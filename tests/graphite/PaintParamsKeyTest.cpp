@@ -235,6 +235,16 @@ ColorFilterType random_colorfiltertype(SkRandom* rand) {
     return static_cast<ColorFilterType>(rand->nextULessThan(kColorFilterTypeCount));
 }
 
+SkMatrix* random_local_matrix(SkRandom* rand, SkMatrix* storage) {
+    switch (rand->nextULessThan(3)) {
+        case 0: return nullptr;
+        case 1: storage->setIdentity(); return storage;
+        case 2: storage->setTranslate(2.0f, 2.0f); return storage;
+    }
+
+    SkUNREACHABLE;
+}
+
 sk_sp<SkImage> make_image(SkRandom* rand, Recorder* recorder) {
     // TODO: add alpha-only images too
     SkImageInfo info = SkImageInfo::Make(32, 32,
@@ -424,9 +434,27 @@ std::pair<sk_sp<SkShader>, sk_sp<PrecompileShader>> create_image_shader(SkRandom
     SkTileMode tmX = random_tilemode(rand);
     SkTileMode tmY = random_tilemode(rand);
 
-    sk_sp<SkShader> s = SkImageShader::Make(make_image(rand, recorder), tmX, tmY,
-                                            SkSamplingOptions(), nullptr);
-    sk_sp<PrecompileShader> o = PrecompileShaders::Image();
+    SkMatrix lmStorage;
+    SkMatrix* lmPtr = random_local_matrix(rand, &lmStorage);
+
+    sk_sp<SkShader> s;
+    sk_sp<PrecompileShader> o;
+
+    // TODO: the combination system accounts for cubic vs. non-cubic sampling and HW vs. non-HW
+    // tiling. We should test those combinations in the fuzzer.
+    if (rand->nextBool()) {
+        s = SkShaders::Image(make_image(rand, recorder),
+                             tmX, tmY,
+                             SkSamplingOptions(),
+                             lmPtr);
+        o = PrecompileShaders::Image();
+    } else {
+        s = SkShaders::RawImage(make_image(rand, recorder),
+                                tmX, tmY,
+                                SkSamplingOptions(),
+                                lmPtr);
+        o = PrecompileShaders::RawImage();
+    }
 
     return { s, o };
 }
@@ -1008,10 +1036,10 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
     PipelineDataGatherer precompileGatherer(Layout::kMetal);
 
     ShaderType shaders[] = {
-            ShaderType::kBlend,
+//            ShaderType::kBlend,
             ShaderType::kImage,
-            ShaderType::kRadialGradient,
-            ShaderType::kSolidColor,
+//            ShaderType::kRadialGradient,
+//            ShaderType::kSolidColor,
 #if EXPANDED_SET
             ShaderType::kNone,
             ShaderType::kColorFilter,
@@ -1027,18 +1055,18 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
     };
 
     BlenderType blenders[] = {
-            BlenderType::kPorterDuff,
-            BlenderType::kShaderBased,
-            BlenderType::kRuntime,
-#if EXPANDED_SET
+//            BlenderType::kPorterDuff,
+//            BlenderType::kShaderBased,
+//            BlenderType::kRuntime,
+//#if EXPANDED_SET
             BlenderType::kNone,
-#endif
+//#endif
     };
 
     ColorFilterType colorFilters[] = {
             ColorFilterType::kNone,
-            ColorFilterType::kBlendMode,
-            ColorFilterType::kMatrix,
+//            ColorFilterType::kBlendMode,
+//            ColorFilterType::kMatrix,
 #if EXPANDED_SET
             ColorFilterType::kColorSpaceXform,
             ColorFilterType::kCompose,

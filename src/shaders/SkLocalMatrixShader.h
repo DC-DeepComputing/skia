@@ -40,11 +40,16 @@ public:
             SkASSERT(imgBase);
             isGraphiteImageShader = imgBase->isGraphiteBacked();
         }
+
+        SkDebugf("MakeWrapped %d %p %d\n", isGraphiteImageShader, localMatrix,
+                 localMatrix ? localMatrix->isIdentity() : false);
+
         // In Graphite we can safely handle a local matrix shader with identity by not emitting code
         // for it. Additionally, Graphite uses the local matrix shader to add the matrix for the
         // origin y-flip if needed. Thus we always emit the local matrix shader here so we can
         // connect the y-flip, but it doesn't hurt us if there is no flip.
         if ((!localMatrix || localMatrix->isIdentity()) && !isGraphiteImageShader) {
+            SkDebugf("Exiting early\n");
             return t;
         }
 

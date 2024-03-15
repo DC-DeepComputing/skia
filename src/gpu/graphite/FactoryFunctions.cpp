@@ -403,6 +403,8 @@ private:
 
     int numIntrinsicCombinations() const override { return kNumIntrinsicCombinations; }
 
+    // This helper allows other precompile objects to add an ImageShader to the key without
+    // an encapsulating LMShader
     static void AddToKey(const KeyContext& keyContext,
                          PaintParamsKeyBuilder* builder,
                          PipelineDataGatherer* gatherer,
@@ -433,11 +435,22 @@ private:
                   PaintParamsKeyBuilder* builder,
                   PipelineDataGatherer* gatherer,
                   int desiredCombination) const override {
+
+        static const LocalMatrixShaderBlock::LMShaderData kIgnoredLMShaderData(SkMatrix::I());
+
+        LocalMatrixShaderBlock::BeginBlock(keyContext, builder, gatherer, kIgnoredLMShaderData);
+
         AddToKey(keyContext, builder, gatherer, desiredCombination);
+
+        builder->endBlock();
     }
 };
 
 sk_sp<PrecompileShader> PrecompileShaders::Image() {
+    return sk_make_sp<PrecompileImageShader>();
+}
+
+sk_sp<PrecompileShader> PrecompileShaders::RawImage() {
     return sk_make_sp<PrecompileImageShader>();
 }
 
