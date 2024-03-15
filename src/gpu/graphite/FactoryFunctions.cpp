@@ -432,6 +432,10 @@ sk_sp<PrecompileShader> PrecompileShaders::Image() {
     return sk_make_sp<PrecompileImageShader>();
 }
 
+sk_sp<PrecompileShader> PrecompileShaders::RawImage() {
+    return sk_make_sp<PrecompileImageShader>();
+}
+
 //--------------------------------------------------------------------------------------------------
 class PrecompileYUVImageShader : public PrecompileShader {
 public:
