@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "80537751_4185e866",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 12114
+      },
+      "writtenOn": "2024-03-15T23:40:45Z",
+      "side": 1,
+      "message": "IMPORTANT: This color space is more commonly called YCgCo. See ITU-T H.273. I am afraid that using the YCoCg name will be confusing.\n\nThe naming issue is explained in the \"History and naming\" section of the Wikipedia article:\nhttps://en.wikipedia.org/wiki/YCoCg",
+      "revId": "53ff9aaad8e21de0d8605467e9fe7636037772dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "0ef6afe1_0c999e7d",
@@ -53,6 +70,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "57acbd9c_8e964b5b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 12114
+      },
+      "writtenOn": "2024-03-15T23:40:45Z",
+      "side": 1,
+      "message": "Hi Saifuddin, please consider my review as supplemental.",
+      "revId": "53ff9aaad8e21de0d8605467e9fe7636037772dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1f87c152_424f5541",
@@ -66,6 +100,57 @@
       "writtenOn": "2024-03-15T14:42:46Z",
       "side": 1,
       "message": "I verified manually that this conversion is similar to that done by ui/gfx/color_space through (Inverse(AdjustedRange)*Transfer) as it goes through [this](https://source.chromium.org/chromium/chromium/src/+/main:ui/gfx/color_transform.cc;drc\u003dc292340f0c721cd88f9b14c453c877c55d13ce6b;l\u003d1310) path. Although haven\u0027t confirmed with the other bit depths.",
+      "revId": "53ff9aaad8e21de0d8605467e9fe7636037772dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f417493_c9df0dfc",
+        "filename": "src/core/SkYUVMath.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 399,
+      "author": {
+        "id": 12114
+      },
+      "writtenOn": "2024-03-15T23:40:45Z",
+      "side": 1,
+      "message": "IMPORTANT: In H.273, to convert RGB to limited-range YCgCo, the operations are applied in this order:\n\n1. E\u0027_R, E\u0027_G, E\u0027_B are converted to R, G, B, with range reduction.\n2. R, G, B are converted to Y, Cg, Co using the matrix.\n\nFor the other color spaces, to convert RGB to limited-range YCbCr, the operations are applied in a different order:\n\n1. E\u0027_R, E\u0027_G, E\u0027_B are converted to E\u0027_Y, E\u0027_PB, E\u0027_PR using the matrix.\n2. E\u0027_Y, E\u0027_PB, E\u0027_PR are converted to Y, Cb, Cr, with range reduction.\n\nPlease make sure you take the different orders into account in this function. I am not familiar with Skia, so I didn\u0027t check the code for correctness.",
+      "revId": "53ff9aaad8e21de0d8605467e9fe7636037772dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "700e757c_83893d15",
+        "filename": "src/core/SkYUVMath.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 403,
+      "author": {
+        "id": 12114
+      },
+      "writtenOn": "2024-03-15T23:40:45Z",
+      "side": 1,
+      "message": "This is Equation 45 for Cb in H.273. And H.273 says Cb may be referred to as Cg.",
+      "revId": "53ff9aaad8e21de0d8605467e9fe7636037772dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "286273bc_9bd6f18f",
+        "filename": "src/core/SkYUVMath.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 404,
+      "author": {
+        "id": 12114
+      },
+      "writtenOn": "2024-03-15T23:40:45Z",
+      "side": 1,
+      "message": "This is Equation 46 for Cr in H.273. And H.273 says Cr may be referred to as Co.\n\nSo, this matrix is for YCgCo, not YCoCg.",
       "revId": "53ff9aaad8e21de0d8605467e9fe7636037772dc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
