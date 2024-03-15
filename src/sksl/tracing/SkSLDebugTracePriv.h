@@ -9,6 +9,7 @@
 #define SKSLDEBUGTRACEPRIV
 
 #include "include/core/SkPoint.h"
+#include "include/core/SkRefCnt.h"
 #include "include/sksl/SkSLDebugTrace.h"
 #include "src/sksl/SkSLPosition.h"
 #include "src/sksl/ir/SkSLType.h"
@@ -64,29 +65,29 @@ public:
     /**
      * Sets the device-coordinate pixel to trace. If it's not set, the point at (0, 0) will be used.
      */
-    void setTraceCoord(const SkIPoint& coord);
+    virtual void setTraceCoord(const SkIPoint& coord) {}
 
     /** Attaches the SkSL source to be debugged. */
-    void setSource(const std::string& source);
+    virtual void setSource(const std::string& source) {}
 
     /** Serializes a debug trace to JSON which can be parsed by our debugger. */
-    bool readTrace(SkStream* r);
-    void writeTrace(SkWStream* w) const override;
+    virtual bool readTrace(SkStream* r) { return false; }
+    void writeTrace(SkWStream* w) const override {}
 
     /** Generates a human-readable dump of the debug trace. */
-    void dump(SkWStream* o) const override;
+    void dump(SkWStream* o) const override {}
 
     /** Returns a slot's component as a variable-name suffix, e.g. ".x" or "[2][2]". */
-    std::string getSlotComponentSuffix(int slotIndex) const;
+    virtual std::string getSlotComponentSuffix(int slotIndex) const { return ""; }
 
     /** Bit-casts a slot's value, then converts to text, e.g. "3.14" or "true" or "12345". */
-    std::string getSlotValue(int slotIndex, int32_t value) const;
+    virtual std::string getSlotValue(int slotIndex, int32_t value) const { return ""; }
 
     /** Bit-casts a value for a given slot into a double, honoring the slot's NumberKind. */
-    double interpretValueBits(int slotIndex, int32_t valueBits) const;
+    virtual double interpretValueBits(int slotIndex, int32_t valueBits) const { return 0; }
 
     /** Converts a numeric value into text, based on the slot's NumberKind. */
-    std::string slotValueToString(int slotIndex, double value) const;
+    virtual std::string slotValueToString(int slotIndex, double value) const { return ""; }
 
     /** The device-coordinate pixel to trace (controlled by setTraceCoord) */
     SkIPoint fTraceCoord = {};
@@ -109,7 +110,20 @@ public:
      * automatically during code generation.
      */
     std::unique_ptr<SkSL::TraceHook> fTraceHook;
+
+    static sk_sp<DebugTracePriv> MakeNoOpImpl();
+
+protected:
+    DebugTracePriv();
 };
+
+using DebugTraceFactory = sk_sp<DebugTracePriv> (*)();
+
+// Return an implementation of DebugTracePriv based on a registered factory. The default is
+// a no-op, but one can be registered (see SkSLDebugTraceImpl.h).
+sk_sp<SkSL::DebugTracePriv> MakeDebugTrace();
+
+void SetDebugTraceFactory(DebugTraceFactory newFact);
 
 }  // namespace SkSL
 

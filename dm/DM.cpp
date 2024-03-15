@@ -68,6 +68,11 @@
     #include "modules/svg/include/SkSVGOpenTypeSVGDecoder.h"
 #endif
 
+#if defined(SKSL_ENABLE_TRACING)
+#include "src/sksl/tracing/SkSLDebugTraceImpl.h"
+#include "src/sksl/tracing/SkSLDebugTracePriv.h"
+#endif
+
 using namespace skia_private;
 
 extern bool gSkForceRasterPipelineBlitter;
@@ -1588,6 +1593,10 @@ int main(int argc, char** argv) {
 #endif
     SkTaskGroup::Enabler enabled(FLAGS_threads);
     CodecUtils::RegisterAllAvailable();
+
+#if defined(SKSL_ENABLE_TRACING)
+    SkSL::SetDebugTraceFactory(SkSL::DebugTraceImpl::Make);
+#endif
 
     if (nullptr == GetResourceAsData("images/color_wheel.png")) {
         info("Some resources are missing.  Do you need to set --resourcePath?\n");
