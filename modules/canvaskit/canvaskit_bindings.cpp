@@ -60,6 +60,7 @@
 #include "include/encode/SkPngEncoder.h"
 #include "include/encode/SkWebpEncoder.h"
 #include "include/private/base/SkOnce.h"
+#include "include/sksl/SkSLDebugTrace.h"
 #include "include/utils/SkParsePath.h"
 #include "include/utils/SkShadowUtils.h"
 #include "src/core/SkPathPriv.h"
@@ -120,10 +121,6 @@
 
 #ifdef CK_INCLUDE_PATHOPS
 #include "include/pathops/SkPathOps.h"
-#endif
-
-#if defined(CK_INCLUDE_RUNTIME_EFFECT) && defined(SKSL_ENABLE_TRACING)
-#include "include/sksl/SkSLDebugTrace.h"
 #endif
 
 #ifndef CK_NO_FONTS

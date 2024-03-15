@@ -2,17 +2,17 @@
 
 store_src_rg                   v0..1 = src.rg
 init_lane_masks                CondMask = LoopMask = RetMask = true
-copy_3_uniforms                param(0..2) = colorRed(0..2)
-copy_constant                  param(3) = 0x3F800000 (1.0)
-copy_2_slots_unmasked          $0..1 = param(0..1)
+copy_3_uniforms                v6..8 = u4..6
+copy_constant                  v9 = 0x3F800000 (1.0)
+copy_2_slots_unmasked          $0..1 = v6..7
 copy_constant                  $2 = 0
-copy_slot_unmasked             $3 = param(3)
+copy_slot_unmasked             $3 = v9
 label                          label 0
-copy_4_slots_unmasked          result = $0..3
-copy_4_uniforms                green = colorGreen
-copy_2_slots_unmasked          $0..1 = green(0..1)
+copy_4_slots_unmasked          v14..17 = $0..3
+copy_4_uniforms                v18..21 = u0..3
+copy_2_slots_unmasked          $0..1 = v18..19
 copy_constant                  $2 = 0
-copy_slot_unmasked             $3 = green(3)
+copy_slot_unmasked             $3 = v21
 label                          label 0x00000001
-copy_4_slots_unmasked          result = $0..3
+copy_4_slots_unmasked          v14..17 = $0..3
 load_src                       src.rgba = $0..3

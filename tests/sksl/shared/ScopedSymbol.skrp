@@ -4,17 +4,17 @@
 i0 = 0xFFFFFFFF
 i1 = 0x00000001 (1.401298e-45)
 
-store_src_rg                   coords = src.rg
+store_src_rg                   v0..1 = src.rg
 init_lane_masks                CondMask = LoopMask = RetMask = true
-copy_constant                  glob = 0
-copy_constant                  glob = 0x00000002 (2.802597e-45)
+copy_constant                  v2 = 0
+copy_constant                  v2 = 0x00000002 (2.802597e-45)
 store_condition_mask           $12 = CondMask
 store_condition_mask           $15 = CondMask
 store_condition_mask           $18 = CondMask
 copy_constant                  $20 = 0xFFFFFFFF
 branch_if_no_active_lanes_eq   branch +6 (label 4 at #15) if no lanes of $20 == 0xFFFFFFFF
 branch_if_no_lanes_active      branch_if_no_lanes_active +3 (label 6 at #13)
-copy_slot_unmasked             $19 = glob
+copy_slot_unmasked             $19 = v2
 cmpeq_imm_int                  $19 = equal($19, 0x00000002)
 label                          label 0x00000006
 jump                           jump +3 (label 5 at #17)
@@ -48,7 +48,7 @@ copy_slot_masked               $0 = Mask($1)
 label                          label 0x00000001
 load_condition_mask            CondMask = $12
 swizzle_4                      $0..3 = ($0..3).xxxx
-copy_4_uniforms                $4..7 = colorRed
-copy_4_uniforms                $8..11 = colorGreen
+copy_4_uniforms                $4..7 = u4..7
+copy_4_uniforms                $8..11 = u0..3
 mix_4_ints                     $0..3 = mix($4..7, $8..11, $0..3)
 load_src                       src.rgba = $0..3

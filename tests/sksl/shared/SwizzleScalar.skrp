@@ -1,22 +1,22 @@
 20 instructions
 
-store_src_rg                   coords = src.rg
+store_src_rg                   v0..1 = src.rg
 init_lane_masks                CondMask = LoopMask = RetMask = true
-copy_uniform                   $0 = unknownInput
+copy_uniform                   $0 = u0
 swizzle_4                      $0..3 = ($0..3).xxxx
-copy_4_slots_unmasked          h4 = $0..3
-copy_uniform                   $0 = unknownInput
+copy_4_slots_unmasked          v6..9 = $0..3
+copy_uniform                   $0 = u0
 copy_slot_unmasked             $1 = $0
-copy_constant                  h4(2) = 0
-copy_constant                  h4(3) = 0x3F800000 (1.0)
-copy_2_slots_unmasked          h4(0..1) = $0..1
-copy_constant                  h4(0) = 0
-copy_uniform                   h4(1) = unknownInput
-copy_constant                  h4(2) = 0x3F800000 (1.0)
-copy_constant                  h4(3) = 0
-copy_constant                  h4(0) = 0
-copy_uniform                   h4(1) = unknownInput
-copy_constant                  h4(2) = 0
-copy_uniform                   h4(3) = unknownInput
-copy_4_slots_unmasked          $0..3 = h4
+copy_constant                  v8 = 0
+copy_constant                  v9 = 0x3F800000 (1.0)
+copy_2_slots_unmasked          v6..7 = $0..1
+copy_constant                  v6 = 0
+copy_uniform                   v7 = u0
+copy_constant                  v8 = 0x3F800000 (1.0)
+copy_constant                  v9 = 0
+copy_constant                  v6 = 0
+copy_uniform                   v7 = u0
+copy_constant                  v8 = 0
+copy_uniform                   v9 = u0
+copy_4_slots_unmasked          $0..3 = v6..9
 load_src                       src.rgba = $0..3

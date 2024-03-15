@@ -3,23 +3,23 @@
 [immutable slots]
 i0 = 0xFFFFFFFF
 
-store_src_rg                   coords = src.rg
+store_src_rg                   v0..1 = src.rg
 init_lane_masks                CondMask = LoopMask = RetMask = true
-copy_4_uniforms                green = colorGreen
-copy_4_uniforms                red = colorRed
-copy_constant                  param = 0
-copy_constant                  x = 0xFFFFFFFF
+copy_4_uniforms                v6..9 = u4..7
+copy_4_uniforms                v10..13 = u0..3
+copy_constant                  v14 = 0
+copy_constant                  v16 = 0xFFFFFFFF
 copy_constant                  $0 = 0
-copy_slot_unmasked             param = x
+copy_slot_unmasked             v14 = v16
 label                          label 0
-copy_constant                  call = 0xFFFFFFFF
+copy_constant                  v17 = 0xFFFFFFFF
 copy_constant                  $0 = 0xFFFFFFFF
-copy_slot_unmasked             $1 = param
+copy_slot_unmasked             $1 = v14
 bitwise_and_int                $0 &= $1
-copy_slot_unmasked             $1 = call
+copy_slot_unmasked             $1 = v17
 bitwise_and_int                $0 &= $1
 swizzle_4                      $0..3 = ($0..3).xxxx
-copy_4_slots_unmasked          $4..7 = red
-copy_4_slots_unmasked          $8..11 = green
+copy_4_slots_unmasked          $4..7 = v10..13
+copy_4_slots_unmasked          $8..11 = v6..9
 mix_4_ints                     $0..3 = mix($4..7, $8..11, $0..3)
 load_src                       src.rgba = $0..3

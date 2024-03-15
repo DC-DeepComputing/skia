@@ -1,18 +1,18 @@
 15 instructions
 
-store_src_rg                   coords = src.rg
+store_src_rg                   v0..1 = src.rg
 init_lane_masks                CondMask = LoopMask = RetMask = true
-copy_constant                  x = 0x3F800000 (1.0)
-copy_constant                  y = 0x40000000 (2.0)
-copy_slot_unmasked             $0 = x
+copy_constant                  v2 = 0x3F800000 (1.0)
+copy_constant                  v8 = 0x40000000 (2.0)
+copy_slot_unmasked             $0 = v2
 cmpeq_imm_float                $0 = equal($0, 0x3F800000 (1.0))
-copy_slot_unmasked             $1 = y
+copy_slot_unmasked             $1 = v8
 cmpeq_imm_float                $1 = equal($1, 0x40000000 (2.0))
 bitwise_and_int                $0 &= $1
-copy_slot_unmasked             x = y
+copy_slot_unmasked             v2 = v8
 label                          label 0x00000001
 swizzle_4                      $0..3 = ($0..3).xxxx
-copy_4_uniforms                $4..7 = colorRed
-copy_4_uniforms                $8..11 = colorGreen
+copy_4_uniforms                $4..7 = u4..7
+copy_4_uniforms                $8..11 = u0..3
 mix_4_ints                     $0..3 = mix($4..7, $8..11, $0..3)
 load_src                       src.rgba = $0..3

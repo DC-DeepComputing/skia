@@ -1,6 +1,6 @@
 4 instructions
 
-store_src_rg                   xy = src.rg
+store_src_rg                   v0..1 = src.rg
 init_lane_masks                CondMask = LoopMask = RetMask = true
-copy_4_uniforms                $0..3 = colorGreen
+copy_4_uniforms                $0..3 = u0..3
 load_src                       src.rgba = $0..3

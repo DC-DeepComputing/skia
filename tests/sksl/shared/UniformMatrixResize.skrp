@@ -15,13 +15,13 @@ i10 = 0
 i11 = 0
 i12 = 0x3F800000 (1.0)
 
-store_src_rg                   coords = src.rg
+store_src_rg                   v0..1 = src.rg
 init_lane_masks                CondMask = LoopMask = RetMask = true
 store_condition_mask           $19 = CondMask
 branch_if_no_lanes_active      branch_if_no_lanes_active +5 (label 2 at #9)
-copy_4_uniforms                $20..23 = testMatrix3x3(0..3)
-copy_4_uniforms                $24..27 = testMatrix3x3(4..7)
-copy_uniform                   $28 = testMatrix3x3(8)
+copy_4_uniforms                $20..23 = u0..3
+copy_4_uniforms                $24..27 = u4..7
+copy_uniform                   $28 = u8
 shuffle                        $22..23 = ($22..23)[1 2]
 label                          label 0x00000002
 copy_4_immutables_unmasked     $24..27 = i0..3 [0x3F800000 (1.0), 0x40000000 (2.0), 0x40800000 (4.0), 0x40A00000 (5.0)]
@@ -31,9 +31,9 @@ bitwise_and_int                $20 &= $21
 copy_constant                  $0 = 0
 merge_condition_mask           CondMask = $19 & $20
 branch_if_no_lanes_active      branch_if_no_lanes_active +18 (label 1 at #34)
-copy_4_uniforms                $1..4 = testMatrix3x3(0..3)
-copy_4_uniforms                $5..8 = testMatrix3x3(4..7)
-copy_uniform                   $9 = testMatrix3x3(8)
+copy_4_uniforms                $1..4 = u0..3
+copy_4_uniforms                $5..8 = u4..7
+copy_uniform                   $9 = u8
 shuffle                        $3..4 = ($3..4)[1 2]
 label                          label 0x00000003
 copy_constant                  $5 = 0
@@ -51,7 +51,7 @@ copy_slot_masked               $0 = Mask($1)
 label                          label 0x00000001
 load_condition_mask            CondMask = $19
 swizzle_4                      $0..3 = ($0..3).xxxx
-copy_4_uniforms                $4..7 = colorRed
-copy_4_uniforms                $8..11 = colorGreen
+copy_4_uniforms                $4..7 = u13..16
+copy_4_uniforms                $8..11 = u9..12
 mix_4_ints                     $0..3 = mix($4..7, $8..11, $0..3)
 load_src                       src.rgba = $0..3

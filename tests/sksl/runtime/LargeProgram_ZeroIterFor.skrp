@@ -3,7 +3,7 @@
 [immutable slots]
 i0 = 0
 
-store_src_rg                   xy = src.rg
+store_src_rg                   v0..1 = src.rg
 init_lane_masks                CondMask = LoopMask = RetMask = true
 copy_constant                  $0 = 0
 cast_to_float_from_int         $0 = IntToFloat($0)

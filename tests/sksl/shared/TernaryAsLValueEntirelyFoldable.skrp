@@ -1,11 +1,11 @@
 9 instructions
 
-store_src_rg                   coords = src.rg
+store_src_rg                   v0..1 = src.rg
 init_lane_masks                CondMask = LoopMask = RetMask = true
-splat_2_constants              r, g = 0
-copy_constant                  r = 0
-copy_constant                  g = 0x3F800000 (1.0)
-copy_2_slots_unmasked          $0..1 = r, g
+splat_2_constants              v6..7 = 0
+copy_constant                  v6 = 0
+copy_constant                  v7 = 0x3F800000 (1.0)
+copy_2_slots_unmasked          $0..1 = v6..7
 copy_constant                  $2 = 0
 copy_constant                  $3 = 0x3F800000 (1.0)
 load_src                       src.rgba = $0..3

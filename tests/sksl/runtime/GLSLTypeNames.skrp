@@ -1,9 +1,9 @@
 7 instructions
 
-store_src_rg                   coords = src.rg
+store_src_rg                   v0..1 = src.rg
 init_lane_masks                CondMask = LoopMask = RetMask = true
-copy_constant                  f = 0
-copy_slot_unmasked             $0 = f
+copy_constant                  v2 = 0
+copy_slot_unmasked             $0 = v2
 swizzle_4                      $0..3 = ($0..3).xxxx
-copy_4_slots_unmasked          fv = $0..3
+copy_4_slots_unmasked          v7..10 = $0..3
 load_src                       src.rgba = $0..3

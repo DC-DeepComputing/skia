@@ -1,32 +1,32 @@
 24 instructions
 
-store_src_rg                   coords = src.rg
+store_src_rg                   v0..1 = src.rg
 init_lane_masks                CondMask = LoopMask = RetMask = true
-splat_4_constants              c = 0
-copy_4_uniforms                x = colorGreen
-copy_4_slots_unmasked          c = x
+splat_4_constants              v6..9 = 0
+copy_4_uniforms                v10..13 = u0..3
+copy_4_slots_unmasked          v6..9 = v10..13
 label                          label 0
-copy_4_uniforms                x = colorGreen
-copy_4_slots_unmasked          c₁ = x
+copy_4_uniforms                v10..13 = u0..3
+copy_4_slots_unmasked          v14..17 = v10..13
 label                          label 0x00000002
-copy_4_slots_unmasked          c = c₁
+copy_4_slots_unmasked          v6..9 = v14..17
 label                          label 0x00000001
-copy_4_slots_unmasked          x₁ = c
-copy_4_slots_unmasked          $0..3 = x₁
-copy_4_slots_unmasked          $4..7 = x₁
+copy_4_slots_unmasked          v18..21 = v6..9
+copy_4_slots_unmasked          $0..3 = v18..21
+copy_4_slots_unmasked          $4..7 = v18..21
 mul_4_floats                   $0..3 *= $4..7
-copy_4_slots_unmasked          x₁ = $0..3
-copy_4_slots_unmasked          c = $0..3
+copy_4_slots_unmasked          v18..21 = $0..3
+copy_4_slots_unmasked          v6..9 = $0..3
 label                          label 0x00000003
-copy_4_slots_unmasked          x₂ = c
-copy_4_slots_unmasked          x₁ = x₂
-copy_4_slots_unmasked          $0..3 = x₁
-copy_4_slots_unmasked          $4..7 = x₁
+copy_4_slots_unmasked          v22..25 = v6..9
+copy_4_slots_unmasked          v18..21 = v22..25
+copy_4_slots_unmasked          $0..3 = v18..21
+copy_4_slots_unmasked          $4..7 = v18..21
 mul_4_floats                   $0..3 *= $4..7
-copy_4_slots_unmasked          x₁ = $0..3
-copy_4_slots_unmasked          x₂ = $0..3
+copy_4_slots_unmasked          v18..21 = $0..3
+copy_4_slots_unmasked          v22..25 = $0..3
 label                          label 0x00000005
-copy_4_slots_unmasked          c = x₂
+copy_4_slots_unmasked          v6..9 = v22..25
 label                          label 0x00000004
-copy_4_slots_unmasked          $0..3 = c
+copy_4_slots_unmasked          $0..3 = v6..9
 load_src                       src.rgba = $0..3

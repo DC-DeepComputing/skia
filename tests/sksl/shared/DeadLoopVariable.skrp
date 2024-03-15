@@ -3,7 +3,7 @@
 [immutable slots]
 i0 = 0
 
-store_src_rg                   coords = src.rg
+store_src_rg                   v0..1 = src.rg
 init_lane_masks                CondMask = LoopMask = RetMask = true
 store_loop_mask                $0 = LoopMask
 jump                           jump +4 (label 1 at #8)
@@ -18,5 +18,5 @@ stack_rewind
 branch_if_any_lanes_active     branch_if_any_lanes_active -8 (label 2 at #5)
 label                          label 0
 load_loop_mask                 LoopMask = $0
-copy_4_uniforms                $0..3 = colorGreen
+copy_4_uniforms                $0..3 = u0..3
 load_src                       src.rgba = $0..3

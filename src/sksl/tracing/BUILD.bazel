@@ -78,3 +78,18 @@ skia_filegroup(
     ],
     visibility = ["//src/sksl:__pkg__"],
 )
+
+skia_cc_library(
+    name = "tracing",
+    srcs = [
+        "SkSLDebugTracePlayer.cpp",
+        "SkSLDebugTracePlayer.h",
+    ],
+    defines = ["SKSL_ENABLE_TRACING"],
+    visibility = ["//modules/canvaskit:__pkg__"],
+    deps = [
+        "//src/base",
+        "//src/core",
+        "//src/core:core_priv",
+    ],
+)

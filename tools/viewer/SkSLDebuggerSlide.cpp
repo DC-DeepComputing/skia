@@ -31,13 +31,13 @@ using LineNumberMap = SkSL::SkSLDebugTracePlayer::LineNumberMap;
 
 SkSLDebuggerSlide::SkSLDebuggerSlide() {
     fName = "Debugger";
-    fTrace = sk_make_sp<SkSL::DebugTracePriv>();
+    fTrace = SkSL::MakeDebugTrace();
 }
 
 void SkSLDebuggerSlide::load(SkScalar winWidth, SkScalar winHeight) {}
 
 void SkSLDebuggerSlide::unload() {
-    fTrace = sk_make_sp<SkSL::DebugTracePriv>();
+    fTrace = SkSL::MakeDebugTrace();
     fPlayer.reset(nullptr);
     fPlayer.setBreakpoints(std::unordered_set<int>{});
 }

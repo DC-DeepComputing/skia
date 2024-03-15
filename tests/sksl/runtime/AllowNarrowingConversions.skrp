@@ -10,10 +10,10 @@ i5 = 0
 i6 = 0
 i7 = 0
 
-store_src_rg                   coords = src.rg
+store_src_rg                   v0..1 = src.rg
 init_lane_masks                CondMask = LoopMask = RetMask = true
-copy_4_uniforms                green = colorGreen
-copy_4_slots_unmasked          $0..3 = green
+copy_4_uniforms                v6..9 = u0..3
+copy_4_slots_unmasked          $0..3 = v6..9
 splat_4_constants              $4..7 = 0x3F800000 (1.0)
 mul_4_floats                   $0..3 *= $4..7
 splat_4_constants              $4..7 = 0

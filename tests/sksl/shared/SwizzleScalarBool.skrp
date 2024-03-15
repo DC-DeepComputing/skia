@@ -1,25 +1,25 @@
 23 instructions
 
-store_src_rg                   coords = src.rg
+store_src_rg                   v0..1 = src.rg
 init_lane_masks                CondMask = LoopMask = RetMask = true
-copy_uniform                   $0 = unknownInput
+copy_uniform                   $0 = u0
 cmpne_imm_float                $0 = notEqual($0, 0)
-copy_slot_unmasked             b = $0
+copy_slot_unmasked             v6 = $0
 swizzle_4                      $0..3 = ($0..3).xxxx
-copy_4_slots_unmasked          b4 = $0..3
-copy_slot_unmasked             $0 = b
+copy_4_slots_unmasked          v7..10 = $0..3
+copy_slot_unmasked             $0 = v6
 copy_slot_unmasked             $1 = $0
-copy_constant                  b4(2) = 0
-copy_constant                  b4(3) = 0xFFFFFFFF
-copy_2_slots_unmasked          b4(0..1) = $0..1
-copy_constant                  b4(0) = 0
-copy_slot_unmasked             b4(1) = b
-copy_constant                  b4(2) = 0xFFFFFFFF
-copy_constant                  b4(3) = 0
-copy_constant                  b4(0) = 0
-copy_slot_unmasked             b4(1) = b
-copy_constant                  b4(2) = 0
-copy_slot_unmasked             b4(3) = b
-copy_4_slots_unmasked          $0..3 = b4
+copy_constant                  v9 = 0
+copy_constant                  v10 = 0xFFFFFFFF
+copy_2_slots_unmasked          v7..8 = $0..1
+copy_constant                  v7 = 0
+copy_slot_unmasked             v8 = v6
+copy_constant                  v9 = 0xFFFFFFFF
+copy_constant                  v10 = 0
+copy_constant                  v7 = 0
+copy_slot_unmasked             v8 = v6
+copy_constant                  v9 = 0
+copy_slot_unmasked             v10 = v6
+copy_4_slots_unmasked          $0..3 = v7..10
 bitwise_and_imm_4_ints         $0..3 &= 0x3F800000 (1.0)
 load_src                       src.rgba = $0..3

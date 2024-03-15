@@ -9,6 +9,7 @@
 #define SKSLDEBUGTRACEPRIV
 
 #include "include/core/SkPoint.h"
+#include "include/core/SkRefCnt.h"
 #include "include/sksl/SkSLDebugTrace.h"
 #include "src/sksl/SkSLPosition.h"
 #include "src/sksl/ir/SkSLType.h"
@@ -109,7 +110,17 @@ public:
      * automatically during code generation.
      */
     std::unique_ptr<SkSL::TraceHook> fTraceHook;
+
+    static sk_sp<SkSL::DebugTracePriv> MakeNoOpImpl();
+private:
+    DebugTracePriv();
 };
+
+using DebugTraceFactory = sk_sp<DebugTracePriv> (*)();
+
+sk_sp<SkSL::DebugTracePriv> MakeDebugTrace();
+
+void SetDebugTraceFactory(DebugTraceFactory newFact);
 
 }  // namespace SkSL
 

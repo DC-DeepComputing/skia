@@ -347,7 +347,7 @@ public:
 static bool detect_shader_settings(const std::string& text,
                                    SkSL::ProgramSettings* settings,
                                    const SkSL::ShaderCaps** caps,
-                                   std::unique_ptr<SkSL::DebugTracePriv>* debugTrace) {
+                                   sk_sp<SkSL::DebugTracePriv>* debugTrace) {
     using Factory = ShaderCapsTestFactory;
 
     // Find a matching comment and isolate the name portion.
@@ -469,7 +469,7 @@ static bool detect_shader_settings(const std::string& text,
                 }
                 if (consume_suffix(&settingsText, " DebugTrace")) {
                     settings->fOptimize = false;
-                    *debugTrace = std::make_unique<SkSL::DebugTracePriv>();
+                    *debugTrace = SkSL::MakeDebugTrace();
                 }
 
                 if (settingsText.empty()) {
@@ -573,7 +573,7 @@ static ResultCode process_command(SkSpan<std::string> args) {
 
     SkSL::ProgramSettings settings;
     const SkSL::ShaderCaps* caps = SkSL::ShaderCapsFactory::Standalone();
-    std::unique_ptr<SkSL::DebugTracePriv> debugTrace;
+    sk_sp<SkSL::DebugTracePriv> debugTrace;
     if (*honorSettings) {
         if (!detect_shader_settings(text, &settings, &caps, &debugTrace)) {
             return ResultCode::kInputError;
@@ -695,7 +695,7 @@ static ResultCode process_command(SkSpan<std::string> args) {
                                                  const SkSL::ShaderCaps* shaderCaps,
                                                  SkSL::Program& program,
                                                  SkSL::OutputStream& out) {
-            SkSL::DebugTracePriv skrpDebugTrace;
+            sk_sp<SkSL::DebugTracePriv> skrpDebugTrace = SkSL::MakeDebugTrace();
             const SkSL::FunctionDeclaration* main = program.getFunction("main");
             if (!main) {
                 compiler.errorReporter().error({}, "code has no entrypoint");
@@ -703,7 +703,7 @@ static ResultCode process_command(SkSpan<std::string> args) {
             }
             bool wantTraceOps = (debugTrace != nullptr);
             std::unique_ptr<SkSL::RP::Program> rasterProg = SkSL::MakeRasterPipelineProgram(
-                    program, *main->definition(), &skrpDebugTrace, wantTraceOps);
+                    program, *main->definition(), skrpDebugTrace.get(), wantTraceOps);
             if (!rasterProg) {
                 compiler.errorReporter().error({}, "code is not supported");
                 return false;

@@ -1,8 +1,8 @@
 5 instructions, 1 invocations
 
-store_src_rg                   p = src.rg
+store_src_rg                   v0..1 = src.rg
 init_lane_masks                CondMask = LoopMask = RetMask = true
-copy_2_slots_unmasked          $0..1 = p
+copy_2_slots_unmasked          $0..1 = v0..1
 swizzle_2                      $0..1 = ($0..1).yx
 exchange_src                   swap(src.rgba, $0..3)
 invoke_shader                  invoke_shader 0

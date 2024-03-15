@@ -1,35 +1,35 @@
 70 instructions
 
-store_src_rg                   coords = src.rg
+store_src_rg                   v0..1 = src.rg
 init_lane_masks                CondMask = LoopMask = RetMask = true
-copy_uniform                   $0 = colorGreen(0)
+copy_uniform                   $0 = u0
 cast_to_int_from_float         $0 = FloatToInt($0)
-copy_slot_unmasked             zero = $0
-copy_uniform                   $0 = colorGreen(1)
+copy_slot_unmasked             v6 = $0
+copy_uniform                   $0 = u1
 cast_to_int_from_float         $0 = FloatToInt($0)
-copy_slot_unmasked             one = $0
-copy_slot_unmasked             x = zero
+copy_slot_unmasked             v7 = $0
+copy_slot_unmasked             v8 = v6
 store_loop_mask                $0 = LoopMask
 jump                           jump +57 (label 1 at #68)
 label                          label 0x00000002
-copy_slot_unmasked             y = one
+copy_slot_unmasked             v9 = v7
 store_loop_mask                $1 = LoopMask
 jump                           jump +42 (label 4 at #57)
 label                          label 0x00000005
-copy_slot_unmasked             _0_x = x
-copy_constant                  _1_result = 0
+copy_slot_unmasked             v10 = v8
+copy_constant                  v11 = 0
 store_loop_mask                $2 = LoopMask
 jump                           jump +9 (label 7 at #29)
 label                          label 0x00000008
-copy_slot_unmasked             $3 = _1_result
+copy_slot_unmasked             $3 = v11
 add_imm_int                    $3 += 0x00000001
-copy_slot_masked               _1_result = Mask($3)
-copy_slot_unmasked             $3 = _0_x
-copy_slot_unmasked             $4 = y
+copy_slot_masked               v11 = Mask($3)
+copy_slot_unmasked             $3 = v10
+copy_slot_unmasked             $4 = v9
 sub_int                        $3 -= $4
-copy_slot_masked               _0_x = Mask($3)
+copy_slot_masked               v10 = Mask($3)
 label                          label 0x00000007
-copy_2_slots_unmasked          $3..4 = y, _0_x
+copy_2_slots_unmasked          $3..4 = v9..10
 cmple_int                      $3 = lessThanEqual($3, $4)
 merge_loop_mask                LoopMask &= $3
 stack_rewind
@@ -37,45 +37,45 @@ branch_if_any_lanes_active     branch_if_any_lanes_active -13 (label 8 at #21)
 label                          label 0x00000006
 load_loop_mask                 LoopMask = $2
 store_condition_mask           $2 = CondMask
-copy_2_slots_unmasked          $3..4 = x, y
+copy_2_slots_unmasked          $3..4 = v8..9
 div_int                        $3 /= $4
-copy_slot_unmasked             $4 = _1_result
+copy_slot_unmasked             $4 = v11
 cmpne_int                      $3 = notEqual($3, $4)
 merge_condition_mask           CondMask = $2 & $3
 copy_constant                  $4 = 0x3F800000 (1.0)
-copy_slot_unmasked             $5 = x
+copy_slot_unmasked             $5 = v8
 cast_to_float_from_int         $5 = IntToFloat($5)
 mul_imm_float                  $5 *= 0x3B808081 (0.003921569)
-copy_slot_unmasked             $6 = y
+copy_slot_unmasked             $6 = v9
 cast_to_float_from_int         $6 = IntToFloat($6)
 mul_imm_float                  $6 *= 0x3B808081 (0.003921569)
 copy_constant                  $7 = 0x3F800000 (1.0)
-copy_4_slots_masked            [main].result = Mask($4..7)
+copy_4_slots_masked            v2..5 = Mask($4..7)
 mask_off_return_mask           RetMask &= ~(CondMask & LoopMask & RetMask)
 load_condition_mask            CondMask = $2
-copy_slot_unmasked             $2 = y
+copy_slot_unmasked             $2 = v9
 add_imm_int                    $2 += 0x00000001
-copy_slot_masked               y = Mask($2)
+copy_slot_masked               v9 = Mask($2)
 label                          label 0x00000004
-copy_slot_unmasked             $2 = y
+copy_slot_unmasked             $2 = v9
 cmplt_imm_int                  $2 = lessThan($2, 0x00000064)
 merge_loop_mask                LoopMask &= $2
 stack_rewind
 branch_if_any_lanes_active     branch_if_any_lanes_active -46 (label 5 at #16)
 label                          label 0x00000003
 load_loop_mask                 LoopMask = $1
-copy_slot_unmasked             $1 = x
+copy_slot_unmasked             $1 = v8
 add_imm_int                    $1 += 0x00000001
-copy_slot_masked               x = Mask($1)
+copy_slot_masked               v8 = Mask($1)
 label                          label 0x00000001
-copy_slot_unmasked             $1 = x
+copy_slot_unmasked             $1 = v8
 cmplt_imm_int                  $1 = lessThan($1, 0x00000064)
 merge_loop_mask                LoopMask &= $1
 stack_rewind
 branch_if_any_lanes_active     branch_if_any_lanes_active -61 (label 2 at #12)
 label                          label 0
 load_loop_mask                 LoopMask = $0
-copy_4_uniforms                $0..3 = colorGreen
-copy_4_slots_masked            [main].result = Mask($0..3)
+copy_4_uniforms                $0..3 = u0..3
+copy_4_slots_masked            v2..5 = Mask($0..3)
 mask_off_return_mask           RetMask &= ~(CondMask & LoopMask & RetMask)
-load_src                       src.rgba = [main].result
+load_src                       src.rgba = v2..5

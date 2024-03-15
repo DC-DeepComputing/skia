@@ -414,3 +414,27 @@ namespace SkSL {
     std::string DebugTracePriv::slotValueToString(int slotIndex, double value) const { return ""; }
 }
 #endif
+
+namespace SkSL {
+DebugTracePriv::DebugTracePriv() = default;
+
+sk_sp<DebugTracePriv> DebugTracePriv::MakeNoOpImpl() {
+     return sk_sp<DebugTracePriv>();
+}
+}
+
+namespace {
+SkSL::DebugTraceFactory debugTraceFactory = SkSL::DebugTracePriv::MakeNoOpImpl;
+}
+
+namespace SkSL {
+
+sk_sp<SkSL::DebugTracePriv> MakeDebugTrace() {
+    return debugTraceFactory();
+}
+
+void SetDebugTraceFactory(DebugTraceFactory newFact) {
+    debugTraceFactory = newFact;
+}
+
+}

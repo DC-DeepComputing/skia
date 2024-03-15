@@ -1,13 +1,13 @@
 10 instructions, 5 invocations
 
-store_src_rg                   xy = src.rg
+store_src_rg                   v0..1 = src.rg
 init_lane_masks                CondMask = LoopMask = RetMask = true
-copy_2_slots_unmasked          $0..1 = xy
+copy_2_slots_unmasked          $0..1 = v0..1
 exchange_src                   swap(src.rgba, $0..3)
 invoke_shader                  invoke_shader 0
 invoke_color_filter            invoke_color_filter 0x00000002
 exchange_src                   swap(src.rgba, $0..3)
-copy_2_slots_unmasked          $4..5 = xy
+copy_2_slots_unmasked          $4..5 = v0..1
 exchange_src                   swap(src.rgba, $4..7)
 invoke_shader                  invoke_shader 0x00000001
 invoke_color_filter            invoke_color_filter 0x00000003
