@@ -45,6 +45,47 @@
       },
       "revId": "1a10f72b80a30b10f252377a7cd3a18542b3116e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "268a7898_312652a2",
+        "filename": "src/gpu/graphite/dawn/DawnQueueManager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-03-15T13:39:17Z",
+      "side": 1,
+      "message": "That does seem like it could happen, but I think having so many if-defs will end up hurting readability.\n\nI know in some cases we can\u0027t compile native dawn code in emscripten, but is that the case here? Or just that utilizing the WaitAny won\u0027t do the right thing? If that\u0027s the case, could we define two classes all the time, DawnWaitAnyWorkSubmission and DawnAsyncWaitWorkSubmission and then use an ifdef to select one and alias it to DawnWorkSubmission?",
+      "parentUuid": "686b62bc_754d7665",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 27
+      },
+      "revId": "1a10f72b80a30b10f252377a7cd3a18542b3116e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "526e6312_dac6e8b2",
+        "filename": "src/gpu/graphite/dawn/DawnQueueManager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-03-15T13:39:17Z",
+      "side": 1,
+      "message": "it looks like there\u0027s a missing parenthesis here",
+      "revId": "1a10f72b80a30b10f252377a7cd3a18542b3116e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
