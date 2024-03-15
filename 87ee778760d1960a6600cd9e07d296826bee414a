@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa54ac90_30ae7527",
+        "filename": "gm/rendertomipmappedyuvimageplanes.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2024-03-15T17:44:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "305a2259_ce536b60",
+      "range": {
+        "startLine": 2,
+        "startChar": 25,
+        "endLine": 2,
+        "endChar": 29
+      },
+      "revId": "87ee778760d1960a6600cd9e07d296826bee414a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5c988ff2_11b2c82f",
@@ -54,6 +78,30 @@
       "writtenOn": "2024-03-15T16:13:45Z",
       "side": 1,
       "message": "kYUVAChannelCount ?",
+      "range": {
+        "startLine": 105,
+        "startChar": 36,
+        "endLine": 105,
+        "endChar": 37
+      },
+      "revId": "87ee778760d1960a6600cd9e07d296826bee414a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "47968e96_fc18fc06",
+        "filename": "gm/rendertomipmappedyuvimageplanes.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2024-03-15T17:44:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5c988ff2_11b2c82f",
       "range": {
         "startLine": 105,
         "startChar": 36,
