@@ -16,6 +16,52 @@
       "message": "not sure if Jim is around today, just in case +rob",
       "revId": "87ee778760d1960a6600cd9e07d296826bee414a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "305a2259_ce536b60",
+        "filename": "gm/rendertomipmappedyuvimageplanes.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-03-15T16:13:45Z",
+      "side": 1,
+      "message": "LLC",
+      "range": {
+        "startLine": 2,
+        "startChar": 25,
+        "endLine": 2,
+        "endChar": 29
+      },
+      "revId": "87ee778760d1960a6600cd9e07d296826bee414a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c988ff2_11b2c82f",
+        "filename": "gm/rendertomipmappedyuvimageplanes.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-03-15T16:13:45Z",
+      "side": 1,
+      "message": "kYUVAChannelCount ?",
+      "range": {
+        "startLine": 105,
+        "startChar": 36,
+        "endLine": 105,
+        "endChar": 37
+      },
+      "revId": "87ee778760d1960a6600cd9e07d296826bee414a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
