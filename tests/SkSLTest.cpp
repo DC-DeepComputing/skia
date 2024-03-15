@@ -856,11 +856,11 @@ static void test_raster_pipeline(skiatest::Reporter* r,
     // Compile our program.
     SkArenaAlloc alloc(/*firstHeapAllocation=*/1000);
     SkRasterPipeline pipeline(&alloc);
-    SkSL::DebugTracePriv debugTrace;
+    sk_sp<SkSL::DebugTracePriv> debugTrace = SkSL::MakeDebugTrace();
     std::unique_ptr<SkSL::RP::Program> rasterProg =
             SkSL::MakeRasterPipelineProgram(*program,
                                             *main->definition(),
-                                            &debugTrace);
+                                            debugTrace.get());
     if (!rasterProg) {
         report_rp_fail(r, testFile, flags, "code is not supported");
         return;
