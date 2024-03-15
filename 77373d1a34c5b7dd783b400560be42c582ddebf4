@@ -16,6 +16,24 @@
       "message": "FreeType, CoreText, and DirectWrite typefaces all have the same issue and build all the things needed in a \"Make\" (in this case that looks like `SkTypeface_Fontations::MakeFromData`). Then you also don\u0027t need to \"create a typeface and then call isValid on it\" since everything that could fail (and be recovered from) has already been done. In other words, have `MakeFromData` call `make_bridge_font_ref` and ensure that it is valid, and then get the style off of that, then pass all of that into the constructor.",
       "revId": "77373d1a34c5b7dd783b400560be42c582ddebf4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a09023da_6d2d4b16",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-03-15T10:10:16Z",
+      "side": 1,
+      "message": "Done in preparatory CL: https://skia-review.googlesource.com/c/skia/+/826556",
+      "parentUuid": "8adb10c0_0eb5bd5a",
+      "revId": "77373d1a34c5b7dd783b400560be42c582ddebf4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
