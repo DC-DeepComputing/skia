@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ef6afe1_0c999e7d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18114
+      },
+      "writtenOn": "2024-03-15T14:42:46Z",
+      "side": 1,
+      "message": "Please take a look.",
+      "revId": "53ff9aaad8e21de0d8605467e9fe7636037772dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f87c152_424f5541",
+        "filename": "src/core/SkYUVMath.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 18114
+      },
+      "writtenOn": "2024-03-15T14:42:46Z",
+      "side": 1,
+      "message": "I verified manually that this conversion is similar to that done by ui/gfx/color_space through (Inverse(AdjustedRange)*Transfer) as it goes through [this](https://source.chromium.org/chromium/chromium/src/+/main:ui/gfx/color_transform.cc;drc\u003dc292340f0c721cd88f9b14c453c877c55d13ce6b;l\u003d1310) path. Although haven\u0027t confirmed with the other bit depths.",
+      "revId": "53ff9aaad8e21de0d8605467e9fe7636037772dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
