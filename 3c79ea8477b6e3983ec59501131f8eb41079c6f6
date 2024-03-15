@@ -51,6 +51,24 @@
       "message": "I don\u0027t think I\u0027ll have time to verify that everything works, but I\u0027m okay with getting this landed (and I will try to work on getting our bots compiling when I have spare time).\n\nJust some minor things:\n\n1) Please add your name / email address to the AUTHORS file.\n2) Some of the files have incorrect formatting (tabs instead of spaces, and lines longer than 100 characters). The easiest thing is to just run clang-format (but it usually creates ugly source code involving SIMD intrinsics).",
       "revId": "3c79ea8477b6e3983ec59501131f8eb41079c6f6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7993ebb9_e7e7c4a9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 21814
+      },
+      "writtenOn": "2024-03-15T01:13:46Z",
+      "side": 1,
+      "message": "I have made some modifications to make the code compliant with the format. If there are still issues, please provide some suggestions for me.Thank you for your time and support.",
+      "parentUuid": "829db5a7_e4638f8a",
+      "revId": "3c79ea8477b6e3983ec59501131f8eb41079c6f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
