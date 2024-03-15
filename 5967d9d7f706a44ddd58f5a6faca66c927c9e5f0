@@ -16,6 +16,24 @@
       "message": "I understand the reasoning for this change and don\u0027t necessarily disagree with it. However, I think there are a bunch of objects that we want to think about how/if they should be ccached globally. Right now I think these are pretty light weight objects and we aren\u0027t extensively using multiple recordings. So I would prefer to hold of this change until later when we make a larger scale pass of trying to figure out what should be in a global cache vs per recording (balancing performance of dealing with thread safety and creating extra resources). I don\u0027t want to start this one object at a time where we end up with N slightly different caches/solutions for each object.",
       "revId": "5967d9d7f706a44ddd58f5a6faca66c927c9e5f0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9f8781a0_3538b6e5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-03-15T13:51:19Z",
+      "side": 1,
+      "message": "I generally agree with Greg\u0027s sentiment, that this specific approach doesn\u0027t feel like quite the right way to get the BindGroups globally shared. DawnSharedContext does have the NoopFragmentShader module, which feels similar to this case, but I would prefer that we also remove it from the SharedContext when we have a good design.\n\nSharedContext was not really meant to be owning anything other than the base GPU access and then delegates to the other component types like QueueManager and GlobalCache. GlobalCache is where I\u0027d like to see these sorts of backend-specific shareable objects land. Besides pipelines, the GlobalCache manages owning the static vertex buffers that get created on initialization, so there\u0027s precedent for creating something once and then storing in the cache.\n\nThe main issue I think is that right now there\u0027s no backend-specific subclass of GlobalCache to add direct getters for these types of static backend resources. If getting these resources is a frequent operation, then it would make sense to have a DawnGlobalCache that holds these fields. On the other hand, currently these seem to be mostly used during pipeline creation, which should be infrequent, and while we want it to be fast, we could probably have an API on GlobalCache where you store a static resource associated with a ResourceKey.  Then during the Dawn backend initialization, it creates these bind group layouts and noop shader modules with resource keys.",
+      "parentUuid": "90ce4399_4a42bb91",
+      "revId": "5967d9d7f706a44ddd58f5a6faca66c927c9e5f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
