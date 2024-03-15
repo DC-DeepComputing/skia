@@ -22,6 +22,30 @@
       },
       "revId": "ce2d90d7e0e1b1133bbdbf7753e9db557c9db7ef",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76158945_84643942",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 740,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-15T14:14:59Z",
+      "side": 1,
+      "message": "It looks like the `FontScanner_Fontations_VariableFont` test might catch this sort of thing (because it would mean two named instances of Variable.ttf would have the same style, which they shouldn\u0027t. However, at the moment it doesn\u0027t because the Fontations based FontScanner doesn\u0027t do variable instances yet (being worked on).",
+      "parentUuid": "43200678_1f059445",
+      "range": {
+        "startLine": 740,
+        "startChar": 44,
+        "endLine": 740,
+        "endChar": 58
+      },
+      "revId": "ce2d90d7e0e1b1133bbdbf7753e9db557c9db7ef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
