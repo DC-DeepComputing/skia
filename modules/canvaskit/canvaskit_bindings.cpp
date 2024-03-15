@@ -60,6 +60,7 @@
 #include "include/encode/SkPngEncoder.h"
 #include "include/encode/SkWebpEncoder.h"
 #include "include/private/base/SkOnce.h"
+#include "include/sksl/SkSLDebugTrace.h"
 #include "include/utils/SkParsePath.h"
 #include "include/utils/SkShadowUtils.h"
 #include "src/core/SkPathPriv.h"
@@ -122,10 +123,6 @@
 #include "include/pathops/SkPathOps.h"
 #endif
 
-#if defined(CK_INCLUDE_RUNTIME_EFFECT) && defined(SKSL_ENABLE_TRACING)
-#include "include/sksl/SkSLDebugTrace.h"
-#endif
-
 #ifndef CK_NO_FONTS
 #include "include/ports/SkFontMgr_data.h"
 #endif
@@ -160,6 +157,10 @@ extern "C" const SkEmbeddedResourceHeader SK_EMBEDDED_FONTS;
 #endif
 #if defined(SK_CODEC_DECODES_WEBP)
 #include "include/codec/SkWebpDecoder.h"
+#endif
+
+#if defined(SKSL_ENABLE_TRACING)
+#include "src/sksl/tracing/SkSLDebugTraceImpl.h"
 #endif
 
 // We'd like clients to be able to compile in as many or few codecs as they want (e.g. codesize)
@@ -2245,6 +2246,7 @@ EMSCRIPTEN_BINDINGS(Skia) {
                 sk_sp<SkShader> shader,
                 int traceCoordX,
                 int traceCoordY) -> SkRuntimeEffect::TracedShader {
+            SkSL::SetDebugTraceFactory(SkSL::DebugTraceImpl::Make);
             return SkRuntimeEffect::MakeTraced(shader, SkIPoint::Make(traceCoordX, traceCoordY));
         }))
 #endif

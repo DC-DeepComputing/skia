@@ -242,6 +242,8 @@ skia_sksl_sources = [
 #  //src/sksl/tracing:enabled_hdrs
 #  //src/sksl/tracing:enabled_srcs
 skia_sksl_tracing_sources = [
+  "$_src/sksl/tracing/SkSLDebugTraceImpl.cpp",
+  "$_src/sksl/tracing/SkSLDebugTraceImpl.h",
   "$_src/sksl/tracing/SkSLDebugTracePlayer.cpp",
   "$_src/sksl/tracing/SkSLDebugTracePlayer.h",
 ]

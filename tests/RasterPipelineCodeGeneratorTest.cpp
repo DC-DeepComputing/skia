@@ -51,9 +51,9 @@ static void test(skiatest::Reporter* r,
     SkArenaAlloc alloc(/*firstHeapAllocation=*/1000);
     SkRasterPipeline pipeline(&alloc);
     pipeline.appendConstantColor(&alloc, startingColor);
-    SkSL::DebugTracePriv debugTrace;
+    sk_sp<SkSL::DebugTracePriv> debugTrace = SkSL::MakeDebugTrace();
     std::unique_ptr<SkSL::RP::Program> rasterProg =
-            SkSL::MakeRasterPipelineProgram(*program, *main->definition(), &debugTrace);
+            SkSL::MakeRasterPipelineProgram(*program, *main->definition(), debugTrace.get());
     if (!rasterProg && !expectedResult.has_value()) {
         // We didn't get a program, as expected. Test passes.
         return;
