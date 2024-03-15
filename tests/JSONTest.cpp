@@ -473,3 +473,53 @@ DEF_TEST(JSON_ParseNumber, reporter) {
         REPORTER_ASSERT(reporter, SkScalarNearlyEqual(**jnumber, test.value, test.tolerance));
     }
 }
+
+DEF_TEST(JSON_Lookup, r) {
+    const char* json = R"({"foo": { "bar": { "baz": 100 }}})";
+    const DOM dom(json, strlen(json));
+    const Value& root = dom.root();
+
+    REPORTER_ASSERT(r, root.is<ObjectValue>());
+    REPORTER_ASSERT(r, root["foo"].is<ObjectValue>());
+    REPORTER_ASSERT(r, root["foo"]["bar"].is<ObjectValue>());
+    REPORTER_ASSERT(r, root["foo"]["bar"]["baz"].is<NumberValue>());
+
+    REPORTER_ASSERT(r, root["foozz"].is<NullValue>());
+    REPORTER_ASSERT(r, root["foozz"]["barzz"].is<NullValue>());
+    REPORTER_ASSERT(r, root["foozz"]["barzz"]["bazzz"].is<NullValue>());
+}
+
+DEF_TEST(JSON_Writable, r) {
+    const char* json = R"({"null": null, "num": 100})";
+    const DOM dom(json, strlen(json));
+    REPORTER_ASSERT(r, dom.root().is<ObjectValue>());
+    const ObjectValue& root = dom.root().as<ObjectValue>();
+
+    SkArenaAlloc alloc(4096);
+
+    REPORTER_ASSERT(r, root["null"].is<NullValue>());
+    Value& w1 = root.writable("null", alloc);
+    REPORTER_ASSERT(r, w1.is<NullValue>());
+    w1 = NumberValue(42);
+    REPORTER_ASSERT(r, root["null"].is<NumberValue>());
+    REPORTER_ASSERT(r, *root["null"].as<NumberValue>() == 42);
+
+    REPORTER_ASSERT(r, root["num"].is<NumberValue>());
+    Value& w2 = root.writable("num", alloc);
+    REPORTER_ASSERT(r, w2.is<NumberValue>());
+    w2 = StringValue("foo", 3, alloc);
+    REPORTER_ASSERT(r, root["num"].is<StringValue>());
+    REPORTER_ASSERT(r, root["num"].as<StringValue>().str() == "foo");
+
+    // new/insert semantics
+    REPORTER_ASSERT(r, root["none"].is<NullValue>());
+    REPORTER_ASSERT(r, root.size() == 2u);
+    Value& w3 = root.writable("none", alloc);
+    REPORTER_ASSERT(r, w3.is<NullValue>());
+    w3 = BoolValue(true);
+    REPORTER_ASSERT(r, root.size() == 3u);
+    REPORTER_ASSERT(r, root["none"].is<BoolValue>());
+    REPORTER_ASSERT(r, *root["none"].as<BoolValue>());
+
+    REPORTER_ASSERT(r, root.toString() == SkString(R"({"null":42,"num":"foo","none":true})"));
+}
