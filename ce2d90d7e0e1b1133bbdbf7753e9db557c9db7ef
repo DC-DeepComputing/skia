@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "43200678_1f059445",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 740,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-15T13:57:20Z",
+      "side": 1,
+      "message": "Does this vary? I believe the reason `stretch` was used is because it is defined to vary, but I\u0027m not sure that this value varies with `wdth`? We should make sure we have a test for that actually... the TypefaceStyle ensures that we get the expected values from a non-variable font, but I don\u0027t see a test currently that ensures a variable font non-default `wdth` produces the expected width values. Note that we can use the existing `Variable.ttf` test font for this since it has both `wght` and `wdth`.\n\nNote on the FreeType side this is done in SkFontScanner_FreeType::scanInstance which starts with kNormal_Width, the `OS/2` value (if present), then `wdth` (if the `wdth` axis definition exists and looks sane, and uses SkFontDescriptor::SkFontStyleWidthForWidthAxisValue to convert).",
+      "range": {
+        "startLine": 740,
+        "startChar": 44,
+        "endLine": 740,
+        "endChar": 58
+      },
+      "revId": "ce2d90d7e0e1b1133bbdbf7753e9db557c9db7ef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
