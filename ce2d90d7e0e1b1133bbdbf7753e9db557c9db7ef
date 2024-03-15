@@ -46,6 +46,30 @@
       },
       "revId": "ce2d90d7e0e1b1133bbdbf7753e9db557c9db7ef",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c5f909b_2fb6cb69",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 740,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-15T14:38:10Z",
+      "side": 1,
+      "message": "Oh, I see, `attributes` don\u0027t appear to vary at all anyway (or take any information allowing it to do so). Which means that this function needs to take the variation coordinates and look for `wght`, `wdth`, etc itself?",
+      "parentUuid": "76158945_84643942",
+      "range": {
+        "startLine": 740,
+        "startChar": 44,
+        "endLine": 740,
+        "endChar": 58
+      },
+      "revId": "ce2d90d7e0e1b1133bbdbf7753e9db557c9db7ef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
