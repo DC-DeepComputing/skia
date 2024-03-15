@@ -40,6 +40,7 @@ public:
             SkASSERT(imgBase);
             isGraphiteImageShader = imgBase->isGraphiteBacked();
         }
+
         // In Graphite we can safely handle a local matrix shader with identity by not emitting code
         // for it. Additionally, Graphite uses the local matrix shader to add the matrix for the
         // origin y-flip if needed. Thus we always emit the local matrix shader here so we can

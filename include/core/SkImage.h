@@ -938,4 +938,22 @@ private:
     using INHERITED = SkRefCnt;
 };
 
+namespace SkShaders {
+/*
+ * Create an SkShader that will sample the 'image'. This is equivalalent to SkImage::makeShader.
+ */
+SK_API sk_sp<SkShader> Image(sk_sp<SkImage> image,
+                             SkTileMode tmx, SkTileMode tmy,
+                             const SkSamplingOptions& options,
+                             const SkMatrix* localMatrix = nullptr);
+/*
+ * Create an SkShader that will sample 'image' with minimal processing. This is equivalent to
+ * SkImage::makeRawShader.
+ */
+SK_API sk_sp<SkShader> RawImage(sk_sp<SkImage> image,
+                                SkTileMode tmx, SkTileMode tmy,
+                                const SkSamplingOptions& options,
+                                const SkMatrix* localMatrix = nullptr);
+} // namespace SkShaders
+
 #endif
