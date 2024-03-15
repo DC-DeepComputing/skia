@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "50d54d47_57d9d2a9",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2024-03-15T09:10:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e2102373_2f8ff881",
+      "range": {
+        "startLine": 122,
+        "startChar": 9,
+        "endLine": 122,
+        "endChar": 22
+      },
+      "revId": "8aaf894fd48eb589ccea9fa7644ddddcf3673639",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "61fe8920_df50fae0",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-03-14T20:21:11Z",
       "side": 1,
       "message": "nit: this-\u003e",
+      "range": {
+        "startLine": 166,
+        "startChar": 9,
+        "endLine": 166,
+        "endChar": 22
+      },
+      "revId": "8aaf894fd48eb589ccea9fa7644ddddcf3673639",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "57946ec5_5b4d22c4",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2024-03-15T09:10:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "61fe8920_df50fae0",
       "range": {
         "startLine": 166,
         "startChar": 9,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "808ae033_b0889fbe",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2024-03-15T09:10:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "282cde28_f439e1bd",
+      "range": {
+        "startLine": 47,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 66
+      },
+      "revId": "8aaf894fd48eb589ccea9fa7644ddddcf3673639",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "518e37a3_68639516",
@@ -83,6 +155,30 @@
       "writtenOn": "2024-03-14T20:21:11Z",
       "side": 1,
       "message": "nit: I don\u0027t think we need to declare the destructor at all.",
+      "range": {
+        "startLine": 23,
+        "startChar": 4,
+        "endLine": 23,
+        "endChar": 45
+      },
+      "revId": "8aaf894fd48eb589ccea9fa7644ddddcf3673639",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f2ff1c6_ab0295c7",
+        "filename": "src/gpu/graphite/dawn/DawnQueueManager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2024-03-15T09:10:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "518e37a3_68639516",
       "range": {
         "startLine": 23,
         "startChar": 4,
@@ -116,6 +212,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4575c43f_c5007a8d",
+        "filename": "src/gpu/graphite/dawn/DawnQueueManager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2024-03-15T09:10:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a19b446d_ca5e1af0",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 33
+      },
+      "revId": "8aaf894fd48eb589ccea9fa7644ddddcf3673639",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "07380a28_b0a52c70",
@@ -129,6 +249,30 @@
       "writtenOn": "2024-03-14T20:21:11Z",
       "side": 1,
       "message": "nit: new line here and have the `,` line up with the `:` above it.",
+      "range": {
+        "startLine": 41,
+        "startChar": 63,
+        "endLine": 41,
+        "endChar": 64
+      },
+      "revId": "8aaf894fd48eb589ccea9fa7644ddddcf3673639",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e4e97187_9b966900",
+        "filename": "src/gpu/graphite/dawn/DawnQueueManager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2024-03-15T09:10:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "07380a28_b0a52c70",
       "range": {
         "startLine": 41,
         "startChar": 63,
@@ -162,6 +306,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1fb119b3_aaeca42c",
+        "filename": "src/gpu/graphite/dawn/DawnQueueManager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2024-03-15T09:10:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fb03629b_11f3dd94",
+      "range": {
+        "startLine": 55,
+        "startChar": 0,
+        "endLine": 55,
+        "endChar": 5
+      },
+      "revId": "8aaf894fd48eb589ccea9fa7644ddddcf3673639",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ebd38980_d28a8c15",
@@ -185,6 +353,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e33b343_304a6a64",
+        "filename": "src/gpu/graphite/dawn/DawnQueueManager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2024-03-15T09:10:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ebd38980_d28a8c15",
+      "range": {
+        "startLine": 77,
+        "startChar": 0,
+        "endLine": 77,
+        "endChar": 1
+      },
+      "revId": "8aaf894fd48eb589ccea9fa7644ddddcf3673639",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f80ecab0_f649b9fc",
@@ -198,6 +390,30 @@
       "writtenOn": "2024-03-14T20:21:11Z",
       "side": 1,
       "message": "nit: `// defined(__EMSCRIPTEN__)` since this endif is getting farther from the starting #if.",
+      "range": {
+        "startLine": 86,
+        "startChar": 0,
+        "endLine": 86,
+        "endChar": 6
+      },
+      "revId": "8aaf894fd48eb589ccea9fa7644ddddcf3673639",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "60a761f1_86b8f484",
+        "filename": "src/gpu/graphite/dawn/DawnQueueManager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2024-03-15T09:10:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f80ecab0_f649b9fc",
       "range": {
         "startLine": 86,
         "startChar": 0,
