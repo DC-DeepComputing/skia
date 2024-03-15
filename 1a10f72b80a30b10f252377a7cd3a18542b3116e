@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba9c89c7_d31885e7",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2024-03-15T18:48:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7db5dc01_dc86a948",
+      "range": {
+        "startLine": 241,
+        "startChar": 54,
+        "endLine": 241,
+        "endChar": 55
+      },
+      "revId": "1a10f72b80a30b10f252377a7cd3a18542b3116e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "686b62bc_754d7665",
@@ -108,6 +132,24 @@
       "writtenOn": "2024-03-15T13:39:17Z",
       "side": 1,
       "message": "it looks like there\u0027s a missing parenthesis here",
+      "revId": "1a10f72b80a30b10f252377a7cd3a18542b3116e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "06ee0d43_a9c582d9",
+        "filename": "src/gpu/graphite/dawn/DawnQueueManager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2024-03-15T18:48:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "526e6312_dac6e8b2",
       "revId": "1a10f72b80a30b10f252377a7cd3a18542b3116e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
