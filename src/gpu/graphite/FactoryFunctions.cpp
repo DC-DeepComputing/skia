@@ -396,18 +396,29 @@ public:
     PrecompileImageShader() {}
 
 private:
-    friend class PrecompilePictureShader;
+    // The normal Skia API always wraps an ImageShader in a LocalMatrixShared and then changes the
+    // program structure depending on the LM being the identity.
+    inline static constexpr int kNumLocalMatrixCombinations = 2;
 
-    // hardware-tiled, shader-tiled and cubic sampling
-    inline static constexpr int kNumIntrinsicCombinations = 3;
+    // The ImageShader has 3 variants: hardware-tiled, shader-tiled and cubic sampling
+    inline static constexpr int kNumSamplingCombinations = 3;
+
+    inline static constexpr int kNumIntrinsicCombinations = kNumLocalMatrixCombinations *
+                                                            kNumSamplingCombinations;
 
     int numIntrinsicCombinations() const override { return kNumIntrinsicCombinations; }
 
-    static void AddToKey(const KeyContext& keyContext,
-                         PaintParamsKeyBuilder* builder,
-                         PipelineDataGatherer* gatherer,
-                         int desiredCombination) {
+    void addToKey(const KeyContext& keyContext,
+                  PaintParamsKeyBuilder* builder,
+                  PipelineDataGatherer* gatherer,
+                  int desiredCombination) const override {
         SkASSERT(desiredCombination < kNumIntrinsicCombinations);
+
+        const int desiredLMCombination = desiredCombination % kNumLocalMatrixCombinations;
+        int remainingCombinations = desiredCombination / kNumLocalMatrixCombinations;
+
+        int desiredImageCombination = remainingCombinations;
+        SkASSERT(desiredImageCombination < PrecompileImageShader::kNumSamplingCombinations);
 
         static constexpr SkSamplingOptions kDefaultCubicSampling(SkCubicResampler::Mitchell());
         static constexpr SkSamplingOptions kDefaultSampling;
@@ -419,25 +430,32 @@ private:
         static constexpr SkISize kHwTileableSize = SkISize::Make(1, 1);
         static constexpr SkISize kNonHwTileableSize = SkISize::Make(2, 2);
 
-        ImageShaderBlock::ImageData imgData(desiredCombination == 2 ? kDefaultCubicSampling
-                                                                    : kDefaultSampling,
-                                            SkTileMode::kClamp, SkTileMode::kClamp,
-                                            desiredCombination == 1 ? kHwTileableSize
-                                                                    : kNonHwTileableSize,
-                                            kSubset, ReadSwizzle::kRGBA);
+        if (desiredLMCombination) {
+            static const LocalMatrixShaderBlock::LMShaderData kIgnoredLMShaderData(SkMatrix::I());
 
-        ImageShaderBlock::AddBlock(keyContext, builder, gatherer, imgData);
-    }
+            LocalMatrixShaderBlock::BeginBlock(keyContext, builder, gatherer, kIgnoredLMShaderData);
+        }
 
-    void addToKey(const KeyContext& keyContext,
-                  PaintParamsKeyBuilder* builder,
-                  PipelineDataGatherer* gatherer,
-                  int desiredCombination) const override {
-        AddToKey(keyContext, builder, gatherer, desiredCombination);
+            ImageShaderBlock::ImageData imgData(desiredImageCombination == 2 ? kDefaultCubicSampling
+                                                                             : kDefaultSampling,
+                                                SkTileMode::kClamp, SkTileMode::kClamp,
+                                                desiredImageCombination == 1 ? kHwTileableSize
+                                                                             : kNonHwTileableSize,
+                                                kSubset, ReadSwizzle::kRGBA);
+
+            ImageShaderBlock::AddBlock(keyContext, builder, gatherer, imgData);
+
+        if (desiredLMCombination) {
+            builder->endBlock();
+        }
     }
 };
 
 sk_sp<PrecompileShader> PrecompileShaders::Image() {
+    return sk_make_sp<PrecompileImageShader>();
+}
+
+sk_sp<PrecompileShader> PrecompileShaders::RawImage() {
     return sk_make_sp<PrecompileImageShader>();
 }
 
@@ -475,48 +493,11 @@ sk_sp<PrecompileShader> PrecompileShaders::YUVImage() {
 }
 
 //--------------------------------------------------------------------------------------------------
-class PrecompilePictureShader : public PrecompileShader {
-public:
-    PrecompilePictureShader() {}
-
-private:
-    // The normal compilation path changes the structure depending on the LM being the identity.
-    inline static constexpr int kNumLocalMatrixCombinations = 2;
-
-    int numIntrinsicCombinations() const override {
-        return kNumLocalMatrixCombinations * PrecompileImageShader::kNumIntrinsicCombinations;
-    }
-
-    void addToKey(const KeyContext& keyContext,
-                  PaintParamsKeyBuilder* builder,
-                  PipelineDataGatherer* gatherer,
-                  int desiredCombination) const override {
-        SkASSERT(desiredCombination < this->numIntrinsicCombinations());
-
-        const int desiredLMCombination = desiredCombination % kNumLocalMatrixCombinations;
-        int remainingCombinations = desiredCombination / kNumLocalMatrixCombinations;
-
-        int desiredImageCombination = remainingCombinations;
-        SkASSERT(desiredImageCombination < PrecompileImageShader::kNumIntrinsicCombinations);
-
-        if (desiredLMCombination) {
-            static const LocalMatrixShaderBlock::LMShaderData kIgnoredLMShaderData(SkMatrix::I());
-
-            LocalMatrixShaderBlock::BeginBlock(keyContext, builder, gatherer, kIgnoredLMShaderData);
-        }
-
-        // Note: We don't need to consider the PrecompileYUVImageShader since the image
-        // being drawn was created internally by Skia (as non-YUV).
-        PrecompileImageShader::AddToKey(keyContext, builder, gatherer, desiredImageCombination);
-
-        if (desiredLMCombination) {
-            builder->endBlock();
-        }
-    }
-};
-
+// The PictureShader ultimately turns into an SkImageShader optionally wrapped in a
+// LocalMatrixShader. The PrecompileImageShader already encapsulates that use case so just reuse
+// it.
 sk_sp<PrecompileShader> PrecompileShaders::Picture() {
-    return sk_make_sp<PrecompilePictureShader>();
+    return sk_make_sp<PrecompileImageShader>();
 }
 
 //--------------------------------------------------------------------------------------------------
