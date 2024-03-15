@@ -88,6 +88,23 @@
       },
       "revId": "ce2d90d7e0e1b1133bbdbf7753e9db557c9db7ef",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07092279_2696643a",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 744,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-15T17:32:16Z",
+      "side": 1,
+      "message": "I think I still prefer getting this off the `attributes()`. For instance, if the os2 table isn\u0027t present then this produces 9 (I think?), but using `attributes()` we\u0027ll end up with 5 since the default is normal. It\u0027s just a higher level interface and I\u0027d prefer not to essentially re-implement `Attributes.new` here.",
+      "revId": "ce2d90d7e0e1b1133bbdbf7753e9db557c9db7ef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
