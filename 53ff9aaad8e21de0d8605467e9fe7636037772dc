@@ -18,6 +18,29 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a57b01f_e982d155",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 12114
+      },
+      "writtenOn": "2024-03-15T23:56:54Z",
+      "side": 1,
+      "message": "Nit: maybe \"bit depth\" would be better than \"bitness\"?",
+      "range": {
+        "startLine": 15,
+        "startChar": 17,
+        "endLine": 15,
+        "endChar": 24
+      },
+      "revId": "53ff9aaad8e21de0d8605467e9fe7636037772dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "0ef6afe1_0c999e7d",
@@ -89,6 +112,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "44f50865_adcaae79",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 12114
+      },
+      "writtenOn": "2024-03-15T23:56:54Z",
+      "side": 1,
+      "message": "I wonder if gfx::ColorSpace doesn\u0027t support limited-range YCgCo.",
+      "parentUuid": "6bf708d9_29bca5c6",
+      "revId": "53ff9aaad8e21de0d8605467e9fe7636037772dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1f87c152_424f5541",
         "filename": "src/core/SkYUVMath.cpp",
         "patchSetId": 6
@@ -117,6 +158,24 @@
       "writtenOn": "2024-03-15T23:40:45Z",
       "side": 1,
       "message": "IMPORTANT: In H.273, to convert RGB to limited-range YCgCo, the operations are applied in this order:\n\n1. E\u0027_R, E\u0027_G, E\u0027_B are converted to R, G, B, with range reduction.\n2. R, G, B are converted to Y, Cg, Co using the matrix.\n\nFor the other color spaces, to convert RGB to limited-range YCbCr, the operations are applied in a different order:\n\n1. E\u0027_R, E\u0027_G, E\u0027_B are converted to E\u0027_Y, E\u0027_PB, E\u0027_PR using the matrix.\n2. E\u0027_Y, E\u0027_PB, E\u0027_PR are converted to Y, Cb, Cr, with range reduction.\n\nPlease make sure you take the different orders into account in this function. I am not familiar with Skia, so I didn\u0027t check the code for correctness.",
+      "revId": "53ff9aaad8e21de0d8605467e9fe7636037772dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85945d0d_d1ef4348",
+        "filename": "src/core/SkYUVMath.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 399,
+      "author": {
+        "id": 12114
+      },
+      "writtenOn": "2024-03-15T23:56:54Z",
+      "side": 1,
+      "message": "See `ColorTransformInternal::AppendColorSpaceToColorSpaceTransform()` in Chrome\u0027s ui/gfx/color_transform.cc. I addressed the order issue in https://chromium-review.googlesource.com/c/chromium/src/+/2651408.",
+      "parentUuid": "1f417493_c9df0dfc",
       "revId": "53ff9aaad8e21de0d8605467e9fe7636037772dc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
