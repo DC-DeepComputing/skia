@@ -43,9 +43,9 @@ void UrlDataManager::reset() {
 }
 
 void UrlDataManager::indexImages(const std::vector<sk_sp<SkImage>>& images) {
-  SkASSERT(imageMap.size() == 0); // this method meant only for initialization once.
-  for (size_t i = 0; i < images.size(); ++i) {
-    imageMap.insert({images[i].get(), i});
+    SkASSERT(imageMap.empty());  // this method meant only for initialization once.
+    for (size_t i = 0; i < images.size(); ++i) {
+        imageMap.insert({images[i].get(), i});
   }
 }
 
