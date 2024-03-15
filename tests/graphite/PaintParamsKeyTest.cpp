@@ -227,6 +227,16 @@ ColorFilterType random_colorfiltertype(SkRandom* rand) {
     return static_cast<ColorFilterType>(rand->nextULessThan(kColorFilterTypeCount));
 }
 
+SkMatrix* random_local_matrix(SkRandom* rand, SkMatrix* storage) {
+    switch (rand->nextULessThan(3)) {
+        case 0: return nullptr;
+        case 1: storage->setIdentity(); return storage;
+        case 2: storage->setTranslate(2.0f, 2.0f); return storage;
+    }
+
+    SkUNREACHABLE;
+}
+
 sk_sp<SkImage> make_image(SkRandom* rand, Recorder* recorder) {
     // TODO: add alpha-only images too
     SkImageInfo info = SkImageInfo::Make(32, 32,
@@ -380,9 +390,31 @@ std::pair<sk_sp<SkShader>, sk_sp<PrecompileShader>> create_image_shader(SkRandom
     SkTileMode tmX = random_tilemode(rand);
     SkTileMode tmY = random_tilemode(rand);
 
-    sk_sp<SkShader> s = SkImageShader::Make(make_image(rand, recorder), tmX, tmY,
-                                            SkSamplingOptions(), nullptr);
+    // TODO: the combination system accounts for cubic vs. non-cubic sampling and HW vs. non-HW
+    // tiling. We should test those combinations in the fuzzer.
+    SkMatrix lmStorage;
+    sk_sp<SkShader> s = SkShaders::Image(make_image(rand, recorder),
+                                         tmX, tmY,
+                                         SkSamplingOptions(),
+                                         random_local_matrix(rand, &lmStorage));
     sk_sp<PrecompileShader> o = PrecompileShaders::Image();
+
+    return { s, o };
+}
+
+std::pair<sk_sp<SkShader>, sk_sp<PrecompileShader>> create_raw_image_shader(SkRandom* rand,
+                                                                            Recorder* recorder) {
+    SkTileMode tmX = random_tilemode(rand);
+    SkTileMode tmY = random_tilemode(rand);
+
+    // TODO: the combination system accounts for cubic vs. non-cubic sampling and HW vs. non-HW
+    // tiling. We should test those combinations in the fuzzer.
+    SkMatrix lmStorage;
+    sk_sp<SkShader> s = SkShaders::RawImage(make_image(rand, recorder),
+                                            tmX, tmY,
+                                            SkSamplingOptions(),
+                                            random_local_matrix(rand, &lmStorage));
+    sk_sp<PrecompileShader> o = PrecompileShaders::RawImage();
 
     return { s, o };
 }
@@ -430,7 +462,10 @@ std::pair<sk_sp<SkShader>, sk_sp<PrecompileShader>>  create_shader(SkRandom* ran
         case ShaderType::kEmpty:
             return create_empty_shader(rand);
         case ShaderType::kImage:
-            return create_image_shader(rand, recorder);
+            if (rand->nextBool()) {
+                return create_image_shader(rand, recorder);
+            }
+            return create_raw_image_shader(rand, recorder);
         case ShaderType::kLinearGradient:
             return create_gradient_shader(rand, SkShaderBase::GradientType::kLinear);
         case ShaderType::kLocalMatrix:
