@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "90ce4399_4a42bb91",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-03-15T12:46:08Z",
+      "side": 1,
+      "message": "I understand the reasoning for this change and don\u0027t necessarily disagree with it. However, I think there are a bunch of objects that we want to think about how/if they should be ccached globally. Right now I think these are pretty light weight objects and we aren\u0027t extensively using multiple recordings. So I would prefer to hold of this change until later when we make a larger scale pass of trying to figure out what should be in a global cache vs per recording (balancing performance of dealing with thread safety and creating extra resources). I don\u0027t want to start this one object at a time where we end up with N slightly different caches/solutions for each object.",
+      "revId": "5967d9d7f706a44ddd58f5a6faca66c927c9e5f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
