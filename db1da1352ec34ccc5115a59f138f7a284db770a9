@@ -63,6 +63,30 @@
       },
       "revId": "db1da1352ec34ccc5115a59f138f7a284db770a9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "380f740c_76448ddc",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-18T14:39:34Z",
+      "side": 1,
+      "message": "The original was on the stack so its lifetime is bound to its enclosing block, which is just long enough so that it will continue to exist when `fRPProgram-\u003edump` executed. If you move it inside the `else if`, its lifetime will be bound to that `else if` block and it will die before `fRPProgram-\u003edump` is called (leading to either a crash or garbage output).",
+      "parentUuid": "ed17c54a_f8ad4ab5",
+      "range": {
+        "startLine": 232,
+        "startChar": 0,
+        "endLine": 232,
+        "endChar": 76
+      },
+      "revId": "db1da1352ec34ccc5115a59f138f7a284db770a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
