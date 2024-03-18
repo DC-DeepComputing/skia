@@ -1492,6 +1492,31 @@ mod test {
         assert!(!result_garbage);
     }
 
+    fn named_instances_in_fonts(font: &Vec<u8>, fontIndex: u32, expected: i32) {
+        let mut num_fonts = 0;
+        let result_collection = font_or_collection(&font, &mut num_fonts);
+        assert!(fontIndex >= 0 && fontIndex < num_fonts);
+
+        let font = make_font_ref(&font, fontIndex);
+        let mut num_named_instances = 0;
+        let result_get_named_instances = get_named_instances(font, &num_named_instances);
+        assert!(result_get_named_instances && num_named_instances == expected);
+    }
+
+    #[test]
+    fn test_num_named_instances_in_fonts() {
+        let collection_buffer = fs::read(TEST_COLLECTION_FILENAME)
+            .expect("Unable to open TrueType collection test file.");
+        let font_buffer =
+            fs::read(TEST_FONT_FILENAME).expect("COLRv0/v1 test font could not be opened.");
+
+        named_instances_in_fonts(&collection_buffer, 0, 2);
+        named_instances_in_fonts(&collection_buffer, 1, 2);
+
+        named_instances_in_fonts(&font_buffer, 0, 2);
+        named_instances_in_fonts(&font_buffer, 1, 2);
+    }
+
     #[test]
     fn test_font_attributes() {
         let file_buffer = fs::read(TEST_CONDENSED_BOLD_ITALIC)

@@ -60,15 +60,16 @@ private:
                 continue;
             }
 
-            int numFaces;
-            if (!scanner->scanFile(stream.get(), &numFaces)) {
+            auto fileData = scanner->scanFile(stream.get());
+            if (!fileData) {
                 // SkDebugf("---- failed to open <%s> as a font\n", filename.c_str());
                 continue;
             }
 
-            for (int faceIndex = 0; faceIndex < numFaces; ++faceIndex) {
+            for (int faceIndex = 0; faceIndex < fileData->getNumFaces(); ++faceIndex) {
                 int numInstances;
-                if (!scanner->scanFace(stream.get(), faceIndex, &numInstances)) {
+                SkFontFileData::AxisDefinitions axisDefinitions;
+                if (!fileData->scanFace(stream.get(), faceIndex, &numInstances, &axisDefinitions)) {
                     // SkDebugf("---- failed to open <%s> as a font\n", filename.c_str());
                     continue;
                 }
@@ -76,13 +77,14 @@ private:
                     bool isFixedPitch;
                     SkString realname;
                     SkFontStyle style = SkFontStyle(); // avoid uninitialized warning
-                    if (!scanner->scanInstance(stream.get(),
-                                               faceIndex,
-                                               instanceIndex,
-                                               &realname,
-                                               &style,
-                                               &isFixedPitch,
-                                               nullptr)) {
+                    if (!fileData->scanInstance(stream.get(),
+                                                faceIndex,
+                                                instanceIndex,
+                                                axisDefinitions,
+                                                &realname,
+                                                &style,
+                                                &isFixedPitch,
+                                                nullptr)) {
                         // SkDebugf("---- failed to open <%s> <%d> as a font\n",
                         //          filename.c_str(), faceIndex);
                         continue;
