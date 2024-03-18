@@ -25,18 +25,10 @@ class SkFontData;
 
 class SkFontScanner_Fontations : public SkFontScanner {
 public:
-    SkFontScanner_Fontations();
-    ~SkFontScanner_Fontations() override;
+    SkFontScanner_Fontations() { }
+    ~SkFontScanner_Fontations() override = default;
 
-    bool scanFile(SkStreamAsset* stream, int* numFaces) const override;
-    bool scanFace(SkStreamAsset* stream, int faceIndex, int* numInstances) const override;
-    bool scanInstance(SkStreamAsset* stream,
-                      int faceIndex,
-                      int instanceIndex,
-                      SkString* name,
-                      SkFontStyle* style,
-                      bool* isFixedPitch,
-                      AxisDefinitions* axes) const override;
+    std::unique_ptr<SkFontFileData> scanFile(SkStreamAsset* stream) const override;
 private:
 };
 
