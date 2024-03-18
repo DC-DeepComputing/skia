@@ -736,7 +736,7 @@ if (skia_compile_sksl_tests) {
     }
     sources += skia_sksl_sources
     sources += skia_sksl_gpu_sources
-    sources += skia_sksl_tracing_sources
+    sources += skia_skslc_tracing_sources
     include_dirs = [ "." ]
     deps = [
       ":run_sksllex",

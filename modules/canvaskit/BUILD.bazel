@@ -312,6 +312,11 @@ cc_binary(
             "//:ganesh_webgl_factory",
         ],
         "//conditions:default": [],
+    }) + select({
+        ":enable_sksl_tracing_true": [
+            "//src/sksl/tracing",
+        ],
+        "//conditions:default": [],
     }),
 )
 
@@ -365,6 +370,11 @@ bool_flag(
 
 bool_flag(
     name = "enable_webgl",
+    default = False,
+)
+
+bool_flag(
+    name = "enable_sksl_tracing",
     default = False,
 )
 
