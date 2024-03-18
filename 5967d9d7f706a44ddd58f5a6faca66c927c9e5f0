@@ -34,6 +34,41 @@
       "parentUuid": "90ce4399_4a42bb91",
       "revId": "5967d9d7f706a44ddd58f5a6faca66c927c9e5f0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e2a4337_035e92b2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2024-03-18T09:11:48Z",
+      "side": 1,
+      "message": "Thanks for the comments.\n\nFor the context, I want to implement a way to immediately clear all related bind groups once a texture is deleted. Currently we cache bind groups in `DawnResourceProvider`. Normally the bind groups will keep the bound textures alive unless we explicitly call `texture.Destroy()` which we did (in some cases) inside `DawnTexture::freeGpuData`. However, we currently don\u0027t do that if the texture is owned externally (e.g. proxy images, external images, etc). In those cases, the externally owned textures could be kept alive by cached bind groups as long as they are not evicted.\n\nOne way I plan to solve this is moving the cached bind groups to inside `DawnTexture` itself. And for that to be possible, I need bind group layouts to be accessible independent of `ResourceProvider`. This might not be an optimal solution.\nAlternative method is storing the binds group inside `ResourceCache`. However, it\u0027s not easy to measure gpu memory of a bind group, since it\u0027s technically zero but it keeps the texture alive which is not zero. So `ResourceCache::freeAsNeeded` wouldn\u0027t delete them even if there are excessive number of them IIUC. Only periodic `ResourceCache::purgeResourcesNotUsedSince` could free them. But it might not reduce the peak memory consumption if the peak happens between the purge intervals.\n\nIf you have any suggestions for alternative approaches, please let me know. Perhaps adding these bind groups to `GlobalCache`? Getting and creating them must be thread safe though.",
+      "parentUuid": "9f8781a0_3538b6e5",
+      "revId": "5967d9d7f706a44ddd58f5a6faca66c927c9e5f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "743f9fa7_c43cb261",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2024-03-18T09:11:48Z",
+      "side": 1,
+      "message": "I think I understand",
+      "revId": "5967d9d7f706a44ddd58f5a6faca66c927c9e5f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
