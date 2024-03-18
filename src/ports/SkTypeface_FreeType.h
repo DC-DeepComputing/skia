@@ -20,6 +20,8 @@
 #include "src/core/SkFontScanner.h"
 #include "src/utils/SkCharToGlyphCache.h"
 
+#include <functional>
+
 class SkFontData;
 
 // These are forward declared to avoid pimpl but also hide the FreeType implementation.
@@ -112,26 +114,15 @@ public:
     SkFontScanner_FreeType();
     ~SkFontScanner_FreeType() override;
 
-    bool scanFile(SkStreamAsset* stream, int* numFaces) const override;
-    bool scanFace(SkStreamAsset* stream, int faceIndex, int* numInstances) const override;
-    bool scanInstance(SkStreamAsset* stream,
-                      int faceIndex,
-                      int instanceIndex,
-                      SkString* name,
-                      SkFontStyle* style,
-                      bool* isFixedPitch,
-                      AxisDefinitions* axes) const override;
-    static void computeAxisValues(
-            AxisDefinitions axisDefinitions,
-            const SkFontArguments::VariationPosition position,
-            SkFixed* axisValues,
-            const SkString& name,
-            const SkFontArguments::VariationPosition::Coordinate* currentPosition = nullptr);
-    static bool GetAxes(FT_Face face, AxisDefinitions* axes);
+    std::unique_ptr<SkFontFileData> scanFile(SkStreamAsset* stream) const override;
+
+    using UnderLock = std::function<void()>;
+    bool lockLibrary(SkStreamAsset* stream, int faceIndex, const UnderLock& code);
+    bool lockLibrary(const UnderLock& code);
 private:
-    FT_Face openFace(SkStreamAsset* stream, int ttcIndex, FT_Stream ftStream) const;
-    FT_Library fLibrary;
     mutable SkMutex fLibraryMutex;
+    FT_Library fLibrary;
+    FT_Face openFace(SkStreamAsset* stream, int ttcIndex, FT_Stream ftStream) const;
 };
 
 #endif // SkTypeface_Freetype_DEFINED

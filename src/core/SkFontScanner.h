@@ -17,19 +17,12 @@ class SkFontStyle;
 class SkStreamAsset;
 class SkString;
 
-class SkFontScanner : public SkNoncopyable {
+class SkFontFileData {
 public:
-    virtual ~SkFontScanner() = default;
-    struct AxisDefinition {
-        SkFourByteTag fTag;
-        SkScalar fMinimum;
-        SkScalar fDefault;
-        SkScalar fMaximum;
-    };
-    typedef skia_private::STArray<4, AxisDefinition, true> AxisDefinitions;
+    typedef skia_private::STArray<4, SkFontParameters::Variation::Axis, true> AxisDefinitions;
+    typedef skia_private::STArray<4, SkScalar, true> AxisValues;
 
-    virtual bool scanFile(SkStreamAsset* stream, int* numFaces) const = 0;
-    virtual bool scanFace(SkStreamAsset* stream, int faceIndex, int* numInstances) const = 0;
+    virtual bool scanFace(SkStreamAsset* stream, int faceIndex) = 0;
     /* instanceIndex 0 is the default instance, 1 to numInstances are the named instances. */
     virtual bool scanInstance(SkStreamAsset* stream,
                               int faceIndex,
@@ -37,7 +30,22 @@ public:
                               SkString* name,
                               SkFontStyle* style,
                               bool* isFixedPitch,
-                              AxisDefinitions* axes) const = 0;
+                              AxisValues* axes) = 0;
+    virtual int getNumFaces() const = 0;
+    virtual int getNumInstances() const = 0;
+    virtual bool computeAxisValues(
+            AxisDefinitions* axisDefinitions,
+            const SkFontArguments::VariationPosition position,
+            SkFixed* axisValues,
+            const SkString& name,
+            const SkFontArguments::VariationPosition::Coordinate* currentPosition = nullptr) = 0;
+};
+
+class SkFontScanner : public SkNoncopyable {
+public:
+    virtual ~SkFontScanner() = default;
+
+    virtual std::unique_ptr<SkFontFileData> scanFile(SkStreamAsset* stream) const = 0;
 };
 
 #endif // SKFONTSCANNER_H_
