@@ -31,11 +31,13 @@
 
 #if defined(SKSL_ENABLE_TRACING)
 
+#include "src/sksl/tracing/SkSLDebugTraceImpl.h"
+
 using LineNumberMap = SkSL::SkSLDebugTracePlayer::LineNumberMap;
 
 static sk_sp<SkSL::DebugTracePriv> make_trace(skiatest::Reporter* r,
                                               std::string src) {
-    auto debugTrace = sk_make_sp<SkSL::DebugTracePriv>();
+    sk_sp<SkSL::DebugTracePriv> debugTrace = SkSL::DebugTraceImpl::Make();
 
     SkSL::Compiler compiler;
     SkSL::ProgramSettings settings;

@@ -88,6 +88,10 @@ struct GraphiteInfo {
 };
 #endif
 
+#if defined(SKSL_ENABLE_TRACING)
+#include "include/utils/SkTracedRuntimeEffect.h"
+#endif
+
 void test_invalid_effect(skiatest::Reporter* r, const char* src, const char* expected) {
     auto [effect, errorText] = SkRuntimeEffect::MakeForShader(SkString(src));
     REPORTER_ASSERT(r, !effect);
@@ -498,13 +502,14 @@ public:
     }
 
     std::string trace(const SkIPoint& traceCoord) {
+#if defined(SKSL_ENABLE_TRACING)
         sk_sp<SkShader> shader = fBuilder->makeShader();
         if (!shader) {
             ERRORF(fReporter, "Effect didn't produce a shader");
             return {};
         }
 
-        auto [debugShader, debugTrace] = SkRuntimeEffect::MakeTraced(std::move(shader), traceCoord);
+        auto [debugShader, debugTrace] = SkRuntimeEffects::MakeTraced(std::move(shader), traceCoord);
 
         SkCanvas* canvas = fSurface->getCanvas();
         SkPaint paint;
@@ -517,6 +522,9 @@ public:
         debugTrace->dump(&wstream);
         sk_sp<SkData> streamData = wstream.detachAsData();
         return std::string(static_cast<const char*>(streamData->data()), streamData->size());
+#else
+        return {};
+#endif
     }
 
     void test(GrColor expected, PreTestFn preTestCallback = nullptr) {
@@ -896,6 +904,7 @@ DEF_TEST(SkRuntimeColorFilterLimitedToES2, r) {
     }
 }
 
+#if defined(SKSL_ENABLE_TRACING)
 DEF_TEST(SkRuntimeEffectTraceShader, r) {
     for (int imageSize : {2, 80}) {
         TestEffect effect(r, /*grContext=*/nullptr, /*graphite=*/nullptr,
@@ -1046,6 +1055,8 @@ exit half4 main(float2 p)
             skstd::starts_with(dump, kSkRPSlotDump) && skstd::ends_with(dump, kExpectedTrace),
             "Trace output does not match expectation:\n%.*s\n", (int)dump.size(), dump.data());
 }
+
+#endif  // defined(SKSL_ENABLE_TRACING)
 
 static void test_RuntimeEffect_Blenders(skiatest::Reporter* r,
                                         GrRecordingContext* grContext,

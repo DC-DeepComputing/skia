@@ -124,6 +124,7 @@
 
 #if defined(CK_INCLUDE_RUNTIME_EFFECT) && defined(SKSL_ENABLE_TRACING)
 #include "include/sksl/SkSLDebugTrace.h"
+#include "include/utils/SkTracedRuntimeEffect.h"
 #endif
 
 #ifndef CK_NO_FONTS
@@ -2211,9 +2212,9 @@ EMSCRIPTEN_BINDINGS(Skia) {
             return std::string(reinterpret_cast<const char*>(trace->bytes()), trace->size());
         }));
 
-    value_object<SkRuntimeEffect::TracedShader>("TracedShader")
-        .field("shader",     &SkRuntimeEffect::TracedShader::shader)
-        .field("debugTrace", &SkRuntimeEffect::TracedShader::debugTrace);
+    value_object<SkRuntimeEffects::TracedShader>("TracedShader")
+        .field("shader",     &SkRuntimeEffects::TracedShader::shader)
+        .field("debugTrace", &SkRuntimeEffects::TracedShader::debugTrace);
 #endif
 
     class_<SkRuntimeEffect>("RuntimeEffect")
@@ -2244,8 +2245,8 @@ EMSCRIPTEN_BINDINGS(Skia) {
         .class_function("MakeTraced", optional_override([](
                 sk_sp<SkShader> shader,
                 int traceCoordX,
-                int traceCoordY) -> SkRuntimeEffect::TracedShader {
-            return SkRuntimeEffect::MakeTraced(shader, SkIPoint::Make(traceCoordX, traceCoordY));
+                int traceCoordY) -> SkRuntimeEffects::TracedShader {
+            return SkRuntimeEffects::MakeTraced(shader, SkIPoint::Make(traceCoordX, traceCoordY));
         }))
 #endif
         .function("_makeShader", optional_override([](SkRuntimeEffect& self,
