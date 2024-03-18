@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "74b1e8ef_80b91769",
+        "filename": "src/gpu/ganesh/GrGpu.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 783,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-03-18T18:22:17Z",
+      "side": 1,
+      "message": "IWYU brought to my attention the fact that we could make GrGpuBuffer a forward declare instead of an include, which I like to do for public headers as per the style guide https://skia.org/docs/dev/contrib/style/  (If this is implemented in the header, we need the buffer header to call the destructor if sk_sp\u0027s ref count went to 0 [via a std::move, I think]).\n\nHowever, this is a private header and I think your point about readability (being obvious that the impl is a no-op) is compelling enough for me to put this back.",
+      "parentUuid": "6fdbaf0c_860e39d7",
+      "range": {
+        "startLine": 782,
+        "startChar": 0,
+        "endLine": 783,
+        "endChar": 56
+      },
+      "revId": "02093a12d2054635c306404fe09e005f179478ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "54c43c24_f6950bc9",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-03-18T18:09:41Z",
       "side": 1,
       "message": "Is having 2 spaces b/w the `}` and`//` intentional?",
+      "range": {
+        "startLine": 43,
+        "startChar": 1,
+        "endLine": 43,
+        "endChar": 3
+      },
+      "revId": "02093a12d2054635c306404fe09e005f179478ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0744af8_457835c5",
+        "filename": "src/gpu/ganesh/GrMeshDrawTarget.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-03-18T18:22:17Z",
+      "side": 1,
+      "message": "clang-format seems to think it should be this way.",
+      "parentUuid": "54c43c24_f6950bc9",
       "range": {
         "startLine": 43,
         "startChar": 1,
