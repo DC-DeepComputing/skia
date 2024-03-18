@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee84887a_4d11ad72",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 657,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-18T15:55:57Z",
+      "side": 1,
+      "message": "This is fine for now. Currently FreeType just ignores the collection index and CoreText doesn\u0027t support a collection index so effectively ignores it. I\u0027ll have to figure out the right thing to do here.",
+      "revId": "558e289bd4e005c1a788f2aaa27e6d1e4226f728",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6b7cea4_efab3c31",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 665,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-18T15:55:57Z",
+      "side": 1,
+      "message": "This is really an error isn\u0027t it? If so, should just return nullptr. (Note that DirectWrite does a lot of that, although hidden in all the `HRN`.)",
+      "revId": "558e289bd4e005c1a788f2aaa27e6d1e4226f728",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "261054bc_f2f3e7b6",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 690,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-18T15:55:57Z",
+      "side": 1,
+      "message": "Yeah, we\u0027ll need to decide what the right thing to do here is. I think current callers always either use the default or set everything anyway so we haven\u0027t run into issues yet, maybe? Will need to write some tests and see what we want the answers to be.",
+      "revId": "558e289bd4e005c1a788f2aaa27e6d1e4226f728",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
