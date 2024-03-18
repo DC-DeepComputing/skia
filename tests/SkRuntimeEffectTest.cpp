@@ -37,6 +37,7 @@
 #include "include/private/base/SkTArray.h"
 #include "include/sksl/SkSLDebugTrace.h"
 #include "include/sksl/SkSLVersion.h"
+#include "include/utils/SkTracedRuntimeEffect.h"
 #include "src/base/SkStringView.h"
 #include "src/base/SkTLazy.h"
 #include "src/core/SkColorSpacePriv.h"
@@ -504,7 +505,7 @@ public:
             return {};
         }
 
-        auto [debugShader, debugTrace] = SkRuntimeEffect::MakeTraced(std::move(shader), traceCoord);
+        auto [debugShader, debugTrace] = SkRuntimeEffects::MakeTraced(std::move(shader), traceCoord);
 
         SkCanvas* canvas = fSurface->getCanvas();
         SkPaint paint;

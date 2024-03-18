@@ -32,6 +32,7 @@ skia_utils_public = [
   "$_include/utils/SkShadowUtils.h",
   "$_include/utils/SkTextUtils.h",
   "$_include/utils/SkTraceEventPhase.h",
+  "$_include/utils/SkTracedRuntimeEffect.h",
   "$_include/utils/mac/SkCGUtils.h",
 ]
 

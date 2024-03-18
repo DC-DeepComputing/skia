@@ -22,7 +22,6 @@
 class SkColorSpace;
 class SkReadBuffer;
 class SkWriteBuffer;
-struct SkIPoint;
 struct SkStageRec;
 
 using UniformsCallback = SkRuntimeEffectPriv::UniformsCallback;
@@ -38,8 +37,6 @@ public:
                     sk_sp<SkSL::DebugTracePriv> debugTrace,
                     UniformsCallback uniformsCallback,
                     SkSpan<const SkRuntimeEffect::ChildPtr> children);
-
-    SkRuntimeEffect::TracedShader makeTracedClone(const SkIPoint& coord);
 
     bool isOpaque() const override { return fEffect->alwaysOpaque(); }
 
@@ -59,6 +56,7 @@ public:
     SK_FLATTENABLE_HOOKS(SkRuntimeShader)
 
 private:
+    friend class SkTracedRuntimeShader;
     enum Flags {
         kHasLegacyLocalMatrix_Flag = 1 << 1,
     };

@@ -24,6 +24,7 @@
 #include "include/private/base/SkAssert.h"
 #include "include/private/base/SkSpan_impl.h"
 #include "include/sksl/SkSLDebugTrace.h"
+#include "include/utils/SkTracedRuntimeEffect.h"
 #include "tools/DecodeUtils.h"
 #include "tools/Resources.h"
 #include "tools/fonts/FontToolUtils.h"
@@ -294,8 +295,8 @@ void SkSLSlide::draw(SkCanvas* canvas) {
     auto shader = fEffect->makeShader(std::move(inputs), fChildren.data(), fChildren.size());
     if (writeTrace || writeDump) {
         SkIPoint traceCoord = {fTraceCoord[0], fTraceCoord[1]};
-        SkRuntimeEffect::TracedShader traced = SkRuntimeEffect::MakeTraced(std::move(shader),
-                                                                           traceCoord);
+        SkRuntimeEffects::TracedShader traced = SkRuntimeEffects::MakeTraced(std::move(shader),
+                                                                             traceCoord);
         shader = std::move(traced.shader);
         debugTrace = std::move(traced.debugTrace);
 
