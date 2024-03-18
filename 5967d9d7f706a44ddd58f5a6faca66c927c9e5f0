@@ -69,6 +69,24 @@
       "message": "I think I understand",
       "revId": "5967d9d7f706a44ddd58f5a6faca66c927c9e5f0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e183509_b6c0afab",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2024-03-18T09:12:40Z",
+      "side": 1,
+      "message": "Accidentally submitted comment. Pls ignore.",
+      "parentUuid": "743f9fa7_c43cb261",
+      "revId": "5967d9d7f706a44ddd58f5a6faca66c927c9e5f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
