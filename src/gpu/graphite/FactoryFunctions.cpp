@@ -398,8 +398,15 @@ public:
 private:
     friend class PrecompilePictureShader;
 
-    // hardware-tiled, shader-tiled and cubic sampling
-    inline static constexpr int kNumIntrinsicCombinations = 3;
+    // The normal Skia API always wraps an ImageShader in a LocalMatrixShader and then changes the
+    // program structure depending on the LM being the identity.
+    inline static constexpr int kNumLocalMatrixCombinations = 2;
+
+    // The ImageShader has 3 variants: hardware-tiled, shader-tiled and cubic sampling
+    inline static constexpr int kNumSamplingCombinations = 3;
+
+    inline static constexpr int kNumIntrinsicCombinations = kNumLocalMatrixCombinations *
+                                                            kNumSamplingCombinations;
 
     int numIntrinsicCombinations() const override { return kNumIntrinsicCombinations; }
 
@@ -408,6 +415,12 @@ private:
                          PipelineDataGatherer* gatherer,
                          int desiredCombination) {
         SkASSERT(desiredCombination < kNumIntrinsicCombinations);
+
+        const int desiredLMCombination = desiredCombination % kNumLocalMatrixCombinations;
+        int remainingCombinations = desiredCombination / kNumLocalMatrixCombinations;
+
+        int desiredImageCombination = remainingCombinations;
+        SkASSERT(desiredImageCombination < PrecompileImageShader::kNumSamplingCombinations);
 
         static constexpr SkSamplingOptions kDefaultCubicSampling(SkCubicResampler::Mitchell());
         static constexpr SkSamplingOptions kDefaultSampling;
@@ -419,14 +432,24 @@ private:
         static constexpr SkISize kHwTileableSize = SkISize::Make(1, 1);
         static constexpr SkISize kNonHwTileableSize = SkISize::Make(2, 2);
 
-        ImageShaderBlock::ImageData imgData(desiredCombination == 2 ? kDefaultCubicSampling
-                                                                    : kDefaultSampling,
-                                            SkTileMode::kClamp, SkTileMode::kClamp,
-                                            desiredCombination == 1 ? kHwTileableSize
-                                                                    : kNonHwTileableSize,
-                                            kSubset, ReadSwizzle::kRGBA);
+        if (desiredLMCombination) {
+            static const LocalMatrixShaderBlock::LMShaderData kIgnoredLMShaderData(SkMatrix::I());
 
-        ImageShaderBlock::AddBlock(keyContext, builder, gatherer, imgData);
+            LocalMatrixShaderBlock::BeginBlock(keyContext, builder, gatherer, kIgnoredLMShaderData);
+        }
+
+            ImageShaderBlock::ImageData imgData(desiredImageCombination == 2 ? kDefaultCubicSampling
+                                                                             : kDefaultSampling,
+                                                SkTileMode::kClamp, SkTileMode::kClamp,
+                                                desiredImageCombination == 1 ? kHwTileableSize
+                                                                             : kNonHwTileableSize,
+                                                kSubset, ReadSwizzle::kRGBA);
+
+            ImageShaderBlock::AddBlock(keyContext, builder, gatherer, imgData);
+
+        if (desiredLMCombination) {
+            builder->endBlock();
+        }
     }
 
     void addToKey(const KeyContext& keyContext,
@@ -438,6 +461,10 @@ private:
 };
 
 sk_sp<PrecompileShader> PrecompileShaders::Image() {
+    return sk_make_sp<PrecompileImageShader>();
+}
+
+sk_sp<PrecompileShader> PrecompileShaders::RawImage() {
     return sk_make_sp<PrecompileImageShader>();
 }
 
@@ -475,6 +502,9 @@ sk_sp<PrecompileShader> PrecompileShaders::YUVImage() {
 }
 
 //--------------------------------------------------------------------------------------------------
+// The PictureShader ultimately turns into an SkImageShader optionally wrapped in a
+// LocalMatrixShader. The PrecompileImageShader already encapsulates that use case so just reuse
+// it.
 class PrecompilePictureShader : public PrecompileShader {
 public:
     PrecompilePictureShader() {}
