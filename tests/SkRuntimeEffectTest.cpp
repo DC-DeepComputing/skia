@@ -896,6 +896,7 @@ DEF_TEST(SkRuntimeColorFilterLimitedToES2, r) {
     }
 }
 
+// If this test fails, be sure SkSL::SetDebugTraceFactory was called first.
 DEF_TEST(SkRuntimeEffectTraceShader, r) {
     for (int imageSize : {2, 80}) {
         TestEffect effect(r, /*grContext=*/nullptr, /*graphite=*/nullptr,
