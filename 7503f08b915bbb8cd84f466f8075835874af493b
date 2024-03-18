@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a8d9597_9b1dac1b",
+        "filename": "include/utils/SkTracedRuntimeEffect.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-03-18T22:06:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "06462ca3_62ecef23",
+      "range": {
+        "startLine": 18,
+        "startChar": 10,
+        "endLine": 18,
+        "endChar": 26
+      },
+      "revId": "7503f08b915bbb8cd84f466f8075835874af493b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "20f85f9f_376ef04d",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d66c81c2_23a7997f",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-03-18T22:06:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "20f85f9f_376ef04d",
+      "range": {
+        "startLine": 69,
+        "startChar": 8,
+        "endLine": 69,
+        "endChar": 12
+      },
+      "revId": "7503f08b915bbb8cd84f466f8075835874af493b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2011f72a_24539e9c",
@@ -60,6 +108,30 @@
       "writtenOn": "2024-03-18T18:32:05Z",
       "side": 1,
       "message": "\"until past the end of `dump` below.\"\n\nSorry, I can\u0027t figure out how to escape backticks properly, but \"dump\" should be in backticks, and it should be \"past\" not \"pass\".",
+      "range": {
+        "startLine": 236,
+        "startChar": 47,
+        "endLine": 236,
+        "endChar": 79
+      },
+      "revId": "7503f08b915bbb8cd84f466f8075835874af493b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b01051f3_44ac6d5f",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-03-18T22:06:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2011f72a_24539e9c",
       "range": {
         "startLine": 236,
         "startChar": 47,
@@ -130,6 +202,30 @@
       "writtenOn": "2024-03-18T18:32:05Z",
       "side": 1,
       "message": "`MakeStub`? And add a doc comment.",
+      "range": {
+        "startLine": 114,
+        "startChar": 33,
+        "endLine": 114,
+        "endChar": 41
+      },
+      "revId": "7503f08b915bbb8cd84f466f8075835874af493b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "22a19a83_07a3ab85",
+        "filename": "src/sksl/tracing/SkSLDebugTracePriv.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-03-18T22:06:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d26f911a_25add34d",
       "range": {
         "startLine": 114,
         "startChar": 33,
