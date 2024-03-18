@@ -60,15 +60,15 @@ private:
                 continue;
             }
 
-            int numFaces;
-            if (!scanner->scanFile(stream.get(), &numFaces)) {
+            auto fileData = scanner->scanFile(stream.get());
+            if (!fileData) {
                 // SkDebugf("---- failed to open <%s> as a font\n", filename.c_str());
                 continue;
             }
 
-            for (int faceIndex = 0; faceIndex < numFaces; ++faceIndex) {
+            for (int faceIndex = 0; faceIndex < fileData->getNumFaces(); ++faceIndex) {
                 int numInstances;
-                if (!scanner->scanFace(stream.get(), faceIndex, &numInstances)) {
+                if (!fileData->scanFace(stream.get(), faceIndex, &numInstances, nullptr)) {
                     // SkDebugf("---- failed to open <%s> as a font\n", filename.c_str());
                     continue;
                 }
@@ -76,7 +76,7 @@ private:
                     bool isFixedPitch;
                     SkString realname;
                     SkFontStyle style = SkFontStyle(); // avoid uninitialized warning
-                    if (!scanner->scanInstance(stream.get(),
+                    if (!fileData->scanInstance(stream.get(),
                                                faceIndex,
                                                instanceIndex,
                                                &realname,

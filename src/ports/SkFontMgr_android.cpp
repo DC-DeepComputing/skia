@@ -162,9 +162,22 @@ public:
             SkString familyName;
             SkFontStyle style;
             bool isFixedWidth;
-            SkFontScanner::AxisDefinitions axisDefinitions;
-            if (!scanner->scanInstance(stream.get(), ttcIndex, 0,
-                                      &familyName, &style, &isFixedWidth, &axisDefinitions))
+            auto fileData = scanner->scanFile(stream.get());
+            if (!fileData) {
+                SkDEBUGF("Requested font file %s exists, but is not a valid font.\n",
+                         pathName.c_str());
+                continue;
+            }
+
+            SkFontFileData::AxisDefinitions axisDefinitions;
+            if (!fileData->scanFace(stream.get(), 0, nullptr, &axisDefinitions)) {
+                SkDEBUGF("Requested font file %s exists, but is not a valid font.\n",
+                         pathName.c_str());
+                continue;
+            }
+
+            if (!fileData->scanInstance(stream.get(), ttcIndex, 0,
+                                      &familyName, &style, &isFixedWidth, nullptr))
             {
                 SkDEBUGF("Requested font file %s exists, but is not a valid font.\n",
                          pathName.c_str());
@@ -198,8 +211,7 @@ public:
                 fontFile.fVariationDesignPosition.begin(),
                 fontFile.fVariationDesignPosition.size()
             };
-            SkFontScanner_FreeType::computeAxisValues(
-                    axisDefinitions, position, axisValues, familyName);
+            fileData->computeAxisValues(position, axisValues, familyName);
 
             fStyles.push_back().reset(new SkTypeface_AndroidSystem(
                     pathName, cacheFontFiles, ttcIndex, axisValues.get(), axisDefinitions.size(),
