@@ -79,7 +79,7 @@ namespace PrecompileShaders {
     // via makeWithLocalMatrix and makeWithColorFilter. However, in the combination API, clients
     // may want to create a set of these (i.e., pass SkSpans to the factory functions vs
     // just single options).
-    SK_API sk_sp<PrecompileShader> LocalMatrix(sk_sp<PrecompileShader> wrapped);
+    SK_API sk_sp<PrecompileShader> LocalMatrix1(sk_sp<PrecompileShader> wrapped, bool selfElide);
     SK_API sk_sp<PrecompileShader> ColorFilter(sk_sp<PrecompileShader>,
                                                sk_sp<PrecompileColorFilter>);
 } // namespace PrecompileShaders
