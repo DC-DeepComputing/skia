@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "29239020_6aaa0604",
+        "filename": "src/gpu/graphite/dawn/DawnQueueManager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2024-03-18T18:18:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "009ee57c_231d7909",
+      "range": {
+        "startLine": 68,
+        "startChar": 34,
+        "endLine": 68,
+        "endChar": 71
+      },
+      "revId": "a1b9dfed0f68d036bc02e004074e35648c1f6f20",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9045caf4_44d10ab4",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-03-18T16:56:16Z",
       "side": 1,
       "message": "Since we now have two separate classes, I think I would lean towards just explicitly calling one or the other in the calling code. It then allows for things like the params for their ctors to be different.",
+      "range": {
+        "startLine": 117,
+        "startChar": 0,
+        "endLine": 121,
+        "endChar": 6
+      },
+      "revId": "a1b9dfed0f68d036bc02e004074e35648c1f6f20",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d687095a_43e9b5dc",
+        "filename": "src/gpu/graphite/dawn/DawnQueueManager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2024-03-18T18:18:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9045caf4_44d10ab4",
       "range": {
         "startLine": 117,
         "startChar": 0,
