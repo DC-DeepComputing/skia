@@ -410,7 +410,7 @@ void add_localmatrixshader_uniform_data(const ShaderCodeDictionary* dict,
 
 } // anonymous namespace
 
-void LocalMatrixShaderBlock::BeginBlock(const KeyContext& keyContext,
+void LocalMatrixShaderBlock::BeginBlock77(const KeyContext& keyContext,
                                         PaintParamsKeyBuilder* builder,
                                         PipelineDataGatherer* gatherer,
                                         const LMShaderData& lmShaderData) {
@@ -1295,7 +1295,7 @@ static void add_to_key(const KeyContext& keyContext,
 
     KeyContextWithLocalMatrix newContext(keyContext, shader->ctm());
 
-    LocalMatrixShaderBlock::BeginBlock(newContext, builder, gatherer, lmShaderData);
+    LocalMatrixShaderBlock::BeginBlock77(newContext, builder, gatherer, lmShaderData);
 
         AddToKey(newContext, builder, gatherer, shader->proxyShader().get());
 
@@ -1425,7 +1425,7 @@ static void add_yuv_image_to_key(const KeyContext& keyContext,
 
     KeyContextWithLocalMatrix newContext(keyContext, originMatrix);
 
-    LocalMatrixShaderBlock::BeginBlock(newContext, builder, gatherer, lmShaderData);
+    LocalMatrixShaderBlock::BeginBlock77(newContext, builder, gatherer, lmShaderData);
 
         YUVImageShaderBlock::AddBlock(newContext, builder, gatherer, imgData);
 
@@ -1551,7 +1551,7 @@ static void add_to_key(const KeyContext& keyContext,
 
         KeyContextWithLocalMatrix newContext(keyContext, matrix);
 
-        LocalMatrixShaderBlock::BeginBlock(newContext, builder, gatherer, lmShaderData);
+        LocalMatrixShaderBlock::BeginBlock77(newContext, builder, gatherer, lmShaderData);
 
             AddToKey(newContext, builder, gatherer, wrappedShader);
 
