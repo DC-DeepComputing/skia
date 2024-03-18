@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a91a338b_69a39864",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-18T14:11:52Z",
+      "side": 1,
+      "message": "We should chat about this. This feels like a lot more change (tons of renames, code moving between files, etc) than I would have expected. I think if I understand the goals, we might be able to get the same goals with less restructuring. Now, to be fair you have already done the work :) but it seems to add a extra layer of indirection/virtualization that hopefully we might be able to avoid.",
+      "revId": "db1da1352ec34ccc5115a59f138f7a284db770a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47fd4684_0cdd33a5",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-18T14:11:52Z",
+      "side": 1,
+      "message": "This incurs an allocation every time `getRPProgram` is called even though the 99.999% case is that debug tracing is off.",
+      "range": {
+        "startLine": 232,
+        "startChar": 0,
+        "endLine": 232,
+        "endChar": 76
+      },
+      "revId": "db1da1352ec34ccc5115a59f138f7a284db770a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
