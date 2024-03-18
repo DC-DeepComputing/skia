@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72587b93_1752f24a",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 642,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-18T16:09:21Z",
+      "side": 1,
+      "message": "I think that if you used `y` from `scale` from `fRec.computeMatrices` instead of `fMatrix.getScaleY()` above you would be doing the same as the other scaler contexts here.",
+      "revId": "7c7fa07fc81b5755bd665c77fa39db555bf5853c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
