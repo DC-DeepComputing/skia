@@ -54,7 +54,7 @@
 #include "tools/graphite/UniqueKeyUtils.h"
 
 // Set this to 1 for more expansive (aka far slower) local testing
-#define EXPANDED_SET 0
+#define EXPANDED_SET 1
 
 // This flag is set to true if during the PaintOption creation an SkPictureShader is created.
 // The SkPictureShader will need an additional program in order to draw the contents of its
@@ -235,6 +235,16 @@ ColorFilterType random_colorfiltertype(SkRandom* rand) {
     return static_cast<ColorFilterType>(rand->nextULessThan(kColorFilterTypeCount));
 }
 
+SkMatrix* random_local_matrix(SkRandom* rand, SkMatrix* storage) {
+    switch (rand->nextULessThan(3)) {
+        case 0: return nullptr;
+        case 1: storage->setIdentity(); return storage;
+        case 2: storage->setTranslate(2.0f, 2.0f); return storage;
+    }
+
+    SkUNREACHABLE;
+}
+
 sk_sp<SkImage> make_image(SkRandom* rand, Recorder* recorder) {
     // TODO: add alpha-only images too
     SkImageInfo info = SkImageInfo::Make(32, 32,
@@ -400,9 +410,10 @@ std::pair<sk_sp<SkShader>, sk_sp<PrecompileShader>> create_localmatrix_shader(Sk
         return { nullptr, nullptr };
     }
 
-    SkMatrix tmp = SkMatrix::Scale(1.5f, 2.0f); // TODO: fuzz
+    SkMatrix lmStorage;
+    random_local_matrix(rand, &lmStorage);
 
-    return { s->makeWithLocalMatrix(tmp), o->makeWithLocalMatrix() };
+    return { s->makeWithLocalMatrix(lmStorage), o->makeWithLocalMatrix() };
 }
 
 std::pair<sk_sp<SkShader>, sk_sp<PrecompileShader>> create_colorfilter_shader(SkRandom* rand,
