@@ -92,6 +92,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c05dbc8b_e16d5669",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 740,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-03-18T12:01:21Z",
+      "side": 1,
+      "message": "@jlavrova@google.com in https://skia-review.googlesource.com/c/skia/+/799417/35..37/src/ports/fontations/src/ffi.rs#b723 explained she\u0027d do a follow-up for adding variations support here. - I had commented in that regard on the CL, and it was agreed to do this as a follow-up. So I see the request to make this change with variations a request separate to this change.",
+      "parentUuid": "0c5f909b_2fb6cb69",
+      "range": {
+        "startLine": 740,
+        "startChar": 44,
+        "endLine": 740,
+        "endChar": 58
+      },
+      "revId": "ce2d90d7e0e1b1133bbdbf7753e9db557c9db7ef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "07092279_2696643a",
         "filename": "src/ports/fontations/src/ffi.rs",
         "patchSetId": 3
@@ -103,6 +127,24 @@
       "writtenOn": "2024-03-15T17:32:16Z",
       "side": 1,
       "message": "I think I still prefer getting this off the `attributes()`. For instance, if the os2 table isn\u0027t present then this produces 9 (I think?), but using `attributes()` we\u0027ll end up with 5 since the default is normal. It\u0027s just a higher level interface and I\u0027d prefer not to essentially re-implement `Attributes.new` here.",
+      "revId": "ce2d90d7e0e1b1133bbdbf7753e9db557c9db7ef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3aa6a191_a3e74084",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 744,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-03-18T12:01:21Z",
+      "side": 1,
+      "message": "I\u0027ll look into changing this back to `attributes()`, but the outcome if os2 is not present is different:\n`f.os()` returns a `Result` type, which is converted to an `Option` type by calling `ok()` on it. The `?` question mark operator checks the `Option` and if it\u0027s `Some()` unwraps it, otherwise `None` is returned from the closure, which results in `style` remaining unchanged and `false` returned from the function.",
+      "parentUuid": "07092279_2696643a",
       "revId": "ce2d90d7e0e1b1133bbdbf7753e9db557c9db7ef",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
