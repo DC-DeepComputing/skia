@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b3514d4_4e4a8ff6",
+        "filename": "BUILD.gn",
+        "patchSetId": 32
+      },
+      "lineNbr": 407,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-18T15:14:17Z",
+      "side": 0,
+      "message": "This seems accidental? We do need this.",
+      "revId": "eaa40b996369930dbab69869280b0f72ab9a04b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb906a8e_91a82cf7",
+        "filename": "BUILD.gn",
+        "patchSetId": 32
+      },
+      "lineNbr": 1456,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-18T15:14:17Z",
+      "side": 0,
+      "message": "And this.",
+      "revId": "eaa40b996369930dbab69869280b0f72ab9a04b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

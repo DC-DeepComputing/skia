@@ -1,0 +1,164 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1e2c708_df3b782e",
+        "filename": "modules/skparagraph/gm/simple_gm.cpp",
+        "patchSetId": 32
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-18T15:14:17Z",
+      "side": 1,
+      "message": "I suppose this is fine for now, but we will want each of these gms to be run for each of these implementations.",
+      "range": {
+        "startLine": 47,
+        "startChar": 27,
+        "endLine": 47,
+        "endChar": 38
+      },
+      "revId": "958115533fca19fe46a445e1748e7d45e7e38ae7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f504b857_3f6c0c9d",
+        "filename": "modules/skplaintexteditor/src/shape.cpp",
+        "patchSetId": 32
+      },
+      "lineNbr": 325,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-18T15:14:17Z",
+      "side": 1,
+      "message": "While this is a good change, can remove these comments.",
+      "revId": "958115533fca19fe46a445e1748e7d45e7e38ae7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0be92087_7c3fb67f",
+        "filename": "modules/skplaintexteditor/src/shape.cpp",
+        "patchSetId": 32
+      },
+      "lineNbr": 338,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-18T15:14:17Z",
+      "side": 1,
+      "message": "Remove comment, not we do not want to hide this.",
+      "revId": "958115533fca19fe46a445e1748e7d45e7e38ae7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9404e6e6_07ba71da",
+        "filename": "modules/skshaper/BUILD.gn",
+        "patchSetId": 32
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-18T15:14:17Z",
+      "side": 1,
+      "message": "No. The reason we\u0027re doing any of this abstraction is to not do this kind of thing anywhere.",
+      "range": {
+        "startLine": 63,
+        "startChar": 37,
+        "endLine": 64,
+        "endChar": 31
+      },
+      "revId": "958115533fca19fe46a445e1748e7d45e7e38ae7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e9d06b02_ebf30e2c",
+        "filename": "modules/skshaper/src/SkShaper_harfbuzz.cpp",
+        "patchSetId": 32
+      },
+      "lineNbr": 627,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-18T15:14:17Z",
+      "side": 1,
+      "message": "If we really think it best for `SkUnicode` to be passed around by shared reference, then we should instead make it `SkRefCnt`, use `sk_sp`, have the `SkUnicode_Make` factory functions return `sk_sp`, and never create `unique_ptr` to them. This probably makes sense now that we know more about how these initialize and are used.\n\nThis is probably something we want to do even before this change (and would probably be easier that way).\n\nSkia does use some `std::shared_ptr` in various places, but as implementation detail and not as \"how to generally use an object\".",
+      "range": {
+        "startLine": 627,
+        "startChar": 19,
+        "endLine": 627,
+        "endChar": 34
+      },
+      "revId": "958115533fca19fe46a445e1748e7d45e7e38ae7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "189a2b7a_073c6bcd",
+        "filename": "modules/skunicode/src/SkUnicode_icu_runtime.cpp",
+        "patchSetId": 32
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-18T15:14:17Z",
+      "side": 1,
+      "message": "It looks like this is the only change to this file? Please undo the rest of the formatting to this file.",
+      "revId": "958115533fca19fe46a445e1748e7d45e7e38ae7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3b9fb5f_f9fd3745",
+        "filename": "modules/skunicode/tests/SkUnicodeTest.cpp",
+        "patchSetId": 32
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-18T15:14:17Z",
+      "side": 1,
+      "message": "Especially with tests, each test should run with each backend.",
+      "range": {
+        "startLine": 33,
+        "startChar": 27,
+        "endLine": 33,
+        "endChar": 38
+      },
+      "revId": "958115533fca19fe46a445e1748e7d45e7e38ae7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a3e23311_56031808",
+        "filename": "modules/svg/src/SkSVGText.cpp",
+        "patchSetId": 32
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-18T15:14:17Z",
+      "side": 1,
+      "message": "It seems that this block should at least have a comment stating that it is already deprecated to do this and the svg module needs to take a unicode or a shaper or both from the user.",
+      "revId": "958115533fca19fe46a445e1748e7d45e7e38ae7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
