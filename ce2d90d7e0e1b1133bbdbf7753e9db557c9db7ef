@@ -165,6 +165,24 @@
       "parentUuid": "3aa6a191_a3e74084",
       "revId": "ce2d90d7e0e1b1133bbdbf7753e9db557c9db7ef",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb538518_86a19f35",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 744,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-03-18T12:25:40Z",
+      "side": 1,
+      "message": "Back to no change to FFI. One advantage of using `attributes()` is that true and a style value would be returned if no OS/2 table is present. With the previous change it would have stopped on a missing table and returned default style.\n\n`TypefaceStyle` test passes locally on Linux, need to check again why I remember it failed on MacOS.",
+      "parentUuid": "0643b8d5_8d714ba9",
+      "revId": "ce2d90d7e0e1b1133bbdbf7753e9db557c9db7ef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

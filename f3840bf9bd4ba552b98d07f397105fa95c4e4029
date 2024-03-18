@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "743afeec_73a8a2cd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-03-18T12:25:40Z",
+      "side": 1,
+      "message": "Please take another look. I am hoping to land this and handling var cases would be done in Julia\u0027s planned follow-up changes to `get_font_style()`? Again, to emphasize, this is important for [unblocking more Fontations testing in this change of yours](https://skia-review.googlesource.com/c/skia/+/822317), Ben.",
+      "revId": "f3840bf9bd4ba552b98d07f397105fa95c4e4029",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
