@@ -13,6 +13,7 @@
 #include "include/core/SkColor.h"
 #include "include/core/SkColorFilter.h"
 #include "include/core/SkData.h"
+#include "include/core/SkShader.h"
 #include "include/private/base/SkAlign.h"
 #include "include/private/base/SkDebug.h"
 #include "include/private/base/SkMutex.h"
@@ -32,7 +33,6 @@
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkRuntimeBlender.h"
 #include "src/core/SkRuntimeEffectPriv.h"
-#include "src/core/SkStreamPriv.h"
 #include "src/core/SkWriteBuffer.h"
 #include "src/effects/colorfilters/SkColorFilterBase.h"
 #include "src/effects/colorfilters/SkRuntimeColorFilter.h"
@@ -65,9 +65,13 @@
 using namespace skia_private;
 
 class SkColorSpace;
-struct SkIPoint;
 
-constexpr bool kRPEnableLiveTrace = false;
+#define SKRP_ENABLE_LIVE_TRACE 0
+
+#if SKRP_ENABLE_LIVE_TRACE
+#include "src/core/SkStreamPriv.h"
+#include "src/sksl/tracing/SkSLDebugTraceImpl.h"
+#endif
 
 using ChildType = SkRuntimeEffect::ChildType;
 
@@ -229,29 +233,30 @@ const SkSL::RP::Program* SkRuntimeEffect::getRPProgram(SkSL::DebugTracePriv* deb
             compiler.runInliner(*fBaseProgram);
         }
 
-        SkSL::DebugTracePriv tempDebugTrace;
+        // Make sure this (if allocated) lives until past the end of `dump` below.
+        sk_sp<SkSL::DebugTracePriv> tempDebugTrace = nullptr;
         if (debugTrace) {
             const_cast<SkRuntimeEffect*>(this)->fRPProgram = MakeRasterPipelineProgram(
                     *fBaseProgram, fMain, debugTrace, /*writeTraceOps=*/true);
-        } else if (kRPEnableLiveTrace) {
-            debugTrace = &tempDebugTrace;
+        } else {
+#if SKRP_ENABLE_LIVE_TRACE
+            tempDebugTrace = SkSL::DebugTraceImpl::Make();
+            debugTrace = tempDebugTrace.get();
+#endif
             const_cast<SkRuntimeEffect*>(this)->fRPProgram = MakeRasterPipelineProgram(
                     *fBaseProgram, fMain, debugTrace, /*writeTraceOps=*/false);
-        } else {
-            const_cast<SkRuntimeEffect*>(this)->fRPProgram = MakeRasterPipelineProgram(
-                    *fBaseProgram, fMain, /*debugTrace=*/nullptr, /*writeTraceOps=*/false);
         }
 
-        if (kRPEnableLiveTrace) {
-            if (fRPProgram) {
-                SkDebugf("-----\n\n");
-                SkDebugfStream stream;
-                fRPProgram->dump(&stream, /*writeInstructionCount=*/true);
-                SkDebugf("\n-----\n\n");
-            } else {
-                SkDebugf("----- RP unsupported -----\n\n");
-            }
+#if SKRP_ENABLE_LIVE_TRACE
+        if (fRPProgram) {
+            SkDebugf("-----\n\n");
+            SkDebugfStream stream;
+            fRPProgram->dump(&stream, /*writeInstructionCount=*/true);
+            SkDebugf("\n-----\n\n");
+        } else {
+            SkDebugf("----- RP unsupported -----\n\n");
         }
+#endif
     });
 
     return fRPProgram.get();
@@ -897,19 +902,6 @@ sk_sp<SkBlender> SkRuntimeEffect::makeBlender(sk_sp<const SkData> uniforms,
         return nullptr;
     }
     return sk_make_sp<SkRuntimeBlender>(sk_ref_sp(this), std::move(uniforms), children);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-
-SkRuntimeEffect::TracedShader SkRuntimeEffect::MakeTraced(sk_sp<SkShader> shader,
-                                                          const SkIPoint& traceCoord) {
-    SkRuntimeEffect* effect = as_SB(shader)->asRuntimeEffect();
-    if (!effect) {
-        return TracedShader{nullptr, nullptr};
-    }
-    // An SkShader with an attached SkRuntimeEffect must be an SkRuntimeShader.
-    SkRuntimeShader* rtShader = static_cast<SkRuntimeShader*>(shader.get());
-    return rtShader->makeTracedClone(traceCoord);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

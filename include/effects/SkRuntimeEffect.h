@@ -14,7 +14,7 @@
 #include "include/core/SkFlattenable.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkRefCnt.h"
-#include "include/core/SkShader.h"
+#include "include/core/SkShader.h"  // IWYU pragma: keep
 #include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
@@ -23,7 +23,6 @@
 #include "include/private/base/SkTemplates.h"
 #include "include/private/base/SkTo.h"
 #include "include/private/base/SkTypeTraits.h"
-#include "include/sksl/SkSLDebugTrace.h"
 #include "include/sksl/SkSLVersion.h"
 
 #include <cstddef>
@@ -35,8 +34,6 @@
 #include <string_view>
 #include <utility>
 #include <vector>
-
-struct SkIPoint;
 
 namespace SkSL {
 class DebugTracePriv;
@@ -225,24 +222,6 @@ public:
     sk_sp<SkBlender> makeBlender(sk_sp<const SkData> uniforms,
                                  SkSpan<const ChildPtr> children = {}) const;
 
-    /**
-     * Creates a new Runtime Effect patterned after an already-existing one. The new shader behaves
-     * like the original, but also creates a debug trace of its execution at the requested
-     * coordinate. After painting with this shader, the associated DebugTrace object will contain a
-     * shader execution trace. Call `writeTrace` on the debug trace object to generate a full trace
-     * suitable for a debugger, or call `dump` to emit a human-readable trace.
-     *
-     * Debug traces are only supported on a raster (non-GPU) canvas.
-
-     * Debug traces are currently only supported on shaders. Color filter and blender tracing is a
-     * work-in-progress.
-     */
-    struct TracedShader {
-        sk_sp<SkShader> shader;
-        sk_sp<SkSL::DebugTrace> debugTrace;
-    };
-    static TracedShader MakeTraced(sk_sp<SkShader> shader, const SkIPoint& traceCoord);
-
     // Returns the SkSL source of the runtime effect shader.
     const std::string& source() const;
 
@@ -307,10 +286,11 @@ private:
 
     const SkSL::RP::Program* getRPProgram(SkSL::DebugTracePriv* debugTrace) const;
 
-    friend class GrSkSLFP;              // usesColorTransform
-    friend class SkRuntimeShader;       // fBaseProgram, fMain, fSampleUsages, getRPProgram()
-    friend class SkRuntimeBlender;      //
-    friend class SkRuntimeColorFilter;  //
+    friend class GrSkSLFP;                  // usesColorTransform
+    friend class SkRuntimeShader;           // fBaseProgram, fMain, fSampleUsages, getRPProgram()
+    friend class SkRuntimeBlender;          //
+    friend class SkRuntimeColorFilter;      //
+    friend class SkTracedRuntimeShaderPriv; // makeUnoptimizedClone
 
     friend class SkRuntimeEffectPriv;
 

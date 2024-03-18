@@ -16,7 +16,6 @@
 #include "include/private/base/SkAssert.h"
 #include "include/private/base/SkDebug.h"
 #include "include/private/base/SkTArray.h"
-#include "include/sksl/SkSLDebugTrace.h"
 #include "src/base/SkTLazy.h"
 #include "src/core/SkEffectPriv.h"
 #include "src/core/SkPicturePriv.h"
@@ -25,7 +24,6 @@
 #include "src/core/SkWriteBuffer.h"
 #include "src/shaders/SkShaderBase.h"
 #include "src/sksl/codegen/SkSLRasterPipelineBuilder.h"
-#include "src/sksl/tracing/SkSLDebugTracePriv.h"
 
 #include <cstdint>
 #include <optional>
@@ -39,7 +37,6 @@
 #endif
 
 class SkColorSpace;
-struct SkIPoint;
 
 SkRuntimeShader::SkRuntimeShader(sk_sp<SkRuntimeEffect> effect,
                                  sk_sp<SkSL::DebugTracePriv> debugTrace,
@@ -58,23 +55,6 @@ SkRuntimeShader::SkRuntimeShader(sk_sp<SkRuntimeEffect> effect,
         , fDebugTrace(std::move(debugTrace))
         , fUniformsCallback(std::move(uniformsCallback))
         , fChildren(children.begin(), children.end()) {}
-
-static sk_sp<SkSL::DebugTracePriv> make_debug_trace(SkRuntimeEffect* effect,
-                                                    const SkIPoint& coord) {
-    auto debugTrace = sk_make_sp<SkSL::DebugTracePriv>();
-    debugTrace->setSource(effect->source());
-    debugTrace->setTraceCoord(coord);
-    return debugTrace;
-}
-
-SkRuntimeEffect::TracedShader SkRuntimeShader::makeTracedClone(const SkIPoint& coord) {
-    sk_sp<SkRuntimeEffect> unoptimized = fEffect->makeUnoptimizedClone();
-    sk_sp<SkSL::DebugTracePriv> debugTrace = make_debug_trace(unoptimized.get(), coord);
-    auto debugShader = sk_make_sp<SkRuntimeShader>(
-            unoptimized, debugTrace, this->uniformData(nullptr), SkSpan(fChildren));
-
-    return SkRuntimeEffect::TracedShader{std::move(debugShader), std::move(debugTrace)};
-}
 
 bool SkRuntimeShader::appendStages(const SkStageRec& rec, const SkShaders::MatrixRec& mRec) const {
     if (!SkRuntimeEffectPriv::CanDraw(SkCapabilities::RasterBackend().get(), fEffect.get())) {

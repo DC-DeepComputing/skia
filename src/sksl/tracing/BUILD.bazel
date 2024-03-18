@@ -1,25 +1,33 @@
-load("//bazel:skia_rules.bzl", "exports_files_legacy", "skia_filegroup")
+load("//bazel:skia_rules.bzl", "exports_files_legacy", "skia_cc_library", "skia_filegroup")
 
 licenses(["notice"])
 
 exports_files_legacy()
 
-# In own group for exporting to sksl.gni:skia_sksl_tracing_sources.
 skia_filegroup(
-    name = "enabled_srcs",
-    srcs = select({
-        "//src/sksl:enable_sksl_tracing_true": ["SkSLDebugTracePlayer.cpp"],
-        "//src/sksl:enable_sksl_tracing_false": [],
-    }),
+    name = "tracing_srcs",
+    srcs = [
+        "SkSLDebugTraceImpl.cpp",
+        "SkSLDebugTracePlayer.cpp",
+        "SkTracedShader.cpp",
+    ],
 )
 
-# In own group for exporting to sksl.gni:skia_sksl_tracing_sources.
+# skslc does not need SkRuntimeEffects::MakeTraced, which requires many other deps
 skia_filegroup(
-    name = "enabled_hdrs",
-    srcs = select({
-        "//src/sksl:enable_sksl_tracing_true": ["SkSLDebugTracePlayer.h"],
-        "//src/sksl:enable_sksl_tracing_false": [],
-    }),
+    name = "tracing_skslc_srcs",
+    srcs = [
+        "SkSLDebugTraceImpl.cpp",
+        "SkSLDebugTracePlayer.cpp",
+    ],
+)
+
+skia_filegroup(
+    name = "tracing_hdrs",
+    srcs = [
+        "SkSLDebugTraceImpl.h",
+        "SkSLDebugTracePlayer.h",
+    ],
 )
 
 skia_filegroup(
@@ -27,8 +35,12 @@ skia_filegroup(
     srcs = [
         "SkSLDebugTracePriv.cpp",
         "SkSLTraceHook.cpp",
-        ":enabled_srcs",
-    ],
+    ] + select({
+        "//src/sksl:enable_sksl_tracing_true": [
+            ":tracing_srcs",
+        ],
+        "//src/sksl:enable_sksl_tracing_false": [],
+    }),
     visibility = ["//src/sksl:__pkg__"],
 )
 
@@ -47,9 +59,13 @@ skia_filegroup(
     name = "private_hdrs",
     srcs = [
         "SkSLDebugTracePriv.h",
-        ":enabled_hdrs",
         ":skopts_hdrs",
-    ],
+    ] + select({
+        "//src/sksl:enable_sksl_tracing_true": [
+            ":tracing_hdrs",
+        ],
+        "//src/sksl:enable_sksl_tracing_false": [],
+    }),
     visibility = ["//src/sksl:__pkg__"],
 )
 
@@ -77,4 +93,26 @@ skia_filegroup(
         "SkSLTraceHook.cpp",
     ],
     visibility = ["//src/sksl:__pkg__"],
+)
+
+skia_cc_library(
+    name = "tracing",
+    srcs = [
+        "SkSLDebugTraceImpl.cpp",
+        "SkSLDebugTracePlayer.cpp",
+        "SkTracedShader.cpp",
+    ],
+    hdrs = [
+        "SkSLDebugTraceImpl.h",
+        "SkSLDebugTracePlayer.h",
+        "//include/utils:tracing_hdrs",
+    ],
+    defines = ["SKSL_ENABLE_TRACING"],
+    visibility = ["//modules/canvaskit:__pkg__"],
+    deps = [
+        "//src/base",
+        "//src/core",
+        "//src/core:core_priv",
+        "//src/utils:json",
+    ],
 )

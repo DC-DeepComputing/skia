@@ -26,18 +26,20 @@
 
 #ifdef SKSL_ENABLE_TRACING
 
+#include "src/sksl/tracing/SkSLDebugTraceImpl.h"
+
 using namespace sk_app;
 using LineNumberMap = SkSL::SkSLDebugTracePlayer::LineNumberMap;
 
 SkSLDebuggerSlide::SkSLDebuggerSlide() {
     fName = "Debugger";
-    fTrace = sk_make_sp<SkSL::DebugTracePriv>();
+    fTrace = SkSL::DebugTraceImpl::Make();
 }
 
 void SkSLDebuggerSlide::load(SkScalar winWidth, SkScalar winHeight) {}
 
 void SkSLDebuggerSlide::unload() {
-    fTrace = sk_make_sp<SkSL::DebugTracePriv>();
+    fTrace = SkSL::DebugTraceImpl::Make();
     fPlayer.reset(nullptr);
     fPlayer.setBreakpoints(std::unordered_set<int>{});
 }
