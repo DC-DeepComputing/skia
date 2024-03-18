@@ -37,6 +37,10 @@
 #include <string>
 #include <string_view>
 
+#if defined(SKSL_ENABLE_TRACING)
+#include "include/utils/SkTracedRuntimeEffect.h"
+#endif
+
 #include "imgui.h"
 
 using namespace sk_app;
@@ -292,10 +296,11 @@ void SkSLSlide::draw(SkCanvas* canvas) {
 
     sk_sp<SkSL::DebugTrace> debugTrace;
     auto shader = fEffect->makeShader(std::move(inputs), fChildren.data(), fChildren.size());
+#ifdef SKSL_ENABLE_TRACING
     if (writeTrace || writeDump) {
         SkIPoint traceCoord = {fTraceCoord[0], fTraceCoord[1]};
-        SkRuntimeEffect::TracedShader traced = SkRuntimeEffect::MakeTraced(std::move(shader),
-                                                                           traceCoord);
+        SkRuntimeEffects::TracedShader traced = SkRuntimeEffects::MakeTraced(std::move(shader),
+                                                                             traceCoord);
         shader = std::move(traced.shader);
         debugTrace = std::move(traced.debugTrace);
 
@@ -309,6 +314,7 @@ void SkSLSlide::draw(SkCanvas* canvas) {
         canvas->clipRect(r, SkClipOp::kIntersect);
         canvas->setMatrix(canvasMatrix);
     }
+#endif
     SkPaint p;
     p.setColor4f(gPaintColor);
     p.setShader(std::move(shader));

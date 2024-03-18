@@ -850,25 +850,25 @@ trace_exit                     TraceExit(???) when $0 is true
 )");
         } else {
             // Test the output when we supply a populated DebugTrace.
-            SkSL::DebugTracePriv trace;
-            trace.fFuncInfo = {{"FunctionA"}, {"FunctionB"}, {"FunctionC"}, {"FunctionD"}};
+            sk_sp<SkSL::DebugTracePriv> trace = SkSL::DebugTracePriv::MakeNoOp();
+            trace->fFuncInfo = {{"FunctionA"}, {"FunctionB"}, {"FunctionC"}, {"FunctionD"}};
 
             SkSL::SlotDebugInfo slot;
             slot.name = "Var0";
-            trace.fSlotInfo.push_back(slot);
+            trace->fSlotInfo.push_back(slot);
             slot.name = "Var1";
-            trace.fSlotInfo.push_back(slot);
+            trace->fSlotInfo.push_back(slot);
             slot.name = "Var2";
-            trace.fSlotInfo.push_back(slot);
+            trace->fSlotInfo.push_back(slot);
             slot.name = "Var3";
-            trace.fSlotInfo.push_back(slot);
+            trace->fSlotInfo.push_back(slot);
             slot.name = "Var4";
-            trace.fSlotInfo.push_back(slot);
+            trace->fSlotInfo.push_back(slot);
 
             std::unique_ptr<SkSL::RP::Program> program = builder.finish(/*numValueSlots=*/20,
                                                                         /*numUniformSlots=*/0,
                                                                         /*numImmutableSlots=*/0,
-                                                                        &trace);
+                                                                        trace.get());
             check(r, *program,
 R"(copy_constant                  $0 = 0xFFFFFFFF
 trace_enter                    TraceEnter(FunctionC) when $0 is true

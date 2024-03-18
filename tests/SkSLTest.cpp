@@ -49,6 +49,7 @@
 #include "src/sksl/ir/SkSLType.h"
 #include "src/sksl/ir/SkSLVarDeclarations.h"
 #include "src/sksl/ir/SkSLVariable.h"
+
 #include "src/sksl/tracing/SkSLDebugTracePriv.h"
 #include "tests/CtsEnforcement.h"
 #include "tests/Test.h"
@@ -74,6 +75,10 @@
 #if defined(SK_DAWN)
 #include "src/gpu/graphite/dawn/DawnCaps.h"
 #endif
+#endif
+
+#if defined(SKSL_ENABLE_TRACING)
+#include "src/sksl/tracing/SkSLDebugTraceImpl.h"
 #endif
 
 using namespace skia_private;
@@ -856,11 +861,15 @@ static void test_raster_pipeline(skiatest::Reporter* r,
     // Compile our program.
     SkArenaAlloc alloc(/*firstHeapAllocation=*/1000);
     SkRasterPipeline pipeline(&alloc);
-    SkSL::DebugTracePriv debugTrace;
+#if defined(SKSL_ENABLE_TRACING)
+    sk_sp<SkSL::DebugTracePriv> debugTrace = SkSL::DebugTraceImpl::Make();
+#else
+    sk_sp<SkSL::DebugTracePriv> debugTrace = SkSL::DebugTracePriv::MakeNoOp();
+#endif
     std::unique_ptr<SkSL::RP::Program> rasterProg =
             SkSL::MakeRasterPipelineProgram(*program,
                                             *main->definition(),
-                                            &debugTrace);
+                                            debugTrace.get());
     if (!rasterProg) {
         report_rp_fail(r, testFile, flags, "code is not supported");
         return;
