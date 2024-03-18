@@ -393,7 +393,7 @@ sk_sp<PrecompileShader> PrecompileShaders::CoordClamp(SkSpan<const sk_sp<Precomp
 //--------------------------------------------------------------------------------------------------
 class PrecompileImageShader : public PrecompileShader {
 public:
-    PrecompileImageShader() {}
+        PrecompileImageShader() {}
 
 private:
     friend class PrecompilePictureShader;
@@ -582,13 +582,18 @@ sk_sp<PrecompileShader> PrecompileShaders::TwoPointConicalGradient() {
 //--------------------------------------------------------------------------------------------------
 class PrecompileLocalMatrixShader : public PrecompileShader {
 public:
-    PrecompileLocalMatrixShader(sk_sp<PrecompileShader> wrapped) : fWrapped(std::move(wrapped)) {}
+    PrecompileLocalMatrixShader(sk_sp<PrecompileShader> wrapped, bool selfElide)
+            : fWrapped(std::move(wrapped))
+            , fSelfElide(selfElide) {
+    }
 
 private:
+    inline static constexpr int kNumLocalMatrixCombinations = 2;
+
     bool isALocalMatrixShader() const override { return true; }
 
     int numChildCombinations() const override {
-        return fWrapped->numCombinations();
+        return (fSelfElide ? kNumLocalMatrixCombinations : 1) * fWrapped->numCombinations();
     }
 
     void addToKey(const KeyContext& keyContext,
@@ -597,20 +602,36 @@ private:
                   int desiredCombination) const override {
         SkASSERT(desiredCombination < fWrapped->numCombinations());
 
-        LocalMatrixShaderBlock::LMShaderData lmShaderData(SkMatrix::I());
+        int desiredLMCombination, desiredWrappedCombination;
+        if (fSelfElide) {
+            desiredLMCombination = desiredCombination % kNumLocalMatrixCombinations;
+            desiredWrappedCombination = desiredCombination / kNumLocalMatrixCombinations;
+        } else {
+            desiredLMCombination = 1;
+            desiredWrappedCombination = desiredCombination;
+        }
+        SkASSERT(desiredWrappedCombination < fWrapped->numCombinations());
 
-        LocalMatrixShaderBlock::BeginBlock(keyContext, builder, gatherer, lmShaderData);
+        if (desiredLMCombination) {
+            LocalMatrixShaderBlock::LMShaderData lmShaderData(SkMatrix::I());
+
+            LocalMatrixShaderBlock::BeginBlock(keyContext, builder, gatherer, lmShaderData);
+        }
 
             fWrapped->priv().addToKey(keyContext, builder, gatherer, desiredCombination);
 
-        builder->endBlock();
+        if (desiredLMCombination) {
+            builder->endBlock();
+        }
     }
 
     sk_sp<PrecompileShader> fWrapped;
+    bool                    fSelfElide;
 };
 
-sk_sp<PrecompileShader> PrecompileShaders::LocalMatrix(sk_sp<PrecompileShader> wrapped) {
-    return sk_make_sp<PrecompileLocalMatrixShader>(std::move(wrapped));
+sk_sp<PrecompileShader> PrecompileShaders::LocalMatrix1(sk_sp<PrecompileShader> wrapped,
+                                                       bool selfElide) {
+    return sk_make_sp<PrecompileLocalMatrixShader>(std::move(wrapped), selfElide);
 }
 
 //--------------------------------------------------------------------------------------------------
