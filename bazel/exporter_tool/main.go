@@ -184,8 +184,13 @@ var gniExportDescs = []exporter.GNIExportDesc{
 			}},
 		{Var: "skia_sksl_tracing_sources",
 			Rules: []string{
-				"//src/sksl/tracing:enabled_hdrs",
-				"//src/sksl/tracing:enabled_srcs",
+				"//src/sksl/tracing:tracing_srcs",
+				"//src/sksl/tracing:tracing_hdrs",
+			}},
+		{Var: "skia_skslc_tracing_sources",
+			Rules: []string{
+				"//src/sksl/tracing:tracing_skslc_srcs",
+				"//src/sksl/tracing:tracing_hdrs",
 			}},
 		{Var: "skia_sksl_gpu_sources",
 			Rules: []string{
