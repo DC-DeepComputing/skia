@@ -144,7 +144,7 @@ struct LocalMatrixShaderBlock {
         const SkM44 fLocalMatrix;
     };
 
-    static void BeginBlock(const KeyContext&,
+    static void BeginBlock77(const KeyContext&,
                            PaintParamsKeyBuilder*,
                            PipelineDataGatherer*,
                            const LMShaderData&);
