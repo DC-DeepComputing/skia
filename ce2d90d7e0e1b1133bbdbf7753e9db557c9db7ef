@@ -147,6 +147,24 @@
       "parentUuid": "07092279_2696643a",
       "revId": "ce2d90d7e0e1b1133bbdbf7753e9db557c9db7ef",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0643b8d5_8d714ba9",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 744,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-03-18T12:04:04Z",
+      "side": 1,
+      "message": "The reason I changed this was that the original implementation did not pass `TypefaceTest`, and I suspected an issue with the floating point + rounding \u003d\u003e int conversion. This would need to be addressed in any event.",
+      "parentUuid": "3aa6a191_a3e74084",
+      "revId": "ce2d90d7e0e1b1133bbdbf7753e9db557c9db7ef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
