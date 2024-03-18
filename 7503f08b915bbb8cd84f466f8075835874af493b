@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06462ca3_62ecef23",
+        "filename": "include/utils/SkTracedRuntimeEffect.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-18T18:32:05Z",
+      "side": 1,
+      "message": "I get how this is kind of playing off of `SkShaders::` or `SkColorFilters::` but I don\u0027t think it really works here. We aren\u0027t going to have a lot of Runtime Effect make functions that live in this namespace.\n\nWDYT about `SkShaders::MakeTracedRuntimeShader` returning a (top level) `SkTracedRuntimeShader`? (Unlike classes, you can split a namespace up across many headers with no consequence.)",
+      "range": {
+        "startLine": 18,
+        "startChar": 10,
+        "endLine": 18,
+        "endChar": 26
+      },
+      "revId": "7503f08b915bbb8cd84f466f8075835874af493b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20f85f9f_376ef04d",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-18T18:32:05Z",
+      "side": 1,
+      "message": "`SKRP_ENABLE_LIVE_TRACE`",
+      "range": {
+        "startLine": 69,
+        "startChar": 8,
+        "endLine": 69,
+        "endChar": 12
+      },
+      "revId": "7503f08b915bbb8cd84f466f8075835874af493b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2011f72a_24539e9c",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-18T18:32:05Z",
+      "side": 1,
+      "message": "\"until past the end of `dump` below.\"\n\nSorry, I can\u0027t figure out how to escape backticks properly, but \"dump\" should be in backticks, and it should be \"past\" not \"pass\".",
+      "range": {
+        "startLine": 236,
+        "startChar": 47,
+        "endLine": 236,
+        "endChar": 79
+      },
+      "revId": "7503f08b915bbb8cd84f466f8075835874af493b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04eda2c4_50372a7c",
+        "filename": "src/sksl/tracing/SkSLDebugTracePriv.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-18T18:32:05Z",
+      "side": 1,
+      "message": "We covered this briefly in our meeting but the class hierarchy needs to be cleaned up here.\n\nWe started with a two-tier hierarchy: `DebugTrace` is meant to be our abstract base class, and `DebugTracePriv` was designed to be the implementation of that base.\n\nThis CL puts additional virtual methods in `DebugTracePriv` and moves the implementations to a new _third_ class, `DebugTraceImpl`. That\u0027s unnecessarily complex.\n\nSince `DebugTrace` was designed to be a pure abstract base, let\u0027s move all the virtual methods into `DebugTrace` and mark them as `\u003d 0` pure methods.\n\nWe now need two implementations of `DebugTrace`, one which is real and one which is a no-op stub.\n\n`DebugTracePriv` was designed to be the implementation class, so let\u0027s keep the implementation in there; all your changes can go away except some methods will now be marked `override`.\n\nThen, create a new `DebugTraceStub` class which implements a no-op version of `DebugTrace`.\n\nThen we will once again have an abstract base class, but now with two concrete implementations instead of one.",
+      "range": {
+        "startLine": 68,
+        "startChar": 0,
+        "endLine": 68,
+        "endChar": 56
+      },
+      "revId": "7503f08b915bbb8cd84f466f8075835874af493b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d26f911a_25add34d",
+        "filename": "src/sksl/tracing/SkSLDebugTracePriv.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-18T18:32:05Z",
+      "side": 1,
+      "message": "`MakeStub`? And add a doc comment.",
+      "range": {
+        "startLine": 114,
+        "startChar": 33,
+        "endLine": 114,
+        "endChar": 41
+      },
+      "revId": "7503f08b915bbb8cd84f466f8075835874af493b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
