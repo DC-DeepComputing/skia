@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6fdbaf0c_860e39d7",
+        "filename": "src/gpu/ganesh/GrGpu.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 783,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-03-18T18:09:41Z",
+      "side": 1,
+      "message": "Why are you giving preference to defining this in the cpp file rather than the header? I suppose I could see how that could be a compiler optimization, but for blank methods, I personally prefer (and see within graphite often) them defined in the .h file so it\u0027s immediately clear looking at the methods that one or multiple of them are no-ops. So if the performance is more or less \"the same\", I actually prefer it how it was before. WDYT?",
+      "range": {
+        "startLine": 782,
+        "startChar": 0,
+        "endLine": 783,
+        "endChar": 56
+      },
+      "revId": "02093a12d2054635c306404fe09e005f179478ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54c43c24_f6950bc9",
+        "filename": "src/gpu/ganesh/GrMeshDrawTarget.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-03-18T18:09:41Z",
+      "side": 1,
+      "message": "Is having 2 spaces b/w the `}` and`//` intentional?",
+      "range": {
+        "startLine": 43,
+        "startChar": 1,
+        "endLine": 43,
+        "endChar": 3
+      },
+      "revId": "02093a12d2054635c306404fe09e005f179478ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
