@@ -95,6 +95,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6b00d4ed_3fbf776a",
+        "filename": "src/sksl/tracing/SkSLDebugTracePriv.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-03-18T19:34:53Z",
+      "side": 1,
+      "message": "Unfortunately, that won\u0027t quite work because SkSLDebugTracePlayer.cpp, SkSLRasterPipelineCodeGenerator.cpp, and SkSLRasterPipelineBuilder.cpp directly use the *public* fields of this `DebugTracePriv`. So this design more closely \n\nShould I add more methods to remove those direct uses? Do we really want to push all these methods up to `DebugTrace` (in the public API)?\n\nI personally think we should follow the pattern used by `SkImage` -\u003e `SkImage_Base` -\u003e `SkImage_Raster` where we can hide implementation details and some default implementations in the middle class and then have more specific/complicated behavior in the bottom class.",
+      "parentUuid": "04eda2c4_50372a7c",
+      "range": {
+        "startLine": 68,
+        "startChar": 0,
+        "endLine": 68,
+        "endChar": 56
+      },
+      "revId": "7503f08b915bbb8cd84f466f8075835874af493b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d26f911a_25add34d",
         "filename": "src/sksl/tracing/SkSLDebugTracePriv.h",
         "patchSetId": 10
