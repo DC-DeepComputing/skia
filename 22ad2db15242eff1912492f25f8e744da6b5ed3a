@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "42cca714_a53c3cc6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-18T14:36:39Z",
+      "side": 1,
+      "message": "Based on discussion with Kevin, we\u0027ll take another crack at this which will preserve the existing API behavior (`SkRuntimeShader::MakeTraced` should continue to work as documented: https://api.skia.org/structSkRuntimeEffect_1_1TracedShader.html)",
+      "revId": "22ad2db15242eff1912492f25f8e744da6b5ed3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
