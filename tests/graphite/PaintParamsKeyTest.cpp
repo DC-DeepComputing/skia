@@ -54,7 +54,7 @@
 #include "tools/graphite/UniqueKeyUtils.h"
 
 // Set this to 1 for more expansive (aka far slower) local testing
-#define EXPANDED_SET 0
+#define EXPANDED_SET 1
 
 // This flag is set to true if during the PaintOption creation an SkPictureShader is created.
 // The SkPictureShader will need an additional program in order to draw the contents of its
