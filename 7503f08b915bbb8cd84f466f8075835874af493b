@@ -215,6 +215,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a6f63e23_72555bce",
+        "filename": "src/sksl/tracing/SkSLDebugTracePriv.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-03-19T15:21:52Z",
+      "side": 1,
+      "message": "1) Yes, I can make that diagram happen.\n\n\u003e Why can\u0027t we just have MakeDebugTrace return null if tracing is disabled?\n\nWouldn\u0027t that involve an #ifdef? That\u0027s the whole point of this CL - remove the function behaving in two different ways depending on how it\u0027s compiled.\n\n2) Sure, I can do that.",
+      "parentUuid": "b0829934_6fd0bb8d",
+      "range": {
+        "startLine": 68,
+        "startChar": 0,
+        "endLine": 68,
+        "endChar": 56
+      },
+      "revId": "7503f08b915bbb8cd84f466f8075835874af493b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d26f911a_25add34d",
         "filename": "src/sksl/tracing/SkSLDebugTracePriv.h",
         "patchSetId": 10
