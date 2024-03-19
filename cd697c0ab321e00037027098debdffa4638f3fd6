@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e2217baa_ab6c980b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-03-19T09:56:07Z",
+      "side": 1,
+      "message": "CC @cbrokaw@google.com - FYI, I am doing this here with a longer set of  tag,value combination arguments to the filter() function, which I think is fine. This make the filter() function versatile and useful for the case where you want a sparse output that leaves out default values. I considered whether we need to change the filter() function, but I don\u0027t think so.",
+      "revId": "cd697c0ab321e00037027098debdffa4638f3fd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
