@@ -16,6 +16,46 @@
       "message": "Adding Brain to get multiple eye evaluating this API change.",
       "revId": "8bf25894af51f2c7f29070d95c53dbe50e6e9a0d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20961700_d3562f6e",
+        "filename": "include/private/SkPathRef.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 412,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-03-19T15:05:42Z",
+      "side": 1,
+      "message": "It\u0027s pre-existing code, but Skia\u0027s coding standard requires single-statement blocks to be braced.",
+      "range": {
+        "startLine": 407,
+        "startChar": 0,
+        "endLine": 412,
+        "endChar": 75
+      },
+      "revId": "8bf25894af51f2c7f29070d95c53dbe50e6e9a0d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e736672c_96e68bb7",
+        "filename": "include/private/SkPathRef.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 444,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-03-19T15:05:42Z",
+      "side": 1,
+      "message": "Shouldn\u0027t this be:\n```\nfConicWeights.reserve_exact(conicCount + reserveConics);\nfConicWeights.resize_back(conicCount);\n```",
+      "revId": "8bf25894af51f2c7f29070d95c53dbe50e6e9a0d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
