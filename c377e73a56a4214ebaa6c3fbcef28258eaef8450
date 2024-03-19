@@ -57,6 +57,121 @@
       },
       "revId": "c377e73a56a4214ebaa6c3fbcef28258eaef8450",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ac74860_d8687f6e",
+        "filename": "src/base/SkVx.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 568,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-19T19:12:57Z",
+      "side": 1,
+      "message": "How does codegen compare to `(retv[0] | retv[4]) !\u003d 0b0000`?",
+      "range": {
+        "startLine": 568,
+        "startChar": 15,
+        "endLine": 568,
+        "endChar": 58
+      },
+      "revId": "c377e73a56a4214ebaa6c3fbcef28258eaef8450",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c9160123_5a839f8f",
+        "filename": "src/base/SkVx.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 574,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-19T19:12:57Z",
+      "side": 1,
+      "message": "nit: Shouldn\u0027t this be indented further, under `__lsx_vldi`?",
+      "range": {
+        "startLine": 574,
+        "startChar": 44,
+        "endLine": 574,
+        "endChar": 67
+      },
+      "revId": "c377e73a56a4214ebaa6c3fbcef28258eaef8450",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0dfda36_a8934198",
+        "filename": "src/base/SkVx.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 611,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-19T19:12:57Z",
+      "side": 1,
+      "message": "How does codegen compare to `(retv[0] \u0026 retv[4]) \u003d\u003d 0b1111`?",
+      "range": {
+        "startLine": 611,
+        "startChar": 8,
+        "endLine": 611,
+        "endChar": 58
+      },
+      "revId": "c377e73a56a4214ebaa6c3fbcef28258eaef8450",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "10094cd4_8d28c5ac",
+        "filename": "src/base/SkVx.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 617,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-19T19:12:57Z",
+      "side": 1,
+      "message": "nit: Indentation?",
+      "range": {
+        "startLine": 617,
+        "startChar": 44,
+        "endLine": 617,
+        "endChar": 55
+      },
+      "revId": "c377e73a56a4214ebaa6c3fbcef28258eaef8450",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ab9c0d6_d89bc720",
+        "filename": "src/base/SkVx.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 835,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-19T19:12:57Z",
+      "side": 1,
+      "message": "nit: Lines cannot be \u003e 100char",
+      "range": {
+        "startLine": 835,
+        "startChar": 95,
+        "endLine": 835,
+        "endChar": 111
+      },
+      "revId": "c377e73a56a4214ebaa6c3fbcef28258eaef8450",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
