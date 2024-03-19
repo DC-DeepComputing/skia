@@ -172,6 +172,29 @@
       },
       "revId": "c377e73a56a4214ebaa6c3fbcef28258eaef8450",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4b23b70_f4efea21",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 6365,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-19T19:22:26Z",
+      "side": 1,
+      "message": "nit: `\u003c\u003d 8` (missing space)",
+      "range": {
+        "startLine": 6365,
+        "startChar": 21,
+        "endLine": 6365,
+        "endChar": 24
+      },
+      "revId": "c377e73a56a4214ebaa6c3fbcef28258eaef8450",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

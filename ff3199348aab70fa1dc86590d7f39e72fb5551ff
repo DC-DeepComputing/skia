@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fee9ad26_609ef4e4",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 5918,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-19T19:22:26Z",
+      "side": 0,
+      "message": "nit: undo",
+      "revId": "ff3199348aab70fa1dc86590d7f39e72fb5551ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f90c3096_77e30004",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 5935,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-19T19:22:26Z",
+      "side": 0,
+      "message": "nit: undo",
+      "revId": "ff3199348aab70fa1dc86590d7f39e72fb5551ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
