@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa67fba8_427a350d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-03-19T18:41:33Z",
+      "side": 1,
+      "message": "Thank you for the formatting fixes. I think we can land this, according to the general Chromium policy for external architecture-specific contributions. We do need a second reviewer for external contributions, so I\u0027m adding Herb.\n\nAs with other chromium projects, we don\u0027t make any promises about maintenance of this code - it may break at some point. I do want to add a compile job, when we have time, to ensure the code stays healthy. Our infrastructure team is very busy right now, so it might not happen immediately.\n\nOne question: Does the loongarch backend have problems with no-lax-vector-conversion, or is it just that you didn\u0027t write the code to do the necessary casts? (I know that we enforced that flag after you started writing this CL).",
+      "revId": "c377e73a56a4214ebaa6c3fbcef28258eaef8450",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
