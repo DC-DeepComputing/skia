@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "62a9fe94_54c4847d",
+        "filename": "include/core/SkImage.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 945,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-03-19T18:33:24Z",
+      "side": 1,
+      "message": "This seems fine to me, but you might want to have another OWNER look at this, as I\u0027m not one.",
+      "range": {
+        "startLine": 945,
+        "startChar": 23,
+        "endLine": 945,
+        "endChar": 28
+      },
+      "revId": "f0e2862f47a2a01c80df317e6d50844e8ae2bad6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2b7a56a1_c012a4c7",
+        "filename": "src/gpu/graphite/FactoryFunctions.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 403,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-03-19T18:33:24Z",
+      "side": 1,
+      "message": "So the two combinations are identity and non-identity? Might be helpful to make that clearer in the comment.",
+      "range": {
+        "startLine": 403,
+        "startChar": 62,
+        "endLine": 403,
+        "endChar": 63
+      },
+      "revId": "f0e2862f47a2a01c80df317e6d50844e8ae2bad6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "107d60b2_175b2d2c",
+        "filename": "src/gpu/graphite/FactoryFunctions.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 423,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-03-19T18:33:24Z",
+      "side": 1,
+      "message": "Elide these two lines?",
+      "range": {
+        "startLine": 420,
+        "startChar": 1,
+        "endLine": 423,
+        "endChar": 1
+      },
+      "revId": "f0e2862f47a2a01c80df317e6d50844e8ae2bad6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e5da062_bcded59a",
+        "filename": "src/gpu/graphite/FactoryFunctions.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-03-19T18:33:24Z",
+      "side": 1,
+      "message": "Nit: created",
+      "revId": "f0e2862f47a2a01c80df317e6d50844e8ae2bad6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
