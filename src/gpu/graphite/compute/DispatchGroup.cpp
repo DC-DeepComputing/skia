@@ -72,6 +72,13 @@ void DispatchGroup::addResourceRefs(CommandBuffer* commandBuffer) const {
     }
 }
 
+void DispatchGroup::moveClears(skia_private::TArray<ClearBufferInfo>& target) {
+    if (!fClearList.empty()) {
+        target.push_back_n(fClearList.size(), &fClearList.front());
+        fClearList.clear();
+    }
+}
+
 const Texture* DispatchGroup::getTexture(size_t index) const {
     SkASSERT(index < SkToSizeT(fTextures.size()));
     SkASSERT(fTextures[index]);
@@ -233,12 +240,15 @@ bool Builder::appendStepInternal(
     return true;
 }
 
-void Builder::assignSharedBuffer(BufferView buffer, unsigned int slot) {
+void Builder::assignSharedBuffer(BufferView buffer, unsigned int slot, ClearBuffer cleared) {
     SkASSERT(fObj);
     SkASSERT(buffer.fInfo);
     SkASSERT(buffer.fSize);
 
     fOutputTable.fSharedSlots[slot] = buffer;
+    if (cleared == ClearBuffer::kYes) {
+        fObj->fClearList.push_back({buffer.fInfo.fBuffer, buffer.fInfo.fOffset, buffer.fSize});
+    }
 }
 
 void Builder::assignSharedTexture(sk_sp<TextureProxy> texture, unsigned int slot) {
@@ -253,6 +263,11 @@ std::unique_ptr<DispatchGroup> Builder::finalize() {
     auto obj = std::move(fObj);
     fOutputTable.reset();
     return obj;
+}
+
+void Builder::reset() {
+    fOutputTable.reset();
+    fObj.reset(new DispatchGroup);
 }
 
 BindBufferInfo Builder::getSharedBufferResource(unsigned int slot) const {
@@ -281,6 +296,7 @@ DispatchResourceOptional Builder::allocateResource(const ComputeStep* step,
                                                    const ComputeStep::ResourceDesc& resource,
                                                    int resourceIdx) {
     SkASSERT(step);
+    SkASSERT(fObj);
     using Type = ComputeStep::ResourceType;
     using ResourcePolicy = ComputeStep::ResourcePolicy;
 
