@@ -16,6 +16,46 @@
       "message": "Fixed all the line lengths to appease the gardener.",
       "revId": "663697b539d0a43c55a7b6f0ef2a90e779b4e454",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7f6e492_b33aae13",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-03-19T15:20:44Z",
+      "side": 1,
+      "message": "LGTM with typo addressed. Thank you very much for jumping in and updating the baselines. I\u0027ll make sure to add the Fontations bots in upcoming changes.",
+      "revId": "663697b539d0a43c55a7b6f0ef2a90e779b4e454",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "747491aa_14e394b5",
+        "filename": "tests/FontationsTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-03-19T15:20:44Z",
+      "side": 1,
+      "message": "Nit: Typo.",
+      "range": {
+        "startLine": 229,
+        "startChar": 21,
+        "endLine": 229,
+        "endChar": 43
+      },
+      "revId": "663697b539d0a43c55a7b6f0ef2a90e779b4e454",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
