@@ -34,6 +34,29 @@
       "parentUuid": "fa67fba8_427a350d",
       "revId": "c377e73a56a4214ebaa6c3fbcef28258eaef8450",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2fa26e70_84723cb0",
+        "filename": "include/private/base/SkFeatures.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-19T18:56:09Z",
+      "side": 1,
+      "message": "These should be in a separate section; this section is for SSE/AVX.\n```suggestion\n\n/**\n *  SK_CPU_LSX_LEVEL\n *\n *  If defined, SK_CPU_LSX_LEVEL should be set to the highest supported level.\n *  On non-loongarch CPU this should be undefined.\n */\n#define SK_CPU_LSX_LEVEL_LSX      70\n#define SK_CPU_LSX_LEVEL_LASX     80\n\n```",
+      "range": {
+        "startLine": 87,
+        "startChar": 0,
+        "endLine": 89,
+        "endChar": 0
+      },
+      "revId": "c377e73a56a4214ebaa6c3fbcef28258eaef8450",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
