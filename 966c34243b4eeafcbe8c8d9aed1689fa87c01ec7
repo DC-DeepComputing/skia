@@ -1,0 +1,188 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45a9368f_3a780b4b",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-03-19T14:27:02Z",
+      "side": 1,
+      "message": "Is there ever a planned case where `fMgr` would be null?",
+      "range": {
+        "startLine": 107,
+        "startChar": 8,
+        "endLine": 107,
+        "endChar": 12
+      },
+      "revId": "966c34243b4eeafcbe8c8d9aed1689fa87c01ec7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ceaad6ad_918f312e",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-03-19T14:27:02Z",
+      "side": 1,
+      "message": "We could add an `explicit bool operator()` too",
+      "range": {
+        "startLine": 52,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 63
+      },
+      "revId": "966c34243b4eeafcbe8c8d9aed1689fa87c01ec7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "55a50520_aa7eb749",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-03-19T14:27:02Z",
+      "side": 1,
+      "message": "With textures, our naming conventions have historically kept \"size\" for the logical dimensions and \"backingStoreX\" for the actual underlying resource size.",
+      "range": {
+        "startLine": 58,
+        "startChar": 0,
+        "endLine": 58,
+        "endChar": 55
+      },
+      "revId": "966c34243b4eeafcbe8c8d9aed1689fa87c01ec7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98f776e4_286cae62",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-03-19T14:27:02Z",
+      "side": 1,
+      "message": "nit: requiredBytes",
+      "range": {
+        "startLine": 62,
+        "startChar": 38,
+        "endLine": 62,
+        "endChar": 52
+      },
+      "revId": "966c34243b4eeafcbe8c8d9aed1689fa87c01ec7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cba7c73b_e3779e9a",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-03-19T14:27:02Z",
+      "side": 1,
+      "message": "This function should probably take a required alignment as well for its initial offset.\n\nEdit: it looks like for now, the alignment is set for the whole ScratchBuffer, which seems reasonable when the buffer usage type determines the alignment. Once we generalize this and use it with uniform data, the alignment will need to change per suballocation.",
+      "range": {
+        "startLine": 62,
+        "startChar": 19,
+        "endLine": 62,
+        "endChar": 30
+      },
+      "revId": "966c34243b4eeafcbe8c8d9aed1689fa87c01ec7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7604e0fc_3bd3b1ab",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-03-19T14:27:02Z",
+      "side": 1,
+      "message": "nit: I\u0027d have the first 3 args moved up with the `(` and then chop down for the buffer and DBM.\n```suggestion\n    ScratchBuffer(size_t logicalSize, int index, size_t alignment,\n                  sk_sp\u003cBuffer\u003e buffer, DrawBufferManager* mgr);\n```",
+      "range": {
+        "startLine": 71,
+        "startChar": 0,
+        "endLine": 71,
+        "endChar": 96
+      },
+      "revId": "966c34243b4eeafcbe8c8d9aed1689fa87c01ec7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4ad4380_aa409bd1",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-03-19T14:27:02Z",
+      "side": 1,
+      "message": "It wasn\u0027t immediately clear to me what this was referring to the BufferInfo., and we only need it to invoke `returnToPool()` on the DBM, which is also the only place that `fMgr` is used.\n\nCan we consolidate `fInfoIndex` and `fMgr` into just holding a pointer to the `BufferInfo`?",
+      "range": {
+        "startLine": 74,
+        "startChar": 0,
+        "endLine": 74,
+        "endChar": 23
+      },
+      "revId": "966c34243b4eeafcbe8c8d9aed1689fa87c01ec7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a92ff364_b9ef7167",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-03-19T14:27:02Z",
+      "side": 1,
+      "message": "Maybe name it `fReusableScratchBuffers`?\n```suggestion\n        skia_private::TArray\u003csk_sp\u003cBuffer\u003e\u003e fReusableScratchBuffers;\n```",
+      "range": {
+        "startLine": 156,
+        "startChar": 44,
+        "endLine": 156,
+        "endChar": 54
+      },
+      "revId": "966c34243b4eeafcbe8c8d9aed1689fa87c01ec7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
