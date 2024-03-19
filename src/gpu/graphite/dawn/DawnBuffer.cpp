@@ -206,14 +206,29 @@ void DawnBuffer::onMap() {
              (fBuffer.GetUsage() & wgpu::BufferUsage::MapWrite));
     bool isWrite = fBuffer.GetUsage() & wgpu::BufferUsage::MapWrite;
 
-    // Use wgpu::Future and wait with timeout=0 to trigger callback immediately.
+    // Use wgpu::Future and WaitAny with timeout=0 to trigger callback immediately.
     // The buffer must already be free of any GPU use at this point.
+
+    // TODO(https://crbug.com/dawn/2469): We still need DawnAsyncWait in case WaitAny fails.
+    // That failure could happen if the command buffer that Dawn "thinks" is using
+    // the buffer failed to be submitted due to some unrelated errors (e.g reference
+    // an error texture, etc).
+    struct MapContext {
+        MapContext(DawnBuffer* buffer, const DawnSharedContext* sharedContext)
+                : fBuffer(buffer), fAsyncWait(sharedContext) {}
+        DawnBuffer* fBuffer;
+        DawnAsyncWait fAsyncWait;
+    };
+
+    MapContext mapContext(this, this->dawnSharedContext());
+
     wgpu::BufferMapCallbackInfo callbackInfo{};
     callbackInfo.mode = wgpu::CallbackMode::AllowSpontaneous;
-    callbackInfo.userdata = this;
+    callbackInfo.userdata = &mapContext;
     callbackInfo.callback = [](WGPUBufferMapAsyncStatus s, void* userData) {
-        auto buffer = static_cast<DawnBuffer*>(userData);
-        buffer->mapCallback(s);
+        auto mapCtx = static_cast<MapContext*>(userData);
+        mapCtx->fBuffer->mapCallback(s);
+        mapCtx->fAsyncWait.signal();
     };
 
     wgpu::FutureWaitInfo mapWaitInfo{};
@@ -227,8 +242,16 @@ void DawnBuffer::onMap() {
     [[maybe_unused]] auto status =
             device.GetAdapter().GetInstance().WaitAny(1, &mapWaitInfo, /*timeoutNS=*/0);
 
-    SkASSERT(status == wgpu::WaitStatus::Success);
-    SkASSERT(mapWaitInfo.completed);
+    if (status == wgpu::WaitStatus::Success) {
+        SkASSERT(mapWaitInfo.completed);
+    } else {
+        // WaitAny(timeout=0) might fail if Dawn thinks the buffer is being used by a command
+        // buffer. But that buffer was partially encoded and failed to be submitted.
+        // In that case, retry with a busy wait.
+        // TODO(https://crbug.com/dawn/2469): remove this once we fix this in Dawn or having
+        // a suggested fix from Dawn.
+        mapContext.fAsyncWait.busyWait();
+    }
 #endif  // defined(__EMSCRIPTEN__)
 }
 
