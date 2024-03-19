@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5a8d2c5_a615056f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-03-19T23:15:13Z",
+      "side": 1,
+      "message": "I haven\u0027t pushed the next PS yet (so what I marked as Done will really be done when I send it). Awaiting your feedback on returning `ScratchBuffer` by value vs `std::unique_ptr\u003cScratchBuffer\u003e`.",
+      "revId": "966c34243b4eeafcbe8c8d9aed1689fa87c01ec7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "45a9368f_3a780b4b",
@@ -14,6 +31,30 @@
       "writtenOn": "2024-03-19T14:27:02Z",
       "side": 1,
       "message": "Is there ever a planned case where `fMgr` would be null?",
+      "range": {
+        "startLine": 107,
+        "startChar": 8,
+        "endLine": 107,
+        "endChar": 12
+      },
+      "revId": "966c34243b4eeafcbe8c8d9aed1689fa87c01ec7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cb2d9db5_60832fd1",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-03-19T23:15:13Z",
+      "side": 1,
+      "message": "The only case this is guarding against is default construction, in which the ScratchBuffer starts out as invalid and has a null `fMgr`. While ScratchBuffers will generally be created by calling `DrawBufferManager::getScratchStorage` etc, supporting default construction is useful in some situations (such as declaring the variable outside the scope that initializes it, storing ScratchBuffers in collections, etc).\n\nI added some wording around this to the header.",
+      "parentUuid": "45a9368f_3a780b4b",
       "range": {
         "startLine": 107,
         "startChar": 8,
@@ -47,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "97a5dc82_25a129cf",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-03-19T23:15:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ceaad6ad_918f312e",
+      "range": {
+        "startLine": 52,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 63
+      },
+      "revId": "966c34243b4eeafcbe8c8d9aed1689fa87c01ec7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "55a50520_aa7eb749",
@@ -60,6 +125,30 @@
       "writtenOn": "2024-03-19T14:27:02Z",
       "side": 1,
       "message": "With textures, our naming conventions have historically kept \"size\" for the logical dimensions and \"backingStoreX\" for the actual underlying resource size.",
+      "range": {
+        "startLine": 58,
+        "startChar": 0,
+        "endLine": 58,
+        "endChar": 55
+      },
+      "revId": "966c34243b4eeafcbe8c8d9aed1689fa87c01ec7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa112d3d_670e83db",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-03-19T23:15:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "55a50520_aa7eb749",
       "range": {
         "startLine": 58,
         "startChar": 0,
@@ -116,6 +205,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d37ecd85_4a222bc5",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-03-19T23:15:13Z",
+      "side": 1,
+      "message": "I added a TODO for now. I like the idea of generalizing this to accept any alignment.",
+      "parentUuid": "cba7c73b_e3779e9a",
+      "range": {
+        "startLine": 62,
+        "startChar": 19,
+        "endLine": 62,
+        "endChar": 30
+      },
+      "revId": "966c34243b4eeafcbe8c8d9aed1689fa87c01ec7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff22c593_b207c9af",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-03-19T23:15:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "98f776e4_286cae62",
+      "range": {
+        "startLine": 62,
+        "startChar": 38,
+        "endLine": 62,
+        "endChar": 52
+      },
+      "revId": "966c34243b4eeafcbe8c8d9aed1689fa87c01ec7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7604e0fc_3bd3b1ab",
@@ -129,6 +266,30 @@
       "writtenOn": "2024-03-19T14:27:02Z",
       "side": 1,
       "message": "nit: I\u0027d have the first 3 args moved up with the `(` and then chop down for the buffer and DBM.\n```suggestion\n    ScratchBuffer(size_t logicalSize, int index, size_t alignment,\n                  sk_sp\u003cBuffer\u003e buffer, DrawBufferManager* mgr);\n```",
+      "range": {
+        "startLine": 71,
+        "startChar": 0,
+        "endLine": 71,
+        "endChar": 96
+      },
+      "revId": "966c34243b4eeafcbe8c8d9aed1689fa87c01ec7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "48660037_50c74ea0",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-03-19T23:15:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7604e0fc_3bd3b1ab",
       "range": {
         "startLine": 71,
         "startChar": 0,
@@ -164,6 +325,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "76cc9065_9c2030ac",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-03-19T23:15:13Z",
+      "side": 1,
+      "message": "That make sense. I imagine this will change back to a pointer to the DBM once we decouple the reuse pool from the BufferInfo, though I like your suggestions as an intermediate state.\n\n---\nP.S.: I was halfway through implementing this but then the mutual dependency between DrawBufferManager and ScratchBuffer got in the way: `DrawBufferManager::getScratchBuffer` returns a `ScratchBuffer` by value so `ScratchBuffer` needs to be declared before DBM. `DrawBufferManager::BufferInfo` is a nested class so it can\u0027t be forward declared.\n\nI could change `getScratchBuffer` to return a `std::unique_ptr\u003cScratchBuffer\u003e` which would resolve the issue but I wanted to avoid the heap allocation as I intended `ScratchBuffer` to be a mostly lightweight move-only type and ScratchBuffers will be allocated frequently.",
+      "parentUuid": "c4ad4380_aa409bd1",
+      "range": {
+        "startLine": 74,
+        "startChar": 0,
+        "endLine": 74,
+        "endChar": 23
+      },
+      "revId": "966c34243b4eeafcbe8c8d9aed1689fa87c01ec7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a92ff364_b9ef7167",
         "filename": "src/gpu/graphite/BufferManager.h",
         "patchSetId": 1
@@ -175,6 +360,30 @@
       "writtenOn": "2024-03-19T14:27:02Z",
       "side": 1,
       "message": "Maybe name it `fReusableScratchBuffers`?\n```suggestion\n        skia_private::TArray\u003csk_sp\u003cBuffer\u003e\u003e fReusableScratchBuffers;\n```",
+      "range": {
+        "startLine": 156,
+        "startChar": 44,
+        "endLine": 156,
+        "endChar": 54
+      },
+      "revId": "966c34243b4eeafcbe8c8d9aed1689fa87c01ec7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b153956c_2e31451c",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-03-19T23:15:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a92ff364_b9ef7167",
       "range": {
         "startLine": 156,
         "startChar": 44,
