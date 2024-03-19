@@ -619,8 +619,12 @@ protected:
     }
 
     void generateFontMetrics(SkFontMetrics* out_metrics) override {
+        SkVector scale;
+        SkMatrix remainingMatrix;
+        fRec.computeMatrices(
+                    SkScalerContextRec::PreMatrixScale::kVertical, &scale, &remainingMatrix);
         fontations_ffi::Metrics metrics = fontations_ffi::get_skia_metrics(
-                fBridgeFontRef, fMatrix.getScaleY(), fBridgeNormalizedCoords);
+                fBridgeFontRef, scale.fY, fBridgeNormalizedCoords);
         out_metrics->fTop = -metrics.top;
         out_metrics->fAscent = -metrics.ascent;
         out_metrics->fDescent = -metrics.descent;
@@ -633,6 +637,8 @@ protected:
         out_metrics->fXHeight = -metrics.x_height;
         out_metrics->fCapHeight = -metrics.cap_height;
         out_metrics->fFlags = 0;
+<<<<<<< PATCH SET (d60fbc [Fontations-backend] Improve y-scaling of font metrics under)
+=======
         if (fontations_ffi::table_data(fBridgeFontRef,
                                        SkSetFourByteTag('f', 'v', 'a', 'r'),
                                        0,
@@ -640,6 +646,7 @@ protected:
             out_metrics->fFlags |= SkFontMetrics::kBoundsInvalid_Flag;
         }
         // TODO(drott): Is it necessary to transform metrics with remaining parts of matrix?
+>>>>>>> BASE      (8c8d09 Roll SK Tool from e0eeaffcaaab to 14bda68e3c7c)
     }
 
 private:
