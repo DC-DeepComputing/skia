@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c9ce18db_ddcb2d42",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 657,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-03-19T17:09:22Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "ee84887a_4d11ad72",
+      "revId": "558e289bd4e005c1a788f2aaa27e6d1e4226f728",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b6b7cea4_efab3c31",
@@ -35,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ad747a2_b0b6912d",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 665,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-03-19T17:09:22Z",
+      "side": 1,
+      "message": "Changing to return `nullptr`.",
+      "parentUuid": "b6b7cea4_efab3c31",
+      "revId": "558e289bd4e005c1a788f2aaa27e6d1e4226f728",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "261054bc_f2f3e7b6",
@@ -48,6 +84,24 @@
       "writtenOn": "2024-03-18T15:55:57Z",
       "side": 1,
       "message": "Yeah, we\u0027ll need to decide what the right thing to do here is. I think current callers always either use the default or set everything anyway so we haven\u0027t run into issues yet, maybe? Will need to write some tests and see what we want the answers to be.",
+      "revId": "558e289bd4e005c1a788f2aaa27e6d1e4226f728",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "67faaf04_81e67541",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 690,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-03-19T17:09:22Z",
+      "side": 1,
+      "message": "Yes. At least Chromium as one current caller starts from a \"clean\" typeface without prior palette overrides, so no problem there AFAICS.",
+      "parentUuid": "261054bc_f2f3e7b6",
       "revId": "558e289bd4e005c1a788f2aaa27e6d1e4226f728",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
