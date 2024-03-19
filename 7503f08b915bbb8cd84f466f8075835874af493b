@@ -191,6 +191,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b0829934_6fd0bb8d",
+        "filename": "src/sksl/tracing/SkSLDebugTracePriv.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-19T14:19:10Z",
+      "side": 1,
+      "message": "Two thoughts:\n\n1 - I made this chart: https://docs.google.com/drawings/d/1MVyqOU1JRFAyX-izbd3D301Zvju7i3okVEkMgSi-Qy8/edit?usp\u003dsharing\n\nNow I\u0027m trying to remind myself why we need a no-op class at all. What is the problem we are trying to solve? Why can\u0027t we just have `MakeDebugTrace` return null if tracing is disabled? The generators already support compiling with a debug trace (this is the common case).\n\n2 - This class refactor should be in its own CL, since we keep iterating on it and it\u0027s really a separate thing from the other changes.",
+      "parentUuid": "6b00d4ed_3fbf776a",
+      "range": {
+        "startLine": 68,
+        "startChar": 0,
+        "endLine": 68,
+        "endChar": 56
+      },
+      "revId": "7503f08b915bbb8cd84f466f8075835874af493b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d26f911a_25add34d",
         "filename": "src/sksl/tracing/SkSLDebugTracePriv.h",
         "patchSetId": 10
