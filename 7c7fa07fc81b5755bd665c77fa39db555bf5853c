@@ -16,6 +16,24 @@
       "message": "I think that if you used `y` from `scale` from `fRec.computeMatrices` instead of `fMatrix.getScaleY()` above you would be doing the same as the other scaler contexts here.",
       "revId": "7c7fa07fc81b5755bd665c77fa39db555bf5853c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a8533c83_f9fe0d02",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 642,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-03-19T17:13:10Z",
+      "side": 1,
+      "message": "Thank you for the suggestion. I\u0027ll prepare a separate change for that.",
+      "parentUuid": "72587b93_1752f24a",
+      "revId": "7c7fa07fc81b5755bd665c77fa39db555bf5853c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
