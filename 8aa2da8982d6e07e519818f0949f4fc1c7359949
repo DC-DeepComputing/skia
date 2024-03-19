@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b7a0e8a_93628608",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 44
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-19T19:50:33Z",
+      "side": 1,
+      "message": "Can remove this line from the commit message now.",
+      "revId": "8aa2da8982d6e07e519818f0949f4fc1c7359949",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
