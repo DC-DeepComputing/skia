@@ -619,8 +619,12 @@ protected:
     }
 
     void generateFontMetrics(SkFontMetrics* out_metrics) override {
+        SkVector scale;
+        SkMatrix remainingMatrix;
+        fRec.computeMatrices(
+                    SkScalerContextRec::PreMatrixScale::kVertical, &scale, &remainingMatrix);
         fontations_ffi::Metrics metrics = fontations_ffi::get_skia_metrics(
-                fBridgeFontRef, fMatrix.getScaleY(), fBridgeNormalizedCoords);
+                fBridgeFontRef, scale.fY, fBridgeNormalizedCoords);
         out_metrics->fTop = -metrics.top;
         out_metrics->fAscent = -metrics.ascent;
         out_metrics->fDescent = -metrics.descent;
@@ -633,7 +637,6 @@ protected:
         out_metrics->fXHeight = -metrics.x_height;
         out_metrics->fCapHeight = -metrics.cap_height;
         out_metrics->fFlags = 0;
-        // TODO(drott): Is it necessary to transform metrics with remaining parts of matrix?
     }
 
 private:
