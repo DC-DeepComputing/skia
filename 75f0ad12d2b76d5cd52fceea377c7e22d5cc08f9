@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a40e88a_f4e5ac5f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-19T21:25:37Z",
+      "side": 1,
+      "message": "Note that for the `Typeface_glyph_to_char` failures that\u0027s about implementing `getGlyphToUnicodeMap`. This is needed by the `SkSVGDevice` and `SkPDFDevice` (more specifically `SkPDFFont`) since they may get just positioned glyphs without source text and want or need to guess at the original text from the glyphs.\n\nThe current empty implementation is a bit worse than not overriding the base class, since at least the base class implementation zeros the array. Currently this test is getting uninitialized values.",
+      "revId": "75f0ad12d2b76d5cd52fceea377c7e22d5cc08f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
