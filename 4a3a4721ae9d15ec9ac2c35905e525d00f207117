@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0b996b50_a883f9da",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-03-19T20:10:31Z",
+      "side": 1,
+      "message": "This should make SK_DONT_PAD_LAYERS easier to remove in chrome. The image diffs all appear to be from a quadro p400 falling over and not drawing anything, which I\u0027ve seen before.",
+      "revId": "4a3a4721ae9d15ec9ac2c35905e525d00f207117",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
