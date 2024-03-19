@@ -74,7 +74,7 @@ public:
      *  API has no impact on simple shaders or images. Primarily, it impacts shaders
      *  that perform mathematical operations, like Blend shaders, or runtime shaders.
      */
-    sk_sp<SkShader> makeWithWorkingColorSpace(sk_sp<SkColorSpace>) const;
+    sk_sp<SkShader> makeWithWorkingColorSpace1(sk_sp<SkColorSpace>) const;
 
 private:
     SkShader() = default;
