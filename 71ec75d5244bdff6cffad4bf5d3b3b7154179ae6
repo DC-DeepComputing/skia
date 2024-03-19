@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "867f26c0_e9df068b",
+        "filename": "modules/skunicode/include/SkUnicode.h",
+        "patchSetId": 39
+      },
+      "lineNbr": 302,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-19T15:35:49Z",
+      "side": 1,
+      "message": "Does this make any sense anymore? If SkUnicode is SkRefCnt then it shouldn\u0027t have any externally visible mutable state, so there should be no difference between a copy and a just adding a reference and returning it (except of course that a copy would be much heavier).",
+      "revId": "71ec75d5244bdff6cffad4bf5d3b3b7154179ae6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d7217ab_5be1b1e8",
+        "filename": "modules/skunicode/src/SkUnicode_icu_runtime.cpp",
+        "patchSetId": 39
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-19T15:35:49Z",
+      "side": 1,
+      "message": "Don\u0027t need the whitespace change.",
+      "revId": "71ec75d5244bdff6cffad4bf5d3b3b7154179ae6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60ed01df_256471fa",
+        "filename": "modules/skunicode/src/SkUnicode_icu_runtime.cpp",
+        "patchSetId": 39
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-19T15:35:49Z",
+      "side": 1,
+      "message": "Not sure what\u0027s going on here, but I\u0027m not sure why any white space should change here at all.",
+      "revId": "71ec75d5244bdff6cffad4bf5d3b3b7154179ae6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
