@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "216d7105_0d443d20",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-03-19T15:24:47Z",
+      "side": 1,
+      "message": "Baseline fix in https://skia-review.googlesource.com/c/skia/+/828536/",
+      "revId": "3fa886fcf1c25f151554d430a62e370badd414e4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
