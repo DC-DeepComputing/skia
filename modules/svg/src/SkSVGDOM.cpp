@@ -417,6 +417,9 @@ sk_sp<SkSVGDOM> SkSVGDOM::Builder::make(SkStream& str) const {
     auto resource_provider = fResourceProvider ? fResourceProvider
                                                : sk_make_sp<NullResourceProvider>();
 
+    auto callbacks = fShapingCallbacks ? fShapingCallbacks
+                                       : 
+
     return sk_sp<SkSVGDOM>(new SkSVGDOM(sk_sp<SkSVGSVG>(static_cast<SkSVGSVG*>(root.release())),
                                         std::move(fFontMgr), std::move(resource_provider),
                                         std::move(mapper)));
@@ -439,7 +442,7 @@ void SkSVGDOM::render(SkCanvas* canvas) const {
         SkSVGLengthContext       lctx(fContainerSize);
         SkSVGPresentationContext pctx;
         fRoot->render(SkSVGRenderContext(canvas, fFontMgr, fResourceProvider, fIDMapper, lctx, pctx,
-                                         {nullptr, nullptr}));
+                                         {nullptr, nullptr}, fShapingCallbacks));
     }
 }
 
@@ -449,7 +452,7 @@ void SkSVGDOM::renderNode(SkCanvas* canvas, SkSVGPresentationContext& pctx, cons
     if (fRoot) {
         SkSVGLengthContext lctx(fContainerSize);
         fRoot->renderNode(SkSVGRenderContext(canvas, fFontMgr, fResourceProvider, fIDMapper,
-                                             lctx, pctx, {nullptr, nullptr}),
+                                             lctx, pctx, {nullptr, nullptr}, fShapingCallbacks),
                           SkSVGIRI(SkSVGIRI::Type::kLocal, SkSVGStringType(id)));
     }
 }
