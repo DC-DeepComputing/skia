@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "33237883_b0f8aa09",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 18114
+      },
+      "writtenOn": "2024-03-19T19:16:58Z",
+      "side": 1,
+      "message": "Noted. Updated it to have YCgCo everywhere instead, thanks.",
+      "parentUuid": "80537751_4185e866",
+      "revId": "53ff9aaad8e21de0d8605467e9fe7636037772dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0a57b01f_e982d155",
@@ -31,6 +49,30 @@
       "writtenOn": "2024-03-15T23:56:54Z",
       "side": 1,
       "message": "Nit: maybe \"bit depth\" would be better than \"bitness\"?",
+      "range": {
+        "startLine": 15,
+        "startChar": 17,
+        "endLine": 15,
+        "endChar": 24
+      },
+      "revId": "53ff9aaad8e21de0d8605467e9fe7636037772dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6434307a_aff8f567",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 18114
+      },
+      "writtenOn": "2024-03-19T19:16:58Z",
+      "side": 1,
+      "message": "Makes sense, updated.",
+      "parentUuid": "0a57b01f_e982d155",
       "range": {
         "startLine": 15,
         "startChar": 17,
@@ -130,6 +172,42 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2f1691d9_8d367de5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18114
+      },
+      "writtenOn": "2024-03-19T19:16:58Z",
+      "side": 1,
+      "message": "I realized gfx::ColorSpace chroma_0_5 numerator is a different function of bit depth than addY here. I\u0027ve also made some changes to how it is calculated for limited range based on the different order of multiplication, thanks!",
+      "parentUuid": "44f50865_adcaae79",
+      "revId": "53ff9aaad8e21de0d8605467e9fe7636037772dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b4a78d9_afe48fad",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18114
+      },
+      "writtenOn": "2024-03-19T19:16:58Z",
+      "side": 1,
+      "message": "Thanks a lot! I admit I\u0027m not much knowledgeable in this area and appreciate all inputs.",
+      "parentUuid": "57acbd9c_8e964b5b",
+      "revId": "53ff9aaad8e21de0d8605467e9fe7636037772dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1f87c152_424f5541",
         "filename": "src/core/SkYUVMath.cpp",
         "patchSetId": 6
@@ -176,6 +254,24 @@
       "side": 1,
       "message": "See `ColorTransformInternal::AppendColorSpaceToColorSpaceTransform()` in Chrome\u0027s ui/gfx/color_transform.cc. I addressed the order issue in https://chromium-review.googlesource.com/c/chromium/src/+/2651408.",
       "parentUuid": "1f417493_c9df0dfc",
+      "revId": "53ff9aaad8e21de0d8605467e9fe7636037772dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1db9d33f_1762d051",
+        "filename": "src/core/SkYUVMath.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 399,
+      "author": {
+        "id": 18114
+      },
+      "writtenOn": "2024-03-19T19:16:58Z",
+      "side": 1,
+      "message": "Thanks for pointing this out, this made me do some more digging and understand this better! I compared the output in Skia with that in how color_transform.cc does it through Inverse(Range) * Transform matrices manually and values were similar except those for addY, addUV which were slightly off. \n\nI had earlier incorrectly assumed addUV and chrome05 were same but chrome05 is more accurately as (1 \u003c\u003c (bit - 1) / (1 \u003c\u003c bit) - 1)\n\nIn gfx::ColorSpace for 8-bit limited YCgCo we have Inverse(Range) as:\n```\n|219/255,    0,      0,    16/219|\n|  0,     219/255,   0,    16/219|\n|  0,        0,   219/255, 16/219|\n|  0,        0,      0,       1  |\n```\n\nAnd Transfer for 8-bit limited is:\n```\n| 0.25,  0.5,  0.25,    0   |\n|-0.25,  0.5, -0.25, 128/255|\n| 0.5,    0,  -0.5,  128/255|\n|  0,     0,    0,      1.  |\n```\n\nThus for addY here, we have 219/255 * 0 + 0 * 128/255 + 0 * 128/255 + 16/219 * 1 \u003d 16/219 (as opposed to 16/255 here earlier)\n\nAnd for chrome05, we have (219/255 * 128/255 + 16/219) which is essentially chrome05 * scaleY + addY here.\n\nI have made those changes here. The other values get calculated properly as it is diagonal matrix in gfX::ColorSpace and similar to scalar multiplication.\n\nIt is helpful that while addressing the order issue there is a test with Limited YCgCo color space so when we switch over to this calculation we can verify. I also added a viz unittest here - https://chromium-review.googlesource.com/c/chromium/src/+/5373123 so that will also be useful to see the result/difference visually.",
+      "parentUuid": "85945d0d_d1ef4348",
       "revId": "53ff9aaad8e21de0d8605467e9fe7636037772dc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
