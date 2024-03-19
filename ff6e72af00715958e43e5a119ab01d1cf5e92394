@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c056f640_6bdcaf86",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-19T14:59:38Z",
+      "side": 1,
+      "message": "Canary-Android actually succeeded. Seems Presubmit was having issues yesterday.",
+      "revId": "ff6e72af00715958e43e5a119ab01d1cf5e92394",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
