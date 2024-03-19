@@ -22,7 +22,7 @@ struct SkStageRec;
 
 class SkWorkingColorSpaceShader final : public SkShaderBase {
 public:
-    SkWorkingColorSpaceShader(sk_sp<SkShader> shader, sk_sp<SkColorSpace> workingSpace)
+    SkWorkingColorSpaceShader(sk_sp<SkShader> shader, sk_sp<SkColorSpace> workingSpace, bool foo)
             : fShader(std::move(shader)), fWorkingSpace(std::move(workingSpace)) {
         SkASSERT(fWorkingSpace);
     }

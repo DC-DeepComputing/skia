@@ -54,7 +54,7 @@
 #include "tools/graphite/UniqueKeyUtils.h"
 
 // Set this to 1 for more expansive (aka far slower) local testing
-#define EXPANDED_SET 0
+#define EXPANDED_SET 1
 
 // This flag is set to true if during the PaintOption creation an SkPictureShader is created.
 // The SkPictureShader will need an additional program in order to draw the contents of its
@@ -84,8 +84,9 @@ enum class ShaderType {
     kRadialGradient,
     kSolidColor,
     kSweepGradient,
+    kWorkingColorSpace,
 
-    kLast          = kSweepGradient
+    kLast          = kWorkingColorSpace
 };
 
 static constexpr int kShaderTypeCount = static_cast<int>(ShaderType::kLast) + 1;
@@ -485,6 +486,20 @@ std::pair<sk_sp<SkShader>, sk_sp<PrecompileShader>> create_blend_shader(SkRandom
     return { s, o };
 }
 
+std::pair<sk_sp<SkShader>, sk_sp<PrecompileShader>> create_workingCS_shader(SkRandom* rand,
+                                                                            Recorder* recorder) {
+    auto [wrappedS, wrappedO] = create_random_shader(rand, recorder);
+    SkASSERT(!wrappedS == !wrappedO);
+    if (!wrappedS) {
+        return { nullptr, nullptr };
+    }
+
+    sk_sp<SkShader> s = wrappedS->makeWithWorkingColorSpace1();
+    sk_sp<PrecompileShader> o = wrappedO->makeWithWorkingColorSpace();
+
+    return { s, o };
+}
+
 std::pair<sk_sp<SkShader>, sk_sp<PrecompileShader>>  create_shader(SkRandom* rand,
                                                                    Recorder* recorder,
                                                                    ShaderType shaderType) {
@@ -518,6 +533,8 @@ std::pair<sk_sp<SkShader>, sk_sp<PrecompileShader>>  create_shader(SkRandom* ran
             return create_solid_shader(rand);
         case ShaderType::kSweepGradient:
             return create_gradient_shader(rand, SkShaderBase::GradientType::kSweep);
+        case ShaderType::kWorkingColorSpace:
+            return create_workingCS_shader(rand, recorder);
     }
 
     SkUNREACHABLE;
