@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d2db6fcc_ebb5b808",
+        "filename": "tests/BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-03-19T16:49:07Z",
+      "side": 1,
+      "message": "I don\u0027t think you want this",
+      "range": {
+        "startLine": 106,
+        "startChar": 12,
+        "endLine": 106,
+        "endChar": 22
+      },
+      "revId": "8974f7928d92e304a15812af68ce4720b2dbda9e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
