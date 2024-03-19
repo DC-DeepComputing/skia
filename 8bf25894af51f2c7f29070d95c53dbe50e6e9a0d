@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b248c21_61bcd779",
+        "filename": "include/private/SkPathRef.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 412,
+      "author": {
+        "id": 19319
+      },
+      "writtenOn": "2024-03-19T15:40:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "20961700_d3562f6e",
+      "range": {
+        "startLine": 407,
+        "startChar": 0,
+        "endLine": 412,
+        "endChar": 75
+      },
+      "revId": "8bf25894af51f2c7f29070d95c53dbe50e6e9a0d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e736672c_96e68bb7",
@@ -54,6 +78,24 @@
       "writtenOn": "2024-03-19T15:05:42Z",
       "side": 1,
       "message": "Shouldn\u0027t this be:\n```\nfConicWeights.reserve_exact(conicCount + reserveConics);\nfConicWeights.resize_back(conicCount);\n```",
+      "revId": "8bf25894af51f2c7f29070d95c53dbe50e6e9a0d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "842cb48d_56c42f41",
+        "filename": "include/private/SkPathRef.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 444,
+      "author": {
+        "id": 19319
+      },
+      "writtenOn": "2024-03-19T15:40:58Z",
+      "side": 1,
+      "message": "Good catch. Updated.",
+      "parentUuid": "e736672c_96e68bb7",
       "revId": "8bf25894af51f2c7f29070d95c53dbe50e6e9a0d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
