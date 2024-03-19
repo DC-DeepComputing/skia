@@ -16,6 +16,7 @@
 #include "include/gpu/graphite/Recording.h"
 #include "include/gpu/graphite/Surface.h"
 #include "src/gpu/graphite/Surface_Graphite.h"
+#include "src/gpu/graphite/ContextPriv.h"
 
 namespace skgpu::graphite {
 
@@ -24,6 +25,8 @@ namespace skgpu::graphite {
 // TODO(b/296420752): enable in CTS after adding VK support for loading MSAA from Resolve
 DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(MultisampleRetainTest, reporter, context,
                                    CtsEnforcement::kNever) {
+    if (context->backend() == BackendApi::kDawn)
+        context->priv().startCapture();
     const SkImageInfo surfaceImageInfo = SkImageInfo::Make(
             16, 16, SkColorType::kRGBA_8888_SkColorType, SkAlphaType::kPremul_SkAlphaType);
 
@@ -80,6 +83,9 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(MultisampleRetainTest, reporter, context,
         REPORTER_ASSERT(reporter,
                         bitmap.getColor4f(kPathPoints[i][0], kPathPoints[i][1]) == SkColors::kBlue);
     }
+
+    if (context->backend() == BackendApi::kDawn)
+        context->priv().stopCapture();
 }
 
 }  // namespace skgpu::graphite

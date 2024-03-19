@@ -43,7 +43,7 @@ BitmapTextRenderStep::BitmapTextRenderStep(bool isLCD)
                                    {"atlasSizeInv"      , SkSLType::kFloat2}},
                      PrimitiveType::kTriangleStrip,
                      kDirectDepthGEqualPass,
-                     /*vertexAttrs=*/ {},
+                     /*vertexAttrs=*/{},
                      /*instanceAttrs=*/
                      {{"size", VertexAttribType::kUShort2, SkSLType::kUShort2},
                       {"uvPos", VertexAttribType::kUShort2, SkSLType::kUShort2},

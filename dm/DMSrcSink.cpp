@@ -100,6 +100,7 @@
 #include "include/gpu/graphite/Surface.h"
 #include "include/private/gpu/graphite/ContextOptionsPriv.h"
 // TODO: Remove this src include once we figure out public readPixels call for Graphite.
+#include "src/gpu/graphite/ContextPriv.h"
 #include "src/gpu/graphite/Surface_Graphite.h"
 #include "tools/graphite/ContextFactory.h"
 #include "tools/graphite/GraphiteTestContext.h"
@@ -117,6 +118,9 @@
 
 #endif // SK_GRAPHITE
 
+
+#define CAPTURE_FRAME 1
+#endif
 
 #if defined(SK_ENABLE_ANDROID_UTILS)
     #include "client_utils/android/BitmapRegionDecoder.h"
@@ -2159,6 +2163,10 @@ Result GraphiteSink::draw(const Src& src,
         return Result::Fatal("Could not create a context.");
     }
 
+#if CAPTURE_FRAME
+    context->priv().startCapture();
+#endif
+
     std::unique_ptr<skgpu::graphite::Recorder> recorder =
                                 context->makeRecorder(ToolUtils::CreateTestingRecorderOptions());
     if (!recorder) {
@@ -2194,6 +2202,10 @@ Result GraphiteSink::draw(const Src& src,
         return Result::Fatal("Context::insertRecording failed.");
     }
     ctxInfo.fTestContext->syncedSubmit(context);
+    
+#if CAPTURE_FRAME
+    context->priv().stopCapture();
+#endif
 
     return Result::Ok();
 }

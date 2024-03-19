@@ -27,6 +27,9 @@ void GraphiteTestContext::submitRecordingAndWaitOnSync(skgpu::graphite::Context*
     SkASSERT(context);
     SkASSERT(recording);
 
+    context->priv().startCapture();
+
+
     if (fFinishTrackers[fCurrentFlushIdx]) {
         fFinishTrackers[fCurrentFlushIdx]->waitTillFinished([this] { tick(); });
     }
@@ -46,6 +49,8 @@ void GraphiteTestContext::submitRecordingAndWaitOnSync(skgpu::graphite::Context*
     context->submit(skgpu::graphite::SyncToCpu::kNo);
 
     fCurrentFlushIdx = (fCurrentFlushIdx + 1) % std::size(fFinishTrackers);
+
+    context->priv().stopCapture();
 }
 
 void GraphiteTestContext::syncedSubmit(skgpu::graphite::Context* context) {

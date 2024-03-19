@@ -1189,6 +1189,9 @@ optional("graphite") {
   if (skia_use_dawn) {
     public += skia_graphite_dawn_public
     sources += skia_graphite_dawn_sources
+    if (is_mac) {
+      sources += skia_graphite_dawn_metal_sources
+    }
   }
   if (skia_use_metal) {
     public_defines += [ "SK_METAL" ]

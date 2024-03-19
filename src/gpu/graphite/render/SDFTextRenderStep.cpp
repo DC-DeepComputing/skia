@@ -42,7 +42,7 @@ SDFTextRenderStep::SDFTextRenderStep(bool isLCD)
                                    {"distAdjust", SkSLType::kFloat}},
                      PrimitiveType::kTriangleStrip,
                      kDirectDepthGEqualPass,
-                     /*vertexAttrs=*/ {},
+                     /*vertexAttrs=*/{},
                      /*instanceAttrs=*/
                      {{"size", VertexAttribType::kUShort2, SkSLType::kUShort2},
                       {"uvPos", VertexAttribType::kUShort2, SkSLType::kUShort2},

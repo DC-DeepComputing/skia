@@ -121,7 +121,6 @@ std::string EmitVaryings(const RenderStep* step,
                          const char* direction,
                          bool emitSsboIndicesVarying,
                          bool emitLocalCoordsVarying);
-
 } // namespace skgpu::graphite
 
 #endif // skgpu_graphite_ContextUtils_DEFINED
