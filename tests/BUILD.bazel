@@ -103,4 +103,8 @@ test_suite(
 android_unit_test(
     name = "android_math_test",
     srcs = ["MathTest.cpp"],
+    deps = [
+        ":tests_base",
+        "//:core",
+    ],
 )
