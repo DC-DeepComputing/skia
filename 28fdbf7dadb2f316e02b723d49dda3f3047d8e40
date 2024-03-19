@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f5f37b63_dc766b4f",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 628,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-19T19:03:51Z",
+      "side": 1,
+      "message": "I myself have often forgotten that leading has magnitude but technically no direction, so it isn\u0027t y-up or y-down.",
+      "revId": "28fdbf7dadb2f316e02b723d49dda3f3047d8e40",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
