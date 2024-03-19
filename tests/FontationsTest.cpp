@@ -196,7 +196,8 @@ DEF_TEST(Fontations_VariationPosition, reporter) {
     sk_sp<SkTypeface> variableTypeface(
             SkTypeface_Make_Fontations(GetResourceAsStream(kVariableResource), SkFontArguments()));
     // Everything at default.
-    REPORTER_ASSERT(reporter, variableTypeface->getVariationDesignPosition(nullptr, 0) == 0);
+    const int numAxes = variableTypeface->getVariationDesignPosition(nullptr, 0);
+    REPORTER_ASSERT(reporter, numAxes == kNumVariableAxes, "numAxes: %d", numAxes);
 
     SkFontArguments::VariationPosition::Coordinate kSwpsCoordinateFirst = {SkSetFourByteTag('S', 'W', 'P', 'S'), 25};
     SkFontArguments::VariationPosition::Coordinate kSwpsCoordinateSecond = {SkSetFourByteTag('S', 'W', 'P', 'S'), 55};
@@ -213,14 +214,16 @@ DEF_TEST(Fontations_VariationPosition, reporter) {
 
     sk_sp<SkTypeface> clonedTypeface = variableTypeface->makeClone(
             SkFontArguments().setVariationDesignPosition(clonePosition));
-    REPORTER_ASSERT(reporter, clonedTypeface->getVariationDesignPosition(nullptr, 0) == 2);
+    const int clonedNumAxes = clonedTypeface->getVariationDesignPosition(nullptr, 0);
+    REPORTER_ASSERT(reporter, clonedNumAxes == kNumVariableAxes, "clonedNumAxes: %d", clonedNumAxes);
 
     SkFontArguments::VariationPosition::Coordinate retrieveCoordinates[kNumVariableAxes] = {};
     // Error when providing too little space.
     REPORTER_ASSERT(reporter, clonedTypeface->getVariationDesignPosition(retrieveCoordinates, 1) == -1);
 
-    REPORTER_ASSERT(reporter,
-                    clonedTypeface->getVariationDesignPosition(retrieveCoordinates, kNumVariableAxes) == 2);
+    const int reteievedClonedNumAxes = clonedTypeface->getVariationDesignPosition(retrieveCoordinates, kNumVariableAxes);
+    REPORTER_ASSERT(reporter, reteievedClonedNumAxes == kNumVariableAxes,
+                    "reteievedClonedNumAxes: %d", reteievedClonedNumAxes);
     REPORTER_ASSERT(reporter,
                     retrieveCoordinates[0].axis == kSwpsCoordinateSecond.axis &&
                             retrieveCoordinates[0].value == kSwpsCoordinateSecond.value);
