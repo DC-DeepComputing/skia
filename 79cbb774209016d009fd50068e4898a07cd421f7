@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8a6d7b17_3e8b8697",
+        "filename": "BUILD.gn",
+        "patchSetId": 39
+      },
+      "lineNbr": 408,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-03-19T17:17:56Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "0b92f268_de9bff68",
+      "revId": "79cbb774209016d009fd50068e4898a07cd421f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "404d95a3_2f67e450",
@@ -31,6 +49,24 @@
       "writtenOn": "2024-03-19T15:35:49Z",
       "side": 0,
       "message": "Rebase locally and make sure you\u0027re not removing this. Landing this change will remove these lines.",
+      "revId": "79cbb774209016d009fd50068e4898a07cd421f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "11ad10eb_89cdfc34",
+        "filename": "BUILD.gn",
+        "patchSetId": 39
+      },
+      "lineNbr": 1456,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-03-19T17:17:56Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "404d95a3_2f67e450",
       "revId": "79cbb774209016d009fd50068e4898a07cd421f7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
