@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "830ea202_2a1fa400",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 636,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-19T18:59:15Z",
+      "side": 0,
+      "message": "Removing this TODO comment appears to be conflicting with https://skia-review.googlesource.com/c/skia/+/827938 .",
+      "revId": "5d3bc267a236efb1b2294075e3f7bf0acc5f4647",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
