@@ -206,7 +206,7 @@ void DawnBuffer::onMap() {
              (fBuffer.GetUsage() & wgpu::BufferUsage::MapWrite));
     bool isWrite = fBuffer.GetUsage() & wgpu::BufferUsage::MapWrite;
 
-    // Use wgpu::Future and wait with timeout=0 to trigger callback immediately.
+    // Use wgpu::Future and WaitAny with timeout=0 to trigger callback immediately.
     // The buffer must already be free of any GPU use at this point.
     wgpu::BufferMapCallbackInfo callbackInfo{};
     callbackInfo.mode = wgpu::CallbackMode::AllowSpontaneous;
@@ -224,8 +224,18 @@ void DawnBuffer::onMap() {
                                           callbackInfo);
 
     wgpu::Device device = static_cast<const DawnSharedContext*>(sharedContext())->device();
-    [[maybe_unused]] auto status =
-            device.GetAdapter().GetInstance().WaitAny(1, &mapWaitInfo, /*timeoutNS=*/0);
+    wgpu::Instance instance = device.GetAdapter().GetInstance();
+    [[maybe_unused]] auto status = instance.WaitAny(1, &mapWaitInfo, /*timeoutNS=*/0);
+
+    if (status != wgpu::WaitStatus::Success) {
+        // WaitAny(timeout=0) might fail if Dawn thinks the buffer is being used by a command
+        // buffer. But that buffer was partially encoded and failed to be submitted.
+        // In that case, retry with a blocking wait.
+        // TODO(https://crbug.com/dawn/2469): remove this once we fix this in Dawn or having
+        // a suggested fix from Dawn.
+        status = instance.WaitAny(
+                1, &mapWaitInfo, /*timeoutNS=*/std::numeric_limits<uint64_t>::max());
+    }
 
     SkASSERT(status == wgpu::WaitStatus::Success);
     SkASSERT(mapWaitInfo.completed);

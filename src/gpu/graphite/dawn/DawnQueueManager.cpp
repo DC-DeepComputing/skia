@@ -139,6 +139,11 @@ QueueManager::OutstandingSubmission DawnQueueManager::onSubmitToGpu() {
 
     fQueue.Submit(/*commandCount=*/1, &wgpuCmdBuffer);
 
+    // Queue.Submit() might fail if it references an error resources. In this case we should issue
+    // an extra tick() to flush any pending commands.
+    // TODO(https://crbug.com/dawn/2469): Remove this once we have a fix in Dawn.
+    this->tick();
+
 #if defined(__EMSCRIPTEN__)
     return std::make_unique<DawnWorkSubmissionWithAsyncWait>(
             std::move(fCurrentCommandBuffer), this, dawnSharedContext());
