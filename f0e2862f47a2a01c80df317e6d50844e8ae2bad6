@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7cdb0fb_582117d3",
+        "filename": "include/core/SkImage.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 945,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-03-20T13:28:13Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "62a9fe94_54c4847d",
+      "range": {
+        "startLine": 945,
+        "startChar": 23,
+        "endLine": 945,
+        "endChar": 28
+      },
+      "revId": "f0e2862f47a2a01c80df317e6d50844e8ae2bad6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2b7a56a1_c012a4c7",
@@ -61,6 +85,30 @@
       "side": 1,
       "message": "Doesn\u0027t matter since you\u0027re removing it in the next CL.",
       "parentUuid": "2b7a56a1_c012a4c7",
+      "range": {
+        "startLine": 403,
+        "startChar": 62,
+        "endLine": 403,
+        "endChar": 63
+      },
+      "revId": "f0e2862f47a2a01c80df317e6d50844e8ae2bad6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "39b8d776_a5c4d5fa",
+        "filename": "src/gpu/graphite/FactoryFunctions.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 403,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-03-20T13:28:13Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "5781df27_9e1b65a8",
       "range": {
         "startLine": 403,
         "startChar": 62,
@@ -118,6 +166,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "30c63cbd_38678803",
+        "filename": "src/gpu/graphite/FactoryFunctions.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 423,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-03-20T13:28:13Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "c2f3b490_d51489f8",
+      "range": {
+        "startLine": 420,
+        "startChar": 1,
+        "endLine": 423,
+        "endChar": 1
+      },
+      "revId": "f0e2862f47a2a01c80df317e6d50844e8ae2bad6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0e5da062_bcded59a",
@@ -131,6 +203,24 @@
       "writtenOn": "2024-03-19T18:33:24Z",
       "side": 1,
       "message": "Nit: created",
+      "revId": "f0e2862f47a2a01c80df317e6d50844e8ae2bad6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae17fb69_72b1c75f",
+        "filename": "src/gpu/graphite/FactoryFunctions.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-03-20T13:28:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0e5da062_bcded59a",
       "revId": "f0e2862f47a2a01c80df317e6d50844e8ae2bad6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
