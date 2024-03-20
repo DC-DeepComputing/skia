@@ -50,6 +50,23 @@
       "message": "include/ lgtm",
       "revId": "f0ed9f562180a28b520f4f86647fb5b131ea8caa",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "370b16cf_e7a3bb2f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13069
+      },
+      "writtenOn": "2024-03-20T21:04:41Z",
+      "side": 1,
+      "message": "lgtm, but don\u0027t have permission to +1",
+      "revId": "f0ed9f562180a28b520f4f86647fb5b131ea8caa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
