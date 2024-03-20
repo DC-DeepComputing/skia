@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "afd9755d_58f37959",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 21
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-03-20T16:13:04Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "d67802b9_299a3b08",
+      "revId": "b5f50575bb83c70b4dbfb87627df38caea58e167",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "79d3276f_bfb561fb",
@@ -49,6 +67,30 @@
       "writtenOn": "2024-03-20T14:40:08Z",
       "side": 1,
       "message": "We also need an alpha-only image variant that handles blending.",
+      "range": {
+        "startLine": 448,
+        "startChar": 0,
+        "endLine": 448,
+        "endChar": 79
+      },
+      "revId": "b5f50575bb83c70b4dbfb87627df38caea58e167",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c2ccdb36_bcdf34fe",
+        "filename": "src/gpu/graphite/FactoryFunctions.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 448,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-03-20T16:13:04Z",
+      "side": 1,
+      "message": "I\u0027ll investigate that in a follow up. For now, I\u0027ve added a TODO.",
+      "parentUuid": "79d3276f_bfb561fb",
       "range": {
         "startLine": 448,
         "startChar": 0,
@@ -82,6 +124,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "867f1f82_82ae2aa1",
+        "filename": "src/gpu/graphite/FactoryFunctions.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 468,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-03-20T16:13:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "558aa605_a0d09f40",
+      "range": {
+        "startLine": 468,
+        "startChar": 0,
+        "endLine": 468,
+        "endChar": 47
+      },
+      "revId": "b5f50575bb83c70b4dbfb87627df38caea58e167",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bb9ffb3a_383198b0",
@@ -95,6 +161,30 @@
       "writtenOn": "2024-03-20T14:40:08Z",
       "side": 1,
       "message": "I don\u0027t think this is right. The PictureShader folds its local matrix into the key context and into the local matrix it creates when calling `image-\u003emakeShader()`, so I think we can say that all picture shaders are covered by the set of image shader combinations and get rid of this class entirely?",
+      "range": {
+        "startLine": 507,
+        "startChar": 6,
+        "endLine": 507,
+        "endChar": 26
+      },
+      "revId": "b5f50575bb83c70b4dbfb87627df38caea58e167",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a37523ec_7f5d7c6a",
+        "filename": "src/gpu/graphite/FactoryFunctions.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 507,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-03-20T16:13:04Z",
+      "side": 1,
+      "message": "The PictureShader does go away in https://skia-review.googlesource.com/c/skia/+/827918. However, SkPictureShader::Make wraps an SkPictureShader in a SkLocalMatrixShader. Later, the SkPictureShader is converted into an SkImageShader that is, potentially, wrapped in another SkLocalMatrixShader.",
+      "parentUuid": "bb9ffb3a_383198b0",
       "range": {
         "startLine": 507,
         "startChar": 6,
