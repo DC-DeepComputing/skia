@@ -101,6 +101,22 @@ test_suite(
 )
 
 android_unit_test(
-    name = "android_math_test",
+    name = "android_math_unit_test",
     srcs = ["MathTest.cpp"],
+    deps = [
+        ":tests_base",
+        "//:core",
+    ],
+)
+
+# skia_cc_library(
+#     name = "android_math_test",
+#     testonly = True,
+#     tests = ":android_math_unit_test",
+#     visibility = ["//tests"],
+# )
+
+test_suite(
+    name = "android_math_test",
+    tests = ":android_math_unit_test",
 )
