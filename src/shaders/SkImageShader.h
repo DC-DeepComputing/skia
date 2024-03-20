@@ -68,7 +68,7 @@ public:
     sk_sp<SkImage> image() const { return fImage; }
     SkSamplingOptions sampling() const { return fSampling; }
     SkRect subset() const { return fSubset; }
-    bool isRaw() const { return fRaw; }
+    bool isRaw1() const { return fRaw; }
 
 private:
     SK_FLATTENABLE_HOOKS(SkImageShader)

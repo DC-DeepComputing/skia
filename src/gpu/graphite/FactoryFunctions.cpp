@@ -394,7 +394,7 @@ sk_sp<PrecompileShader> PrecompileShaders::CoordClamp(SkSpan<const sk_sp<Precomp
 // TODO: Investigate the Alpha-only use case
 class PrecompileImageShader : public PrecompileShader {
 public:
-    PrecompileImageShader() {}
+    PrecompileImageShader(bool isRaw) : fIsRaw(isRaw) {}
 
 private:
     // The ImageShader has 3 variants: hardware-tiled, shader-tiled and cubic sampling
@@ -427,16 +427,20 @@ private:
 
         ImageShaderBlock::AddBlock(keyContext, builder, gatherer, imgData);
     }
+
+    bool fIsRaw;
 };
 
 sk_sp<PrecompileShader> PrecompileShaders::Image() {
-    return PrecompileShaders::LocalMatrix({ sk_make_sp<PrecompileImageShader>() });
+    constexpr bool kIsNotRaw = false;
+    return PrecompileShaders::LocalMatrix({ sk_make_sp<PrecompileImageShader>(kIsNotRaw) });
 }
 
 sk_sp<PrecompileShader> PrecompileShaders::RawImage() {
+    constexpr bool kIsRaw = false;
     // Raw images do not perform color space conversion, but in Graphite, this is represented as
     // an identity color space xform, not as a distinct shader
-    return PrecompileShaders::LocalMatrix({ sk_make_sp<PrecompileImageShader>() });
+    return PrecompileShaders::LocalMatrix({ sk_make_sp<PrecompileImageShader>(kIsRaw) });
 }
 
 //--------------------------------------------------------------------------------------------------
