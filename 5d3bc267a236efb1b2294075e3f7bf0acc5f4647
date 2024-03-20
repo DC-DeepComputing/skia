@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d712def_c8e6c995",
+        "filename": "src/ports/SkTypeface_fontations_priv.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-20T20:42:22Z",
+      "side": 0,
+      "message": "We\u0027re eventually going to need to have this implemented, and it looks like using https://docs.rs/skrifa/latest/skrifa/charmap/struct.Mappings.html it shouldn\u0027t be too difficult to fill out the array?",
+      "revId": "5d3bc267a236efb1b2294075e3f7bf0acc5f4647",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
