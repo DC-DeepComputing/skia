@@ -141,7 +141,10 @@ class PrecompileColorShader : public PrecompileShader {
 public:
     PrecompileColorShader() {}
 
-    bool isConstant() const override { return true; }
+    bool isConstant(int desiredCombination) const override {
+        SkASSERT(desiredCombination == 0); // The color shader only ever has one combination
+        return true;
+    }
 
 private:
     void addToKey(const KeyContext& keyContext,
@@ -554,6 +557,24 @@ public:
         }
     }
 
+    bool isConstant(int desiredCombination) const override {
+        SkASSERT(desiredCombination < this->numCombinations());
+
+        /*
+         * Regardless of whether the LocalMatrixShader elides itself or not, we always want
+         * the Constantness of the wrapped shader.
+         */
+        int desiredWrappedCombination = desiredCombination / kNumIntrinsicCombinations;
+        SkASSERT(desiredWrappedCombination < fNumWrappedCombos);
+
+        auto wrapped = PrecompileBase::SelectOption(fWrapped, desiredWrappedCombination);
+        if (wrapped.first) {
+            return wrapped.first->isConstant(wrapped.second);
+        }
+
+        return false;
+    }
+
 private:
     bool isALocalMatrixShader() const override { return true; }
 
@@ -567,11 +588,11 @@ private:
     void addToKey(const KeyContext& keyContext,
                   PaintParamsKeyBuilder* builder,
                   PipelineDataGatherer* gatherer,
-                  int desiredCombination1) const override {
-        SkASSERT(desiredCombination1 < this->numCombinations());
+                  int desiredCombination) const override {
+        SkASSERT(desiredCombination < this->numCombinations());
 
-        int desiredLMCombination = desiredCombination1 % kNumIntrinsicCombinations;
-        int desiredWrappedCombination = desiredCombination1 / kNumIntrinsicCombinations;
+        int desiredLMCombination = desiredCombination % kNumIntrinsicCombinations;
+        int desiredWrappedCombination = desiredCombination / kNumIntrinsicCombinations;
         SkASSERT(desiredWrappedCombination < fNumWrappedCombos);
 
         if (desiredLMCombination) {
