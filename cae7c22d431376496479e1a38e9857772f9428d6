@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5513df08_aef69238",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-03-20T18:48:11Z",
+      "side": 1,
+      "message": "Small update to comment documentation from https://skia-review.googlesource.com/c/skia/+/828676",
+      "revId": "cae7c22d431376496479e1a38e9857772f9428d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
