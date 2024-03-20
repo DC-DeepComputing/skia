@@ -168,7 +168,7 @@ private:
         float                                fLength = 0; // total path length
     };
 
-    void shapePendingBuffer(const SkFont&, sk_sp<SkFontMgr> fallback);
+    void shapePendingBuffer(const SkSVGRenderContext&, const SkFont&);
 
     SkRSXform computeGlyphXform(SkGlyphID, const SkFont&, const SkPoint& glyph_pos,
                                 const PositionAdjustment&) const;
