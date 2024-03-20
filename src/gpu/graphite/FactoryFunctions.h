@@ -92,6 +92,9 @@ namespace PrecompileShaders {
             SkSpan<const sk_sp<PrecompileShader>> shaders,
             SkSpan<const sk_sp<PrecompileColorFilter>> colorFilters);
 
+    SK_API sk_sp<PrecompileShader> WorkingColorSpace(SkSpan<const sk_sp<PrecompileShader>> shaders,
+                                                     SkSpan<const sk_sp<SkColorSpace>> colorSpaces);
+
 } // namespace PrecompileShaders
 
 //--------------------------------------------------------------------------------------------------
