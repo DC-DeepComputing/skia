@@ -16,6 +16,24 @@
       "message": "This is a commit on the main branch of libavif. It is newer than the libavif v1.0.x release branch.\n\nUntil libavif v1.1.0 is released, we will need to update to a recent stable snapshot of the libavif main branch.",
       "revId": "9b500368c92b6fbe8a5044b1f5238e0a30fb18de",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d78c80f_1d8b208c",
+        "filename": "bazel/deps.bzl",
+        "patchSetId": 2
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 5920
+      },
+      "writtenOn": "2024-03-20T17:15:13Z",
+      "side": 0,
+      "message": "\u003e This is a commit on the main branch of libavif. It is newer than the libavif v1.0.x release branch.\n\u003e \n\u003e Until libavif v1.1.0 is released, we will need to update to a recent stable snapshot of the libavif main branch.\n\nWe can wait for that then. I mistook the commit as older; I didn\u0027t look closely enough.",
+      "parentUuid": "2b16e61f_c0d83c97",
+      "revId": "9b500368c92b6fbe8a5044b1f5238e0a30fb18de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
