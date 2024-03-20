@@ -824,6 +824,10 @@ bool Context::isDeviceLost() const {
     return fSharedContext->isDeviceLost();
 }
 
+int Context::maxTextureSize() const {
+    return fSharedContext->caps()->maxTextureSize();
+}
+
 bool Context::supportsProtectedContent() const {
     return fSharedContext->isProtected() == Protected::kYes;
 }
