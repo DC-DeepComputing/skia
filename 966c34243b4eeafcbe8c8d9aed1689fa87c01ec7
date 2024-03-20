@@ -373,6 +373,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "abf85365_878eaeb0",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-03-20T14:04:53Z",
+      "side": 1,
+      "message": "I think keeping it as a value type makes the most sense, so I\u0027m glad you found a solution. One approach we could do is split `BufferInfo` into two pieces: the \"type\" configuration such as alignment and usage that is immutable and needs to be shared with the ScratchBuffer; and the current buffer tracking used for the non-scratch suballocations. The configuration could be a public struct defined outside of DBM.",
+      "parentUuid": "672b278f_62feaaa2",
+      "range": {
+        "startLine": 74,
+        "startChar": 0,
+        "endLine": 74,
+        "endChar": 23
+      },
+      "revId": "966c34243b4eeafcbe8c8d9aed1689fa87c01ec7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a92ff364_b9ef7167",
         "filename": "src/gpu/graphite/BufferManager.h",
         "patchSetId": 1
