@@ -54,7 +54,7 @@
 #include "tools/graphite/UniqueKeyUtils.h"
 
 // Set this to 1 for more expansive (aka far slower) local testing
-#define EXPANDED_SET 0
+#define EXPANDED_SET 1
 
 // This flag is set to true if during the PaintOption creation an SkPictureShader is created.
 // The SkPictureShader will need an additional program in order to draw the contents of its
@@ -247,11 +247,13 @@ SkMatrix* random_local_matrix(SkRandom* rand, SkMatrix* storage) {
 }
 
 sk_sp<SkImage> make_image(SkRandom* rand, Recorder* recorder) {
-    // TODO: add alpha-only images too
-    SkImageInfo info = SkImageInfo::Make(32, 32,
-                                         SkColorType::kRGBA_8888_SkColorType,
-                                         kPremul_SkAlphaType,
-                                         random_colorspace(rand));
+    SkColorType ct = SkColorType::kRGBA_8888_SkColorType;
+//    if (rand->nextBool()) {
+        ct = SkColorType::kAlpha_8_SkColorType;
+//    }
+
+
+    SkImageInfo info = SkImageInfo::Make(32, 32, ct, kPremul_SkAlphaType, random_colorspace(rand));
 
     SkBitmap bitmap;
     bitmap.allocPixels(info);

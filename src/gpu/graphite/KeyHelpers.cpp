@@ -1214,6 +1214,7 @@ static void add_to_key(const KeyContext& keyContext,
     SkColorInfo workingInfo(dstInfo.colorType(), workingAT, workingCS);
     KeyContextWithColorInfo workingContext(keyContext, workingInfo);
 
+    //$$
     // Use two nested compose blocks to chain (dst->working), child, and (working->dst) together
     // while appearing as one block to the parent node.
     Compose(keyContext, builder, gatherer,
@@ -1498,6 +1499,8 @@ static void add_to_key(const KeyContext& keyContext,
                                                 imageToDraw->alphaType(),
                                                 keyContext.dstColorInfo().colorSpace(),
                                                 keyContext.dstColorInfo().alphaType());
+
+        SkDebugf("isAlphaOnly %d\n", imageToDraw->isAlphaOnly());
 
         if (imageToDraw->isAlphaOnly() && keyContext.scope() != KeyContext::Scope::kRuntimeEffect) {
             Blend(keyContext, builder, gatherer,
