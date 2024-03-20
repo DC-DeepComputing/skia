@@ -1067,6 +1067,8 @@ public:
         }
     }
 
+    int type() const override { return 11; }
+
 private:
     int numChildCombinations() const override {
         int numOptions = 0;
