@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a2ffd97_027890a3",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1314,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-03-20T18:49:08Z",
+      "side": 1,
+      "message": "Is there a bug out there for this or is it simply worth noting?",
+      "range": {
+        "startLine": 1314,
+        "startChar": 11,
+        "endLine": 1314,
+        "endChar": 15
+      },
+      "revId": "6069db98dfe81c2ed5ea648b42b085306ff21550",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
