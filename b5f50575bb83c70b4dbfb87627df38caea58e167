@@ -16,6 +16,93 @@
       "message": "+Greg \u0026 Michael for API change",
       "revId": "b5f50575bb83c70b4dbfb87627df38caea58e167",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d67802b9_299a3b08",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 21
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-03-20T14:40:08Z",
+      "side": 1,
+      "message": "I\u0027m happy with the new SkShaders APIs, but `SkShader.h` already has SkImage and SkTileMode forward declared, so we could define them with the main namespace?",
+      "parentUuid": "abb69bf7_f4270828",
+      "revId": "b5f50575bb83c70b4dbfb87627df38caea58e167",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79d3276f_bfb561fb",
+        "filename": "src/gpu/graphite/FactoryFunctions.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 448,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-03-20T14:40:08Z",
+      "side": 1,
+      "message": "We also need an alpha-only image variant that handles blending.",
+      "range": {
+        "startLine": 448,
+        "startChar": 0,
+        "endLine": 448,
+        "endChar": 79
+      },
+      "revId": "b5f50575bb83c70b4dbfb87627df38caea58e167",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "558aa605_a0d09f40",
+        "filename": "src/gpu/graphite/FactoryFunctions.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 468,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-03-20T14:40:08Z",
+      "side": 1,
+      "message": "nit: Add a comment like \"// Raw images do not perform color space conversion, but in Graphite, this is represented as an identity color space xform, not as a distinct shader\"",
+      "range": {
+        "startLine": 468,
+        "startChar": 0,
+        "endLine": 468,
+        "endChar": 47
+      },
+      "revId": "b5f50575bb83c70b4dbfb87627df38caea58e167",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb9ffb3a_383198b0",
+        "filename": "src/gpu/graphite/FactoryFunctions.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 507,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-03-20T14:40:08Z",
+      "side": 1,
+      "message": "I don\u0027t think this is right. The PictureShader folds its local matrix into the key context and into the local matrix it creates when calling `image-\u003emakeShader()`, so I think we can say that all picture shaders are covered by the set of image shader combinations and get rid of this class entirely?",
+      "range": {
+        "startLine": 507,
+        "startChar": 6,
+        "endLine": 507,
+        "endChar": 26
+      },
+      "revId": "b5f50575bb83c70b4dbfb87627df38caea58e167",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
