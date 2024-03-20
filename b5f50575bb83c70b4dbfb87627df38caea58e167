@@ -101,6 +101,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d3cb11c_98af6bfc",
+        "filename": "src/gpu/graphite/FactoryFunctions.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 448,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-03-20T17:11:45Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "c2ccdb36_bcdf34fe",
+      "range": {
+        "startLine": 448,
+        "startChar": 0,
+        "endLine": 448,
+        "endChar": 79
+      },
+      "revId": "b5f50575bb83c70b4dbfb87627df38caea58e167",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "558aa605_a0d09f40",
@@ -185,6 +209,30 @@
       "side": 1,
       "message": "The PictureShader does go away in https://skia-review.googlesource.com/c/skia/+/827918. However, SkPictureShader::Make wraps an SkPictureShader in a SkLocalMatrixShader. Later, the SkPictureShader is converted into an SkImageShader that is, potentially, wrapped in another SkLocalMatrixShader.",
       "parentUuid": "bb9ffb3a_383198b0",
+      "range": {
+        "startLine": 507,
+        "startChar": 6,
+        "endLine": 507,
+        "endChar": 26
+      },
+      "revId": "b5f50575bb83c70b4dbfb87627df38caea58e167",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a2cea1b9_fe74129a",
+        "filename": "src/gpu/graphite/FactoryFunctions.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 507,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-03-20T17:11:45Z",
+      "side": 1,
+      "message": "Ah gotcha, and normally consecutive local matrix shaders are concatenated in the `SkLocalMatrixShader`, but because the SkImageShader isn\u0027t created until we\u0027ve already appended the picture shader\u0027s local matrix block, they don\u0027t get combined.",
+      "parentUuid": "a37523ec_7f5d7c6a",
       "range": {
         "startLine": 507,
         "startChar": 6,
