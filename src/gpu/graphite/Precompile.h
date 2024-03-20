@@ -118,6 +118,9 @@ public:
 
     virtual bool isConstant() const { return false; }
 
+    // TODO: hide this (and isConstant()) with a "SkShaderBase: public SkShader"-like setup
+    virtual int /*SkShaderBase::ShaderType*/ type() const = 0;
+
     sk_sp<PrecompileShader> makeWithLocalMatrix();
 
     sk_sp<PrecompileShader> makeWithColorFilter(sk_sp<PrecompileColorFilter>);
@@ -132,6 +135,8 @@ class PrecompileColorFilter : public PrecompileBase {
 public:
     PrecompileColorFilter() : PrecompileBase(Type::kColorFilter) {}
 
+    virtual int /*SkShaderBase::ShaderType*/ type() const { return -1; }
+
     sk_sp<PrecompileColorFilter> makeComposed(sk_sp<PrecompileColorFilter> inner) const;
 };
 
@@ -143,6 +148,8 @@ public:
 class PrecompileBlender : public PrecompileBase {
 public:
     PrecompileBlender() : PrecompileBase(Type::kBlender) {}
+
+    virtual int /*SkShaderBase::ShaderType*/ type() const { return -2; }
 
     virtual std::optional<SkBlendMode> asBlendMode() const { return {}; }
 
@@ -188,6 +195,8 @@ public:
 
 private:
     friend class PaintOptionsPriv;
+
+    bool shouldDither() const;
 
     int numShaderCombinations() const;
     int numMaskFilterCombinations() const;

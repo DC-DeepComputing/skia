@@ -251,7 +251,10 @@ bool PaintOption::shouldDither(SkColorType dstCT) const {
     }
 
     // Otherwise, dither is only needed for non-const paints.
-    return fShader.first && !fShader.first->isConstant();
+    bool bar = fShader.first && !fShader.first->isConstant();
+    SkDebugf("bar %d %d\n", bar,
+             fShader.first ? fShader.first.get()->type() : -22);
+    return bar;
 }
 
 void PaintOption::handleDithering(const KeyContext& keyContext,

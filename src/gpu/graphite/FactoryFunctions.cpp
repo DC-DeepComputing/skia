@@ -89,6 +89,8 @@ class PrecompileEmptyShader : public PrecompileShader {
 public:
     PrecompileEmptyShader() {}
 
+    int type() const override { return 1; }
+
 private:
     void addToKey(const KeyContext& keyContext,
                   PaintParamsKeyBuilder* builder,
@@ -110,6 +112,8 @@ sk_sp<PrecompileShader> PrecompileShaders::Empty() {
 class PrecompilePerlinNoiseShader : public PrecompileShader {
 public:
     PrecompilePerlinNoiseShader() {}
+
+    int type() const override { return 2; }
 
 private:
     void addToKey(const KeyContext& keyContext,
@@ -142,6 +146,7 @@ public:
     PrecompileColorShader() {}
 
     bool isConstant() const override { return true; }
+    int type() const override { return 3; }
 
 private:
     void addToKey(const KeyContext& keyContext,
@@ -221,6 +226,8 @@ public:
             fBlenderIndex = 0;
         }
     }
+
+    int type() const override { return 4; }
 
 private:
     int numChildCombinations() const override {
@@ -361,6 +368,8 @@ public:
         }
     }
 
+    int type() const override { return 5; }
+
 private:
     int numChildCombinations() const override {
         return fNumShaderCombos;
@@ -394,6 +403,8 @@ sk_sp<PrecompileShader> PrecompileShaders::CoordClamp(SkSpan<const sk_sp<Precomp
 class PrecompileImageShader : public PrecompileShader {
 public:
     PrecompileImageShader() {}
+
+    int type() const override { return 6; }
 
 private:
     // The ImageShader has 3 variants: hardware-tiled, shader-tiled and cubic sampling
@@ -441,6 +452,8 @@ class PrecompileYUVImageShader : public PrecompileShader {
 public:
     PrecompileYUVImageShader() {}
 
+    int type() const override { return 7; }
+
 private:
     // non-cubic and cubic sampling
     inline static constexpr int kNumIntrinsicCombinations = 2;
@@ -484,6 +497,8 @@ sk_sp<PrecompileShader> PrecompileShaders::Picture() {
 class PrecompileGradientShader : public PrecompileShader {
 public:
     PrecompileGradientShader(SkShaderBase::GradientType type) : fType(type) {}
+
+    int type() const override { return 8; }
 
 private:
     /*
@@ -554,6 +569,8 @@ public:
         }
     }
 
+    int type() const override { return 9; }
+
 private:
     bool isALocalMatrixShader() const override { return true; }
 
@@ -613,6 +630,8 @@ public:
             fNumColorFilterCombos += cf->numCombinations();
         }
     }
+
+    int type() const override { return 10; }
 
 private:
     int numChildCombinations() const override { return fNumShaderCombos * fNumColorFilterCombos; }
@@ -1066,6 +1085,8 @@ public:
             fChildOptions.push_back({ c.begin(), c.end() });
         }
     }
+
+    int type() const override { return 11; }
 
 private:
     int numChildCombinations() const override {

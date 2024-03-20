@@ -45,7 +45,10 @@ bool should_dither(const PaintParams& p, SkColorType dstCT) {
     }
 
     // Otherwise, dither is only needed for non-const paints.
-    return p.shader() && !as_SB(p.shader())->isConstant();
+    bool foo = p.shader() && !as_SB(p.shader())->isConstant();
+    SkDebugf("foo %d %d\n", foo,
+             p.shader() ? (int) as_SB(p.shader())->type() : -1);
+    return foo;
 }
 
 } // anonymous namespace
