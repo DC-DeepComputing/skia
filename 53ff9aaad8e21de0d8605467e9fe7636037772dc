@@ -206,6 +206,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1bbb0b8e_dd554bce",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18114
+      },
+      "writtenOn": "2024-03-20T21:59:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2f1691d9_8d367de5",
+      "revId": "53ff9aaad8e21de0d8605467e9fe7636037772dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1f87c152_424f5541",
@@ -219,6 +237,24 @@
       "writtenOn": "2024-03-15T14:42:46Z",
       "side": 1,
       "message": "I verified manually that this conversion is similar to that done by ui/gfx/color_space through (Inverse(AdjustedRange)*Transfer) as it goes through [this](https://source.chromium.org/chromium/chromium/src/+/main:ui/gfx/color_transform.cc;drc\u003dc292340f0c721cd88f9b14c453c877c55d13ce6b;l\u003d1310) path. Although haven\u0027t confirmed with the other bit depths.",
+      "revId": "53ff9aaad8e21de0d8605467e9fe7636037772dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5336b2d_e489ba59",
+        "filename": "src/core/SkYUVMath.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 18114
+      },
+      "writtenOn": "2024-03-20T21:59:19Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "1f87c152_424f5541",
       "revId": "53ff9aaad8e21de0d8605467e9fe7636037772dc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -272,6 +308,24 @@
       "side": 1,
       "message": "Thanks for pointing this out, this made me do some more digging and understand this better! I compared the output in Skia with that in how color_transform.cc does it through Inverse(Range) * Transform matrices manually and values were similar except those for addY, addUV which were slightly off. \n\nI had earlier incorrectly assumed addUV and chrome05 were same but chrome05 is more accurately as (1 \u003c\u003c (bit - 1) / (1 \u003c\u003c bit) - 1)\n\nIn gfx::ColorSpace for 8-bit limited YCgCo we have Inverse(Range) as:\n```\n|219/255,    0,      0,    16/219|\n|  0,     219/255,   0,    16/219|\n|  0,        0,   219/255, 16/219|\n|  0,        0,      0,       1  |\n```\n\nAnd Transfer for 8-bit limited is:\n```\n| 0.25,  0.5,  0.25,    0   |\n|-0.25,  0.5, -0.25, 128/255|\n| 0.5,    0,  -0.5,  128/255|\n|  0,     0,    0,      1.  |\n```\n\nThus for addY here, we have 219/255 * 0 + 0 * 128/255 + 0 * 128/255 + 16/219 * 1 \u003d 16/219 (as opposed to 16/255 here earlier)\n\nAnd for chrome05, we have (219/255 * 128/255 + 16/219) which is essentially chrome05 * scaleY + addY here.\n\nI have made those changes here. The other values get calculated properly as it is diagonal matrix in gfX::ColorSpace and similar to scalar multiplication.\n\nIt is helpful that while addressing the order issue there is a test with Limited YCgCo color space so when we switch over to this calculation we can verify. I also added a viz unittest here - https://chromium-review.googlesource.com/c/chromium/src/+/5373123 so that will also be useful to see the result/difference visually.",
       "parentUuid": "85945d0d_d1ef4348",
+      "revId": "53ff9aaad8e21de0d8605467e9fe7636037772dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fbb01fa7_03f85475",
+        "filename": "src/core/SkYUVMath.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 399,
+      "author": {
+        "id": 18114
+      },
+      "writtenOn": "2024-03-20T21:59:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1db9d33f_1762d051",
       "revId": "53ff9aaad8e21de0d8605467e9fe7636037772dc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
