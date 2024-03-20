@@ -14,6 +14,7 @@
 #include "include/private/base/SkTemplates.h"
 #include "modules/skresources/include/SkResources.h"
 #include "modules/svg/include/SkSVGIDMapper.h"
+#include "modules/svg/include/SkSVGShaping.h"
 
 class SkCanvas;
 class SkDOM;
@@ -39,11 +40,14 @@ public:
          */
         Builder& setResourceProvider(sk_sp<skresources::ResourceProvider>);
 
+        Builder& setShapingCallbacks(SkSVGShaping::Callbacks);
+
         sk_sp<SkSVGDOM> make(SkStream&) const;
 
     private:
         sk_sp<SkFontMgr>                     fFontMgr;
         sk_sp<skresources::ResourceProvider> fResourceProvider;
+        SkSVGShaping::Callbacks              fCallbacks;
     };
 
     static sk_sp<SkSVGDOM> MakeFromStream(SkStream& str) {
@@ -90,14 +94,14 @@ public:
 
 private:
     SkSVGDOM(sk_sp<SkSVGSVG>, sk_sp<SkFontMgr>, sk_sp<skresources::ResourceProvider>,
-             SkSVGIDMapper&&);
+             SkSVGIDMapper&&, SkSVGShaping::Callbacks);
 
     const sk_sp<SkSVGSVG>                      fRoot;
     const sk_sp<SkFontMgr>                     fFontMgr;
     const sk_sp<skresources::ResourceProvider> fResourceProvider;
     const SkSVGIDMapper                        fIDMapper;
-
-    SkSize                 fContainerSize;
+    SkSize                                     fContainerSize;
+    SkSVGShaping::Callbacks                    fCallbacks;
 };
 
 #endif // SkSVGDOM_DEFINED

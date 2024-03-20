@@ -12,8 +12,8 @@
 #include "modules/svg/include/SkSVGAttributeParser.h"
 #include "modules/svg/include/SkSVGCircle.h"
 #include "modules/svg/include/SkSVGClipPath.h"
-#include "modules/svg/include/SkSVGDOM.h"
 #include "modules/svg/include/SkSVGDefs.h"
+#include "modules/svg/include/SkSVGDOM.h"
 #include "modules/svg/include/SkSVGEllipse.h"
 #include "modules/svg/include/SkSVGFeBlend.h"
 #include "modules/svg/include/SkSVGFeColorMatrix.h"
@@ -22,8 +22,8 @@
 #include "modules/svg/include/SkSVGFeFlood.h"
 #include "modules/svg/include/SkSVGFeGaussianBlur.h"
 #include "modules/svg/include/SkSVGFeImage.h"
-#include "modules/svg/include/SkSVGFeLightSource.h"
 #include "modules/svg/include/SkSVGFeLighting.h"
+#include "modules/svg/include/SkSVGFeLightSource.h"
 #include "modules/svg/include/SkSVGFeMorphology.h"
 #include "modules/svg/include/SkSVGFeOffset.h"
 #include "modules/svg/include/SkSVGFeTurbulence.h"
@@ -40,8 +40,9 @@
 #include "modules/svg/include/SkSVGRadialGradient.h"
 #include "modules/svg/include/SkSVGRect.h"
 #include "modules/svg/include/SkSVGRenderContext.h"
-#include "modules/svg/include/SkSVGSVG.h"
+#include "modules/svg/include/SkSVGShaping.h"
 #include "modules/svg/include/SkSVGStop.h"
+#include "modules/svg/include/SkSVGSVG.h"
 #include "modules/svg/include/SkSVGText.h"
 #include "modules/svg/include/SkSVGTypes.h"
 #include "modules/svg/include/SkSVGUse.h"
@@ -395,6 +396,11 @@ SkSVGDOM::Builder& SkSVGDOM::Builder::setResourceProvider(sk_sp<skresources::Res
     return *this;
 }
 
+SkSVGDOM::Builder& SkSVGDOM::Builder::setShapingCallbacks(SkSVGShaping::Callbacks callbacks) {
+    fCallbacks = callbacks;
+    return *this;
+}
+
 sk_sp<SkSVGDOM> SkSVGDOM::Builder::make(SkStream& str) const {
     TRACE_EVENT0("skia", TRACE_FUNC);
     SkDOM xmlDom;
@@ -417,18 +423,22 @@ sk_sp<SkSVGDOM> SkSVGDOM::Builder::make(SkStream& str) const {
     auto resource_provider = fResourceProvider ? fResourceProvider
                                                : sk_make_sp<NullResourceProvider>();
 
+    auto callbacks = std::get<0>(fCallbacks) ? fCallbacks : SkSVGShaping::Primitive();
+
     return sk_sp<SkSVGDOM>(new SkSVGDOM(sk_sp<SkSVGSVG>(static_cast<SkSVGSVG*>(root.release())),
                                         std::move(fFontMgr), std::move(resource_provider),
-                                        std::move(mapper)));
+                                        std::move(mapper), callbacks));
 }
 
 SkSVGDOM::SkSVGDOM(sk_sp<SkSVGSVG> root, sk_sp<SkFontMgr> fmgr,
-                   sk_sp<skresources::ResourceProvider> rp, SkSVGIDMapper&& mapper)
+                   sk_sp<skresources::ResourceProvider> rp, SkSVGIDMapper&& mapper,
+                   SkSVGShaping::Callbacks callbacks)
     : fRoot(std::move(root))
     , fFontMgr(std::move(fmgr))
     , fResourceProvider(std::move(rp))
     , fIDMapper(std::move(mapper))
     , fContainerSize(fRoot->intrinsicSize(SkSVGLengthContext(SkSize::Make(0, 0))))
+    , fCallbacks(callbacks)
 {
     SkASSERT(fResourceProvider);
 }
@@ -439,7 +449,7 @@ void SkSVGDOM::render(SkCanvas* canvas) const {
         SkSVGLengthContext       lctx(fContainerSize);
         SkSVGPresentationContext pctx;
         fRoot->render(SkSVGRenderContext(canvas, fFontMgr, fResourceProvider, fIDMapper, lctx, pctx,
-                                         {nullptr, nullptr}));
+                                         {nullptr, nullptr}, fCallbacks));
     }
 }
 
@@ -449,7 +459,7 @@ void SkSVGDOM::renderNode(SkCanvas* canvas, SkSVGPresentationContext& pctx, cons
     if (fRoot) {
         SkSVGLengthContext lctx(fContainerSize);
         fRoot->renderNode(SkSVGRenderContext(canvas, fFontMgr, fResourceProvider, fIDMapper,
-                                             lctx, pctx, {nullptr, nullptr}),
+                                             lctx, pctx, {nullptr, nullptr}, fCallbacks),
                           SkSVGIRI(SkSVGIRI::Type::kLocal, SkSVGStringType(id)));
     }
 }

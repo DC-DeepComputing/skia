@@ -16,8 +16,10 @@
 #include "include/core/SkSize.h"
 #include "include/core/SkTypes.h"
 #include "modules/skresources/include/SkResources.h"
+#include "modules/skshaper/include/SkShaper.h"
 #include "modules/svg/include/SkSVGAttribute.h"
 #include "modules/svg/include/SkSVGIDMapper.h"
+#include "modules/svg/include/SkSVGShaping.h"
 #include "src/base/SkTLazy.h"
 #include "src/core/SkTHash.h"
 
@@ -66,10 +68,14 @@ public:
         const SkSVGRenderContext* fCtx;
     };
 
-    SkSVGRenderContext(SkCanvas*, const sk_sp<SkFontMgr>&,
-                       const sk_sp<skresources::ResourceProvider>&, const SkSVGIDMapper&,
-                       const SkSVGLengthContext&, const SkSVGPresentationContext&,
-                       const OBBScope&);
+    SkSVGRenderContext(SkCanvas*,
+                       const sk_sp<SkFontMgr>&,
+                       const sk_sp<skresources::ResourceProvider>&,
+                       const SkSVGIDMapper&,
+                       const SkSVGLengthContext&,
+                       const SkSVGPresentationContext&,
+                       const OBBScope&,
+                       SkSVGShaping::Callbacks);
     SkSVGRenderContext(const SkSVGRenderContext&);
     SkSVGRenderContext(const SkSVGRenderContext&, SkCanvas*);
     // Establish a new OBB scope.  Normally used when entering a node's render scope.
@@ -186,6 +192,7 @@ private:
 
     // Current object bounding box scope.
     const OBBScope                                fOBBScope;
+    SkSVGShaping::Callbacks                fCallbacks;
 };
 
 #endif // SkSVGRenderContext_DEFINED
