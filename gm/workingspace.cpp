@@ -84,11 +84,11 @@ static sk_sp<SkColorFilter> spin(sk_sp<SkColorFilter> cf) {
 }
 
 static sk_sp<SkShader> spin(sk_sp<SkShader> shader) {
-    return shader->makeWithWorkingColorSpace(SkColorSpace::MakeSRGB()->makeColorSpin());
+    return shader->makeWithWorkingColorSpace1(SkColorSpace::MakeSRGB()->makeColorSpin());
 }
 
 static sk_sp<SkShader> linear(sk_sp<SkShader> shader) {
-    return shader->makeWithWorkingColorSpace(SkColorSpace::MakeSRGBLinear());
+    return shader->makeWithWorkingColorSpace1(SkColorSpace::MakeSRGBLinear());
 }
 
 DEF_SIMPLE_GM_CAN_FAIL(workingspace, canvas, errorMsg, 200, 350) {
