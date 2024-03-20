@@ -349,6 +349,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "672b278f_62feaaa2",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-03-20T00:46:28Z",
+      "side": 1,
+      "message": "OK, I have a temporary solution that assumes the buffer type is always a storage buffer (which is currently the case anyway). I\u0027ll upload this shortly.",
+      "parentUuid": "76cc9065_9c2030ac",
+      "range": {
+        "startLine": 74,
+        "startChar": 0,
+        "endLine": 74,
+        "endChar": 23
+      },
+      "revId": "966c34243b4eeafcbe8c8d9aed1689fa87c01ec7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a92ff364_b9ef7167",
         "filename": "src/gpu/graphite/BufferManager.h",
         "patchSetId": 1
