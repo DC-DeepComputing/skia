@@ -14,6 +14,7 @@
 #include "modules/skresources/include/SkResources.h"
 #include "modules/svg/include/SkSVGDOM.h"
 #include "modules/svg/include/SkSVGNode.h"
+#include "modules/svg/include/SkSVGShapingUtils.h"
 #include "src/utils/SkOSPath.h"
 #include "tools/fonts/FontToolUtils.h"
 
@@ -38,7 +39,11 @@ void SvgSlide::load(SkScalar w, SkScalar h) {
             skresources::FileResourceProvider::Make(SkOSPath::Dirname(fPath.c_str()), predecode),
             predecode, ToolUtils::TestFontMgr());
 
-    fDom = SkSVGDOM::Builder().setFontManager(ToolUtils::TestFontMgr()).setResourceProvider(std::move(rp)).make(*stream);
+    fDom = SkSVGDOM::Builder()
+                   .setFontManager(ToolUtils::TestFontMgr())
+                   .setResourceProvider(std::move(rp))
+                   .setShapingCallbacks(SkSVGShaping::BestAvailable())
+                   .make(*stream);
 
     if (fDom) {
         fDom->setContainerSize(SkSize::Make(w, h));
