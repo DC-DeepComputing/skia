@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ca2fb80_2f96df06",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 2
+      },
+      "lineNbr": 745,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-21T14:19:59Z",
+      "side": 1,
+      "message": "nit: no idea about what this indentation is \"supposed to be\" but it now looks strange.",
+      "range": {
+        "startLine": 745,
+        "startChar": 16,
+        "endLine": 745,
+        "endChar": 24
+      },
+      "revId": "63f93eef777a305fc3a2dddf509faec0a25689ca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
