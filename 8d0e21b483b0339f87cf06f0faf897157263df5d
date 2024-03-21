@@ -1,0 +1,510 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "749f9043_6fd8817a",
+        "filename": "src/core/SkRasterPipeline.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-21T14:27:22Z",
+      "side": 1,
+      "message": "nit: line length must be \u003c\u003d 100 chars",
+      "range": {
+        "startLine": 29,
+        "startChar": 94,
+        "endLine": 29,
+        "endChar": 95
+      },
+      "revId": "8d0e21b483b0339f87cf06f0faf897157263df5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b0a7a42_8ff569fb",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 925,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-21T14:27:22Z",
+      "side": 1,
+      "message": "nit: open braces should be on same line as close parens.\n\n`) {`",
+      "range": {
+        "startLine": 924,
+        "startChar": 47,
+        "endLine": 925,
+        "endChar": 5
+      },
+      "revId": "8d0e21b483b0339f87cf06f0faf897157263df5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2264202_da90d175",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 932,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-21T14:27:22Z",
+      "side": 1,
+      "message": "nit: open braces should be on same line as close parens.",
+      "range": {
+        "startLine": 932,
+        "startChar": 4,
+        "endLine": 932,
+        "endChar": 5
+      },
+      "revId": "8d0e21b483b0339f87cf06f0faf897157263df5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec7abb39_523e656c",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 953,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-21T14:27:22Z",
+      "side": 1,
+      "message": "Does LSX/LASX support FMADD?\n\nhttps://loongson.github.io/LoongArch-Documentation/LoongArch-Vol1-EN.html#_fmaddmsubnmaddnmsub_sd",
+      "range": {
+        "startLine": 953,
+        "startChar": 0,
+        "endLine": 953,
+        "endChar": 74
+      },
+      "revId": "8d0e21b483b0339f87cf06f0faf897157263df5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9944c457_2714545c",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 954,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-21T14:27:22Z",
+      "side": 1,
+      "message": "FNMADD?\n\nhttps://loongson.github.io/LoongArch-Documentation/LoongArch-Vol1-EN.html#_fmaddmsubnmaddnmsub_sd",
+      "range": {
+        "startLine": 954,
+        "startChar": 0,
+        "endLine": 954,
+        "endChar": 74
+      },
+      "revId": "8d0e21b483b0339f87cf06f0faf897157263df5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8186955c_a5a75f21",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 955,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-21T14:27:22Z",
+      "side": 1,
+      "message": "FABS?\n\nhttps://loongson.github.io/LoongArch-Documentation/LoongArch-Vol1-EN.html#_fabsneg_sd",
+      "range": {
+        "startLine": 955,
+        "startChar": 0,
+        "endLine": 955,
+        "endChar": 82
+      },
+      "revId": "8d0e21b483b0339f87cf06f0faf897157263df5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eff1b4a7_856ad4e8",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 958,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-21T14:27:22Z",
+      "side": 1,
+      "message": "`nmad`?",
+      "range": {
+        "startLine": 958,
+        "startChar": 66,
+        "endLine": 958,
+        "endChar": 80
+      },
+      "revId": "8d0e21b483b0339f87cf06f0faf897157263df5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "37f3763f_c5362f77",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 964,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-21T14:27:22Z",
+      "side": 1,
+      "message": "Isn\u0027t this just `v + t`?",
+      "range": {
+        "startLine": 964,
+        "startChar": 36,
+        "endLine": 964,
+        "endChar": 48
+      },
+      "revId": "8d0e21b483b0339f87cf06f0faf897157263df5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a4dc5ef_6885a5e0",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 969,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-21T14:27:22Z",
+      "side": 1,
+      "message": "`v + t`?",
+      "range": {
+        "startLine": 969,
+        "startChar": 36,
+        "endLine": 969,
+        "endChar": 48
+      },
+      "revId": "8d0e21b483b0339f87cf06f0faf897157263df5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f4f94d6_2429779e",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 990,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-21T14:27:22Z",
+      "side": 1,
+      "message": "How does codegen compare to `(retv[0] | retv[4]) !\u003d 0b0000`?",
+      "range": {
+        "startLine": 990,
+        "startChar": 15,
+        "endLine": 990,
+        "endChar": 57
+      },
+      "revId": "8d0e21b483b0339f87cf06f0faf897157263df5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9230faf_8ba2ae3c",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 995,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-21T14:27:22Z",
+      "side": 1,
+      "message": "How does codegen compare to `(retv[0] \u0026 retv[4]) \u003d\u003d 0b1111`?",
+      "range": {
+        "startLine": 995,
+        "startChar": 15,
+        "endLine": 995,
+        "endChar": 58
+      },
+      "revId": "8d0e21b483b0339f87cf06f0faf897157263df5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a8392e39_3215361d",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1030,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-21T14:27:22Z",
+      "side": 1,
+      "message": "nit: missing space\n\n`, 15`",
+      "range": {
+        "startLine": 1030,
+        "startChar": 85,
+        "endLine": 1030,
+        "endChar": 88
+      },
+      "revId": "8d0e21b483b0339f87cf06f0faf897157263df5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c26c04fa_a35d0d45",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1139,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-21T14:27:22Z",
+      "side": 1,
+      "message": "nit: missing space\n\n`) {`",
+      "range": {
+        "startLine": 1139,
+        "startChar": 37,
+        "endLine": 1139,
+        "endChar": 39
+      },
+      "revId": "8d0e21b483b0339f87cf06f0faf897157263df5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8326aab0_8708b146",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1154,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-21T14:27:22Z",
+      "side": 1,
+      "message": "Lots of this looks copy-pasted from the LASX section, so the same comments apply.",
+      "range": {
+        "startLine": 1154,
+        "startChar": 41,
+        "endLine": 1154,
+        "endChar": 46
+      },
+      "revId": "8d0e21b483b0339f87cf06f0faf897157263df5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "deec707e_d06994f1",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1223,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-21T14:27:22Z",
+      "side": 1,
+      "message": "nit: fix alignment",
+      "range": {
+        "startLine": 1223,
+        "startChar": 55,
+        "endLine": 1223,
+        "endChar": 57
+      },
+      "revId": "8d0e21b483b0339f87cf06f0faf897157263df5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c161caee_d77b93bd",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1506,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-21T14:27:22Z",
+      "side": 1,
+      "message": "Just merge into the previous `#elif` block",
+      "range": {
+        "startLine": 1506,
+        "startChar": 14,
+        "endLine": 1506,
+        "endChar": 30
+      },
+      "revId": "8d0e21b483b0339f87cf06f0faf897157263df5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e15e8721_0b914932",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 3384,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-21T14:27:22Z",
+      "side": 1,
+      "message": "nit: spaces\n\n`\u003c\u003d 4) {`",
+      "range": {
+        "startLine": 3384,
+        "startChar": 21,
+        "endLine": 3384,
+        "endChar": 26
+      },
+      "revId": "8d0e21b483b0339f87cf06f0faf897157263df5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47b213ef_d5443f2e",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 5857,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-21T14:27:22Z",
+      "side": 1,
+      "message": "Fix comment",
+      "range": {
+        "startLine": 5857,
+        "startChar": 45,
+        "endLine": 5857,
+        "endChar": 64
+      },
+      "revId": "8d0e21b483b0339f87cf06f0faf897157263df5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6977a54d_6061d360",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 5880,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-21T14:27:22Z",
+      "side": 1,
+      "message": "Why is this here??",
+      "range": {
+        "startLine": 5872,
+        "startChar": 0,
+        "endLine": 5880,
+        "endChar": 0
+      },
+      "revId": "8d0e21b483b0339f87cf06f0faf897157263df5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70b1598e_06ee449f",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 5904,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-21T14:27:22Z",
+      "side": 1,
+      "message": "Delete me?",
+      "range": {
+        "startLine": 5893,
+        "startChar": 0,
+        "endLine": 5904,
+        "endChar": 0
+      },
+      "revId": "8d0e21b483b0339f87cf06f0faf897157263df5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e11bb371_eadd2e9a",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 6125,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-21T14:27:22Z",
+      "side": 1,
+      "message": "Curious: why is this not good enough on LASX?",
+      "range": {
+        "startLine": 6125,
+        "startChar": 0,
+        "endLine": 6125,
+        "endChar": 28
+      },
+      "revId": "8d0e21b483b0339f87cf06f0faf897157263df5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41d1463d_459f46b7",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 6364,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-21T14:27:22Z",
+      "side": 1,
+      "message": "nit: `\u003c\u003d 8`",
+      "range": {
+        "startLine": 6364,
+        "startChar": 21,
+        "endLine": 6364,
+        "endChar": 25
+      },
+      "revId": "8d0e21b483b0339f87cf06f0faf897157263df5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
