@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "284c1d2b_c868a0fb",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 5918,
+      "author": {
+        "id": 21814
+      },
+      "writtenOn": "2024-03-21T09:06:26Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "fee9ad26_609ef4e4",
+      "revId": "ff3199348aab70fa1dc86590d7f39e72fb5551ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f90c3096_77e30004",
@@ -31,6 +49,24 @@
       "writtenOn": "2024-03-19T19:22:26Z",
       "side": 0,
       "message": "nit: undo",
+      "revId": "ff3199348aab70fa1dc86590d7f39e72fb5551ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a7b253f_1bc9b6d5",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 5935,
+      "author": {
+        "id": 21814
+      },
+      "writtenOn": "2024-03-21T09:06:26Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "f90c3096_77e30004",
       "revId": "ff3199348aab70fa1dc86590d7f39e72fb5551ff",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }

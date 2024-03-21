@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bb284642_41b697b4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 21814
+      },
+      "writtenOn": "2024-03-21T09:06:26Z",
+      "side": 1,
+      "message": "1.Yes, this parameter ```no-lax-vector-conversion``` could cause the header file to fail to compile, so we removed it.\n\n\n2.I have uploaded smaller CLs[1]. Thank you for your review.\n\n[1]https://skia-review.googlesource.com/c/skia/+/829877",
+      "parentUuid": "da423186_5072ff22",
+      "revId": "c377e73a56a4214ebaa6c3fbcef28258eaef8450",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2fa26e70_84723cb0",
         "filename": "include/private/base/SkFeatures.h",
         "patchSetId": 4
@@ -49,6 +67,30 @@
       "writtenOn": "2024-03-19T18:56:09Z",
       "side": 1,
       "message": "These should be in a separate section; this section is for SSE/AVX.\n```suggestion\n\n/**\n *  SK_CPU_LSX_LEVEL\n *\n *  If defined, SK_CPU_LSX_LEVEL should be set to the highest supported level.\n *  On non-loongarch CPU this should be undefined.\n */\n#define SK_CPU_LSX_LEVEL_LSX      70\n#define SK_CPU_LSX_LEVEL_LASX     80\n\n```",
+      "range": {
+        "startLine": 87,
+        "startChar": 0,
+        "endLine": 89,
+        "endChar": 0
+      },
+      "revId": "c377e73a56a4214ebaa6c3fbcef28258eaef8450",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2084d245_a2001509",
+        "filename": "include/private/base/SkFeatures.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 21814
+      },
+      "writtenOn": "2024-03-21T09:06:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2fa26e70_84723cb0",
       "range": {
         "startLine": 87,
         "startChar": 0,
@@ -82,6 +124,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba1fc91a_2e0d9601",
+        "filename": "src/base/SkVx.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 568,
+      "author": {
+        "id": 21814
+      },
+      "writtenOn": "2024-03-21T09:06:26Z",
+      "side": 1,
+      "message": "Thank you for your suggestion, I have made the changes in a smaller CL.",
+      "parentUuid": "4ac74860_d8687f6e",
+      "range": {
+        "startLine": 568,
+        "startChar": 15,
+        "endLine": 568,
+        "endChar": 58
+      },
+      "revId": "c377e73a56a4214ebaa6c3fbcef28258eaef8450",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c9160123_5a839f8f",
@@ -95,6 +161,30 @@
       "writtenOn": "2024-03-19T19:12:57Z",
       "side": 1,
       "message": "nit: Shouldn\u0027t this be indented further, under `__lsx_vldi`?",
+      "range": {
+        "startLine": 574,
+        "startChar": 44,
+        "endLine": 574,
+        "endChar": 67
+      },
+      "revId": "c377e73a56a4214ebaa6c3fbcef28258eaef8450",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "95ac422d_bcd19246",
+        "filename": "src/base/SkVx.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 574,
+      "author": {
+        "id": 21814
+      },
+      "writtenOn": "2024-03-21T09:06:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c9160123_5a839f8f",
       "range": {
         "startLine": 574,
         "startChar": 44,
@@ -128,6 +218,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d898b95_b99321cf",
+        "filename": "src/base/SkVx.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 611,
+      "author": {
+        "id": 21814
+      },
+      "writtenOn": "2024-03-21T09:06:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f0dfda36_a8934198",
+      "range": {
+        "startLine": 611,
+        "startChar": 8,
+        "endLine": 611,
+        "endChar": 58
+      },
+      "revId": "c377e73a56a4214ebaa6c3fbcef28258eaef8450",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "10094cd4_8d28c5ac",
@@ -141,6 +255,30 @@
       "writtenOn": "2024-03-19T19:12:57Z",
       "side": 1,
       "message": "nit: Indentation?",
+      "range": {
+        "startLine": 617,
+        "startChar": 44,
+        "endLine": 617,
+        "endChar": 55
+      },
+      "revId": "c377e73a56a4214ebaa6c3fbcef28258eaef8450",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e26a3109_772d9b57",
+        "filename": "src/base/SkVx.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 617,
+      "author": {
+        "id": 21814
+      },
+      "writtenOn": "2024-03-21T09:06:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "10094cd4_8d28c5ac",
       "range": {
         "startLine": 617,
         "startChar": 44,
@@ -174,6 +312,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d1826c9_01867e98",
+        "filename": "src/base/SkVx.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 835,
+      "author": {
+        "id": 21814
+      },
+      "writtenOn": "2024-03-21T09:06:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2ab9c0d6_d89bc720",
+      "range": {
+        "startLine": 835,
+        "startChar": 95,
+        "endLine": 835,
+        "endChar": 111
+      },
+      "revId": "c377e73a56a4214ebaa6c3fbcef28258eaef8450",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d4b23b70_f4efea21",
@@ -187,6 +349,30 @@
       "writtenOn": "2024-03-19T19:22:26Z",
       "side": 1,
       "message": "nit: `\u003c\u003d 8` (missing space)",
+      "range": {
+        "startLine": 6365,
+        "startChar": 21,
+        "endLine": 6365,
+        "endChar": 24
+      },
+      "revId": "c377e73a56a4214ebaa6c3fbcef28258eaef8450",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5a04c550_aa342645",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 6365,
+      "author": {
+        "id": 21814
+      },
+      "writtenOn": "2024-03-21T09:06:26Z",
+      "side": 1,
+      "message": "Thanks, when I modified this code, I found that HSW was also missing a space at the same place.",
+      "parentUuid": "d4b23b70_f4efea21",
       "range": {
         "startLine": 6365,
         "startChar": 21,
