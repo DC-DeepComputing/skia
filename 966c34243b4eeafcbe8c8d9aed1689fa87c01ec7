@@ -65,6 +65,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e291d7cc_f3678dc4",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-03-21T18:24:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cb2d9db5_60832fd1",
+      "range": {
+        "startLine": 107,
+        "startChar": 8,
+        "endLine": 107,
+        "endChar": 12
+      },
+      "revId": "966c34243b4eeafcbe8c8d9aed1689fa87c01ec7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ceaad6ad_918f312e",
