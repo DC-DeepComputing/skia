@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6579b797_4514f23b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-21T18:05:55Z",
+      "side": 1,
+      "message": "Is there a cleaner way to write this? I keep running into limitations with cxx. I haven\u0027t actually verified that this is faster yet though I suspect it should be. Also, the real win would be to pass through the glyph array so that multiple code point to glyph mappings can be done with one Charmap, since even with MappingIndex there is still some work to set up the Charmap.",
+      "revId": "f9fed1b5530fcd99fbe6c237ecbecde14e1457c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
