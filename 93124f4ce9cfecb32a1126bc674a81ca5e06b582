@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "73787946_57dd03ad",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 21814
+      },
+      "writtenOn": "2024-03-21T08:32:14Z",
+      "side": 1,
+      "message": "This is the first CL of \"Add vector support for LoongArch\", thank you for your review.",
+      "revId": "93124f4ce9cfecb32a1126bc674a81ca5e06b582",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
