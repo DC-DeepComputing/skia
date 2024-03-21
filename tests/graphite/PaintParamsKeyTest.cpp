@@ -247,11 +247,13 @@ SkMatrix* random_local_matrix(SkRandom* rand, SkMatrix* storage) {
 }
 
 sk_sp<SkImage> make_image(SkRandom* rand, Recorder* recorder) {
-    // TODO: add alpha-only images too
-    SkImageInfo info = SkImageInfo::Make(32, 32,
-                                         SkColorType::kRGBA_8888_SkColorType,
-                                         kPremul_SkAlphaType,
-                                         random_colorspace(rand));
+    SkColorType ct = SkColorType::kRGBA_8888_SkColorType;
+//    if (rand->nextBool()) {
+        ct = SkColorType::kAlpha_8_SkColorType;
+//    }
+
+
+    SkImageInfo info = SkImageInfo::Make(32, 32, ct, kPremul_SkAlphaType, random_colorspace(rand));
 
     SkBitmap bitmap;
     bitmap.allocPixels(info);
@@ -1101,7 +1103,7 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
 #endif
     };
 
-#if EXPANDED_SET
+#if 1
     size_t kExpected = std::size(shaders) * std::size(blenders) * std::size(colorFilters);
     int current = 0;
 #endif
@@ -1110,7 +1112,7 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
         for (auto bm : blenders) {
             for (auto cf : colorFilters) {
 
-#if EXPANDED_SET
+#if 1
                 SkDebugf("%d/%zu\n", current, kExpected);
                 ++current;
 #endif
@@ -1222,7 +1224,7 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
         }
     }
 
-#if EXPANDED_SET
+#if 1
     SkASSERT(current == (int) kExpected);
 #endif
 }

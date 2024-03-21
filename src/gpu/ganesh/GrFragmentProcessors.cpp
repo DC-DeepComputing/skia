@@ -633,7 +633,7 @@ static std::unique_ptr<GrFragmentProcessor> make_shader_fp(const SkImageShader* 
     }
     fp = GrMatrixEffect::Make(total, std::move(fp));
 
-    if (!shader->isRaw()) {
+    if (!shader->isRaw1()) {
         fp = GrColorSpaceXformEffect::Make(std::move(fp),
                                            shader->image()->colorSpace(),
                                            shader->image()->alphaType(),
