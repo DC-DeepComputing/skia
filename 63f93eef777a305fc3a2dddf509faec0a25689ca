@@ -22,6 +22,30 @@
       },
       "revId": "63f93eef777a305fc3a2dddf509faec0a25689ca",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a0f362a_4c095812",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 2
+      },
+      "lineNbr": 745,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-03-21T16:02:16Z",
+      "side": 1,
+      "message": "Not sure why `cargo fmt` produces this result, but moving the comment to the end of the line makes this perhaps more natural, updated.",
+      "parentUuid": "7ca2fb80_2f96df06",
+      "range": {
+        "startLine": 745,
+        "startChar": 16,
+        "endLine": 745,
+        "endChar": 24
+      },
+      "revId": "63f93eef777a305fc3a2dddf509faec0a25689ca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
