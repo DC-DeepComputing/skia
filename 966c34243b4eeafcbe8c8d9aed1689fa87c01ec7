@@ -395,6 +395,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9a12bf4_01fb8cc6",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-03-21T18:24:16Z",
+      "side": 1,
+      "message": "That\u0027s a good suggestion. I filed b/330743233 to track the follow up work.",
+      "parentUuid": "abf85365_878eaeb0",
+      "range": {
+        "startLine": 74,
+        "startChar": 0,
+        "endLine": 74,
+        "endChar": 23
+      },
+      "revId": "966c34243b4eeafcbe8c8d9aed1689fa87c01ec7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a92ff364_b9ef7167",
