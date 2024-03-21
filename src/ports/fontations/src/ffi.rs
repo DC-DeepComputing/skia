@@ -35,6 +35,19 @@ fn num_glyphs(font_ref: &BridgeFontRef) -> u16 {
         .unwrap_or_default()
 }
 
+fn fill_glyph_to_unicode_map(font_ref: &BridgeFontRef, map: &mut [u32]) {
+    map.fill(0);
+    font_ref.with_font(|f| {
+        let mappings = f.charmap().mappings();
+        for item in mappings {
+            if map[item.1.to_u16() as usize] == 0 {
+                map[item.1.to_u16() as usize] = item.0;
+            }
+        }
+        Some(())
+    });
+}
+
 struct PathWrapperPen<'a> {
     path_wrapper: Pin<&'a mut ffi::PathWrapper>,
 }
@@ -702,7 +715,7 @@ fn resolve_into_normalized_coords(
     Box::new(bridge_normalized_coords)
 }
 
-fn normalized_coords_equal(a : &BridgeNormalizedCoords, b: &BridgeNormalizedCoords) -> bool {
+fn normalized_coords_equal(a: &BridgeNormalizedCoords, b: &BridgeNormalizedCoords) -> bool {
     a.normalized_coords.coords() == b.normalized_coords.coords()
 }
 
@@ -1213,6 +1226,7 @@ mod ffi {
             coords: &BridgeNormalizedCoords,
         ) -> Metrics;
         fn num_glyphs(font_ref: &BridgeFontRef) -> u16;
+        fn fill_glyph_to_unicode_map(font_ref: &BridgeFontRef, map: &mut [u32]);
         fn family_name(font_ref: &BridgeFontRef) -> String;
         fn postscript_name(font_ref: &BridgeFontRef, out_string: &mut String) -> bool;
 
@@ -1270,7 +1284,7 @@ mod ffi {
             design_coords: &[SkiaDesignCoordinate],
         ) -> Box<BridgeNormalizedCoords>;
 
-        fn normalized_coords_equal(a : &BridgeNormalizedCoords, b: &BridgeNormalizedCoords) -> bool;
+        fn normalized_coords_equal(a: &BridgeNormalizedCoords, b: &BridgeNormalizedCoords) -> bool;
 
         fn draw_colr_glyph(
             font_ref: &BridgeFontRef,
