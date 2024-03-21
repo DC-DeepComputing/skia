@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "32e71d97_2c8df6a4",
+        "filename": "src/core/SkBlitRow_D32.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 368,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-21T17:32:43Z",
+      "side": 1,
+      "message": "Oops, never mind, this is integer data.",
+      "parentUuid": "71ace9a9_3a71febb",
+      "range": {
+        "startLine": 362,
+        "startChar": 0,
+        "endLine": 368,
+        "endChar": 0
+      },
+      "revId": "29730bf20a54f175f7620056ed22259f63f1f99d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0109f53e_c5caf8f3",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-03-21T17:27:35Z",
       "side": 1,
       "message": "Seems like these could be combined into `__lsx_vmadd_h`?\n```suggestion\n        dst_rb \u003d __lsx_vmadd_h(dst_rb, dst_scale, src_rb);\n        dst_ag \u003d __lsx_vmadd_h(dst_ag, dst_scale, src_ag);\n```",
+      "range": {
+        "startLine": 482,
+        "startChar": 0,
+        "endLine": 488,
+        "endChar": 0
+      },
+      "revId": "29730bf20a54f175f7620056ed22259f63f1f99d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "93351b8e_fb57f05d",
+        "filename": "src/core/SkBlitRow_D32.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 488,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-21T17:32:43Z",
+      "side": 1,
+      "message": "Oops, never mind, this is integer data.",
+      "parentUuid": "0109f53e_c5caf8f3",
       "range": {
         "startLine": 482,
         "startChar": 0,
