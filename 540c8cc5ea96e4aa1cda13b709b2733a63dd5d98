@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3911eb31_323b3f01",
+        "filename": "src/base/SkVx.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 836,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-21T14:32:28Z",
+      "side": 1,
+      "message": "nit: indent",
+      "range": {
+        "startLine": 836,
+        "startChar": 0,
+        "endLine": 836,
+        "endChar": 44
+      },
+      "revId": "540c8cc5ea96e4aa1cda13b709b2733a63dd5d98",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
