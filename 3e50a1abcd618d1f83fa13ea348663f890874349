@@ -16,6 +16,23 @@
       "message": "PTAL.",
       "revId": "3e50a1abcd618d1f83fa13ea348663f890874349",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb3887a9_f2f05171",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-03-21T18:29:33Z",
+      "side": 1,
+      "message": "This is essentially a copy of MetalWindowContext_ios, but derives from GraphiteMetalWindowContext instead so we set up for Graphite, and turns framebufferOnly off.",
+      "revId": "3e50a1abcd618d1f83fa13ea348663f890874349",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
