@@ -133,11 +133,11 @@ bool SkShaderBase::appendRootStages(const SkStageRec& rec, const SkMatrix& ctm) 
     return this->appendStages(rec, SkShaders::MatrixRec(ctm));
 }
 
-sk_sp<SkShader> SkShaderBase::makeWithCTM(const SkMatrix& postM) const {
-    return sk_sp<SkShader>(new SkCTMShader(sk_ref_sp(this), postM));
+sk_sp<SkShader> SkShaderBase::makeWithCTM1(const SkMatrix& postM) const {
+    return sk_sp<SkShader>(new SkCTMShader(sk_ref_sp(this), postM, true));
 }
 
 // need a cheap way to invert the alpha channel of a shader (i.e. 1 - a)
-sk_sp<SkShader> SkShaderBase::makeInvertAlpha() const {
+sk_sp<SkShader> SkShaderBase::makeInvertAlpha1() const {
     return this->makeWithColorFilter(SkColorFilters::Blend(0xFFFFFFFF, SkBlendMode::kSrcOut));
 }

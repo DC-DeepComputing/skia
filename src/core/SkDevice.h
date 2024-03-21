@@ -249,9 +249,9 @@ public:
     virtual void clipRegion(const SkRegion& region, SkClipOp op) = 0;
 
     void clipShader(sk_sp<SkShader> sh, SkClipOp op) {
-        sh = as_SB(sh)->makeWithCTM(this->localToDevice());
+        sh = as_SB(sh)->makeWithCTM1(this->localToDevice());
         if (op == SkClipOp::kDifference) {
-            sh = as_SB(sh)->makeInvertAlpha();
+            sh = as_SB(sh)->makeInvertAlpha1();
         }
         this->onClipShader(std::move(sh));
     }
