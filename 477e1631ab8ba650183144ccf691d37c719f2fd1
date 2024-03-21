@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93412dcd_e3cb7898",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-03-21T17:15:41Z",
+      "side": 1,
+      "message": "If you want to take an initial pass at what this looks like - I\u0027m sketching out the Bazel modules for SVG to make sure this works for Bazel too (although I\u0027m optimistic because of my POC CL http://cl/616908496)",
+      "revId": "477e1631ab8ba650183144ccf691d37c719f2fd1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
