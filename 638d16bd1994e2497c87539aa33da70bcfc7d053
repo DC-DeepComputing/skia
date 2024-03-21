@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b14970ae_83456514",
+        "filename": "src/opts/SkSwizzler_opts.inc",
+        "patchSetId": 1
+      },
+      "lineNbr": 1428,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-03-21T21:09:43Z",
+      "side": 1,
+      "message": "Is this an old comment that can be deleted?",
+      "range": {
+        "startLine": 1428,
+        "startChar": 0,
+        "endLine": 1428,
+        "endChar": 6
+      },
+      "revId": "638d16bd1994e2497c87539aa33da70bcfc7d053",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
