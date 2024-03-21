@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92f4051e_dc3e31a3",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-03-21T14:44:44Z",
+      "side": 1,
+      "message": "Would we want any of these assertions present in release builds as well?",
+      "range": {
+        "startLine": 85,
+        "startChar": 0,
+        "endLine": 87,
+        "endChar": 21
+      },
+      "revId": "eae5b780324fcdbb041e858e421a3d18663b77a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "410c6c1b_48b352e1",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-03-21T14:44:44Z",
+      "side": 1,
+      "message": "Are there bugs for each of these TODOs, or at least a general cleanup/improvement bug we could add here that enumerates all the changes we are wanting to make to the BufferManager?",
+      "range": {
+        "startLine": 193,
+        "startChar": 0,
+        "endLine": 199,
+        "endChar": 70
+      },
+      "revId": "eae5b780324fcdbb041e858e421a3d18663b77a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
