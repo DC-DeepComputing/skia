@@ -61,7 +61,7 @@ bool SkLocalMatrixShader::appendStages(const SkStageRec& rec,
 
 ////////////////////////////////////////////////////////////////////
 
-SkCTMShader::SkCTMShader(sk_sp<SkShader> proxy, const SkMatrix& ctm)
+SkCTMShader::SkCTMShader(sk_sp<SkShader> proxy, const SkMatrix& ctm, bool)
         : fProxyShader(std::move(proxy)), fCTM(ctm) {}
 
 SkShaderBase::GradientType SkCTMShader::asGradient(GradientInfo* info,
