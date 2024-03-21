@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9fdd0c42_89323e41",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-03-21T19:33:53Z",
+      "side": 1,
+      "message": "You *might* not need this CL. The `_general` functions still use SIMD, (`Sk4px, which uses `skvx`), and on x64 machines, we\u0027ve found that\u0027s good enough. I suggest only adding this code if it really helps (this code is all for text rendering, so that\u0027s where you would see the performance change).",
+      "revId": "aa9913056119b06c49d361591322e41b4b3fb8b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
