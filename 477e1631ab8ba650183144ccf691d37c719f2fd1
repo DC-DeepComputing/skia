@@ -16,6 +16,86 @@
       "message": "If you want to take an initial pass at what this looks like - I\u0027m sketching out the Bazel modules for SVG to make sure this works for Bazel too (although I\u0027m optimistic because of my POC CL http://cl/616908496)",
       "revId": "477e1631ab8ba650183144ccf691d37c719f2fd1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6612e708_ba0db856",
+        "filename": "modules/svg/include/SkSVGDOM.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-21T20:14:35Z",
+      "side": 1,
+      "message": "setTextShapingCallbacks",
+      "range": {
+        "startLine": 47,
+        "startChar": 17,
+        "endLine": 47,
+        "endChar": 36
+      },
+      "revId": "477e1631ab8ba650183144ccf691d37c719f2fd1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0f9394a_b64c0c00",
+        "filename": "modules/svg/include/SkSVGShaping.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-21T20:14:35Z",
+      "side": 1,
+      "message": "SkSVGTextShaping.h",
+      "revId": "477e1631ab8ba650183144ccf691d37c719f2fd1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "30bced04_f003c049",
+        "filename": "modules/svg/include/SkSVGShaping.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-21T20:14:35Z",
+      "side": 1,
+      "message": "`SkSVGTextShaping` The issue is just that \"Shape\" can mean a lot of things with respect to SVG, so it seems like a good idea to be a bit more specific here.",
+      "range": {
+        "startLine": 16,
+        "startChar": 10,
+        "endLine": 16,
+        "endChar": 22
+      },
+      "revId": "477e1631ab8ba650183144ccf691d37c719f2fd1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a7e7e77_a73fcab2",
+        "filename": "modules/svg/include/SkSVGShaping.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-21T20:14:35Z",
+      "side": 1,
+      "message": "This looks like a very heavy way to specify an interface like\n\n```\nclass Callbacks {\n    std::unique_ptr\u003cSkShaper\u003e makeShaper(sk_sp\u003cSkFontMgr\u003e fallback)\u003e \u003d 0;\n    std::unique_ptr\u003cSkShaper::BiDiRunIterator\u003e makeBiDiIterator(\n        const char* utf8, size_t utf8Bytes, uint8_t bidiLevel) \u003d 0;\n    std::unique_ptr\u003cSkShaper::ScriptRunIterator\u003e makeScriptIterator(\n        const char* utf8, size_t utf8Bytes)\u003e \u003d 0;\n};\n````\n\nAlso, just passing this around by value would be just as heavy as (or less heavy than) passing around the tuple by value, but it seems if these Callbacks have state it might be better to move them or reference them somehow? Also, this class is kind of the definition of a Factory, which is a special kind of callback, so that might be a better name.",
+      "revId": "477e1631ab8ba650183144ccf691d37c719f2fd1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
