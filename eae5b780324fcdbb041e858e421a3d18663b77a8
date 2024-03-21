@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4237c84b_598dc8db",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-03-21T18:47:40Z",
+      "side": 1,
+      "message": "AFAICT there\u0027s no rule of thumb. However, if you have no reason to suspect that these assertions should ever really be false (ie, only Skia internally interacts with this ctor and there\u0027s input validation present before calling it or after when performing operations w/ those member attributes) and they\u0027re moreso just added for insurance, it\u0027s probably fine to keep it as-is.\n\nIf we do not end up asserting these in release builds though, then I would expect that we check for potential nullptrs or invalid values within other methods as a safeguard to avoid undefined behavior.\n\nMichael might have more thoughts on the matter :D",
+      "parentUuid": "8b0b6970_fe1d4b5c",
+      "range": {
+        "startLine": 85,
+        "startChar": 0,
+        "endLine": 87,
+        "endChar": 21
+      },
+      "revId": "eae5b780324fcdbb041e858e421a3d18663b77a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "410c6c1b_48b352e1",
         "filename": "src/gpu/graphite/BufferManager.h",
         "patchSetId": 2
