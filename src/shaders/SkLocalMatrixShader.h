@@ -93,7 +93,7 @@ private:
  */
 class SkCTMShader final : public SkShaderBase {
 public:
-    SkCTMShader(sk_sp<SkShader> proxy, const SkMatrix& ctm);
+    SkCTMShader(sk_sp<SkShader> proxy, const SkMatrix& ctm, bool);
 
     GradientType asGradient(GradientInfo* info, SkMatrix* localMatrix) const override;
 
