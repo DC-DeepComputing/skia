@@ -1214,6 +1214,7 @@ static void add_to_key(const KeyContext& keyContext,
     SkColorInfo workingInfo(dstInfo.colorType(), workingAT, workingCS);
     KeyContextWithColorInfo workingContext(keyContext, workingInfo);
 
+    //$$
     // Use two nested compose blocks to chain (dst->working), child, and (working->dst) together
     // while appearing as one block to the parent node.
     Compose(keyContext, builder, gatherer,
@@ -1411,7 +1412,7 @@ static void add_yuv_image_to_key(const KeyContext& keyContext,
     );
     imgData.fYUVtoRGBTranslate = {yuvM[4], yuvM[9], yuvM[14]};
 
-    if (!origShader->isRaw()) {
+    if (!origShader->isRaw1()) {
         imgData.fSteps = SkColorSpaceXformSteps(imageToDraw->colorSpace(),
                                                 imageToDraw->alphaType(),
                                                 keyContext.dstColorInfo().colorSpace(),
@@ -1493,11 +1494,14 @@ static void add_to_key(const KeyContext& keyContext,
     }
     imgData.fReadSwizzle = swizzle_class_to_read_enum(readSwizzle);
 
-    if (!shader->isRaw()) {
+    if (!shader->isRaw1()) {
         imgData.fSteps = SkColorSpaceXformSteps(imageToDraw->colorSpace(),
                                                 imageToDraw->alphaType(),
                                                 keyContext.dstColorInfo().colorSpace(),
                                                 keyContext.dstColorInfo().alphaType());
+
+        //$$
+        SkDebugf("isAlphaOnly %d\n", imageToDraw->isAlphaOnly());
 
         if (imageToDraw->isAlphaOnly() && keyContext.scope() != KeyContext::Scope::kRuntimeEffect) {
             Blend(keyContext, builder, gatherer,
