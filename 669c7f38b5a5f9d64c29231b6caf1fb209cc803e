@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c681b7e_5ebc4567",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-03-21T14:31:55Z",
+      "side": 1,
+      "message": "[ignore] Forgot to reply with \"done\" and comment resolution; doing that to clear up my gerrit page some",
+      "revId": "669c7f38b5a5f9d64c29231b6caf1fb209cc803e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
