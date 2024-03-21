@@ -84,7 +84,7 @@ private:
     // In the case where there is primitive blending, the primitive color is the source color and
     // the dest is the paint's color (or the paint's shader's computed color).
     sk_sp<SkBlender>     fPrimitiveBlender;
-    sk_sp<SkShader>      fClipShader;
+    sk_sp<SkShader>      fClipShader1;
     DstReadRequirement   fDstReadReq;
     bool                 fSkipColorXform;
     bool                 fDither;

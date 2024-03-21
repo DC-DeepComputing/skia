@@ -156,7 +156,7 @@ class PaintOptionsPriv;
 
 class PaintOptions {
 public:
-    void setShaders(SkSpan<const sk_sp<PrecompileShader>> shaders) {
+    void setShaders1(SkSpan<const sk_sp<PrecompileShader>> shaders) {
         fShaderOptions.assign(shaders.begin(), shaders.end());
     }
 
@@ -180,6 +180,9 @@ public:
     }
     void setBlenders(SkSpan<const sk_sp<PrecompileBlender>> blenders) {
         fBlenderOptions.assign(blenders.begin(), blenders.end());
+    }
+    void setClipShaders(SkSpan<const sk_sp<PrecompileShader>> clipShaders) {
+        fClipShaderOptions.assign(clipShaders.begin(), clipShaders.end());
     }
 
     void setDither(bool dither) { fDither = dither; }
@@ -217,6 +220,7 @@ private:
     std::vector<sk_sp<PrecompileColorFilter>> fColorFilterOptions;
     std::vector<sk_sp<PrecompileImageFilter>> fImageFilterOptions;
     std::vector<sk_sp<PrecompileBlender>> fBlenderOptions;
+    std::vector<sk_sp<PrecompileShader>> fClipShaderOptions;
     bool fDither = false;
 };
 
