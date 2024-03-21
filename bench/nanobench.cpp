@@ -60,6 +60,7 @@
 #if defined(SK_ENABLE_SVG)
 #include "modules/svg/include/SkSVGDOM.h"
 #include "modules/svg/include/SkSVGNode.h"
+#include "modules/svg/include/SkSVGShapingUtils.h"
 #endif
 
 #ifdef SK_ENABLE_ANDROID_UTILS
@@ -875,7 +876,9 @@ public:
 #if defined(SK_ENABLE_SVG)
         SkMemoryStream stream(std::move(data));
         sk_sp<SkSVGDOM> svgDom =
-                SkSVGDOM::Builder().setFontManager(ToolUtils::TestFontMgr()).make(stream);
+                SkSVGDOM::Builder().setFontManager(ToolUtils::TestFontMgr())
+                                   .setShapingCallbacks(SkSVGShaping::BestAvailable())
+                                   .make(stream);
         if (!svgDom) {
             SkDebugf("Could not parse %s.\n", path);
             return nullptr;

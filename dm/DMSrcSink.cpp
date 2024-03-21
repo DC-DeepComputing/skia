@@ -89,6 +89,7 @@
     #include "include/svg/SkSVGCanvas.h"
     #include "modules/svg/include/SkSVGDOM.h"
     #include "modules/svg/include/SkSVGNode.h"
+    #include "modules/svg/include/SkSVGShapingUtils.h"
     #include "src/xml/SkXMLWriter.h"
 #endif
 
@@ -1368,6 +1369,7 @@ SVGSrc::SVGSrc(Path path)
 
     fDom = SkSVGDOM::Builder().setResourceProvider(std::move(rp))
                               .setFontManager(ToolUtils::TestFontMgr())
+                              .setShapingCallbacks(SkSVGShaping::BestAvailable())
                               .make(*stream);
     if (!fDom) {
         return;
@@ -2600,10 +2602,6 @@ Result ViaRuntimeBlend::draw(const Src& src,
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 #ifdef TEST_VIA_SVG
-#include "include/svg/SkSVGCanvas.h"
-#include "modules/svg/include/SkSVGDOM.h"
-#include "src/xml/SkXMLWriter.h"
-
 Result ViaSVG::draw(const Src& src, SkBitmap* bitmap, SkWStream* stream, SkString* log) const {
     auto size = src.size();
     return draw_to_canvas(fSink.get(), bitmap, stream, log, size,
@@ -2617,7 +2615,9 @@ Result ViaSVG::draw(const Src& src, SkBitmap* bitmap, SkWStream* stream, SkStrin
         }
         std::unique_ptr<SkStream> rstream(wstream.detachAsStream());
         sk_sp<SkSVGDOM> dom =
-                SkSVGDOM::Builder().setFontManager(ToolUtils::TestFontMgr()).make(*rstream);
+                SkSVGDOM::Builder().setFontManager(ToolUtils::TestFontMgr())
+                                   .setShapingCallbacks(SkSVGShaping::BestAvailable())
+                                   .make(*rstream);
         if (dom) {
             dom->setContainerSize(SkSize::Make(size));
             dom->render(canvas);
