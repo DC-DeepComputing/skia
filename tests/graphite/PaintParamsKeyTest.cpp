@@ -88,7 +88,7 @@ std::pair<sk_sp<SkColorFilter>, sk_sp<PrecompileColorFilter>> create_random_colo
 
 enum class ShaderType {
 #define M(type) k##type,
-        SK_ALL_TEST_SHADERS(M)
+    SK_ALL_TEST_SHADERS(M)
 #undef M
 
     kLast          = kWorkingColorSpace
@@ -115,7 +115,7 @@ const char* to_str(ShaderType s) {
 // TODO: do we need to add a separable category and/or a category for dstRead requiring blends?
 enum class BlenderType {
 #define M(type) k##type,
-        SK_ALL_TEST_BLENDERS(M)
+    SK_ALL_TEST_BLENDERS(M)
 #undef M
 
     kLast = kRuntime
@@ -150,7 +150,7 @@ const char* to_str(BlenderType b) {
 
 enum class ColorFilterType {
 #define M(type) k##type,
-        SK_ALL_TEST_COLORFILTERS(M)
+    SK_ALL_TEST_COLORFILTERS(M)
 #undef M
 
     kLast = kWorkingFormat
@@ -162,6 +162,30 @@ const char* to_str(ColorFilterType cf) {
     switch (cf) {
 #define M(type) case ColorFilterType::k##type : return "ColorFilterType::k" #type;
         SK_ALL_TEST_COLORFILTERS(M)
+#undef M
+    }
+
+    SkUNREACHABLE;
+}
+
+#define SK_ALL_TEST_CLIPS(M) \
+    M(None)            \
+    M(Shader)
+
+enum class ClipType {
+#define M(type) k##type,
+    SK_ALL_TEST_CLIPS(M)
+#undef M
+
+    kLast = kShader
+};
+
+static constexpr int kClipTypeCount = static_cast<int>(ClipType::kLast) + 1;
+
+const char* to_str(ClipType c) {
+    switch (c) {
+#define M(type) case ClipType::k##type : return "ClipType::k" #type;
+        SK_ALL_TEST_CLIPS(M)
 #undef M
     }
 
@@ -1048,7 +1072,8 @@ void run_test(skiatest::Reporter*,
               const DrawData&,
               ShaderType,
               BlenderType,
-              ColorFilterType);
+              ColorFilterType,
+              ClipType);
 
 // This is intended to be a smoke test for the agreement between the two ways of creating a
 // PaintParamsKey:
@@ -1150,19 +1175,29 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
 #endif
     };
 
+    ClipType clips[] = {
+            ClipType::kNone,
+#if EXPANDED_SET
+            ClipType::kShader,
+#endif
+    };
+
 #if EXPANDED_SET
     size_t kExpected = std::size(shaders) * std::size(blenders) * std::size(colorFilters);
     int current = 0;
 #endif
 
-    for (auto s : shaders) {
-        for (auto bm : blenders) {
+    for (auto shader : shaders) {
+        for (auto blender : blenders) {
             for (auto cf : colorFilters) {
+                for (auto clip : clips) {
 #if EXPANDED_SET
                 SkDebugf("%d/%zu\n", current, kExpected);
                 ++current;
 #endif
-                run_test(reporter, context, testContext, precompileKeyContext, drawData, s, bm, cf);
+                run_test(reporter, context, testContext, precompileKeyContext, drawData,
+                         shader, blender, cf, clip);
+                }
             }
         }
     }
@@ -1179,7 +1214,8 @@ void run_test(skiatest::Reporter* reporter,
               const DrawData& drawData,
               ShaderType s,
               BlenderType bm,
-              ColorFilterType cf) {
+              ColorFilterType cf,
+              ClipType clip) {
     SkRandom rand;
 
     std::unique_ptr<Recorder> recorder = context->makeRecorder();
