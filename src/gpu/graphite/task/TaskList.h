@@ -8,32 +8,34 @@
 #ifndef skgpu_graphite_task_TaskGraph_DEFINED
 #define skgpu_graphite_task_TaskGraph_DEFINED
 
-#include <vector>
 #include "src/gpu/graphite/task/Task.h"
 
+#include <vector>
+
 namespace skgpu::graphite {
+
 class CommandBuffer;
 class Context;
 class ResourceProvider;
 
-class TaskGraph {
+class TaskList {
 public:
-    TaskGraph();
-    ~TaskGraph();
+    TaskList() = default;
 
-    void add(sk_sp<Task>);
-    void prepend(sk_sp<Task>);
+    void add(sk_sp<Task> task)     { fTasks.emplace_back(std::move(task)); }
+    void prepend(sk_sp<Task> task) { fTasks.emplace(fTasks.begin(), std::move(task)); }
+    void reset() { fTasks.clear(); }
+
+    bool hasTasks() const { return !fTasks.empty(); }
 
     // Returns true on success; false on failure
     bool prepareResources(ResourceProvider*, const RuntimeEffectDictionary*);
     bool addCommands(Context*, CommandBuffer*, Task::ReplayTargetData);
 
-    void reset();
-
-    bool hasTasks() const { return !fTasks.empty(); }
-
-protected:
 private:
+    // TODO(b/238767759): Switch to TArray, but that doesn't support inserting at the front.
+    // Prepending tasks can be avoided if we restructure how tasks are moved from Recorder to
+    // Recording.
     std::vector<sk_sp<Task>> fTasks;
 };
 
