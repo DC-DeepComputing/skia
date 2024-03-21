@@ -16,6 +16,23 @@
       "message": "Michael FYI: this change introduces child tasks to ComputeTask.",
       "revId": "3548c7ead21104c509a951c330087703a12a8775",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ad1635e_d4ed2aa5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-03-21T18:38:18Z",
+      "side": 1,
+      "message": "The Vulkan backend needs to be updated too. I\u0027ll do that shortly.",
+      "revId": "3548c7ead21104c509a951c330087703a12a8775",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
