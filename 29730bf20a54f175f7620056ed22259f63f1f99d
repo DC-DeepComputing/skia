@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71ace9a9_3a71febb",
+        "filename": "src/core/SkBlitRow_D32.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 368,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-21T17:27:35Z",
+      "side": 1,
+      "message": "Consider `__lsx_vmadd_h`?",
+      "range": {
+        "startLine": 362,
+        "startChar": 0,
+        "endLine": 368,
+        "endChar": 0
+      },
+      "revId": "29730bf20a54f175f7620056ed22259f63f1f99d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0109f53e_c5caf8f3",
+        "filename": "src/core/SkBlitRow_D32.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 488,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-21T17:27:35Z",
+      "side": 1,
+      "message": "Seems like these could be combined into `__lsx_vmadd_h`?\n```suggestion\n        dst_rb \u003d __lsx_vmadd_h(dst_rb, dst_scale, src_rb);\n        dst_ag \u003d __lsx_vmadd_h(dst_ag, dst_scale, src_ag);\n```",
+      "range": {
+        "startLine": 482,
+        "startChar": 0,
+        "endLine": 488,
+        "endChar": 0
+      },
+      "revId": "29730bf20a54f175f7620056ed22259f63f1f99d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
