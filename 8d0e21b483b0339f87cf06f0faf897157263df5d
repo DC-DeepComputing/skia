@@ -72,6 +72,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ac30100c_632c14be",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 945,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-21T14:32:33Z",
+      "side": 1,
+      "message": "The SkVx implementation will probably be faster.\n```\n        return sk_bit_cast\u003cVec\u003cN,T\u003e\u003e(__lasx_xvbitsel_v(sk_bit_cast\u003c__m256i\u003e(e),\n                                                       sk_bit_cast\u003c__m256i\u003e(t),\n                                                       sk_bit_cast\u003c__m256i\u003e(cond)));\n```",
+      "range": {
+        "startLine": 938,
+        "startChar": 0,
+        "endLine": 945,
+        "endChar": 0
+      },
+      "revId": "8d0e21b483b0339f87cf06f0faf897157263df5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ec7abb39_523e656c",
         "filename": "src/opts/SkRasterPipeline_opts.h",
         "patchSetId": 2
@@ -295,6 +318,29 @@
         "startChar": 37,
         "endLine": 1139,
         "endChar": 39
+      },
+      "revId": "8d0e21b483b0339f87cf06f0faf897157263df5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19e90917_5c6ceffe",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1146,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-21T14:32:33Z",
+      "side": 1,
+      "message": "Can we use the SkVx implementation?\n```\n        return sk_bit_cast\u003cVec\u003cN,T\u003e\u003e(__lsx_vbitsel_v(sk_bit_cast\u003c__m128i\u003e(e),\n                                                     sk_bit_cast\u003c__m128i\u003e(t),\n                                                     sk_bit_cast\u003c__m128i\u003e(cond)));\n```",
+      "range": {
+        "startLine": 1140,
+        "startChar": 0,
+        "endLine": 1146,
+        "endChar": 0
       },
       "revId": "8d0e21b483b0339f87cf06f0faf897157263df5d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
