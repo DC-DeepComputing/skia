@@ -200,6 +200,7 @@ if (is_ios) {
         if (ios_min_target != "") {
           IPHONEOS_DEPLOYMENT_TARGET = ios_min_target
         }
+        INFOPLIST_FILE = rebase_path("${target_gen_dir}/${app_name}_Info.plist")
       }
 
       deps = [

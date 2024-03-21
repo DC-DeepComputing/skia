@@ -23,6 +23,7 @@ with open(os.path.join(out, app + '_Info.plist'), 'w') as f:
   <dict>
     <key>CFBundleVersion</key> <string>0.1.0</string>
     <key>CFBundleShortVersionString</key> <string>0.1.0</string>
+    <key>CFBundleName</key> <string>{app}</string>
     <key>CFBundleExecutable</key> <string>{app}</string>
     <key>CFBundleIdentifier</key> <string>{bundle_prefix}.{app}</string>
     <key>CFBundlePackageType</key> <string>APPL</string>
