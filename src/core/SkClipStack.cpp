@@ -156,7 +156,7 @@ void SkClipStack::Element::invertShapeFillType() {
             fDeviceSpacePath->toggleInverseFillType();
             break;
         case DeviceSpaceType::kShader:
-            fShader = as_SB(fShader)->makeInvertAlpha();
+            fShader = as_SB(fShader)->makeInvertAlpha1();
             break;
         case DeviceSpaceType::kEmpty:
             // Should this set to an empty, inverse filled path?
