@@ -16,6 +16,167 @@
       "message": "This will be helpful for some collection management patterns in Graphite where a list gets appended to a larger collection and then reset, but I\u0027m open to other approaches or changing function names to clarify things.",
       "revId": "3930aa0d2be0867ad61c0cca11693ea4aba3d85c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1ef68e2_96e28b68",
+        "filename": "include/private/base/SkTArray.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 366,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-22T14:09:33Z",
+      "side": 1,
+      "message": "Curious: would it be possible to allow the same semantics for `a.move_back(b)` without needing the extra `std::move`? \n\nThinking it through briefly, if we made this a `TArray\u0026`, then the only thing we\u0027ve lost is the ability to pass in a temporary here. We could probably add a `TArray\u0026\u0026` overload which just calls through to the `TArray\u0026` version. Any other caveats that I am missing?",
+      "range": {
+        "startLine": 366,
+        "startChar": 19,
+        "endLine": 366,
+        "endChar": 27
+      },
+      "revId": "3930aa0d2be0867ad61c0cca11693ea4aba3d85c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "493a0c8d_570dc3eb",
+        "filename": "include/private/base/SkTArray.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 371,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-22T14:09:33Z",
+      "side": 1,
+      "message": "been",
+      "range": {
+        "startLine": 371,
+        "startChar": 72,
+        "endLine": 371,
+        "endChar": 74
+      },
+      "revId": "3930aa0d2be0867ad61c0cca11693ea4aba3d85c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8dbbb187_62dca65b",
+        "filename": "include/private/base/SkTArray.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 375,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-22T14:09:33Z",
+      "side": 1,
+      "message": "destroyed",
+      "range": {
+        "startLine": 375,
+        "startChar": 48,
+        "endLine": 375,
+        "endChar": 58
+      },
+      "revId": "3930aa0d2be0867ad61c0cca11693ea4aba3d85c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74a67ef9_e9aa777a",
+        "filename": "include/private/base/SkTArray.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 375,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-22T14:09:33Z",
+      "side": 1,
+      "message": "when MEM_MOVE is false",
+      "range": {
+        "startLine": 375,
+        "startChar": 60,
+        "endLine": 375,
+        "endChar": 77
+      },
+      "revId": "3930aa0d2be0867ad61c0cca11693ea4aba3d85c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3666b5b6_fdb35b3e",
+        "filename": "include/private/base/SkTArray.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 376,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-22T14:09:33Z",
+      "side": 1,
+      "message": "when MEM_MOVE is true",
+      "range": {
+        "startLine": 376,
+        "startChar": 31,
+        "endLine": 376,
+        "endChar": 47
+      },
+      "revId": "3930aa0d2be0867ad61c0cca11693ea4aba3d85c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45efd6a0_ad04769c",
+        "filename": "tests/TArrayTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-22T14:09:33Z",
+      "side": 1,
+      "message": "Consider `SkSpan\u003cTArray\u003cT\u003e*\u003e` or `std::initializer_list\u003cTArray\u003cT\u003e*\u003e` here? Having to think about type decay on array-of-pointer-to-class adds unneeded complexity IMO.\n\n(Note: I realize after originally writing this that the code is patterned after `test_swap` on L207. Up to you whether you want to fix that up as well.)",
+      "range": {
+        "startLine": 260,
+        "startChar": 50,
+        "endLine": 260,
+        "endChar": 73
+      },
+      "revId": "3930aa0d2be0867ad61c0cca11693ea4aba3d85c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "16bc907c_6092d73a",
+        "filename": "tests/TArrayTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 261,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-22T14:09:33Z",
+      "side": 1,
+      "message": "`SkSpan\u003cconst int\u003e` would be easier to understand.",
+      "range": {
+        "startLine": 261,
+        "startChar": 50,
+        "endLine": 261,
+        "endChar": 65
+      },
+      "revId": "3930aa0d2be0867ad61c0cca11693ea4aba3d85c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
