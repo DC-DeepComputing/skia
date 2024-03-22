@@ -15,6 +15,8 @@
 #include "include/core/SkData.h"
 #include "include/core/SkDocument.h"
 #include "include/core/SkGraphics.h"
+#include "modules/skshaper/include/SkShaper_factory.h"
+#include "modules/skshaper/utils/FactoryHelpers.h"
 #include "src/base/SkHalf.h"
 #include "src/base/SkLeanWindows.h"
 #include "src/base/SkNoDestructor.h"
@@ -1550,6 +1552,7 @@ int main(int argc, char** argv) {
     CommandLineFlags::Parse(argc, argv);
 
     initializeEventTracingForTools();
+    SkShapers::SetFactory(SkShapers::BestAvailable());
 
 #if !defined(SK_BUILD_FOR_GOOGLE3) && defined(SK_BUILD_FOR_IOS)
     cd_Documents();
