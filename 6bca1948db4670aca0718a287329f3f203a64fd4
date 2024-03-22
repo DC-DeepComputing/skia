@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b68b3612_5d14f846",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-03-22T15:53:19Z",
+      "side": 1,
+      "message": "Intial feedback done. Going to play around with setting a global instead of on the builder and see how that feels from an ergonomic sense.",
+      "revId": "6bca1948db4670aca0718a287329f3f203a64fd4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
