@@ -13,6 +13,7 @@
 #include "include/encode/SkPngEncoder.h"
 #include "modules/skresources/include/SkResources.h"
 #include "modules/svg/include/SkSVGDOM.h"
+#include "modules/svg/include/SkSVGTextShapingUtils.h"
 #include "src/utils/SkOSPath.h"
 #include "tools/CodecUtils.h"
 #include "tools/flags/CommandLineFlags.h"
@@ -65,9 +66,10 @@ int main(int argc, char** argv) {
             fontMgr);
 
     auto svg_dom = SkSVGDOM::Builder()
-                        .setFontManager(fontMgr)
-                        .setResourceProvider(std::move(rp))
-                        .make(in);
+                           .setFontManager(fontMgr)
+                           .setResourceProvider(std::move(rp))
+                           .setTextShapingCallbacks(SkSVGTextShaping::BestAvailable())
+                           .make(in);
 
     if (!svg_dom) {
         std::cerr << "Could not parse " << FLAGS_input[0] << "\n";

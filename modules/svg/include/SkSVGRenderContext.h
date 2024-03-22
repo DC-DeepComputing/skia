@@ -16,8 +16,10 @@
 #include "include/core/SkSize.h"
 #include "include/core/SkTypes.h"
 #include "modules/skresources/include/SkResources.h"
+#include "modules/skshaper/include/SkShaper.h"
 #include "modules/svg/include/SkSVGAttribute.h"
 #include "modules/svg/include/SkSVGIDMapper.h"
+#include "modules/svg/include/SkSVGTextShaping.h"
 #include "src/base/SkTLazy.h"
 #include "src/core/SkTHash.h"
 
@@ -66,10 +68,14 @@ public:
         const SkSVGRenderContext* fCtx;
     };
 
-    SkSVGRenderContext(SkCanvas*, const sk_sp<SkFontMgr>&,
-                       const sk_sp<skresources::ResourceProvider>&, const SkSVGIDMapper&,
-                       const SkSVGLengthContext&, const SkSVGPresentationContext&,
-                       const OBBScope&);
+    SkSVGRenderContext(SkCanvas*,
+                       const sk_sp<SkFontMgr>&,
+                       const sk_sp<skresources::ResourceProvider>&,
+                       const SkSVGIDMapper&,
+                       const SkSVGLengthContext&,
+                       const SkSVGPresentationContext&,
+                       const OBBScope&,
+                       sk_sp<SkSVGTextShaping::Factory>);
     SkSVGRenderContext(const SkSVGRenderContext&);
     SkSVGRenderContext(const SkSVGRenderContext&, SkCanvas*);
     // Establish a new OBB scope.  Normally used when entering a node's render scope.
@@ -155,6 +161,24 @@ public:
                           const SkSVGLength& w, const SkSVGLength& h,
                           SkSVGObjectBoundingBoxUnits) const;
 
+    std::unique_ptr<SkShaper> makeShaper() const {
+        SkASSERT(fTextShapingFactory);
+        return fTextShapingFactory->makeShaper(this->fontMgr());
+    }
+
+    std::unique_ptr<SkShaper::BiDiRunIterator> makeBidiIterator(const char* utf8,
+                                                                size_t utf8Bytes,
+                                                                uint8_t bidiLevel) const {
+        SkASSERT(fTextShapingFactory);
+        return fTextShapingFactory->makeBidiIterator(utf8, utf8Bytes, bidiLevel);
+    }
+
+    std::unique_ptr<SkShaper::ScriptRunIterator> makeRunIterator(const char* utf8,
+                                                                 size_t utf8Bytes) const {
+        SkASSERT(fTextShapingFactory);
+        return fTextShapingFactory->makeRunIterator(utf8, utf8Bytes);
+    }
+
 private:
     // Stack-only
     void* operator new(size_t)                               = delete;
@@ -186,6 +210,7 @@ private:
 
     // Current object bounding box scope.
     const OBBScope                                fOBBScope;
+    sk_sp<SkSVGTextShaping::Factory>              fTextShapingFactory;
 };
 
 #endif // SkSVGRenderContext_DEFINED

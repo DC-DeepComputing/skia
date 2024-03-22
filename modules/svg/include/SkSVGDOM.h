@@ -14,6 +14,7 @@
 #include "include/private/base/SkTemplates.h"
 #include "modules/skresources/include/SkResources.h"
 #include "modules/svg/include/SkSVGIDMapper.h"
+#include "modules/svg/include/SkSVGTextShaping.h"
 
 class SkCanvas;
 class SkDOM;
@@ -39,11 +40,18 @@ public:
          */
         Builder& setResourceProvider(sk_sp<skresources::ResourceProvider>);
 
+        /**
+         * Specify the callbacks for dealing with shaping text. See also
+         * modules/svg/include/SkSVGTextShapingUtils.h
+         */
+        Builder& setTextShapingCallbacks(sk_sp<SkSVGTextShaping::Factory>);
+
         sk_sp<SkSVGDOM> make(SkStream&) const;
 
     private:
-        sk_sp<SkFontMgr>                     fFontMgr;
-        sk_sp<skresources::ResourceProvider> fResourceProvider;
+        sk_sp<SkFontMgr>                             fFontMgr;
+        sk_sp<skresources::ResourceProvider>         fResourceProvider;
+        sk_sp<SkSVGTextShaping::Factory>             fTextShapingFactory;
     };
 
     static sk_sp<SkSVGDOM> MakeFromStream(SkStream& str) {
@@ -89,15 +97,18 @@ public:
     void renderNode(SkCanvas*, SkSVGPresentationContext&, const char* id) const;
 
 private:
-    SkSVGDOM(sk_sp<SkSVGSVG>, sk_sp<SkFontMgr>, sk_sp<skresources::ResourceProvider>,
-             SkSVGIDMapper&&);
+    SkSVGDOM(sk_sp<SkSVGSVG>,
+             sk_sp<SkFontMgr>,
+             sk_sp<skresources::ResourceProvider>,
+             SkSVGIDMapper&&,
+             sk_sp<SkSVGTextShaping::Factory>);
 
-    const sk_sp<SkSVGSVG>                      fRoot;
-    const sk_sp<SkFontMgr>                     fFontMgr;
-    const sk_sp<skresources::ResourceProvider> fResourceProvider;
-    const SkSVGIDMapper                        fIDMapper;
-
-    SkSize                 fContainerSize;
+    const sk_sp<SkSVGSVG>                       fRoot;
+    const sk_sp<SkFontMgr>                      fFontMgr;
+    const sk_sp<skresources::ResourceProvider>  fResourceProvider;
+    const SkSVGIDMapper                         fIDMapper;
+    SkSize                                      fContainerSize;
+    sk_sp<SkSVGTextShaping::Factory>            fTextShapingFactory;
 };
 
 #endif // SkSVGDOM_DEFINED

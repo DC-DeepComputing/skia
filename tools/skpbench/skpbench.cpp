@@ -39,6 +39,7 @@
 
 #if defined(SK_ENABLE_SVG)
 #include "modules/svg/include/SkSVGDOM.h"
+#include "modules/svg/include/SkSVGTextShapingUtils.h"
 #include "src/xml/SkDOM.h"
 #endif
 
@@ -709,8 +710,10 @@ static sk_sp<SkPicture> create_warmup_skp() {
 
 static sk_sp<SkPicture> create_skp_from_svg(SkStream* stream, const char* filename) {
 #if defined(SK_ENABLE_SVG)
-    sk_sp<SkSVGDOM> svg =
-            SkSVGDOM::Builder().setFontManager(ToolUtils::TestFontMgr()).make(*stream);
+    sk_sp<SkSVGDOM> svg = SkSVGDOM::Builder()
+                                  .setFontManager(ToolUtils::TestFontMgr())
+                                  .setTextShapingCallbacks(SkSVGTextShaping::BestAvailable())
+                                  .make(*stream);
     if (!svg) {
         exitf(ExitErr::kData, "failed to build svg dom from file %s", filename);
     }

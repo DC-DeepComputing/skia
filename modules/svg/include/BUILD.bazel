@@ -51,9 +51,12 @@ skia_filegroup(
         "SkSVGShape.h",
         "SkSVGStop.h",
         "SkSVGText.h",
+        "SkSVGTextShaping.h",
+        "SkSVGTextShapingUtils.h",
         "SkSVGTransformableNode.h",
         "SkSVGTypes.h",
         "SkSVGUse.h",
         "SkSVGValue.h",
     ],
+    visibility = ["//modules/svg:__pkg__"],
 )
