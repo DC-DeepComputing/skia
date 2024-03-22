@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f66329db_80302e38",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-03-22T20:38:40Z",
+      "side": 1,
+      "message": "Trimming this down, then planning to migrate what\u0027s left into chromium. The linked bug is the primary issue, but this is ultimately in service of https://crbug.com/40064090",
+      "revId": "416c4f96b1f866d5a024f6545ebd98c993e76d0b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
