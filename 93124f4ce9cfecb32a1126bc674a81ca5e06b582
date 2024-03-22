@@ -65,6 +65,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "72ad173c_2bdad4ad",
+        "filename": "gn/skia/BUILD.gn",
+        "patchSetId": 1
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 21814
+      },
+      "writtenOn": "2024-03-22T01:48:15Z",
+      "side": 1,
+      "message": "This was my mistake, I forgot to remove these two parameters.They are just for cross-compilation. To maintain consistency with other architectures, we have decided to simply remove them.",
+      "parentUuid": "f80bc979_463e3c73",
+      "range": {
+        "startLine": 172,
+        "startChar": 17,
+        "endLine": 172,
+        "endChar": 54
+      },
+      "revId": "93124f4ce9cfecb32a1126bc674a81ca5e06b582",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "34f8c580_ed6a5b01",
@@ -78,6 +102,30 @@
       "writtenOn": "2024-03-21T13:49:04Z",
       "side": 1,
       "message": "nit: missing space\n`{ features |\u003d `\n```suggestion\n        if (hwcap \u0026 HWCAP_LOONGARCH_LSX)  { features |\u003d SkCpu::LOONGARCH_SX; }\n        if (hwcap \u0026 HWCAP_LOONGARCH_LASX) { features |\u003d SkCpu::LOONGARCH_ASX; }\n```",
+      "range": {
+        "startLine": 81,
+        "startChar": 42,
+        "endLine": 81,
+        "endChar": 44
+      },
+      "revId": "93124f4ce9cfecb32a1126bc674a81ca5e06b582",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1e5792d7_df8d2d85",
+        "filename": "src/core/SkCpu.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 21814
+      },
+      "writtenOn": "2024-03-22T01:48:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "34f8c580_ed6a5b01",
       "range": {
         "startLine": 81,
         "startChar": 42,
