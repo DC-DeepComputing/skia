@@ -16,6 +16,201 @@
       "message": "This shouldn\u0027t land as is, as we need to figure out a way to roll this out smoothly - clients will need to call the registration function before they can get the new code.",
       "revId": "e6607a45dde326091fed96d513e98cd980814838",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "de4989e6_541e2438",
+        "filename": "modules/skottie/src/text/TextShaper.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 484,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-03-22T19:43:17Z",
+      "side": 1,
+      "message": "I don\u0027t know if we need to store this, the getter is cheap and we could just use on the fly.",
+      "revId": "e6607a45dde326091fed96d513e98cd980814838",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0acb9a53_006a6d7a",
+        "filename": "modules/skshaper/include/SkShaper_factory.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-03-22T19:43:17Z",
+      "side": 1,
+      "message": "`makeBidiRunIterator`?",
+      "range": {
+        "startLine": 23,
+        "startChar": 55,
+        "endLine": 23,
+        "endChar": 71
+      },
+      "revId": "e6607a45dde326091fed96d513e98cd980814838",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67287a0a_33c880dc",
+        "filename": "modules/skshaper/include/SkShaper_factory.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-03-22T19:43:17Z",
+      "side": 1,
+      "message": "Do we actually need a separate non-fourbytetag virtual?  I think the implementation just calls the more verbose version with a default script value, clients should be able to pass the same.",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 58
+      },
+      "revId": "e6607a45dde326091fed96d513e98cd980814838",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "86777c33_7e41c87d",
+        "filename": "modules/skshaper/include/SkShaper_factory.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-03-22T19:43:17Z",
+      "side": 1,
+      "message": "`makeScriptRunIterator`?",
+      "range": {
+        "startLine": 27,
+        "startChar": 57,
+        "endLine": 27,
+        "endChar": 72
+      },
+      "revId": "e6607a45dde326091fed96d513e98cd980814838",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9549fe58_485842dc",
+        "filename": "modules/skshaper/include/SkShaper_factory.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-03-22T19:43:17Z",
+      "side": 1,
+      "message": "This doesn\u0027t have to be in a public header, just move to .cpp and uninline `Primitive::Factory()`?",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 53,
+        "endChar": 20
+      },
+      "revId": "e6607a45dde326091fed96d513e98cd980814838",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dfb1bded_6cbcbe1a",
+        "filename": "modules/skshaper/include/SkShaper_factory.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-03-22T19:43:17Z",
+      "side": 1,
+      "message": "`const sk_sp\u003cFactory\u003e\u0026` so that we don\u0027t introduce unneeded refcount churn.  Clients can always grab a ref from that if they need ownership.",
+      "range": {
+        "startLine": 59,
+        "startChar": 7,
+        "endLine": 59,
+        "endChar": 21
+      },
+      "revId": "e6607a45dde326091fed96d513e98cd980814838",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cc4cb6ab_41efca46",
+        "filename": "modules/skshaper/include/SkShaper_factory.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-03-22T19:43:17Z",
+      "side": 1,
+      "message": "Another thought: instead of exposing this to clients, we could offer specialized stable factories - `SkShapers::MakeShaper`, `SkShapers::MakeScriptRunIterator`, etc - and defer to the registered/general factory internally.\n\nIt would hopefully reduce some of the churn in the intermediate layers, but I don\u0027t feel strongly either way.",
+      "revId": "e6607a45dde326091fed96d513e98cd980814838",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "257904f4_429bdcdf",
+        "filename": "modules/skshaper/include/SkShaper_factory.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-03-22T19:43:17Z",
+      "side": 1,
+      "message": "naming nit: \"Register\" sounds like it could allow adding multiple factories.  Maybe \"Set\" to balance GetFactory?",
+      "range": {
+        "startLine": 60,
+        "startChar": 12,
+        "endLine": 60,
+        "endChar": 27
+      },
+      "revId": "e6607a45dde326091fed96d513e98cd980814838",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c38e115_cb43c255",
+        "filename": "modules/skshaper/src/SkShaper_factory.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-03-22T19:43:17Z",
+      "side": 1,
+      "message": "std::move(newFactory)",
+      "range": {
+        "startLine": 24,
+        "startChar": 21,
+        "endLine": 24,
+        "endChar": 31
+      },
+      "revId": "e6607a45dde326091fed96d513e98cd980814838",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
