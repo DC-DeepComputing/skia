@@ -34,6 +34,8 @@
 #include "include/core/SkSurface.h"
 #include "include/encode/SkPngEncoder.h"
 #include "include/private/base/SkMacros.h"
+#include "modules/skshaper/include/SkShaper_factory.h"
+#include "modules/skshaper/utils/FactoryHelpers.h"
 #include "src/base/SkAutoMalloc.h"
 #include "src/base/SkLeanWindows.h"
 #include "src/base/SkTime.h"
@@ -87,8 +89,7 @@ extern bool gSkForceRasterPipelineBlitter;
 extern bool gForceHighPrecisionRasterPipeline;
 
 #ifndef SK_BUILD_FOR_WIN
-    #include <unistd.h>
-
+#include <unistd.h>
 #endif
 
 #include "include/gpu/GrDirectContext.h"
@@ -1348,7 +1349,7 @@ int main(int argc, char** argv) {
     CommandLineFlags::Parse(argc, argv);
 
     initializeEventTracingForTools();
-
+     SkShapers::RegisterFactory(SkShapers::BestAvailable());
 #if defined(SK_BUILD_FOR_IOS)
     cd_Documents();
 #endif
