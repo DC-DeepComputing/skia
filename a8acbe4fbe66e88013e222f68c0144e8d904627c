@@ -22,6 +22,30 @@
       },
       "revId": "a8acbe4fbe66e88013e222f68c0144e8d904627c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f3a9ee9_c25040e0",
+        "filename": "include/private/base/SkTArray.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 366,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-03-22T20:12:44Z",
+      "side": 1,
+      "message": "I decided that temporaries didn\u0027t provide much utility in this case. My uses wouldn\u0027t need it, they are expressly for when there\u0027s an existing TArray that needs to be concatenated and reset. \n\nIf you have a temporary list or initializer, etc., there are other move_back/push_back operations that are more usable already I think.",
+      "parentUuid": "4fca4dce_44e38439",
+      "range": {
+        "startLine": 366,
+        "startChar": 0,
+        "endLine": 366,
+        "endChar": 34
+      },
+      "revId": "a8acbe4fbe66e88013e222f68c0144e8d904627c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
