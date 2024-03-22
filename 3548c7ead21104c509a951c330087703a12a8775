@@ -33,6 +33,29 @@
       "message": "The Vulkan backend needs to be updated too. I\u0027ll do that shortly.",
       "revId": "3548c7ead21104c509a951c330087703a12a8775",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c851eb4_c91c0b19",
+        "filename": "src/gpu/graphite/task/ComputeTask.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-03-22T20:39:27Z",
+      "side": 1,
+      "message": "task/ClearBuffersTask",
+      "range": {
+        "startLine": 11,
+        "startChar": 27,
+        "endLine": 11,
+        "endChar": 43
+      },
+      "revId": "3548c7ead21104c509a951c330087703a12a8775",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
