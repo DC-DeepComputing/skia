@@ -40,8 +40,8 @@ sk_sp<SkFlattenable> SkColorFilterShader::CreateProc(SkReadBuffer& buffer) {
     return sk_make_sp<SkColorFilterShader>(shader, 1.0f, filter);
 }
 
-bool SkColorFilterShader::isOpaque() const {
-    return fShader->isOpaque() && fAlpha == 1.0f && as_CFB(fFilter)->isAlphaUnchanged();
+bool SkColorFilterShader::isOpaque1() const {
+    return fShader->isOpaque1() && fAlpha == 1.0f && as_CFB(fFilter)->isAlphaUnchanged();
 }
 
 void SkColorFilterShader::flatten(SkWriteBuffer& buffer) const {
@@ -58,7 +58,7 @@ bool SkColorFilterShader::appendStages(const SkStageRec& rec,
     if (fAlpha != 1.0f) {
         rec.fPipeline->append(SkRasterPipelineOp::scale_1_float, rec.fAlloc->make<float>(fAlpha));
     }
-    if (!fFilter->appendStages(rec, fAlpha == 1.0f && fShader->isOpaque())) {
+    if (!fFilter->appendStages(rec, fAlpha == 1.0f && fShader->isOpaque1())) {
         return false;
     }
     return true;

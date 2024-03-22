@@ -75,7 +75,7 @@ void no_blend_mode_option_test(const KeyContext& keyContext,
                                PipelineDataGatherer* gatherer,
                                skiatest::Reporter* reporter) {
     PaintOptions paintOptions;
-    paintOptions.setShaders({ PrecompileShaders::Color() });
+    paintOptions.setShaders1({ PrecompileShaders::Color() });
 
     REPORTER_ASSERT(reporter, paintOptions.priv().numCombinations() == 1);
 
@@ -134,7 +134,7 @@ void big_test(const KeyContext& keyContext,
                                             })
                                 });
 
-    paintOptions.setShaders({ sweepGrad_0, blendShader_0 });
+    paintOptions.setShaders1({ sweepGrad_0, blendShader_0 });
 
     SkBlendMode evenMoreBlendModes[] = {
         SkBlendMode::kSrcOver,
@@ -231,7 +231,7 @@ void runtime_effect_test(const KeyContext& keyContext,
                                                         kRedS,
                                                         kGreenS,
                                                         kCombineS);
-        paintOptions.setShaders(combinations);
+        paintOptions.setShaders1(combinations);
     }
 
     // color filters

@@ -57,7 +57,7 @@ public:
                   bool raw,
                   bool clampAsIfUnpremul);
 
-    bool isOpaque() const override;
+    bool isOpaque1() const override;
 
     ShaderType type() const override { return ShaderType::kImage; }
 

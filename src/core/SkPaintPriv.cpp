@@ -91,7 +91,7 @@ bool SkPaintPriv::Overwrites(const SkPaint* paint, ShaderOverrideOpacity overrid
     if (!changes_alpha(*paint)) {
         const unsigned paintAlpha = paint->getAlpha();
         if (0xff == paintAlpha && overrideOpacity != kNotOpaque_ShaderOverrideOpacity &&
-            (!paint->getShader() || paint->getShader()->isOpaque())) {
+            (!paint->getShader() || paint->getShader()->isOpaque1())) {
             opacityType = kOpaque_SrcColorOpacity;
         } else if (0 == paintAlpha) {
             if (overrideOpacity == kNone_ShaderOverrideOpacity && !paint->getShader()) {

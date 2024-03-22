@@ -41,7 +41,7 @@ public:
 
     SkRuntimeEffect::TracedShader makeTracedClone(const SkIPoint& coord);
 
-    bool isOpaque() const override { return fEffect->alwaysOpaque(); }
+    bool isOpaque1() const override { return fEffect->alwaysOpaque(); }
 
     ShaderType type() const override { return ShaderType::kRuntime; }
 
