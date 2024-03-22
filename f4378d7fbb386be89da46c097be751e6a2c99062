@@ -39,6 +39,30 @@
       },
       "revId": "f4378d7fbb386be89da46c097be751e6a2c99062",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "34a16c14_3039176d",
+        "filename": "gn/ios.gni",
+        "patchSetId": 4
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-22T22:05:17Z",
+      "side": 1,
+      "message": "https://gn.googlesource.com/gn/+/main/docs/reference.md?pli\u003d1#string-literals\n\nTo insert a newline character in GN, use: `\"$0x0A\"`",
+      "parentUuid": "95c4631d_fcad3f23",
+      "range": {
+        "startLine": 111,
+        "startChar": 12,
+        "endLine": 111,
+        "endChar": 14
+      },
+      "revId": "f4378d7fbb386be89da46c097be751e6a2c99062",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
