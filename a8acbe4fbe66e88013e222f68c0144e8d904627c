@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4fca4dce_44e38439",
+        "filename": "include/private/base/SkTArray.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 366,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-22T20:10:42Z",
+      "side": 1,
+      "message": "Did you want to add a `TArray\u0026\u0026` overload so that temporaries can be passed in?\n(If you do, add a test that temporary passing works)",
+      "range": {
+        "startLine": 366,
+        "startChar": 0,
+        "endLine": 366,
+        "endChar": 34
+      },
+      "revId": "a8acbe4fbe66e88013e222f68c0144e8d904627c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
