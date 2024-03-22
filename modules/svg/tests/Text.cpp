@@ -8,6 +8,8 @@
 #include <vector>
 
 #include "include/utils/SkNoDrawCanvas.h"
+#include "modules/skshaper/include/SkShaper_factory.h"
+#include "modules/skshaper/utils/FactoryHelpers.h"
 #include "modules/svg/src/SkSVGTextPriv.h"
 #include "tests/Test.h"
 #include "tools/fonts/FontToolUtils.h"
@@ -148,6 +150,7 @@ DEF_TEST(Svg_Text_PosProvider, r) {
     const SkSVGTextContext::ShapedTextCallback mock_cb =
         [](const SkSVGRenderContext&, const sk_sp<SkTextBlob>&, const SkPaint*, const SkPaint*) {};
 
+    SkShapers::RegisterFactory(SkShapers::BestAvailable());
     auto test = [&](const PosTestDesc& tst) {
         auto a = SkSVGText::Make();
         auto b = SkSVGTSpan::Make();

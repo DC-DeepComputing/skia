@@ -37,6 +37,8 @@
 #include "modules/skottie/include/Skottie.h"
 #include "modules/skresources/include/SkResources.h"
 #include "modules/sksg/include/SkSGInvalidationController.h"
+#include "modules/skshaper/include/SkShaper_factory.h"
+#include "modules/skshaper/utils/FactoryHelpers.h"
 
 #include <GLES2/gl2.h>
 #include <GLES2/gl2ext.h>
@@ -180,6 +182,8 @@ Java_org_skia_skottie_SkottieAnimation_nCreateProxy(JNIEnv *env,
     SkCodecs::Register(SkPngDecoder::Decoder());
     SkCodecs::Register(SkGifDecoder::Decoder());
     SkCodecs::Register(SkJpegDecoder::Decoder());
+
+    SkShapers::RegisterFactory(SkShapers::BestAvailable());
 
     skottieAnimation->mAnimation = skottie::Animation::Builder()
         // Note, this nullptr ResourceProvider will only be able to decode base64 encoded images
