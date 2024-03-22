@@ -1420,6 +1420,7 @@ func (b *jobBuilder) recreateSKPs() {
 			"pool:SkiaCT",
 			fmt.Sprintf("os:%s", DEFAULT_OS_LINUX_GCE),
 		)
+		//b.envPrefixes("VPYTHON_DEFAULT_SPEC", "skia/.vpython")
 		b.usesGo()
 		b.cache(CACHES_WORKDIR...)
 		b.timeout(6 * time.Hour)

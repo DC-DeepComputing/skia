@@ -100,7 +100,7 @@ solutions = [
 		}
 
 		cmd := []string{
-			"vpython3", "-u", botUpdateScript,
+			"python3", "-u", botUpdateScript,
 			"--spec-path", specPath,
 			"--patch_root", patchRoot,
 			"--revision_mapping_file", revMapFile,
@@ -121,7 +121,7 @@ solutions = [
 			return err
 		}
 
-		if _, err := exec.RunCwd(ctx, checkoutRoot, "vpython3", "-u", filepath.Join(depotToolsDir, "gclient.py"), "runhooks"); err != nil {
+		if _, err := exec.RunCwd(ctx, checkoutRoot, "python3", "-u", filepath.Join(depotToolsDir, "gclient.py"), "runhooks"); err != nil {
 			return err
 		}
 
