@@ -129,6 +129,7 @@ public:
                 const std::pair<sk_sp<PrecompileShader>, int>& shader,
                 const std::pair<sk_sp<PrecompileColorFilter>, int>& colorFilter,
                 bool hasPrimitiveBlender,
+                const std::pair<sk_sp<PrecompileShader>, int>& clipShader,
                 DstReadRequirement dstReadReq,
                 bool dither)
         : fOpaquePaintColor(opaquePaintColor)
@@ -136,6 +137,7 @@ public:
         , fShader(shader)
         , fColorFilter(colorFilter)
         , fHasPrimitiveBlender(hasPrimitiveBlender)
+        , fClipShader2(clipShader)
         , fDstReadReq(dstReadReq)
         , fDither(dither) {
     }
@@ -161,6 +163,7 @@ private:
     std::pair<sk_sp<PrecompileShader>, int> fShader;
     std::pair<sk_sp<PrecompileColorFilter>, int> fColorFilter;
     bool fHasPrimitiveBlender;
+    std::pair<sk_sp<PrecompileShader>, int> fClipShader2;
     DstReadRequirement fDstReadReq;
     bool fDither;
 };
@@ -311,6 +314,16 @@ void PaintOption::toKey(const KeyContext& keyContext,
                         PaintParamsKeyBuilder* keyBuilder,
                         PipelineDataGatherer* gatherer) const {
     this->handleDstRead(keyContext, keyBuilder, gatherer);
+
+    if (fClipShader2.first) {
+        //$$
+        ClipShaderBlock::BeginBlock(keyContext, keyBuilder, gatherer);
+
+            fClipShader2.first->priv().addToKey(keyContext, keyBuilder, gatherer,
+                                                fClipShader2.second);
+
+        keyBuilder->endBlock();
+    }
 }
 
 void PaintOptions::createKey(const KeyContext& keyContext,
@@ -353,6 +366,8 @@ void PaintOptions::createKey(const KeyContext& keyContext,
                        PrecompileBase::SelectOption(fColorFilterOptions,
                                                     desiredColorFilterCombination),
                        addPrimitiveBlender,
+                       PrecompileBase::SelectOption(fClipShaderOptions,
+                                                    desiredClipShaderCombination),
                        dstReadReq,
                        fDither);
 
