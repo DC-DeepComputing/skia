@@ -7,6 +7,7 @@
 
 #include "src/gpu/ganesh/ops/AAHairLinePathRenderer.h"
 
+#include "include/core/SkPaint.h"
 #include "include/core/SkPoint3.h"
 #include "include/private/base/SkFloatingPoint.h"
 #include "include/private/base/SkTemplates.h"
@@ -1322,6 +1323,10 @@ PathRenderer::CanDrawPath AAHairLinePathRenderer::onCanDrawPath(const CanDrawPat
 
     // We don't currently handle dashing in this class though perhaps we should.
     if (args.fShape->style().pathEffect()) {
+        return CanDrawPath::kNo;
+    }
+
+    if (args.fShape->style().strokeRec().getCap() != SkPaint::kButt_Cap) {
         return CanDrawPath::kNo;
     }
 
