@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8d5cd67_88c0edb8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-03-22T18:44:40Z",
+      "side": 1,
+      "message": "This shouldn\u0027t land as is, as we need to figure out a way to roll this out smoothly - clients will need to call the registration function before they can get the new code.",
+      "revId": "e6607a45dde326091fed96d513e98cd980814838",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
