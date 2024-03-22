@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f4759be_4254e12c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-03-22T07:58:46Z",
+      "side": 1,
+      "message": "Yes, this may have been also the reason why it failed for me on Mac. I am still thinking whether working with usWidthClass values is cleaner, but this looks good to me.\n\nGold changes seem unrelated.",
+      "revId": "7fbf7d2cfaf21ff9968d2576d28df9fc2fdd021e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
