@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2747b7fc_e64c0d3d",
+        "filename": "include/private/base/SkTArray.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 366,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-03-22T15:42:43Z",
+      "side": 1,
+      "message": "Yeah, I think that\u0027s entirely reasonable to consider. I\u0027d used `TArray\u0026\u0026` to make calling call code use `std::move()`, which I find helps clarify at the call site that the input is being emptied, but happy to change it if you prefer TArray\u0026.",
+      "parentUuid": "d1ef68e2_96e28b68",
+      "range": {
+        "startLine": 366,
+        "startChar": 19,
+        "endLine": 366,
+        "endChar": 27
+      },
+      "revId": "3930aa0d2be0867ad61c0cca11693ea4aba3d85c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "493a0c8d_570dc3eb",
         "filename": "include/private/base/SkTArray.h",
         "patchSetId": 2
