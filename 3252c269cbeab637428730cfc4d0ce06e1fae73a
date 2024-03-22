@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dde20317_4af2b5c1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-03-22T13:18:54Z",
+      "side": 1,
+      "message": "Swapping reviews due to OoO and needing an OWNERS.",
+      "revId": "3252c269cbeab637428730cfc4d0ce06e1fae73a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
