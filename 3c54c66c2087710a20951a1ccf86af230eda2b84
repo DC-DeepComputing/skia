@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6459757a_4ef9d0cb",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 956,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-22T14:40:15Z",
+      "side": 1,
+      "message": "This seems very suspicious. `nmad` is supposed to be equivalent to a `_mm256_fnmadd_ps`. Another way to write it would be `_mm256_fmadd_ps(-f, m, a)`. I don\u0027t have Loongarch docs, so I don\u0027t know what `__lasx_xvfnmadd_s` does, but negating `a` seems wrong unless your `fnmadd` is quite different from both Intel\u0027s and ARM\u0027s.\n\nHave you run the unit tests? Normally I would expect our CI to do it for us, but since we don\u0027t have Loongarch hardware available to us, you will need to do it yourself :)\n\nPlease try running: `out/Debug/dm -m SkRasterPipeline`\n\nAnd make sure all tests are actually passing.",
+      "range": {
+        "startLine": 956,
+        "startChar": 0,
+        "endLine": 956,
+        "endChar": 74
+      },
+      "revId": "3c54c66c2087710a20951a1ccf86af230eda2b84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
