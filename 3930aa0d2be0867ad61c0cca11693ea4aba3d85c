@@ -177,6 +177,29 @@
       },
       "revId": "3930aa0d2be0867ad61c0cca11693ea4aba3d85c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c3dd762_9eb8b684",
+        "filename": "tests/TArrayTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 302,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-22T14:11:11Z",
+      "side": 1,
+      "message": "`constexpr int kSizes`",
+      "range": {
+        "startLine": 302,
+        "startChar": 4,
+        "endLine": 302,
+        "endChar": 13
+      },
+      "revId": "3930aa0d2be0867ad61c0cca11693ea4aba3d85c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
