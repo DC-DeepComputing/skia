@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bb9b5adc_1a287ec1",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 916,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-03-22T17:45:05Z",
+      "side": 1,
+      "message": "Please change this to `Vec\u003c8, T\u003e`. (I changed this earlier this year so that it can support GCC, too. (You can see that in the latest version of the HSW/SSE blocks).",
+      "range": {
+        "startLine": 916,
+        "startChar": 36,
+        "endLine": 916,
+        "endChar": 73
+      },
+      "revId": "3c54c66c2087710a20951a1ccf86af230eda2b84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6459757a_4ef9d0cb",
         "filename": "src/opts/SkRasterPipeline_opts.h",
         "patchSetId": 4
@@ -19,6 +42,29 @@
         "startChar": 0,
         "endLine": 956,
         "endChar": 74
+      },
+      "revId": "3c54c66c2087710a20951a1ccf86af230eda2b84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "169cc4af_377be7fb",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 1120,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-03-22T17:45:05Z",
+      "side": 1,
+      "message": "`Vec\u003c4, T\u003e`",
+      "range": {
+        "startLine": 1120,
+        "startChar": 36,
+        "endLine": 1120,
+        "endChar": 73
       },
       "revId": "3c54c66c2087710a20951a1ccf86af230eda2b84",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
