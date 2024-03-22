@@ -18,6 +18,8 @@
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/ganesh/SkSurfaceGanesh.h"
 #include "include/private/chromium/GrDeferredDisplayList.h"
+#include "modules/skshaper/include/SkShaper_factory.h"
+#include "modules/skshaper/utils/FactoryHelpers.h"
 #include "src/core/SkOSFile.h"
 #include "src/core/SkTaskGroup.h"
 #include "src/gpu/ganesh/GrCaps.h"
@@ -520,6 +522,7 @@ int main(int argc, char** argv) {
     }
 
     SkGraphics::Init();
+    SkShapers::RegisterFactory(SkShapers::BestAvailable());
 
     sk_sp<SkPicture> skp;
     std::unique_ptr<MultiFrameSkp> mskp; // populated if the file is multi frame.
@@ -709,8 +712,9 @@ static sk_sp<SkPicture> create_warmup_skp() {
 
 static sk_sp<SkPicture> create_skp_from_svg(SkStream* stream, const char* filename) {
 #if defined(SK_ENABLE_SVG)
-    sk_sp<SkSVGDOM> svg =
-            SkSVGDOM::Builder().setFontManager(ToolUtils::TestFontMgr()).make(*stream);
+    sk_sp<SkSVGDOM> svg = SkSVGDOM::Builder()
+                                  .setFontManager(ToolUtils::TestFontMgr())
+                                  .make(*stream);
     if (!svg) {
         exitf(ExitErr::kData, "failed to build svg dom from file %s", filename);
     }
