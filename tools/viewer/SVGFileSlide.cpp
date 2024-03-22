@@ -13,6 +13,7 @@
 #include "include/core/SkStream.h"
 #include "modules/svg/include/SkSVGDOM.h"
 #include "modules/svg/include/SkSVGNode.h"
+#include "modules/svg/include/SkSVGShapingUtils.h"
 #include "src/core/SkOSFile.h"
 #include "src/utils/SkOSPath.h"
 #include "src/xml/SkDOM.h"
@@ -35,7 +36,10 @@ public:
             return;
         }
 
-        fDom = SkSVGDOM::Builder().setFontManager(ToolUtils::TestFontMgr()).make(svgStream);
+        fDom = SkSVGDOM::Builder()
+                       .setFontManager(ToolUtils::TestFontMgr())
+                       .setShapingCallbacks(SkSVGShaping::BestAvailable())
+                       .make(svgStream);
         if (fDom) {
             fDom->setContainerSize(SkSize{w, h});
         }

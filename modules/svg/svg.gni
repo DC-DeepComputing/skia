@@ -52,6 +52,8 @@ skia_svg_public = [
   "$_modules/svg/include/SkSVGRenderContext.h",
   "$_modules/svg/include/SkSVGSVG.h",
   "$_modules/svg/include/SkSVGShape.h",
+  "$_modules/svg/include/SkSVGShaping.h",
+  "$_modules/svg/include/SkSVGShapingUtils.h",
   "$_modules/svg/include/SkSVGStop.h",
   "$_modules/svg/include/SkSVGText.h",
   "$_modules/svg/include/SkSVGTransformableNode.h",

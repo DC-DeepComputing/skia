@@ -265,8 +265,8 @@ var gniExportDescs = []exporter.GNIExportDesc{
 	{GNI: "gn/xml.gni", Vars: []exporter.GNIFileListExportDesc{
 		{Var: "skia_xml_sources",
 			Rules: []string{
-				"//src/xml:xml_hdrs",
-				"//src/xml:xml_srcs",
+				"//src/xml:_xml_hdrs",
+				"//src/xml:_xml_srcs",
 			}}},
 	},
 	{GNI: "gn/gpu.gni", Vars: []exporter.GNIFileListExportDesc{
