@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "005015bb_2780dbfa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-03-22T13:32:54Z",
+      "side": 1,
+      "message": "This will be helpful for some collection management patterns in Graphite where a list gets appended to a larger collection and then reset, but I\u0027m open to other approaches or changing function names to clarify things.",
+      "revId": "3930aa0d2be0867ad61c0cca11693ea4aba3d85c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
