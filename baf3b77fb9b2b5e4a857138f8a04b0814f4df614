@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "05f92745_a3fa36a1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-03-22T15:34:01Z",
+      "side": 1,
+      "message": "You probably copied the SSE code before February. About a month ago, we found a bug in `blend_lcd16` and `blend_lcd16_opaque`, so you should update the math to match. You can see the changes we made here: https://skia-review.googlesource.com/c/skia/+/817202",
+      "revId": "baf3b77fb9b2b5e4a857138f8a04b0814f4df614",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
