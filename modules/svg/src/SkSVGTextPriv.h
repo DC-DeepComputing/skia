@@ -10,6 +10,7 @@
 
 #include "include/private/base/SkTArray.h"
 #include "modules/skshaper/include/SkShaper.h"
+#include "modules/skshaper/include/SkShaper_factory.h"
 #include "modules/svg/include/SkSVGRenderContext.h"
 #include "modules/svg/include/SkSVGText.h"
 #include "src/base/SkTLazy.h"
@@ -168,7 +169,7 @@ private:
         float                                fLength = 0; // total path length
     };
 
-    void shapePendingBuffer(const SkFont&, sk_sp<SkFontMgr> fallback);
+    void shapePendingBuffer(const SkSVGRenderContext&, const SkFont&);
 
     SkRSXform computeGlyphXform(SkGlyphID, const SkFont&, const SkPoint& glyph_pos,
                                 const PositionAdjustment&) const;
@@ -184,9 +185,10 @@ private:
     // http://www.w3.org/TR/SVG11/text.html#TextLayout
     const SkSVGRenderContext&       fRenderContext; // original render context
     const ShapedTextCallback&       fCallback;
-    const std::unique_ptr<SkShaper> fShaper;
+    sk_sp<SkShapers::Factory>       fShapingFactory;
+    std::unique_ptr<SkShaper>       fShaper;
     std::vector<RunRec>             fRuns;
-    const ScopedPosResolver*        fPosResolver  = nullptr;
+    const ScopedPosResolver*        fPosResolver = nullptr;
     std::unique_ptr<PathData>       fPathData;
 
     // shaper state

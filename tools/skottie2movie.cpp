@@ -13,6 +13,8 @@
 #include "include/private/base/SkTPin.h"
 #include "modules/skottie/include/Skottie.h"
 #include "modules/skresources/include/SkResources.h"
+#include "modules/skshaper/include/SkShaper_factory.h"
+#include "modules/skshaper/utils/FactoryHelpers.h"
 #include "src/base/SkTime.h"
 #include "src/utils/SkOSPath.h"
 
@@ -68,6 +70,7 @@ int main(int argc, char** argv) {
     SkDebugf("assetPath %s\n", assetPath.c_str());
 
     CodecUtils::RegisterAllAvailable();
+    SkShapers::RegisterFactory(SkShapers::BestAvailable());
 
     auto animation = skottie::Animation::Builder()
         .setResourceProvider(skresources::FileResourceProvider::Make(assetPath))
