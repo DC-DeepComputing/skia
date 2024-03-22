@@ -58,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e79ad4d6_bc8c442e",
+        "filename": "tools/window/ios/GraphiteMetalWindowContext_ios.mm",
+        "patchSetId": 2
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-03-22T13:44:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6391bd10_77a59fff",
+      "range": {
+        "startLine": 43,
+        "startChar": 25,
+        "endLine": 43,
+        "endChar": 33
+      },
+      "revId": "3e50a1abcd618d1f83fa13ea348663f890874349",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cbaaea8c_d6ab0b75",
@@ -71,6 +95,30 @@
       "writtenOn": "2024-03-21T18:46:48Z",
       "side": 1,
       "message": "nit: make the comment actionable by converting to `TODO(b/xxxxxxxx): add MSAA config code` or accept the behavior by rewriting to something like `// iOS Viewer currently ignores MSAA settings.`\n\nThis has been in the existing iOS metal window context code for almost five years; consider fixing it there as well.",
+      "range": {
+        "startLine": 52,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 52
+      },
+      "revId": "3e50a1abcd618d1f83fa13ea348663f890874349",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5bba8a2c_81676604",
+        "filename": "tools/window/ios/GraphiteMetalWindowContext_ios.mm",
+        "patchSetId": 2
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-03-22T13:44:48Z",
+      "side": 1,
+      "message": "I\u0027ve filed two bugs for all the commented issues: b/330865345 and b/330864368. No need to document here I don\u0027t think.",
+      "parentUuid": "cbaaea8c_d6ab0b75",
       "range": {
         "startLine": 52,
         "startChar": 0,
@@ -104,6 +152,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "27c0c8d4_69eac51a",
+        "filename": "tools/window/ios/GraphiteMetalWindowContext_ios.mm",
+        "patchSetId": 2
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-03-22T13:44:48Z",
+      "side": 1,
+      "message": "Done. I like to compare to nil to remind myself that it\u0027s an ObjC object.",
+      "parentUuid": "0a42d1d9_89b840b1",
+      "range": {
+        "startLine": 64,
+        "startChar": 13,
+        "endLine": 64,
+        "endChar": 27
+      },
+      "revId": "3e50a1abcd618d1f83fa13ea348663f890874349",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2ad00ba1_208be0a5",
@@ -117,6 +189,30 @@
       "writtenOn": "2024-03-21T20:24:23Z",
       "side": 1,
       "message": "Same TODO feedback as John but here as well",
+      "range": {
+        "startLine": 78,
+        "startChar": 0,
+        "endLine": 78,
+        "endChar": 34
+      },
+      "revId": "3e50a1abcd618d1f83fa13ea348663f890874349",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9e17da5_e302bf04",
+        "filename": "tools/window/ios/GraphiteMetalWindowContext_ios.mm",
+        "patchSetId": 2
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-03-22T13:44:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2ad00ba1_208be0a5",
       "range": {
         "startLine": 78,
         "startChar": 0,
@@ -188,6 +284,30 @@
       "side": 1,
       "message": "IMO, only if we plan on implementing it in the near future...",
       "parentUuid": "134a4c75_d5ebe4eb",
+      "range": {
+        "startLine": 92,
+        "startChar": 0,
+        "endLine": 92,
+        "endChar": 28
+      },
+      "revId": "3e50a1abcd618d1f83fa13ea348663f890874349",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d190ac21_c5fed62c",
+        "filename": "tools/window/ios/GraphiteMetalWindowContext_ios.mm",
+        "patchSetId": 2
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-03-22T13:44:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e7810daf_763e317e",
       "range": {
         "startLine": 92,
         "startChar": 0,
