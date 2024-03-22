@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b828daf4_d6fbce77",
+        "filename": "modules/skottie/src/text/TextShaper.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 484,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-03-22T22:14:26Z",
+      "side": 1,
+      "message": "I wanted a way to say \"if the makeShaper() call fails, make everything fallback to be primitive\" and I\u0027m not sure how to elegantly do that without storying the factory.\n\nIf the registration sticks we can try the static functions you mentioned and I think that will clean things up sufficiently.",
+      "parentUuid": "de4989e6_541e2438",
+      "revId": "e6607a45dde326091fed96d513e98cd980814838",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0acb9a53_006a6d7a",
         "filename": "modules/skshaper/include/SkShaper_factory.h",
         "patchSetId": 16
@@ -48,6 +66,30 @@
       "writtenOn": "2024-03-22T19:43:17Z",
       "side": 1,
       "message": "`makeBidiRunIterator`?",
+      "range": {
+        "startLine": 23,
+        "startChar": 55,
+        "endLine": 23,
+        "endChar": 71
+      },
+      "revId": "e6607a45dde326091fed96d513e98cd980814838",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e1eff8d3_0d0b539b",
+        "filename": "modules/skshaper/include/SkShaper_factory.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-03-22T22:14:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0acb9a53_006a6d7a",
       "range": {
         "startLine": 23,
         "startChar": 55,
@@ -81,6 +123,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "830dfe93_809d7bed",
+        "filename": "modules/skshaper/include/SkShaper_factory.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-03-22T22:14:26Z",
+      "side": 1,
+      "message": "The default value is HB_SCRIPT_UNKNOWN and I wasn\u0027t sure I wanted to force SVG to emulate that, but I see that\u0027s what Skottie does so :shrug:\n\nDone.",
+      "parentUuid": "67287a0a_33c880dc",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 58
+      },
+      "revId": "e6607a45dde326091fed96d513e98cd980814838",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "86777c33_7e41c87d",
@@ -104,6 +170,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f72c4a35_4e5ce78c",
+        "filename": "modules/skshaper/include/SkShaper_factory.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-03-22T22:14:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "86777c33_7e41c87d",
+      "range": {
+        "startLine": 27,
+        "startChar": 57,
+        "endLine": 27,
+        "endChar": 72
+      },
+      "revId": "e6607a45dde326091fed96d513e98cd980814838",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9549fe58_485842dc",
@@ -117,6 +207,30 @@
       "writtenOn": "2024-03-22T19:43:17Z",
       "side": 1,
       "message": "This doesn\u0027t have to be in a public header, just move to .cpp and uninline `Primitive::Factory()`?",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 53,
+        "endChar": 20
+      },
+      "revId": "e6607a45dde326091fed96d513e98cd980814838",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "89e4cdf2_e1a12eea",
+        "filename": "modules/skshaper/include/SkShaper_factory.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-03-22T22:14:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9549fe58_485842dc",
       "range": {
         "startLine": 32,
         "startChar": 0,
@@ -167,6 +281,48 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d0a4227_52f8953c",
+        "filename": "modules/skshaper/include/SkShaper_factory.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-03-22T22:14:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dfb1bded_6cbcbe1a",
+      "range": {
+        "startLine": 59,
+        "startChar": 7,
+        "endLine": 59,
+        "endChar": 21
+      },
+      "revId": "e6607a45dde326091fed96d513e98cd980814838",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5400826d_5f23d6b9",
+        "filename": "modules/skshaper/include/SkShaper_factory.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-03-22T22:14:26Z",
+      "side": 1,
+      "message": "I still don\u0027t know how I feel about the registered factory. I\u0027d like @bungeman@google.com to weigh in before going too much farther with this.",
+      "parentUuid": "cc4cb6ab_41efca46",
+      "revId": "e6607a45dde326091fed96d513e98cd980814838",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "257904f4_429bdcdf",
@@ -190,6 +346,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f7fe071_03768cc6",
+        "filename": "modules/skshaper/include/SkShaper_factory.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-03-22T22:14:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "257904f4_429bdcdf",
+      "range": {
+        "startLine": 60,
+        "startChar": 12,
+        "endLine": 60,
+        "endChar": 27
+      },
+      "revId": "e6607a45dde326091fed96d513e98cd980814838",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4c38e115_cb43c255",
@@ -203,6 +383,30 @@
       "writtenOn": "2024-03-22T19:43:17Z",
       "side": 1,
       "message": "std::move(newFactory)",
+      "range": {
+        "startLine": 24,
+        "startChar": 21,
+        "endLine": 24,
+        "endChar": 31
+      },
+      "revId": "e6607a45dde326091fed96d513e98cd980814838",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9011d76_0739d432",
+        "filename": "modules/skshaper/src/SkShaper_factory.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-03-22T22:14:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4c38e115_cb43c255",
       "range": {
         "startLine": 24,
         "startChar": 21,
