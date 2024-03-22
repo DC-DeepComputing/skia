@@ -16,6 +16,23 @@
       "message": "Makes sense to me, thanks!",
       "revId": "adeb54c4ea8940601e1aa62e83c449e4f719b733",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c80afe28_cf946ecc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-03-22T13:28:50Z",
+      "side": 1,
+      "message": "This is really good cleanup, just a final thought on the `findOrCreateCompatibleSamplerWithKnownKey` function.",
+      "revId": "adeb54c4ea8940601e1aa62e83c449e4f719b733",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

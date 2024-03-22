@@ -93,6 +93,30 @@
       },
       "revId": "6fff7569fff621499bd6ab8f86b512509ccdbe83",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "75a496a9_01f8c0f4",
+        "filename": "src/gpu/graphite/ResourceProvider.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-03-22T13:28:50Z",
+      "side": 1,
+      "message": "Will the pipeline layout creation process have the key, or will it have the `SamplerDesc`? I\u0027m hopeful we can get away with needing to create GraphiteResourceKeys entirely for samplers and just rely on the SamplerDesc holding all the information (following what I outlined in the next CL).\n\nOn the other hand, if the SamplerDesc will not contain the ycbcr info and the PaintParamsKey will embed the GraphiteResourceKey that does include the ycbcr info, then being able to find or create a Sampler from a known key makes sense. Although that point, we would have to pass in the GraphiteResourceKey to `createSampler` so that the backend could get the ycbcr info that wasn\u0027t on the SamplerDesc.\n\nFor now, since it\u0027s used internally only, and is a pretty simple refactor to bring back, would you be okay just keeping `findOrCreateCompatibleSampler` and then the known-key version can come back if we can\u0027t get rid of keys entirely for samplers?",
+      "parentUuid": "c6d42859_ac83f3bd",
+      "range": {
+        "startLine": 124,
+        "startChar": 67,
+        "endLine": 124,
+        "endChar": 86
+      },
+      "revId": "6fff7569fff621499bd6ab8f86b512509ccdbe83",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
