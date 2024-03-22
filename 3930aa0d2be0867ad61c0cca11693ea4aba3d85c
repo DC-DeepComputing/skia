@@ -67,6 +67,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "580d35ca_53d2e552",
+        "filename": "include/private/base/SkTArray.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 366,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-22T15:45:13Z",
+      "side": 1,
+      "message": "I don\u0027t see much value in forcing the caller to use `std::move` with an API that\u0027s already called **move**_back. It\u0027s already clear enough.",
+      "parentUuid": "2747b7fc_e64c0d3d",
+      "range": {
+        "startLine": 366,
+        "startChar": 19,
+        "endLine": 366,
+        "endChar": 27
+      },
+      "revId": "3930aa0d2be0867ad61c0cca11693ea4aba3d85c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "493a0c8d_570dc3eb",
         "filename": "include/private/base/SkTArray.h",
         "patchSetId": 2
