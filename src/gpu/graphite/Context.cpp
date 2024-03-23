@@ -804,6 +804,8 @@ void Context::performDeferredCleanup(std::chrono::milliseconds msNotUsed) {
 
     this->checkAsyncWorkCompletion();
 
+    fMappedBufferManager->process();
+
     auto purgeTime = skgpu::StdSteadyClock::now() - msNotUsed;
     fResourceProvider->purgeResourcesNotUsedSince(purgeTime);
 }
