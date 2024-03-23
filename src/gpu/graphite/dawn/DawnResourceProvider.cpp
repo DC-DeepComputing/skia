@@ -314,7 +314,9 @@ void DawnResourceProvider::onDeleteBackendTexture(const BackendTexture& texture)
     // Automatically release the pointers in wgpu::TextureView & wgpu::Texture's dtor.
     // Acquire() won't increment the ref count.
     wgpu::TextureView::Acquire(texture.getDawnTextureViewPtr());
-    wgpu::Texture::Acquire(texture.getDawnTexturePtr());
+    // We need to explicit call Destroy() here since any DawnTextures created from this backend
+    // texture won't destroy the underlying Dawn texture since it's considered a "wrapped" texture.
+    wgpu::Texture::Acquire(texture.getDawnTexturePtr()).Destroy();
 }
 
 DawnSharedContext* DawnResourceProvider::dawnSharedContext() const {
