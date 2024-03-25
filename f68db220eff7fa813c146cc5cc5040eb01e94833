@@ -16,6 +16,24 @@
       "message": "@bungeman@google.com, since an automatic rebase did not work, could you manually rebase this? After https://skia-review.googlesource.com/c/skia/+/830996 I am expecting only a few failures. Some of them might be caused by expectations towards a FontManager to enumerate system fonts which we may not want to fulfil yet with the Fontations one, until Julia\u0027s work progresses and we could enumerate with FontConfig and instantiate with Fontations.",
       "revId": "f68db220eff7fa813c146cc5cc5040eb01e94833",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7e4f557_867ebe00",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-25T17:36:50Z",
+      "side": 1,
+      "message": "Yeah, I\u0027m working on it. Turns out that we need to update a bunch of build stuff as well, so working on that first. Then will take a look at the Paragraph stuff.",
+      "parentUuid": "d8a07012_0137ee77",
+      "revId": "f68db220eff7fa813c146cc5cc5040eb01e94833",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
