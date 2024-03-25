@@ -63,6 +63,30 @@
       },
       "revId": "05a4b4f45d217565d6e1683cc8428e68bff9df7c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a8d1e7d_ff675f04",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-03-25T23:22:23Z",
+      "side": 1,
+      "message": "I think I would prefer checkAsyncWorkCompletion not have any big side effects like having to do a queue submit to the gpu. Like even with the syncCpu flag on it, its not 100% obvious from API POV that saying syncCpu would mean that work gets submitted to the GPU as well. I would prefer forcing clients to have just the one entry point to send and wait on work from the GPU, i.e. Context::submit",
+      "parentUuid": "5839b3f1_6086e633",
+      "range": {
+        "startLine": 157,
+        "startChar": 0,
+        "endLine": 158,
+        "endChar": 36
+      },
+      "revId": "05a4b4f45d217565d6e1683cc8428e68bff9df7c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
