@@ -80,6 +80,30 @@
       },
       "revId": "4d25b3793697801abcec50552ff93f7f923d17fc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed54e2ed_d3b9b7ab",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 318,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-03-25T16:59:48Z",
+      "side": 1,
+      "message": "Okay that makes sense about Destroy then, so we can leave off the TODO I had mentioned. But I still don\u0027t think anything needs to be called about about being \"wrapped\" The create/destroyBackendTexture are simply meant to be helper functions for clients to use to create a texture they own. The create and deletion of them doesn\u0027t interact directly with core Skia. This is all part of the higher level BackendTexture contracts. We don\u0027t need to call out that if this backendTexture happened to of been wrapped in a Skia object (i.e. SkImage or SkSurface) that Skia didn\u0027t delete it at the end, because that just is the API/contract.\n\nSo maybe something along the lines of:\n\"We call Delete on the dawn Texture here since that is the recommended way to delete a WebGPU texture versus just dropping a ref and relying on the garbage collection.\n\nAdditionally this helps to work around an issue where Skia may have cached a BindGroup that references the underlying texture. Skia currently doesn\u0027t destroy BindGroups when its use of the texture goes away, thus a ref to the texture remains on the BindGroup and memory is never cleared up unless we call Destroy here.\"",
+      "parentUuid": "65bf7351_e977c86a",
+      "range": {
+        "startLine": 317,
+        "startChar": 4,
+        "endLine": 318,
+        "endChar": 98
+      },
+      "revId": "4d25b3793697801abcec50552ff93f7f923d17fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
