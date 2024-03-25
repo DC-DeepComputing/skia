@@ -39,6 +39,30 @@
       },
       "revId": "4911e3162bc8e0f7a8b294db766605363f4f119b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "158b8ddf_88926429",
+        "filename": "src/gpu/graphite/Recording.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-03-25T19:08:30Z",
+      "side": 1,
+      "message": "For some reason, clang isn\u0027t able to infer the template argument so you end up writing `std::forward\u003cTaskList\u003e(tasks)` which doesn\u0027t look as good IMO. I agree that if I could drop the `\u003cTaskList\u003e` forwarding would be best, but for now I\u0027m going to leave it as `std::move()`.",
+      "parentUuid": "84f4e912_74b1d4f3",
+      "range": {
+        "startLine": 176,
+        "startChar": 35,
+        "endLine": 176,
+        "endChar": 44
+      },
+      "revId": "4911e3162bc8e0f7a8b294db766605363f4f119b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
