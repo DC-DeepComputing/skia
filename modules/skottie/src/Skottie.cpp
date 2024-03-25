@@ -136,6 +136,7 @@ AnimationBuilder::AnimationBuilder(sk_sp<ResourceProvider> rp, sk_sp<SkFontMgr> 
                                    sk_sp<PropertyObserver> pobserver, sk_sp<Logger> logger,
                                    sk_sp<MarkerObserver> mobserver, sk_sp<PrecompInterceptor> pi,
                                    sk_sp<ExpressionManager> expressionmgr,
+                                   sk_sp<SkShapers::Factory> shapingFactory,
                                    Animation::Builder::Stats* stats,
                                    const SkSize& comp_size, float duration, float framerate,
                                    uint32_t flags)
@@ -146,6 +147,7 @@ AnimationBuilder::AnimationBuilder(sk_sp<ResourceProvider> rp, sk_sp<SkFontMgr> 
     , fMarkerObserver(std::move(mobserver))
     , fPrecompInterceptor(std::move(pi))
     , fExpressionManager(std::move(expressionmgr))
+    , fShapingFactory(std::move(shapingFactory))
     , fRevalidator(sk_make_sp<SceneGraphRevalidator>())
     , fSlotManager(sk_make_sp<SlotManager>(fRevalidator))
     , fStats(stats)
@@ -400,6 +402,8 @@ sk_sp<Animation> Animation::Builder::make(const char* data, size_t data_len) {
         return nullptr;
     }
 
+    auto factory = fShapingFactory ? fShapingFactory : SkShapers::Primitive::Factory();
+
     SkASSERT(resolvedProvider);
     internal::AnimationBuilder builder(std::move(resolvedProvider), fFontMgr,
                                        std::move(fPropertyObserver),
@@ -407,6 +411,7 @@ sk_sp<Animation> Animation::Builder::make(const char* data, size_t data_len) {
                                        std::move(fMarkerObserver),
                                        std::move(fPrecompInterceptor),
                                        std::move(fExpressionManager),
+                                       std::move(factory),
                                        &fStats, size, duration, fps, fFlags);
     auto ainfo = builder.parse(json);
 
