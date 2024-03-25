@@ -16,6 +16,46 @@
       "message": "PTAL",
       "revId": "ed3ef8f7dbb1194b04c40b5595aa2f3413eb59ec",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f5058a8c_4c841092",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-03-25T14:24:46Z",
+      "side": 1,
+      "message": "Looping in Greg and Jim for thoughts on where the processing should best happen.",
+      "revId": "ed3ef8f7dbb1194b04c40b5595aa2f3413eb59ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d63cb6a7_14e67119",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 807,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-03-25T14:24:46Z",
+      "side": 1,
+      "message": "Does it make sense to instead move this to inside `checkAsyncWorkCompletion`?\n\nSeparately from that, does it make sense to also be processing the manager on `insertRecording()` or `submit()`, since those functions don\u0027t explicitly check for async work to be complete, but could be a useful way to avoid building up too many messages at one time?",
+      "range": {
+        "startLine": 807,
+        "startChar": 0,
+        "endLine": 807,
+        "endChar": 36
+      },
+      "revId": "ed3ef8f7dbb1194b04c40b5595aa2f3413eb59ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
