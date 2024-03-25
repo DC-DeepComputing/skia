@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9da51fcd_44001c90",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 21754
+      },
+      "writtenOn": "2024-03-25T20:33:05Z",
+      "side": 1,
+      "message": "PTAL - the CL description has been updated since the original fix already went in",
+      "revId": "05a4b4f45d217565d6e1683cc8428e68bff9df7c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
