@@ -22,6 +22,30 @@
       },
       "revId": "8495bf1679f7b9cddd45a34648ab2aa6a3fab0bf",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bdadc721_5ea46c79",
+        "filename": "infra/bots/gen_tasks_logic/compile_cas.go",
+        "patchSetId": 1
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-25T19:09:06Z",
+      "side": 1,
+      "message": "Yes, I now see that the existing `.vpython` file contains `python_version: \"3.8\"` which looks like python3? So I suppose we could leave these alone for now. Mostly this was about updating recipes-py since the current version won\u0027t work with a recent depot_tools, but this is separate from that, I think. However, skimming through luci and infra/tools, it really looks like this file wants to be called `.vpython3` (though there are still a number of hacks to keep `.vpython` working most of the time).",
+      "parentUuid": "4ce94dc0_27c865a4",
+      "range": {
+        "startLine": 50,
+        "startChar": 4,
+        "endLine": 50,
+        "endChar": 12
+      },
+      "revId": "8495bf1679f7b9cddd45a34648ab2aa6a3fab0bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

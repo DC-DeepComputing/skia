@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "17093497_098cc622",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-25T19:09:06Z",
+      "side": 1,
+      "message": "And now I am unsure as to why both `virtualenv` and `venv` are being used with python3 and why `venv` installation appears to be failing in `virtualenv`, though using the two together does not seem like a great idea. I\u0027m not entirely sure yet where these are coming from (what code is actually trying to install them).",
+      "revId": "1814562096ceabefe8b77d6bef48cb85ac6ba2ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
