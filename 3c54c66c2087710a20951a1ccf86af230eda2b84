@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bdd5c44f_5e036452",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 916,
+      "author": {
+        "id": 21814
+      },
+      "writtenOn": "2024-03-25T03:38:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bb9b5adc_1a287ec1",
+      "range": {
+        "startLine": 916,
+        "startChar": 36,
+        "endLine": 916,
+        "endChar": 73
+      },
+      "revId": "3c54c66c2087710a20951a1ccf86af230eda2b84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6459757a_4ef9d0cb",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "02114943_1bc7c295",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 956,
+      "author": {
+        "id": 21814
+      },
+      "writtenOn": "2024-03-25T03:38:41Z",
+      "side": 1,
+      "message": "Our fnmadd is indeed quite different from both Intel\u0027s and ARM\u0027s.\nThe operation of ```__lasx_xvfnmadd_s``` is:\n```\nfor i in range(4):\n    dst[i] \u003d -(f[i] * m[i] + a[i]); \n```\nIt\u0027s actually just negating the result of the vfmadd operation, so we use ```-a``` to get the same result.\n\nAnd we can make sure all the tests have been passed.",
+      "parentUuid": "6459757a_4ef9d0cb",
+      "range": {
+        "startLine": 956,
+        "startChar": 0,
+        "endLine": 956,
+        "endChar": 74
+      },
+      "revId": "3c54c66c2087710a20951a1ccf86af230eda2b84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "169cc4af_377be7fb",
@@ -60,6 +108,30 @@
       "writtenOn": "2024-03-22T17:45:05Z",
       "side": 1,
       "message": "`Vec\u003c4, T\u003e`",
+      "range": {
+        "startLine": 1120,
+        "startChar": 36,
+        "endLine": 1120,
+        "endChar": 73
+      },
+      "revId": "3c54c66c2087710a20951a1ccf86af230eda2b84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4c16a23e_baa110c9",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 1120,
+      "author": {
+        "id": 21814
+      },
+      "writtenOn": "2024-03-25T03:38:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "169cc4af_377be7fb",
       "range": {
         "startLine": 1120,
         "startChar": 36,
