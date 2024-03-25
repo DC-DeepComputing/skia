@@ -32,6 +32,8 @@
 #include "modules/skottie/include/Skottie.h"
 #include "modules/skottie/utils/SkottieUtils.h"
 #include "modules/skresources/include/SkResources.h"
+#include "modules/skshaper/include/SkShaper_factory.h"
+#include "modules/skshaper/utils/FactoryHelpers.h"
 #include "src/core/SkOSFile.h"
 #include "src/core/SkTaskGroup.h"
 #include "src/utils/SkOSPath.h"
@@ -501,6 +503,8 @@ int main(int argc, char** argv) {
     SkCodecs::Register(SkPngDecoder::Decoder());
     SkCodecs::Register(SkJpegDecoder::Decoder());
     SkCodecs::Register(SkWebpDecoder::Decoder());
+
+    SkShapers::SetFactory(SkShapers::BestAvailable());
 
     // If necessary, clients should use a font manager that would load fonts from the system.
 #if defined(SK_BUILD_FOR_MAC) && defined(SK_FONTMGR_CORETEXT_AVAILABLE)

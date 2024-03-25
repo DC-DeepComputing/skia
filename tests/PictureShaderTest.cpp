@@ -106,7 +106,7 @@ DEF_TEST(PictureShader_caching2, reporter) {
     // Check that we did cache something, but only 1 thing
     data.counter = 0;
     SkResourceCache::VisitAll(counter, &data);
-    REPORTER_ASSERT(reporter, data.counter == 1);
+    REPORTER_ASSERT(reporter, data.counter == 1, "%d != 1", data.counter);
 
     // Now delete the picture, and check the we purge the cache entry
 
