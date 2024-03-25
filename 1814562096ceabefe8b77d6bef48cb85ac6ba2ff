@@ -16,6 +16,24 @@
       "message": "And now I am unsure as to why both `virtualenv` and `venv` are being used with python3 and why `venv` installation appears to be failing in `virtualenv`, though using the two together does not seem like a great idea. I\u0027m not entirely sure yet where these are coming from (what code is actually trying to install them).",
       "revId": "1814562096ceabefe8b77d6bef48cb85ac6ba2ff",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d327e4ba_cb3edd73",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-25T20:49:29Z",
+      "side": 1,
+      "message": "It looks like that command Skia is running which causes this issue is the `vpython3 --version` command and all the setup here is being done by [vpython itself](https://source.chromium.org/chromium/infra/infra/+/f502e30ef7a1f6d22095b3709185f9fc82fcac6a:go/src/go.chromium.org/luci/vpython/python/python.go;l\u003d55). I think the issue is that vpython will default to 3.8, but then depot_tools wants 3.11, so it tries to create a single venv with both. Though I am wondering why it seems the `.vpython3` isn\u0027t being found, looking the CAS for this build I don\u0027t see it listed. Is it possible that the CAS is done early enough that this would require landing a change to add `.vpython3` and add it to `compile_cas.go` first?",
+      "parentUuid": "17093497_098cc622",
+      "revId": "1814562096ceabefe8b77d6bef48cb85ac6ba2ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
