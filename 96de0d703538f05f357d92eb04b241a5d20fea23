@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "87c1562d_60ecf103",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-03-25T14:53:45Z",
+      "side": 1,
+      "message": "Agree about the final small changes John suggested. As long as tests pass: lgtm!",
+      "revId": "96de0d703538f05f357d92eb04b241a5d20fea23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "81fa0890_5b4a9037",
