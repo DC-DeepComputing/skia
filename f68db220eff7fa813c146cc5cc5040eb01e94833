@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8a07012_0137ee77",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-03-25T15:44:19Z",
+      "side": 1,
+      "message": "@bungeman@google.com, since an automatic rebase did not work, could you manually rebase this? After https://skia-review.googlesource.com/c/skia/+/830996 I am expecting only a few failures. Some of them might be caused by expectations towards a FontManager to enumerate system fonts which we may not want to fulfil yet with the Fontations one, until Julia\u0027s work progresses and we could enumerate with FontConfig and instantiate with Fontations.",
+      "revId": "f68db220eff7fa813c146cc5cc5040eb01e94833",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
