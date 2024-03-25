@@ -123,6 +123,8 @@ public:
     sk_sp<PrecompileShader> makeWithColorFilter(sk_sp<PrecompileColorFilter>);
 
     sk_sp<PrecompileShader> makeWithWorkingColorSpace(sk_sp<SkColorSpace>);
+
+    sk_sp<PrecompileShader> makeWithCTM();
 };
 
 class PrecompileMaskFilter : public PrecompileBase {
@@ -182,6 +184,13 @@ public:
         fBlenderOptions.assign(blenders.begin(), blenders.end());
     }
 
+    void setClipShaders(SkSpan<const sk_sp<PrecompileShader>> clipShaders) {
+        fClipShaderOptions.reserve(clipShaders.size());
+        for (const sk_sp<PrecompileShader>& cs : clipShaders) {
+            fClipShaderOptions.emplace_back(cs->makeWithCTM());
+        }
+    }
+
     void setDither(bool dither) { fDither = dither; }
 
     // Provides access to functions that aren't part of the public API.
@@ -196,6 +205,7 @@ private:
     int numColorFilterCombinations() const;
     // TODO: need to decompose imagefilters into component draws
     int numBlendModeCombinations() const;
+    int numClipShaderCombinations() const;
 
     int numCombinations() const;
     // 'desiredCombination' must be less than the result of the numCombinations call
@@ -217,6 +227,7 @@ private:
     std::vector<sk_sp<PrecompileColorFilter>> fColorFilterOptions;
     std::vector<sk_sp<PrecompileImageFilter>> fImageFilterOptions;
     std::vector<sk_sp<PrecompileBlender>> fBlenderOptions;
+    std::vector<sk_sp<PrecompileShader>> fClipShaderOptions;
     bool fDither = false;
 };
 
