@@ -73,14 +73,14 @@ static DEFINE_bool(fontations, false, "Use Fontations for native font rendering.
 sk_sp<SkTypeface> PlanetTypeface() {
     static const sk_sp<SkTypeface> planetTypeface = []() {
         const char* filename;
-#if defined(SK_BUILD_FOR_WIN)
+/* #if defined(SK_BUILD_FOR_WIN)
         filename = "fonts/planetcolr.ttf";
 #elif defined(SK_BUILD_FOR_MAC) || defined(SK_BUILD_FOR_IOS)
-        filename = "fonts/planetsbix.ttf";
-#else
+ */        filename = "fonts/planetsbix.ttf";
+/* #else
         filename = "fonts/planetcbdt.ttf";
 #endif
-        sk_sp<SkTypeface> typeface = CreateTypefaceFromResource(filename);
+ */        sk_sp<SkTypeface> typeface = CreateTypefaceFromResource(filename);
         if (typeface) {
             return typeface;
         }

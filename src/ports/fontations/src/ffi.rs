@@ -1065,6 +1065,8 @@ mod bitmap {
                     return Some(Box::new(BridgeBitmapGlyph {
                         data: Some(BitmapPixelData::PngData(sbix_glyph.glyph_data.data())),
                         metrics: FfiBitmapMetrics {
+                            // TODO: Can we adjust these if glyf contours are found,
+                            // can potential scaling be fit into ppem_x, ppem_y?
                             bearing_x: sbix_glyph.glyph_data.origin_offset_x() as f32,
                             bearing_y: sbix_glyph.glyph_data.origin_offset_y() as f32,
                             ppem_x: sbix_glyph.ppem as f32,

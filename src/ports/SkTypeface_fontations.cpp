@@ -474,11 +474,22 @@ protected:
 
             SkRect bounds = SkRect::MakeEmpty();
             SkImageInfo info = codec->getInfo();
-            float height_adjustment = placement_origin_bottom_left ? info.height() : 0;
+
+            printf("Bitmap height: %d width %d ppemy: %f, scale %f\n",
+                   info.height(),
+                   info.width(),
+                   bitmap_metrics.ppem_y,
+                   scale.fY);
 
             bounds = SkRect::Make(info.bounds());
             SkMatrix matrix = remainingMatrix;
             SkScalar ratio = scale.fY / bitmap_metrics.ppem_y;
+
+            // TODO(drott): Fix scaling and placement by glyf contour here, see SBIX OpenType
+            // special placement rules.
+            // float height_adjustment =   placement_origin_bottom_left ? info.height() : 0;
+            float height_adjustment = 968 / 200 * scale.fY;
+
             matrix.preScale(ratio, ratio);
             matrix.preTranslate(bitmap_metrics.bearing_x,
                                 -bitmap_metrics.bearing_y - height_adjustment);
@@ -488,6 +499,11 @@ protected:
             }
             matrix.mapRect(&bounds);
             mx.bounds = SkRect::Make(bounds.roundOut());
+            printf("Bitmap details: by: %f, adj: %f height: %d, Bounds in generateMetrics: \n",
+                   -bitmap_metrics.bearing_y,
+                   height_adjustment,
+                   info.height());
+            mx.bounds.dump();
         } else {
             // TODO: Retrieve from read_fonts and Skrifa - TrueType bbox or from path with
             // hinting?
@@ -541,13 +557,16 @@ protected:
             canvas.translate(SkFixedToScalar(glyph.getSubXFixed()),
                              SkFixedToScalar(glyph.getSubYFixed()));
         }
+
         const fontations_ffi::BitmapMetrics bitmapMetrics =
                 fontations_ffi::bitmap_metrics(*bitmap_glyph);
+
         SkScalar ratio = scale.fY / bitmapMetrics.ppem_y;
         canvas.scale(ratio, ratio);
 
-        float height_adjustment =
-                bitmapMetrics.placement_origin_bottom_left ? glyph_image->height() : 0;
+        // float height_adjustment = bitmapMetrics.placement_origin_bottom_left ?
+        // glyph_image->height()  : 0;
+        float height_adjustment = 968 / 200 * scale.fY;
         canvas.translate(bitmapMetrics.bearing_x, -bitmapMetrics.bearing_y - height_adjustment);
 
         SkSamplingOptions sampling(SkFilterMode::kLinear, SkMipmapMode::kNearest);

@@ -9,6 +9,7 @@
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkFont.h"
+#include "include/core/SkFontMetrics.h"
 #include "include/core/SkFontTypes.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkRect.h"
@@ -96,6 +97,12 @@ protected:
             font.setSubpixel(false);
             font.setTypeface(fEmojiTypeface);
             font.measureText(fEmojiText, strlen(fEmojiText), SkTextEncoding::kUTF8, &bounds);
+            printf("Emoji font bounds: \n");
+            bounds.dump();
+            SkFontMetrics metrics;
+            font.getMetrics(&metrics);
+
+//             printf("Ascent %f, descent %f, leading %f\n", metrics.fAscent, metrics.fDescent, metrics.fLeading);
             ToolUtils::add_to_text_blob(&builder, fEmojiText, font, xOffset, yOffset);
         }
 
