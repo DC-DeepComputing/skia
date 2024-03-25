@@ -1145,6 +1145,7 @@ void Device::drawGeometry(const Transform& localToDevice,
     const Clip clip =
             fClip.visitClipStackForDraw(localToDevice, geometry, style, outsetBoundsForAA,
                                         &clipElements);
+//    SkDebugf("clipShader: %p\n", clip.shader());
     if (clip.isClippedOut()) {
         // Clipped out, so don't record anything.
         return;

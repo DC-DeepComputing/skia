@@ -100,6 +100,8 @@ namespace PrecompileShaders {
     SK_API sk_sp<PrecompileShader> WorkingColorSpace(SkSpan<const sk_sp<PrecompileShader>> shaders,
                                                      SkSpan<const sk_sp<SkColorSpace>> colorSpaces);
 
+    SK_API sk_sp<PrecompileShader> CTM(SkSpan<const sk_sp<PrecompileShader>> wrapped);
+
 } // namespace PrecompileShaders
 
 //--------------------------------------------------------------------------------------------------

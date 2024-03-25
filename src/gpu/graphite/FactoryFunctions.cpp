@@ -645,9 +645,9 @@ private:
         SkASSERT(desiredWrappedCombination < fNumWrappedCombos);
 
         if (desiredLMCombination) {
-            LocalMatrixShaderBlock::LMShaderData lmShaderData(SkMatrix::I());
+            LocalMatrixShaderBlock::LMShaderData kIgnoredLMShaderData(SkMatrix::I());
 
-            LocalMatrixShaderBlock::BeginBlock(keyContext, builder, gatherer, lmShaderData);
+            LocalMatrixShaderBlock::BeginBlock(keyContext, builder, gatherer, kIgnoredLMShaderData);
         }
 
             AddToKey<PrecompileShader>(keyContext, builder, gatherer, fWrapped,
@@ -779,6 +779,55 @@ sk_sp<PrecompileShader> PrecompileShaders::WorkingColorSpace(
         SkSpan<const sk_sp<SkColorSpace>> colorSpaces) {
     return sk_make_sp<PrecompileWorkingColorSpaceShader>(std::move(shaders),
                                                          std::move(colorSpaces));
+}
+
+//--------------------------------------------------------------------------------------------------
+// In Graphite this acts as a non-elidable LocalMatrixShader
+class PrecompileCTMShader : public PrecompileShader {
+public:
+    PrecompileCTMShader(SkSpan<const sk_sp<PrecompileShader>> wrapped)
+            : fWrapped(wrapped.begin(), wrapped.end()) {
+        fNumWrappedCombos = 0;
+        for (const auto& s : fWrapped) {
+            fNumWrappedCombos += s->numCombinations();
+        }
+    }
+
+    bool isConstant(int desiredCombination) const override {
+        SkASSERT(desiredCombination < fNumWrappedCombos);
+
+        auto wrapped = PrecompileBase::SelectOption(fWrapped, desiredCombination);
+        if (wrapped.first) {
+            return wrapped.first->isConstant(wrapped.second);
+        }
+
+        return false;
+    }
+
+private:
+    int numChildCombinations() const override { return fNumWrappedCombos; }
+
+    void addToKey(const KeyContext& keyContext,
+                  PaintParamsKeyBuilder* builder,
+                  PipelineDataGatherer* gatherer,
+                  int desiredCombination) const override {
+        SkASSERT(desiredCombination < fNumWrappedCombos);
+
+        LocalMatrixShaderBlock::LMShaderData kIgnoredLMShaderData(SkMatrix::I());
+
+        LocalMatrixShaderBlock::BeginBlock(keyContext, builder, gatherer, kIgnoredLMShaderData);
+
+            AddToKey<PrecompileShader>(keyContext, builder, gatherer, fWrapped, desiredCombination);
+
+        builder->endBlock();
+    }
+
+    std::vector<sk_sp<PrecompileShader>> fWrapped;
+    int fNumWrappedCombos;
+};
+
+sk_sp<PrecompileShader> PrecompileShaders::CTM(SkSpan<const sk_sp<PrecompileShader>> wrapped) {
+    return sk_make_sp<PrecompileLocalMatrixShader>(std::move(wrapped));
 }
 
 //--------------------------------------------------------------------------------------------------
