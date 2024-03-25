@@ -472,12 +472,12 @@ public:
     ~SkUnicode_icu() override { }
     std::unique_ptr<SkBidiIterator> makeBidiIterator(const uint16_t text[], int count,
                                                      SkBidiIterator::Direction dir) override {
-        return SkUnicode_IcuBidi::MakeIterator(text, count, dir);
+        return SkBidiFactory::MakeIterator(text, count, dir);
     }
     std::unique_ptr<SkBidiIterator> makeBidiIterator(const char text[],
                                                      int count,
                                                      SkBidiIterator::Direction dir) override {
-        return SkUnicode_IcuBidi::MakeIterator(text, count, dir);
+        return SkBidiFactory::MakeIterator(text, count, dir);
     }
     std::unique_ptr<SkBreakIterator> makeBreakIterator(const char locale[],
                                                        BreakType type) override {
@@ -521,7 +521,7 @@ public:
                         int utf8Units,
                         TextDirection dir,
                         std::vector<BidiRegion>* results) override {
-        return SkUnicode_IcuBidi::ExtractBidi(utf8, utf8Units, dir, results);
+        return SkBidiFactory::ExtractBidi(utf8, utf8Units, dir, results);
     }
 
     bool getWords(const char utf8[], int utf8Units, const char* locale,
@@ -673,7 +673,7 @@ public:
     void reorderVisual(const BidiLevel runLevels[],
                        int levelsCount,
                        int32_t logicalFromVisual[]) override {
-        SkUnicode_IcuBidi::bidi_reorderVisual(runLevels, levelsCount, logicalFromVisual);
+        SkBidiFactory::bidi_reorderVisual(runLevels, levelsCount, logicalFromVisual);
     }
 };
 
