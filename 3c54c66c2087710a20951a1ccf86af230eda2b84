@@ -97,6 +97,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e18b6ea3_32e04344",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 956,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-25T13:29:18Z",
+      "side": 1,
+      "message": "Wow, that\u0027s weird! I don\u0027t know why they would use silicon on an op like this!\n\nI\u0027d recommend `__lasx_xvfmadd_s(-f, m, a)` as a less confusing alternative and avoid `__lasx_xvfnmadd_s` entirely.",
+      "parentUuid": "02114943_1bc7c295",
+      "range": {
+        "startLine": 956,
+        "startChar": 0,
+        "endLine": 956,
+        "endChar": 74
+      },
+      "revId": "3c54c66c2087710a20951a1ccf86af230eda2b84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "169cc4af_377be7fb",
         "filename": "src/opts/SkRasterPipeline_opts.h",
         "patchSetId": 4
