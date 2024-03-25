@@ -12,6 +12,8 @@
 #include "include/core/SkSurface.h"
 #include "include/encode/SkPngEncoder.h"
 #include "modules/skresources/include/SkResources.h"
+#include "modules/skshaper/include/SkShaper_factory.h"
+#include "modules/skshaper/utils/FactoryHelpers.h"
 #include "modules/svg/include/SkSVGDOM.h"
 #include "src/utils/SkOSPath.h"
 #include "tools/CodecUtils.h"
@@ -64,6 +66,7 @@ int main(int argc, char** argv) {
             predecode,
             fontMgr);
 
+    SkShapers::SetFactory(SkShapers::BestAvailable());
     auto svg_dom = SkSVGDOM::Builder()
                         .setFontManager(fontMgr)
                         .setResourceProvider(std::move(rp))

@@ -21,6 +21,8 @@
 #include "modules/skparagraph/include/Paragraph.h"
 #include "modules/skresources/include/SkResources.h"
 #include "modules/sksg/include/SkSGInvalidationController.h"
+#include "modules/skshaper/include/SkShaper_factory.h"
+#include "modules/skshaper/utils/FactoryHelpers.h"
 #include "modules/skunicode/include/SkUnicode.h"
 #include "src/base/SkUTF.h"
 #include "src/ports/SkTypeface_FreeType.h"
@@ -785,6 +787,8 @@ EMSCRIPTEN_BINDINGS(Skottie) {
 #if defined(SK_CODEC_DECODES_WEBP)
             SkCodecs::Register(SkWebpDecoder::Decoder());
 #endif
+
+            SkShapers::SetFactory(SkShapers::BestAvailable());
         });
 
         return ManagedAnimation::Make(json,

@@ -35,6 +35,8 @@
 #include "include/private/base/SkTPin.h"
 #include "include/private/base/SkTo.h"
 #include "include/utils/SkPaintFilterCanvas.h"
+#include "modules/skshaper/include/SkShaper_factory.h"
+#include "modules/skshaper/utils/FactoryHelpers.h"
 #include "src/base/SkBase64.h"
 #include "src/base/SkTLazy.h"
 #include "src/base/SkTSort.h"
@@ -511,6 +513,7 @@ Viewer::Viewer(int argc, char** argv, void* platformData)
     , fPerspectiveMode(kPerspective_Off)
 {
     SkGraphics::Init();
+    SkShapers::SetFactory(SkShapers::BestAvailable());
 #if defined(SK_ENABLE_SVG)
     SkGraphics::SetOpenTypeSVGDecoderFactory(SkSVGOpenTypeSVGDecoder::Make);
 #endif
