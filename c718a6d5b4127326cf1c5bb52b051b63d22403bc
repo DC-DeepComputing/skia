@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a71f42e_497361fe",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-03-25T17:28:17Z",
+      "side": 1,
+      "message": "Do we make this change only to avoid compiling bidi code twice? It\u0027s really small and actually, is used by libgrapheme only until I move it to the next version (or I can do it in this version, actually).",
+      "revId": "c718a6d5b4127326cf1c5bb52b051b63d22403bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
