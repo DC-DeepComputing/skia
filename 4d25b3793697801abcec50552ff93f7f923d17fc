@@ -56,6 +56,30 @@
       },
       "revId": "4d25b3793697801abcec50552ff93f7f923d17fc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65bf7351_e977c86a",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 318,
+      "author": {
+        "id": 21754
+      },
+      "writtenOn": "2024-03-25T16:45:24Z",
+      "side": 1,
+      "message": "WebGPU and by extension Dawn prefers clients calling Destroy() rather than relying on garbage collection of the API objects:\n\n\"Calling the destroy method on a WebGPU interface (such as GPUDevice.destroy() or GPUBuffer.destroy()) should be favored over relying on garbage collection if predictable release of allocated resources is needed.\"\n\nhttps://www.w3.org/TR/webgpu/#enumdef-gputextureaspect:~:text\u003dCalling%20the%20destroy%20method%20on%20a%20WebGPU%20interface%20(such%20as%20GPUDevice.destroy()%20or%20GPUBuffer.destroy())%20should%20be%20favored%20over%20relying%20on%20garbage%20collection%20if%20predictable%20release%20of%20allocated%20resources%20is%20needed.\n\nRe: why talking about wrapped is important, the distinction is that a wrapped resource is owned by the client and not by Skia so Skia calling Destroy() on it isn\u0027t right. Intuitively destroyBackendTexture should destroy the backend texture that was created by Skia in createBackendTexture. The backend textures created by createBackendTexture are only \"wrapped\" when they\u0027re put in a SkSurface or SkImage via wrapBackendTexture.\n\nAlso FWIW, Chrome also calls Destroy() on any Dawn textures it creates from IOSurfaces: https://source.chromium.org/chromium/chromium/src/+/main:gpu/command_buffer/service/shared_image/iosurface_image_backing.mm;l\u003d1382",
+      "parentUuid": "ef02ac21_834c0225",
+      "range": {
+        "startLine": 317,
+        "startChar": 4,
+        "endLine": 318,
+        "endChar": 98
+      },
+      "revId": "4d25b3793697801abcec50552ff93f7f923d17fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
