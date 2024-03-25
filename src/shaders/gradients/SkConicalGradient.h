@@ -58,7 +58,7 @@ public:
                                   const SkMatrix* localMatrix);
 
     GradientType asGradient(GradientInfo* info, SkMatrix* localMatrix) const override;
-    bool isOpaque() const override;
+    bool isOpaque1() const override;
 
     SkScalar getCenterX1() const { return SkPoint::Distance(fCenter1, fCenter2); }
     SkScalar getStartRadius() const { return fRadius1; }

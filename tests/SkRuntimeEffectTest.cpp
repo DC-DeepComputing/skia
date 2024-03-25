@@ -1496,8 +1496,8 @@ DEF_TEST(SkRuntimeShaderIsOpaque, r) {
 
         auto cOnes = SkShaders::Color(SK_ColorWHITE);
         auto cZeros = SkShaders::Color(SK_ColorTRANSPARENT);
-        SkASSERT(cOnes->isOpaque());
-        SkASSERT(!cZeros->isOpaque());
+        SkASSERT(cOnes->isOpaque1());
+        SkASSERT(!cZeros->isOpaque1());
 
         SkRuntimeShaderBuilder builder(effect);
         builder.child("cOnes") = std::move(cOnes);
@@ -1506,7 +1506,7 @@ DEF_TEST(SkRuntimeShaderIsOpaque, r) {
         builder.uniform("uZeros") = SkColors::kTransparent;
 
         auto shader = builder.makeShader();
-        REPORTER_ASSERT(r, shader->isOpaque() == expectOpaque);
+        REPORTER_ASSERT(r, shader->isOpaque1() == expectOpaque);
     };
 
     // Cases where our optimization is valid, and works:

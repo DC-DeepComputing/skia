@@ -80,6 +80,8 @@ protected:
 
     bool appendStages(const SkStageRec&, const SkShaders::MatrixRec&) const override;
 
+    // TODO: add isOpaque
+
 private:
     SK_FLATTENABLE_HOOKS(SkLocalMatrixShader)
 
@@ -104,6 +106,7 @@ public:
     const SkMatrix& ctm() const { return fCTM; }
     sk_sp<SkShader> proxyShader() const { return fProxyShader; }
 
+    // TODO: add isOpaque
 protected:
     void flatten(SkWriteBuffer&) const override { SkASSERT(false); }
 

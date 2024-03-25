@@ -536,7 +536,7 @@ bool SkGradientBaseShader::appendStages(const SkStageRec& rec,
     return true;
 }
 
-bool SkGradientBaseShader::isOpaque() const {
+bool SkGradientBaseShader::isOpaque1() const {
     return fColorsAreOpaque && (this->getTileMode() != SkTileMode::kDecal);
 }
 

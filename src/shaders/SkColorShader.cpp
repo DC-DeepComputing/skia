@@ -26,7 +26,7 @@
 
 SkColorShader::SkColorShader(SkColor c) : fColor(c) {}
 
-bool SkColorShader::isOpaque() const {
+bool SkColorShader::isOpaque1() const {
     return SkColorGetA(fColor) == 255;
 }
 

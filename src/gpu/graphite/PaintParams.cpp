@@ -319,11 +319,15 @@ void PaintParams::toKey(const KeyContext& keyContext,
     }
 
     if (fClipShader) {
+        //$$
+//        SkDebugf("Adding PaintParams ClipShaderBlock\n");
         ClipShaderBlock::BeginBlock(keyContext, builder, gatherer);
 
             AddToKey(keyContext, builder, gatherer, fClipShader.get());
 
         builder->endBlock();
+    } else {
+//        SkDebugf("_Not_ Adding PaintParams ClipShaderBlock\n");
     }
 
     // Set the hardware blend mode.

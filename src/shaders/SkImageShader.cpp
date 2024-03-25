@@ -182,7 +182,7 @@ void SkImageShader::flatten(SkWriteBuffer& buffer) const {
     buffer.writeBool(fRaw);
 }
 
-bool SkImageShader::isOpaque() const {
+bool SkImageShader::isOpaque1() const {
     return fImage->isOpaque() &&
            fTileModeX != SkTileMode::kDecal && fTileModeY != SkTileMode::kDecal;
 }

@@ -116,7 +116,7 @@ void SkDraw::drawAtlas(const SkRSXform xform[],
         SkBlendMode_AppendStages(*bm, rec.fPipeline);
     }
 
-    bool isOpaque = !colors && transformShader->isOpaque();
+    bool isOpaque = !colors && transformShader->isOpaque1();
     if (p.getAlphaf() != 1) {
         rec.fPipeline->append(SkRasterPipelineOp::scale_1_float, alloc.make<float>(p.getAlphaf()));
         isOpaque = false;
