@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb947a64_6082063a",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 317,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-03-25T20:30:25Z",
+      "side": 1,
+      "message": "nit: explicitly",
+      "range": {
+        "startLine": 317,
+        "startChar": 18,
+        "endLine": 317,
+        "endChar": 26
+      },
+      "revId": "7fcc800857a7f5121bde84b26a6ac1bf38f2a777",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
