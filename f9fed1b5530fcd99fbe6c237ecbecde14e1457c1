@@ -34,6 +34,24 @@
       "parentUuid": "6579b797_4514f23b",
       "revId": "f9fed1b5530fcd99fbe6c237ecbecde14e1457c1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e8e2f470_4c825a29",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-25T14:27:37Z",
+      "side": 1,
+      "message": "Creating the Charmap and also the overhead of making all the calls. We made `onCharsToGlyphs` as bulk as possible because it was always showing up in performance testing and anything we could do to get the per-code-point time down helped. Most of the timing was with FreeType though, so part of that was also ensuring we didn\u0027t need to take a lock, so it may not be as bad here.",
+      "parentUuid": "c5c822fa_a6af75e3",
+      "revId": "f9fed1b5530fcd99fbe6c237ecbecde14e1457c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
