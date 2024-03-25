@@ -34,6 +34,23 @@
       "parentUuid": "17093497_098cc622",
       "revId": "1814562096ceabefe8b77d6bef48cb85ac6ba2ff",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bffe6aee_09eabeff",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 3
+      },
+      "lineNbr": 524,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-03-25T21:27:15Z",
+      "side": 1,
+      "message": "You need to add a reference to .vpython3 here so the \"recipes\" CAS spec knows to include the file. Not sure why .vpython wasn\u0027t here before...",
+      "revId": "1814562096ceabefe8b77d6bef48cb85ac6ba2ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
