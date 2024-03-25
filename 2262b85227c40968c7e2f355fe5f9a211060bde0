@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "217117b6_915ea06f",
+        "filename": "src/gpu/graphite/task/DrawTask.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-03-25T19:15:40Z",
+      "side": 1,
+      "message": "nit: 2024",
+      "revId": "2262b85227c40968c7e2f355fe5f9a211060bde0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a4ac0a38_bc890737",
+        "filename": "src/gpu/graphite/task/DrawTask.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-03-25T19:15:40Z",
+      "side": 1,
+      "message": "nit: s/2021/2024/",
+      "revId": "2262b85227c40968c7e2f355fe5f9a211060bde0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a2dbfe7d_8be7458c",
+        "filename": "src/gpu/graphite/task/DrawTask.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-03-25T19:15:40Z",
+      "side": 1,
+      "message": "nit: Make constructor explicit?",
+      "revId": "2262b85227c40968c7e2f355fe5f9a211060bde0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
