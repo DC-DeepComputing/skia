@@ -71,7 +71,7 @@ public:
 
     ShaderType type() const final { return ShaderType::kGradientBase; }
 
-    bool isOpaque() const override;
+    bool isOpaque1() const override;
 
     bool interpolateInPremul() const {
         return fInterpolation.fInPremul == SkGradientShader::Interpolation::InPremul::kYes;

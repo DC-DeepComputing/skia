@@ -41,7 +41,7 @@ public:
      *  alpha value. Subclasses should override this to allow some
      *  optimizations.
      */
-    virtual bool isOpaque() const { return false; }
+    virtual bool isOpaque1() const { return false; }
 
     /**
      *  Iff this shader is backed by a single SkImage, return its ptr (the caller must ref this

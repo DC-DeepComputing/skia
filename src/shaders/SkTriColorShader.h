@@ -33,7 +33,7 @@ protected:
     bool appendStages(const SkStageRec& rec, const SkShaders::MatrixRec&) const override;
 
 private:
-    bool isOpaque() const override { return fIsOpaque; }
+    bool isOpaque1() const override { return fIsOpaque; }
     // For serialization.  This will never be called.
     Factory getFactory() const override { return nullptr; }
     const char* getTypeName() const override { return nullptr; }
