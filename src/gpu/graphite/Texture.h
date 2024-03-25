@@ -51,6 +51,9 @@ protected:
 
     void invokeReleaseProc() override;
 
+    void onDumpMemoryStatistics(SkTraceMemoryDump* traceMemoryDump,
+                                const char* dumpName) const override;
+
 private:
     SkISize fDimensions;
     TextureInfo fInfo;
