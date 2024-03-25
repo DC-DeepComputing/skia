@@ -56,6 +56,30 @@
       },
       "revId": "ed3ef8f7dbb1194b04c40b5595aa2f3413eb59ec",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "116f36ef_1ee10148",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 807,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-03-25T14:31:14Z",
+      "side": 1,
+      "message": "Although it looks like a similar change from Benoit already landed, I do think `checkAsyncWorkCompletion` might cover more resource management cases than just processing in performDeferredCleanup().",
+      "parentUuid": "d63cb6a7_14e67119",
+      "range": {
+        "startLine": 807,
+        "startChar": 0,
+        "endLine": 807,
+        "endChar": 36
+      },
+      "revId": "ed3ef8f7dbb1194b04c40b5595aa2f3413eb59ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
