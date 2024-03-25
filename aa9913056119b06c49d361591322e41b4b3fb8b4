@@ -16,6 +16,24 @@
       "message": "You *might* not need this CL. The `_general` functions still use SIMD, (`Sk4px, which uses `skvx`), and on x64 machines, we\u0027ve found that\u0027s good enough. I suggest only adding this code if it really helps (this code is all for text rendering, so that\u0027s where you would see the performance change).",
       "revId": "aa9913056119b06c49d361591322e41b4b3fb8b4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d5d0768_1a94e7c4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-25T13:49:58Z",
+      "side": 1,
+      "message": "Kai, what do you think? Is this code actually beneficial?",
+      "parentUuid": "9fdd0c42_89323e41",
+      "revId": "aa9913056119b06c49d361591322e41b4b3fb8b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
