@@ -118,7 +118,7 @@ public:
     /**
      * Checks whether any asynchronous work is complete and if so calls related callbacks.
      */
-    void checkAsyncWorkCompletion();
+    void checkAsyncWorkCompletion(SyncToCpu = SyncToCpu::kNo);
 
     /**
      * Called to delete the passed in BackendTexture. This should only be called if the
