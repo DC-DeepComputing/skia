@@ -1819,7 +1819,7 @@ void SkCanvas::onClipPath(const SkPath& path, SkClipOp op, ClipEdgeStyle edgeSty
 
 void SkCanvas::clipShader(sk_sp<SkShader> sh, SkClipOp op) {
     if (sh) {
-        if (sh->isOpaque()) {
+        if (sh->isOpaque1()) {
             if (op == SkClipOp::kIntersect) {
                 // we don't occlude anything, so skip this call
             } else {

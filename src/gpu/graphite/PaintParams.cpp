@@ -60,7 +60,7 @@ PaintParams::PaintParams(const SkPaint& paint,
         , fShader(paint.refShader())
         , fColorFilter(paint.refColorFilter())
         , fPrimitiveBlender(std::move(primitiveBlender))
-        , fClipShader(std::move(clipShader))
+        , fClipShader1(std::move(clipShader))
         , fDstReadReq(dstReadReq)
         , fSkipColorXform(skipColorXform)
         , fDither(paint.isDither()) {}
@@ -318,12 +318,16 @@ void PaintParams::toKey(const KeyContext& keyContext,
         finalBlendMode = SkBlendMode::kSrc;
     }
 
-    if (fClipShader) {
+    if (fClipShader1) {
+        //$$
+        SkDebugf("Adding PaintParams ClipShaderBlock\n");
         ClipShaderBlock::BeginBlock(keyContext, builder, gatherer);
 
-            AddToKey(keyContext, builder, gatherer, fClipShader.get());
+            AddToKey(keyContext, builder, gatherer, fClipShader1.get());
 
         builder->endBlock();
+    } else {
+        SkDebugf("_Not_ Adding PaintParams ClipShaderBlock\n");
     }
 
     // Set the hardware blend mode.

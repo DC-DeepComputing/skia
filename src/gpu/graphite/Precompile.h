@@ -123,6 +123,8 @@ public:
     sk_sp<PrecompileShader> makeWithColorFilter(sk_sp<PrecompileColorFilter>);
 
     sk_sp<PrecompileShader> makeWithWorkingColorSpace(sk_sp<SkColorSpace>);
+
+    sk_sp<PrecompileShader> makeWithCTM();
 };
 
 class PrecompileMaskFilter : public PrecompileBase {
@@ -156,7 +158,7 @@ class PaintOptionsPriv;
 
 class PaintOptions {
 public:
-    void setShaders(SkSpan<const sk_sp<PrecompileShader>> shaders) {
+    void setShaders1(SkSpan<const sk_sp<PrecompileShader>> shaders) {
         fShaderOptions.assign(shaders.begin(), shaders.end());
     }
 
@@ -173,13 +175,16 @@ public:
     }
 
     void setBlendModes(SkSpan<SkBlendMode> blendModes) {
-        fBlenderOptions.reserve(blendModes.size());
+        fBlenderOptions1.reserve(blendModes.size());
         for (SkBlendMode bm : blendModes) {
-            fBlenderOptions.emplace_back(PrecompileBlender::Mode(bm));
+            fBlenderOptions1.emplace_back(PrecompileBlender::Mode(bm));
         }
     }
     void setBlenders(SkSpan<const sk_sp<PrecompileBlender>> blenders) {
-        fBlenderOptions.assign(blenders.begin(), blenders.end());
+        fBlenderOptions1.assign(blenders.begin(), blenders.end());
+    }
+    void setClipShaders(SkSpan<const sk_sp<PrecompileShader>> clipShaders) {
+        fClipShaderOptions2.assign(clipShaders.begin(), clipShaders.end());
     }
 
     void setDither(bool dither) { fDither = dither; }
@@ -195,7 +200,8 @@ private:
     int numMaskFilterCombinations() const;
     int numColorFilterCombinations() const;
     // TODO: need to decompose imagefilters into component draws
-    int numBlendModeCombinations() const;
+    int numBlendModeCombinations1() const;
+    int numClipShaderCombinations() const;
 
     int numCombinations() const;
     // 'desiredCombination' must be less than the result of the numCombinations call
@@ -216,7 +222,8 @@ private:
     std::vector<sk_sp<PrecompileMaskFilter>> fMaskFilterOptions;
     std::vector<sk_sp<PrecompileColorFilter>> fColorFilterOptions;
     std::vector<sk_sp<PrecompileImageFilter>> fImageFilterOptions;
-    std::vector<sk_sp<PrecompileBlender>> fBlenderOptions;
+    std::vector<sk_sp<PrecompileBlender>> fBlenderOptions1;
+    std::vector<sk_sp<PrecompileShader>> fClipShaderOptions2;
     bool fDither = false;
 };
 

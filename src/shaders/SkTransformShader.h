@@ -43,7 +43,7 @@ public:
         return nullptr;
     }
 
-    bool isOpaque() const override { return fShader.isOpaque(); }
+    bool isOpaque1() const override { return fShader.isOpaque1(); }
 
 private:
     const SkShaderBase& fShader;

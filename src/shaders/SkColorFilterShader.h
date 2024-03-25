@@ -30,7 +30,7 @@ public:
     float alpha() const { return fAlpha; }
 
 private:
-    bool isOpaque() const override;
+    bool isOpaque1() const override;
     void flatten(SkWriteBuffer&) const override;
     bool appendStages(const SkStageRec&, const SkShaders::MatrixRec&) const override;
 

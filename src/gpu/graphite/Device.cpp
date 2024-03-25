@@ -119,7 +119,7 @@ bool paint_depends_on_dst(SkColor4f color,
                           const SkColorFilter* colorFilter,
                           const SkBlender* finalBlender,
                           const SkBlender* primitiveBlender) {
-    const bool srcIsTransparent = !color.isOpaque() || (shader && !shader->isOpaque()) ||
+    const bool srcIsTransparent = !color.isOpaque() || (shader && !shader->isOpaque1()) ||
                                   (colorFilter && !colorFilter->isAlphaUnchanged());
 
     if (primitiveBlender && blender_depends_on_dst(primitiveBlender, srcIsTransparent)) {
@@ -1145,6 +1145,7 @@ void Device::drawGeometry(const Transform& localToDevice,
     const Clip clip =
             fClip.visitClipStackForDraw(localToDevice, geometry, style, outsetBoundsForAA,
                                         &clipElements);
+    SkDebugf("clip %p\n", clip.shader());
     if (clip.isClippedOut()) {
         // Clipped out, so don't record anything.
         return;

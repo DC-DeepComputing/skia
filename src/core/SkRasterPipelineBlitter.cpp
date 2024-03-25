@@ -143,7 +143,7 @@ SkBlitter* SkCreateRasterPipelineBlitter(const SkPixmap& dst,
                                                is_opaque, is_constant, clipShader.get());
     }
 
-    bool is_opaque    = shader->isOpaque() && dstPaintColor.fA == 1.0f;
+    bool is_opaque    = shader->isOpaque1() && dstPaintColor.fA == 1.0f;
     bool is_constant  = shader->isConstant();
 
     if (shader->appendRootStages({&shaderPipeline, alloc, dstCT, dstCS, dstPaintColor, props},
