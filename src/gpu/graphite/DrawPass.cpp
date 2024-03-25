@@ -541,6 +541,9 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
                                      curDst,
                                      dstOffset,
                                      targetInfo.colorInfo());
+
+//            SkDebugf("From DrawPass: ");
+//            dict->lookup(shaderID).dump(dict);
         } // else depth-only
 
         for (int stepIndex = 0; stepIndex < draw.fRenderer->numRenderSteps(); ++stepIndex) {
