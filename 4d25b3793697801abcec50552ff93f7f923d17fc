@@ -33,6 +33,29 @@
       "message": "egdaniel: PTAL - does this look ok?",
       "revId": "4d25b3793697801abcec50552ff93f7f923d17fc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef02ac21_834c0225",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 318,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-03-25T16:09:31Z",
+      "side": 1,
+      "message": "Isn\u0027t the real issue here is that we are dropping our ref, but because internally we also have a bindGroup that refs the dawn texture it doesn\u0027t get destroyed. I think talking about being wrapped is not really interesting here since BackendTextures are meant to be treated independently.\n\nI think I would then add a TODO along the lines of \"We can remove the Destroy and depend on ref\u0027s if we have a way to free BindGroups when we remove the associated texture.\" Well unless we think we\u0027d always want the Destroy call, but that seems not to be in line with how Dawn was designed to work.",
+      "range": {
+        "startLine": 317,
+        "startChar": 4,
+        "endLine": 318,
+        "endChar": 98
+      },
+      "revId": "4d25b3793697801abcec50552ff93f7f923d17fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
