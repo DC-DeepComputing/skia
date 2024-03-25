@@ -159,7 +159,7 @@
   },
   {
     "cmd": [
-      "vpython",
+      "vpython3",
       "RECIPE_MODULE[skia::build]\\resources\\cleanup_win_processes.py"
     ],
     "infra_step": true,
