@@ -19,6 +19,7 @@
 #include "src/gpu/ResourceKey.h"
 #include "src/gpu/Swizzle.h"
 #include "src/gpu/graphite/ResourceTypes.h"
+#include "src/gpu/graphite/TextureProxy.h"
 #include "src/text/gpu/SDFTControl.h"
 
 #if defined(GRAPHITE_TEST_UTILS)
@@ -111,6 +112,16 @@ public:
     // backends append within their implementation. By default, simply returns a key based upon
     // the SamplerDesc with no extra info.
     virtual GraphiteResourceKey makeSamplerKey(const SamplerDesc& samplerDesc) const;
+
+    // Backends can optionally override this method to report backend-specific sampler description
+    // information.
+    // virtual std::vector<uint32_t> getAdditionalSamplerDescInfo(sk_sp<TextureProxy> proxy) const {
+    //     // By default, return an empty span containing no additional information.
+    //     return {};
+    // }
+    virtual SamplerConversionInfo getSamplerConversionInfo(sk_sp<TextureProxy> proxy) const {
+        return {};
+    }
 
     virtual bool extractGraphicsDescs(const UniqueKey&,
                                       GraphicsPipelineDesc*,
