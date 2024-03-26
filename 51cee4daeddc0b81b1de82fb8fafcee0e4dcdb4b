@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "da35f4cd_5067d2ca",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-26T20:30:31Z",
+      "side": 1,
+      "message": "One thing to note here is that the error message states `virtualenv-20.17.1` which was tagged Dec 5, 2022. The current latest actually available in cipd is `20.25.1` from Feb 21, 2024. It isn\u0027t immediately clear why we\u0027re getting these older versions.",
+      "revId": "51cee4daeddc0b81b1de82fb8fafcee0e4dcdb4b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
