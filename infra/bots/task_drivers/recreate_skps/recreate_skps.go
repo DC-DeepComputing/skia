@@ -36,7 +36,7 @@ const (
 	metricValue_Failure           = "1"
 )
 
-func botUpdate(ctx context.Context, checkoutRoot, gitCacheDir, skiaRev, patchRef, depotToolsDir string, local bool) error {
+func botUpdate(ctx context.Context, checkoutRoot, skiaRev, patchRef, depotToolsDir string, local bool) error {
 	return td.Do(ctx, td.Props("bot_update").Infra(), func(ctx context.Context) error {
 		tmp, err := os_steps.TempDir(ctx, "", "")
 		if err != nil {
@@ -83,39 +83,19 @@ solutions = [
 			return err
 		}
 		skiaRepoURL := "https://skia.googlesource.com/skia.git"
-		botUpdateScript := filepath.Join(depotToolsDir, "recipes", "recipe_modules", "bot_update", "resources", "bot_update.py")
+		gclient := filepath.Join(depotToolsDir, "gclient.py")
 		mainRepoName := "src"
-		patchRoot := "src/third_party/skia"
 		revision := "origin/main"
-		// These are required for some reason, despite our not using them.
-		outputJson := filepath.Join(tmp, "bot_update.json")
-		revMapFile := filepath.Join(tmp, "revmap")
-		revMap := `{"got_revision": "src"}`
-		if err := os_steps.WriteFile(ctx, revMapFile, []byte(revMap), os.ModePerm); err != nil {
-			return err
-		}
-		cleanupDir := filepath.Join(tmp, "cleanup")
-		if err := os_steps.MkdirAll(ctx, cleanupDir); err != nil {
-			return err
-		}
 
 		cmd := []string{
-			"vpython3", "-u", botUpdateScript,
-			"--spec-path", specPath,
-			"--patch_root", patchRoot,
-			"--revision_mapping_file", revMapFile,
-			"--cleanup-dir", cleanupDir,
-			"--output_json", outputJson,
+			"vpython3", "-u", gclient,
 			"--revision", fmt.Sprintf("%s@%s", mainRepoName, revision),
-			"--revision", fmt.Sprintf("%s@%s", "https://skia.googlesource.com/skia.git", skiaRev),
-		}
-		if gitCacheDir != "" {
-			cmd = append(cmd, "--git-cache-dir", gitCacheDir)
+			"--revision", fmt.Sprintf("skia@%s", skiaRev),
 		}
 		if patchRef != "" {
 			patchRepoURL := skiaRepoURL
 			patchBaseRev := skiaRev
-			cmd = append(cmd, "--patch_ref", fmt.Sprintf("%s@%s:%s", patchRepoURL, patchBaseRev, patchRef))
+			cmd = append(cmd, "--patch-ref", fmt.Sprintf("%s@%s:%s", patchRepoURL, patchBaseRev, patchRef))
 		}
 		if _, err := exec.RunCwd(ctx, checkoutRoot, cmd...); err != nil {
 			return err
@@ -141,7 +121,6 @@ func main() {
 		patchRef         = flag.String("patch_ref", "", "Patch ref, if any, associated with this task.")
 		skipSync         = flag.Bool("skip-sync", false, "Skip sync. Helpful for running locally.")
 		skipBuild        = flag.Bool("skip-build", false, "skip build. Helpful for running locally.")
-		gitCacheDirFlag  = flag.String("git_cache", "", "Git cache directory.")
 		checkoutRootFlag = flag.String("checkout_root", "", "Directory to use for checkouts.")
 		dmPathFlag       = flag.String("dm_path", "", "Path to the DM binary.")
 	)
@@ -165,10 +144,6 @@ func main() {
 		td.Fatal(ctx, err)
 	}
 	skiaDir := filepath.Join(cwd, "skia")
-	gitCacheDir := ""
-	if *gitCacheDirFlag != "" {
-		gitCacheDir = filepath.Join(cwd, *gitCacheDirFlag)
-	}
 	checkoutRoot := cwd
 	if *checkoutRootFlag != "" {
 		checkoutRoot = filepath.Join(cwd, *checkoutRootFlag)
@@ -224,7 +199,7 @@ func main() {
 
 	// Sync Chrome.
 	if !*skipSync {
-		if err := botUpdate(ctx, checkoutRoot, gitCacheDir, *skiaRev, *patchRef, depotToolsDir, *local); err != nil {
+		if err := botUpdate(ctx, checkoutRoot, *skiaRev, *patchRef, depotToolsDir, *local); err != nil {
 			td.Fatal(ctx, err)
 		}
 	}
