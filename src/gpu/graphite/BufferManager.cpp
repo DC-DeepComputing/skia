@@ -277,9 +277,10 @@ void DrawBufferManager::transferToRecording(Recording* recording) {
     // Transfer the buffers in the reuse pool to the recording.
     // TODO: Allow reuse across different Recordings?
     for (auto& buffer : fReusableScratchStorageBuffers) {
-        recording->priv().addResourceRef(std::move(buffer));
+        //recording->priv().addResourceRef(std::move(buffer));
+        recording->priv().addResourceRef(buffer);
     }
-    fReusableScratchStorageBuffers.clear();
+    //fReusableScratchStorageBuffers.clear();
 
     for (auto& [buffer, transferBuffer] : fUsedBuffers) {
         if (transferBuffer) {
