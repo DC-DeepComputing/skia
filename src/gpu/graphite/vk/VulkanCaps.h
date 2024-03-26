@@ -45,9 +45,13 @@ public:
 
     TextureInfo getDefaultStorageTextureInfo(SkColorType) const override;
 
+    SamplerConversionInfo getSamplerConversionInfo(sk_sp<TextureProxy> proxy) const override;
+
     UniqueKey makeGraphicsPipelineKey(const GraphicsPipelineDesc&,
                                       const RenderPassDesc&) const override;
     UniqueKey makeComputePipelineKey(const ComputePipelineDesc&) const override { return {}; }
+
+    GraphiteResourceKey makeSamplerKey(const SamplerDesc&) const override;
 
     uint32_t channelMask(const TextureInfo&) const override;
 
