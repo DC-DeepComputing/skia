@@ -27578,6 +27578,9 @@
           "cipd_bin_packages",
           "cipd_bin_packages/bin"
         ],
+        "VPYTHON_DEFAULT_SPEC": [
+          "skia/.vpython"
+        ],
         "VPYTHON_VIRTUALENV_ROOT": [
           "cache/vpython"
         ]
@@ -28482,6 +28485,9 @@
           "cipd_bin_packages/cpython3/bin",
           "cipd_bin_packages",
           "cipd_bin_packages/bin"
+        ],
+        "VPYTHON_DEFAULT_SPEC": [
+          "skia/.vpython"
         ],
         "VPYTHON_VIRTUALENV_ROOT": [
           "cache/vpython"
