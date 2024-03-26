@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94c5bfde_a0781c9c",
+        "filename": "src/opts/SkBitmapProcState_opts.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 263,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-26T15:45:41Z",
+      "side": 1,
+      "message": "nit: delete `1 \u0026\u0026 `\n```suggestion\n#elif SK_CPU_LSX_LEVEL \u003e\u003d SK_CPU_LSX_LEVEL_LASX\n```",
+      "range": {
+        "startLine": 263,
+        "startChar": 6,
+        "endLine": 263,
+        "endChar": 11
+      },
+      "revId": "017b363b037057b768351fe2a63fafd879338be5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "241f62c4_529642b4",
+        "filename": "src/opts/SkBitmapProcState_opts.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 322,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-26T15:45:41Z",
+      "side": 1,
+      "message": "nit: don\u0027t put two blank lines in a row",
+      "revId": "017b363b037057b768351fe2a63fafd879338be5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fff71f5c_16ae0be2",
+        "filename": "src/opts/SkBitmapProcState_opts.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-26T15:45:41Z",
+      "side": 1,
+      "message": "nit: remove `1 \u0026\u0026`\n```suggestion\n#elif SK_CPU_LSX_LEVEL \u003e\u003d SK_CPU_LSX_LEVEL_LSX\n```",
+      "range": {
+        "startLine": 348,
+        "startChar": 6,
+        "endLine": 348,
+        "endChar": 10
+      },
+      "revId": "017b363b037057b768351fe2a63fafd879338be5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2928aece_4f72125a",
+        "filename": "src/opts/SkBitmapProcState_opts.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 408,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-26T15:45:41Z",
+      "side": 1,
+      "message": "nit: don\u0027t put two blank lines in a row",
+      "revId": "017b363b037057b768351fe2a63fafd879338be5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
