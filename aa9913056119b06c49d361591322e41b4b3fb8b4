@@ -52,6 +52,98 @@
       "parentUuid": "2d5d0768_1a94e7c4",
       "revId": "aa9913056119b06c49d361591322e41b4b3fb8b4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a6c177c4_58faab98",
+        "filename": "src/opts/SkBlitMask_opts.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-03-26T14:32:05Z",
+      "side": 1,
+      "message": "It looks like you swapped `r` and `b` here?",
+      "range": {
+        "startLine": 190,
+        "startChar": 0,
+        "endLine": 193,
+        "endChar": 61
+      },
+      "revId": "aa9913056119b06c49d361591322e41b4b3fb8b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1fd69526_ec2b53da",
+        "filename": "src/opts/SkBlitMask_opts.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-03-26T14:32:05Z",
+      "side": 1,
+      "message": "`vilvl` packs first argument, then second argument (reading from high words of the register)? So doesn\u0027t this produce `RRRRrrrr GGGGgggg`, based on the previous comments? Maybe I\u0027m misunderstanding some of the intrinsics?",
+      "range": {
+        "startLine": 206,
+        "startChar": 59,
+        "endLine": 206,
+        "endChar": 79
+      },
+      "revId": "aa9913056119b06c49d361591322e41b4b3fb8b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f478300_e2d24275",
+        "filename": "src/opts/SkBlitMask_opts.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-03-26T14:32:05Z",
+      "side": 1,
+      "message": "With `g` being shifted left, doesn\u0027t this actually produce `grgrgrgr GRGRGRGR`? Same thing for `ba` below.",
+      "range": {
+        "startLine": 227,
+        "startChar": 69,
+        "endLine": 227,
+        "endChar": 89
+      },
+      "revId": "aa9913056119b06c49d361591322e41b4b3fb8b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ffba25c2_d2f1f35d",
+        "filename": "src/opts/SkBlitMask_opts.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-03-26T14:32:05Z",
+      "side": 1,
+      "message": "Same thing here: What\u0027s the actual order of the output? I thought that `vilv` would be doing the same thing as `ba \u003c\u003c 16 | rg`, so it would produce `bargbarg ...`\n\nBut with the swapped order from the `vor(vslli)` above, this is actually:\n\n`abgrabgr abgrabgr` ?",
+      "range": {
+        "startLine": 229,
+        "startChar": 71,
+        "endLine": 229,
+        "endChar": 89
+      },
+      "revId": "aa9913056119b06c49d361591322e41b4b3fb8b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
