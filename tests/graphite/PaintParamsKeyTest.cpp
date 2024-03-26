@@ -1312,7 +1312,7 @@ void run_test(skiatest::Reporter* reporter,
                                                         : nullptr;
 
             // In the normal API this modification happens in SkDevice::clipShader()
-            // TODO: add SkClipOp::kDifference munging
+            // TODO: add SkClipOp::kDifference munging!
             sk_sp<SkShader> mungedClipShader = clipShader
                                                    ? as_SB(clipShader)->makeWithCTM(SkMatrix::I())
                                                    : nullptr;
