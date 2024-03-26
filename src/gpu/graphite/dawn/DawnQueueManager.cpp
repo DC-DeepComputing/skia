@@ -7,6 +7,7 @@
 
 #include "src/gpu/graphite/dawn/DawnQueueManager.h"
 
+#include "src/core/SkTraceEvent.h"
 #include "src/gpu/graphite/dawn/DawnAsyncWait.h"
 #include "src/gpu/graphite/dawn/DawnCommandBuffer.h"
 #include "src/gpu/graphite/dawn/DawnResourceProvider.h"
@@ -129,6 +130,7 @@ std::unique_ptr<CommandBuffer> DawnQueueManager::getNewCommandBuffer(
 }
 
 QueueManager::OutstandingSubmission DawnQueueManager::onSubmitToGpu() {
+    TRACE_EVENT0("skia.gpu", TRACE_FUNC);
     SkASSERT(fCurrentCommandBuffer);
     DawnCommandBuffer* dawnCmdBuffer = static_cast<DawnCommandBuffer*>(fCurrentCommandBuffer.get());
     auto wgpuCmdBuffer = dawnCmdBuffer->finishEncoding();
@@ -137,7 +139,10 @@ QueueManager::OutstandingSubmission DawnQueueManager::onSubmitToGpu() {
         return nullptr;
     }
 
-    fQueue.Submit(/*commandCount=*/1, &wgpuCmdBuffer);
+    {
+        TRACE_EVENT0("skia.gpu", "Dawn Queue Submit");
+        fQueue.Submit(/*commandCount=*/1, &wgpuCmdBuffer);
+    }
 
 #if defined(__EMSCRIPTEN__)
     return std::make_unique<DawnWorkSubmissionWithAsyncWait>(

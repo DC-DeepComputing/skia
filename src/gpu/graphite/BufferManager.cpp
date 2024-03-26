@@ -8,6 +8,7 @@
 #include "src/gpu/graphite/BufferManager.h"
 
 #include "include/gpu/graphite/Recording.h"
+#include "src/core/SkTraceEvent.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/ContextPriv.h"
 #include "src/gpu/graphite/Log.h"
@@ -254,6 +255,7 @@ BindBufferInfo DrawBufferManager::getIndirectStorage(size_t requiredBytes, Clear
 }
 
 ScratchBuffer DrawBufferManager::getScratchStorage(size_t requiredBytes) {
+    TRACE_EVENT0("skia.gpu", TRACE_FUNC);
     if (!requiredBytes) {
         return {};
     }
@@ -403,6 +405,7 @@ BindBufferInfo DrawBufferManager::prepareBindBuffer(BufferInfo* info,
 }
 
 sk_sp<Buffer> DrawBufferManager::findReusableSbo(size_t bufferSize) {
+    TRACE_EVENT0("skia.gpu", TRACE_FUNC);
     SkASSERT(bufferSize);
 
     for (int i = 0; i < fReusableScratchStorageBuffers.size(); ++i) {

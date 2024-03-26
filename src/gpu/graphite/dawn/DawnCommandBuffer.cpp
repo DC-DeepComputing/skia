@@ -7,6 +7,7 @@
 
 #include "src/gpu/graphite/dawn/DawnCommandBuffer.h"
 
+#include "src/core/SkTraceEvent.h"
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/TextureProxy.h"
 #include "src/gpu/graphite/compute/DispatchGroup.h"
@@ -63,6 +64,7 @@ DawnCommandBuffer::DawnCommandBuffer(const DawnSharedContext* sharedContext,
 DawnCommandBuffer::~DawnCommandBuffer() {}
 
 wgpu::CommandBuffer DawnCommandBuffer::finishEncoding() {
+    TRACE_EVENT0("skia.gpu", TRACE_FUNC);
     SkASSERT(fCommandEncoder);
     wgpu::CommandBuffer cmdBuffer = fCommandEncoder.Finish();
 
@@ -116,10 +118,13 @@ bool DawnCommandBuffer::onAddRenderPass(const RenderPassDesc& renderPassDesc,
 }
 
 bool DawnCommandBuffer::onAddComputePass(DispatchGroupSpan groups) {
+    TRACE_EVENT0("skia.gpu", TRACE_FUNC);
     this->beginComputePass();
     for (const auto& group : groups) {
+        TRACE_EVENT0("skia.gpu", "Process DispatchGroup");
         group->addResourceRefs(this);
         for (const auto& dispatch : group->dispatches()) {
+            TRACE_EVENT0("skia.gpu", "Process Dispatch");
             this->bindComputePipeline(group->getPipeline(dispatch.fPipelineIndex));
             this->bindDispatchResources(*group, dispatch);
             if (const WorkgroupSize* globalSize =
@@ -803,6 +808,7 @@ void DawnCommandBuffer::beginComputePass() {
 }
 
 void DawnCommandBuffer::bindComputePipeline(const ComputePipeline* computePipeline) {
+    TRACE_EVENT0("skia.gpu", TRACE_FUNC);
     SkASSERT(fActiveComputePassEncoder);
 
     fActiveComputePipeline = static_cast<const DawnComputePipeline*>(computePipeline);
@@ -811,6 +817,7 @@ void DawnCommandBuffer::bindComputePipeline(const ComputePipeline* computePipeli
 
 void DawnCommandBuffer::bindDispatchResources(const DispatchGroup& group,
                                               const DispatchGroup::Dispatch& dispatch) {
+    TRACE_EVENT0("skia.gpu", TRACE_FUNC);
     SkASSERT(fActiveComputePassEncoder);
     SkASSERT(fActiveComputePipeline);
 
@@ -847,11 +854,15 @@ void DawnCommandBuffer::bindDispatchResources(const DispatchGroup& group,
     desc.entryCount = entries.size();
     desc.entries = entries.data();
 
-    auto bindGroup = fSharedContext->device().CreateBindGroup(&desc);
-    fActiveComputePassEncoder.SetBindGroup(0, bindGroup);
+    {
+        TRACE_EVENT0("skia.gpu", "Dawn CreateBindGroup");
+        auto bindGroup = fSharedContext->device().CreateBindGroup(&desc);
+        fActiveComputePassEncoder.SetBindGroup(0, bindGroup);
+    }
 }
 
 void DawnCommandBuffer::dispatchWorkgroups(const WorkgroupSize& globalSize) {
+    TRACE_EVENT0("skia.gpu", TRACE_FUNC);
     SkASSERT(fActiveComputePassEncoder);
     SkASSERT(fActiveComputePipeline);
 
@@ -861,6 +872,7 @@ void DawnCommandBuffer::dispatchWorkgroups(const WorkgroupSize& globalSize) {
 
 void DawnCommandBuffer::dispatchWorkgroupsIndirect(const Buffer* indirectBuffer,
                                                    size_t indirectBufferOffset) {
+    TRACE_EVENT0("skia.gpu", TRACE_FUNC);
     SkASSERT(fActiveComputePassEncoder);
     SkASSERT(fActiveComputePipeline);
 
