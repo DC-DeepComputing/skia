@@ -27612,7 +27612,7 @@
         {
           "name": "infra/recipe_bundles/chromium.googlesource.com/chromium/tools/build",
           "path": "recipe_bundle",
-          "version": "git_revision:1a28cb094add070f4beefd052725223930d8c27a"
+          "version": "git_revision:faf6561cd2b6c8b1663f160d1720ffe914740be1"
         },
         {
           "name": "infra/tools/git/${platform}",
