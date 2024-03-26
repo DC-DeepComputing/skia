@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac5ab0ae_64c550d4",
+        "filename": "infra/bots/recipe_modules/build/resources/docker-compile.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-03-26T15:05:53Z",
+      "side": 1,
+      "message": "./third_party/ninja/ninja",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 5
+      },
+      "revId": "6b1f17320b6bac6f2e42bf20df3dd379cf63f230",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
