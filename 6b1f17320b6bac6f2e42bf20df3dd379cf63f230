@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "97e5cf97_7a36bfbc",
+        "filename": "infra/bots/recipe_modules/build/default.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-03-26T15:14:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "062bde5b_bea769d9",
+      "revId": "6b1f17320b6bac6f2e42bf20df3dd379cf63f230",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ac5ab0ae_64c550d4",
@@ -31,6 +49,30 @@
       "writtenOn": "2024-03-26T15:05:53Z",
       "side": 1,
       "message": "./third_party/ninja/ninja",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 5
+      },
+      "revId": "6b1f17320b6bac6f2e42bf20df3dd379cf63f230",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "76d5dfc2_4b37e951",
+        "filename": "infra/bots/recipe_modules/build/resources/docker-compile.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-03-26T15:14:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ac5ab0ae_64c550d4",
       "range": {
         "startLine": 21,
         "startChar": 0,
