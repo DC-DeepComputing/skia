@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "24cba43f_b0280a07",
+        "filename": "src/gpu/graphite/CommandBuffer.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-03-26T14:23:56Z",
+      "side": 1,
+      "message": "nit: since spans are immutable it\u0027s somewhat meaningless, but I don\u0027t think they are usually `const`.",
+      "range": {
+        "startLine": 83,
+        "startChar": 24,
+        "endLine": 83,
+        "endChar": 29
+      },
+      "revId": "775267b5e26798d1f1c4e449e82bf5cc58b31928",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aae3365c_daac41ff",
+        "filename": "src/gpu/graphite/compute/DispatchGroup.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-03-26T14:23:56Z",
+      "side": 1,
+      "message": "should we just do this in `finalize`? That already resets the output table, and then there\u0027s no need to finalize and reset?",
+      "range": {
+        "startLine": 270,
+        "startChar": 0,
+        "endLine": 270,
+        "endChar": 34
+      },
+      "revId": "775267b5e26798d1f1c4e449e82bf5cc58b31928",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "de2da7d8_782b2b52",
+        "filename": "src/gpu/graphite/task/ComputeTask.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-03-26T14:23:56Z",
+      "side": 1,
+      "message": "I think this would be cleaner if `DispatchGroup` had something like `snapChildTask()` that internally moved its clear list into a ClearBuffersTask or returned null if they were empty.",
+      "range": {
+        "startLine": 25,
+        "startChar": 8,
+        "endLine": 31,
+        "endChar": 9
+      },
+      "revId": "775267b5e26798d1f1c4e449e82bf5cc58b31928",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
