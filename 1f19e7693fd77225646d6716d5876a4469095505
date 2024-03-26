@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "51e72815_185d9e11",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-03-26T17:00:41Z",
+      "side": 1,
+      "message": "PS 4 switches the validation to use `\u003d\u003d` after offline discussion with Rob. This would have caught the original bug, but was allowing valid SKPs through previously because the \u0027expectedClipCount\u0027 was always less than \u00274*actualClipCount\u0027.",
+      "revId": "1f19e7693fd77225646d6716d5876a4469095505",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
