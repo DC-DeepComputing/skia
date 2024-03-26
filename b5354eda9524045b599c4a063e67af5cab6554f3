@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "294842ec_8c921399",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-26T12:03:26Z",
+      "side": 1,
+      "message": "It looks like this roll of depot_tools also includes [Remove legacy ninja binaries](https://chromium.googlesource.com/chromium/tools/depot_tools/+/8f41177abf2c51b2c0114af9abe9a5cd074d5014). It looks like the compile tasks were depending on `ninja` showing up there.",
+      "revId": "b5354eda9524045b599c4a063e67af5cab6554f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
