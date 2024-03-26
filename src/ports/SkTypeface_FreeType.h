@@ -112,23 +112,9 @@ public:
     SkFontScanner_FreeType();
     ~SkFontScanner_FreeType() override;
 
-    bool scanFile(SkStreamAsset* stream, int* numFaces) const override;
-    bool scanFace(SkStreamAsset* stream, int faceIndex, int* numInstances) const override;
-    bool scanInstance(SkStreamAsset* stream,
-                      int faceIndex,
-                      int instanceIndex,
-                      SkString* name,
-                      SkFontStyle* style,
-                      bool* isFixedPitch,
-                      AxisDefinitions* axes) const override;
-    static void computeAxisValues(
-            AxisDefinitions axisDefinitions,
-            const SkFontArguments::VariationPosition position,
-            SkFixed* axisValues,
-            const SkString& name,
-            const SkFontArguments::VariationPosition::Coordinate* currentPosition = nullptr);
-    static bool GetAxes(FT_Face face, AxisDefinitions* axes);
+    std::unique_ptr<SkFontFileData> scanFile(SkStreamAsset* stream, int* numFiles) const override;
 private:
+    friend class SkFontFileData_FreeType;
     FT_Face openFace(SkStreamAsset* stream, int ttcIndex, FT_Stream ftStream) const;
     FT_Library fLibrary;
     mutable SkMutex fLibraryMutex;
