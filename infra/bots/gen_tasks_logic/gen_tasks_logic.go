@@ -1402,7 +1402,6 @@ func (b *jobBuilder) recreateSKPs() {
 		"--task_name", b.Name,
 		"--skia_revision", specs.PLACEHOLDER_REVISION,
 		"--patch_ref", specs.PLACEHOLDER_PATCH_REF,
-		"--git_cache", "cache/git",
 		"--checkout_root", "cache/work",
 		"--dm_path", "build/dm",
 	}
@@ -1415,6 +1414,11 @@ func (b *jobBuilder) recreateSKPs() {
 		b.dep("Build-Debian10-Clang-x86_64-Release") // To get DM.
 		b.cmd(cmd...)
 		b.cipd(CIPD_PKG_LUCI_AUTH)
+		b.cipd(&specs.CipdPackage{
+			Name:    "infra/tools/luci/vpython/${platform}",
+			Path:    "cipd_bin_packages",
+			Version: "git_revision:31b61178dc24ab61a24e3fbccf5debe58adbf8a5",
+		})
 		b.serviceAccount(b.cfg.ServiceAccountRecreateSKPs)
 		b.dimension(
 			"pool:SkiaCT",
