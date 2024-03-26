@@ -299,6 +299,7 @@ cc_binary(
         ":enable_skottie_true": [
             "//modules/skottie:skottie_harfbuzz_icu",
             "//modules/skottie:utils",
+            "//:fontmgr_empty_freetype",
         ],
         ":enable_skottie_false": [],
     }) + select({

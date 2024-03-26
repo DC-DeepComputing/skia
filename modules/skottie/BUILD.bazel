@@ -172,9 +172,10 @@ skia_cc_library(
     visibility = ["//:__subpackages__"],
     deps = [
         "//:core",
+        "//:skshaper_core",
+        "//modules/skshaper:skshaper_core",
+        "//modules/skunicode:skunicode_core",
         "//src/base",
         "//src/core:core_priv",
-        "//:skshaper_core",
-        # TODO(kjlubick) make this depend on skunicode_core
     ],
 )
