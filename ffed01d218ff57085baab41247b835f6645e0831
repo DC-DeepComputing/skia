@@ -1,0 +1,176 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8c896ee_ddaa7f3d",
+        "filename": "src/opts/SkSwizzler_opts.inc",
+        "patchSetId": 2
+      },
+      "lineNbr": 1093,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-26T15:29:40Z",
+      "side": 1,
+      "message": "This should probably be marked `SI` instead of `static` to guarantee inlining. (I see that this is missing from some of our other paths too, which is something we can fix separately--it\u0027s very likely that Clang is doing the right thing either way, but in `-Oz` sometimes it gets it wrong.)",
+      "range": {
+        "startLine": 1093,
+        "startChar": 0,
+        "endLine": 1093,
+        "endChar": 6
+      },
+      "revId": "ffed01d218ff57085baab41247b835f6645e0831",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93121dfe_c0186acf",
+        "filename": "src/opts/SkSwizzler_opts.inc",
+        "patchSetId": 2
+      },
+      "lineNbr": 1139,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-26T15:29:40Z",
+      "side": 1,
+      "message": "nit: code block should be indented.",
+      "range": {
+        "startLine": 1103,
+        "startChar": 0,
+        "endLine": 1139,
+        "endChar": 0
+      },
+      "revId": "ffed01d218ff57085baab41247b835f6645e0831",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a2baefe1_d4b9c30b",
+        "filename": "src/opts/SkSwizzler_opts.inc",
+        "patchSetId": 2
+      },
+      "lineNbr": 1343,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-26T15:29:40Z",
+      "side": 1,
+      "message": "`SI`",
+      "range": {
+        "startLine": 1343,
+        "startChar": 0,
+        "endLine": 1343,
+        "endChar": 6
+      },
+      "revId": "ffed01d218ff57085baab41247b835f6645e0831",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2224f466_5e56d16a",
+        "filename": "src/opts/SkSwizzler_opts.inc",
+        "patchSetId": 2
+      },
+      "lineNbr": 1386,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-26T15:29:40Z",
+      "side": 1,
+      "message": "nit: remove empty line before close brace",
+      "revId": "ffed01d218ff57085baab41247b835f6645e0831",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "681ed25c_7cadbb1d",
+        "filename": "src/opts/SkSwizzler_opts.inc",
+        "patchSetId": 2
+      },
+      "lineNbr": 1502,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-26T15:29:40Z",
+      "side": 1,
+      "message": "nit: spaces missing",
+      "range": {
+        "startLine": 1499,
+        "startChar": 27,
+        "endLine": 1502,
+        "endChar": 14
+      },
+      "revId": "ffed01d218ff57085baab41247b835f6645e0831",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f37c9b2_93075a7a",
+        "filename": "src/opts/SkSwizzler_opts.inc",
+        "patchSetId": 2
+      },
+      "lineNbr": 1531,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-26T15:29:40Z",
+      "side": 1,
+      "message": "nit: remove empty line at end of code block",
+      "revId": "ffed01d218ff57085baab41247b835f6645e0831",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53a6ab41_d0fbfd1b",
+        "filename": "src/opts/SkSwizzler_opts.inc",
+        "patchSetId": 2
+      },
+      "lineNbr": 1561,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-26T15:29:40Z",
+      "side": 1,
+      "message": "nit: line too long",
+      "range": {
+        "startLine": 1561,
+        "startChar": 100,
+        "endLine": 1561,
+        "endChar": 101
+      },
+      "revId": "ffed01d218ff57085baab41247b835f6645e0831",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "285e52fb_2f74fd90",
+        "filename": "src/opts/SkSwizzler_opts.inc",
+        "patchSetId": 2
+      },
+      "lineNbr": 1764,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-26T15:29:40Z",
+      "side": 1,
+      "message": "nit: `dst,` not `dst ,`",
+      "range": {
+        "startLine": 1761,
+        "startChar": 32,
+        "endLine": 1764,
+        "endChar": 37
+      },
+      "revId": "ffed01d218ff57085baab41247b835f6645e0831",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
