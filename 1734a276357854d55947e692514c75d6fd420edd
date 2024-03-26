@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0dd6005_af28f7c9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-26T14:42:10Z",
+      "side": 1,
+      "message": "In addition, `infra/bots/recipe_modules/build/resources/docker-compile.sh` needs to be updated to `fetch-ninja`.",
+      "revId": "1734a276357854d55947e692514c75d6fd420edd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f907e27f_d61954e9",
+        "filename": "infra/bots/recipe_modules/build/default.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-26T14:42:10Z",
+      "side": 1,
+      "message": "This compiles swiftshader and wants `ninja` but we haven\u0027t done `fetch-ninja` yet. Note that this doesn\u0027t need `gn` since this build of swiftshader uses `cmake`.",
+      "revId": "1734a276357854d55947e692514c75d6fd420edd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
