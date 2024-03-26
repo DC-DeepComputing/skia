@@ -266,6 +266,7 @@ ScratchBuffer DrawBufferManager::getScratchStorage(size_t requiredBytes) {
         buffer = fResourceProvider->findOrCreateBuffer(
                 bufferSize, BufferType::kStorage, AccessPattern::kGpuOnly);
     }
+    SkDebugf("@@@ getScratchStorage - requiredBytes: %lu, final size: %lu\n", requiredBytes, buffer->size());
     return {requiredBytes, info.fStartAlignment, std::move(buffer), this};
 }
 

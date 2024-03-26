@@ -370,6 +370,7 @@ std::unique_ptr<DispatchGroup> VelloRenderer::renderScene(const RenderParams& pa
     builder.appendStep(&fBboxClear, to_wg_size(dispatchInfo.bbox_clear));
 
     // flatten
+    SkDebugf("@@@@ LINES SIZE: %lu\n", lines_size);
     ScratchBuffer lines = bufMgr->getScratchStorage(lines_size);
     builder.assignSharedBuffer(new_scratch_slice(lines), kVelloSlot_Lines);
     builder.appendStep(&fFlatten, to_wg_size(dispatchInfo.flatten));
