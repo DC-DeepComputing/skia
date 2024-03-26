@@ -8,6 +8,7 @@
 #include "src/gpu/graphite/compute/DispatchGroup.h"
 
 #include "include/gpu/graphite/Recorder.h"
+#include "src/core/SkTraceEvent.h"
 #include "src/gpu/graphite/BufferManager.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/CommandBuffer.h"
@@ -64,6 +65,7 @@ bool DispatchGroup::prepareResources(ResourceProvider* resourceProvider) {
 }
 
 void DispatchGroup::addResourceRefs(CommandBuffer* commandBuffer) const {
+    TRACE_EVENT0("skia.gpu", TRACE_FUNC);
     for (int i = 0; i < fPipelines.size(); ++i) {
         commandBuffer->trackResource(fPipelines[i]);
     }

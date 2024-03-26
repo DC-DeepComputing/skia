@@ -117,6 +117,7 @@ void ResourceCache::insertResource(Resource* resource) {
 
 Resource* ResourceCache::findAndRefResource(const GraphiteResourceKey& key,
                                             skgpu::Budgeted budgeted) {
+    TRACE_EVENT0("skia.gpu", TRACE_FUNC);
     ASSERT_SINGLE_OWNER
 
     this->processReturnedResources();
