@@ -57,6 +57,30 @@
       },
       "revId": "16220785ea7d85683e79ff034de1d0dbe96d6306",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5be3e9d1_a77a4c3a",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 8
+      },
+      "lineNbr": 2089,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-26T19:32:17Z",
+      "side": 1,
+      "message": "So this `run_presubmit` currently only applies to `Housekeeper-OnDemand-Presubmit`. Updated with https://skia-review.googlesource.com/c/skia/+/832837 .",
+      "parentUuid": "b421d210_b2cbb2a6",
+      "range": {
+        "startLine": 2089,
+        "startChar": 26,
+        "endLine": 2089,
+        "endChar": 66
+      },
+      "revId": "16220785ea7d85683e79ff034de1d0dbe96d6306",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

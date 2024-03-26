@@ -16,6 +16,24 @@
       "message": "By moving this after the `cd` `.vpython3` is now found. Unfortunately, the venv issue is still there. Maybe it wasn\u0027t that both 3.8 and 3.11 were being used, but at least now there should be only 3.11.",
       "revId": "741c6ad655356f4c64193a4a929dd2750d6db7de",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "21ac95fe_94da508e",
+        "filename": "infra/bots/bundle_recipes.sh",
+        "patchSetId": 6
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-26T19:32:17Z",
+      "side": 1,
+      "message": "Smaller standalone roll for 3.11 at https://skia-review.googlesource.com/c/skia/+/832780 to use for issue reporting.",
+      "parentUuid": "147b3da9_1dff96ae",
+      "revId": "741c6ad655356f4c64193a4a929dd2750d6db7de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
