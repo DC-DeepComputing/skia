@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "27d6a23c_7ce5cc20",
+        "filename": "src/gpu/graphite/CommandBuffer.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-03-26T22:44:19Z",
+      "side": 1,
+      "message": "I\u0027ll remove the const to make this consistent with the surrounding code.",
+      "parentUuid": "24cba43f_b0280a07",
+      "range": {
+        "startLine": 83,
+        "startChar": 24,
+        "endLine": 83,
+        "endChar": 29
+      },
+      "revId": "775267b5e26798d1f1c4e449e82bf5cc58b31928",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "aae3365c_daac41ff",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aa834a61_1c257fac",
+        "filename": "src/gpu/graphite/compute/DispatchGroup.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-03-26T22:44:19Z",
+      "side": 1,
+      "message": "I\u0027ve considered this but decided against it since Builder reuse shouldn\u0027t be common and I would like the default path (via `finalize()`) to not allocate.\n\nI added `reset()` primarily because it was convenient for the unit test I added. I don\u0027t expect it to be used in the production code.",
+      "parentUuid": "aae3365c_daac41ff",
+      "range": {
+        "startLine": 270,
+        "startChar": 0,
+        "endLine": 270,
+        "endChar": 34
+      },
+      "revId": "775267b5e26798d1f1c4e449e82bf5cc58b31928",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "de2da7d8_782b2b52",
@@ -60,6 +108,30 @@
       "writtenOn": "2024-03-26T14:23:56Z",
       "side": 1,
       "message": "I think this would be cleaner if `DispatchGroup` had something like `snapChildTask()` that internally moved its clear list into a ClearBuffersTask or returned null if they were empty.",
+      "range": {
+        "startLine": 25,
+        "startChar": 8,
+        "endLine": 31,
+        "endChar": 9
+      },
+      "revId": "775267b5e26798d1f1c4e449e82bf5cc58b31928",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "efd1f268_dc2dafb9",
+        "filename": "src/gpu/graphite/task/ComputeTask.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-03-26T22:44:19Z",
+      "side": 1,
+      "message": "Good idea. Done.",
+      "parentUuid": "de2da7d8_782b2b52",
       "range": {
         "startLine": 25,
         "startChar": 8,
