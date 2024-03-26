@@ -288,6 +288,9 @@ void GrGLCaps::init(const GrContextOptions& contextOptions,
             fBindFragDataLocationSupport = true;
         }
     } else if (GR_IS_GR_WEBGL(standard)) {
+        // The WebGL version of EXT_blend_func_extended explicitly does not support its new API
+        // functions, e.g. BindFragDataLocation:
+        // https://registry.khronos.org/webgl/extensions/WEBGL_blend_func_extended/
         fBindFragDataLocationSupport = false;
     }
 
@@ -442,6 +445,8 @@ void GrGLCaps::init(const GrContextOptions& contextOptions,
         shaderCaps->fInverseHyperbolicSupport =
                 ctxInfo.glslGeneration() >= SkSL::GLSLGeneration::k300es;
     } else if (GR_IS_GR_WEBGL(standard)) {
+        shaderCaps->fDualSourceBlendingSupport = ctxInfo.hasExtension("GL_WEBGL_blend_func_extended");
+
         shaderCaps->fShaderDerivativeSupport = version >= GR_GL_VER(2, 0) ||
                                                ctxInfo.hasExtension("GL_OES_standard_derivatives") ||
                                                ctxInfo.hasExtension("OES_standard_derivatives");
@@ -1005,14 +1010,14 @@ void GrGLCaps::initGLSL(const GrGLContextInfo& ctxInfo, const GrGLInterface* gli
     if (GR_IS_GR_GL(standard)) {
         shaderCaps->fNoPerspectiveInterpolationSupport =
             ctxInfo.glslGeneration() >= SkSL::GLSLGeneration::k130;
-    } else if (GR_IS_GR_GL_ES(standard)) {
+    } else if (GR_IS_GR_GL_ES(standard) || GR_IS_GR_WEBGL(standard)) {
         if (ctxInfo.hasExtension("GL_NV_shader_noperspective_interpolation") &&
             ctxInfo.glslGeneration() >= SkSL::GLSLGeneration::k300es) {
             shaderCaps->fNoPerspectiveInterpolationSupport = true;
             shaderCaps->fNoPerspectiveInterpolationExtensionString =
                 "GL_NV_shader_noperspective_interpolation";
         }
-    }  // Not sure for WebGL
+    }
 
     if (GR_IS_GR_GL(standard)) {
         shaderCaps->fSampleMaskSupport = ctxInfo.glslGeneration() >= SkSL::GLSLGeneration::k400;
@@ -1035,7 +1040,7 @@ void GrGLCaps::initGLSL(const GrGLContextInfo& ctxInfo, const GrGLInterface* gli
         }
     } // WebGL might have to check for OES_standard_derivatives
 
-    if (GR_IS_GR_GL_ES(standard)) {
+    if (GR_IS_GR_GL_ES(standard) || GR_IS_GR_WEBGL(standard)) {
         shaderCaps->fSecondaryOutputExtensionString = "GL_EXT_blend_func_extended";
     }
 
