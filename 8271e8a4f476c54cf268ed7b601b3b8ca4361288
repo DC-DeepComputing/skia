@@ -50,6 +50,23 @@
       "message": "lgtm",
       "revId": "8271e8a4f476c54cf268ed7b601b3b8ca4361288",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "70c556fb_382e5559",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18114
+      },
+      "writtenOn": "2024-03-26T14:01:13Z",
+      "side": 1,
+      "message": "I believe my calculations regarding addY for limited range were incorrect. It should have `denom` as denominator for YCgCo and GBR cases, and `2 * denom` for YDZDX case. I have updated it here for all three of them.\n\nPlease take another look.",
+      "revId": "8271e8a4f476c54cf268ed7b601b3b8ca4361288",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
