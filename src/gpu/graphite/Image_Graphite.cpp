@@ -18,6 +18,7 @@
 #include "src/gpu/RefCntedCallback.h"
 #include "src/gpu/SkBackingFit.h"
 #include "src/gpu/graphite/Caps.h"
+#include "src/gpu/graphite/Device.h"
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/ResourceProvider.h"
@@ -29,10 +30,112 @@ Image::Image(uint32_t uniqueID,
              TextureProxyView view,
              const SkColorInfo& info)
     : Image_Base(SkImageInfo::Make(view.proxy()->dimensions(), info), uniqueID)
-    , fTextureProxyView(std::move(view)) {
-}
+    , fTextureProxyView(std::move(view))
+    , fSurfaceDevice(nullptr) {}
 
 Image::~Image() {}
+
+sk_sp<Image> Image::MakeView(sk_sp<Device> device) {
+    TextureProxyView proxy = device->readSurfaceView();
+    if (!proxy) {
+        return nullptr;
+    }
+    sk_sp<Image> view = sk_make_sp<Image>(kNeedNewImageUniqueID,
+                                          std::move(proxy),
+                                          device->imageInfo().colorInfo());
+    view->fSurfaceDevice = std::move(device);
+    return view;
+}
+
+// FIXME: notifyInUse() rename? copies stemming from image sourc'ed textures ought to call this too
+void Image::notifyUseInDraw(Recorder* recorder) {
+    // Images, including those that wrap a Device or Surface, can be used in multiple Recorders
+    // so this function must be thread safe. Hold a local ref on any attached surface device to
+    // prevent it from being destroyed by another thread when the Image uniquely owns it but happens
+    // to be being drawn to two Recorders simultaneously.
+    // FIXME: Do we need to take a mutex on thi simage in order to read fSurfaceDevice in the first place?
+
+    /**
+     * So in theory, there are many references held on the Image object, and so notifyUse() gets
+     * invoked from many threads simultaneously. But `fSurfaceDevice` is not necessarily held by
+     * anything other than this image.
+     *
+     * while the ref adding on the Device object is atomic and thread safe, the access of the
+     * fSurfaceDevice sk_sp here is not, so we can have one thread get() the pointer to the Device
+     * and then get stalled, while another thread gets the pointer, processes through this function
+     * and sees that the surface device is uniquely held (since the local ref in thread A hasn't
+     * actuall been added yet). It deletes the surface and returns. A comes back and adds a ref
+     * to deleted memory, womp womp)
+     *
+     *
+    */
+    sk_sp<Device> linkedDevice = fSurfaceDevice;
+    if (!linkedDevice) {
+        return; // nothing to flush
+    }
+
+    SkASSERT(!linkedDevice->unique()); // at minimum Image and 'linkedDevice' hold a ref.
+    // Automatic flushing of image views only happens when mixing reads and writes on the
+    // originating Recorder. Draws of the view on another Recorder will always see the texture
+    // content dependent on how Recordings are inserted.
+    if (linkedDevice->recorder() == recorder) {
+        linkedDevice->flushPendingWorkToRecorder();
+    }
+    linkedDevice.reset();
+
+    if (fSurfaceDevice->unique()) {
+        // The Surface has been destroyed, so the linked device can't have any more pending work
+        // added to it that might need to be flushed before drawing the image view.
+        fSurfaceDevice.reset();
+    }
+
+    // So if Image were holding a weak-reference around the Device, what this would look like
+    // instead is:
+    // -> really what we want is for it to be WeakRef<Device> and every image that has it adds a
+    // weak_ref() to the Device object. If try_ref() fails, the device "deleted" and the image drops
+    // its weak ref. Eventually all the Images detect this and the weak references hit 0 and the
+    // device is finally destroyed. This is valuable for the case where we create multiple image views
+    // of the same device. However, it still suffers from the same problem that we have in the originla
+    // code where there's no thread safety on the IMage itself accessing its pointer.
+    //  -> could we actually delete the entire Device in weak_dispose()?
+    //  -> maybe, if the weak reference count was held in the wrapper around Device
+    //     so that those could still be accessed safely. Then some thread somewhere would get the
+    //     last strong unref and destroy the device.
+    //   all referencing images would have try_ref() fail safely so work is skipped.
+    //     but we have the dangling wrapper that doesn't get cleaned up unitl the weak refs hit 0
+    //     and if we try doing multithreaded weak unrefing via the same Image, we get into troubel again...
+    // really want an atomic way to update a pointer and a counter at teh same time.
+
+    // obviously for now a mutex is the simplex way to resolve all of these issues.
+    // could probably do it with some relaxed/acquire loading of an atomic if that's faster than a mutex?
+    //
+    // but we do need to think about these image views from other images
+    //   -> Surface caching an image view is fine
+    //   -> if we had thread safe weak refs, I suppose we could not cache the image view and then
+    //      not worry about unlinked the device -> already not worrying about that with this uniqueness business though.
+    //   -> but makeWithCOlorSpace or whatever variant that shares the same texture data needs to be
+    //      linked to the same device. And if that's called ever with strong references, we will keep
+    //      the device alive until one of the images goes away.
+    if (fSurfaceDevice->try_ref()) {
+        // We have a strong reference now, so it won't be deleted on us
+        fSurfaceDevice->flushPendingWorkToRecorder();
+        fSurfaceDevice->unref(); // we need unref to signal if it was the last one...
+
+        // Because ugh, we could have held multiple strong refs for the flushing (or at leas tto
+        // keep the device alive and access it), which means then we don't have any guarantee about
+        // how many threads are inside this conditional block and they all could take the weak_expired()
+        // branch.
+        if (fSurfaceDevice->weak_expired()) {
+
+        }
+    } else {
+        // Didn't get the strong ref, presumably some other thread acquired it and then saw they
+        // were unique and then deleted things, so don't do anythign anymore
+        // Next time through should see that it's null
+    }
+
+    //
+}
 
 size_t Image::textureSize() const {
     if (!fTextureProxyView.proxy()) {
@@ -77,6 +180,7 @@ sk_sp<SkImage> Image::copyImage(const SkIRect& subset,
     if (!srcView) {
         return nullptr;
     }
+    this->notifyUseInDraw(recorder); // FIXME: const'ness, should we just make it mutable?
 
     auto mm = requiredProps.fMipmapped ? skgpu::Mipmapped::kYes : skgpu::Mipmapped::kNo;
     TextureProxyView copiedView = TextureProxyView::Copy(
