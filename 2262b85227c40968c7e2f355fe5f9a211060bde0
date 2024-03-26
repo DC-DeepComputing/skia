@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c781c182_48f9e4d1",
+        "filename": "src/gpu/graphite/task/DrawTask.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-03-26T01:07:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "217117b6_915ea06f",
+      "revId": "2262b85227c40968c7e2f355fe5f9a211060bde0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a4ac0a38_bc890737",
@@ -35,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c670016_913201a2",
+        "filename": "src/gpu/graphite/task/DrawTask.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-03-26T01:07:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a4ac0a38_bc890737",
+      "revId": "2262b85227c40968c7e2f355fe5f9a211060bde0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a2dbfe7d_8be7458c",
@@ -48,6 +84,24 @@
       "writtenOn": "2024-03-25T19:15:40Z",
       "side": 1,
       "message": "nit: Make constructor explicit?",
+      "revId": "2262b85227c40968c7e2f355fe5f9a211060bde0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d154359_a0f93abd",
+        "filename": "src/gpu/graphite/task/DrawTask.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-03-26T01:07:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a2dbfe7d_8be7458c",
       "revId": "2262b85227c40968c7e2f355fe5f9a211060bde0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
