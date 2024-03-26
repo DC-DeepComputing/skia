@@ -34,6 +34,24 @@
       "parentUuid": "9fdd0c42_89323e41",
       "revId": "aa9913056119b06c49d361591322e41b4b3fb8b4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce63923f_0cfe6464",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 21814
+      },
+      "writtenOn": "2024-03-26T08:37:46Z",
+      "side": 1,
+      "message": "When using nanobench, we found that the performance of the ```blit_mask_d32_a8``` function was very poor in test cases such as ```TextBlobFirstTimeBench```, ```rastertile```, and ```GM_paragraph__underline_visitor``` (possibly due to the auto-vectorization of compiler). \n\nAfter adding this optimization, the average time can be reduced to at least one-third, and even to one-tenth. So, we hope to keep this optimization.",
+      "parentUuid": "2d5d0768_1a94e7c4",
+      "revId": "aa9913056119b06c49d361591322e41b4b3fb8b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
