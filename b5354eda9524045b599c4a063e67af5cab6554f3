@@ -33,6 +33,24 @@
       "message": "It looks like we\u0027re already pulling `bin/fetch-ninja` here, but there is no step currently to run it? The compile jobs have a `fetch-gn` task, it looks like we need to add a `fetch-ninja` as well.",
       "revId": "b5354eda9524045b599c4a063e67af5cab6554f3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "18115a48_06bbb941",
+        "filename": "infra/bots/gen_tasks_logic/compile_cas.go",
+        "patchSetId": 9
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-26T12:29:34Z",
+      "side": 1,
+      "message": "Adding a `fetch-ninja` step appears to fix this.",
+      "parentUuid": "99c903dc_a2606918",
+      "revId": "b5354eda9524045b599c4a063e67af5cab6554f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
