@@ -86,6 +86,15 @@ def compile_fn(api, checkout_root, out_dir):
   args = {'werror': 'true', 'link_pool_depth':'2'}
   env = {}
 
+  with api.context(cwd=skia_dir):
+    api.run(api.step, 'fetch-gn',
+            cmd=['python3', skia_dir.join('bin', 'fetch-gn')],
+            infra_step=True)
+
+    api.run(api.step, 'fetch-ninja',
+            cmd=['python3', skia_dir.join('bin', 'fetch-ninja')],
+            infra_step=True)
+
   if os == 'Mac':
     # XCode build is listed in parentheses after the version at
     # https://developer.apple.com/news/releases/, or on Wikipedia here:
@@ -343,14 +352,6 @@ def compile_fn(api, checkout_root, out_dir):
   gn = skia_dir.join('bin', 'gn')
 
   with api.context(cwd=skia_dir):
-    api.run(api.step, 'fetch-gn',
-            cmd=['python3', skia_dir.join('bin', 'fetch-gn')],
-            infra_step=True)
-
-    api.run(api.step, 'fetch-ninja',
-            cmd=['python3', skia_dir.join('bin', 'fetch-ninja')],
-            infra_step=True)
-
     with api.env(env):
       if ccache:
         api.run(api.step, 'ccache stats-start', cmd=[ccache, '-s'])
