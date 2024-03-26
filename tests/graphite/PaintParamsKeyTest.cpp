@@ -1197,6 +1197,10 @@ void run_test(skiatest::Reporter* reporter,
                      DrawTypeFlags::kText,
                      DrawTypeFlags::kDrawVertices }) {
 
+        // TODO: How is this working? It seems that, if we call drawVertices w/ colors that we'll
+        // always get a primitiveBlender in the real draws. Since we can create the option w/o
+        // the blender, the version w/ the primitiveBlender should be found missing during the
+        // real drawVertices call.
         for (bool withPrimitiveBlender : { false, true }) {
 
             sk_sp<SkBlender> primitiveBlender;
