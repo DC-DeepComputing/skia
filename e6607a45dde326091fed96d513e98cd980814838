@@ -53,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ddc6ea9_252459cf",
+        "filename": "modules/skottie/src/text/TextShaper.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 484,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-03-26T22:05:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b828daf4_d6fbce77",
+      "revId": "e6607a45dde326091fed96d513e98cd980814838",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0acb9a53_006a6d7a",
@@ -319,6 +337,24 @@
       "side": 1,
       "message": "I still don\u0027t know how I feel about the registered factory. I\u0027d like @bungeman@google.com to weigh in before going too much farther with this.",
       "parentUuid": "cc4cb6ab_41efca46",
+      "revId": "e6607a45dde326091fed96d513e98cd980814838",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "646769f9_898d3c0b",
+        "filename": "modules/skshaper/include/SkShaper_factory.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-03-26T22:05:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5400826d_5f23d6b9",
       "revId": "e6607a45dde326091fed96d513e98cd980814838",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },

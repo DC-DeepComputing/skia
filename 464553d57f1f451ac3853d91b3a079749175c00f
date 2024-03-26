@@ -16,6 +16,24 @@
       "message": "I would prefer for Skia not to have any mutable globals at all (and if it does need \"globals\" for them to go on a \"library\" object which stores all the library state and the user sets up and passes back in, like `FT_Library` or something like that (though even this is to be avoided if possible).\n\nMutable globals on a library make it very difficult to use properly, for case studies see `strtok` vs `strtok_r`, using any call in the C standard library that uses the current locale, etc. It\u0027s fine for an application to have these, but a Skia shouldn\u0027t have them.",
       "revId": "464553d57f1f451ac3853d91b3a079749175c00f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab9b56e0_d306ca7c",
+        "filename": "modules/skshaper/src/SkShaper_factory.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-03-26T22:05:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4e510dbd_422fe2ca",
+      "revId": "464553d57f1f451ac3853d91b3a079749175c00f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

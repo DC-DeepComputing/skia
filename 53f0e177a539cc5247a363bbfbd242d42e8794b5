@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "652ba3d8_f67e0557",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 24
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-03-26T22:05:39Z",
+      "side": 1,
+      "message": "PTAL - I added an SkShapers::Factory to the builder. I had to revert to an earlier patchset, so if some comments were undone, I apologize.",
+      "revId": "53f0e177a539cc5247a363bbfbd242d42e8794b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
