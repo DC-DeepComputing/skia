@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f074dab3_3dc56e36",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-26T01:34:22Z",
+      "side": 1,
+      "message": "So at this point I think the issue might be that since there is no script being executed this is a \"commandTarget\" and the specification file is being searched from the cwd. However, since this script was launched like `skia/infra/bots/bundle_recipes.sh` is appears the cwd is the one just above `skia`, but the `.vpython3` file is at `skia/.vpython3` so it isn\u0027t found. Looking at existing tasks it looks like this is the case and the default has always been used (and the existing tasks use 3.8 and 2.7! which appears to work out for the virtual environment setup).",
+      "revId": "7e9f81bb74e10d5d52d7160bf3bee013ccb3a5be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
