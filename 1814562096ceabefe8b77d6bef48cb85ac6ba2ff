@@ -51,6 +51,24 @@
       "message": "You need to add a reference to .vpython3 here so the \"recipes\" CAS spec knows to include the file. Not sure why .vpython wasn\u0027t here before...",
       "revId": "1814562096ceabefe8b77d6bef48cb85ac6ba2ff",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d9c1740_51545386",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 3
+      },
+      "lineNbr": 524,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-26T01:21:02Z",
+      "side": 1,
+      "message": "Thanks, I was trying to figure out how this worked. I think this \"worked\" previously because which `.vpython` wasn\u0027t sent over, the only thing it did was set python to 3.8, but that is also currently the default.\n\nThat being said, I now see it in the CAS, but it still isn\u0027t being found / used. Will look some more...",
+      "parentUuid": "bffe6aee_09eabeff",
+      "revId": "1814562096ceabefe8b77d6bef48cb85ac6ba2ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
