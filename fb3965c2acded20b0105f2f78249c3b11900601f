@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f66e4b0c_35df8751",
+        "filename": "src/gpu/graphite/ResourceTypes.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-03-26T18:56:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8f589f1a_e44db414",
+      "range": {
+        "startLine": 202,
+        "startChar": 0,
+        "endLine": 206,
+        "endChar": 9
+      },
+      "revId": "fb3965c2acded20b0105f2f78249c3b11900601f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6db2025c_853e2619",
@@ -54,6 +78,30 @@
       "writtenOn": "2024-03-13T21:00:34Z",
       "side": 1,
       "message": "I would write this as an explicit function `toString()` and have it defined in the C++ file.",
+      "range": {
+        "startLine": 211,
+        "startChar": 4,
+        "endLine": 219,
+        "endChar": 5
+      },
+      "revId": "fb3965c2acded20b0105f2f78249c3b11900601f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bea86089_121eca84",
+        "filename": "src/gpu/graphite/ResourceTypes.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-03-26T18:56:07Z",
+      "side": 1,
+      "message": "There currently is not a .cpp file that goes w/ this header. \n\nI could explicitly define a `toString()` method, however, I set it up this way to easily enable `SkTHash`, `SkChecksum` to obtain a unique object representation in a way that is digestible for those structures.\n\nAlternatively, I played w/ the idea of expanding `DenseBiMap` (within `DrawPass.cpp`) to take in a `UniqueKeyHash`-type struct allowing users of `DenseBiMap` to define their hash representation. It ended up seeming messier to do it that way to me at the time, but please LMKWYT!",
+      "parentUuid": "6db2025c_853e2619",
       "range": {
         "startLine": 211,
         "startChar": 4,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "504a7e97_659867a2",
+        "filename": "src/gpu/graphite/ResourceTypes.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-03-26T18:56:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3584ab69_2036ba68",
+      "range": {
+        "startLine": 233,
+        "startChar": 4,
+        "endLine": 233,
+        "endChar": 33
+      },
+      "revId": "fb3965c2acded20b0105f2f78249c3b11900601f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f8997e40_c3d2c6e5",
@@ -100,6 +172,30 @@
       "writtenOn": "2024-03-13T21:00:34Z",
       "side": 1,
       "message": "We shouldn\u0027t use `std::vector`, it was an idea we thought we could do when graphite started, but then Herb and John\u0027s work on code size and performance makes SkTArray the better choice.\n\nAt the expense of generality, it would be convenient if we could just store a fixed size of extra bits so that `SamplerDesc` remains trivially destructible. I don\u0027t know if Dawn can commit to 4 uint32\u0027s like vulkan (seems reasonable?).",
+      "range": {
+        "startLine": 237,
+        "startChar": 4,
+        "endLine": 237,
+        "endChar": 25
+      },
+      "revId": "fb3965c2acded20b0105f2f78249c3b11900601f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "558dc98a_80313e14",
+        "filename": "src/gpu/graphite/ResourceTypes.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-03-26T18:56:07Z",
+      "side": 1,
+      "message": "Seems reasonable since they will be wanting to store essentially the same information.\n\nI think we will want to cap it at 5 now though seeing as we now store the sampler key instead of just the YCbCr conversion info. Done :)",
+      "parentUuid": "f8997e40_c3d2c6e5",
       "range": {
         "startLine": 237,
         "startChar": 4,
@@ -181,6 +277,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1cb6879f_4e505460",
+        "filename": "src/gpu/graphite/vk/VulkanSamplerYcbcrConversion.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-03-26T18:56:07Z",
+      "side": 1,
+      "message": "* These numbers (such as 7 bits for the ycbcrmodel) simply came from ganesh. We don\u0027t have a guarantee that, for example, the `VkSamplerYcbcrModelConversion` enum won\u0027t be expanded in the future by the Vulkan spec... but as of right now, yes, there are only 5 unique values defined. Personally, it makes sense to me to shrink that to be encapsulated within 3 bits (which still leaves us some wiggle room if they add just one more possible model or so).\n\n* \"I wish we could find some guarantees about how large a value externalFormat might take.\" Me too, but alas...\n\n* Addressed other offline comments with TODOs and restructuring! 😊",
+      "parentUuid": "8b880bdf_55329f90",
+      "range": {
+        "startLine": 65,
+        "startChar": 0,
+        "endLine": 70,
+        "endChar": 60
+      },
+      "revId": "fb3965c2acded20b0105f2f78249c3b11900601f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "80f88a77_d82bf0bd",
@@ -194,6 +314,30 @@
       "writtenOn": "2024-03-13T21:00:34Z",
       "side": 1,
       "message": "Could this be a `std::array\u003c4\u003e`?",
+      "range": {
+        "startLine": 34,
+        "startChar": 10,
+        "endLine": 34,
+        "endChar": 20
+      },
+      "revId": "fb3965c2acded20b0105f2f78249c3b11900601f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d8e3c76_1d470a61",
+        "filename": "src/gpu/graphite/vk/VulkanSamplerYcbcrConversion.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-03-26T18:56:07Z",
+      "side": 1,
+      "message": "Sure! Just for my own knowledge... does this mean we prefer `STArray` over `std::vector` but still prefer `std::array` over `STArray`?",
+      "parentUuid": "80f88a77_d82bf0bd",
       "range": {
         "startLine": 34,
         "startChar": 10,
