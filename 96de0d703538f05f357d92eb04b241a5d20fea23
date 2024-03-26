@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "39c4dd7a_1efbcb1f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 21814
+      },
+      "writtenOn": "2024-03-26T01:32:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3fb7e235_78d58b0b",
+      "revId": "96de0d703538f05f357d92eb04b241a5d20fea23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "81fa0890_5b4a9037",
@@ -58,6 +76,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "70f7ae6c_2c70dd07",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 1148,
+      "author": {
+        "id": 21814
+      },
+      "writtenOn": "2024-03-26T01:32:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "81fa0890_5b4a9037",
+      "range": {
+        "startLine": 1148,
+        "startChar": 57,
+        "endLine": 1148,
+        "endChar": 68
+      },
+      "revId": "96de0d703538f05f357d92eb04b241a5d20fea23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "53c48cb0_fd9dff6e",
@@ -71,6 +113,30 @@
       "writtenOn": "2024-03-25T13:34:44Z",
       "side": 1,
       "message": "nit: consider `__lsx_vfmadd_s(-f, m, a)` instead for ease of comprehension",
+      "range": {
+        "startLine": 1160,
+        "startChar": 41,
+        "endLine": 1160,
+        "endChar": 56
+      },
+      "revId": "96de0d703538f05f357d92eb04b241a5d20fea23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c88d112_72ed6381",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 1160,
+      "author": {
+        "id": 21814
+      },
+      "writtenOn": "2024-03-26T01:32:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "53c48cb0_fd9dff6e",
       "range": {
         "startLine": 1160,
         "startChar": 41,
