@@ -27548,8 +27548,6 @@
         "<(REVISION)",
         "--patch_ref",
         "<(PATCH_REF)",
-        "--git_cache",
-        "cache/git",
         "--checkout_root",
         "cache/work",
         "--dm_path",
@@ -27577,6 +27575,9 @@
           "cipd_bin_packages/cpython3/bin",
           "cipd_bin_packages",
           "cipd_bin_packages/bin"
+        ],
+        "VPYTHON_DEFAULT_SPEC": [
+          "skia/.vpython3"
         ],
         "VPYTHON_VIRTUALENV_ROOT": [
           "cache/vpython"
@@ -28454,8 +28455,6 @@
         "<(REVISION)",
         "--patch_ref",
         "<(PATCH_REF)",
-        "--git_cache",
-        "cache/git",
         "--checkout_root",
         "cache/work",
         "--dm_path",
@@ -28482,6 +28481,9 @@
           "cipd_bin_packages/cpython3/bin",
           "cipd_bin_packages",
           "cipd_bin_packages/bin"
+        ],
+        "VPYTHON_DEFAULT_SPEC": [
+          "skia/.vpython3"
         ],
         "VPYTHON_VIRTUALENV_ROOT": [
           "cache/vpython"
