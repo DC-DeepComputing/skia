@@ -16,6 +16,23 @@
       "message": "It looks like this roll of depot_tools also includes [Remove legacy ninja binaries](https://chromium.googlesource.com/chromium/tools/depot_tools/+/8f41177abf2c51b2c0114af9abe9a5cd074d5014). It looks like the compile tasks were depending on `ninja` showing up there.",
       "revId": "b5354eda9524045b599c4a063e67af5cab6554f3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "99c903dc_a2606918",
+        "filename": "infra/bots/gen_tasks_logic/compile_cas.go",
+        "patchSetId": 9
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-26T12:10:10Z",
+      "side": 1,
+      "message": "It looks like we\u0027re already pulling `bin/fetch-ninja` here, but there is no step currently to run it? The compile jobs have a `fetch-gn` task, it looks like we need to add a `fetch-ninja` as well.",
+      "revId": "b5354eda9524045b599c4a063e67af5cab6554f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
