@@ -16,6 +16,29 @@
       "message": "This isn\u0027t used yet, but is adding visitation code that will be called from `Device::drawGeometry()` to detect images that are linked with Devices and scratch DrawTasks.\n\nOnce dst readback proxies are not required for paint params key building, the paint key can be moved to Device recording time, and the image detection can happen naturally inside AddToKey instead.",
       "revId": "ccfc5536e02ee989f6d494b5c77b704df32d0f99",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "95e67993_33d9ac02",
+        "filename": "src/gpu/graphite/KeyHelpers.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 427,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-03-26T17:45:53Z",
+      "side": 1,
+      "message": "they are ?",
+      "range": {
+        "startLine": 427,
+        "startChar": 89,
+        "endLine": 427,
+        "endChar": 93
+      },
+      "revId": "ccfc5536e02ee989f6d494b5c77b704df32d0f99",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
