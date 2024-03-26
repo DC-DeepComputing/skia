@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f4d306e_7804bbd0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-26T13:11:03Z",
+      "side": 1,
+      "message": "At Patchset 10 this appears to be working and at least gets things mostly updated. Will need to roll depot_tools and recipes-py again and move to python 3.11, but that will need to be a separate change since the current python 3.11 doesn\u0027t appear to be getting set up properly. This also fixes the motivating developer issue of `make train` not working with an up to date local depot_tools already on the path.\n\nAre there any known interesting tryjobs to run that might run into issues that should be tried before landing this?",
+      "revId": "01d529a66db7859458d6e61c66e4f1ea1e966f37",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
