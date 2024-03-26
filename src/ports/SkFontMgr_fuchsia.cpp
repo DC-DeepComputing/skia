@@ -244,27 +244,32 @@ private:
 sk_sp<SkTypeface> CreateTypefaceFromSkStream(std::unique_ptr<SkStreamAsset> stream,
                                              const SkFontArguments& args, TypefaceId id) {
     SkFontScanner_FreeType fontScanner;
+    auto fontFileData = fontScanner.scanFile(stream.get(), nullptr);
+    if (!fontFileData) {
+        return nullptr;
+    }
     int numInstances;
-    if (!fontScanner.scanFace(stream.get(), args.getCollectionIndex(), &numInstances)) {
+    SkFontFileData::AxisDefinitions axisDefinitions;
+    if (!fontFileData->scanFace(stream.get(), args.getCollectionIndex(), &numInstances, &axisDefinitions))
+    {
         return nullptr;
     }
     bool isFixedPitch;
     SkFontStyle style;
     SkString name;
-    SkFontScanner::AxisDefinitions axisDefinitions;
-    if (!fontScanner.scanInstance(stream.get(),
+    if (!fontFileData->scanInstance(stream.get(),
                                   args.getCollectionIndex(),
                                   0,
                                   &name,
                                   &style,
                                   &isFixedPitch,
-                                  &axisDefinitions)) {
+                                  nullptr)) {
+    {
         return nullptr;
     }
-
     const SkFontArguments::VariationPosition position = args.getVariationDesignPosition();
     AutoSTMalloc<4, SkFixed> axisValues(axisDefinitions.size());
-    SkFontScanner_FreeType::computeAxisValues(axisDefinitions, position, axisValues, name);
+    fontFileData->computeAxisValues( &axisDefinitions, position, axisValues, name);
 
     auto fontData = std::make_unique<SkFontData>(
         std::move(stream), args.getCollectionIndex(), args.getPalette().index,
