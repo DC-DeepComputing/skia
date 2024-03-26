@@ -22,22 +22,41 @@
 struct SkAdvancedTypefaceMetrics;
 class SkFontDescriptor;
 class SkFontData;
+class SkFontScanner_Fontations;
 
-class SkFontScanner_Fontations : public SkFontScanner {
-public:
-    SkFontScanner_Fontations();
-    ~SkFontScanner_Fontations() override;
+class SkFontFileData_Fontations : public SkFontFileData {
+ public:
+    SkFontFileData_Fontations(const SkFontScanner_Fontations* parent)
+        : fParentScanner(parent) { }
 
-    bool scanFile(SkStreamAsset* stream, int* numFaces) const override;
-    bool scanFace(SkStreamAsset* stream, int faceIndex, int* numInstances) const override;
+    ~SkFontFileData_Fontations() override = default;
+    bool scanFace(SkStreamAsset* stream,
+                  int faceIndex,
+                  int* numInstances,
+                  AxisDefinitions* axisDefinitions) override;
+    /* instanceIndex 0 is the default instance, 1 to numInstances are the named instances. */
     bool scanInstance(SkStreamAsset* stream,
                       int faceIndex,
                       int instanceIndex,
                       SkString* name,
                       SkFontStyle* style,
                       bool* isFixedPitch,
-                      AxisDefinitions* axes) const override;
-private:
+                      AxisValues* axes) override;
+    bool computeAxisValues(
+            AxisDefinitions* axisDefinitions,
+            const SkFontArguments::VariationPosition position,
+            SkFixed* axisValues,
+            const SkString& name,
+            const SkFontArguments::VariationPosition::Coordinate* currentPosition = nullptr) override;
+ private:
+    [[maybe_unused]]const SkFontScanner_Fontations* fParentScanner;
+};
+
+class SkFontScanner_Fontations : public SkFontScanner {
+public:
+    SkFontScanner_Fontations() = default;
+    ~SkFontScanner_Fontations() override = default;
+    std::unique_ptr<SkFontFileData> scanFile(SkStreamAsset* stream, int* numFaces) const override;
 };
 
 #endif // SKFONTSCANNER_FONTATIONS_H_

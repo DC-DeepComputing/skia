@@ -81,13 +81,14 @@ static void load_font_from_data(const SkFontScanner* scanner,
                                 int index,
                                 SkFontMgr_Custom::Families* families) {
     int numFaces;
-    if (!scanner->scanFile(stream.get(), &numFaces)) {
+    auto fontFileData = scanner->scanFile(stream.get(), &numFaces);
+    if (!fontFileData) {
         SkDebugf("---- failed to open <%d> as a font\n", index);
         return;
     }
     for (int faceIndex = 0; faceIndex < numFaces; ++faceIndex) {
         int numInstances;
-        if (!scanner->scanFace(stream.get(), faceIndex, &numInstances)) {
+        if (!fontFileData->scanFace(stream.get(), faceIndex, &numInstances, nullptr)) {
             SkDebugf("---- failed to open <%d> <%d> as a face\n", index, faceIndex);
             continue;
         }
@@ -96,13 +97,13 @@ static void load_font_from_data(const SkFontScanner* scanner,
             bool isFixedPitch;
             SkString realname;
             SkFontStyle style = SkFontStyle();  // avoid uninitialized warning
-            if (!scanner->scanInstance(stream.get(),
-                                      faceIndex,
-                                      instanceIndex,
-                                      &realname,
-                                      &style,
-                                      &isFixedPitch,
-                                      nullptr)) {
+            if (!fontFileData->scanInstance(stream.get(),
+                                            faceIndex,
+                                            instanceIndex,
+                                            &realname,
+                                            &style,
+                                            &isFixedPitch,
+                                            nullptr)) {
                 SkDebugf("---- failed to open <%d> <%d> <%d> as an instance\n",
                          index,
                          faceIndex,

@@ -112,6 +112,9 @@ public:
     SkFontScanner_FreeType();
     ~SkFontScanner_FreeType() override;
 
+<<<<<<< PATCH SET (9c2a7f FontScanner refactoring)
+    std::unique_ptr<SkFontFileData> scanFile(SkStreamAsset* stream, int* numFiles) const override;
+=======
     bool scanFile(SkStreamAsset* stream, int* numFaces) const override;
     bool scanFace(SkStreamAsset* stream, int faceIndex, int* numInstances) const override;
     bool scanInstance(SkStreamAsset* stream,
@@ -129,7 +132,9 @@ public:
             SkFontStyle* style,
             const SkFontArguments::VariationPosition::Coordinate* currentPosition = nullptr);
     static bool GetAxes(FT_Face face, AxisDefinitions* axes);
+>>>>>>> BASE      (283d3e Roll vulkan-deps from daa9d07a18bb to c771d4aa9a32 (3 revisi)
 private:
+    friend class SkFontFileData_FreeType;
     FT_Face openFace(SkStreamAsset* stream, int ttcIndex, FT_Stream ftStream) const;
     FT_Library fLibrary;
     mutable SkMutex fLibraryMutex;
