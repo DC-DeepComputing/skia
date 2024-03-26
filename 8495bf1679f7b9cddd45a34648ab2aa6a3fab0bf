@@ -46,6 +46,30 @@
       },
       "revId": "8495bf1679f7b9cddd45a34648ab2aa6a3fab0bf",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4da25c93_c53565fe",
+        "filename": "infra/bots/gen_tasks_logic/compile_cas.go",
+        "patchSetId": 1
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-26T11:22:41Z",
+      "side": 1,
+      "message": "Created and got it used.",
+      "parentUuid": "bdadc721_5ea46c79",
+      "range": {
+        "startLine": 50,
+        "startChar": 4,
+        "endLine": 50,
+        "endChar": 12
+      },
+      "revId": "8495bf1679f7b9cddd45a34648ab2aa6a3fab0bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

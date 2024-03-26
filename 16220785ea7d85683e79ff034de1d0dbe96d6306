@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c1b88585_3179f843",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-26T11:22:41Z",
+      "side": 1,
+      "message": "So I backed this up to where depot_tools and recipes-py were on 3.8 to see if that would work. However, there is still a whole mess of other random .vpython3 out there which randomly specify 3.11 (like various `recipe_modules`). It looks like maybe we will need to figure out why 3.11 is failing to get set up.",
+      "revId": "16220785ea7d85683e79ff034de1d0dbe96d6306",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b421d210_b2cbb2a6",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 8
+      },
+      "lineNbr": 2089,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-26T11:22:41Z",
+      "side": 1,
+      "message": "This revision is from Nov 12, 2021 and has a .vpython that requests python 2.7.",
+      "range": {
+        "startLine": 2089,
+        "startChar": 26,
+        "endLine": 2089,
+        "endChar": 66
+      },
+      "revId": "16220785ea7d85683e79ff034de1d0dbe96d6306",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

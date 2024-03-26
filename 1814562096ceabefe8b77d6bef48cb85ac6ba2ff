@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a13cb37_34c35562",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-26T11:22:41Z",
+      "side": 1,
+      "message": "This was because .vpython3 wasn\u0027t listed for this task and also because it wasn\u0027t in the search path. Both of these are now fixed.",
+      "parentUuid": "d327e4ba_cb3edd73",
+      "revId": "1814562096ceabefe8b77d6bef48cb85ac6ba2ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bffe6aee_09eabeff",
