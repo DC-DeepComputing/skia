@@ -61,14 +61,15 @@ private:
             }
 
             int numFaces;
-            if (!scanner->scanFile(stream.get(), &numFaces)) {
+            auto fontFileData = scanner->scanFile(stream.get(), &numFaces);
+            if (!fontFileData) {
                 // SkDebugf("---- failed to open <%s> as a font\n", filename.c_str());
                 continue;
             }
 
             for (int faceIndex = 0; faceIndex < numFaces; ++faceIndex) {
                 int numInstances;
-                if (!scanner->scanFace(stream.get(), faceIndex, &numInstances)) {
+                if (!fontFileData->scanFace(stream.get(), faceIndex, &numInstances, nullptr)) {
                     // SkDebugf("---- failed to open <%s> as a font\n", filename.c_str());
                     continue;
                 }
@@ -76,13 +77,13 @@ private:
                     bool isFixedPitch;
                     SkString realname;
                     SkFontStyle style = SkFontStyle(); // avoid uninitialized warning
-                    if (!scanner->scanInstance(stream.get(),
-                                               faceIndex,
-                                               instanceIndex,
-                                               &realname,
-                                               &style,
-                                               &isFixedPitch,
-                                               nullptr)) {
+                    if (!fontFileData->scanInstance(stream.get(),
+                                                    faceIndex,
+                                                    instanceIndex,
+                                                    &realname,
+                                                    &style,
+                                                    &isFixedPitch,
+                                                   nullptr)) {
                         // SkDebugf("---- failed to open <%s> <%d> as a font\n",
                         //          filename.c_str(), faceIndex);
                         continue;

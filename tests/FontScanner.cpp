@@ -32,7 +32,8 @@ static void FontScanner_VariableFont(skiatest::Reporter* reporter,
     }
 
     int numFaces;
-    if (!scanner->scanFile(stream.get(), &numFaces)) {
+    auto fileData = scanner->scanFile(stream.get(), &numFaces);
+    if (fileData == nullptr) {
          REPORTER_ASSERT(reporter, false, "Cannot scanFile\n");
     }
     REPORTER_ASSERT(reporter, numFaces == 1);
@@ -40,7 +41,7 @@ static void FontScanner_VariableFont(skiatest::Reporter* reporter,
     skia_private::THashSet<SkFontStyle> uniqueStyles;
     for (int faceIndex = 0; faceIndex < numFaces; ++faceIndex) {
         int numInstances;
-        if (!scanner->scanFace(stream.get(), faceIndex, &numInstances)) {
+        if (!fileData->scanFace(stream.get(), faceIndex, &numInstances, nullptr)) {
             REPORTER_ASSERT(reporter, false, "Cannot scanFace\n");
             continue;
         }
@@ -53,7 +54,7 @@ static void FontScanner_VariableFont(skiatest::Reporter* reporter,
             bool isFixedPitch;
             SkString realname;
             SkFontStyle style = SkFontStyle(); // avoid uninitialized warning
-            if (!scanner->scanInstance(stream.get(),
+            if (!fileData->scanInstance(stream.get(),
                                         faceIndex,
                                         instanceIndex,
                                         &realname,
