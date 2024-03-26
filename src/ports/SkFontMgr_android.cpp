@@ -162,15 +162,26 @@ public:
             SkString familyName;
             SkFontStyle style;
             bool isFixedWidth;
-            SkFontScanner::AxisDefinitions axisDefinitions;
-            if (!scanner->scanInstance(stream.get(), ttcIndex, 0,
-                                      &familyName, &style, &isFixedWidth, &axisDefinitions))
+            SkFontFileData::AxisDefinitions axisDefinitions;
+            auto fontFileData = scanner->scanFile(stream.get(), nullptr);
+            if (!fontFileData) {
+                SkDEBUGF("Requested font file %s exists, but is not a valid font.\n",
+                         pathName.c_str());
+                continue;
+            }
+            if (!fontFileData->scanFace(stream.get(), ttcIndex, nullptr, &axisDefinitions))
+            {
+                SkDEBUGF("Requested font face[%d] %s exists, but is not a valid font face.\n",
+                         ttcIndex, pathName.c_str());
+                continue;
+            }
+            if (!fontFileData->scanInstance(stream.get(), ttcIndex, 0,
+                                      &familyName, &style, &isFixedWidth, nullptr))
             {
                 SkDEBUGF("Requested font file %s exists, but is not a valid font.\n",
                          pathName.c_str());
                 continue;
             }
-
             int weight = fontFile.fWeight != 0 ? fontFile.fWeight : style.weight();
             SkFontStyle::Slant slant = style.slant();
             switch (fontFile.fStyle) {
@@ -198,8 +209,8 @@ public:
                 fontFile.fVariationDesignPosition.begin(),
                 fontFile.fVariationDesignPosition.size()
             };
-            SkFontScanner_FreeType::computeAxisValues(
-                    axisDefinitions, position, axisValues, familyName);
+            fontFileData->computeAxisValues(
+                    &axisDefinitions, position, axisValues, familyName);
 
             fStyles.push_back().reset(new SkTypeface_AndroidSystem(
                     pathName, cacheFontFiles, ttcIndex, axisValues.get(), axisDefinitions.size(),
