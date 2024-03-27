@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "06743a87_a08ae353",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-03-27T16:06:04Z",
+      "side": 1,
+      "message": "Not setting to review state, yet, until the GM results are coming back, but locally, this seems to address the sbix scaling issue... that took a while, to understand the coordinate system fun here.",
+      "revId": "58781f6122754676faa86cd5ff9297423e0c9692",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
