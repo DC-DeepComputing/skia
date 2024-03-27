@@ -44,6 +44,40 @@ static constexpr int kChromeKnownRuntimeEffectsEnd = kChromeKnownRuntimeEffectsS
 
 static constexpr int kUnknownRuntimeEffectIDStart = kChromeKnownRuntimeEffectsEnd;
 
+#define START = kStart
+#define BLURBASE1D = k1DBlurBase
+#define BLURBASE2D = k2DBlurBase
+#define EMPTY
+
+#define SK_ALL_STABLEKEYS(M)     \
+    M(Invalid, START)      \
+    M(1DBlurBase, EMPTY)           \
+    M(1DBlur4, BLURBASE1D) \
+    M(1DBlur8, EMPTY)  \
+    M(1DBlur12, EMPTY) \
+    M(1DBlur16, EMPTY) \
+    M(1DBlur20, EMPTY) \
+    M(1DBlur28, EMPTY) \
+    M(2DBlurBase, EMPTY) \
+    M(2DBlur4, BLURBASE2D) \
+    M(2DBlur8, EMPTY)              \
+    M(2DBlur12, EMPTY) \
+    M(2DBlur16, EMPTY) \
+    M(2DBlur20, EMPTY) \
+    M(2DBlur28, EMPTY) \
+    M(Blend, EMPTY) \
+    M(Decal, EMPTY) \
+    M(Displacement, EMPTY) \
+    M(Lighting, EMPTY) \
+    M(LinearMorphology, EMPTY) \
+    M(Magnifier, EMPTY) \
+    M(Normal, EMPTY) \
+    M(SparseMorphology, EMPTY) \
+    M(Arithmetic, EMPTY) \
+    M(HighContrast, EMPTY) \
+    M(Lerp, EMPTY) \
+    M(Luma, EMPTY) \
+    M(Overdraw, EMPTY)
 
 // WARNING: If any of the existing values are changed, UniqueKeys that have stably-keyed effects
 // will need to be invalidated. (Adding new values to the end of the enum should be fine though.)
@@ -53,6 +87,11 @@ static constexpr int kUnknownRuntimeEffectIDStart = kChromeKnownRuntimeEffectsEn
 enum class StableKey : uint32_t {
     kStart =   kSkiaKnownRuntimeEffectsStart,
 
+#define M(type, initializer) k##type initializer,
+    SK_ALL_STABLEKEYS(M)
+#undef M
+
+#if 0
     kInvalid = kStart,
 
     // shaders
@@ -93,6 +132,7 @@ enum class StableKey : uint32_t {
     kLerp,
     kLuma,
     kOverdraw,
+#endif
 
     kLast =    kOverdraw,
 };
@@ -103,6 +143,8 @@ static const int kStableKeyCnt = static_cast<int>(StableKey::kLast) -
 static_assert(static_cast<int>(StableKey::kLast) < kSkiaKnownRuntimeEffectsEnd);
 
 const SkRuntimeEffect* GetKnownRuntimeEffect(StableKey);
+
+static_assert(static_cast<int>(StableKey::kInvalid)  == static_cast<int>(StableKey::kStart));
 
 static_assert(static_cast<int>(StableKey::k1DBlur4)  == static_cast<int>(StableKey::k1DBlurBase));
 static_assert(static_cast<int>(StableKey::k1DBlur8)  == static_cast<int>(StableKey::k1DBlurBase)+1);
