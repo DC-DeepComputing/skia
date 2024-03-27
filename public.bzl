@@ -2595,13 +2595,16 @@ SKUNICODE_HDRS = [
 
 SKSHAPER_HDRS = [
     "modules/skshaper/include/SkShaper.h",
-    "modules/skshaper/include/SkShaper_harfbuzz.h",
     "modules/skshaper/include/SkShaper_coretext.h",
+    "modules/skshaper/include/SkShaper_factory.h",
+    "modules/skshaper/include/SkShaper_harfbuzz.h",
     "modules/skshaper/include/SkShaper_skunicode.h",
+    "modules/skshaper/utils/FactoryHelpers.h",
 ]
 
 SKSHAPER_HARFBUZZ_SRCS = [
     "modules/skshaper/src/SkShaper.cpp",
+    "modules/skshaper/src/SkShaper_factory.cpp",
     "modules/skshaper/src/SkShaper_harfbuzz.cpp",
     "modules/skshaper/src/SkShaper_primitive.cpp",
     "modules/skshaper/src/SkShaper_skunicode.cpp",
