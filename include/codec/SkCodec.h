@@ -1051,6 +1051,7 @@ using MakeFromStreamCallback = std::unique_ptr<SkCodec> (*)(std::unique_ptr<SkSt
                                                             DecodeContext);
 
 struct SK_API Decoder {
+    ~Decoder() { SkVLOG("Deleted"); }
     // By convention, we use all lowercase letters and go with the primary filename extension.
     // For example "png", "jpg", "ico", "webp", etc
     std::string_view id;
