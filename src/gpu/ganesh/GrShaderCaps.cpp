@@ -12,7 +12,6 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 
-#ifdef SK_ENABLE_DUMP_GPU
 #include "src/utils/SkJSONWriter.h"
 
 void GrShaderCaps::dumpJSON(SkJSONWriter* writer) const {
@@ -84,9 +83,6 @@ void GrShaderCaps::dumpJSON(SkJSONWriter* writer) const {
 
     writer->endObject();
 }
-#else
-void GrShaderCaps::dumpJSON(SkJSONWriter* writer) const { }
-#endif
 
 void GrShaderCaps::applyOptionsOverrides(const GrContextOptions& options) {
     if (options.fDisableDriverCorrectnessWorkarounds) {
