@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "38ee1859_3f556c7d",
+        "filename": "src/opts/SkBitmapProcState_opts.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 263,
+      "author": {
+        "id": 21814
+      },
+      "writtenOn": "2024-03-27T01:36:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "94c5bfde_a0781c9c",
+      "range": {
+        "startLine": 263,
+        "startChar": 6,
+        "endLine": 263,
+        "endChar": 11
+      },
+      "revId": "017b363b037057b768351fe2a63fafd879338be5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "241f62c4_529642b4",
@@ -37,6 +61,24 @@
       "writtenOn": "2024-03-26T15:45:41Z",
       "side": 1,
       "message": "nit: don\u0027t put two blank lines in a row",
+      "revId": "017b363b037057b768351fe2a63fafd879338be5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6356f8c6_a3e94a05",
+        "filename": "src/opts/SkBitmapProcState_opts.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 322,
+      "author": {
+        "id": 21814
+      },
+      "writtenOn": "2024-03-27T01:36:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "241f62c4_529642b4",
       "revId": "017b363b037057b768351fe2a63fafd879338be5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -64,6 +106,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "06cbc41b_9bfb6fd0",
+        "filename": "src/opts/SkBitmapProcState_opts.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 21814
+      },
+      "writtenOn": "2024-03-27T01:36:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fff71f5c_16ae0be2",
+      "range": {
+        "startLine": 348,
+        "startChar": 6,
+        "endLine": 348,
+        "endChar": 10
+      },
+      "revId": "017b363b037057b768351fe2a63fafd879338be5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2928aece_4f72125a",
@@ -77,6 +143,24 @@
       "writtenOn": "2024-03-26T15:45:41Z",
       "side": 1,
       "message": "nit: don\u0027t put two blank lines in a row",
+      "revId": "017b363b037057b768351fe2a63fafd879338be5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "09092fce_7507132f",
+        "filename": "src/opts/SkBitmapProcState_opts.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 408,
+      "author": {
+        "id": 21814
+      },
+      "writtenOn": "2024-03-27T01:36:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2928aece_4f72125a",
       "revId": "017b363b037057b768351fe2a63fafd879338be5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
