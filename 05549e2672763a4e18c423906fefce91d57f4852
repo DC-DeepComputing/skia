@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0c7003d_79725ea7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3335589
+      },
+      "writtenOn": "2024-03-27T20:58:34Z",
+      "side": 1,
+      "message": "fmalita: can you please review? I think CQ is currently broken. Please let me know if you have any concerns. Thank you!",
+      "revId": "05549e2672763a4e18c423906fefce91d57f4852",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
