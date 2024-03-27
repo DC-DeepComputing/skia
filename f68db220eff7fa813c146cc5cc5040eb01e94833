@@ -34,6 +34,24 @@
       "parentUuid": "d8a07012_0137ee77",
       "revId": "f68db220eff7fa813c146cc5cc5040eb01e94833",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a649359_8b610d75",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-27T19:34:23Z",
+      "side": 1,
+      "message": "Most of the failing Paragraph tests are behind `UNIX_ONLY_TEST` at the moment (though I think most of those can be removed now) which is why at least `SkParagraph_GetRectsForRangeTight` is only failing on Debian (because it doesn\u0027t exist in the macOS build). At least for this test there aren\u0027t any system fonts involved (that\u0027s the intention of the tests and is true as far as I can see stepping through the whole thing), so I think this might be a real issue of some sort. The issue here is mostly around bounds calculation though, and it may be that these are only passing with FreeType, but the bounds look quite different and this may be one of the few tests that actually uses Fontations to do shaping (since most of the other tests around shaping require a Collection SkFontMgr, and this test happens to make its own). Unfortunately, it looks like everything is being mapped to glyph 0. This may be due to having two different fonts named \"Noto Sans CJK JP\". For some reason when I run with FreeType the request for \"Noto Sans CJK JP\" produces the big font \"18677220 NotoSansCJK-Regular.ttc\" and with Fontations the small font \"8732 NotoSansCJK-VF-subset.otf.ttc\". So something is going different when loading the fonts into the lists... possibly with how the family names are being produced.",
+      "parentUuid": "a7e4f557_867ebe00",
+      "revId": "f68db220eff7fa813c146cc5cc5040eb01e94833",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
