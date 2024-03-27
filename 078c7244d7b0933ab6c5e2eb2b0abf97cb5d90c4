@@ -50,6 +50,24 @@
       "message": "Oof. I swear I tried this before, but you\u0027re right - it does work. When I went and added GCC support earlier this year (http://review.skia.org/798201), I ended up adding a helper function (and using subtraction of zero) to get the same effect. I probably should go back and clean things up using this trick.",
       "revId": "078c7244d7b0933ab6c5e2eb2b0abf97cb5d90c4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a939eec1_42c7280b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-03-27T14:25:00Z",
+      "side": 1,
+      "message": "Ah, right. Thank you, James. Yes, this is invoking the aggregate constructor, which defaults the other values to zero. (It\u0027s all coming back to me).\n\nSo yeah, you can get the effect you want with the trick I used elsewhere:\n`F(1)` --\u003e `F() + 1`",
+      "parentUuid": "60354e19_52184100",
+      "revId": "078c7244d7b0933ab6c5e2eb2b0abf97cb5d90c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
