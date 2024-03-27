@@ -135,6 +135,9 @@ public:
     static sk_sp<PrecompileColorFilter> LinearToSRGBGamma();
     static sk_sp<PrecompileColorFilter> SRGBToLinearGamma();
 
+    // This matches the main API's factory in include/effects/SkLumaColorFilter.h
+    static sk_sp<PrecompileColorFilter> Luma();
+
     // This encompases both variants of SkColorFilters::Table and TableARGB
     static sk_sp<PrecompileColorFilter> Table();
 
