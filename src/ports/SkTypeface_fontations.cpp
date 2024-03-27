@@ -691,6 +691,27 @@ protected:
                                        rust::Slice<uint8_t>())) {
             out_metrics->fFlags |= SkFontMetrics::kBoundsInvalid_Flag;
         }
+        out_metrics->fUnderlinePosition = 0;
+        if (!sk_float_isnan(metrics.underline_position)) {
+            out_metrics->fFlags |= SkFontMetrics::kUnderlinePositionIsValid_Flag;
+            out_metrics->fUnderlinePosition = -metrics.underline_position;
+        }
+        out_metrics->fUnderlineThickness = 0;
+        if (!sk_float_isnan(metrics.underline_thickness)) {
+            out_metrics->fFlags |= SkFontMetrics::kUnderlineThicknessIsValid_Flag;
+            out_metrics->fUnderlineThickness = metrics.underline_thickness;
+        }
+
+        out_metrics->fStrikeoutPosition = 0;
+        if (!sk_float_isnan(metrics.strikeout_position)) {
+            out_metrics->fFlags |= SkFontMetrics::kStrikeoutPositionIsValid_Flag;
+            out_metrics->fStrikeoutPosition = -metrics.strikeout_position;
+        }
+        out_metrics->fStrikeoutThickness = 0;
+        if (!sk_float_isnan(metrics.strikeout_thickness)) {
+            out_metrics->fFlags |= SkFontMetrics::kStrikeoutThicknessIsValid_Flag;
+            out_metrics->fStrikeoutThickness = metrics.strikeout_thickness;
+        }
     }
 
 private:

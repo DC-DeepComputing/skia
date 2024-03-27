@@ -386,6 +386,10 @@ fn convert_metrics(skrifa_metrics: &Metrics) -> ffi::Metrics {
         max_char_width: skrifa_metrics.max_width.unwrap_or(0.0),
         x_height: skrifa_metrics.x_height.unwrap_or(0.0),
         cap_height: skrifa_metrics.cap_height.unwrap_or(0.0),
+        underline_position: skrifa_metrics.underline.map_or_else(|| f32::NAN, |u| u.offset),
+        underline_thickness: skrifa_metrics.underline.map_or_else(|| f32::NAN, |u| u.thickness),
+        strikeout_position: skrifa_metrics.strikeout.map_or_else(|| f32::NAN, |s| s.offset),
+        strikeout_thickness: skrifa_metrics.strikeout.map_or_else(|| f32::NAN, |s| s.thickness),
     }
 }
 
@@ -1138,6 +1142,10 @@ mod ffi {
         x_max: f32,
         x_height: f32,
         cap_height: f32,
+        underline_position: f32,
+        underline_thickness: f32,
+        strikeout_position: f32,
+        strikeout_thickness: f32,
     }
 
     struct BridgeLocalizedName {
