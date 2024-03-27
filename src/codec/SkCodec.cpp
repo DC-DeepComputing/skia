@@ -136,7 +136,9 @@ void Register(Decoder d) {
     auto decoders = get_decoders_for_editing();
     for (size_t i = 0; i < decoders->size(); i++) {
         if ((*decoders)[i].id == d.id) {
+            Decoder* old_decoder = &(*decoders)[i];
             (*decoders)[i] = d;
+            SkASSERT(!old_decoder);
             return;
         }
     }
