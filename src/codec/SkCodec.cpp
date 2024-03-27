@@ -30,6 +30,7 @@
 #include <string>
 #include <string_view>
 #include <utility>
+#include <vector>
 
 #if !defined(SK_DISABLE_LEGACY_INIT_DECODERS)
 #include "include/private/base/SkOnce.h"
@@ -134,8 +135,13 @@ const std::vector<Decoder>& get_decoders() {
 
 void Register(Decoder d) {
     auto decoders = get_decoders_for_editing();
+
+    // Erase existing decoders
+    std::erase_if(*decoders, [&d](const Decoder& decoder) { return decoder.id == d.id; });
+
     for (size_t i = 0; i < decoders->size(); i++) {
         if ((*decoders)[i].id == d.id) {
+            SkASSERT((*decoders)[i].is_cleaned_up);
             (*decoders)[i] = d;
             return;
         }

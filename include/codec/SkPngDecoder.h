@@ -35,9 +35,7 @@ SK_API std::unique_ptr<SkCodec> Decode(sk_sp<SkData>,
                                        SkCodec::Result*,
                                        SkCodecs::DecodeContext = nullptr);
 
-inline constexpr SkCodecs::Decoder Decoder() {
-    return { "png", IsPng, Decode };
-}
+inline SkCodecs::Decoder Decoder() { return {"png", IsPng, Decode}; }
 
 }  // namespace SkPngDecoder
 
