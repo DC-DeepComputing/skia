@@ -273,8 +273,8 @@ void do_deflated_image(const SkPixmap& pm,
 
 bool do_jpeg(sk_sp<SkData> data, SkColorSpace* imageColorSpace, SkPDFDocument* doc, SkISize size,
              SkPDFIndirectReference ref) {
-    static constexpr const SkCodecs::Decoder decoders[] = {
-        SkJpegDecoder::Decoder(),
+    static const SkCodecs::Decoder decoders[] = {
+            SkJpegDecoder::Decoder(),
     };
     std::unique_ptr<SkCodec> codec = SkCodec::MakeFromData(data, decoders);
     if (!codec) {

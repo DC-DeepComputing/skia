@@ -1051,11 +1051,13 @@ using MakeFromStreamCallback = std::unique_ptr<SkCodec> (*)(std::unique_ptr<SkSt
                                                             DecodeContext);
 
 struct SK_API Decoder {
+    ~Decoder() { is_cleaned_up = true; }
     // By convention, we use all lowercase letters and go with the primary filename extension.
     // For example "png", "jpg", "ico", "webp", etc
     std::string_view id;
     IsFormatCallback isFormat;
     MakeFromStreamCallback makeFromStream;
+    bool is_cleaned_up;
 };
 
 // Add the decoder to the end of a linked list of decoders, which will be used to identify calls to
