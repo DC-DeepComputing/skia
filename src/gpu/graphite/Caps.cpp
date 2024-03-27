@@ -111,6 +111,20 @@ SkColorType Caps::getRenderableColorType(SkColorType ct) const {
     return kUnknown_SkColorType;
 }
 
+SkTextureCompressionType Caps::compressionType(const TextureInfo& info) const {
+    // All our compressed formats either use RGBA_8888 or RGB_888x colorTypes. So we just manually
+    // search both those options.
+    const ColorTypeInfo* colorTypeInfo = this->getColorTypeInfo(kRGB_888x_SkColorType, info);
+    if (!colorTypeInfo) {
+        colorTypeInfo = this->getColorTypeInfo(kRGBA_8888_SkColorType, info);
+    }
+
+    if (colorTypeInfo) {
+        return colorTypeInfo->fCompressionType;
+    }
+    return SkTextureCompressionType::kNone;
+}
+
 skgpu::Swizzle Caps::getReadSwizzle(SkColorType ct, const TextureInfo& info) const {
     // TODO: add SkTextureCompressionType handling
     // (can be handled by setting up the colorTypeInfo instead?)
