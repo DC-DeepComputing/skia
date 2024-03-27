@@ -415,7 +415,7 @@ void DawnCaps::initCaps(const DawnBackendContext& backendContext, const ContextO
     fDrawBufferCanBeMappedForReadback = false;
 #endif
 
-#if !defined(__EMSCRIPTEN__)
+#if !defined(__EMSCRIPTEN__) && 0
     fDrawBufferCanBeMapped =
             backendContext.fDevice.HasFeature(wgpu::FeatureName::BufferMapExtendedUsages);
 
