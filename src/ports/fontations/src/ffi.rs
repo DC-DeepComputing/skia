@@ -1053,6 +1053,16 @@ mod bitmap {
             .unwrap_or_default()
     }
 
+    fn glyf_lower_left(font_ref: &FontRef, glyph_id: GlyphId) -> Option<(i16, i16)> {
+        let glyf_table = font_ref.glyf().ok()?;
+        let glyph = font_ref
+            .loca(None)
+            .ok()?
+            .get_glyf(glyph_id, &glyf_table)
+            .ok()??;
+        Some((glyph.x_min(), glyph.y_min()))
+    }
+
     pub unsafe fn bitmap_glyph<'a>(
         font_ref: &'a BridgeFontRef,
         glyph_id: u16,
@@ -1062,11 +1072,20 @@ mod bitmap {
         font_ref
             .with_font(|font| {
                 if let Some(sbix_glyph) = sbix_glyph(font, glyph_id, Some(font_size)) {
+                    let origin_offset = (
+                        sbix_glyph.glyph_data.origin_offset_x(),
+                        sbix_glyph.glyph_data.origin_offset_y(),
+                    );
+                    // https://learn.microsoft.com/en-us/typography/opentype/spec/sbix
+                    // "If there is a glyph contour, the glyph design space
+                    // origin for the graphic is placed at the lower left corner
+                    // of the glyph bounding box (xMin, yMin)."
+                    let glyf_shift = glyf_lower_left(font, glyph_id).unwrap_or_default();
                     return Some(Box::new(BridgeBitmapGlyph {
                         data: Some(BitmapPixelData::PngData(sbix_glyph.glyph_data.data())),
                         metrics: FfiBitmapMetrics {
-                            bearing_x: sbix_glyph.glyph_data.origin_offset_x() as f32,
-                            bearing_y: sbix_glyph.glyph_data.origin_offset_y() as f32,
+                            bearing_x: (origin_offset.0 + glyf_shift.0).into(),
+                            bearing_y: (origin_offset.1 + glyf_shift.1).into(),
                             ppem_x: sbix_glyph.ppem as f32,
                             ppem_y: sbix_glyph.ppem as f32,
                             placement_origin_bottom_left: true,
