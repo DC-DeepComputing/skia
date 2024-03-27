@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "343160cd_b0d0864d",
+        "filename": "src/core/SkYUVMath.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 526,
+      "author": {
+        "id": 18114
+      },
+      "writtenOn": "2024-03-27T20:07:54Z",
+      "side": 1,
+      "message": "Makes sense, updated.",
+      "parentUuid": "d845fff3_b5d39dae",
+      "revId": "2a1ba10b29ff39f7373555c90c2f47e132c82d87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cfe30a52_fa8b16e7",
@@ -31,6 +49,24 @@
       "writtenOn": "2024-03-27T18:13:44Z",
       "side": 1,
       "message": "nit: Same here, \"GBR applies range correction to RGB values similar to YCgCo\", though it\u0027s less important here, because there are no yuv values.",
+      "revId": "2a1ba10b29ff39f7373555c90c2f47e132c82d87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eb188497_54900488",
+        "filename": "src/core/SkYUVMath.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 551,
+      "author": {
+        "id": 18114
+      },
+      "writtenOn": "2024-03-27T20:07:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cfe30a52_fa8b16e7",
       "revId": "2a1ba10b29ff39f7373555c90c2f47e132c82d87",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
