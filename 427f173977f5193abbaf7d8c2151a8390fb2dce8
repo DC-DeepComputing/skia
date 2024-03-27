@@ -16,6 +16,23 @@
       "message": "LGTM if it passes Canary or if the canary failure is unrelated",
       "revId": "427f173977f5193abbaf7d8c2151a8390fb2dce8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8659d72f_29b240d1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-03-27T20:02:25Z",
+      "side": 1,
+      "message": "Looks like I\u0027ll have to fix Chrome first",
+      "revId": "427f173977f5193abbaf7d8c2151a8390fb2dce8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
