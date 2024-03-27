@@ -96,7 +96,8 @@ bool Precompile(Context* context,
     return true;
 }
 
-void Precompile(Context* context, const PaintOptions& options, DrawTypeFlags drawTypes) {
+void Precompile(Context* context, const PaintOptions& options, DrawTypeFlags drawTypes,
+                std::unordered_set<uint32_t>& foo) {
 
     ShaderCodeDictionary* dict = context->priv().shaderCodeDictionary();
     const Caps* caps = context->priv().caps();
@@ -164,6 +165,7 @@ void Precompile(Context* context, const PaintOptions& options, DrawTypeFlags dra
             /* addPrimitiveBlender= */ false,
             coverage,
              [&](UniquePaintParamsID uniqueID) {
+                 foo.insert(uniqueID.asUInt());
                  compile(context->priv().rendererProvider(),
                          context->priv().resourceProvider(),
                          keyContext, uniqueID,
@@ -174,18 +176,35 @@ void Precompile(Context* context, const PaintOptions& options, DrawTypeFlags dra
 
     if (drawTypes & DrawTypeFlags::kDrawVertices) {
         for (Coverage coverage : {Coverage::kNone, Coverage::kSingleChannel, Coverage::kLCD}) {
+            constexpr bool kWithPrimitiveBlender = true;    // for if the vertices have colors
+            constexpr bool kWithOutPrimitiveBlender = false;// for if the vertices don't have colors
+
             options.priv().buildCombinations(
                 keyContext,
                 &gatherer,
-                /* addPrimitiveBlender= */ true,
+                kWithPrimitiveBlender,
                 coverage,
                 [&](UniquePaintParamsID uniqueID) {
+                    foo.insert(uniqueID.asUInt());
                     compile(context->priv().rendererProvider(),
                             context->priv().resourceProvider(),
                             keyContext, uniqueID,
                             DrawTypeFlags::kDrawVertices,
-                            renderPassDescs, /* withPrimitiveBlender= */ true, coverage);
+                            renderPassDescs, kWithPrimitiveBlender, coverage);
                 });
+            options.priv().buildCombinations(
+                    keyContext,
+                    &gatherer,
+                    kWithOutPrimitiveBlender,
+                    coverage,
+                    [&](UniquePaintParamsID uniqueID) {
+                        foo.insert(uniqueID.asUInt());
+                        compile(context->priv().rendererProvider(),
+                                context->priv().resourceProvider(),
+                                keyContext, uniqueID,
+                                DrawTypeFlags::kDrawVertices,
+                                renderPassDescs, kWithOutPrimitiveBlender, coverage);
+                    });
         }
     }
 }

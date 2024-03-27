@@ -180,6 +180,7 @@ void PaintOption::handlePrimitiveColor(const KeyContext& keyContext,
                                        PaintParamsKeyBuilder* keyBuilder,
                                        PipelineDataGatherer* gatherer) const {
     if (fHasPrimitiveBlender) {
+        SkDebugf("precompile: adding PrimitiveBlender\n");
         Blend(keyContext, keyBuilder, gatherer,
               /* addBlendToKey= */ [&] () -> void {
                   // TODO: Support runtime blenders for primitive blending in the precompile API.

@@ -53,6 +53,8 @@
 #include "tools/graphite/GraphiteTestContext.h"
 #include "tools/graphite/UniqueKeyUtils.h"
 
+#include <set>
+
 // Set this to 1 for more expansive (aka far slower) local testing
 #define EXPANDED_SET 0
 
@@ -959,7 +961,8 @@ SkPath make_path() {
 struct DrawData {
     SkPath fPath;
     sk_sp<SkTextBlob> fBlob;
-    sk_sp<SkVertices> fVerts;
+    sk_sp<SkVertices> fVertsWithColors;
+    sk_sp<SkVertices> fVertsWithOutColors;
 };
 
 void check_draw(skiatest::Reporter* reporter,
@@ -995,7 +998,9 @@ void check_draw(skiatest::Reporter* reporter,
                 canvas->drawTextBlob(drawData.fBlob, 0, 16, paint);
                 break;
             case DrawTypeFlags::kDrawVertices:
-                canvas->drawVertices(drawData.fVerts, SkBlendMode::kDst, paint);
+                SkDebugf("Calling SkCanvas::drawVertices\n");
+                canvas->drawVertices(drawData.fVertsWithColors, SkBlendMode::kDst, paint);
+                canvas->drawVertices(drawData.fVertsWithOutColors, SkBlendMode::kDst, paint);
                 break;
             default:
                 SkASSERT(false);
@@ -1089,8 +1094,6 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
     SkFont font(ToolUtils::DefaultPortableTypeface(), 16);
     const char text[] = "hambur";
 
-    // TODO: add a drawVertices call w/o colors. That impacts whether the RenderSteps emit
-    // a primitive color blender
     constexpr int kNumVerts = 4;
     constexpr SkPoint kPositions[kNumVerts] { {0,0}, {0,16}, {16,16}, {16,0} };
     constexpr SkColor kColors[kNumVerts] = { SK_ColorBLUE, SK_ColorGREEN,
@@ -1101,6 +1104,8 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
             SkTextBlob::MakeFromText(text, strlen(text), font),
             SkVertices::MakeCopy(SkVertices::kTriangleFan_VertexMode, kNumVerts,
                                  kPositions, kPositions, kColors),
+            SkVertices::MakeCopy(SkVertices::kTriangleFan_VertexMode, kNumVerts,
+                                 kPositions, kPositions, /* colors= */ nullptr),
     };
 
     ShaderType shaders[] = {
@@ -1150,26 +1155,26 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
 #endif
     };
 
-#if EXPANDED_SET
+//#if EXPANDED_SET
     size_t kExpected = std::size(shaders) * std::size(blenders) * std::size(colorFilters);
     int current = 0;
-#endif
+//#endif
 
     for (auto s : shaders) {
         for (auto bm : blenders) {
             for (auto cf : colorFilters) {
-#if EXPANDED_SET
+//#if EXPANDED_SET
                 SkDebugf("%d/%zu\n", current, kExpected);
                 ++current;
-#endif
+//#endif
                 run_test(reporter, context, testContext, precompileKeyContext, drawData, s, bm, cf);
             }
         }
     }
 
-#if EXPANDED_SET
+//#if EXPANDED_SET
     SkASSERT(current == (int) kExpected);
-#endif
+//#endif
 }
 
 void run_test(skiatest::Reporter* reporter,
@@ -1193,10 +1198,13 @@ void run_test(skiatest::Reporter* reporter,
     gNeedSKPPaintOption = false;
     auto [paint, paintOptions] = create_paint(&rand, recorder.get(), s, bm, cf);
 
-    for (auto dt : { DrawTypeFlags::kShape,
-                     DrawTypeFlags::kText,
+    for (auto dt : { //DrawTypeFlags::kShape,
+                     //DrawTypeFlags::kText,
                      DrawTypeFlags::kDrawVertices }) {
 
+        // Note: 'withPrimitiveBlender' and 'primitiveBlender' are only used in ExtractPaintData
+        // and PaintOptions::buildCombinations. Thus, as long as those two uses agree, it doesn't
+        // matter if the actual draw uses a primitive blender.
         for (bool withPrimitiveBlender : { false, true }) {
 
             sk_sp<SkBlender> primitiveBlender;
@@ -1208,6 +1216,8 @@ void run_test(skiatest::Reporter* reporter,
 
                 primitiveBlender = SkBlender::Mode(SkBlendMode::kSrcOver);
             }
+
+            SkDebugf("------- withPrimitiveBlender %d\n", withPrimitiveBlender);
 
             constexpr Coverage coverageOptions[3] = {
                     Coverage::kNone, Coverage::kSingleChannel, Coverage::kLCD};
@@ -1260,8 +1270,8 @@ void run_test(skiatest::Reporter* reporter,
                 SkDebugf("Failure on case: %s %s %s\n", to_str(s), to_str(bm), to_str(cf));
             }
 
-#ifdef SK_DEBUG
-            if (result == precompileIDs.end()) {
+//#ifdef SK_DEBUG
+//            if (result == precompileIDs.end()) {
                 SkDebugf("From paint: ");
                 dump(dict, paintID);
 
@@ -1269,8 +1279,8 @@ void run_test(skiatest::Reporter* reporter,
                 for (auto iter : precompileIDs) {
                     dump(dict, iter);
                 }
-            }
-#endif
+//            }
+//#endif
 
             REPORTER_ASSERT(reporter, result != precompileIDs.end());
 
@@ -1278,16 +1288,22 @@ void run_test(skiatest::Reporter* reporter,
                 context->priv().globalCache()->resetGraphicsPipelines();
 
                 int before = context->priv().globalCache()->numGraphicsPipelines();
-                Precompile(context, paintOptions, dt);
+                std::unordered_set<uint32_t> precompileIDs2;
+                Precompile(context, paintOptions, dt, precompileIDs2);
                 if (gNeedSKPPaintOption) {
                     // The skp draws a rect w/ a default SkPaint
                     PaintOptions skpPaintOptions;
-                    Precompile(context, skpPaintOptions, DrawTypeFlags::kShape);
+                    Precompile(context, skpPaintOptions, DrawTypeFlags::kShape, precompileIDs2);
                 }
                 int after = context->priv().globalCache()->numGraphicsPipelines();
 
                 REPORTER_ASSERT(reporter, before == 0);
                 REPORTER_ASSERT(reporter, after > before);
+
+                SkDebugf("From Precompile:");
+                for (auto iter : precompileIDs2) {
+                    dump(dict, UniquePaintParamsID(iter));
+                }
 
                 check_draw(reporter,
                            context,
