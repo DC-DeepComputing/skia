@@ -21,6 +21,7 @@
 #include "include/core/SkVertices.h"
 #include "include/effects/SkColorMatrix.h"
 #include "include/effects/SkGradientShader.h"
+#include "include/effects/SkLumaColorFilter.h"
 #include "include/effects/SkPerlinNoiseShader.h"
 #include "include/effects/SkRuntimeEffect.h"
 #include "include/gpu/graphite/Image.h"
@@ -142,6 +143,7 @@ const char* to_str(BlenderType b) {
     M(HSLAMatrix)      \
     M(Lighting)        \
     M(LinearToSRGB)    \
+    M(Luma)            \
     M(Matrix)          \
     M(Runtime)         \
     M(SRGBToLinear)    \
@@ -849,6 +851,10 @@ std::pair<sk_sp<SkColorFilter>, sk_sp<PrecompileColorFilter>> create_srgb_to_lin
     return { SkColorFilters::SRGBToLinearGamma(), PrecompileColorFilters::SRGBToLinearGamma() };
 }
 
+std::pair<sk_sp<SkColorFilter>, sk_sp<PrecompileColorFilter>> create_luma_colorfilter() {
+    return { SkLumaColorFilter::Make(), PrecompileColorFilters::Luma() };
+}
+
 std::pair<sk_sp<SkColorFilter>, sk_sp<PrecompileColorFilter>> create_compose_colorfilter(
         SkRandom* rand) {
     auto [outerCF, outerO] = create_random_colorfilter(rand);
@@ -921,6 +927,8 @@ std::pair<sk_sp<SkColorFilter>, sk_sp<PrecompileColorFilter>> create_colorfilter
             return create_lighting_colorfilter();
         case ColorFilterType::kLinearToSRGB:
             return create_linear_to_srgb_colorfilter();
+        case ColorFilterType::kLuma:
+            return create_luma_colorfilter();
         case ColorFilterType::kMatrix:
             return create_matrix_colorfilter();
         case ColorFilterType::kRuntime:
@@ -1208,6 +1216,7 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
             ColorFilterType::kHSLAMatrix,
             ColorFilterType::kLighting,
             ColorFilterType::kLinearToSRGB,
+            ColorFilterType::kLuma,
             ColorFilterType::kRuntime,
             ColorFilterType::kSRGBToLinear,
             ColorFilterType::kTable,
@@ -1224,19 +1233,19 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
 #endif
     };
 
-#if EXPANDED_SET
+//#if EXPANDED_SET
     size_t kExpected = std::size(shaders) * std::size(blenders) * std::size(colorFilters);
     int current = 0;
-#endif
+//#endif
 
     for (auto shader : shaders) {
         for (auto blender : blenders) {
             for (auto cf : colorFilters) {
                 for (auto clip : clips) {
-#if EXPANDED_SET
+//#if EXPANDED_SET
                 SkDebugf("%d/%zu\n", current, kExpected);
                 ++current;
-#endif
+//#endif
                 run_test(reporter, context, testContext, precompileKeyContext, drawData,
                          shader, blender, cf, clip);
                 }
@@ -1244,9 +1253,9 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
         }
     }
 
-#if EXPANDED_SET
+//#if EXPANDED_SET
     SkASSERT(current == (int) kExpected);
-#endif
+//#endif
 }
 
 void run_test(skiatest::Reporter* reporter,
@@ -1356,7 +1365,7 @@ void run_test(skiatest::Reporter* reporter,
             }
 
 #ifdef SK_DEBUG
-            if (result == precompileIDs.end()) {
+//            if (result == precompileIDs.end()) {
                 SkDebugf("From paint: ");
                 dump(dict, paintID);
 
@@ -1364,7 +1373,7 @@ void run_test(skiatest::Reporter* reporter,
                 for (auto iter : precompileIDs) {
                     dump(dict, iter);
                 }
-            }
+//            }
 #endif
 
             REPORTER_ASSERT(reporter, result != precompileIDs.end());
