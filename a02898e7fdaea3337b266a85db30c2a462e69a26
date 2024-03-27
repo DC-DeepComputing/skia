@@ -16,6 +16,23 @@
       "message": "PTAL",
       "revId": "a02898e7fdaea3337b266a85db30c2a462e69a26",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9683ce98_2b098a9a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2024-03-27T15:03:14Z",
+      "side": 1,
+      "message": "I don\u0027t have permission to vote, but lgtm",
+      "revId": "a02898e7fdaea3337b266a85db30c2a462e69a26",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
