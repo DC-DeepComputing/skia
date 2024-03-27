@@ -389,7 +389,7 @@ void VulkanResourceProvider::onDeleteBackendTexture(const BackendTexture& textur
 }
 
 sk_sp<VulkanSamplerYcbcrConversion>
-        VulkanResourceProvider::findOrCreateCompatibleSamplerYcbcrConversion(
+        VulkanResourceProvider::findOrCreateCompatibleYcbcrConversion(
                 const VulkanYcbcrConversionInfo& ycbcrInfo) const {
     if (!ycbcrInfo.isValid()) {
         return nullptr;
@@ -398,7 +398,7 @@ sk_sp<VulkanSamplerYcbcrConversion>
             this->vulkanSharedContext(), ycbcrInfo);
 
     if (Resource* resource = fResourceCache->findAndRefResource(ycbcrConversionKey,
-                                                                skgpu::Budgeted::kNo)) {
+                                                                skgpu::Budgeted::kYes)) {
         return sk_sp<VulkanSamplerYcbcrConversion>(
                 static_cast<VulkanSamplerYcbcrConversion*>(resource));
     }
@@ -518,7 +518,7 @@ BackendTexture VulkanResourceProvider::onCreateBackendTexture(AHardwareBuffer* h
                                   usageFlags,
                                   VK_SHARING_MODE_EXCLUSIVE,
                                   VK_IMAGE_ASPECT_COLOR_BIT,
-                                  VulkanYcbcrConversionInfo() };
+                                  VulkanYcbcrConversionInfo() }; // TODO initialize w/ ycbcr info?
 
     if (isRenderable && (importAsExternalFormat || !vkCaps.isRenderable(vkTexInfo))) {
         SKGPU_LOG_W("Renderable texture requested from an AHardwareBuffer which uses a VkFormat "
@@ -555,6 +555,7 @@ BackendTexture VulkanResourceProvider::onCreateBackendTexture(AHardwareBuffer* h
                         "format properties.\n");
             return {};
         }
+        vkTexInfo.fYcbcrConversionInfo = ycbcrInfo;
         externalFormat.externalFormat = hwbFormatProps.externalFormat;
     }
     const VkExternalMemoryImageCreateInfo externalMemoryImageInfo{

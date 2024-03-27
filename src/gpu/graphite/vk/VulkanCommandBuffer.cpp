@@ -1102,13 +1102,25 @@ void VulkanCommandBuffer::recordTextureAndSamplerDescSet(
         fBindTextureSamplers = false;
         return;
     }
+
     // Query resource provider to obtain a descriptor set for the texture/samplers
     TArray<DescriptorData> descriptors(command.fNumTexSamplers);
     for (int i = 0; i < command.fNumTexSamplers; i++) {
-        descriptors.push_back({DescriptorType::kCombinedTextureSampler,
-                               /*descCount=*/1,
-                               /*bindingIdx=*/i,
-                               PipelineStageFlags::kFragmentShader});
+
+        auto sampler = static_cast<const VulkanSampler*>(
+                drawPass.getSampler(command.fSamplerIndices[i]));
+
+        std::vector<const Sampler*> immutableSamplers {};
+        if (sampler && sampler->ycbcrConversion()) {
+            immutableSamplers.push_back(sampler);
+        }
+
+        descriptors.push_back({
+                DescriptorType::kCombinedTextureSampler,
+                /*descCount=*/1,
+                /*bindingIdx=*/i,
+                PipelineStageFlags::kFragmentShader,
+                std::move(immutableSamplers)});
     }
     sk_sp<VulkanDescriptorSet> set = fResourceProvider->findOrCreateDescriptorSet(
             SkSpan<DescriptorData>{&descriptors.front(), descriptors.size()});
@@ -1140,7 +1152,7 @@ void VulkanCommandBuffer::recordTextureAndSamplerDescSet(
 
         VkDescriptorImageInfo& textureInfo = descriptorImageInfos.push_back();
         memset(&textureInfo, 0, sizeof(VkDescriptorImageInfo));
-        textureInfo.sampler = sampler->vkSampler();
+        textureInfo.sampler = sampler->ycbcrConversion() ? VK_NULL_HANDLE : sampler->vkSampler();
         textureInfo.imageView =
                 texture->getImageView(VulkanImageView::Usage::kShaderInput)->imageView();
         textureInfo.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;

@@ -522,9 +522,9 @@ static VkPipelineLayout setup_pipeline_layout(const VulkanSharedContext* sharedC
         skia_private::TArray<DescriptorData> textureSamplerDescs(numTextureSamplers);
         for (int i = 0; i < numTextureSamplers; i++) {
             textureSamplerDescs.push_back({DescriptorType::kCombinedTextureSampler,
-                                            /*descCount=*/1,
-                                            /*bindingIdx=*/i,
-                                            PipelineStageFlags::kFragmentShader});
+                                           /*descCount=*/1,
+                                           /*bindingIdx=*/i,
+                                           PipelineStageFlags::kFragmentShader});
         }
         VkDescriptorSetLayout textureSamplerDescSetLayout =
                 descriptor_data_to_layout(sharedContext, {textureSamplerDescs});
@@ -620,6 +620,14 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
                                                 renderPassDesc.fWriteSwizzle);
     std::string& fsSkSL = fsSkSLInfo.fSkSL;
     const bool localCoordsNeeded = fsSkSLInfo.fRequiresLocalCoords;
+    // TODO: Get additional data from fsSkSLInfo that would contain YCbCr information.
+
+    // How to know which YCbCr conversion is associated with each sampler?
+
+    // Number of samplers == number of immutable samplers?
+
+    // Then the graphics pipeline can pass that in w/ setup_pipeline_layout in order to have the
+    // immutable sampler
 
     bool hasFragmentSkSL = !fsSkSL.empty();
     std::string vsSPIRV, fsSPIRV;

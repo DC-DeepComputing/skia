@@ -104,6 +104,12 @@ public:
     virtual SkISize getDepthAttachmentDimensions(const TextureInfo&,
                                                  const SkISize colorAttachmentDimensions) const;
 
+    virtual std::vector<uint32_t> getAdditionalSamplerDescInfo(sk_sp<TextureProxy> proxy) const {
+        // By default, return an empty span containing no additional information. Different
+        // backends can override this method as needed.
+        return {};
+    }
+
     virtual UniqueKey makeGraphicsPipelineKey(const GraphicsPipelineDesc&,
                                               const RenderPassDesc&) const = 0;
     virtual UniqueKey makeComputePipelineKey(const ComputePipelineDesc&) const = 0;
