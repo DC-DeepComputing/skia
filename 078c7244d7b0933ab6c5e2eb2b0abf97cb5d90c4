@@ -33,6 +33,23 @@
       "message": "Hmm, locally when I compile and run\n\n```\n#include \u003ccstdio\u003e\n\ntemplate \u003cint N, typename T\u003e using Vec \u003d T __attribute__((ext_vector_type(N)));\n\nint main() {\n    using F \u003d Vec\u003c4, float\u003e;\n    F f;\n    f \u003d F(1);\n    printf(\"%f %f %f %f\\n\", f[0], f[1], f[2], f[3]);\n}\n```\n\nwith Clang, I see `1.000000 1.000000 1.000000 1.000000`, but with\n\n```\n    f \u003d F{1};\n```\n\nI see `1.000000 0.000000 0.000000 0.000000` both with Clang and with GCC (using the appropriate definition of Vec).",
       "revId": "078c7244d7b0933ab6c5e2eb2b0abf97cb5d90c4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "64895621_55798062",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-03-27T14:21:43Z",
+      "side": 1,
+      "message": "Oof. I swear I tried this before, but you\u0027re right - it does work. When I went and added GCC support earlier this year (http://review.skia.org/798201), I ended up adding a helper function (and using subtraction of zero) to get the same effect. I probably should go back and clean things up using this trick.",
+      "revId": "078c7244d7b0933ab6c5e2eb2b0abf97cb5d90c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
