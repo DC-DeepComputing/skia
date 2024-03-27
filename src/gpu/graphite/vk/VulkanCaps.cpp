@@ -7,6 +7,7 @@
 
 #include "src/gpu/graphite/vk/VulkanCaps.h"
 
+#include "include/core/SkTextureCompressionType.h"
 #include "include/gpu/graphite/ContextOptions.h"
 #include "include/gpu/graphite/TextureInfo.h"
 #include "include/gpu/graphite/vk/VulkanGraphiteTypes.h"
@@ -261,6 +262,12 @@ TextureInfo VulkanCaps::getTextureInfoForSampledCopy(const TextureInfo& textureI
     info.fSharingMode = VK_SHARING_MODE_EXCLUSIVE;
 
     return info;
+}
+
+TextureInfo VulkanCaps::getDefaultCompressedTextureInfo(SkTextureCompressionType compression,
+                                                        Mipmapped mipmapped,
+                                                        Protected) const {
+    return {};
 }
 
 TextureInfo VulkanCaps::getDefaultMSAATextureInfo(const TextureInfo& singleSampledInfo,

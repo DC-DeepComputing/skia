@@ -28,6 +28,8 @@ struct SkISize;
 
 namespace skgpu::graphite {
 
+class Caps;
+
 class SK_API TextureInfo {
 public:
     TextureInfo() {}
