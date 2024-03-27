@@ -52,6 +52,24 @@
       "parentUuid": "a7e4f557_867ebe00",
       "revId": "f68db220eff7fa813c146cc5cc5040eb01e94833",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cdffd129_a0be6a9b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-27T20:04:09Z",
+      "side": 1,
+      "message": "So with FreeType both of these were named \"Noto Sans CJK JP\", ended up in the same \"family\" and then the test (deterministically) lucked out and got the \"good\" one. With Fontations the big one is named \"Noto Sans CJK JP Regular\" and the little one \"Noto Sans CJK JP\". It would probably be good to [mirror what FreeType does](https://source.chromium.org/chromium/chromium/src/+/main:third_party/freetype/src/src/sfnt/sfobjs.c;l\u003d1039;drc\u003d47574f7ea445c8bb751da0fa716424c9c29a6807).\n\nIt is also probably worth pointing out here that the PostScript name is supposed to vary, like [FT_Get_Postscript_Name](https://source.chromium.org/chromium/chromium/src/+/main:third_party/freetype/src/include/freetype/freetype.h;l\u003d4555;drc\u003d47574f7ea445c8bb751da0fa716424c9c29a6807) does, see [sfnt_get_var_ps_name](https://source.chromium.org/chromium/chromium/src/+/main:third_party/freetype/src/src/sfnt/sfdriver.c;l\u003d803;drc\u003d05bb4ce2df79db9c7f4fd9ef1856f0c41bca440f;bpv\u003d1;bpt\u003d1).",
+      "parentUuid": "6a649359_8b610d75",
+      "revId": "f68db220eff7fa813c146cc5cc5040eb01e94833",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
