@@ -16,6 +16,23 @@
       "message": "`}`",
       "revId": "20173c658500fc7893d4db3fdb5792f8b01cc272",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25f50807_ef146f19",
+        "filename": "src/opts/SkSwizzler_opts.inc",
+        "patchSetId": 4
+      },
+      "lineNbr": 1086,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-03-27T13:50:57Z",
+      "side": 1,
+      "message": "Need a closed-brace here",
+      "revId": "20173c658500fc7893d4db3fdb5792f8b01cc272",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
