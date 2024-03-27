@@ -10,7 +10,7 @@
 #include "src/gpu/ganesh/GrTexture.h"
 #include "src/gpu/ganesh/mtl/GrMtlGpu.h"
 #include "src/gpu/mtl/MtlUtilsPriv.h"
-
+#include "include/gpu/ganesh/mtl/GrMtlBackendSurface.h"
 #if !__has_feature(objc_arc)
 #error This file must be compiled with Arc. Use -fobjc-arc flag
 #endif
@@ -133,7 +133,7 @@ GrBackendTexture GrMtlTexture::getBackendTexture() const {
                                          : skgpu::Mipmapped::kNo;
     GrMtlTextureInfo info;
     info.fTexture.reset(GrRetainPtrFromId(fTexture->mtlTexture()));
-    return GrBackendTexture(this->width(), this->height(), mipmapped, info);
+    return GrBackendTextures::MakeMetal(this->width(), this->height(), mipmapped, info);
 }
 
 GrBackendFormat GrMtlTexture::backendFormat() const {

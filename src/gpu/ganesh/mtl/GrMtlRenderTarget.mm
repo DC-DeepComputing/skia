@@ -12,6 +12,7 @@
 #include "src/gpu/ganesh/mtl/GrMtlFramebuffer.h"
 #include "src/gpu/ganesh/mtl/GrMtlGpu.h"
 #include "src/gpu/ganesh/mtl/GrMtlUtil.h"
+#include "include/gpu/ganesh/mtl/GrMtlBackendSurface.h"
 
 #if !__has_feature(objc_arc)
 #error This file must be compiled with Arc. Use -fobjc-arc flag
@@ -104,7 +105,7 @@ GrMtlRenderTarget::~GrMtlRenderTarget() {
 GrBackendRenderTarget GrMtlRenderTarget::getBackendRenderTarget() const {
     GrMtlTextureInfo info;
     info.fTexture.reset(GrRetainPtrFromId(fColorAttachment->mtlTexture()));
-    return GrBackendRenderTarget(this->width(), this->height(), info);
+    return GrBackendRenderTargets::MakeMetal(this->width(), this->height(), info);
 }
 
 GrBackendFormat GrMtlRenderTarget::backendFormat() const {
