@@ -138,6 +138,7 @@ DawnBuffer::DawnBuffer(const DawnSharedContext* sharedContext,
         , fBuffer(std::move(buffer))
         , fType(type) {
     fMapPtr = mappedAtCreationPtr;
+    SkDebugf("DawnBuffer %zu\n", this->size());
 }
 
 void DawnBuffer::onAsyncMap(GpuFinishedProc proc, GpuFinishedContext ctx) {
@@ -236,6 +237,7 @@ bool DawnBuffer::isUnmappable() const {
 
 void DawnBuffer::freeGpuData() {
     fBuffer = nullptr;
+    SkDebugf("--> freed DawnBuffer %zu\n", size());
 }
 
 void DawnBuffer::onDumpMemoryStatistics(SkTraceMemoryDump* traceMemoryDump,
