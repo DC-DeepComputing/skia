@@ -14,6 +14,7 @@
 
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkRefCnt.h"
+#include "include/core/SkTextureCompressionType.h"
 #include "include/private/base/SkAlign.h"
 #include "src/base/SkEnumBitMask.h"
 #include "src/gpu/ResourceKey.h"
@@ -118,6 +119,8 @@ public:
     bool isTexturable(const TextureInfo&) const;
     virtual bool isRenderable(const TextureInfo&) const = 0;
     virtual bool isStorage(const TextureInfo&) const = 0;
+
+    SkTextureCompressionType compressionType(const TextureInfo&) const;
 
     int maxTextureSize() const { return fMaxTextureSize; }
     int defaultMSAASamplesCount() const { return fDefaultMSAASamples; }
@@ -306,6 +309,7 @@ protected:
     struct ColorTypeInfo {
         SkColorType fColorType = kUnknown_SkColorType;
         SkColorType fTransferColorType = kUnknown_SkColorType;
+        SkTextureCompressionType fCompressionType = SkTextureCompressionType::kNone;
         enum {
             kUploadData_Flag = 0x1,
             // Does Graphite itself support rendering to this colorType & format pair. Renderability
