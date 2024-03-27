@@ -177,14 +177,6 @@ public:
     // Creates an invalid backend texture.
     GrBackendTexture();
 
-#ifdef SK_METAL
-    GrBackendTexture(int width,
-                     int height,
-                     skgpu::Mipmapped,
-                     const GrMtlTextureInfo& mtlInfo,
-                     std::string_view label = {});
-#endif
-
 #ifdef SK_DIRECT3D
     GrBackendTexture(int width,
                      int height,
@@ -215,11 +207,6 @@ public:
     GrBackendApi backend() const {return fBackend; }
     GrTextureType textureType() const { return fTextureType; }
 
-#ifdef SK_METAL
-    // If the backend API is Metal, copies a snapshot of the GrMtlTextureInfo struct into the passed
-    // in pointer and returns true. Otherwise returns false if the backend API is not Metal.
-    bool getMtlTextureInfo(GrMtlTextureInfo*) const;
-#endif
 
 #ifdef SK_DIRECT3D
     // If the backend API is Direct3D, copies a snapshot of the GrD3DTextureResourceInfo struct into
@@ -320,8 +307,13 @@ private:
         GrD3DBackendSurfaceInfo fD3DInfo;
 #endif
     };
-#ifdef SK_METAL
-    GrMtlTextureInfo fMtlInfo;
+
+#if !defined(SK_DISABLE_LEGACY_METAL_BACKEND_SURFACE) && defined(SK_METAL)
+    GrBackendTexture(int width,
+                     int height,
+                     skgpu::Mipmapped,
+                     const GrMtlTextureInfo& mtlInfo,
+                     std::string_view label = {});
 #endif
 };
 
@@ -329,12 +321,6 @@ class SK_API GrBackendRenderTarget {
 public:
     // Creates an invalid backend texture.
     GrBackendRenderTarget();
-
-#ifdef SK_METAL
-    GrBackendRenderTarget(int width,
-                          int height,
-                          const GrMtlTextureInfo& mtlInfo);
-#endif
 
 #ifdef SK_DIRECT3D
     GrBackendRenderTarget(int width,
@@ -360,12 +346,6 @@ public:
     int stencilBits() const { return fStencilBits; }
     GrBackendApi backend() const {return fBackend; }
     bool isFramebufferOnly() const { return fFramebufferOnly; }
-
-#ifdef SK_METAL
-    // If the backend API is Metal, copies a snapshot of the GrMtlTextureInfo struct into the passed
-    // in pointer and returns true. Otherwise returns false if the backend API is not Metal.
-    bool getMtlTextureInfo(GrMtlTextureInfo*) const;
-#endif
 
 #ifdef SK_DIRECT3D
     // If the backend API is Direct3D, copies a snapshot of the GrMtlTextureInfo struct into the
@@ -464,9 +444,6 @@ private:
         GrD3DBackendSurfaceInfo fD3DInfo;
 #endif
     };
-#ifdef SK_METAL
-    GrMtlTextureInfo fMtlInfo;
-#endif
 };
 
 #endif
