@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "805cc180_8c7a6b35",
+        "filename": "src/opts/SkBlitMask_opts.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-27T13:43:28Z",
+      "side": 1,
+      "message": "Indentation is wrong here.\n```suggestion\n                if (isColor) {\n                    *device \u003d SkBlendARGB32(pmc, *device, aa);\n                } else {\n                    *device \u003d SkAlphaMulQ(pmc, SkAlpha255To256(aa))\n                        + SkAlphaMulQ(*device, SkAlpha255To256(255 - aa));\n                }\n```",
+      "range": {
+        "startLine": 247,
+        "startChar": 19,
+        "endLine": 252,
+        "endChar": 13
+      },
+      "revId": "29809c6a7ab51d3468c6700658fe4df03a2abc72",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
