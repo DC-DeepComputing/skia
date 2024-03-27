@@ -16,6 +16,23 @@
       "message": "I think this is ready depending on what the tryjob results are.",
       "revId": "d0d52fd50138ba2e348db6716cba4aa55c294ce3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "17d57382_a272b28d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-03-27T17:46:26Z",
+      "side": 1,
+      "message": "Looks like those failing jobs are passing now.",
+      "revId": "d0d52fd50138ba2e348db6716cba4aa55c294ce3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
