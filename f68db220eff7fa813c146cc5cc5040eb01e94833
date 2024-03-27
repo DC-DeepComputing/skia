@@ -70,6 +70,24 @@
       "parentUuid": "6a649359_8b610d75",
       "revId": "f68db220eff7fa813c146cc5cc5040eb01e94833",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "add6735b_a8c1e9c5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-27T21:53:16Z",
+      "side": 1,
+      "message": "And for localized names all of them are currently returned, see [familyNameTypes](https://skia.googlesource.com/skia.git/+/66241be7c81cc3308cadb4b1fba0059c9131add7/src/sfnt/SkOTUtils.cpp#213). It should be fairly easy to update `get_localized_strings` to match.",
+      "parentUuid": "cdffd129_a0be6a9b",
+      "revId": "f68db220eff7fa813c146cc5cc5040eb01e94833",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
