@@ -348,8 +348,8 @@ static constexpr MTLPixelFormat kMtlFormats[] = {
     MTLPixelFormatRGBA8Unorm_sRGB,
     MTLPixelFormatR16Unorm,
     MTLPixelFormatRG16Unorm,
-    // kMTLPixelFormatETC2_RGB8
-    // MTLPixelFormatBC1_RGBA
+    MTLPixelFormatETC2_RGB8,
+    MTLPixelFormatBC1_RGBA,
     MTLPixelFormatRGBA16Unorm,
     MTLPixelFormatRG16Float,
 
@@ -674,6 +674,47 @@ void MtlCaps::initFormatTable() {
             ctInfo.fFlags = ColorTypeInfo::kUploadData_Flag | ColorTypeInfo::kRenderable_Flag;
         }
     }
+
+    // Format: ETC2_RGB8
+    {
+        if (@available(macOS 11.0, iOS 8.0, tvOS 9.0, *)) {
+            if (this->isApple()) {
+                info = &fFormatTable[GetFormatIndex(MTLPixelFormatETC2_RGB8)];
+                info->fFlags = FormatInfo::kTexturable_Flag;
+                info->fColorTypeInfoCount = 1;
+                info->fColorTypeInfos = std::make_unique<ColorTypeInfo[]>(info->fColorTypeInfoCount);
+                int ctIdx = 0;
+                // Format: ETC2_RGB8, Surface: kRGB_888x
+                {
+                    auto& ctInfo = info->fColorTypeInfos[ctIdx++];
+                    ctInfo.fColorType = kRGB_888x_SkColorType;
+                    ctInfo.fCompressionType = SkTextureCompressionType::kETC2_RGB8_UNORM;
+                    ctInfo.fFlags = ColorTypeInfo::kUploadData_Flag;
+                }
+            }
+        }
+    }
+
+    // Format: BC1_RGBA
+    {
+#ifdef SK_BUILD_FOR_MAC
+        if (this->isMac()) {
+            info = &fFormatTable[GetFormatIndex(MTLPixelFormatBC1_RGBA)];
+            info->fFlags = FormatInfo::kTexturable_Flag;
+            info->fColorTypeInfoCount = 1;
+            info->fColorTypeInfos = std::make_unique<ColorTypeInfo[]>(info->fColorTypeInfoCount);
+            int ctIdx = 0;
+            // Format: BC1_RGBA, Surface: kRGBA_8888
+            {
+                auto& ctInfo = info->fColorTypeInfos[ctIdx++];
+                ctInfo.fColorType = kRGBA_8888_SkColorType;
+                ctInfo.fCompressionType = SkTextureCompressionType::kBC1_RGBA8_UNORM;
+                ctInfo.fFlags = ColorTypeInfo::kUploadData_Flag;
+            }
+        }
+#endif
+    }
+
     /*
      * Non-color formats
      */
@@ -779,6 +820,40 @@ TextureInfo MtlCaps::getTextureInfoForSampledCopy(const TextureInfo& textureInfo
     info.fSampleCount = 1;
     info.fMipmapped = mipmapped;
     info.fUsage = MTLTextureUsageShaderRead;
+    info.fStorageMode = MTLStorageModePrivate;
+    info.fFramebufferOnly = false;
+
+    return info;
+}
+
+namespace {
+MTLPixelFormat format_from_compression(SkTextureCompressionType compression) {
+    switch (compression) {
+        case SkTextureCompressionType::kETC2_RGB8_UNORM:
+            return MTLPixelFormatETC2_RGB8;
+        case SkTextureCompressionType::kBC1_RGBA8_UNORM:
+            return MTLPixelFormatBC1_RGBA;
+        default:
+            return MTLPixelFormatInvalid;
+    }
+}
+}
+
+TextureInfo MtlCaps::getDefaultCompressedTextureInfo(SkTextureCompressionType compression,
+                                                     Mipmapped mipmapped,
+                                                     Protected) const {
+    MTLTextureUsage usage = MTLTextureUsageShaderRead;
+
+    MtlPixelFormat format = format_from_compression(compression);
+    if (format == MTLPixelFormatInvalid) {
+        return {};
+    }
+
+    MtlTextureInfo info;
+    info.fSampleCount = 1;
+    info.fMipmapped = mipmapped;
+    info.fFormat = format;
+    info.fUsage = usage;
     info.fStorageMode = MTLStorageModePrivate;
     info.fFramebufferOnly = false;
 

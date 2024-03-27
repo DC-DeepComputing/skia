@@ -9,6 +9,7 @@
 #define skgpu_graphite_TextureInfo_DEFINED
 
 #include "include/core/SkString.h"
+#include "include/core/SkTextureCompressionType.h"
 #include "include/gpu/graphite/GraphiteTypes.h"
 
 #ifdef SK_DAWN
@@ -26,6 +27,8 @@
 struct SkISize;
 
 namespace skgpu::graphite {
+
+class Caps;
 
 class SK_API TextureInfo {
 public:
@@ -77,6 +80,7 @@ public:
     uint32_t numSamples() const { return fSampleCount; }
     Mipmapped mipmapped() const { return fMipmapped; }
     Protected isProtected() const { return fProtected; }
+    SkTextureCompressionType compressionType() const;
 
 #ifdef SK_DAWN
     bool getDawnTextureInfo(DawnTextureInfo* info) const;
@@ -106,7 +110,7 @@ public:
     SkString toString() const;
 
 private:
-    friend size_t ComputeSize(SkISize dimensions, const TextureInfo&);  // for bytesPerPixel
+    friend size_t ComputeSize(SkISize dimensions, const TextureInfo&); // for bytesPerPixel
 
     size_t bytesPerPixel() const;
 
