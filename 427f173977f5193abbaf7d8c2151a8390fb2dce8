@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "186d61eb_a43c3dab",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-03-27T18:50:59Z",
+      "side": 1,
+      "message": "LGTM if it passes Canary or if the canary failure is unrelated",
+      "revId": "427f173977f5193abbaf7d8c2151a8390fb2dce8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
