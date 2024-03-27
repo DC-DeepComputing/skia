@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "58c359d5_48909b78",
+        "filename": "src/opts/SkSwizzler_opts.inc",
+        "patchSetId": 2
+      },
+      "lineNbr": 1093,
+      "author": {
+        "id": 21814
+      },
+      "writtenOn": "2024-03-27T02:04:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b8c896ee_ddaa7f3d",
+      "range": {
+        "startLine": 1093,
+        "startChar": 0,
+        "endLine": 1093,
+        "endChar": 6
+      },
+      "revId": "ffed01d218ff57085baab41247b835f6645e0831",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "93121dfe_c0186acf",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-03-26T15:29:40Z",
       "side": 1,
       "message": "nit: code block should be indented.",
+      "range": {
+        "startLine": 1103,
+        "startChar": 0,
+        "endLine": 1139,
+        "endChar": 0
+      },
+      "revId": "ffed01d218ff57085baab41247b835f6645e0831",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a352490_9017f394",
+        "filename": "src/opts/SkSwizzler_opts.inc",
+        "patchSetId": 2
+      },
+      "lineNbr": 1139,
+      "author": {
+        "id": 21814
+      },
+      "writtenOn": "2024-03-27T02:04:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "93121dfe_c0186acf",
       "range": {
         "startLine": 1103,
         "startChar": 0,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "829bf54a_767d5875",
+        "filename": "src/opts/SkSwizzler_opts.inc",
+        "patchSetId": 2
+      },
+      "lineNbr": 1343,
+      "author": {
+        "id": 21814
+      },
+      "writtenOn": "2024-03-27T02:04:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a2baefe1_d4b9c30b",
+      "range": {
+        "startLine": 1343,
+        "startChar": 0,
+        "endLine": 1343,
+        "endChar": 6
+      },
+      "revId": "ffed01d218ff57085baab41247b835f6645e0831",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2224f466_5e56d16a",
@@ -83,6 +155,24 @@
       "writtenOn": "2024-03-26T15:29:40Z",
       "side": 1,
       "message": "nit: remove empty line before close brace",
+      "revId": "ffed01d218ff57085baab41247b835f6645e0831",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c0ba6919_14f2224c",
+        "filename": "src/opts/SkSwizzler_opts.inc",
+        "patchSetId": 2
+      },
+      "lineNbr": 1386,
+      "author": {
+        "id": 21814
+      },
+      "writtenOn": "2024-03-27T02:04:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2224f466_5e56d16a",
       "revId": "ffed01d218ff57085baab41247b835f6645e0831",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -110,6 +200,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9c42a946_5755c4b4",
+        "filename": "src/opts/SkSwizzler_opts.inc",
+        "patchSetId": 2
+      },
+      "lineNbr": 1502,
+      "author": {
+        "id": 21814
+      },
+      "writtenOn": "2024-03-27T02:04:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "681ed25c_7cadbb1d",
+      "range": {
+        "startLine": 1499,
+        "startChar": 27,
+        "endLine": 1502,
+        "endChar": 14
+      },
+      "revId": "ffed01d218ff57085baab41247b835f6645e0831",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2f37c9b2_93075a7a",
@@ -123,6 +237,24 @@
       "writtenOn": "2024-03-26T15:29:40Z",
       "side": 1,
       "message": "nit: remove empty line at end of code block",
+      "revId": "ffed01d218ff57085baab41247b835f6645e0831",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6bb91c11_4de65a7a",
+        "filename": "src/opts/SkSwizzler_opts.inc",
+        "patchSetId": 2
+      },
+      "lineNbr": 1531,
+      "author": {
+        "id": 21814
+      },
+      "writtenOn": "2024-03-27T02:04:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2f37c9b2_93075a7a",
       "revId": "ffed01d218ff57085baab41247b835f6645e0831",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -150,6 +282,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab647b2d_d89e20d5",
+        "filename": "src/opts/SkSwizzler_opts.inc",
+        "patchSetId": 2
+      },
+      "lineNbr": 1561,
+      "author": {
+        "id": 21814
+      },
+      "writtenOn": "2024-03-27T02:04:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "53a6ab41_d0fbfd1b",
+      "range": {
+        "startLine": 1561,
+        "startChar": 100,
+        "endLine": 1561,
+        "endChar": 101
+      },
+      "revId": "ffed01d218ff57085baab41247b835f6645e0831",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "285e52fb_2f74fd90",
@@ -163,6 +319,30 @@
       "writtenOn": "2024-03-26T15:29:40Z",
       "side": 1,
       "message": "nit: `dst,` not `dst ,`",
+      "range": {
+        "startLine": 1761,
+        "startChar": 32,
+        "endLine": 1764,
+        "endChar": 37
+      },
+      "revId": "ffed01d218ff57085baab41247b835f6645e0831",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4b7a714_268950cf",
+        "filename": "src/opts/SkSwizzler_opts.inc",
+        "patchSetId": 2
+      },
+      "lineNbr": 1764,
+      "author": {
+        "id": 21814
+      },
+      "writtenOn": "2024-03-27T02:04:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "285e52fb_2f74fd90",
       "range": {
         "startLine": 1761,
         "startChar": 32,
