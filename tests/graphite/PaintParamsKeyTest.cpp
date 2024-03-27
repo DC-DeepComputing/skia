@@ -1187,8 +1187,8 @@ void run_test(skiatest::Reporter* reporter,
     ShaderCodeDictionary* dict = context->priv().shaderCodeDictionary();
 
     PaintParamsKeyBuilder builder(dict);
-    PipelineDataGatherer paramsGatherer(Layout::kMetal);
-    PipelineDataGatherer precompileGatherer(Layout::kMetal);
+    PipelineDataGatherer paramsGatherer(recorder->priv().caps(), Layout::kMetal);
+    PipelineDataGatherer precompileGatherer(recorder->priv().caps(), Layout::kMetal);
 
     gNeedSKPPaintOption = false;
     auto [paint, paintOptions] = create_paint(&rand, recorder.get(), s, bm, cf);
