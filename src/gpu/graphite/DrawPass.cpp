@@ -58,7 +58,8 @@ struct Bitfield {
     static uint64_t set(uint32_t v) { return (v & kMask) << kOffset; }
 };
 
-// This class maps objects to a dense index which can then be used to look them up later
+// This class maps objects (T) to a dense index (V) which can then be used to look them up later.
+// C is a container(?) of data of type T.
 template <typename T, typename V = T, typename C = V>
 class DenseBiMap {
 public:
@@ -127,6 +128,7 @@ struct TextureBinding {
 using UniformCache = DenseBiMap<const UniformDataBlock*, CpuOrGpuData>;
 using TextureBindingCache = DenseBiMap<TextureBinding>;
 using GraphicsPipelineCache = DenseBiMap<GraphicsPipelineDesc>;
+//using SpecialSamplerCache = std::vector<Sampler>;
 
 // Automatically merges and manages texture bindings and uniform bindings sourced from either the
 // paint or the RenderStep. Tracks the bound state based on last-provided unique index to write
@@ -181,6 +183,9 @@ private:
         const TextureProxy* fProxy;
         operator sk_sp<TextureProxy>() const { return sk_ref_sp(fProxy); }
     };
+
+    // TODO: Do we need a () operator for texture proxy cache as well given that Vulkan adds
+    // more info? Or is that already handled somehow/somewhere?
     using TextureProxyCache = DenseBiMap<const TextureProxy*, sk_sp<TextureProxy>, ProxyRef>;
     using SamplerDescCache = DenseBiMap<SamplerDesc>;
 
@@ -188,6 +193,8 @@ private:
 
     TextureProxyCache fProxyCache;
     SamplerDescCache fSamplerCache;
+    // TODO: Add comment to explain why we have this
+    //SpecialSamplerCache fSpecialSamplerCache;
 
     TextureBindingCache::Index fLastIndex = TextureBindingCache::kInvalidIndex;
 };

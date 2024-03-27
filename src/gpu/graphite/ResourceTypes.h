@@ -24,6 +24,8 @@
 
 #include <vector>
 
+#include <vector>
+
 namespace skgpu::graphite {
 
 class Buffer;

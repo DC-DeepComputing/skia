@@ -8,6 +8,7 @@
 #ifndef skgpu_graphite_DescriptorTypes_DEFINED
 #define skgpu_graphite_DescriptorTypes_DEFINED
 
+#include "include/core/SkSpan.h"
 #include "src/base/SkEnumBitMask.h"
 #include "src/gpu/graphite/Sampler.h"
 
