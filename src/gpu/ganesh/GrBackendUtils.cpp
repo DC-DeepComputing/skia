@@ -12,6 +12,7 @@
 #include "include/gpu/GrTypes.h"
 #include "include/private/base/SkAssert.h" // IWYU pragma: keep
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
+#include "src/gpu/DataUtils.h"
 #include "src/gpu/ganesh/GrBackendSurfacePriv.h"
 #include "src/gpu/ganesh/GrDataUtils.h"
 
@@ -83,7 +84,7 @@ size_t GrBackendFormatBytesPerBlock(const GrBackendFormat& format) {
         case GrBackendApi::kMock: {
             SkTextureCompressionType compression = format.asMockCompressionType();
             if (compression != SkTextureCompressionType::kNone) {
-                return GrCompressedRowBytes(compression, 1);
+                return skgpu::CompressedRowBytes(compression, 1);
             } else if (format.isMockStencilFormat()) {
                 static constexpr int kMockStencilSize = 4;
                 return kMockStencilSize;
