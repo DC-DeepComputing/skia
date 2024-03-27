@@ -19,6 +19,7 @@
 #include "include/core/SkShader.h"
 #include "include/core/SkTextBlob.h"
 #include "include/core/SkVertices.h"
+#include "include/effects/SkBlenders.h"
 #include "include/effects/SkColorMatrix.h"
 #include "include/effects/SkGradientShader.h"
 #include "include/effects/SkPerlinNoiseShader.h"
@@ -110,6 +111,7 @@ const char* to_str(ShaderType s) {
     M(None)        \
     M(PorterDuff)  \
     M(ShaderBased) \
+    M(Arithmetic)  \
     M(Runtime)
 
 // TODO: do we need to add a separable category and/or a category for dstRead requiring blends?
@@ -650,6 +652,17 @@ std::pair<sk_sp<SkBlender>, sk_sp<PrecompileBlender>> create_bm_blender(SkRandom
     return { SkBlender::Mode(bm), PrecompileBlender::Mode(bm) };
 }
 
+std::pair<sk_sp<SkBlender>, sk_sp<PrecompileBlender>> create_arithmetic_blender(SkRandom* rand) {
+    sk_sp<SkBlender> b = SkBlenders::Arithmetic(/* k1= */ 0.5,
+                                                /* k2= */ 0.5,
+                                                /* k3= */ 0.5,
+                                                /* k4= */ 0.5,
+                                                /* enforcePremul= */ true);
+    sk_sp<PrecompileBlender> o = PrecompileBlenders::Arithmetic();
+
+    return { std::move(b), std::move(o) };
+}
+
 std::pair<sk_sp<SkBlender>, sk_sp<PrecompileBlender>> create_rt_blender(SkRandom* rand) {
     int option = rand->nextULessThan(3);
 
@@ -671,6 +684,8 @@ std::pair<sk_sp<SkBlender>, sk_sp<PrecompileBlender>> create_blender(SkRandom* r
             return create_bm_blender(rand, random_porter_duff_bm(rand));
         case BlenderType::kShaderBased:
             return create_bm_blender(rand, random_complex_bm(rand));
+        case BlenderType::kArithmetic:
+            return create_arithmetic_blender(rand);
         case BlenderType::kRuntime:
             return create_rt_blender(rand);
     }
