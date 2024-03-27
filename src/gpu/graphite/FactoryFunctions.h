@@ -25,6 +25,21 @@ class PrecompileShader;
 // All of these factory functions will be moved elsewhere once the pre-compile API becomes public
 
 //--------------------------------------------------------------------------------------------------
+namespace PrecompileBlenders {
+
+    // --- This call matches the SkBlenders factory in include/effects/SkBlenders.h
+    SK_API sk_sp<PrecompileBlender> Arithmetic();
+
+    // Note: the other main API SkBlender factories are:
+    //   SkBlender::Mode in include/core/SkBlender.h
+    //   SkRuntimeEffect::makeBlender in include/effects/SkRuntimeEffect.h
+    // Their precompilation correlates are:
+    //   PrecompileBlender::Mode(bm) in src/gpu/graphite/Precomile.h
+    //   MakePrecompileBlender() in src/gpu/graphite/FactoryFunctions.h
+
+} // namespace PrecompileBlenders
+
+//--------------------------------------------------------------------------------------------------
 namespace PrecompileShaders {
     // --- This block of six matches the SkShaders factories in include/core/SkShader.h
     SK_API sk_sp<PrecompileShader> Empty();
@@ -106,66 +121,57 @@ namespace PrecompileShaders {
 // Initially this will go next to SkMaskFilter in include/core/SkMaskFilter.h but the
 // SkMaskFilter::MakeBlur factory should be split out or removed. This namespace will follow
 // where ever that factory goes.
-class PrecompileMaskFilters {
-public:
+namespace PrecompileMaskFilters {
     // TODO: change SkMaskFilter::MakeBlur to match this and SkImageFilters::Blur (skbug.com/13441)
-    static sk_sp<PrecompileMaskFilter> Blur();
+    SK_API sk_sp<PrecompileMaskFilter> Blur();
 
-private:
-    PrecompileMaskFilters() = delete;
-};
+} // namespace PrecompileMaskFilters
 
-//--------------------------------------------------------------------------------------------------
+        //--------------------------------------------------------------------------------------------------
 // This will move to be beside SkColorFilters in include/core/SkColorFilter.h
-class PrecompileColorFilters {
-public:
-    static sk_sp<PrecompileColorFilter> Compose(SkSpan<const sk_sp<PrecompileColorFilter>> outer,
+namespace PrecompileColorFilters {
+    SK_API sk_sp<PrecompileColorFilter> Compose(SkSpan<const sk_sp<PrecompileColorFilter>> outer,
                                                 SkSpan<const sk_sp<PrecompileColorFilter>> inner);
 
     // This encompasses both variants of SkColorFilters::Blend
-    static sk_sp<PrecompileColorFilter> Blend();
+    SK_API sk_sp<PrecompileColorFilter> Blend();
 
     // This encompasses both variants of SkColorFilters::Matrix
-    static sk_sp<PrecompileColorFilter> Matrix();
+    SK_API sk_sp<PrecompileColorFilter> Matrix();
 
     // This encompasses both variants of SkColorFilters::HSLAMatrix
-    static sk_sp<PrecompileColorFilter> HSLAMatrix();
+    SK_API sk_sp<PrecompileColorFilter> HSLAMatrix();
 
     // TODO: add Lerp
-    static sk_sp<PrecompileColorFilter> LinearToSRGBGamma();
-    static sk_sp<PrecompileColorFilter> SRGBToLinearGamma();
+    SK_API sk_sp<PrecompileColorFilter> LinearToSRGBGamma();
+    SK_API sk_sp<PrecompileColorFilter> SRGBToLinearGamma();
 
     // This encompases both variants of SkColorFilters::Table and TableARGB
-    static sk_sp<PrecompileColorFilter> Table();
+    SK_API sk_sp<PrecompileColorFilter> Table();
 
-    static sk_sp<PrecompileColorFilter> Lighting();
+    SK_API sk_sp<PrecompileColorFilter> Lighting();
 
     // The remaining three match those in SkColorFilterPriv
-    static sk_sp<PrecompileColorFilter> Gaussian();
+    SK_API sk_sp<PrecompileColorFilter> Gaussian();
 
-    static sk_sp<PrecompileColorFilter> ColorSpaceXform();
+    SK_API sk_sp<PrecompileColorFilter> ColorSpaceXform();
 
-    static sk_sp<PrecompileColorFilter> WithWorkingFormat(
+    SK_API sk_sp<PrecompileColorFilter> WithWorkingFormat(
             SkSpan<const sk_sp<PrecompileColorFilter>> childOptions);
 
-private:
-    PrecompileColorFilters() = delete;
-};
+} // namespace PrecompileColorFilters
 
 //--------------------------------------------------------------------------------------------------
 // This will move to be beside SkImageFilters in include/effects/SkImageFilters.h
-class PrecompileImageFilters {
-public:
-    static sk_sp<PrecompileImageFilter> Blur();
-    static sk_sp<PrecompileImageFilter> Image();
+namespace PrecompileImageFilters {
+    SK_API sk_sp<PrecompileImageFilter> Blur();
+    SK_API sk_sp<PrecompileImageFilter> Image();
     // TODO: Arithmetic, Blend (2 kinds), ColorFilter, Compose, DisplacementMap,
     // DropShadow, DropShadowOnly, Magnifier, MatrixConvolution, MatrixTransform, Merge, Offset,
     // Picture, Runtime, Shader, Tile, Dilate, Erode, DistantLitDiffuse, PointLitDiffuse,
     // SpotLitDiffuse, DistantLitSpecular, PointLitSpecular, SpotLitSpecular
 
-private:
-    PrecompileImageFilters() = delete;
-};
+} //namespace PrecompileImageFilters
 
 //--------------------------------------------------------------------------------------------------
 // Object that allows passing a SkPrecompileShader, SkPrecompileColorFilter or
