@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af0a13a8_393546f3",
+        "filename": "src/opts/SkSwizzler_opts.inc",
+        "patchSetId": 4
+      },
+      "lineNbr": 1086,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-27T13:50:33Z",
+      "side": 1,
+      "message": "`}`",
+      "revId": "20173c658500fc7893d4db3fdb5792f8b01cc272",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
