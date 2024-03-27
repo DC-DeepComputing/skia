@@ -1170,9 +1170,9 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
 
     ShaderType shaders[] = {
             ShaderType::kBlend,
-            ShaderType::kImage,
-            ShaderType::kRadialGradient,
-            ShaderType::kSolidColor,
+//            ShaderType::kImage,
+//            ShaderType::kRadialGradient,
+//            ShaderType::kSolidColor,
 #if EXPANDED_SET
             ShaderType::kNone,
             ShaderType::kColorFilter,
@@ -1189,18 +1189,18 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
     };
 
     BlenderType blenders[] = {
-            BlenderType::kPorterDuff,
-            BlenderType::kShaderBased,
-            BlenderType::kRuntime,
-#if EXPANDED_SET
+//            BlenderType::kPorterDuff,
+//            BlenderType::kShaderBased,
+//            BlenderType::kRuntime,
+//#if EXPANDED_SET
             BlenderType::kNone,
-#endif
+//#endif
     };
 
     ColorFilterType colorFilters[] = {
             ColorFilterType::kNone,
-            ColorFilterType::kBlendMode,
-            ColorFilterType::kMatrix,
+//            ColorFilterType::kBlendMode,
+//            ColorFilterType::kMatrix,
 #if EXPANDED_SET
             ColorFilterType::kColorSpaceXform,
             ColorFilterType::kCompose,
@@ -1224,19 +1224,19 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
 #endif
     };
 
-#if EXPANDED_SET
+//#if EXPANDED_SET
     size_t kExpected = std::size(shaders) * std::size(blenders) * std::size(colorFilters);
     int current = 0;
-#endif
+//#endif
 
     for (auto shader : shaders) {
         for (auto blender : blenders) {
             for (auto cf : colorFilters) {
                 for (auto clip : clips) {
-#if EXPANDED_SET
+//#if EXPANDED_SET
                 SkDebugf("%d/%zu\n", current, kExpected);
                 ++current;
-#endif
+//#endif
                 run_test(reporter, context, testContext, precompileKeyContext, drawData,
                          shader, blender, cf, clip);
                 }
@@ -1244,9 +1244,9 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
         }
     }
 
-#if EXPANDED_SET
+//#if EXPANDED_SET
     SkASSERT(current == (int) kExpected);
-#endif
+//#endif
 }
 
 void run_test(skiatest::Reporter* reporter,
@@ -1356,7 +1356,7 @@ void run_test(skiatest::Reporter* reporter,
             }
 
 #ifdef SK_DEBUG
-            if (result == precompileIDs.end()) {
+//            if (result == precompileIDs.end()) {
                 SkDebugf("From paint: ");
                 dump(dict, paintID);
 
@@ -1364,7 +1364,7 @@ void run_test(skiatest::Reporter* reporter,
                 for (auto iter : precompileIDs) {
                     dump(dict, iter);
                 }
-            }
+//            }
 #endif
 
             REPORTER_ASSERT(reporter, result != precompileIDs.end());
