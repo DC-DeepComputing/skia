@@ -25,6 +25,7 @@
 #include "src/core/SkMipmap.h"
 #include "src/core/SkTaskGroup.h"
 #include "src/core/SkTraceEvent.h"
+#include "src/gpu/DataUtils.h"
 #include "src/gpu/GpuTypesPriv.h"
 #include "src/gpu/RefCntedCallback.h"
 #include "src/gpu/Swizzle.h"
@@ -957,7 +958,7 @@ GrBackendTexture GrDirectContext::createCompressedBackendTexture(
     size_t size = SkCompressedDataSize(
             compression, {width, height}, nullptr, mipmapped == skgpu::Mipmapped::kYes);
     auto storage = std::make_unique<char[]>(size);
-    GrFillInCompressedData(compression, {width, height}, mipmapped, storage.get(), color);
+    skgpu::FillInCompressedData(compression, {width, height}, mipmapped, storage.get(), color);
     return create_and_update_compressed_backend_texture(this,
                                                         {width, height},
                                                         backendFormat,
@@ -1047,11 +1048,11 @@ bool GrDirectContext::updateCompressedBackendTexture(const GrBackendTexture& bac
                                        nullptr,
                                        backendTexture.hasMipmaps());
     SkAutoMalloc storage(size);
-    GrFillInCompressedData(compression,
-                           backendTexture.dimensions(),
-                           backendTexture.mipmapped(),
-                           static_cast<char*>(storage.get()),
-                           color);
+    skgpu::FillInCompressedData(compression,
+                                backendTexture.dimensions(),
+                                backendTexture.mipmapped(),
+                                static_cast<char*>(storage.get()),
+                                color);
     return fGpu->updateCompressedBackendTexture(backendTexture,
                                                 std::move(finishedCallback),
                                                 storage.get(),
