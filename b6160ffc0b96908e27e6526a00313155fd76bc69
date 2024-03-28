@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7dff3f84_9af076fd",
+        "filename": "modules/skunicode/src/SkBidiFactory_icu_subset.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-28T02:23:53Z",
+      "side": 1,
+      "message": "I just locally built Skia with `skia_use_libgrapheme \u003d true` on macOS and ran into the warning\n\n```\n[2647/2716] compile ../../modules/skunicode/src/SkBidiFactory_icu_subset.cpp\n../../modules/skunicode/src/SkBidiFactory_icu_subset.cpp:13:9: warning: \u0027U_DISABLE_RENAMING\u0027 macro redefined [-Wmacro-redefined]\n#define U_DISABLE_RENAMING 0\n        ^\n\u003ccommand line\u003e:44:9: note: previous definition is here\n#define U_DISABLE_RENAMING 1\n        ^\n1 warning generated.\n```\n\nI also have `werror \u003d true` but for some reason it didn\u0027t turn into an error?",
+      "revId": "b6160ffc0b96908e27e6526a00313155fd76bc69",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
