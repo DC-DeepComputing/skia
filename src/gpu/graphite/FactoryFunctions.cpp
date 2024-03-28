@@ -1027,6 +1027,23 @@ sk_sp<PrecompileColorFilter> PrecompileColorFilters::HSLAMatrix() {
 }
 
 //--------------------------------------------------------------------------------------------------
+sk_sp<PrecompileColorFilter> PrecompileColorFilters::Lerp(
+        SkSpan<const sk_sp<PrecompileColorFilter>> dstOptions,
+        SkSpan<const sk_sp<PrecompileColorFilter>> srcOptions) {
+
+    if (dstOptions.empty() && srcOptions.empty()) {
+        return nullptr;
+    }
+
+    const SkRuntimeEffect* lerpEffect =
+            GetKnownRuntimeEffect(SkKnownRuntimeEffects::StableKey::kLerp);
+
+
+    PrecompileChildOptions inputs[] =  { dstOptions, srcOptions };
+    return MakePrecompileColorFilter(sk_ref_sp(lerpEffect), inputs);
+}
+
+//--------------------------------------------------------------------------------------------------
 class PrecompileTableColorFilter : public PrecompileColorFilter {
     void addToKey(const KeyContext& keyContext,
                   PaintParamsKeyBuilder* builder,
