@@ -39,6 +39,30 @@
       },
       "revId": "d00298cac4963b9d14911f5663b61f09424eb44f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "312359e3_b7f9b96a",
+        "filename": "include/private/SkEncodedInfo.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 3335589
+      },
+      "writtenOn": "2024-03-28T17:01:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ac565260_31c325a4",
+      "range": {
+        "startLine": 172,
+        "startChar": 0,
+        "endLine": 173,
+        "endChar": 62
+      },
+      "revId": "d00298cac4963b9d14911f5663b61f09424eb44f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
