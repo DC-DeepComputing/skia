@@ -124,37 +124,22 @@ sk_sp<const SkCapabilities> Surface::onCapabilities() {
 
 TextureProxy* Surface::backingTextureProxy() const { return fDevice->target(); }
 
-sk_sp<SkSurface> Surface::MakeGraphite(Recorder* recorder,
-                                       const SkImageInfo& info,
-                                       skgpu::Budgeted budgeted,
-                                       Mipmapped mipmapped,
-                                       const SkSurfaceProps* props) {
+sk_sp<Surface> Surface::Make(Recorder* recorder,
+                             const SkImageInfo& info,
+                             Mipmapped mipmapped,
+                             Budgeted budgeted,
+                             SkBackingFit backingFit,
+                             const SkSurfaceProps* props,
+                             bool addInitialClear,
+                             bool registerWithRecorder) {
     sk_sp<Device> device = Device::Make(recorder,
                                         info,
                                         budgeted,
                                         mipmapped,
-                                        SkBackingFit::kExact,
+                                        backingFit,
                                         SkSurfacePropsCopyOrDefault(props),
-                                        /* addInitialClear= */ true);
-    if (!device) {
-        return nullptr;
-    }
-
-    if (!device->target()->instantiate(recorder->priv().resourceProvider())) {
-        return nullptr;
-    }
-    return sk_make_sp<Surface>(std::move(device));
-}
-
-sk_sp<SkSurface> Surface::MakeGraphiteScratch(Recorder* recorder,
-                                              const SkImageInfo& info,
-                                              Mipmapped mipmapped,
-                                              const SkSurfaceProps* props) {
-    sk_sp<Device> device = Device::MakeScratch(recorder,
-                                               info,
-                                               mipmapped,
-                                               SkSurfacePropsCopyOrDefault(props),
-                                               /* addInitialClear= */ true);
+                                        addInitialClear,
+                                        registerWithRecorder);
     if (!device) {
         return nullptr;
     }

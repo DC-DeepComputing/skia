@@ -47,6 +47,11 @@ sk_sp<DrawContext> DrawContext::Make(sk_sp<TextureProxy> target,
     if (!target) {
         return nullptr;
     }
+    // We don't render to unknown or unpremul alphatypes
+    if (colorInfo.alphaType() == kUnknown_SkAlphaType ||
+        colorInfo.alphaType() == kUnpremul_SkAlphaType) {
+        return nullptr;
+    }
 
     // Accept an approximate-fit texture, but make sure it's at least as large as the device's
     // logical size.
