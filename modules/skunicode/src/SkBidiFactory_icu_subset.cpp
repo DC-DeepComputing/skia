@@ -4,13 +4,15 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
-// In order to use this file, we must have compiled icu with the define
-// U_LIB_SUFFIX_C_NAME=_skia
-// so the functions we call are given a suffix of "_skia" to prevent
-// ODR violations if this "subset of ICU" is compiled alongside a full ICU build also.
+// In order to use this file, we must have compiled icu with the given defines
+// also being set. This is to make sure the functions we call are given a suffix
+// of "_skia" to prevent ODR violations if this "subset of ICU" is compiled
+// alongside a full ICU build also.
+// See https://chromium.googlesource.com/chromium/deps/icu.git/+/d94ab131bc8fef3bc17f356a628d8e4cd44d65d9/source/common/unicode/uversion.h
+// for how these ar used.
 #define U_LIB_SUFFIX_C_NAME _skia
 #define U_HAVE_LIB_SUFFIX 1
-#define U_DISABLE_RENAMING 0
+#define U_DISABLE_VERSION_SUFFIX 1
 
 #include "modules/skunicode/src/SkBidiFactory_icu_subset.h"
 
