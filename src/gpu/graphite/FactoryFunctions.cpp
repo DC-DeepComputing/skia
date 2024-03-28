@@ -900,7 +900,7 @@ sk_sp<PrecompileColorFilter> PrecompileColorFilters::SRGBToLinearGamma() {
     return sk_make_sp<PrecompileColorSpaceXformColorFilter>();
 }
 
-sk_sp<PrecompileColorFilter> PrecompileColorFilters::ColorSpaceXform() {
+sk_sp<PrecompileColorFilter> PrecompileColorFiltersPriv::ColorSpaceXform() {
     return sk_make_sp<PrecompileColorSpaceXformColorFilter>();
 }
 

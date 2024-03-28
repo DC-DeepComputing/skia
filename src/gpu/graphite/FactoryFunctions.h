@@ -119,6 +119,7 @@ private:
 // This will move to be beside SkColorFilters in include/core/SkColorFilter.h
 class PrecompileColorFilters {
 public:
+    // -- The next 8 entries match those in include/core/SkColorFilter.h
     static sk_sp<PrecompileColorFilter> Compose(SkSpan<const sk_sp<PrecompileColorFilter>> outer,
                                                 SkSpan<const sk_sp<PrecompileColorFilter>> inner);
 
@@ -139,14 +140,6 @@ public:
     static sk_sp<PrecompileColorFilter> Table();
 
     static sk_sp<PrecompileColorFilter> Lighting();
-
-    // The remaining three match those in SkColorFilterPriv
-    static sk_sp<PrecompileColorFilter> Gaussian();
-
-    static sk_sp<PrecompileColorFilter> ColorSpaceXform();
-
-    static sk_sp<PrecompileColorFilter> WithWorkingFormat(
-            SkSpan<const sk_sp<PrecompileColorFilter>> childOptions);
 
 private:
     PrecompileColorFilters() = delete;
