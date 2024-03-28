@@ -3,6 +3,40 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8054196a_58953f82",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 330,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-28T21:57:48Z",
+      "side": 1,
+      "message": "This should really pass in the size we\u0027re looking for (what will be used to get the image to draw) because strikes need not have all the glyphs in them and just checking strike 0 might not always be what we want.",
+      "revId": "cf7fefd0bbfbf0189b67af6f57963cb36fa890ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77cdbf15_2eb191da",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 24
+      },
+      "lineNbr": 876,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-28T21:57:48Z",
+      "side": 1,
+      "message": "If `has_bitmap_glyph` took the size (which would be more correct) then this wouldn\u0027t need to be optional. Also, much like the FreeType side, it doesn\u0027t seem like we should keep re-calculating the `best_strike_size` over and over, the strike index should just be cached on the scaler context and that\u0027s what should be passed in here.",
+      "revId": "cf7fefd0bbfbf0189b67af6f57963cb36fa890ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f2c5160f_2373aee6",
         "filename": "src/ports/fontations/src/ffi.rs",
         "patchSetId": 24
@@ -14,6 +48,24 @@
       "writtenOn": "2024-03-28T21:22:25Z",
       "side": 1,
       "message": "See `scaledemoji_rendering` gm with cbdt.ttf. The space glyph draws like the diamond. The space glyph is properly mapped to glyph 1, but there is no cblc/cbdt entry for glyph 1, which should cause the glyph to not be drawn. Instead of getting a \"it\u0027s empty\" signal this is instead returning the data for the next entry (which might be bad if it\u0027s after the last entry).\n\nI think this is the \"A small number of missing glyphs can be efficiently represented in formats 1 or 3 by having the offset for the missing glyph be followed by the same offset for the next glyph, thus indicating a data size of zero.\" case in [the specification](https://learn.microsoft.com/en-us/typography/opentype/spec/eblc#indexsubtable5-constant-metrics-glyphs-with-sparse-glyph-codes). Not sure how to handle this other than to find the location of the next glyph and see if it is equal? Not sure if this should be handled on this side or the skrifa / readfonts side. I\u0027m somewhat surprised this doesn\u0027t happen for sbix since it works in a similar way, but it looks like that interface takes care of the glyph_data not being accessible / existing?",
+      "revId": "cf7fefd0bbfbf0189b67af6f57963cb36fa890ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab40433e_ff9d64d6",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 24
+      },
+      "lineNbr": 886,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-28T21:57:48Z",
+      "side": 1,
+      "message": "In particular it looks suspect that [read_fonts::tables::bitmap::BitmapSize::location](https://github.com/googlefonts/fontations/blob/14750830138d55088509fe3f81acbe76b2be69e3/read-fonts/src/tables/bitmap.rs#L34) Format 1 doesn\u0027t set the data size or metrics? We would want to know both here and (if we ever got to it) `bitmap_glyph` that the data size was actually 0 (there wasn\u0027t an image available for this glyph in this strike).",
+      "parentUuid": "f2c5160f_2373aee6",
       "revId": "cf7fefd0bbfbf0189b67af6f57963cb36fa890ec",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
