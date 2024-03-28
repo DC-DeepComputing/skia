@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c7293d1f_4eee3baf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-03-28T13:19:53Z",
+      "side": 1,
+      "message": "Thanks for the fix, please also add yourself to the AUTHORS file.",
+      "revId": "6d248798847d53f0a2c1ef971b6ad04f5285a06b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
