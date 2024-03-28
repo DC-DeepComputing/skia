@@ -68,6 +68,24 @@
       "parentUuid": "f2c5160f_2373aee6",
       "revId": "cf7fefd0bbfbf0189b67af6f57963cb36fa890ec",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5edee285_db97a331",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 24
+      },
+      "lineNbr": 886,
+      "author": {
+        "id": 19969
+      },
+      "writtenOn": "2024-03-28T22:22:34Z",
+      "side": 1,
+      "message": "Nice catch Ben.\n\nI\u0027ve submitted a fix for this at [fontations#863](https://github.com/googlefonts/fontations/pull/863). Specifically, it does what you suggest and computes size based on two entries. After this patch lands, the code on the Skia side can be changed to check if `location.data_size \u003d\u003d Some(0)` to detect empty bitmaps.\n\nFor format 1, it looks like metrics are supposed to be in the CBDT/EBDT table so we won\u0027t have any available for empty glyphs.",
+      "parentUuid": "ab40433e_ff9d64d6",
+      "revId": "cf7fefd0bbfbf0189b67af6f57963cb36fa890ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
