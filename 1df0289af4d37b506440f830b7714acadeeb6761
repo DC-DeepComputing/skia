@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "11e484ce_5378efbe",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-03-28T08:07:28Z",
+      "side": 1,
+      "message": "Thanks for doing this, this is important for Blink as well. \n\nWhich test did you find covering this?",
+      "revId": "1df0289af4d37b506440f830b7714acadeeb6761",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "31e24bae_ccc8c17d",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 694,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-03-28T08:07:28Z",
+      "side": 1,
+      "message": "I think if we set these metrics to `0` anyway here, we can do that straight in the ffi instead of using `NaN` as a `std::optional`, wdyt? I don\u0027t think we need to have the ffi API used anywhere else and I don\u0027t consider it public API, and I\u0027ve placed Skia typeface specific logic straight in there. If we\u0027d have another client for ffi that needs to know whether the metric exists or not, we can change that.",
+      "revId": "1df0289af4d37b506440f830b7714acadeeb6761",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "787c3fad_8b07ac07",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 1
+      },
+      "lineNbr": 389,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-03-28T08:07:28Z",
+      "side": 1,
+      "message": "See other comment, I\u0027d say let\u0027s be consistent with the other optional metrics and map to 0 here directly. \n\nSince the default value (whether it\u0027s `0` or `NaN`) is constant not expensive to compute (and thus does not require lazy evaluation), it\u0027s a little less verbose to use `.map_or()`\n\n```suggestion\n        underline_position: skrifa_metrics.underline.map_or(0, |u| u.offset),\n```",
+      "range": {
+        "startLine": 389,
+        "startChar": 53,
+        "endLine": 389,
+        "endChar": 91
+      },
+      "revId": "1df0289af4d37b506440f830b7714acadeeb6761",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
