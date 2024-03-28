@@ -4,6 +4,10 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+// This file calls functions from ICU without the default version suffix or
+// a custom suffix.
+#define U_DISABLE_RENAMING 1
+#define U_USING_ICU_NAMESPACE 0
 
 #include "include/private/base/SkFeatures.h"  // IWYU pragma: keep
 #include "modules/skunicode/src/SkUnicode_icupriv.h"
