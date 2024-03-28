@@ -60,8 +60,21 @@ private:
 // Used to pass in the necessary information to create a VkSamplerYcbcrConversion object for an
 // VkExternalFormatANDROID.
 struct VulkanYcbcrConversionInfo {
-    static VulkanYcbcrConversionInfo MakeFromSamplerDescValues() {
+    static VulkanYcbcrConversionInfo MakeFromNumericalRepresentation(
+            bool useExternalFormat,
+            uint8_t nonFormatYcbcrInfo,
+            uint64_t format,
+            uint32_t formatFeatures) {
         VulkanYcbcrConversionInfo info;
+        // info.fFormat =
+        // info.fExternalFormat =
+        // info.fYcbcrModel =
+        // info.fYcbcrRange =
+        // info.fXChromaOffset =
+        // info.fYChromaOffset =
+        // info.fChromaFilter =
+        // info.fForceExplicitReconstruction =
+        // info.fFormatFeatures =
         return info;
     }
 
@@ -87,25 +100,14 @@ struct VulkanYcbcrConversionInfo {
                fExternalFormat != 0;
     }
 
-    // uint8_t asUInt8() const {
-    //     static_assert(kForceExplicitReconShift + kForceExplicitReconBits <= 8);
-    //     return ((static_cast<uint8_t>(fYcbcrModel                 ) << kYcbcrModelShift   ) |
-    //             (static_cast<uint8_t>(fYcbcrRange                 ) << kYcbcrRangeShift   ) |
-    //             (static_cast<uint8_t>(fXChromaOffset              ) << kXChromaOffsetShift) |
-    //             (static_cast<uint8_t>(fYChromaOffset              ) << kYChromaOffsetShift) |
-    //             (static_cast<uint8_t>(fChromaFilter               ) << kChromaFilterShift ) |
-    //             (static_cast<uint8_t>(fForceExplicitReconstruction) << kForceExplicitReconShift));
-    // }
-
-    // TODO: Make this Uint8.
-    uint16_t asUInt16() const {
-        static_assert(kForceExplicitReconShift + kForceExplicitReconBits <= 16);
-        return ((static_cast<uint16_t>(fYcbcrModel                 ) << kYcbcrModelShift   ) |
-                (static_cast<uint16_t>(fYcbcrRange                 ) << kYcbcrRangeShift   ) |
-                (static_cast<uint16_t>(fXChromaOffset              ) << kXChromaOffsetShift) |
-                (static_cast<uint16_t>(fYChromaOffset              ) << kYChromaOffsetShift) |
-                (static_cast<uint16_t>(fChromaFilter               ) << kChromaFilterShift ) |
-                (static_cast<uint16_t>(fForceExplicitReconstruction) << kForceExplicitReconShift));
+    uint8_t nonFormatInfoAsUInt8() const {
+        static_assert(kForceExplicitReconShift + kForceExplicitReconBits <= 8);
+        return ((static_cast<uint8_t>(fYcbcrModel                 ) << kYcbcrModelShift   ) |
+                (static_cast<uint8_t>(fYcbcrRange                 ) << kYcbcrRangeShift   ) |
+                (static_cast<uint8_t>(fXChromaOffset              ) << kXChromaOffsetShift) |
+                (static_cast<uint8_t>(fYChromaOffset              ) << kYChromaOffsetShift) |
+                (static_cast<uint8_t>(fChromaFilter               ) << kChromaFilterShift ) |
+                (static_cast<uint8_t>(fForceExplicitReconstruction) << kForceExplicitReconShift));
     }
 
     // Format of the source image. Must be set to VK_FORMAT_UNDEFINED for external images or
