@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fda0f550_972f6d28",
+        "filename": "src/gpu/ganesh/GrGpuBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-03-28T15:49:13Z",
+      "side": 1,
+      "message": "Since this doesn\u0027t do anything other than call onGetData() I\u0027d make this the virtual and remove onGetData().",
+      "range": {
+        "startLine": 86,
+        "startChar": 18,
+        "endLine": 86,
+        "endChar": 25
+      },
+      "revId": "aebd7955d252af777ea8aeeca4b7d002a8522bb1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b8caca4_3a423dbd",
+        "filename": "src/gpu/ganesh/GrGpuBuffer.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-03-28T15:49:13Z",
+      "side": 1,
+      "message": "It probably wouldn\u0027t hurt to make the default functional -- i.e., map(), copy to the dst from the mapped data, and unmap().",
+      "range": {
+        "startLine": 141,
+        "startChar": 68,
+        "endLine": 141,
+        "endChar": 81
+      },
+      "revId": "aebd7955d252af777ea8aeeca4b7d002a8522bb1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
