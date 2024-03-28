@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3bb15b5c_d3b6ce39",
+        "filename": "src/opts/SkBlitMask_opts.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 253,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-28T13:42:15Z",
+      "side": 1,
+      "message": "The indentation on _this_ line is now wrong.",
+      "range": {
+        "startLine": 253,
+        "startChar": 0,
+        "endLine": 253,
+        "endChar": 32
+      },
+      "revId": "68f5fbd1526e3892371db1f66d540580bfe829b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
