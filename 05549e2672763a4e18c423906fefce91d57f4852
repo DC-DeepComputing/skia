@@ -33,6 +33,24 @@
       "message": "I don\u0027t think I see the leak/issue: the loop below performs an equivalent operation by overwriting the existing Decoder if already registered.\n\nIOW `erase` + `push_back` is logically equivalent with the reassignment on L142 below (modulo order, which is not important).",
       "revId": "05549e2672763a4e18c423906fefce91d57f4852",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "71be5805_798dae80",
+        "filename": "src/codec/SkCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 3335589
+      },
+      "writtenOn": "2024-03-28T17:32:16Z",
+      "side": 1,
+      "message": "Ack, thank you so much for clarifying. Have marked this cl as abandoned, sorry for the confusion!",
+      "parentUuid": "cf12f463_8f2eb84b",
+      "revId": "05549e2672763a4e18c423906fefce91d57f4852",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
