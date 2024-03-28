@@ -45,6 +45,40 @@
       },
       "revId": "aebd7955d252af777ea8aeeca4b7d002a8522bb1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bbfdbcbf_2dcb6640",
+        "filename": "src/gpu/ganesh/gl/GrGLAssembleGLInterfaceAutogen.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-03-28T16:04:34Z",
+      "side": 1,
+      "message": "An entry for GetBufferSubData needs to be added to /tools/gpu/gl/interface/interface.json5, or the changes to these Autogen files will be overwritten.",
+      "revId": "aebd7955d252af777ea8aeeca4b7d002a8522bb1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "49e210f8_aed76907",
+        "filename": "src/gpu/ganesh/gl/GrGLBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 282,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-03-28T16:04:34Z",
+      "side": 1,
+      "message": "I guess we only need to call bindBuffer under the if statement?",
+      "revId": "aebd7955d252af777ea8aeeca4b7d002a8522bb1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
