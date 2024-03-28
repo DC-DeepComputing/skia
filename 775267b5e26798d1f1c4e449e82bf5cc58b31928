@@ -97,6 +97,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "34025eb1_d9d44318",
+        "filename": "src/gpu/graphite/compute/DispatchGroup.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-03-28T16:07:01Z",
+      "side": 1,
+      "message": "Giving reset a `_TestingOnly` suffix seems to be a pattern used in Graphite, if you think that\u0027s appropriate here. We could also put a macro around it but I think we\u0027re trying to move away from that, though I don\u0027t remember the exact reasons.",
+      "parentUuid": "aa834a61_1c257fac",
+      "range": {
+        "startLine": 270,
+        "startChar": 0,
+        "endLine": 270,
+        "endChar": 34
+      },
+      "revId": "775267b5e26798d1f1c4e449e82bf5cc58b31928",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "de2da7d8_782b2b52",
         "filename": "src/gpu/graphite/task/ComputeTask.cpp",
         "patchSetId": 4
