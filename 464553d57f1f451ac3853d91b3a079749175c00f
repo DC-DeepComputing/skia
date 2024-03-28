@@ -106,6 +106,24 @@
       "parentUuid": "552e5b1d_573bacfb",
       "revId": "464553d57f1f451ac3853d91b3a079749175c00f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9b15540_087d3a83",
+        "filename": "modules/skshaper/src/SkShaper_factory.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-28T17:05:17Z",
+      "side": 1,
+      "message": "Well, then at least `lib2` is going to need to pass something in to indicate how to do text shaping, in the same way it\u0027s going to need to pass in a `ResourceProvider`. In fact, maybe it would be better to add all of this to `ResourceProvider` instead? (Or something like it, which is essentially that this CL currently is.) In addition to loading named assets we need a way to provide text shaping implementations.\n\nAlso G3 gets away with many sins, as no one there writes libraries. Which is also why Skia hasn\u0027t been a library (it\u0027s just a source dump of application code that one can compile into an application).",
+      "parentUuid": "552e5b1d_573bacfb",
+      "revId": "464553d57f1f451ac3853d91b3a079749175c00f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
