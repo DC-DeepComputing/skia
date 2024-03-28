@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f5c80be2_c96cf28f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-28T14:49:28Z",
+      "side": 1,
+      "message": "It looks like the only test we really have for this are the `fontmgr_bounds*` gms, but these source their SkTypefaces from `ToolUtils::TestFontMgr()-\u003ecreateStyleSet` which we don\u0027t have with Fontations yet, so I just hacked the gm locally to create a SkTypeface from some of the fonts in the `resources/fonts` directory.",
+      "parentUuid": "11e484ce_5378efbe",
+      "revId": "1df0289af4d37b506440f830b7714acadeeb6761",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "31e24bae_ccc8c17d",
@@ -37,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5710ea47_4975e71d",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 694,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-28T14:49:28Z",
+      "side": 1,
+      "message": "We still need to know here if the values were present or not (to set the flags). I\u0027m only setting these to 0 here to ensure that they are initialized to something (so `SkFontMetrics::operator\u003d\u003d` can work). We also need to set the flag. Now we could handle this in the ffi, setting the values to 0 if not present and also having explicit boolean flags for if the values were present or not. It\u0027s just that floats already have a NaN and we know that\u0027s not a good value for a position or thickness.\n\nI suppose this could be clearer if this setting to 0 were in an `else`, or maybe in a complicated ternary, like this beauty with a comma operator:\n\n```\nout_metrics-\u003efUnderlinePosition \u003d !sk_float_isnan(metrics.underline_position)\n    ? out_metrics-\u003efFlags |\u003d SkFontMetrics::kUnderlinePositionIsValid_Flag\n    , -metrics.underline_position\n    : 0;\n```",
+      "parentUuid": "31e24bae_ccc8c17d",
+      "revId": "1df0289af4d37b506440f830b7714acadeeb6761",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "787c3fad_8b07ac07",
         "filename": "src/ports/fontations/src/ffi.rs",
         "patchSetId": 1
@@ -48,6 +84,30 @@
       "writtenOn": "2024-03-28T08:07:28Z",
       "side": 1,
       "message": "See other comment, I\u0027d say let\u0027s be consistent with the other optional metrics and map to 0 here directly. \n\nSince the default value (whether it\u0027s `0` or `NaN`) is constant not expensive to compute (and thus does not require lazy evaluation), it\u0027s a little less verbose to use `.map_or()`\n\n```suggestion\n        underline_position: skrifa_metrics.underline.map_or(0, |u| u.offset),\n```",
+      "range": {
+        "startLine": 389,
+        "startChar": 53,
+        "endLine": 389,
+        "endChar": 91
+      },
+      "revId": "1df0289af4d37b506440f830b7714acadeeb6761",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "444437e6_374e8d5e",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 1
+      },
+      "lineNbr": 389,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-28T14:49:28Z",
+      "side": 1,
+      "message": "Yes, I just copied what was being done above without thinking about it too hard. Those should probably be updated too?",
+      "parentUuid": "787c3fad_8b07ac07",
       "range": {
         "startLine": 389,
         "startChar": 53,
