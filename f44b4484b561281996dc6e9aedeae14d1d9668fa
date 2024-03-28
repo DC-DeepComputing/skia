@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60d4e04d_04dc76ef",
+        "filename": "modules/skottie/src/SkottieTool.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 538,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-28T19:16:05Z",
+      "side": 1,
+      "message": "We set the font manager here for the same reason we want to pass the text shaping around, which was to get off the build time settings and globals. However, now we\u0027re at the point where this concept is more general than just sending in a font manager, we also want to logically send in more text handling stuff here, in a kind of `TextProvider` which would include the SkFontMgr, SkShaper, SkUnicode, and whatever else is needed for text like things. Note that one of the primary reasons to pass the SkFontMgr here is to use it to call SkShaper::MakeFontMgrRunIterator which could also be a thing on SkShapers::Factory (a `makeFontRunIterator`). However, Skottie also uses this SkFontMgr as a way to try to look up named fonts for finding the initial typeface, so it is used for slightly more than that.\n\nThe proposal here is to add an additional SkShapers::Factory parameter, but the concern is the extra plumbing. This should have the same plumbing as the current font manager plumbing, so another way to do this is replace the font manager here with a new type that contains a font manager and these new factory callbacks. Another way would be to take everything that would go on that type and instead put it into ResourceProvider and have the font manager from the resource provider be preferred to the one passed here until this one can be removed.",
+      "revId": "f44b4484b561281996dc6e9aedeae14d1d9668fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
