@@ -121,6 +121,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "db7c26b9_6d81a447",
+        "filename": "src/gpu/graphite/compute/DispatchGroup.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-03-28T17:04:48Z",
+      "side": 1,
+      "message": "Since this is not a public interface we\u0027re allowing a GPU_TEST_UTILS macro -- using GRAPHITE_TEST_UTILS should be fine for now until we move to that. That would be my suggestion.",
+      "parentUuid": "34025eb1_d9d44318",
+      "range": {
+        "startLine": 270,
+        "startChar": 0,
+        "endLine": 270,
+        "endChar": 34
+      },
+      "revId": "775267b5e26798d1f1c4e449e82bf5cc58b31928",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "de2da7d8_782b2b52",
         "filename": "src/gpu/graphite/task/ComputeTask.cpp",
         "patchSetId": 4
