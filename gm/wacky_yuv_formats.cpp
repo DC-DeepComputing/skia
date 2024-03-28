@@ -690,8 +690,10 @@ static int create_YUV(const PlaneData& planes,
 static void draw_col_label(SkCanvas* canvas, int x, int yuvColorSpace, bool opaque) {
     static const char* kYUVColorSpaceNames[] = {"JPEG",     "601",      "709F",     "709L",
                                                 "2020_8F",  "2020_8L",  "2020_10F", "2020_10L",
-                                                "2020_12F", "2020_12L", "YCGCO_8F", "YCGCO_8L",
-                                                "YCGCO_10F", "YCGCO_10L", "YCGCO_12F", "YCGCO_12L",
+                                                "2020_12F", "2020_12L", "FCCF",     "FCCL",
+                                                "SMPTE240F","SMPTE240L","YDZDXF",   "YDZDXL",
+                                                "GBRF",     "GBRL",     "YCGCO_8F", "YCGCO_8L",
+                                                "YCGCO_10F","YCGCO_10L","YCGCO_12F","YCGCO_12L",
                                                 "Identity"};
     static_assert(std::size(kYUVColorSpaceNames) == kLastEnum_SkYUVColorSpace + 1);
 
@@ -841,10 +843,25 @@ protected:
     bool createImages(GrDirectContext* dContext, Recorder* recorder) {
         int origin = 0;
         for (bool opaque : { false, true }) {
-            for (int cs = kJPEG_SkYUVColorSpace; cs <= kLastEnum_SkYUVColorSpace; ++cs) {
+            for (auto cs : {kJPEG_Full_SkYUVColorSpace,
+                            kRec601_Limited_SkYUVColorSpace,
+                            kRec709_Full_SkYUVColorSpace,
+                            kRec709_Limited_SkYUVColorSpace,
+                            kBT2020_8bit_Full_SkYUVColorSpace,
+                            kBT2020_8bit_Limited_SkYUVColorSpace,
+                            kBT2020_10bit_Limited_SkYUVColorSpace,
+                            kBT2020_12bit_Full_SkYUVColorSpace,
+                            kFCC_Limited_SkYUVColorSpace,
+                            kSMPTE240_Limited_SkYUVColorSpace,
+                            kYDZDX_Limited_SkYUVColorSpace,
+                            kGBR_Limited_SkYUVColorSpace,
+                            kYCgCo_8bit_Full_SkYUVColorSpace,
+                            kYCgCo_8bit_Limited_SkYUVColorSpace,
+                            kYCgCo_12bit_Limited_SkYUVColorSpace,
+                            kIdentity_SkYUVColorSpace}) {
                 PlaneData planes;
                 extract_planes(fOriginalBMs[opaque],
-                               static_cast<SkYUVColorSpace>(cs),
+                               cs,
                                static_cast<SkEncodedOrigin>(origin + 1),  // valid origins are 1...8
                                &planes);
 
@@ -858,17 +875,17 @@ protected:
                                                         static_cast<SkEncodedOrigin>(origin + 1));
                     SkYUVAPixmaps pixmaps =
                             planarConfig.makeYUVAPixmaps(fOriginalBMs[opaque].dimensions(),
-                                                         static_cast<SkYUVColorSpace>(cs),
+                                                         cs,
                                                          resultBMs,
                                                          numPlanes);
                     auto lazyYUV = sk_gpu_test::LazyYUVImage::Make(std::move(pixmaps));
 #if defined(SK_GRAPHITE)
                     if (recorder) {
-                        fImages[opaque][cs][format] = lazyYUV->refImage(recorder, fImageType);
+                        fImages[opaque][static_cast<int>(cs)][format] = lazyYUV->refImage(recorder, fImageType);
                     } else
 #endif
                     {
-                        fImages[opaque][cs][format] = lazyYUV->refImage(dContext, fImageType);
+                        fImages[opaque][static_cast<int>(cs)][format] = lazyYUV->refImage(dContext, fImageType);
                     }
                 }
                 origin = (origin + 1) % 8;
