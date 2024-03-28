@@ -16,6 +16,29 @@
       "message": "fmalita: can you please review? Thank you!",
       "revId": "d00298cac4963b9d14911f5663b61f09424eb44f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac565260_31c325a4",
+        "filename": "include/private/SkEncodedInfo.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-03-28T13:48:10Z",
+      "side": 1,
+      "message": "nit: let\u0027s use SkToU8(...) which performs some sanity checks in debug mode\n\n(include/private/base/SkTo.h)\n```suggestion\n                             SkToU8(bitsPerComponent),\n                             SkToU8(colorDepth),\n```",
+      "range": {
+        "startLine": 172,
+        "startChar": 0,
+        "endLine": 173,
+        "endChar": 62
+      },
+      "revId": "d00298cac4963b9d14911f5663b61f09424eb44f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
