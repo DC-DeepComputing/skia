@@ -52,6 +52,24 @@
       "parentUuid": "ab9b56e0_d306ca7c",
       "revId": "464553d57f1f451ac3853d91b3a079749175c00f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59c57220_30dc3b39",
+        "filename": "modules/skshaper/src/SkShaper_factory.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-28T15:24:14Z",
+      "side": 1,
+      "message": "SkGraphics is a big offender that we eventually need to do away with. That should all be in a `SkLibrary` that users need to pass back in if they need to. Though it\u0027s possible that `Init` may be ok since it\u0027s mostly tied to architecture.\n\nSkottie and SVG don\u0027t need any of this if they just hard depend on certain SkShaper and SkUnicode implementation targets, the same way they don\u0027t need either globals or pass-through for codecs if they directly depend on the codecs needed. SkCodec use still relies on too many globals. SkResources currently uses `SkCodecs::get_decoders` as a global registry of codecs, but this is really just to keep Chromium limping along and Skia really should not have these globals (except maybe on a `SkLibrary` like thing). The SkCodecs side of this is that each SkResources instance should be maintaining its own list of codecs.",
+      "parentUuid": "55d3205a_90ada5f3",
+      "revId": "464553d57f1f451ac3853d91b3a079749175c00f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
