@@ -70,6 +70,24 @@
       "parentUuid": "55d3205a_90ada5f3",
       "revId": "464553d57f1f451ac3853d91b3a079749175c00f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "552e5b1d_573bacfb",
+        "filename": "modules/skshaper/src/SkShaper_factory.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-03-28T16:11:58Z",
+      "side": 1,
+      "message": "\u003e Skottie and SVG don\u0027t need any of this if they just hard depend on certain SkShaper and SkUnicode implementation targets, the same way they don\u0027t need either globals or pass-through for codecs if they directly depend on the codecs needed.\n\nIsn\u0027t that the whole point though, that Skottie \u0026 SVG, libraries themselves, cannot hard-code any of these decisions, for neither shaping nor codecs, and it is up to the top-level component to select the actual configuration?\n\nSome apps only care about binary size and may want to exclude all text overhead + use platform codecs, while others just want the kitchen sink, and everything in between.\n\nI find the explicit plumbing solution hard to swallow, and this is just the Skia side of things.  There are at least a couple of middleware libs built on top of Skia/Skottie in G3 that I know about, and probably many more intermediate Blaze targets.  With this approach, they would have to be updated to haul around text shaper factory data that they could not care less about:\n\n`  app -\u003e lib1 -\u003e lib2 ... Skottie -\u003e SkShaper`\n  \nTo avoid touching the whole chain, I keep going back to build system based configuration, where the top level app can select the actual SkShaper \"backend\" via explicit deps or whatnot, and that in turn selects a factory implementation.  Some version of this has served us well with GN, but I understand that Blaze is running into some link order issues.  There are solutions to that though, I see libs with registrable components use globals and static initializers in G3 to achieve the same build system driven configuration.  If static initializers are allowed in G3 but disallowed in Chromium, maybe there is still a workable hybrid solution: static initializer based registration for Blaze, and regular factory swapping for GN?",
+      "parentUuid": "59c57220_30dc3b39",
+      "revId": "464553d57f1f451ac3853d91b3a079749175c00f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
