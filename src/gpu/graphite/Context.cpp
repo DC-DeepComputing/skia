@@ -501,17 +501,19 @@ void Context::asyncReadPixelsYUV420(Recorder* recorder,
                                     SkImage::ReadPixelsContext callbackContext) {
     TRACE_EVENT2("skia.gpu", TRACE_FUNC, "width", srcRect.width(), "height", srcRect.height());
 
-    // Make three or four Surfaces to draw the YUV[A] planes into
+    // Make three or four Surfaces to draw the YUV[A] planes into. These surfaces don't live
+    // outside this function and their image view is not returned to the client, so they can be
+    // budgeted scratch surfaces.
     SkImageInfo yaInfo = SkImageInfo::MakeA8(srcRect.size());
-    sk_sp<SkSurface> ySurface = Surface::MakeGraphite(recorder, yaInfo, Budgeted::kNo);
+    sk_sp<SkSurface> ySurface = Surface::MakeScratch(recorder, yaInfo);
     sk_sp<SkSurface> aSurface;
     if (readAlpha) {
-        aSurface = Surface::MakeGraphite(recorder, yaInfo, Budgeted::kNo);
+        aSurface = Surface::MakeScratch(recorder, yaInfo);
     }
 
     SkImageInfo uvInfo = yaInfo.makeWH(yaInfo.width()/2, yaInfo.height()/2);
-    sk_sp<SkSurface> uSurface = Surface::MakeGraphite(recorder, uvInfo, Budgeted::kNo);
-    sk_sp<SkSurface> vSurface = Surface::MakeGraphite(recorder, uvInfo, Budgeted::kNo);
+    sk_sp<SkSurface> uSurface = Surface::MakeScratch(recorder, uvInfo);
+    sk_sp<SkSurface> vSurface = Surface::MakeScratch(recorder, uvInfo);
 
     if (!ySurface || !uSurface || !vSurface || (readAlpha && !aSurface)) {
         callback(callbackContext, nullptr);
