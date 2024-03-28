@@ -16,6 +16,23 @@
       "message": "fmalita: can you please review? I think CQ is currently broken. Please let me know if you have any concerns. Thank you!",
       "revId": "05549e2672763a4e18c423906fefce91d57f4852",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf12f463_8f2eb84b",
+        "filename": "src/codec/SkCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-03-28T14:26:06Z",
+      "side": 1,
+      "message": "I don\u0027t think I see the leak/issue: the loop below performs an equivalent operation by overwriting the existing Decoder if already registered.\n\nIOW `erase` + `push_back` is logically equivalent with the reassignment on L142 below (modulo order, which is not important).",
+      "revId": "05549e2672763a4e18c423906fefce91d57f4852",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
