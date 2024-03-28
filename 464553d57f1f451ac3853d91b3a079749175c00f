@@ -124,6 +124,24 @@
       "parentUuid": "552e5b1d_573bacfb",
       "revId": "464553d57f1f451ac3853d91b3a079749175c00f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a463aa8_c8b2ba24",
+        "filename": "modules/skshaper/src/SkShaper_factory.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-03-28T18:11:58Z",
+      "side": 1,
+      "message": "\u003e It\u0027s not the top level app that needs to make this decision - it\u0027s whomever is depending directly on skottie, specifically whomever creates the animation.\n\nHaving a library bound to a particular configuration sounds extremely limiting.\n\n```\ncc_binary(\n    name \u003d \"app1\",\n    deps \u003d [\":lib1\"],\n)\n\ncc_binary(\n    name \u003d \"app2\",\n    deps \u003d [\":lib1\"],\n)\n```\n\n`app1` runs on iOS and wants coretext shaping, `app2` runs on android and wants harfbuzz.  They both rely on Lottie templating logic implemented in `lib1`.",
+      "parentUuid": "d9b15540_087d3a83",
+      "revId": "464553d57f1f451ac3853d91b3a079749175c00f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
