@@ -34,6 +34,24 @@
       "parentUuid": "4e510dbd_422fe2ca",
       "revId": "464553d57f1f451ac3853d91b3a079749175c00f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "55d3205a_90ada5f3",
+        "filename": "modules/skshaper/src/SkShaper_factory.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-03-28T15:07:46Z",
+      "side": 1,
+      "message": "\u003e I would prefer for Skia not to have any mutable globals at all (and if it does need \"globals\" for them to go on a \"library\" object which stores all the library state and the user sets up and passes back in, like FT_Library or something like that (though even this is to be avoided if possible).\n\nIs this different from all the other global registration mechanisms (codecs, SkGraphics stuff) in some way?  Why is it ok to plumb text shaping factories through unrelated layers, but not e.g. SkCodecs?",
+      "parentUuid": "ab9b56e0_d306ca7c",
+      "revId": "464553d57f1f451ac3853d91b3a079749175c00f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
