@@ -11,7 +11,7 @@
 #include "modules/skottie/include/Skottie.h"
 #include "modules/skottie/include/SkottieProperty.h"
 #include "tests/Test.h"
-#include "tools/fonts/FontToolUtils.h"
+#include "tools/fonts/TextProviderUtils.h"
 
 using namespace skottie;
 
@@ -251,7 +251,7 @@ DEF_TEST(Skottie_Expression, r) {
 
     auto anim = Animation::Builder()
         .setExpressionManager(em)
-        .setFontManager(ToolUtils::TestFontMgr())
+        .setTextProvider(ToolUtils::TestTextProvider())
         .setPropertyObserver(observer)
         .make(&stream);
 
@@ -352,7 +352,7 @@ DEF_TEST(Skottie_ExpressionText, r) {
 
     auto anim = Animation::Builder()
                         .setExpressionManager(em)
-                        .setFontManager(ToolUtils::TestFontMgr())
+                        .setTextProvider(ToolUtils::TestTextProvider())
                         .setPropertyObserver(observer)
                         .make(&stream);
 

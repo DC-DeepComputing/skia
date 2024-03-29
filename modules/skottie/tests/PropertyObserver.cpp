@@ -13,7 +13,7 @@
 #include "modules/skottie/include/SkottieProperty.h"
 #include "tests/Test.h"
 #include "tools/ToolUtils.h"
-#include "tools/fonts/FontToolUtils.h"
+#include "tools/fonts/TextProviderUtils.h"
 
 using namespace skottie;
 
@@ -277,7 +277,7 @@ DEF_TEST(Skottie_Props, reporter) {
 
     auto animation = skottie::Animation::Builder()
             .setPropertyObserver(observer)
-            .setFontManager(test_font_manager)
+            .setTextProvider(ToolUtils::TestTextProvider(test_font_manager))
             .make(&stream);
 
     REPORTER_ASSERT(reporter, animation);
@@ -379,7 +379,7 @@ DEF_TEST(Skottie_Props_Revalidation, reporter) {
 
     auto animation = skottie::Animation::Builder()
             .setPropertyObserver(observer)
-            .setFontManager(test_font_manager)
+            .setTextProvider(ToolUtils::TestTextProvider(test_font_manager))
             .make(&stream);
 
     REPORTER_ASSERT(reporter, animation);

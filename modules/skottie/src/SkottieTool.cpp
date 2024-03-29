@@ -32,6 +32,8 @@
 #include "modules/skottie/include/Skottie.h"
 #include "modules/skottie/utils/SkottieUtils.h"
 #include "modules/skresources/include/SkResources.h"
+#include "modules/skresources/include/SkTextProvider.h"
+#include "modules/skshaper/utils/FactoryHelpers.h"
 #include "src/core/SkOSFile.h"
 #include "src/core/SkTaskGroup.h"
 #include "src/utils/SkOSPath.h"
@@ -464,6 +466,33 @@ private:
                           fWarnings;
 };
 
+class TextProvider final : public skresources::TextProvider {
+public:
+    TextProvider() {
+    // If necessary, clients should use a font manager that would load fonts from the system.
+#if defined(SK_BUILD_FOR_MAC) && defined(SK_FONTMGR_CORETEXT_AVAILABLE)
+    fMgr = SkFontMgr_New_CoreText(nullptr);
+#elif defined(SK_BUILD_FOR_ANDROID) && defined(SK_FONTMGR_ANDROID_AVAILABLE)
+    fMgr = SkFontMgr_New_Android(nullptr, std::make_unique<SkFontScanner_FreeType>());
+#elif defined(SK_BUILD_FOR_UNIX) && defined(SK_FONTMGR_FONTCONFIG_AVAILABLE)
+    fMgr = SkFontMgr_New_FontConfig(nullptr);
+#else
+    fMgr = SkFontMgr_New_Custom_Empty();
+#endif
+    }
+
+sk_sp<SkFontMgr> fontMgr() const override {
+    return fMgr;
+}
+
+sk_sp<SkShapers::Factory> textShapingFactory() const override {
+    return SkShapers::BestAvailable();
+}
+
+private:
+    sk_sp<SkFontMgr> fMgr;
+};
+
 } // namespace
 
 extern bool gSkUseThreadLocalStrikeCaches_IAcknowledgeThisIsIncrediblyExperimental;
@@ -502,16 +531,7 @@ int main(int argc, char** argv) {
     SkCodecs::Register(SkJpegDecoder::Decoder());
     SkCodecs::Register(SkWebpDecoder::Decoder());
 
-    // If necessary, clients should use a font manager that would load fonts from the system.
-#if defined(SK_BUILD_FOR_MAC) && defined(SK_FONTMGR_CORETEXT_AVAILABLE)
-    sk_sp<SkFontMgr> fontMgr = SkFontMgr_New_CoreText(nullptr);
-#elif defined(SK_BUILD_FOR_ANDROID) && defined(SK_FONTMGR_ANDROID_AVAILABLE)
-    sk_sp<SkFontMgr> fontMgr = SkFontMgr_New_Android(nullptr, std::make_unique<SkFontScanner_FreeType>());
-#elif defined(SK_BUILD_FOR_UNIX) && defined(SK_FONTMGR_FONTCONFIG_AVAILABLE)
-    sk_sp<SkFontMgr> fontMgr = SkFontMgr_New_FontConfig(nullptr);
-#else
-    sk_sp<SkFontMgr> fontMgr = SkFontMgr_New_Custom_Empty();
-#endif
+    sk_sp<skresources::TextProvider> tp = sk_make_sp<TextProvider>();
 
     auto predecode = skresources::ImageDecodeStrategy::kPreDecode;
     auto logger = sk_make_sp<Logger>();
@@ -520,7 +540,7 @@ int main(int argc, char** argv) {
                     skresources::FileResourceProvider::Make(SkOSPath::Dirname(FLAGS_input[0]),
                                                             predecode),
                     predecode,
-                    fontMgr));
+                    tp->fontMgr()));
     auto data   = SkData::MakeFromFileName(FLAGS_input[0]);
     auto precomp_interceptor =
             sk_make_sp<skottie_utils::ExternalAnimationPrecompInterceptor>(rp, "__");
@@ -534,9 +554,9 @@ int main(int argc, char** argv) {
     //   - we need to know its duration upfront
     //   - we want to only report parsing errors once
     auto anim = skottie::Animation::Builder()
-            .setFontManager(fontMgr)
             .setLogger(logger)
             .setResourceProvider(rp)
+            .setTextProvider(tp)
             .make(static_cast<const char*>(data->data()), data->size());
     if (!anim) {
         SkDebugf("Could not parse animation: '%s'.\n", FLAGS_input[0]);

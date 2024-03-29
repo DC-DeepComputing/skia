@@ -14,6 +14,7 @@
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
 #include "modules/skresources/include/SkResources.h"
+#include "modules/skresources/include/SkTextProvider.h"
 
 // TODO(kjlubick) update clients and then remove the following:
 #include "include/core/SkFontMgr.h"  // IWYU pragma: keep
@@ -42,6 +43,7 @@ namespace internal { class Animator; }
 
 using ImageAsset = skresources::ImageAsset;
 using ResourceProvider = skresources::ResourceProvider;
+using TextProvider = skresources::TextProvider;
 
 /**
  * A Logger subclass can be used to receive Animation::Builder parsing errors and warnings.
@@ -101,6 +103,8 @@ public:
         };
 
         explicit Builder(uint32_t flags = 0);
+        Builder(const Builder&);
+        Builder(Builder&&);
         ~Builder();
 
         struct Stats {
@@ -125,8 +129,10 @@ public:
 
         /**
          * Specify a font manager for loading animation fonts.
+         *
+         * DEPRECATED see setTextProvider
          */
-        Builder& setFontManager(sk_sp<SkFontMgr>);
+        //Builder& setFontManager(sk_sp<SkFontMgr>);
 
         /**
          * Specify a PropertyObserver to receive callbacks during parsing.
@@ -159,6 +165,11 @@ public:
         Builder& setExpressionManager(sk_sp<ExpressionManager>);
 
         /**
+         * Set the implementations necessary to process and shape text.
+         */
+        Builder& setTextProvider(sk_sp<TextProvider>);
+
+        /**
          * Animation factories.
          */
         sk_sp<Animation> make(SkStream*);
@@ -177,9 +188,10 @@ public:
         sk_sp<SkFontMgr>          fFontMgr;
         sk_sp<PropertyObserver>   fPropertyObserver;
         sk_sp<Logger>             fLogger;
-        sk_sp<MarkerObserver  >   fMarkerObserver;
+        sk_sp<MarkerObserver>     fMarkerObserver;
         sk_sp<PrecompInterceptor> fPrecompInterceptor;
         sk_sp<ExpressionManager>  fExpressionManager;
+        sk_sp<TextProvider>       fTextProvider;
         sk_sp<SlotManager>        fSlotManager;
         Stats                     fStats;
     };
