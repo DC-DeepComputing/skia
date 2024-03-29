@@ -22,6 +22,30 @@
       },
       "revId": "bbfe9f4c58d1b91bb03481164551697f6deca5d5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "90b0f34c_ccfd6afc",
+        "filename": "gm/compressed_textures.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 331,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-03-29T20:31:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0fd1811f_0a16b3da",
+      "range": {
+        "startLine": 331,
+        "startChar": 83,
+        "endLine": 331,
+        "endChar": 94
+      },
+      "revId": "bbfe9f4c58d1b91bb03481164551697f6deca5d5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
