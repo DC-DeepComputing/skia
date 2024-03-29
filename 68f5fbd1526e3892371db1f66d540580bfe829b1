@@ -22,6 +22,30 @@
       },
       "revId": "68f5fbd1526e3892371db1f66d540580bfe829b1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aa365926_c30cb008",
+        "filename": "src/opts/SkBlitMask_opts.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 253,
+      "author": {
+        "id": 21814
+      },
+      "writtenOn": "2024-03-29T07:11:40Z",
+      "side": 1,
+      "message": "I\u0027ve uploaded a new cl to fix it[1]\n\n[1]https://skia-review.googlesource.com/c/skia/+/834196",
+      "parentUuid": "3bb15b5c_d3b6ce39",
+      "range": {
+        "startLine": 253,
+        "startChar": 0,
+        "endLine": 253,
+        "endChar": 32
+      },
+      "revId": "68f5fbd1526e3892371db1f66d540580bfe829b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
