@@ -16,6 +16,23 @@
       "message": "I may need you to put this in the CQ (I appear to have lost this capability)",
       "revId": "a58ea0085e470590d42dcf6efca813835c3d26f5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f3643b14_6f6f1afc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-03-29T14:09:09Z",
+      "side": 1,
+      "message": "This is part of the new two (trusted) reviewer policy. Looks like your chromium account isn\u0027t linked to your google.com one? If so, this will require two reviews before it can be submitted.",
+      "revId": "a58ea0085e470590d42dcf6efca813835c3d26f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
