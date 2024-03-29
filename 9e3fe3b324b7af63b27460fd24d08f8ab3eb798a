@@ -22,6 +22,30 @@
       },
       "revId": "9e3fe3b324b7af63b27460fd24d08f8ab3eb798a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ef5a504_2d73db3e",
+        "filename": "src/encode/SkICC.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2024-03-29T14:50:23Z",
+      "side": 0,
+      "message": "On top of this, I see a strong argument for moving serialization to skcms (ducks!)",
+      "parentUuid": "e784531c_0b3706c6",
+      "range": {
+        "startLine": 30,
+        "startChar": 0,
+        "endLine": 30,
+        "endChar": 7
+      },
+      "revId": "9e3fe3b324b7af63b27460fd24d08f8ab3eb798a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
