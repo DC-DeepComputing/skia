@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c78e387c_052353bb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 21814
+      },
+      "writtenOn": "2024-03-29T07:09:08Z",
+      "side": 1,
+      "message": "To fix the indentation of the previous commit",
+      "revId": "fe11492a5aec79bcb60a08b6e066ae090d05c246",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
