@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a35a57f_8fe3ad1d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-29T21:04:20Z",
+      "side": 1,
+      "message": "At Patchset 1 this is some ugly code, but I just copied off what FreeType does and it does make a number of paragraph tests pass. Will need to clean this up, especially with regard to using `with_font` multiple times like this.",
+      "revId": "85a889abfdf9d77ebf8a59e20d74df0c39b38545",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
