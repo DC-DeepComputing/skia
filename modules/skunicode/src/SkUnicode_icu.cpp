@@ -24,10 +24,13 @@
 #include "src/core/SkChecksum.h"
 #include "src/core/SkTHash.h"
 
+#include <unicode/ubidi.h>
 #include <unicode/ubrk.h>
 #include <unicode/uchar.h>
 #include <unicode/uloc.h>
 #include <unicode/umachine.h>
+#include <unicode/uscript.h>
+#include <unicode/ustring.h>
 #include <unicode/utext.h>
 #include <unicode/utypes.h>
 
