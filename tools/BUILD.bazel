@@ -123,7 +123,9 @@ skia_cc_library(
     visibility = ["//tools/viewer:__pkg__"],
     deps = [
         ":sk_sharing_proc",
-        "//:skia_internal",
+        "//:core",
+        "//:ganesh_gl",
+        "//src/utils:multi_picture_document",
     ],
 )
 
@@ -135,7 +137,7 @@ skia_cc_library(
         "//tests:__pkg__",
         "//tools/viewer:__pkg__",
     ],
-    deps = ["//:skia_internal"],
+    deps = ["//:core"],
 )
 
 skia_cc_library(
@@ -197,11 +199,13 @@ skia_cc_library(
         "EncodeUtils.cpp",
     ],
     hdrs = [
+        "CodecUtils.h",
         "DecodeUtils.h",
         "EncodeUtils.h",
     ],
     visibility = [
         "//gm:__subpackages__",
+        "//tools/viewer:__pkg__",
     ],
     deps = [
         "//:core",
@@ -210,6 +214,25 @@ skia_cc_library(
         "//src/base",
         "//src/core:core_priv",
         "//tools:resources",
+    ],
+)
+
+skia_cc_library(
+    name = "gpu_tool_utils",
+    testonly = True,
+    srcs = [
+        "GpuToolUtils.cpp",
+    ],
+    hdrs = [
+        "GpuToolUtils.h",
+    ],
+    visibility = [
+        "//bench:__subpackages__",
+        "//gm:__subpackages__",
+        "//tools:__subpackages__",
+    ],
+    deps = [
+        "//:core",
     ],
 )
 

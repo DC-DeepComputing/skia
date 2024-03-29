@@ -1,5 +1,5 @@
 load("//bazel:cc_binary_with_flags.bzl", "cc_binary_with_flags")
-load("//bazel:skia_rules.bzl", "exports_files_legacy")
+load("//bazel:skia_rules.bzl", "exports_files_legacy", "skia_cc_binary")
 
 licenses(["notice"])
 
@@ -66,6 +66,71 @@ cc_binary_with_flags(
         "//tools:runtime_blend_utils",
         "//tools/gpu:utils",
         "//tools/sk_app:legacy_sk_app",
+        "//tools/skui",
+        "@imgui",
+    ],
+)
+
+# Work in progress. Currently builds with:
+#
+#     $ bazel build //tools/viewer:modular_viewer \
+#           --config=linux_rbe --with_fontations --config=gl_ganesh
+#
+# However it currently segfaults. As evidenced by the above flags, this target is mixing modular
+# legacy targets, so further work is required to make it fully modular.
+skia_cc_binary(
+    name = "modular_viewer",
+    testonly = True,
+    srcs = [
+        "AnimTimer.h",
+        "BisectSlide.cpp",
+        "BisectSlide.h",
+        "GMSlide.cpp",
+        "GMSlide.h",
+        "ImGuiLayer.cpp",
+        "ImGuiLayer.h",
+        "ImageSlide.cpp",
+        "ImageSlide.h",
+        "MSKPSlide.cpp",
+        "MSKPSlide.h",
+        "SKPSlide.cpp",
+        "SKPSlide.h",
+        "SkSLDebuggerSlide.cpp",
+        "SkSLDebuggerSlide.h",
+        "SkSLSlide.cpp",
+        "SkSLSlide.h",
+        "Slide.h",
+        "SlideDir.cpp",
+        "SlideDir.h",
+        "StatsLayer.cpp",
+        "StatsLayer.h",
+        "SvgSlide.cpp",
+        "SvgSlide.h",
+        "TouchGesture.cpp",
+        "TouchGesture.h",
+        "Viewer.cpp",
+        "Viewer.h",
+        "//bench:gpu_tools",
+        "//gm:gm_subset",
+        "//tools/flags",
+        "//tools/flags:common_flags_legacy",
+        "//tools/fonts:test_font_manager_srcs",
+        "//tools/trace",
+    ],
+    deps = [
+        "//:core",
+        "//gm",
+        "//modules/sksg",
+        "//src/sksl/tracing:debug_trace_player",
+        "//src/utils:json",
+        "//tools:codec_utils",
+        "//tools:gpu_tool_utils",
+        "//tools:mskp_player",
+        "//tools:registry",
+        "//tools:runtime_blend_utils",
+        "//tools:tool_utils",
+        "//tools/gpu:ganesh_gl_utils",
+        "//tools/sk_app",
         "//tools/skui",
         "@imgui",
     ],
