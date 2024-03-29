@@ -178,6 +178,24 @@
       "parentUuid": "6454b43a_8b164053",
       "revId": "464553d57f1f451ac3853d91b3a079749175c00f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "69b5a739_ab9b5b28",
+        "filename": "modules/skshaper/src/SkShaper_factory.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-03-29T13:59:14Z",
+      "side": 1,
+      "message": "We can look at how these are being extended in practice.\n\nThe Skia ResourceProvider implementations are either used internally for our tools or are utilities to wrap other client provided RPs.  Any client that cares about asset management is going to provide their own implementation.  I counted at least 8 client impls.\n\nSkFontMgr is being extended by some sophisticated clients, but also most instances require some client-provided configuration information.\n\nThe only purpose of SkShaper and SkUnicode in SVG/Skottie APIs is to select one of Skia\u0027s impls.  Would we still consider this approach if the same was achievable at the build system level?",
+      "parentUuid": "7a30f6c1_a403404e",
+      "revId": "464553d57f1f451ac3853d91b3a079749175c00f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
