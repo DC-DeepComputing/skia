@@ -265,8 +265,8 @@ var gniExportDescs = []exporter.GNIExportDesc{
 	{GNI: "gn/xml.gni", Vars: []exporter.GNIFileListExportDesc{
 		{Var: "skia_xml_sources",
 			Rules: []string{
-				"//src/xml:xml_hdrs",
-				"//src/xml:xml_srcs",
+				"//src/xml:_xml_hdrs",
+				"//src/xml:_xml_srcs",
 			}}},
 	},
 	{GNI: "gn/gpu.gni", Vars: []exporter.GNIFileListExportDesc{
@@ -372,7 +372,6 @@ var gniExportDescs = []exporter.GNIExportDesc{
 			}},
 		{Var: "skia_gpu_metal_public",
 			Rules: []string{
-				"//include/gpu/mtl:public_hdrs",
 				"//include/gpu/ganesh/mtl:public_hdrs",
 			}},
 		{Var: "skia_gpu_metal_private",
@@ -419,7 +418,7 @@ var gniExportDescs = []exporter.GNIExportDesc{
 				"//src/gpu/vk:vk_srcs"}},
 		{Var: "skia_shared_mtl_sources",
 			Rules: []string{
-				"//include/gpu/mtl:shared_public_hdrs",
+				"//include/gpu/mtl:public_hdrs",
 				"//src/gpu/mtl:mtl_hdrs",
 				"//src/gpu/mtl:mtl_srcs",
 			}},
@@ -479,7 +478,9 @@ var gniExportDescs = []exporter.GNIExportDesc{
 	}},
 	{GNI: "modules/skshaper/skshaper.gni", Vars: []exporter.GNIFileListExportDesc{
 		{Var: "skia_shaper_public",
-			Rules: []string{"//modules/skshaper/include:hdrs"}},
+			Rules: []string{"//modules/skshaper/include:hdrs",
+				"//modules/skshaper/utils:core_hdrs",
+			}},
 		{Var: "skia_shaper_primitive_sources",
 			Rules: []string{"//modules/skshaper/src:base_srcs"}},
 		{Var: "skia_shaper_harfbuzz_sources",

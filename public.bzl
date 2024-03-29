@@ -181,8 +181,6 @@ SKIA_PUBLIC_HDRS = [
     "include/gpu/gl/GrGLInterface.h",
     "include/gpu/gl/GrGLTypes.h",
     "include/gpu/mock/GrMockTypes.h",
-    "include/gpu/mtl/GrMtlBackendContext.h",
-    "include/gpu/mtl/GrMtlTypes.h",
     "include/gpu/mtl/MtlMemoryAllocator.h",
     "include/gpu/vk/GrVkBackendContext.h",
     "include/gpu/vk/GrVkExtensions.h",
@@ -2603,13 +2601,16 @@ SKUNICODE_HDRS = [
 
 SKSHAPER_HDRS = [
     "modules/skshaper/include/SkShaper.h",
-    "modules/skshaper/include/SkShaper_harfbuzz.h",
     "modules/skshaper/include/SkShaper_coretext.h",
+    "modules/skshaper/include/SkShaper_factory.h",
+    "modules/skshaper/include/SkShaper_harfbuzz.h",
     "modules/skshaper/include/SkShaper_skunicode.h",
+    "modules/skshaper/utils/FactoryHelpers.h",
 ]
 
 SKSHAPER_HARFBUZZ_SRCS = [
     "modules/skshaper/src/SkShaper.cpp",
+    "modules/skshaper/src/SkShaper_factory.cpp",
     "modules/skshaper/src/SkShaper_harfbuzz.cpp",
     "modules/skshaper/src/SkShaper_primitive.cpp",
     "modules/skshaper/src/SkShaper_skunicode.cpp",

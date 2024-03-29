@@ -26,6 +26,7 @@
 #include "src/utils/SkOSPath.h"
 #include "tools/Resources.h"
 #include "tools/fonts/FontToolUtils.h"
+#include "tools/fonts/TextProviderUtils.h"
 #include "tools/timer/TimeUtils.h"
 
 #include <cmath>
@@ -536,7 +537,7 @@ void SkottieSlide::init() {
     auto text_tracker = sk_make_sp<TextTracker>(fTransformTracker);
 
     builder.setLogger(logger)
-           .setFontManager(ToolUtils::TestFontMgr())
+           .setTextProvider(ToolUtils::TestTextProvider())
            .setPrecompInterceptor(std::move(precomp_interceptor))
            .setResourceProvider(resource_provider)
            .setPropertyObserver(text_tracker);

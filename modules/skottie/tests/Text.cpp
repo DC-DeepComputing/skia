@@ -12,9 +12,11 @@
 #include "include/core/SkStream.h"
 #include "modules/skottie/include/Skottie.h"
 #include "modules/skottie/include/SkottieProperty.h"
+#include "modules/skshaper/include/SkShaper_factory.h"
+#include "modules/skshaper/utils/FactoryHelpers.h"
 #include "tests/Test.h"
 #include "tools/ToolUtils.h"
-#include "tools/fonts/FontToolUtils.h"
+#include "tools/fonts/TextProviderUtils.h"
 
 using namespace skottie;
 
@@ -108,7 +110,7 @@ DEF_TEST(Skottie_Text_Style, r) {
     auto fmgr = sk_make_sp<RecordMatchFamilyStyleSkFontMgr>();
 
     auto anim = Animation::Builder()
-                    .setFontManager(fmgr)
+                    .setTextProvider(ToolUtils::TestTextProvider())
                     .make(&stream);
 
     REPORTER_ASSERT(r, anim);
@@ -282,7 +284,7 @@ DEF_TEST(Skottie_Text_FontFamily, r) {
 
     SkMemoryStream stream(json, strlen(json));
     auto anim = Animation::Builder()
-                    .setFontManager(fmgr)
+                    .setTextProvider(ToolUtils::TestTextProvider(fmgr))
                     .setPropertyObserver(prop_observer)
                     .make(&stream);
     REPORTER_ASSERT(r, anim);
