@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e784531c_0b3706c6",
+        "filename": "src/encode/SkICC.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-29T14:40:10Z",
+      "side": 0,
+      "message": "Ech, the whole \"constexpr variable implies const; const integral variable at namespace scope has internal linkage by default\". So yes, we don\u0027t need the `static`, but it\u0027s such a long line of reasoning. And there are more like this below.\n\nAlso, `ICCHeader` below should not be a global type, and there are some missing `static` on several methods like `write_clut`. If we\u0027re going to remove this `static` then we should put everything from here down to `SkWriteICCProfile` into an anonymous namespace and remove all the `static` from inside that block. (Though we may want that to be a separate CL.)",
+      "range": {
+        "startLine": 30,
+        "startChar": 0,
+        "endLine": 30,
+        "endChar": 7
+      },
+      "revId": "9e3fe3b324b7af63b27460fd24d08f8ab3eb798a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
