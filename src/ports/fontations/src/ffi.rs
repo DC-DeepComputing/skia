@@ -3,7 +3,7 @@ use ffi::{FillLinearParams, FillRadialParams};
 // Use of this source code is governed by a BSD-style license that can be found
 // in the LICENSE file.
 use font_types::{BoundingBox, GlyphId, Pen};
-use read_fonts::{tables::colr::CompositeMode, FileRef, FontRef, ReadError, TableProvider};
+use read_fonts::{tables::colr::CompositeMode, FileRef, FontRef, ReadError, TableProvider, tables::os2::SelectionFlags};
 use skrifa::{
     attribute::Style,
     charmap::MappingIndex,
@@ -453,7 +453,18 @@ fn english_or_first_font_name(font_ref: &BridgeFontRef, name_id: StringId) -> Op
 }
 
 fn family_name(font_ref: &BridgeFontRef) -> String {
-    english_or_first_font_name(font_ref, StringId::FAMILY_NAME).unwrap_or_default()
+    font_ref.with_font(|f| {
+        // https://learn.microsoft.com/en-us/typography/opentype/spec/os2#fsselection
+        // Bit 8 of the `fsSelection' field in the `OS/2' table indicates a WWS-only font face.
+        let wws = f.os2().map_or(false, |t| t.fs_selection().contains(SelectionFlags::WWS));
+        if wws {
+            None
+        } else {
+            english_or_first_font_name(font_ref, StringId::WWS_FAMILY_NAME)
+        }.or_else(
+        ||{english_or_first_font_name(font_ref, StringId::TYPOGRAPHIC_FAMILY_NAME)}.or_else(
+        ||{english_or_first_font_name(font_ref, StringId::FAMILY_NAME)}))
+    }).unwrap_or_default()
 }
 
 fn postscript_name(font_ref: &BridgeFontRef, out_string: &mut String) -> bool {
