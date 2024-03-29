@@ -214,6 +214,24 @@
       "parentUuid": "69b5a739_ab9b5b28",
       "revId": "464553d57f1f451ac3853d91b3a079749175c00f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7edaa041_ce43fcfe",
+        "filename": "modules/skshaper/src/SkShaper_factory.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-03-29T14:44:28Z",
+      "side": 1,
+      "message": "Hard-coding the configuration at the intermediate library level is not useful.  Why can\u0027t that be delegated to clients?\n\n```\ncc_binary(\n    name \u003d \"app\",\n    deps \u003d [\n       \":skia_svg\",\n       \":skia_shaper_harfbuzz_impl\",\n       \":skia_unicode_icu_impl\",\n       ...\n    ],\n)\n```",
+      "parentUuid": "7dbfbbf6_f517515a",
+      "revId": "464553d57f1f451ac3853d91b3a079749175c00f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

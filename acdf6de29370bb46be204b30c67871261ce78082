@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9267e106_a8ccd207",
+        "filename": "modules/skottie/include/Skottie.h",
+        "patchSetId": 31
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-03-29T14:44:28Z",
+      "side": 1,
+      "message": "Why is this needed?  If anything, let\u0027s make the builder explicitly non-copyable.",
+      "range": {
+        "startLine": 106,
+        "startChar": 0,
+        "endLine": 107,
+        "endChar": 27
+      },
+      "revId": "acdf6de29370bb46be204b30c67871261ce78082",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a24ea189_dc3bcf83",
+        "filename": "modules/skottie/include/Skottie.h",
+        "patchSetId": 31
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-03-29T14:44:28Z",
+      "side": 1,
+      "message": "Test change?\n```suggestion\n        Builder\u0026 setFontManager(sk_sp\u003cSkFontMgr\u003e);\n```",
+      "revId": "acdf6de29370bb46be204b30c67871261ce78082",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
