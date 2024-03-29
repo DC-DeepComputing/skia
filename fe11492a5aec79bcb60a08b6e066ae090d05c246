@@ -16,6 +16,23 @@
       "message": "To fix the indentation of the previous commit",
       "revId": "fe11492a5aec79bcb60a08b6e066ae090d05c246",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e709c12_3f81b33d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-03-29T12:55:35Z",
+      "side": 1,
+      "message": "Thank you for following up!",
+      "revId": "fe11492a5aec79bcb60a08b6e066ae090d05c246",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
