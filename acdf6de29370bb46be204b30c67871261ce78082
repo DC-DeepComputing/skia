@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "41706def_3812da19",
+        "filename": "modules/skottie/include/Skottie.h",
+        "patchSetId": 31
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-03-29T15:08:02Z",
+      "side": 1,
+      "message": "We should not be copying builders though, I\u0027m surprised those would be generated at all.  If I mark them as deleted locally nothing breaks.",
+      "parentUuid": "7911c4a5_0d8f33ee",
+      "range": {
+        "startLine": 106,
+        "startChar": 0,
+        "endLine": 107,
+        "endChar": 27
+      },
+      "revId": "acdf6de29370bb46be204b30c67871261ce78082",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a24ea189_dc3bcf83",
         "filename": "modules/skottie/include/Skottie.h",
         "patchSetId": 31
