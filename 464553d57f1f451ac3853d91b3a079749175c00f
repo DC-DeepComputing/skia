@@ -322,6 +322,24 @@
       "parentUuid": "6b55a4b8_b1844e75",
       "revId": "464553d57f1f451ac3853d91b3a079749175c00f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c42c3219_8214b440",
+        "filename": "modules/skshaper/src/SkShaper_factory.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-29T18:10:42Z",
+      "side": 1,
+      "message": "Yeah, and that\u0027s fine if you just live in G3 or just live in Chromium (in which case you don\u0027t have to be a library, you\u0027re just application code as a source bundle). But Skia should be a library. This isn\u0027t just a little bit of \"dislike\", it\u0027s more like \"you should be this tall to ride this ride\". Skia is frankly a bit of an embarrassment here as even things like FontConfig came kicking and screaming into the \"libraries should not have globals\" world years ago.",
+      "parentUuid": "233f6e90_4dffa52f",
+      "revId": "464553d57f1f451ac3853d91b3a079749175c00f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
