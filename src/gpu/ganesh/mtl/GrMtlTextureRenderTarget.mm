@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "include/gpu/ganesh/mtl/GrMtlBackendSurface.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 #include "src/gpu/ganesh/GrResourceProvider.h"
 #include "src/gpu/ganesh/mtl/GrMtlGpu.h"
@@ -53,7 +54,7 @@ bool create_rt_attachments(GrMtlGpu* gpu, SkISize dimensions, MTLPixelFormat for
     if (sampleCnt > 1) {
         auto rp = gpu->getContext()->priv().resourceProvider();
         sk_sp<GrAttachment> msaaAttachment = rp->makeMSAAAttachment(
-                dimensions, GrBackendFormat::MakeMtl(format), sampleCnt, GrProtected::kNo,
+                dimensions, GrBackendFormats::MakeMtl(format), sampleCnt, GrProtected::kNo,
                 GrMemoryless::kNo);
         if (!msaaAttachment) {
             return false;
