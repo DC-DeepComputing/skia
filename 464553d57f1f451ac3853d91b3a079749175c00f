@@ -304,6 +304,24 @@
       "parentUuid": "9a08c554_bd50c069",
       "revId": "464553d57f1f451ac3853d91b3a079749175c00f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "233f6e90_4dffa52f",
+        "filename": "modules/skshaper/src/SkShaper_factory.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-03-29T17:58:35Z",
+      "side": 1,
+      "message": "Your dislike must be quite intense if you\u0027d rather put up with the churn and fallout of plumbing this through all the existing clients :)\n\nInteresting that we see things so differently.  To me, the ability to support multiple configurations and effect configuration changes without touching source files is the main advantage to build system based dependency injection, followed closely by the reduced API surface.\n\nThe only thing going for explicit factory plumbing is the ability to support multiple configs within the same app.  Nobody is asking for that though, but who knows, maybe they will.",
+      "parentUuid": "6b55a4b8_b1844e75",
+      "revId": "464553d57f1f451ac3853d91b3a079749175c00f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
