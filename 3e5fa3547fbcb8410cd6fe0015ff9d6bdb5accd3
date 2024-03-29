@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b386659_076c6428",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 36
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-03-29T20:02:21Z",
+      "side": 1,
+      "message": "After discussion on this CL and another thread, we decided that `.setTextShapingFactory` strikes a reasonable balance between \"changes in clients\" and \"not using globals\".",
+      "revId": "3e5fa3547fbcb8410cd6fe0015ff9d6bdb5accd3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
