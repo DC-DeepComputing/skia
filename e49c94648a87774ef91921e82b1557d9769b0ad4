@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fdf310a5_3478b5ef",
+        "filename": "src/gpu/graphite/dawn/DawnUtils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-03-29T14:42:18Z",
+      "side": 1,
+      "message": "Move this up a line and align with the others ?",
+      "revId": "e49c94648a87774ef91921e82b1557d9769b0ad4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4bc8d55e_36da0b56",
+        "filename": "src/gpu/mtl/MtlUtils.mm",
+        "patchSetId": 2
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-03-29T14:42:18Z",
+      "side": 1,
+      "message": "Same here ?",
+      "revId": "e49c94648a87774ef91921e82b1557d9769b0ad4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
