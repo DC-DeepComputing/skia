@@ -7,6 +7,7 @@
 
 #include "src/gpu/ganesh/mtl/GrMtlRenderTarget.h"
 
+#include "include/gpu/ganesh/mtl/GrMtlBackendSurface.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 #include "src/gpu/ganesh/GrResourceProvider.h"
 #include "src/gpu/ganesh/mtl/GrMtlFramebuffer.h"
@@ -70,7 +71,7 @@ sk_sp<GrMtlRenderTarget> GrMtlRenderTarget::MakeWrappedRenderTarget(GrMtlGpu* gp
             }
             auto rp = gpu->getContext()->priv().resourceProvider();
             sk_sp<GrAttachment> msaaAttachment = rp->makeMSAAAttachment(
-                    dimensions, GrBackendFormat::MakeMtl(format), sampleCnt, GrProtected::kNo,
+                    dimensions, GrBackendFormats::MakeMtl(format), sampleCnt, GrProtected::kNo,
                     GrMemoryless::kNo);
             if (!msaaAttachment) {
                 return nullptr;
@@ -104,11 +105,11 @@ GrMtlRenderTarget::~GrMtlRenderTarget() {
 GrBackendRenderTarget GrMtlRenderTarget::getBackendRenderTarget() const {
     GrMtlTextureInfo info;
     info.fTexture.reset(GrRetainPtrFromId(fColorAttachment->mtlTexture()));
-    return GrBackendRenderTarget(this->width(), this->height(), info);
+    return GrBackendRenderTargets::MakeMtl(this->width(), this->height(), info);
 }
 
 GrBackendFormat GrMtlRenderTarget::backendFormat() const {
-    return GrBackendFormat::MakeMtl(fColorAttachment->mtlFormat());
+    return GrBackendFormats::MakeMtl(fColorAttachment->mtlFormat());
 }
 
 static int renderpass_features_to_index(bool hasResolve, bool hasStencil) {
