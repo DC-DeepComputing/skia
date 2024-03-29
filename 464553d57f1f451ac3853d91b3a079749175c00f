@@ -268,6 +268,24 @@
       "parentUuid": "54dc6048_060a608c",
       "revId": "464553d57f1f451ac3853d91b3a079749175c00f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a08c554_bd50c069",
+        "filename": "modules/skshaper/src/SkShaper_factory.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-03-29T16:39:02Z",
+      "side": 1,
+      "message": "I\u0027m not super thrilled with the idea of global variables in lib nor the static initializer that registers them. I personally do not like the idea that *only* deleting or adding a dep will cause something about the code to change behavior. There are tools that will try to clean up or fix deps, and they sometimes get it wrong. I wouldn\u0027t want such automated processes to risk breaking behavior without a compiler or linker error.",
+      "parentUuid": "6a17d318_7880d604",
+      "revId": "464553d57f1f451ac3853d91b3a079749175c00f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
