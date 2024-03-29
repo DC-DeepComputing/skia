@@ -232,6 +232,24 @@
       "parentUuid": "7dbfbbf6_f517515a",
       "revId": "464553d57f1f451ac3853d91b3a079749175c00f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54dc6048_060a608c",
+        "filename": "modules/skshaper/src/SkShaper_factory.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-03-29T14:52:55Z",
+      "side": 1,
+      "message": "Delegating the configuration to the clients is exactly the goal.\n\nThere still needs to be some C++ code that connects the shaper bit and the svg bit. It cannot happen automatically (and safely) through any technique I know of.\n\nThat C++ code can be a new method on the builder or passing in something like SkResources (e.g. `TextProvider` which the CL is currently playing around with.\n\nSending `SkShapers::BestAvailable()` to the builder was the lowest lift C++ I have been able to think of so far (that doesn\u0027t involve registering global state in Skia). `TextProvider` is a bit heavier weight, but makes a bit more sense to bundle the SkFontMgr with the shaper bits.",
+      "parentUuid": "7edaa041_ce43fcfe",
+      "revId": "464553d57f1f451ac3853d91b3a079749175c00f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

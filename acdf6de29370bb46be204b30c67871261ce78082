@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7911c4a5_0d8f33ee",
+        "filename": "modules/skottie/include/Skottie.h",
+        "patchSetId": 31
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-03-29T14:52:55Z",
+      "side": 1,
+      "message": "Does it? My goal was to make Skottie.h not need to include SkShapers_factory.h and I believe having the copy and move constructor be generated in the header caused the compiler to need the full class definition and not just a forward declaration.",
+      "parentUuid": "9267e106_a8ccd207",
+      "range": {
+        "startLine": 106,
+        "startChar": 0,
+        "endLine": 107,
+        "endChar": 27
+      },
+      "revId": "acdf6de29370bb46be204b30c67871261ce78082",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a24ea189_dc3bcf83",
         "filename": "modules/skottie/include/Skottie.h",
         "patchSetId": 31
@@ -37,6 +61,24 @@
       "writtenOn": "2024-03-29T14:44:28Z",
       "side": 1,
       "message": "Test change?\n```suggestion\n        Builder\u0026 setFontManager(sk_sp\u003cSkFontMgr\u003e);\n```",
+      "revId": "acdf6de29370bb46be204b30c67871261ce78082",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5be72989_346d27ee",
+        "filename": "modules/skottie/include/Skottie.h",
+        "patchSetId": 31
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-03-29T14:52:55Z",
+      "side": 1,
+      "message": "The current PS is work-in-progress trying to do what Ben suggested by adding a ResourceProvider like thing and I commented this out to fix all of Skia\u0027s changes.",
+      "parentUuid": "a24ea189_dc3bcf83",
       "revId": "acdf6de29370bb46be204b30c67871261ce78082",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
