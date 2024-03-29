@@ -250,6 +250,24 @@
       "parentUuid": "7edaa041_ce43fcfe",
       "revId": "464553d57f1f451ac3853d91b3a079749175c00f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a17d318_7880d604",
+        "filename": "modules/skshaper/src/SkShaper_factory.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-03-29T16:32:44Z",
+      "side": 1,
+      "message": "\u003e There still needs to be some C++ code that connects the shaper bit and the svg bit. It cannot happen automatically (and safely) through any technique I know of.\n\nThis seems to work fine, and is the same approach used by e.g. MediaPipe in production: http://shortn/_7BcO80c9fT\n\nAm I missing something regarding safety?",
+      "parentUuid": "54dc6048_060a608c",
+      "revId": "464553d57f1f451ac3853d91b3a079749175c00f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
