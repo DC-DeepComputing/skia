@@ -22,6 +22,30 @@
       },
       "revId": "8fad834dff3a0a1c000febe40645ace79cff7d4b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "201f52d2_c204c998",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 530,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-03-29T14:15:50Z",
+      "side": 0,
+      "message": "When I looked, it seemed like the first thing the recorder did was loop through all its devices and call flushPendingWork. But it is possible I misunderstood what was going on.",
+      "parentUuid": "34ab5c03_139102f1",
+      "range": {
+        "startLine": 530,
+        "startChar": 8,
+        "endLine": 530,
+        "endChar": 43
+      },
+      "revId": "8fad834dff3a0a1c000febe40645ace79cff7d4b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

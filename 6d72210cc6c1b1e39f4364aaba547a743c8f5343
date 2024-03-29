@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "63340d2a_00a996db",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 2972,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-03-29T14:15:50Z",
+      "side": 1,
+      "message": "This is the model used in the rest of the Viewer file already so I think for now it is at least worth just keeping it consistent. Though personally, unlike GMs where we just have the canvas, we actually know if we\u0027re running a graphite backend here so doesn\u0027t bad to just check that. But regardless if we like the checking recorder/context instead I think that should be done as a separate CL and switch all the users of is_graphite_backend_type",
+      "parentUuid": "052b0b7f_beeb7d3d",
+      "range": {
+        "startLine": 2972,
+        "startChar": 16,
+        "endLine": 2972,
+        "endChar": 54
+      },
+      "revId": "6d72210cc6c1b1e39f4364aaba547a743c8f5343",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "95624ab6_51c6afc5",
         "filename": "tools/viewer/Viewer.cpp",
         "patchSetId": 2
@@ -37,6 +61,30 @@
       "writtenOn": "2024-03-29T14:06:45Z",
       "side": 1,
       "message": "else?",
+      "range": {
+        "startLine": 2989,
+        "startChar": 12,
+        "endLine": 2989,
+        "endChar": 13
+      },
+      "revId": "6d72210cc6c1b1e39f4364aaba547a743c8f5343",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c40938c_412f1f49",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 2989,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-03-29T14:15:50Z",
+      "side": 1,
+      "message": "So how I have it setup right now else doesn\u0027t work because if we try to do the graphite readPixels and it fails, then we won\u0027t get to the \"Failed to readPixels line\".",
+      "parentUuid": "95624ab6_51c6afc5",
       "range": {
         "startLine": 2989,
         "startChar": 12,
