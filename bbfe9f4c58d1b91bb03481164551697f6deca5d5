@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0fd1811f_0a16b3da",
+        "filename": "gm/compressed_textures.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 331,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-03-29T19:44:23Z",
+      "side": 1,
+      "message": "compressed",
+      "range": {
+        "startLine": 331,
+        "startChar": 83,
+        "endLine": 331,
+        "endChar": 94
+      },
+      "revId": "bbfe9f4c58d1b91bb03481164551697f6deca5d5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
