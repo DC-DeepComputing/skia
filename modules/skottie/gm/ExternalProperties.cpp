@@ -13,8 +13,10 @@
 #include "modules/skottie/include/SkottieProperty.h"
 #include "modules/skottie/utils/SkottieUtils.h"
 #include "modules/skresources/include/SkResources.h"
+#include "modules/skshaper/include/SkShaper_factory.h"
+#include "modules/skshaper/utils/FactoryHelpers.h"
 #include "tools/Resources.h"
-#include "tools/fonts/FontToolUtils.h"
+#include "tools/fonts/TextProviderUtils.h"
 
 #include <cmath>
 #include <vector>
@@ -52,7 +54,7 @@ protected:
         if (auto stream = GetResourceAsStream(kSkottieResource)) {
             fPropManager = std::make_unique<skottie_utils::CustomPropertyManager>();
             fAnimation = skottie::Animation::Builder()
-                            .setFontManager(ToolUtils::TestFontMgr())
+                            .setTextProvider(ToolUtils::TestTextProvider())
                             .setResourceProvider(sk_make_sp<FakeWebFontProvider>())
                             .setPropertyObserver(fPropManager->getPropertyObserver())
                             .make(stream.get());

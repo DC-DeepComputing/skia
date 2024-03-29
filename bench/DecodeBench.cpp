@@ -13,7 +13,7 @@
 #include "modules/skottie/include/Skottie.h"
 #include "tools/DecodeUtils.h"
 #include "tools/Resources.h"
-#include "tools/fonts/FontToolUtils.h"
+#include "tools/fonts/TextProviderUtils.h"
 
 class DecodeBench : public Benchmark {
 protected:
@@ -68,7 +68,7 @@ public:
     void onDraw(int loops, SkCanvas*) override {
         while (loops-- > 0) {
             const auto anim = skottie::Animation::Builder()
-                .setFontManager(ToolUtils::TestFontMgr())
+                .setTextProvider(ToolUtils::TestTextProvider())
                 .make(reinterpret_cast<const char*>(fData->data()),
                                                     fData->size());
         }
@@ -87,7 +87,7 @@ public:
     void onDraw(int loops, SkCanvas*) override {
         while (loops-- > 0) {
             const auto anim = skottie::Animation::Builder()
-                .setFontManager(ToolUtils::TestFontMgr())
+                .setTextProvider(ToolUtils::TestTextProvider())
                 .make(reinterpret_cast<const char*>(fData->data()),
                                                     fData->size());
             SkPictureRecorder recorder;

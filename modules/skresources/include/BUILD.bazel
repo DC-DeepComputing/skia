@@ -6,6 +6,9 @@ exports_files_legacy()
 
 skia_filegroup(
     name = "hdrs",
-    srcs = ["SkResources.h"],
+    srcs = [
+        "SkResources.h",
+        "SkTextProvider.h",
+    ],
     visibility = ["//modules/skresources:__pkg__"],
 )
