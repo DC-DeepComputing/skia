@@ -150,6 +150,7 @@ SKIA_PUBLIC_HDRS = [
     "include/gpu/ganesh/gl/GrGLDirectContext.h",
     "include/gpu/ganesh/mtl/GrMtlBackendContext.h",
     "include/gpu/ganesh/mtl/GrMtlBackendSemaphore.h",
+    "include/gpu/ganesh/mtl/GrMtlBackendSurface.h",
     "include/gpu/ganesh/mtl/GrMtlDirectContext.h",
     "include/gpu/ganesh/mtl/GrMtlTypes.h",
     "include/gpu/ganesh/mtl/SkSurfaceMetal.h",
