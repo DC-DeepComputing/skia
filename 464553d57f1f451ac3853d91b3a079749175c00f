@@ -196,6 +196,24 @@
       "parentUuid": "7a30f6c1_a403404e",
       "revId": "464553d57f1f451ac3853d91b3a079749175c00f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7dbfbbf6_f517515a",
+        "filename": "modules/skshaper/src/SkShaper_factory.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-29T14:21:06Z",
+      "side": 1,
+      "message": "`modules/skshaper/utils/FactoryHelpers.h` exists purely for convenience, anyone could implement an `SkShapers::Factory` with whatever the want.\n\nSVG/Skottie can of course just select one of Skia\u0027s impls if they want, but that means that they need to depend on them directly. So yes, this is achievable at the build system level if SVG/Skottie  are willing to depend on one of Skia\u0027s impls directly.",
+      "parentUuid": "69b5a739_ab9b5b28",
+      "revId": "464553d57f1f451ac3853d91b3a079749175c00f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
