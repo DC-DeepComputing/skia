@@ -195,6 +195,27 @@ skia_filegroup(
 )
 
 skia_cc_library(
+    name = "json",
+    srcs = [
+        "SkJSON.cpp",
+        "SkJSONWriter.cpp",
+    ],
+    hdrs = [
+        "SkJSON.h",
+        "SkJSONWriter.h",
+    ],
+    visibility = [
+        "//bench:__pkg__",
+        "//gm:__pkg__",
+        "//tools/viewer:__pkg__",
+    ],
+    deps = [
+        "//:core",
+        "//src/base",
+    ],
+)
+
+skia_cc_library(
     name = "multi_picture_document",
     srcs = [
         "SkMultiPictureDocument.cpp",
@@ -205,6 +226,7 @@ skia_cc_library(
         "//include/docs:multi_picture_document_hdrs",
     ],
     visibility = [
+        "//tools:__pkg__",
         "//tools/debugger:__pkg__",
     ],
     deps = [
