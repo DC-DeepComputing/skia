@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d22e4109_9a41ebad",
+        "filename": "src/gpu/ganesh/GrGpuBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 3371831
+      },
+      "writtenOn": "2024-03-29T01:55:54Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "fda0f550_972f6d28",
+      "range": {
+        "startLine": 86,
+        "startChar": 18,
+        "endLine": 86,
+        "endChar": 25
+      },
+      "revId": "aebd7955d252af777ea8aeeca4b7d002a8522bb1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5b8caca4_3a423dbd",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-03-28T15:49:13Z",
       "side": 1,
       "message": "It probably wouldn\u0027t hurt to make the default functional -- i.e., map(), copy to the dst from the mapped data, and unmap().",
+      "range": {
+        "startLine": 141,
+        "startChar": 68,
+        "endLine": 141,
+        "endChar": 81
+      },
+      "revId": "aebd7955d252af777ea8aeeca4b7d002a8522bb1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "72805563_3ee08e6b",
+        "filename": "src/gpu/ganesh/GrGpuBuffer.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 3371831
+      },
+      "writtenOn": "2024-03-29T01:55:54Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "5b8caca4_3a423dbd",
       "range": {
         "startLine": 141,
         "startChar": 68,
@@ -64,6 +112,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5be8fc3b_e1a5c712",
+        "filename": "src/gpu/ganesh/gl/GrGLAssembleGLInterfaceAutogen.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 3371831
+      },
+      "writtenOn": "2024-03-29T01:55:54Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "bbfdbcbf_2dcb6640",
+      "revId": "aebd7955d252af777ea8aeeca4b7d002a8522bb1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "49e210f8_aed76907",
@@ -77,6 +143,24 @@
       "writtenOn": "2024-03-28T16:04:34Z",
       "side": 1,
       "message": "I guess we only need to call bindBuffer under the if statement?",
+      "revId": "aebd7955d252af777ea8aeeca4b7d002a8522bb1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "49116436_05c8c31a",
+        "filename": "src/gpu/ganesh/gl/GrGLBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 282,
+      "author": {
+        "id": 3371831
+      },
+      "writtenOn": "2024-03-29T01:55:54Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "49e210f8_aed76907",
       "revId": "aebd7955d252af777ea8aeeca4b7d002a8522bb1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
