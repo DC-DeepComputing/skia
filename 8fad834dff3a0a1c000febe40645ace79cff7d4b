@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "34ab5c03_139102f1",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 530,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-03-29T14:06:45Z",
+      "side": 0,
+      "message": "I think this might be needed, unless something has changed.",
+      "range": {
+        "startLine": 530,
+        "startChar": 8,
+        "endLine": 530,
+        "endChar": 43
+      },
+      "revId": "8fad834dff3a0a1c000febe40645ace79cff7d4b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

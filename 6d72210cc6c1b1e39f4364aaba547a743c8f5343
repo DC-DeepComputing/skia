@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "052b0b7f_beeb7d3d",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 2972,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-03-29T14:06:45Z",
+      "side": 1,
+      "message": "In the GMs we\u0027re switching on whether the SkCanvas has a Recorder. I think this is fine but mentioning it in case you want to be consistent with that.",
+      "range": {
+        "startLine": 2972,
+        "startChar": 16,
+        "endLine": 2972,
+        "endChar": 54
+      },
+      "revId": "6d72210cc6c1b1e39f4364aaba547a743c8f5343",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "95624ab6_51c6afc5",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 2989,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-03-29T14:06:45Z",
+      "side": 1,
+      "message": "else?",
+      "range": {
+        "startLine": 2989,
+        "startChar": 12,
+        "endLine": 2989,
+        "endChar": 13
+      },
+      "revId": "6d72210cc6c1b1e39f4364aaba547a743c8f5343",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
