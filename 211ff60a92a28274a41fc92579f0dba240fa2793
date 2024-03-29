@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc065ed3_453fe086",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 33
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-03-29T16:18:51Z",
+      "side": 1,
+      "message": "A big difference for the clients between PS 32 and PS 30 is that they will now have to implement a new class in order to use text with Skia. PS 30 had the upshot of them just adding one line to their builder without creating a custom implementation.",
+      "revId": "211ff60a92a28274a41fc92579f0dba240fa2793",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
