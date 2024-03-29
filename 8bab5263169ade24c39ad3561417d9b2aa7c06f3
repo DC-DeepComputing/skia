@@ -1,0 +1,136 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "76c67a52_8244cf5b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-03-29T13:02:08Z",
+      "side": 1,
+      "message": "Do we have tests that will test this new code path?",
+      "revId": "8bab5263169ade24c39ad3561417d9b2aa7c06f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "62517832_6a4527e6",
+        "filename": "src/gpu/AsyncReadTypes.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-03-29T13:02:08Z",
+      "side": 1,
+      "message": "Not sure if it is worth it or not, but this code is the same as the code right below it. Is it worth abstracting them out to helper function or lambda or restructuring these checks slightly to only need the code block once? What are others thoughts here?",
+      "range": {
+        "startLine": 162,
+        "startChar": 0,
+        "endLine": 165,
+        "endChar": 60
+      },
+      "revId": "8bab5263169ade24c39ad3561417d9b2aa7c06f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1af329fd_d23b66ee",
+        "filename": "src/gpu/ganesh/GrGpuBuffer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-03-29T13:02:08Z",
+      "side": 1,
+      "message": "Should we have some code to validate the offset and size that are passed in fit within our buffer allocation?",
+      "range": {
+        "startLine": 86,
+        "startChar": 37,
+        "endLine": 86,
+        "endChar": 63
+      },
+      "revId": "8bab5263169ade24c39ad3561417d9b2aa7c06f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "129c8099_9e64c9d2",
+        "filename": "src/gpu/ganesh/gl/GrGLBuffer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-03-29T13:02:08Z",
+      "side": 1,
+      "message": "is this api valid to be called on all types of buffers?",
+      "range": {
+        "startLine": 287,
+        "startChar": 12,
+        "endLine": 287,
+        "endChar": 28
+      },
+      "revId": "8bab5263169ade24c39ad3561417d9b2aa7c06f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f4604520_2c4e962d",
+        "filename": "src/gpu/ganesh/gl/GrGLCaps.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 405,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-03-29T13:02:08Z",
+      "side": 1,
+      "message": "Is this the correct version for both OpenGL and WebGL? or should this check be something like:\n\n```\nif (GR_IS_GR_GL(standard) ||\n    (GR_IS_GR_WEBGL(standard) \u0026\u0026 version \u003e\u003d GR_GL_VER(2, 0))\n```",
+      "range": {
+        "startLine": 405,
+        "startChar": 46,
+        "endLine": 405,
+        "endChar": 62
+      },
+      "revId": "8bab5263169ade24c39ad3561417d9b2aa7c06f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "feab30f9_c49ca00d",
+        "filename": "src/gpu/ganesh/gl/GrGLCaps.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 568,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-03-29T13:02:08Z",
+      "side": 1,
+      "message": "can we move all the checks down to the next if block where we are setting these flags for all the cases cases",
+      "range": {
+        "startLine": 565,
+        "startChar": 5,
+        "endLine": 568,
+        "endChar": 63
+      },
+      "revId": "8bab5263169ade24c39ad3561417d9b2aa7c06f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
