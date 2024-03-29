@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "934c88cd_c7dfd0f3",
+        "filename": "tools/sk_app/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-03-29T19:33:38Z",
+      "side": 1,
+      "message": "nit: remove your name here",
+      "range": {
+        "startLine": 62,
+        "startChar": 25,
+        "endLine": 62,
+        "endChar": 33
+      },
+      "revId": "3e6ba42b95a840816fd2e55861683831e494f4c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
