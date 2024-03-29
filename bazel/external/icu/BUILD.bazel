@@ -1021,8 +1021,6 @@ cc_library(
         "-Wno-unused-function",
     ],
     defines = [
-        "U_USING_ICU_NAMESPACE=0",
-        "U_DISABLE_RENAMING",
         "SK_USING_THIRD_PARTY_ICU",
     ],
     includes = [
@@ -1035,6 +1033,8 @@ cc_library(
         "U_STATIC_IMPLEMENTATION",
         "U_ENABLE_DYLOAD=0",
         "U_I18N_IMPLEMENTATION",
+        "U_DISABLE_RENAMING",
+        "U_USING_ICU_NAMESPACE=0",
 
         # If we don't set this to zero, ICU will set it to 600,
         # which makes Macs set _POSIX_C_SOURCE=200112L,
