@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "90091afd_6bbab761",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 2972,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-03-29T15:22:01Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "63340d2a_00a996db",
+      "range": {
+        "startLine": 2972,
+        "startChar": 16,
+        "endLine": 2972,
+        "endChar": 54
+      },
+      "revId": "6d72210cc6c1b1e39f4364aaba547a743c8f5343",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "95624ab6_51c6afc5",
@@ -85,6 +109,30 @@
       "side": 1,
       "message": "So how I have it setup right now else doesn\u0027t work because if we try to do the graphite readPixels and it fails, then we won\u0027t get to the \"Failed to readPixels line\".",
       "parentUuid": "95624ab6_51c6afc5",
+      "range": {
+        "startLine": 2989,
+        "startChar": 12,
+        "endLine": 2989,
+        "endChar": 13
+      },
+      "revId": "6d72210cc6c1b1e39f4364aaba547a743c8f5343",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c495d562_51ca80fe",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 2989,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-03-29T15:22:01Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "8c40938c_412f1f49",
       "range": {
         "startLine": 2989,
         "startChar": 12,
