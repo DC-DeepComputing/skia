@@ -33,6 +33,24 @@
       "message": "This is a quite common operation that should probably be in a library. It doesn\u0027t seem like every user of Fontations should need to know this level of minutia for the common task of just wanting a family or style name. For instance, FreeType exposes this as `family_name` and `style_name` with DirectWrite providing a more modern (and more like Fontations) IDWriteFontFamily::GetFamilyNames (family names, like this) and IDWriteFont::GetFaceNames (style names, like \"Regular\" or \"Bold\") which return a set of localized strings much like `localized_strings` but automatically pick the `StringId`.\n\nPerhaps that what Fontations should expose, a `FontRef.family_name() -\u003e StringId` and a `FontRef.style_name() -\u003e StringId` which would look at the WWS and which name ids are available and return which `StringId` should be requested. (They could also return the appropriate `LocalizedStrings` directly if that makes sense.)",
       "revId": "85a889abfdf9d77ebf8a59e20d74df0c39b38545",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d8eea4ce_d5a205f8",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 1
+      },
+      "lineNbr": 467,
+      "author": {
+        "id": 19969
+      },
+      "writtenOn": "2024-03-30T02:12:39Z",
+      "side": 1,
+      "message": "We can definitely clean this up a bit on our end and provide more convenient accessors. DirectWrite is a good model to copy. I\u0027ll take a look at this next week.\n\nIn the meantime, this change LGTM.",
+      "parentUuid": "654984a7_330cb911",
+      "revId": "85a889abfdf9d77ebf8a59e20d74df0c39b38545",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
