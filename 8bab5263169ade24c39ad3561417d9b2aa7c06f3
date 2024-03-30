@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a0ea430b_d0c61be3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3371831
+      },
+      "writtenOn": "2024-03-30T00:40:02Z",
+      "side": 1,
+      "message": "Not yet. I\u0027ll try to write test cases cover this code path.",
+      "parentUuid": "e61e8cd6_0c1140ae",
+      "revId": "8bab5263169ade24c39ad3561417d9b2aa7c06f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "62517832_6a4527e6",
         "filename": "src/gpu/AsyncReadTypes.h",
         "patchSetId": 4
@@ -82,6 +100,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c17eb418_8ab6b178",
+        "filename": "src/gpu/ganesh/GrGpuBuffer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 3371831
+      },
+      "writtenOn": "2024-03-30T00:40:02Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "1af329fd_d23b66ee",
+      "range": {
+        "startLine": 86,
+        "startChar": 37,
+        "endLine": 86,
+        "endChar": 63
+      },
+      "revId": "8bab5263169ade24c39ad3561417d9b2aa7c06f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "129c8099_9e64c9d2",
@@ -95,6 +137,30 @@
       "writtenOn": "2024-03-29T13:02:08Z",
       "side": 1,
       "message": "is this api valid to be called on all types of buffers?",
+      "range": {
+        "startLine": 287,
+        "startChar": 12,
+        "endLine": 287,
+        "endChar": 28
+      },
+      "revId": "8bab5263169ade24c39ad3561417d9b2aa7c06f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cf945a77_f93f0da4",
+        "filename": "src/gpu/ganesh/gl/GrGLBuffer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 3371831
+      },
+      "writtenOn": "2024-03-30T00:40:02Z",
+      "side": 1,
+      "message": "Yes. All binding point valid as parameter for glBindBuffer are also valid for this call.",
+      "parentUuid": "129c8099_9e64c9d2",
       "range": {
         "startLine": 287,
         "startChar": 12,
@@ -128,6 +194,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dfe99935_3b04dda3",
+        "filename": "src/gpu/ganesh/gl/GrGLCaps.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 405,
+      "author": {
+        "id": 3371831
+      },
+      "writtenOn": "2024-03-30T00:40:02Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "f4604520_2c4e962d",
+      "range": {
+        "startLine": 405,
+        "startChar": 46,
+        "endLine": 405,
+        "endChar": 62
+      },
+      "revId": "8bab5263169ade24c39ad3561417d9b2aa7c06f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "feab30f9_c49ca00d",
@@ -141,6 +231,30 @@
       "writtenOn": "2024-03-29T13:02:08Z",
       "side": 1,
       "message": "can we move all the checks down to the next if block where we are setting these flags for all the cases cases",
+      "range": {
+        "startLine": 565,
+        "startChar": 5,
+        "endLine": 568,
+        "endChar": 63
+      },
+      "revId": "8bab5263169ade24c39ad3561417d9b2aa7c06f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d5f8700_5d649d07",
+        "filename": "src/gpu/ganesh/gl/GrGLCaps.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 568,
+      "author": {
+        "id": 3371831
+      },
+      "writtenOn": "2024-03-30T00:40:02Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "feab30f9_c49ca00d",
       "range": {
         "startLine": 565,
         "startChar": 5,
