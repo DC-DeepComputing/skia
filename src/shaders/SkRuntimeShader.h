@@ -37,7 +37,8 @@ public:
     SkRuntimeShader(sk_sp<SkRuntimeEffect> effect,
                     sk_sp<SkSL::DebugTracePriv> debugTrace,
                     UniformsCallback uniformsCallback,
-                    SkSpan<const SkRuntimeEffect::ChildPtr> children);
+                    SkSpan<const SkRuntimeEffect::ChildPtr> children,
+                    bool);
 
     SkRuntimeEffect::TracedShader makeTracedClone(const SkIPoint& coord);
 
@@ -54,7 +55,7 @@ public:
     sk_sp<SkRuntimeEffect> effect() const { return fEffect; }
     SkSpan<const SkRuntimeEffect::ChildPtr> children() const { return fChildren; }
 
-    sk_sp<const SkData> uniformData(const SkColorSpace* dstCS) const;
+    sk_sp<const SkData> uniformData7(const SkColorSpace* dstCS) const;
 
     SK_FLATTENABLE_HOOKS(SkRuntimeShader)
 
