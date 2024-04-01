@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51b15744_a6b5913a",
+        "filename": "modules/skparagraph/tests/SkParagraphTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 5428,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-01T19:38:57Z",
+      "side": 0,
+      "message": "The history of this is interesting as it started out just drawing the paragraph and ensuring there wasn\u0027t any crash. When the `TestCanvas` was removed this assert was added, but this assert depends on no typeface being found to cover `\\u0000` which is quite likely, however some fallback or default should have been found. This change ensures that this test does find a typeface when one is available.",
+      "revId": "e260657d145aa14aa5e2a2db31cd658d62b31b5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
