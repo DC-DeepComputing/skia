@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8be75a0c_790b1131",
+        "filename": "tools/viewer/BlurTweakSlide.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-01T14:39:20Z",
+      "side": 1,
+      "message": "There is also the related function `skgpu::BlurSigmaRadius` which is sigma-\u003eradius as `ceil(3*sigma)`.\n\nAlthough the ceil messes with things, that\u0027s approximately `3s+1/2`, so the inverse would could be `(r-1/2)/3`, which doesn\u0027t appear to match any of the existing functions.",
+      "range": {
+        "startLine": 21,
+        "startChar": 13,
+        "endLine": 21,
+        "endChar": 41
+      },
+      "revId": "f4e3acfed84f18aa58832d05ba93a622b9626e4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba3128b7_6b9c6554",
+        "filename": "tools/viewer/BlurTweakSlide.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-01T14:39:20Z",
+      "side": 1,
+      "message": "They don\u0027t always share code paths, but it\u0027d be good if mask filter blurs and image filter blurs agreed with how a blurred opaque rectangle looked.",
+      "range": {
+        "startLine": 73,
+        "startChar": 0,
+        "endLine": 73,
+        "endChar": 88
+      },
+      "revId": "f4e3acfed84f18aa58832d05ba93a622b9626e4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ce62f057_ae848d0b",
+        "filename": "tools/viewer/BlurTweakSlide.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-01T14:39:20Z",
+      "side": 1,
+      "message": "From the screenshot you showed, this is placing the yellow circles on the first pixel that\u0027s non-zero, which makes sense, but visually that looks like such a fast increase from fully black to a dark gray. Did you increase the constrast in the screenshot? Is it just an issue with lack of dithering?",
+      "range": {
+        "startLine": 82,
+        "startChar": 0,
+        "endLine": 82,
+        "endChar": 67
+      },
+      "revId": "f4e3acfed84f18aa58832d05ba93a622b9626e4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33baf4cc_d9840f65",
+        "filename": "tools/viewer/BlurTweakSlide.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-01T14:39:20Z",
+      "side": 1,
+      "message": "It could also be helpful to visualize the analytic gaussian and where its integral would be less than `1/2*1/255`?",
+      "range": {
+        "startLine": 114,
+        "startChar": 0,
+        "endLine": 115,
+        "endChar": 77
+      },
+      "revId": "f4e3acfed84f18aa58832d05ba93a622b9626e4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
