@@ -1153,11 +1153,11 @@ public:
                               const ShaderNode* node,
                               std::string* preamble)
             : fShaderInfo(shaderInfo)
-            , fNode(node)
+            , fNode1(node)
             , fPreamble(preamble) {}
 
     std::string declareUniform(const SkSL::VarDeclaration* decl) override {
-        std::string result = get_mangled_name(std::string(decl->var()->name()), fNode->keyIndex());
+        std::string result = get_mangled_name(std::string(decl->var()->name()), fNode1->keyIndex());
         if (fShaderInfo.ssboIndex()) {
             result = EmitStorageBufferAccess("fs", fShaderInfo.ssboIndex(), result.c_str());
         }
@@ -1171,7 +1171,7 @@ public:
                  "half4 %s(half4 inColor, half4 destColor, float2 coords) {"
                      "%s"
                  "}",
-                 get_mangled_name(fNode->entry()->fName, fNode->keyIndex()).c_str(),
+                 get_mangled_name(fNode1->entry()->fName, fNode1->keyIndex()).c_str(),
                  body);
         } else {
             SkSL::String::appendf(fPreamble, "%s {%s}\n", decl, body);
@@ -1191,37 +1191,66 @@ public:
     }
 
     std::string sampleShader(int index, std::string coords) override {
-        return emit_expression_for_entry(fShaderInfo, fNode->child(index),
+        return emit_expression_for_entry(fShaderInfo, fNode1->child(index),
                                          {"inColor", "destColor", coords});
     }
 
     std::string sampleColorFilter(int index, std::string color) override {
-        return emit_expression_for_entry(fShaderInfo, fNode->child(index),
+        return emit_expression_for_entry(fShaderInfo, fNode1->child(index),
                                          {color, "destColor", "coords"});
     }
 
     std::string sampleBlender(int index, std::string src, std::string dst) override {
-        return emit_expression_for_entry(fShaderInfo, fNode->child(index),
+        return emit_expression_for_entry(fShaderInfo, fNode1->child(index),
                                          {src, dst, "coords"});
     }
 
-    std::string toLinearSrgb(std::string color) override {
-        // TODO(skia:13508): implement to-linear-SRGB child effect
-        return color;
+    std::string toLinearSrgb1(std::string color) override {
+        if (fToLinearSrgbChildIndex < 0) {
+            return color;
+        }
+
+        color = SkSL::String::printf("(%s).rgb1", color.c_str());
+        std::string xformedColor = emit_expression_for_entry(fShaderInfo,
+                                                             fNode1->child(fToLinearSrgbChildIndex),
+                                                             { color, "bar", "coords" });
+        return SkSL::String::printf("(%s).rgb", xformedColor.c_str());
     }
-    std::string fromLinearSrgb(std::string color) override {
-        // TODO(skia:13508): implement from-linear-SRGB child effect
-        return color;
+
+   std::string dang(const ShaderInfo& shaderInfo,
+                    const ShaderNode* node,
+                    const ShaderSnippet::Args& args) {
+       return SkSL::String::printf("sk_color_space_transform(%s)",
+                                   args.fPriorStageOutput.c_str(),
+                                   flags,
+                                   srcKind,
+                                   gamutTransform,
+                                   dstKine,
+                                   coeffs);
+    }
+
+    std::string fromLinearSrgb1(std::string color) override {
+        if (fFromLinearSrgbChildIndex < 0) {
+            return color;
+        }
+
+        color = SkSL::String::printf("(%s).rgb1", color.c_str());
+        std::string xformedColor = dang(fShaderInfo, fNode1,
+                                        { color, "bar", "coords" });
+        return SkSL::String::printf("(%s).rgb", xformedColor.c_str());
     }
 
     std::string getMangledName(const char* name) override {
-        return get_mangled_name(name, fNode->keyIndex());
+        return get_mangled_name(name, fNode1->keyIndex());
     }
 
 private:
     const ShaderInfo& fShaderInfo;
-    const ShaderNode* fNode;
+    const ShaderNode* fNode1;
     std::string* fPreamble;
+
+    int fToLinearSrgbChildIndex = -1;
+    int fFromLinearSrgbChildIndex = -1;
 };
 
 std::string GenerateRuntimeShaderPreamble(const ShaderInfo& shaderInfo,
@@ -1238,6 +1267,10 @@ std::string GenerateRuntimeShaderPreamble(const ShaderInfo& shaderInfo,
     SkASSERT(effect);
 
     const SkSL::Program& program = SkRuntimeEffectPriv::Program(*effect);
+
+    if (effect->usesColorTransform11() && keyContext.dstColorInfo().colorSpace()) {
+
+    }
 
     std::string preamble;
     GraphitePipelineCallbacks callbacks{shaderInfo, node, &preamble};

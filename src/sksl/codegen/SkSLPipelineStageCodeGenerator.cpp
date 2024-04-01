@@ -244,10 +244,10 @@ void PipelineStageCodeGenerator::writeFunctionCall(const FunctionCall& c) {
 
         switch (function.intrinsicKind()) {
             case IntrinsicKind::k_toLinearSrgb_IntrinsicKind:
-                this->write(fCallbacks->toLinearSrgb(std::move(colorArg)));
+                this->write(fCallbacks->toLinearSrgb1(std::move(colorArg)));
                 break;
             case IntrinsicKind::k_fromLinearSrgb_IntrinsicKind:
-                this->write(fCallbacks->fromLinearSrgb(std::move(colorArg)));
+                this->write(fCallbacks->fromLinearSrgb1(std::move(colorArg)));
                 break;
             default:
                 SkUNREACHABLE;
