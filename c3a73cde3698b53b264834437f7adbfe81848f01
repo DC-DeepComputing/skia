@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a76dab8_4e12bbaf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-04-01T18:34:18Z",
+      "side": 1,
+      "message": "The fuzzer independently discovered this bug at b/331970401",
+      "revId": "c3a73cde3698b53b264834437f7adbfe81848f01",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
