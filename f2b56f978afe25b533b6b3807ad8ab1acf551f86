@@ -22,6 +22,30 @@
       },
       "revId": "f2b56f978afe25b533b6b3807ad8ab1acf551f86",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "408b8f40_176f3d73",
+        "filename": "src/gpu/ganesh/glsl/GrGLSLShaderBuilder.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-04-01T18:02:43Z",
+      "side": 1,
+      "message": "FWIW, `uniformHandler` is just a pointer, so taking a copy of it or a reference to it really doesn\u0027t matter either way. Since this is just basically a helper method that lives inside the function, and its lifetime doesn\u0027t escape, I would be fine with `[\u0026]`, but it\u0027s really not a big deal regardless.",
+      "parentUuid": "b492b06a_bd632034",
+      "range": {
+        "startLine": 153,
+        "startChar": 30,
+        "endLine": 153,
+        "endChar": 44
+      },
+      "revId": "f2b56f978afe25b533b6b3807ad8ab1acf551f86",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
