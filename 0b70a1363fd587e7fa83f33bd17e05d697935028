@@ -72,6 +72,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "090ce052_aac937a3",
+        "filename": "bench/MathBench.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 615,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-04-01T16:56:25Z",
+      "side": 1,
+      "message": "http://review.skia.org/834699\n\nYup, this is an obsolete bench",
+      "parentUuid": "9d8424d9_05cd2e3c",
+      "range": {
+        "startLine": 615,
+        "startChar": 12,
+        "endLine": 615,
+        "endChar": 21
+      },
+      "revId": "0b70a1363fd587e7fa83f33bd17e05d697935028",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "efae951a_aef5d21b",
         "filename": "bench/MatrixBench.cpp",
         "patchSetId": 6
