@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d45e156_ef569539",
+        "filename": "bench/ColorPrivBench.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-04-01T16:44:31Z",
+      "side": 1,
+      "message": "See if you can do `junk \u003d` and the bench still works.",
+      "range": {
+        "startLine": 68,
+        "startChar": 24,
+        "endLine": 68,
+        "endChar": 31
+      },
+      "revId": "0b70a1363fd587e7fa83f33bd17e05d697935028",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b5c5c54_c37fd983",
+        "filename": "bench/GeometryBench.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-04-01T16:44:31Z",
+      "side": 1,
+      "message": "Just use `fVolatileInt \u003d n` instead?",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 26
+      },
+      "revId": "0b70a1363fd587e7fa83f33bd17e05d697935028",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9d8424d9_05cd2e3c",
+        "filename": "bench/MathBench.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 615,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-04-01T16:44:31Z",
+      "side": 1,
+      "message": "You can delete this bench--no one is looking closely at the benchmarks for integer div-mod anymore. (If you look at SkTDivMod, there is some cleverness that is intended to generate better code on GCC + ARM32, but it\u0027s a ten year old piece of code, and we don\u0027t use GCC anymore, so it\u0027s very unlikely to matter. I might remove it actually.)",
+      "range": {
+        "startLine": 615,
+        "startChar": 12,
+        "endLine": 615,
+        "endChar": 21
+      },
+      "revId": "0b70a1363fd587e7fa83f33bd17e05d697935028",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "efae951a_aef5d21b",
+        "filename": "bench/MatrixBench.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-04-01T16:44:31Z",
+      "side": 1,
+      "message": "Just delete this bench. No one is using it anymore.",
+      "range": {
+        "startLine": 57,
+        "startChar": 0,
+        "endLine": 57,
+        "endChar": 1
+      },
+      "revId": "0b70a1363fd587e7fa83f33bd17e05d697935028",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06bbc696_56823dcf",
+        "filename": "bench/MatrixBench.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-04-01T16:44:31Z",
+      "side": 1,
+      "message": "No one is working on SkMatrix::setAll optimization anymore. You can delete this bench.",
+      "range": {
+        "startLine": 127,
+        "startChar": 16,
+        "endLine": 127,
+        "endChar": 22
+      },
+      "revId": "0b70a1363fd587e7fa83f33bd17e05d697935028",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65e40d7f_9509186e",
+        "filename": "bench/ScalarBench.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-04-01T16:44:31Z",
+      "side": 1,
+      "message": "You know what? We can delete this whole cpp file. We don\u0027t have a dedicated SkScalar type anymore. These benchmarks are worthless.",
+      "range": {
+        "startLine": 61,
+        "startChar": 0,
+        "endLine": 61,
+        "endChar": 22
+      },
+      "revId": "0b70a1363fd587e7fa83f33bd17e05d697935028",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
