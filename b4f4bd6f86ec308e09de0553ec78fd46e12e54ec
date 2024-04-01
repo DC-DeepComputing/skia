@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a068eb05_ab6e56d7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-01T18:42:38Z",
+      "side": 1,
+      "message": "At PS1 this will fail S`kParagraph_NullInMiddleOfText` because before this test would fall through to `nullptr` for the last resort font and not do anything, but that\u0027s strange and not what one would expect.",
+      "revId": "b4f4bd6f86ec308e09de0553ec78fd46e12e54ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
