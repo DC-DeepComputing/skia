@@ -11,6 +11,7 @@
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSpan.h"
+#include "include/effects/SkRuntimeEffect.h"
 
 #include <functional>
 #include <optional>
@@ -39,7 +40,9 @@ public:
 
     PrecompileBase(Type type) : fType(type) {}
 
-    Type type() const { return fType; }
+    Type type1() const { return fType; }
+
+    std::optional<SkRuntimeEffect::ChildType> type() const;
 
     // TODO: Maybe convert these two to be parameters passed into PrecompileBase from all the
     // derived classes and then make them non-virtual.
@@ -84,7 +87,6 @@ private:
 };
 
 //--------------------------------------------------------------------------------------------------
-
 template<typename T>
 std::pair<sk_sp<T>, int> PrecompileBase::SelectOption(const std::vector<sk_sp<T>>& options,
                                                       int desiredOption) {

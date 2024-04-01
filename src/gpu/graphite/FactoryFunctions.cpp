@@ -31,7 +31,7 @@ bool precompilebase_is_valid_as_child(const PrecompileBase *child) {
         return true;
     }
 
-    switch (child->type()) {
+    switch (child->type1()) {
         case PrecompileBase::Type::kShader:
         case PrecompileBase::Type::kColorFilter:
         case PrecompileBase::Type::kBlender:
@@ -1031,6 +1031,23 @@ sk_sp<PrecompileColorFilter> PrecompileColorFilters::Matrix() {
 
 sk_sp<PrecompileColorFilter> PrecompileColorFilters::HSLAMatrix() {
     return sk_make_sp<PrecompileMatrixColorFilter>();
+}
+
+//--------------------------------------------------------------------------------------------------
+sk_sp<PrecompileColorFilter> PrecompileColorFilters::Lerp(
+        SkSpan<const sk_sp<PrecompileColorFilter>> dstOptions,
+        SkSpan<const sk_sp<PrecompileColorFilter>> srcOptions) {
+
+    if (dstOptions.empty() && srcOptions.empty()) {
+        return nullptr;
+    }
+
+    const SkRuntimeEffect* lerpEffect =
+            GetKnownRuntimeEffect(SkKnownRuntimeEffects::StableKey::kLerp);
+
+
+    PrecompileChildOptions inputs[] =  { dstOptions, srcOptions };
+    return MakePrecompileColorFilter(sk_ref_sp(lerpEffect), inputs);
 }
 
 //--------------------------------------------------------------------------------------------------
