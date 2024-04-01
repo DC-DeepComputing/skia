@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "73122f6b_582e85cf",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 925,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-04-01T21:01:41Z",
+      "side": 1,
+      "message": "Good idea -- done! (Feel free to suggest comment edits tho)",
+      "parentUuid": "67f6c62a_24320554",
+      "revId": "5bf548fd6d0c0c0005851ff9b1da64de8357ec57",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "883b283f_fae43d03",
@@ -117,6 +135,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c0f2621c_f6087587",
+        "filename": "src/gpu/graphite/vk/VulkanGraphiteUtilsPriv.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-04-01T21:01:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "794204ad_714bf4de",
+      "range": {
+        "startLine": 19,
+        "startChar": 94,
+        "endLine": 19,
+        "endChar": 95
+      },
+      "revId": "5bf548fd6d0c0c0005851ff9b1da64de8357ec57",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa2a2003_7ec0fc9b",
+        "filename": "src/gpu/graphite/vk/VulkanGraphiteUtilsPriv.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-04-01T21:01:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "59a057fd_f4f655a3",
+      "range": {
+        "startLine": 19,
+        "startChar": 57,
+        "endLine": 19,
+        "endChar": 58
+      },
+      "revId": "5bf548fd6d0c0c0005851ff9b1da64de8357ec57",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f1667de8_4df525d2",
@@ -130,6 +196,30 @@
       "writtenOn": "2024-04-01T20:19:55Z",
       "side": 1,
       "message": "nit: rm `Note: ` and just start with `This must...` and rm the comma after `checkVkResult`\n```suggestion\n// This must be called before checkVkResult since this does not log if the VulkanSharedContext is\n```",
+      "range": {
+        "startLine": 24,
+        "startChar": 3,
+        "endLine": 24,
+        "endChar": 13
+      },
+      "revId": "5bf548fd6d0c0c0005851ff9b1da64de8357ec57",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8bcf2b9_5c568816",
+        "filename": "src/gpu/graphite/vk/VulkanGraphiteUtilsPriv.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-04-01T21:01:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f1667de8_4df525d2",
       "range": {
         "startLine": 24,
         "startChar": 3,
