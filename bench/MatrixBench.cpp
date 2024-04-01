@@ -52,11 +52,23 @@ protected:
         m1.reset();
         m2.reset();
 
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-volatile"
+#elif defined(__GNUC__) && __GNUC__ >= 13
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-volatile"
+#endif
         // xor into a volatile prevents these comparisons from being optimized away.
         [[maybe_unused]] volatile bool junk = false;
         junk ^= (m0 == m1);
         junk ^= (m1 == m2);
         junk ^= (m2 == m0);
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#elif defined(__GNUC__) && __GNUC__ >= 13
+#pragma GCC diagnostic pop
+#endif
     }
 private:
     using INHERITED = MatrixBench;
@@ -115,6 +127,13 @@ protected:
         fMatrix.setAll(fArray[0], fArray[1], fArray[2],
                        fArray[3], fArray[4], fArray[5],
                        fArray[6], fArray[7], fArray[8]);
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-volatile"
+#elif defined(__GNUC__) && __GNUC__ >= 13
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-volatile"
+#endif
         // xoring into a volatile prevents the compiler from optimizing these away
         [[maybe_unused]] volatile int junk = 0;
         junk ^= (fMatrix.getType());
@@ -132,6 +151,11 @@ protected:
         junk ^= (fMatrix.getType());
         fMatrix.dirtyMatrixTypeCache();
         junk ^= (fMatrix.getType());
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#elif defined(__GNUC__) && __GNUC__ >= 13
+#pragma GCC diagnostic pop
+#endif
     }
 private:
     SkMatrix fMatrix;

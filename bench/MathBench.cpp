@@ -612,6 +612,13 @@ protected:
     }
 
     void onDraw(int loops, SkCanvas*) override {
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-volatile"
+#elif defined(__GNUC__) && __GNUC__ >= 13
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-volatile"
+#endif
         volatile T a = 0, b = 0;
         T div = 0, mod = 0;
         for (int i = 0; i < loops; i++) {
@@ -620,6 +627,11 @@ protected:
             a ^= div;
             b ^= mod;
         }
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#elif defined(__GNUC__) && __GNUC__ >= 13
+#pragma GCC diagnostic pop
+#endif
     }
 };
 DEF_BENCH(return new DivModBench<uint8_t>("uint8_t"))
