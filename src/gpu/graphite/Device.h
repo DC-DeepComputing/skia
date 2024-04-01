@@ -85,12 +85,8 @@ public:
 
     const Transform& localToDeviceTransform();
 
-    bool isImmutable() const { return fImmutable; }
-    void setImmutable() override {
-        // Don't abandon the recorder, we might still need to flush pending work or create copies
-        // for snapSpecialImage().
-        fImmutable = true;
-    }
+    // Flushes any pending work to the recorder and then deregisters and abandons the recorder.
+    void setImmutable() override;
 
     SkStrikeDeviceInfo strikeDeviceInfo() const override;
 

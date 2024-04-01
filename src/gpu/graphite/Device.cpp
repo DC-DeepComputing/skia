@@ -391,14 +391,28 @@ Device::Device(Recorder* recorder,
 }
 
 Device::~Device() {
-    if (fRecorder) {
-        this->flushPendingWorkToRecorder();
-        fRecorder->deregisterDevice(this);
-    }
+    // The Device should have been marked immutable before it's destroyed, or the Recorder was the
+    // last holder of a reference to it and de-registered the device as part of its cleanup.
+    SkASSERT(!fRecorder);
 }
 
 void Device::abandonRecorder() {
     fRecorder = nullptr;
+}
+
+void Device::setImmutable() {
+    if (fRecorder) {
+        // Push any pending work to the Recorder now. setImmutable() is only called by the
+        // destructor of a client-owned Surface, or explicitly in layer/filtering workflows. In
+        // both cases this is restricted to the Recorder's thread. This is in contrast to ~Device(),
+        // which might be called from another thread if it was linked to an Image used in multiple
+        // recorders.
+        this->flushPendingWorkToRecorder();
+        fRecorder->deregisterDevice(this);
+        // Abandoning the recorder ensures that there are no further operations that can be recorded
+        // and is relied on by Image::notifyInUse() to detect when it can unlink from a Device.
+        this->abandonRecorder();
+    }
 }
 
 const Transform& Device::localToDeviceTransform() {
@@ -1638,11 +1652,21 @@ sk_sp<SkSpecialImage> Device::makeSpecial(const SkImage*) {
 }
 
 sk_sp<SkSpecialImage> Device::snapSpecial(const SkIRect& subset, bool forceCopy) {
-    this->flushPendingWorkToRecorder();
+    if (fRecorder) {
+        this->flushPendingWorkToRecorder();
+    }
 
     SkIRect finalSubset = subset;
     TextureProxyView view = this->readSurfaceView();
     if (forceCopy || !view || view.proxy()->isFullyLazy()) {
+        // snapSpecial() can be called after setImmutable() is called, but in that case it should
+        // never be a copy (that would otherwise require access to the recorder), and shouldn't be
+        // a non-readable or fully lazy proxy (since those come from client Surfaces).
+        SkASSERT(fRecorder);
+        if (!fRecorder) {
+            return nullptr;
+        }
+
         // TODO: this doesn't address the non-readable surface view case, in which view is empty and
         // createCopy will return an empty view as well.
         view = this->createCopy(&subset, Mipmapped::kNo, SkBackingFit::kApprox);
@@ -1652,6 +1676,8 @@ sk_sp<SkSpecialImage> Device::snapSpecial(const SkIRect& subset, bool forceCopy)
         finalSubset = SkIRect::MakeSize(subset.size());
     }
 
+    // For non-copying "snapSpecial", the semantics are returning an image view of the surface data,
+    // and relying on higher-level draw and restore logic for the contents to make sense.
     return SkSpecialImages::MakeGraphite(finalSubset,
                                          kNeedNewImageUniqueID_SpecialImage,
                                          std::move(view),
