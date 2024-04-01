@@ -16,6 +16,24 @@
       "message": "Regarding where to put tests like this -- when a new test is added specifically to test an issue in Graphite or Ganesh, but it only uses non-gpu-specific API features, I prefer to make the test generic and usable with either Graphite or Ganesh. However, I\u0027ve added tests that don\u0027t do this, namely\n\nhttps://crsrc.org/c/third_party/skia/tests/graphite/DeviceTest.cpp\n\nand\n\nhttps://crsrc.org/c/third_party/skia/tests/DashPathEffectTestGanesh.cpp.\n\nPersonally I would prefer to make both of these tests more generic, but it\u0027s not necessarily a practical concern. Do you all have any strong feelings about this?",
       "revId": "ce310835545ce3540ee71dea04920f7d888f4bba",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ce82f32_f61a42ee",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-01T16:15:28Z",
+      "side": 1,
+      "message": "I think keeping the tests generic when possible makes sense, but I think it\u0027s pretty low priority to go back and make those 2 tests generic.",
+      "parentUuid": "eaea96c7_d1ea09c6",
+      "revId": "ce310835545ce3540ee71dea04920f7d888f4bba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
