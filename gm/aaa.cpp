@@ -6,8 +6,10 @@
  */
 
 #include "gm/gm.h"
+#include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
+#include "include/core/SkImage.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPathBuilder.h"
 #include "include/core/SkScalar.h"
@@ -132,15 +134,18 @@ DEF_SIMPLE_GM(analytic_antialias_general, canvas, W, H) {
                                     .detach(), p);
 }
 
-DEF_SIMPLE_GM(analytic_antialias_inverse, canvas, W, H) {
-        SkPaint p;
-        p.setColor(SK_ColorRED);
-        p.setAntiAlias(true);
+DEF_SIMPLE_GM(a123Test, canvas, W, H) {
+    SkImageInfo ii = SkImageInfo::MakeN32Premul(W, H);
+    SkBitmap bm;
+    bm.allocPixels(ii);
+    bm.eraseColor(SK_ColorRED);
 
-        canvas->save();
+    sk_sp<SkImage> image = SkImages::RasterFromBitmap(bm);
 
-        SkPath path = SkPath::Circle(100, 100, 30);
-        path.setFillType(SkPathFillType::kInverseWinding);
-        canvas->drawPath(path, p);
-        canvas->restore();
+    SkPaint p;
+    p.setAlphaf(0.5f);
+    //p.setDither(true);
+
+    canvas->clear(SK_ColorTRANSPARENT);
+    canvas->drawImage(image.get(), 0 , 0, SkSamplingOptions(), &p);
 }
