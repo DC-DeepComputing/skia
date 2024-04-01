@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9cc4a8b5_45a24bb9",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 925,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-04-01T14:22:54Z",
+      "side": 1,
+      "message": "Note: I had to convert to `_NOCHECK` here since a `VulkanSharedContext` isn\u0027t available yet. This looks fine IMO since it\u0027s already logging errors on it\u0027s own, but I wanted to call it out.",
+      "revId": "5bf548fd6d0c0c0005851ff9b1da64de8357ec57",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "883b283f_fae43d03",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-04-01T14:22:54Z",
+      "side": 1,
+      "message": "I didn\u0027t touch these lines so IDK why `git clang-format` felt like it had a right to tweak this -- should I undo this formatting change?",
+      "revId": "5bf548fd6d0c0c0005851ff9b1da64de8357ec57",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
