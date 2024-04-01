@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "14160f55_13ea7936",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-04-01T23:42:13Z",
+      "side": 1,
+      "message": "The dummy change to third_party/vello/src/lib.rs fixes the Bazel rebuild issue. PTAL again.",
+      "revId": "4d55b118bf07108f47103d8d498dd4fffce163f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f841b0c5_a0703908",
