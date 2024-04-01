@@ -168,6 +168,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "01ad8809_ad7c35ce",
+        "filename": "modules/skottie/include/Skottie.h",
+        "patchSetId": 31
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-04-01T17:22:12Z",
+      "side": 1,
+      "message": "It worked fine for me locally too, but the G3 canary failed. I DM\u0027d you more details.",
+      "parentUuid": "9f2f902e_861aa0a8",
+      "range": {
+        "startLine": 106,
+        "startChar": 0,
+        "endLine": 107,
+        "endChar": 27
+      },
+      "revId": "acdf6de29370bb46be204b30c67871261ce78082",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a24ea189_dc3bcf83",
