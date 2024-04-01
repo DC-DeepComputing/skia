@@ -2274,13 +2274,13 @@ private:
 };
 
 SkPathConvexity SkPath::computeConvexity() const {
-    auto setComputedConvexity = [=](SkPathConvexity convexity){
+    auto setComputedConvexity = [this](SkPathConvexity convexity){
         SkASSERT(SkPathConvexity::kUnknown != convexity);
         this->setConvexity(convexity);
         return convexity;
     };
 
-    auto setFail = [=](){
+    auto setFail = [&](){
         return setComputedConvexity(SkPathConvexity::kConcave);
     };
 
