@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "548e89b0_ee61eabf",
+        "filename": "tools/viewer/BlurTweakSlide.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-04-01T15:13:11Z",
+      "side": 1,
+      "message": "Right. I\u0027ve been using that (the 3x) as my upper bound for how big the radius will actually be (I just sent a link to a doc with all the notes I jotted last week while investigating this stuff).",
+      "parentUuid": "8be75a0c_790b1131",
+      "range": {
+        "startLine": 21,
+        "startChar": 13,
+        "endLine": 21,
+        "endChar": 41
+      },
+      "revId": "f4e3acfed84f18aa58832d05ba93a622b9626e4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ba3128b7_6b9c6554",
         "filename": "tools/viewer/BlurTweakSlide.cpp",
         "patchSetId": 2
@@ -37,6 +61,30 @@
       "writtenOn": "2024-04-01T14:39:20Z",
       "side": 1,
       "message": "They don\u0027t always share code paths, but it\u0027d be good if mask filter blurs and image filter blurs agreed with how a blurred opaque rectangle looked.",
+      "range": {
+        "startLine": 73,
+        "startChar": 0,
+        "endLine": 73,
+        "endChar": 88
+      },
+      "revId": "f4e3acfed84f18aa58832d05ba93a622b9626e4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1faf9868_29030060",
+        "filename": "tools/viewer/BlurTweakSlide.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-04-01T15:13:11Z",
+      "side": 1,
+      "message": "Yes, definitely.",
+      "parentUuid": "ba3128b7_6b9c6554",
       "range": {
         "startLine": 73,
         "startChar": 0,
@@ -72,6 +120,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "92989123_960a330e",
+        "filename": "tools/viewer/BlurTweakSlide.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-04-01T15:13:11Z",
+      "side": 1,
+      "message": "I didn\u0027t tweak the screenshot at all - I\u0027m guessing it\u0027s the lack of dithering.",
+      "parentUuid": "ce62f057_ae848d0b",
+      "range": {
+        "startLine": 82,
+        "startChar": 0,
+        "endLine": 82,
+        "endChar": 67
+      },
+      "revId": "f4e3acfed84f18aa58832d05ba93a622b9626e4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "33baf4cc_d9840f65",
         "filename": "tools/viewer/BlurTweakSlide.cpp",
         "patchSetId": 2
@@ -83,6 +155,30 @@
       "writtenOn": "2024-04-01T14:39:20Z",
       "side": 1,
       "message": "It could also be helpful to visualize the analytic gaussian and where its integral would be less than `1/2*1/255`?",
+      "range": {
+        "startLine": 114,
+        "startChar": 0,
+        "endLine": 115,
+        "endChar": 77
+      },
+      "revId": "f4e3acfed84f18aa58832d05ba93a622b9626e4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "95a67019_c9fa9276",
+        "filename": "tools/viewer/BlurTweakSlide.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-04-01T15:13:11Z",
+      "side": 1,
+      "message": "Ooh, good idea.",
+      "parentUuid": "33baf4cc_d9840f65",
       "range": {
         "startLine": 114,
         "startChar": 0,
