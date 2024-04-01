@@ -54,6 +54,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b1a5fd3f_c2ebfc89",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3371831
+      },
+      "writtenOn": "2024-04-01T03:03:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a0ea430b_d0c61be3",
+      "revId": "8bab5263169ade24c39ad3561417d9b2aa7c06f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "62517832_6a4527e6",
@@ -67,6 +85,30 @@
       "writtenOn": "2024-03-29T13:02:08Z",
       "side": 1,
       "message": "Not sure if it is worth it or not, but this code is the same as the code right below it. Is it worth abstracting them out to helper function or lambda or restructuring these checks slightly to only need the code block once? What are others thoughts here?",
+      "range": {
+        "startLine": 162,
+        "startChar": 0,
+        "endLine": 165,
+        "endChar": 60
+      },
+      "revId": "8bab5263169ade24c39ad3561417d9b2aa7c06f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c085ea38_47f89958",
+        "filename": "src/gpu/AsyncReadTypes.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 3371831
+      },
+      "writtenOn": "2024-04-01T03:03:00Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "62517832_6a4527e6",
       "range": {
         "startLine": 162,
         "startChar": 0,
