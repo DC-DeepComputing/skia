@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5fdb3171_f6cb918f",
+        "filename": "src/gpu/graphite/ResourceTypes.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-01T14:50:18Z",
+      "side": 1,
+      "message": "nit: can we update the ctor and methods to use these new constants in this CL so that the next CL only shows the new fields shifts?",
+      "range": {
+        "startLine": 217,
+        "startChar": 4,
+        "endLine": 224,
+        "endChar": 82
+      },
+      "revId": "0bd7224ec120d4af3ea579915ba91267a239bcbb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
