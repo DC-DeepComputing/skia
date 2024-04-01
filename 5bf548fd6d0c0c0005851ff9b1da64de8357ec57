@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "67f6c62a_24320554",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 925,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-04-01T20:19:55Z",
+      "side": 1,
+      "message": "That makes sense. Perhaps leave a comment above it explaining why we are using `NOCHECK` but then checking the result?",
+      "parentUuid": "9cc4a8b5_45a24bb9",
+      "revId": "5bf548fd6d0c0c0005851ff9b1da64de8357ec57",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "883b283f_fae43d03",
         "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
         "patchSetId": 1
@@ -31,6 +49,93 @@
       "writtenOn": "2024-04-01T14:22:54Z",
       "side": 1,
       "message": "I didn\u0027t touch these lines so IDK why `git clang-format` felt like it had a right to tweak this -- should I undo this formatting change?",
+      "revId": "5bf548fd6d0c0c0005851ff9b1da64de8357ec57",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "31de2aaa_718a9f9e",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-04-01T20:19:55Z",
+      "side": 1,
+      "message": "No, this is fine. I think it\u0027s identifying that these should all be indented twice which is what we typically do if we cannot fit the first (and subsequent) args after the `{`.",
+      "parentUuid": "883b283f_fae43d03",
+      "revId": "5bf548fd6d0c0c0005851ff9b1da64de8357ec57",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "794204ad_714bf4de",
+        "filename": "src/gpu/graphite/vk/VulkanGraphiteUtilsPriv.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-04-01T20:19:55Z",
+      "side": 1,
+      "message": "nit: capitalize\n```suggestion\n// Helper macros to call functions on the VulkanInterface, without checking for errors. Note: This\n```",
+      "range": {
+        "startLine": 19,
+        "startChar": 94,
+        "endLine": 19,
+        "endChar": 95
+      },
+      "revId": "5bf548fd6d0c0c0005851ff9b1da64de8357ec57",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59a057fd_f4f655a3",
+        "filename": "src/gpu/graphite/vk/VulkanGraphiteUtilsPriv.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-04-01T20:19:55Z",
+      "side": 1,
+      "message": "nit: rm comma\n```suggestion\n// Helper macros to call functions on the VulkanInterface without checking for errors. Note: this\n```",
+      "range": {
+        "startLine": 19,
+        "startChar": 57,
+        "endLine": 19,
+        "endChar": 58
+      },
+      "revId": "5bf548fd6d0c0c0005851ff9b1da64de8357ec57",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1667de8_4df525d2",
+        "filename": "src/gpu/graphite/vk/VulkanGraphiteUtilsPriv.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-04-01T20:19:55Z",
+      "side": 1,
+      "message": "nit: rm `Note: ` and just start with `This must...` and rm the comma after `checkVkResult`\n```suggestion\n// This must be called before checkVkResult since this does not log if the VulkanSharedContext is\n```",
+      "range": {
+        "startLine": 24,
+        "startChar": 3,
+        "endLine": 24,
+        "endChar": 13
+      },
       "revId": "5bf548fd6d0c0c0005851ff9b1da64de8357ec57",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
