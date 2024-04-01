@@ -144,6 +144,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9f2f902e_861aa0a8",
+        "filename": "modules/skottie/include/Skottie.h",
+        "patchSetId": 31
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-04-01T17:17:10Z",
+      "side": 1,
+      "message": "FWIW, PS37 builds fine locally if I remove the copy ctor.",
+      "parentUuid": "f60abe3f_e66e9530",
+      "range": {
+        "startLine": 106,
+        "startChar": 0,
+        "endLine": 107,
+        "endChar": 27
+      },
+      "revId": "acdf6de29370bb46be204b30c67871261ce78082",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a24ea189_dc3bcf83",
