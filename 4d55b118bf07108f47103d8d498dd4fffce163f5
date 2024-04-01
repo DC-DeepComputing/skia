@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f841b0c5_a0703908",
+        "filename": "third_party/vello/src/lib.rs",
+        "patchSetId": 6
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-04-01T23:10:53Z",
+      "side": 1,
+      "message": "I believe the vello test job is failing because bazel isn\u0027t rebuilding the vello crate with the changed feature flags. I made a change to this file to see if it triggers a rebuild.",
+      "revId": "4d55b118bf07108f47103d8d498dd4fffce163f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
