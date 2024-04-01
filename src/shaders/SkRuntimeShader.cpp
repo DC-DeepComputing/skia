@@ -53,7 +53,8 @@ SkRuntimeShader::SkRuntimeShader(sk_sp<SkRuntimeEffect> effect,
 SkRuntimeShader::SkRuntimeShader(sk_sp<SkRuntimeEffect> effect,
                                  sk_sp<SkSL::DebugTracePriv> debugTrace,
                                  UniformsCallback uniformsCallback,
-                                 SkSpan<const SkRuntimeEffect::ChildPtr> children)
+                                 SkSpan<const SkRuntimeEffect::ChildPtr> children,
+                                 bool)
         : fEffect(std::move(effect))
         , fDebugTrace(std::move(debugTrace))
         , fUniformsCallback(std::move(uniformsCallback))
@@ -71,7 +72,7 @@ SkRuntimeEffect::TracedShader SkRuntimeShader::makeTracedClone(const SkIPoint& c
     sk_sp<SkRuntimeEffect> unoptimized = fEffect->makeUnoptimizedClone();
     sk_sp<SkSL::DebugTracePriv> debugTrace = make_debug_trace(unoptimized.get(), coord);
     auto debugShader = sk_make_sp<SkRuntimeShader>(
-            unoptimized, debugTrace, this->uniformData(nullptr), SkSpan(fChildren));
+            unoptimized, debugTrace, this->uniformData7(nullptr), SkSpan(fChildren));
 
     return SkRuntimeEffect::TracedShader{std::move(debugShader), std::move(debugTrace)};
 }
@@ -89,7 +90,7 @@ bool SkRuntimeShader::appendStages(const SkStageRec& rec, const SkShaders::Matri
         }
         SkSpan<const float> uniforms =
                 SkRuntimeEffectPriv::UniformsAsSpan(fEffect->uniforms(),
-                                                    this->uniformData(rec.fDstCS),
+                                                    this->uniformData7(rec.fDstCS),
                                                     /*alwaysCopyIntoAlloc=*/fUniformData == nullptr,
                                                     rec.fDstCS,
                                                     rec.fAlloc);
@@ -102,11 +103,11 @@ bool SkRuntimeShader::appendStages(const SkStageRec& rec, const SkShaders::Matri
 
 void SkRuntimeShader::flatten(SkWriteBuffer& buffer) const {
     buffer.writeString(fEffect->source().c_str());
-    buffer.writeDataAsByteArray(this->uniformData(nullptr).get());
+    buffer.writeDataAsByteArray(this->uniformData7(nullptr).get());
     SkRuntimeEffectPriv::WriteChildEffects(buffer, fChildren);
 }
 
-sk_sp<const SkData> SkRuntimeShader::uniformData(const SkColorSpace* dstCS) const {
+sk_sp<const SkData> SkRuntimeShader::uniformData7(const SkColorSpace* dstCS) const {
     if (fUniformData) {
         return fUniformData;
     }

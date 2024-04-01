@@ -275,11 +275,11 @@ private:
                                                                /*coords=*/"float2(0)");
             }
 
-            std::string toLinearSrgb(std::string color) override {
+            std::string toLinearSrgb1(std::string color) override {
                 SK_ABORT("Color transform intrinsics not allowed.");
             }
 
-            std::string fromLinearSrgb(std::string Color) override {
+            std::string fromLinearSrgb1(std::string Color) override {
                 SK_ABORT("Color transform intrinsics not allowed.");
             }
 

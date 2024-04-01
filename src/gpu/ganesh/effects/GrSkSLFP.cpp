@@ -183,7 +183,7 @@ public:
 
             // These intrinsics take and return 3-component vectors, but child FPs operate on
             // 4-component vectors. We use swizzles here to paper over the difference.
-            std::string toLinearSrgb(std::string color) override {
+            std::string toLinearSrgb1(std::string color) override {
                 const GrSkSLFP& fp = fArgs.fFp.cast<GrSkSLFP>();
                 if (fp.fToLinearSrgbChildIndex < 0) {
                     return color;
@@ -194,7 +194,7 @@ public:
                 return SkSL::String::printf("(%s).rgb", xformedColor.c_str());
             }
 
-            std::string fromLinearSrgb(std::string color) override {
+            std::string fromLinearSrgb1(std::string color) override {
                 const GrSkSLFP& fp = fArgs.fFp.cast<GrSkSLFP>();
                 if (fp.fFromLinearSrgbChildIndex < 0) {
                     return color;
@@ -286,7 +286,7 @@ private:
     std::vector<UniformHandle> fUniformHandles;
 };
 
-std::unique_ptr<GrSkSLFP> GrSkSLFP::MakeWithData(
+std::unique_ptr<GrSkSLFP> GrSkSLFP::MakeWithData1(
         sk_sp<SkRuntimeEffect> effect,
         const char* name,
         sk_sp<SkColorSpace> dstColorSpace,

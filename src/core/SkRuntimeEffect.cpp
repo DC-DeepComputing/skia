@@ -797,7 +797,7 @@ const SkRuntimeEffect::Child* SkRuntimeEffect::findChild(std::string_view name) 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-sk_sp<SkShader> SkRuntimeEffectPriv::MakeDeferredShader(
+sk_sp<SkShader> SkRuntimeEffectPriv::MakeDeferredShader1(
         const SkRuntimeEffect* effect,
         UniformsCallback uniformsCallback,
         SkSpan<const SkRuntimeEffect::ChildPtr> children,
@@ -815,7 +815,7 @@ sk_sp<SkShader> SkRuntimeEffectPriv::MakeDeferredShader(
                                                              sk_ref_sp(effect),
                                                              /*debugTrace=*/nullptr,
                                                              std::move(uniformsCallback),
-                                                             children);
+                                                             children, true); //$$
 }
 
 sk_sp<SkShader> SkRuntimeEffect::makeShader(sk_sp<const SkData> uniforms,
