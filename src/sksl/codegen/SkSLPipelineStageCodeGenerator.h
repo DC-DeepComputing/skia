@@ -34,8 +34,8 @@ namespace PipelineStage {
         virtual std::string sampleColorFilter(int index, std::string color) = 0;
         virtual std::string sampleBlender(int index, std::string src, std::string dst) = 0;
 
-        virtual std::string toLinearSrgb(std::string color) = 0;
-        virtual std::string fromLinearSrgb(std::string color) = 0;
+        virtual std::string toLinearSrgb1(std::string color) = 0;
+        virtual std::string fromLinearSrgb1(std::string color) = 0;
     };
 
     /*

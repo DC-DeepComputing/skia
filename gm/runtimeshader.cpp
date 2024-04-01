@@ -1040,7 +1040,7 @@ DEF_SIMPLE_GM_CAN_FAIL(deferred_shader_rt, canvas, errorMsg, 150, 50) {
     };
 
     auto shader =
-            SkRuntimeEffectPriv::MakeDeferredShader(effect.get(), makeUniforms, /*children=*/{});
+            SkRuntimeEffectPriv::MakeDeferredShader1(effect.get(), makeUniforms, /*children=*/{});
     SkASSERT(shader);
 
     SkPaint paint;
