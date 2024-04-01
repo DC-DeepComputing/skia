@@ -16,6 +16,23 @@
       "message": "Everyone should review some Rust code!\n\nI\u0027m violating all kinds of standard indentation rules to make this look nice. Eventually this will be done in Fontations though, just need this now to pass more tests.\n\nI tried using `primitive.bool::then` but then I end up with an `Option\u003cOption\u003cString\u003e\u003e` here which needs an extra `unwrap_or_default` so just using `if` worked out being more obvious and clear.",
       "revId": "628090e6e82cc617e782234f42f53eae4388bb07",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "86f25e2b_90945a83",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 2
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-01T15:23:40Z",
+      "side": 1,
+      "message": "Eck... forgot about wrapping this one.",
+      "revId": "628090e6e82cc617e782234f42f53eae4388bb07",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
