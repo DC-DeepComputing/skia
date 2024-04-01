@@ -921,18 +921,18 @@ static bool gather_srcs() {
     }
 
     TArray<SkString> images;
-    if (!CommonFlags::CollectImages(FLAGS_images, &images)) {
-        return false;
-    }
+//    if (!CommonFlags::CollectImages(FLAGS_images, &images)) {
+//        return false;
+//    }
 
     for (const SkString& image : images) {
         push_codec_srcs(image);
     }
 
     TArray<SkString> colorImages;
-    if (!CommonFlags::CollectImages(FLAGS_colorImages, &colorImages)) {
-        return false;
-    }
+//    if (!CommonFlags::CollectImages(FLAGS_colorImages, &colorImages)) {
+//        return false;
+//    }
 
     for (const SkString& colorImage : colorImages) {
         push_src("colorImage", "decode_native", new ColorCodecSrc(colorImage, false));

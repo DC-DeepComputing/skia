@@ -117,7 +117,7 @@ public:
      * for all of the 'uniform' variables in the SkSL source. The layout of the uniforms blob is
      * dictated by the SkRuntimeEffect.
      */
-    static std::unique_ptr<GrSkSLFP> MakeWithData(
+    static std::unique_ptr<GrSkSLFP> MakeWithData1(
             sk_sp<SkRuntimeEffect> effect,
             const char* name,
             sk_sp<SkColorSpace> dstColorSpace,

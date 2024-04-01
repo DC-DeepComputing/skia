@@ -972,6 +972,11 @@ void RuntimeEffectBlock::BeginBlock(const KeyContext& keyContext,
                                     PaintParamsKeyBuilder* builder,
                                     PipelineDataGatherer* gatherer,
                                     const ShaderData& shaderData) {
+
+    if (shaderData.fEffect->usesColorTransform() && keyContext.dstColorInfo().colorSpace()) {
+
+    }
+
     ShaderCodeDictionary* dict = keyContext.dict();
     int codeSnippetID = dict->findOrCreateRuntimeEffectSnippet(shaderData.fEffect.get());
 
@@ -1047,13 +1052,90 @@ void add_children_to_key(const KeyContext& keyContext,
     }
 }
 
-void add_to_key(const KeyContext& keyContext,
+bool rte_needs_wrapping(const KeyContext& keyContext, SkRuntimeEffect* effect) {
+    return effect->usesColorTransform() && keyContext.dstColorInfo().colorSpace();
+}
+
+void add_to_key2(const KeyContext& keyContext,
+                 PaintParamsKeyBuilder* builder,
+                 PipelineDataGatherer* gatherer,
+                 sk_sp<const SkRuntimeEffect> effect,
+                 SkSpan<const SkRuntimeEffect::ChildPtr> children,
+                 sk_sp<const SkData> originalUniformData) {
+    SkASSERT(effect);
+
+    sk_sp<const SkData> uniforms = SkRuntimeEffectPriv::TransformUniforms(
+            effect->uniforms(),
+            originalUniformData,
+            keyContext.dstColorInfo().colorSpace());
+    SkASSERT(uniforms);
+
+    RuntimeEffectBlock::BeginBlock(keyContext, builder, gatherer,
+                                   { effect, std::move(uniforms) });
+
+    add_children_to_key(keyContext, builder, gatherer, children, effect->children());
+
+    builder->endBlock();
+}
+
+void wrapify(const KeyContext& keyContext,
+             PaintParamsKeyBuilder* builder,
+             PipelineDataGatherer* gatherer,
+             sk_sp<const SkRuntimeEffect> effect,
+             SkSpan<const SkRuntimeEffect::ChildPtr> children,
+             sk_sp<const SkData> originalUniformData) {
+    SkASSERT(effect);
+
+    const SkColorInfo& dstInfo = keyContext.dstColorInfo();
+    sk_sp<SkColorSpace> dstCS = dstInfo.refColorSpace();
+    SkASSERT(dstCS);
+
+    ColorSpaceTransformBlock::ColorSpaceTransformData workingToLinear(dstCS.get(),
+                                                                      kUnpremul_SkAlphaType,
+                                                                      sk_srgb_linear_singleton(),
+                                                                      kUnpremul_SkAlphaType);
+    ColorSpaceTransformBlock::ColorSpaceTransformData linearToWorking(sk_srgb_linear_singleton(),
+                                                                      kUnpremul_SkAlphaType,
+                                                                      dstCS.get(),
+                                                                      kUnpremul_SkAlphaType);
+
+    SkColorInfo linearInfo(dstInfo.colorType(), kUnpremul_SkAlphaType,
+                           SkColorSpace::MakeSRGBLinear());
+    KeyContextWithColorInfo linearContext(keyContext, linearInfo);
+
+    //$$
+    // Use two nested compose blocks to chain (dst->working), child, and (working->dst) together
+    // while appearing as one block to the parent node.
+    Compose(keyContext, builder, gatherer,
+            /* addInnerToKey= */ [&]() -> void {
+                // Inner compose
+                Compose(keyContext, builder, gatherer,
+                        /* addInnerToKey= */ [&]() -> void {
+                            // Innermost (inner of inner compose)
+                            ColorSpaceTransformBlock::AddBlock(keyContext, builder, gatherer,
+                                                               workingToLinear);
+                        },
+                        /* addOuterToKey= */ [&]() -> void {
+                            // Middle (outer of inner compose)
+                            add_to_key2(linearContext, builder, gatherer,
+                                        std::move(effect), children,
+                                        std::move(originalUniformData));
+                        });
+            },
+            /* addOuterToKey= */ [&]() -> void {
+                // Outermost (outer of outer compose)
+                ColorSpaceTransformBlock::AddBlock(keyContext, builder, gatherer, linearToWorking);
+            });
+}
+
+void add_to_key1(const KeyContext& keyContext,
                 PaintParamsKeyBuilder* builder,
                 PipelineDataGatherer* gatherer,
                 const SkRuntimeBlender* blender) {
     SkASSERT(blender);
     sk_sp<SkRuntimeEffect> effect = blender->effect();
     SkASSERT(effect);
+
     sk_sp<const SkData> uniforms = SkRuntimeEffectPriv::TransformUniforms(
             effect->uniforms(),
             blender->uniforms(),
@@ -1067,6 +1149,21 @@ void add_to_key(const KeyContext& keyContext,
                         blender->children(), effect->children());
 
     builder->endBlock();
+}
+
+void add_to_key(const KeyContext& keyContext,
+                 PaintParamsKeyBuilder* builder,
+                 PipelineDataGatherer* gatherer,
+                 const SkRuntimeBlender* blender) {
+    SkASSERT(blender);
+    sk_sp<SkRuntimeEffect> effect = blender->effect();
+    SkASSERT(effect);
+
+    if (rte_needs_wrapping(keyContext, effect.get())) {
+        wrapify(keyContext, builder, gatherer, effect, blender->children(), blender->uniforms());
+    } else {
+        add_to_key2(keyContext, builder, gatherer, effect, blender->children(), blender->uniforms());
+    }
 }
 
 void notify_in_use(Recorder* recorder,
@@ -1187,7 +1284,7 @@ static void add_to_key(const KeyContext& keyContext,
     MatrixColorFilterBlock::AddBlock(keyContext, builder, gatherer, matrixCFData);
 }
 
-static void add_to_key(const KeyContext& keyContext,
+static void add_to_key1(const KeyContext& keyContext,
                        PaintParamsKeyBuilder* builder,
                        PipelineDataGatherer* gatherer,
                        const SkRuntimeColorFilter* filter) {
@@ -1204,6 +1301,21 @@ static void add_to_key(const KeyContext& keyContext,
                         filter->children(), effect->children());
 
     builder->endBlock();
+}
+
+static void add_to_key(const KeyContext& keyContext,
+                       PaintParamsKeyBuilder* builder,
+                       PipelineDataGatherer* gatherer,
+                       const SkRuntimeColorFilter* filter) {
+    SkASSERT(filter);
+    sk_sp<SkRuntimeEffect> effect = filter->effect();
+    SkASSERT(effect);
+
+    if (rte_needs_wrapping(keyContext, effect.get())) {
+        wrapify(keyContext, builder, gatherer, effect, filter->children(), filter->uniforms());
+    } else {
+        add_to_key2(keyContext, builder, gatherer, effect, filter->children(), filter->uniforms());
+    }
 }
 
 static void add_to_key(const KeyContext& keyContext,
@@ -1245,6 +1357,7 @@ static void add_to_key(const KeyContext& keyContext,
     SkColorInfo workingInfo(dstInfo.colorType(), workingAT, workingCS);
     KeyContextWithColorInfo workingContext(keyContext, workingInfo);
 
+    //$$
     // Use two nested compose blocks to chain (dst->working), child, and (working->dst) together
     // while appearing as one block to the parent node.
     Compose(keyContext, builder, gatherer,
@@ -1260,7 +1373,7 @@ static void add_to_key(const KeyContext& keyContext,
                         },
                         /* addOuterToKey= */ [&]() -> void {
                             // Middle (outer of inner compose)
-                            AddToKey(workingContext, builder, gatherer, filter->child().get());
+                            AddToKey(workingContext, builder, gatherer, filter);
                         });
             },
             /* addOuterToKey= */ [&]() -> void {
@@ -1762,7 +1875,7 @@ static void notify_in_use(Recorder*, DrawContext*, const SkPictureShader*) {
     // notified, that will happen when the picture is rendered into an image in add_to_key
 }
 
-static void add_to_key(const KeyContext& keyContext,
+static void add_to_key1(const KeyContext& keyContext,
                        PaintParamsKeyBuilder* builder,
                        PipelineDataGatherer* gatherer,
                        const SkRuntimeShader* shader) {
@@ -1782,6 +1895,22 @@ static void add_to_key(const KeyContext& keyContext,
 
     builder->endBlock();
 }
+
+static void add_to_key(const KeyContext& keyContext,
+                        PaintParamsKeyBuilder* builder,
+                        PipelineDataGatherer* gatherer,
+                        const SkRuntimeShader* shader) {
+    SkASSERT(shader);
+    sk_sp<SkRuntimeEffect> effect = shader->effect();
+    SkASSERT(effect);
+
+    if (rte_needs_wrapping(keyContext, effect.get())) {
+        wrapify(keyContext, builder, gatherer, effect, shader->children(), shader->uniforms());
+    } else {
+        add_to_key2(keyContext, builder, gatherer, effect, shader->children(), shader->uniforms());
+    }
+}
+
 static void notify_in_use(Recorder* recorder,
                           DrawContext* drawContext,
                           const SkRuntimeShader* shader) {

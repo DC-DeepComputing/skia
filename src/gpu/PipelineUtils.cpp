@@ -44,7 +44,7 @@ bool SkSLToBackend(const SkSL::ShaderCaps* caps,
 #if defined(SK_PRINT_SKSL_SHADERS)
     const bool kPrintSkSL = true;
 #else
-    const bool kPrintSkSL = false;
+    const bool kPrintSkSL = true;
 #endif
     const bool kSkSLPostCompilation = false;
 #if defined(SK_PRINT_NATIVE_SHADERS)

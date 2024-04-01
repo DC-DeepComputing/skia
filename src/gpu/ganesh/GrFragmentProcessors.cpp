@@ -191,7 +191,7 @@ GrFPResult MakeChildFP(const SkRuntimeEffect::ChildPtr& child, const GrFPArgs& c
     SkUNREACHABLE;
 }
 
-static GrFPResult make_effect_fp(sk_sp<SkRuntimeEffect> effect,
+static GrFPResult make_effect_fp1(sk_sp<SkRuntimeEffect> effect,
                                  const char* name,
                                  sk_sp<const SkData> uniforms,
                                  std::unique_ptr<GrFragmentProcessor> inputFP,
@@ -206,7 +206,7 @@ static GrFPResult make_effect_fp(sk_sp<SkRuntimeEffect> effect,
         }
         childFPs.push_back(std::move(childFP));
     }
-    auto fp = GrSkSLFP::MakeWithData(std::move(effect),
+    auto fp = GrSkSLFP::MakeWithData1(std::move(effect),
                                      name,
                                      childArgs.fDstColorInfo->refColorSpace(),
                                      std::move(inputFP),
@@ -236,7 +236,7 @@ static std::unique_ptr<GrFragmentProcessor> make_blender_fp(
                        fpArgs.fDstColorInfo,
                        fpArgs.fSurfaceProps,
                        GrFPArgs::Scope::kRuntimeEffect);
-    auto [success, fp] = make_effect_fp(rtb->effect(),
+    auto [success, fp] = make_effect_fp1(rtb->effect(),
                                         "runtime_blender",
                                         std::move(uniforms),
                                         std::move(srcFP),
@@ -427,7 +427,7 @@ static GrFPResult make_colorfilter_fp(GrRecordingContext* context,
     SkASSERT(uniforms);
 
     GrFPArgs childArgs(context, &colorInfo, props, GrFPArgs::Scope::kRuntimeEffect);
-    return make_effect_fp(filter->effect(),
+    return make_effect_fp1(filter->effect(),
                           "runtime_color_filter",
                           std::move(uniforms),
                           std::move(inputFP),
@@ -801,7 +801,7 @@ static std::unique_ptr<GrFragmentProcessor> make_shader_fp(const SkRuntimeShader
     std::unique_ptr<GrFragmentProcessor> fp;
     GrFPArgs childArgs(
             args.fContext, args.fDstColorInfo, args.fSurfaceProps, GrFPArgs::Scope::kRuntimeEffect);
-    std::tie(success, fp) = make_effect_fp(shader->effect(),
+    std::tie(success, fp) = make_effect_fp1(shader->effect(),
                                            "runtime_shader",
                                            std::move(uniforms),
                                            /*inputFP=*/nullptr,

@@ -12,6 +12,7 @@
 #include "include/core/SkData.h"
 #include "include/core/SkDocument.h"
 #include "include/core/SkExecutor.h"
+#include "include/core/SkFontMgr.h"
 #include "include/core/SkImageGenerator.h"
 #include "include/core/SkMallocPixelRef.h"
 #include "include/core/SkPictureRecorder.h"
