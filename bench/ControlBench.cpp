@@ -15,6 +15,13 @@ struct ControlBench : public Benchmark {
     bool isSuitableFor(Backend backend) override { return backend == Backend::kNonRendering; }
 
     void onDraw(int loops, SkCanvas*) override {
+#if defined(__clang__)
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wdeprecated-volatile"
+#elif defined(__GNUC__) && __GNUC__ >= 13
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wdeprecated-volatile"
+#endif
         // Nothing terribly useful: force a memory read, a memory write, and some math.
         [[maybe_unused]] volatile uint32_t rand = 0;
         for (int i = 0; i < 1000*loops; i++) {
@@ -22,5 +29,10 @@ struct ControlBench : public Benchmark {
             rand += 1013904223;
         }
     }
+#if defined(__clang__)
+    #pragma clang diagnostic pop
+#elif defined(__GNUC__) && __GNUC__ >= 13
+    #pragma GCC diagnostic pop
+#endif
 };
 DEF_BENCH(return new ControlBench;)

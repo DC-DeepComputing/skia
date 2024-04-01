@@ -58,10 +58,22 @@ public:
 protected:
     int mulLoopCount() const override { return 4; }
     void performTest() override {
+#if defined(__clang__)
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wdeprecated-volatile"
+#elif defined(__GNUC__) && __GNUC__ >= 13
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wdeprecated-volatile"
+#endif
         // xoring into a volatile prevents the compiler from optimizing these checks away.
         [[maybe_unused]] volatile bool junk = false;
         junk ^= (fArray[6] != 0.0f || fArray[7] != 0.0f || fArray[8] != 1.0f);
         junk ^= (fArray[2] != 0.0f || fArray[5] != 0.0f);
+#if defined(__clang__)
+    #pragma clang diagnostic pop
+#elif defined(__GNUC__) && __GNUC__ >= 13
+    #pragma GCC diagnostic pop
+#endif
     }
 private:
     float fArray[9];
@@ -77,6 +89,13 @@ public:
 protected:
     int mulLoopCount() const override { return 4; }
     void performTest() override {
+#if defined(__clang__)
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wdeprecated-volatile"
+#elif defined(__GNUC__) && __GNUC__ >= 13
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wdeprecated-volatile"
+#endif
         // xoring into a volatile prevents the compiler from optimizing these checks away.
         [[maybe_unused]] volatile int32_t junk = 0;
         junk ^= (SkScalarAs2sCompliment(fArray[6]) |
@@ -84,6 +103,11 @@ protected:
                 (SkScalarAs2sCompliment(fArray[8]) - kPersp1Int));
         junk ^= (SkScalarAs2sCompliment(fArray[2]) |
                  SkScalarAs2sCompliment(fArray[5]));
+#if defined(__clang__)
+    #pragma clang diagnostic pop
+#elif defined(__GNUC__) && __GNUC__ >= 13
+    #pragma GCC diagnostic pop
+#endif
     }
 private:
     static const int32_t kPersp1Int = 0x3f800000;

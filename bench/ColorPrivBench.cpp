@@ -40,6 +40,13 @@ public:
     }
 
     void onDraw(int loops, SkCanvas*) override {
+#if defined(__clang__)
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wdeprecated-volatile"
+#elif defined(__GNUC__) && __GNUC__ >= 13
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wdeprecated-volatile"
+#endif
         // We xor results of FourByteInterp into junk to make sure the function runs.
         [[maybe_unused]] volatile SkPMColor junk = 0;
 
@@ -69,6 +76,11 @@ public:
                 }
             }
         }
+#if defined(__clang__)
+    #pragma clang diagnostic pop
+#elif defined(__GNUC__) && __GNUC__ >= 13
+    #pragma GCC diagnostic pop
+#endif
     }
 
 private:

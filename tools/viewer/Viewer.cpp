@@ -1719,7 +1719,7 @@ void Viewer::drawSlide(SkSurface* surface) {
             break;
     }
 
-    auto make_surface = [=](int w, int h) {
+    auto make_surface = [=, this](int w, int h) {
         SkSurfaceProps props(fWindow->getRequestedDisplayParams().fSurfaceProps);
         slideCanvas->getProps(&props);
 
@@ -2135,7 +2135,7 @@ void Viewer::drawImGui() {
                 ImGui::RadioButton("Direct3D", &newBackend, sk_app::Window::kDirect3D_BackendType);
 #endif
                 if (newBackend != fBackendType) {
-                    fDeferredActions.push_back([=]() {
+                    fDeferredActions.push_back([=, this]() {
                         this->setBackend(static_cast<sk_app::Window::BackendType>(newBackend));
                     });
                 }
@@ -2821,7 +2821,7 @@ void Viewer::drawImGui() {
                                  : GrContextOptions::ShaderCacheStrategy::kBackendSource;
                     displayParamsChanged = true;
 
-                    fDeferredActions.push_back([=]() {
+                    fDeferredActions.push_back([=, this]() {
                         // Reset the cache.
                         fPersistentCache.reset();
                         sDoDeferredView = true;
@@ -2919,7 +2919,7 @@ void Viewer::drawImGui() {
             }
         }
         if (displayParamsChanged || uiParamsChanged) {
-            fDeferredActions.push_back([=]() {
+            fDeferredActions.push_back([=, this]() {
                 if (displayParamsChanged) {
                     fWindow->setRequestedDisplayParams(params);
                 }
