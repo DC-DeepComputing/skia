@@ -35,7 +35,21 @@ protected:
      *  needed somewhere, and since this method is not const, the member fields cannot
      *  be assumed to be const before and after the call.
      */
-    virtual void virtualCallToFoilOptimizers(int n) { fVolatileInt += n; }
+    virtual void virtualCallToFoilOptimizers(int n) {
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-volatile"
+#elif defined(__GNUC__) && __GNUC__ >= 13
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-volatile"
+#endif
+        fVolatileInt += n;
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#elif defined(__GNUC__) && __GNUC__ >= 13
+#pragma GCC diagnostic pop
+#endif
+    }
 
 private:
     SkString fName;
