@@ -106,6 +106,24 @@
       "parentUuid": "add6735b_a8c1e9c5",
       "revId": "f68db220eff7fa813c146cc5cc5040eb01e94833",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1119123c_add8593b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-01T15:47:20Z",
+      "side": 1,
+      "message": "https://skia-review.googlesource.com/c/skia/+/833533 fixes this for now, as noted there will want Fontations to provide some helpers for this fun WWS bit handling.",
+      "parentUuid": "bbb1eef9_7af7d7f2",
+      "revId": "f68db220eff7fa813c146cc5cc5040eb01e94833",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
