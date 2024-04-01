@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "facc905b_a039f55f",
+        "filename": "gm/compressed_textures.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-04-01T13:05:13Z",
+      "side": 1,
+      "message": "std::move ?",
+      "range": {
+        "startLine": 177,
+        "startChar": 76,
+        "endLine": 177,
+        "endChar": 79
+      },
+      "revId": "804c11d1da79f486e2184d2006173cc4f3ed1da2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65054840_f6b2f516",
+        "filename": "gm/compressed_textures.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 332,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-04-01T13:05:13Z",
+      "side": 1,
+      "message": "texture backed ?",
+      "range": {
+        "startLine": 332,
+        "startChar": 46,
+        "endLine": 332,
+        "endChar": 62
+      },
+      "revId": "804c11d1da79f486e2184d2006173cc4f3ed1da2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04bb3174_54130b06",
+        "filename": "include/gpu/graphite/TextureInfo.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-04-01T13:05:13Z",
+      "side": 1,
+      "message": "Do we actually need this ?",
+      "revId": "804c11d1da79f486e2184d2006173cc4f3ed1da2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
