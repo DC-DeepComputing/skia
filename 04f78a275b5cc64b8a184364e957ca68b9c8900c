@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "404d4eab_f201743c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-01T20:33:58Z",
+      "side": 1,
+      "message": "For tests I now have this locally (some minor other fixes not quite done yet) down to just `SkParagraph_EmojiParagraph` where Fontations appears to always use the `advance_width` which always uses the values from `hmtx` but for a EBDT/CBDT font we want to scale the advance in the EBDT/CBDT. I think this means returning this along with the bitmap metrics and properly scaling it.",
+      "revId": "04f78a275b5cc64b8a184364e957ca68b9c8900c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
