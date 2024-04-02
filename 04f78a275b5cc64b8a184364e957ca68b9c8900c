@@ -70,6 +70,24 @@
       "parentUuid": "249a87a3_d361290a",
       "revId": "04f78a275b5cc64b8a184364e957ca68b9c8900c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "154ff8d4_b91f1e91",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-02T14:58:18Z",
+      "side": 1,
+      "message": "Oh, and yes, these are the advances that FreeType uses (see how `horiAdvance` is set through `tt_face_load_sbit_image` \u003e `tt_sbit_decoder_load_image` \u003e `tt_sbit_decoder_load_bitmap` \u003e `tt_sbit_decoder_load_metrics`, copied to the glyph\u0027s metrics in `load_sbit_image` and eventually end up in the metrics for the glyph. This is very necessary with EBDT since these are the manually \"hinted\" metrics and CBDT inherits that.",
+      "parentUuid": "249a87a3_d361290a",
+      "revId": "04f78a275b5cc64b8a184364e957ca68b9c8900c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
