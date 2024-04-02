@@ -332,10 +332,6 @@ Device::~Device() {
     SkASSERT(!fRecorder);
 }
 
-void Device::abandonRecorder() {
-    fRecorder = nullptr;
-}
-
 void Device::setImmutable() {
     if (fRecorder) {
         // Push any pending work to the Recorder now. setImmutable() is only called by the
@@ -872,7 +868,19 @@ void Device::drawAtlasSubRun(const sktext::gpu::AtlasSubRun* subRun,
             }
             this->drawGeometry(localToDevice,
                                Geometry(SubRunData(subRun,
-                                                   subRunStorage,
+                                                   subRunokPro16.2-GPU-IntelIrisPlus-x86_64-Debug-All-Graphite_Native_Metal
+ Test-Ubuntu18-Clang-Golo-GPU-QuadroP400-x86_64-Debug-All-DDL3_Vulkan
+ Test-Ubuntu18-Clang-Golo-GPU-QuadroP400-x86_64-Release-All
+ Test-Win2019-Clang-GCE-CPU-AVX2-x86_64-Release-All
+Results
+Patchset 9 (latest)
+￼
+CHOOSE TRYJOBS
+RETRY FAILED BUILDS
+  Error (0)
+  Warning (0)
+  Info (20)
+  Success (42)Storage,
                                                    bounds,
                                                    this->localToDeviceTransform().inverse(),
                                                    subRunCursor,
@@ -1548,6 +1556,19 @@ TextureProxy* Device::target() { return fDC->target(); }
 
 TextureProxyView Device::readSurfaceView() const { return fDC->readSurfaceView(); }
 
+bool Device::isScratchDevice() const {
+    // Scratch device status is inferred from whether or not the Device's target is instantiated.
+    // By default devices start out un-instantiated unless they are wrapping an existing backend
+    // texture (definitely not a scratch scenario), or Surface explicitly instantiates the target
+    // before returning to the client (not a scratch scenario).
+    //
+    // Scratch device targets are instantiated during the prepareResources() phase of
+    // Recorder::snap(). Truly scratch devices that have gone out of scope as intended will have
+    // already been destroyed at this point. Scratch devices that become longer-lived (linked to
+    // a client-owned object) automatically transition to non-scratch usage.
+    return SkToBool(fDC->target());
+}
+
 sk_sp<sktext::gpu::Slug> Device::convertGlyphRunListToSlug(const sktext::GlyphRunList& glyphRunList,
                                                            const SkPaint& paint) {
     return sktext::gpu::SlugImpl::Make(this->localToDevice(),
@@ -1563,3 +1584,16 @@ void Device::drawSlug(SkCanvas* canvas, const sktext::gpu::Slug* slug, const SkP
 }
 
 } // namespace skgpu::graphite
+okPro16.2-GPU-IntelIrisPlus-x86_64-Debug-All-Graphite_Native_Metal
+ Test-Ubuntu18-Clang-Golo-GPU-QuadroP400-x86_64-Debug-All-DDL3_Vulkan
+ Test-Ubuntu18-Clang-Golo-GPU-QuadroP400-x86_64-Release-All
+ Test-Win2019-Clang-GCE-CPU-AVX2-x86_64-Release-All
+Results
+Patchset 9 (latest)
+￼
+CHOOSE TRYJOBS
+RETRY FAILED BUILDS
+  Error (0)
+  Warning (0)
+  Info (20)
+  Success (42)
