@@ -39,7 +39,6 @@
 #include "src/gpu/graphite/geom/IntersectionTree.h"
 #include "src/gpu/graphite/geom/Shape.h"
 #include "src/gpu/graphite/geom/Transform_graphite.h"
-#include "src/gpu/graphite/task/CopyTask.h"
 #include "src/gpu/graphite/text/TextAtlasManager.h"
 
 #include "include/core/SkColorSpace.h"
@@ -387,48 +386,6 @@ sk_sp<SkDevice> Device::createDevice(const CreateInfo& info, const SkPaint*) {
 
 sk_sp<SkSurface> Device::makeSurface(const SkImageInfo& ii, const SkSurfaceProps& props) {
     return SkSurfaces::RenderTarget(fRecorder, ii, Mipmapped::kNo, &props);
-}
-
-TextureProxyView TextureProxyView::Copy(Recorder* recorder,
-                                        const SkColorInfo& srcColorInfo,
-                                        const TextureProxyView& srcView,
-                                        SkIRect srcRect,
-                                        Mipmapped mipmapped,
-                                        SkBackingFit backingFit) {
-    SkASSERT(!(mipmapped == Mipmapped::kYes && backingFit == SkBackingFit::kApprox));
-
-    SkASSERT(srcView.proxy()->isFullyLazy() ||
-             SkIRect::MakeSize(srcView.proxy()->dimensions()).contains(srcRect));
-
-    skgpu::graphite::TextureInfo textureInfo =
-            recorder->priv().caps()->getTextureInfoForSampledCopy(srcView.proxy()->textureInfo(),
-                                                                  mipmapped);
-    sk_sp<TextureProxy> dest = TextureProxy::Make(
-            recorder->priv().caps(),
-            backingFit == SkBackingFit::kApprox ? GetApproxSize(srcRect.size()) : srcRect.size(),
-            textureInfo,
-            skgpu::Budgeted::kNo);
-    if (!dest) {
-        return {};
-    }
-
-    sk_sp<CopyTextureToTextureTask> copyTask = CopyTextureToTextureTask::Make(srcView.refProxy(),
-                                                                              srcRect,
-                                                                              dest,
-                                                                              {0, 0});
-    if (!copyTask) {
-        return {};
-    }
-
-    recorder->priv().add(std::move(copyTask));
-
-    if (mipmapped == Mipmapped::kYes) {
-        if (!GenerateMipmaps(recorder, dest, srcColorInfo)) {
-            SKGPU_LOG_W("TextureProxyView::Copy: Failed to generate mipmaps");
-        }
-    }
-
-    return { std::move(dest), srcView.swizzle() };
 }
 
 bool Device::onReadPixels(const SkPixmap& pm, int srcX, int srcY) {

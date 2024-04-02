@@ -7,11 +7,17 @@
 
 #include "src/gpu/graphite/TextureProxy.h"
 
+#include "include/gpu/GpuTypes.h"
+#include "include/gpu/graphite/Recorder.h"
 #include "src/core/SkMipmap.h"
+#include "src/gpu/SkBackingFit.h"
 #include "src/gpu/graphite/Caps.h"
+#include "src/gpu/graphite/Log.h"
+#include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/ResourceProvider.h"
 #include "src/gpu/graphite/Texture.h"
 #include "src/gpu/graphite/TextureUtils.h"
+#include "src/gpu/graphite/task/CopyTask.h"
 
 namespace skgpu::graphite {
 
@@ -206,5 +212,47 @@ void TextureProxy::validateTexture(const Texture* texture) {
               texture->textureInfo().toString().c_str());
 }
 #endif
+
+TextureProxyView TextureProxyView::Copy(Recorder* recorder,
+                                        const SkColorInfo& srcColorInfo,
+                                        const TextureProxyView& srcView,
+                                        SkIRect srcRect,
+                                        Mipmapped mipmapped,
+                                        SkBackingFit backingFit) {
+    SkASSERT(!(mipmapped == Mipmapped::kYes && backingFit == SkBackingFit::kApprox));
+
+    SkASSERT(srcView.proxy()->isFullyLazy() ||
+             SkIRect::MakeSize(srcView.proxy()->dimensions()).contains(srcRect));
+
+    skgpu::graphite::TextureInfo textureInfo =
+            recorder->priv().caps()->getTextureInfoForSampledCopy(srcView.proxy()->textureInfo(),
+                                                                  mipmapped);
+    sk_sp<TextureProxy> dest = TextureProxy::Make(
+            recorder->priv().caps(),
+            backingFit == SkBackingFit::kApprox ? GetApproxSize(srcRect.size()) : srcRect.size(),
+            textureInfo,
+            skgpu::Budgeted::kNo);
+    if (!dest) {
+        return {};
+    }
+
+    sk_sp<CopyTextureToTextureTask> copyTask = CopyTextureToTextureTask::Make(srcView.refProxy(),
+                                                                              srcRect,
+                                                                              dest,
+                                                                              {0, 0});
+    if (!copyTask) {
+        return {};
+    }
+
+    recorder->priv().add(std::move(copyTask));
+
+    if (mipmapped == Mipmapped::kYes) {
+        if (!GenerateMipmaps(recorder, dest, srcColorInfo)) {
+            SKGPU_LOG_W("TextureProxyView::Copy: Failed to generate mipmaps");
+        }
+    }
+
+    return { std::move(dest), srcView.swizzle() };
+}
 
 } // namespace skgpu::graphite
