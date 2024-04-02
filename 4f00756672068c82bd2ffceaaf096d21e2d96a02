@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf8cf2c6_5461e749",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-02T21:43:49Z",
+      "side": 1,
+      "message": "Rolling vpython at https://skia-review.googlesource.com/c/buildbot/+/835302 .",
+      "revId": "4f00756672068c82bd2ffceaaf096d21e2d96a02",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
