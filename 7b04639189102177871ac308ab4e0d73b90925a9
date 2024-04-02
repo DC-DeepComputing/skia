@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b1d79306_b0ae5850",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-04-02T13:33:14Z",
+      "side": 1,
+      "message": "It seems to me we shouldn\u0027t be calling Device::Make when running on a raster surface config, but I guess this check doesn\u0027t hurt.",
+      "revId": "7b04639189102177871ac308ab4e0d73b90925a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
