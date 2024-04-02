@@ -56,6 +56,36 @@ ExtractPaintData(Recorder* recorder,
         if (gatherer->hasTextures()) {
             TextureDataCache* textureDataCache = recorder->priv().textureDataCache();
             textures = textureDataCache->insert(gatherer->textureDataBlock());
+            const std::vector<TextureDataBlock::SampledTexture>& sampledTextures =
+                    gatherer->textureDataBlock().textures();
+
+            // 3 uint32s of data: 2 for format/external format, 1 for format features
+            static constexpr int kNumInt32sSamplerInfo = 3;
+
+            // beginBlock() data block
+
+
+            // TODO: Instead of pushing back kNumInt32sSamplerInfo int32s for each texture,
+            // only append for the # of textures that are ycbcr.
+            std::vector<int32_t> cumulativeSamplerData;
+            for (int i = 0; i < gatherer->textureDataBlock().numTextures(); i++) {
+                 const SamplerDesc& samplerDesc = sampledTextures.at(i).second;
+                 cumulativeSamplerData.push_back((uint32_t)(samplerDesc.format() << 32));
+                 cumulativeSamplerData.push_back((uint32_t)samplerDesc.format());
+                 cumulativeSamplerData.push_back(samplerDesc.formatFeatures());
+            }
+            SkASSERT((int)cumulativeSamplerData.size() ==
+                     gatherer->textureDataBlock().numTextures() * kNumInt32sSamplerInfo);
+            builder->addData(cumulativeSamplerData);
+
+            // Since we added additional data to the paint params key, re-generate a unique ID
+            // TODO: Reorganize this such that we don't bother generating a paint params key until
+            // after this data addition.
+            paintID = recorder->priv().shaderCodeDictionary()->findOrCreate(builder);
+            if (!paintID.isValid()) {
+                // TODO: Make SKGPU_LOG_E instead of SkDebugf?
+                SkDebugf("Failed to create unique paint ID with additional sampler information");
+            }
         }
     }
 
@@ -566,6 +596,7 @@ FragSkSLInfo BuildFragmentSkSL(const Caps* caps,
     // that changes the HW blending choice to handle analytic coverage.
     result.fBlendInfo = shaderInfo.blendInfo();
     result.fRequiresLocalCoords = shaderInfo.needsLocalCoords();
+    result.fData = shaderInfo.data();
 
     return result;
 }
