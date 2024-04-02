@@ -15,6 +15,7 @@
 #include "src/gpu/graphite/DrawTypes.h"
 #include "src/gpu/graphite/GraphicsPipeline.h"
 #include "src/gpu/graphite/vk/VulkanGraphiteUtilsPriv.h"
+#include "src/gpu/graphite/vk/VulkanSampler.h"
 
 namespace SkSL {
     class Compiler;
@@ -25,6 +26,7 @@ namespace skgpu::graphite {
 class Attribute;
 class GraphicsPipelineDesc;
 class RuntimeEffectDictionary;
+class VulkanResourceProvider;
 class VulkanSharedContext;
 struct RenderPassDesc;
 class TextureInfo;
@@ -78,7 +80,8 @@ public:
                                               const GraphicsPipelineDesc&,
                                               const RenderPassDesc&,
                                               const sk_sp<VulkanRenderPass>& compatibleRenderPass,
-                                              VkPipelineCache);
+                                              VkPipelineCache,
+                                              const VulkanResourceProvider*);
 
     static sk_sp<VulkanGraphicsPipeline> MakeLoadMSAAPipeline(
             const VulkanSharedContext*,
@@ -121,7 +124,8 @@ private:
                            bool hasFragmentUniforms,
                            bool hasStepUniforms,
                            int numTextureSamplers,
-                           bool ownsPipelineLayout);
+                           bool ownsPipelineLayout,
+                           std::vector<sk_sp<VulkanSampler>> immutableSamplers);
 
     void freeGpuData() override;
 
@@ -131,6 +135,9 @@ private:
     bool fHasStepUniforms = false;
     int fNumTextureSamplers = 0;
     bool fOwnsPipelineLayout = true;
+
+    // Hold a ref to immutable samplers used such that their lifetime is properly managed.
+    std::vector<sk_sp<VulkanSampler>> fImmutableSamplers;
 };
 
 } // namespace skgpu::graphite
