@@ -73,6 +73,9 @@ enum class BuiltInCodeSnippetID : int32_t {
 
     kCompose,
 
+    // A snippet that simply houses data
+    kDataContainer,
+
     // Fixed-function blend modes are used for the final blend with the dst buffer's color when the
     // SkPaint is using a coefficient-based SkBlendMode. The actual coefficients are extracted into
     // the SkBlendInfo associated with each pipeline, but a unique code snippet ID is assigned so

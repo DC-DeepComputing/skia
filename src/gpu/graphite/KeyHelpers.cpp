@@ -909,6 +909,13 @@ void ColorSpaceTransformBlock::AddBlock(const KeyContext& keyContext,
 
 //--------------------------------------------------------------------------------------------------
 
+// void SamplerDataBlock::BeginBlock(int numInt32s) {
+//     builder->beginBlock(BuiltInCodeSnippetID::kDataContainer);
+//     //numInt32s
+// }
+
+//--------------------------------------------------------------------------------------------------
+
 void AddBlendModeColorFilter(const KeyContext& keyContext,
                              PaintParamsKeyBuilder* builder,
                              PipelineDataGatherer* gatherer,

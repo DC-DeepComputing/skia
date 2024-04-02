@@ -57,6 +57,9 @@ public:
 
     GraphiteResourceKey makeSamplerKey(const SamplerDesc&) const override;
 
+    // TODO add comment here explaining
+    GraphiteResourceKey reconstructSamplerKeyFromInts(SkSpan<const uint32_t>) const;
+
     uint32_t channelMask(const TextureInfo&) const override;
 
     bool isRenderable(const TextureInfo&) const override;
@@ -237,6 +240,8 @@ private:
     bool fGpuOnlyBuffersMorePerformant = false;
     bool fShouldPersistentlyMapCpuToGpuBuffers = true;
     bool fSupportsDeviceFaultInfo = false;
+
+    // static ResourceType kSamplerResourceType;
 };
 
 } // namespace skgpu::graphite
