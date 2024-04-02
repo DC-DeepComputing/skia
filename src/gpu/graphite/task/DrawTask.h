@@ -41,6 +41,24 @@ private:
     TaskList fChildTasks;
 };
 
+// RefDrawTask serves as a temporary placeholder for a child DrawTask in a parent's task list.
+// For now, all DrawTasks are added at most once to the root task list. Scratch device tasks are
+// then linked into a graph using RefDrawTasks to determine the read/write intervals of the targets.
+// Eventually, scratch devices will not add their DrawTasks to the root task list and will instead
+// be appended directly to the parent's task list. The read/write interval tracking performed by
+// this task will be merged into DrawTask's functionality.
+class RefDrawTask final : public Task {
+public:
+    explicit RefDrawTask(sk_sp<DrawTask> task) : fRealTask(std::move(task)) {}
+
+    bool prepareResources(ResourceProvider*, const RuntimeEffectDictionary*) override;
+
+    bool addCommands(Context*, CommandBuffer*, ReplayTargetData) override;
+
+private:
+    sk_sp<DrawTask> fRealTask;
+}
+
 } // namespace skgpu::graphite
 
 #endif // skgpu_graphite_task_DrawTask_DEFINED

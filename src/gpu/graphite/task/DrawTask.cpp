@@ -26,4 +26,17 @@ bool DrawTask::addCommands(Context* ctx,
     return fChildTasks.addCommands(ctx, commandBuffer, replayTarget);
 }
 
+bool RefDrawTask::prepareResources(ResourceProvider* resourceProvider,
+                                const RuntimeEffectDictionary* rteDict) {
+    return fChildTasks.prepareResources(resourceProvider, rteDict);
+}
+
+bool RefDrawTask::addCommands(Context*, CommandBuffer*, ReplayTargetData) {
+    // When referring to a DrawTask later in the task list, there are no operations to perform.
+    // The actual DrawTask must have been added to the root task list first, and the read/write
+    // interval was determined in prepareResources().
+    SkASSERT(fRealTask.)
+    return fChildTasks.addCommands(ctx, commandBuffer, replayTarget);
+}
+
 } // namespace skgpu::graphite
