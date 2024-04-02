@@ -61,28 +61,23 @@ sk_sp<VulkanSamplerYcbcrConversion> VulkanSamplerYcbcrConversion::Make(
 GraphiteResourceKey VulkanSamplerYcbcrConversion::MakeYcbcrConversionKey(
         const VulkanSharedContext* context, const VulkanYcbcrConversionInfo& info) {
     static const ResourceType kType = GraphiteResourceKey::GenerateResourceType();
-
-    // One uint32 for Vkformat, two for external format, and one to house all ycbcr information
-    static const int num32DataCnt = 4;
     GraphiteResourceKey key;
-    GraphiteResourceKey::Builder builder(&key, kType, num32DataCnt, Shareable::kYes);
+    // TODO: When using a known VkFormat, we only need 2 int32s because an external format is
+    // stored as an int64 whereas a known VkFormat can be contained within an int32. Optimize for
+    // this case.
+    static constexpr int kUint32sNeededForYcbcrInfo = 3;
+    GraphiteResourceKey::Builder builder(&key, kType, kUint32sNeededForYcbcrInfo, Shareable::kYes);
 
-    SkASSERT(info.fYcbcrModel                  < (1u << 7));
-    SkASSERT(info.fYcbcrRange                  < (1u << 1));
-    SkASSERT(info.fXChromaOffset               < (1u << 1));
-    SkASSERT(info.fYChromaOffset               < (1u << 1));
-    SkASSERT(info.fChromaFilter                < (1u << 1));
-    SkASSERT(info.fForceExplicitReconstruction < (1u << 7));
-
-    builder[0] = info.fFormat;
-    builder[1] = (uint32_t)(info.fExternalFormat << 32);
-    builder[2] = (uint32_t)info.fExternalFormat;
-    builder[3] = (static_cast<uint32_t>(info.fYcbcrModel                 ) <<  0) |
-                 (static_cast<uint32_t>(info.fYcbcrRange                 ) <<  8) |
-                 (static_cast<uint32_t>(info.fXChromaOffset              ) <<  9) |
-                 (static_cast<uint32_t>(info.fYChromaOffset              ) << 10) |
-                 (static_cast<uint32_t>(info.fChromaFilter               ) << 11) |
-                 (static_cast<uint32_t>(info.fForceExplicitReconstruction) << 12) ;
+    builder[0] = info.asUInt16();
+    if (info.fFormat == VK_FORMAT_UNDEFINED) {
+        builder[1] = (uint32_t)(info.fExternalFormat << 32);
+        builder[2] = (uint32_t)info.fExternalFormat;
+    } else {
+        builder[1] = info.fFormat;
+        // TODO: Remove assigning builder[2] to 0 once we only use 2 int32s for conversions with
+        // known formats.
+        builder[2] = 0;
+    }
 
     builder.finish();
     return key;

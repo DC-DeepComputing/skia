@@ -149,14 +149,15 @@ sk_sp<Texture> ResourceProvider::findOrCreateTextureWithKey(SkISize dimensions,
     return tex;
 }
 
-sk_sp<Sampler> ResourceProvider::findOrCreateCompatibleSampler(const SamplerDesc& desc) {
-    GraphiteResourceKey key = fSharedContext->caps()->makeSamplerKey(desc);
+sk_sp<Sampler> ResourceProvider::findOrCreateCompatibleSampler(const SamplerDesc& samplerDesc) {
+    // Sampler key length can vary by backend, so first query Caps to obtain a sampler key.
+    GraphiteResourceKey key = fSharedContext->caps()->makeSamplerKey(samplerDesc);
 
     if (Resource* resource = fResourceCache->findAndRefResource(key, skgpu::Budgeted::kYes)) {
         return sk_sp<Sampler>(static_cast<Sampler*>(resource));
     }
 
-    sk_sp<Sampler> sampler = this->createSampler(desc);
+    sk_sp<Sampler> sampler = this->createSampler(samplerDesc, key);
     if (!sampler) {
         return nullptr;
     }
