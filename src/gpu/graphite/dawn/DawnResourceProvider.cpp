@@ -25,7 +25,7 @@ namespace {
 
 constexpr int kBufferBindingSizeAlignment = 16;
 constexpr int kMaxNumberOfCachedBufferBindGroups = 32;
-constexpr int kMaxNumberOfCachedTextureBindGroups = 256;
+constexpr int kMaxNumberOfCachedTextureBindGroups = 4096;
 
 wgpu::ShaderModule create_shader_module(const wgpu::Device& device, const char* source) {
     wgpu::ShaderModuleWGSLDescriptor wgslDesc;
@@ -289,15 +289,11 @@ sk_sp<Buffer> DawnResourceProvider::createBuffer(size_t size,
                             accessPattern);
 }
 
-sk_sp<Sampler> DawnResourceProvider::createSampler(const SkSamplingOptions& options,
-                                                   SkTileMode xTileMode,
-                                                   SkTileMode yTileMode
-                                                   const std::vector<uint32_t>& extraBackendDesc) {
+sk_sp<Sampler> DawnResourceProvider::createSampler(const SamplerDesc& samplerDesc) {
     return DawnSampler::Make(this->dawnSharedContext(),
-                             options,
-                             xTileMode,
-                             yTileMode,
-                             extraBackendDesc);
+                             samplerDesc.samplingOptions(),
+                             samplerDesc.tileModeX(),
+                             samplerDesc.tileModeY());
 }
 
 BackendTexture DawnResourceProvider::onCreateBackendTexture(SkISize dimensions,

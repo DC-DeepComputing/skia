@@ -118,7 +118,6 @@ SKIA_PUBLIC_HDRS = [
     "include/effects/Sk1DPathEffect.h",
     "include/effects/Sk2DPathEffect.h",
     "include/effects/SkBlenders.h",
-    "include/effects/SkBlurDrawLooper.h",
     "include/effects/SkBlurMaskFilter.h",
     "include/effects/SkColorMatrixFilter.h",
     "include/effects/SkColorMatrix.h",
@@ -149,6 +148,10 @@ SKIA_PUBLIC_HDRS = [
     "include/gpu/ganesh/SkSurfaceGanesh.h",
     "include/gpu/ganesh/gl/GrGLBackendSurface.h",
     "include/gpu/ganesh/gl/GrGLDirectContext.h",
+    "include/gpu/ganesh/mtl/GrMtlBackendContext.h",
+    "include/gpu/ganesh/mtl/GrMtlBackendSemaphore.h",
+    "include/gpu/ganesh/mtl/GrMtlDirectContext.h",
+    "include/gpu/ganesh/mtl/GrMtlTypes.h",
     "include/gpu/ganesh/mtl/SkSurfaceMetal.h",
     "include/gpu/ganesh/vk/GrBackendDrawableInfo.h",
     "include/gpu/ganesh/vk/GrVkBackendSemaphore.h",
@@ -1907,6 +1910,7 @@ base_gl_srcs = [
     "src/gpu/ganesh/gl/GrGLCaps.h",
     "src/gpu/ganesh/gl/GrGLContext.cpp",
     "src/gpu/ganesh/gl/GrGLContext.h",
+    "src/gpu/ganesh/gl/GrGLCoreFunctions.h",
     "src/gpu/ganesh/gl/GrGLDefines.h",
     "src/gpu/ganesh/gl/GrGLDirectContext.cpp",
     "src/gpu/ganesh/gl/GrGLExtensions.cpp",
@@ -2037,6 +2041,8 @@ PORTS_SRCS_IOS = [
     "src/utils/mac/SkCreateCGImageRef.cpp",
     "src/utils/mac/SkCTFont.cpp",
     "src/utils/mac/SkCTFont.h",
+    "src/utils/mac/SkCTFontCreateExactCopy.cpp",
+    "src/utils/mac/SkCTFontCreateExactCopy.h",
     "src/utils/mac/SkUniqueCFRef.h",
 ]
 
@@ -2112,10 +2118,12 @@ MTL_HDRS = [
 
 MTL_SRCS = [
     "src/gpu/ganesh/mtl/GrMtlAttachment.mm",
+    "src/gpu/ganesh/mtl/GrMtlBackendSemaphore.mm",
     "src/gpu/ganesh/mtl/GrMtlBuffer.mm",
     "src/gpu/ganesh/mtl/GrMtlCaps.mm",
     "src/gpu/ganesh/mtl/GrMtlCommandBuffer.mm",
     "src/gpu/ganesh/mtl/GrMtlDepthStencil.mm",
+    "src/gpu/ganesh/mtl/GrMtlDirectContext.mm",
     "src/gpu/ganesh/mtl/GrMtlFramebuffer.mm",
     "src/gpu/ganesh/mtl/GrMtlGpu.mm",
     "src/gpu/ganesh/mtl/GrMtlOpsRenderPass.mm",
@@ -2555,7 +2563,7 @@ SKOTTIE_SHAPER_SRCS = [
 SKUNICODE_ICU_BUILTIN_SRCS = [
     "modules/skunicode/src/SkUnicode.cpp",
     "modules/skunicode/src/SkUnicode_icu.cpp",
-    "modules/skunicode/src/SkUnicode_icu.h",
+    "modules/skunicode/src/SkUnicode_icupriv.h",
     "modules/skunicode/src/SkUnicode_icu_bidi.cpp",
     "modules/skunicode/src/SkUnicode_icu_bidi.h",
     "modules/skunicode/src/SkUnicode_icu_builtin.cpp",
@@ -2564,7 +2572,7 @@ SKUNICODE_ICU_BUILTIN_SRCS = [
 SKUNICODE_ICU_RUNTIME_SRCS = [
     "modules/skunicode/src/SkUnicode.cpp",
     "modules/skunicode/src/SkUnicode_icu.cpp",
-    "modules/skunicode/src/SkUnicode_icu.h",
+    "modules/skunicode/src/SkUnicode_icupriv.h",
     "modules/skunicode/src/SkUnicode_icu_bidi.cpp",
     "modules/skunicode/src/SkUnicode_icu_bidi.h",
     "modules/skunicode/src/SkUnicode_icu_runtime.cpp",
@@ -2579,6 +2587,10 @@ SKUNICODE_CLIENT_SRCS = [
 
 SKUNICODE_HDRS = [
     "modules/skunicode/include/SkUnicode.h",
+    "modules/skunicode/include/SkUnicode_client.h",
+    "modules/skunicode/include/SkUnicode_icu.h",
+    "modules/skunicode/include/SkUnicode_icu4x.h",
+    "modules/skunicode/include/SkUnicode_libgrapheme.h",
 ]
 
 SKSHAPER_HDRS = [

@@ -1297,6 +1297,11 @@ std::string GenerateNestedChildrenPreamble(const ShaderInfo& shaderInfo,
 }
 
 //--------------------------------------------------------------------------------------------------
+static constexpr char kDataContainerName[] = "DataContainer";
+
+static constexpr int kNumDataContainerChildren = 1;
+
+//--------------------------------------------------------------------------------------------------
 static constexpr TextureAndSampler kTableColorFilterTexturesAndSamplers[] = {
         {"tableSampler"},
 };
@@ -1922,6 +1927,17 @@ ShaderCodeDictionary::ShaderCodeDictionary() {
             GenerateDefaultExpression,
             GenerateNestedChildrenPreamble,
             kNumComposeChildren
+    };
+
+    fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kDataContainer] = {
+            "DataContainer",
+            { },     // no uniforms
+            SnippetRequirementFlags::kDataChild,
+            { },     // no samplers
+            kDataContainerName,
+            GenerateDefaultExpression,
+            GenerateNestedChildrenPreamble,
+            kNumDataContainerChildren
     };
 
     // Fixed-function blend mode snippets are all the same, their functionality is entirely defined

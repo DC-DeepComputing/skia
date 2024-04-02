@@ -26,6 +26,7 @@ class VulkanDescriptorSet;
 class VulkanFramebuffer;
 class VulkanGraphicsPipeline;
 class VulkanRenderPass;
+class VulkanSampler;
 class VulkanSharedContext;
 class VulkanSamplerYcbcrConversion;
 
@@ -62,11 +63,11 @@ private:
 
     sk_sp<Texture> createTexture(SkISize, const TextureInfo&, skgpu::Budgeted) override;
     sk_sp<Buffer> createBuffer(size_t size, BufferType type, AccessPattern) override;
+    sk_sp<Sampler> createSampler(const SamplerDesc&) override;
 
-    sk_sp<Sampler> createSampler(const SkSamplingOptions&,
-                                 SkTileMode xTileMode,
-                                 SkTileMode yTileMode,
-                                 const std::vector<uint32_t>& extraBackendDesc) override;
+    friend class VulkanGraphicsPipeline;
+    sk_sp<VulkanSampler> getSampler(GraphiteResourceKey key) const;
+
     sk_sp<VulkanFramebuffer> createFramebuffer(
             const VulkanSharedContext*,
             const skia_private::TArray<VkImageView>& attachmentViews,

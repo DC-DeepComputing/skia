@@ -57,41 +57,27 @@ ExtractPaintData(Recorder* recorder,
             TextureDataCache* textureDataCache = recorder->priv().textureDataCache();
             textures = textureDataCache->insert(gatherer->textureDataBlock());
 
-            // TODO: We should probablt separate this into a helper.
             const std::vector<TextureDataBlock::SampledTexture>& sampledTextures =
                     gatherer->textureDataBlock().textures();
-            // Check each sampler within the texture data block for additional sampler information
-            // that needs to be included within the paint key.
-            int extraSamplerInfoCount = 0;     // # of samplers w/ extra description information
-            int quantityInt32sInExtraInfo = 0; // # int32s associated with each sampler's extra info
-            static constexpr int kExtraSamplerInfoCountIdx = 0;
-            static constexpr int kQuantityInt32sInExtraInfoIdx = 1;
 
-            std::vector<int32_t> cumulativeExtraInfo {0, 0};
-            // cumulativeExtraInfo container structured as follows:
-            // TODO: Squish extraSamplerInfoCount and quantityInt32sInExtraInfo into one int32.
-            // [kExtraSamplerInfoCountIdx] = extraSamplerInfoCount
-            // [kQuantityInt32sInExtraInfoIdx] = quantityInt32sInExtraInfo
-            // [...] = (extraSamplerInfoCount * quantityInt32sInExtraInfo) int32s of data
+            // 3 uint32s of data: 2 for format/external format, 1 for format features
+            static constexpr int kNumInt32sSamplerInfo = 3;
 
+            // beginBlock() data block
+
+
+            // TODO: Instead of pushing back kNumInt32sSamplerInfo int32s for each texture,
+            // only append for the # of textures that are ycbcr.
+            std::vector<int32_t> cumulativeSamplerData;
             for (int i = 0; i < gatherer->textureDataBlock().numTextures(); i++) {
-                const std::vector<uint32_t>& extraSamplerInfo =
-                        sampledTextures.at(i).second.extraBackendDesc();
-                if (!extraSamplerInfo.empty()) {
-                    extraSamplerInfoCount++;
-                    // TODO: Assert that each sampler's additional information is all the same size.
-                    quantityInt32sInExtraInfo = extraSamplerInfo.size();
-
-                    for (int j = 0; j < quantityInt32sInExtraInfo; j++) {
-                        cumulativeExtraInfo.push_back(extraSamplerInfo.at(j));
-                    }
-                }
+                 const SamplerDesc& samplerDesc = sampledTextures.at(i).second;
+                 cumulativeSamplerData.push_back((uint32_t)(samplerDesc.format() << 32));
+                 cumulativeSamplerData.push_back((uint32_t)samplerDesc.format());
+                 cumulativeSamplerData.push_back(samplerDesc.formatFeatures());
             }
-            // Now that extraSamplerInfoCount and quantityInt32sInExtraInfo have been determined,
-            // assign those values to the appropriate locations.
-            cumulativeExtraInfo[kExtraSamplerInfoCountIdx] = extraSamplerInfoCount;
-            cumulativeExtraInfo[kQuantityInt32sInExtraInfoIdx] = quantityInt32sInExtraInfo;
-            builder->addData(cumulativeExtraInfo);
+            SkASSERT((int)cumulativeSamplerData.size() ==
+                     gatherer->textureDataBlock().numTextures() * kNumInt32sSamplerInfo);
+            builder->addData(cumulativeSamplerData);
 
             // Since we added additional data to the paint params key, re-generate a unique ID
             // TODO: Reorganize this such that we don't bother generating a paint params key until
@@ -611,7 +597,7 @@ FragSkSLInfo BuildFragmentSkSL(const Caps* caps,
     // that changes the HW blending choice to handle analytic coverage.
     result.fBlendInfo = shaderInfo.blendInfo();
     result.fRequiresLocalCoords = shaderInfo.needsLocalCoords();
-    // TODO: Populate result.f[DataMemberAttribute] = shaderInfo.data();
+    result.fData = shaderInfo.data();
 
     return result;
 }

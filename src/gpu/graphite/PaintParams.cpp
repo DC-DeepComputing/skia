@@ -183,12 +183,12 @@ void AddDitherBlock(const KeyContext& keyContext,
     DitherShaderBlock::AddBlock(keyContext, builder, gatherer, data);
 }
 
-// // TODO: Add array of data as input.
-// void AddDataBlock(const KeyContext& keyContext,
-//                   PaintParamsKeyBuilder* builder,
-//                   PipelineDataGatherer* gatherer) {
-
-// }
+// TODO: Add array of data as input.
+void AddDataBlock(const KeyContext& keyContext,
+                  PaintParamsKeyBuilder* builder,
+                  PipelineDataGatherer* gatherer) {
+    // AddToKey? or AddBlock?
+}
 
 void PaintParams::addPaintColorToKey(const KeyContext& keyContext,
                                      PaintParamsKeyBuilder* keyBuilder,

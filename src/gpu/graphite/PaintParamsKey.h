@@ -138,10 +138,16 @@ public:
     }
 
     void addData(SkSpan<int32_t> data) {
+        // TODO: With known sizes, use memcpy instead
         // push length of span, memcpy span contents into data array
+        this->beginBlock(BuiltInCodeSnippetID::kDataContainer);
+        // push "length of span"
+        fData.push_back(data.size());
+        // memcpy span contents into data array
         for (size_t i = 0; i < data.size(); i++) {
             fData.push_back(data[i]);
         }
+        this->endBlock();
     }
 
 private:

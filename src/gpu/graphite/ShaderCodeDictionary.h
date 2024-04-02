@@ -80,7 +80,7 @@ struct ShaderSnippet {
         std::string fBlenderDstColor;
         std::string fFragCoord;
         // TODO: Needed?
-        std::string fData;
+        std::string fData = "";
     };
     using GenerateExpressionForSnippetFn = std::string (*)(const ShaderInfo& shaderInfo,
                                                            const ShaderNode*,
@@ -140,7 +140,7 @@ public:
                SkSpan<const ShaderNode*> children,
                int codeID,
                int keyIndex,
-               SkSpan<int32_t> data) // TODO: default argument of nullptr?
+               SkSpan<const int32_t> data) // TODO: default argument of nullptr?
             : fEntry(snippet)
             , fChildren(children)
             , fCodeID(codeID)
@@ -181,7 +181,7 @@ private:
     int32_t fKeyIndex; // index back to PaintParamsKey, unique across nodes within a ShaderInfo
 
     SkEnumBitMask<SnippetRequirementFlags> fRequiredFlags;
-    SkSpan<int32_t> fData;
+    SkSpan<const int32_t> fData;
 };
 
 // ShaderInfo holds all root ShaderNodes defined for a PaintParams as well as the extracted fixed
@@ -208,8 +208,7 @@ public:
 
     const skgpu::BlendInfo& blendInfo() const { return fBlendInfo; }
 
-    // TODO: Add method to get additional data information from this class.
-    // const [container of int32 data] data() const {return fData}
+    SkSpan<const uint32_t> data() const { return {fData}; }
 
     std::string toSkSL(const Caps* caps,
                        const RenderStep* step,
@@ -236,6 +235,7 @@ private:
     SkBlendMode fBlendMode = SkBlendMode::kClear;
     skgpu::BlendInfo fBlendInfo;
     SkEnumBitMask<SnippetRequirementFlags> fSnippetRequirementFlags;
+    SkSpan<const uint32_t> fData;
 };
 
 // ShaderCodeDictionary is a thread-safe dictionary of ShaderSnippets to code IDs for use with

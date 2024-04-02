@@ -19,15 +19,25 @@
 
 namespace skgpu::graphite {
 
+static constexpr uint32_t kDefaultAtlasDim = 4096;
+
+static constexpr uint32_t kSmallPathPlotWidth = 512;
+static constexpr uint32_t kSmallPathPlotHeight = 256;
+
 RasterPathAtlas::RasterPathAtlas(Recorder* recorder)
         : PathAtlas(recorder, kDefaultAtlasDim, kDefaultAtlasDim)
-        , fCachedAtlasMgr(fWidth, fHeight, fWidth, fHeight)
-        , fUncachedAtlasMgr(fWidth, fHeight, fWidth, fHeight) {
+        , fCachedAtlasMgr(fWidth, fHeight, fWidth, fHeight, recorder->priv().caps())
+        , fSmallPathAtlasMgr(std::max(fWidth/2, kSmallPathPlotWidth),
+                             std::max(fHeight/2, kSmallPathPlotHeight),
+                             kSmallPathPlotWidth, kSmallPathPlotHeight,
+                             recorder->priv().caps())
+        , fUncachedAtlasMgr(fWidth, fHeight, fWidth, fHeight, recorder->priv().caps()) {
     SkASSERT(recorder);
 }
 
 void RasterPathAtlas::recordUploads(DrawContext* dc) {
     fCachedAtlasMgr.recordUploads(dc, fRecorder);
+    fSmallPathAtlasMgr.recordUploads(dc, fRecorder);
     fUncachedAtlasMgr.recordUploads(dc, fRecorder);
 }
 
@@ -39,13 +49,25 @@ const TextureProxy* RasterPathAtlas::onAddShape(const Shape& shape,
     skgpu::UniqueKey maskKey;
     bool hasKey = shape.hasKey();
     if (hasKey) {
+        constexpr int kMaxSmallPathSize = 162;
         // Try to locate or add to cached DrawAtlas
-        const TextureProxy* proxy = fCachedAtlasMgr.findOrCreateEntry(fRecorder,
-                                                                      shape,
-                                                                      transform,
-                                                                      strokeRec,
-                                                                      maskSize,
-                                                                      outPos);
+        const TextureProxy* proxy = nullptr;
+        if (maskSize.x() <= kMaxSmallPathSize && maskSize.y() <= kMaxSmallPathSize) {
+            proxy = fSmallPathAtlasMgr.findOrCreateEntry(fRecorder,
+                                                         shape,
+                                                         transform,
+                                                         strokeRec,
+                                                         maskSize,
+                                                         outPos);
+        }
+        if (!proxy) {
+            proxy = fCachedAtlasMgr.findOrCreateEntry(fRecorder,
+                                                      shape,
+                                                      transform,
+                                                      strokeRec,
+                                                      maskSize,
+                                                      outPos);
+        }
         if (proxy) {
             return proxy;
         }
@@ -65,15 +87,19 @@ const TextureProxy* RasterPathAtlas::onAddShape(const Shape& shape,
 /////////////////////////////////////////////////////////////////////////////////////////
 
 RasterPathAtlas::DrawAtlasMgr::DrawAtlasMgr(size_t width, size_t height,
-                                            size_t plotWidth, size_t plotHeight) {
+                                            size_t plotWidth, size_t plotHeight,
+                                            const Caps* caps) {
     static constexpr SkColorType colorType = kAlpha_8_SkColorType;
+
 
     fDrawAtlas = DrawAtlas::Make(colorType,
                                  SkColorTypeBytesPerPixel(colorType),
                                  width, height,
                                  plotWidth, plotHeight,
                                  this,
-                                 DrawAtlas::AllowMultitexturing::kYes,
+                                 caps->allowMultipleAtlasTextures() ?
+                                         DrawAtlas::AllowMultitexturing::kYes :
+                                         DrawAtlas::AllowMultitexturing::kNo,
                                  this,
                                  /*label=*/"RasterPathAtlas");
     SkASSERT(fDrawAtlas);
@@ -146,6 +172,15 @@ const TextureProxy* RasterPathAtlas::DrawAtlasMgr::addToAtlas(Recorder* recorder
     }
     SkIPoint topLeft = locator->topLeft();
     *outPos = skvx::half2(topLeft.x()+kEntryPadding, topLeft.y()+kEntryPadding);
+
+    // If the mask is empty, just return.
+    // TODO: this may not be needed if we can handle clipped out bounds with inverse fills
+    // another way. See PathAtlas::addShape().
+    if (!all(maskSize)) {
+        fDrawAtlas->setLastUseToken(*locator,
+                                    recorder->priv().tokenTracker()->nextFlushToken());
+        return fDrawAtlas->getProxies()[locator->pageIndex()].get();
+    }
 
     // Rasterize path to backing pixmap.
     // This pixmap will be the size of the Plot that contains the given rect, not the entire atlas,

@@ -24,29 +24,26 @@ namespace skgpu::graphite {
 
 class VulkanSharedContext;
 
+// TODO: Consider changing this class to not be a Resource that we cache, store, and share. It is
+// relatively small and it may make more sense to simply have each texture that requires a
+// conversion store its own conversion information even if it is duplicated.
 class VulkanSamplerYcbcrConversion : public Resource {
 public:
     static sk_sp<VulkanSamplerYcbcrConversion> Make(const VulkanSharedContext*,
                                                     const VulkanYcbcrConversionInfo&);
 
-    // One uint32 for Vkformat, two for external format, and one to house all ycbcr information
-    static const int kUint32sNeededForYcbcrInfo = 4;
-
-    // Gather all identifying YCbCr conversion information into compact numerical representation
-    using YcbcrArray = skia_private::STArray<kUint32sNeededForYcbcrInfo, uint32_t>;
-    static YcbcrArray GetYcbcrConversionKeyInfo(const VulkanYcbcrConversionInfo& info);
-
     // Return a fully-formed GraphiteResourceKey that represents the conversion from conversion info
     static GraphiteResourceKey MakeYcbcrConversionKey(const VulkanSharedContext*,
                                                       const VulkanYcbcrConversionInfo&);
 
-    // Return a fully-formed GraphiteResourceKey that represents the conversion from YCbCr key info
-    // represented as a vector of integers.
-    // TODO: expland upon this comment as to why we have this
-    static GraphiteResourceKey MakeYcbcrConversionKeyFromInts(
-            const std::vector<uint32_t>& ycbcrDataAsInts);
+    // Return a fully-formed GraphiteResourceKey that represents a YCbCr conversion by extracting
+    // relevant information from a SamplerDesc.
+    static GraphiteResourceKey GetKeyFromSamplerDesc(const SamplerDesc& samplerDesc);
 
-    // TODO: Consider a "add to existing builder/key" method
+    // TODO: When using a known VkFormat, we only need 3 int32s because an external format is
+    // stored as an int64 whereas a known VkFormat can be contained within an int32. Optimize for
+    // this case.
+    static constexpr int kUint32sNeededForYcbcrInfo = 4;
 
     VkSamplerYcbcrConversion ycbcrConversion() const { return fYcbcrConversion; }
 

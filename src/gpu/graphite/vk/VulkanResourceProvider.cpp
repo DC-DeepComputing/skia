@@ -109,7 +109,8 @@ sk_sp<GraphicsPipeline> VulkanResourceProvider::createGraphicsPipeline(
                                         pipelineDesc,
                                         renderPassDesc,
                                         compatibleRenderPass,
-                                        this->pipelineCache());
+                                        this->pipelineCache(),
+                                        this);
 }
 
 sk_sp<ComputePipeline> VulkanResourceProvider::createComputePipeline(const ComputePipelineDesc&) {
@@ -127,27 +128,62 @@ sk_sp<Buffer> VulkanResourceProvider::createBuffer(size_t size,
     return VulkanBuffer::Make(this->vulkanSharedContext(), size, type, accessPattern);
 }
 
-sk_sp<Sampler> VulkanResourceProvider::createSampler(
-        const SkSamplingOptions& samplingOptions,
-        SkTileMode xTileMode,
-        SkTileMode yTileMode,
-        const std::vector<uint32_t>& extraBackendDesc) {
-    // TODO: Reconstruct VulkanYcbcrConversionInfo based off of extraBackendDesc?
+sk_sp<Sampler> VulkanResourceProvider::createSampler(const SamplerDesc& samplerDesc) {
+    // If the sampler description has non-zero additionalFormatInfo, use that to obtain a real
+    // YCbCr conversion to pass into VulkanSampler creation.
     sk_sp<VulkanSamplerYcbcrConversion> ycbcrConversion = nullptr;
-    if (!extraBackendDesc.empty()) {
-        // Textures are made first, so the YCbCr convesion should already be made by now.
+
+    // TODO: Have better check for when we actually care about YCbCr information.
+    if (samplerDesc.format()) {
         GraphiteResourceKey ycbcrKey =
-                VulkanSamplerYcbcrConversion::MakeYcbcrConversionKeyFromInts(extraBackendDesc);
+                VulkanSamplerYcbcrConversion::GetKeyFromSamplerDesc(samplerDesc);
 
         if (Resource* resource = fResourceCache->findAndRefResource(ycbcrKey,
                                                                     skgpu::Budgeted::kNo)) {
             ycbcrConversion = sk_sp<VulkanSamplerYcbcrConversion>(
                     static_cast<VulkanSamplerYcbcrConversion*>(resource));
+        } else {
+            // Reconstruct from SamplerDesc.
+            SamplerMutability samplerMutability =
+                    (SamplerMutability)(samplerDesc.desc() >> SamplerDesc::kMutabilityShift);
+
+            if (samplerMutability != SamplerMutability::kDynamicSampler) {
+                bool useExternalFormat =
+                        samplerMutability == SamplerMutability::kImmutableSamplerExternalFormat;
+
+                VulkanYcbcrConversionInfo ycbcrConversionInfo =
+                        VulkanYcbcrConversionInfo::MakeFromNumericalRepresentation(
+                                useExternalFormat,
+                                (uint8_t)(samplerDesc.desc() >> SamplerDesc::kConversionInfoShift),
+                                samplerDesc.format(),
+                                samplerDesc.formatFeatures());
+
+                // TODO: Fix. This is horribly inefficient and annoying to have to go between
+                // SamplerDesc -> key; SamplerDesc -> YcbcrInfo -> Creating conversion
+                ycbcrConversion = findOrCreateCompatibleYcbcrConversion(ycbcrConversionInfo);
+                SkASSERT(ycbcrConversion); // TODO is this even necessarily true?
+            }
         }
     }
 
-    return VulkanSampler::Make(
-            this->vulkanSharedContext(), samplingOptions, xTileMode, yTileMode, ycbcrConversion);
+    return VulkanSampler::Make(this->vulkanSharedContext(),
+                               samplerDesc.samplingOptions(),
+                               samplerDesc.tileModeX(),
+                               samplerDesc.tileModeY(),
+                               ycbcrConversion);
+}
+
+sk_sp<VulkanSampler> VulkanResourceProvider::getSampler(GraphiteResourceKey key) const {
+    // If in cache, return
+    if (Resource* resource = fResourceCache->findAndRefResource(key, skgpu::Budgeted::kNo)) {
+        return sk_sp<VulkanSampler>(static_cast<VulkanSampler*>(resource));
+    }
+
+    // TODO: Sampler should already be created.
+    // If not, create here.
+    SkUNREACHABLE;
+
+    return nullptr;
 }
 
 BackendTexture VulkanResourceProvider::onCreateBackendTexture(SkISize dimensions,
@@ -395,7 +431,7 @@ sk_sp<VulkanSamplerYcbcrConversion>
             this->vulkanSharedContext(), ycbcrInfo);
 
     if (Resource* resource = fResourceCache->findAndRefResource(ycbcrConversionKey,
-                                                                skgpu::Budgeted::kNo)) {
+                                                                skgpu::Budgeted::kYes)) {
         return sk_sp<VulkanSamplerYcbcrConversion>(
                 static_cast<VulkanSamplerYcbcrConversion*>(resource));
     }

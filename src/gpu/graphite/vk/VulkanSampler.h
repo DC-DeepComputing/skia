@@ -27,12 +27,16 @@ public:
                                      SkTileMode yTileMode,
                                      sk_sp<VulkanSamplerYcbcrConversion>);
 
+    // static GraphiteResourceKey MakeKeyFromData(SkSpan<const uint32_t> data);
+
     ~VulkanSampler() override {}
 
+    // TODO: Not needed?
     VkSampler vkSampler() const { return fSampler; }
 
     const VulkanSamplerYcbcrConversion* ycbcrConversion() const { return fYcbcrConversion.get(); }
 
+    // TODO: Not needed?
     const VkSampler* constVkSamplerPtr() const {
         return &fSampler;
     }

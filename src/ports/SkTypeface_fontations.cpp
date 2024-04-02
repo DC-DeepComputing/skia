@@ -54,8 +54,8 @@ static_assert(sizeof(fontations_ffi::SkiaDesignCoordinate) ==
               "SkFontArguments::VariationPosition::Coordinate.");
 
 rust::Box<fontations_ffi::BridgeNormalizedCoords> make_normalized_coords(
-        fontations_ffi::BridgeFontRef const& bridgeFontRef, const SkFontArguments& args) {
-    SkFontArguments::VariationPosition variationPosition = args.getVariationDesignPosition();
+        fontations_ffi::BridgeFontRef const& bridgeFontRef,
+        const SkFontArguments::VariationPosition& variationPosition) {
     // Cast is safe because of static_assert matching the structs above.
     rust::Slice<const fontations_ffi::SkiaDesignCoordinate> coordinates(
             reinterpret_cast<const fontations_ffi::SkiaDesignCoordinate*>(
@@ -83,20 +83,23 @@ sk_sp<SkTypeface> SkTypeface_Make_Fontations(std::unique_ptr<SkStreamAsset> font
     return SkTypeface_Fontations::MakeFromStream(std::move(fontData), args);
 }
 
-SkTypeface_Fontations::SkTypeface_Fontations(sk_sp<SkData> fontData, const SkFontArguments& args)
-        : SkTypeface(SkFontStyle(), true)
-        , fFontData(fontData)
-        , fTtcIndex(args.getCollectionIndex())
-        , fBridgeFontRef(make_bridge_font_ref(fFontData, fTtcIndex))
-        , fBridgeNormalizedCoords(make_normalized_coords(*fBridgeFontRef, args))
-        , fOutlines(fontations_ffi::get_outline_collection(*fBridgeFontRef))
-        , fPalette(resolve_palette(
-                  *fBridgeFontRef,
-                  args.getPalette().index,
-                  rust::Slice<const fontations_ffi::PaletteOverride>(
-                          reinterpret_cast<const ::fontations_ffi::PaletteOverride*>(
-                                  args.getPalette().overrides),
-                          args.getPalette().overrideCount))) {}
+SkTypeface_Fontations::SkTypeface_Fontations(
+        sk_sp<SkData> fontData,
+        const SkFontStyle& style,
+        uint32_t ttcIndex,
+        rust::Box<fontations_ffi::BridgeFontRef>&& fontRef,
+        rust::Box<fontations_ffi::BridgeMappingIndex>&& mappingIndex,
+        rust::Box<fontations_ffi::BridgeNormalizedCoords>&& normalizedCoords,
+        rust::Box<fontations_ffi::BridgeOutlineCollection>&& outlines,
+        rust::Vec<uint32_t>&& palette)
+        : SkTypeface(style, true)
+        , fFontData(std::move(fontData))
+        , fTtcIndex(ttcIndex)
+        , fBridgeFontRef(std::move(fontRef))
+        , fMappingIndex(std::move(mappingIndex))
+        , fBridgeNormalizedCoords(std::move(normalizedCoords))
+        , fOutlines(std::move(outlines))
+        , fPalette(std::move(palette)) {}
 
 sk_sp<SkTypeface> SkTypeface_Fontations::MakeFromStream(std::unique_ptr<SkStreamAsset> stream,
                                                         const SkFontArguments& args) {
@@ -105,8 +108,74 @@ sk_sp<SkTypeface> SkTypeface_Fontations::MakeFromStream(std::unique_ptr<SkStream
 
 sk_sp<SkTypeface> SkTypeface_Fontations::MakeFromData(sk_sp<SkData> data,
                                                       const SkFontArguments& args) {
-    sk_sp<SkTypeface_Fontations> probeTypeface(new SkTypeface_Fontations(data, args));
-    return probeTypeface->hasValidBridgeFontRef() ? probeTypeface : nullptr;
+    uint32_t ttcIndex = args.getCollectionIndex();
+    rust::Box<fontations_ffi::BridgeFontRef> bridgeFontRef = make_bridge_font_ref(data, ttcIndex);
+    if (!fontations_ffi::font_ref_is_valid(*bridgeFontRef)) {
+        return nullptr;
+    }
+
+    SkFontStyle style;
+    fontations_ffi::BridgeFontStyle fontStyle;
+    if (fontations_ffi::get_font_style(*bridgeFontRef, fontStyle)) {
+        style = SkFontStyle(fontStyle.weight,
+                            fontStyle.width,
+                            static_cast<SkFontStyle::Slant>(fontStyle.slant));
+    }
+    rust::Box<fontations_ffi::BridgeMappingIndex> mappingIndex =
+            fontations_ffi::make_mapping_index(*bridgeFontRef);
+
+    SkFontArguments::VariationPosition variationPosition = args.getVariationDesignPosition();
+    std::unique_ptr<SkFontArguments::VariationPosition::Coordinate[]> concatenatedCoords = nullptr;
+    // Handle FreeType behaviour of upper 15 bits of collection index
+    // representing a named instance choice. If so, prepopulate the variation
+    // coordinates with the values from the named instance and append the user
+    // coordinates after that so they can override the named instance's
+    // coordinates.
+    if (args.getCollectionIndex() & 0xFFFF0000) {
+        size_t numNamedInstanceCoords =
+                fontations_ffi::coordinates_for_shifted_named_instance_index(
+                        *bridgeFontRef,
+                        args.getCollectionIndex(),
+                        rust::cxxbridge1::Slice<fontations_ffi::SkiaDesignCoordinate>());
+        concatenatedCoords.reset(
+                new SkFontArguments::VariationPosition::Coordinate
+                        [numNamedInstanceCoords + variationPosition.coordinateCount]);
+
+        rust::cxxbridge1::Slice<fontations_ffi::SkiaDesignCoordinate> targetSlice(
+                reinterpret_cast<fontations_ffi::SkiaDesignCoordinate*>(concatenatedCoords.get()),
+                numNamedInstanceCoords);
+        size_t retrievedNamedInstanceCoords =
+                fontations_ffi::coordinates_for_shifted_named_instance_index(
+                        *bridgeFontRef, args.getCollectionIndex(), targetSlice);
+        if (numNamedInstanceCoords != retrievedNamedInstanceCoords) {
+            return nullptr;
+        }
+        for (int i = 0; i < variationPosition.coordinateCount; ++i) {
+            concatenatedCoords[numNamedInstanceCoords + i] = variationPosition.coordinates[i];
+        }
+        variationPosition.coordinateCount += numNamedInstanceCoords;
+        variationPosition.coordinates = concatenatedCoords.get();
+    }
+
+    rust::Box<fontations_ffi::BridgeNormalizedCoords> normalizedCoords =
+            make_normalized_coords(*bridgeFontRef, variationPosition);
+    rust::Box<fontations_ffi::BridgeOutlineCollection> outlines =
+            fontations_ffi::get_outline_collection(*bridgeFontRef);
+
+    rust::Slice<const fontations_ffi::PaletteOverride> paletteOverrides(
+            reinterpret_cast<const ::fontations_ffi::PaletteOverride*>(args.getPalette().overrides),
+            args.getPalette().overrideCount);
+    rust::Vec<uint32_t> palette =
+            resolve_palette(*bridgeFontRef, args.getPalette().index, paletteOverrides);
+
+    return sk_sp<SkTypeface>(new SkTypeface_Fontations(data,
+                                                       style,
+                                                       ttcIndex,
+                                                       std::move(bridgeFontRef),
+                                                       std::move(mappingIndex),
+                                                       std::move(normalizedCoords),
+                                                       std::move(outlines),
+                                                       std::move(palette)));
 }
 
 namespace sk_fontations {
@@ -193,7 +262,9 @@ void SkTypeface_Fontations::onGetFamilyName(SkString* familyName) const {
 bool SkTypeface_Fontations::onGetPostScriptName(SkString* postscriptName) const {
     rust::String readPsName;
     if (fontations_ffi::postscript_name(*fBridgeFontRef, readPsName)) {
-        *postscriptName = SkString(readPsName.data(), readPsName.size());
+        if (postscriptName) {
+            *postscriptName = SkString(readPsName.data(), readPsName.size());
+        }
         return true;
     }
 
@@ -214,15 +285,21 @@ void SkTypeface_Fontations::onCharsToGlyphs(const SkUnichar* chars,
     sk_bzero(glyphs, count * sizeof(glyphs[0]));
 
     for (int i = 0; i < count; ++i) {
-        glyphs[i] = fontations_ffi::lookup_glyph_or_zero(*fBridgeFontRef, chars[i]);
+        glyphs[i] = fontations_ffi::lookup_glyph_or_zero(*fBridgeFontRef, *fMappingIndex, chars[i]);
     }
 }
 int SkTypeface_Fontations::onCountGlyphs() const {
     return fontations_ffi::num_glyphs(*fBridgeFontRef);
 }
 
-bool SkTypeface_Fontations::hasValidBridgeFontRef() const {
-    return fontations_ffi::font_ref_is_valid(*fBridgeFontRef);
+void SkTypeface_Fontations::getGlyphToUnicodeMap(SkUnichar* codepointForGlyphMap) const {
+    size_t numGlyphs = SkToSizeT(onCountGlyphs());
+    if (!codepointForGlyphMap) {
+        SkASSERT(numGlyphs == 0);
+    }
+    rust::Slice<uint32_t> codepointForGlyphSlice{reinterpret_cast<uint32_t*>(codepointForGlyphMap),
+                                                 numGlyphs};
+    fontations_ffi::fill_glyph_to_unicode_map(*fBridgeFontRef, codepointForGlyphSlice);
 }
 
 void SkTypeface_Fontations::onFilterRec(SkScalerContextRec* rec) const {
@@ -519,8 +596,7 @@ protected:
     }
 
     bool generatePath(const SkGlyph& glyph, SkPath* path) override {
-        SkASSERT(glyph.extraBits() != ScalerContextBits::COLRv1);
-        SkASSERT(glyph.extraBits() != ScalerContextBits::COLRv0);
+        SkASSERT(glyph.extraBits() == ScalerContextBits::PATH);
 
         SkVector scale;
         SkMatrix remainingMatrix;
@@ -584,21 +660,24 @@ protected:
             }
         };
         ScalerContextBits::value_type format = glyph.extraBits();
-        if (format == ScalerContextBits::BITMAP) {
-            return nullptr;
+        if (format == ScalerContextBits::COLRv1 || format == ScalerContextBits::COLRv0) {
+            return sk_sp<SkDrawable>(new ColrGlyphDrawable(this, glyph));
         }
-        SkASSERT(format == ScalerContextBits::COLRv1 || format == ScalerContextBits::COLRv0);
-        return sk_sp<SkDrawable>(new ColrGlyphDrawable(this, glyph));
+        return nullptr;
     }
 
     void generateFontMetrics(SkFontMetrics* out_metrics) override {
-        fontations_ffi::Metrics metrics = fontations_ffi::get_skia_metrics(
-                fBridgeFontRef, fMatrix.getScaleY(), fBridgeNormalizedCoords);
+        SkVector scale;
+        SkMatrix remainingMatrix;
+        fRec.computeMatrices(
+                SkScalerContextRec::PreMatrixScale::kVertical, &scale, &remainingMatrix);
+        fontations_ffi::Metrics metrics =
+                fontations_ffi::get_skia_metrics(fBridgeFontRef, scale.fY, fBridgeNormalizedCoords);
         out_metrics->fTop = -metrics.top;
         out_metrics->fAscent = -metrics.ascent;
         out_metrics->fDescent = -metrics.descent;
         out_metrics->fBottom = -metrics.bottom;
-        out_metrics->fLeading = -metrics.leading;
+        out_metrics->fLeading = metrics.leading;
         out_metrics->fAvgCharWidth = metrics.avg_char_width;
         out_metrics->fMaxCharWidth = metrics.max_char_width;
         out_metrics->fXMin = metrics.x_min;
@@ -606,7 +685,12 @@ protected:
         out_metrics->fXHeight = -metrics.x_height;
         out_metrics->fCapHeight = -metrics.cap_height;
         out_metrics->fFlags = 0;
-        // TODO(drott): Is it necessary to transform metrics with remaining parts of matrix?
+        if (fontations_ffi::table_data(fBridgeFontRef,
+                                       SkSetFourByteTag('f', 'v', 'a', 'r'),
+                                       0,
+                                       rust::Slice<uint8_t>())) {
+            out_metrics->fFlags |= SkFontMetrics::kBoundsInvalid_Flag;
+        }
     }
 
 private:
@@ -625,13 +709,111 @@ std::unique_ptr<SkStreamAsset> SkTypeface_Fontations::onOpenStream(int* ttcIndex
 }
 
 sk_sp<SkTypeface> SkTypeface_Fontations::onMakeClone(const SkFontArguments& args) const {
-    return MakeFromData(fFontData, args);
+    // Matching DWrite implementation, return self if ttc index mismatches.
+    if (fTtcIndex != SkTo<uint32_t>(args.getCollectionIndex())) {
+        return sk_ref_sp(this);
+    }
+
+    int numAxes = onGetVariationDesignPosition(nullptr, 0);
+    auto fusedDesignPosition =
+            std::make_unique<SkFontArguments::VariationPosition::Coordinate[]>(numAxes);
+    int retrievedAxes = onGetVariationDesignPosition(fusedDesignPosition.get(), numAxes);
+    if (numAxes != retrievedAxes) {
+        return nullptr;
+    }
+
+    // We know the internally retrieved axes are normalized, contain a value for every possible
+    // axis, other axes do not exist, so we only need to override any of those.
+    for (int i = 0; i < numAxes; ++i) {
+        const SkFontArguments::VariationPosition& argPosition = args.getVariationDesignPosition();
+        for (int j = 0; j < argPosition.coordinateCount; ++j) {
+            if (fusedDesignPosition[i].axis == argPosition.coordinates[j].axis) {
+                fusedDesignPosition[i].value = argPosition.coordinates[j].value;
+            }
+        }
+    }
+
+    SkFontArguments fusedArgs;
+    fusedArgs.setVariationDesignPosition({fusedDesignPosition.get(), SkToInt(numAxes)});
+    fusedArgs.setPalette(args.getPalette());
+
+    rust::cxxbridge1::Box<fontations_ffi::BridgeNormalizedCoords> normalized_args =
+            make_normalized_coords(*fBridgeFontRef, fusedArgs.getVariationDesignPosition());
+
+    if (!fontations_ffi::normalized_coords_equal(*normalized_args, *fBridgeNormalizedCoords)) {
+        return MakeFromData(fFontData, fusedArgs);
+    }
+
+    // TODO(crbug.com/skia/330149870): Palette differences are not fused, see DWrite backend impl.
+    rust::Slice<const fontations_ffi::PaletteOverride> argPaletteOverrides(
+            reinterpret_cast<const fontations_ffi::PaletteOverride*>(args.getPalette().overrides),
+            args.getPalette().overrideCount);
+    rust::Vec<uint32_t> newPalette =
+            resolve_palette(*fBridgeFontRef, args.getPalette().index, argPaletteOverrides);
+
+    if (fPalette.size() != newPalette.size() ||
+        memcmp(fPalette.data(), newPalette.data(), fPalette.size() * sizeof(fPalette[0]))) {
+        return MakeFromData(fFontData, fusedArgs);
+    }
+
+    return sk_ref_sp(this);
 }
 
 std::unique_ptr<SkScalerContext> SkTypeface_Fontations::onCreateScalerContext(
         const SkScalerContextEffects& effects, const SkDescriptor* desc) const {
     return std::make_unique<SkFontationsScalerContext>(
             sk_ref_sp(const_cast<SkTypeface_Fontations*>(this)), effects, desc);
+}
+
+std::unique_ptr<SkAdvancedTypefaceMetrics> SkTypeface_Fontations::onGetAdvancedMetrics() const {
+    std::unique_ptr<SkAdvancedTypefaceMetrics> info(new SkAdvancedTypefaceMetrics);
+
+    if (!fontations_ffi::is_embeddable(*fBridgeFontRef)) {
+        info->fFlags |= SkAdvancedTypefaceMetrics::kNotEmbeddable_FontFlag;
+    }
+
+    if (!fontations_ffi::is_subsettable(*fBridgeFontRef)) {
+        info->fFlags |= SkAdvancedTypefaceMetrics::kNotSubsettable_FontFlag;
+    }
+
+    if (fontations_ffi::table_data(
+                *fBridgeFontRef, SkSetFourByteTag('f', 'v', 'a', 'r'), 0, rust::Slice<uint8_t>())) {
+        info->fFlags |= SkAdvancedTypefaceMetrics::kVariable_FontFlag;
+    }
+
+    // Metrics information.
+    fontations_ffi::Metrics metrics =
+            fontations_ffi::get_unscaled_metrics(*fBridgeFontRef, *fBridgeNormalizedCoords);
+    info->fAscent = metrics.ascent;
+    info->fDescent = metrics.descent;
+    info->fCapHeight = metrics.cap_height;
+
+    info->fBBox = SkIRect::MakeLTRB((int32_t)metrics.x_min,
+                                    (int32_t)metrics.top,
+                                    (int32_t)metrics.x_max,
+                                    (int32_t)metrics.bottom);
+
+    // Style information.
+    if (fontations_ffi::is_fixed_pitch(*fBridgeFontRef)) {
+        info->fStyle |= SkAdvancedTypefaceMetrics::kFixedPitch_Style;
+    }
+
+    fontations_ffi::BridgeFontStyle fontStyle;
+    if (fontations_ffi::get_font_style(*fBridgeFontRef, fontStyle)) {
+        if (fontStyle.slant == SkFontStyle::Slant::kItalic_Slant) {
+            info->fStyle |= SkAdvancedTypefaceMetrics::kItalic_Style;
+        }
+    }
+
+    if (fontations_ffi::is_serif_style(*fBridgeFontRef)) {
+        info->fStyle |= SkAdvancedTypefaceMetrics::kSerif_Style;
+    } else if (fontations_ffi::is_script_style(*fBridgeFontRef)) {
+        info->fStyle |= SkAdvancedTypefaceMetrics::kScript_Style;
+    }
+
+    info->fItalicAngle = fontations_ffi::italic_angle(*fBridgeFontRef);
+
+    return info;
 }
 
 void SkTypeface_Fontations::onGetFontDescriptor(SkFontDescriptor* desc, bool* serialize) const {

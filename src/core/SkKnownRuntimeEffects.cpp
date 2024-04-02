@@ -18,7 +18,7 @@ namespace {
 // This must be kept in sync w/ the version in BlurUtils.h
 static constexpr int kMaxBlurSamples = 28;
 
-SkRuntimeEffect* make_blur_1D_effect(int kernelWidth) {
+SkRuntimeEffect* make_blur_1D_effect(int kernelWidth, const SkRuntimeEffect::Options& options) {
     SkASSERT(kernelWidth <= kMaxBlurSamples);
     // The SkSL structure performs two kernel taps; if the kernel has an odd width the last
     // sample will be skipped with the current loop limit calculation.
@@ -46,10 +46,11 @@ SkRuntimeEffect* make_blur_1D_effect(int kernelWidth) {
                             "sum += s.w * child.eval(coord + s.z*dir);"
                         "}"
                         "return sum;"
-                    "}", kMaxBlurSamples, kernelWidth).c_str());
+                    "}", kMaxBlurSamples, kernelWidth).c_str(),
+                    options);
 }
 
-SkRuntimeEffect* make_blur_2D_effect(int maxKernelSize) {
+SkRuntimeEffect* make_blur_2D_effect(int maxKernelSize, const SkRuntimeEffect::Options& options) {
     SkASSERT(maxKernelSize % 4 == 0);
     return SkMakeRuntimeEffect(SkRuntimeEffect::MakeForShader,
             SkStringPrintf(
@@ -82,7 +83,8 @@ SkRuntimeEffect* make_blur_2D_effect(int maxKernelSize) {
                             "sum += k.w * child.eval(coord + o.zw);"
                         "}"
                         "return sum;"
-                    "}", kMaxBlurSamples, maxKernelSize).c_str());
+                    "}", kMaxBlurSamples, maxKernelSize).c_str(),
+                    options);
 }
 
 } // anonymous namespace
@@ -96,6 +98,54 @@ const SkRuntimeEffect* GetKnownRuntimeEffect(StableKey stableKey) {
             return nullptr;
 
         // Shaders
+        case StableKey::k1DBlur4: {
+            static SkRuntimeEffect* s1DBlurEffect = make_blur_1D_effect(4, options);
+            return s1DBlurEffect;
+        }
+        case StableKey::k1DBlur8: {
+            static SkRuntimeEffect* s1DBlurEffect = make_blur_1D_effect(8, options);
+            return s1DBlurEffect;
+        }
+        case StableKey::k1DBlur12: {
+            static SkRuntimeEffect* s1DBlurEffect = make_blur_1D_effect(12, options);
+            return s1DBlurEffect;
+        }
+        case StableKey::k1DBlur16: {
+            static SkRuntimeEffect* s1DBlurEffect = make_blur_1D_effect(16, options);
+            return s1DBlurEffect;
+        }
+        case StableKey::k1DBlur20: {
+            static SkRuntimeEffect* s1DBlurEffect = make_blur_1D_effect(20, options);
+            return s1DBlurEffect;
+        }
+        case StableKey::k1DBlur28: {
+            static SkRuntimeEffect* s1DBlurEffect = make_blur_1D_effect(28, options);
+            return s1DBlurEffect;
+        }
+        case StableKey::k2DBlur4: {
+            static SkRuntimeEffect* s2DBlurEffect = make_blur_2D_effect(4, options);
+            return s2DBlurEffect;
+        }
+        case StableKey::k2DBlur8: {
+            static SkRuntimeEffect* s2DBlurEffect = make_blur_2D_effect(8, options);
+            return s2DBlurEffect;
+        }
+        case StableKey::k2DBlur12: {
+            static SkRuntimeEffect* s2DBlurEffect = make_blur_2D_effect(12, options);
+            return s2DBlurEffect;
+        }
+        case StableKey::k2DBlur16: {
+            static SkRuntimeEffect* s2DBlurEffect = make_blur_2D_effect(16, options);
+            return s2DBlurEffect;
+        }
+        case StableKey::k2DBlur20: {
+            static SkRuntimeEffect* s2DBlurEffect = make_blur_2D_effect(20, options);
+            return s2DBlurEffect;
+        }
+        case StableKey::k2DBlur28: {
+            static SkRuntimeEffect* s2DBlurEffect = make_blur_2D_effect(28, options);
+            return s2DBlurEffect;
+        }
         case StableKey::kBlend: {
             static constexpr char kBlendShaderCode[] =
                 "uniform shader s, d;"
@@ -110,54 +160,46 @@ const SkRuntimeEffect* GetKnownRuntimeEffect(StableKey stableKey) {
                                         options);
             return sBlendEffect;
         }
+        case StableKey::kDecal: {
+            static constexpr char kDecalShaderCode[] =
+                "uniform shader image;"
+                "uniform float4 decalBounds;"
 
-        case StableKey::k1DBlur4: {
-            static SkRuntimeEffect* s1DBlurEffect = make_blur_1D_effect(4);
-            return s1DBlurEffect;
+                "half4 main(float2 coord) {"
+                    "half4 d = half4(decalBounds - coord.xyxy) * half4(-1, -1, 1, 1);"
+                    "d = saturate(d + 0.5);"
+                    "return (d.x*d.y*d.z*d.w) * image.eval(coord);"
+                "}";
+
+            static const SkRuntimeEffect* sDecalEffect =
+                    SkMakeRuntimeEffect(SkRuntimeEffect::MakeForShader,
+                                        kDecalShaderCode,
+                                        options);
+            return sDecalEffect;
         }
-        case StableKey::k1DBlur8: {
-            static SkRuntimeEffect* s1DBlurEffect = make_blur_1D_effect(8);
-            return s1DBlurEffect;
-        }
-        case StableKey::k1DBlur12: {
-            static SkRuntimeEffect* s1DBlurEffect = make_blur_1D_effect(12);
-            return s1DBlurEffect;
-        }
-        case StableKey::k1DBlur16: {
-            static SkRuntimeEffect* s1DBlurEffect = make_blur_1D_effect(16);
-            return s1DBlurEffect;
-        }
-        case StableKey::k1DBlur20: {
-            static SkRuntimeEffect* s1DBlurEffect = make_blur_1D_effect(20);
-            return s1DBlurEffect;
-        }
-        case StableKey::k1DBlur28: {
-            static SkRuntimeEffect* s1DBlurEffect = make_blur_1D_effect(28);
-            return s1DBlurEffect;
-        }
-        case StableKey::k2DBlur4: {
-            static SkRuntimeEffect* s2DBlurEffect = make_blur_2D_effect(4);
-            return s2DBlurEffect;
-        }
-        case StableKey::k2DBlur8: {
-            static SkRuntimeEffect* s2DBlurEffect = make_blur_2D_effect(8);
-            return s2DBlurEffect;
-        }
-        case StableKey::k2DBlur12: {
-            static SkRuntimeEffect* s2DBlurEffect = make_blur_2D_effect(12);
-            return s2DBlurEffect;
-        }
-        case StableKey::k2DBlur16: {
-            static SkRuntimeEffect* s2DBlurEffect = make_blur_2D_effect(16);
-            return s2DBlurEffect;
-        }
-        case StableKey::k2DBlur20: {
-            static SkRuntimeEffect* s2DBlurEffect = make_blur_2D_effect(20);
-            return s2DBlurEffect;
-        }
-        case StableKey::k2DBlur28: {
-            static SkRuntimeEffect* s2DBlurEffect = make_blur_2D_effect(28);
-            return s2DBlurEffect;
+        case StableKey::kDisplacement: {
+            // NOTE: This uses dot product selection to work on all GLES2 hardware (enforced by
+            // public runtime effect restrictions). Otherwise, this would use a "uniform ivec2"
+            // and component indexing to convert the displacement color into a vector.
+            static constexpr char kDisplacementShaderCode[] =
+                "uniform shader displMap;"
+                "uniform shader colorMap;"
+                "uniform half2 scale;"
+                "uniform half4 xSelect;" // Only one of RGBA will be 1, the rest are 0
+                "uniform half4 ySelect;"
+
+                "half4 main(float2 coord) {"
+                    "half4 displColor = unpremul(displMap.eval(coord));"
+                    "half2 displ = half2(dot(displColor, xSelect), dot(displColor, ySelect));"
+                    "displ = scale * (displ - 0.5);"
+                    "return colorMap.eval(coord + displ);"
+                "}";
+
+            static const SkRuntimeEffect* sDisplacementEffect =
+                    SkMakeRuntimeEffect(SkRuntimeEffect::MakeForShader,
+                                        kDisplacementShaderCode,
+                                        options);
+            return sDisplacementEffect;
         }
         case StableKey::kLighting: {
             static constexpr char kLightingShaderCode[] =

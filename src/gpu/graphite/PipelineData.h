@@ -72,10 +72,11 @@ public:
              const SkSamplingOptions& sampling,
              const SkTileMode tileModes[2],
              sk_sp<TextureProxy> proxy) {
-        fTextureData.push_back({std::move(proxy),
-                                SamplerDesc{sampling,
-                                            tileModes,
-                                            caps->getAdditionalSamplerDescInfo(proxy)}});
+        // Before relinquishing ownership of the proxy, query Caps to gather any relevant sampler
+        // conversion information for the SamplerDesc.
+        SamplerConversionInfo conversionInfo = caps->getSamplerConversionInfo(proxy);
+        fTextureData.push_back(
+                {std::move(proxy), SamplerDesc{sampling, tileModes, conversionInfo}});
     }
 
     void reset() {
@@ -139,9 +140,9 @@ private:
     void doneWithExpectedUniforms() { fUniformManager.doneWithExpectedUniforms(); }
 #endif // SK_DEBUG
 
-    TextureDataBlock fTextureDataBlock;
-    UniformManager   fUniformManager;
-    const Caps*      fCaps;
+    const Caps* const fCaps;
+    TextureDataBlock  fTextureDataBlock;
+    UniformManager    fUniformManager;
 };
 
 #ifdef SK_DEBUG

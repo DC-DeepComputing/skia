@@ -114,6 +114,17 @@ public:
                                               const RenderPassDesc&) const = 0;
     virtual UniqueKey makeComputePipelineKey(const ComputePipelineDesc&) const = 0;
 
+    // Returns a GraphiteResourceKey based upon a SamplerDesc with any additional information that
+    // backends append within their implementation. By default, simply returns a key based upon
+    // the SamplerDesc with no extra info.
+    // TODO: Rather than going through a GraphiteResourceKey, migrate to having a cache of samplers
+    // keyed off of SamplerDesc to minimize heap allocations.
+    virtual GraphiteResourceKey makeSamplerKey(const SamplerDesc& samplerDesc) const;
+
+    virtual SamplerConversionInfo getSamplerConversionInfo(sk_sp<TextureProxy> proxy) const {
+        return {};
+    }
+
     virtual bool extractGraphicsDescs(const UniqueKey&,
                                       GraphicsPipelineDesc*,
                                       RenderPassDesc*,
@@ -267,8 +278,9 @@ public:
     float glyphsAsPathsFontSize() const { return fGlyphsAsPathsFontSize; }
 
     size_t glyphCacheTextureMaximumBytes() const { return fGlyphCacheTextureMaximumBytes; }
+    int maxPathAtlasTextureSize() const { return fMaxPathAtlasTextureSize; }
 
-    bool allowMultipleGlyphCacheTextures() const { return fAllowMultipleGlyphCacheTextures; }
+    bool allowMultipleAtlasTextures() const { return fAllowMultipleAtlasTextures; }
     bool supportBilerpFromGlyphAtlas() const { return fSupportBilerpFromGlyphAtlas; }
 
     bool requireOrderedRecordings() const { return fRequireOrderedRecordings; }
@@ -371,7 +383,9 @@ protected:
     float fMinDistanceFieldFontSize = 18;
     float fGlyphsAsPathsFontSize = 324;
 
-    bool fAllowMultipleGlyphCacheTextures = true;
+    int fMaxPathAtlasTextureSize = 8192;
+
+    bool fAllowMultipleAtlasTextures = true;
     bool fSupportBilerpFromGlyphAtlas = false;
 
     // Set based on client options

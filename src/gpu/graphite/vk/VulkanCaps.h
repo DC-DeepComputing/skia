@@ -45,11 +45,16 @@ public:
 
     TextureInfo getDefaultStorageTextureInfo(SkColorType) const override;
 
-    std::vector<uint32_t> getAdditionalSamplerDescInfo(sk_sp<TextureProxy> proxy) const override;
+    SamplerConversionInfo getSamplerConversionInfo(sk_sp<TextureProxy> proxy) const override;
 
     UniqueKey makeGraphicsPipelineKey(const GraphicsPipelineDesc&,
                                       const RenderPassDesc&) const override;
     UniqueKey makeComputePipelineKey(const ComputePipelineDesc&) const override { return {}; }
+
+    GraphiteResourceKey makeSamplerKey(const SamplerDesc&) const override;
+
+    // TODO add comment here explaining
+    GraphiteResourceKey reconstructSamplerKeyFromInts(SkSpan<const uint32_t>) const;
 
     uint32_t channelMask(const TextureInfo&) const override;
 
@@ -238,6 +243,8 @@ private:
     bool fGpuOnlyBuffersMorePerformant = false;
     bool fShouldPersistentlyMapCpuToGpuBuffers = true;
     bool fSupportsDeviceFaultInfo = false;
+
+    // static ResourceType kSamplerResourceType;
 };
 
 } // namespace skgpu::graphite

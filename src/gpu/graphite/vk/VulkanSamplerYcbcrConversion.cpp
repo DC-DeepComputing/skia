@@ -58,59 +58,50 @@ sk_sp<VulkanSamplerYcbcrConversion> VulkanSamplerYcbcrConversion::Make(
             new VulkanSamplerYcbcrConversion(context, conversion));
 }
 
-VulkanSamplerYcbcrConversion::YcbcrArray VulkanSamplerYcbcrConversion::GetYcbcrConversionKeyInfo(
-        const VulkanYcbcrConversionInfo& info) {
-    YcbcrArray ycbcrData;
-
-    SkASSERT(info.fYcbcrModel                  < (1u << 7));
-    SkASSERT(info.fYcbcrRange                  < (1u << 1));
-    SkASSERT(info.fXChromaOffset               < (1u << 1));
-    SkASSERT(info.fYChromaOffset               < (1u << 1));
-    SkASSERT(info.fChromaFilter                < (1u << 1));
-    SkASSERT(info.fForceExplicitReconstruction < (1u << 7));
-
-    ycbcrData.push_back(info.fFormat);
-    ycbcrData.push_back((uint32_t)(info.fExternalFormat << 32));
-    ycbcrData.push_back((uint32_t)info.fExternalFormat);
-    ycbcrData.push_back((static_cast<uint32_t>(info.fYcbcrModel                 ) <<  0) |
-                        (static_cast<uint32_t>(info.fYcbcrRange                 ) <<  8) |
-                        (static_cast<uint32_t>(info.fXChromaOffset              ) <<  9) |
-                        (static_cast<uint32_t>(info.fYChromaOffset              ) << 10) |
-                        (static_cast<uint32_t>(info.fChromaFilter               ) << 11) |
-                        (static_cast<uint32_t>(info.fForceExplicitReconstruction) << 12));
-
-    return ycbcrData;
-}
-
 GraphiteResourceKey VulkanSamplerYcbcrConversion::MakeYcbcrConversionKey(
         const VulkanSharedContext* context, const VulkanYcbcrConversionInfo& info) {
     static const ResourceType kType = GraphiteResourceKey::GenerateResourceType();
     GraphiteResourceKey key;
     GraphiteResourceKey::Builder builder(&key, kType, kUint32sNeededForYcbcrInfo, Shareable::kYes);
 
-    VulkanSamplerYcbcrConversion::YcbcrArray ycbcrData = GetYcbcrConversionKeyInfo(info);
-    for (int i = 0; i < ycbcrData.size(); i++) {
-        builder[i] = ycbcrData[i];
+    builder[0] = info.nonFormatInfoAsUInt8();
+    if (info.fFormat == VK_FORMAT_UNDEFINED) {
+        builder[1] = (uint32_t)(info.fExternalFormat << 32);
+        builder[2] = (uint32_t)info.fExternalFormat;
+    } else {
+        builder[1] = info.fFormat;
+        // TODO: Remove assigning builder[2] to 0 once we only use 2 int32s for conversions with
+        // known formats.
+        builder[2] = 0;
     }
+    builder[3] = info.fFormatFeatures;
 
     builder.finish();
     return key;
 }
 
-GraphiteResourceKey VulkanSamplerYcbcrConversion::MakeYcbcrConversionKeyFromInts(
-        const std::vector<uint32_t>& ycbcrDataAsInts) {
-    if (ycbcrDataAsInts.empty() || ycbcrDataAsInts.size() != kUint32sNeededForYcbcrInfo) {
-        // TODO improve error message
-        SKGPU_LOG_E("Requested YCbCr conversion key from incompatible data");
-    }
-
+GraphiteResourceKey VulkanSamplerYcbcrConversion::GetKeyFromSamplerDesc(
+        const SamplerDesc& samplerDesc) {
+    SkASSERT(samplerDesc.format());
     static const ResourceType kType = GraphiteResourceKey::GenerateResourceType();
     GraphiteResourceKey key;
     GraphiteResourceKey::Builder builder(&key, kType, kUint32sNeededForYcbcrInfo, Shareable::kYes);
 
-    for (size_t i = 0; i < ycbcrDataAsInts.size(); i++) {
-        builder[i] = ycbcrDataAsInts.at(i);
-    }
+    // Construct VulkanYcbcrConversionInfo from the sampler description desc
+    // VulkanYcbcrConversionInfo::MakeFromSamplerDescValues()
+    // uint32_t  = samplerDesc.desc();
+
+    // VulkanYcbcrConversionInfo info {(desc >> SamplerDesc::kConversionInfoShift),
+    //                                  samplerDesc.format(),
+    //                                  desc >> sampler};
+    // SamplerConversionInfo conversionInfo = (SamplerConversionInfo)(
+    //         samplerDesc.desc() >> SamplerDesc::kConversionInfoShift);
+
+    static_assert(kUint32sNeededForYcbcrInfo == 4);
+    builder[0] = (uint32_t)(samplerDesc.desc() >> SamplerDesc::kConversionInfoShift);
+    builder[1] = (uint32_t)(samplerDesc.format() << 32);
+    builder[2] = (uint32_t)(samplerDesc.format());
+    builder[3] = (uint32_t)(samplerDesc.formatFeatures());
 
     builder.finish();
     return key;
@@ -120,7 +111,7 @@ VulkanSamplerYcbcrConversion::VulkanSamplerYcbcrConversion(
         const VulkanSharedContext* context, VkSamplerYcbcrConversion ycbcrConversion)
         : Resource(context,
                    Ownership::kOwned,
-                   skgpu::Budgeted::kNo,
+                   skgpu::Budgeted::kYes, // Shareable, so must be budgeted
                    /*gpuMemorySize=*/0,
                    /*label=*/"VulkanSamplerYcbcrConversion")
         , fYcbcrConversion (ycbcrConversion) {}

@@ -52,6 +52,7 @@ struct DescriptorData {
     uint32_t fCount;
     int fBindingIndex;
     SkEnumBitMask<PipelineStageFlags> fPipelineStageFlags;
+    // TODO: Use SkTArray; return SkSpan. Or: Enforce only one per descriptor?
     const std::vector<const Sampler*> fImmutableSamplers;
 };
 

@@ -50,7 +50,7 @@ class ResourceProvider;
 class RuntimeEffectDictionary;
 class SharedContext;
 class Task;
-class TaskGraph;
+class TaskList;
 class TextureDataBlock;
 class TextureInfo;
 class UniformDataBlock;
@@ -167,9 +167,15 @@ public:
     void performDeferredCleanup(std::chrono::milliseconds msNotUsed);
 
     /**
-     * Returns the number of bytes of gpu memory currently budgeted in the Recorder's cache.
+     * Returns the number of bytes of the Recorder's gpu memory cache budget that are currently in
+     * use.
      */
     size_t currentBudgetedBytes() const;
+
+    /**
+     * Returns the size of Recorder's gpu memory cache budget in bytes.
+     */
+    size_t maxBudgetedBytes() const;
 
     /**
      * Enumerates all cached GPU resources owned by the Recorder and dumps their memory to
@@ -214,7 +220,8 @@ private:
     std::unique_ptr<ResourceProvider> fResourceProvider;
     std::unique_ptr<RuntimeEffectDictionary> fRuntimeEffectDict;
 
-    std::unique_ptr<TaskGraph> fGraph;
+    // NOTE: These are stored by pointer to allow them to be forward declared.
+    std::unique_ptr<TaskList> fRootTaskList;
     std::unique_ptr<UniformDataCache> fUniformDataCache;
     std::unique_ptr<TextureDataCache> fTextureDataCache;
     std::unique_ptr<DrawBufferManager> fDrawBufferManager;
