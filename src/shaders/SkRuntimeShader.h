@@ -54,7 +54,7 @@ public:
     sk_sp<SkRuntimeEffect> effect() const { return fEffect; }
     SkSpan<const SkRuntimeEffect::ChildPtr> children() const { return fChildren; }
 
-    sk_sp<const SkData> uniformData(const SkColorSpace* dstCS) const;
+    sk_sp<const SkData> uniformData7(const SkColorSpace* dstCS) const;
 
     SK_FLATTENABLE_HOOKS(SkRuntimeShader)
 
