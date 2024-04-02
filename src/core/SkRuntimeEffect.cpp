@@ -552,7 +552,7 @@ SkRuntimeEffect::Result SkRuntimeEffect::MakeInternal(std::unique_ptr<SkSL::Prog
     // Determine if this effect uses of the color transform intrinsics. Effects need to know this
     // so they can allocate color transform objects, etc.
     if (SkSL::Analysis::CallsColorTransformIntrinsics(*program)) {
-        flags |= kUsesColorTransform_Flag;
+        flags |= kUsesColorTransform_Flag1;
     }
 
     // Shaders are the only thing that cares about this, but it's inexpensive (and safe) to call.
@@ -797,7 +797,7 @@ const SkRuntimeEffect::Child* SkRuntimeEffect::findChild(std::string_view name) 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-sk_sp<SkShader> SkRuntimeEffectPriv::MakeDeferredShader(
+sk_sp<SkShader> SkRuntimeEffectPriv::MakeDeferredShader1(
         const SkRuntimeEffect* effect,
         UniformsCallback uniformsCallback,
         SkSpan<const SkRuntimeEffect::ChildPtr> children,
@@ -815,7 +815,7 @@ sk_sp<SkShader> SkRuntimeEffectPriv::MakeDeferredShader(
                                                              sk_ref_sp(effect),
                                                              /*debugTrace=*/nullptr,
                                                              std::move(uniformsCallback),
-                                                             children);
+                                                             children, true); //$$
 }
 
 sk_sp<SkShader> SkRuntimeEffect::makeShader(sk_sp<const SkData> uniforms,

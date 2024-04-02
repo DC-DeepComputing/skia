@@ -59,7 +59,7 @@ public:
     // Serializing the resulting shader will immediately invoke the callback (and record the
     // resulting uniforms).
     using UniformsCallback = std::function<sk_sp<const SkData>(const UniformsCallbackContext&)>;
-    static sk_sp<SkShader> MakeDeferredShader(const SkRuntimeEffect* effect,
+    static sk_sp<SkShader> MakeDeferredShader1(const SkRuntimeEffect* effect,
                                               UniformsCallback uniformsCallback,
                                               SkSpan<const SkRuntimeEffect::ChildPtr> children,
                                               const SkMatrix* localMatrix = nullptr);
