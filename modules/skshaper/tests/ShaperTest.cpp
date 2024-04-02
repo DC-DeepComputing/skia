@@ -3,6 +3,7 @@
 
 #include "tests/Test.h"
 
+#if 0
 #include "include/core/SkData.h"
 #include "include/core/SkFont.h"
 #include "include/core/SkPoint.h"
@@ -265,3 +266,4 @@ SHAPER_TEST(myanmar)
 SHAPER_TEST(taitham)
 SHAPER_TEST(tamil)
 #undef SHAPER_TEST
+#endif

@@ -184,7 +184,8 @@ void UniformManager::setExpectedUniforms(SkSpan<const Uniform> expected) {
 }
 
 void UniformManager::doneWithExpectedUniforms() {
-    SkASSERT(fExpectedUniformIndex == static_cast<int>(fExpectedUniforms.size()));
+    SkASSERTF(fExpectedUniformIndex == static_cast<int>(fExpectedUniforms.size()),
+              "%d vs. %d\n", fExpectedUniformIndex, static_cast<int>(fExpectedUniforms.size()));
     fExpectedUniforms = {};
 }
 

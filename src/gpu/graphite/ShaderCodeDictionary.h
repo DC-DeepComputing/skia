@@ -254,7 +254,7 @@ public:
 private:
     const char* addTextToArena(std::string_view text);
 
-    SkSpan<const Uniform> convertUniforms(const SkRuntimeEffect* effect);
+    SkSpan<const Uniform> convertUniforms1(const SkRuntimeEffect* effect, bool);
 
     std::array<ShaderSnippet, kBuiltInCodeSnippetIDCount> fBuiltInCodeSnippets;
 

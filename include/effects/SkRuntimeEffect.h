@@ -301,13 +301,16 @@ private:
     uint32_t hash() const { return fHash; }
     bool usesSampleCoords()   const { return (fFlags & kUsesSampleCoords_Flag);   }
     bool samplesOutsideMain() const { return (fFlags & kSamplesOutsideMain_Flag); }
+public:
     bool usesColorTransform() const { return (fFlags & kUsesColorTransform_Flag); }
+private:
     bool alwaysOpaque()       const { return (fFlags & kAlwaysOpaque_Flag);       }
     bool isAlphaUnchanged()   const { return (fFlags & kAlphaUnchanged_Flag);     }
 
     const SkSL::RP::Program* getRPProgram(SkSL::DebugTracePriv* debugTrace) const;
 
     friend class GrSkSLFP;              // usesColorTransform
+    friend class RuntimeEffectBlock;    // usesColorTransform
     friend class SkRuntimeShader;       // fBaseProgram, fMain, fSampleUsages, getRPProgram()
     friend class SkRuntimeBlender;      //
     friend class SkRuntimeColorFilter;  //

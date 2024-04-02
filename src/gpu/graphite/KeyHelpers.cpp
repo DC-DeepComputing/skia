@@ -949,13 +949,15 @@ bool RuntimeEffectBlock::ShaderData::operator==(const ShaderData& rhs) const {
     return fEffect == rhs.fEffect && skdata_matches(fUniforms.get(), rhs.fUniforms.get());
 }
 
-static void gather_runtime_effect_uniforms(SkSpan<const SkRuntimeEffect::Uniform> rtsUniforms,
+static void gather_runtime_effect_uniforms(const KeyContext& keyContext,
+                                           const SkRuntimeEffect* effect,
+                                           SkSpan<const SkRuntimeEffect::Uniform> rtsUniforms,
                                            SkSpan<const Uniform> graphiteUniforms,
                                            const SkData* uniformData,
                                            PipelineDataGatherer* gatherer) {
-    if (!rtsUniforms.empty() && uniformData) {
-        SkDEBUGCODE(UniformExpectationsValidator uev(gatherer, graphiteUniforms);)
+    SkDEBUGCODE(UniformExpectationsValidator uev(gatherer, graphiteUniforms);)
 
+    if (!rtsUniforms.empty() && uniformData) {
         // Collect all the other uniforms from the provided SkData.
         const uint8_t* uniformBase = uniformData->bytes();
         for (size_t index = 0; index < rtsUniforms.size(); ++index) {
@@ -966,6 +968,26 @@ static void gather_runtime_effect_uniforms(SkSpan<const SkRuntimeEffect::Uniform
             gatherer->write(uniform, uniformPtr);
         }
     }
+
+    if (effect->usesColorTransform() && true /*??*/) {
+        SkColorSpace* dstCS = keyContext.dstColorInfo().colorSpace();
+        if (!dstCS) {
+            dstCS = sk_srgb_linear_singleton(); // turns colorspace conversion into a noop
+        }
+
+        ColorSpaceTransformBlock::ColorSpaceTransformData workingToLinear(dstCS,
+                                                                          kUnpremul_SkAlphaType,
+                                                                          sk_srgb_linear_singleton(),
+                                                                          kUnpremul_SkAlphaType);
+        ColorSpaceTransformBlock::ColorSpaceTransformData linearToWorking(sk_srgb_linear_singleton(),
+                                                                          kUnpremul_SkAlphaType,
+                                                                          dstCS,
+                                                                          kUnpremul_SkAlphaType);
+
+        add_color_space_uniforms(workingToLinear.fSteps, ReadSwizzle::kRGBA, gatherer);
+        add_color_space_uniforms(linearToWorking.fSteps, ReadSwizzle::kRGBA, gatherer);
+    }
+
 }
 
 void RuntimeEffectBlock::BeginBlock(const KeyContext& keyContext,
@@ -982,7 +1004,9 @@ void RuntimeEffectBlock::BeginBlock(const KeyContext& keyContext,
     const ShaderSnippet* entry = dict->getEntry(codeSnippetID);
     SkASSERT(entry);
 
-    gather_runtime_effect_uniforms(shaderData.fEffect->uniforms(),
+    gather_runtime_effect_uniforms(keyContext,
+                                   shaderData.fEffect.get(),
+                                   shaderData.fEffect->uniforms(),
                                    entry->fUniforms,
                                    shaderData.fUniforms.get(),
                                    gatherer);
@@ -1054,11 +1078,17 @@ void add_to_key(const KeyContext& keyContext,
     SkASSERT(blender);
     sk_sp<SkRuntimeEffect> effect = blender->effect();
     SkASSERT(effect);
+
     sk_sp<const SkData> uniforms = SkRuntimeEffectPriv::TransformUniforms(
             effect->uniforms(),
             blender->uniforms(),
             keyContext.dstColorInfo().colorSpace());
     SkASSERT(uniforms);
+
+    if (effect->usesColorTransform() && keyContext.dstColorInfo().colorSpace()) {
+        int foo = 0;
+        ++foo;
+    }
 
     RuntimeEffectBlock::BeginBlock(keyContext, builder, gatherer,
                                    { effect, std::move(uniforms) });
@@ -1187,6 +1217,7 @@ static void add_to_key(const KeyContext& keyContext,
     MatrixColorFilterBlock::AddBlock(keyContext, builder, gatherer, matrixCFData);
 }
 
+#if 1
 static void add_to_key(const KeyContext& keyContext,
                        PaintParamsKeyBuilder* builder,
                        PipelineDataGatherer* gatherer,
@@ -1205,6 +1236,24 @@ static void add_to_key(const KeyContext& keyContext,
 
     builder->endBlock();
 }
+#endif
+
+#if 0
+static void add_to_key1(const KeyContext& keyContext,
+                       PaintParamsKeyBuilder* builder,
+                       PipelineDataGatherer* gatherer,
+                       const SkRuntimeColorFilter* filter) {
+    SkASSERT(filter);
+    sk_sp<SkRuntimeEffect> effect = filter->effect();
+    SkASSERT(effect);
+
+    if (rte_needs_wrapping(keyContext, effect.get())) {
+        wrapify(keyContext, builder, gatherer, effect, filter->children(), filter->uniforms());
+    } else {
+        add_to_key2(keyContext, builder, gatherer, effect, filter->children(), filter->uniforms());
+    }
+}
+#endif
 
 static void add_to_key(const KeyContext& keyContext,
                        PaintParamsKeyBuilder* builder,
@@ -1762,6 +1811,7 @@ static void notify_in_use(Recorder*, DrawContext*, const SkPictureShader*) {
     // notified, that will happen when the picture is rendered into an image in add_to_key
 }
 
+#if 1
 static void add_to_key(const KeyContext& keyContext,
                        PaintParamsKeyBuilder* builder,
                        PipelineDataGatherer* gatherer,
@@ -1770,7 +1820,7 @@ static void add_to_key(const KeyContext& keyContext,
     sk_sp<SkRuntimeEffect> effect = shader->effect();
     sk_sp<const SkData> uniforms = SkRuntimeEffectPriv::TransformUniforms(
             effect->uniforms(),
-            shader->uniformData(keyContext.dstColorInfo().colorSpace()),
+            shader->uniformData7(keyContext.dstColorInfo().colorSpace()),
             keyContext.dstColorInfo().colorSpace());
     SkASSERT(uniforms);
 
@@ -1782,6 +1832,27 @@ static void add_to_key(const KeyContext& keyContext,
 
     builder->endBlock();
 }
+#endif
+
+#if 0
+static void add_to_key1(const KeyContext& keyContext,
+                        PaintParamsKeyBuilder* builder,
+                        PipelineDataGatherer* gatherer,
+                        const SkRuntimeShader* shader) {
+    SkASSERT(shader);
+    sk_sp<SkRuntimeEffect> effect = shader->effect();
+    SkASSERT(effect);
+
+    if (rte_needs_wrapping(keyContext, effect.get())) {
+        wrapify(keyContext, builder, gatherer, effect, shader->children(),
+                shader->uniformData7(keyContext.dstColorInfo().colorSpace()));
+    } else {
+        add_to_key2(keyContext, builder, gatherer, effect, shader->children(),
+                    shader->uniformData7(keyContext.dstColorInfo().colorSpace()));
+    }
+}
+#endif
+
 static void notify_in_use(Recorder* recorder,
                           DrawContext* drawContext,
                           const SkRuntimeShader* shader) {

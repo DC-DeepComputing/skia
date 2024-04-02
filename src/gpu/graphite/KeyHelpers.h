@@ -23,6 +23,8 @@
 #include "src/gpu/graphite/TextureProxy.h"
 #include "src/shaders/SkShaderBase.h"
 
+#include "src/gpu/graphite/KeyHelpers.h"
+
 class SkColorFilter;
 class SkData;
 class SkRuntimeEffect;
