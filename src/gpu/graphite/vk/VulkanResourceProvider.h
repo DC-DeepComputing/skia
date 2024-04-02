@@ -62,7 +62,7 @@ private:
 
     sk_sp<Texture> createTexture(SkISize, const TextureInfo&, skgpu::Budgeted) override;
     sk_sp<Buffer> createBuffer(size_t size, BufferType type, AccessPattern) override;
-    sk_sp<Sampler> createSampler(const SamplerDesc&) override;
+    sk_sp<Sampler> createSampler(const SamplerDesc&, const GraphiteResourceKey&) override;
 
     sk_sp<VulkanFramebuffer> createFramebuffer(
             const VulkanSharedContext*,
