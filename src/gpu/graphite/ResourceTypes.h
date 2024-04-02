@@ -20,6 +20,10 @@
 
 #include <vector>
 
+#include <vector>
+
+#include <vector>
+
 namespace skgpu::graphite {
 
 class Buffer;
@@ -194,6 +198,11 @@ struct SamplerConversionInfo {
     // fFormat represents known OR external format numerical representation depending upon whether
     // SkSamplerMutability dictates the usage of a known or external format.
     uint64_t fFormat = 0;
+    uint32_t fFormatFeatures = 0;
+
+    // SamplerConversionInfo(uint16_t) {
+
+    // }
 };
 
 
@@ -209,12 +218,11 @@ struct SamplerDesc {
                 const SamplerConversionInfo conversionInfo = {})
             : fDesc((static_cast<int>(tileModes[0])               << kTileModeXShift     ) |
                     (static_cast<int>(tileModes[1])               << kTileModeYShift     ) |
-                    (static_cast<int>(samplingOptions.filter)     << kFilterModeShift    ) |
                     (static_cast<int>(samplingOptions.mipmap)     << kMipmapModeShift    ) |
                     (static_cast<int>(conversionInfo.fMutability) << kMutabilityShift    ) |
                     (conversionInfo.fYcbcrConversionInfo          << kConversionInfoShift) )
-            , fAdditionalFormatInfo(conversionInfo.fFormat) {
-
+            , fFormat(conversionInfo.fFormat)
+            , fFormatFeatures(conversionInfo.fFormatFeatures) {
         // Cubic sampling is handled in a shader, with the actual texture sampled by with NN,
         // but that is what a cubic SkSamplingOptions is set to if you ignore 'cubic', which let's
         // us simplify how we construct SamplerDec's from the options passed to high-level draws.
@@ -231,14 +239,15 @@ struct SamplerDesc {
     SamplerDesc(const SamplerDesc&) = default;
 
     bool operator==(const SamplerDesc& o) const {
-        return o.fDesc == fDesc && o.fAdditionalFormatInfo == fAdditionalFormatInfo;
+        return o.fDesc == fDesc && o.fFormat == fFormat && fFormatFeatures == o.fFormatFeatures;
     }
 
     bool operator!=(const SamplerDesc& o) const { return !(*this == o); }
 
     operator SkString() const { // TODO: Explore better representations of the sampler desc
         SkString uniqueRep {fDesc};
-        uniqueRep.appendU64(fAdditionalFormatInfo);
+        uniqueRep.appendU64(fFormat);
+        uniqueRep.appendU32(fFormatFeatures);
         return uniqueRep;
     }
 
@@ -255,16 +264,11 @@ struct SamplerDesc {
         return SkSamplingOptions(filter, mipmap);
     }
 
-    uint64_t additionalFormatInfo() const { return fAdditionalFormatInfo; }
+    uint64_t format() const { return fFormat; }
+    uint32_t formatFeatures() const { return fFormatFeatures; }
 
-private:
-    uint32_t fDesc;
-    // Data field populated by backend Caps which stored texture format information (needed for
-    // YCbCr sampling). Only relevant when using immutable samplers (ie, sampler mutability !=
-    // SamplerMutability::kDynamicSampler). Otherwise, can be ignored.
-    // TODO: Optimize such that we store an int32 as opposed to 64 when using a known format.
-    uint64_t fAdditionalFormatInfo = 0;
-
+    // These are public such that backends can bitshift data in order to determine whatever
+    // sampler qualities they need from fDesc.
     static constexpr int kNumTileModeBits   = SkNextLog2_portable(int(SkTileMode::kLastTileMode)+1);
     static constexpr int kNumFilterModeBits = SkNextLog2_portable(int(SkFilterMode::kLast)+1);
     static constexpr int kNumMipmapModeBits = SkNextLog2_portable(int(SkMipmapMode::kLast)+1);
@@ -276,6 +280,15 @@ private:
     static constexpr int kMipmapModeShift     = kFilterModeShift + kNumFilterModeBits;
     static constexpr int kMutabilityShift     = kMipmapModeShift + kNumMutabilityBits;
     static constexpr int kConversionInfoShift = kMutabilityShift + sizeof(uint16_t);
+
+private:
+    uint32_t fDesc;
+    // Data field populated by backend Caps which stored texture format information (needed for
+    // YCbCr sampling). Only relevant when using immutable samplers (ie, sampler mutability !=
+    // SamplerMutability::kDynamicSampler). Otherwise, can be ignored.
+    // TODO: Optimize such that we store an int32 as opposed to 64 when using a known format.
+    uint64_t fFormat = 0;
+    uint32_t fFormatFeatures = 0;
 };
 
 };  // namespace skgpu::graphite
