@@ -16,6 +16,24 @@
       "message": "For tests I now have this locally (some minor other fixes not quite done yet) down to just `SkParagraph_EmojiParagraph` where Fontations appears to always use the `advance_width` which always uses the values from `hmtx` but for a EBDT/CBDT font we want to scale the advance in the EBDT/CBDT. I think this means returning this along with the bitmap metrics and properly scaling it.",
       "revId": "04f78a275b5cc64b8a184364e957ca68b9c8900c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d693d89_3620895d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-04-02T11:11:25Z",
+      "side": 1,
+      "message": "On ToT today, `SkParagraph_EmojiParagraph` seems to pass for me with\n`$ dm -m SkParagraph_EmojiParagraph --fontations`\nIn what configuration or execution do you see failures?\n\nI remember from our discussio on bitmap metrics, we\u0027re not sure we trust those values? Do you see them used and returned from FT?",
+      "parentUuid": "404d4eab_f201743c",
+      "revId": "04f78a275b5cc64b8a184364e957ca68b9c8900c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
