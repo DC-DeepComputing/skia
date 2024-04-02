@@ -48,6 +48,11 @@ sk_sp<DrawContext> DrawContext::Make(const Caps* caps,
     if (!target) {
         return nullptr;
     }
+    // We don't render to unknown or unpremul alphatypes
+    if (colorInfo.alphaType() == kUnknown_SkAlphaType ||
+        colorInfo.alphaType() == kUnpremul_SkAlphaType) {
+        return nullptr;
+    }
     if (!caps->isRenderable(target->textureInfo())) {
         return nullptr;
     }
