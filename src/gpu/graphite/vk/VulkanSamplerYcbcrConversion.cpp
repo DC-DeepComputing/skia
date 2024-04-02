@@ -62,10 +62,6 @@ GraphiteResourceKey VulkanSamplerYcbcrConversion::MakeYcbcrConversionKey(
         const VulkanSharedContext* context, const VulkanYcbcrConversionInfo& info) {
     static const ResourceType kType = GraphiteResourceKey::GenerateResourceType();
     GraphiteResourceKey key;
-    // TODO: When using a known VkFormat, we only need 2 int32s because an external format is
-    // stored as an int64 whereas a known VkFormat can be contained within an int32. Optimize for
-    // this case.
-    static constexpr int kUint32sNeededForYcbcrInfo = 3;
     GraphiteResourceKey::Builder builder(&key, kType, kUint32sNeededForYcbcrInfo, Shareable::kYes);
 
     builder[0] = info.asUInt16();
@@ -78,6 +74,34 @@ GraphiteResourceKey VulkanSamplerYcbcrConversion::MakeYcbcrConversionKey(
         // known formats.
         builder[2] = 0;
     }
+    builder[3] = info.fFormatFeatures;
+
+    builder.finish();
+    return key;
+}
+
+GraphiteResourceKey VulkanSamplerYcbcrConversion::GetKeyFromSamplerDesc(
+        const SamplerDesc& samplerDesc) {
+    SkASSERT(samplerDesc.format());
+    static const ResourceType kType = GraphiteResourceKey::GenerateResourceType();
+    GraphiteResourceKey key;
+    GraphiteResourceKey::Builder builder(&key, kType, kUint32sNeededForYcbcrInfo, Shareable::kYes);
+
+    // Construct VulkanYcbcrConversionInfo from the sampler description desc
+    // VulkanYcbcrConversionInfo::MakeFromSamplerDescValues()
+    // uint32_t  = samplerDesc.desc();
+
+    // VulkanYcbcrConversionInfo info {(desc >> SamplerDesc::kConversionInfoShift),
+    //                                  samplerDesc.format(),
+    //                                  desc >> sampler};
+    // SamplerConversionInfo conversionInfo = (SamplerConversionInfo)(
+    //         samplerDesc.desc() >> SamplerDesc::kConversionInfoShift);
+
+    static_assert(kUint32sNeededForYcbcrInfo == 4);
+    builder[0] = (uint32_t)(samplerDesc.desc() >> SamplerDesc::kConversionInfoShift);
+    builder[1] = (uint32_t)(samplerDesc.format() << 32);
+    builder[2] = (uint32_t)(samplerDesc.format());
+    builder[3] = (uint32_t)(samplerDesc.formatFeatures());
 
     builder.finish();
     return key;
