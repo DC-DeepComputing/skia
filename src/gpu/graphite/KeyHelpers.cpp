@@ -949,13 +949,15 @@ bool RuntimeEffectBlock::ShaderData::operator==(const ShaderData& rhs) const {
     return fEffect == rhs.fEffect && skdata_matches(fUniforms.get(), rhs.fUniforms.get());
 }
 
-static void gather_runtime_effect_uniforms(SkSpan<const SkRuntimeEffect::Uniform> rtsUniforms,
+static void gather_runtime_effect_uniforms(const KeyContext& keyContext,
+                                           const SkRuntimeEffect* effect,
+                                           SkSpan<const SkRuntimeEffect::Uniform> rtsUniforms,
                                            SkSpan<const Uniform> graphiteUniforms,
                                            const SkData* uniformData,
                                            PipelineDataGatherer* gatherer) {
-    if (!rtsUniforms.empty() && uniformData) {
-        SkDEBUGCODE(UniformExpectationsValidator uev(gatherer, graphiteUniforms);)
+    SkDEBUGCODE(UniformExpectationsValidator uev(gatherer, graphiteUniforms);)
 
+    if (!rtsUniforms.empty() && uniformData) {
         // Collect all the other uniforms from the provided SkData.
         const uint8_t* uniformBase = uniformData->bytes();
         for (size_t index = 0; index < rtsUniforms.size(); ++index) {
@@ -966,6 +968,26 @@ static void gather_runtime_effect_uniforms(SkSpan<const SkRuntimeEffect::Uniform
             gatherer->write(uniform, uniformPtr);
         }
     }
+
+    if (SkRuntimeEffectPriv::UsesColorTransform(effect) && true /*??*/) {
+        SkColorSpace* dstCS = keyContext.dstColorInfo().colorSpace();
+        if (!dstCS) {
+            dstCS = sk_srgb_linear_singleton(); // turn colorspace conversion into a noop
+        }
+
+        ColorSpaceTransformBlock::ColorSpaceTransformData dstToLinear(dstCS,
+                                                                      kUnpremul_SkAlphaType,
+                                                                      sk_srgb_linear_singleton(),
+                                                                      kUnpremul_SkAlphaType);
+        ColorSpaceTransformBlock::ColorSpaceTransformData linearToDst(sk_srgb_linear_singleton(),
+                                                                      kUnpremul_SkAlphaType,
+                                                                      dstCS,
+                                                                      kUnpremul_SkAlphaType);
+
+        add_color_space_uniforms(dstToLinear.fSteps, ReadSwizzle::kRGBA, gatherer);
+        add_color_space_uniforms(linearToDst.fSteps, ReadSwizzle::kRGBA, gatherer);
+    }
+
 }
 
 void RuntimeEffectBlock::BeginBlock(const KeyContext& keyContext,
@@ -982,7 +1004,9 @@ void RuntimeEffectBlock::BeginBlock(const KeyContext& keyContext,
     const ShaderSnippet* entry = dict->getEntry(codeSnippetID);
     SkASSERT(entry);
 
-    gather_runtime_effect_uniforms(shaderData.fEffect->uniforms(),
+    gather_runtime_effect_uniforms(keyContext,
+                                   shaderData.fEffect.get(),
+                                   shaderData.fEffect->uniforms(),
                                    entry->fUniforms,
                                    shaderData.fUniforms.get(),
                                    gatherer);
@@ -1770,7 +1794,7 @@ static void add_to_key(const KeyContext& keyContext,
     sk_sp<SkRuntimeEffect> effect = shader->effect();
     sk_sp<const SkData> uniforms = SkRuntimeEffectPriv::TransformUniforms(
             effect->uniforms(),
-            shader->uniformData(keyContext.dstColorInfo().colorSpace()),
+            shader->uniformData7(keyContext.dstColorInfo().colorSpace()),
             keyContext.dstColorInfo().colorSpace());
     SkASSERT(uniforms);
 
