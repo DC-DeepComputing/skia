@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "50f8a081_bd0e3aab",
+        "filename": "modules/skunicode/src/SkUnicode_icu4x.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-02T19:28:10Z",
+      "side": 1,
+      "message": "I would agree that we shouldn\u0027t need this, this is part of ICU, not icu4x (and I\u0027m pretty sure they avoided creating conflicting include names).",
+      "revId": "f387b4e88925cd1a143aa6293d3a985476ec7282",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9a49c42_7c85e5e8",
+        "filename": "modules/skunicode/src/SkUnicode_icu4x.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-02T19:28:10Z",
+      "side": 1,
+      "message": "I\u0027m sure I reviewed this at some point, but why are these includes down here instead of up wit the other similar ones?",
+      "revId": "f387b4e88925cd1a143aa6293d3a985476ec7282",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
