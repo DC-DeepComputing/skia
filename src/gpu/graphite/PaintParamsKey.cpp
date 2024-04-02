@@ -71,8 +71,51 @@ const ShaderNode* PaintParamsKey::createNode(const ShaderCodeDictionary* dict,
         return nullptr;
     }
 
+    // If the snippet requires a data child, we interpret first block as "length" and create  the
+    // span we pass to the ShaderNode.
+    const ShaderNode** dataChildArray =
+                arena->makeArray<const ShaderNode*>(entry->fNumChildren);
+    if (entry->hasDataChild()) {
+        // currentIndex = in paint params key traversal
+        // index =
+
+         // Increment index to peek the first block of length.
+        //index++;
+        (*currentIndex)++;
+        int lengthOfData = fData[currentIndex];
+
+        // Increment index to peek at the first real data value.
+        (*currentIndex)++;
+        //skia_private::TArray<int32_t>
+        SkSpan<int32_t> dataSpan {fData.front() + (*currentIndex), lengthOfData};
+
+         // Increment currentIndex appropiately such that we begin at the next block of data post-
+         // traversal.
+         *currentIndex = (*currentIndex) + lengthOfData;
+
+        // Create node w/ data.
+        const ShaderNode* child = this->createNode(dict, index, arena);
+                // arena->make<ShaderNode>(entry,
+                //                         SkSpan(dataChildArray, entry->fNumChildren),
+                //                         id,
+                //                         currentIndex,
+                //                         dataSpan);
+        if (!child) {
+            return nullptr;
+        }
+        dataChildArray[i] = child;
+
+        return arena->make<ShaderNode>(entry,
+                                       SkSpan(dataChildArray, entry->fNumChildren),
+                                       id,
+                                       index,
+                                       dataSpan);
+    }
+
     const ShaderNode** childArray = arena->makeArray<const ShaderNode*>(entry->fNumChildren);
     for (int i = 0; i < entry->fNumChildren; ++i) {
+        // If shader snippet entry has a data child, then when creating the child ShaderNode,
+        // encode the sampler data.
         const ShaderNode* child = this->createNode(dict, currentIndex, arena);
         if (!child) {
             return nullptr;
@@ -80,7 +123,12 @@ const ShaderNode* PaintParamsKey::createNode(const ShaderCodeDictionary* dict,
         childArray[i] = child;
     }
 
-    return arena->make<ShaderNode>(entry, SkSpan(childArray, entry->fNumChildren), id, index);
+    return arena->make<ShaderNode>(entry,
+                                   SkSpan(childArray, entry->fNumChildren),
+                                   id,
+                                   index,
+                                   /*data=*/SkSpan<int32_t>());
+                                   //SkSpan<int32_t>(data));
 }
 
 SkSpan<const ShaderNode*> PaintParamsKey::getRootNodes(const ShaderCodeDictionary* dict,

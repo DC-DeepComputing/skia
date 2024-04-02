@@ -970,7 +970,7 @@ void VulkanCommandBuffer::bindUniformBuffers() {
             fSharedContext)->vulkanCaps().maxUniformBufferRange();
 
     for (int i = 0; i < descriptors.size(); i++) {
-        int descriptorBindingIndex = descriptors.at(i).bindingIndex;
+        int descriptorBindingIndex = descriptors.at(i).fBindingIndex;
         SkASSERT(static_cast<unsigned long>(descriptorBindingIndex)
                     < fUniformBuffersToBind.size());
         if (fUniformBuffersToBind[descriptorBindingIndex].fBuffer) {
@@ -990,8 +990,8 @@ void VulkanCommandBuffer::bindUniformBuffers() {
             writeInfo.dstSet = *set->descriptorSet();
             writeInfo.dstBinding = descriptorBindingIndex;
             writeInfo.dstArrayElement = 0;
-            writeInfo.descriptorCount = descriptors.at(i).count;
-            writeInfo.descriptorType = DsTypeEnumToVkDs(descriptors.at(i).type);
+            writeInfo.descriptorCount = descriptors.at(i).fCount;
+            writeInfo.descriptorType = DsTypeEnumToVkDs(descriptors.at(i).fType);
             writeInfo.pImageInfo = nullptr;
             writeInfo.pBufferInfo = &bufferInfo;
             writeInfo.pTexelBufferView = nullptr;
@@ -1102,13 +1102,25 @@ void VulkanCommandBuffer::recordTextureAndSamplerDescSet(
         fBindTextureSamplers = false;
         return;
     }
+
     // Query resource provider to obtain a descriptor set for the texture/samplers
     TArray<DescriptorData> descriptors(command.fNumTexSamplers);
     for (int i = 0; i < command.fNumTexSamplers; i++) {
-        descriptors.push_back({DescriptorType::kCombinedTextureSampler,
-                               /*descCount=*/1,
-                               /*bindingIdx=*/i,
-                               PipelineStageFlags::kFragmentShader});
+
+        auto sampler = static_cast<const VulkanSampler*>(
+                drawPass.getSampler(command.fSamplerIndices[i]));
+
+        std::vector<const Sampler*> immutableSamplers {};
+        if (sampler && sampler->ycbcrConversion()) {
+            immutableSamplers.push_back(sampler);
+        }
+
+        descriptors.push_back({
+                DescriptorType::kCombinedTextureSampler,
+                /*descCount=*/1,
+                /*bindingIdx=*/i,
+                PipelineStageFlags::kFragmentShader,
+                std::move(immutableSamplers)});
     }
     sk_sp<VulkanDescriptorSet> set = fResourceProvider->findOrCreateDescriptorSet(
             SkSpan<DescriptorData>{&descriptors.front(), descriptors.size()});
@@ -1140,7 +1152,7 @@ void VulkanCommandBuffer::recordTextureAndSamplerDescSet(
 
         VkDescriptorImageInfo& textureInfo = descriptorImageInfos.push_back();
         memset(&textureInfo, 0, sizeof(VkDescriptorImageInfo));
-        textureInfo.sampler = sampler->vkSampler();
+        textureInfo.sampler = sampler->ycbcrConversion() ? VK_NULL_HANDLE : sampler->vkSampler();
         textureInfo.imageView =
                 texture->getImageView(VulkanImageView::Usage::kShaderInput)->imageView();
         textureInfo.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
@@ -1159,12 +1171,11 @@ void VulkanCommandBuffer::recordTextureAndSamplerDescSet(
         writeInfo.pTexelBufferView = nullptr;
     }
 
-    VULKAN_CALL(fSharedContext->interface(),
-            UpdateDescriptorSets(fSharedContext->device(),
-                                    command.fNumTexSamplers,
-                                    &writeDescriptorSets[0],
-                                    /*descriptorCopyCount=*/0,
-                                    /*pDescriptorCopies=*/nullptr));
+    VULKAN_CALL(fSharedContext->interface(), UpdateDescriptorSets(fSharedContext->device(),
+                                                                  command.fNumTexSamplers,
+                                                                  &writeDescriptorSets[0],
+                                                                  /*descriptorCopyCount=*/0,
+                                                                  /*pDescriptorCopies=*/nullptr));
 
     // Store the updated descriptor set to be actually bound later on. This avoids binding and
     // potentially having to re-bind in cases where earlier descriptor sets change while going

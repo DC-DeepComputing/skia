@@ -498,7 +498,7 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
 
     // The initial layout we pass here is not important as it will be re-assigned when writing
     // shading and geometry uniforms below.
-    PipelineDataGatherer gatherer(uniformLayout);
+    PipelineDataGatherer gatherer(recorder->priv().caps(), uniformLayout);
 
     // Copy of destination, if needed.
     sk_sp<TextureProxy> dst;
@@ -708,10 +708,7 @@ bool DrawPass::prepareResources(ResourceProvider* resourceProvider,
 
     fSamplers.reserve(fSamplers.size() + fSamplerDescs.size());
     for (int i = 0; i < fSamplerDescs.size(); ++i) {
-        sk_sp<Sampler> sampler = resourceProvider->findOrCreateCompatibleSampler(
-                fSamplerDescs[i].samplingOptions(),
-                fSamplerDescs[i].tileModeX(),
-                fSamplerDescs[i].tileModeY());
+        sk_sp<Sampler> sampler = resourceProvider->findOrCreateCompatibleSampler(fSamplerDescs[i]);
         if (!sampler) {
             SKGPU_LOG_W("Failed to create sampler. Will not create renderpass!");
             return false;

@@ -1103,6 +1103,12 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
                                  kPositions, kPositions, kColors),
     };
 
+    SkRandom rand;
+
+    PaintParamsKeyBuilder builder(dict);
+    PipelineDataGatherer paramsGatherer(context->priv().caps(), Layout::kMetal);
+    PipelineDataGatherer precompileGatherer(context->priv().caps(), Layout::kMetal);
+
     ShaderType shaders[] = {
             ShaderType::kBlend,
             ShaderType::kImage,
@@ -1187,8 +1193,8 @@ void run_test(skiatest::Reporter* reporter,
     ShaderCodeDictionary* dict = context->priv().shaderCodeDictionary();
 
     PaintParamsKeyBuilder builder(dict);
-    PipelineDataGatherer paramsGatherer(Layout::kMetal);
-    PipelineDataGatherer precompileGatherer(Layout::kMetal);
+    PipelineDataGatherer paramsGatherer(recorder->priv().caps(), Layout::kMetal);
+    PipelineDataGatherer precompileGatherer(recorder->priv().caps(), Layout::kMetal);
 
     gNeedSKPPaintOption = false;
     auto [paint, paintOptions] = create_paint(&rand, recorder.get(), s, bm, cf);
