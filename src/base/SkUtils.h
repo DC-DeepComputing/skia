@@ -46,7 +46,7 @@ template <typename T, typename P>
 static SK_ALWAYS_INLINE T SK_FP_SAFE_ABI sk_unaligned_load(const P* ptr) {
     static_assert(std::is_trivially_copyable<T>::value);
     T val;
-    memcpy(&val, ptr, sizeof(val));
+    memcpy(&val, reinterpret_cast<const void*>(ptr), sizeof(val));
     return val;
 }
 
