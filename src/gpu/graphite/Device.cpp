@@ -389,49 +389,6 @@ sk_sp<SkSurface> Device::makeSurface(const SkImageInfo& ii, const SkSurfaceProps
     return SkSurfaces::RenderTarget(fRecorder, ii, Mipmapped::kNo, &props);
 }
 
-TextureProxyView Device::createCopy(const SkIRect* subset,
-                                    Mipmapped mipmapped,
-                                    SkBackingFit backingFit) {
-    const TextureProxyView& srcView = this->readSurfaceView();
-    if (!srcView) {
-        return {};
-    }
-
-    if (!fRecorder->priv().caps()->supportsReadPixels(srcView.proxy()->textureInfo())) {
-        if (!fRecorder->priv().caps()->isTexturable(srcView.proxy()->textureInfo())) {
-            return {};
-        }
-        // We ignore backingFit here and always make a tight texture.
-        auto size = subset ? subset->size() : this->size();
-        auto surface = SkSurfaces::RenderTarget(fRecorder,
-                                                this->imageInfo().makeDimensions(size),
-                                                mipmapped);
-
-        // Any pending work is flushed automatically when this image is drawn to `surface`
-        auto image = Image::MakeView(sk_ref_sp(this));
-        SkPaint paint;
-        paint.setBlendMode(SkBlendMode::kSrc);
-        auto pt = subset ? subset->topLeft() : SkIPoint{0, 0};
-        surface->getCanvas()->drawImage(image, -pt.x(), -pt.y(), SkFilterMode::kNearest, &paint);
-        Flush(surface.get());
-        const TextureProxyView& readView = static_cast<Surface*>(surface.get())->readSurfaceView();
-        // TODO(b/297344089): For mipmapped surfaces, the above Flush() also generates the mipmaps.
-        // When automatic mipmap generation happens lazily on first-read, this function should
-        // explicitly trigger the one-time mipmap generation.
-        SkASSERT(readView.proxy()->mipmapped() == mipmapped);
-        return readView;
-    }
-
-    SkIRect srcRect = subset ? *subset : SkIRect::MakeSize(this->imageInfo().dimensions());
-    this->flushPendingWorkToRecorder();
-    return TextureProxyView::Copy(this->recorder(),
-                                  this->imageInfo().colorInfo(),
-                                  srcView,
-                                  srcRect,
-                                  mipmapped,
-                                  backingFit);
-}
-
 TextureProxyView TextureProxyView::Copy(Recorder* recorder,
                                         const SkColorInfo& srcColorInfo,
                                         const TextureProxyView& srcView,
@@ -1597,25 +1554,23 @@ sk_sp<SkSpecialImage> Device::makeSpecial(const SkImage*) {
 }
 
 sk_sp<SkSpecialImage> Device::snapSpecial(const SkIRect& subset, bool forceCopy) {
+    // TODO(b/323886870): For now snapSpecial() force adds the pending work to the recorder's
+    // root task list. Once shared atlas management is solved and DrawTasks can be nested in a graph
+    // then this can go away in favor of auto-flushing through the image's linked device.
     if (fRecorder) {
         this->flushPendingWorkToRecorder();
     }
+    if (!this->readSurfaceView() || this->readSurfaceView().proxy()->isFullyLazy()) {
+        // This is a non-readable surface or a deferred surface, which don't support readback yet.
+        return nullptr;
+    }
 
+    sk_sp<Image> deviceImage = Image::MakeView(sk_ref_sp(this));
     SkIRect finalSubset = subset;
-    TextureProxyView view = this->readSurfaceView();
-    if (forceCopy || !view || view.proxy()->isFullyLazy()) {
-        // snapSpecial() can be called after setImmutable() is called, but in that case it should
-        // never be a copy (that would otherwise require access to the recorder), and shouldn't be
-        // a non-readable or fully lazy proxy (since those come from client Surfaces).
-        SkASSERT(fRecorder);
-        if (!fRecorder) {
-            return nullptr;
-        }
-
-        // TODO: this doesn't address the non-readable surface view case, in which view is empty and
-        // createCopy will return an empty view as well.
-        view = this->createCopy(&subset, Mipmapped::kNo, SkBackingFit::kApprox);
-        if (!view) {
+    if (forceCopy) {
+        deviceImage = deviceImage->copyImage(
+                fRecorder, subset, Mipmapped::kNo, Budgeted::kYes, SkBackingFit::kApprox);
+        if (!deviceImage) {
             return nullptr;
         }
         finalSubset = SkIRect::MakeSize(subset.size());
@@ -1623,11 +1578,8 @@ sk_sp<SkSpecialImage> Device::snapSpecial(const SkIRect& subset, bool forceCopy)
 
     // For non-copying "snapSpecial", the semantics are returning an image view of the surface data,
     // and relying on higher-level draw and restore logic for the contents to make sense.
-    return SkSpecialImages::MakeGraphite(finalSubset,
-                                         kNeedNewImageUniqueID_SpecialImage,
-                                         std::move(view),
-                                         this->imageInfo().colorInfo(),
-                                         this->surfaceProps());
+    return SkSpecialImages::MakeGraphite(
+            fRecorder, finalSubset, std::move(deviceImage), this->surfaceProps());
 }
 
 sk_sp<skif::Backend> Device::createImageFilteringBackend(const SkSurfaceProps& surfaceProps,
