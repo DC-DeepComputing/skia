@@ -30,7 +30,7 @@
 #include <ICU4XBidi.hpp>
 
 #include <cstdint>
-#include <unicode/umachine.h>
+//#include <unicode/umachine.h>
 #include <algorithm>
 #include <cstdint>
 #include <memory>
