@@ -52,6 +52,24 @@
       "parentUuid": "8d693d89_3620895d",
       "revId": "04f78a275b5cc64b8a184364e957ca68b9c8900c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "388ca078_fb51d049",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-04-02T14:53:03Z",
+      "side": 1,
+      "message": "Ok, I see. Any comments on the other question, whether FT currently uses that and what we think about the trustworthiness of these metrics?",
+      "parentUuid": "249a87a3_d361290a",
+      "revId": "04f78a275b5cc64b8a184364e957ca68b9c8900c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
