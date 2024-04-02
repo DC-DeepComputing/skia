@@ -154,8 +154,7 @@ BackendTexture VulkanResourceProvider::onCreateBackendTexture(SkISize dimensions
 }
 
 namespace {
-GraphiteResourceKey build_desc_set_key(const SkSpan<DescriptorData>& requestedDescriptors,
-                                       const uint32_t uniqueId) {
+GraphiteResourceKey build_desc_set_key(const SkSpan<DescriptorData>& requestedDescriptors) {
     // TODO(nicolettep): Finalize & optimize key structure. Refactor to have the order of the
     // requested descriptors be irrelevant.
     // For now, to place some kind of upper limit on key size, limit a key to only containing
@@ -163,7 +162,7 @@ GraphiteResourceKey build_desc_set_key(const SkSpan<DescriptorData>& requestedDe
     // uniform buffer descriptors and observationally only encountering up to 6 texture/samplers for
     // our testing use cases. The 10th uint32 is reserved for housing a unique descriptor set ID.
     static const int kMaxDescriptorQuantity = 9;
-    static const int kNum32DataCnt = kMaxDescriptorQuantity + 1;
+    static const int kNum32DataCnt = kMaxDescriptorQuantity;
     static const ResourceType kType = GraphiteResourceKey::GenerateResourceType();
 
     GraphiteResourceKey key;
@@ -188,7 +187,6 @@ GraphiteResourceKey build_desc_set_key(const SkSpan<DescriptorData>& requestedDe
             builder[i] = 0;
         }
     }
-    builder[kNum32DataCnt - 1] = uniqueId;
     builder.finish();
     return key;
 }
@@ -217,15 +215,12 @@ sk_sp<VulkanDescriptorSet> VulkanResourceProvider::findOrCreateDescriptorSet(
     // a unique set ID (which ranges from 0 to kMaxNumSets - 1). Start the search at 0 and continue
     // until an available set is found.
     // TODO(nicolettep): Explore ways to optimize this traversal.
-    GraphiteResourceKey descSetKeys [VulkanDescriptorPool::kMaxNumSets];
-    for (uint32_t i = 0; i < VulkanDescriptorPool::kMaxNumSets; i++) {
-        GraphiteResourceKey key = build_desc_set_key(requestedDescriptors, i);
-        if (auto descSet = fResourceCache->findAndRefResource(key, skgpu::Budgeted::kYes)) {
-            // A non-null resource pointer indicates we have found an available descriptor set.
-            return sk_sp<VulkanDescriptorSet>(static_cast<VulkanDescriptorSet*>(descSet));
-        }
-        descSetKeys[i] = key;
+    GraphiteResourceKey key = build_desc_set_key(requestedDescriptors);
+    if (auto descSet = fResourceCache->findAndRefResource(key, skgpu::Budgeted::kYes)) {
+        // A non-null resource pointer indicates we have found an available descriptor set.
+        return sk_sp<VulkanDescriptorSet>(static_cast<VulkanDescriptorSet*>(descSet));
     }
+
 
     // If we did not find an existing avilable desc set, allocate sets with the appropriate layout
     // and add them to the cache.
@@ -248,7 +243,7 @@ sk_sp<VulkanDescriptorSet> VulkanResourceProvider::findOrCreateDescriptorSet(
     // allows us to return that later without having to perform a find operation on the cache once
     // all the sets are added.
     auto firstDescSet =
-            add_new_desc_set_to_cache(context, pool, descSetKeys[0], fResourceCache.get());
+            add_new_desc_set_to_cache(context, pool, key, fResourceCache.get());
     if (!firstDescSet) {
         return nullptr;
     }
@@ -257,7 +252,7 @@ sk_sp<VulkanDescriptorSet> VulkanResourceProvider::findOrCreateDescriptorSet(
     // they're needed.
     for (int i = 1; i < VulkanDescriptorPool::kMaxNumSets ; i++) {
         auto descSet =
-                add_new_desc_set_to_cache(context, pool, descSetKeys[i], fResourceCache.get());
+                add_new_desc_set_to_cache(context, pool, key, fResourceCache.get());
         if (!descSet) {
             SKGPU_LOG_W("Descriptor set allocation %d of %d was unsuccessful; no more sets will be"
                         "allocated from this pool.", i, VulkanDescriptorPool::kMaxNumSets);
