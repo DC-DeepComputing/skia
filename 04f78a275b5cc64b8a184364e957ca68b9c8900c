@@ -34,6 +34,24 @@
       "parentUuid": "404d4eab_f201743c",
       "revId": "04f78a275b5cc64b8a184364e957ca68b9c8900c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "249a87a3_d361290a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-02T14:37:18Z",
+      "side": 1,
+      "message": "I\u0027m \"breaking\" it with https://skia-review.googlesource.com/c/skia/+/834702 which makes `SkParagraph_EmojiParagraph` use `extra_fonts`. What you\u0027re probably seeing is the test passing with whatever system emoji font you have, which probably isn\u0027t CBDT. I expected that to have landed already, but something failed on the bot that isn\u0027t failing locally, currently looking into that.",
+      "parentUuid": "8d693d89_3620895d",
+      "revId": "04f78a275b5cc64b8a184364e957ca68b9c8900c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
