@@ -117,6 +117,13 @@ public:
         return {};
     }
 
+    // Backends can optionally override this method to report backend-specific sampler description
+    // information.
+    virtual std::vector<uint32_t> getAdditionalSamplerDescInfo(sk_sp<TextureProxy> proxy) const {
+        // By default, return an empty span containing no additional information.
+        return {};
+    }
+
     virtual bool extractGraphicsDescs(const UniqueKey&,
                                       GraphicsPipelineDesc*,
                                       RenderPassDesc*,

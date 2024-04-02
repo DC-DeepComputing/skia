@@ -10,6 +10,7 @@
 
 #include "src/gpu/graphite/Resource.h"
 
+#include "include/private/base/SkTArray.h"
 #include "include/private/gpu/vk/SkiaVulkan.h"
 #include "src/core/SkChecksum.h"
 
@@ -35,10 +36,18 @@ public:
     static GraphiteResourceKey MakeYcbcrConversionKey(const VulkanSharedContext*,
                                                       const VulkanYcbcrConversionInfo&);
 
+    // Return a fully-formed GraphiteResourceKey that represents a YCbCr conversion by extracting
+    // relevant information from a SamplerDesc.
+    static GraphiteResourceKey GetKeyFromSamplerDesc(const SamplerDesc& samplerDesc);
+
+    // TODO: When using a known VkFormat, we only need 3 int32s because an external format is
+    // stored as an int64 whereas a known VkFormat can be contained within an int32. Optimize for
+    // this case.
+    static constexpr int kUint32sNeededForYcbcrInfo = 4;
+
     VkSamplerYcbcrConversion ycbcrConversion() const { return fYcbcrConversion; }
 
     const char* getResourceType() const override { return "Vulkan Sampler YCbCr Conversion"; }
-
 
 private:
     VulkanSamplerYcbcrConversion(const VulkanSharedContext*, VkSamplerYcbcrConversion);

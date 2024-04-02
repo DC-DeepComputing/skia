@@ -60,19 +60,25 @@ private:
 // Used to pass in the necessary information to create a VkSamplerYcbcrConversion object for an
 // VkExternalFormatANDROID.
 struct VulkanYcbcrConversionInfo {
+    static VulkanYcbcrConversionInfo MakeFromSamplerDescValues() {
+        VulkanYcbcrConversionInfo info;
+        return info;
+    }
+
     bool operator==(const VulkanYcbcrConversionInfo& that) const {
         // Invalid objects are not required to have all other fields initialized or matching.
         if (!this->isValid() && !that.isValid()) {
             return true;
         }
-        return this->fFormat == that.fFormat &&
-               this->fExternalFormat == that.fExternalFormat &&
-               this->fYcbcrModel == that.fYcbcrModel &&
-               this->fYcbcrRange == that.fYcbcrRange &&
-               this->fXChromaOffset == that.fXChromaOffset &&
-               this->fYChromaOffset == that.fYChromaOffset &&
-               this->fChromaFilter == that.fChromaFilter &&
-               this->fForceExplicitReconstruction == that.fForceExplicitReconstruction;
+        return this->fFormat                      == that.fFormat                      &&
+               this->fExternalFormat              == that.fExternalFormat              &&
+               this->fYcbcrModel                  == that.fYcbcrModel                  &&
+               this->fYcbcrRange                  == that.fYcbcrRange                  &&
+               this->fXChromaOffset               == that.fXChromaOffset               &&
+               this->fYChromaOffset               == that.fYChromaOffset               &&
+               this->fChromaFilter                == that.fChromaFilter                &&
+               this->fForceExplicitReconstruction == that.fForceExplicitReconstruction &&
+               this->fFormatFeatures              == that.fFormatFeatures;
     }
     bool operator!=(const VulkanYcbcrConversionInfo& that) const { return !(*this == that); }
 
@@ -81,6 +87,17 @@ struct VulkanYcbcrConversionInfo {
                fExternalFormat != 0;
     }
 
+    // uint8_t asUInt8() const {
+    //     static_assert(kForceExplicitReconShift + kForceExplicitReconBits <= 8);
+    //     return ((static_cast<uint8_t>(fYcbcrModel                 ) << kYcbcrModelShift   ) |
+    //             (static_cast<uint8_t>(fYcbcrRange                 ) << kYcbcrRangeShift   ) |
+    //             (static_cast<uint8_t>(fXChromaOffset              ) << kXChromaOffsetShift) |
+    //             (static_cast<uint8_t>(fYChromaOffset              ) << kYChromaOffsetShift) |
+    //             (static_cast<uint8_t>(fChromaFilter               ) << kChromaFilterShift ) |
+    //             (static_cast<uint8_t>(fForceExplicitReconstruction) << kForceExplicitReconShift));
+    // }
+
+    // TODO: Make this Uint8.
     uint16_t asUInt16() const {
         static_assert(kForceExplicitReconShift + kForceExplicitReconBits <= 16);
         return ((static_cast<uint16_t>(fYcbcrModel                 ) << kYcbcrModelShift   ) |
