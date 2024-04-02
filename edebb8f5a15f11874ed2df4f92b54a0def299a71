@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77c1c18e_3470ecce",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 978,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-04-02T18:54:19Z",
+      "side": 1,
+      "message": "Hypothetically we could upload only one set of uniforms if the runtime shader only uses one of `toLinearSRGB` or `fromLinearSRGB`, right? Should we leave a TODO/bug for that here?\n```suggestion\n\n        // TODO(b/????): If the runtime shader only uses one of these\n        // transforms, we could upload only one set of uniforms.\n```",
+      "revId": "edebb8f5a15f11874ed2df4f92b54a0def299a71",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0734df2e_3aded65d",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 991,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-04-02T18:54:19Z",
+      "side": 1,
+      "message": "tiny nit: unnecessary blank line",
+      "revId": "edebb8f5a15f11874ed2df4f92b54a0def299a71",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
