@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f783985f_b69a6775",
+        "filename": "modules/skparagraph/tests/SkParagraphTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1599,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-02T19:01:15Z",
+      "side": 0,
+      "message": "A local ASAN run of this reported that there in fact is no `boxes[1]`, which makes sense since there is only one box because there is only one Latin character A here. I think this may have been responsible for the random test failures that were previously seen, but it isn\u0027t entirely clear.",
+      "range": {
+        "startLine": 1599,
+        "startChar": 55,
+        "endLine": 1599,
+        "endChar": 58
+      },
+      "revId": "f4b4d9be97fa9a4ad117ec0514ca8fe6ec4e209a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
