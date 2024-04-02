@@ -57,6 +57,7 @@
 #include <initializer_list>
 #include <memory>
 #include <utility>
+#include <vector>
 
 static const int kTileWidthHeight = 128;
 static const int kLabelWidth = 64;
@@ -219,6 +220,20 @@ struct PlaneData {
 
    SkBitmap fFull;
    SkBitmap fQuarter; // 2x2 downsampled YUVA
+};
+
+const std::vector<SkYUVColorSpace> color_space_array {
+    kJPEG_Full_SkYUVColorSpace,                 //!< describes full range
+    kRec601_Limited_SkYUVColorSpace,            //!< describes SDTV range
+    kRec709_Full_SkYUVColorSpace,               //!< describes HDTV range
+    kRec709_Limited_SkYUVColorSpace,
+    kBT2020_8bit_Full_SkYUVColorSpace,          //!< describes UHDTV range, non-constant-luminance
+    kBT2020_8bit_Limited_SkYUVColorSpace,
+    kBT2020_10bit_Full_SkYUVColorSpace,
+    kBT2020_10bit_Limited_SkYUVColorSpace,
+    kBT2020_12bit_Full_SkYUVColorSpace,
+    kBT2020_12bit_Limited_SkYUVColorSpace,
+    kIdentity_SkYUVColorSpace
 };
 
 // Add a portion of a circle to 'path'. The points 'o1' and 'o2' are on the border of the circle
@@ -690,10 +705,8 @@ static int create_YUV(const PlaneData& planes,
 static void draw_col_label(SkCanvas* canvas, int x, int yuvColorSpace, bool opaque) {
     static const char* kYUVColorSpaceNames[] = {"JPEG",     "601",      "709F",     "709L",
                                                 "2020_8F",  "2020_8L",  "2020_10F", "2020_10L",
-                                                "2020_12F", "2020_12L", "YCGCO_8F", "YCGCO_8L",
-                                                "YCGCO_10F", "YCGCO_10L", "YCGCO_12F", "YCGCO_12L",
-                                                "Identity"};
-    static_assert(std::size(kYUVColorSpaceNames) == kLastEnum_SkYUVColorSpace + 1);
+                                                "2020_12F", "2020_12L", "Identity"};
+    static_assert(std::size(kYUVColorSpaceNames) == color_space_array.size());
 
     SkPaint paint;
     SkFont  font(ToolUtils::CreatePortableTypeface("Sans", SkFontStyle::Bold()), 16);
@@ -807,7 +820,7 @@ protected:
     }
 
     SkISize getISize() override {
-        int numCols = 2 * (kLastEnum_SkYUVColorSpace + 1); // opacity x #-color-spaces
+        int numCols = 2 * (color_space_array.size()); // opacity x #-color-spaces
         int numRows = 1 + (kLast_YUVFormat + 1);  // original + #-yuv-formats
         int wh = SkScalarCeilToInt(kTileWidthHeight * (fUseSubset ? 1.5f : 1.f));
         return SkISize::Make(kLabelWidth  + numCols * (wh + kPad),
@@ -841,10 +854,10 @@ protected:
     bool createImages(GrDirectContext* dContext, Recorder* recorder) {
         int origin = 0;
         for (bool opaque : { false, true }) {
-            for (int cs = kJPEG_SkYUVColorSpace; cs <= kLastEnum_SkYUVColorSpace; ++cs) {
+            for (size_t cs = 0; cs < color_space_array.size(); ++cs) {
                 PlaneData planes;
                 extract_planes(fOriginalBMs[opaque],
-                               static_cast<SkYUVColorSpace>(cs),
+                               color_space_array[cs],
                                static_cast<SkEncodedOrigin>(origin + 1),  // valid origins are 1...8
                                &planes);
 
@@ -858,7 +871,7 @@ protected:
                                                         static_cast<SkEncodedOrigin>(origin + 1));
                     SkYUVAPixmaps pixmaps =
                             planarConfig.makeYUVAPixmaps(fOriginalBMs[opaque].dimensions(),
-                                                         static_cast<SkYUVColorSpace>(cs),
+                                                         color_space_array[cs],
                                                          resultBMs,
                                                          numPlanes);
                     auto lazyYUV = sk_gpu_test::LazyYUVImage::Make(std::move(pixmaps));
@@ -912,7 +925,7 @@ protected:
 
     void onGpuTeardown() override {
         for (int i = 0; i < 2; ++i) {
-            for (int j = 0; j <= kLastEnum_SkYUVColorSpace; ++j) {
+            for (size_t j = 0; j < color_space_array.size(); ++j) {
                 for (int k = 0; k <= kLast_YUVFormat; ++k) {
                     fImages[i][j][k] = nullptr;
                 }
@@ -948,9 +961,9 @@ protected:
         SkSamplingOptions sampling = fUseCubicSampling
                                          ? SkSamplingOptions(SkCubicResampler::Mitchell())
                                          : SkSamplingOptions(SkFilterMode::kLinear);
-        for (int cs = kJPEG_SkYUVColorSpace; cs <= kLastEnum_SkYUVColorSpace; ++cs) {
+        for (size_t cs = kJPEG_SkYUVColorSpace; cs < color_space_array.size(); ++cs) {
             SkPaint paint;
-            if (kIdentity_SkYUVColorSpace == cs) {
+            if (kIdentity_SkYUVColorSpace == color_space_array[cs]) {
                 // The identity color space needs post processing to appear correctly
                 paint.setColorFilter(yuv_to_rgb_colorfilter());
             }
@@ -997,7 +1010,7 @@ protected:
 
 private:
     SkBitmap                   fOriginalBMs[2];
-    sk_sp<SkImage>             fImages[2][kLastEnum_SkYUVColorSpace + 1][kLast_YUVFormat + 1];
+    sk_sp<SkImage>             fImages[2][color_space_array.size()][kLast_YUVFormat + 1];
     bool                       fUseTargetColorSpace;
     bool                       fUseSubset;
     bool                       fUseCubicSampling;
