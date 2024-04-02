@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "26fd66f4_83988d35",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 25
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-04-02T21:18:12Z",
+      "side": 1,
+      "message": "This fixes at least one test in Gold (too bad about all the random flakes in your dry run): https://screenshot.googleplex.com/7tAdbvAKbqKYRX4",
+      "revId": "42c604821260e7153e499763726382c0e0bc47b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
