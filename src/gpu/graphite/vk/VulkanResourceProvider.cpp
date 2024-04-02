@@ -127,30 +127,10 @@ sk_sp<Buffer> VulkanResourceProvider::createBuffer(size_t size,
     return VulkanBuffer::Make(this->vulkanSharedContext(), size, type, accessPattern);
 }
 
-sk_sp<Sampler> VulkanResourceProvider::createSampler(const SamplerDesc& samplerDesc) {
-    // If the sampler description has non-zero additionalFormatInfo, use that to obtain a real
-    // YCbCr conversion to pass into VulkanSampler creation.
-    sk_sp<VulkanSamplerYcbcrConversion> ycbcrConversion = nullptr;
-    if (samplerDesc.format()) {
-        GraphiteResourceKey ycbcrKey =
-                VulkanSamplerYcbcrConversion::GetKeyFromSamplerDesc(samplerDesc);
-
-        if (Resource* resource = fResourceCache->findAndRefResource(ycbcrKey,
-                                                                    skgpu::Budgeted::kNo)) {
-            ycbcrConversion = sk_sp<VulkanSamplerYcbcrConversion>(
-                    static_cast<VulkanSamplerYcbcrConversion*>(resource));
-        } else {
-            // Textures and their conversions are made first, so the necessary YCbCr conversion
-            // should already be available in the cache.
-            SkUNREACHABLE;
-        }
-    }
-
-    return VulkanSampler::Make(this->vulkanSharedContext(),
-                               samplerDesc.samplingOptions(),
-                               samplerDesc.tileModeX(),
-                               samplerDesc.tileModeY(),
-                               ycbcrConversion);
+sk_sp<Sampler> VulkanResourceProvider::createSampler(const SkSamplingOptions& samplingOptions,
+                                                     SkTileMode xTileMode,
+                                                     SkTileMode yTileMode) {
+    return VulkanSampler::Make(this->vulkanSharedContext(), samplingOptions, xTileMode, yTileMode);
 }
 
 BackendTexture VulkanResourceProvider::onCreateBackendTexture(SkISize dimensions,
@@ -507,8 +487,7 @@ BackendTexture VulkanResourceProvider::onCreateBackendTexture(AHardwareBuffer* h
     if (!importAsExternalFormat) {
         usageFlags |= VK_IMAGE_USAGE_TRANSFER_SRC_BIT | VK_IMAGE_USAGE_TRANSFER_DST_BIT;
         if (isRenderable) {
-            // Renderable attachments can be used as input attachments if we are loading from MSAA.
-            usageFlags |= VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT | VK_IMAGE_USAGE_INPUT_ATTACHMENT_BIT;
+            usageFlags |= VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
         }
     }
     VulkanTextureInfo vkTexInfo { VK_SAMPLE_COUNT_1_BIT,

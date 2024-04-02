@@ -61,6 +61,7 @@
 #include "src/core/SkTraceEvent.h"
 #include "src/core/SkVerticesPriv.h"
 #include "src/gpu/TiledTextureUtils.h"
+#include "src/shaders/SkImageShader.h"
 #include "src/text/GlyphRun.h"
 #include "src/text/gpu/GlyphVector.h"
 #include "src/text/gpu/SlugImpl.h"
@@ -526,6 +527,7 @@ TextureProxyView TextureProxyView::Copy(Recorder* recorder,
 bool Device::onReadPixels(const SkPixmap& pm, int srcX, int srcY) {
 #if defined(GRAPHITE_TEST_UTILS)
     if (Context* context = fRecorder->priv().context()) {
+        this->flushPendingWorkToRecorder();
         // Add all previous commands generated to the command buffer.
         // If the client snaps later they'll only get post-read commands in their Recording,
         // but since they're doing a readPixels in the middle that shouldn't be unexpected.
@@ -1030,8 +1032,6 @@ void Device::drawGeometry(const Transform& localToDevice,
                           SkEnumBitMask<DrawFlags> flags,
                           sk_sp<SkBlender> primitiveBlender,
                           bool skipColorXform) {
-    SkASSERT(fRecorder && !fImmutable);
-
     if (!localToDevice.valid()) {
         // If the transform is not invertible or not finite then drawing isn't well defined.
         SKGPU_LOG_W("Skipping draw with non-invertible/non-finite transform.");
@@ -1605,7 +1605,7 @@ void Device::drawCoverageMask(const SkSpecialImage* mask,
     TextureDataBlock tdb;
     // NOTE: CoverageMaskRenderStep controls the final sampling options; this texture data block
     // serves only to keep the mask alive so the sampling passed to add() doesn't matter.
-    tdb.add(fRecorder->priv().caps(), SkFilterMode::kLinear, kClamp, maskProxyView.refProxy());
+    tdb.add(SkFilterMode::kLinear, kClamp, maskProxyView.refProxy());
     fRecorder->priv().textureDataCache()->insert(tdb);
 
     // CoverageMaskShape() wraps a Shape when it's used as a PathAtlas, but in this case the

@@ -5,18 +5,15 @@
 * found in the LICENSE file.
 */
 
-#include "modules/skunicode/include/SkUnicode_libgrapheme.h"
-
 #include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
 #include "include/private/base/SkTArray.h"
 #include "modules/skunicode/include/SkUnicode.h"
-#include "modules/skunicode/src/SkBidiFactory_icu_subset.h"
+#include "modules/skunicode/include/SkUnicode_libgrapheme.h"
 #include "modules/skunicode/src/SkUnicode_hardcoded.h"
 #include "modules/skunicode/src/SkUnicode_icu_bidi.h"
 #include "src/base/SkBitmaskEnum.h"
-
 extern "C" {
 #include <grapheme.h>
 }
@@ -46,7 +43,7 @@ public:
                         int utf8Units,
                         TextDirection dir,
                         std::vector<BidiRegion>* results) override {
-        return fBidiFact->ExtractBidi(utf8, utf8Units, dir, results);
+        return SkUnicode_IcuBidi::ExtractBidi(utf8, utf8Units, dir, results);
     }
 
     bool getSentences(const char utf8[],
@@ -227,12 +224,10 @@ public:
     void reorderVisual(const BidiLevel runLevels[],
                        int levelsCount,
                        int32_t logicalFromVisual[]) override {
-        fBidiFact->bidi_reorderVisual(runLevels, levelsCount, logicalFromVisual);
+        SkUnicode_IcuBidi::bidi_reorderVisual(runLevels, levelsCount, logicalFromVisual);
     }
 private:
     friend class SkBreakIterator_libgrapheme;
-
-    sk_sp<SkBidiFactory> fBidiFact = sk_make_sp<SkBidiSubsetFactory>();
 };
 
 class SkBreakIterator_libgrapheme: public SkBreakIterator {
@@ -281,12 +276,12 @@ public:
 
 std::unique_ptr<SkBidiIterator> SkUnicode_libgrapheme::makeBidiIterator(const uint16_t text[], int count,
                                                  SkBidiIterator::Direction dir) {
-    return fBidiFact->MakeIterator(text, count, dir);
+    return SkUnicode_IcuBidi::MakeIterator(text, count, dir);
 }
 std::unique_ptr<SkBidiIterator> SkUnicode_libgrapheme::makeBidiIterator(const char text[],
                                                  int count,
                                                  SkBidiIterator::Direction dir) {
-    return fBidiFact->MakeIterator(text, count, dir);
+    return SkUnicode_IcuBidi::MakeIterator(text, count, dir);
 }
 std::unique_ptr<SkBreakIterator> SkUnicode_libgrapheme::makeBreakIterator(const char locale[],
                                                    BreakType breakType) {

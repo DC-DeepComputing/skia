@@ -26,7 +26,6 @@ class SkString;
 
 namespace skgpu::graphite {
 class Context;
-class Recorder;
 }
 
 using skwindow::DisplayParams;
@@ -162,7 +161,6 @@ public:
     // Returns null if there is not a GPU backend or if the backend is not yet created.
     GrDirectContext* directContext() const;
     skgpu::graphite::Context* graphiteContext() const;
-    skgpu::graphite::Recorder* graphiteRecorder() const;
 
 protected:
     Window();

@@ -181,6 +181,8 @@ SKIA_PUBLIC_HDRS = [
     "include/gpu/gl/GrGLInterface.h",
     "include/gpu/gl/GrGLTypes.h",
     "include/gpu/mock/GrMockTypes.h",
+    "include/gpu/mtl/GrMtlBackendContext.h",
+    "include/gpu/mtl/GrMtlTypes.h",
     "include/gpu/mtl/MtlMemoryAllocator.h",
     "include/gpu/vk/GrVkBackendContext.h",
     "include/gpu/vk/GrVkExtensions.h",
@@ -781,8 +783,6 @@ BASE_SRCS_ALL = [
     "src/gpu/BlurUtils.cpp",
     "src/gpu/BlurUtils.h",
     "src/gpu/BufferWriter.h",
-    "src/gpu/DataUtils.cpp",
-    "src/gpu/DataUtils.h",
     "src/gpu/DitherUtils.cpp",
     "src/gpu/DitherUtils.h",
     "src/gpu/GpuRefCnt.h",
@@ -2567,8 +2567,6 @@ SKUNICODE_ICU_BUILTIN_SRCS = [
     "modules/skunicode/src/SkUnicode_icu_bidi.cpp",
     "modules/skunicode/src/SkUnicode_icu_bidi.h",
     "modules/skunicode/src/SkUnicode_icu_builtin.cpp",
-    "modules/skunicode/src/SkBidiFactory_icu_full.cpp",
-    "modules/skunicode/src/SkBidiFactory_icu_full.h",
 ]
 
 SKUNICODE_ICU_RUNTIME_SRCS = [
@@ -2578,8 +2576,6 @@ SKUNICODE_ICU_RUNTIME_SRCS = [
     "modules/skunicode/src/SkUnicode_icu_bidi.cpp",
     "modules/skunicode/src/SkUnicode_icu_bidi.h",
     "modules/skunicode/src/SkUnicode_icu_runtime.cpp",
-    "modules/skunicode/src/SkBidiFactory_icu_full.cpp",
-    "modules/skunicode/src/SkBidiFactory_icu_full.h",
 ]
 
 SKUNICODE_CLIENT_SRCS = [
@@ -2587,8 +2583,6 @@ SKUNICODE_CLIENT_SRCS = [
     "modules/skunicode/src/SkUnicode_client.cpp",
     "modules/skunicode/src/SkUnicode_icu_bidi.cpp",
     "modules/skunicode/src/SkUnicode_icu_bidi.h",
-    "modules/skunicode/src/SkBidiFactory_icu_subset.cpp",
-    "modules/skunicode/src/SkBidiFactory_icu_subset.h",
 ]
 
 SKUNICODE_HDRS = [

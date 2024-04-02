@@ -629,8 +629,7 @@ protected:
         canvas->concat(scalerMatrix);
         SkPaint defaultPaint;
         defaultPaint.setColor(SK_ColorRED);
-        sk_fontations::ColorPainter colorPainter(*this, *canvas, fPalette, foregroundColor,
-                                                 SkMask::kBW_Format != fRec.fMaskFormat, upem);
+        sk_fontations::ColorPainter colorPainter(*this, *canvas, fPalette, foregroundColor, upem);
         bool result = fontations_ffi::draw_colr_glyph(
                 fBridgeFontRef, fBridgeNormalizedCoords, glyph.getGlyphID(), colorPainter);
         return result;
@@ -692,25 +691,6 @@ protected:
                                        rust::Slice<uint8_t>())) {
             out_metrics->fFlags |= SkFontMetrics::kBoundsInvalid_Flag;
         }
-        auto setMetric = [](float& dstMetric, const float srcMetric,
-                            uint32_t& flags, const SkFontMetrics::FontMetricsFlags flag)
-        {
-            if (sk_float_isnan(srcMetric)) {
-                dstMetric = 0;
-            } else {
-                dstMetric = srcMetric;
-                flags |= flag;
-            }
-        };
-        setMetric(out_metrics->fUnderlinePosition, -metrics.underline_position,
-                  out_metrics->fFlags, SkFontMetrics::kUnderlinePositionIsValid_Flag);
-        setMetric(out_metrics->fUnderlineThickness, metrics.underline_thickness,
-                  out_metrics->fFlags, SkFontMetrics::kUnderlineThicknessIsValid_Flag);
-
-        setMetric(out_metrics->fStrikeoutPosition, -metrics.strikeout_position,
-                  out_metrics->fFlags, SkFontMetrics::kStrikeoutPositionIsValid_Flag);
-        setMetric(out_metrics->fStrikeoutThickness, metrics.strikeout_thickness,
-                  out_metrics->fFlags, SkFontMetrics::kStrikeoutThicknessIsValid_Flag);
     }
 
 private:
@@ -1048,13 +1028,11 @@ ColorPainter::ColorPainter(SkFontationsScalerContext& scaler_context,
                            SkCanvas& canvas,
                            SkSpan<SkColor> palette,
                            SkColor foregroundColor,
-                           bool antialias,
                            uint16_t upem)
         : fScalerContext(scaler_context)
         , fCanvas(canvas)
         , fPalette(palette)
         , fForegroundColor(foregroundColor)
-        , fAntialias(antialias)
         , fUpem(upem) {}
 
 void ColorPainter::push_transform(const fontations_ffi::Transform& transform_arg) {
@@ -1068,19 +1046,18 @@ void ColorPainter::push_clip_glyph(uint16_t glyph_id) {
     fCanvas.save();
     SkPath path;
     fScalerContext.generateYScalePathForGlyphId(glyph_id, &path, fUpem);
-    fCanvas.clipPath(path, fAntialias);
+    fCanvas.clipPath(path, true /* doAntialias */);
 }
 
 void ColorPainter::push_clip_rectangle(float x_min, float y_min, float x_max, float y_max) {
     fCanvas.save();
     SkRect clipRect = SkRect::MakeLTRB(x_min, -y_min, x_max, -y_max);
-    fCanvas.clipRect(clipRect, fAntialias);
+    fCanvas.clipRect(clipRect, true);
 }
 
 void ColorPainter::pop_clip() { fCanvas.restore(); }
 
 void ColorPainter::configure_solid_paint(uint16_t palette_index, float alpha, SkPaint& paint) {
-    paint.setAntiAlias(fAntialias);
     SkColor4f color;
     if (palette_index == kForegroundColorPaletteIndex) {
         color = SkColor4f::FromColor(fForegroundColor);
@@ -1112,8 +1089,6 @@ void ColorPainter::configure_linear_paint(const fontations_ffi::FillLinearParams
                                           uint8_t extend_mode,
                                           SkPaint& paint,
                                           SkMatrix* paintTransform) {
-    paint.setAntiAlias(fAntialias);
-
     std::vector<SkScalar> stops;
     std::vector<SkColor4f> colors;
 
@@ -1177,8 +1152,6 @@ void ColorPainter::configure_radial_paint(
         uint8_t extend_mode,
         SkPaint& paint,
         SkMatrix* paintTransform) {
-    paint.setAntiAlias(fAntialias);
-
     SkPoint start = SkPoint::Make(fill_radial_params.x0, -fill_radial_params.y0);
     SkPoint end = SkPoint::Make(fill_radial_params.x1, -fill_radial_params.y1);
 
@@ -1333,8 +1306,6 @@ void ColorPainter::configure_sweep_paint(const fontations_ffi::FillSweepParams& 
                                          uint8_t extend_mode,
                                          SkPaint& paint,
                                          SkMatrix* paintTransform) {
-    paint.setAntiAlias(fAntialias);
-
     SkPoint center = SkPoint::Make(sweep_params.x0, -sweep_params.y0);
 
     std::vector<SkScalar> stops;

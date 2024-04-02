@@ -10,7 +10,6 @@
 
 #import <Metal/Metal.h>
 
-#include "include/core/SkTextureCompressionType.h"
 #include "src/gpu/PipelineUtils.h"
 #include "src/sksl/codegen/SkSLMetalCodeGenerator.h"
 
@@ -46,8 +45,6 @@ bool MtlFormatIsCompressed(MTLPixelFormat);
 uint32_t MtlFormatChannels(MTLPixelFormat);
 
 size_t MtlFormatBytesPerBlock(MTLPixelFormat);
-
-SkTextureCompressionType MtlFormatToCompressionType(MTLPixelFormat);
 
 const char* MtlFormatToString(MTLPixelFormat);
 

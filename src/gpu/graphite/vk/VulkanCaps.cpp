@@ -11,7 +11,6 @@
 #include "include/gpu/graphite/TextureInfo.h"
 #include "include/gpu/graphite/vk/VulkanGraphiteTypes.h"
 #include "include/gpu/vk/VulkanExtensions.h"
-#include "include/gpu/vk/VulkanTypes.h"
 #include "src/gpu/graphite/AttachmentTypes.h"
 #include "src/gpu/graphite/ContextUtils.h"
 #include "src/gpu/graphite/GraphicsPipelineDesc.h"
@@ -20,7 +19,6 @@
 #include "src/gpu/graphite/RuntimeEffectDictionary.h"
 #include "src/gpu/graphite/vk/VulkanGraphiteUtilsPriv.h"
 #include "src/gpu/graphite/vk/VulkanRenderPass.h"
-#include "src/gpu/graphite/vk/VulkanSamplerYcbcrConversion.h"
 #include "src/gpu/graphite/vk/VulkanSharedContext.h"
 #include "src/gpu/vk/VulkanUtilsPriv.h"
 
@@ -121,6 +119,9 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
         fShouldPersistentlyMapCpuToGpuBuffers = false;
     }
 
+    this->initFormatTable(vkInterface, physDev, physDevProperties);
+    this->initDepthStencilFormatTable(vkInterface, physDev, physDevProperties);
+
     if (!contextOptions.fDisableDriverCorrectnessWorkarounds) {
         this->applyDriverCorrectnessWorkarounds(physDevProperties);
     }
@@ -154,11 +155,6 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
     if (extensions->hasExtension(VK_EXT_DEVICE_FAULT_EXTENSION_NAME, 1)) {
         fSupportsDeviceFaultInfo = true;
     }
-
-    // Note that format table initialization should be performed at the end of this method to ensure
-    // all capability determinations are completed prior to populating the format tables.
-    this->initFormatTable(vkInterface, physDev, physDevProperties);
-    this->initDepthStencilFormatTable(vkInterface, physDev, physDevProperties);
 
     this->finishInitialization(contextOptions);
 }
@@ -780,19 +776,8 @@ void VulkanCaps::initFormatTable(const skgpu::VulkanInterface* interface,
         constexpr VkFormat format = VK_FORMAT_ETC2_R8G8B8_UNORM_BLOCK;
         auto& info = this->getFormatInfo(format);
         info.init(interface, physDev, properties, format);
-        if (info.isTexturable(VK_IMAGE_TILING_OPTIMAL)) {
-            info.fColorTypeInfoCount = 1;
-            info.fColorTypeInfos = std::make_unique<ColorTypeInfo[]>(info.fColorTypeInfoCount);
-            int ctIdx = 0;
-            // Format: VK_FORMAT_ETC2_R8G8B8_UNORM_BLOCK, Surface: kRGB_888x
-            {
-                constexpr SkColorType ct = SkColorType::kRGB_888x_SkColorType;
-                auto& ctInfo = info.fColorTypeInfos[ctIdx++];
-                ctInfo.fColorType = ct;
-                ctInfo.fTransferColorType = ct;
-                ctInfo.fFlags = ColorTypeInfo::kUploadData_Flag;
-            }
-        }
+        // Setting this to texel block size
+        // No supported SkColorType.
     }
 
     // Format: VK_FORMAT_BC1_RGB_UNORM_BLOCK
@@ -800,19 +785,8 @@ void VulkanCaps::initFormatTable(const skgpu::VulkanInterface* interface,
         constexpr VkFormat format = VK_FORMAT_BC1_RGB_UNORM_BLOCK;
         auto& info = this->getFormatInfo(format);
         info.init(interface, physDev, properties, format);
-        if (info.isTexturable(VK_IMAGE_TILING_OPTIMAL)) {
-            info.fColorTypeInfoCount = 1;
-            info.fColorTypeInfos = std::make_unique<ColorTypeInfo[]>(info.fColorTypeInfoCount);
-            int ctIdx = 0;
-            // Format: VK_FORMAT_BC1_RGB_UNORM_BLOCK, Surface: kRGB_888x
-            {
-                constexpr SkColorType ct = SkColorType::kRGB_888x_SkColorType;
-                auto& ctInfo = info.fColorTypeInfos[ctIdx++];
-                ctInfo.fColorType = ct;
-                ctInfo.fTransferColorType = ct;
-                ctInfo.fFlags = ColorTypeInfo::kUploadData_Flag;
-            }
-        }
+        // Setting this to texel block size
+        // No supported SkColorType.
     }
 
     // Format: VK_FORMAT_BC1_RGBA_UNORM_BLOCK
@@ -820,19 +794,8 @@ void VulkanCaps::initFormatTable(const skgpu::VulkanInterface* interface,
         constexpr VkFormat format = VK_FORMAT_BC1_RGBA_UNORM_BLOCK;
         auto& info = this->getFormatInfo(format);
         info.init(interface, physDev, properties, format);
-        if (info.isTexturable(VK_IMAGE_TILING_OPTIMAL)) {
-            info.fColorTypeInfoCount = 1;
-            info.fColorTypeInfos = std::make_unique<ColorTypeInfo[]>(info.fColorTypeInfoCount);
-            int ctIdx = 0;
-            // Format: VK_FORMAT_BC1_RGBA_UNORM_BLOCK, Surface: kRGB_888x
-            {
-                constexpr SkColorType ct = SkColorType::kRGBA_8888_SkColorType;
-                auto& ctInfo = info.fColorTypeInfos[ctIdx++];
-                ctInfo.fColorType = ct;
-                ctInfo.fTransferColorType = ct;
-                ctInfo.fFlags = ColorTypeInfo::kUploadData_Flag;
-            }
-        }
+        // Setting this to texel block size
+        // No supported SkColorType.
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -979,30 +942,6 @@ bool VulkanCaps::SupportedSampleCounts::isSampleCountSupported(int requestedCoun
     return false;
 }
 
-
-namespace {
-bool is_texturable(VkFormatFeatureFlags flags) {
-    return SkToBool(VK_FORMAT_FEATURE_SAMPLED_IMAGE_BIT & flags) &&
-           SkToBool(VK_FORMAT_FEATURE_SAMPLED_IMAGE_FILTER_LINEAR_BIT & flags);
-}
-
-bool is_renderable(VkFormatFeatureFlags flags) {
-    return SkToBool(VK_FORMAT_FEATURE_COLOR_ATTACHMENT_BLEND_BIT & flags);
-}
-
-bool is_storage(VkFormatFeatureFlags flags) {
-    return SkToBool(VK_FORMAT_FEATURE_STORAGE_IMAGE_BIT & flags);
-}
-
-bool is_transfer_src(VkFormatFeatureFlags flags) {
-    return SkToBool(VK_FORMAT_FEATURE_TRANSFER_SRC_BIT & flags);
-}
-
-bool is_transfer_dst(VkFormatFeatureFlags flags) {
-    return SkToBool(VK_FORMAT_FEATURE_TRANSFER_DST_BIT & flags);
-}
-}
-
 void VulkanCaps::FormatInfo::init(const skgpu::VulkanInterface* interface,
                                   VkPhysicalDevice physDev,
                                   const VkPhysicalDeviceProperties& properties,
@@ -1010,7 +949,7 @@ void VulkanCaps::FormatInfo::init(const skgpu::VulkanInterface* interface,
     memset(&fFormatProperties, 0, sizeof(VkFormatProperties));
     VULKAN_CALL(interface, GetPhysicalDeviceFormatProperties(physDev, format, &fFormatProperties));
 
-    if (is_renderable(fFormatProperties.optimalTilingFeatures)) {
+    if (this->isRenderable(fFormatProperties.optimalTilingFeatures)) {
         // We make all renderable images support being used as input attachment
         VkImageUsageFlags usageFlags = VK_IMAGE_USAGE_TRANSFER_SRC_BIT |
                                        VK_IMAGE_USAGE_TRANSFER_DST_BIT |
@@ -1025,9 +964,9 @@ void VulkanCaps::FormatInfo::init(const skgpu::VulkanInterface* interface,
 bool VulkanCaps::FormatInfo::isTexturable(VkImageTiling imageTiling) const {
     switch (imageTiling) {
         case VK_IMAGE_TILING_OPTIMAL:
-            return is_texturable(fFormatProperties.optimalTilingFeatures);
+            return this->isTexturable(fFormatProperties.optimalTilingFeatures);
         case VK_IMAGE_TILING_LINEAR:
-            return is_texturable(fFormatProperties.linearTilingFeatures);
+            return this->isTexturable(fFormatProperties.linearTilingFeatures);
         default:
             return false;
     }
@@ -1041,9 +980,9 @@ bool VulkanCaps::FormatInfo::isRenderable(VkImageTiling imageTiling,
     }
     switch (imageTiling) {
         case VK_IMAGE_TILING_OPTIMAL:
-            return is_renderable(fFormatProperties.optimalTilingFeatures);
+            return this->isRenderable(fFormatProperties.optimalTilingFeatures);
         case VK_IMAGE_TILING_LINEAR:
-            return is_renderable(fFormatProperties.linearTilingFeatures);
+            return this->isRenderable(fFormatProperties.linearTilingFeatures);
         default:
             return false;
     }
@@ -1053,9 +992,9 @@ bool VulkanCaps::FormatInfo::isRenderable(VkImageTiling imageTiling,
 bool VulkanCaps::FormatInfo::isStorage(VkImageTiling imageTiling) const {
     switch (imageTiling) {
         case VK_IMAGE_TILING_OPTIMAL:
-            return is_storage(fFormatProperties.optimalTilingFeatures);
+            return this->isStorage(fFormatProperties.optimalTilingFeatures);
         case VK_IMAGE_TILING_LINEAR:
-            return is_storage(fFormatProperties.linearTilingFeatures);
+            return this->isStorage(fFormatProperties.linearTilingFeatures);
         default:
             return false;
     }
@@ -1065,9 +1004,9 @@ bool VulkanCaps::FormatInfo::isStorage(VkImageTiling imageTiling) const {
 bool VulkanCaps::FormatInfo::isTransferSrc(VkImageTiling imageTiling) const {
     switch (imageTiling) {
         case VK_IMAGE_TILING_OPTIMAL:
-            return is_transfer_src(fFormatProperties.optimalTilingFeatures);
+            return this->isTransferSrc(fFormatProperties.optimalTilingFeatures);
         case VK_IMAGE_TILING_LINEAR:
-            return is_transfer_src(fFormatProperties.linearTilingFeatures);
+            return this->isTransferSrc(fFormatProperties.linearTilingFeatures);
         default:
             return false;
     }
@@ -1077,16 +1016,56 @@ bool VulkanCaps::FormatInfo::isTransferSrc(VkImageTiling imageTiling) const {
 bool VulkanCaps::FormatInfo::isTransferDst(VkImageTiling imageTiling) const {
     switch (imageTiling) {
         case VK_IMAGE_TILING_OPTIMAL:
-            return is_transfer_dst(fFormatProperties.optimalTilingFeatures);
+            return this->isTransferDst(fFormatProperties.optimalTilingFeatures);
         case VK_IMAGE_TILING_LINEAR:
-            return is_transfer_dst(fFormatProperties.linearTilingFeatures);
+            return this->isTransferDst(fFormatProperties.linearTilingFeatures);
         default:
             return false;
     }
     SkUNREACHABLE;
 }
 
+bool VulkanCaps::FormatInfo::isTexturable(VkFormatFeatureFlags flags) const {
+    return SkToBool(VK_FORMAT_FEATURE_SAMPLED_IMAGE_BIT & flags) &&
+           SkToBool(VK_FORMAT_FEATURE_SAMPLED_IMAGE_FILTER_LINEAR_BIT & flags);
+}
+
+bool VulkanCaps::FormatInfo::isRenderable(VkFormatFeatureFlags flags) const {
+    return SkToBool(VK_FORMAT_FEATURE_COLOR_ATTACHMENT_BLEND_BIT & flags);
+}
+
+bool VulkanCaps::FormatInfo::isStorage(VkFormatFeatureFlags flags) const {
+    return SkToBool(VK_FORMAT_FEATURE_STORAGE_IMAGE_BIT & flags);
+}
+
+bool VulkanCaps::FormatInfo::isTransferSrc(VkFormatFeatureFlags flags) const {
+    return SkToBool(VK_FORMAT_FEATURE_TRANSFER_SRC_BIT & flags);
+}
+
+bool VulkanCaps::FormatInfo::isTransferDst(VkFormatFeatureFlags flags) const {
+    return SkToBool(VK_FORMAT_FEATURE_TRANSFER_DST_BIT & flags);
+}
+
 void VulkanCaps::setColorType(SkColorType colorType, std::initializer_list<VkFormat> formats) {
+#ifdef SK_DEBUG
+    // If any format's FormatInfo claims support for the passed-in colorType, ensure that format is
+    // included in the provided formats list.
+    for (size_t i = 0; i < kNumVkFormats; ++i) {
+        const auto& formatInfo = fFormatTable[i];
+        for (int j = 0; j < formatInfo.fColorTypeInfoCount; ++j) {
+            const auto& ctInfo = formatInfo.fColorTypeInfos[j];
+            if (ctInfo.fColorType == colorType && !formatInfo.fIsWrappedOnly) {
+                bool found = false;
+                for (auto it = formats.begin(); it != formats.end(); ++it) {
+                    if (kVkFormats[i] == *it) {
+                        found = true;
+                    }
+                }
+                SkASSERT(found);
+            }
+        }
+    }
+#endif
     int idx = static_cast<int>(colorType);
     for (auto it = formats.begin(); it != formats.end(); ++it) {
         const auto& info = this->getFormatInfo(*it);
@@ -1367,28 +1346,6 @@ UniqueKey VulkanCaps::makeGraphicsPipelineKey(const GraphicsPipelineDesc& pipeli
     return pipelineKey;
 }
 
-GraphiteResourceKey VulkanCaps::makeSamplerKey(const SamplerDesc& samplerDesc) const {
-    GraphiteResourceKey samplerKey;
-    static const ResourceType kType = GraphiteResourceKey::GenerateResourceType();
-
-    // A sampler format of "0" is acceptable and indicative that we simply not using YCbCr sampling.
-    const uint64_t samplerFormat = samplerDesc.format();
-
-    // TODO: Optimize for the case where we only need 3 int32s as opposed to 4 when using a known
-    // format.
-    int uint32Quantity = samplerFormat ? 4 : 1;
-    GraphiteResourceKey::Builder builder(&samplerKey, kType, uint32Quantity, Shareable::kYes);
-
-    builder[0] = samplerDesc.desc();
-    if (samplerFormat) {
-        builder[1] = (uint32_t)(samplerFormat << 32);
-        builder[2] = (uint32_t)samplerFormat;
-        builder[3] = samplerDesc.formatFeatures();
-    }
-    builder.finish();
-    return samplerKey;
-}
-
 void VulkanCaps::buildKeyForTexture(SkISize dimensions,
                                     const TextureInfo& info,
                                     ResourceType type,
@@ -1400,8 +1357,7 @@ void VulkanCaps::buildKeyForTexture(SkISize dimensions,
 
     // We expect that the VkFormat enum is at most a 32-bit value.
     static_assert(VK_FORMAT_MAX_ENUM == 0x7FFFFFFF);
-    // We should either be using a known VkFormat or have a valid ycbcr conversion.
-    SkASSERT(vkSpec.fFormat != VK_FORMAT_UNDEFINED || vkSpec.fYcbcrConversionInfo.isValid());
+    SkASSERT(vkSpec.fFormat != VK_FORMAT_UNDEFINED);
     uint32_t formatKey = static_cast<uint32_t>(vkSpec.fFormat);
 
     uint32_t samplesKey = SamplesToKey(info.numSamples());
@@ -1421,17 +1377,10 @@ void VulkanCaps::buildKeyForTexture(SkISize dimensions,
     SkASSERT(vkSpec.fAspectMask                 < (1u << 11)); // aspectMask is bits 8 - 19
     SkASSERT(vkSpec.fImageUsageFlags            < (1u << 12)); // imageUsageFlags are bits 20-32
 
-    // We need two uint32_ts for dimensions, 1 for format, and 2 for the rest of the information.
-    static constexpr int kNum32DataCntNoYcbcr =  2 + 1 + 2;
-    int num32DataCnt = kNum32DataCntNoYcbcr;
+    // We need two uint32_ts for dimensions, 1 for format, and 2 for the rest of the key.
+    static int kNum32DataCnt = 2 + 1 + 2;
 
-    // If a texture w/ an external format is being used, that information must also be appended.
-    const VulkanYcbcrConversionInfo& ycbcrInfo = info.vulkanTextureSpec().fYcbcrConversionInfo;
-    if (ycbcrInfo.isValid()) {
-        num32DataCnt += VulkanSamplerYcbcrConversion::kUint32sNeededForYcbcrInfo;
-    }
-
-    GraphiteResourceKey::Builder builder(key, type, num32DataCnt, shareable);
+    GraphiteResourceKey::Builder builder(key, type, kNum32DataCnt, shareable);
 
     builder[0] = dimensions.width();
     builder[1] = dimensions.height();
@@ -1444,48 +1393,6 @@ void VulkanCaps::buildKeyForTexture(SkISize dimensions,
                  (static_cast<uint32_t>(vkSpec.fSharingMode)         << 6)  |
                  (static_cast<uint32_t>(vkSpec.fAspectMask)          << 7)  |
                  (static_cast<uint32_t>(vkSpec.fImageUsageFlags)     << 19);
-
-    if (ycbcrInfo.isValid()) {
-        // TODO: Verify whether this needs to be bitshifted to match creation
-        builder[5] = ycbcrInfo.asUInt16();
-
-        SkASSERT(ycbcrInfo.fFormat != VK_FORMAT_UNDEFINED || ycbcrInfo.fExternalFormat != 0);
-        bool useExternalFormat = (ycbcrInfo.fFormat == VK_FORMAT_UNDEFINED &&
-                                  ycbcrInfo.fExternalFormat != 0);
-        builder[6] = useExternalFormat ? (uint32_t)(ycbcrInfo.fExternalFormat << 32)
-                                       : ycbcrInfo.fFormat;
-        builder[7] = useExternalFormat ? (uint32_t)ycbcrInfo.fExternalFormat : 0;
-        builder[8] = ycbcrInfo.fFormatFeatures;
-    }
-}
-
-SamplerConversionInfo VulkanCaps::getSamplerConversionInfo(sk_sp<TextureProxy> proxy) const {
-    if (proxy) {
-        const skgpu::VulkanYcbcrConversionInfo& ycbcrConversionInfo =
-                proxy->textureInfo().vulkanTextureSpec().fYcbcrConversionInfo;
-
-        if (ycbcrConversionInfo.isValid()) {
-            SamplerConversionInfo conversionInfo;
-            if (ycbcrConversionInfo.fFormat == VK_FORMAT_UNDEFINED) {
-                // ycbcrConversionInfo's fFormat being VK_FORMAT_UNDEFINED indicates we are using an
-                // external format rather than a known VkFormat.
-                conversionInfo.fMutability = SamplerMutability::kImmutableSamplerExternalFormat;
-                conversionInfo.fFormat = ycbcrConversionInfo.fExternalFormat;
-            } else {
-                conversionInfo.fMutability = SamplerMutability::kImmutableSamplerKnownFormat;
-                conversionInfo.fFormat = ycbcrConversionInfo.fFormat;
-            }
-
-            conversionInfo.fYcbcrConversionInfo = ycbcrConversionInfo.asUInt16();
-            conversionInfo.fFormatFeatures = ycbcrConversionInfo.fFormatFeatures;
-
-            return conversionInfo;
-        }
-    }
-
-    // If the proxy is null or the YCbCr conversion for that proxy is invalid, then return a
-    // default SamplerConversionInfo struct.
-    return {};
 }
 
 } // namespace skgpu::graphite

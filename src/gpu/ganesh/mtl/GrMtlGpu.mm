@@ -16,7 +16,6 @@
 #include "src/base/SkRectMemcpy.h"
 #include "src/core/SkCompressedDataUtils.h"
 #include "src/core/SkMipmap.h"
-#include "src/gpu/DataUtils.h"
 #include "src/gpu/ganesh/GrBackendUtils.h"
 #include "src/gpu/ganesh/GrDataUtils.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
@@ -676,8 +675,7 @@ sk_sp<GrTexture> GrMtlGpu::onCreateCompressedTexture(SkISize dimensions,
 
     SkISize levelDimensions = dimensions;
     for (int currentMipLevel = 0; currentMipLevel < numMipLevels; currentMipLevel++) {
-        const size_t levelRowBytes = skgpu::CompressedRowBytes(compressionType,
-                                                               levelDimensions.width());
+        const size_t levelRowBytes = GrCompressedRowBytes(compressionType, levelDimensions.width());
         size_t levelSize = SkCompressedDataSize(compressionType, levelDimensions, nullptr, false);
 
         // TODO: can this all be done in one go?
@@ -1093,7 +1091,7 @@ bool GrMtlGpu::onUpdateCompressedBackendTexture(const GrBackendTexture& backendT
         size_t levelRowBytes;
         size_t levelSize;
 
-        levelRowBytes = skgpu::CompressedRowBytes(compression, levelDimensions.width());
+        levelRowBytes = GrCompressedRowBytes(compression, levelDimensions.width());
         levelSize = SkCompressedDataSize(compression, levelDimensions, nullptr, false);
 
         // TODO: can this all be done in one go?

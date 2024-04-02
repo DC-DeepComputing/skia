@@ -128,9 +128,7 @@ public:
 
         SkString path;
         while (iter.next(&path)) {
-            if ((false)) {
-                SkDebugf("font %s\n", path.c_str());
-            }
+            //SkDebugf("font %s\n", path.c_str());
             // Look for a sentinel font, without which several tests will fail/crash.
             if (path.endsWith("Roboto-Italic.ttf")) {
                 fFontsFound = true;
@@ -149,15 +147,9 @@ public:
             // Without --nativeFonts, DM will use the portable test font manager which does
             // not know how to read in fonts from bytes.
             if (face) {
-                if ((false)) {
-                    SkString familyName;
-                    face->getFamilyName(&familyName);
-                    SkDebugf("Registering: %s size: %zu\n",
-                             familyName.c_str(), face->openExistingStream(nullptr)->getLength());
-                }
-                fFontProvider->registerTypeface(std::move(face));
+                fFontProvider->registerTypeface(face);
             } else {
-                SkDEBUGF("%s was not turned into a Typeface. Did you set --nativeFonts?\n",
+                SkDEBUGF("%s was not turned into a Typeface. Did you set --nativeFonts?",
                          file_path.c_str());
             }
         }

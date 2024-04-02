@@ -60,52 +60,25 @@ private:
 // Used to pass in the necessary information to create a VkSamplerYcbcrConversion object for an
 // VkExternalFormatANDROID.
 struct VulkanYcbcrConversionInfo {
-    static VulkanYcbcrConversionInfo MakeFromSamplerDescValues() {
-        VulkanYcbcrConversionInfo info;
-        return info;
-    }
-
     bool operator==(const VulkanYcbcrConversionInfo& that) const {
         // Invalid objects are not required to have all other fields initialized or matching.
         if (!this->isValid() && !that.isValid()) {
             return true;
         }
-        return this->fFormat                      == that.fFormat                      &&
-               this->fExternalFormat              == that.fExternalFormat              &&
-               this->fYcbcrModel                  == that.fYcbcrModel                  &&
-               this->fYcbcrRange                  == that.fYcbcrRange                  &&
-               this->fXChromaOffset               == that.fXChromaOffset               &&
-               this->fYChromaOffset               == that.fYChromaOffset               &&
-               this->fChromaFilter                == that.fChromaFilter                &&
-               this->fForceExplicitReconstruction == that.fForceExplicitReconstruction &&
-               this->fFormatFeatures              == that.fFormatFeatures;
+        return this->fFormat == that.fFormat &&
+               this->fExternalFormat == that.fExternalFormat &&
+               this->fYcbcrModel == that.fYcbcrModel &&
+               this->fYcbcrRange == that.fYcbcrRange &&
+               this->fXChromaOffset == that.fXChromaOffset &&
+               this->fYChromaOffset == that.fYChromaOffset &&
+               this->fChromaFilter == that.fChromaFilter &&
+               this->fForceExplicitReconstruction == that.fForceExplicitReconstruction;
     }
     bool operator!=(const VulkanYcbcrConversionInfo& that) const { return !(*this == that); }
 
     bool isValid() const {
         return fYcbcrModel != VK_SAMPLER_YCBCR_MODEL_CONVERSION_RGB_IDENTITY ||
                fExternalFormat != 0;
-    }
-
-    // uint8_t asUInt8() const {
-    //     static_assert(kForceExplicitReconShift + kForceExplicitReconBits <= 8);
-    //     return ((static_cast<uint8_t>(fYcbcrModel                 ) << kYcbcrModelShift   ) |
-    //             (static_cast<uint8_t>(fYcbcrRange                 ) << kYcbcrRangeShift   ) |
-    //             (static_cast<uint8_t>(fXChromaOffset              ) << kXChromaOffsetShift) |
-    //             (static_cast<uint8_t>(fYChromaOffset              ) << kYChromaOffsetShift) |
-    //             (static_cast<uint8_t>(fChromaFilter               ) << kChromaFilterShift ) |
-    //             (static_cast<uint8_t>(fForceExplicitReconstruction) << kForceExplicitReconShift));
-    // }
-
-    // TODO: Make this Uint8.
-    uint16_t asUInt16() const {
-        static_assert(kForceExplicitReconShift + kForceExplicitReconBits <= 16);
-        return ((static_cast<uint16_t>(fYcbcrModel                 ) << kYcbcrModelShift   ) |
-                (static_cast<uint16_t>(fYcbcrRange                 ) << kYcbcrRangeShift   ) |
-                (static_cast<uint16_t>(fXChromaOffset              ) << kXChromaOffsetShift) |
-                (static_cast<uint16_t>(fYChromaOffset              ) << kYChromaOffsetShift) |
-                (static_cast<uint16_t>(fChromaFilter               ) << kChromaFilterShift ) |
-                (static_cast<uint16_t>(fForceExplicitReconstruction) << kForceExplicitReconShift));
     }
 
     // Format of the source image. Must be set to VK_FORMAT_UNDEFINED for external images or
@@ -126,20 +99,6 @@ struct VulkanYcbcrConversionInfo {
     // For external images format features here should be those returned by a call to
     // vkAndroidHardwareBufferFormatPropertiesANDROID
     VkFormatFeatureFlags fFormatFeatures = 0;
-
-    static constexpr int kYcbcrModelBits          = 3;
-    static constexpr int kYcbcrRangeBits          = 1;
-    static constexpr int kXChromaOffsetBits       = 1;
-    static constexpr int kYChromaOffsetBits       = 1;
-    static constexpr int kChromaFilterBits        = 1;
-    static constexpr int kForceExplicitReconBits  = 1;
-
-    static constexpr int kYcbcrModelShift         = 0;
-    static constexpr int kYcbcrRangeShift         = kYcbcrModelShift    + kYcbcrModelBits;
-    static constexpr int kXChromaOffsetShift      = kYcbcrRangeShift    + kYcbcrRangeBits;
-    static constexpr int kYChromaOffsetShift      = kXChromaOffsetShift + kXChromaOffsetBits;
-    static constexpr int kChromaFilterShift       = kYChromaOffsetShift + kYChromaOffsetBits;
-    static constexpr int kForceExplicitReconShift = kChromaFilterShift  + kChromaFilterBits;
 };
 
 typedef void* VulkanDeviceLostContext;

@@ -9,7 +9,6 @@
 #include "include/gpu/gl/GrGLInterface.h"
 #include "tools/window/GLWindowContext.h"
 #include "tools/window/unix/WindowContextFactory_unix.h"
-#include "include/gpu/gl/glx/GrGLMakeGLXInterface.h"
 
 #include <GL/gl.h>
 
@@ -97,7 +96,7 @@ sk_sp<const GrGLInterface> GLWindowContext_xlib::onInitializeContext() {
                     current = true;
                     // Look to see if RenderDoc is attached. If so, re-create the context with a
                     // core profile.
-                    interface = GrGLInterfaces::MakeGLX();
+                    interface = GrGLMakeNativeInterface();
                     if (interface && interface->fExtensions.has("GL_EXT_debug_tool")) {
                         interface.reset();
                         glXMakeCurrent(fDisplay, None, nullptr);
@@ -151,7 +150,7 @@ sk_sp<const GrGLInterface> GLWindowContext_xlib::onInitializeContext() {
                  &border_width, &depth);
     glViewport(0, 0, fWidth, fHeight);
 
-    return interface ? interface : GrGLInterfaces::MakeGLX();
+    return interface ? interface : GrGLMakeNativeInterface();
 }
 
 GLWindowContext_xlib::~GLWindowContext_xlib() {

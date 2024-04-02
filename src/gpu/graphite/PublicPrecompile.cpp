@@ -109,7 +109,7 @@ void Precompile(Context* context, const PaintOptions& options, DrawTypeFlags dra
 
     // Since the precompilation path's uniforms aren't used and don't change the key,
     // the exact layout doesn't matter
-    PipelineDataGatherer gatherer(caps, Layout::kMetal);
+    PipelineDataGatherer gatherer(Layout::kMetal);
 
     // TODO: we need iterate over a broader set of TextureInfos here. Perhaps, allow the client
     // to pass in colorType, mipmapping and protection.
@@ -174,21 +174,18 @@ void Precompile(Context* context, const PaintOptions& options, DrawTypeFlags dra
 
     if (drawTypes & DrawTypeFlags::kDrawVertices) {
         for (Coverage coverage : {Coverage::kNone, Coverage::kSingleChannel, Coverage::kLCD}) {
-            // drawVertices w/ colors use a primitiveBlender while those w/o don't
-            for (bool withPrimitiveBlender : { true, false }) {
-                options.priv().buildCombinations(
-                    keyContext,
-                    &gatherer,
-                    withPrimitiveBlender,
-                    coverage,
-                    [&](UniquePaintParamsID uniqueID) {
-                        compile(context->priv().rendererProvider(),
-                                context->priv().resourceProvider(),
-                                keyContext, uniqueID,
-                                DrawTypeFlags::kDrawVertices,
-                                renderPassDescs, withPrimitiveBlender, coverage);
-                    });
-            }
+            options.priv().buildCombinations(
+                keyContext,
+                &gatherer,
+                /* addPrimitiveBlender= */ true,
+                coverage,
+                [&](UniquePaintParamsID uniqueID) {
+                    compile(context->priv().rendererProvider(),
+                            context->priv().resourceProvider(),
+                            keyContext, uniqueID,
+                            DrawTypeFlags::kDrawVertices,
+                            renderPassDescs, /* withPrimitiveBlender= */ true, coverage);
+                });
         }
     }
 }
