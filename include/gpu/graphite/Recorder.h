@@ -241,7 +241,7 @@ private:
     std::unique_ptr<TextureDataCache> fTextureDataCache;
     std::unique_ptr<DrawBufferManager> fDrawBufferManager;
     std::unique_ptr<UploadBufferManager> fUploadBufferManager;
-    std::vector<Device*> fTrackedDevices;
+    std::vector<sk_sp<Device>> fTrackedDevices;
 
     uint32_t fUniqueID;  // Needed for MessageBox handling for text
     uint32_t fNextRecordingID = 1;
