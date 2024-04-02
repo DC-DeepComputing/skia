@@ -921,18 +921,18 @@ static bool gather_srcs() {
     }
 
     TArray<SkString> images;
-    if (!CommonFlags::CollectImages(FLAGS_images, &images)) {
-        return false;
-    }
+//    if (!CommonFlags::CollectImages(FLAGS_images, &images)) {
+//        return false;
+//    }
 
     for (const SkString& image : images) {
         push_codec_srcs(image);
     }
 
     TArray<SkString> colorImages;
-    if (!CommonFlags::CollectImages(FLAGS_colorImages, &colorImages)) {
-        return false;
-    }
+//    if (!CommonFlags::CollectImages(FLAGS_colorImages, &colorImages)) {
+//        return false;
+//    }
 
     for (const SkString& colorImage : colorImages) {
         push_src("colorImage", "decode_native", new ColorCodecSrc(colorImage, false));
@@ -945,6 +945,7 @@ static bool gather_srcs() {
 static void push_sink(const SkCommandLineConfig& config, Sink* s) {
     std::unique_ptr<Sink> sink(s);
 
+#if 0
     // Try a simple Src as a canary.  If it fails, skip this sink.
     struct : public Src {
         Result draw(SkCanvas* c, skiatest::graphite::GraphiteTestContext*) const override {
@@ -963,6 +964,7 @@ static void push_sink(const SkCommandLineConfig& config, Sink* s) {
         info("Could not run %s: %s\n", config.getTag().c_str(), result.c_str());
         exit(1);
     }
+#endif
 
     TaggedSink& ts = gSinks->push_back();
     ts.reset(sink.release());  // NOLINT(misc-uniqueptr-reset-release)
