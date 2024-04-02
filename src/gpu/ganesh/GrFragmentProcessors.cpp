@@ -793,7 +793,7 @@ static std::unique_ptr<GrFragmentProcessor> make_shader_fp(const SkRuntimeShader
 
     sk_sp<const SkData> uniforms = SkRuntimeEffectPriv::TransformUniforms(
             shader->asRuntimeEffect()->uniforms(),
-            shader->uniformData(args.fDstColorInfo->colorSpace()),
+            shader->uniformData7(args.fDstColorInfo->colorSpace()),
             args.fDstColorInfo->colorSpace());
     SkASSERT(uniforms);
 
