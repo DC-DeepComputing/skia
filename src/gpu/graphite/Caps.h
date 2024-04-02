@@ -27,7 +27,6 @@
 #endif
 
 enum class SkBlendMode;
-enum class SkTextureCompressionType;
 class SkCapabilities;
 
 namespace SkSL { struct ShaderCaps; }
@@ -92,10 +91,6 @@ public:
     virtual TextureInfo getTextureInfoForSampledCopy(const TextureInfo& textureInfo,
                                                      Mipmapped mipmapped) const = 0;
 
-    virtual TextureInfo getDefaultCompressedTextureInfo(SkTextureCompressionType,
-                                                        Mipmapped mipmapped,
-                                                        Protected) const = 0;
-
     virtual TextureInfo getDefaultMSAATextureInfo(const TextureInfo& singleSampledInfo,
                                                   Discardable discardable) const = 0;
 
@@ -116,16 +111,11 @@ public:
     // Returns a GraphiteResourceKey based upon a SamplerDesc with any additional information that
     // backends append within their implementation. By default, simply returns a key based upon
     // the SamplerDesc with no extra info.
+    // TODO: Rather than going through a GraphiteResourceKey, migrate to having a cache of samplers
+    // keyed off of SamplerDesc to minimize heap allocations.
     virtual GraphiteResourceKey makeSamplerKey(const SamplerDesc& samplerDesc) const;
 
     virtual SamplerConversionInfo getSamplerConversionInfo(sk_sp<TextureProxy> proxy) const {
-        return {};
-    }
-
-    // Backends can optionally override this method to report backend-specific sampler description
-    // information.
-    virtual std::vector<uint32_t> getAdditionalSamplerDescInfo(sk_sp<TextureProxy> proxy) const {
-        // By default, return an empty span containing no additional information.
         return {};
     }
 
@@ -289,12 +279,6 @@ public:
 
     bool requireOrderedRecordings() const { return fRequireOrderedRecordings; }
 
-    // When uploading to a full compressed texture do we need to pad the size out to a multiple of
-    // the block width and height.
-    bool fullCompressedUploadSizeMustAlignToBlockDims() const {
-        return fFullCompressedUploadSizeMustAlignToBlockDims;
-    }
-
     sktext::gpu::SDFTControl getSDFTControl(bool useSDFTForSmallText) const;
 
 protected:
@@ -367,7 +351,6 @@ protected:
 
     bool fComputeSupport = false;
     bool fSupportsAHardwareBufferImages = false;
-    bool fFullCompressedUploadSizeMustAlignToBlockDims = false;
 
 #if defined(GRAPHITE_TEST_UTILS)
     bool fDrawBufferCanBeMappedForReadback = true;

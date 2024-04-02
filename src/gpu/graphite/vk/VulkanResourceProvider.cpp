@@ -198,9 +198,9 @@ GraphiteResourceKey build_desc_set_key(const SkSpan<DescriptorData>& requestedDe
     for (size_t i = 0; i < kNum32DataCnt; i++) {
         if (i < requestedDescriptors.size()) {
             // TODO: Consider making the DescriptorData struct itself just use uint16_t.
-            uint16_t smallerCount = static_cast<uint16_t>(requestedDescriptors[i].count);
-            builder[i] =  static_cast<uint8_t>(requestedDescriptors[i].type) << 24
-                          | requestedDescriptors[i].bindingIndex << 16
+            uint16_t smallerCount = static_cast<uint16_t>(requestedDescriptors[i].fCount);
+            builder[i] =  static_cast<uint8_t>(requestedDescriptors[i].fType) << 24
+                          | requestedDescriptors[i].fBindingIndex << 16
                           | smallerCount;
         } else {
             // Populate reminaing key components with 0.
@@ -507,8 +507,7 @@ BackendTexture VulkanResourceProvider::onCreateBackendTexture(AHardwareBuffer* h
     if (!importAsExternalFormat) {
         usageFlags |= VK_IMAGE_USAGE_TRANSFER_SRC_BIT | VK_IMAGE_USAGE_TRANSFER_DST_BIT;
         if (isRenderable) {
-            // Renderable attachments can be used as input attachments if we are loading from MSAA.
-            usageFlags |= VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT | VK_IMAGE_USAGE_INPUT_ATTACHMENT_BIT;
+            usageFlags |= VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
         }
     }
     VulkanTextureInfo vkTexInfo { VK_SAMPLE_COUNT_1_BIT,

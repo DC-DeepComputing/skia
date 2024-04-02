@@ -87,16 +87,6 @@ struct VulkanYcbcrConversionInfo {
                fExternalFormat != 0;
     }
 
-    // uint8_t asUInt8() const {
-    //     static_assert(kForceExplicitReconShift + kForceExplicitReconBits <= 8);
-    //     return ((static_cast<uint8_t>(fYcbcrModel                 ) << kYcbcrModelShift   ) |
-    //             (static_cast<uint8_t>(fYcbcrRange                 ) << kYcbcrRangeShift   ) |
-    //             (static_cast<uint8_t>(fXChromaOffset              ) << kXChromaOffsetShift) |
-    //             (static_cast<uint8_t>(fYChromaOffset              ) << kYChromaOffsetShift) |
-    //             (static_cast<uint8_t>(fChromaFilter               ) << kChromaFilterShift ) |
-    //             (static_cast<uint8_t>(fForceExplicitReconstruction) << kForceExplicitReconShift));
-    // }
-
     // TODO: Make this Uint8.
     uint16_t asUInt16() const {
         static_assert(kForceExplicitReconShift + kForceExplicitReconBits <= 16);

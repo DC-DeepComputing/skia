@@ -11,7 +11,6 @@
 #include "include/gpu/graphite/BackendSemaphore.h"
 #include "include/gpu/vk/VulkanMutableTextureState.h"
 #include "include/private/base/SkTArray.h"
-#include "src/gpu/DataUtils.h"
 #include "src/gpu/graphite/DescriptorData.h"
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/Surface_Graphite.h"
@@ -971,7 +970,7 @@ void VulkanCommandBuffer::bindUniformBuffers() {
             fSharedContext)->vulkanCaps().maxUniformBufferRange();
 
     for (int i = 0; i < descriptors.size(); i++) {
-        int descriptorBindingIndex = descriptors.at(i).bindingIndex;
+        int descriptorBindingIndex = descriptors.at(i).fBindingIndex;
         SkASSERT(static_cast<unsigned long>(descriptorBindingIndex)
                     < fUniformBuffersToBind.size());
         if (fUniformBuffersToBind[descriptorBindingIndex].fBuffer) {
@@ -991,8 +990,8 @@ void VulkanCommandBuffer::bindUniformBuffers() {
             writeInfo.dstSet = *set->descriptorSet();
             writeInfo.dstBinding = descriptorBindingIndex;
             writeInfo.dstArrayElement = 0;
-            writeInfo.descriptorCount = descriptors.at(i).count;
-            writeInfo.descriptorType = DsTypeEnumToVkDs(descriptors.at(i).type);
+            writeInfo.descriptorCount = descriptors.at(i).fCount;
+            writeInfo.descriptorType = DsTypeEnumToVkDs(descriptors.at(i).fType);
             writeInfo.pImageInfo = nullptr;
             writeInfo.pBufferInfo = &bufferInfo;
             writeInfo.pTexelBufferView = nullptr;
@@ -1160,12 +1159,11 @@ void VulkanCommandBuffer::recordTextureAndSamplerDescSet(
         writeInfo.pTexelBufferView = nullptr;
     }
 
-    VULKAN_CALL(fSharedContext->interface(),
-            UpdateDescriptorSets(fSharedContext->device(),
-                                    command.fNumTexSamplers,
-                                    &writeDescriptorSets[0],
-                                    /*descriptorCopyCount=*/0,
-                                    /*pDescriptorCopies=*/nullptr));
+    VULKAN_CALL(fSharedContext->interface(), UpdateDescriptorSets(fSharedContext->device(),
+                                                                  command.fNumTexSamplers,
+                                                                  &writeDescriptorSets[0],
+                                                                  /*descriptorCopyCount=*/0,
+                                                                  /*pDescriptorCopies=*/nullptr));
 
     // Store the updated descriptor set to be actually bound later on. This avoids binding and
     // potentially having to re-bind in cases where earlier descriptor sets change while going
@@ -1297,7 +1295,7 @@ void VulkanCommandBuffer::drawIndexedIndirect(PrimitiveType) {
                                        /*stride=*/0));
 }
 
-bool VulkanCommandBuffer::onAddComputePass(DispatchGroupSpan) { return false; }
+bool VulkanCommandBuffer::onAddComputePass(const DispatchGroupList&) { return false; }
 
 bool VulkanCommandBuffer::onCopyBufferToBuffer(const Buffer* srcBuffer,
                                                size_t srcOffset,
@@ -1388,8 +1386,6 @@ bool VulkanCommandBuffer::onCopyBufferToTexture(const Buffer* buffer,
     VulkanTextureInfo dstTextureInfo;
     dstTexture->textureInfo().getVulkanTextureInfo(&dstTextureInfo);
     size_t bytesPerBlock = VkFormatBytesPerBlock(dstTextureInfo.fFormat);
-    SkISize oneBlockDims = CompressedDimensions(dstTexture->textureInfo().compressionType(),
-                                                {1, 1});
 
     // Set up copy regions.
     TArray<VkBufferImageCopy> regions(count);
@@ -1398,9 +1394,7 @@ bool VulkanCommandBuffer::onCopyBufferToTexture(const Buffer* buffer,
         memset(&region, 0, sizeof(VkBufferImageCopy));
         region.bufferOffset = copyData[i].fBufferOffset;
         // copyData provides row length in bytes, but Vulkan expects bufferRowLength in texels.
-        // For compressed this is the number of logical pixels not the number of blocks.
-        region.bufferRowLength =
-                (uint32_t)((copyData[i].fBufferRowBytes/bytesPerBlock) * oneBlockDims.fWidth);
+        region.bufferRowLength = (uint32_t)(copyData[i].fBufferRowBytes/bytesPerBlock);
         region.bufferImageHeight = 0; // Tightly packed
         region.imageSubresource = { VK_IMAGE_ASPECT_COLOR_BIT, copyData[i].fMipLevel, 0, 1 };
         region.imageOffset = { copyData[i].fRect.left(),
