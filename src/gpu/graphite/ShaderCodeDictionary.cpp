@@ -1709,8 +1709,7 @@ ShaderCodeDictionary::ShaderCodeDictionary() {
     fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kLocalMatrixShader] = {
             "LocalMatrixShader",
             SkSpan(kLocalMatrixShaderUniforms),
-            (SnippetRequirementFlags::kPriorStageOutput |
-             SnippetRequirementFlags::kLocalCoords),
+            (SnippetRequirementFlags::kPriorStageOutput | SnippetRequirementFlags::kLocalCoords),
             { },     // no samplers
             kLocalMatrixShaderName,
             GenerateDefaultExpression,
@@ -1720,7 +1719,7 @@ ShaderCodeDictionary::ShaderCodeDictionary() {
     fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kImageShader] = {
             "ImageShader",
             SkSpan(kImageShaderUniforms),
-            SnippetRequirementFlags::kLocalCoords,
+            (SnippetRequirementFlags::kLocalCoords | SnippetRequirementFlags::kStoresData),
             SkSpan(kISTexturesAndSamplers),
             kImageShaderName,
             GenerateDefaultExpression,

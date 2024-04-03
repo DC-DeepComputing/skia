@@ -64,7 +64,7 @@ GraphiteResourceKey VulkanSamplerYcbcrConversion::MakeYcbcrConversionKey(
     GraphiteResourceKey key;
     GraphiteResourceKey::Builder builder(&key, kType, kUint32sNeededForYcbcrInfo, Shareable::kYes);
 
-    builder[0] = info.asUInt16();
+    builder[0] = info.nonFormatInfoAsUInt8();
     if (info.fFormat == VK_FORMAT_UNDEFINED) {
         builder[1] = (uint32_t)(info.fExternalFormat << 32);
         builder[2] = (uint32_t)info.fExternalFormat;
@@ -111,7 +111,7 @@ VulkanSamplerYcbcrConversion::VulkanSamplerYcbcrConversion(
         const VulkanSharedContext* context, VkSamplerYcbcrConversion ycbcrConversion)
         : Resource(context,
                    Ownership::kOwned,
-                   skgpu::Budgeted::kNo,
+                   skgpu::Budgeted::kYes, // Shareable, so must be budgeted
                    /*gpuMemorySize=*/0,
                    /*label=*/"VulkanSamplerYcbcrConversion")
         , fYcbcrConversion (ycbcrConversion) {}

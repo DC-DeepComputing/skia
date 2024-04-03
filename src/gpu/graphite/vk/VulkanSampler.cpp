@@ -101,6 +101,13 @@ sk_sp<VulkanSampler> VulkanSampler::Make(
     return sk_sp<VulkanSampler>(new VulkanSampler(sharedContext, sampler, ycbcrConversion));
 }
 
+// GraphiteResourceKey VulkanSampler::MakeKeyFromData(SkSpan<const uint32_t> data) {
+
+//     for (int i = 0; i < data.length(); i++) {
+
+//     }
+// }
+
 void VulkanSampler::freeGpuData() {
     const VulkanSharedContext* sharedContext =
         static_cast<const VulkanSharedContext*>(this->sharedContext());

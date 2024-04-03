@@ -31,6 +31,16 @@
 
 namespace skgpu::graphite {
 
+namespace {
+    // void init_sampler_rsrc_type(ResourceType& rsrcType) {
+    //     rsrcType = GraphiteResourceKey::GenerateResourceType();
+    // }
+    ResourceType sampler_rsrc_type() {
+        static const ResourceType samplerResrouceType = GraphiteResourceKey::GenerateResourceType();
+        return samplerResrouceType;
+    }
+}
+
 VulkanCaps::VulkanCaps(const ContextOptions& contextOptions,
                        const skgpu::VulkanInterface* vkInterface,
                        VkPhysicalDevice physDev,
@@ -39,6 +49,8 @@ VulkanCaps::VulkanCaps(const ContextOptions& contextOptions,
                        const skgpu::VulkanExtensions* extensions,
                        Protected isProtected)
         : Caps() {
+    // kSamplerResourceType = GraphiteResourceKey::GenerateResourceType();
+    // init_sampler_rsrc_type(kSamplerResourceType);
     this->init(contextOptions, vkInterface, physDev, physicalDeviceVersion, features, extensions,
                isProtected);
 }
@@ -155,6 +167,8 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
     if (extensions->hasExtension(VK_EXT_DEVICE_FAULT_EXTENSION_NAME, 1)) {
         fSupportsDeviceFaultInfo = true;
     }
+
+    // static const kSamplerResourceType = GraphiteResourceKey::GenerateResourceType();
 
     // Note that format table initialization should be performed at the end of this method to ensure
     // all capability determinations are completed prior to populating the format tables.
@@ -1411,7 +1425,6 @@ UniqueKey VulkanCaps::makeGraphicsPipelineKey(const GraphicsPipelineDesc& pipeli
 
 GraphiteResourceKey VulkanCaps::makeSamplerKey(const SamplerDesc& samplerDesc) const {
     GraphiteResourceKey samplerKey;
-    static const ResourceType kType = GraphiteResourceKey::GenerateResourceType();
 
     // A sampler format of "0" is acceptable and indicative that we simply not using YCbCr sampling.
     const uint64_t samplerFormat = samplerDesc.format();
@@ -1419,7 +1432,8 @@ GraphiteResourceKey VulkanCaps::makeSamplerKey(const SamplerDesc& samplerDesc) c
     // TODO: Optimize for the case where we only need 3 int32s as opposed to 4 when using a known
     // format.
     int uint32Quantity = samplerFormat ? 4 : 1;
-    GraphiteResourceKey::Builder builder(&samplerKey, kType, uint32Quantity, Shareable::kYes);
+    GraphiteResourceKey::Builder builder(&samplerKey, sampler_rsrc_type(), uint32Quantity,
+                                         Shareable::kYes);
 
     builder[0] = samplerDesc.desc();
     if (samplerFormat) {
@@ -1427,6 +1441,21 @@ GraphiteResourceKey VulkanCaps::makeSamplerKey(const SamplerDesc& samplerDesc) c
         builder[2] = (uint32_t)samplerFormat;
         builder[3] = samplerDesc.formatFeatures();
     }
+    builder.finish();
+    return samplerKey;
+}
+
+GraphiteResourceKey VulkanCaps::reconstructSamplerKeyFromInts(SkSpan<const uint32_t> data) const {
+    GraphiteResourceKey samplerKey;
+    static constexpr int kNumInts = 4; // TODO cleanup
+    GraphiteResourceKey::Builder builder(&samplerKey, sampler_rsrc_type(), kNumInts,
+                                         Shareable::kYes);
+
+    builder[0] = data[0];
+    builder[1] = data[1];
+    builder[2] = data[2];
+    builder[3] = data[3];
+
     builder.finish();
     return samplerKey;
 }
@@ -1489,7 +1518,7 @@ void VulkanCaps::buildKeyForTexture(SkISize dimensions,
 
     if (ycbcrInfo.isValid()) {
         // TODO: Verify whether this needs to be bitshifted to match creation
-        builder[5] = ycbcrInfo.asUInt16();
+        builder[5] = ycbcrInfo.nonFormatInfoAsUInt8();
 
         SkASSERT(ycbcrInfo.fFormat != VK_FORMAT_UNDEFINED || ycbcrInfo.fExternalFormat != 0);
         bool useExternalFormat = (ycbcrInfo.fFormat == VK_FORMAT_UNDEFINED &&
@@ -1518,7 +1547,8 @@ SamplerConversionInfo VulkanCaps::getSamplerConversionInfo(sk_sp<TextureProxy> p
                 conversionInfo.fFormat = ycbcrConversionInfo.fFormat;
             }
 
-            conversionInfo.fYcbcrConversionInfo = ycbcrConversionInfo.asUInt16();
+            conversionInfo.fNonFormatYcbcrConversionInfo =
+                    ycbcrConversionInfo.nonFormatInfoAsUInt8();
             conversionInfo.fFormatFeatures = ycbcrConversionInfo.fFormatFeatures;
 
             return conversionInfo;
