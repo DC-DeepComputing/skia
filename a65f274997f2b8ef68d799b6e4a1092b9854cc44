@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "26553da7_40e82600",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-03T14:27:51Z",
+      "side": 1,
+      "message": "Before this change landed, `Test-Debian10-Clang-GCE-CPU-AVX2-x86_64-Debug-All-NativeFonts` had random apparently non-deterministic failures of a similar nature, but now that this has landed we\u0027re seeing more of them. Oddly, Test-CPU-ASAN doesn\u0027t seem to pick up anything and the Test-CPU-MSAN task is running these tests but not reporting anything (and hasn\u0027t had these failures). It appears we don\u0027t have any Test-CPU-TSAN tasks currently (only GPU) so need to see if this is something TSAN might catch.",
+      "revId": "a65f274997f2b8ef68d799b6e4a1092b9854cc44",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
