@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d7529020_cfd6d978",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-03T21:04:01Z",
+      "side": 1,
+      "message": "Alas, even after fetching ninja it appears we\u0027re still getting the depot_tools ninja. Part of the issue is this ninja is being called bare directly as a cmake action generated directly out of the script. We could modify things so that the ninja used here can be specified.",
+      "revId": "752c8219b05932011a98d2d46785c701007b264d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
