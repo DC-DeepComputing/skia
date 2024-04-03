@@ -23,6 +23,7 @@
 #include "src/gpu/graphite/mtl/MtlSharedContext.h"
 #include "src/gpu/graphite/mtl/MtlTexture.h"
 #include "src/gpu/mtl/MtlUtilsPriv.h"
+#include "tools/AutoreleasePool.h"
 
 namespace skgpu::graphite {
 
@@ -59,6 +60,10 @@ bool MtlCommandBuffer::setNewCommandBufferResources() {
 
 bool MtlCommandBuffer::createNewMTLCommandBuffer() {
     SkASSERT(fCommandBuffer == nil);
+
+    // Inserting a pool here so the autorelease occurs when we return and the
+    // only remaining ref is the retain below.
+    AutoreleasePool pool;
     if (@available(macOS 11.0, iOS 14.0, tvOS 14.0, *)) {
         sk_cfp<MTLCommandBufferDescriptor*> desc([[MTLCommandBufferDescriptor alloc] init]);
         (*desc).retainedReferences = NO;

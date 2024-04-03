@@ -35,8 +35,8 @@ void CommandBuffer::releaseResources() {
 void CommandBuffer::resetCommandBuffer() {
     TRACE_EVENT0("skia.gpu", TRACE_FUNC);
 
-    this->releaseResources();
     this->onResetCommandBuffer();
+    this->releaseResources();
     fBuffersToAsyncMap.clear();
 }
 

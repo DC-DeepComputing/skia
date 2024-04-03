@@ -11,6 +11,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/ports/SkCFObject.h"
 #include "src/gpu/graphite/Resource.h"
+#include "tools/AutoreleasePool.h"
 
 #import <Metal/Metal.h>
 
@@ -24,6 +25,9 @@ public:
     static sk_sp<MtlRenderCommandEncoder> Make(const SharedContext* sharedContext,
                                                id<MTLCommandBuffer> commandBuffer,
                                                MTLRenderPassDescriptor* descriptor) {
+        // Inserting a pool here so the autorelease occurs when we return and the
+        // only remaining ref is the retain below.
+        AutoreleasePool pool;
         // Adding a retain here to keep our own ref separate from the autorelease pool
         sk_cfp<id<MTLRenderCommandEncoder>> encoder =
                  sk_ret_cfp([commandBuffer renderCommandEncoderWithDescriptor:descriptor]);
