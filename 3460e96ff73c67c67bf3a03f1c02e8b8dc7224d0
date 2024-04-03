@@ -16,6 +16,24 @@
       "message": "I think this message refers to the follow-on CL, not this one.",
       "revId": "3460e96ff73c67c67bf3a03f1c02e8b8dc7224d0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b6e6721d_4fde1cea",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 3375938
+      },
+      "writtenOn": "2024-04-03T16:44:07Z",
+      "side": 1,
+      "message": "Hmm... not sure how this got garbled. Should be fixed now.",
+      "parentUuid": "166e06ac_797088d6",
+      "revId": "3460e96ff73c67c67bf3a03f1c02e8b8dc7224d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
