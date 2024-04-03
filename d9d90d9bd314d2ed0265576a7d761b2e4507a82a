@@ -16,6 +16,24 @@
       "message": "This CL is now happy; the bots were angry first from issues around device registering/unregistering that is handled by https://skia-review.googlesource.com/c/skia/+/834877. That CL also had some job failures that propagated into this CL, but other than rebasing a lot, this CL hasn\u0027t needed changes.",
       "revId": "d9d90d9bd314d2ed0265576a7d761b2e4507a82a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8aa318f_a41e9ff8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-03T12:37:34Z",
+      "side": 1,
+      "message": "The red vello jobs failed with the same reason as the failures on ToT",
+      "parentUuid": "85716d1f_e3b540af",
+      "revId": "d9d90d9bd314d2ed0265576a7d761b2e4507a82a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
