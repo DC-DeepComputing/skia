@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "efffa26a_5bea018a",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 4
+      },
+      "lineNbr": 464,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-03T21:00:12Z",
+      "side": 1,
+      "message": "Seems strange to give this a name, since it seems this bit and the trailing `;` can be removed and this works anyway.",
+      "range": {
+        "startLine": 464,
+        "startChar": 12,
+        "endLine": 464,
+        "endChar": 33
+      },
+      "revId": "89ebc997e5dce8287be5afba04088e7ade2e2342",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb6c27f7_c1953e7b",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 4
+      },
+      "lineNbr": 468,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-03T21:00:12Z",
+      "side": 1,
+      "message": "It\u0027s so awkward to work around the lack of `bool::and_then` right here. It it existed this would be more like\n\n```\nt.fs_selection().contains(SelectionFlags::WWS).not().and_then(\n    english_or_first_font_name(font_ref, StringId::WWS_FAMILY_NAME))\n```\n\nwith the issue being that `bool::then` takes an `F: FnOnce() -\u003e T` and isn\u0027t `F: FnOnce() -\u003e Option\u003cT\u003e`, more like `Option::and_then`. That\u0027s what I really wanted to write the first time around.",
+      "revId": "89ebc997e5dce8287be5afba04088e7ade2e2342",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
