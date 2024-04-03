@@ -31,6 +31,10 @@ namespace PrecompileColorFiltersPriv {
             SkSpan<const sk_sp<PrecompileColorFilter>> childOptions);
 } // namespace PrecompileColorFiltersPriv
 
+sk_sp<PrecompileColorFilter> MakePrecompileColorFilterPriv(
+        sk_sp<SkRuntimeEffect> effect,
+        SkSpan<const SkSpan<const sk_sp<PrecompileColorFilter>>> childOptions = {});
+
 } // namespace skgpu::graphite
 
 #endif // skgpu_graphite_FactoryFunctionsPriv_DEFINED

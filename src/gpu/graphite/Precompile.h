@@ -11,6 +11,7 @@
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSpan.h"
+#include "include/effects/SkRuntimeEffect.h"
 
 #include <functional>
 #include <optional>
@@ -84,7 +85,6 @@ private:
 };
 
 //--------------------------------------------------------------------------------------------------
-
 template<typename T>
 std::pair<sk_sp<T>, int> PrecompileBase::SelectOption(const std::vector<sk_sp<T>>& options,
                                                       int desiredOption) {

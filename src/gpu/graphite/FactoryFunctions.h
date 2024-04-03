@@ -146,9 +146,10 @@ namespace PrecompileColorFilters {
     // This encompasses both variants of SkColorFilters::HSLAMatrix
     SK_API sk_sp<PrecompileColorFilter> HSLAMatrix();
 
-    // TODO: add Lerp
     SK_API sk_sp<PrecompileColorFilter> LinearToSRGBGamma();
     SK_API sk_sp<PrecompileColorFilter> SRGBToLinearGamma();
+    SK_API sk_sp<PrecompileColorFilter> Lerp(SkSpan<const sk_sp<PrecompileColorFilter>> dst,
+                                             SkSpan<const sk_sp<PrecompileColorFilter>> src);
 
     // This encompases both variants of SkColorFilters::Table and TableARGB
     SK_API sk_sp<PrecompileColorFilter> Table();

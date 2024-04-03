@@ -1034,6 +1034,22 @@ sk_sp<PrecompileColorFilter> PrecompileColorFilters::HSLAMatrix() {
 }
 
 //--------------------------------------------------------------------------------------------------
+sk_sp<PrecompileColorFilter> PrecompileColorFilters::Lerp(
+        SkSpan<const sk_sp<PrecompileColorFilter>> dstOptions,
+        SkSpan<const sk_sp<PrecompileColorFilter>> srcOptions) {
+
+    if (dstOptions.empty() && srcOptions.empty()) {
+        return nullptr;
+    }
+
+    const SkRuntimeEffect* lerpEffect =
+            GetKnownRuntimeEffect(SkKnownRuntimeEffects::StableKey::kLerp);
+
+    SkSpan<const sk_sp<PrecompileColorFilter>> inputs[] =  { dstOptions, srcOptions };
+    return MakePrecompileColorFilterPriv(sk_ref_sp(lerpEffect), inputs);
+}
+
+//--------------------------------------------------------------------------------------------------
 class PrecompileTableColorFilter : public PrecompileColorFilter {
     void addToKey(const KeyContext& keyContext,
                   PaintParamsKeyBuilder* builder,
@@ -1255,6 +1271,15 @@ public:
         }
     }
 
+    PrecompileRTEffect(sk_sp<SkRuntimeEffect> effect,
+                       SkSpan<const SkSpan<const sk_sp<PrecompileColorFilter>>> childOptions)
+            : fEffect(std::move(effect)) {
+        fChildOptions.reserve(childOptions.size());
+        for (const SkSpan<const sk_sp<PrecompileColorFilter>> c : childOptions) {
+            fChildOptions.push_back({ c.begin(), c.end() });
+        }
+    }
+
 private:
     int numChildCombinations() const override {
         int numOptions = 0;
@@ -1307,6 +1332,15 @@ sk_sp<PrecompileShader> MakePrecompileShader(
 sk_sp<PrecompileColorFilter> MakePrecompileColorFilter(
         sk_sp<SkRuntimeEffect> effect,
         SkSpan<const PrecompileChildOptions> childOptions) {
+    // TODO: check that 'effect' has the kAllowColorFilter_Flag bit set and:
+    //  for each entry in childOptions:
+    //    all the SkPrecompileChildPtrs have the same type as the corresponding child in the effect
+    return sk_make_sp<PrecompileRTEffect<PrecompileColorFilter>>(std::move(effect), childOptions);
+}
+
+sk_sp<PrecompileColorFilter> MakePrecompileColorFilterPriv(
+        sk_sp<SkRuntimeEffect> effect,
+        SkSpan<const SkSpan<const sk_sp<PrecompileColorFilter>>> childOptions) {
     // TODO: check that 'effect' has the kAllowColorFilter_Flag bit set and:
     //  for each entry in childOptions:
     //    all the SkPrecompileChildPtrs have the same type as the corresponding child in the effect
