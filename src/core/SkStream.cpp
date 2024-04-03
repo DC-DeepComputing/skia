@@ -342,10 +342,12 @@ void SkMemoryStream::skipToAlign4() {
 size_t SkMemoryStream::read(void* buffer, size_t size) {
     size_t dataSize = fData->size();
 
-    if (size > dataSize - fOffset) {
+    if (fOffset >= dataSize) {
+        size = 0;
+    } else if (size > dataSize - fOffset) {
         size = dataSize - fOffset;
     }
-    if (buffer) {
+    if (buffer && size > 0) {
         memcpy(buffer, fData->bytes() + fOffset, size);
     }
     fOffset += size;
