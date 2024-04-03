@@ -34,6 +34,24 @@
       "parentUuid": "bf8cf2c6_5461e749",
       "revId": "4f00756672068c82bd2ffceaaf096d21e2d96a02",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c7ab391_0efe3927",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-03T01:17:22Z",
+      "side": 1,
+      "message": "Turns out the proposed fix at https://github.com/pypa/virtualenv/pull/2613/files never landed, upstream still has this issue.",
+      "parentUuid": "92c4a431_65c9cccd",
+      "revId": "4f00756672068c82bd2ffceaaf096d21e2d96a02",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
