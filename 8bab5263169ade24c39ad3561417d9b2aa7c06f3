@@ -262,6 +262,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d8d29edd_1e72edc9",
+        "filename": "src/gpu/ganesh/gl/GrGLCaps.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 405,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-04-03T15:28:49Z",
+      "side": 1,
+      "message": "Sorry what is the answer here? Is the version check value for both GR_IS_GR_GL(standard) and GR_IS_GR_WEBGL(standard)? Or should it only be checked for WEBGL? Is it always value for OpenGL on all versions?",
+      "parentUuid": "dfe99935_3b04dda3",
+      "range": {
+        "startLine": 405,
+        "startChar": 46,
+        "endLine": 405,
+        "endChar": 62
+      },
+      "revId": "8bab5263169ade24c39ad3561417d9b2aa7c06f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "feab30f9_c49ca00d",
         "filename": "src/gpu/ganesh/gl/GrGLCaps.cpp",
         "patchSetId": 4

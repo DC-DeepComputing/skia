@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d47a3f66_e02899ee",
+        "filename": "tests/TransferPixelsTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 478,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-04-03T15:28:49Z",
+      "side": 1,
+      "message": "nit: over 100 chars, break up the line at each `,`",
+      "range": {
+        "startLine": 478,
+        "startChar": 100,
+        "endLine": 478,
+        "endChar": 108
+      },
+      "revId": "c97f3b0787e67bc37fa2fc8a4a26d9ac256e4a7c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
