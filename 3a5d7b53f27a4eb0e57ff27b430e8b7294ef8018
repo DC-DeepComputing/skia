@@ -16,6 +16,24 @@
       "message": "At Patchset 5 this doesn\u0027t appear to be working as expected. What you want to do is go be on a Mac and go to to SBIXSlide.cpp and do\n```\n    void load(SkScalar w, SkScalar h) override {\n        fFontMgr.emplace_back(ToolUtils::TestFontMgr()); //Or just the CT one directly\n        fFontMgr.emplace_back(SkFontMgr_New_Custom_Empty());\n        fFontMgr.emplace_back(SkFontMgr_New_Fontations_Empty());\n```\nand add the needed fontations #include and build `viewer` with FreeType and Fontations and go to the `SBIX` slide and play around with the points. The only ones that should really matter are the black point\u0027s y (the bbox y-min) and the green point\u0027s x (the lsb). You will notice that CoreText appears to apply the x-min value to the wrong side of the bounding box and in the wrong direction (this is probably just a bug, so I haven\u0027t attempted to replicate it with FreeType or DirectWrite). The actual contour point (blue point) isn\u0027t actually used.\n\nThe OpenType specification makes sense, but it has no correlation to what CoreText actually does.",
       "revId": "3a5d7b53f27a4eb0e57ff27b430e8b7294ef8018",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb5e075c_47cdb9ea",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-04-03T15:28:00Z",
+      "side": 1,
+      "message": "That should work now, as much as I can tell. PTAL.",
+      "parentUuid": "3d49772e_ae51a30c",
+      "revId": "3a5d7b53f27a4eb0e57ff27b430e8b7294ef8018",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
