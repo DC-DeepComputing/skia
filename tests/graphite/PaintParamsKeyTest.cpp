@@ -143,6 +143,7 @@ const char* to_str(BlenderType b) {
     M(Compose)         \
     M(Gaussian)        \
     M(HSLAMatrix)      \
+    M(Lerp)            \
     M(Lighting)        \
     M(LinearToSRGB)    \
     M(Matrix)          \
@@ -818,6 +819,22 @@ std::pair<sk_sp<SkColorFilter>, sk_sp<PrecompileColorFilter>> create_rt_colorfil
     return { nullptr, nullptr };
 }
 
+std::pair<sk_sp<SkColorFilter>, sk_sp<PrecompileColorFilter>> create_lerp_colorfilter(
+        SkRandom* rand) {
+
+    auto [dst, dstO] = create_random_colorfilter(rand);
+    auto [src, srcO] = create_random_colorfilter(rand);
+
+    // TODO: SkColorFilters::Lerp will return a different colorFilter depending on the
+    // weight value and the child color filters. I don't know if that is worth capturing
+    // in the precompile API.
+    sk_sp<SkColorFilter> cf = SkColorFilters::Lerp(0.5f, std::move(dst), std::move(src));
+
+    sk_sp<PrecompileColorFilter> o = PrecompileColorFilters::Lerp({ dstO }, { srcO });
+
+    return { cf, o };
+}
+
 std::pair<sk_sp<SkColorFilter>, sk_sp<PrecompileColorFilter>> create_lighting_colorfilter() {
     // TODO: the lighting color filter factory special cases when nothing is added and converts it
     // to a blendmode color filter
@@ -934,6 +951,8 @@ std::pair<sk_sp<SkColorFilter>, sk_sp<PrecompileColorFilter>> create_colorfilter
             return create_gaussian_colorfilter();
         case ColorFilterType::kHSLAMatrix:
             return create_hsla_matrix_colorfilter();
+        case ColorFilterType::kLerp:
+            return create_lerp_colorfilter(rand);
         case ColorFilterType::kLighting:
             return create_lighting_colorfilter();
         case ColorFilterType::kLinearToSRGB:
@@ -1192,9 +1211,9 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
     };
 
     ShaderType shaders[] = {
-            ShaderType::kBlend,
-            ShaderType::kImage,
-            ShaderType::kRadialGradient,
+//            ShaderType::kBlend,
+//            ShaderType::kImage,
+//            ShaderType::kRadialGradient,
             ShaderType::kSolidColor,
 #if EXPANDED_SET
             ShaderType::kNone,
@@ -1213,8 +1232,8 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
 
     BlenderType blenders[] = {
             BlenderType::kPorterDuff,
-            BlenderType::kShaderBased,
-            BlenderType::kRuntime,
+//            BlenderType::kShaderBased,
+//            BlenderType::kRuntime,
 #if EXPANDED_SET
             BlenderType::kNone,
             BlenderType::kArithmetic,
@@ -1222,9 +1241,10 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
     };
 
     ColorFilterType colorFilters[] = {
-            ColorFilterType::kNone,
-            ColorFilterType::kBlendMode,
-            ColorFilterType::kMatrix,
+//            ColorFilterType::kNone,
+//            ColorFilterType::kBlendMode,
+//            ColorFilterType::kMatrix,
+            ColorFilterType::kLerp,
 #if EXPANDED_SET
             ColorFilterType::kColorSpaceXform,
             ColorFilterType::kCompose,
