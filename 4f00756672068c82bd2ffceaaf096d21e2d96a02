@@ -16,6 +16,24 @@
       "message": "Rolling vpython at https://skia-review.googlesource.com/c/buildbot/+/835302 .",
       "revId": "4f00756672068c82bd2ffceaaf096d21e2d96a02",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "92c4a431_65c9cccd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-03T00:19:16Z",
+      "side": 1,
+      "message": "And now we get `virtualenv-20.25.1` as expected after all the rolls... and we get the same error.",
+      "parentUuid": "bf8cf2c6_5461e749",
+      "revId": "4f00756672068c82bd2ffceaaf096d21e2d96a02",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
