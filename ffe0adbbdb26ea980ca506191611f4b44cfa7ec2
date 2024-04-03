@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a6a1b11_758df01a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-04-03T18:37:39Z",
+      "side": 1,
+      "message": "Swapping releaseResources() and onResetCommandBuffer() in resetCommandBuffer() doesn\u0027t seem to make a difference here. There must be some other race condition\ngoing on.",
+      "revId": "ffe0adbbdb26ea980ca506191611f4b44cfa7ec2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
