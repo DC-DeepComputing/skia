@@ -308,6 +308,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a1bd739_05237f31",
+        "filename": "src/gpu/ganesh/gl/GrGLCaps.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 405,
+      "author": {
+        "id": 3371831
+      },
+      "writtenOn": "2024-04-03T16:44:05Z",
+      "side": 1,
+      "message": "I decide to change it no version check for OpenGL.",
+      "parentUuid": "32fb4e0e_55d9ddb0",
+      "range": {
+        "startLine": 405,
+        "startChar": 46,
+        "endLine": 405,
+        "endChar": 62
+      },
+      "revId": "8bab5263169ade24c39ad3561417d9b2aa7c06f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "feab30f9_c49ca00d",
