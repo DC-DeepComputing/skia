@@ -443,6 +443,12 @@ DrawPass::DrawPass(sk_sp<TextureProxy> target,
 
 DrawPass::~DrawPass() = default;
 
+#ifdef SK_DEBUG
+    void dump(ShaderCodeDictionary* dict, UniquePaintParamsID id) {
+        dict->lookup(id).dump(dict);
+    }
+#endif
+
 std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
                                          std::unique_ptr<DrawList> draws,
                                          sk_sp<TextureProxy> target,
@@ -541,6 +547,9 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
                                      curDst,
                                      dstOffset,
                                      targetInfo.colorInfo());
+
+            SkDebugf("In DrawPass.cpp: ");
+            dump(dict, shaderID);
         } // else depth-only
 
         for (int stepIndex = 0; stepIndex < draw.fRenderer->numRenderSteps(); ++stepIndex) {

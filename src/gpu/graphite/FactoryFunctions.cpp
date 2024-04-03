@@ -839,6 +839,15 @@ sk_sp<PrecompileShader> PrecompileShadersPriv::CTM(SkSpan<const sk_sp<Precompile
 }
 
 //--------------------------------------------------------------------------------------------------
+
+sk_sp<PrecompileShader> PrecompileShadersPriv::Blur1D4() {
+    const SkRuntimeEffect* blurXEffect =
+            GetKnownRuntimeEffect(SkKnownRuntimeEffects::StableKey::k1DBlur4);
+
+    return MakePrecompileShader(sk_ref_sp(blurXEffect));
+}
+
+//--------------------------------------------------------------------------------------------------
 class PrecompileBlurMaskFilter : public PrecompileMaskFilter {
 public:
     PrecompileBlurMaskFilter() {}
