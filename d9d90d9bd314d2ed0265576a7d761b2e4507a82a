@@ -34,6 +34,24 @@
       "parentUuid": "85716d1f_e3b540af",
       "revId": "d9d90d9bd314d2ed0265576a7d761b2e4507a82a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e82616ac_9786e9b5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-04-03T16:34:35Z",
+      "side": 1,
+      "message": "The offending change was reverted. I re-ran them, they should go green again unless something else goes wrong.",
+      "parentUuid": "a8aa318f_a41e9ff8",
+      "revId": "d9d90d9bd314d2ed0265576a7d761b2e4507a82a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
