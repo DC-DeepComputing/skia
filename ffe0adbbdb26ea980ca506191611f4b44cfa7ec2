@@ -16,6 +16,23 @@
       "message": "Swapping releaseResources() and onResetCommandBuffer() in resetCommandBuffer() doesn\u0027t seem to make a difference here. There must be some other race condition\ngoing on.",
       "revId": "ffe0adbbdb26ea980ca506191611f4b44cfa7ec2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d349b870_16ce3a03",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-04-03T20:01:27Z",
+      "side": 1,
+      "message": "It looks like `AutoreleasePool` needs to move outside of `tools`.",
+      "revId": "ffe0adbbdb26ea980ca506191611f4b44cfa7ec2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
