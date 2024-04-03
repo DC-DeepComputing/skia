@@ -16,6 +16,24 @@
       "message": "How many more of these are we expecting? I like MSAN, but we\u0027re now moving well past zero cost.",
       "revId": "b3482fd031be09cfccf74dacb7d5bc1856047c07",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb6e6ce1_045ea2a4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3375938
+      },
+      "writtenOn": "2024-04-03T16:58:27Z",
+      "side": 1,
+      "message": "In Skia? None that I\u0027ve found.\n\nIt\u0027s true that this isn\u0027t zero cost. But I think there\u0027s two important things to note here:\n1. The C++ language specification specifically calls passing uninitialized values as function arguments UB. We should try to avoid UB :)\n2. We\u0027re already paying the cost. We use `-ftrivial-auto-var-init\u003dpattern` in non-sanitizer builds (e.g. builds that ship to users), so the compiler already initializes it (Vec is trivially constructible without this CL). This just makes it explicit.",
+      "parentUuid": "e7ecb6f8_949112af",
+      "revId": "b3482fd031be09cfccf74dacb7d5bc1856047c07",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
