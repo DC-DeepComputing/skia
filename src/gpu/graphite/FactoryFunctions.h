@@ -146,9 +146,10 @@ namespace PrecompileColorFilters {
     // This encompasses both variants of SkColorFilters::HSLAMatrix
     SK_API sk_sp<PrecompileColorFilter> HSLAMatrix();
 
-    // TODO: add Lerp
     SK_API sk_sp<PrecompileColorFilter> LinearToSRGBGamma();
     SK_API sk_sp<PrecompileColorFilter> SRGBToLinearGamma();
+    SK_API sk_sp<PrecompileColorFilter> Lerp(SkSpan<const sk_sp<PrecompileColorFilter>> dst,
+                                             SkSpan<const sk_sp<PrecompileColorFilter>> src);
 
     // This encompases both variants of SkColorFilters::Table and TableARGB
     SK_API sk_sp<PrecompileColorFilter> Table();
@@ -181,7 +182,7 @@ class PrecompileChildPtr {
 public:
     PrecompileChildPtr() = default;
     PrecompileChildPtr(sk_sp<PrecompileShader>);
-    PrecompileChildPtr(sk_sp<PrecompileColorFilter>);
+    PrecompileChildPtr(const sk_sp<PrecompileColorFilter>);
     PrecompileChildPtr(sk_sp<PrecompileBlender>);
 
     // Asserts that the SkPrecompileBase is either null, or one of the legal derived types
@@ -198,7 +199,7 @@ private:
     sk_sp<PrecompileBase> fChild;
 };
 
-using PrecompileChildOptions = SkSpan<const PrecompileChildPtr>;
+using PrecompileChildOptions = SkSpan<const sk_sp<PrecompileBase>>;
 
 // TODO: the precompile RuntimeEffects are handling their child options different from the
 // rest of the precompile system!

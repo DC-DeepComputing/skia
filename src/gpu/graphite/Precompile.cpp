@@ -20,6 +20,21 @@
 
 namespace skgpu::graphite {
 
+std::optional<SkRuntimeEffect::ChildType> PrecompileBase::type() const {
+    switch (fType) {
+        case PrecompileBase::Type::kShader:
+            return SkRuntimeEffect::ChildType::kShader;
+        case PrecompileBase::Type::kColorFilter:
+            return SkRuntimeEffect::ChildType::kColorFilter;
+        case PrecompileBase::Type::kBlender:
+            return SkRuntimeEffect::ChildType::kBlender;
+        default:
+            SkASSERT(0);
+            break;
+    }
+    return std::nullopt;
+}
+
 //--------------------------------------------------------------------------------------------------
 sk_sp<PrecompileShader> PrecompileShader::makeWithLocalMatrix() {
     if (this->priv().isALocalMatrixShader()) {
