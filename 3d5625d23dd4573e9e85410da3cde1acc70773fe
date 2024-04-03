@@ -34,6 +34,24 @@
       "parentUuid": "5f5e1a43_543fa929",
       "revId": "3d5625d23dd4573e9e85410da3cde1acc70773fe",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a4d9c0ec_f9694e73",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-04-03T17:39:37Z",
+      "side": 1,
+      "message": "Building with GCC locally should repro this. Assuming you have a recent GCC installed, you can just switch your GN args so that `cc\u003dgcc` and `cxx\u003dg++`",
+      "parentUuid": "b0bc083c_6eda9232",
+      "revId": "3d5625d23dd4573e9e85410da3cde1acc70773fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
