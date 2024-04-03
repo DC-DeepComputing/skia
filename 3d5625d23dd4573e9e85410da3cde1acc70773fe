@@ -52,6 +52,24 @@
       "parentUuid": "b0bc083c_6eda9232",
       "revId": "3d5625d23dd4573e9e85410da3cde1acc70773fe",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "23774325_b1096a59",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-04-03T17:42:01Z",
+      "side": 1,
+      "message": "https://skia-review.googlesource.com/c/skia/+/836021 adds one of those GCC jobs to the Skia CQ.",
+      "parentUuid": "a4d9c0ec_f9694e73",
+      "revId": "3d5625d23dd4573e9e85410da3cde1acc70773fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
