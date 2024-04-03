@@ -16,6 +16,29 @@
       "message": "PTAL",
       "revId": "cf1692f1a974c3b66d22479cbe607f12c1806508",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d771b736_376f9e0d",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1538,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-03T15:54:49Z",
+      "side": 1,
+      "message": "Is the plan to add readswizzle to this type so that we can update regular image shaders to be composed in this same way?",
+      "range": {
+        "startLine": 1538,
+        "startChar": 30,
+        "endLine": 1538,
+        "endChar": 53
+      },
+      "revId": "cf1692f1a974c3b66d22479cbe607f12c1806508",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
