@@ -1042,6 +1042,34 @@ sk_sp<PrecompileColorFilter> PrecompileColorFilters::HSLAMatrix() {
 }
 
 //--------------------------------------------------------------------------------------------------
+sk_sp<PrecompileColorFilter> PrecompileColorFilters::Lerp(
+        SkSpan<const sk_sp<PrecompileColorFilter>> dstOptions,
+        SkSpan<const sk_sp<PrecompileColorFilter>> srcOptions) {
+
+    if (dstOptions.empty() && srcOptions.empty()) {
+        return nullptr;
+    }
+
+    const SkRuntimeEffect* lerpEffect =
+            GetKnownRuntimeEffect(SkKnownRuntimeEffects::StableKey::kLerp);
+
+    // Since the RuntimeEffect Precompile objects behave differently we have to manually create
+    // all the combinations here (b/332690425).
+    std::vector<std::array<PrecompileChildPtr, 2>> combos;
+    for (const sk_sp<PrecompileColorFilter>& d : dstOptions) {
+        for (const sk_sp<PrecompileColorFilter>& s : srcOptions) {
+            combos.push_back({ d, s });
+        }
+    }
+    std::vector<const PrecompileChildOptions> comboSpans;
+    for (const std::array<PrecompileChildPtr, 2>& combo : combos) {
+        comboSpans.push_back(combo);
+    }
+
+    return MakePrecompileColorFilter(sk_ref_sp(lerpEffect), comboSpans);
+}
+
+//--------------------------------------------------------------------------------------------------
 class PrecompileTableColorFilter : public PrecompileColorFilter {
     void addToKey(const KeyContext& keyContext,
                   PaintParamsKeyBuilder* builder,
@@ -1203,7 +1231,7 @@ void add_children_to_key(const KeyContext& keyContext,
                          SkSpan<const SkRuntimeEffect::Child> childInfo) {
     using ChildType = SkRuntimeEffect::ChildType;
 
-    SkASSERT(optionSet.size() == childInfo.size());
+    SkASSERTF(optionSet.size() == childInfo.size(), "%d %d\n", (int)optionSet.size(), (int)childInfo.size());
 
     KeyContextWithScope childContext(keyContext, KeyContext::Scope::kRuntimeEffect);
 
@@ -1261,6 +1289,18 @@ public:
         for (PrecompileChildOptions c : childOptions) {
             fChildOptions.push_back({ c.begin(), c.end() });
         }
+    }
+
+    PrecompileRTEffect(sk_sp<SkRuntimeEffect> effect,
+                       SkSpan<const SkSpan<const sk_sp<PrecompileColorFilter>>> childOptions)
+            : fEffect(std::move(effect)) {
+        fChildOptions.reserve(childOptions.size());
+        SkDebugf("foo %d\n", (int)childOptions.size());
+        for (const SkSpan<const sk_sp<PrecompileColorFilter>> c : childOptions) {
+            SkDebugf("adding %d\n", (int)c.size());
+            fChildOptions.push_back({ c.begin(), c.end() });
+        }
+        SkDebugf("end\n");
     }
 
 private:
