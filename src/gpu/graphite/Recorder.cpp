@@ -167,10 +167,10 @@ std::unique_ptr<Recording> Recorder::snap() {
         }
     });
 
-    // TODO: fulfill all promise images in the TextureDataCache here
-    // TODO: create all the samplers needed in the TextureDataCache here
-
-    if (!fRootTaskList->prepareResources(fResourceProvider.get(), fRuntimeEffectDict.get())) {
+    // In both the "task failed" case and the "everything is discarded" case, there's no work that
+    // can/should be bundled as a Recording.
+    if (fRootTaskList->prepareResources(fResourceProvider.get(),
+                                        fRuntimeEffectDict.get()) != Task::Status::kSuccess) {
         // Leaving 'fTrackedDevices' alone since they were flushed earlier and could still be
         // attached to extant SkSurfaces.
         fDrawBufferManager = std::make_unique<DrawBufferManager>(fResourceProvider.get(),
