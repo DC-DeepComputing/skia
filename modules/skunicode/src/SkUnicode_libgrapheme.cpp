@@ -160,6 +160,7 @@ public:
                       int utf8Units,
                       const char* locale,
                       std::vector<Position>* results) override {
+        /*
         // Let's consider sort line breaks, whitespaces and CJK codepoints instead
         std::vector<CodeUnitFlags> breaks(utf8Units + 1, CodeUnitFlags::kNoCodeUnitFlag);
 
@@ -201,17 +202,14 @@ public:
                 whitespaces = false;
             }
         }
-
-        return true;
-
-        /*
+        */
         size_t wordBreak = 0;
+        results->emplace_back(wordBreak);
         while (wordBreak < utf8Units) {
             wordBreak += grapheme_next_word_break_utf8(utf8 + wordBreak, utf8Units - wordBreak);
             results->emplace_back(wordBreak);
         }
         return true;
-        */
     }
 
     SkString toUpper(const SkString& str) override {
@@ -299,5 +297,8 @@ std::unique_ptr<SkBreakIterator> SkUnicode_libgrapheme::makeBreakIterator(BreakT
 namespace SkUnicodes::Libgrapheme {
 sk_sp<SkUnicode> Make() {
     return sk_make_sp<SkUnicode_libgrapheme>();
+}
+std::unique_ptr<SkUnicode> MakeUnique() {
+    return std::make_unique<SkUnicode_libgrapheme>();
 }
 }

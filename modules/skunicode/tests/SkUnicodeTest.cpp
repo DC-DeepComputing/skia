@@ -101,20 +101,20 @@ UNIX_ONLY_TEST(SkUnicode_Compiled_Native, reporter) {
 }
 #endif
 
-#if defined(SK_UNICODE_LIBGRAPHEME_IMPLEMENTATION)
-UNIX_ONLY_TEST(SkUnicode_GetUtf8Words, reporter) {
+DEF_TEST_UNICODES(SkUnicode_GetUtf8Words, reporter) {
+    if (!unicode) {
+        return;
+    }
     SkString text("1 22 333 4444 55555 666666 7777777");
     std::vector<SkUnicode::Position> expected = { 0, 1, 2, 4, 5, 8, 9, 13, 14, 19, 20, 26, 27, 34 };
-    auto libgrapheme = SkUnicodes::Libgrapheme::Make();
     std::vector<SkUnicode::Position> results;
-    auto result = libgrapheme->getUtf8Words(text.data(), text.size(), "en", &results);
+    auto result = unicode->getUtf8Words(text.data(), text.size(), "en", &results);
     REPORTER_ASSERT(reporter, result);
     REPORTER_ASSERT(reporter, results.size() == expected.size());
     for (auto i = 0ul; i < results.size(); ++i) {
         REPORTER_ASSERT(reporter, results[i] == expected[i]);
     }
 }
-#endif
 
 #if defined(SK_UNICODE_ICU_IMPLEMENTATION)
 UNIX_ONLY_TEST(SkUnicode_Compiled_GetSentences, reporter) {

@@ -560,6 +560,9 @@ public:
                       int utf8Units,
                       const char* locale,
                       std::vector<SkUnicode::Position>* results) override {
+        if (results == nullptr) {
+            return true;
+        }
         SkUnicode_icu::extractPositions(
                 utf8, utf8Units, BreakType::kSentences, nullptr,
                 [&](int pos, int status) {
@@ -694,6 +697,22 @@ sk_sp<SkUnicode> Make() {
 #endif
     if (SkGetICULib()) {
         return sk_make_sp<SkUnicode_icu>();
+    }
+    return nullptr;
+}
+
+std::unique_ptr<SkUnicode> MakeUnique() {
+    // We haven't yet created a way to encode the ICU data for assembly on Windows,
+    // so we use a helper library to load icudtl.dat from the harddrive.
+#if defined(SK_USING_THIRD_PARTY_ICU) && defined(SK_BUILD_FOR_WIN)
+    if (!SkLoadICU()) {
+        static SkOnce once;
+        once([] { SkDEBUGF("SkLoadICU() failed!\n"); });
+        return nullptr;
+    }
+#endif
+    if (SkGetICULib()) {
+        return std::make_unique<SkUnicode_icu>();
     }
     return nullptr;
 }

@@ -16,7 +16,7 @@ SOURCES = ../../../src/base/SkSemaphore.cpp \
 .FORCE:
 
 bridge: .FORCE
-	/usr/bin/clang++ -o ../../../out/Release/libbridge.a ../cpp/*.cpp $(SOURCES) -std=c++20 -fvisibility-inlines-hidden -O3 -Wall -Wextra -fPIC -shared -l:libskunicode.a -I../../.. -L../../../out/Release
+	/usr/bin/clang++ -o ../../../out/Release/libbridge.a ../cpp/*.cpp $(SOURCES) -std=c++17 -DSK_RELEASE -fvisibility-inlines-hidden -O3 -Wall -Wextra -fPIC -shared -l:libskunicode_core.a -l:libskunicode_icu.a -l:libskunicode_icu4x.a -l:libskunicode_libgrapheme.a -l:libicu4x_rust.a -I../../.. -L../../../out/Release
 
 extract_info: .FORCE bridge
 	go build -a -o ../../../out/Release/extract_info extract_info/main.go

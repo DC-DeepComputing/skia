@@ -13,6 +13,7 @@
 
 namespace SkUnicodes::ICU {
 SKUNICODE_API sk_sp<SkUnicode> Make();
+SKUNICODE_API std::unique_ptr<SkUnicode> MakeUnique();
 }
 
 #endif //SkUnicode_icu_DEFINED

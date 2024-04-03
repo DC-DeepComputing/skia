@@ -13,6 +13,7 @@ import (
 	"fmt"
 	"go.skia.org/skia/tools/unicode_comparison/go/helpers"
 	"html/template"
+	"math"
 	"os"
 	"path/filepath"
 	"sort"
@@ -44,11 +45,21 @@ func (r Ratio) Divide() string {
 		return fmt.Sprintf("%.6f", float64(r.Num)/float64(r.Total))
 	}
 }
-func (fr FloatRatio) Percents() string {
-	if fr.Top == fr.Bottom {
-		return "        "
+
+func nearlyEqual(a, b float64) bool {
+	tolerance := 0.001
+	if diff := math.Abs(a - b); diff < tolerance {
+		return true
 	} else {
-		return fmt.Sprintf("%.6f", (float64(fr.Top)/float64(fr.Bottom)-1)*100)
+		return false
+	}
+}
+
+func (fr FloatRatio) Percents() string {
+	if nearlyEqual(fr.Top, 0.0) {
+		return "0.00%"
+	} else {
+		return fmt.Sprintf("%.2f", (float64(fr.Top)/float64(fr.Bottom)-1)*100)
 	}
 }
 
@@ -336,123 +347,219 @@ func (r Row) Differences() int {
 		len(r.Delta.Data.Extra.Controls)
 }
 
-func (r Row) HasMissingGraphemes() bool {
-	return len(r.Delta.Data.Missing.Graphemes) > 0
+func (r Row) MissingGraphemesEnabled() string {
+	if len(r.Delta.Data.Missing.Graphemes) > 0 {
+		return "enabled"
+	} else {
+		return "disabled"
+	}
 }
 
-func (r Row) HasExtraGraphemes() bool {
-	return len(r.Delta.Data.Extra.Graphemes) > 0
+func (r Row) ExtraGraphemesEnabled() string {
+	if len(r.Delta.Data.Extra.Graphemes) > 0 {
+		return "enabled"
+	} else {
+		return "disabled"
+	}
 }
 
 func (r Row) HasNoGraphemes() bool {
-	return !r.HasMissingGraphemes() && !r.HasExtraGraphemes()
+	return len(r.Delta.Data.Extra.Graphemes)+len(r.Delta.Data.Missing.Graphemes) == 0
 }
 
-func (r Row) HasMissingSoftBreaks() bool {
-	return len(r.Delta.Data.Missing.SoftBreaks) > 0
+func (r Row) MissingSoftBreaksEnabled() string {
+	if len(r.Delta.Data.Missing.SoftBreaks) > 0 {
+		return "enabled"
+	} else {
+		return "disabled"
+	}
 }
 
-func (r Row) HasExtraSoftBreaks() bool {
-	return len(r.Delta.Data.Extra.SoftBreaks) > 0
+func (r Row) ExtraSoftBreaksEnabled() string {
+	if len(r.Delta.Data.Extra.SoftBreaks) > 0 {
+		return "enabled"
+	} else {
+		return "disabled"
+	}
 }
-
 func (r Row) HasNoSoftBreaks() bool {
-	return !r.HasMissingSoftBreaks() && !r.HasExtraSoftBreaks()
+	return len(r.Delta.Data.Extra.SoftBreaks)+len(r.Delta.Data.Missing.SoftBreaks) == 0
 }
 
-func (r Row) HasMissingHardBreaks() bool {
-	return len(r.Delta.Data.Missing.HardBreaks) > 0
+func (r Row) MissingHardBreaksEnabled() string {
+	if len(r.Delta.Data.Missing.HardBreaks) > 0 {
+		return "enabled"
+	} else {
+		return "disabled"
+	}
 }
 
-func (r Row) HasExtraHardBreaks() bool {
-	return len(r.Delta.Data.Extra.HardBreaks) > 0
+func (r Row) ExtraHardBreaksEnabled() string {
+	if len(r.Delta.Data.Extra.HardBreaks) > 0 {
+		return "enabled"
+	} else {
+		return "disabled"
+	}
 }
 
 func (r Row) HasNoHardBreaks() bool {
-	return !r.HasMissingHardBreaks() && !r.HasExtraHardBreaks()
+	return len(r.Delta.Data.Extra.HardBreaks)+len(r.Delta.Data.Missing.HardBreaks) == 0
 }
 
-func (r Row) HasMissingWhitespaces() bool {
-	return len(r.Delta.Data.Missing.Whitespaces) > 0
+func (r Row) MissingWhitespacesEnabled() string {
+	if len(r.Delta.Data.Missing.Whitespaces) > 0 {
+		return "enabled"
+	} else {
+		return "disabled"
+	}
 }
 
-func (r Row) HasExtraWhitespaces() bool {
-	return len(r.Delta.Data.Extra.Whitespaces) > 0
+func (r Row) ExtraWhitespacesEnabled() string {
+	if len(r.Delta.Data.Extra.Whitespaces) > 0 {
+		return "enabled"
+	} else {
+		return "disabled"
+	}
 }
 
 func (r Row) HasNoWhitespaces() bool {
-	return !r.HasMissingWhitespaces() && !r.HasExtraWhitespaces()
+	return len(r.Delta.Data.Extra.Whitespaces)+len(r.Delta.Data.Missing.Whitespaces) == 0
 }
 
-func (r Row) HasMissingWords() bool {
-	return len(r.Delta.Data.Missing.Words) > 0
+func (r Row) MissingWordsEnabled() string {
+	if len(r.Delta.Data.Missing.Words) > 0 {
+		return "enabled"
+	} else {
+		return "disabled"
+	}
 }
 
-func (r Row) HasExtraWords() bool {
-	return len(r.Delta.Data.Extra.Words) > 0
+func (r Row) ExtraWordsEnabled() string {
+	if len(r.Delta.Data.Extra.Words) > 0 {
+		return "enabled"
+	} else {
+		return "disabled"
+	}
 }
 
 func (r Row) HasNoWords() bool {
-	return !r.HasMissingWords() && !r.HasExtraWords()
+	return len(r.Delta.Data.Extra.Words)+len(r.Delta.Data.Missing.Words) == 0
 }
 
-func (r Row) HasMissingControls() bool {
-	return len(r.Delta.Data.Missing.Controls) > 0
+func (r Row) MissingControlsEnabled() string {
+	if len(r.Delta.Data.Missing.Controls) > 0 {
+		return "enabled"
+	} else {
+		return "disabled"
+	}
 }
 
-func (r Row) HasExtraControls() bool {
-	return len(r.Delta.Data.Extra.Controls) > 0
+func (r Row) ExtraControlsEnabled() string {
+	if len(r.Delta.Data.Extra.Controls) > 0 {
+		return "enabled"
+	} else {
+		return "disabled"
+	}
 }
+
 func (r Row) HasNoControls() bool {
-	return !r.HasMissingControls() && !r.HasExtraControls()
+	return len(r.Delta.Data.Extra.Controls)+len(r.Delta.Data.Missing.Controls) == 0
 }
 
-func (r Row) MissingGraphemeNum() int {
-	return len(r.Delta.Data.Missing.Graphemes) - 1
+func (r Row) MissingGraphemeNum() string {
+	if len(r.Delta.Data.Missing.Graphemes) > 1 {
+		return fmt.Sprintf("-%d", len(r.Delta.Data.Missing.Graphemes)-1)
+	} else {
+		return ""
+	}
 }
 
-func (r Row) ExtraGraphemeNum() int {
-	return len(r.Delta.Data.Extra.Graphemes) - 1
+func (r Row) ExtraGraphemeNum() string {
+	if len(r.Delta.Data.Extra.Graphemes) > 1 {
+		return fmt.Sprintf("+%d", len(r.Delta.Data.Extra.Graphemes)-1)
+	} else {
+		return ""
+	}
 }
 
-func (r Row) MissingSoftBreakNum() int {
-	return len(r.Delta.Data.Missing.SoftBreaks) - 1
+func (r Row) MissingSoftBreakNum() string {
+	if len(r.Delta.Data.Missing.SoftBreaks) > 1 {
+		return fmt.Sprintf("-%d", len(r.Delta.Data.Missing.SoftBreaks)-1)
+	} else {
+		return ""
+	}
 }
 
-func (r Row) ExtraSoftBreakNum() int {
-	return len(r.Delta.Data.Extra.SoftBreaks) - 1
+func (r Row) ExtraSoftBreakNum() string {
+	if len(r.Delta.Data.Extra.SoftBreaks) > 1 {
+		return fmt.Sprintf("+%d", len(r.Delta.Data.Extra.SoftBreaks)-1)
+	} else {
+		return ""
+	}
 }
 
-func (r Row) MissingHardBreakNum() int {
-	return len(r.Delta.Data.Missing.HardBreaks) - 1
+func (r Row) MissingHardBreakNum() string {
+	if len(r.Delta.Data.Missing.HardBreaks) > 1 {
+		return fmt.Sprintf("-%d", len(r.Delta.Data.Missing.HardBreaks)-1)
+	} else {
+		return ""
+	}
 }
 
-func (r Row) ExtraHardBreakNum() int {
-	return len(r.Delta.Data.Extra.HardBreaks) - 1
+func (r Row) ExtraHardBreakNum() string {
+	if len(r.Delta.Data.Extra.HardBreaks) > 1 {
+		return fmt.Sprintf("+%d", len(r.Delta.Data.Missing.HardBreaks)-1)
+	} else {
+		return ""
+	}
 }
 
-func (r Row) MissingWhitespaceNum() int {
-	return len(r.Delta.Data.Missing.Whitespaces) - 1
+func (r Row) MissingWhitespaceNum() string {
+	if len(r.Delta.Data.Missing.Whitespaces) > 1 {
+		return fmt.Sprintf("-%d", len(r.Delta.Data.Missing.Whitespaces)-1)
+	} else {
+		return ""
+	}
 }
 
-func (r Row) ExtraWhitespaceNum() int {
-	return len(r.Delta.Data.Extra.Whitespaces) - 1
+func (r Row) ExtraWhitespaceNum() string {
+	if len(r.Delta.Data.Extra.Whitespaces) > 1 {
+		return fmt.Sprintf("+%d", len(r.Delta.Data.Missing.Whitespaces)-1)
+	} else {
+		return ""
+	}
 }
 
-func (r Row) MissingWordNum() int {
-	return len(r.Delta.Data.Missing.Words) - 1
+func (r Row) MissingWordNum() string {
+	if len(r.Delta.Data.Missing.Words) > 1 {
+		return fmt.Sprintf("-%d", len(r.Delta.Data.Missing.Words)-1)
+	} else {
+		return ""
+	}
 }
 
-func (r Row) ExtraWordNum() int {
-	return len(r.Delta.Data.Extra.Words) - 1
+func (r Row) ExtraWordNum() string {
+	if len(r.Delta.Data.Extra.Words) > 1 {
+		return fmt.Sprintf("+%d", len(r.Delta.Data.Missing.Words)-1)
+	} else {
+		return ""
+	}
 }
 
-func (r Row) MissingControlNum() int {
-	return len(r.Delta.Data.Missing.Controls) - 1
+func (r Row) MissingControlNum() string {
+	if len(r.Delta.Data.Missing.Controls) > 1 {
+		return fmt.Sprintf("-%d", len(r.Delta.Data.Missing.Controls)-1)
+	} else {
+		return ""
+	}
 }
 
-func (r Row) ExtraControlNum() int {
-	return len(r.Delta.Data.Extra.Controls) - 1
+func (r Row) ExtraControlNum() string {
+	if len(r.Delta.Data.Extra.Controls) > 1 {
+		return fmt.Sprintf("+%d", len(r.Delta.Data.Missing.Controls)-1)
+	} else {
+		return ""
+	}
 }
 
 type WebPage struct {
