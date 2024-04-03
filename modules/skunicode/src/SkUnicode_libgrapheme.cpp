@@ -300,4 +300,7 @@ namespace SkUnicodes::Libgrapheme {
 sk_sp<SkUnicode> Make() {
     return sk_make_sp<SkUnicode_libgrapheme>();
 }
+std::unique_ptr<SkUnicode> MakeUnique() {
+    return std::make_unique<SkUnicode_libgrapheme>();
+}
 }

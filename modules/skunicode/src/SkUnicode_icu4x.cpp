@@ -415,4 +415,8 @@ namespace SkUnicodes::ICU4X {
 sk_sp<SkUnicode> Make() {
     return sk_make_sp<SkUnicode_icu4x>();
 }
+
+std::unique_ptr<SkUnicode> MakeUnique() {
+    return std::make_unique<SkUnicode_icu4x>();
+}
 }

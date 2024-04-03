@@ -14,6 +14,7 @@
 
 namespace SkUnicodes::Libgrapheme {
 SKUNICODE_API sk_sp<SkUnicode> Make();
+SKUNICODE_API std::unique_ptr<SkUnicode> MakeUnique();
 }
 
 #endif
