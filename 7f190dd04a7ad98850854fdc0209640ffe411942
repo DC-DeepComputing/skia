@@ -206,6 +206,30 @@
       },
       "revId": "7f190dd04a7ad98850854fdc0209640ffe411942",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c6d2311_7656a4a3",
+        "filename": "src/base/SkVx.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-04T20:19:15Z",
+      "side": 1,
+      "message": "From comments on the original thread, when skia is built in chrome, we\u0027re auto-initializing these anyways, so I wouldn\u0027t expect code size to change in an app like that. There have been no perf regressions in our system (which isn\u0027t probably auto-initializing), so I\u0027m okay with these increases.",
+      "parentUuid": "c242125f_9424cabf",
+      "range": {
+        "startLine": 215,
+        "startChar": 0,
+        "endLine": 215,
+        "endChar": 15
+      },
+      "revId": "7f190dd04a7ad98850854fdc0209640ffe411942",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
