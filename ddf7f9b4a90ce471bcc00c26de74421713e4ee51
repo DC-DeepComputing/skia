@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "84dfdc80_2396be00",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-04T03:37:55Z",
+      "side": 1,
+      "message": "I\u0027m still trying to figure out what\u0027s going on with the skparagraph random failures. There may actually be too many fonts loaded, but these tests can\u0027t really share the ResourceFontCollections because they\u0027re mutable. May need to set a limit of how many of these can run at once?",
+      "revId": "ddf7f9b4a90ce471bcc00c26de74421713e4ee51",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
