@@ -70,6 +70,30 @@
       },
       "revId": "10e05b3a3e80e6eb3e08918ee1d1cc0752048602",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2d81946_809e6d7e",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-04T23:45:13Z",
+      "side": 1,
+      "message": "When this happens it\u0027s the `NotoColorEmoji.ttf` from the `skparagraph` asset (extra_fonts) with glyph 3. Since this is the space glyph with the new fontations we notice that this would be an outline instead so go to get the path, but there is no path either (there isn\u0027t even a `glyf` table). It looks like this isn\u0027t reproducing on Linux because there `scalerMetrics.has_overlaps` seems to consistently start off with 0 (false) in it (so maybe Linux MSAN would be needed to catch this consistently). However, when this happens on both Linux and Mac `scalerMetrics.has_overlaps` is not written to (I set a watchpoint on it) even though `fontations_ffi::get_path` returns true, which it probably should not since there aren\u0027t any paths in this font at all.\n\nIt looks like `get_path` has changed quite a bit since it was first introduced, but if I replace the current version with the body\n\n```\n    outlines\n        .0\n        .as_ref()\n        .map(|outlines| -\u003e Option\u003cbool\u003e {\n            None\n        })\n        .is_some()\n```\nit still returns `true` (and obviously doesn\u0027t set anything). Doing a tautological\n```\n    let none: Option\u003cbool\u003e \u003d None;\n    none.is_some()\n```\ndoes return `false` so it\u0027s not an issue somewhere else. I must be overlooking something obvious.",
+      "parentUuid": "fed597c2_ebde2cfb",
+      "range": {
+        "startLine": 272,
+        "startChar": 12,
+        "endLine": 272,
+        "endChar": 38
+      },
+      "revId": "10e05b3a3e80e6eb3e08918ee1d1cc0752048602",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
