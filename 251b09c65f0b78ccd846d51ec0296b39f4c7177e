@@ -158,6 +158,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "09718d10_4bb69b62",
+        "filename": "src/core/SkStream.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 346,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-04T17:32:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0d89cd10_34bc23c0",
+      "revId": "251b09c65f0b78ccd846d51ec0296b39f4c7177e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "78c220c1_42d9fce4",
@@ -195,6 +213,30 @@
       "side": 1,
       "message": "+1, `sk_careful_memcpy` is the right choice.",
       "parentUuid": "78c220c1_42d9fce4",
+      "range": {
+        "startLine": 351,
+        "startChar": 8,
+        "endLine": 351,
+        "endChar": 14
+      },
+      "revId": "251b09c65f0b78ccd846d51ec0296b39f4c7177e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e4e430ab_44f8c1dd",
+        "filename": "src/core/SkStream.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 351,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-04T17:32:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "32754375_0c0d08cf",
       "range": {
         "startLine": 351,
         "startChar": 8,

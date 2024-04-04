@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6843f9fa_8bb1f767",
+        "filename": "src/core/SkStream.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 346,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-04T17:32:36Z",
+      "side": 1,
+      "message": "No need for this comment, this is in the documentation of [SkStream::read](https://skia.googlesource.com/skia.git/+/d58a6dbaaadbb87943ce3ecde00890541b1683cd/include/core/SkStream.h#39).",
+      "revId": "fb0e4739dd7f559e660a0790515652a16103fdc1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
