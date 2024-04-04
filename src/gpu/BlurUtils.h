@@ -14,6 +14,7 @@
 
 #include <array>
 
+class SkBitmap;
 class SkRuntimeEffect;
 struct SkV4;
 
@@ -139,6 +140,11 @@ void Compute2DBlurOffsets(SkISize radius, std::array<SkV4, kMaxBlurSamples/2>& o
 void Compute1DBlurLinearKernel(float sigma,
                                int radius,
                                std::array<SkV4, kMaxBlurSamples/2>& offsetsAndKernel);
+
+// Calculates the integral table for an analytic rectangle blur. The integral values are stored in
+// the red channel of the provided bitmap, which will be 1D with a 1-pixel height. Returns the
+// resulting bitmap width.
+int CreateIntegralTable(float sixSigma, SkBitmap* table);
 
 } // namespace skgpu
 

@@ -185,6 +185,11 @@ public:
     void drawCoverageMask(const SkSpecialImage*, const SkMatrix& localToDevice,
                           const SkSamplingOptions&, const SkPaint&) override;
 
+    bool drawRectBlurMaskFilter(const SkRect&, const SkPaint&) override;
+    // TODO(b/238762890) Support analytic blurring with these shapes.
+    // bool drawRRectBlurMaskFilter(const SkRRect&, const SkPaint&) override;
+    // bool drawCircleBlurMaskFilter(const SkRect&, const SkPaint&) override;
+
 private:
     class IntersectionTreeSet;
 
@@ -230,6 +235,14 @@ private:
                       SkEnumBitMask<DrawFlags> = DrawFlags::kNone,
                       sk_sp<SkBlender> primitiveBlender = nullptr,
                       bool skipColorXform = false);
+    void drawGeometry(const Transform&,
+                      const Geometry&,
+                      const SkPaint&,
+                      const SkStrokeRec&,
+                      const Renderer*,
+                      PathAtlas*,
+                      sk_sp<SkBlender> primitiveBlender,
+                      bool skipColorXform);
 
     // Like drawGeometry() but is Shape-only, depth-only, fill-only, and lets the ClipStack define
     // the transform, clip, and DrawOrder (although Device still tracks stencil buffer usage).
@@ -247,6 +260,8 @@ private:
                                                        const SkPaint& paint) override;
 
     void drawSlug(SkCanvas*, const sktext::gpu::Slug* slug, const SkPaint& paint) override;
+
+    bool drawBlurMaskFilter(const SkRRect& srcRRect, const Geometry&, const SkPaint&);
 
     // Returns the Renderer to draw the shape in the given style. If SkStrokeRec is a
     // stroke-and-fill, this returns the Renderer used for the fill portion and it can be assumed
