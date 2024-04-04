@@ -37,6 +37,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "37be7dc3_0564cc4e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-04-04T13:37:55Z",
+      "side": 1,
+      "message": "Please add a unit test which would fail in UBSAN without the additional check.",
+      "revId": "251b09c65f0b78ccd846d51ec0296b39f4c7177e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "585d28dd_9825c48a",
         "filename": "src/core/SkStream.cpp",
         "patchSetId": 1
@@ -89,6 +106,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "70486e28_28dcb95f",
+        "filename": "src/core/SkStream.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 346,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-04-04T13:37:55Z",
+      "side": 1,
+      "message": "We could convert the check to an `SkASSERT` to be safe.",
+      "parentUuid": "c54761dc_6f5a318c",
+      "revId": "251b09c65f0b78ccd846d51ec0296b39f4c7177e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "78c220c1_42d9fce4",
         "filename": "src/core/SkStream.cpp",
         "patchSetId": 1
@@ -100,6 +135,30 @@
       "writtenOn": "2024-04-04T12:50:13Z",
       "side": 1,
       "message": "Should call `sk_careful_memcpy` instead of the size check to make things more obvious.",
+      "range": {
+        "startLine": 351,
+        "startChar": 8,
+        "endLine": 351,
+        "endChar": 14
+      },
+      "revId": "251b09c65f0b78ccd846d51ec0296b39f4c7177e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32754375_0c0d08cf",
+        "filename": "src/core/SkStream.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 351,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-04-04T13:37:55Z",
+      "side": 1,
+      "message": "+1, `sk_careful_memcpy` is the right choice.",
+      "parentUuid": "78c220c1_42d9fce4",
       "range": {
         "startLine": 351,
         "startChar": 8,
