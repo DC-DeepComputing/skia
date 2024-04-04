@@ -46,6 +46,30 @@
       },
       "revId": "10e05b3a3e80e6eb3e08918ee1d1cc0752048602",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fed597c2_ebde2cfb",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-04T19:07:38Z",
+      "side": 1,
+      "message": "So on macOS I\u0027m building with ASAN, using `SkTypeface_Fontations::MakeFromStream` directly in `ResourceFontCollection` to make the fonts, and removed the `UNIX_ONLY` bits to run these tests. When `SkParagraph_EmojiParagraph` runs ASAN emits `runtime error: load of value 111, which is not a valid value for type \u0027bool\u0027` with various values for the value. Putting a watch on the location doesn\u0027t break, so I\u0027m assuming it isn\u0027t being set. In this case everything looks hermetic, so I\u0027m not sure why this isn\u0027t happening on Linux.",
+      "parentUuid": "7e80acf0_f634cc8a",
+      "range": {
+        "startLine": 272,
+        "startChar": 12,
+        "endLine": 272,
+        "endChar": 38
+      },
+      "revId": "10e05b3a3e80e6eb3e08918ee1d1cc0752048602",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
