@@ -52,6 +52,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "51a24cf2_41aa9064",
+        "filename": "src/gpu/graphite/geom/RectBlurData.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-04-04T15:34:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "02404808_e642d618",
+      "revId": "85bd4b0f1c5d546d54c2d33bb1dd682aab38e9b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2f0bd092_779a97ce",
@@ -65,6 +83,30 @@
       "writtenOn": "2024-04-04T15:17:59Z",
       "side": 1,
       "message": "up to you: It doesn\u0027t actually make any difference, but we support `rect.TLRB` as a synonym for `rect.xyzw` if you think it looks nicer.",
+      "range": {
+        "startLine": 1436,
+        "startChar": 34,
+        "endLine": 1436,
+        "endChar": 36
+      },
+      "revId": "85bd4b0f1c5d546d54c2d33bb1dd682aab38e9b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "794f7712_2d21185c",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 3
+      },
+      "lineNbr": 1436,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-04-04T15:34:18Z",
+      "side": 1,
+      "message": "I do, thank you!",
+      "parentUuid": "2f0bd092_779a97ce",
       "range": {
         "startLine": 1436,
         "startChar": 34,
@@ -98,6 +140,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "42b588e2_a32d4a4d",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 3
+      },
+      "lineNbr": 1437,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-04-04T15:34:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "25c26761_69e3251b",
+      "range": {
+        "startLine": 1437,
+        "startChar": 58,
+        "endLine": 1437,
+        "endChar": 62
+      },
+      "revId": "85bd4b0f1c5d546d54c2d33bb1dd682aab38e9b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c158f854_32639e59",
@@ -111,6 +177,30 @@
       "writtenOn": "2024-04-04T15:17:59Z",
       "side": 1,
       "message": "nit: should we include a TODO comment for the other shape types?",
+      "range": {
+        "startLine": 1476,
+        "startChar": 1,
+        "endLine": 1476,
+        "endChar": 2
+      },
+      "revId": "85bd4b0f1c5d546d54c2d33bb1dd682aab38e9b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "09e1507b_d771f59a",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 3
+      },
+      "lineNbr": 1476,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-04-04T15:34:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c158f854_32639e59",
       "range": {
         "startLine": 1476,
         "startChar": 1,
