@@ -4,9 +4,8 @@ use ffi::{FillLinearParams, FillRadialParams};
 // in the LICENSE file.
 use font_types::{BoundingBox, GlyphId, Pen};
 use read_fonts::{
-    tables::colr::CompositeMode,
-    tables::os2::SelectionFlags,
-    FileRef, FontRef, ReadError, TableProvider
+    tables::{colr::CompositeMode, os2::SelectionFlags},
+    FileRef, FontRef, ReadError, TableProvider,
 };
 use skrifa::{
     attribute::Style,
@@ -19,7 +18,7 @@ use skrifa::{
     string::{LocalizedStrings, StringId},
     MetadataProvider, OutlineGlyphCollection, Tag,
 };
-use std::pin::Pin;
+use std::{ops::Not, pin::Pin};
 
 use crate::bitmap::{bitmap_glyph, bitmap_metrics, has_bitmap_glyph, png_data, BridgeBitmapGlyph};
 
@@ -457,15 +456,27 @@ fn english_or_first_font_name(font_ref: &BridgeFontRef, name_id: StringId) -> Op
 }
 
 fn family_name(font_ref: &BridgeFontRef) -> String {
-    font_ref.with_font(|f| {
-        // https://learn.microsoft.com/en-us/typography/opentype/spec/os2#fsselection
-        // Bit 8 of the `fsSelection' field in the `OS/2' table indicates a WWS-only font face.
-        // When this bit is set it means *do not* use the WWS strings.
-        let use_wws = !f.os2().map_or(false, |t| t.fs_selection().contains(SelectionFlags::WWS));
-        if use_wws { english_or_first_font_name(font_ref, StringId::WWS_FAMILY_NAME) } else { None }
-         .or_else(|| english_or_first_font_name(font_ref, StringId::TYPOGRAPHIC_FAMILY_NAME))
-         .or_else(|| english_or_first_font_name(font_ref, StringId::FAMILY_NAME))
-    }).unwrap_or_default()
+    font_ref
+        .with_font(|f| {
+            // https://learn.microsoft.com/en-us/typography/opentype/spec/os2#fsselection
+            // Bit 8 of the `fsSelection' field in the `OS/2' table indicates a WWS-only font face.
+            // When this bit is set it means *do not* use the WWS strings.
+            f.os2()
+                .ok()
+                .and_then(|t| {
+                    t.fs_selection()
+                        .contains(SelectionFlags::WWS)
+                        .not()
+                        .then_some(english_or_first_font_name(
+                            font_ref,
+                            StringId::WWS_FAMILY_NAME,
+                        ))
+                })
+                .flatten()
+                .or_else(|| english_or_first_font_name(font_ref, StringId::TYPOGRAPHIC_FAMILY_NAME))
+                .or_else(|| english_or_first_font_name(font_ref, StringId::FAMILY_NAME))
+        })
+        .unwrap_or_default()
 }
 
 fn postscript_name(font_ref: &BridgeFontRef, out_string: &mut String) -> bool {
