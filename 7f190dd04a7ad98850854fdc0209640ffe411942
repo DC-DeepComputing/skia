@@ -158,6 +158,30 @@
       },
       "revId": "7f190dd04a7ad98850854fdc0209640ffe411942",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7eb6aba_bb090ff9",
+        "filename": "src/base/SkVx.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 3375938
+      },
+      "writtenOn": "2024-04-04T20:13:07Z",
+      "side": 1,
+      "message": "Sure, but do we have any benchmarks that we can test to measure performance deltas?\n\nI understand that this is perf-sensitive code, but if the difference isn\u0027t observable, how much does it matter?",
+      "parentUuid": "24163447_7e2be99d",
+      "range": {
+        "startLine": 215,
+        "startChar": 0,
+        "endLine": 215,
+        "endChar": 15
+      },
+      "revId": "7f190dd04a7ad98850854fdc0209640ffe411942",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
