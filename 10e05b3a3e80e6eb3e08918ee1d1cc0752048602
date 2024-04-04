@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e3f052f_7f8f5eef",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-04T17:58:30Z",
+      "side": 1,
+      "message": "Not sure exactly what is happening yet, but while running the SkParagraph_Emoji test on a macOS (and forcing it to run anyway) with ASAN/UBSAN states that `scalerMetrics.has_overlaps` has some random value that isn\u0027t valid for a bool. It looks like at least in some cases we get there without it being set.",
+      "range": {
+        "startLine": 272,
+        "startChar": 12,
+        "endLine": 272,
+        "endChar": 38
+      },
+      "revId": "10e05b3a3e80e6eb3e08918ee1d1cc0752048602",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
