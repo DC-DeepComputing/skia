@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5bbc19d_f32e2171",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-04T13:09:01Z",
+      "side": 1,
+      "message": "Pointed out by https://skia-review.googlesource.com/c/skia/+/836027 .",
+      "revId": "64f3ec854f31bbe033df920ac395131765cc47ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
