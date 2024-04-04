@@ -43,6 +43,8 @@
 
 using namespace skia_private;
 
+std::unordered_set<uint32_t> foo;
+
 namespace skgpu::graphite {
 
 namespace {
@@ -443,6 +445,12 @@ DrawPass::DrawPass(sk_sp<TextureProxy> target,
 
 DrawPass::~DrawPass() = default;
 
+#ifdef SK_DEBUG
+    void dump(ShaderCodeDictionary* dict, UniquePaintParamsID id) {
+        dict->lookup(id).dump(dict);
+    }
+#endif
+
 std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
                                          std::unique_ptr<DrawList> draws,
                                          sk_sp<TextureProxy> target,
@@ -541,12 +549,19 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
                                      curDst,
                                      dstOffset,
                                      targetInfo.colorInfo());
+
+            if (foo.find(shaderID.asUInt()) == foo.end()) {
+                foo.insert(shaderID.asUInt());
+                SkDebugf("In DrawPass.cpp: ");
+                dump(dict, shaderID);
+            }
         } // else depth-only
 
         for (int stepIndex = 0; stepIndex < draw.fRenderer->numRenderSteps(); ++stepIndex) {
             const RenderStep* const step = draw.fRenderer->steps()[stepIndex];
             const bool performsShading = draw.fPaintParams.has_value() && step->performsShading();
 
+            SkDebugf("DrawPass: renderstep: %s\n", step->name());
             GraphicsPipelineCache::Index pipelineIndex = pipelineCache.insert(
                     {step, performsShading ? shaderID : UniquePaintParamsID::InvalidID()});
             auto [geometryUniforms, stepTextures] = ExtractRenderStepData(&geometryUniformDataCache,
