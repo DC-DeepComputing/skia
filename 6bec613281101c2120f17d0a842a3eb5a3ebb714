@@ -34,6 +34,24 @@
       "parentUuid": "1fd2e325_160fb1c2",
       "revId": "6bec613281101c2120f17d0a842a3eb5a3ebb714",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2860e4f8_90ae3e53",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-04-04T15:30:54Z",
+      "side": 1,
+      "message": "I thought for many/all of these paragraph tests we use fonts we pulled in from CIPD. Are there some actual system fonts that get used?",
+      "parentUuid": "adf2e91e_519e696d",
+      "revId": "6bec613281101c2120f17d0a842a3eb5a3ebb714",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
