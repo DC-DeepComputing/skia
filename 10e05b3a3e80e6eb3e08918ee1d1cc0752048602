@@ -22,6 +22,30 @@
       },
       "revId": "10e05b3a3e80e6eb3e08918ee1d1cc0752048602",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e80acf0_f634cc8a",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-04T18:38:01Z",
+      "side": 1,
+      "message": "And for some reason isn\u0027t reproducing when running what seems to be the same thing on my Linux box... I\u0027m assuming we\u0027re using different fonts. Need to make these tests stop using random fonts, but do need to do an sbix version of the test.",
+      "parentUuid": "3e3f052f_7f8f5eef",
+      "range": {
+        "startLine": 272,
+        "startChar": 12,
+        "endLine": 272,
+        "endChar": 38
+      },
+      "revId": "10e05b3a3e80e6eb3e08918ee1d1cc0752048602",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
