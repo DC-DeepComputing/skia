@@ -1499,7 +1499,7 @@ static constexpr size_t N = sizeof(F) / sizeof(float);
     // We can still only pass 16 floats, so best as 4x {r,g,b,a}.
     #define ABI __attribute__((pcs("aapcs-vfp")))
     #define JUMPER_NARROW_STAGES 1
-#elif defined(_MSC_VER)
+#elif defined(SK_BUILD_FOR_WIN)
     // Even if not vectorized, this lets us pass {r,g,b,a} as registers,
     // instead of {b,a} on the stack.  Narrow stages work best for __vectorcall.
     #define ABI __vectorcall
