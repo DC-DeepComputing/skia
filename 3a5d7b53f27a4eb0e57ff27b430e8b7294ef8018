@@ -34,6 +34,24 @@
       "parentUuid": "3d49772e_ae51a30c",
       "revId": "3a5d7b53f27a4eb0e57ff27b430e8b7294ef8018",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7bfc8eef_c000a803",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-04T03:34:07Z",
+      "side": 1,
+      "message": "This almost works too well, might be the first implementation I\u0027ve seen that\u0027s bug compatible with CoreText. I\u0027m fine with it, though it might be nicer to match FreeType.",
+      "parentUuid": "fb5e075c_47cdb9ea",
+      "revId": "3a5d7b53f27a4eb0e57ff27b430e8b7294ef8018",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
