@@ -194,15 +194,11 @@ struct SamplerConversionInfo {
     SamplerMutability fMutability = SamplerMutability::kDynamicSampler;
     // If the sampler requires YCbCr conversion, backends can place that information within
     // this 16-bit value.
-    uint16_t fYcbcrConversionInfo = 0;
+    uint8_t fNonFormatYcbcrConversionInfo = 0;
     // fFormat represents known OR external format numerical representation depending upon whether
     // SkSamplerMutability dictates the usage of a known or external format.
     uint64_t fFormat = 0;
     uint32_t fFormatFeatures = 0;
-
-    // SamplerConversionInfo(uint16_t) {
-
-    // }
 };
 
 
@@ -210,9 +206,7 @@ struct SamplerConversionInfo {
  * Struct used to describe how a Texture/TextureProxy/TextureProxyView is sampled.
  */
 struct SamplerDesc {
-    static_assert(kSkTileModeCount   <= 4 &&
-                  kSkFilterModeCount <= 2 &&
-                  kSkMipmapModeCount <= 3);
+    static_assert(kSkTileModeCount   <= 4 && kSkFilterModeCount <= 2 && kSkMipmapModeCount <= 3);
     SamplerDesc(const SkSamplingOptions& samplingOptions,
                 const SkTileMode tileModes[2],
                 const SamplerConversionInfo conversionInfo = {})
@@ -220,7 +214,7 @@ struct SamplerDesc {
                     (static_cast<int>(tileModes[1])               << kTileModeYShift     ) |
                     (static_cast<int>(samplingOptions.mipmap)     << kMipmapModeShift    ) |
                     (static_cast<int>(conversionInfo.fMutability) << kMutabilityShift    ) |
-                    (conversionInfo.fYcbcrConversionInfo          << kConversionInfoShift) )
+                    (conversionInfo.fNonFormatYcbcrConversionInfo << kConversionInfoShift) )
             , fFormat(conversionInfo.fFormat)
             , fFormatFeatures(conversionInfo.fFormatFeatures) {
         // Cubic sampling is handled in a shader, with the actual texture sampled by with NN,
@@ -231,9 +225,9 @@ struct SamplerDesc {
 
         // Basic, backend-agnostic sampler information can fit within one uint32_t.
         // TODO: Add aniso value when used.
-        static_assert(sizeof(uint32_t) == 4 && sizeof(uint16_t) == 2);
-        static_assert(sizeof(conversionInfo.fYcbcrConversionInfo) == sizeof(uint16_t));
-        static_assert((kMutabilityShift + kNumMutabilityBits + sizeof(uint16_t)) <= 32);
+        static_assert(sizeof(uint32_t) == 4 && sizeof(uint8_t) == 1);
+        static_assert(sizeof(conversionInfo.fNonFormatYcbcrConversionInfo) == sizeof(uint8_t));
+        static_assert((kMutabilityShift + kNumMutabilityBits + sizeof(uint8_t)) <= 32);
     }
 
     SamplerDesc(const SamplerDesc&) = default;

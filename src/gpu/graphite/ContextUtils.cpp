@@ -56,6 +56,38 @@ ExtractPaintData(Recorder* recorder,
         if (gatherer->hasTextures()) {
             TextureDataCache* textureDataCache = recorder->priv().textureDataCache();
             textures = textureDataCache->insert(gatherer->textureDataBlock());
+        //     const std::vector<TextureDataBlock::SampledTexture>& sampledTextures =
+        //             gatherer->textureDataBlock().textures();
+
+        //     // TODO clean this; fetch from samplerdesc struct
+        //     static constexpr int kNumInt32sSamplerInfo = 4;
+
+        //     // TODO: Instead of pushing back kNumInt32sSamplerInfo int32s for each texture,
+        //     // only append for the # of textures that are ycbcr.
+        //     std::vector<int32_t> cumulativeSamplerData = {0};
+        //     for (int i = 0; i < gatherer->textureDataBlock().numTextures(); i++) {
+        //          const SamplerDesc& samplerDesc = sampledTextures.at(i).second;
+        //          // TODO: Fix logic to better check if sampler needs this addt'l info appended.
+        //          if (samplerDesc.format() || samplerDesc.formatFeatures()) {
+        //             cumulativeSamplerData.push_back(samplerDesc.desc());
+        //             cumulativeSamplerData.push_back((uint32_t)(samplerDesc.format() << 32));
+        //             cumulativeSamplerData.push_back((uint32_t)samplerDesc.format());
+        //             cumulativeSamplerData.push_back(samplerDesc.formatFeatures());
+        //             cumulativeSamplerData[0] = cumulativeSamplerData[0] + kNumInt32sSamplerInfo;
+        //          }
+        //     }
+
+        //     // The data must be appended LAST.
+        //     SkASSERT(((int)cumulativeSamplerData.size() - 1) % kNumInt32sSamplerInfo == 0);
+        //     builder->addData(cumulativeSamplerData);
+        //     // Since we added additional data to the paint params key, re-generate a unique ID
+        //     // TODO: Reorganize this such that we don't bother generating a paint params key
+        //     // until after this data addition.
+        //     paintID = recorder->priv().shaderCodeDictionary()->findOrCreate(builder);
+            // if (!paintID.isValid()) {
+            //     // TODO: Make SKGPU_LOG_E instead of SkDebugf?
+            //     SkDebugf("Failed to create paint ID with additional sampler information");
+            // }
         }
     }
 
@@ -566,6 +598,12 @@ FragSkSLInfo BuildFragmentSkSL(const Caps* caps,
     // that changes the HW blending choice to handle analytic coverage.
     result.fBlendInfo = shaderInfo.blendInfo();
     result.fRequiresLocalCoords = shaderInfo.needsLocalCoords();
+    if (shaderInfo.data().empty()) {
+        result.fData = shaderInfo.data();
+    } else {
+        result.fData = shaderInfo.data().subspan(1); // TODO: testing only. rm the lopping off of 1st ele
+    }
+
 
     return result;
 }
