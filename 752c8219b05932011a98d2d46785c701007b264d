@@ -16,6 +16,24 @@
       "message": "Alas, even after fetching ninja it appears we\u0027re still getting the depot_tools ninja. Part of the issue is this ninja is being called bare directly as a cmake action generated directly out of the script. We could modify things so that the ninja used here can be specified.",
       "revId": "752c8219b05932011a98d2d46785c701007b264d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "839351c5_9cea5963",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-04-04T15:31:50Z",
+      "side": 1,
+      "message": "Are you sure? The CQ job seems to work now, and it wasn\u0027t before due to a lack of ninja.",
+      "parentUuid": "d7529020_cfd6d978",
+      "revId": "752c8219b05932011a98d2d46785c701007b264d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
