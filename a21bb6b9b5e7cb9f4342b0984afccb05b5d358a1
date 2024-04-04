@@ -122,6 +122,24 @@
       "parentUuid": "7e2ff3ef_007b4388",
       "revId": "a21bb6b9b5e7cb9f4342b0984afccb05b5d358a1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cbe0cfd6_b999b45d",
+        "filename": "modules/skparagraph/tests/SkParagraphTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-04-04T15:40:20Z",
+      "side": 1,
+      "message": "This is how it happened once: the fonts disappeared and all the tests were silently skipping - and for a few month we were running SkParagraph without tests. (But if we fail here it\u0027s not good either since some machines don\u0027t have the right fonts and they will fail for no reason).",
+      "parentUuid": "7e2ff3ef_007b4388",
+      "revId": "a21bb6b9b5e7cb9f4342b0984afccb05b5d358a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
