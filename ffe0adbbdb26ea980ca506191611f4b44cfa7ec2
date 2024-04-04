@@ -33,6 +33,24 @@
       "message": "It looks like `AutoreleasePool` needs to move outside of `tools`.",
       "revId": "ffe0adbbdb26ea980ca506191611f4b44cfa7ec2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "388265c3_8f76e8f2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-04-04T14:37:03Z",
+      "side": 1,
+      "message": "Is the `AutoreleasePool` class obsolete nowadays?",
+      "parentUuid": "d349b870_16ce3a03",
+      "revId": "ffe0adbbdb26ea980ca506191611f4b44cfa7ec2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
