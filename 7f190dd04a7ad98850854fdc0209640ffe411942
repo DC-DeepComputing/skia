@@ -254,6 +254,30 @@
       },
       "revId": "7f190dd04a7ad98850854fdc0209640ffe411942",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71e62d02_eb0908b1",
+        "filename": "src/base/SkVx.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-04T20:43:57Z",
+      "side": 1,
+      "message": "This was landed in Skia already but was reverted due to the gcc compiler bug. But the original CL tested the initialization of Vec\u003c1\u003e and there were no reported regressions.\n\nThat being said, the reports are on aggregate frame times, etc. We can run a cluster over the original CL to see if there are any microbenchmarks that may have picked things up.\n\nhttps://perf.skia.org/t/?begin\u003d1712164121\u0026end\u003d1712164123\u0026subset\u003dall",
+      "parentUuid": "34c21070_38767b5f",
+      "range": {
+        "startLine": 215,
+        "startChar": 0,
+        "endLine": 215,
+        "endChar": 15
+      },
+      "revId": "7f190dd04a7ad98850854fdc0209640ffe411942",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
