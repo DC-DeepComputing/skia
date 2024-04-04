@@ -52,6 +52,24 @@
       "parentUuid": "fb5e075c_47cdb9ea",
       "revId": "3a5d7b53f27a4eb0e57ff27b430e8b7294ef8018",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a40cf22_18328157",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-04-04T12:52:53Z",
+      "side": 1,
+      "message": "I\u0027d like to land this as is, for the following reasons:\n1) I\u0027d say the main relevant practical difference I see between the implementations is that the FT-based impl disregards the sbix glyph originOffsetX on top of the glyf-controlled corner/shifted origin. So in FT the diamond glyph is not offset to the right within the bounding box. I think that\u0027s a bug in the FT implementation because a) it diverges from the spec _and_ from CoreText. \n\n\u003e \"The originOffsetX and originOffsetY values give the placement of the bitmap graphic in relation to the standard coordinate system of the glyph design space.\" \n+\n\u003e \"If there is a glyph contour, the glyph design space origin for the graphic is placed at the lower left corner of the glyph bounding box (xMin, yMin).\"\n\n2) The rest of the differences affect the bounding box / drawable area mostly and are controlled by values that are mostly 0 or not very interesting in Apple Color Emoji and a more visible with the SBIX slide tool. I don\u0027t see these differences affecting glyph placement.\n\nThe main improvement here is: It fixes the planet placement in GM_mixedtextblobs, and has a couple of other improvements that make it behave identically in SBIXSlide - so I\u0027d say let\u0027s go ahead.",
+      "parentUuid": "7bfc8eef_c000a803",
+      "revId": "3a5d7b53f27a4eb0e57ff27b430e8b7294ef8018",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
