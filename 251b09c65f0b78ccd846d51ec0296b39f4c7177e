@@ -142,6 +142,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0d89cd10_34bc23c0",
+        "filename": "src/core/SkStream.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 346,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-04T14:07:53Z",
+      "side": 1,
+      "message": "Need a language that supports declaring pre and post conditions and invariants in a sane way. But yeah, if someone wanted to `SkASSERT(fOffset \u003c\u003d fData-\u003esize())` at the beginning and end of every method on `SkMemoryStream` that would be fine.",
+      "parentUuid": "70486e28_28dcb95f",
+      "revId": "251b09c65f0b78ccd846d51ec0296b39f4c7177e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "78c220c1_42d9fce4",
         "filename": "src/core/SkStream.cpp",
         "patchSetId": 1
