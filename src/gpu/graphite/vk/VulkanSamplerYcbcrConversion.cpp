@@ -67,22 +67,24 @@ GraphiteResourceKey VulkanSamplerYcbcrConversion::MakeYcbcrConversionKey(
     GraphiteResourceKey key;
     GraphiteResourceKey::Builder builder(&key, kType, num32DataCnt, Shareable::kYes);
 
-    SkASSERT(info.fYcbcrModel                  < (1u << 7));
+    SkASSERT(info.fYcbcrModel                  < (1u << 3));
     SkASSERT(info.fYcbcrRange                  < (1u << 1));
     SkASSERT(info.fXChromaOffset               < (1u << 1));
     SkASSERT(info.fYChromaOffset               < (1u << 1));
     SkASSERT(info.fChromaFilter                < (1u << 1));
-    SkASSERT(info.fForceExplicitReconstruction < (1u << 7));
+    SkASSERT(info.fForceExplicitReconstruction < (1u << 1));
+    SkASSERT(info.fSwapRB                      < (1u << 1));
 
     builder[0] = info.fFormat;
     builder[1] = (uint32_t)(info.fExternalFormat << 32);
     builder[2] = (uint32_t)info.fExternalFormat;
     builder[3] = (static_cast<uint32_t>(info.fYcbcrModel                 ) <<  0) |
-                 (static_cast<uint32_t>(info.fYcbcrRange                 ) <<  8) |
-                 (static_cast<uint32_t>(info.fXChromaOffset              ) <<  9) |
-                 (static_cast<uint32_t>(info.fYChromaOffset              ) << 10) |
-                 (static_cast<uint32_t>(info.fChromaFilter               ) << 11) |
-                 (static_cast<uint32_t>(info.fForceExplicitReconstruction) << 12) ;
+                 (static_cast<uint32_t>(info.fYcbcrRange                 ) <<  3) |
+                 (static_cast<uint32_t>(info.fXChromaOffset              ) <<  4) |
+                 (static_cast<uint32_t>(info.fYChromaOffset              ) <<  5) |
+                 (static_cast<uint32_t>(info.fChromaFilter               ) <<  6) |
+                 (static_cast<uint32_t>(info.fForceExplicitReconstruction) <<  7) |
+                 (static_cast<uint32_t>(info.fSwapRB)                      <<  8);
 
     builder.finish();
     return key;

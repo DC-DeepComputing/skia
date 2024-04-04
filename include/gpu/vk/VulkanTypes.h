@@ -72,7 +72,8 @@ struct VulkanYcbcrConversionInfo {
                this->fXChromaOffset == that.fXChromaOffset &&
                this->fYChromaOffset == that.fYChromaOffset &&
                this->fChromaFilter == that.fChromaFilter &&
-               this->fForceExplicitReconstruction == that.fForceExplicitReconstruction;
+               this->fForceExplicitReconstruction == that.fForceExplicitReconstruction &&
+               this->fSwapRB == that.fSwapRB;
     }
     bool operator!=(const VulkanYcbcrConversionInfo& that) const { return !(*this == that); }
 
@@ -99,6 +100,9 @@ struct VulkanYcbcrConversionInfo {
     // For external images format features here should be those returned by a call to
     // vkAndroidHardwareBufferFormatPropertiesANDROID
     VkFormatFeatureFlags fFormatFeatures = 0;
+
+    // Swap the R and B channels.  This is ignored when fExternalFormat is non-zero.
+    VkBool32 fSwapRB                          = false;
 };
 
 typedef void* VulkanDeviceLostContext;

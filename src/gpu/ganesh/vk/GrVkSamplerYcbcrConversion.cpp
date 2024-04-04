@@ -70,14 +70,17 @@ GrVkSamplerYcbcrConversion::Key GrVkSamplerYcbcrConversion::GenerateKey(
     SkASSERT(static_cast<int>(ycbcrInfo.fChromaFilter) <= 1);
     static const int kReconShift = kChromaFilterShift + 1;
     SkASSERT(static_cast<int>(ycbcrInfo.fForceExplicitReconstruction) <= 1);
-    static_assert(kReconShift <= 7);
+    static const int kSwapRBShift = kReconShift + 1;
+    SkASSERT(static_cast<int>(ycbcrInfo.fSwapRB) <= 1);
+    static_assert(kSwapRBShift <= 8);
 
-    uint8_t ycbcrKey = static_cast<uint8_t>(ycbcrInfo.fYcbcrModel);
-    ycbcrKey |= (static_cast<uint8_t>(ycbcrInfo.fYcbcrRange) << kRangeShift);
-    ycbcrKey |= (static_cast<uint8_t>(ycbcrInfo.fXChromaOffset) << kXChromaOffsetShift);
-    ycbcrKey |= (static_cast<uint8_t>(ycbcrInfo.fYChromaOffset) << kYChromaOffsetShift);
-    ycbcrKey |= (static_cast<uint8_t>(ycbcrInfo.fChromaFilter) << kChromaFilterShift);
-    ycbcrKey |= (static_cast<uint8_t>(ycbcrInfo.fForceExplicitReconstruction) << kReconShift);
+    uint16_t ycbcrKey = static_cast<uint16_t>(ycbcrInfo.fYcbcrModel);
+    ycbcrKey |= (static_cast<uint16_t>(ycbcrInfo.fYcbcrRange) << kRangeShift);
+    ycbcrKey |= (static_cast<uint16_t>(ycbcrInfo.fXChromaOffset) << kXChromaOffsetShift);
+    ycbcrKey |= (static_cast<uint16_t>(ycbcrInfo.fYChromaOffset) << kYChromaOffsetShift);
+    ycbcrKey |= (static_cast<uint16_t>(ycbcrInfo.fChromaFilter) << kChromaFilterShift);
+    ycbcrKey |= (static_cast<uint16_t>(ycbcrInfo.fForceExplicitReconstruction) << kReconShift);
+    ycbcrKey |= (static_cast<uint16_t>(ycbcrInfo.fSwapRB) << kSwapRBShift);
 
     return Key{ycbcrInfo.fFormat, ycbcrInfo.fExternalFormat, ycbcrKey};
 }

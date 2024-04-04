@@ -48,9 +48,14 @@ void SetupSamplerYcbcrConversionInfo(VkSamplerYcbcrConversionCreateInfo* outInfo
     outInfo->ycbcrRange = conversionInfo.fYcbcrRange;
 
     // Components is ignored for external format conversions. For all other formats identity swizzle
-    // is used. It can be added to VulkanYcbcrConversionInfo if necessary.
-    outInfo->components = {VK_COMPONENT_SWIZZLE_IDENTITY, VK_COMPONENT_SWIZZLE_IDENTITY,
-                           VK_COMPONENT_SWIZZLE_IDENTITY, VK_COMPONENT_SWIZZLE_IDENTITY};
+    // is used unless fSwapRB is true.
+    if (conversionInfo.fSwapRB) {
+        outInfo->components = {VK_COMPONENT_SWIZZLE_B, VK_COMPONENT_SWIZZLE_IDENTITY,
+                               VK_COMPONENT_SWIZZLE_R, VK_COMPONENT_SWIZZLE_IDENTITY};
+    } else {
+        outInfo->components = {VK_COMPONENT_SWIZZLE_IDENTITY, VK_COMPONENT_SWIZZLE_IDENTITY,
+                               VK_COMPONENT_SWIZZLE_IDENTITY, VK_COMPONENT_SWIZZLE_IDENTITY};
+    }
     outInfo->xChromaOffset = conversionInfo.fXChromaOffset;
     outInfo->yChromaOffset = conversionInfo.fYChromaOffset;
     outInfo->chromaFilter = conversionInfo.fChromaFilter;
@@ -72,6 +77,7 @@ void GetYcbcrConversionInfoFromFormatProps(
     outConversionInfo->fForceExplicitReconstruction = VK_FALSE;
     outConversionInfo->fExternalFormat = formatProps.externalFormat;
     outConversionInfo->fFormatFeatures = formatProps.formatFeatures;
+    outConversionInfo->fSwapRB = false;
     if (VK_FORMAT_FEATURE_SAMPLED_IMAGE_YCBCR_CONVERSION_LINEAR_FILTER_BIT &
         formatProps.formatFeatures) {
         outConversionInfo->fChromaFilter = VK_FILTER_LINEAR;
