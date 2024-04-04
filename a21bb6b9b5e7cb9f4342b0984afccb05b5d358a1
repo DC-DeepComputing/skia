@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a65a70a7_de058371",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-04T13:21:52Z",
+      "side": 1,
+      "message": "I have still not discovered exactly what it failing silently due to what appears to be random resource exhaustion, but for the time being using fewer peak resources seems like a good way to avoid it.",
+      "revId": "a21bb6b9b5e7cb9f4342b0984afccb05b5d358a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
