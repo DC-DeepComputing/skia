@@ -230,6 +230,30 @@
       },
       "revId": "7f190dd04a7ad98850854fdc0209640ffe411942",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "34c21070_38767b5f",
+        "filename": "src/base/SkVx.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-04-04T20:22:36Z",
+      "side": 1,
+      "message": "It\u0027s a valid point that in Chrome we will eat this cost regardless.\n\nI don\u0027t think we can know the perf regression cost without landing it in Skia and looking at our benchmarks. When Chrome enabled `-ftrivial-auto-var-init`, I\u0027m sure it affected performance by some small amount across the board and people weren\u0027t laser-focusing on individual Skia classes.",
+      "parentUuid": "4c6d2311_7656a4a3",
+      "range": {
+        "startLine": 215,
+        "startChar": 0,
+        "endLine": 215,
+        "endChar": 15
+      },
+      "revId": "7f190dd04a7ad98850854fdc0209640ffe411942",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
