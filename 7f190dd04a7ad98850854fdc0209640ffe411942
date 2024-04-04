@@ -182,6 +182,30 @@
       },
       "revId": "7f190dd04a7ad98850854fdc0209640ffe411942",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "147bdd2b_e0b1649b",
+        "filename": "src/base/SkVx.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-04-04T20:17:29Z",
+      "side": 1,
+      "message": "Gotcha. Skia has lots of benchmarks. Off the cuff I can\u0027t necessarily point to one benchmark which will demonstrate the performance impact of adding extra logic to all SkVx work. If you want to experiment with it, use `nanobench`.\n\nYou can run it via `out/Release/nanobench -m mytestname`. Omitting the command line arguments will just run all tests.\n\nBenchmarks are in the `bench` directory if you want to skim them for something that seems pertinent.",
+      "parentUuid": "f7eb6aba_bb090ff9",
+      "range": {
+        "startLine": 215,
+        "startChar": 0,
+        "endLine": 215,
+        "endChar": 15
+      },
+      "revId": "7f190dd04a7ad98850854fdc0209640ffe411942",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
