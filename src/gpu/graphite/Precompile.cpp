@@ -12,10 +12,12 @@
 #include "src/gpu/graphite/FactoryFunctionsPriv.h"
 #include "src/gpu/graphite/KeyContext.h"
 #include "src/gpu/graphite/KeyHelpers.h"
+#include "src/gpu/graphite/PaintOptionsPriv.h"
 #include "src/gpu/graphite/PaintParams.h"
 #include "src/gpu/graphite/PaintParamsKey.h"
 #include "src/gpu/graphite/Precompile.h"
 #include "src/gpu/graphite/PrecompileBasePriv.h"
+#include "src/gpu/graphite/Renderer.h"
 #include "src/gpu/graphite/ShaderCodeDictionary.h"
 
 namespace skgpu::graphite {
@@ -179,9 +181,11 @@ public:
         , fDither(dither) {
     }
 
-    PrecompileBlender* finalBlender() { return fFinalBlender.first.get(); }
+    const PrecompileBlender* finalBlender() const { return fFinalBlender.first.get(); }
 
-    void toKey(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
+    void toKey1(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
+
+    void foo(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
 
 private:
     void addPaintColorToKey(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
@@ -347,7 +351,7 @@ void PaintOption::handleDstRead(const KeyContext& keyContext,
     }
 }
 
-void PaintOption::toKey(const KeyContext& keyContext,
+void PaintOption::toKey1(const KeyContext& keyContext,
                         PaintParamsKeyBuilder* keyBuilder,
                         PipelineDataGatherer* gatherer) const {
     this->handleDstRead(keyContext, keyBuilder, gatherer);
@@ -359,6 +363,8 @@ void PaintOption::toKey(const KeyContext& keyContext,
         keyBuilder->endBlock();
     }
 }
+
+void foo(const PaintOption& option);
 
 void PaintOptions::createKey(const KeyContext& keyContext,
                              PaintParamsKeyBuilder* keyBuilder,
@@ -384,7 +390,7 @@ void PaintOptions::createKey(const KeyContext& keyContext,
     remainingCombinations /= numColorFilterCombinations;
 
     [[maybe_unused]] const int desiredMaskFilterCombination =
-                                             remainingCombinations % numMaskFilterCombinations;
+            remainingCombinations % numMaskFilterCombinations;
     remainingCombinations /= numMaskFilterCombinations;
 
     const int desiredShaderCombination = remainingCombinations;
@@ -411,12 +417,18 @@ void PaintOptions::createKey(const KeyContext& keyContext,
                        dstReadReq,
                        fDither);
 
-    option.toKey(keyContext, keyBuilder, gatherer);
+    option.foo(keyContext, keyBuilder, gatherer);
+}
 
-    std::optional<SkBlendMode> finalBlendMode = option.finalBlender()
-                                                        ? option.finalBlender()->asBlendMode()
+void PaintOption::foo(const KeyContext& keyContext,
+                      PaintParamsKeyBuilder* keyBuilder,
+                      PipelineDataGatherer* gatherer) const {
+    this->toKey1(keyContext, keyBuilder, gatherer);
+
+    std::optional<SkBlendMode> finalBlendMode = this->finalBlender()
+                                                        ? this->finalBlender()->asBlendMode()
                                                         : SkBlendMode::kSrcOver;
-    if (dstReadReq != DstReadRequirement::kNone) {
+    if (fDstReadReq != DstReadRequirement::kNone) {
         // In this case the blend will have been handled by shader-based blending with the dstRead.
         finalBlendMode = SkBlendMode::kSrc;
     }
@@ -426,6 +438,50 @@ void PaintOptions::createKey(const KeyContext& keyContext,
             kFixedFunctionBlendModeIDOffset + static_cast<int>(*finalBlendMode));
 
     keyBuilder->addBlock(fixedFuncBlendModeID);
+}
+
+void create_blur_pipelines(const KeyContext& keyContext,
+                           PaintParamsKeyBuilder* keyBuilder,
+                           PipelineDataGatherer* gatherer,
+                           const std::function<void(UniquePaintParamsID)>& processCombination) {
+    PaintOptions paintOptions;
+
+    sk_sp<PrecompileShader> child = PrecompileShaders::Image();
+
+    SkBlendMode blendModes[] = { SkBlendMode::kSrc };
+    paintOptions.setShaders({ PrecompileShadersPriv::Blur1D16(child) });
+    paintOptions.setBlendModes(blendModes);
+
+    paintOptions.priv().buildCombinations(keyContext,
+                                          gatherer,
+                                          /* withPrimitiveBlender= */ false,
+                                          Coverage::kNone, // TODO: it seems like this should vary
+                                          processCombination);
+
+#if 0
+    gatherer->resetWithNewLayout(Layout::kMetal);
+
+    const bool kOpaquePaintColor = true;
+
+    sk_sp<PrecompileShader> child = PrecompileShaders::Image();
+
+    PaintOption option(kOpaquePaintColor,
+                       { PrecompileBlender::Mode(SkBlendMode::kSrcOver), 0 },
+                       { PrecompileShadersPriv::Blur1D4(child), 0 },
+                       /* colorFilter= */ { nullptr, 0 },
+                       /* hasPrimitiveBlender= */ false,
+                       /* clipShader= */ { nullptr, 0 },
+                       DstReadRequirement::kNone,
+                       /* dither= */ false);
+
+    option.foo(keyContext, keyBuilder, gatherer);
+
+    // The 'findOrCreate' calls lockAsKey on builder and then destroys the returned
+    // PaintParamsKey. This serves to reset the builder.
+    UniquePaintParamsID paintID = keyContext.dict()->findOrCreate(keyBuilder);
+
+    processCombination(paintID);
+#endif
 }
 
 void PaintOptions::buildCombinations(
@@ -450,6 +506,10 @@ void PaintOptions::buildCombinations(
         UniquePaintParamsID paintID = keyContext.dict()->findOrCreate(&builder);
 
         processCombination(paintID);
+    }
+
+    if (fImageFilterOptions & PrecompileImageFilters1::kBlur) {
+        create_blur_pipelines(keyContext, &builder, gatherer, processCombination);
     }
 }
 
