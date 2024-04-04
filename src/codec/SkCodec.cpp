@@ -292,6 +292,7 @@ bool SkCodec::conversionSupported(const SkImageInfo& dst, bool srcIsOpaque, bool
         case kRGBA_8888_SkColorType:
         case kBGRA_8888_SkColorType:
         case kRGBA_F16_SkColorType:
+        case kBGRA_10101010_XR_SkColorType:
             return true;
         case kBGR_101010x_XR_SkColorType:
         case kRGB_565_SkColorType:
@@ -787,6 +788,9 @@ bool sk_select_xform_format(SkColorType colorType, bool forColorTable,
             break;
         case kRGBA_F16_SkColorType:
             *outFormat = skcms_PixelFormat_RGBA_hhhh;
+            break;
+        case kBGRA_10101010_XR_SkColorType:
+            *outFormat = skcms_PixelFormat_BGRA_10101010_XR;
             break;
         case kBGR_101010x_XR_SkColorType:
             *outFormat = skcms_PixelFormat_BGR_101010x_XR;
