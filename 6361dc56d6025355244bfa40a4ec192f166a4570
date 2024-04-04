@@ -206,6 +206,30 @@
       },
       "revId": "6361dc56d6025355244bfa40a4ec192f166a4570",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "56a3b358_d497217b",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 6
+      },
+      "lineNbr": 1466,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-04-04T17:15:23Z",
+      "side": 1,
+      "message": "+1, I like avoiding the switch (which would be uniform, but still, better to avoid entirely if we can)",
+      "parentUuid": "a6ed19b6_b52b643b",
+      "range": {
+        "startLine": 1466,
+        "startChar": 12,
+        "endLine": 1466,
+        "endChar": 28
+      },
+      "revId": "6361dc56d6025355244bfa40a4ec192f166a4570",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
