@@ -1,0 +1,211 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "86db6ce4_1578aebb",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 2281,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-04T17:13:35Z",
+      "side": 1,
+      "message": "These functions (circle and rrect too), will need to go inside the `if (layer)` check so that any image filter on the paint is handled first. The `PredrawFlags::kSkipMaskFilterAutoLayer` should be passed in so the mask filter is not converted to an image filter yet.\n\nInside the `if (layer)`, if drawRectBlurMaskFilter() returns false but there is a mask filter, then we need to make a new `AutoLayerForImageFilter` directly and  pass in `skipMaskFilterLayer\u003dtrue`. For the time being we could wrap all this extra logic in a call to `device-\u003euseDrawCoverageMaskForMaskFilters()` since this direct analytic blurring is a component of the long-term implementation. \n\nIt\u0027s not necessarily feasible, but if the `drawRectBlurMaskFilter()` function always succeeds when it fully implemented and the SkCanvas is responsible for detecting when that\u0027s possible, the flow is hopefully simpler.  In that world, SkCanvas was pre-determine that the blur can be analytic, and add the `kSkipMaskFilterAutoLayer` flag to `aboutToDraw()`. Then within the `if(layer)` it either calls `drawRect()` or `drawRectBlurMaskFilter()` but doesn\u0027t have to worry about falling back from the analytic blur to an image-based blur.",
+      "range": {
+        "startLine": 2278,
+        "startChar": 0,
+        "endLine": 2281,
+        "endChar": 5
+      },
+      "revId": "6361dc56d6025355244bfa40a4ec192f166a4570",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0544e1e6_22fa0c97",
+        "filename": "src/core/SkDevice.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 470,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-04T17:13:35Z",
+      "side": 1,
+      "message": "Since this will only be called for blurs, I have a slight preference to name these `drawBlurredRect` and pass in the `SkBlurStyle` and `sigma` directly. We can hopefully have the `respectCTM` parameter handled similarly to the maskfilter-\u003eimagefilter path (e.g. SkCanvas sees the CTM and calculates the local sigma appropriately before it calls these functions).",
+      "range": {
+        "startLine": 470,
+        "startChar": 17,
+        "endLine": 470,
+        "endChar": 69
+      },
+      "revId": "6361dc56d6025355244bfa40a4ec192f166a4570",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e3a64df_8b2b034b",
+        "filename": "src/core/SkDevice.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 472,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-04T17:13:35Z",
+      "side": 1,
+      "message": "Do we need `drawCircle` or can that be part of `drawRRect`, which would let us handle arbitrary ovals too?",
+      "range": {
+        "startLine": 472,
+        "startChar": 0,
+        "endLine": 472,
+        "endChar": 90
+      },
+      "revId": "6361dc56d6025355244bfa40a4ec192f166a4570",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b868c8da_e85bdae3",
+        "filename": "src/gpu/BlurUtils.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-04T17:13:35Z",
+      "side": 1,
+      "message": "Can this return an SkBitmap? They are lightweight objects that just point to an internal pixmap.",
+      "range": {
+        "startLine": 147,
+        "startChar": 0,
+        "endLine": 147,
+        "endChar": 57
+      },
+      "revId": "6361dc56d6025355244bfa40a4ec192f166a4570",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a53d7bb6_d8812691",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1149,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-04T17:13:35Z",
+      "side": 1,
+      "message": "I don\u0027t think we need to split this into two functions. The one with that takes a `renderer` is also misleading because it skips over the path effect handling (not currently an issue because the `drawBlur` checks for a path effect and returns false).\n\nSince we have the new Geometry type, that can just be included in the type checks at the start of `chooseRenderer`.",
+      "range": {
+        "startLine": 1132,
+        "startChar": 1,
+        "endLine": 1149,
+        "endChar": 48
+      },
+      "revId": "6361dc56d6025355244bfa40a4ec192f166a4570",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6bc8dac6_fa67755d",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1742,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-04T17:13:35Z",
+      "side": 1,
+      "message": "I\u0027d been imagining that these checks would be handled in SkCanvas, so that the device function can assume that there\u0027s no path effect (or it\u0027s ignored), it\u0027s a fill, and the sigma has been transformed by the device matrix. The long term plan will be that the actual SkMaskFilter implementations go away entirely, and if the Device cannot handle them analytically it will be converted to the image filter blur. Ganesh and graphite have the same analytic capabilities, but if the analytic blurs in `SkMask` for the raster backend are more expansive (i.e. handle more than normal blur styles), then we probably have to structure it like this where Device can reject the operation.",
+      "range": {
+        "startLine": 1725,
+        "startChar": 4,
+        "endLine": 1742,
+        "endChar": 80
+      },
+      "revId": "6361dc56d6025355244bfa40a4ec192f166a4570",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb9ba5ca_9f5fbeae",
+        "filename": "src/gpu/graphite/geom/RectBlurData.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-04T17:13:35Z",
+      "side": 1,
+      "message": "We should use `Transform` here; it has functions to determine a scale factor including for perspective within a known bounding box.",
+      "range": {
+        "startLine": 45,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 81
+      },
+      "revId": "6361dc56d6025355244bfa40a4ec192f166a4570",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f8dd541_3ab780f6",
+        "filename": "src/gpu/graphite/geom/RectBlurData.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-04T17:13:35Z",
+      "side": 1,
+      "message": "I know this device-space restriction was inherited from Ganesh, but is there a chance we can structure the graphite code and effect so that we can render it in local space?\n\nThat would simplify this function and also make it (hopefully) not need to be an optional constructor that can fail.\n\nLooking at the shader code very quickly, I\u0027d think that we could update the logic to render under an arbitrary transform so long as the integral table had sufficient resolution to match the sampling rate in device space.",
+      "range": {
+        "startLine": 51,
+        "startChar": 5,
+        "endLine": 76,
+        "endChar": 5
+      },
+      "revId": "6361dc56d6025355244bfa40a4ec192f166a4570",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a6ed19b6_b52b643b",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 6
+      },
+      "lineNbr": 1466,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-04T17:13:35Z",
+      "side": 1,
+      "message": "Will we be able to have a single RenderStep for all the shape types? If not, the different rendersteps/renderers will trigger new pipelines so then they can just call the direct blur function and the renderstep can drop the type enum.",
+      "range": {
+        "startLine": 1466,
+        "startChar": 12,
+        "endLine": 1466,
+        "endChar": 28
+      },
+      "revId": "6361dc56d6025355244bfa40a4ec192f166a4570",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
