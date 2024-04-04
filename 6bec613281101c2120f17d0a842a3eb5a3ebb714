@@ -70,6 +70,24 @@
       "parentUuid": "2860e4f8_90ae3e53",
       "revId": "6bec613281101c2120f17d0a842a3eb5a3ebb714",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1e2e1a8_6ed6f90a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-04-04T15:42:29Z",
+      "side": 1,
+      "message": "Heres a list of all failures: https://chromium-swarm.appspot.com/tasklist?c\u003dname\u0026c\u003dcreatedTs\u0026c\u003dpendingTime\u0026c\u003dduration\u0026c\u003dbot\u0026c\u003dpool-tag\u0026c\u003dstate\u0026d\u003dasc\u0026f\u003dsk_name-tag%3ATest-Debian10-Clang-GCE-CPU-AVX2-x86_64-Debug-All-NativeFonts\u0026f\u003dstate%3AQUERY_COMPLETED_FAILURE\u0026s\u003dbot\u0026st\u003d1712072400000\n\nAnd successes:\nhttps://chromium-swarm.appspot.com/tasklist?at\u003dfalse\u0026c\u003dname\u0026c\u003dcreatedTs\u0026c\u003dpendingTime\u0026c\u003dduration\u0026c\u003dbot\u0026c\u003dpool-tag\u0026c\u003dstate\u0026d\u003dasc\u0026et\u003d1712245225652\u0026f\u003dsk_name-tag%3ATest-Debian10-Clang-GCE-CPU-AVX2-x86_64-Debug-All-NativeFonts\u0026f\u003dstate%3AQUERY_COMPLETED_SUCCESS\u0026k\u003d\u0026n\u003dtrue\u0026s\u003dbot\u0026st\u003d1712072400000\u0026v\u003dfalse\n\nI do see some correlation (e.g. skia-e-gce-201 has always passed, and skia-e-gce-200 always failed), but some machines show up on both lists (e.g. skia-e-gce-204)",
+      "parentUuid": "13c1bfa8_a81e6932",
+      "revId": "6bec613281101c2120f17d0a842a3eb5a3ebb714",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
