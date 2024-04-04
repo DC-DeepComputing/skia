@@ -70,6 +70,24 @@
       "parentUuid": "7bfc8eef_c000a803",
       "revId": "3a5d7b53f27a4eb0e57ff27b430e8b7294ef8018",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "13a1a80e_cb147682",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-04T13:36:14Z",
+      "side": 1,
+      "message": "Nothing (DirectWrite or FreeType) attempt to fully do what CoreText does because what CoreText does is obviously buggy. But it hardly matters at this point since the buggy CoreText handling has hobbled the `sbix` format enough that hardly anyone makes any interesting fonts with it.",
+      "parentUuid": "8a40cf22_18328157",
+      "revId": "3a5d7b53f27a4eb0e57ff27b430e8b7294ef8018",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
