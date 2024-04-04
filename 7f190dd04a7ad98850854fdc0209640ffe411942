@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c11d49f0_ec1637f5",
+        "filename": "src/base/SkUtils.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 3375938
+      },
+      "writtenOn": "2024-04-04T19:59:05Z",
+      "side": 1,
+      "message": "Done. This was a bit of a experiment; some people have indicated they find reinterpret_cast more intuitive for this case, even though static_cast suffices.\n\nBut I polled some more people, and the consensus (of one reply:P) was static_cast, so I\u0027m fine with that.",
+      "parentUuid": "7c2fa8ff_b3424344",
+      "range": {
+        "startLine": 56,
+        "startChar": 17,
+        "endLine": 56,
+        "endChar": 33
+      },
+      "revId": "7f190dd04a7ad98850854fdc0209640ffe411942",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "22debc59_13ffea08",
@@ -78,6 +102,30 @@
       "side": 1,
       "message": "Looking at the CL description, it looks like this is the point of the CL, but it\u0027s disappointing that it seems to have a fairly broad impact. Are the GCC warnings all over the place or localized to just a few sites?",
       "parentUuid": "22debc59_13ffea08",
+      "range": {
+        "startLine": 215,
+        "startChar": 0,
+        "endLine": 215,
+        "endChar": 15
+      },
+      "revId": "7f190dd04a7ad98850854fdc0209640ffe411942",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ba461a7_0cc4284b",
+        "filename": "src/base/SkVx.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 3375938
+      },
+      "writtenOn": "2024-04-04T19:59:05Z",
+      "side": 1,
+      "message": "It is not strictly necessary. I could just fix the one violation I know of in SkMatrix.cpp by initializing the hi float: https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/core/SkMatrix.cpp;l\u003d1002;drc\u003d331c38bbbbba75976d99afaa5b456cdbd44939a5\n\nNote that per the C++ standard, passing uninitialized data as parameters (or as a return value) *is* undefined behaviour, so I think the MSan violation is correct.\n\nAs for why fixing it here rather than just one specific instance:\n- There have been very few times when people have been pleasantly surprised by the result of not initializing trivial variables.\n- Projects are increasingly using `-ftrivial-auto-var-init\u003dpattern` or `-ftrivial-auto-var-init\u003dzero`, so they already pay the cost. Chrome uses this flag, for instance.\n- There is some work to continue improving dead store elimination, which will help (but probably not eliminate all cases).\n\nPlaying whack-a-mole isn\u0027t the overall strategy we\u0027ve adopted; we have decided that the very low cost of initializing memory is better than accidentally operating on garbage.\n\nNote that there are ways to opt out of this (i.e. by using https://source.chromium.org/chromium/chromium/src/+/main:base/compiler_specific.h;l\u003d303;drc\u003dc077a30ed629e1389043c1688eea88b9b38a8cf6 when) when there is a demonstrated regression.",
+      "parentUuid": "c242125f_9424cabf",
       "range": {
         "startLine": 215,
         "startChar": 0,
