@@ -74,8 +74,6 @@ public:
     // from the DrawContext as a RenderPassTask and records it in the Device's recorder.
     void flushPendingWorkToRecorder();
 
-    TextureProxyView createCopy(const SkIRect* subset, Mipmapped, SkBackingFit);
-
     const Transform& localToDeviceTransform();
 
     // Flushes any pending work to the recorder and then deregisters and abandons the recorder.

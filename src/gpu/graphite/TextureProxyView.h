@@ -93,6 +93,7 @@ public:
                                  const SkColorInfo& srcColorInfo,
                                  const TextureProxyView& srcView,
                                  SkIRect srcRect,
+                                 Budgeted,
                                  Mipmapped,
                                  SkBackingFit);
 
