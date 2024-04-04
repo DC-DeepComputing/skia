@@ -2276,6 +2276,10 @@ void SkCanvas::onDrawRect(const SkRect& r, const SkPaint& paint) {
         return;
     }
 
+    if (this->topDevice()->drawRectBlurMaskFilter(r, paint)) {
+        return;
+    }
+
     auto layer = this->aboutToDraw(paint, &r, PredrawFlags::kCheckForOverwrite);
     if (layer) {
         this->topDevice()->drawRect(r, layer->paint());
@@ -2344,6 +2348,10 @@ void SkCanvas::onDrawOval(const SkRect& oval, const SkPaint& paint) {
         return;
     }
 
+    if (oval.width() == oval.height() && this->topDevice()->drawCircleBlurMaskFilter(oval, paint)) {
+        return;
+    }
+
     auto layer = this->aboutToDraw(paint, &oval);
     if (layer) {
         this->topDevice()->drawOval(oval, layer->paint());
@@ -2379,6 +2387,10 @@ void SkCanvas::onDrawRRect(const SkRRect& rrect, const SkPaint& paint) {
     }
 
     if (this->internalQuickReject(bounds, paint)) {
+        return;
+    }
+
+    if (this->topDevice()->drawRRectBlurMaskFilter(rrect, paint)) {
         return;
     }
 
