@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "62a6f556_19e8c69d",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 4
+      },
+      "lineNbr": 464,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-04-04T10:42:29Z",
+      "side": 1,
+      "message": "I uploaded a new version, not assigning a temporary name. I did that mostly to improve automatic formatting and perhaps adding some clarity by making explicit that this name is not always used.\n\nLet\u0027s move this file to being rust_fmt\u0027ed one way or the other.",
+      "parentUuid": "efffa26a_5bea018a",
+      "range": {
+        "startLine": 464,
+        "startChar": 12,
+        "endLine": 464,
+        "endChar": 33
+      },
+      "revId": "89ebc997e5dce8287be5afba04088e7ade2e2342",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "eb6c27f7_c1953e7b",
         "filename": "src/ports/fontations/src/ffi.rs",
         "patchSetId": 4
@@ -37,6 +61,24 @@
       "writtenOn": "2024-04-03T21:00:12Z",
       "side": 1,
       "message": "It\u0027s so awkward to work around the lack of `bool::and_then` right here. It it existed this would be more like\n\n```\nt.fs_selection().contains(SelectionFlags::WWS).not().and_then(\n    english_or_first_font_name(font_ref, StringId::WWS_FAMILY_NAME))\n```\n\nwith the issue being that `bool::then` takes an `F: FnOnce() -\u003e T` and isn\u0027t `F: FnOnce() -\u003e Option\u003cT\u003e`, more like `Option::and_then`. That\u0027s what I really wanted to write the first time around.",
+      "revId": "89ebc997e5dce8287be5afba04088e7ade2e2342",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "636c7035_093f0052",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 4
+      },
+      "lineNbr": 468,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-04-04T10:42:29Z",
+      "side": 1,
+      "message": "Yes, there\u0027s no `.and_then()` like method on `bool` that would let you return the `Option\u003c\u003e` type directly, but `then_some()` can be combined with `flatten()` to work around that, and avoid an explicit `if` statement and explicit `None`-returning branch. \n\nI had trouble parsing what change you wanted from your review comment, but I made a guess and incorporated in the new version just chaining everything, without assigning explicit booleans, and explicit None-returns.",
+      "parentUuid": "eb6c27f7_c1953e7b",
       "revId": "89ebc997e5dce8287be5afba04088e7ade2e2342",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
