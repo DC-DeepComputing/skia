@@ -134,6 +134,30 @@
       },
       "revId": "7f190dd04a7ad98850854fdc0209640ffe411942",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "24163447_7e2be99d",
+        "filename": "src/base/SkVx.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-04-04T20:08:51Z",
+      "side": 1,
+      "message": "In the abstract, I hear you, but in this particular case, this is the base class of SkVx and underpins most of our vectorization code. By definition it is very performance sensitive because we only use SkVx when it matters. \n\nThe case MSAN caught is totally valid and we can fix it there; I trust it to find future cases just as well.",
+      "parentUuid": "1ba461a7_0cc4284b",
+      "range": {
+        "startLine": 215,
+        "startChar": 0,
+        "endLine": 215,
+        "endChar": 15
+      },
+      "revId": "7f190dd04a7ad98850854fdc0209640ffe411942",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
