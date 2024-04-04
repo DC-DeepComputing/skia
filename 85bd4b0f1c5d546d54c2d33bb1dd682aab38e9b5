@@ -16,6 +16,109 @@
       "message": "Michael - Please review and confirm this is what you had in mind for the general approach here\nRob - Let me know if there are any concerns related to precompilation\nJohn - Please feel free to review the SkSL if you feel so inspired!\n\nThe algorithms for the specific fast-paths, including most of the comments, is lifted and will continue to be lifted from https://crsrc.org/c/third_party/skia/src/gpu/ganesh/GrBlurUtils.cpp. Very open to any changes in naming.",
       "revId": "85bd4b0f1c5d546d54c2d33bb1dd682aab38e9b5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "06747df3_f24106ce",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-04-04T15:17:59Z",
+      "side": 1,
+      "message": "SkSL looks good to me",
+      "revId": "85bd4b0f1c5d546d54c2d33bb1dd682aab38e9b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02404808_e642d618",
+        "filename": "src/gpu/graphite/geom/RectBlurData.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-04-04T15:17:59Z",
+      "side": 1,
+      "message": "tiny nit:  blank line?",
+      "revId": "85bd4b0f1c5d546d54c2d33bb1dd682aab38e9b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f0bd092_779a97ce",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 3
+      },
+      "lineNbr": 1436,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-04-04T15:17:59Z",
+      "side": 1,
+      "message": "up to you: It doesn\u0027t actually make any difference, but we support `rect.TLRB` as a synonym for `rect.xyzw` if you think it looks nicer.",
+      "range": {
+        "startLine": 1436,
+        "startChar": 34,
+        "endLine": 1436,
+        "endChar": 36
+      },
+      "revId": "85bd4b0f1c5d546d54c2d33bb1dd682aab38e9b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25c26761_69e3251b",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 3
+      },
+      "lineNbr": 1437,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-04-04T15:17:59Z",
+      "side": 1,
+      "message": "nit/up to you: `xy.x` is a bit hard to read. A different variable name (`pos`?) might flow better.",
+      "range": {
+        "startLine": 1437,
+        "startChar": 58,
+        "endLine": 1437,
+        "endChar": 62
+      },
+      "revId": "85bd4b0f1c5d546d54c2d33bb1dd682aab38e9b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c158f854_32639e59",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 3
+      },
+      "lineNbr": 1476,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-04-04T15:17:59Z",
+      "side": 1,
+      "message": "nit: should we include a TODO comment for the other shape types?",
+      "range": {
+        "startLine": 1476,
+        "startChar": 1,
+        "endLine": 1476,
+        "endChar": 2
+      },
+      "revId": "85bd4b0f1c5d546d54c2d33bb1dd682aab38e9b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
