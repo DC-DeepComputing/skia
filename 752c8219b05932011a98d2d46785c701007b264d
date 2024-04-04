@@ -34,6 +34,24 @@
       "parentUuid": "d7529020_cfd6d978",
       "revId": "752c8219b05932011a98d2d46785c701007b264d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fbbcac6b_3d6768e5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-04T16:06:33Z",
+      "side": 1,
+      "message": "The CQ job passes, but I wouldn\u0027t call it \"working\". It passed before fetching ninja, the change to fetch ninja made no difference here. The thing I\u0027m interested in here is why the cmake call out to ninja at cmake build generation time is now failing (this is currently being reported as a cmake build generation warning). Everything keeps going because cmake is using make here and not ninja to do the actual build.",
+      "parentUuid": "839351c5_9cea5963",
+      "revId": "752c8219b05932011a98d2d46785c701007b264d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
