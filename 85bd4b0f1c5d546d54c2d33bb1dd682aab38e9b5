@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d26d77d6_d7d58216",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-04-04T15:00:24Z",
+      "side": 1,
+      "message": "Michael - Please review and confirm this is what you had in mind for the general approach here\nRob - Let me know if there are any concerns related to precompilation\nJohn - Please feel free to review the SkSL if you feel so inspired!\n\nThe algorithms for the specific fast-paths, including most of the comments, is lifted and will continue to be lifted from https://crsrc.org/c/third_party/skia/src/gpu/ganesh/GrBlurUtils.cpp. Very open to any changes in naming.",
+      "revId": "85bd4b0f1c5d546d54c2d33bb1dd682aab38e9b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

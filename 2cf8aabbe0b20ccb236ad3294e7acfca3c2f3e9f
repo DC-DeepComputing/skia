@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "33b3ff22_c11bd83c",
+        "filename": "src/gpu/graphite/geom/RectBlurData.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-04-04T15:00:24Z",
+      "side": 1,
+      "message": "Not sure how helpful this is right here next to the enum definition, but we have similar checks in ShaderCodeDictionary for other enums in our SkSL.",
+      "revId": "2cf8aabbe0b20ccb236ad3294e7acfca3c2f3e9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
