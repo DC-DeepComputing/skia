@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c54761dc_6f5a318c",
+        "filename": "src/core/SkStream.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 346,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-04T12:50:13Z",
+      "side": 1,
+      "message": "If this were ever true something else would have broken already, as `fOffset` is an offset into the `fData`. (The UB would have already happened because we would have already read or forced a seek past the end of the data.) This check should not be needed.",
+      "revId": "251b09c65f0b78ccd846d51ec0296b39f4c7177e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "78c220c1_42d9fce4",
+        "filename": "src/core/SkStream.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 351,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-04T12:50:13Z",
+      "side": 1,
+      "message": "Should call `sk_careful_memcpy` instead of the size check to make things more obvious.",
+      "range": {
+        "startLine": 351,
+        "startChar": 8,
+        "endLine": 351,
+        "endChar": 14
+      },
+      "revId": "251b09c65f0b78ccd846d51ec0296b39f4c7177e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
