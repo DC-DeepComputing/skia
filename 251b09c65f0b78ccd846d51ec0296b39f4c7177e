@@ -3,6 +3,57 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d3a2a9d3_96bb3ed9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-04T13:01:45Z",
+      "side": 1,
+      "message": "The null check on buffer is obviously needed because that\u0027s how `skip` works. Remove this paragraph.",
+      "revId": "251b09c65f0b78ccd846d51ec0296b39f4c7177e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a1407a3_7f5d35a0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-04T13:01:45Z",
+      "side": 1,
+      "message": "Yeah, this is the bug, fix that.",
+      "revId": "251b09c65f0b78ccd846d51ec0296b39f4c7177e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "585d28dd_9825c48a",
+        "filename": "src/core/SkStream.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 339,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-04T13:01:45Z",
+      "side": 1,
+      "message": "Anyone using this is probably a broken mess anyway and this has been around forever, but this has always been a bug. This class has always had something that assumed `fOffset` was always an offset into the `fData`. It seems Skia no longer uses it, as it was replaced with `SkRBuffer::skipToAlign4`. This should probably be removed as it generally doesn\u0027t make sense (and doesn\u0027t appear to be used anywhere in Chromium).",
+      "revId": "251b09c65f0b78ccd846d51ec0296b39f4c7177e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c54761dc_6f5a318c",
         "filename": "src/core/SkStream.cpp",
         "patchSetId": 1
