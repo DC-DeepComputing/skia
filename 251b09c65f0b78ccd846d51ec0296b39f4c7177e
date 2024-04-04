@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c3e03c40_9931a5bb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 21659
+      },
+      "writtenOn": "2024-04-04T17:48:30Z",
+      "side": 1,
+      "message": "I wouldn\u0027t call a method buried in another file, with no explanatory comment obvious. But it sounds like you prefer it without a comment, so I\u0027ve left it in its existing state.",
+      "parentUuid": "d3a2a9d3_96bb3ed9",
+      "revId": "251b09c65f0b78ccd846d51ec0296b39f4c7177e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6a1407a3_7f5d35a0",
@@ -35,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7fefaac4_65fda2ac",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 21659
+      },
+      "writtenOn": "2024-04-04T17:48:30Z",
+      "side": 1,
+      "message": "(no longer applicable.)",
+      "parentUuid": "6a1407a3_7f5d35a0",
+      "revId": "251b09c65f0b78ccd846d51ec0296b39f4c7177e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "37be7dc3_0564cc4e",
@@ -48,6 +84,24 @@
       "writtenOn": "2024-04-04T13:37:55Z",
       "side": 1,
       "message": "Please add a unit test which would fail in UBSAN without the additional check.",
+      "revId": "251b09c65f0b78ccd846d51ec0296b39f4c7177e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a8fba87_14998755",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 21659
+      },
+      "writtenOn": "2024-04-04T17:48:30Z",
+      "side": 1,
+      "message": "Took me a while to sort this out. Annoyingly, I couldn\u0027t find a place where Chromium build Skia\u0027s tests, and Skia standalone doesn\u0027t seem to have UBSan set up. I got it working eventually.\n\nDone. The gap was that you all had tests for empty streams, but they didn\u0027t cover enough because of the null buffer case.",
+      "parentUuid": "37be7dc3_0564cc4e",
       "revId": "251b09c65f0b78ccd846d51ec0296b39f4c7177e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -176,6 +230,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca1279d7_440455a8",
+        "filename": "src/core/SkStream.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 346,
+      "author": {
+        "id": 21659
+      },
+      "writtenOn": "2024-04-04T17:48:30Z",
+      "side": 1,
+      "message": "Well if it goes out of sync because of `skipToAlign4()` this would have been the first source of UB, but agreed that maintaining the invariant is better. Happily with `skipToAlign4()` gone, it\u0027s all moot.\n\nAdded an `SkASSERT`.",
+      "parentUuid": "0d89cd10_34bc23c0",
+      "revId": "251b09c65f0b78ccd846d51ec0296b39f4c7177e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "78c220c1_42d9fce4",
@@ -236,6 +308,30 @@
       "writtenOn": "2024-04-04T17:32:36Z",
       "side": 1,
       "message": "Done",
+      "parentUuid": "32754375_0c0d08cf",
+      "range": {
+        "startLine": 351,
+        "startChar": 8,
+        "endLine": 351,
+        "endChar": 14
+      },
+      "revId": "251b09c65f0b78ccd846d51ec0296b39f4c7177e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "30429dfd_9a644efc",
+        "filename": "src/core/SkStream.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 351,
+      "author": {
+        "id": 21659
+      },
+      "writtenOn": "2024-04-04T17:48:30Z",
+      "side": 1,
+      "message": "Ah, perfect. Done. Yeah, we have one of these in BoringSSL too because the `memcpy` mistake was just too painful to deal with.",
       "parentUuid": "32754375_0c0d08cf",
       "range": {
         "startLine": 351,
