@@ -302,6 +302,30 @@
       },
       "revId": "7f190dd04a7ad98850854fdc0209640ffe411942",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8fe04c3a_eed6f0b6",
+        "filename": "src/base/SkVx.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 3375938
+      },
+      "writtenOn": "2024-04-05T20:52:03Z",
+      "side": 1,
+      "message": "Thanks for looking into this too. I hope that future improvements in the toolchain will improve even these cases.",
+      "parentUuid": "d86680c9_0e3e57ff",
+      "range": {
+        "startLine": 215,
+        "startChar": 0,
+        "endLine": 215,
+        "endChar": 15
+      },
+      "revId": "7f190dd04a7ad98850854fdc0209640ffe411942",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
