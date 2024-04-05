@@ -94,6 +94,30 @@
       },
       "revId": "10e05b3a3e80e6eb3e08918ee1d1cc0752048602",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9eab9b7c_62247e26",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-05T02:35:22Z",
+      "side": 1,
+      "message": "Ok, I need to get things set up with an IDE that can show types, because that would have helped a lot. The issue isn\u0027t in this change, but with the current code. Will comment on https://skia-review.googlesource.com/c/skia/+/801676 .",
+      "parentUuid": "b2d81946_809e6d7e",
+      "range": {
+        "startLine": 272,
+        "startChar": 12,
+        "endLine": 272,
+        "endChar": 38
+      },
+      "revId": "10e05b3a3e80e6eb3e08918ee1d1cc0752048602",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
