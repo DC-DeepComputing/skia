@@ -16,6 +16,24 @@
       "message": "So at least in Ganesh the key size isn\u0027t increasing with the added components so that was my main worry (+nicolette to confirm how this would affect Graphite). But regradless I have a general API question that I can be swayed either way on. Do we actually think there are use cases for any component mappings besides R-B swaps? If not would it make sense to just have a single flag to handle that swap?\n\nBut like I said since our internal key size doesn\u0027t change storing all 4 channels I don\u0027t care too much, just wanted to mention an alternative here.",
       "revId": "326083d6a231179e0f385ccdc9f6442264a167a6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d767ee9_2fe806d3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 21169
+      },
+      "writtenOn": "2024-04-05T16:46:18Z",
+      "side": 1,
+      "message": "No, RB swap should be the only thing needed.  I also had a bool initially.  v2 switches to a bool.",
+      "parentUuid": "00ed1a89_23a52d22",
+      "revId": "326083d6a231179e0f385ccdc9f6442264a167a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
