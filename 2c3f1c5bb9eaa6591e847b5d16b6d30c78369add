@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4b8a6c5_77518641",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-04-05T16:00:01Z",
+      "side": 1,
+      "message": "Copied over the oddness from GrYUVToRGBEffect. Only thing remaining is tweaking the subset code, and possibly we need adjusted sampling for nearest neighbor (see MakeCustomLinearFilterInset).",
+      "revId": "2c3f1c5bb9eaa6591e847b5d16b6d30c78369add",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
