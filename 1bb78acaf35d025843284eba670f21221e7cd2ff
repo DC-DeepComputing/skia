@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b369570a_21166533",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2024-04-05T14:15:38Z",
+      "side": 1,
+      "message": "PTAL. The diff between ps1 and latest patch set are the changes.",
+      "revId": "1bb78acaf35d025843284eba670f21221e7cd2ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
