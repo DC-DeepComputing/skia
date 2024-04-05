@@ -51,6 +51,24 @@
       "parentUuid": "fb060322_2934eb53",
       "revId": "54b0b66ef8d210319f03fdc6c7c973d3ac2d337f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d43ec993_4b44f9cd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8918
+      },
+      "writtenOn": "2024-04-05T12:36:48Z",
+      "side": 1,
+      "message": "I don\u0027t understand what those things actually define, but as mentioned in b/332913234, I have noticed crashes on Windows in the way it currently works, but not if using the first #elif. I am happy to help with debugging if necessary",
+      "parentUuid": "474369de_1dcb28f2",
+      "revId": "54b0b66ef8d210319f03fdc6c7c973d3ac2d337f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
