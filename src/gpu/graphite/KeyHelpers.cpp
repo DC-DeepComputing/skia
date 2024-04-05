@@ -618,9 +618,11 @@ void add_yuv_image_uniform_data(const ShaderCodeDictionary* dict,
 
     gatherer->write(SkSize::Make(1.f/imgData.fImgSize.width(), 1.f/imgData.fImgSize.height()));
     gatherer->write(imgData.fSubset);
+    gatherer->write(imgData.fSubsetUV);
     gatherer->write(SkTo<int>(imgData.fTileModes[0]));
     gatherer->write(SkTo<int>(imgData.fTileModes[1]));
     gatherer->write(SkTo<int>(imgData.fSampling.filter));
+    gatherer->write(SkTo<int>(imgData.fSamplingUV.filter));
 
     for (int i = 0; i < 4; ++i) {
         gatherer->writeHalf(imgData.fChannelSelect[i]);
@@ -636,6 +638,7 @@ void add_cubic_yuv_image_uniform_data(const ShaderCodeDictionary* dict,
 
     gatherer->write(SkSize::Make(1.f/imgData.fImgSize.width(), 1.f/imgData.fImgSize.height()));
     gatherer->write(imgData.fSubset);
+    gatherer->write(imgData.fSubsetUV);
     gatherer->write(SkTo<int>(imgData.fTileModes[0]));
     gatherer->write(SkTo<int>(imgData.fTileModes[1]));
     const SkCubicResampler& cubic = imgData.fSampling.cubic;
@@ -656,9 +659,11 @@ YUVImageShaderBlock::ImageData::ImageData(const SkSamplingOptions& sampling,
                                           SkISize imgSize,
                                           SkRect subset)
         : fSampling(sampling)
+        , fSamplingUV(sampling)
         , fTileModes{tileModeX, tileModeY}
         , fImgSize(imgSize)
-        , fSubset(subset) {
+        , fSubset(subset)
+        , fSubsetUV(subset) {
 }
 
 void YUVImageShaderBlock::AddBlock(const KeyContext& keyContext,
@@ -672,9 +677,10 @@ void YUVImageShaderBlock::AddBlock(const KeyContext& keyContext,
         return;
     }
 
-    for (int i = 0; i < 4; ++i) {
-        gatherer->add(imgData.fSampling, imgData.fTileModes, imgData.fTextureProxies[i]);
-    }
+    gatherer->add(imgData.fSampling, imgData.fTileModes, imgData.fTextureProxies[0]);
+    gatherer->add(imgData.fSamplingUV, imgData.fTileModes, imgData.fTextureProxies[1]);
+    gatherer->add(imgData.fSamplingUV, imgData.fTileModes, imgData.fTextureProxies[2]);
+    gatherer->add(imgData.fSampling, imgData.fTileModes, imgData.fTextureProxies[3]);
 
     if (imgData.fSampling.useCubic) {
         add_cubic_yuv_image_uniform_data(keyContext.dict(), imgData, gatherer);
@@ -1475,7 +1481,10 @@ static void add_yuv_image_to_key(const KeyContext& keyContext,
     const YUVATextureProxies& yuvaProxies =
             static_cast<const Image_YUVA*>(imageToDraw.get())->yuvaProxies();
     const SkYUVAInfo& yuvaInfo = yuvaProxies.yuvaInfo();
-
+    // We would want to add a translation to the local matrix to handle other sitings.
+    SkASSERT(yuvaInfo.sitingX() == SkYUVAInfo::Siting::kCentered);
+    SkASSERT(yuvaInfo.sitingY() == SkYUVAInfo::Siting::kCentered);
+    // We assume the U and V planes are the same size
     YUVImageShaderBlock::ImageData imgData(sampling,
                                            origShader->tileModeX(),
                                            origShader->tileModeY(),
@@ -1486,6 +1495,8 @@ static void add_yuv_image_to_key(const KeyContext& keyContext,
     }
     int textureCount = 0;
     SkYUVAInfo::YUVALocations yuvaLocations = yuvaProxies.yuvaLocations();
+    SkASSERT(yuvaInfo.planeSubsamplingFactors(yuvaLocations[SkYUVAInfo::kU].fPlane) ==
+             yuvaInfo.planeSubsamplingFactors(yuvaLocations[SkYUVAInfo::kV].fPlane));
     for (int locIndex = 0; locIndex < SkYUVAInfo::kYUVAChannelCount; ++locIndex) {
         auto [yuvPlane, yuvChannel] = yuvaLocations[locIndex];
         if (yuvPlane >= 0) {
@@ -1494,6 +1505,34 @@ static void add_yuv_image_to_key(const KeyContext& keyContext,
             imgData.fTextureProxies[locIndex] = view.refProxy();
             imgData.fChannelSelect[locIndex][static_cast<int>(yuvChannel)] = 1.0f;
             ++textureCount;
+            auto [ssx, ssy] = yuvaInfo.planeSubsamplingFactors(yuvPlane);
+            SkRect planeSubset = imgData.fSubset;
+            if (ssx > 1 || ssy > 1) {
+                float scaleX = 1.f/ssx;
+                float scaleY = 1.f/ssy;
+                if (imgData.fTileModes[0] != SkTileMode::kClamp) {
+                    int dx = (ssx*view.width() - yuvaInfo.width());
+                    float maxRight = view.width() - dx*scaleX;
+                    if (planeSubset.fRight > maxRight) {
+                        planeSubset.fRight = maxRight;
+                    }
+                }
+                if (imgData.fTileModes[1] != SkTileMode::kClamp) {
+                    int dy = (ssy*view.height() - yuvaInfo.height());
+                    float maxBottom = view.height() - dy*scaleY;
+                    if (planeSubset.fBottom > maxBottom) {
+                        planeSubset.fBottom = maxBottom;
+                    }
+                }
+                if (imgData.fSampling.filter == SkFilterMode::kNearest) {
+                    imgData.fSamplingUV = SkSamplingOptions(SkFilterMode::kLinear,
+                                                            imgData.fSampling.mipmap);
+                }
+            }
+            // V will share this subset
+            if (locIndex == SkYUVAInfo::kU) {
+                imgData.fSubsetUV = planeSubset;
+            }
         }
     }
     SkASSERT(textureCount == 3 || textureCount == 4);
