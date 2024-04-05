@@ -22,6 +22,30 @@
       },
       "revId": "9a549e204325ff8cfd9303289d84cce1455e283f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "41bab877_29e701a4",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 4
+      },
+      "lineNbr": 322,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-05T02:53:04Z",
+      "side": 1,
+      "message": "Looks like this should actually be an `and_then`. See https://skia-review.googlesource.com/c/skia/+/836796 .",
+      "parentUuid": "f69524c8_de7f3bc0",
+      "range": {
+        "startLine": 322,
+        "startChar": 9,
+        "endLine": 322,
+        "endChar": 12
+      },
+      "revId": "9a549e204325ff8cfd9303289d84cce1455e283f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
