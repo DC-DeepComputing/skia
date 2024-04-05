@@ -230,76 +230,35 @@ private:
     SkSTArenaAllocWithReset<4 * sizeof(IntersectionTree)> fTreeStore;
 };
 
-namespace {
-
-sk_sp<TextureProxy> make_draw_target(const Recorder* recorder,
-                                     const SkImageInfo& ii,
-                                     Mipmapped mipmapped,
-                                     Protected isProtected,
-                                     Budgeted budgeted) {
-    if (!recorder) {
-        return nullptr;
-    }
-    return TextureProxy::Make(recorder->priv().caps(),
-                              ii.dimensions(),
-                              ii.colorType(),
-                              mipmapped,
-                              isProtected,
-                              Renderable::kYes,
-                              budgeted);
-}
-
-sk_sp<DrawContext> make_draw_context(const Recorder* recorder,
-                                     sk_sp<TextureProxy> target,
-                                     const SkISize& dimensions,
-                                     const SkColorInfo& colorInfo,
-                                     const SkSurfaceProps& props) {
-    // We don't render to unknown or unpremul alphatypes
-    if (colorInfo.alphaType() == kUnknown_SkAlphaType ||
-        colorInfo.alphaType() == kUnpremul_SkAlphaType) {
-        return nullptr;
-    }
-    return DrawContext::Make(recorder->priv().caps(), std::move(target),
-                             dimensions, colorInfo, props);
-}
-
-}  // anonymous namespace
-
 sk_sp<Device> Device::Make(Recorder* recorder,
                            const SkImageInfo& ii,
                            skgpu::Budgeted budgeted,
                            Mipmapped mipmapped,
                            SkBackingFit backingFit,
                            const SkSurfaceProps& props,
-                           bool addInitialClear) {
+                           bool addInitialClear,
+                           bool registerWithRecorder) {
     SkASSERT(!(mipmapped == Mipmapped::kYes && backingFit == SkBackingFit::kApprox));
-
     if (!recorder) {
         return nullptr;
     }
 
     Protected isProtected = Protected(recorder->priv().caps()->protectedSupport());
-    sk_sp<TextureProxy> target = make_draw_target(
-            recorder,
-            backingFit == SkBackingFit::kApprox ? ii.makeDimensions(GetApproxSize(ii.dimensions()))
-                                                : ii,
-            mipmapped,
-            isProtected,
-            budgeted);
-    if (!target) {
-        return nullptr;
-    }
-
-    return Make(
-            recorder, std::move(target), ii.dimensions(), ii.colorInfo(), props, addInitialClear);
-}
-
-sk_sp<Device> Device::Make(Recorder* recorder,
-                           sk_sp<TextureProxy> target,
-                           const SkColorInfo& colorInfo,
-                           const SkSurfaceProps& props,
-                           bool addInitialClear) {
-    return Make(recorder, target, target->dimensions(), colorInfo, props, addInitialClear);
+    SkISize backingDimensions = backingFit == SkBackingFit::kApprox ? GetApproxSize(ii.dimensions())
+                                                                    : ii.dimensions();
+    return Make(recorder,
+                TextureProxy::Make(recorder->priv().caps(),
+                                   backingDimensions,
+                                   ii.colorType(),
+                                   mipmapped,
+                                   isProtected,
+                                   Renderable::kYes,
+                                   budgeted),
+                ii.dimensions(),
+                ii.colorInfo(),
+                props,
+                addInitialClear,
+                registerWithRecorder);
 }
 
 sk_sp<Device> Device::Make(Recorder* recorder,
@@ -307,44 +266,28 @@ sk_sp<Device> Device::Make(Recorder* recorder,
                            SkISize deviceSize,
                            const SkColorInfo& colorInfo,
                            const SkSurfaceProps& props,
-                           bool addInitialClear) {
+                           bool addInitialClear,
+                           bool registerWithRecorder) {
     if (!recorder) {
         return nullptr;
     }
 
-    sk_sp<DrawContext> dc =
-            make_draw_context(recorder, std::move(target), deviceSize, colorInfo, props);
+    sk_sp<DrawContext> dc = DrawContext::Make(recorder->priv().caps(),
+                                              std::move(target),
+                                              deviceSize,
+                                              colorInfo,
+                                              props);
     if (!dc) {
         return nullptr;
+    } else if (addInitialClear) {
+        dc->clear(SkColors::kTransparent);
     }
 
-    return sk_sp<Device>(
-            new Device(recorder, std::move(dc), addInitialClear, /*registerWithRecorder=*/true));
-}
-
-sk_sp<Device> Device::MakeScratch(Recorder* recorder,
-                                  const SkImageInfo& ii,
-                                  Mipmapped mipmapped,
-                                  const SkSurfaceProps& props,
-                                  bool addInitialClear) {
-    if (!recorder) {
-        return nullptr;
+    sk_sp<Device> device{new Device(recorder, std::move(dc))};
+    if (registerWithRecorder) {
+        recorder->registerDevice(device);
     }
-
-    sk_sp<TextureProxy> target =
-            make_draw_target(recorder, ii, mipmapped, Protected::kNo, Budgeted::kYes);
-    if (!target) {
-        return nullptr;
-    }
-
-    sk_sp<DrawContext> dc =
-            make_draw_context(recorder, std::move(target), ii.dimensions(), ii.colorInfo(), props);
-    if (!dc) {
-        return nullptr;
-    }
-
-    return sk_sp<Device>(
-            new Device(recorder, std::move(dc), addInitialClear, /*registerWithRecorder=*/false));
+    return device;
 }
 
 // These default tuning numbers for the HybridBoundsManager were chosen from looking at performance
@@ -360,10 +303,7 @@ static constexpr int kGridCellSize = 16;
 static constexpr int kMaxBruteForceN = 64;
 static constexpr int kMaxGridSize = 32;
 
-Device::Device(Recorder* recorder,
-               sk_sp<DrawContext> dc,
-               bool addInitialClear,
-               bool registerWithRecorder)
+Device::Device(Recorder* recorder, sk_sp<DrawContext> dc)
         : SkDevice(dc->imageInfo(), dc->surfaceProps())
         , fRecorder(recorder)
         , fDC(std::move(dc))
@@ -375,12 +315,6 @@ Device::Device(Recorder* recorder,
         , fCurrentDepth(DrawOrder::kClearDepth)
         , fSDFTControl(recorder->priv().caps()->getSDFTControl(false)) {
     SkASSERT(SkToBool(fDC) && SkToBool(fRecorder));
-    if (registerWithRecorder) {
-        fRecorder->registerDevice(this);
-    }
-    if (addInitialClear) {
-        fDC->clear(SkColors::kTransparent);
-    }
     if (fRecorder->priv().caps()->defaultMSAASamplesCount() > 1) {
         if (fRecorder->priv().caps()->msaaRenderToSingleSampledSupport()) {
             fMSAASupported = true;
