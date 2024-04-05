@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "159b6bd7_da45413c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-04-05T17:20:25Z",
+      "side": 1,
+      "message": "Oh yeah, a remnant of the \"are we in background\" function.",
+      "revId": "9ac417b952716f5ab245cf48d548485ea3df8e6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
