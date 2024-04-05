@@ -129,7 +129,7 @@ parse_targets() {
     basename $LIBPATH
   done
 }
-${NINJA} -C ${BUILD_DIR} libskia.a libskshaper.a libskunicode.a \
+${NINJA} -C ${BUILD_DIR} libskia.a libskshaper.a libskunicode_core.a libskunicode_icu.a \
   $(parse_targets $GM_LIB)
 
 echo "Generating final wasm"
@@ -217,7 +217,8 @@ EMCC_DEBUG=1 ${EMCXX} \
     $TESTS_TO_BUILD \
     $GM_LIB \
     $BUILD_DIR/libskshaper.a \
-    $BUILD_DIR/libskunicode.a \
+    $BUILD_DIR/libskunicode_core.a \
+    $BUILD_DIR/libskunicode_icu.a \
     $BUILD_DIR/libsvg.a \
     $BUILD_DIR/libskia.a \
     $BUILTIN_FONT \
