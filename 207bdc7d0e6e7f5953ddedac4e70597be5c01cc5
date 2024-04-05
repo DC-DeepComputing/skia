@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "973a3832_e93dbd54",
+        "filename": "src/gpu/graphite/Device.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-05T19:04:22Z",
+      "side": 1,
+      "message": "It might be possible from one direction. I think we could add an assert that when Device is deleted it shouldn\u0027t have any pending work if it hasn\u0027t abandoned its recorder. If it did, that would mean that it wasn\u0027t manually flushed or had its owning surface go out of scope, or been marked immutable, etc, but also hadn\u0027t had abandonRecorder() called.\n\nHowever, there\u0027s not a good way to have `Recorder::snap()` check all un-registered devices to make sure they\u0027ve had their work flushed.\n\nFor now I\u0027m inclined to leave it as-is. My medium-term design hope is that scratch device tasks will be referenced by parent tasks and be ordered correctly there. This would be both for drawing a scratch device or copying from a scratch device. Operations that need to instantiate and return a scratch device to the client would have an explicit task added to the root task list that held on to the device\u0027s tasks and represents the conversion from scratch to not-scratch (e.g. SkImages::MakeWithFilter).  In that world, we wouldn\u0027t be dependent on surfaces going out of scope or manually flushing to order tasks appropriately.",
+      "parentUuid": "9bb75a8d_167138f0",
+      "range": {
+        "startLine": 47,
+        "startChar": 29,
+        "endLine": 48,
+        "endChar": 34
+      },
+      "revId": "207bdc7d0e6e7f5953ddedac4e70597be5c01cc5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f227bb32_a65bb9c7",
         "filename": "src/gpu/graphite/Surface_Graphite.h",
         "patchSetId": 12
@@ -37,6 +61,30 @@
       "writtenOn": "2024-04-05T15:23:11Z",
       "side": 1,
       "message": "Is this just here so that the scratch version can call this function passing in false? If so is better to make a private factory instead that takes this parameter so that we can keep usages of the public APIs contained to how we want them to be used?",
+      "range": {
+        "startLine": 35,
+        "startChar": 32,
+        "endLine": 35,
+        "endChar": 63
+      },
+      "revId": "207bdc7d0e6e7f5953ddedac4e70597be5c01cc5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b470b675_eaaad42e",
+        "filename": "src/gpu/graphite/Surface_Graphite.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-05T19:04:22Z",
+      "side": 1,
+      "message": "This `Surface::Make` is not really public, though, that\u0027s `SkSurfaces::RenderTarget(recorder)`.  I am also working in subsequent CLs to move all internal uses of `::Make` to `::MakeScratch`. Once that\u0027s done then I think it makes more sense to have this `Make` be entirely private so that you can either get a scratch surface or a public `::RenderTarget` which our internal code shouldn\u0027t be using.\n\nIn the long term I\u0027d even like to get rid of `Surface::MakeScratch` and update the internal draw code to operate on Device by itself. Right now a Surface is always instantiated, so if we want full texture reuse for internal operations, we either need to allow surfaces to not be instantiated right away (I don\u0027t love that), or update all the internal code to use Device and wrap the Device in an SkCanvas.",
+      "parentUuid": "f227bb32_a65bb9c7",
       "range": {
         "startLine": 35,
         "startChar": 32,
