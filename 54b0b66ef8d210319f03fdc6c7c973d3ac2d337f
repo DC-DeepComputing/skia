@@ -87,6 +87,24 @@
       "parentUuid": "d43ec993_4b44f9cd",
       "revId": "54b0b66ef8d210319f03fdc6c7c973d3ac2d337f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5398d2b8_a8de8faf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-04-05T13:46:45Z",
+      "side": 1,
+      "message": "`_MSC_VER` indicates the compiler in use, not the target platform. We don\u0027t _recommend_ Dev Studio but we do build and test it.",
+      "parentUuid": "e81094bd_20ea8e02",
+      "revId": "54b0b66ef8d210319f03fdc6c7c973d3ac2d337f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
