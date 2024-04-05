@@ -33,6 +33,24 @@
       "message": "This test passes locally.  I\u0027m not sure if the fact that I can\u0027t use the `grmtl` config.\n\n```\n$ ./out/Debug/dm -m \"SurfaceAsyncReadPixelsGraphite\" --nameByHash --key arch arm64 compiler Clang configuration Debug cpu_or_gpu GPU cpu_or_gpu_value AppleM1 extra_config ASAN_Graphite_Native_Metal model MacMini9.1 os Mac11 style default --randomProcessorTest --nocpu --nogpu --src tests gm\nSkipping config 8888: Don\u0027t understand \u00278888\u0027.\nSkipping config gl: Don\u0027t understand \u0027gl\u0027.\nSkipping config nonrendering: Don\u0027t understand \u0027nonrendering\u0027.\n0 srcs * 0 sinks + 1 tests \u003d\u003d 1 tasks\n\n[1/1] 22MB RAM, 22MB peak, 0 queued, 1 threads:\n\tunit test  SurfaceAsyncReadPixelsGraphite  done\nFinished!\n```",
       "revId": "e697716bba97339e48c241b398f670281fdf0666",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0371b9d0_c1f4610f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 9944
+      },
+      "writtenOn": "2024-04-05T20:53:45Z",
+      "side": 1,
+      "message": "I figured it out, you need\n```\nbin/gn gen out/Debug --args\u003d\"skia_enable_graphite\u003dtrue skia_use_metal\u003dtrue\"\n./out/Debug/dm -m \"SurfaceAsyncReadPixelsGraphite\" --config grmtl\n```",
+      "parentUuid": "b2f6c380_179ee20c",
+      "revId": "e697716bba97339e48c241b398f670281fdf0666",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
