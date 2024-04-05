@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e81ffaf5_0c15ba5c",
+        "filename": "src/gpu/graphite/Device.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-04-05T19:55:25Z",
+      "side": 1,
+      "message": "If the assert isn\u0027t hard to add I think it could be a good safety check. I don\u0027t think we need to checking the other direction, especially with the long term design plan.",
+      "parentUuid": "973a3832_e93dbd54",
+      "range": {
+        "startLine": 47,
+        "startChar": 29,
+        "endLine": 48,
+        "endChar": 34
+      },
+      "revId": "207bdc7d0e6e7f5953ddedac4e70597be5c01cc5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f227bb32_a65bb9c7",
         "filename": "src/gpu/graphite/Surface_Graphite.h",
         "patchSetId": 12
@@ -85,6 +109,30 @@
       "side": 1,
       "message": "This `Surface::Make` is not really public, though, that\u0027s `SkSurfaces::RenderTarget(recorder)`.  I am also working in subsequent CLs to move all internal uses of `::Make` to `::MakeScratch`. Once that\u0027s done then I think it makes more sense to have this `Make` be entirely private so that you can either get a scratch surface or a public `::RenderTarget` which our internal code shouldn\u0027t be using.\n\nIn the long term I\u0027d even like to get rid of `Surface::MakeScratch` and update the internal draw code to operate on Device by itself. Right now a Surface is always instantiated, so if we want full texture reuse for internal operations, we either need to allow surfaces to not be instantiated right away (I don\u0027t love that), or update all the internal code to use Device and wrap the Device in an SkCanvas.",
       "parentUuid": "f227bb32_a65bb9c7",
+      "range": {
+        "startLine": 35,
+        "startChar": 32,
+        "endLine": 35,
+        "endChar": 63
+      },
+      "revId": "207bdc7d0e6e7f5953ddedac4e70597be5c01cc5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b7b1ef4e_ed7f75c1",
+        "filename": "src/gpu/graphite/Surface_Graphite.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-04-05T19:55:25Z",
+      "side": 1,
+      "message": "Yeah I wasn\u0027t using public here in the sense of public to outside users. Just public in terms of the class itself. If these API calls are going to go away soon then we can live with this for now. But if they\u0027re going to hang around for a bit until we actually have time to do the refactor, I think its worth not have parameters in the main factory we don\u0027t actually want people to use.",
+      "parentUuid": "b470b675_eaaad42e",
       "range": {
         "startLine": 35,
         "startChar": 32,
