@@ -39,6 +39,30 @@
       },
       "revId": "2c3f1c5bb9eaa6591e847b5d16b6d30c78369add",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ca3e335_678ceb4f",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1525,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-05T18:46:38Z",
+      "side": 1,
+      "message": "I agree, I think it makes sense to map the subset back into the logical pixel space.",
+      "parentUuid": "8888122c_d350906e",
+      "range": {
+        "startLine": 1525,
+        "startChar": 28,
+        "endLine": 1525,
+        "endChar": 65
+      },
+      "revId": "2c3f1c5bb9eaa6591e847b5d16b6d30c78369add",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
