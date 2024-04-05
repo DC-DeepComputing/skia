@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1268da83_b87f0052",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3302461
+      },
+      "writtenOn": "2024-04-05T13:00:07Z",
+      "side": 1,
+      "message": "Should be good to be merged now, PTAL.",
+      "revId": "522fb801469a9fa3b777621f2115529dad19165e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
