@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9bb75a8d_167138f0",
+        "filename": "src/gpu/graphite/Device.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-04-05T15:23:11Z",
+      "side": 1,
+      "message": "can this be validated in any way?",
+      "range": {
+        "startLine": 47,
+        "startChar": 29,
+        "endLine": 48,
+        "endChar": 34
+      },
+      "revId": "207bdc7d0e6e7f5953ddedac4e70597be5c01cc5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f227bb32_a65bb9c7",
+        "filename": "src/gpu/graphite/Surface_Graphite.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-04-05T15:23:11Z",
+      "side": 1,
+      "message": "Is this just here so that the scratch version can call this function passing in false? If so is better to make a private factory instead that takes this parameter so that we can keep usages of the public APIs contained to how we want them to be used?",
+      "range": {
+        "startLine": 35,
+        "startChar": 32,
+        "endLine": 35,
+        "endChar": 63
+      },
+      "revId": "207bdc7d0e6e7f5953ddedac4e70597be5c01cc5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
