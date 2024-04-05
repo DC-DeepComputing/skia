@@ -69,6 +69,24 @@
       "parentUuid": "474369de_1dcb28f2",
       "revId": "54b0b66ef8d210319f03fdc6c7c973d3ac2d337f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "31004a13_b771e786",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-04-05T13:45:25Z",
+      "side": 1,
+      "message": "From the bug: \"When building Skia for Windows using the Android build system\"--could you get into the details a bit more here?\n\nWe use _MSC_VER as an indicator for \"building in Dev Studio\" and SK_BUILD_FOR_WIN as \"building for Windows operating system.\" The 99% case for Skia on Windows is building with Clang (we strongly urge this in our docs). The Dev Studio C++ compiler is a very limited platform for us and disables most SIMD entirely, since it doesn\u0027t support the builtin vector types that Clang and GCC do. \n\nI don\u0027t know what it means to \"build Skia for Windows on the Android build system\" and you don\u0027t indicate any specifics on what sorts of crashes you are seeing. Links or screenshots or CLs will be useful.\n\nI will say, in general, if you are seeing mysterious issues, a good first step is to try disabling SK_HAS_MUSTTAIL: https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/core/SkRasterPipeline.h;l\u003d29-31;drc\u003d8c8c780b29096d335db532ea89ccd1eab17e22da\n\n`[[clang::musttail]]` is great for performance but has issues on many platforms. It seems like it\u0027s still a work in progress on the Clang side. We had to disable it in skcms on Windows IIRC.",
+      "parentUuid": "d43ec993_4b44f9cd",
+      "revId": "54b0b66ef8d210319f03fdc6c7c973d3ac2d337f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
