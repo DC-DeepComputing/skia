@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1f3fff16_aac6474f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-05T22:10:27Z",
+      "side": 1,
+      "message": "PTAL, the new assert validations appear to be happy.",
+      "revId": "12cf090868308d6b7d2c301da77d204bd9cd766e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f423086a_eac40434",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-05T22:10:27Z",
+      "side": 1,
+      "message": "I\u0027m not 100% sure, since I wouldn\u0027t expect the `Device()` constructor to run if `new` failed, but calling `registerDevice` from inside the constructor was one hypothesis for the crash reports in b/333073673.\n\nEven if that\u0027s not the case, this feels better because now we don\u0027t expose the device pointer to anything until it\u0027s been put into an `sk_sp`.",
+      "range": {
+        "startLine": 286,
+        "startChar": 4,
+        "endLine": 288,
+        "endChar": 41
+      },
+      "revId": "12cf090868308d6b7d2c301da77d204bd9cd766e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
