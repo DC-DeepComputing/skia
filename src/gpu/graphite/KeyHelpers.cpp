@@ -617,6 +617,7 @@ void add_yuv_image_uniform_data(const ShaderCodeDictionary* dict,
     VALIDATE_UNIFORMS(gatherer, dict, BuiltInCodeSnippetID::kYUVImageShader)
 
     gatherer->write(SkSize::Make(1.f/imgData.fImgSize.width(), 1.f/imgData.fImgSize.height()));
+    gatherer->write(SkSize::Make(1.f/imgData.fImgSizeUV.width(), 1.f/imgData.fImgSizeUV.height()));
     gatherer->write(imgData.fSubset);
     gatherer->write(imgData.fSubsetUV);
     gatherer->write(SkTo<int>(imgData.fTileModes[0]));
@@ -637,6 +638,7 @@ void add_cubic_yuv_image_uniform_data(const ShaderCodeDictionary* dict,
     VALIDATE_UNIFORMS(gatherer, dict, BuiltInCodeSnippetID::kCubicYUVImageShader)
 
     gatherer->write(SkSize::Make(1.f/imgData.fImgSize.width(), 1.f/imgData.fImgSize.height()));
+    gatherer->write(SkSize::Make(1.f/imgData.fImgSizeUV.width(), 1.f/imgData.fImgSizeUV.height()));
     gatherer->write(imgData.fSubset);
     gatherer->write(imgData.fSubsetUV);
     gatherer->write(SkTo<int>(imgData.fTileModes[0]));
@@ -662,6 +664,7 @@ YUVImageShaderBlock::ImageData::ImageData(const SkSamplingOptions& sampling,
         , fSamplingUV(sampling)
         , fTileModes{tileModeX, tileModeY}
         , fImgSize(imgSize)
+        , fImgSizeUV(imgSize)
         , fSubset(subset)
         , fSubsetUV(subset) {
 }
@@ -1514,6 +1517,10 @@ static void add_yuv_image_to_key(const KeyContext& keyContext,
                 if (ssx > 1 || ssy > 1) {
                     float scaleX = 1.f/ssx;
                     float scaleY = 1.f/ssy;
+                    planeSubset = {planeSubset.fLeft  *scaleX,
+                                   planeSubset.fTop   *scaleY,
+                                   planeSubset.fRight *scaleX,
+                                   planeSubset.fBottom*scaleY};
                     // If the image is not a multiple of the subsampling then the subsampled plane
                     // needs to be tiled at less than its full width/height. This only matters when
                     // the mode is not clamp.
@@ -1521,18 +1528,14 @@ static void add_yuv_image_to_key(const KeyContext& keyContext,
                         int dx = (ssx*view.width() - yuvaInfo.width());
                         float maxRight = view.width() - dx*scaleX;
                         if (planeSubset.fRight > maxRight) {
-                            // scale back into Y's image space
-                            // TODO: have separate imgSize for UV
-                            planeSubset.fRight = maxRight*yuvaInfo.width()/view.width();
+                            planeSubset.fRight = maxRight;
                         }
                     }
                     if (imgData.fTileModes[1] != SkTileMode::kClamp) {
                         int dy = (ssy*view.height() - yuvaInfo.height());
                         float maxBottom = view.height() - dy*scaleY;
                         if (planeSubset.fBottom > maxBottom) {
-                            // scale back into Y's image space
-                            // TODO: have separate imgSize for UV
-                            planeSubset.fBottom = maxBottom*yuvaInfo.width()/view.width();
+                            planeSubset.fBottom = maxBottom;
                         }
                     }
                     if (imgData.fSampling.filter == SkFilterMode::kNearest) {
@@ -1540,6 +1543,7 @@ static void add_yuv_image_to_key(const KeyContext& keyContext,
                                                                 imgData.fSampling.mipmap);
                     }
                 }
+                imgData.fImgSizeUV = view.dimensions();
                 imgData.fSubsetUV = planeSubset;
             }
         }

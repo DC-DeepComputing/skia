@@ -1017,7 +1017,8 @@ static constexpr char kHWImageShaderName[] = "sk_hw_image_shader";
 //--------------------------------------------------------------------------------------------------
 
 static constexpr Uniform kYUVImageShaderUniforms[] = {
-        { "invImgSize",            SkSLType::kFloat2 },
+        { "invImgSizeY",           SkSLType::kFloat2 },
+        { "invImgSizeUV",          SkSLType::kFloat2 },
         { "subsetY",               SkSLType::kFloat4 },
         { "subsetUV",              SkSLType::kFloat4 },
         { "tilemodeX",             SkSLType::kInt },
@@ -1033,7 +1034,8 @@ static constexpr Uniform kYUVImageShaderUniforms[] = {
 };
 
 static constexpr Uniform kCubicYUVImageShaderUniforms[] = {
-        { "invImgSize",            SkSLType::kFloat2 },
+        { "invImgSizeY",           SkSLType::kFloat2 },
+        { "invImgSizeUV",          SkSLType::kFloat2 },
         { "subsetY",               SkSLType::kFloat4 },
         { "subsetUV",              SkSLType::kFloat4 },
         { "tilemodeX",             SkSLType::kInt },
