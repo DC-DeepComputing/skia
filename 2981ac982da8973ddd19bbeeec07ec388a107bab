@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f2a7ad0_c86b5654",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2024-04-05T22:58:14Z",
+      "side": 1,
+      "message": "Hi Michael and Greg, PTAL. Thanks",
+      "revId": "2981ac982da8973ddd19bbeeec07ec388a107bab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
