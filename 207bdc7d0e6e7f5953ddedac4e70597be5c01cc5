@@ -72,6 +72,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c22d19f_37d227cd",
+        "filename": "src/gpu/graphite/Device.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-05T21:20:04Z",
+      "side": 1,
+      "message": "I started implementing this for checking if there was pending work, and realized that that isn\u0027t a valid assert in the case where some runtime error occurs. We may end up collecting some draws and then have to abort. In the current code, the failed device may still be flushed to the recorder, but in the end we should correctly be leaving unflushed work in the device if nothing ever actually uses it.\n\nHowever, I realized what I can always assert for these unregistered scratch devices is that they go out of scope on the Recorder\u0027s thread and that the recorder hasn\u0027t been snapped since the device was created. I also added an assert in `Device::flushPendingWorkToRecorder` that if it\u0027s a scratch device, it\u0027s being flushed in the expected next recording.",
+      "parentUuid": "e81ffaf5_0c15ba5c",
+      "range": {
+        "startLine": 47,
+        "startChar": 29,
+        "endLine": 48,
+        "endChar": 34
+      },
+      "revId": "207bdc7d0e6e7f5953ddedac4e70597be5c01cc5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f227bb32_a65bb9c7",
@@ -133,6 +157,30 @@
       "side": 1,
       "message": "Yeah I wasn\u0027t using public here in the sense of public to outside users. Just public in terms of the class itself. If these API calls are going to go away soon then we can live with this for now. But if they\u0027re going to hang around for a bit until we actually have time to do the refactor, I think its worth not have parameters in the main factory we don\u0027t actually want people to use.",
       "parentUuid": "b470b675_eaaad42e",
+      "range": {
+        "startLine": 35,
+        "startChar": 32,
+        "endLine": 35,
+        "endChar": 63
+      },
+      "revId": "207bdc7d0e6e7f5953ddedac4e70597be5c01cc5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3130c17c_065f3812",
+        "filename": "src/gpu/graphite/Surface_Graphite.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-05T21:20:04Z",
+      "side": 1,
+      "message": "I\u0027m hoping that I will clean them up soon as part of the texture reuse implementation to migrate all of hte internal rendering onto scratch surfaces that get to have reusable textures.\n\nBut it was also easy to move the `Make` that took the two booleans private and have a public `Make` that passed in true for both values.",
+      "parentUuid": "b7b1ef4e_ed7f75c1",
       "range": {
         "startLine": 35,
         "startChar": 32,
