@@ -16,6 +16,23 @@
       "message": "Okay, I think I\u0027m stuck.  I don\u0027t know how to reproduce this failed test locally.",
       "revId": "e697716bba97339e48c241b398f670281fdf0666",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b2f6c380_179ee20c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 9944
+      },
+      "writtenOn": "2024-04-05T20:22:13Z",
+      "side": 1,
+      "message": "This test passes locally.  I\u0027m not sure if the fact that I can\u0027t use the `grmtl` config.\n\n```\n$ ./out/Debug/dm -m \"SurfaceAsyncReadPixelsGraphite\" --nameByHash --key arch arm64 compiler Clang configuration Debug cpu_or_gpu GPU cpu_or_gpu_value AppleM1 extra_config ASAN_Graphite_Native_Metal model MacMini9.1 os Mac11 style default --randomProcessorTest --nocpu --nogpu --src tests gm\nSkipping config 8888: Don\u0027t understand \u00278888\u0027.\nSkipping config gl: Don\u0027t understand \u0027gl\u0027.\nSkipping config nonrendering: Don\u0027t understand \u0027nonrendering\u0027.\n0 srcs * 0 sinks + 1 tests \u003d\u003d 1 tasks\n\n[1/1] 22MB RAM, 22MB peak, 0 queued, 1 threads:\n\tunit test  SurfaceAsyncReadPixelsGraphite  done\nFinished!\n```",
+      "revId": "e697716bba97339e48c241b398f670281fdf0666",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
