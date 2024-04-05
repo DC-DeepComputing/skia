@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d3244407_3607a1da",
+        "filename": "modules/canvaskit/BUILD.bazel",
+        "patchSetId": 40
+      },
+      "lineNbr": 300,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-04-05T15:27:13Z",
+      "side": 0,
+      "message": "I don\u0027t see an explicit dep for ICU, are we assuming it gets pulled in indirectly?",
+      "range": {
+        "startLine": 300,
+        "startChar": 48,
+        "endLine": 300,
+        "endChar": 51
+      },
+      "revId": "ce2d991d7624151c79e4a75ddaf58a5d5e46493d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
