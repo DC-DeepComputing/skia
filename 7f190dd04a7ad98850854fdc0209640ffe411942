@@ -278,6 +278,30 @@
       },
       "revId": "7f190dd04a7ad98850854fdc0209640ffe411942",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d86680c9_0e3e57ff",
+        "filename": "src/base/SkVx.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-04-05T14:22:18Z",
+      "side": 1,
+      "message": "I dug into this some more and I found a few cases where things were getting zeroed out in ways that the compiler couldn\u0027t optimize away (`SkQuadCoeff`, `SkConicCoeff` and `SkCubicCoeff` are good examples here) which would explain a code size delta. \n\nSince this is zero-cost from a Chrome standpoint (they\u0027re already paying to zero out everything all the time), I\u0027m OK with this. If we see any change in our metrics we can always re-evaluate, but I doubt that we will.",
+      "parentUuid": "71e62d02_eb0908b1",
+      "range": {
+        "startLine": 215,
+        "startChar": 0,
+        "endLine": 215,
+        "endChar": 15
+      },
+      "revId": "7f190dd04a7ad98850854fdc0209640ffe411942",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
