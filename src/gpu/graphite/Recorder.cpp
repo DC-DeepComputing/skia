@@ -472,9 +472,6 @@ void RecorderPriv::flushTrackedDevices() {
     for (auto it = fRecorder->fTrackedDevices.begin(); it != fRecorder->fTrackedDevices.end();) {
         Device* device = it->get();
         if (!device || !device->recorder() || device->unique()) {
-            if (device) {
-                device->abandonRecorder(); // Keep ~Device() happy
-            }
             it = fRecorder->fTrackedDevices.erase(it);
         } else {
             ++it;
