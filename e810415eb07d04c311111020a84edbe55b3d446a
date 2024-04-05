@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2efea6f8_61a17c13",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 7
+      },
+      "lineNbr": 369,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-04-05T19:10:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "37e85b34_e987d1ad",
+      "range": {
+        "startLine": 369,
+        "startChar": 0,
+        "endLine": 369,
+        "endChar": 38
+      },
+      "revId": "e810415eb07d04c311111020a84edbe55b3d446a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "60dc60ef_c811390c",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-04-05T18:46:38Z",
       "side": 1,
       "message": "could this just be `coords \u003d floor(coords) + 0.5;`?",
+      "range": {
+        "startLine": 370,
+        "startChar": 8,
+        "endLine": 373,
+        "endChar": 31
+      },
+      "revId": "e810415eb07d04c311111020a84edbe55b3d446a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d3dd7d1_0548027e",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 7
+      },
+      "lineNbr": 373,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-04-05T19:10:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "60dc60ef_c811390c",
       "range": {
         "startLine": 370,
         "startChar": 8,
