@@ -25,8 +25,9 @@ class Recorder;
 
 class Image final : public Image_Base {
 public:
-    Image(uint32_t uniqueID, TextureProxyView, const SkColorInfo&);
     ~Image() override;
+
+    static sk_sp<Image> Make(TextureProxyView, const SkColorInfo&);
 
     // Create an Image that wraps the Device and automatically flushes or references the Device's
     // pending tasks when the Image is used in a draw to another canvas.
@@ -71,6 +72,8 @@ public:
 #endif
 
 private:
+    Image(uint32_t uniqueID, TextureProxyView, const SkColorInfo&);
+
     sk_sp<SkImage> onMakeSubset(Recorder*, const SkIRect&, RequiredProperties) const override;
     sk_sp<SkImage> makeColorTypeAndColorSpace(Recorder*,
                                               SkColorType targetCT,
