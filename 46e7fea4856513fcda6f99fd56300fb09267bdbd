@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3b7677b_3f3a616e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-04-08T18:24:04Z",
+      "side": 1,
+      "message": "Just want to leave a note here: This did trigger a measurable (large) regression in SKP rendering performance, but only for MSVC. I don\u0027t think that requires any action -- we already produce known-slow code on MSVC.\n\nhttps://perf.skia.org/e/?begin\u003d1712301465\u0026end\u003d1712584583\u0026keys\u003dX0dde6cf2b9fd125663a8b02179cc143b\u0026num_commits\u003d50\u0026request_type\u003d1\u0026xbaroffset\u003d71138",
+      "revId": "46e7fea4856513fcda6f99fd56300fb09267bdbd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
