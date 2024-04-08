@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e84baa7_abe65372",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-08T15:57:02Z",
+      "side": 1,
+      "message": "And I think I\u0027ve figured it out and why it seem sticky but not too sticky on the bots. It\u0027s the order the typefaces are registered, which is based on the order the file names are reported by the iterator, which isn\u0027t deterministic (usually has something to do with the order the files were written to disk or last updated). Reading in the file names and then sorting them produces interestingly different (but stable) results.",
+      "revId": "bee010002003fc334b6528f05bb424c59f6162fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
