@@ -350,7 +350,8 @@ $pure half4 $yuv_to_rgb(half4 sampleColorY,
 
 $pure half4 sk_yuv_image_shader(float2 coords,
                                 float2 invImgSize,
-                                float4 subset,
+                                float4 subsetY,
+                                float4 subsetUV,
                                 int tileModeX,
                                 int tileModeY,
                                 int filterModeY,
@@ -373,16 +374,16 @@ $pure half4 sk_yuv_image_shader(float2 coords,
     }
 
     half4 sampleColorY, sampleColorU, sampleColorV, sampleColorA;
-    sampleColorY = $sample_image_subset(coords, invImgSize, subset, tileModeX, tileModeY,
+    sampleColorY = $sample_image_subset(coords, invImgSize, subsetY, tileModeX, tileModeY,
                                         filterModeY, sY);
-    sampleColorU = $sample_image_subset(coords, invImgSize, subset, tileModeX, tileModeY,
+    sampleColorU = $sample_image_subset(coords, invImgSize, subsetUV, tileModeX, tileModeY,
                                         filterModeUV, sU);
-    sampleColorV = $sample_image_subset(coords, invImgSize, subset, tileModeX, tileModeY,
+    sampleColorV = $sample_image_subset(coords, invImgSize, subsetUV, tileModeX, tileModeY,
                                         filterModeUV, sV);
     if (channelSelectA == half4(1)) {
         sampleColorA = half4(0, 0, 0, 1);
     } else {
-        sampleColorA = $sample_image_subset(coords, invImgSize, subset, tileModeX, tileModeY,
+        sampleColorA = $sample_image_subset(coords, invImgSize, subsetY, tileModeX, tileModeY,
                                             filterModeY, sA);
     }
 
@@ -394,6 +395,7 @@ $pure half4 sk_yuv_image_shader(float2 coords,
 $pure half4 sk_cubic_yuv_image_shader(float2 coords,
                                       float2 invImgSize,
                                       float4 subset,
+                                      float4 subsetUV,
                                       int tileModeX,
                                       int tileModeY,
                                       half4x4 cubicCoeffs,
@@ -410,9 +412,9 @@ $pure half4 sk_cubic_yuv_image_shader(float2 coords,
     half4 sampleColorY, sampleColorU, sampleColorV, sampleColorA;
     sampleColorY = $cubic_filter_image(coords, invImgSize, subset, tileModeX, tileModeY,
                                        cubicCoeffs, sY);
-    sampleColorU = $cubic_filter_image(coords, invImgSize, subset, tileModeX, tileModeY,
+    sampleColorU = $cubic_filter_image(coords, invImgSize, subsetUV, tileModeX, tileModeY,
                                        cubicCoeffs, sU);
-    sampleColorV = $cubic_filter_image(coords, invImgSize, subset, tileModeX, tileModeY,
+    sampleColorV = $cubic_filter_image(coords, invImgSize, subsetUV, tileModeX, tileModeY,
                                        cubicCoeffs, sV);
     if (channelSelectA == half4(1)) {
         sampleColorA = half4(0, 0, 0, 1);

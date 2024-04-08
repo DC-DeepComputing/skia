@@ -193,6 +193,7 @@ struct YUVImageShaderBlock {
         SkTileMode fTileModes[2];
         SkISize fImgSize;
         SkRect fSubset;
+        SkRect fSubsetUV;
         SkV4 fChannelSelect[4];
         SkMatrix fYUVtoRGBMatrix;
         SkPoint3 fYUVtoRGBTranslate;
