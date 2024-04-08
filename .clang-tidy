@@ -17,6 +17,7 @@ Checks: >
     performance-move-constructor-init,
     performance-unnecessary-copy-initialization,
     readability-const-return-type,
+    readability-container-size-empty,
     readability-redundant-preprocessor,
     readability-redundant-smartptr-get,
     readability-static-accessed-through-instance

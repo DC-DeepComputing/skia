@@ -364,7 +364,7 @@ def compile_fn(api, checkout_root, out_dir):
       if 'Fontations' in extra_tokens:
         api.run(api.step, 'gn clean',
               cmd=[gn, 'clean', out_dir])
-      api.run(api.step, 'ninja', cmd=[ninja, '-C', out_dir])
+      api.run(api.step, 'ninja', cmd=[ninja, '-C', out_dir, '-k', 100])
       if ccache:
         api.run(api.step, 'ccache stats-end', cmd=[ccache, '-s'])
 
