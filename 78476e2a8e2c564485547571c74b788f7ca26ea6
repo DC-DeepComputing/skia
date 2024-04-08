@@ -16,6 +16,24 @@
       "message": "Hmm. With these all being unsigned types, this is going to underflow for any encoded value less than 0. I think you can either inject a cast to switch the math to signed before the subtraction happens -- or -- change the pin so it happens before the subtraction: pin raw_alpha to [kZero,kOne(ie kZero+kRange)].",
       "revId": "78476e2a8e2c564485547571c74b788f7ca26ea6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dcbce61b_586cc166",
+        "filename": "src/core/SkConvertPixels.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 9944
+      },
+      "writtenOn": "2024-04-08T17:51:00Z",
+      "side": 1,
+      "message": "Sorry, thanks for the catch.  I thought it was in i64 despite typing it otherwise multiple times.  Now all the math is in int64_t, the conversion to u8 only happens after the clamp.",
+      "parentUuid": "4e1cdd9c_c7c54dce",
+      "revId": "78476e2a8e2c564485547571c74b788f7ca26ea6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
