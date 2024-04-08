@@ -494,7 +494,9 @@ var gniExportDescs = []exporter.GNIExportDesc{
 	}},
 	{GNI: "modules/skunicode/skunicode.gni", Vars: []exporter.GNIFileListExportDesc{
 		{Var: "skia_unicode_public",
-			Rules: []string{"//modules/skunicode/include:hdrs"}},
+			Rules: []string{"//modules/skunicode/include:hdrs",
+			"//modules/skunicode/utils:core_hdrs",
+			}},
 		{Var: "skia_unicode_sources",
 			Rules: []string{"//modules/skunicode/src:srcs"}},
 		{Var: "skia_unicode_icu_sources",
