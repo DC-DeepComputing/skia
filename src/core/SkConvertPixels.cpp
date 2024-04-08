@@ -82,6 +82,20 @@ static bool swizzle_or_premul(const SkImageInfo& dstInfo,       void* dstPixels,
     return true;
 }
 
+namespace {
+    // TODO(gaaclarke): Replace with std::clamp when c++17 is supported.
+    template<typename T>
+    constexpr const T& clamp(const T& val, const T& min, const T& max) {
+        if (val < min) {
+            return min;
+        }
+        if (val > max) {
+            return max;
+        }
+        return val;
+    }
+}
+
 static bool convert_to_alpha8(const SkImageInfo& dstInfo,       void* vdst, size_t dstRB,
                               const SkImageInfo& srcInfo, const void*  src, size_t srcRB,
                               const SkColorSpaceXformSteps&) {
@@ -204,6 +218,27 @@ static bool convert_to_alpha8(const SkImageInfo& dstInfo,       void* vdst, size
             return true;
         }
 
+        case kBGRA_10101010_XR_SkColorType: {
+            auto src64 = (const uint64_t*) src;
+            for (int y = 0; y < srcInfo.height(); y++) {
+                for (int x = 0; x < srcInfo.width(); x++) {
+                    static constexpr uint64_t kZero = 384;
+                    static constexpr uint64_t kRange = 510;
+                    static constexpr uint64_t kMaxU8 = 0xff;
+                    static constexpr uint64_t kMinU8 = 0x00;
+                    static constexpr uint64_t kDivisor = kRange / kMaxU8;
+                    uint64_t raw_alpha = src64[x] >> 54;
+                    // f(384) = 0
+                    // f(894) = 255
+                    uint64_t alpha =
+                            clamp((raw_alpha - kZero) / kDivisor, kMinU8, kMaxU8);
+                    dst[x] = static_cast<uint8_t>(alpha);
+                }
+                dst = SkTAddOffset<uint8_t>(dst, dstRB);
+                src64 = SkTAddOffset<const uint64_t>(src64, srcRB);
+            }
+            return true;
+        }
         case kRGBA_10x6_SkColorType:
         case kR16G16B16A16_unorm_SkColorType: {
             auto src64 = (const uint64_t*) src;
