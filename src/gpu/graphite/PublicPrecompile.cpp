@@ -37,7 +37,9 @@ void compile(const RendererProvider* rendererProvider,
              bool withPrimitiveBlender,
              Coverage coverage) {
     for (const Renderer* r : rendererProvider->renderers()) {
-        if (!(r->drawTypes() & drawTypes)) {
+
+
+        if (!(r->drawTypes1() & drawTypes)) {
             continue;
         }
 
@@ -50,10 +52,18 @@ void compile(const RendererProvider* rendererProvider,
         if (r->coverage() != coverage) {
             // For now, UniqueIDs are explicitly built with a specific type of coverage so must
             // match what the Renderer requires
+            SkDebugf("skipping %s due to coverage: %s != %s\n",
+                     r->name(),
+                     (r->coverage() == Coverage::kNone) ? "none" :
+                         (r->coverage() == Coverage::kSingleChannel) ? "single" : "LCD",
+                     (coverage == Coverage::kNone) ? "none" :
+                         (coverage == Coverage::kSingleChannel) ? "single" : "LCD");
             continue;
         }
 
         for (auto&& s : r->steps()) {
+            SkDebugf("Public Precompile: renderStep2: %s\n", s->name());
+
             SkASSERT(!s->performsShading() || s->emitsPrimitiveColor() == withPrimitiveBlender);
 
             UniquePaintParamsID paintID = s->performsShading() ? uniqueID
@@ -96,7 +106,8 @@ bool Precompile(Context* context,
     return true;
 }
 
-void Precompile(Context* context, const PaintOptions& options, DrawTypeFlags drawTypes) {
+void Precompile(Context* context, const PaintOptions& options, DrawTypeFlags drawTypes,
+                std::unordered_set<uint32_t>& foo) {
 
     ShaderCodeDictionary* dict = context->priv().shaderCodeDictionary();
     const Caps* caps = context->priv().caps();
@@ -157,13 +168,14 @@ void Precompile(Context* context, const PaintOptions& options, DrawTypeFlags dra
                              caps->getWriteSwizzle(ci.colorType(), info)),
     };
 
-    for (Coverage coverage : {Coverage::kNone, Coverage::kSingleChannel, Coverage::kLCD}) {
+    for (Coverage coverage : { Coverage::kNone, Coverage::kSingleChannel, /*Coverage::kLCD*/}) {
         options.priv().buildCombinations(
             keyContext,
             &gatherer,
             /* addPrimitiveBlender= */ false,
             coverage,
              [&](UniquePaintParamsID uniqueID) {
+                 foo.insert(uniqueID.asUInt());
                  compile(context->priv().rendererProvider(),
                          context->priv().resourceProvider(),
                          keyContext, uniqueID,
@@ -172,6 +184,7 @@ void Precompile(Context* context, const PaintOptions& options, DrawTypeFlags dra
              });
     }
 
+#if 0
     if (drawTypes & DrawTypeFlags::kDrawVertices) {
         for (Coverage coverage : {Coverage::kNone, Coverage::kSingleChannel, Coverage::kLCD}) {
             // drawVertices w/ colors use a primitiveBlender while those w/o don't
@@ -182,6 +195,7 @@ void Precompile(Context* context, const PaintOptions& options, DrawTypeFlags dra
                     withPrimitiveBlender,
                     coverage,
                     [&](UniquePaintParamsID uniqueID) {
+                        foo.insert(uniqueID.asUInt());
                         compile(context->priv().rendererProvider(),
                                 context->priv().resourceProvider(),
                                 keyContext, uniqueID,
@@ -191,6 +205,7 @@ void Precompile(Context* context, const PaintOptions& options, DrawTypeFlags dra
             }
         }
     }
+#endif
 }
 
 } // namespace skgpu::graphite
