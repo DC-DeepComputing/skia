@@ -281,7 +281,7 @@ alias(
 
 alias(
     name = "skunicode_core",
-    actual = "//modules/skunicode:skunicode_core",
+    actual = "//modules/skunicode:skunicode_core_and_utils",
     visibility = ["//visibility:public"],
 )
 

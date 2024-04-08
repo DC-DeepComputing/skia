@@ -25,11 +25,14 @@ skia_cc_library(
 )
 
 skia_cc_library(
-    name = "skunicode_core",
+    name = "skunicode_core_and_utils",
     srcs = [
         "//modules/skunicode/src:srcs",
     ],
-    hdrs = ["//modules/skunicode/include:core_hdrs"],
+    hdrs = [
+        "//modules/skunicode/include:core_hdrs",
+        "//modules/skunicode/utils:core_hdrs",
+    ],
     defines = [
         "SK_UNICODE_AVAILABLE",
     ],
@@ -61,6 +64,7 @@ skia_cc_library(
     hdrs = [
         "//modules/skunicode/include:core_hdrs",
         "//modules/skunicode/include:icu_hdrs",
+        "//modules/skshaper/utils:core_hdrs",
     ],
     defines = [
         "SK_UNICODE_AVAILABLE",
