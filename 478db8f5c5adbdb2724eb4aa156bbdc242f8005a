@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85e0e9f6_fe685340",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 1038,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-04-08T16:48:45Z",
+      "side": 1,
+      "message": "So, should this also be \"subsetY\" ?",
+      "revId": "478db8f5c5adbdb2724eb4aa156bbdc242f8005a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
