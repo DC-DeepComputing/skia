@@ -4,7 +4,6 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
-
 #include "include/core/SkColor.h"
 #include "include/core/SkFontStyle.h"
 #include "include/core/SkPictureRecorder.h"
@@ -16,6 +15,8 @@
 #include "modules/skparagraph/include/TypefaceFontProvider.h"
 #include "modules/skparagraph/src/ParagraphBuilderImpl.h"
 #include "modules/skparagraph/src/ParagraphImpl.h"
+#include "modules/skunicode/include/SkUnicode.h"
+#include "modules/skunicode/include/SkUnicode_icu.h"
 
 #include <string>
 #include <vector>
@@ -537,7 +538,7 @@ EMSCRIPTEN_BINDINGS(Paragraph) {
                         fc->setDefaultFontManager(fontMgr);
                         fc->enableFontFallback();
                         auto ps = toParagraphStyle(style);
-                        auto pb = para::ParagraphBuilderImpl::make(ps, fc);
+                        auto pb = para::ParagraphBuilderImpl::make(ps, fc, SkUnicodes::ICU::Make());
                         return std::unique_ptr<para::ParagraphBuilderImpl>(
                                 static_cast<para::ParagraphBuilderImpl*>(pb.release()));
                     }),
@@ -551,7 +552,7 @@ EMSCRIPTEN_BINDINGS(Paragraph) {
                         fc->setDefaultFontManager(fontProvider);
                         fc->enableFontFallback();
                         auto ps = toParagraphStyle(style);
-                        auto pb = para::ParagraphBuilderImpl::make(ps, fc);
+                        auto pb = para::ParagraphBuilderImpl::make(ps, fc, SkUnicodes::ICU::Make());
                         return std::unique_ptr<para::ParagraphBuilderImpl>(
                                 static_cast<para::ParagraphBuilderImpl*>(pb.release()));
                     }),
@@ -562,7 +563,7 @@ EMSCRIPTEN_BINDINGS(Paragraph) {
                                          sk_sp<para::FontCollection> fontCollection)
                                               -> std::unique_ptr<para::ParagraphBuilderImpl> {
                         auto ps = toParagraphStyle(style);
-                        auto pb = para::ParagraphBuilderImpl::make(ps, fontCollection);
+                        auto pb = para::ParagraphBuilderImpl::make(ps, fontCollection, SkUnicodes::ICU::Make());
                         return std::unique_ptr<para::ParagraphBuilderImpl>(
                                 static_cast<para::ParagraphBuilderImpl*>(pb.release()));
                     }),
@@ -588,7 +589,7 @@ EMSCRIPTEN_BINDINGS(Paragraph) {
                     pstyle.setTextStyle(style);
                 }
 
-                auto pb = para::ParagraphBuilder::make(pstyle, fc);
+                auto pb = para::ParagraphBuilder::make(pstyle, fc, SkUnicodes::ICU::Make());
 
                 // tease apart the FontBlock runs
                 size_t runCount = jruns["length"].as<size_t>();
