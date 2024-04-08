@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "76e16cc0_ae2de703",
+        "filename": "BUILD.gn",
+        "patchSetId": 3
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-04-08T13:54:23Z",
+      "side": 1,
+      "message": "Not having this defined was masking places where the GN build needed fixing.",
+      "range": {
+        "startLine": 33,
+        "startChar": 5,
+        "endLine": 33,
+        "endChar": 37
+      },
+      "revId": "1fa49205aa52b4d539c7dcedcd8adf2b53c950f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
