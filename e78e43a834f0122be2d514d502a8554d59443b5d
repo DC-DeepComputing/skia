@@ -55,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "746367ea_fd95779f",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 1023,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-08T18:00:16Z",
+      "side": 1,
+      "message": "The YUVA shader snippets all are evaluated with `coords` relative to the Y texel space, and shader tiling based on `subset` is applied in the Y texel space. This theoretically could lead to not clamping enough for the UV planes with nearest-neighbor because the 1/2px inset the subset snippet does is not in the right texel space.\n\nHowever, the UV planes now use linear when Y is meant to be nearest, so we avoid that issue.\n\nThe `invImgSize` that makes its way to the actual `$sample_image` snippet is `1/(uView.width()*ssx)` or `1/(vView.height()*ssy)`. The scale factors are from UV to Y, so denominator is actually the UV dimension relative to Y. Multiplying a Y-space coordinate with this factor than should be producing a normalized coordinate relative to the UV dimension.",
+      "parentUuid": "1433f282_8e9de450",
+      "revId": "e78e43a834f0122be2d514d502a8554d59443b5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "81f04cd4_7f5ab213",
         "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
         "patchSetId": 8
