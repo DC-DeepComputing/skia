@@ -1,0 +1,16 @@
+load("//bazel:skia_rules.bzl", "exports_files_legacy", "skia_filegroup")
+
+licenses(["notice"])
+
+exports_files_legacy()
+
+skia_filegroup(
+    name = "core_hdrs",
+    srcs = [
+        "UnicodeFactoryHelpers.h",
+    ],
+    visibility = [
+        "//modules/skunicode:__pkg__",
+        "//modules/skunicode/include:__pkg__",
+    ],
+)

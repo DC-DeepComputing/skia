@@ -43,26 +43,6 @@ enum ParaFlags {
     kUseUnderline   = 1 << 1,
     kShowVisitor    = 1 << 2,
 };
-
-sk_sp<SkUnicode> get_unicode() {
-#if defined(SK_UNICODE_ICU_IMPLEMENTATION)
-    if (auto unicode = SkUnicodes::ICU::Make()) {
-        return unicode;
-    }
-#endif
-#if defined(SK_UNICODE_LIBGRAPHEME_IMPLEMENTATION)
-    if (auto unicode = SkUnicodes::Libgrapheme::Make()) {
-        return unicode;
-    }
-#endif
-#if defined(SK_UNICODE_ICU4X_IMPLEMENTATION)
-    if (auto unicode = SkUnicodes::ICU4X::Make()) {
-        return unicode;
-    }
-#endif
-    SkDEBUGFAIL("Cannot make SkUnicode");
-    return nullptr;
-}
 }  // namespace
 
 // TODO: Make it work with ALL possible SkUnicodes
@@ -98,7 +78,7 @@ public:
         collection->setDefaultFontManager(std::move(fontmgr));
 
         auto builder = skia::textlayout::ParagraphBuilderImpl::make(
-                paraStyle, collection, get_unicode());
+            paraStyle, collection);
         if (nullptr == builder) {
             fPara = nullptr;
             return;

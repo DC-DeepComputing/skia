@@ -20,6 +20,7 @@ skia_filegroup(
     name = "core_hdrs",
     srcs = [
         "SkUnicode.h",
+        "//modules/skunicode/utils:core_hdrs",
     ],
     visibility = ["//modules/skunicode:__pkg__"],
 )
