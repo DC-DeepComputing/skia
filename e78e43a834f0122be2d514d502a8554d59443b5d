@@ -71,6 +71,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a0d8d05_e9cbf98c",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 1023,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-04-08T18:15:47Z",
+      "side": 1,
+      "message": "Yeah, I did a small example and the coordinates work out.",
+      "parentUuid": "746367ea_fd95779f",
+      "revId": "e78e43a834f0122be2d514d502a8554d59443b5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "81f04cd4_7f5ab213",
