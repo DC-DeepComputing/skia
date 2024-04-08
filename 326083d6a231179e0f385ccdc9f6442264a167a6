@@ -34,6 +34,24 @@
       "parentUuid": "00ed1a89_23a52d22",
       "revId": "326083d6a231179e0f385ccdc9f6442264a167a6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6555f820_41741d98",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-04-08T17:29:34Z",
+      "side": 1,
+      "message": "Can confirm this is not an issue for graphite. We have room to add the extra bit. :)",
+      "parentUuid": "7d767ee9_2fe806d3",
+      "revId": "326083d6a231179e0f385ccdc9f6442264a167a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
