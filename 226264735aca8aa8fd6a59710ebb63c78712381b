@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d11f4038_da993cb3",
+        "filename": "modules/canvaskit/BUILD.gn",
+        "patchSetId": 4
+      },
+      "lineNbr": 351,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-08T18:26:33Z",
+      "side": 1,
+      "message": "I would have expected this to depend on specific implementations, but I suppose depending on them all is fine?",
+      "revId": "226264735aca8aa8fd6a59710ebb63c78712381b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
