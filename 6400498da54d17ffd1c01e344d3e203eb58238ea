@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a6b0987a_9377a5a9",
+        "filename": "src/core/SkConvertPixels.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-04-08T15:54:30Z",
+      "side": 1,
+      "message": "This seems wrong - it would only be correct if the alpha values were encoded using normalized 10-bit, but they\u0027ve got the extra linear transform applied. So I think we need to do the extra math here, too? (probably using the inverse of the unorm8 formula from the docs, along with clamping, just in case):\n\n`dst[x] \u003d (src64[x] \u003e\u003e 54 - 384) / 2` ?",
+      "revId": "6400498da54d17ffd1c01e344d3e203eb58238ea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
