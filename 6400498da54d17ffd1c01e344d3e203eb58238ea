@@ -16,6 +16,24 @@
       "message": "This seems wrong - it would only be correct if the alpha values were encoded using normalized 10-bit, but they\u0027ve got the extra linear transform applied. So I think we need to do the extra math here, too? (probably using the inverse of the unorm8 formula from the docs, along with clamping, just in case):\n\n`dst[x] \u003d (src64[x] \u003e\u003e 54 - 384) / 2` ?",
       "revId": "6400498da54d17ffd1c01e344d3e203eb58238ea",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "417cc7e9_5fd43ec2",
+        "filename": "src/core/SkConvertPixels.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 9944
+      },
+      "writtenOn": "2024-04-08T16:39:26Z",
+      "side": 1,
+      "message": "Yep, good catch.  I hadn\u0027t realized that 510 was 255 * 2.  Smart apple, done.",
+      "parentUuid": "a6b0987a_9377a5a9",
+      "revId": "6400498da54d17ffd1c01e344d3e203eb58238ea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
