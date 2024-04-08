@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a765b89_6af7223a",
+        "filename": "tests/sksl/runtime/IncrementDisambiguation.minified.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-04-08T15:16:03Z",
+      "side": 1,
+      "message": "^",
+      "range": {
+        "startLine": 1,
+        "startChar": 66,
+        "endLine": 1,
+        "endChar": 91
+      },
+      "revId": "b38774750ef6bb77ddf7ad2e49e990c5cb9f59b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
