@@ -30,6 +30,7 @@ config("skia_public") {
   defines = [
     "SK_CODEC_DECODES_BMP",
     "SK_CODEC_DECODES_WBMP",
+    "SK_DISABLE_LEGACY_SHAPER_FACTORY",
   ]
   cflags_objcc = []
   if (is_component_build) {
@@ -2424,6 +2425,7 @@ if (skia_enable_tools) {
         "modules/skottie",
         "modules/skottie:utils",
         "modules/skshaper",
+        "modules/skunicode",
         "modules/svg",
       ]
     }
@@ -2477,6 +2479,7 @@ if (skia_enable_tools) {
       ":trace",
       "modules/skparagraph",
       "modules/skshaper",
+      "modules/skunicode",
       "modules/svg",
     ]
   }
@@ -2997,6 +3000,7 @@ if (skia_enable_tools) {
         "modules/skparagraph:slides",
         "modules/sksg:slides",
         "modules/skshaper:skshaper",
+        "modules/skunicode",
         "modules/svg",
         "//third_party/imgui",
       ]
