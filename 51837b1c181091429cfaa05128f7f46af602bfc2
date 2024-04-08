@@ -118,6 +118,30 @@
       },
       "revId": "51837b1c181091429cfaa05128f7f46af602bfc2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94b95bc9_81637290",
+        "filename": "src/gpu/vk/VulkanUtilsPriv.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 10189
+      },
+      "writtenOn": "2024-04-08T19:08:25Z",
+      "side": 1,
+      "message": "I\u0027m fine with either too. I have slight preference to have components, as it\u0027s a bit straight forward to use and less confusing, because we\u0027re actually swapping U and V, not R and B (i.e swap is _before_ the conversion), as long as it doesn\u0027t cause any problems with the pipeline keys. \n\nWe\u0027re talking about adding 1 bit (bool) vs... 12 (4 x 3 bits swizzle flags)? If using 1 bit is preferable, we can use bool, I don\u0027t expect any other weird swizzlings here.",
+      "parentUuid": "221f6839_735eacb8",
+      "range": {
+        "startLine": 80,
+        "startChar": 4,
+        "endLine": 80,
+        "endChar": 39
+      },
+      "revId": "51837b1c181091429cfaa05128f7f46af602bfc2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
