@@ -16,6 +16,40 @@
       "message": "PTAL",
       "revId": "e78e43a834f0122be2d514d502a8554d59443b5d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "abbe06cc_b47b30b7",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 1023,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-04-08T16:21:22Z",
+      "side": 1,
+      "message": "No \"subsetUV\" ?",
+      "revId": "e78e43a834f0122be2d514d502a8554d59443b5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "81f04cd4_7f5ab213",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 1038,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-04-08T16:21:22Z",
+      "side": 1,
+      "message": "This doesn\u0027t seem to be reflected in the SkSL code",
+      "revId": "e78e43a834f0122be2d514d502a8554d59443b5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
