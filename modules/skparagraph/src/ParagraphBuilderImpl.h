@@ -13,6 +13,7 @@
 #include "modules/skparagraph/include/ParagraphBuilder.h"
 #include "modules/skparagraph/include/ParagraphStyle.h"
 #include "modules/skparagraph/include/TextStyle.h"
+#include "modules/skunicode/utils/FactoryHelpers.h"
 
 namespace skia {
 namespace textlayout {
@@ -21,7 +22,7 @@ class ParagraphBuilderImpl : public ParagraphBuilder {
 public:
     ParagraphBuilderImpl(const ParagraphStyle& style,
                          sk_sp<FontCollection> fontCollection,
-                         sk_sp<SkUnicode> unicode);
+                         sk_sp<SkUnicodes::Factory> factory);
 
     // Just until we fix all the code; calls icu::make inside
     ParagraphBuilderImpl(const ParagraphStyle& style, sk_sp<FontCollection> fontCollection);
@@ -64,7 +65,6 @@ public:
     SkSpan<char> getText() override;
     const ParagraphStyle& getParagraphStyle() const override;
 
-#ifndef SK_DISABLE_LEGACY_CLIENT_UNICODE
     void setWordsUtf8(std::vector<SkUnicode::Position> wordsUtf8) override;
     void setWordsUtf16(std::vector<SkUnicode::Position> wordsUtf16) override;
 
@@ -74,22 +74,16 @@ public:
     void setLineBreaksUtf8(std::vector<SkUnicode::LineBreakBefore> lineBreaksUtf8) override;
     void setLineBreaksUtf16(std::vector<SkUnicode::LineBreakBefore> lineBreaksUtf16) override;
 
-    void SetUnicode(sk_sp<SkUnicode> unicode) override {
-        fUnicode = std::move(unicode);
-    }
-#endif
     // Support for Flutter optimization
     void Reset() override;
 
     static std::unique_ptr<ParagraphBuilder> make(const ParagraphStyle& style,
                                                   sk_sp<FontCollection> fontCollection,
-                                                  sk_sp<SkUnicode> unicode);
+                                                  sk_sp<SkUnicodes::Factory> factory);
 
     // Just until we fix all the code; calls icu::make inside
     static std::unique_ptr<ParagraphBuilder> make(const ParagraphStyle& style,
                                                   sk_sp<FontCollection> fontCollection);
-
-    static bool RequiresClientICU();
 protected:
     void startStyledBlock();
     void endRunIfNeeded();
@@ -104,19 +98,13 @@ protected:
     sk_sp<FontCollection> fFontCollection;
     ParagraphStyle fParagraphStyle;
 
-    sk_sp<SkUnicode> fUnicode;
+    sk_sp<SkUnicodes::Factory> fUnicodeFactory;
 private:
     SkOnce fillUTF16MappingOnce;
     void ensureUTF16Mapping();
     skia_private::TArray<TextIndex, true> fUTF8IndexForUTF16Index;
     skia_private::TArray<TextIndex, true> fUTF16IndexForUTF8Index;
-#if defined(SK_UNICODE_CLIENT_IMPLEMENTATION)
     bool fTextIsFinalized;
-    bool fUsingClientInfo;
-    std::vector<SkUnicode::Position> fWordsUtf16;
-    std::vector<SkUnicode::Position> fGraphemeBreaksUtf8;
-    std::vector<SkUnicode::LineBreakBefore> fLineBreaksUtf8;
-#endif
 };
 }  // namespace textlayout
 }  // namespace skia

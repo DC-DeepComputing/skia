@@ -60,19 +60,13 @@ public:
     virtual SkSpan<char> getText() = 0;
     virtual const ParagraphStyle& getParagraphStyle() const = 0;
 
-#ifndef SK_DISABLE_LEGACY_CLIENT_UNICODE
-    // Mainly, support for "Client" unicode
+    // Mainly, support for "Client" unicode. Does nothing for the others
     virtual void setWordsUtf8(std::vector<SkUnicode::Position> wordsUtf8) = 0;
     virtual void setWordsUtf16(std::vector<SkUnicode::Position> wordsUtf16) = 0;
-
     virtual void setGraphemeBreaksUtf8(std::vector<SkUnicode::Position> graphemesUtf8) = 0;
     virtual void setGraphemeBreaksUtf16(std::vector<SkUnicode::Position> graphemesUtf16) = 0;
-
     virtual void setLineBreaksUtf8(std::vector<SkUnicode::LineBreakBefore> lineBreaksUtf8) = 0;
     virtual void setLineBreaksUtf16(std::vector<SkUnicode::LineBreakBefore> lineBreaksUtf16) = 0;
-
-    virtual void SetUnicode(sk_sp<SkUnicode> unicode) = 0;
-#endif
 
     // Resets this builder to its initial state, discarding any text, styles, placeholders that have
     // been added, but keeping the initial ParagraphStyle.
