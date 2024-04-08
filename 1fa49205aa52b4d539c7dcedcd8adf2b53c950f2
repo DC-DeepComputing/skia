@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ffea6d5_a3e9ddd2",
+        "filename": "BUILD.gn",
+        "patchSetId": 3
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-04-08T17:32:28Z",
+      "side": 1,
+      "message": "AFAICT, no GN users *are* using the old behavior. I can remove it so we are testing that old path, but I have a few G3 CLs just about ready that remove all users of that behavior.",
+      "parentUuid": "36291b07_4a5ad767",
+      "range": {
+        "startLine": 33,
+        "startChar": 5,
+        "endLine": 33,
+        "endChar": 37
+      },
+      "revId": "1fa49205aa52b4d539c7dcedcd8adf2b53c950f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "de0eed52_bf9f370b",
@@ -61,6 +85,24 @@
       "writtenOn": "2024-04-08T14:53:06Z",
       "side": 1,
       "message": "It is horrifically broken to define these here. This BUILD.gn file shouldn\u0027t know anything about when or how these are set. We might as well start `#define public private`.\n\nI\u0027m assuming that this `canvaskit` isn\u0027t getting these because it doesn\u0027t have a direct dependency on skshaper and skunicode. However, it did previously have a hidden dependency on them trough the global. Now that we\u0027re making this application responsible for the global it needs to know about this directly.\n\nIt looks like for the time being //modules/canvaskit:canvaskit_js is depending on //modules/skottie:skottie which is doing all the depending. This does in fact mean that //modules/skottie:skottie needs to re-export these if the application is going to handle the global (otherwise we need this very error prone manual dependency here on how Skia was built).\n\nIn the end, if one isn\u0027t using the legacy globals and depending on the new build, then what ever code is doing that needs to either re-implement those globals (though perhaps not as globals) or it needs to explicitly pass the buck up the build chain. In this case //modules/skottie:skottie is still depending on skunicode and skshaper implementations, when in this forced component build it should not be (only depending on the core parts). It is this level that should be depending on the implementations. If it isn\u0027t, then it should be using the legacy globals and build.",
+      "revId": "1fa49205aa52b4d539c7dcedcd8adf2b53c950f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "433ed155_cc3c27a2",
+        "filename": "modules/canvaskit/BUILD.gn",
+        "patchSetId": 3
+      },
+      "lineNbr": 352,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-04-08T17:32:28Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "de0eed52_bf9f370b",
       "revId": "1fa49205aa52b4d539c7dcedcd8adf2b53c950f2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
