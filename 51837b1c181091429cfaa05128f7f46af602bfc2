@@ -142,6 +142,30 @@
       },
       "revId": "51837b1c181091429cfaa05128f7f46af602bfc2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8c6df38_399b9497",
+        "filename": "src/gpu/vk/VulkanUtilsPriv.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 21169
+      },
+      "writtenOn": "2024-04-08T19:33:53Z",
+      "side": 1,
+      "message": "I failed to notice `VkAndroidHardwareBufferFormatPropertiesANDROID::samplerYcbcrConversionComponents`.  I think we want components to really support it.  I am reverting back to use components.\n\nAs for cache key size, adding 1 bit vs 12 bits makes no difference to graphite at least.",
+      "parentUuid": "94b95bc9_81637290",
+      "range": {
+        "startLine": 80,
+        "startChar": 4,
+        "endLine": 80,
+        "endChar": 39
+      },
+      "revId": "51837b1c181091429cfaa05128f7f46af602bfc2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
