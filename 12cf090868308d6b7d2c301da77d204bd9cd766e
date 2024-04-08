@@ -20,6 +20,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "370baa76_7629964f",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 285,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-04-08T17:57:09Z",
+      "side": 1,
+      "message": "Can we use `sk_make_sp` here?",
+      "revId": "12cf090868308d6b7d2c301da77d204bd9cd766e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f423086a_eac40434",
         "filename": "src/gpu/graphite/Device.cpp",
         "patchSetId": 13
@@ -37,6 +54,46 @@
         "endLine": 288,
         "endChar": 41
       },
+      "revId": "12cf090868308d6b7d2c301da77d204bd9cd766e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "254a6df8_35f65016",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 338,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-04-08T17:57:09Z",
+      "side": 1,
+      "message": "Nit: \"its\" (here and below)",
+      "range": {
+        "startLine": 338,
+        "startChar": 20,
+        "endLine": 338,
+        "endChar": 24
+      },
+      "revId": "12cf090868308d6b7d2c301da77d204bd9cd766e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec983476_d5238500",
+        "filename": "src/gpu/graphite/Surface_Graphite.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-04-08T17:57:09Z",
+      "side": 1,
+      "message": "Indentation",
       "revId": "12cf090868308d6b7d2c301da77d204bd9cd766e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
