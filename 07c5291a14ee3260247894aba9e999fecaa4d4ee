@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b40257d7_a8f3878a",
+        "filename": "src/gpu/graphite/Image_Graphite.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-04-09T20:49:54Z",
+      "side": 1,
+      "message": "```suggestion\n    // NOTE: If the device was created with an approx backing fit, its SkImageInfo reports the\n```",
+      "range": {
+        "startLine": 48,
+        "startChar": 67,
+        "endLine": 48,
+        "endChar": 71
+      },
+      "revId": "07c5291a14ee3260247894aba9e999fecaa4d4ee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a8f9cebd_90c2896e",
         "filename": "src/gpu/graphite/SpecialImage_Graphite.cpp",
         "patchSetId": 13
