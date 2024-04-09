@@ -51,6 +51,24 @@
       "message": "https://gold.skia.org/search?blame\u003d001000018827\u0026corpus\u003dgm",
       "revId": "e6aa301601a7ed3cc1ce8132a9abe2ba38e75c6c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "42a364ca_a563b382",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2024-04-09T18:05:50Z",
+      "side": 1,
+      "message": "FYI. In dawn, Feature Norm16TextureFormats has been split to two new features Unorm16TextureFormats(for 16 bits unorm formats) and Snorm16TextureFormats(for 16 bits snorm formats). https://dawn-review.googlesource.com/c/dawn/+/182660\n\nI believe skia graphite doesn\u0027t use snorm formats, right? so request Unorm16TextureFormats is sufficient. Where is the untriaged images come from?",
+      "parentUuid": "5e96bca9_cbdc1ff4",
+      "revId": "e6aa301601a7ed3cc1ce8132a9abe2ba38e75c6c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
