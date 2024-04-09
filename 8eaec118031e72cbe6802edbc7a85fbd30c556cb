@@ -94,6 +94,30 @@
       },
       "revId": "8eaec118031e72cbe6802edbc7a85fbd30c556cb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a9ebde5_16b7af85",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1535,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-09T17:34:15Z",
+      "side": 1,
+      "message": "There were performance regressions in ganesh when I tried to make it go to 0.50001 before the approx-fit work that\u0027s gone into avoiding it in image filtering.\n\nIf we do exactly 0.5, it\u0027s possible for linear filtering to select the subset edge pixel with a weight of 1.0 and an outside pixel with a weight of 0. Visually it shouldn\u0027t matter, but it makes MSAN mad and some GPUs don\u0027t quite get the weights right. Clamping to a slightly more than 1/2px makes sure the weight goes from an inside pixel to an edge pixel.",
+      "parentUuid": "26210d23_929cee62",
+      "range": {
+        "startLine": 1535,
+        "startChar": 55,
+        "endLine": 1535,
+        "endChar": 66
+      },
+      "revId": "8eaec118031e72cbe6802edbc7a85fbd30c556cb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
