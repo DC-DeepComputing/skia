@@ -29,7 +29,7 @@ const char* SkPDFGetNodeIdKey() {
 }
 
 static SkString ToValidUtf8String(const SkData& d) {
-    if (d.size() == 0) {
+    if (d.empty()) {
         SkDEBUGFAIL("Not a valid string, data length is zero.");
         return SkString();
     }
@@ -361,7 +361,7 @@ void SkPDFDocument::onEndPage() {
     SkSize mediaSize = fPageDevice->imageInfo().dimensions() * fInverseRasterScale;
     std::unique_ptr<SkStreamAsset> pageContent = fPageDevice->content();
     auto resourceDict = fPageDevice->makeResourceDict();
-    SkASSERT(fPageRefs.size() > 0);
+    SkASSERT(!fPageRefs.empty());
     fPageDevice = nullptr;
 
     page->insertObject("Resources", std::move(resourceDict));
