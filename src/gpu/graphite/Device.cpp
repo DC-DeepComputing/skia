@@ -436,7 +436,7 @@ sk_sp<Image> Device::makeImageCopy(const SkIRect& subset,
         return nullptr;
     }
 
-    return sk_make_sp<Image>(kNeedNewImageUniqueID, std::move(copiedView), colorInfo);
+    return Image::Make(std::move(copiedView), colorInfo);
 }
 
 TextureProxyView TextureProxyView::Copy(Recorder* recorder,
