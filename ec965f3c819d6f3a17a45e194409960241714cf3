@@ -16,6 +16,29 @@
       "message": "@johnstiles: PTAL at the new code in DawnGraphiteUtils.cpp that injects the `enable chromium_internal_graphite;` directive to WGSL shaders.",
       "revId": "ec965f3c819d6f3a17a45e194409960241714cf3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "449535c1_c552c941",
+        "filename": "src/gpu/graphite/dawn/DawnGraphiteUtils.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-04-09T16:54:04Z",
+      "side": 1,
+      "message": "If this is something we always want at the top of our shaders, we should just add it to WGSLCodeGenerator, rather than making a copy of the entire program string just to tack it on.\n\nOn the other hand--maybe it should be a program setting? This would not be viable if we wanted to make CanvasKit for WebGPU. (Counter-counterpoint: this is graphite/**dawn**, not graphite/webgpu, and I expect we\u0027d need bigger changes as well.)",
+      "range": {
+        "startLine": 155,
+        "startChar": 0,
+        "endLine": 158,
+        "endChar": 0
+      },
+      "revId": "ec965f3c819d6f3a17a45e194409960241714cf3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
