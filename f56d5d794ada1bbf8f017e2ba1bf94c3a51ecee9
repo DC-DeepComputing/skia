@@ -16,6 +16,29 @@
       "message": "I think this is ready.  Greg, can you take another look?",
       "revId": "f56d5d794ada1bbf8f017e2ba1bf94c3a51ecee9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f812dc0_8e43a5b1",
+        "filename": "include/gpu/vk/VulkanTypes.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-04-09T17:19:23Z",
+      "side": 1,
+      "message": "Is this actually true? Especially since you\u0027ve updated our helper function to have `outConversionInfo-\u003efComponents \u003d formatProps.samplerYcbcrConversionComponents;` Regardless I don\u0027t think we actually do ignore that value internally, so if I client were to set it even with an externalFormat we\u0027d still use it, right?",
+      "range": {
+        "startLine": 107,
+        "startChar": 4,
+        "endLine": 107,
+        "endChar": 56
+      },
+      "revId": "f56d5d794ada1bbf8f017e2ba1bf94c3a51ecee9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
