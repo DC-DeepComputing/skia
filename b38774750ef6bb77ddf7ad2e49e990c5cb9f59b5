@@ -22,6 +22,30 @@
       },
       "revId": "b38774750ef6bb77ddf7ad2e49e990c5cb9f59b5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "53c0edd6_2bee0028",
+        "filename": "tests/sksl/runtime/IncrementDisambiguation.minified.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-04-09T17:17:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a765b89_6af7223a",
+      "range": {
+        "startLine": 1,
+        "startChar": 66,
+        "endLine": 1,
+        "endChar": 91
+      },
+      "revId": "b38774750ef6bb77ddf7ad2e49e990c5cb9f59b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
