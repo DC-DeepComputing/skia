@@ -20,9 +20,6 @@
 #if defined(SK_UNICODE_ICU_IMPLEMENTATION)
 #include "modules/skunicode/include/SkUnicode_icu.h"
 #endif
-#if defined(SK_UNICODE_CLIENT_IMPLEMENTATION)
-#include "modules/skunicode/include/SkUnicode_client.h"
-#endif
 
 #include <string>
 #include <vector>
@@ -50,11 +47,7 @@ struct SimpleFontStyle {
 };
 
 static sk_sp<SkUnicode> get_unicode() {
-    // For code size reasons, we prefer to use the unicode implementation first
-    // over the full ICU version.
-#if defined(SK_UNICODE_CLIENT_IMPLEMENTATION)
-    return SkUnicodes::Client::Make();
-#elif defined(SK_UNICODE_ICU_IMPLEMENTATION)
+#if defined(SK_UNICODE_ICU_IMPLEMENTATION)
     return SkUnicodes::ICU::Make();
 #else
     #error "Must have at least one implementation of unicode compiled in"
