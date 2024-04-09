@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d527886_ec10444f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 9562
+      },
+      "writtenOn": "2024-04-09T17:47:40Z",
+      "side": 1,
+      "message": "the change to WaitAnyOnly LGTM; I don\u0027t have review permissions though",
+      "revId": "04c71d862e81512baedfa1af0c29f15d87e8ce20",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
