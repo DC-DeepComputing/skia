@@ -619,6 +619,7 @@ void add_yuv_image_uniform_data(const ShaderCodeDictionary* dict,
     gatherer->write(SkSize::Make(1.f/imgData.fImgSize.width(), 1.f/imgData.fImgSize.height()));
     gatherer->write(SkSize::Make(1.f/imgData.fImgSizeUV.width(), 1.f/imgData.fImgSizeUV.height()));
     gatherer->write(imgData.fSubset);
+    gatherer->write(imgData.fLinearFilterInset);
     gatherer->write(SkTo<int>(imgData.fTileModes[0]));
     gatherer->write(SkTo<int>(imgData.fTileModes[1]));
     gatherer->write(SkTo<int>(imgData.fSampling.filter));
@@ -1519,6 +1520,7 @@ static void add_yuv_image_to_key(const KeyContext& keyContext,
                     if (imgData.fSampling.filter == SkFilterMode::kNearest) {
                         imgData.fSamplingUV = SkSamplingOptions(SkFilterMode::kLinear,
                                                                 imgData.fSampling.mipmap);
+                        imgData.fLinearFilterInset = { 1.f/(2*ssx), 1.f/(2*ssy) };
                     }
                 }
 
