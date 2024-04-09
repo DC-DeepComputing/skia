@@ -148,7 +148,11 @@ skia_wasm_lib("canvaskit") {
     ]
   }
 
-  ldflags = []
+  ldflags = [
+    # https://g-issues.skia.org/issues/332939934
+    "-fwasm-exceptions",
+    "-sABORTING_MALLOC=0",
+  ]
   if (is_debug) {
     ldflags += [
       "-O0",
@@ -316,7 +320,6 @@ skia_wasm_lib("canvaskit") {
     "--pre-js",
     rebase_path("postamble.js"),
     "-sALLOW_MEMORY_GROWTH",
-    "-sDISABLE_EXCEPTION_CATCHING",
     "-sNODEJS_CATCH_EXIT=0",
     "-sDYNAMIC_EXECUTION=0",
     "-sEXPORT_NAME=CanvasKitInit",
