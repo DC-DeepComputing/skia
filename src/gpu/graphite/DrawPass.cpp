@@ -677,20 +677,20 @@ bool DrawPass::prepareResources(ResourceProvider* resourceProvider,
                                 const RenderPassDesc& renderPassDesc) {
     TRACE_EVENT0("skia.gpu", TRACE_FUNC);
 
-    fFullPipelines.reserve(fFullPipelines.size() + fPipelineDescs.size());
-    for (const GraphicsPipelineDesc& pipelineDesc : fPipelineDescs) {
-        auto pipeline = resourceProvider->findOrCreateGraphicsPipeline(runtimeDict,
-                                                                       pipelineDesc,
-                                                                       renderPassDesc);
-        if (!pipeline) {
-            SKGPU_LOG_W("Failed to create GraphicsPipeline for draw in RenderPass. Dropping pass!");
-            return false;
-        }
-        fFullPipelines.push_back(std::move(pipeline));
-    }
-    // The DrawPass may be long lived on a Recording and we no longer need the GraphicPipelineDescs
-    // once we've created pipelines, so we drop the storage for them here.
-    fPipelineDescs.clear();
+    // fFullPipelines.reserve(fFullPipelines.size() + fPipelineDescs.size());
+    // for (const GraphicsPipelineDesc& pipelineDesc : fPipelineDescs) {
+    //     auto pipeline = resourceProvider->findOrCreateGraphicsPipeline(runtimeDict,
+    //                                                                    pipelineDesc,
+    //                                                                    renderPassDesc);
+    //     if (!pipeline) {
+    //         SKGPU_LOG_W("Failed to create GraphicsPipeline for draw in RenderPass. Dropping pass!");
+    //         return false;
+    //     }
+    //     fFullPipelines.push_back(std::move(pipeline));
+    // }
+    // // The DrawPass may be long lived on a Recording and we no longer need the GraphicPipelineDescs
+    // // once we've created pipelines, so we drop the storage for them here.
+    // fPipelineDescs.clear();
 
     for (int i = 0; i < fSampledTextures.size(); ++i) {
         // TODO: We need to remove this check once we are creating valid SkImages from things like
@@ -718,6 +718,21 @@ bool DrawPass::prepareResources(ResourceProvider* resourceProvider,
     // The DrawPass may be long lived on a Recording and we no longer need the SamplerDescs
     // once we've created Samplers, so we drop the storage for them here.
     fSamplerDescs.clear();
+
+    fFullPipelines.reserve(fFullPipelines.size() + fPipelineDescs.size());
+    for (const GraphicsPipelineDesc& pipelineDesc : fPipelineDescs) {
+        auto pipeline = resourceProvider->findOrCreateGraphicsPipeline(runtimeDict,
+                                                                       pipelineDesc,
+                                                                       renderPassDesc);
+        if (!pipeline) {
+            SKGPU_LOG_W("Failed to create GraphicsPipeline for draw in RenderPass. Dropping pass!");
+            return false;
+        }
+        fFullPipelines.push_back(std::move(pipeline));
+    }
+    // The DrawPass may be long lived on a Recording and we no longer need the GraphicPipelineDescs
+    // once we've created pipelines, so we drop the storage for them here.
+    fPipelineDescs.clear();
 
     return true;
 }

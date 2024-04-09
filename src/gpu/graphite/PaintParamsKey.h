@@ -88,7 +88,8 @@ private:
     // nodes created.
     const ShaderNode* createNode(const ShaderCodeDictionary*,
                                  int* currentIndex,
-                                 SkArenaAlloc* arena) const;
+                                 SkArenaAlloc* arena,
+                                 bool entryInTreeStoresData = false) const;
 
     // The memory referenced in 'fData' is always owned by someone else. It either shares the span
     // of from the Builder, or clone() puts the span in an arena.
@@ -137,6 +138,25 @@ public:
         this->endBlock();
     }
 
+    void addData(SkSpan<int32_t> data) {
+        // TODO: With known sizes, use memcpy instead
+        // push length of span, memcpy span contents into data array
+        // push "length of span"
+        SkDebugf("Adding data...Current fData:\n");
+        for (int i = 0; i < fData.size(); i++) {
+            SkDebugf("fData[%d]: %d\n", i, fData[i]);
+        }
+
+        fData.push_back(data.size());
+
+        // memcpy span contents into data array
+        for (size_t i = 0; i < data.size(); i++) {
+            fData.push_back(data[i]);
+            SkDebugf("Adding %i\n", data[i]);
+        }
+        SkDebugf("Adding data completed.\n");
+    }
+
 private:
     friend class AutoLockBuilderAsKey; // for lockAsKey() and unlock()
 
@@ -173,6 +193,8 @@ private:
         int fCodeSnippetID;
         int fNumExpectedChildren;
         int fNumActualChildren = 0;
+        // TODO: Track whether or not data was added and in the right spot relative to any other
+        // children. Update debug validation appropriately
     };
 
     const ShaderCodeDictionary* fDict;

@@ -51,6 +51,10 @@ bool VulkanTexture::MakeVkImage(const VulkanSharedContext* sharedContext,
     VkImageLayout initialLayout = isLinear ? VK_IMAGE_LAYOUT_PREINITIALIZED
                                            : VK_IMAGE_LAYOUT_UNDEFINED;
 
+    if (spec.fImageTiling == VK_IMAGE_TILING_DRM_FORMAT_MODIFIER_EXT) {
+        SkDebugf("Encountered VK_IMAGE_TILING_DRM_FORMAT_MODIFIER_EXT tiling mode\n");
+    }
+
     // Create Image
     VkSampleCountFlagBits vkSamples;
     if (!SampleCountToVkSampleCount(info.numSamples(), &vkSamples)) {
@@ -155,7 +159,7 @@ sk_sp<Texture> VulkanTexture::Make(const VulkanSharedContext* sharedContext,
     if (!MakeVkImage(sharedContext, dimensions, info, &imageInfo)) {
         return nullptr;
     }
-    auto ycbcrConversion = resourceProvider->findOrCreateCompatibleSamplerYcbcrConversion(
+    auto ycbcrConversion = resourceProvider->findOrCreateCompatibleYcbcrConversion(
             info.vulkanTextureSpec().fYcbcrConversionInfo);
 
     return sk_sp<Texture>(new VulkanTexture(sharedContext,
@@ -176,7 +180,7 @@ sk_sp<Texture> VulkanTexture::MakeWrapped(const VulkanSharedContext* sharedConte
                                           sk_sp<MutableTextureState> mutableState,
                                           VkImage image,
                                           const VulkanAlloc& alloc) {
-    auto ycbcrConversion = resourceProvider->findOrCreateCompatibleSamplerYcbcrConversion(
+    auto ycbcrConversion = resourceProvider->findOrCreateCompatibleYcbcrConversion(
             info.vulkanTextureSpec().fYcbcrConversionInfo);
 
     return sk_sp<Texture>(new VulkanTexture(sharedContext,

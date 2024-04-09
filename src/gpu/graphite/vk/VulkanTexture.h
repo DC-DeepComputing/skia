@@ -89,6 +89,9 @@ public:
                 VK_IMAGE_USAGE_INPUT_ATTACHMENT_BIT);
     }
 
+    // TODO - remove?
+    const VulkanSamplerYcbcrConversion* ycbcrConversion() const { return fSamplerYcbcrConversion.get(); }
+
 private:
     VulkanTexture(const VulkanSharedContext* sharedContext,
                   SkISize dimensions,
