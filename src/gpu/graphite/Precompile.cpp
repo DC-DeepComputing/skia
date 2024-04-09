@@ -12,13 +12,28 @@
 #include "src/gpu/graphite/FactoryFunctionsPriv.h"
 #include "src/gpu/graphite/KeyContext.h"
 #include "src/gpu/graphite/KeyHelpers.h"
+#include "src/gpu/graphite/PaintOptionsPriv.h"
 #include "src/gpu/graphite/PaintParams.h"
 #include "src/gpu/graphite/PaintParamsKey.h"
 #include "src/gpu/graphite/Precompile.h"
 #include "src/gpu/graphite/PrecompileBasePriv.h"
+#include "src/gpu/graphite/Renderer.h"
 #include "src/gpu/graphite/ShaderCodeDictionary.h"
 
+#include "src/gpu/graphite/AttachmentTypes.h"
+#include "src/gpu/graphite/ContextPriv.h"
+
 namespace skgpu::graphite {
+
+void compile1(const RendererProvider* rendererProvider,
+             ResourceProvider* resourceProvider,
+             const KeyContext& keyContext,
+             UniquePaintParamsID uniqueID,
+             DrawTypeFlags drawTypes,
+             SkSpan<RenderPassDesc> renderPassDescs,
+             bool withPrimitiveBlender,
+             Coverage coverage,
+             const char* label);
 
 //--------------------------------------------------------------------------------------------------
 sk_sp<PrecompileShader> PrecompileShader::makeWithLocalMatrix() {
@@ -108,19 +123,15 @@ int PaintOptions::numColorFilterCombinations() const {
 }
 
 int PaintOptions::numBlendModeCombinations() const {
-    bool bmBased = false;
-    int numBlendCombos = 0;
+    int numBlendCombos = fBlendModeOptions.size();
     for (const sk_sp<PrecompileBlender>& b: fBlenderOptions) {
-        if (b->asBlendMode().has_value()) {
-            bmBased = true;
-        } else {
-            numBlendCombos += b->numChildCombinations();
-        }
+        SkASSERT(!b->asBlendMode().has_value());
+        numBlendCombos += b->numChildCombinations();
     }
 
-    if (bmBased || !numBlendCombos) {
-        // If numBlendCombos is zero we will fallback to kSrcOver blending
-        ++numBlendCombos;
+    if (!numBlendCombos) {
+        // If the user didn't specify a blender we will fall back to kSrcOver blending
+        numBlendCombos = 1;
     }
 
     return numBlendCombos;
@@ -181,7 +192,7 @@ public:
 
     const PrecompileBlender* finalBlender() const { return fFinalBlender.first.get(); }
 
-    void toKey(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
+    void toKey1(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
 
 private:
     void addPaintColorToKey(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
@@ -347,7 +358,7 @@ void PaintOption::handleDstRead(const KeyContext& keyContext,
     }
 }
 
-void PaintOption::toKey(const KeyContext& keyContext,
+void PaintOption::toKey1(const KeyContext& keyContext,
                         PaintParamsKeyBuilder* keyBuilder,
                         PipelineDataGatherer* gatherer) const {
     this->handleDstRead(keyContext, keyBuilder, gatherer);
@@ -399,7 +410,7 @@ void PaintOptions::createKey(const KeyContext& keyContext,
     remainingCombinations /= numColorFilterCombinations;
 
     [[maybe_unused]] const int desiredMaskFilterCombination =
-                                             remainingCombinations % numMaskFilterCombinations;
+            remainingCombinations % numMaskFilterCombinations;
     remainingCombinations /= numMaskFilterCombinations;
 
     const int desiredShaderCombination = remainingCombinations;
@@ -408,33 +419,180 @@ void PaintOptions::createKey(const KeyContext& keyContext,
     // TODO: this probably needs to be passed in just like addPrimitiveBlender
     const bool kOpaquePaintColor = true;
 
-    auto clipShader = PrecompileBase::SelectOption(fClipShaderOptions,
+    auto clipShader = PrecompileBase::SelectOption(SkSpan(fClipShaderOptions),
                                                    desiredClipShaderCombination);
 
-    auto finalBlender = PrecompileBase::SelectOption(fBlenderOptions, desiredBlendCombination);
+    std::pair<sk_sp<PrecompileBlender>, int> finalBlender;
+    if (desiredBlendCombination < fBlendModeOptions.size()) {
+        finalBlender = { PrecompileBlender::Mode(fBlendModeOptions[desiredBlendCombination]), 0 };
+    } else {
+        finalBlender = PrecompileBase::SelectOption(
+                SkSpan(fBlenderOptions),
+                desiredBlendCombination - fBlendModeOptions.size());
+    }
+    if (!finalBlender.first) {
+        finalBlender = { PrecompileBlender::Mode(SkBlendMode::kSrcOver), 0 };
+    }
 
     DstReadRequirement dstReadReq = get_dst_read_req(keyContext.caps(), coverage,
                                                      finalBlender.first.get());
 
     PaintOption option(kOpaquePaintColor,
                        finalBlender,
-                       PrecompileBase::SelectOption(fShaderOptions, desiredShaderCombination),
-                       PrecompileBase::SelectOption(fColorFilterOptions,
+                       PrecompileBase::SelectOption(SkSpan(fShaderOptions),
+                                                    desiredShaderCombination),
+                       PrecompileBase::SelectOption(SkSpan(fColorFilterOptions),
                                                     desiredColorFilterCombination),
                        addPrimitiveBlender,
                        clipShader,
                        dstReadReq,
                        fDither);
 
-    option.toKey(keyContext, keyBuilder, gatherer);
+    option.toKey1(keyContext, keyBuilder, gatherer);
+}
+
+void dump2(ShaderCodeDictionary* dict, UniquePaintParamsID id) {
+    dict->lookup(id).dump(id.asUInt(), dict);
+}
+
+
+
+void flimflam(const PaintOptions& options,
+              Context* context,
+              const KeyContext& keyContext,
+              PaintParamsKeyBuilder* keyBuilder,
+              PipelineDataGatherer* gatherer,
+              const std::function<void(UniquePaintParamsID)>& processCombination,
+              std::unordered_set<uint32_t>& foo);
+
+void create_blur_pipelines(Context* context,
+                           const KeyContext& keyContext,
+                           PaintParamsKeyBuilder* keyBuilder,
+                           PipelineDataGatherer* gatherer,
+                           const std::function<void(UniquePaintParamsID)>& processCombination,
+                           std::unordered_set<uint32_t>& foo) {
+    PaintOptions paintOptions1, paintOptions2;
+
+    sk_sp<PrecompileShader> child = PrecompileShaders::RawImage(); // no alpha-only cases
+
+    SkBlendMode blendModes1[] = { SkBlendMode::kSrc };
+    paintOptions1.setShaders({ PrecompileShadersPriv::Blur1D16(child) });
+    paintOptions1.setBlendModes(blendModes1);
+
+    SkBlendMode blendModes2[] = { SkBlendMode::kSrc, SkBlendMode::kDstOut };
+    paintOptions2.setShaders({ child });
+    paintOptions2.setBlendModes(blendModes2);
+
+    flimflam(paintOptions1, context, keyContext, keyBuilder, gatherer, processCombination, foo);
+    flimflam(paintOptions2, context, keyContext, keyBuilder, gatherer, processCombination, foo);
+}
+
+void flimflam(const PaintOptions& options,
+              Context* context,
+              const KeyContext& keyContext,
+              PaintParamsKeyBuilder* keyBuilder,
+              PipelineDataGatherer* gatherer,
+              const std::function<void(UniquePaintParamsID)>& processCombination,
+              std::unordered_set<uint32_t>& foo) {
+    TextureInfo info = keyContext.caps()->getDefaultSampledTextureInfo(keyContext.dstColorInfo().colorType(),
+                                                                       Mipmapped::kNo,
+                                                                       Protected::kNo,
+                                                                       Renderable::kYes);
+
+    RenderPassDesc renderPassDescs[] = {
+            RenderPassDesc::Make(keyContext.caps(),
+                                 info,
+                                 LoadOp::kClear,   // ignored for Metal
+                                 StoreOp::kStore,  // ignored for Metal
+                                 DepthStencilFlags::kDepth,
+                                 /* clearColor= */ { .0f, .0f, .0f, .0f }, // ignored for Metal
+                                 /* requiresMSAA= */ true,
+                                 keyContext.caps()->getWriteSwizzle(keyContext.dstColorInfo().colorType(),
+                                                                    info)),
+            RenderPassDesc::Make(keyContext.caps(),
+                                 info,
+                                 LoadOp::kClear,   // ignored for Metal
+                                 StoreOp::kStore,  // ignored for Metal
+                                 DepthStencilFlags::kDepthStencil,
+                                 /* clearColor= */ { .0f, .0f, .0f, .0f }, // ignored for Metal
+                                 /* requiresMSAA= */ true,
+                                 keyContext.caps()->getWriteSwizzle(keyContext.dstColorInfo().colorType(),
+                                                                    info)),
+            RenderPassDesc::Make(keyContext.caps(),
+                                 info,
+                                 LoadOp::kClear,   // ignored for Metal
+                                 StoreOp::kStore,  // ignored for Metal
+                                 DepthStencilFlags::kDepth,
+                                 /* clearColor= */ { .0f, .0f, .0f, .0f }, // ignored for Metal
+                                 /* requiresMSAA= */ false,
+                                 keyContext.caps()->getWriteSwizzle(keyContext.dstColorInfo().colorType(),
+                                                                    info)),
+            RenderPassDesc::Make(keyContext.caps(),
+                                 info,
+                                 LoadOp::kClear,   // ignored for Metal
+                                 StoreOp::kStore,  // ignored for Metal
+                                 DepthStencilFlags::kDepthStencil,
+                                 /* clearColor= */ { .0f, .0f, .0f, .0f }, // ignored for Metal
+                                 /* requiresMSAA= */ false,
+                                 keyContext.caps()->getWriteSwizzle(keyContext.dstColorInfo().colorType(),
+                                                                    info)),
+    };
+
+    options.priv().buildCombinations(context,
+                                      keyContext,
+                                      gatherer,
+                                      /* withPrimitiveBlender= */ false,
+                                      Coverage::kNone, // TODO: it seems like this should vary
+                                      [&](UniquePaintParamsID uniqueID) {
+                                          if (foo.find(uniqueID.asUInt()) == foo.end()) {
+                                              foo.insert(uniqueID.asUInt());
+                                              dump2(keyContext.dict(), uniqueID);
+                                          }
+                                          compile1(context->priv().rendererProvider(),
+                                                  context->priv().resourceProvider(),
+                                                  keyContext, uniqueID,
+                                                  DrawTypeFlags::kSimpleShape,
+                                                  renderPassDescs,
+                                                  /* withPrimitiveBlender= */ false,
+                                                  Coverage::kSingleChannel, // Coverage::kNone, Coverage::kSingleChannel
+                                                  "for blur");
+                                      },
+                                      foo);
+
+#if 0
+    gatherer->resetWithNewLayout(Layout::kMetal);
+
+    const bool kOpaquePaintColor = true;
+
+    sk_sp<PrecompileShader> child = PrecompileShaders::Image();
+
+    PaintOption option(kOpaquePaintColor,
+                       { PrecompileBlender::Mode(SkBlendMode::kSrcOver), 0 },
+                       { PrecompileShadersPriv::Blur1D4(child), 0 },
+                       /* colorFilter= */ { nullptr, 0 },
+                       /* hasPrimitiveBlender= */ false,
+                       /* clipShader= */ { nullptr, 0 },
+                       DstReadRequirement::kNone,
+                       /* dither= */ false);
+
+    option.foo(keyContext, keyBuilder, gatherer);
+
+    // The 'findOrCreate' calls lockAsKey on builder and then destroys the returned
+    // PaintParamsKey. This serves to reset the builder.
+    UniquePaintParamsID paintID = keyContext.dict()->findOrCreate(keyBuilder);
+
+    processCombination(paintID);
+#endif
 }
 
 void PaintOptions::buildCombinations(
+        Context* context,
         const KeyContext& keyContext,
         PipelineDataGatherer* gatherer,
         bool addPrimitiveBlender,
         Coverage coverage,
-        const std::function<void(UniquePaintParamsID)>& processCombination) const {
+        const std::function<void(UniquePaintParamsID)>& processCombination,
+        std::unordered_set<uint32_t>& foo) const {
 
     PaintParamsKeyBuilder builder(keyContext.dict());
 
@@ -451,6 +609,10 @@ void PaintOptions::buildCombinations(
         UniquePaintParamsID paintID = keyContext.dict()->findOrCreate(&builder);
 
         processCombination(paintID);
+    }
+
+    if (fImageFilterOptions & PrecompileImageFilters1::kBlur) {
+        create_blur_pipelines(context, keyContext, &builder, gatherer, processCombination, foo);
     }
 }
 

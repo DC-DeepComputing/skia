@@ -11,6 +11,8 @@
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSpan.h"
+#include "include/private/base/SkTArray.h"
+#include "include/private/base/SkTDArray.h"
 
 #include <functional>
 #include <optional>
@@ -57,8 +59,7 @@ public:
 protected:
     // This returns the desired option along with the child options.
     template<typename T>
-    static std::pair<sk_sp<T>, int> SelectOption(const std::vector<sk_sp<T>>& options,
-                                                 int desiredOption);
+    static std::pair<sk_sp<T>, int> SelectOption(SkSpan<const sk_sp<T>> options, int desiredOption);
 
     // In general, derived classes should use AddToKey to select the desired child option from
     // a vector and then have it added to the key with its reduced/nested child option.
@@ -66,7 +67,7 @@ protected:
     static void AddToKey(const KeyContext&,
                          PaintParamsKeyBuilder*,
                          PipelineDataGatherer*,
-                         const std::vector<sk_sp<T>>& options,
+                         SkSpan<const sk_sp<T>> options,
                          int desiredOption);
 
 private:
@@ -86,7 +87,7 @@ private:
 //--------------------------------------------------------------------------------------------------
 
 template<typename T>
-std::pair<sk_sp<T>, int> PrecompileBase::SelectOption(const std::vector<sk_sp<T>>& options,
+std::pair<sk_sp<T>, int> PrecompileBase::SelectOption(SkSpan<const sk_sp<T>> options,
                                                       int desiredOption) {
     for (const sk_sp<T>& option : options) {
         if (desiredOption < (option ? option->numCombinations() : 1)) {
@@ -101,7 +102,7 @@ template<typename T>
 void PrecompileBase::AddToKey(const KeyContext& keyContext,
                               PaintParamsKeyBuilder* builder,
                               PipelineDataGatherer* gatherer,
-                              const std::vector<sk_sp<T>>& options,
+                              SkSpan<const sk_sp<T>> options,
                               int desiredOption) {
     auto [option, childOptions] = SelectOption(options, desiredOption);
     if (option) {
@@ -139,11 +140,6 @@ public:
     sk_sp<PrecompileColorFilter> makeComposed(sk_sp<PrecompileColorFilter> inner) const;
 };
 
-class PrecompileImageFilter : public PrecompileBase {
-public:
-    PrecompileImageFilter() : PrecompileBase(Type::kImageFilter) {}
-};
-
 class PrecompileBlender : public PrecompileBase {
 public:
     PrecompileBlender() : PrecompileBase(Type::kBlender) {}
@@ -152,6 +148,12 @@ public:
 
     static sk_sp<PrecompileBlender> Mode(SkBlendMode);
 };
+
+enum class PrecompileImageFilters1 : uint32_t {
+    kNone = 0x0,
+    kBlur = 0x1,
+};
+SK_MAKE_BITMASK_OPS(PrecompileImageFilters1)
 
 //--------------------------------------------------------------------------------------------------
 class PaintOptionsPriv;
@@ -170,18 +172,21 @@ public:
         fColorFilterOptions.assign(colorFilters.begin(), colorFilters.end());
     }
 
-    void setImageFilters(SkSpan<const sk_sp<PrecompileImageFilter>> imageFilters) {
-        fImageFilterOptions.assign(imageFilters.begin(), imageFilters.end());
+    void setImageFilters(SkEnumBitMask<PrecompileImageFilters1> options) {
+        fImageFilterOptions = options;
     }
 
     void setBlendModes(SkSpan<SkBlendMode> blendModes) {
-        fBlenderOptions.reserve(blendModes.size());
-        for (SkBlendMode bm : blendModes) {
-            fBlenderOptions.emplace_back(PrecompileBlender::Mode(bm));
-        }
+        fBlendModeOptions.append(blendModes.size(), blendModes.data());
     }
     void setBlenders(SkSpan<const sk_sp<PrecompileBlender>> blenders) {
-        fBlenderOptions.assign(blenders.begin(), blenders.end());
+        for (const sk_sp<PrecompileBlender>& b: blenders) {
+            if (b->asBlendMode().has_value()) {
+                fBlendModeOptions.push_back(b->asBlendMode().value());
+            } else {
+                fBlenderOptions.push_back(b);
+            }
+        }
     }
 
     void setClipShaders(SkSpan<const sk_sp<PrecompileShader>> clipShaders);
@@ -211,17 +216,20 @@ private:
                    bool addPrimitiveBlender,
                    Coverage coverage) const;
     void buildCombinations(
+        Context* context,
         const KeyContext&,
         PipelineDataGatherer*,
         bool addPrimitiveBlender,
         Coverage coverage,
-        const std::function<void(UniquePaintParamsID)>& processCombination) const;
+        const std::function<void(UniquePaintParamsID)>& processCombination,
+        std::unordered_set<uint32_t>& foo) const;
 
     std::vector<sk_sp<PrecompileShader>> fShaderOptions;
     std::vector<sk_sp<PrecompileMaskFilter>> fMaskFilterOptions;
     std::vector<sk_sp<PrecompileColorFilter>> fColorFilterOptions;
-    std::vector<sk_sp<PrecompileImageFilter>> fImageFilterOptions;
-    std::vector<sk_sp<PrecompileBlender>> fBlenderOptions;
+    SkEnumBitMask<PrecompileImageFilters1> fImageFilterOptions = PrecompileImageFilters1::kNone;
+    SkTDArray<SkBlendMode> fBlendModeOptions;
+    skia_private::TArray<sk_sp<PrecompileBlender>> fBlenderOptions;
     std::vector<sk_sp<PrecompileShader>> fClipShaderOptions;
     bool fDither = false;
 };
