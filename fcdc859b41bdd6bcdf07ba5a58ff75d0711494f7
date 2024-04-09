@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "995e5368_5d742a50",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-09T20:27:31Z",
+      "side": 1,
+      "message": "Locally tested that the CFF font was actually embedded instead of turned into a Type3 font with all of FreeType, CoreText, and DirectWrite. In theory we should probably still detect CFF2 use and shuttle that off to Type3, however most (if not all) CFF2 will be variable and be converted to Type3 that way. If anyone did make a non-variable CFF2 then it would get embedded, but it should still work on any recent platform (though it may draw only blank glyphs on platforms from before ~2018).",
+      "revId": "fcdc859b41bdd6bcdf07ba5a58ff75d0711494f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
