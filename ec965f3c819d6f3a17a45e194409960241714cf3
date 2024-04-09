@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d47cd0f_c1a93f35",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-04-09T01:22:11Z",
+      "side": 1,
+      "message": "@johnstiles: PTAL at the new code in DawnGraphiteUtils.cpp that injects the `enable chromium_internal_graphite;` directive to WGSL shaders.",
+      "revId": "ec965f3c819d6f3a17a45e194409960241714cf3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
