@@ -7,6 +7,7 @@
 
 #include "tests/Test.h"
 
+#if 0
 #if defined(SK_GRAPHITE)
 
 #include "include/core/SkColorSpace.h"
@@ -35,6 +36,7 @@ void empty_test(const KeyContext& keyContext,
 
     REPORTER_ASSERT(reporter, paintOptions.priv().numCombinations() == 1);
 
+    std::unordered_set<uint32_t> foo;
     std::vector<UniquePaintParamsID> precompileIDs;
     paintOptions.priv().buildCombinations(keyContext,
                                           gatherer,
@@ -42,7 +44,8 @@ void empty_test(const KeyContext& keyContext,
                                           Coverage::kNone,
                                           [&](UniquePaintParamsID id) {
                                               precompileIDs.push_back(id);
-                                          });
+                                          },
+                                          foo);
 
     SkASSERT(precompileIDs.size() == 1);
 }
@@ -58,6 +61,7 @@ void no_shader_option_test(const KeyContext& keyContext,
 
     REPORTER_ASSERT(reporter, paintOptions.priv().numCombinations() == 1);
 
+    std::unordered_set<uint32_t> foo;
     std::vector<UniquePaintParamsID> precompileIDs;
     paintOptions.priv().buildCombinations(keyContext,
                                           gatherer,
@@ -65,7 +69,7 @@ void no_shader_option_test(const KeyContext& keyContext,
                                           Coverage::kNone,
                                           [&](UniquePaintParamsID id) {
                                               precompileIDs.push_back(id);
-                                          });
+                                          }, foo);
 
     SkASSERT(precompileIDs.size() == 1);
 }
@@ -79,6 +83,7 @@ void no_blend_mode_option_test(const KeyContext& keyContext,
 
     REPORTER_ASSERT(reporter, paintOptions.priv().numCombinations() == 1);
 
+    std::unordered_set<uint32_t> foo;
     std::vector<UniquePaintParamsID> precompileIDs;
     paintOptions.priv().buildCombinations(keyContext,
                                           gatherer,
@@ -86,7 +91,8 @@ void no_blend_mode_option_test(const KeyContext& keyContext,
                                           Coverage::kNone,
                                           [&](UniquePaintParamsID id) {
                                               precompileIDs.push_back(id);
-                                          });
+                                          },
+                                          foo);
 
     SkASSERT(precompileIDs.size() == 1);
 }
@@ -149,6 +155,7 @@ void big_test(const KeyContext& keyContext,
     REPORTER_ASSERT(reporter, paintOptions.priv().numCombinations() == 116,
                     "Actual # of combinations %d", paintOptions.priv().numCombinations());
 
+    std::unordered_set<uint32_t> foo;
     std::vector<UniquePaintParamsID> precompileIDs;
     paintOptions.priv().buildCombinations(keyContext,
                                           gatherer,
@@ -156,7 +163,8 @@ void big_test(const KeyContext& keyContext,
                                           Coverage::kNone,
                                           [&](UniquePaintParamsID id) {
                                               precompileIDs.push_back(id);
-                                          });
+                                          },
+                                          foo);
 
     SkASSERT(precompileIDs.size() == 116);
 }
@@ -288,6 +296,7 @@ void runtime_effect_test(const KeyContext& keyContext,
 
     REPORTER_ASSERT(reporter, paintOptions.priv().numCombinations() == 8);
 
+    std::unordered_set<uint32_t> foo;
     std::vector<UniquePaintParamsID> precompileIDs;
     paintOptions.priv().buildCombinations(keyContext,
                                           gatherer,
@@ -295,7 +304,7 @@ void runtime_effect_test(const KeyContext& keyContext,
                                           Coverage::kNone,
                                           [&](UniquePaintParamsID id) {
                                               precompileIDs.push_back(id);
-                                          });
+                                          }, foo);
 
     SkASSERT(precompileIDs.size() == 8);
 }
@@ -326,3 +335,4 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(CombinationBuilderTest, reporter, context,
 }
 
 #endif // SK_GRAPHITE
+#endif

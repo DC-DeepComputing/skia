@@ -491,7 +491,7 @@ sk_sp<PrecompileShader> PrecompileShaders::Image() {
 }
 
 sk_sp<PrecompileShader> PrecompileShaders::RawImage() {
-    constexpr bool kIsRaw = false;
+    constexpr bool kIsRaw = true;
     // Raw images do not perform color space conversion, but in Graphite, this is represented as
     // an identity color space xform, not as a distinct shader
     return PrecompileShaders::LocalMatrix({ sk_make_sp<PrecompileImageShader>(kIsRaw) });
@@ -625,7 +625,7 @@ public:
         int desiredWrappedCombination = desiredCombination / kNumIntrinsicCombinations;
         SkASSERT(desiredWrappedCombination < fNumWrappedCombos);
 
-        auto wrapped = PrecompileBase::SelectOption(fWrapped, desiredWrappedCombination);
+        auto wrapped = PrecompileBase::SelectOption(SkSpan(fWrapped), desiredWrappedCombination);
         if (wrapped.first) {
             return wrapped.first->isConstant(wrapped.second);
         }
@@ -805,7 +805,7 @@ public:
     bool isConstant(int desiredCombination) const override {
         SkASSERT(desiredCombination < fNumWrappedCombos);
 
-        auto wrapped = PrecompileBase::SelectOption(fWrapped, desiredCombination);
+        auto wrapped = PrecompileBase::SelectOption(SkSpan(fWrapped), desiredCombination);
         if (wrapped.first) {
             return wrapped.first->isConstant(wrapped.second);
         }
@@ -837,6 +837,22 @@ private:
 
 sk_sp<PrecompileShader> PrecompileShadersPriv::CTM(SkSpan<const sk_sp<PrecompileShader>> wrapped) {
     return sk_make_sp<PrecompileCTMShader>(std::move(wrapped));
+}
+
+//--------------------------------------------------------------------------------------------------
+
+sk_sp<PrecompileShader> PrecompileShadersPriv::Blur1D4(sk_sp<PrecompileShader> child) {
+    const SkRuntimeEffect* blurXEffect =
+            GetKnownRuntimeEffect(SkKnownRuntimeEffects::StableKey::k1DBlur4);
+
+    return MakePrecompileShader(sk_ref_sp(blurXEffect), {{ std::move(child) }});
+}
+
+sk_sp<PrecompileShader> PrecompileShadersPriv::Blur1D16(sk_sp<PrecompileShader> child) {
+    const SkRuntimeEffect* blurXEffect =
+            GetKnownRuntimeEffect(SkKnownRuntimeEffects::StableKey::k1DBlur16);
+
+    return MakePrecompileShader(sk_ref_sp(blurXEffect), {{ std::move(child) }});
 }
 
 //--------------------------------------------------------------------------------------------------
