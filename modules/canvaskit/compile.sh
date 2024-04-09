@@ -199,6 +199,8 @@ echo "Compiling"
   is_trivial_abi=true \
   werror=true \
   target_cpu=\"wasm\" \
+  extra_ldflags=[\"-fwasm-exceptions\", \"-sABORTING_MALLOC=0\"] \
+  extra_cflags=[\"-fwasm-exceptions\"] \
   \
   skia_use_angle=false \
   skia_use_dng_sdk=false \
