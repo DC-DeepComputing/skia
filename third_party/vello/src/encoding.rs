@@ -11,7 +11,7 @@ use {
     },
     std::pin::Pin,
     vello_encoding::{
-        BumpEstimator, Encoding as VelloEncoding, PathEncoder, RenderConfig, Transform,
+        BufferSize, BumpEstimator, Encoding as VelloEncoding, PathEncoder, RenderConfig, Transform,
     },
 };
 
@@ -102,12 +102,17 @@ impl Encoding {
 
         let bump_estimate = self.estimator.tally(None);
         //println!("bump: {bump_estimate}");
+        //let ptcl_estimate = (width + 15) * (height + 15); // TODO: document calculation
         config.buffer_sizes.bin_data = bump_estimate.binning;
         config.buffer_sizes.seg_counts = bump_estimate.seg_counts;
         config.buffer_sizes.segments = bump_estimate.segments;
         config.buffer_sizes.lines = bump_estimate.lines;
+        //config.buffer_sizes.ptcl = BufferSize::from_size_in_bytes(ptcl_estimate);
+        config.gpu.lines_size = bump_estimate.lines.len();
         config.gpu.binning_size = bump_estimate.binning.len();
+        config.gpu.seg_counts_size = bump_estimate.seg_counts.len();
         config.gpu.segments_size = bump_estimate.segments.len();
+        //config.gpu.ptcl_size = config.buffer_sizes.ptcl.len();
 
         Box::new(RenderConfiguration {
             packed_scene,
