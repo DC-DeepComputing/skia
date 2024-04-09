@@ -70,6 +70,8 @@ static constexpr const char* sk_color_type_to_str(SkColorType colorType) {
             return "kBGR_101010x_SkColorType";
         case kBGR_101010x_XR_SkColorType:
             return "kBGR_101010x_XR_SkColorType";
+        case kBGRA_10101010_XR_SkColorType:
+            return "kBGRA_10101010_XR_SkColorType";
         case kGray_8_SkColorType:
             return "kGray_8_SkColorType";
         case kRGBA_F16Norm_SkColorType:
