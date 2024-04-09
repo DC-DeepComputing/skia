@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a4819dea_363aa11a",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 285,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-09T02:27:53Z",
+      "side": 1,
+      "message": "No, `sk_make_sp` requires that the type has a public constructor that it can call and Device is private. I definitely prefer `sk_make_sp` over `sk_sp(new T)` but I prefer that over the friend syntax to get `sk_make_sp` happy.",
+      "parentUuid": "370baa76_7629964f",
+      "revId": "12cf090868308d6b7d2c301da77d204bd9cd766e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f423086a_eac40434",
@@ -48,6 +66,30 @@
       "writtenOn": "2024-04-05T22:10:27Z",
       "side": 1,
       "message": "I\u0027m not 100% sure, since I wouldn\u0027t expect the `Device()` constructor to run if `new` failed, but calling `registerDevice` from inside the constructor was one hypothesis for the crash reports in b/333073673.\n\nEven if that\u0027s not the case, this feels better because now we don\u0027t expose the device pointer to anything until it\u0027s been put into an `sk_sp`.",
+      "range": {
+        "startLine": 286,
+        "startChar": 4,
+        "endLine": 288,
+        "endChar": 41
+      },
+      "revId": "12cf090868308d6b7d2c301da77d204bd9cd766e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dcb3905e_1cfe6c71",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-09T02:27:53Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "f423086a_eac40434",
       "range": {
         "startLine": 286,
         "startChar": 4,
@@ -81,6 +123,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e11b4395_df5599dc",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 338,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-09T02:27:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "254a6df8_35f65016",
+      "range": {
+        "startLine": 338,
+        "startChar": 20,
+        "endLine": 338,
+        "endChar": 24
+      },
+      "revId": "12cf090868308d6b7d2c301da77d204bd9cd766e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ec983476_d5238500",
@@ -94,6 +160,24 @@
       "writtenOn": "2024-04-08T17:57:09Z",
       "side": 1,
       "message": "Indentation",
+      "revId": "12cf090868308d6b7d2c301da77d204bd9cd766e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6cfdc336_f84cc0c0",
+        "filename": "src/gpu/graphite/Surface_Graphite.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-09T02:27:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ec983476_d5238500",
       "revId": "12cf090868308d6b7d2c301da77d204bd9cd766e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
