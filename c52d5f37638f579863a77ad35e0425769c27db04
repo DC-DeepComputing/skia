@@ -50,6 +50,23 @@
       "message": "Thanks for the fix!",
       "revId": "c52d5f37638f579863a77ad35e0425769c27db04",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "44dd0395_0d56874f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2024-04-09T20:33:43Z",
+      "side": 1,
+      "message": "Hi Michael, Greg, PTAL. Thanks",
+      "revId": "c52d5f37638f579863a77ad35e0425769c27db04",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
