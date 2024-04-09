@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cec9f288_abb1d382",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-04-09T19:30:29Z",
+      "side": 1,
+      "message": "This was also the last \"deprecated\" header, so I removed the corresponding logic and tests from the bazel -\u003e GNI converter.",
+      "revId": "5a5dab3d9a2132ecfda4ee3af0b2a7d6853bf39b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
