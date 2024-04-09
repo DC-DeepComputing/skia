@@ -1439,9 +1439,7 @@ std::pair<const Renderer*, PathAtlas*> Device::chooseRenderer(const Transform& l
 
     const Shape& shape = geometry.shape();
     // We can't use this renderer if we require MSAA for an effect (i.e. clipping or stroke+fill).
-    if (!requireMSAA && is_simple_shape(shape, type) &&
-        (strategy == PathRendererStrategy::kDefault ||
-         strategy == PathRendererStrategy::kRasterAA)) {
+    if (!requireMSAA && is_simple_shape(shape, type)) {
         return {renderers->analyticRRect(), nullptr};
     }
 
