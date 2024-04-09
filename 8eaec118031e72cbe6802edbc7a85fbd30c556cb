@@ -46,6 +46,30 @@
       },
       "revId": "8eaec118031e72cbe6802edbc7a85fbd30c556cb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0891864e_3fa3c1c0",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1535,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-04-09T15:25:28Z",
+      "side": 1,
+      "message": "The default inset value in Ganesh is 0.5, but 0.50001 in Graphite. It\u0027s not clear to me why there\u0027s a difference.",
+      "parentUuid": "b8a09bb5_5cdc86b2",
+      "range": {
+        "startLine": 1535,
+        "startChar": 55,
+        "endLine": 1535,
+        "endChar": 66
+      },
+      "revId": "8eaec118031e72cbe6802edbc7a85fbd30c556cb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
