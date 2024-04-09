@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d4aa2c0_f508c247",
+        "filename": "src/gpu/graphite/compute/VelloComputeSteps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-09T17:43:54Z",
+      "side": 1,
+      "message": "Is this causing the dawn validation errors? Should it be `Storage`?",
+      "range": {
+        "startLine": 204,
+        "startChar": 48,
+        "endLine": 204,
+        "endChar": 55
+      },
+      "revId": "591af8d1c26ed213abd40c7e5204b0daf89c2e01",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
