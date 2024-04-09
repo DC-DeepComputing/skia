@@ -26,6 +26,9 @@ BASE_LINKOPTS = [
     "-sDYNAMIC_EXECUTION=0",
     "-sFILESYSTEM=0",
     "-sEXPORTED_FUNCTIONS=['_malloc','_free']",
+    # https://g-issues.skia.org/issues/332939934
+    "-fwasm-exceptions",
+    "-sABORTING_MALLOC=0",
 ]
 
 RELEASE_OPTS = [

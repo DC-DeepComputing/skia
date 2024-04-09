@@ -135,6 +135,7 @@ build:debug --compilation_mode=dbg
 
 # See also https://github.com/emscripten-core/emsdk/issues/984 for disabling cc_toolchain_resolution
 build:canvaskit_full --noincompatible_enable_cc_toolchain_resolution \
+                     --copt="-fwasm-exceptions" \
                      --include_decoder=gif_decode_codec --include_decoder=jpeg_decode_codec \
                      --include_decoder=png_decode_codec --include_decoder=webp_decode_codec \
                      \
