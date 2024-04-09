@@ -425,9 +425,7 @@ sk_sp<SkImage> MakeFromBitmap(Recorder* recorder,
     }
 
     SkASSERT(!requiredProps.fMipmapped || view.proxy()->mipmapped() == skgpu::Mipmapped::kYes);
-    return sk_make_sp<skgpu::graphite::Image>(kNeedNewImageUniqueID,
-                                              std::move(view),
-                                              colorInfo.makeColorType(ct));
+    return Image::Make(std::move(view), colorInfo.makeColorType(ct));
 }
 
 size_t ComputeSize(SkISize dimensions,
@@ -501,9 +499,7 @@ sk_sp<SkImage> RescaleImage(Recorder* recorder,
     // Within a rescaling pass tempInput is read from and tempOutput is written to.
     // At the end of the pass tempOutput's texture is wrapped and assigned to tempInput.
     const SkImageInfo& srcImageInfo = srcImage->imageInfo();
-    sk_sp<SkImage> tempInput(new Image(kNeedNewImageUniqueID,
-                                       imageView,
-                                       srcImageInfo.colorInfo()));
+    sk_sp<SkImage> tempInput = Image::Make(imageView,  srcImageInfo.colorInfo());
     sk_sp<SkSurface> tempOutput;
 
     // Assume we should ignore the rescale linear request if the surface has no color space since
@@ -597,9 +593,7 @@ bool GenerateMipmaps(Recorder* recorder,
     // pixel format. We have to be consistent and swizzle on the read.
     auto imgSwizzle = recorder->priv().caps()->getReadSwizzle(colorInfo.colorType(),
                                                               texture->textureInfo());
-    sk_sp<SkImage> scratchImg(
-            new Image(kNeedNewImageUniqueID, TextureProxyView(texture, imgSwizzle), colorInfo));
-
+    sk_sp<SkImage> scratchImg = Image::Make({texture, imgSwizzle}, colorInfo);
     SkISize srcSize = texture->dimensions();
     const SkColorInfo outColorInfo = colorInfo.makeAlphaType(kPremul_SkAlphaType);
 
@@ -775,10 +769,7 @@ public:
         const SkColorInfo& colorInfo = data.info().colorInfo();
         skgpu::Swizzle swizzle = fRecorder->priv().caps()->getReadSwizzle(colorInfo.colorType(),
                                                                           proxy->textureInfo());
-        return sk_make_sp<skgpu::graphite::Image>(
-                data.getGenerationID(),
-                skgpu::graphite::TextureProxyView(std::move(proxy), swizzle),
-                colorInfo);
+        return skgpu::graphite::Image::Make({std::move(proxy), swizzle}, colorInfo);
     }
 
     const SkBlurEngine* getBlurEngine() const override { return this; }

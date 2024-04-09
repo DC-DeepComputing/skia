@@ -35,31 +35,36 @@ namespace skgpu::graphite {
 Image::Image(uint32_t uniqueID,
              TextureProxyView view,
              const SkColorInfo& info)
-    : Image_Base(SkImageInfo::Make(view.proxy()->dimensions(), info), uniqueID)
-    , fTextureProxyView(std::move(view)) {}
+        : Image_Base(SkImageInfo::Make(view.proxy()->dimensions(), info), uniqueID)
+        , fTextureProxyView(std::move(view)) {
+    SkASSERT(fTextureProxyView.proxy());
+}
 
 Image::~Image() = default;
 
+sk_sp<Image> Image::Make(TextureProxyView view, const SkColorInfo& info) {
+    if (!view) {
+        return nullptr;
+    }
+    // Graphite doesn't use SkImage's unique ID for caching so always request a new one.
+    return sk_sp<Image>(new Image(kNeedNewImageUniqueID, std::move(view), info));
+}
+
 sk_sp<Image> Image::MakeView(sk_sp<Device> device) {
-    TextureProxyView proxy = device->readSurfaceView();
-    if (!proxy) {
+    if (!device) {
         return nullptr;
     }
     // NOTE: If the device was created with an approx backing fit, it's SkImageInfo reports the
     // logical dimensions, but its proxy has the approximate fit. These larger dimensions are
     // propagated to the SkImageInfo of this image view.
-    sk_sp<Image> view = sk_make_sp<Image>(kNeedNewImageUniqueID,
-                                          std::move(proxy),
-                                          device->imageInfo().colorInfo());
-    view->linkDevice(std::move(device));
+    sk_sp<Image> view = Make(device->readSurfaceView(), device->imageInfo().colorInfo());
+    if (view) {
+        view->linkDevice(std::move(device));
+    }
     return view;
 }
 
 size_t Image::textureSize() const {
-    if (!fTextureProxyView.proxy()) {
-        return 0;
-    }
-
     if (!fTextureProxyView.proxy()->texture()) {
         return fTextureProxyView.proxy()->uninstantiatedGpuMemorySize();
     }
@@ -123,7 +128,7 @@ sk_sp<Image> Image::copyImage(Recorder* recorder,
                                                          mipmapped,
                                                          backingFit);
     if (copiedView) {
-        return sk_make_sp<Image>(kNeedNewImageUniqueID, std::move(copiedView), colorInfo);
+        return Image::Make(std::move(copiedView), colorInfo);
     }
 
     // Perform the copy as a draw; since the proxy has been wrapped in an Image, it should be
@@ -148,10 +153,8 @@ sk_sp<Image> Image::copyImage(Recorder* recorder,
 }
 
 sk_sp<SkImage> Image::onReinterpretColorSpace(sk_sp<SkColorSpace> newCS) const {
-    sk_sp<Image> view = sk_make_sp<Image>(kNeedNewImageUniqueID,
-                                          fTextureProxyView,
-                                          this->imageInfo().colorInfo()
-                                                           .makeColorSpace(std::move(newCS)));
+    sk_sp<Image> view = Make(fTextureProxyView,
+                             this->imageInfo().colorInfo().makeColorSpace(std::move(newCS)));
     // The new Image object shares the same texture proxy, so it should also share linked Devices
     view->linkDevices(this);
     return view;

@@ -23,11 +23,9 @@ class Recorder;
 
 class Image_YUVA final : public Image_Base {
 public:
-    Image_YUVA(uint32_t uniqueID,
-               YUVATextureProxies proxies,
-               sk_sp<SkColorSpace>);
-
     ~Image_YUVA() override;
+
+    static sk_sp<Image_YUVA> Make(YUVATextureProxies proxies, sk_sp<SkColorSpace>);
 
     // Wraps the Graphite-backed Image planes into a YUV[A] image. The returned image shares
     // textures as well as any links to Devices that might modify those textures.
@@ -64,6 +62,8 @@ public:
             SkImages::GraphitePromiseTextureReleaseProc);
 
 private:
+    Image_YUVA(uint32_t uniqueID, YUVATextureProxies proxies, sk_sp<SkColorSpace>);
+
     sk_sp<SkImage> makeTextureImage(Recorder*, RequiredProperties) const override;
     using Image_Base::onMakeSubset;
     sk_sp<SkImage> onMakeSubset(Recorder*, const SkIRect&, RequiredProperties) const override;
