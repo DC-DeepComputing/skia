@@ -34,6 +34,7 @@
 #include "include/core/SkSurface.h"
 #include "include/encode/SkPngEncoder.h"
 #include "include/private/base/SkMacros.h"
+#include "include/private/gpu/graphite/ContextOptionsPriv.h"
 #include "src/base/SkAutoMalloc.h"
 #include "src/base/SkLeanWindows.h"
 #include "src/base/SkTime.h"
@@ -315,6 +316,7 @@ struct GraphiteTarget : public Target {
     TestContext* testContext;
     skgpu::graphite::Context* context;
     std::unique_ptr<skgpu::graphite::Recorder> recorder;
+    skgpu::graphite::ContextOptionsPriv privOpts;
 
     ~GraphiteTarget() override {
         // For Vulkan we need to release all our refs before we destroy the vulkan context which
@@ -357,7 +359,10 @@ struct GraphiteTarget : public Target {
         bench->modifyGrContextOptions(&options);
         // TODO: We should merge Ganesh and Graphite context options and then actually use the
         // context options when we make the factory here.
-        this->factory = std::make_unique<ContextFactory>();
+        privOpts.fPathRendererStrategy = skgpu::graphite::PathRendererStrategy::kComputeAnalyticAA;
+        skiatest::graphite::TestOptions testOpts;
+        testOpts.fContextOptions.fOptionsPriv = &privOpts;
+        this->factory = std::make_unique<ContextFactory>(testOpts);
 
         skiatest::graphite::ContextInfo ctxInfo =
                 this->factory->getContextInfo(this->config.ctxType);
