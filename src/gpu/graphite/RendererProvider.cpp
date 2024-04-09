@@ -55,38 +55,38 @@ RendererProvider::RendererProvider(const Caps* caps, StaticBufferManager* buffer
     const bool infinitySupport = caps->shaderCaps()->fInfinitySupport;
 
     // Single-step renderers don't share RenderSteps
-    auto makeFromStep = [&](std::unique_ptr<RenderStep> singleStep, DrawTypeFlags drawTypes) {
+    auto makeFromStep = [&](std::unique_ptr<RenderStep> singleStep, DrawTypeFlags drawTypes, bool foo) {
         std::string name = "SingleStep[";
         name += singleStep->name();
         name += "]";
         fRenderSteps.push_back(std::move(singleStep));
-        return Renderer(name, drawTypes, fRenderSteps.back().get());
+        return Renderer(name, drawTypes, foo, fRenderSteps.back().get());
     };
 
     fConvexTessellatedWedges =
             makeFromStep(std::make_unique<TessellateWedgesRenderStep>(
                                  "convex", infinitySupport, kDirectDepthGreaterPass, bufferManager),
-                         DrawTypeFlags::kShape);
+                         DrawTypeFlags::kShape1, true); //$$
     fTessellatedStrokes = makeFromStep(
-            std::make_unique<TessellateStrokesRenderStep>(infinitySupport), DrawTypeFlags::kShape);
-    fCoverageMask = makeFromStep(std::make_unique<CoverageMaskRenderStep>(), DrawTypeFlags::kShape);
+            std::make_unique<TessellateStrokesRenderStep>(infinitySupport), DrawTypeFlags::kShape1, true); //$$
+    fCoverageMask = makeFromStep(std::make_unique<CoverageMaskRenderStep>(), DrawTypeFlags::kShape1, true); //$$
     for (bool lcd : {false, true}) {
         fBitmapText[lcd] = makeFromStep(std::make_unique<BitmapTextRenderStep>(lcd),
-                                        DrawTypeFlags::kText);
+                                        DrawTypeFlags::kText, true); //$$
         fSDFText[lcd] = makeFromStep(std::make_unique<SDFTextRenderStep>(lcd),
-                                     DrawTypeFlags::kText);
+                                     DrawTypeFlags::kText, true); //$$
     }
     fAnalyticRRect = makeFromStep(std::make_unique<AnalyticRRectRenderStep>(bufferManager),
-                                  DrawTypeFlags::kShape);
+                                  DrawTypeFlags::kSimpleShape, true); //$$
     fPerEdgeAAQuad = makeFromStep(std::make_unique<PerEdgeAAQuadRenderStep>(bufferManager),
-                                  DrawTypeFlags::kShape);
+                                  DrawTypeFlags::kShape1, true); //$$
     for (PrimitiveType primType : {PrimitiveType::kTriangles, PrimitiveType::kTriangleStrip}) {
         for (bool color : {false, true}) {
             for (bool texCoords : {false, true}) {
                 int index = 4*(primType == PrimitiveType::kTriangleStrip) + 2*color + texCoords;
                 fVertices[index] = makeFromStep(
                         std::make_unique<VerticesRenderStep>(primType, color, texCoords),
-                        DrawTypeFlags::kDrawVertices);
+                        DrawTypeFlags::kDrawVertices, true); //$$
             }
         }
     }
@@ -114,7 +114,7 @@ RendererProvider::RendererProvider(const Caps* caps, StaticBufferManager* buffer
             std::string variant = kTessVariants[index];
 
             constexpr DrawTypeFlags kTextAndShape =
-                    static_cast<DrawTypeFlags>(DrawTypeFlags::kText|DrawTypeFlags::kShape);
+                    static_cast<DrawTypeFlags>(DrawTypeFlags::kText|DrawTypeFlags::kShape1);//$$
 
             const RenderStep* coverStep = inverse ? coverInverse.get() : coverFill.get();
             fStencilTessellatedCurves[index] = Renderer("StencilTessellatedCurvesAndTris" + variant,
