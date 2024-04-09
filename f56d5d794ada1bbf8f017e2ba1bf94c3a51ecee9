@@ -39,6 +39,30 @@
       },
       "revId": "f56d5d794ada1bbf8f017e2ba1bf94c3a51ecee9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "24558671_43cac393",
+        "filename": "include/gpu/vk/VulkanTypes.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 21169
+      },
+      "writtenOn": "2024-04-09T17:45:51Z",
+      "side": 1,
+      "message": "That\u0027s from https://registry.khronos.org/vulkan/specs/1.3-extensions/man/html/VkSamplerYcbcrConversionCreateInfo.html:\n\n```\nIf the pNext chain includes a VkExternalFormatANDROID structure with non-zero externalFormat member, the sampler Y′CBCR conversion object represents an external format conversion, and format must be VK_FORMAT_UNDEFINED. Such conversions must only be used to sample image views with a matching external format. When creating an external format conversion, the value of components is ignored.\n```\n\nThe change to `GetYcbcrConversionInfoFromFormatProps` means, if the AHB being imported does not use an external format, the swizzle will be honored; if the AHB being imported uses an external format, the swizzle will be ignored.  I think that\u0027s the desired behavior.",
+      "parentUuid": "9f812dc0_8e43a5b1",
+      "range": {
+        "startLine": 107,
+        "startChar": 4,
+        "endLine": 107,
+        "endChar": 56
+      },
+      "revId": "f56d5d794ada1bbf8f017e2ba1bf94c3a51ecee9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
