@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8aacbe2f_a2ef4634",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 2281,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-09T18:25:41Z",
+      "side": 1,
+      "message": "Yeah, I really like the attemptBlurredRRectDraw() code and agree that it works out nicely enough to not worry about making it not failproof. There is a little bit more changes that I outlined in its implementation to make sure the layering works out the right way, but I think all the pieces are there.",
+      "parentUuid": "3b6ac3e8_79535e21",
+      "range": {
+        "startLine": 2278,
+        "startChar": 0,
+        "endLine": 2281,
+        "endChar": 5
+      },
+      "revId": "6361dc56d6025355244bfa40a4ec192f166a4570",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0544e1e6_22fa0c97",
@@ -320,6 +344,30 @@
       "side": 1,
       "message": "The big thing we get from SkMatrix here is `rectStaysRect()`, is it worth implementing that in Transform? (We also use `preservesRightAngles()` and `isSimilarity()` in RectBlurData::Make, but I suppose we could convert from SkMatrix to Transform when passing the matrix to MakeRect)",
       "parentUuid": "bb9ba5ca_9f5fbeae",
+      "range": {
+        "startLine": 45,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 81
+      },
+      "revId": "6361dc56d6025355244bfa40a4ec192f166a4570",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e42b255_920c36f1",
+        "filename": "src/gpu/graphite/geom/RectBlurData.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-09T18:25:41Z",
+      "side": 1,
+      "message": "For `Transform`, you can check `t.type() \u003c\u003d Transform::Type::kRectStaysRect`. If `preservesRightAngles()` is valuable, `Transform` calculates all the right information to add a `kOrthogonal` type that is equivalent to preserves-right-angles.",
+      "parentUuid": "ee0abb0f_3cf49a8e",
       "range": {
         "startLine": 45,
         "startChar": 0,
