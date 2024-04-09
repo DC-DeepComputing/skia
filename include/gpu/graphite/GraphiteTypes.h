@@ -109,19 +109,22 @@ enum class Volatile : bool {
  */
 enum DrawTypeFlags : uint8_t {
 
-    kNone         = 0b000,
+    kNone          = 0b0000,
 
     // SkCanvas:: drawSimpleText, drawString, drawGlyphs, drawTextBlob, drawSlug
-    kText         = 0b001,
+    kText          = 0b0001,
 
     // SkCanvas::drawVertices
-    kDrawVertices = 0b010,
+    kDrawVertices  = 0b0010,
+
+    kSimpleShape    = 0b0100,
+    kNonSimpleShape = 0b1000,
 
     // All other canvas draw calls
-    kShape        = 0b100,
+    kShape1        = kSimpleShape | kNonSimpleShape,
 
-    kMostCommon = kText | kShape,
-    kAll = kText | kDrawVertices | kShape
+    kMostCommon = kText | kShape1,
+    kAll = kText | kDrawVertices | kShape1
 };
 
 } // namespace skgpu::graphite
