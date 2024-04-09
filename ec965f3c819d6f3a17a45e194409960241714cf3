@@ -84,6 +84,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "51fa92f5_75157182",
+        "filename": "src/gpu/graphite/dawn/DawnGraphiteUtils.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-04-09T21:52:14Z",
+      "side": 1,
+      "message": "For SkSL this makes sense but for pre-compiled shaders like the vello sources this has to get injected somewhere other than the SkSL codegen backend. I didn\u0027t add this declaration to the vello source directly because the prebuild tooling uses naga and that doesn\u0027t recognize the \"enable\" or \"require\" directives yet (see https://github.com/gfx-rs/wgpu/issues/5476). It also didn\u0027t make sense to put it there because the extension name is very specific to dawn+graphite.\n\nI can figure out a different place (like the vello crate) to inject this directive if it really shouldn\u0027t be here.\n\n\u003e On the other hand--maybe it should be a program setting? This would not be viable if we wanted to make CanvasKit for WebGPU. (Counter-counterpoint: this is graphite/dawn, not graphite/webgpu, and I expect we\u0027d need bigger changes as well.)\n\nFor SkSL, it probably make sense for this to be a program setting. This still needs be configurable based on dawn vs webgpu as you say. The __EMSCRIPTEN__ guard here is one way to achieve that.",
+      "parentUuid": "1f15fad3_f35cc197",
+      "range": {
+        "startLine": 155,
+        "startChar": 0,
+        "endLine": 158,
+        "endChar": 0
+      },
+      "revId": "ec965f3c819d6f3a17a45e194409960241714cf3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7e6288dc_0162fb08",
         "filename": "tools/window/GraphiteDawnWindowContext.cpp",
         "patchSetId": 1
