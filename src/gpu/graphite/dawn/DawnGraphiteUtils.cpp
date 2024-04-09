@@ -148,7 +148,14 @@ bool DawnCompileWGSLShaderModule(const DawnSharedContext* sharedContext,
                                  wgpu::ShaderModule* module,
                                  ShaderErrorHandler* errorHandler) {
     wgpu::ShaderModuleWGSLDescriptor wgslDesc;
+
+#if defined(__EMSCRIPTEN__)
     wgslDesc.code = wgsl.c_str();
+#else
+    // Request Graphite-specific extensions on Dawn native.
+    std::string src = "enable chromium_internal_graphite;\n" + wgsl;
+    wgslDesc.code = src.c_str();
+#endif
 
     wgpu::ShaderModuleDescriptor desc;
     desc.nextInChain = &wgslDesc;
