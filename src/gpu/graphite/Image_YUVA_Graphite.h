@@ -61,15 +61,6 @@ public:
 private:
     Image_YUVA(uint32_t uniqueID, YUVATextureProxies proxies, sk_sp<SkColorSpace>);
 
-    sk_sp<SkImage> makeTextureImage(Recorder*, RequiredProperties) const override;
-    using Image_Base::onMakeSubset;
-    sk_sp<SkImage> onMakeSubset(Recorder*, const SkIRect&, RequiredProperties) const override;
-    using Image_Base::onMakeColorTypeAndColorSpace;
-    sk_sp<SkImage> makeColorTypeAndColorSpace(Recorder*,
-                                              SkColorType targetCT,
-                                              sk_sp<SkColorSpace> targetCS,
-                                              RequiredProperties) const override;
-
     YUVATextureProxies fYUVAProxies;
 };
 
