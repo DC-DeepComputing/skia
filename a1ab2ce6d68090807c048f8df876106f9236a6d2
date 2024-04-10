@@ -33,6 +33,75 @@
       "message": "ping",
       "revId": "a1ab2ce6d68090807c048f8df876106f9236a6d2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cb501024_f42860c6",
+        "filename": "bench/SKPBench.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-10T19:47:48Z",
+      "side": 1,
+      "message": "nit: amortizing\n```suggestion\n        // to the gpu so we are measuring the cost of gpu submission and not amortizing one\n```",
+      "range": {
+        "startLine": 129,
+        "startChar": 77,
+        "endLine": 129,
+        "endChar": 88
+      },
+      "revId": "a1ab2ce6d68090807c048f8df876106f9236a6d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79ddfc18_bf94e6b5",
+        "filename": "bench/nanobench.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-10T19:47:48Z",
+      "side": 1,
+      "message": "This waits until all work is done, right? While the above `flushAndWaitOnSync` in `endTiming()` is the logic that allows several submissions to be running in parallel but wait if the CPU gets too far ahead, right?",
+      "range": {
+        "startLine": 266,
+        "startChar": 45,
+        "endLine": 266,
+        "endChar": 60
+      },
+      "revId": "a1ab2ce6d68090807c048f8df876106f9236a6d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "060bcb95_371f552e",
+        "filename": "bench/nanobench.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-10T19:47:48Z",
+      "side": 1,
+      "message": "`// Make sure we\u0027re done with setup work before we start timing`\n```suggestion\n        // Make sure we\u0027re done with setup work before we start timing.\n```",
+      "range": {
+        "startLine": 46,
+        "startChar": 8,
+        "endLine": 46,
+        "endChar": 58
+      },
+      "revId": "a1ab2ce6d68090807c048f8df876106f9236a6d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
