@@ -37,7 +37,7 @@ void compile(const RendererProvider* rendererProvider,
              bool withPrimitiveBlender,
              Coverage coverage) {
     for (const Renderer* r : rendererProvider->renderers()) {
-        if (!(r->drawTypes() & drawTypes)) {
+        if (!(r->drawTypes1() & drawTypes)) {
             continue;
         }
 
