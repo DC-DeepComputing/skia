@@ -35,6 +35,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "63d3df12_4286ac9e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 20
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-10T16:22:35Z",
+      "side": 1,
+      "message": "https://skia-review.googlesource.com/c/skia/+/838736",
+      "revId": "40200ceca00e8614b84bb229d34cb2aa3b269308",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8439ffbc_88b102b7",
@@ -48,6 +65,24 @@
       "writtenOn": "2024-04-10T15:32:35Z",
       "side": 1,
       "message": "Didn\u0027t notice because this wasn\u0027t moved in this change (the old one is still hangin around and was removed later), but these used to be `SkFixed`.",
+      "revId": "40200ceca00e8614b84bb229d34cb2aa3b269308",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4bede957_a9ff3b62",
+        "filename": "src/core/SkFontScanner.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-10T16:22:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8439ffbc_88b102b7",
       "revId": "40200ceca00e8614b84bb229d34cb2aa3b269308",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -69,6 +104,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2abea972_ab255bd2",
+        "filename": "src/ports/SkFontHost_FreeType.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 2122,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-10T16:22:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3574a2e6_609ca6a7",
+      "revId": "40200ceca00e8614b84bb229d34cb2aa3b269308",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "eb278571_b1f7f9e8",
@@ -86,6 +139,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f609eb2_74fedca5",
+        "filename": "src/ports/SkFontHost_FreeType.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 2239,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-10T16:22:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eb278571_b1f7f9e8",
+      "revId": "40200ceca00e8614b84bb229d34cb2aa3b269308",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7ad0ac75_1565da55",
@@ -99,6 +170,24 @@
       "writtenOn": "2024-04-10T15:38:40Z",
       "side": 1,
       "message": "And this is horribly \"working\" by dividing the float values out.",
+      "revId": "40200ceca00e8614b84bb229d34cb2aa3b269308",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a26d350_6f64e3c5",
+        "filename": "src/ports/SkFontHost_FreeType.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 2255,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-10T16:22:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7ad0ac75_1565da55",
       "revId": "40200ceca00e8614b84bb229d34cb2aa3b269308",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
