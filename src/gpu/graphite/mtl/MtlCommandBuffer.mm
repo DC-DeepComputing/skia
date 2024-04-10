@@ -240,6 +240,7 @@ bool MtlCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
     sk_cfp<MTLRenderPassDescriptor*> descriptor([[MTLRenderPassDescriptor alloc] init]);
     // Set up color attachment.
     auto& colorInfo = renderPassDesc.fColorAttachment;
+    SkDebugf("begin renderpass, load op = %d\n", (int) colorInfo.fLoadOp);
     bool loadMSAAFromResolve = false;
     if (colorTexture) {
         // TODO: check Texture matches RenderPassDesc
