@@ -380,6 +380,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c88d4cc7_bd0f1b93",
+        "filename": "src/gpu/graphite/geom/RectBlurData.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-04-10T21:03:01Z",
+      "side": 1,
+      "message": "I started trying to use Transform here where possible but I\u0027ve concluded that there\u0027s so much SkMatrix-specific functionality used here that it\u0027s not worth porting that to Transform in this CL, and therefore we need an SkMatrix from the very beginning of `RectBlurData::Make()`. I added a todo about expanding functionality in Transform.",
+      "parentUuid": "1e42b255_920c36f1",
+      "range": {
+        "startLine": 45,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 81
+      },
+      "revId": "6361dc56d6025355244bfa40a4ec192f166a4570",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6f8dd541_3ab780f6",
         "filename": "src/gpu/graphite/geom/RectBlurData.cpp",
         "patchSetId": 6

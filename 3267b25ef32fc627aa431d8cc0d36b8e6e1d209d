@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3e1d979a_605eaae7",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 2281,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-04-10T21:03:01Z",
+      "side": 1,
+      "message": "That occurred to me, but looking at https://crsrc.org/c/third_party/skia/src/core/SkStrokeRec.cpp, namely `init()` and `getStyle()`, isn\u0027t it possible for the SkStrokeRec style to also be Fill when the paint\u0027s style is StrokeAndFill and it has a hairline stroke?",
+      "parentUuid": "06c59458_63facab0",
+      "range": {
+        "startLine": 2281,
+        "startChar": 8,
+        "endLine": 2281,
+        "endChar": 65
+      },
+      "revId": "3267b25ef32fc627aa431d8cc0d36b8e6e1d209d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6f952b1b_980fb5cc",
         "filename": "src/core/SkCanvas.cpp",
         "patchSetId": 7
@@ -37,6 +61,30 @@
       "writtenOn": "2024-04-09T18:25:41Z",
       "side": 1,
       "message": "I think this assert would be useful to move outside the if statement.",
+      "range": {
+        "startLine": 2304,
+        "startChar": 0,
+        "endLine": 2304,
+        "endChar": 68
+      },
+      "revId": "3267b25ef32fc627aa431d8cc0d36b8e6e1d209d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b7935a98_72e432ad",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 2304,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-04-10T21:03:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6f952b1b_980fb5cc",
       "range": {
         "startLine": 2304,
         "startChar": 0,
@@ -72,6 +120,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ca42abd8_f2a445d6",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 2312,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-04-10T21:03:01Z",
+      "side": 1,
+      "message": "Well, this gets piped to `RectBlurData::MakeRect`, which does ostensibly expect a device-space sigma. Things get a little complicated in there since we\u0027re dealing with shape geometry that\u0027s in this weird halfway coordinate space with the device scale applied but not rotation or translation. But I suppose the rotation and translation don\u0027t apply to the sigma here anyways.",
+      "parentUuid": "3b043aba_7977a44b",
+      "range": {
+        "startLine": 2312,
+        "startChar": 55,
+        "endLine": 2312,
+        "endChar": 74
+      },
+      "revId": "3267b25ef32fc627aa431d8cc0d36b8e6e1d209d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "578e1c25_75d3f822",
         "filename": "src/core/SkCanvas.cpp",
         "patchSetId": 7
@@ -83,6 +155,30 @@
       "writtenOn": "2024-04-09T18:25:41Z",
       "side": 1,
       "message": "If this fails, but there was an image filter on the paint passed into `auto layer \u003d this-\u003eaboutToDraw` we\u0027ve created a device and layer that will be restored when `layer` goes out of scope. It won\u0027t have had anything drawn into it, but will still then run through the image filtering with a transparent black image, which probably will produce transparent black (unless the specific filters change that).\n\nWe can\u0027t just return `AutoLayerForImageFilter(in_place, this, layer-\u003epaint(), \u0026bounds, /*skip\u003d*/false)` here to add a deeper layer, since then the first layer still gets destroyed too soon. What we will need to add is a way to modify the AutoLayerForImageFilter object to redo its mask filter layering. That should be as simple as making `addMaskFilterLayer()` public so we can add it to the auto-layer if the analytic blur fails, and then return `layer` that now includes both image filter and mask filter layers.",
+      "range": {
+        "startLine": 2316,
+        "startChar": 7,
+        "endLine": 2316,
+        "endChar": 9
+      },
+      "revId": "3267b25ef32fc627aa431d8cc0d36b8e6e1d209d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd39489a_e0c6e368",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 2316,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-04-10T21:03:01Z",
+      "side": 1,
+      "message": "As discussed offline, I had to add a move constructor for AutoLayerForImageFilter -- I put that in a separate CL http://review.skia.org/838798.",
+      "parentUuid": "578e1c25_75d3f822",
       "range": {
         "startLine": 2316,
         "startChar": 7,
@@ -116,6 +212,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "df9fe05c_d5f36853",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 2320,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-04-10T21:03:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4c2b5338_e5e99bcc",
+      "range": {
+        "startLine": 2320,
+        "startChar": 0,
+        "endLine": 2320,
+        "endChar": 50
+      },
+      "revId": "3267b25ef32fc627aa431d8cc0d36b8e6e1d209d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8e94e47a_7236b02e",
@@ -139,6 +259,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b54e7c5b_f84197f8",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 2330,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-04-10T21:03:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8e94e47a_7236b02e",
+      "range": {
+        "startLine": 2330,
+        "startChar": 42,
+        "endLine": 2330,
+        "endChar": 54
+      },
+      "revId": "3267b25ef32fc627aa431d8cc0d36b8e6e1d209d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3e873227_e45eff1d",
@@ -152,6 +296,30 @@
       "writtenOn": "2024-04-09T18:25:41Z",
       "side": 1,
       "message": "Since we are mixing rects in different coordinate spaces, can we add comments to each that say what space they are in. My understanding is that `fBounds` is in the local coordinate space, and `fShapeData` has been transformed by the local-to-device matrix AND `fDevToScaledShape`?",
+      "range": {
+        "startLine": 78,
+        "startChar": 0,
+        "endLine": 80,
+        "endChar": 20
+      },
+      "revId": "3267b25ef32fc627aa431d8cc0d36b8e6e1d209d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "90b8e114_e5e0a348",
+        "filename": "src/gpu/graphite/geom/RectBlurData.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-04-10T21:03:01Z",
+      "side": 1,
+      "message": "Done. I also renamed `fBounds` to `fDrawBounds` and `bounds()` to `drawBounds()`, although that\u0027s now inconsistent with other Geometry subclasses which I believe all use `bounds()` to return their device-space draw bounds? So lmk if you think that\u0027s more confusing than helpful.",
+      "parentUuid": "3e873227_e45eff1d",
       "range": {
         "startLine": 78,
         "startChar": 0,
