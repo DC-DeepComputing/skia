@@ -40,6 +40,26 @@
 
 namespace skgpu::graphite {
 
+namespace {
+
+// Discarding content on floating point textures can leave nans as the prior color for a pixel,
+// in which case hardware blending (when enabled) will fail even if the src, dst coefficients
+// and coverage would produce the unmodified src value.
+bool discard_op_should_use_clear(SkColorType ct) {
+    switch(ct) {
+        case kRGBA_F16Norm_SkColorType:
+        case kRGBA_F16_SkColorType:
+        case kRGBA_F32_SkColorType:
+        case kA16_float_SkColorType:
+        case kR16G16_float_SkColorType:
+            return true;
+        default:
+            return false;
+    }
+}
+
+}
+
 sk_sp<DrawContext> DrawContext::Make(const Caps* caps,
                                      sk_sp<TextureProxy> target,
                                      SkISize deviceSize,
@@ -89,25 +109,40 @@ DrawContext::DrawContext(const Caps* caps,
     }
     // TBD - Will probably want DrawLists (and its internal commands) to come from an arena
     // that the DC manages.
+
+    if (discard_op_should_use_clear(ii.colorType())) {
+        fPendingLoadOp = LoadOp::kClear;
+    }
 }
 
 DrawContext::~DrawContext() = default;
 
 void DrawContext::clear(const SkColor4f& clearColor) {
+    this->discard();
+
     fPendingLoadOp = LoadOp::kClear;
     SkPMColor4f pmColor = clearColor.premul();
     fPendingClearColor = pmColor.array();
+}
 
-    // A fullscreen clear will overwrite anything that came before, so start a new DrawList.
+void DrawContext::discard() {
+    // A fullscreen clear or discard will overwrite anything that came before, so clear the DrawList
     // NOTE: Eventually the current DrawTask should be reset, once there are no longer implicit
     // dependencies on atlas tasks between DrawContexts. When that's resolved, the only tasks in the
     // current DrawTask are those that directly impact the target, which becomes irrelevant with the
     // clear op overwriting it. For now, preserve the previous tasks that might include atlas
     // uploads that are not explicitly shared between DrawContexts.
-    fPendingDraws = std::make_unique<DrawList>();
+    if (fPendingDraws->renderStepCount() > 0) {
+        fPendingDraws = std::make_unique<DrawList>();
+    }
     if (fComputePathAtlas) {
         fComputePathAtlas->reset();
     }
+
+    // Don't bother with setting the clear color for the discard-as-clear case; the dst values
+    // shouldn't end up visible but the clear ensures there are no NaNs.
+    fPendingLoadOp = discard_op_should_use_clear(fImageInfo.colorType()) ? LoadOp::kClear
+                                                                         : LoadOp::kDiscard;
 }
 
 void DrawContext::recordDraw(const Renderer* renderer,
@@ -196,6 +231,8 @@ void DrawContext::flush(Recorder* recorder) {
                                                     std::make_pair(fPendingLoadOp, fPendingStoreOp),
                                                     fPendingClearColor);
     fPendingDraws = std::make_unique<DrawList>();
+    // Now that there is content drawn to the target, that content must be loaded on any subsequent
+    // render pass.
     fPendingLoadOp = LoadOp::kLoad;
     fPendingStoreOp = StoreOp::kStore;
 
@@ -207,6 +244,7 @@ void DrawContext::flush(Recorder* recorder) {
         auto writeSwizzle = caps->getWriteSwizzle(this->colorInfo().colorType(),
                                                   fTarget->textureInfo());
 
+        SkDebugf("draw pass succeeded load op = %d, store = %d\n", (int) loadOp, (int) storeOp);
         RenderPassDesc desc = RenderPassDesc::Make(caps, fTarget->textureInfo(), loadOp, storeOp,
                                                    pass->depthStencilFlags(),
                                                    pass->clearColor(),
@@ -216,6 +254,8 @@ void DrawContext::flush(Recorder* recorder) {
         RenderPassTask::DrawPassList passes;
         passes.emplace_back(std::move(pass));
         fCurrentDrawTask->addTask(RenderPassTask::Make(std::move(passes), desc, fTarget));
+    } else {
+        SkDebugf("draw pass failed\n");
     }
     // else pass creation failed, DrawPass will have logged why. Don't discard the previously
     // accumulated tasks, however, since they may represent operations on an atlas that other
