@@ -50,7 +50,7 @@ public:
     }
 
     sk_sp<SkImage> asImage() const override {
-        return sk_make_sp<Image>(this->uniqueID(), fTextureProxyView, this->colorInfo());
+        return sk_make_sp<Image>(fTextureProxyView, this->colorInfo());
     }
 
 private:

@@ -31,24 +31,23 @@
 
 namespace skgpu::graphite {
 
-Image::Image(uint32_t uniqueID,
-             TextureProxyView view,
+// Graphite does not cache based on the image's unique ID so always request a new one.
+Image::Image(TextureProxyView view,
              const SkColorInfo& info)
-    : Image_Base(SkImageInfo::Make(view.proxy()->dimensions(), info), uniqueID)
+    : Image_Base(SkImageInfo::Make(view.proxy()->dimensions(), info), kNeedNewImageUniqueID)
     , fTextureProxyView(std::move(view)) {}
 
 Image::~Image() = default;
 
-sk_sp<Image> Image::MakeView(sk_sp<Device> device) {
+sk_sp<Image> Image::WrapDevice(sk_sp<Device> device) {
     TextureProxyView proxy = device->readSurfaceView();
     if (!proxy) {
         return nullptr;
     }
-    sk_sp<Image> view = sk_make_sp<Image>(kNeedNewImageUniqueID,
-                                          std::move(proxy),
-                                          device->imageInfo().colorInfo());
-    view->linkDevice(std::move(device));
-    return view;
+    sk_sp<Image> image = sk_make_sp<Image>(std::move(proxy),
+                                           device->imageInfo().colorInfo());
+    image->linkDevice(std::move(device));
+    return image;
 }
 
 size_t Image::textureSize() const {
@@ -104,14 +103,11 @@ sk_sp<SkImage> Image::copyImage(const SkIRect& subset,
         return nullptr;
     }
 
-    return sk_sp<Image>(new Image(kNeedNewImageUniqueID,
-                                  std::move(copiedView),
-                                  this->imageInfo().colorInfo()));
+    return sk_make_sp<Image>(std::move(copiedView), this->imageInfo().colorInfo());
 }
 
 sk_sp<SkImage> Image::onReinterpretColorSpace(sk_sp<SkColorSpace> newCS) const {
-    sk_sp<Image> view = sk_make_sp<Image>(kNeedNewImageUniqueID,
-                                          fTextureProxyView,
+    sk_sp<Image> view = sk_make_sp<Image>(fTextureProxyView,
                                           this->imageInfo().colorInfo()
                                                            .makeColorSpace(std::move(newCS)));
     // The new Image object shares the same texture proxy, so it should also share linked Devices

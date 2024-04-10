@@ -422,7 +422,7 @@ TextureProxyView Device::createCopy(const SkIRect* subset,
                                                 mipmapped);
 
         // Any pending work is flushed automatically when this image is drawn to `surface`
-        auto image = Image::MakeView(sk_ref_sp(this));
+        auto image = Image::WrapDevice(sk_ref_sp(this));
         SkPaint paint;
         paint.setBlendMode(SkBlendMode::kSrc);
         auto pt = subset ? subset->topLeft() : SkIPoint{0, 0};

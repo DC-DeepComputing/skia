@@ -28,7 +28,7 @@ namespace skgpu::graphite {
 Surface::Surface(sk_sp<Device> device)
         : SkSurface_Base(device->width(), device->height(), &device->surfaceProps())
         , fDevice(std::move(device))
-        , fImageView(Image::MakeView(fDevice)) {}
+        , fImageView(Image::WrapDevice(fDevice)) {}
 
 Surface::~Surface() {
     // Mark the device immutable when the Surface is destroyed to flush any pending work to the
@@ -80,9 +80,7 @@ sk_sp<SkImage> Surface::makeImageCopy(const SkIRect* subset, Mipmapped mipmapped
         return nullptr;
     }
 
-    return sk_sp<Image>(new Image(kNeedNewImageUniqueID,
-                                  std::move(srcView),
-                                  this->imageInfo().colorInfo()));
+    return sk_make_sp<Image>(std::move(srcView), this->imageInfo().colorInfo());
 }
 
 void Surface::onWritePixels(const SkPixmap& pixmap, int x, int y) {
