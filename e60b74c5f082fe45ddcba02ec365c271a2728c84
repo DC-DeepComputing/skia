@@ -16,6 +16,23 @@
       "message": "Thanks!",
       "revId": "e60b74c5f082fe45ddcba02ec365c271a2728c84",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5a3c125_1de842db",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-04-10T17:02:15Z",
+      "side": 1,
+      "message": "Gentle bump",
+      "revId": "e60b74c5f082fe45ddcba02ec365c271a2728c84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
