@@ -245,9 +245,11 @@ VelloRenderer::VelloRenderer(const Caps* caps) {
     if (ComputeShaderCoverageMaskTargetFormat(caps) == kAlpha_8_SkColorType) {
         fFineArea = std::make_unique<VelloFineAreaAlpha8Step>();
         fFineMsaa16 = std::make_unique<VelloFineMsaa16Alpha8Step>();
+        fFineMsaa8 = std::make_unique<VelloFineMsaa8Alpha8Step>();
     } else {
         fFineArea = std::make_unique<VelloFineAreaStep>();
         fFineMsaa16 = std::make_unique<VelloFineMsaa16Step>();
+        fFineMsaa8 = std::make_unique<VelloFineMsaa8Step>();
     }
 }
 
@@ -370,7 +372,7 @@ std::unique_ptr<DispatchGroup> VelloRenderer::renderScene(const RenderParams& pa
     builder.appendStep(&fBboxClear, to_wg_size(dispatchInfo.bbox_clear));
 
     // flatten
-    SkDebugf("@@@@ LINES SIZE: %lu\n", lines_size);
+    //SkDebugf("@@@@ LINES SIZE: %lu\n", lines_size);
     ScratchBuffer lines = bufMgr->getScratchStorage(lines_size);
     builder.assignSharedBuffer(new_scratch_slice(lines), kVelloSlot_Lines);
     builder.appendStep(&fFlatten, to_wg_size(dispatchInfo.flatten));
@@ -467,8 +469,19 @@ std::unique_ptr<DispatchGroup> VelloRenderer::renderScene(const RenderParams& pa
 
     // fine
     builder.assignSharedTexture(std::move(target), kVelloSlot_OutputImage);
-    const ComputeStep* fineVariant =
-            params.fAaConfig == VelloAaConfig::kMSAA16 ? fFineMsaa16.get() : fFineArea.get();
+    const ComputeStep* fineVariant = nullptr;
+    switch (params.fAaConfig) {
+        case VelloAaConfig::kAnalyticArea:
+            fineVariant = fFineArea.get();
+            break;
+        case VelloAaConfig::kMSAA16:
+            fineVariant = fFineMsaa16.get();
+            break;
+        case VelloAaConfig::kMSAA8:
+            fineVariant = fFineMsaa8.get();
+            break;
+    }
+    SkASSERT(fineVariant != nullptr);
     builder.appendStep(fineVariant, to_wg_size(dispatchInfo.fine));
 
     return builder.finalize();

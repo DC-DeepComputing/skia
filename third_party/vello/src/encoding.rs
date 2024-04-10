@@ -102,7 +102,6 @@ impl Encoding {
 
         let bump_estimate = self.estimator.tally(None);
         //println!("bump: {bump_estimate}");
-        println!("bump: {bump_estimate}");
         //let ptcl_estimate = (width + 15) * (height + 15); // TODO: document calculation
         config.buffer_sizes.bin_data = bump_estimate.binning;
         config.buffer_sizes.seg_counts = bump_estimate.seg_counts;

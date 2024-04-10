@@ -292,6 +292,31 @@ private:
     ::rust::Vec<uint8_t> fMaskLut;
 };
 
+template <vello_cpp::ShaderStage S, SkColorType T>
+class VelloFineMsaa8StepBase : public VelloFineStepBase<S, T> {
+public:
+    size_t calculateBufferSize(int resourceIndex, const ComputeStep::ResourceDesc&) const override {
+        SkASSERT(resourceIndex == 5);
+        return 32 * 32;  // 32x32 LUT of 8-bit masks.
+    }
+
+    void prepareStorageBuffer(int resourceIndex,
+                              const ComputeStep::ResourceDesc&,
+                              void* buffer,
+                              size_t bufferSize) const override {
+        SkASSERT(resourceIndex == 5);
+        SkASSERT(fMaskLut.size() == bufferSize);
+        memcpy(buffer, fMaskLut.data(), fMaskLut.size());
+    }
+
+protected:
+    explicit VelloFineMsaa8StepBase(SkSpan<const ComputeStep::ResourceDesc> resources)
+            : VelloFineStepBase<S, T>(resources), fMaskLut(vello_cpp::build_mask_lut_8()) {}
+
+private:
+    ::rust::Vec<uint8_t> fMaskLut;
+};
+
 class VelloFineAreaStep final
         : public VelloFineStepBase<vello_cpp::ShaderStage::FineArea, kRGBA_8888_SkColorType> {
 public:
@@ -315,6 +340,19 @@ class VelloFineMsaa16Alpha8Step final
                                          kAlpha_8_SkColorType> {
 public:
     VelloFineMsaa16Alpha8Step();
+};
+
+class VelloFineMsaa8Step final : public VelloFineMsaa8StepBase<vello_cpp::ShaderStage::FineMsaa8,
+                                                                 kRGBA_8888_SkColorType> {
+public:
+    VelloFineMsaa8Step();
+};
+
+class VelloFineMsaa8Alpha8Step final
+        : public VelloFineMsaa8StepBase<vello_cpp::ShaderStage::FineMsaa8R8,
+                                         kAlpha_8_SkColorType> {
+public:
+    VelloFineMsaa8Alpha8Step();
 };
 
 }  // namespace skgpu::graphite

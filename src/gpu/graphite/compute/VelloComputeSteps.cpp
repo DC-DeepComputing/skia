@@ -280,6 +280,21 @@ VelloFineMsaa16Step::VelloFineMsaa16Step()
                   BUFFER_BINDING(MaskLUT, ReadOnlyStorage, Mapped),
           }) {}
 
+VelloFineMsaa8Step::VelloFineMsaa8Step()
+        : VelloFineMsaa8StepBase({
+                  BUFFER_BINDING(ConfigUniform, Uniform,         None),
+                  BUFFER_BINDING(Segments,      ReadOnlyStorage, None),
+                  BUFFER_BINDING(PTCL,          ReadOnlyStorage, None),
+                  BUFFER_BINDING(InfoBinData,   ReadOnlyStorage, None),
+                  {
+                          /*type=*/ResourceType::kWriteOnlyStorageTexture,
+                          /*flow=*/DataFlow::kShared,
+                          /*policy=*/ResourcePolicy::kNone,
+                          /*slot=*/kVelloSlot_OutputImage,
+                  },
+                  BUFFER_BINDING(MaskLUT, ReadOnlyStorage, Mapped),
+          }) {}
+
 VelloFineAreaAlpha8Step::VelloFineAreaAlpha8Step()
         : VelloFineStepBase({
                   BUFFER_BINDING(ConfigUniform, Uniform,         None),
@@ -296,6 +311,21 @@ VelloFineAreaAlpha8Step::VelloFineAreaAlpha8Step()
 
 VelloFineMsaa16Alpha8Step::VelloFineMsaa16Alpha8Step()
         : VelloFineMsaa16StepBase({
+                  BUFFER_BINDING(ConfigUniform, Uniform,         None),
+                  BUFFER_BINDING(Segments,      ReadOnlyStorage, None),
+                  BUFFER_BINDING(PTCL,          ReadOnlyStorage, None),
+                  BUFFER_BINDING(InfoBinData,   ReadOnlyStorage, None),
+                  {
+                          /*type=*/ResourceType::kWriteOnlyStorageTexture,
+                          /*flow=*/DataFlow::kShared,
+                          /*policy=*/ResourcePolicy::kNone,
+                          /*slot=*/kVelloSlot_OutputImage,
+                  },
+                  BUFFER_BINDING(MaskLUT, ReadOnlyStorage, Mapped),
+          }) {}
+
+VelloFineMsaa8Alpha8Step::VelloFineMsaa8Alpha8Step()
+        : VelloFineMsaa8StepBase({
                   BUFFER_BINDING(ConfigUniform, Uniform,         None),
                   BUFFER_BINDING(Segments,      ReadOnlyStorage, None),
                   BUFFER_BINDING(PTCL,          ReadOnlyStorage, None),
