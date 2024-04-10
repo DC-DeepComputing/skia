@@ -16,6 +16,24 @@
       "message": "These fields on the left hand side went from being `SkFixed` to `SkScaler` but since this \"conversion\" here didn\u0027t change the values were still multiplied by 2^16. All of the `SkFixedToScalar` were also untouched, and would convert these `SkScaler` to `SkFixed`, convert back to `SkScaler` and divide by 2^16. This would have been caught if there weren\u0027t implicit conversion between `SkScaler` and `SkFixed`, but C++ makes not having such an implicit conversion difficult.",
       "revId": "df6d08abb447b780c4075cd56f87582b829d2948",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "92d60819_5a458dd7",
+        "filename": "src/ports/SkFontHost_FreeType.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2273,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-04-10T16:43:11Z",
+      "side": 0,
+      "message": "Acknowledged",
+      "parentUuid": "947ea0a8_528bedbb",
+      "revId": "df6d08abb447b780c4075cd56f87582b829d2948",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
