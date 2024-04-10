@@ -63,7 +63,7 @@ public:
     SkString toString(const ShaderCodeDictionary* dict) const;
 #endif
 #ifdef SK_DEBUG
-    void dump(const ShaderCodeDictionary*) const;
+    void dump(int id, const ShaderCodeDictionary*) const;
 #endif
 
     bool operator==(const PaintParamsKey& that) const {
