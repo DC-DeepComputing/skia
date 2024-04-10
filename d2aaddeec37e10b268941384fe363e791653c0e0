@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8c51170_c89dc1da",
+        "filename": "gn/BUILDCONFIG.gn",
+        "patchSetId": 2
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-04-10T18:00:33Z",
+      "side": 1,
+      "message": "`(\\.[0-9]){0,2}` would allow `12`, `12.34` and `12.34.56`",
+      "range": {
+        "startLine": 160,
+        "startChar": 45,
+        "endLine": 160,
+        "endChar": 64
+      },
+      "revId": "d2aaddeec37e10b268941384fe363e791653c0e0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
