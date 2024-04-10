@@ -35,6 +35,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aced0a00_ead91341",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-04-10T19:56:08Z",
+      "side": 1,
+      "message": "I have the same question as Michael regarding the difference between `endTiming` and `flushAndWaitOnSync`. Otherwise, LGTM.",
+      "revId": "a1ab2ce6d68090807c048f8df876106f9236a6d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cb501024_f42860c6",
@@ -54,6 +71,23 @@
         "endLine": 129,
         "endChar": 88
       },
+      "revId": "a1ab2ce6d68090807c048f8df876106f9236a6d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92a6c86a_33102fbb",
+        "filename": "bench/SKPBench.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-04-10T19:56:08Z",
+      "side": 1,
+      "message": "How does this interact with the `direct-\u003eflushAndSubmit()` call above? Is `direct` expected to be null on Graphite?",
       "revId": "a1ab2ce6d68090807c048f8df876106f9236a6d2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
