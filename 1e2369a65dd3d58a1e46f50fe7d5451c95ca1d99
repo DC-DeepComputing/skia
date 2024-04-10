@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "21013f65_782f98a9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-10T18:43:02Z",
+      "side": 1,
+      "message": "PTAL another look, I had missed a case for fully lazy targets, where should *not* be starting with a discard.",
+      "revId": "1e2369a65dd3d58a1e46f50fe7d5451c95ca1d99",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
