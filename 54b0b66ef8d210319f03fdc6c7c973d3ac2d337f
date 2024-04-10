@@ -105,6 +105,24 @@
       "parentUuid": "e81094bd_20ea8e02",
       "revId": "54b0b66ef8d210319f03fdc6c7c973d3ac2d337f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba77c15b_786b1368",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8918
+      },
+      "writtenOn": "2024-04-10T17:55:58Z",
+      "side": 1,
+      "message": "When I disable SK_HAS_MUSTTAIL, the crashes are gone. So I will abandon this change. We can continue the discussion in the bug",
+      "parentUuid": "31004a13_b771e786",
+      "revId": "54b0b66ef8d210319f03fdc6c7c973d3ac2d337f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
