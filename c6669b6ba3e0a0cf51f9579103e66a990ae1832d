@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "323f1a9e_4188da69",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 304,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-04-10T14:07:49Z",
+      "side": 1,
+      "message": "If this were to return null are all the error things happening as expected? Like will something below end up doing the `callback(callbackContext, nullptr);`?\n\nMy gut says this is not the case because I assume drawImage will fail with a null srcImage, but there is not check afterwards to know this failed",
+      "revId": "c6669b6ba3e0a0cf51f9579103e66a990ae1832d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19452814_0a3dc7ef",
+        "filename": "src/gpu/graphite/Image_Graphite.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-04-10T14:07:49Z",
+      "side": 1,
+      "message": "why is this called a view?",
+      "range": {
+        "startLine": 60,
+        "startChar": 17,
+        "endLine": 60,
+        "endChar": 21
+      },
+      "revId": "c6669b6ba3e0a0cf51f9579103e66a990ae1832d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a2190930_31e325e5",
+        "filename": "src/gpu/graphite/Image_Graphite.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-04-10T14:07:49Z",
+      "side": 1,
+      "message": "check if not null?",
+      "range": {
+        "startLine": 159,
+        "startChar": 4,
+        "endLine": 159,
+        "endChar": 8
+      },
+      "revId": "c6669b6ba3e0a0cf51f9579103e66a990ae1832d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3390801_cd14b84c",
+        "filename": "src/gpu/graphite/Image_YUVA_Graphite.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-04-10T14:07:49Z",
+      "side": 1,
+      "message": "Isn\u0027t the point of changing this to a factory so we can return null here if it fails? In the normal Image factory above we don\u0027t assert.",
+      "range": {
+        "startLine": 95,
+        "startChar": 4,
+        "endLine": 95,
+        "endChar": 19
+      },
+      "revId": "c6669b6ba3e0a0cf51f9579103e66a990ae1832d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7898a2b9_77120c26",
+        "filename": "src/gpu/graphite/Image_YUVA_Graphite.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-04-10T14:07:49Z",
+      "side": 1,
+      "message": "do we need to check this is not null?",
+      "range": {
+        "startLine": 116,
+        "startChar": 22,
+        "endLine": 116,
+        "endChar": 26
+      },
+      "revId": "c6669b6ba3e0a0cf51f9579103e66a990ae1832d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
