@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8b892eb0_f92ca3af",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-10T14:33:15Z",
+      "side": 1,
+      "message": "All of the non-Image call sites that used a ctor could fail but have replicated validation or have skipped validation that should have been performed and we\u0027ve just been getting lucky. The internal call sites that used a ctor should not fail based on their context.\n\nThis `Make` is an intermediate transition to hide the `sk_sp` and image ID logic. Eventually this `Make` will be private and used to keep calling code simpler but will remain without validation because we\u0027ll trust the calling Image code to have ensured contextually that it\u0027s safe.\n\nAll of the public call sites will migrate to additional factories that aren\u0027t shown in this CL that will contain all the validation logic that either can be consolidated or has been missing.\n\nSo this CL doesn\u0027t change any of the where/how validation is performed, that will come later.",
+      "parentUuid": "441651e8_028a88b8",
+      "revId": "c6669b6ba3e0a0cf51f9579103e66a990ae1832d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "323f1a9e_4188da69",
         "filename": "src/gpu/graphite/Context.cpp",
         "patchSetId": 5
@@ -114,6 +132,30 @@
       "side": 1,
       "message": "Sure but we use view as something specific, i.e. a TextureView. I feel like it is confusing to be calling an Image a view here. Maybe the issue is with the name of the factory being MakeView?",
       "parentUuid": "841491d4_b2023598",
+      "range": {
+        "startLine": 60,
+        "startChar": 17,
+        "endLine": 60,
+        "endChar": 21
+      },
+      "revId": "c6669b6ba3e0a0cf51f9579103e66a990ae1832d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b425e7bb_0b75f806",
+        "filename": "src/gpu/graphite/Image_Graphite.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-10T14:33:15Z",
+      "side": 1,
+      "message": "That\u0027s a good point, I think I originally called it `MakeView` because it was wrapping `device-\u003ereadSurfaceView()` and was the \"viewing\" the texture as an `Image`, but it is distinct from the existing lower-level concept of a texture view so I can rename it.",
+      "parentUuid": "a2b52de6_1e65ffca",
       "range": {
         "startLine": 60,
         "startChar": 17,
