@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c11cd293_213ba9d2",
+        "filename": "src/ports/SkFontHost_FreeType.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 2165,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-10T15:32:35Z",
+      "side": 0,
+      "message": "Before this was fine, going from `FT_Fixed` to `SkFixed`.",
+      "revId": "31fae9f0cdd17e08274b6a16dfa5c188c9511347",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d51b7bd1_74daf5b3",
+        "filename": "src/ports/SkFontHost_FreeType.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 2181,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-10T15:32:35Z",
+      "side": 0,
+      "message": "And converted here.",
+      "revId": "31fae9f0cdd17e08274b6a16dfa5c188c9511347",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

@@ -18,6 +18,57 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5143cef0_aa09169a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 20
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-10T15:32:35Z",
+      "side": 1,
+      "message": "Working on a fix and test for the axis definitions being incorrectly reported.",
+      "revId": "40200ceca00e8614b84bb229d34cb2aa3b269308",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8439ffbc_88b102b7",
+        "filename": "src/core/SkFontScanner.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-10T15:32:35Z",
+      "side": 1,
+      "message": "Didn\u0027t notice because this wasn\u0027t moved in this change (the old one is still hangin around and was removed later), but these used to be `SkFixed`.",
+      "revId": "40200ceca00e8614b84bb229d34cb2aa3b269308",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb278571_b1f7f9e8",
+        "filename": "src/ports/SkFontHost_FreeType.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 2239,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-10T15:32:35Z",
+      "side": 1,
+      "message": "But there is no conversion from `FT_Fixed` to `SkScaler` here in the new code, so these values are wrong (multiplied by 2^16).",
+      "revId": "40200ceca00e8614b84bb229d34cb2aa3b269308",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "65e4c508_e9f272f5",
