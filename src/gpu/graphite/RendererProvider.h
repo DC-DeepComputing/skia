@@ -55,7 +55,9 @@ public:
     const Renderer* coverageMask() const { return &fCoverageMask; }
 
     // Atlas'ed text rendering
-    const Renderer* bitmapText(bool useLCDText) const { return &fBitmapText[useLCDText]; }
+    const Renderer* bitmapText(bool useLCDText) const {
+        return &fBitmapText[useLCDText];
+    }
     const Renderer* sdfText(bool useLCDText) const { return &fSDFText[useLCDText]; }
 
     // Mesh rendering
