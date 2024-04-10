@@ -174,6 +174,8 @@ public:
     void drawCoverageMask(const SkSpecialImage*, const SkMatrix& localToDevice,
                           const SkSamplingOptions&, const SkPaint&) override;
 
+    bool drawBlurredRRect(const SkRRect&, const SkPaint&, float transformedSigma) override;
+
 private:
     class IntersectionTreeSet;
 
