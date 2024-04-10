@@ -90,7 +90,15 @@ void ResourceCache::insertResource(Resource* resource) {
     // to update this check.
     SkASSERT(resource->ownership() == Ownership::kOwned);
 
-    this->processReturnedResources();
+    // The reason to call processReturnedResources here is to get an accurate accounting of our
+    // memory usage as some resources can go from unbudgeted to budgeted when they return. So we
+    // want to have them all returned before adding the budget for the new resource incase we need
+    // to purge things. However, if the new resource has a memory size of 0, then we just skip
+    // returning resources (which has overhead for each call) since the new resource won't be
+    // affecting whether we're over or under budget.
+    if (resource->gpuMemorySize() > 0) {
+        this->processReturnedResources();
+    }
 
     resource->registerWithCache(sk_ref_sp(this));
     resource->refCache();
@@ -124,6 +132,13 @@ Resource* ResourceCache::findAndRefResource(const GraphiteResourceKey& key,
     SkASSERT(key.isValid());
 
     Resource* resource = fResourceMap.find(key);
+    if (!resource) {
+        // The main reason to call processReturnedResources in this call is to see if there are any
+        // resources that we could match with the key. However, there is overhead into calling it.
+        // So we only call it if we first failed to find a matching resource.
+        this->processReturnedResources();
+        resource = fResourceMap.find(key);
+    }
     if (resource) {
         // All resources we pull out of the cache for use should be budgeted
         SkASSERT(resource->budgeted() == skgpu::Budgeted::kYes);
