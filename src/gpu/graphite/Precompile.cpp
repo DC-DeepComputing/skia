@@ -12,13 +12,28 @@
 #include "src/gpu/graphite/FactoryFunctionsPriv.h"
 #include "src/gpu/graphite/KeyContext.h"
 #include "src/gpu/graphite/KeyHelpers.h"
+#include "src/gpu/graphite/PaintOptionsPriv.h"
 #include "src/gpu/graphite/PaintParams.h"
 #include "src/gpu/graphite/PaintParamsKey.h"
 #include "src/gpu/graphite/Precompile.h"
 #include "src/gpu/graphite/PrecompileBasePriv.h"
+#include "src/gpu/graphite/Renderer.h"
 #include "src/gpu/graphite/ShaderCodeDictionary.h"
 
+#include "src/gpu/graphite/AttachmentTypes.h"
+#include "src/gpu/graphite/ContextPriv.h"
+
 namespace skgpu::graphite {
+
+void compile1(const RendererProvider* rendererProvider,
+             ResourceProvider* resourceProvider,
+             const KeyContext& keyContext,
+             UniquePaintParamsID uniqueID,
+             DrawTypeFlags drawTypes,
+             SkSpan<RenderPassDesc> renderPassDescs,
+             bool withPrimitiveBlender,
+             Coverage coverage,
+             const char* label);
 
 //--------------------------------------------------------------------------------------------------
 sk_sp<PrecompileShader> PrecompileShader::makeWithLocalMatrix() {
@@ -177,7 +192,7 @@ public:
 
     const PrecompileBlender* finalBlender() const { return fFinalBlender.first.get(); }
 
-    void toKey(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
+    void toKey1(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
 
 private:
     void addPaintColorToKey(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
@@ -343,7 +358,7 @@ void PaintOption::handleDstRead(const KeyContext& keyContext,
     }
 }
 
-void PaintOption::toKey(const KeyContext& keyContext,
+void PaintOption::toKey1(const KeyContext& keyContext,
                         PaintParamsKeyBuilder* keyBuilder,
                         PipelineDataGatherer* gatherer) const {
     this->handleDstRead(keyContext, keyBuilder, gatherer);
@@ -395,7 +410,7 @@ void PaintOptions::createKey(const KeyContext& keyContext,
     remainingCombinations /= numColorFilterCombinations;
 
     [[maybe_unused]] const int desiredMaskFilterCombination =
-                                             remainingCombinations % numMaskFilterCombinations;
+            remainingCombinations % numMaskFilterCombinations;
     remainingCombinations /= numMaskFilterCombinations;
 
     const int desiredShaderCombination = remainingCombinations;
@@ -418,6 +433,7 @@ void PaintOptions::createKey(const KeyContext& keyContext,
     if (!finalBlender.first) {
         finalBlender = { PrecompileBlender::Mode(SkBlendMode::kSrcOver), 0 };
     }
+
     DstReadRequirement dstReadReq = get_dst_read_req(keyContext.caps(), coverage,
                                                      finalBlender.first.get());
 
@@ -432,32 +448,160 @@ void PaintOptions::createKey(const KeyContext& keyContext,
                        dstReadReq,
                        fDither);
 
-    option.toKey(keyContext, keyBuilder, gatherer);
+    option.toKey1(keyContext, keyBuilder, gatherer);
+}
+
+void dump2(ShaderCodeDictionary* dict, UniquePaintParamsID id) {
+    dict->lookup(id).dump(id.asUInt(), dict);
+}
+
+
+
+void flimflam(const PaintOptions& options,
+              Context* context,
+              const KeyContext& keyContext,
+              PaintParamsKeyBuilder* keyBuilder,
+              PipelineDataGatherer* gatherer,
+              const std::function<void(UniquePaintParamsID)>& processCombination,
+              std::unordered_set<uint32_t>& foo);
+
+void create_blur_pipelines(Context* context,
+                           const KeyContext& keyContext,
+                           PaintParamsKeyBuilder* keyBuilder,
+                           PipelineDataGatherer* gatherer,
+                           const std::function<void(UniquePaintParamsID)>& processCombination,
+                           std::unordered_set<uint32_t>& foo) {
+    PaintOptions paintOptions1, paintOptions2;
+
+    sk_sp<PrecompileShader> child = PrecompileShaders::RawImage(); // no alpha-only cases
+
+    SkBlendMode blendModes1[] = { SkBlendMode::kSrc };
+    paintOptions1.setShaders({ PrecompileShadersPriv::Blur1D16(child) });
+    paintOptions1.setBlendModes(blendModes1);
+
+    SkBlendMode blendModes2[] = { SkBlendMode::kSrc, SkBlendMode::kDstOut };
+    paintOptions2.setShaders({ child });
+    paintOptions2.setBlendModes(blendModes2);
+
+    flimflam(paintOptions1, context, keyContext, keyBuilder, gatherer, processCombination, foo);
+    flimflam(paintOptions2, context, keyContext, keyBuilder, gatherer, processCombination, foo);
+}
+
+void flimflam(const PaintOptions& options,
+              Context* context,
+              const KeyContext& keyContext,
+              PaintParamsKeyBuilder* keyBuilder,
+              PipelineDataGatherer* gatherer,
+              const std::function<void(UniquePaintParamsID)>& processCombination,
+              std::unordered_set<uint32_t>& foo) {
+    TextureInfo info = keyContext.caps()->getDefaultSampledTextureInfo(keyContext.dstColorInfo().colorType(),
+                                                                       Mipmapped::kNo,
+                                                                       Protected::kNo,
+                                                                       Renderable::kYes);
+
+    RenderPassDesc renderPassDescs[] = {
+            RenderPassDesc::Make(keyContext.caps(),
+                                 info,
+                                 LoadOp::kClear,   // ignored for Metal
+                                 StoreOp::kStore,  // ignored for Metal
+                                 DepthStencilFlags::kDepth,
+                                 /* clearColor= */ { .0f, .0f, .0f, .0f }, // ignored for Metal
+                                 /* requiresMSAA= */ true,
+                                 keyContext.caps()->getWriteSwizzle(keyContext.dstColorInfo().colorType(),
+                                                                    info)),
+            RenderPassDesc::Make(keyContext.caps(),
+                                 info,
+                                 LoadOp::kClear,   // ignored for Metal
+                                 StoreOp::kStore,  // ignored for Metal
+                                 DepthStencilFlags::kDepthStencil,
+                                 /* clearColor= */ { .0f, .0f, .0f, .0f }, // ignored for Metal
+                                 /* requiresMSAA= */ true,
+                                 keyContext.caps()->getWriteSwizzle(keyContext.dstColorInfo().colorType(),
+                                                                    info)),
+            RenderPassDesc::Make(keyContext.caps(),
+                                 info,
+                                 LoadOp::kClear,   // ignored for Metal
+                                 StoreOp::kStore,  // ignored for Metal
+                                 DepthStencilFlags::kDepth,
+                                 /* clearColor= */ { .0f, .0f, .0f, .0f }, // ignored for Metal
+                                 /* requiresMSAA= */ false,
+                                 keyContext.caps()->getWriteSwizzle(keyContext.dstColorInfo().colorType(),
+                                                                    info)),
+            RenderPassDesc::Make(keyContext.caps(),
+                                 info,
+                                 LoadOp::kClear,   // ignored for Metal
+                                 StoreOp::kStore,  // ignored for Metal
+                                 DepthStencilFlags::kDepthStencil,
+                                 /* clearColor= */ { .0f, .0f, .0f, .0f }, // ignored for Metal
+                                 /* requiresMSAA= */ false,
+                                 keyContext.caps()->getWriteSwizzle(keyContext.dstColorInfo().colorType(),
+                                                                    info)),
+    };
+
+    options.priv().buildCombinations(context,
+                                      keyContext,
+                                      gatherer,
+                                      /* withPrimitiveBlender= */ false,
+                                      Coverage::kNone, // TODO: it seems like this should vary
+                                      [&](UniquePaintParamsID uniqueID) {
+                                          if (foo.find(uniqueID.asUInt()) == foo.end()) {
+                                              foo.insert(uniqueID.asUInt());
+                                              dump2(keyContext.dict(), uniqueID);
+                                          }
+                                          compile1(context->priv().rendererProvider(),
+                                                  context->priv().resourceProvider(),
+                                                  keyContext, uniqueID,
+                                                  DrawTypeFlags::kSimpleShape,
+                                                  renderPassDescs,
+                                                  /* withPrimitiveBlender= */ false,
+                                                  Coverage::kSingleChannel, // Coverage::kNone, Coverage::kSingleChannel
+                                                  "for blur");
+                                      },
+                                      foo);
 }
 
 void PaintOptions::buildCombinations(
+        Context* context,
         const KeyContext& keyContext,
         PipelineDataGatherer* gatherer,
         bool addPrimitiveBlender,
         Coverage coverage,
-        const std::function<void(UniquePaintParamsID)>& processCombination) const {
+        const std::function<void(UniquePaintParamsID)>& processCombination,
+        std::unordered_set<uint32_t>& foo) const {
 
     PaintParamsKeyBuilder builder(keyContext.dict());
 
-    int numCombinations = this->numCombinations();
-    for (int i = 0; i < numCombinations; ++i) {
-        // Since the precompilation path's uniforms aren't used and don't change the key,
-        // the exact layout doesn't matter
-        gatherer->resetWithNewLayout(Layout::kMetal);
+    if (fImageFilterOptions != PrecompileImageFilters1::kNone) {
+        PaintOptions tmp = *this;
 
-        this->createKey(keyContext, &builder, gatherer, i, addPrimitiveBlender, coverage);
+        // When image filtering the original blend mode is taken over by the restore paint
+        tmp.setImageFilters(PrecompileImageFilters1::kNone);
+        SkBlendMode kFoo[] = { SkBlendMode::kSrcOver };
+        tmp.setBlendModes(kFoo);
 
-        // The 'findOrCreate' calls lockAsKey on builder and then destroys the returned
-        // PaintParamsKey. This serves to reset the builder.
-        UniquePaintParamsID paintID = keyContext.dict()->findOrCreate(&builder);
+        tmp.buildCombinations(context, keyContext, gatherer, addPrimitiveBlender, coverage,
+                              processCombination, foo);
 
-        processCombination(paintID);
+        if (fImageFilterOptions & PrecompileImageFilters1::kBlur) {
+            create_blur_pipelines(context, keyContext, &builder, gatherer, processCombination, foo);
+        }
+    } else {
+        int numCombinations = this->numCombinations();
+        for (int i = 0; i < numCombinations; ++i) {
+            // Since the precompilation path's uniforms aren't used and don't change the key,
+            // the exact layout doesn't matter
+            gatherer->resetWithNewLayout(Layout::kMetal);
+
+            this->createKey(keyContext, &builder, gatherer, i, addPrimitiveBlender, coverage);
+
+            // The 'findOrCreate' calls lockAsKey on builder and then destroys the returned
+            // PaintParamsKey. This serves to reset the builder.
+            UniquePaintParamsID paintID = keyContext.dict()->findOrCreate(&builder);
+
+            processCombination(paintID);
+        }
     }
+
 }
 
 } // namespace skgpu::graphite

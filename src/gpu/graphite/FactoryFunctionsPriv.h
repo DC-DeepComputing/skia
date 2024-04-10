@@ -19,6 +19,10 @@ namespace PrecompileShadersPriv {
     // TODO: This, technically, doesn't need to take an SkSpan since it is only called from
     // PrecompileShader::makeWithCTM. Leaving it be for now in case the usage is revised.
     sk_sp<PrecompileShader> CTM(SkSpan<const sk_sp<PrecompileShader>> wrapped);
+
+    sk_sp<PrecompileShader> Blur1D4(sk_sp<PrecompileShader> child);
+    sk_sp<PrecompileShader> Blur1D16(sk_sp<PrecompileShader> child);
+
 } // namespace PrecompileShadersPriv
 
 namespace PrecompileColorFiltersPriv {
