@@ -22,6 +22,30 @@
       },
       "revId": "2bfa3b8491e29a3f21fbfba251ddd079cd328d6f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3cf69b56_116d3430",
+        "filename": "src/gpu/graphite/DrawContext.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-10T18:20:58Z",
+      "side": 1,
+      "message": "We initialize it to {0,0,0,0} when the DrawContext is made, but if we had set it from a previous call to `clear()` and that had nans then it might. Looking up stack, there\u0027s nothing stopping the client from setting a nan on the paint or having a runtime color filter that does something bad, so I\u0027ll remove this and reset the clear color too.",
+      "parentUuid": "7eaccd1a_171ecd53",
+      "range": {
+        "startLine": 142,
+        "startChar": 5,
+        "endLine": 143,
+        "endChar": 72
+      },
+      "revId": "2bfa3b8491e29a3f21fbfba251ddd079cd328d6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
