@@ -236,7 +236,7 @@ public:
     }
 
     const char*   name()           const { return fName.c_str(); }
-    DrawTypeFlags drawTypes()      const { return fDrawTypes; }
+    DrawTypeFlags drawTypes1()      const { return fDrawTypes1; }
     int           numRenderSteps() const { return fStepCount;    }
 
     bool requiresMSAA() const {
@@ -275,7 +275,7 @@ private:
     template<size_t N>
     Renderer(std::string_view name, DrawTypeFlags drawTypes, std::array<const RenderStep*, N> steps)
             : fName(name)
-            , fDrawTypes(drawTypes)
+            , fDrawTypes1(drawTypes)
             , fStepCount(SkTo<int>(N)) {
         static_assert(N <= kMaxRenderSteps);
         for (int i = 0 ; i < fStepCount; ++i) {
@@ -294,7 +294,7 @@ private:
 
     std::array<const RenderStep*, kMaxRenderSteps> fSteps;
     std::string fName;
-    DrawTypeFlags fDrawTypes = DrawTypeFlags::kAll;
+    DrawTypeFlags fDrawTypes1 = DrawTypeFlags::kNone;
     int fStepCount;
 
     SkEnumBitMask<StepFlags> fStepFlags = StepFlags::kNone;

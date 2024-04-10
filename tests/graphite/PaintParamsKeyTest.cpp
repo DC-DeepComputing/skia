@@ -16,6 +16,7 @@
 #include "include/core/SkPathBuilder.h"
 #include "include/core/SkPicture.h"
 #include "include/core/SkPictureRecorder.h"
+#include "include/core/SkRRect.h"
 #include "include/core/SkShader.h"
 #include "include/core/SkTextBlob.h"
 #include "include/core/SkVertices.h"
@@ -1105,10 +1106,24 @@ void check_draw(skiatest::Reporter* reporter,
         }
 
         switch (dt) {
-            case DrawTypeFlags::kShape:
+            case DrawTypeFlags::kSimpleShape:
                 canvas->drawRect(SkRect::MakeWH(16, 16), paint);
+                canvas->drawRRect(SkRRect::MakeOval({0, 0, 16, 16}), paint);
+                canvas->drawRRect(SkRRect::MakeRectXY({0, 0, 16, 16}, 4, 4), paint);
+                canvas->experimental_DrawEdgeAAQuad(SkRect::MakeWH(16, 16),
+                                                    /* clip= */ nullptr,
+                                                    SkCanvas::kAll_QuadAAFlags,
+                                                    SkColors::kBlue,
+                                                    SkBlendMode::kMultiply);
+                break;
+            case DrawTypeFlags::kNonSimpleShape:
                 canvas->drawPath(drawData.fPath, paint);
                 break;
+            case DrawTypeFlags::kShape1:
+                canvas->drawRect(SkRect::MakeWH(16, 16), paint);
+                canvas->drawRRect(SkRRect::MakeOval({0, 0, 16, 16}), paint);
+                canvas->drawRRect(SkRRect::MakeRectXY({0, 0, 16, 16}, 4, 4), paint);
+                canvas->drawPath(drawData.fPath, paint);
             case DrawTypeFlags::kText:
                 canvas->drawTextBlob(drawData.fBlob, 0, 16, paint);
                 break;
@@ -1337,7 +1352,9 @@ void run_test(skiatest::Reporter* reporter,
     gNeedSKPPaintOption = false;
     auto [paint, paintOptions] = create_paint(&rand, recorder.get(), s, bm, cf);
 
-    for (DrawTypeFlags dt : { DrawTypeFlags::kShape,
+    for (DrawTypeFlags dt : { DrawTypeFlags::kSimpleShape,
+                              DrawTypeFlags::kNonSimpleShape,
+                              DrawTypeFlags::kShape1,
                               DrawTypeFlags::kText,
                               DrawTypeFlags::kDrawVertices }) {
 
@@ -1444,7 +1461,7 @@ void run_test(skiatest::Reporter* reporter,
                 if (gNeedSKPPaintOption) {
                     // The skp draws a rect w/ a default SkPaint
                     PaintOptions skpPaintOptions;
-                    Precompile(context, skpPaintOptions, DrawTypeFlags::kShape);
+                    Precompile(context, skpPaintOptions, DrawTypeFlags::kSimpleShape);
                 }
                 int after = context->priv().globalCache()->numGraphicsPipelines();
 

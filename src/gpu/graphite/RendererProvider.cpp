@@ -66,10 +66,10 @@ RendererProvider::RendererProvider(const Caps* caps, StaticBufferManager* buffer
     fConvexTessellatedWedges =
             makeFromStep(std::make_unique<TessellateWedgesRenderStep>(
                                  "convex", infinitySupport, kDirectDepthGreaterPass, bufferManager),
-                         DrawTypeFlags::kShape);
+                         DrawTypeFlags::kShape1);
     fTessellatedStrokes = makeFromStep(
-            std::make_unique<TessellateStrokesRenderStep>(infinitySupport), DrawTypeFlags::kShape);
-    fCoverageMask = makeFromStep(std::make_unique<CoverageMaskRenderStep>(), DrawTypeFlags::kShape);
+            std::make_unique<TessellateStrokesRenderStep>(infinitySupport), DrawTypeFlags::kShape1);
+    fCoverageMask = makeFromStep(std::make_unique<CoverageMaskRenderStep>(), DrawTypeFlags::kShape1);
     for (bool lcd : {false, true}) {
         fBitmapText[lcd] = makeFromStep(std::make_unique<BitmapTextRenderStep>(lcd),
                                         DrawTypeFlags::kText);
@@ -77,9 +77,9 @@ RendererProvider::RendererProvider(const Caps* caps, StaticBufferManager* buffer
                                      DrawTypeFlags::kText);
     }
     fAnalyticRRect = makeFromStep(std::make_unique<AnalyticRRectRenderStep>(bufferManager),
-                                  DrawTypeFlags::kShape);
+                                  DrawTypeFlags::kSimpleShape);
     fPerEdgeAAQuad = makeFromStep(std::make_unique<PerEdgeAAQuadRenderStep>(bufferManager),
-                                  DrawTypeFlags::kShape);
+                                  DrawTypeFlags::kSimpleShape);
     for (PrimitiveType primType : {PrimitiveType::kTriangles, PrimitiveType::kTriangleStrip}) {
         for (bool color : {false, true}) {
             for (bool texCoords : {false, true}) {
@@ -114,7 +114,7 @@ RendererProvider::RendererProvider(const Caps* caps, StaticBufferManager* buffer
             std::string variant = kTessVariants[index];
 
             constexpr DrawTypeFlags kTextAndShape =
-                    static_cast<DrawTypeFlags>(DrawTypeFlags::kText|DrawTypeFlags::kShape);
+                    static_cast<DrawTypeFlags>(DrawTypeFlags::kText|DrawTypeFlags::kShape1);
 
             const RenderStep* coverStep = inverse ? coverInverse.get() : coverFill.get();
             fStencilTessellatedCurves[index] = Renderer("StencilTessellatedCurvesAndTris" + variant,

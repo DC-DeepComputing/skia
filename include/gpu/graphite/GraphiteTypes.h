@@ -109,7 +109,7 @@ enum class Volatile : bool {
  */
 enum DrawTypeFlags : uint8_t {
 
-    kNone         = 0b000,
+    kNone         = 0b0000,
 
     // SkCanvas:: drawSimpleText, drawString, drawGlyphs, drawTextBlob, drawSlug
     kText         = 0b001,
@@ -117,11 +117,22 @@ enum DrawTypeFlags : uint8_t {
     // SkCanvas::drawVertices
     kDrawVertices = 0b010,
 
-    // All other canvas draw calls
-    kShape        = 0b100,
+    // TODO: make these two internal-only
+    // SkCanvas::experimental_DrawEdgeAAQuad, experimental_DrawEdgeAAImageSet and internally
+    // atlased shapes
+    // SkCanvas:: drawRect, drawRRect, drawLine for:
+    // regular filled and hairline rrects, stroked/hairline lines, stroked circular rrects
+    // (see is_simple_shape())
+    // Note: clipping can bump a draw out of the simple shape path
+    kSimpleShape    = 0b0100,
+    // All other shapes (e.g., SkPaths)
+    kNonSimpleShape = 0b1000,
 
-    kMostCommon = kText | kShape,
-    kAll = kText | kDrawVertices | kShape
+    // All other canvas draw calls
+    kShape1        = kSimpleShape | kNonSimpleShape,
+
+    kMostCommon1 = kText | kShape1,
+    kAll1 = kText | kDrawVertices | kShape1
 };
 
 } // namespace skgpu::graphite
