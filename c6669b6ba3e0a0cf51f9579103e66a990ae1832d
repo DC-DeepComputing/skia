@@ -56,6 +56,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4289c5cc_2ccbab42",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-10T15:16:13Z",
+      "side": 1,
+      "message": "That sounds good, I\u0027ll make a CL to update the constructor and abandon this one. Then will proceed with migrating the public ctor call sites to factories that contain the validation. The internal Image creation call sites will stick with the updated ctor, and once all the public ctor usage is gone the ctor will be marked private.",
+      "parentUuid": "c85d55bd_70a9ae1c",
+      "revId": "c6669b6ba3e0a0cf51f9579103e66a990ae1832d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "323f1a9e_4188da69",
         "filename": "src/gpu/graphite/Context.cpp",
         "patchSetId": 5
