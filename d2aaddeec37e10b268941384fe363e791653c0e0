@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bdc21f0c_325d60a2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-10T18:34:37Z",
+      "side": 1,
+      "message": "It looks like the only place we use `clang_win_version` is when building with clang-cl on Windows for ASAN to link in `clang_rt.asan-x86_64.lib`.",
+      "revId": "d2aaddeec37e10b268941384fe363e791653c0e0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b8c51170_c89dc1da",
