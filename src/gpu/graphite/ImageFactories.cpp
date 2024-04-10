@@ -402,8 +402,7 @@ sk_sp<SkImage> TextureFromImage(skgpu::graphite::Recorder* recorder,
                 recorder, static_cast<const SkImage_Lazy*>(ib), requiredProps);
     }
     SkASSERT(ib->isGraphiteBacked());
-    auto gi = static_cast<const skgpu::graphite::Image_Base*>(ib);
-    return gi->makeTextureImage(recorder, requiredProps);
+    return ib->makeSubset(recorder, ib->bounds(), requiredProps);
 }
 
 sk_sp<SkImage> TextureFromYUVAPixmaps(Recorder* recorder,
