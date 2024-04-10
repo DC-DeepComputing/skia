@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "441651e8_028a88b8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-04-10T14:23:40Z",
+      "side": 1,
+      "message": "Based on the latest responses, I\u0027m really confused by this change. Everywhere you say the make call has previously been validated and can\u0027t fail. If that is the case why not just have a ctor?",
+      "revId": "c6669b6ba3e0a0cf51f9579103e66a990ae1832d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "323f1a9e_4188da69",
         "filename": "src/gpu/graphite/Context.cpp",
         "patchSetId": 5
@@ -73,6 +90,30 @@
       "side": 1,
       "message": "Because it\u0027s the view of the device\u0027s texture as an image.",
       "parentUuid": "19452814_0a3dc7ef",
+      "range": {
+        "startLine": 60,
+        "startChar": 17,
+        "endLine": 60,
+        "endChar": 21
+      },
+      "revId": "c6669b6ba3e0a0cf51f9579103e66a990ae1832d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a2b52de6_1e65ffca",
+        "filename": "src/gpu/graphite/Image_Graphite.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-04-10T14:23:40Z",
+      "side": 1,
+      "message": "Sure but we use view as something specific, i.e. a TextureView. I feel like it is confusing to be calling an Image a view here. Maybe the issue is with the name of the factory being MakeView?",
+      "parentUuid": "841491d4_b2023598",
       "range": {
         "startLine": 60,
         "startChar": 17,
