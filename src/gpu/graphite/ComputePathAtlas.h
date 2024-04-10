@@ -10,7 +10,12 @@
 
 #include "src/gpu/graphite/PathAtlas.h"
 
+#include "src/base/SkTInternalLList.h"
+#include "src/core/SkTHash.h"
+#include "src/gpu/AtlasTypes.h"
 #include "src/gpu/RectanizerSkyline.h"
+#include "src/gpu/ResourceKey.h"
+#include "src/gpu/graphite/DrawAtlas.h"
 
 #ifdef SK_ENABLE_VELLO_SHADERS
 #include "src/gpu/graphite/compute/VelloRenderer.h"
@@ -59,6 +64,57 @@ protected:
 private:
     bool initializeTextureIfNeeded();
 
+    // Wrapper class to manage DrawAtlas and associated caching operations
+    class DrawAtlasMgr : public AtlasGenerationCounter, public PlotEvictionCallback {
+    public:
+        DrawAtlasMgr(size_t width, size_t height,
+                     size_t plotWidth, size_t plotHeight,
+                     const Caps*);
+
+        const TextureProxy* findOrCreateEntry(Recorder* recorder,
+                                              const Shape& shape,
+                                              const Transform& transform,
+                                              const SkStrokeRec& strokeRec,
+                                              skvx::half2 maskSize,
+                                              skvx::half2* outPos);
+        // Adds to DrawAtlas but not the cache
+        const TextureProxy* addToAtlas(Recorder* recorder,
+                                       const Shape& shape,
+                                       const Transform& transform,
+                                       const SkStrokeRec& strokeRec,
+                                       skvx::half2 maskSize,
+                                       skvx::half2* outPos,
+                                       AtlasLocator* locator);
+        bool recordUploads(DrawContext*, Recorder*);
+        void evict(PlotLocator) override;
+        void postFlush(Recorder*);
+
+    private:
+        std::unique_ptr<DrawAtlas> fDrawAtlas;
+
+        // Tracks whether a shape is already in the DrawAtlas, and its location in the atlas
+        struct UniqueKeyHash {
+            uint32_t operator()(const skgpu::UniqueKey& key) const { return key.hash(); }
+        };
+        using ShapeCache = skia_private::THashMap<skgpu::UniqueKey, AtlasLocator, UniqueKeyHash>;
+        ShapeCache fShapeCache;
+
+        // List of stored keys per Plot, used to invalidate cache entries.
+        // When a Plot is invalidated via evict(), we'll get its index and Page index from the
+        // PlotLocator, index into the fKeyLists array to get the ShapeKeyList for that Plot,
+        // then iterate through the list and remove entries matching those keys from the ShapeCache.
+        struct ShapeKeyEntry {
+            skgpu::UniqueKey fKey;
+            SK_DECLARE_INTERNAL_LLIST_INTERFACE(ShapeKeyEntry);
+        };
+        using ShapeKeyList = SkTInternalLList<ShapeKeyEntry>;
+        SkTDArray<ShapeKeyList> fKeyLists;
+    };
+
+    DrawAtlasMgr fCachedAtlasMgr;
+
+    //////////////////
+    // Uncached data
     skgpu::RectanizerSkyline fRectanizer;
 
     // ComputePathAtlas lazily requests a texture from the AtlasProvider when the first shape gets
