@@ -365,12 +365,21 @@ Other compilers get generic unoptimized code.
 
 Setting the `cc` and `cxx` gn args is _not_ sufficient to build with clang-cl.
 These variables are ignored on Windows. Instead set the variable `clang_win` to
-your LLVM installation directory. If you installed the prebuilt LLVM downloaded
-from [here](https://releases.llvm.org/download.html 'LLVM Download') in the
-default location that would be:
+your LLVM installation directory, and `clang_win_version` to the installed
+LLVM version. If you installed the prebuilt LLVM downloaded from
+[here](https://releases.llvm.org/download.html 'LLVM Download') in the
+default location, that would be:
 
 ```
 clang_win = "C:\Program Files\LLVM"
+clang_win_version = "10.0.0"  # Replace "10.0.0" with the actual LLVM version
+```
+
+If you will be compiling the rest of your program with a compiler other than
+Clang, add this GN argument as well:
+
+```
+is_trivial_abi = false
 ```
 
 Follow the standard Windows path specification and not MinGW convention (e.g.
