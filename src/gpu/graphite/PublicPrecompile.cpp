@@ -53,6 +53,8 @@ void compile(const RendererProvider* rendererProvider,
             continue;
         }
 
+//        SkDebugf("Got %s for %d %d\n", r->name(), drawTypes, coverage);
+
         for (auto&& s : r->steps()) {
             SkASSERT(!s->performsShading() || s->emitsPrimitiveColor() == withPrimitiveBlender);
 

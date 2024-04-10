@@ -47,6 +47,10 @@ namespace skgpu::graphite {
 
 namespace {
 
+void dump(ShaderCodeDictionary* dict, UniquePaintParamsID id) {
+    dict->lookup(id).dump(id.asUInt(), dict);
+}
+
 // Helper to manage packed fields within a uint64_t
 template <uint64_t Bits, uint64_t Offset>
 struct Bitfield {
@@ -541,6 +545,9 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
                                      curDst,
                                      dstOffset,
                                      targetInfo.colorInfo());
+//            SkDebugf("in DrawPass.cpp - %s\n", draw.fRenderer->name());
+//            dump(dict, shaderID);
+
         } // else depth-only
 
         for (int stepIndex = 0; stepIndex < draw.fRenderer->numRenderSteps(); ++stepIndex) {
