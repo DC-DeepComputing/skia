@@ -16,6 +16,29 @@
       "message": "Not massive perf gains, but I do think these are improvements.",
       "revId": "fcdb0130934fc61e21dd4ca32fcc5476b436af38",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "535a37f6_c4cd8407",
+        "filename": "src/gpu/graphite/ResourceCache.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-10T19:55:03Z",
+      "side": 1,
+      "message": "offline we had talked about having `processReturnedResources` return a bool for if it had actually returned anything so that we could skip the second `find()` if nothing had changed.\n\nDid that not work out to a meaningful improvement or turned out to be too complex in processReturnedResources()?",
+      "range": {
+        "startLine": 139,
+        "startChar": 0,
+        "endLine": 139,
+        "endChar": 41
+      },
+      "revId": "fcdb0130934fc61e21dd4ca32fcc5476b436af38",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
