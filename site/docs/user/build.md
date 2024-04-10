@@ -371,6 +371,14 @@ default location that would be:
 
 ```
 clang_win = "C:\Program Files\LLVM"
+clang_win_version="10.0.0"  # Replace "10.0.0" with the downloaded LLVM version
+```
+
+If you will be compiling the rest of your program with a compiler other than
+Clang, add this GN argument as well:
+
+```
+is_trivial_abi = false
 ```
 
 Follow the standard Windows path specification and not MinGW convention (e.g.
