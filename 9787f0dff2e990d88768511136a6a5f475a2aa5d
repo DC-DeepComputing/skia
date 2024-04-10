@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9da38eca_37f8a739",
+        "filename": "site/docs/user/build.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 375,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-04-10T18:11:25Z",
+      "side": 1,
+      "message": "clang_win_version issue is fixed by http://review.skia.org/838737",
+      "range": {
+        "startLine": 375,
+        "startChar": 0,
+        "endLine": 375,
+        "endChar": 77
+      },
+      "revId": "9787f0dff2e990d88768511136a6a5f475a2aa5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
