@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2fe0c8dd_33e4f31c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 21169
+      },
+      "writtenOn": "2024-04-10T17:27:52Z",
+      "side": 1,
+      "message": "cherry-pick to m124",
+      "revId": "48cf9efd14039d1a1eaf24b340ba9b1069d6b4d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
