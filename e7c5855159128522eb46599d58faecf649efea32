@@ -16,6 +16,116 @@
       "message": "Hi @michaelludwig@google.com, I updated `SkPDFDevice` to use bitmap layer fallback when the color space is not sRGB. I\u0027ve put up another CL (839476: pdf: Implement SkColorSpace on SaveLayerRec using ICC color profiles | https://skia-review.googlesource.com/c/skia/+/839476) attempting to implement the color space as a ICC color profile on the layer itself, but I\u0027ll need more guidance if we want to take that approach.",
       "revId": "e7c5855159128522eb46599d58faecf649efea32",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a52126b4_3513b346",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-11T19:50:31Z",
+      "side": 1,
+      "message": "The bitmap fallback approach looks good to me, and is a reasonable first step since for the time being I don\u0027t think this feature will be used in document backends anyways.",
+      "parentUuid": "c89f296b_e5f70076",
+      "revId": "e7c5855159128522eb46599d58faecf649efea32",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "358c7ebd_06426c92",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 882,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-11T19:50:31Z",
+      "side": 1,
+      "message": "As written, this will compose any SkColorFilter on the restore paint into the filter graph that is then evaluated in the layer\u0027s color space. I think this is the behavior we want (and would be consistent with the updated public docs in SaveLayerRec).\n\nBut the alternative could be that while the image filter evaluates in the layer space, the rest of the restore paint operations are in the dst device\u0027s color space (which would require explicitly wrapping the paint\u0027s color filter in a WorkingSpaceColorFilter() if the layer and dst color spaces were different). In either case, I think blending is always going to happen in the dst color space.\n\nWhich way do you lean, @brianosman?",
+      "range": {
+        "startLine": 882,
+        "startChar": 21,
+        "endLine": 882,
+        "endChar": 48
+      },
+      "revId": "e7c5855159128522eb46599d58faecf649efea32",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03d3a1fd_a50ab62c",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 1272,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-11T19:50:31Z",
+      "side": 1,
+      "message": "nit: line length, maybe we lift the `filterColorInfo` definition from the `#else` block to be above the `#if defined(SK_RESOLVE_FILTERS_BEFORE_RESTORE`?\n\nExactly how we do it isn\u0027t too big a deal since I really should finish updating clients so I can delete this legacy code path.",
+      "range": {
+        "startLine": 1272,
+        "startChar": 0,
+        "endLine": 1272,
+        "endChar": 109
+      },
+      "revId": "e7c5855159128522eb46599d58faecf649efea32",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d5bddc2e_f1feecab",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 1283,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-11T19:50:31Z",
+      "side": 1,
+      "message": "nit: line length is 100 in the skia repo, so `filterColorInfo` should go on the next line.\n```suggestion\n                                               DeviceCompatibleWithFilter::kUnknown,\n                                               filterColorInfo);\n```",
+      "range": {
+        "startLine": 1283,
+        "startChar": 0,
+        "endLine": 1283,
+        "endChar": 102
+      },
+      "revId": "e7c5855159128522eb46599d58faecf649efea32",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "99f6c19d_c99b17c6",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 2505,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-11T19:50:31Z",
+      "side": 1,
+      "message": "nit: line length",
+      "range": {
+        "startLine": 2505,
+        "startChar": 0,
+        "endLine": 2505,
+        "endChar": 102
+      },
+      "revId": "e7c5855159128522eb46599d58faecf649efea32",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

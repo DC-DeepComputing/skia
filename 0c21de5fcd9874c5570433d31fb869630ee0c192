@@ -182,6 +182,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fc60b186_03efd6cc",
+        "filename": "include/core/SkCanvas.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 727,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-11T19:50:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e0cdaf23_54429048",
+      "range": {
+        "startLine": 726,
+        "startChar": 34,
+        "endLine": 727,
+        "endChar": 56
+      },
+      "revId": "0c21de5fcd9874c5570433d31fb869630ee0c192",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "edc9433f_d4364d4e",
@@ -217,6 +241,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f870ffb_b300a911",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1291,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-11T19:50:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "11b8b214_b3d226b7",
+      "revId": "0c21de5fcd9874c5570433d31fb869630ee0c192",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ec235c5b_4a64bae5",
@@ -248,6 +290,24 @@
       "side": 1,
       "message": "Yes, I think that of the choices, having the backdrop filter operate in the new device\u0027s color space (the color space of the SaveLayerRec) makes the most sense.",
       "parentUuid": "ec235c5b_4a64bae5",
+      "revId": "0c21de5fcd9874c5570433d31fb869630ee0c192",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2291e33f_144d2a3f",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1365,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-11T19:50:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c25af812_b4e938a7",
       "revId": "0c21de5fcd9874c5570433d31fb869630ee0c192",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
