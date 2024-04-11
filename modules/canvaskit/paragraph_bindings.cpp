@@ -4,7 +4,6 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
-
 #include "include/core/SkColor.h"
 #include "include/core/SkFontStyle.h"
 #include "include/core/SkPictureRecorder.h"
@@ -16,6 +15,14 @@
 #include "modules/skparagraph/include/TypefaceFontProvider.h"
 #include "modules/skparagraph/src/ParagraphBuilderImpl.h"
 #include "modules/skparagraph/src/ParagraphImpl.h"
+#include "modules/skunicode/include/SkUnicode.h"
+
+#if defined(SK_UNICODE_ICU_IMPLEMENTATION)
+#include "modules/skunicode/include/SkUnicode_icu.h"
+#endif
+#if defined(SK_UNICODE_CLIENT_IMPLEMENTATION)
+#include "modules/skunicode/include/SkUnicode_client.h"
+#endif
 
 #include <string>
 #include <vector>
@@ -41,6 +48,18 @@ struct SimpleFontStyle {
     SkFontStyle::Weight weight;
     SkFontStyle::Width width;
 };
+
+#if defined(SK_UNICODE_ICU_IMPLEMENTATION)
+static sk_sp<SkUnicode> get_unicode() {
+    return SkUnicodes::ICU::Make();
+}
+#endif
+
+#if defined(SK_UNICODE_CLIENT_IMPLEMENTATION)
+static skia::textlayout::ParagraphBuilder::ClientUnicodeFactory get_factory() {
+    return SkUnicodes::Client::Make;
+}
+#endif
 
 struct SimpleTextStyle {
     WASMPointerF32 colorPtr;
@@ -537,7 +556,11 @@ EMSCRIPTEN_BINDINGS(Paragraph) {
                         fc->setDefaultFontManager(fontMgr);
                         fc->enableFontFallback();
                         auto ps = toParagraphStyle(style);
-                        auto pb = para::ParagraphBuilderImpl::make(ps, fc);
+#if defined(SK_UNICODE_CLIENT_IMPLEMENTATION)
+                        auto pb = para::ParagraphBuilderImpl::make(ps, fc, get_factory());
+#else
+                        auto pb = para::ParagraphBuilderImpl::make(ps, fc, get_unicode());
+#endif
                         return std::unique_ptr<para::ParagraphBuilderImpl>(
                                 static_cast<para::ParagraphBuilderImpl*>(pb.release()));
                     }),
@@ -551,7 +574,11 @@ EMSCRIPTEN_BINDINGS(Paragraph) {
                         fc->setDefaultFontManager(fontProvider);
                         fc->enableFontFallback();
                         auto ps = toParagraphStyle(style);
-                        auto pb = para::ParagraphBuilderImpl::make(ps, fc);
+#if defined(SK_UNICODE_CLIENT_IMPLEMENTATION)
+                        auto pb = para::ParagraphBuilderImpl::make(ps, fc, get_factory());
+#else
+                        auto pb = para::ParagraphBuilderImpl::make(ps, fc, get_unicode());
+#endif
                         return std::unique_ptr<para::ParagraphBuilderImpl>(
                                 static_cast<para::ParagraphBuilderImpl*>(pb.release()));
                     }),
@@ -562,7 +589,11 @@ EMSCRIPTEN_BINDINGS(Paragraph) {
                                          sk_sp<para::FontCollection> fontCollection)
                                               -> std::unique_ptr<para::ParagraphBuilderImpl> {
                         auto ps = toParagraphStyle(style);
-                        auto pb = para::ParagraphBuilderImpl::make(ps, fontCollection);
+#if defined(SK_UNICODE_CLIENT_IMPLEMENTATION)
+                        auto pb = para::ParagraphBuilderImpl::make(ps, fontCollection, get_factory());
+#else
+                        auto pb = para::ParagraphBuilderImpl::make(ps, fontCollection, get_unicode());
+#endif
                         return std::unique_ptr<para::ParagraphBuilderImpl>(
                                 static_cast<para::ParagraphBuilderImpl*>(pb.release()));
                     }),
@@ -588,8 +619,11 @@ EMSCRIPTEN_BINDINGS(Paragraph) {
                     pstyle.setTextStyle(style);
                 }
 
-                auto pb = para::ParagraphBuilder::make(pstyle, fc);
-
+#if defined(SK_UNICODE_CLIENT_IMPLEMENTATION)
+                        auto pb = para::ParagraphBuilderImpl::make(pstyle, fc, get_factory());
+#else
+                        auto pb = para::ParagraphBuilderImpl::make(pstyle, fc, get_unicode());
+#endif
                 // tease apart the FontBlock runs
                 size_t runCount = jruns["length"].as<size_t>();
                 for (size_t i = 0; i < runCount; ++i) {
