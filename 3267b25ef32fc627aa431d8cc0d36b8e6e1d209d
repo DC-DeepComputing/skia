@@ -72,6 +72,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f497f5e7_c1dc6338",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 2281,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-04-11T16:17:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "44935577_45d5163c",
+      "range": {
+        "startLine": 2281,
+        "startChar": 8,
+        "endLine": 2281,
+        "endChar": 65
+      },
+      "revId": "3267b25ef32fc627aa431d8cc0d36b8e6e1d209d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6f952b1b_980fb5cc",
@@ -180,6 +204,30 @@
       "side": 1,
       "message": "I was going to push for always passing in a local space sigma so that it was consistent with the coordinate space of the `rrect`, but no matter which convention we want, SkCanvas will have to map the sigma based on the ignore-ctm parameter.\n\nSince there\u0027s the public `computeXformedSigma` now, let\u0027s keep it as you have it, and if we get to Graphite operating locally for more transforms then we can adjust the canvas conventions too. But, I think we should rename `transformedSigma` to `dev[ice?]Sigma` here and in the Device function declaration.",
       "parentUuid": "ca42abd8_f2a445d6",
+      "range": {
+        "startLine": 2312,
+        "startChar": 55,
+        "endLine": 2312,
+        "endChar": 74
+      },
+      "revId": "3267b25ef32fc627aa431d8cc0d36b8e6e1d209d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cc64f00e_23188677",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 2312,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-04-11T16:17:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f263c9f9_c7dbf264",
       "range": {
         "startLine": 2312,
         "startChar": 55,
