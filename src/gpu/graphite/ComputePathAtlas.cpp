@@ -11,6 +11,7 @@
 #include "src/gpu/graphite/AtlasProvider.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/Log.h"
+#include "src/gpu/graphite/RasterPathUtils.h"
 #include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/RendererProvider.h"
 #include "src/gpu/graphite/TextureProxy.h"
@@ -31,6 +32,7 @@ constexpr uint16_t kComputeAtlasDim = 4096;
 
 ComputePathAtlas::ComputePathAtlas(Recorder* recorder)
     : PathAtlas(recorder, kComputeAtlasDim, kComputeAtlasDim)
+    , fCachedAtlasMgr(fWidth, fHeight, fWidth, fHeight, recorder->priv().caps())
     , fRectanizer(this->width(), this->height()) {}
 
 bool ComputePathAtlas::initializeTextureIfNeeded() {
@@ -244,6 +246,31 @@ std::unique_ptr<ComputePathAtlas> ComputePathAtlas::CreateDefault(Recorder* reco
 #else
     return nullptr;
 #endif
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////
+
+bool ComputePathAtlas::ComputeAtlasMgr::onAddToAtlas(const Shape& shape,
+                                                     const Transform& transform,
+                                                     const SkStrokeRec& strokeRec,
+                                                     SkIRect shapeBounds,
+                                                     const AtlasLocator& locator) {
+    // Rasterize path to backing pixmap.
+    // This pixmap will be the size of the Plot that contains the given rect, not the entire atlas,
+    // and hence the position we render at will be relative to that Plot.
+    // The value of outPos is relative to the entire texture, to be used for texture coords.
+    SkAutoPixmapStorage dst;
+    SkIPoint renderPos = fDrawAtlas->prepForRender(locator, &dst);
+
+    RasterMaskHelper helper(&dst);
+    if (!helper.init(fDrawAtlas->plotSize())) {
+        return false;
+    }
+    // Offset to plot location and draw
+    shapeBounds.offset(renderPos.x()+kEntryPadding, renderPos.y()+kEntryPadding);
+    helper.drawShape(shape, transform, strokeRec, shapeBounds);
+
+    return true;
 }
 
 }  // namespace skgpu::graphite

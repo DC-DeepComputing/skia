@@ -10,7 +10,12 @@
 
 #include "src/gpu/graphite/PathAtlas.h"
 
+#include "src/base/SkTInternalLList.h"
+#include "src/core/SkTHash.h"
+#include "src/gpu/AtlasTypes.h"
 #include "src/gpu/RectanizerSkyline.h"
+#include "src/gpu/ResourceKey.h"
+#include "src/gpu/graphite/DrawAtlas.h"
 
 #ifdef SK_ENABLE_VELLO_SHADERS
 #include "src/gpu/graphite/compute/VelloRenderer.h"
@@ -59,6 +64,25 @@ protected:
 private:
     bool initializeTextureIfNeeded();
 
+    class ComputeAtlasMgr : public PathAtlas::DrawAtlasMgr {
+    public:
+        ComputeAtlasMgr(size_t width, size_t height,
+                        size_t plotWidth, size_t plotHeight,
+                        const Caps* caps)
+            : PathAtlas::DrawAtlasMgr(width, height, plotWidth, plotHeight, caps) {}
+
+    protected:
+        bool onAddToAtlas(const Shape&,
+                          const Transform& transform,
+                          const SkStrokeRec&,
+                          SkIRect shapeBounds,
+                          const AtlasLocator&) override;
+    };
+
+    ComputeAtlasMgr fCachedAtlasMgr;
+
+    //////////////////
+    // Uncached data
     skgpu::RectanizerSkyline fRectanizer;
 
     // ComputePathAtlas lazily requests a texture from the AtlasProvider when the first shape gets
