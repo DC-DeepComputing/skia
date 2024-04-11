@@ -75,6 +75,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3eada95b_d47cbea7",
+        "filename": "bench/SKPBench.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-04-11T14:18:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cb501024_f42860c6",
+      "range": {
+        "startLine": 129,
+        "startChar": 77,
+        "endLine": 129,
+        "endChar": 88
+      },
+      "revId": "a1ab2ce6d68090807c048f8df876106f9236a6d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "92a6c86a_33102fbb",
@@ -88,6 +112,24 @@
       "writtenOn": "2024-04-10T19:56:08Z",
       "side": 1,
       "message": "How does this interact with the `direct-\u003eflushAndSubmit()` call above? Is `direct` expected to be null on Graphite?",
+      "revId": "a1ab2ce6d68090807c048f8df876106f9236a6d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "85ce38d5_3a83daca",
+        "filename": "bench/SKPBench.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-04-11T14:18:41Z",
+      "side": 1,
+      "message": "I canvas can only have a direct context if it is Ganesh backed. It can only have a recorder if it is graphite backed. So we can\u0027t ever end up in both of these blocks for the same canvas.",
+      "parentUuid": "92a6c86a_33102fbb",
       "revId": "a1ab2ce6d68090807c048f8df876106f9236a6d2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -117,6 +159,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ffe29d56_08c9c14f",
+        "filename": "bench/nanobench.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-04-11T14:18:41Z",
+      "side": 1,
+      "message": "Yes that\u0027s right. flushAndWaitOnSync will submit up to maxFrameLag times each with a finished proc. After that it will only maxFrameLag outstanding finished procs before submitting again.\n\nflushAndSyncCpu actually waits for all outstanding work to finish on the GPU. Thus its used for endTiming and at the end of setup.",
+      "parentUuid": "79ddfc18_bf94e6b5",
+      "range": {
+        "startLine": 266,
+        "startChar": 45,
+        "endLine": 266,
+        "endChar": 60
+      },
+      "revId": "a1ab2ce6d68090807c048f8df876106f9236a6d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "060bcb95_371f552e",
         "filename": "bench/nanobench.h",
         "patchSetId": 2
@@ -128,6 +194,30 @@
       "writtenOn": "2024-04-10T19:47:48Z",
       "side": 1,
       "message": "`// Make sure we\u0027re done with setup work before we start timing`\n```suggestion\n        // Make sure we\u0027re done with setup work before we start timing.\n```",
+      "range": {
+        "startLine": 46,
+        "startChar": 8,
+        "endLine": 46,
+        "endChar": 58
+      },
+      "revId": "a1ab2ce6d68090807c048f8df876106f9236a6d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c1b3ee5d_c918873d",
+        "filename": "bench/nanobench.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-04-11T14:18:41Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "060bcb95_371f552e",
       "range": {
         "startLine": 46,
         "startChar": 8,
