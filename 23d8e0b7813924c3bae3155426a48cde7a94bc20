@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "827cfe37_4901d04a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-04-11T17:36:44Z",
+      "side": 1,
+      "message": "Done (but punting the CanvasKit API changes down the road some more)",
+      "parentUuid": "6aebfa41_47bd0cb4",
+      "revId": "23d8e0b7813924c3bae3155426a48cde7a94bc20",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "39fa71d4_9c8ecea0",
@@ -31,6 +49,24 @@
       "writtenOn": "2024-04-11T15:08:36Z",
       "side": 1,
       "message": "For example calling these functions down here is currently just a super awkward (and non-atomic) way of setting up an `SkUnicode_client`. The user should just pass in the SkUnicode they want to be used instead.\n\nCurrently the way that works is Flutter builds CanvasKit without any real built in SkUnicode implementation (just the client one) which wouldn\u0027t work except for this weird API where by calling enough of these setters Paragraph will magically create a SkUnicode_client out of them.\n\nHowever, we don\u0027t always want `skparagraph` to be directly depending on `SkUnicode_client`, because no one else wants or needs that code hanging around. So the proposal here is to add yet more complexity so the user can pass through a function pointer to create an `SkUnicode_client` later *out of information the user going to pass in*. The user already has all the information to create an `SkUnicode_client` and they should just make it and pass it in.",
+      "revId": "23d8e0b7813924c3bae3155426a48cde7a94bc20",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd9a3ca8_0745ebec",
+        "filename": "modules/canvaskit/paragraph_bindings.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 723,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-04-11T17:36:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "39fa71d4_9c8ecea0",
       "revId": "23d8e0b7813924c3bae3155426a48cde7a94bc20",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
