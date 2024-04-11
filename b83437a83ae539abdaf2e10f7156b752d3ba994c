@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e2017016_67ebd52a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-11T17:07:43Z",
+      "side": 1,
+      "message": "PTAL, this should address the wrapped backend texture issues.",
+      "revId": "b83437a83ae539abdaf2e10f7156b752d3ba994c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
