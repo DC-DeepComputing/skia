@@ -16,6 +16,29 @@
       "message": "cherry-pick to m124",
       "revId": "48cf9efd14039d1a1eaf24b340ba9b1069d6b4d6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d4033fbc_f6da3695",
+        "filename": "src/gpu/graphite/vk/VulkanSamplerYcbcrConversion.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-04-11T14:59:57Z",
+      "side": 1,
+      "message": "Really, these \"magic numbers\" should all be made into static const declarations, but that\u0027s not an issue with this change specifically. Nothing needs to happen in this CL, just thought it may be worth calling out for the future.",
+      "range": {
+        "startLine": 82,
+        "startChar": 0,
+        "endLine": 93,
+        "endChar": 0
+      },
+      "revId": "48cf9efd14039d1a1eaf24b340ba9b1069d6b4d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
