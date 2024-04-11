@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "460ba7e7_0f54acad",
+        "filename": "src/gpu/graphite/ResourceCache.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-04-11T14:30:40Z",
+      "side": 1,
+      "message": "I may be forgetting the convention, but should we be adding `(void)` to clearly discard the return result of this method call? OR should we be consulting it here for any particular reason?",
+      "range": {
+        "startLine": 100,
+        "startChar": 8,
+        "endLine": 100,
+        "endChar": 41
+      },
+      "revId": "1c77b8bc040dd1fb48d3098d7483d880eb78f993",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
