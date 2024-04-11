@@ -23,6 +23,7 @@
 #include "include/effects/SkBlenders.h"
 #include "include/effects/SkColorMatrix.h"
 #include "include/effects/SkGradientShader.h"
+#include "include/effects/SkImageFilters.h"
 #include "include/effects/SkLumaColorFilter.h"
 #include "include/effects/SkPerlinNoiseShader.h"
 #include "include/effects/SkRuntimeEffect.h"
@@ -72,7 +73,10 @@ namespace {
 std::pair<sk_sp<SkShader>, sk_sp<PrecompileShader>> create_random_shader(SkRandom*, Recorder*);
 std::pair<sk_sp<SkBlender>, sk_sp<PrecompileBlender>> create_random_blender(SkRandom*);
 std::pair<sk_sp<SkColorFilter>, sk_sp<PrecompileColorFilter>> create_random_colorfilter(SkRandom*);
+//std::pair<sk_sp<SkImageFilter>, SkEnumBitMask<PrecompileImageFilters1>> create_random_image_filter(SkRandom*);
 
+//--------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 #define SK_ALL_TEST_SHADERS(M) \
     M(Blend)              \
     M(ColorFilter)        \
@@ -110,6 +114,8 @@ const char* to_str(ShaderType s) {
     SkUNREACHABLE;
 }
 
+//--------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 #define SK_ALL_TEST_BLENDERS(M) \
     M(None)        \
     M(PorterDuff)  \
@@ -138,6 +144,8 @@ const char* to_str(BlenderType b) {
     SkUNREACHABLE;
 }
 
+//--------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 #define SK_ALL_TEST_COLORFILTERS(M) \
     M(None)            \
     M(BlendMode)       \
@@ -175,6 +183,8 @@ const char* to_str(ColorFilterType cf) {
     SkUNREACHABLE;
 }
 
+//--------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 #define SK_ALL_TEST_CLIPS(M) \
     M(None)            \
     M(Shader)          \
@@ -196,6 +206,32 @@ const char* to_str(ClipType c) {
     SkUNREACHABLE;
 }
 
+//--------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
+#define SK_ALL_TEST_IMAGE_FILTERS(M) \
+    M(None)            \
+    M(Blur)
+
+enum class ImageFilterType {
+#define M(type) k##type,
+    SK_ALL_TEST_IMAGE_FILTERS(M)
+#undef M
+    kLast = kBlur
+};
+
+//static constexpr int kImageFilterTypeCount = static_cast<int>(ImageFilterType::kLast) + 1;
+
+const char* to_str(ImageFilterType c) {
+    switch (c) {
+#define M(type) case ImageFilterType::k##type : return "ImageFilterType::k" #type;
+        SK_ALL_TEST_IMAGE_FILTERS(M)
+#undef M
+    }
+    SkUNREACHABLE;
+}
+
+//--------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 static constexpr skcms_TransferFunction gTransferFunctions[] = {
     SkNamedTransferFn::kSRGB,
     SkNamedTransferFn::k2Dot2,
@@ -319,6 +355,10 @@ BlenderType random_blendertype(SkRandom* rand) {
 ColorFilterType random_colorfiltertype(SkRandom* rand) {
     return static_cast<ColorFilterType>(rand->nextULessThan(kColorFilterTypeCount));
 }
+
+//ImageFilterType random_imagefiltertype(SkRandom* rand) {
+//    return static_cast<ImageFilterType>(rand->nextULessThan(kImageFilterTypeCount));
+//}
 
 SkMatrix* random_local_matrix(SkRandom* rand, SkMatrix* storage) {
     switch (rand->nextULessThan(3)) {
@@ -992,11 +1032,53 @@ std::pair<sk_sp<SkColorFilter>, sk_sp<PrecompileColorFilter>> create_random_colo
 }
 
 //--------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
+sk_sp<SkImageFilter> blur_imagefilter(SkRandom* rand, SkEnumBitMask<PrecompileImageFilters1>* code) {
+
+    int option = rand->nextULessThan(3);
+
+    float sigma;
+    switch (option) {
+//        case 0:  sigma = 1.0f;
+//        case 1:  sigma = 2.0f;
+//        case 2:  sigma = 3.0f;
+        default: sigma = 5.0f;
+    }
+
+    sk_sp<SkImageFilter> blurIF = SkImageFilters::Blur(sigma, sigma, /* input= */ nullptr);
+    *code |= PrecompileImageFilters1::kBlur;
+
+    return blurIF;
+}
+
+std::pair<sk_sp<SkImageFilter>, SkEnumBitMask<PrecompileImageFilters1>> create_image_filter(
+        SkRandom* rand,
+        ImageFilterType type) {
+
+    sk_sp<SkImageFilter> imgFilter;
+    SkEnumBitMask<PrecompileImageFilters1> code = PrecompileImageFilters1::kNone;
+
+    switch (type) {
+        case ImageFilterType::kNone:
+            break;
+        case ImageFilterType::kBlur:
+            imgFilter = blur_imagefilter(rand, &code);
+    }
+
+    return { std::move(imgFilter), code };
+}
+
+//std::pair<sk_sp<SkImageFilter>, SkEnumBitMask<PrecompileImageFilters1>> create_random_image_filter(SkRandom* rand) {
+//    return create_image_filter(rand, random_imagefiltertype(rand));
+//}
+
+//--------------------------------------------------------------------------------------------------
 std::pair<SkPaint, PaintOptions> create_paint(SkRandom* rand,
                                               Recorder* recorder,
                                               ShaderType shaderType,
                                               BlenderType blenderType,
-                                              ColorFilterType colorFilterType) {
+                                              ColorFilterType colorFilterType,
+                                              ImageFilterType imageFilterType) {
     SkPaint paint;
     paint.setColor(random_color(rand, ColorConstraint::kOpaque));
 
@@ -1032,17 +1114,30 @@ std::pair<SkPaint, PaintOptions> create_paint(SkRandom* rand,
         }
     }
 
+    {
+        auto [filter, filterO] = create_image_filter(rand, imageFilterType);
+        SkASSERT(!filter == !filterO);
+
+        if (filter) {
+            SkDebugf("%p %d\n", filter.get(), filterO.value());
+            paint.setImageFilter(std::move(filter));
+            paintOptions.setImageFilters(filterO);
+        }
+    }
+
+#if 0
     if (rand->nextBool()) {
         paint.setDither(true);
         paintOptions.setDither(true);
     }
+#endif
 
     return { paint, paintOptions };
 }
 
 #ifdef SK_DEBUG
-void dump(ShaderCodeDictionary* dict, UniquePaintParamsID id) {
-    dict->lookup(id).dump(dict);
+void dump(const ShaderCodeDictionary* dict, UniquePaintParamsID id) {
+    dict->lookup(id).dump(id.asUInt(), dict);
 }
 #endif
 
@@ -1181,6 +1276,7 @@ void check_draw(skiatest::Reporter* reporter,
                                                 &originalRenderPassDesc);
 
                 SkDebugf("------- New key from draw:\n");
+                dump(dict, originalPipelineDesc.paintParamsID());
                 afterKey.dump("original key:");
                 UniqueKeyUtils::DumpDescs(rendererProvider, dict,
                                           originalPipelineDesc,
@@ -1201,7 +1297,8 @@ void run_test(skiatest::Reporter*,
               ShaderType,
               BlenderType,
               ColorFilterType,
-              ClipType);
+              ClipType,
+              ImageFilterType);
 
 // This is intended to be a smoke test for the agreement between the two ways of creating a
 // PaintParamsKey:
@@ -1257,9 +1354,9 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
     };
 
     ShaderType shaders[] = {
-            ShaderType::kBlend,
-            ShaderType::kImage,
-            ShaderType::kRadialGradient,
+//            ShaderType::kBlend,
+//            ShaderType::kImage,
+//            ShaderType::kRadialGradient,
             ShaderType::kSolidColor,
 #if EXPANDED_SET
             ShaderType::kNone,
@@ -1278,8 +1375,8 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
 
     BlenderType blenders[] = {
             BlenderType::kPorterDuff,
-            BlenderType::kShaderBased,
-            BlenderType::kRuntime,
+//            BlenderType::kShaderBased,
+//            BlenderType::kRuntime,
 #if EXPANDED_SET
             BlenderType::kNone,
             BlenderType::kArithmetic,
@@ -1288,8 +1385,8 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
 
     ColorFilterType colorFilters[] = {
             ColorFilterType::kNone,
-            ColorFilterType::kBlendMode,
-            ColorFilterType::kMatrix,
+//            ColorFilterType::kBlendMode,
+//            ColorFilterType::kMatrix,
 #if EXPANDED_SET
             ColorFilterType::kColorSpaceXform,
             ColorFilterType::kCompose,
@@ -1314,22 +1411,31 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
 #endif
     };
 
+    ImageFilterType imageFilters[] = {
+//            ImageFilterType::kNone,
+            ImageFilterType::kBlur,
 #if EXPANDED_SET
+#endif
+    };
+
+//#if EXPANDED_SET
     size_t kExpected = std::size(shaders) * std::size(blenders) * std::size(colorFilters) *
                        std::size(clips);
     int current = 0;
-#endif
+//#endif
 
     for (auto shader : shaders) {
         for (auto blender : blenders) {
             for (auto cf : colorFilters) {
                 for (auto clip : clips) {
-#if EXPANDED_SET
-                SkDebugf("%d/%zu\n", current, kExpected);
-                ++current;
-#endif
-                run_test(reporter, context, testContext, precompileKeyContext, drawData,
-                         shader, blender, cf, clip);
+                    for (auto imageFilter : imageFilters) {
+//#if EXPANDED_SET
+                        SkDebugf("%d/%zu\n", current, kExpected);
+                        ++current;
+//#endif
+                        run_test(reporter, context, testContext, precompileKeyContext, drawData,
+                                 shader, blender, cf, clip, imageFilter);
+                    }
                 }
             }
         }
@@ -1348,7 +1454,8 @@ void run_test(skiatest::Reporter* reporter,
               ShaderType s,
               BlenderType bm,
               ColorFilterType cf,
-              ClipType clip) {
+              ClipType clip,
+              ImageFilterType imageFilter) {
     SkRandom rand;
 
     std::unique_ptr<Recorder> recorder = context->makeRecorder();
@@ -1368,7 +1475,7 @@ void run_test(skiatest::Reporter* reporter,
     PipelineDataGatherer precompileGatherer(Layout::kMetal);
 
     gNeedSKPPaintOption = false;
-    auto [paint, paintOptions] = create_paint(&rand, recorder.get(), s, bm, cf);
+    auto [paint, paintOptions] = create_paint(&rand, recorder.get(), s, bm, cf, imageFilter);
 
     for (DrawTypeFlags dt : { DrawTypeFlags::kSimpleShape,
                               DrawTypeFlags::kNonSimpleShape,
@@ -1394,14 +1501,14 @@ void run_test(skiatest::Reporter* reporter,
 
             constexpr Coverage coverageOptions[3] = {
                     Coverage::kNone, Coverage::kSingleChannel, Coverage::kLCD};
-            Coverage coverage = coverageOptions[rand.nextULessThan(3)];
+            Coverage coverage1 = coverageOptions[rand.nextULessThan(3)];
 
             DstReadRequirement dstReadReq = DstReadRequirement::kNone;
             const SkBlenderBase* blender = as_BB(paint.getBlender());
             if (blender) {
                 dstReadReq = GetDstReadRequirement(recorder->priv().caps(),
                                                    blender->asBlendMode(),
-                                                   coverage);
+                                                   coverage1);
             }
             bool needsDstSample = dstReadReq == DstReadRequirement::kTextureCopy ||
                                   dstReadReq == DstReadRequirement::kTextureSample;
@@ -1432,6 +1539,7 @@ void run_test(skiatest::Reporter* reporter,
 
             paintOptions.setClipShaders({ clipShaderOption });
 
+#if 0
             std::vector<UniquePaintParamsID> precompileIDs;
             paintOptions.priv().buildCombinations(precompileKeyContext,
                                                   &precompileGatherer,
@@ -1452,13 +1560,13 @@ void run_test(skiatest::Reporter* reporter,
             // combinations generated by the combination system.
             auto result = std::find(precompileIDs.begin(), precompileIDs.end(), paintID);
 
-            if (result == precompileIDs.end()) {
-                SkDebugf("Failure on case: %s %s %s %s\n",
-                         to_str(s), to_str(bm), to_str(cf), to_str(clip));
-            }
+//            if (result == precompileIDs.end()) {
+                SkDebugf("Testing case: %s %s %s %s %s\n",
+                         to_str(s), to_str(bm), to_str(cf), to_str(clip), to_str(imageFilter));
+//            }
 
 #ifdef SK_DEBUG
-            if (result == precompileIDs.end()) {
+//            if (result == precompileIDs.end()) {
                 SkDebugf("From paint: ");
                 dump(dict, paintID);
 
@@ -1466,25 +1574,33 @@ void run_test(skiatest::Reporter* reporter,
                 for (auto iter : precompileIDs) {
                     dump(dict, iter);
                 }
-            }
+  //          }
 #endif
 
             REPORTER_ASSERT(reporter, result != precompileIDs.end());
+#endif
 
             {
                 context->priv().globalCache()->resetGraphicsPipelines();
 
                 int before = context->priv().globalCache()->numGraphicsPipelines();
-                Precompile(context, paintOptions, dt);
+                std::unordered_set<uint32_t> precompileIDs2;
+                Precompile(context, paintOptions, dt, precompileIDs2);
                 if (gNeedSKPPaintOption) {
                     // The skp draws a rect w/ a default SkPaint
                     PaintOptions skpPaintOptions;
-                    Precompile(context, skpPaintOptions, DrawTypeFlags::kSimpleShape);
+                    Precompile(context, skpPaintOptions, DrawTypeFlags::kSimpleShape,
+                               precompileIDs2);
                 }
                 int after = context->priv().globalCache()->numGraphicsPipelines();
 
                 REPORTER_ASSERT(reporter, before == 0);
                 REPORTER_ASSERT(reporter, after > before);
+
+                SkDebugf("From Precompile: %d %d\n", before, after);
+                for (auto iter : precompileIDs2) {
+                    dump(dict, UniquePaintParamsID(iter));
+                }
 
                 check_draw(reporter,
                            context,

@@ -73,7 +73,7 @@ void DumpDescs(const RendererProvider* rendererProvider,
                const ShaderCodeDictionary* dict,
                const GraphicsPipelineDesc& pipelineDesc,
                const RenderPassDesc& rpd) {
-    dict->lookup(pipelineDesc.paintParamsID()).dump(dict);
+    dict->lookup(pipelineDesc.paintParamsID()).dump(pipelineDesc.paintParamsID().asUInt(), dict);
 
     const RenderStep* rs = rendererProvider->lookup(pipelineDesc.renderStepID());
 

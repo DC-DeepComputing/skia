@@ -63,7 +63,18 @@ PaintParams::PaintParams(const SkPaint& paint,
         , fClipShader(std::move(clipShader))
         , fDstReadReq(dstReadReq)
         , fSkipColorXform(skipColorXform)
-        , fDither(paint.isDither()) {}
+        , fDither(paint.isDither()) {
+    if (!fFinalBlender) {
+        SkDebugf("here2\n");
+    }
+    if (fFinalBlender && as_BB(fFinalBlender)->asBlendMode().has_value()) {
+        if (as_BB(fFinalBlender)->asBlendMode().value() == SkBlendMode::kSrcOver) {
+            SkDebugf("here\n");
+        }
+    }
+}
+
+
 
 PaintParams::PaintParams(const PaintParams& other) = default;
 PaintParams::~PaintParams() = default;
