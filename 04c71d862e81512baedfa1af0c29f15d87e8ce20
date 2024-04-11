@@ -16,6 +16,23 @@
       "message": "the change to WaitAnyOnly LGTM; I don\u0027t have review permissions though",
       "revId": "04c71d862e81512baedfa1af0c29f15d87e8ce20",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "478bcd1a_5ff9263a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2024-04-11T07:34:32Z",
+      "side": 1,
+      "message": "friendly ping. I need another +1. Thanks.",
+      "revId": "04c71d862e81512baedfa1af0c29f15d87e8ce20",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
