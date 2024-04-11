@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fdc4d54a_e41ccdc8",
+        "filename": "src/gpu/graphite/geom/RectBlurData.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-04-11T19:29:00Z",
+      "side": 1,
+      "message": "It\u0027s a little tricky IMO to minimize extra work while keeping this code clean, since if the localToDevice matrix is just a scale and translation then we never extract the scale, and if it maps rects to rects then we extract the scale but don\u0027t calculate a new matrix without scale.\n\nTo prevent any unnecessary work we could check these cases ahead of time, and decompose only as much as needed, but it might look a little convoluted.",
+      "parentUuid": "1a30bc70_bda153c5",
+      "range": {
+        "startLine": 128,
+        "startChar": 0,
+        "endLine": 128,
+        "endChar": 61
+      },
+      "revId": "8ab5f3b19f8df929e8dc5bdf5eba19a001af9298",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "85d82e75_198985d1",
         "filename": "src/gpu/graphite/geom/RectBlurData.h",
         "patchSetId": 10
@@ -37,6 +61,30 @@
       "writtenOn": "2024-04-11T18:31:52Z",
       "side": 1,
       "message": "Based on `MakeRect`, I think this is actually still in the local coordinate space. It comes from `srcRect` and then outset by undoing the scale effect of `localToDevice` from `devSigma`.",
+      "range": {
+        "startLine": 79,
+        "startChar": 4,
+        "endLine": 79,
+        "endChar": 35
+      },
+      "revId": "8ab5f3b19f8df929e8dc5bdf5eba19a001af9298",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "32761703_6fbe1654",
+        "filename": "src/gpu/graphite/geom/RectBlurData.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-04-11T19:29:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "85d82e75_198985d1",
       "range": {
         "startLine": 79,
         "startChar": 4,
