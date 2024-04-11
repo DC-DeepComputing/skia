@@ -24,19 +24,22 @@
 #include "src/gpu/graphite/RuntimeEffectDictionary.h"
 #include "src/gpu/graphite/UniquePaintParamsID.h"
 
-namespace {
+namespace skgpu::graphite {
 
-using namespace skgpu::graphite;
+//using namespace skgpu::graphite;
 
-void compile(const RendererProvider* rendererProvider,
+void compile1(const RendererProvider* rendererProvider,
              ResourceProvider* resourceProvider,
              const KeyContext& keyContext,
              UniquePaintParamsID uniqueID,
              DrawTypeFlags drawTypes,
              SkSpan<RenderPassDesc> renderPassDescs,
              bool withPrimitiveBlender,
-             Coverage coverage) {
+             Coverage coverage,
+             const char* label) {
     for (const Renderer* r : rendererProvider->renderers()) {
+
+
         if (!(r->drawTypes() & drawTypes)) {
             continue;
         }
@@ -50,6 +53,12 @@ void compile(const RendererProvider* rendererProvider,
         if (r->coverage() != coverage) {
             // For now, UniqueIDs are explicitly built with a specific type of coverage so must
             // match what the Renderer requires
+//            SkDebugf("skipping %s due to coverage: %s != %s\n",
+//                     r->name(),
+//                     (r->coverage() == Coverage::kNone) ? "none" :
+//                         (r->coverage() == Coverage::kSingleChannel) ? "single" : "LCD",
+//                     (coverage == Coverage::kNone) ? "none" :
+//                         (coverage == Coverage::kSingleChannel) ? "single" : "LCD");
             continue;
         }
 
@@ -59,6 +68,8 @@ void compile(const RendererProvider* rendererProvider,
             UniquePaintParamsID paintID = s->performsShading() ? uniqueID
                                                                : UniquePaintParamsID::InvalidID();
             GraphicsPipelineDesc pipelineDesc(s, paintID);
+
+            SkDebugf("--- %s Creating Pipeline for: %d renderStep2: %s\n", label, paintID.asUInt(), s->name());
 
             for (const RenderPassDesc& renderPassDesc : renderPassDescs) {
                 sk_sp<GraphicsPipeline> pipeline = resourceProvider->findOrCreateGraphicsPipeline(
@@ -96,7 +107,12 @@ bool Precompile(Context* context,
     return true;
 }
 
-void Precompile(Context* context, const PaintOptions& options, DrawTypeFlags drawTypes) {
+void dump1(ShaderCodeDictionary* dict, UniquePaintParamsID id) {
+    dict->lookup(id).dump(id.asUInt(), dict);
+}
+
+void Precompile(Context* context, const PaintOptions& options, DrawTypeFlags drawTypes,
+                std::unordered_set<uint32_t>& foo) {
 
     ShaderCodeDictionary* dict = context->priv().shaderCodeDictionary();
     const Caps* caps = context->priv().caps();
@@ -125,51 +141,58 @@ void Precompile(Context* context, const PaintOptions& options, DrawTypeFlags dra
     RenderPassDesc renderPassDescs[] = {
         RenderPassDesc::Make(caps,
                              info,
-                             LoadOp::kClear,
-                             StoreOp::kStore,
+                             LoadOp::kClear,   // ignored for Metal
+                             StoreOp::kStore,  // ignored for Metal
                              DepthStencilFlags::kDepth,
-                             /* clearColor= */ { .0f, .0f, .0f, .0f },
+                             /* clearColor= */ { .0f, .0f, .0f, .0f }, // ignored for Metal
                              /* requiresMSAA= */ true,
                              caps->getWriteSwizzle(ci.colorType(), info)),
         RenderPassDesc::Make(caps,
                              info,
-                             LoadOp::kClear,
-                             StoreOp::kStore,
+                             LoadOp::kClear,   // ignored for Metal
+                             StoreOp::kStore,  // ignored for Metal
                              DepthStencilFlags::kDepthStencil,
-                             /* clearColor= */ { .0f, .0f, .0f, .0f },
+                             /* clearColor= */ { .0f, .0f, .0f, .0f }, // ignored for Metal
                              /* requiresMSAA= */ true,
                              caps->getWriteSwizzle(ci.colorType(), info)),
         RenderPassDesc::Make(caps,
                              info,
-                             LoadOp::kClear,
-                             StoreOp::kStore,
+                             LoadOp::kClear,   // ignored for Metal
+                             StoreOp::kStore,  // ignored for Metal
                              DepthStencilFlags::kDepth,
-                             /* clearColor= */ { .0f, .0f, .0f, .0f },
+                             /* clearColor= */ { .0f, .0f, .0f, .0f }, // ignored for Metal
                              /* requiresMSAA= */ false,
                              caps->getWriteSwizzle(ci.colorType(), info)),
         RenderPassDesc::Make(caps,
                              info,
-                             LoadOp::kClear,
-                             StoreOp::kStore,
+                             LoadOp::kClear,   // ignored for Metal
+                             StoreOp::kStore,  // ignored for Metal
                              DepthStencilFlags::kDepthStencil,
-                             /* clearColor= */ { .0f, .0f, .0f, .0f },
+                             /* clearColor= */ { .0f, .0f, .0f, .0f }, // ignored for Metal
                              /* requiresMSAA= */ false,
                              caps->getWriteSwizzle(ci.colorType(), info)),
     };
 
-    for (Coverage coverage : {Coverage::kNone, Coverage::kSingleChannel, Coverage::kLCD}) {
+    for (Coverage coverage : { Coverage::kNone, Coverage::kSingleChannel, /*Coverage::kLCD*/}) {
         options.priv().buildCombinations(
+            context,
             keyContext,
             &gatherer,
             /* addPrimitiveBlender= */ false,
             coverage,
              [&](UniquePaintParamsID uniqueID) {
-                 compile(context->priv().rendererProvider(),
+                if (foo.find(uniqueID.asUInt()) == foo.end()) {
+                    dump1(dict, uniqueID);
+                    foo.insert(uniqueID.asUInt());
+                }
+                 compile1(context->priv().rendererProvider(),
                          context->priv().resourceProvider(),
                          keyContext, uniqueID,
                          static_cast<DrawTypeFlags>(drawTypes & ~DrawTypeFlags::kDrawVertices),
-                         renderPassDescs, /* withPrimitiveBlender= */ false, coverage);
-             });
+                         renderPassDescs, /* withPrimitiveBlender= */ false, coverage,
+                         "normal");
+             },
+             foo);
     }
 
     if (drawTypes & DrawTypeFlags::kDrawVertices) {
@@ -177,17 +200,23 @@ void Precompile(Context* context, const PaintOptions& options, DrawTypeFlags dra
             // drawVertices w/ colors use a primitiveBlender while those w/o don't
             for (bool withPrimitiveBlender : { true, false }) {
                 options.priv().buildCombinations(
+                    context,
                     keyContext,
                     &gatherer,
                     withPrimitiveBlender,
                     coverage,
                     [&](UniquePaintParamsID uniqueID) {
-                        compile(context->priv().rendererProvider(),
+                        if (foo.find(uniqueID.asUInt()) == foo.end()) {
+                            dump1(dict, uniqueID);
+                            foo.insert(uniqueID.asUInt());
+                        }
+                        compile1(context->priv().rendererProvider(),
                                 context->priv().resourceProvider(),
                                 keyContext, uniqueID,
                                 DrawTypeFlags::kDrawVertices,
-                                renderPassDescs, withPrimitiveBlender, coverage);
-                    });
+                                renderPassDescs, withPrimitiveBlender, coverage,
+                                "drawVertices");
+                    }, foo);
             }
         }
     }
