@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a30bc70_bda153c5",
+        "filename": "src/gpu/graphite/geom/RectBlurData.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-11T18:31:52Z",
+      "side": 1,
+      "message": "We are calling decomposeScale twice. We should do the decomposition just once to be consistent.",
+      "range": {
+        "startLine": 128,
+        "startChar": 0,
+        "endLine": 128,
+        "endChar": 61
+      },
+      "revId": "8ab5f3b19f8df929e8dc5bdf5eba19a001af9298",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85d82e75_198985d1",
+        "filename": "src/gpu/graphite/geom/RectBlurData.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-11T18:31:52Z",
+      "side": 1,
+      "message": "Based on `MakeRect`, I think this is actually still in the local coordinate space. It comes from `srcRect` and then outset by undoing the scale effect of `localToDevice` from `devSigma`.",
+      "range": {
+        "startLine": 79,
+        "startChar": 4,
+        "endLine": 79,
+        "endChar": 35
+      },
+      "revId": "8ab5f3b19f8df929e8dc5bdf5eba19a001af9298",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
