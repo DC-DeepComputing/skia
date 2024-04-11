@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6aebfa41_47bd0cb4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-11T15:08:36Z",
+      "side": 1,
+      "message": "The entire point of having an `SkUnicode` interface is so we wouldn\u0027t need to do things like this. The `paragraph_bindings.cpp` part is meh, but all of these changes under `modules/skparagraph` are basically \"why did we even try\".\n\nThe fundamental design issue as I see it is anything using `fUsingClientInfo`. I\u0027m not sure why this exists or why it is set when only some of the setters are called. The client should be creating the SkUnicode and passing it in. The user should be making this `fClientUnicodeFactory` call themselves and passing the resulting `SkUnicode` into the existing `ParagraphBuilder::make` (and all the `ParagraphBuilderImpl::set*` that touch `fUsingClientInfo` be removed).\n\nNow, I see why this change is attractive from the standpoint of not changing the CanvasKit Paragraph API which currently just always uses the default `SkUnicode` implementation and doesn\u0027t appear to have a way to construct a `SkUnicode_client` to pass in. However, the real fix here is to have CanvasKit provide an API to create an `SkUnicode_client` (if built with that support) and then provide a way to pass that in to the paragraph.",
+      "revId": "23d8e0b7813924c3bae3155426a48cde7a94bc20",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39fa71d4_9c8ecea0",
+        "filename": "modules/canvaskit/paragraph_bindings.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 723,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-11T15:08:36Z",
+      "side": 1,
+      "message": "For example calling these functions down here is currently just a super awkward (and non-atomic) way of setting up an `SkUnicode_client`. The user should just pass in the SkUnicode they want to be used instead.\n\nCurrently the way that works is Flutter builds CanvasKit without any real built in SkUnicode implementation (just the client one) which wouldn\u0027t work except for this weird API where by calling enough of these setters Paragraph will magically create a SkUnicode_client out of them.\n\nHowever, we don\u0027t always want `skparagraph` to be directly depending on `SkUnicode_client`, because no one else wants or needs that code hanging around. So the proposal here is to add yet more complexity so the user can pass through a function pointer to create an `SkUnicode_client` later *out of information the user going to pass in*. The user already has all the information to create an `SkUnicode_client` and they should just make it and pass it in.",
+      "revId": "23d8e0b7813924c3bae3155426a48cde7a94bc20",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
