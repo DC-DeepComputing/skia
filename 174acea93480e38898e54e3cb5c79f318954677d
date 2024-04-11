@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "edc01265_93eb23bf",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 2336,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-11T14:25:11Z",
+      "side": 1,
+      "message": "It just occurred to me that we could move checking for `useDrawcoverageMaskForMaskFilters()` into `attemptBlurredRRectDraw()` and just take the path that calls `aboutToDraw()`.  Then the drawRect, drawRRect, drawCircle/Oval call sites can avoid this ternary structure.",
+      "range": {
+        "startLine": 2336,
+        "startChar": 0,
+        "endLine": 2336,
+        "endChar": 66
+      },
+      "revId": "174acea93480e38898e54e3cb5c79f318954677d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

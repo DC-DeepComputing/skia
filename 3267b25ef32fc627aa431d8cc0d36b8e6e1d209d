@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "44935577_45d5163c",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 2281,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-11T14:25:11Z",
+      "side": 1,
+      "message": "That\u0027s a good point, we haven\u0027t fully removed stroke-and-fill yet. Can you add a note that once stroke-and-fill goes away we can just check the paint\u0027s style directly?",
+      "parentUuid": "3e1d979a_605eaae7",
+      "range": {
+        "startLine": 2281,
+        "startChar": 8,
+        "endLine": 2281,
+        "endChar": 65
+      },
+      "revId": "3267b25ef32fc627aa431d8cc0d36b8e6e1d209d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6f952b1b_980fb5cc",
         "filename": "src/core/SkCanvas.cpp",
         "patchSetId": 7
@@ -132,6 +156,30 @@
       "side": 1,
       "message": "Well, this gets piped to `RectBlurData::MakeRect`, which does ostensibly expect a device-space sigma. Things get a little complicated in there since we\u0027re dealing with shape geometry that\u0027s in this weird halfway coordinate space with the device scale applied but not rotation or translation. But I suppose the rotation and translation don\u0027t apply to the sigma here anyways.",
       "parentUuid": "3b043aba_7977a44b",
+      "range": {
+        "startLine": 2312,
+        "startChar": 55,
+        "endLine": 2312,
+        "endChar": 74
+      },
+      "revId": "3267b25ef32fc627aa431d8cc0d36b8e6e1d209d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f263c9f9_c7dbf264",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 2312,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-11T14:25:11Z",
+      "side": 1,
+      "message": "I was going to push for always passing in a local space sigma so that it was consistent with the coordinate space of the `rrect`, but no matter which convention we want, SkCanvas will have to map the sigma based on the ignore-ctm parameter.\n\nSince there\u0027s the public `computeXformedSigma` now, let\u0027s keep it as you have it, and if we get to Graphite operating locally for more transforms then we can adjust the canvas conventions too. But, I think we should rename `transformedSigma` to `dev[ice?]Sigma` here and in the Device function declaration.",
+      "parentUuid": "ca42abd8_f2a445d6",
       "range": {
         "startLine": 2312,
         "startChar": 55,
