@@ -1,4 +1,5 @@
 // Copyright 2019 Google LLC.
+#include "modules/skparagraph/src/ParagraphBuilderImpl.h"
 
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkTypes.h"
@@ -7,10 +8,11 @@
 #include "modules/skparagraph/include/ParagraphBuilder.h"
 #include "modules/skparagraph/include/ParagraphStyle.h"
 #include "modules/skparagraph/include/TextStyle.h"
-#include "modules/skparagraph/src/ParagraphBuilderImpl.h"
 #include "modules/skparagraph/src/ParagraphImpl.h"
 #include "modules/skunicode/include/SkUnicode.h"
+#include "src/core/SkStringUtils.h"
 
+#if !defined(SK_DISABLE_LEGACY_PARAGRAPH_UNICODE)
 #if defined(SK_UNICODE_ICU_IMPLEMENTATION)
 #include "modules/skunicode/include/SkUnicode_icu.h"
 #endif
@@ -27,12 +29,15 @@
 #include "modules/skunicode/include/SkUnicode_client.h"
 #endif
 
+#endif  // !defined(SK_DISABLE_LEGACY_PARAGRAPH_UNICODE)
+
 #include <memory>
 #include <utility>
-#include "src/core/SkStringUtils.h"
 
 namespace skia {
 namespace textlayout {
+
+#if !defined(SK_DISABLE_LEGACY_PARAGRAPH_UNICODE)
 
 namespace {
 // TODO(kjlubick,jlavrova) Remove these defines by having clients register something or somehow
@@ -55,16 +60,47 @@ sk_sp<SkUnicode> get_unicode() {
 #endif
     return nullptr;
 }
+
+ParagraphBuilder::ClientUnicodeFactory get_factory() {
+#if defined(SK_UNICODE_CLIENT_IMPLEMENTATION)
+    return SkUnicodes::Client::Make;
+#endif
+    return nullptr;
+}
 }
 
 std::unique_ptr<ParagraphBuilder> ParagraphBuilder::make(const ParagraphStyle& style,
                                                          sk_sp<FontCollection> fontCollection) {
-    return ParagraphBuilderImpl::make(style, std::move(fontCollection));
+    if (auto unicode = get_unicode()) {
+        return ParagraphBuilderImpl::make(style, std::move(fontCollection), unicode);
+    }
+    return ParagraphBuilderImpl::make(style, std::move(fontCollection), get_factory());
 }
 
 std::unique_ptr<ParagraphBuilder> ParagraphBuilderImpl::make(const ParagraphStyle& style,
                                                              sk_sp<FontCollection> fontCollection) {
-    return std::make_unique<ParagraphBuilderImpl>(style, std::move(fontCollection));
+    return std::make_unique<ParagraphBuilderImpl>(style, std::move(fontCollection), get_unicode(), get_factory());
+}
+
+ParagraphBuilderImpl::ParagraphBuilderImpl(
+        const ParagraphStyle& style, sk_sp<FontCollection> fontCollection)
+        : ParagraphBuilderImpl(style, std::move(fontCollection), get_unicode(), get_factory())
+{ }
+
+#endif  // !defined(SK_DISABLE_LEGACY_PARAGRAPH_UNICODE)
+
+std::unique_ptr<ParagraphBuilder> ParagraphBuilder::make(const ParagraphStyle& style,
+                                                         sk_sp<FontCollection> fontCollection,
+                                                         sk_sp<SkUnicode> unicode) {
+    SkASSERT(unicode);
+    return ParagraphBuilderImpl::make(style, std::move(fontCollection), std::move(unicode));
+}
+
+std::unique_ptr<ParagraphBuilder> ParagraphBuilder::make(const ParagraphStyle& style,
+                                                         sk_sp<FontCollection> fontCollection,
+                                                         ClientUnicodeFactory factory) {
+    SkASSERT(factory);
+    return ParagraphBuilderImpl::make(style, std::move(fontCollection), factory);
 }
 
 std::unique_ptr<ParagraphBuilder> ParagraphBuilderImpl::make(const ParagraphStyle& style,
@@ -74,16 +110,28 @@ std::unique_ptr<ParagraphBuilder> ParagraphBuilderImpl::make(const ParagraphStyl
         return nullptr;
     }
     return std::make_unique<ParagraphBuilderImpl>(style, std::move(fontCollection),
-                                                  std::move(unicode));
+                                                  std::move(unicode), nullptr);
+}
+
+std::unique_ptr<ParagraphBuilder> ParagraphBuilderImpl::make(const ParagraphStyle& style,
+                                                             sk_sp<FontCollection> fontCollection,
+                                                             ClientUnicodeFactory factory) {
+    if (nullptr == factory) {
+        return nullptr;
+    }
+    return std::make_unique<ParagraphBuilderImpl>(style, std::move(fontCollection),
+                                                  nullptr, factory);
 }
 
 ParagraphBuilderImpl::ParagraphBuilderImpl(
-        const ParagraphStyle& style, sk_sp<FontCollection> fontCollection, sk_sp<SkUnicode> unicode)
+        const ParagraphStyle& style, sk_sp<FontCollection> fontCollection, sk_sp<SkUnicode> unicode,
+        ClientUnicodeFactory factory)
         : ParagraphBuilder()
         , fUtf8()
         , fFontCollection(std::move(fontCollection))
         , fParagraphStyle(style)
         , fUnicode(std::move(unicode))
+        , fClientUnicodeFactory(factory)
 #if defined(SK_UNICODE_CLIENT_IMPLEMENTATION)
         , fTextIsFinalized(false)
         , fUsingClientInfo(false)
@@ -92,11 +140,6 @@ ParagraphBuilderImpl::ParagraphBuilderImpl(
     SkASSERT(fFontCollection);
     startStyledBlock();
 }
-
-ParagraphBuilderImpl::ParagraphBuilderImpl(
-        const ParagraphStyle& style, sk_sp<FontCollection> fontCollection)
-        : ParagraphBuilderImpl(style, std::move(fontCollection), get_unicode())
-{ }
 
 ParagraphBuilderImpl::~ParagraphBuilderImpl() = default;
 
@@ -227,16 +270,18 @@ std::unique_ptr<Paragraph> ParagraphBuilderImpl::Build() {
     // Add one fake placeholder with the rest of the text
     this->addPlaceholder(PlaceholderStyle(), true);
 
+    SkASSERT(fUnicode || fClientUnicodeFactory);
 #ifndef SK_DISABLE_LEGACY_CLIENT_UNICODE
 #if defined(SK_UNICODE_CLIENT_IMPLEMENTATION)
     if (fUsingClientInfo && !fUnicode) {
+        SkASSERT(fClientUnicodeFactory);
         fUTF8IndexForUTF16Index.clear();
         fUTF16IndexForUTF8Index.clear();
         // This is the place where SkUnicode is paired with SkParagraph
-        fUnicode = SkUnicodes::Client::Make(this->getText(),
-                                            std::move(fWordsUtf16),
-                                            std::move(fGraphemeBreaksUtf8),
-                                            std::move(fLineBreaksUtf8));
+        fUnicode = fClientUnicodeFactory(this->getText(),
+                                         std::move(fWordsUtf16),
+                                         std::move(fGraphemeBreaksUtf8),
+                                         std::move(fLineBreaksUtf8));
     }
 #endif
 #endif

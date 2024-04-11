@@ -21,10 +21,13 @@ class ParagraphBuilderImpl : public ParagraphBuilder {
 public:
     ParagraphBuilderImpl(const ParagraphStyle& style,
                          sk_sp<FontCollection> fontCollection,
-                         sk_sp<SkUnicode> unicode);
+                         sk_sp<SkUnicode> unicode,
+                         ParagraphBuilder::ClientUnicodeFactory = nullptr);
 
+#if !defined(SK_DISABLE_LEGACY_PARAGRAPH_UNICODE)
     // Just until we fix all the code; calls icu::make inside
     ParagraphBuilderImpl(const ParagraphStyle& style, sk_sp<FontCollection> fontCollection);
+#endif
 
     ~ParagraphBuilderImpl() override;
 
@@ -85,9 +88,15 @@ public:
                                                   sk_sp<FontCollection> fontCollection,
                                                   sk_sp<SkUnicode> unicode);
 
+    static std::unique_ptr<ParagraphBuilder> make(const ParagraphStyle& style,
+                                                  sk_sp<FontCollection> fontCollection,
+                                                  ParagraphBuilder::ClientUnicodeFactory);
+
+#if !defined(SK_DISABLE_LEGACY_PARAGRAPH_UNICODE)
     // Just until we fix all the code; calls icu::make inside
     static std::unique_ptr<ParagraphBuilder> make(const ParagraphStyle& style,
                                                   sk_sp<FontCollection> fontCollection);
+#endif
 
     static bool RequiresClientICU();
 protected:
@@ -110,6 +119,8 @@ private:
     void ensureUTF16Mapping();
     skia_private::TArray<TextIndex, true> fUTF8IndexForUTF16Index;
     skia_private::TArray<TextIndex, true> fUTF16IndexForUTF8Index;
+    ParagraphBuilder::ClientUnicodeFactory fClientUnicodeFactory;
+
 #if defined(SK_UNICODE_CLIENT_IMPLEMENTATION)
     bool fTextIsFinalized;
     bool fUsingClientInfo;
