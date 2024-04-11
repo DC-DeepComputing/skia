@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c89f296b_e5f70076",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18419
+      },
+      "writtenOn": "2024-04-11T19:25:41Z",
+      "side": 1,
+      "message": "Hi @michaelludwig@google.com, I updated `SkPDFDevice` to use bitmap layer fallback when the color space is not sRGB. I\u0027ve put up another CL (839476: pdf: Implement SkColorSpace on SaveLayerRec using ICC color profiles | https://skia-review.googlesource.com/c/skia/+/839476) attempting to implement the color space as a ICC color profile on the layer itself, but I\u0027ll need more guidance if we want to take that approach.",
+      "revId": "e7c5855159128522eb46599d58faecf649efea32",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
