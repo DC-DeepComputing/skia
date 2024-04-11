@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eec7db90_5daa99d7",
+        "filename": "src/gpu/graphite/FactoryFunctions.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 494,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-04-11T12:40:00Z",
+      "side": 0,
+      "message": "This was a bug and a source of over-generation.",
+      "revId": "53db15f41ecd6018e8a6ced435b0cf55361f4721",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
