@@ -44,9 +44,17 @@ sk_sp<VulkanSampler> VulkanSampler::Make(
     VkSamplerCreateInfo samplerInfo;
     memset(&samplerInfo, 0, sizeof(VkSamplerCreateInfo));
     samplerInfo.sType = VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO;
-    // TODO(b/311392779): If a ycbcrConversion is passed in, assign pNext to
-    // VkSamplerYcbcrConversion.
-    samplerInfo.pNext = nullptr;
+
+    void* pNext = nullptr;
+    VkSamplerYcbcrConversionInfo conversionInfo;
+    if (ycbcrConversion) {
+        conversionInfo.sType = VK_STRUCTURE_TYPE_SAMPLER_YCBCR_CONVERSION_INFO;
+        conversionInfo.pNext = nullptr;
+        conversionInfo.conversion = ycbcrConversion->ycbcrConversion();
+        pNext = &conversionInfo;
+    }
+
+    samplerInfo.pNext = pNext;
     samplerInfo.flags = 0;
 
     VkFilter minMagFilter = [&] {
@@ -100,6 +108,13 @@ sk_sp<VulkanSampler> VulkanSampler::Make(
 
     return sk_sp<VulkanSampler>(new VulkanSampler(sharedContext, sampler, ycbcrConversion));
 }
+
+// GraphiteResourceKey VulkanSampler::MakeKeyFromData(SkSpan<const uint32_t> data) {
+
+//     for (int i = 0; i < data.length(); i++) {
+
+//     }
+// }
 
 void VulkanSampler::freeGpuData() {
     const VulkanSharedContext* sharedContext =
