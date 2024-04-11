@@ -22,6 +22,30 @@
       },
       "revId": "1c77b8bc040dd1fb48d3098d7483d880eb78f993",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e526974_01285aa4",
+        "filename": "src/gpu/graphite/ResourceCache.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-04-11T14:41:14Z",
+      "side": 1,
+      "message": "I don\u0027t think having (void) is necessary IMO. I think that is more for functions where we\u0027ve mark the return values as [[nodiscard]]. Thus if a caller really is going to discard the return value they\u0027re forced to do something like (void) to signal they are knowingly doing something unexpected.\n\nIn this case it really isn\u0027t important if the return value is used by the caller or not. Its there for extra information if the caller wants it.",
+      "parentUuid": "460ba7e7_0f54acad",
+      "range": {
+        "startLine": 100,
+        "startChar": 8,
+        "endLine": 100,
+        "endChar": 41
+      },
+      "revId": "1c77b8bc040dd1fb48d3098d7483d880eb78f993",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
