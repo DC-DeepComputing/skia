@@ -626,7 +626,7 @@ static void emit_subset_type3(const SkPDFFont& pdfFont, SkPDFDocument* doc) {
                         doc, glyphDevice->content(),
                         SkPDFMakeArray(0, 0, glyphBBox.width(), glyphBBox.height()),
                         glyphDevice->makeResourceDict(),
-                        SkMatrix::Translate(glyphBBox.fLeft, glyphBBox.fTop), nullptr);
+                        SkMatrix::Translate(glyphBBox.fLeft, glyphBBox.fTop), std::nullopt);
                 imageGlyphs.emplace_back(gID, xobject);
                 SkPDFUtils::AppendScalar(drawableGlyph->advanceX(), &content);
                 content.writeText(" 0 d0\n1 0 0 1 0 0 cm\n/X");

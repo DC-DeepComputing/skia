@@ -396,3 +396,10 @@ SkPDFIndirectReference SkPDFSerializeImage(const SkImage* img,
     serialize_image(img, encodingQuality, doc, ref);
     return ref;
 }
+
+SkPDFUnion GetColorSpaceAsIccProfile(SkPDFDocument* doc, SkColorSpace* colorSpace) {
+    skcms_ICCProfile iccProfile;
+    colorSpace->toProfile(&iccProfile);
+    sk_sp<SkData> iccData = SkWriteICCProfile(&iccProfile, "");
+    return write_icc_profile(doc, std::move(iccData), 1);
+}

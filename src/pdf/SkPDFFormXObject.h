@@ -12,6 +12,8 @@
 #include "src/pdf/SkPDFDevice.h"
 #include "src/pdf/SkPDFTypes.h"
 
+#include <optional>
+
 class SkPDFDocument;
 
 /** A form XObject is a self contained description of a graphics
@@ -24,5 +26,5 @@ SkPDFIndirectReference SkPDFMakeFormXObject(SkPDFDocument* doc,
                                             std::unique_ptr<SkPDFArray> mediaBox,
                                             std::unique_ptr<SkPDFDict> resourceDict,
                                             const SkMatrix& inverseTransform,
-                                            const char* colorSpace);
+                                            std::optional<SkPDFUnion>&& colorSpace);
 #endif

@@ -9,8 +9,10 @@
 
 #include "include/core/SkData.h"
 #include "src/core/SkChecksum.h"
+#include "src/pdf/SkPDFUnion.h"
 
 class SkCodec;
+class SkColorSpace;
 class SkImage;
 class SkPDFDocument;
 struct SkEncodedInfo;
@@ -43,5 +45,7 @@ struct SkPDFIccProfileKey {
         }
     };
 };
+
+SkPDFUnion GetColorSpaceAsIccProfile(SkPDFDocument* doc, SkColorSpace* colorSpace);
 
 #endif  // SkPDFBitmap_DEFINED

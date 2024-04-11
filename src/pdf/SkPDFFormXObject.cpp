@@ -7,14 +7,17 @@
 
 
 #include "src/pdf/SkPDFFormXObject.h"
+#include "src/pdf/SkPDFUnion.h"
 #include "src/pdf/SkPDFUtils.h"
+
+#include <optional>
 
 SkPDFIndirectReference SkPDFMakeFormXObject(SkPDFDocument* doc,
                                             std::unique_ptr<SkStreamAsset> content,
                                             std::unique_ptr<SkPDFArray> mediaBox,
                                             std::unique_ptr<SkPDFDict> resourceDict,
                                             const SkMatrix& inverseTransform,
-                                            const char* colorSpace) {
+                                            std::optional<SkPDFUnion>&& colorSpace) {
     std::unique_ptr<SkPDFDict> dict = SkPDFMakeDict();
     dict->insertName("Type", "XObject");
     dict->insertName("Subtype", "Form");
@@ -30,8 +33,8 @@ SkPDFIndirectReference SkPDFMakeFormXObject(SkPDFDocument* doc,
     // alpha masks?
     auto group = SkPDFMakeDict("Group");
     group->insertName("S", "Transparency");
-    if (colorSpace != nullptr) {
-        group->insertName("CS", colorSpace);
+    if (colorSpace.has_value()) {
+        group->insertUnion("CS", std::move(colorSpace).value());
     }
     group->insertBool("I", true);  // Isolated.
     dict->insertObject("Group", std::move(group));
