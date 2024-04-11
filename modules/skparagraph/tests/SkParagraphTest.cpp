@@ -67,6 +67,10 @@
 #include "modules/skunicode/include/SkUnicode_icu4x.h"
 #endif
 
+#if defined(SK_UNICODE_CLIENT_IMPLEMENTATION)
+#include "modules/skunicode/include/SkUnicode_client.h"
+#endif
+
 using namespace skia_private;
 
 struct GrContextOptions;
@@ -8250,5 +8254,17 @@ UNIX_ONLY_TEST(SkParagraph_ICU_EmojiRuns, reporter) {
 #if defined(SK_UNICODE_ICU4X_IMPLEMENTATION)
 UNIX_ONLY_TEST(SkParagraph_ICU4X_EmojiRuns, reporter) {
     SkUnicode_Emoji(SkUnicodes::ICU4X::Make(), reporter);
+}
+#endif
+
+#if defined(SK_UNICODE_CLIENT_IMPLEMENTATION)
+DEF_TEST(SkParagraph_ClientImpl_Compiles, reporter) {
+    sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>();
+    SKIP_IF_FONTS_NOT_FOUND(reporter, fontCollection)
+
+    ParagraphStyle paragraph_style;
+    auto builder = skia::textlayout::ParagraphBuilder::make(paragraph_style, fontCollection,
+                                                            SkUnicodes::Client::Make);
+    REPORTER_ASSERT(reporter, builder);
 }
 #endif
