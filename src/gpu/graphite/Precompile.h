@@ -140,11 +140,6 @@ public:
     sk_sp<PrecompileColorFilter> makeComposed(sk_sp<PrecompileColorFilter> inner) const;
 };
 
-class PrecompileImageFilter : public PrecompileBase {
-public:
-    PrecompileImageFilter() : PrecompileBase(Type::kImageFilter) {}
-};
-
 class PrecompileBlender : public PrecompileBase {
 public:
     PrecompileBlender() : PrecompileBase(Type::kBlender) {}
@@ -153,6 +148,12 @@ public:
 
     static sk_sp<PrecompileBlender> Mode(SkBlendMode);
 };
+
+enum class PrecompileImageFilters1 : uint32_t {
+    kNone = 0x0,
+    kBlur = 0x1,
+};
+SK_MAKE_BITMASK_OPS(PrecompileImageFilters1)
 
 //--------------------------------------------------------------------------------------------------
 class PaintOptionsPriv;
@@ -171,8 +172,8 @@ public:
         fColorFilterOptions.assign(colorFilters.begin(), colorFilters.end());
     }
 
-    void setImageFilters(SkSpan<const sk_sp<PrecompileImageFilter>> imageFilters) {
-        fImageFilterOptions.assign(imageFilters.begin(), imageFilters.end());
+    void setImageFilters(SkEnumBitMask<PrecompileImageFilters1> options) {
+        fImageFilterOptions = options;
     }
 
     void setBlendModes(SkSpan<SkBlendMode> blendModes) {
@@ -215,16 +216,18 @@ private:
                    bool addPrimitiveBlender,
                    Coverage coverage) const;
     void buildCombinations(
+        Context* context,
         const KeyContext&,
         PipelineDataGatherer*,
         bool addPrimitiveBlender,
         Coverage coverage,
-        const std::function<void(UniquePaintParamsID)>& processCombination) const;
+        const std::function<void(UniquePaintParamsID)>& processCombination,
+        std::unordered_set<uint32_t>& foo) const;
 
     std::vector<sk_sp<PrecompileShader>> fShaderOptions;
     std::vector<sk_sp<PrecompileMaskFilter>> fMaskFilterOptions;
     std::vector<sk_sp<PrecompileColorFilter>> fColorFilterOptions;
-    std::vector<sk_sp<PrecompileImageFilter>> fImageFilterOptions;
+    SkEnumBitMask<PrecompileImageFilters1> fImageFilterOptions = PrecompileImageFilters1::kNone;
     SkTDArray<SkBlendMode> fBlendModeOptions;
     skia_private::TArray<sk_sp<PrecompileBlender>> fBlenderOptions;
     std::vector<sk_sp<PrecompileShader>> fClipShaderOptions;
