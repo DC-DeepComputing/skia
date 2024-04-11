@@ -22,6 +22,13 @@ public:
 
     ~Image_YUVA() override;
 
+    // using PlaneProxyFactoryFn = TextureProxyView (*)(int plane);
+    using PlaneProxyFactoryFn = std::function<TextureProxyView(int)>;
+    static sk_sp<Image_YUVA> Wrap(const Caps* caps,
+                                  const SkYUVAInfo& yuvaInfo,
+                                  sk_sp<SkColorSpace> imageColorSpace,
+                                  PlaneProxyFactoryFn planeFn);
+
     // Wraps the Graphite-backed Image planes into a YUV[A] image. The returned image shares
     // textures as well as any links to Devices that might modify those textures.
     static sk_sp<Image_YUVA> WrapImages(const Caps* caps,
