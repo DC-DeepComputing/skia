@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a73486b3_f75a125c",
+        "filename": "src/gpu/graphite/ResourceCache.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 384,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-04-11T13:54:42Z",
+      "side": 0,
+      "message": "I have also removed this call to processReturnedResources in latest patch. I believe this should be fine as all callers are already calling processReturnedResources beforehand when they think it is necessary, but I wouldn\u0027t mind a second set of eyes to confirm this is okay.",
+      "range": {
+        "startLine": 384,
+        "startChar": 10,
+        "endLine": 384,
+        "endChar": 34
+      },
+      "revId": "91e0c0f4bf41efa25c8972e4ff1916b109f181ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

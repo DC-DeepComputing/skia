@@ -39,6 +39,30 @@
       },
       "revId": "fcdb0130934fc61e21dd4ca32fcc5476b436af38",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d69a5c37_964d9faf",
+        "filename": "src/gpu/graphite/ResourceCache.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-04-11T13:54:42Z",
+      "side": 1,
+      "message": "Yes good catch added the check.",
+      "parentUuid": "535a37f6_c4cd8407",
+      "range": {
+        "startLine": 139,
+        "startChar": 0,
+        "endLine": 139,
+        "endChar": 41
+      },
+      "revId": "fcdb0130934fc61e21dd4ca32fcc5476b436af38",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
