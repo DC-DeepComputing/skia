@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fcd2358c_cc5457d3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-11T20:12:46Z",
+      "side": 1,
+      "message": "This looks vaguely like it does what is expected, but of will need to actually emit some pdfs and test in various viewers. That might be made easier if we had a GM similar to the `Canvas_saveLayer_colorSpace` test.",
+      "revId": "0f85b1445a948dd03ed45967c8ff6d013a56c23b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eacde79e_16f60859",
+        "filename": "src/pdf/SkPDFBitmap.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 313,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-11T20:12:46Z",
+      "side": 1,
+      "message": "Probably want this to be a call to `GetColorSpaceAsIccProfile`?",
+      "revId": "0f85b1445a948dd03ed45967c8ff6d013a56c23b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e18b1f6_8c7f7a8b",
+        "filename": "src/pdf/SkPDFBitmap.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 403,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-11T20:12:46Z",
+      "side": 1,
+      "message": "This should just be `nullptr` now. (Not that it makes much difference, it\u0027s just when the original code was written this couldn\u0027t be `nullptr` and so empty string was used, but that crashed some physical printers so now empty string and `nullptr` mean create a generated unique name. I think using `nullptr` now that we\u0027re touching this is a bit more obviously \"go auto generate a name\".)",
+      "range": {
+        "startLine": 403,
+        "startChar": 59,
+        "endLine": 403,
+        "endChar": 61
+      },
+      "revId": "0f85b1445a948dd03ed45967c8ff6d013a56c23b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
