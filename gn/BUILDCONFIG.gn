@@ -43,6 +43,9 @@ declare_args() {
 
   # This affects Skia's ABI; must be set consistently for Skia and dependents.
   is_trivial_abi = !is_official_build
+
+  # should only code sign when running on a device, not the simulator
+  ios_skip_signing = ios_use_simulator
 }
 
 assert(!(is_debug && is_official_build))
