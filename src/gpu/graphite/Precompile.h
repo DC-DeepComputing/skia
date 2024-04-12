@@ -13,6 +13,7 @@
 #include "include/core/SkSpan.h"
 #include "include/private/base/SkTArray.h"
 #include "include/private/base/SkTDArray.h"
+#include "src/gpu/graphite/AttachmentTypes.h"
 
 #include <functional>
 #include <optional>
@@ -27,6 +28,25 @@ class KeyContext;
 class PipelineDataGatherer;
 class PrecompileBasePriv;
 class UniquePaintParamsID;
+
+void Compile(const RendererProvider* rendererProvider,
+             ResourceProvider* resourceProvider,
+             const KeyContext& keyContext,
+             UniquePaintParamsID uniqueID,
+             DrawTypeFlags drawTypes,
+             SkSpan<RenderPassDesc> renderPassDescs,
+             bool withPrimitiveBlender,
+             Coverage coverage);
+
+// Create the Pipelines specified by 'options' by combining the shading portion w/ the specified
+// 'drawTypes' and a stock set of RenderPass descriptors (e.g., kDepth+msaa, kDepthStencil+msaa)
+void PrecompileCombinations(Context* context,
+                            const PaintOptions& options,
+                            const KeyContext& keyContext,
+                            DrawTypeFlags drawTypes,
+                            bool withPrimitiveBlender,
+                            Coverage coverage,
+                            std::unordered_set<uint32_t>& foo);
 
 class PrecompileBase : public SkRefCnt {
 public:
@@ -140,11 +160,6 @@ public:
     sk_sp<PrecompileColorFilter> makeComposed(sk_sp<PrecompileColorFilter> inner) const;
 };
 
-class PrecompileImageFilter : public PrecompileBase {
-public:
-    PrecompileImageFilter() : PrecompileBase(Type::kImageFilter) {}
-};
-
 class PrecompileBlender : public PrecompileBase {
 public:
     PrecompileBlender() : PrecompileBase(Type::kBlender) {}
@@ -153,6 +168,12 @@ public:
 
     static sk_sp<PrecompileBlender> Mode(SkBlendMode);
 };
+
+enum class PrecompileImageFilters1 : uint32_t {
+    kNone = 0x0,
+    kBlur = 0x1,
+};
+SK_MAKE_BITMASK_OPS(PrecompileImageFilters1)
 
 //--------------------------------------------------------------------------------------------------
 class PaintOptionsPriv;
@@ -171,8 +192,8 @@ public:
         fColorFilterOptions.assign(colorFilters.begin(), colorFilters.end());
     }
 
-    void setImageFilters(SkSpan<const sk_sp<PrecompileImageFilter>> imageFilters) {
-        fImageFilterOptions.assign(imageFilters.begin(), imageFilters.end());
+    void setImageFilters(SkEnumBitMask<PrecompileImageFilters1> options) {
+        fImageFilterOptions = options;
     }
 
     void setBlendModes(SkSpan<SkBlendMode> blendModes) {
@@ -214,17 +235,20 @@ private:
                    int desiredCombination,
                    bool addPrimitiveBlender,
                    Coverage coverage) const;
-    void buildCombinations(
+    void buildCombinations1(
+        Context* context,
         const KeyContext&,
         PipelineDataGatherer*,
+        DrawTypeFlags,
+        SkSpan<RenderPassDesc> renderPassDescs,
         bool addPrimitiveBlender,
         Coverage coverage,
-        const std::function<void(UniquePaintParamsID)>& processCombination) const;
+        std::unordered_set<uint32_t>& foo) const;
 
     std::vector<sk_sp<PrecompileShader>> fShaderOptions;
     std::vector<sk_sp<PrecompileMaskFilter>> fMaskFilterOptions;
     std::vector<sk_sp<PrecompileColorFilter>> fColorFilterOptions;
-    std::vector<sk_sp<PrecompileImageFilter>> fImageFilterOptions;
+    SkEnumBitMask<PrecompileImageFilters1> fImageFilterOptions = PrecompileImageFilters1::kNone;
     SkTDArray<SkBlendMode> fBlendModeOptions;
     skia_private::TArray<sk_sp<PrecompileBlender>> fBlenderOptions;
     std::vector<sk_sp<PrecompileShader>> fClipShaderOptions;
