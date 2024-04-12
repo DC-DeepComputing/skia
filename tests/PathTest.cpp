@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "include/core/SkArc.h"
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
@@ -33,6 +34,7 @@
 #include "include/pathops/SkPathOps.h"
 #include "include/private/SkIDChangeListener.h"
 #include "include/private/SkPathRef.h"
+#include "include/private/base/SkAssert.h"
 #include "include/private/base/SkFloatingPoint.h"
 #include "include/private/base/SkMalloc.h"
 #include "include/private/base/SkTo.h"
@@ -45,6 +47,7 @@
 #include "src/core/SkGeometry.h"
 #include "src/core/SkPathEnums.h"
 #include "src/core/SkPathPriv.h"
+#include "src/core/SkPointPriv.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkWriteBuffer.h"
 #include "tests/Test.h"
@@ -6011,4 +6014,244 @@ DEF_TEST(path_walk_simple_edges_1154864, r) {
     SkPaint paint;
     paint.setAntiAlias(true);
     surface->getCanvas()->drawPath(path, paint);
+}
+
+// Creates a ray from the control point, through the midpoint of the chord.
+// Uses tangent and w to compute the expected radius (and hypotenuse),
+// gets center from that.
+bool conic_to_arc_bisector_old(const SkPoint p[3], float w, SkArc* arc) {
+    // The two tangent segments must be equal in length
+    auto e0 = p[1] - p[0], e1 = p[1] - p[2];
+    if (!SkScalarNearlyEqual(e0.length(), e1.length())) {
+        return false;
+    }
+
+    // Assuming it is a circular arc, compute the length of the vector from the center to p[1]
+    const float hypotSqr = sk_ieee_float_divide(e0.dot(e0), (1.0f - w*w));
+    const float hypot = std::sqrt(hypotSqr);
+    if (!std::isfinite(hypot)) {
+        return false;
+    }
+
+    // We also want the circle's radius
+    const float radius = hypot * w;
+
+    const SkPoint midpoint = (p[0] + p[2]) * 0.5f;
+    SkVector controlToCenter = (midpoint - p[1]);
+    if (!controlToCenter.normalize()) {
+        return false;
+    }
+
+    const SkPoint center = p[1] + (controlToCenter * hypot);
+
+    if (!SkScalarNearlyEqual(w, (center - p[0]).length() / hypot)) {
+        return false;
+    }
+
+    arc->fOval.setLTRB(
+            center.x() - radius, center.y() - radius, center.x() + radius, center.y() + radius);
+    return true;
+}
+
+
+// Creates a ray from the control point, through the midpoint of the chord.
+// Uses tangent and w to compute the expected radius (and hypotenuse),
+// gets center from that.
+bool conic_to_arc_bisector(const SkPoint p[3], float w, SkArc* arc) {
+    // The two tangent segments must be equal in length
+    double p0x = p[0].fX,
+           p0y = p[0].fY,
+           p1x = p[1].fX,
+           p1y = p[1].fY,
+           p2x = p[2].fX,
+           p2y = p[2].fY;
+    double e0x = p1x - p0x;
+    double e0y = p1y - p0y;
+    double e1x = p1x - p2x;
+    double e1y = p1y - p2y;
+//    auto e0 = p[1] - p[0], e1 = p[1] - p[2];
+    if (!SkScalarNearlyEqual(std::sqrt(e0x * e0x + e0y * e0y), std::sqrt(e1x * e1x + e1y * e1y))) {
+        return false;
+    }
+
+    const double ySqr = 1.0 - w*w;
+
+    double midx = (p0x + p2x) * 0.5, midy = (p0y + p2y) * 0.5;
+    double c2mx = midx - p1x, c2my = midy - p1y;
+    double c2cx = c2mx * (1.0 / ySqr), c2cy = c2my * (1.0 / ySqr);
+    double cx = p1x + c2cx, cy = p1y + c2cy;
+
+    double c2px = p0x - cx, c2py = p0y - cy;
+    double r = std::sqrt(c2px * c2px + c2py * c2py);
+    double h = std::sqrt(c2cx * c2cx + c2cy * c2cy);
+
+    if (!SkScalarNearlyEqual(w, r / h)) {
+        return false;
+    }
+
+    arc->fOval.setLTRB(cx - r, cy - r, cx + r, cy + r);
+    return true;
+}
+
+#if 0
+static bool intersect_lines(const SkPoint& ptA,
+                            const SkVector& normA,
+                            const SkPoint& ptB,
+                            const SkVector& normB,
+                            SkPoint* result) {
+    SkScalar lineAW = -normA.dot(ptA);
+    SkScalar lineBW = -normB.dot(ptB);
+
+    SkScalar wInv = normA.fX * normB.fY - normA.fY * normB.fX;
+    wInv = sk_ieee_float_divide(1.0f, wInv);
+    result->fX = normA.fY * lineBW - lineAW * normB.fY;
+    result->fX *= wInv;
+
+    result->fY = lineAW * normB.fX - normA.fX * lineBW;
+    result->fY *= wInv;
+    return SkScalarIsFinite(wInv);
+}
+#endif
+
+// Returns true if line segment (p0-p1) intersects with line segment (l0-l1); if true is returned,
+// the intersection point is stored in 'intersect'.
+static bool intersect_lines(const SkPoint& p0, const SkPoint& p1,
+                            const SkPoint& l0, const SkPoint& l1, SkPoint* intersect) {
+    static constexpr SkScalar kHorizontalTolerance = 0.001f; // Pretty conservative
+
+    // Use doubles for accuracy, since the clipping strategy used below can create T
+    // junctions, and lower precision could artificially create gaps
+    double pY = (double) p1.fY - (double) p0.fY;
+    double pX = (double) p1.fX - (double) p0.fX;
+    double lY = (double) l1.fY - (double) l0.fY;
+    double lX = (double) l1.fX - (double) l0.fX;
+    double plY = (double) p0.fY - (double) l0.fY;
+    double plX = (double) p0.fX - (double) l0.fX;
+    if (SkScalarNearlyZero(pY, kHorizontalTolerance)) {
+        if (SkScalarNearlyZero(lY, kHorizontalTolerance)) {
+            // Two horizontal lines
+            return false;
+        } else {
+            // Recalculate but swap p and l
+            return intersect_lines(l0, l1, p0, p1, intersect);
+        }
+    }
+
+    // Up to now, the line segments do not form an invalid intersection
+    double lNumerator = plX * pY - plY * pX;
+    double lDenom = lX * pY - lY * pX;
+    if (SkScalarNearlyZero(lDenom)) {
+        // Parallel or identical
+        return false;
+    }
+
+    // Calculate alphaL that provides the intersection point along (l0-l1), e.g. l0+alphaL*(l1-l0)
+    double alphaL = lNumerator / lDenom;
+    // Is valid, so calculate the actual intersection point
+    *intersect = l1 * SkScalar(alphaL) + l0 * SkScalar(1.0 - alphaL);
+    return true;
+}
+
+bool conic_to_arc_intersect(const SkPoint p[3], float w, SkArc* arc) {
+    // The two tangent segments must be equal in length
+    auto p0Tan = p[1] - p[0], p2Tan = p[2] - p[1];
+    if (!SkScalarNearlyEqual(p0Tan.length(), p2Tan.length())) {
+        return false;
+    }
+
+#if 0
+    if (!p0Tan.normalize() || !p2Tan.normalize()) {
+        return false;
+    }
+#endif
+
+    SkVector p0Norm = SkPointPriv::MakeOrthog(p0Tan, SkPointPriv::kLeft_Side),
+             p2Norm = SkPointPriv::MakeOrthog(p2Tan, SkPointPriv::kLeft_Side);
+
+    SkPoint center;
+    if (!intersect_lines(p[0], p[0] + p0Norm, p[2], p[2] + p2Norm, &center)) {
+        return false;
+    }
+
+    // Validate that the radius and hypotenuse have a ratio of w
+    const float radius = (p[0] - center).length();
+    const float hypot = (p[1] - center).length();
+    if (!SkScalarNearlyEqual(w, radius / hypot)) {
+        return false;
+    }
+
+    // Could also try to validate angle vs. w?
+
+    arc->fOval.setLTRB(
+            center.x() - radius, center.y() - radius, center.x() + radius, center.y() + radius);
+    return true;
+}
+
+static bool compare_rects(const SkRect& a, const SkRect& b, float tol) {
+    if (std::fabs(a.fLeft - b.fLeft) > tol || std::fabs(a.fTop - b.fTop) > tol ||
+        std::fabs(a.fRight - b.fRight) > tol || std::fabs(a.fBottom - b.fBottom) > tol) {
+        SkDebugf("[%g %g %g %g] vs. [%g %g %g %g]",
+                 a.fLeft, a.fTop, a.fRight, a.fBottom,
+                 b.fLeft, b.fTop, b.fRight, b.fBottom);
+        return false;
+    }
+    return true;
+}
+
+DEF_TEST(path_conic_to_arc, r) {
+    // First, a bunch of cases that should succeed:
+    const SkRect circle = SkRect::MakeXYWH(10000, 100000, 100, 100);
+    const float kTol = 0.01f;
+    int numFailedArcs = 0, numFailedRects = 0;
+    for (float start = 0.0f; start < 360.0f; start += 1.0f) {
+        for (float sweep = -89.5f; sweep < 90.0f; sweep += 0.5f) {
+            if (sweep == 0) {
+                continue;
+            }
+
+            SkPath p;
+            p.addArc(circle, start, sweep);
+            SkPath::Iter iter(p, false);
+            SkPoint pts[4];
+            SkAssertResult(iter.next(pts) == SkPath::kMove_Verb);
+            SkAssertResult(iter.next(pts) == SkPath::kConic_Verb);
+            const float w = iter.conicWeight();
+
+            SkArc arc;
+            if (!conic_to_arc_bisector(pts, w, &arc)) {
+                SkDebugf("arc_to_bisector(%g %g) failed]\n", start, sweep);
+                ++numFailedArcs;
+                continue;
+            }
+
+            if (!compare_rects(circle, arc.fOval, kTol)) {
+                SkDebugf("  (%g, %g)\n", start, sweep);
+                ++numFailedRects;
+            }
+
+            SkAssertResult(iter.next(pts) == SkPath::kDone_Verb);
+        }
+    }
+
+    SkDebugf("%d failed arcs, %d mismatched rects\n", numFailedArcs, numFailedRects);
+
+    // Now, do the same thing, but perturb w. These should fail.
+    float ofs = 0.01f;
+    for (float start = 0.0f; start < 360.0f; start += 1.0f) {
+        for (float sweep = -85.0f; sweep < 90.0f; sweep += 10.0f) {
+            SkPath p;
+            p.addArc(circle, start, sweep);
+            SkPath::Iter iter(p, false);
+            SkPoint pts[4];
+            SkAssertResult(iter.next(pts) == SkPath::kMove_Verb);
+            SkAssertResult(iter.next(pts) == SkPath::kConic_Verb);
+            const float w = iter.conicWeight() + ofs;
+            ofs = -ofs;
+
+            SkArc arc;
+            SkAssertResult(!conic_to_arc_bisector(pts, w, &arc));
+
+            SkAssertResult(iter.next(pts) == SkPath::kDone_Verb);
+        }
+    }
 }
