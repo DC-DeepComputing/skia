@@ -268,6 +268,20 @@ public:
     */
     bool isRRect(SkRRect* rrect) const;
 
+    /** Returns true if path is representable as an oval arc. In other words, could this
+        path be drawn using SkCanvas::drawArc.
+
+        oval       receives bounds of oval
+        startAngle receives starting angle of arc
+        sweepAngle receives sweep angle of arc
+
+       @param oval       storage for bounding oval of arc; may be nullptr
+       @param startAngle storage for starting angle of arc; may be nullptr
+       @param sweepAngle storage for sweep angle of arc; may be nullptr
+       @return           true if SkPath contains only a single arc from an oval
+    */
+    bool isOvalArc(SkRect* oval, SkScalar* startAngle, SkScalar* sweepAngle) const;
+
     /** Sets SkPath to its initial state.
         Removes verb array, SkPoint array, and weights, and sets FillType to kWinding.
         Internal storage associated with SkPath is released.
