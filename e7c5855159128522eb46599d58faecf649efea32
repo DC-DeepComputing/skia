@@ -82,6 +82,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4cd3728c_5c9433ef",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 1272,
+      "author": {
+        "id": 18419
+      },
+      "writtenOn": "2024-04-12T20:18:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "03d3a1fd_a50ab62c",
+      "range": {
+        "startLine": 1272,
+        "startChar": 0,
+        "endLine": 1272,
+        "endChar": 109
+      },
+      "revId": "e7c5855159128522eb46599d58faecf649efea32",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d5bddc2e_f1feecab",
@@ -105,6 +129,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a0dbeaf8_2bbeee4f",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 1283,
+      "author": {
+        "id": 18419
+      },
+      "writtenOn": "2024-04-12T20:18:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d5bddc2e_f1feecab",
+      "range": {
+        "startLine": 1283,
+        "startChar": 0,
+        "endLine": 1283,
+        "endChar": 102
+      },
+      "revId": "e7c5855159128522eb46599d58faecf649efea32",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "99f6c19d_c99b17c6",
@@ -118,6 +166,30 @@
       "writtenOn": "2024-04-11T19:50:31Z",
       "side": 1,
       "message": "nit: line length",
+      "range": {
+        "startLine": 2505,
+        "startChar": 0,
+        "endLine": 2505,
+        "endChar": 102
+      },
+      "revId": "e7c5855159128522eb46599d58faecf649efea32",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "de1de4e7_37df3ed3",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 2505,
+      "author": {
+        "id": 18419
+      },
+      "writtenOn": "2024-04-12T20:18:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "99f6c19d_c99b17c6",
       "range": {
         "startLine": 2505,
         "startChar": 0,
