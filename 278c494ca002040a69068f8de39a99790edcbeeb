@@ -34,6 +34,24 @@
       "parentUuid": "d6cb5070_a1bc75c3",
       "revId": "278c494ca002040a69068f8de39a99790edcbeeb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0aa30f5_4953f3c6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-04-12T18:40:13Z",
+      "side": 1,
+      "message": "It actually looks like you have and I don\u0027t think the current run of the CQ is getting blocked by iOS. The still show up as previously run jobs for this patchset but I think they are ignored by CQ",
+      "parentUuid": "dfd7850f_ae3ee315",
+      "revId": "278c494ca002040a69068f8de39a99790edcbeeb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
