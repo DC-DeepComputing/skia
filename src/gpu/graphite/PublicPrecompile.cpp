@@ -24,11 +24,9 @@
 #include "src/gpu/graphite/RuntimeEffectDictionary.h"
 #include "src/gpu/graphite/UniquePaintParamsID.h"
 
-namespace {
+namespace skgpu::graphite {
 
-using namespace skgpu::graphite;
-
-void compile(const RendererProvider* rendererProvider,
+void Compile(const RendererProvider* rendererProvider,
              ResourceProvider* resourceProvider,
              const KeyContext& keyContext,
              UniquePaintParamsID uniqueID,
@@ -74,10 +72,6 @@ void compile(const RendererProvider* rendererProvider,
     }
 }
 
-} // anonymous namespace
-
-namespace skgpu::graphite {
-
 bool Precompile(Context* context,
                 RuntimeEffectDictionary* rteDict,
                 const GraphicsPipelineDesc& pipelineDesc,
@@ -96,7 +90,8 @@ bool Precompile(Context* context,
     return true;
 }
 
-void Precompile(Context* context, const PaintOptions& options, DrawTypeFlags drawTypes) {
+void Precompile(Context* context, const PaintOptions& options, DrawTypeFlags drawTypes,
+                std::unordered_set<uint32_t>& foo) {
 
     ShaderCodeDictionary* dict = context->priv().shaderCodeDictionary();
     const Caps* caps = context->priv().caps();
@@ -188,17 +183,13 @@ void PrecompileCombinations(Context* context,
     };
 
     options.priv().buildCombinations(
+        context,
         keyContext,
         &gatherer,
+        drawTypes,
+        renderPassDescs,
         withPrimitiveBlender,
-        coverage,
-        [&](UniquePaintParamsID uniqueID) {
-            compile(context->priv().rendererProvider(),
-                    context->priv().resourceProvider(),
-                    keyContext, uniqueID,
-                    drawTypes,
-                    renderPassDescs, withPrimitiveBlender, coverage);
-        });
+        coverage);
 }
 
 } // namespace skgpu::graphite
