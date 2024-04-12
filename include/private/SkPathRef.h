@@ -63,6 +63,7 @@ public:
         kGeneral,
         kOval,
         kRRect,
+        kArc,
     };
 
     SkPathRef(PointsArray points, VerbsArray verbs, ConicWeightsArray weights,
@@ -78,6 +79,8 @@ public:
         // The next two values don't matter unless fType is kOval or kRRect
         fRRectOrOvalIsCCW = false;
         fRRectOrOvalStartIdx = 0xAC;
+        fArcOval.setEmpty();
+        fArcStartAngle = fArcSweepAngle = 0.0f;
         SkDEBUGCODE(fEditorsAttached.store(0);)
 
         this->computeBounds();  // do this now, before we worry about multiple owners/threads
@@ -158,6 +161,10 @@ public:
 
         void setIsRRect(bool isCCW, unsigned start) {
             fPathRef->setIsRRect(isCCW, start);
+        }
+
+        void setIsArc(const SkRect& oval, SkScalar startAngle, SkScalar sweepAngle) {
+            fPathRef->setIsArc(oval, startAngle, sweepAngle);
         }
 
         void setBounds(const SkRect& rect) { fPathRef->setBounds(rect); }
@@ -248,6 +255,22 @@ public:
     }
 
     bool isRRect(SkRRect* rrect, bool* isCCW, unsigned* start) const;
+
+    bool isOvalArc(SkRect* oval, SkScalar* startAngle, SkScalar* sweepAngle) const {
+        if (fType == PathType::kArc) {
+            if (oval) {
+                *oval = fArcOval;
+            }
+            if (startAngle) {
+                *startAngle = fArcStartAngle;
+            }
+            if (sweepAngle) {
+                *sweepAngle = fArcSweepAngle;
+            }
+        }
+
+        return fType == PathType::kArc;
+    }
 
     bool hasComputedBounds() const {
         return !fBoundsIsDirty;
@@ -365,6 +388,8 @@ private:
         // The next two values don't matter unless fType is kOval or kRRect
         fRRectOrOvalIsCCW = false;
         fRRectOrOvalStartIdx = 0xAC;
+        fArcOval.setEmpty();
+        fArcStartAngle = fArcSweepAngle = 0.0f;
         if (numPoints > 0) {
             fPoints.reserve_exact(numPoints);
         }
@@ -497,6 +522,13 @@ private:
         fRRectOrOvalStartIdx = SkToU8(start);
     }
 
+    void setIsArc(const SkRect& oval, SkScalar startAngle, SkScalar sweepAngle) {
+        fType = PathType::kArc;
+        fArcOval = oval;
+        fArcStartAngle = startAngle;
+        fArcSweepAngle = sweepAngle;
+    }
+
     // called only by the editor. Note that this is not a const function.
     SkPoint* getWritablePoints() {
         SkDEBUGCODE(this->validate();)
@@ -534,6 +566,9 @@ private:
     bool     fRRectOrOvalIsCCW;
     uint8_t  fRRectOrOvalStartIdx;
     uint8_t  fSegmentMask;
+    SkRect   fArcOval;
+    SkScalar fArcStartAngle;
+    SkScalar fArcSweepAngle;
 
     friend class PathRefTest_Private;
     friend class ForceIsRRect_Private; // unit test isRRect
