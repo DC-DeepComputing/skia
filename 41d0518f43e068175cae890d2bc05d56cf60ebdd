@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b799db14_ac9319d9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-04-12T15:12:22Z",
+      "side": 1,
+      "message": "This just avoids an assert (t in [0,1]) inside SkConic::evalAt.",
+      "revId": "41d0518f43e068175cae890d2bc05d56cf60ebdd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
