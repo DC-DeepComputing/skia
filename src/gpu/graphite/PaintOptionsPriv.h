@@ -23,14 +23,18 @@ public:
         return fPaintOptions->numCombinations();
     }
 
-    void buildCombinations(
+    void buildCombinations2(
+            Context* context,
             const KeyContext& keyContext,
             PipelineDataGatherer* gatherer,
+            DrawTypeFlags drawTypes,
+            SkSpan<RenderPassDesc> renderPassDescs,
             bool addPrimitiveBlender,
             Coverage coverage,
-            const std::function<void(UniquePaintParamsID)>& processCombination) const {
-        fPaintOptions->buildCombinations(
-                keyContext, gatherer, addPrimitiveBlender, coverage, processCombination);
+            std::unordered_set<uint32_t>& foo) const {
+        fPaintOptions->buildCombinations1(
+                context, keyContext, gatherer, drawTypes, renderPassDescs, addPrimitiveBlender,
+                coverage, foo);
     }
 
 private:
