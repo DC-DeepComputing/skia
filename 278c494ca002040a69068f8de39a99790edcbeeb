@@ -16,6 +16,24 @@
       "message": "jcgregorio@ I saw that the CQ is opened with temporarily disabled iOS compile but my CL is still getting blocked by iOS bots\u0027 failures. Is it expected?",
       "revId": "278c494ca002040a69068f8de39a99790edcbeeb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dfd7850f_ae3ee315",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-04-12T18:36:11Z",
+      "side": 1,
+      "message": "Rebase the CL onto to TOT. It is still on a branch where iOS was part of the CQ",
+      "parentUuid": "d6cb5070_a1bc75c3",
+      "revId": "278c494ca002040a69068f8de39a99790edcbeeb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
