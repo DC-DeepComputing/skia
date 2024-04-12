@@ -22,6 +22,30 @@
       },
       "revId": "25495c72f3e19c725fcaf0e3ff286e228ab7de06",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bea2f67f_fd153bf9",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 532,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-12T00:50:39Z",
+      "side": 1,
+      "message": "good catch, my middle mouse button was biting me with unexpected pastes a lot today.",
+      "parentUuid": "fd775d84_3dce8f8a",
+      "range": {
+        "startLine": 532,
+        "startChar": 81,
+        "endLine": 532,
+        "endChar": 84
+      },
+      "revId": "25495c72f3e19c725fcaf0e3ff286e228ab7de06",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
