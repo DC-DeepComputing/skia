@@ -131,6 +131,8 @@ def compile_fn(api, checkout_root, out_dir):
         # Our current min-spec for Skia is iOS 11
         env['IPHONEOS_DEPLOYMENT_TARGET'] = '11.0'
         args['ios_min_target'] = '"11.0"'
+        # TODO(b/334054110)
+        args['skia_ios_use_signing'] = 'false'
       else:
         # We have some bots on 10.13.
         env['MACOSX_DEPLOYMENT_TARGET'] = '10.13'
