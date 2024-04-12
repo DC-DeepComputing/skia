@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "46ab2c0c_3d5387bb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2024-04-12T05:27:37Z",
+      "side": 1,
+      "message": "I\u0027m spending a lot of time on how to get the most out of this sort of representation for other reasons, and I\u0027ve been using Skia\u0027s ICC as a test framework. This is the best I\u0027ve managed to get, and so I think I can stop here.\n\nBTW, this is the sort of result it produces:\n- SDR image (computed analytically):\n  https://screenshot.googleplex.com/yvpdpEkhoMaQeDH\n- PQ image (with ~8k ICC profile):\n  https://screenshot.googleplex.com/6WzDRqzsqNAN463",
+      "revId": "a0db567b97aafb32d5a941e883e59bd7d256a9ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
