@@ -11,6 +11,7 @@
 #include "src/gpu/graphite/AtlasProvider.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/Log.h"
+#include "src/gpu/graphite/RasterPathUtils.h"
 #include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/RendererProvider.h"
 #include "src/gpu/graphite/TextureProxy.h"
@@ -105,7 +106,9 @@ void ComputePathAtlas::reset() {
  */
 class VelloComputePathAtlas final : public ComputePathAtlas {
 public:
-    explicit VelloComputePathAtlas(Recorder* recorder) : ComputePathAtlas(recorder) {}
+    explicit VelloComputePathAtlas(Recorder* recorder)
+        : ComputePathAtlas(recorder)
+        , fCachedAtlasMgr(fWidth, fHeight, fWidth, fHeight, recorder->priv().caps()) {}
     // Record the compute dispatches that will draw the atlas contents.
     std::unique_ptr<DispatchGroup> recordDispatches(Recorder* recorder) const override;
 
@@ -116,16 +119,39 @@ private:
                                    skvx::half2 maskSize,
                                    skvx::half2* outPos) override;
     void onReset() override {
+        // **** need a way to mark the Pages in use so we don't try to add to their
+        //      rectanizers next time, unless we're out of room
+
         fScene.reset();
-        fOccuppiedWidth = fOccuppiedHeight = 0;
+        fOccupiedWidth = fOccupiedHeight = 0;
     }
 
+    class VelloAtlasMgr : public PathAtlas::DrawAtlasMgr {
+    public:
+        VelloAtlasMgr(size_t width, size_t height,
+                      size_t plotWidth, size_t plotHeight,
+                      const Caps* caps)
+            : PathAtlas::DrawAtlasMgr(width, height, plotWidth, plotHeight, caps) {}
+
+    protected:
+        bool onAddToAtlas(const Shape&,
+                          const Transform& transform,
+                          const SkStrokeRec&,
+                          SkIRect shapeBounds,
+                          const AtlasLocator&) override;
+    };
+
+    VelloAtlasMgr fCachedAtlasMgr;
+
     // Contains the encoded scene buffer data that serves as the input to a vello compute pass.
+    // **** will need multiple scenes, one per texture
     VelloScene fScene;
 
-    // Occuppied bounds of the atlas
-    uint32_t fOccuppiedWidth = 0;
-    uint32_t fOccuppiedHeight = 0;
+    // Occupied bounds of the atlas
+    // **** similarly will need multiples of this
+    // **** maybe add all this to DrawAtlasMgr?
+    uint32_t fOccupiedWidth = 0;
+    uint32_t fOccupiedHeight = 0;
 };
 
 std::unique_ptr<DispatchGroup> VelloComputePathAtlas::recordDispatches(Recorder* recorder) const {
@@ -143,7 +169,7 @@ std::unique_ptr<DispatchGroup> VelloComputePathAtlas::recordDispatches(Recorder*
     }
 #endif
     return recorder->priv().rendererProvider()->velloRenderer()->renderScene(
-            {fOccuppiedWidth, fOccuppiedHeight, SkColors::kBlack, config},
+            {fOccupiedWidth, fOccupiedHeight, SkColors::kBlack, config},
             fScene,
             sk_ref_sp(this->texture()),
             recorder);
@@ -175,8 +201,8 @@ const TextureProxy* VelloComputePathAtlas::onAddShape(
     // Restrict the render to the occupied area of the atlas, including entry padding so that the
     // padded row/column is cleared when Vello renders.
     Rect atlasBounds = Rect::XYWH(skvx::float2(iPos.x(), iPos.y()), skvx::cast<float>(maskSize));
-    fOccuppiedWidth = std::max(fOccuppiedWidth, (uint32_t)atlasBounds.right() + kEntryPadding);
-    fOccuppiedHeight = std::max(fOccuppiedHeight, (uint32_t)atlasBounds.bot() + kEntryPadding);
+    fOccupiedWidth = std::max(fOccupiedWidth, (uint32_t)atlasBounds.right() + kEntryPadding);
+    fOccupiedHeight = std::max(fOccupiedHeight, (uint32_t)atlasBounds.bot() + kEntryPadding);
 
     // TODO(b/283876964): Apply clips here. Initially we'll need to encode the clip stack repeatedly
     // for each shape since the full vello renderer treats clips and their affected draws as a
@@ -234,6 +260,31 @@ const TextureProxy* VelloComputePathAtlas::onAddShape(
     fScene.popClipLayer();
 
     return texProxy;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////
+
+bool VelloComputePathAtlas::VelloAtlasMgr::onAddToAtlas(const Shape& shape,
+                                                        const Transform& transform,
+                                                        const SkStrokeRec& strokeRec,
+                                                        SkIRect shapeBounds,
+                                                        const AtlasLocator& locator) {
+    // Rasterize path to backing pixmap.
+    // This pixmap will be the size of the Plot that contains the given rect, not the entire atlas,
+    // and hence the position we render at will be relative to that Plot.
+    // The value of outPos is relative to the entire texture, to be used for texture coords.
+    SkAutoPixmapStorage dst;
+    SkIPoint renderPos = fDrawAtlas->prepForRender(locator, &dst);
+
+    RasterMaskHelper helper(&dst);
+    if (!helper.init(fDrawAtlas->plotSize())) {
+        return false;
+    }
+    // Offset to plot location and draw
+    shapeBounds.offset(renderPos.x()+kEntryPadding, renderPos.y()+kEntryPadding);
+    helper.drawShape(shape, transform, strokeRec, shapeBounds);
+
+    return true;
 }
 
 #endif  // SK_ENABLE_VELLO_SHADERS
