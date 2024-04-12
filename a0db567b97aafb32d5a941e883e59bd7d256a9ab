@@ -16,6 +16,29 @@
       "message": "I\u0027m spending a lot of time on how to get the most out of this sort of representation for other reasons, and I\u0027ve been using Skia\u0027s ICC as a test framework. This is the best I\u0027ve managed to get, and so I think I can stop here.\n\nBTW, this is the sort of result it produces:\n- SDR image (computed analytically):\n  https://screenshot.googleplex.com/yvpdpEkhoMaQeDH\n- PQ image (with ~8k ICC profile):\n  https://screenshot.googleplex.com/6WzDRqzsqNAN463",
       "revId": "a0db567b97aafb32d5a941e883e59bd7d256a9ab",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f53a40c3_6d297eca",
+        "filename": "tests/ICCTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-04-12T13:42:56Z",
+      "side": 1,
+      "message": "nit: Comment says HLG, variable is PQ?\n```suggestion\n    // The tone mapped value of PQ 0.25, when maxRGB is 0.5.\n    constexpr float kPQ_025 \u003d 0.020679904f;\n```",
+      "range": {
+        "startLine": 64,
+        "startChar": 0,
+        "endLine": 65,
+        "endChar": 43
+      },
+      "revId": "a0db567b97aafb32d5a941e883e59bd7d256a9ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
