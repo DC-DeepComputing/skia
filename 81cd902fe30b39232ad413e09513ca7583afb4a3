@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c133fa6_1fdedfd8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-04-12T20:16:50Z",
+      "side": 1,
+      "message": "IIUC, this will cause tests to fail because we won\u0027t be able to use the binaries, but the builds will at least keep us apprised of other issues.",
+      "revId": "81cd902fe30b39232ad413e09513ca7583afb4a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
