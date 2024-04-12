@@ -96,6 +96,13 @@ bool Precompile(Context* context,
     return true;
 }
 
+void FlimFlam(Context* context,
+              const PaintOptions& options,
+              const KeyContext& keyContext,
+              DrawTypeFlags drawTypes,
+              bool withPrimitiveBlender,
+              Coverage coverage);
+
 void Precompile(Context* context, const PaintOptions& options, DrawTypeFlags drawTypes) {
 
     ShaderCodeDictionary* dict = context->priv().shaderCodeDictionary();
@@ -107,90 +114,96 @@ void Precompile(Context* context, const PaintOptions& options, DrawTypeFlags dra
     KeyContext keyContext(
             caps, dict, rtEffectDict.get(), ci, /* dstTexture= */ nullptr, /* dstOffset= */ {0, 0});
 
+    for (Coverage coverage : { Coverage::kNone, Coverage::kSingleChannel, Coverage::kLCD }) {
+        FlimFlam(context, options, keyContext,
+                 static_cast<DrawTypeFlags>(drawTypes & ~DrawTypeFlags::kDrawVertices),
+                 /* withPrimitiveBlender= */ false,
+                 coverage);
+    }
+
+    if (drawTypes & DrawTypeFlags::kDrawVertices) {
+        for (Coverage coverage: { Coverage::kNone, Coverage::kSingleChannel, Coverage::kLCD }) {
+            // drawVertices w/ colors use a primitiveBlender while those w/o don't
+            for (bool withPrimitiveBlender : { true, false }) {
+                FlimFlam(context, options, keyContext,
+                         DrawTypeFlags::kDrawVertices,
+                         withPrimitiveBlender,
+                         coverage);
+            }
+        }
+    }
+}
+
+void FlimFlam(Context* context,
+              const PaintOptions& options,
+              const KeyContext& keyContext,
+              DrawTypeFlags drawTypes,
+              bool withPrimitiveBlender,
+              Coverage coverage) {
     // Since the precompilation path's uniforms aren't used and don't change the key,
     // the exact layout doesn't matter
     PipelineDataGatherer gatherer(Layout::kMetal);
 
+    SkColorType destCT = keyContext.dstColorInfo().colorType();
     // TODO: we need iterate over a broader set of TextureInfos here. Perhaps, allow the client
     // to pass in colorType, mipmapping and protection.
-    TextureInfo info = caps->getDefaultSampledTextureInfo(ci.colorType(),
-                                                          Mipmapped::kNo,
-                                                          Protected::kNo,
-                                                          Renderable::kYes);
+    TextureInfo info = keyContext.caps()->getDefaultSampledTextureInfo(destCT,
+                                                                       Mipmapped::kNo,
+                                                                       Protected::kNo,
+                                                                       Renderable::kYes);
 
+    Swizzle writeSwizzle = keyContext.caps()->getWriteSwizzle(destCT, info);
     // Note: at least on Metal, the LoadOp, StoreOp and clearColor fields don't influence the
     // actual RenderPassDescKey.
     // TODO: if all of the Renderers associated w/ the requested drawTypes require MSAA we
     // do not need to generate the combinations w/ the non-MSAA RenderPassDescs.
     RenderPassDesc renderPassDescs[] = {
-        RenderPassDesc::Make(caps,
+        RenderPassDesc::Make(keyContext.caps(),
                              info,
                              LoadOp::kClear,
                              StoreOp::kStore,
                              DepthStencilFlags::kDepth,
                              /* clearColor= */ { .0f, .0f, .0f, .0f },
                              /* requiresMSAA= */ true,
-                             caps->getWriteSwizzle(ci.colorType(), info)),
-        RenderPassDesc::Make(caps,
+                             writeSwizzle),
+        RenderPassDesc::Make(keyContext.caps(),
                              info,
                              LoadOp::kClear,
                              StoreOp::kStore,
                              DepthStencilFlags::kDepthStencil,
                              /* clearColor= */ { .0f, .0f, .0f, .0f },
                              /* requiresMSAA= */ true,
-                             caps->getWriteSwizzle(ci.colorType(), info)),
-        RenderPassDesc::Make(caps,
+                             writeSwizzle),
+        RenderPassDesc::Make(keyContext.caps(),
                              info,
                              LoadOp::kClear,
                              StoreOp::kStore,
                              DepthStencilFlags::kDepth,
                              /* clearColor= */ { .0f, .0f, .0f, .0f },
                              /* requiresMSAA= */ false,
-                             caps->getWriteSwizzle(ci.colorType(), info)),
-        RenderPassDesc::Make(caps,
+                             writeSwizzle),
+        RenderPassDesc::Make(keyContext.caps(),
                              info,
                              LoadOp::kClear,
                              StoreOp::kStore,
                              DepthStencilFlags::kDepthStencil,
                              /* clearColor= */ { .0f, .0f, .0f, .0f },
                              /* requiresMSAA= */ false,
-                             caps->getWriteSwizzle(ci.colorType(), info)),
+                             writeSwizzle),
     };
 
-    for (Coverage coverage : {Coverage::kNone, Coverage::kSingleChannel, Coverage::kLCD}) {
-        options.priv().buildCombinations(
-            keyContext,
-            &gatherer,
-            /* addPrimitiveBlender= */ false,
-            coverage,
-             [&](UniquePaintParamsID uniqueID) {
-                 compile(context->priv().rendererProvider(),
-                         context->priv().resourceProvider(),
-                         keyContext, uniqueID,
-                         static_cast<DrawTypeFlags>(drawTypes & ~DrawTypeFlags::kDrawVertices),
-                         renderPassDescs, /* withPrimitiveBlender= */ false, coverage);
-             });
-    }
-
-    if (drawTypes & DrawTypeFlags::kDrawVertices) {
-        for (Coverage coverage : {Coverage::kNone, Coverage::kSingleChannel, Coverage::kLCD}) {
-            // drawVertices w/ colors use a primitiveBlender while those w/o don't
-            for (bool withPrimitiveBlender : { true, false }) {
-                options.priv().buildCombinations(
-                    keyContext,
-                    &gatherer,
-                    withPrimitiveBlender,
-                    coverage,
-                    [&](UniquePaintParamsID uniqueID) {
-                        compile(context->priv().rendererProvider(),
-                                context->priv().resourceProvider(),
-                                keyContext, uniqueID,
-                                DrawTypeFlags::kDrawVertices,
-                                renderPassDescs, withPrimitiveBlender, coverage);
-                    });
-            }
-        }
-    }
+    options.priv().buildCombinations(
+        keyContext,
+        &gatherer,
+        withPrimitiveBlender,
+        coverage,
+         [&](UniquePaintParamsID uniqueID) {
+             compile(context->priv().rendererProvider(),
+                     context->priv().resourceProvider(),
+                     keyContext, uniqueID,
+                     drawTypes,
+                     renderPassDescs, withPrimitiveBlender, coverage);
+         });
 }
 
 } // namespace skgpu::graphite
