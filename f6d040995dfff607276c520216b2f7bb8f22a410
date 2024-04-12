@@ -16,6 +16,24 @@
       "message": "What\u0027s the motivation here?",
       "revId": "f6d040995dfff607276c520216b2f7bb8f22a410",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9280623f_8f0a27ce",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-04-12T17:13:47Z",
+      "side": 1,
+      "message": "Using GrGLMakeNativeInterface isn\u0027t compatible with a modular build. Clients will need to depend against ganesh_gl and one or more factories like ganesh_gl_mac_factory and then explicitly create the GrGLInterface they need. (see example/external_client/)\n\nThe motivation for moving the other files was to keep moving along with \"The Great Renaming\" that was done to src/ but not to include/ due to churn concerns. However, for new files, I\u0027ve been mostly following that convention of putting Ganesh files in include/gpu/ganesh/* instead of include/gpu/*.",
+      "parentUuid": "b75f98dd_e342bf65",
+      "revId": "f6d040995dfff607276c520216b2f7bb8f22a410",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
