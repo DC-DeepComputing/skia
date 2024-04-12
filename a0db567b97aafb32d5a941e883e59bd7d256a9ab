@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e8f2f95_b5e9697d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2024-04-12T17:02:19Z",
+      "side": 1,
+      "message": "Thanks! I think I may need the CQ bit set again (maybe I should look into becoming a committer)",
+      "revId": "a0db567b97aafb32d5a941e883e59bd7d256a9ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f53a40c3_6d297eca",
@@ -31,6 +48,30 @@
       "writtenOn": "2024-04-12T13:42:56Z",
       "side": 1,
       "message": "nit: Comment says HLG, variable is PQ?\n```suggestion\n    // The tone mapped value of PQ 0.25, when maxRGB is 0.5.\n    constexpr float kPQ_025 \u003d 0.020679904f;\n```",
+      "range": {
+        "startLine": 64,
+        "startChar": 0,
+        "endLine": 65,
+        "endChar": 43
+      },
+      "revId": "a0db567b97aafb32d5a941e883e59bd7d256a9ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6494f3d8_f3df30f0",
+        "filename": "tests/ICCTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2024-04-12T17:02:19Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "f53a40c3_6d297eca",
       "range": {
         "startLine": 64,
         "startChar": 0,
