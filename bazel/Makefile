@@ -13,7 +13,7 @@ generate_go:
 .PHONY: generate_cmake
 generate_cmake:
 	cd .. && bazelisk build //bazel/exporter_tool && ${EXPORTER_TOOL} \
-		-output_format=cmake -proj_name=Skia -rule='//:skia_public'
+		-output_format=cmake -proj_name=Skia -rule='//bazel:everything'
 
 .PHONY: generate_gni
 generate_gni:
