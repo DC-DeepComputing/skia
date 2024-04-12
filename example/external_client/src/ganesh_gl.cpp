@@ -24,6 +24,12 @@
 #include <GL/gl.h>
 #endif
 
+#if defined(__APPLE__) && TARGET_OS_MAC == 1
+#include "include/gpu/ganesh/gl/mac/GrGLMakeMacInterface.h"
+
+#include "gl_context_helper.h"
+#endif
+
 #include <cstdio>
 
 #if defined(__linux__)
@@ -111,6 +117,11 @@ int main(int argc, char** argv) {
         return 1;
     }
     sk_sp<const GrGLInterface> interface = GrGLInterfaces::MakeGLX();
+#elif defined(__APPLE__) && TARGET_OS_MAC == 1
+    if (!initialize_gl_mac()) {
+        return 1;
+    }
+    sk_sp<const GrGLInterface> interface = GrGLInterfaces::MakeMac();
 #endif
     if (!interface) {
         printf("Could not make GL interface\n");
