@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d6cb5070_a1bc75c3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2024-04-12T18:31:02Z",
+      "side": 1,
+      "message": "jcgregorio@ I saw that the CQ is opened with temporarily disabled iOS compile but my CL is still getting blocked by iOS bots\u0027 failures. Is it expected?",
+      "revId": "278c494ca002040a69068f8de39a99790edcbeeb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
