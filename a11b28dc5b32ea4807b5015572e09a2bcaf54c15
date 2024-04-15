@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "232077db_7de9e0e0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-04-15T14:28:18Z",
+      "side": 1,
+      "message": "In general this feels less convenient than what we had. If we believe that the profiles will be updated automatically it might be better just to revert the original CL.",
+      "revId": "a11b28dc5b32ea4807b5015572e09a2bcaf54c15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4a1f3aeb_c65a78e5",
