@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4febad76_226be3e3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-04-15T18:21:21Z",
+      "side": 1,
+      "message": "If we add this, I think it should at least include the flags (as an optional last parameter). What do you think about just calling `SkCanvasPriv::ScaledBackdropLayer` instead? We already do that in viz to make a Rec with some private options, and that function already supports the filter-list. The header is in a src/ folder, it\u0027s really just \"private to chromium\" API).",
+      "revId": "ef891650c356a8d320e38dd902653b6bbfa1f943",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
