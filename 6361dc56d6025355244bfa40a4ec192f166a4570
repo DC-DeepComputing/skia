@@ -449,6 +449,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1db07214_e8a6e3e9",
+        "filename": "src/gpu/graphite/geom/RectBlurData.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-04-15T15:07:28Z",
+      "side": 1,
+      "message": "Sticking with the Ganesh approach for now.",
+      "parentUuid": "6f8dd541_3ab780f6",
+      "range": {
+        "startLine": 51,
+        "startChar": 5,
+        "endLine": 76,
+        "endChar": 5
+      },
+      "revId": "6361dc56d6025355244bfa40a4ec192f166a4570",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a6ed19b6_b52b643b",
@@ -510,6 +534,30 @@
       "side": 1,
       "message": "It\u0027s definitely possible to handle all the shape types with a single RenderStep. There are at least a few shape-specific inputs: isFast and invSixSigma for rects, cornerRadius and blurRadius for rrects. So e.g. for circle we might be passing in unused inputs, and we might have to pass in isRect as a half float for the inputs to be as condensed as possible. The idea here of course is to reduce the number of shaders.",
       "parentUuid": "56a3b358_d497217b",
+      "range": {
+        "startLine": 1466,
+        "startChar": 12,
+        "endLine": 1466,
+        "endChar": 28
+      },
+      "revId": "6361dc56d6025355244bfa40a4ec192f166a4570",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d19ca46e_2c44441a",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 6
+      },
+      "lineNbr": 1466,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-04-15T15:07:28Z",
+      "side": 1,
+      "message": "Sticking with one shader for now.",
+      "parentUuid": "7f9da29e_7be0fadd",
       "range": {
         "startLine": 1466,
         "startChar": 12,

@@ -16,6 +16,24 @@
       "message": "static since not in an anonymous namespace",
       "revId": "da5b00d3ad0a5ec08c13dd6e0ab2904516a9b133",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0fd2b98d_f852e628",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 2276,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-04-15T15:07:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7bf091fb_0aa221c6",
+      "revId": "da5b00d3ad0a5ec08c13dd6e0ab2904516a9b133",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
