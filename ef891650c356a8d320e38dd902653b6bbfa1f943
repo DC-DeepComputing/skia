@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "401ec2b5_19175007",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 19669
+      },
+      "writtenOn": "2024-04-15T18:34:37Z",
+      "side": 1,
+      "message": "Whoops. That was a typo. I\u0027m typing \"rect\" way too often in the canvas world!",
+      "parentUuid": "4a172d5e_5fd70181",
+      "range": {
+        "startLine": 7,
+        "startChar": 6,
+        "endLine": 7,
+        "endChar": 19
+      },
+      "revId": "ef891650c356a8d320e38dd902653b6bbfa1f943",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "4febad76_226be3e3",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 2
@@ -37,6 +61,24 @@
       "writtenOn": "2024-04-15T18:21:21Z",
       "side": 1,
       "message": "If we add this, I think it should at least include the flags (as an optional last parameter). What do you think about just calling `SkCanvasPriv::ScaledBackdropLayer` instead? We already do that in viz to make a Rec with some private options, and that function already supports the filter-list. The header is in a src/ folder, it\u0027s really just \"private to chromium\" API).",
+      "revId": "ef891650c356a8d320e38dd902653b6bbfa1f943",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f1657178_48e45123",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19669
+      },
+      "writtenOn": "2024-04-15T18:34:37Z",
+      "side": 1,
+      "message": "\u003e What do you think about just calling SkCanvasPriv::ScaledBackdropLayer instead?\n\nWorks for me! I saw the private SaveLayerRec constructor overload and thought it was exactly what I needed. I didn\u0027t know about `SkCanvasPriv`, nor would have I known we could use it.",
+      "parentUuid": "4febad76_226be3e3",
       "revId": "ef891650c356a8d320e38dd902653b6bbfa1f943",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
