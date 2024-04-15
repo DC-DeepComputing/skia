@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c2210457_4373a7dc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-04-15T17:08:36Z",
+      "side": 1,
+      "message": "Thanks, Brian! I certainly haven\u0027t used this executable in a while.\n\nOne thing I\u0027ve asked @jmbetancourt@google.com to look at, now that he\u0027s focusing more on Android, is to clean up our Android *apps*, which, for example, have several ways of being built, and it\u0027s not clear which are supported. This may (still) be a related area where we have some outdated cruft.",
+      "revId": "5b62c0022f92b3fea4fd9b99e1e517fe002cf15a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
