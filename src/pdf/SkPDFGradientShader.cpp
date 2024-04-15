@@ -926,7 +926,7 @@ static SkPDFIndirectReference create_smask_graphic_state(SkPDFDocument* doc,
                                  SkPDFUtils::RectToArray(bbox),
                                  std::move(resources),
                                  SkMatrix::I(),
-                                 "DeviceRGB");
+                                 SkPDFUnion::TextString("DeviceRGB"));
     return SkPDFGraphicState::GetSMaskGraphicState(
             alphaMask, false, SkPDFGraphicState::kLuminosity_SMaskMode, doc);
 }

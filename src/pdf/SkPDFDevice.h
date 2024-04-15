@@ -10,6 +10,7 @@
 
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
+#include "include/core/SkColorSpace.h"
 #include "include/core/SkData.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkRect.h"
@@ -59,8 +60,10 @@ public:
      *         as images (via SkPDFDocument::serialize()).
      *  @param initialTransform Transform to be applied to the entire page.
      */
-    SkPDFDevice(SkISize pageSize, SkPDFDocument* document,
-                const SkMatrix& initialTransform = SkMatrix::I());
+    SkPDFDevice(SkISize pageSize,
+                SkPDFDocument* document,
+                const SkMatrix& initialTransform = SkMatrix::I(),
+                sk_sp<SkColorSpace> colorSpace = nullptr);
 
     sk_sp<SkPDFDevice> makeCongruentDevice() {
         return sk_make_sp<SkPDFDevice>(this->size(), fDocument);

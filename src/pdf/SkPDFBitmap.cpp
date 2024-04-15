@@ -304,13 +304,10 @@ bool do_jpeg(sk_sp<SkData> data, SkColorSpace* imageColorSpace, SkPDFDocument* d
     if (sk_sp<SkData> encodedIccProfileData = encodedInfo.profileData()) {
         colorSpace = write_icc_profile(doc, std::move(encodedIccProfileData), channels);
     } else if (const skcms_ICCProfile* codecIccProfile = codec->getICCProfile()) {
-        sk_sp<SkData> codecIccData = SkWriteICCProfile(codecIccProfile, "");
+        sk_sp<SkData> codecIccData = SkWriteICCProfile(codecIccProfile, nullptr);
         colorSpace = write_icc_profile(doc, std::move(codecIccData), channels);
     } else if (imageColorSpace && channels != 1) {
-        skcms_ICCProfile imageIccProfile;
-        imageColorSpace->toProfile(&imageIccProfile);
-        sk_sp<SkData> imageIccData = SkWriteICCProfile(&imageIccProfile, "");
-        colorSpace = write_icc_profile(doc, std::move(imageIccData), channels);
+        colorSpace = GetColorSpaceAsIccProfile(doc, imageColorSpace, channels);
     }
 
     emit_image_stream(doc, ref,
@@ -395,4 +392,13 @@ SkPDFIndirectReference SkPDFSerializeImage(const SkImage* img,
     }
     serialize_image(img, encodingQuality, doc, ref);
     return ref;
+}
+
+SkPDFUnion GetColorSpaceAsIccProfile(SkPDFDocument* doc,
+                                     SkColorSpace* colorSpace,
+                                     int channels) {
+    skcms_ICCProfile iccProfile;
+    colorSpace->toProfile(&iccProfile);
+    sk_sp<SkData> iccData = SkWriteICCProfile(&iccProfile, nullptr);
+    return write_icc_profile(doc, std::move(iccData), channels);
 }

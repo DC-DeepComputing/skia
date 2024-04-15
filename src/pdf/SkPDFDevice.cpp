@@ -18,6 +18,7 @@
 #include "include/core/SkSurface.h"
 #include "include/core/SkTextBlob.h"
 #include "include/docs/SkPDFDocument.h"
+#include "include/encode/SkICC.h"
 #include "include/encode/SkJpegEncoder.h"
 #include "include/pathops/SkPathOps.h"
 #include "include/private/base/SkTemplates.h"
@@ -53,6 +54,7 @@
 #include "src/text/GlyphRun.h"
 #include "src/utils/SkClipStackUtils.h"
 
+#include <optional>
 #include <vector>
 
 using namespace skia_private;
@@ -228,13 +230,18 @@ sk_sp<SkDevice> SkPDFDevice::createDevice(const CreateInfo& cinfo, const SkPaint
 
     // TODO: It may be possible to express some filters natively using PDF
     // to improve quality and file size (https://bug.skia.org/3043)
-    if ((layerPaint && (layerPaint->getImageFilter() || layerPaint->getColorFilter()))
-        || !cinfo.fInfo.colorSpace()->isSRGB()) {
+    if (layerPaint && (layerPaint->getImageFilter() || layerPaint->getColorFilter())) {
         // need to return a raster device, which we will detect in drawDevice()
         return SkBitmapDevice::Create(cinfo.fInfo,
                                       SkSurfaceProps());
     }
-    return sk_make_sp<SkPDFDevice>(cinfo.fInfo.dimensions(), fDocument);
+
+    sk_sp<SkColorSpace> colorSpace;
+    if (!cinfo.fInfo.colorSpace()->isSRGB()) {
+        colorSpace = cinfo.fInfo.refColorSpace();
+    }
+    return sk_make_sp<SkPDFDevice>(
+            cinfo.fInfo.dimensions(), fDocument, SkMatrix::I(), std::move(colorSpace));
 }
 
 // A helper class to automatically finish a ContentEntry at the end of a
@@ -319,8 +326,12 @@ private:
 
 ////////////////////////////////////////////////////////////////////////////////
 
-SkPDFDevice::SkPDFDevice(SkISize pageSize, SkPDFDocument* doc, const SkMatrix& transform)
-        : SkClipStackDevice(SkImageInfo::MakeUnknown(pageSize.width(), pageSize.height()),
+SkPDFDevice::SkPDFDevice(SkISize pageSize,
+                         SkPDFDocument* doc,
+                         const SkMatrix& transform,
+                         sk_sp<SkColorSpace> colorSpace)
+        : SkClipStackDevice(SkImageInfo::MakeUnknown(pageSize.width(), pageSize.height())
+                                    .makeColorSpace(std::move(colorSpace)),
                             SkSurfaceProps())
         , fInitialTransform(transform)
         , fNodeId(0)
@@ -1138,13 +1149,22 @@ SkPDFIndirectReference SkPDFDevice::makeFormXObjectFromDevice(SkIRect bounds, bo
             inverseTransform.reset();
         }
     }
-    const char* colorSpace = alpha ? "DeviceGray" : nullptr;
 
-    SkPDFIndirectReference xobject =
-        SkPDFMakeFormXObject(fDocument, this->content(),
-                             SkPDFMakeArray(bounds.left(), bounds.top(),
-                                            bounds.right(), bounds.bottom()),
-                             this->makeResourceDict(), inverseTransform, colorSpace);
+    std::optional<SkPDFUnion> colorSpace;
+    SkASSERT(imageInfo().colorSpace());
+    if (!imageInfo().colorSpace()->isSRGB()) {
+        colorSpace = GetColorSpaceAsIccProfile(fDocument, imageInfo().colorSpace(), 1);
+    } else if (alpha) {
+        colorSpace = SkPDFUnion::TextString("DeviceGray");
+    }
+
+    SkPDFIndirectReference xobject = SkPDFMakeFormXObject(
+            fDocument,
+            this->content(),
+            SkPDFMakeArray(bounds.left(), bounds.top(), bounds.right(), bounds.bottom()),
+            this->makeResourceDict(),
+            inverseTransform,
+            std::move(colorSpace));
     // We always draw the form xobjects that we create back into the device, so
     // we simply preserve the font usage instead of pulling it out and merging
     // it back in later.
