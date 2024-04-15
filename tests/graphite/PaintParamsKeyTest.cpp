@@ -1435,11 +1435,15 @@ void run_test(skiatest::Reporter* reporter,
             std::vector<UniquePaintParamsID> precompileIDs;
             paintOptions.priv().buildCombinations(precompileKeyContext,
                                                   &precompileGatherer,
+                                                  DrawTypeFlags::kNone,
                                                   withPrimitiveBlender,
                                                   coverage,
-                                                  [&](UniquePaintParamsID id) {
-                                                      precompileIDs.push_back(id);
-                                                  });
+                                                  [&precompileIDs](UniquePaintParamsID id,
+                                                                   DrawTypeFlags,
+                                                                   bool /* withPrimitiveBlender */,
+                                                                   Coverage) {
+                                                                       precompileIDs.push_back(id);
+                                                                   });
 
             // Although we've gathered both sets of uniforms (i.e., from the paint
             // params and the precompilation paths) we can't compare the two since the
