@@ -369,7 +369,7 @@ void fuzz_graphite(Fuzz* fuzz, Context* context, int depth = 9) {
     paintOptions.priv().buildCombinations(precompileKeyContext,
                                           &gatherer,
                                           DrawTypeFlags::kNone,
-                                          /* addPrimitiveBlender= */ false,
+                                          /* withPrimitiveBlender= */ false,
                                           coverage,
                                           [&](UniquePaintParamsID id,
                                               DrawTypeFlags,
