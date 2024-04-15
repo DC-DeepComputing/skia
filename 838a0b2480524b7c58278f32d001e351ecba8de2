@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0aba1ad3_dcb7e82d",
+        "filename": "modules/skottie/utils/TextPreshape.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-15T19:48:24Z",
+      "side": 1,
+      "message": "Not sure if you need to return early here or not. While this does mean you\u0027re not going to get something good, it is possible to continue.",
+      "revId": "838a0b2480524b7c58278f32d001e351ecba8de2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
