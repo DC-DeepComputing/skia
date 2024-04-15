@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fc1263d1_c6e7c592",
+        "filename": "modules/skottie/utils/TextPreshape.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-04-15T17:52:50Z",
+      "side": 1,
+      "message": "There is a more general font format in Lottie, where each glyph can be represented as an arbitrary composition.  In theory that should allow us to support both bitmap-only and color fonts.  Converting from a drawable to a Lottie comp is definitely non-trivial though, so punting until someone asks for it.\n\n\nAdded comments.",
+      "parentUuid": "5c2231c1_54121326",
+      "revId": "46b31a72ea75e16a52830b148bf75155b010bf31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "890b7aa8_0f038188",
@@ -48,6 +66,30 @@
       "writtenOn": "2024-04-15T13:52:42Z",
       "side": 1,
       "message": "`glyphid_as_utf8`? To my eye just saying `utf8` looks like there are Unicode code points being encoded, but in this case we\u0027re really smuggling glyph ids in utf8 encoding. Should make that a bit more obvious.",
+      "range": {
+        "startLine": 245,
+        "startChar": 21,
+        "endLine": 245,
+        "endChar": 25
+      },
+      "revId": "46b31a72ea75e16a52830b148bf75155b010bf31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "34a49585_caf84e6a",
+        "filename": "modules/skottie/utils/TextPreshape.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-04-15T17:52:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "890b7aa8_0f038188",
       "range": {
         "startLine": 245,
         "startChar": 21,
