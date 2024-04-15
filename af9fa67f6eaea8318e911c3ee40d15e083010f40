@@ -16,6 +16,24 @@
       "message": "Even if you weren\u0027t adding another type this would probably be a good idea.",
       "revId": "af9fa67f6eaea8318e911c3ee40d15e083010f40",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "75ebd1ae_ff08a39e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-04-15T16:01:03Z",
+      "side": 1,
+      "message": "Yeah, I also found the existing versions of `setIsFoo` to be really strange (taking a bool). The old pattern also meant that even if it weren\u0027t classified as a foo, we\u0027d still make the editor object, which would incur performance cost.",
+      "parentUuid": "1cca98ff_437c652e",
+      "revId": "af9fa67f6eaea8318e911c3ee40d15e083010f40",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
