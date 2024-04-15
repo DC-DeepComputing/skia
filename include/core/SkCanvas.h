@@ -712,6 +712,24 @@ public:
                      SaveLayerFlags saveLayerFlags)
             : SaveLayerRec(bounds, paint, backdrop, 1.f, saveLayerFlags, /*filters=*/{}) {}
 
+        /** Sets fBounds, fPaint, and fFilters.
+
+            @param bounds          layer dimensions; may be nullptr
+            @param paint           Applied to layer when overlaying prior layer;
+                                   may be nullptr.
+            @param filters         Series of filters, each applied on the layer
+                                   independently and drawn to the parent one
+                                   after the other.
+            @return                SaveLayerRec fully specified.
+        */
+        SaveLayerRec(const SkRect* bounds, const SkPaint* paint, FilterSpan filters)
+                : SaveLayerRec(bounds,
+                               paint,
+                               /*backdrop=*/nullptr,
+                               /*backdropScale=*/1.f,
+                               /*saveLayerFlags=*/0,
+                               filters) {}
+
         /** hints at layer size limit */
         const SkRect*        fBounds         = nullptr;
 
