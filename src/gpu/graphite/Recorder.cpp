@@ -151,6 +151,24 @@ std::unique_ptr<Recording> Recorder::snap() {
     ASSERT_SINGLE_OWNER
     this->priv().flushTrackedDevices();
 
+    // Clean up the tracked device list. We don't do this inside flushTrackedDevices() since that
+    // can be re-entrant if there are SkPictureShaders that aren't rendered until a flush.
+    // TODO(b/330864257): After paint data is extracted at draw time, see if this clean up can occur
+    // inside flushTrackedDevices() and enforce that it's not re-entered.
+    int i = 0;
+    while (i < fTrackedDevices.size()) {
+        Device* device = fTrackedDevices[i].get();
+        if (!device || !device->recorder() || device->unique()) {
+            if (device) {
+                device->abandonRecorder(); // Keep ~Device() happy
+            }
+            fTrackedDevices.removeShuffle(i);
+            // Keep i as-is to process what was just shuffled to the ith index.
+        } else {
+            i++;
+        }
+    }
+
     std::unordered_set<sk_sp<TextureProxy>, Recording::ProxyHash> nonVolatileLazyProxies;
     std::unordered_set<sk_sp<TextureProxy>, Recording::ProxyHash> volatileLazyProxies;
     fTextureDataCache->foreach([&](const TextureDataBlock* block) {
@@ -244,6 +262,7 @@ void Recorder::registerDevice(sk_sp<Device> device) {
     ASSERT_SINGLE_OWNER
 
     SkASSERT(device);
+    SkASSERT(fInsideFlushTrackedDevices == 0);
 #if defined(SK_DEBUG)
     // TODO(b/333073673): Confirm the device isn't already in the tracked list
     for (const sk_sp<Device>& tracked : fTrackedDevices) {
@@ -254,16 +273,15 @@ void Recorder::registerDevice(sk_sp<Device> device) {
     // By taking a ref on tracked devices, the Recorder prevents the Device from being deleted on
     // another thread unless the Recorder has been destroyed or the device has abandoned its
     // recorder (e.g. was marked immutable).
-    fTrackedDevices.push_back(std::move(device));
+    fTrackedDevices.emplace_back(std::move(device));
 }
 
 void Recorder::deregisterDevice(const Device* device) {
     ASSERT_SINGLE_OWNER
-    for (sk_sp<Device>& tracked : fTrackedDevices) {
-        if (tracked.get() == device) {
+    for (int i = 0; i < fTrackedDevices.size(); ++i) {
+        if (fTrackedDevices[i].get() == device) {
             // Don't modify the list structure of fTrackedDevices within this loop
-            tracked.reset();
-            SkASSERT(!tracked);
+            fTrackedDevices[i] = nullptr;
             break;
         }
     }
@@ -479,7 +497,8 @@ void RecorderPriv::add(sk_sp<Task> task) {
 
 void RecorderPriv::flushTrackedDevices() {
     ASSERT_SINGLE_OWNER_PRIV
-    for (sk_sp<Device>& device : fRecorder->fTrackedDevices) {
+    SkDEBUGCODE(fRecorder->fInsideFlushTrackedDevices++;)
+    for (const sk_sp<Device>& device : fRecorder->fTrackedDevices) {
         // Entries may be set to null from a call to deregisterDevice(), which will be cleaned up
         // along with any immutable or uniquely held Devices once everything is flushed.
         if (device) {
@@ -487,23 +506,11 @@ void RecorderPriv::flushTrackedDevices() {
         }
     }
 
-    // Clean up the tracked device list
-    for (auto it = fRecorder->fTrackedDevices.begin(); it != fRecorder->fTrackedDevices.end();) {
-        Device* device = it->get();
-        if (!device || !device->recorder() || device->unique()) {
-            if (device) {
-                device->abandonRecorder(); // Keep ~Device() happy
-            }
-            it = fRecorder->fTrackedDevices.erase(it);
-        } else {
-            ++it;
-        }
-    }
-
     // Issue next upload flush token. This is only used by the atlasing code which
     // always uses this method. Calling in Device::flushPendingWorkToRecorder may
     // miss parent device flushes, increment too often, and lead to atlas corruption.
     this->tokenTracker()->issueFlushToken();
+    SkDEBUGCODE(fRecorder->fInsideFlushTrackedDevices--;)
 }
 
 sk_sp<TextureProxy> RecorderPriv::CreateCachedProxy(Recorder* recorder,
