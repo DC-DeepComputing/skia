@@ -16,6 +16,46 @@
       "message": "Bump.",
       "revId": "46b31a72ea75e16a52830b148bf75155b010bf31",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c2231c1_54121326",
+        "filename": "modules/skottie/utils/TextPreshape.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-15T13:52:42Z",
+      "side": 1,
+      "message": "`SkFont::getPath` returns `bool` for whether or not the glyph is represented by a path based mask. You may want to put a comment here about how color glyphs aren\u0027t supported. Since this is being used in a tool, it might be worth it to loudly log somewhere that glyphs are being essentially dropped (they\u0027re there, but will be invisible).\n\nOn the PDF side in this case a drawable is used for the glyph representation if available, then pick some arbitrary size for a color bitmap. Not sure if that works in the Lottie format.",
+      "revId": "46b31a72ea75e16a52830b148bf75155b010bf31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "890b7aa8_0f038188",
+        "filename": "modules/skottie/utils/TextPreshape.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-15T13:52:42Z",
+      "side": 1,
+      "message": "`glyphid_as_utf8`? To my eye just saying `utf8` looks like there are Unicode code points being encoded, but in this case we\u0027re really smuggling glyph ids in utf8 encoding. Should make that a bit more obvious.",
+      "range": {
+        "startLine": 245,
+        "startChar": 21,
+        "endLine": 245,
+        "endChar": 25
+      },
+      "revId": "46b31a72ea75e16a52830b148bf75155b010bf31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
