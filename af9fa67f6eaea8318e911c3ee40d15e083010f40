@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1cca98ff_437c652e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-15T15:07:22Z",
+      "side": 1,
+      "message": "Even if you weren\u0027t adding another type this would probably be a good idea.",
+      "revId": "af9fa67f6eaea8318e911c3ee40d15e083010f40",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
