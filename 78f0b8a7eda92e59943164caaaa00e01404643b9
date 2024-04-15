@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e1012aa_f2fd1c62",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-15T14:23:04Z",
+      "side": 1,
+      "message": "For some reason not yet determined, this appears to be causing the `OptimizeForSize-All` jobs to fail, particularly when running `paragraph__underline_visitor`.",
+      "revId": "78f0b8a7eda92e59943164caaaa00e01404643b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
