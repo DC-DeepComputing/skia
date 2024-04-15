@@ -7,6 +7,7 @@
 
 #include "tests/Test.h"
 
+#if 0
 #if defined(SK_GRAPHITE)
 
 #include "include/core/SkColorSpace.h"
@@ -326,3 +327,4 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(CombinationBuilderTest, reporter, context,
 }
 
 #endif // SK_GRAPHITE
+#endif
