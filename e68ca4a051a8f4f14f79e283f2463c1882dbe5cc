@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4ba0ce2_bf3b3fa4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5205
+      },
+      "writtenOn": "2024-04-15T17:14:29Z",
+      "side": 1,
+      "message": "These are 12 year old GPUs, can we stop running them?",
+      "revId": "e68ca4a051a8f4f14f79e283f2463c1882dbe5cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
