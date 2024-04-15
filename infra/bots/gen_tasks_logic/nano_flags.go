@@ -262,10 +262,6 @@ func (b *taskBuilder) nanobenchFlags(doUpload bool) {
 		match = append(match, "~top25desk_ebay_com.skp_1.1")
 		match = append(match, "~top25desk_ebay.skp_1.1")
 	}
-	if b.extraConfig("Vulkan") && b.gpu("GTX660") {
-		// skia:8523 skia:9271
-		match = append(match, "~compositing_images")
-	}
 	if b.extraConfig("ASAN") && b.cpu() {
 		// floor2int_undef benches undefined behavior, so ASAN correctly complains.
 		match = append(match, "~^floor2int_undef$")
