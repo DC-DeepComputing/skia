@@ -59,6 +59,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "957fef55_aac03d69",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 882,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-04-15T14:34:21Z",
+      "side": 1,
+      "message": "I agree that this is the behavior we want. I think either model could be justified (and it\u0027s always going to be awkward that we\u0027re effectively drawing a line somewhere in the paint pipeline), but if the image filter happens in the layer\u0027s space, then the color filter should, too.",
+      "parentUuid": "358c7ebd_06426c92",
+      "range": {
+        "startLine": 882,
+        "startChar": 21,
+        "endLine": 882,
+        "endChar": 48
+      },
+      "revId": "e7c5855159128522eb46599d58faecf649efea32",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "03d3a1fd_a50ab62c",
