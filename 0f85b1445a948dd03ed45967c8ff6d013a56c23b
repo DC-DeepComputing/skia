@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "27ee5b58_699f485f",
+        "filename": "src/pdf/SkPDFBitmap.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 313,
+      "author": {
+        "id": 18419
+      },
+      "writtenOn": "2024-04-15T21:19:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eacde79e_16f60859",
+      "revId": "0f85b1445a948dd03ed45967c8ff6d013a56c23b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1e18b1f6_8c7f7a8b",
@@ -48,6 +66,30 @@
       "writtenOn": "2024-04-11T20:12:46Z",
       "side": 1,
       "message": "This should just be `nullptr` now. (Not that it makes much difference, it\u0027s just when the original code was written this couldn\u0027t be `nullptr` and so empty string was used, but that crashed some physical printers so now empty string and `nullptr` mean create a generated unique name. I think using `nullptr` now that we\u0027re touching this is a bit more obviously \"go auto generate a name\".)",
+      "range": {
+        "startLine": 403,
+        "startChar": 59,
+        "endLine": 403,
+        "endChar": 61
+      },
+      "revId": "0f85b1445a948dd03ed45967c8ff6d013a56c23b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "663b4f27_75f8b112",
+        "filename": "src/pdf/SkPDFBitmap.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 403,
+      "author": {
+        "id": 18419
+      },
+      "writtenOn": "2024-04-15T21:19:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1e18b1f6_8c7f7a8b",
       "range": {
         "startLine": 403,
         "startChar": 59,
