@@ -37,6 +37,10 @@ static const char* gSpeech = "Five score years ago, a great American, in whose s
 #include "modules/skunicode/include/SkUnicode_icu4x.h"
 #endif
 
+#if defined(SK_UNICODE_CLIENT_IMPLEMENTATION)
+#include "modules/skunicode/include/SkUnicode_client.h"
+#endif
+
 namespace {
 enum ParaFlags {
     kTimeLayout     = 1 << 0,
@@ -60,7 +64,6 @@ sk_sp<SkUnicode> get_unicode() {
         return unicode;
     }
 #endif
-    SkDEBUGFAIL("Cannot make SkUnicode");
     return nullptr;
 }
 }  // namespace
@@ -97,14 +100,26 @@ public:
         auto collection = sk_make_sp<skia::textlayout::FontCollection>();
         collection->setDefaultFontManager(std::move(fontmgr));
 
+        auto unicode = get_unicode();
         auto builder = skia::textlayout::ParagraphBuilderImpl::make(
-                paraStyle, collection, get_unicode());
+                paraStyle, collection, unicode);
         if (nullptr == builder) {
             fPara = nullptr;
             return;
         }
 
         builder->addText(gSpeech, strlen(gSpeech));
+
+#if defined(SK_UNICODE_CLIENT_IMPLEMENTATION)
+        if (!unicode) {
+            auto [words, graphemeBreaks, lineBreaks] = builder->getClientICUData();
+            auto text = builder->getText();
+            sk_sp<SkUnicode> clientICU =
+                    SkUnicodes::Client::Make(text, words, graphemeBreaks, lineBreaks);
+            SkASSERT(clientICU);
+            builder->SetUnicode(clientICU);
+        }
+#endif
 
         fPara = builder->Build();
         fPara->layout(400);
