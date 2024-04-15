@@ -20,6 +20,29 @@
 
 namespace skgpu::graphite {
 
+namespace {
+
+std::optional<Rect> outset_bounds(const SkMatrix& localToDevice,
+                                  float devSigma,
+                                  const SkRect& srcRect) {
+    float outsetX = 3.0f * devSigma;
+    float outsetY = 3.0f * devSigma;
+    if (localToDevice.isScaleTranslate()) {
+        outsetX /= std::fabs(localToDevice.getScaleX());
+        outsetY /= std::fabs(localToDevice.getScaleY());
+    } else {
+        SkSize scale;
+        if (!localToDevice.decomposeScale(&scale, nullptr)) {
+            return std::nullopt;
+        }
+        outsetX /= scale.width();
+        outsetY /= scale.height();
+    }
+    return srcRect.makeOutset(outsetX, outsetY);
+}
+
+}  // anonymous namespace
+
 std::optional<RectBlurData> RectBlurData::Make(Recorder* recorder,
                                                const Transform& localToDeviceTransform,
                                                float deviceSigma,
@@ -27,22 +50,34 @@ std::optional<RectBlurData> RectBlurData::Make(Recorder* recorder,
     // TODO: Implement SkMatrix functionality used below for Transform.
     SkMatrix localToDevice = localToDeviceTransform;
 
-    SkRRect devRRect;
-    const bool devRRectIsValid = srcRRect.transform(localToDevice, &devRRect);
-    const bool devRRectIsCircle = devRRectIsValid && SkRRectPriv::IsCircle(devRRect);
     const bool canBeRect = srcRRect.isRect() && localToDevice.preservesRightAngles();
-    const bool canBeCircle = (SkRRectPriv::IsCircle(srcRRect) && localToDevice.isSimilarity()) ||
-                             devRRectIsCircle;
-
     if (canBeRect) {
         return MakeRect(recorder, localToDevice, deviceSigma, srcRRect.rect());
-    } else if (canBeCircle) {
-        // TODO(b/238762890) Support analytic blurring with circles.
-        return std::nullopt;
-    } else {  // RRect
-        // TODO(b/238762890) Support analytic blurring with rrects.
-        return std::nullopt;
     }
+
+    SkRRect devRRect;
+    const bool devRRectIsCircle = srcRRect.transform(localToDevice, &devRRect) &&
+                                  SkRRectPriv::IsCircle(devRRect);
+    const bool canBeCircle = devRRectIsCircle ||
+                             (SkRRectPriv::IsCircle(srcRRect) && localToDevice.isSimilarity());
+    if (canBeCircle) {
+        const SkRect srcRect = srcRRect.rect();
+        SkRect devRect;
+        if (devRRectIsCircle) {
+            devRect = devRRect.rect();
+        } else {
+            const SkPoint center = localToDevice.mapPoint(srcRect.center());
+            const float radius = localToDevice.mapVector(0, srcRect.width() / 2.0f).length();
+            devRect = {center.x() - radius,
+                       center.y() - radius,
+                       center.x() + radius,
+                       center.y() + radius};
+        }
+        return MakeCircle(recorder, localToDevice, deviceSigma, srcRect, devRect);
+    }
+
+    // TODO(b/238762890) Support analytic blurring with rrects.
+    return std::nullopt;
 }
 
 std::optional<RectBlurData> RectBlurData::MakeRect(Recorder* recorder,
@@ -118,28 +153,84 @@ std::optional<RectBlurData> RectBlurData::MakeRect(Recorder* recorder,
     const float invSixSigma = 1.0f / sixSigma;
 
     // Determine how much to outset the draw bounds to ensure we hit pixels within 3*sigma.
-    float outsetX = 3.0f * devSigma;
-    float outsetY = 3.0f * devSigma;
-    if (localToDevice.isScaleTranslate()) {
-        outsetX /= std::fabs(localToDevice.getScaleX());
-        outsetY /= std::fabs(localToDevice.getScaleY());
-    } else {
-        SkSize scale;
-        if (!localToDevice.decomposeScale(&scale, nullptr)) {
-            return std::nullopt;
-        }
-        outsetX /= scale.width();
-        outsetY /= scale.height();
+    std::optional<Rect> drawBounds = outset_bounds(localToDevice, devSigma, srcRect);
+    if (!drawBounds) {
+        return std::nullopt;
     }
-    const Rect drawBounds = srcRect.makeOutset(outsetX, outsetY);
 
-    return RectBlurData(drawBounds,
+    return RectBlurData(*drawBounds,
                         SkM44(devToScaledShape),
                         shapeData,
                         ShapeType::kRect,
                         isFast,
                         invSixSigma,
                         integral);
+}
+
+std::optional<RectBlurData> RectBlurData::MakeCircle(Recorder* recorder,
+                                                     const SkMatrix& localToDevice,
+                                                     float devSigma,
+                                                     const SkRect& srcRect,
+                                                     const SkRect& devRect) {
+    const float radius = devRect.width() / 2.0f;
+    if (!sk_float_isfinite(radius) || radius < SK_ScalarNearlyZero) {
+        return std::nullopt;
+    }
+
+    // When sigma is really small this becomes a equivalent to convolving a Gaussian with a
+    // half-plane. Similarly, in the extreme high ratio cases circle becomes a point WRT to the
+    // Guassian and the profile texture is a just a Gaussian evaluation. However, we haven't yet
+    // implemented this latter optimization.
+    constexpr float kHalfPlaneThreshold = 0.1f;
+    const float sigmaToRadiusRatio = std::min(devSigma / radius, 8.0f);
+    const bool useHalfPlaneApprox = sigmaToRadiusRatio <= kHalfPlaneThreshold;
+
+    float solidRadius;
+    float textureRadius;
+    if (useHalfPlaneApprox) {
+        solidRadius = radius - 3.0f * devSigma;
+        textureRadius = 6.0f * devSigma;
+    } else {
+        devSigma = radius * sigmaToRadiusRatio;
+        solidRadius = 0.0f;
+        textureRadius = radius + 3.0f * devSigma;
+    }
+
+    constexpr int kProfileTextureWidth = 512;
+
+    SkBitmap profileBitmap;
+    if (useHalfPlaneApprox) {
+        profileBitmap = skgpu::CreateHalfPlaneProfile(kProfileTextureWidth);
+    } else {
+        // Rescale params to the size of the texture we're creating.
+        const float scale = kProfileTextureWidth / textureRadius;
+        profileBitmap =
+                skgpu::CreateCircleProfile(devSigma * scale, radius * scale, kProfileTextureWidth);
+    }
+    profileBitmap.setImmutable();
+
+    sk_sp<TextureProxy> profile = RecorderPriv::CreateCachedProxy(recorder, profileBitmap);
+    if (!profile) {
+        return std::nullopt;
+    }
+
+    const Rect shapeData =
+            Rect(devRect.centerX(), devRect.centerY(), solidRadius, 1.0f / textureRadius);
+
+    // Determine how much to outset the draw bounds to ensure we hit pixels within 3*sigma.
+    std::optional<Rect> drawBounds = outset_bounds(localToDevice, devSigma, srcRect);
+    if (!drawBounds) {
+        return std::nullopt;
+    }
+
+    constexpr float kUnusedBlurData = 0.0f;
+    return RectBlurData(*drawBounds,
+                        SkM44(),
+                        shapeData,
+                        ShapeType::kCircle,
+                        kUnusedBlurData,
+                        kUnusedBlurData,
+                        profile);
 }
 
 }  // namespace skgpu::graphite
