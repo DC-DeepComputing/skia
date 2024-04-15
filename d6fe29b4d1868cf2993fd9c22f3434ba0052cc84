@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb80dd03_c95b8107",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-04-15T16:25:16Z",
+      "side": 1,
+      "message": "So from what I can tell, this CL is adding validation that we aren\u0027t mixing buffer bindings for WebGL, but it is not doing any sort of work to enforce that restriction. I assume you created this CL because you were hitting an issue so I would have thought a fix would also have been included here besides just a valid check.",
+      "revId": "d6fe29b4d1868cf2993fd9c22f3434ba0052cc84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d270a24b_78dcbc99",
+        "filename": "src/gpu/ganesh/gl/GrGLBuffer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-04-15T16:25:16Z",
+      "side": 1,
+      "message": "nit: don\u0027t need `this-\u003e` for accessing data members. With our f[MemberName] syntax that already makes it clear its a local member",
+      "range": {
+        "startLine": 112,
+        "startChar": 16,
+        "endLine": 112,
+        "endChar": 22
+      },
+      "revId": "d6fe29b4d1868cf2993fd9c22f3434ba0052cc84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d921ab35_ee536368",
+        "filename": "src/gpu/ganesh/gl/GrGLBuffer.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-04-15T16:25:16Z",
+      "side": 1,
+      "message": "use an enum class instead.\n\n```\nenum class BindingCategory {\n    kUndefined,\n    kIndexBuffer,\n    kOtherData,\n}\n```",
+      "range": {
+        "startLine": 67,
+        "startChar": 4,
+        "endLine": 67,
+        "endChar": 24
+      },
+      "revId": "d6fe29b4d1868cf2993fd9c22f3434ba0052cc84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54a57aec_f9cb2276",
+        "filename": "src/gpu/ganesh/gl/GrGLBuffer.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-04-15T16:25:16Z",
+      "side": 1,
+      "message": "This isn\u0027t initialized anywhere explicitly. Maybe make this:\n`mutable BindingCategory fBindingCategory \u003d BindingCategory::kUndefined;`",
+      "range": {
+        "startLine": 72,
+        "startChar": 28,
+        "endLine": 72,
+        "endChar": 44
+      },
+      "revId": "d6fe29b4d1868cf2993fd9c22f3434ba0052cc84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
