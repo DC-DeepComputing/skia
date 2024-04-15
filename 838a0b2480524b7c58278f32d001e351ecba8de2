@@ -16,6 +16,24 @@
       "message": "Not sure if you need to return early here or not. While this does mean you\u0027re not going to get something good, it is possible to continue.",
       "revId": "838a0b2480524b7c58278f32d001e351ecba8de2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ae230c9_a59c986a",
+        "filename": "modules/skottie/utils/TextPreshape.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-04-15T20:21:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0aba1ad3_dcb7e82d",
+      "revId": "838a0b2480524b7c58278f32d001e351ecba8de2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
