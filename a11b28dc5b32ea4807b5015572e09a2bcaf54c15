@@ -16,6 +16,29 @@
       "message": "This should fix the Flutter roll",
       "revId": "a11b28dc5b32ea4807b5015572e09a2bcaf54c15",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a1f3aeb_c65a78e5",
+        "filename": "gn/skia.gni",
+        "patchSetId": 1
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-04-15T14:26:45Z",
+      "side": 1,
+      "message": "I think we want this to default to true, since most of the time clients will be running on hardware.",
+      "range": {
+        "startLine": 98,
+        "startChar": 27,
+        "endLine": 98,
+        "endChar": 32
+      },
+      "revId": "a11b28dc5b32ea4807b5015572e09a2bcaf54c15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
