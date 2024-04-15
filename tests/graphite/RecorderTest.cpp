@@ -79,7 +79,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(RecorderDevicePtrTest, reporter, context,
     device4.reset();
     REPORTER_ASSERT(reporter, dev4Ptr->unique()); // The recorder holds a ref still
     REPORTER_ASSERT(reporter, recorder->priv().deviceIsRegistered(dev4Ptr));
-    recorder->priv().flushTrackedDevices(); // should delete device4 now
+    recorder->snap(); // should delete device4 now
     REPORTER_ASSERT(reporter, !recorder->priv().deviceIsRegistered(dev4Ptr));
 
     REPORTER_ASSERT(reporter, recorder->priv().deviceIsRegistered(device1.get()));
