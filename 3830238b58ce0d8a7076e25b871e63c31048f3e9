@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ce446ff_b09e4d92",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-15T17:23:39Z",
+      "side": 1,
+      "message": "More crash reports came in after the last round of validation checks, and it seems to implicate that it\u0027s a bad Device* in the fTrackedDevices list.",
+      "revId": "3830238b58ce0d8a7076e25b871e63c31048f3e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
