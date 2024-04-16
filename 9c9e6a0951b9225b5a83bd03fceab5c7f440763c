@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "036ffe62_4a98c94a",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 5
+      },
+      "lineNbr": 481,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-04-16T20:31:00Z",
+      "side": 1,
+      "message": "Any chance we could get the perf task on a M1 as well? The two Mac CPUs have radically different performance characteristics.",
+      "range": {
+        "startLine": 481,
+        "startChar": 12,
+        "endLine": 481,
+        "endChar": 77
+      },
+      "revId": "9c9e6a0951b9225b5a83bd03fceab5c7f440763c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
