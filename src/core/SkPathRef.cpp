@@ -185,15 +185,7 @@ void SkPathRef::CreateTransformedCopy(sk_sp<SkPathRef>* dst,
      */
     if (canXformBounds) {
         (*dst)->fBoundsIsDirty = false;
-        if (src.fIsFinite) {
-            matrix.mapRect(&(*dst)->fBounds, src.fBounds);
-            if (!((*dst)->fIsFinite = (*dst)->fBounds.isFinite())) {
-                (*dst)->fBounds.setEmpty();
-            }
-        } else {
-            (*dst)->fIsFinite = false;
-            (*dst)->fBounds.setEmpty();
-        }
+        matrix.mapRect(&(*dst)->fBounds, src.fBounds);
     } else {
         (*dst)->fBoundsIsDirty = true;
     }
@@ -224,7 +216,7 @@ void SkPathRef::Rewind(sk_sp<SkPathRef>* pathRef) {
     if ((*pathRef)->unique()) {
         SkDEBUGCODE((*pathRef)->validate();)
         (*pathRef)->callGenIDChangeListeners();
-        (*pathRef)->fBoundsIsDirty = true;  // this also invalidates fIsFinite
+        (*pathRef)->fBoundsIsDirty = true;
         (*pathRef)->fGenerationID = 0;
         (*pathRef)->fPoints.clear();
         (*pathRef)->fVerbs.clear();
@@ -280,7 +272,6 @@ void SkPathRef::copy(const SkPathRef& ref,
     fBoundsIsDirty = ref.fBoundsIsDirty;
     if (!fBoundsIsDirty) {
         fBounds = ref.fBounds;
-        fIsFinite = ref.fIsFinite;
     }
     fSegmentMask = ref.fSegmentMask;
     fType = ref.fType;
@@ -304,7 +295,7 @@ std::tuple<SkPoint*, SkScalar*> SkPathRef::growForVerbsInPath(const SkPathRef& p
     SkDEBUGCODE(this->validate();)
 
     fSegmentMask |= path.fSegmentMask;
-    fBoundsIsDirty = true;  // this also invalidates fIsFinite
+    fBoundsIsDirty = true;
     fType = PathType::kGeneral;
 
     if (int numVerbs = path.countVerbs()) {
@@ -364,7 +355,7 @@ SkPoint* SkPathRef::growForRepeatedVerb(int /*SkPath::Verb*/ verb,
             break;
     }
 
-    fBoundsIsDirty = true;  // this also invalidates fIsFinite
+    fBoundsIsDirty = true;
     fType = PathType::kGeneral;
 
     memset(fVerbs.push_back_n(numVbs), verb, numVbs);
@@ -416,7 +407,7 @@ SkPoint* SkPathRef::growForVerb(int /* SkPath::Verb*/ verb, SkScalar weight) {
     }
 
     fSegmentMask |= mask;
-    fBoundsIsDirty = true;  // this also invalidates fIsFinite
+    fBoundsIsDirty = true;
     fType = PathType::kGeneral;
 
     fVerbs.push_back(verb);
@@ -649,7 +640,7 @@ bool SkPathRef::isValid() const {
                 isFinite = false;
             }
         }
-        if (SkToBool(fIsFinite) != isFinite) {
+        if (this->isFinite() != isFinite) {
             return false;
         }
     }

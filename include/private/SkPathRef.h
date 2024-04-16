@@ -71,7 +71,7 @@ public:
         , fVerbs(std::move(verbs))
         , fConicWeights(std::move(weights))
     {
-        fBoundsIsDirty = true;    // this also invalidates fIsFinite
+        fBoundsIsDirty = true;
         fGenerationID = 0;        // recompute
         fSegmentMask = segmentMask;
         fType = PathType::kGeneral;
@@ -208,7 +208,7 @@ public:
         if (fBoundsIsDirty) {
             this->computeBounds();
         }
-        return SkToBool(fIsFinite);
+        return fBounds.isFinite();
     }
 
     /**
@@ -358,7 +358,7 @@ private:
     };
 
     SkPathRef(int numVerbs = 0, int numPoints = 0, int numConics = 0) {
-        fBoundsIsDirty = true;    // this also invalidates fIsFinite
+        fBoundsIsDirty = true;
         fGenerationID = kEmptyGenID;
         fSegmentMask = 0;
         fType = PathType::kGeneral;
@@ -380,19 +380,13 @@ private:
 
     void copy(const SkPathRef& ref, int additionalReserveVerbs, int additionalReservePoints, int additionalReserveConics);
 
-    // Return true if the computed bounds are finite.
-    static bool ComputePtBounds(SkRect* bounds, const SkPathRef& ref) {
-        return bounds->setBoundsCheck(ref.points(), ref.countPoints());
-    }
-
     // called, if dirty, by getBounds()
     void computeBounds() const {
         SkDEBUGCODE(this->validate();)
-        // TODO: remove fBoundsIsDirty and fIsFinite,
-        // using an inverted rect instead of fBoundsIsDirty and always recalculating fIsFinite.
+        // TODO: remove fBoundsIsDirty using an inverted rect instead of fBoundsIsDirty?
         SkASSERT(fBoundsIsDirty);
 
-        fIsFinite = ComputePtBounds(&fBounds, *this);
+        fBounds.setBoundsNoCheck(this->points(), this->countPoints());
         fBoundsIsDirty = false;
     }
 
@@ -400,7 +394,6 @@ private:
         SkASSERT(rect.fLeft <= rect.fRight && rect.fTop <= rect.fBottom);
         fBounds = rect;
         fBoundsIsDirty = false;
-        fIsFinite = fBounds.isFinite();
     }
 
     /** Makes additional room but does not change the counts or change the genID */
@@ -427,7 +420,7 @@ private:
     void commonReset() {
         SkDEBUGCODE(this->validate();)
         this->callGenIDChangeListeners();
-        fBoundsIsDirty = true;      // this also invalidates fIsFinite
+        fBoundsIsDirty = true;
         fGenerationID = 0;
 
         fSegmentMask = 0;
@@ -530,7 +523,6 @@ private:
     SkDEBUGCODE(std::atomic<int> fEditorsAttached;) // assert only one editor in use at any time.
 
     mutable uint8_t  fBoundsIsDirty;
-    mutable bool     fIsFinite;    // only meaningful if bounds are valid
 
     PathType fType;
     // Both the circle and rrect special cases have a notion of direction and starting point
