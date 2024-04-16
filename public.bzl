@@ -202,7 +202,6 @@ SKIA_PUBLIC_HDRS = [
     "include/ports/SkImageGeneratorCG.h",
     "include/ports/SkImageGeneratorNDK.h",
     "include/ports/SkImageGeneratorWIC.h",
-    "include/ports/SkRemotableFontMgr.h",
     "include/ports/SkTypeface_mac.h",
     "include/ports/SkTypeface_win.h",
     # We do not want clients to directly include our private headers, so we exclude include/private
@@ -767,7 +766,6 @@ BASE_SRCS_ALL = [
     "src/effects/imagefilters/SkRuntimeImageFilter.cpp",
     "src/effects/imagefilters/SkShaderImageFilter.cpp",
     "src/fonts/SkFontMgr_indirect.cpp",
-    "src/fonts/SkRemotableFontMgr.cpp",
     "src/gpu/AsyncReadTypes.h",
     "src/gpu/AtlasTypes.cpp",
     "src/gpu/AtlasTypes.h",
