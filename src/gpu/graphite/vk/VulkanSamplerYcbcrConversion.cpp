@@ -78,19 +78,16 @@ GraphiteResourceKey VulkanSamplerYcbcrConversion::MakeYcbcrConversionKey(
     SkASSERT(info.fComponents.b                < (1u << 3));
     SkASSERT(info.fComponents.a                < (1u << 3));
 
-    builder[0] = info.fFormat;
-    builder[1] = (uint32_t)(info.fExternalFormat << 32);
-    builder[2] = (uint32_t)info.fExternalFormat;
-    builder[3] = (static_cast<uint32_t>(info.fYcbcrModel                 ) <<  0) |
-                 (static_cast<uint32_t>(info.fYcbcrRange                 ) <<  8) |
-                 (static_cast<uint32_t>(info.fXChromaOffset              ) <<  9) |
-                 (static_cast<uint32_t>(info.fYChromaOffset              ) << 10) |
-                 (static_cast<uint32_t>(info.fChromaFilter               ) << 11) |
-                 (static_cast<uint32_t>(info.fForceExplicitReconstruction) << 12) |
-                 (static_cast<uint32_t>(info.fComponents.r               ) << 20) |
-                 (static_cast<uint32_t>(info.fComponents.g               ) << 23) |
-                 (static_cast<uint32_t>(info.fComponents.b               ) << 26) |
-                 (static_cast<uint32_t>(info.fComponents.a               ) << 29) ;
+    if (info.fFormat != VK_FORMAT_UNDEFINED) {
+        builder[0] = (uint32_t)(info.fExternalFormat << 32);
+        builder[1] = (uint32_t)info.fExternalFormat;
+    } else {
+        builder[0] = info.fFormat;
+        // TODO: For convenience, we currently keep the size of all Vulkan YCbCr format keys the
+        // same. However, we could optimize to have known VkFormats not use the unnecessary uint32.
+        builder[1] = 0;
+    }
+    builder[2] = info.nonFormatInfoAsUInt32();
 
     builder.finish();
     return key;

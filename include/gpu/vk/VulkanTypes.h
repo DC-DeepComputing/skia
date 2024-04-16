@@ -65,24 +65,51 @@ struct VulkanYcbcrConversionInfo {
         if (!this->isValid() && !that.isValid()) {
             return true;
         }
-        return this->fFormat == that.fFormat &&
-               this->fExternalFormat == that.fExternalFormat &&
-               this->fYcbcrModel == that.fYcbcrModel &&
-               this->fYcbcrRange == that.fYcbcrRange &&
-               this->fXChromaOffset == that.fXChromaOffset &&
-               this->fYChromaOffset == that.fYChromaOffset &&
-               this->fChromaFilter == that.fChromaFilter &&
+        return this->fFormat                      == that.fFormat                      &&
+               this->fExternalFormat              == that.fExternalFormat              &&
+               this->fYcbcrModel                  == that.fYcbcrModel                  &&
+               this->fYcbcrRange                  == that.fYcbcrRange                  &&
+               this->fXChromaOffset               == that.fXChromaOffset               &&
+               this->fYChromaOffset               == that.fYChromaOffset               &&
+               this->fChromaFilter                == that.fChromaFilter                &&
                this->fForceExplicitReconstruction == that.fForceExplicitReconstruction &&
-               this->fComponents.r == that.fComponents.r &&
-               this->fComponents.g == that.fComponents.g &&
-               this->fComponents.b == that.fComponents.b &&
-               this->fComponents.a == that.fComponents.a;
+               this->fFormatFeatures              == that.fFormatFeatures              &&
+               this->fComponents.r                == that.fComponents.r                &&
+               this->fComponents.g                == that.fComponents.g                &&
+               this->fComponents.b                == that.fComponents.b                &&
+               this->fComponents.a                == that.fComponents.a;
     }
     bool operator!=(const VulkanYcbcrConversionInfo& that) const { return !(*this == that); }
 
     bool isValid() const {
         return fYcbcrModel != VK_SAMPLER_YCBCR_MODEL_CONVERSION_RGB_IDENTITY ||
                fExternalFormat != 0;
+    }
+
+    uint32_t nonFormatInfoAsUInt32() const {
+        static_assert(kComponentAShift + kComponentBits <= 32);
+
+        SkASSERT(fYcbcrModel                  < (1u << kYcbcrModelBits        ));
+        SkASSERT(fYcbcrRange                  < (1u << kYcbcrRangeBits        ));
+        SkASSERT(fXChromaOffset               < (1u << kXChromaOffsetBits     ));
+        SkASSERT(fYChromaOffset               < (1u << kYChromaOffsetBits     ));
+        SkASSERT(fChromaFilter                < (1u << kChromaFilterBits      ));
+        SkASSERT(fForceExplicitReconstruction < (1u << kForceExplicitReconBits));
+        SkASSERT(fComponents.r                < (1u << kComponentBits         ));
+        SkASSERT(fComponents.g                < (1u << kComponentBits         ));
+        SkASSERT(fComponents.b                < (1u << kComponentBits         ));
+        SkASSERT(fComponents.a                < (1u << kComponentBits         ));
+
+        return ((static_cast<uint32_t>(fYcbcrModel                 ) << kYcbcrModelShift        ) |
+                (static_cast<uint32_t>(fYcbcrRange                 ) << kYcbcrRangeShift        ) |
+                (static_cast<uint32_t>(fXChromaOffset              ) << kXChromaOffsetShift     ) |
+                (static_cast<uint32_t>(fYChromaOffset              ) << kYChromaOffsetShift     ) |
+                (static_cast<uint32_t>(fChromaFilter               ) << kChromaFilterShift      ) |
+                (static_cast<uint32_t>(fForceExplicitReconstruction) << kForceExplicitReconShift) |
+                (static_cast<uint32_t>(fComponents.r               ) << kComponentRShift        ) |
+                (static_cast<uint32_t>(fComponents.g               ) << kComponentGShift        ) |
+                (static_cast<uint32_t>(fComponents.b               ) << kComponentBShift        ) |
+                (static_cast<uint32_t>(fComponents.a               ) << kComponentAShift        ));
     }
 
     // Format of the source image. Must be set to VK_FORMAT_UNDEFINED for external images or
@@ -109,6 +136,25 @@ struct VulkanYcbcrConversionInfo {
                                                  VK_COMPONENT_SWIZZLE_IDENTITY,
                                                  VK_COMPONENT_SWIZZLE_IDENTITY,
                                                  VK_COMPONENT_SWIZZLE_IDENTITY};
+
+    static constexpr int kYcbcrModelBits          = 3;
+    static constexpr int kYcbcrRangeBits          = 1;
+    static constexpr int kXChromaOffsetBits       = 1;
+    static constexpr int kYChromaOffsetBits       = 1;
+    static constexpr int kChromaFilterBits        = 1;
+    static constexpr int kForceExplicitReconBits  = 1;
+    static constexpr int kComponentBits           = 3;
+
+    static constexpr int kYcbcrModelShift         = 0;
+    static constexpr int kYcbcrRangeShift         = kYcbcrModelShift         + kYcbcrModelBits;
+    static constexpr int kXChromaOffsetShift      = kYcbcrRangeShift         + kYcbcrRangeBits;
+    static constexpr int kYChromaOffsetShift      = kXChromaOffsetShift      + kXChromaOffsetBits;
+    static constexpr int kChromaFilterShift       = kYChromaOffsetShift      + kYChromaOffsetBits;
+    static constexpr int kForceExplicitReconShift = kChromaFilterShift       + kChromaFilterBits;
+    static constexpr int kComponentRShift         = kForceExplicitReconShift + kComponentBits;
+    static constexpr int kComponentGShift         = kComponentRShift         + kComponentBits;
+    static constexpr int kComponentBShift         = kComponentGShift         + kComponentBits;
+    static constexpr int kComponentAShift         = kComponentBShift         + kComponentBits;
 };
 
 typedef void* VulkanDeviceLostContext;
