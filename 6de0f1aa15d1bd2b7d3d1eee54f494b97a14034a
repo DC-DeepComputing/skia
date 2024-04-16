@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9ee11cf_f8277922",
+        "filename": "src/ports/SkTypeface_win_dw.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-04-16T13:01:05Z",
+      "side": 1,
+      "message": "Cute.",
+      "revId": "6de0f1aa15d1bd2b7d3d1eee54f494b97a14034a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
