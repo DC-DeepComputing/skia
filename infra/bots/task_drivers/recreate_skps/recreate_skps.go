@@ -204,6 +204,8 @@ func main() {
 		td.Fatal(ctx, err)
 	}
 
+	ctx = td.WithEnv(ctx, []string{"PATH=%(PATH)s:" + depotToolsDir})
+
 	// Hack warning: Sync depot tools to HEAD because of problems syncing chrome
 	// due to submodule-related failures on older depot tools revisions
 	// (b/303291416). Updating depot tools via recipes.cfg was risky because
@@ -219,8 +221,6 @@ func main() {
 	if err := exec.Run(ctx, depotToolsUpdateCommand); err != nil {
 		td.Fatal(ctx, err)
 	}
-
-	ctx = td.WithEnv(ctx, []string{"PATH=%(PATH)s:" + depotToolsDir})
 
 	// Sync Chrome.
 	if !*skipSync {
