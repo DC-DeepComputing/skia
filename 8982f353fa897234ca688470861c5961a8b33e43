@@ -16,6 +16,24 @@
       "message": "The reality is that we haven\u0027t really supported these in a while now.",
       "revId": "8982f353fa897234ca688470861c5961a8b33e43",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "31cfbbc0_51ed215d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-16T18:28:44Z",
+      "side": 1,
+      "message": "We do currently build for iOS 11, though it appears there\u0027s no reason anymore to target anything less than 15.",
+      "parentUuid": "c0212ee7_316043de",
+      "revId": "8982f353fa897234ca688470861c5961a8b33e43",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
