@@ -16,6 +16,24 @@
       "message": "This is causing (on at least `Test-Mac12-Clang-MacMini9.1-CPU-AppleM1-arm64-Debug-All-NativeFonts_ASAN`)\n\n```\nskia/src/pdf/SkPDFDevice.cpp:232:39: runtime error: member call on null pointer of type \u0027SkColorSpace\u0027\n```",
       "revId": "55b64cbaad8389f4bcd1325578dbc72b19746f63",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "788bda52_03f87069",
+        "filename": "src/pdf/SkPDFDevice.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-16T17:47:21Z",
+      "side": 1,
+      "message": "Though with a better stack trace on `Test-Debian10-Clang-GCE-CPU-AVX2-x86_64-Debug-All-ASAN`.",
+      "parentUuid": "21a3b916_e8cde3f1",
+      "revId": "55b64cbaad8389f4bcd1325578dbc72b19746f63",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
