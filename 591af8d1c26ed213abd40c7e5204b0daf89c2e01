@@ -22,6 +22,30 @@
       },
       "revId": "591af8d1c26ed213abd40c7e5204b0daf89c2e01",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1a49807_20284201",
+        "filename": "src/gpu/graphite/compute/VelloComputeSteps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-04-16T18:40:46Z",
+      "side": 1,
+      "message": "No, this is correct. It could be that the Bazel build didn\u0027t trigger for the new shaders though. I may need to touch third_party/vello again to nudge the incremental build.",
+      "parentUuid": "5d4aa2c0_f508c247",
+      "range": {
+        "startLine": 204,
+        "startChar": 48,
+        "endLine": 204,
+        "endChar": 55
+      },
+      "revId": "591af8d1c26ed213abd40c7e5204b0daf89c2e01",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
