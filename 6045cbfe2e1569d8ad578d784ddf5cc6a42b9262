@@ -16,6 +16,41 @@
       "message": "Any other bots to add beside the dry-run list?",
       "revId": "6045cbfe2e1569d8ad578d784ddf5cc6a42b9262",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d5aa287_7eac0ed4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-04-16T16:47:42Z",
+      "side": 1,
+      "message": "Hmm, I don\u0027t remember. Didn\u0027t an update get reverted recently?",
+      "parentUuid": "62e50916_4fdb27b5",
+      "revId": "6045cbfe2e1569d8ad578d784ddf5cc6a42b9262",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ab6366b_bf66fc28",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-04-16T16:47:42Z",
+      "side": 1,
+      "message": "Change lgtm. The image result from Gold is unrelated.",
+      "revId": "6045cbfe2e1569d8ad578d784ddf5cc6a42b9262",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
