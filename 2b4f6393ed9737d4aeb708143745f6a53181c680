@@ -16,6 +16,24 @@
       "message": "This is still marked WIP, is that intentional?\n\nI would like to see a gm with a few interesting uses of this new feature so we have something to look at and compare against (especially for ease of creating such PDFs so we can see how this works out in the viewers).",
       "revId": "2b4f6393ed9737d4aeb708143745f6a53181c680",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fed8536f_673e1789",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18419
+      },
+      "writtenOn": "2024-04-16T20:54:39Z",
+      "side": 1,
+      "message": "That is intentional, I think i\u0027ll need more hands-on help with actually landing this change, if it\u0027s desired. For instance, I\u0027m not sure what a gm is, what icc profiles actually do for PDF, or how the PDF backend is used in the wild.",
+      "parentUuid": "ce39c6f8_0b27eda6",
+      "revId": "2b4f6393ed9737d4aeb708143745f6a53181c680",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
