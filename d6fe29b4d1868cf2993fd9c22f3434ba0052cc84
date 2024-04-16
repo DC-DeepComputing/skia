@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "520feab4_1c227da7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3371831
+      },
+      "writtenOn": "2024-04-16T04:11:42Z",
+      "side": 1,
+      "message": "I\u0027m not experience an issue for buffer binding in WebGL.\nI\u0027s here because we have limited support for buffer binding in WebGL so that CopyBufferSubData can\u0027t be in use safely. This CL just check for skia\u0027s use of CopyBufferSubData is safe for WebGL so that it can be enabled.",
+      "parentUuid": "eb80dd03_c95b8107",
+      "revId": "d6fe29b4d1868cf2993fd9c22f3434ba0052cc84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d270a24b_78dcbc99",
         "filename": "src/gpu/ganesh/gl/GrGLBuffer.cpp",
         "patchSetId": 5
