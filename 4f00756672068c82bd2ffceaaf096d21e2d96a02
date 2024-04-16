@@ -52,6 +52,24 @@
       "parentUuid": "92c4a431_65c9cccd",
       "revId": "4f00756672068c82bd2ffceaaf096d21e2d96a02",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c164689e_442817e1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-16T15:30:23Z",
+      "side": 1,
+      "message": "A more local change to work around this with https://chromium-review.googlesource.com/c/infra/luci/luci-go/+/5449147 .",
+      "parentUuid": "2c7ab391_0efe3927",
+      "revId": "4f00756672068c82bd2ffceaaf096d21e2d96a02",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
