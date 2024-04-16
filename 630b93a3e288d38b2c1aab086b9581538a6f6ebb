@@ -39,6 +39,30 @@
       },
       "revId": "630b93a3e288d38b2c1aab086b9581538a6f6ebb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51fefb9d_a5f0cb66",
+        "filename": "include/gpu/vk/VulkanTypes.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-04-16T17:25:14Z",
+      "side": 1,
+      "message": "I will add comment docs for whatever we determine, but I do think that we can assume if one external format \u003d\u003d another that we can ignore the format feature flag equality check since we get the format feature flags from `VkAndroidHardwareBufferFormatPropertiesANDROID` where `externalFormat` is implementation-defined, so I don\u0027t think that implementation should be changing at runtime.",
+      "parentUuid": "fe3898d4_aa3e7168",
+      "range": {
+        "startLine": 76,
+        "startChar": 0,
+        "endLine": 76,
+        "endChar": 89
+      },
+      "revId": "630b93a3e288d38b2c1aab086b9581538a6f6ebb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
