@@ -1414,6 +1414,11 @@ std::pair<const Renderer*, PathAtlas*> Device::chooseRenderer(const Transform& l
     }
 }
 
+sk_sp<Task> Device::lastDrawTask() const {
+    SkASSERT(this->isScratchDevice());
+    return fLastTask;
+}
+
 void Device::flushPendingWorkToRecorder(Recorder* recorder) {
     TRACE_EVENT0("skia.gpu", TRACE_FUNC);
 
@@ -1441,6 +1446,16 @@ void Device::flushPendingWorkToRecorder(Recorder* recorder) {
 
     this->internalFlush();
     sk_sp<Task> drawTask = fDC->snapDrawTask(fRecorder);
+    if (this->isScratchDevice()) {
+        // TODO(b/323887221): Once shared atlas resources are less brittle, scratch devices won't
+        // flush to the recorder at all and will only store the snapped task here.
+        fLastTask = drawTask;
+    } else {
+        // Non-scratch devices do not need to point back to the last snapped task since they are
+        // always added to the root task list.
+        fLastTask = nullptr;
+    }
+
     if (drawTask) {
         fRecorder->priv().add(std::move(drawTask));
 
