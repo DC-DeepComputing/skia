@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b473318e_71add982",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-16T18:15:53Z",
+      "side": 1,
+      "message": "Might want to inform Flutter as well, since they think they kinda support 10.14 at the moment ( https://docs.flutter.dev/reference/supported-platforms ).",
+      "revId": "1d6d523eb10ce2c6a2364c47da2d435894f6edbe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
