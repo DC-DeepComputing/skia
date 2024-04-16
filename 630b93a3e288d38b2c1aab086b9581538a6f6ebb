@@ -205,6 +205,30 @@
       },
       "revId": "630b93a3e288d38b2c1aab086b9581538a6f6ebb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2be117ba_a32c7f21",
+        "filename": "src/gpu/graphite/vk/VulkanSamplerYcbcrConversion.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-16T20:46:03Z",
+      "side": 1,
+      "message": "I think the bit you added in `nonFormatInfoAsUInt32` is a good safety check; I could imagine that some driver out there just starts their external format after the maximum defined regular format, so it still fits in 32-bits",
+      "parentUuid": "c229ecdb_e4076475",
+      "range": {
+        "startLine": 85,
+        "startChar": 8,
+        "endLine": 85,
+        "endChar": 34
+      },
+      "revId": "630b93a3e288d38b2c1aab086b9581538a6f6ebb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
