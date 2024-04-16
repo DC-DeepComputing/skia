@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3dc96864_06caba82",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 3
+      },
+      "lineNbr": 863,
+      "author": {
+        "id": 5205
+      },
+      "writtenOn": "2024-04-16T20:15:24Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "9e4edea6_7e5ff708",
+      "range": {
+        "startLine": 863,
+        "startChar": 0,
+        "endLine": 863,
+        "endChar": 29
+      },
+      "revId": "152f944ca0db6d3fdf72d72866b868439a626dbc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f71fc1fb_d1727c10",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-04-16T18:24:13Z",
       "side": 0,
       "message": "We will no longer have any Mac CPU jobs.",
+      "range": {
+        "startLine": 463,
+        "startChar": 0,
+        "endLine": 463,
+        "endChar": 77
+      },
+      "revId": "152f944ca0db6d3fdf72d72866b868439a626dbc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "58524815_56dd8ec5",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 463,
+      "author": {
+        "id": 5205
+      },
+      "writtenOn": "2024-04-16T20:15:24Z",
+      "side": 0,
+      "message": "Good catch! I added a Mac12 CPU Perf job.",
+      "parentUuid": "f71fc1fb_d1727c10",
       "range": {
         "startLine": 463,
         "startChar": 0,
