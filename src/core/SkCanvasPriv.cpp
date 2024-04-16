@@ -248,7 +248,7 @@ void AutoLayerForImageFilter::addMaskFilterLayer(const SkRect* drawBounds) {
 
     // TODO: Eventually all SkMaskFilters will implement this method so this can switch to an assert
     sk_sp<SkImageFilter> maskFilterAsImageFilter =
-            as_MFB(fPaint.getMaskFilter())->asImageFilter(fCanvas->getTotalMatrix());
+            as_MFB(fPaint.getMaskFilter())->asImageFilter1(fCanvas->getTotalMatrix());
     if (!maskFilterAsImageFilter) {
         // This is a legacy mask filter that can be handled by raster and Ganesh directly, but will
         // be ignored by Graphite. Return now, leaving the paint with the mask filter so that the

@@ -70,7 +70,7 @@ bool SkBlurMaskFilterImpl::asABlur(BlurRec* rec) const {
     return true;
 }
 
-sk_sp<SkImageFilter> SkBlurMaskFilterImpl::asImageFilter(const SkMatrix& ctm) const {
+sk_sp<SkImageFilter> SkBlurMaskFilterImpl::asImageFilter1(const SkMatrix& ctm) const {
     float sigma = fSigma;
     if (this->ignoreXform()) {
         // This is analogous to computeXformedSigma(), but it might be more correct to wrap the

@@ -47,7 +47,7 @@ bool SkMaskFilterBase::asABlur(BlurRec*) const {
     return false;
 }
 
-sk_sp<SkImageFilter> SkMaskFilterBase::asImageFilter(const SkMatrix& ctm) const {
+sk_sp<SkImageFilter> SkMaskFilterBase::asImageFilter1(const SkMatrix& ctm) const {
     return nullptr;
 }
 
