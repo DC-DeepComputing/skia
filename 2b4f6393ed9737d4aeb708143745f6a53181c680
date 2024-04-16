@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ce39c6f8_0b27eda6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-16T16:19:00Z",
+      "side": 1,
+      "message": "This is still marked WIP, is that intentional?\n\nI would like to see a gm with a few interesting uses of this new feature so we have something to look at and compare against (especially for ease of creating such PDFs so we can see how this works out in the viewers).",
+      "revId": "2b4f6393ed9737d4aeb708143745f6a53181c680",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
