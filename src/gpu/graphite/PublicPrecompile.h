@@ -10,6 +10,8 @@
 
 #include "include/gpu/graphite/GraphiteTypes.h"
 
+#include <unordered_set>
+
 // TODO: this header should be moved to include/gpu/graphite once the precompilation API
 // is made public
 namespace skgpu::graphite {
@@ -30,7 +32,7 @@ class RuntimeEffectDictionary;
  *   @param paintOptions   captures a set of SkPaints that will be drawn
  *   @param drawTypes      communicates which primitives those paints will be drawn with
  */
-void Precompile(Context*, const PaintOptions&, DrawTypeFlags = kMostCommon);
+void Precompile(Context*, const PaintOptions&, DrawTypeFlags, std::unordered_set<uint32_t>&);
 
 /*
  * TODO: Rather than passing in a pipelineDesc and renderPassDesc we need to add an

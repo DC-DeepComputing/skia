@@ -96,7 +96,8 @@ bool Precompile(Context* context,
     return true;
 }
 
-void Precompile(Context* context, const PaintOptions& options, DrawTypeFlags drawTypes) {
+void Precompile(Context* context, const PaintOptions& options, DrawTypeFlags drawTypes,
+                std::unordered_set<uint32_t>& foo) {
 
     ShaderCodeDictionary* dict = context->priv().shaderCodeDictionary();
     const Caps* caps = context->priv().caps();
@@ -112,7 +113,7 @@ void Precompile(Context* context, const PaintOptions& options, DrawTypeFlags dra
                 context, options, keyContext,
                 static_cast<DrawTypeFlags>(drawTypes & ~DrawTypeFlags::kDrawVertices),
                 /* withPrimitiveBlender= */ false,
-                coverage);
+                coverage, foo);
     }
 
     if (drawTypes & DrawTypeFlags::kDrawVertices) {
@@ -122,7 +123,7 @@ void Precompile(Context* context, const PaintOptions& options, DrawTypeFlags dra
                 PrecompileCombinations(context, options, keyContext,
                                        DrawTypeFlags::kDrawVertices,
                                        withPrimitiveBlender,
-                                       coverage);
+                                       coverage, foo);
             }
         }
     }
@@ -133,7 +134,8 @@ void PrecompileCombinations(Context* context,
                             const KeyContext& keyContext,
                             DrawTypeFlags drawTypes,
                             bool withPrimitiveBlender,
-                            Coverage coverage) {
+                            Coverage coverage,
+                            std::unordered_set<uint32_t>& foo) {
     // Since the precompilation path's uniforms aren't used and don't change the key,
     // the exact layout doesn't matter
     PipelineDataGatherer gatherer(Layout::kMetal);
@@ -196,7 +198,14 @@ void PrecompileCombinations(Context* context,
         [context, &keyContext, &renderPassDescs](UniquePaintParamsID uniqueID,
                                                  DrawTypeFlags drawTypes,
                                                  bool withPrimitiveBlender,
-                                                 Coverage coverage) {
+                                                 Coverage coverage,
+                                                 std::unordered_set<uint32_t>& foo2) {
+                const ShaderCodeDictionary* dict = context->priv().shaderCodeDictionary();
+                if (foo2.find(uniqueID.asUInt()) == foo2.end()) {
+                    dict->dump(uniqueID);
+                    foo2.insert(uniqueID.asUInt());
+                }
+
                compile(context->priv().rendererProvider(),
                        context->priv().resourceProvider(),
                        keyContext,
@@ -205,7 +214,8 @@ void PrecompileCombinations(Context* context,
                        renderPassDescs,
                        withPrimitiveBlender,
                        coverage);
-        });
+        },
+        foo);
 }
 
 } // namespace skgpu::graphite

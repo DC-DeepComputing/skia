@@ -13,6 +13,7 @@
 #include "include/core/SkSpan.h"
 #include "include/private/base/SkTArray.h"
 #include "include/private/base/SkTDArray.h"
+#include "src/gpu/graphite/AttachmentTypes.h"
 
 #include <functional>
 #include <optional>
@@ -35,7 +36,8 @@ void PrecompileCombinations(Context* context,
                             const KeyContext& keyContext,
                             DrawTypeFlags drawTypes,
                             bool withPrimitiveBlender,
-                            Coverage coverage);
+                            Coverage coverage,
+                            std::unordered_set<uint32_t>& foo);
 
 class PrecompileBase : public SkRefCnt {
 public:
@@ -205,7 +207,8 @@ public:
     typedef std::function<void(UniquePaintParamsID id,
                                DrawTypeFlags,
                                bool withPrimitiveBlender,
-                               Coverage)> ProcessCombination;
+                               Coverage,
+                               std::unordered_set<uint32_t>& foo)> ProcessCombination;
 
     // Provides access to functions that aren't part of the public API.
     PaintOptionsPriv priv();
@@ -236,7 +239,8 @@ private:
         DrawTypeFlags drawTypes,
         bool addPrimitiveBlender,
         Coverage coverage,
-        const ProcessCombination& processCombination) const;
+        const ProcessCombination& processCombination,
+        std::unordered_set<uint32_t>& foo) const;
 
     std::vector<sk_sp<PrecompileShader>> fShaderOptions;
     std::vector<sk_sp<PrecompileMaskFilter>> fMaskFilterOptions;

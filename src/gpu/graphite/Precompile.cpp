@@ -20,6 +20,9 @@
 #include "src/gpu/graphite/Renderer.h"
 #include "src/gpu/graphite/ShaderCodeDictionary.h"
 
+#include "src/gpu/graphite/AttachmentTypes.h"
+#include "src/gpu/graphite/ContextPriv.h"
+
 namespace skgpu::graphite {
 
 //--------------------------------------------------------------------------------------------------
@@ -420,6 +423,7 @@ void PaintOptions::createKey(const KeyContext& keyContext,
     if (!finalBlender.first) {
         finalBlender = { PrecompileBlender::Mode(SkBlendMode::kSrcOver), 0 };
     }
+
     DstReadRequirement dstReadReq = get_dst_read_req(keyContext.caps(), coverage,
                                                      finalBlender.first.get());
 
@@ -441,7 +445,8 @@ namespace {
 
 void create_blur_pipelines(const KeyContext& keyContext,
                            PipelineDataGatherer* gatherer,
-                           const PaintOptions::ProcessCombination& processCombination) {
+                           const PaintOptions::ProcessCombination& processCombination,
+                           std::unordered_set<uint32_t>& foo) {
     PaintOptions blurPaintOptions, imagePaintOptions;
 
     // For blurs we know we don't have alpha-only textures and don't need cubic filtering.
@@ -461,13 +466,15 @@ void create_blur_pipelines(const KeyContext& keyContext,
                                               DrawTypeFlags::kSimpleShape,
                                               /* withPrimitiveBlender= */ false,
                                               Coverage::kSingleChannel,
-                                              processCombination);
+                                              processCombination,
+                                              foo);
     imagePaintOptions.priv().buildCombinations(keyContext,
                                                gatherer,
                                                DrawTypeFlags::kSimpleShape,
                                                /* withPrimitiveBlender= */ false,
                                                Coverage::kSingleChannel,
-                                               processCombination);
+                                               processCombination,
+                                               foo);
 }
 
 } // anonymous namespace
@@ -478,7 +485,8 @@ void PaintOptions::buildCombinations(
         DrawTypeFlags drawTypes,
         bool withPrimitiveBlender,
         Coverage coverage,
-        const ProcessCombination& processCombination) const {
+        const ProcessCombination& processCombination,
+        std::unordered_set<uint32_t>& foo) const {
 
     PaintParamsKeyBuilder builder(keyContext.dict());
 
@@ -491,10 +499,10 @@ void PaintOptions::buildCombinations(
         tmp.setBlendModes(newDrawBlendMode);
 
         tmp.buildCombinations(keyContext, gatherer, drawTypes, withPrimitiveBlender, coverage,
-                              processCombination);
+                              processCombination, foo);
 
         if (fImageFilterOptions & PrecompileImageFilters::kBlur) {
-            create_blur_pipelines(keyContext, gatherer, processCombination);
+            create_blur_pipelines(keyContext, gatherer, processCombination, foo);
         }
     } else {
         int numCombinations = this->numCombinations();
@@ -509,9 +517,10 @@ void PaintOptions::buildCombinations(
             // PaintParamsKey. This serves to reset the builder.
             UniquePaintParamsID paintID = keyContext.dict()->findOrCreate(&builder);
 
-            processCombination(paintID, drawTypes, withPrimitiveBlender, coverage);
+            processCombination(paintID, drawTypes, withPrimitiveBlender, coverage, foo);
         }
     }
+
 }
 
 } // namespace skgpu::graphite
