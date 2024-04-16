@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "46c6f8dc_e2310738",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-04-16T13:27:34Z",
+      "side": 1,
+      "message": "I guess I would want to see this as part of the CL to use CopyBufferSubData in Skia WebGL. It is odd to me to add a new cap and have a validation check for it, but is not actually used anywhere.",
+      "parentUuid": "520feab4_1c227da7",
+      "revId": "d6fe29b4d1868cf2993fd9c22f3434ba0052cc84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d270a24b_78dcbc99",
         "filename": "src/gpu/ganesh/gl/GrGLBuffer.cpp",
         "patchSetId": 5
