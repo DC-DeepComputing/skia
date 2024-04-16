@@ -51,6 +51,24 @@
       "message": "Change lgtm. The image result from Gold is unrelated.",
       "revId": "6045cbfe2e1569d8ad578d784ddf5cc6a42b9262",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "70cad270_e3de35c6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5920
+      },
+      "writtenOn": "2024-04-16T18:29:50Z",
+      "side": 1,
+      "message": "\u003e Hmm, I don\u0027t remember. Didn\u0027t an update get reverted recently?\n\nJust the one I mistakenly made for libavif (which turned out to be a downgrade). There\u0027s AVIF specific bots, but I didn\u0027t see any for webp. I just wanted to check before submitting.",
+      "parentUuid": "0d5aa287_7eac0ed4",
+      "revId": "6045cbfe2e1569d8ad578d784ddf5cc6a42b9262",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
