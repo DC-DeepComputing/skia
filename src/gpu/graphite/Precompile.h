@@ -179,6 +179,11 @@ public:
 
     void setColorFilters(SkSpan<const sk_sp<PrecompileColorFilter>> colorFilters) {
         fColorFilterOptions.assign(colorFilters.begin(), colorFilters.end());
+        if (colorFilters.size()) {
+            // Currently we only have BlurMaskFilters which are implemented
+            // via BlurImageFiltering
+            fImageFilterOptions |= PrecompileImageFilters::kBlur;
+        }
     }
 
     void setImageFilters(SkEnumBitMask<PrecompileImageFilters> options) {
