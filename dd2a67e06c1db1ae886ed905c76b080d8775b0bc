@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "55585769_b5a75392",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18419
+      },
+      "writtenOn": "2024-04-16T15:59:24Z",
+      "side": 1,
+      "message": "Hi Michael and Brian, I don\u0027t have +2 privileges in this repo, can either of you help me submit this change?\n\nThank you again for the help and reviews!",
+      "revId": "dd2a67e06c1db1ae886ed905c76b080d8775b0bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
