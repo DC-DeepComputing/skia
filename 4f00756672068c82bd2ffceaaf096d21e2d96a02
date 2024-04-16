@@ -70,6 +70,24 @@
       "parentUuid": "2c7ab391_0efe3927",
       "revId": "4f00756672068c82bd2ffceaaf096d21e2d96a02",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "247c19fd_09805fbd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-16T15:53:35Z",
+      "side": 1,
+      "message": "And rolled back with https://chromium.googlesource.com/infra/luci/luci-go/+/7f1070fd28b718864a306e95cad0b7a757eb0eca and we couldn\u0027t even try it since it never rolled into luci and made it into cipd.",
+      "parentUuid": "c164689e_442817e1",
+      "revId": "4f00756672068c82bd2ffceaaf096d21e2d96a02",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
