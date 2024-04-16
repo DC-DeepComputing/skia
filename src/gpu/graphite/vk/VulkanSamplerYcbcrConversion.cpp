@@ -62,8 +62,10 @@ GraphiteResourceKey VulkanSamplerYcbcrConversion::MakeYcbcrConversionKey(
         const VulkanSharedContext* context, const VulkanYcbcrConversionInfo& info) {
     static const ResourceType kType = GraphiteResourceKey::GenerateResourceType();
 
-    // One uint32 for Vkformat, two for external format, and one to house all ycbcr information
-    static const int num32DataCnt = 4;
+    bool useExternalFormat = info.fFormat == VK_FORMAT_UNDEFINED;
+    // 2 uint32s needed for the external format or 1 for a known VkFormat. 1 uint32 can store all
+    // other differentiating ycbcr information.
+    static const int num32DataCnt = useExternalFormat ? 3 : 2;
     GraphiteResourceKey key;
     GraphiteResourceKey::Builder builder(&key, kType, num32DataCnt, Shareable::kYes);
 
@@ -78,19 +80,15 @@ GraphiteResourceKey VulkanSamplerYcbcrConversion::MakeYcbcrConversionKey(
     SkASSERT(info.fComponents.b                < (1u << 3));
     SkASSERT(info.fComponents.a                < (1u << 3));
 
-    builder[0] = info.fFormat;
-    builder[1] = (uint32_t)(info.fExternalFormat << 32);
-    builder[2] = (uint32_t)info.fExternalFormat;
-    builder[3] = (static_cast<uint32_t>(info.fYcbcrModel                 ) <<  0) |
-                 (static_cast<uint32_t>(info.fYcbcrRange                 ) <<  8) |
-                 (static_cast<uint32_t>(info.fXChromaOffset              ) <<  9) |
-                 (static_cast<uint32_t>(info.fYChromaOffset              ) << 10) |
-                 (static_cast<uint32_t>(info.fChromaFilter               ) << 11) |
-                 (static_cast<uint32_t>(info.fForceExplicitReconstruction) << 12) |
-                 (static_cast<uint32_t>(info.fComponents.r               ) << 20) |
-                 (static_cast<uint32_t>(info.fComponents.g               ) << 23) |
-                 (static_cast<uint32_t>(info.fComponents.b               ) << 26) |
-                 (static_cast<uint32_t>(info.fComponents.a               ) << 29) ;
+    int i = 0;
+    if (useExternalFormat) {
+        builder[i++] = (uint32_t)(info.fExternalFormat << 32);
+        builder[i++] = (uint32_t)info.fExternalFormat;
+    } else {
+        builder[i++] = info.fFormat;
+    }
+    builder[i++] = info.nonFormatInfoAsUInt32();
+    SkASSERT(i == num32DataCnt);
 
     builder.finish();
     return key;
