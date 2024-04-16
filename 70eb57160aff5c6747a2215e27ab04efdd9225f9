@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e0d4acd4_478862dc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-16T16:19:59Z",
+      "side": 1,
+      "message": "PTAL a new look. With the assertion failures in some picture-shader GMs on an earlier patch set I realized I was missing an entire case of concurrent modification, so it\u0027s been reworked pretty significantly. The CL description has also been updated.",
+      "revId": "70eb57160aff5c6747a2215e27ab04efdd9225f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
