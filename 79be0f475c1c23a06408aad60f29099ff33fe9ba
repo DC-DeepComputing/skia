@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "97dc4bf3_c8e7abb2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-16T22:32:55Z",
+      "side": 1,
+      "message": "Need to remove this implementation dependency first so that https://chromium-review.googlesource.com/c/chromium/src/+/5460160 can land.",
+      "revId": "79be0f475c1c23a06408aad60f29099ff33fe9ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
