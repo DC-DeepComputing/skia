@@ -46,6 +46,30 @@
       },
       "revId": "591af8d1c26ed213abd40c7e5204b0daf89c2e01",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fca737a4_749d9a13",
+        "filename": "src/gpu/graphite/compute/VelloComputeSteps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-04-16T21:13:49Z",
+      "side": 1,
+      "message": "Yep this was the issue. Though this surfaced a new bug: dashing5_bw is causing a system-wide hang. Weirdly this reproduces with grdawn_mtl but not with grmtl.\n\nThere have been other reports from some external users of Vello: https://github.com/linebender/vello/issues/548. I\u0027ll investigate.",
+      "parentUuid": "d1a49807_20284201",
+      "range": {
+        "startLine": 204,
+        "startChar": 48,
+        "endLine": 204,
+        "endChar": 55
+      },
+      "revId": "591af8d1c26ed213abd40c7e5204b0daf89c2e01",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
