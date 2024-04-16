@@ -33,6 +33,24 @@
       "message": "The most common Chrome nvidia GPU is still the 620. Up there is also the 630 and 625 (along with 700 series). So I think it is still beneficial for us to be testing a GPU from the 600 series.",
       "revId": "e68ca4a051a8f4f14f79e283f2463c1882dbe5cc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "05d34431_2cf06e9e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5205
+      },
+      "writtenOn": "2024-04-16T17:09:30Z",
+      "side": 1,
+      "message": "Thanks!",
+      "parentUuid": "bc0f08e1_3807d852",
+      "revId": "e68ca4a051a8f4f14f79e283f2463c1882dbe5cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
