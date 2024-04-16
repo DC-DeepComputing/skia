@@ -23,10 +23,21 @@ namespace skgpu::graphite {
 
 class VulkanSharedContext;
 
+// TODO: Consider changing this class to not be a Resource that we cache, store, and share. It is
+// relatively small and it may make more sense to simply have each texture that requires a
+// conversion store its own conversion information even if it is duplicated.
 class VulkanSamplerYcbcrConversion : public Resource {
 public:
     static sk_sp<VulkanSamplerYcbcrConversion> Make(const VulkanSharedContext*,
                                                     const VulkanYcbcrConversionInfo&);
+
+    // 1 uint32 needed for Vkformat, 2 for external format, and 1 to house remaining ycbcr info.
+    // TODO: When using a known VkFormat, we only need 3 int32s because an external format is
+    // stored as an int64 whereas a known VkFormat can be contained within an int32. Optimize for
+    // this case.
+    static const int kUint32sNeededForYcbcrInfo = 4;
+
+    // Return a fully-formed GraphiteResourceKey that represents the conversion from conversion info
     static GraphiteResourceKey MakeYcbcrConversionKey(const VulkanSharedContext*,
                                                       const VulkanYcbcrConversionInfo&);
 

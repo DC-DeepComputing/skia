@@ -67,18 +67,7 @@ GraphiteResourceKey VulkanSamplerYcbcrConversion::MakeYcbcrConversionKey(
     // other differentiating ycbcr information.
     static const int num32DataCnt = useExternalFormat ? 3 : 2;
     GraphiteResourceKey key;
-    GraphiteResourceKey::Builder builder(&key, kType, num32DataCnt, Shareable::kYes);
-
-    SkASSERT(info.fYcbcrModel                  < (1u << 7));
-    SkASSERT(info.fYcbcrRange                  < (1u << 1));
-    SkASSERT(info.fXChromaOffset               < (1u << 1));
-    SkASSERT(info.fYChromaOffset               < (1u << 1));
-    SkASSERT(info.fChromaFilter                < (1u << 1));
-    SkASSERT(info.fForceExplicitReconstruction < (1u << 7));
-    SkASSERT(info.fComponents.r                < (1u << 3));
-    SkASSERT(info.fComponents.g                < (1u << 3));
-    SkASSERT(info.fComponents.b                < (1u << 3));
-    SkASSERT(info.fComponents.a                < (1u << 3));
+    GraphiteResourceKey::Builder builder(&key, kType, kUint32sNeededForYcbcrInfo, Shareable::kYes);
 
     int i = 0;
     if (useExternalFormat) {
