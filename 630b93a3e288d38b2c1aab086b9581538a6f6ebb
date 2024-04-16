@@ -89,6 +89,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "79dcc689_da5d2e94",
+        "filename": "include/gpu/vk/VulkanTypes.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-04-16T17:57:31Z",
+      "side": 1,
+      "message": "For where the value comes from, see the comment I sneaked in right before yours above.\n\nThe `VkFormatFeatureFlags` returned by `VkAndroidHardwareBufferFormatPropertiesANDROID` are ONLY relevant and representative of actual format capabilities when we are using an *external* format\n(https://registry.khronos.org/vulkan/specs/1.3-extensions/man/html/VkAndroidHardwareBufferFormatPropertiesANDROID.html#_description). That being said, as for whether we could use the same sampler if it has different format features...\n\n[info ripped from link above] \nAndroid hardware buffers with the *same* external format must have the same support for:\nVK_FORMAT_FEATURE_SAMPLED_IMAGE_FILTER_LINEAR_BIT, VK_FORMAT_FEATURE_MIDPOINT_CHROMA_SAMPLES_BIT, VK_FORMAT_FEATURE_COSITED_CHROMA_SAMPLES_BIT, VK_FORMAT_FEATURE_SAMPLED_IMAGE_YCBCR_CONVERSION_LINEAR_FILTER_BIT, VK_FORMAT_FEATURE_SAMPLED_IMAGE_YCBCR_CONVERSION_SEPARATE_RECONSTRUCTION_FILTER_BIT, and VK_FORMAT_FEATURE_SAMPLED_IMAGE_YCBCR_CONVERSION_CHROMA_RECONSTRUCTION_EXPLICIT_FORCEABLE_BIT. \n\n\"Other format features may differ between Android hardware buffers that have the same external format. This allows applications to use the same VkSamplerYcbcrConversion object (and samplers and pipelines created from them) for any Android hardware buffers that have the same external format.\"\n\nSo with that, I think we are good to not check this equality here. Removed! Marking as resolved",
+      "parentUuid": "16dbffe5_95d8eed2",
+      "range": {
+        "startLine": 76,
+        "startChar": 0,
+        "endLine": 76,
+        "endChar": 89
+      },
+      "revId": "630b93a3e288d38b2c1aab086b9581538a6f6ebb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c2c8c690_9d6fd79f",
@@ -112,6 +136,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f78d746_3f9cc193",
+        "filename": "src/gpu/graphite/vk/VulkanSamplerYcbcrConversion.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-04-16T17:57:31Z",
+      "side": 1,
+      "message": "whoops yes thanks! 😊",
+      "parentUuid": "c2c8c690_9d6fd79f",
+      "range": {
+        "startLine": 81,
+        "startChar": 21,
+        "endLine": 81,
+        "endChar": 23
+      },
+      "revId": "630b93a3e288d38b2c1aab086b9581538a6f6ebb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d9a87561_5f8c2739",
@@ -125,6 +173,30 @@
       "writtenOn": "2024-04-16T17:26:08Z",
       "side": 1,
       "message": "Do we need a bit to know if we\u0027re using external format vs normal? If so can this bit fit in the nonFormatInfo bits?",
+      "range": {
+        "startLine": 85,
+        "startChar": 8,
+        "endLine": 85,
+        "endChar": 34
+      },
+      "revId": "630b93a3e288d38b2c1aab086b9581538a6f6ebb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c229ecdb_e4076475",
+        "filename": "src/gpu/graphite/vk/VulkanSamplerYcbcrConversion.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-04-16T17:57:31Z",
+      "side": 1,
+      "message": "Theoretically I suppose it *is* possible that the `uint64 external format value` could \u003d\u003d `(a known uint32 format value with a 0 value uint32 appended)`, so we certainly can add a bit to nonFormatInfo to determine that. It fits with no issues. Done!\n\nNote:\nI\u0027m still simply checking if `info.fFormat \u003d\u003d VK_FORMAT_UNDEFINED` here rather than calling `nonFormatInfoAsUInt32()` first and checking the first bit because I imagine we want format info earliest in the key for fastest possible determination if two conversions are the same, so this sequentially makes more sense and is clearer IMO.\n\nI *could* add a small method of `usesExternalFormat()` to `VulkanYcbcrConversionInfo` if we want to have that logic be in one central place, but the logic that determines that should never really change. So personally, this feels comfortable to me as-is.",
+      "parentUuid": "d9a87561_5f8c2739",
       "range": {
         "startLine": 85,
         "startChar": 8,
