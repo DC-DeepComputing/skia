@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "62e50916_4fdb27b5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5920
+      },
+      "writtenOn": "2024-04-16T01:58:39Z",
+      "side": 1,
+      "message": "Any other bots to add beside the dry-run list?",
+      "revId": "6045cbfe2e1569d8ad578d784ddf5cc6a42b9262",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
