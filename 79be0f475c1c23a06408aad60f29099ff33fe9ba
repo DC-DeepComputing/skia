@@ -16,6 +16,23 @@
       "message": "Need to remove this implementation dependency first so that https://chromium-review.googlesource.com/c/chromium/src/+/5460160 can land.",
       "revId": "79be0f475c1c23a06408aad60f29099ff33fe9ba",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3c1ca21_66936afa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-17T00:44:50Z",
+      "side": 1,
+      "message": "lgtm modulo the canary reds being red herrings from the earlier fuchsia font manager issues.",
+      "revId": "79be0f475c1c23a06408aad60f29099ff33fe9ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
