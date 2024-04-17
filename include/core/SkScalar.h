@@ -65,10 +65,10 @@ static inline bool SkScalarIsNaN(SkScalar x) { return x != x; }
 
 /** Returns true if x is not NaN and not infinite
  */
-static inline bool SkScalarIsFinite(SkScalar x) { return sk_float_isfinite(x); }
+static inline bool SkScalarIsFinite(SkScalar x) { return std::isfinite(x); }
 
 static inline bool SkScalarsAreFinite(SkScalar a, SkScalar b) {
-    return sk_floats_are_finite(a, b);
+    return (0.0f * a * b) == 0;
 }
 
 static inline bool SkScalarsAreFinite(const SkScalar array[], int count) {
