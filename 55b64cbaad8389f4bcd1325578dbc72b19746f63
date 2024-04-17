@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9040e220_971ca0a5",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 1534,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-04-17T14:19:36Z",
+      "side": 1,
+      "message": "Hey. While looking at a different issue today, I realized that we might want to change the implementation of `SkCanvas::imageInfo()`, especially after this CL. Today, we always return the image info of the root device -- I\u0027d propose switching that to the top device. Otherwise:\n\n```\n    // Make surface with MakeSRGB color space, get canvas...\n    canvas-\u003esaveLayer({nullptr, nullptr, nullptr, SkColorSpace::MakeSRGBLinear(), 0});\n    auto curCS \u003d canvas-\u003eimageInfo().refColorSpace();\n    // curCS will still be SRGB, not SRGBLinear\n```",
+      "revId": "55b64cbaad8389f4bcd1325578dbc72b19746f63",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "21a3b916_e8cde3f1",
         "filename": "src/pdf/SkPDFDevice.cpp",
         "patchSetId": 14
