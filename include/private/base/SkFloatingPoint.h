@@ -13,7 +13,6 @@
 
 #include <cmath>
 #include <cstdint>
-#include <cstring>
 #include <limits>
 
 inline constexpr float SK_FloatSqrt2 = 1.41421356f;
