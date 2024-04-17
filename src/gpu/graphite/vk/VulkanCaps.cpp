@@ -1412,11 +1412,30 @@ UniqueKey VulkanCaps::makeGraphicsPipelineKey(const GraphicsPipelineDesc& pipeli
 GraphiteResourceKey VulkanCaps::makeSamplerKey(const SamplerDesc& samplerDesc) const {
     GraphiteResourceKey samplerKey;
     static const ResourceType kType = GraphiteResourceKey::GenerateResourceType();
-    GraphiteResourceKey::Builder builder(&samplerKey, kType, 1, Shareable::kYes);
 
-    // TODO(b/311392779): When needed, add YCbCr info to the sampler key.
+    // A sampler format of "0" is acceptable and indicative that we simply not using YCbCr sampling.
+    const uint64_t& samplerFormat = samplerDesc.format();
+    // Non-zero conversion information means the sampler utilizes a ycbcr conversion.
+    bool usesYcbcrConversion = (samplerDesc.desc() >> SamplerDesc::kConversionInfoShift) != 0;
+    bool usesExternalFormat = samplerFormat == VK_FORMAT_UNDEFINED;
+
+    int uint32Quantity = 1;
+    if (usesYcbcrConversion) {
+        // Known formats only require 1 uint32. External formats (when sampler format is
+        // undefined) require 3: 2 to encapsulate the format and one for format feature flags.
+        uint32Quantity += usesExternalFormat ? 3 : 1;
+    }
+    GraphiteResourceKey::Builder builder(&samplerKey, kType, uint32Quantity, Shareable::kYes);
 
     builder[0] = samplerDesc.desc();
+    if (usesYcbcrConversion) {
+        builder[1] = (uint32_t)(samplerFormat << 32); // TODO verify this
+        if (usesExternalFormat) {
+            builder[2] = (uint32_t)samplerFormat;
+            builder[3] = samplerDesc.formatFeatures();
+        }
+    }
+
     builder.finish();
     return samplerKey;
 }
@@ -1432,7 +1451,8 @@ void VulkanCaps::buildKeyForTexture(SkISize dimensions,
 
     // We expect that the VkFormat enum is at most a 32-bit value.
     static_assert(VK_FORMAT_MAX_ENUM == 0x7FFFFFFF);
-    SkASSERT(vkSpec.fFormat != VK_FORMAT_UNDEFINED);
+    // We should either be using a known VkFormat or have a valid ycbcr conversion.
+    SkASSERT(vkSpec.fFormat != VK_FORMAT_UNDEFINED || vkSpec.fYcbcrConversionInfo.isValid());
     uint32_t formatKey = static_cast<uint32_t>(vkSpec.fFormat);
 
     uint32_t samplesKey = SamplesToKey(info.numSamples());
@@ -1452,10 +1472,17 @@ void VulkanCaps::buildKeyForTexture(SkISize dimensions,
     SkASSERT(vkSpec.fAspectMask                 < (1u << 11)); // aspectMask is bits 8 - 19
     SkASSERT(vkSpec.fImageUsageFlags            < (1u << 12)); // imageUsageFlags are bits 20-32
 
-    // We need two uint32_ts for dimensions, 1 for format, and 2 for the rest of the key.
-    static int kNum32DataCnt = 2 + 1 + 2;
+    // We need two uint32_ts for dimensions, 1 for format, and 2 for the rest of the information.
+    static constexpr int kNum32DataCntNoYcbcr =  2 + 1 + 2;
+    int num32DataCnt = kNum32DataCntNoYcbcr;
 
-    GraphiteResourceKey::Builder builder(key, type, kNum32DataCnt, shareable);
+    // If a texture w/ an external format is being used, that information must also be appended.
+    const VulkanYcbcrConversionInfo& ycbcrInfo = info.vulkanTextureSpec().fYcbcrConversionInfo;
+    if (ycbcrInfo.isValid()) {
+        num32DataCnt += VulkanSamplerYcbcrConversion::kUint32sNeededForYcbcrInfo;
+    }
+
+    GraphiteResourceKey::Builder builder(key, type, num32DataCnt, shareable);
 
     builder[0] = dimensions.width();
     builder[1] = dimensions.height();
@@ -1468,6 +1495,19 @@ void VulkanCaps::buildKeyForTexture(SkISize dimensions,
                  (static_cast<uint32_t>(vkSpec.fSharingMode)         << 6)  |
                  (static_cast<uint32_t>(vkSpec.fAspectMask)          << 7)  |
                  (static_cast<uint32_t>(vkSpec.fImageUsageFlags)     << 19);
+
+    if (ycbcrInfo.isValid()) {
+        // TODO: Verify whether this needs to be bitshifted to match creation
+        builder[5] = ycbcrInfo.nonFormatInfoAsUInt32();
+
+        SkASSERT(ycbcrInfo.fFormat != VK_FORMAT_UNDEFINED || ycbcrInfo.fExternalFormat != 0);
+        bool useExternalFormat = (ycbcrInfo.fFormat == VK_FORMAT_UNDEFINED &&
+                                  ycbcrInfo.fExternalFormat != 0);
+        builder[6] = useExternalFormat ? (uint32_t)(ycbcrInfo.fExternalFormat << 32)
+                                       : ycbcrInfo.fFormat;
+        builder[7] = useExternalFormat ? (uint32_t)ycbcrInfo.fExternalFormat : 0;
+        builder[8] = ycbcrInfo.fFormatFeatures;
+    }
 }
 
 SamplerConversionInfo VulkanCaps::getSamplerConversionInfo(sk_sp<TextureProxy> proxy) const {
