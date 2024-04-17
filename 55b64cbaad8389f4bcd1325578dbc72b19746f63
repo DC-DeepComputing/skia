@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eacf53aa_f1b0310c",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 1534,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-17T14:28:02Z",
+      "side": 1,
+      "message": "That is a good point, filed b/335412420",
+      "parentUuid": "9040e220_971ca0a5",
+      "revId": "55b64cbaad8389f4bcd1325578dbc72b19746f63",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "21a3b916_e8cde3f1",
