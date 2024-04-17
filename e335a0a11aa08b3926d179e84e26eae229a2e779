@@ -16,6 +16,24 @@
       "message": "I\u0027m not sure why, but gold is telling us that this caused all subpixel antialiased text to disappear on Mac12-Metal gms.",
       "revId": "e335a0a11aa08b3926d179e84e26eae229a2e779",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2176cb46_84d89b86",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-17T02:23:57Z",
+      "side": 1,
+      "message": "Actually, it looks like this has been happening intermittently lately, starting with https://skia.googlesource.com/skia.git/+show/53db15f41ecd6018e8a6ced435b0cf55361f4721 !? In any event, I don\u0027t think it\u0027s this change, but something seems to be up with the `Test-Mac12-GPU-IntelIrisPlus-Metal` type jobs because they appear to have recently greatly increased their propensity for not drawing subpixel anti-aliased text.",
+      "parentUuid": "c114363e_e9d0c6d1",
+      "revId": "e335a0a11aa08b3926d179e84e26eae229a2e779",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
