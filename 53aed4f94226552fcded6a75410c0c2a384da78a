@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ffa8910_29cd68f2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-04-17T17:01:19Z",
+      "side": 1,
+      "message": "These were the only \"edit\" methods that didn\u0027t have this functionality. I quickly ran into a user of SkPathBuilder in chromium taking advantage of it for offset.",
+      "revId": "53aed4f94226552fcded6a75410c0c2a384da78a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
