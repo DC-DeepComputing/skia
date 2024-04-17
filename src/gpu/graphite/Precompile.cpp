@@ -23,14 +23,14 @@
 namespace skgpu::graphite {
 
 //--------------------------------------------------------------------------------------------------
-sk_sp<PrecompileShader> PrecompileShader::makeWithLocalMatrix() {
+sk_sp<PrecompileShader> PrecompileShader::makeWithLocalMatrix1() {
     if (this->priv().isALocalMatrixShader()) {
         // SkShader::makeWithLocalMatrix collapses chains of localMatrix shaders so we need to
         // follow suit here
         return sk_ref_sp(this);
     }
 
-    return PrecompileShaders::LocalMatrix({ sk_ref_sp(this) });
+    return PrecompileShaders::LocalMatrix1({ sk_ref_sp(this) });
 }
 
 sk_sp<PrecompileShader> PrecompileShader::makeWithColorFilter(sk_sp<PrecompileColorFilter> cf) {

@@ -59,12 +59,12 @@ DEF_SIMPLE_GM(localmatrixshader_nested, canvas, 450, 1200) {
     static const FactoryT gFactories[] = {
         // SkLocalMatrixShader(SkImageShader(inner), outer)
         [](const sk_sp<SkImage>& img, const SkMatrix& inner, const SkMatrix& outer) {
-            return img->makeShader(SkSamplingOptions(), inner)->makeWithLocalMatrix(outer);
+            return img->makeShader(SkSamplingOptions(), inner)->makeWithLocalMatrix1(outer);
         },
 
         // SkLocalMatrixShader(SkLocalMatrixShader(SkImageShader(I), inner), outer)
         [](const sk_sp<SkImage>& img, const SkMatrix& inner, const SkMatrix& outer) {
-            return img->makeShader(SkSamplingOptions())->makeWithLocalMatrix(inner)->makeWithLocalMatrix(outer);
+            return img->makeShader(SkSamplingOptions())->makeWithLocalMatrix1(inner)->makeWithLocalMatrix1(outer);
         },
 
         // SkLocalMatrixShader(SkComposeShader(SkImageShader(inner)), outer)
@@ -72,15 +72,15 @@ DEF_SIMPLE_GM(localmatrixshader_nested, canvas, 450, 1200) {
             return SkShaders::Blend(SkBlendMode::kSrcOver,
                                     SkShaders::Color(SK_ColorTRANSPARENT),
                                     img->makeShader(SkSamplingOptions(), inner))
-                   ->makeWithLocalMatrix(outer);
+                   ->makeWithLocalMatrix1(outer);
         },
 
         // SkLocalMatrixShader(SkComposeShader(SkLocalMatrixShader(SkImageShader(I), inner)), outer)
         [](const sk_sp<SkImage>& img, const SkMatrix& inner, const SkMatrix& outer) {
             return SkShaders::Blend(SkBlendMode::kSrcOver,
                                     SkShaders::Color(SK_ColorTRANSPARENT),
-                                    img->makeShader(SkSamplingOptions())->makeWithLocalMatrix(inner))
-                   ->makeWithLocalMatrix(outer);
+                                    img->makeShader(SkSamplingOptions())->makeWithLocalMatrix1(inner))
+                   ->makeWithLocalMatrix1(outer);
         },
     };
 
@@ -171,7 +171,7 @@ DEF_SIMPLE_GM(localmatrixshader_persp, canvas, 542, 266) {
     // These post-concat, so it ends up as persp * scale.
     auto s2 = image->makeShader(SkTileMode::kRepeat, SkTileMode::kRepeat,
                                 SkSamplingOptions(), &scale)
-                   ->makeWithLocalMatrix(persp);
+                   ->makeWithLocalMatrix1(persp);
     draw(s2, false);
 
     // 3. Providing pre-computed persp*scale to SkImage::makeShader()
@@ -181,7 +181,7 @@ DEF_SIMPLE_GM(localmatrixshader_persp, canvas, 542, 266) {
 
     // 4. Providing pre-computed persp*scale to makeWithLocalMatrix
     auto s4 = image->makeShader(SkTileMode::kRepeat, SkTileMode::kRepeat, SkSamplingOptions())
-                   ->makeWithLocalMatrix(perspScale);
+                   ->makeWithLocalMatrix1(perspScale);
     draw(s4, false);
     canvas->restore();
 
@@ -200,7 +200,7 @@ DEF_SIMPLE_GM(localmatrixshader_persp, canvas, 542, 266) {
     auto g2 = SkGradientShader::MakeRadial({imgRect.centerX(), imgRect.centerY()},
                                            imgRect.width() / 2.f, kGradColors, nullptr, 2,
                                            SkTileMode::kRepeat, 0, &scale)
-                              ->makeWithLocalMatrix(persp);
+                              ->makeWithLocalMatrix1(persp);
     draw(g2, false);
 
     // 3. Provide per-computed persp*scale to Make
@@ -213,7 +213,7 @@ DEF_SIMPLE_GM(localmatrixshader_persp, canvas, 542, 266) {
     auto g4 = SkGradientShader::MakeRadial({imgRect.centerX(), imgRect.centerY()},
                                            imgRect.width() / 2.f, kGradColors, nullptr, 2,
                                            SkTileMode::kRepeat)
-                              ->makeWithLocalMatrix(perspScale);
+                              ->makeWithLocalMatrix1(perspScale);
     draw(g4, false);
     canvas->restore();
 }
@@ -243,7 +243,7 @@ protected:
                 SkFilterMode::kNearest,
                 SkMatrix::Scale(2, 2)); // make same size as mandrill and...
         // ... rotate about center
-        eshader = eshader->makeWithLocalMatrix(SkMatrix::RotateDeg(45, {128, 128}));
+        eshader = eshader->makeWithLocalMatrix1(SkMatrix::RotateDeg(45, {128, 128}));
 
         // blend the two rotated and aligned images.
         fShader = SkShaders::Blend(SkBlendMode::kModulate, mshader, eshader);
@@ -259,7 +259,7 @@ protected:
             center = ictm.mapPoint(center);
         }
 
-        auto shader = fShader->makeWithLocalMatrix(SkMatrix::RotateDeg(fAngle, center));
+        auto shader = fShader->makeWithLocalMatrix1(SkMatrix::RotateDeg(fAngle, center));
 
         SkPaint paint;
         paint.setShader(shader);

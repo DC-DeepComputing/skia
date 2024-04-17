@@ -425,7 +425,7 @@ static sk_sp<SkShader> make_post_inverse_lm(const SkShader* shader, const SkMatr
     return shader->makeWithLocalMatrix(inverse_lm * prev_local_matrix);
 #endif
 
-    return shader->makeWithLocalMatrix(inverse_lm);
+    return shader->makeWithLocalMatrix1(inverse_lm);
 }
 
 void SkDevice::drawGlyphRunList(SkCanvas* canvas,

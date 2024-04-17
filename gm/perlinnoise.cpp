@@ -177,7 +177,7 @@ class PerlinNoiseLocalMatrixGM : public skiagm::GM {
 
         SkMatrix lm;
         lm.setScale(2, 2);
-        paint.setShader(paint.getShader()->makeWithLocalMatrix(lm));
+        paint.setShader(paint.getShader()->makeWithLocalMatrix1(lm));
         r.fRight += r.width();
         r.fBottom += r.height();
 

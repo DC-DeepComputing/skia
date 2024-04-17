@@ -186,7 +186,7 @@ static void linear_gradproc_matrix(skiatest::Reporter* reporter, const GradRec& 
     // Same but using a local matrix wrapper.
     s = SkGradientShader::MakeLinear(buildRec.fPoint, buildRec.fColors, buildRec.fPos,
                                      buildRec.fColorCount, buildRec.fTileMode);
-    s = s->makeWithLocalMatrix(localMatrix);
+    s = s->makeWithLocalMatrix1(localMatrix);
     checkRec.gradCheck(reporter, s, &info, SkShaderBase::GradientType::kLinear, localMatrix);
     REPORTER_ASSERT(reporter, !memcmp(info.fPoint, checkRec.fPoint, 2 * sizeof(SkPoint)));
 }

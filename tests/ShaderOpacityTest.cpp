@@ -106,9 +106,9 @@ static void test_matrix(skiatest::Reporter* reporter) {
 
     static const SkMatrix kMatrix = SkMatrix::Scale(1,  1);
 
-    sk_sp<SkShader> lm1 = colorShader1->makeWithLocalMatrix(kMatrix);
+    sk_sp<SkShader> lm1 = colorShader1->makeWithLocalMatrix1(kMatrix);
     REPORTER_ASSERT(reporter, !lm1->isOpaque());
-    sk_sp<SkShader> lm2 = colorShader2->makeWithLocalMatrix(kMatrix);
+    sk_sp<SkShader> lm2 = colorShader2->makeWithLocalMatrix1(kMatrix);
     REPORTER_ASSERT(reporter, lm2->isOpaque());
 
     sk_sp<SkShader> ctm1 = as_SB(colorShader1)->makeWithCTM(kMatrix);

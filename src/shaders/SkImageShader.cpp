@@ -311,7 +311,7 @@ sk_sp<SkShader> SkImageShader::MakeRaw(sk_sp<SkImage> image,
         return SkShaders::Empty();
     }
     auto subset = SkRect::Make(image->dimensions());
-    return SkLocalMatrixShader::MakeWrapped<SkImageShader>(localMatrix,
+    return SkLocalMatrixShader::MakeWrapped1<SkImageShader>(localMatrix,
                                                            image,
                                                            subset,
                                                            tmx, tmy,
@@ -342,7 +342,7 @@ sk_sp<SkShader> SkImageShader::MakeSubset(sk_sp<SkImage> image,
     if (!SkRect::Make(image->bounds()).contains(subset)) {
         return nullptr;
     }
-    return SkLocalMatrixShader::MakeWrapped<SkImageShader>(localMatrix,
+    return SkLocalMatrixShader::MakeWrapped1<SkImageShader>(localMatrix,
                                                            std::move(image),
                                                            subset,
                                                            tmx, tmy,

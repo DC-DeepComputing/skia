@@ -543,7 +543,7 @@ std::pair<sk_sp<SkShader>, sk_sp<PrecompileShader>> create_localmatrix_shader(Sk
     SkMatrix lmStorage;
     random_local_matrix(rand, &lmStorage);
 
-    return { s->makeWithLocalMatrix(lmStorage), o->makeWithLocalMatrix() };
+    return { s->makeWithLocalMatrix1(lmStorage), o->makeWithLocalMatrix1() };
 }
 
 std::pair<sk_sp<SkShader>, sk_sp<PrecompileShader>> create_colorfilter_shader(SkRandom* rand,
