@@ -34,6 +34,24 @@
       "parentUuid": "c114363e_e9d0c6d1",
       "revId": "e335a0a11aa08b3926d179e84e26eae229a2e779",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "279a18a7_fbfc1584",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-04-17T12:59:32Z",
+      "side": 1,
+      "message": "I had filed skbug.com/40044604 a long time ago. It seems that the IntelIrisPlus just gets tired of drawing stuff sometimes.",
+      "parentUuid": "2176cb46_84d89b86",
+      "revId": "e335a0a11aa08b3926d179e84e26eae229a2e779",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
