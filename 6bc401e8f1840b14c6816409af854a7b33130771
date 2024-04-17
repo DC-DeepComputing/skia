@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ce05054_f5b82534",
+        "filename": "src/gpu/graphite/Image_YUVA_Graphite.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-04-17T16:39:19Z",
+      "side": 1,
+      "message": "It seems odd to me that if I already have an array of proxyviews I\u0027ll have to wrap it in a lambda to use this factory, especially since you\u0027ll be unrolling it into an array in the method itself.",
+      "range": {
+        "startLine": 33,
+        "startChar": 34,
+        "endLine": 33,
+        "endChar": 61
+      },
+      "revId": "6bc401e8f1840b14c6816409af854a7b33130771",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
