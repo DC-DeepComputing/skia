@@ -211,9 +211,8 @@ struct SamplerDesc {
         return SkSamplingOptions(filter, mipmap);
     }
 
-private:
-    uint32_t fDesc;
-
+    // These are public such that backends can bitshift data in order to determine whatever
+    // sampler qualities they need from fDesc.
     static constexpr int kNumTileModeBits   = SkNextLog2_portable(int(SkTileMode::kLastTileMode)+1);
     static constexpr int kNumFilterModeBits = SkNextLog2_portable(int(SkFilterMode::kLast)+1);
     static constexpr int kNumMipmapModeBits = SkNextLog2_portable(int(SkMipmapMode::kLast)+1);
@@ -222,6 +221,9 @@ private:
     static constexpr int kTileModeYShift  = kTileModeXShift  + kNumTileModeBits;
     static constexpr int kFilterModeShift = kTileModeYShift  + kNumTileModeBits;
     static constexpr int kMipmapModeShift = kFilterModeShift + kNumFilterModeBits;
+
+private:
+    uint32_t fDesc;
 };
 
 };  // namespace skgpu::graphite
