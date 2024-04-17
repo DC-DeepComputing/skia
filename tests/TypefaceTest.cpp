@@ -117,6 +117,68 @@ DEF_TEST(TypefaceStyle, reporter) {
     }
 }
 
+DEF_TEST(TypefaceStyleVariable, reporter) {
+    using Variation = SkFontArguments::VariationPosition;
+    sk_sp<SkFontMgr> fm = ToolUtils::TestFontMgr();
+
+    std::unique_ptr<SkStreamAsset> stream(GetResourceAsStream("fonts/Variable.ttf"));
+    if (!stream) {
+        REPORT_FAILURE(reporter, "fonts/Variable.ttf", SkString("Cannot load resource"));
+        return;
+    }
+    sk_sp<SkTypeface> typeface(ToolUtils::TestFontMgr()->makeFromStream(stream->duplicate()));
+    if (!typeface) {
+        // Not all SkFontMgr can MakeFromStream().
+        return;
+    }
+
+    // Creating Variable.ttf without any extra parameters should have a normal font style.
+    SkFontStyle fs = typeface->fontStyle();
+    REPORTER_ASSERT(reporter, fs == SkFontStyle::Normal(),
+                    "fs: %d %d %d", fs.weight(), fs.width(), fs.slant());
+
+    // Ensure that the font supports variable stuff
+    Variation::Coordinate varPos[2];
+    int numAxes = typeface->getVariationDesignPosition(varPos, std::size(varPos));
+    if (numAxes <= 0) {
+        // Not all SkTypeface can get the variation.
+        return;
+    }
+    if (numAxes != 2) {
+        // Variable.ttf has two axes.
+        REPORTER_ASSERT(reporter, numAxes == 2);
+        return;
+    }
+
+    // If a fontmgr or typeface can do variations, ensure the variation affects the reported style.
+    const Variation::Coordinate nonDefaultPosition[] = {
+        { SkSetFourByteTag('w','g','h','t'), 200.0f },
+        { SkSetFourByteTag('w','d','t','h'), 75.0f },
+    };
+    const SkFontStyle expectedStyle(200, 3, SkFontStyle::kUpright_Slant);
+
+    // On Mac10.15 and earlier, the wdth affected the style using the old gx ranges.
+    // On macOS 11 and later, the wdth affects the style using the new OpenType ranges.
+    // Allow old CoreText to report the wrong width values.
+#if defined(SK_BUILD_FOR_MAC) || defined(SK_BUILD_FOR_IOS)
+    SkFontStyle mac1015style(200, 9, SkFontStyle::kUpright_Slant);
+#else
+    SkFontStyle mac1015style = expectedStyle;
+#endif
+    SkFontArguments args;
+    args.setVariationDesignPosition(Variation{nonDefaultPosition, std::size(nonDefaultPosition)});
+
+    sk_sp<SkTypeface> nonDefaultTypeface = fm->makeFromStream(stream->duplicate(), args);
+    SkFontStyle ndfs = nonDefaultTypeface->fontStyle();
+    REPORTER_ASSERT(reporter, ndfs == expectedStyle || ndfs == mac1015style,
+                    "ndfs: %d %d %d", ndfs.weight(), ndfs.width(), ndfs.slant());
+
+    sk_sp<SkTypeface> cloneTypeface = typeface->makeClone(args);
+    SkFontStyle cfs = cloneTypeface->fontStyle();
+    REPORTER_ASSERT(reporter, cfs == expectedStyle || cfs == mac1015style,
+                    "cfs: %d %d %d", cfs.weight(), cfs.width(), cfs.slant());
+}
+
 DEF_TEST(TypefacePostScriptName, reporter) {
     sk_sp<SkTypeface> typeface(ToolUtils::CreateTypefaceFromResource("fonts/Em.ttf"));
     if (!typeface) {
