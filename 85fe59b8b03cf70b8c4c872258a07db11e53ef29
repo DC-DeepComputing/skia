@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ab5f95b_a53927ab",
+        "filename": "include/private/base/SkFloatBits.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-04-17T19:06:11Z",
+      "side": 1,
+      "message": "TODO: this can be removed. I\u0027ll do that later today",
+      "range": {
+        "startLine": 40,
+        "startChar": 0,
+        "endLine": 44,
+        "endChar": 0
+      },
+      "revId": "85fe59b8b03cf70b8c4c872258a07db11e53ef29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
