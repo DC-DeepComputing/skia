@@ -88,6 +88,24 @@
       "parentUuid": "c164689e_442817e1",
       "revId": "4f00756672068c82bd2ffceaaf096d21e2d96a02",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3fadbb30_9fe72794",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-17T19:44:16Z",
+      "side": 1,
+      "message": "And re-landed as https://chromium.googlesource.com/infra/luci/luci-go/+/3e19cd7bb78031ef91dc239ca5e570a32305d103 and then rolled through all the rollers and seems to alleviate the python 3.11 virtualenv issue.",
+      "parentUuid": "247c19fd_09805fbd",
+      "revId": "4f00756672068c82bd2ffceaaf096d21e2d96a02",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
