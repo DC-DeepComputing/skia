@@ -42,14 +42,14 @@ union SkFloatIntUnion {
 };
 
 // Helper to see a float as its bit pattern (w/o aliasing warnings)
-static inline int32_t SkFloat2Bits(float x) {
+static inline uint32_t SkFloat2Bits(float x) {
     SkFloatIntUnion data;
     data.fFloat = x;
     return data.fSignBitInt;
 }
 
 // Helper to see a bit pattern as a float (w/o aliasing warnings)
-static inline float SkBits2Float(int32_t floatAsBits) {
+static inline float SkBits2Float(uint32_t floatAsBits) {
     SkFloatIntUnion data;
     data.fSignBitInt = floatAsBits;
     return data.fFloat;
@@ -58,11 +58,11 @@ static inline float SkBits2Float(int32_t floatAsBits) {
 constexpr int32_t gFloatBits_exponent_mask = 0x7F800000;
 constexpr int32_t gFloatBits_matissa_mask  = 0x007FFFFF;
 
-static inline bool SkFloatBits_IsFinite(int32_t bits) {
+static inline bool SkFloatBits_IsFinite(uint32_t bits) {
     return (bits & gFloatBits_exponent_mask) != gFloatBits_exponent_mask;
 }
 
-static inline bool SkFloatBits_IsInf(int32_t bits) {
+static inline bool SkFloatBits_IsInf(uint32_t bits) {
     return ((bits & gFloatBits_exponent_mask) == gFloatBits_exponent_mask) &&
             (bits & gFloatBits_matissa_mask) == 0;
 }
