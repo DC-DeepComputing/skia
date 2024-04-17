@@ -61,13 +61,3 @@ int SkNthSet(uint32_t target, int n) {
 
     return SkCTZ(target);
 }
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-
-bool sk_floats_are_unit(const float array[], size_t count) {
-    bool is_unit = true;
-    for (size_t i = 0; i < count; ++i) {
-        is_unit &= (array[i] >= 0) & (array[i] <= 1);
-    }
-    return is_unit;
-}
