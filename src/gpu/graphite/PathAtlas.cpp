@@ -195,6 +195,9 @@ void PathAtlas::DrawAtlasMgr::evict(PlotLocator plotLocator) {
         fKeyLists[index].remove(currEntry);
         delete currEntry;
     }
+
+    //*** need an onEvict() so we can reset the associated Scene and OccupiedSize, and
+    //    anything in the DrawAtlas that "locks" Pages
 }
 
 void PathAtlas::DrawAtlasMgr::postFlush(Recorder* recorder) {
