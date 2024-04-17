@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c114363e_e9d0c6d1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-17T02:03:58Z",
+      "side": 1,
+      "message": "I\u0027m not sure why, but gold is telling us that this caused all subpixel antialiased text to disappear on Mac12-Metal gms.",
+      "revId": "e335a0a11aa08b3926d179e84e26eae229a2e779",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
