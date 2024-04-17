@@ -22,6 +22,30 @@
       },
       "revId": "7fec4401e5834a12aa86ff2ff8d7efeea8a3ddfe",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7011b82_88d4c98d",
+        "filename": "src/gpu/graphite/vk/VulkanSamplerYcbcrConversion.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-04-17T14:30:45Z",
+      "side": 1,
+      "message": "I need them to add the facepalm emoji to Gerrit for this reason. I must have left it in during a rebase. Thank you, Michael! Removed.",
+      "parentUuid": "4d4a292e_11f06d13",
+      "range": {
+        "startLine": 72,
+        "startChar": 0,
+        "endLine": 81,
+        "endChar": 60
+      },
+      "revId": "7fec4401e5834a12aa86ff2ff8d7efeea8a3ddfe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
