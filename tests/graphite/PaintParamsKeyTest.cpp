@@ -1256,6 +1256,12 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
                                  kPositions, kPositions, /* colors= */ nullptr),
     };
 
+    SkRandom rand;
+
+    PaintParamsKeyBuilder builder(dict);
+    PipelineDataGatherer paramsGatherer(context->priv().caps(), Layout::kMetal);
+    PipelineDataGatherer precompileGatherer(context->priv().caps(), Layout::kMetal);
+
     ShaderType shaders[] = {
             ShaderType::kBlend,
             ShaderType::kImage,

@@ -9,12 +9,18 @@
 #define skgpu_graphite_ResourceTypes_DEFINED
 
 #include "include/core/SkSamplingOptions.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTileMode.h"
 #include "include/gpu/graphite/GraphiteTypes.h"
+#include "include/private/base/SkTArray.h"
 #include "include/private/base/SkTo.h"
 #include "src/base/SkEnumBitMask.h"
 #include "src/base/SkMathPriv.h"
+
+#include <vector>
+
+#include <vector>
 
 namespace skgpu::graphite {
 
@@ -197,12 +203,10 @@ struct SamplerDesc {
                 const SamplerConversionInfo conversionInfo = {})
             : fDesc((static_cast<int>(tileModes[0])               << kTileModeXShift     ) |
                     (static_cast<int>(tileModes[1])               << kTileModeYShift     ) |
-                    (static_cast<int>(samplingOptions.filter)     << kFilterModeShift    ) |
                     (static_cast<int>(samplingOptions.mipmap)     << kMipmapModeShift    ) |
                     (conversionInfo.fNonFormatYcbcrConversionInfo << kConversionInfoShift) )
             , fFormat(conversionInfo.fFormat)
             , fFormatFeatures(conversionInfo.fFormatFeatures) {
-
         // Cubic sampling is handled in a shader, with the actual texture sampled by with NN,
         // but that is what a cubic SkSamplingOptions is set to if you ignore 'cubic', which let's
         // us simplify how we construct SamplerDec's from the options passed to high-level draws.
@@ -250,14 +254,8 @@ struct SamplerDesc {
         return SkSamplingOptions(filter, mipmap);
     }
 
-private:
-    uint32_t fDesc;
-    // Data fields populated by backend Caps which store texture format information (needed for
-    // YCbCr sampling). Only relevant when using immutable samplers. Otherwise, can be ignored.
-    // TODO: Optimize such that we store an int32 as opposed to 64 when using a known format.
-    uint64_t fFormat = 0;
-    uint32_t fFormatFeatures = 0;
-
+    // These are public such that backends can bitshift data in order to determine whatever
+    // sampler qualities they need from fDesc.
     static constexpr int kNumTileModeBits   = SkNextLog2_portable(int(SkTileMode::kLastTileMode)+1);
     static constexpr int kNumFilterModeBits = SkNextLog2_portable(int(SkFilterMode::kLast)+1);
     static constexpr int kNumMipmapModeBits = SkNextLog2_portable(int(SkMipmapMode::kLast)+1);
@@ -269,6 +267,15 @@ private:
     static constexpr int kFilterModeShift     = kTileModeYShift  + kNumTileModeBits;
     static constexpr int kMipmapModeShift     = kFilterModeShift + kNumFilterModeBits;
     static constexpr int kConversionInfoShift = kMipmapModeShift + kNumMipmapModeBits;
+
+private:
+    uint32_t fDesc;
+    // Data field populated by backend Caps which stored texture format information (needed for
+    // YCbCr sampling). Only relevant when using immutable samplers (ie, sampler mutability !=
+    // SamplerMutability::kDynamicSampler). Otherwise, can be ignored.
+    // TODO: Optimize such that we store an int32 as opposed to 64 when using a known format.
+    uint64_t fFormat = 0;
+    uint32_t fFormatFeatures = 0;
 };
 
 };  // namespace skgpu::graphite
