@@ -184,7 +184,7 @@ static void transform_shader(SkPaint* paint, const SkMatrix& ctm) {
     }
     return;
 #endif
-    paint->setShader(paint->getShader()->makeWithLocalMatrix(ctm));
+    paint->setShader(paint->getShader()->makeWithLocalMatrix1(ctm));
 }
 
 

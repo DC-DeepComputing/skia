@@ -96,7 +96,7 @@ private:
         return surface->makeImageSnapshot()
                 ->makeShader(SkTileMode::kRepeat, SkTileMode::kRepeat,
                              SkSamplingOptions(SkFilterMode::kLinear), &lm)
-                ->makeWithLocalMatrix(outer_lm);
+                ->makeWithLocalMatrix1(outer_lm);
     }
 
     inline static constexpr float kSZ     = 300,

@@ -173,7 +173,7 @@ private:
                                                   fUseLocalMatrixWrapper ? nullptr : &localMatrix,
                                                   nullptr);
         paint.setShader(fUseLocalMatrixWrapper
-                            ? pictureShader->makeWithLocalMatrix(localMatrix)
+                            ? pictureShader->makeWithLocalMatrix1(localMatrix)
                             : pictureShader);
         canvas->drawRect(SkRect::MakeWH(fSceneSize, fSceneSize), paint);
 
@@ -184,7 +184,7 @@ private:
                                                SkSamplingOptions(),
                                                fUseLocalMatrixWrapper ? nullptr : &localMatrix);
         paint.setShader(fUseLocalMatrixWrapper
-                            ? bitmapShader->makeWithLocalMatrix(localMatrix)
+                            ? bitmapShader->makeWithLocalMatrix1(localMatrix)
                             : bitmapShader);
         canvas->drawRect(SkRect::MakeWH(fSceneSize, fSceneSize), paint);
 

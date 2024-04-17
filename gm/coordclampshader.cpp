@@ -43,22 +43,22 @@ DEF_SIMPLE_GM(coordclampshader, canvas, 1074, 795) {
 
     canvas->save();
     canvas->translate(image->width(), 0);
-    shader = SkShaders::CoordClamp(imageShader->makeWithLocalMatrix(rotate), clampRect);
+    shader = SkShaders::CoordClamp(imageShader->makeWithLocalMatrix1(rotate), clampRect);
     paint.setShader(std::move(shader));
     canvas->drawRect(drawRect, paint);
     canvas->restore();
 
     canvas->save();
     canvas->translate(0, image->height());
-    shader = SkShaders::CoordClamp(imageShader, clampRect)->makeWithLocalMatrix(rotate);
+    shader = SkShaders::CoordClamp(imageShader, clampRect)->makeWithLocalMatrix1(rotate);
     paint.setShader(std::move(shader));
     canvas->drawRect(drawRect, paint);
     canvas->restore();
 
     canvas->save();
     canvas->translate(image->width(), image->height());
-    shader = SkShaders::CoordClamp(imageShader->makeWithLocalMatrix(rotate), clampRect)
-                     ->makeWithLocalMatrix(rotate);
+    shader = SkShaders::CoordClamp(imageShader->makeWithLocalMatrix1(rotate), clampRect)
+                     ->makeWithLocalMatrix1(rotate);
     paint.setShader(std::move(shader));
     canvas->drawRect(drawRect, paint);
     canvas->restore();

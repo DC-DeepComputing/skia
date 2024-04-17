@@ -45,14 +45,15 @@ public:
         // origin y-flip if needed. Thus we always emit the local matrix shader here so we can
         // connect the y-flip, but it doesn't hurt us if there is no flip.
         if ((!localMatrix || localMatrix->isIdentity()) && !isGraphiteImageShader) {
-            return t;
+            return t; //$$
         }
 
         return sk_make_sp<SkLocalMatrixShader>(sk_sp<SkShader>(std::move(t)),
-                                               localMatrix ? *localMatrix : SkMatrix::I());
+                                               localMatrix ? *localMatrix : SkMatrix::I(),
+                                               true); //$$
     }
 
-    SkLocalMatrixShader(sk_sp<SkShader> wrapped, const SkMatrix& localMatrix)
+    SkLocalMatrixShader(sk_sp<SkShader> wrapped, const SkMatrix& localMatrix, bool foo)
             : fLocalMatrix(localMatrix), fWrappedShader(std::move(wrapped)) {}
 
     bool isOpaque() const override { return as_SB(fWrappedShader)->isOpaque(); }

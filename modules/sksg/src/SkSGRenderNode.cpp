@@ -87,7 +87,7 @@ static sk_sp<SkShader> LocalShader(const sk_sp<SkShader>& shader,
     // SkShader::makeWithPostLocalMatrix).  Probably a good signal that the whole mechanism is
     // contrived and should be redesigned (use SkCanvas::clipShader when available, drop shader
     // "effects" completely, etc).
-    return shader->makeWithLocalMatrix(lm);
+    return shader->makeWithLocalMatrix1(lm);
 }
 
 bool RenderNode::RenderContext::requiresIsolation() const {
@@ -173,7 +173,7 @@ RenderNode::ScopedRenderContext::modulateMaskShader(sk_sp<SkShader> ms, const Sk
             const auto relative_transform = SkMatrix::Concat(invMaskCTM, ctm);
             fCtx.fMaskShader = SkShaders::Blend(SkBlendMode::kSrcIn,
                                                 std::move(fCtx.fMaskShader),
-                                                ms->makeWithLocalMatrix(relative_transform));
+                                                ms->makeWithLocalMatrix1(relative_transform));
         }
     } else {
         fCtx.fMaskShader = std::move(ms);
