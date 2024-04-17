@@ -305,7 +305,7 @@ bool SkColorSpace::Equals(const SkColorSpace* x, const SkColorSpace* y) {
         // even returns true more often than those two OR'd together   (two different NaNs).
         auto equiv = [](float X, float Y) {
             return (X==Y)
-                || (sk_float_isnan(X) && sk_float_isnan(Y));
+                || (std::isnan(X) && std::isnan(Y));
         };
 
         for (int i = 0; i < 7; i++) {
