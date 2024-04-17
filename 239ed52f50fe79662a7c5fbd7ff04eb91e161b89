@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "503d7eb9_929e13d0",
+        "filename": "src/gpu/graphite/TextureUtils.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-04-17T14:19:31Z",
+      "side": 1,
+      "message": "is this needed?",
+      "range": {
+        "startLine": 76,
+        "startChar": 10,
+        "endLine": 76,
+        "endChar": 20
+      },
+      "revId": "239ed52f50fe79662a7c5fbd7ff04eb91e161b89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
