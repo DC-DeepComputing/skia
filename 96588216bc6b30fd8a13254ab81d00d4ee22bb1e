@@ -46,6 +46,30 @@
       },
       "revId": "96588216bc6b30fd8a13254ab81d00d4ee22bb1e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "95188e56_5f4cbfc8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-18T17:41:15Z",
+      "side": 1,
+      "message": "There is a `gn/__init__.py`, so it looks like this is a package. This seems to work when run the way the task runs it, like `python3 -c \"from gn import gn_to_bp\"` but then not when run directly.\n\nIt looks like in addition to absolutely broken `sort` this is another failure of python3 https://stackoverflow.com/questions/16981921/relative-imports-in-python-3 .",
+      "parentUuid": "c245b745_0185bcf6",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 43
+      },
+      "revId": "96588216bc6b30fd8a13254ab81d00d4ee22bb1e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
