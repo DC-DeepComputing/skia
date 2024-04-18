@@ -25,6 +25,7 @@
 #include "src/base/SkTLazy.h"
 #include "src/utils/SkJSON.h"
 
+#include <cmath>
 #include <utility>
 
 class SkMatrix;
