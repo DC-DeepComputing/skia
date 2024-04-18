@@ -16,8 +16,8 @@ import string
 import subprocess
 import tempfile
 
-import skqp_gn_args
-import gn_to_bp_utils
+from . import skqp_gn_args
+from . import gn_to_bp_utils
 
 # First we start off with a template for Android.bp,
 # with holes for source lists and include directories.
