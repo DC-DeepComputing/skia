@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ccbceb3_1c6e1696",
+        "filename": "src/gpu/ganesh/vk/GrVkOpsRenderPass.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 748,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-04-18T13:21:34Z",
+      "side": 1,
+      "message": "Maybe make this and following more like:\n```\nif (vertexBuffer) {\n    SkDEBUGCODE(auto* gpuBuffer \u003d static_cast......);\n    SkASSERT(..);\n    ....\n}\n```\nOr just repeat the cast in each assert call",
+      "range": {
+        "startLine": 748,
+        "startChar": 4,
+        "endLine": 748,
+        "endChar": 97
+      },
+      "revId": "fbf6c047c045ecf3196e1fc8a06a666d3f47229b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
