@@ -22,6 +22,30 @@
       },
       "revId": "9ece71262f49e78da4d0308d6b44435b0a443e11",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f612982f_fc31c487",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1457,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-18T14:31:05Z",
+      "side": 1,
+      "message": "Yeah I think we can make it an assert. I\u0027d put the assignment in there for the case where a scratch device transitioned to a non-scratch device, but I think it makes sense to make that transition more explicit when it happens and that would involve moving the draw task off the device. Right now there aren\u0027t any scratch devices that transition because the cases that could/should do that use non-scratch devices at the moment.",
+      "parentUuid": "8e693a3b_53a2563c",
+      "range": {
+        "startLine": 1453,
+        "startChar": 6,
+        "endLine": 1457,
+        "endChar": 5
+      },
+      "revId": "9ece71262f49e78da4d0308d6b44435b0a443e11",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
