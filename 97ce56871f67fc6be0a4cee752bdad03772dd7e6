@@ -69,6 +69,24 @@
       "parentUuid": "bf445c62_62d39446",
       "revId": "97ce56871f67fc6be0a4cee752bdad03772dd7e6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "77e83af3_5651149b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-18T13:57:42Z",
+      "side": 1,
+      "message": "So it turns out that if you only remove files in a CL the empty list of files to check will be passed to `rewrite_includes.py`, but that script interprets no source files to check as \"check all the files\".",
+      "parentUuid": "a4663ce9_b6ff3d3e",
+      "revId": "97ce56871f67fc6be0a4cee752bdad03772dd7e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
