@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dea59a42_4052d4e5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-04-18T16:05:36Z",
+      "side": 1,
+      "message": "Weird, this is working for me locally as is. And this seems to break it?\n\n```\nTraceback (most recent call last):\n  File \"/usr/local/google/home/scroggo/android/main/external/skia/gn/gn_to_bp.py\", line 19, in \u003cmodule\u003e\n    from . import skqp_gn_args\nImportError: attempted relative import with no known parent package\n```\n\nI\u0027m using Python 3.11.8",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 43
+      },
+      "revId": "96588216bc6b30fd8a13254ab81d00d4ee22bb1e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
