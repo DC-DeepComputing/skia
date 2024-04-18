@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "759fb5cb_3ddb5fdc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-04-18T14:40:43Z",
+      "side": 1,
+      "message": "The alternative is to just (for now) rewrite all of the code in Skia that uses these. Thoughts?",
+      "revId": "7836bb224ccb73f5fe41dbea4418b0163d3c069e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
