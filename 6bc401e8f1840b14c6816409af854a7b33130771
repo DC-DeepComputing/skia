@@ -70,6 +70,30 @@
       },
       "revId": "6bc401e8f1840b14c6816409af854a7b33130771",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93ae09a2_3f76a32d",
+        "filename": "src/gpu/graphite/Image_YUVA_Graphite.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-18T03:01:21Z",
+      "side": 1,
+      "message": "PS 5 has it updated to have callers fill out an array of TextureProxyViews and then call `Make` that performs validation. I opted to have logic that was already needing to check for success/failure on some steps to also return null early, but otherwise simpler factories would just defer validation to inside Make().\n\nOne thing I realized doing it this way is that with `Wrap` taking a proxy function, we weren\u0027t trying to create texture proxies until after the base validation had been performed. With this approach, it theoretically could produce work that\u0027s then wasted because the final image validation failed. In practice I don\u0027t think that matters much because most validation failures will have also produced an invalid SkYUVAInfo and that reports a plane count of 0 so the proxy-filling-loops will just be no-ops.\n\nOther than this wasted work when failing, I think this is more readable than trying to parse the lambda syntax.",
+      "parentUuid": "b9abf338_54881169",
+      "range": {
+        "startLine": 33,
+        "startChar": 34,
+        "endLine": 33,
+        "endChar": 61
+      },
+      "revId": "6bc401e8f1840b14c6816409af854a7b33130771",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
