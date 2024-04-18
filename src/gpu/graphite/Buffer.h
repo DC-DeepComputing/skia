@@ -34,6 +34,8 @@ public:
 
     const char* getResourceType() const override { return "Buffer"; }
 
+    const Buffer* asBuffer() const override { return this; }
+
 protected:
     Buffer(const SharedContext* sharedContext,
            size_t size,
@@ -59,4 +61,3 @@ private:
 } // namespace skgpu::graphite
 
 #endif // skgpu_graphite_Buffer_DEFINED
-
