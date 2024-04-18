@@ -41,8 +41,8 @@ func main() {
 	if _, gnToBpErr := exec.RunCommand(ctx, &exec.Command{
 		Env:  gnEnv,
 		Dir:  skiaCheckoutAbsPath,
-		Name: "python2",
-		Args: []string{"-c", "from gn import gn_to_bp"},
+		Name: "python3",
+		Args: []string{"gn/gn_to_bp.py"},
 	}); gnToBpErr != nil {
 		td.Fatal(ctx, fmt.Errorf("Failed to run gn_to_bp: %s", gnToBpErr))
 	}
