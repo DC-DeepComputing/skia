@@ -16,6 +16,24 @@
       "message": "This makes this target visible to the target with the odd name `__pkg__` at top level right?",
       "revId": "500fd99f0ac475798677ee81f49a5c75236344e4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e473f0b6_00252417",
+        "filename": "src/ports/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 417,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-04-18T15:10:13Z",
+      "side": 0,
+      "message": "I\u0027m not quite sure how Bazel was interpreting this before. Now it means \"any target in the top level BUILD.bazel file\" is fair game.",
+      "parentUuid": "121e7e2e_29b7efcb",
+      "revId": "500fd99f0ac475798677ee81f49a5c75236344e4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
