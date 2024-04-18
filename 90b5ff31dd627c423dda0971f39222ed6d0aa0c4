@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "723ac729_2ba225f2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-18T19:09:09Z",
+      "side": 1,
+      "message": "While this is prep for the full discardable system, and that CL needs a bit of clean up still, https://skia-review.googlesource.com/c/skia/+/836136 is probably good to glance at to know what this CL is prepping for.",
+      "revId": "90b5ff31dd627c423dda0971f39222ed6d0aa0c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
