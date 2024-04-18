@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "28f867fe_adc12919",
+        "filename": "src/gpu/ganesh/vk/GrVkOpsRenderPass.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-04-18T13:55:20Z",
+      "side": 1,
+      "message": "Today, `rewrite-includes` insisted on this order. Yesterday, no complaints. Weird.",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 56
+      },
+      "revId": "6d7cc46acaa0357a0d656e427dc1f4feca0cb1f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
