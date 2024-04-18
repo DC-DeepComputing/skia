@@ -52,6 +52,23 @@
       "parentUuid": "cc5065ce_d4293234",
       "revId": "38e58e41dce531d586eaf96248baa163057af127",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8ff6c71c_93a0917f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-04-18T21:41:42Z",
+      "side": 1,
+      "message": "This change isn\u0027t going to be merged; it should be abandoned.",
+      "revId": "38e58e41dce531d586eaf96248baa163057af127",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
