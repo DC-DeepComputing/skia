@@ -22,6 +22,30 @@
       },
       "revId": "96588216bc6b30fd8a13254ab81d00d4ee22bb1e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c245b745_0185bcf6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-18T17:00:29Z",
+      "side": 1,
+      "message": "Interesting, since it seems to work for me locally and seems to be working on `Housekeeper-PerCommit-RunGnToBp`. From where are you running it?",
+      "parentUuid": "dea59a42_4052d4e5",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 43
+      },
+      "revId": "96588216bc6b30fd8a13254ab81d00d4ee22bb1e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
