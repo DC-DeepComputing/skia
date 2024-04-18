@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4bb3421c_71e41722",
+        "filename": "src/gpu/graphite/geom/RectBlurData.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-18T19:22:07Z",
+      "side": 1,
+      "message": "At first I thought that `devRRectIsCircle` was sufficient, but then I realized `canBeCircle` does cover additional cases, so a comment along the lines of:\n\n    // A local-space circle transformed by a rotation matrix will fail\n    // SkRRect::transform since it only supports scale+translate matrices, but\n    // is still a valid circle that can be blurred.",
+      "range": {
+        "startLine": 59,
+        "startChar": 4,
+        "endLine": 62,
+        "endChar": 95
+      },
+      "revId": "a97757e16e690dd437a9ca01ee5580eaf1b6a935",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d822c5a_2756a68b",
+        "filename": "src/gpu/graphite/geom/RectBlurData.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-18T19:22:07Z",
+      "side": 1,
+      "message": "I like being able to fit all the analytic blurs into a single Geometry type, if that remains true for rounded rects as well, it\u0027d be nice to rename this to something like `AnaltyicBlurMask`",
+      "range": {
+        "startLine": 229,
+        "startChar": 11,
+        "endLine": 229,
+        "endChar": 23
+      },
+      "revId": "a97757e16e690dd437a9ca01ee5580eaf1b6a935",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
