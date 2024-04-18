@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "801c11ac_db1b6a30",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-18T21:10:05Z",
+      "side": 1,
+      "message": "Now that we have tests that these values actually mean something, we can put these in the PDF, not that any viewers currently seem to use them.",
+      "revId": "cca8ad9fbb7e50745fceb3fb8adc08adc08ac8d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
