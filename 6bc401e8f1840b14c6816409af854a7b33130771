@@ -94,6 +94,30 @@
       },
       "revId": "6bc401e8f1840b14c6816409af854a7b33130771",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4463d37e_3ad9f91a",
+        "filename": "src/gpu/graphite/Image_YUVA_Graphite.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-04-18T17:12:25Z",
+      "side": 1,
+      "message": "I agree, the readability is much better and worth the unlikely wasted work.",
+      "parentUuid": "93ae09a2_3f76a32d",
+      "range": {
+        "startLine": 33,
+        "startChar": 34,
+        "endLine": 33,
+        "endChar": 61
+      },
+      "revId": "6bc401e8f1840b14c6816409af854a7b33130771",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
