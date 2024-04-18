@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "121e7e2e_29b7efcb",
+        "filename": "src/ports/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 417,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-18T14:36:21Z",
+      "side": 0,
+      "message": "This makes this target visible to the target with the odd name `__pkg__` at top level right?",
+      "revId": "500fd99f0ac475798677ee81f49a5c75236344e4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
