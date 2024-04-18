@@ -33,6 +33,46 @@
       "message": "Gentle bump",
       "revId": "e60b74c5f082fe45ddcba02ec365c271a2728c84",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a67c770_f6671212",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-04-18T15:55:02Z",
+      "side": 1,
+      "message": "TY for making progress on this!! LGTM minus one nit. In the future, I would advise breaking out functionality changes and formatting changes for easier reviewing, but only if it\u0027s not too much additional overhead to do so. Thanks, Nolan! 😊",
+      "revId": "e60b74c5f082fe45ddcba02ec365c271a2728c84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c0448ac6_a4864062",
+        "filename": "src/gpu/graphite/vk/VulkanGraphiteUtilsPriv.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-04-18T15:55:02Z",
+      "side": 1,
+      "message": "Clarity nit.... perhaps:\n```suggestion\n// cannot require a VulkanSharedContext because driver calls are needed before the shared context has been initialized.\n```",
+      "range": {
+        "startLine": 20,
+        "startChar": 47,
+        "endLine": 20,
+        "endChar": 59
+      },
+      "revId": "e60b74c5f082fe45ddcba02ec365c271a2728c84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
