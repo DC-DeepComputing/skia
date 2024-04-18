@@ -94,6 +94,30 @@
       },
       "revId": "96588216bc6b30fd8a13254ab81d00d4ee22bb1e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cb2c9333_f0eba4e9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-04-18T20:00:08Z",
+      "side": 1,
+      "message": "\u003e From where are you running it?\n\nLooks like you\u0027ve figured out the problem (thanks!), but fwiw, this is on my cloudtop, where I\u0027m just running\n\n```\npython gn/gn_to_bp.py\n```",
+      "parentUuid": "0d8b9651_cca97820",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 43
+      },
+      "revId": "96588216bc6b30fd8a13254ab81d00d4ee22bb1e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

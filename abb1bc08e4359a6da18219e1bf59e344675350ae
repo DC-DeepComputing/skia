@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "12d1177f_91d76878",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-04-18T20:00:08Z",
+      "side": 1,
+      "message": "I\u0027m not familiar with the code you\u0027re changing now, but I no longer have any objections.",
+      "revId": "abb1bc08e4359a6da18219e1bf59e344675350ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
