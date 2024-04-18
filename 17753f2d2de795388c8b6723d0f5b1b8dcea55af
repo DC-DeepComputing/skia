@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ea38ebf_40085740",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-18T02:24:51Z",
+      "side": 1,
+      "message": "There were some slight regressions to this change: https://perf.skia.org/t/?begin\u003d1713371869\u0026end\u003d1713371870\u0026subset\u003dall\n\nbut they weren\u0027t huge regressions and they mostly seemed to impact ganesh + msaa configs. DMSAA didn\u0027t show up and looking at all SKP timings on all graphite configs showed no regression, so I think I am going to stick with this approach and make a follow up CL to ensure the Recording will fail being snapped.",
+      "revId": "17753f2d2de795388c8b6723d0f5b1b8dcea55af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
