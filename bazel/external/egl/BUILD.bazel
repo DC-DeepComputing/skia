@@ -1,0 +1,8 @@
+cc_library(
+    name = "egl",
+    linkopts = [
+        "-lGLESv2",
+        "-lEGL",
+    ],
+    visibility = ["//:__subpackages__"],
+)
