@@ -52,6 +52,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b6862e6c_ed4c0c9e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-04-18T21:15:47Z",
+      "side": 1,
+      "message": "Thanks for your assistance!! 😊\n\n\u003e In the future, I would advise breaking out functionality changes and formatting changes for easier reviewing, but only if it\u0027s not too much additional overhead to do so. \n\nFair point! I feel a lil self-conscious leaving a repo in an unformatted state, unless I have an atomic CL stack. But IIRC, CL stacks work differently in Skia\u0027s Gerrit compared to Android\u0027s instance, so I avoid them in Skia\u0027s instance out of habit. 😢",
+      "parentUuid": "1a67c770_f6671212",
+      "revId": "e60b74c5f082fe45ddcba02ec365c271a2728c84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c0448ac6_a4864062",
@@ -65,6 +83,30 @@
       "writtenOn": "2024-04-18T15:55:02Z",
       "side": 1,
       "message": "Clarity nit.... perhaps:\n```suggestion\n// cannot require a VulkanSharedContext because driver calls are needed before the shared context has been initialized.\n```",
+      "range": {
+        "startLine": 20,
+        "startChar": 47,
+        "endLine": 20,
+        "endChar": 59
+      },
+      "revId": "e60b74c5f082fe45ddcba02ec365c271a2728c84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "33b73469_916950bf",
+        "filename": "src/gpu/graphite/vk/VulkanGraphiteUtilsPriv.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-04-18T21:15:47Z",
+      "side": 1,
+      "message": "I like that, thanks!",
+      "parentUuid": "c0448ac6_a4864062",
       "range": {
         "startLine": 20,
         "startChar": 47,
