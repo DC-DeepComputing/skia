@@ -70,6 +70,30 @@
       },
       "revId": "96588216bc6b30fd8a13254ab81d00d4ee22bb1e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d8b9651_cca97820",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-18T19:35:34Z",
+      "side": 1,
+      "message": "So I\u0027m going with \"this is written as a python script, not a module\" and updating the task to run it that way. In addition, this allows for simply passing the path to gn.",
+      "parentUuid": "95188e56_5f4cbfc8",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 43
+      },
+      "revId": "96588216bc6b30fd8a13254ab81d00d4ee22bb1e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
