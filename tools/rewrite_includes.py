@@ -52,6 +52,9 @@ ignorelist = [
   'Device.h',
   # Temporary shims
   'GrBackendDrawableInfo.h',
+  'GrGLMakeEGLInterface.h',
+  'GrGLMakeEpoxyEGLInterface.h',
+  'GrGLMakeGLXInterface.h',
   # Transitional
   'tools/window',
 ]
