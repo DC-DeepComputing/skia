@@ -34,6 +34,24 @@
       "parentUuid": "73ed19c2_0bc66f62",
       "revId": "84addd92a3be7c9a47b58ce9fb8c7ede84864782",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "96e27cf2_fa053918",
+        "filename": "include/core/SkScalar.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-04-19T16:27:37Z",
+      "side": 0,
+      "message": "Restored API.",
+      "parentUuid": "13d43f67_6aacb765",
+      "revId": "84addd92a3be7c9a47b58ce9fb8c7ede84864782",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
