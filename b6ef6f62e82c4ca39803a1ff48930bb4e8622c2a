@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ae4d3de_238e5b70",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 373,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-19T20:12:06Z",
+      "side": 1,
+      "message": "Missing this check on `mapPtr` is the likely source of b/335848866, which started happening after adding the null checks inside the `BufferWriter`s. This was crashing with very small values, which could come from here if the `Buffer` resource and offset were non-null/zero but `map()` failed.  The later `SkTAddOffset` produces a \"non-null\" value that we\u0027d crash on.",
+      "range": {
+        "startLine": 373,
+        "startChar": 9,
+        "endLine": 373,
+        "endChar": 15
+      },
+      "revId": "b6ef6f62e82c4ca39803a1ff48930bb4e8622c2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
