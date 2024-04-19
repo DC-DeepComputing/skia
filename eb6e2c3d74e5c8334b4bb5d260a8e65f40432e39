@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0809f27f_4b01885c",
+        "filename": "src/opts/SkBitmapProcState_opts.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 573,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-04-19T13:26:28Z",
+      "side": 1,
+      "message": "I think maybe now we have the evidence we need? This always benefits images with baked-in rotation.",
+      "range": {
+        "startLine": 573,
+        "startChar": 0,
+        "endLine": 573,
+        "endChar": 87
+      },
+      "revId": "eb6e2c3d74e5c8334b4bb5d260a8e65f40432e39",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
