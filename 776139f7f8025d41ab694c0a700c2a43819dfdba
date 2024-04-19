@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a43dddba_048e7d95",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-04-19T16:38:27Z",
+      "side": 1,
+      "message": "why is this needed? I thought in general we don\u0027t really do the whole swizzle to all the channels anymore. Most things do things like 000r or a000",
+      "revId": "776139f7f8025d41ab694c0a700c2a43819dfdba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
