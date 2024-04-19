@@ -16,6 +16,24 @@
       "message": "why is this needed? I thought in general we don\u0027t really do the whole swizzle to all the channels anymore. Most things do things like 000r or a000",
       "revId": "776139f7f8025d41ab694c0a700c2a43819dfdba",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d13e1013_68044744",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-19T17:03:26Z",
+      "side": 1,
+      "message": "The motivation is some logic in the next CL for storing the final channel selection on the TextureProxyView for the channel, instead of having to hold on to the whole YUVALocations object. That gets the particular channel programmatically so it\u0027s more convenient to just pass in the `char` instead of having to convert it into a 4-char string. \n\nOriginally, I had written it to produce a swizzle like `c000` since it only needs the specific channel to be in the first location. There\u0027s no reason I can\u0027t go back to that behavior; it\u0027d just be changing what we pass in to the `CToI` functions for the last 3 channels.",
+      "parentUuid": "a43dddba_048e7d95",
+      "revId": "776139f7f8025d41ab694c0a700c2a43819dfdba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
