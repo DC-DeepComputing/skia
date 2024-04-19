@@ -201,6 +201,21 @@ static void unittest_isfinite(skiatest::Reporter* reporter) {
     REPORTER_ASSERT(reporter,  SkIsFinite(big));
     REPORTER_ASSERT(reporter,  SkIsFinite(-big));
     REPORTER_ASSERT(reporter,  SkIsFinite(zero));
+
+    // SkIsFinite has unique implementations for a pair of values, and for 3+ values.
+    REPORTER_ASSERT(reporter, !SkIsFinite(inf, T(1)));
+    REPORTER_ASSERT(reporter, !SkIsFinite(T(2), -inf));
+    REPORTER_ASSERT(reporter, !SkIsFinite(nan, T(3)));
+    REPORTER_ASSERT(reporter,  SkIsFinite(T(4), big));
+    REPORTER_ASSERT(reporter,  SkIsFinite(-big, T(5)));
+    REPORTER_ASSERT(reporter,  SkIsFinite(T(6), zero));
+
+    REPORTER_ASSERT(reporter, !SkIsFinite(inf, T(1), T(2)));
+    REPORTER_ASSERT(reporter, !SkIsFinite(T(3), -inf, T(4)));
+    REPORTER_ASSERT(reporter, !SkIsFinite(T(5), T(6), nan));
+    REPORTER_ASSERT(reporter,  SkIsFinite(big, T(7), T(8)));
+    REPORTER_ASSERT(reporter,  SkIsFinite(T(9), -big, T(10)));
+    REPORTER_ASSERT(reporter,  SkIsFinite(T(11), T(12), zero));
 }
 
 static void unittest_half(skiatest::Reporter* reporter) {
