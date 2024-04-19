@@ -34,6 +34,24 @@
       "parentUuid": "ce39c6f8_0b27eda6",
       "revId": "2b4f6393ed9737d4aeb708143745f6a53181c680",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "478832a4_7e7ae4ea",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-19T18:59:53Z",
+      "side": 1,
+      "message": "A gm means adding a \"golden master\" test, like the ones under the `gm/` directory in the Skia repository. These can then be viewed in the `viewer` application, are run by the `dm` application which runs tests, and run by `dm` on the waterfall (all the `Test-` tasks at status.skia.org) with the results uploaded to gold.skia.org where they can be viewed and triaged.\n\nThe icc profiles in the PDF are there for the obvious reasons and most viewers do use them, though support for anything in PDF that isn\u0027t \"draw a solid fill rectangle\" seems to vary across viewers. For example, Pdfium is currently in an experiment to move off of its old rendering backend onto a newer Skia rendering backend for (among other things) proper color space support.\n\nGenerally we try to ensure there is a GM for things like this so we can muck about with it in `viewer` and ensure manually that it\u0027s rendering correctly with all the Skia rendering paths and also because all GMs can be output to PDF like `dm --config pdf -w \u003cwhere to put output\u003e` and then the PDF can be viewed wherever.",
+      "parentUuid": "fed8536f_673e1789",
+      "revId": "2b4f6393ed9737d4aeb708143745f6a53181c680",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
