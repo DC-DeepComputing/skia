@@ -68,6 +68,13 @@ static inline bool SkIsFinite(double a, double b) {
 
 // Multiplying a group of values against zero will result in zero at each iteration, except for
 // NAN or ±Inf, which will result in NAN and continue resulting in NAN for the rest of the loop.
+template <typename... Pack>
+static inline bool SkIsFinite(Pack... values) {
+    static_assert(std::is_same_v<float, decltype((0 * ... * values))> ||
+                  std::is_same_v<double, decltype((0 * ... * values))>);
+    return (0 * ... * values) == 0;
+}
+
 static inline bool SkIsFinite(const float array[], int count) {
     float prod = 0.0f;
     for (int i = 0; i < count; ++i) {
