@@ -34,6 +34,24 @@
       "parentUuid": "a43dddba_048e7d95",
       "revId": "776139f7f8025d41ab694c0a700c2a43819dfdba",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e2ef7f2_8a3c756e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-19T19:36:07Z",
+      "side": 1,
+      "message": "Per offline discussion, the single-channel constructor is moved to a member function `selectChannelInR(i)` that returns the ith swizzle component as `c000`.",
+      "parentUuid": "d13e1013_68044744",
+      "revId": "776139f7f8025d41ab694c0a700c2a43819dfdba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
