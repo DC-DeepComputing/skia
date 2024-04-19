@@ -22,6 +22,30 @@
       },
       "revId": "2b62e7a2e338bf8017cd5ebcc893600e7a47be92",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4bad9f7_37450faf",
+        "filename": "modules/skparagraph/include/TextStyle.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-04-19T15:54:42Z",
+      "side": 1,
+      "message": "@jlavrova@google.com @bungeman@google.com PTAL",
+      "parentUuid": "67eaef1a_ea629f30",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 41
+      },
+      "revId": "2b62e7a2e338bf8017cd5ebcc893600e7a47be92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
