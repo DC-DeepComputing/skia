@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "953cfde9_3aa3f364",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-04-19T16:49:31Z",
+      "side": 1,
+      "message": "modulo question on documentation",
+      "revId": "a629a04ba5915909cf24e10520f70b90a0ec41aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "488014fb_9134fe95",
+        "filename": "include/core/SkArc.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-04-19T16:49:31Z",
+      "side": 1,
+      "message": "since this is a public header, do you think we should have documentation here on what these values mean? I know it is documented in the API call that takes it. I guess I\u0027m not sure what our usual documentation policy is for these sort of things",
+      "range": {
+        "startLine": 19,
+        "startChar": 4,
+        "endLine": 19,
+        "endChar": 24
+      },
+      "revId": "a629a04ba5915909cf24e10520f70b90a0ec41aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
