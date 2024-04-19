@@ -1,6 +1,74 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cc0005dd_499a0044",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-04-19T20:31:56Z",
+      "side": 1,
+      "message": "Should we check the mapping status in VelloRenderer.cpp as well? There are two mapped buffers that that requires: a small uniform buffer and a mapped storage buffer to write the scene data into (see lines 309 and 315, https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/gpu/graphite/compute/VelloRenderer.cpp;l\u003d309?q\u003dVelloRenderer.cpp\u0026ss\u003dchromium%2Fchromium%2Fsrc:third_party%2Fskia%2F).",
+      "revId": "b6ef6f62e82c4ca39803a1ff48930bb4e8622c2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9298ce78_0afa6da1",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-04-19T20:31:56Z",
+      "side": 1,
+      "message": "Could the call to `prepareMappedBindBuffer` handle this case so that the wrapper calls don\u0027t all have to check for `fMappingFailed`?",
+      "revId": "b6ef6f62e82c4ca39803a1ff48930bb4e8622c2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dfd47813_6886e967",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-04-19T20:31:56Z",
+      "side": 1,
+      "message": "What is the state of the UniformWriter if `prepareMappedBindBuffer` fails and returns nullptr in `ptr`? I\u0027m guessing that it handles that gracefully (not having checked the code)?",
+      "revId": "b6ef6f62e82c4ca39803a1ff48930bb4e8622c2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab1a1e81_d3f8b938",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-04-19T20:31:56Z",
+      "side": 1,
+      "message": "Do you think it makes sense to continue allowing unmapped/private buffers to be reused after mapping fails? I guess if this happens the whole Recorder will become defunct anyway but just a thought. I\u0027m fine with the code as it is.",
+      "revId": "b6ef6f62e82c4ca39803a1ff48930bb4e8622c2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6ae4d3de_238e5b70",
@@ -14,6 +82,30 @@
       "writtenOn": "2024-04-19T20:12:06Z",
       "side": 1,
       "message": "Missing this check on `mapPtr` is the likely source of b/335848866, which started happening after adding the null checks inside the `BufferWriter`s. This was crashing with very small values, which could come from here if the `Buffer` resource and offset were non-null/zero but `map()` failed.  The later `SkTAddOffset` produces a \"non-null\" value that we\u0027d crash on.",
+      "range": {
+        "startLine": 373,
+        "startChar": 9,
+        "endLine": 373,
+        "endChar": 15
+      },
+      "revId": "b6ef6f62e82c4ca39803a1ff48930bb4e8622c2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4604439a_b9a908a9",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 373,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-04-19T20:31:56Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "6ae4d3de_238e5b70",
       "range": {
         "startLine": 373,
         "startChar": 9,
