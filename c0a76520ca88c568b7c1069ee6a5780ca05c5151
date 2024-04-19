@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f83f32f_e17a2a63",
+        "filename": "include/core/SkScalar.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-19T16:35:05Z",
+      "side": 1,
+      "message": "This is declared in `include/private/base/SkFloatingPoint.h`, I don\u0027t think we should be outright telling users to use `include/private`.",
+      "range": {
+        "startLine": 66,
+        "startChar": 19,
+        "endLine": 66,
+        "endChar": 26
+      },
+      "revId": "c0a76520ca88c568b7c1069ee6a5780ca05c5151",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
