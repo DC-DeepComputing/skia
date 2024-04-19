@@ -28,8 +28,11 @@ class Swizzle {
 public:
     // Equivalent to "rgba", but Clang doesn't always manage to inline this
     // if we're too deep in the inlining already.
-    constexpr Swizzle() : Swizzle(0x3210) {}
+    constexpr Swizzle() : Swizzle((uint16_t) 0x3210) {}
     explicit constexpr Swizzle(const char c[4]);
+
+    // Creates a swizzle that replicates the specific channel into all channels.
+    explicit constexpr Swizzle(char c);
 
     constexpr Swizzle(const Swizzle&) = default;
     constexpr Swizzle& operator=(const Swizzle& that) = default;
@@ -92,6 +95,9 @@ private:
 constexpr Swizzle::Swizzle(const char c[4])
         : fKey(static_cast<uint16_t>((CToI(c[0]) << 0) | (CToI(c[1]) << 4) | (CToI(c[2]) << 8) |
                                      (CToI(c[3]) << 12))) {}
+constexpr Swizzle::Swizzle(char c)
+        : fKey(static_cast<uint16_t>((CToI(c) << 0) | (CToI(c) << 4) | (CToI(c) << 8) |
+                                     (CToI(c) << 12))) {}
 
 constexpr Swizzle Swizzle::selectChannelInR(int i) const {
     return Swizzle(static_cast<uint16_t>((this->channelIndex(i) << 0) | (CToI('0') << 4) |
