@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "521398af_0ac45944",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-04-19T16:53:41Z",
+      "side": 1,
+      "message": "lgtm. I do have ideas for a slight further streamlining, but not worth bike-shedding. 😊",
+      "revId": "6707977f6287d165cc7a54d9912a8438e94587da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
