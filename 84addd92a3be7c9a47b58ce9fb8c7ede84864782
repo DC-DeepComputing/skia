@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73ed19c2_0bc66f62",
+        "filename": "include/core/SkScalar.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-19T16:14:58Z",
+      "side": 0,
+      "message": "Make sure all the Canaries run (difficult at the moment with G3).",
+      "revId": "84addd92a3be7c9a47b58ce9fb8c7ede84864782",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
