@@ -71,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5273946b_68e54141",
+        "filename": "include/core/SkScalar.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-04-19T15:52:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5e01090d_5b8efb46",
+      "range": {
+        "startLine": 70,
+        "startChar": 0,
+        "endLine": 82,
+        "endChar": 1
+      },
+      "revId": "6d7f2ec4921a0246eebdbb4d7213904fca6c6404",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8eb1959c_8f0a022a",
@@ -84,6 +108,24 @@
       "writtenOn": "2024-04-19T15:08:35Z",
       "side": 1,
       "message": "This is misleading, because it\u0027s actually a double.",
+      "revId": "6d7f2ec4921a0246eebdbb4d7213904fca6c6404",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e9ddcba_f92ef447",
+        "filename": "src/base/SkCubics.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-04-19T15:52:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8eb1959c_8f0a022a",
       "revId": "6d7f2ec4921a0246eebdbb4d7213904fca6c6404",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -105,6 +147,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c1d614e4_4174a44b",
+        "filename": "src/base/SkCubics.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-04-19T15:52:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9fb1d549_c2bd4cce",
+      "revId": "6d7f2ec4921a0246eebdbb4d7213904fca6c6404",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "96126fb2_5c981e66",
@@ -118,6 +178,24 @@
       "writtenOn": "2024-04-19T15:08:35Z",
       "side": 1,
       "message": "doubles in this file, too...",
+      "revId": "6d7f2ec4921a0246eebdbb4d7213904fca6c6404",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e0e995c_3f971059",
+        "filename": "src/base/SkQuads.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-04-19T15:52:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "96126fb2_5c981e66",
       "revId": "6d7f2ec4921a0246eebdbb4d7213904fca6c6404",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -189,6 +267,24 @@
       "side": 1,
       "message": "I just did the search-replace with `SkIsFinite` and I\u0027m happy with it that way; we aren\u0027t beholden to the old style.",
       "parentUuid": "639e5f81_988cd984",
+      "revId": "6d7f2ec4921a0246eebdbb4d7213904fca6c6404",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "63c94063_455b4d17",
+        "filename": "src/core/SkPath.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 3763,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-04-19T15:52:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2ac836c5_7a1cb111",
       "revId": "6d7f2ec4921a0246eebdbb4d7213904fca6c6404",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
