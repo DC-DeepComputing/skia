@@ -7,6 +7,7 @@
 
 #include "src/sksl/codegen/SkSLRasterPipelineBuilder.h"
 
+#include "include/core/SkScalar.h"
 #include "include/core/SkStream.h"
 #include "include/private/base/SkMalloc.h"
 #include "include/private/base/SkTo.h"
@@ -27,7 +28,6 @@
 #endif
 
 #include <algorithm>
-#include <cmath>
 #include <cstddef>
 #include <cstring>
 #include <iterator>
@@ -2496,7 +2496,7 @@ public:
         auto text = SkSL::String::printf("0x%08X", immUnsigned);
 
         // Extend it to `0x3F800000 (1.0)` for finite floating point values.
-        if (showAsFloat && std::isfinite(immFloat)) {
+        if (showAsFloat && SkScalarIsFinite(immFloat)) {
             text += " (";
             text += skstd::to_string(immFloat);
             text += ')';

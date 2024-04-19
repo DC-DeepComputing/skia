@@ -7,6 +7,7 @@
 
 #include "src/base/SkQuads.h"
 
+#include "include/core/SkScalar.h"
 #include "include/private/base/SkAssert.h"
 #include "include/private/base/SkFloatingPoint.h"
 
@@ -24,7 +25,7 @@ static int solve_linear(const double M, const double B, double solution[2]) {
         return 0;
     }
     solution[0] = -B / M;
-    if (!std::isfinite(solution[0])) {
+    if (!SkScalarIsFinite(solution[0])) {
         return 0;
     }
     return 1;
@@ -142,15 +143,15 @@ int SkQuads::RootsReal(const double A, const double B, const double C, double so
     auto [discriminant, root0, root1] = Roots(A, -0.5 * B, C);
 
     // Handle invariants to mesh with existing code from here on.
-    if (!std::isfinite(discriminant) || discriminant < 0) {
+    if (!SkScalarIsFinite(discriminant) || discriminant < 0) {
         return 0;
     }
 
     int roots = 0;
-    if (const double r0 = zero_if_tiny(root0); std::isfinite(r0)) {
+    if (const double r0 = zero_if_tiny(root0); SkScalarIsFinite(r0)) {
         solution[roots++] = r0;
     }
-    if (const double r1 = zero_if_tiny(root1); std::isfinite(r1)) {
+    if (const double r1 = zero_if_tiny(root1); SkScalarIsFinite(r1)) {
         solution[roots++] = r1;
     }
 

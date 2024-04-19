@@ -67,7 +67,11 @@ static inline bool SkScalarIsNaN(SkScalar x) { return x != x; }
 
 /** Returns true if x is not NaN and not infinite
  */
-static inline bool SkScalarIsFinite(SkScalar x) { return std::isfinite(x); }
+static inline bool SkScalarIsFinite(SkScalar x) {
+    // Subtracting a value from itself will result in zero, except for NAN or ±Inf, which make NAN.
+    // This generates better code than `std::isfinite` when building with clang-cl (April 2024).
+    return (x - x) == 0;
+}
 
 static inline bool SkScalarsAreFinite(SkScalar a, SkScalar b) {
     // Subtracting a value from itself will result in zero, except for NAN or ±Inf, which make NAN.

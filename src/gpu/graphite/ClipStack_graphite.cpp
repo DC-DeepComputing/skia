@@ -1114,7 +1114,7 @@ Clip ClipStack::visitClipStackForDraw(const Transform& localToDevice,
     }
 
     auto origSize = geometry.bounds().size();
-    if (!std::isfinite(origSize.x()) || !std::isfinite(origSize.y())) {
+    if (!SkScalarsAreFinite(origSize.x(), origSize.y())) {
         // Discard all non-finite geometry as if it were clipped out
         return kClippedOut;
     }

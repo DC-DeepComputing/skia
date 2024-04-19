@@ -54,7 +54,7 @@ bool SkPoint3::normalize() {
     // sqrtf does not provide enough precision; since sqrt takes a double,
     // there's no additional penalty to storing invScale in a double
     double invScale;
-    if (std::isfinite(magSq)) {
+    if (SkScalarIsFinite(magSq)) {
         invScale = magSq;
     } else {
         // our magSq step overflowed to infinity, so use doubles instead.
@@ -70,7 +70,7 @@ bool SkPoint3::normalize() {
     fX *= scale;
     fY *= scale;
     fZ *= scale;
-    if (!std::isfinite(fX) || !std::isfinite(fY) || !std::isfinite(fZ)) {
+    if (!SkScalarsAreFinite(fX, fY) || !SkScalarIsFinite(fZ)) {
         this->set(0, 0, 0);
         return false;
     }
