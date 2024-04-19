@@ -39,6 +39,30 @@
       },
       "revId": "a629a04ba5915909cf24e10520f70b90a0ec41aa",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef835d99_920de6dc",
+        "filename": "include/core/SkArc.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-04-19T17:14:45Z",
+      "side": 1,
+      "message": "Yeah, I\u0027ll just copy the comments from SkCanvas - useCenter is probably not obvious.",
+      "parentUuid": "488014fb_9134fe95",
+      "range": {
+        "startLine": 19,
+        "startChar": 4,
+        "endLine": 19,
+        "endChar": 24
+      },
+      "revId": "a629a04ba5915909cf24e10520f70b90a0ec41aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
