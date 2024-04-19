@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3b1b218_5e48b996",
+        "filename": "include/core/SkRect.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 713,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-19T15:03:17Z",
+      "side": 1,
+      "message": "nice 😊",
+      "range": {
+        "startLine": 713,
+        "startChar": 0,
+        "endLine": 713,
+        "endChar": 86
+      },
+      "revId": "6d7f2ec4921a0246eebdbb4d7213904fca6c6404",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af08823e_e7fc2e0d",
+        "filename": "include/core/SkScalar.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-19T15:03:17Z",
+      "side": 1,
+      "message": "These might need to go back into `SkFloatingPoint.h` since SkScalar is in core and not base.",
+      "range": {
+        "startLine": 70,
+        "startChar": 0,
+        "endLine": 82,
+        "endChar": 1
+      },
+      "revId": "6d7f2ec4921a0246eebdbb4d7213904fca6c6404",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
