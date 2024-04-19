@@ -70,6 +70,30 @@
       },
       "revId": "591af8d1c26ed213abd40c7e5204b0daf89c2e01",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5bddde87_3c468756",
+        "filename": "src/gpu/graphite/compute/VelloComputeSteps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-04-19T20:12:42Z",
+      "side": 1,
+      "message": "I updated the roll with the fixes I landed in Vello. These have locally fixed the lockup in dashing5_bw for me, let\u0027s see if it fixes the CI job as well.",
+      "parentUuid": "fca737a4_749d9a13",
+      "range": {
+        "startLine": 204,
+        "startChar": 48,
+        "endLine": 204,
+        "endChar": 55
+      },
+      "revId": "591af8d1c26ed213abd40c7e5204b0daf89c2e01",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
