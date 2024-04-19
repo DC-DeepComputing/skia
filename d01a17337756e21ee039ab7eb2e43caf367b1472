@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a75a7ca_0e42d09d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-19T14:59:19Z",
+      "side": 1,
+      "message": "The canary failure is a flake; the actual test failures that caused the revert are all green now.",
+      "revId": "d01a17337756e21ee039ab7eb2e43caf367b1472",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
