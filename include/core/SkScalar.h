@@ -63,24 +63,6 @@ typedef float SkScalar;
 #define SkScalarToDouble(x)     static_cast<double>(x)
 #define SkDoubleToScalar(x)     sk_double_to_float(x)
 
-static inline bool SkScalarIsNaN(SkScalar x) { return x != x; }
-
-/** Returns true if x is not NaN and not infinite
- */
-static inline bool SkScalarIsFinite(SkScalar x) { return std::isfinite(x); }
-
-static inline bool SkScalarsAreFinite(SkScalar a, SkScalar b) {
-    // Subtracting a value from itself will result in zero, except for NAN or ±Inf, which make NAN.
-    // A NAN is not equal to any value, so a NAN or ±Inf in either `a` or `b` will cause the
-    // comparison to evaluate as false.
-    // If both `a` and `b` are finite, the comparison will reduce to `0 == 0`, which is true.
-    return (a - a) == (b - b);
-}
-
-static inline bool SkScalarsAreFinite(const SkScalar array[], int count) {
-    return sk_floats_are_finite(array, count);
-}
-
 /** Returns the fractional part of the scalar. */
 static inline SkScalar SkScalarFraction(SkScalar x) {
     return x - SkScalarTruncToScalar(x);

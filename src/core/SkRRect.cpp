@@ -54,7 +54,7 @@ void SkRRect::setRectXY(const SkRect& rect, SkScalar xRad, SkScalar yRad) {
         return;
     }
 
-    if (!SkScalarsAreFinite(xRad, yRad)) {
+    if (!SkIsFinite(xRad, yRad)) {
         xRad = yRad = 0;    // devolve into a simple rect
     }
 
@@ -119,7 +119,7 @@ void SkRRect::setNinePatch(const SkRect& rect, SkScalar leftRad, SkScalar topRad
     }
 
     const SkScalar array[4] = { leftRad, topRad, rightRad, bottomRad };
-    if (!SkScalarsAreFinite(array, 4)) {
+    if (!SkIsFinite(array, 4)) {
         this->setRect(rect);    // devolve into a simple rect
         return;
     }
@@ -192,7 +192,7 @@ void SkRRect::setRectRadii(const SkRect& rect, const SkVector radii[4]) {
         return;
     }
 
-    if (!SkScalarsAreFinite(&radii[0].fX, 8)) {
+    if (!SkIsFinite(&radii[0].fX, 8)) {
         this->setRect(rect);    // devolve into a simple rect
         return;
     }
