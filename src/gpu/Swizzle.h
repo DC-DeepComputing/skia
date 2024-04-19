@@ -28,7 +28,7 @@ class Swizzle {
 public:
     // Equivalent to "rgba", but Clang doesn't always manage to inline this
     // if we're too deep in the inlining already.
-    constexpr Swizzle() : Swizzle(0x3210) {}
+    constexpr Swizzle() : Swizzle((uint16_t) 0x3210) {}
     explicit constexpr Swizzle(const char c[4]);
 
     constexpr Swizzle(const Swizzle&) = default;
