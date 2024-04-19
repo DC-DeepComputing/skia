@@ -22,6 +22,30 @@
       },
       "revId": "eb6e2c3d74e5c8334b4bb5d260a8e65f40432e39",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d93fd6f0_a38f859e",
+        "filename": "src/opts/SkBitmapProcState_opts.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 573,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-04-19T13:37:14Z",
+      "side": 1,
+      "message": "Yeah, I was thinking that, too. I wonder if the portable version of `filter_and_scale_by_alpha` is good enough that this would be a win, even without further optimizations? Filed https://g-issues.skia.org/issues/335823238 to follow-up.",
+      "parentUuid": "0809f27f_4b01885c",
+      "range": {
+        "startLine": 573,
+        "startChar": 0,
+        "endLine": 573,
+        "endChar": 87
+      },
+      "revId": "eb6e2c3d74e5c8334b4bb5d260a8e65f40432e39",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
