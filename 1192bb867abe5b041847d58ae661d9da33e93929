@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5777d6ee_42fdcc55",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-04-20T00:24:06Z",
+      "side": 1,
+      "message": "Thanks for handling this! I have no idea why I thought I could land this without a guard, as it\u0027s obviously going to change bitmap rendering.",
+      "revId": "1192bb867abe5b041847d58ae661d9da33e93929",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
