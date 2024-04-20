@@ -16,6 +16,24 @@
       "message": "This change suspiciously aligns with `Perf-Debian11-Clang-NUC11TZi5-GPU-IntelIrisXe-x86_64-Release-All-Graphite_Dawn_Vulkan` beginning to fail quite frequently.",
       "revId": "d27e288efd5464700841644c7ff8753d4214ed92",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "055ba45f_f5ddbd88",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-20T01:45:56Z",
+      "side": 1,
+      "message": "This change introduced graphite recording to nanobench, which looks related based on the (admittedly poor) stack traces.\n\nBuilding nanobench with ASAN and running `out/asan/nanobench --nocpu --config grdawn_vk` immediately fails with bad downcasts in Dawn, so a release build is probably not going to have a good time.",
+      "parentUuid": "afab51a2_bd97e919",
+      "revId": "d27e288efd5464700841644c7ff8753d4214ed92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
