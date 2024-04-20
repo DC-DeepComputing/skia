@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "98fc48b8_824a9f27",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-20T01:56:51Z",
+      "side": 1,
+      "message": "Good catch, yes, those aren\u0027t relying on the Writer to discard writes so they have to check for nullptr. I added checking for null to the ifs before they encode things. That adds a new file to this CL so will require a new +1.",
+      "parentUuid": "cc0005dd_499a0044",
+      "revId": "b6ef6f62e82c4ca39803a1ff48930bb4e8622c2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9298ce78_0afa6da1",
@@ -31,6 +49,24 @@
       "writtenOn": "2024-04-19T20:31:56Z",
       "side": 1,
       "message": "Could the call to `prepareMappedBindBuffer` handle this case so that the wrapper calls don\u0027t all have to check for `fMappingFailed`?",
+      "revId": "b6ef6f62e82c4ca39803a1ff48930bb4e8622c2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e33cb7f5_627b64fc",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-20T01:56:51Z",
+      "side": 1,
+      "message": "Done; it turns out I was able to push the check all the way down to `prepareBindBuffer` and cover everything gracefully.",
+      "parentUuid": "9298ce78_0afa6da1",
       "revId": "b6ef6f62e82c4ca39803a1ff48930bb4e8622c2a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -52,6 +88,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "15587609_8b909455",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-20T01:56:51Z",
+      "side": 1,
+      "message": "The writers (Uniform or Vertex or whatever) were updated in https://skia-review.googlesource.com/c/skia/+/841836 to discard writes if they are wrapping a null pointer. This was the simplest way to avoid propagating possible failure conditions throughout graphite code and doesn\u0027t seem to cause perf regressions on platforms we care about.  \n\nThe one downside is codesize increase due to the extra instructions from inlining. If that becomes too problematic, what I may do is go back and have the buffer managers create CPU arrays that the writers can wrap so they can consume data w/o needing to error check on the error side but that is also annoying because then the DBM has to hold on to all CPU-side error arrays until it\u0027s reset at snap time.",
+      "parentUuid": "dfd47813_6886e967",
+      "revId": "b6ef6f62e82c4ca39803a1ff48930bb4e8622c2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ab1a1e81_d3f8b938",
@@ -65,6 +119,24 @@
       "writtenOn": "2024-04-19T20:31:56Z",
       "side": 1,
       "message": "Do you think it makes sense to continue allowing unmapped/private buffers to be reused after mapping fails? I guess if this happens the whole Recorder will become defunct anyway but just a thought. I\u0027m fine with the code as it is.",
+      "revId": "b6ef6f62e82c4ca39803a1ff48930bb4e8622c2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c350c243_8e65d2d5",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-20T01:56:51Z",
+      "side": 1,
+      "message": "My approach was to clean things up ASAP, leaving it in the state it\u0027d have become after a successful transferToRecording() call, and then make all future requests fail since all work will be invalidated anyways.\n\nThe exception is cases like the UploadBufferManager where the specific buffer mapping failure can be reported up through the client API by returning a null image/etc. If we have other cases that can have isolated failures, then I think it\u0027s worth looking into other failure modes. Alternatively, if we can move DrawPass creation to inside prepareResources() for RenderPassTask, all use of these DrawBufferManagers will be restricted to snap time itself and then the tasks themselves can just return failure statuses to end then.",
+      "parentUuid": "ab1a1e81_d3f8b938",
       "revId": "b6ef6f62e82c4ca39803a1ff48930bb4e8622c2a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
