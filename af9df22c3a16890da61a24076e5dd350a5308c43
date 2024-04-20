@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f436fd6c_1c705023",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-04-20T00:45:55Z",
+      "side": 1,
+      "message": "Looks like that resolved all the issues. PTAL.",
+      "revId": "af9df22c3a16890da61a24076e5dd350a5308c43",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
