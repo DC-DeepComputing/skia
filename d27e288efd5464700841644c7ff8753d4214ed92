@@ -52,6 +52,24 @@
       "parentUuid": "055ba45f_f5ddbd88",
       "revId": "d27e288efd5464700841644c7ff8753d4214ed92",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bee67043_346c0709",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-20T02:23:25Z",
+      "side": 1,
+      "message": "The status page is somewhat lying, because sometimes this accidentally passes and one of those tuns is taking up a lot of space on the default front page at the moment. You have to look at the actual task runs and look back a way. (Easier to see if you look at the last ~200 runs, I\u0027m looking at the range 2024-04-05 21:21 to 2024-04-19 21:21.)\n\nThe cast in Dawn is the one in `src/dawn/common/WeakRefSupport.h` which already has one suppression on it, but also needs a `__attribute__((no_sanitize(\"undefined\")))` (or external suppression) to fake out UBSAN.",
+      "parentUuid": "a928bcae_a9bf8187",
+      "revId": "d27e288efd5464700841644c7ff8753d4214ed92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
