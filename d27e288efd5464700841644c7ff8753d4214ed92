@@ -34,6 +34,24 @@
       "parentUuid": "afab51a2_bd97e919",
       "revId": "d27e288efd5464700841644c7ff8753d4214ed92",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a928bcae_a9bf8187",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-20T01:51:31Z",
+      "side": 1,
+      "message": "`nanobench` was running graphite before this CL, this CL just changes how multiple samples are queued up and pipelined with the GPU compared to what had been happening before. That said, that\u0027s the exact sort of thing that could cause a top-tier GPU to fall on its face. In the failed runs I\u0027m seeing on status, the root cause is likely \"[graphite] Buffer async map failed with status DeviceLost.\" and then crashing (probably because the consumers of mapped buffers had been overly optimistic about it always succeeding... https://skia-review.googlesource.com/c/skia/+/843376).\n\nWhere are you seeing stack traces with bad casts in dawn?",
+      "parentUuid": "055ba45f_f5ddbd88",
+      "revId": "d27e288efd5464700841644c7ff8753d4214ed92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
