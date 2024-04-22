@@ -118,9 +118,6 @@ std::unique_ptr<GraphiteTestContext> DawnTestContext::Make(wgpu::BackendType bac
     if (adapter.HasFeature(wgpu::FeatureName::TextureCompressionBC)) {
         features.push_back(wgpu::FeatureName::TextureCompressionBC);
     }
-    if (adapter.HasFeature(wgpu::FeatureName::R8UnormStorage)) {
-        features.push_back(wgpu::FeatureName::R8UnormStorage);
-    }
 
     wgpu::DeviceDescriptor desc;
     desc.requiredFeatureCount  = features.size();
