@@ -77,6 +77,12 @@ private:
                                                     float devSigma,
                                                     const SkRect& srcRect);
 
+    static std::optional<AnalyticBlurMask> MakeCircle(Recorder*,
+                                                      const SkMatrix& localToDevice,
+                                                      float transformedSigma,
+                                                      const SkRect& srcRect,
+                                                      const SkRect& devRect);
+
     // Draw bounds in local space.
     Rect fDrawBounds;
 
