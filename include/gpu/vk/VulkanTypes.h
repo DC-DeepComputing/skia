@@ -60,8 +60,29 @@ private:
 // Used to pass in the necessary information to create a VkSamplerYcbcrConversion object for an
 // VkExternalFormatANDROID.
 struct VulkanYcbcrConversionInfo {
-    static VulkanYcbcrConversionInfo MakeFromSamplerDescValues() {
+    static VulkanYcbcrConversionInfo MakeFromNumericalRepresentation(
+            uint32_t nonFormatYcbcrInfo,
+            uint64_t format,
+            uint32_t formatFeatures) {
         VulkanYcbcrConversionInfo info;
+        bool useExternalFormat =  static_cast<bool>(nonFormatYcbcrInfo >> kUsesExternalFormatBits);
+        info.fFormat = useExternalFormat ? VK_FORMAT_UNDEFINED
+                                         : static_cast<VkFormat>(static_cast<uint32_t>(format));
+        info.fExternalFormat = useExternalFormat ? format : 0;
+        info.fFormatFeatures = formatFeatures;
+        info.fYcbcrModel =
+                static_cast<VkSamplerYcbcrModelConversion>(nonFormatYcbcrInfo >> kYcbcrModelShift);
+        info.fYcbcrRange =
+                static_cast<VkSamplerYcbcrRange>(nonFormatYcbcrInfo >> kYcbcrRangeShift);
+        info.fXChromaOffset =
+                static_cast<VkChromaLocation>(nonFormatYcbcrInfo >> kXChromaOffsetShift);
+        info.fYChromaOffset =
+                static_cast<VkChromaLocation>(nonFormatYcbcrInfo >> kYChromaOffsetShift);
+        info.fChromaFilter =
+                static_cast<VkFilter>(nonFormatYcbcrInfo >> kChromaFilterShift);
+        info.fForceExplicitReconstruction =
+                static_cast<VkBool32>(nonFormatYcbcrInfo >> kForceExplicitReconShift);
+
         return info;
     }
 

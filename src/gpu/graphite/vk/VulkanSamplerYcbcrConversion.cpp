@@ -104,7 +104,7 @@ VulkanSamplerYcbcrConversion::VulkanSamplerYcbcrConversion(
         const VulkanSharedContext* context, VkSamplerYcbcrConversion ycbcrConversion)
         : Resource(context,
                    Ownership::kOwned,
-                   skgpu::Budgeted::kNo,
+                   skgpu::Budgeted::kYes, // Shareable, so must be budgeted
                    /*gpuMemorySize=*/0,
                    /*label=*/"VulkanSamplerYcbcrConversion")
         , fYcbcrConversion (ycbcrConversion) {}

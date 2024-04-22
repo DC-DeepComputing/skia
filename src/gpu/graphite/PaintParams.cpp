@@ -183,6 +183,13 @@ void AddDitherBlock(const KeyContext& keyContext,
     DitherShaderBlock::AddBlock(keyContext, builder, gatherer, data);
 }
 
+// // TODO: Add array of data as input.
+// void AddDataBlock(const KeyContext& keyContext,
+//                   PaintParamsKeyBuilder* builder,
+//                   PipelineDataGatherer* gatherer) {
+
+// }
+
 void PaintParams::addPaintColorToKey(const KeyContext& keyContext,
                                      PaintParamsKeyBuilder* keyBuilder,
                                      PipelineDataGatherer* gatherer) const {
@@ -332,6 +339,27 @@ void PaintParams::toKey(const KeyContext& keyContext,
             kFixedFunctionBlendModeIDOffset + static_cast<int>(*finalBlendMode));
 
     builder->addBlock(fixedFuncBlendModeID);
+
+    if (gatherer->hasTextures()) {
+        const std::vector<TextureDataBlock::SampledTexture>& sampledTextures =
+                gatherer->textureDataBlock().textures();
+
+        std::vector<int32_t> cumulativeSamplerData = {0};
+        // TODO clean this; fetch from samplerdesc struct
+        static constexpr int kNumInt32sSamplerInfo = 4;
+        for (int i = 0; i < gatherer->textureDataBlock().numTextures(); i++) {
+                const SamplerDesc& samplerDesc = sampledTextures.at(i).second;
+                // TODO: Fix logic to better check if sampler needs this addt'l info appended.
+                if (samplerDesc.format() || samplerDesc.formatFeatures()) {
+                    cumulativeSamplerData.push_back(samplerDesc.desc());
+                    cumulativeSamplerData.push_back((uint32_t)(samplerDesc.format() << 32));
+                    cumulativeSamplerData.push_back((uint32_t)samplerDesc.format());
+                    cumulativeSamplerData.push_back(samplerDesc.formatFeatures());
+                    cumulativeSamplerData[0] = cumulativeSamplerData[0] + kNumInt32sSamplerInfo;
+                }
+        }
+        builder->addData(cumulativeSamplerData);
+    }
 }
 
 // TODO(b/330864257): Can be deleted once keys are determined by the Device draw.
