@@ -200,7 +200,6 @@ struct SamplerDesc {
                 const SamplerConversionInfo conversionInfo = {})
             : fDesc((static_cast<int>(tileModes[0])               << kTileModeXShift     ) |
                     (static_cast<int>(tileModes[1])               << kTileModeYShift     ) |
-                    (static_cast<int>(samplingOptions.filter)     << kFilterModeShift    ) |
                     (static_cast<int>(samplingOptions.mipmap)     << kMipmapModeShift    ) |
                     (conversionInfo.fNonFormatYcbcrConversionInfo << kConversionInfoShift) )
             , fFormat(conversionInfo.fFormat)

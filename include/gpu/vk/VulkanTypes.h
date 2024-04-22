@@ -60,6 +60,11 @@ private:
 // Used to pass in the necessary information to create a VkSamplerYcbcrConversion object for an
 // VkExternalFormatANDROID.
 struct VulkanYcbcrConversionInfo {
+    static VulkanYcbcrConversionInfo MakeFromSamplerDescValues() {
+        VulkanYcbcrConversionInfo info;
+        return info;
+    }
+
     bool operator==(const VulkanYcbcrConversionInfo& that) const {
         // Invalid objects are not required to have all other fields initialized or matching.
         if (!this->isValid() && !that.isValid()) {

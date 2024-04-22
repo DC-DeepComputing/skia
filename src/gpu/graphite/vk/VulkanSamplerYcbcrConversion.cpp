@@ -66,10 +66,6 @@ GraphiteResourceKey VulkanSamplerYcbcrConversion::MakeYcbcrConversionKey(
     // other differentiating ycbcr information.
     static const int num32DataCnt = useExternalFormat ? 3 : 2;
     GraphiteResourceKey key;
-    // TODO: When using a known VkFormat, we only need 2 int32s because an external format is
-    // stored as an int64 whereas a known VkFormat can be contained within an int32. Optimize for
-    // this case.
-    static constexpr int kUint32sNeededForYcbcrInfo = 3;
     GraphiteResourceKey::Builder builder(&key, kType, kUint32sNeededForYcbcrInfo, Shareable::kYes);
 
     int i = 0;
@@ -81,6 +77,24 @@ GraphiteResourceKey VulkanSamplerYcbcrConversion::MakeYcbcrConversionKey(
     }
     builder[i++] = info.nonFormatInfoAsUInt32();
     SkASSERT(i == num32DataCnt);
+
+    builder.finish();
+    return key;
+}
+
+// TODO: review this method.
+GraphiteResourceKey VulkanSamplerYcbcrConversion::GetKeyFromSamplerDesc(
+        const SamplerDesc& samplerDesc) {
+    SkASSERT(samplerDesc.format());
+    static const ResourceType kType = GraphiteResourceKey::GenerateResourceType();
+    GraphiteResourceKey key;
+    GraphiteResourceKey::Builder builder(&key, kType, kUint32sNeededForYcbcrInfo, Shareable::kYes);
+
+    static_assert(kUint32sNeededForYcbcrInfo == 4);
+    builder[0] = (uint32_t)(samplerDesc.desc() >> SamplerDesc::kConversionInfoShift);
+    builder[1] = (uint32_t)(samplerDesc.format() << 32);
+    builder[2] = (uint32_t)(samplerDesc.format());
+    builder[3] = (uint32_t)(samplerDesc.formatFeatures());
 
     builder.finish();
     return key;
