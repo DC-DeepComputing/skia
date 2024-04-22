@@ -289,8 +289,7 @@ sk_sp<Buffer> DawnResourceProvider::createBuffer(size_t size,
                             accessPattern);
 }
 
-sk_sp<Sampler> DawnResourceProvider::createSampler(const SamplerDesc& samplerDesc,
-                                                   const GraphiteResourceKey& key) {
+sk_sp<Sampler> DawnResourceProvider::createSampler(const SamplerDesc& samplerDescy) {
     return DawnSampler::Make(this->dawnSharedContext(),
                              samplerDesc.samplingOptions(),
                              samplerDesc.tileModeX(),

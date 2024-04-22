@@ -1537,32 +1537,4 @@ SamplerConversionInfo VulkanCaps::getSamplerConversionInfo(sk_sp<TextureProxy> p
     return {};
 }
 
-SamplerConversionInfo VulkanCaps::getSamplerConversionInfo(sk_sp<TextureProxy> proxy) const {
-    if (proxy) {
-        const skgpu::VulkanYcbcrConversionInfo& ycbcrConversionInfo =
-                proxy->textureInfo().vulkanTextureSpec().fYcbcrConversionInfo;
-
-        if (ycbcrConversionInfo.isValid()) {
-            SamplerConversionInfo conversionInfo;
-            if (ycbcrConversionInfo.fFormat == VK_FORMAT_UNDEFINED) {
-                // ycbcrConversionInfo's fFormat being VK_FORMAT_UNDEFINED indicates we are using an
-                // external format rather than a known VkFormat.
-                conversionInfo.fMutability = SamplerMutability::kImmutableSamplerExternalFormat;
-                conversionInfo.fFormat = ycbcrConversionInfo.fExternalFormat;
-            } else {
-                conversionInfo.fMutability = SamplerMutability::kImmutableSamplerKnownFormat;
-                conversionInfo.fFormat = ycbcrConversionInfo.fFormat;
-            }
-
-            conversionInfo.fYcbcrConversionInfo = ycbcrConversionInfo.asUInt16();
-
-            return conversionInfo;
-        }
-    }
-
-    // If the proxy is null or the YCbCr conversion for that proxy is invalid, then return a
-    // default SamplerConversionInfo struct.
-    return {};
-}
-
 } // namespace skgpu::graphite
