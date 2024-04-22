@@ -22,6 +22,30 @@
       },
       "revId": "22d1130a2ba22beb7156d5578f1a9942d1e88bcb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2139367d_6f2ff959",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 1494,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-04-22T19:33:23Z",
+      "side": 0,
+      "message": "It looks like the default case should cover it in the loop below.",
+      "parentUuid": "688f453f_70a30c84",
+      "range": {
+        "startLine": 1494,
+        "startChar": 8,
+        "endLine": 1494,
+        "endChar": 60
+      },
+      "revId": "22d1130a2ba22beb7156d5578f1a9942d1e88bcb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
