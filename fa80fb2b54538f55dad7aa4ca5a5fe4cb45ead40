@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "55ab0994_f83ce70c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-22T18:55:17Z",
+      "side": 1,
+      "message": "WDYT about this approach? I started it when I saw chrome was reporting perf regressions, but the more I looked into the actual regression the more it was a red herring and not related to the CL it blamed. \n\nBut I am kind of partial to keeping the BufferWriter simpler and less magical, and either checking or relying `DrawWriter` to allocate storage for just a single instance is pretty lightweight.",
+      "revId": "fa80fb2b54538f55dad7aa4ca5a5fe4cb45ead40",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
