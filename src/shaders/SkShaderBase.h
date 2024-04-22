@@ -379,7 +379,7 @@ public:
      *  If this shader can be represented by another shader + a localMatrix, return that shader and
      *  the localMatrix. If not, return nullptr and ignore the localMatrix parameter.
      */
-    virtual sk_sp<SkShader> makeAsALocalMatrixShader(SkMatrix* localMatrix) const;
+    virtual sk_sp<SkShader> makeAsALocalMatrixShader1(SkMatrix* localMatrix) const;
 
     static SkMatrix ConcatLocalMatrices(const SkMatrix& parentLM, const SkMatrix& childLM) {
 #if defined(SK_BUILD_FOR_ANDROID_FRAMEWORK)  // b/256873449

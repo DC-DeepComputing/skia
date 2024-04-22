@@ -33,7 +33,7 @@ sk_sp<SkFlattenable> SkLocalMatrixShader::CreateProc(SkReadBuffer& buffer) {
     if (!baseShader) {
         return nullptr;
     }
-    return baseShader->makeWithLocalMatrix(lm);
+    return baseShader->makeWithLocalMatrix1(lm);
 }
 
 void SkLocalMatrixShader::flatten(SkWriteBuffer& buffer) const {

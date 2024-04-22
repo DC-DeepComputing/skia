@@ -23,16 +23,16 @@ SkImage* SkShader::isAImage(SkMatrix* localMatrix, SkTileMode xy[2]) const {
     return as_SB(this)->onIsAImage(localMatrix, xy);
 }
 
-sk_sp<SkShader> SkShader::makeWithLocalMatrix(const SkMatrix& localMatrix) const {
-    if (localMatrix.isIdentity()) {
-        return sk_ref_sp(const_cast<SkShader*>(this));
-    }
+sk_sp<SkShader> SkShader::makeWithLocalMatrix1(const SkMatrix& localMatrix) const {
+//    if (localMatrix.isIdentity()) {
+//        return sk_ref_sp(const_cast<SkShader*>(this));
+//    }
 
     const SkMatrix* lm = &localMatrix;
 
     sk_sp<SkShader> baseShader;
     SkMatrix otherLocalMatrix;
-    sk_sp<SkShader> proxy = as_SB(this)->makeAsALocalMatrixShader(&otherLocalMatrix);
+    sk_sp<SkShader> proxy = as_SB(this)->makeAsALocalMatrixShader1(&otherLocalMatrix);
     if (proxy) {
         otherLocalMatrix = SkShaderBase::ConcatLocalMatrices(localMatrix, otherLocalMatrix);
         lm = &otherLocalMatrix;
@@ -41,7 +41,7 @@ sk_sp<SkShader> SkShader::makeWithLocalMatrix(const SkMatrix& localMatrix) const
         baseShader = sk_ref_sp(const_cast<SkShader*>(this));
     }
 
-    return sk_make_sp<SkLocalMatrixShader>(std::move(baseShader), *lm);
+    return sk_make_sp<SkLocalMatrixShader>(std::move(baseShader), *lm, true); //$$
 }
 
 sk_sp<SkShader> SkShader::makeWithColorFilter(sk_sp<SkColorFilter> filter) const {

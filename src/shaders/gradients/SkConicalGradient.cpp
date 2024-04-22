@@ -103,7 +103,7 @@ sk_sp<SkShader> SkConicalGradient::Create(const SkPoint& c0,
             return nullptr;
         }
     }
-    return SkLocalMatrixShader::MakeWrapped<SkConicalGradient>(
+    return SkLocalMatrixShader::MakeWrapped1<SkConicalGradient>(
             localMatrix, c0, r0, c1, r1, desc, gradientType, gradientMatrix, focalData);
 }
 

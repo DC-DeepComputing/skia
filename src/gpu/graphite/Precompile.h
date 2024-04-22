@@ -128,7 +128,7 @@ public:
 
     virtual bool isConstant(int desiredCombination) const { return false; }
 
-    sk_sp<PrecompileShader> makeWithLocalMatrix();
+    sk_sp<PrecompileShader> makeWithLocalMatrix1();
 
     sk_sp<PrecompileShader> makeWithColorFilter(sk_sp<PrecompileColorFilter>);
 

@@ -830,7 +830,7 @@ private:
                 // Apply a local transform in the shader to map from the tile rectangle to (0,0,w,h)
                 static const SkRect kTarget = SkRect::MakeWH(kTileWidth, kTileHeight);
                 SkMatrix local = SkMatrix::RectToRect(kTarget, rect);
-                paint->setShader(fShader->makeWithLocalMatrix(local));
+                paint->setShader(fShader->makeWithLocalMatrix1(local));
             } else {
                 paint->setShader(fShader);
             }

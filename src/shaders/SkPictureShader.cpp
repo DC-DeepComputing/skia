@@ -125,7 +125,7 @@ sk_sp<SkShader> SkPictureShader::Make(sk_sp<SkPicture> picture, SkTileMode tmx, 
     if (!picture || picture->cullRect().isEmpty() || (tile && tile->isEmpty())) {
         return SkShaders::Empty();
     }
-    return SkLocalMatrixShader::MakeWrapped<SkPictureShader>(lm,
+    return SkLocalMatrixShader::MakeWrapped1<SkPictureShader>(lm,
                                                              std::move(picture),
                                                              tmx, tmy,
                                                              filter,

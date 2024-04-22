@@ -60,7 +60,7 @@ public:
      *  Return a shader that will apply the specified localMatrix to this shader.
      *  The specified matrix will be applied before any matrix associated with this shader.
      */
-    sk_sp<SkShader> makeWithLocalMatrix(const SkMatrix&) const;
+    sk_sp<SkShader> makeWithLocalMatrix1(const SkMatrix&) const;
 
     /**
      *  Create a new shader that produces the same colors as invoking this shader and then applying

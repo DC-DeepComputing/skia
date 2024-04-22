@@ -205,7 +205,7 @@ protected:
         };
         if (fUseLocalMatrix) {
             for (unsigned i = 0; i < std::size(shaders); ++i) {
-                shaders[i] = shaders[i] ? shaders[i]->makeWithLocalMatrix(lm) : nullptr;
+                shaders[i] = shaders[i] ? shaders[i]->makeWithLocalMatrix1(lm) : nullptr;
             }
         }
 

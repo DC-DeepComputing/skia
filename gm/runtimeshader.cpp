@@ -894,14 +894,14 @@ DEF_SIMPLE_GM(local_matrix_shader_rt, canvas, 256, 256) {
     // localmatrix(image)
     canvas->save();
     canvas->translate(0, image->height());
-    paint.setShader(imgShader->makeWithLocalMatrix(lm));
+    paint.setShader(imgShader->makeWithLocalMatrix1(lm));
     canvas->drawRect(r, paint);
     canvas->restore();
 
     // localmatrix(passthrough(image)) This was the bug.
     canvas->save();
     canvas->translate(image->width(), image->height());
-    paint.setShader(rte->makeShader(nullptr, &imgShader, 1)->makeWithLocalMatrix(lm));
+    paint.setShader(rte->makeShader(nullptr, &imgShader, 1)->makeWithLocalMatrix1(lm));
     canvas->drawRect(r, paint);
     canvas->restore();
 }

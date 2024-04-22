@@ -1427,7 +1427,7 @@ sk_sp<SkShader> FilterResult::getAnalyzedShaderView(
     }
 
     if (imageShader && !postDecal.isIdentity()) {
-        imageShader = imageShader->makeWithLocalMatrix(postDecal);
+        imageShader = imageShader->makeWithLocalMatrix1(postDecal);
     }
 
     if (imageShader && fColorFilter) {
@@ -1790,7 +1790,7 @@ SkSpan<sk_sp<SkShader>> FilterResult::Builder::createInputShaders(
                                             input.fFlags | xtraFlags,
                                             sampleBounds);
         if (evaluateInParameterSpace && shader) {
-            shader = shader->makeWithLocalMatrix(layerToParam);
+            shader = shader->makeWithLocalMatrix1(layerToParam);
         }
         fInputShaders.push_back(std::move(shader));
     }
