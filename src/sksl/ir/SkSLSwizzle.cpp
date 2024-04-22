@@ -12,6 +12,7 @@
 #include "src/sksl/SkSLAnalysis.h"
 #include "src/sksl/SkSLConstantFolder.h"
 #include "src/sksl/SkSLContext.h"
+#include "src/sksl/SkSLDefines.h"
 #include "src/sksl/SkSLErrorReporter.h"
 #include "src/sksl/SkSLOperator.h"
 #include "src/sksl/SkSLString.h"
@@ -22,7 +23,6 @@
 #include "src/sksl/ir/SkSLLiteral.h"
 
 #include <algorithm>
-#include <cstddef>
 #include <cstdint>
 #include <optional>
 
@@ -247,6 +247,13 @@ std::unique_ptr<Expression> Swizzle::Convert(const Context& context,
                                              Position maskPos,
                                              std::unique_ptr<Expression> base,
                                              std::string_view maskString) {
+    if (maskString.size() > 4) {
+        context.fErrors->error(Position::Range(maskPos.startOffset() + 4,
+                                               maskPos.endOffset()),
+                               "too many components in swizzle mask");
+        return nullptr;
+    }
+
     ComponentArray components;
     for (size_t i = 0; i < maskString.length(); ++i) {
         char field = maskString[i];
@@ -289,12 +296,7 @@ std::unique_ptr<Expression> Swizzle::Convert(const Context& context,
                                              Position maskPos,
                                              std::unique_ptr<Expression> base,
                                              ComponentArray inComponents) {
-    if (inComponents.size() > 4) {
-        context.fErrors->error(Position::Range(maskPos.startOffset() + 4,
-                                               maskPos.endOffset()),
-                               "too many components in swizzle mask");
-        return nullptr;
-    }
+    SkASSERT(inComponents.size() <= 4);
 
     if (!validate_swizzle_domain(inComponents)) {
         context.fErrors->error(maskPos, "invalid swizzle mask '" + MaskString(inComponents) + "'");

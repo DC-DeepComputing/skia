@@ -9,13 +9,14 @@
 #define SKSL_SWIZZLE
 
 #include "include/core/SkTypes.h"
-#include "src/sksl/SkSLDefines.h"
 #include "src/sksl/SkSLPosition.h"
 #include "src/sksl/ir/SkSLExpression.h"
 #include "src/sksl/ir/SkSLIRNode.h"
 #include "src/sksl/ir/SkSLType.h"
 
 #include <cstdint>
+#include <cstring>
+#include <initializer_list>
 #include <memory>
 #include <string>
 #include <string_view>
@@ -38,6 +39,110 @@ enum Type : int8_t {
 };
 
 }  // namespace SwizzleComponent
+
+/**
+ * Represents the components of a vector swizzle.
+ */
+class ComponentArray {
+public:
+    ComponentArray() = default;
+
+    ComponentArray(std::initializer_list<int8_t> elems) {
+        for (int8_t elem : elems) {
+            fComponent[fSize++] = elem;
+        }
+    }
+
+    int8_t& operator[](size_t index) {
+        SkASSERT(index < fSize);
+        return fComponent[index];
+    }
+
+    const int8_t& operator[](size_t index) const {
+        SkASSERT(index < fSize);
+        return fComponent[index];
+    }
+
+    bool operator==(const ComponentArray& that) const {
+        return fSize == that.fSize && (0 == memcmp(fComponent, that.fComponent, fSize));
+    }
+
+    int size() const {
+        return fSize;
+    }
+
+    bool empty() const {
+        return fSize == 0;
+    }
+
+    void resize(int newSize) {
+        if (fSize > newSize) {
+            fSize = newSize;
+        } else {
+            while (newSize > fSize) {
+                this->push_back(0);
+            }
+        }
+    }
+
+    void push_back(int8_t x) {
+        SkASSERT(fSize < 4);
+        fComponent[fSize++] = x;
+    }
+
+    void pop_back() {
+        SkASSERT(fSize > 0);
+        --fSize;
+    }
+
+    int8_t* data() {
+        return fComponent;
+    }
+
+    const int8_t* data() const {
+        return fComponent;
+    }
+
+    int8_t* begin() {
+        return fComponent;
+    }
+
+    const int8_t* begin() const {
+        return fComponent;
+    }
+
+    int8_t* end() {
+        return fComponent + fSize;
+    }
+
+    const int8_t* end() const {
+        return fComponent + fSize;
+    }
+
+    int8_t& front() {
+        SkASSERT(fSize > 0);
+        return fComponent[0];
+    }
+
+    const int8_t& front() const {
+        SkASSERT(fSize > 0);
+        return fComponent[0];
+    }
+
+    int8_t& back() {
+        SkASSERT(fSize > 0);
+        return fComponent[fSize - 1];
+    }
+
+    const int8_t& back() const {
+        SkASSERT(fSize > 0);
+        return fComponent[fSize - 1];
+    }
+
+private:
+    int8_t fComponent[4];
+    uint8_t fSize = 0;
+};
 
 /**
  * Represents a vector swizzle operation such as 'float3(1, 2, 3).zyx'.
