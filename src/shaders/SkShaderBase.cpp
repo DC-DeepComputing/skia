@@ -127,7 +127,7 @@ bool SkShaderBase::ContextRec::isLegacyCompatible(SkColorSpace* shaderColorSpace
            SkColorSpaceXformSteps{shaderColorSpace, shaderAT, fDstColorSpace, dstAT}.flags.mask();
 }
 
-sk_sp<SkShader> SkShaderBase::makeAsALocalMatrixShader(SkMatrix*) const { return nullptr; }
+sk_sp<SkShader> SkShaderBase::makeAsALocalMatrixShader1(SkMatrix*) const { return nullptr; }
 
 bool SkShaderBase::appendRootStages(const SkStageRec& rec, const SkMatrix& ctm) const {
     return this->appendStages(rec, SkShaders::MatrixRec(ctm));

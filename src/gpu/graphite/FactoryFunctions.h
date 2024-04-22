@@ -95,7 +95,7 @@ namespace PrecompileShaders {
     // LocalMatrixShaders (i.e., pass an SkSpan to the factory function vs just creating a
     // single option). This entry point allows that use case.
     // Note: PrecompileShader::makeWithLocalMatrix() can still be used and works as expected.
-    SK_API sk_sp<PrecompileShader> LocalMatrix(SkSpan<const sk_sp<PrecompileShader>> wrapped);
+    SK_API sk_sp<PrecompileShader> LocalMatrix1(SkSpan<const sk_sp<PrecompileShader>> wrapped);
 
     // Normally, ColorFilterShaders are only created via SkShader::makeWithColorFilter.
     // However, in the combination API, clients may want to create a set of precompile

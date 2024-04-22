@@ -653,7 +653,7 @@ static std::unique_ptr<GrFragmentProcessor> make_shader_fp(const SkImageShader* 
 static std::unique_ptr<GrFragmentProcessor> make_shader_fp(const SkLocalMatrixShader* shader,
                                                            const GrFPArgs& args,
                                                            const SkShaders::MatrixRec& mRec) {
-    return Make(shader->wrappedShader().get(), args, mRec.concat(shader->localMatrix()));
+    return Make(shader->wrappedShader().get(), args, mRec.concat(shader->localMatrix7()));
 }
 
 static std::unique_ptr<GrFragmentProcessor> make_shader_fp(const SkPerlinNoiseShader* shader,

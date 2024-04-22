@@ -116,7 +116,7 @@ inline void WriteUTF16beHex(SkWStream* wStream, SkUnichar utf32) {
 
 inline SkMatrix GetShaderLocalMatrix(const SkShader* shader) {
     SkMatrix localMatrix;
-    if (sk_sp<SkShader> s = as_SB(shader)->makeAsALocalMatrixShader(&localMatrix)) {
+    if (sk_sp<SkShader> s = as_SB(shader)->makeAsALocalMatrixShader1(&localMatrix)) {
         return localMatrix;
     }
     return SkMatrix::I();
