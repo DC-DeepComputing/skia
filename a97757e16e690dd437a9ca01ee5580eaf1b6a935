@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3c34f25_4bb0d2d3",
+        "filename": "src/gpu/graphite/geom/RectBlurData.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-04-22T15:35:11Z",
+      "side": 1,
+      "message": "I ended up rearranging these checks a bit to try to make this cleaner. Added this comment as well.",
+      "parentUuid": "4bb3421c_71e41722",
+      "range": {
+        "startLine": 59,
+        "startChar": 4,
+        "endLine": 62,
+        "endChar": 95
+      },
+      "revId": "a97757e16e690dd437a9ca01ee5580eaf1b6a935",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7d822c5a_2756a68b",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-04-18T19:22:07Z",
       "side": 1,
       "message": "I like being able to fit all the analytic blurs into a single Geometry type, if that remains true for rounded rects as well, it\u0027d be nice to rename this to something like `AnaltyicBlurMask`",
+      "range": {
+        "startLine": 229,
+        "startChar": 11,
+        "endLine": 229,
+        "endChar": 23
+      },
+      "revId": "a97757e16e690dd437a9ca01ee5580eaf1b6a935",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7963f88_97851794",
+        "filename": "src/gpu/graphite/geom/RectBlurData.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-04-22T15:35:11Z",
+      "side": 1,
+      "message": "Did this in http://review.skia.org/844337",
+      "parentUuid": "7d822c5a_2756a68b",
       "range": {
         "startLine": 229,
         "startChar": 11,
