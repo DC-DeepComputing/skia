@@ -174,8 +174,11 @@ std::unique_ptr<Recording> Recorder::snap() {
         fTargetProxyCanvas.reset();
     }
 
+    // In both the "task failed" case and the "everything is discarded" case, there's no work that
+    // can/should be bundled as a Recording.
     if (fDrawBufferManager->hasMappingFailed() ||
-        !fRootTaskList->prepareResources(fResourceProvider.get(), fRuntimeEffectDict.get())) {
+        fRootTaskList->prepareResources(fResourceProvider.get(),
+                                        fRuntimeEffectDict.get()) != Task::Status::kSuccess) {
         // Leaving 'fTrackedDevices' alone since they were flushed earlier and could still be
         // attached to extant SkSurfaces.
         fDrawBufferManager = std::make_unique<DrawBufferManager>(fResourceProvider.get(),
