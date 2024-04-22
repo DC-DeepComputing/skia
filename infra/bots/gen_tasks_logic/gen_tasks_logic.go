@@ -453,6 +453,7 @@ func GenTasks(cfg *Config) {
 			"skia/.bazelrc",
 			"skia/.bazelversion",
 			"skia/BUILD.bazel",
+			"skia/LICENSE", // Referred to by default_applicable_licenses
 			"skia/WORKSPACE.bazel",
 			"skia/bazel",
 			"skia/defines.bzl",
