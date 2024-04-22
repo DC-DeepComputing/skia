@@ -1426,7 +1426,7 @@ sk_sp<SkShader> FilterResult::getAnalyzedShaderView(
         imageShader = builder.makeShader();
     }
 
-    if (imageShader && !postDecal.isIdentity()) {
+    if (imageShader) {
         imageShader = imageShader->makeWithLocalMatrix(postDecal);
     }
 

@@ -626,16 +626,12 @@ public:
     }
 
     bool isConstant(int desiredCombination) const override {
-        SkASSERT(desiredCombination < this->numCombinations());
+        SkASSERT(desiredCombination < fNumWrappedCombos);
 
         /*
-         * Regardless of whether the LocalMatrixShader elides itself or not, we always want
-         * the Constantness of the wrapped shader.
+         * We always want the Constant-ness of the wrapped shader.
          */
-        int desiredWrappedCombination = desiredCombination / kNumIntrinsicCombinations;
-        SkASSERT(desiredWrappedCombination < fNumWrappedCombos);
-
-        auto wrapped = PrecompileBase::SelectOption(SkSpan(fWrapped), desiredWrappedCombination);
+        auto wrapped = PrecompileBase::SelectOption(SkSpan(fWrapped), desiredCombination);
         if (wrapped.first) {
             return wrapped.first->isConstant(wrapped.second);
         }
@@ -646,35 +642,22 @@ public:
 private:
     bool isALocalMatrixShader() const override { return true; }
 
-    // Two combinations: with and without the LocalMatrixShader
-    inline static constexpr int kNumIntrinsicCombinations = 2;
-
-    int numIntrinsicCombinations() const override { return kNumIntrinsicCombinations; }
-
     int numChildCombinations() const override { return fNumWrappedCombos; }
 
     void addToKey(const KeyContext& keyContext,
                   PaintParamsKeyBuilder* builder,
                   PipelineDataGatherer* gatherer,
                   int desiredCombination) const override {
-        SkASSERT(desiredCombination < this->numCombinations());
+        SkASSERT(desiredCombination < fNumWrappedCombos);
 
-        int desiredLMCombination = desiredCombination % kNumIntrinsicCombinations;
-        int desiredWrappedCombination = desiredCombination / kNumIntrinsicCombinations;
-        SkASSERT(desiredWrappedCombination < fNumWrappedCombos);
+        LocalMatrixShaderBlock::LMShaderData kIgnoredLMShaderData(SkMatrix::I());
 
-        if (desiredLMCombination) {
-            LocalMatrixShaderBlock::LMShaderData kIgnoredLMShaderData(SkMatrix::I());
-
-            LocalMatrixShaderBlock::BeginBlock(keyContext, builder, gatherer, kIgnoredLMShaderData);
-        }
+        LocalMatrixShaderBlock::BeginBlock(keyContext, builder, gatherer, kIgnoredLMShaderData);
 
             AddToKey<PrecompileShader>(keyContext, builder, gatherer, fWrapped,
-                                       desiredWrappedCombination);
+                                       desiredCombination);
 
-        if (desiredLMCombination) {
-            builder->endBlock();
-        }
+        builder->endBlock();
     }
 
     std::vector<sk_sp<PrecompileShader>> fWrapped;
