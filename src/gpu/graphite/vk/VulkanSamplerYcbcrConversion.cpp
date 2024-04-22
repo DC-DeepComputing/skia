@@ -62,11 +62,15 @@ GraphiteResourceKey VulkanSamplerYcbcrConversion::MakeYcbcrConversionKey(
     static const ResourceType kType = GraphiteResourceKey::GenerateResourceType();
 
     bool useExternalFormat = info.fFormat == VK_FORMAT_UNDEFINED;
-    // 2 uint32s needed for the external format or 1 for a known VkFormat. 1 uint32 can store all
+    // 2 uint32s needed for the external format OR 1 for a known VkFormat. 1 uint32 can store all
     // other differentiating ycbcr information.
     static const int num32DataCnt = useExternalFormat ? 3 : 2;
     GraphiteResourceKey key;
-    GraphiteResourceKey::Builder builder(&key, kType, num32DataCnt, Shareable::kYes);
+    // TODO: When using a known VkFormat, we only need 2 int32s because an external format is
+    // stored as an int64 whereas a known VkFormat can be contained within an int32. Optimize for
+    // this case.
+    static constexpr int kUint32sNeededForYcbcrInfo = 3;
+    GraphiteResourceKey::Builder builder(&key, kType, kUint32sNeededForYcbcrInfo, Shareable::kYes);
 
     int i = 0;
     if (useExternalFormat) {

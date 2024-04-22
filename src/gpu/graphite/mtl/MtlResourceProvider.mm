@@ -249,7 +249,8 @@ sk_sp<Buffer> MtlResourceProvider::createBuffer(size_t size,
     return MtlBuffer::Make(this->mtlSharedContext(), size, type, accessPattern);
 }
 
-sk_sp<Sampler> MtlResourceProvider::createSampler(const SamplerDesc& samplerDesc) {
+sk_sp<Sampler> MtlResourceProvider::createSampler(const SamplerDesc& samplerDesc,
+                                                  const GraphiteResourceKey& key) {
     return MtlSampler::Make(this->mtlSharedContext(),
                             samplerDesc.samplingOptions(),
                             samplerDesc.tileModeX(),
