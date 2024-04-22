@@ -99,6 +99,7 @@ SKSL_SRCS = [
     "SkSLString.cpp",
     "SkSLString.h",
     "SkSLStringStream.h",
+    "SkSLTinyArray.h",
     "SkSLUtil.cpp",
     "SkSLUtil.h",
     "spirv.h",

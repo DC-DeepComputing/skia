@@ -9,8 +9,8 @@
 #define SKSL_SWIZZLE
 
 #include "include/core/SkTypes.h"
-#include "src/sksl/SkSLDefines.h"
 #include "src/sksl/SkSLPosition.h"
+#include "src/sksl/SkSLTinyArray.h"
 #include "src/sksl/ir/SkSLExpression.h"
 #include "src/sksl/ir/SkSLIRNode.h"
 #include "src/sksl/ir/SkSLType.h"
@@ -38,6 +38,11 @@ enum Type : int8_t {
 };
 
 }  // namespace SwizzleComponent
+
+/**
+ * Represents the components of a vector swizzle.
+ */
+using ComponentArray = TinyArray<4, int8_t>;
 
 /**
  * Represents a vector swizzle operation such as 'float3(1, 2, 3).zyx'.
