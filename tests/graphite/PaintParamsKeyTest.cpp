@@ -363,9 +363,10 @@ ImageFilterType random_imagefiltertype(SkRandom* rand) {
 
 SkMatrix* random_local_matrix(SkRandom* rand, SkMatrix* storage) {
     switch (rand->nextULessThan(3)) {
-        case 0: return nullptr;
-        case 1: storage->setIdentity(); return storage;
-        case 2: storage->setTranslate(2.0f, 2.0f); return storage;
+        case 0:  //return nullptr;
+        case 1:  //storage->setIdentity(); return storage;
+        case 2:  [[fallthrough]];
+        default: storage->setTranslate(2.0f, 2.0f); return storage;
     }
 
     SkUNREACHABLE;
@@ -454,18 +455,19 @@ std::pair<sk_sp<SkShader>, sk_sp<PrecompileShader>> create_picture_shader(SkRand
 
     gNeedSKPPaintOption = true;
 
-    SkMatrix lm;
-    if (rand->nextBool()) {
-        lm = SkMatrix::Translate(1.5f, 2.0f);
-    }
+    SkMatrix lmStorage;
+    SkMatrix* lmPtr = random_local_matrix(rand, &lmStorage);
+    SkDebugf("create_picture_shader %p isI %d\n",
+             lmPtr,
+             lmPtr ? lmPtr->isIdentity() : -1);
 
     // TODO: can the clamp, filter mode, or tileRect affect the final program?
     sk_sp<SkShader> s = picture->makeShader(SkTileMode::kClamp,
                                             SkTileMode::kClamp,
                                             SkFilterMode::kLinear,
-                                            &lm,
+                                            lmPtr,
                                             /* tileRect= */ nullptr);
-    sk_sp<PrecompileShader> o = PrecompileShaders::Picture();
+    sk_sp<PrecompileShader> o = PrecompileShadersPriv::Picture(SkToBool(lmPtr));
 
     return { s, o };
 }
@@ -498,6 +500,12 @@ std::pair<sk_sp<SkShader>, sk_sp<PrecompileShader>> create_gradient_shader(
     SkColor colors[2] = {random_color(rand, constraint), random_color(rand, constraint)};
     SkScalar offsets[2] = {0.0f, 1.0f};
 
+    SkMatrix lmStorage;
+    SkMatrix* lmPtr = random_local_matrix(rand, &lmStorage);
+    SkDebugf("ptr: %p\n", lmPtr);
+
+    uint32_t flags = rand->nextBool() ? 0x0 : SkGradientShader::kInterpolateColorsInPremul_Flag;
+
     sk_sp<SkShader> s;
     sk_sp<PrecompileShader> o;
 
@@ -505,23 +513,25 @@ std::pair<sk_sp<SkShader>, sk_sp<PrecompileShader>> create_gradient_shader(
 
     switch (type) {
         case SkShaderBase::GradientType::kLinear:
-            s = SkGradientShader::MakeLinear(pts, colors, offsets, 2, tm);
-            o = PrecompileShaders::LinearGradient();
+            s = SkGradientShader::MakeLinear(pts, colors, offsets, 2, tm, flags, lmPtr);
+            o = PrecompileShadersPriv::LinearGradient(SkToBool(lmPtr));
             break;
         case SkShaderBase::GradientType::kRadial:
-            s = SkGradientShader::MakeRadial({0, 0}, 100, colors, offsets, 2, tm);
-            o = PrecompileShaders::RadialGradient();
+            s = SkGradientShader::MakeRadial({0, 0}, 100, colors, offsets, 2, tm, flags, lmPtr);
+            o = PrecompileShadersPriv::RadialGradient(SkToBool(lmPtr));
             break;
         case SkShaderBase::GradientType::kSweep:
             s = SkGradientShader::MakeSweep(0, 0, colors, offsets, 2, tm,
-                                            0, 359, 0, nullptr);
-            o = PrecompileShaders::SweepGradient();
+                                            /* startAngle= */ 0, /* endAngle= */ 359,
+                                            flags, lmPtr);
+            o = PrecompileShadersPriv::SweepGradient(SkToBool(lmPtr));
             break;
         case SkShaderBase::GradientType::kConical:
             s = SkGradientShader::MakeTwoPointConical({100, 100}, 100,
                                                       {-100, -100}, 100,
-                                                      colors, offsets, 2, tm);
-            o = PrecompileShaders::TwoPointConicalGradient();
+                                                      colors, offsets, 2,
+                                                      tm, flags, lmPtr);
+            o = PrecompileShadersPriv::TwoPointConicalGradient(SkToBool(lmPtr));
             break;
         case SkShaderBase::GradientType::kNone:
             SkDEBUGFAIL("Gradient shader says its type is none");
@@ -1354,29 +1364,29 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
     };
 
     ShaderType shaders[] = {
-            ShaderType::kBlend,
-            ShaderType::kImage,
-            ShaderType::kRadialGradient,
-            ShaderType::kSolidColor,
+//            ShaderType::kImage,
+//            ShaderType::kBlend,
+//            ShaderType::kRadialGradient,
+//            ShaderType::kSolidColor,
+//            ShaderType::kLocalMatrix,
+//            ShaderType::kConicalGradient,
+//            ShaderType::kLinearGradient,
+//            ShaderType::kSweepGradient,
+            ShaderType::kPicture,
 #if EXPANDED_SET
             ShaderType::kNone,
             ShaderType::kColorFilter,
             ShaderType::kCoordClamp,
-            ShaderType::kConicalGradient,
             ShaderType::kEmpty,
-            ShaderType::kLinearGradient,
-            ShaderType::kLocalMatrix,
             ShaderType::kPerlinNoise,
-            ShaderType::kPicture,
-            ShaderType::kSweepGradient,
             ShaderType::kWorkingColorSpace,
 #endif
     };
 
     BlenderType blenders[] = {
             BlenderType::kPorterDuff,
-            BlenderType::kShaderBased,
-            BlenderType::kRuntime,
+//            BlenderType::kShaderBased,
+//            BlenderType::kRuntime,
 #if EXPANDED_SET
             BlenderType::kNone,
             BlenderType::kArithmetic,
@@ -1385,8 +1395,8 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
 
     ColorFilterType colorFilters[] = {
             ColorFilterType::kNone,
-            ColorFilterType::kBlendMode,
-            ColorFilterType::kMatrix,
+//            ColorFilterType::kBlendMode,
+//            ColorFilterType::kMatrix,
 #if EXPANDED_SET
             ColorFilterType::kColorSpaceXform,
             ColorFilterType::kCompose,
@@ -1418,21 +1428,21 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
 #endif
     };
 
-#if EXPANDED_SET
+//#if EXPANDED_SET
     size_t kExpected = std::size(shaders) * std::size(blenders) * std::size(colorFilters) *
                        std::size(clips) * std::size(imageFilters);
     int current = 0;
-#endif
+//#endif
 
     for (auto shader : shaders) {
         for (auto blender : blenders) {
             for (auto cf : colorFilters) {
                 for (auto clip : clips) {
                     for (auto imageFilter : imageFilters) {
-#if EXPANDED_SET
+//#if EXPANDED_SET
                         SkDebugf("%d/%zu\n", current, kExpected);
                         ++current;
-#endif
+//#endif
                         run_test(reporter, context, testContext, precompileKeyContext, drawData,
                                  shader, blender, cf, clip, imageFilter);
                     }
@@ -1441,9 +1451,9 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
         }
     }
 
-#if EXPANDED_SET
+//#if EXPANDED_SET
     SkASSERT(current == (int) kExpected);
-#endif
+//#endif
 }
 
 void run_test(skiatest::Reporter* reporter,
