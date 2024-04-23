@@ -51,6 +51,24 @@
       "parentUuid": "499a1d7d_8737713c",
       "revId": "7de10456194805c13dfaf6b226861ff09c747866",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f93bc7ff_61d150ba",
+        "filename": "src/gpu/graphite/task/ComputeTask.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-04-23T22:40:21Z",
+      "side": 1,
+      "message": "I see. So this allows for the possibility of a task to return success from prepareResources once and for later calls signal discard. I think that\u0027s reasonable.\n\nI don\u0027t have too strong feelings about this, just that the same status field has a slightly different side effect wrt/ addCommands and prepareResources. Perhaps these should return different Status types. Either way, I leave that up to you.",
+      "parentUuid": "49511645_ee742bb9",
+      "revId": "7de10456194805c13dfaf6b226861ff09c747866",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

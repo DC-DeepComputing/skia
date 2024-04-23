@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "af82fceb_f688bd13",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-04-23T22:40:21Z",
+      "side": 1,
+      "message": "LGTM. I\u0027m not too strongly opinionated and I don\u0027t have a good suggestion for how to make the distinct semantics between a Status from prepareResources vs addCommands any more clear.\n\nEither way, lgtm.",
+      "revId": "576badce1dd7c21e1644a4aba2e1f0b75cd27708",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
