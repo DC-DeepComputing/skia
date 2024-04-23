@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e113de88_fde66a5c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-23T15:56:26Z",
+      "side": 1,
+      "message": "https://skia-review.googlesource.com/c/skia/+/844796 needs to run CPU tests not in parallel, so it seemed straightforward enough to add a new macro that groups serial cpu tests to run ahead of everything else on the main thread.",
+      "revId": "ee51686199b6789ef381d542176c3fd8fd2fa297",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
