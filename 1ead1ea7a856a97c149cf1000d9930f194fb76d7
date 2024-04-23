@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3880390f_9fb3aacd",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-04-23T17:56:14Z",
+      "side": 1,
+      "message": "Do we still need an empty MSAA16 macro here as well?",
+      "revId": "1ead1ea7a856a97c149cf1000d9930f194fb76d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
