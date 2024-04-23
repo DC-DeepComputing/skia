@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6530f0b1_edd96311",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-04-23T17:37:54Z",
+      "side": 1,
+      "message": "Just one question regarding `Status::kDiscard` in the context of `prepareResources`.",
+      "revId": "7de10456194805c13dfaf6b226861ff09c747866",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "499a1d7d_8737713c",
+        "filename": "src/gpu/graphite/task/ComputeTask.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-04-23T17:37:54Z",
+      "side": 1,
+      "message": "I\u0027m somewhat confused about what `Status::kDiscard` means in the context of `prepareResources`. I understand that it means \"the call succeeded but `addCommands`\" won\u0027t be called on it as it will get discarded beforehand (which is slightly different from what it means in the context of `addCommands`). Isn\u0027t that equivalent to failing?\n\nI\u0027m wondering if `prepareResources` should have a binary success/fail result instead of a tri-state. Is there a scenario you had in mind in which returning discard from `prepareResources` is useful, even though the task won\u0027t get added to a command buffer?",
+      "revId": "7de10456194805c13dfaf6b226861ff09c747866",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
