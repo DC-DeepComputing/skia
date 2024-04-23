@@ -844,6 +844,7 @@ sk_sp<SkShader> SkRuntimeEffect::makeShader(sk_sp<const SkData> uniforms,
     if (uniforms->size() != this->uniformSize()) {
         return nullptr;
     }
+
     return SkLocalMatrixShader::MakeWrapped<SkRuntimeShader>(localMatrix,
                                                              sk_ref_sp(this),
                                                              /*debugTrace=*/nullptr,

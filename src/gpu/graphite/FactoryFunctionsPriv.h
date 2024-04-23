@@ -22,6 +22,15 @@ enum class PrecompileImageShaderFlags {
 };
 SK_MAKE_BITMASK_OPS(PrecompileImageShaderFlags)
 
+#if 1
+enum class PrecompileGradientFlags2 {
+    kNone           = 0b00,
+    kSkipXformed    = 0b01,
+    kSkipNonXformed = 0b10
+};
+SK_MAKE_BITMASK_OPS(PrecompileGradientFlags2)
+#endif
+
 //--------------------------------------------------------------------------------------------------
 namespace PrecompileShadersPriv {
     sk_sp<PrecompileShader> Blur(sk_sp<PrecompileShader> child);
@@ -31,6 +40,12 @@ namespace PrecompileShadersPriv {
     sk_sp<PrecompileShader> CTM(SkSpan<const sk_sp<PrecompileShader>> wrapped);
 
     sk_sp<PrecompileShader> Image(SkEnumBitMask<PrecompileImageShaderFlags>);
+
+    sk_sp<PrecompileShader> LinearGradient(bool withLM);
+    sk_sp<PrecompileShader> RadialGradient(bool withLM);
+    sk_sp<PrecompileShader> TwoPointConicalGradient(bool withLM);
+    sk_sp<PrecompileShader> SweepGradient(bool withLM);
+    sk_sp<PrecompileShader> Picture(bool withLM);
 
 } // namespace PrecompileShadersPriv
 

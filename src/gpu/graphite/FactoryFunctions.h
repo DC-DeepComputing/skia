@@ -88,7 +88,7 @@ namespace PrecompileShaders {
     // that by adding a "passing-non-null-non-Identity-LM-to-SkPicture::makeShader" flag here
     // in which case we would either add or skip the LMShader. That would be a pretty obscure API
     // though.
-    SK_API sk_sp<PrecompileShader> Picture();
+    SK_API sk_sp<PrecompileShader> Picture1();
 
     // Normally, LocalMatrixShaders are only created via SkShader::makeWithLocalMatrix.
     // However, in the combination API, clients may want to create a set of precompile
