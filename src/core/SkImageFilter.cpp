@@ -386,5 +386,9 @@ skif::FilterResult SkImageFilter_Base::getChildOutput(int index, const skif::Con
 }
 
 void SkImageFilter_Base::PurgeCache() {
-    SkImageFilterCache::Get()->purge();
+    const bool kCreateIfNecessary = false;
+    auto cache = SkImageFilterCache::Get(kCreateIfNecessary);
+    if (cache) {
+        cache->purge();
+    }
 }

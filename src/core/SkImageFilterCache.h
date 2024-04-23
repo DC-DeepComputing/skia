@@ -60,7 +60,7 @@ public:
 
     ~SkImageFilterCache() override {}
     static sk_sp<SkImageFilterCache> Create(size_t maxBytes);
-    static sk_sp<SkImageFilterCache> Get();
+    static sk_sp<SkImageFilterCache> Get(bool createIfNecessary = true);
 
     // Returns true on cache hit and updates 'result' to be the cached result. Returns false when
     // not in the cache, in which case 'result' is not modified.

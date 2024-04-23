@@ -12,6 +12,7 @@
 #include "include/core/SkColorFilter.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkColorType.h"
+#include "include/core/SkGraphics.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkImageFilter.h"
 #include "include/core/SkImageInfo.h"
@@ -327,4 +328,27 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ImageFilterCache_GPUBacked,
     test_dont_find_if_diff_key(reporter, fullImg, subsetImg);
     test_internal_purge(reporter, fullImg);
     test_explicit_purging(reporter, fullImg, subsetImg);
+}
+
+DEF_TEST(PurgeImageFilterCache, r) {
+    bool kCreateIfNecessary = false;
+    auto cache = SkImageFilterCache::Get(kCreateIfNecessary);
+    if (cache) {
+        // This test verifies that Get(false) does not create the cache, but
+        // another test has already created it, so there is nothing to test.
+        return;
+    }
+
+    // This method calls SkImageFilter_Base::PurgeCache(), which is private.
+    SkGraphics::PurgeResourceCache();
+    cache = SkImageFilterCache::Get(kCreateIfNecessary);
+
+    // PurgeCache should not have created it.
+    REPORTER_ASSERT(r, !cache);
+
+    {
+        kCreateIfNecessary = true;
+        cache = SkImageFilterCache::Get(kCreateIfNecessary);
+        REPORTER_ASSERT(r, cache);
+    }
 }
