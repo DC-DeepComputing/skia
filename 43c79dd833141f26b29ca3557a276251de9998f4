@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d4bfbcf6_0d960ecf",
+        "filename": "src/gpu/graphite/Image_YUVA_Graphite.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-23T02:01:29Z",
+      "side": 1,
+      "message": "Done; I just had it call `SkYUVAInfo::SubsamplingFactors()` with the subsampling of `yuvaInfo`. I think this does what we want since we just want the U/V factors but don\u0027t have the plane indices on hand anymore (but it shouldn\u0027t matter since if there\u0027s no subsampling for the plane config, it\u0027ll return 0 or 1 and that\u0027s what we expect)",
+      "parentUuid": "05c6dfe8_aea27dff",
+      "range": {
+        "startLine": 55,
+        "startChar": 23,
+        "endLine": 55,
+        "endChar": 62
+      },
+      "revId": "43c79dd833141f26b29ca3557a276251de9998f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0602c0dd_c7180d5b",
         "filename": "src/gpu/graphite/Image_YUVA_Graphite.cpp",
         "patchSetId": 8
@@ -61,6 +85,30 @@
       "side": 1,
       "message": "are you planning on fixing that here?",
       "parentUuid": "0602c0dd_c7180d5b",
+      "range": {
+        "startLine": 191,
+        "startChar": 4,
+        "endLine": 195,
+        "endChar": 5
+      },
+      "revId": "43c79dd833141f26b29ca3557a276251de9998f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "03193cf4_4284f624",
+        "filename": "src/gpu/graphite/Image_YUVA_Graphite.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-23T02:01:29Z",
+      "side": 1,
+      "message": "Done; I also updated it to return either the texture size or the uninstantiated estimate, which is what Image_Graphite does for single planes.",
+      "parentUuid": "4f3da44a_9bd443b8",
       "range": {
         "startLine": 191,
         "startChar": 4,

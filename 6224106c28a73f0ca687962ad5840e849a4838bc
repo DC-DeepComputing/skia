@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ee2ac74_256fcad8",
+        "filename": "src/gpu/graphite/Image_YUVA_Graphite.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-23T02:01:29Z",
+      "side": 1,
+      "message": "I added this validation check, since SkYUVAInfo.planeDimensions appears to do the right thing for even vs. odd dimensions with the different subsampling factors. In theory we could have subsampled planes that are embedded in larger textures but I\u0027m not aware of that as something we\u0027ve ever supported.",
+      "range": {
+        "startLine": 105,
+        "startChar": 0,
+        "endLine": 107,
+        "endChar": 9
+      },
+      "revId": "6224106c28a73f0ca687962ad5840e849a4838bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

@@ -46,6 +46,30 @@
       },
       "revId": "22d1130a2ba22beb7156d5578f1a9942d1e88bcb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a70af999_4c3d8350",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 1494,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-23T02:01:29Z",
+      "side": 0,
+      "message": "Right; this had only been needed because the channel assignment would just set a specific component to 1, but it worked out just as easy to set the whole selector and I thought that was clearer what it was doing.",
+      "parentUuid": "2139367d_6f2ff959",
+      "range": {
+        "startLine": 1494,
+        "startChar": 8,
+        "endLine": 1494,
+        "endChar": 60
+      },
+      "revId": "22d1130a2ba22beb7156d5578f1a9942d1e88bcb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
