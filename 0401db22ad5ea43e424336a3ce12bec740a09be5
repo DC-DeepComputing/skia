@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c16eccc_88ca0c83",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 9
+      },
+      "lineNbr": 1485,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-04-23T14:55:37Z",
+      "side": 1,
+      "message": "Could we pre-populate `0.5 - circle.z` instead of calculating it per-pixel?",
+      "range": {
+        "startLine": 1485,
+        "startChar": 31,
+        "endLine": 1485,
+        "endChar": 50
+      },
+      "revId": "0401db22ad5ea43e424336a3ce12bec740a09be5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
