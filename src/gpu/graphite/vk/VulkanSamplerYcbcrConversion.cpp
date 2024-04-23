@@ -64,23 +64,51 @@ GraphiteResourceKey VulkanSamplerYcbcrConversion::MakeYcbcrConversionKey(
     bool useExternalFormat = info.fFormat == VK_FORMAT_UNDEFINED;
     // 2 uint32s needed for the external format OR 1 for a known VkFormat. 1 uint32 can store all
     // other differentiating ycbcr information.
-    static const int num32DataCnt = useExternalFormat ? 3 : 2;
+    static const int num32DataCnt = useExternalFormat ? 4 : 2;
     GraphiteResourceKey key;
-    // TODO: When using a known VkFormat, we only need 2 int32s because an external format is
-    // stored as an int64 whereas a known VkFormat can be contained within an int32. Optimize for
-    // this case.
-    static constexpr int kUint32sNeededForYcbcrInfo = 3;
-    GraphiteResourceKey::Builder builder(&key, kType, kUint32sNeededForYcbcrInfo, Shareable::kYes);
+    GraphiteResourceKey::Builder builder(&key, kType, num32DataCnt, Shareable::kYes);
 
     int i = 0;
+    builder[i++] = info.nonFormatInfoAsUInt32();
     if (useExternalFormat) {
         builder[i++] = (uint32_t)(info.fExternalFormat << 32);
         builder[i++] = (uint32_t)info.fExternalFormat;
+        builder[i++] = info.fFormatFeatures;
     } else {
         builder[i++] = info.fFormat;
     }
-    builder[i++] = info.nonFormatInfoAsUInt32();
+
     SkASSERT(i == num32DataCnt);
+
+    builder.finish();
+    return key;
+}
+
+// TODO: review this method.
+GraphiteResourceKey VulkanSamplerYcbcrConversion::GetKeyFromSamplerDesc(
+        const SamplerDesc& samplerDesc) {
+    SkASSERT(samplerDesc.format());
+    static const ResourceType kType = GraphiteResourceKey::GenerateResourceType();
+    GraphiteResourceKey key;
+    int int32sNeeded = 1; // 1 needed for non-format information
+
+    bool usesExternalFormat = (bool)(samplerDesc.desc() >>
+            (SamplerDesc::kConversionInfoShift +
+             VulkanYcbcrConversionInfo::kUsesExternalFormatShift));
+    // If using an external format, we need to append more data thn if we are using a known one.
+    // TODO: Make static constant vals?
+    int32sNeeded += usesExternalFormat ? 3 : 1;
+
+    GraphiteResourceKey::Builder builder(&key, kType, int32sNeeded, Shareable::kYes);
+
+    builder[0] = (uint32_t)(samplerDesc.desc() >> SamplerDesc::kConversionInfoShift);
+    if (usesExternalFormat) {
+        builder[1] = (uint32_t)(samplerDesc.format() << 32);
+        builder[2] = (uint32_t)(samplerDesc.format());
+        builder[3] = (uint32_t)(samplerDesc.formatFeatures());
+    } else {
+        builder[1] = (uint32_t)(samplerDesc.format()); // TODO verify
+    }
 
     builder.finish();
     return key;
