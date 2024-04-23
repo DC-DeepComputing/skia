@@ -40,6 +40,8 @@
 
 #include <algorithm>
 
+extern FILE* gFile;
+
 namespace skif {
 
 namespace {
@@ -1426,9 +1428,35 @@ sk_sp<SkShader> FilterResult::getAnalyzedShaderView(
         imageShader = builder.makeShader();
     }
 
+#if 0
+    // Not eliding
+    if (imageShader) {
+        imageShader = imageShader->makeWithLocalMatrix(postDecal);
+    }
+#else
+    // Eliding
     if (imageShader && !postDecal.isIdentity()) {
         imageShader = imageShader->makeWithLocalMatrix(postDecal);
     }
+#endif
+
+#if 0
+    if (imageShader) {
+        if (!postDecal.isIdentity()) {
+            imageShader = imageShader->makeWithLocalMatrix(postDecal);
+        } else {
+            if (!gFile) {
+                gFile = fopen("/Users/robertphillips/chrome-log.txt", "a");
+            }
+            if (gFile) {
+                fprintf(gFile, "------------------------------- Eliding3\n");
+                fflush(gFile);
+            } else {
+                printf("----------------------- gFile Open failed 3\n");
+            }
+        }
+    }
+#endif
 
     if (imageShader && fColorFilter) {
         imageShader = imageShader->makeWithColorFilter(fColorFilter);
