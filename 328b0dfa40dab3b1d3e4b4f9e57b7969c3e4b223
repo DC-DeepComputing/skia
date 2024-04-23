@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2056d704_174fa868",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-04-23T20:13:48Z",
+      "side": 1,
+      "message": "I don\u0027t love adding all these fields to SkPathRef, but all of my attempts to reconstruct the arc mathematically are much too brittle. In any case, my plan is to tweak the canvas code to use this (rather than its own arc-detection logic), and make sure it performs similarly.",
+      "revId": "328b0dfa40dab3b1d3e4b4f9e57b7969c3e4b223",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
