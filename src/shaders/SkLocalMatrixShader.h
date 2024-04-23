@@ -27,12 +27,18 @@ class SkWriteBuffer;
 enum class SkTileMode;
 struct SkStageRec;
 
+extern FILE* gFile;
+
 class SkLocalMatrixShader final : public SkShaderBase {
 public:
     template <typename T, typename... Args>
     static std::enable_if_t<std::is_base_of_v<SkShader, T>, sk_sp<SkShader>>
     MakeWrapped(const SkMatrix* localMatrix, Args&&... args) {
         auto t = sk_make_sp<T>(std::forward<Args>(args)...);
+
+#if 0
+        // not eliding
+#else
         bool isGraphiteImageShader = false;
         if (t->type() == SkShaderBase::ShaderType::kImage) {
             auto imgShader = static_cast<const SkImageShader*>(as_SB(t));
@@ -40,13 +46,29 @@ public:
             SkASSERT(imgBase);
             isGraphiteImageShader = imgBase->isGraphiteBacked();
         }
+
         // In Graphite we can safely handle a local matrix shader with identity by not emitting code
         // for it. Additionally, Graphite uses the local matrix shader to add the matrix for the
         // origin y-flip if needed. Thus we always emit the local matrix shader here so we can
         // connect the y-flip, but it doesn't hurt us if there is no flip.
         if ((!localMatrix || localMatrix->isIdentity()) && !isGraphiteImageShader) {
+#if 0
+            if (!gFile) {
+                gFile = fopen("/Users/robertphillips/chrome-log.txt", "a");
+            }
+            if (gFile) {
+                fprintf(gFile, "------------------------------- Eliding1 lm %p isI %d -- type: %d\n",
+                        localMatrix,
+                        localMatrix ? localMatrix->isIdentity() : -1,
+                        (int) t->type());
+                fflush(gFile);
+            } else {
+                printf("----------------------- gFile Open failed 1\n");
+            }
+#endif
             return t;
         }
+#endif
 
         return sk_make_sp<SkLocalMatrixShader>(sk_sp<SkShader>(std::move(t)),
                                                localMatrix ? *localMatrix : SkMatrix::I());

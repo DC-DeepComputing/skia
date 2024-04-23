@@ -50,8 +50,8 @@ public:
     sk_sp<GraphicsPipeline> addGraphicsPipeline(const UniqueKey&,
                                                 sk_sp<GraphicsPipeline>) SK_EXCLUDES(fSpinLock);
 
-#if defined(GRAPHITE_TEST_UTILS)
     int numGraphicsPipelines() const SK_EXCLUDES(fSpinLock);
+#if defined(GRAPHITE_TEST_UTILS)
     void resetGraphicsPipelines() SK_EXCLUDES(fSpinLock);
     void forEachGraphicsPipeline(
             const std::function<void(const UniqueKey&, const GraphicsPipeline*)>& fn)

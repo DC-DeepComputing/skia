@@ -15,6 +15,8 @@
 
 #include <utility>
 
+extern FILE* gFile;
+
 class SkColorFilter;
 class SkImage;
 enum class SkTileMode;
@@ -24,9 +26,25 @@ SkImage* SkShader::isAImage(SkMatrix* localMatrix, SkTileMode xy[2]) const {
 }
 
 sk_sp<SkShader> SkShader::makeWithLocalMatrix(const SkMatrix& localMatrix) const {
+#if 0
+    // Not eliding
+#else
+    // Eliding
     if (localMatrix.isIdentity()) {
+#if 0
+        if (!gFile) {
+            gFile = fopen("/Users/robertphillips/chrome-log.txt", "a");
+        }
+        if (gFile) {
+            fprintf(gFile, "------------------------------- Eliding2\n");
+            fflush(gFile);
+        } else {
+            printf("----------------------- gFile Open failed 2\n");
+        }
+#endif
         return sk_ref_sp(const_cast<SkShader*>(this));
     }
+#endif
 
     const SkMatrix* lm = &localMatrix;
 
