@@ -416,7 +416,7 @@ private:
     inline static constexpr int kHWTiled      = 1;
     inline static constexpr int kShaderTiled  = 0;
 
-    // There are 2 alpha combinations: alpha-only and not-alpha-only
+    // There are also 2 potential alpha combinations: alpha-only and not-alpha-only
     inline static constexpr int kNumAlphaCombinations = 2;
     inline static constexpr int kAlphaOnly    = 1;
     inline static constexpr int kNonAlphaOnly = 0;
@@ -554,61 +554,131 @@ sk_sp<PrecompileShader> PrecompileShaders::Picture() {
 //--------------------------------------------------------------------------------------------------
 class PrecompileGradientShader : public PrecompileShader {
 public:
-    PrecompileGradientShader(SkShaderBase::GradientType type) : fType(type) {}
+    PrecompileGradientShader(SkShaderBase::GradientType type) : fType(type) {
+//        constexpr SkEnumBitMask<PrecompileGradientFlags> kBoth = PrecompileGradientFlags::kSkipXformed |
+//                                                                 PrecompileGradientFlags::kSkipNonXformed;
+//        SkASSERT((fFlags & kBoth) != kBoth); // Can't skip both cases
+    }
 
 private:
-    /*
-     * The gradients currently have two specializations based on the number of stops.
-     */
+     // The gradients currently have two specializations based on the number of stops.
     inline static constexpr int kNumStopVariants = 2;
     inline static constexpr int kStopVariants[kNumStopVariants] = { 4, 8 };
 
+    // The gradients also have two potential variants based on being wrapped in a local matrix
+    // or not
+    inline static constexpr int kNumMatrixVariants  = 2;
+    inline static constexpr int kWithLocalMatrix    = 1;
+    inline static constexpr int kWithoutLocalMatrix = 0;
+
     int numIntrinsicCombinations() const override {
-        return kNumStopVariants;
+        if (fFlags & PrecompileGradientFlags2::kSkipXformed ||
+            fFlags & PrecompileGradientFlags2::kSkipNonXformed) {
+            return kNumStopVariants;
+        }
+        return kNumStopVariants * kNumMatrixVariants;
     }
 
     void addToKey(const KeyContext& keyContext,
                   PaintParamsKeyBuilder* builder,
                   PipelineDataGatherer* gatherer,
                   int desiredCombination) const override {
-        const int intrinsicCombination = desiredCombination / this->numChildCombinations();
-        SkDEBUGCODE(int childCombination = desiredCombination % this->numChildCombinations();)
-        SkASSERT(intrinsicCombination < kNumStopVariants);
-        SkASSERT(childCombination == 0);
+        SkASSERT(desiredCombination < this->numIntrinsicCombinations());
+        SkASSERT(this->numChildCombinations() == 1);
 
-        GradientShaderBlocks::GradientData gradData(fType, kStopVariants[intrinsicCombination]);
+        int desiredXformVariant, desiredStopVariant;
+        if (fFlags & PrecompileGradientFlags2::kSkipXformed) {
+            desiredXformVariant = kWithoutLocalMatrix;
+            desiredStopVariant = desiredCombination;
+        } else if (fFlags & PrecompileGradientFlags2::kSkipNonXformed) {
+            desiredXformVariant = kWithLocalMatrix;
+            desiredStopVariant = desiredCombination;
+        } else {
+            desiredXformVariant = desiredCombination % kNumMatrixVariants;
+            desiredStopVariant = desiredCombination / kNumMatrixVariants;
+        }
+        SkASSERT(desiredXformVariant < kNumMatrixVariants);
+        SkASSERT(desiredStopVariant < kNumStopVariants);
+
+        GradientShaderBlocks::GradientData gradData(fType, kStopVariants[desiredStopVariant]);
 
         constexpr SkAlphaType kAlphaType = kPremul_SkAlphaType;
         ColorSpaceTransformBlock::ColorSpaceTransformData csData(sk_srgb_singleton(), kAlphaType,
                                                                  sk_srgb_singleton(), kAlphaType);
 
-        // TODO: we may need SkLocalMatrixShader-wrapped versions too
-        Compose(keyContext, builder, gatherer,
-                /* addInnerToKey= */ [&]() -> void {
-                    GradientShaderBlocks::AddBlock(keyContext, builder, gatherer, gradData);
-                },
-                /* addOuterToKey= */  [&]() -> void {
-                    ColorSpaceTransformBlock::AddBlock(keyContext, builder, gatherer, csData);
-                });
+        if (desiredXformVariant == kWithLocalMatrix) {
+            LocalMatrixShaderBlock::LMShaderData kIgnoredLMShaderData(SkMatrix::I());
+
+            LocalMatrixShaderBlock::BeginBlock(keyContext, builder, gatherer, kIgnoredLMShaderData);
+        }
+
+            Compose(keyContext, builder, gatherer,
+                    /* addInnerToKey= */ [&]() -> void {
+                        GradientShaderBlocks::AddBlock(keyContext, builder, gatherer, gradData);
+                    },
+                    /* addOuterToKey= */  [&]() -> void {
+                        ColorSpaceTransformBlock::AddBlock(keyContext, builder, gatherer, csData);
+                    });
+
+        if (desiredXformVariant == kWithLocalMatrix) {
+            builder->endBlock();
+        }
     }
 
     SkShaderBase::GradientType fType;
+    SkEnumBitMask<PrecompileGradientFlags2> fFlags = PrecompileGradientFlags2::kSkipXformed;
 };
 
 sk_sp<PrecompileShader> PrecompileShaders::LinearGradient() {
-    return sk_make_sp<PrecompileGradientShader>(SkShaderBase::GradientType::kLinear);
+    sk_sp<PrecompileShader> s = sk_make_sp<PrecompileGradientShader>(SkShaderBase::GradientType::kLinear);
+    return PrecompileShaders::LocalMatrix({ std::move(s) });
+}
+
+sk_sp<PrecompileShader> PrecompileShadersPriv::LinearGradient(bool withLM) {
+    sk_sp<PrecompileShader> s = sk_make_sp<PrecompileGradientShader>(SkShaderBase::GradientType::kLinear);
+    if (withLM) {
+        return PrecompileShaders::LocalMatrix({ std::move(s) });
+    }
+    return s;
 }
 
 sk_sp<PrecompileShader> PrecompileShaders::RadialGradient() {
-    return sk_make_sp<PrecompileGradientShader>(SkShaderBase::GradientType::kRadial);
+    sk_sp<PrecompileShader> s = sk_make_sp<PrecompileGradientShader>(SkShaderBase::GradientType::kRadial);
+    return PrecompileShaders::LocalMatrix({ std::move(s) });
+}
+
+sk_sp<PrecompileShader> PrecompileShadersPriv::RadialGradient(bool withLM) {
+    sk_sp<PrecompileShader> s = sk_make_sp<PrecompileGradientShader>(SkShaderBase::GradientType::kRadial);
+    if (withLM) {
+        return PrecompileShaders::LocalMatrix({ std::move(s) });
+    }
+    return s;
 }
 
 sk_sp<PrecompileShader> PrecompileShaders::SweepGradient() {
-    return sk_make_sp<PrecompileGradientShader>(SkShaderBase::GradientType::kSweep);
+    sk_sp<PrecompileShader> s = sk_make_sp<PrecompileGradientShader>(SkShaderBase::GradientType::kSweep);
+    return PrecompileShaders::LocalMatrix({ std::move(s) });
+}
+
+sk_sp<PrecompileShader> PrecompileShadersPriv::SweepGradient(bool withLM) {
+    sk_sp<PrecompileShader> s = sk_make_sp<PrecompileGradientShader>(SkShaderBase::GradientType::kSweep);
+    if (withLM) {
+        return PrecompileShaders::LocalMatrix({ std::move(s) });
+    }
+    return s;
 }
 
 sk_sp<PrecompileShader> PrecompileShaders::TwoPointConicalGradient() {
-    return sk_make_sp<PrecompileGradientShader>(SkShaderBase::GradientType::kConical);
+    sk_sp<PrecompileShader> s = sk_make_sp<PrecompileGradientShader>(SkShaderBase::GradientType::kConical);
+    return PrecompileShaders::LocalMatrix({ std::move(s) });
+}
+
+sk_sp<PrecompileShader> PrecompileShadersPriv::TwoPointConicalGradient(bool withLM) {
+    sk_sp<PrecompileShader> s = sk_make_sp<PrecompileGradientShader>(SkShaderBase::GradientType::kConical);
+    if (withLM) {
+        return PrecompileShaders::LocalMatrix({ std::move(s) });
+    }
+    return s;
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -626,16 +696,12 @@ public:
     }
 
     bool isConstant(int desiredCombination) const override {
-        SkASSERT(desiredCombination < this->numCombinations());
+        SkASSERT(desiredCombination < fNumWrappedCombos);
 
         /*
-         * Regardless of whether the LocalMatrixShader elides itself or not, we always want
-         * the Constantness of the wrapped shader.
+         * We always want the Constant-ness of the wrapped shader.
          */
-        int desiredWrappedCombination = desiredCombination / kNumIntrinsicCombinations;
-        SkASSERT(desiredWrappedCombination < fNumWrappedCombos);
-
-        auto wrapped = PrecompileBase::SelectOption(SkSpan(fWrapped), desiredWrappedCombination);
+        auto wrapped = PrecompileBase::SelectOption(SkSpan(fWrapped), desiredCombination);
         if (wrapped.first) {
             return wrapped.first->isConstant(wrapped.second);
         }
@@ -646,35 +712,22 @@ public:
 private:
     bool isALocalMatrixShader() const override { return true; }
 
-    // Two combinations: with and without the LocalMatrixShader
-    inline static constexpr int kNumIntrinsicCombinations = 2;
-
-    int numIntrinsicCombinations() const override { return kNumIntrinsicCombinations; }
-
     int numChildCombinations() const override { return fNumWrappedCombos; }
 
     void addToKey(const KeyContext& keyContext,
                   PaintParamsKeyBuilder* builder,
                   PipelineDataGatherer* gatherer,
                   int desiredCombination) const override {
-        SkASSERT(desiredCombination < this->numCombinations());
+        SkASSERT(desiredCombination < fNumWrappedCombos);
 
-        int desiredLMCombination = desiredCombination % kNumIntrinsicCombinations;
-        int desiredWrappedCombination = desiredCombination / kNumIntrinsicCombinations;
-        SkASSERT(desiredWrappedCombination < fNumWrappedCombos);
+        LocalMatrixShaderBlock::LMShaderData kIgnoredLMShaderData(SkMatrix::I());
 
-        if (desiredLMCombination) {
-            LocalMatrixShaderBlock::LMShaderData kIgnoredLMShaderData(SkMatrix::I());
-
-            LocalMatrixShaderBlock::BeginBlock(keyContext, builder, gatherer, kIgnoredLMShaderData);
-        }
+        LocalMatrixShaderBlock::BeginBlock(keyContext, builder, gatherer, kIgnoredLMShaderData);
 
             AddToKey<PrecompileShader>(keyContext, builder, gatherer, fWrapped,
-                                       desiredWrappedCombination);
+                                       desiredCombination);
 
-        if (desiredLMCombination) {
-            builder->endBlock();
-        }
+        builder->endBlock();
     }
 
     std::vector<sk_sp<PrecompileShader>> fWrapped;

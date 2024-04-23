@@ -734,7 +734,7 @@ static sk_sp<SkShader> lit_shader(sk_sp<SkShader> normals) {
         }
     )";
     auto effect = SkRuntimeEffect::MakeForShader(SkString(kSrc)).effect;
-    return effect->makeShader(nullptr, &normals, 1);
+    return effect->makeShader(/* uniforms= */ nullptr, &normals, /* childCount= */ 1);
 }
 
 static sk_sp<SkShader> lit_shader_linear(sk_sp<SkShader> normals) {
@@ -748,7 +748,7 @@ static sk_sp<SkShader> lit_shader_linear(sk_sp<SkShader> normals) {
         }
     )";
     auto effect = SkRuntimeEffect::MakeForShader(SkString(kSrc)).effect;
-    return effect->makeShader(nullptr, &normals, 1);
+    return effect->makeShader(/* uniforms= */ nullptr, &normals, /* childCount= */ 1);
 }
 
 DEF_SIMPLE_GM(paint_alpha_normals_rt, canvas, 512,512) {
@@ -887,7 +887,7 @@ DEF_SIMPLE_GM(local_matrix_shader_rt, canvas, 256, 256) {
     // passthrough(image)
     canvas->save();
     canvas->translate(image->width(), 0);
-    paint.setShader(rte->makeShader(nullptr, &imgShader, 1));
+    paint.setShader(rte->makeShader(/* uniforms= */ nullptr, &imgShader, /* childCount= */ 1));
     canvas->drawRect(r, paint);
     canvas->restore();
 
@@ -901,7 +901,8 @@ DEF_SIMPLE_GM(local_matrix_shader_rt, canvas, 256, 256) {
     // localmatrix(passthrough(image)) This was the bug.
     canvas->save();
     canvas->translate(image->width(), image->height());
-    paint.setShader(rte->makeShader(nullptr, &imgShader, 1)->makeWithLocalMatrix(lm));
+    paint.setShader(rte->makeShader(/* uniforms= */ nullptr, &imgShader, /* childCount= */ 1)
+                            ->makeWithLocalMatrix(lm));
     canvas->drawRect(r, paint);
     canvas->restore();
 }
@@ -922,7 +923,7 @@ DEF_SIMPLE_GM(null_child_rt, canvas, 150, 100) {
 
         SkPaint paint;
         ChildPtr children[1] = {ChildPtr{sk_sp<SkShader>{nullptr}}};
-        paint.setShader(rtShader->makeShader(/*uniforms=*/nullptr, children));
+        paint.setShader(rtShader->makeShader(/*uniforms=*/ nullptr, children));
         paint.setColor(SkColorSetARGB(0xFF, 0x00, 0xFF, 0x00));  // green (ignored)
         canvas->drawRect({0, 0, 48, 48}, paint);
         canvas->translate(50, 0);
@@ -939,7 +940,7 @@ DEF_SIMPLE_GM(null_child_rt, canvas, 150, 100) {
 
         SkPaint paint;
         ChildPtr children[1] = {ChildPtr{sk_sp<SkColorFilter>{nullptr}}};
-        paint.setShader(rtShader->makeShader(/*uniforms=*/nullptr, children));
+        paint.setShader(rtShader->makeShader(/*uniforms=*/ nullptr, children));
         paint.setColor(SkColorSetARGB(0xFF, 0x00, 0x00, 0xFF));  // green (does not contribute)
         canvas->drawRect({0, 0, 48, 48}, paint);
         canvas->translate(50, 0);
@@ -956,7 +957,7 @@ DEF_SIMPLE_GM(null_child_rt, canvas, 150, 100) {
 
         SkPaint paint;
         ChildPtr children[1] = {ChildPtr{sk_sp<SkBlender>{nullptr}}};
-        paint.setShader(rtShader->makeShader(/*uniforms=*/nullptr, children));
+        paint.setShader(rtShader->makeShader(/*uniforms=*/ nullptr, children));
         paint.setColor(SkColorSetARGB(0xFF, 0x00, 0x00, 0xFF));  // green (does not contribute)
         canvas->drawRect({0, 0, 48, 48}, paint);
         canvas->translate(50, 0);
@@ -1102,7 +1103,7 @@ DEF_SIMPLE_GM_CAN_FAIL(alpha_image_shader_rt, canvas, errorMsg, 350, 50) {
     paint.setShader(
             SkRuntimeEffect::MakeForShader(SkString("uniform shader s;"
                                                     "half4 main(float2 p) { return s.eval(p); }"))
-                    .effect->makeShader(nullptr, children));
+                    .effect->makeShader(/* uniforms= */ nullptr, children));
     rect();
 
     // Color-filter that evaluates the "paint color" shader, with and without a shader on the paint

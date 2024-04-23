@@ -811,6 +811,7 @@ sk_sp<SkShader> SkRuntimeEffectPriv::MakeDeferredShader(
     if (!uniformsCallback) {
         return nullptr;
     }
+    //$$
     return SkLocalMatrixShader::MakeWrapped<SkRuntimeShader>(localMatrix,
                                                              sk_ref_sp(effect),
                                                              /*debugTrace=*/nullptr,
@@ -844,11 +845,17 @@ sk_sp<SkShader> SkRuntimeEffect::makeShader(sk_sp<const SkData> uniforms,
     if (uniforms->size() != this->uniformSize()) {
         return nullptr;
     }
-    return SkLocalMatrixShader::MakeWrapped<SkRuntimeShader>(localMatrix,
-                                                             sk_ref_sp(this),
-                                                             /*debugTrace=*/nullptr,
-                                                             std::move(uniforms),
-                                                             children);
+
+    sk_sp<SkShader> shader = sk_make_sp<SkRuntimeShader>(sk_ref_sp(this),
+                                                         /*debugTrace=*/nullptr,
+                                                         std::move(uniforms),
+                                                         children);
+    if (localMatrix) {
+        // Take the existence of 'localMatrix' as a hint that we'll always have one
+        // irrespective of it being the identity
+        return shader->makeWithLocalMatrix(*localMatrix);
+    }
+    return shader;
 }
 
 sk_sp<SkColorFilter> SkRuntimeEffect::makeColorFilter(sk_sp<const SkData> uniforms,
