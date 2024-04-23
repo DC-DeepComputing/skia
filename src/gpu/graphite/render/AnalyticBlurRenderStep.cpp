@@ -25,8 +25,8 @@ AnalyticBlurRenderStep::AnalyticBlurRenderStep()
                       {"shapeData", SkSLType::kFloat4},
                       {"depth", SkSLType::kFloat},
                       {"shapeType", SkSLType::kInt},
-                      {"isFast", SkSLType::kInt},
-                      {"invSixSigma", SkSLType::kHalf}},
+                      {"blurData1", SkSLType::kHalf},
+                      {"blurData2", SkSLType::kHalf}},
                      PrimitiveType::kTriangleStrip,
                      kDirectDepthGreaterPass,
                      /*vertexAttrs=*/
@@ -55,8 +55,8 @@ const char* AnalyticBlurRenderStep::fragmentCoverageSkSL() const {
     return "outputCoverage = blur_coverage_fn(scaledShapeCoords, "
                                              "shapeData, "
                                              "shapeType, "
-                                             "isFast, "
-                                             "invSixSigma, "
+                                             "blurData1, "
+                                             "blurData2, "
                                              "s);";
 }
 
@@ -82,8 +82,8 @@ void AnalyticBlurRenderStep::writeUniformsAndTextures(const DrawParams& params,
     gatherer->write(blur.shapeData().asSkRect());
     gatherer->write(params.order().depthAsFloat());
     gatherer->write(static_cast<int>(blur.shapeType()));
-    gatherer->write(blur.isFast());
-    gatherer->writeHalf(blur.invSixSigma());
+    gatherer->writeHalf(blur.blurData1());
+    gatherer->writeHalf(blur.blurData2());
 
     SkSamplingOptions samplingOptions = blur.shapeType() == AnalyticBlurMask::ShapeType::kRect
                                                 ? SkFilterMode::kLinear
