@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b83f969_df911bb4",
+        "filename": "src/sksl/ir/SkSLSwizzle.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-04-23T14:49:55Z",
+      "side": 1,
+      "message": "Previously, this version of Convert would make a ComponentArray of \u003e4 elements and let the follow-on Convert function catch it and fail. That doesn\u0027t work when the array is truly fixed-size.",
+      "range": {
+        "startLine": 251,
+        "startChar": 0,
+        "endLine": 257,
+        "endChar": 0
+      },
+      "revId": "ae3b6005db5b13830ec9e40cb521d03c0a092f71",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
