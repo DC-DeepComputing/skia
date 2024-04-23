@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "931d829f_83e66027",
+        "filename": "dm/DM.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1632,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-23T17:01:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d1aefa42_f43caf3d",
+      "range": {
+        "startLine": 1632,
+        "startChar": 63,
+        "endLine": 1632,
+        "endChar": 64
+      },
+      "revId": "ee51686199b6789ef381d542176c3fd8fd2fa297",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f7d6f19b_306f215f",
@@ -54,6 +78,30 @@
       "writtenOn": "2024-04-23T16:39:31Z",
       "side": 1,
       "message": "nit: line up the `\\`s?",
+      "range": {
+        "startLine": 321,
+        "startChar": 0,
+        "endLine": 324,
+        "endChar": 89
+      },
+      "revId": "ee51686199b6789ef381d542176c3fd8fd2fa297",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d6f6a6e7_c3775cae",
+        "filename": "tests/Test.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 324,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-23T17:01:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f7d6f19b_306f215f",
       "range": {
         "startLine": 321,
         "startChar": 0,
