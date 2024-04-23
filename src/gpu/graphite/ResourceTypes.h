@@ -17,8 +17,6 @@
 #include "src/base/SkEnumBitMask.h"
 #include "src/base/SkMathPriv.h"
 
-#include <vector>
-
 namespace skgpu::graphite {
 
 class Buffer;
