@@ -60,6 +60,65 @@ private:
 // Used to pass in the necessary information to create a VkSamplerYcbcrConversion object for an
 // VkExternalFormatANDROID.
 struct VulkanYcbcrConversionInfo {
+    static VulkanYcbcrConversionInfo MakeFromNumericalRepresentation(
+            uint32_t nonFormatYcbcrInfo,
+            uint64_t format,
+            uint32_t formatFeatures) {
+        VulkanYcbcrConversionInfo info;
+        bool useExternalFormat =  static_cast<bool>(nonFormatYcbcrInfo >> kUsesExternalFormatBits);
+        info.fFormat = useExternalFormat ? VK_FORMAT_UNDEFINED
+                                         : static_cast<VkFormat>(static_cast<uint32_t>(format));
+        info.fExternalFormat = useExternalFormat ? format : 0;
+        info.fFormatFeatures = formatFeatures;
+
+        // We compact some Vulkan enums/structures into smaller sizes, so isolate only the
+        // appropriate bits before casting.
+        static constexpr uint32_t kYcbcrModelMask =
+                ((1 << kYcbcrModelBits) - 1) << kYcbcrModelShift;
+        static constexpr uint32_t kYcbcrRangeMask =
+                ((1 << kYcbcrRangeBits) - 1) << kYcbcrRangeShift;
+
+        uint32_t test = static_cast<uint32_t>(nonFormatYcbcrInfo & kYcbcrRangeMask);
+
+        static constexpr uint32_t kXChromaOffsetMask =
+                ((1 << kXChromaOffsetBits) - 1) << kXChromaOffsetShift;
+        static constexpr uint32_t kYChromaOffsetMask =
+                ((1 << kYChromaOffsetBits) - 1) << kYChromaOffsetShift;
+        static constexpr uint32_t kChromaFilterMask =
+                ((1 << kChromaFilterBits) - 1) << kChromaFilterShift;
+        static constexpr uint32_t kForceExplicitReconMask =
+                ((1 << kForceExplicitReconBits) - 1) << kForceExplicitReconShift;
+        static constexpr uint32_t kComponentRMask = ((1 << kComponentBits) - 1) << kComponentRShift;
+        static constexpr uint32_t kComponentBMask = ((1 << kComponentBits) - 1) << kComponentGShift;
+        static constexpr uint32_t kComponentGMask = ((1 << kComponentBits) - 1) << kComponentBShift;
+        static constexpr uint32_t kComponentAMask = ((1 << kComponentBits) - 1) << kComponentAShift;
+
+        info.fYcbcrModel = static_cast<VkSamplerYcbcrModelConversion>(
+                static_cast<uint32_t>(nonFormatYcbcrInfo & kYcbcrModelMask));
+        info.fYcbcrRange = static_cast<VkSamplerYcbcrRange>(
+                static_cast<uint32_t>(nonFormatYcbcrInfo & kYcbcrRangeMask));
+        info.fXChromaOffset = static_cast<VkChromaLocation>(
+                static_cast<uint32_t>(nonFormatYcbcrInfo & kXChromaOffsetMask));
+        info.fYChromaOffset = static_cast<VkChromaLocation>(
+                static_cast<uint32_t>(nonFormatYcbcrInfo & kYChromaOffsetMask));
+        info.fChromaFilter = static_cast<VkFilter>(
+                static_cast<uint32_t>(nonFormatYcbcrInfo & kChromaFilterMask));
+        info.fForceExplicitReconstruction = static_cast<VkBool32>(
+            static_cast<uint32_t>(nonFormatYcbcrInfo & kForceExplicitReconMask));
+        info.fComponents = {
+            static_cast<VkComponentSwizzle>(
+                    static_cast<uint32_t>(nonFormatYcbcrInfo & kComponentRMask)),
+            static_cast<VkComponentSwizzle>(
+                    static_cast<uint32_t>(nonFormatYcbcrInfo & kComponentGMask)),
+            static_cast<VkComponentSwizzle>(
+                    static_cast<uint32_t>(nonFormatYcbcrInfo & kComponentBMask)),
+            static_cast<VkComponentSwizzle>(
+                    static_cast<uint32_t>(nonFormatYcbcrInfo & kComponentAMask))
+        };
+
+        return info;
+    }
+
     int numInt32sNeeded() const {
         if (!this->isValid()) {
             return 0;

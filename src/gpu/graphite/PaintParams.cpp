@@ -183,6 +183,13 @@ void AddDitherBlock(const KeyContext& keyContext,
     DitherShaderBlock::AddBlock(keyContext, builder, gatherer, data);
 }
 
+// // TODO: Add array of data as input.
+// void AddDataBlock(const KeyContext& keyContext,
+//                   PaintParamsKeyBuilder* builder,
+//                   PipelineDataGatherer* gatherer) {
+
+// }
+
 void PaintParams::addPaintColorToKey(const KeyContext& keyContext,
                                      PaintParamsKeyBuilder* keyBuilder,
                                      PipelineDataGatherer* gatherer) const {
@@ -310,6 +317,41 @@ void PaintParams::handleDstRead(const KeyContext& keyContext,
 void PaintParams::toKey(const KeyContext& keyContext,
                         PaintParamsKeyBuilder* builder,
                         PipelineDataGatherer* gatherer) const {
+    // PaintParam keys that store data must have that data appended at the front of the key.
+    if (gatherer->hasTextures()) {
+        const std::vector<TextureDataBlock::SampledTexture>& sampledTextures =
+                gatherer->textureDataBlock().textures();
+
+        std::vector<int32_t> cumulativeSamplerData = {0};
+
+        for (int i = 0; i < gatherer->textureDataBlock().numTextures(); i++) {
+            const SamplerDesc& samplerDesc = sampledTextures.at(i).second;
+
+            // TODO: Fix logic to better check if sampler needs this addt'l info appended.
+            bool containsAdditionalInfo = samplerDesc.format() || samplerDesc.formatFeatures();
+            if (!containsAdditionalInfo) {
+                continue;
+            }
+
+            cumulativeSamplerData.push_back((uint32_t)samplerDesc.format());
+
+            // TODO: Fix logic to better check if sampler uses external format.
+            bool usesExternalFormat = (samplerDesc.formatFeatures() != 0);
+            int numAppendedData = 1;
+            if (usesExternalFormat) {
+                cumulativeSamplerData.push_back((uint32_t)(samplerDesc.format() >> 32));
+                cumulativeSamplerData.push_back(samplerDesc.formatFeatures());
+                numAppendedData += 2;
+            }
+            cumulativeSamplerData.push_back(samplerDesc.desc()); // TODO: shift?
+            numAppendedData++;
+
+            cumulativeSamplerData[0] = cumulativeSamplerData[0] + numAppendedData;
+        }
+
+        builder->addData(cumulativeSamplerData);
+    }
+
     this->handleDstRead(keyContext, builder, gatherer);
 
     std::optional<SkBlendMode> finalBlendMode = this->asFinalBlendMode();

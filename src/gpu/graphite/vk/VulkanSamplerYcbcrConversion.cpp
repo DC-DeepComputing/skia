@@ -96,7 +96,7 @@ GraphiteResourceKey VulkanSamplerYcbcrConversion::GetKeyFromSamplerDesc(
              VulkanYcbcrConversionInfo::kUsesExternalFormatShift));
     // If using an external format, we need to append more data thn if we are using a known one.
     // TODO: Make static constant vals?
-    int32sNeeded += usesExternalFormat ? 3 : 1;
+    int32sNeeded += usesExternalFormat ? 2 : 1;
 
     GraphiteResourceKey::Builder builder(&key, kType, int32sNeeded, Shareable::kYes);
 
@@ -118,7 +118,7 @@ VulkanSamplerYcbcrConversion::VulkanSamplerYcbcrConversion(
         const VulkanSharedContext* context, VkSamplerYcbcrConversion ycbcrConversion)
         : Resource(context,
                    Ownership::kOwned,
-                   skgpu::Budgeted::kNo,
+                   skgpu::Budgeted::kYes, // Shareable, so must be budgeted
                    /*gpuMemorySize=*/0,
                    /*label=*/"VulkanSamplerYcbcrConversion")
         , fYcbcrConversion (ycbcrConversion) {}

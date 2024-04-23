@@ -200,6 +200,12 @@ ShaderInfo::ShaderInfo(UniquePaintParamsID id,
     // the root to initialize the HW blend info.
     SkDEBUGCODE(bool fixedFuncBlendFound = false;)
     for (const ShaderNode* root : fRootNodes) {
+        // If a snippet within this node tree requires data, append that data to the beginning of
+        // the data.
+        if (root->requiredFlags() & SnippetRequirementFlags::kStoresData) {
+            fData = root->data();
+        }
+
         // TODO: This is brittle as it relies on PaintParams::toKey() putting the final fixed
         // function blend block at the root level. This can be improved with more structure to the
         // key creation.
@@ -1802,8 +1808,7 @@ ShaderCodeDictionary::ShaderCodeDictionary() {
     fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kLocalMatrixShader] = {
             "LocalMatrixShader",
             SkSpan(kLocalMatrixShaderUniforms),
-            (SnippetRequirementFlags::kPriorStageOutput |
-             SnippetRequirementFlags::kLocalCoords),
+            (SnippetRequirementFlags::kPriorStageOutput | SnippetRequirementFlags::kLocalCoords),
             { },     // no samplers
             kLocalMatrixShaderName,
             GenerateDefaultExpression,
@@ -1813,7 +1818,7 @@ ShaderCodeDictionary::ShaderCodeDictionary() {
     fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kImageShader] = {
             "ImageShader",
             SkSpan(kImageShaderUniforms),
-            SnippetRequirementFlags::kLocalCoords,
+            (SnippetRequirementFlags::kLocalCoords | SnippetRequirementFlags::kStoresData),
             SkSpan(kISTexturesAndSamplers),
             kImageShaderName,
             GenerateDefaultExpression,

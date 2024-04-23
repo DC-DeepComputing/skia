@@ -31,6 +31,16 @@
 
 namespace skgpu::graphite {
 
+namespace {
+    // void init_sampler_rsrc_type(ResourceType& rsrcType) {
+    //     rsrcType = GraphiteResourceKey::GenerateResourceType();
+    // }
+    ResourceType sampler_rsrc_type() {
+        static const ResourceType samplerResrouceType = GraphiteResourceKey::GenerateResourceType();
+        return samplerResrouceType;
+    }
+}
+
 VulkanCaps::VulkanCaps(const ContextOptions& contextOptions,
                        const skgpu::VulkanInterface* vkInterface,
                        VkPhysicalDevice physDev,
@@ -39,6 +49,8 @@ VulkanCaps::VulkanCaps(const ContextOptions& contextOptions,
                        const skgpu::VulkanExtensions* extensions,
                        Protected isProtected)
         : Caps() {
+    // kSamplerResourceType = GraphiteResourceKey::GenerateResourceType();
+    // init_sampler_rsrc_type(kSamplerResourceType);
     this->init(contextOptions, vkInterface, physDev, physicalDeviceVersion, features, extensions,
                isProtected);
 }
@@ -155,6 +167,8 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
     if (extensions->hasExtension(VK_EXT_DEVICE_FAULT_EXTENSION_NAME, 1)) {
         fSupportsDeviceFaultInfo = true;
     }
+
+    // static const kSamplerResourceType = GraphiteResourceKey::GenerateResourceType();
 
     // Note that format table initialization should be performed at the end of this method to ensure
     // all capability determinations are completed prior to populating the format tables.
@@ -1415,7 +1429,6 @@ UniqueKey VulkanCaps::makeGraphicsPipelineKey(const GraphicsPipelineDesc& pipeli
 
 GraphiteResourceKey VulkanCaps::makeSamplerKey(const SamplerDesc& samplerDesc) const {
     GraphiteResourceKey samplerKey;
-    static const ResourceType kType = GraphiteResourceKey::GenerateResourceType();
 
     // A sampler format of "0" is acceptable and indicative that we simply not using YCbCr sampling.
     const uint64_t samplerFormat = samplerDesc.format();
@@ -1429,16 +1442,43 @@ GraphiteResourceKey VulkanCaps::makeSamplerKey(const SamplerDesc& samplerDesc) c
         // undefined) require 3: 2 to encapsulate the format and one for format feature flags.
         uint32Quantity += usesExternalFormat ? 3 : 1;
     }
-    GraphiteResourceKey::Builder builder(&samplerKey, kType, uint32Quantity, Shareable::kYes);
+    GraphiteResourceKey::Builder builder(&samplerKey, sampler_rsrc_type(), uint32Quantity,
+                                         Shareable::kYes);
 
-    builder[0] = samplerDesc.desc();
+    SkDebugf("\nCreating sampler key:\n");
+
+    int i = 0;
     if (usesYcbcrConversion) {
-        builder[1] = (uint32_t)samplerFormat;
+        SkDebugf("  sampler format pt.1 (%d) \n", (uint32_t)samplerFormat);
+        builder[i++] = (uint32_t)samplerFormat;
         if (usesExternalFormat) {
-            builder[2] = (uint32_t)(samplerFormat >> 32);
-            builder[3] = samplerDesc.formatFeatures();
+            SkDebugf("  external format pt2 (%d)\n",(uint32_t)(samplerFormat >> 32));
+            builder[i++] = (uint32_t)(samplerFormat >> 32);
+            SkDebugf("  format features (%d)\n",samplerDesc.formatFeatures());
+            builder[i++] = samplerDesc.formatFeatures();
         }
     }
+    SkDebugf("  sampler desc (%d)\n", samplerDesc.desc());
+    builder[i++] = samplerDesc.desc();
+    SkASSERT(i == uint32Quantity);
+
+    SkDebugf("end of key. ----------\n");
+    builder.finish();
+    return samplerKey;
+}
+
+GraphiteResourceKey VulkanCaps::reconstructSamplerKeyFromInts(SkSpan<const int32_t> data) const {
+    GraphiteResourceKey samplerKey;
+    static constexpr int kNumInts = 4; // TODO cleanup
+    GraphiteResourceKey::Builder builder(&samplerKey, sampler_rsrc_type(), kNumInts,
+                                         Shareable::kYes);
+
+    SkDebugf("\nReconstructing sampler key from data. data: %d, %d, %d, %d\n",
+             data[0], data[1], data[2], data[3]);
+    builder[0] = data[0];
+    builder[1] = data[1];
+    builder[2] = data[2];
+    builder[3] = data[3];
 
     builder.finish();
     return samplerKey;
