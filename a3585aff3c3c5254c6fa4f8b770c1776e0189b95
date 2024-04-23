@@ -3,6 +3,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ad534a34_1b7ecffc",
+        "filename": "src/core/SkImageFilter.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 390,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-23T15:40:23Z",
+      "side": 1,
+      "message": "nit: I\u0027d prefer either `/*createIfNecessary\u003d*/false` or we define a `enum class CreateIfNecessary : bool { kNo, kYes }` that we pass in. Since it\u0027s an internal API I am totally fine with it staying a bool and annotating it with a comment.",
+      "range": {
+        "startLine": 390,
+        "startChar": 41,
+        "endLine": 390,
+        "endChar": 59
+      },
+      "revId": "a3585aff3c3c5254c6fa4f8b770c1776e0189b95",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4936ff70_0100cd77",
+        "filename": "tests/ImageFilterCacheTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 335,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-23T15:40:23Z",
+      "side": 1,
+      "message": "nit, I think it\u0027ll be more readable to just call `Get(/*createIfNecessary\u003d*/false)` and later on you see `/*createIfNecessary\u003d*/true)`.",
+      "range": {
+        "startLine": 335,
+        "startChar": 41,
+        "endLine": 335,
+        "endChar": 59
+      },
+      "revId": "a3585aff3c3c5254c6fa4f8b770c1776e0189b95",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a7ac35ed_5a5ddd90",
         "filename": "tests/ImageFilterCacheTest.cpp",
         "patchSetId": 1
@@ -19,6 +65,53 @@
         "startChar": 0,
         "endLine": 340,
         "endChar": 5
+      },
+      "revId": "a3585aff3c3c5254c6fa4f8b770c1776e0189b95",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8bf30a16_d7bc2e66",
+        "filename": "tests/ImageFilterCacheTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 340,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-23T15:40:23Z",
+      "side": 1,
+      "message": "I don\u0027t have any better suggestions; there are definitely CPU-based tests that render image filters, and those are allowed to run in parallel.",
+      "parentUuid": "a7ac35ed_5a5ddd90",
+      "range": {
+        "startLine": 336,
+        "startChar": 0,
+        "endLine": 340,
+        "endChar": 5
+      },
+      "revId": "a3585aff3c3c5254c6fa4f8b770c1776e0189b95",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "334a0255_ad13e486",
+        "filename": "tests/ImageFilterCacheTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 344,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-23T15:40:23Z",
+      "side": 1,
+      "message": "Since there are tests that run in parallel, we could see a flaky failure where `PurgeResourceCache()` correctly did nothing but another test created the image filter cache before the call to `Get()`.\n\nI can\u0027t think of a great way to work around that since there\u0027s no good way to expose the mutex to prevent such interleaved work. Right now DM doesn\u0027t have a way to mark a CPU test as needing to run in serial, it does them all in parallel.\n\nIt looks like it\u0027ll be pretty easy to add support for serially-run CPU test cases and that should address this issue. I\u0027ll work that up quick.",
+      "range": {
+        "startLine": 343,
+        "startChar": 0,
+        "endLine": 344,
+        "endChar": 56
       },
       "revId": "a3585aff3c3c5254c6fa4f8b770c1776e0189b95",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
