@@ -28,6 +28,7 @@ ComputeTask::ComputeTask(DispatchGroupList dispatchGroups)
 ComputeTask::~ComputeTask() = default;
 
 Task::Status ComputeTask::prepareResources(ResourceProvider* provider,
+                                           ScratchResourceManager*,
                                            const RuntimeEffectDictionary* rtd) {
     for (auto& child : fChildTasks) {
         if (child) {

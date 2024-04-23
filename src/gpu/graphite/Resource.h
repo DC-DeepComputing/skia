@@ -122,6 +122,9 @@ public:
     // when the content of the Resource object changes. This will never return 0.
     UniqueID uniqueID() const { return fUniqueID; }
 
+    virtual const Texture* asTexture() const { return nullptr; }
+    virtual const Buffer*  asBuffer() const { return nullptr; }
+
     // Describes the type of gpu resource that is represented by the implementing
     // class (e.g. texture, buffer, etc).  This data is used for diagnostic
     // purposes by dumpMemoryStatistics().
@@ -171,8 +174,6 @@ public:
 
 #if defined(GRAPHITE_TEST_UTILS)
     bool testingShouldDeleteASAP() const { return fDeleteASAP == DeleteASAP::kYes; }
-
-    virtual const Texture* asTexture() const { return nullptr; }
 #endif
 
 protected:
