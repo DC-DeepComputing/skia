@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7ac35ed_5a5ddd90",
+        "filename": "tests/ImageFilterCacheTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 340,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-04-23T15:08:55Z",
+      "side": 1,
+      "message": "This is kind of annoying. Depending on the test order (I\u0027m assuming we have other tests that actually use the cache), this test may execute without verifying anything.\n\nRunning the test by itself, the cache hasn\u0027t been created yet, so this works as intended (verified with `SkDebugf`). Though this isn\u0027t guaranteed - DM could be updated to instantiate the cache, and then we\u0027d never be testing this.\n\nBut I think this is the best we can do, without modifying the way the cache is handled further. Any suggestions?",
+      "range": {
+        "startLine": 336,
+        "startChar": 0,
+        "endLine": 340,
+        "endChar": 5
+      },
+      "revId": "a3585aff3c3c5254c6fa4f8b770c1776e0189b95",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
