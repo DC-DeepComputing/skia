@@ -33,6 +33,24 @@
       "message": "I\u0027m somewhat confused about what `Status::kDiscard` means in the context of `prepareResources`. I understand that it means \"the call succeeded but `addCommands`\" won\u0027t be called on it as it will get discarded beforehand (which is slightly different from what it means in the context of `addCommands`). Isn\u0027t that equivalent to failing?\n\nI\u0027m wondering if `prepareResources` should have a binary success/fail result instead of a tri-state. Is there a scenario you had in mind in which returning discard from `prepareResources` is useful, even though the task won\u0027t get added to a command buffer?",
       "revId": "7de10456194805c13dfaf6b226861ff09c747866",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "49511645_ee742bb9",
+        "filename": "src/gpu/graphite/task/ComputeTask.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-23T18:24:17Z",
+      "side": 1,
+      "message": "If a task fails, it takes down the entire Recording. Discard is used to mean \"I didn\u0027t fail, I maybe did some stuff, but I definitely don\u0027t need to do anything more\".\n\nThe specific use case I have for this is in image filter graphs, scratch devices can be referenced multiple times as the input image. This means their DrawTask that renders the dynamic content will be in the task graph multiple times. I want prepareResources() called for the task at every point in time that it is referenced, but other than the first encounter, the other references should not produce any commands.\n\nIt\u0027s not straight forward to just have DrawTask store a boolean for whether or not its added commands, because on a replay() we still do want it to run its commands the first time through. It works out pretty nicely in this use case just to have the calling TaskLists clean up discarded tasks regardless of if it\u0027s prepareResources() or addCommands() that does it.\n\nI am certainly open to a different name that doesn\u0027t have negative connotations, though.",
+      "parentUuid": "499a1d7d_8737713c",
+      "revId": "7de10456194805c13dfaf6b226861ff09c747866",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
