@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4c7cb90_a1d3161e",
+        "filename": "src/core/SkImageFilter.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 390,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-04-23T17:27:12Z",
+      "side": 1,
+      "message": "Hmm. I recall being encouraged to use a named constant - that probably comes from [this section](https://docs.google.com/document/d/1i7AEuIwXwjUOKENOK8ZInv92oPx1LJF50cGUlVk-Agk/edit?tab\u003dt.0#heading\u003dh.krcfdut5mk61) of go/sf-style-guide, which I acknowledge doesn\u0027t apply here. I couldn\u0027t find anything in go/cppstyle, but the SF style guide links to go/totw/94, which kinda says \"here are a bunch of ways you can do this\". It describes what I have here as \"a less ambiguous [Editor\u0027s note: good, I guess] but longer [Editor\u0027s note: bad?] variant\".\n\nI like my way much better than the comment approach, which looks quite ugly to me. I\u0027m not opposed to the enum class, though. Done.",
+      "parentUuid": "ad534a34_1b7ecffc",
+      "range": {
+        "startLine": 390,
+        "startChar": 41,
+        "endLine": 390,
+        "endChar": 59
+      },
+      "revId": "a3585aff3c3c5254c6fa4f8b770c1776e0189b95",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4936ff70_0100cd77",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-04-23T15:40:23Z",
       "side": 1,
       "message": "nit, I think it\u0027ll be more readable to just call `Get(/*createIfNecessary\u003d*/false)` and later on you see `/*createIfNecessary\u003d*/true)`.",
+      "range": {
+        "startLine": 335,
+        "startChar": 41,
+        "endLine": 335,
+        "endChar": 59
+      },
+      "revId": "a3585aff3c3c5254c6fa4f8b770c1776e0189b95",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "39426e23_6d61758b",
+        "filename": "tests/ImageFilterCacheTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 335,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-04-23T17:27:12Z",
+      "side": 1,
+      "message": "Went with the `enum class` option.",
+      "parentUuid": "4936ff70_0100cd77",
       "range": {
         "startLine": 335,
         "startChar": 41,
@@ -107,6 +155,30 @@
       "writtenOn": "2024-04-23T15:40:23Z",
       "side": 1,
       "message": "Since there are tests that run in parallel, we could see a flaky failure where `PurgeResourceCache()` correctly did nothing but another test created the image filter cache before the call to `Get()`.\n\nI can\u0027t think of a great way to work around that since there\u0027s no good way to expose the mutex to prevent such interleaved work. Right now DM doesn\u0027t have a way to mark a CPU test as needing to run in serial, it does them all in parallel.\n\nIt looks like it\u0027ll be pretty easy to add support for serially-run CPU test cases and that should address this issue. I\u0027ll work that up quick.",
+      "range": {
+        "startLine": 343,
+        "startChar": 0,
+        "endLine": 344,
+        "endChar": 56
+      },
+      "revId": "a3585aff3c3c5254c6fa4f8b770c1776e0189b95",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "06034608_3ce8f7a5",
+        "filename": "tests/ImageFilterCacheTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 344,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-04-23T17:27:12Z",
+      "side": 1,
+      "message": "Thanks for I2fb6334489c7aca8c5b0d1dba6fd606c6a812c73!",
+      "parentUuid": "334a0255_ad13e486",
       "range": {
         "startLine": 343,
         "startChar": 0,
