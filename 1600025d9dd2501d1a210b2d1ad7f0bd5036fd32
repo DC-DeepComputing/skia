@@ -16,6 +16,24 @@
       "message": "I can\u0027t think of any other place that benefits from this (I just did a quick scan of the code, too...). It\u0027s pretty rare that we have something with a variable size, but a hard upper limit. Regardless - it\u0027s not *that* much extra code for a measurable win on both code size and RAM. We could probably make the LOC even smaller by storing std::array\u003c\u003e, which would remove the need for the asserts?",
       "revId": "1600025d9dd2501d1a210b2d1ad7f0bd5036fd32",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c9d4fa64_ed8b3494",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-04-24T13:59:13Z",
+      "side": 1,
+      "message": "I\u0027m not sure if switching to `std::array\u003c\u003e` would do what we want. Presumably `operator[]` would be unguarded and `.at` would throw; neither one has a debug-only check.\n\nFun fact, I originally started the class as a subclass of `std::array` but ended up deciding against it because I didn\u0027t like the idea of accidentally forgetting to overload something and exposing, say, an incorrect `back()`.",
+      "parentUuid": "fff25fa5_29787f6e",
+      "revId": "1600025d9dd2501d1a210b2d1ad7f0bd5036fd32",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
