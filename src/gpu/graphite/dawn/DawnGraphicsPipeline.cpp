@@ -14,6 +14,7 @@
 #include "src/gpu/graphite/ContextUtils.h"
 #include "src/gpu/graphite/GraphicsPipelineDesc.h"
 #include "src/gpu/graphite/Log.h"
+#include "src/gpu/graphite/RenderPassDesc.h"
 #include "src/gpu/graphite/RendererProvider.h"
 #include "src/gpu/graphite/UniformManager.h"
 #include "src/gpu/graphite/dawn/DawnCaps.h"
@@ -272,10 +273,10 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(const DawnSharedContext* 
     FragSkSLInfo fsSkSLInfo = BuildFragmentSkSL(&caps,
                                                 sharedContext->shaderCodeDictionary(),
                                                 runtimeDict,
+                                                renderPassDesc,
                                                 step,
                                                 pipelineDesc.paintParamsID(),
-                                                useStorageBuffers,
-                                                renderPassDesc.fWriteSwizzle);
+                                                useStorageBuffers);
     std::string& fsSkSL = fsSkSLInfo.fSkSL;
     const BlendInfo& blendInfo = fsSkSLInfo.fBlendInfo;
     const bool localCoordsNeeded = fsSkSLInfo.fRequiresLocalCoords;

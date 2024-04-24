@@ -16,6 +16,7 @@
 #include "src/gpu/graphite/PaintParams.h"
 #include "src/gpu/graphite/PipelineData.h"
 #include "src/gpu/graphite/RecorderPriv.h"
+#include "src/gpu/graphite/RenderPassDesc.h"
 #include "src/gpu/graphite/Renderer.h"
 #include "src/gpu/graphite/ResourceProvider.h"
 #include "src/gpu/graphite/ShaderCodeDictionary.h"
@@ -538,12 +539,14 @@ VertSkSLInfo BuildVertexSkSL(const ResourceBindingRequirements& bindingReqs,
 FragSkSLInfo BuildFragmentSkSL(const Caps* caps,
                                const ShaderCodeDictionary* dict,
                                const RuntimeEffectDictionary* rteDict,
+                               const RenderPassDesc& rpDesc,
                                const RenderStep* step,
                                UniquePaintParamsID paintID,
-                               bool useStorageBuffers,
-                               skgpu::Swizzle writeSwizzle) {
+                               bool useStorageBuffers) {
     FragSkSLInfo result;
-    result.fLabel = step->name();
+    result.fLabel = std::string(rpDesc.toString().c_str());
+    result.fLabel += " + ";
+    result.fLabel += step->name();
 
     if (!paintID.isValid()) {
         // Depth-only draw so no fragment shader to compile
@@ -561,7 +564,7 @@ FragSkSLInfo BuildFragmentSkSL(const Caps* caps,
                                      &result.fNumPaintUniforms,
                                      &result.fRenderStepUniformsTotalBytes,
                                      &result.fPaintUniformsTotalBytes,
-                                     writeSwizzle);
+                                     rpDesc.fWriteSwizzle);
 
     // Extract blend info after integrating the RenderStep into the final fragment shader in case
     // that changes the HW blending choice to handle analytic coverage.

@@ -33,6 +33,7 @@ class GraphicsPipelineDesc;
 class PaintParams;
 class PipelineDataGatherer;
 class Recorder;
+struct RenderPassDesc;
 class RenderStep;
 class RuntimeEffectDictionary;
 class ShaderNode;
@@ -87,10 +88,10 @@ VertSkSLInfo BuildVertexSkSL(const ResourceBindingRequirements&,
 FragSkSLInfo BuildFragmentSkSL(const Caps* caps,
                                const ShaderCodeDictionary*,
                                const RuntimeEffectDictionary*,
+                               const RenderPassDesc& rpDesc,
                                const RenderStep* renderStep,
                                UniquePaintParamsID paintID,
-                               bool useStorageBuffers,
-                               skgpu::Swizzle writeSwizzle);
+                               bool useStorageBuffers);
 
 std::string BuildComputeSkSL(const Caps*, const ComputeStep*);
 

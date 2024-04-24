@@ -19,6 +19,7 @@
 #include "src/gpu/graphite/ContextUtils.h"
 #include "src/gpu/graphite/GlobalCache.h"
 #include "src/gpu/graphite/GraphicsPipelineDesc.h"
+#include "src/gpu/graphite/RenderPassDesc.h"
 #include "src/gpu/graphite/Renderer.h"
 #include "src/gpu/graphite/RendererProvider.h"
 #include "src/gpu/graphite/compute/ComputeStep.h"
@@ -125,10 +126,10 @@ sk_sp<GraphicsPipeline> MtlResourceProvider::createGraphicsPipeline(
     FragSkSLInfo fsSkSLInfo = BuildFragmentSkSL(fSharedContext->caps(),
                                                 fSharedContext->shaderCodeDictionary(),
                                                 runtimeDict,
+                                                renderPassDesc,
                                                 step,
                                                 pipelineDesc.paintParamsID(),
-                                                useStorageBuffers,
-                                                renderPassDesc.fWriteSwizzle);
+                                                useStorageBuffers);
     std::string& fsSkSL = fsSkSLInfo.fSkSL;
     const BlendInfo& blendInfo = fsSkSLInfo.fBlendInfo;
     const bool localCoordsNeeded = fsSkSLInfo.fRequiresLocalCoords;

@@ -11,11 +11,11 @@
 #include "src/gpu/graphite/Resource.h"
 
 #include "include/private/base/SkTArray.h"
-#include "src/gpu/graphite/AttachmentTypes.h"
 #include "src/gpu/graphite/vk/VulkanCommandBuffer.h"
 
 namespace skgpu::graphite {
 
+struct RenderPassDesc;
 class VulkanCommandBuffer;
 class VulkanSharedContext;
 
