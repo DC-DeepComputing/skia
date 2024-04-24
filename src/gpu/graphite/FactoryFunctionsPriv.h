@@ -22,11 +22,6 @@ enum class PrecompileImageShaderFlags {
 };
 SK_MAKE_BITMASK_OPS(PrecompileImageShaderFlags)
 
-enum class PrecompileLocalMatrixFlags {
-    kNone,
-    kSkipElision,
-};
-
 //--------------------------------------------------------------------------------------------------
 namespace PrecompileShadersPriv {
     sk_sp<PrecompileShader> Blur(sk_sp<PrecompileShader> child);
@@ -46,8 +41,7 @@ namespace PrecompileShadersPriv {
     sk_sp<PrecompileShader> SweepGradient(bool withLM);
     sk_sp<PrecompileShader> Picture(bool withLM);
 
-    sk_sp<PrecompileShader> LocalMatrix(SkSpan<const sk_sp<PrecompileShader>> wrapped,
-                                        PrecompileLocalMatrixFlags);
+    sk_sp<PrecompileShader> LocalMatrixSoft(SkSpan<const sk_sp<PrecompileShader>> wrapped);
 
 } // namespace PrecompileShadersPriv
 
