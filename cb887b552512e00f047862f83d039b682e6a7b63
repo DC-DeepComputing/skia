@@ -3,6 +3,23 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "88b783a6_b1ac457a",
+        "filename": "src/gpu/graphite/FactoryFunctions.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 493,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-04-24T14:29:29Z",
+      "side": 1,
+      "message": "ImageShaders are now always wrapped in a LMShader",
+      "revId": "cb887b552512e00f047862f83d039b682e6a7b63",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "2265bd2d_da876b6b",
         "filename": "src/shaders/gradients/SkConicalGradient.cpp",
         "patchSetId": 28
