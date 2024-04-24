@@ -72,6 +72,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "abdc3a6b_37c3b688",
+        "filename": "src/gpu/graphite/FactoryFunctions.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 612,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-04-24T18:29:48Z",
+      "side": 1,
+      "message": "The long term plan here is to switch all the Factories to always wrapping their children in a LocalMatrixShader (c.f. b/336810091). At that point the LMShader will always exist or not exist and we won\u0027t need the \u0027withLM\u0027 factories or for PrecompileLocalMatrixShader to have w/ and w/o variants.",
+      "parentUuid": "ec2ee2ff_a0bf0844",
+      "range": {
+        "startLine": 610,
+        "startChar": 4,
+        "endLine": 612,
+        "endChar": 60
+      },
+      "revId": "7e27b03c9c1aeb6c057fbf05df1e42a894e24501",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "280c1602_3e6e0bf2",
