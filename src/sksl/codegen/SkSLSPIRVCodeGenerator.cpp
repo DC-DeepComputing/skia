@@ -3526,13 +3526,18 @@ SpvId SPIRVCodeGenerator::writeBinaryOperation(const Type& resultType,
                                                const Type& operandType, SpvId lhs,
                                                SpvId rhs, SpvOp_ ifFloat, SpvOp_ ifInt,
                                                SpvOp_ ifUInt, SpvOp_ ifBool, OutputStream& out) {
-    SpvId result = this->nextId(&resultType);
     SpvOp_ op = pick_by_type(operandType, ifFloat, ifInt, ifUInt, ifBool);
     if (op == SpvOpUndef) {
         fContext.fErrors->error(operandType.fPosition,
-                "unsupported operand for binary expression: " + operandType.description());
+                                "unsupported operand for binary expression: " +
+                                operandType.description());
         return NA;
     }
+    if (operandType.isMatrix()) {
+        return this->writeComponentwiseMatrixBinary(resultType, lhs, rhs, op, out);
+    }
+
+    SpvId result = this->nextId(&resultType);
     this->writeInstruction(op, this->getType(resultType), result, lhs, rhs, out);
     return result;
 }
@@ -3880,17 +3885,9 @@ SpvId SPIRVCodeGenerator::writeBinaryExpression(const Type& leftType, SpvId lhs,
                                               SpvOpFOrdLessThanEqual, SpvOpSLessThanEqual,
                                               SpvOpULessThanEqual, SpvOpUndef, out);
         case Operator::Kind::PLUS:
-            if (leftType.isMatrix() && rightType.isMatrix()) {
-                SkASSERT(leftType.matches(rightType));
-                return this->writeComponentwiseMatrixBinary(leftType, lhs, rhs, SpvOpFAdd, out);
-            }
             return this->writeBinaryOperation(resultType, *operandType, lhs, rhs, SpvOpFAdd,
                                               SpvOpIAdd, SpvOpIAdd, SpvOpUndef, out);
         case Operator::Kind::MINUS:
-            if (leftType.isMatrix() && rightType.isMatrix()) {
-                SkASSERT(leftType.matches(rightType));
-                return this->writeComponentwiseMatrixBinary(leftType, lhs, rhs, SpvOpFSub, out);
-            }
             return this->writeBinaryOperation(resultType, *operandType, lhs, rhs, SpvOpFSub,
                                               SpvOpISub, SpvOpISub, SpvOpUndef, out);
         case Operator::Kind::STAR:
@@ -3904,10 +3901,6 @@ SpvId SPIRVCodeGenerator::writeBinaryExpression(const Type& leftType, SpvId lhs,
             return this->writeBinaryOperation(resultType, *operandType, lhs, rhs, SpvOpFMul,
                                               SpvOpIMul, SpvOpIMul, SpvOpUndef, out);
         case Operator::Kind::SLASH:
-            if (leftType.isMatrix() && rightType.isMatrix()) {
-                SkASSERT(leftType.matches(rightType));
-                return this->writeComponentwiseMatrixBinary(leftType, lhs, rhs, SpvOpFDiv, out);
-            }
             return this->writeBinaryOperation(resultType, *operandType, lhs, rhs, SpvOpFDiv,
                                               SpvOpSDiv, SpvOpUDiv, SpvOpUndef, out);
         case Operator::Kind::PERCENT:
