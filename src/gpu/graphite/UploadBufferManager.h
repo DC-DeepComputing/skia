@@ -41,7 +41,8 @@ private:
 
 
     std::tuple<void*/*mappedPtr*/, BindBufferInfo> makeBindInfo(size_t requiredBytes,
-                                                                size_t requiredAlignment);
+                                                                size_t requiredAlignment,
+                                                                std::string_view label);
 
     ResourceProvider* fResourceProvider;
 
