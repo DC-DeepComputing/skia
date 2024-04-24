@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a3326630_e64d5a98",
+        "filename": "src/gpu/graphite/FactoryFunctions.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 612,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-04-24T16:34:16Z",
+      "side": 1,
+      "message": "Well, I would have to think about that a bit. The Precompile API is, right now, not structured that way (having the factories return lists of things). In general, I think I would prefer only providing the \u0027withLM\u0027 factories. Then we could also have the invariant that if the LocalMatrix factory is invoked the LMShader is always there.",
+      "parentUuid": "d88d4665_e3c58836",
+      "range": {
+        "startLine": 610,
+        "startChar": 4,
+        "endLine": 612,
+        "endChar": 60
+      },
+      "revId": "7e27b03c9c1aeb6c057fbf05df1e42a894e24501",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "280c1602_3e6e0bf2",
         "filename": "src/gpu/graphite/KeyHelpers.cpp",
         "patchSetId": 31
@@ -37,6 +61,30 @@
       "writtenOn": "2024-04-24T15:57:51Z",
       "side": 1,
       "message": "Since we always have a LM shader around an SkImageShader, can we update this logic to incorporate the YUVA origin matrix as well? That will further reduce the pipeline variations (or at least simpify the paint key structure) when there\u0027s a YUV image vs. a single-plane image.",
+      "range": {
+        "startLine": 1706,
+        "startChar": 43,
+        "endLine": 1706,
+        "endChar": 61
+      },
+      "revId": "7e27b03c9c1aeb6c057fbf05df1e42a894e24501",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46da8192_582ca209",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 1706,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-04-24T16:34:16Z",
+      "side": 1,
+      "message": "I created a bug and added a TODO here referencing it.",
+      "parentUuid": "280c1602_3e6e0bf2",
       "range": {
         "startLine": 1706,
         "startChar": 43,
