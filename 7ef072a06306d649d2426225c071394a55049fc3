@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80dcf156_6e5d2d13",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-24T17:39:52Z",
+      "side": 1,
+      "message": "Should we be using `label` here?",
+      "range": {
+        "startLine": 81,
+        "startChar": 0,
+        "endLine": 81,
+        "endChar": 58
+      },
+      "revId": "7ef072a06306d649d2426225c071394a55049fc3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1abaf214_61d91711",
+        "filename": "src/gpu/graphite/mtl/MtlBuffer.mm",
+        "patchSetId": 1
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-24T17:39:52Z",
+      "side": 1,
+      "message": "based on the comment in this CL, are you planning a follow-up that will set `label` here instead?",
+      "range": {
+        "startLine": 62,
+        "startChar": 0,
+        "endLine": 62,
+        "endChar": 50
+      },
+      "revId": "7ef072a06306d649d2426225c071394a55049fc3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
