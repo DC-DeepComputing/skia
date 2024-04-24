@@ -16,6 +16,24 @@
       "message": "LGTM once that build error is remedied",
       "revId": "8e9512559869486c084f81218b088141968f3580",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "22c3e9f9_162871bf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-04-24T02:02:18Z",
+      "side": 1,
+      "message": "That came from other CL in the chain. It should go away now that I rebased this on main.",
+      "parentUuid": "2546d29e_9db03d04",
+      "revId": "8e9512559869486c084f81218b088141968f3580",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
