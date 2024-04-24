@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2265bd2d_da876b6b",
+        "filename": "src/shaders/gradients/SkConicalGradient.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-04-24T13:45:50Z",
+      "side": 1,
+      "message": "Storing LMs in Gradients was removed 1.5yo in https://skia-review.googlesource.com/c/skia/+/587541. Don\u0027t needlessly add an extra layer of LMShader.",
+      "revId": "cb887b552512e00f047862f83d039b682e6a7b63",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
