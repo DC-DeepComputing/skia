@@ -69,6 +69,24 @@
       "parentUuid": "49511645_ee742bb9",
       "revId": "7de10456194805c13dfaf6b226861ff09c747866",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c98a4943_a6deeab6",
+        "filename": "src/gpu/graphite/task/ComputeTask.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-24T01:17:11Z",
+      "side": 1,
+      "message": "I decided to leave it as the same type for now, but I could see adjusting it if we add more complex task controls.",
+      "parentUuid": "f93bc7ff_61d150ba",
+      "revId": "7de10456194805c13dfaf6b226861ff09c747866",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
