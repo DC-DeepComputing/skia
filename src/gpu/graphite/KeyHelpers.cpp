@@ -1531,11 +1531,22 @@ static void add_yuv_image_to_key(const KeyContext& keyContext,
                         // actual subsampled plane, one of those values may come from outside the
                         // subset. Hence, we use this custom inset which applies the wrap mode to
                         // the subset but allows linear filtering to read pixels from the plane
-                        // that are just outside the subset.
-                        imgData.fLinearFilterUVInset = { 1.f/(2*ssx), 1.f/(2*ssy) };
+                        // that are just outside the subset. We only want to apply this offset in
+                        // non-decal modes, or when the image view size is not a multiple of
+                        // the UV subsampling factor.
+                        if (origShader->tileModeX() != SkTileMode::kDecal ||
+                            view.dimensions().width()*ssx > yuvaInfo.width()) {
+                            imgData.fLinearFilterUVInset.fX = 1.f/(2*ssx);
+                        }
+                        if (origShader->tileModeY() != SkTileMode::kDecal ||
+                            view.dimensions().height()*ssy > yuvaInfo.height()) {
+                            imgData.fLinearFilterUVInset.fY = 1.f/(2*ssy);
+                        }
                     }
                 }
-
+                // Need to scale this just like we scale the image size
+                imgData.fLinearFilterUVInset = {imgData.fLinearFilterUVInset.fX*ssx,
+                                                imgData.fLinearFilterUVInset.fY*ssy};
             }
         }
     }
