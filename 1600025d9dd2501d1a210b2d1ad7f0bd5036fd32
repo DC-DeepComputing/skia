@@ -34,6 +34,24 @@
       "parentUuid": "fff25fa5_29787f6e",
       "revId": "1600025d9dd2501d1a210b2d1ad7f0bd5036fd32",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b4e1343d_c6ec9f4e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-04-24T14:11:19Z",
+      "side": 1,
+      "message": "Ah, right - I was thinking that we\u0027d get the kid of checking we want -  but you\u0027re right, it\u0027s probably just going to throw. Regardless, I think the current impl is worth the gains.",
+      "parentUuid": "c9d4fa64_ed8b3494",
+      "revId": "1600025d9dd2501d1a210b2d1ad7f0bd5036fd32",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
