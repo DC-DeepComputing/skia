@@ -349,7 +349,6 @@ func scaleDeviceForBenchmark(ctx context.Context, model string) error {
 func doesNotAllowADBRoot(model string) bool {
 	return map[string]bool{
 		"GalaxyS7_G930FD": true,
-		"GalaxyS9":        true,
 		"GalaxyS20":       true,
 		"P30":             true,
 		"Pixel4":          true,
