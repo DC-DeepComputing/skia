@@ -238,11 +238,14 @@ $pure half4 $sample_image_subset(float2 pos,
 
         // Do soft edge shader filtering for decal tiling and linear filtering using the error
         // values calculated above.
-        if (tileModeX == $kTileModeDecal) {
-            color *= max(1 - absError.x, 0);
-        }
-        if (tileModeY == $kTileModeDecal) {
-            color *= max(1 - absError.y, 0);
+        absError /= half2(linearFilterInset);
+        if (tileModeX == $kTileModeDecal || tileModeY == $kTileModeDecal) {
+            if (tileModeX == $kTileModeDecal) {
+                color *= max(1 - absError.x, 0);
+            }
+            if (tileModeY == $kTileModeDecal) {
+                color *= max(1 - absError.y, 0);
+            }
         }
     }
 
