@@ -1009,7 +1009,6 @@ func (b *taskBuilder) defaultSwarmDimensions() {
 			} else if b.isLinux() {
 				gpu, ok := map[string]string{
 					// Intel drivers come from CIPD, so no need to specify the version here.
-					"IntelBayTrail": "8086:0f31",
 					"IntelHD2000":   "8086:0102",
 					"IntelHD405":    "8086:22b1",
 					"IntelIris640":  "8086:5926",
