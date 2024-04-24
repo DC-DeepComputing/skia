@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec2ee2ff_a0bf0844",
+        "filename": "src/gpu/graphite/FactoryFunctions.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 612,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-04-24T18:12:08Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "a3326630_e64d5a98",
+      "range": {
+        "startLine": 610,
+        "startChar": 4,
+        "endLine": 612,
+        "endChar": 60
+      },
+      "revId": "7e27b03c9c1aeb6c057fbf05df1e42a894e24501",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "280c1602_3e6e0bf2",
