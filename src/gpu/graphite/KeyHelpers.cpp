@@ -1535,7 +1535,10 @@ static void add_yuv_image_to_key(const KeyContext& keyContext,
                         imgData.fLinearFilterUVInset = { 1.f/(2*ssx), 1.f/(2*ssy) };
                     }
                 }
-
+                // Need to scale this just like we scale the image size... is this right?
+                // Means the inset is always (1/2, 1/2) in the nearest/linear case
+                imgData.fLinearFilterUVInset = {imgData.fLinearFilterUVInset.fX*ssx,
+                                                imgData.fLinearFilterUVInset.fY*ssy};
             }
         }
     }

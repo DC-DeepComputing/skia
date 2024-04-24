@@ -379,12 +379,14 @@ $pure half4 sk_yuv_image_shader(float2 coords,
         coords = floor(coords) + 0.5;
     }
 
+    int tileModeX_UV = tileModeX == $kTileModeDecal ? $kTileModeClamp : tileModeX;
+    int tileModeY_UV = tileModeY == $kTileModeDecal ? $kTileModeClamp : tileModeY;
     half4 sampleColorY, sampleColorU, sampleColorV, sampleColorA;
     sampleColorY = $sample_image_subset(coords, invImgSizeY, subset, tileModeX, tileModeY,
                                         filterModeY, float2($kLinearInset), sY);
-    sampleColorU = $sample_image_subset(coords, invImgSizeUV, subset, tileModeX, tileModeY,
+    sampleColorU = $sample_image_subset(coords, invImgSizeUV, subset, tileModeX_UV, tileModeY_UV,
                                         filterModeUV, linearFilterUVInset, sU);
-    sampleColorV = $sample_image_subset(coords, invImgSizeUV, subset, tileModeX, tileModeY,
+    sampleColorV = $sample_image_subset(coords, invImgSizeUV, subset, tileModeX_UV, tileModeY_UV,
                                         filterModeUV, linearFilterUVInset, sV);
     if (channelSelectA == half4(1)) {
         sampleColorA = half4(0, 0, 0, 1);
