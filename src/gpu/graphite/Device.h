@@ -225,15 +225,10 @@ private:
     enum class DrawFlags : unsigned {
         kNone             = 0b000,
 
-        // Any SkMaskFilter on the SkPaint passed into drawGeometry() is ignored.
-        // - drawPaint, drawVertices, drawAtlas
-        // - drawShape after it's applied the mask filter.
-        kIgnoreMaskFilter = 0b001,
-
         // Any SkPathEffect on the SkPaint passed into drawGeometry() is ignored.
         // - drawPaint, drawImageLattice, drawImageRect, drawEdgeAAImageSet, drawVertices, drawAtlas
         // - drawShape after it's applied the path effect.
-        kIgnorePathEffect = 0b010,
+        kIgnorePathEffect = 0b001,
     };
     SK_DECL_BITMASK_OPS_FRIENDS(DrawFlags)
 
