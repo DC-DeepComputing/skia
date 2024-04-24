@@ -446,7 +446,7 @@ std::tuple<TextureProxyView, SkColorType> MakeBitmapProxyView(Recorder* recorder
 
     // Create proxy
     sk_sp<TextureProxy> proxy =
-            TextureProxy::Make(caps, bmpToUpload.dimensions(), textureInfo, budgeted);
+            TextureProxy::Make(recorder, bmpToUpload.dimensions(), textureInfo, budgeted);
     if (!proxy) {
         return {};
     }

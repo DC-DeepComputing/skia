@@ -454,11 +454,11 @@ bool DrawAtlas::activateNewPage(Recorder* recorder) {
 
     const Caps* caps = recorder->priv().caps();
     auto textureInfo = caps->getDefaultSampledTextureInfo(fColorType,
-                                                          /*mipmapped=*/Mipmapped::kNo,
+                                                          Mipmapped::kNo,
                                                           recorder->priv().isProtected(),
                                                           Renderable::kNo);
     fProxies[fNumActivePages] = TextureProxy::Make(
-            caps, {fTextureWidth, fTextureHeight}, textureInfo, skgpu::Budgeted::kYes);
+            recorder, {fTextureWidth, fTextureHeight}, textureInfo, skgpu::Budgeted::kYes);
     if (!fProxies[fNumActivePages]) {
         return false;
     }
