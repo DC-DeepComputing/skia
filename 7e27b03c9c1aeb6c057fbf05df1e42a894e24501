@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d88d4665_e3c58836",
+        "filename": "src/gpu/graphite/FactoryFunctions.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 612,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-24T15:57:51Z",
+      "side": 1,
+      "message": "Can we have this instead return:\n\n    return { LinearGradient(false), LinearGradient(true) };\n    \nand then have the `LocalMatrix` factory not need to take a flag for whether or not to skip elision? If it\u0027s called it\u0027s always included?",
+      "range": {
+        "startLine": 610,
+        "startChar": 4,
+        "endLine": 612,
+        "endChar": 60
+      },
+      "revId": "7e27b03c9c1aeb6c057fbf05df1e42a894e24501",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "280c1602_3e6e0bf2",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 1706,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-24T15:57:51Z",
+      "side": 1,
+      "message": "Since we always have a LM shader around an SkImageShader, can we update this logic to incorporate the YUVA origin matrix as well? That will further reduce the pipeline variations (or at least simpify the paint key structure) when there\u0027s a YUV image vs. a single-plane image.",
+      "range": {
+        "startLine": 1706,
+        "startChar": 43,
+        "endLine": 1706,
+        "endChar": 61
+      },
+      "revId": "7e27b03c9c1aeb6c057fbf05df1e42a894e24501",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
