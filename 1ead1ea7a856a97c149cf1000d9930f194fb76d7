@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd9cecac_40f0a0e6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-24T01:14:22Z",
+      "side": 1,
+      "message": "lgtm w/ James\u0027 comment",
+      "revId": "1ead1ea7a856a97c149cf1000d9930f194fb76d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3880390f_9fb3aacd",
