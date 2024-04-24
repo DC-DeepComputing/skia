@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "73871a33_513144a9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-04-24T14:36:34Z",
+      "side": 1,
+      "message": "Ahh lets keep the S9s around for now. Originally they had a similar GPU to the P30s and I marked to keep the P30s, but just realized those all died on us.",
+      "revId": "b52f8029fd61d3a5b3af9635e555adef6c166f91",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
