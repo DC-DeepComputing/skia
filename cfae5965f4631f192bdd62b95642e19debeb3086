@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1451e1c1_25c39164",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 32
+      },
+      "lineNbr": 1430,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-24T17:19:28Z",
+      "side": 1,
+      "message": "Per offline discussion, we want to keep a guard here but limit the local matrix wrapping to when there\u0027s special decal handling. The new check should be `\u0026\u0026 analysis \u0026 BoundsAnalysis::kRequiresDecalInLayerSpace`.\n\nTechnically, when we require the decal in layer space and there\u0027s a rectStaysRect() transform, the postDecal matrix will be identity and we could skip it. However, that creates two options for the special decal handling, which we don\u0027t want. In the case we don\u0027t do special decal handling, the postDecal matrix is always I so we should just skip it entirely.",
+      "range": {
+        "startLine": 1430,
+        "startChar": 8,
+        "endLine": 1430,
+        "endChar": 19
+      },
+      "revId": "cfae5965f4631f192bdd62b95642e19debeb3086",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
