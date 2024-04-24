@@ -284,6 +284,12 @@ private:
      */
     skia_private::TArray<SpvId> vectorize(const ExpressionArray& args, OutputStream& out);
 
+    /**
+     * Given a SpvId of a scalar, converts it to the passed-in type (scalar or vector) and returns
+     * the SpvId of the new value.
+     */
+    SpvId vectorize(const Type& type, SpvId id, OutputStream& out);
+
     SpvId writeSpecialIntrinsic(const FunctionCall& c, SpecialIntrinsic kind, OutputStream& out);
     SpvId writeAtomicIntrinsic(const FunctionCall& c,
                                SpecialIntrinsic kind,
@@ -1307,7 +1313,7 @@ SpvId SPIRVCodeGenerator::writeOpConstant(const Type& type, int32_t valueBits) {
 
 SpvId SPIRVCodeGenerator::writeOpConstantComposite(const Type& type,
                                                    const TArray<SpvId>& values) {
-    SkASSERT(values.size() == (type.isStruct() ? (int)type.fields().size() : type.columns()));
+    SkASSERT(values.size() == (type.isStruct() ? SkToInt(type.fields().size()) : type.columns()));
 
     Words words;
     words.push_back(this->getType(type));
@@ -1994,12 +2000,23 @@ TArray<SpvId> SPIRVCodeGenerator::vectorize(const ExpressionArray& args, OutputS
             }
         }
     }
-    TArray<SpvId> result;
-    result.reserve_exact(args.size());
+    STArray<4, SpvId> result;
     for (const auto& arg : args) {
         result.push_back(this->vectorize(*arg, vectorSize, out));
     }
     return result;
+}
+
+SpvId SPIRVCodeGenerator::vectorize(const Type& type, SpvId id, OutputStream& out) {
+    if (type.isScalar()) {
+        return id;
+    }
+
+    // Generate a OpCompositeConstruct which repeats the argument N times.
+    SkASSERT(type.isVector());
+    STArray<4, SpvId> values;
+    values.push_back_n(/*n=*/type.columns(), /*t=*/id);
+    return this->writeOpCompositeConstruct(type, values, out);
 }
 
 void SPIRVCodeGenerator::writeGLSLExtendedInstruction(const Type& type, SpvId id, SpvId floatInst,
@@ -2861,10 +2878,8 @@ SpvId SPIRVCodeGenerator::writeConstructorSplat(const ConstructorSplat& c, Outpu
     // Write the splat argument.
     SpvId argument = this->writeExpression(*c.argument(), out);
 
-    // Generate a OpCompositeConstruct which repeats the argument N times.
-    STArray<4, SpvId> values;
-    values.push_back_n(/*n=*/c.type().columns(), /*t=*/argument);
-    return this->writeOpCompositeConstruct(c.type(), values, out);
+    // Vectorize it.
+    return this->vectorize(c.type(), argument, out);
 }
 
 SpvId SPIRVCodeGenerator::writeCompositeConstructor(const AnyConstructor& c, OutputStream& out) {
@@ -4154,18 +4169,22 @@ SpvId SPIRVCodeGenerator::writePrefixExpression(const PrefixExpression& p, Outpu
     switch (p.getOperator().kind()) {
         case Operator::Kind::PLUS:
             return this->writeExpression(*p.operand(), out);
+
         case Operator::Kind::PLUSPLUS: {
+            SpvId one = this->writeLiteral(1.0, type.componentType());
+            one = type.isMatrix() ? this->writeScalarToMatrixSplat(type, one, out)
+                                  : this->vectorize(type, one, out);
             std::unique_ptr<LValue> lv = this->getLValue(*p.operand(), out);
-            SpvId one = this->writeLiteral(1.0, type);
-            SpvId result = this->writeBinaryOperation(type, type, lv->load(out), one,
-                                                      SpvOpFAdd, SpvOpIAdd, SpvOpIAdd, SpvOpUndef,
-                                                      out);
+            SpvId result = this->writeBinaryOperation(type, type, lv->load(out), one, SpvOpFAdd,
+                                                      SpvOpIAdd, SpvOpIAdd, SpvOpUndef, out);
             lv->store(result, out);
             return result;
         }
         case Operator::Kind::MINUSMINUS: {
+            SpvId one = this->writeLiteral(1.0, type.componentType());
+            one = type.isMatrix() ? this->writeScalarToMatrixSplat(type, one, out)
+                                  : this->vectorize(type, one, out);
             std::unique_ptr<LValue> lv = this->getLValue(*p.operand(), out);
-            SpvId one = this->writeLiteral(1.0, type);
             SpvId result = this->writeBinaryOperation(type, type, lv->load(out), one, SpvOpFSub,
                                                       SpvOpISub, SpvOpISub, SpvOpUndef, out);
             lv->store(result, out);
@@ -4195,7 +4214,9 @@ SpvId SPIRVCodeGenerator::writePostfixExpression(const PostfixExpression& p, Out
     const Type& type = p.type();
     std::unique_ptr<LValue> lv = this->getLValue(*p.operand(), out);
     SpvId result = lv->load(out);
-    SpvId one = this->writeLiteral(1.0, type);
+    SpvId one = this->writeLiteral(1.0, type.componentType());
+    one = type.isMatrix() ? this->writeScalarToMatrixSplat(type, one, out)
+                          : this->vectorize(type, one, out);
     switch (p.getOperator().kind()) {
         case Operator::Kind::PLUSPLUS: {
             SpvId temp = this->writeBinaryOperation(type, type, result, one, SpvOpFAdd,
