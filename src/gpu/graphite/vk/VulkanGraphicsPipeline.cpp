@@ -13,11 +13,11 @@
 #include "src/core/SkSLTypeShared.h"
 #include "src/core/SkTraceEvent.h"
 #include "src/gpu/PipelineUtils.h"
-#include "src/gpu/graphite/AttachmentTypes.h"
 #include "src/gpu/graphite/Attribute.h"
 #include "src/gpu/graphite/ContextUtils.h"
 #include "src/gpu/graphite/GraphicsPipelineDesc.h"
 #include "src/gpu/graphite/Log.h"
+#include "src/gpu/graphite/RenderPassDesc.h"
 #include "src/gpu/graphite/RendererProvider.h"
 #include "src/gpu/graphite/RuntimeEffectDictionary.h"
 #include "src/gpu/graphite/vk/VulkanCaps.h"
@@ -614,10 +614,10 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
     FragSkSLInfo fsSkSLInfo = BuildFragmentSkSL(sharedContext->caps(),
                                                 sharedContext->shaderCodeDictionary(),
                                                 runtimeDict,
+                                                renderPassDesc,
                                                 step,
                                                 pipelineDesc.paintParamsID(),
-                                                useStorageBuffers,
-                                                renderPassDesc.fWriteSwizzle);
+                                                useStorageBuffers);
     std::string& fsSkSL = fsSkSLInfo.fSkSL;
     const bool localCoordsNeeded = fsSkSLInfo.fRequiresLocalCoords;
 
