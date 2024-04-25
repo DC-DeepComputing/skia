@@ -52,6 +52,24 @@
       "parentUuid": "f14268f3_b8fafcb6",
       "revId": "de3120f9d21b1cd776293d42d7ac8bd3e9e2c361",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cdbc31f8_64d4a00a",
+        "filename": "tests/graphite/DrawPassTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-25T20:56:34Z",
+      "side": 1,
+      "message": "Yep, saveLayer() or image filters are already budgeted draw passes. Soon generating mipmaps and rescaling images will be too.",
+      "parentUuid": "35378b23_59e81103",
+      "revId": "de3120f9d21b1cd776293d42d7ac8bd3e9e2c361",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
