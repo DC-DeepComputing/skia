@@ -35,6 +35,7 @@ CanvasKit._extraInitializations.push(function() {
     var shouldOwnUniforms = !floats['_ck'];
     var fptr = copy1dArray(floats, 'HEAPF32');
     var localMatrixPtr = copy3x3MatrixToWasm(localMatrix);
+    console.log("lmPtr", localMatrixPtr);
     // Our array has 4 bytes per float, so be sure to account for that before
     // sending it over the wire.
     return this._makeShader(fptr, floats.length * 4, shouldOwnUniforms, localMatrixPtr);

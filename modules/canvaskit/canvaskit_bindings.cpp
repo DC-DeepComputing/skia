@@ -2260,7 +2260,7 @@ EMSCRIPTEN_BINDINGS(Skia) {
             }
 
             OptionalMatrix localMatrix(mPtr);
-            return self.makeShader(uniforms, nullptr, 0, &localMatrix);
+            return self.makeShader(uniforms, nullptr, 0, /*mPtr ? &localMatrix : nullptr*/ &localMatrix);
         }))
         .function("_makeShaderWithChildren", optional_override([](SkRuntimeEffect& self,
                                                                   WASMPointerF32 fPtr,
