@@ -1020,7 +1020,8 @@ static constexpr Uniform kYUVImageShaderUniforms[] = {
         { "invImgSizeY",           SkSLType::kFloat2 },
         { "invImgSizeUV",          SkSLType::kFloat2 },  // Relative to Y's texel space
         { "subset",                SkSLType::kFloat4 },
-        { "linearFilterUVInset",   SkSLType::kFloat2 },
+        { "subsetUV",              SkSLType::kFloat4 },  // Relative to Y's texel space
+        { "linearFilterUVInset",   SkSLType::kFloat2 },  // Relative to Y's texel space
         { "tilemodeX",             SkSLType::kInt },
         { "tilemodeY",             SkSLType::kInt },
         { "filterModeY",           SkSLType::kInt },
@@ -1037,6 +1038,7 @@ static constexpr Uniform kCubicYUVImageShaderUniforms[] = {
         { "invImgSizeY",           SkSLType::kFloat2 },
         { "invImgSizeUV",          SkSLType::kFloat2 },  // Relative to Y's texel space
         { "subset",                SkSLType::kFloat4 },
+        { "subsetUV",              SkSLType::kFloat4 },  // Relative to Y's texel space
         { "tilemodeX",             SkSLType::kInt },
         { "tilemodeY",             SkSLType::kInt },
         { "cubicCoeffs",           SkSLType::kHalf4x4 },
