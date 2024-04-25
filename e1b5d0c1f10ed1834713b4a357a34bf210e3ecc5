@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0acbb9ee_df1bc501",
+        "filename": "src/gpu/graphite/task/UploadTask.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 335,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-04-25T14:55:49Z",
+      "side": 0,
+      "message": "why was this removed?",
+      "range": {
+        "startLine": 332,
+        "startChar": 4,
+        "endLine": 335,
+        "endChar": 5
+      },
+      "revId": "e1b5d0c1f10ed1834713b4a357a34bf210e3ecc5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
