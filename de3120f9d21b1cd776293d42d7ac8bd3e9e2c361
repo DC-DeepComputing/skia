@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f14f818b_5e9be229",
+        "filename": "tests/graphite/DrawPassTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-04-25T20:45:11Z",
+      "side": 1,
+      "message": "Alright I know we just had this conversation in http://review.skia.org/845436. And I\u0027m fully on-board with the use of Budgeted::kYes in other tests where the texture proxy represents something we\u0027d have created internally, which would be budgeted. But in this case the render target could be a surface that the client owns, right? I guess it comes down to whether we think the test is more useful with Budgeted::kYes or kNo; personally I lean towards the latter here but no strong feelings.",
+      "revId": "de3120f9d21b1cd776293d42d7ac8bd3e9e2c361",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
