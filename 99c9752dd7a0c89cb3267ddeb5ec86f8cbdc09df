@@ -62,6 +62,29 @@
       },
       "revId": "99c9752dd7a0c89cb3267ddeb5ec86f8cbdc09df",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca9775a6_c92ee523",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 1506,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-04-25T22:11:12Z",
+      "side": 1,
+      "message": "`blurRadius` and `cornerRadius` are never used other than to calculate `edgeSize`. Maybe you should just be passing in `edgeSize` directly?",
+      "range": {
+        "startLine": 1506,
+        "startChar": 0,
+        "endLine": 1506,
+        "endChar": 58
+      },
+      "revId": "99c9752dd7a0c89cb3267ddeb5ec86f8cbdc09df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
