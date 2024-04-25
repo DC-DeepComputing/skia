@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "30ccb351_be43dd26",
+        "filename": "fuzz/FuzzPrecompile.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 329,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-04-25T16:24:59Z",
+      "side": 1,
+      "message": "It feels a little weird to me to be passing Budgeted::kYes in a test; do you think it\u0027s worth a comment mentioning that we do this so that we don\u0027t instantiate here?",
+      "revId": "e1b5d0c1f10ed1834713b4a357a34bf210e3ecc5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64ef9e9b_0b75d713",
+        "filename": "tests/graphite/PaintParamsKeyTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1332,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-04-25T16:24:59Z",
+      "side": 1,
+      "message": "Same comment as above in FuzzPrecompile.cpp",
+      "revId": "e1b5d0c1f10ed1834713b4a357a34bf210e3ecc5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
