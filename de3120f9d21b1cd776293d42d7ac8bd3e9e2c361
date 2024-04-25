@@ -34,6 +34,24 @@
       "parentUuid": "f14f818b_5e9be229",
       "revId": "de3120f9d21b1cd776293d42d7ac8bd3e9e2c361",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "35378b23_59e81103",
+        "filename": "tests/graphite/DrawPassTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-04-25T20:52:28Z",
+      "side": 1,
+      "message": "For sure it is extra work. But since we\u0027re not assuming anything about the internals of DrawPass::Make in this test (hypothetically), I want to lean towards constructing a scenario that matches real-world scenarios as closely as possible. On the other hand, I\u0027m guessing we do make DrawPasses internally with budgeted render targets. So I\u0027m fine with keeping it like this.",
+      "parentUuid": "f14268f3_b8fafcb6",
+      "revId": "de3120f9d21b1cd776293d42d7ac8bd3e9e2c361",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
