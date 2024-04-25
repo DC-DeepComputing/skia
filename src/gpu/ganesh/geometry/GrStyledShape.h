@@ -110,8 +110,8 @@ public:
 
     GrStyledShape(const GrStyledShape&);
 
-    static GrStyledShape MakeArc(const SkRect& oval, SkScalar startAngleDegrees,
-                                 SkScalar sweepAngleDegrees, bool useCenter, const GrStyle& style,
+    static GrStyledShape MakeArc(const SkArc& arc,
+                                 const GrStyle& style,
                                  DoSimplify = DoSimplify::kYes);
 
     GrStyledShape& operator=(const GrStyledShape& that);

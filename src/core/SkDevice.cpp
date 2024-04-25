@@ -8,6 +8,7 @@
 #include "src/core/SkDevice.h"
 
 #include "include/core/SkAlphaType.h"
+#include "include/core/SkArc.h"
 #include "include/core/SkColorPriv.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkColorType.h"
@@ -130,12 +131,10 @@ void SkDevice::drawRegion(const SkRegion& region, const SkPaint& paint) {
     }
 }
 
-void SkDevice::drawArc(const SkRect& oval, SkScalar startAngle,
-                       SkScalar sweepAngle, bool useCenter, const SkPaint& paint) {
+void SkDevice::drawArc(const SkArc& arc, const SkPaint& paint) {
     SkPath path;
     bool isFillNoPathEffect = SkPaint::kFill_Style == paint.getStyle() && !paint.getPathEffect();
-    SkPathPriv::CreateDrawArcPath(&path, oval, startAngle, sweepAngle, useCenter,
-                                  isFillNoPathEffect);
+    SkPathPriv::CreateDrawArcPath(&path, arc, isFillNoPathEffect);
     this->drawPath(path, paint);
 }
 
