@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "817d5039_cb80fbc8",
+        "filename": "src/gpu/graphite/DrawContext.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-04-25T16:25:57Z",
+      "side": 1,
+      "message": "I guess the assert is more checking that the dst copy will be readable, rather than that the copy itself is possible. But there could still be todos here for checking blit-ability, getting a different texturable TextureInfo, or adding a copy-as-draw fallback.",
+      "revId": "7b5f2dc143caa0ba3438e74cdef218b0ee5561f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
