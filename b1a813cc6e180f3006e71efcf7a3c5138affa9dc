@@ -46,6 +46,30 @@
       },
       "revId": "b1a813cc6e180f3006e71efcf7a3c5138affa9dc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "69192138_02bb830d",
+        "filename": "tools/js_shaper/api.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-04-26T17:16:15Z",
+      "side": 1,
+      "message": "I update the API but notice that by using FontStyle in place of TextStyle we limit our text decoration somewhat. I am not sure if it matters a lot and we can extend it later, so it should do for now.",
+      "parentUuid": "af933d20_82ae4ccf",
+      "range": {
+        "startLine": 103,
+        "startChar": 0,
+        "endLine": 110,
+        "endChar": 1
+      },
+      "revId": "b1a813cc6e180f3006e71efcf7a3c5138affa9dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
