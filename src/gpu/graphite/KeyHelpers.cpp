@@ -618,6 +618,7 @@ void add_yuv_image_uniform_data(const ShaderCodeDictionary* dict,
     gatherer->write(SkSize::Make(1.f/imgData.fImgSize.width(), 1.f/imgData.fImgSize.height()));
     gatherer->write(SkSize::Make(1.f/imgData.fImgSizeUV.width(), 1.f/imgData.fImgSizeUV.height()));
     gatherer->write(imgData.fSubset);
+    gatherer->write(imgData.fSubsetUV);
     gatherer->write(imgData.fLinearFilterUVInset);
     gatherer->write(SkTo<int>(imgData.fTileModes[0]));
     gatherer->write(SkTo<int>(imgData.fTileModes[1]));
@@ -639,6 +640,7 @@ void add_cubic_yuv_image_uniform_data(const ShaderCodeDictionary* dict,
     gatherer->write(SkSize::Make(1.f/imgData.fImgSize.width(), 1.f/imgData.fImgSize.height()));
     gatherer->write(SkSize::Make(1.f/imgData.fImgSizeUV.width(), 1.f/imgData.fImgSizeUV.height()));
     gatherer->write(imgData.fSubset);
+    gatherer->write(imgData.fSubsetUV);
     gatherer->write(SkTo<int>(imgData.fTileModes[0]));
     gatherer->write(SkTo<int>(imgData.fTileModes[1]));
     const SkCubicResampler& cubic = imgData.fSampling.cubic;
@@ -663,7 +665,8 @@ YUVImageShaderBlock::ImageData::ImageData(const SkSamplingOptions& sampling,
         , fTileModes{tileModeX, tileModeY}
         , fImgSize(imgSize)
         , fImgSizeUV(imgSize)
-        , fSubset(subset) {
+        , fSubset(subset)
+        , fSubsetUV(subset) {
 }
 
 void YUVImageShaderBlock::AddBlock(const KeyContext& keyContext,
@@ -1524,6 +1527,7 @@ static void add_yuv_image_to_key(const KeyContext& keyContext,
         // accordingly.
         const TextureProxyView& view = yuvaImage->proxyView(SkYUVAInfo::kU);
         imgData.fImgSizeUV = {view.dimensions().width()*ssx, view.dimensions().height()*ssy};
+
         // This promotion of nearest to linear filtering for UV planes exists to mimic
         // libjpeg[-turbo]'s do_fancy_upsampling option. We will filter the subsampled plane,
         // however we want to filter at a fixed point for each logical image pixel to simulate
@@ -1532,6 +1536,24 @@ static void add_yuv_image_to_key(const KeyContext& keyContext,
         if (imgData.fSampling.filter == SkFilterMode::kNearest) {
             imgData.fSamplingUV = SkSamplingOptions(SkFilterMode::kLinear,
                                                     imgData.fSampling.mipmap);
+            // We need to adjust our subset to snap to the UV texel space
+            float scaleX = 1.f/ssx;
+            float scaleY = 1.f/ssy;
+            // Map to UV texel space
+            SkRect subsetUV = {imgData.fSubset.fLeft  *scaleX,
+                               imgData.fSubset.fTop   *scaleY,
+                               imgData.fSubset.fRight *scaleX,
+                               imgData.fSubset.fBottom*scaleY};
+            // Round to UV texel borders
+            SkIRect iSubsetUV = subsetUV.roundOut();
+            // Map back to Y texel space, clamping to image's boundary.
+            // We perform this clamp because the ratios of the image size to the scaled UV size
+            // might not be equal to the subsampling factors, leaving some extra area in UV that
+            // should not be included in the subset.
+            imgData.fSubsetUV = {(float)iSubsetUV.fLeft  *ssx,
+                                 (float)iSubsetUV.fTop   *ssy,
+                                 (float)std::min(iSubsetUV.fRight*ssx, yuvaInfo.width()),
+                                 (float)std::min(iSubsetUV.fBottom*ssy, yuvaInfo.height())};
             // Consider a logical image pixel at the edge of the subset. When computing the logical
             // pixel color value we should use a blend of two values from the subsampled plane.
             // Depending on where the subset edge falls in actual subsampled plane, one of those
