@@ -20,6 +20,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fdf8fa43_4142a461",
+        "filename": "src/gpu/graphite/geom/AnalyticBlurMask.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-26T12:47:36Z",
+      "side": 1,
+      "message": "We should have a comment explaining what these fields hold depending on the shape type.",
+      "range": {
+        "startLine": 104,
+        "startChar": 4,
+        "endLine": 105,
+        "endChar": 21
+      },
+      "revId": "99c9752dd7a0c89cb3267ddeb5ec86f8cbdc09df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d0683ae2_924c2a37",
         "filename": "src/gpu/graphite/render/AnalyticBlurRenderStep.cpp",
         "patchSetId": 2
@@ -31,6 +54,30 @@
       "writtenOn": "2024-04-25T22:08:40Z",
       "side": 1,
       "message": "If it\u0027s just a generic data blob anyway, consider just passing one `half2`?",
+      "range": {
+        "startLine": 28,
+        "startChar": 24,
+        "endLine": 29,
+        "endChar": 51
+      },
+      "revId": "99c9752dd7a0c89cb3267ddeb5ec86f8cbdc09df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dfe74dee_c5a1a4e0",
+        "filename": "src/gpu/graphite/render/AnalyticBlurRenderStep.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-26T12:47:36Z",
+      "side": 1,
+      "message": "+1",
+      "parentUuid": "d0683ae2_924c2a37",
       "range": {
         "startLine": 28,
         "startChar": 24,
