@@ -1692,7 +1692,6 @@ static void add_to_key(const KeyContext& keyContext,
         // If the image is not graphite backed then we can assume the origin will be TopLeft as we
         // require that in the ImageProvider utility. Also Graphite YUV images are assumed to be
         // TopLeft origin.
-        // TODO (b/336788317): Fold YUVAImage's origin into this matrix as well.
         auto imgBase = as_IB(imgShader->image());
         if (imgBase->isGraphiteBacked() && !imgBase->isYUVA()) {
             auto imgGraphite = static_cast<Image*>(imgBase);
@@ -1706,17 +1705,21 @@ static void add_to_key(const KeyContext& keyContext,
     }
 
     matrix.postConcat(shader->localMatrix());
-    LocalMatrixShaderBlock::LMShaderData lmShaderData(matrix);
+    if (!matrix.isIdentity()) {
 
-    KeyContextWithLocalMatrix newContext(keyContext, matrix);
+        LocalMatrixShaderBlock::LMShaderData lmShaderData(matrix);
 
-    LocalMatrixShaderBlock::BeginBlock(newContext, builder, gatherer, lmShaderData);
+        KeyContextWithLocalMatrix newContext(keyContext, matrix);
 
-        AddToKey(newContext, builder, gatherer, wrappedShader);
+        LocalMatrixShaderBlock::BeginBlock(newContext, builder, gatherer, lmShaderData);
 
-    builder->endBlock();
+            AddToKey(newContext, builder, gatherer, wrappedShader);
+
+        builder->endBlock();
+    } else  {
+        AddToKey(keyContext, builder, gatherer, wrappedShader);
+    }
 }
-
 static void notify_in_use(Recorder* recorder,
                           DrawContext* drawContext,
                           const SkLocalMatrixShader* shader) {

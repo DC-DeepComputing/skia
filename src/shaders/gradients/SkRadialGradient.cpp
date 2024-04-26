@@ -56,12 +56,9 @@ SkShaderBase::GradientType SkRadialGradient::asGradient(GradientInfo* info,
 
 sk_sp<SkFlattenable> SkRadialGradient::CreateProc(SkReadBuffer& buffer) {
     DescriptorScope desc;
-    SkMatrix legacyLocalMatrix, *lmPtr = nullptr;
+    SkMatrix legacyLocalMatrix;
     if (!desc.unflatten(buffer, &legacyLocalMatrix)) {
         return nullptr;
-    }
-    if (!legacyLocalMatrix.isIdentity()) {
-        lmPtr = &legacyLocalMatrix;
     }
     const SkPoint center = buffer.readPoint();
     const SkScalar radius = buffer.readScalar();
@@ -73,7 +70,7 @@ sk_sp<SkFlattenable> SkRadialGradient::CreateProc(SkReadBuffer& buffer) {
                                         desc.fColorCount,
                                         desc.fTileMode,
                                         desc.fInterpolation,
-                                        lmPtr);
+                                        &legacyLocalMatrix);
 }
 
 void SkRadialGradient::flatten(SkWriteBuffer& buffer) const {

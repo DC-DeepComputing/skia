@@ -34,6 +34,7 @@
 #include "src/core/SkSamplingPriv.h"
 #include "src/core/SkWriteBuffer.h"
 #include "src/image/SkImage_Base.h"
+#include "src/shaders/SkLocalMatrixShader.h"
 
 #ifdef SK_ENABLE_LEGACY_SHADERCONTEXT
 #include "src/shaders/SkBitmapProcShader.h"
@@ -317,15 +318,19 @@ sk_sp<SkShader> SkImageShader::MakeRaw(sk_sp<SkImage> image,
     if (!image) {
         return SkShaders::Empty();
     }
-    auto subset = SkRect::Make(image->dimensions());
 
-    sk_sp<SkShader> s = sk_make_sp<SkImageShader>(image,
-                                                  subset,
-                                                  tmx, tmy,
-                                                  options,
-                                                  /*raw=*/true,
-                                                  /*clampAsIfUnpremul=*/false);
-    return s->makeWithLocalMatrix(localMatrix ? *localMatrix : SkMatrix::I());
+    if (!localMatrix || localMatrix->isIdentity()) {
+        SkDebugf("Will Skip\n");
+    }
+
+    auto subset = SkRect::Make(image->dimensions());
+    return SkLocalMatrixShader::MakeWrapped<SkImageShader>(localMatrix,
+                                                           image,
+                                                           subset,
+                                                           tmx, tmy,
+                                                           options,
+                                                           /*raw=*/true,
+                                                           /*clampAsIfUnpremul=*/false);
 }
 
 sk_sp<SkShader> SkImageShader::MakeSubset(sk_sp<SkImage> image,
@@ -351,13 +356,17 @@ sk_sp<SkShader> SkImageShader::MakeSubset(sk_sp<SkImage> image,
         return nullptr;
     }
 
-    sk_sp<SkShader> s = sk_make_sp<SkImageShader>(std::move(image),
-                                                  subset,
-                                                  tmx, tmy,
-                                                  options,
-                                                  /*raw=*/false,
-                                                  clampAsIfUnpremul);
-    return s->makeWithLocalMatrix(localMatrix ? *localMatrix : SkMatrix::I());
+    if (!localMatrix || localMatrix->isIdentity()) {
+        SkDebugf("Will Skip\n");
+    }
+
+    return SkLocalMatrixShader::MakeWrapped<SkImageShader>(localMatrix,
+                                                           std::move(image),
+                                                           subset,
+                                                           tmx, tmy,
+                                                           options,
+                                                           /*raw=*/false,
+                                                           clampAsIfUnpremul);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
