@@ -163,6 +163,8 @@ public:
 
     SkSpan<const char> text(TextRange textRange);
     SkSpan<Cluster> clusters(ClusterRange clusterRange);
+    TextRange textRange(ClusterRange clusterRange);
+    bool isWhitespaceRange(TextRange textRange);
     Cluster& cluster(ClusterIndex clusterIndex);
     ClusterIndex clusterIndex(TextIndex textIndex) {
         auto clusterIndex = this->fClustersIndexFromCodeUnit[textIndex];
@@ -243,6 +245,8 @@ public:
     bool codeUnitHasProperty(size_t index, SkUnicode::CodeUnitFlags property) const {
         return (fCodeUnitProperties[index] & property) == property;
     }
+
+    skia_private::TArray<SkUnicode::CodeUnitFlags, true> getProperties() { return fCodeUnitProperties; }
 
     sk_sp<SkUnicode> getUnicode() { return fUnicode; }
 
