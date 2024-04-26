@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>This is a proposal for javascript text shaper</title>
+    <style>
+        label {
+          display: inline-block;
+          width: 200px;
+          text-align: right;
+        }
+        th, td {
+            text-align: left;
+            vertical-align: center;
+        }
+        span.word {
+            word-break: keep-all;
+        }
+        span.word:nth-child(2n) {
+            text-decoration: darkred overline;
+        }
+        span.word:nth-child(2n+1) {
+            text-decoration: darkblue underline;
+        }
+        span.grapheme {
+            color: yellow;
+        }
+        span.grapheme:nth-child(2n) {
+            color: red;
+        }
+        span.grapheme:nth-child(2n+1) {
+            color: blue;
+        }
+        div table tbody tr.line, tr.grapheme, tr.word, tr.run, tr.whitespaces {
+            display: none;
+        }
+        #showGraphemes:checked { ~ div table tbody tr.grapheme { display: table-row; } }
+        #showWords:checked { ~ div table tbody tr.word { display: table-row; } }
+        #showWhitespaces:checked { ~ div table tbody tr.whitespaces { display: table-row; } }
+        #showTextRuns:checked { ~ div table tbody tr.run { display: table-row; } }
+        #showLines:checked { ~ div table tbody tr.line { display: table-row; } }
+    </style>
+    <script src="api.js"></script>
+</head>
+<body>
+    <div class="form" style="font-size: 20px; width:100%;">
+        <div style="display: flex; align-items: center;">
+            <label for="textStyle">Font style:</label>
+            <input type="text" id="textStyle" style="font-size: 20px; width:100%;" value="font: italic bold 20px 'Roboto';" onchange="showInfo()" />
+        </div>
+        <br/>
+        <div style="display: flex; align-items: center;">
+            <label for="textInput">Text to shape:</label>
+            <input type="text" id="textInput" style="font-size: 20px; width:100%;" value="OK சரி সব ভালো બધા સારા 문제 없다 大丈夫 🐕‍🦺" onchange="showInfo()" />
+        </div>
+    </div>
+    <div id="div" style="font-size: 20px; width:100%; left: 0px; right: 0px;"></div>
+    <div id="result" style="font-size: 20px; width:100%;">
+        <div id="measurement"></div>
+        <div id="text"></div>
+
+        <br><label for="showGraphemes">Show graphemes</label>
+        <input type="checkbox" id="showGraphemes" name="graphemes" checked></input>
+        <br><label for="showWords">Show words</label>
+        <input type="checkbox" id="showWords" name="words" checked></input>
+        <br><label for="showTextRuns">Show text runs</label>
+        <input type="checkbox" id="showTextRuns" name="textRuns" checked></input>
+        <br><label for="showLines">Show lines</label>
+        <input type="checkbox" id="showLines" name="lines" checked></input>
+
+        <div id= "table">
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th scope="col">Type</th>
+                        <th scope="col">Text</th>
+                        <th scope="col">Left</th>
+                        <th scope="col">Top</th>
+                        <th scope="col">Right</th>
+                        <th scope="col">Bottom</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody">
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script>
+        function collectInfo() {
+            window.shaper = new Shaper();
+            window.shaper.addText(document.getElementById("textInput").value, document.getElementById("textStyle").value);
+            window.shaper.layout(window.innerWidth);
+            document.querySelector("label[for='showGraphemes']").innerText = "Show graphemes (" + this.shaper.graphemes.length + ")";
+            document.querySelector("label[for='showWords']").innerText = "Show words (" + this.shaper.words.length + ")";
+            document.querySelector("label[for='showTextRuns']").innerText = "Show text runs (" + this.shaper.glyphRuns.length + ")";
+            document.querySelector("label[for='showLines']").innerText = "Show lines (" + this.shaper.shapedLines.length + ")";
+        }
+
+        function showInfo() {
+            if (window.shaper === undefined) {
+                collectInfo();
+                window.shaper.printTable();
+            }
+        }
+    </script>
+</body>
+</html>
