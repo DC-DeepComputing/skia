@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "64986240_65be92a2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-04-26T20:48:42Z",
+      "side": 1,
+      "message": "lgtm, but I do think factoring out the matrix-splat part would be nice, too.",
+      "revId": "c53e384bd21ed722009caafbe37b528bce5a634f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
