@@ -68,6 +68,30 @@
       },
       "revId": "2ead7823a7f741377a11572d53a4a502f7cccbd5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd739f5f_5282bf2f",
+        "filename": "src/base/SkFixedArray.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-04-26T20:54:42Z",
+      "side": 1,
+      "message": "Looks like we don\u0027t test this operator?",
+      "parentUuid": "98acbc3d_0a57ab93",
+      "range": {
+        "startLine": 74,
+        "startChar": 70,
+        "endLine": 74,
+        "endChar": 75
+      },
+      "revId": "2ead7823a7f741377a11572d53a4a502f7cccbd5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
