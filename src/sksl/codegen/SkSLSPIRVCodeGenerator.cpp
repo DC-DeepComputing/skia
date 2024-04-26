@@ -383,12 +383,22 @@ private:
                                         SpvOp_ op,
                                         OutputStream& out);
 
-    SpvId writeComponentwiseMatrixBinary(const Type& operandType, SpvId lhs, SpvId rhs,
-                                         SpvOp_ op, OutputStream& out);
+    SpvId writeColumnwiseMatrixBinary(const Type& operandType, SpvId lhs, SpvId rhs,
+                                      SpvOp_ op, OutputStream& out);
+
+    SpvId writeBinaryOperationColumnwiseIfMatrix(const Type& resultType, const Type& operandType,
+                                                    SpvId lhs, SpvId rhs,
+                                                    SpvOp_ ifFloat, SpvOp_ ifInt,
+                                                    SpvOp_ ifUInt, SpvOp_ ifBool,
+                                                    OutputStream& out);
 
     SpvId writeBinaryOperation(const Type& resultType, const Type& operandType, SpvId lhs,
                                SpvId rhs, SpvOp_ ifFloat, SpvOp_ ifInt, SpvOp_ ifUInt,
                                SpvOp_ ifBool, OutputStream& out);
+
+    SpvId writeBinaryOperation(const Type& resultType, const Type& operandType, SpvId lhs,
+                               SpvId rhs, bool writeColumnwiseIfMatrix, SpvOp_ ifFloat,
+                               SpvOp_ ifInt, SpvOp_ ifUInt, SpvOp_ ifBool, OutputStream& out);
 
     SpvId writeReciprocal(const Type& type, SpvId value, OutputStream& out);
 
@@ -2325,7 +2335,7 @@ SpvId SPIRVCodeGenerator::writeSpecialIntrinsic(const FunctionCall& c, SpecialIn
             SkASSERT(arguments.size() == 2);
             SpvId lhs = this->writeExpression(*arguments[0], out);
             SpvId rhs = this->writeExpression(*arguments[1], out);
-            result = this->writeComponentwiseMatrixBinary(callType, lhs, rhs, SpvOpFMul, out);
+            result = this->writeColumnwiseMatrixBinary(callType, lhs, rhs, SpvOpFMul, out);
             break;
         }
         case kAtomicAdd_SpecialIntrinsic:
@@ -3522,19 +3532,42 @@ SpvId SPIRVCodeGenerator::writeSwizzle(const Swizzle& swizzle, OutputStream& out
     return this->writeSwizzle(*swizzle.base(), swizzle.components(), out);
 }
 
-SpvId SPIRVCodeGenerator::writeBinaryOperation(const Type& resultType,
-                                               const Type& operandType, SpvId lhs,
-                                               SpvId rhs, SpvOp_ ifFloat, SpvOp_ ifInt,
-                                               SpvOp_ ifUInt, SpvOp_ ifBool, OutputStream& out) {
-    SpvId result = this->nextId(&resultType);
+SpvId SPIRVCodeGenerator::writeBinaryOperation(const Type& resultType, const Type& operandType,
+                                               SpvId lhs, SpvId rhs,
+                                               bool writeColumnwiseIfMatrix,
+                                               SpvOp_ ifFloat, SpvOp_ ifInt, SpvOp_ ifUInt,
+                                               SpvOp_ ifBool, OutputStream& out) {
     SpvOp_ op = pick_by_type(operandType, ifFloat, ifInt, ifUInt, ifBool);
     if (op == SpvOpUndef) {
         fContext.fErrors->error(operandType.fPosition,
                 "unsupported operand for binary expression: " + operandType.description());
         return NA;
     }
+    if (writeColumnwiseIfMatrix && operandType.isMatrix()) {
+        return this->writeColumnwiseMatrixBinary(resultType, lhs, rhs, op, out);
+    }
+    SpvId result = this->nextId(&resultType);
     this->writeInstruction(op, this->getType(resultType), result, lhs, rhs, out);
     return result;
+}
+
+SpvId SPIRVCodeGenerator::writeBinaryOperationColumnwiseIfMatrix(const Type& resultType,
+                                                                    const Type& operandType,
+                                                                    SpvId lhs, SpvId rhs,
+                                                                    SpvOp_ ifFloat, SpvOp_ ifInt,
+                                                                    SpvOp_ ifUInt, SpvOp_ ifBool,
+                                                                    OutputStream& out) {
+    return this->writeBinaryOperation(resultType, operandType, lhs, rhs,
+                                      /*writeColumnwiseIfMatrix=*/true,
+                                      ifFloat, ifInt, ifUInt, ifBool, out);
+}
+
+SpvId SPIRVCodeGenerator::writeBinaryOperation(const Type& resultType, const Type& operandType,
+                                               SpvId lhs, SpvId rhs, SpvOp_ ifFloat, SpvOp_ ifInt,
+                                               SpvOp_ ifUInt, SpvOp_ ifBool, OutputStream& out) {
+    return this->writeBinaryOperation(resultType, operandType, lhs, rhs,
+                                      /*writeColumnwiseIfMatrix=*/false,
+                                      ifFloat, ifInt, ifUInt, ifBool, out);
 }
 
 SpvId SPIRVCodeGenerator::foldToBool(SpvId id, const Type& operandType, SpvOp op,
@@ -3598,8 +3631,8 @@ SpvId SPIRVCodeGenerator::writeComponentwiseMatrixUnary(const Type& operandType,
     return this->writeOpCompositeConstruct(operandType, columns, out);
 }
 
-SpvId SPIRVCodeGenerator::writeComponentwiseMatrixBinary(const Type& operandType, SpvId lhs,
-                                                         SpvId rhs, SpvOp_ op, OutputStream& out) {
+SpvId SPIRVCodeGenerator::writeColumnwiseMatrixBinary(const Type& operandType, SpvId lhs,
+                                                      SpvId rhs, SpvOp_ op, OutputStream& out) {
     SkASSERT(operandType.isMatrix());
     const Type& columnType = operandType.columnType(fContext);
     SpvId columnTypeId = this->getType(columnType);
@@ -3880,19 +3913,13 @@ SpvId SPIRVCodeGenerator::writeBinaryExpression(const Type& leftType, SpvId lhs,
                                               SpvOpFOrdLessThanEqual, SpvOpSLessThanEqual,
                                               SpvOpULessThanEqual, SpvOpUndef, out);
         case Operator::Kind::PLUS:
-            if (leftType.isMatrix() && rightType.isMatrix()) {
-                SkASSERT(leftType.matches(rightType));
-                return this->writeComponentwiseMatrixBinary(leftType, lhs, rhs, SpvOpFAdd, out);
-            }
-            return this->writeBinaryOperation(resultType, *operandType, lhs, rhs, SpvOpFAdd,
-                                              SpvOpIAdd, SpvOpIAdd, SpvOpUndef, out);
+            return this->writeBinaryOperationColumnwiseIfMatrix(resultType, *operandType,
+                                                                lhs, rhs, SpvOpFAdd, SpvOpIAdd,
+                                                                SpvOpIAdd, SpvOpUndef, out);
         case Operator::Kind::MINUS:
-            if (leftType.isMatrix() && rightType.isMatrix()) {
-                SkASSERT(leftType.matches(rightType));
-                return this->writeComponentwiseMatrixBinary(leftType, lhs, rhs, SpvOpFSub, out);
-            }
-            return this->writeBinaryOperation(resultType, *operandType, lhs, rhs, SpvOpFSub,
-                                              SpvOpISub, SpvOpISub, SpvOpUndef, out);
+            return this->writeBinaryOperationColumnwiseIfMatrix(resultType, *operandType,
+                                                                lhs, rhs, SpvOpFSub, SpvOpISub,
+                                                                SpvOpISub, SpvOpUndef, out);
         case Operator::Kind::STAR:
             if (leftType.isMatrix() && rightType.isMatrix()) {
                 // matrix multiply
@@ -3904,12 +3931,9 @@ SpvId SPIRVCodeGenerator::writeBinaryExpression(const Type& leftType, SpvId lhs,
             return this->writeBinaryOperation(resultType, *operandType, lhs, rhs, SpvOpFMul,
                                               SpvOpIMul, SpvOpIMul, SpvOpUndef, out);
         case Operator::Kind::SLASH:
-            if (leftType.isMatrix() && rightType.isMatrix()) {
-                SkASSERT(leftType.matches(rightType));
-                return this->writeComponentwiseMatrixBinary(leftType, lhs, rhs, SpvOpFDiv, out);
-            }
-            return this->writeBinaryOperation(resultType, *operandType, lhs, rhs, SpvOpFDiv,
-                                              SpvOpSDiv, SpvOpUDiv, SpvOpUndef, out);
+            return this->writeBinaryOperationColumnwiseIfMatrix(resultType, *operandType,
+                                                                lhs, rhs, SpvOpFDiv, SpvOpSDiv,
+                                                                SpvOpUDiv, SpvOpUndef, out);
         case Operator::Kind::PERCENT:
             return this->writeBinaryOperation(resultType, *operandType, lhs, rhs, SpvOpFMod,
                                               SpvOpSMod, SpvOpUMod, SpvOpUndef, out);
