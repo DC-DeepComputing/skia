@@ -833,7 +833,7 @@ public:
     static sk_sp<SkPicture> ReadPicture(const char* path) {
         // Not strictly necessary, as it will be checked again later,
         // but helps to avoid a lot of pointless work if we're going to skip it.
-        if (CommandLineFlags::ShouldSkip(FLAGS_match, SkOSPath::Basename(path).c_str())) {
+        if (CommandLineFlags::ShouldSkip({"desk_linkedin"}, SkOSPath::Basename(path).c_str())) {
             return nullptr;
         }
 
@@ -849,7 +849,7 @@ public:
     static std::unique_ptr<MSKPPlayer> ReadMSKP(const char* path) {
         // Not strictly necessary, as it will be checked again later,
         // but helps to avoid a lot of pointless work if we're going to skip it.
-        if (CommandLineFlags::ShouldSkip(FLAGS_match, SkOSPath::Basename(path).c_str())) {
+        if (CommandLineFlags::ShouldSkip({"desk_linkedin"}, SkOSPath::Basename(path).c_str())) {
             return nullptr;
         }
 
@@ -863,7 +863,7 @@ public:
     }
 
     static sk_sp<SkPicture> ReadSVGPicture(const char* path) {
-        if (CommandLineFlags::ShouldSkip(FLAGS_match, SkOSPath::Basename(path).c_str())) {
+        if (CommandLineFlags::ShouldSkip({"desk_linkedin"}, SkOSPath::Basename(path).c_str())) {
             return nullptr;
         }
         sk_sp<SkData> data(SkData::MakeFromFileName(path));
@@ -1056,7 +1056,7 @@ public:
             fSourceType = "image";
             fBenchType = "skcodec";
             const SkString& path = fImages[fCurrentCodec];
-            if (CommandLineFlags::ShouldSkip(FLAGS_match, path.c_str())) {
+            if (CommandLineFlags::ShouldSkip({"desk_linkedin"}, path.c_str())) {
                 continue;
             }
             sk_sp<SkData> encoded(SkData::MakeFromFileName(path.c_str()));
@@ -1135,7 +1135,7 @@ public:
             fBenchType = "skandroidcodec";
 
             const SkString& path = fImages[fCurrentAndroidCodec];
-            if (CommandLineFlags::ShouldSkip(FLAGS_match, path.c_str())) {
+            if (CommandLineFlags::ShouldSkip({"desk_linkedin"}, path.c_str())) {
                 continue;
             }
             sk_sp<SkData> encoded(SkData::MakeFromFileName(path.c_str()));
@@ -1181,7 +1181,7 @@ public:
             fBenchType = "BRD";
 
             const SkString& path = fImages[fCurrentBRDImage];
-            if (CommandLineFlags::ShouldSkip(FLAGS_match, path.c_str())) {
+            if (CommandLineFlags::ShouldSkip({"desk_linkedin"}, path.c_str())) {
                 continue;
             }
 
@@ -1460,7 +1460,7 @@ int main(int argc, char** argv) {
     AutoreleasePool pool;
     while (Benchmark* b = benchStream.next()) {
         std::unique_ptr<Benchmark> bench(b);
-        if (CommandLineFlags::ShouldSkip(FLAGS_match, bench->getUniqueName())) {
+        if (CommandLineFlags::ShouldSkip({"desk_linkedin"}, bench->getUniqueName())) {
             continue;
         }
 

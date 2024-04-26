@@ -1706,15 +1706,20 @@ static void add_to_key(const KeyContext& keyContext,
     }
 
     matrix.postConcat(shader->localMatrix());
-    LocalMatrixShaderBlock::LMShaderData lmShaderData(matrix);
+    if (!matrix.isIdentity()) {
 
-    KeyContextWithLocalMatrix newContext(keyContext, matrix);
+        LocalMatrixShaderBlock::LMShaderData lmShaderData(matrix);
 
-    LocalMatrixShaderBlock::BeginBlock(newContext, builder, gatherer, lmShaderData);
+        KeyContextWithLocalMatrix newContext(keyContext, matrix);
+
+        LocalMatrixShaderBlock::BeginBlock(newContext, builder, gatherer, lmShaderData);
 
         AddToKey(newContext, builder, gatherer, wrappedShader);
 
-    builder->endBlock();
+        builder->endBlock();
+    } else  {
+        AddToKey(keyContext, builder, gatherer, wrappedShader);
+    }
 }
 
 static void notify_in_use(Recorder* recorder,
