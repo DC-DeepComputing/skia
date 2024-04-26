@@ -364,10 +364,9 @@ ImageFilterType random_imagefiltertype(SkRandom* rand) {
 
 SkMatrix* random_local_matrix(SkRandom* rand, SkMatrix* storage) {
     switch (rand->nextULessThan(3)) {
-        case 0:  return nullptr;
-        case 1:  storage->setIdentity(); return storage;
-        case 2:  [[fallthrough]];
-        default: storage->setTranslate(2.0f, 2.0f); return storage;
+        case 0: return nullptr;
+        case 1: storage->setIdentity(); return storage;
+        case 2: storage->setTranslate(2.0f, 2.0f); return storage;
     }
 
     SkUNREACHABLE;
@@ -456,16 +455,18 @@ std::pair<sk_sp<SkShader>, sk_sp<PrecompileShader>> create_picture_shader(SkRand
 
     gNeedSKPPaintOption = true;
 
-    SkMatrix lmStorage;
-    SkMatrix* lmPtr = random_local_matrix(rand, &lmStorage);
+    SkMatrix lm;
+    if (rand->nextBool()) {
+        lm = SkMatrix::Translate(1.5f, 2.0f);
+    }
 
     // TODO: can the clamp, filter mode, or tileRect affect the final program?
     sk_sp<SkShader> s = picture->makeShader(SkTileMode::kClamp,
                                             SkTileMode::kClamp,
                                             SkFilterMode::kLinear,
-                                            lmPtr,
+                                            &lm,
                                             /* tileRect= */ nullptr);
-    sk_sp<PrecompileShader> o = PrecompileShadersPriv::Picture(SkToBool(lmPtr));
+    sk_sp<PrecompileShader> o = PrecompileShaders::Picture();
 
     return { s, o };
 }
@@ -498,11 +499,6 @@ std::pair<sk_sp<SkShader>, sk_sp<PrecompileShader>> create_gradient_shader(
     SkColor colors[2] = {random_color(rand, constraint), random_color(rand, constraint)};
     SkScalar offsets[2] = {0.0f, 1.0f};
 
-    SkMatrix lmStorage;
-    SkMatrix* lmPtr = random_local_matrix(rand, &lmStorage);
-
-    uint32_t flags = rand->nextBool() ? 0x0 : SkGradientShader::kInterpolateColorsInPremul_Flag;
-
     sk_sp<SkShader> s;
     sk_sp<PrecompileShader> o;
 
@@ -510,25 +506,23 @@ std::pair<sk_sp<SkShader>, sk_sp<PrecompileShader>> create_gradient_shader(
 
     switch (type) {
         case SkShaderBase::GradientType::kLinear:
-            s = SkGradientShader::MakeLinear(pts, colors, offsets, 2, tm, flags, lmPtr);
-            o = PrecompileShadersPriv::LinearGradient(SkToBool(lmPtr));
+            s = SkGradientShader::MakeLinear(pts, colors, offsets, 2, tm);
+            o = PrecompileShaders::LinearGradient();
             break;
         case SkShaderBase::GradientType::kRadial:
-            s = SkGradientShader::MakeRadial({0, 0}, 100, colors, offsets, 2, tm, flags, lmPtr);
-            o = PrecompileShadersPriv::RadialGradient(SkToBool(lmPtr));
+            s = SkGradientShader::MakeRadial({0, 0}, 100, colors, offsets, 2, tm);
+            o = PrecompileShaders::RadialGradient();
             break;
         case SkShaderBase::GradientType::kSweep:
             s = SkGradientShader::MakeSweep(0, 0, colors, offsets, 2, tm,
-                                            /* startAngle= */ 0, /* endAngle= */ 359,
-                                            flags, lmPtr);
-            o = PrecompileShadersPriv::SweepGradient(SkToBool(lmPtr));
+                                            0, 359, 0, nullptr);
+            o = PrecompileShaders::SweepGradient();
             break;
         case SkShaderBase::GradientType::kConical:
             s = SkGradientShader::MakeTwoPointConical({100, 100}, 100,
                                                       {-100, -100}, 100,
-                                                      colors, offsets, 2,
-                                                      tm, flags, lmPtr);
-            o = PrecompileShadersPriv::TwoPointConicalGradient(SkToBool(lmPtr));
+                                                      colors, offsets, 2, tm);
+            o = PrecompileShaders::TwoPointConicalGradient();
             break;
         case SkShaderBase::GradientType::kNone:
             SkDEBUGFAIL("Gradient shader says its type is none");
