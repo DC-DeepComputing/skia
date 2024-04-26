@@ -1427,6 +1427,13 @@ sk_sp<SkShader> FilterResult::getAnalyzedShaderView(
         imageShader = builder.makeShader();
     }
 
+    bool t1 = imageShader && !postDecal.isIdentity();
+    bool t2 = imageShader && (analysis & BoundsAnalysis::kRequiresDecalInLayerSpace);
+
+    if (t1 != t2) {
+        SkDebugf("here\n");
+    }
+
     if (imageShader && (analysis & BoundsAnalysis::kRequiresDecalInLayerSpace)) {
         imageShader = imageShader->makeWithLocalMatrix(postDecal);
     }

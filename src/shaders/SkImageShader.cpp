@@ -319,6 +319,10 @@ sk_sp<SkShader> SkImageShader::MakeRaw(sk_sp<SkImage> image,
     }
     auto subset = SkRect::Make(image->dimensions());
 
+    if (!localMatrix || localMatrix->isIdentity()) {
+//        SkDebugf("would've skipped MakeRaw\n");
+    }
+
     sk_sp<SkShader> s = sk_make_sp<SkImageShader>(image,
                                                   subset,
                                                   tmx, tmy,
@@ -349,6 +353,10 @@ sk_sp<SkShader> SkImageShader::MakeSubset(sk_sp<SkImage> image,
     // Validate subset and check if we can drop it
     if (!SkRect::Make(image->bounds()).contains(subset)) {
         return nullptr;
+    }
+
+    if (!localMatrix || localMatrix->isIdentity()) {
+//        SkDebugf("would've skipped MakeSub\n");
     }
 
     sk_sp<SkShader> s = sk_make_sp<SkImageShader>(std::move(image),
