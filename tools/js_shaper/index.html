@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>This is a proposal for javascript text shaper</title>
+    <script>
+        function includeHTML() {
+            var z, i, elmnt, file, xhttp;
+            /* Loop through a collection of all HTML elements: */
+            z = document.getElementsByTagName("*");
+            for (i = 0; i < z.length; i++) {
+                elmnt = z[i];
+                /*search for elements with a certain atrribute:*/
+                file = elmnt.getAttribute("w3-include-html");
+                if (file) {
+                    /* Make an HTTP request using the attribute value as the file name: */
+                    xhttp = new XMLHttpRequest();
+                    xhttp.onreadystatechange = function() {
+                        if (this.readyState == 4) {
+                            if (this.status == 200) {elmnt.innerHTML = this.responseText;}
+                            if (this.status == 404) {elmnt.innerHTML = "Page not found.";}
+                            /* Remove the attribute, and call this function once more: */
+                            elmnt.removeAttribute("w3-include-html");
+                            includeHTML();
+                            showInfo();
+                        }
+                    }
+                    xhttp.open("GET", file, true);
+                    xhttp.send();
+                    /* Exit the function: */
+                    return;
+                }
+            }
+        }
+    </script>
+    <style>
+        label {
+          display: inline-block;
+          width: 200px;
+          text-align: right;
+        }
+        th, td {
+            text-align: left;
+            vertical-align: center;
+        }
+        td {
+            padding: 2px;
+        }
+        span.word {
+            word-break: keep-all;
+        }
+        span.word:nth-child(2n) {
+            text-decoration: darkred overline;
+        }
+        span.word:nth-child(2n+1) {
+            text-decoration: darkblue underline;
+        }
+        span.grapheme {
+            color: yellow;
+        }
+        span.grapheme:nth-child(2n) {
+            color: red;
+        }
+        span.grapheme:nth-child(2n+1) {
+            color: blue;
+        }
+        div div table tbody tr.line, tr.grapheme, tr.word, tr.run, tr.whitespaces {
+            display: none;
+        }
+        #showGraphemes:checked { ~ * .grapheme { display: table-row; } }
+        #showWords:checked { ~ * .word { display: table-row; } }
+        #showWhitespaces:checked { ~ * .whitespaces { display: table-row; } }
+        #showTextRuns:checked { ~ * .run { display: table-row; } }
+        #showLines:checked { ~ * .line { display: table-row; } }
+    </style>
+    <script src="api.js"></script>
+</head>
+<body style="margin: 0px; padding: 0px; border: 0px;">
+    <div class="form" style="font-size: 20px; width:100%;">
+        <div style="display: flex; align-items: center;">
+            <label for="textStyle">Font style:</label>
+            <input type="text" id="textStyle" style="font-size: 20px; width:100%;" value="font-family:'Noto Sans', 'Noto Sans Arabic', 'Noto Sans Emoji', 'Noto Sans Bengali'; font-size: 20px;" onchange="showInfo()" />
+        </div>
+        <br/>
+        <div id="textInput" w3-include-html="generated/text.html" style="font-family: 'Noto Sans', 'Noto Sans Arabic', 'Noto Sans Emoji', 'Noto Sans Bengali'; font-size: 20px; width:100%; float: left; font-size: 20px; width:100%;"></div>
+    </div>
+
+    <div id="div" style="font-family:'Noto Sans', 'Noto Sans Arabic', 'Noto Sans Emoji', 'Noto Sans Bengali'; font-size: 20px; width:800px; left: 0px; right: 0px; margin: 0px; padding: 0px; border: 0px;"></div>
+    <div id="result" style="float: left; font-size: 20px; width:50%;">
+        <div id="measurement"></div>
+        <div id="text"></div>
+
+        <br><label for="showGraphemes">Show graphemes</label>
+        <input type="checkbox" id="showGraphemes" name="graphemes" checked></input>
+        <br><label for="showWords">Show words</label>
+        <input type="checkbox" id="showWords" name="words"></input>
+        <br><label for="showTextRuns">Show text runs</label>
+        <input type="checkbox" id="showTextRuns" name="textRuns" checked></input>
+        <br><label for="showLines">Show lines</label>
+        <input type="checkbox" id="showLines" name="lines" checked></input>
+
+        <div style="width:100%; display: flex;">
+            <div style="flex: 1;">
+            <table border="1" id= "table" style="font-size: 20px; background-color: lightcyan">
+                <thead>
+                <tr>
+                    <th scope="col">Type</th>
+                    <th scope="col">Text</th>
+                    <th scope="col">Left</th>
+                    <th scope="col">Top</th>
+                    <th scope="col">Right</th>
+                    <th scope="col">Bottom</th>
+                </tr>
+                </thead>
+                <tbody id="tbody"></tbody>
+            </table>
+            </div>
+            <div>
+            <table border="1" style="font-size: 20px; background-color: aliceblue">
+                <thead>
+                <tr>
+                    <th scope="col">Type</th>
+                    <th scope="col">Text</th>
+                    <th scope="col">Left</th>
+                    <th scope="col">Top</th>
+                    <th scope="col">Right</th>
+                    <th scope="col">Bottom</th>
+                </tr>
+                </thead>
+                <tbody w3-include-html="generated/skia.html"></tbody>
+            </table>
+            </div>
+        </div>
+    </div>
+    <script>
+        includeHTML();
+    </script>
+    <script>
+        function collectInfo() {
+            window.shaper = new Shaper();
+            window.shaper.addText(document.getElementById("textInput").innerText,
+                                  document.getElementById("textStyle").value);
+            window.shaper.layout(800);
+            document.querySelector("label[for='showGraphemes']").innerText = "Show graphemes (" + this.shaper.graphemes.length + ")";
+            document.querySelector("label[for='showWords']").innerText = "Show words (" + this.shaper.words.length + ")";
+            document.querySelector("label[for='showTextRuns']").innerText = "Show text runs (" + this.shaper.runs.length + ")";
+            document.querySelector("label[for='showLines']").innerText = "Show lines (" + this.shaper.lines.length + ")";
+        }
+
+        function showInfo() {
+            if (window.shaper === undefined) {
+                collectInfo();
+                window.shaper.printTable();
+            }
+        }
+    </script>
+</body>
+</html>
