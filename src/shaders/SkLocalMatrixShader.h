@@ -31,7 +31,11 @@ public:
     static std::enable_if_t<std::is_base_of_v<SkShader, T>, sk_sp<SkShader>>
     MakeWrapped(const SkMatrix* localMatrix, Args&&... args) {
         auto t = sk_make_sp<T>(std::forward<Args>(args)...);
+
         if (localMatrix) {
+            if (localMatrix->isIdentity()) {
+//                SkDebugf("Would've skipped MakeWrapped\n");
+            }
             return t->makeWithLocalMatrix(*localMatrix);
         }
         return t;

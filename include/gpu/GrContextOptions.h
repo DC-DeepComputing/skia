@@ -232,7 +232,7 @@ struct SK_API GrContextOptions {
      *
      * If 0, Ganesh will disable internal code paths that use multisampling.
      */
-    int  fInternalMultisampleCount = 4;
+    int  fInternalMultisampleCount = 0;
 
     /**
      * In Skia's vulkan backend a single GrContext submit equates to the submission of a single
