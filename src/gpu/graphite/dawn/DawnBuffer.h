@@ -58,6 +58,8 @@ private:
         return static_cast<const DawnSharedContext*>(this->sharedContext());
     }
 
+    void setBackendLabel(char const* label) override;
+
     wgpu::Buffer fBuffer;
     const BufferType fType;
     SkMutex fAsyncMutex;

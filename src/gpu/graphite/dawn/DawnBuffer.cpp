@@ -321,4 +321,9 @@ void DawnBuffer::onDumpMemoryStatistics(SkTraceMemoryDump* traceMemoryDump,
             dumpName, "backend_label", kBufferTypeNames[static_cast<int>(fType)]);
 }
 
+void DawnBuffer::setBackendLabel(char const* label) {
+    SkASSERT(label);
+    fBuffer.SetLabel(label);
+}
+
 } // namespace skgpu::graphite
