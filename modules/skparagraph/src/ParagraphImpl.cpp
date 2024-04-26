@@ -359,6 +359,7 @@ Cluster::Cluster(ParagraphImpl* owner,
         // I am not even sure it's worth it if we do not save a unicode call
         if (is_ascii_7bit_space(*ch)) {
             ++whiteSpacesBreakLen;
+            ++intraWordBreakLen;
         }
     } else {
         for (auto i = fTextRange.start; i < fTextRange.end; ++i) {
@@ -945,6 +946,31 @@ SkSpan<Cluster> ParagraphImpl::clusters(ClusterRange clusterRange) {
     SkASSERT(clusterRange.start < SkToSizeT(fClusters.size()) &&
              clusterRange.end <= SkToSizeT(fClusters.size()));
     return SkSpan<Cluster>(&fClusters[clusterRange.start], clusterRange.width());
+}
+
+TextRange ParagraphImpl::textRange(ClusterRange clusterRange) {
+
+    auto start = &this->cluster(clusterRange.start);
+    auto end = &this->cluster(clusterRange.end);
+    TextRange textRange(start->textRange().start, end->textRange().start);
+    /*
+    if (!start->run().leftToRight()) {
+        start = &this->cluster(clusterRange.end);
+        end = &this->cluster(clusterRange.start);
+        textRange = TextRange(start->textRange().end, end->textRange().end);
+    }
+    */
+    SkASSERT(textRange.start <= textRange.end);
+    return textRange;
+}
+
+bool ParagraphImpl::isWhitespaceRange(TextRange textRange) {
+    for (auto i = textRange.start; i < textRange.end; ++i) {
+        if (!this->codeUnitHasProperty(i, SkUnicode::CodeUnitFlags::kPartOfWhiteSpaceBreak)) {
+            return false;
+        }
+    }
+    return true;
 }
 
 Cluster& ParagraphImpl::cluster(ClusterIndex clusterIndex) {
