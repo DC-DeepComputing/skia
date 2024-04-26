@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c78308b9_c0536966",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-04-26T13:23:52Z",
+      "side": 1,
+      "message": "I\u0027m still working on the subset adjustment, but this at least is not needed. Graphite\u0027s current subset placement matches what\u0027s in Ganesh -- I\u0027m not convinced that it\u0027s correct though.",
+      "revId": "dfb1ccc9e96e9165e04fd4cb302a27d240793b90",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
