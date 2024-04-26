@@ -22,6 +22,30 @@
       },
       "revId": "b1a813cc6e180f3006e71efcf7a3c5138affa9dc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "af933d20_82ae4ccf",
+        "filename": "tools/js_shaper/api.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-04-26T17:02:23Z",
+      "side": 1,
+      "message": "Whatever we can do with styles I think we should be as transparent as possible. So I will switch to the css format.",
+      "parentUuid": "1cbcc1b5_06ee809f",
+      "range": {
+        "startLine": 103,
+        "startChar": 0,
+        "endLine": 110,
+        "endChar": 1
+      },
+      "revId": "b1a813cc6e180f3006e71efcf7a3c5138affa9dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
