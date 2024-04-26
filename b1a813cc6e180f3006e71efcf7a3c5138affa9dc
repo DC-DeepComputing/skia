@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1cbcc1b5_06ee809f",
+        "filename": "tools/js_shaper/api.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-04-26T16:37:07Z",
+      "side": 1,
+      "message": "(moving my comment from gdocs)\n\nAre you planning to do anything interesting with the style components, or are they mostly pass-through to html/css?\n\nIf the latter, it may be more flexible to just use a general string in the css font format, instead of duplicating all its props: https://developer.mozilla.org/en-US/docs/Web/CSS/font",
+      "range": {
+        "startLine": 103,
+        "startChar": 0,
+        "endLine": 110,
+        "endChar": 1
+      },
+      "revId": "b1a813cc6e180f3006e71efcf7a3c5138affa9dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
