@@ -106,7 +106,7 @@ void SetCtxOptions(GrContextOptions* ctxOptions) {
     ctxOptions->fResourceCacheLimitOverride          = FLAGS_gpuResourceCacheLimit;
 
     if (FLAGS_internalSamples >= 0) {
-        ctxOptions->fInternalMultisampleCount = FLAGS_internalSamples;
+        ctxOptions->fInternalMultisampleCount = 0;
     }
     if (FLAGS_maxAtlasSize >= 0) {
         ctxOptions->fMaxTextureAtlasSize = FLAGS_maxAtlasSize;
