@@ -16,6 +16,24 @@
       "message": "It\u0027s not clear to me why this CL would cause a regression on Android, but their tooling shows it to cause one.\n\nI think it will be useful to submit a revert and see how it affects their dashboards. I\u0027d like to confirm that it improves the metrics, and I\u0027d also like to see if reverting makes other metrics regress. (They don\u0027t tell us if we *improve* things!)\n\nThat said, I\u0027m open to different ways of going about this. I could turn this into\n\n```\n#ifdef SK_BUILD_FOR_ANDROID_FRAMEWORK\n  // Use 4mb\n#else\n  // Use 64kb\n#endif\n```\n\nIn order to not affect other clients. I\u0027m also happy to try a canary run just to confirm, though I managed to bisect where the only variable was the Skia commit, so it\u0027s hard to see how something else affected it.",
       "revId": "e17ca5bbe4fd49c406e4075c409aafe23f4b2940",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "14a4ed4f_4842a62b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-04-26T13:45:14Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "88bf7210_43189e2d",
+      "revId": "e17ca5bbe4fd49c406e4075c409aafe23f4b2940",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
