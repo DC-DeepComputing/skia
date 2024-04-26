@@ -163,6 +163,8 @@ public:
 
     SkSpan<const char> text(TextRange textRange);
     SkSpan<Cluster> clusters(ClusterRange clusterRange);
+    TextRange textRange(ClusterRange clusterRange);
+    bool isWhitespaceRange(TextRange textRange);
     Cluster& cluster(ClusterIndex clusterIndex);
     ClusterIndex clusterIndex(TextIndex textIndex) {
         auto clusterIndex = this->fClustersIndexFromCodeUnit[textIndex];

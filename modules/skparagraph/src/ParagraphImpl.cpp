@@ -947,6 +947,31 @@ SkSpan<Cluster> ParagraphImpl::clusters(ClusterRange clusterRange) {
     return SkSpan<Cluster>(&fClusters[clusterRange.start], clusterRange.width());
 }
 
+TextRange ParagraphImpl::textRange(ClusterRange clusterRange) {
+
+    auto start = &this->cluster(clusterRange.start);
+    auto end = &this->cluster(clusterRange.end);
+    TextRange textRange(start->textRange().start, end->textRange().start);
+    /*
+    if (!start->run().leftToRight()) {
+        start = &this->cluster(clusterRange.end);
+        end = &this->cluster(clusterRange.start);
+        textRange = TextRange(start->textRange().end, end->textRange().end);
+    }
+    */
+    SkASSERT(textRange.start <= textRange.end);
+    return textRange;
+}
+
+bool ParagraphImpl::isWhitespaceRange(TextRange textRange) {
+    for (auto i = textRange.start; i < textRange.end; ++i) {
+        if (!this->codeUnitHasProperty(i, SkUnicode::CodeUnitFlags::kPartOfWhiteSpaceBreak)) {
+            return false;
+        }
+    }
+    return true;
+}
+
 Cluster& ParagraphImpl::cluster(ClusterIndex clusterIndex) {
     SkASSERT(clusterIndex < SkToSizeT(fClusters.size()));
     return fClusters[clusterIndex];
