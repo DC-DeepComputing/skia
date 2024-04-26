@@ -3059,6 +3059,15 @@ if (skia_enable_tools) {
     deps = [ ":skia" ]
   }
 
+  skia_executable("generate_html") {
+    sources = [ "tools/js_shaper/html_generator.cpp" ]
+    deps = [  ":skia",
+              "modules/skparagraph",
+              ":tool_utils",
+    ]
+    testonly = true
+  }
+
   group("modules_testonly") {
     testonly = true
     deps = []
