@@ -15,6 +15,9 @@
 #include "include/core/SkTypes.h"
 #include "src/shaders/SkShaderBase.h"
 
+#include "src/image/SkImage_Base.h"
+#include "src/shaders/SkImageShader.h"
+
 #include <type_traits>
 #include <utility>
 
@@ -31,6 +34,20 @@ public:
     static std::enable_if_t<std::is_base_of_v<SkShader, T>, sk_sp<SkShader>>
     MakeWrapped(const SkMatrix* localMatrix, Args&&... args) {
         auto t = sk_make_sp<T>(std::forward<Args>(args)...);
+
+        bool isGraphiteImageShader = false;
+        if (t->type() == SkShaderBase::ShaderType::kImage) {
+            auto imgShader = static_cast<const SkImageShader*>(as_SB(t));
+            auto imgBase = as_IB(imgShader->image());
+            SkASSERT(imgBase);
+            isGraphiteImageShader = imgBase->isGraphiteBacked();
+        }
+
+        bool foo = (!localMatrix || localMatrix->isIdentity()) && !isGraphiteImageShader;
+        if (foo) {
+            SkDebugf("Would've skipped - MakeWrapped\n");
+        }
+
         if (localMatrix) {
             return t->makeWithLocalMatrix(*localMatrix);
         }

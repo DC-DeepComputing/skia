@@ -1684,6 +1684,8 @@ static void add_to_key(const KeyContext& keyContext,
     SkASSERT(shader);
     auto wrappedShader = shader->wrappedShader().get();
 
+//    SkDebugf("LMShader wrapping %d\n", as_SB(wrappedShader)->type());
+
     // Fold the texture's origin flip into the local matrix so that the image shader doesn't need
     // additional state
     SkMatrix matrix;
