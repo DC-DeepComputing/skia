@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14b982fd_d2d3edde",
+        "filename": "src/base/SkFixedArray.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-04-26T20:47:54Z",
+      "side": 1,
+      "message": "nit: LLC\n```suggestion\n * Copyright 2024 Google LLC\n```",
+      "range": {
+        "startLine": 2,
+        "startChar": 25,
+        "endLine": 2,
+        "endChar": 29
+      },
+      "revId": "2ead7823a7f741377a11572d53a4a502f7cccbd5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "968fe9fe_b95da6d3",
+        "filename": "src/base/SkFixedArray.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-04-26T20:47:54Z",
+      "side": 1,
+      "message": "```suggestion\n        for (T value : values) {\n```\n\nAlso: Assert that values.size() is \u003c\u003d N?",
+      "range": {
+        "startLine": 36,
+        "startChar": 13,
+        "endLine": 36,
+        "endChar": 19
+      },
+      "revId": "2ead7823a7f741377a11572d53a4a502f7cccbd5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98acbc3d_0a57ab93",
+        "filename": "src/base/SkFixedArray.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-04-26T20:47:54Z",
+      "side": 1,
+      "message": "```suggestion\n        return fSize \u003d\u003d that.fSize \u0026\u0026 (0 \u003d\u003d memcmp(fData, that.fData, fSize * sizeof(T)));\n```",
+      "range": {
+        "startLine": 74,
+        "startChar": 70,
+        "endLine": 74,
+        "endChar": 75
+      },
+      "revId": "2ead7823a7f741377a11572d53a4a502f7cccbd5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
