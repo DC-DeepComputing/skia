@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a852c08f_b480ba11",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-04-26T15:39:02Z",
+      "side": 1,
+      "message": "I\u0027m torn on whether to keep this or not. I think it is nice to be able to quickly distinguish Skia objects if you do a GPU capture that has a mix of things making objects. I could just always append it to the string we store in fLabel, but then someone dumping skia\u0027s resources manually has to see \"Skia\" in front of every string when its already obvious everything is from Skia. I think I\u0027m leaning towards keeping this, but open to suggestsions.",
+      "range": {
+        "startLine": 140,
+        "startChar": 12,
+        "endLine": 140,
+        "endChar": 59
+      },
+      "revId": "24082f7e3adc39fa277cf719645da1bb177ee8d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
