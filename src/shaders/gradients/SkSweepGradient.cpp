@@ -60,12 +60,9 @@ static std::tuple<SkScalar, SkScalar> angles_from_t_coeff(SkScalar tBias, SkScal
 
 sk_sp<SkFlattenable> SkSweepGradient::CreateProc(SkReadBuffer& buffer) {
     DescriptorScope desc;
-    SkMatrix legacyLocalMatrix, *lmPtr = nullptr;
+    SkMatrix legacyLocalMatrix;
     if (!desc.unflatten(buffer, &legacyLocalMatrix)) {
         return nullptr;
-    }
-    if (!legacyLocalMatrix.isIdentity()) {
-        lmPtr = &legacyLocalMatrix;
     }
     const SkPoint center = buffer.readPoint();
 
@@ -82,7 +79,7 @@ sk_sp<SkFlattenable> SkSweepGradient::CreateProc(SkReadBuffer& buffer) {
                                        startAngle,
                                        endAngle,
                                        desc.fInterpolation,
-                                       lmPtr);
+                                       &legacyLocalMatrix);
 }
 
 void SkSweepGradient::flatten(SkWriteBuffer& buffer) const {
