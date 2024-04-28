@@ -74,70 +74,70 @@ float4 main(float2 _21)
     float _86 = _39 * 0.100000001490116119384765625f;
     y = _86;
     x = _84 * _86;
-    int _89 = _47 | 0;
-    z = _89;
-    int _91 = _89 & (-1);
-    z = _91;
-    int _92 = _91 ^ 0;
-    z = _92;
-    int _93 = _92 >> 2;
-    z = _93;
-    int _94 = _93 << 4;
-    z = _94;
-    z = _94 % 5;
-    float _102 = float(6);
-    x = _102;
+    x = 6.0f;
+    y = (((float(_67) * float(_71)) * float(_73)) * float(_77)) * float(_81);
+    int _99 = _47 | 0;
+    z = _99;
+    int _101 = _99 & (-1);
+    z = _101;
+    int _102 = _101 ^ 0;
+    z = _102;
+    int _103 = _102 >> 2;
+    z = _103;
+    int _104 = _103 << 4;
+    z = _104;
+    z = _104 % 5;
     y = 6.0f;
     z = 6;
     int2 w = int2(-6, -6);
-    int2 _121 = ~int2(-6, -6);
-    w = _121;
-    bool _128 = false;
-    if (_121.x == 5)
+    int2 _113 = ~int2(-6, -6);
+    w = _113;
+    bool _120 = false;
+    if (_113.x == 5)
     {
-        _128 = _121.y == 5;
+        _120 = _113.y == 5;
     }
     else
     {
-        _128 = false;
+        _120 = false;
     }
-    bool _132 = false;
-    if (_128)
+    bool _123 = false;
+    if (_120)
     {
-        _132 = _102 == 6.0f;
+        _123 = true;
     }
     else
     {
-        _132 = false;
+        _123 = false;
     }
-    bool _135 = false;
-    if (_132)
+    bool _126 = false;
+    if (_123)
     {
-        _135 = true;
+        _126 = true;
     }
     else
     {
-        _135 = false;
+        _126 = false;
     }
-    bool _138 = false;
-    if (_135)
+    bool _129 = false;
+    if (_126)
     {
-        _138 = true;
+        _129 = true;
     }
     else
     {
-        _138 = false;
+        _129 = false;
     }
-    float4 _139 = 0.0f.xxxx;
-    if (_138)
+    float4 _130 = 0.0f.xxxx;
+    if (_129)
     {
-        _139 = _7_colorGreen;
+        _130 = _7_colorGreen;
     }
     else
     {
-        _139 = _7_colorRed;
+        _130 = _7_colorRed;
     }
-    return _139;
+    return _130;
 }
 
 void frag_main()

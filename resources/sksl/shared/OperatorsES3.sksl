@@ -15,14 +15,15 @@ half4 main(float2 coords) {
     x += 12;
     x -= 12;
     x *= y /= 10;
+    x = (colorGreen.xy, 6);
+    y = float(b) * float(c) * float(d) * float(e) * float(f);
     z |= 0;
     z &= -1;
     z ^= 0;
     z >>= 2;
     z <<= 4;
     z %= 5;
-    x = (colorGreen.xy, 6);
-    y = (float(b) * float(c) * float(d) * float(e) * float(f), 6.0);
+    y = (unknownInput, 6.0);
     z = (colorRed.zw, 6);
     int2 w = int2(~5);
     w = ~w;

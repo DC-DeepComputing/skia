@@ -874,6 +874,11 @@ std::unique_ptr<Expression> ConstantFolder::Simplify(const Context& context,
                                                                         *right, resultType)) {
             return expr;
         }
+
+        // We can jettison the left side of a sequence expression if it has no side effects.
+        if (op.kind() == OperatorKind::COMMA && !Analysis::HasSideEffects(*left)) {
+            return right->clone(pos);
+        }
     }
 
     // We aren't able to constant-fold.
