@@ -33,6 +33,7 @@
 #include "src/sksl/ir/SkSLType.h"
 #include "src/sksl/ir/SkSLVarDeclarations.h"
 #include "src/sksl/ir/SkSLVariable.h"
+#include "src/sksl/ir/SkSLVariableReference.h"
 
 #include <cstddef>
 #include <cstdint>
@@ -168,12 +169,20 @@ public:
                 }
                 break;
             }
+            case Expression::Kind::kVariableReference: {
+                const VariableReference& var = expr.as<VariableReference>();
+                if (var.type().matches(*fContext.fTypes.fSkCaps)) {
+                    fContext.fErrors->error(expr.fPosition, "invalid expression");
+                }
+                break;
+            }
             case Expression::Kind::kFunctionReference:
             case Expression::Kind::kMethodReference:
             case Expression::Kind::kTypeReference:
                 SkDEBUGFAIL("invalid reference-expr, should have been reported by coerce()");
                 fContext.fErrors->error(expr.fPosition, "invalid expression");
                 break;
+
             default:
                 if (expr.type().matches(*fContext.fTypes.fInvalid)) {
                     fContext.fErrors->error(expr.fPosition, "invalid expression");
