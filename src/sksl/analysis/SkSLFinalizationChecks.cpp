@@ -174,6 +174,7 @@ public:
                 SkDEBUGFAIL("invalid reference-expr, should have been reported by coerce()");
                 fContext.fErrors->error(expr.fPosition, "invalid expression");
                 break;
+
             default:
                 if (expr.type().matches(*fContext.fTypes.fInvalid)) {
                     fContext.fErrors->error(expr.fPosition, "invalid expression");
