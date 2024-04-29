@@ -73,6 +73,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ac7972eb_0156e002",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-04-29T19:45:45Z",
+      "side": 1,
+      "message": "\u003e \u003e One day, we\u0027d like to switch over to Perfetto entirely, at which point a lot of this becomes unnecessary. Will it be easy to undo these changes? (Or can it be made easy? Maybe there\u0027s no way to know at this point...)\n\u003e \n\u003e In a world where we no longer maintain ATrace as an option in Android framework builds, then a bunch of stuff including `TRACE_EVENT_ATRACE_OR_PERFETTO_FORCEABLE` can be easily deleted, and transitively these new ATrace \"arg\" macros could be deleted as well.\n\nWhew!\n\n\u003e \n\u003e \u003e I am not going to pretend that I tried to understand your macro code, but just tried to review things at a high level. This only affects Android, right? So maybe other Skia engineers won\u0027t care, but maybe we\u0027ll want another set of eyes for maintainability? (And to review macro code in more detail.)\n\u003e \n\u003e Correct, only Android framework builds to be specific. Perhaps brianosman@ ?\n\nSgtm, or bungeman@. (Others, too - not trying to leave anyone out, but I think they\u0027d both be great reviewer candidates!)",
+      "parentUuid": "626eb848_22045585",
+      "revId": "1a6f02c1bd436c72ef8f794f0089c0dce8a25a1e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "840851ca_34d911ff",
         "filename": "src/core/SkTraceEventCommon.h",
         "patchSetId": 1
@@ -167,6 +185,24 @@
       "side": 1,
       "message": "Good points, do you mean something like `^(drawCount: 1)` ?",
       "parentUuid": "b8302826_244c4a1b",
+      "revId": "1a6f02c1bd436c72ef8f794f0089c0dce8a25a1e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "badf0346_18a7ead5",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 317,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-04-29T19:45:45Z",
+      "side": 1,
+      "message": "Exactly.",
+      "parentUuid": "d59a3775_487f9b01",
       "revId": "1a6f02c1bd436c72ef8f794f0089c0dce8a25a1e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -302,6 +338,30 @@
       "side": 1,
       "message": "For example:\n```\nif (foo)\n  ATRACE_ANDROID_FRAMEWORK_ALWAYS(\"My format with a number: %d\", myNum);\n```\n\nExpands to:\n```\nif (foo)\n  char skTraceStrBuf123[256];\n  snprintf(skTraceStrBuf123, 256,      \n           \"My format with a number: %d\", myNum);\n  TRACE_EVENT0_ALWAYS(\"skia.android\", TRACE_STR_COPY(skTraceStrBuf123));\n```\n\nWith only the first line being in scope of the `if`. That said, I\u0027m realizing that would cause a compilation error, but I\u0027d like to document it all the same.\n\nThe scariness factor hasn\u0027t changed, I just noticed it was undocumented. I\u0027ll mention it in the commit message.",
       "parentUuid": "c7e3daf9_bb67d4b2",
+      "range": {
+        "startLine": 447,
+        "startChar": 0,
+        "endLine": 448,
+        "endChar": 21
+      },
+      "revId": "1a6f02c1bd436c72ef8f794f0089c0dce8a25a1e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec384242_8e1dceb8",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 448,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-04-29T19:45:45Z",
+      "side": 1,
+      "message": "Oh yeah - I\u0027m strongly in the camp of \"you should not have if statements without braces\", and I appreciate that newer programming languages require the braces.\n\nThough I must admit, a more realistic case, which I might be guilty of, would be\n\n```\nif (foo) ATRACE...;\n```\n\nBut yeah, the compilation error makes me less nervous.",
+      "parentUuid": "4d4ef087_c80d51fb",
       "range": {
         "startLine": 447,
         "startChar": 0,
