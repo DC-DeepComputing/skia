@@ -16,6 +16,24 @@
       "message": "What was virtual doing here!?",
       "revId": "ca6f8c9175a2abe7ab96f48c3c1c91bd92089e5c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "df072abd_8927a330",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-04-29T17:41:34Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "7cb3fb2c_a1a41e78",
+      "revId": "ca6f8c9175a2abe7ab96f48c3c1c91bd92089e5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
