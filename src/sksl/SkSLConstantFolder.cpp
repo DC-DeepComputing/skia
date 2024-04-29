@@ -807,6 +807,39 @@ static std::unique_ptr<Expression> fold_two_constants(const Context& context,
     return nullptr;
 }
 
+static std::unique_ptr<Expression> fold_three_expressions(const Context& context,
+                                                          Position pos,
+                                                          Operator op,
+                                                          Expression& otherExpr,
+                                                          Expression& maybeConstantExpr,
+                                                          const Expression& constantExpr,
+                                                          const Type& resultType) {
+    // `constantExpr` is known to be constant.
+    SkASSERT(Analysis::IsCompileTimeConstant(constantExpr));
+
+    // `maybeConstantExpr` might be constant--if it is, we attempt to fold it together
+    // with `constantExpr` to create a new value, `foldedExpr`.
+    // (`otherExpr` is the third expression in the mix, which we do not directly attempt to fold.)
+    const Expression* foldableExpr = ConstantFolder::GetConstantValueOrNull(maybeConstantExpr);
+    if (!foldableExpr || !foldableExpr->type().matches(constantExpr.type())) {
+        return nullptr;
+    }
+
+    // If `constantExpr` and `maybeConstantExpr` can be folded togther, we return the simplified
+    // expression `otherExpr op foldedExpr`.
+    std::unique_ptr<Expression> foldedExpr = fold_two_constants(context, pos, foldableExpr, op,
+                                                                &constantExpr, constantExpr.type());
+    if (!foldedExpr) {
+        return nullptr;
+    }
+    return BinaryExpression::Make(context,
+                                  pos,
+                                  otherExpr.clone(pos),
+                                  op,
+                                  std::move(foldedExpr),
+                                  &resultType);
+}
+
 std::unique_ptr<Expression> ConstantFolder::Simplify(const Context& context,
                                                      Position pos,
                                                      const Expression& leftExpr,
@@ -894,6 +927,68 @@ std::unique_ptr<Expression> ConstantFolder::Simplify(const Context& context,
         if (std::unique_ptr<Expression> expr = simplify_matrix_division(context, pos, *left, op,
                                                                         *right, resultType)) {
             return expr;
+        }
+
+        // Consider a binary expression where the right side is a constant, and the left side is a
+        // binary expression using the same operator as the outer expression. Further assume that
+        // this operator is commutative. For example:
+        // - (a + 1) + (2)
+        //
+        // We might be able to rearrange the elements in order to constant-fold. For instance, the
+        // above expression could be rearranged into these forms:
+        // - (a) + (1 + 2)
+        // - (1) + (a + 2)
+        //
+        // The first arrangement allows for further simplification.
+        // Note that we could also introspect other patterns; for example, the same check could be
+        // done if the left side were a constant and the right side were a binary expression.
+        // However, since we always parse in a left-to-right order, this wouldn't occur unless
+        // parentheses are used.
+        //
+        // First, check for (binary expression) op (constant).
+        if (left->is<BinaryExpression>() && rightSideIsConstant) {
+            // Next, make sure the binary expression operator matches the outer operator.
+            const BinaryExpression& binaryLeft = left->as<BinaryExpression>();
+            if (binaryLeft.getOperator().kind() == op.kind()) {
+                // Next, look for commutative operators.
+                switch (op.kind()) {
+                    default:
+                        // The right side isn't a commutative operator; reordering will change the
+                        // meaning. (Note that some of these, like subtraction and division, could
+                        // still be simplified with a little extra restructuring.)
+                        break;
+
+                    case OperatorKind::PLUS:
+                    case OperatorKind::STAR:
+                    case OperatorKind::BITWISEAND:
+                    case OperatorKind::BITWISEOR:
+                    case OperatorKind::BITWISEXOR: {
+                        // Given `(a + b) + c`, attempt to fold  `b + c`.
+                        if (std::unique_ptr<Expression> expr =
+                                    fold_three_expressions(context,
+                                                           pos,
+                                                           op,
+                                                           *binaryLeft.left(),
+                                                           *binaryLeft.right(),
+                                                           *right,
+                                                           resultType)) {
+                            return expr;
+                        }
+                        // Given `(a + b) + c`, attempt to fold `a + c`.
+                        if (std::unique_ptr<Expression> expr =
+                                    fold_three_expressions(context,
+                                                           pos,
+                                                           op,
+                                                           *binaryLeft.right(),
+                                                           *binaryLeft.left(),
+                                                           *right,
+                                                           resultType)) {
+                            return expr;
+                        }
+                        break;
+                    }
+                }
+            }
         }
     }
 
