@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7169eafe_77de7365",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-04-29T14:57:26Z",
+      "side": 1,
+      "message": "Proposal for \"option 1\" in b/337301999. Thoughts?",
+      "revId": "1a6f02c1bd436c72ef8f794f0089c0dce8a25a1e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d8099491_ac859255",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 317,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-04-29T14:57:26Z",
+      "side": 1,
+      "message": "I\u0027m flexible on the format here, I just want to indicate that this slice logically belongs to the parent slice.",
+      "revId": "1a6f02c1bd436c72ef8f794f0089c0dce8a25a1e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
