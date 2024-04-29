@@ -52,8 +52,7 @@ public:
     const SkM44& deviceToScaledShape() const { return fDevToScaledShape; }
     const Rect& shapeData() const { return fShapeData; }
     ShapeType shapeType() const { return fShapeType; }
-    bool isFast() const { return fIsFast; }
-    float invSixSigma() const { return fInvSixSigma; }
+    const SkV2& blurData() const { return fBlurData; }
     sk_sp<TextureProxy> refProxy() const { return fProxy; }
 
 private:
@@ -61,15 +60,13 @@ private:
                      const SkM44& devToScaledShape,
                      const Rect& shapeData,
                      ShapeType shapeType,
-                     bool isFast,
-                     float invSixSigma,
+                     const SkV2& blurData,
                      sk_sp<TextureProxy> proxy)
             : fDrawBounds(drawBounds)
             , fDevToScaledShape(devToScaledShape)
             , fShapeData(shapeData)
             , fShapeType(shapeType)
-            , fIsFast(isFast)
-            , fInvSixSigma(invSixSigma)
+            , fBlurData(blurData)
             , fProxy(std::move(proxy)) {}
 
     static std::optional<AnalyticBlurMask> MakeRect(Recorder*,
@@ -83,6 +80,12 @@ private:
                                                       const SkRect& srcRect,
                                                       const SkRect& devRect);
 
+    static std::optional<AnalyticBlurMask> MakeRRect(Recorder* recorder,
+                                                     const SkMatrix& localToDevice,
+                                                     float devSigma,
+                                                     const SkRRect& srcRRect,
+                                                     const SkRRect& devRRect);
+
     // Draw bounds in local space.
     Rect fDrawBounds;
 
@@ -95,8 +98,19 @@ private:
     Rect fShapeData;
 
     ShapeType fShapeType;
-    bool fIsFast;
-    float fInvSixSigma;
+
+    // "fBlurData" holds different data depending on the shape type, for the unique needs of the
+    // shape types' respective shaders.
+    // In the rectangle case, it holds:
+    //   x = a boolean indicating whether we can use a fast path for sampling the blur integral
+    //       because the rectangle is larger than 6*sigma in both dimensions, and
+    //   y = the value "1 / (6*sigma)".
+    // In the rounded rectangle case, it holds:
+    //   x = the corner radius of the rrect in device space, and
+    //   y = the blur radius in device space.
+    // In the circle case, this data is unused.
+    SkV2 fBlurData;
+
     sk_sp<TextureProxy> fProxy;
 };
 
