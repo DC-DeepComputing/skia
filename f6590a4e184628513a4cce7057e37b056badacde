@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b84eb99_cea5bb06",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-29T16:54:20Z",
+      "side": 1,
+      "message": "So this started with https://skia-review.googlesource.com/c/skia/+/822317 when I locally ran `make train` and my depot_tools was too new. So I tied to roll everything to tip of tree, but that ran into issues. So I rolled to python 3.8 and had to wait for the vpython3 fix to unblock python 3.11. The I rolled for python 3.11 but couldn\u0027t roll to tip of tree due to these changes to the path API. So mostly I this is just me trying to finish the roll I started trying to do.\n\nAlso hoping that eventually having all these fixes means that `RecreateSKPs` may eventually work (though that\u0027s now more an issue of getting Chromium on 3.11 or a newer vpython3, I think).\n\nAlso, I was waiting on reviews for https://chromium-review.googlesource.com/c/chromium/src/+/5474046 and related.",
+      "parentUuid": "6c6114ca_ed9e5438",
+      "revId": "f6590a4e184628513a4cce7057e37b056badacde",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dc69546f_4b66115d",
