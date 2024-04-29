@@ -1676,18 +1676,23 @@ static void add_to_key(const KeyContext& keyContext,
                                                 keyContext.dstColorInfo().colorSpace(),
                                                 keyContext.dstColorInfo().alphaType());
 
-        if (imageToDraw->isAlphaOnly() && keyContext.scope() != KeyContext::Scope::kRuntimeEffect) {
-            Blend(keyContext, builder, gatherer,
-                  /* addBlendToKey= */ [&] () -> void {
-                      AddKnownModeBlend(keyContext, builder, gatherer, SkBlendMode::kDstIn);
-                  },
-                  /* addSrcToKey= */ [&] () -> void {
-                      ImageShaderBlock::AddBlock(keyContext, builder, gatherer, imgData);
-                  },
-                  /* addDstToKey= */ [&]() -> void {
-                      RGBPaintColorBlock::AddBlock(keyContext, builder, gatherer);
-                  });
-            return;
+        if (imageToDraw->isAlphaOnly()) {
+            if (keyContext.scope1() != KeyContext::Scope::kRuntimeEffect) {
+                SkDebugf("Doing blend %d %d\n", keyContext.scope1(), keyContext.secretScope());
+                Blend(keyContext, builder, gatherer,
+                      /* addBlendToKey= */ [&] () -> void {
+                          AddKnownModeBlend(keyContext, builder, gatherer, SkBlendMode::kDstIn);
+                      },
+                      /* addSrcToKey= */ [&] () -> void {
+                          ImageShaderBlock::AddBlock(keyContext, builder, gatherer, imgData);
+                      },
+                      /* addDstToKey= */ [&]() -> void {
+                           RGBPaintColorBlock::AddBlock(keyContext, builder, gatherer);
+                      });
+                return;
+            } else {
+                SkDebugf("NOT doing blend %d %d\n", keyContext.scope1(), keyContext.secretScope());
+            }
         }
     }
 

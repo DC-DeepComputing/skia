@@ -76,7 +76,8 @@ public:
         kRuntimeEffect,
     };
 
-    Scope scope() const { return fScope; }
+    Scope scope1() const { return fScope1; }
+    Scope secretScope() const { return fSecretScope; }
 
 protected:
     Recorder* fRecorder = nullptr;
@@ -89,9 +90,13 @@ protected:
     // and a separate alpha portion. The two portions will never be used together but are stored
     // together to reduce the number of uniforms.
     SkPMColor4f fPaintColor = SK_PMColor4fBLACK;
-    Scope fScope = Scope::kDefault;
+    Scope fScope1 = Scope::kDefault;
+    Scope fSecretScope = Scope::kDefault;
 
 private:
+    KeyContext& operator=(const KeyContext&) = delete;
+    bool operator==(const KeyContext&) const = delete;
+
     const Caps* fCaps = nullptr;
     sk_sp<TextureProxy> fDstTexture;
     SkIPoint fDstOffset;
@@ -99,8 +104,10 @@ private:
 
 class KeyContextWithLocalMatrix : public KeyContext {
 public:
-    KeyContextWithLocalMatrix(const KeyContext& other, const SkMatrix& childLM)
-            : KeyContext(other) {
+    KeyContextWithLocalMatrix(const KeyContext& other, const SkMatrix& childLM) : KeyContext(other) {
+        if (fScope1 != fSecretScope) {
+            SkDebugf("KeyContextWithLocalMatrix: Lost scope\n");
+        }
         if (fLocalMatrix) {
             fStorage = SkMatrix::Concat(childLM, *fLocalMatrix);
         } else {
@@ -120,6 +127,9 @@ private:
 class KeyContextWithColorInfo : public KeyContext {
 public:
     KeyContextWithColorInfo(const KeyContext& other, const SkColorInfo& info) : KeyContext(other) {
+        if (fScope1 != fSecretScope) {
+            SkDebugf("KeyContextWithColorInfo: Lost scope\n");
+        }
         // We want to keep fPaintColor's alpha value but replace the RGB with values in the new
         // color space
         SkPMColor4f tmp = fPaintColor;
@@ -139,7 +149,9 @@ private:
 class KeyContextWithScope : public KeyContext {
 public:
     KeyContextWithScope(const KeyContext& other, KeyContext::Scope scope) : KeyContext(other) {
-        fScope = scope;
+        SkDebugf("KeyContextWithScope: newScope: %d\n", scope);
+        fScope1 = scope;
+        fSecretScope = scope;
     }
 
 private:

@@ -39,6 +39,8 @@ KeyContext::KeyContext(const KeyContext& other)
         , fRTEffectDict(other.fRTEffectDict)
         , fDstColorInfo(other.fDstColorInfo)
         , fPaintColor(other.fPaintColor)
+        , fScope1(other.fScope1)
+        , fSecretScope(other.fScope1)
         , fCaps(other.fCaps)
         , fDstTexture(other.fDstTexture)
         , fDstOffset(other.fDstOffset) {}
