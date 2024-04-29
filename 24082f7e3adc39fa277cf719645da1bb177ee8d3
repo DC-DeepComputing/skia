@@ -22,6 +22,30 @@
       },
       "revId": "24082f7e3adc39fa277cf719645da1bb177ee8d3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7be4db0_66cbe2dd",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-04-29T14:59:49Z",
+      "side": 1,
+      "message": "I would find the `Skia_` to be annoying to look at for everything, especially at the front. WDYT about appending it to the *end* of the label? like \"DawnBuffer_Skia_Resource\" or something like that?",
+      "parentUuid": "a852c08f_b480ba11",
+      "range": {
+        "startLine": 140,
+        "startChar": 12,
+        "endLine": 140,
+        "endChar": 59
+      },
+      "revId": "24082f7e3adc39fa277cf719645da1bb177ee8d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
