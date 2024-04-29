@@ -16,6 +16,24 @@
       "message": "Sorry, Brian--Gerrit decided to remove your +1 due to rebasing :(",
       "revId": "9b4110c479e5eba4ec0d47e7a23c260af838dcba",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f939fece_6841fb3e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-04-29T14:53:57Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "f81129b9_154b4472",
+      "revId": "9b4110c479e5eba4ec0d47e7a23c260af838dcba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
