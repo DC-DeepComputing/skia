@@ -35,6 +35,42 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e78a3df_f1638d9c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-04-29T17:02:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7169eafe_77de7365",
+      "revId": "1a6f02c1bd436c72ef8f794f0089c0dce8a25a1e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "626eb848_22045585",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-04-29T17:02:03Z",
+      "side": 1,
+      "message": "\u003e One day, we\u0027d like to switch over to Perfetto entirely, at which point a lot of this becomes unnecessary. Will it be easy to undo these changes? (Or can it be made easy? Maybe there\u0027s no way to know at this point...)\n\nIn a world where we no longer maintain ATrace as an option in Android framework builds, then a bunch of stuff including `TRACE_EVENT_ATRACE_OR_PERFETTO_FORCEABLE` can be easily deleted, and transitively these new ATrace \"arg\" macros could be deleted as well.\n\n\u003e I am not going to pretend that I tried to understand your macro code, but just tried to review things at a high level. This only affects Android, right? So maybe other Skia engineers won\u0027t care, but maybe we\u0027ll want another set of eyes for maintainability? (And to review macro code in more detail.)\n\nCorrect, only Android framework builds to be specific. Perhaps brianosman@ ?",
+      "parentUuid": "739c3ccc_baf65d70",
+      "revId": "1a6f02c1bd436c72ef8f794f0089c0dce8a25a1e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "840851ca_34d911ff",
@@ -48,6 +84,30 @@
       "writtenOn": "2024-04-29T15:38:32Z",
       "side": 1,
       "message": "Can we enforce this somehow? More broadly, it seems like we always want to prioritize `UnboxPerfettoString` if we can use it, otherwise use this one?",
+      "range": {
+        "startLine": 271,
+        "startChar": 48,
+        "endLine": 272,
+        "endChar": 22
+      },
+      "revId": "1a6f02c1bd436c72ef8f794f0089c0dce8a25a1e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e21b262c_28141559",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-04-29T17:02:03Z",
+      "side": 1,
+      "message": "\u003e Can we enforce this somehow?\n\nI don\u0027t think so, but the only chance for making that mistake is within this file. Skia devs use the `TRACE_STR_COPY` macro instead of referencing this or `UnboxPerfettoString`. Both functions are only declared for Android framework builds.\n\n\u003e More broadly, it seems like we always want to prioritize UnboxPerfettoString if we can use it, otherwise use this one?\n\nExactly -- tweaked the comment slightly, LMK if I should rephrase further.",
+      "parentUuid": "840851ca_34d911ff",
       "range": {
         "startLine": 271,
         "startChar": 48,
@@ -95,6 +155,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d59a3775_487f9b01",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 317,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-04-29T17:02:03Z",
+      "side": 1,
+      "message": "Good points, do you mean something like `^(drawCount: 1)` ?",
+      "parentUuid": "b8302826_244c4a1b",
+      "revId": "1a6f02c1bd436c72ef8f794f0089c0dce8a25a1e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fff343ac_fa55d49e",
         "filename": "src/core/SkTraceEventCommon.h",
         "patchSetId": 1
@@ -106,6 +184,30 @@
       "writtenOn": "2024-04-29T15:38:32Z",
       "side": 1,
       "message": "Would it make sense to separate out these macros into their own file? It wouldn\u0027t prevent using them directly, but maybe it\u0027s helpful for devs wanting to trace something?\n\nActually, though, I think *most* of these shouldn\u0027t be used directly, e.g. anything named `SK_INTERNAL`. So maybe this comment is redundant? Or perhaps using one of these is worse than other \"internal\" ones?",
+      "range": {
+        "startLine": 341,
+        "startChar": 68,
+        "endLine": 341,
+        "endChar": 96
+      },
+      "revId": "1a6f02c1bd436c72ef8f794f0089c0dce8a25a1e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c56b23f7_8fbac584",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 341,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-04-29T17:02:03Z",
+      "side": 1,
+      "message": "You\u0027re right, I meant the comment to apply to the argument-specific macros like `SK_INTERNAL_ATRACE_ARGS_BEGIN_0` as well, but I agree it\u0027s redundant. They\u0027re all equally \"dangerous\" in that you need to be careful to always emit the same number of `END` events that were started with corresponding `BEGIN` events.\n\nThese macros are only defined in Android framework builds, so devs can\u0027t use them directly.",
+      "parentUuid": "fff343ac_fa55d49e",
       "range": {
         "startLine": 341,
         "startChar": 68,
@@ -141,6 +243,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "36dbcb3e_e3415ea3",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 388,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-04-29T17:02:03Z",
+      "side": 1,
+      "message": "I haven\u0027t retested it yet, but that feature has worked correctly in the past, and the Perfetto branch of `TRACE_EVENT_ATRACE_OR_PERFETTO_FORCEABLE` is unmodified.\n\nI\u0027ll go through and do more thorough testing just to be sure.",
+      "parentUuid": "f5553ef4_a918aeca",
+      "range": {
+        "startLine": 387,
+        "startChar": 59,
+        "endLine": 388,
+        "endChar": 42
+      },
+      "revId": "1a6f02c1bd436c72ef8f794f0089c0dce8a25a1e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c7e3daf9_bb67d4b2",
         "filename": "src/core/SkTraceEventCommon.h",
         "patchSetId": 1
@@ -152,6 +278,30 @@
       "writtenOn": "2024-04-29T15:38:32Z",
       "side": 1,
       "message": "What would such a single line control statement look like? Why is this suddenly so scary?",
+      "range": {
+        "startLine": 447,
+        "startChar": 0,
+        "endLine": 448,
+        "endChar": 21
+      },
+      "revId": "1a6f02c1bd436c72ef8f794f0089c0dce8a25a1e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d4ef087_c80d51fb",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 448,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-04-29T17:02:03Z",
+      "side": 1,
+      "message": "For example:\n```\nif (foo)\n  ATRACE_ANDROID_FRAMEWORK_ALWAYS(\"My format with a number: %d\", myNum);\n```\n\nExpands to:\n```\nif (foo)\n  char skTraceStrBuf123[256];\n  snprintf(skTraceStrBuf123, 256,      \n           \"My format with a number: %d\", myNum);\n  TRACE_EVENT0_ALWAYS(\"skia.android\", TRACE_STR_COPY(skTraceStrBuf123));\n```\n\nWith only the first line being in scope of the `if`. That said, I\u0027m realizing that would cause a compilation error, but I\u0027d like to document it all the same.\n\nThe scariness factor hasn\u0027t changed, I just noticed it was undocumented. I\u0027ll mention it in the commit message.",
+      "parentUuid": "c7e3daf9_bb67d4b2",
       "range": {
         "startLine": 447,
         "startChar": 0,
