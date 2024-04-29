@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d632739_44e004ef",
+        "filename": "src/gpu/graphite/geom/AnalyticBlurMask.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-04-29T16:17:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fdf8fa43_4142a461",
+      "range": {
+        "startLine": 104,
+        "startChar": 4,
+        "endLine": 105,
+        "endChar": 21
+      },
+      "revId": "99c9752dd7a0c89cb3267ddeb5ec86f8cbdc09df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d0683ae2_924c2a37",
@@ -88,6 +112,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f70b0d9c_d5c1a6c0",
+        "filename": "src/gpu/graphite/render/AnalyticBlurRenderStep.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-04-29T16:17:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dfe74dee_c5a1a4e0",
+      "range": {
+        "startLine": 28,
+        "startChar": 24,
+        "endLine": 29,
+        "endChar": 51
+      },
+      "revId": "99c9752dd7a0c89cb3267ddeb5ec86f8cbdc09df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1a9126f1_c0a1c632",
@@ -111,6 +159,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "90a684da_d9cfa2ba",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 1505,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-04-29T16:17:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a9126f1_c0a1c632",
+      "range": {
+        "startLine": 1504,
+        "startChar": 45,
+        "endLine": 1505,
+        "endChar": 53
+      },
+      "revId": "99c9752dd7a0c89cb3267ddeb5ec86f8cbdc09df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ca9775a6_c92ee523",
@@ -124,6 +196,30 @@
       "writtenOn": "2024-04-25T22:11:12Z",
       "side": 1,
       "message": "`blurRadius` and `cornerRadius` are never used other than to calculate `edgeSize`. Maybe you should just be passing in `edgeSize` directly?",
+      "range": {
+        "startLine": 1506,
+        "startChar": 0,
+        "endLine": 1506,
+        "endChar": 58
+      },
+      "revId": "99c9752dd7a0c89cb3267ddeb5ec86f8cbdc09df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "166f2a8a_000975a1",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 1506,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-04-29T16:17:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ca9775a6_c92ee523",
       "range": {
         "startLine": 1506,
         "startChar": 0,
