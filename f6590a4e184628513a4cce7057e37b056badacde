@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c6114ca_ed9e5438",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-04-29T16:27:37Z",
+      "side": 1,
+      "message": "Just curious what the impetus for this was?",
+      "revId": "f6590a4e184628513a4cce7057e37b056badacde",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dc69546f_4b66115d",
@@ -31,6 +48,24 @@
       "writtenOn": "2024-04-29T16:18:14Z",
       "side": 1,
       "message": "Updated the hack to continue to work. Looks like it is still needed.",
+      "revId": "f6590a4e184628513a4cce7057e37b056badacde",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "49a366fc_c425c2a2",
+        "filename": "infra/bots/recipe_modules/vars/api.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-04-29T16:27:37Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "b5fadf74_bc166103",
       "revId": "f6590a4e184628513a4cce7057e37b056badacde",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
