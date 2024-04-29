@@ -46,6 +46,30 @@
       },
       "revId": "24082f7e3adc39fa277cf719645da1bb177ee8d3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11ae93a0_b865bf30",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-04-29T18:27:42Z",
+      "side": 1,
+      "message": "Hmm, I\u0027m inclined to leave it too. I think we\u0027re more likely to be dumping resources in a mixed setting and it\u0027ll be useful to have `Skia`. In a mixed setting, having `Skia` at the start will group the resources nicely, and if it\u0027s always the same size, should be easy to skip over visually.",
+      "parentUuid": "c7be4db0_66cbe2dd",
+      "range": {
+        "startLine": 140,
+        "startChar": 12,
+        "endLine": 140,
+        "endChar": 59
+      },
+      "revId": "24082f7e3adc39fa277cf719645da1bb177ee8d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
