@@ -20,6 +20,46 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "739c3ccc_baf65d70",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-04-29T15:38:32Z",
+      "side": 1,
+      "message": "One day, we\u0027d like to switch over to Perfetto entirely, at which point a lot of this becomes unnecessary. Will it be easy to undo these changes? (Or can it be made easy? Maybe there\u0027s no way to know at this point...)\n\nI am not going to pretend that I tried to understand your macro code, but just tried to review things at a high level. This only affects Android, right? So maybe other Skia engineers won\u0027t care, but maybe we\u0027ll want another set of eyes for maintainability? (And to review macro code in more detail.)",
+      "revId": "1a6f02c1bd436c72ef8f794f0089c0dce8a25a1e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "840851ca_34d911ff",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-04-29T15:38:32Z",
+      "side": 1,
+      "message": "Can we enforce this somehow? More broadly, it seems like we always want to prioritize `UnboxPerfettoString` if we can use it, otherwise use this one?",
+      "range": {
+        "startLine": 271,
+        "startChar": 48,
+        "endLine": 272,
+        "endChar": 22
+      },
+      "revId": "1a6f02c1bd436c72ef8f794f0089c0dce8a25a1e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d8099491_ac859255",
         "filename": "src/core/SkTraceEventCommon.h",
         "patchSetId": 1
@@ -31,6 +71,93 @@
       "writtenOn": "2024-04-29T14:57:26Z",
       "side": 1,
       "message": "I\u0027m flexible on the format here, I just want to indicate that this slice logically belongs to the parent slice.",
+      "revId": "1a6f02c1bd436c72ef8f794f0089c0dce8a25a1e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8302826_244c4a1b",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 317,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-04-29T15:38:32Z",
+      "side": 1,
+      "message": "From [this screenshot](https://screenshot.googleplex.com/BkbcT4Abq2LMiJb), I see an example, `^::drawCount\u003d1`.\n\n`^` is probably helpful - it tells us that this slice is associated with the one above.\n\n`::` seems weird - I tend to think of this symbol as denoting a class member. I was thinking maybe we could use parentheses? These are parameters to the macro, after all.\n\n`\u003d` - i might have a small preference for `: ` instead, but I think this is fine.",
+      "parentUuid": "d8099491_ac859255",
+      "revId": "1a6f02c1bd436c72ef8f794f0089c0dce8a25a1e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fff343ac_fa55d49e",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 341,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-04-29T15:38:32Z",
+      "side": 1,
+      "message": "Would it make sense to separate out these macros into their own file? It wouldn\u0027t prevent using them directly, but maybe it\u0027s helpful for devs wanting to trace something?\n\nActually, though, I think *most* of these shouldn\u0027t be used directly, e.g. anything named `SK_INTERNAL`. So maybe this comment is redundant? Or perhaps using one of these is worse than other \"internal\" ones?",
+      "range": {
+        "startLine": 341,
+        "startChar": 68,
+        "endLine": 341,
+        "endChar": 96
+      },
+      "revId": "1a6f02c1bd436c72ef8f794f0089c0dce8a25a1e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5553ef4_a918aeca",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 388,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-04-29T15:38:32Z",
+      "side": 1,
+      "message": "Did you test this, too?",
+      "range": {
+        "startLine": 387,
+        "startChar": 59,
+        "endLine": 388,
+        "endChar": 42
+      },
+      "revId": "1a6f02c1bd436c72ef8f794f0089c0dce8a25a1e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7e3daf9_bb67d4b2",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 448,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-04-29T15:38:32Z",
+      "side": 1,
+      "message": "What would such a single line control statement look like? Why is this suddenly so scary?",
+      "range": {
+        "startLine": 447,
+        "startChar": 0,
+        "endLine": 448,
+        "endChar": 21
+      },
       "revId": "1a6f02c1bd436c72ef8f794f0089c0dce8a25a1e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
