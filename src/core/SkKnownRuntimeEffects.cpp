@@ -9,9 +9,16 @@
 
 #include "include/core/SkString.h"
 #include "include/effects/SkRuntimeEffect.h"
+#include "include/private/base/SkMutex.h"
+#include "src/base/SkMathPriv.h"
+#include "src/core/SkLRUCache.h"
 #include "src/core/SkRuntimeEffectPriv.h"
 
 namespace SkKnownRuntimeEffects {
+
+// Don't like!
+static constexpr int kMaxUniformKernelSize = 28;
+static constexpr int kMaxKernelDimension = 2048;
 
 namespace {
 
@@ -87,11 +94,166 @@ SkRuntimeEffect* make_blur_2D_effect(int maxKernelSize, const SkRuntimeEffect::O
                     options);
 }
 
+// There are two shader variants: a small kernel version that stores the matrix in uniforms
+// and iterates in 1D (selected when texWidth==0 & texHeight==0); and a large kernel version
+// that stores the matrix in a texture. The 2D texture kernel shader still uses constant-length
+// for loops (up to the texWidth and texHeight passed in); the actual kernel size is uploaded
+// as a uniform, allowing the shaders to be quantized.
+
+// MAKE return sk_sp
+
+static const SkRuntimeEffect* get_matrix_convolution_runtime_effect(int texWidth, int texHeight) {
+    SkDebugf("Getting %d %d\n", texWidth, texHeight);
+
+    // While the loop structure and uniforms are different, pieces of the algorithm are common and
+    // defined statically for re-use in the two shaders:
+    static const char* kHeaderSkSL =
+        "uniform int2 size;"
+        "uniform int2 offset;"
+        "uniform half2 gainAndBias;"
+        "uniform int convolveAlpha;" // FIXME not a full  int?
+
+        "uniform shader child;"
+
+        "half4 main(float2 coord) {"
+            "half4 sum = half4(0);"
+            "half origAlpha = 0;";
+
+    // Used in the inner loop to accumulate convolution sum
+    static const char* kAccumulateSkSL =
+                "half4 c = child.eval(coord + half2(kernelPos) - half2(offset));"
+                "if (convolveAlpha == 0) {"
+                    // When not convolving alpha, remember the original alpha for actual sample
+                    // coord, and perform accumulation on unpremul colors.
+                    "if (kernelPos == offset) {"
+                        "origAlpha = c.a;"
+                    "}"
+                    "c = unpremul(c);"
+                "}"
+                "sum += c*k;";
+
+    // Used after the loop to calculate final color
+    static const char* kFooterSkSL =
+            "half4 color = sum*gainAndBias.x + gainAndBias.y;"
+            "if (convolveAlpha == 0) {"
+                // Reset the alpha to the original and convert to premul RGB
+                "color = half4(color.rgb*origAlpha, origAlpha);"
+            "} else {"
+                // Ensure convolved alpha is within [0, 1]
+                "color.a = saturate(color.a);"
+            "}"
+            // Make RGB valid premul w/ respect to the alpha (either original or convolved)
+            "color.rgb = clamp(color.rgb, 0, color.a);"
+            "return color;"
+        "}";
+
+    // The uniform array storing the kernel is packed into half4's so that we don't waste space
+    // forcing array elements out to 16-byte alignment when using std140.
+    static_assert(kMaxUniformKernelSize % 4 == 0, "Must be a multiple of 4");
+    static const SkRuntimeEffect* uniformEffect = SkMakeRuntimeEffect(SkRuntimeEffect::MakeForShader,
+        SkStringPrintf("const int kMaxUniformKernelSize = %d / 4;"
+                       "uniform half4 kernel[kMaxUniformKernelSize];"
+                       "%s" // kHeaderSkSL
+                            "int2 kernelPos = int2(0);"
+                            "for (int i = 0; i < kMaxUniformKernelSize; ++i) {"
+                                "if (kernelPos.y >= size.y) { break; }"
+
+                                "half4 k4 = kernel[i];"
+                                "for (int j = 0; j < 4; ++j) {"
+                                    "if (kernelPos.y >= size.y) { break; }"
+                                    "half k = k4[j];"
+                                    "%s" // kAccumulateSkSL
+
+                                    // The 1D index has to be "constant", so reconstruct 2D coords
+                                    // instead of a more conventional double for-loop and i=y*w+x
+                                    "kernelPos.x += 1;"
+                                    "if (kernelPos.x >= size.x) {"
+                                        "kernelPos.x = 0;"
+                                        "kernelPos.y += 1;"
+                                    "}"
+                                "}"
+                            "}"
+                        "%s", // kFooterSkSL
+                        kMaxUniformKernelSize, kHeaderSkSL, kAccumulateSkSL, kFooterSkSL).c_str());
+
+    // The texture-backed kernel creates shaders with quantized upper bounds on the kernel size and
+    // then stored in a thread-safe LRU cache.
+    static SkMutex cacheLock;
+    static SkLRUCache<SkISize, sk_sp<const SkRuntimeEffect>>
+            textureShaderCache SK_GUARDED_BY(cacheLock) {/*maxCount=*/5};
+
+    static const auto makeTextureEffect = [](SkISize maxKernelSize) {
+        const SkRuntimeEffect* foo = SkMakeRuntimeEffect(SkRuntimeEffect::MakeForShader,
+            SkStringPrintf("const int kMaxKernelWidth = %d;"
+                           "const int kMaxKernelHeight = %d;"
+                           "uniform shader kernel;"
+                           "uniform half2 innerGainAndBias;"
+                           "%s" // kHeaderSkSL
+                                   "for (int y = 0; y < kMaxKernelHeight; ++y) {"
+                                       "if (y >= size.y) { break; }"
+                                       "for (int x = 0; x < kMaxKernelWidth; ++x) {"
+                                           "if (x >= size.x) { break; }"
+
+                                           "int2 kernelPos = int2(x,y);"
+                                           "half k = kernel.eval(half2(kernelPos) + 0.5).a;"
+                                           "k = k * innerGainAndBias.x + innerGainAndBias.y;"
+                                           "%s" // kAccumulateSkSL
+                                       "}"
+                                   "}"
+                               "%s", // kFooterSkSL
+                               maxKernelSize.fWidth, maxKernelSize.fHeight,
+                               kHeaderSkSL, kAccumulateSkSL, kFooterSkSL).c_str());
+
+        return foo;
+    };
+
+
+    if (texWidth == 0 && texHeight == 0) {
+        return uniformEffect; // sk_ref_sp(uniformEffect);
+    } else {
+        static_assert((kMaxKernelDimension & (kMaxKernelDimension - 1)) == 0,
+                      "kMaxKernelDimension must be power of two");
+        SkASSERT(texWidth <= kMaxKernelDimension && texHeight <= kMaxKernelDimension);
+        const SkISize key = {SkNextPow2(texWidth), SkNextPow2(texHeight)};
+
+        SkAutoMutexExclusive acquire{cacheLock};
+        sk_sp<const SkRuntimeEffect>* effect = textureShaderCache.find(key);
+        if (!effect) {
+            // Adopt the raw pointer returned by makeTextureEffect so that it will be deleted if
+            // it's removed from the LRU cache.
+            sk_sp<const SkRuntimeEffect> newEffect{makeTextureEffect(key)};
+            effect = textureShaderCache.insert(key, std::move(newEffect));
+        }
+
+        return effect->get();
+    }
+}
+
+const SkRuntimeEffect* blah(StableKey stableKey) {
+    int foo = static_cast<int>(stableKey) - static_cast<int>(StableKey::kMatrixConvolutionBase);
+    SkASSERT(foo < 12*12);
+
+    if (foo == 0) {
+        return get_matrix_convolution_runtime_effect(0, 0);
+    }
+
+    int w = foo / 12;
+    int h = foo % 12;
+
+    return get_matrix_convolution_runtime_effect(1 << w, 1 << h);
+}
+
+
 } // anonymous namespace
 
 const SkRuntimeEffect* GetKnownRuntimeEffect(StableKey stableKey) {
     SkRuntimeEffect::Options options;
     SkRuntimeEffectPriv::SetStableKey(&options, static_cast<uint32_t>(stableKey));
+
+    if (stableKey >= StableKey::kMatrixConvolutionStart &&
+        stableKey < StableKey::kMatrixConvolutionEnd) {
+        return blah(stableKey);
+    }
 
     switch (stableKey) {
         case StableKey::kInvalid:
@@ -521,6 +683,9 @@ const SkRuntimeEffect* GetKnownRuntimeEffect(StableKey stableKey) {
                                         options);
             return sOverdrawEffect;
         }
+
+        default:
+            return nullptr;
     }
 
     SkUNREACHABLE;

@@ -36,6 +36,7 @@
 #include "src/base/SkSafeMath.h"
 #include "src/core/SkImageFilterTypes.h"
 #include "src/core/SkImageFilter_Base.h"
+#include "src/core/SkKnownRuntimeEffects.h"
 #include "src/core/SkLRUCache.h"
 #include "src/core/SkPicturePriv.h"
 #include "src/core/SkReadBuffer.h"
@@ -347,64 +348,7 @@ skif::LayerSpace<SkIRect> SkMatrixConvolutionImageFilter::boundsAffectedByKernel
                   fKernelOffset.y());
 }
 
-// There are two shader variants: a small kernel version that stores the matrix in uniforms
-// and iterates in 1D (selected when texWidth==0 & texHeight==0); and a large kernel version
-// that stores the matrix in a texture. The 2D texture kernel shader still uses constant-length
-// for loops (up to the texWidth and texHeight passed in); the actual kernel size is uploaded
-// as a uniform, allowing the shaders to be quantized.
-static sk_sp<SkRuntimeEffect> get_runtime_effect(int texWidth, int texHeight) {
-    // While the loop structure and uniforms are different, pieces of the algorithm are common and
-    // defined statically for re-use in the two shaders:
-    static const char* kHeaderSkSL =
-        "uniform int2 size;"
-        "uniform int2 offset;"
-        "uniform half2 gainAndBias;"
-        "uniform int convolveAlpha;" // FIXME not a full  int?
-
-        "uniform shader child;"
-
-        "half4 main(float2 coord) {"
-            "half4 sum = half4(0);"
-            "half origAlpha = 0;";
-
-    // Used in the inner loop to accumulate convolution sum
-    static const char* kAccumulateSkSL =
-                "half4 c = child.eval(coord + half2(kernelPos) - half2(offset));"
-                "if (convolveAlpha == 0) {"
-                    // When not convolving alpha, remember the original alpha for actual sample
-                    // coord, and perform accumulation on unpremul colors.
-                    "if (kernelPos == offset) {"
-                        "origAlpha = c.a;"
-                    "}"
-                    "c = unpremul(c);"
-                "}"
-                "sum += c*k;";
-
-    // Used after the loop to calculate final color
-    static const char* kFooterSkSL =
-            "half4 color = sum*gainAndBias.x + gainAndBias.y;"
-            "if (convolveAlpha == 0) {"
-                // Reset the alpha to the original and convert to premul RGB
-                "color = half4(color.rgb*origAlpha, origAlpha);"
-            "} else {"
-                // Ensure convolved alpha is within [0, 1]
-                "color.a = saturate(color.a);"
-            "}"
-            // Make RGB valid premul w/ respect to the alpha (either original or convolved)
-            "color.rgb = clamp(color.rgb, 0, color.a);"
-            "return color;"
-        "}";
-
-    // The uniform array storing the kernel is packed into half4's so that we don't waste space
-    // forcing array elements out to 16-byte alignment when using std140.
-    static_assert(kMaxUniformKernelSize % 4 == 0, "Must be a multiple of 4");
-    static SkRuntimeEffect* uniformEffect = SkMakeRuntimeEffect(SkRuntimeEffect::MakeForShader,
-        SkStringPrintf("const int kMaxUniformKernelSize = %d / 4;"
-                       "uniform half4 kernel[kMaxUniformKernelSize];"
-                       "%s" // kHeaderSkSL
-                            "int2 kernelPos = int2(0);"
-                            "for (int i = 0; i < kMaxUniformKernelSize; ++i) {"
-                                "if (kernelPos.y >= size.y) { break; }"
+#if 0
 
                                 "half4 k4 = kernel[i];"
                                 "for (int j = 0; j < 4; ++j) {"
@@ -470,7 +414,40 @@ static sk_sp<SkRuntimeEffect> get_runtime_effect(int texWidth, int texHeight) {
         }
 
         return *effect;
+#endif
+
+static SkKnownRuntimeEffects::StableKey gimme(int width, int height) {
+    SkDebugf("Requesting %d %d\n", width ? SkNextPow2(width) : 0, height ? SkNextPow2(height) : 0);
+
+    int w2 = width ? SkNextLog2(width) : 0;
+    int h2 = height ? SkNextLog2(height) : 0;
+
+    SkASSERT(w2 < 12 && h2 < 12);
+    int foo = w2*12 + h2;
+    SkASSERT(foo < 12*12);
+
+    int w3 = foo / 12;
+    int h3 = foo % 12;
+
+    SkASSERT(w2 == w3 && h2 == h3);
+
+    if (width) {
+        SkASSERT(SkNextPow2(width) == (1 << w2));
     }
+    if (height) {
+        SkASSERT(SkNextPow2(height) == (1 << h2));
+    }
+
+    SkKnownRuntimeEffects::StableKey bar =
+            static_cast<SkKnownRuntimeEffects::StableKey>(
+                    static_cast<int>(SkKnownRuntimeEffects::StableKey::kMatrixConvolutionBase) + foo);
+    SkASSERT(bar >= SkKnownRuntimeEffects::StableKey::kMatrixConvolutionBase &&
+             bar < SkKnownRuntimeEffects::StableKey::kMatrixConvolutionEnd);
+
+    int baz = static_cast<int>(bar) - static_cast<int>(SkKnownRuntimeEffects::StableKey::kMatrixConvolutionBase);
+    SkASSERT(baz == foo);
+
+    return bar;
 }
 
 sk_sp<SkShader> SkMatrixConvolutionImageFilter::createShader(const skif::Context& ctx,
@@ -481,9 +458,13 @@ sk_sp<SkShader> SkMatrixConvolutionImageFilter::createShader(const skif::Context
         return nullptr; // No actual kernel data to work with from a prior OOM
     }
 
-    auto effect = get_runtime_effect(useTextureShader ? fKernelSize.width() : 0,
-                                     useTextureShader ? fKernelSize.height() : 0);
-    SkRuntimeShaderBuilder builder(std::move(effect));
+    SkKnownRuntimeEffects::StableKey stableID = gimme(useTextureShader ? fKernelSize.width() : 0,
+                                                      useTextureShader ? fKernelSize.height() : 0);
+
+    const SkRuntimeEffect* matrixConvolutionEffect = GetKnownRuntimeEffect(stableID);
+
+    // Not safe to do this
+    SkRuntimeShaderBuilder builder(sk_ref_sp(matrixConvolutionEffect));
     builder.child("child") = std::move(input);
 
     if (useTextureShader) {

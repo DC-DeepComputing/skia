@@ -82,6 +82,12 @@ static constexpr int kUnknownRuntimeEffectIDStart = kChromeKnownRuntimeEffectsEn
     M(Luma)                 \
     M(Overdraw)
 
+
+// The matrix convolution effects are binned by pairs (w, h) of powers of two from 0..11.
+//    kMatrixConvolutionBase,
+//    kMatrixConvolutionStart = kMatrixConvolutionBase,
+//            kMatrixConvolutionEnd = kMatrixConvolutionStart + 12*12,
+
 // WARNING: If any of the existing values are changed, UniqueKeys that have stably-keyed effects
 // will need to be invalidated. (Adding new values to the end of the enum should be fine though.)
 // TODO(b/238759147): add a revision number that can drive the invalidation

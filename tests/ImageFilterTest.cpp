@@ -1264,6 +1264,145 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ImageFilterMatrixConvolutionBigKernel_Gpu
     test_big_kernel(reporter, ctxInfo.directContext());
 }
 
+static void test_giant_kernel(skiatest::Reporter* reporter,
+                              const std::function<sk_sp<SkSurface>(int width, int height)>& createSurface,
+                              const std::function<sk_sp<SkImage>(sk_sp<SkImage> src,
+                                                                 const SkImageFilter* filter,
+                                                                 const SkIRect& subset,
+                                                                 const SkIRect& clipBounds,
+                                                                 SkIRect* outSubset,
+                                                                 SkIPoint* offset)>& makeWithFilter) {
+    constexpr int kSrcWidthHeight = 100;
+
+    sk_sp<SkImage> srcImg;
+
+    {
+        sk_sp<SkSurface> surface(createSurface(kSrcWidthHeight, kSrcWidthHeight));
+        surface->getCanvas()->clear(SK_ColorRED);
+        srcImg = surface->makeImageSnapshot();
+        SkASSERT(srcImg);
+    }
+
+    SkIRect srcSubset = { 0, 0, kSrcWidthHeight, kSrcWidthHeight };
+
+    for (int filterWidth = 8; filterWidth <= 2048; filterWidth *= 2) {
+        for (int filterHeight = 8; filterHeight <= 2048; filterHeight *= 2) {
+            float inv = 1.0f / (filterWidth * filterHeight);
+
+            AutoTArray<float> kernelStorage(filterWidth*filterHeight);
+            float* kernel = kernelStorage.get();
+
+            for (int i = 0; i < filterWidth*filterHeight; ++i) {
+                kernel[i] = inv;
+            }
+
+            SkISize kernelSize = SkISize::Make(filterWidth, filterHeight);
+            SkScalar gain = SK_Scalar1, bias = 0;
+            SkIPoint kernelOffset = SkIPoint::Make(0, 0);
+
+            sk_sp<SkImageFilter> filter(SkImageFilters::MatrixConvolution(
+                    kernelSize, kernel, gain, bias, kernelOffset,
+                    SkTileMode::kClamp, /* convolveAlpha=*/ true, /* input= */ nullptr));
+
+            SkIRect outSubset;
+            SkIPoint offset;
+            sk_sp<SkImage> resultImg = makeWithFilter(srcImg, filter.get(), srcSubset, srcSubset,
+                                                      &outSubset, &offset);
+            REPORTER_ASSERT(reporter, resultImg);
+            REPORTER_ASSERT(reporter, srcImg->isTextureBacked() == resultImg->isTextureBacked());
+            REPORTER_ASSERT(reporter, resultImg->width() == kSrcWidthHeight &&
+                                      resultImg->height() == kSrcWidthHeight);
+            REPORTER_ASSERT(reporter, offset.fX == 0 && offset.fY == 0);
+        }
+    }
+}
+
+DEF_TEST(ImageFilterMatrixConvolutionGiantKern1el, reporter) {
+    auto createRasterSurface = [](int width, int height) -> sk_sp<SkSurface> {
+        const SkImageInfo info = SkImageInfo::MakeN32(width, height, kOpaque_SkAlphaType);
+        return SkSurfaces::Raster(info);
+    };
+
+    auto raster = [](sk_sp<SkImage> src,
+                     const SkImageFilter* filter,
+                     const SkIRect& subset,
+                     const SkIRect& clipBounds,
+                     SkIRect* outSubset,
+                     SkIPoint* offset) -> sk_sp<SkImage> {
+        return SkImages::MakeWithFilter(std::move(src),
+                                        filter,
+                                        subset,
+                                        clipBounds,
+                                        outSubset,
+                                        offset);
+    };
+
+
+    test_giant_kernel(reporter, createRasterSurface, raster);
+}
+
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ImageFilterMatrixConvolutionGiantKernel_Ganesh,
+                                       reporter,
+                                       ctxInfo,
+                                       CtsEnforcement::kNever) {
+    GrRecordingContext* rContext = ctxInfo.directContext();
+
+    auto createGaneshSurface = [rContext](int width, int height) -> sk_sp<SkSurface> {
+        const SkImageInfo info = SkImageInfo::MakeN32(width, height, kOpaque_SkAlphaType);
+        return SkSurfaces::RenderTarget(
+                rContext, skgpu::Budgeted::kNo, info, 0, kTestSurfaceOrigin, nullptr);
+    };
+
+    auto ganesh = [rContext](sk_sp<SkImage> src,
+                             const SkImageFilter* filter,
+                             const SkIRect& subset,
+                             const SkIRect& clipBounds,
+                             SkIRect* outSubset,
+                             SkIPoint* offset) -> sk_sp<SkImage> {
+        return SkImages::MakeWithFilter(rContext,
+                                        std::move(src),
+                                        filter,
+                                        subset,
+                                        clipBounds,
+                                        outSubset,
+                                        offset);
+    };
+
+    test_giant_kernel(reporter, createGaneshSurface, ganesh);
+}
+
+#if defined(SK_GRAPHITE)
+DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(ImageFilterMatrixConvolutionGiantKernel_Graphite,
+                                         reporter,
+                                         context,
+                                         CtsEnforcement::kNextRelease) {
+    std::unique_ptr<skgpu::graphite::Recorder> recorder =
+            context->makeRecorder(ToolUtils::CreateTestingRecorderOptions());
+
+    auto createGraphiteSurface = [r = recorder.get()](int width, int height) -> sk_sp<SkSurface> {
+        const SkImageInfo info = SkImageInfo::MakeN32(width, height, kPremul_SkAlphaType);
+        return SkSurfaces::RenderTarget(r, info);
+    };
+
+    auto graphite = [r = recorder.get()](sk_sp<SkImage> src,
+                                         const SkImageFilter* filter,
+                                         const SkIRect& subset,
+                                         const SkIRect& clipBounds,
+                                         SkIRect* outSubset,
+                                         SkIPoint* offset) -> sk_sp<SkImage> {
+        return SkImages::MakeWithFilter(r,
+                                        std::move(src),
+                                        filter,
+                                        subset,
+                                        clipBounds,
+                                        outSubset,
+                                        offset);
+    };
+
+    test_giant_kernel(reporter, createGraphiteSurface, graphite);
+}
+#endif
+
 DEF_TEST(ImageFilterCropRect, reporter) {
     test_cropRects(reporter, nullptr);
 }
