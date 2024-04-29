@@ -16,6 +16,24 @@
       "message": "This appears to be the only code affected by the Path API changes in recipes-py. Not sure how to replicate this with the new code. It looks like something like this is still needed.",
       "revId": "68e5df837c5a230e75800ca753ce29f1fc313d25",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e779ba93_8228c43e",
+        "filename": "infra/bots/recipe_modules/vars/api.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-04-29T16:18:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2ec1d049_b351d48b",
+      "revId": "68e5df837c5a230e75800ca753ce29f1fc313d25",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
