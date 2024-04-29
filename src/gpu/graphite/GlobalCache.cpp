@@ -12,6 +12,8 @@
 #include "src/gpu/graphite/GraphicsPipeline.h"
 #include "src/gpu/graphite/Resource.h"
 
+extern FILE* gFile;
+
 namespace skgpu::graphite {
 
 GlobalCache::GlobalCache()
@@ -42,16 +44,35 @@ sk_sp<GraphicsPipeline> GlobalCache::findGraphicsPipeline(const UniqueKey& key) 
 }
 
 sk_sp<GraphicsPipeline> GlobalCache::addGraphicsPipeline(const UniqueKey& key,
-                                                         sk_sp<GraphicsPipeline> pipeline) {
-    SkAutoSpinlock lock{fSpinLock};
+                                                         sk_sp<GraphicsPipeline> pipeline,
+                                                         const std::string& str) {
 
-    sk_sp<GraphicsPipeline>* entry = fGraphicsPipelineCache.find(key);
-    if (!entry) {
-        // No equivalent pipeline was stored in the cache between a previous call to
-        // findGraphicsPipeline() that returned null (triggering the pipeline creation) and this
-        // later adding to the cache.
-        entry = fGraphicsPipelineCache.insert(key, std::move(pipeline));
-    } // else there was a race creating the same pipeline and this thread lost, so return the winner
+    sk_sp<GraphicsPipeline>* entry = nullptr;
+    int num = 0;
+    {
+        SkAutoSpinlock lock{fSpinLock};
+
+        num = fGraphicsPipelineCache.count();
+
+        entry = fGraphicsPipelineCache.find(key);
+        if (!entry) {
+            // No equivalent pipeline was stored in the cache between a previous call to
+            // findGraphicsPipeline() that returned null (triggering the pipeline creation) and this
+            // later adding to the cache.
+            entry = fGraphicsPipelineCache.insert(key, std::move(pipeline));
+        } // else there was a race creating the same pipeline and this thread lost, so return the winner
+    }
+
+    if (!gFile) {
+        gFile = fopen("/Users/robertphillips/chrome-log.txt", "a");
+    }
+    if (gFile) {
+        fprintf(gFile, "------------------------------- addGraphicsPipeline %d:\n %s\n", num, str.c_str());
+        fflush(gFile);
+    } else {
+        printf("----------------------- gFile Open failed dtor\n");
+    }
+
     return *entry;
 }
 
