@@ -42,7 +42,7 @@ public:
     ~PaintParamsKey() = default;
     PaintParamsKey& operator=(const PaintParamsKey&) = default;
 
-    static constexpr PaintParamsKey Invalid() { return PaintParamsKey(SkSpan<const int32_t>()); }
+    static constexpr PaintParamsKey Invalid() { return PaintParamsKey(SkSpan<const uint32_t>()); }
     bool isValid() const { return !fData.empty(); }
 
     // Return a PaintParamsKey whose data is owned by the provided arena and is not attached to
@@ -80,7 +80,10 @@ public:
 private:
     friend class PaintParamsKeyBuilder;   // for the parented-data ctor
 
-    constexpr PaintParamsKey(SkSpan<const int32_t> span) : fData(span) {}
+    // TODO define -1 as const value indicating no additional data
+    constexpr PaintParamsKey(SkSpan<const uint32_t> span, int beginningIdxOfStoredSamplerData = -1)
+            : fData(span)
+            , fIdxOfStoredSamplerData(beginningIdxOfStoredSamplerData) {}
 
     // Returns null if the node or any of its children have an invalid snippet ID. Recursively
     // creates a node and all of its children, incrementing 'currentIndex' by the total number of
@@ -91,7 +94,8 @@ private:
 
     // The memory referenced in 'fData' is always owned by someone else. It either shares the span
     // of from the Builder, or clone() puts the span in an arena.
-    SkSpan<const int32_t> fData;
+    SkSpan<const uint32_t> fData;
+    int fIdxOfStoredSamplerData = -1;
 };
 
 // The PaintParamsKeyBuilder and the PaintParamsKeys snapped from it share the same
@@ -117,6 +121,9 @@ public:
         SkASSERT(!fLocked);
         SkDEBUGCODE(this->pushStack(codeSnippetID);)
         fData.push_back(codeSnippetID);
+        // if (fIdxOfAdditionalData != -1) {
+        //     fIdxOfAdditionalData++;
+        // }
     }
 
     // TODO: Have endBlock() be handled automatically with RAII, in which case we could have it
@@ -136,6 +143,26 @@ public:
         this->endBlock();
     }
 
+    void addData(SkSpan<int32_t> data) {
+        // TODO: With known sizes, use memcpy instead
+        // push length of span, memcpy span contents into data array
+        // push "length of span"
+        fIdxOfAdditionalData = fData.size();
+        SkDebugf("Adding data...Current fData:\n");
+        for (int i = 0; i < fData.size(); i++) {
+            SkDebugf("fData[%d]: %d\n", i, fData[i]);
+        }
+
+        // memcpy span contents into data array
+        for (size_t i = 0; i < data.size(); i++) {
+            fData.push_back(data[i]);
+            SkDebugf("Adding %i\n", data[i]);
+        }
+        SkDebugf("Adding data completed.\n");
+    }
+
+    //bool storesData() { return fKeyStoresData; }
+
 private:
     friend class AutoLockBuilderAsKey; // for lockAsKey() and unlock()
 
@@ -146,7 +173,7 @@ private:
         SkASSERT(fStack.empty()); // All beginBlocks() had a matching endBlock()
 
         SkDEBUGCODE(fLocked = true;)
-        return PaintParamsKey({fData.data(), fData.size()});
+        return PaintParamsKey({fData.data(), fData.size()}, fIdxOfAdditionalData);
     }
 
     // Invalidates any PaintParamsKey returned by lockAsKey() unless it has been cloned.
@@ -161,7 +188,8 @@ private:
 
     // The data array uses clear() on unlock so that it's underlying storage and repeated use of the
     // builder will hit a high-water mark and avoid lots of allocations when recording draws.
-    skia_private::TArray<int32_t> fData;
+    skia_private::TArray<uint32_t> fData;
+    int fIdxOfAdditionalData = -1;
 
 #ifdef SK_DEBUG
     void pushStack(int32_t codeSnippetID);
@@ -172,6 +200,8 @@ private:
         int fCodeSnippetID;
         int fNumExpectedChildren;
         int fNumActualChildren = 0;
+        // TODO: Track whether or not data was added and in the right spot relative to any other
+        // children. Update debug validation appropriately
     };
 
     const ShaderCodeDictionary* fDict;

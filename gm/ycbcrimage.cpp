@@ -20,6 +20,19 @@
 #include "include/gpu/ganesh/SkImageGanesh.h"
 #include "tools/gpu/vk/VkYcbcrSamplerHelper.h"
 
+#if defined(SK_GRAPHITE)
+#include "include/gpu/graphite/Image.h"
+#include "include/gpu/graphite/Recorder.h"
+#include "include/gpu/vk/VulkanBackendContext.h"
+#include "src/gpu/graphite/RecorderPriv.h"
+#include "src/gpu/graphite/vk/VulkanSharedContext.h"
+#include "tools/graphite/vk/GraphiteVulkanTestContext.h"
+
+using VulkanTestContext = skiatest::graphite::VulkanTestContext;
+using SharedContext = skgpu::graphite::SharedContext;
+using VulkanSharedContext = skgpu::graphite::VulkanSharedContext;
+#endif
+
 static void release_ycbcrhelper(void* releaseContext) {
     VkYcbcrSamplerHelper* ycbcrHelper = reinterpret_cast<VkYcbcrSamplerHelper*>(releaseContext);
     delete ycbcrHelper;
@@ -41,6 +54,69 @@ protected:
         return SkISize::Make(2*kPad+kImageSize, 2*kPad+kImageSize);
     }
 
+#if defined(SK_GRAPHITE)
+    DrawResult createYCbCrImage(skgpu::graphite::Recorder* recorder,
+                                skiatest::graphite::GraphiteTestContext* graphiteTestContext,
+                                SkString* errorMsg) {
+        SkASSERT_RELEASE(recorder->backend() == skgpu::BackendApi::kVulkan);
+
+        if (!graphiteTestContext) {
+            *errorMsg = "GraphiteTestContext must not be passed in as nullptr.";
+            return skiagm::DrawResult::kSkip;
+        }
+
+        VulkanTestContext* vkTestCtxt = static_cast<VulkanTestContext*>(graphiteTestContext);
+        if (!vkTestCtxt) {
+            *errorMsg = "Unable to create Vulkan test context from graphiteTestContext.";
+            return skiagm::DrawResult::kFail;
+        }
+
+        const VulkanSharedContext* vulkanSharedCtxt = nullptr;
+        if (recorder) {
+            const SharedContext* sharedCtxt = recorder->priv().sharedContext();
+            vulkanSharedCtxt = static_cast<const VulkanSharedContext*>(sharedCtxt);
+        }
+
+        std::unique_ptr<VkYcbcrSamplerHelper> ycbcrHelper(
+                new VkYcbcrSamplerHelper(vulkanSharedCtxt,
+                                        //  recorder,
+                                         vkTestCtxt->getBackendContext().fPhysicalDevice));
+        if (!ycbcrHelper) {
+            *errorMsg = "Unable to create VkYcbcrSamplerHelper.";
+            return skiagm::DrawResult::kFail;
+        }
+
+        if (!ycbcrHelper->isYCbCrSupported()) {
+            *errorMsg = "YCbCr sampling not supported.";
+            return skiagm::DrawResult::kSkip;
+        }
+
+        if (!ycbcrHelper->createBackendTexture(kImageSize, kImageSize)) {
+            *errorMsg = "Failed to create I420 backend texture.";
+            return skiagm::DrawResult::kFail;
+        }
+
+        SkASSERT(!fYCbCrImage);
+        fYCbCrImage = SkImages::WrapTexture(recorder,
+                                            ycbcrHelper->backendTexture(),
+                                            kRGB_888x_SkColorType,
+                                            kPremul_SkAlphaType,
+                                            /*colorSpace=*/nullptr,
+                                            release_ycbcrhelper,
+                                             ycbcrHelper.get());//const_cast<VulkanSharedContext*>(vulkanSharedCtxt));//graphiteTestContext);
+                                            // TODO: Ganesh passes in YCbCr helper here. Should
+                                            // graphite do the same?
+        SkASSERT(fYCbCrImage);
+        ycbcrHelper.release();
+        if (!fYCbCrImage) {
+            *errorMsg = "Failed to create I420 image.";
+            return DrawResult::kFail;
+        }
+
+        return DrawResult::kOk;
+    }
+#endif // SK_GRAPHITE
+
     DrawResult createYCbCrImage(GrDirectContext* dContext, SkString* errorMsg) {
         std::unique_ptr<VkYcbcrSamplerHelper> ycbcrHelper(new VkYcbcrSamplerHelper(dContext));
 
@@ -56,7 +132,7 @@ protected:
 
         SkASSERT(!fYCbCrImage);
         fYCbCrImage = SkImages::BorrowTextureFrom(dContext,
-                                                  ycbcrHelper->backendTexture(),
+                                                  ycbcrHelper->grBackendTexture(),
                                                   kTopLeft_GrSurfaceOrigin,
                                                   kRGB_888x_SkColorType,
                                                   kPremul_SkAlphaType,
@@ -72,8 +148,24 @@ protected:
         return DrawResult::kOk;
     }
 
-    DrawResult onGpuSetup(SkCanvas* canvas, SkString* errorMsg, GraphiteTestContext*) override {
+    DrawResult onGpuSetup(SkCanvas* canvas,
+                          SkString* errorMsg,
+                          GraphiteTestContext* graphiteTestContext) override {
+#if defined(SK_GRAPHITE)
+        auto recorder = canvas->recorder();
+        if (!recorder) {
+            return DrawResult::kSkip;
+        }
+
+        if (recorder->backend() != skgpu::BackendApi::kVulkan) {
+            *errorMsg = "This GM requires using Vulkan.";
+            return DrawResult::kSkip;
+        }
+
+        return this->createYCbCrImage(recorder, graphiteTestContext, errorMsg);
+#elif defined(SK_GANESH)
         GrDirectContext* dContext = GrAsDirectContext(canvas->recordingContext());
+
         if (!dContext || dContext->abandoned()) {
             return DrawResult::kSkip;
         }
@@ -89,9 +181,16 @@ protected:
         }
 
         return DrawResult::kOk;
+#endif
+        SkUNREACHABLE;
+        return DrawResult::kSkip;
     }
 
     void onGpuTeardown() override {
+// #ifdef (SK_GRAPHITE)
+
+// #endif
+
         fYCbCrImage = nullptr;
     }
 
