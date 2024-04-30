@@ -61,7 +61,7 @@ namespace {
 // Note: SkSL balks (w/ a "program is too large" error) whenever the number of kernel values
 // is >= 2048 (e.g., 8x256, 16x128, ...) so that should be a pretty good upper limit for what
 // is being seen in the wild.
-static constexpr int kMaxKernelSize = 256;
+static constexpr int kMaxKernelSize1 = 256;
 // The uniform-based kernel shader can store 28 values in any order layout (28x1, 1x25, 5x5, and
 // smaller orders like 3x3 or 5x4, etc.), but must be a multiple of 4 for better packing in std140.
 static constexpr int kMaxUniformKernelSize = 28;
@@ -82,7 +82,7 @@ public:
             , fBias(bias)
             , fConvolveAlpha(convolveAlpha) {
         // The public factory should have ensured these before creating this object.
-        SkASSERT(SkSafeMath::Mul(kernelSize.fWidth, kernelSize.fHeight) <= kMaxKernelSize);
+        SkASSERT(SkSafeMath::Mul(kernelSize.fWidth, kernelSize.fHeight) <= kMaxKernelSize1);
         SkASSERT(kernelSize.fWidth >= 1 && kernelSize.fHeight >= 1);
         SkASSERT(kernelOffset.fX >= 0 && kernelOffset.fX < kernelSize.fWidth);
         SkASSERT(kernelOffset.fY >= 0 && kernelOffset.fY < kernelSize.fHeight);
@@ -236,7 +236,7 @@ sk_sp<SkImageFilter> SkImageFilters::MatrixConvolution(const SkISize& kernelSize
     if (kernelSize.width() < 1 || kernelSize.height() < 1) {
         return nullptr;
     }
-    if (SkSafeMath::Mul(kernelSize.width(), kernelSize.height()) > kMaxKernelSize) {
+    if (SkSafeMath::Mul(kernelSize.width(), kernelSize.height()) > kMaxKernelSize1) {
         return nullptr;
     }
     if (!kernel) {
@@ -456,8 +456,8 @@ static sk_sp<SkRuntimeEffect> get_runtime_effect(int texWidth, int texHeight) {
     if (texWidth == 0 && texHeight == 0) {
         return sk_ref_sp(uniformEffect);
     } else {
-        static_assert(kMaxKernelSize % 4 == 0, "Must be a multiple of 4");
-        SkASSERT(SkSafeMath::Mul(texWidth, texHeight) <= kMaxKernelSize);
+        static_assert(kMaxKernelSize1 % 4 == 0, "Must be a multiple of 4");
+        SkASSERT(SkSafeMath::Mul(texWidth, texHeight) <= kMaxKernelSize1);
         const SkISize key = {SkNextPow2(texWidth), SkNextPow2(texHeight)};
 
         SkAutoMutexExclusive acquire{cacheLock};
