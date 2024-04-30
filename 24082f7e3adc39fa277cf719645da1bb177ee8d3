@@ -70,6 +70,30 @@
       },
       "revId": "24082f7e3adc39fa277cf719645da1bb177ee8d3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "58d9f283_da062bc0",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-04-30T14:28:28Z",
+      "side": 1,
+      "message": "I can get behind that. I was picturing more a situation where most things are Skia resources which may not actually be the case. Works for me!",
+      "parentUuid": "11ae93a0_b865bf30",
+      "range": {
+        "startLine": 140,
+        "startChar": 12,
+        "endLine": 140,
+        "endChar": 59
+      },
+      "revId": "24082f7e3adc39fa277cf719645da1bb177ee8d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
