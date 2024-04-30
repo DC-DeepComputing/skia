@@ -13,7 +13,6 @@
 #include "include/gpu/graphite/vk/VulkanGraphiteTypes.h"
 #include "include/gpu/vk/VulkanExtensions.h"
 #include "include/gpu/vk/VulkanTypes.h"
-#include "src/gpu/graphite/AttachmentTypes.h"
 #include "src/gpu/graphite/ContextUtils.h"
 #include "src/gpu/graphite/GraphicsPipelineDesc.h"
 #include "src/gpu/graphite/GraphiteResourceKey.h"
@@ -32,6 +31,16 @@
 
 namespace skgpu::graphite {
 
+namespace {
+    // void init_sampler_rsrc_type(ResourceType& rsrcType) {
+    //     rsrcType = GraphiteResourceKey::GenerateResourceType();
+    // }
+    ResourceType sampler_rsrc_type() {
+        static const ResourceType samplerResrouceType = GraphiteResourceKey::GenerateResourceType();
+        return samplerResrouceType;
+    }
+}
+
 VulkanCaps::VulkanCaps(const ContextOptions& contextOptions,
                        const skgpu::VulkanInterface* vkInterface,
                        VkPhysicalDevice physDev,
@@ -40,6 +49,8 @@ VulkanCaps::VulkanCaps(const ContextOptions& contextOptions,
                        const skgpu::VulkanExtensions* extensions,
                        Protected isProtected)
         : Caps() {
+    // kSamplerResourceType = GraphiteResourceKey::GenerateResourceType();
+    // init_sampler_rsrc_type(kSamplerResourceType);
     this->init(contextOptions, vkInterface, physDev, physicalDeviceVersion, features, extensions,
                isProtected);
 }
@@ -156,6 +167,8 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
     if (extensions->hasExtension(VK_EXT_DEVICE_FAULT_EXTENSION_NAME, 1)) {
         fSupportsDeviceFaultInfo = true;
     }
+
+    // static const kSamplerResourceType = GraphiteResourceKey::GenerateResourceType();
 
     // Note that format table initialization should be performed at the end of this method to ensure
     // all capability determinations are completed prior to populating the format tables.
@@ -1416,30 +1429,57 @@ UniqueKey VulkanCaps::makeGraphicsPipelineKey(const GraphicsPipelineDesc& pipeli
 
 GraphiteResourceKey VulkanCaps::makeSamplerKey(const SamplerDesc& samplerDesc) const {
     GraphiteResourceKey samplerKey;
-    static const ResourceType kType = GraphiteResourceKey::GenerateResourceType();
 
-    // A sampler format of "0" is acceptable and indicative that we simply not using YCbCr sampling.
     const uint64_t samplerFormat = samplerDesc.format();
     // Non-zero conversion information means the sampler utilizes a ycbcr conversion.
     bool usesYcbcrConversion = (samplerDesc.desc() >> SamplerDesc::kConversionInfoShift) != 0;
-    bool usesExternalFormat = samplerFormat == VK_FORMAT_UNDEFINED;
-
+    bool usesExternalFormat = false;
     int uint32Quantity = 1;
     if (usesYcbcrConversion) {
+        usesExternalFormat = (bool)(samplerDesc.desc() >>
+                (SamplerDesc::kConversionInfoShift +
+                 VulkanYcbcrConversionInfo::kUsesExternalFormatShift));
+
         // Known formats only require 1 uint32. External formats (when sampler format is
         // undefined) require 3: 2 to encapsulate the format and one for format feature flags.
         uint32Quantity += usesExternalFormat ? 3 : 1;
     }
-    GraphiteResourceKey::Builder builder(&samplerKey, kType, uint32Quantity, Shareable::kYes);
+    GraphiteResourceKey::Builder builder(&samplerKey, sampler_rsrc_type(), uint32Quantity,
+                                         Shareable::kYes);
 
-    builder[0] = samplerDesc.desc();
+    SkDebugf("\nCreating sampler key:\n");
+
+    int i = 0;
+    builder[i++] = samplerDesc.desc();
+    SkDebugf("  sampler desc (%d)\n", samplerDesc.desc());
     if (usesYcbcrConversion) {
-        builder[1] = (uint32_t)samplerFormat;
+        SkDebugf("  sampler format pt.1 (%d) \n", (uint32_t)samplerFormat);
+        builder[i++] = (uint32_t)samplerFormat;
         if (usesExternalFormat) {
-            builder[2] = (uint32_t)(samplerFormat >> 32);
-            builder[3] = samplerDesc.formatFeatures();
+            SkDebugf("  external format pt2 (%d)\n",(uint32_t)(samplerFormat >> 32));
+            builder[i++] = (uint32_t)(samplerFormat >> 32);
+            SkDebugf("  format features (%d)\n",samplerDesc.formatFeatures());
+            builder[i++] = samplerDesc.formatFeatures();
         }
     }
+    SkASSERT(i == uint32Quantity);
+
+    SkDebugf("end of key. ----------\n");
+    builder.finish();
+    return samplerKey;
+}
+
+GraphiteResourceKey VulkanCaps::reconstructSamplerKeyFromInts(SkSpan<const int32_t> data) const {
+    GraphiteResourceKey samplerKey;
+    GraphiteResourceKey::Builder builder(&samplerKey, sampler_rsrc_type(), data.size(),
+                                         Shareable::kYes);
+
+    SkDebugf("\nReconstructing sampler key from data:\n");
+    for (size_t i = 0; i < data.size(); i++) {
+        SkDebugf(" %d,", data[i]);
+        builder[i] = data[i];
+    }
+    SkDebugf(".\n");
 
     builder.finish();
     return samplerKey;
@@ -1492,6 +1532,7 @@ void VulkanCaps::buildKeyForTexture(SkISize dimensions,
     builder[i++] = dimensions.width();
     builder[i++] = dimensions.height();
 
+    // Add format information to key.
     if (ycbcrInfo.isValid()) {
         SkASSERT(ycbcrInfo.fFormat != VK_FORMAT_UNDEFINED || ycbcrInfo.fExternalFormat != 0);
         bool useExternalFormat = ycbcrInfo.fFormat == VK_FORMAT_UNDEFINED;
@@ -1530,8 +1571,11 @@ SamplerConversionInfo VulkanCaps::getSamplerConversionInfo(sk_sp<TextureProxy> p
             conversionInfo.fFormat = ycbcrConversionInfo.fFormat == VK_FORMAT_UNDEFINED ?
                     ycbcrConversionInfo.fExternalFormat
                     :  ycbcrConversionInfo.fFormat;
+
             conversionInfo.fNonFormatYcbcrConversionInfo =
                     ycbcrConversionInfo.nonFormatInfoAsUInt32();
+
+            conversionInfo.fFormatFeatures = ycbcrConversionInfo.fFormatFeatures;
             return conversionInfo;
         }
     }

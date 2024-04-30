@@ -101,13 +101,12 @@ GraphiteResourceKey VulkanSamplerYcbcrConversion::GetKeyFromSamplerDesc(
     GraphiteResourceKey::Builder builder(&key, kType, int32sNeeded, Shareable::kYes);
 
     int i = 0;
-    if (usesExternalFormat) {
-        builder[i++] = (uint32_t)samplerDesc.format();
-        builder[i++] = (uint32_t)(samplerDesc.format() >> 32);
-    } else {
-        builder[i++] = (uint32_t)samplerDesc.format();
-    }
     builder[i++] = (uint32_t)(samplerDesc.desc() >> SamplerDesc::kConversionInfoShift);
+    builder[i++] = (uint32_t)samplerDesc.format();
+    if (usesExternalFormat) {
+        builder[i++] = (uint32_t)(samplerDesc.format() >> 32);
+        builder[i++] = samplerDesc.formatFeatures();
+    }
     SkASSERT(i == int32sNeeded);
 
     builder.finish();
@@ -118,7 +117,7 @@ VulkanSamplerYcbcrConversion::VulkanSamplerYcbcrConversion(
         const VulkanSharedContext* context, VkSamplerYcbcrConversion ycbcrConversion)
         : Resource(context,
                    Ownership::kOwned,
-                   skgpu::Budgeted::kNo,
+                   skgpu::Budgeted::kYes, // Shareable, so must be budgeted
                    /*gpuMemorySize=*/0,
                    /*label=*/"VulkanSamplerYcbcrConversion")
         , fYcbcrConversion (ycbcrConversion) {}
