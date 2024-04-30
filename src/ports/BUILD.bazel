@@ -352,6 +352,7 @@ skia_cc_library(
         "SkFontMgr_android_parser.h",
         "//include/ports:android_fontmgr_hdrs",
     ],
+    defines = ["SK_FONTMGR_ANDROID_AVAILABLE"],
     visibility = ["//:__pkg__"],
     deps = [
         ":freetype_support",
@@ -513,6 +514,10 @@ skia_objc_library(
         "CoreText",
     ],
     mac_frameworks = ["ApplicationServices"],
+    visibility = [
+        "//:__pkg__",
+        "//modules/skshaper:__pkg__",
+    ],
     deps = [
         "//:core",
         "//src/base",
