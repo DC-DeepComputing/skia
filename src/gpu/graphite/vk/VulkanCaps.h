@@ -8,6 +8,7 @@
 #ifndef skgpu_graphite_VulkanCaps_DEFINED
 #define skgpu_graphite_VulkanCaps_DEFINED
 
+#include "include/core/SkSpan.h"
 #include "include/private/base/SkTDArray.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/vk/VulkanInterface.h"
@@ -56,6 +57,9 @@ public:
     UniqueKey makeComputePipelineKey(const ComputePipelineDesc&) const override { return {}; }
 
     GraphiteResourceKey makeSamplerKey(const SamplerDesc&) const override;
+
+    // TODO add comment here explaining
+    GraphiteResourceKey reconstructSamplerKeyFromInts(SkSpan<const int32_t>) const;
 
     uint32_t channelMask(const TextureInfo&) const override;
 
@@ -237,6 +241,8 @@ private:
     bool fGpuOnlyBuffersMorePerformant = false;
     bool fShouldPersistentlyMapCpuToGpuBuffers = true;
     bool fSupportsDeviceFaultInfo = false;
+
+    // static ResourceType kSamplerResourceType;
 };
 
 } // namespace skgpu::graphite

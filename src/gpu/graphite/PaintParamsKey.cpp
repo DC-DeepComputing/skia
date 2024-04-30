@@ -54,7 +54,7 @@ void PaintParamsKeyBuilder::popStack() {
 PaintParamsKey PaintParamsKey::clone(SkArenaAlloc* arena) const {
     int32_t* newData = arena->makeArrayDefault<int32_t>(fData.size());
     memcpy(newData, fData.data(), fData.size_bytes());
-    return PaintParamsKey({newData, fData.size()});
+    return PaintParamsKey({newData, fData.size()}, fIdxOfStoredSamplerData);
 }
 
 
@@ -63,6 +63,44 @@ const ShaderNode* PaintParamsKey::createNode(const ShaderCodeDictionary* dict,
                                              SkArenaAlloc* arena) const {
     SkASSERT(*currentIndex < SkTo<int>(fData.size()));
     const int32_t index = (*currentIndex)++;
+
+    // Before traversing all the child nodes, if the snippet requires a data child, gather
+    // that data to be placed into the ShaderNode. The first block represents the "length" of the
+    // data in terms of indices.
+    // SkSpan<const uint32_t> dataSpan = {};
+    if (index == 0) {
+        SkDebugf("\n================================\n");
+        for (size_t i = 0; i < fData.size(); i++) {
+            SkDebugf("fData[%zu]: %d\n", i, fData[i]);
+        }
+        SkDebugf("================================\n");
+    }
+
+    // if (index == fIdxOfStoredSamplerData) {
+    //     // Treat the first index as the length of the stored data rather than a snippet ID.
+    //     size_t dataLength = fData[index];
+    //     SkASSERT(fData.size() >= index + dataLength);
+    //     index++;
+    //     // dataSpan = fData.subspan(index, dataLength);
+    //     index += dataLength;
+    // }
+
+    // if (entryInTreeStoresData) {
+    //     // index++; //+= 2; // TODO: temporary. need to figure out how to skip over real snippets.
+    //     size_t dataLength = fData[index];
+    //     // if (index + dataLength == fData.size() - 1) {
+    //     SkASSERT(fData.size() >= index + dataLength);
+    //     index++;
+    //     dataSpan = fData.subspan(index, dataLength);
+    //     index += dataLength;
+
+    //     *currentIndex = index;//(*currentIndex) + 1 + dataLength;
+    //     // }
+    //     // else {
+    //     //     dataSpan = {0};
+    //     // }
+    // }
+
     const int32_t id = fData[index];
 
     const ShaderSnippet* entry = dict->getEntry(id);
@@ -70,9 +108,14 @@ const ShaderNode* PaintParamsKey::createNode(const ShaderCodeDictionary* dict,
         SKGPU_LOG_E("Unknown snippet ID in key: %d", id);
         return nullptr;
     }
+    // if (!entryInTreeStoresData && entry->storesData()) {
+    //     entryInTreeStoresData = true;
+    // }
 
     const ShaderNode** childArray = arena->makeArray<const ShaderNode*>(entry->fNumChildren);
     for (int i = 0; i < entry->fNumChildren; ++i) {
+        // If shader snippet entry has a data child, then when creating the child ShaderNode,
+        // encode the sampler data.
         const ShaderNode* child = this->createNode(dict, currentIndex, arena);
         if (!child) {
             return nullptr;
@@ -80,7 +123,18 @@ const ShaderNode* PaintParamsKey::createNode(const ShaderCodeDictionary* dict,
         childArray[i] = child;
     }
 
-    return arena->make<ShaderNode>(entry, SkSpan(childArray, entry->fNumChildren), id, index);
+    SkSpan<const int32_t> dataSpan = {};
+    if (index == fIdxOfStoredSamplerData) {
+        dataSpan = fData.subspan(fIdxOfStoredSamplerData + 1, fData[fIdxOfStoredSamplerData]);
+        // index += fData[fIdxOfStoredSamplerData];
+        *currentIndex = index + fData[fIdxOfStoredSamplerData] + 1;
+    }
+
+    return arena->make<ShaderNode>(entry,
+                                   SkSpan(childArray, entry->fNumChildren),
+                                   id,
+                                   index,
+                                   dataSpan);
 }
 
 SkSpan<const ShaderNode*> PaintParamsKey::getRootNodes(const ShaderCodeDictionary* dict,
