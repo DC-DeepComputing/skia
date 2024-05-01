@@ -8,6 +8,7 @@
 #ifndef skgpu_graphite_task_DrawTask_DEFINED
 #define skgpu_graphite_task_DrawTask_DEFINED
 
+#include "src/gpu/graphite/ScratchResourceManager.h"
 #include "src/gpu/graphite/task/Task.h"
 #include "src/gpu/graphite/task/TaskList.h"
 
@@ -20,7 +21,7 @@ class TextureProxy;
  * image in the DrawTask's target. As such, at least one of its subtasks will either be a
  * RenderPassTask, ComputeTask or CopyXToTextureTask that directly modify the target.
 */
-class DrawTask final : public Task {
+class DrawTask final : public Task, private ScratchResourceManager::PendingUseListener {
 public:
     explicit DrawTask(sk_sp<TextureProxy> target);
     ~DrawTask() override;
@@ -38,6 +39,8 @@ private:
     // fixed once DrawContext snaps the task.
     void addTask(sk_sp<Task> task) { fChildTasks.add(std::move(task)); }
     bool hasTasks() const { return fChildTasks.hasTasks(); }
+
+    void onUseCompleted(ScratchResourceManager*) override;
 
     sk_sp<TextureProxy> fTarget;
     TaskList fChildTasks;
