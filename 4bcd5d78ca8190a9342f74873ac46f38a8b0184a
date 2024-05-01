@@ -33,6 +33,42 @@
       "message": "Is this a temporary thing related to https://skia-review.googlesource.com/c/buildbot/+/848396 ? Is this here so that can roll into Skia\u0027s `infra/` or is that one the more general fix?",
       "revId": "4bcd5d78ca8190a9342f74873ac46f38a8b0184a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6804f2be_27fb83d5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-05-01T14:35:34Z",
+      "side": 1,
+      "message": "It\u0027s just a bunch of instances of \"vpython\" \u003d\u003e \"vpython3\": https://screenshot.googleplex.com/5acPnwwG6eeRXW9",
+      "parentUuid": "0ae9d46c_bb56eb7d",
+      "revId": "4bcd5d78ca8190a9342f74873ac46f38a8b0184a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "010c8dd7_77dd8ce9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-05-01T14:35:34Z",
+      "side": 1,
+      "message": "Yes, kind of.  This CL is essentially to prove that the other one will work then it gets rolled, or possibly, to remove skia\u0027s dependency on the old package if it couldn\u0027t immediately be removed in the other repo (it could).",
+      "parentUuid": "539780d5_aa64a022",
+      "revId": "4bcd5d78ca8190a9342f74873ac46f38a8b0184a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
