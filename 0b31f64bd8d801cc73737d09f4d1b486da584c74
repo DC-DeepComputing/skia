@@ -16,6 +16,24 @@
       "message": "Forcing a scalar to a single value vector seems unintuitive. This is mentioned in the specs though. Is there a reason for this?",
       "revId": "0b31f64bd8d801cc73737d09f4d1b486da584c74",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9dbaa7e_b5e47bed",
+        "filename": "resources/skottie/skottie_sample_1.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-05-01T15:49:17Z",
+      "side": 0,
+      "message": "I think it\u0027s just historical gunk - old Bodymovin versions exporting things slightly differently.\n\nWe definitely have some compat workarounds in Skottie to support the old format, but going forward we should ignore.",
+      "parentUuid": "1d594378_1e6b2ae1",
+      "revId": "0b31f64bd8d801cc73737d09f4d1b486da584c74",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

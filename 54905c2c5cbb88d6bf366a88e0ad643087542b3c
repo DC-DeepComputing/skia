@@ -16,6 +16,24 @@
       "message": "Looks like the in/out curves are now clamped to 0-1 with this format. It seems useful to allow unclamped, though probably cleaner to explicitly have the min/max point as explicit keyframes.\n\nIf we are going to have limited curve range going forward, I\u0027m not sure if this sample has any value and could probably be deleted.",
       "revId": "54905c2c5cbb88d6bf366a88e0ad643087542b3c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da0db778_750ceee4",
+        "filename": "resources/skottie/skottie-bezier-extranormal.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-05-01T15:49:17Z",
+      "side": 1,
+      "message": "IIRC in practice x is clamped but y is not, same as the Skia cubic Bezier API:\nhttps://github.com/google/skia/blob/0b31f64bd8d801cc73737d09f4d1b486da584c74/include/core/SkCubicMap.h#L21\n\nWe should update the spec, this is useful behavior needed to support AE\u0027s easing semantics.",
+      "parentUuid": "c8d6788a_105a6b4b",
+      "revId": "54905c2c5cbb88d6bf366a88e0ad643087542b3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
