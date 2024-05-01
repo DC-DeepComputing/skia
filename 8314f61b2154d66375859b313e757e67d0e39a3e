@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d01c89d4_18d21baa",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 11
+      },
+      "lineNbr": 1141,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-05-01T21:56:18Z",
+      "side": 1,
+      "message": "Need to set `inner_bearing_*` now. https://skia-review.googlesource.com/c/skia/+/848227",
+      "revId": "8314f61b2154d66375859b313e757e67d0e39a3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
