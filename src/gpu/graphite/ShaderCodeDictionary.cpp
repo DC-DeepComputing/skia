@@ -217,6 +217,12 @@ ShaderInfo::ShaderInfo(UniquePaintParamsID id,
         } else {
             fSnippetRequirementFlags |= root->requiredFlags();
         }
+
+        // If a snippet within this node tree requires additional sampler data to be stored, append
+        // it to fData.
+        if (root->requiredFlags() & SnippetRequirementFlags::kStoresData) {
+            fData = root->data();
+        }
     }
 }
 
@@ -1600,7 +1606,7 @@ int ShaderCodeDictionary::findOrCreateRuntimeEffectSnippet(const SkRuntimeEffect
     key.fHash = SkRuntimeEffectPriv::Hash(*effect);
     key.fUniformSize = effect->uniformSize();
 
-    int32_t* existingCodeSnippetID = fRuntimeEffectMap.find(key);
+    uint32_t* existingCodeSnippetID = fRuntimeEffectMap.find(key);
     if (existingCodeSnippetID) {
         return *existingCodeSnippetID;
     }
@@ -1801,8 +1807,7 @@ ShaderCodeDictionary::ShaderCodeDictionary() {
     fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kLocalMatrixShader] = {
             "LocalMatrixShader",
             SkSpan(kLocalMatrixShaderUniforms),
-            (SnippetRequirementFlags::kPriorStageOutput |
-             SnippetRequirementFlags::kLocalCoords),
+            (SnippetRequirementFlags::kPriorStageOutput | SnippetRequirementFlags::kLocalCoords),
             { },     // no samplers
             kLocalMatrixShaderName,
             GenerateDefaultExpression,
@@ -1812,7 +1817,7 @@ ShaderCodeDictionary::ShaderCodeDictionary() {
     fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kImageShader] = {
             "ImageShader",
             SkSpan(kImageShaderUniforms),
-            SnippetRequirementFlags::kLocalCoords,
+            (SnippetRequirementFlags::kLocalCoords | SnippetRequirementFlags::kStoresData),
             SkSpan(kISTexturesAndSamplers),
             kImageShaderName,
             GenerateDefaultExpression,

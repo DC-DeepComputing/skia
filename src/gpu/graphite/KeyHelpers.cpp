@@ -127,7 +127,7 @@ void RGBPaintColorBlock::AddBlock(const KeyContext& keyContext,
                                   PaintParamsKeyBuilder* builder,
                                   PipelineDataGatherer* gatherer) {
     add_rgb_paint_color_uniform_data(keyContext.dict(), keyContext.paintColor(), gatherer);
-
+    SkDebugf("\n!!!!!!!!!!adding rgb block!!!!!!!!!!\n");
     builder->addBlock(BuiltInCodeSnippetID::kRGBPaintColor);
 }
 
@@ -603,6 +603,7 @@ void ImageShaderBlock::AddBlock(const KeyContext& keyContext,
         add_image_uniform_data(keyContext.dict(), imgData, gatherer);
         builder->addBlock(BuiltInCodeSnippetID::kImageShader);
     }
+    // TODO: builder->adddata() here?
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -1685,7 +1686,7 @@ static void add_to_key(const KeyContext& keyContext,
                       ImageShaderBlock::AddBlock(keyContext, builder, gatherer, imgData);
                   },
                   /* addDstToKey= */ [&]() -> void {
-                      RGBPaintColorBlock::AddBlock(keyContext, builder, gatherer);
+                      //RGBPaintColorBlock::AddBlock(keyContext, builder, gatherer);
                   });
             return;
         }

@@ -61,6 +61,9 @@ public:
     int numTextures() const { return SkTo<int>(fTextureData.size()); }
     const SampledTexture& texture(int index) const { return fTextureData[index]; }
 
+    // TODO: Perhaps return an SkSpan instead of a vector.
+    const std::vector<SampledTexture>& textures() const { return fTextureData; }
+
     bool operator==(const TextureDataBlock&) const;
     bool operator!=(const TextureDataBlock& other) const { return !(*this == other);  }
     uint32_t hash() const;

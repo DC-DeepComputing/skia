@@ -57,11 +57,12 @@ private:
 };
 
 enum class SnippetRequirementFlags : uint32_t {
-    kNone = 0x0,
-    kLocalCoords = 0x1,
+    kNone             = 0x0,
+    kLocalCoords      = 0x1,
     kPriorStageOutput = 0x2,  // AKA the "input" color, or the "src" argument for a blender
-    kBlenderDstColor = 0x4,  // The "dst" argument for a blender
-    kSurfaceColor = 0x8,
+    kBlenderDstColor  = 0x4,  // The "dst" argument for a blender
+    kSurfaceColor     = 0x8,
+    kStoresData       = 0x16, // Indicates that the node stores some amount of data (TODO elaborate)
 };
 SK_MAKE_BITMASK_OPS(SnippetRequirementFlags)
 
@@ -78,6 +79,8 @@ struct ShaderSnippet {
         std::string fPriorStageOutput;
         std::string fBlenderDstColor;
         std::string fFragCoord;
+        // TODO: Needed?
+        std::string fData = "";
     };
     using GenerateExpressionForSnippetFn = std::string (*)(const ShaderInfo& shaderInfo,
                                                            const ShaderNode*,
@@ -111,6 +114,9 @@ struct ShaderSnippet {
     bool needsBlenderDstColor() const {
         return SkToBool(fSnippetRequirementFlags & SnippetRequirementFlags::kBlenderDstColor);
     }
+    bool storesData() const {
+        return SkToBool(fSnippetRequirementFlags & SnippetRequirementFlags::kStoresData);
+    }
 
     const char* fName = nullptr;
     SkSpan<const Uniform> fUniforms;
@@ -132,17 +138,22 @@ public:
     ShaderNode(const ShaderSnippet* snippet,
                SkSpan<const ShaderNode*> children,
                int codeID,
-               int keyIndex)
+               int keyIndex,
+               SkSpan<const uint32_t> data)
             : fEntry(snippet)
             , fChildren(children)
             , fCodeID(codeID)
             , fKeyIndex(keyIndex)
-            , fRequiredFlags(snippet->fSnippetRequirementFlags) {
+            , fRequiredFlags(snippet->fSnippetRequirementFlags)
+            , fData(data) {
         SkASSERT(children.size() == (size_t) fEntry->fNumChildren);
         // TODO: RuntimeEffects can actually mask off requirements if they invoke a child with
         // explicit arguments.
         for (const ShaderNode* child : children) {
             fRequiredFlags |= child->requiredFlags();
+        }
+        if (!fData.empty()) {
+            fRequiredFlags |= SnippetRequirementFlags::kStoresData;
         }
     }
 
@@ -156,6 +167,8 @@ public:
     SkSpan<const ShaderNode*> children() const { return fChildren; }
     const ShaderNode* child(int childIndex) const { return fChildren[childIndex]; }
 
+    SkSpan<const uint32_t> data() const { return fData; }
+
 private:
     const ShaderSnippet* fEntry; // Owned by the ShaderCodeDictionary
     SkSpan<const ShaderNode*> fChildren; // Owned by the ShaderInfo's arena
@@ -164,6 +177,7 @@ private:
     int32_t fKeyIndex; // index back to PaintParamsKey, unique across nodes within a ShaderInfo
 
     SkEnumBitMask<SnippetRequirementFlags> fRequiredFlags;
+    SkSpan<const uint32_t> fData;
 };
 
 // ShaderInfo holds all root ShaderNodes defined for a PaintParams as well as the extracted fixed
@@ -190,6 +204,10 @@ public:
 
     const skgpu::BlendInfo& blendInfo() const { return fBlendInfo; }
 
+    std::string_view label() const { return fLabel; }
+
+    SkSpan<const uint32_t> data() const { return {fData}; }
+
     std::string toSkSL(const Caps* caps,
                        const RenderStep* step,
                        bool useStorageBuffers,
@@ -215,6 +233,8 @@ private:
     SkBlendMode fBlendMode = SkBlendMode::kClear;
     skgpu::BlendInfo fBlendInfo;
     SkEnumBitMask<SnippetRequirementFlags> fSnippetRequirementFlags;
+    std::string fLabel;
+    SkSpan<const uint32_t> fData;
 };
 
 // ShaderCodeDictionary is a thread-safe dictionary of ShaderSnippets to code IDs for use with
@@ -297,7 +317,7 @@ private:
     // an existing ID. Entries in the runtime-effect map are never removed; they only disappear when
     // the context is discarded, which takes the ShaderCodeDictionary along with it. However, they
     // are extremely small (< 20 bytes) so the memory footprint should be unnoticeable.
-    using RuntimeEffectMap = skia_private::THashMap<RuntimeEffectKey, int32_t>;
+    using RuntimeEffectMap = skia_private::THashMap<RuntimeEffectKey, uint32_t>;
     RuntimeEffectMap fRuntimeEffectMap SK_GUARDED_BY(fSpinLock);
 
     // This arena holds:
