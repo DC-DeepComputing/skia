@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d594378_1e6b2ae1",
+        "filename": "resources/skottie/skottie_sample_1.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 3241878
+      },
+      "writtenOn": "2024-05-01T14:45:19Z",
+      "side": 0,
+      "message": "Forcing a scalar to a single value vector seems unintuitive. This is mentioned in the specs though. Is there a reason for this?",
+      "revId": "0b31f64bd8d801cc73737d09f4d1b486da584c74",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

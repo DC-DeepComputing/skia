@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8d6788a_105a6b4b",
+        "filename": "resources/skottie/skottie-bezier-extranormal.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 3241878
+      },
+      "writtenOn": "2024-05-01T14:45:19Z",
+      "side": 1,
+      "message": "Looks like the in/out curves are now clamped to 0-1 with this format. It seems useful to allow unclamped, though probably cleaner to explicitly have the min/max point as explicit keyframes.\n\nIf we are going to have limited curve range going forward, I\u0027m not sure if this sample has any value and could probably be deleted.",
+      "revId": "54905c2c5cbb88d6bf366a88e0ad643087542b3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
