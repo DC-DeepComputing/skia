@@ -11,6 +11,7 @@
 #include "include/core/SkData.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkTypes.h"
+#include "include/private/SkXmp.h"
 
 #include <memory>
 #include <vector>
@@ -42,6 +43,12 @@ public:
     };
 
     /**
+     * Create metadata from a JPEG file (at least all of the data up to StartOfScan). This may
+     * return nullptr.
+     */
+    static std::unique_ptr<SkJpegMetadataDecoder> Make(sk_sp<SkData> data);
+
+    /**
      * Create metadata for the specified segments from a JPEG file's header (defined as all segments
      * before the first StartOfScan). This may return nullptr.
      */
@@ -60,6 +67,11 @@ public:
      * created.
      */
     virtual sk_sp<SkData> getICCProfileData(bool copyData) const = 0;
+
+    /**
+     * Return the XMP metadata.
+     */
+    virtual std::unique_ptr<SkXmp> getXmpMetadata() const = 0;
 
     /**
      * Return true if there is a possibility that this image contains a gainmap image.

@@ -1157,27 +1157,9 @@ static bool extract_gainmap(SkJpegSourceMgr* decoderSource,
         return false;
     }
 
-    // Scan through the image up to the StartOfScan. We'll be searching for the XMP metadata.
-    SkJpegSegmentScanner scan(kJpegMarkerStartOfScan);
-    scan.onBytes(imageData->data(), imageData->size());
-    if (scan.hadError() || !scan.isDone()) {
-        SkCodecPrintf("Failed to scan header of MP image.\n");
-        return false;
-    }
-
-    // Collect the potential XMP segments and build the XMP.
-    std::vector<sk_sp<SkData>> app1Params;
-    for (const auto& segment : scan.getSegments()) {
-        if (segment.marker != kXMPMarker) {
-            continue;
-        }
-        auto parameters = SkJpegSegmentScanner::GetParameters(imageData.get(), segment);
-        if (!parameters) {
-            continue;
-        }
-        app1Params.push_back(std::move(parameters));
-    }
-    auto xmp = SkJpegMakeXmp(app1Params);
+    // Create a metadata decoder for this MP image. We'll be searching for the XMP metadata.
+    auto metadata_decoder = SkJpegMetadataDecoder::Make(imageData);
+    auto xmp = metadata_decoder->getXmpMetadata();
     if (!xmp) {
         return false;
     }
@@ -1339,6 +1321,20 @@ public:
                              copyData);
     }
 
+    std::unique_ptr<SkXmp> getXmpMetadata() const override {
+#ifdef SK_CODEC_DECODES_JPEG_GAINMAPS
+        std::vector<sk_sp<SkData>> decoderApp1Params;
+        for (const auto& marker : fMarkerList) {
+            if (marker.fMarker == kXMPMarker) {
+                decoderApp1Params.push_back(marker.fData);
+            }
+        }
+        return SkJpegMakeXmp(decoderApp1Params);
+#else
+        return nullptr;
+#endif
+    }
+
     bool mightHaveGainmapImage() const override {
 #ifdef SK_CODEC_DECODES_JPEG_GAINMAPS
         // All supported gainmap formats require MPF. Reject images that do not have MPF.
@@ -1376,6 +1372,20 @@ public:
 private:
     SkJpegMarkerList fMarkerList;
 };
+
+std::unique_ptr<SkJpegMetadataDecoder> SkJpegMetadataDecoder::Make(sk_sp<SkData> data) {
+    SkJpegSegmentScanner scan(kJpegMarkerStartOfScan);
+    scan.onBytes(data->data(), data->size());
+    if (scan.hadError() || !scan.isDone()) {
+        SkCodecPrintf("Failed to scan header image.\n");
+        return nullptr;
+    }
+    SkJpegMarkerList markerList;
+    for (const auto& segment : scan.getSegments()) {
+        markerList.emplace_back(segment.marker, scan.GetParameters(data.get(), segment));
+    }
+    return std::make_unique<SkJpegMetadataDecoderImpl>(std::move(markerList));
+}
 
 std::unique_ptr<SkJpegMetadataDecoder> SkJpegMetadataDecoder::Make(std::vector<Segment> segments) {
     SkJpegMarkerList markerList;
