@@ -46,6 +46,30 @@
       },
       "revId": "3fa0a1bad86e86f4f2c3c2c613bca06c8a18eda7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a521c6f7_85ec4317",
+        "filename": "src/gpu/graphite/RenderPassDesc.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-01T16:23:30Z",
+      "side": 1,
+      "message": "So for now, I\u0027ll leave it, and then we can simplify what we print once Dawn\u0027s load msaa op work is wrapped up and used in graphite.\n\nI would think that if we kept the sample counts on the attachments and got rid of this sample count, we\u0027d be able to differentiate the msaa color attachment w/ single-sample resolve vs. a msaa color attachment w/o any single sample resolve, and then not need any special handling to incorporate the special load op.",
+      "parentUuid": "9979d612_8b12110f",
+      "range": {
+        "startLine": 122,
+        "startChar": 62,
+        "endLine": 122,
+        "endChar": 74
+      },
+      "revId": "3fa0a1bad86e86f4f2c3c2c613bca06c8a18eda7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
