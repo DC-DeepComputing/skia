@@ -27,7 +27,6 @@
 #endif
 
 enum class SkBlendMode;
-enum class SkTextureCompressionType;
 class SkCapabilities;
 
 namespace SkSL { struct ShaderCaps; }
