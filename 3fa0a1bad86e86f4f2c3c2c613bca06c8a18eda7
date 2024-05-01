@@ -70,6 +70,30 @@
       },
       "revId": "3fa0a1bad86e86f4f2c3c2c613bca06c8a18eda7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d011d7b3_b47b783e",
+        "filename": "src/gpu/graphite/RenderPassDesc.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-05-01T16:54:28Z",
+      "side": 1,
+      "message": "But we will do different pipelines if there if the LoadOp is Load vs Clear/Discard with msaa to single sample resolve. We can\u0027t know we\u0027re in that case simply by seeing the sample counts",
+      "parentUuid": "a521c6f7_85ec4317",
+      "range": {
+        "startLine": 122,
+        "startChar": 62,
+        "endLine": 122,
+        "endChar": 74
+      },
+      "revId": "3fa0a1bad86e86f4f2c3c2c613bca06c8a18eda7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
