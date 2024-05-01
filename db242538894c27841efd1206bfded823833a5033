@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5af7d3a8_a4dba5c0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-05-01T20:51:21Z",
+      "side": 1,
+      "message": "Seeing as this is a test file and this is also what we do in `SkDeflate.cpp` lgtm.",
+      "revId": "db242538894c27841efd1206bfded823833a5033",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
