@@ -22,6 +22,30 @@
       },
       "revId": "3fa0a1bad86e86f4f2c3c2c613bca06c8a18eda7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9979d612_8b12110f",
+        "filename": "src/gpu/graphite/RenderPassDesc.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-05-01T15:34:21Z",
+      "side": 1,
+      "message": "I think this is going to be redundant especially with the way chrome is doing the load to msaa. I.e. Skia supplies an msaa color attachment but has a special load from resolve load op. Though I think I would leave this sample count and remove the ones from the attachments.\n\nNow given that, I think we may actually want to be printing out something special when we are using a msaa color attachment with a load op. That in general may change the pipeline we use depending on the backend.",
+      "parentUuid": "cb5a436c_a67b3303",
+      "range": {
+        "startLine": 122,
+        "startChar": 62,
+        "endLine": 122,
+        "endChar": 74
+      },
+      "revId": "3fa0a1bad86e86f4f2c3c2c613bca06c8a18eda7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
