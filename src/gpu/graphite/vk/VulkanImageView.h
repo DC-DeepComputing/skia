@@ -42,6 +42,10 @@ public:
     VkImageView imageView() const { return fImageView; }
     Usage usage() const { return fUsage; }
 
+    // TODO - remove?
+    const VulkanSamplerYcbcrConversion* ycbcrConversion() const { return fYcbcrConversion.get(); }
+
+
 private:
     VulkanImageView(const VulkanSharedContext*, VkImageView, Usage,
                     sk_sp<VulkanSamplerYcbcrConversion>);

@@ -30,6 +30,17 @@
 
 using namespace skia_private;
 
+#if defined(SK_BUILD_FOR_WIN)
+ #include "C:\Program Files\RenderDoc\renderdoc_app.h"
+ #include <windows.h>
+#elif defined(SK_BUILD_FOR_UNIX)
+ #include <dlfcn.h>
+ #include "/usr/local/google/home/nicolettep/Downloads/renderdoc_1.27/include/renderdoc_app.h"
+#endif
+
+#include <cassert>
+RENDERDOC_API_1_1_2 *rdoc_api = nullptr;
+
 namespace skgpu::graphite {
 
 class VulkanDescriptorSet;
@@ -49,6 +60,24 @@ uint64_t clamp_ubo_binding_size(const uint64_t& offset,
 std::unique_ptr<VulkanCommandBuffer> VulkanCommandBuffer::Make(
         const VulkanSharedContext* sharedContext,
         VulkanResourceProvider* resourceProvider) {
+#if defined(SK_BUILD_FOR_WIN)
+    if(HMODULE mod = GetModuleHandleA("renderdoc.dll")) {
+        pRENDERDOC_GetAPI RENDERDOC_GetAPI =
+            (pRENDERDOC_GetAPI)GetProcAddress(mod, "RENDERDOC_GetAPI");
+        int ret = RENDERDOC_GetAPI(eRENDERDOC_API_Version_1_1_2, (void **)&rdoc_api);
+        assert(ret == 1);
+    }
+#elif defined(SK_BUILD_FOR_UNIX)
+    if (rdoc_api == nullptr) {
+        if(void *mod = dlopen("librenderdoc.so", RTLD_NOW | RTLD_NOLOAD)) {
+            pRENDERDOC_GetAPI RENDERDOC_GetAPI = (pRENDERDOC_GetAPI)dlsym(mod, "RENDERDOC_GetAPI");
+            int ret = RENDERDOC_GetAPI(eRENDERDOC_API_Version_1_1_2, (void **)&rdoc_api);
+            assert(ret == 1);
+        }
+    }
+#endif
+    if(rdoc_api) rdoc_api->StartFrameCapture(NULL, NULL);
+
     // Create VkCommandPool
     VkCommandPoolCreateFlags cmdPoolCreateFlags = VK_COMMAND_POOL_CREATE_TRANSIENT_BIT;
     if (sharedContext->isProtected() == Protected::kYes) {
@@ -121,6 +150,8 @@ VulkanCommandBuffer::~VulkanCommandBuffer() {
     // This should delete any command buffers as well.
     VULKAN_CALL(fSharedContext->interface(),
                 DestroyCommandPool(fSharedContext->device(), fPool, nullptr));
+
+    if(rdoc_api) rdoc_api->EndFrameCapture(NULL, NULL);
 }
 
 void VulkanCommandBuffer::onResetCommandBuffer() {
@@ -1098,13 +1129,25 @@ void VulkanCommandBuffer::recordTextureAndSamplerDescSet(
         fBindTextureSamplers = false;
         return;
     }
+
     // Query resource provider to obtain a descriptor set for the texture/samplers
     TArray<DescriptorData> descriptors(command.fNumTexSamplers);
     for (int i = 0; i < command.fNumTexSamplers; i++) {
-        descriptors.push_back({DescriptorType::kCombinedTextureSampler,
-                               /*descCount=*/1,
-                               /*bindingIdx=*/i,
-                               PipelineStageFlags::kFragmentShader});
+
+        auto sampler = static_cast<const VulkanSampler*>(
+                drawPass.getSampler(command.fSamplerIndices[i]));
+
+        std::vector<const Sampler*> immutableSamplers {};
+        if (sampler && sampler->ycbcrConversion()) {
+            immutableSamplers.push_back(sampler);
+        }
+
+        descriptors.push_back({
+                DescriptorType::kCombinedTextureSampler,
+                /*descCount=*/1,
+                /*bindingIdx=*/i,
+                PipelineStageFlags::kFragmentShader,
+                std::move(immutableSamplers)});
     }
     sk_sp<VulkanDescriptorSet> set = fResourceProvider->findOrCreateDescriptorSet(
             SkSpan<DescriptorData>{&descriptors.front(), descriptors.size()});
@@ -1134,12 +1177,19 @@ void VulkanCommandBuffer::recordTextureAndSamplerDescSet(
             return;
         }
 
+        // Assert texture, sampler ycbcr conversions are identical?
+        SkASSERT(sampler->ycbcrConversion() == texture->ycbcrConversion());
+
         VkDescriptorImageInfo& textureInfo = descriptorImageInfos.push_back();
         memset(&textureInfo, 0, sizeof(VkDescriptorImageInfo));
-        textureInfo.sampler = sampler->vkSampler();
-        textureInfo.imageView =
-                texture->getImageView(VulkanImageView::Usage::kShaderInput)->imageView();
+        textureInfo.sampler = sampler->ycbcrConversion() ? VK_NULL_HANDLE : sampler->vkSampler();
+
+        auto imgView = texture->getImageView(VulkanImageView::Usage::kShaderInput);
+
+        textureInfo.imageView = imgView->imageView();
         textureInfo.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+
+        SkASSERT(imgView->ycbcrConversion() == texture->ycbcrConversion());
 
         VkWriteDescriptorSet& writeInfo = writeDescriptorSets.push_back();
         memset(&writeInfo, 0, sizeof(VkWriteDescriptorSet));
@@ -1174,6 +1224,9 @@ void VulkanCommandBuffer::bindTextureSamplers() {
     fBindTextureSamplers = false;
     if (fTextureSamplerDescSetToBind != VK_NULL_HANDLE &&
         fActiveGraphicsPipeline->numTextureSamplers() == fNumTextureSamplers) {
+
+        // assert that immutable samplers are the same?
+
         VULKAN_CALL(fSharedContext->interface(),
                     CmdBindDescriptorSets(fPrimaryCommandBuffer,
                                           VK_PIPELINE_BIND_POINT_GRAPHICS,

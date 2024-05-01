@@ -183,6 +183,13 @@ void AddDitherBlock(const KeyContext& keyContext,
     DitherShaderBlock::AddBlock(keyContext, builder, gatherer, data);
 }
 
+// // TODO: Add array of data as input.
+// void AddDataBlock(const KeyContext& keyContext,
+//                   PaintParamsKeyBuilder* builder,
+//                   PipelineDataGatherer* gatherer) {
+
+// }
+
 void PaintParams::addPaintColorToKey(const KeyContext& keyContext,
                                      PaintParamsKeyBuilder* keyBuilder,
                                      PipelineDataGatherer* gatherer) const {
@@ -332,6 +339,38 @@ void PaintParams::toKey(const KeyContext& keyContext,
             kFixedFunctionBlendModeIDOffset + static_cast<int>(*finalBlendMode));
 
     builder->addBlock(fixedFuncBlendModeID);
+
+    // PaintParam keys that store data must have that data appended at the end of the key.
+    if (gatherer->hasTextures()) {
+        const std::vector<TextureDataBlock::SampledTexture>& sampledTextures =
+                gatherer->textureDataBlock().textures();
+
+        std::vector<uint32_t> cumulativeSamplerData = {0};
+        for (int i = 0; i < gatherer->textureDataBlock().numTextures(); i++) {
+            const SamplerDesc& samplerDesc = sampledTextures.at(i).second;
+
+            // TODO: Fix logic to better check if sampler needs this addt'l info appended.
+            bool containsAdditionalInfo = samplerDesc.format() || samplerDesc.formatFeatures();
+            if (!containsAdditionalInfo) {
+                continue;
+            }
+
+            cumulativeSamplerData.push_back(samplerDesc.desc());
+            cumulativeSamplerData.push_back((uint32_t)samplerDesc.format());
+
+            // TODO: Fix logic to better check if sampler uses external format.
+            // TODO: assign real value; debugging
+            bool usesExternalFormat = false;//samplerDesc.formatFeatures() != 0;
+            if (usesExternalFormat) {
+                cumulativeSamplerData.push_back((uint32_t)(samplerDesc.format() >> 32));
+                cumulativeSamplerData.push_back(samplerDesc.formatFeatures());
+            }
+        }
+        // Store the data length at index 0.
+        cumulativeSamplerData[0] = cumulativeSamplerData.size() - 1;
+
+        builder->addData(cumulativeSamplerData);
+    }
 }
 
 // TODO(b/330864257): Can be deleted once keys are determined by the Device draw.

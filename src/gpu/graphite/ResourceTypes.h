@@ -234,6 +234,7 @@ struct SamplerDesc {
 
         // TODO: Add aniso value when used.
 
+        SkDebugf("\nnonformatinfo: %u\n", conversionInfo.fNonFormatYcbcrConversionInfo);
         // Assert that fYcbcrConversionInfo does not exceed kMaxNumConversionInfoBits such that
         // the conversion information can fit within an uint32.
         SkASSERT(conversionInfo.fNonFormatYcbcrConversionInfo >> kMaxNumConversionInfoBits == 0);
