@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "faab6b6d_dbd119cc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-05-01T22:37:57Z",
+      "side": 1,
+      "message": "Kaylee, please help! I\u0027ve got everything building and GN working with the new ICU, but `make -C bazel generate_gni` emits an error that I am stumped on: https://paste.googleplex.com/5357567772983296",
+      "revId": "97fe8f2fe0c8ec94f69f6cb8cf49a10a4f19ee7d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
