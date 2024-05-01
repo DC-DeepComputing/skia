@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "63b221db_d6616823",
+        "filename": "src/effects/imagefilters/SkMatrixConvolutionImageFilter.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 452,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-05-01T18:33:32Z",
+      "side": 1,
+      "message": "Avoid a cast and addition inside the inner loop:\n\n`for (half x \u003d 0.5; x \u003c kMaxTextureKernelSize + 0.5; ++x)`\n...\n`half k \u003d kernel.eval(half2(x, 0.5)).a;`",
+      "range": {
+        "startLine": 452,
+        "startChar": 37,
+        "endLine": 452,
+        "endChar": 40
+      },
+      "revId": "876131b03d874202ceabf6e7bda8ebcdd7b145a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
