@@ -1,0 +1,211 @@
+lottie.schema.json invalid
+
+skottie_sample_1.json invalid
+
+skottie_sample_2.json invalid
+
+skottie_sample_multiframe.json invalid
+
+skottie_sample_search.json invalid
+
+skottie_sample_webfont.json valid
+skottie-3d-2planes.json valid
+skottie-3d-3planes.json valid
+skottie-3d-parenting-camera.json valid
+skottie-3d-parenting-nocamera.json valid
+skottie-3d-rotation-order.json valid
+skottie-auto-orient-2.json valid
+skottie-auto-orient.json valid
+skottie-bezier-extranormal.json invalid
+
+skottie-blackandwhite-effect.json valid
+skottie-blendmode-hardmix.json valid
+skottie-brightnesscontrast-legacy.json valid
+skottie-brightnesscontrast.json valid
+skottie-bulge.json valid
+skottie-camera-one-node.json valid
+skottie-camera-parent-1.json valid
+skottie-camera-parent-2.json valid
+skottie-camera-parent-3.json valid
+skottie-camera-precomp.json valid
+skottie-camera-rotation.json valid
+skottie-cctoner.json valid
+skottie-chained-mattes.json valid
+skottie-corner-pin-effect.json valid
+skottie-directional-blur.json valid
+skottie-displacement-expand.json invalid
+
+skottie-displacement-hsla.json invalid
+
+skottie-displacement-lfho.json invalid
+
+skottie-displacement-rgba.json invalid
+
+skottie-displacement-tiling.json invalid
+
+skottie-dropshadow-style.json valid
+skottie-effects-transform.json valid
+skottie-fill-effect.json valid
+skottie-fractalnoise-basic.json valid
+skottie-fractalnoise-block.json valid
+skottie-fractalnoise-cycle.json valid
+skottie-fractalnoise-linear.json valid
+skottie-fractalnoise-scalerotate.json valid
+skottie-fractalnoise-softlinear.json valid
+skottie-fractalnoise-sphere.json valid
+skottie-fractalnoise-suboptions.json valid
+skottie-fractalnoise-turbulentbasic.json valid
+skottie-fractalnoise-turbulentsharp.json valid
+skottie-fractalnoise-turbulentsmooth.json valid
+skottie-gaussian-blur.json valid
+skottie-glow-spread.json valid
+skottie-gradient-opacity.json valid
+skottie-gradient-ramp.json valid
+skottie-hidden-shapes-layers.json valid
+skottie-huesaturation-animated.json valid
+skottie-huesaturation-effect.json valid
+skottie-inline-fonts.json valid
+skottie-innerglow-style.json valid
+skottie-innershadow-style.json valid
+skottie-invert-effect-yiq.json valid
+skottie-invert-effect.json valid
+skottie-levels-effect.json valid
+skottie-line-height.json valid
+skottie-linear-wipe-effect.json valid
+skottie-luma-matte.json valid
+skottie-mask-feather.json valid
+skottie-masking-opaque.json valid
+skottie-masking-translucent.json valid
+skottie-matte-blendmode.json valid
+skottie-mergepaths-effect.json valid
+skottie-motion-blur-mask.json valid
+skottie-motion-blur-ph-360.json valid
+skottie-motion-blur-ph0.json valid
+skottie-motion-blur-ph360.json valid
+skottie-motiontile-effect-phase.json valid
+skottie-motiontile-effect.json valid
+skottie-multi-range-selectors.json valid
+skottie-nested-animation.json valid
+skottie-offsetpaths-effect.json valid
+skottie-outerglow-style.json valid
+skottie-phonehub-connecting_min.json invalid
+
+skottie-phonehub-connecting.json invalid
+
+skottie-phonehub-generic-error_min.json invalid
+
+skottie-phonehub-generic-error.json invalid
+
+skottie-phonehub-onboard_min.json invalid
+
+skottie-phonehub-onboard.json invalid
+
+skottie-phonehub-svgo-connecting_min.json invalid
+
+skottie-phonehub-svgo-connecting.json invalid
+
+skottie-phonehub-svgo-generic-error_min.json invalid
+
+skottie-phonehub-svgo-generic-error.json invalid
+
+skottie-phonehub-svgo-no-frills-connecting_min.json invalid
+
+skottie-phonehub-svgo-no-frills-connecting.json invalid
+
+skottie-phonehub-svgo-no-frills-generic-error_min.json invalid
+
+skottie-phonehub-svgo-no-frills-generic-error.json invalid
+
+skottie-phonehub-svgo-no-frills-onboard_min.json invalid
+
+skottie-phonehub-svgo-no-frills-onboard.json invalid
+
+skottie-phonehub-svgo-no-masks-connecting_min.json invalid
+
+skottie-phonehub-svgo-no-masks-connecting.json invalid
+
+skottie-phonehub-svgo-no-masks-onboard_min.json invalid
+
+skottie-phonehub-svgo-no-masks-onboard.json invalid
+
+skottie-phonehub-svgo-onboard_min.json invalid
+
+skottie-phonehub-svgo-onboard.json invalid
+
+skottie-prolevels-effect.json valid
+skottie-puckerbloat-effect.json valid
+skottie-radial-wipe-effect.json valid
+skottie-repeater.json valid
+skottie-sharpen.json valid
+skottie-shift-channels-effect.json valid
+skottie-sksl-color-filter.json valid
+skottie-sksl-effect.json valid
+skottie-slots.json valid
+skottie-sphere-controls.json valid
+skottie-sphere-effect.json valid
+skottie-sphere-lighting-types.json valid
+skottie-sphere-lighting.json valid
+skottie-sphere-transparecy.json valid
+skottie-text-allcaps.json valid
+skottie-text-animatedglyphs-01.json invalid
+
+skottie-text-animatedglyphs-02.json invalid
+
+skottie-text-animatedglyphs-03.json invalid
+
+skottie-text-animatedglyphs-04.json invalid
+
+skottie-text-animator-1.json valid
+skottie-text-animator-2.json valid
+skottie-text-animator-3.json valid
+skottie-text-animator-4.json valid
+skottie-text-animator-5.json valid
+skottie-text-animator-6.json valid
+skottie-text-animator-7.json valid
+skottie-text-animator-8.json valid
+skottie-text-animator-fillstrokeopacity.json valid
+skottie-text-animator-linespacing.json valid
+skottie-text-animator-opacity.json valid
+skottie-text-animator-strokewidth.json valid
+skottie-text-baseline-shift.json valid
+skottie-text-blur.json valid
+skottie-text-emptylines.json valid
+skottie-text-fill-over-stroke.json valid
+skottie-text-grouping-alignment-2.json valid
+skottie-text-grouping-alignment.json valid
+skottie-text-perchar-3d.json valid
+skottie-text-pointmode-downscaletofit.json valid
+skottie-text-pointmode-scaletofit.json valid
+skottie-text-resize-to-fit.json valid
+skottie-text-rtl.json valid
+skottie-text-scale-to-fit-maxlines.json valid
+skottie-text-scale-to-fit-minmax.json valid
+skottie-text-scale-to-fit.json valid
+skottie-text-strokejoin.json valid
+skottie-text-strokescale.json valid
+skottie-text-valign-2.json valid
+skottie-text-valign-bottom.json valid
+skottie-text-valign-scaletofit.json valid
+skottie-text-valign-visual-2.json valid
+skottie-text-valign-visual-scaletofit.json valid
+skottie-text-valign.json valid
+skottie-text-vertical-clip.json valid
+skottie-text-whitespace-align.json valid
+skottie-textpath-01.json valid
+skottie-textpath-02.json valid
+skottie-textpath-03.json valid
+skottie-textpath-04.json valid
+skottie-textpath-05.json valid
+skottie-textpath-paragraph-01.json valid
+skottie-textpath-paragraph-02.json valid
+skottie-textpath-paragraph-03.json valid
+skottie-textpath-tracking.json valid
+skottie-threshold-compositing.json valid
+skottie-threshold-effect.json valid
+skottie-time-reverse.json valid
+skottie-transform-effect.json valid
+skottie-transform-skew.json valid
+skottie-trimpath-fill.json valid
+skottie-trimpath-modes.json valid
+skottie-tritone-effect.json valid
+skottie-venetianblinds-effect.json valid
