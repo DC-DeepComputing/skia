@@ -16,6 +16,23 @@
       "message": "Gerrit is choking on this CL when trying to open tasks.json\nLGTM assuming it looks right",
       "revId": "4bcd5d78ca8190a9342f74873ac46f38a8b0184a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "539780d5_aa64a022",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-05-01T14:17:32Z",
+      "side": 1,
+      "message": "Is this a temporary thing related to https://skia-review.googlesource.com/c/buildbot/+/848396 ? Is this here so that can roll into Skia\u0027s `infra/` or is that one the more general fix?",
+      "revId": "4bcd5d78ca8190a9342f74873ac46f38a8b0184a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
