@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ae9d46c_bb56eb7d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2024-05-01T14:13:45Z",
+      "side": 1,
+      "message": "Gerrit is choking on this CL when trying to open tasks.json\nLGTM assuming it looks right",
+      "revId": "4bcd5d78ca8190a9342f74873ac46f38a8b0184a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
