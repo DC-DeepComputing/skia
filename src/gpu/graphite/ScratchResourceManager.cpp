@@ -10,12 +10,16 @@
 #include "src/gpu/graphite/Resource.h"
 #include "src/gpu/graphite/ResourceProvider.h"
 #include "src/gpu/graphite/Texture.h"
+#include "src/gpu/graphite/TextureProxy.h"
 
 namespace skgpu::graphite {
 
-ScratchResourceManager::ScratchResourceManager(ResourceProvider* resourceProvider)
-        : fResourceProvider(resourceProvider) {
+ScratchResourceManager::ScratchResourceManager(ResourceProvider* resourceProvider,
+                                               std::unique_ptr<ProxyReadCountMap> proxyCounts)
+        : fResourceProvider(resourceProvider)
+        , fProxyReadCounts(std::move(proxyCounts)) {
     SkASSERT(resourceProvider);
+    SkASSERT(fProxyReadCounts);
 }
 
 ScratchResourceManager::~ScratchResourceManager() = default;
@@ -70,6 +74,10 @@ void ScratchResourceManager::popScope() {
     int n = 0;
     while (fListenerStack.fromBack(n)) {
         n++;
+    }
+    SkDebugf("n = %d, size = %d\n", n, fListenerStack.size());
+    if (n < fListenerStack.size() - 1) {
+        SkDebugf("last %p\n", fListenerStack.fromBack(n+1));
     }
     SkASSERT(n < fListenerStack.size() && fListenerStack.fromBack(n) == nullptr);
     // Remove all non-null listeners after the most recent null entry AND the null entry
