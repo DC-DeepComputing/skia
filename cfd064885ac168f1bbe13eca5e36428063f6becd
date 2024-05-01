@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d58f6c3b_b1478491",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 20
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-05-01T16:52:45Z",
+      "side": 1,
+      "message": "We talked offline. For the M1s the performance is about the same as with the medium case so we could probably remove it for the M1s. My plan is to land this CL to get a Perf baseline and then experiment. Other devices maybe not be as accepting of just having a max/256 texture case.",
+      "parentUuid": "c1e63e21_ebe798b4",
+      "range": {
+        "startLine": 21,
+        "startChar": 84,
+        "endLine": 21,
+        "endChar": 87
+      },
+      "revId": "cfd064885ac168f1bbe13eca5e36428063f6becd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "15eb7482_c4adc7ba",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-05-01T15:05:38Z",
       "side": 1,
       "message": "It looks like we\u0027re using a raw shader for the kernel, and no subsetting on it, so that inner sample should hopefully hit the hw shader snippet. But we are likely hitting the subset image snippet when sampling the child shader and that is probably slower than what ganesh is doing.",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 129
+      },
+      "revId": "cfd064885ac168f1bbe13eca5e36428063f6becd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e77b9f8_6c1564c7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 20
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-05-01T16:52:45Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "15eb7482_c4adc7ba",
       "range": {
         "startLine": 25,
         "startChar": 0,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "259b3f61_152934f5",
+        "filename": "src/effects/imagefilters/SkMatrixConvolutionImageFilter.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-05-01T16:52:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ef503bfe_ddf8e3f8",
+      "range": {
+        "startLine": 68,
+        "startChar": 0,
+        "endLine": 69,
+        "endChar": 22
+      },
+      "revId": "cfd064885ac168f1bbe13eca5e36428063f6becd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6acd3aa5_8934568c",
@@ -83,6 +155,30 @@
       "writtenOn": "2024-05-01T15:05:38Z",
       "side": 1,
       "message": "nit: replace with ternary\n```suggestion\n    return kernelSize \u003c\u003d kMediumKernelSize ? kMediumKernelSize : kMaxKernelSize;\n```",
+      "range": {
+        "startLine": 174,
+        "startChar": 4,
+        "endLine": 178,
+        "endChar": 26
+      },
+      "revId": "cfd064885ac168f1bbe13eca5e36428063f6becd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8aa3dba2_0859be63",
+        "filename": "src/effects/imagefilters/SkMatrixConvolutionImageFilter.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-05-01T16:52:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6acd3aa5_8934568c",
       "range": {
         "startLine": 174,
         "startChar": 4,
@@ -116,6 +212,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6aed446a_b7c4914a",
+        "filename": "src/effects/imagefilters/SkMatrixConvolutionImageFilter.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-05-01T16:52:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "139f12a5_ef7ccbe4",
+      "range": {
+        "startLine": 191,
+        "startChar": 4,
+        "endLine": 191,
+        "endChar": 7
+      },
+      "revId": "cfd064885ac168f1bbe13eca5e36428063f6becd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9590aa1c_305dec74",
@@ -139,6 +259,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "374d7eda_e522ec5b",
+        "filename": "src/effects/imagefilters/SkMatrixConvolutionImageFilter.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 456,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-05-01T16:52:45Z",
+      "side": 1,
+      "message": "Yeah - I was going to fiddle with the code gen in a follow up CL",
+      "parentUuid": "9590aa1c_305dec74",
+      "range": {
+        "startLine": 455,
+        "startChar": 31,
+        "endLine": 456,
+        "endChar": 82
+      },
+      "revId": "cfd064885ac168f1bbe13eca5e36428063f6becd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7fe17693_95fbf3f8",
@@ -152,6 +296,30 @@
       "writtenOn": "2024-05-01T15:05:38Z",
       "side": 1,
       "message": "Similarly, this could go into `kAccumulateSkSL` since it\u0027s the same.\n\nThe only thing that makes me hesitate is that the uniform case has the extra loop with `j` and the kernelPos y update has to be inside the loop so the kernelPos handling can\u0027t be completely lifted into the header and accumulate templates.",
+      "range": {
+        "startLine": 463,
+        "startChar": 35,
+        "endLine": 467,
+        "endChar": 38
+      },
+      "revId": "cfd064885ac168f1bbe13eca5e36428063f6becd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "497a4c78_1489270b",
+        "filename": "src/effects/imagefilters/SkMatrixConvolutionImageFilter.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 467,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-05-01T16:52:45Z",
+      "side": 1,
+      "message": "Same as above - I was going to fiddle w/ this in a follow up CL",
+      "parentUuid": "7fe17693_95fbf3f8",
       "range": {
         "startLine": 463,
         "startChar": 35,
