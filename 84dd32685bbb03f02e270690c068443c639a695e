@@ -16,6 +16,29 @@
       "message": "ping",
       "revId": "84dd32685bbb03f02e270690c068443c639a695e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0dfe62a1_b327423b",
+        "filename": "src/core/SkPath.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1193,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-05-01T17:48:54Z",
+      "side": 1,
+      "message": "kWeight ? kConicWeight ?",
+      "range": {
+        "startLine": 1193,
+        "startChar": 19,
+        "endLine": 1193,
+        "endChar": 25
+      },
+      "revId": "84dd32685bbb03f02e270690c068443c639a695e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
