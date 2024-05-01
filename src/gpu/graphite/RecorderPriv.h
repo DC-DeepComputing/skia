@@ -32,6 +32,8 @@ public:
 
     ResourceProvider* resourceProvider() { return fRecorder->fResourceProvider.get(); }
 
+    SharedContext* sharedContext() { return fRecorder->fSharedContext.get(); }
+
     const RuntimeEffectDictionary* runtimeEffectDictionary() const {
         return fRecorder->fRuntimeEffectDict.get();
     }
