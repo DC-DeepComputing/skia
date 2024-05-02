@@ -16,6 +16,23 @@
       "message": "ptal -- this is some initial cleanup before diving into the ISO gainmap stuff. There\u0027s more cleanup to do, but I wanted to keep this one limited in size.",
       "revId": "264d0d43d5bd1c74b7be50b9ba3d0f9af038a75b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1babb2d0_ef0bcfcc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-05-02T19:30:57Z",
+      "side": 1,
+      "message": "I\u0027m just trying to understand the size implications here... We still have a GN variable for `skia_use_jpeg_gainmaps`, but that really just guards the XMP code (so I guess it indirectly guards anything to do with gainmaps, but no longer the multi-picture stuff). I see that our stripped-down code-size builds are growing with this, is the plan to also add the non-XMP gainmap as an always-on feature?",
+      "revId": "264d0d43d5bd1c74b7be50b9ba3d0f9af038a75b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
