@@ -336,6 +336,7 @@ bool UploadInstance::prepareResources(ResourceProvider* resourceProvider) {
     // "scratch" because they aren't going to be reused for anything else in a Recording. At the
     // same time, it could still go through the ScratchResourceManager and just never return them,
     // which is no different from instantiating them directly with the ResourceProvider.
+    SkDebugf("upload instantiation: %p\n", fTextureProxy.get());
     if (!TextureProxy::InstantiateIfNotLazy(resourceProvider, fTextureProxy.get())) {
         SKGPU_LOG_E("Could not instantiate texture proxy for UploadTask!");
         return false;

@@ -138,6 +138,7 @@ sk_sp<Surface> Surface::Make(Recorder* recorder,
     // TODO: This instantiation isn't necessary anymore when budgeted == kNo; there are some callers
     // that pass in kYes that still rely on this instantiation for Surface objects and need to have
     // their logic updated to work correctly with truly scratch textures.
+    SkDebugf("instantiating surface target: %p, %d\n", device->target(), (int) budgeted);
     if (!device->target()->instantiate(recorder->priv().resourceProvider())) {
         return nullptr;
     }

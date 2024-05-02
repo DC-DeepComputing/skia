@@ -59,6 +59,8 @@ void Image_Base::notifyInUse(Recorder* recorder, DrawContext* drawContext) const
             } else {
                 if (device->isScratchDevice()) {
                     sk_sp<Task> deviceDrawTask = device->lastDrawTask();
+                    SkDebugf("scratch device being drawn %p into %p\n", device->target(),
+                            drawContext ? drawContext->target() : nullptr);
                     if (deviceDrawTask) {
                         // Increment the pending read count for the device's target
                         recorder->priv().addPendingRead(device->target());
@@ -83,6 +85,8 @@ void Image_Base::notifyInUse(Recorder* recorder, DrawContext* drawContext) const
                         // child's DrawTask when it's drawn back into `device`, and then any post
                         // tasks that further modify the `device`'s target.
                         SkASSERT(device->recorder() && device->recorder() == recorder);
+                        SkDebugf("skipping linking parent draw %p to child %p\n",
+                                device->target(), drawContext ? drawContext->target() : nullptr);
                     }
 
                     // Scratch devices are often already marked immutable, but they are also the

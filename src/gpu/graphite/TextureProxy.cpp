@@ -85,6 +85,7 @@ bool TextureProxy::instantiate(ResourceProvider* resourceProvider) {
         return true;
     }
 
+    SkDebugf("instantiate() call for %p\n", this);
     fTexture = resourceProvider->findOrCreateScratchTexture(fDimensions, fInfo, fBudgeted);
     if (!fTexture) {
         return false;
@@ -114,6 +115,7 @@ bool TextureProxy::InstantiateIfNotLazy(ResourceProvider* resourceProvider,
         return true;
     }
 
+    SkDebugf("legacy instantiate: %p\n", textureProxy);
     return textureProxy->instantiate(resourceProvider);
 }
 
@@ -123,6 +125,7 @@ bool TextureProxy::InstantiateIfNotLazy(ScratchResourceManager* scratchManager,
         return true;
     }
 
+    SkDebugf("scratch instantiate: %p\n", textureProxy);
     textureProxy->fTexture = scratchManager->getScratchTexture(textureProxy->dimensions(),
                                                                textureProxy->textureInfo());
     if (!textureProxy->fTexture) {
@@ -163,6 +166,7 @@ sk_sp<TextureProxy> TextureProxy::Make(const Caps* caps,
     if (budgeted == Budgeted::kNo) {
         // Instantiate immediately to avoid races later on if the client starts to use the wrapping
         // object on multiple threads.
+        SkDebugf("instantiating non-budgeted proxy: %p\n", proxy.get());
         if (!proxy->instantiate(resourceProvider)) {
             return nullptr;
         }

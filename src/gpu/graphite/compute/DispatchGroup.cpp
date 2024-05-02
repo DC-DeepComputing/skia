@@ -40,6 +40,7 @@ bool DispatchGroup::prepareResources(ResourceProvider* resourceProvider) {
             SKGPU_LOG_W("Failed to validate bound texture. Dropping dispatch group!");
             return false;
         }
+        SkDebugf("dispatch instantiation: %p\n", fTextures[i].get());
         if (!TextureProxy::InstantiateIfNotLazy(resourceProvider, fTextures[i].get())) {
             SKGPU_LOG_W("Failed to instantiate bound texture. Dropping dispatch group!");
             return false;

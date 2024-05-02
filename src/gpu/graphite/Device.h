@@ -301,6 +301,8 @@ private:
     // in the long-term, these scratch draw tasks will only be executed if they are referenced by
     // some other task chain that makes it to the root list.
     sk_sp<Task> fLastTask;
+    // Estimated GPU memory required to instantiate child Devices for saveLayers.
+    size_t fEstimatedChildTextureMemory = 0;
 
     ClipStack fClip;
 

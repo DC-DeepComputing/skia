@@ -303,7 +303,7 @@ protected:
         SkFont font = ToolUtils::DefaultPortableFont();
         font.setSize(12);
         for (size_t i = 0; i < std::size(filterNames); ++i) {
-            canvas->drawString(filterNames[i], DX * i + MARGIN, 15, font, textPaint);
+            // canvas->drawString(filterNames[i], DX * i + MARGIN, 15, font, textPaint);
         }
 
         canvas->translate(MARGIN, MARGIN);
@@ -318,7 +318,7 @@ protected:
                 // filtered result.
                 SkPaint alpha;
                 alpha.setAlphaf(0.3f);
-                canvas->drawImage(mainImage, 0, 0, SkSamplingOptions(), &alpha);
+                // canvas->drawImage(mainImage, 0, 0, SkSamplingOptions(), &alpha);
 
                 this->drawImageWithFilter(canvas, mainImage, auxImage, filters[i], clipBound,
                                           subset, &outSubset);
@@ -329,7 +329,7 @@ protected:
                 if (fStrategy != Strategy::kSaveLayer) {
                     outSubsetBounds = &outSubset;
                 }
-                show_bounds(canvas, &clipBound, &subset, outSubsetBounds);
+                // show_bounds(canvas, &clipBound, &subset, outSubsetBounds);
 
                 canvas->translate(DX, 0);
             }
@@ -364,6 +364,7 @@ private:
             // Put the image filter on the layer
             SkPaint paint;
             paint.setImageFilter(filter);
+            SkDebugf("saveLayer\n");
             canvas->saveLayer(nullptr, &paint);
 
             // Draw the original subset of the image
@@ -406,6 +407,7 @@ private:
                                   SkSamplingOptions(), nullptr,
                                   SkCanvas::kStrict_SrcRectConstraint);
         }
+        SkDebugf("restore\n");
     }
 
     using INHERITED = GM;

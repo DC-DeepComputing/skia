@@ -53,6 +53,9 @@ Task::Status RenderPassTask::prepareResources(ResourceProvider* resourceProvider
                                               ScratchResourceManager* scratchManager,
                                               const RuntimeEffectDictionary* runtimeDict) {
     SkASSERT(fTarget);
+    if (!fTarget->isInstantiated() && !fTarget->isLazy()) {
+        SkDebugf("instantiating target for RPTask %p\n", fTarget.get());
+    }
     if (!TextureProxy::InstantiateIfNotLazy(scratchManager, fTarget.get())) {
         SKGPU_LOG_W("Failed to instantiate RenderPassTask target. Will not create renderpass!");
         SKGPU_LOG_W("Dimensions are (%d, %d).",
@@ -72,6 +75,7 @@ Task::Status RenderPassTask::prepareResources(ResourceProvider* resourceProvider
     // from the scratch manager, since at the equivalent point in the task graph's addCommands()
     // phase, the renderpass will have sampled from any scratch textures and their contents no
     // longer have to be preserved.
+    SkDebugf("notifying resources consumed into %p\n", fTarget.get());
     scratchManager->notifyResourcesConsumed();
     return Status::kSuccess;
 }

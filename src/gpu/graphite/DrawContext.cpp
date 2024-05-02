@@ -182,6 +182,7 @@ void DrawContext::recordDependentTask(sk_sp<Task> task) {
     // Adding `task` to the current DrawTask directly means that it will execute after any previous
     // dependent tasks and after any previous calls to flush(), but everything else that's being
     // collected on the DrawContext will execute after `task` once the next flush() is performed.
+    SkDebugf("adding %p to %p\n", task.get(), fCurrentDrawTask.get());
     fCurrentDrawTask->addTask(std::move(task));
 }
 
@@ -296,6 +297,7 @@ void DrawContext::flush(Recorder* recorder) {
     // else pass creation failed, DrawPass will have logged why. Don't discard the previously
     // accumulated tasks, however, since they may represent operations on an atlas that other
     // DrawContexts now implicitly depend on.
+    SkDebugf("flushed draw task %p\n", fCurrentDrawTask.get());
 }
 
 sk_sp<Task> DrawContext::snapDrawTask(Recorder* recorder) {
@@ -308,6 +310,7 @@ sk_sp<Task> DrawContext::snapDrawTask(Recorder* recorder) {
     }
 
     sk_sp<Task> snappedTask = std::move(fCurrentDrawTask);
+    SkDebugf("snapped %p\n", snappedTask.get());
     fCurrentDrawTask = sk_make_sp<DrawTask>(fTarget);
     return snappedTask;
 }

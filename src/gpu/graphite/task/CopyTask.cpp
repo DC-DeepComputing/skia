@@ -164,6 +164,7 @@ Task::Status CopyTextureToTextureTask::prepareResources(ResourceProvider* resour
     // entirely and they cannot participate until they've been moved into scoping tasks like
     // DrawTask first. In particular, for texture-to-texture copies, they should be scoped to not
     // invoke pending listeners for a subsequent RenderPassTask.
+    SkDebugf("copy src instantiation: %p\n", fSrcProxy.get());
     if (!TextureProxy::InstantiateIfNotLazy(resourceProvider, fSrcProxy.get())) {
         SKGPU_LOG_E("Could not instantiate src texture proxy for CopyTextureToTextureTask!");
         return Status::kFail;
@@ -172,6 +173,7 @@ Task::Status CopyTextureToTextureTask::prepareResources(ResourceProvider* resour
     // that texture can be returned need to be worked out. While brittle, all current use cases
     // of scratch texture-to-texture copies have the dst used immediately by the next task, so it
     // could just add a pending listener that returns the texture w/o any read counting.
+    SkDebugf("copy dst instantiation: %p\n", fDstProxy.get());
     if (!TextureProxy::InstantiateIfNotLazy(resourceProvider, fDstProxy.get())) {
         SKGPU_LOG_E("Could not instantiate dst texture proxy for CopyTextureToTextureTask!");
         return Status::kFail;
