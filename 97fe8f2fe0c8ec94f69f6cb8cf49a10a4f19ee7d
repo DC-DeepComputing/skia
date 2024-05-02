@@ -88,6 +88,24 @@
       "parentUuid": "fb907704_6122d0d7",
       "revId": "97fe8f2fe0c8ec94f69f6cb8cf49a10a4f19ee7d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ae74ca3e_c0398d29",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-05-02T12:16:55Z",
+      "side": 1,
+      "message": "\"ICU has a sister project ICU4J that extends the internationalization capabilities of Java to a level similar to ICU. The ICU C/C++ project is also called ICU4C when a distinction is necessary.\"\n\nhttps://unicode-org.github.io/icu/userguide/icu4c/#introduction",
+      "parentUuid": "b3a62d0d_480f9185",
+      "revId": "97fe8f2fe0c8ec94f69f6cb8cf49a10a4f19ee7d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
