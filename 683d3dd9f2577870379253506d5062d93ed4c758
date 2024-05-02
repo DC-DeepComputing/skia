@@ -16,6 +16,115 @@
       "message": "PTAL! ^-^",
       "revId": "683d3dd9f2577870379253506d5062d93ed4c758",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01001273_610a7d71",
+        "filename": "gm/ycbcrimage.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-05-02T12:47:36Z",
+      "side": 1,
+      "message": "This should probably be updated to handle the case where both Graphite and Ganesh are built into the same binary",
+      "revId": "683d3dd9f2577870379253506d5062d93ed4c758",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05342100_ee7e6ad0",
+        "filename": "tools/gpu/vk/VkYcbcrSamplerHelper.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-05-02T12:47:36Z",
+      "side": 1,
+      "message": "it seems like we could remove the \u0027\\n\u0027 here and have the params move up a line",
+      "range": {
+        "startLine": 57,
+        "startChar": 27,
+        "endLine": 57,
+        "endChar": 28
+      },
+      "revId": "683d3dd9f2577870379253506d5062d93ed4c758",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eba6d24e_b1db37da",
+        "filename": "tools/gpu/vk/VkYcbcrSamplerHelper.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-05-02T12:47:36Z",
+      "side": 1,
+      "message": "We would usually pass this as a \"uint32_t*\" to indicate at the call site that the value can change.",
+      "range": {
+        "startLine": 60,
+        "startChar": 9,
+        "endLine": 60,
+        "endChar": 34
+      },
+      "revId": "683d3dd9f2577870379253506d5062d93ed4c758",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc2fc8b4_57bc2595",
+        "filename": "tools/gpu/vk/VkYcbcrSamplerHelper.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-05-02T12:47:36Z",
+      "side": 1,
+      "message": "Both can be compiled in at once",
+      "range": {
+        "startLine": 78,
+        "startChar": 0,
+        "endLine": 78,
+        "endChar": 19
+      },
+      "revId": "683d3dd9f2577870379253506d5062d93ed4c758",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9bc9435_256f4822",
+        "filename": "tools/gpu/vk/VkYcbcrSamplerHelper.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-05-02T12:47:36Z",
+      "side": 1,
+      "message": "This should go down a line",
+      "range": {
+        "startLine": 37,
+        "startChar": 51,
+        "endLine": 37,
+        "endChar": 52
+      },
+      "revId": "683d3dd9f2577870379253506d5062d93ed4c758",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
