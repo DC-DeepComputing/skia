@@ -120,6 +120,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a5047c49_553a71b8",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 468,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-05-02T15:13:11Z",
+      "side": 0,
+      "message": "Acknowledged",
+      "parentUuid": "da291ad3_b674596a",
+      "range": {
+        "startLine": 465,
+        "startChar": 0,
+        "endLine": 468,
+        "endChar": 0
+      },
+      "revId": "4dbf9ad5fa1eeebfef1c6f4c76ef419c250d151b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "33de113a_12e884e3",
@@ -181,6 +205,30 @@
       "side": 0,
       "message": "9h queue yesterday https://screenshot.googleplex.com/7dvnbucmop5eQ5E",
       "parentUuid": "f908255e_112586c3",
+      "range": {
+        "startLine": 689,
+        "startChar": 0,
+        "endLine": 691,
+        "endChar": 0
+      },
+      "revId": "4dbf9ad5fa1eeebfef1c6f4c76ef419c250d151b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e8f0334_038d1e87",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 691,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-05-02T15:13:11Z",
+      "side": 0,
+      "message": "Acknowledged",
+      "parentUuid": "e5229ac8_56475f4c",
       "range": {
         "startLine": 689,
         "startChar": 0,
