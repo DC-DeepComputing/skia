@@ -283,7 +283,8 @@ bool TextAtlasManager::initAtlas(MaskFormat format) {
                                           plotDimensions.width(), plotDimensions.height(),
                                           this,
                                           fAllowMultitexturing,
-                                          nullptr,
+                                          DrawAtlas::UseStorageTextures::kNo,
+                                          /*evictor=*/nullptr,
                                           /*label=*/"TextAtlas");
         if (!fAtlases[index]) {
             return false;
