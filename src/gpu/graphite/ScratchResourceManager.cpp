@@ -22,16 +22,20 @@ ScratchResourceManager::ScratchResourceManager(ResourceProvider* resourceProvide
     SkASSERT(fProxyReadCounts);
 }
 
-ScratchResourceManager::~ScratchResourceManager() = default;
+ScratchResourceManager::~ScratchResourceManager() {
+    SkDebugf("get = %d, new textures = %d, reused textures = %d, returned = %d\n", fGetCount, fNewResourceCount, fReuseCount, fReturnedCount);
+}
 
 sk_sp<Texture> ScratchResourceManager::getScratchTexture(SkISize dimensions,
                                                          const TextureInfo& info) {
+    fGetCount++;
     for (ScratchResource& sr : fScratchResources) {
         if (!sr.fAvailable) { continue; }
 
         if (const Texture* t = sr.fResource->asTexture()) {
             if (t->dimensions() == dimensions && t->textureInfo() == info) {
                 sr.fAvailable = false;
+                fReuseCount ++;
                 return sk_ref_sp(t);
             }
         }
@@ -43,6 +47,7 @@ sk_sp<Texture> ScratchResourceManager::getScratchTexture(SkISize dimensions,
             dimensions, info, Budgeted::kYes);
     if (newScratchTexture) {
         fScratchResources.push_back({newScratchTexture, /*fAvailable=*/false});
+        fNewResourceCount++;
     }
     return newScratchTexture;
 }
@@ -52,6 +57,7 @@ void ScratchResourceManager::returnResource(sk_sp<Resource> resource) {
         if (sr.fResource.get() == resource.get()) {
             SkASSERT(!sr.fAvailable);
             sr.fAvailable = true;
+            fReturnedCount++;
             return;
         }
     }
@@ -62,6 +68,7 @@ void ScratchResourceManager::returnResource(sk_sp<Resource> resource) {
 void ScratchResourceManager::pushScope() {
     // Push a null pointer to mark the beginning of the list of listeners in the next depth
     fListenerStack.push_back(nullptr);
+    SkDebugf("push scope, depth = %d\n", fListenerStack.size());
 }
 
 void ScratchResourceManager::popScope() {
@@ -78,6 +85,7 @@ void ScratchResourceManager::popScope() {
     SkASSERT(n < fListenerStack.size() && fListenerStack.fromBack(n) == nullptr);
     // Remove all non-null listeners after the most recent null entry AND the null entry
     fListenerStack.pop_back_n(n + 1);
+    SkDebugf("popping scope: %d, %d\n", n+1, fListenerStack.size());
 }
 
 void ScratchResourceManager::notifyResourcesConsumed() {
@@ -86,6 +94,7 @@ void ScratchResourceManager::notifyResourcesConsumed() {
 
     int n = 0;
     while (PendingUseListener* listener = fListenerStack.fromBack(n)) {
+        SkDebugf("listener %p\n", listener);
         listener->onUseCompleted(this);
         n++;
     }
@@ -94,6 +103,7 @@ void ScratchResourceManager::notifyResourcesConsumed() {
     // marks the start of this scope boundary.
     if (n > 0) {
         fListenerStack.pop_back_n(n);
+        SkDebugf("notifyResourcesConsumed remove %d, %d\n", n, fListenerStack.size());
     }
 }
 

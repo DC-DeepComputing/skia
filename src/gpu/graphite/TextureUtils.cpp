@@ -57,6 +57,8 @@ using SkImages::GraphitePromiseTextureFulfillProc;
 using SkImages::GraphitePromiseTextureFulfillContext;
 using SkImages::GraphitePromiseTextureReleaseProc;
 
+#define GRAPHITE_USE_APPROX_FIT_FOR_FILTERS
+
 namespace skgpu::graphite {
 
 namespace {
@@ -72,6 +74,7 @@ sk_sp<Surface> make_renderable_scratch_surface(
 
     // TODO(b/323886870): Historically the scratch surfaces used here were exact-fit but they should
     // be able to be approx-fit and uninstantiated.
+    SkDebugf("make_renderable_scratch_surface\n");
     return Surface::MakeScratch(recorder,
                                 info.makeColorType(ct),
                                 Budgeted::kYes,
@@ -125,6 +128,7 @@ sk_sp<SkSpecialImage> eval_blur(Recorder* recorder,
 #endif
                                outProps,
                                LoadOp::kDiscard);
+    SkDebugf("eval_blur device proxy %p\n", device->target());
     if (!device) {
         return nullptr;
     }
@@ -554,6 +558,7 @@ sk_sp<SkImage> RescaleImage(Recorder* recorder,
 
     // make a Surface matching dstInfo to rescale into
     SkSurfaceProps surfaceProps = {};
+    SkDebugf("rescale image\n");
     sk_sp<SkSurface> dst = make_renderable_scratch_surface(recorder, dstInfo, &surfaceProps);
     if (!dst) {
         return nullptr;
@@ -584,7 +589,7 @@ sk_sp<SkImage> RescaleImage(Recorder* recorder,
     // Within a rescaling pass tempInput is read from and tempOutput is written to.
     // At the end of the pass tempOutput's texture is wrapped and assigned to tempInput.
     const SkImageInfo& srcImageInfo = srcImage->imageInfo();
-    sk_sp<SkImage> tempInput(new Image(imageView, srcImageInfo.colorInfo()));
+    sk_sp<SkImage> tempInput(sk_ref_sp(srcImage)); //new Image(imageView, srcImageInfo.colorInfo()));
     sk_sp<SkSurface> tempOutput;
 
     // Assume we should ignore the rescale linear request if the surface has no color space since
@@ -827,7 +832,7 @@ public:
                                                   this->colorType(),
                                                   kPremul_SkAlphaType,
                                                   std::move(colorSpace));
-        return skgpu::graphite::Device::Make(fRecorder,
+        auto d = skgpu::graphite::Device::Make(fRecorder,
                                              imageInfo,
                                              skgpu::Budgeted::kYes,
                                              skgpu::Mipmapped::kNo,
@@ -838,6 +843,8 @@ public:
 #endif
                                              props ? *props : this->surfaceProps(),
                                              skgpu::graphite::LoadOp::kDiscard);
+        SkDebugf("filterresult proxy = %p\n", d->target());
+        return d;
     }
 
     sk_sp<SkSpecialImage> makeImage(const SkIRect& subset, sk_sp<SkImage> image) const override {
