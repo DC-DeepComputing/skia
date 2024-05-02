@@ -54,7 +54,7 @@ std::unique_ptr<DrawAtlas> DrawAtlas::Make(SkColorType colorType, size_t bpp, in
                                            AtlasGenerationCounter* generationCounter,
                                            AllowMultitexturing allowMultitexturing,
                                            UseStorageTextures useStorageTextures,
-                                           PlotEvictionCallback* evictor,
+                                          PlotEvictionCallback* evictor,
                                            std::string_view label) {
     std::unique_ptr<DrawAtlas> atlas(new DrawAtlas(colorType, bpp, width, height,
                                                    plotWidth, plotHeight, generationCounter,
