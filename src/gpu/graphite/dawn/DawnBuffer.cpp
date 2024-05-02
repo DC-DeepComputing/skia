@@ -77,9 +77,9 @@ sk_sp<DawnBuffer> DawnBuffer::Make(const DawnSharedContext* sharedContext,
     }
 
     wgpu::BufferDescriptor desc;
-#ifdef SK_DEBUG
+#if defined(SK_GRAPHITE_DAWN_LABEL)
     desc.label = kBufferTypeNames[static_cast<int>(type)];
-#endif
+#endif  // defined(SK_GRAPHITE_DAWN_LABEL)
     desc.usage = usage;
     desc.size  = size;
     // Specifying mappedAtCreation avoids clearing the buffer on the GPU which can cause MapAsync to

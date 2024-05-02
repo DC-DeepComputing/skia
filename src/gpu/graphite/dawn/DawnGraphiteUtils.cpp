@@ -153,8 +153,9 @@ bool DawnCompileWGSLShaderModule(const DawnSharedContext* sharedContext,
 
     wgpu::ShaderModuleDescriptor desc;
     desc.nextInChain = &wgslDesc;
+#if defined(SK_GRAPHITE_DAWN_LABEL)
     desc.label = label;
-
+#endif  // defined(SK_GRAPHITE_DAWN_LABEL)
     *module = sharedContext->device().CreateShaderModule(&desc);
 
     return check_shader_module(module, wgsl.c_str(), errorHandler);
