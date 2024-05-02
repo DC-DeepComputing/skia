@@ -39,7 +39,9 @@ TestFontCollection::TestFontCollection(const std::string& resourceDir, bool test
     }
 
     fFontsFound = fFontProvider->countFamilies();
-    if (testOnly) {
+    if (!loadFonts) {
+        this->setDefaultFontManager(fFontProvider);
+    } else if (testOnly) {
         this->setTestFontManager(fFontProvider);
     } else {
         this->setAssetFontManager(fFontProvider);
