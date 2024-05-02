@@ -22,6 +22,30 @@
       },
       "revId": "4480ab06de48042e38da23af9a2606cd1e1d43c7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a8195ee_52f7fff3",
+        "filename": "bazel/deps_parser/deps_parser.go",
+        "patchSetId": 3
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-05-02T20:47:29Z",
+      "side": 1,
+      "message": "It looks like there is `patch_cmds_win`?",
+      "parentUuid": "0619d486_3cf03622",
+      "range": {
+        "startLine": 41,
+        "startChar": 29,
+        "endLine": 41,
+        "endChar": 116
+      },
+      "revId": "4480ab06de48042e38da23af9a2606cd1e1d43c7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
