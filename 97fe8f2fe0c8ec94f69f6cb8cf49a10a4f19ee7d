@@ -70,6 +70,24 @@
       "parentUuid": "ec9bd66d_dfd193b8",
       "revId": "97fe8f2fe0c8ec94f69f6cb8cf49a10a4f19ee7d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3a62d0d_480f9185",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-05-02T12:08:52Z",
+      "side": 1,
+      "message": "I thought ICU4C was a distinct project from icu. I\u0027ll talk to Julia about it",
+      "parentUuid": "fb907704_6122d0d7",
+      "revId": "97fe8f2fe0c8ec94f69f6cb8cf49a10a4f19ee7d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
