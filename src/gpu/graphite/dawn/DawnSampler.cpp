@@ -81,7 +81,7 @@ sk_sp<DawnSampler> DawnSampler::Make(const DawnSharedContext* sharedContext,
     desc.maxAnisotropy = 1;
     desc.compare       = wgpu::CompareFunction::Undefined;
 
-#ifdef SK_DEBUG
+#if defined(SK_GRAPHITE_DAWN_LABEL)
     static const char* tileModeLabels[] = {
         "Clamp",
         "Repeat",
@@ -103,7 +103,7 @@ sk_sp<DawnSampler> DawnSampler::Make(const DawnSharedContext* sharedContext,
     label.append(minMagFilterLabels[static_cast<int>(samplingOptions.filter)]);
     label.append(mipFilterLabels[static_cast<int>(samplingOptions.mipmap)]);
     desc.label = label.c_str();
-#endif
+#endif  // defined(SK_GRAPHITE_DAWN_LABEL)
 
     auto sampler = sharedContext->device().CreateSampler(&desc);
     if (!sampler) {

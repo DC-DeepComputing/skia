@@ -45,9 +45,9 @@ wgpu::RenderPipeline create_blit_render_pipeline(const DawnSharedContext* shared
                                                  wgpu::TextureFormat renderPassDepthStencilFormat,
                                                  int numSamples) {
     wgpu::RenderPipelineDescriptor descriptor;
-#if defined(SK_DEBUG)
+#if defined(SK_GRAPHITE_DAWN_LABEL)
     descriptor.label = label;
-#endif
+#endif  // defined(SK_GRAPHITE_DAWN_LABEL)
     descriptor.layout = nullptr;
 
     wgpu::ColorTargetState colorTarget;
@@ -378,9 +378,9 @@ const wgpu::BindGroupLayout& DawnResourceProvider::getOrCreateUniformBuffersBind
     entries[2].buffer.minBindingSize = 0;
 
     wgpu::BindGroupLayoutDescriptor groupLayoutDesc;
-#if defined(SK_DEBUG)
+#if defined(SK_GRAPHITE_DAWN_LABEL)
     groupLayoutDesc.label = "Uniform buffers bind group layout";
-#endif
+#endif  // defined(SK_GRAPHITE_DAWN_LABEL)
 
     groupLayoutDesc.entryCount = entries.size();
     groupLayoutDesc.entries = entries.data();
@@ -409,9 +409,9 @@ DawnResourceProvider::getOrCreateSingleTextureSamplerBindGroupLayout() {
     entries[1].texture.multisampled = false;
 
     wgpu::BindGroupLayoutDescriptor groupLayoutDesc;
-#if defined(SK_DEBUG)
+#if defined(SK_GRAPHITE_DAWN_LABEL)
     groupLayoutDesc.label = "Single texture + sampler bind group layout";
-#endif
+#endif  // defined(SK_GRAPHITE_DAWN_LABEL)
 
     groupLayoutDesc.entryCount = entries.size();
     groupLayoutDesc.entries = entries.data();
@@ -424,9 +424,9 @@ DawnResourceProvider::getOrCreateSingleTextureSamplerBindGroupLayout() {
 const wgpu::Buffer& DawnResourceProvider::getOrCreateNullBuffer() {
     if (!fNullBuffer) {
         wgpu::BufferDescriptor desc;
-#if defined(SK_DEBUG)
+#if defined(SK_GRAPHITE_DAWN_LABEL)
         desc.label = "UnusedBufferSlot";
-#endif
+#endif  // defined(SK_GRAPHITE_DAWN_LABEL)
         desc.usage = wgpu::BufferUsage::CopyDst | wgpu::BufferUsage::Uniform |
                      wgpu::BufferUsage::Storage;
         desc.size = kBufferBindingSizeAlignment;

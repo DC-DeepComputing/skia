@@ -163,7 +163,9 @@ sk_sp<DawnComputePipeline> DawnComputePipeline::Make(const DawnSharedContext* sh
     }
 
     wgpu::PipelineLayoutDescriptor pipelineLayoutDesc;
+#if defined(SK_GRAPHITE_DAWN_LABEL)
     pipelineLayoutDesc.label = step->name();
+#endif  // defined(SK_GRAPHITE_DAWN_LABEL)
     pipelineLayoutDesc.bindGroupLayoutCount = 1;
     pipelineLayoutDesc.bindGroupLayouts = &bindGroupLayout;
     wgpu::PipelineLayout layout = device.CreatePipelineLayout(&pipelineLayoutDesc);
@@ -172,7 +174,9 @@ sk_sp<DawnComputePipeline> DawnComputePipeline::Make(const DawnSharedContext* sh
     }
 
     wgpu::ComputePipelineDescriptor descriptor;
+#if defined(SK_GRAPHITE_DAWN_LABEL)
     descriptor.label = step->name();
+#endif  // defined(SK_GRAPHITE_DAWN_LABEL)
     descriptor.compute.module = std::move(shaderModule);
     descriptor.compute.entryPoint = entryPointName.c_str();
     descriptor.layout = std::move(layout);

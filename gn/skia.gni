@@ -92,6 +92,8 @@ declare_args() {
   skia_enable_graphite = false
   skia_use_zlib = true
 
+  skia_enable_graphite_dawn_label = is_debug
+
   if (is_ios) {
     skia_ios_identity = ".*Google.*"
     skia_ios_profile = "Google Development"

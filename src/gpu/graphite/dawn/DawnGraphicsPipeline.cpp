@@ -322,8 +322,9 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(const DawnSharedContext* 
     std::string pipelineLabel =
             GetPipelineLabel(sharedContext->shaderCodeDictionary(), renderPassDesc, step, paintID);
     wgpu::RenderPipelineDescriptor descriptor;
+#if defined(SK_GRAPHITE_DAWN_LABEL)
     descriptor.label = pipelineLabel.c_str();
-
+#endif  // defined(SK_GRAPHITE_DAWN_LABEL)
     // Fragment state
     skgpu::BlendEquation equation = blendInfo.fEquation;
     skgpu::BlendCoeff srcCoeff = blendInfo.fSrcBlend;
@@ -414,9 +415,9 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(const DawnSharedContext* 
                 }
 
                 wgpu::BindGroupLayoutDescriptor groupLayoutDesc;
-#if defined(SK_DEBUG)
+#if defined(SK_GRAPHITE_DAWN_LABEL)
                 groupLayoutDesc.label = vsSkSLInfo.fLabel.c_str();
-#endif
+#endif  // defined(SK_GRAPHITE_DAWN_LABEL)
                 groupLayoutDesc.entryCount = entries.size();
                 groupLayoutDesc.entries = entries.data();
                 groupLayouts[1] = device.CreateBindGroupLayout(&groupLayoutDesc);
@@ -427,9 +428,9 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(const DawnSharedContext* 
         }
 
         wgpu::PipelineLayoutDescriptor layoutDesc;
-#if defined(SK_DEBUG)
+#if defined(SK_GRAPHITE_DAWN_LABEL)
         layoutDesc.label = fsSkSLInfo.fLabel.c_str();
-#endif
+#endif  // defined(SK_GRAPHITE_DAWN_LABEL)
         layoutDesc.bindGroupLayoutCount =
             hasFragmentSamplers ? groupLayouts.size() : groupLayouts.size() - 1;
         layoutDesc.bindGroupLayouts = groupLayouts.data();
