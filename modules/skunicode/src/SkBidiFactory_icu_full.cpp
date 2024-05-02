@@ -8,6 +8,10 @@
 
 #include "modules/skunicode/src/SkUnicode_icupriv.h"
 
+#include <ubidi.h>
+#include <umachine.h>
+#include <utypes.h>
+
 const char* SkBidiICUFactory::errorName(UErrorCode status) const {
     return SkGetICULib()->f_u_errorName(status);
 }
