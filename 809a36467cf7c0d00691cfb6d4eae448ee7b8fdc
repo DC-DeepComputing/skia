@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89121e9f_2f8ee3d2",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 980,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-05-02T12:11:44Z",
+      "side": 1,
+      "message": "nit: let\u0027s remove this param name to make it even more clear that we ignore it in this implementation.",
+      "range": {
+        "startLine": 980,
+        "startChar": 54,
+        "endLine": 980,
+        "endChar": 63
+      },
+      "revId": "809a36467cf7c0d00691cfb6d4eae448ee7b8fdc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
