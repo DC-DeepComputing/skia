@@ -10,6 +10,7 @@
 
 #include "include/core/SkRefCnt.h"
 
+#include <cstddef>
 #include <cstdint>
 #include <memory>
 #include <vector>
