@@ -34,6 +34,24 @@
       "parentUuid": "faab6b6d_dbd119cc",
       "revId": "97fe8f2fe0c8ec94f69f6cb8cf49a10a4f19ee7d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec9bd66d_dfd193b8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-05-02T01:09:59Z",
+      "side": 1,
+      "message": "I tried just hacking them in and ran into another problem. These BUILD.bazel files expect the project to be called \"icu4c\", not \"icu\", so they can\u0027t work unless we change our name for ICU to `@icu4c` instead of `@icu`.\n\nhttps://github.com/unicode-org/icu/blob/main/icu4c/source/i18n/BUILD.bazel#L75",
+      "parentUuid": "4e07e93e_fb917a3e",
+      "revId": "97fe8f2fe0c8ec94f69f6cb8cf49a10a4f19ee7d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
