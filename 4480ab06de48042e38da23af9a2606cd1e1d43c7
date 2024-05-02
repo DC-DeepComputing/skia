@@ -94,6 +94,30 @@
       },
       "revId": "4480ab06de48042e38da23af9a2606cd1e1d43c7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75744d10_2fe75f78",
+        "filename": "bazel/deps_parser/deps_parser.go",
+        "patchSetId": 3
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-05-02T20:52:35Z",
+      "side": 1,
+      "message": "So add commas or use echo.",
+      "parentUuid": "7e2f4c4c_386b6e33",
+      "range": {
+        "startLine": 41,
+        "startChar": 29,
+        "endLine": 41,
+        "endChar": 116
+      },
+      "revId": "4480ab06de48042e38da23af9a2606cd1e1d43c7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
