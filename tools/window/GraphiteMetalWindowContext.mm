@@ -17,6 +17,7 @@
 #include "include/gpu/graphite/mtl/MtlGraphiteUtils.h"
 #include "include/private/gpu/graphite/ContextOptionsPriv.h"
 #include "src/base/SkMathPriv.h"
+#include "src/gpu/graphite/ContextPriv.h"
 #include "tools/GpuToolUtils.h"
 #include "tools/window/GraphiteMetalWindowContext.h"
 
