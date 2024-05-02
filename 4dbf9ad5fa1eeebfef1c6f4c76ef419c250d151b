@@ -74,6 +74,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a40b4977_19c82c11",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 468,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-05-02T15:04:57Z",
+      "side": 0,
+      "message": "Actually even from your link, the most recent job spent 1h 51m 38s in Pending status",
+      "parentUuid": "cc245a84_62f30d4d",
+      "range": {
+        "startLine": 465,
+        "startChar": 0,
+        "endLine": 468,
+        "endChar": 0
+      },
+      "revId": "4dbf9ad5fa1eeebfef1c6f4c76ef419c250d151b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "33de113a_12e884e3",
         "filename": "infra/bots/jobs.json",
         "patchSetId": 1
