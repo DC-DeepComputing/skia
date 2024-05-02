@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "76eb8935_ad8e79cf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-05-02T21:37:00Z",
+      "side": 1,
+      "message": "lgtm with some comments",
+      "revId": "8ca58cbbf9a8a59e0fb3037c036d48d9fb451940",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3abaa4cb_18d3c6da",
+        "filename": "src/gpu/graphite/ScratchResourceManager.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-05-02T21:37:00Z",
+      "side": 1,
+      "message": "nit: I don\u0027t remember what the latest Skia style decision on explicit constructors was but consider marking this as explicit.",
+      "revId": "8ca58cbbf9a8a59e0fb3037c036d48d9fb451940",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04040e8c_832a0799",
+        "filename": "src/gpu/graphite/ScratchResourceManager.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-05-02T21:37:00Z",
+      "side": 1,
+      "message": "nit: Maybe refrain from using \"return\" in the documentation and use \"get\", since returning may also mean \"returning a resource for reuse\".",
+      "revId": "8ca58cbbf9a8a59e0fb3037c036d48d9fb451940",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3875abfc_c9aacf6b",
+        "filename": "src/gpu/graphite/ScratchResourceManager.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-05-02T21:37:00Z",
+      "side": 1,
+      "message": "My answer to this is yes, though there is a question of whether to maintain the `ScratchBuffer` wrapper that exists today, which supports sub-allocations and automatically returns a buffer back to the pool when it goes out of scope. I generally like the RAII in that approach while also supporting an explicit return.  \n\nI\u0027ve been meaning to generalize the current `DrawBufferManager::getScratchBuffer`, which is limited to private storage buffers, to uniform and vertex buffers that are transfer copy destinations (which we chatted about today). I can explore moving that logic over here as it\u0027s not particularly tied to DrawBufferManager, although there will be some common logic around managing alignments for the specific usage.\n\nI can picture a scenario in which DrawBufferManager calls out to ScratchResourceManager when it needs a copy destination for transfer buffers.",
+      "revId": "8ca58cbbf9a8a59e0fb3037c036d48d9fb451940",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e144d8c8_1239beb6",
+        "filename": "src/gpu/graphite/ScratchResourceManager.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-05-02T21:37:00Z",
+      "side": 1,
+      "message": "To make sure I\u0027m understanding this correctly: `popScope()` will invalidate and remove the listeners in the scope without notifying them?",
+      "revId": "8ca58cbbf9a8a59e0fb3037c036d48d9fb451940",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
