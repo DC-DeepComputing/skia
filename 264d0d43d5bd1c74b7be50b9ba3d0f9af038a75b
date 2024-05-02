@@ -33,6 +33,24 @@
       "message": "I\u0027m just trying to understand the size implications here... We still have a GN variable for `skia_use_jpeg_gainmaps`, but that really just guards the XMP code (so I guess it indirectly guards anything to do with gainmaps, but no longer the multi-picture stuff). I see that our stripped-down code-size builds are growing with this, is the plan to also add the non-XMP gainmap as an always-on feature?",
       "revId": "264d0d43d5bd1c74b7be50b9ba3d0f9af038a75b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f8c608c9_0f3d1482",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2024-05-02T19:37:32Z",
+      "side": 1,
+      "message": "Yeah, my thought would be for the non-XMP gainmap stuff to be always-on.\n\nWe\u0027ll soon(ish) have AVIF/HEIF support, and I think it\u0027ll be more work to put that behind a flag than it would to just have it always-on. It then gets sort-of-strange to have JPEG get special treatment for the feature.\n\nI also want to further unify the JPEG metadata parsing (it\u0027s sort-of-smeared across libjpeg and the segment scanning stuff right now).",
+      "parentUuid": "1babb2d0_ef0bcfcc",
+      "revId": "264d0d43d5bd1c74b7be50b9ba3d0f9af038a75b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
