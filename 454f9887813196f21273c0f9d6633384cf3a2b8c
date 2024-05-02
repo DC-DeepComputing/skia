@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6088f8c3_ad46a37b",
+        "filename": "tools/window/GraphiteDawnWindowContext.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-05-02T18:33:43Z",
+      "side": 1,
+      "message": "Are we not supposed to do something like:\n   togglesDesc.nextInChain \u003d deviceDescriptor.nextInChain;\nfirst ?",
+      "revId": "454f9887813196f21273c0f9d6633384cf3a2b8c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
