@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb06e927_9e1d317d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2024-05-02T11:58:02Z",
+      "side": 1,
+      "message": "ptal -- this is some initial cleanup before diving into the ISO gainmap stuff. There\u0027s more cleanup to do, but I wanted to keep this one limited in size.",
+      "revId": "264d0d43d5bd1c74b7be50b9ba3d0f9af038a75b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
