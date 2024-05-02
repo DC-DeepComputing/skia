@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cc245a84_62f30d4d",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 468,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-05-02T15:03:28Z",
+      "side": 0,
+      "message": "Was a 13h queue yesterday https://screenshot.googleplex.com/4N4Vt3MN76EC9Pp",
+      "parentUuid": "a6a5d26e_6da507b5",
+      "range": {
+        "startLine": 465,
+        "startChar": 0,
+        "endLine": 468,
+        "endChar": 0
+      },
+      "revId": "4dbf9ad5fa1eeebfef1c6f4c76ef419c250d151b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "33de113a_12e884e3",
         "filename": "infra/bots/jobs.json",
         "patchSetId": 1
@@ -85,6 +109,30 @@
       "side": 0,
       "message": "Also looks fine: https://chromium-swarm.appspot.com/tasklist?c\u003dname\u0026c\u003dcreatedTs\u0026c\u003dpendingTime\u0026c\u003dduration\u0026c\u003dbot\u0026c\u003dpool-tag\u0026c\u003dstate\u0026d\u003ddesc\u0026et\u003d1714661776709\u0026f\u003dgpu-tag%3A1002%3A6821-4.0.20-3.2.8\u0026f\u003dos-tag%3AMac-10.15.7\u0026f\u003dpool-tag%3ASkia\u0026f\u003dsk_name-tag%3ATest-Mac10.15.7-Clang-MacBookPro11.5-GPU-RadeonHD8870M-x86_64-Debug-All-Graphite_Native_Metal\u0026k\u003dsk_name-tag\u0026s\u003dcreatedTs\u0026st\u003d1714402560000",
       "parentUuid": "33de113a_12e884e3",
+      "range": {
+        "startLine": 689,
+        "startChar": 0,
+        "endLine": 691,
+        "endChar": 0
+      },
+      "revId": "4dbf9ad5fa1eeebfef1c6f4c76ef419c250d151b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5229ac8_56475f4c",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 691,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-05-02T15:03:28Z",
+      "side": 0,
+      "message": "9h queue yesterday https://screenshot.googleplex.com/7dvnbucmop5eQ5E",
+      "parentUuid": "f908255e_112586c3",
       "range": {
         "startLine": 689,
         "startChar": 0,
