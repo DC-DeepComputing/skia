@@ -12,11 +12,11 @@
 #include "include/core/SkStream.h"
 #include "include/core/SkTypes.h"
 #include "src/codec/SkCodecPriv.h"
-
-#ifdef SK_CODEC_DECODES_JPEG_GAINMAPS
 #include "src/codec/SkJpegConstants.h"
 #include "src/codec/SkJpegSegmentScan.h"
-#endif  // SK_CODEC_DECODES_JPEG_GAINMAPS
+
+#include <algorithm>
+#include <cstring>
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // SkStream helpers.
@@ -74,7 +74,6 @@ public:
         bytesInBuffer -= bytesToSkip;
         return true;
     }
-#ifdef SK_CODEC_DECODES_JPEG_GAINMAPS
     const std::vector<SkJpegSegment>& getAllSegments() override {
         if (fScanner) {
             return fScanner->getSegments();
@@ -114,7 +113,6 @@ public:
         return SkData::MakeWithoutCopy(base + kJpegMarkerCodeSize + kJpegSegmentParameterLengthSize,
                                        segment.parameterLength - kJpegSegmentParameterLengthSize);
     }
-#endif  // SK_CODEC_DECODES_JPEG_GAINMAPS
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -163,7 +161,6 @@ public:
         nextInputByte = fBuffer->bytes();
         return true;
     }
-#ifdef SK_CODEC_DECODES_JPEG_GAINMAPS
     const std::vector<SkJpegSegment>& getAllSegments() override {
         if (fScanner) {
             return fScanner->getSegments();
@@ -239,7 +236,6 @@ public:
 
         return result;
     }
-#endif  // SK_CODEC_DECODES_JPEG_GAINMAPS
 
 private:
     sk_sp<SkData> fBuffer;
@@ -248,7 +244,6 @@ private:
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // SkJpegUnseekableSourceMgr
 
-#ifdef SK_CODEC_DECODES_JPEG_GAINMAPS
 /*
  * This class implements SkJpegSourceMgr for a stream that cannot seek or rewind. It scans the data
  * as it is presented to the decoder. This allows it to track the position of segments, so that it
@@ -416,18 +411,15 @@ private:
     // into fBuffer.
     size_t fLastReadOffset = 0;
 };
-#endif  // SK_CODEC_DECODES_JPEG_GAINMAPS
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // SkJpegSourceMgr
 
 // static
 std::unique_ptr<SkJpegSourceMgr> SkJpegSourceMgr::Make(SkStream* stream, size_t bufferSize) {
-#ifdef SK_CODEC_DECODES_JPEG_GAINMAPS
     if (!stream->hasPosition()) {
         return std::make_unique<SkJpegUnseekableSourceMgr>(stream, bufferSize);
     }
-#endif
     if (stream->hasLength() && stream->getMemoryBase()) {
         return std::make_unique<SkJpegMemorySourceMgr>(stream);
     }
