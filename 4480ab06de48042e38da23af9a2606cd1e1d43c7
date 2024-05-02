@@ -46,6 +46,30 @@
       },
       "revId": "4480ab06de48042e38da23af9a2606cd1e1d43c7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fce9ebb9_e0843181",
+        "filename": "bazel/deps_parser/deps_parser.go",
+        "patchSetId": 3
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-05-02T20:48:34Z",
+      "side": 1,
+      "message": "Windows will try to run this command too. If we need a powershell version (because bash is not available), we can add one, but I don\u0027t currently have a way to test it to make sure it would work.",
+      "parentUuid": "4a8195ee_52f7fff3",
+      "range": {
+        "startLine": 41,
+        "startChar": 29,
+        "endLine": 41,
+        "endChar": 116
+      },
+      "revId": "4480ab06de48042e38da23af9a2606cd1e1d43c7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
