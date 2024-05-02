@@ -75,6 +75,8 @@
 #include <unordered_map>
 #include <vector>
 
+#define GRAPHITE_USE_APPROX_FIT_FOR_FILTERS
+
 using RescaleGamma       = SkImage::RescaleGamma;
 using RescaleMode        = SkImage::RescaleMode;
 using ReadPixelsCallback = SkImage::ReadPixelsCallback;
@@ -391,17 +393,36 @@ sk_sp<SkDevice> Device::createDevice(const CreateInfo& info, const SkPaint*) {
     // Skia's convention is to only clear a device if it is non-opaque.
     LoadOp initialLoadOp = info.fInfo.isOpaque() ? LoadOp::kDiscard : LoadOp::kClear;
 
-    return Make(fRecorder,
-                info.fInfo,
-                skgpu::Budgeted::kYes,
-                Mipmapped::kNo,
+    // createDevice() is only used to make Devices for saveLayers that will be drawn back into this
+    // device when SkCanvas::restore() is called.
+    sk_sp<Device> child = Make(fRecorder,
+                               info.fInfo,
+                               skgpu::Budgeted::kYes,
+                               Mipmapped::kNo,
 #if defined(GRAPHITE_USE_APPROX_FIT_FOR_FILTERS)
-                SkBackingFit::kApprox,
+                               SkBackingFit::kApprox,
 #else
-                SkBackingFit::kExact,
+                               SkBackingFit::kExact,
 #endif
-                props,
-                initialLoadOp);
+                               props,
+                               initialLoadOp);
+
+    // Keep track of how much scratch texture space is required to be instantiated and locked for
+    // this Device's child layers. If it exceeds a threshold, trigger an internal flush that adds
+    // a RenderPassTask that samples from the pending child layers. This allows those child textures
+    // to be returned and reused for subsequent layers into this Device.
+    const size_t extraTextureMemory = child->target()->uninstantiatedGpuMemorySize();
+    const size_t pendingThreshold = 1 * ComputeSize(fDC->imageInfo().dimensions(),
+                                                    fDC->target()->textureInfo());
+    // const size_t pendingThreshold = 100000;
+    SkDebugf("createDevice cost: %lu, limit: %lu, net: %lu, parent = %p, child proxy = %p\n",
+            extraTextureMemory, pendingThreshold, fEstimatedChildTextureMemory + extraTextureMemory, fDC->target(), child->target());
+    if (fEstimatedChildTextureMemory + extraTextureMemory > pendingThreshold) {
+        SkDebugf("triggering savelayer flush\n");
+        this->internalFlush();
+    }
+    fEstimatedChildTextureMemory += extraTextureMemory;
+    return child;
 }
 
 sk_sp<SkSurface> Device::makeSurface(const SkImageInfo& ii, const SkSurfaceProps& props) {
@@ -1470,7 +1491,8 @@ void Device::flushPendingWorkToRecorder(Recorder* recorder) {
         fLastTask = nullptr;
     }
 
-    if (drawTask) {
+    if (drawTask && !this->isScratchDevice()) {
+        SkDebugf("adding %p to root task list\n", drawTask.get());
         fRecorder->priv().add(std::move(drawTask));
 
         // TODO(b/297344089): This always regenerates mipmaps on the draw target when it's drawn to.
@@ -1503,6 +1525,7 @@ void Device::internalFlush() {
     fColorDepthBoundsManager->reset();
     fDisjointStencilSet->reset();
     fCurrentDepth = DrawOrder::kClearDepth;
+    fEstimatedChildTextureMemory = 0;
 
      // Any cleanup in the AtlasProvider
     fRecorder->priv().atlasProvider()->postFlush();
@@ -1563,6 +1586,7 @@ void Device::drawCoverageMask(const SkSpecialImage* mask,
         SKGPU_LOG_W("Couldn't get Graphite-backed special image as texture proxy view");
         return;
     }
+    SkDebugf("drawCoverageMask is being called\n");
 
     // 'mask' logically has 0 coverage outside of its pixels, which is equivalent to kDecal tiling.
     // However, since we draw geometry tightly fitting 'mask', we can use the better-supported

@@ -178,6 +178,11 @@ private:
     skia_private::TArray<PendingUseListener*> fListenerStack;
 
     std::unique_ptr<ProxyReadCountMap> fProxyReadCounts;
+
+    int fGetCount = 0;
+    int fReuseCount = 0;
+    int fNewResourceCount = 0;
+    int fReturnedCount = 0;
 };
 
 } // namespace skgpu::graphite
