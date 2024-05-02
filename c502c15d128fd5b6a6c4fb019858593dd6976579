@@ -16,6 +16,23 @@
       "message": "PTAL. Thanks",
       "revId": "c502c15d128fd5b6a6c4fb019858593dd6976579",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af926b2e_3787a403",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-05-02T20:30:47Z",
+      "side": 1,
+      "message": "Couple questions here.\n\n1) Looking at the latest comments on the bug, it seemed like it was suggesting always setting the labels in Graphite. What is the reason then to continue having the flag you\u0027re adding here?\n\n2) If the flag is needed, I think you also need to update DawnTexture and DawnBuffer. In DawnBuffer we don\u0027t set the label on the Desc but instead call SetLabel.",
+      "revId": "c502c15d128fd5b6a6c4fb019858593dd6976579",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
