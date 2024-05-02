@@ -1095,8 +1095,7 @@ optional("avif") {
 }
 
 optional("jpeg_mpf") {
-  enabled = skia_use_jpeg_gainmaps &&
-            (skia_use_libjpeg_turbo_encode || skia_use_libjpeg_turbo_decode)
+  enabled = skia_use_libjpeg_turbo_encode || skia_use_libjpeg_turbo_decode
   sources = [
     "src/codec/SkJpegMultiPicture.cpp",
     "src/codec/SkJpegSegmentScan.cpp",
@@ -1107,7 +1106,10 @@ optional("jpeg_decode") {
   enabled = skia_use_libjpeg_turbo_decode
   public_defines = [ "SK_CODEC_DECODES_JPEG" ]
 
-  deps = [ "//third_party/libjpeg-turbo:libjpeg" ]
+  deps = [
+    ":jpeg_mpf",
+    "//third_party/libjpeg-turbo:libjpeg",
+  ]
   sources = [
     "src/codec/SkJpegCodec.cpp",
     "src/codec/SkJpegDecoderMgr.cpp",
@@ -1117,11 +1119,8 @@ optional("jpeg_decode") {
   if (skia_use_jpeg_gainmaps) {
     # Theoretically this doesn't need to be public, but this allows gn_to_bp.py to see it, and seems
     # to align with other codec support. See b/265939413
-    public_defines += [ "SK_CODEC_DECODES_JPEG_GAINMAPS" ]
-    deps += [
-      ":jpeg_mpf",
-      ":xml",
-    ]
+    public_defines += [ "SK_CODEC_PARSES_XMP" ]
+    deps += [ ":xml" ]
     sources += skia_codec_jpeg_xmp
   }
 }
