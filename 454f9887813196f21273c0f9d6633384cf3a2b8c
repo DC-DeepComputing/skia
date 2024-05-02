@@ -33,6 +33,24 @@
       "message": "Are we not supposed to do something like:\n   togglesDesc.nextInChain \u003d deviceDescriptor.nextInChain;\nfirst ?",
       "revId": "454f9887813196f21273c0f9d6633384cf3a2b8c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "af6a5c58_01303c75",
+        "filename": "tools/window/GraphiteDawnWindowContext.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-05-02T22:09:50Z",
+      "side": 1,
+      "message": "In Dawn\u0027s C++ declaration of `ChainedStruct`, the `nextInChain` field is default initialized as `nullptr`. I believe that denotes the end of a descriptor chain (see (https://source.chromium.org/chromium/chromium/src/+/main:out/webview-Debug/gen/third_party/dawn/include/webgpu/webgpu_cpp_chained_struct.h;drc\u003d6f3f85b321146cfc0f9eb81a74c7c2257821461e;l\u003d17)). The code works as intended since we currently don\u0027t have any other elements in the chain.\n\nThat said I can see the value of adding that line here defensively, in case the code above changes one day to insert additional descriptors, in which case this assignment would break the chain. I\u0027ll add it here just in case but it\u0027s not strictly necessary.",
+      "parentUuid": "6088f8c3_ad46a37b",
+      "revId": "454f9887813196f21273c0f9d6633384cf3a2b8c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
