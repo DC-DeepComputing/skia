@@ -8,13 +8,12 @@
 #include "src/codec/SkJpegSegmentScan.h"
 
 #include "include/core/SkData.h"
-#include "include/core/SkStream.h"
 #include "include/private/base/SkAssert.h"
 #include "src/codec/SkCodecPriv.h"
 #include "src/codec/SkJpegConstants.h"
 
+#include <algorithm>
 #include <cstring>
-#include <utility>
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // SkJpegSegmentScanner
