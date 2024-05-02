@@ -29,6 +29,7 @@
 
 #include <cstdio>
 
+
 constexpr size_t kWidth =  450;
 constexpr size_t kHeight = 120;
 
