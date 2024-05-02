@@ -23,9 +23,10 @@ AnalyticBlurRenderStep::AnalyticBlurRenderStep()
                      {{"localToDevice", SkSLType::kFloat4x4},
                       {"deviceToScaledShape", SkSLType::kFloat3x3},
                       {"shapeData", SkSLType::kFloat4},
-                      {"blurData", SkSLType::kHalf2},
+                      {"depth", SkSLType::kFloat},
                       {"shapeType", SkSLType::kInt},
-                      {"depth", SkSLType::kFloat}},
+                      {"isFast", SkSLType::kInt},
+                      {"invSixSigma", SkSLType::kHalf}},
                      PrimitiveType::kTriangleStrip,
                      kDirectDepthGreaterPass,
                      /*vertexAttrs=*/
@@ -53,8 +54,9 @@ std::string AnalyticBlurRenderStep::texturesAndSamplersSkSL(
 const char* AnalyticBlurRenderStep::fragmentCoverageSkSL() const {
     return "outputCoverage = blur_coverage_fn(scaledShapeCoords, "
                                              "shapeData, "
-                                             "blurData, "
                                              "shapeType, "
+                                             "isFast, "
+                                             "invSixSigma, "
                                              "s);";
 }
 
@@ -78,9 +80,10 @@ void AnalyticBlurRenderStep::writeUniformsAndTextures(const DrawParams& params,
     const AnalyticBlurMask& blur = params.geometry().analyticBlurMask();
     gatherer->write(blur.deviceToScaledShape().asM33());
     gatherer->write(blur.shapeData().asSkRect());
-    gatherer->writeHalf(blur.blurData());
-    gatherer->write(static_cast<int>(blur.shapeType()));
     gatherer->write(params.order().depthAsFloat());
+    gatherer->write(static_cast<int>(blur.shapeType()));
+    gatherer->write(blur.isFast());
+    gatherer->writeHalf(blur.invSixSigma());
 
     SkSamplingOptions samplingOptions = blur.shapeType() == AnalyticBlurMask::ShapeType::kRect
                                                 ? SkFilterMode::kLinear
