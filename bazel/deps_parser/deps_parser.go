@@ -17,6 +17,7 @@ import (
 type depConfig struct {
 	bazelNameOverride string // Bazel style uses underscores not dashes, so we fix those if needed.
 	needsBazelFile    bool
+	patchCmds         []string
 }
 
 // These are all C++ deps or Rust deps (with a compatible C++ FFI) used by the Bazel build.
@@ -30,12 +31,15 @@ var deps = map[string]depConfig{
 	// This name is important because spirv_tools expects @spirv_headers to exist by that name.
 	"spirv-headers": {bazelNameOverride: "spirv_headers"},
 
-	"dawn":                     {needsBazelFile: true},
-	"dng_sdk":                  {needsBazelFile: true},
-	"expat":                    {needsBazelFile: true},
-	"freetype":                 {needsBazelFile: true},
-	"harfbuzz":                 {needsBazelFile: true},
-	"icu":                      {needsBazelFile: true},
+	"dawn":     {needsBazelFile: true},
+	"dng_sdk":  {needsBazelFile: true},
+	"expat":    {needsBazelFile: true},
+	"freetype": {needsBazelFile: true},
+	"harfbuzz": {needsBazelFile: true},
+	"icu": {
+		needsBazelFile: true,
+		patchCmds:      []string{`"rm ./source/i18n/BUILD.bazel ./source/common/BUILD.bazel ./source/stubdata/BUILD.bazel"`},
+	},
 	"icu4x":                    {needsBazelFile: true},
 	"imgui":                    {needsBazelFile: true},
 	"libavif":                  {needsBazelFile: true},
@@ -134,7 +138,7 @@ func parseDEPSFile(contents []string, workspaceFile string) (string, int, error)
 				id = cfg.bazelNameOverride
 			}
 			if cfg.needsBazelFile {
-				if err := writeNewGitRepositoryRule(outputFile, id, repo, rev); err != nil {
+				if err := writeNewGitRepositoryRule(outputFile, id, repo, rev, cfg.patchCmds); err != nil {
 					return "", 0, fmt.Errorf("Could not write to output file %s: %s\n", outputFile.Name(), err)
 				}
 				workspaceLine := fmt.Sprintf("# @%s - //bazel/external/%s:BUILD.bazel", id, id)
@@ -326,10 +330,11 @@ def header_based_configs():
     )
 `
 
-func writeNewGitRepositoryRule(w io.StringWriter, bazelName, repo, rev string) error {
-	// TODO(kjlubick) In a newer version of Bazel, new_git_repository can be replaced with just
-	// git_repository
-	_, err := w.WriteString(fmt.Sprintf(`
+func writeNewGitRepositoryRule(w io.StringWriter, bazelName, repo, rev string, patchCmds []string) error {
+	if len(patchCmds) == 0 {
+		// TODO(kjlubick) In a newer version of Bazel, new_git_repository can be replaced with just
+		// git_repository
+		_, err := w.WriteString(fmt.Sprintf(`
     new_git_repository(
         name = "%s",
         build_file = ws + "//bazel/external/%s:BUILD.bazel",
@@ -337,6 +342,18 @@ func writeNewGitRepositoryRule(w io.StringWriter, bazelName, repo, rev string) e
         remote = "%s",
     )
 `, bazelName, bazelName, rev, repo))
+		return err
+	}
+	patches := "[" + strings.Join(patchCmds, ",\n") + "]"
+	_, err := w.WriteString(fmt.Sprintf(`
+    new_git_repository(
+        name = "%s",
+        build_file = ws + "//bazel/external/%s:BUILD.bazel",
+        commit = "%s",
+        remote = "%s",
+        patch_cmds = %s,
+    )
+`, bazelName, bazelName, rev, repo, patches))
 	return err
 }
 
