@@ -13,6 +13,7 @@
 #include "src/codec/SkCodecPriv.h"
 #include "src/codec/SkJpegConstants.h"
 
+#include <algorithm>
 #include <cstring>
 #include <utility>
 
