@@ -8,27 +8,19 @@
 #ifndef SkJpegSourceMgr_codec_DEFINED
 #define SkJpegSourceMgr_codec_DEFINED
 
-#include "include/core/SkTypes.h"
-
-#ifdef SK_CODEC_DECODES_JPEG_GAINMAPS
 #include "include/core/SkRefCnt.h"
-#endif  // SK_CODEC_DECODES_JPEG_GAINMAPS
+#include "include/core/SkTypes.h"
 
 #include <cstddef>
 #include <cstdint>
 #include <memory>
 
-#ifdef SK_CODEC_DECODES_JPEG_GAINMAPS
 #include <vector>
-#endif  // SK_CODEC_DECODES_JPEG_GAINMAPS
 
-class SkStream;
-
-#ifdef SK_CODEC_DECODES_JPEG_GAINMAPS
 class SkData;
 class SkJpegSegmentScanner;
+class SkStream;
 struct SkJpegSegment;
-#endif  // SK_CODEC_DECODES_JPEG_GAINMAPS
 
 /*
  * Interface to adapt an SkStream to the jpeg_source_mgr interface. This interface has different
@@ -48,7 +40,6 @@ public:
                                 const uint8_t*& nextInputByte,
                                 size_t& bytesInBuffer) = 0;
 
-#ifdef SK_CODEC_DECODES_JPEG_GAINMAPS
     // Parse this stream all the way through its EndOfImage marker and return the list of segments.
     // Return false if there is an error or if no EndOfImage marker is found.
     virtual const std::vector<SkJpegSegment>& getAllSegments() = 0;
@@ -62,16 +53,13 @@ public:
     // those two bytes, followed by parameters. Return the parameters portion of the specified
     // segment. If possible, the returned SkData will refer to memory owned by |fStream|.
     virtual sk_sp<SkData> getSegmentParameters(const SkJpegSegment& segment) = 0;
-#endif  // SK_CODEC_DECODES_JPEG_GAINMAPS
 
 protected:
     SkJpegSourceMgr(SkStream* stream);
     SkStream* const fStream;  // unowned
 
-#ifdef SK_CODEC_DECODES_JPEG_GAINMAPS
     // The segment scanner is lazily creatd only when needed.
     std::unique_ptr<SkJpegSegmentScanner> fScanner;
-#endif  // SK_CODEC_DECODES_JPEG_GAINMAPS
 };
 
 #endif
