@@ -89,6 +89,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b62e03b9_4b1f24e2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-05-02T19:19:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ac7972eb_0156e002",
+      "revId": "1a6f02c1bd436c72ef8f794f0089c0dce8a25a1e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "840851ca_34d911ff",
@@ -291,6 +309,30 @@
       "side": 1,
       "message": "I haven\u0027t retested it yet, but that feature has worked correctly in the past, and the Perfetto branch of `TRACE_EVENT_ATRACE_OR_PERFETTO_FORCEABLE` is unmodified.\n\nI\u0027ll go through and do more thorough testing just to be sure.",
       "parentUuid": "f5553ef4_a918aeca",
+      "range": {
+        "startLine": 387,
+        "startChar": 59,
+        "endLine": 388,
+        "endChar": 42
+      },
+      "revId": "1a6f02c1bd436c72ef8f794f0089c0dce8a25a1e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "62d05e5a_513fc153",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 388,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-05-02T19:19:55Z",
+      "side": 1,
+      "message": "The Perfetto backend still traces arguments correctly, see http://b/337301999#comment2 for reference.",
+      "parentUuid": "36dbcb3e_e3415ea3",
       "range": {
         "startLine": 387,
         "startChar": 59,
