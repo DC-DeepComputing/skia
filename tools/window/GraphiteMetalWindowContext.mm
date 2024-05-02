@@ -17,6 +17,7 @@
 #include "include/gpu/graphite/mtl/MtlGraphiteUtils.h"
 #include "include/private/gpu/graphite/ContextOptionsPriv.h"
 #include "src/base/SkMathPriv.h"
+#include "src/gpu/graphite/ContextPriv.h"
 #include "tools/GpuToolUtils.h"
 #include "tools/window/GraphiteMetalWindowContext.h"
 
@@ -63,6 +64,7 @@ void GraphiteMetalWindowContext::initializeContext() {
     fGraphiteContext = skgpu::graphite::ContextFactory::MakeMetal(
             backendContext, fDisplayParams.fGraphiteContextOptions.fOptions);
     fGraphiteRecorder = fGraphiteContext->makeRecorder(ToolUtils::CreateTestingRecorderOptions());
+//    fGraphiteContext->priv().startCapture();
     // TODO
 //    if (!fGraphiteContext && fDisplayParams.fMSAASampleCount > 1) {
 //        fDisplayParams.fMSAASampleCount /= 2;
@@ -128,6 +130,8 @@ void GraphiteMetalWindowContext::onSwapBuffers() {
     // ARC is off in sk_app, so we need to release the CF ref manually
     CFRelease(fDrawableHandle);
     fDrawableHandle = nil;
+//    fGraphiteContext->priv().stopCapture();
+
 }
 
 void GraphiteMetalWindowContext::setDisplayParams(const DisplayParams& params) {
