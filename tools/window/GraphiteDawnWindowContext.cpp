@@ -177,6 +177,15 @@ wgpu::Device GraphiteDawnWindowContext::createDevice(wgpu::BackendType type) {
     deviceDescriptor.requiredFeatures = features.data();
     deviceDescriptor.requiredFeatureCount = features.size();
 
+    if (fDisplayParams.fDisableTintSymbolRenaming) {
+        static constexpr const char* kOptionalDeviceToggles[] = {
+            "disable_symbol_renaming",
+        };
+        togglesDesc.enabledToggleCount = std::size(kOptionalDeviceToggles);
+        togglesDesc.enabledToggles    = kOptionalDeviceToggles;
+        deviceDescriptor.nextInChain = &togglesDesc;
+    }
+
     auto device = adapter.CreateDevice(&deviceDescriptor);
     if (!device) {
         return nullptr;
