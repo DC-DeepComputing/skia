@@ -16,6 +16,40 @@
       "message": "PTAL",
       "revId": "0e5d1f8ba51adcbc6214559415683119a798594a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "33279fd2_3c6bbe39",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-05-02T17:31:38Z",
+      "side": 1,
+      "message": "lgtm % nit",
+      "revId": "0e5d1f8ba51adcbc6214559415683119a798594a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b08c554b_a2db02f1",
+        "filename": "tools/graphite/dawn/GraphiteDawnTestContext.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-05-02T17:31:38Z",
+      "side": 1,
+      "message": "Do we want this in `tools/window/GraphiteDawnWindowContext.cpp` as well?",
+      "revId": "0e5d1f8ba51adcbc6214559415683119a798594a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
