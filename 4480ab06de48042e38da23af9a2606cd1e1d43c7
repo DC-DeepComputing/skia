@@ -118,6 +118,30 @@
       },
       "revId": "4480ab06de48042e38da23af9a2606cd1e1d43c7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9d04c7a6_2fe18caa",
+        "filename": "bazel/deps_parser/deps_parser.go",
+        "patchSetId": 3
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-05-02T20:54:15Z",
+      "side": 1,
+      "message": "Actually maybe `rm x; rm y; rm z` works on both?",
+      "parentUuid": "75744d10_2fe75f78",
+      "range": {
+        "startLine": 41,
+        "startChar": 29,
+        "endLine": 41,
+        "endChar": 116
+      },
+      "revId": "4480ab06de48042e38da23af9a2606cd1e1d43c7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
