@@ -171,7 +171,7 @@ skif::LayerSpace<SkIRect> adjust(const skif::LayerSpace<SkIRect>& rect,
 // The bitmap-based filter has two size options: medium and max
 int quantize_kernel_size(int kernelSize) {
     SkASSERT(kernelSize > kMaxUniformKernelSize);  // otherwise we would be in the uniform case
-    return kernelSize <= kMediumKernelSize ? kMediumKernelSize : kMaxKernelSize;
+    return kMaxKernelSize;
 }
 
 SkBitmap create_kernel_bitmap(const SkISize& kernelSize, const float* kernel,
