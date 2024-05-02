@@ -63,6 +63,40 @@ size_t TypefaceFontProvider::registerTypeface(sk_sp<SkTypeface> typeface, const 
     return 1;
 }
 
+sk_sp<SkTypeface> TypefaceFontProvider::onMatchFamilyStyleCharacter(const char familyName[],
+                                              const SkFontStyle& fontStyle,
+                                              const char* bcp47[],
+                                              int bcp47Count,
+                                              SkUnichar character) const {
+    sk_sp<SkTypeface> noFontFamilyMatch = nullptr;
+    sk_sp<SkTypeface> noFontFamilyOrStyleMatch = nullptr;
+
+    // TODO: Deal with bcp47 properly (match locales from the font)
+    for (auto& fontFamilySet : fRegisteredFamilies) {
+        bool familyMatch = familyName && fontFamilySet.first.equals(familyName);
+        sk_sp<SkTypeface> face(fontFamilySet.second->matchStyle(fontStyle));
+        if (face != nullptr) {
+            if (face->unicharToGlyph(character) != 0) {
+                if (familyMatch) {
+                    return face;
+                } else if (noFontFamilyMatch == nullptr) {
+                    noFontFamilyMatch = face;
+                }
+            }
+        } else if (noFontFamilyOrStyleMatch == nullptr) {
+            noFontFamilyOrStyleMatch = fontFamilySet.second->getFirstTypeface();
+        }
+    }
+
+    if (noFontFamilyMatch != nullptr) {
+        return noFontFamilyMatch;
+    }
+    if (noFontFamilyOrStyleMatch != nullptr) {
+        return noFontFamilyOrStyleMatch;
+    }
+    return nullptr;
+}
+
 sk_sp<SkTypeface> TypefaceFontProvider::onLegacyMakeTypeface(const char familyName[],
                                                              SkFontStyle style) const {
     if (familyName) {
@@ -83,6 +117,11 @@ sk_sp<SkTypeface> TypefaceFontProvider::onLegacyMakeTypeface(const char familyNa
 
 TypefaceFontStyleSet::TypefaceFontStyleSet(const SkString& familyName)
         : fFamilyName(familyName) {}
+
+
+sk_sp<SkTypeface> TypefaceFontStyleSet::getFirstTypeface() const {
+    return fStyles.empty() ? nullptr : fStyles[0];
+}
 
 int TypefaceFontStyleSet::count() { return fStyles.size(); }
 

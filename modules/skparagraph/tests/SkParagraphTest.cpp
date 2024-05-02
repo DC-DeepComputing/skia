@@ -8267,3 +8267,30 @@ UNIX_ONLY_TEST(SkParagraph_ICU4X_EmojiRuns, reporter) {
     SkUnicode_Emoji(SkUnicodes::ICU4X::Make(), reporter);
 }
 #endif
+
+UNIX_ONLY_TEST(SkParagraph_FontResolution_For_TypefaceFontProvider, reporter) {
+
+    auto fontCollection = sk_make_sp<TestFontCollection>(GetResourcePath("fonts").c_str(), false, false);
+    if (!fontCollection->addFontFromFile("Roboto-Regular.ttf", "roboto")) {
+        return;
+    }
+    fontCollection->enableFontFallback();
+    const auto wrapTo = 250;
+
+    ParagraphStyle paraStyle;
+    TextStyle defaultTextStyle;
+    defaultTextStyle.setColor(SK_ColorBLACK);
+    defaultTextStyle.setFontFamilies({SkString("non-existing-font-family-name")});
+    paraStyle.setTextStyle(defaultTextStyle);
+
+    ParagraphBuilderImpl builder(paraStyle, fontCollection, get_unicode());
+    defaultTextStyle.setFontFamilies({SkString("another-non-existing-font-family-name")});
+    builder.pushStyle(defaultTextStyle);
+    builder.addText("ABC DEF GHI");
+
+    auto paragraph = builder.Build();
+    paragraph->layout(wrapTo);
+    TestCanvas canvas("SkParagraph_TypefaceFontProvider.png");
+    paragraph->paint(canvas.get(), 0, 0);
+    REPORTER_ASSERT(reporter,paragraph->unresolvedGlyphs() == 0);
+}

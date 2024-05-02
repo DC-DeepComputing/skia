@@ -116,7 +116,11 @@ std::vector<sk_sp<SkTypeface>> FontCollection::findTypefaces(const std::vector<S
                 break;
             }
         }
-        if (!match) {
+
+
+        // This is a questionable piece of logic but if we remove it we might break the current code.
+        // Font fallback should take care of it; let's skip it when font fallback is enabled
+        if (!match && !fEnableFontFallback) {
             for (const auto& manager : this->getFontManagerOrder()) {
                 match = manager->legacyMakeTypeface(nullptr, fontStyle);
                 if (match) {
@@ -168,7 +172,6 @@ sk_sp<SkTypeface> FontCollection::defaultFallback(SkUnichar unicode,
     }
     return nullptr;
 }
-
 // Find ANY font in available font managers that resolves this emojiStart
 sk_sp<SkTypeface> FontCollection::defaultEmojiFallback(SkUnichar emojiStart,
                                                        SkFontStyle fontStyle,

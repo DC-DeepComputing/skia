@@ -27,8 +27,8 @@ public:
 
     SkString getFamilyName() const { return fFamilyName; }
     SkString getAlias() const { return fAlias; }
+    sk_sp<SkTypeface> getFirstTypeface() const;
     void appendTypeface(sk_sp<SkTypeface> typeface);
-
 private:
     skia_private::TArray<sk_sp<SkTypeface>> fStyles;
     SkString fFamilyName;
@@ -48,12 +48,11 @@ public:
 
     sk_sp<SkFontStyleSet> onCreateStyleSet(int) const override;
     sk_sp<SkTypeface> onMatchFamilyStyle(const char familyName[], const SkFontStyle& pattern) const override;
-    sk_sp<SkTypeface> onMatchFamilyStyleCharacter(const char[], const SkFontStyle&,
-                                                  const char*[], int,
-                                                  SkUnichar) const override {
-        return nullptr;
-    }
-
+    sk_sp<SkTypeface> onMatchFamilyStyleCharacter(const char familyName[],
+                                                  const SkFontStyle&,
+                                                  const char* bcp47[],
+                                                  int bcp47Count,
+                                                  SkUnichar) const override;
     sk_sp<SkTypeface> onMakeFromData(sk_sp<SkData>, int) const override { return nullptr; }
     sk_sp<SkTypeface> onMakeFromStreamIndex(std::unique_ptr<SkStreamAsset>, int) const override {
         return nullptr;
