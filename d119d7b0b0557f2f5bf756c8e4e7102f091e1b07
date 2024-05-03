@@ -16,6 +16,23 @@
       "message": "I think this might be the last change needed before landing https://skia-review.googlesource.com/c/skia/+/822317 , though there is still the issue a few advances being slightly different and I\u0027m not sure why.",
       "revId": "d119d7b0b0557f2f5bf756c8e4e7102f091e1b07",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "089e4242_a547d7b3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-05-03T23:50:04Z",
+      "side": 1,
+      "message": "The behavior of CoreText is easier to understand from a historical context. As far as I can tell, it was originally designed so that glyphs would reference some png entry but then the png drawing would be clipped to the glyph outline (something like if there were a bitmap fill instead of solid color fill in COLR). Used this way, using the bounds of the glyf outline makes sense. I believe this was the original intent of the sbix header\u0027s flags bit 1, support for which is optional and we generally haven\u0027t supported. If we ever do attempt to support that for some reason, we will need to update these bounds, but we\u0027d need to do more than just that anyway. However, as far as I know I have never seen a font which requested this.",
+      "revId": "d119d7b0b0557f2f5bf756c8e4e7102f091e1b07",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
