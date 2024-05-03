@@ -16,6 +16,46 @@
       "message": "I still need to do timings on this but it should be pretty close to the final plan.",
       "revId": "0aa5b9f34e88c4ce7f07d3c71dc2514d9f7418b8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "08394fe1_3aa362ae",
+        "filename": "src/gpu/graphite/ComputePathAtlas.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-05-03T16:14:13Z",
+      "side": 1,
+      "message": "Move this up a line ?",
+      "revId": "0aa5b9f34e88c4ce7f07d3c71dc2514d9f7418b8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e40be3f0_b3bf6ebc",
+        "filename": "src/gpu/graphite/ComputePathAtlas.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-05-03T16:14:13Z",
+      "side": 1,
+      "message": "make this a constant kNumCachedX ?",
+      "range": {
+        "startLine": 141,
+        "startChar": 32,
+        "endLine": 141,
+        "endChar": 33
+      },
+      "revId": "0aa5b9f34e88c4ce7f07d3c71dc2514d9f7418b8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
