@@ -280,6 +280,8 @@ void Context::asyncReadPixels(const TextureProxy* proxy,
     }
 
     const Caps* caps = fSharedContext->caps();
+    // TODO: This is very similar to Image::Copy and CopyAsDraw(). Can asyncReadPixels be abstracted
+    // in terms of Image?
     if (!caps->supportsReadPixels(proxy->textureInfo())) {
         if (!caps->isTexturable(proxy->textureInfo())) {
             callback(callbackContext, nullptr);
@@ -288,11 +290,18 @@ void Context::asyncReadPixels(const TextureProxy* proxy,
 
         auto recorder = this->makeRecorder();
 
-        auto surface = SkSurfaces::RenderTarget(recorder.get(),
-                                                srcImageInfo.makeDimensions(srcRect.size()));
+        // TODO: These are ideally approx-fit surfaces.
+        auto surface = Surface::MakeScratch(recorder.get(),
+                                            srcImageInfo.makeDimensions(srcRect.size()),
+                                            Budgeted::kYes,
+                                            Mipmapped::kNo,
+                                            SkBackingFit::kExact);
         if (!surface) {
-            surface = SkSurfaces::RenderTarget(recorder.get(),
-                                               SkImageInfo::Make(srcRect.size(), dstColorInfo));
+            surface = Surface::MakeScratch(recorder.get(),
+                                           SkImageInfo::Make(srcRect.size(), dstColorInfo),
+                                           Budgeted::kYes,
+                                           Mipmapped::kNo,
+                                           SkBackingFit::kExact);
             if (!surface) {
                 callback(callbackContext, nullptr);
                 return;
@@ -309,6 +318,13 @@ void Context::asyncReadPixels(const TextureProxy* proxy,
                                         -srcRect.x(), -srcRect.y(),
                                         SkFilterMode::kNearest,
                                         &paint);
+
+        // Manually flush 'surface' to collect its tasks into the Recorder since 'surface' does not
+        // go out of scope before we have to insert the Recording, and they are scratch surfaces so
+        // are not registered with the Recorder to auto-flush during snap().
+        // TODO: Eventually, the rendering tasks will not go into the root task list and will likely
+        // be added as dependencies to the CopyTextureToBuffer task that asyncReadPixels() creates.
+        Flush(surface);
 
         auto recording = recorder->snap();
         InsertRecordingInfo recordingInfo;
@@ -502,16 +518,23 @@ void Context::asyncReadPixelsYUV420(Recorder* recorder,
     TRACE_EVENT2("skia.gpu", TRACE_FUNC, "width", srcRect.width(), "height", srcRect.height());
 
     // Make three or four Surfaces to draw the YUV[A] planes into
+    auto makePlaneSurface = [recorder](const SkImageInfo& info) {
+        // TODO: Can these be approx-fit surfaces and still be copied into buffers without accessing
+        // the extra row bytes?
+        return Surface::MakeScratch(recorder,
+                                    info,
+                                    Budgeted::kYes,
+                                    Mipmapped::kNo,
+                                    SkBackingFit::kExact);
+    };
+
     SkImageInfo yaInfo = SkImageInfo::MakeA8(srcRect.size());
-    sk_sp<SkSurface> ySurface = Surface::Make(recorder, yaInfo, Budgeted::kNo);
-    sk_sp<SkSurface> aSurface;
-    if (readAlpha) {
-        aSurface = Surface::Make(recorder, yaInfo, Budgeted::kNo);
-    }
+    sk_sp<SkSurface> ySurface = makePlaneSurface(yaInfo);
+    sk_sp<SkSurface> aSurface = readAlpha ? makePlaneSurface(yaInfo) : nullptr;
 
     SkImageInfo uvInfo = yaInfo.makeWH(yaInfo.width()/2, yaInfo.height()/2);
-    sk_sp<SkSurface> uSurface = Surface::Make(recorder, uvInfo, Budgeted::kNo);
-    sk_sp<SkSurface> vSurface = Surface::Make(recorder, uvInfo, Budgeted::kNo);
+    sk_sp<SkSurface> uSurface = makePlaneSurface(uvInfo);
+    sk_sp<SkSurface> vSurface = makePlaneSurface(uvInfo);
 
     if (!ySurface || !uSurface || !vSurface || (readAlpha && !aSurface)) {
         callback(callbackContext, nullptr);
@@ -538,6 +561,16 @@ void Context::asyncReadPixelsYUV420(Recorder* recorder,
 
         SkCanvas* canvas = dstSurface->getCanvas();
         canvas->drawPaint(paint);
+        // Manually flush the surface after drawing because the control flow does not let
+        // dstSurface go out of scope to auto-flush; it transfers from texture to buffer directly
+        // from the dstSurface's texture proxy instead of transitioning from surface -> image first.
+        Flush(dstSurface);
+
+        // TODO: As scratch surfaces, the rendering operations will eventually not be added
+        // directly to the root task list. In that world, their DrawTask would become a dependent
+        // task of the eventual CopyTextureToBuffer task that is created in transferPixels().
+        // For now, flush explicitly to ensure their tasks are added to the Recorder. As a scratch
+        // surface they are not automatically flushed with snap().
     };
 
     auto copyPlane = [this](SkSurface* surface) {
