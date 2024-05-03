@@ -39,6 +39,30 @@
       },
       "revId": "101d2a7f35daf0709bea524b46485548675c221c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4a674c0_bd99625e",
+        "filename": "tests/TypefaceTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-05-03T13:51:48Z",
+      "side": 1,
+      "message": "... or maybe I\u0027m just failing to parse this. It sure looks right the right initialization, but the compiler sure isn\u0027t happy.",
+      "parentUuid": "1cb30616_16f3b1c7",
+      "range": {
+        "startLine": 154,
+        "startChar": 11,
+        "endLine": 154,
+        "endChar": 15
+      },
+      "revId": "101d2a7f35daf0709bea524b46485548675c221c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
