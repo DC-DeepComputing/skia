@@ -11,6 +11,6 @@ void draw(SkCanvas* canvas) {
     paint.setShader(SkGradientShader::MakeLinear(points, colors, nullptr, 4, SkTileMode::kClamp));
     auto vertices = SkVertices::MakeCopy(SkVertices::kTriangleFan_VertexMode,
             std::size(points), points, texs, colors);
-    canvas->drawVertices(vertices, SkBlendMode::kDarken, paint);
+    canvas->drawVertices(vertices, SkBlendMode::kDst, paint);
 }
 }  // END FIDDLE
