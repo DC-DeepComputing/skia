@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b5c309f_37152ba9",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-05-03T15:10:38Z",
+      "side": 1,
+      "message": "What\u0027s this used for? Future plans?",
+      "range": {
+        "startLine": 126,
+        "startChar": 27,
+        "endLine": 126,
+        "endChar": 35
+      },
+      "revId": "f2b58ffd904edbdb8e6a7679b4212b1c4fe14c8a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
