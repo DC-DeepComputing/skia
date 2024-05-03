@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8fd7e320_9d071a1f",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 587,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-05-03T18:03:41Z",
+      "side": 1,
+      "message": "To match this.",
+      "revId": "ca7c5355b28333bd31c83cd3a08d6b00b2ef6f2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
