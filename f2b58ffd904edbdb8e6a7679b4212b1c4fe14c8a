@@ -22,6 +22,30 @@
       },
       "revId": "f2b58ffd904edbdb8e6a7679b4212b1c4fe14c8a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "48e773d9_45b67a66",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-03T15:52:14Z",
+      "side": 1,
+      "message": "Yeah, once buffers can be stored in the ScratchResourceManager it will want a way to differentiate the resources. Since I was mucking around and making asTexture() always available, I figured I might as well add asBuffer() now too.\n\nWe could adjust it so that the available resource list is broken into specifically typed lists, and the returnResource function has overloads for each type as well. In that case we would not need any inspection on Resource itself. WDYT?",
+      "parentUuid": "6b5c309f_37152ba9",
+      "range": {
+        "startLine": 126,
+        "startChar": 27,
+        "endLine": 126,
+        "endChar": 35
+      },
+      "revId": "f2b58ffd904edbdb8e6a7679b4212b1c4fe14c8a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
