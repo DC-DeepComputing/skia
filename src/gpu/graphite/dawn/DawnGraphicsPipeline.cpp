@@ -509,21 +509,15 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(const DawnSharedContext* 
 
     // Multisampled state
     descriptor.multisample.count = renderPassDesc.fSampleCount;
-    [[maybe_unused]] bool isMSAARenderToSingleSampled =
-            renderPassDesc.fSampleCount > 1 &&
-            renderPassDesc.fColorAttachment.fTextureInfo.isValid() &&
-            renderPassDesc.fColorAttachment.fTextureInfo.numSamples() == 1;
-#if defined(__EMSCRIPTEN__)
-    SkASSERT(!isMSAARenderToSingleSampled);
-#else
-    wgpu::DawnMultisampleStateRenderToSingleSampled pipelineMSAARenderToSingleSampledDesc;
-    if (isMSAARenderToSingleSampled) {
-        // If render pass is multi sampled but the color attachment is single sampled, we need
-        // to activate multisampled render to single sampled feature for this graphics pipeline.
-        SkASSERT(device.HasFeature(wgpu::FeatureName::MSAARenderToSingleSampled));
-
-        descriptor.multisample.nextInChain = &pipelineMSAARenderToSingleSampledDesc;
-        pipelineMSAARenderToSingleSampledDesc.enabled = true;
+#if !defined(__EMSCRIPTEN__)
+    const bool loadMsaaFromResolve = renderPassDesc.fColorResolveAttachment.fTextureInfo.isValid() &&
+                               renderPassDesc.fColorResolveAttachment.fLoadOp == LoadOp::kLoad;
+    // Special case: a render pass loading resolve texture requires additional settings for the
+    // pipeline to make it compatible.
+    wgpu::MultisampleStateExpandResolveTextureDawn pipelineMSAALoadResolveTextureDesc;
+    if (loadMsaaFromResolve && device.HasFeature(wgpu::FeatureName::DawnLoadResolveTexture)) {
+        descriptor.multisample.nextInChain = &pipelineMSAALoadResolveTextureDesc;
+        pipelineMSAALoadResolveTextureDesc.enabled = true;
     }
 #endif
 
