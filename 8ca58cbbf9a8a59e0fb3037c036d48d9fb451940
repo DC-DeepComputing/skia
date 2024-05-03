@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "025dc218_155d971e",
+        "filename": "src/gpu/graphite/ScratchResourceManager.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-03T14:44:45Z",
+      "side": 1,
+      "message": "Done, style says it should be explicit.",
+      "parentUuid": "3abaa4cb_18d3c6da",
+      "revId": "8ca58cbbf9a8a59e0fb3037c036d48d9fb451940",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "04040e8c_832a0799",
@@ -48,6 +66,24 @@
       "writtenOn": "2024-05-02T21:37:00Z",
       "side": 1,
       "message": "nit: Maybe refrain from using \"return\" in the documentation and use \"get\", since returning may also mean \"returning a resource for reuse\".",
+      "revId": "8ca58cbbf9a8a59e0fb3037c036d48d9fb451940",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d1f2af21_1f430fc0",
+        "filename": "src/gpu/graphite/ScratchResourceManager.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-03T14:44:45Z",
+      "side": 1,
+      "message": "Good point, done.",
+      "parentUuid": "04040e8c_832a0799",
       "revId": "8ca58cbbf9a8a59e0fb3037c036d48d9fb451940",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -69,6 +105,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba296a37_becedf46",
+        "filename": "src/gpu/graphite/ScratchResourceManager.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-03T14:44:45Z",
+      "side": 1,
+      "message": "I updated the TODO to say that yes this should be possible but there\u0027s some more work to do. I captured some thoughts on RAII (is nice for ScratchBuffer, but if we can\u0027t apply it to TextureProxies and Textures, it may make sense to keep it as an abstraction above this class). And right now, the ScratchResourceManager is only present at snap time and DrawBufferManager is always available for DrawPasses. I have considered making it so that DrawPasses are all deferred until snap() time too so there\u0027s no GPU resource creation until snap() and that would allow the DBM to refer to the ScratchResourceManager.",
+      "parentUuid": "3875abfc_c9aacf6b",
+      "revId": "8ca58cbbf9a8a59e0fb3037c036d48d9fb451940",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e144d8c8_1239beb6",
@@ -82,6 +136,24 @@
       "writtenOn": "2024-05-02T21:37:00Z",
       "side": 1,
       "message": "To make sure I\u0027m understanding this correctly: `popScope()` will invalidate and remove the listeners in the scope without notifying them?",
+      "revId": "8ca58cbbf9a8a59e0fb3037c036d48d9fb451940",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e72b8e61_ffd8cfd9",
+        "filename": "src/gpu/graphite/ScratchResourceManager.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-03T14:44:45Z",
+      "side": 1,
+      "message": "Correct. Right now with the way snaps are triggered by chrome, and because a snap flushes all tracked devices (which includes some scratch devices), we can end up in a situation where we have a DrawTask that instantiates the texture but nothing ever uses it until a subsequent Recording.",
+      "parentUuid": "e144d8c8_1239beb6",
       "revId": "8ca58cbbf9a8a59e0fb3037c036d48d9fb451940",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
