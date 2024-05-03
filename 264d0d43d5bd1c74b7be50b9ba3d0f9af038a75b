@@ -87,6 +87,23 @@
       "parentUuid": "24d4dd7b_b104f796",
       "revId": "264d0d43d5bd1c74b7be50b9ba3d0f9af038a75b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fba83a83_b0978186",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2024-05-03T13:45:44Z",
+      "side": 1,
+      "message": "Sg. Abandoning for now.",
+      "revId": "264d0d43d5bd1c74b7be50b9ba3d0f9af038a75b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
