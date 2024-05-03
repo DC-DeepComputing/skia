@@ -19,6 +19,7 @@ namespace skgpu::graphite {
 
 class Context;
 class Device;
+class DrawContext;
 class Image;
 class Recorder;
 class TextureProxy;
@@ -28,8 +29,8 @@ public:
     ~Image_Base() override;
 
     // Must be called at the time of recording an action that reads from the image, be it a draw
-    // or a copy operation.
-    void notifyInUse(Recorder*) const;
+    // or a copy operation. `drawContext` can be null if the "use" is scoped by a draw.
+    void notifyInUse(Recorder*, DrawContext* drawContext) const;
 
     // Returns true if this image is linked to a device that may render their shared texture(s).
     bool isDynamic() const;
