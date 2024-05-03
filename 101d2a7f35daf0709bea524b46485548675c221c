@@ -16,6 +16,29 @@
       "message": "I was about to make a change that would have broken this, so land the test first to make sure I don\u0027t.",
       "revId": "101d2a7f35daf0709bea524b46485548675c221c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1cb30616_16f3b1c7",
+        "filename": "tests/TypefaceTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-05-03T13:50:29Z",
+      "side": 1,
+      "message": "I think you might be getting a name clash with another type named Test?",
+      "range": {
+        "startLine": 154,
+        "startChar": 11,
+        "endLine": 154,
+        "endChar": 15
+      },
+      "revId": "101d2a7f35daf0709bea524b46485548675c221c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
