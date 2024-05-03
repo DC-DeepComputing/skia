@@ -33,6 +33,24 @@
       "message": "Couple questions here.\n\n1) Looking at the latest comments on the bug, it seemed like it was suggesting always setting the labels in Graphite. What is the reason then to continue having the flag you\u0027re adding here?\n\n2) If the flag is needed, I think you also need to update DawnTexture and DawnBuffer. In DawnBuffer we don\u0027t set the label on the Desc but instead call SetLabel.",
       "revId": "c502c15d128fd5b6a6c4fb019858593dd6976579",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bfdaac1a_14237135",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-05-03T16:28:11Z",
+      "side": 1,
+      "message": "It looks like my change to use SetLabel for Dawn Buffers had some fairly large perf regressions as it wasn\u0027t guarded by SK_DEBUG. So that does seem to suggest we\u0027ll want so way to optionally set the label on the Dawn objects.\n\nSo if we\u0027re going down this path a couple comments for this CL.\n1) I think the flag should be backend agnostic. It is probably worth being able to disable setting the backend labels on all backends. Even though it was no where near as large as in Dawn our GrMtl config did show some 1-2% regressions as well.\n\n2) Unfortunately I don\u0027t think we can do this with a gn arg and a DEFINE. Skia is actively removing all DEFINES that aren\u0027t directly target platform related (e.g. Windows, Android, Emscriptin, etc.) or Debug vs Release. This is because our bazel builds can only compile a file one given way for a given platform. You can\u0027t have customizable defines like this. Thus I think we\u0027d have to do this via a ContextOption that gets stored on and can be queried from Caps.",
+      "parentUuid": "af926b2e_3787a403",
+      "revId": "c502c15d128fd5b6a6c4fb019858593dd6976579",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
