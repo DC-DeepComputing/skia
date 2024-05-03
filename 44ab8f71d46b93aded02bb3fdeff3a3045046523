@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "86e27120_6b8a0ab0",
+        "filename": "src/gpu/graphite/ScratchResourceManager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-05-03T20:25:22Z",
+      "side": 1,
+      "message": "nit: The `st.fAvailable` here looks redundant given the check right above.",
+      "revId": "44ab8f71d46b93aded02bb3fdeff3a3045046523",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
