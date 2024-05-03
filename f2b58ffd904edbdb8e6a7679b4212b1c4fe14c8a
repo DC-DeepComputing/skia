@@ -70,6 +70,30 @@
       },
       "revId": "f2b58ffd904edbdb8e6a7679b4212b1c4fe14c8a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "43b88530_72e690fa",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-03T18:36:28Z",
+      "side": 1,
+      "message": "PTAL, I removed the changes to Resource/Texture/Buffer and ScratchResourceManager now just has a list of available Textures. When buffers get moved over in the future, it has documented that the plan of record will be to have a separate list of available Buffers.\n\nUnfortunately taht reset all the +1s.",
+      "parentUuid": "9d25236b_4b151a49",
+      "range": {
+        "startLine": 126,
+        "startChar": 27,
+        "endLine": 126,
+        "endChar": 35
+      },
+      "revId": "f2b58ffd904edbdb8e6a7679b4212b1c4fe14c8a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
