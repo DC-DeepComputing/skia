@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a47428a9_29607877",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-05-03T17:59:40Z",
+      "side": 1,
+      "message": "Allows https://skia-review.googlesource.com/c/skia/+/822317 to finally pass tests.",
+      "revId": "09ae428fc21af31dff24c64fe9887d5ace6724af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
