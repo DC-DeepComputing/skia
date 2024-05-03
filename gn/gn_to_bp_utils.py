@@ -65,7 +65,6 @@ def CleanupCFlags(cflags):
   # Add the rest of the flags we want.
   cflags = cflags.union([
     "-fvisibility=hidden",
-    "-D_FORTIFY_SOURCE=1",
     "-DSKIA_DLL",
     "-DSKIA_IMPLEMENTATION=1",
     "-DATRACE_TAG=ATRACE_TAG_VIEW",
@@ -75,11 +74,7 @@ def CleanupCFlags(cflags):
   if "-Weverything" in cflags:
     cflags.remove("-Weverything")
 
-  # We need to undefine FORTIFY_SOURCE before we define it. Insert it at the
-  # beginning after sorting.
-  cflags = sorted(cflags)
-  cflags.insert(0, "-U_FORTIFY_SOURCE")
-  return cflags
+  return sorted(cflags)
 
 def CleanupCCFlags(cflags_cc):
   # Android does not want -Weverything set, it blocks toolchain updates.
