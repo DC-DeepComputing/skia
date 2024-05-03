@@ -16,6 +16,24 @@
       "message": "To match this.",
       "revId": "ca7c5355b28333bd31c83cd3a08d6b00b2ef6f2e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f98ea4b_6eeb6348",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 587,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-05-03T18:10:55Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "8fd7e320_9d071a1f",
+      "revId": "ca7c5355b28333bd31c83cd3a08d6b00b2ef6f2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
