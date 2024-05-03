@@ -1215,7 +1215,7 @@ static bool get_gainmap_info(const SkJpegMarkerList& markerList,
                              SkJpegSourceMgr* sourceMgr,
                              SkGainmapInfo* info,
                              std::unique_ptr<SkStream>* gainmapImageStream) {
-    // The GContainer and APP15-based HDRGM formats require XMP metadata. Extract it now.
+    // All non-ISO formats require XMP metadata. Extract it now.
     std::unique_ptr<SkXmp> xmp = get_xmp_metadata(markerList);
 
     // Let |base_image_info| be the HDRGM gainmap information found in the base image (if any).
@@ -1279,26 +1279,6 @@ static bool get_gainmap_info(const SkJpegMarkerList& markerList,
         SkCodecPrintf("Failed to extract container-specified gainmap.\n");
     }
 
-    // Finally, attempt to extract SkGainmapInfo from the primary image's XMP and extract the
-    // gainmap from APP15 segments.
-    if (xmp && base_image_has_hdrgm) {
-        auto gainmapData = read_metadata(markerList,
-                                         kGainmapMarker,
-                                         kGainmapSig,
-                                         sizeof(kGainmapSig),
-                                         /*signaturePadding=*/0,
-                                         kGainmapMarkerIndexSize,
-                                         /*alwaysCopyData=*/true);
-        if (gainmapData) {
-            *gainmapImageStream = SkMemoryStream::Make(std::move(gainmapData));
-            if (*gainmapImageStream) {
-                *info = base_image_info;
-                return true;
-            }
-        } else {
-            SkCodecPrintf("Parsed HDRGM metadata but did not find image\n");
-        }
-    }
     return false;
 }
 
