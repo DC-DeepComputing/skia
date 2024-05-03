@@ -69,6 +69,24 @@
       "parentUuid": "f8c608c9_0f3d1482",
       "revId": "264d0d43d5bd1c74b7be50b9ba3d0f9af038a75b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "175a3200_f63b5f8d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-05-03T13:17:40Z",
+      "side": 1,
+      "message": "That might be better - I\u0027d like to see the net size change once it\u0027s all in. In theory, the world will eventually all want gainmaps, but I suspect we\u0027re a ways off (certainly in some applications). We\u0027re not hyper sensitive to size, but we\u0027ve still got WASM clients (for example) that might care.",
+      "parentUuid": "24d4dd7b_b104f796",
+      "revId": "264d0d43d5bd1c74b7be50b9ba3d0f9af038a75b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
