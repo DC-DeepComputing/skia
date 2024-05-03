@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7352ae9c_da91833c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-05-03T13:31:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6e1a6758_f09882ba",
+      "range": {
+        "startLine": 19,
+        "startChar": 5,
+        "endLine": 19,
+        "endChar": 29
+      },
+      "revId": "ec5fee2c377c6b440ad86aad595cefe6212230d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d825f062_07c332a4",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-05-02T21:04:39Z",
       "side": 1,
       "message": "Oh shoot, this is an _array_ of strings.\n\nAll we need is\n\n```\npatch_cmds \u003d [\"rm source/i18n/BUILD.bazel\", \n              \"rm source/common/BUILD.bazel\", \n              \"rm source/stubdata/BUILD.bazel\"],\n```\n\nForward slash paths are OK in Powershell.",
+      "range": {
+        "startLine": 83,
+        "startChar": 36,
+        "endLine": 83,
+        "endChar": 38
+      },
+      "revId": "ec5fee2c377c6b440ad86aad595cefe6212230d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "167ff8c0_4c6adeb9",
+        "filename": "bazel/deps.bzl",
+        "patchSetId": 5
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-05-03T13:31:19Z",
+      "side": 1,
+      "message": "Done. To accomplish this (in a tractable way), I had to pay down some tech debt and apply buildifier formatting to the generated deps.bzl",
+      "parentUuid": "d825f062_07c332a4",
       "range": {
         "startLine": 83,
         "startChar": 36,
