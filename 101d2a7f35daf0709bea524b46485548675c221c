@@ -63,6 +63,47 @@
       },
       "revId": "101d2a7f35daf0709bea524b46485548675c221c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "618decb8_0f5ed286",
+        "filename": "tests/TypefaceTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-05-03T14:23:52Z",
+      "side": 1,
+      "message": "Yeah, why is only the Android compiler thinking that `tests[]` is of type `::Test[]`? Seems like a bug where it doesn\u0027t think the local `Test` is a complete type until the `;` (instead of at the `}`).",
+      "parentUuid": "b4a674c0_bd99625e",
+      "range": {
+        "startLine": 154,
+        "startChar": 11,
+        "endLine": 154,
+        "endChar": 15
+      },
+      "revId": "101d2a7f35daf0709bea524b46485548675c221c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bbef7687_4912bbc6",
+        "filename": "tests/TypefaceTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-05-03T14:23:52Z",
+      "side": 1,
+      "message": "So MSVC is seeing these `#if` as being inside the expansion of the `REPORTER_ASSERT` macro. It is in fact illegal to expand to something with `defined` in it, though apparently gcc and clang allow it. Will need to fix that for this predicate.",
+      "revId": "101d2a7f35daf0709bea524b46485548675c221c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
