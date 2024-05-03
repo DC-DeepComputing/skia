@@ -16,6 +16,52 @@
       "message": "Just code shuffling...",
       "revId": "c06c6a1a6d39460b04fe29a1643a423597421b9d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b83ec13_3ba97192",
+        "filename": "src/codec/SkJpegMetadataDecoderImpl.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-05-03T13:55:32Z",
+      "side": 1,
+      "message": "```suggestion\n * Copyright 2024 Google LLC\n```",
+      "range": {
+        "startLine": 2,
+        "startChar": 25,
+        "endLine": 2,
+        "endChar": 29
+      },
+      "revId": "c06c6a1a6d39460b04fe29a1643a423597421b9d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25e0cf17_79a0eaa1",
+        "filename": "src/codec/SkJpegMetadataDecoderImpl.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-05-03T13:55:32Z",
+      "side": 1,
+      "message": "```suggestion\n * Copyright 2024 Google LLC\n```",
+      "range": {
+        "startLine": 2,
+        "startChar": 25,
+        "endLine": 2,
+        "endChar": 29
+      },
+      "revId": "c06c6a1a6d39460b04fe29a1643a423597421b9d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
