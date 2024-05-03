@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "09d11445_b0d92b25",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-05-03T18:22:21Z",
+      "side": 1,
+      "message": "Note that this will cause `sbix` glyph bounds to not quite match what CoreText does, but we need to change that to do what FreeType does anyway because CoreText is just buggy and emulating it\u0027s buggy behavior exactly only serves to over constrain our model.",
+      "revId": "ca7c5355b28333bd31c83cd3a08d6b00b2ef6f2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8fd7e320_9d071a1f",
