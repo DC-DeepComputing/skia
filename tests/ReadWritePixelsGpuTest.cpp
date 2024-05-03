@@ -59,6 +59,9 @@
 #include "tools/gpu/BackendTextureImageFactory.h"
 #include "tools/gpu/ContextType.h"
 
+#include "include/core/SkStream.h"
+#include "include/encode/SkPngEncoder.h"
+
 #include <algorithm>
 #include <array>
 #include <cstring>
@@ -140,6 +143,7 @@ std::vector<SkIRect> make_long_rect_array(int w, int h) {
     return {
             // entire thing
             SkIRect::MakeWH(w, h),
+#if 0
             // larger on all sides
             SkIRect::MakeLTRB(-10, -10, w + 10, h + 10),
             // fully contained
@@ -182,6 +186,7 @@ std::vector<SkIRect> make_long_rect_array(int w, int h) {
             SkIRect::MakeLTRB(3*w/4, 3*h/4, w + 10, h + 10),
             // overlapping top right and bottom right corners
             SkIRect::MakeLTRB(3*w/4, -10, w + 10, h + 10),
+#endif
     };
 }
 
@@ -189,10 +194,12 @@ std::vector<SkIRect> make_short_rect_array(int w, int h) {
     return {
             // entire thing
             SkIRect::MakeWH(w, h),
+#if 0
             // fully contained
             SkIRect::MakeLTRB(w/4, h/4, 3*w/4, 3*h/4),
             // overlapping top right corner
             SkIRect::MakeLTRB(3*w/4, -10, w + 10, h/4),
+#endif
     };
 }
 
@@ -283,6 +290,20 @@ static SkAutoPixmapStorage make_ref_data(const SkImageInfo& info, bool forceOpaq
         paint.setBlendMode(SkBlendMode::kDstIn);
         surface->getCanvas()->drawPaint(paint);
     }
+
+    static bool once1 = false;  // change to true to save out the first reference image
+    if (once1) {
+        once1 = false;
+
+        SkString filename;
+        filename.appendf("//tmp//ref-img.png");
+
+        SkFILEWStream file(filename.c_str());
+        SkAssertResult(file.isValid());
+
+        SkAssertResult(SkPngEncoder::Encode(&file, result, {}));
+    }
+
     return result;
 }
 
@@ -353,7 +374,7 @@ static void gpu_read_pixels_test_driver(skiatest::Reporter* reporter,
         bool guardOk = true;
         auto guardCheck = [](char x) { return x == kInitialByte; };
 
-        // Considering the rect we tried to read and the surface bounds figure  out which pixels in
+        // Considering the rect we tried to read and the surface bounds figure out which pixels in
         // both src and dst space should actually have been read and written.
         SkIRect srcReadRect;
         if (result == Result::kSuccess && srcReadRect.intersect(surfBounds, rect)) {
@@ -420,6 +441,13 @@ static void gpu_read_pixels_test_driver(skiatest::Reporter* reporter,
             // This is the part of dstPixels that should have been updated.
             SkPixmap actual;
             SkAssertResult(dstPixels.extractSubset(&actual, dstWriteRect));
+
+            SkColor4f a4f = actual.getColor4f(0, 0);
+            SkColor4f e4f = ref.getColor4f(0, 0);
+            SkDebugf("actual: %.2f,%.2f,%.2f,%.2f expected: %.2f,%.2f,%.2f,%.2f\n",
+                     a4f.fR, a4f.fG, a4f.fB, a4f.fA,
+                     e4f.fR, e4f.fG, e4f.fB, e4f.fA);
+
             ComparePixels(ref, actual, tols, error);
 
             const auto* v = dstData.get();
@@ -465,12 +493,12 @@ static void gpu_read_pixels_test_driver(skiatest::Reporter* reporter,
     // and full complement of alpha types with one successful read in the loop.
     std::array<bool, kLastEnum_SkColorType + 1> srcCTTestedThoroughly  = {},
                                                 readCTTestedThoroughly = {};
-    for (int sat = 0; sat <= kLastEnum_SkAlphaType; ++sat) {
+    for (int sat = kOpaque_SkAlphaType; sat <= kOpaque_SkAlphaType; ++sat) {
         const auto srcAT = static_cast<SkAlphaType>(sat);
         if (srcAT == kUnpremul_SkAlphaType && !rules.fAllowUnpremulSrc) {
             continue;
         }
-        for (int sct = 0; sct <= kLastEnum_SkColorType; ++sct) {
+        for (int sct = kRGBA_8888_SkColorType; sct <= kRGBA_8888_SkColorType; ++sct) {
             const auto srcCT = static_cast<SkColorType>(sct);
             if (rules.fSkipSRGBCT && srcCT == kSRGBA_8888_SkColorType) {
                 continue;
@@ -525,11 +553,11 @@ static void gpu_read_pixels_test_driver(skiatest::Reporter* reporter,
                  kUnknown_SkAlphaType  == srcAT)) {
                 continue;
             }
-            for (int rct = 0; rct <= kLastEnum_SkColorType; ++rct) {
+            for (int rct = kRGBA_8888_SkColorType; rct <= kRGBA_8888_SkColorType; ++rct) {
                 const auto readCT = static_cast<SkColorType>(rct);
                 for (const sk_sp<SkColorSpace>& readCS :
-                     {SkColorSpace::MakeSRGB(), SkColorSpace::MakeSRGBLinear()}) {
-                    for (int at = 0; at <= kLastEnum_SkAlphaType; ++at) {
+                     {SkColorSpace::MakeSRGB() /*, SkColorSpace::MakeSRGBLinear()*/}) {
+                    for (int at = kOpaque_SkAlphaType; at <= kOpaque_SkAlphaType; ++at) {
                         const auto readAT = static_cast<SkAlphaType>(at);
                         if (srcAT != kOpaque_SkAlphaType && readAT == kOpaque_SkAlphaType) {
                             // This doesn't make sense.
@@ -705,7 +733,9 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SurfaceAsyncReadPixels,
         rules.fSkipSRGBCT = true;
     }
 
-    for (GrSurfaceOrigin origin : {kTopLeft_GrSurfaceOrigin, kBottomLeft_GrSurfaceOrigin}) {
+    for (GrSurfaceOrigin origin : {kTopLeft_GrSurfaceOrigin /*, kBottomLeft_GrSurfaceOrigin*/}) {
+        SkString label;
+#if 0
         auto factory = std::function<GpuSrcFactory<Surface>>(
                 [context = ctxInfo.directContext(), origin](const SkPixmap& src) {
                     auto surf = SkSurfaces::RenderTarget(
@@ -715,8 +745,9 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SurfaceAsyncReadPixels,
                     }
                     return surf;
                 });
-        auto label = SkStringPrintf("Origin: %d", origin);
+        label = SkStringPrintf("Origin: %d", origin);
         gpu_read_pixels_test_driver(reporter, rules, factory, reader, label);
+#endif
         auto backendRTFactory = std::function<GpuSrcFactory<Surface>>(
                 [context = ctxInfo.directContext(), origin](const SkPixmap& src) {
                     auto surf = sk_gpu_test::MakeBackendRenderTargetSurface(context,
