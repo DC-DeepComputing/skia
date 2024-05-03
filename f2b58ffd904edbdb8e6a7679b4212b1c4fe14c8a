@@ -46,6 +46,30 @@
       },
       "revId": "f2b58ffd904edbdb8e6a7679b4212b1c4fe14c8a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9d25236b_4b151a49",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-05-03T16:07:38Z",
+      "side": 1,
+      "message": "We may want to to go in that direction in the end. Since a caller that requests a scratch resource already knows whether they want a texture or a buffer, having separate pools may help with the speed of lookups. Although this might be a bit premature at this stage, we may also want to manage the texture and buffer pools with different heuristics (based on size class, usage, texture format, and so on).",
+      "parentUuid": "48e773d9_45b67a66",
+      "range": {
+        "startLine": 126,
+        "startChar": 27,
+        "endLine": 126,
+        "endChar": 35
+      },
+      "revId": "f2b58ffd904edbdb8e6a7679b4212b1c4fe14c8a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
