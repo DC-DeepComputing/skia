@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eb558eb7_b2026168",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 20
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-05-04T13:46:00Z",
+      "side": 1,
+      "message": "At Patchset 20 and the current state of things, it looks like the only real differences here are due to hinting settings.",
+      "revId": "14c9965b128223923f5186cfea3a1cdee125238c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
