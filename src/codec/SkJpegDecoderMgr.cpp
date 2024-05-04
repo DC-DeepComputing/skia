@@ -7,6 +7,7 @@
 #include "src/codec/SkJpegDecoderMgr.h"
 
 #include "include/core/SkTypes.h"
+#include "include/private/base/SkMalloc.h"
 #include "src/codec/SkCodecPriv.h"
 #include "src/codec/SkJpegSourceMgr.h"
 #include "src/codec/SkJpegUtility.h"
@@ -91,8 +92,12 @@ SkJpegSourceMgr* JpegDecoderMgr::getSourceMgr() {
 
 JpegDecoderMgr::JpegDecoderMgr(SkStream* stream)
         : fSrcMgr(SkJpegSourceMgr::Make(stream)), fInit(false) {
-    // Error manager must be set before any calls to libjeg in order to handle failures
-    fDInfo.err = jpeg_std_error(&fErrorMgr);
+    // An error manager must be set before any calls to libjpeg, in order to handle failures.
+    // `jpeg_std_error` leaves the msg_parm fields uninitialized; this is safe, but confuses MSAN,
+    // so we explicitly zero out the structure before using it. (crbug.com/oss-fuzz/68691)
+    jpeg_error_mgr* errorMgr = &fErrorMgr;
+    sk_bzero(errorMgr, sizeof(*errorMgr));
+    fDInfo.err = jpeg_std_error(errorMgr);
     fErrorMgr.error_exit = skjpeg_err_exit;
 }
 
