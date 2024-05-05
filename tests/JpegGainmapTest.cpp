@@ -475,10 +475,18 @@ DEF_TEST(AndroidCodec_jpegGainmapDecode, r) {
              SkISize::Make(1512, 2016),
              0xFF3B3B3B,
              0xFF101010,
-             std::exp(0.f),
-             std::exp(1.f),
              1.f,
-             2.71828f},
+             3.482202f,
+             1.f,
+             3.482202f},
+            {"images/iphone_15.jpeg",
+             SkISize::Make(2016, 1512),
+             0xFF5C5C5C,
+             0xFF656565,
+             1.f,
+             3.755272f,
+             1.f,
+             3.755272f},
     };
 
     TestStream::Type kStreamTypes[] = {
