@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b848bea9_daa5eec8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-05-06T17:45:30Z",
+      "side": 1,
+      "message": "See also https://github.com/google/oss-fuzz/pull/11914",
+      "revId": "da772ace76fffffe6036ea0ae9d83c308cf5ba8c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
