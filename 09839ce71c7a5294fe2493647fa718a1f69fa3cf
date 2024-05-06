@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "89a39065_68e8d022",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-05-06T16:11:54Z",
+      "side": 1,
+      "message": "LGTM once failing builds are fixed and small comments addressed",
+      "revId": "09839ce71c7a5294fe2493647fa718a1f69fa3cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b84481fe_326a3a84",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1776,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-05-06T16:11:54Z",
+      "side": 1,
+      "message": "`PerlinNoiseTexture`?",
+      "range": {
+        "startLine": 1776,
+        "startChar": 45,
+        "endLine": 1776,
+        "endChar": 68
+      },
+      "revId": "09839ce71c7a5294fe2493647fa718a1f69fa3cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40374f5c_fc8fc1b5",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1780,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-05-06T16:11:54Z",
+      "side": 1,
+      "message": "`PerlinNoiseNoiseTexture`?\n```suggestion\n                                            \"PerlinNoiseNoiseTexture\");\n```",
+      "range": {
+        "startLine": 1780,
+        "startChar": 45,
+        "endLine": 1780,
+        "endChar": 69
+      },
+      "revId": "09839ce71c7a5294fe2493647fa718a1f69fa3cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eafb37ed_81c6d4a4",
+        "filename": "tests/graphite/PaintParamsKeyTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1341,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-05-06T16:11:54Z",
+      "side": 1,
+      "message": "```suggestion\n                                                            \"PaintParamsKeyTestFakeDstTexture\",\n```",
+      "range": {
+        "startLine": 1341,
+        "startChar": 61,
+        "endLine": 1341,
+        "endChar": 82
+      },
+      "revId": "09839ce71c7a5294fe2493647fa718a1f69fa3cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5de4058_b4bcbe5c",
+        "filename": "tests/graphite/ProxyCacheTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 295,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-05-06T16:11:54Z",
+      "side": 1,
+      "message": "I don\u0027t mind that `Texture` isn\u0027t explicitly appended here, but it does mismatch with, say, `RecorderTestTexture` below. So perhaps append it here to match (`ProxyCacheTestTexture`) or remove the word `Texture` at the end in other places if it seems redundant to call out",
+      "range": {
+        "startLine": 295,
+        "startChar": 68,
+        "endLine": 295,
+        "endChar": 82
+      },
+      "revId": "09839ce71c7a5294fe2493647fa718a1f69fa3cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
