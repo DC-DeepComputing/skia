@@ -16,6 +16,46 @@
       "message": "Next patch is second-to-last (I think!)",
       "revId": "d12383397437a9988523b7887a4a4a5d82d5b3ca",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c1939c2_ac6de2d9",
+        "filename": "src/codec/SkJpegMetadataDecoderImpl.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-05-06T14:43:47Z",
+      "side": 1,
+      "message": "nit: line length\n```suggestion\n    // Next try for Apple gain map metadata. This does not require anything specific from the base\n    // image.\n```",
+      "revId": "d12383397437a9988523b7887a4a4a5d82d5b3ca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c41ddd7a_0d6021df",
+        "filename": "src/codec/SkXmp.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 611,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-05-06T14:43:47Z",
+      "side": 1,
+      "message": "The Apple version doesn\u0027t have this same check. Want to add it?",
+      "range": {
+        "startLine": 609,
+        "startChar": 0,
+        "endLine": 611,
+        "endChar": 5
+      },
+      "revId": "d12383397437a9988523b7887a4a4a5d82d5b3ca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
