@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ed9b79b_77a4cf7a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-05-06T23:05:02Z",
+      "side": 1,
+      "message": "What is the goal?\n\nSince this is a leaf function and can\u0027t recurse, this only saves us from a stack overflow if we were 48 bytes away from disaster anyway.",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 21
+      },
+      "revId": "19c1b735d46a1610fd259df3718e08ab766a5e47",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
