@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "b48d1d10_3372a216",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 307,
+      "author": {
+        "id": 21754
+      },
+      "writtenOn": "2024-05-06T16:01:14Z",
+      "side": 1,
+      "message": "IIUC it\u0027s only problematic with Metal since there are a lot of string copies involved due to mismatched types and string manipulation (NSString vs std::string, Dawn\u0027s label manipulation).\n\nThere\u0027s a use_user_defined_labels_in_backend Dawn toggle that can be used to limit passing the labels to Metal so I\u0027d recommend disabling that in Skia\u0027s benchmarks rather than put all labels behind SK_DEBUG which limits what Chrome can do e.g. we can\u0027t emit labels in release builds even if that might be the right decision for us to help in debugging performance/memory issues.",
+      "parentUuid": "b2ed1468_2ddb45d1",
+      "range": {
+        "startLine": 307,
+        "startChar": 0,
+        "endLine": 307,
+        "endChar": 15
+      },
+      "revId": "c321bddf5fa8887ecf62ae8992cf4fc0974e0f92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "8f357404_75374273",
         "filename": "src/gpu/graphite/mtl/MtlBuffer.mm",
         "patchSetId": 1

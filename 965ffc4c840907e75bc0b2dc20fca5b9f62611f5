@@ -22,6 +22,30 @@
       },
       "revId": "965ffc4c840907e75bc0b2dc20fca5b9f62611f5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "05dbcc1b_6ccd9516",
+        "filename": "src/gpu/graphite/dawn/DawnTexture.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 243,
+      "author": {
+        "id": 21754
+      },
+      "writtenOn": "2024-05-06T16:01:14Z",
+      "side": 0,
+      "message": "Yes, it\u0027s not needed if the labels match all the way through to the backend. And there\u0027s no extra supporting code in Chrome - these are just generic string fields which get displayed in the memory-infra tracing UI as is.",
+      "parentUuid": "8b272524_2204ad7a",
+      "range": {
+        "startLine": 243,
+        "startChar": 13,
+        "endLine": 243,
+        "endChar": 26
+      },
+      "revId": "965ffc4c840907e75bc0b2dc20fca5b9f62611f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
