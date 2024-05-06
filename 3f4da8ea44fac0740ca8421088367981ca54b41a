@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73461d26_8e309485",
+        "filename": "src/utils/SkParsePath.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-05-06T16:04:02Z",
+      "side": 1,
+      "message": "nit: you can use the shorthand initializer John suggested\n\n```suggestion\n    SkPoint points[3] \u003d {};\n```",
+      "revId": "3f4da8ea44fac0740ca8421088367981ca54b41a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
