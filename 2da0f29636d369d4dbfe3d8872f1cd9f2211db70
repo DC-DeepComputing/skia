@@ -46,6 +46,30 @@
       },
       "revId": "2da0f29636d369d4dbfe3d8872f1cd9f2211db70",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "404f9511_ab30de74",
+        "filename": "tools/lottiecap/package.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2024-05-06T12:43:29Z",
+      "side": 1,
+      "message": "It\u0027s already breaking stuff- https://task-driver.skia.org/td/IBddd7VztHOUk6lT6CEd?ifNotFound\u003dhttps%3A%2F%2Fchromium-swarm.appspot.com%2Ftask%3Fid%3D6966b89cac22bf10\n\nGoing to revert.",
+      "parentUuid": "31209205_deb9cab9",
+      "range": {
+        "startLine": 8,
+        "startChar": 4,
+        "endLine": 8,
+        "endChar": 26
+      },
+      "revId": "2da0f29636d369d4dbfe3d8872f1cd9f2211db70",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
