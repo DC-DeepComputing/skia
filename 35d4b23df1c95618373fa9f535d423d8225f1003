@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "158c9e04_3b17e776",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-05-06T14:53:12Z",
+      "side": 1,
+      "message": "nit: This appears to not be linking - I suspect it won\u0027t trigger gitwatcher. I\u0027d just split this into two `Bug:` lines",
+      "range": {
+        "startLine": 31,
+        "startChar": 17,
+        "endLine": 31,
+        "endChar": 29
+      },
+      "revId": "35d4b23df1c95618373fa9f535d423d8225f1003",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
