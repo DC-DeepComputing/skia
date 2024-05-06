@@ -16,6 +16,24 @@
       "message": "The change overall looks good to me. I can\u0027t say I have my head fully wrapped around the state machine wrt scratch devices and how they interact with images.\n\nI feel that there are a number of invariants now that different classes operate under and it would be have some high level documentation around the whole task/image/flush management eventually.",
       "revId": "1d83738c381708be881e2110e4e2210220a7a800",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a884e041_9f3f75de",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-06T19:15:33Z",
+      "side": 1,
+      "message": "I absolutely agree, and I want to put more concrete details into https://docs.google.com/document/d/19AuP9Jse8XoyTZVxgcXD_uIsO9-va4P4lHFksI-LAMs/edit?resourcekey\u003d0--s-At2of4sd-3ynu0Wy2kQ\u0026tab\u003dt.0#heading\u003dh.x9snb54sjlu9 but have been focusing on getting something done to unblock the chrome testing releases.\n\nOnce it\u0027s unblocked, I\u0027ll finish the document and make sure it aligns with some of the recent changes in the actual code. That will show how both the interim semi-graph works as well as how it will work once all the tasks are just organized as a graph. It\u0027ll stay in that interim state for a while until the atlasing and flushing is sorted out, but once that\u0027s done I think it makes sense working on enforcing the invariants within the code. Unfortunately, that\u0027s tricky to do in the interim state.",
+      "parentUuid": "b1fd0956_841ecff0",
+      "revId": "1d83738c381708be881e2110e4e2210220a7a800",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
