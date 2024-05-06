@@ -1,0 +1,366 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e9ab5255_bb586c4b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-06T19:10:28Z",
+      "side": 1,
+      "message": "The core implementation seems good to me, all my comments are around the labels that were chosen at callsites. Not sure if I succeeded in every place, but I tried to make them to varying degrees more specific to their content (vs. call-site) and not have \"Texture\" if there was a better synonym since Texture would probably be pretty apparent from any gpu capture or memory dump.",
+      "revId": "069e7b39b56829fb7e120681e6e6681ce616b019",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3365879c_6fc7411e",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 506,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-06T19:10:28Z",
+      "side": 1,
+      "message": "AsyncReadPixelsYPlane?",
+      "range": {
+        "startLine": 506,
+        "startChar": 65,
+        "endLine": 506,
+        "endChar": 88
+      },
+      "revId": "069e7b39b56829fb7e120681e6e6681ce616b019",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f0f16ec_f8aea7de",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 406,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-06T19:10:28Z",
+      "side": 1,
+      "message": "SaveLayer?",
+      "range": {
+        "startLine": 406,
+        "startChar": 17,
+        "endLine": 406,
+        "endChar": 36
+      },
+      "revId": "069e7b39b56829fb7e120681e6e6681ce616b019",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33dd765e_5feb8c63",
+        "filename": "src/gpu/graphite/DrawAtlas.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 469,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-06T19:10:28Z",
+      "side": 1,
+      "message": "DrawAtlasPage?",
+      "range": {
+        "startLine": 469,
+        "startChar": 52,
+        "endLine": 469,
+        "endChar": 68
+      },
+      "revId": "069e7b39b56829fb7e120681e6e6681ce616b019",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2eb054b5_ad65c318",
+        "filename": "src/gpu/graphite/Image_Base_Graphite.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-06T19:10:28Z",
+      "side": 1,
+      "message": "This (and the one below) are copying a possibly-client-labeled image. Do we want to preserve that as well?",
+      "range": {
+        "startLine": 152,
+        "startChar": 28,
+        "endLine": 152,
+        "endChar": 46
+      },
+      "revId": "069e7b39b56829fb7e120681e6e6681ce616b019",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25151a1f_852ddcfb",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1780,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-06T19:10:28Z",
+      "side": 1,
+      "message": "Table? (and above for permutation?)",
+      "range": {
+        "startLine": 1780,
+        "startChar": 45,
+        "endLine": 1780,
+        "endChar": 68
+      },
+      "revId": "069e7b39b56829fb7e120681e6e6681ce616b019",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c2d3146e_c624775b",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-06T19:10:28Z",
+      "side": 1,
+      "message": "nit: do we need `Texture` in this label?",
+      "range": {
+        "startLine": 175,
+        "startChar": 65,
+        "endLine": 175,
+        "endChar": 81
+      },
+      "revId": "069e7b39b56829fb7e120681e6e6681ce616b019",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44d4c68b_77cdf019",
+        "filename": "src/gpu/graphite/Surface_Graphite.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-06T19:10:28Z",
+      "side": 1,
+      "message": "do we want to have a public API that lets callers pass in labels?",
+      "range": {
+        "startLine": 225,
+        "startChar": 59,
+        "endLine": 225,
+        "endChar": 80
+      },
+      "revId": "069e7b39b56829fb7e120681e6e6681ce616b019",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0dbeb85_b5e36b93",
+        "filename": "src/gpu/graphite/TextureUtils.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 571,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-06T19:10:28Z",
+      "side": 1,
+      "message": "RescaleDstTexture?",
+      "range": {
+        "startLine": 571,
+        "startChar": 79,
+        "endLine": 571,
+        "endChar": 98
+      },
+      "revId": "069e7b39b56829fb7e120681e6e6681ce616b019",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ec18f94_b042a4d0",
+        "filename": "src/gpu/graphite/TextureUtils.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 617,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-06T19:10:28Z",
+      "side": 1,
+      "message": "RescaleLinearGammaTexture?",
+      "range": {
+        "startLine": 617,
+        "startChar": 54,
+        "endLine": 617,
+        "endChar": 78
+      },
+      "revId": "069e7b39b56829fb7e120681e6e6681ce616b019",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b7c052e8_4a02bc9b",
+        "filename": "src/gpu/graphite/TextureUtils.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 859,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-06T19:10:28Z",
+      "side": 1,
+      "message": "ImageFilterResult?",
+      "range": {
+        "startLine": 859,
+        "startChar": 46,
+        "endLine": 859,
+        "endChar": 70
+      },
+      "revId": "069e7b39b56829fb7e120681e6e6681ce616b019",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1fe1b8dd_5a20e0a8",
+        "filename": "src/gpu/graphite/TextureUtils.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 868,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-06T19:10:28Z",
+      "side": 1,
+      "message": "ImageFilterCachedBitmap?",
+      "range": {
+        "startLine": 868,
+        "startChar": 71,
+        "endLine": 868,
+        "endChar": 95
+      },
+      "revId": "069e7b39b56829fb7e120681e6e6681ce616b019",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6379a0b_3a0cc1a1",
+        "filename": "src/gpu/graphite/compute/DispatchGroup.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 368,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-06T19:10:28Z",
+      "side": 1,
+      "message": "nit: Texture seems superfluous here to me.",
+      "range": {
+        "startLine": 368,
+        "startChar": 40,
+        "endLine": 368,
+        "endChar": 71
+      },
+      "revId": "069e7b39b56829fb7e120681e6e6681ce616b019",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf63c355_80ef3618",
+        "filename": "src/gpu/graphite/geom/AnalyticBlurMask.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-06T19:10:28Z",
+      "side": 1,
+      "message": "nit: BlurredRectIntegralTable?",
+      "range": {
+        "startLine": 134,
+        "startChar": 68,
+        "endLine": 134,
+        "endChar": 91
+      },
+      "revId": "069e7b39b56829fb7e120681e6e6681ce616b019",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "def195fb_fc5eef7f",
+        "filename": "src/gpu/graphite/geom/AnalyticBlurMask.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-06T19:10:28Z",
+      "side": 1,
+      "message": "nit: BlurredCircleIntegralTable",
+      "range": {
+        "startLine": 216,
+        "startChar": 67,
+        "endLine": 216,
+        "endChar": 92
+      },
+      "revId": "069e7b39b56829fb7e120681e6e6681ce616b019",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19619d11_dfafe5e5",
+        "filename": "src/gpu/graphite/geom/AnalyticBlurMask.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 294,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-06T19:10:28Z",
+      "side": 1,
+      "message": "nit: BlurredRRectNinePatch",
+      "range": {
+        "startLine": 294,
+        "startChar": 69,
+        "endLine": 294,
+        "endChar": 93
+      },
+      "revId": "069e7b39b56829fb7e120681e6e6681ce616b019",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
