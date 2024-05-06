@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "79f8fcf5_19e900ae",
+        "filename": "src/utils/SkParsePath.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-05-06T16:02:42Z",
+      "side": 1,
+      "message": "Initialization and comments added - now-redundant checks removed.",
+      "parentUuid": "8dec13c0_7640a484",
+      "range": {
+        "startLine": 108,
+        "startChar": 4,
+        "endLine": 108,
+        "endChar": 22
+      },
+      "revId": "2781eaa1f6dbb56f261afc8aaaf9a82eb3f7da33",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fa96f5a3_da2d3bf8",
@@ -61,6 +85,30 @@
       "writtenOn": "2024-05-06T15:30:43Z",
       "side": 1,
       "message": "This violates the style guide :( https://skia.org/docs/dev/contrib/style/#braces",
+      "range": {
+        "startLine": 142,
+        "startChar": 16,
+        "endLine": 142,
+        "endChar": 40
+      },
+      "revId": "2781eaa1f6dbb56f261afc8aaaf9a82eb3f7da33",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7f04eecb_d638548e",
+        "filename": "src/utils/SkParsePath.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-05-06T16:02:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fa96f5a3_da2d3bf8",
       "range": {
         "startLine": 142,
         "startChar": 16,
