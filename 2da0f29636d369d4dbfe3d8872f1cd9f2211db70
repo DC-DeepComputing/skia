@@ -22,6 +22,30 @@
       },
       "revId": "2da0f29636d369d4dbfe3d8872f1cd9f2211db70",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "31209205_deb9cab9",
+        "filename": "tools/lottiecap/package.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2024-05-06T12:41:35Z",
+      "side": 1,
+      "message": "Yes. Let\u0027s watch it. Should be harmless to revert if we need to.",
+      "parentUuid": "d92905d6_b32fd3ec",
+      "range": {
+        "startLine": 8,
+        "startChar": 4,
+        "endLine": 8,
+        "endChar": 26
+      },
+      "revId": "2da0f29636d369d4dbfe3d8872f1cd9f2211db70",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
