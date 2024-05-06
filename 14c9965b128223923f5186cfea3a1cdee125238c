@@ -16,6 +16,24 @@
       "message": "At Patchset 20 and the current state of things, it looks like the only real differences here are due to hinting settings.",
       "revId": "14c9965b128223923f5186cfea3a1cdee125238c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7e215a9_f7ec302f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 20
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-05-06T05:03:10Z",
+      "side": 1,
+      "message": "\\o/ so we land it 😔👉👈? Hinting integration is what I will be working on next.",
+      "parentUuid": "eb558eb7_b2026168",
+      "revId": "14c9965b128223923f5186cfea3a1cdee125238c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
