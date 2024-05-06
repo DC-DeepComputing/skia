@@ -14,6 +14,7 @@
 #include "src/core/SkTraceEvent.h"
 #include "src/gpu/graphite/ContextPriv.h"
 #include "src/gpu/graphite/vk/VulkanQueueManager.h"
+#include "src/gpu/graphite/vk/VulkanSampler.h"
 #include "src/gpu/graphite/vk/VulkanSharedContext.h"
 #include "src/sksl/SkSLProgramSettings.h"
 
@@ -82,9 +83,12 @@ void DescriptorDataToVkDescSetLayout(const VulkanSharedContext* ctxt,
             layoutBinding.descriptorCount = currDescriptor.fCount;
             layoutBinding.stageFlags =
                     PipelineStageFlagsToVkShaderStageFlags(currDescriptor.fPipelineStageFlags);
-            // TODO(b/302126498): Set immutableSamplers here by checking
-            // currDescriptor.fImmutableSamplers.
-            layoutBinding.pImmutableSamplers = VK_NULL_HANDLE;
+            SkDebugf("desc set layout creation has immutable samplers? %i\n",
+                     !currDescriptor.fImmutableSamplers.empty());
+            layoutBinding.pImmutableSamplers = currDescriptor.fImmutableSamplers.empty()
+                    ? VK_NULL_HANDLE
+                    : static_cast<const VulkanSampler*>( // todo nullcheck this
+                            currDescriptor.fImmutableSamplers[0])->constVkSamplerPtr();
         }
     }
 

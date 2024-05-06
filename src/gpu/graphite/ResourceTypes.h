@@ -234,6 +234,7 @@ struct SamplerDesc {
 
         // TODO: Add aniso value when used.
 
+        SkDebugf("\nnonformatinfo: %u\n", conversionInfo.fNonFormatYcbcrConversionInfo);
         // Assert that fYcbcrConversionInfo does not exceed kMaxNumConversionInfoBits such that
         // the conversion information can fit within an uint32.
         SkASSERT(conversionInfo.fNonFormatYcbcrConversionInfo >> kMaxNumConversionInfoBits == 0);
@@ -268,8 +269,8 @@ struct SamplerDesc {
     // nearest-neighbor sampling in HW.
     SkSamplingOptions samplingOptions() const {
         // TODO: Add support for anisotropic filtering
-        SkFilterMode filter = static_cast<SkFilterMode>((fDesc >> 4) & 0b01);
-        SkMipmapMode mipmap = static_cast<SkMipmapMode>((fDesc >> 5) & 0b11);
+        SkFilterMode filter = static_cast<SkFilterMode>((fDesc >> kFilterModeShift) & 0b01);
+        SkMipmapMode mipmap = static_cast<SkMipmapMode>((fDesc >> kMipmapModeShift) & 0b11);
         return SkSamplingOptions(filter, mipmap);
     }
 
