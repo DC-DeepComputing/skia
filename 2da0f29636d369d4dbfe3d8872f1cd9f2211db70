@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d92905d6_b32fd3ec",
+        "filename": "tools/lottiecap/package.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-05-06T12:38:48Z",
+      "side": 1,
+      "message": "This is potentially a big bump as it also increases the version of Chrome that we test on.",
+      "range": {
+        "startLine": 8,
+        "startChar": 4,
+        "endLine": 8,
+        "endChar": 26
+      },
+      "revId": "2da0f29636d369d4dbfe3d8872f1cd9f2211db70",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
