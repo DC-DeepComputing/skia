@@ -106,6 +106,7 @@ bool SkParsePath::FromSVGString(const char data[], SkPath* result) {
     SkPoint c = {0, 0};
     SkPoint lastc = {0, 0};
     SkPoint points[3];
+    SkScalar scratch = 0;
     char op = '\0';
     char previousOp = '\0';
     bool relative = false;
@@ -149,16 +150,14 @@ bool SkParsePath::FromSVGString(const char data[], SkPath* result) {
                 c = points[0];
                 break;
             case 'H': {
-                SkScalar x;
-                data = find_scalar(data, &x, relative, c.fX);
-                path.lineTo(x, c.fY);
-                c.fX = x;
+                data = find_scalar(data, &scratch, relative, c.fX);
+                path.lineTo(scratch, c.fY);
+                c.fX = scratch;
             } break;
             case 'V': {
-                SkScalar y;
-                data = find_scalar(data, &y, relative, c.fY);
-                path.lineTo(c.fX, y);
-                c.fY = y;
+                data = find_scalar(data, &scratch, relative, c.fY);
+                path.lineTo(c.fX, scratch);
+                c.fY = scratch;
             } break;
             case 'C':
                 data = find_points(data, points, 3, relative, &c);
