@@ -22,6 +22,30 @@
       },
       "revId": "21f81484b4e9ec1db3c20d448f195e96359d005a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3b428c6_0bd6a239",
+        "filename": "src/utils/SkParsePath.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-05-06T15:28:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6bb08619_d36054e6",
+      "range": {
+        "startLine": 153,
+        "startChar": 0,
+        "endLine": 155,
+        "endChar": 31
+      },
+      "revId": "21f81484b4e9ec1db3c20d448f195e96359d005a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
