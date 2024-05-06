@@ -34,6 +34,24 @@
       "parentUuid": "eb558eb7_b2026168",
       "revId": "14c9965b128223923f5186cfea3a1cdee125238c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d873a4e3_66802f78",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 20
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-05-06T17:57:53Z",
+      "side": 1,
+      "message": "Yes, this is now ready to land.",
+      "parentUuid": "a7e215a9_f7ec302f",
+      "revId": "14c9965b128223923f5186cfea3a1cdee125238c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
