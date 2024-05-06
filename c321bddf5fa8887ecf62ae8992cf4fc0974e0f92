@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b2ed1468_2ddb45d1",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 307,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-05-06T14:18:22Z",
+      "side": 1,
+      "message": "Setting labels has shown a ~10% regression on some of perf tests when going through dawn. So unfortunately we need to put this back under SK_DEBUG for now. Something like, https://skia-review.googlesource.com/c/skia/+/849176 will make these more controllable.",
+      "range": {
+        "startLine": 307,
+        "startChar": 0,
+        "endLine": 307,
+        "endChar": 15
+      },
+      "revId": "c321bddf5fa8887ecf62ae8992cf4fc0974e0f92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f357404_75374273",
+        "filename": "src/gpu/graphite/mtl/MtlBuffer.mm",
+        "patchSetId": 1
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-05-06T14:18:22Z",
+      "side": 1,
+      "message": "Right now this is being used in metal instead of sk_debug. But when Peng\u0027s CL linked earlier lands I imagine we\u0027ll have all of these controlled in the same way.",
+      "range": {
+        "startLine": 87,
+        "startChar": 7,
+        "endLine": 87,
+        "endChar": 31
+      },
+      "revId": "c321bddf5fa8887ecf62ae8992cf4fc0974e0f92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

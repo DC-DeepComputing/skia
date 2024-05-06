@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b272524_2204ad7a",
+        "filename": "src/gpu/graphite/dawn/DawnTexture.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 243,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-05-06T14:18:22Z",
+      "side": 0,
+      "message": "Sunny, with the more detailed normal labels I believe this extra thing isn\u0027t needed anymore. Do you agree or did I miss something? If it is not needed, we can also remove the supporting code in chrome that prints these.",
+      "range": {
+        "startLine": 243,
+        "startChar": 13,
+        "endLine": 243,
+        "endChar": 26
+      },
+      "revId": "965ffc4c840907e75bc0b2dc20fca5b9f62611f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
