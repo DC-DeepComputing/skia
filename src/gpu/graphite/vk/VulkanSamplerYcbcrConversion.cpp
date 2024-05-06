@@ -71,12 +71,44 @@ GraphiteResourceKey VulkanSamplerYcbcrConversion::MakeYcbcrConversionKey(
     int i = 0;
     if (useExternalFormat) {
         builder[i++] = (uint32_t)info.fExternalFormat;
-        builder[i++] = (uint32_t)(info.fExternalFormat << 32);
+        builder[i++] = (uint32_t)(info.fExternalFormat >> 32);
     } else {
         builder[i++] = info.fFormat;
     }
     builder[i++] = info.nonFormatInfoAsUInt32();
+
     SkASSERT(i == num32DataCnt);
+
+    builder.finish();
+    return key;
+}
+
+// TODO: review this method.
+GraphiteResourceKey VulkanSamplerYcbcrConversion::GetKeyFromSamplerDesc(
+        const SamplerDesc& samplerDesc) {
+    SkASSERT(samplerDesc.format());
+    static const ResourceType kType = GraphiteResourceKey::GenerateResourceType();
+    GraphiteResourceKey key;
+    int int32sNeeded = 1; // 1 needed for non-format information
+
+    bool usesExternalFormat = (bool)(samplerDesc.desc() >>
+            (SamplerDesc::kConversionInfoShift +
+             VulkanYcbcrConversionInfo::kUsesExternalFormatShift));
+    // If using an external format, we need to append more data thn if we are using a known one.
+    // TODO: Make static constant vals?
+    int32sNeeded += usesExternalFormat ? 3 : 1;
+
+    GraphiteResourceKey::Builder builder(&key, kType, int32sNeeded, Shareable::kYes);
+
+    int i = 0;
+    if (usesExternalFormat) {
+        builder[i++] = (uint32_t)samplerDesc.format();
+        builder[i++] = (uint32_t)(samplerDesc.format() >> 32);
+    } else {
+        builder[i++] = (uint32_t)samplerDesc.format();
+    }
+    builder[i++] = (uint32_t)(samplerDesc.desc() >> SamplerDesc::kConversionInfoShift);
+    SkASSERT(i == int32sNeeded);
 
     builder.finish();
     return key;
