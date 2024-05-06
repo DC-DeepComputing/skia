@@ -16,6 +16,24 @@
       "message": "Looks like the right kind of change to make, if it fixes the issue, LGTM. Also, do we have an \"official build\" builder?",
       "revId": "091c03569861c8b5df1c927ddc04e9db8a5fbe09",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4261c059_0b0b6653",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-05-06T20:12:02Z",
+      "side": 1,
+      "message": "We do `Build-Debian10-Clang-x86_64-Release-NoDEPS`. I don\u0027t think it links an executable which is why the reported linktime error wasn\u0027t showing up.\n\nTo reproduce locally, I added `skia_use_system_icu` to my GN args since if I set `is_official_build\u003dTrue` only a .so would be built (\"successfully\").",
+      "parentUuid": "eb625ba5_4abb3134",
+      "revId": "091c03569861c8b5df1c927ddc04e9db8a5fbe09",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
