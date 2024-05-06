@@ -27,7 +27,6 @@
 #include "src/sksl/transform/SkSLTransform.h"
 
 #include <algorithm>
-#include <forward_list>
 #include <iterator>
 
 using namespace skia_private;
@@ -38,24 +37,36 @@ std::string SwitchStatement::description() const {
     return "switch (" + this->value()->description() + ") " + this->caseBlock()->description();
 }
 
-static std::forward_list<const SwitchCase*> find_duplicate_case_values(
-        const StatementArray& cases) {
-    std::forward_list<const SwitchCase*> duplicateCases;
+using DuplicateCaseList = std::unique_ptr<const SwitchCase*[]>;
+
+static DuplicateCaseList find_duplicate_case_values(const StatementArray& cases) {
+    DuplicateCaseList duplicateCases;
+    int numDuplicateCases = 0;
     THashSet<SKSL_INT> intValues;
     bool foundDefault = false;
+
+    // We use a unique_ptr<Case*[]> (null-terminated), so that the common case (no errors) is fast.
+    // std::forward_list would also work well, but newer MSVC standard libraries are triggering
+    // UBSAN errors in that code when built with clang-cl.
+    auto addDuplicateCase = [&](const SwitchCase* dupe) {
+        if (!duplicateCases) {
+            duplicateCases = std::make_unique<const SwitchCase*[]>(cases.size() + 1);
+        }
+        duplicateCases[numDuplicateCases++] = dupe;
+    };
 
     for (const std::unique_ptr<Statement>& stmt : cases) {
         const SwitchCase* sc = &stmt->as<SwitchCase>();
         if (sc->isDefault()) {
             if (foundDefault) {
-                duplicateCases.push_front(sc);
+                addDuplicateCase(sc);
                 continue;
             }
             foundDefault = true;
         } else {
             SKSL_INT value = sc->value();
             if (intValues.contains(value)) {
-                duplicateCases.push_front(sc);
+                addDuplicateCase(sc);
                 continue;
             }
             intValues.add(value);
@@ -180,11 +191,10 @@ std::unique_ptr<Statement> SwitchStatement::Convert(const Context& context,
     }
 
     // Detect duplicate `case` labels and report an error.
-    // (Using forward_list here to optimize for the common case of no results.)
-    std::forward_list<const SwitchCase*> duplicateCases = find_duplicate_case_values(cases);
-    if (!duplicateCases.empty()) {
-        duplicateCases.reverse();
-        for (const SwitchCase* sc : duplicateCases) {
+    DuplicateCaseList duplicateCases = find_duplicate_case_values(cases);
+    if (duplicateCases) {
+        for (int i = 0; duplicateCases[i] != nullptr; i++) {
+            const SwitchCase* sc = duplicateCases[i];
             if (sc->isDefault()) {
                 context.fErrors->error(sc->fPosition, "duplicate default case");
             } else {
@@ -215,7 +225,7 @@ std::unique_ptr<Statement> SwitchStatement::Make(const Context& context,
     }));
 
     // Confirm that every switch-case value is unique.
-    SkASSERT(find_duplicate_case_values(cases).empty());
+    SkASSERT(find_duplicate_case_values(cases) == nullptr);
 
     // Flatten switch statements if we're optimizing, and the value is known
     if (context.fConfig->fSettings.fOptimize) {
