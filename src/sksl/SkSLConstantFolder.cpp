@@ -895,6 +895,48 @@ std::unique_ptr<Expression> ConstantFolder::Simplify(const Context& context,
                                                                         *right, resultType)) {
             return expr;
         }
+
+        // Consider a binary expression where the right side is a constant, and the left side is a
+        // binary expression using the same operator as the outer expression. Further assume that
+        // this operator is commutative. For example, given:
+        // - (a + 1) + 2
+        //
+        // We can rearrange the parentheses in order to constant-fold:
+        // - (a) + (1 + 2)
+        //
+        // First, check for (binary expression) op (constant).
+        if (left->is<BinaryExpression>() && rightSideIsConstant) {
+            // Next, make sure the binary expression operator matches the outer operator, and that
+            // the possibly-simplifiable values match in type.
+            const BinaryExpression& binaryLeft = left->as<BinaryExpression>();
+            if (binaryLeft.getOperator().kind() == op.kind() &&
+                binaryLeft.right()->type().matches(right->type())) {
+                // Next, look for commutative operators.
+                switch (op.kind()) {
+                    case OperatorKind::PLUS:
+                    case OperatorKind::STAR:
+                    case OperatorKind::BITWISEAND:
+                    case OperatorKind::BITWISEOR:
+                    case OperatorKind::BITWISEXOR: {
+                        // Given `(a + b) + c`, attempt to simplify `a + (b + c)`.
+                        if (std::unique_ptr<Expression> expr = Simplify(context, pos,
+                                                                        *binaryLeft.right(), op,
+                                                                        *right, right->type())) {
+                            return BinaryExpression::Make(context, pos,
+                                                          binaryLeft.left()->clone(), op,
+                                                          std::move(expr), &resultType);
+                        }
+                        break;
+                    }
+                    default:
+                        // The right side isn't a supported operator; moving parenthesis will change
+                        // the meaning. (Note that some of these, like subtraction and division,
+                        // could still be simplified with a little extra restructuring.)
+                        break;
+                }
+            }
+        }
+
     }
 
     // We aren't able to constant-fold.
