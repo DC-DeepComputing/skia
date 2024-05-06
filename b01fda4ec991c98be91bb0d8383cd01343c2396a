@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d09addb_93d26e38",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2024-05-06T13:43:40Z",
+      "side": 1,
+      "message": "Second-to-last patch. The last one isn\u0027t written yet, but will be adding ISO 21496-1 gainmap decoding (we have test files from lots of places now!).",
+      "revId": "b01fda4ec991c98be91bb0d8383cd01343c2396a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
