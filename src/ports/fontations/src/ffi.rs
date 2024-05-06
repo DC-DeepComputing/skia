@@ -3,7 +3,10 @@ use ffi::{FillLinearParams, FillRadialParams};
 // Use of this source code is governed by a BSD-style license that can be found
 // in the LICENSE file.
 use font_types::{BoundingBox, GlyphId, Pen};
-use read_fonts::{tables::colr::CompositeMode, FileRef, FontRef, ReadError, TableProvider};
+use read_fonts::{
+    tables::colr::CompositeMode, tables::os2::SelectionFlags, FileRef, FontRef, ReadError,
+    TableProvider,
+};
 use skrifa::{
     attribute::Style,
     charmap::MappingIndex,
@@ -337,7 +340,7 @@ fn get_path(
     outlines
         .0
         .as_ref()
-        .map(|outlines| {
+        .and_then(|outlines| {
             let glyph = outlines.get(GlyphId::new(glyph_id))?;
             let draw_settings = DrawSettings::unhinted(Size::new(size), &coords.normalized_coords);
 
@@ -375,10 +378,10 @@ fn units_per_em_or_zero(font_ref: &BridgeFontRef) -> u16 {
 
 fn convert_metrics(skrifa_metrics: &Metrics) -> ffi::Metrics {
     ffi::Metrics {
-        top: skrifa_metrics.bounds.map_or_else(|| 0.0, |b| b.y_max),
-        bottom: skrifa_metrics.bounds.map_or_else(|| 0.0, |b| b.y_min),
-        x_min: skrifa_metrics.bounds.map_or_else(|| 0.0, |b| b.x_min),
-        x_max: skrifa_metrics.bounds.map_or_else(|| 0.0, |b| b.x_max),
+        top: skrifa_metrics.bounds.map_or(0.0, |b| b.y_max),
+        bottom: skrifa_metrics.bounds.map_or(0.0, |b| b.y_min),
+        x_min: skrifa_metrics.bounds.map_or(0.0, |b| b.x_min),
+        x_max: skrifa_metrics.bounds.map_or(0.0, |b| b.x_max),
         ascent: skrifa_metrics.ascent,
         descent: skrifa_metrics.descent,
         leading: skrifa_metrics.leading,
@@ -386,6 +389,10 @@ fn convert_metrics(skrifa_metrics: &Metrics) -> ffi::Metrics {
         max_char_width: skrifa_metrics.max_width.unwrap_or(0.0),
         x_height: skrifa_metrics.x_height.unwrap_or(0.0),
         cap_height: skrifa_metrics.cap_height.unwrap_or(0.0),
+        underline_position: skrifa_metrics.underline.map_or(f32::NAN, |u| u.offset),
+        underline_thickness: skrifa_metrics.underline.map_or(f32::NAN, |u| u.thickness),
+        strikeout_position: skrifa_metrics.strikeout.map_or(f32::NAN, |s| s.offset),
+        strikeout_thickness: skrifa_metrics.strikeout.map_or(f32::NAN, |s| s.thickness),
     }
 }
 
@@ -449,7 +456,15 @@ fn english_or_first_font_name(font_ref: &BridgeFontRef, name_id: StringId) -> Op
 }
 
 fn family_name(font_ref: &BridgeFontRef) -> String {
-    english_or_first_font_name(font_ref, StringId::FAMILY_NAME).unwrap_or_default()
+    font_ref.with_font(|f| {
+        // https://learn.microsoft.com/en-us/typography/opentype/spec/os2#fsselection
+        // Bit 8 of the `fsSelection' field in the `OS/2' table indicates a WWS-only font face.
+        // When this bit is set it means *do not* use the WWS strings.
+        let use_wws = !f.os2().map_or(false, |t| t.fs_selection().contains(SelectionFlags::WWS));
+        if use_wws { english_or_first_font_name(font_ref, StringId::WWS_FAMILY_NAME) } else { None }
+         .or_else(|| english_or_first_font_name(font_ref, StringId::TYPOGRAPHIC_FAMILY_NAME))
+         .or_else(|| english_or_first_font_name(font_ref, StringId::FAMILY_NAME))
+    }).unwrap_or_default()
 }
 
 fn postscript_name(font_ref: &BridgeFontRef, out_string: &mut String) -> bool {
@@ -937,7 +952,11 @@ mod bitmap {
         FontRef, TableProvider,
     };
 
-    use font_types::GlyphId;
+    use font_types::{BoundingBox, GlyphId};
+    use skrifa::{
+        instance::{LocationRef, Size},
+        metrics::GlyphMetrics,
+    };
 
     use crate::{ffi::BitmapMetrics as FfiBitmapMetrics, BridgeFontRef};
 
@@ -1053,6 +1072,21 @@ mod bitmap {
             .unwrap_or_default()
     }
 
+    fn glyf_bounds(font_ref: &FontRef, glyph_id: GlyphId) -> Option<BoundingBox<i16>> {
+        let glyf_table = font_ref.glyf().ok()?;
+        let glyph = font_ref
+            .loca(None)
+            .ok()?
+            .get_glyf(glyph_id, &glyf_table)
+            .ok()??;
+        Some(BoundingBox {
+            x_min: glyph.x_min(),
+            y_min: glyph.y_min(),
+            x_max: glyph.x_max(),
+            y_max: glyph.y_max(),
+        })
+    }
+
     pub unsafe fn bitmap_glyph<'a>(
         font_ref: &'a BridgeFontRef,
         glyph_id: u16,
@@ -1062,11 +1096,25 @@ mod bitmap {
         font_ref
             .with_font(|font| {
                 if let Some(sbix_glyph) = sbix_glyph(font, glyph_id, Some(font_size)) {
+                    // https://learn.microsoft.com/en-us/typography/opentype/spec/sbix
+                    // "If there is a glyph contour, the glyph design space
+                    // origin for the graphic is placed at the lower left corner
+                    // of the glyph bounding box (xMin, yMin)."
+                    let glyf_bb = glyf_bounds(font, glyph_id).unwrap_or_default();
+                    let glyf_left_side_bearing =
+                        GlyphMetrics::new(font, Size::unscaled(), LocationRef::default())
+                            .left_side_bearing(glyph_id)
+                            .unwrap_or_default();
+
                     return Some(Box::new(BridgeBitmapGlyph {
                         data: Some(BitmapPixelData::PngData(sbix_glyph.glyph_data.data())),
                         metrics: FfiBitmapMetrics {
-                            bearing_x: sbix_glyph.glyph_data.origin_offset_x() as f32,
-                            bearing_y: sbix_glyph.glyph_data.origin_offset_y() as f32,
+                            bearing_x: glyf_left_side_bearing,
+                            inner_bearing_x: sbix_glyph.glyph_data.origin_offset_x() as f32,
+                            bearing_y: glyf_bb.y_min as f32,
+                            inner_bearing_y: sbix_glyph.glyph_data.origin_offset_y() as f32,
+                            width: glyf_bb.x_max as f32 - glyf_bb.x_min as f32,
+                            height: glyf_bb.y_max as f32 - glyf_bb.y_min as f32,
                             ppem_x: sbix_glyph.ppem as f32,
                             ppem_y: sbix_glyph.ppem as f32,
                             placement_origin_bottom_left: true,
@@ -1093,6 +1141,8 @@ mod bitmap {
                                 bearing_y,
                                 ppem_x: cblc_glyph.ppem_x as f32,
                                 ppem_y: cblc_glyph.ppem_y as f32,
+                                width: f32::INFINITY,
+                                height: f32::INFINITY,
                                 ..Default::default()
                             },
                         }));
@@ -1138,6 +1188,10 @@ mod ffi {
         x_max: f32,
         x_height: f32,
         cap_height: f32,
+        underline_position: f32,
+        underline_thickness: f32,
+        strikeout_position: f32,
+        strikeout_thickness: f32,
     }
 
     struct BridgeLocalizedName {
@@ -1209,17 +1263,28 @@ mod ffi {
 
     #[derive(Default)]
     struct BitmapMetrics {
+        // Outer glyph bearings that affect the computed bounds. We distinguish
+        // those here from `inner_bearing_*` to account for CoreText behavior in
+        // SBIX placement. Where the sbix originOffsetX/Y are applied only
+        // within the bounds. Specified in font units.
         bearing_x: f32,
         bearing_y: f32,
-        // Not returning CBDT/CBLC encoded width and height values as these
-        // should be retrieved from the PNG, which is avoids a potential
-        // mismatch between stored metrics and actual image dimensions.  ppem_*
-        // values are used to compute a scale factor on the client side.
+        // Scale factors to scale image to 1em.
         ppem_x: f32,
         ppem_y: f32,
         // Account for the fact that Sbix and CBDT/CBLC have a different origin
         // definition.
         placement_origin_bottom_left: bool,
+        // For SBIX, width and height in font units as determined from maximum x
+        // and y values from the corresponding contour glyph.  For CBDT, set to
+        // f32::INFINITY.
+        width: f32,
+        height: f32,
+        // For SBIX, specified as a pixel value, to be scaled by `ppem_*` as an
+        // offset applied to placing the image within the bounds rectangle.
+        // 0 for CBDT, CBLC.
+        inner_bearing_x: f32,
+        inner_bearing_y: f32,
     }
 
     extern "Rust" {

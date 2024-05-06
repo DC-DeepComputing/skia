@@ -25,24 +25,29 @@ public:
     static sk_sp<DawnBuffer> Make(const DawnSharedContext*,
                                   size_t size,
                                   BufferType type,
-                                  AccessPattern);
+                                  AccessPattern,
+                                  std::string_view label);
 
     bool isUnmappable() const override;
 
     const wgpu::Buffer& dawnBuffer() const { return fBuffer; }
-
-    void prepareForReturnToCache(const std::function<void()>& takeRef) override;
 
 private:
     DawnBuffer(const DawnSharedContext*,
                size_t size,
                wgpu::Buffer,
                BufferType,
-               void* mapAtCreationPtr);
+               void* mapAtCreationPtr,
+               std::string_view label);
 
-    void onMap() override;
+#if defined(__EMSCRIPTEN__)
+    void prepareForReturnToCache(const std::function<void()>& takeRef) override;
     void onAsyncMap(GpuFinishedProc, GpuFinishedContext) override;
+#endif
+    void onMap() override;
     void onUnmap() override;
+
+    void mapCallback(WGPUBufferMapAsyncStatus status);
 
     void freeGpuData() override;
 

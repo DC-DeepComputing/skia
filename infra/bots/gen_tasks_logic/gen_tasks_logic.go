@@ -453,6 +453,7 @@ func GenTasks(cfg *Config) {
 			"skia/.bazelrc",
 			"skia/.bazelversion",
 			"skia/BUILD.bazel",
+			"skia/LICENSE", // Referred to by default_applicable_licenses
 			"skia/WORKSPACE.bazel",
 			"skia/bazel",
 			"skia/defines.bzl",
@@ -566,8 +567,10 @@ func GenTasks(cfg *Config) {
 			"skia/.bazelrc",
 			"skia/.bazelversion",
 			"skia/BUILD.bazel",
+			"skia/LICENSE",
 			"skia/WORKSPACE.bazel",
 			"skia/bazel",
+			"skia/defines.bzl",
 			"skia/go_repositories.bzl",
 			"skia/include/config", // There's a WORKSPACE.bazel in here
 			"skia/requirements.txt",
@@ -609,7 +612,6 @@ func GenTasks(cfg *Config) {
 			"skia/bin/fetch-sk",
 			"skia/infra/bots/assets/skp",
 			"skia/infra/bots/utils.py",
-			"skia/infra/config/recipes.cfg",
 			"skia/tools/skp",
 		},
 		Excludes: []string{rbe.ExcludeGitDir},
@@ -860,9 +862,6 @@ func (b *taskBuilder) defaultSwarmDimensions() {
 			"Debian10":   DEFAULT_OS_LINUX_GCE,
 			"Debian11":   DEBIAN_11_OS,
 			"Mac":        DEFAULT_OS_MAC,
-			"Mac10.12":   "Mac-10.12",
-			"Mac10.13":   "Mac-10.13.6",
-			"Mac10.14":   "Mac-10.14",
 			"Mac10.15.1": "Mac-10.15.1",
 			"Mac10.15.7": "Mac-10.15.7", // Same as 'Mac', but explicit.
 			"Mac11":      "Mac-11.4",
@@ -1010,14 +1009,13 @@ func (b *taskBuilder) defaultSwarmDimensions() {
 			} else if b.isLinux() {
 				gpu, ok := map[string]string{
 					// Intel drivers come from CIPD, so no need to specify the version here.
-					"IntelBayTrail": "8086:0f31",
-					"IntelHD2000":   "8086:0102",
-					"IntelHD405":    "8086:22b1",
-					"IntelIris640":  "8086:5926",
-					"QuadroP400":    "10de:1cb3-510.60.02",
-					"RTX3060":       "10de:2489-470.182.03",
-					"IntelIrisXe":   "8086:9a49",
-					"RadeonVega6":   "1002:1636",
+					"IntelHD2000":  "8086:0102",
+					"IntelHD405":   "8086:22b1",
+					"IntelIris640": "8086:5926",
+					"QuadroP400":   "10de:1cb3-510.60.02",
+					"RTX3060":      "10de:2489-470.182.03",
+					"IntelIrisXe":  "8086:9a49",
+					"RadeonVega6":  "1002:1636",
 				}[b.parts["cpu_or_gpu_value"]]
 				if !ok {
 					log.Fatalf("Entry %q not found in Ubuntu GPU mapping.", b.parts["cpu_or_gpu_value"])
@@ -2193,14 +2191,16 @@ var shorthandToLabel = map[string]labelAndSavedOutputDir{
 	"cpu_8888_benchmark_test":        {"//bench:cpu_8888_test", ""},
 
 	// Note: these paths are relative to the WORKSPACE in //example/external_client
-	"decode_everything": {"//:decode_everything", ""},
-	"path_combiner":     {"//:path_combiner", ""},
-	"png_decoder":       {"//:png_decoder", ""},
-	"shape_text":        {"//:shape_text", ""},
-	"use_ganesh_gl":     {"//:use_ganesh_gl", ""},
-	"use_ganesh_vulkan": {"//:use_ganesh_vulkan", ""},
-	"use_skresources":   {"//:use_skresources", ""},
-	"write_text_to_png": {"//:write_text_to_png", ""},
+	"decode_everything":  {"//:decode_everything", ""},
+	"path_combiner":      {"//:path_combiner", ""},
+	"png_decoder":        {"//:png_decoder", ""},
+	"shape_text":         {"//:shape_text", ""},
+	"svg_with_harfbuzz":  {"//:svg_with_harfbuzz", ""},
+	"svg_with_primitive": {"//:svg_with_primitive", ""},
+	"use_ganesh_gl":      {"//:use_ganesh_gl", ""},
+	"use_ganesh_vulkan":  {"//:use_ganesh_vulkan", ""},
+	"use_skresources":    {"//:use_skresources", ""},
+	"write_text_to_png":  {"//:write_text_to_png", ""},
 
 	// Currently there is no way to tell Bazel "only test go_test targets", so we must group them
 	// under a test_suite.
@@ -2404,11 +2404,11 @@ func (b *jobBuilder) bazelTest() {
 			// the bazel-bin directory, which we receive a subset of as a CAS input.
 			command := strings.ReplaceAll(labelAndSavedOutputDir.label, "//", "")
 			command = strings.ReplaceAll(command, ":", "/")
-			command = filepath.Join(OUTPUT_BAZEL, command)
+			command = path.Join(OUTPUT_BAZEL, command)
 
 			// The test's working directory will be its runfiles directory, which simulates the behavior of
 			// the "bazel run" command.
-			commandWorkDir := filepath.Join(command+".runfiles", "skia")
+			commandWorkDir := path.Join(command+".runfiles", "skia")
 
 			cmd = append(cmd,
 				"--command="+command,

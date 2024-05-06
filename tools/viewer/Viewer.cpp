@@ -10,6 +10,7 @@
 #include "bench/GpuTools.h"
 #include "gm/gm.h"
 #include "include/core/SkAlphaType.h"
+#include "include/core/SkBitmap.h"
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
@@ -230,17 +231,21 @@ static DEFINE_string2(match, m, nullptr,
 #ifdef SK_ENABLE_VELLO_SHADERS
 #define COMPUTE_ANALYTIC_PATHSTRATEGY_STR ", \"compute-analytic\""
 #define COMPUTE_MSAA16_PATHSTRATEGY_STR ", \"compute-msaa16\""
+#define COMPUTE_MSAA8_PATHSTRATEGY_STR ", \"compute-msaa8\""
 #else
 #define COMPUTE_ANALYTIC_PATHSTRATEGY_STR
 #define COMPUTE_MSAA16_PATHSTRATEGY_STR
+#define COMPUTE_MSAA8_PATHSTRATEGY_STR
 #endif
-#define PATHSTRATEGY_STR_EVALUATOR(default, raster, compute_analytic, compute_msaa16, tess) \
+#define PATHSTRATEGY_STR_EVALUATOR(                                             \
+        default, raster, compute_analytic, compute_msaa16, compute_msaa8, tess) \
     default raster compute_analytic compute_msaa16 tess
 #define PATHSTRATEGY_STR                                          \
     PATHSTRATEGY_STR_EVALUATOR("\"default\"",                     \
                                "\"raster\"",                      \
                                COMPUTE_ANALYTIC_PATHSTRATEGY_STR, \
                                COMPUTE_MSAA16_PATHSTRATEGY_STR,   \
+                               COMPUTE_MSAA8_PATHSTRATEGY_STR,    \
                                "\"tessellation\"")
 
 static DEFINE_string(pathstrategy, "default",
@@ -309,6 +314,8 @@ static const char*
             return "GPU Compute AA (Analytic)";
         case Strategy::kComputeMSAA16:
             return "GPU Compute AA (16xMSAA)";
+        case Strategy::kComputeMSAA8:
+            return "GPU Compute AA (8xMSAA)";
         case Strategy::kRasterAA:
             return "CPU Raster AA";
         case Strategy::kTessellation:
@@ -328,6 +335,8 @@ static skgpu::graphite::PathRendererStrategy get_path_renderer_strategy_type(con
         return Strategy::kComputeAnalyticAA;
     } else if (0 == strcmp(str, "compute-msaa16")) {
         return Strategy::kComputeMSAA16;
+    } else if (0 == strcmp(str, "compute-msaa8")) {
+        return Strategy::kComputeMSAA8;
 #endif
     } else if (0 == strcmp(str, "tessellation")) {
         return Strategy::kTessellation;
@@ -1718,16 +1727,6 @@ void Viewer::drawSlide(SkSurface* surface) {
             break;
     }
 
-    auto make_surface = [=](int w, int h) {
-        SkSurfaceProps props(fWindow->getRequestedDisplayParams().fSurfaceProps);
-        slideCanvas->getProps(&props);
-
-        SkImageInfo info = SkImageInfo::Make(w, h, colorType, kPremul_SkAlphaType, colorSpace);
-        return Window::kRaster_BackendType == this->fBackendType
-                       ? SkSurfaces::Raster(info, &props)
-                       : slideCanvas->makeSurface(info, &props);
-    };
-
     // We need to render offscreen if we're...
     // ... in fake perspective or zooming (so we have a snapped copy of the results)
     // ... in any raster mode, because the window surface is actually GL
@@ -1740,8 +1739,15 @@ void Viewer::drawSlide(SkSurface* surface) {
         Window::kRaster_BackendType == fBackendType ||
         colorSpace != nullptr ||
         FLAGS_offscreen) {
+        SkSurfaceProps props(fWindow->getRequestedDisplayParams().fSurfaceProps);
+        slideCanvas->getProps(&props);
 
-        offscreenSurface = make_surface(fWindow->width(), fWindow->height());
+        SkImageInfo info = SkImageInfo::Make(
+                fWindow->width(), fWindow->height(), colorType, kPremul_SkAlphaType, colorSpace);
+        offscreenSurface = Window::kRaster_BackendType == this->fBackendType
+                                   ? SkSurfaces::Raster(info, &props)
+                                   : slideCanvas->makeSurface(info, &props);
+
         slideSurface = offscreenSurface.get();
         slideCanvas = offscreenSurface->getCanvas();
     }
@@ -2134,7 +2140,7 @@ void Viewer::drawImGui() {
                 ImGui::RadioButton("Direct3D", &newBackend, sk_app::Window::kDirect3D_BackendType);
 #endif
                 if (newBackend != fBackendType) {
-                    fDeferredActions.push_back([=]() {
+                    fDeferredActions.push_back([newBackend, this]() {
                         this->setBackend(static_cast<sk_app::Window::BackendType>(newBackend));
                     });
                 }
@@ -2234,6 +2240,7 @@ void Viewer::drawImGui() {
                         PathRendererStrategy strategies[] = {
                                 PathRendererStrategy::kComputeAnalyticAA,
                                 PathRendererStrategy::kComputeMSAA16,
+                                PathRendererStrategy::kComputeMSAA8,
                                 PathRendererStrategy::kRasterAA,
                                 PathRendererStrategy::kTessellation,
                         };
@@ -2757,6 +2764,7 @@ void Viewer::drawImGui() {
 
 #if defined(SK_VULKAN)
                     if (isVulkan && !sksl) {
+                        // Disassemble the SPIR-V into its textual form.
                         spvtools::SpirvTools tools(SPV_ENV_VULKAN_1_0);
                         for (auto& entry : fCachedShaders) {
                             for (int i = 0; i < kGrShaderTypeCount; ++i) {
@@ -2767,8 +2775,16 @@ void Viewer::drawImGui() {
                                 entry.fShader[i].assign(disasm);
                             }
                         }
-                    }
+                    } else
 #endif
+                    {
+                        // Reformat the SkSL with proper indentation.
+                        for (auto& entry : fCachedShaders) {
+                            for (int i = 0; i < kGrShaderTypeCount; ++i) {
+                                entry.fShader[i] = SkShaderUtils::PrettyPrint(entry.fShader[i]);
+                            }
+                        }
+                    }
                 }
 
                 // Defer actually doing the View/Apply logic so that we can trigger an Apply when we
@@ -2820,7 +2836,7 @@ void Viewer::drawImGui() {
                                  : GrContextOptions::ShaderCacheStrategy::kBackendSource;
                     displayParamsChanged = true;
 
-                    fDeferredActions.push_back([=]() {
+                    fDeferredActions.push_back([doDump, this]() {
                         // Reset the cache.
                         fPersistentCache.reset();
                         sDoDeferredView = true;
@@ -2918,7 +2934,7 @@ void Viewer::drawImGui() {
             }
         }
         if (displayParamsChanged || uiParamsChanged) {
-            fDeferredActions.push_back([=]() {
+            fDeferredActions.push_back([displayParamsChanged, params, this]() {
                 if (displayParamsChanged) {
                     fWindow->setRequestedDisplayParams(params);
                 }
@@ -2967,13 +2983,42 @@ void Viewer::drawImGui() {
 
             uint32_t pixel = 0;
             SkImageInfo info = SkImageInfo::MakeN32Premul(1, 1);
-            auto dContext = fWindow->directContext();
-            if (fLastImage->readPixels(dContext, info, &pixel, info.minRowBytes(), xInt, yInt)) {
+            bool didGraphiteRead = false;
+            if (is_graphite_backend_type(fBackendType)) {
+#if defined(GRAPHITE_TEST_UTILS)
+                SkBitmap bitmap;
+                bitmap.allocPixels(info);
+                SkPixmap pixels;
+                SkAssertResult(bitmap.peekPixels(&pixels));
+                didGraphiteRead = fLastImage->readPixelsGraphite(fWindow->graphiteRecorder(),
+                                                                 pixels,
+                                                                 xInt,
+                                                                 yInt);
+                pixel = *pixels.addr32();
                 ImGui::SameLine();
                 ImGui::Text("(X, Y): %d, %d RGBA: %X %X %X %X",
                             xInt, yInt,
                             SkGetPackedR32(pixel), SkGetPackedG32(pixel),
                             SkGetPackedB32(pixel), SkGetPackedA32(pixel));
+#endif
+            }
+            auto dContext = fWindow->directContext();
+            if (fLastImage->readPixels(dContext,
+                                       info,
+                                       &pixel,
+                                       info.minRowBytes(),
+                                       xInt,
+                                       yInt)) {
+                ImGui::SameLine();
+                ImGui::Text("(X, Y): %d, %d RGBA: %X %X %X %X",
+                            xInt, yInt,
+                            SkGetPackedR32(pixel), SkGetPackedG32(pixel),
+                            SkGetPackedB32(pixel), SkGetPackedA32(pixel));
+            } else {
+                if (!didGraphiteRead) {
+                    ImGui::SameLine();
+                    ImGui::Text("Failed to readPixels");
+                }
             }
 
             fImGuiLayer.skiaWidget(avail, [=, lastImage = fLastImage](SkCanvas* c) {

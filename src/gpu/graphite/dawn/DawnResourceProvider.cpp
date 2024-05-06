@@ -8,8 +8,10 @@
 #include "src/gpu/graphite/dawn/DawnResourceProvider.h"
 
 #include "include/gpu/graphite/BackendTexture.h"
+#include "include/gpu/graphite/TextureInfo.h"
 #include "include/private/base/SkAlign.h"
 #include "src/gpu/graphite/ComputePipeline.h"
+#include "src/gpu/graphite/RenderPassDesc.h"
 #include "src/gpu/graphite/dawn/DawnBuffer.h"
 #include "src/gpu/graphite/dawn/DawnComputePipeline.h"
 #include "src/gpu/graphite/dawn/DawnErrorChecker.h"
@@ -282,17 +284,20 @@ sk_sp<Texture> DawnResourceProvider::createTexture(SkISize dimensions,
 
 sk_sp<Buffer> DawnResourceProvider::createBuffer(size_t size,
                                                  BufferType type,
-                                                 AccessPattern accessPattern) {
+                                                 AccessPattern accessPattern,
+                                                 std::string_view label) {
     return DawnBuffer::Make(this->dawnSharedContext(),
                             size,
                             type,
-                            accessPattern);
+                            accessPattern,
+                            std::move(label));
 }
 
-sk_sp<Sampler> DawnResourceProvider::createSampler(const SkSamplingOptions& options,
-                                                   SkTileMode xTileMode,
-                                                   SkTileMode yTileMode) {
-    return DawnSampler::Make(this->dawnSharedContext(), options, xTileMode, yTileMode);
+sk_sp<Sampler> DawnResourceProvider::createSampler(const SamplerDesc& samplerDesc) {
+    return DawnSampler::Make(this->dawnSharedContext(),
+                             samplerDesc.samplingOptions(),
+                             samplerDesc.tileModeX(),
+                             samplerDesc.tileModeY());
 }
 
 BackendTexture DawnResourceProvider::onCreateBackendTexture(SkISize dimensions,
@@ -314,7 +319,14 @@ void DawnResourceProvider::onDeleteBackendTexture(const BackendTexture& texture)
     // Automatically release the pointers in wgpu::TextureView & wgpu::Texture's dtor.
     // Acquire() won't increment the ref count.
     wgpu::TextureView::Acquire(texture.getDawnTextureViewPtr());
-    wgpu::Texture::Acquire(texture.getDawnTexturePtr());
+    // We need to explicitly call Destroy() here since since that is the recommended way to delete
+    // a Dawn texture predictably versus just dropping a ref and relying on garbage collection.
+    //
+    // Additionally this helps to work around an issue where Skia may have cached a BindGroup that
+    // references the underlying texture. Skia currently doesn't destroy BindGroups when its use of
+    // the texture goes away, thus a ref to the texture remains on the BindGroup and memory is never
+    // cleared up unless we call Destroy() here.
+    wgpu::Texture::Acquire(texture.getDawnTexturePtr()).Destroy();
 }
 
 DawnSharedContext* DawnResourceProvider::dawnSharedContext() const {
@@ -323,8 +335,9 @@ DawnSharedContext* DawnResourceProvider::dawnSharedContext() const {
 
 sk_sp<DawnBuffer> DawnResourceProvider::findOrCreateDawnBuffer(size_t size,
                                                                BufferType type,
-                                                               AccessPattern accessPattern) {
-    sk_sp<Buffer> buffer = this->findOrCreateBuffer(size, type, accessPattern);
+                                                               AccessPattern accessPattern,
+                                                               std::string_view label) {
+    sk_sp<Buffer> buffer = this->findOrCreateBuffer(size, type, accessPattern, std::move(label));
     DawnBuffer* ptr = static_cast<DawnBuffer*>(buffer.release());
     return sk_sp<DawnBuffer>(ptr);
 }

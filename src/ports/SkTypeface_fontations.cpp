@@ -461,10 +461,8 @@ protected:
                     fontations_ffi::png_data(*bitmap_glyph);
             SkASSERT(png_data.size());
 
-            const fontations_ffi::BitmapMetrics bitmap_metrics =
+            const fontations_ffi::BitmapMetrics bitmapMetrics =
                     fontations_ffi::bitmap_metrics(*bitmap_glyph);
-
-            const bool& placement_origin_bottom_left = bitmap_metrics.placement_origin_bottom_left;
 
             std::unique_ptr<SkCodec> codec = SkPngDecoder::Decode(
                     SkData::MakeWithoutCopy(png_data.data(), png_data.size()), nullptr);
@@ -472,16 +470,45 @@ protected:
                 return mx;
             }
 
-            SkRect bounds = SkRect::MakeEmpty();
             SkImageInfo info = codec->getInfo();
-            float height_adjustment = placement_origin_bottom_left ? info.height() : 0;
 
-            bounds = SkRect::Make(info.bounds());
+            SkRect bounds = SkRect::Make(info.bounds());
             SkMatrix matrix = remainingMatrix;
-            SkScalar ratio = scale.fY / bitmap_metrics.ppem_y;
-            matrix.preScale(ratio, ratio);
-            matrix.preTranslate(bitmap_metrics.bearing_x,
-                                -bitmap_metrics.bearing_y - height_adjustment);
+
+            // We deal with two scale factors here: Scaling from font units to
+            // device pixels, and scaling the embedded PNG from its number of
+            // rows to a specific size, depending on the ppem values in the
+            // bitmap glyph information.
+            SkScalar imageToSize = scale.fY / bitmapMetrics.ppem_y;
+            float fontUnitsToSize = scale.fY / fontations_ffi::units_per_em_or_zero(fBridgeFontRef);
+
+            // Relevant for sbix only: Convert the potential restrictive size
+            // bounds back to unscaled pixels so that it can be intersected with
+            // the decompressed pixel size of the sbix image.
+            if (!std::isinf(bitmapMetrics.width) && !std::isinf(bitmapMetrics.height)) {
+                SkRect modifiedBounds =
+                        SkRect::MakeXYWH(0,
+                                         0,
+                                         bitmapMetrics.width * fontUnitsToSize / imageToSize,
+                                         bitmapMetrics.height * fontUnitsToSize / imageToSize);
+                if (modifiedBounds.isEmpty()) {
+                    bounds = SkRect::MakeEmpty();
+                } else {
+                    bounds = modifiedBounds;
+                }
+            }
+
+            // The offset from origin is given in font units, so requires a
+            // different scale factor than the scaling of the image.
+            matrix.preTranslate(bitmapMetrics.bearing_x * fontUnitsToSize,
+                                -bitmapMetrics.bearing_y * fontUnitsToSize);
+
+            matrix.preScale(imageToSize, imageToSize);
+            // For sbix bitmap glyphs, the origin is the bottom left of the image.
+            float heightAdjustment =
+                    bitmapMetrics.placement_origin_bottom_left ? bounds.height() : 0;
+            matrix.preTranslate(0, -heightAdjustment);
+
             if (this->isSubpixel()) {
                 matrix.postTranslate(SkFixedToScalar(glyph.getSubXFixed()),
                                      SkFixedToScalar(glyph.getSubYFixed()));
@@ -543,12 +570,21 @@ protected:
         }
         const fontations_ffi::BitmapMetrics bitmapMetrics =
                 fontations_ffi::bitmap_metrics(*bitmap_glyph);
-        SkScalar ratio = scale.fY / bitmapMetrics.ppem_y;
-        canvas.scale(ratio, ratio);
 
-        float height_adjustment =
+        // We need two different scale factors here, one for font units to size,
+        // one for scaling the embedded PNG, see generateMetrics() for details.
+        SkScalar imageScaleFactor = scale.fY / bitmapMetrics.ppem_y;
+
+        float fontUnitsToSize = scale.fY / fontations_ffi::units_per_em_or_zero(fBridgeFontRef);
+        canvas.translate(bitmapMetrics.bearing_x * fontUnitsToSize,
+                         -bitmapMetrics.bearing_y * fontUnitsToSize);
+        canvas.scale(imageScaleFactor, imageScaleFactor);
+        canvas.translate(bitmapMetrics.inner_bearing_x, -bitmapMetrics.inner_bearing_y);
+
+        float heightAdjustment =
                 bitmapMetrics.placement_origin_bottom_left ? glyph_image->height() : 0;
-        canvas.translate(bitmapMetrics.bearing_x, -bitmapMetrics.bearing_y - height_adjustment);
+
+        canvas.translate(0, -heightAdjustment);
 
         SkSamplingOptions sampling(SkFilterMode::kLinear, SkMipmapMode::kNearest);
         canvas.drawImage(glyph_image, 0, 0, sampling);
@@ -629,7 +665,8 @@ protected:
         canvas->concat(scalerMatrix);
         SkPaint defaultPaint;
         defaultPaint.setColor(SK_ColorRED);
-        sk_fontations::ColorPainter colorPainter(*this, *canvas, fPalette, foregroundColor, upem);
+        sk_fontations::ColorPainter colorPainter(*this, *canvas, fPalette, foregroundColor,
+                                                 SkMask::kBW_Format != fRec.fMaskFormat, upem);
         bool result = fontations_ffi::draw_colr_glyph(
                 fBridgeFontRef, fBridgeNormalizedCoords, glyph.getGlyphID(), colorPainter);
         return result;
@@ -691,6 +728,25 @@ protected:
                                        rust::Slice<uint8_t>())) {
             out_metrics->fFlags |= SkFontMetrics::kBoundsInvalid_Flag;
         }
+        auto setMetric = [](float& dstMetric, const float srcMetric,
+                            uint32_t& flags, const SkFontMetrics::FontMetricsFlags flag)
+        {
+            if (std::isnan(srcMetric)) {
+                dstMetric = 0;
+            } else {
+                dstMetric = srcMetric;
+                flags |= flag;
+            }
+        };
+        setMetric(out_metrics->fUnderlinePosition, -metrics.underline_position,
+                  out_metrics->fFlags, SkFontMetrics::kUnderlinePositionIsValid_Flag);
+        setMetric(out_metrics->fUnderlineThickness, metrics.underline_thickness,
+                  out_metrics->fFlags, SkFontMetrics::kUnderlineThicknessIsValid_Flag);
+
+        setMetric(out_metrics->fStrikeoutPosition, -metrics.strikeout_position,
+                  out_metrics->fFlags, SkFontMetrics::kStrikeoutPositionIsValid_Flag);
+        setMetric(out_metrics->fStrikeoutThickness, metrics.strikeout_thickness,
+                  out_metrics->fFlags, SkFontMetrics::kStrikeoutThicknessIsValid_Flag);
     }
 
 private:
@@ -1028,11 +1084,13 @@ ColorPainter::ColorPainter(SkFontationsScalerContext& scaler_context,
                            SkCanvas& canvas,
                            SkSpan<SkColor> palette,
                            SkColor foregroundColor,
+                           bool antialias,
                            uint16_t upem)
         : fScalerContext(scaler_context)
         , fCanvas(canvas)
         , fPalette(palette)
         , fForegroundColor(foregroundColor)
+        , fAntialias(antialias)
         , fUpem(upem) {}
 
 void ColorPainter::push_transform(const fontations_ffi::Transform& transform_arg) {
@@ -1046,18 +1104,19 @@ void ColorPainter::push_clip_glyph(uint16_t glyph_id) {
     fCanvas.save();
     SkPath path;
     fScalerContext.generateYScalePathForGlyphId(glyph_id, &path, fUpem);
-    fCanvas.clipPath(path, true /* doAntialias */);
+    fCanvas.clipPath(path, fAntialias);
 }
 
 void ColorPainter::push_clip_rectangle(float x_min, float y_min, float x_max, float y_max) {
     fCanvas.save();
     SkRect clipRect = SkRect::MakeLTRB(x_min, -y_min, x_max, -y_max);
-    fCanvas.clipRect(clipRect, true);
+    fCanvas.clipRect(clipRect, fAntialias);
 }
 
 void ColorPainter::pop_clip() { fCanvas.restore(); }
 
 void ColorPainter::configure_solid_paint(uint16_t palette_index, float alpha, SkPaint& paint) {
+    paint.setAntiAlias(fAntialias);
     SkColor4f color;
     if (palette_index == kForegroundColorPaletteIndex) {
         color = SkColor4f::FromColor(fForegroundColor);
@@ -1089,6 +1148,8 @@ void ColorPainter::configure_linear_paint(const fontations_ffi::FillLinearParams
                                           uint8_t extend_mode,
                                           SkPaint& paint,
                                           SkMatrix* paintTransform) {
+    paint.setAntiAlias(fAntialias);
+
     std::vector<SkScalar> stops;
     std::vector<SkColor4f> colors;
 
@@ -1152,6 +1213,8 @@ void ColorPainter::configure_radial_paint(
         uint8_t extend_mode,
         SkPaint& paint,
         SkMatrix* paintTransform) {
+    paint.setAntiAlias(fAntialias);
+
     SkPoint start = SkPoint::Make(fill_radial_params.x0, -fill_radial_params.y0);
     SkPoint end = SkPoint::Make(fill_radial_params.x1, -fill_radial_params.y1);
 
@@ -1306,6 +1369,8 @@ void ColorPainter::configure_sweep_paint(const fontations_ffi::FillSweepParams& 
                                          uint8_t extend_mode,
                                          SkPaint& paint,
                                          SkMatrix* paintTransform) {
+    paint.setAntiAlias(fAntialias);
+
     SkPoint center = SkPoint::Make(sweep_params.x0, -sweep_params.y0);
 
     std::vector<SkScalar> stops;
