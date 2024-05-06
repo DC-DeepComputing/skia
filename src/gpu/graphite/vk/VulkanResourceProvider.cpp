@@ -88,7 +88,8 @@ sk_sp<Texture> VulkanResourceProvider::createWrappedTexture(const BackendTexture
                                       texture.info(),
                                       texture.getMutableState(),
                                       texture.getVkImage(),
-                                      /*alloc=*/{}); // Skia does not own wrapped texture memory
+                                      /*alloc=*/{},  // Skia does not own wrapped texture memory
+                                      "WrappedTexture");
 }
 
 sk_sp<Buffer> VulkanResourceProvider::refIntrinsicConstantBuffer() const {
@@ -117,9 +118,16 @@ sk_sp<ComputePipeline> VulkanResourceProvider::createComputePipeline(const Compu
     return nullptr;
 }
 
-sk_sp<Texture> VulkanResourceProvider::createTexture(SkISize size, const TextureInfo& info,
+sk_sp<Texture> VulkanResourceProvider::createTexture(SkISize size,
+                                                     const TextureInfo& info,
+                                                     std::string_view label,
                                                      skgpu::Budgeted budgeted) {
-    return VulkanTexture::Make(this->vulkanSharedContext(), this, size, info, budgeted);
+    return VulkanTexture::Make(this->vulkanSharedContext(),
+                               this,
+                               size,
+                               info,
+                               std::move(label),
+                               budgeted);
 }
 
 sk_sp<Buffer> VulkanResourceProvider::createBuffer(size_t size,
@@ -191,9 +199,9 @@ GraphiteResourceKey build_desc_set_key(const SkSpan<DescriptorData>& requestedDe
     for (int i = 1; i < num32DataCnt; i++) {
         const auto& currDesc = requestedDescriptors[i - 1];
         // TODO: Consider making the DescriptorData struct itself just use uint16_t.
-        uint16_t smallerCount = static_cast<uint16_t>(currDesc.count);
-        builder[i] = static_cast<uint8_t>(currDesc.type) << 24 |
-                     currDesc.bindingIndex << 16 |
+        uint16_t smallerCount = static_cast<uint16_t>(currDesc.fCount);
+        builder[i] = static_cast<uint8_t>(currDesc.fType) << 24 |
+                     currDesc.fBindingIndex << 16 |
                      smallerCount;
     }
     builder.finish();
