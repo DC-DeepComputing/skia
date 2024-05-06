@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b1fd0956_841ecff0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-05-06T18:24:10Z",
+      "side": 1,
+      "message": "The change overall looks good to me. I can\u0027t say I have my head fully wrapped around the state machine wrt scratch devices and how they interact with images.\n\nI feel that there are a number of invariants now that different classes operate under and it would be have some high level documentation around the whole task/image/flush management eventually.",
+      "revId": "1d83738c381708be881e2110e4e2210220a7a800",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
