@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a9081c5_054d3f9a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-05-06T04:54:58Z",
+      "side": 1,
+      "message": "Thanks for doing this!",
+      "revId": "e0aa078eb4a09fc89a6a184d806cad769b919aa9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ed0d85a_737bbd0c",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 1152,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-05-06T04:54:58Z",
+      "side": 1,
+      "message": "Nit, it\u0027s enough to just say: `advance` if field name and local variable name match.",
+      "range": {
+        "startLine": 1152,
+        "startChar": 32,
+        "endLine": 1152,
+        "endChar": 48
+      },
+      "revId": "e0aa078eb4a09fc89a6a184d806cad769b919aa9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "49a7e7f7_1d2de49c",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 1294,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-05-06T04:54:58Z",
+      "side": 1,
+      "message": "Perhaps we can say which?",
+      "range": {
+        "startLine": 1294,
+        "startChar": 11,
+        "endLine": 1294,
+        "endChar": 17
+      },
+      "revId": "e0aa078eb4a09fc89a6a184d806cad769b919aa9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
