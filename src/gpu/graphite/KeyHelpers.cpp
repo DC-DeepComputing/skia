@@ -11,6 +11,8 @@
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkData.h"
 #include "include/core/SkImageInfo.h"
+#include "include/core/SkM44.h"
+#include "include/core/SkScalar.h"
 #include "include/effects/SkRuntimeEffect.h"
 #include "include/gpu/graphite/Surface.h"
 #include "src/base/SkHalf.h"
@@ -1661,7 +1663,30 @@ static void add_to_key(const KeyContext& keyContext,
                                         view.proxy()->dimensions(),
                                         shader->subset(),
                                         ReadSwizzle::kRGBA);
-    imgData.fSampling = newSampling;
+
+    // Here we detect pixel aligned blit-like image draws. Some devices have low precision filtering
+    // and will produce degraded (blurry) images unexpectedly for sequential exact pixel blits when
+    // not using nearest filtering. This is common for canvas scrolling implementations. Forcing
+    // nearest filtering when possible can also be a minor perf/power optimization depending on the
+    // hardware.
+    bool filter_and_mip_no_effect = false;
+    // We skip runtime effects because these might have arbitrary coordinate sampling.
+    if (keyContext.scope() != KeyContext::Scope::kRuntimeEffect &&
+        SkM44(keyContext.local2Dev().asM33()) == keyContext.local2Dev()) {
+        SkMatrix totalM = keyContext.local2Dev().asM33();
+        if (keyContext.localMatrix()) {
+            totalM.preConcat(*keyContext.localMatrix());
+        }
+        totalM.normalizePerspective();
+        // The matrix should be identity with the exception of pixel aligned 2d translation.
+        filter_and_mip_no_effect = SkScalarIsInt(totalM.rc(0, 2)) &&
+                                   SkScalarIsInt(totalM.rc(1, 2)) && totalM.rc(0, 0) == 1.f &&
+                                   totalM.rc(1, 1) == 1.f && totalM.rc(2, 2) == 1.0f &&
+                                   totalM.rc(2, 0) == 0.f && totalM.rc(2, 1) == 0.f &&
+                                   totalM.rc(0, 1) == 0.f && totalM.rc(1, 0) == 0.f;
+    }
+
+    imgData.fSampling = filter_and_mip_no_effect ? SkFilterMode::kNearest : newSampling;
     imgData.fTextureProxy = view.refProxy();
     skgpu::Swizzle readSwizzle = view.swizzle();
     // If the color type is alpha-only, propagate the alpha value to the other channels.
