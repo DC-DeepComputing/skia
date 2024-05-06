@@ -287,3 +287,38 @@ genrule(
     cmd = "echo '%s' > $@" % _GENERATE_WORKAROUNDS,
     tools = [":build_workaround_header"],
 )
+
+skia_cc_library(
+    name = "full_build",
+    testonly = True,
+    # This is not intended to be used for tests or anything, just for IWYU
+    visibility = ["//visibility:private"],
+    deps = [
+        "//:bmp_decode_codec",
+        "//:core",
+        "//:fontmgr_data_freetype",
+        "//:fontmgr_directory_freetype",
+        "//:fontmgr_empty_freetype",
+        "//:gif_decode_codec",
+        "//:ico_decode_codec",
+        "//:jpeg_decode_codec",
+        "//:jpeg_encode_codec",
+        "//:jpegxl_decode_codec",
+        "//:pathops",
+        "//:png_decode_codec",
+        "//:png_encode_codec",
+        "//:skparagraph_harfbuzz_unicode",
+        "//:skresources",
+        "//:skshaper_core",
+        "//:skshaper_harfbuzz",
+        "//:skshaper_unicode",
+        "//:skunicode_core",
+        "//:skunicode_icu",
+        "//:svg_renderer",
+        "//:wbmp_decode_codec",
+        "//:webp_decode_codec",
+        "//:webp_encode_codec",
+        "//src/gpu/ganesh/gl:ganesh_gl_TEST_UTIL",
+        "//src/gpu/ganesh/vk:ganesh_vulkan_TEST_UTIL",
+    ],
+)
