@@ -1927,12 +1927,18 @@ GrGLuint GrGLGpu::createTexture(SkISize dimensions,
     if (internalFormat) {
         if (this->glCaps().formatSupportsTexStorage(format)) {
             auto levelCount = std::max(mipLevelCount, 1);
+
+            SkDebugf("glTexStorage2D internalFormat 0x%x\n", internalFormat);
+
             GrGLenum error = GL_ALLOC_CALL(TexStorage2D(target, levelCount, internalFormat,
                                                         dimensions.width(), dimensions.height()));
             success = (error == GR_GL_NO_ERROR);
         } else {
             GrGLenum externalFormat, externalType;
             this->glCaps().getTexImageExternalFormatAndType(format, &externalFormat, &externalType);
+
+            SkDebugf("glTexImage2D internalFormat 0x%x\n", internalFormat);
+
             GrGLenum error = GR_GL_NO_ERROR;
             if (externalFormat && externalType) {
                 // If we don't unbind here then nullptr is treated as a zero offset into the bound
@@ -4055,6 +4061,9 @@ GrBackendRenderTarget GrGLGpu::createTestingOnlyBackendRenderTarget(SkISize dime
     if (!sampleCnt) {
         return {};
     }
+
+    SkDebugf("Creating BERT here %d %d\n", colorType, sampleCnt);
+
     // We make a texture instead of a render target if we're using a
     // "multisampled_render_to_texture" style extension or have a BGRA format that
     // is allowed for textures but not render buffer internal formats.
