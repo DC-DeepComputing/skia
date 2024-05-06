@@ -461,6 +461,7 @@ bool DrawAtlas::activateNewPage(Recorder* recorder) {
                                                    recorder->priv().resourceProvider(),
                                                    {fTextureWidth, fTextureHeight},
                                                    textureInfo,
+                                                   "DrawAtlasTexture",
                                                    skgpu::Budgeted::kYes);
     if (!fProxies[fNumActivePages]) {
         return false;
