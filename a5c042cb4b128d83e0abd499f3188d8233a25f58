@@ -16,6 +16,23 @@
       "message": "\\o/ Great, we\u0027ve come along way with this one. Thanks for all your help!",
       "revId": "a5c042cb4b128d83e0abd499f3188d8233a25f58",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f893d86_4bc41248",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 23
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-05-06T20:15:59Z",
+      "side": 1,
+      "message": "Some notes taken while triaging gm images after this change:\n\n1) Solid purple-ish glyph instead of transparent or white?\ncolrv1_sweep_varsweep_*\ncolrv1_sweep_coincident\n[Fontations](https://gold.skia.org/img/images/7e6f2cda4c412a21a796f33295d7f7d5.png) vs. [DWriteCore](https://gold.skia.org/img/images/95d769a29554594026a2d62319dd5692.png)\n\n2) If not requesting anti-aliasing, bitmaps should be nearest neighbor\nscaledemoji_cbdt / scaledemoji_sbix\nscaledemojipos_cbdt / scaledemojipos_sbix\nscaledemoji_rendering\n[Fontations](https://gold.skia.org/img/images/6135296e736bc61aa6b36fc9b4b42392.png) vs. [DWriteCore](https://gold.skia.org/img/images/be40cf78d15f128a20bbda23078877e4.png)\n\n3) What is it supposed to look like (nearest is triaged negative)\ncolrv1_variable_alpha\n[Fontations](https://gold.skia.org/img/images/af8e1085665312e2eddaeaabeeba52c5.png) vs. [DWriteCore](https://gold.skia.org/img/images/ac5fcfc75fd74e4fd79af694e3d7f4f0.png)",
+      "revId": "a5c042cb4b128d83e0abd499f3188d8233a25f58",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
