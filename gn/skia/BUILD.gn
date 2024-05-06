@@ -445,6 +445,7 @@ config("warnings") {
     if (is_clang) {
       cflags += [
         "-Wno-unused-parameter",  # Re-enabled for header sources
+        "-Wno-switch-default",  # Warns even when all enum values are covered
       ]
     }
   } else {
