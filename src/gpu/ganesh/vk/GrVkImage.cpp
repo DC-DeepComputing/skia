@@ -512,6 +512,10 @@ bool GrVkImage::InitImageInfo(GrVkGpu* gpu, const ImageDesc& imageDesc, GrVkImag
         initialLayout                                // initialLayout
     };
 
+    SkDebugf("Creating Vk Image here VkImageType %d VkFormat %d\n",
+             imageDesc.fImageType,
+             imageDesc.fFormat);
+
     VkImage image = VK_NULL_HANDLE;
     VkResult result;
     GR_VK_CALL_RESULT(gpu, result, CreateImage(gpu->device(), &imageCreateInfo, nullptr, &image));
