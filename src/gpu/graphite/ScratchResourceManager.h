@@ -49,7 +49,7 @@ public:
     // It is the caller's responsibility to determine when it's acceptable to return a resource.
     // That said, it's not mandatory that the scratch resources be returned. In that case, they just
     // stop being available for reuse for later tasks in a Recording.
-    sk_sp<Texture> getScratchTexture(SkISize, const TextureInfo&);
+    sk_sp<Texture> getScratchTexture(SkISize, const TextureInfo&, std::string_view label);
 
     // TODO: Eventually update ScratchBuffer and DrawBufferManager to leverage the
     // ScratchResourceManager. There are a few open issues to address first:
