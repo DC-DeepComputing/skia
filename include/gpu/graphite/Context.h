@@ -31,6 +31,8 @@ class Buffer;
 class ClientMappedBufferManager;
 class Context;
 class ContextPriv;
+class Image_Base;
+class Image;
 class GlobalCache;
 class PaintOptions;
 class PlotUploadTracker;
@@ -243,30 +245,37 @@ private:
                                              SkImage::ReadPixelsCallback callback,
                                              SkImage::ReadPixelsContext context);
 
-    void asyncReadPixels(const TextureProxy* textureProxy,
-                         const SkImageInfo& srcImageInfo,
+    // Recorder is optional and will be used if drawing operations are required. If no Recorder is
+    // provided but drawing operations are needed, a new Recorder will be created automatically.
+    void asyncReadPixels(std::unique_ptr<Recorder>,
+                         const Image_Base*,
                          const SkColorInfo& dstColorInfo,
                          const SkIRect& srcRect,
                          SkImage::ReadPixelsCallback callback,
                          SkImage::ReadPixelsContext context);
 
-    void asyncReadPixelsYUV420(Recorder*,
-                               const SkImage*,
+    void asyncReadPixelsYUV420(std::unique_ptr<Recorder>,
+                               const Image_Base*,
                                SkYUVColorSpace yuvColorSpace,
                                bool readAlpha,
                                const SkIRect& srcRect,
                                SkImage::ReadPixelsCallback callback,
                                SkImage::ReadPixelsContext context);
 
-    void finalizeAsyncReadPixels(SkSpan<PixelTransferResult>,
-                                 SkImage::ReadPixelsCallback callback,
-                                 SkImage::ReadPixelsContext callbackContext);
-
-    // Inserts a texture to buffer transfer task, used by asyncReadPixels methods
-    PixelTransferResult transferPixels(const TextureProxy*,
-                                       const SkImageInfo& srcImageInfo,
+    // Inserts a texture to buffer transfer task, used by asyncReadPixels methods. If the
+    // Recorder is non-null, tasks will be added to the Recorder's list; otherwise the transfer
+    // tasks will be added to the queue manager directly.
+    PixelTransferResult transferPixels(Recorder*,
+                                       const Image*,
                                        const SkColorInfo& dstColorInfo,
                                        const SkIRect& srcRect);
+
+    // If the recorder is non-null, it will be snapped and inserted with the assumption that the
+    // copy tasks (and possibly preparatory draw tasks) have already been added to the Recording.
+    void finalizeAsyncReadPixels(std::unique_ptr<Recorder>,
+                                 SkSpan<PixelTransferResult>,
+                                 SkImage::ReadPixelsCallback callback,
+                                 SkImage::ReadPixelsContext callbackContext);
 
     sk_sp<SharedContext> fSharedContext;
     std::unique_ptr<ResourceProvider> fResourceProvider;
