@@ -63,6 +63,9 @@ config("skia_public") {
   if (skia_enable_graphite) {
     defines += [ "SK_GRAPHITE" ]
   }
+  if (skia_enable_graphite_dawn_label) {
+    defines += [ "SK_GRAPHITE_DAWN_LABEL" ]
+  }
   if (skia_disable_tracing) {
     defines += [ "SK_DISABLE_TRACING" ]
   }

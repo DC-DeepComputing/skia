@@ -97,6 +97,11 @@ struct SK_API ContextOptions {
     size_t fGpuBudgetInBytes = kDefaultContextBudget;
 
     /**
+     * Whether labels will be set to backend resources.
+     */
+    bool fSetBackendLabels = false;
+
+    /**
      * Private options that are only meant for testing within Skia's tools.
      */
     ContextOptionsPriv* fOptionsPriv = nullptr;
