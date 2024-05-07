@@ -22,6 +22,30 @@
       },
       "revId": "19c1b735d46a1610fd259df3718e08ab766a5e47",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e7023ce_d11aaac7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-05-07T14:40:14Z",
+      "side": 1,
+      "message": ":shrug: A number was too big and could be made smaller with minimal repercussions. As you pointed out in https://skia-review.googlesource.com/c/skia/+/850122 we could even get rid of the whole function.",
+      "parentUuid": "2ed9b79b_77a4cf7a",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 21
+      },
+      "revId": "19c1b735d46a1610fd259df3718e08ab766a5e47",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
