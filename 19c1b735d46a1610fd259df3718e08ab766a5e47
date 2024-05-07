@@ -46,6 +46,30 @@
       },
       "revId": "19c1b735d46a1610fd259df3718e08ab766a5e47",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3319f3f_c5ffe37a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-05-07T14:42:04Z",
+      "side": 1,
+      "message": "SGTM. Leaf function stack space is essentially free real estate though, so I wouldn\u0027t spend a lot of cycles on this.",
+      "parentUuid": "3e7023ce_d11aaac7",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 21
+      },
+      "revId": "19c1b735d46a1610fd259df3718e08ab766a5e47",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
