@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c769d6be_3ca8e552",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 1672,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-07T14:43:20Z",
+      "side": 1,
+      "message": "nit: Skia\u0027s codestyle doesn\u0027t use `_`, so this would be `filterAndMipNoEffect`, but you could also call it `samplingHasNoEffect`, which reads more naturally to me.",
+      "range": {
+        "startLine": 1672,
+        "startChar": 9,
+        "endLine": 1672,
+        "endChar": 33
+      },
+      "revId": "49a6112bb9a4f26e863fb0ba267dc6f8b5a716f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85c7ee1c_ca79adfc",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 1675,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-07T14:43:20Z",
+      "side": 1,
+      "message": "The geometry being drawn always has a local Z of 0, so I think this check is unnecessary, since we flatten `local2Dev()` to an `SkMatrix`.",
+      "range": {
+        "startLine": 1675,
+        "startChar": 8,
+        "endLine": 1675,
+        "endChar": 71
+      },
+      "revId": "49a6112bb9a4f26e863fb0ba267dc6f8b5a716f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb3986e3_d7f688e3",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 1683,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-07T14:43:20Z",
+      "side": 1,
+      "message": "In this case, `SkMatrix::getTranslateX()` and `getTranslateY()` are probably more readable (particularly once we get rid of the rest of the `rc()` calls)",
+      "range": {
+        "startLine": 1682,
+        "startChar": 35,
+        "endLine": 1683,
+        "endChar": 65
+      },
+      "revId": "49a6112bb9a4f26e863fb0ba267dc6f8b5a716f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7849e922_ea7d40fd",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 1686,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-07T14:43:20Z",
+      "side": 1,
+      "message": "You can just call `SkMatrix::isTranslate()` and then check if the X and Y translation components are integers.",
+      "range": {
+        "startLine": 1683,
+        "startChar": 69,
+        "endLine": 1686,
+        "endChar": 83
+      },
+      "revId": "49a6112bb9a4f26e863fb0ba267dc6f8b5a716f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
