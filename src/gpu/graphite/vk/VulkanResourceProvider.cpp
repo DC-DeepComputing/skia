@@ -142,10 +142,29 @@ sk_sp<Buffer> VulkanResourceProvider::createBuffer(size_t size,
 }
 
 sk_sp<Sampler> VulkanResourceProvider::createSampler(const SamplerDesc& samplerDesc) {
+    // If the sampler description has non-zero additionalFormatInfo, use that to obtain a real
+    // YCbCr conversion to pass into VulkanSampler creation.
+    sk_sp<VulkanSamplerYcbcrConversion> ycbcrConversion = nullptr;
+    if (samplerDesc.format()) {
+        GraphiteResourceKey ycbcrKey =
+                VulkanSamplerYcbcrConversion::GetKeyFromSamplerDesc(samplerDesc);
+
+        if (Resource* resource = fResourceCache->findAndRefResource(ycbcrKey,
+                                                                    skgpu::Budgeted::kNo)) {
+            ycbcrConversion = sk_sp<VulkanSamplerYcbcrConversion>(
+                    static_cast<VulkanSamplerYcbcrConversion*>(resource));
+        } else {
+            // Textures and their conversions are made first, so the necessary YCbCr conversion
+            // should already be available in the cache.
+            SkUNREACHABLE;
+        }
+    }
+
     return VulkanSampler::Make(this->vulkanSharedContext(),
                                samplerDesc.samplingOptions(),
                                samplerDesc.tileModeX(),
-                               samplerDesc.tileModeY());
+                               samplerDesc.tileModeY(),
+                               ycbcrConversion);
 }
 
 BackendTexture VulkanResourceProvider::onCreateBackendTexture(SkISize dimensions,
@@ -180,9 +199,9 @@ GraphiteResourceKey build_desc_set_key(const SkSpan<DescriptorData>& requestedDe
     for (int i = 1; i < num32DataCnt; i++) {
         const auto& currDesc = requestedDescriptors[i - 1];
         // TODO: Consider making the DescriptorData struct itself just use uint16_t.
-        uint16_t smallerCount = static_cast<uint16_t>(currDesc.count);
-        builder[i] = static_cast<uint8_t>(currDesc.type) << 24 |
-                     currDesc.bindingIndex << 16 |
+        uint16_t smallerCount = static_cast<uint16_t>(currDesc.fCount);
+        builder[i] = static_cast<uint8_t>(currDesc.fType) << 24 |
+                     currDesc.fBindingIndex << 16 |
                      smallerCount;
     }
     builder.finish();
