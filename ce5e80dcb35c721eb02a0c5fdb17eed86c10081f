@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3cc4b653_5b81c87a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 21
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-05-07T14:03:17Z",
+      "side": 1,
+      "message": "PTAL - bite-sized CL to add immutable sampler member attribute to DescriptorData and to align attribute names to convention.",
+      "revId": "ce5e80dcb35c721eb02a0c5fdb17eed86c10081f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
