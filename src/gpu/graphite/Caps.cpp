@@ -84,8 +84,7 @@ GraphiteResourceKey Caps::makeSamplerKey(const SamplerDesc& samplerDesc) const {
 bool Caps::areColorTypeAndTextureInfoCompatible(SkColorType ct, const TextureInfo& info) const {
     // TODO: add SkTextureCompressionType handling
     // (can be handled by setting up the colorTypeInfo instead?)
-
-    return SkToBool(this->getColorTypeInfo(ct, info));
+    return this->onAreColorTypeAndTextureInfoCompatible(ct, info);
 }
 
 static inline SkColorType color_type_fallback(SkColorType ct) {
