@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "50062c64_3c093ebd",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2024-05-07T14:58:03Z",
+      "side": 1,
+      "message": "Yes, we still plan to support this for vulkan device that natively supports it. The code using this feature is still here in Graphite. Most Dawn backends just don\u0027t expose this feature currently so the MSAARenderToSingleSampled is mostly unused right now.",
+      "parentUuid": "92305ac4_264303bf",
+      "range": {
+        "startLine": 11,
+        "startChar": 24,
+        "endLine": 11,
+        "endChar": 49
+      },
+      "revId": "401a04209bbdfe6bfc8a3fc9732b52ec7493303b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "18ae4148_733d86ec",
         "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
         "patchSetId": 2
@@ -37,6 +61,30 @@
       "writtenOn": "2024-05-07T14:43:20Z",
       "side": 1,
       "message": "Shouldn\u0027t this be affecting the pipeline keys we make for Dawn? At least if this is used for Vulkan, it should require new pipelines for every draw in the renderpass (compared to the cases we don\u0027t need to do the resolve load).",
+      "range": {
+        "startLine": 206,
+        "startChar": 48,
+        "endLine": 206,
+        "endChar": 73
+      },
+      "revId": "401a04209bbdfe6bfc8a3fc9732b52ec7493303b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80f25bbc_d6e04d3f",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2024-05-07T14:58:03Z",
+      "side": 1,
+      "message": "Currently this feature is not supported in vulkan backend yet. However, in future when we implement in in vulkan, I am planning to create two pipelines internally in Dawn/Vulkan, one is used by \"resolve loading\" render pass and one without. Then the appropriate one would be selected internally by Dawn transparently from users.\n\nOr we could also require different pipeline keys, we can introduce that change in Graphite later when the feature is fully implemented in vulkan.",
+      "parentUuid": "18ae4148_733d86ec",
       "range": {
         "startLine": 206,
         "startChar": 48,
