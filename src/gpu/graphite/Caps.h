@@ -287,6 +287,8 @@ public:
 
     sktext::gpu::SDFTControl getSDFTControl(bool useSDFTForSmallText) const;
 
+    bool setBackendLabels() const { return fSetBackendLabels; }
+
 protected:
     Caps();
 
@@ -391,6 +393,8 @@ protected:
 
     // Set based on client options
     bool fRequireOrderedRecordings = false;
+
+    bool fSetBackendLabels = false;
 
 private:
     virtual bool onIsTexturable(const TextureInfo&) const = 0;
