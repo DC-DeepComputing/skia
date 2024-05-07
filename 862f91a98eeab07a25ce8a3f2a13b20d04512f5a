@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db345a61_1eef2650",
+        "filename": "src/core/SkKnownRuntimeEffects.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-07T20:32:13Z",
+      "side": 1,
+      "message": "there is not good support for lower-bit integers or booleans, so unfortunately it has to be. We got rid of the ability to pass short uniforms (you can still use shorts/bytes as vertex attributes).\n\nThat said, we could just as easily put it into a half3 with gainAndBias?",
+      "range": {
+        "startLine": 109,
+        "startChar": 37,
+        "endLine": 109,
+        "endChar": 62
+      },
+      "revId": "862f91a98eeab07a25ce8a3f2a13b20d04512f5a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "61333331_3ff53dac",
+        "filename": "src/core/SkKnownRuntimeEffects.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-07T20:32:13Z",
+      "side": 1,
+      "message": "these runtime effects are just file moves right now right?",
+      "range": {
+        "startLine": 147,
+        "startChar": 0,
+        "endLine": 147,
+        "endChar": 66
+      },
+      "revId": "862f91a98eeab07a25ce8a3f2a13b20d04512f5a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "81258e20_6f31650d",
+        "filename": "src/core/SkKnownRuntimeEffects.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-07T20:32:13Z",
+      "side": 1,
+      "message": "nit: mixing nomenclatures, I\u0027d prefer `TexMin` and `TexMax` or `TexSm` and `TexLg` as the pair of names.",
+      "range": {
+        "startLine": 78,
+        "startChar": 0,
+        "endLine": 79,
+        "endChar": 29
+      },
+      "revId": "862f91a98eeab07a25ce8a3f2a13b20d04512f5a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a307f6a_9ae8e0a0",
+        "filename": "src/effects/imagefilters/SkMatrixConvolutionImageFilter.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-07T20:32:13Z",
+      "side": 1,
+      "message": "nit: this should match either \"small\" or \"min\" that\u0027s used for the stable key name.",
+      "range": {
+        "startLine": 27,
+        "startChar": 21,
+        "endLine": 27,
+        "endChar": 38
+      },
+      "revId": "862f91a98eeab07a25ce8a3f2a13b20d04512f5a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
