@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ccfc7477_a98415f0",
+        "filename": "tools/js_shaper/api.js",
+        "patchSetId": 12
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 3241878
+      },
+      "writtenOn": "2024-05-07T18:05:38Z",
+      "side": 1,
+      "message": "Nit, could we just initialize with \u0027\u0027 ?\n```suggestion\n        this.text \u003d \u0027\u0027;\n```",
+      "revId": "8b79eb61701d6b7feca95c7285e4ca43f7b3d4be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "34a9a8a8_b028a0e9",
+        "filename": "tools/js_shaper/api.js",
+        "patchSetId": 12
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 3241878
+      },
+      "writtenOn": "2024-05-07T18:05:38Z",
+      "side": 1,
+      "message": "Looks like this function will write to #properties directly, is it possible that the two calls may interfere with each other?",
+      "revId": "8b79eb61701d6b7feca95c7285e4ca43f7b3d4be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1084cf5c_e561e4be",
+        "filename": "tools/js_shaper/api.js",
+        "patchSetId": 12
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 3241878
+      },
+      "writtenOn": "2024-05-07T18:05:38Z",
+      "side": 1,
+      "message": "Nit: JS has template literals which are a bit cleaner than string concat. So this would become \n\n```suggestion\n                html +\u003d `\u003cspan id\u003d\u0027g${g}\u0027 class\u003d\u0027grapheme\u0027\u003e`;\n```",
+      "revId": "8b79eb61701d6b7feca95c7285e4ca43f7b3d4be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21031843_371cc62d",
+        "filename": "tools/js_shaper/api.js",
+        "patchSetId": 12
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 3241878
+      },
+      "writtenOn": "2024-05-07T18:05:38Z",
+      "side": 1,
+      "message": "Should we use tagName.topUpperCase() in case casing is inconsistent?",
+      "revId": "8b79eb61701d6b7feca95c7285e4ca43f7b3d4be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b1957af7_acda6db4",
+        "filename": "tools/js_shaper/api.js",
+        "patchSetId": 12
+      },
+      "lineNbr": 635,
+      "author": {
+        "id": 3241878
+      },
+      "writtenOn": "2024-05-07T18:05:38Z",
+      "side": 1,
+      "message": "Adding some comments on shape/purpose/example for these fields would be helpful",
+      "revId": "8b79eb61701d6b7feca95c7285e4ca43f7b3d4be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb7edee1_5c12ff89",
+        "filename": "tools/js_shaper/api.js",
+        "patchSetId": 12
+      },
+      "lineNbr": 636,
+      "author": {
+        "id": 3241878
+      },
+      "writtenOn": "2024-05-07T18:05:38Z",
+      "side": 1,
+      "message": "I think we are using \"#\" to designate private, seems strange to consider these as output too?",
+      "revId": "8b79eb61701d6b7feca95c7285e4ca43f7b3d4be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
