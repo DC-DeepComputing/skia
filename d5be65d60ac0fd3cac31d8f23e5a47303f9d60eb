@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d6ddc35_f2043bc6",
+        "filename": "tools/gpu/vk/VkYcbcrSamplerHelper.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 379,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-05-07T15:41:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0f46a01d_0db071b4",
+      "revId": "d5be65d60ac0fd3cac31d8f23e5a47303f9d60eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7b6d96af_784b3731",
@@ -48,6 +66,24 @@
       "writtenOn": "2024-05-07T15:05:56Z",
       "side": 1,
       "message": "line up",
+      "revId": "d5be65d60ac0fd3cac31d8f23e5a47303f9d60eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "79f67789_46ba1951",
+        "filename": "tools/gpu/vk/VkYcbcrSamplerHelper.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 384,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-05-07T15:41:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7b6d96af_784b3731",
       "revId": "d5be65d60ac0fd3cac31d8f23e5a47303f9d60eb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
