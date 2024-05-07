@@ -1226,10 +1226,18 @@ bool VulkanCaps::onIsTexturable(const TextureInfo& texInfo) const {
     if (!texInfo.getVulkanTextureInfo(&vkInfo)) {
         return false;
     }
-
-    // TODO:
-    // Once we support external formats with associated YCbCr conversion info, check for that
-    // and return true here because we can always texture from an external format.
+    // Check if we are using an external format. All external formats are texturable.
+    if (vkInfo.fFormat == VK_FORMAT_UNDEFINED && vkInfo.fYcbcrConversionInfo.isValid()) {
+        switch (vkInfo.fImageTiling) {
+            case VK_IMAGE_TILING_OPTIMAL:
+                return true;
+            case VK_IMAGE_TILING_LINEAR:
+                return vkInfo.fYcbcrConversionInfo.fFormatFeatureFlags &
+                       VK_FORMAT_FEATURE_SAMPLED_IMAGE_YCBCR_CONVERSION_LINEAR_FILTER_BIT;
+            default:
+                return false;
+        }
+    }
 
     const FormatInfo& info = this->getFormatInfo(vkInfo.fFormat);
     return info.isTexturable(vkInfo.fImageTiling);
