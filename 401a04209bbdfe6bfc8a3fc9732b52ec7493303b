@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92305ac4_264303bf",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-05-07T14:43:20Z",
+      "side": 1,
+      "message": "Do we still plan to support this feature in Dawn? I mostly thinking about in Vulkan if Dawn wanted to use the similar extension under the hood. In that case this feature more closely maps to that functionality. However, for the general case where we need input attachments and such for Vulkan, this new model is better.",
+      "range": {
+        "startLine": 11,
+        "startChar": 24,
+        "endLine": 11,
+        "endChar": 49
+      },
+      "revId": "401a04209bbdfe6bfc8a3fc9732b52ec7493303b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18ae4148_733d86ec",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-05-07T14:43:20Z",
+      "side": 1,
+      "message": "Shouldn\u0027t this be affecting the pipeline keys we make for Dawn? At least if this is used for Vulkan, it should require new pipelines for every draw in the renderpass (compared to the cases we don\u0027t need to do the resolve load).",
+      "range": {
+        "startLine": 206,
+        "startChar": 48,
+        "endLine": 206,
+        "endChar": 73
+      },
+      "revId": "401a04209bbdfe6bfc8a3fc9732b52ec7493303b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
