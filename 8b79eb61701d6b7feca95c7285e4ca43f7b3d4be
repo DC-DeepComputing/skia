@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "76ecfc11_eb2a340a",
+        "filename": "tools/js_shaper/api.js",
+        "patchSetId": 12
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-05-07T21:54:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ccfc7477_a98415f0",
+      "revId": "8b79eb61701d6b7feca95c7285e4ca43f7b3d4be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "34a9a8a8_b028a0e9",
@@ -37,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a1f840d0_8dee7950",
+        "filename": "tools/js_shaper/api.js",
+        "patchSetId": 12
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-05-07T21:54:27Z",
+      "side": 1,
+      "message": "I sort of assumed that they run synchronously?..",
+      "parentUuid": "34a9a8a8_b028a0e9",
+      "revId": "8b79eb61701d6b7feca95c7285e4ca43f7b3d4be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1084cf5c_e561e4be",
         "filename": "tools/js_shaper/api.js",
         "patchSetId": 12
@@ -48,6 +84,24 @@
       "writtenOn": "2024-05-07T18:05:38Z",
       "side": 1,
       "message": "Nit: JS has template literals which are a bit cleaner than string concat. So this would become \n\n```suggestion\n                html +\u003d `\u003cspan id\u003d\u0027g${g}\u0027 class\u003d\u0027grapheme\u0027\u003e`;\n```",
+      "revId": "8b79eb61701d6b7feca95c7285e4ca43f7b3d4be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "50edf47f_41759dc9",
+        "filename": "tools/js_shaper/api.js",
+        "patchSetId": 12
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-05-07T21:54:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1084cf5c_e561e4be",
       "revId": "8b79eb61701d6b7feca95c7285e4ca43f7b3d4be",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -71,6 +125,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "557fcc94_b869dc57",
+        "filename": "tools/js_shaper/api.js",
+        "patchSetId": 12
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-05-07T21:54:27Z",
+      "side": 1,
+      "message": "I tried. There is no topUpperCase(), at least my browser does not find it.",
+      "parentUuid": "21031843_371cc62d",
+      "revId": "8b79eb61701d6b7feca95c7285e4ca43f7b3d4be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b1957af7_acda6db4",
         "filename": "tools/js_shaper/api.js",
         "patchSetId": 12
@@ -82,6 +154,24 @@
       "writtenOn": "2024-05-07T18:05:38Z",
       "side": 1,
       "message": "Adding some comments on shape/purpose/example for these fields would be helpful",
+      "revId": "8b79eb61701d6b7feca95c7285e4ca43f7b3d4be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c6c09026_de7e3346",
+        "filename": "tools/js_shaper/api.js",
+        "patchSetId": 12
+      },
+      "lineNbr": 635,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-05-07T21:54:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b1957af7_acda6db4",
       "revId": "8b79eb61701d6b7feca95c7285e4ca43f7b3d4be",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -99,6 +189,24 @@
       "writtenOn": "2024-05-07T18:05:38Z",
       "side": 1,
       "message": "I think we are using \"#\" to designate private, seems strange to consider these as output too?",
+      "revId": "8b79eb61701d6b7feca95c7285e4ca43f7b3d4be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe4686e9_6655f85e",
+        "filename": "tools/js_shaper/api.js",
+        "patchSetId": 12
+      },
+      "lineNbr": 636,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-05-07T21:54:27Z",
+      "side": 1,
+      "message": "We do not return them directly, just by methods. But they still are outputs",
+      "parentUuid": "eb7edee1_5c12ff89",
       "revId": "8b79eb61701d6b7feca95c7285e4ca43f7b3d4be",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
