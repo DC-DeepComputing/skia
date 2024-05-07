@@ -56,6 +56,23 @@
       },
       "revId": "0aa5b9f34e88c4ce7f07d3c71dc2514d9f7418b8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9a57346_b898e2a9",
+        "filename": "src/gpu/graphite/ComputePathAtlas.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-05-07T03:34:34Z",
+      "side": 1,
+      "message": "I suggest generalizing this function so that it can be shared with `VelloComputePathAtlas::onAddShape` as much of the logic is the same. Perhaps they could both call out to a helper that is parameterized over a `Scene` and a `SkISize*` (representing the occupied area that the function should output)?",
+      "revId": "0aa5b9f34e88c4ce7f07d3c71dc2514d9f7418b8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
