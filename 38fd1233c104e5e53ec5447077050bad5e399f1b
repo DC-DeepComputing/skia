@@ -88,6 +88,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c3a1b11d_5a91f6ed",
+        "filename": "tools/gpu/vk/VkYcbcrSamplerHelper.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-05-07T15:05:56Z",
+      "side": 1,
+      "message": "As discussed offline we\u0027re just going to create a bug to track possible code sharing and move on.",
+      "parentUuid": "9102dd68_114d34ee",
+      "revId": "38fd1233c104e5e53ec5447077050bad5e399f1b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "30c43bf4_14ec7ba3",
