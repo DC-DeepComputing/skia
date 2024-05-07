@@ -60,6 +60,28 @@ private:
 // Used to pass in the necessary information to create a VkSamplerYcbcrConversion object for an
 // VkExternalFormatANDROID.
 struct VulkanYcbcrConversionInfo {
+    // Non-format information fits into one uint32. How many additional uint32s are needed depends
+    // upon whether we are using a known or external format. Known formats fit within one uint32;
+    // external formats into two. Format feature flags, which only need to be recorded when using
+    // an external format, require another.
+    static constexpr int kInt32sNeededNonFormatInfo = 1;
+    static constexpr int kInt32sNeededKnownFormat = 1;
+    static constexpr int kInt32sNeededExternalFormat = 2;
+    static constexpr int kInt32sNeededFormatFeatureFlags = 1;
+
+    static constexpr int kInt32sNeededWithKnownFormat = kInt32sNeededNonFormatInfo +
+                                                        kInt32sNeededKnownFormat;
+    static constexpr int kInt32sNeededwithExternalFormat = kInt32sNeededNonFormatInfo +
+                                                           kInt32sNeededExternalFormat +
+                                                           kInt32sNeededFormatFeatureFlags;
+    int numInt32sNeeded() const {
+        if (!this->isValid()) {
+            return 0;
+        }
+        return (fFormat == VK_FORMAT_UNDEFINED) ? kInt32sNeededwithExternalFormat
+                                                : kInt32sNeededWithKnownFormat;
+    }
+
     bool operator==(const VulkanYcbcrConversionInfo& that) const {
         // Invalid objects are not required to have all other fields initialized or matching.
         if (!this->isValid() && !that.isValid()) {
@@ -166,6 +188,25 @@ struct VulkanYcbcrConversionInfo {
     static constexpr int kComponentGShift         = kComponentRShift         + kComponentBits;
     static constexpr int kComponentBShift         = kComponentGShift         + kComponentBits;
     static constexpr int kComponentAShift         = kComponentBShift         + kComponentBits;
+
+    static constexpr uint32_t kUseExternalFormatMask =
+            ((1 << kUsesExternalFormatBits) - 1) << kUsesExternalFormatShift;
+    static constexpr uint32_t kYcbcrModelMask =
+            ((1 << kYcbcrModelBits) - 1) << kYcbcrModelShift;
+    static constexpr uint32_t kYcbcrRangeMask =
+            ((1 << kYcbcrRangeBits) - 1) << kYcbcrRangeShift;
+    static constexpr uint32_t kXChromaOffsetMask =
+            ((1 << kXChromaOffsetBits) - 1) << kXChromaOffsetShift;
+    static constexpr uint32_t kYChromaOffsetMask =
+            ((1 << kYChromaOffsetBits) - 1) << kYChromaOffsetShift;
+    static constexpr uint32_t kChromaFilterMask =
+            ((1 << kChromaFilterBits) - 1) << kChromaFilterShift;
+    static constexpr uint32_t kForceExplicitReconMask =
+            ((1 << kForceExplicitReconBits) - 1) << kForceExplicitReconShift;
+    static constexpr uint32_t kComponentRMask = ((1 << kComponentBits) - 1) << kComponentRShift;
+    static constexpr uint32_t kComponentBMask = ((1 << kComponentBits) - 1) << kComponentGShift;
+    static constexpr uint32_t kComponentGMask = ((1 << kComponentBits) - 1) << kComponentBShift;
+    static constexpr uint32_t kComponentAMask = ((1 << kComponentBits) - 1) << kComponentAShift;
 };
 
 typedef void* VulkanDeviceLostContext;
