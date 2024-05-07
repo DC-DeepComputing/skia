@@ -16,6 +16,24 @@
       "message": "Multiple pinpoint jobs suggest that this actually is causing regressions in Chrome:\nhttps://pinpoint-dot-chromeperf.appspot.com/job/13aa60237e0000\nhttps://pinpoint-dot-chromeperf.appspot.com/job/16e72157fe0000\n(specifically the cpu_time_percentage metric).\n\nWhen I profiled the `browse:media:tumblr:2018` story locally I found that 45% of CPU time is spent in eval_H: https://crsrc.org/c/third_party/skia/src/gpu/BlurUtils.cpp;l\u003d510, so maybe we should implement GPU-side mask generation before enabling this in Chrome?\n\nOr, maybe this CL will cause more regressions, because analytic rrect blurs did speed things up overall but we\u0027re not alerted to that. In that case, we\u0027d have an argument to keep analytic rrect blurs enabled while implementing GPU-side mask generation.",
       "revId": "ab6cee8957fb59470262b52afe7c2d34f104f79f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "36dbd8db_0c7fd801",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-07T14:46:43Z",
+      "side": 1,
+      "message": "I know there\u0027s a bug to cache the integral tables without having to build the tables. Would that avoid this cost? Or is the final mask we generate for rrects much more specific to a given rrect geometry vs. just the blur radius?",
+      "parentUuid": "9cfbb317_78c5e4bd",
+      "revId": "ab6cee8957fb59470262b52afe7c2d34f104f79f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
