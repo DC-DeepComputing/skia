@@ -1227,12 +1227,47 @@ bool VulkanCaps::onIsTexturable(const TextureInfo& texInfo) const {
         return false;
     }
 
-    // TODO:
-    // Once we support external formats with associated YCbCr conversion info, check for that
-    // and return true here because we can always texture from an external format.
+    // Check if we are using an external format. All external formats are texturable.
+    if (vkInfo.fFormat == VK_FORMAT_UNDEFINED && vkInfo.fYcbcrConversionInfo.isValid()) {
+        switch (vkInfo.fImageTiling) {
+            case VK_IMAGE_TILING_OPTIMAL:
+                return true;
+            case VK_IMAGE_TILING_LINEAR:
+                // Ensure that if linear tiling is requested that the external format supports it.
+                return vkInfo.fYcbcrConversionInfo.fFormatFeatures &
+                       VK_FORMAT_FEATURE_SAMPLED_IMAGE_YCBCR_CONVERSION_LINEAR_FILTER_BIT;
+            default:
+                return false;
+        }
+    }
 
+    // Otherwise, we are working with a known format and can simply reference the format table info.
     const FormatInfo& info = this->getFormatInfo(vkInfo.fFormat);
     return info.isTexturable(vkInfo.fImageTiling);
+}
+
+bool VulkanCaps::onAreColorTypeAndTextureInfoCompatible(SkColorType ct,
+                                                        const TextureInfo& info) const {
+#ifdef SK_BUILD_FOR_ANDROID
+    // Vulkan texture info can represent a texture wrappers an AHardwareBuffer. In that case,
+    // if we are also using an unknown/external format, then querying the format table will not do
+    // us any good.
+    VulkanTextureInfo vkInfo;
+    if (!info.getVulkanTextureInfo(&vkInfo)) {
+        return false;
+    }
+    // Vulkan textures that wrap an AHardwareBuffer have their color type determined via
+    // AHardwareBufferUtils::GetSkColorTypeFromBufferFormat(...). So, if we are using an external
+    // format AHardwareBuffer, we know the appropriate color type was selected for the buffer
+    // format.
+    if (vkInfo.fFormat == VK_FORMAT_UNDEFINED && vkInfo.fYcbcrConversionInfo.isValid()) {
+        // TODO: As an extra layer of validation, one could doubly confirm that the color type
+        // passed in matches the output of AHardwareBufferUtils::GetSkColorTypeFromBufferFormat with
+        // the appropriate format.
+        return true;
+    }
+#endif
+    return SkToBool(this->getColorTypeInfo(ct, info));
 }
 
 
