@@ -16,6 +16,74 @@
       "message": "PTAL 😊 The 3 failing tasks are failing in general on the tree.",
       "revId": "38fd1233c104e5e53ec5447077050bad5e399f1b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9d35ffb8_e48e2ad1",
+        "filename": "tools/gpu/vk/VkYcbcrSamplerHelper.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-05-07T13:30:51Z",
+      "side": 1,
+      "message": "Maybe break here rather than checking \u0027foundHelp\u0027 in the loop condition ?\nCouldn\u0027t you also do away with \u0027foundHelp\u0027 and return true here and return false at the end ?",
+      "revId": "38fd1233c104e5e53ec5447077050bad5e399f1b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "039ab0e7_4c981006",
+        "filename": "tools/gpu/vk/VkYcbcrSamplerHelper.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-05-07T13:30:51Z",
+      "side": 1,
+      "message": "A big chunk of this seems to be shared with the new createBackendTexture method. Would it be possible to have a helper that takes a device, interface and physicalDevice to do the shared work?",
+      "revId": "38fd1233c104e5e53ec5447077050bad5e399f1b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "30c43bf4_14ec7ba3",
+        "filename": "tools/gpu/vk/VkYcbcrSamplerHelper.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 378,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-05-07T13:30:51Z",
+      "side": 1,
+      "message": "It doesn\u0027t seem like this will work well if both Graphite and Ganesh are compiled in\nI would think you would need to guard it with an \"if (fSharedCtxt)\" test",
+      "revId": "38fd1233c104e5e53ec5447077050bad5e399f1b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "24ac50be_8fa1149e",
+        "filename": "tools/gpu/vk/VkYcbcrSamplerHelper.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 405,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-05-07T13:30:51Z",
+      "side": 1,
+      "message": "This method also needs to be able to support both Graphite and Ganesh at the same time",
+      "revId": "38fd1233c104e5e53ec5447077050bad5e399f1b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
