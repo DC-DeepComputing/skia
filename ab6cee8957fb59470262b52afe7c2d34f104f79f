@@ -34,6 +34,24 @@
       "parentUuid": "9cfbb317_78c5e4bd",
       "revId": "ab6cee8957fb59470262b52afe7c2d34f104f79f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c018e4c_aad5d0e9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-05-07T14:52:46Z",
+      "side": 1,
+      "message": "That\u0027s an interesting question. Currently in Ganesh he mask keys are specific to given rect geometry: https://crsrc.org/c/third_party/skia/src/gpu/ganesh/GrBlurUtils.cpp;l\u003d715;drc\u003d3401ef96\n\nbut a comment there suggests that the keying could be simpler since we only do analytic blurring for simple circular rrects: https://crsrc.org/c/third_party/skia/src/gpu/ganesh/GrBlurUtils.cpp;l\u003d908;drc\u003d3401ef96",
+      "parentUuid": "36dbd8db_0c7fd801",
+      "revId": "ab6cee8957fb59470262b52afe7c2d34f104f79f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
