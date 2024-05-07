@@ -70,6 +70,8 @@ public:
                                                  const SkBitmap&,
                                                  Mipmapped = skgpu::Mipmapped::kNo);
 
+    static sk_sp<Image> CopyAsDraw(Recorder*,)
+
     uint32_t uniqueID() const { return fRecorder->fUniqueID; }
 
 #if defined(SK_DEBUG)
