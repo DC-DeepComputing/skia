@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96232aae_d23db624",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 749,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-07T20:41:28Z",
+      "side": 1,
+      "message": "not sure if it\u0027s worth adding, but scanning through how isRRect is tracked, I don\u0027t think we\u0027d catch rects in this path. We\u0027d need to also call isRect() separately.",
+      "range": {
+        "startLine": 749,
+        "startChar": 32,
+        "endLine": 749,
+        "endChar": 39
+      },
+      "revId": "086bef08eec9b85e9dbe764ef50338f7aaefc8d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
