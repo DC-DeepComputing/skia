@@ -22,6 +22,30 @@
       },
       "revId": "086bef08eec9b85e9dbe764ef50338f7aaefc8d6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5715fd4_7be65f8f",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 749,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2024-05-07T20:45:27Z",
+      "side": 1,
+      "message": "I had thought that it would, but you\u0027re right. The path data is actually inspected to determine rect-ness. I\u0027ll give that a try.",
+      "parentUuid": "96232aae_d23db624",
+      "range": {
+        "startLine": 749,
+        "startChar": 32,
+        "endLine": 749,
+        "endChar": 39
+      },
+      "revId": "086bef08eec9b85e9dbe764ef50338f7aaefc8d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
