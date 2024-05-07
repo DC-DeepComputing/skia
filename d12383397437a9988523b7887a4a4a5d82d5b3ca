@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e21a5463_ef3db579",
+        "filename": "src/codec/SkJpegMetadataDecoderImpl.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2024-05-07T16:32:52Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "1c1939c2_ac6de2d9",
+      "revId": "d12383397437a9988523b7887a4a4a5d82d5b3ca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c41ddd7a_0d6021df",
@@ -48,6 +66,30 @@
       "writtenOn": "2024-05-06T14:43:47Z",
       "side": 1,
       "message": "The Apple version doesn\u0027t have this same check. Want to add it?",
+      "range": {
+        "startLine": 609,
+        "startChar": 0,
+        "endLine": 611,
+        "endChar": 5
+      },
+      "revId": "d12383397437a9988523b7887a4a4a5d82d5b3ca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f4d3e967_93e92405",
+        "filename": "src/codec/SkXmp.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 611,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2024-05-07T16:32:52Z",
+      "side": 1,
+      "message": "Apple has the strange thing of \"Exif in the base image, XMP in the gainmap image\", so it ends up not mattering there. The Adobe scheme has \"XMP in the base image with just the version field, then XMP in the gainmap with all fields\".",
+      "parentUuid": "c41ddd7a_0d6021df",
       "range": {
         "startLine": 609,
         "startChar": 0,
