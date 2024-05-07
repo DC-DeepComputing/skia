@@ -118,6 +118,7 @@ TextureProxy* Surface::backingTextureProxy() const { return fDevice->target(); }
 
 sk_sp<Surface> Surface::Make(Recorder* recorder,
                              const SkImageInfo& info,
+                             std::string_view label,
                              Budgeted budgeted,
                              Mipmapped mipmapped,
                              SkBackingFit backingFit,
@@ -131,6 +132,7 @@ sk_sp<Surface> Surface::Make(Recorder* recorder,
                                         backingFit,
                                         SkSurfacePropsCopyOrDefault(props),
                                         initialLoadOp,
+                                        std::move(label),
                                         registerWithRecorder);
     if (!device) {
         return nullptr;
@@ -220,8 +222,9 @@ sk_sp<SkSurface> RenderTarget(Recorder* recorder,
                               skgpu::Mipmapped mipmapped,
                               const SkSurfaceProps* props) {
     // The client is getting the ref on this surface so it must be unbudgeted.
-    return skgpu::graphite::Surface::Make(
-            recorder, info, skgpu::Budgeted::kNo, mipmapped, SkBackingFit::kExact, props);
+    return skgpu::graphite::Surface::Make(recorder, info, "SkSurfaceRenderTarget",
+                                          skgpu::Budgeted::kNo, mipmapped, SkBackingFit::kExact,
+                                          props);
 }
 
 sk_sp<SkSurface> WrapBackendTexture(Recorder* recorder,
