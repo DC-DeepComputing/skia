@@ -60,6 +60,21 @@ private:
 // Used to pass in the necessary information to create a VkSamplerYcbcrConversion object for an
 // VkExternalFormatANDROID.
 struct VulkanYcbcrConversionInfo {
+    int numInt32sNeeded() const {
+        if (!this->isValid()) {
+            return 0;
+        }
+
+        static constexpr int kInt32sNeededForNonFormatInfo = 1;
+        if (fFormat != VK_FORMAT_UNDEFINED) {
+            // Using a known format only requires one additional int32 to capture format information
+            return kInt32sNeededForNonFormatInfo + 1;
+        }
+        // Otherwise, we are using an external format (uint64_t) and need to capture format feature
+        // flags, so we need 3 more uint32s
+        return kInt32sNeededForNonFormatInfo + 3;
+    }
+
     bool operator==(const VulkanYcbcrConversionInfo& that) const {
         // Invalid objects are not required to have all other fields initialized or matching.
         if (!this->isValid() && !that.isValid()) {
