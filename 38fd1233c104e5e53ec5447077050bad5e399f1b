@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "94754bbd_df3727d4",
+        "filename": "tools/gpu/vk/VkYcbcrSamplerHelper.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-05-07T14:38:16Z",
+      "side": 1,
+      "message": "Yeah, this helper is a new wrapper around existing functionality. Good callout that it can be simplified.",
+      "parentUuid": "9d35ffb8_e48e2ad1",
+      "revId": "38fd1233c104e5e53ec5447077050bad5e399f1b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "039ab0e7_4c981006",
@@ -48,6 +66,24 @@
       "writtenOn": "2024-05-07T13:30:51Z",
       "side": 1,
       "message": "A big chunk of this seems to be shared with the new createBackendTexture method. Would it be possible to have a helper that takes a device, interface and physicalDevice to do the shared work?",
+      "revId": "38fd1233c104e5e53ec5447077050bad5e399f1b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9102dd68_114d34ee",
+        "filename": "tools/gpu/vk/VkYcbcrSamplerHelper.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-05-07T14:38:16Z",
+      "side": 1,
+      "message": "A lot of it does perform the same work, yes. The issue is that macro calls to Vulkan driver calls differ for ganesh and graphite (`VULKAN_CALL`; `GR_VK_CALL`) making it less trivial to share the same operations. I could put them into one method or add a helper, but every time we need to perform a driver call, we would have to do something like:\n`if (sharedCtxt) { VULKAN_CALL } else { GR_VK_CALL }` which I\u0027m not sure is better. LMKWYT!",
+      "parentUuid": "039ab0e7_4c981006",
       "revId": "38fd1233c104e5e53ec5447077050bad5e399f1b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -69,6 +105,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1036c165_a074eae4",
+        "filename": "tools/gpu/vk/VkYcbcrSamplerHelper.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 378,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-05-07T14:38:16Z",
+      "side": 1,
+      "message": "Yes, you\u0027re correct. When compiling for both but, say, only running ganesh tests then we\u0027d need to skip over using VULKAN_CALL with a null shared context. Added!",
+      "parentUuid": "30c43bf4_14ec7ba3",
+      "revId": "38fd1233c104e5e53ec5447077050bad5e399f1b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "24ac50be_8fa1149e",
@@ -82,6 +136,24 @@
       "writtenOn": "2024-05-07T13:30:51Z",
       "side": 1,
       "message": "This method also needs to be able to support both Graphite and Ganesh at the same time",
+      "revId": "38fd1233c104e5e53ec5447077050bad5e399f1b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b42b281_0f13fa77",
+        "filename": "tools/gpu/vk/VkYcbcrSamplerHelper.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 405,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-05-07T14:38:16Z",
+      "side": 1,
+      "message": "I missed this elif when poking around. Thanks for keeping me honest 😄",
+      "parentUuid": "24ac50be_8fa1149e",
       "revId": "38fd1233c104e5e53ec5447077050bad5e399f1b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
