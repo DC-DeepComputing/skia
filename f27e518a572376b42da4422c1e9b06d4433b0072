@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "660f8751_2a25c751",
+        "filename": "src/gpu/graphite/vk/VulkanGraphiteUtils.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-05-07T16:58:58Z",
+      "side": 1,
+      "message": "nit: I think nullptr is actually more accurate to use here. This is a pointer member and not a Vulkan object that has a handle.",
+      "range": {
+        "startLine": 87,
+        "startChar": 47,
+        "endLine": 87,
+        "endChar": 61
+      },
+      "revId": "f27e518a572376b42da4422c1e9b06d4433b0072",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
