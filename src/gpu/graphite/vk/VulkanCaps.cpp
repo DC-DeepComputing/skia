@@ -1226,13 +1226,43 @@ bool VulkanCaps::onIsTexturable(const TextureInfo& texInfo) const {
     if (!texInfo.getVulkanTextureInfo(&vkInfo)) {
         return false;
     }
-
-    // TODO:
-    // Once we support external formats with associated YCbCr conversion info, check for that
-    // and return true here because we can always texture from an external format.
+    // Check if we are using an external format. All external formats are texturable.
+    if (vkInfo.fFormat == VK_FORMAT_UNDEFINED && vkInfo.fYcbcrConversionInfo.isValid()) {
+        switch (vkInfo.fImageTiling) {
+            case VK_IMAGE_TILING_OPTIMAL:
+                return true;
+            case VK_IMAGE_TILING_LINEAR:
+                return vkInfo.fYcbcrConversionInfo.fFormatFeatures &
+                       VK_FORMAT_FEATURE_SAMPLED_IMAGE_YCBCR_CONVERSION_LINEAR_FILTER_BIT;
+            default:
+                return false;
+        }
+    }
 
     const FormatInfo& info = this->getFormatInfo(vkInfo.fFormat);
     return info.isTexturable(vkInfo.fImageTiling);
+}
+
+bool VulkanCaps::onAreColorTypeAndTextureInfoCompatible(SkColorType ct,
+                                                        const TextureInfo& info) const {
+// In the case of AHwBuffer texture, assert that the color type is compatible with a set of known
+// ahwbuf formats (or the dault fallback color type in the case of an unknown format).
+#ifdef SK_BUILD_FOR_ANDROID
+    VulkanTextureInfo vkInfo;
+    if (!info.getVulkanTextureInfo(&vkInfo)) {
+        return false;
+    }
+    // Vulkan backend textures that wrap an AHardwareBuffer have their color type determined via
+    // AHardwareBufferUtils::GetSkColorTypeFromBufferFormat(...). So if the texture is wrapping an
+    // AHardwareBuffer, we know the appropriate color type was selected for the buffer format.
+    if (vkInfo.fFormat == VK_FORMAT_UNDEFINED && vkInfo.fYcbcrConversionInfo.isValid()) {
+        return true;
+    }
+    // TODO: As an extra layer of validation, one could re-consult the hardware buffer format to
+    // confirm that the color type matches the output of
+    // AHardwareBufferUtils::GetSkColorTypeFromBufferFormat.
+#endif
+    return SkToBool(this->getColorTypeInfo(ct, info));
 }
 
 
