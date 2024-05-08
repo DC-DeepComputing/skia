@@ -79,10 +79,10 @@ GraphiteResourceKey VulkanSamplerYcbcrConversion::MakeYcbcrConversionKey(
     if (useExternalFormat) {
         builder[i++] = (uint32_t)info.fExternalFormat;
         builder[i++] = (uint32_t)(info.fExternalFormat >> 32);
+        builder[i++] = info.fFormatFeatures;
     } else {
         builder[i++] = info.fFormat;
     }
-    builder[i++] = info.fFormatFeatures; // TODO - needed?
     SkASSERT(i == num32DataCnt);
 
     builder.finish();
@@ -111,13 +111,11 @@ GraphiteResourceKey VulkanSamplerYcbcrConversion::GetKeyFromSamplerDesc(
 
     int i = 0;
     builder[i++] = nonFormatYcbcrInfo;
+    builder[i++] = (uint32_t)samplerDesc.format();
     if (usesExternalFormat) {
-        builder[i++] = (uint32_t)samplerDesc.format();
         builder[i++] = (uint32_t)(samplerDesc.format() >> 32);
-    } else {
-        builder[i++] = (uint32_t)samplerDesc.format();
+        builder[i++] = samplerDesc.formatFeatures();
     }
-    builder[i++] = samplerDesc.formatFeatures(); // TODO - needed?
     SkASSERT(i == num32DataCnt);
 
     builder.finish();
