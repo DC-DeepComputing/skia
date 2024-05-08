@@ -236,7 +236,7 @@ GrVkGpu::GrVkGpu(GrDirectContext* direct,
         , fResourceProvider(this)
         , fStagingBufferManager(this)
         , fDisconnected(false)
-        , fProtectedContext(backendContext.fProtectedContext)
+        , fProtectedContext(backendContext.fProtectedContext) //$$
         , fDeviceLostContext(backendContext.fDeviceLostContext)
         , fDeviceLostProc(backendContext.fDeviceLostProc) {
     SkASSERT(!backendContext.fOwnsInstanceAndDevice);
@@ -1405,6 +1405,7 @@ sk_sp<GrTexture> GrVkGpu::onWrapBackendTexture(const GrBackendTexture& backendTe
     }
 
     if (backendTex.isProtected() && (fProtectedContext == GrProtected::kNo)) {
+        SkDebugf("Vk Rejected 1\n");
         return nullptr;
     }
 
@@ -1445,6 +1446,7 @@ sk_sp<GrTexture> GrVkGpu::onWrapRenderableBackendTexture(const GrBackendTexture&
     }
 
     if (backendTex.isProtected() && (fProtectedContext == GrProtected::kNo)) {
+        SkDebugf("Vk Rejected 2\n");
         return nullptr;
     }
 
@@ -1476,6 +1478,7 @@ sk_sp<GrRenderTarget> GrVkGpu::onWrapBackendRenderTarget(const GrBackendRenderTa
     }
 
     if (backendRT.isProtected() && (fProtectedContext == GrProtected::kNo)) {
+        SkDebugf("Vk Rejected 3\n");
         return nullptr;
     }
 
@@ -1671,6 +1674,7 @@ bool GrVkGpu::createVkImageForBackendSurface(VkFormat vkFormat,
     SkASSERT(texturable == GrTexturable::kYes || renderable == GrRenderable::kYes);
 
     if (fProtectedContext != isProtected) {
+        SkASSERT(0);
         return false;
     }
 
@@ -1794,6 +1798,7 @@ GrBackendTexture GrVkGpu::onCreateBackendTexture(SkISize dimensions,
     const GrVkCaps& caps = this->vkCaps();
 
     if (fProtectedContext != isProtected) {
+        SkDebugf("Vk Rejected 4\n");
         return {};
     }
 
