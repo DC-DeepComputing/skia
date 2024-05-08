@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7705a89_bec4a665",
+        "filename": "third_party/harfbuzz/BUILD.gn",
+        "patchSetId": 1
+      },
+      "lineNbr": 387,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-05-08T22:21:51Z",
+      "side": 1,
+      "message": "Unfortunately, these are repeated between harfbuzz and harfbuzz-subset. Worse, these pull in a number of non-public `.hh` headers, so this would also break a sandbox build. Even the upstream build could use a bit of tlc.",
+      "range": {
+        "startLine": 382,
+        "startChar": 0,
+        "endLine": 387,
+        "endChar": 25
+      },
+      "revId": "9ba5f7eb3b811905b9e892cc3646428581e273e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
