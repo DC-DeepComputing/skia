@@ -50,6 +50,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5b197f1b_e2f6b1e0",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 467,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-08T13:42:37Z",
+      "side": 1,
+      "message": "Is the dawn+metal backend going to stop advertising this feature? Right now this extension has priority in the RenderPassDesc configuration inside Graphite so we\u0027d still use that instead of managing the msaa attachments ourselves.",
+      "range": {
+        "startLine": 467,
+        "startChar": 0,
+        "endLine": 467,
+        "endChar": 92
+      },
+      "revId": "401a04209bbdfe6bfc8a3fc9732b52ec7493303b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "18ae4148_733d86ec",
         "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
         "patchSetId": 2
@@ -85,6 +108,30 @@
       "side": 1,
       "message": "Currently this feature is not supported in vulkan backend yet. However, in future when we implement in in vulkan, I am planning to create two pipelines internally in Dawn/Vulkan, one is used by \"resolve loading\" render pass and one without. Then the appropriate one would be selected internally by Dawn transparently from users.\n\nOr we could also require different pipeline keys, we can introduce that change in Graphite later when the feature is fully implemented in vulkan.",
       "parentUuid": "18ae4148_733d86ec",
+      "range": {
+        "startLine": 206,
+        "startChar": 48,
+        "endLine": 206,
+        "endChar": 73
+      },
+      "revId": "401a04209bbdfe6bfc8a3fc9732b52ec7493303b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83fed573_7812ed4f",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-08T13:42:37Z",
+      "side": 1,
+      "message": "I could imagine it going either way. It seems convenient to have Dawn hide that aspect, and just creating 2 pipelines right away should hopefully avoid a lot of duplicate work since the spir-v should be the same if we\u0027re just changing the render pass description.\n\nBut we\u0027ll likely have some higher-level concept of this loading added to graphite\u0027s keys for vulkan and employ a very similar strategy. At that point, Dawn+vulkan could just as well signal that loading requires a new pipeline just like native-vulkan.",
+      "parentUuid": "80f25bbc_d6e04d3f",
       "range": {
         "startLine": 206,
         "startChar": 48,
