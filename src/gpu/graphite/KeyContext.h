@@ -8,6 +8,7 @@
 #ifndef skgpu_graphite_KeyContext_DEFINED
 #define skgpu_graphite_KeyContext_DEFINED
 
+#include <cstdint>
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkM44.h"
 #include "include/core/SkMatrix.h"
@@ -28,6 +29,7 @@ class ShaderCodeDictionary;
 // backend-specific resource providing object (e.g., a Recorder).
 class KeyContext {
 public:
+    enum class SamplingOptimizationType : uint8_t { kDefault, kSkipSamplingOptimizations };
     // Constructor for the pre-compile code path (i.e., no Recorder)
     KeyContext(const Caps* caps,
                ShaderCodeDictionary* dict,
@@ -48,7 +50,8 @@ public:
                const SkColorInfo& dstColorInfo,
                const SkColor4f& paintColor,
                sk_sp<TextureProxy> dstTexture,
-               SkIPoint dstOffset);
+               SkIPoint dstOffset,
+               SamplingOptimizationType samplingOptimizationType);
 
     KeyContext(const KeyContext&);
 
@@ -77,6 +80,7 @@ public:
     };
 
     Scope scope() const { return fScope; }
+    SamplingOptimizationType samplingOptimizationType() const { return fSamplingOptimizationType; }
 
 protected:
     Recorder* fRecorder = nullptr;
@@ -95,6 +99,7 @@ private:
     const Caps* fCaps = nullptr;
     sk_sp<TextureProxy> fDstTexture;
     SkIPoint fDstOffset;
+    SamplingOptimizationType fSamplingOptimizationType = SamplingOptimizationType::kDefault;
 };
 
 class KeyContextWithLocalMatrix : public KeyContext {

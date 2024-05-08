@@ -23,27 +23,37 @@
 #include "src/gpu/graphite/UniformManager.h"
 #include "src/gpu/graphite/UniquePaintParamsID.h"
 #include "src/gpu/graphite/compute/ComputeStep.h"
+#include "src/gpu/graphite/geom/Geometry.h"
 #include "src/sksl/SkSLString.h"
 #include "src/sksl/SkSLUtil.h"
 
 namespace skgpu::graphite {
 
-std::tuple<UniquePaintParamsID, const UniformDataBlock*, const TextureDataBlock*>
-ExtractPaintData(Recorder* recorder,
-                 PipelineDataGatherer* gatherer,
-                 PaintParamsKeyBuilder* builder,
-                 const Layout layout,
-                 const SkM44& local2Dev,
-                 const PaintParams& p,
-                 sk_sp<TextureProxy> dstTexture,
-                 SkIPoint dstOffset,
-                 const SkColorInfo& targetColorInfo) {
+std::tuple<UniquePaintParamsID, const UniformDataBlock*, const TextureDataBlock*> ExtractPaintData(
+        Recorder* recorder,
+        PipelineDataGatherer* gatherer,
+        PaintParamsKeyBuilder* builder,
+        const Layout layout,
+        const SkM44& local2Dev,
+        const PaintParams& p,
+        const Geometry& geometry,
+        sk_sp<TextureProxy> dstTexture,
+        SkIPoint dstOffset,
+        const SkColorInfo& targetColorInfo) {
     SkDEBUGCODE(builder->checkReset());
 
     gatherer->resetWithNewLayout(layout);
 
     KeyContext keyContext(
-            recorder, local2Dev, targetColorInfo, p.color(), std::move(dstTexture), dstOffset);
+            recorder,
+            local2Dev,
+            targetColorInfo,
+            p.color(),
+            std::move(dstTexture),
+            dstOffset,
+            geometry.type() != Geometry::Type::kShape
+                    ? KeyContext::SamplingOptimizationType::kDefault
+                    : KeyContext::SamplingOptimizationType::kSkipSamplingOptimizations);
     p.toKey(keyContext, builder, gatherer);
 
     UniquePaintParamsID paintID = recorder->priv().shaderCodeDictionary()->findOrCreate(builder);

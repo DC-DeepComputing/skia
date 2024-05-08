@@ -17,14 +17,16 @@ KeyContext::KeyContext(skgpu::graphite::Recorder* recorder,
                        const SkColorInfo& dstColorInfo,
                        const SkColor4f& paintColor,
                        sk_sp<TextureProxy> dstTexture,
-                       SkIPoint dstOffset)
+                       SkIPoint dstOffset,
+                       SamplingOptimizationType samplingOptimizationType)
         : fRecorder(recorder)
         , fLocal2Dev(local2Dev)
         , fLocalMatrix(nullptr)
         , fDstColorInfo(dstColorInfo)
         , fCaps(recorder->priv().caps())
         , fDstTexture(std::move(dstTexture))
-        , fDstOffset(dstOffset) {
+        , fDstOffset(dstOffset)
+        , fSamplingOptimizationType(samplingOptimizationType) {
     fDictionary = fRecorder->priv().shaderCodeDictionary();
     fRTEffectDict = fRecorder->priv().runtimeEffectDictionary();
     fPaintColor = PaintParams::Color4fPrepForDst(paintColor, fDstColorInfo).makeOpaque().premul();
