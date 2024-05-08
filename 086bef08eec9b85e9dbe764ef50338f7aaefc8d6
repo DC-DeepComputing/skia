@@ -46,6 +46,30 @@
       },
       "revId": "086bef08eec9b85e9dbe764ef50338f7aaefc8d6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "54c0267f_fec0c074",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 749,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2024-05-08T01:14:46Z",
+      "side": 1,
+      "message": "Done, but only for fill style. The comment on the isRect() method only claims to fill equivalently. I didn\u0027t look in too much detail but the implementation looks quite complicated.",
+      "parentUuid": "f5715fd4_7be65f8f",
+      "range": {
+        "startLine": 749,
+        "startChar": 32,
+        "endLine": 749,
+        "endChar": 39
+      },
+      "revId": "086bef08eec9b85e9dbe764ef50338f7aaefc8d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
