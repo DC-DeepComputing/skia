@@ -22,6 +22,30 @@
       },
       "revId": "a56f4d4f2058a6379c82fc36360a684a15988494",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b6ef818_87cf8d27",
+        "filename": "include/private/base/SkFloatingPoint.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-05-08T17:28:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7198b40b_3fd06c9d",
+      "range": {
+        "startLine": 79,
+        "startChar": 34,
+        "endLine": 79,
+        "endChar": 38
+      },
+      "revId": "a56f4d4f2058a6379c82fc36360a684a15988494",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
