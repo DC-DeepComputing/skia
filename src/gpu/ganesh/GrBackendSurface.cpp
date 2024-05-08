@@ -306,7 +306,10 @@ GrBackendTexture::~GrBackendTexture() {
 }
 
 void GrBackendTexture::cleanup() {
-    fTextureData.reset();
+    if (this->isValid()) {
+        fTextureData.reset();
+    }
+
 #ifdef SK_DIRECT3D
     if (this->isValid() && GrBackendApi::kDirect3D == fBackend) {
         fD3DInfo.cleanup();

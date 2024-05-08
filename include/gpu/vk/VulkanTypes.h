@@ -70,7 +70,8 @@ struct VulkanYcbcrConversionInfo {
     static constexpr int kInt32sNeededFormatFeatureFlags = 1;
 
     static constexpr int kInt32sNeededWithKnownFormat = kInt32sNeededNonFormatInfo +
-                                                        kInt32sNeededKnownFormat;
+                                                        kInt32sNeededKnownFormat +
+                                                        kInt32sNeededFormatFeatureFlags;
     static constexpr int kInt32sNeededwithExternalFormat = kInt32sNeededNonFormatInfo +
                                                            kInt32sNeededExternalFormat +
                                                            kInt32sNeededFormatFeatureFlags;
@@ -140,6 +141,56 @@ struct VulkanYcbcrConversionInfo {
                 (static_cast<uint32_t>(fComponents.g               ) << kComponentGShift        ) |
                 (static_cast<uint32_t>(fComponents.b               ) << kComponentBShift        ) |
                 (static_cast<uint32_t>(fComponents.a               ) << kComponentAShift        ));
+    }
+
+    static VulkanYcbcrConversionInfo MakeFromNumericalRepresentation(
+            uint32_t nonFormatYcbcrInfo,
+            uint64_t format,
+            uint32_t formatFeatures) {
+
+        SkDebugf("\nMaking conversion info from numerical rep...\n");
+        SkDebugf("nonformatycbcrinfo: %u\n", nonFormatYcbcrInfo);
+
+        VulkanYcbcrConversionInfo info;
+        bool useExternalFormat =  static_cast<bool>(
+                (nonFormatYcbcrInfo & kUseExternalFormatMask) >> kUsesExternalFormatShift);
+        SkDebugf("Uses external format? %i\n", useExternalFormat);
+
+        info.fFormat = useExternalFormat ? VK_FORMAT_UNDEFINED
+                                         : static_cast<VkFormat>(static_cast<uint32_t>(format));
+        info.fExternalFormat = useExternalFormat ? format : 0;
+        info.fFormatFeatures = formatFeatures;
+
+        info.fYcbcrModel = static_cast<VkSamplerYcbcrModelConversion>(
+                (nonFormatYcbcrInfo & kYcbcrModelMask) >> kYcbcrModelShift);
+
+        info.fYcbcrRange = static_cast<VkSamplerYcbcrRange>(
+                (nonFormatYcbcrInfo & kYcbcrRangeMask) >> kYcbcrRangeShift);
+
+        info.fXChromaOffset = static_cast<VkChromaLocation>(
+                (nonFormatYcbcrInfo & kXChromaOffsetMask) >> kXChromaOffsetShift);
+
+        info.fYChromaOffset = static_cast<VkChromaLocation>(
+                (nonFormatYcbcrInfo & kYChromaOffsetMask) >> kYChromaOffsetShift);
+
+        info.fChromaFilter = static_cast<VkFilter>(
+                (nonFormatYcbcrInfo & kChromaFilterMask) >> kChromaFilterShift);
+
+        info.fForceExplicitReconstruction = static_cast<VkBool32>(
+                (nonFormatYcbcrInfo & kForceExplicitReconMask) >> kForceExplicitReconShift);
+
+        info.fComponents = {
+            static_cast<VkComponentSwizzle>(
+                    (nonFormatYcbcrInfo & kComponentRMask) >> kComponentRShift),
+            static_cast<VkComponentSwizzle>(
+                    (nonFormatYcbcrInfo & kComponentGMask) >> kComponentGShift),
+            static_cast<VkComponentSwizzle>(
+                    (nonFormatYcbcrInfo & kComponentBMask) >> kComponentBShift),
+            static_cast<VkComponentSwizzle>(
+                    (nonFormatYcbcrInfo & kComponentAMask) >> kComponentAShift)
+        };
+
+        return info;
     }
 
     // Format of the source image. Must be set to VK_FORMAT_UNDEFINED for external images or
