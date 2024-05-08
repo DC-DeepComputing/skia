@@ -16,6 +16,64 @@
       "message": "PTAL",
       "revId": "927dcb595396afaba3b3cfd894ccba323a5dc03d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b60eed76_9352f51d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-05-08T18:22:34Z",
+      "side": 1,
+      "message": "I suppose in an ideal world where we were just looking at Graphite we would have the timed categories: paint/record, snap, insert, and submit (maybe merging the last two). But if the goal is to be able to compare with Ganesh I think what you have is the best approach?",
+      "revId": "927dcb595396afaba3b3cfd894ccba323a5dc03d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22a120d8_3dda9249",
+        "filename": "tools/window/GraphiteDawnWindowContext.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-05-08T18:22:34Z",
+      "side": 1,
+      "message": "Is the hope that this is a noop since we called this in Viewer:drawSlide? If that is the case is it safe to just remove these calls here or is there some other work it might submit?",
+      "range": {
+        "startLine": 103,
+        "startChar": 10,
+        "endLine": 103,
+        "endChar": 32
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "fde0a84e_1f049a97",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tools/window/GraphiteDawnWindowContext.cpp",
+              "range": {
+                "startLine": 103,
+                "startChar": 0,
+                "endLine": 103,
+                "endChar": 0
+              },
+              "replacement": "    // This is a noop if there is no pending recording.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "927dcb595396afaba3b3cfd894ccba323a5dc03d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
