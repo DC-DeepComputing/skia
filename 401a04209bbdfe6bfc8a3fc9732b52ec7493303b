@@ -260,6 +260,30 @@
       },
       "revId": "401a04209bbdfe6bfc8a3fc9732b52ec7493303b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bcb27e75_834bd538",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-05-08T17:13:22Z",
+      "side": 1,
+      "message": "The problem with that approach is older qualcomm (and maybe still new) devices. For a long time their implementation of subpasses was to just create a different renderpass for each subpass. So you get hit by the very expensive load and stores on each subpass. Thus in this case if we\u0027re setting up the load subpass all the time, it can have a big perf hit when it is not needed.",
+      "parentUuid": "2a41b891_51d43849",
+      "range": {
+        "startLine": 206,
+        "startChar": 48,
+        "endLine": 206,
+        "endChar": 73
+      },
+      "revId": "401a04209bbdfe6bfc8a3fc9732b52ec7493303b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
