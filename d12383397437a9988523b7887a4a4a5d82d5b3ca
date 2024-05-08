@@ -98,6 +98,30 @@
       },
       "revId": "d12383397437a9988523b7887a4a4a5d82d5b3ca",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e1d9ce71_cf093a31",
+        "filename": "src/codec/SkXmp.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 611,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-05-08T19:42:54Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "f4d3e967_93e92405",
+      "range": {
+        "startLine": 609,
+        "startChar": 0,
+        "endLine": 611,
+        "endChar": 5
+      },
+      "revId": "d12383397437a9988523b7887a4a4a5d82d5b3ca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
