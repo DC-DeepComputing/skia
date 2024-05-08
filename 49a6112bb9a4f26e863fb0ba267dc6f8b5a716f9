@@ -128,6 +128,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "96113ecc_8d9d1702",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-08T15:25:29Z",
+      "side": 1,
+      "message": "I am hoping to be able to move uniform and paint key extraction to be at the time the draw is called, which would mean the full transform is always available to set on the KeyContext, so we wouldn\u0027t run into the issue of reconstructing an incomplete transform from a RenderStep that decomposed it.",
+      "parentUuid": "2468321c_a987ca9b",
+      "revId": "49a6112bb9a4f26e863fb0ba267dc6f8b5a716f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c769d6be_3ca8e552",
         "filename": "src/gpu/graphite/KeyHelpers.cpp",
         "patchSetId": 8
