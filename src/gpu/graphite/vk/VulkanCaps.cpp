@@ -39,6 +39,8 @@ VulkanCaps::VulkanCaps(const ContextOptions& contextOptions,
                        const skgpu::VulkanExtensions* extensions,
                        Protected isProtected)
         : Caps() {
+    // kSamplerResourceType = GraphiteResourceKey::GenerateResourceType();
+    // init_sampler_rsrc_type(kSamplerResourceType);
     this->init(contextOptions, vkInterface, physDev, physicalDeviceVersion, features, extensions,
                isProtected);
 }
@@ -155,6 +157,8 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
     if (extensions->hasExtension(VK_EXT_DEVICE_FAULT_EXTENSION_NAME, 1)) {
         fSupportsDeviceFaultInfo = true;
     }
+
+    // static const kSamplerResourceType = GraphiteResourceKey::GenerateResourceType();
 
     // Note that format table initialization should be performed at the end of this method to ensure
     // all capability determinations are completed prior to populating the format tables.
@@ -1455,6 +1459,22 @@ GraphiteResourceKey VulkanCaps::makeSamplerKey(const SamplerDesc& samplerDesc) c
     return samplerKey;
 }
 
+GraphiteResourceKey VulkanCaps::reconstructSamplerKeyFromInts(SkSpan<const uint32_t> data) const {
+    GraphiteResourceKey samplerKey;
+    GraphiteResourceKey::Builder builder(&samplerKey, sampler_rsrc_type(), data.size(),
+                                         Shareable::kYes);
+
+    SkDebugf("\nReconstructing sampler key from data:\n");
+    for (size_t i = 0; i < data.size(); i++) {
+        SkDebugf(" %d,", data[i]);
+        builder[i] = data[i];
+    }
+    SkDebugf("\n");
+
+    builder.finish();
+    return samplerKey;
+}
+
 void VulkanCaps::buildKeyForTexture(SkISize dimensions,
                                     const TextureInfo& info,
                                     ResourceType type,
@@ -1500,8 +1520,11 @@ void VulkanCaps::buildKeyForTexture(SkISize dimensions,
     builder[i++] = dimensions.width();
     builder[i++] = dimensions.height();
 
+    // Add format information to key.
     if (ycbcrInfo.isValid()) {
         SkASSERT(ycbcrInfo.fFormat != VK_FORMAT_UNDEFINED || ycbcrInfo.fExternalFormat != 0);
+
+        builder[i++] = ycbcrInfo.nonFormatInfoAsUInt32();
         bool useExternalFormat = ycbcrInfo.fFormat == VK_FORMAT_UNDEFINED;
         if (useExternalFormat) {
             builder[i++] = (uint32_t)ycbcrInfo.fExternalFormat;
@@ -1510,7 +1533,6 @@ void VulkanCaps::buildKeyForTexture(SkISize dimensions,
         } else {
             builder[i++] =  ycbcrInfo.fFormat;
         }
-        builder[i++] = ycbcrInfo.nonFormatInfoAsUInt32();
     } else {
         builder[i++] = format;
     }

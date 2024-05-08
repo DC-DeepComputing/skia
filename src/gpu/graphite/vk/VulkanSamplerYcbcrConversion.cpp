@@ -68,9 +68,8 @@ GraphiteResourceKey VulkanSamplerYcbcrConversion::MakeYcbcrConversionKey(
 
     bool useExternalFormat = info.fFormat == VK_FORMAT_UNDEFINED;
     GraphiteResourceKey key;
-    int num32DataCnt =
-            useExternalFormat ? VulkanYcbcrConversionInfo::kInt32sNeededwithExternalFormat
-                              : VulkanYcbcrConversionInfo::kInt32sNeededWithKnownFormat;
+    int num32DataCnt = useExternalFormat ? VulkanYcbcrConversionInfo::kInt32sNeededExternalFormat
+                                         : VulkanYcbcrConversionInfo::kInt32sNeededKnownFormat;
     GraphiteResourceKey::Builder builder(&key, conversion_rsrc_type(), num32DataCnt,
                                          Shareable::kYes);
 
