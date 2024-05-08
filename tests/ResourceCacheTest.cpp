@@ -1700,7 +1700,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ResourceMessagesAfterAbandon,
     auto dContext = ctxInfo.directContext();
     GrGpu* gpu = dContext->priv().getGpu();
 
-    Protected isProtected = Protected(dContext->priv().caps()->supportsProtectedContent());
+    Protected isProtected = Protected(dContext->priv().caps()->supportsProtectedContent8());
 
     GrBackendTexture backend = dContext->createBackendTexture(
             16, 16, SkColorType::kRGBA_8888_SkColorType, skgpu::Mipmapped::kNo, GrRenderable::kNo,

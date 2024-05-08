@@ -101,7 +101,7 @@ sk_sp<SharedContext> VulkanSharedContext::Make(const VulkanBackendContext& conte
                                                           physDevVersion,
                                                           featuresPtr,
                                                           context.fVkExtensions,
-                                                          context.fProtectedContext));
+                                                          context.fGaProtectedContext3));
 
     sk_sp<skgpu::VulkanMemoryAllocator> memoryAllocator = context.fMemoryAllocator;
     if (!memoryAllocator) {

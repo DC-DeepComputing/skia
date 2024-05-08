@@ -65,7 +65,7 @@ static sk_sp<GrTextureProxy> deferred_tex(skiatest::Reporter* reporter,
 
     const GrCaps* caps = rContext->priv().caps();
 
-    Protected isProtected = Protected(caps->supportsProtectedContent());
+    Protected isProtected = Protected(caps->supportsProtectedContent8());
 
     GrBackendFormat format = caps->getDefaultBackendFormat(kColorType, GrRenderable::kNo);
 
@@ -91,7 +91,7 @@ static sk_sp<GrTextureProxy> deferred_texRT(skiatest::Reporter* reporter,
 
     const GrCaps* caps = rContext->priv().caps();
 
-    Protected isProtected = Protected(caps->supportsProtectedContent());
+    Protected isProtected = Protected(caps->supportsProtectedContent8());
 
     GrBackendFormat format = caps->getDefaultBackendFormat(kColorType, GrRenderable::kYes);
 
@@ -113,7 +113,7 @@ static sk_sp<GrTextureProxy> wrapped(skiatest::Reporter* reporter, GrRecordingCo
                                      GrProxyProvider* proxyProvider, SkBackingFit fit) {
     using namespace skgpu;
 
-    Protected isProtected = Protected(rContext->priv().caps()->supportsProtectedContent());
+    Protected isProtected = Protected(rContext->priv().caps()->supportsProtectedContent8());
 
     sk_sp<GrTextureProxy> proxy = proxyProvider->testingOnly_createInstantiatedProxy(
             kSize, kColorType, GrRenderable::kNo, 1, fit, Budgeted::kYes, isProtected);
@@ -128,7 +128,7 @@ static sk_sp<GrTextureProxy> wrapped_with_key(skiatest::Reporter* reporter,
                                               SkBackingFit fit) {
     using namespace skgpu;
 
-    Protected isProtected = Protected(rContext->priv().caps()->supportsProtectedContent());
+    Protected isProtected = Protected(rContext->priv().caps()->supportsProtectedContent8());
 
     static UniqueKey::Domain d = UniqueKey::GenerateDomain();
     static int kUniqueKeyData = 0;
@@ -150,7 +150,7 @@ static sk_sp<GrTextureProxy> wrapped_with_key(skiatest::Reporter* reporter,
 static sk_sp<GrTextureProxy> create_wrapped_backend(GrDirectContext* dContext) {
     using namespace skgpu;
 
-    Protected isProtected = Protected(dContext->priv().caps()->supportsProtectedContent());
+    Protected isProtected = Protected(dContext->priv().caps()->supportsProtectedContent8());
 
     auto mbet = sk_gpu_test::ManagedBackendTexture::MakeWithoutData(
             dContext,

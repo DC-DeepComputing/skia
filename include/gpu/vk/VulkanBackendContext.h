@@ -38,7 +38,7 @@ struct SK_API VulkanBackendContext {
     // for allocating Vulkan resources that use VkDeviceMemory.
     sk_sp<VulkanMemoryAllocator>     fMemoryAllocator;
     skgpu::VulkanGetProc             fGetProc;
-    Protected                        fProtectedContext = Protected::kNo;
+    Protected                        fGaProtectedContext3 = Protected::kNo;
     // Optional callback which will be invoked if a VK_ERROR_DEVICE_LOST error code is received from
     // the driver. Debug information from the driver will be provided to the callback if the
     // VK_EXT_device_fault extension is supported and enabled (VkPhysicalDeviceFaultFeaturesEXT must

@@ -608,7 +608,7 @@ bool GrVkPrimaryCommandBuffer::submitToQueue(
         // queue with no worries.
         submitted = submit_to_queue(
                 gpu, queue, fSubmitFence, 0, nullptr, nullptr, 1, &fCmdBuffer, 0, nullptr,
-                GrProtected(gpu->protectedContext()));
+                GrProtected(gpu->protectedContext7()));
     } else {
         TArray<VkSemaphore> vkSignalSems(signalCount);
         for (int i = 0; i < signalCount; ++i) {
@@ -635,7 +635,7 @@ bool GrVkPrimaryCommandBuffer::submitToQueue(
         submitted = submit_to_queue(gpu, queue, fSubmitFence, vkWaitSems.size(),
                                     vkWaitSems.begin(), vkWaitStages.begin(), 1, &fCmdBuffer,
                                     vkSignalSems.size(), vkSignalSems.begin(),
-                                    GrProtected(gpu->protectedContext()));
+                                    GrProtected(gpu->protectedContext7()));
         if (submitted) {
             for (int i = 0; i < signalCount; ++i) {
                 signalSemaphores[i]->markAsSignaled();

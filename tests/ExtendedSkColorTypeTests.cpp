@@ -214,7 +214,7 @@ static void gpu_tests(GrDirectContext* dContext,
         return;
     }
 
-    Protected isProtected = Protected(dContext->priv().caps()->supportsProtectedContent());
+    Protected isProtected = Protected(dContext->priv().caps()->supportsProtectedContent8());
 
     SkAutoPixmapStorage nativeExpected;
     nativeExpected.alloc(nativeII);

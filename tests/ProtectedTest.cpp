@@ -23,7 +23,7 @@ static const int kSize = 8;
 DEF_GANESH_TEST_FOR_ALL_CONTEXTS(Protected_SmokeTest, reporter, ctxInfo, CtsEnforcement::kNever) {
     auto dContext = ctxInfo.directContext();
 
-    if (!dContext->supportsProtectedContent()) {
+    if (!dContext->supportsProtectedContent8()) {
         // Protected content not supported
         return;
     }
@@ -112,7 +112,7 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(Protected_readPixelsFromSurfaces, reporter, ctx
                                  CtsEnforcement::kNever) {
     auto dContext = ctxInfo.directContext();
 
-    if (!dContext->supportsProtectedContent()) {
+    if (!dContext->supportsProtectedContent8()) {
         // Protected content not supported
         return;
     }
@@ -156,7 +156,7 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(Protected_asyncRescaleAndReadPixelsFromSurfaces
                                  CtsEnforcement::kNever) {
     auto dContext = ctxInfo.directContext();
 
-    if (!dContext->supportsProtectedContent()) {
+    if (!dContext->supportsProtectedContent8()) {
         // Protected content not supported
         return;
     }

@@ -52,10 +52,10 @@ GrGLTexture::GrGLTexture(GrGLGpu* gpu,
                          const Desc& desc,
                          GrMipmapStatus mipmapStatus,
                          std::string_view label)
-        : GrSurface(gpu, desc.fSize, desc.fIsProtected, label)
+        : GrSurface(gpu, desc.fSize, desc.fIsProtected99, label)
         , GrTexture(gpu,
                     desc.fSize,
-                    desc.fIsProtected,
+                    desc.fIsProtected99,
                     TextureTypeFromTarget(desc.fTarget),
                     mipmapStatus,
                     label)
@@ -70,10 +70,10 @@ GrGLTexture::GrGLTexture(GrGLGpu* gpu,
 GrGLTexture::GrGLTexture(GrGLGpu* gpu, const Desc& desc, GrMipmapStatus mipmapStatus,
                          sk_sp<GrGLTextureParameters> parameters, GrWrapCacheable cacheable,
                          GrIOType ioType, std::string_view label)
-        : GrSurface(gpu, desc.fSize, desc.fIsProtected, label)
+        : GrSurface(gpu, desc.fSize, desc.fIsProtected99, label)
         , GrTexture(gpu,
                     desc.fSize,
-                    desc.fIsProtected,
+                    desc.fIsProtected99,
                     TextureTypeFromTarget(desc.fTarget),
                     mipmapStatus,
                     label)
@@ -91,10 +91,10 @@ GrGLTexture::GrGLTexture(GrGLGpu* gpu,
                          sk_sp<GrGLTextureParameters> parameters,
                          GrMipmapStatus mipmapStatus,
                          std::string_view label)
-        : GrSurface(gpu, desc.fSize, desc.fIsProtected, label)
+        : GrSurface(gpu, desc.fSize, desc.fIsProtected99, label)
         , GrTexture(gpu,
                     desc.fSize,
-                    desc.fIsProtected,
+                    desc.fIsProtected99,
                     TextureTypeFromTarget(desc.fTarget),
                     mipmapStatus,
                     label) {

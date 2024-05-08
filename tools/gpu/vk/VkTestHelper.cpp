@@ -90,7 +90,7 @@ protected:
             return false;
         }
 
-        SkASSERT(fDirectContext->supportsProtectedContent() == fIsProtected);
+        SkASSERT(fDirectContext->supportsProtectedContent8() == fIsProtected);
         return true;
     }
 

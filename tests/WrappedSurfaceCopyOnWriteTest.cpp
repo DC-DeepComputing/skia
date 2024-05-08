@@ -57,7 +57,7 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(WrappedSurfaceCopyOnWrite,
 
     GrDirectContext* dContext = ctxInfo.directContext();
 
-    Protected isProtected = Protected(dContext->priv().caps()->supportsProtectedContent());
+    Protected isProtected = Protected(dContext->priv().caps()->supportsProtectedContent8());
 
     auto makeDirectBackendSurface = [&]() {
         auto info = SkImageInfo::Make({10, 10}, kRGBA_8888_SkColorType, kPremul_SkAlphaType);

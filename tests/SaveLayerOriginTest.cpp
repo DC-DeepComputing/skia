@@ -77,7 +77,7 @@ static void run_test(skiatest::Reporter* reporter,
                      GrSurfaceOrigin origin) {
     using namespace skgpu;
 
-    Protected isProtected = Protected(context->priv().caps()->supportsProtectedContent());
+    Protected isProtected = Protected(context->priv().caps()->supportsProtectedContent8());
 
     auto beTexture = context->createBackendTexture(8,
                                                    8,

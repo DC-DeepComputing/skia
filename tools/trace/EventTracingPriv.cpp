@@ -67,7 +67,7 @@ void initializeEventTracingForTools(const char* traceFlag) {
       #endif
     }
     else {
-        eventTracer = new ChromeTracingTracer(traceFlag);
+//        eventTracer = new ChromeTracingTracer(traceFlag);
     }
 
     SkAssertResult(SkEventTracer::SetInstance(eventTracer));

@@ -86,7 +86,7 @@ public:
     /**
      * Does this context support protected content?
      */
-    SK_API bool supportsProtectedContent() const;
+    SK_API bool supportsProtectedContent8() const;
 
     /**
      * Gets the maximum supported sample count for a color type. 1 is returned if only non-MSAA

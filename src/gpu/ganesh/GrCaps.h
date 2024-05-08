@@ -419,7 +419,7 @@ public:
         return fDynamicStateArrayGeometryProcessorTextureSupport;
     }
 
-    bool supportsProtectedContent() const { return fSupportsProtectedContent; }
+    bool supportsProtectedContent8() const { return fSupportsProtectedContent; }
 
     // Not all backends support clearing with a scissor test (e.g. Metal), this will always
     // return true if performColorClearsAsDraws() returns true.

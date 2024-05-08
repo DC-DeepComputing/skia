@@ -175,8 +175,8 @@ bool GrRecordingContext::colorTypeSupportedAsImage(SkColorType colorType) const 
     return format.isValid();
 }
 
-bool GrRecordingContext::supportsProtectedContent() const {
-    return this->caps()->supportsProtectedContent();
+bool GrRecordingContext::supportsProtectedContent8() const {
+    return this->caps()->supportsProtectedContent8();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

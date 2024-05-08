@@ -51,7 +51,7 @@ DEF_GANESH_TEST_FOR_VULKAN_CONTEXT(VkDRMModifierTest, reporter, ctxInfo, CtsEnfo
         return;
     }
 
-    Protected isProtected = Protected(vkCaps->supportsProtectedContent());
+    Protected isProtected = Protected(vkCaps->supportsProtectedContent8());
 
     // First make a normal backend texture with DRM
     auto mbet = sk_gpu_test::ManagedBackendTexture::MakeWithoutData(
@@ -107,7 +107,7 @@ DEF_GANESH_TEST_FOR_VULKAN_CONTEXT(VkImageLayoutTest, reporter, ctxInfo, CtsEnfo
 
     auto dContext = ctxInfo.directContext();
 
-    Protected isProtected = Protected(dContext->priv().caps()->supportsProtectedContent());
+    Protected isProtected = Protected(dContext->priv().caps()->supportsProtectedContent8());
 
     auto mbet = sk_gpu_test::ManagedBackendTexture::MakeWithoutData(
             dContext, 1, 1, kRGBA_8888_SkColorType, Mipmapped::kNo, GrRenderable::kNo, isProtected);

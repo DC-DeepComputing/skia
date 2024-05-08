@@ -289,7 +289,7 @@ public:
     /**
      * Does this context support protected content?
      */
-    using GrRecordingContext::supportsProtectedContent;
+    using GrRecordingContext::supportsProtectedContent8;
 
     /**
      * Can a SkSurface be created with the given color type. To check whether MSAA is supported

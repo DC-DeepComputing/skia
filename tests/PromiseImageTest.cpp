@@ -155,7 +155,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(PromiseImageTest,
 
     auto ctx = ctxInfo.directContext();
 
-    Protected isProtected = Protected(ctx->priv().caps()->supportsProtectedContent());
+    Protected isProtected = Protected(ctx->priv().caps()->supportsProtectedContent8());
 
     GrBackendTexture backendTex = ctx->createBackendTexture(kWidth,
                                                             kHeight,
@@ -315,7 +315,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(PromiseImageTextureFullCache,
 
     auto dContext = ctxInfo.directContext();
 
-    Protected isProtected = Protected(dContext->priv().caps()->supportsProtectedContent());
+    Protected isProtected = Protected(dContext->priv().caps()->supportsProtectedContent8());
 
     GrBackendTexture backendTex = dContext->createBackendTexture(kWidth,
                                                                  kHeight,

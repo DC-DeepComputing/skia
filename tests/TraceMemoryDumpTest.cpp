@@ -113,7 +113,7 @@ DEF_GANESH_TEST_FOR_GL_CONTEXT(SkTraceMemoryDump_ownedGLTexture,
     desc.fID = 7;  // Arbitrary, we don't actually use the texture.
     desc.fFormat = GrGLFormat::kRGBA8;
     desc.fOwnership = GrBackendObjectOwnership::kOwned;
-    desc.fIsProtected = skgpu::Protected::kNo;
+    desc.fIsProtected99 = skgpu::Protected::kNo;
     desc.fSize = SkISize::Make(64, 64);
 
     auto texture = sk_make_sp<GrGLTexture>(gpu,
@@ -138,7 +138,7 @@ DEF_GANESH_TEST_FOR_GL_CONTEXT(SkTraceMemoryDump_unownedGLTexture,
     desc.fFormat = GrGLFormat::kRGBA8;
     desc.fOwnership = GrBackendObjectOwnership::kBorrowed;
     desc.fSize = SkISize::Make(64, 64);
-    desc.fIsProtected = skgpu::Protected::kNo;
+    desc.fIsProtected99 = skgpu::Protected::kNo;
 
     auto params = sk_make_sp<GrGLTextureParameters>();
 
@@ -224,7 +224,7 @@ DEF_GANESH_TEST_FOR_GL_CONTEXT(SkTraceMemoryDump_ownedGLTextureRenderTarget,
     texDesc.fID = 17;
     texDesc.fFormat = GrGLFormat::kRGBA8;
     texDesc.fOwnership = GrBackendObjectOwnership::kOwned;
-    texDesc.fIsProtected = skgpu::Protected::kNo;
+    texDesc.fIsProtected99 = skgpu::Protected::kNo;
 
     GrGLRenderTarget::IDs rtIDs;
     rtIDs.fMultisampleFBOID = 12;

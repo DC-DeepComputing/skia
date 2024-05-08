@@ -134,7 +134,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(DeferredProxyTest,
     GrResourceProvider* resourceProvider = direct->priv().resourceProvider();
     const GrCaps& caps = *direct->priv().caps();
 
-    Protected isProtected = Protected(caps.supportsProtectedContent());
+    Protected isProtected = Protected(caps.supportsProtectedContent8());
 
     for (auto widthHeight : {100, 128, 1048576}) {
         for (auto ct : {GrColorType::kAlpha_8, GrColorType::kBGR_565, GrColorType::kRGBA_8888,
@@ -269,7 +269,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(WrappedProxyTest,
     GrGpu* gpu = direct->priv().getGpu();
     const GrCaps& caps = *direct->priv().caps();
 
-    Protected isProtected = Protected(caps.supportsProtectedContent());
+    Protected isProtected = Protected(caps.supportsProtectedContent8());
 
     static const int kWidthHeight = 100;
 

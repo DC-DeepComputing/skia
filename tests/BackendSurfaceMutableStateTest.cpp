@@ -50,7 +50,7 @@ DEF_GANESH_TEST_FOR_VULKAN_CONTEXT(VkBackendSurfaceMutableStateTest,
 
     auto dContext = ctxInfo.directContext();
 
-    Protected isProtected = Protected(dContext->priv().caps()->supportsProtectedContent());
+    Protected isProtected = Protected(dContext->priv().caps()->supportsProtectedContent8());
 
     GrBackendFormat format = GrBackendFormats::MakeVk(VK_FORMAT_R8G8B8A8_UNORM);
     GrBackendTexture backendTex = dContext->createBackendTexture(

@@ -47,7 +47,7 @@ void wrap_tex_test(skiatest::Reporter* reporter, GrDirectContext* dContext) {
 
     GrGpu* gpu = dContext->priv().getGpu();
 
-    Protected isProtected = Protected(dContext->priv().caps()->supportsProtectedContent());
+    Protected isProtected = Protected(dContext->priv().caps()->supportsProtectedContent8());
 
     auto mbet = sk_gpu_test::ManagedBackendTexture::MakeWithoutData(
             dContext, kW, kH, kRGBA_8888_SkColorType, skgpu::Mipmapped::kNo, GrRenderable::kNo,
@@ -114,7 +114,7 @@ void wrap_rt_test(skiatest::Reporter* reporter, GrDirectContext* dContext) {
     GrGpu* gpu = dContext->priv().getGpu();
     GrColorType ct = SkColorTypeToGrColorType(kColorType);
 
-    Protected isProtected = Protected(dContext->priv().caps()->supportsProtectedContent());
+    Protected isProtected = Protected(dContext->priv().caps()->supportsProtectedContent8());
 
     for (int sampleCnt : {1, 4}) {
         GrBackendFormat format = gpu->caps()->getDefaultBackendFormat(ct, GrRenderable::kYes);
@@ -163,7 +163,7 @@ void wrap_trt_test(skiatest::Reporter* reporter, GrDirectContext* dContext) {
 
     GrGpu* gpu = dContext->priv().getGpu();
 
-    Protected isProtected = Protected(dContext->priv().caps()->supportsProtectedContent());
+    Protected isProtected = Protected(dContext->priv().caps()->supportsProtectedContent8());
 
     auto mbet = sk_gpu_test::ManagedBackendTexture::MakeWithoutData(
             dContext, kW, kH, kRGBA_8888_SkColorType, Mipmapped::kNo, GrRenderable::kYes,

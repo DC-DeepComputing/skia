@@ -567,7 +567,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrContext_colorTypeSupportedAsImage,
 
     auto dContext = ctxInfo.directContext();
 
-    Protected isProtected = Protected(dContext->priv().caps()->supportsProtectedContent());
+    Protected isProtected = Protected(dContext->priv().caps()->supportsProtectedContent8());
 
     static constexpr int kSize = 10;
 

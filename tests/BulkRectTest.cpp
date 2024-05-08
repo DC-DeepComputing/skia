@@ -70,7 +70,7 @@ static sk_sp<GrSurfaceProxy> create_proxy(GrRecordingContext* rContext) {
 
     static constexpr SkISize kDimensions = {128, 128};
 
-    Protected isProtected = Protected(rContext->priv().caps()->supportsProtectedContent());
+    Protected isProtected = Protected(rContext->priv().caps()->supportsProtectedContent8());
 
     const GrBackendFormat format = rContext->priv().caps()->getDefaultBackendFormat(
                                                                            GrColorType::kRGBA_8888,

@@ -602,7 +602,7 @@ void color_type_backend_allocation_test(const sk_gpu_test::ContextInfo& ctxInfo,
     auto context = ctxInfo.directContext();
     const GrCaps* caps = context->priv().caps();
 
-    Protected isProtected = Protected(caps->supportsProtectedContent());
+    Protected isProtected = Protected(caps->supportsProtectedContent8());
 
     constexpr SkColor4f kTransCol { 0, 0.25f, 0.75f, 0.5f };
     constexpr SkColor4f kGrayCol { 0.75f, 0.75f, 0.75f, 0.75f };
@@ -962,7 +962,7 @@ DEF_GANESH_TEST_FOR_VULKAN_CONTEXT(VkBackendAllocationTest,
     auto context = ctxInfo.directContext();
     const GrVkCaps* vkCaps = static_cast<const GrVkCaps*>(context->priv().caps());
 
-    Protected isProtected = Protected(vkCaps->supportsProtectedContent());
+    Protected isProtected = Protected(vkCaps->supportsProtectedContent8());
 
     constexpr SkColor4f kTransCol { 0, 0.25f, 0.75f, 0.5f };
     constexpr SkColor4f kGrayCol { 0.75f, 0.75f, 0.75f, 1 };

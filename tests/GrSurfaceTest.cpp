@@ -452,7 +452,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ReadOnlyTexture,
     auto dContext = context_info.directContext();
     GrProxyProvider* proxyProvider = dContext->priv().proxyProvider();
 
-    Protected isProtected = Protected(dContext->priv().caps()->supportsProtectedContent());
+    Protected isProtected = Protected(dContext->priv().caps()->supportsProtectedContent8());
 
     // We test both kRW in addition to kRead mostly to ensure that the calls are structured such
     // that they'd succeed if the texture wasn't kRead. We want to be sure we're failing with

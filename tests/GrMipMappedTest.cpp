@@ -100,7 +100,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrWrappedMipMappedTest,
         return;
     }
 
-    Protected isProtected = Protected(dContext->priv().caps()->supportsProtectedContent());
+    Protected isProtected = Protected(dContext->priv().caps()->supportsProtectedContent8());
 
     for (auto mipmapped : { Mipmapped::kNo, Mipmapped::kYes }) {
         for (auto renderable : {GrRenderable::kNo, GrRenderable::kYes}) {
@@ -188,7 +188,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrBackendTextureImageMipMappedTest,
         return;
     }
 
-    Protected isProtected = Protected(dContext->priv().caps()->supportsProtectedContent());
+    Protected isProtected = Protected(dContext->priv().caps()->supportsProtectedContent8());
 
     for (auto betMipmapped : { Mipmapped::kNo, Mipmapped::kYes }) {
         for (auto requestMipmapped : { Mipmapped::kNo, Mipmapped::kYes }) {
@@ -338,7 +338,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrImageSnapshotMipMappedTest,
         return;
     }
 
-    GrProtected isProtected = GrProtected(dContext->priv().caps()->supportsProtectedContent());
+    GrProtected isProtected = GrProtected(dContext->priv().caps()->supportsProtectedContent8());
 
     auto resourceProvider = dContext->priv().resourceProvider();
 

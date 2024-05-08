@@ -141,7 +141,7 @@ public:
 #ifdef SK_VULKAN
         if (rContext->backend() == GrBackendApi::kVulkan) {
             auto vkCaps = static_cast<const GrVkCaps*>(rContext->priv().caps());
-            fCanBeProtected = vkCaps->supportsProtectedContent();
+            fCanBeProtected = vkCaps->supportsProtectedContent8();
             if (fCanBeProtected) {
                 fIsProtected = skgpu::Protected::kYes;
             }
@@ -1059,7 +1059,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(DDLCreateCharacterizationFailures,
     size_t maxResourceBytes = dContext->getResourceCacheLimit();
     auto proxy = dContext->threadSafeProxy().get();
 
-    Protected isProtected = Protected(dContext->priv().caps()->supportsProtectedContent());
+    Protected isProtected = Protected(dContext->priv().caps()->supportsProtectedContent8());
 
     auto check_create_fails = [proxy, reporter, maxResourceBytes](
                                       const GrBackendFormat& backendFormat,
@@ -1191,7 +1191,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(DDLSkSurfaceFlush,
 
     auto context = ctxInfo.directContext();
 
-    Protected isProtected = Protected(context->priv().caps()->supportsProtectedContent());
+    Protected isProtected = Protected(context->priv().caps()->supportsProtectedContent8());
 
     SkImageInfo ii = SkImageInfo::Make(32, 32, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
     sk_sp<SkSurface> s = SkSurfaces::RenderTarget(context, Budgeted::kNo, ii);
