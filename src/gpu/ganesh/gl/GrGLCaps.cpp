@@ -392,6 +392,7 @@ void GrGLCaps::init(const GrContextOptions& contextOptions,
     fMustSyncGpuDuringAbandon = false;
 
     fSupportsProtectedContent = [&]() {
+        //$$
         if (!ctxInfo.hasExtension("GL_EXT_protected_textures")) {
             return false;
         }
