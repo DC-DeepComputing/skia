@@ -119,6 +119,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "062371bc_8a7f3215",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 467,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-08T14:04:15Z",
+      "side": 1,
+      "message": "That makes sense to me, then we don\u0027t have to change any of the higher RenderPassDesc creation logic to do the right thing on dawn+metal. It seems reasonable that if a Dawn backend could support both features, but there were significant performance differences between them (like metal in this case), it would choose to only expose the best one. \n\nIn the event that they are equivalent, it doesn\u0027t seem problematic for DawnCaps to report both being available, and then we just use the one that\u0027s simplest at the Graphite level, which is `MSAARenderToSingleSampled`.",
+      "parentUuid": "85234b43_719541d9",
+      "range": {
+        "startLine": 467,
+        "startChar": 0,
+        "endLine": 467,
+        "endChar": 92
+      },
+      "revId": "401a04209bbdfe6bfc8a3fc9732b52ec7493303b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "18ae4148_733d86ec",
