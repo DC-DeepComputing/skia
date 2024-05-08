@@ -34,6 +34,24 @@
       "parentUuid": "c8d6788a_105a6b4b",
       "revId": "54905c2c5cbb88d6bf366a88e0ad643087542b3c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "22d0b9ff_54d7dfa6",
+        "filename": "resources/skottie/skottie-bezier-extranormal.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 3241878
+      },
+      "writtenOn": "2024-05-08T19:30:49Z",
+      "side": 1,
+      "message": "Part of my issue was my syntax was not quite right, got that fixed and now works as expected.",
+      "parentUuid": "da0db778_750ceee4",
+      "revId": "54905c2c5cbb88d6bf366a88e0ad643087542b3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
