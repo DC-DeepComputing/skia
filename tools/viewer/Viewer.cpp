@@ -1820,7 +1820,25 @@ void Viewer::drawSlide(SkSurface* surface) {
 
     // Force a flush so we can time that, too
     fStatsLayer.beginTiming(fFlushTimer);
-    skgpu::FlushAndSubmit(slideSurface);
+#if defined(SK_GANESH)
+    skgpu::ganesh::FlushAndSubmit(slideSurface);
+#endif
+#if defined(SK_GRAPHITE)
+    skgpu::graphite::Flush(slideSurface);
+    fWindow->snapRecordingAndSubmit();
+    // Explictly
+    skgpu::graphite::Context* graphiteContext = fWindow->graphiteContext();
+    if (graphiteContext) {
+        SkASSERT(fWindow->graphiteRecorder());
+        std::unique_ptr<skgpu::graphite::Recording> recording = fWindow->graphiteRecorder()->snap();
+        if (recording) {
+            skgpu::graphite::InsertRecordingInfo info;
+            info.fRecording = recording.get();
+            graphiteContext->insertRecording(info);
+            graphiteContext->submit(skgpu::graphite::SyncToCpu::kNo);
+        }
+    }
+#endif
     fStatsLayer.endTiming(fFlushTimer);
 
     // If we rendered offscreen, snap an image and push the results to the window's canvas
