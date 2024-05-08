@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bd219bcd_4a5b43db",
+        "filename": "resources/skottie/skottie-bezier-extranormal.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-05-08T20:25:28Z",
+      "side": 0,
+      "message": "This is using the \"separate dimensions\" feature, where each coordinate is keyframed separately.  That allows e.g. different easing parameters for x-vs-y animation.  In this case, since x is constant, it doesn\u0027t matter - but you may run into other examples which are not convertible.\n\nEventually we should add separate dimensions support to the spec, so up to you if you think it\u0027s worth converting now.",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 53,
+        "endChar": 11
+      },
+      "revId": "0b31f64bd8d801cc73737d09f4d1b486da584c74",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1d594378_1e6b2ae1",
         "filename": "resources/skottie/skottie_sample_1.json",
         "patchSetId": 1
