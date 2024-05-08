@@ -112,6 +112,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b6801fd0_bc329585",
+        "filename": "src/gpu/graphite/ResourceTypes.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-05-08T15:32:23Z",
+      "side": 1,
+      "message": "Michael, you\u0027re a genius. Moving the member attributes around is all that I needed. Thank you sooo much! 😄",
+      "parentUuid": "bea86089_121eca84",
+      "range": {
+        "startLine": 211,
+        "startChar": 4,
+        "endLine": 219,
+        "endChar": 5
+      },
+      "revId": "fb3965c2acded20b0105f2f78249c3b11900601f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3584ab69_2036ba68",
