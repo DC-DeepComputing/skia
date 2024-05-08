@@ -146,6 +146,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "65539194_9532c0a9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-08T15:32:18Z",
+      "side": 1,
+      "message": "A short term fix that shouldn\u0027t be too hard, that should catch the coordclampshader and rsx_blob_shader issues would be to add a value to `KeyContext::Scope` like `kSkipSamplingOptimizations`.\n\nIn the `add_to_key` function for `SkCoordClampShader`, it would pass in a KeyContextWithScope that switches to `kSkipSamplingOptimizations` if it\u0027s not `kDefault`. In `ContextUtils::ExtractPaintData`, we\u0027d add a new parameter to take the initial scope for the KeyContext. If the DrawParams\u0027 geometry is a Shape, we use kDefault. If it\u0027s anything else, we use kSkipSamplingOptimizations.",
+      "parentUuid": "96113ecc_8d9d1702",
+      "revId": "49a6112bb9a4f26e863fb0ba267dc6f8b5a716f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c769d6be_3ca8e552",
         "filename": "src/gpu/graphite/KeyHelpers.cpp",
         "patchSetId": 8
