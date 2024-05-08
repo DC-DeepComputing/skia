@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7198b40b_3fd06c9d",
+        "filename": "include/private/base/SkFloatingPoint.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-05-08T17:16:55Z",
+      "side": 1,
+      "message": "on",
+      "range": {
+        "startLine": 79,
+        "startChar": 34,
+        "endLine": 79,
+        "endChar": 38
+      },
+      "revId": "a56f4d4f2058a6379c82fc36360a684a15988494",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
