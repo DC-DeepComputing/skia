@@ -92,6 +92,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "32569505_976b57f2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-08T14:17:56Z",
+      "side": 1,
+      "message": "@peter, if you\u0027re checking the coordclampshader against a \"closest positive\", it won\u0027t be a graphite-generated image. Graphite hasn\u0027t wired up anisotropic filtering, so comparing to a config other than `grmtl` or `grdawnmtl` will highlight differences from that in addition to any changes from this optimization.\n\nI only see changes to the top-left clamped image when sticking with Graphite configs",
+      "parentUuid": "4403c448_e6729cb7",
+      "revId": "49a6112bb9a4f26e863fb0ba267dc6f8b5a716f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c769d6be_3ca8e552",
         "filename": "src/gpu/graphite/KeyHelpers.cpp",
         "patchSetId": 8
