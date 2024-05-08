@@ -55,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "19a52fff_e4e1471c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-05-08T19:06:17Z",
+      "side": 1,
+      "message": "I considered adding some additional timers but thought I would at least start with this.",
+      "parentUuid": "7f82f28f_cd42817e",
+      "revId": "927dcb595396afaba3b3cfd894ccba323a5dc03d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "22a120d8_3dda9249",
         "filename": "tools/window/GraphiteDawnWindowContext.cpp",
         "patchSetId": 3
@@ -90,6 +108,30 @@
           ]
         }
       ],
+      "revId": "927dcb595396afaba3b3cfd894ccba323a5dc03d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc7bcb6d_f7db1f08",
+        "filename": "tools/window/GraphiteDawnWindowContext.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-05-08T19:06:17Z",
+      "side": 1,
+      "message": "If we drew offscreen this will handle rendering the offscreen surface to the window surface. We also draw the stats in a different layer so this should handle that as well.",
+      "parentUuid": "22a120d8_3dda9249",
+      "range": {
+        "startLine": 103,
+        "startChar": 10,
+        "endLine": 103,
+        "endChar": 32
+      },
       "revId": "927dcb595396afaba3b3cfd894ccba323a5dc03d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
