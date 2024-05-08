@@ -16,6 +16,64 @@
       "message": "Hi Greg, Michael, PTAL. Thanks",
       "revId": "1ed60888fba8278d9120f8ac71d9d97db5f910d0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a8db406_4f0ee182",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-08T19:12:33Z",
+      "side": 1,
+      "message": "I have a couple of general questions on the behavior of this context option:\n1. If it\u0027s set to false, should Graphite also stop setting labels on its Resource objects or TextureProxies. In particular, with scratch textures the labels will involve string concatenation, so if the label will never make it to the backend resource, it seems reasonable to skip the work entirely.\n2. We don\u0027t set labels on textures/buffers for performance reasons in dawn+metal, but the pipelines seem to be valuable and are a much lower frequency that always setting those labels seems like a good thing.\n3. This CL isn\u0027t checking the flag for DawnBuffer and DawnTexture, but probably should.\n4. The Metal backend will need to be updated as well, but that can be a separate CL\n5. Should the default behavior for setting backend labels be true? Or perhaps tied to SK_DEBUG?",
+      "revId": "1ed60888fba8278d9120f8ac71d9d97db5f910d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05048f67_6f934d27",
+        "filename": "include/gpu/graphite/ContextOptions.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-08T19:12:33Z",
+      "side": 1,
+      "message": "nit: on",
+      "range": {
+        "startLine": 100,
+        "startChar": 34,
+        "endLine": 100,
+        "endChar": 36
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "c3776681_3d27cd9b",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/gpu/graphite/ContextOptions.h",
+              "range": {
+                "startLine": 100,
+                "startChar": 0,
+                "endLine": 101,
+                "endChar": 0
+              },
+              "replacement": "     * Whether labels will be set on backend resources.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "1ed60888fba8278d9120f8ac71d9d97db5f910d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
