@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02d2fe63_3730d456",
+        "filename": "src/gpu/graphite/TextureUtils.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-05-08T16:22:28Z",
+      "side": 1,
+      "message": "Unused?",
+      "revId": "54293903214ce8005c2d43258cbb0dd12fc2ece9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f84f9f8_2740d774",
+        "filename": "src/gpu/graphite/TextureUtils.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-05-08T16:22:28Z",
+      "side": 1,
+      "message": "Nit: redundant argument names\n```suggestion\n                        Budgeted,\n                        Mipmapped,\n                        SkBackingFit,\n```",
+      "range": {
+        "startLine": 72,
+        "startChar": 0,
+        "endLine": 74,
+        "endChar": 48
+      },
+      "revId": "54293903214ce8005c2d43258cbb0dd12fc2ece9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
