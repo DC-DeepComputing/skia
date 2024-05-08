@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "97c3eb19_3ed07c8c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-08T14:00:07Z",
+      "side": 1,
+      "message": "With perfect precision of varyings for the texture coordinates, linear and nearest should look the same in this situation. The largest set of diffs appear to be for compressed textures, and it doesn\u0027t surprise me that linear and nearest may actually do something different in such a situation.  @greg, should we skip this optimization when the texture is compressed to avoid popping during a transform animation?\n\nThe `coordclampshader` ones are subtle, but the GM\u0027s clamping rectangle that it configures do not have any 1/2px inset, so when clamping to an actual pixel boundary with linear filtering, it will include some of the pixel just to the outside of the clamp rect. (`SkShaders::CoordClamp` is not sampling aware, so this is technically the expected behavior).\n\nBut the `CoordClamp` shader is not actually implemented by an internal runtime effect, but has a similar effect that it breaks the linear transform assumption for this optimization. It\u0027s unlikely this is being used, and if the GM had been insetting by 1/2px it wouldn\u0027t be noticeable. I wouldn\u0027t block this change on it, but we\u0027ll probably need to adjust the keycontext\u0027s scope to track whether or not the coords are purely linear regardless of runtime effect or not.\n\nThe one I\u0027m concerned about is `rsx_blob_shader`, because I cannot sort out what is happening to account for that change, but it is stable across different hardwares so I\u0027ll check a GPU capture to see if that helps.",
+      "parentUuid": "41ddb8ab_48a10f47",
+      "revId": "49a6112bb9a4f26e863fb0ba267dc6f8b5a716f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c769d6be_3ca8e552",
         "filename": "src/gpu/graphite/KeyHelpers.cpp",
         "patchSetId": 8
