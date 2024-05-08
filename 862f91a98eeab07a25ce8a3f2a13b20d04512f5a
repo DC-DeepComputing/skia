@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "73ebdbbb_28ef5261",
+        "filename": "src/core/SkKnownRuntimeEffects.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-05-08T14:42:01Z",
+      "side": 1,
+      "message": "I\u0027ve expanded the comment and will address it in the code modifying CL",
+      "parentUuid": "db345a61_1eef2650",
+      "range": {
+        "startLine": 109,
+        "startChar": 37,
+        "endLine": 109,
+        "endChar": 62
+      },
+      "revId": "862f91a98eeab07a25ce8a3f2a13b20d04512f5a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "61333331_3ff53dac",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-05-07T20:32:13Z",
       "side": 1,
       "message": "these runtime effects are just file moves right now right?",
+      "range": {
+        "startLine": 147,
+        "startChar": 0,
+        "endLine": 147,
+        "endChar": 66
+      },
+      "revId": "862f91a98eeab07a25ce8a3f2a13b20d04512f5a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "54a950c2_aba79abe",
+        "filename": "src/core/SkKnownRuntimeEffects.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-05-08T14:42:01Z",
+      "side": 1,
+      "message": "Right. The next CL in the stack modifies the code generation.",
+      "parentUuid": "61333331_3ff53dac",
       "range": {
         "startLine": 147,
         "startChar": 0,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "42d4a580_33fa3f41",
+        "filename": "src/core/SkKnownRuntimeEffects.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-05-08T14:42:01Z",
+      "side": 1,
+      "message": "Went w/ TexSm and TexLg",
+      "parentUuid": "81258e20_6f31650d",
+      "range": {
+        "startLine": 78,
+        "startChar": 0,
+        "endLine": 79,
+        "endChar": 29
+      },
+      "revId": "862f91a98eeab07a25ce8a3f2a13b20d04512f5a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4a307f6a_9ae8e0a0",
@@ -83,6 +155,30 @@
       "writtenOn": "2024-05-07T20:32:13Z",
       "side": 1,
       "message": "nit: this should match either \"small\" or \"min\" that\u0027s used for the stable key name.",
+      "range": {
+        "startLine": 27,
+        "startChar": 21,
+        "endLine": 27,
+        "endChar": 38
+      },
+      "revId": "862f91a98eeab07a25ce8a3f2a13b20d04512f5a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3142b08_83e3624c",
+        "filename": "src/effects/imagefilters/SkMatrixConvolutionImageFilter.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-05-08T14:42:01Z",
+      "side": 1,
+      "message": "I\u0027ve gone with kSmallKernelSize",
+      "parentUuid": "4a307f6a_9ae8e0a0",
       "range": {
         "startLine": 27,
         "startChar": 21,
