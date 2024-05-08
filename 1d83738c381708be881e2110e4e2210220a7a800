@@ -77,6 +77,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9492a771_4e12313f",
+        "filename": "src/gpu/graphite/DrawContext.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-08T15:06:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e5fe6a3f_3facb449",
+      "range": {
+        "startLine": 86,
+        "startChar": 86,
+        "endLine": 86,
+        "endChar": 93
+      },
+      "revId": "1d83738c381708be881e2110e4e2210220a7a800",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cae720b7_868faec7",
@@ -156,6 +180,30 @@
       "side": 1,
       "message": "That seems good.",
       "parentUuid": "392cc1f6_e26b0261",
+      "range": {
+        "startLine": 88,
+        "startChar": 9,
+        "endLine": 88,
+        "endChar": 28
+      },
+      "revId": "1d83738c381708be881e2110e4e2210220a7a800",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "52ee4ed2_b3f73dd7",
+        "filename": "src/gpu/graphite/DrawContext.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-08T15:06:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "114e5458_ee9443cd",
       "range": {
         "startLine": 88,
         "startChar": 9,
