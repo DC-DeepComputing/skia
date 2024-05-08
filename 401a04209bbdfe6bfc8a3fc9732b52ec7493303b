@@ -236,6 +236,30 @@
       },
       "revId": "401a04209bbdfe6bfc8a3fc9732b52ec7493303b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a41b891_51d43849",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2024-05-08T15:03:14Z",
+      "side": 1,
+      "message": "I think another approach without explicit pipeline differences is that we treat all render passes the same as \"load\" render passes, i.e. they will always have two subpasses. The normal render passes will have \"no-op\" 1st subpass.\n\nIt also makes sense that you want explicit option for Graphite to make the pipeline compatible with the \"load resolve\" render passes. I can add that option to Dawn. However I will need to remove the similar option from MSAARenderToSingleSampled first https://skia-review.googlesource.com/c/skia/+/851116. That option no longer makes sense for MSAARenderToSingleSampled feature. It makes more sense for LoadResolveTexture feature now.",
+      "parentUuid": "21170f8f_2fefb821",
+      "range": {
+        "startLine": 206,
+        "startChar": 48,
+        "endLine": 206,
+        "endChar": 73
+      },
+      "revId": "401a04209bbdfe6bfc8a3fc9732b52ec7493303b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
