@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "524a4830_75ef3e4b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-08T14:21:33Z",
+      "side": 1,
+      "message": "I was a little surprised at the gold diffs, but they are all from Radeon GPUs. I looked at a frame capture on my M1 and all of the intermediates are exact-fit HW textures. However, a lot of them use the DontCare/Discard load op and we have the issue with coverage+src rendering right now thinking it needs to blend with the dst.\n\nMy current theory is that the src-blend w/ dst readback and what should amount to 100% coverage is not quite a perfect src-blend on Radeon so we see some discarded/random values leaking through slightly. This should be fixed when the proper non-aa blit is added.",
+      "revId": "632e410efdac2ececa2d234ff74cb3767ed905f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
