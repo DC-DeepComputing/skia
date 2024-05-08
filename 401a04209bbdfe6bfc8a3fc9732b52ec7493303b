@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "79f7887c_15150b07",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-05-08T13:47:57Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "50062c64_3c093ebd",
+      "range": {
+        "startLine": 11,
+        "startChar": 24,
+        "endLine": 11,
+        "endChar": 49
+      },
+      "revId": "401a04209bbdfe6bfc8a3fc9732b52ec7493303b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5b197f1b_e2f6b1e0",
@@ -132,6 +156,30 @@
       "side": 1,
       "message": "I could imagine it going either way. It seems convenient to have Dawn hide that aspect, and just creating 2 pipelines right away should hopefully avoid a lot of duplicate work since the spir-v should be the same if we\u0027re just changing the render pass description.\n\nBut we\u0027ll likely have some higher-level concept of this loading added to graphite\u0027s keys for vulkan and employ a very similar strategy. At that point, Dawn+vulkan could just as well signal that loading requires a new pipeline just like native-vulkan.",
       "parentUuid": "80f25bbc_d6e04d3f",
+      "range": {
+        "startLine": 206,
+        "startChar": 48,
+        "endLine": 206,
+        "endChar": 73
+      },
+      "revId": "401a04209bbdfe6bfc8a3fc9732b52ec7493303b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21170f8f_2fefb821",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-05-08T13:47:57Z",
+      "side": 1,
+      "message": "Yeah I think personally I would lean towards Skia needing to explicitly compile each pipeline separately. Seems like always compiling two pipelines is going to lead to a lot of unnecessary work. Or alternatively if Dawn still hid it but lazily compiled the pipeline, I think this is also bad as now we\u0027ll get weird surprise pipeline compiles at times we weren\u0027t expecting it.\n\nAs Michael said, Skia will already know when it is in this situation, so I think it makes sense to have Skia be the one to trigger compiles as it is needed.",
+      "parentUuid": "83fed573_7812ed4f",
       "range": {
         "startLine": 206,
         "startChar": 48,
