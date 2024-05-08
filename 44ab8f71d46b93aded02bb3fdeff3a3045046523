@@ -16,6 +16,24 @@
       "message": "nit: The `st.fAvailable` here looks redundant given the check right above.",
       "revId": "44ab8f71d46b93aded02bb3fdeff3a3045046523",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "469cee50_3b609f09",
+        "filename": "src/gpu/graphite/ScratchResourceManager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-08T13:44:40Z",
+      "side": 1,
+      "message": "Oops! fixed in //skia-review.googlesource.com/c/skia/+/851037",
+      "parentUuid": "86e27120_6b8a0ab0",
+      "revId": "44ab8f71d46b93aded02bb3fdeff3a3045046523",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
