@@ -684,7 +684,7 @@ void GrVkOpsRenderPass::onSetScissorRect(const SkIRect& scissor) {
 
 #ifdef SK_DEBUG
 void check_sampled_texture(GrTexture* tex, GrAttachment* colorAttachment, GrVkGpu* gpu) {
-    SkASSERT(!tex->isProtected() || (colorAttachment->isProtected() && gpu->protectedContext()));
+    SkASSERT(!tex->isProtected() || (colorAttachment->isProtected() && gpu->protectedContext7()));
     auto vkTex = static_cast<GrVkTexture*>(tex)->textureImage();
     SkASSERT(vkTex->currentLayout() == VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
 }

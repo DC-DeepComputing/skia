@@ -298,6 +298,7 @@ void GrVkCaps::init(const GrContextOptions& contextOptions,
                     uint32_t physicalDeviceVersion,
                     const skgpu::VulkanExtensions& extensions,
                     GrProtected isProtected) {
+    isProtected = GrProtected::kYes; //$$
     VkPhysicalDeviceProperties properties;
     GR_VK_CALL(vkInterface, GetPhysicalDeviceProperties(physDev, &properties));
 
