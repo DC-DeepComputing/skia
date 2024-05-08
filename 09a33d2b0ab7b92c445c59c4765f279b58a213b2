@@ -1,0 +1,259 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ede9e8c_1809b7b7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 36
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-08T17:43:23Z",
+      "side": 1,
+      "message": "lgtm modulo some nits",
+      "revId": "09a33d2b0ab7b92c445c59c4765f279b58a213b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f4914ce_7823a82f",
+        "filename": "src/gpu/graphite/PipelineData.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-08T17:43:23Z",
+      "side": 1,
+      "message": "nit: this should be on the next line with `fCaps`, aligned above the `,`.",
+      "range": {
+        "startLine": 15,
+        "startChar": 76,
+        "endLine": 15,
+        "endChar": 77
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "e56999d8_2a1d29ca",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/PipelineData.cpp",
+              "range": {
+                "startLine": 15,
+                "startChar": 0,
+                "endLine": 18,
+                "endChar": 0
+              },
+              "replacement": "PipelineDataGatherer::PipelineDataGatherer(const Caps* caps, Layout layout)\n        : fCaps(caps), fUniformManager(layout) {}\n"
+            }
+          ]
+        }
+      ],
+      "revId": "09a33d2b0ab7b92c445c59c4765f279b58a213b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e24c69b_f4135272",
+        "filename": "src/gpu/graphite/ResourceTypes.h",
+        "patchSetId": 36
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-08T17:43:23Z",
+      "side": 1,
+      "message": "nit: not needed anymore, right?",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 34
+      },
+      "revId": "09a33d2b0ab7b92c445c59c4765f279b58a213b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ef20d4d_e2647fec",
+        "filename": "src/gpu/graphite/ResourceTypes.h",
+        "patchSetId": 36
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-08T17:43:23Z",
+      "side": 1,
+      "message": "What do you think about renaming this `YCbCrConversionInfo`? `SamplerConversionInfo` kind of sounds like it\u0027s how to convert between samplers to me, and the underlying vulkan types all include YCbCr in them.\n\nAlternatively, since this can be used to implement immutable samplers too, with or without ycbcr conversion, maybe we go with `ImmutableSamplerInfo`?",
+      "range": {
+        "startLine": 199,
+        "startChar": 7,
+        "endLine": 199,
+        "endChar": 28
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "8ac3a759_7f9aaacd",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/ResourceTypes.h",
+              "range": {
+                "startLine": 199,
+                "startChar": 0,
+                "endLine": 200,
+                "endChar": 0
+              },
+              "replacement": "struct YCbCrConversionInfo {\n"
+            },
+            {
+              "path": "src/gpu/graphite/ResourceTypes.h",
+              "range": {
+                "startLine": 220,
+                "startChar": 0,
+                "endLine": 221,
+                "endChar": 0
+              },
+              "replacement": "                const YCbCrConversionInfo conversionInfo \u003d {})\n"
+            }
+          ]
+        }
+      ],
+      "revId": "09a33d2b0ab7b92c445c59c4765f279b58a213b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9abaa258_87f69a16",
+        "filename": "src/gpu/graphite/ResourceTypes.h",
+        "patchSetId": 36
+      },
+      "lineNbr": 285,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-08T17:43:23Z",
+      "side": 1,
+      "message": "I am skeptical that this will be worth pursuing now, since we\u0027ll need the 64-bits for external formats anyways and there\u0027s not that much difference between 96 and 128 bytes (64 vs 128 would be more compelling). Right now we have a dense object that is trivially destructible, so that\u0027s a good place to be.",
+      "range": {
+        "startLine": 285,
+        "startChar": 0,
+        "endLine": 285,
+        "endChar": 93
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "daf27be6_ee94e5e5",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/ResourceTypes.h",
+              "range": {
+                "startLine": 285,
+                "startChar": 0,
+                "endLine": 286,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "09a33d2b0ab7b92c445c59c4765f279b58a213b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1a47e91_51673d4b",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 1486,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-08T17:43:23Z",
+      "side": 1,
+      "message": "nit: line up the `?` at the start of the next line above the `:`",
+      "range": {
+        "startLine": 1486,
+        "startChar": 87,
+        "endLine": 1486,
+        "endChar": 89
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "a1501a77_e519f265",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/vk/VulkanCaps.cpp",
+              "range": {
+                "startLine": 1487,
+                "startChar": 0,
+                "endLine": 1489,
+                "endChar": 0
+              },
+              "replacement": "                    ycbcrConversionInfo.fExternalFormat : ycbcrConversionInfo.fFormat;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "09a33d2b0ab7b92c445c59c4765f279b58a213b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71084ac7_d8a11944",
+        "filename": "src/gpu/graphite/vk/VulkanSamplerYcbcrConversion.h",
+        "patchSetId": 36
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-08T17:43:23Z",
+      "side": 1,
+      "message": "This seems like a reasonable follow up once we establish a performance baseline when the main feature is finished.",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 76
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "f031f058_2717f81d",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/vk/VulkanSamplerYcbcrConversion.h",
+              "range": {
+                "startLine": 26,
+                "startChar": 0,
+                "endLine": 29,
+                "endChar": 0
+              },
+              "replacement": "// TODO(b/285195801): Consider changing this class to not be a Resource that we cache, store, and\n// share. It is relatively small and it may make more sense to simply have each texture that\n// requires a conversion store its own conversion information even if it is duplicated.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "09a33d2b0ab7b92c445c59c4765f279b58a213b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
