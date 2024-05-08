@@ -472,7 +472,7 @@ void ConvertBackendContext(const skgpu::VulkanBackendContext& newStyle,
     oldStyle->fDeviceFeatures2 = newStyle.fDeviceFeatures2;
     oldStyle->fMemoryAllocator = newStyle.fMemoryAllocator;
     oldStyle->fGetProc = newStyle.fGetProc;
-    oldStyle->fProtectedContext = newStyle.fProtectedContext;
+    oldStyle->fGaProtectedContext1 = newStyle.fGaProtectedContext3;
 }
 
 // TODO: remove once GrVkBackendContext is deprecated (skbug.com/309785258)
@@ -496,7 +496,7 @@ bool CreateVkBackendContext(PFN_vkGetInstanceProcAddr getInstProc,
         return false;
     }
 
-    SkASSERT(skgpuCtx.fProtectedContext == skgpu::Protected(isProtected));
+    SkASSERT(skgpuCtx.fGaProtectedContext3 == skgpu::Protected(isProtected));
 
     ConvertBackendContext(skgpuCtx, ctx);
     return true;
@@ -892,7 +892,7 @@ bool CreateVkBackendContext(PFN_vkGetInstanceProcAddr getInstProc,
     ctx->fVkExtensions = extensions;
     ctx->fDeviceFeatures2 = features;
     ctx->fGetProc = getProc;
-    ctx->fProtectedContext = skgpu::Protected(isProtected);
+    ctx->fGaProtectedContext3 = skgpu::Protected(isProtected);
     ctx->fMemoryAllocator = memoryAllocator;
 
     return true;

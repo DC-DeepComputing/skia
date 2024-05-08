@@ -147,14 +147,14 @@ std::unique_ptr<GrGpu> GrVkGpu::Make(const GrVkBackendContext& backendContext,
     if (backendContext.fDeviceFeatures2) {
         caps.reset(new GrVkCaps(options, interface.get(), backendContext.fPhysicalDevice,
                                 *backendContext.fDeviceFeatures2, instanceVersion, physDevVersion,
-                                *backendContext.fVkExtensions, backendContext.fProtectedContext));
+                                *backendContext.fVkExtensions, backendContext.fGaProtectedContext1));
     } else if (backendContext.fDeviceFeatures) {
         VkPhysicalDeviceFeatures2 features2;
         features2.pNext = nullptr;
         features2.features = *backendContext.fDeviceFeatures;
         caps.reset(new GrVkCaps(options, interface.get(), backendContext.fPhysicalDevice,
                                 features2, instanceVersion, physDevVersion,
-                                *backendContext.fVkExtensions, backendContext.fProtectedContext));
+                                *backendContext.fVkExtensions, backendContext.fGaProtectedContext1));
     } else {
         VkPhysicalDeviceFeatures2 features;
         memset(&features, 0, sizeof(VkPhysicalDeviceFeatures2));
@@ -179,7 +179,7 @@ std::unique_ptr<GrGpu> GrVkGpu::Make(const GrVkBackendContext& backendContext,
         }
         caps.reset(new GrVkCaps(options, interface.get(), backendContext.fPhysicalDevice,
                                 features, instanceVersion, physDevVersion, extensions,
-                                backendContext.fProtectedContext));
+                                backendContext.fGaProtectedContext1));
     }
 
     if (!caps) {
@@ -209,7 +209,7 @@ std::unique_ptr<GrGpu> GrVkGpu::Make(const GrVkBackendContext& backendContext,
                                                instanceVersion,
                                                physDevVersion,
                                                std::move(memoryAllocator)));
-    if (backendContext.fProtectedContext == GrProtected::kYes &&
+    if (backendContext.fGaProtectedContext1 == GrProtected::kYes &&
         !vkGpu->vkCaps().supportsProtectedContent()) {
         return nullptr;
     }
@@ -236,7 +236,7 @@ GrVkGpu::GrVkGpu(GrDirectContext* direct,
         , fResourceProvider(this)
         , fStagingBufferManager(this)
         , fDisconnected(false)
-        , fProtectedContext(backendContext.fProtectedContext)
+        , fGaProtectedContext2(backendContext.fGaProtectedContext1)
         , fDeviceLostContext(backendContext.fDeviceLostContext)
         , fDeviceLostProc(backendContext.fDeviceLostProc) {
     SkASSERT(!backendContext.fOwnsInstanceAndDevice);
@@ -718,7 +718,7 @@ bool GrVkGpu::onTransferPixelsFrom(GrSurface* surface,
     }
     SkASSERT(surface);
     SkASSERT(transferBuffer);
-    if (fProtectedContext == GrProtected::kYes) {
+    if (fGaProtectedContext2 == GrProtected::kYes) {
         return false;
     }
 
@@ -1404,7 +1404,7 @@ sk_sp<GrTexture> GrVkGpu::onWrapBackendTexture(const GrBackendTexture& backendTe
         return nullptr;
     }
 
-    if (backendTex.isProtected() && (fProtectedContext == GrProtected::kNo)) {
+    if (backendTex.isProtected() && (fGaProtectedContext2 == GrProtected::kNo)) {
         return nullptr;
     }
 
@@ -1444,7 +1444,7 @@ sk_sp<GrTexture> GrVkGpu::onWrapRenderableBackendTexture(const GrBackendTexture&
         return nullptr;
     }
 
-    if (backendTex.isProtected() && (fProtectedContext == GrProtected::kNo)) {
+    if (backendTex.isProtected() && (fGaProtectedContext2 == GrProtected::kNo)) {
         return nullptr;
     }
 
@@ -1475,7 +1475,7 @@ sk_sp<GrRenderTarget> GrVkGpu::onWrapBackendRenderTarget(const GrBackendRenderTa
         return nullptr;
     }
 
-    if (backendRT.isProtected() && (fProtectedContext == GrProtected::kNo)) {
+    if (backendRT.isProtected() && (fGaProtectedContext2 == GrProtected::kNo)) {
         return nullptr;
     }
 
@@ -1670,7 +1670,7 @@ bool GrVkGpu::createVkImageForBackendSurface(VkFormat vkFormat,
                                              GrProtected isProtected) {
     SkASSERT(texturable == GrTexturable::kYes || renderable == GrRenderable::kYes);
 
-    if (fProtectedContext != isProtected) {
+    if (fGaProtectedContext2 != isProtected) {
         return false;
     }
 
@@ -1717,7 +1717,7 @@ bool GrVkGpu::createVkImageForBackendSurface(VkFormat vkFormat,
     imageDesc.fImageTiling = VK_IMAGE_TILING_OPTIMAL;
     imageDesc.fUsageFlags = usageFlags;
     imageDesc.fMemProps = VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT;
-    imageDesc.fIsProtected = fProtectedContext;
+    imageDesc.fIsProtected = fGaProtectedContext2;
 
     if (!GrVkImage::InitImageInfo(this, imageDesc, info)) {
         SkDebugf("Failed to init image info\n");
@@ -1793,7 +1793,7 @@ GrBackendTexture GrVkGpu::onCreateBackendTexture(SkISize dimensions,
                                                  std::string_view label) {
     const GrVkCaps& caps = this->vkCaps();
 
-    if (fProtectedContext != isProtected) {
+    if (fGaProtectedContext2 != isProtected) {
         return {};
     }
 
