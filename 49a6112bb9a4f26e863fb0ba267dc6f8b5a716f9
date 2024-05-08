@@ -56,6 +56,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0270a858_51eae14c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19305
+      },
+      "writtenOn": "2024-05-08T14:10:53Z",
+      "side": 1,
+      "message": "I think the coordclampshader one shows something even stranger. The bottom row of images are suppose to have higher order filtering (ending with anisotropic). The new versions are more blurry than the positive reference. The nearest filtering should not be playing any role if the pixels on the screen are not 1:1 so im not yet sure what is occurring here.   The code does this  \n\n        imageShader \u003d image-\u003emakeShader(SkTileMode::kMirror,\n                                        SkTileMode::kMirror,\n                                        sampler,\n                                        SkMatrix::Scale(0.3f, 1.0));\n                                        \n                                       Which to me should just contribute that sale 0.3 to the local matrix\n                                       \n                                       https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/gm/coordclampshader.cpp;l\u003d77?q\u003dcoordclampshader",
+      "parentUuid": "97c3eb19_3ed07c8c",
+      "revId": "49a6112bb9a4f26e863fb0ba267dc6f8b5a716f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c769d6be_3ca8e552",
         "filename": "src/gpu/graphite/KeyHelpers.cpp",
         "patchSetId": 8
