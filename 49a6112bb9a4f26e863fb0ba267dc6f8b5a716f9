@@ -74,6 +74,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4403c448_e6729cb7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-05-08T14:13:03Z",
+      "side": 1,
+      "message": "Yeah I think I would just skip this optimization for compressed textures. To be honest its hard to fully picture why there is such a stark difference. Like in a theoretical world the compressed texture would be expanded out to a logical \"full\" texture and then nearest and linear should mostly match in this case (like all other textures). But I\u0027m sure the devices have some specialized hardware doing stuff here so not sure how it all works in practice.\n\nAnyways you should be able to check for compressed by doing:\n`view.proxy()-\u003etextureInfo().compressionType() \u003d\u003d SkCompressionType::kNone` or at least something close to that.",
+      "parentUuid": "97c3eb19_3ed07c8c",
+      "revId": "49a6112bb9a4f26e863fb0ba267dc6f8b5a716f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c769d6be_3ca8e552",
         "filename": "src/gpu/graphite/KeyHelpers.cpp",
         "patchSetId": 8
