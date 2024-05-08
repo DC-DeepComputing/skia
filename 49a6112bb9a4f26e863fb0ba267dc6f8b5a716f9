@@ -110,6 +110,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2468321c_a987ca9b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-08T15:24:11Z",
+      "side": 1,
+      "message": "The `rsx_blob_shader` changes are also a bug that requires another check unfortunately. Right now the KeyContext\u0027s \"local2Dev\" transform is initialized from the transform stored on the `DrawParams` object that\u0027s recorded and eventually processed when creating a DrawPass.\n\nFor shapes and tessellated paths, this transform is always the full local-to-device transform, but I hadn\u0027t realized that for coverage masks (atlases, and text, etc.) the full transform is often decomposed into a part that\u0027s embedded into the shape drawn in the mask, and then a remaining post-mask transform. The post-mask transform is what\u0027s stored in the DrawParams, and each mask-ish Geometry type has its own way of reconstructing the correct true local coordinates for shaders.\n\nUnfortunately in these cases that means the KeyContext\u0027s \"local2Dev\" matrix isn\u0027t seeing the whole thing, and often sees just an integer translation matrix instead. In `rsx_blob_shader` case, there\u0027s a 1.4 scale factor that\u0027s been embedded in the glyph masks and then the text renderstep is further scaling the local coords to compensate, but KeyHelpers is now thinking it can switch to nearest.  The underlying the rectangle fill sees the whole transform correctly and doesn\u0027t switch to nearest.",
+      "parentUuid": "32569505_976b57f2",
+      "revId": "49a6112bb9a4f26e863fb0ba267dc6f8b5a716f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c769d6be_3ca8e552",
         "filename": "src/gpu/graphite/KeyHelpers.cpp",
         "patchSetId": 8
