@@ -1712,7 +1712,7 @@ static void add_to_key(const KeyContext& keyContext,
     ImageShaderBlock::AddBlock(keyContext, builder, gatherer, imgData);
 }
 static void notify_in_use(Recorder* recorder,
-                          DrawContext*,
+                          DrawContext* drawContext,
                           const SkImageShader* shader) {
     auto image = as_IB(shader->image());
     if (!image->isGraphiteBacked()) {
@@ -1720,9 +1720,7 @@ static void notify_in_use(Recorder* recorder,
         return;
     }
 
-    // TODO(b/323887207): Once scratch devices are linked to special images and their use needs to
-    // be linked to specific draw contexts, that will be passed in here.
-    static_cast<Image_Base*>(image)->notifyInUse(recorder);
+    static_cast<Image_Base*>(image)->notifyInUse(recorder, drawContext);
 }
 
 static void add_to_key(const KeyContext& keyContext,
