@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f57027b2_cb6b1ce4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-05-08T20:13:10Z",
+      "side": 1,
+      "message": "Re 1. Chrome has in the past dumped all our Resources in the Cache and the labels are very helpful there. Though not sure if that\u0027s something Chrome does outside of local debugging. However, Android definitely does the same thing and they will even ask users/partners to dump the information so it needs to be available in release builds there (and there isn\u0027t requirement to put on labels on backend objects).",
+      "parentUuid": "9a8db406_4f0ee182",
+      "revId": "1ed60888fba8278d9120f8ac71d9d97db5f910d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "05048f67_6f934d27",
         "filename": "include/gpu/graphite/ContextOptions.h",
         "patchSetId": 4
