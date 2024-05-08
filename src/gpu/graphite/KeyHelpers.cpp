@@ -11,6 +11,8 @@
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkData.h"
 #include "include/core/SkImageInfo.h"
+#include "include/core/SkM44.h"
+#include "include/core/SkScalar.h"
 #include "include/effects/SkRuntimeEffect.h"
 #include "include/gpu/graphite/Surface.h"
 #include "src/base/SkHalf.h"
@@ -1679,7 +1681,29 @@ static void add_to_key(const KeyContext& keyContext,
                                         view.proxy()->dimensions(),
                                         shader->subset(),
                                         ReadSwizzle::kRGBA);
-    imgData.fSampling = newSampling;
+
+    // Here we detect pixel aligned blit-like image draws. Some devices have low precision filtering
+    // and will produce degraded (blurry) images unexpectedly for sequential exact pixel blits when
+    // not using nearest filtering. This is common for canvas scrolling implementations. Forcing
+    // nearest filtering when possible can also be a minor perf/power optimization depending on the
+    // hardware.
+    bool samplingHasNoEffect = false;
+    // We skip runtime effects because these might have arbitrary coordinate sampling. We also skip
+    // compressed textures as forcing nearest can create subtle differences that may be hardware
+    // dependent.
+    if (keyContext.scope() != KeyContext::Scope::kRuntimeEffect &&
+        view.proxy()->textureInfo().compressionType() == SkTextureCompressionType::kNone) {
+        SkMatrix totalM = keyContext.local2Dev().asM33();
+        if (keyContext.localMatrix()) {
+            totalM.preConcat(*keyContext.localMatrix());
+        }
+        totalM.normalizePerspective();
+        // The matrix should be translation with only pixel aligned 2d translation.
+        samplingHasNoEffect = totalM.isTranslate() && SkScalarIsInt(totalM.getTranslateX()) &&
+                              SkScalarIsInt(totalM.getTranslateY());
+    }
+
+    imgData.fSampling = samplingHasNoEffect ? SkFilterMode::kNearest : newSampling;
     imgData.fTextureProxy = view.refProxy();
     skgpu::Swizzle readSwizzle = view.swizzle();
     // If the color type is alpha-only, propagate the alpha value to the other channels.
