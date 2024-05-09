@@ -97,6 +97,17 @@ static sk_sp<SkData> subset_harfbuzz(const SkTypeface& typeface,
             }
         }
     }
+    if (!face) {
+        // hb_face_create_for_tables may still create a working hb_face.
+        // See https://github.com/harfbuzz/harfbuzz/issues/3609
+        // See https://github.com/harfbuzz/harfbuzz/issues/1697
+        face.reset(hb_face_create_for_tables(
+            skhb_get_table,
+            const_cast<SkTypeface*>(SkRef(&typeface)),
+            [](void* user_data){ SkSafeUnref(reinterpret_cast<SkTypeface*>(user_data)); }));
+        hb_face_set_index(face.get(), (unsigned)index);
+    }
+    SkASSERT(face);
 
     HBSubsetInput input(hb_subset_input_create_or_fail());
     SkASSERT(input);
