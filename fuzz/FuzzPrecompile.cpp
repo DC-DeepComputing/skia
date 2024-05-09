@@ -361,14 +361,20 @@ void fuzz_graphite(Fuzz* fuzz, Context* context, int depth = 9) {
                           dstReadReq == DstReadRequirement::kTextureSample;
     sk_sp<TextureProxy> curDst = needsDstSample ? fakeDstTexture : nullptr;
 
-    auto [paintID, uData, tData] = ExtractPaintData(
-            recorder.get(), &gatherer, &builder, layout, {},
-            PaintParams(paint,
-                        /* primitiveBlender= */ nullptr,
-                        /* clipShader= */nullptr,
-                        dstReadReq,
-                        /* skipColorXform= */ false),
-            curDst, fakeDstOffset, ci);
+    auto [paintID, uData, tData] = ExtractPaintData(recorder.get(),
+                                                    &gatherer,
+                                                    &builder,
+                                                    layout,
+                                                    {},
+                                                    PaintParams(paint,
+                                                                /* primitiveBlender= */ nullptr,
+                                                                /* clipShader= */ nullptr,
+                                                                dstReadReq,
+                                                                /* skipColorXform= */ false),
+                                                    {},
+                                                    curDst,
+                                                    fakeDstOffset,
+                                                    ci);
 
     std::vector<UniquePaintParamsID> precompileIDs;
     paintOptions.priv().buildCombinations(precompileKeyContext,

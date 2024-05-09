@@ -28,6 +28,7 @@ class ShaderCodeDictionary;
 // backend-specific resource providing object (e.g., a Recorder).
 class KeyContext {
 public:
+    enum class OptimizeSampling : bool { kNo = false, kYes = true };
     // Constructor for the pre-compile code path (i.e., no Recorder)
     KeyContext(const Caps* caps,
                ShaderCodeDictionary* dict,
@@ -46,6 +47,7 @@ public:
     KeyContext(Recorder*,
                const SkM44& local2Dev,
                const SkColorInfo& dstColorInfo,
+               OptimizeSampling optimizeSampling,
                const SkColor4f& paintColor,
                sk_sp<TextureProxy> dstTexture,
                SkIPoint dstOffset);
@@ -77,6 +79,7 @@ public:
     };
 
     Scope scope() const { return fScope; }
+    OptimizeSampling optimizeSampling() const { return fOptimizeSampling; }
 
 protected:
     Recorder* fRecorder = nullptr;
@@ -90,6 +93,7 @@ protected:
     // together to reduce the number of uniforms.
     SkPMColor4f fPaintColor = SK_PMColor4fBLACK;
     Scope fScope = Scope::kDefault;
+    OptimizeSampling fOptimizeSampling = OptimizeSampling::kNo;
 
 private:
     const Caps* fCaps = nullptr;
@@ -140,6 +144,11 @@ class KeyContextWithScope : public KeyContext {
 public:
     KeyContextWithScope(const KeyContext& other, KeyContext::Scope scope) : KeyContext(other) {
         fScope = scope;
+        // We skip optimized sampling for runtime effects because these might have arbitrary
+        // coordinate sampling.
+        if (fScope == Scope::kRuntimeEffect) {
+            fOptimizeSampling = OptimizeSampling::kNo;
+        }
     }
 
 private:
