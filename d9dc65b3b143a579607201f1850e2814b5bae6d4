@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "da8ba077_032fa22d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-05-09T15:08:03Z",
+      "side": 1,
+      "message": "Thanks, Kaylee!",
+      "revId": "d9dc65b3b143a579607201f1850e2814b5bae6d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "91d0e515_c9f9c61c",
+        "filename": "modules/skottie/utils/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-05-09T15:08:03Z",
+      "side": 1,
+      "message": "The plan is for TextPreshape.h to be a public header, but I guess we can deal with it when/if the first client shows up.",
+      "revId": "d9dc65b3b143a579607201f1850e2814b5bae6d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
