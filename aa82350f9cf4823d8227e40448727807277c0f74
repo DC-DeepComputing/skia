@@ -22,6 +22,30 @@
       },
       "revId": "aa82350f9cf4823d8227e40448727807277c0f74",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "750f6811_7dcd7afa",
+        "filename": "modules/skottie/skottie.gni",
+        "patchSetId": 2
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-05-09T18:01:07Z",
+      "side": 0,
+      "message": "No, since GN only does the header check for public ones. However, I like to list them anyway. Good catch.",
+      "parentUuid": "10ebabd4_7fdb20a2",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 47,
+        "endChar": 40
+      },
+      "revId": "aa82350f9cf4823d8227e40448727807277c0f74",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
