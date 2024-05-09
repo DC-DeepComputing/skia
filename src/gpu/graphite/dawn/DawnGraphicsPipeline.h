@@ -58,7 +58,7 @@ public:
                                             const GraphicsPipelineDesc& pipelineDesc,
                                             const RenderPassDesc& renderPassDesc);
 
-    ~DawnGraphicsPipeline() override {}
+    ~DawnGraphicsPipeline() override;
 
     uint32_t stencilReferenceValue() const { return fStencilReferenceValue; }
     PrimitiveType primitiveType() const { return fPrimitiveType; }
@@ -71,7 +71,7 @@ public:
     const BindGroupLayouts& dawnGroupLayouts() const { return fGroupLayouts; }
 
 private:
-    using AsyncPipelineCreation = DawnAsyncResult<wgpu::RenderPipeline>;
+    struct AsyncPipelineCreation;
 
     DawnGraphicsPipeline(const skgpu::graphite::SharedContext* sharedContext,
                          PipelineInfo* pipelineInfo,
@@ -86,6 +86,7 @@ private:
     void freeGpuData() override;
 
     std::unique_ptr<AsyncPipelineCreation> fAsyncPipelineCreation;
+    const wgpu::RenderPipeline fNullPipeline;
     BindGroupLayouts fGroupLayouts;
     const PrimitiveType fPrimitiveType;
     const uint32_t fStencilReferenceValue;
