@@ -156,7 +156,7 @@ sk_sp<Texture> VulkanTexture::Make(const VulkanSharedContext* sharedContext,
     if (!MakeVkImage(sharedContext, dimensions, info, &imageInfo)) {
         return nullptr;
     }
-    auto ycbcrConversion = resourceProvider->findOrCreateCompatibleSamplerYcbcrConversion(
+    auto ycbcrConversion = resourceProvider->findOrCreateCompatibleYcbcrConversion(
             info.vulkanTextureSpec().fYcbcrConversionInfo);
 
     return sk_sp<Texture>(new VulkanTexture(sharedContext,
@@ -179,7 +179,7 @@ sk_sp<Texture> VulkanTexture::MakeWrapped(const VulkanSharedContext* sharedConte
                                           VkImage image,
                                           const VulkanAlloc& alloc,
                                           std::string_view label) {
-    auto ycbcrConversion = resourceProvider->findOrCreateCompatibleSamplerYcbcrConversion(
+    auto ycbcrConversion = resourceProvider->findOrCreateCompatibleYcbcrConversion(
             info.vulkanTextureSpec().fYcbcrConversionInfo);
 
     return sk_sp<Texture>(new VulkanTexture(sharedContext,
@@ -317,7 +317,7 @@ VulkanTexture::VulkanTexture(const VulkanSharedContext* sharedContext,
                              std::string_view label,
                              Ownership ownership,
                              skgpu::Budgeted budgeted,
-                             sk_sp<VulkanSamplerYcbcrConversion> ycbcrConversion)
+                             sk_sp<VulkanYcbcrConversion> ycbcrConversion)
         : Texture(sharedContext,
                   dimensions,
                   info,
@@ -327,7 +327,7 @@ VulkanTexture::VulkanTexture(const VulkanSharedContext* sharedContext,
                   budgeted)
         , fImage(image)
         , fMemoryAlloc(alloc)
-        , fSamplerYcbcrConversion(std::move(ycbcrConversion)) {}
+        , fYcbcrConversion(std::move(ycbcrConversion)) {}
 
 void VulkanTexture::freeGpuData() {
     // Need to delete any ImageViews first
@@ -428,7 +428,7 @@ const VulkanImageView* VulkanTexture::getImageView(VulkanImageView::Usage usage)
                                            vkTexInfo.fFormat,
                                            usage,
                                            miplevels,
-                                           fSamplerYcbcrConversion);
+                                           fYcbcrConversion);
     return fImageViews.push_back(std::move(imageView)).get();
 }
 
