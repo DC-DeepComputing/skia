@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8c4a8ea_c6ef726e",
+        "filename": "bazel/external/harfbuzz/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-05-09T17:44:55Z",
+      "side": 1,
+      "message": "Even worse, files like this one (and many others which include it) in base HarfBuzz pull in `hb-subset.hh`. I\u0027m not even sure `libharfbuzz-subset` really even needs to depend on `libharfbuzz`, since it appears to logically contain an entire copy of (at least most of) it.",
+      "revId": "2250252cb2e0b5958403ce2608890f20a17c4bc4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
