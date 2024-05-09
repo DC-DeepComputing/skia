@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "87595d12_d87034fa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-05-09T20:29:34Z",
+      "side": 1,
+      "message": "Sorry to throw you on to *another* CL Greg, but I do think you have more ability to weigh in here given your AHardwareBuffer knowledge. At least it\u0027s small? 😎",
+      "revId": "12a80d6fede011e2d50a45e9fdb70b0ca86bf874",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "29f3ac3b_5b1d65eb",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1238,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-05-09T20:29:34Z",
+      "side": 1,
+      "message": "If a client requests linear tiling and the image does not support it, do we want to fail in this way? Or fallback to using a different mode?",
+      "range": {
+        "startLine": 1235,
+        "startChar": 12,
+        "endLine": 1238,
+        "endChar": 90
+      },
+      "revId": "12a80d6fede011e2d50a45e9fdb70b0ca86bf874",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c48d2b6c_b2efb2a9",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1266,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-05-09T20:29:34Z",
+      "side": 1,
+      "message": "WDYT about this? We always use the buffer format to determine the SkColorType internally, but I can also see how this is fragile. I could include AHardwareBufferUtils if we are building for Android and check it, but right now that would simply be redundant. \n\nPerhaps we could include AHardwareBufferUtils and perform that verification only when building for Android *and* in a debug build?\n\nIt also shouldn\u0027t really matter all that much according to https://skia.googlesource.com/skia.git/+/refs/heads/main/src/gpu/android/AHardwareBufferUtils.cpp#35 anyways, which I believe should still apply for graphite?\n\nLMK your thoughts 😊",
+      "range": {
+        "startLine": 1264,
+        "startChar": 0,
+        "endLine": 1266,
+        "endChar": 34
+      },
+      "revId": "12a80d6fede011e2d50a45e9fdb70b0ca86bf874",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

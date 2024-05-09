@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71be0ae3_51fa18de",
+        "filename": "src/gpu/graphite/Caps.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 324,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-05-09T20:29:34Z",
+      "side": 1,
+      "message": "Please LMKWYT about this solution/workaround. One option is technically to just have `const Caps::ColorTypeInfo* getColorTypeInfo(...)` return a non-0/null value if we are using an external format, but that feels hacky and bad seeing as nothing is stopping us from calling `getColorTypeInfo(...)` and expecting a real ptr.\n\nThis overrideable method may also be useful for Dawn later.",
+      "range": {
+        "startLine": 322,
+        "startChar": 0,
+        "endLine": 324,
+        "endChar": 81
+      },
+      "revId": "382d94b3ab31530dbce6a51d0fc4375886f446c7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
