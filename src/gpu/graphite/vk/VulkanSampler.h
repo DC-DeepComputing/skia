@@ -9,8 +9,8 @@
 #define skgpu_graphite_VulkanSampler_DEFINED
 
 #include "src/gpu/graphite/Sampler.h"
-#include "src/gpu/graphite/vk/VulkanSamplerYcbcrConversion.h"
 #include "src/gpu/graphite/vk/VulkanSharedContext.h"
+#include "src/gpu/graphite/vk/VulkanYcbcrConversion.h"
 
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkTileMode.h"
@@ -37,7 +37,7 @@ private:
 
     VkSampler fSampler;
     // TODO: Add YCbCr conversion information to this class.
-    //sk_sp<VulkanSamplerYcbcrConversion> fYcbcrConversion;
+    //sk_sp<VulkanYcbcrConversion> fYcbcrConversion;
 };
 
 } // namepsace skgpu::graphite

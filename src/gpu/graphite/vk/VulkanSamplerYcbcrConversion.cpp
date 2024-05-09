@@ -5,7 +5,7 @@
  * found in the LICENSE file.
  */
 
-#include "src/gpu/graphite/vk/VulkanSamplerYcbcrConversion.h"
+#include "src/gpu/graphite/vk/VulkanYcbcrConversion.h"
 
 #include "include/gpu/graphite/vk/VulkanGraphiteTypes.h"
 #include "src/gpu/graphite/vk/VulkanCaps.h"
@@ -14,7 +14,7 @@
 
 namespace skgpu::graphite {
 
-sk_sp<VulkanSamplerYcbcrConversion> VulkanSamplerYcbcrConversion::Make(
+sk_sp<VulkanYcbcrConversion> VulkanYcbcrConversion::Make(
         const VulkanSharedContext* context,
         const VulkanYcbcrConversionInfo& conversionInfo) {
     if (!context->vulkanCaps().supportsYcbcrConversion()) {
@@ -53,11 +53,10 @@ sk_sp<VulkanSamplerYcbcrConversion> VulkanSamplerYcbcrConversion::Make(
     if (result != VK_SUCCESS) {
         return nullptr;
     }
-    return sk_sp<VulkanSamplerYcbcrConversion>(
-            new VulkanSamplerYcbcrConversion(context, conversion));
+    return sk_sp<VulkanYcbcrConversion>(new VulkanYcbcrConversion(context, conversion));
 }
 
-GraphiteResourceKey VulkanSamplerYcbcrConversion::MakeYcbcrConversionKey(
+GraphiteResourceKey VulkanYcbcrConversion::MakeYcbcrConversionKey(
         const VulkanSharedContext* context, const VulkanYcbcrConversionInfo& info) {
     static const ResourceType kType = GraphiteResourceKey::GenerateResourceType();
 
@@ -82,16 +81,16 @@ GraphiteResourceKey VulkanSamplerYcbcrConversion::MakeYcbcrConversionKey(
     return key;
 }
 
-VulkanSamplerYcbcrConversion::VulkanSamplerYcbcrConversion(
+VulkanYcbcrConversion::VulkanYcbcrConversion(
         const VulkanSharedContext* context, VkSamplerYcbcrConversion ycbcrConversion)
         : Resource(context,
                    Ownership::kOwned,
                    skgpu::Budgeted::kNo,
                    /*gpuMemorySize=*/0,
-                   /*label=*/"VulkanSamplerYcbcrConversion")
+                   /*label=*/"VulkanYcbcrConversion")
         , fYcbcrConversion (ycbcrConversion) {}
 
-void VulkanSamplerYcbcrConversion::freeGpuData() {
+void VulkanYcbcrConversion::freeGpuData() {
     auto sharedContext = static_cast<const VulkanSharedContext*>(this->sharedContext());
     SkASSERT(fYcbcrConversion != VK_NULL_HANDLE);
     VULKAN_CALL(sharedContext->interface(),
