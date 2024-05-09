@@ -1,3 +1,4 @@
+#if 0
 /*
  * Copyright 2011 Google Inc.
  *
@@ -342,3 +343,4 @@ private:
 };
 
 DEF_SLIDE( return new ShaperSlide; );
+#endif

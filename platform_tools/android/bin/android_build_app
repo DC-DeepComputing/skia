@@ -37,6 +37,10 @@ cmd = ['./apps/gradlew',
        ':' + args.app_name + ':assemble' + target_cpu + android_buildtype,
        '-papps/' + args.app_name,
        '-P' + target_cpu + '.out.dir=' + os.path.abspath(args.output_dir)]
+
+cmd += ['--warning-mode=all']
+cmd += ['--stacktrace']
+
 if not args.no_daemon:
   cmd += ['--daemon']
 try:

@@ -1,3 +1,4 @@
+#if 0
 /*
  * Copyright 2020 Google Inc.
  *
@@ -475,3 +476,4 @@ public:
     }
 };
 DEF_SLIDE( return new SkottieCubeSlide; )
+#endif

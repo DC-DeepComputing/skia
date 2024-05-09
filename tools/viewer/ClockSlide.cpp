@@ -1,3 +1,4 @@
+#if 0
 /*
  * Copyright 2013 Google Inc.
  *
@@ -212,3 +213,4 @@ public:
 };
 
 DEF_SLIDE( return new ClockSlide(); )
+#endif

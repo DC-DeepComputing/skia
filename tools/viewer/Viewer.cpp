@@ -176,7 +176,7 @@ Application* Application::Create(int argc, char** argv, void* platformData) {
     return new Viewer(argc, argv, platformData);
 }
 
-static DEFINE_string(slide, "", "Start on this sample.");
+static DEFINE_string(slide, "GM_shadow_utils_directional", "Start on this sample.");
 static DEFINE_bool(list, false, "List samples?");
 
 #ifdef SK_GL
