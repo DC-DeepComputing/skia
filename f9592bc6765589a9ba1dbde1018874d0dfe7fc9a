@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8bb1770_2601a104",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-05-09T15:30:03Z",
+      "side": 1,
+      "message": "Now that `roll-deps` by default checkout out a shallow clone, it is necessary to `--unshallow` before running the roll script or one will always end up reporting `(1 commit)` because the commits will just be grafted with no history. Probably should check for that in the roll script.",
+      "revId": "f9592bc6765589a9ba1dbde1018874d0dfe7fc9a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
