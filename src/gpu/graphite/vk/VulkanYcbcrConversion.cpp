@@ -5,7 +5,7 @@
  * found in the LICENSE file.
  */
 
-#include "src/gpu/graphite/vk/VulkanSamplerYcbcrConversion.h"
+#include "src/gpu/graphite/vk/VulkanYcbcrConversion.h"
 
 #include "include/gpu/graphite/vk/VulkanGraphiteTypes.h"
 #include "src/gpu/graphite/vk/VulkanCaps.h"
@@ -14,9 +14,8 @@
 
 namespace skgpu::graphite {
 
-sk_sp<VulkanSamplerYcbcrConversion> VulkanSamplerYcbcrConversion::Make(
-        const VulkanSharedContext* context,
-        const VulkanYcbcrConversionInfo& conversionInfo) {
+sk_sp<VulkanYcbcrConversion> VulkanYcbcrConversion::Make(
+        const VulkanSharedContext* context, const VulkanYcbcrConversionInfo& conversionInfo) {
     if (!context->vulkanCaps().supportsYcbcrConversion()) {
         return nullptr;
     }
@@ -53,25 +52,24 @@ sk_sp<VulkanSamplerYcbcrConversion> VulkanSamplerYcbcrConversion::Make(
     if (result != VK_SUCCESS) {
         return nullptr;
     }
-    return sk_sp<VulkanSamplerYcbcrConversion>(
-            new VulkanSamplerYcbcrConversion(context, conversion));
+    return sk_sp<VulkanYcbcrConversion>(new VulkanYcbcrConversion(context, conversion));
 }
 
-GraphiteResourceKey VulkanSamplerYcbcrConversion::MakeYcbcrConversionKey(
+GraphiteResourceKey VulkanYcbcrConversion::MakeYcbcrConversionKey(
         const VulkanSharedContext* context, const VulkanYcbcrConversionInfo& info) {
     static const ResourceType kType = GraphiteResourceKey::GenerateResourceType();
 
     bool useExternalFormat = info.fFormat == VK_FORMAT_UNDEFINED;
-    // 2 uint32s needed for the external format OR 1 for a known VkFormat. 1 uint32 can store all
+    // 2 uint32s needed for the external format or 1 for a known VkFormat. 1 uint32 can store all
     // other differentiating ycbcr information.
-    const int num32DataCnt = useExternalFormat ? 3 : 2;
+    static const int num32DataCnt = useExternalFormat ? 3 : 2;
     GraphiteResourceKey key;
     GraphiteResourceKey::Builder builder(&key, kType, num32DataCnt, Shareable::kYes);
 
     int i = 0;
     if (useExternalFormat) {
+        builder[i++] = (uint32_t)(info.fExternalFormat << 32);
         builder[i++] = (uint32_t)info.fExternalFormat;
-        builder[i++] = (uint32_t)(info.fExternalFormat >> 32);
     } else {
         builder[i++] = info.fFormat;
     }
@@ -82,16 +80,16 @@ GraphiteResourceKey VulkanSamplerYcbcrConversion::MakeYcbcrConversionKey(
     return key;
 }
 
-VulkanSamplerYcbcrConversion::VulkanSamplerYcbcrConversion(
-        const VulkanSharedContext* context, VkSamplerYcbcrConversion ycbcrConversion)
+VulkanYcbcrConversion::VulkanYcbcrConversion(const VulkanSharedContext* context,
+                                             VkSamplerYcbcrConversion ycbcrConversion)
         : Resource(context,
                    Ownership::kOwned,
                    skgpu::Budgeted::kNo,
                    /*gpuMemorySize=*/0,
-                   /*label=*/"VulkanSamplerYcbcrConversion")
+                   /*label=*/"VulkanYcbcrConversion")
         , fYcbcrConversion (ycbcrConversion) {}
 
-void VulkanSamplerYcbcrConversion::freeGpuData() {
+void VulkanYcbcrConversion::freeGpuData() {
     auto sharedContext = static_cast<const VulkanSharedContext*>(this->sharedContext());
     SkASSERT(fYcbcrConversion != VK_NULL_HANDLE);
     VULKAN_CALL(sharedContext->interface(),
