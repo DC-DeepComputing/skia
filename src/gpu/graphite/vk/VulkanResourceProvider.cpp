@@ -111,7 +111,8 @@ sk_sp<GraphicsPipeline> VulkanResourceProvider::createGraphicsPipeline(
                                         pipelineDesc,
                                         renderPassDesc,
                                         compatibleRenderPass,
-                                        this->pipelineCache());
+                                        this->pipelineCache(),
+                                        this);
 }
 
 sk_sp<ComputePipeline> VulkanResourceProvider::createComputePipeline(const ComputePipelineDesc&) {
@@ -176,6 +177,20 @@ sk_sp<Sampler> VulkanResourceProvider::createSampler(const SamplerDesc& samplerD
                                samplerDesc.tileModeX(),
                                samplerDesc.tileModeY(),
                                ycbcrConversion);
+}
+
+sk_sp<VulkanSampler> VulkanResourceProvider::getSampler(GraphiteResourceKey key) const {
+    // If in cache, return
+    if (Resource* resource = fResourceCache->findAndRefResource(key, skgpu::Budgeted::kYes)) {
+        return sk_sp<VulkanSampler>(static_cast<VulkanSampler*>(resource));
+    }
+
+    // TODO: Sampler should already be created.
+    // If not, create here.
+
+    SkUNREACHABLE;
+
+    return nullptr;
 }
 
 BackendTexture VulkanResourceProvider::onCreateBackendTexture(SkISize dimensions,
@@ -519,7 +534,7 @@ BackendTexture VulkanResourceProvider::onCreateBackendTexture(AHardwareBuffer* h
                                   usageFlags,
                                   VK_SHARING_MODE_EXCLUSIVE,
                                   VK_IMAGE_ASPECT_COLOR_BIT,
-                                  VulkanYcbcrConversionInfo() };
+                                  VulkanYcbcrConversionInfo() }; // TODO initialize w/ ycbcr info?
 
     if (isRenderable && (importAsExternalFormat || !vkCaps.isRenderable(vkTexInfo))) {
         SKGPU_LOG_W("Renderable texture requested from an AHardwareBuffer which uses a VkFormat "
@@ -556,6 +571,7 @@ BackendTexture VulkanResourceProvider::onCreateBackendTexture(AHardwareBuffer* h
                         "format properties.\n");
             return {};
         }
+        vkTexInfo.fYcbcrConversionInfo = ycbcrInfo;
         externalFormat.externalFormat = hwbFormatProps.externalFormat;
     }
     const VkExternalMemoryImageCreateInfo externalMemoryImageInfo{

@@ -26,6 +26,7 @@ class VulkanDescriptorSet;
 class VulkanFramebuffer;
 class VulkanGraphicsPipeline;
 class VulkanRenderPass;
+class VulkanSampler;
 class VulkanSharedContext;
 class VulkanSamplerYcbcrConversion;
 
@@ -69,6 +70,9 @@ private:
                                AccessPattern,
                                std::string_view label) override;
     sk_sp<Sampler> createSampler(const SamplerDesc&) override;
+
+    friend class VulkanGraphicsPipeline;
+    sk_sp<VulkanSampler> getSampler(GraphiteResourceKey key) const;
 
     sk_sp<VulkanFramebuffer> createFramebuffer(
             const VulkanSharedContext*,

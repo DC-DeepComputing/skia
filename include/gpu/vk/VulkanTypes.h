@@ -141,7 +141,6 @@ struct VulkanYcbcrConversionInfo {
     static VulkanYcbcrConversionInfo MakeFromNumericalRepresentation(uint32_t nonFormatYcbcrInfo,
                                                                      uint64_t formatFeatures,
                                                                      uint32_t format) {
-
         VulkanYcbcrConversionInfo info;
         bool useExternalFormat =  static_cast<bool>(
                 (nonFormatYcbcrInfo & kUseExternalFormatMask) >> kUsesExternalFormatShift);

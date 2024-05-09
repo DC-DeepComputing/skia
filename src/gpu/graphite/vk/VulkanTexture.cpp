@@ -51,6 +51,10 @@ bool VulkanTexture::MakeVkImage(const VulkanSharedContext* sharedContext,
     VkImageLayout initialLayout = isLinear ? VK_IMAGE_LAYOUT_PREINITIALIZED
                                            : VK_IMAGE_LAYOUT_UNDEFINED;
 
+    if (spec.fImageTiling == VK_IMAGE_TILING_DRM_FORMAT_MODIFIER_EXT) {
+        SkDebugf("Encountered VK_IMAGE_TILING_DRM_FORMAT_MODIFIER_EXT tiling mode\n");
+    }
+
     // Create Image
     VkSampleCountFlagBits vkSamples;
     if (!SampleCountToVkSampleCount(info.numSamples(), &vkSamples)) {

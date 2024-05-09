@@ -39,6 +39,8 @@ VulkanCaps::VulkanCaps(const ContextOptions& contextOptions,
                        const skgpu::VulkanExtensions* extensions,
                        Protected isProtected)
         : Caps() {
+    // kSamplerResourceType = GraphiteResourceKey::GenerateResourceType();
+    // init_sampler_rsrc_type(kSamplerResourceType);
     this->init(contextOptions, vkInterface, physDev, physicalDeviceVersion, features, extensions,
                isProtected);
 }
@@ -155,6 +157,8 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
     if (extensions->hasExtension(VK_EXT_DEVICE_FAULT_EXTENSION_NAME, 1)) {
         fSupportsDeviceFaultInfo = true;
     }
+
+    // static const kSamplerResourceType = GraphiteResourceKey::GenerateResourceType();
 
     // Note that format table initialization should be performed at the end of this method to ensure
     // all capability determinations are completed prior to populating the format tables.
@@ -1494,8 +1498,11 @@ void VulkanCaps::buildKeyForTexture(SkISize dimensions,
     builder[i++] = dimensions.width();
     builder[i++] = dimensions.height();
 
+    // Add format information to key.
     if (ycbcrInfo.isValid()) {
         SkASSERT(ycbcrInfo.fFormat != VK_FORMAT_UNDEFINED || ycbcrInfo.fExternalFormat != 0);
+
+        builder[i++] = ycbcrInfo.nonFormatInfoAsUInt32();
         bool useExternalFormat = ycbcrInfo.fFormat == VK_FORMAT_UNDEFINED;
         builder[i++] = ycbcrInfo.nonFormatInfoAsUInt32();
         if (useExternalFormat) {
