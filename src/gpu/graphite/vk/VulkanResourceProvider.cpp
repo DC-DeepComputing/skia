@@ -142,10 +142,40 @@ sk_sp<Buffer> VulkanResourceProvider::createBuffer(size_t size,
 }
 
 sk_sp<Sampler> VulkanResourceProvider::createSampler(const SamplerDesc& samplerDesc) {
+    sk_sp<VulkanSamplerYcbcrConversion> ycbcrConversion = nullptr;
+
+    // Non-zero conversion information means the sampler utilizes a ycbcr conversion.
+    bool usesYcbcrConversion = (samplerDesc.desc() >> SamplerDesc::kImmutableSamplerInfoShift) != 0;
+    if (usesYcbcrConversion) {
+        GraphiteResourceKey ycbcrKey =
+                VulkanSamplerYcbcrConversion::GetKeyFromSamplerDesc(samplerDesc);
+
+        if (Resource* resource = fResourceCache->findAndRefResource(ycbcrKey,
+                                                                    skgpu::Budgeted::kYes)) {
+            ycbcrConversion = sk_sp<VulkanSamplerYcbcrConversion>(
+                    static_cast<VulkanSamplerYcbcrConversion*>(resource));
+        } else {
+            // Textures and their conversions are made first, so theoretically the necessary YCbCr
+            // conversion should already be available in the cache. However, if not, create it.
+            VulkanYcbcrConversionInfo ycbcrConversionInfo =
+                    VulkanYcbcrConversionInfo::MakeFromNumericalRepresentation(
+                            static_cast<uint32_t>(
+                                    samplerDesc.desc() >> SamplerDesc::kImmutableSamplerInfoShift),
+                            samplerDesc.formatFeatures(),
+                            samplerDesc.format());
+
+            // TODO(b/339614071): findOrCreateCompatibleYcbcrConversion re-determines a key for
+            // that conversion, so avoiding that would be ideal.
+            ycbcrConversion = this->findOrCreateCompatibleYcbcrConversion(ycbcrConversionInfo);
+            SkASSERT(ycbcrConversion);
+        }
+    }
+
     return VulkanSampler::Make(this->vulkanSharedContext(),
                                samplerDesc.samplingOptions(),
                                samplerDesc.tileModeX(),
-                               samplerDesc.tileModeY());
+                               samplerDesc.tileModeY(),
+                               ycbcrConversion);
 }
 
 BackendTexture VulkanResourceProvider::onCreateBackendTexture(SkISize dimensions,
@@ -359,9 +389,8 @@ void VulkanResourceProvider::onDeleteBackendTexture(const BackendTexture& textur
     }
 }
 
-sk_sp<VulkanSamplerYcbcrConversion>
-        VulkanResourceProvider::findOrCreateCompatibleSamplerYcbcrConversion(
-                const VulkanYcbcrConversionInfo& ycbcrInfo) const {
+sk_sp<VulkanSamplerYcbcrConversion> VulkanResourceProvider::findOrCreateCompatibleYcbcrConversion(
+        const VulkanYcbcrConversionInfo& ycbcrInfo) const {
     if (!ycbcrInfo.isValid()) {
         return nullptr;
     }
@@ -369,7 +398,7 @@ sk_sp<VulkanSamplerYcbcrConversion>
             this->vulkanSharedContext(), ycbcrInfo);
 
     if (Resource* resource = fResourceCache->findAndRefResource(ycbcrConversionKey,
-                                                                skgpu::Budgeted::kNo)) {
+                                                                skgpu::Budgeted::kYes)) {
         return sk_sp<VulkanSamplerYcbcrConversion>(
                 static_cast<VulkanSamplerYcbcrConversion*>(resource));
     }
