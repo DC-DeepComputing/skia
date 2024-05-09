@@ -15,6 +15,7 @@ namespace skgpu::graphite {
 KeyContext::KeyContext(skgpu::graphite::Recorder* recorder,
                        const SkM44& local2Dev,
                        const SkColorInfo& dstColorInfo,
+                       OptimizeSampling optimizeSampling,
                        const SkColor4f& paintColor,
                        sk_sp<TextureProxy> dstTexture,
                        SkIPoint dstOffset)
@@ -22,6 +23,7 @@ KeyContext::KeyContext(skgpu::graphite::Recorder* recorder,
         , fLocal2Dev(local2Dev)
         , fLocalMatrix(nullptr)
         , fDstColorInfo(dstColorInfo)
+        , fOptimizeSampling(optimizeSampling)
         , fCaps(recorder->priv().caps())
         , fDstTexture(std::move(dstTexture))
         , fDstOffset(dstOffset) {
