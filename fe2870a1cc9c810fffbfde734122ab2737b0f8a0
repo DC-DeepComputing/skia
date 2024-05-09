@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b89502e_a45915d8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-05-09T21:51:51Z",
+      "side": 1,
+      "message": "Cleans up the font subsetting interface quite a bit so it\u0027s easier to reason about externalizing. Need a good public bitset type. Skia is here using `SkPDFGlyphUsage` which is backed by `SkBitSet`, which is translated into HarfBuzz as a `hb_set_t` which is backed by a `hb_bit_set_t` which is much the same (a bit sparser, but much the same).",
+      "revId": "fe2870a1cc9c810fffbfde734122ab2737b0f8a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
