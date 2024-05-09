@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5401efba_46c019ec",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-05-09T18:27:11Z",
+      "side": 1,
+      "message": "This is an interesting exercise, and some more effort could be made to make it work. However, the real issue here is getting Skia\u0027s `src/pdf` modularized, which really means making a way for a user to pass in a subsetter (or no subsetter).",
+      "revId": "dc6d956ac59897327967afbb478b8520c84785aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41ecb3f9_4d1e8c05",
+        "filename": "bazel/external/harfbuzz/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 440,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-05-09T18:27:11Z",
+      "side": 1,
+      "message": "Basically need to make all the \"headers\" available to both.",
+      "revId": "dc6d956ac59897327967afbb478b8520c84785aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
