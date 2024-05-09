@@ -20,6 +20,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f872a946_e3aaf88a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 30
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-05-09T18:50:30Z",
+      "side": 1,
+      "message": "Maybe I don\u0027t fully understand the flow in the system but there seems to be a lot of packing and unpacking going on and the need to generate a key multiple times for the same sampler. Should we just be storing the key on something so we don\u0027t need to keep recalculating it?",
+      "revId": "be986e08cad2aac25ae997ad89d30b1b6279d957",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6755b05b_21dd05aa",
         "filename": "include/gpu/vk/VulkanTypes.h",
         "patchSetId": 30
@@ -37,6 +54,132 @@
         "endLine": 141,
         "endChar": 68
       },
+      "revId": "be986e08cad2aac25ae997ad89d30b1b6279d957",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e84695b9_6169f729",
+        "filename": "include/gpu/vk/VulkanTypes.h",
+        "patchSetId": 30
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-05-09T18:50:30Z",
+      "side": 1,
+      "message": "Definitely don\u0027t want any #ifdef checks here as that messes up our modular builds.\n\nHowever, I question why we have this and nonFormatInfoAsUInt32 (and all the related constexpr bit values) exposed in the public API. AFAIK this should be things that need to be exposed to a client. Can these two functions just be moved to be static helpers in an internal Utils file? Or at a minimum a private Types file",
+      "parentUuid": "6755b05b_21dd05aa",
+      "range": {
+        "startLine": 141,
+        "startChar": 37,
+        "endLine": 141,
+        "endChar": 68
+      },
+      "revId": "be986e08cad2aac25ae997ad89d30b1b6279d957",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d75bd0ea_f70fbdf1",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 1431,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-05-09T18:50:30Z",
+      "side": 1,
+      "message": "should this be +\u003d since we need the amount needed for the ycbcr plus the 1 for normal sampler things? Or maybe the ycbcr things are already including that extra 1? In that case I wonder if those should be updated to just reflect how much space is needed for the ycbcr info since it is specific to those types and then add the + 1 here.",
+      "range": {
+        "startLine": 1431,
+        "startChar": 23,
+        "endLine": 1431,
+        "endChar": 24
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "07c972ea_1ebcf0ef",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/vk/VulkanCaps.cpp",
+              "range": {
+                "startLine": 1431,
+                "startChar": 0,
+                "endLine": 1433,
+                "endChar": 0
+              },
+              "replacement": "        uint32Quantity \u003d usesExternalFormat ?\n                VulkanYcbcrConversionInfo::kInt32sNeededExternalFormat + 1\n                : VulkanYcbcrConversionInfo::kInt32sNeededKnownFormat + 1;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "be986e08cad2aac25ae997ad89d30b1b6279d957",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "234d3858_02d6bf9a",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 1443,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-05-09T18:50:30Z",
+      "side": 1,
+      "message": "Do we actually have to key the sampler off of this? This shouldn\u0027t be part of making the ycbcr sampler object afaik. Like we need to keep this value connected to the texture to know how we can use it, but we could use the same ycbcr sampler with different textures that have different features.",
+      "range": {
+        "startLine": 1443,
+        "startChar": 12,
+        "endLine": 1443,
+        "endChar": 55
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "a509b7d3_637510e7",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/vk/VulkanCaps.cpp",
+              "range": {
+                "startLine": 1443,
+                "startChar": 0,
+                "endLine": 1444,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "src/gpu/graphite/vk/VulkanCaps.cpp",
+              "range": {
+                "startLine": 1504,
+                "startChar": 0,
+                "endLine": 1505,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "src/gpu/graphite/vk/VulkanCaps.cpp",
+              "range": {
+                "startLine": 1537,
+                "startChar": 0,
+                "endLine": 1538,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
       "revId": "be986e08cad2aac25ae997ad89d30b1b6279d957",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
