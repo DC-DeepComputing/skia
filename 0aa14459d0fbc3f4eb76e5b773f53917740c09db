@@ -34,6 +34,23 @@
       "parentUuid": "532799c8_50c81033",
       "revId": "0aa14459d0fbc3f4eb76e5b773f53917740c09db",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d434f2b_6681a070",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-05-09T23:01:28Z",
+      "side": 1,
+      "message": "Fix for the estimator: https://github.com/linebender/vello/pull/573\nFix for the hang: https://github.com/linebender/vello/pull/553\n\nI\u0027ll roll vello and retry this CL once those land.",
+      "revId": "0aa14459d0fbc3f4eb76e5b773f53917740c09db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
