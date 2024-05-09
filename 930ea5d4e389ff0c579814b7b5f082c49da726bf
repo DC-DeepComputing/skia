@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0b74fa57_64046169",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 19305
+      },
+      "writtenOn": "2024-05-09T17:46:34Z",
+      "side": 1,
+      "message": "Small but important change related to this. I did not add this \u0027fOptimizeSampling\u0027 to the copy constructor so it was just using default values. I have fixed this and now everything works as expected.",
+      "parentUuid": "cd604b8f_3bbefe2a",
+      "range": {
+        "startLine": 51,
+        "startChar": 66,
+        "endLine": 51,
+        "endChar": 69
+      },
+      "revId": "930ea5d4e389ff0c579814b7b5f082c49da726bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e93c85be_9ea476d7",
         "filename": "src/gpu/graphite/ContextUtils.h",
         "patchSetId": 16
