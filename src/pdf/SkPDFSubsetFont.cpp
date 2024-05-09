@@ -27,19 +27,53 @@ using HBFace = std::unique_ptr<hb_face_t, SkFunctionObject<hb_face_destroy>>;
 using HBSubsetInput = std::unique_ptr<hb_subset_input_t, SkFunctionObject<hb_subset_input_destroy>>;
 using HBSet = std::unique_ptr<hb_set_t, SkFunctionObject<hb_set_destroy>>;
 
-HBBlob stream_to_blob(std::unique_ptr<SkStreamAsset> asset) {
-    size_t size = asset->getLength();
-    HBBlob blob;
-    if (const void* base = asset->getMemoryBase()) {
-        blob.reset(hb_blob_create(const_cast<char*>(static_cast<const char*>(base)), SkToUInt(size),
-                                  HB_MEMORY_MODE_READONLY, asset.release(),
-                                  [](void* p) { delete (SkStreamAsset*)p; }));
-    } else {
-        void* ptr = size ? sk_malloc_throw(size) : nullptr;
-        asset->read(ptr, size);
-        blob.reset(hb_blob_create((char*)ptr, SkToUInt(size),
-                                  HB_MEMORY_MODE_READONLY, ptr, sk_free));
+unsigned int skhb_get_table_tags_func(const hb_face_t *face,
+                                      unsigned int start_offset,
+                                      unsigned int *table_count, /* IN/OUT */
+                                      hb_tag_t *table_tags /* OUT */,
+                                      void *user_data)
+{
+    SkTypeface& typeface = *reinterpret_cast<SkTypeface*>(user_data);
+    int numTables = typeface.countTables();
+    if (numTables <= 0 || static_cast<unsigned int>(numTables) <= start_offset) {
+        *table_count = 0;
+        return 0;
     }
+    if (!table_count || *table_count == 0) {
+        return numTables;
+    }
+
+    std::unique_ptr<SkFontTableTag[]> allTableTags = std::make_unique<SkFontTableTag[]>(numTables);
+    int numTableTags = typeface.readTableTags({allTableTags.get(), numTables});
+    if (numTableTags != numTables) {
+        *table_count = 0;
+        return 0;
+    }
+
+    *table_count = std::min(*table_count, static_cast<unsigned int>(numTableTags) - start_offset);
+    memcpy(table_tags, allTableTags.get() + start_offset, *table_count);
+    return numTableTags;
+}
+
+hb_blob_t* skhb_get_table(hb_face_t* face, hb_tag_t tag, void* user_data) {
+    SkTypeface& typeface = *reinterpret_cast<SkTypeface*>(user_data);
+
+    auto data = typeface.copyTableData(tag);
+    if (!data) {
+        return nullptr;
+    }
+    SkData* rawData = data.release();
+    return hb_blob_create(reinterpret_cast<char*>(rawData->writable_data()), rawData->size(),
+                          HB_MEMORY_MODE_READONLY, rawData,
+                          [](void* p) { SkSafeUnref(((SkData*)p)); });
+}
+
+HBBlob stream_to_blob(std::unique_ptr<SkStreamAsset> asset) {
+    const void* base = asset->getMemoryBase();
+    size_t size = asset->getLength();
+    HBBlob blob(hb_blob_create(const_cast<char*>(static_cast<const char*>(base)), SkToUInt(size),
+                               HB_MEMORY_MODE_READONLY, asset.release(),
+                               [](void* p) { delete (SkStreamAsset*)p; }));
     SkASSERT(blob);
     hb_blob_make_immutable(blob.get());
     return blob;
@@ -72,14 +106,34 @@ HBFace make_subset(hb_subset_input_t* input, hb_face_t* face, bool retainZeroGly
 
 sk_sp<SkData> subset_harfbuzz(const SkTypeface& typeface, const SkPDFGlyphUse& glyphUsage) {
     int index = 0;
-    std::unique_ptr<SkStreamAsset> typefaceAsset = typeface.openStream(&index);
+    std::unique_ptr<SkStreamAsset> typefaceAsset = typeface.openExistingStream(&index);
     HBFace face;
-    HBBlob blob(stream_to_blob(std::move(typefaceAsset)));
-    // hb_face_create always succeeds. Check that the format is minimally recognized first.
-    // See https://github.com/harfbuzz/harfbuzz/issues/248
-    unsigned int num_hb_faces = hb_face_count(blob.get());
-    if (0 < num_hb_faces && (unsigned)index < num_hb_faces) {
-        face.reset(hb_face_create(blob.get(), (unsigned)index));
+    if (typefaceAsset && typefaceAsset->getMemoryBase()) {
+        HBBlob blob(stream_to_blob(std::move(typefaceAsset)));
+        // hb_face_create always succeeds. Check that the format is minimally recognized first.
+        // See https://github.com/harfbuzz/harfbuzz/issues/248
+        unsigned int num_hb_faces = hb_face_count(blob.get());
+        if (0 < num_hb_faces && (unsigned)index < num_hb_faces) {
+            face.reset(hb_face_create(blob.get(), (unsigned)index));
+            // Check the number of glyphs as a basic sanitization step.
+            if (face && hb_face_get_glyph_count(face.get()) == 0) {
+                face.reset();
+            }
+        }
+    }
+    if (!face) {
+        // hb_face_create_for_tables may still create a working hb_face.
+        // See https://github.com/harfbuzz/harfbuzz/issues/3609
+        // See https://github.com/harfbuzz/harfbuzz/issues/1697
+        face.reset(hb_face_create_for_tables(
+            skhb_get_table,
+            const_cast<SkTypeface*>(SkRef(&typeface)),
+            [](void* user_data){ SkSafeUnref(reinterpret_cast<SkTypeface*>(user_data)); }));
+        hb_face_set_index(face.get(), (unsigned)index);
+        hb_face_set_get_table_tags_func(
+            face.get(), skhb_get_table_tags_func,
+            const_cast<SkTypeface*>(SkRef(&typeface)),
+            [](void* user_data){ SkSafeUnref(reinterpret_cast<SkTypeface*>(user_data)); });
         // Check the number of glyphs as a basic sanitization step.
         if (face && hb_face_get_glyph_count(face.get()) == 0) {
             face.reset();
