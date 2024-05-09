@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f53e3221_96c947b5",
+        "filename": "resources/skottie/skottie-bezier-extranormal.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 3241878
+      },
+      "writtenOn": "2024-05-09T14:23:29Z",
+      "side": 0,
+      "message": "Ah I hadn\u0027t considered that. I\u0027m going to revert this as a reminder/example for that work.",
+      "parentUuid": "bd219bcd_4a5b43db",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 53,
+        "endChar": 11
+      },
+      "revId": "0b31f64bd8d801cc73737d09f4d1b486da584c74",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1d594378_1e6b2ae1",
