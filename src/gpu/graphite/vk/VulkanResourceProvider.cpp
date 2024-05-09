@@ -26,9 +26,9 @@
 #include "src/gpu/graphite/vk/VulkanGraphicsPipeline.h"
 #include "src/gpu/graphite/vk/VulkanRenderPass.h"
 #include "src/gpu/graphite/vk/VulkanSampler.h"
-#include "src/gpu/graphite/vk/VulkanSamplerYcbcrConversion.h"
 #include "src/gpu/graphite/vk/VulkanSharedContext.h"
 #include "src/gpu/graphite/vk/VulkanTexture.h"
+#include "src/gpu/graphite/vk/VulkanYcbcrConversion.h"
 #include "src/gpu/vk/VulkanMemory.h"
 #include "src/sksl/SkSLCompiler.h"
 
@@ -359,22 +359,21 @@ void VulkanResourceProvider::onDeleteBackendTexture(const BackendTexture& textur
     }
 }
 
-sk_sp<VulkanSamplerYcbcrConversion>
-        VulkanResourceProvider::findOrCreateCompatibleSamplerYcbcrConversion(
-                const VulkanYcbcrConversionInfo& ycbcrInfo) const {
+sk_sp<VulkanYcbcrConversion> VulkanResourceProvider::findOrCreateCompatibleYcbcrConversion(
+        const VulkanYcbcrConversionInfo& ycbcrInfo) const {
     if (!ycbcrInfo.isValid()) {
         return nullptr;
     }
-    auto ycbcrConversionKey = VulkanSamplerYcbcrConversion::MakeYcbcrConversionKey(
+    auto ycbcrConversionKey = VulkanYcbcrConversion::MakeYcbcrConversionKey(
             this->vulkanSharedContext(), ycbcrInfo);
 
     if (Resource* resource = fResourceCache->findAndRefResource(ycbcrConversionKey,
                                                                 skgpu::Budgeted::kNo)) {
-        return sk_sp<VulkanSamplerYcbcrConversion>(
-                static_cast<VulkanSamplerYcbcrConversion*>(resource));
+        return sk_sp<VulkanYcbcrConversion>(
+                static_cast<VulkanYcbcrConversion*>(resource));
     }
 
-    auto ycbcrConversion = VulkanSamplerYcbcrConversion::Make(this->vulkanSharedContext(),
+    auto ycbcrConversion = VulkanYcbcrConversion::Make(this->vulkanSharedContext(),
                                                               ycbcrInfo);
     if (!ycbcrConversion) {
         return nullptr;
