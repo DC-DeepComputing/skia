@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f2c723f_635a8f75",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-05-09T17:25:49Z",
+      "side": 1,
+      "message": "PTAL, had to tweak some things to make the layer checker happy",
+      "revId": "57ad641f77f4f3c1cc289191680bb103848ede73",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
