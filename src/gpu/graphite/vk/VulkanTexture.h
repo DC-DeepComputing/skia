@@ -38,20 +38,20 @@ public:
                             CreatedImageInfo* outInfo);
 
     static sk_sp<Texture> Make(const VulkanSharedContext*,
-                               const VulkanResourceProvider*,
                                SkISize dimensions,
                                const TextureInfo&,
                                std::string_view label,
-                               skgpu::Budgeted);
+                               skgpu::Budgeted,
+                               sk_sp<VulkanSamplerYcbcrConversion>);
 
     static sk_sp<Texture> MakeWrapped(const VulkanSharedContext*,
-                                      const VulkanResourceProvider*,
                                       SkISize dimensions,
                                       const TextureInfo&,
                                       sk_sp<MutableTextureState>,
                                       VkImage,
                                       const VulkanAlloc&,
-                                      std::string_view label);
+                                      std::string_view label,
+                                      sk_sp<VulkanSamplerYcbcrConversion>);
 
     ~VulkanTexture() override {}
 
