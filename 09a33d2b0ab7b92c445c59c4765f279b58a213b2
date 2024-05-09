@@ -59,6 +59,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c036fb9_808ddee4",
+        "filename": "src/gpu/graphite/PipelineData.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-05-09T13:31:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3f4914ce_7823a82f",
+      "range": {
+        "startLine": 15,
+        "startChar": 76,
+        "endLine": 15,
+        "endChar": 77
+      },
+      "revId": "09a33d2b0ab7b92c445c59c4765f279b58a213b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8e24c69b_f4135272",
@@ -72,6 +96,30 @@
       "writtenOn": "2024-05-08T17:43:23Z",
       "side": 1,
       "message": "nit: not needed anymore, right?",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 34
+      },
+      "revId": "09a33d2b0ab7b92c445c59c4765f279b58a213b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "836354a4_a6241963",
+        "filename": "src/gpu/graphite/ResourceTypes.h",
+        "patchSetId": 36
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-05-09T13:31:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8e24c69b_f4135272",
       "range": {
         "startLine": 12,
         "startChar": 0,
@@ -133,6 +181,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f2827632_2684c5bd",
+        "filename": "src/gpu/graphite/ResourceTypes.h",
+        "patchSetId": 36
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-05-09T13:31:06Z",
+      "side": 1,
+      "message": "Good callout; changed to ImmutableSamplerInfo.",
+      "parentUuid": "6ef20d4d_e2647fec",
+      "range": {
+        "startLine": 199,
+        "startChar": 7,
+        "endLine": 199,
+        "endChar": 28
+      },
+      "revId": "09a33d2b0ab7b92c445c59c4765f279b58a213b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9abaa258_87f69a16",
@@ -170,6 +242,30 @@
           ]
         }
       ],
+      "revId": "09a33d2b0ab7b92c445c59c4765f279b58a213b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "337826b1_7e165f97",
+        "filename": "src/gpu/graphite/ResourceTypes.h",
+        "patchSetId": 36
+      },
+      "lineNbr": 285,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-05-09T13:31:06Z",
+      "side": 1,
+      "message": "I was thinking the same. Removed 😊",
+      "parentUuid": "9abaa258_87f69a16",
+      "range": {
+        "startLine": 285,
+        "startChar": 0,
+        "endLine": 285,
+        "endChar": 93
+      },
       "revId": "09a33d2b0ab7b92c445c59c4765f279b58a213b2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -215,6 +311,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d81d179_0c3fba0f",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 1486,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-05-09T13:31:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d1a47e91_51673d4b",
+      "range": {
+        "startLine": 1486,
+        "startChar": 87,
+        "endLine": 1486,
+        "endChar": 89
+      },
+      "revId": "09a33d2b0ab7b92c445c59c4765f279b58a213b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "71084ac7_d8a11944",
@@ -252,6 +372,30 @@
           ]
         }
       ],
+      "revId": "09a33d2b0ab7b92c445c59c4765f279b58a213b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "022475e3_5dd4e3d7",
+        "filename": "src/gpu/graphite/vk/VulkanSamplerYcbcrConversion.h",
+        "patchSetId": 36
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-05-09T13:31:06Z",
+      "side": 1,
+      "message": "Thank you for the feedback :D Ack; added bug #.",
+      "parentUuid": "71084ac7_d8a11944",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 76
+      },
       "revId": "09a33d2b0ab7b92c445c59c4765f279b58a213b2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
