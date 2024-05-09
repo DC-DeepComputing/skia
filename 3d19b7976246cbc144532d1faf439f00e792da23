@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c77dce3_f6fe5a7f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-05-09T17:39:30Z",
+      "side": 1,
+      "message": "This implements the VulkanTexture creation improvements we talked about offline 😄",
+      "revId": "3d19b7976246cbc144532d1faf439f00e792da23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
