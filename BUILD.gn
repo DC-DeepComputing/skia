@@ -1201,6 +1201,9 @@ optional("graphite") {
   if (skia_use_dawn) {
     public += skia_graphite_dawn_public
     sources += skia_graphite_dawn_sources
+    if (skia_canvaskit_enable_webgpu) {
+      deps += [ "//third_party/externals/dawn/src/emdawnwebgpu:emdawnwebgpu" ]
+    }
   }
   if (skia_use_metal) {
     public_defines += [ "SK_METAL" ]
