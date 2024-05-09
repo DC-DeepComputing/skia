@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7690ab79_538c6c19",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 30
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-05-09T15:37:02Z",
+      "side": 1,
+      "message": "PTAL when you get a chance ^-^ feel free to do your usual general skim and then follow up w/ any nits after I address those.",
+      "revId": "be986e08cad2aac25ae997ad89d30b1b6279d957",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6755b05b_21dd05aa",
+        "filename": "include/gpu/vk/VulkanTypes.h",
+        "patchSetId": 30
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-05-09T15:37:02Z",
+      "side": 1,
+      "message": "This method and the small convenience method `numInt32sNeeded()` above are only used within graphite, so we *could* encapsulate those in `#ifdef SK_GRAPHITE`, though I\u0027m not sure if it is better to avoid `#ifdef` guards and just allow these methods to exist even if unused by ganesh. LMKWYT!",
+      "range": {
+        "startLine": 141,
+        "startChar": 37,
+        "endLine": 141,
+        "endChar": 68
+      },
+      "revId": "be986e08cad2aac25ae997ad89d30b1b6279d957",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
