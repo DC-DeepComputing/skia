@@ -109,7 +109,10 @@ bool DawnCommandBuffer::onAddRenderPass(const RenderPassDesc& renderPassDesc,
     this->setViewport(viewport);
 
     for (const auto& drawPass : drawPasses) {
-        this->addDrawPass(drawPass.get());
+        if (!this->addDrawPass(drawPass.get())) SK_UNLIKELY {
+            this->endRenderPass();
+            return false;
+        }
     }
 
     this->endRenderPass();
@@ -393,13 +396,15 @@ void DawnCommandBuffer::endRenderPass() {
     fActiveRenderPassEncoder = nullptr;
 }
 
-void DawnCommandBuffer::addDrawPass(const DrawPass* drawPass) {
+bool DawnCommandBuffer::addDrawPass(const DrawPass* drawPass) {
     drawPass->addResourceRefs(this);
     for (auto [type, cmdPtr] : drawPass->commands()) {
         switch (type) {
             case DrawPassCommands::Type::kBindGraphicsPipeline: {
                 auto bgp = static_cast<DrawPassCommands::BindGraphicsPipeline*>(cmdPtr);
-                this->bindGraphicsPipeline(drawPass->getPipeline(bgp->fPipelineIndex));
+                if (!this->bindGraphicsPipeline(drawPass->getPipeline(bgp->fPipelineIndex))) {
+                    return false;
+                }
                 break;
             }
             case DrawPassCommands::Type::kSetBlendConstants: {
@@ -471,14 +476,21 @@ void DawnCommandBuffer::addDrawPass(const DrawPass* drawPass) {
             }
         }
     }
+
+    return true;
 }
 
-void DawnCommandBuffer::bindGraphicsPipeline(const GraphicsPipeline* graphicsPipeline) {
+bool DawnCommandBuffer::bindGraphicsPipeline(const GraphicsPipeline* graphicsPipeline) {
     SkASSERT(fActiveRenderPassEncoder);
 
     fActiveGraphicsPipeline = static_cast<const DawnGraphicsPipeline*>(graphicsPipeline);
+    if (!fActiveGraphicsPipeline) {
+        return false;
+    }
     fActiveRenderPassEncoder.SetPipeline(fActiveGraphicsPipeline->dawnRenderPipeline());
     fBoundUniformBuffersDirty = true;
+
+    return true;
 }
 
 void DawnCommandBuffer::bindUniformBuffer(const BindUniformBufferInfo& info, UniformSlot slot) {
