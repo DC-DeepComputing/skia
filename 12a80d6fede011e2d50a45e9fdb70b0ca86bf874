@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2dbeb570_f46d5e00",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1238,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-05-09T21:11:51Z",
+      "side": 1,
+      "message": "I am silly; this is for linear filtering not tiling. All external formats can be sampled, so this can simply return true.",
+      "parentUuid": "29f3ac3b_5b1d65eb",
+      "range": {
+        "startLine": 1235,
+        "startChar": 12,
+        "endLine": 1238,
+        "endChar": 90
+      },
+      "revId": "12a80d6fede011e2d50a45e9fdb70b0ca86bf874",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c48d2b6c_b2efb2a9",
