@@ -147,17 +147,15 @@ bool VulkanTexture::MakeVkImage(const VulkanSharedContext* sharedContext,
 }
 
 sk_sp<Texture> VulkanTexture::Make(const VulkanSharedContext* sharedContext,
-                                   const VulkanResourceProvider* resourceProvider,
                                    SkISize dimensions,
                                    const TextureInfo& info,
                                    std::string_view label,
-                                   skgpu::Budgeted budgeted) {
+                                   skgpu::Budgeted budgeted,
+                                   sk_sp<VulkanSamplerYcbcrConversion> ycbcrConversion) {
     CreatedImageInfo imageInfo;
     if (!MakeVkImage(sharedContext, dimensions, info, &imageInfo)) {
         return nullptr;
     }
-    auto ycbcrConversion = resourceProvider->findOrCreateCompatibleSamplerYcbcrConversion(
-            info.vulkanTextureSpec().fYcbcrConversionInfo);
 
     return sk_sp<Texture>(new VulkanTexture(sharedContext,
                                             dimensions,
@@ -172,16 +170,13 @@ sk_sp<Texture> VulkanTexture::Make(const VulkanSharedContext* sharedContext,
 }
 
 sk_sp<Texture> VulkanTexture::MakeWrapped(const VulkanSharedContext* sharedContext,
-                                          const VulkanResourceProvider* resourceProvider,
                                           SkISize dimensions,
                                           const TextureInfo& info,
                                           sk_sp<MutableTextureState> mutableState,
                                           VkImage image,
                                           const VulkanAlloc& alloc,
-                                          std::string_view label) {
-    auto ycbcrConversion = resourceProvider->findOrCreateCompatibleSamplerYcbcrConversion(
-            info.vulkanTextureSpec().fYcbcrConversionInfo);
-
+                                          std::string_view label,
+                                          sk_sp<VulkanSamplerYcbcrConversion> ycbcrConversion) {
     return sk_sp<Texture>(new VulkanTexture(sharedContext,
                                             dimensions,
                                             info,
