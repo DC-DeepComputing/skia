@@ -149,18 +149,6 @@ skia_cc_library(
     ],
 )
 
-skia_cc_library(
-    name = "utils",
-    srcs = ["//modules/skottie/utils:srcs"],
-    hdrs = ["//modules/skottie/utils:hdrs"],
-    visibility = ["//modules/canvaskit:__pkg__"],
-    deps = [
-        ":skottie",
-        "//:core",
-        "//tools/skui",
-    ],
-)
-
 # A tiny subset of Skottie, exposing text-shaping related functions
 # for clients which require low-level access to shaping metrics.
 # There is no animation code available here.

@@ -1,4 +1,4 @@
-load("//bazel:skia_rules.bzl", "exports_files_legacy", "skia_filegroup")
+load("//bazel:skia_rules.bzl", "exports_files_legacy", "skia_cc_library", "skia_filegroup")
 
 package(
     default_applicable_licenses = ["//:license"],
@@ -13,7 +13,6 @@ skia_filegroup(
     srcs = [
         "SkottieUtils.h",
         "TextEditor.h",
-        "TextPreshape.h",
     ],
     visibility = ["//modules/skottie:__pkg__"],
 )
@@ -23,7 +22,6 @@ skia_filegroup(
     srcs = [
         "SkottieUtils.cpp",
         "TextEditor.cpp",
-        "TextPreshape.cpp",
     ],
     visibility = ["//modules/skottie:__pkg__"],
 )
@@ -32,6 +30,50 @@ skia_filegroup(
     name = "skottie_preshape_tool",
     srcs = [
         "PreshapeTool.cpp",
+        "TextPreshape.cpp",
+        "TextPreshape.h",
     ],
     visibility = ["//modules/skottie:__pkg__"],
+)
+
+skia_cc_library(
+    name = "skottie_utils",
+    srcs = [
+        "SkottieUtils.cpp",
+    ],
+    hdrs = [
+        "SkottieUtils.h",
+    ],
+    features = ["layering_check"],
+    visibility = [
+        "//:__pkg__",
+        "//modules/canvaskit:__pkg__",
+    ],
+    deps = [
+        "//:core",
+        "//modules/skottie",
+        "//modules/skresources",
+        "//src/base",
+    ],
+)
+
+skia_cc_library(
+    name = "text_editor",
+    srcs = [
+        "TextEditor.cpp",
+    ],
+    hdrs = [
+        "TextEditor.h",
+    ],
+    features = ["layering_check"],
+    visibility = [
+        "//:__pkg__",
+        "//modules/canvaskit:__pkg__",
+    ],
+    deps = [
+        "//:core",
+        "//modules/skottie",
+        "//src/base",
+        "//tools/skui",
+    ],
 )
