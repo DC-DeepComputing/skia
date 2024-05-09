@@ -73,6 +73,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9ec36403_ce1ca86d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-05-09T18:55:13Z",
+      "side": 1,
+      "message": "I have a question about Michael\u0027s 2. Michale, what is the scenario you think we\u0027d want backend labels on things like samplers, layout descriptions, and even pipelines, but you don\u0027t care about having backend labels on textures and buffers? In theory Chrome is only going to enable these labels when it has the feature to be performant enough, so I think I agree with Peng\u0027s original approach to have the guard be on all labels to keep things consistent.",
+      "parentUuid": "e4c239ea_15d6213a",
+      "revId": "1ed60888fba8278d9120f8ac71d9d97db5f910d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "05048f67_6f934d27",
         "filename": "include/gpu/graphite/ContextOptions.h",
         "patchSetId": 4
