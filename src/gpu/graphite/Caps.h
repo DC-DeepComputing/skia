@@ -326,6 +326,14 @@ protected:
         }
     }
 
+    // Some backends, such as Vulkan, have compatible texture info & color type combinations which
+    // are not represented by graphite abstractions. Such implementations can override this method
+    // to perform a simple T/F check without requiring a valid ColorTypeInfo ptr.
+    virtual bool onAreColorTypeAndTextureInfoCompatible(SkColorType ct,
+                                                        const TextureInfo& info) const {
+        return SkToBool(this->getColorTypeInfo(ct, info));
+    }
+
     // ColorTypeInfo for a specific format.
     // Used in format tables.
     struct ColorTypeInfo {

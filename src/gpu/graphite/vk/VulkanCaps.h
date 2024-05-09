@@ -132,6 +132,7 @@ private:
     const ColorTypeInfo* getColorTypeInfo(SkColorType, const TextureInfo&) const override;
 
     bool onIsTexturable(const TextureInfo&) const override;
+    bool onAreColorTypeAndTextureInfoCompatible(SkColorType, const TextureInfo&) const override;
 
     bool supportsWritePixels(const TextureInfo&) const override;
     bool supportsReadPixels(const TextureInfo&) const override;
