@@ -412,7 +412,6 @@ DawnResourceProvider::getOrCreateSingleTextureSamplerBindGroupLayout() {
 #if defined(SK_DEBUG)
     groupLayoutDesc.label = "Single texture + sampler bind group layout";
 #endif
-
     groupLayoutDesc.entryCount = entries.size();
     groupLayoutDesc.entries = entries.data();
     fSingleTextureSamplerBindGroupLayout =

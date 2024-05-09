@@ -151,10 +151,11 @@ sk_sp<TextureProxy> TextureProxy::Make(const Caps* caps,
         return nullptr;
     }
 
-    sk_sp<TextureProxy> proxy{new TextureProxy(dimensions,
-                                               textureInfo,
-                                               std::move(label),
-                                               budgeted)};
+    sk_sp<TextureProxy> proxy{
+            new TextureProxy(dimensions,
+                             textureInfo,
+                             caps->setBackendLabels() ? std::move(label) : std::string_view(),
+                             budgeted)};
     if (budgeted == Budgeted::kNo) {
         // Instantiate immediately to avoid races later on if the client starts to use the wrapping
         // object on multiple threads.

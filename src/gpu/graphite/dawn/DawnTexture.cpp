@@ -78,9 +78,7 @@ wgpu::Texture DawnTexture::MakeDawnTexture(const DawnSharedContext* sharedContex
     }
 
     wgpu::TextureDescriptor desc;
-#ifdef SK_DEBUG
-    desc.label                      = texture_info_to_label(info, dawnSpec);
-#endif
+    desc.label = caps->setBackendLabels() ? texture_info_to_label(info, dawnSpec) : nullptr;
     desc.usage                      = dawnSpec.fUsage;
     desc.dimension                  = wgpu::TextureDimension::e2D;
     desc.size.width                 = dimensions.width();
