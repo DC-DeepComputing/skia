@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce9b91c8_f92b8480",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-05-09T19:46:35Z",
+      "side": 1,
+      "message": "Looks more like Chrome\u0027s rendering, so lgtm.",
+      "revId": "b1c7264470d035e946061c16a3c385590fb02b84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
