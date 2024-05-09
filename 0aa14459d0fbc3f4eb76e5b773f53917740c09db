@@ -16,6 +16,24 @@
       "message": "The Vello jobs seem to be timing out -- not sure if it\u0027s related to this change.",
       "revId": "0aa14459d0fbc3f4eb76e5b773f53917740c09db",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "06d3e8c8_b52d594d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-05-09T17:18:25Z",
+      "side": 1,
+      "message": "The `inverse_windingmode_filters` GM is triggering a system-wide lockup that I can locally reproduce. The hang doesn\u0027t happen if I disable estimation so this is definitely a bug. Holding off for now.",
+      "parentUuid": "532799c8_50c81033",
+      "revId": "0aa14459d0fbc3f4eb76e5b773f53917740c09db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
