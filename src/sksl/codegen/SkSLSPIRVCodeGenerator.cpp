@@ -129,7 +129,7 @@ public:
 
         // Applies a swizzle to the components of the LValue, if possible. This is used to create
         // LValues that are swizzes-of-swizzles. Non-swizzle LValues can just return false.
-        virtual bool applySwizzle(const ComponentArray& components, const Type& newType) {
+        virtual bool applySwizzle(ComponentArray components, const Type& newType) {
             return false;
         }
 
@@ -343,9 +343,7 @@ private:
 
     SpvId writeFieldAccess(const FieldAccess& f, OutputStream& out);
 
-    SpvId writeSwizzle(const Expression& baseExpr,
-                       const ComponentArray& components,
-                       OutputStream& out);
+    SpvId writeSwizzle(const Expression& baseExpr, ComponentArray components, OutputStream& out);
 
     SpvId writeSwizzle(const Swizzle& swizzle, OutputStream& out);
 
@@ -3106,7 +3104,7 @@ private:
 
 class SwizzleLValue : public SPIRVCodeGenerator::LValue {
 public:
-    SwizzleLValue(SPIRVCodeGenerator& gen, SpvId vecPointer, const ComponentArray& components,
+    SwizzleLValue(SPIRVCodeGenerator& gen, SpvId vecPointer, ComponentArray components,
                   const Type& baseType, const Type& swizzleType, SpvStorageClass_ storageClass)
     : fGen(gen)
     , fVecPointer(vecPointer)
@@ -3115,7 +3113,7 @@ public:
     , fSwizzleType(&swizzleType)
     , fStorageClass(storageClass) {}
 
-    bool applySwizzle(const ComponentArray& components, const Type& newType) override {
+    bool applySwizzle(ComponentArray components, const Type& newType) override {
         ComponentArray updatedSwizzle;
         for (int8_t component : components) {
             if (component < 0 || component >= fComponents.size()) {
@@ -3507,7 +3505,7 @@ SpvId SPIRVCodeGenerator::writeFieldAccess(const FieldAccess& f, OutputStream& o
 }
 
 SpvId SPIRVCodeGenerator::writeSwizzle(const Expression& baseExpr,
-                                       const ComponentArray& components,
+                                       ComponentArray components,
                                        OutputStream& out) {
     size_t count = components.size();
     const Type& type = baseExpr.type().componentType().toCompound(fContext, count, /*rows=*/1);

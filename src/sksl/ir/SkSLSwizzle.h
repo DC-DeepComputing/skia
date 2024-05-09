@@ -55,7 +55,7 @@ public:
     using Component = SwizzleComponent::Type;
 
     Swizzle(const Context& context, Position pos, std::unique_ptr<Expression> base,
-            const ComponentArray& components)
+            ComponentArray components)
             : INHERITED(pos, kIRNodeKind,
                         &base->type().componentType().toCompound(context, components.size(), 1))
             , fBase(std::move(base))
@@ -99,14 +99,14 @@ public:
     std::string description(OperatorPrecedence) const override;
 
     // Converts an array of swizzle components into a string.
-    static std::string MaskString(const ComponentArray& inComponents);
+    static std::string MaskString(ComponentArray inComponents);
 
     // Returns true if a swizzle keeps each component in its original position.
-    static bool IsIdentity(const ComponentArray& components);
+    static bool IsIdentity(ComponentArray components);
 
 private:
     Swizzle(Position pos, const Type* type, std::unique_ptr<Expression> base,
-            const ComponentArray& components)
+            ComponentArray components)
         : INHERITED(pos, kIRNodeKind, type)
         , fBase(std::move(base))
         , fComponents(components) {

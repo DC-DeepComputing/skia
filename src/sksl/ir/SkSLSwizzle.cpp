@@ -31,7 +31,7 @@ using namespace skia_private;
 
 namespace SkSL {
 
-static bool validate_swizzle_domain(const ComponentArray& fields) {
+static bool validate_swizzle_domain(ComponentArray fields) {
     enum SwizzleDomain {
         kCoordinate,
         kColor,
@@ -109,7 +109,7 @@ static char mask_char(int8_t component) {
     }
 }
 
-std::string Swizzle::MaskString(const ComponentArray& components) {
+std::string Swizzle::MaskString(ComponentArray components) {
     std::string result;
     for (int8_t component : components) {
         result += mask_char(component);
@@ -438,7 +438,7 @@ std::unique_ptr<Expression> Swizzle::Convert(const Context& context,
     return Swizzle::Make(context, pos, std::move(expr), swizzleComponents);
 }
 
-bool Swizzle::IsIdentity(const ComponentArray& components) {
+bool Swizzle::IsIdentity(ComponentArray components) {
     for (int index = 0; index < components.size(); ++index) {
         if (components[index] != index) {
             return false;

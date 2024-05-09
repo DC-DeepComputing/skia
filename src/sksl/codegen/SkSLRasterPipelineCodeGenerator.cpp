@@ -905,7 +905,7 @@ private:
 
 class SwizzleLValue final : public LValue {
 public:
-    explicit SwizzleLValue(std::unique_ptr<LValue> p, const ComponentArray& c)
+    explicit SwizzleLValue(std::unique_ptr<LValue> p, ComponentArray c)
             : fParent(std::move(p))
             , fComponents(c) {
         SkASSERT(!fComponents.empty() && fComponents.size() <= 4);
@@ -951,7 +951,7 @@ public:
 
 private:
     std::unique_ptr<LValue> fParent;
-    const ComponentArray& fComponents;
+    ComponentArray fComponents;
 };
 
 class UnownedLValueSlice : public LValue {

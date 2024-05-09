@@ -1158,7 +1158,7 @@ private:
 class WGSLCodeGenerator::SwizzleLValue : public WGSLCodeGenerator::LValue {
 public:
     // `name` must be a WGSL expression with no side-effects that points to a WGSL vector.
-    SwizzleLValue(const Context& ctx, std::string name, const Type& t, const ComponentArray& c)
+    SwizzleLValue(const Context& ctx, std::string name, const Type& t, ComponentArray c)
             : fContext(ctx)
             , fName(std::move(name))
             , fType(t)
