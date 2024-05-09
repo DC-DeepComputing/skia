@@ -73,6 +73,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "12bf7b05_e30c73ee",
+        "filename": "tools/js_shaper/api.js",
+        "patchSetId": 12
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 3241878
+      },
+      "writtenOn": "2024-05-09T14:02:29Z",
+      "side": 1,
+      "message": "Yeah, they run sync so won\u0027t interfere in that way. But if the second call may overwrite values in the dictionary. Maybe that is intentional or the way the indexes are made there won\u0027t be conflicts.",
+      "parentUuid": "a1f840d0_8dee7950",
+      "revId": "8b79eb61701d6b7feca95c7285e4ca43f7b3d4be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1084cf5c_e561e4be",
         "filename": "tools/js_shaper/api.js",
         "patchSetId": 12
@@ -137,6 +155,24 @@
       "side": 1,
       "message": "I tried. There is no topUpperCase(), at least my browser does not find it.",
       "parentUuid": "21031843_371cc62d",
+      "revId": "8b79eb61701d6b7feca95c7285e4ca43f7b3d4be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b5a2daeb_a11f0ad7",
+        "filename": "tools/js_shaper/api.js",
+        "patchSetId": 12
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 3241878
+      },
+      "writtenOn": "2024-05-09T14:02:29Z",
+      "side": 1,
+      "message": "Strange, how are you calling it? You should be able to just call it on the string directly- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/toUpperCase",
+      "parentUuid": "557fcc94_b869dc57",
       "revId": "8b79eb61701d6b7feca95c7285e4ca43f7b3d4be",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
