@@ -5,8 +5,8 @@
  * found in the LICENSE file.
  */
 
-#ifndef skgpu_graphite_VulkanSamplerYcbcrConversion_DEFINED
-#define skgpu_graphite_VulkanSamplerYcbcrConversion_DEFINED
+#ifndef skgpu_graphite_VulkanYcbcrConversion_DEFINED
+#define skgpu_graphite_VulkanYcbcrConversion_DEFINED
 
 #include "src/gpu/graphite/Resource.h"
 
@@ -23,9 +23,9 @@ namespace skgpu::graphite {
 
 class VulkanSharedContext;
 
-class VulkanSamplerYcbcrConversion : public Resource {
+class VulkanYcbcrConversion : public Resource {
 public:
-    static sk_sp<VulkanSamplerYcbcrConversion> Make(const VulkanSharedContext*,
+    static sk_sp<VulkanYcbcrConversion> Make(const VulkanSharedContext*,
                                                     const VulkanYcbcrConversionInfo&);
     static GraphiteResourceKey MakeYcbcrConversionKey(const VulkanSharedContext*,
                                                       const VulkanYcbcrConversionInfo&);
@@ -36,7 +36,7 @@ public:
 
 
 private:
-    VulkanSamplerYcbcrConversion(const VulkanSharedContext*, VkSamplerYcbcrConversion);
+    VulkanYcbcrConversion(const VulkanSharedContext*, VkSamplerYcbcrConversion);
 
     void freeGpuData() override;
 
@@ -44,5 +44,5 @@ private:
 };
 } // namespace skgpu::graphite
 
-#endif // skgpu_graphite_VulkanSamplerYcbcrConversion_DEFINED
+#endif // skgpu_graphite_VulkanYcbcrConversion_DEFINED
 
