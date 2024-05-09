@@ -178,13 +178,14 @@ skia_wasm_lib("canvaskit") {
   ldflags += [ "-fno-rtti" ]
 
   if (skia_canvaskit_enable_webgpu) {
+    deps += [ "//third_party/externals/dawn/emscripten:emscripten_webgpu" ]
     ldflags += [
       "--pre-js",
       rebase_path("cpu.js"),
       "--pre-js",
       rebase_path("webgpu.js"),
       "-sUSE_WEBGL2=0",
-      "-sUSE_WEBGPU=1",
+      "-sUSE_WEBGPU=0",  # We use Dawn's Emscripten bindings fork instead.
       "-sASYNCIFY",
 
       # Modules from html5_webgpu for JS<->WASM interop
