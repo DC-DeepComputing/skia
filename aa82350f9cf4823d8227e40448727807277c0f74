@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "10ebabd4_7fdb20a2",
+        "filename": "modules/skottie/skottie.gni",
+        "patchSetId": 2
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-05-09T17:53:40Z",
+      "side": 0,
+      "message": "Are there any side effects from omitting private headers in GN src lists?",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 47,
+        "endChar": 40
+      },
+      "revId": "aa82350f9cf4823d8227e40448727807277c0f74",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
