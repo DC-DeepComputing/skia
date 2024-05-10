@@ -22,6 +22,30 @@
       },
       "revId": "73fc05c693efa4672f04a6067f56cc970925dfca",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed06a72c_f0d0329f",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2024-05-10T22:51:47Z",
+      "side": 1,
+      "message": "We would like to always set label for pipelines, since pipeline labels could be used by dawn for tracing.",
+      "parentUuid": "3ad300d7_f6d58c46",
+      "range": {
+        "startLine": 48,
+        "startChar": 4,
+        "endLine": 48,
+        "endChar": 29
+      },
+      "revId": "73fc05c693efa4672f04a6067f56cc970925dfca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
