@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "37a98988_510a0355",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 20
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19305
+      },
+      "writtenOn": "2024-05-10T15:06:47Z",
+      "side": 1,
+      "message": "Sg. Should we also avoid mip? One can always bias in the shader. This entire \u0027optimization\u0027 relies on us knowing exactly how sampling occurs in the shader.\n\n\nI could just check if this is linear and no mip and then force nearest if it is pixel aligned.",
+      "parentUuid": "bcb2936a_37d53a67",
+      "revId": "18a406a3a8cc12d18744489a4b6560db3204b024",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "082749b3_59aa17db",
         "filename": "src/gpu/graphite/KeyHelpers.cpp",
         "patchSetId": 20
