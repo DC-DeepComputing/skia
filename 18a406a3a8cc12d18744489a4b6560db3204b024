@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "12032e1d_8369ecd6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 20
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-10T15:09:13Z",
+      "side": 1,
+      "message": "I *think* that since the net transform has an identity scale factor, that if mipmapping is enabled, we\u0027ll still always be selecting the base level (even with the 1/2 bias we use to prefer the larger level). So for now, I think we can allow mipmapping to be converted to NN in this situation too.",
+      "parentUuid": "37a98988_510a0355",
+      "revId": "18a406a3a8cc12d18744489a4b6560db3204b024",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "082749b3_59aa17db",
         "filename": "src/gpu/graphite/KeyHelpers.cpp",
         "patchSetId": 20
