@@ -39,6 +39,30 @@
       },
       "revId": "18a406a3a8cc12d18744489a4b6560db3204b024",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a8b16a4_c49cbc58",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 1463,
+      "author": {
+        "id": 19305
+      },
+      "writtenOn": "2024-05-10T02:51:22Z",
+      "side": 1,
+      "message": "Did you see the skia gold. The compressed still shows up as having a difference. Does this seem odd to you?",
+      "parentUuid": "082749b3_59aa17db",
+      "range": {
+        "startLine": 1463,
+        "startChar": 17,
+        "endLine": 1463,
+        "endChar": 27
+      },
+      "revId": "18a406a3a8cc12d18744489a4b6560db3204b024",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
