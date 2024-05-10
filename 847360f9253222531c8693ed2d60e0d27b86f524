@@ -70,6 +70,30 @@
       },
       "revId": "847360f9253222531c8693ed2d60e0d27b86f524",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c53df4d7_a4b4b962",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 4
+      },
+      "lineNbr": 1817,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-05-10T14:08:51Z",
+      "side": 1,
+      "message": "Ok, I guess it\u0027ll be obvious is this timeout is not appropriate for some tasks, because they\u0027ll hit it very frequently.",
+      "parentUuid": "ce2abc9d_5b5a206f",
+      "range": {
+        "startLine": 1817,
+        "startChar": 23,
+        "endLine": 1817,
+        "endChar": 28
+      },
+      "revId": "847360f9253222531c8693ed2d60e0d27b86f524",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
