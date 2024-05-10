@@ -37,7 +37,30 @@ struct SK_API SkColorSpacePrimaries {
      *  representation of SkColorSpace.
      */
     bool toXYZD50(skcms_Matrix3x3* toXYZD50) const;
+
+    bool operator==(const SkColorSpacePrimaries& o) const {
+        return fRX == o.fRX && fRY == o.fRY && fGX == o.fGX && fGY == o.fGY && fBX == o.fBX &&
+               fBY == o.fBY && fWX == o.fWX && fWY == o.fWY;
+    }
+    bool operator!=(const SkColorSpacePrimaries& o) const { return !(*this == o); }
 };
+
+namespace SkNamedPrimaries {
+
+// Color primaries as defined by ITU-T H.273, table 2.
+
+static constexpr SkColorSpacePrimaries kSRGB = {
+        0.6400f, 0.3300f, 0.3000f, 0.6000f, 0.1500f, 0.0600f, 0.3127f, 0.3290f};
+
+static constexpr SkColorSpacePrimaries kP3 = {
+        0.6800f, 0.3200f, 0.2650f, 0.6900f, 0.1500f, 0.0600f, 0.3127f, 0.3290f};
+
+static constexpr SkColorSpacePrimaries kRec2020 = {
+        0.7080f, 0.2920f, 0.1700f, 0.7970f, 0.1310f, 0.0460f, 0.3127f, 0.3290f};
+
+static constexpr SkColorSpacePrimaries kXYZD50 = {1.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.34567f, 0.35850f};
+
+}  // namespace SkNamedPrimaries
 
 namespace SkNamedTransferFn {
 
