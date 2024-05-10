@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b590b6be_6742a2ff",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-05-10T14:56:54Z",
+      "side": 1,
+      "message": "This should fix the G3 roll",
+      "revId": "f6f09b06e1c9b8068720a3c5f0fa6beedb547dfb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
