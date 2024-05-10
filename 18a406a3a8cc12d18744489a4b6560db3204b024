@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bcb2936a_37d53a67",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 20
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-10T01:13:24Z",
+      "side": 1,
+      "message": "I was confused by the presence of the `compressed_textures` GMs and dug into it a bit more. The diffs showing up all have a red stroke border, which is used by the GM to show that those particular cells were images that had to be uploaded uncompressed.\n\nSo the optimization check is currently allowing the switch to nearest, as expected, since those are not actually compressed textures on these platforms. But that\u0027s an unexpectedly large appearance difference across a wide range of hardware (not just intel). Reading through the GM, I realized it\u0027s actually using cubic sampling, and one unfortunate quirk about cubic sampling is that even when pixel aligned, it\u0027s not identical to nearest-neighbor.\n\nWe should definitely add a `!newSampling.useCubic` check to the if that looks at whether or not to drop down to nearest-neighbor. But it makes me wonder if my earlier thinking about compressed textures not preserving nearest-neighbor appearance was off-base because they also would have been converting from cubic to nearest.\n\nI think we should run a dryrun on a patch set that avoids the optimization when cubic sampling is used, but doesn\u0027t have the guard for compressed textures to see if that explains everything in that GM.",
+      "revId": "18a406a3a8cc12d18744489a4b6560db3204b024",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "082749b3_59aa17db",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 1463,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-10T01:13:24Z",
+      "side": 1,
+      "message": "We need to override this `keyContext` with one that sets the `OptimizeSampling` to `kNo`.",
+      "range": {
+        "startLine": 1463,
+        "startChar": 17,
+        "endLine": 1463,
+        "endChar": 27
+      },
+      "revId": "18a406a3a8cc12d18744489a4b6560db3204b024",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
