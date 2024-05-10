@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "18ef3ea4_bd344eb4",
+        "filename": "third_party/vello/src/lib.rs",
+        "patchSetId": 2
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-05-10T19:46:09Z",
+      "side": 1,
+      "message": "Touching this file to trigger a rebuild.",
+      "revId": "d4f758c85994ef9eb4885b20f59135ed12e0fedb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
