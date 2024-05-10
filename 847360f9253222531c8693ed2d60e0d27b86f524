@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5187f90_9cf65835",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 4
+      },
+      "lineNbr": 1817,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-05-10T14:06:10Z",
+      "side": 1,
+      "message": "We\u0027ve confirmed that ALL Mac11 tasks should fit within a 30-minute timeout?",
+      "range": {
+        "startLine": 1817,
+        "startChar": 23,
+        "endLine": 1817,
+        "endChar": 28
+      },
+      "revId": "847360f9253222531c8693ed2d60e0d27b86f524",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
