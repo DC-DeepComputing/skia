@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "458a44a6_e4ef2223",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-10T14:33:34Z",
+      "side": 1,
+      "message": "This was written before Greg reverted the failing CL here: https://skia-review.googlesource.com/c/skia/+/851814, but would otherwise fix the issue.\n\nThis is a different approach to organizing these sorts of extensions to enums that avoids having to guard the DawnCaps definition and where its used in other code, leaving the main EMSCRIPTEN guard in DawnCaps during initialization.\n\nDo you like this approach? If so, it can be folded into the reland of the msaa load op CL.",
+      "revId": "e4f765fd96c80ad23597895b9d940cfa51873612",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
