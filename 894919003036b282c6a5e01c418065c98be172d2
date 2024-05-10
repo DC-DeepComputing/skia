@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c0147a78_bcfe9f00",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 21754
+      },
+      "writtenOn": "2024-05-10T23:20:24Z",
+      "side": 1,
+      "message": "This causes a virtual function (setBackendLabel) to be called from Resource constructor which means instead of calling the derived class implementation it just calls the base class implementation which does nothing.\n\nThe practical effect of this is that Dawn labels aren\u0027t set while Skia labels are set in Chrome Graphite memory infra traces. Dawn labels are seen for resources which get reused in some way in which case we call setLabel() to change the label of the resource.\n\nI think we can solve this by not passing label in the constructor (and intermediate plumbing) and instead call setLabel explicitly from ResourceProvider.",
+      "range": {
+        "startLine": 139,
+        "startChar": 8,
+        "endLine": 142,
+        "endChar": 9
+      },
+      "revId": "894919003036b282c6a5e01c418065c98be172d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
