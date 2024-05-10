@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f995b34_b78b2b53",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-05-10T17:40:55Z",
+      "side": 1,
+      "message": "Turns out we have had gold images for (PDFKit rasterized) pdfs. This restores them so that we know when we change things.",
+      "revId": "b7e69edcaa30cb4dd4328e9acc14ea0f8b4b39be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
