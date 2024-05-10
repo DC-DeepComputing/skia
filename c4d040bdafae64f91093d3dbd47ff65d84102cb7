@@ -1,0 +1,178 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6976f48c_c343a043",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 251,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-10T14:04:07Z",
+      "side": 1,
+      "message": "I think this needs to have at least an fRenderPipeline field given how ::Make assigns to it.",
+      "range": {
+        "startLine": 251,
+        "startChar": 0,
+        "endLine": 251,
+        "endChar": 54
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "f37a3b47_25a09adf",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+              "range": {
+                "startLine": 251,
+                "startChar": 0,
+                "endLine": 252,
+                "endChar": 0
+              },
+              "replacement": "struct DawnGraphicsPipeline::AsyncPipelineCreation {\n    wgpu::RenderPipeline fRenderPipeline;\n};\n"
+            }
+          ]
+        }
+      ],
+      "revId": "c4d040bdafae64f91093d3dbd47ff65d84102cb7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "42ad01ee_6d1339ee",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 560,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-10T14:04:07Z",
+      "side": 1,
+      "message": "If we set this to `nullptr`, if we ever call `dawnRenderPipeline()` a second time, we\u0027d try waiting on the future again. \n\nWhen the callback is finished, regardless of success or not, should we set the future to null? Then if it holds both a null wgpu::RenderPipeline and a null future, it\u0027s in a failure state and we don\u0027t try waiting anymore. If it was a successful compilation, we\u0027ve freed some memory held by the future.",
+      "range": {
+        "startLine": 560,
+        "startChar": 0,
+        "endLine": 560,
+        "endChar": 47
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "17f0c1a4_c07e0fc6",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+              "range": {
+                "startLine": 560,
+                "startChar": 0,
+                "endLine": 561,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "c4d040bdafae64f91093d3dbd47ff65d84102cb7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f776a908_bb1cb38f",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 627,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-10T14:04:07Z",
+      "side": 1,
+      "message": "As written, we could hit this if the wasm mode failed to create the render pipeline, right? We should probably check if the non-async case completes successfully in the factory and just return a null DawnGraphicsPipeline wrapper in that case.",
+      "range": {
+        "startLine": 627,
+        "startChar": 0,
+        "endLine": 627,
+        "endChar": 71
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "bd0a8265_99355278",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+              "range": {
+                "startLine": 547,
+                "startChar": 0,
+                "endLine": 548,
+                "endChar": 0
+              },
+              "replacement": "        SKGPU_LOG_F(\"CreateRenderPipelineAsync shouldn\u0027t be used in wasm\");\n"
+            },
+            {
+              "path": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+              "range": {
+                "startLine": 627,
+                "startChar": 0,
+                "endLine": 628,
+                "endChar": 0
+              },
+              "replacement": "    SKGPU_LOG_F(\"CreateRenderPipelineAsync shouldn\u0027t be used in wasm\");\n"
+            }
+          ]
+        }
+      ],
+      "revId": "c4d040bdafae64f91093d3dbd47ff65d84102cb7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85c07aec_7eb57ba1",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 638,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-10T14:04:07Z",
+      "side": 1,
+      "message": "in theory, the compilation could fail if we have a bug in our sksl or sksl-\u003ewgsl, or if there\u0027s a driver compiler bug, right? For sksl or sksl-\u003ewgsl, or wgsl-\u003ebackend shader, an assert here seems like an okay signal that something is wrong since those are bugs that we can control.\n\nBut if it\u0027s a driver compiler bug that causes the pipeline to fail, we need to clean up gracefully and we\u0027d want to mark the whole `DawnGraphicsPipeline` as bad and fail the `insertRecording`. Ideally we\u0027d also then remove this `DawnGraphicsPipeline` from the global pipeline cache since it\u0027ll never recover, but if we keep it in the cache, then future recordings will keep using that pipeline and hit the null `wgpu::RenderPipeline`.\n\nIn that case, I think we need some way to mark the `DawnGraphicsPipeline` as bad and then fail the `insertRecording`.",
+      "range": {
+        "startLine": 638,
+        "startChar": 13,
+        "endLine": 638,
+        "endChar": 48
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "9ca975df_103fdf73",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+              "range": {
+                "startLine": 638,
+                "startChar": 0,
+                "endLine": 640,
+                "endChar": 0
+              },
+              "replacement": "    if (status !\u003d wgpu::WaitStatus::Success || !waitInfo.completed) {\n        SKGPU_LOG_E(\"Failed to wait for render pipeline creation\");\n    }\n"
+            }
+          ]
+        }
+      ],
+      "revId": "c4d040bdafae64f91093d3dbd47ff65d84102cb7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
