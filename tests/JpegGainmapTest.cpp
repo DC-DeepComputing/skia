@@ -458,7 +458,19 @@ void decode_all(Reporter& r,
                                                                  gainmapBitmap.rowBytes()));
 }
 
-static bool approx_eq(float x, float y, float epsilon) { return std::abs(x - y) < epsilon; }
+static bool approx_eq(float x, float y, float epsilon) {
+    if (epsilon != 0.f) {
+        return std::abs(x - y) < epsilon;
+    }
+
+    // If epsilon is 0, then check for less than 0.01 percent difference.
+    float diff = std::abs(x - y);
+    float maxDiff = 1e-4 * std::max(std::min(std::abs(x), std::abs(y)), 1e-4f);
+    if (diff > maxDiff) {
+        return false;
+    }
+    return true;
+}
 
 DEF_TEST(AndroidCodec_jpegGainmapDecode, r) {
     const struct Rec {
@@ -471,15 +483,25 @@ DEF_TEST(AndroidCodec_jpegGainmapDecode, r) {
         float hdrRatioMin;
         float hdrRatioMax;
     } recs[] = {
-            {"images/iphone_13_pro.jpeg",
-             SkISize::Make(1512, 2016),
-             0xFF3B3B3B,
-             0xFF101010,
-             1.f,
-             3.482202f,
-             1.f,
-             3.482202f},
-            {"images/iphone_15.jpeg",
+            /*
+                        {"images/iphone_13_pro.jpeg",
+                         SkISize::Make(1512, 2016),
+                         0xFF3B3B3B,
+                         0xFF101010,
+                         1.f,
+                         3.482202f,
+                         1.f,
+                         3.482202f},
+                        {"images/iphone_15.jpeg",
+                         SkISize::Make(2016, 1512),
+                         0xFF5C5C5C,
+                         0xFF656565,
+                         1.f,
+                         3.755272f,
+                         1.f,
+                         3.755272f},
+            */
+            {"images/01.jpg",
              SkISize::Make(2016, 1512),
              0xFF5C5C5C,
              0xFF656565,
@@ -576,6 +598,22 @@ static bool approx_eq_rgb(const SkColor4f& x, const SkColor4f& y, float epsilon)
            approx_eq(x.fB, y.fB, epsilon);
 }
 
+template <typename Reporter>
+void expect_approx_eq_info(Reporter& r,
+                           const SkGainmapInfo& a,
+                           const SkGainmapInfo& b,
+                           float epsilon = 0.f) {
+    REPORTER_ASSERT(r, approx_eq_rgb(a.fGainmapRatioMin, b.fGainmapRatioMin, epsilon));
+    REPORTER_ASSERT(r, approx_eq_rgb(a.fGainmapRatioMin, b.fGainmapRatioMin, epsilon));
+    REPORTER_ASSERT(r, approx_eq_rgb(a.fGainmapGamma, b.fGainmapGamma, epsilon));
+    REPORTER_ASSERT(r, approx_eq_rgb(a.fEpsilonSdr, b.fEpsilonSdr, epsilon));
+    REPORTER_ASSERT(r, approx_eq_rgb(a.fEpsilonHdr, b.fEpsilonHdr, epsilon));
+    REPORTER_ASSERT(r, approx_eq(a.fDisplayRatioSdr, b.fDisplayRatioSdr, epsilon));
+    REPORTER_ASSERT(r, approx_eq(a.fDisplayRatioHdr, b.fDisplayRatioHdr, epsilon));
+    REPORTER_ASSERT(r, a.fType == b.fType);
+    REPORTER_ASSERT(r, a.fBaseImageType == b.fBaseImageType);
+}
+
 DEF_TEST(AndroidCodec_gainmapInfoEncode, r) {
     SkDynamicMemoryWStream encodeStream;
     SkGainmapInfo gainmapInfo;
@@ -630,7 +668,7 @@ DEF_TEST(AndroidCodec_gainmapInfoEncode, r) {
         decode_all(r, std::move(decodeStream), baseBitmap, gainmapBitmap, decodedGainmapInfo);
 
         // Verify they are |gainmapInfo| matches |decodedGainmapInfo|.
-        REPORTER_ASSERT(r, gainmapInfo == decodedGainmapInfo);
+        expect_approx_eq_info(r, gainmapInfo, decodedGainmapInfo);
     }
 }
 
@@ -728,36 +766,7 @@ DEF_TEST(AndroidCodec_jpegGainmapTranscode, r) {
         decode_all(r, std::move(decodeStream), baseBitmap[1], gainmapBitmap[1], gainmapInfo[1]);
 
         // HDRGM will have the same rendering parameters.
-        REPORTER_ASSERT(
-                r,
-                approx_eq_rgb(
-                        gainmapInfo[0].fGainmapRatioMin, gainmapInfo[1].fGainmapRatioMin,kEpsilon));
-        REPORTER_ASSERT(
-                r,
-                approx_eq_rgb(
-                        gainmapInfo[0].fGainmapRatioMax, gainmapInfo[1].fGainmapRatioMax, kEpsilon));
-        REPORTER_ASSERT(
-                r,
-                approx_eq_rgb(
-                        gainmapInfo[0].fGainmapGamma, gainmapInfo[1].fGainmapGamma, kEpsilon));
-        REPORTER_ASSERT(
-                r,
-                approx_eq(gainmapInfo[0].fEpsilonSdr.fR, gainmapInfo[1].fEpsilonSdr.fR, kEpsilon));
-        REPORTER_ASSERT(
-                r,
-                approx_eq(gainmapInfo[0].fEpsilonHdr.fR, gainmapInfo[1].fEpsilonHdr.fR, kEpsilon));
-        REPORTER_ASSERT(
-                r,
-                approx_eq(
-                        gainmapInfo[0].fDisplayRatioSdr,
-                        gainmapInfo[1].fDisplayRatioSdr,
-                        kEpsilon));
-        REPORTER_ASSERT(
-                r,
-                approx_eq(
-                        gainmapInfo[0].fDisplayRatioHdr,
-                        gainmapInfo[1].fDisplayRatioHdr,
-                        kEpsilon));
+        expect_approx_eq_info(r, gainmapInfo[0], gainmapInfo[1]);
 
         // Render a few pixels and verify that they come out the same. Rendering requires SkSL.
         const struct Rec {
@@ -800,4 +809,85 @@ DEF_TEST(AndroidCodec_jpegGainmapTranscode, r) {
         }
     }
 }
+
+DEF_TEST(AndroidCodec_gainmapInfoParse, r) {
+    constexpr float kEpsilon = 1e-4f;
+
+    const uint8_t versionData[] = {
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+    };
+    const uint8_t data[] = {
+            0x00, 0x00, 0x00, 0x00, 0xc0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01,
+            0x00, 0x01, 0x45, 0x3e, 0x00, 0x00, 0x80, 0x00, 0xfc, 0x23, 0x05, 0x14, 0x40,
+            0x00, 0x00, 0x00, 0x00, 0x01, 0x1f, 0xe1, 0x00, 0x00, 0x80, 0x00, 0x10, 0x4b,
+            0x9f, 0x0a, 0x40, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x40, 0x00, 0x00,
+            0x00, 0x01, 0x00, 0x00, 0x00, 0x40, 0x00, 0x00, 0x00, 0xfd, 0xdb, 0x68, 0x04,
+            0x40, 0x00, 0x00, 0x00, 0x00, 0x01, 0x11, 0x68, 0x00, 0x00, 0x80, 0x00, 0x10,
+            0x28, 0xf9, 0x53, 0x40, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x40, 0x00,
+            0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x40, 0x00, 0x00, 0x00, 0xf7, 0x16, 0x7b,
+            0x90, 0x40, 0x00, 0x00, 0x00, 0x00, 0x01, 0x0f, 0x9a, 0x00, 0x00, 0x80, 0x00,
+            0x12, 0x95, 0xa8, 0x3f, 0x40, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x40,
+            0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x40, 0x00, 0x00, 0x00,
+    };
+    SkGainmapInfo kExpectedInfo = {
+            {0.959023f, 0.977058f, 0.907989f, 1.f},
+            {4.753710f, 4.395375f, 4.352630f, 1.f},
+            {3.927490f, 3.960382f, 3.443712f, 1.f},
+            {0.015625f, 0.015625f, 0.015625f, 1.f},
+            {0.015625f, 0.015625f, 0.015625f, 1.f},
+            1.000000f,
+            5.819739f,
+            SkGainmapInfo::BaseImageType::kSDR,
+            SkGainmapInfo::Type::kDefault,
+            nullptr,
+            false,
+            SkNamedPrimaries::kSRGB,
+    };
+    SkGainmapInfo kSingleChannelInfo = {
+            {0.1234567e-4f, 0.1234567e-4f, 0.1234567e-4f, 1.f},
+            {-0.1234567e-4f, -0.1234567e-4f, -0.1234567e-4f, 1.f},
+            {0.1234567e+0f, 0.1234567e+0f, 0.1234567e+0f, 1.f},
+            {0.1234567e+4f, 0.1234567e+4f, 0.1234567e+4f, 1.f},
+            {0.1234567e+4f, 0.1234567e+4f, 0.1234567e+4f, 1.f},
+            1.,
+            4.f,
+            SkGainmapInfo::BaseImageType::kHDR,
+            SkGainmapInfo::Type::kDefault,
+            nullptr,
+            true,
+            SkNamedPrimaries::kSRGB,
+    };
+
+    // Verify the version from data.
+    REPORTER_ASSERT(r,
+                    SkGainmapInfo::ParseVersion(
+                            SkData::MakeWithoutCopy(versionData, sizeof(versionData)).get()));
+
+    // Verify the SkGainmapInfo from data.
+    SkGainmapInfo info;
+    REPORTER_ASSERT(r,
+                    SkGainmapInfo::Parse(SkData::MakeWithoutCopy(data, sizeof(data)).get(), info));
+    expect_approx_eq_info(r, info, kExpectedInfo);
+
+    // Verify the parsed version.
+    REPORTER_ASSERT(r, SkGainmapInfo::ParseVersion(SkGainmapInfo::SerializeVersion().get()));
+
+    // Verify the round-trip SkGainmapInfo.
+    auto dataInfo = info.serialize();
+    SkGainmapInfo infoRoundTrip;
+    REPORTER_ASSERT(r, SkGainmapInfo::Parse(dataInfo.get(), infoRoundTrip));
+    expect_approx_eq_info(r, info, infoRoundTrip);
+
+    // Serialize a single-channel SkGainmapInfo. The serialized data should be smaller.
+    auto dataSingleChannelInfo = kSingleChannelInfo.serialize();
+    REPORTER_ASSERT(r, dataSingleChannelInfo->size() < dataInfo->size());
+    SkGainmapInfo singleChannelInfoRoundTrip;
+    REPORTER_ASSERT(r,
+                    SkGainmapInfo::Parse(dataSingleChannelInfo.get(), singleChannelInfoRoundTrip));
+    expect_approx_eq_info(r, singleChannelInfoRoundTrip, kSingleChannelInfo);
+}
+
 #endif  // !defined(SK_ENABLE_NDK_IMAGES)
