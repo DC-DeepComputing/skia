@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d5fcedc0_8ed82e15",
+        "filename": "src/gpu/graphite/task/CopyTask.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-10T01:24:05Z",
+      "side": 0,
+      "message": "My understanding of what was happening was that on the graphite-native-vulkan jobs, we were requiring dst-readback with texture copies, so there was a CopyTextureToTexture task that was added right before the RenderPassTask, where the copy source was the same as the RP target.\n\nAll the rest of the code was expecting/assuming that the RP task would instantiate the target with the scratch resource manager, but this task snuck in there and did it the direct way, so when it was correctly returnable, the scratch resource manager had never seen it.\n\nAs noted in the rest of the existing comments, this is already kind of an ugly situation because the source texture hasn\u0027t had anything to initialize it yet, but also none of the draws in the subsequent renderpass task would actually blend in a way to show those values. A scratch surface that uses kClear doesn\u0027t have this issue because that will include an RPTask with just a clear load op when the flush happens for a dst-readback-requiring draw. Surfaces only use load when something else has filled them in, which implies that they will start out instantiated or will have a task that instantiated them.\n\nIt\u0027s only discard load ops that can create this situation where we don\u0027t have a preceding task that would instantiate the texture as part of its initializing of the texture contents. All scratch surfaces using discard are meant to be drawn with non-aa kSrc blits that don\u0027t trigger coverage blending, which shouldn\u0027t ever cause a dst-readback except for how they get routed to the rendersteps that actually do report coverage. b/333729316 tracks the work to clean this up, and then we\u0027ll be able to have an assert about `fSrcProxy` already being instantiated.  At that point, tasks can assume/assert that they only have to instantiate what they write to; preceding task dependencies should have prepared anything that was needed to read from.",
+      "range": {
+        "startLine": 167,
+        "startChar": 0,
+        "endLine": 170,
+        "endChar": 5
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "16541c97_aba4a2dd",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/task/CopyTask.cpp",
+              "range": {
+                "startLine": 167,
+                "startChar": 0,
+                "endLine": 168,
+                "endChar": 0
+              },
+              "replacement": "    // invoke pending listeners for a subsequent RenderPassTask. (This is a problem for\n    // graphite-native-vulkan jobs, which require dst-readback with texture copies, so there was a\n    // CopyTextureToTexture task that was added right before a RenderPassTask.)\n"
+            }
+          ]
+        }
+      ],
+      "revId": "c29f6694c078c59ebfc043b4f51d3e64b9a3f953",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
