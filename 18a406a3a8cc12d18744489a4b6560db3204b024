@@ -54,6 +54,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9de2df5b_4f2d9917",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 20
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19305
+      },
+      "writtenOn": "2024-05-10T17:43:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "12032e1d_8369ecd6",
+      "revId": "18a406a3a8cc12d18744489a4b6560db3204b024",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "082749b3_59aa17db",
@@ -115,6 +133,30 @@
       "side": 1,
       "message": "This is to fix the `coordclampshader` GM diffs. My other comment talks about the compressed texture diffs; I think I was wrong early (maybe), but that GM actually uses cubic filtering which we don\u0027t want to ever downgrade to nearest-neighbor since it doesn\u0027t preserve the effect when pixel-aligned.",
       "parentUuid": "6a8b16a4_c49cbc58",
+      "range": {
+        "startLine": 1463,
+        "startChar": 17,
+        "endLine": 1463,
+        "endChar": 27
+      },
+      "revId": "18a406a3a8cc12d18744489a4b6560db3204b024",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ade3057_be7878aa",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 1463,
+      "author": {
+        "id": 19305
+      },
+      "writtenOn": "2024-05-10T17:43:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "49b2d6d7_883c6589",
       "range": {
         "startLine": 1463,
         "startChar": 17,
