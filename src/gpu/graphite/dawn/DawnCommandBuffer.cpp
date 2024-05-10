@@ -166,7 +166,7 @@ bool DawnCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
     wgpu::RenderPassDepthStencilAttachment wgpuDepthStencilAttachment;
 
     // Set up color attachment.
-#ifndef __EMSCRIPTEN__
+#if !defined(__EMSCRIPTEN__)
     wgpu::DawnRenderPassColorAttachmentRenderToSingleSampled mssaRenderToSingleSampledDesc;
 #endif
 
@@ -202,12 +202,11 @@ bool DawnCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
             // But it also means we have to load the resolve texture into the MSAA color attachment
             if (renderPassDesc.fColorResolveAttachment.fLoadOp == LoadOp::kLoad)
             {
-#if !defined(__EMSCRIPTEN__)
-                if (fSharedContext->dawnCaps()->resolveTextureCanBeLoaded()) {
-                    wgpuColorAttachment.loadOp = wgpu::LoadOp::ExpandResolveTexture;
-                } else
-#endif
-                {
+                std::optional<wgpu::LoadOp> resolveLoadOp =
+                        fSharedContext->dawnCaps()->resolveTextureLoadOp();
+                if (resolveLoadOp.has_value()) {
+                    wgpuColorAttachment.loadOp = *resolveLoadOp;
+                } else {
                     // No Dawn built-in support, we need to manually load the resolve texture.
                     loadMSAAFromResolveExplicitly = true;
                 }
