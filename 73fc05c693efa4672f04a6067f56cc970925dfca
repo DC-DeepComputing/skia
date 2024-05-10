@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ad300d7_f6d58c46",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 21754
+      },
+      "writtenOn": "2024-05-10T22:23:20Z",
+      "side": 1,
+      "message": "drive-by: shouldn\u0027t this also have been guarded behind the new flag?",
+      "range": {
+        "startLine": 48,
+        "startChar": 4,
+        "endLine": 48,
+        "endChar": 29
+      },
+      "revId": "73fc05c693efa4672f04a6067f56cc970925dfca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
