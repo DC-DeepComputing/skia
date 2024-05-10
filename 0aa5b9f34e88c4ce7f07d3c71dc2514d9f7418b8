@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "862aa11a_027aa38b",
+        "filename": "src/gpu/graphite/ComputePathAtlas.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-05-10T15:00:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "08394fe1_3aa362ae",
+      "revId": "0aa5b9f34e88c4ce7f07d3c71dc2514d9f7418b8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e40be3f0_b3bf6ebc",
@@ -58,6 +76,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cf049c3f_9c2387cc",
+        "filename": "src/gpu/graphite/ComputePathAtlas.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-05-10T15:00:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e40be3f0_b3bf6ebc",
+      "range": {
+        "startLine": 141,
+        "startChar": 32,
+        "endLine": 141,
+        "endChar": 33
+      },
+      "revId": "0aa5b9f34e88c4ce7f07d3c71dc2514d9f7418b8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f9a57346_b898e2a9",
@@ -71,6 +113,24 @@
       "writtenOn": "2024-05-07T03:34:34Z",
       "side": 1,
       "message": "I suggest generalizing this function so that it can be shared with `VelloComputePathAtlas::onAddShape` as much of the logic is the same. Perhaps they could both call out to a helper that is parameterized over a `Scene` and a `SkISize*` (representing the occupied area that the function should output)?",
+      "revId": "0aa5b9f34e88c4ce7f07d3c71dc2514d9f7418b8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9877b0be_3f8a88fb",
+        "filename": "src/gpu/graphite/ComputePathAtlas.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-05-10T15:00:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f9a57346_b898e2a9",
       "revId": "0aa5b9f34e88c4ce7f07d3c71dc2514d9f7418b8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
