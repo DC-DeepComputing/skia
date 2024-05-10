@@ -38,7 +38,7 @@
  *
  *  This product includes Gain Map technology under license by Adobe.
  */
-struct SkGainmapInfo {
+struct SK_API SkGainmapInfo {
     /**
      *  Parameters for converting the gainmap from its image encoding to log space. These are
      *  specified per color channel. The alpha value is unused.
@@ -89,8 +89,41 @@ struct SkGainmapInfo {
     /**
      * If specified, color space to apply the gainmap in, otherwise the base image's color space
      * is used. Only the color primaries are used, the transfer function is irrelevant.
+     * TODO(b/338342146): Replace this with |fUseGainmapMathPrimaries| and |fGainmapMathPrimaries|.
      */
     sk_sp<SkColorSpace> fGainmapMathColorSpace = nullptr;
+
+    /**
+     * If set to true, then use the primaries specified in |fGainmapMathPrimaries| as the primaries
+     * for in which to apply the gainmap. When parsing the ISO 21496-1 metadata blob using the
+     * Parse function, only the |fUseGainmapMathPrimaries| member is populated. The image decoder
+     * is responsible
+     * for populating |fGainmapMathPrimaries|.
+     */
+    bool fUseGainmapMathPrimaries = false;
+    SkColorSpacePrimaries fGainmapMathPrimaries = SkNamedPrimaries::kSRGB;
+
+    /**
+     * If |data| contains an ISO 21496-1 version that is supported, return true. Otherwise return
+     * false.
+     */
+    static bool ParseVersion(const SkData* data);
+
+    /**
+     * If |data| constains ISO 21496-1 metadata then parse that metadata, use it to populate |info|,
+     * and return true. Otherwise return false.
+     */
+    static bool Parse(const SkData* data, SkGainmapInfo& info);
+
+    /**
+     * Serialize an ISO 21496-1 version 0 blob containing only the version structure.
+     */
+    static sk_sp<SkData> SerializeVersion();
+
+    /**
+     * Serialize an ISO 21496-1 version 0 blob containing this' gainmap parameters.
+     */
+    sk_sp<SkData> serialize() const;
 
     inline bool operator==(const SkGainmapInfo& other) const {
         return fGainmapRatioMin == other.fGainmapRatioMin &&
@@ -98,7 +131,9 @@ struct SkGainmapInfo {
                fEpsilonSdr == other.fEpsilonSdr && fEpsilonHdr == other.fEpsilonHdr &&
                fDisplayRatioSdr == other.fDisplayRatioSdr &&
                fDisplayRatioHdr == other.fDisplayRatioHdr &&
-               fBaseImageType == other.fBaseImageType &&
+               fBaseImageType == other.fBaseImageType && fType == other.fType &&
+               fUseGainmapMathPrimaries == other.fUseGainmapMathPrimaries &&
+               fGainmapMathPrimaries == other.fGainmapMathPrimaries &&
                SkColorSpace::Equals(fGainmapMathColorSpace.get(),
                                     other.fGainmapMathColorSpace.get());
     }
