@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "93998f08_3654cedf",
+        "filename": "src/pdf/SkPDFSubsetFont.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-05-10T14:29:32Z",
+      "side": 1,
+      "message": "I\u0027ve pushed off the above, so it isn\u0027t there anymore. (And changed the other one to `p`.)",
+      "parentUuid": "6cb72b1b_135920aa",
+      "revId": "c9bd38b56ec1a47852e0cedef08a826582b10c24",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fd02122f_08b159db",
@@ -41,6 +59,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "11a7fc0c_29d98fdb",
+        "filename": "src/pdf/SkPDFSubsetFont.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-05-10T14:29:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fd02122f_08b159db",
+      "range": {
+        "startLine": 46,
+        "startChar": 11,
+        "endLine": 46,
+        "endChar": 19
+      },
+      "revId": "c9bd38b56ec1a47852e0cedef08a826582b10c24",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3f7c4cfa_5f0e01ba",
@@ -54,6 +96,30 @@
       "writtenOn": "2024-05-10T12:29:46Z",
       "side": 1,
       "message": "I\u0027m a bit confused why we check for getMemoryBase() here and up in stream_to_blob. Does that mean we can get rid of the copy logic above or should we remove the extra check down here?",
+      "range": {
+        "startLine": 87,
+        "startChar": 22,
+        "endLine": 87,
+        "endChar": 55
+      },
+      "revId": "c9bd38b56ec1a47852e0cedef08a826582b10c24",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c35e32c_8f3372dd",
+        "filename": "src/pdf/SkPDFSubsetFont.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-05-10T14:29:32Z",
+      "side": 1,
+      "message": "This is supposed to go in the potential follow-up. Moved it there.",
+      "parentUuid": "3f7c4cfa_5f0e01ba",
       "range": {
         "startLine": 87,
         "startChar": 22,
