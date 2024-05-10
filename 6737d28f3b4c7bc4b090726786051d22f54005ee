@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0db9a1b7_19eb46db",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-05-10T17:25:04Z",
+      "side": 1,
+      "message": "OK, with the (dependent) roll, the vello jobs no longer hang. PTAL.",
+      "revId": "6737d28f3b4c7bc4b090726786051d22f54005ee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
