@@ -22,6 +22,30 @@
       },
       "revId": "382d94b3ab31530dbce6a51d0fc4375886f446c7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3baed39c_318af56f",
+        "filename": "src/gpu/graphite/Caps.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 324,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-05-10T14:04:02Z",
+      "side": 1,
+      "message": "Hmmm I actually think having getColorTypeInfo returning a real thing for external formats isn\u0027t a bad thing. Like I would make a real ColorTypeInfo that has the properties we want (i.e. not renderable, no swizzle, etc.). I think the only support SkColorType should be RGBA_8888. I imagine the VulkanCaps can just store an const fExternalColorType that it returns.",
+      "parentUuid": "71be0ae3_51fa18de",
+      "range": {
+        "startLine": 322,
+        "startChar": 0,
+        "endLine": 324,
+        "endChar": 81
+      },
+      "revId": "382d94b3ab31530dbce6a51d0fc4375886f446c7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

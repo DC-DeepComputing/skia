@@ -1,0 +1,62 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "369c68e4_42712670",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-05-10T14:04:02Z",
+      "side": 1,
+      "message": "This has nothing to do with this change, but I cam across it while looking up the tiling stuff. I don\u0027t know if we actually handle the swizzle correctly when importing an RGBX AHB (in Ganesh or Graphite). We should make a bug to check that. From the spec:\n\n\"Vulkan does not differentiate between AHARDWAREBUFFER_FORMAT_R8G8B8A8_UNORM and AHARDWAREBUFFER_FORMAT_R8G8B8X8_UNORM: they both behave as VK_FORMAT_R8G8B8A8_UNORM. After an external entity writes to a AHARDWAREBUFFER_FORMAT_R8G8B8X8_UNORM Android hardware buffer, the values read by Vulkan from the X/A component are undefined. To emulate the traditional behavior of the X component during sampling or blending, applications should use VK_COMPONENT_SWIZZLE_ONE in image view component mappings and VK_BLEND_FACTOR_ONE in color blend factors. There is no way to avoid copying these undefined values when copying from such an image to another image or buffer\"",
+      "revId": "c51687bc7b40b2d377085fda911bbe221be7bf43",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ccb647c5_15956372",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 475,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-05-10T14:04:02Z",
+      "side": 1,
+      "message": "For external formats, this is required to be Optimal, https://registry.khronos.org/vulkan/specs/1.1-extensions/html/vkspec.html#VUID-VkImageCreateInfo-pNext-02398.\n\nFor AHB that have a known vulkan format (not external), I don\u0027t see anything that explicitly says they have to optimal tiling, but I also don\u0027t see anyway for someone to query such a thing from the AHB. FWIW I think Dawn also always sets OPTIMAL when importing AHBs.\n\nSo I think for now we shouldn\u0027t plan on letting the caller pass in a tiling and just assume it will be optimal. You can update the comment here though to reflect what I said above.",
+      "range": {
+        "startLine": 474,
+        "startChar": 4,
+        "endLine": 475,
+        "endChar": 63
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "38b66ab5_fe403ce2",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+              "range": {
+                "startLine": 474,
+                "startChar": 0,
+                "endLine": 476,
+                "endChar": 0
+              },
+              "replacement": "    // TODO: Allow client to pass in tiling mode. For external formats, this is required to be\n    // optimal. For AHB that have a known Vulkan format, we can query VulkanCaps to determine if\n    // optimal is a valid decision given the format features.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "c51687bc7b40b2d377085fda911bbe221be7bf43",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
