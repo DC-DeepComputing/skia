@@ -823,34 +823,30 @@ DEF_TEST(AndroidCodec_gainmapInfoParse, r) {
             0x01, 0x00, 0x00, 0x00, 0x40, 0x00, 0x00, 0x00,  // Blue: Base offset
             0x01, 0x00, 0x00, 0x00, 0x40, 0x00, 0x00, 0x00,  // Blue: Altr offset
     };
-    SkGainmapInfo kExpectedInfo = {
-            {0.959023f, 0.977058f, 0.907989f, 1.f},
-            {4.753710f, 4.395375f, 4.352630f, 1.f},
-            {3.927490f, 3.960382f, 3.443712f, 1.f},
-            {0.015625f, 0.015625f, 0.015625f, 1.f},
-            {0.015625f, 0.015625f, 0.015625f, 1.f},
-            1.000000f,
-            5.819739f,
-            SkGainmapInfo::BaseImageType::kSDR,
-            SkGainmapInfo::Type::kDefault,
-            nullptr,
-            false,
-            SkNamedPrimaries::kSRGB,
-    };
-    SkGainmapInfo kSingleChannelInfo = {
-            {0.1234567e-4f, 0.1234567e-4f, 0.1234567e-4f, 1.f},
-            {-0.1234567e-4f, -0.1234567e-4f, -0.1234567e-4f, 1.f},
-            {0.1234567e+0f, 0.1234567e+0f, 0.1234567e+0f, 1.f},
-            {0.1234567e+4f, 0.1234567e+4f, 0.1234567e+4f, 1.f},
-            {0.1234567e+4f, 0.1234567e+4f, 0.1234567e+4f, 1.f},
-            1.,
-            4.f,
-            SkGainmapInfo::BaseImageType::kHDR,
-            SkGainmapInfo::Type::kDefault,
-            nullptr,
-            true,
-            SkNamedPrimaries::kSRGB,
-    };
+    SkGainmapInfo kExpectedInfo = {{0.959023f, 0.977058f, 0.907989f, 1.f},
+                                   {4.753710f, 4.395375f, 4.352630f, 1.f},
+                                   {3.927490f, 3.960382f, 3.443712f, 1.f},
+                                   {0.015625f, 0.015625f, 0.015625f, 1.f},
+                                   {0.015625f, 0.015625f, 0.015625f, 1.f},
+                                   1.000000f,
+                                   5.819739f,
+                                   SkGainmapInfo::BaseImageType::kSDR,
+                                   SkGainmapInfo::Type::kDefault,
+                                   nullptr,
+                                   false,
+                                   {0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f}};
+    SkGainmapInfo kSingleChannelInfo = {{0.1234567e-4f, 0.1234567e-4f, 0.1234567e-4f, 1.f},
+                                        {-0.1234567e-4f, -0.1234567e-4f, -0.1234567e-4f, 1.f},
+                                        {0.1234567e+0f, 0.1234567e+0f, 0.1234567e+0f, 1.f},
+                                        {0.1234567e+4f, 0.1234567e+4f, 0.1234567e+4f, 1.f},
+                                        {0.1234567e+4f, 0.1234567e+4f, 0.1234567e+4f, 1.f},
+                                        1.,
+                                        4.f,
+                                        SkGainmapInfo::BaseImageType::kHDR,
+                                        SkGainmapInfo::Type::kDefault,
+                                        nullptr,
+                                        true,
+                                        {0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f}};
 
     // Verify the version from data.
     REPORTER_ASSERT(r,
