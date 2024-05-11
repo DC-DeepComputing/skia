@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "32edf7d3_b22d26cd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2024-05-11T09:42:56Z",
+      "side": 1,
+      "message": "ptal -- this adds the parsing, but doesn\u0027t add the actual image support (I will need to add SkGainmapInfo.cpp to the Chromium build before adding that).",
+      "revId": "dbcc1d84cc4c4890fe09a82665a670f8b907f736",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
