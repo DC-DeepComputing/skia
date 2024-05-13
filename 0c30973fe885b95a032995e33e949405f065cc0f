@@ -1,0 +1,148 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c3d7069_e930c3bb",
+        "filename": "include/private/SkGainmapInfo.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-05-13T14:25:30Z",
+      "side": 1,
+      "message": "Is this becoming real public API? Should we move it to include (out of include/private)?",
+      "range": {
+        "startLine": 44,
+        "startChar": 7,
+        "endLine": 44,
+        "endChar": 13
+      },
+      "revId": "0c30973fe885b95a032995e33e949405f065cc0f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c4352ac_b3a8a514",
+        "filename": "src/codec/SkGainmapInfo.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-05-13T14:25:30Z",
+      "side": 1,
+      "message": "nit: LLC",
+      "range": {
+        "startLine": 2,
+        "startChar": 25,
+        "endLine": 2,
+        "endChar": 29
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "bfe76aed_8aaf768d",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/codec/SkGainmapInfo.cpp",
+              "range": {
+                "startLine": 2,
+                "startChar": 0,
+                "endLine": 3,
+                "endChar": 0
+              },
+              "replacement": " * Copyright 2024 Google LLC\n"
+            }
+          ]
+        }
+      ],
+      "revId": "0c30973fe885b95a032995e33e949405f065cc0f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07620a37_9b099ea7",
+        "filename": "src/codec/SkGainmapInfo.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-05-13T14:25:30Z",
+      "side": 1,
+      "message": "Seeing the temporary `double` values in the reading code made me realize this could spill into imprecise intermediate floats? Obviously, picking an ideal denominator is tricky, but still might be better to do something like:\n`static_cast\u003cint32_t\u003e(static_cast\u003cdouble\u003e(x) * denominator + 0.5)`",
+      "range": {
+        "startLine": 47,
+        "startChar": 45,
+        "endLine": 47,
+        "endChar": 60
+      },
+      "revId": "0c30973fe885b95a032995e33e949405f065cc0f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ab66518_6211ee0a",
+        "filename": "src/codec/SkGainmapInfo.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-05-13T14:25:30Z",
+      "side": 1,
+      "message": "Presumably not needed? Maybe throw in an assert?",
+      "range": {
+        "startLine": 55,
+        "startChar": 8,
+        "endLine": 55,
+        "endChar": 20
+      },
+      "revId": "0c30973fe885b95a032995e33e949405f065cc0f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a12e6bfd_82da51ed",
+        "filename": "src/codec/SkGainmapInfo.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-05-13T14:25:30Z",
+      "side": 1,
+      "message": "`static` ?",
+      "revId": "0c30973fe885b95a032995e33e949405f065cc0f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "142f07a6_4a21f943",
+        "filename": "src/codec/SkGainmapInfo.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-05-13T14:25:30Z",
+      "side": 1,
+      "message": "Same here",
+      "revId": "0c30973fe885b95a032995e33e949405f065cc0f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
