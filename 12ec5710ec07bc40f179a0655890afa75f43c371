@@ -61,6 +61,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d8c3f14e_a71bedf1",
+        "filename": "src/gpu/graphite/ComputePipeline.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 21754
+      },
+      "writtenOn": "2024-05-13T22:04:31Z",
+      "side": 1,
+      "message": "\u003e an alternative could be that we just expect every subclass to call it in its ctor like you have here\n\nI had considered that for reduced churn, but found that removing the label parameter from Resource constructor lead to most of the churn.\n\nHowever, I\u0027ve changed the CL so that we do pass the label to Resource constructor after all - it just doesn\u0027t set the backend label. An updateBackendLabel method is exposed to subclasses which can just call it in their constructors if they care about backend labels. This leads to the least amount of churn. It also opens up a path to setting the label during backend resource creation time e.g. setting the label directly on the Dawn descriptors for createTexture/Buffer - it doesn\u0027t matter now since 1) most backend APIs have explicit label setting so there\u0027s not much difference between setting the label on the descriptor vs updating it later and 2) we shouldn\u0027t be performing any operations between initialization and setting the label for Graphite on Dawn (not true for WebGPU which can do things like clears, etc.)",
+      "parentUuid": "d9497728_4db51534",
+      "range": {
+        "startLine": 17,
+        "startChar": 4,
+        "endLine": 17,
+        "endChar": 38
+      },
+      "revId": "12ec5710ec07bc40f179a0655890afa75f43c371",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7981ca2f_c2730f90",
         "filename": "src/gpu/graphite/GraphicsPipeline.cpp",
         "patchSetId": 1
@@ -100,6 +124,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b23d332_c36b9971",
+        "filename": "src/gpu/graphite/GraphicsPipeline.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 21754
+      },
+      "writtenOn": "2024-05-13T22:04:31Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "7981ca2f_c2730f90",
+      "range": {
+        "startLine": 30,
+        "startChar": 5,
+        "endLine": 30,
+        "endChar": 39
+      },
+      "revId": "12ec5710ec07bc40f179a0655890afa75f43c371",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c41666e9_ec87a1d3",
@@ -113,6 +161,30 @@
       "writtenOn": "2024-05-13T18:30:08Z",
       "side": 1,
       "message": "move to ResourceProvider::findOrCreateCompatibleSampler",
+      "range": {
+        "startLine": 17,
+        "startChar": 4,
+        "endLine": 17,
+        "endChar": 30
+      },
+      "revId": "12ec5710ec07bc40f179a0655890afa75f43c371",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f933f2a1_b0165895",
+        "filename": "src/gpu/graphite/Sampler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 21754
+      },
+      "writtenOn": "2024-05-13T22:04:31Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "c41666e9_ec87a1d3",
       "range": {
         "startLine": 17,
         "startChar": 4,
