@@ -1,0 +1,66 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "99873e99_03a925e8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-05-13T09:19:24Z",
+      "side": 1,
+      "message": "Thanks for fixing testing logistics with this change, one comment below:",
+      "revId": "11d892ce49b6dcfd60998ae3864aa48a7078297d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64eac187_86f5f9f1",
+        "filename": "gm/fontations_ft_compare.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-05-13T09:19:24Z",
+      "side": 1,
+      "message": "Would it make sense to return `DrawResult::kSkip` immediately here?",
+      "fixSuggestions": [
+        {
+          "fixId": "0ca82b67_ffee09a3",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "gm/fontations_ft_compare.cpp",
+              "range": {
+                "startLine": 224,
+                "startChar": 0,
+                "endLine": 225,
+                "endChar": 0
+              },
+              "replacement": "                                *errorMsg \u003d \"Unable to read pixels.\";\n                                return DrawResult::kSkip;\n"
+            },
+            {
+              "path": "gm/fontations_ft_compare.cpp",
+              "range": {
+                "startLine": 234,
+                "startChar": 0,
+                "endLine": 235,
+                "endChar": 0
+              },
+              "replacement": "                                *errorMsg \u003d \"Unable to read pixels.\";\n                                return DrawResult::kSkip;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "11d892ce49b6dcfd60998ae3864aa48a7078297d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
