@@ -89,6 +89,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "01ec3f53_f3662acf",
+        "filename": "tools/js_shaper/api.js",
+        "patchSetId": 12
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-05-13T19:45:01Z",
+      "side": 1,
+      "message": "No, they will not. They are writing into different arrays.",
+      "parentUuid": "12bf7b05_e30c73ee",
+      "revId": "8b79eb61701d6b7feca95c7285e4ca43f7b3d4be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1084cf5c_e561e4be",
@@ -173,6 +191,24 @@
       "side": 1,
       "message": "Strange, how are you calling it? You should be able to just call it on the string directly- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/toUpperCase",
       "parentUuid": "557fcc94_b869dc57",
+      "revId": "8b79eb61701d6b7feca95c7285e4ca43f7b3d4be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5fd912f_6c425cdc",
+        "filename": "tools/js_shaper/api.js",
+        "patchSetId": 12
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-05-13T19:45:01Z",
+      "side": 1,
+      "message": "Big surprise: now it works.",
+      "parentUuid": "b5a2daeb_a11f0ad7",
       "revId": "8b79eb61701d6b7feca95c7285e4ca43f7b3d4be",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
