@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "655a4a7c_2a5d8110",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 7
+      },
+      "lineNbr": 693,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-05-13T15:41:37Z",
+      "side": 0,
+      "message": "Added a replacement for this in https://skia.googlesource.com/skia.git/+/d1118d56853c01f0fe79e31eda6afac2f7cc5844 . (Also later went and removed all the PDF ignores and triaged them.) Turns out on macOS we already have a setup to use PdfKit to rasterize pdfs to create images for gold.",
+      "revId": "2eb1def98b9c94ce62ea886aa172397d7238f407",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
