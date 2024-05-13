@@ -55,7 +55,11 @@ static void write_positive_rational_be(SkWStream* s, float x) {
     if (x > 1.f) {
         denominator = 0x1000;
     }
+<<<<<<< PATCH SET (53bae2 Add ISO 21496-1 JPEG gainmap support)
+    uint32_t numerator = static_cast<uint32_t>(x * denominator + 0.5f);
+=======
     uint32_t numerator = static_cast<uint32_t>(static_cast<double>(x) * denominator + 0.5);
+>>>>>>> BASE      (a9ba74 Reland: Add ISO 21496-1 gainmap parsing)
     write_u32_be(s, numerator);
     write_u32_be(s, denominator);
 }

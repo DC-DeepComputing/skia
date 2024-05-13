@@ -45,6 +45,13 @@ static bool approx_eq(float x, float y, float epsilon) {
     }
     return true;
 }
+<<<<<<< PATCH SET (53bae2 Add ISO 21496-1 JPEG gainmap support)
+static bool approx_eq(const SkColor4f& x, const SkColor4f& y, float epsilon) {
+    return approx_eq(x.fR, y.fR, epsilon) && approx_eq(x.fG, y.fG, epsilon) &&
+           approx_eq(x.fB, y.fB, epsilon);
+}
+=======
+>>>>>>> BASE      (a9ba74 Reland: Add ISO 21496-1 gainmap parsing)
 
 // A test stream to stress the different SkJpegSourceMgr sub-classes.
 class TestStream : public SkStream {
@@ -580,9 +587,27 @@ DEF_TEST(AndroidCodec_jpegNoGainmap, r) {
 
 #if !defined(SK_ENABLE_NDK_IMAGES)
 
+<<<<<<< PATCH SET (53bae2 Add ISO 21496-1 JPEG gainmap support)
+template <typename Reporter>
+void expect_approx_eq_info(Reporter& r, const SkGainmapInfo& a, const SkGainmapInfo& b) {
+    float kEpsilon = 1e-4f;
+    REPORTER_ASSERT(r, approx_eq(a.fGainmapRatioMin, b.fGainmapRatioMin, kEpsilon));
+    REPORTER_ASSERT(r, approx_eq(a.fGainmapRatioMin, b.fGainmapRatioMin, kEpsilon));
+    REPORTER_ASSERT(r, approx_eq(a.fGainmapGamma, b.fGainmapGamma, kEpsilon));
+    REPORTER_ASSERT(r, approx_eq(a.fEpsilonSdr, b.fEpsilonSdr, kEpsilon));
+    REPORTER_ASSERT(r, approx_eq(a.fEpsilonHdr, b.fEpsilonHdr, kEpsilon));
+    REPORTER_ASSERT(r, approx_eq(a.fDisplayRatioSdr, b.fDisplayRatioSdr, kEpsilon));
+    REPORTER_ASSERT(r, approx_eq(a.fDisplayRatioHdr, b.fDisplayRatioHdr, kEpsilon));
+    REPORTER_ASSERT(r, a.fType == b.fType);
+    REPORTER_ASSERT(r, a.fBaseImageType == b.fBaseImageType);
+    REPORTER_ASSERT(
+            r,
+            SkColorSpace::Equals(a.fGainmapMathColorSpace.get(), b.fGainmapMathColorSpace.get()));
+=======
 static bool approx_eq(const SkColor4f& x, const SkColor4f& y, float epsilon) {
     return approx_eq(x.fR, y.fR, epsilon) && approx_eq(x.fG, y.fG, epsilon) &&
            approx_eq(x.fB, y.fB, epsilon);
+>>>>>>> BASE      (a9ba74 Reland: Add ISO 21496-1 gainmap parsing)
 }
 
 template <typename Reporter>

@@ -11,6 +11,10 @@
 #include "include/core/SkColor.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkRefCnt.h"
+<<<<<<< PATCH SET (53bae2 Add ISO 21496-1 JPEG gainmap support)
+#include "include/private/base/SkAPI.h"
+=======
+>>>>>>> BASE      (a9ba74 Reland: Add ISO 21496-1 gainmap parsing)
 class SkData;
 
 /**
