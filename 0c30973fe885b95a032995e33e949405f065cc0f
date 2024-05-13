@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d2d31ee_b22ec73f",
+        "filename": "include/private/SkGainmapInfo.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2024-05-13T19:39:45Z",
+      "side": 1,
+      "message": "I was thinking that Chrome would probably need it, when we get to PNG. Unless I create an SkPNGMetadataDecoder. Which ... maybe I will.\n\nI do think we\u0027ll want this to be a public API at some point. But it can wait. I\u0027ll leave this out for now.",
+      "parentUuid": "7c3d7069_e930c3bb",
+      "range": {
+        "startLine": 44,
+        "startChar": 7,
+        "endLine": 44,
+        "endChar": 13
+      },
+      "revId": "0c30973fe885b95a032995e33e949405f065cc0f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8c4352ac_b3a8a514",
@@ -65,6 +89,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "217a077c_4fc6be8a",
+        "filename": "src/codec/SkGainmapInfo.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2024-05-13T19:39:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8c4352ac_b3a8a514",
+      "range": {
+        "startLine": 2,
+        "startChar": 25,
+        "endLine": 2,
+        "endChar": 29
+      },
+      "revId": "0c30973fe885b95a032995e33e949405f065cc0f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "07620a37_9b099ea7",
@@ -78,6 +126,30 @@
       "writtenOn": "2024-05-13T14:25:30Z",
       "side": 1,
       "message": "Seeing the temporary `double` values in the reading code made me realize this could spill into imprecise intermediate floats? Obviously, picking an ideal denominator is tricky, but still might be better to do something like:\n`static_cast\u003cint32_t\u003e(static_cast\u003cdouble\u003e(x) * denominator + 0.5)`",
+      "range": {
+        "startLine": 47,
+        "startChar": 45,
+        "endLine": 47,
+        "endChar": 60
+      },
+      "revId": "0c30973fe885b95a032995e33e949405f065cc0f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e4311eb_472626c8",
+        "filename": "src/codec/SkGainmapInfo.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2024-05-13T19:39:45Z",
+      "side": 1,
+      "message": "Good idea, done.\n\nI suspect that there\u0027s a \"find the most precise rational representation of a float\" algorithm somewhere out there which we can plop in here.",
+      "parentUuid": "07620a37_9b099ea7",
       "range": {
         "startLine": 47,
         "startChar": 45,
@@ -111,6 +183,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b29d9739_bd450d09",
+        "filename": "src/codec/SkGainmapInfo.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2024-05-13T19:39:45Z",
+      "side": 1,
+      "message": "I was recently burned by aggressive `SkASSERT`s, so I\u0027d prefer to just quietly use wrong values here. Removed the abs, though.",
+      "parentUuid": "1ab66518_6211ee0a",
+      "range": {
+        "startLine": 55,
+        "startChar": 8,
+        "endLine": 55,
+        "endChar": 20
+      },
+      "revId": "0c30973fe885b95a032995e33e949405f065cc0f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a12e6bfd_82da51ed",
@@ -128,6 +224,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a1cbcf3_bebca13c",
+        "filename": "src/codec/SkGainmapInfo.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2024-05-13T19:39:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a12e6bfd_82da51ed",
+      "revId": "0c30973fe885b95a032995e33e949405f065cc0f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "142f07a6_4a21f943",
@@ -141,6 +255,24 @@
       "writtenOn": "2024-05-13T14:25:30Z",
       "side": 1,
       "message": "Same here",
+      "revId": "0c30973fe885b95a032995e33e949405f065cc0f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eec7b97a_a83f0571",
+        "filename": "src/codec/SkGainmapInfo.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2024-05-13T19:39:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "142f07a6_4a21f943",
       "revId": "0c30973fe885b95a032995e33e949405f065cc0f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
