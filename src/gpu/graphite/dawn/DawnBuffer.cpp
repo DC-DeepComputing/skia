@@ -82,11 +82,8 @@ sk_sp<DawnBuffer> DawnBuffer::Make(const DawnSharedContext* sharedContext,
         SkASSERT(mappedAtCreationPtr);
     }
 
-    return sk_sp<DawnBuffer>(new DawnBuffer(sharedContext,
-                                            size,
-                                            std::move(buffer),
-                                            mappedAtCreationPtr,
-                                            std::move(label)));
+    return sk_sp<DawnBuffer>(
+            new DawnBuffer(sharedContext, size, std::move(buffer), mappedAtCreationPtr, label));
 }
 
 DawnBuffer::DawnBuffer(const DawnSharedContext* sharedContext,
@@ -96,10 +93,11 @@ DawnBuffer::DawnBuffer(const DawnSharedContext* sharedContext,
                        std::string_view label)
         : Buffer(sharedContext,
                  size,
-                 std::move(label),
+                 label,
                  /*commandBufferRefsAsUsageRefs=*/buffer.GetUsage() & wgpu::BufferUsage::MapWrite)
         , fBuffer(std::move(buffer)) {
     fMapPtr = mappedAtCreationPtr;
+    this->updateBackendLabel();
 }
 
 #if defined(__EMSCRIPTEN__)

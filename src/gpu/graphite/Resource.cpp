@@ -37,12 +37,11 @@ Resource::Resource(const SharedContext* sharedContext,
         , fOwnership(ownership)
         , fGpuMemorySize(gpuMemorySize)
         , fBudgeted(budgeted)
-        , fUniqueID(create_unique_id()) {
+        , fUniqueID(create_unique_id())
+        , fLabel(label) {
     // If we don't own the resource that must mean its wrapped in a client object. Thus we should
     // not be budgeted
     SkASSERT(fOwnership == Ownership::kOwned || fBudgeted == skgpu::Budgeted::kNo);
-
-    this->setLabel(label);
 }
 
 Resource::~Resource() {
