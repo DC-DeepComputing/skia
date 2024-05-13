@@ -124,9 +124,10 @@ private:
             : Resource(sharedContext,
                        Ownership::kOwned,
                        skgpu::Budgeted::kYes,
-                       /*gpuMemorySize=*/0,
-                       /*label=*/"MtlBlitCommandEncoder")
-            , fCommandEncoder(std::move(encoder)) {}
+                       /*gpuMemorySize=*/0)
+            , fCommandEncoder(std::move(encoder)) {
+        this->Resource::setLabel("MtlBlitCommandEncoder");
+    }
 
     void freeGpuData() override {
         fCommandEncoder.reset();

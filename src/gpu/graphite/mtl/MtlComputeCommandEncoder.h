@@ -130,8 +130,7 @@ private:
             : Resource(sharedContext,
                        Ownership::kOwned,
                        skgpu::Budgeted::kYes,
-                       /*gpuMemorySize=*/0,
-                       /*label=*/"MtlComputeCommandEncoder")
+                       /*gpuMemorySize=*/0)
             , fCommandEncoder(std::move(encoder)) {
         for (int i = 0; i < kMaxExpectedBuffers; i++) {
             fBuffers[i] = nil;
@@ -140,6 +139,7 @@ private:
             fTextures[i] = nil;
             fSamplers[i] = nil;
         }
+        this->Resource::setLabel("MtlComputeCommandEncoder");
     }
 
     void freeGpuData() override { fCommandEncoder.reset(); }

@@ -14,8 +14,7 @@ GraphicsPipeline::GraphicsPipeline(const SharedContext* sharedContext, PipelineI
         : Resource(sharedContext,
                    Ownership::kOwned,
                    skgpu::Budgeted::kYes,
-                   /*gpuMemorySize=*/0,
-                   /*label=*/"GraphicsPipeline") {
+                   /*gpuMemorySize=*/0) {
 #if defined(GRAPHITE_TEST_UTILS)
     if (pipelineInfo) {
         fPipelineInfo.fRenderStepID = pipelineInfo->fRenderStepID;
@@ -28,6 +27,7 @@ GraphicsPipeline::GraphicsPipeline(const SharedContext* sharedContext, PipelineI
         fPipelineInfo.fNativeFragmentShader = std::move(pipelineInfo->fNativeFragmentShader);
     }
 #endif
+    this->setLabel("GraphicsPipeline");
 }
 
 GraphicsPipeline::~GraphicsPipeline() = default;
