@@ -16,6 +16,29 @@
       "message": "Thanks -- updated!",
       "revId": "88cf12f77e70e4c61ac7105d8ae95b79c9f6c620",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a860eda2_b8d55164",
+        "filename": "src/codec/SkGainmapInfo.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-05-13T19:46:22Z",
+      "side": 1,
+      "message": "Oops, same cast needed here?",
+      "range": {
+        "startLine": 58,
+        "startChar": 47,
+        "endLine": 58,
+        "endChar": 49
+      },
+      "revId": "88cf12f77e70e4c61ac7105d8ae95b79c9f6c620",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
