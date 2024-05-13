@@ -16,6 +16,152 @@
       "message": "PTAL",
       "revId": "12ec5710ec07bc40f179a0655890afa75f43c371",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9497728_4db51534",
+        "filename": "src/gpu/graphite/ComputePipeline.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-05-13T18:30:08Z",
+      "side": 1,
+      "message": "For consistency, this can be moved to ResourceProvider::findOrCreateComputePipeline.\n\nSide note: I think I like the pattern in this CL of using ResourceProvider to call setLabel, but an alternative could be that we just expect every subclass to call it in its ctor like you have here. As long as everything is consistent.",
+      "range": {
+        "startLine": 17,
+        "startChar": 4,
+        "endLine": 17,
+        "endChar": 38
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "434e4078_46e23a95",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/ComputePipeline.cpp",
+              "range": {
+                "startLine": 16,
+                "startChar": 0,
+                "endLine": 19,
+                "endChar": 0
+              },
+              "replacement": "                   /*gpuMemorySize\u003d*/0) {}\n"
+            }
+          ]
+        }
+      ],
+      "revId": "12ec5710ec07bc40f179a0655890afa75f43c371",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7981ca2f_c2730f90",
+        "filename": "src/gpu/graphite/GraphicsPipeline.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-05-13T18:30:08Z",
+      "side": 1,
+      "message": "ResourceProvider::findOrCreateGraphicsPipeline",
+      "range": {
+        "startLine": 30,
+        "startChar": 5,
+        "endLine": 30,
+        "endChar": 39
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "910a13df_2fd7b8b6",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/GraphicsPipeline.cpp",
+              "range": {
+                "startLine": 30,
+                "startChar": 0,
+                "endLine": 31,
+                "endChar": 0
+              },
+              "replacement": "    this-\u003esetLabel(\"GraphicsPipeline\");  // TODO: add pipeline info to label\n"
+            }
+          ]
+        }
+      ],
+      "revId": "12ec5710ec07bc40f179a0655890afa75f43c371",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c41666e9_ec87a1d3",
+        "filename": "src/gpu/graphite/Sampler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-05-13T18:30:08Z",
+      "side": 1,
+      "message": "move to ResourceProvider::findOrCreateCompatibleSampler",
+      "range": {
+        "startLine": 17,
+        "startChar": 4,
+        "endLine": 17,
+        "endChar": 30
+      },
+      "revId": "12ec5710ec07bc40f179a0655890afa75f43c371",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b7bd176_b46c3a24",
+        "filename": "src/gpu/graphite/mtl/MtlBlitCommandEncoder.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-05-13T18:30:08Z",
+      "side": 1,
+      "message": "Don\u0027t need to update things for this CL, but to try keep things consistent, I think I would prefer we went through MtlResourceProvider to get all the these various Encoders and then do the label setting there. Anyays just leaving this comment as an FYI here.",
+      "range": {
+        "startLine": 129,
+        "startChar": 8,
+        "endLine": 129,
+        "endChar": 58
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "0b814538_65c99806",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/mtl/MtlBlitCommandEncoder.h",
+              "range": {
+                "startLine": 128,
+                "startChar": 0,
+                "endLine": 131,
+                "endChar": 0
+              },
+              "replacement": "            , fCommandEncoder(std::move(encoder)) {}\n"
+            }
+          ]
+        }
+      ],
+      "revId": "12ec5710ec07bc40f179a0655890afa75f43c371",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
