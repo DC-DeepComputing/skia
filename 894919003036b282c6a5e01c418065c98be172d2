@@ -22,6 +22,30 @@
       },
       "revId": "894919003036b282c6a5e01c418065c98be172d2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "859bbd08_307e5992",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-05-13T12:58:45Z",
+      "side": 1,
+      "message": "thanks sunny, fix on the way.",
+      "parentUuid": "c0147a78_bcfe9f00",
+      "range": {
+        "startLine": 139,
+        "startChar": 8,
+        "endLine": 142,
+        "endChar": 9
+      },
+      "revId": "894919003036b282c6a5e01c418065c98be172d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
