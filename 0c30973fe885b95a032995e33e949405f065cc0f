@@ -160,6 +160,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0153ff1f_21444f10",
+        "filename": "src/codec/SkGainmapInfo.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-05-13T19:45:20Z",
+      "side": 1,
+      "message": "Yeah, I figured as much. https://github.com/alidasdan/best-rational-approximation looks promising, at first glance. (Obviously not necessary now, but might be a nice follow-up, if the code isn\u0027t too wild).",
+      "parentUuid": "3e4311eb_472626c8",
+      "range": {
+        "startLine": 47,
+        "startChar": 45,
+        "endLine": 47,
+        "endChar": 60
+      },
+      "revId": "0c30973fe885b95a032995e33e949405f065cc0f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1ab66518_6211ee0a",
