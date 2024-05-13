@@ -61,6 +61,24 @@
       ],
       "revId": "11d892ce49b6dcfd60998ae3864aa48a7078297d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "463faa7a_c10c500d",
+        "filename": "gm/fontations_ft_compare.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-05-13T14:50:36Z",
+      "side": 1,
+      "message": "I don\u0027t think we actually want to skip, the `Fontations` and `FreeType`  `DrawPhase` cases still work and this should still draw.",
+      "parentUuid": "64eac187_86f5f9f1",
+      "revId": "11d892ce49b6dcfd60998ae3864aa48a7078297d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
