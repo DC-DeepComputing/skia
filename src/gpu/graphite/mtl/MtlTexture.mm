@@ -67,7 +67,6 @@ MtlTexture::MtlTexture(const MtlSharedContext* sharedContext,
                        SkISize dimensions,
                        const TextureInfo& info,
                        sk_cfp<id<MTLTexture>> texture,
-
                        std::string_view label,
                        Ownership ownership,
                        skgpu::Budgeted budgeted)
@@ -75,10 +74,12 @@ MtlTexture::MtlTexture(const MtlSharedContext* sharedContext,
                   dimensions,
                   info,
                   /*mutableState=*/nullptr,
-                  std::move(label),
+                  label,
                   ownership,
                   budgeted)
-        , fTexture(std::move(texture)) {}
+        , fTexture(std::move(texture)) {
+    this->updateBackendLabel();
+}
 
 sk_sp<Texture> MtlTexture::Make(const MtlSharedContext* sharedContext,
                                 SkISize dimensions,
@@ -93,7 +94,7 @@ sk_sp<Texture> MtlTexture::Make(const MtlSharedContext* sharedContext,
                                          dimensions,
                                          info,
                                          std::move(texture),
-                                         std::move(label),
+                                         label,
                                          Ownership::kOwned,
                                          budgeted));
 }
@@ -107,7 +108,7 @@ sk_sp<Texture> MtlTexture::MakeWrapped(const MtlSharedContext* sharedContext,
                                          dimensions,
                                          info,
                                          std::move(texture),
-                                         std::move(label),
+                                         label,
                                          Ownership::kWrapped,
                                          skgpu::Budgeted::kNo));
 }

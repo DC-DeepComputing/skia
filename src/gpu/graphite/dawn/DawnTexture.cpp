@@ -83,12 +83,14 @@ DawnTexture::DawnTexture(const DawnSharedContext* sharedContext,
                   dimensions,
                   info,
                   /*mutableState=*/nullptr,
-                  std::move(label),
+                  label,
                   ownership,
                   budgeted)
         , fTexture(std::move(texture))
         , fSampleTextureView(std::move(sampleTextureView))
-        , fRenderTextureView(std::move(renderTextureView)) {}
+        , fRenderTextureView(std::move(renderTextureView)) {
+    this->updateBackendLabel();
+}
 
 // static
 std::pair<wgpu::TextureView, wgpu::TextureView> DawnTexture::CreateTextureViews(
@@ -146,7 +148,7 @@ sk_sp<Texture> DawnTexture::Make(const DawnSharedContext* sharedContext,
                                           std::move(texture),
                                           std::move(sampleTextureView),
                                           std::move(renderTextureView),
-                                          std::move(label),
+                                          label,
                                           Ownership::kOwned,
                                           budgeted));
 }
@@ -168,7 +170,7 @@ sk_sp<Texture> DawnTexture::MakeWrapped(const DawnSharedContext* sharedContext,
                                           std::move(texture),
                                           std::move(sampleTextureView),
                                           std::move(renderTextureView),
-                                          std::move(label),
+                                          label,
                                           Ownership::kWrapped,
                                           skgpu::Budgeted::kNo));
 }
@@ -188,7 +190,7 @@ sk_sp<Texture> DawnTexture::MakeWrapped(const DawnSharedContext* sharedContext,
                                           /*texture=*/nullptr,
                                           /*sampleTextureView=*/textureView,
                                           /*renderTextureView=*/textureView,
-                                          std::move(label),
+                                          label,
                                           Ownership::kWrapped,
                                           skgpu::Budgeted::kNo));
 }

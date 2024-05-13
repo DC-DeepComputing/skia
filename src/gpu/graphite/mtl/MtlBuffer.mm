@@ -43,18 +43,16 @@ sk_sp<Buffer> MtlBuffer::Make(const MtlSharedContext* sharedContext,
     sk_cfp<id<MTLBuffer>> buffer([sharedContext->device() newBufferWithLength:size
                                                                       options:options]);
 
-    return sk_sp<Buffer>(new MtlBuffer(sharedContext,
-                                       size,
-                                       std::move(buffer),
-                                       std::move(label)));
+    return sk_sp<Buffer>(new MtlBuffer(sharedContext, size, std::move(buffer), label));
 }
 
 MtlBuffer::MtlBuffer(const MtlSharedContext* sharedContext,
                      size_t size,
                      sk_cfp<id<MTLBuffer>> buffer,
                      std::string_view label)
-        : Buffer(sharedContext, size, std::move(label))
-        , fBuffer(std::move(buffer)) {}
+        : Buffer(sharedContext, size, label), fBuffer(std::move(buffer)) {
+    this->updateBackendLabel();
+}
 
 void MtlBuffer::onMap() {
     SkASSERT(fBuffer);

@@ -27,7 +27,7 @@ class GraphicsPipeline : public Resource {
 public:
     ~GraphicsPipeline() override;
 
-    const char* getResourceType() const override { return "Graphics Pipeline"; }
+    const char* getResourceType() const override { return "GraphicsPipeline"; }
 
 #if defined(GRAPHITE_TEST_UTILS)
     // This is not quite enough information to fully recreate the pipeline, as the RenderPassDesc

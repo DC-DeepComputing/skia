@@ -135,11 +135,7 @@ public:
     // when reusing a scratch Texture we can change the label to match callers current use.
     void setLabel(std::string_view label) {
         fLabel = label;
-
-        if (!label.empty()) {
-            const std::string fullLabel = "Skia_" + fLabel;
-            this->setBackendLabel(fullLabel.c_str());
-        }
+        this->updateBackendLabel();
     }
 
     // Tests whether a object has been abandoned or released. All objects will be in this state
@@ -201,6 +197,16 @@ protected:
 
     // Needed to be protected for DawnBuffer emscripten prepareForReturnToCache
     void setDeleteASAP() { fDeleteASAP = DeleteASAP::kYes; }
+
+    void updateBackendLabel() {
+        std::string fullLabel = "Skia_";
+        if (!fLabel.empty()) {
+            fullLabel += fLabel;
+        } else {
+            fullLabel += getResourceType();
+        }
+        this->setBackendLabel(fullLabel.c_str());
+    }
 
 private:
     friend class ProxyCache; // for setDeleteASAP and updateAccessTime
