@@ -79,6 +79,24 @@
       "parentUuid": "64eac187_86f5f9f1",
       "revId": "11d892ce49b6dcfd60998ae3864aa48a7078297d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d6405192_12071020",
+        "filename": "gm/fontations_ft_compare.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-05-13T15:23:04Z",
+      "side": 1,
+      "message": "So you mean, only the comparison parts that need readback would fail?",
+      "parentUuid": "463faa7a_c10c500d",
+      "revId": "11d892ce49b6dcfd60998ae3864aa48a7078297d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
