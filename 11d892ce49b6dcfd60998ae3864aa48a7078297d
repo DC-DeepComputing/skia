@@ -97,6 +97,24 @@
       "parentUuid": "463faa7a_c10c500d",
       "revId": "11d892ce49b6dcfd60998ae3864aa48a7078297d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "681b7c23_f195da1f",
+        "filename": "gm/fontations_ft_compare.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-05-13T15:36:27Z",
+      "side": 1,
+      "message": "Yes, in viewer if you select one of the F16 color modes the the gm will continue to draw, just the comparison parts will disappear. Also, this means we don\u0027t need special handling for the PDF config (which is now running again) for which one cannot do read back at all, but we still get coverage that the drawing part works.",
+      "parentUuid": "d6405192_12071020",
+      "revId": "11d892ce49b6dcfd60998ae3864aa48a7078297d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
