@@ -19,6 +19,7 @@
 #include <chrono>
 #include <functional>
 #include <memory>
+#include <type_traits>
 
 class SkColorSpace;
 class SkRuntimeEffect;
@@ -31,6 +32,8 @@ class Buffer;
 class ClientMappedBufferManager;
 class Context;
 class ContextPriv;
+class Image_Base;
+class Image;
 class GlobalCache;
 class PaintOptions;
 class PlotUploadTracker;
@@ -230,43 +233,64 @@ private:
     // require Context::Make() to return a nullptr.
     bool finishInitialization();
 
+
     void checkForFinishedWork(SyncToCpu);
 
-    void asyncRescaleAndReadPixelsYUV420Impl(const SkImage*,
-                                             SkYUVColorSpace yuvColorSpace,
-                                             bool readAlpha,
-                                             sk_sp<SkColorSpace> dstColorSpace,
-                                             const SkIRect& srcRect,
-                                             const SkISize& dstSize,
-                                             SkImage::RescaleGamma rescaleGamma,
-                                             SkImage::RescaleMode rescaleMode,
-                                             SkImage::ReadPixelsCallback callback,
-                                             SkImage::ReadPixelsContext context);
+    template <typename SrcPixels, typename... ExtraParams>
+    struct AsyncParams {
+        const SrcPixels* fSrcImage;
+        SkIRect          fSrcRect;
 
-    void asyncReadPixels(const TextureProxy* textureProxy,
-                         const SkImageInfo& srcImageInfo,
-                         const SkColorInfo& dstColorInfo,
-                         const SkIRect& srcRect,
-                         SkImage::ReadPixelsCallback callback,
-                         SkImage::ReadPixelsContext context);
+        std::tuple<ExtraParams...> fExtraParams;
 
-    void asyncReadPixelsYUV420(Recorder*,
-                               const SkImage*,
-                               SkYUVColorSpace yuvColorSpace,
-                               bool readAlpha,
-                               const SkIRect& srcRect,
-                               SkImage::ReadPixelsCallback callback,
-                               SkImage::ReadPixelsContext context);
+        SkImage::ReadPixelsCallback* fCallback;
+        SkImage::ReadPixelsContext   fCallbackContext;
 
-    void finalizeAsyncReadPixels(SkSpan<PixelTransferResult>,
-                                 SkImage::ReadPixelsCallback callback,
-                                 SkImage::ReadPixelsContext callbackContext);
+        AsyncParams withNewSource(const SrcPixels* newPixels, const SkISize& newSize) const {
+            return AsyncParams{newPixels, SkIRect::MakeSize(newSize),
+                               fExtraParams, fCallback, fCallbackContext};
+        }
+        void fail() const {
+            (*fCallback)(fCallbackContext, nullptr);
+        }
+    };
+    using ImageParams = AsyncParams<SkImage, SkColorInfo /*dstColorInfo*/>;
+    using YUVAImageParams = AsyncParams<SkImage, SkYUVColorSpace, bool /*readAlpha*/>;
+    using TextureParams = AsyncParams<TextureProxy,
+                                      SkColorInfo /*srcColorInfo*/,
+                                      SkColorInfo /*dstColorInfo*/>;
 
-    // Inserts a texture to buffer transfer task, used by asyncReadPixels methods
-    PixelTransferResult transferPixels(const TextureProxy*,
-                                       const SkImageInfo& srcImageInfo,
+    template <typename ReadFn, typename... ExtraArgs>
+    void asyncRescaleAndReadImpl(ReadFn Context::* asyncRead,
+                                 SkImage::RescaleGamma rescaleGamma,
+                                 SkImage::RescaleMode rescaleMode,
+                                 const AsyncParams<SkImage, ExtraArgs...>&,
+                                 const SkImageInfo& dstImageInfo);
+
+    // Recorder is optional and will be used if drawing operations are required. If no Recorder is
+    // provided but drawing operations are needed, a new Recorder will be created automatically.
+    void asyncReadPixels(std::unique_ptr<Recorder>, const ImageParams&);
+    void asyncReadPixelsYUV420(std::unique_ptr<Recorder>, const YUVAImageParams&);
+
+    // Like asyncReadPixels() except it performs no fallbacks, and requires that the texture be
+    // readable. However, the texture does not need to be sampleable.
+    void asyncReadTexture(std::unique_ptr<Recorder>, const TextureParams&);
+
+    // Inserts a texture to buffer transfer task, used by asyncReadPixels methods. If the
+    // Recorder is non-null, tasks will be added to the Recorder's list; otherwise the transfer
+    // tasks will be added to the queue manager directly.
+    PixelTransferResult transferPixels(Recorder*,
+                                       const TextureProxy* srcProxy,
+                                       const SkColorInfo& srcColorInfo,
                                        const SkColorInfo& dstColorInfo,
                                        const SkIRect& srcRect);
+
+    // // If the recorder is non-null, it will be snapped and inserted with the assumption that the
+    // // copy tasks (and possibly preparatory draw tasks) have already been added to the Recording.
+    void finalizeAsyncReadPixels(std::unique_ptr<Recorder>,
+                                 SkSpan<PixelTransferResult>,
+                                 SkImage::ReadPixelsCallback callback,
+                                 SkImage::ReadPixelsContext callbackContext);
 
     sk_sp<SharedContext> fSharedContext;
     std::unique_ptr<ResourceProvider> fResourceProvider;
