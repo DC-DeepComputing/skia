@@ -55,11 +55,9 @@ using namespace skia_private;
 
 class SkDescriptor;
 
-TestSVGTypeface::TestSVGTypeface(const char*                              name,
-                                 int                                      upem,
-                                 const SkFontMetrics&                     fontMetrics,
-                                 SkSpan<const SkSVGTestTypefaceGlyphData> data,
-                                 const SkFontStyle&                       style)
+TestSVGTypeface::TestSVGTypeface(const char* name, const SkFontStyle& style,
+                                 int upem, const SkFontMetrics& fontMetrics,
+                                 SkSpan<const SkSVGTestTypefaceGlyphData> data)
         : SkTypeface(style, false)
         , fName(name)
         , fUpem(upem)
@@ -365,7 +363,7 @@ sk_sp<TestSVGTypeface> TestSVGTypeface::Default() {
     metrics.fStrikeoutPosition  = -400;
 
     return sk_sp<TestSVGTypeface>(
-        new DefaultTypeface("Emoji", 1000, metrics, glyphs, SkFontStyle::Normal()));
+        new DefaultTypeface("Emoji", SkFontStyle::Normal(), 1000, metrics, glyphs));
 }
 
 class PlanetTypeface : public TestSVGTypeface {
@@ -441,7 +439,7 @@ sk_sp<TestSVGTypeface> TestSVGTypeface::Planets() {
     metrics.fStrikeoutPosition  = -80;
 
     return sk_sp<TestSVGTypeface>(
-        new PlanetTypeface("Planets", 200, metrics, glyphs, SkFontStyle::Normal()));
+        new PlanetTypeface("Planets", SkFontStyle::Normal(), 200, metrics, glyphs));
 }
 
 void TestSVGTypeface::exportTtxCommon(SkWStream*                out,
@@ -748,6 +746,14 @@ void TestSVGTypeface::exportTtxCommon(SkWStream*                out,
     out->writeText(
             "    <namerecord nameID=\"2\" platformID=\"3\" platEncID=\"1\" langID=\"0x409\">\n");
     out->writeText("      Regular\n");
+    out->writeText("    </namerecord>\n");
+        out->writeText(
+            "    <namerecord nameID=\"6\" platformID=\"3\" platEncID=\"1\" langID=\"0x409\">\n");
+    out->writeText("      ");
+    out->writeText(fName.c_str());
+    out->writeText("_");
+    out->writeText(type);
+    out->writeText("\n");
     out->writeText("    </namerecord>\n");
     out->writeText("  </name>\n");
 
@@ -1079,30 +1085,27 @@ void TestSVGTypeface::exportTtxSbix(SkWStream* out, SkSpan<unsigned> strikeSizes
             sk_sp<SkImage> image = surface->makeImageSnapshot();
             sk_sp<SkData> data = SkPngEncoder::Encode(nullptr, image.get(), {});
 
-            // The originOffset values are difficult to use as DirectWrite and FreeType interpret
-            // the origin to be the initial glyph position on the baseline, but CoreGraphics
-            // interprets the origin to be the lower left of the cbox of the outline in the 'glyf'
-            // table.
-            //#define SK_SBIX_LIKE_FT
-            //#define SK_SBIX_LIKE_DW
+            // The originOffset values are difficult to use.
+            // The CoreText origin is the lower left of the bbox in the 'glyf' table (after lsb).
+            // The DirectWrite and FreeType origin was the initial glyph position on the baseline,
+            // but this has slowly changed to be a bit more like CoreText.
+            //#define SK_SBIX_LIKE_MAC
             out->writeText("      <glyph name=\"glyf");
             out->writeHexAsText(i, 4);
             out->writeText("\" graphicType=\"png \" originOffsetX=\"");
-#if defined(SK_SBIX_LIKE_FT) || defined(SK_SBIX_LIKE_DW)
-            out->writeDecAsText(bounds.fLeft);
-#else
+#if defined(SK_SBIX_LIKE_MAC)
             out->writeDecAsText(0);
+#else
+            out->writeDecAsText(bounds.fLeft);
 #endif
             // DirectWrite and CoreGraphics use positive values of originOffsetY to push the
             // image visually up (but from different origins).
-            // FreeType uses positive values to push the image down.
+            // FreeType used positive values to push the image down until 2.12.0
             out->writeText("\" originOffsetY=\"");
-#if defined(SK_SBIX_LIKE_FT)
-            out->writeScalarAsText(bounds.fBottom);
-#elif defined(SK_SBIX_LIKE_DW)
-            out->writeScalarAsText(-bounds.fBottom);
-#else
+#if defined(SK_SBIX_LIKE_MAC)
             out->writeDecAsText(0);
+#else
+            out->writeScalarAsText(-bounds.fBottom);
 #endif
             out->writeText("\">\n");
 
