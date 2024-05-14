@@ -55,11 +55,9 @@ using namespace skia_private;
 
 class SkDescriptor;
 
-TestSVGTypeface::TestSVGTypeface(const char*                              name,
-                                 int                                      upem,
-                                 const SkFontMetrics&                     fontMetrics,
-                                 SkSpan<const SkSVGTestTypefaceGlyphData> data,
-                                 const SkFontStyle&                       style)
+TestSVGTypeface::TestSVGTypeface(const char* name, const SkFontStyle& style,
+                                 int upem, const SkFontMetrics& fontMetrics,
+                                 SkSpan<const SkSVGTestTypefaceGlyphData> data)
         : SkTypeface(style, false)
         , fName(name)
         , fUpem(upem)
@@ -365,7 +363,7 @@ sk_sp<TestSVGTypeface> TestSVGTypeface::Default() {
     metrics.fStrikeoutPosition  = -400;
 
     return sk_sp<TestSVGTypeface>(
-        new DefaultTypeface("Emoji", 1000, metrics, glyphs, SkFontStyle::Normal()));
+        new DefaultTypeface("Emoji", SkFontStyle::Normal(), 1000, metrics, glyphs));
 }
 
 class PlanetTypeface : public TestSVGTypeface {
@@ -441,7 +439,7 @@ sk_sp<TestSVGTypeface> TestSVGTypeface::Planets() {
     metrics.fStrikeoutPosition  = -80;
 
     return sk_sp<TestSVGTypeface>(
-        new PlanetTypeface("Planets", 200, metrics, glyphs, SkFontStyle::Normal()));
+        new PlanetTypeface("Planets", SkFontStyle::Normal(), 200, metrics, glyphs));
 }
 
 void TestSVGTypeface::exportTtxCommon(SkWStream*                out,
@@ -748,6 +746,14 @@ void TestSVGTypeface::exportTtxCommon(SkWStream*                out,
     out->writeText(
             "    <namerecord nameID=\"2\" platformID=\"3\" platEncID=\"1\" langID=\"0x409\">\n");
     out->writeText("      Regular\n");
+    out->writeText("    </namerecord>\n");
+        out->writeText(
+            "    <namerecord nameID=\"6\" platformID=\"3\" platEncID=\"1\" langID=\"0x409\">\n");
+    out->writeText("      ");
+    out->writeText(fName.c_str());
+    out->writeText("_");
+    out->writeText(type);
+    out->writeText("\n");
     out->writeText("    </namerecord>\n");
     out->writeText("  </name>\n");
 
