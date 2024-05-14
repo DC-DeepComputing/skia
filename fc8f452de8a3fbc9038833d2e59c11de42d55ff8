@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ecbdd0a7_85a6a252",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 632,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2024-05-14T21:30:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "23819756_95285b1c",
+      "range": {
+        "startLine": 632,
+        "startChar": 4,
+        "endLine": 632,
+        "endChar": 15
+      },
+      "revId": "fc8f452de8a3fbc9038833d2e59c11de42d55ff8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ab8325dc_6743ad32",
@@ -61,6 +85,30 @@
           ]
         }
       ],
+      "revId": "fc8f452de8a3fbc9038833d2e59c11de42d55ff8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "37cd3a1b_6e9592ce",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 637,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2024-05-14T21:30:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ab8325dc_6743ad32",
+      "range": {
+        "startLine": 637,
+        "startChar": 4,
+        "endLine": 637,
+        "endChar": 22
+      },
       "revId": "fc8f452de8a3fbc9038833d2e59c11de42d55ff8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -112,6 +160,30 @@
           ]
         }
       ],
+      "revId": "fc8f452de8a3fbc9038833d2e59c11de42d55ff8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "530847f7_1ba3e20c",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 643,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2024-05-14T21:30:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9f0631f4_8c91b4e4",
+      "range": {
+        "startLine": 643,
+        "startChar": 15,
+        "endLine": 643,
+        "endChar": 28
+      },
       "revId": "fc8f452de8a3fbc9038833d2e59c11de42d55ff8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
