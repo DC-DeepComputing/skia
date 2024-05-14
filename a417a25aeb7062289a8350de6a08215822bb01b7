@@ -16,6 +16,23 @@
       "message": "The original change broke the CanvasKit-WebGPU build: https://chromium-swarm.appspot.com/task?id\u003d699038451fdf6910.\n\nI\u0027m guessing this may need some guards for when the webgpu header comes from emscripten?",
       "revId": "a417a25aeb7062289a8350de6a08215822bb01b7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d81720d_7bf07a00",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-05-14T17:56:10Z",
+      "side": 1,
+      "message": "Fix forward @ https://skia-review.googlesource.com/c/skia/+/853257",
+      "revId": "a417a25aeb7062289a8350de6a08215822bb01b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
