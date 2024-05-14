@@ -16,6 +16,24 @@
       "message": "Sorry! :(",
       "revId": "4c49aee0041804c5c3a2550537e705656f3f1a80",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ebe095ba_da34913a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-05-14T12:05:30Z",
+      "side": 1,
+      "message": "No worries! The error message for reference: https://chromium-swarm.appspot.com/task?id\u003d698e576c66f1b510\n\n../../../../../../skia/tests/JpegGainmapTest.cpp:48:13: error: unused function \u0027approx_eq\u0027 [-Werror,-Wunused-function]\nstatic bool approx_eq(const SkColor4f\u0026 x, const SkColor4f\u0026 y, float epsilon) {\n            ^\n1 error generated.",
+      "parentUuid": "366ef652_6f1f9639",
+      "revId": "4c49aee0041804c5c3a2550537e705656f3f1a80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
