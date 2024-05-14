@@ -1276,6 +1276,7 @@ std::string GenerateRuntimeShaderPreamble(const ShaderInfo& shaderInfo,
     SkASSERT(node->codeSnippetId() >= kBuiltInCodeSnippetIDCount);
     const SkRuntimeEffect* effect;
     if (node->codeSnippetId() < kSkiaKnownRuntimeEffectsStart + kStableKeyCnt) {
+        SkDebugf("--- GenerateRuntimeShaderPreamble\n");
         effect = GetKnownRuntimeEffect(static_cast<StableKey>(node->codeSnippetId()));
     } else {
         SkASSERT(node->codeSnippetId() >= kUnknownRuntimeEffectIDStart);
