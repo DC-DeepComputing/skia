@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "afaa2993_e27a7366",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2024-05-14T17:58:41Z",
+      "side": 1,
+      "message": "Small refactor before adding ISO gainmap encoding (that patch was getting out of hand)",
+      "revId": "6981d1f2ef10544f32c98ecc779670cc986bca04",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
