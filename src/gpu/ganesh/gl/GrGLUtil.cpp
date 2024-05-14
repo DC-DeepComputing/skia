@@ -604,6 +604,8 @@ static std::tuple<GrGLANGLEBackend, SkString> get_angle_backend(const char* rend
             return {GrGLANGLEBackend::kMetal, std::move(innerString)};
         } else if (strstr(rendererString, "OpenGL")) {
             return {GrGLANGLEBackend::kOpenGL, std::move(innerString)};
+        } else if (strstr(rendererString, "Vulkan")) {
+            return {GrGLANGLEBackend::kVulkan, std::move(innerString)};
         }
     }
     return {GrGLANGLEBackend::kUnknown, {}};
