@@ -355,6 +355,7 @@ void CommandLineFlags::Parse(int argc, const char* const* argv) {
     }
 }
 
+#if 0
 namespace {
 
 template <typename Strings> bool ShouldSkipImpl(const Strings& strings, const char* name) {
@@ -390,10 +391,15 @@ template <typename Strings> bool ShouldSkipImpl(const Strings& strings, const ch
 }
 
 }  // namespace
+#endif
 
 bool CommandLineFlags::ShouldSkip(const SkTDArray<const char*>& strings, const char* name) {
-    return ShouldSkipImpl(strings, name);
+    size_t matchLen  = strlen("matrixconvolution");
+    return strncmp(name, "matrixconvolution", matchLen);
+//    return ShouldSkipImpl(strings, name);
 }
 bool CommandLineFlags::ShouldSkip(const StringArray& strings, const char* name) {
-    return ShouldSkipImpl(strings, name);
+    size_t matchLen  = strlen("matrixconvolution");
+    return strncmp(name, "matrixconvolution", matchLen);
+//    return ShouldSkipImpl(strings, name);
 }
