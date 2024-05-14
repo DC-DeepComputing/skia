@@ -85,6 +85,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f0a5bc1b_344b6485",
+        "filename": "src/gpu/graphite/ComputePipeline.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-05-14T13:22:31Z",
+      "side": 1,
+      "message": "Based on this updated change, it made me think about this some more.\n\n1) It\u0027s weird to pass in label to a ctor but have that do something different than calling setLabel later. I.e. setLabel will call updateBackendLabel but the ctor doesn\u0027t.\n\n2) As you\u0027ve done here the only places you\u0027ve called updateBackendLabel immediately are for buffers and textures. Thinking about this more, I can\u0027t really think of why we\u0027d ever want/need the label for a \"sampler\" or \"GraphicsPipeline\" to be passed onto the backend object. When looking at a capture like RenderDoc or MTL instruments its already 100% obvious you\u0027re looking at these generic types so the label isn\u0027t adding stuff. In a previous cl by Peng there was talk about wanting to always set labels on pipelines so they show up in Dawn. But now I\u0027m confused why that was thought to be useful since we don\u0027t put anything interest on the pipeline\u0027s labels.\n\n3) If someone wanted to iterate/dump all the Resource objects from Skia, they can also print out the ResourceType. The ResourceType basically exactly mimics the label for these generic objects as well. So again in this case I think the only interesting labels are for Textures and Buffers.\n\nSo given all that, what if we go back the version where we don\u0027t pass in a label to the ctor. Then just have the ResourceProvider call setLabel for textures and buffers. We then don\u0027t expect any other Resource to call setLabel (but can always add it later if we find a compelling use case).\n\nIs there any use case I missed in my reasoning?",
+      "parentUuid": "d8c3f14e_a71bedf1",
+      "range": {
+        "startLine": 17,
+        "startChar": 4,
+        "endLine": 17,
+        "endChar": 38
+      },
+      "revId": "12ec5710ec07bc40f179a0655890afa75f43c371",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7981ca2f_c2730f90",
         "filename": "src/gpu/graphite/GraphicsPipeline.cpp",
         "patchSetId": 1
