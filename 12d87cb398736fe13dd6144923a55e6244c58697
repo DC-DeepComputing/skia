@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed9c7f81_9786f904",
+        "filename": "include/gpu/graphite/dawn/DawnTypes.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-05-14T17:57:54Z",
+      "side": 1,
+      "message": "nit: maybe add a comment explaining why Emscripten doesn\u0027t have this. Is it because our version of emcc is too old or is this a non-web feature?",
+      "range": {
+        "startLine": 29,
+        "startChar": 13,
+        "endLine": 29,
+        "endChar": 27
+      },
+      "revId": "12d87cb398736fe13dd6144923a55e6244c58697",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
