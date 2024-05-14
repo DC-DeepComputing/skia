@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c7ca671_69ff82f9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 21754
+      },
+      "writtenOn": "2024-05-14T20:55:07Z",
+      "side": 1,
+      "message": "Should be fixed now - please lgtm again since a new file is now in changed files list",
+      "revId": "d2e78a70aa2bd5ab2f85cea2196691d61d382fac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
