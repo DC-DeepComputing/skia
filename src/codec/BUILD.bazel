@@ -95,7 +95,6 @@ DECODE_JPEG_FILES = [
     "SkJpegDecoderMgr.cpp",
     "SkJpegDecoderMgr.h",
     "SkJpegMetadataDecoderImpl.cpp",
-    "SkJpegMetadataDecoderImpl.h",
     "SkJpegSourceMgr.cpp",
     "SkJpegSourceMgr.h",
     "SkJpegUtility.cpp",
@@ -113,6 +112,7 @@ skia_filegroup(
     name = "shared_jpeg_hdrs",  # needed for both encoding and decoding
     srcs = [
         "SkJpegConstants.h",
+        "SkJpegMetadataDecoderImpl.h",
     ],
     visibility = ["//src/encode:__pkg__"],
 )
