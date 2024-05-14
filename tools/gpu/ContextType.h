@@ -26,6 +26,8 @@ enum class ContextType {
     kANGLE_GL_ES3,     //! ANGLE on OpenGL OpenGL ES 3 context.
     kANGLE_Metal_ES2,  //! ANGLE on Metal ES 2 context.
     kANGLE_Metal_ES3,  //! ANGLE on Metal ES 3 context.
+    kANGLE_Vk_ES2,     //! ANGLE on Vulkan ES2 context.
+    kANGLE_Vk_ES3,     //! ANGLE on Vulkan ES3 context.
     kVulkan,           //! Vulkan
     kMetal,            //! Metal
     kDirect3D,         //! Direct3D 12

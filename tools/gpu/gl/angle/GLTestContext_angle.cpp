@@ -87,6 +87,9 @@ void* get_angle_egl_display(void* nativeDisplay, ANGLEBackend type) {
         case ANGLEBackend::kMetal:
             typeNum = EGL_PLATFORM_ANGLE_TYPE_METAL_ANGLE;
             break;
+        case ANGLEBackend::kVulkan:
+            typeNum = EGL_PLATFORM_ANGLE_TYPE_VULKAN_ANGLE;
+            break;
     }
     const EGLint attribs[] = { EGL_PLATFORM_ANGLE_TYPE_ANGLE, typeNum, EGL_NONE };
     return eglGetPlatformDisplayEXT(EGL_PLATFORM_ANGLE_ANGLE, nativeDisplay, attribs);
@@ -358,6 +361,9 @@ ANGLEGLContext::ANGLEGLContext(ANGLEBackend type, ANGLEContextVersion version,
         break;
     case ANGLEBackend::kMetal:
         SkASSERT(strstr(renderer, "Metal"));
+        break;
+    case ANGLEBackend::kVulkan:
+        SkASSERT(strstr(renderer, "Vulkan"));
         break;
     }
 #endif
