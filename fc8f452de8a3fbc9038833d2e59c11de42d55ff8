@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23819756_95285b1c",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 632,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-14T20:56:40Z",
+      "side": 1,
+      "message": "nit: this-\u003efreeGpuData()",
+      "range": {
+        "startLine": 632,
+        "startChar": 4,
+        "endLine": 632,
+        "endChar": 15
+      },
+      "revId": "fc8f452de8a3fbc9038833d2e59c11de42d55ff8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab8325dc_6743ad32",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 637,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-14T20:56:40Z",
+      "side": 1,
+      "message": "nit: (void) this-\u003edawnRenderPipeline();",
+      "range": {
+        "startLine": 637,
+        "startChar": 4,
+        "endLine": 637,
+        "endChar": 22
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "7f35232d_feeafdc5",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+              "range": {
+                "startLine": 637,
+                "startChar": 0,
+                "endLine": 638,
+                "endChar": 0
+              },
+              "replacement": "    this-\u003edawnRenderPipeline();\n"
+            }
+          ]
+        }
+      ],
+      "revId": "fc8f452de8a3fbc9038833d2e59c11de42d55ff8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f0631f4_8c91b4e4",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 643,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-14T20:56:40Z",
+      "side": 1,
+      "message": "Instead of adding a `fNullPipeline` member to DawnGraphicsPipeline, can we just declare a `static const wgpu::RenderPipeline kNullPipeline(nullptr);` here and return that?",
+      "range": {
+        "startLine": 643,
+        "startChar": 15,
+        "endLine": 643,
+        "endChar": 28
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "80b124c4_248d7921",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+              "range": {
+                "startLine": 623,
+                "startChar": 0,
+                "endLine": 624,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+              "range": {
+                "startLine": 643,
+                "startChar": 0,
+                "endLine": 644,
+                "endChar": 0
+              },
+              "replacement": "        static wgpu::RenderPipeline nullPipeline;\n        return nullPipeline;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "fc8f452de8a3fbc9038833d2e59c11de42d55ff8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
