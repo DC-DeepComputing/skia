@@ -437,8 +437,7 @@ VulkanRenderPass::VulkanRenderPass(const VulkanSharedContext* context,
         : Resource(context,
                    Ownership::kOwned,
                    skgpu::Budgeted::kYes,
-                   /*gpuMemorySize=*/0,
-                   /*label=*/"VulkanRenderPass")
+                   /*gpuMemorySize=*/0)
         , fSharedContext(context)
         , fRenderPass (renderPass)
         , fGranularity (granularity) {
