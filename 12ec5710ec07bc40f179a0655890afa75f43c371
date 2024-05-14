@@ -107,6 +107,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "79c20b1c_996a0f11",
+        "filename": "src/gpu/graphite/ComputePipeline.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 21754
+      },
+      "writtenOn": "2024-05-14T18:35:18Z",
+      "side": 1,
+      "message": "Restored the original version and removed the generic labels for Sampler, GraphicsPipeline, etc.\n\n\u003e  In a previous cl by Peng there was talk about wanting to always set labels on pipelines so they show up in Dawn. But now I\u0027m confused why that was thought to be useful since we don\u0027t put anything interest on the pipeline\u0027s labels.\n\nFor pipelines, we set the backend label directly in DawnGraphicsPipeline::Make - that\u0027s what Peng wanted to set unconditionally.",
+      "parentUuid": "f0a5bc1b_344b6485",
+      "range": {
+        "startLine": 17,
+        "startChar": 4,
+        "endLine": 17,
+        "endChar": 38
+      },
+      "revId": "12ec5710ec07bc40f179a0655890afa75f43c371",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7981ca2f_c2730f90",
