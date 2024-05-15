@@ -206,11 +206,23 @@ void DawnTexture::freeGpuData() {
 }
 
 void DawnTexture::setBackendLabel(char const* label) {
+    if (!sharedContext()->caps()->setBackendLabels()) {
+        return;
+    }
     SkASSERT(label);
-    // We need to check fTexture here in case the DawnTexture was only created with a view and not
-    // the real texture.
-    if (fTexture && sharedContext()->caps()->setBackendLabels()) {
-        fTexture.SetLabel(label);
+    std::string labelStr = label;
+    // Wrapped texture views won't have an associated texture here.
+    if (fTexture) {
+        fTexture.SetLabel(labelStr);
+    }
+    // But we always have the texture views available.
+    SkASSERT(fSampleTextureView);
+    SkASSERT(fRenderTextureView);
+    if (fSampleTextureView == fRenderTextureView) {
+        fSampleTextureView->SetLabel(labelStr + "_TextureView");
+    } else {
+        fSampleTextureView->SetLabel(labelStr + "_SampleTextureView");
+        fRenderTextureView->SetLabel(labelStr + "_RenderTextureView");
     }
 }
 
