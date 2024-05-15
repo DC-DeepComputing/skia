@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d6f219d_e077854c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2024-05-15T15:31:00Z",
+      "side": 1,
+      "message": "Take 3.....",
+      "revId": "dedda316fb7c492b2d0016a0579242c2ee946bcb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
