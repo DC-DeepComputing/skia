@@ -76,6 +76,15 @@ SkMatrix SkMatrixFromFontationsTransform(const fontations_ffi::Transform& transf
                              1.0f);
 }
 
+bool isLCD(const SkScalerContextRec& rec) { return SkMask::kLCD16_Format == rec.fMaskFormat; }
+
+bool bothZero(SkScalar a, SkScalar b) { return 0 == a && 0 == b; }
+
+bool isAxisAligned(const SkScalerContextRec& rec) {
+    return 0 == rec.fPreSkewX && (bothZero(rec.fPost2x2[0][1], rec.fPost2x2[1][0]) ||
+                                  bothZero(rec.fPost2x2[0][0], rec.fPost2x2[1][1]));
+}
+
 }  // namespace
 
 sk_sp<SkTypeface> SkTypeface_Make_Fontations(std::unique_ptr<SkStreamAsset> fontData,
@@ -303,7 +312,18 @@ void SkTypeface_Fontations::getGlyphToUnicodeMap(SkUnichar* codepointForGlyphMap
 }
 
 void SkTypeface_Fontations::onFilterRec(SkScalerContextRec* rec) const {
-    rec->setHinting(SkFontHinting::kNone);
+    // Opportunistic hinting downgrades copied from SkFontHost_FreeType.cpp
+    SkFontHinting h = rec->getHinting();
+    if (SkFontHinting::kFull == h && !isLCD(*rec)) {
+        // Collapse full->normal hinting if we're not doing LCD.
+        h = SkFontHinting::kNormal;
+    }
+
+    // Rotated text looks bad with hinting, so we disable it as needed.
+    if (!isAxisAligned(*rec)) {
+        h = SkFontHinting::kNone;
+    }
+    rec->setHinting(h);
 }
 
 class SkrifaLocalizedStrings : public SkTypeface::LocalizedStrings {
@@ -342,8 +362,40 @@ public:
             , fBridgeNormalizedCoords(static_cast<SkTypeface_Fontations*>(this->getTypeface())
                                               ->getBridgeNormalizedCoords())
             , fOutlines(static_cast<SkTypeface_Fontations*>(this->getTypeface())->getOutlines())
-            , fPalette(static_cast<SkTypeface_Fontations*>(this->getTypeface())->getPalette()) {
+            , fPalette(static_cast<SkTypeface_Fontations*>(this->getTypeface())->getPalette())
+            , fHintingInstance(fontations_ffi::no_hinting_instance()) {
         fRec.getSingleMatrix(&fMatrix);
+
+        SkVector scale;
+        SkMatrix remainingMatrix;
+        fRec.computeMatrices(
+                SkScalerContextRec::PreMatrixScale::kVertical, &scale, &remainingMatrix);
+
+        // TODO(drott): Adhere to SkFont::setLinearMetrics() request.
+
+        if (SkMask::kBW_Format == fRec.fMaskFormat) {
+            fHintingInstance = fontations_ffi::make_mono_hinting_instance(
+                    fOutlines, scale.fY, fBridgeNormalizedCoords);
+        } else {
+            switch (fRec.getHinting()) {
+                case SkFontHinting::kNone:
+                    fHintingInstance = fontations_ffi::no_hinting_instance();
+                    break;
+                case SkFontHinting::kSlight:
+                case SkFontHinting::kNormal:
+                    // No hinting to subpixel coordinates.
+                    fHintingInstance = fontations_ffi::make_hinting_instance(
+                            fOutlines, scale.fY, fBridgeNormalizedCoords, false, false);
+                case SkFontHinting::kFull:
+                    // Attempt to make use of hinting to subpixel coordinates.
+                    fHintingInstance = fontations_ffi::make_hinting_instance(
+                            fOutlines,
+                            scale.fY,
+                            fBridgeNormalizedCoords,
+                            isLCD(fRec),
+                            SkToBool(fRec.fFlags & SkScalerContext::kLCD_Vertical_Flag));
+            }
+        }
     }
 
     // TODO(drott): Add parameter/control for hinting here once that is available from Fontations.
@@ -355,6 +407,7 @@ public:
                                       glyphId,
                                       yScale,
                                       fBridgeNormalizedCoords,
+                                      *fHintingInstance,
                                       pathWrapper,
                                       scalerMetrics)) {
             return false;
@@ -747,6 +800,7 @@ private:
     const fontations_ffi::BridgeNormalizedCoords& fBridgeNormalizedCoords;
     const fontations_ffi::BridgeOutlineCollection& fOutlines;
     const SkSpan<SkColor> fPalette;
+    rust::Box<fontations_ffi::BridgeHintingInstance> fHintingInstance;
     friend class sk_fontations::ColorPainter;
 };
 
