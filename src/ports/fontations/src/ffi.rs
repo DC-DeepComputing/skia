@@ -13,7 +13,7 @@ use skrifa::{
     color::{Brush, ColorGlyphFormat, ColorPainter, Transform},
     instance::{Location, Size},
     metrics::{GlyphMetrics, Metrics},
-    outline::DrawSettings,
+    outline::{DrawSettings, HintingInstance, LcdLayout},
     setting::VariationSetting,
     string::{LocalizedStrings, StringId},
     MetadataProvider, OutlineGlyphCollection, Tag,
@@ -31,6 +31,43 @@ fn make_mapping_index<'a>(font_ref: &'a BridgeFontRef) -> Box<BridgeMappingIndex
     font_ref
         .with_font(|f| Some(Box::new(BridgeMappingIndex(MappingIndex::new(f)))))
         .unwrap()
+}
+
+unsafe fn no_hinting_instance<'a>() -> Box<BridgeHintingInstance> {
+    Box::new(BridgeHintingInstance(None))
+}
+
+unsafe fn make_hinting_instance<'a>(
+    outlines: &BridgeOutlineCollection,
+    size: f32,
+    coords: &BridgeNormalizedCoords,
+    do_lcd_antialiasing: bool,
+    lcd_orientation_vertical: bool,
+) -> Box<BridgeHintingInstance> {
+    let hinting_instance = match &outlines.0 {
+        Some(outlines) => {
+            let mut lcd_subpixel = None;
+            if do_lcd_antialiasing {
+                lcd_subpixel = if lcd_orientation_vertical {
+                    Some(LcdLayout::Vertical)
+                } else {
+                    Some(LcdLayout::Horizontal)
+                }
+            }
+            HintingInstance::new(
+                outlines,
+                Size::new(size),
+                &coords.normalized_coords,
+                skrifa::outline::HintingMode::Smooth {
+                    lcd_subpixel,
+                    preserve_linear_metrics: false,
+                },
+            )
+            .ok()
+        }
+        _ => None,
+    };
+    Box::new(BridgeHintingInstance(hinting_instance))
 }
 
 fn lookup_glyph_or_zero(font_ref: &BridgeFontRef, map: &BridgeMappingIndex, codepoint: u32) -> u16 {
@@ -456,15 +493,23 @@ fn english_or_first_font_name(font_ref: &BridgeFontRef, name_id: StringId) -> Op
 }
 
 fn family_name(font_ref: &BridgeFontRef) -> String {
-    font_ref.with_font(|f| {
-        // https://learn.microsoft.com/en-us/typography/opentype/spec/os2#fsselection
-        // Bit 8 of the `fsSelection' field in the `OS/2' table indicates a WWS-only font face.
-        // When this bit is set it means *do not* use the WWS strings.
-        let use_wws = !f.os2().map_or(false, |t| t.fs_selection().contains(SelectionFlags::WWS));
-        if use_wws { english_or_first_font_name(font_ref, StringId::WWS_FAMILY_NAME) } else { None }
-         .or_else(|| english_or_first_font_name(font_ref, StringId::TYPOGRAPHIC_FAMILY_NAME))
-         .or_else(|| english_or_first_font_name(font_ref, StringId::FAMILY_NAME))
-    }).unwrap_or_default()
+    font_ref
+        .with_font(|f| {
+            // https://learn.microsoft.com/en-us/typography/opentype/spec/os2#fsselection
+            // Bit 8 of the `fsSelection' field in the `OS/2' table indicates a WWS-only font face.
+            // When this bit is set it means *do not* use the WWS strings.
+            let use_wws = !f
+                .os2()
+                .map_or(false, |t| t.fs_selection().contains(SelectionFlags::WWS));
+            if use_wws {
+                english_or_first_font_name(font_ref, StringId::WWS_FAMILY_NAME)
+            } else {
+                None
+            }
+            .or_else(|| english_or_first_font_name(font_ref, StringId::TYPOGRAPHIC_FAMILY_NAME))
+            .or_else(|| english_or_first_font_name(font_ref, StringId::FAMILY_NAME))
+        })
+        .unwrap_or_default()
 }
 
 fn postscript_name(font_ref: &BridgeFontRef, out_string: &mut String) -> bool {
@@ -813,7 +858,7 @@ fn num_color_stops(color_stops: &BridgeColorStops) -> usize {
 fn get_font_style(
     font_ref: &BridgeFontRef,
     coords: &BridgeNormalizedCoords,
-    style: &mut BridgeFontStyle
+    style: &mut BridgeFontStyle,
 ) -> bool {
     font_ref
         .with_font(|f| {
@@ -845,24 +890,30 @@ fn get_font_style(
                 match user_coord.selector {
                     wght => skia_weight = user_coord.value.round() as i32,
                     // 50, 62.5, 75, 87.5, 100, 112.5, 125, 150, 200 map to 1-9
-                    wdth => skia_width = match user_coord.value {
-                        x if x <=  56.25 => 1,
-                        x if x <=  68.75 => 2,
-                        x if x <=  81.25 => 3,
-                        x if x <=  93.75 => 4,
-                        x if x <= 106.25 => 5,
-                        x if x <= 118.75 => 6,
-                        x if x <= 137.50 => 7,
-                        x if x <= 175.00 => 8,
-                        _ => 9,
-                    },
-                    slnt => skia_slant = if skia_slant == 1 /* kItalic_Slant */ {
-                                             skia_slant
-                                         } else if user_coord.value == 0.0 {
-                                             0 /* kUpright_Slant */
-                                         } else {
-                                             2 /* kOblique_Slant */
-                                         },
+                    wdth => {
+                        skia_width = match user_coord.value {
+                            x if x <= 56.25 => 1,
+                            x if x <= 68.75 => 2,
+                            x if x <= 81.25 => 3,
+                            x if x <= 93.75 => 4,
+                            x if x <= 106.25 => 5,
+                            x if x <= 118.75 => 6,
+                            x if x <= 137.50 => 7,
+                            x if x <= 175.00 => 8,
+                            _ => 9,
+                        }
+                    }
+                    slnt => {
+                        skia_slant = if skia_slant == 1
+                        /* kItalic_Slant */
+                        {
+                            skia_slant
+                        } else if user_coord.value == 0.0 {
+                            0 /* kUpright_Slant */
+                        } else {
+                            2 /* kOblique_Slant */
+                        }
+                    }
                     _ => (),
                 }
             }
@@ -1203,6 +1254,7 @@ mod bitmap {
 }
 
 pub struct BridgeMappingIndex(MappingIndex);
+pub struct BridgeHintingInstance(Option<HintingInstance>);
 
 #[cxx::bridge(namespace = "fontations_ffi")]
 mod ffi {
@@ -1345,6 +1397,17 @@ mod ffi {
 
         type BridgeMappingIndex;
         unsafe fn make_mapping_index<'a>(font_ref: &'a BridgeFontRef) -> Box<BridgeMappingIndex>;
+
+        type BridgeHintingInstance;
+        unsafe fn make_hinting_instance<'a>(
+            outlines: &BridgeOutlineCollection,
+            size: f32,
+            coords: &BridgeNormalizedCoords,
+            do_lcd_antialiasing: bool,
+            lcd_orientation_vertical: bool,
+        ) -> Box<BridgeHintingInstance>;
+        unsafe fn no_hinting_instance<'a>() -> Box<BridgeHintingInstance>;
+
         fn lookup_glyph_or_zero(
             font_ref: &BridgeFontRef,
             map: &BridgeMappingIndex,
@@ -1463,7 +1526,7 @@ mod ffi {
         fn get_font_style(
             font_ref: &BridgeFontRef,
             coords: &BridgeNormalizedCoords,
-            font_style: &mut BridgeFontStyle
+            font_style: &mut BridgeFontStyle,
         ) -> bool;
 
         // Additional low-level access functions needed for generateAdvancedMetrics().
