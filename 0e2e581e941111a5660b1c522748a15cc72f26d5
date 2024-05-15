@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1ff76602_ffa0bcd7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 21754
+      },
+      "writtenOn": "2024-05-15T16:00:55Z",
+      "side": 1,
+      "message": "PTAL - I didn\u0027t realize you had fixed the bug and also created a reland CL so here\u0027s mine - the diff is between PS1..5 and there\u0027s a small enhancement on top of the original to add labels to Dawn texture views, but I can land that separately if you prefer landing your reland CL first (+1\u0027d)",
+      "revId": "0e2e581e941111a5660b1c522748a15cc72f26d5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
