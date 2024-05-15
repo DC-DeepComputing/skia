@@ -39,6 +39,30 @@
       },
       "revId": "b9a304eb05d2a3673a96885244aef6d497b99670",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e9282884_fb9f3294",
+        "filename": "src/encode/SkJpegEncoderImpl.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 263,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-05-15T20:36:36Z",
+      "side": 1,
+      "message": "I\u0027d try removing this - I think it may push us back down to having enough registers that the warning doesn\u0027t fire?",
+      "parentUuid": "e5075f2b_f08d4047",
+      "range": {
+        "startLine": 263,
+        "startChar": 27,
+        "endLine": 263,
+        "endChar": 45
+      },
+      "revId": "b9a304eb05d2a3673a96885244aef6d497b99670",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
