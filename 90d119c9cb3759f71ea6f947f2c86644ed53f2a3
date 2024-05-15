@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d27af59_830442c9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2024-05-15T13:11:00Z",
+      "side": 1,
+      "message": "I have linked google.com to chromium.org on skia-review. But not sure why two reviews are still required.",
+      "revId": "90d119c9cb3759f71ea6f947f2c86644ed53f2a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
