@@ -51,6 +51,24 @@
       ],
       "revId": "38fea166116c5c459b499e43bbdf4f9fedb41363",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "79ecf489_bc10f78c",
+        "filename": "src/gpu/graphite/dawn/DawnTexture.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-05-15T13:34:02Z",
+      "side": 1,
+      "message": "Dawn can create a skia texture with only a TextureView and not the actual backing Texture. This can happens when using the dawn swapchain. I added a comment here for future reference.",
+      "parentUuid": "077d04af_522cf13c",
+      "revId": "38fea166116c5c459b499e43bbdf4f9fedb41363",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
