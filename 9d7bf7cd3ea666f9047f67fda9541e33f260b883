@@ -22,6 +22,30 @@
       },
       "revId": "9d7bf7cd3ea666f9047f67fda9541e33f260b883",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "073c1406_915cdde1",
+        "filename": "whitespace.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-05-15T17:35:19Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "220f5ba4_739522ff",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 7
+      },
+      "revId": "9d7bf7cd3ea666f9047f67fda9541e33f260b883",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
