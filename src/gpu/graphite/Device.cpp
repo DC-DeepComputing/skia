@@ -245,6 +245,7 @@ sk_sp<Device> Device::Make(Recorder* recorder,
                            bool registerWithRecorder) {
     SkASSERT(!(mipmapped == Mipmapped::kYes && backingFit == SkBackingFit::kApprox));
     if (!recorder) {
+        SkDebugf("no recorder1\n");
         return nullptr;
     }
 
@@ -274,6 +275,7 @@ sk_sp<Device> Device::Make(Recorder* recorder,
                            LoadOp initialLoadOp,
                            bool registerWithRecorder) {
     if (!recorder) {
+        SkDebugf("no recorder!\n");
         return nullptr;
     }
 
@@ -283,6 +285,7 @@ sk_sp<Device> Device::Make(Recorder* recorder,
                                               colorInfo,
                                               props);
     if (!dc) {
+        SkDebugf("now DC\n");
         return nullptr;
     } else if (initialLoadOp == LoadOp::kClear) {
         dc->clear(SkColors::kTransparent);

@@ -68,14 +68,17 @@ sk_sp<DrawContext> DrawContext::Make(const Caps* caps,
                                      const SkColorInfo& colorInfo,
                                      const SkSurfaceProps& props) {
     if (!target) {
+        SkDebugf("draw context has no target\n");
         return nullptr;
     }
     // We don't render to unknown or unpremul alphatypes
     if (colorInfo.alphaType() == kUnknown_SkAlphaType ||
         colorInfo.alphaType() == kUnpremul_SkAlphaType) {
+        SkDebugf("unknown or unpremul can't be rendered to\n");
         return nullptr;
     }
     if (!caps->isRenderable(target->textureInfo())) {
+        SkDebugf("target isn't renderable\n");
         return nullptr;
     }
 

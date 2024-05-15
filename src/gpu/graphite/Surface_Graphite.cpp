@@ -120,6 +120,7 @@ sk_sp<Surface> Surface::Make(Recorder* recorder,
                              const SkSurfaceProps* props,
                              LoadOp initialLoadOp,
                              bool registerWithRecorder) {
+SkDebugf("Make called...\n");
     sk_sp<Device> device = Device::Make(recorder,
                                         info,
                                         budgeted,

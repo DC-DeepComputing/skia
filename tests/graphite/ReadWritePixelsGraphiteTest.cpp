@@ -442,6 +442,7 @@ static void graphite_read_pixels_test_driver(skiatest::Reporter* reporter,
 
             auto src = srcFactory(recorder.get(), srcPixels);
             if (!src) {
+                SkDebugf("skipping %d %d src\n", (int) srcCT, (int) srcAT);
                 continue;
             }
             if (SkColorTypeIsAlwaysOpaque(srcCT) && srcCTTestedThoroughly[srcCT] &&
@@ -486,9 +487,14 @@ static void graphite_read_pixels_test_driver(skiatest::Reporter* reporter,
                                 srcCTTestedThoroughly[sct] && readCTTestedThoroughly[rct]
                                         ? shortRectArray
                                         : longRectArray;
+
+                        SkDebugf("running test src %d %d, read %d %d\n",
+                            (int) srcCT, (int) srcAT, (int) rct, (int) at);
+
                         for (const auto& rect : rects) {
                             const auto readInfo = SkImageInfo::Make(rect.width(), rect.height(),
                                                                     readCT, readAT, readCS);
+
                             const SkIPoint offset = rect.topLeft();
                             Result r = runTest(src, srcPixels, readInfo, offset);
                             if (r == Result::kSuccess) {
