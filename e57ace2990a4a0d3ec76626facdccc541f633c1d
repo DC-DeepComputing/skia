@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3dd98ee2_1ed3062a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-05-15T17:58:29Z",
+      "side": 1,
+      "message": "A few lines are too long, but this is just some slide code I only look at, so I\u0027m fine with it.\n\nTurns out originOffsetX/Y work more or less as expected to offset the draw location of the bitmap, but on CoreText does not affect the draw bounds.",
+      "revId": "e57ace2990a4a0d3ec76626facdccc541f633c1d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
