@@ -1,0 +1,56 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d477a5b7_2d7b8941",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-05-15T13:31:13Z",
+      "side": 1,
+      "message": "Looks good to me. I just a have a small question about when this can happen.",
+      "revId": "38fea166116c5c459b499e43bbdf4f9fedb41363",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "077d04af_522cf13c",
+        "filename": "src/gpu/graphite/dawn/DawnTexture.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-05-15T13:31:13Z",
+      "side": 1,
+      "message": "If `fTexture` is null that means `setBackendLabel` got called after `freeGpuData`, correct? Do you know in what situation that can happen?",
+      "fixSuggestions": [
+        {
+          "fixId": "6734eeb4_a2e98fe6",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/dawn/DawnTexture.cpp",
+              "range": {
+                "startLine": 210,
+                "startChar": 0,
+                "endLine": 211,
+                "endChar": 0
+              },
+              "replacement": "    if (sharedContext()-\u003ecaps()-\u003esetBackendLabels()) {\n"
+            }
+          ]
+        }
+      ],
+      "revId": "38fea166116c5c459b499e43bbdf4f9fedb41363",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
