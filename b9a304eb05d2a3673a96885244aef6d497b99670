@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4b451b7_0257020f",
+        "filename": "src/encode/SkJpegEncoderImpl.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-05-15T20:25:53Z",
+      "side": 1,
+      "message": "GCC builders complaining about\n\n`error: argument \u0027srcYUVA\u0027 might be clobbered by \u0027longjmp\u0027 or \u0027vfork\u0027 [-Werror\u003dclobbered]`\n\nThis may be due to https://gcc.gnu.org/bugzilla/show_bug.cgi?id\u003d21161 .",
+      "revId": "b9a304eb05d2a3673a96885244aef6d497b99670",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5075f2b_f08d4047",
+        "filename": "src/encode/SkJpegEncoderImpl.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 263,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-05-15T20:25:53Z",
+      "side": 1,
+      "message": "Not used?",
+      "range": {
+        "startLine": 263,
+        "startChar": 27,
+        "endLine": 263,
+        "endChar": 45
+      },
+      "revId": "b9a304eb05d2a3673a96885244aef6d497b99670",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
