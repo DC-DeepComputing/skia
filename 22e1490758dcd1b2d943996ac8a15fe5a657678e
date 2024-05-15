@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eb4798f5_b8df0a54",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2024-05-15T12:28:49Z",
+      "side": 1,
+      "message": "Okay, sorted out the build issues. Ptal now. This is to avoid adding extra fields for \"all the unneeded stuff\".",
+      "revId": "22e1490758dcd1b2d943996ac8a15fe5a657678e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
