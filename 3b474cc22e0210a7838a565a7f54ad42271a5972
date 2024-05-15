@@ -1,0 +1,76 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a901fc9_cf8809a7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 24
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-05-15T14:46:23Z",
+      "side": 1,
+      "message": "Sorry about only now getting around to this. LGTM with one question around the management of plots and scene encodings.",
+      "revId": "3b474cc22e0210a7838a565a7f54ad42271a5972",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b433a59_4f2ffe21",
+        "filename": "src/gpu/graphite/ComputePathAtlas.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-05-15T14:46:23Z",
+      "side": 1,
+      "message": "Sorry if I missed this but what triggers the call to `onReset`? Is there a mechanism right now to reset and repopulate a scene entry when a plot entry gets evicted (to work around the fact that shapes cannot be removed from an encoded scene)?",
+      "fixSuggestions": [
+        {
+          "fixId": "afbd957e_6121ebb1",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/ComputePathAtlas.cpp",
+              "range": {
+                "startLine": 154,
+                "startChar": 0,
+                "endLine": 162,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "src/gpu/graphite/ComputePathAtlas.cpp",
+              "range": {
+                "startLine": 170,
+                "startChar": 0,
+                "endLine": 170,
+                "endChar": 0
+              },
+              "replacement": "        void onReset() override;\n\n"
+            },
+            {
+              "path": "src/gpu/graphite/ComputePathAtlas.cpp",
+              "range": {
+                "startLine": 388,
+                "startChar": 0,
+                "endLine": 388,
+                "endChar": 0
+              },
+              "replacement": "\nvoid VelloComputePathAtlas::VelloAtlasMgr::onReset() {\n    fDrawAtlas-\u003emarkUsedPlotsAsFull();\n    for (int i \u003d 0; i \u003c PlotLocator::kMaxMultitexturePages; ++i) {\n        fScenes[i].reset();\n        fOccupiedAreas[i] \u003d {0, 0};\n    }\n}\n"
+            }
+          ]
+        }
+      ],
+      "revId": "3b474cc22e0210a7838a565a7f54ad42271a5972",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
