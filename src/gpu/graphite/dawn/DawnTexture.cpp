@@ -207,7 +207,7 @@ void DawnTexture::freeGpuData() {
 
 void DawnTexture::setBackendLabel(char const* label) {
     SkASSERT(label);
-    if (sharedContext()->caps()->setBackendLabels()) {
+    if (fTexture && sharedContext()->caps()->setBackendLabels()) {
         fTexture.SetLabel(label);
     }
 }
