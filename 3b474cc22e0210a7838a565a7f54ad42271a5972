@@ -71,6 +71,24 @@
       ],
       "revId": "3b474cc22e0210a7838a565a7f54ad42271a5972",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cb67f6aa_8c116137",
+        "filename": "src/gpu/graphite/ComputePathAtlas.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-05-15T17:37:12Z",
+      "side": 1,
+      "message": "VelloAtlasMgr::onReset() is called in VelloComputePathAtlas::onReset(). The mechanism for invalidating Plots is the standard token tracker -- we check to see if a Plot is in use in the current set of work based on the current token. If all are in use, we flushPendingWorkToRecorder which advances the token, and means that the LRU Plot is available to be overwritten. There\u0027s only one Plot per texture.",
+      "parentUuid": "6b433a59_4f2ffe21",
+      "revId": "3b474cc22e0210a7838a565a7f54ad42271a5972",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
