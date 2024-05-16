@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e2f33cfc_d2732e45",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-05-16T18:31:33Z",
+      "side": 1,
+      "message": "After much study, I\u0027m updating these fonts as best we can. DWrite still needs work, but not sure if we care too much about sbix, so long as the lsb\u003d0, bbox.xMin\u003d0, bbox.yMin\u003d0, originOffset\u003d(0,0) case works. This tries to also test some other cases, but mostly just to know if their behavior ever changes.",
+      "revId": "3c4201bdbc50d4b7670a02185701e0ace01f7747",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
