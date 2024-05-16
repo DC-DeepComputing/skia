@@ -141,6 +141,26 @@ impl<'a> Pen for PathWrapperPen<'a> {
     }
 }
 
+struct NoOpPen {
+}
+
+impl<'a> Pen for NoOpPen {
+    fn move_to(&mut self, _x: f32, _y: f32) {
+    }
+
+    fn line_to(&mut self, _x: f32, _y: f32) {
+    }
+
+    fn quad_to(&mut self, _cx0: f32, _cy0: f32, _x: f32, _y: f32) {
+    }
+
+    fn curve_to(&mut self, _cx0: f32, _cy0: f32, _cx1: f32, _cy1: f32, _x: f32, _y: f32) {
+    }
+
+    fn close(&mut self) {
+    }
+}
+
 struct ColorPainterImpl<'a> {
     color_painter_wrapper: Pin<&'a mut ffi::ColorPainterWrapper>,
 }
@@ -413,7 +433,7 @@ fn get_path(
         .is_some()
 }
 
-fn advance_width_or_zero(
+fn unhinted_advance_width_or_zero(
     font_ref: &BridgeFontRef,
     size: f32,
     coords: &BridgeNormalizedCoords,
@@ -426,6 +446,44 @@ fn advance_width_or_zero(
         })
         .unwrap_or_default()
 }
+
+fn scaler_hinted_advance_width(
+    outlines: &BridgeOutlineCollection,
+    hinting_instance: &BridgeHintingInstance,
+    glyph_id: u16,
+    out_advance_width: &mut f32,
+) -> bool {
+
+    let draw_settings = match &hinting_instance.0 {
+        Some(instance) => DrawSettings::hinted(instance, false),
+        _ => {
+            return false;
+        }
+    };
+
+    outlines
+        .0
+        .as_ref()
+        .and_then(|outlines| {
+            let glyph = outlines.get(GlyphId::new(glyph_id))?;
+            let mut pen_dump = NoOpPen{};
+            match glyph.draw(draw_settings, &mut pen_dump) {
+                Err(_) => None,
+                Ok(metrics) => {
+                    match metrics.advance_width {
+                        Some(adjusted_advance) => {
+                            *out_advance_width = adjusted_advance;
+                            Some(())
+                        },
+                        _ => None,
+                    }
+                }
+            }
+        })
+        .is_some()
+
+}
+
 
 fn units_per_em_or_zero(font_ref: &BridgeFontRef) -> u16 {
     font_ref
@@ -1435,12 +1493,18 @@ mod ffi {
             path_wrapper: Pin<&mut PathWrapper>,
             scaler_metrics: &mut BridgeScalerMetrics,
         ) -> bool;
-        fn advance_width_or_zero(
+        fn unhinted_advance_width_or_zero(
             font_ref: &BridgeFontRef,
             size: f32,
             coords: &BridgeNormalizedCoords,
             glyph_id: u16,
         ) -> f32;
+        fn scaler_hinted_advance_width(
+            outlines: &BridgeOutlineCollection,
+            hinting_instance: &BridgeHintingInstance,
+            glyph_id: u16,
+            out_advance_width: &mut f32,
+        ) -> bool;
         fn units_per_em_or_zero(font_ref: &BridgeFontRef) -> u16;
         fn get_skia_metrics(
             font_ref: &BridgeFontRef,
