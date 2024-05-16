@@ -25,11 +25,14 @@ public:
     }
 
     SkScalar getAdjustment(int i, bool useGammaCorrectTable) const {
+        i >>= kDistanceAdjustLumShift;
         return useGammaCorrectTable ? fGammaCorrectTable[i] : fTable[i];
     }
 
 private:
     DistanceFieldAdjustTable();
+
+    static constexpr int kDistanceAdjustLumShift = 5;
 
     SkScalar* fTable;
     SkScalar* fGammaCorrectTable;
