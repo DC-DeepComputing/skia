@@ -166,7 +166,7 @@ def c_plus_plus_deps(ws = "@skia"):
     new_git_repository(
         name = "vulkanmemoryallocator",
         build_file = ws + "//bazel/external/vulkanmemoryallocator:BUILD.bazel",
-        commit = "a6bfc237255a6bac1513f7c1ebde6d8aed6b5191",
+        commit = "56300b29fbfcc693ee6609ddad3fdd5b7a449a21",
         remote = "https://chromium.googlesource.com/external/github.com/GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator",
     )
 
