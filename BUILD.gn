@@ -1730,7 +1730,10 @@ config("our_vulkan_headers") {
 }
 
 config("vulkan_memory_allocator") {
-  include_dirs = [ "$skia_vulkan_memory_allocator_dir/include" ]
+  include_dirs = [
+    "$skia_vulkan_memory_allocator_dir/include",
+    "include/third_party/vulkan",
+  ]
 }
 
 # Targets guarded by skia_enable_tools may use //third_party freely.
