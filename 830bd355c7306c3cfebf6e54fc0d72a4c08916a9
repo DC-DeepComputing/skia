@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "23b57770_82844422",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-05-16T14:39:46Z",
+      "side": 1,
+      "message": "I was just looking at the `textblobmixedsizes` that this produced https://gold.skia.org/img/images/917a1c23b6558602b910b0ee72acce4d.png and am confused about why various sizes have lcd and others do not. I think it\u0027s due to the `SK_MAX_SIZE_FOR_LCDTEXT`. Which may or may not have been what \"no lcd\" was complaining about.",
+      "revId": "830bd355c7306c3cfebf6e54fc0d72a4c08916a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d4caaf95_70255de2",
