@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f11889e_a2dd8d1c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-05-16T19:49:40Z",
+      "side": 1,
+      "message": "Except at the moment not everything that *has* the PDF writer also *has* the subsetter, because there are builds where the PDF writer is compiled in but never used, so not having the subsetter is \"ok\" in that case.",
+      "revId": "11eb117f1a2203012eed7aee91d5f360f54f7128",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
