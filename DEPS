@@ -56,7 +56,7 @@ deps = {
   "third_party/externals/perfetto"               : "https://android.googlesource.com/platform/external/perfetto@93885509be1c9240bc55fa515ceb34811e54a394",
   "third_party/externals/piex"                   : "https://android.googlesource.com/platform/external/piex.git@bb217acdca1cc0c16b704669dd6f91a1b509c406",
   "third_party/externals/swiftshader"            : "https://swiftshader.googlesource.com/SwiftShader@da334852e70510d259bfa8cbaa7c5412966b2f41",
-  "third_party/externals/vulkanmemoryallocator"  : "https://chromium.googlesource.com/external/github.com/GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator@a6bfc237255a6bac1513f7c1ebde6d8aed6b5191",
+  "third_party/externals/vulkan_memory_allocator": "https://chromium.googlesource.com/external/github.com/GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator@56300b29fbfcc693ee6609ddad3fdd5b7a449a21",
   # vulkan-deps is a meta-repo containing several interdependent Khronos Vulkan repositories.
   # When the vulkan-deps revision is updated, those repos (spirv-*, vulkan-*) should be updated as well.
   "third_party/externals/vulkan-deps"            : "https://chromium.googlesource.com/vulkan-deps@5bf3171f7092d79b0535b3fe465927d8b19f06a7",
