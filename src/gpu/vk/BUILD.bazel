@@ -49,7 +49,7 @@ skia_cc_deps(
     name = "deps",
     visibility = ["//src/gpu:__pkg__"],
     deps = select({
-        "//src/gpu:vulkan_with_vma": ["//third_party/vulkanmemoryallocator"],
+        "//src/gpu:vulkan_with_vma": ["//third_party/vulkan_memory_allocator"],
         "//conditions:default": [],
     }),
 )

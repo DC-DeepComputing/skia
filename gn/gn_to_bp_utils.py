@@ -51,7 +51,7 @@ def CleanupCFlags(cflags):
   # Only use the generated flags related to warnings.
   cflags = {s for s in cflags if s.startswith('-W')}
   # Add additional warning suppressions
-  # Some for third_party/vulkanmemoryallocator
+  # Some for third_party/vulkan_memory_allocator
   # Some for Android's '-Wall -Werror'
   cflags = cflags.union([
     "-Wno-implicit-fallthrough",
