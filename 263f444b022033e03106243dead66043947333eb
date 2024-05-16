@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a5ccb2b_55a9a982",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1350,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-05-16T17:15:30Z",
+      "side": 1,
+      "message": "Evaluating the draw bounds lazily resolves the pinpoint regression on `motionmark_ramp_paths`. Though I suspect the regression will come back when the compute atlas is available since it currently needs the device-space bounds for the `isSuitableForAtlasing` checks.\n\nFYI: this was the cause of the revert: https://crbug.com/339684345",
+      "revId": "263f444b022033e03106243dead66043947333eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
