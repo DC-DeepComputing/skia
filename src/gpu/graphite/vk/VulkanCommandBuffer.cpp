@@ -955,55 +955,84 @@ void VulkanCommandBuffer::bindUniformBuffers() {
             fUniformBuffersToBind[VulkanGraphicsPipeline::kPaintUniformBufferIndex].fBuffer) {
         descriptors.push_back(VulkanGraphicsPipeline::kPaintUniformDescriptor);
     }
-    sk_sp<VulkanDescriptorSet> set = fResourceProvider->findOrCreateDescriptorSet(
-            SkSpan<DescriptorData>{&descriptors.front(), descriptors.size()});
-
-    if (!set) {
-        SKGPU_LOG_E("Unable to find or create descriptor set");
-        return;
-    }
     static uint64_t maxUniformBufferRange = static_cast<const VulkanSharedContext*>(
             fSharedContext)->vulkanCaps().maxUniformBufferRange();
 
+    std::array<Resource::UniqueID, VulkanGraphicsPipeline::kNumUniformBuffers> newBufferIDs;
+    for (int i = 0; i < descriptors.size(); i++) {
+        int descriptorBindingIndex = descriptors.at(i).fBindingIndex;
+        if (fUniformBuffersToBind[descriptorBindingIndex].fBuffer) {
+            newBufferIDs[descriptorBindingIndex] =
+                    fUniformBuffersToBind[descriptorBindingIndex].fBuffer->uniqueID();
+        }
+    }
+    bool needsNewSet = !fCurrentUniformSet || (newBufferIDs != fBoundUniformBufferIDs);
+
+    if (needsNewSet) {
+        fCurrentUniformSet = fResourceProvider->findOrCreateDescriptorSet(
+                SkSpan<DescriptorData>{&descriptors.front(), descriptors.size()});
+
+        if (!fCurrentUniformSet) {
+            SKGPU_LOG_E("Unable to find or create descriptor set");
+            return;
+        }
+    }
+
+    skia_private::AutoSTMalloc<3, uint32_t> dynamicOffsets(descriptors.size());
     for (int i = 0; i < descriptors.size(); i++) {
         int descriptorBindingIndex = descriptors.at(i).fBindingIndex;
         SkASSERT(static_cast<unsigned long>(descriptorBindingIndex)
                     < fUniformBuffersToBind.size());
+        SkDebugf("descBindIndex for i=%d is: %d\n", i, descriptorBindingIndex);
         if (fUniformBuffersToBind[descriptorBindingIndex].fBuffer) {
-            VkDescriptorBufferInfo bufferInfo;
-            memset(&bufferInfo, 0, sizeof(VkDescriptorBufferInfo));
-            auto vulkanBuffer = static_cast<const VulkanBuffer*>(
-                    fUniformBuffersToBind[descriptorBindingIndex].fBuffer);
-            bufferInfo.buffer = vulkanBuffer->vkBuffer();
-            bufferInfo.offset = fUniformBuffersToBind[descriptorBindingIndex].fOffset;
-            bufferInfo.range = clamp_ubo_binding_size(bufferInfo.offset, vulkanBuffer->size(),
-                                                      maxUniformBufferRange);
+            uint32_t currentOffset = fUniformBuffersToBind[descriptorBindingIndex].fOffset;
+            dynamicOffsets[i] = currentOffset;
 
-            VkWriteDescriptorSet writeInfo;
-            memset(&writeInfo, 0, sizeof(VkWriteDescriptorSet));
-            writeInfo.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-            writeInfo.pNext = nullptr;
-            writeInfo.dstSet = *set->descriptorSet();
-            writeInfo.dstBinding = descriptorBindingIndex;
-            writeInfo.dstArrayElement = 0;
-            writeInfo.descriptorCount = descriptors.at(i).fCount;
-            writeInfo.descriptorType = DsTypeEnumToVkDs(descriptors.at(i).fType);
-            writeInfo.pImageInfo = nullptr;
-            writeInfo.pBufferInfo = &bufferInfo;
-            writeInfo.pTexelBufferView = nullptr;
+            if (needsNewSet) {
+                VkDescriptorBufferInfo bufferInfo;
+                memset(&bufferInfo, 0, sizeof(VkDescriptorBufferInfo));
+                auto vulkanBuffer = static_cast<const VulkanBuffer*>(
+                        fUniformBuffersToBind[descriptorBindingIndex].fBuffer);
+                bufferInfo.buffer = vulkanBuffer->vkBuffer();
+                bufferInfo.offset = 0;
+                bufferInfo.range = clamp_ubo_binding_size(
+                        0, vulkanBuffer->size(), maxUniformBufferRange);
 
-            // TODO(b/293925059): Migrate to updating all the uniform descriptors with one driver
-            // call. Calling UpdateDescriptorSets once to encapsulate updates to all uniform
-            // descriptors would be ideal, but that led to issues with draws where all the UBOs
-            // within that set would unexpectedly be assigned the same offset. Updating them one at
-            // a time within this loop works in the meantime but is suboptimal.
-            VULKAN_CALL(fSharedContext->interface(),
-                        UpdateDescriptorSets(fSharedContext->device(),
-                                            /*descriptorWriteCount=*/1,
-                                            &writeInfo,
-                                            /*descriptorCopyCount=*/0,
-                                            /*pDescriptorCopies=*/nullptr));
+                VkWriteDescriptorSet writeInfo;
+                memset(&writeInfo, 0, sizeof(VkWriteDescriptorSet));
+                writeInfo.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+                writeInfo.pNext = nullptr;
+                writeInfo.dstSet = *fCurrentUniformSet->descriptorSet();
+                writeInfo.dstBinding = descriptorBindingIndex;
+                writeInfo.dstArrayElement = 0;
+                writeInfo.descriptorCount = descriptors.at(i).fCount;
+                writeInfo.descriptorType = DsTypeEnumToVkDs(descriptors.at(i).fType);
+                writeInfo.pImageInfo = nullptr;
+                writeInfo.pBufferInfo = &bufferInfo;
+                writeInfo.pTexelBufferView = nullptr;
+                SkDebugf("dynamic offset: %d\n", currentOffset);
+
+                // TODO(b/293925059): Migrate to updating all the uniform descriptors with one
+                // driver call. Calling UpdateDescriptorSets once to encapsulate updates to all
+                // uniform descriptors would be ideal, but that led to issues with draws where all
+                // the UBOs within that set would unexpectedly be assigned the same offset. Updating
+                // them one at a time within this loop works in the meantime but is suboptimal.
+                VULKAN_CALL(fSharedContext->interface(),
+                            UpdateDescriptorSets(fSharedContext->device(),
+                                                 /*descriptorWriteCount=*/1,
+                                                 &writeInfo,
+                                                 /*descriptorCopyCount=*/0,
+                                                 /*pDescriptorCopies=*/nullptr));
+
+                fBoundUniformBufferIDs[descriptorBindingIndex] = vulkanBuffer->uniqueID();
+            }
         }
+    }
+    for (int i = 0; i < descriptors.size(); ++i) {
+        SkDebugf("array dynamic offset[%d] of total: %d is: %d\n",
+                 i,
+                 descriptors.size(),
+                 dynamicOffsets[i]);
     }
     VULKAN_CALL(fSharedContext->interface(),
                 CmdBindDescriptorSets(fPrimaryCommandBuffer,
@@ -1011,10 +1040,10 @@ void VulkanCommandBuffer::bindUniformBuffers() {
                                       fActiveGraphicsPipeline->layout(),
                                       VulkanGraphicsPipeline::kUniformBufferDescSetIndex,
                                       /*setCount=*/1,
-                                      set->descriptorSet(),
-                                      /*dynamicOffsetCount=*/0,
-                                      /*dynamicOffsets=*/nullptr));
-    this->trackResource(std::move(set));
+                                      fCurrentUniformSet->descriptorSet(),
+                                      descriptors.size(),
+                                      dynamicOffsets.get()));
+    this->trackResource(fCurrentUniformSet);
 }
 
 void VulkanCommandBuffer::bindDrawBuffers(const BindBufferInfo& vertices,

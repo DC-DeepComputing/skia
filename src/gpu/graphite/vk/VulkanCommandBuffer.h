@@ -17,6 +17,7 @@
 namespace skgpu::graphite {
 
 class VulkanBuffer;
+class VulkanDescriptorSet;
 class VulkanResourceProvider;
 class VulkanSharedContext;
 class VulkanTexture;
@@ -216,6 +217,11 @@ private:
     VkBuffer fBoundIndirectBuffer = VK_NULL_HANDLE;
     size_t fBoundIndexBufferOffset = 0;
     size_t fBoundIndirectBufferOffset = 0;
+
+    std::array<Resource::UniqueID,
+               VulkanGraphicsPipeline::kNumUniformBuffers> fBoundUniformBufferIDs;
+    sk_sp<VulkanDescriptorSet> fCurrentUniformSet;
+
 
     float fCachedBlendConstant[4];
 };

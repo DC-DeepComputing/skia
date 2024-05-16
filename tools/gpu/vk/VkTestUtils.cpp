@@ -92,12 +92,15 @@ static uint32_t remove_patch_version(uint32_t specVersion) {
 static int should_include_debug_layer(const char* layerName,
                                        uint32_t layerCount, VkLayerProperties* layers,
                                        uint32_t version) {
+    SkDebugf("layer: %s\n", layerName);
     for (uint32_t i = 0; i < layerCount; ++i) {
+        SkDebugf("checking with layer: %s\n", layers[i].layerName);
         if (!strcmp(layerName, layers[i].layerName)) {
             // Since the layers intercept the vulkan calls and forward them on, we need to make sure
             // layer was written against a version that isn't older than the version of Vulkan we're
             // using so that it has all the api entry points.
             if (version <= remove_patch_version(layers[i].specVersion)) {
+                SkDebugf("doing thing\n");
                 return i;
             }
             return -1;
@@ -126,6 +129,7 @@ VKAPI_ATTR VkBool32 VKAPI_CALL DebugReportCallback(
     const char*                 pLayerPrefix,
     const char*                 pMessage,
     void*                       pUserData) {
+    SkDebugf("in debug callback\n");
     if (flags & VK_DEBUG_REPORT_ERROR_BIT_EXT) {
         // See https://github.com/KhronosGroup/Vulkan-ValidationLayers/issues/1887
         if (strstr(pMessage, "VUID-VkGraphicsPipelineCreateInfo-pDynamicStates-01521") ||
@@ -178,11 +182,13 @@ static bool init_instance_extensions_and_layers(PFN_vkGetInstanceProcAddr getIns
     VkResult res;
     uint32_t layerCount = 0;
 #ifdef SK_ENABLE_VK_LAYERS
+    SkDebugf("in spot 2\n");
     // instance layers
     res = grVkEnumerateInstanceLayerProperties(&layerCount, nullptr);
     if (VK_SUCCESS != res) {
         return false;
     }
+    SkDebugf("device layer count: %d\n", layerCount);
     VkLayerProperties* layers = new VkLayerProperties[layerCount];
     res = grVkEnumerateInstanceLayerProperties(&layerCount, layers);
     if (VK_SUCCESS != res) {
@@ -192,6 +198,7 @@ static bool init_instance_extensions_and_layers(PFN_vkGetInstanceProcAddr getIns
 
     uint32_t nonPatchVersion = remove_patch_version(specVersion);
     for (size_t i = 0; i < std::size(kDebugLayerNames); ++i) {
+        SkDebugf("help\n");
         int idx = should_include_debug_layer(kDebugLayerNames[i], layerCount, layers,
                                              nonPatchVersion);
         if (idx != -1) {
@@ -570,7 +577,11 @@ bool CreateVkBackendContext(PFN_vkGetInstanceProcAddr getInstProc,
     }
     for (int i = 0; i < instanceExtensions.size(); ++i) {
         if (strncmp(instanceExtensions[i].extensionName, "VK_KHX", 6) != 0) {
-            instanceExtensionNames.push_back(instanceExtensions[i].extensionName);
+            if (strncmp(instanceExtensions[i].extensionName, "VK_EXT_lay", 10) != 0) {
+
+                SkDebugf("extension name: %s\n", instanceExtensions[i].extensionName);
+                instanceExtensionNames.push_back(instanceExtensions[i].extensionName);
+            }
         }
     }
 
@@ -756,7 +767,8 @@ bool CreateVkBackendContext(PFN_vkGetInstanceProcAddr getInstProc,
         // often are missing dependecy requirements for other extensions. Additionally, these are
         // often left behind in the driver even after they've been promoted to real extensions.
         if (0 != strncmp(deviceExtensions[i].extensionName, "VK_KHX", 6) &&
-            0 != strncmp(deviceExtensions[i].extensionName, "VK_NVX", 6)) {
+            0 != strncmp(deviceExtensions[i].extensionName, "VK_NVX", 6) &&
+            0 != strncmp(deviceExtensions[i].extensionName, "VK_EXT_lay", 10)) {
 
             // There are some extensions that are not supported by the debug layers which result in
             // many warnings even though we don't actually use them. It's easiest to just
