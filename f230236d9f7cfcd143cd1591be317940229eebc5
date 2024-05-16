@@ -70,6 +70,24 @@
       "parentUuid": "47897d76_6a418299",
       "revId": "f230236d9f7cfcd143cd1591be317940229eebc5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d3820c8_1ee3c912",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-05-16T14:26:27Z",
+      "side": 1,
+      "message": "Thanks for the repro. Indeed the image is in the skp file (verified via local viewer run) so that means it\u0027s being encoded fine. I think I know where to look in the debugger to fix that.",
+      "parentUuid": "98902f94_0ec03a80",
+      "revId": "f230236d9f7cfcd143cd1591be317940229eebc5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
