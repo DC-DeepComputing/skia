@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "52897b73_12215289",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-05-16T10:39:53Z",
+      "side": 1,
+      "message": "COLRv1 scaling issues were due to the fact that these need to be drawn unhinted at font unit scale. Changed to pass an unhinted `HintingInstance` to the path extraction.",
+      "revId": "fe8e5b86ed5e5523e6d08bdb2abee77df2d4a1f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
