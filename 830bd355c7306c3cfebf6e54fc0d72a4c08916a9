@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4caaf95_70255de2",
+        "filename": "src/gpu/graphite/render/SDFTextRenderStep.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-05-16T13:43:25Z",
+      "side": 1,
+      "message": "nit: Now that this is in two places, can we move the constant into DistanceFieldAdjustTable.h? (... or change the API so that getAdjustment just takes the luminance value, and does the shift internally?)",
+      "revId": "830bd355c7306c3cfebf6e54fc0d72a4c08916a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
