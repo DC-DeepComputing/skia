@@ -16,6 +16,47 @@
       "message": "Thank you for the speedy turnaround!",
       "revId": "6d5aea5e3eb00347068c4e65eb895bb97b8a8ce4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3574e85d_c8b34d82",
+        "filename": "modules/canvaskit/debugger_bindings.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-05-16T15:02:15Z",
+      "side": 1,
+      "message": "Hmm... why do we have two-space tabs in this file? Not important, just odd.",
+      "range": {
+        "startLine": 70,
+        "startChar": 0,
+        "endLine": 70,
+        "endChar": 2
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "dde15319_e571af43",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "modules/canvaskit/debugger_bindings.cpp",
+              "range": {
+                "startLine": 69,
+                "startChar": 0,
+                "endLine": 70,
+                "endChar": 0
+              },
+              "replacement": "static sk_sp\u003cSkImage\u003e deserializeImage(sk_sp\u003cSkData\u003e data,\n                                       std::optional\u003cSkAlphaType\u003e,\n                                       void*) {\n"
+            }
+          ]
+        }
+      ],
+      "revId": "6d5aea5e3eb00347068c4e65eb895bb97b8a8ce4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
