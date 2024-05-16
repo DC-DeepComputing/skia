@@ -16,6 +16,24 @@
       "message": "I realize we currently seem to have the option to build PDF with or without the HarfBuzz subsetter, but does anyone actually build PDF without it? For the time being does it make things easier to just make PDF always depend on the harfbuzz subsetter?",
       "revId": "fa9c4986f613c1e56ec48760c981285fa0951fc1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "049a83e5_e70dc13d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-05-16T18:50:54Z",
+      "side": 1,
+      "message": "It looks like we could just remove the whole `#if defined(SK_PDF_USE_HARFBUZZ_SUBSET)` bit from `SkPDFSubsetFont.cpp` and let that roll out and then just go and remove the `SK_PDF_USE_HARFBUZZ_SUBSET` defines at leisure. It used to make a bit of sense to also allow a no-subsetter option back when we also had a choice of subsetters, but we only support the HarfBuzz one here at the moment and the reality is that using PDF without the subsetter is a bit crazy.",
+      "parentUuid": "34981a0e_156e55ca",
+      "revId": "fa9c4986f613c1e56ec48760c981285fa0951fc1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
