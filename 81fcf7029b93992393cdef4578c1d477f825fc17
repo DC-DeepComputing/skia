@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ea13cde9_91d77ad3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-05-16T11:58:28Z",
+      "side": 1,
+      "message": "As far as I can tell this is doing the right thing. Relevant Ganesh code is in SubRunContainer.cpp starting around line 1070, and AtlasTextOp.cpp starting around line 520.",
+      "revId": "81fcf7029b93992393cdef4578c1d477f825fc17",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
