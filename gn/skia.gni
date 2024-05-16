@@ -164,7 +164,7 @@ declare_args() {
   skia_enable_metal_debug_info = skia_enable_gpu_debug_layers
   skia_use_vma = skia_use_vulkan
   skia_vulkan_memory_allocator_dir =
-      "//third_party/externals/vulkanmemoryallocator"
+      "//third_party/externals/vulkan_memory_allocator"
   skia_build_for_debugger = false
 
   # icu_bidi sources
