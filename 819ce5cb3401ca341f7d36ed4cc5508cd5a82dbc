@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5de5b3b4_80a658f8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-05-16T14:16:19Z",
+      "side": 1,
+      "message": "`typefacerendering` GM\n\nBefore this change: https://gold.skia.org/img/images/f23b23bdcf5a04702608a0a17a646cbc.png\nThis change: https://gold.skia.org/img/images/bd0aaf6d3a02887d74a3ce132b2905e1.png\nCurrent NativeFonts_FreeType: https://gold.skia.org/img/images/953ec5fbcdd4a539bfe545143845703a.png\nCurrent DirectWrite: https://gold.skia.org/img/images/21a502dd3b54484205abf7440b7dbaac.png\n\nSome of the difference is due to lack of EBLC/EBDT (the odd sizes) and possibly also due to the lack of a real bi-level renderer with dropout control. However, it does look like the biggest difference is that this isn\u0027t applying hinting to the metrics. Skia\u0027s design does mean that we essentially have to run the hinter twice and we should probably think about that (by allowing the `generateMetrics` to set a non-empty path).",
+      "revId": "819ce5cb3401ca341f7d36ed4cc5508cd5a82dbc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
