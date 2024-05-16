@@ -1,4 +1,4 @@
-# This file will be copied into //third_party/externals/vulkanmemoryallocator via the
+# This file will be copied into //third_party/externals/vulkan_memory_allocator via the
 # new_local_repository rule in WORKSPACE.bazel, so all files should be relative to that path.
 
 cc_library(

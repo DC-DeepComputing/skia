@@ -9,3 +9,4 @@ angle_has_build = false
 # Bunch of features ANGLE's build files test for that we never set.
 is_cfi = false
 is_chromeos = false
+is_castos = false

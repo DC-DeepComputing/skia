@@ -5,7 +5,7 @@
  * found in the LICENSE file.
  */
 
-// We use this header to include vk_mem_alloc.h to make sure we have the corect defines before we
+// We use this header to include vk_mem_alloc.h to make sure we have the correct defines before we
 // include vulkan.h inside of vk_mem_alloc.h
 
 #ifndef VulkanMemoryAllocatorWrapper_DEFINED
@@ -25,7 +25,7 @@
 // However, some builds of Skia may not have access to vulkan.h and just have access to
 // vulkan_core.h. So we pretend we've already included vulkan.h (if it already hasn't been) which
 // will be fine for building internal skia files. If we do fake it out by defining VULKAN_H_ we
-// need to make sure to undefine it incase outside client code does later try to include the
+// need to make sure to undefine it in case outside client code does later try to include the
 // real vulkan.h
 #ifndef VULKAN_H_
 #define VULKAN_H_

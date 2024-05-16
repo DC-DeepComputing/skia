@@ -917,7 +917,7 @@ optional("gpu_shared") {
       public_defines += [ "SK_ENABLE_VK_LAYERS" ]
     }
     if (skia_use_vma) {
-      public_deps += [ "src/gpu/vk/vulkanmemoryallocator" ]
+      public_deps += [ "src/gpu/vk/vulkan_memory_allocator" ]
     }
   }
 

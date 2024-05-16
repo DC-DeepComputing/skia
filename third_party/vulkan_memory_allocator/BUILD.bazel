@@ -6,7 +6,7 @@ licenses(["notice"])
 # TODO(kjlubick) remove this after G3 rolls
 
 alias(
-    name = "vulkanmemoryallocator",
-    actual = "//src/gpu/vk/vulkanmemoryallocator:vulkanmemoryallocator",
+    name = "vulkan_memory_allocator",
+    actual = "//src/gpu/vk/vulkan_memory_allocator:vulkan_memory_allocator",
     visibility = ["//visibility:public"],
 )
