@@ -57,6 +57,30 @@
       ],
       "revId": "6d5aea5e3eb00347068c4e65eb895bb97b8a8ce4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "97715178_fc50cca2",
+        "filename": "modules/canvaskit/debugger_bindings.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-05-16T15:03:14Z",
+      "side": 1,
+      "message": "Probably because the author and reviewer of this file were not super familiar with the C++ style guide when it was first created.",
+      "parentUuid": "3574e85d_c8b34d82",
+      "range": {
+        "startLine": 70,
+        "startChar": 0,
+        "endLine": 70,
+        "endChar": 2
+      },
+      "revId": "6d5aea5e3eb00347068c4e65eb895bb97b8a8ce4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
