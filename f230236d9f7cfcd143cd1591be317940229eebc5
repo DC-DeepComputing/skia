@@ -34,6 +34,24 @@
       "parentUuid": "06a44d4c_63448a63",
       "revId": "f230236d9f7cfcd143cd1591be317940229eebc5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47897d76_6a418299",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-05-16T13:53:22Z",
+      "side": 1,
+      "message": "The issue I had found is at the intersection of Fiddle and Skia Debugger. I took a screencast of it:\n\nhttps://screencast.googleplex.com/cast/NTE2NzQ4ODk3NDE5MjY0MHw0ZWUwMmM1YS1jOQ\n\nNote that the mandrill is visible in the fiddle, but somehow failed to make its way across the Fiddle-\u003eDebugger boundary. The Debugger shows a DrawImage call but no image resources to use. Michael\u0027s hypothesis was that this is occurring because the image encoders were not registered.\n\nSince Fiddle is still running the November version, I\u0027m guessing that a new Fiddle build would also fail to display the Mandrill entirely? Is that what this CL would fix?\n\nHappy to +1 it since it sounds like a valid fix, IIUC what is happening.",
+      "parentUuid": "8d763889_0a2b064a",
+      "revId": "f230236d9f7cfcd143cd1591be317940229eebc5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
