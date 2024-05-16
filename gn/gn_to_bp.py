@@ -103,10 +103,10 @@ cc_defaults {
     target: {
       android: {
         srcs: [
-          "src/gpu/vk/vulkanmemoryallocator/VulkanMemoryAllocatorWrapper.cpp",
+          "src/gpu/vk/vulkan_memory_allocator/VulkanMemoryAllocatorWrapper.cpp",
         ],
         local_include_dirs: [
-          "src/gpu/vk/vulkanmemoryallocator",
+          "src/gpu/vk/vulkan_memory_allocator",
           "vma_android/include",
         ],
       },
@@ -566,7 +566,7 @@ def strip_non_srcs(sources):
   src_extensions = ['.s', '.S', '.c', '.cpp', '.cc', '.cxx', '.mm']
   return {s for s in sources if os.path.splitext(s)[1] in src_extensions}
 
-VMA_DEP = "//src/gpu/vk/vulkanmemoryallocator:vulkanmemoryallocator"
+VMA_DEP = "//src/gpu/vk/vulkan_memory_allocator:vulkan_memory_allocator"
 
 gn_to_bp_utils.GrabDependentValues(js, '//:skia', 'sources', android_srcs, VMA_DEP)
 android_srcs    = strip_non_srcs(android_srcs)
@@ -677,9 +677,9 @@ mkdir_if_not_exists('renderengine/include/config/')
 mkdir_if_not_exists('skqp/include/config/')
 mkdir_if_not_exists('vma_android/include')
 
-shutil.copy('third_party/externals/vulkanmemoryallocator/include/vk_mem_alloc.h',
+shutil.copy('third_party/externals/vulkan_memory_allocator/include/vk_mem_alloc.h',
             'vma_android/include')
-shutil.copy('third_party/externals/vulkanmemoryallocator/LICENSE.txt', 'vma_android/')
+shutil.copy('third_party/externals/vulkan_memory_allocator/LICENSE.txt', 'vma_android/')
 
 platforms = { 'IOS', 'MAC', 'WIN', 'ANDROID', 'UNIX' }
 
