@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3c84b978_67129c29",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-05-16T21:19:15Z",
+      "side": 1,
+      "message": "colr.ttf now renders as it should straight from the generator. (Instead of needing manual fix-ups after.)",
+      "revId": "a0b13ab8315f22113072df8eac3d33d9ca116984",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
