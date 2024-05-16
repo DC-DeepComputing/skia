@@ -41,17 +41,21 @@ std::unique_ptr<Context> MakeMetal(const MtlBackendContext& backendContext,
 
 } // namespace ContextFactory
 
-MTLPixelFormat MtlDepthStencilFlagsToFormat(SkEnumBitMask<DepthStencilFlags> mask) {
+MTLPixelFormat MtlDepthStencilFlagsToFormat(const MtlCaps* caps,
+                                            SkEnumBitMask<DepthStencilFlags> mask) {
     // TODO: Decide if we want to change this to always return a combined depth and stencil format
     // to allow more sharing of depth stencil allocations.
     if (mask == DepthStencilFlags::kDepth) {
-        // MTLPixelFormatDepth16Unorm is also a universally supported option here
-        return MTLPixelFormatDepth32Float;
+        if (@available(macOS 10.12, iOS 13.0, tvOS 13.0, *)) {
+            return MTLPixelFormatDepth16Unorm; // Universally supported if available
+        } else {
+            return MTLPixelFormatDepth32Float;
+        }
     } else if (mask == DepthStencilFlags::kStencil) {
         return MTLPixelFormatStencil8;
     } else if (mask == DepthStencilFlags::kDepthStencil) {
-        // MTLPixelFormatDepth24Unorm_Stencil8 is supported on Mac family GPUs.
-        return MTLPixelFormatDepth32Float_Stencil8;
+        return caps->isMac() ? MTLPixelFormatDepth24Unorm_Stencil8
+                             : MTLPixelFormatDepth32Float_Stencil8;
     }
     SkASSERT(false);
     return MTLPixelFormatInvalid;
@@ -59,8 +63,10 @@ MTLPixelFormat MtlDepthStencilFlagsToFormat(SkEnumBitMask<DepthStencilFlags> mas
 
 SkEnumBitMask<DepthStencilFlags> MtlFormatToDepthStencilFlags(MTLPixelFormat format) {
     switch (format) {
+        case MTLPixelFormatDepth16Unorm:          [[fallthrough]];
         case MTLPixelFormatDepth32Float:          return DepthStencilFlags::kDepth;
         case MTLPixelFormatStencil8:              return DepthStencilFlags::kStencil;
+        case MTLPixelFormatDepth24Unorm_Stencil8: [[fallthrough]];
         case MTLPixelFormatDepth32Float_Stencil8: return DepthStencilFlags::kDepthStencil;
         default:                                  return DepthStencilFlags::kNone;
     }

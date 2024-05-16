@@ -42,6 +42,7 @@ std::unique_ptr<Context> MakeDawn(const DawnBackendContext& backendContext,
 bool DawnFormatIsDepthOrStencil(wgpu::TextureFormat format) {
     switch (format) {
         case wgpu::TextureFormat::Stencil8: // fallthrough
+        case wgpu::TextureFormat::Depth16Unorm:
         case wgpu::TextureFormat::Depth32Float:
         case wgpu::TextureFormat::Depth24PlusStencil8:
         case wgpu::TextureFormat::Depth32FloatStencil8:
@@ -53,6 +54,7 @@ bool DawnFormatIsDepthOrStencil(wgpu::TextureFormat format) {
 
 bool DawnFormatIsDepth(wgpu::TextureFormat format) {
     switch (format) {
+        case wgpu::TextureFormat::Depth16Unorm:
         case wgpu::TextureFormat::Depth32Float:
         case wgpu::TextureFormat::Depth24PlusStencil8:
         case wgpu::TextureFormat::Depth32FloatStencil8:
@@ -77,8 +79,7 @@ wgpu::TextureFormat DawnDepthStencilFlagsToFormat(SkEnumBitMask<DepthStencilFlag
     // TODO: Decide if we want to change this to always return a combined depth and stencil format
     // to allow more sharing of depth stencil allocations.
     if (mask == DepthStencilFlags::kDepth) {
-        // wgpu::TextureFormatDepth16Unorm is also a universally supported option here
-        return wgpu::TextureFormat::Depth32Float;
+        return wgpu::TextureFormat::Depth16Unorm;
     } else if (mask == DepthStencilFlags::kStencil) {
         return wgpu::TextureFormat::Stencil8;
     } else if (mask == DepthStencilFlags::kDepthStencil) {

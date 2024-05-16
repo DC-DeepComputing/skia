@@ -906,7 +906,7 @@ TextureInfo MtlCaps::getDefaultDepthStencilTextureInfo(
     MtlTextureInfo info;
     info.fSampleCount = sampleCount;
     info.fMipmapped = Mipmapped::kNo;
-    info.fFormat = MtlDepthStencilFlagsToFormat(depthStencilType);
+    info.fFormat = MtlDepthStencilFlagsToFormat(this, depthStencilType);
     info.fUsage = MTLTextureUsageRenderTarget;
     info.fStorageMode = this->getDefaultMSAAStorageMode(Discardable::kYes);
     info.fFramebufferOnly = false;
