@@ -9,7 +9,7 @@ licenses(["notice"])
 exports_files_legacy()
 
 skia_cc_library(
-    name = "vulkanmemoryallocator",
+    name = "vulkan_memory_allocator",
     srcs = [
         "VulkanMemoryAllocatorWrapper.cpp",
     ],
@@ -31,6 +31,6 @@ skia_cc_library(
     visibility = ["//:__subpackages__"],
     deps = [
         "//include/third_party/vulkan",
-        "@vulkanmemoryallocator//:hdrs",
+        "@vulkan_memory_allocator//:hdrs",
     ],
 )

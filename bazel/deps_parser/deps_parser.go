@@ -60,7 +60,7 @@ var deps = map[string]depConfig{
 	"vulkan-headers":           {bazelNameOverride: "vulkan_headers", needsBazelFile: true},
 	"vulkan-tools":             {bazelNameOverride: "vulkan_tools", needsBazelFile: true},
 	"vulkan-utility-libraries": {bazelNameOverride: "vulkan_utility_libraries", needsBazelFile: true},
-	"vulkanmemoryallocator":    {needsBazelFile: true},
+	"vulkan_memory_allocator":  {needsBazelFile: true},
 	"wuffs":                    {needsBazelFile: true},
 	// Some other dependency downloads zlib but with their own rules
 	"zlib": {bazelNameOverride: "zlib_skia", needsBazelFile: true},
