@@ -7,6 +7,6 @@ licenses(["notice"])
 
 alias(
     name = "vulkanmemoryallocator",
-    actual = "//src/gpu/vk/vulkanmemoryallocator:vulkanmemoryallocator",
+    actual = "//src/gpu/vk/vulkan_memory_allocator:vulkan_memory_allocator",
     visibility = ["//visibility:public"],
 )

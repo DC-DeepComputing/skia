@@ -103,10 +103,10 @@ cc_defaults {
     target: {
       android: {
         srcs: [
-          "src/gpu/vk/vulkanmemoryallocator/VulkanMemoryAllocatorWrapper.cpp",
+          "src/gpu/vk/vulkan_memory_allocator/VulkanMemoryAllocatorWrapper.cpp",
         ],
         local_include_dirs: [
-          "src/gpu/vk/vulkanmemoryallocator",
+          "src/gpu/vk/vulkan_memory_allocator",
           "vma_android/include",
         ],
       },
@@ -566,7 +566,7 @@ def strip_non_srcs(sources):
   src_extensions = ['.s', '.S', '.c', '.cpp', '.cc', '.cxx', '.mm']
   return {s for s in sources if os.path.splitext(s)[1] in src_extensions}
 
-VMA_DEP = "//src/gpu/vk/vulkanmemoryallocator:vulkanmemoryallocator"
+VMA_DEP = "//src/gpu/vk/vulkan_memory_allocator:vulkan_memory_allocator"
 
 gn_to_bp_utils.GrabDependentValues(js, '//:skia', 'sources', android_srcs, VMA_DEP)
 android_srcs    = strip_non_srcs(android_srcs)

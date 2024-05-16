@@ -29,5 +29,5 @@
 #include <cstdio>
 
 #include <vulkan/vulkan_core.h>
-#include "VulkanMemoryAllocatorWrapper.h"  // NO_G3_REWRITE
+#include "src/gpu/vk/vulkan_memory_allocator/VulkanMemoryAllocatorWrapper.h"  // NO_G3_REWRITE
 
