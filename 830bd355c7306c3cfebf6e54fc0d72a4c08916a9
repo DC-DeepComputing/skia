@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cb00a358_ad6f24ad",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-05-16T17:10:05Z",
+      "side": 1,
+      "message": "SDF text doesn\u0027t have LCD enabled yet -- it\u0027s on my short-term list to do. I agree it might be related to the blurriness issue, if the resolution of the monitor is high enough.",
+      "parentUuid": "23b57770_82844422",
+      "revId": "830bd355c7306c3cfebf6e54fc0d72a4c08916a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d4caaf95_70255de2",
