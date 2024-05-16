@@ -104,9 +104,17 @@ declare_args() {
   skia_enable_skshaper_tests = skia_enable_skshaper
 }`
 
+// The footer written to modules/skshaper/skshaper.gni.
+const pdfGNIFooter = `
+skia_harfbuzz_subsetter = []
+
+skia_no_subsetter = []
+`
+
 // Map of GNI file names to footer text to be appended to the end of the file.
 var footerMap = map[string]string{
 	"gn/core.gni":                   coreGNIFooter,
+	"gn/pdf.gni":                    pdfGNIFooter,
 	"gn/sksl_tests.gni":             skslTestsFooter,
 	"modules/skshaper/skshaper.gni": skshaperFooter,
 }
