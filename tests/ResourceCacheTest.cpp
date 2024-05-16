@@ -118,7 +118,8 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ResourceCacheCache,
 static bool is_rendering_and_not_angle_es3(skgpu::ContextType type) {
     if (type == skgpu::ContextType::kANGLE_D3D11_ES3 ||
         type == skgpu::ContextType::kANGLE_GL_ES3 ||
-        type == skgpu::ContextType::kANGLE_Metal_ES3) {
+        type == skgpu::ContextType::kANGLE_Metal_ES3 ||
+        type == skgpu::ContextType::kANGLE_Vk_ES3) {
         return false;
     }
     return skgpu::IsRenderingContext(type);

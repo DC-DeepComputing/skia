@@ -9,3 +9,28 @@ angle_has_build = false
 # Bunch of features ANGLE's build files test for that we never set.
 is_cfi = false
 is_chromeos = false
+
+angle_vulkan_memory_allocator_dir =
+    "//third_party/externals/vulkan_memory_allocator"
+
+#angle_vulkan_headers_dir = "//third_party/externals/vulkan-headers"
+#angle_vulkan_loader_dir = "/usr/local/google/home/robertphillips/src/skia.0/third_party/externals/vulkan-loader"
+angle_vulkan_tools_dir = "//third_party/externals/vulkan-tools"
+swiftshader_dir = "//third_party/externals/swiftshader"
+is_castos = false
+
+#angle_vulkan_validation_layers_dir = "/usr/local/google/home/robertphillips/src/skia.0/third_party/externals/vulkan-deps/vulkan-validation-layers/src"
+
+#./third_party/externals/vulkan-tools/icd/VkICD_mock_icd.json.in
+#./third_party/externals/vulkan-tools/icd/VkICD_mock_icd.def
+
+# installed at: third_party/externals/vulkan-deps/vulkan-loader/src
+
+#/usr/local/google/home/robertphillips/src/lunarg/1.3.283.0/x86_64/lib/libvulkan.so
+
+declare_args() {
+  angle_use_gbm = false
+}
+# vulkan-deps only seems to have vulkan-headers and vulkan-tools
+# missing vulkan-loader and vulkan-validation-layers
+# !!added vulkan-loader to DEPS file
