@@ -34,6 +34,24 @@
       "parentUuid": "5de5b3b4_80a658f8",
       "revId": "819ce5cb3401ca341f7d36ed4cc5508cd5a82dbc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff48809a_98d2d104",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-05-16T14:49:53Z",
+      "side": 1,
+      "message": "The nice thing about `typefacerendering` is it also does `gasp` in a controlled way, not sure how that\u0027s currently handled (or if you want to).",
+      "parentUuid": "5784695f_579a2fa2",
+      "revId": "819ce5cb3401ca341f7d36ed4cc5508cd5a82dbc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
