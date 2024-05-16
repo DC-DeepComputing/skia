@@ -16,6 +16,24 @@
       "message": "The bug we were seeing was that generated SKPs did not contain images in the Skia Debugger; will this change solve that? I thought it was an encoding issue, not a decoding issue.",
       "revId": "f230236d9f7cfcd143cd1591be317940229eebc5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d763889_0a2b064a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-05-16T11:42:56Z",
+      "side": 1,
+      "message": "Oh. Sorry. I heard fiddle. As it turns out, this needs fixing too.",
+      "parentUuid": "06a44d4c_63448a63",
+      "revId": "f230236d9f7cfcd143cd1591be317940229eebc5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
