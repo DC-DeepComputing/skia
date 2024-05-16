@@ -14,7 +14,7 @@ if (skia_use_system_harfbuzz) {
   system("harfbuzz") {
     include_dirs = [ "/usr/include/harfbuzz" ]
     libs = [ "harfbuzz" ]
-    if (skia_pdf_subset_harfbuzz) {
+    if (skia_enable_pdf) {
       libs += [ "harfbuzz-subset" ]
     }
   }

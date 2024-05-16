@@ -143,10 +143,6 @@ if (skia_use_angle && skia_gl_standard != "gles") {
 }
 
 declare_args() {
-  skia_pdf_subset_harfbuzz = skia_use_harfbuzz
-}
-
-declare_args() {
   skia_enable_fontmgr_android = skia_use_expat && skia_use_freetype
   skia_enable_fontmgr_custom_directory =
       skia_use_freetype && !is_fuchsia && !is_wasm

@@ -1209,21 +1209,17 @@ optional("graphite") {
 
 optional("pdf") {
   enabled = skia_use_zlib && skia_enable_pdf && skia_use_libjpeg_turbo_decode &&
-            skia_use_libjpeg_turbo_encode
+            skia_use_libjpeg_turbo_encode && skia_use_harfbuzz
   public_defines = [ "SK_SUPPORT_PDF" ]
-
-  deps = [ "//third_party/zlib" ]
+  deps = [
+    ":jpeg_decode",
+    ":jpeg_encode",
+    "//third_party/harfbuzz",
+    "//third_party/zlib",
+  ]
   public = skia_pdf_public
   sources = skia_pdf_sources
   sources_when_disabled = [ "src/pdf/SkDocument_PDF_None.cpp" ]
-  if (skia_pdf_subset_harfbuzz) {
-    deps += [ "//third_party/harfbuzz" ]
-    defines = [ "SK_PDF_USE_HARFBUZZ_SUBSET" ]
-  }
-  deps += [
-    ":jpeg_decode",
-    ":jpeg_encode",
-  ]
 }
 
 optional("xps") {

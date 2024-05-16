@@ -1,16 +1,13 @@
 // Copyright 2018 Google LLC.
 // Use of this source code is governed by a BSD-style license that can be found in the LICENSE file.
 
-#include "src/pdf/SkPDFSubsetFont.h"
-
-#if defined(SK_PDF_USE_HARFBUZZ_SUBSET)
-
 #include "include/core/SkData.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkTypeface.h"
 #include "include/private/base/SkTemplates.h"
 #include "include/private/base/SkTo.h"
 #include "src/pdf/SkPDFGlyphUse.h"
+#include "src/pdf/SkPDFSubsetFont.h"
 #include "src/utils/SkCallableTraits.h"
 
 #include "hb.h"  // NO_G3_REWRITE
@@ -103,11 +100,3 @@ sk_sp<SkData> subset_harfbuzz(const SkTypeface& typeface, const SkPDFGlyphUse& g
 sk_sp<SkData> SkPDFSubsetFont(const SkTypeface& typeface, const SkPDFGlyphUse& glyphUsage) {
     return subset_harfbuzz(typeface, glyphUsage);
 }
-
-#else
-
-sk_sp<SkData> SkPDFSubsetFont(const SkTypeface&, const SkPDFGlyphUse&) {
-    return nullptr;
-}
-
-#endif  // defined(SK_PDF_USE_HARFBUZZ_SUBSET)

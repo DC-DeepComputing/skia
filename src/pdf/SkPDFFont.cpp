@@ -574,6 +574,7 @@ static void emit_subset_type3(const SkPDFFont& pdfFont, SkPDFDocument* doc) {
         --lastGlyphID;
     }
     int unitsPerEm;
+    // TODO: Uses the default paint; fonts that use the "current color" will get only black.
     SkStrikeSpec strikeSpec = SkStrikeSpec::MakePDFVector(*typeface, &unitsPerEm);
     auto strike = strikeSpec.findOrCreateStrike();
     SkASSERT(strike);
