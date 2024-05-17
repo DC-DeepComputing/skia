@@ -64,6 +64,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4e3ea79d_60586453",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 848,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2024-05-17T21:20:15Z",
+      "side": 1,
+      "message": "Yes, it\u0027s due to the extension struct which would create a different pipeline.\n\nDawn metal backend will also use this struct when creating pipelines, but it\u0027s possible that the backend\u0027s pipeline cache will return a same pipeline due to having the same mtl shaders and descriptor.",
+      "parentUuid": "741733d2_18cf1ff5",
+      "range": {
+        "startLine": 847,
+        "startChar": 0,
+        "endLine": 848,
+        "endChar": 74
+      },
+      "revId": "25c4ee9f33b4cedf6e13c5372a3b929bfde0682f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5e1148d4_4a2d6514",
         "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
         "patchSetId": 1
@@ -99,6 +123,30 @@
           ]
         }
       ],
+      "revId": "25c4ee9f33b4cedf6e13c5372a3b929bfde0682f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85d53dad_428e9191",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2024-05-17T21:20:15Z",
+      "side": 1,
+      "message": "This pipeline is for a workaround pass where neither Dawn\u0027s LoadOp nor MSAARenderToSingleSampled extension is available. In this scenario, the extension struct will never be used to create any pipeline, no matter a render pass has load-resove-to-msaa or not.",
+      "parentUuid": "5e1148d4_4a2d6514",
+      "range": {
+        "startLine": 165,
+        "startChar": 28,
+        "endLine": 165,
+        "endChar": 60
+      },
       "revId": "25c4ee9f33b4cedf6e13c5372a3b929bfde0682f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
