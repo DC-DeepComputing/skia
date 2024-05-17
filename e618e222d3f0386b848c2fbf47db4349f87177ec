@@ -16,6 +16,24 @@
       "message": "Skimming it this looks fine but I won\u0027t have time to look at it thoroughly before I go. What\u0027s the justification for using the Recorder now since we were trying to avoid it before?",
       "revId": "e618e222d3f0386b848c2fbf47db4349f87177ec",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c0dd9c41_b0ed376d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-17T17:27:13Z",
+      "side": 1,
+      "message": "If an async readback doesn\u0027t require any drawing operations, we still avoid the Recorder.  But if we do require drawing operations (for the rescale, copy-as-draw fallback, or extracting YUVA planes), we carry the recorder down to the end and have the CopyTextureTobuffer tasks added to the recorder so that when texture reuse is applied, the drawing operations can in theory share textures and have their read/write lifetime tracked with the actual copy task that puts it into the buffer.\n\n(caveat is that for now, copy tasks *don\u0027t* actually participate in the read/write interval tracking).",
+      "parentUuid": "247e11ad_5946e9c5",
+      "revId": "e618e222d3f0386b848c2fbf47db4349f87177ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
