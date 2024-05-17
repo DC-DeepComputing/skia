@@ -16,6 +16,63 @@
       "message": "I\u0027d like your opinion on this. It does avoid duplicating the conditional, but has the side effect of duplicating the LCD logic up to four times, depending on how many textures we have. I\u0027m not sure which is better, or how to test that.",
       "revId": "eb7bcd67330b6a1377d9a71af8e83740d0e2f60b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5eae601_77c89fca",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-05-17T15:32:47Z",
+      "side": 1,
+      "message": "This LGTM overall but just so I understand better, what does the output look like before and after the change?",
+      "revId": "eb7bcd67330b6a1377d9a71af8e83740d0e2f60b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e7cbdff2_ca3ca911",
+        "filename": "src/gpu/ganesh/effects/GrAtlasedShaderHelpers.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-05-17T15:32:47Z",
+      "side": 1,
+      "message": "up to you: could just be `half3(1)`",
+      "range": {
+        "startLine": 113,
+        "startChar": 45,
+        "endLine": 113,
+        "endChar": 59
+      },
+      "revId": "eb7bcd67330b6a1377d9a71af8e83740d0e2f60b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65193392_aa968aff",
+        "filename": "src/gpu/ganesh/effects/GrAtlasedShaderHelpers.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-05-17T15:32:47Z",
+      "side": 1,
+      "message": "tiny nit: two blank lines in a row",
+      "revId": "eb7bcd67330b6a1377d9a71af8e83740d0e2f60b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
