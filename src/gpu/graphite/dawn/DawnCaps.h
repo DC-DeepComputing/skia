@@ -60,7 +60,8 @@ public:
                             ResourceType,
                             Shareable,
                             GraphiteResourceKey*) const override;
-    uint64_t getRenderPassDescKey(const RenderPassDesc& renderPassDesc) const;
+    uint64_t getRenderPassDescKey(const RenderPassDesc& renderPassDesc,
+                                  bool ignoreLoadResolveToMSAA) const;
 
     static constexpr size_t kFormatCnt = 16;
 

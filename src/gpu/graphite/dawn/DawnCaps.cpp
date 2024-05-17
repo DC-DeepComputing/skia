@@ -834,17 +834,27 @@ void DawnCaps::setColorType(SkColorType colorType,
     }
 }
 
-uint64_t DawnCaps::getRenderPassDescKey(const RenderPassDesc& renderPassDesc) const {
+uint64_t DawnCaps::getRenderPassDescKey(const RenderPassDesc& renderPassDesc,
+                                        bool ignoreLoadResolveToMSAA) const {
     DawnTextureInfo colorInfo, depthStencilInfo;
     renderPassDesc.fColorAttachment.fTextureInfo.getDawnTextureInfo(&colorInfo);
     renderPassDesc.fDepthStencilAttachment.fTextureInfo.getDawnTextureInfo(&depthStencilInfo);
     SkASSERT(static_cast<uint32_t>(colorInfo.getViewFormat()) <= 0xffff &&
-             static_cast<uint32_t>(depthStencilInfo.getViewFormat()) <= 0xffff);
-    uint32_t colorAttachmentKey =
-            static_cast<uint32_t>(colorInfo.getViewFormat()) << 16 | colorInfo.fSampleCount;
+             static_cast<uint32_t>(depthStencilInfo.getViewFormat()) <= 0xffff &&
+             colorInfo.fSampleCount < 0x7fff);
+    // Whether we load resolve texture or not might result in a different pipeline.
+    uint32_t loadResolveAttachmentKey = 0;
+    if (!ignoreLoadResolveToMSAA && renderPassDesc.fColorResolveAttachment.fTextureInfo.isValid() &&
+        renderPassDesc.fColorResolveAttachment.fLoadOp == LoadOp::kLoad) {
+        loadResolveAttachmentKey = 1;
+    }
+
+    uint32_t colorAttachmentKey = static_cast<uint32_t>(colorInfo.getViewFormat()) << 16 |
+                                  colorInfo.fSampleCount << 1 | loadResolveAttachmentKey;
+
     uint32_t dsAttachmentKey = static_cast<uint32_t>(depthStencilInfo.getViewFormat()) << 16 |
                                depthStencilInfo.fSampleCount;
-    return (((uint64_t) colorAttachmentKey) << 32) | dsAttachmentKey;
+    return (((uint64_t)colorAttachmentKey) << 32) | dsAttachmentKey;
 }
 
 UniqueKey DawnCaps::makeGraphicsPipelineKey(const GraphicsPipelineDesc& pipelineDesc,
@@ -859,7 +869,8 @@ UniqueKey DawnCaps::makeGraphicsPipelineKey(const GraphicsPipelineDesc& pipeline
         builder[1] = pipelineDesc.paintParamsID().asUInt();
 
         // add RenderPassDesc key
-        uint64_t renderPassKey = this->getRenderPassDescKey(renderPassDesc);
+        uint64_t renderPassKey =
+                this->getRenderPassDescKey(renderPassDesc, /*ignoreLoadResolveToMSAA=*/false);
         builder[2] = renderPassKey & 0xFFFFFFFF;
         builder[3] = (renderPassKey >> 32) & 0xFFFFFFFF;
         builder[4] = renderPassDesc.fWriteSwizzle.asKey();

@@ -161,8 +161,8 @@ DawnResourceProvider::~DawnResourceProvider() = default;
 
 wgpu::RenderPipeline DawnResourceProvider::findOrCreateBlitWithDrawPipeline(
         const RenderPassDesc& renderPassDesc) {
-    uint64_t renderPassKey =
-            this->dawnSharedContext()->dawnCaps()->getRenderPassDescKey(renderPassDesc);
+    uint64_t renderPassKey = this->dawnSharedContext()->dawnCaps()->getRenderPassDescKey(
+            renderPassDesc, /*ignoreLoadResolveToMSAA=*/true);
     wgpu::RenderPipeline pipeline = fBlitWithDrawPipelines[renderPassKey];
     if (!pipeline) {
         static constexpr char kVertexShaderText[] = R"(
