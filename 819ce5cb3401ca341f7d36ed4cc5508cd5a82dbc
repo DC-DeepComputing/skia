@@ -52,6 +52,24 @@
       "parentUuid": "5784695f_579a2fa2",
       "revId": "819ce5cb3401ca341f7d36ed4cc5508cd5a82dbc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab867042_78c39c0e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-05-17T08:06:42Z",
+      "side": 1,
+      "message": "Thanks for the analysis of that test case.\n\n\u003e However, it does look like the biggest difference is that this isn\u0027t applying hinting to the metrics.\n\nI checked and the metrics part seems fixed in the follow-up CL. Will send that for review separately. \n\n\u003e The nice thing about typefacerendering is it also does gasp in a controlled way, not sure how that\u0027s currently handled (or if you want to).\n\n`gasp` would need to be handled separately in `SkTypeface_Fontations.cpp`, by reading gasp and configuring the hinting settings accordingly. I will file an issue in fontations upstream, we may need slightly more fine-grained hinting settings control if we want to do that. OTOH, currently, gasp support is not needed for the Fontations backend - I don\u0027t expect a requirement for web fonts or Linux system fonts to adhere to gasp settings. I think so far we only ensured gasp compatibility on the DW backend - that\u0027s where it mattered most.",
+      "parentUuid": "ff48809a_98d2d104",
+      "revId": "819ce5cb3401ca341f7d36ed4cc5508cd5a82dbc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
