@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9319a1b6_1ea76b65",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-05-17T18:04:36Z",
+      "side": 1,
+      "message": "Looking at the gradient spec, I just realized we don\u0027t support the highlight options.\n\n\nTest preview: https://skottie.skia.org/244dbf463b6783211d25daccbf93aa56?h\u003d500\u0026l\u003dtrue\u0026w\u003d500",
+      "revId": "a7e8afb9126e8343071ba0dd923da58a748d631a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
