@@ -938,7 +938,8 @@ std::string GenerateLocalMatrixPreamble(const ShaderInfo& shaderInfo,
     std::string helperFnName =
             get_mangled_name(node->entry()->fStaticFunctionName, node->keyIndex());
     return SkSL::String::printf("half4 %s(half4 inColor, half4 destColor, float2 coords) {"
-                                    "coords = (%s * coords.xy01).xy;"
+                                    "float4 pc = (%s * coords.xy01);"
+                                    "coords = (pc / pc.w).xy;"
                                     "return %s;"
                                 "}",
                                 helperFnName.c_str(),
