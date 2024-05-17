@@ -111,6 +111,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca29b03a_9d2ca4de",
+        "filename": "src/gpu/ganesh/effects/GrAtlasedShaderHelpers.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-05-17T16:10:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e7cbdff2_ca3ca911",
+      "range": {
+        "startLine": 113,
+        "startChar": 45,
+        "endLine": 113,
+        "endChar": 59
+      },
+      "revId": "eb7bcd67330b6a1377d9a71af8e83740d0e2f60b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "65193392_aa968aff",
@@ -124,6 +148,24 @@
       "writtenOn": "2024-05-17T15:32:47Z",
       "side": 1,
       "message": "tiny nit: two blank lines in a row",
+      "revId": "eb7bcd67330b6a1377d9a71af8e83740d0e2f60b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f5b67f40_2e68d210",
+        "filename": "src/gpu/ganesh/effects/GrAtlasedShaderHelpers.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-05-17T16:10:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "65193392_aa968aff",
       "revId": "eb7bcd67330b6a1377d9a71af8e83740d0e2f60b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
