@@ -1454,7 +1454,7 @@ static int downscale_step_count(float netScaleFactor) {
         // For a multipass rescale, we allow for a lot of tolerance when deciding to collapse the
         // final step. If there's only a single pass, we require the scale factor to be very close
         // to the identity since it causes the step count to go to 0.
-        static constexpr float kMultiPassLimit = 0.8f;
+        static constexpr float kMultiPassLimit = 0.9f;
         static constexpr float kNearIdentityLimit = 1.f - kRoundEpsilon; // 1px error in 1000px img
 
         float finalStepScale = netScaleFactor * (1 << (steps - 1));
@@ -1481,9 +1481,6 @@ FilterResult FilterResult::rescale(const Context& ctx,
         return {};
     }
 
-    int xSteps = downscale_step_count(scale.width());
-    int ySteps = downscale_step_count(scale.height());
-
     // NOTE: For the first pass, PixelSpace and LayerSpace are equivalent
     PixelSpace<SkIPoint> origin;
     const bool pixelAligned = is_nearly_integer_translation(fTransform, &origin);
@@ -1503,6 +1500,9 @@ FilterResult FilterResult::rescale(const Context& ctx,
             SkToBool(fColorFilter) ||
             fImage->colorType() != ctx.backend()->colorType() ||
             !SkColorSpace::Equals(fImage->getColorSpace(), ctx.colorSpace());
+
+    int xSteps = downscale_step_count(scale.width());
+    int ySteps = downscale_step_count(scale.height());
 
     if (xSteps == 0 && ySteps == 0 && !hasEffectsToApply) {
         if (analysis & BoundsAnalysis::kHasLayerFillingEffect) {
@@ -1549,6 +1549,46 @@ FilterResult FilterResult::rescale(const Context& ctx,
         return {};
     }
 
+    float finalScaleX = scale.width();
+    float finalScaleY = scale.height();
+    if (deferPeriodicTiling) {
+        // Must hit pixel bounds for period to match once upscaled
+        float cx = 0.5f * (srcRect.right() + srcRect.left());
+        float cy = 0.5f * (srcRect.bottom() + srcRect.top());
+        PixelSpace<SkRect> dstBoundsF{{
+            (srcRect.left() - cx)*finalScaleX,
+            (srcRect.top() - cy)*finalScaleY,
+            (srcRect.right() - cx)*finalScaleX,
+            (srcRect.bottom() - cy)*finalScaleY
+        }};
+
+        PixelSpace<SkIRect> innerDstPixels = dstBoundsF.roundIn();
+        int dstCenterX = sk_float_floor2int(0.5f * (dstBoundsF.right() + dstBoundsF.left()));
+        int dstCenterY = sk_float_floor2int(0.5f * (dstBoundsF.bottom() + dstBoundsF.top()));
+        dstBoundsF = PixelSpace<SkRect>({(float) std::min(dstCenterX, innerDstPixels.left()),
+                                         (float) std::min(dstCenterY, innerDstPixels.top()),
+                                         (float) std::max(dstCenterX+1, innerDstPixels.right()),
+                                         (float) std::max(dstCenterY+1, innerDstPixels.bottom())});
+
+        finalScaleX = dstBoundsF.width() / srcRect.width();
+        finalScaleY = dstBoundsF.height() / srcRect.height();
+        // FIXME: This doesn't work very well because the final level has sometimes landing on
+        // half-pixel edges -> if the floor'ed dimensions are odd we end at 1/2, and then dstPixelBounds
+        // rounds out.
+        //   -> we need more plumbing to be able to have a fractional origin that is subtracted
+        //      to arrive at integer dimensions. That's not worth doing at this point, so make a note
+        //      of the simplification for when
+        // finalScaleX = std::max(sk_float_floor(srcRect.width() * finalScaleX), 1.f) / srcRect.width();
+        // finalScaleY = std::max(sk_float_floor(srcRect.height() * finalScaleY), 1.f) / srcRect.height();
+
+        SkDebugf("adjust %f,%f -> %f,%f  steps %d,%d -> %d,%d\n",
+            scale.width(), scale.height(), finalScaleX, finalScaleY,
+            xSteps, ySteps, downscale_step_count(finalScaleX), downscale_step_count(finalScaleY));
+
+        xSteps = downscale_step_count(finalScaleX);
+        ySteps = downscale_step_count(finalScaleY);
+    }
+
     // To avoid incurring error from rounding up the dimensions at every step, the logical size of
     // the image is tracked in floats through the whole process; rounding to integers is only done
     // to produce a conservative pixel buffer and clamp-tiling is used so that partially covered
@@ -1559,37 +1599,67 @@ FilterResult FilterResult::rescale(const Context& ctx,
     // If we made it here, at least one iteration is required, even if xSteps and ySteps are 0.
     // sk_sp<SkSpecialImage> image = nullptr;
     FilterResult image = *this;
+    if (deferPeriodicTiling) {
+        image.fTileMode = SkTileMode::kClamp;
+    }
     do {
         float sx = 1.f;
         if (xSteps > 0) {
-            sx = xSteps > 1 ? 0.5f : srcRect.width()*scale.width() / stepBoundsF.width();
+            sx = xSteps > 1 ? 0.5f : srcRect.width()*finalScaleX / stepBoundsF.width();
             xSteps--;
         }
 
         float sy = 1.f;
         if (ySteps > 0) {
-            sy = ySteps > 1 ? 0.5f : srcRect.height()*scale.height() / stepBoundsF.height();
+            sy = ySteps > 1 ? 0.5f : srcRect.height()*finalScaleY / stepBoundsF.height();
             ySteps--;
         }
 
-        PixelSpace<SkRect> dstBoundsF{SkRect::MakeWH(stepBoundsF.width() * sx,
-                                                     stepBoundsF.height() * sy)};
+        float cx = 0.5f * (stepBoundsF.right() + stepBoundsF.left());
+        float cy = 0.5f * (stepBoundsF.bottom() + stepBoundsF.top());
+        PixelSpace<SkRect> dstBoundsF{{
+            (stepBoundsF.left() - cx)*sx,
+            (stepBoundsF.top() - cy)*sy,
+            (stepBoundsF.right() - cx)*sx,
+            (stepBoundsF.bottom() - cy)*sy
+        }};
+
+        auto dstBoundsFOrig = dstBoundsF;
+
+        // TODO: this isn't necessary with the up-front scaling
+        // if (deferPeriodicTiling && (xSteps == 0 || ySteps ==0)) {
+        //     PixelSpace<SkIRect> innerDstPixels = dstBoundsF.roundIn();
+        //     int dstCenterX = sk_float_floor2int(0.5f * (dstBoundsF.right() + dstBoundsF.left()));
+        //     int dstCenterY = sk_float_floor2int(0.5f * (dstBoundsF.bottom() + dstBoundsF.top()));
+        //     if (xSteps == 0) {
+        //         // Round down to the next smallest pixel size to preserve the periodicity when we scale
+        //         // back up to the original layer space (since the period is applied to pixel bounds).
+        //         dstBoundsF = PixelSpace<SkRect>({(float) std::min(dstCenterX, innerDstPixels.left()),
+        //                                          dstBoundsF.top(),
+        //                                          (float) std::max(dstCenterX+1, innerDstPixels.right()),
+        //                                          dstBoundsF.bottom()});
+        //     }
+        //     if (ySteps == 0) {
+        //         dstBoundsF = PixelSpace<SkRect>({dstBoundsF.left(),
+        //                             (float) std::min(dstCenterY, innerDstPixels.top()),
+        //                             dstBoundsF.right(),
+        //                             (float) std::max(dstCenterY+1, innerDstPixels.bottom())});
+        //     }
+        // }
+
         PixelSpace<SkIRect> dstPixelBounds = dstBoundsF.roundOut();
 
-        // Bump fractional coords out to pixel bounds on the last step, which greatly helps apparent
-        // stability of the upscaled image.
-        if (xSteps == 0) {
-            dstBoundsF = PixelSpace<SkRect>({(float)dstPixelBounds.left(),  dstBoundsF.top(),
-                                             (float)dstPixelBounds.right(), dstBoundsF.bottom()});
-        }
-        if (ySteps == 0) {
-            dstBoundsF = PixelSpace<SkRect>({dstBoundsF.left(),  (float)dstPixelBounds.top(),
-                                             dstBoundsF.right(), (float)dstPixelBounds.bottom()});
-        }
+        SkDebugf("scale = %f,%f -> %f,%f,%f,%f -> %f,%f,%f,%f\n",
+                 sx, sy, stepBoundsF.left(), stepBoundsF.top(), stepBoundsF.right(), stepBoundsF.bottom(),
+                 dstBoundsFOrig.left(), dstBoundsFOrig.top(), dstBoundsFOrig.right(), dstBoundsFOrig.bottom());
+        SkDebugf("actual %f,%f  -> %f,%f,%f,%f\n",
+                dstBoundsF.width() / stepBoundsF.width(), dstBoundsF.height() / stepBoundsF.height(),
+                dstBoundsF.left(), dstBoundsF.top(), dstBoundsF.right(), dstBoundsF.bottom());
+        SkDebugf("total so far: %f,%f\n", dstBoundsF.width() / srcRect.width(), dstBoundsF.height()/srcRect.height());
 
         PixelBoundary boundary = PixelBoundary::kUnknown;
         PixelSpace<SkIRect> sampleBounds = dstPixelBounds;
-        if (tileMode == SkTileMode::kDecal) {
+        if (tileMode == SkTileMode::kDecal) {//} || deferPeriodicTiling) {
             boundary = PixelBoundary::kTransparent;
         } else {
             // This is roughly equivalent to using PixelBoundary::kInitialized, but keeps some of
@@ -1647,7 +1717,8 @@ FilterResult FilterResult::rescale(const Context& ctx,
                                        cfOnly); // Right (no corners)
                     // Clamping logic will preserve its values on subsequent rescale steps.
                     cfBorder = false;
-                } else if (tileMode != SkTileMode::kDecal) {
+                } else { //}  if (tileMode == SkTileMode::kClamp) {
+                    SkASSERT(tileMode != SkTileMode::kDecal);
                     // Sample the border pixels directly, scaling only on an axis at a time for
                     // edges, and with no scaling for corners. Since only the CTM is adjusted, these
                     // 8 draws should be batchable with the primary fill.
@@ -1662,8 +1733,46 @@ FilterResult FilterResult::rescale(const Context& ctx,
                                  SkIRect::MakeXYWH(dst.fX, dst.fY, 1,   1));
                     };
 
+                    if (tileMode == SkTileMode::kMirror ||
+                        tileMode == SkTileMode::kRepeat) {
+                        // The 1/2px inset aligns the edges halfway between the two outermost pixels
+                        // of the edge so bilinear filtering averages them together.
+                        // stepPixelBounds.inset(PixelSpace<SkSize>({0.5f, 0.5f}));
+                        // FIXME is this right for mirror? what's the second outset doing?
+                        // for repeat, the 1px inset at the end was meant to get the other parts of
+                        // the image that hadn't been folded into the round-out yet, I think, but
+                        // does that actually work? Are we compressing the axes too much? I don't
+                        // think so because we are actually only using one edge value at a time
+                        // with the original srcSampled for the other axis.
+                        stepPixelBounds = PixelSpace<SkRect>(sampleBounds); // -> pixels that are drawn by the main rect
+                        stepPixelBounds.inset(PixelSpace<SkSize>({0.5f, 0.5f})); // -> pixel centers are drawn
+                        SkAssertResult(scaleXform.inverseMapRect(stepPixelBounds, &stepPixelBounds)); // -> local coords at the pixel center
+                        // stepPixelBounds = srcSampled;
+                        // Adjust by 1/2px out so that the 1px rectangle the drawEdge code uses
+                        // stays centered on the original value returned by scaleXform.
+                        stepPixelBounds.outset(PixelSpace<SkSize>({0.5f, 0.5f}));
+                        if (tileMode == SkTileMode::kRepeat) {
+                            // This moves the the averaging option from the outermost 2 source pixels
+                            // (that we'd be flipping for a mirror), to the next 2, that we need to
+                            // fold into the next level when we sample
+                            // hmm but I think this doesn't actually look as good...
+                            // and is it still relevant if we are snapping to pixel size at the end?
+                            // stepPixelBounds.inset(PixelSpace<SkSize>({1.f, 1.f}));
+                        }
+                    }
+                    PixelSpace<SkRect> clip{dstPixelBounds};
+                    if (tileMode == SkTileMode::kRepeat) {
+                        // FIXME I think this is right if we have the fractional tiling -> eh maybe not
+                        dstPixelBounds = PixelSpace<SkIRect>({dstPixelBounds.right()-1, dstPixelBounds.bottom()-1,
+                                                            dstPixelBounds.left()+1, dstPixelBounds.top()+1});
+                    }
+
+                    surface->save();
+                    // surface->clipRect({clip.left(), clip.top()*0.5f + clip.bottom()*0.5f,
+                    //                    clip.right(), clip.bottom()});
+
                     // Edges (excluding corners)
-                    drawEdge({stepPixelBounds.left(),        srcSampled.top(),
+                    drawEdge({stepPixelBounds.left(),        srcSampled.top(), // FIXME does this work when rounding in? maybe if patch its values when filling the missed rows/columns?
                               stepPixelBounds.left() + 1.f,  srcSampled.bottom()},
                              {dstPixelBounds.left(),         sampleBounds.top(),
                               dstPixelBounds.left()  + 1,    sampleBounds.bottom()}); // Left
@@ -1693,6 +1802,13 @@ FilterResult FilterResult::rescale(const Context& ctx,
                                {dstPixelBounds.right()  - 1, dstPixelBounds.bottom()  - 1}); // BR
                     drawCorner({stepPixelBounds.left(),      stepPixelBounds.bottom() - 1},
                                {dstPixelBounds.left(),       dstPixelBounds.bottom()  - 1}); // BL
+
+                    if (tileMode == SkTileMode::kRepeat) {
+                        dstPixelBounds = PixelSpace<SkIRect>({dstPixelBounds.right()-1, dstPixelBounds.bottom()-1,
+                                                            dstPixelBounds.left()+1, dstPixelBounds.top()+1});
+                    }
+
+                    surface->restore();
                 }
             }
         } else {
@@ -1706,7 +1822,7 @@ FilterResult FilterResult::rescale(const Context& ctx,
         image.fTileMode = deferPeriodicTiling ? SkTileMode::kClamp : tileMode;
 
         stepBoundsF = dstBoundsF;
-        stepPixelBounds = PixelSpace<SkRect>(dstPixelBounds);
+        stepPixelBounds = PixelSpace<SkRect>(deferPeriodicTiling ? sampleBounds : dstPixelBounds);
     } while(xSteps > 0 || ySteps > 0);
 
 
@@ -1716,6 +1832,7 @@ FilterResult FilterResult::rescale(const Context& ctx,
         // Inset the image to undo the manually added border of pixels, which will allow the result
         // to have the kInitialized boundary state.
         image = image.insetByPixel();
+        // tileMode = SkTileMode::kDecal;
     } else {
         SkASSERT(tileMode == SkTileMode::kDecal || tileMode == SkTileMode::kClamp);
         // Leave the image as-is. If it's decal tiled, this preserves the known transparent
@@ -1725,13 +1842,74 @@ FilterResult FilterResult::rescale(const Context& ctx,
     }
     image.fTileMode = tileMode;
     image.fTransform.postConcat(
-            LayerSpace<SkMatrix>::RectToRect(stepBoundsF, LayerSpace<SkRect>{srcRect}));
-    image.fLayerBounds = visibleLayerBounds;
+            LayerSpace<SkMatrix>::RectToRect(deferPeriodicTiling ? stepPixelBounds : stepBoundsF,
+                                             LayerSpace<SkRect>{srcRect}));
 
-    SkASSERT(!enforceDecal || image.fTileMode == SkTileMode::kDecal);
-    SkASSERT(image.fTileMode != SkTileMode::kDecal ||
-             image.fBoundary == PixelBoundary::kTransparent);
-    SkASSERT(!deferPeriodicTiling || image.fBoundary == PixelBoundary::kInitialized);
+
+    /**
+     * So I can't really discern the difference between using decal as the final pixel bounds for
+     * repeat vs. manually patching things in. But maybe then I can pick the simples toption?
+     * decal is the simplest oslution, but it makes me worried that transparency would slip into
+     * things if I am actually wrong about why that works.
+     *
+     * additionally, it also definitely doesn't add the color values up correctly, but maybe the
+     * regular ones don't either (seemed that way with the regular pad filling).
+    */
+
+
+
+    //  FIXME so having periodic tiling round out to stepPixelBounds for the transform helps with
+    // seaming, even if it creates less ideal scaling behavior.
+    // But what's weird is that it also keeps the tiling inline with the original geometry.
+    // -> so figure out why that works out to the right thing?
+    //    or is it that it's an integer transformation?
+    //    shouldn't we be .... ugh too many beers
+    //    -> no it's because, it's making the actual image bounds align with the srcRect, and the
+            //  srcRect represents the layer-space pixel bounds of the periodic tiling. w/o that
+            // alignment, the blur etc will be evaluated in not quite the same periodic space
+            // we may be able to hide that fact by applying the repeat once we get to the last step
+            // but I suspect that would mean that when we get to upscaling we'd be out of alignment
+            // -> or we'd have to be able to apply the low-res period with the fractional tiling
+            // such that tha twould align.
+
+            // -> long term, I think these calculations work out for the right period averages, but
+            // that we need to be able to then tile it over a fractional pixel boundary and mix
+            // across the edges?
+    //
+    // ...
+    // but beyond why that logic does or does not work (which i'd accept on a short-term period),
+    // why does this rescaling code have flickering at middle sigmas when it's blurred? It looks
+    // very reasonable w/o the blur pass.
+    //
+    // i think the seaming is that the extra size of the low res pixels is that it includes the
+    // next area, so if we could do fractional pixels in the blur then it'd be okay?
+
+
+    // but if we switch back to the floating point bounds and the upscaling to layer bounds, mirorr
+    // looks pretty good. some flickering by the time we get to lower resolutions but less flickering
+    // than when we snap to pixels, and there aren't terrible seams. Maybe that's just a repeat thing?
+        // - yeah in that config, repeat still has seams...
+        // and if we switch to pixel snapping this transform, it looks good
+        // so yeah, why does that work?
+        // and given that it works, how can we resolve the rest of the flickering that's showing up?
+        //   -> do we need to skip an inset? do we need to add an extra inset for the repat?
+        // do we need to do what ganesh did (which is also pixel->pxiel mapping) and choose a scale
+        // factor that reaches the integer scaling? right now we have pixel snapping of the transfrom
+        // which changes the effective scale factor, but aren't adjusting the sigmas.
+
+    // -> it doesn't appear to be the graphite vs. ganesh implementation, both exhibit the problems
+    // if I use this rescaling function
+    // -> I think I should try and figure out if I can calculate the sigma and scale factor that
+    // would hit a pixel boundary... because I do bet that the seaming is related to the issues
+    // where the blur is using the pixel dimensions to repeat over and that's not actually what
+    // the period should be applied to.
+    image.fLayerBounds = visibleLayerBounds;
+    // image.fLayerBounds = image.fTransform.mapRect(PixelSpace<SkIRect>(image.fImage->dimensions()));
+
+    // SkASSERT(!enforceDecal || image.fTileMode == SkTileMode::kDecal);
+    // SkASSERT(image.fTileMode != SkTileMode::kDecal ||
+    //          image.fBoundary == PixelBoundary::kTransparent);
+    // SkASSERT(!deferPeriodicTiling || image.fBoundary == PixelBoundary::kInitialized);
     return image;
 }
 
@@ -1941,26 +2119,18 @@ FilterResult FilterResult::Builder::blur(const LayerSpace<SkSize>& sigma) {
     const SkBlurEngine* blurEngine = fContext.backend()->getBlurEngine();
     SkASSERT(blurEngine);
 
-    // TODO: All tilemodes are applied right now in resolve() so query with just kDecal
     const SkBlurEngine::Algorithm* algorithm = blurEngine->findAlgorithm(
             SkSize(sigma), fContext.backend()->colorType());
     if (!algorithm) {
         return {};
     }
 
-    // TODO: Move resizing logic out of GrBlurUtils into this function
-    SkASSERT(sigma.width() <= algorithm->maxSigma() && sigma.height() <= algorithm->maxSigma());
-
     // TODO: De-duplicate this logic between SkBlurImageFilter, here, and skgpu::BlurUtils.
-    skif::LayerSpace<SkISize> radii =
+    LayerSpace<SkISize> radii =
             LayerSpace<SkSize>({3.f*sigma.width(), 3.f*sigma.height()}).ceil();
     auto maxOutput = fInputs[0].fImage.layerBounds();
     maxOutput.outset(radii);
 
-    // TODO: If the input image is periodic, the output that's calculated can be the original image
-    // size and then have the layer bounds and tilemode of the output image apply the tile again.
-    // Similarly, a clamped blur can be restricted to a radius-outset buffer of the image bounds
-    // (vs. layer bounds) and rendered with clamp tiling.
     const auto outputBounds = this->outputBounds(maxOutput);
     if (outputBounds.isEmpty()) {
         return {};
@@ -1972,33 +2142,108 @@ FilterResult FilterResult::Builder::blur(const LayerSpace<SkSize>& sigma) {
     auto sampleBounds = outputBounds;
     sampleBounds.outset(radii);
 
-    // TODO: If the blur implementation requires downsampling, we should incorporate any deferred
-    // transform and colorfilter to the first rescale step instead of generating a full resolution
-    // simple image first.
-    // TODO: The presence of a non-decal tilemode should not force resolving to a simple image; it
-    // should be incorporated into the image that's sampled by the blur effect (modulo biasing edge
-    // pixels somehow for very large clamp blurs).
-    // TODO: resolve() doesn't actually guarantee that the returned image has the same color space
-    // as the Context, but probably should since the blur algorithm operates in the color space of
-    // the input image.
-    FilterResult resolved = fInputs[0].fImage.resolve(fContext, sampleBounds);
-    if (!resolved) {
+    float sx = sigma.width()  > algorithm->maxSigma() ? algorithm->maxSigma()/sigma.width()  : 1.f;
+    float sy = sigma.height() > algorithm->maxSigma() ? algorithm->maxSigma()/sigma.height() : 1.f;
+
+    // For identity scale factors, this rescale() is a no-op when possible, but otherwise it will
+    // also handle resolving any color filters or transform similar to a resolve() except that it
+    // can defer the tile mode.
+    FilterResult lowResImage = fInputs[0].fImage.rescale(
+            fContext.withNewDesiredOutput(sampleBounds),
+            LayerSpace<SkSize>({sx, sy}),
+            algorithm->supportsOnlyDecalTiling());
+    if (!lowResImage) {
         return {};
     }
+    SkASSERT(lowResImage.tileMode() == SkTileMode::kDecal ||
+             !algorithm->supportsOnlyDecalTiling());
 
-    // TODO: Can blur() take advantage of AutoSurface? Right now the GPU functions are responsible
-    // for creating their own target surfaces.
-    auto srcRelativeOutput = outputBounds;
-    srcRelativeOutput.offset(-resolved.layerBounds().topLeft());
-    resolved = {algorithm->blur(SkSize(sigma),
-                                resolved.fImage,
-                                SkIRect::MakeSize(resolved.fImage->dimensions()),
-                                SkTileMode::kDecal,
-                                SkIRect(srcRelativeOutput)),
-                outputBounds.topLeft()};
-    // TODO: Allow the blur functor to provide an upscaling transform that is applied to the
-    // FilterResult so that a render pass can possibly be elided if this is the final operation.
-    return resolved;
+    sx = lowResImage.fTransform.rc(0,0);
+    sy = lowResImage.fTransform.rc(1,1);
+
+    // if ((true)) {
+    //     lowResImage.fSamplingOptions = SkFilterMode::kNearest;
+    // // //     // lowResImage.fTileMode = SkTileMode::kDecal;
+    // //     SkTileMode tm = lowResImage.tileMode();
+    // //     if (tm == SkTileMode::kRepeat ||
+    // //         tm == SkTileMode::kMirror) {
+    // //         auto periodBounds = fInputs[0].fImage.fTransform.mapRect(
+    // //                 LayerSpace<SkIRect>(fInputs[0].fImage.image()->dimensions()));
+
+    // //         lowResImage.fTileMode = SkTileMode::kClamp;
+    // //         lowResImage = lowResImage.applyCrop(fContext, periodBounds, tm);
+    // //     }
+
+    //     return lowResImage;
+    // }
+
+    // Map 'outputBounds' into the low-res image's pixel space to determine the low-res output
+    // from the blur engine.
+    PixelSpace<SkSize> lowResSigma{{std::min(algorithm->maxSigma(), sx * sigma.width()),
+                                    std::min(algorithm->maxSigma(), sy * sigma.height())}};
+    PixelSpace<SkIRect> lowResMaxOutput{SkISize{lowResImage.fImage->width(),
+                                                lowResImage.fImage->height()}};
+
+    PixelSpace<SkIRect> srcRelativeOutput;
+    if (lowResImage.tileMode() == SkTileMode::kRepeat ||
+        lowResImage.tileMode() == SkTileMode::kMirror) {
+        // The periodic tiling was deferred when down-sampling; we can further defer it to after the
+        // blur. The low-res output is 1-to-1 with the low res image.
+        srcRelativeOutput = lowResMaxOutput;
+    } else {
+        // For decal and clamp tiling, the blurred image stops being interesting outside the radii
+        // outset, so redo the max output analysis with the 'outputBounds' mapped into pixel space.
+        SkAssertResult(lowResImage.fTransform.inverseMapRect(outputBounds, &srcRelativeOutput));
+        // Include 1px of blur output so that it can be sampled during the upscale, which is needed
+        // to correctly seem large blurs across crop/raster tiles (crbug.com/1500021).
+        srcRelativeOutput.outset(PixelSpace<SkISize>({1, 1}));
+
+        // NOTE: Since 'lowResMaxOutput' is based on the actual image and deferred tiling, this can
+        // be smaller than the pessimistic filling for a clamp-tiled blur.
+        lowResMaxOutput.outset(PixelSpace<SkSize>({3.f * lowResSigma.width(),
+                                                   3.f * lowResSigma.height()}).ceil());
+        srcRelativeOutput = lowResMaxOutput.relevantSubset(srcRelativeOutput,
+                                                           lowResImage.tileMode());
+        // Clamp won't return empty from relevantSubset() and a non-intersecting decal should have
+        // been caught earlier.
+        SkASSERT(!srcRelativeOutput.isEmpty());
+    }
+
+    sk_sp<SkSpecialImage> lowResBlur = lowResImage.refImage();
+    SkIRect blurOutputBounds = SkIRect(srcRelativeOutput);
+    SkTileMode tileMode = lowResImage.tileMode();
+    if (lowResImage.canClampToTransparentBoundary(BoundsAnalysis::kSimple)) {
+        lowResBlur = lowResBlur->makePixelOutset();
+        blurOutputBounds.offset(1, 1);
+        tileMode = SkTileMode::kClamp;
+    }
+
+    lowResBlur = algorithm->blur(SkSize(lowResSigma),
+                                lowResBlur,
+                                SkIRect::MakeSize(lowResBlur->dimensions()),
+                                tileMode,
+                                blurOutputBounds);
+
+    FilterResult result{std::move(lowResBlur), srcRelativeOutput.topLeft()};
+    if (lowResImage.tileMode() == SkTileMode::kClamp ||
+        lowResImage.tileMode() == SkTileMode::kDecal) {
+        // Undo the outset padding that was added to srcRelativeOutput before invoking the blur
+        result = result.insetByPixel();
+    }
+
+    result.fTransform.postConcat(lowResImage.fTransform);
+    result.fLayerBounds = outputBounds;
+    // result.fTileMode = lowResImage.tileMode();
+    // result.fSamplingOptions = SkFilterMode::kNearest;
+    result.fTileMode = lowResImage.tileMode();
+    // if (lowResImage.tileMode() == SkTileMode::kRepeat ||
+    //     lowResImage.tileMode() == SkTileMode::kMirror) {
+    //     auto periodBounds = fInputs[0].fImage.fTransform.mapRect(
+    //             LayerSpace<SkIRect>(fInputs[0].fImage.image()->dimensions()));
+    //     result = result.applyCrop(fContext, periodBounds, lowResImage.tileMode());
+    // } else {
+    // }
+    return result;
 }
 
 } // end namespace skif
