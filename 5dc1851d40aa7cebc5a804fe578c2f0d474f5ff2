@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "148b5889_22607880",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-05-17T20:09:33Z",
+      "side": 1,
+      "message": "The primary motivation is https://skia-review.googlesource.com/c/skia/+/854017/4 where something is going wrong but because these tests are crashing (and not just failing) no images are sent to gold either so it is difficult to see the effect of the change other than \"something unexpected happened\".",
+      "revId": "5dc1851d40aa7cebc5a804fe578c2f0d474f5ff2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
