@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f4e87ca_a63063d9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-05-17T11:33:07Z",
+      "side": 1,
+      "message": "I have trouble reproducing the Debian failures. I tried copying the command line from the bot:\n```\nout/gnvello/dm -m SkParagraph_Kern --nativeFonts --paragraph_fonts \"extra_fonts\" --norun_paragraph_tests_needing_system_fonts --fontations --verbose --config 8888 --nativeFonts\n```\n\nBut I am not sure what `extra_fonts` is. Also, how can I get the PNG dumped from `TestCanvas` and under what circumstances is that producing an image?",
+      "revId": "a9c71e98170b0a8766fb50139a57a4487763f3ce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
