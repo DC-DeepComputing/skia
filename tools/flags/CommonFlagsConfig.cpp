@@ -99,6 +99,8 @@ static const struct {
     { "angle_gl_es3_dmsaa",    "gpu", "api=angle_gl_es3,dmsaa=true" },
     { "angle_mtl_es2",         "gpu", "api=angle_mtl_es2" },
     { "angle_mtl_es3",         "gpu", "api=angle_mtl_es3" },
+    { "angle_vk_es2",          "gpu", "api=angle_vk_es2" },
+    { "angle_vk_es3",          "gpu", "api=angle_vk_es3" },
     { "mock",                  "gpu", "api=mock" },
 #ifdef SK_VULKAN
     { "vk",                    "gpu", "api=vulkan" },
@@ -203,6 +205,8 @@ static const char configExtendedHelp[] =
         "\t\tangle_d3d11_es3\t\tUse OpenGL ES3 on the ANGLE Direct3D11 backend.\n"
         "\t\tangle_gl_es2\t\tUse OpenGL ES2 on the ANGLE OpenGL backend.\n"
         "\t\tangle_gl_es3\t\tUse OpenGL ES3 on the ANGLE OpenGL backend.\n"
+        "\t\tangle_vk_es2\t\tUse OpenGL ES2 on the ANGLE Vulkan backend.\n"
+        "\t\tangle_vk_es3\t\tUse OpenGL ES3 on the ANGLE Vulkan backend.\n"
         "\t\tmock\t\t\tUse mock context.\n"
 #ifdef SK_VULKAN
         "\t\tvulkan\t\t\tUse Vulkan.\n"
@@ -353,6 +357,14 @@ static bool parse_option_gpu_api(const SkString&                      value,
     }
     if (value.equals("angle_mtl_es3")) {
         *outContextType = skgpu::ContextType::kANGLE_Metal_ES3;
+        return true;
+    }
+    if (value.equals("angle_vk_es2")) {
+        *outContextType = skgpu::ContextType::kANGLE_Vk_ES2;
+        return true;
+    }
+    if (value.equals("angle_vk_es3")) {
+        *outContextType = skgpu::ContextType::kANGLE_Vk_ES3;
         return true;
     }
     if (value.equals("mock")) {

@@ -22,7 +22,8 @@ enum class ANGLEBackend {
     kD3D9,
     kD3D11,
     kOpenGL,
-    kMetal
+    kMetal,
+    kVulkan
 };
 
 enum class ANGLEContextVersion {

@@ -44,8 +44,8 @@ sk_sp<VulkanMemoryAllocator> VulkanAMDMemoryAllocator::Make(
 
     // We don't use dynamic function getting in the allocator so we set the getProc functions to
     // null.
-    functions.vkGetInstanceProcAddr = nullptr;
-    functions.vkGetDeviceProcAddr = nullptr;
+//    functions.vkGetInstanceProcAddr = nullptr;
+//    functions.vkGetDeviceProcAddr = nullptr;
     SKGPU_COPY_FUNCTION(GetPhysicalDeviceProperties);
     SKGPU_COPY_FUNCTION(GetPhysicalDeviceMemoryProperties);
     SKGPU_COPY_FUNCTION(AllocateMemory);
@@ -95,7 +95,7 @@ sk_sp<VulkanMemoryAllocator> VulkanAMDMemoryAllocator::Make(
     // TODO: Update our interface and headers to support vulkan 1.3 and add in the new required
     // functions for 1.3 that the allocator needs. Until then we just clamp the version to 1.1.
     info.vulkanApiVersion = std::min(physicalDeviceVersion, VK_MAKE_VERSION(1, 1, 0));
-    info.pTypeExternalMemoryHandleTypes = nullptr;
+//    info.pTypeExternalMemoryHandleTypes = nullptr;
 
     VmaAllocator allocator;
     vmaCreateAllocator(&info, &allocator);
@@ -270,9 +270,10 @@ VkResult VulkanAMDMemoryAllocator::invalidateMemory(const VulkanBackendMemory& m
 }
 
 std::pair<uint64_t, uint64_t> VulkanAMDMemoryAllocator::totalAllocatedAndUsedMemory() const {
-    VmaTotalStatistics stats;
-    vmaCalculateStatistics(fAllocator, &stats);
-    return {stats.total.statistics.blockBytes, stats.total.statistics.allocationBytes};
+//    VmaTotalStatistics stats;
+//    vmaCalculateStatistics(fAllocator, &stats);
+//    return {stats.total.statistics.blockBytes, stats.total.statistics.allocationBytes};
+    return {0, 0};
 }
 
 #endif // SK_USE_VMA

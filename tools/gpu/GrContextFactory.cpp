@@ -215,6 +215,14 @@ ContextInfo GrContextFactory::getContextInfoInternal(ContextType type, ContextOv
                     glCtx = MakeANGLETestContext(ANGLEBackend::kMetal, ANGLEContextVersion::kES3,
                                                  glShareContext).release();
                     break;
+                case ContextType::kANGLE_Vk_ES2:
+                    glCtx = MakeANGLETestContext(ANGLEBackend::kVulkan, ANGLEContextVersion::kES2,
+                                                 glShareContext).release();
+                    break;
+                case ContextType::kANGLE_Vk_ES3:
+                    glCtx = MakeANGLETestContext(ANGLEBackend::kVulkan, ANGLEContextVersion::kES3,
+                                                 glShareContext).release();
+                    break;
 #endif
                 default:
                     return ContextInfo();
