@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "247e11ad_5946e9c5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-05-17T17:05:38Z",
+      "side": 1,
+      "message": "Skimming it this looks fine but I won\u0027t have time to look at it thoroughly before I go. What\u0027s the justification for using the Recorder now since we were trying to avoid it before?",
+      "revId": "e618e222d3f0386b848c2fbf47db4349f87177ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
