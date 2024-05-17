@@ -34,6 +34,24 @@
       "parentUuid": "5f4e87ca_a63063d9",
       "revId": "a9c71e98170b0a8766fb50139a57a4487763f3ce",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53012bd8_6cef3370",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-05-17T20:11:10Z",
+      "side": 1,
+      "message": "Also, unfortunately there is an actual crash in `SkParagraph_NewlineParagraph` (and possibly would be in many others). As a result no images are being uploaded to Gold, so it is difficult to just look to see what other (possibly related) issues there might be. Proposal to get started working on the paragraph test crashes at https://skia-review.googlesource.com/c/skia/+/854777 .",
+      "parentUuid": "fdb10f1d_fd822160",
+      "revId": "a9c71e98170b0a8766fb50139a57a4487763f3ce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
