@@ -53,6 +53,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "28c64aa4_cd6c1b15",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-05-17T15:51:28Z",
+      "side": 1,
+      "message": "My gut reaction is that this structure is better (one copy of the flow control, with N copies of the simple uniform math, vs. 3 copies of the flow control), but I know better than to trust my intuition about GPU performance.\n\nI\u0027m also not confident that any of our benchmarking is good enough to detect a change, so :shrug:.",
+      "revId": "eb7bcd67330b6a1377d9a71af8e83740d0e2f60b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e7cbdff2_ca3ca911",
