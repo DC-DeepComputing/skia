@@ -125,7 +125,9 @@ sk_sp<SkShader> SkGradientShader::MakeLinear(const SkPoint pts[2],
 
     SkGradientBaseShader::Descriptor desc(
             colors, std::move(colorSpace), pos, colorCount, mode, interpolation);
-    return SkLocalMatrixShader::MakeWrapped<SkLinearGradient>(localMatrix, pts, desc);
+
+    sk_sp<SkShader> s = sk_make_sp<SkLinearGradient>(pts, desc);
+    return s->makeWithLocalMatrix(localMatrix ? *localMatrix : SkMatrix::I());
 }
 
 sk_sp<SkShader> SkGradientShader::MakeLinear(const SkPoint pts[2],

@@ -149,10 +149,8 @@ sk_sp<SkShader> SkGradientShader::MakeSweep(SkScalar cx, SkScalar cy,
     const SkScalar t0 = startAngle / 360,
                    t1 =   endAngle / 360;
 
-    return SkLocalMatrixShader::MakeWrapped<SkSweepGradient>(localMatrix,
-                                                             SkPoint::Make(cx, cy),
-                                                             t0, t1,
-                                                             desc);
+    sk_sp<SkShader> s = sk_make_sp<SkSweepGradient>(SkPoint::Make(cx, cy), t0, t1, desc);
+    return s->makeWithLocalMatrix(localMatrix ? *localMatrix : SkMatrix::I());
 }
 
 sk_sp<SkShader> SkGradientShader::MakeSweep(SkScalar cx, SkScalar cy,
