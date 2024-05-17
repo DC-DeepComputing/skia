@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "043eefd8_b81cf068",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 542,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-17T14:11:03Z",
+      "side": 0,
+      "message": "Don\u0027t we still want this support for other backends that will expose the msaa render-to-single sampled feature?",
+      "range": {
+        "startLine": 526,
+        "startChar": 0,
+        "endLine": 542,
+        "endChar": 6
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "e44dae5f_ca5c2af8",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+              "range": {
+                "startLine": 525,
+                "startChar": 0,
+                "endLine": 526,
+                "endChar": 0
+              },
+              "replacement": "    switch (step-\u003eprimitiveType()) {\n"
+            },
+            {
+              "path": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+              "range": {
+                "startLine": 536,
+                "startChar": 0,
+                "endLine": 536,
+                "endChar": 0
+              },
+              "replacement": "        default:\n            SkUNREACHABLE;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "071cbd93d0a46c38a3788b8f8e3c2846bdd928a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

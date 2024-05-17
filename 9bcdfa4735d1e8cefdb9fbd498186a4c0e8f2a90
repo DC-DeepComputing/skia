@@ -16,6 +16,47 @@
       "message": "@michaelludwig@google.com PTAL",
       "revId": "9bcdfa4735d1e8cefdb9fbd498186a4c0e8f2a90",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "913d0ece_a4d78a1c",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-17T14:11:03Z",
+      "side": 1,
+      "message": "nit: move this up to the if line.",
+      "range": {
+        "startLine": 207,
+        "startChar": 12,
+        "endLine": 207,
+        "endChar": 13
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "7d99acd8_131c8862",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+              "range": {
+                "startLine": 206,
+                "startChar": 0,
+                "endLine": 208,
+                "endChar": 0
+              },
+              "replacement": "            if (renderPassDesc.fColorResolveAttachment.fLoadOp \u003d\u003d LoadOp::kLoad) {\n"
+            }
+          ]
+        }
+      ],
+      "revId": "9bcdfa4735d1e8cefdb9fbd498186a4c0e8f2a90",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
