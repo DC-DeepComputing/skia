@@ -65,6 +65,8 @@ protected:
 
     SkImage* onIsAImage(SkMatrix* matrix, SkTileMode* mode) const override;
 
+    bool onAsLuminanceColor(SkColor4f*) const override;
+
     bool appendStages(const SkStageRec&, const SkShaders::MatrixRec&) const override;
 
 private:
