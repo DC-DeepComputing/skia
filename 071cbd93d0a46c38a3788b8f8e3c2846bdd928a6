@@ -50,6 +50,30 @@
       ],
       "revId": "071cbd93d0a46c38a3788b8f8e3c2846bdd928a6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad5f2b42_c14a2d85",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 542,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2024-05-17T14:28:47Z",
+      "side": 0,
+      "message": "MSAA render to single sampled is still supported, just that the special chained struct settings to make a render pipeline compatible to a render pass using \"MSAA render to single sampeld\" is no longer required. That chained struct requirement has been transferred to the new DawnLoadResolveTexture extension.\n\nPreviously, the DawnMultisampleStateRenderToSingleSampled was here because Dawn planned to implement MSAA render to single sampled using 2 vulkan subpasses. But now, we don\u0027t use that implementation anymore. Instead:\n- DawnLoadResolveTexture (new extension) will use 2 subpasses implementation.\n- MSAARenderToSingleSampled will use VK_EXT_mutisampled_render_to_single_sampled native extension. I don\u0027t think this native extension requires renderpipeline\u0027s compatibility.",
+      "parentUuid": "043eefd8_b81cf068",
+      "range": {
+        "startLine": 526,
+        "startChar": 0,
+        "endLine": 542,
+        "endChar": 6
+      },
+      "revId": "071cbd93d0a46c38a3788b8f8e3c2846bdd928a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
