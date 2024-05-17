@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ea3fa1a_0ad73eb0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-05-17T15:51:25Z",
+      "side": 1,
+      "message": "Generally with conditionals I think one way to reason about it is, just assume the cost of the work will happen either way. That is, if you sample from a texture in an if-block that isn\u0027t taken, assume that there\u0027s a decent chance the hardware will act as if that sample occurred either way (e.g., it\u0027ll sample it and then discard the data). Of course it\u0027s not actually this simple but it is a good way to think about the costs.",
+      "parentUuid": "1782efac_4bd92997",
+      "revId": "eb7bcd67330b6a1377d9a71af8e83740d0e2f60b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e7cbdff2_ca3ca911",
