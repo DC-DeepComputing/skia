@@ -72,6 +72,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c75194b1_38d20dc7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-05-17T16:08:31Z",
+      "side": 1,
+      "message": "Before:\n\n\thalf4 texColor;\n\tif (vTexIndex_S0 \u003d\u003d 0) \n\t{\n\t\ttexColor \u003d sample(uTextureSampler_0_S0, uv).rrrr;\n\t}\n\telse if (vTexIndex_S0 \u003d\u003d 1) \n\t{\n\t\ttexColor \u003d sample(uTextureSampler_1_S0, uv).rrrr;\n\t}\n\telse \n\t{\n\t\ttexColor \u003d sample(uTextureSampler_2_S0, uv).rrrr;\n\t}\n\thalf3 distance;\n\tdistance.y \u003d texColor.r;\n\thalf2 uv_adjusted \u003d half2(uv) - offset;\n\tif (vTexIndex_S0 \u003d\u003d 0) \n\t{\n\t\ttexColor \u003d sample(uTextureSampler_0_S0, uv_adjusted).rrrr;\n\t}\n\telse if (vTexIndex_S0 \u003d\u003d 1) \n\t{\n\t\ttexColor \u003d sample(uTextureSampler_1_S0, uv_adjusted).rrrr;\n\t}\n\telse \n\t{\n\t\ttexColor \u003d sample(uTextureSampler_2_S0, uv_adjusted).rrrr;\n\t}\n\tdistance.x \u003d texColor.r;\n\tuv_adjusted \u003d half2(uv) + offset;\n\tif (vTexIndex_S0 \u003d\u003d 0) \n\t{\n\t\ttexColor \u003d sample(uTextureSampler_0_S0, uv_adjusted).rrrr;\n\t}\n\telse if (vTexIndex_S0 \u003d\u003d 1) \n\t{\n\t\ttexColor \u003d sample(uTextureSampler_1_S0, uv_adjusted).rrrr;\n\t}\n\telse \n\t{\n\t\ttexColor \u003d sample(uTextureSampler_2_S0, uv_adjusted).rrrr;\n\t}\n\tdistance.z \u003d texColor.r;\n\nNew:\n\n\thalf3 distance;\n\tif (vTexIndex_S0 \u003d\u003d 0) \n\t{\n\t\tdistance.y \u003d sample(uTextureSampler_0_S0, uv).rrrr.r;\n\t\thalf2 uv_adjusted \u003d half2(uv) - offset;\n\t\tdistance.x \u003d sample(uTextureSampler_0_S0, uv_adjusted).rrrr.r;\n\t\tuv_adjusted \u003d half2(uv) + offset;\n\t\tdistance.z \u003d sample(uTextureSampler_0_S0, uv_adjusted).rrrr.r;\n\t}\n\telse if (vTexIndex_S0 \u003d\u003d 1) \n\t{\n\t\tdistance.y \u003d sample(uTextureSampler_1_S0, uv).rrrr.r;\n\t\thalf2 uv_adjusted \u003d half2(uv) - offset;\n\t\tdistance.x \u003d sample(uTextureSampler_1_S0, uv_adjusted).rrrr.r;\n\t\tuv_adjusted \u003d half2(uv) + offset;\n\t\tdistance.z \u003d sample(uTextureSampler_1_S0, uv_adjusted).rrrr.r;\n\t}\n\telse if (vTexIndex_S0 \u003d\u003d 2) \n\t{\n\t\tdistance.y \u003d sample(uTextureSampler_2_S0, uv).rrrr.r;\n\t\thalf2 uv_adjusted \u003d half2(uv) - offset;\n\t\tdistance.x \u003d sample(uTextureSampler_2_S0, uv_adjusted).rrrr.r;\n\t\tuv_adjusted \u003d half2(uv) + offset;\n\t\tdistance.z \u003d sample(uTextureSampler_2_S0, uv_adjusted).rrrr.r;\n\t}",
+      "parentUuid": "a5eae601_77c89fca",
+      "revId": "eb7bcd67330b6a1377d9a71af8e83740d0e2f60b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e7cbdff2_ca3ca911",
         "filename": "src/gpu/ganesh/effects/GrAtlasedShaderHelpers.h",
         "patchSetId": 1
