@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "741733d2_18cf1ff5",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 848,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-17T20:47:50Z",
+      "side": 1,
+      "message": "On metal, the actual metal pipeline won\u0027t change just because we\u0027re loading the resolve texture, but we need the dawn pipeline key to be match the special load op behavior because we are always adding the extension struct when creating the pipeline, right?\n\nUnder the hood, will the dawn metal backend be seeing the extra pipeline requests as really fast cache hits?",
+      "range": {
+        "startLine": 847,
+        "startChar": 0,
+        "endLine": 848,
+        "endChar": 74
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "c06cdd26_df3a3514",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/dawn/DawnCaps.cpp",
+              "range": {
+                "startLine": 837,
+                "startChar": 0,
+                "endLine": 839,
+                "endChar": 0
+              },
+              "replacement": "uint64_t DawnCaps::getRenderPassDescKey(const RenderPassDesc\u0026 renderPassDesc) const {\n"
+            },
+            {
+              "path": "src/gpu/graphite/dawn/DawnCaps.cpp",
+              "range": {
+                "startLine": 847,
+                "startChar": 0,
+                "endLine": 848,
+                "endChar": 0
+              },
+              "replacement": "    if (renderPassDesc.fColorResolveAttachment.fTextureInfo.isValid() \u0026\u0026\n"
+            },
+            {
+              "path": "src/gpu/graphite/dawn/DawnCaps.cpp",
+              "range": {
+                "startLine": 872,
+                "startChar": 0,
+                "endLine": 874,
+                "endChar": 0
+              },
+              "replacement": "        uint64_t renderPassKey \u003d this-\u003egetRenderPassDescKey(renderPassDesc);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "25c4ee9f33b4cedf6e13c5372a3b929bfde0682f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e1148d4_4a2d6514",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-17T20:47:50Z",
+      "side": 1,
+      "message": "why is it that this pipeline does not care if there\u0027s a load-resolve-to-msaa load op?",
+      "range": {
+        "startLine": 165,
+        "startChar": 28,
+        "endLine": 165,
+        "endChar": 60
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "7d1e9d9f_88a3156d",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+              "range": {
+                "startLine": 164,
+                "startChar": 0,
+                "endLine": 164,
+                "endChar": 0
+              },
+              "replacement": "    // The blit pipeline is used to copy the contents of a texture to another texture.\n    // The load-resolve-to-msaa load op is not relevant to this pipeline.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "25c4ee9f33b4cedf6e13c5372a3b929bfde0682f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
