@@ -359,7 +359,11 @@ static constexpr MTLPixelFormat kMtlFormats[] = {
     MTLPixelFormatRG16Float,
 
     MTLPixelFormatStencil8,
+    MTLPixelFormatDepth16Unorm,
     MTLPixelFormatDepth32Float,
+#ifdef SK_BUILD_FOR_MAC
+    MTLPixelFormatDepth24Unorm_Stencil8,
+#endif
     MTLPixelFormatDepth32Float_Stencil8,
 
     MTLPixelFormatInvalid,
@@ -729,6 +733,16 @@ void MtlCaps::initFormatTable() {
         info->fColorTypeInfoCount = 0;
     }
 
+    // Format: Depth16Unorm
+    {
+        info = &fFormatTable[GetFormatIndex(MTLPixelFormatDepth16Unorm)];
+        info->fFlags = FormatInfo::kMSAA_Flag;
+        if (this->isMac() || fFamilyGroup >= 3) {
+            info->fFlags |= FormatInfo::kResolve_Flag;
+        }
+        info->fColorTypeInfoCount = 0;
+    }
+
     // Format: Depth32Float
     {
         info = &fFormatTable[GetFormatIndex(MTLPixelFormatDepth32Float)];
@@ -737,6 +751,17 @@ void MtlCaps::initFormatTable() {
             info->fFlags |= FormatInfo::kResolve_Flag;
         }
         info->fColorTypeInfoCount = 0;
+    }
+
+    // Format: Depth24Unorm_Stencil8
+    {
+#ifdef SK_BUILD_FOR_MAC
+        if (this->isMac()) {
+            info = &fFormatTable[GetFormatIndex(MTLPixelFormatDepth24Unorm_Stencil8)];
+            info->fFlags = FormatInfo::kMSAA_Flag | FormatInfo::kResolve_Flag;
+            info->fColorTypeInfoCount = 0;
+        }
+#endif
     }
 
     // Format: Depth32Float_Stencil8
@@ -906,7 +931,7 @@ TextureInfo MtlCaps::getDefaultDepthStencilTextureInfo(
     MtlTextureInfo info;
     info.fSampleCount = sampleCount;
     info.fMipmapped = Mipmapped::kNo;
-    info.fFormat = MtlDepthStencilFlagsToFormat(depthStencilType);
+    info.fFormat = MtlDepthStencilFlagsToFormat(this, depthStencilType);
     info.fUsage = MTLTextureUsageRenderTarget;
     info.fStorageMode = this->getDefaultMSAAStorageMode(Discardable::kYes);
     info.fFramebufferOnly = false;

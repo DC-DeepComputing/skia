@@ -41,16 +41,23 @@ std::unique_ptr<Context> MakeMetal(const MtlBackendContext& backendContext,
 
 } // namespace ContextFactory
 
-MTLPixelFormat MtlDepthStencilFlagsToFormat(SkEnumBitMask<DepthStencilFlags> mask) {
+MTLPixelFormat MtlDepthStencilFlagsToFormat(const MtlCaps* caps,
+                                            SkEnumBitMask<DepthStencilFlags> mask) {
     // TODO: Decide if we want to change this to always return a combined depth and stencil format
     // to allow more sharing of depth stencil allocations.
     if (mask == DepthStencilFlags::kDepth) {
-        // MTLPixelFormatDepth16Unorm is also a universally supported option here
-        return MTLPixelFormatDepth32Float;
+        // Graphite only needs 16-bits for depth values, so save some memory. If needed for
+        // workarounds, MTLPixelFormatDepth32Float is also available.
+        return MTLPixelFormatDepth16Unorm;
     } else if (mask == DepthStencilFlags::kStencil) {
         return MTLPixelFormatStencil8;
     } else if (mask == DepthStencilFlags::kDepthStencil) {
-        // MTLPixelFormatDepth24Unorm_Stencil8 is supported on Mac family GPUs.
+#if defined(SK_BUILD_FOR_MAC)
+            if (caps->isMac()) {
+                // Only supported on non-Apple silicon devices.
+                return MTLPixelFormatDepth24Unorm_Stencil8;
+            }
+#endif
         return MTLPixelFormatDepth32Float_Stencil8;
     }
     SkASSERT(false);
@@ -59,8 +66,12 @@ MTLPixelFormat MtlDepthStencilFlagsToFormat(SkEnumBitMask<DepthStencilFlags> mas
 
 SkEnumBitMask<DepthStencilFlags> MtlFormatToDepthStencilFlags(MTLPixelFormat format) {
     switch (format) {
+        case MTLPixelFormatDepth16Unorm:          [[fallthrough]];
         case MTLPixelFormatDepth32Float:          return DepthStencilFlags::kDepth;
         case MTLPixelFormatStencil8:              return DepthStencilFlags::kStencil;
+#if defined(SK_BUILD_FOR_MAC)
+        case MTLPixelFormatDepth24Unorm_Stencil8: [[fallthrough]];
+#endif
         case MTLPixelFormatDepth32Float_Stencil8: return DepthStencilFlags::kDepthStencil;
         default:                                  return DepthStencilFlags::kNone;
     }
