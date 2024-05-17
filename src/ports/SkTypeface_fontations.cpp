@@ -371,15 +371,16 @@ public:
         fRec.computeMatrices(
                 SkScalerContextRec::PreMatrixScale::kVertical, &scale, &remainingMatrix);
 
-        // TODO(drott): Adhere to SkFont::setLinearMetrics() request.
-
+        fDoLinearMetrics = this->isLinearMetrics();
         if (SkMask::kBW_Format == fRec.fMaskFormat) {
             fHintingInstance = fontations_ffi::make_mono_hinting_instance(
                     fOutlines, scale.fY, fBridgeNormalizedCoords);
+            fDoLinearMetrics = false;
         } else {
             switch (fRec.getHinting()) {
                 case SkFontHinting::kNone:
                     fHintingInstance = fontations_ffi::no_hinting_instance();
+                    fDoLinearMetrics = true;
                     break;
                 case SkFontHinting::kSlight:
                 case SkFontHinting::kNormal:
@@ -390,7 +391,7 @@ public:
                             fBridgeNormalizedCoords,
                             false /* do_lcd_antialiasing */,
                             false /* lcd_orientation_vertical */,
-                            false /* preserve_linear_metrics */);
+                            fDoLinearMetrics /* preserve_linear_metrics */);
                     break;
                 case SkFontHinting::kFull:
                     // Attempt to make use of hinting to subpixel coordinates.
@@ -402,7 +403,7 @@ public:
                             SkToBool(fRec.fFlags &
                                      SkScalerContext::
                                              kLCD_Vertical_Flag) /* lcd_orientation_vertical */,
-                            false /* preserve_linear_metrics */);
+                            fDoLinearMetrics /* preserve_linear_metrics */);
             }
         }
     }
@@ -456,17 +457,18 @@ protected:
             return mx;
         }
         float x_advance = 0.0f;
-        x_advance = fontations_ffi::advance_width_or_zero(
+        x_advance = fontations_ffi::unhinted_advance_width_or_zero(
                 fBridgeFontRef, scale.y(), fBridgeNormalizedCoords, glyph.getGlyphID());
-        // TODO(drott): y-advance?
+        if (!fDoLinearMetrics) {
+            fontations_ffi::scaler_hinted_advance_width(
+                    fOutlines, *fHintingInstance, glyph.getGlyphID(), x_advance);
+        }
         mx.advance = remainingMatrix.mapXY(x_advance, SkFloatToScalar(0.f));
 
         // The FreeType backend has a big switch here:
         // Scalable or bitmap, monochromatic or color, subpixel shifting bounds if needed.
         // For now: check if COLRv1, get clipbox, else -
         // get bounds from Path.
-        // TODO(drott): Later move bounds retrieval for monochromatic glyphs to retrieving
-        // them from Skrifa scaler, taking hinting into account.
 
         bool has_colrv1_glyph =
                 fontations_ffi::has_colrv1_glyph(fBridgeFontRef, glyph.getGlyphID());
@@ -818,6 +820,8 @@ private:
     const fontations_ffi::BridgeOutlineCollection& fOutlines;
     const SkSpan<SkColor> fPalette;
     rust::Box<fontations_ffi::BridgeHintingInstance> fHintingInstance;
+    bool fDoLinearMetrics = false;
+
     friend class sk_fontations::ColorPainter;
 };
 
