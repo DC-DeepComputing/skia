@@ -16,6 +16,24 @@
       "message": "I have trouble reproducing the Debian failures. I tried copying the command line from the bot:\n```\nout/gnvello/dm -m SkParagraph_Kern --nativeFonts --paragraph_fonts \"extra_fonts\" --norun_paragraph_tests_needing_system_fonts --fontations --verbose --config 8888 --nativeFonts\n```\n\nBut I am not sure what `extra_fonts` is. Also, how can I get the PNG dumped from `TestCanvas` and under what circumstances is that producing an image?",
       "revId": "a9c71e98170b0a8766fb50139a57a4487763f3ce",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fdb10f1d_fd822160",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-05-17T18:54:34Z",
+      "side": 1,
+      "message": "To get the right `extra_fonts` in your Skia checkout do `bin/sk asset download skparagraph resources/extra_fonts`. The way to figure this out is to go look in `\u003cskia\u003e/infra/bots/tasks.json` for the job name (here `Test-Debian10-Clang-GCE-CPU-AVX2-x86_64-Debug-All-NativeFonts_Fontations`) and look for `extra_fonts` which will tell you which cipd package is going where.\n\nIt looks like `TestCanvas` writes out to `skiatest::GetTmpDir()` (if it is non-empty) which is set with `--tmpDir` or `-t`.",
+      "parentUuid": "5f4e87ca_a63063d9",
+      "revId": "a9c71e98170b0a8766fb50139a57a4487763f3ce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
