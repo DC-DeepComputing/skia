@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1782efac_4bd92997",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-05-17T15:25:14Z",
+      "side": 1,
+      "message": "I\u0027d like your opinion on this. It does avoid duplicating the conditional, but has the side effect of duplicating the LCD logic up to four times, depending on how many textures we have. I\u0027m not sure which is better, or how to test that.",
+      "revId": "eb7bcd67330b6a1377d9a71af8e83740d0e2f60b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
