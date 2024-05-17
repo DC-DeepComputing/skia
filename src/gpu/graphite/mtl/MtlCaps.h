@@ -137,9 +137,9 @@ private:
         int fColorTypeInfoCount = 0;
     };
 #ifdef SK_BUILD_FOR_MAC
-    inline static constexpr size_t kNumMtlFormats = 21;
+    inline static constexpr size_t kNumMtlFormats = 23;
 #else
-    inline static constexpr size_t kNumMtlFormats = 20;
+    inline static constexpr size_t kNumMtlFormats = 21;
 #endif
 
     static size_t GetFormatIndex(MTLPixelFormat);
