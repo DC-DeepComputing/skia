@@ -102,6 +102,54 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d59ce44a_49ac508f",
+        "filename": "include/gpu/graphite/Context.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-20T17:39:19Z",
+      "side": 1,
+      "message": "No, these are privately created Recorders that the Context creates if it determines that drawing is necessary to do part of the async readback. It used to be that each internal async readback function was responsible for snapping a Recording and inserting it (if their logic triggered draws) before calling finalize. Now the recorder moves with the calls into finalize() and if it\u0027s not null it\u0027s snapped and inserted in just that one place. Logically the tasks are all still ordered the same as before relative to the finish info, but it\u0027s consolidated.",
+      "parentUuid": "adbab0e5_aa06e622",
+      "range": {
+        "startLine": 244,
+        "startChar": 7,
+        "endLine": 244,
+        "endChar": 15
+      },
+      "revId": "e618e222d3f0386b848c2fbf47db4349f87177ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04058a4e_e595696e",
+        "filename": "include/gpu/graphite/Context.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-20T17:39:19Z",
+      "side": 1,
+      "message": "These are private APIs and the public functions don\u0027t take a Recorder",
+      "parentUuid": "89d3c95a_0ddbe5f5",
+      "range": {
+        "startLine": 244,
+        "startChar": 32,
+        "endLine": 244,
+        "endChar": 45
+      },
+      "revId": "e618e222d3f0386b848c2fbf47db4349f87177ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "96a2e033_5d9bea30",
         "filename": "include/gpu/graphite/Context.h",
         "patchSetId": 12
@@ -137,6 +185,30 @@
           ]
         }
       ],
+      "revId": "e618e222d3f0386b848c2fbf47db4349f87177ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad8b36a7_17d30f3d",
+        "filename": "include/gpu/graphite/Context.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-20T17:39:19Z",
+      "side": 1,
+      "message": "The recorder is internal and is created under one of three scenarios: rescaling the image to the requested dst size, needing to copy-as-draw from a texturable but not readable format, and converting the RGB[A] data into separate A8 textures to hold the YUVA data.\n\nIt\u0027s theoretically possible that the rescaling operations in a recorder could be combined with the copy-as-draw or yuva plane extraction draws. For a non-rescaling RGBA readback that doesn\u0027t have to fallback to copy-as-draw, we\u0027ll never create a Recorder. For non-scaling RGBA readback with copy-as-draw fallback, there is one extra texture in play so participating in scratch reuse isn\u0027t that important. For any rescaling, and for YUVA plane extraction there will be multiple texture proxies in play (one for each progressive rescaling step, and 3-4 for the plane extraction.\n\nIn particular, if we update the RescaleImage logic to use 2 surfaces (vs. log2 with distinct dimensions), that will be a further improvement but would be follow-up work.",
+      "parentUuid": "96a2e033_5d9bea30",
+      "range": {
+        "startLine": 245,
+        "startChar": 52,
+        "endLine": 245,
+        "endChar": 95
+      },
       "revId": "e618e222d3f0386b848c2fbf47db4349f87177ec",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
