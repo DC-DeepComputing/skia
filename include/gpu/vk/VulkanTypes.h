@@ -60,6 +60,24 @@ private:
 // Used to pass in the necessary information to create a VkSamplerYcbcrConversion object for an
 // VkExternalFormatANDROID.
 struct VulkanYcbcrConversionInfo {
+
+    // The number of uint32s required to represent all relevant YCbCr conversion info depends upon
+    // whether we are using a known VkFormat or an external format. With a known format, we only
+    // require 2 - one for non-format information and another to store the VkFormat.
+    static constexpr int kInt32sNeededKnownFormat = 2;
+    // External formats are represented by a uint64 and require us to store format feature flags,
+    // meaning that we end up with 4 uint32s total - 1 for non-format info, 2 for the format, and 1
+    // for format feature flags.
+    static constexpr int kInt32sNeededExternalFormat = 4;
+
+    int numInt32sNeeded() const {
+        if (!this->isValid()) {
+            return 0;
+        }
+        return (fFormat == VK_FORMAT_UNDEFINED) ? kInt32sNeededExternalFormat
+                                                : kInt32sNeededKnownFormat;
+    }
+
     bool operator==(const VulkanYcbcrConversionInfo& that) const {
         // Invalid objects are not required to have all other fields initialized or matching.
         if (!this->isValid() && !that.isValid()) {
@@ -120,6 +138,50 @@ struct VulkanYcbcrConversionInfo {
                 (static_cast<uint32_t>(fComponents.a               ) << kComponentAShift        ));
     }
 
+    static VulkanYcbcrConversionInfo MakeFromNumericalRepresentation(uint32_t nonFormatYcbcrInfo,
+                                                                     uint64_t formatFeatures,
+                                                                     uint32_t format) {
+
+        VulkanYcbcrConversionInfo info;
+        bool useExternalFormat =  static_cast<bool>(
+                (nonFormatYcbcrInfo & kUseExternalFormatMask) >> kUsesExternalFormatShift);
+
+        info.fFormat = useExternalFormat ? VK_FORMAT_UNDEFINED : static_cast<VkFormat>(format);
+        info.fExternalFormat = useExternalFormat ? format : 0;
+        info.fFormatFeatures = static_cast<VkFormatFeatureFlags>(formatFeatures);
+
+        info.fYcbcrModel = static_cast<VkSamplerYcbcrModelConversion>(
+                (nonFormatYcbcrInfo & kYcbcrModelMask) >> kYcbcrModelShift);
+
+        info.fYcbcrRange = static_cast<VkSamplerYcbcrRange>(
+                (nonFormatYcbcrInfo & kYcbcrRangeMask) >> kYcbcrRangeShift);
+
+        info.fXChromaOffset = static_cast<VkChromaLocation>(
+                (nonFormatYcbcrInfo & kXChromaOffsetMask) >> kXChromaOffsetShift);
+
+        info.fYChromaOffset = static_cast<VkChromaLocation>(
+                (nonFormatYcbcrInfo & kYChromaOffsetMask) >> kYChromaOffsetShift);
+
+        info.fChromaFilter = static_cast<VkFilter>(
+                (nonFormatYcbcrInfo & kChromaFilterMask) >> kChromaFilterShift);
+
+        info.fForceExplicitReconstruction = static_cast<VkBool32>(
+                (nonFormatYcbcrInfo & kForceExplicitReconMask) >> kForceExplicitReconShift);
+
+        info.fComponents = {
+            static_cast<VkComponentSwizzle>(
+                    (nonFormatYcbcrInfo & kComponentRMask) >> kComponentRShift),
+            static_cast<VkComponentSwizzle>(
+                    (nonFormatYcbcrInfo & kComponentGMask) >> kComponentGShift),
+            static_cast<VkComponentSwizzle>(
+                    (nonFormatYcbcrInfo & kComponentBMask) >> kComponentBShift),
+            static_cast<VkComponentSwizzle>(
+                    (nonFormatYcbcrInfo & kComponentAMask) >> kComponentAShift)
+        };
+
+        return info;
+    }
+
     // Format of the source image. Must be set to VK_FORMAT_UNDEFINED for external images or
     // a valid image format otherwise.
     VkFormat fFormat = VK_FORMAT_UNDEFINED;
@@ -166,6 +228,25 @@ struct VulkanYcbcrConversionInfo {
     static constexpr int kComponentGShift         = kComponentRShift         + kComponentBits;
     static constexpr int kComponentBShift         = kComponentGShift         + kComponentBits;
     static constexpr int kComponentAShift         = kComponentBShift         + kComponentBits;
+
+    static constexpr uint32_t kUseExternalFormatMask =
+            ((1 << kUsesExternalFormatBits) - 1) << kUsesExternalFormatShift;
+    static constexpr uint32_t kYcbcrModelMask =
+            ((1 << kYcbcrModelBits) - 1) << kYcbcrModelShift;
+    static constexpr uint32_t kYcbcrRangeMask =
+            ((1 << kYcbcrRangeBits) - 1) << kYcbcrRangeShift;
+    static constexpr uint32_t kXChromaOffsetMask =
+            ((1 << kXChromaOffsetBits) - 1) << kXChromaOffsetShift;
+    static constexpr uint32_t kYChromaOffsetMask =
+            ((1 << kYChromaOffsetBits) - 1) << kYChromaOffsetShift;
+    static constexpr uint32_t kChromaFilterMask =
+            ((1 << kChromaFilterBits) - 1) << kChromaFilterShift;
+    static constexpr uint32_t kForceExplicitReconMask =
+            ((1 << kForceExplicitReconBits) - 1) << kForceExplicitReconShift;
+    static constexpr uint32_t kComponentRMask = ((1 << kComponentBits) - 1) << kComponentRShift;
+    static constexpr uint32_t kComponentBMask = ((1 << kComponentBits) - 1) << kComponentGShift;
+    static constexpr uint32_t kComponentGMask = ((1 << kComponentBits) - 1) << kComponentBShift;
+    static constexpr uint32_t kComponentAMask = ((1 << kComponentBits) - 1) << kComponentAShift;
 };
 
 typedef void* VulkanDeviceLostContext;

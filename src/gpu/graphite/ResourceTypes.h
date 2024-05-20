@@ -9,6 +9,7 @@
 #define skgpu_graphite_ResourceTypes_DEFINED
 
 #include "include/core/SkSamplingOptions.h"
+#include "include/core/SkString.h"
 #include "include/core/SkTileMode.h"
 #include "include/gpu/graphite/GraphiteTypes.h"
 #include "include/private/base/SkTo.h"
