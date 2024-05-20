@@ -16,6 +16,47 @@
       "message": "Jesse does the updated logic look correct to you now?",
       "revId": "0cd757d119c2dfb5d476587019512f9848c00b71",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f57deb45_608dbfe4",
+        "filename": "src/gpu/ganesh/vk/GrVkSampler.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-05-20T15:50:32Z",
+      "side": 1,
+      "message": "itself",
+      "range": {
+        "startLine": 102,
+        "startChar": 51,
+        "endLine": 102,
+        "endChar": 58
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "63a24a47_864f8bc9",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/ganesh/vk/GrVkSampler.cpp",
+              "range": {
+                "startLine": 102,
+                "startChar": 0,
+                "endLine": 103,
+                "endChar": 0
+              },
+              "replacement": "            // This doesn\u0027t explicitly do anything itself, but if we don\u0027t support separate\n"
+            }
+          ]
+        }
+      ],
+      "revId": "0cd757d119c2dfb5d476587019512f9848c00b71",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
