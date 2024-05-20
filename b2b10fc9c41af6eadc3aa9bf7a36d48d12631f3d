@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2083171c_ae756aab",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 9
+      },
+      "lineNbr": 713,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-20T16:00:32Z",
+      "side": 0,
+      "message": "If there aren\u0027t anymore uses of $map_to_unit_x we can delete that function from the module.",
+      "range": {
+        "startLine": 713,
+        "startChar": 30,
+        "endLine": 713,
+        "endChar": 43
+      },
+      "revId": "b2b10fc9c41af6eadc3aa9bf7a36d48d12631f3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

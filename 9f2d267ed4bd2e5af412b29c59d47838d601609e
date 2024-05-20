@@ -1,0 +1,114 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fbaf531a_8046ba6c",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 1773,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-20T16:00:32Z",
+      "side": 1,
+      "message": "nit: can we make this an `else if`",
+      "range": {
+        "startLine": 1773,
+        "startChar": 4,
+        "endLine": 1773,
+        "endChar": 6
+      },
+      "revId": "9f2d267ed4bd2e5af412b29c59d47838d601609e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64295401_62b54cc4",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 1778,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-20T16:00:32Z",
+      "side": 1,
+      "message": "The code inside `SkASSERT` is removed on release builds. We have a separate macro `SkAssertResult` that runs the code in release build, but adds the assert in debug build that we should use here.\n\nThis will also automatically fix some of the build errors that are complaining about `gradMatrix` being unused on release builds.",
+      "range": {
+        "startLine": 1778,
+        "startChar": 8,
+        "endLine": 1778,
+        "endChar": 52
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "91113241_05c7eceb",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/KeyHelpers.cpp",
+              "range": {
+                "startLine": 1778,
+                "startChar": 0,
+                "endLine": 1779,
+                "endChar": 0
+              },
+              "replacement": "        SkAssertResult(gradMatrix.invert(\u0026invGradMatrix));\n"
+            }
+          ]
+        }
+      ],
+      "revId": "9f2d267ed4bd2e5af412b29c59d47838d601609e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cc2f1d78_a7abd4ef",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 9
+      },
+      "lineNbr": 752,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-20T16:00:32Z",
+      "side": 1,
+      "message": "Can we move this into `$linear_grad_layout` and update that function to not take in extra parameters?",
+      "range": {
+        "startLine": 752,
+        "startChar": 16,
+        "endLine": 752,
+        "endChar": 35
+      },
+      "revId": "9f2d267ed4bd2e5af412b29c59d47838d601609e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d928224_8776f662",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 9
+      },
+      "lineNbr": 788,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-20T16:00:32Z",
+      "side": 1,
+      "message": "Similarly, can this logic go into a simplified `$radial_grad_layout` function?",
+      "range": {
+        "startLine": 788,
+        "startChar": 0,
+        "endLine": 788,
+        "endChar": 54
+      },
+      "revId": "9f2d267ed4bd2e5af412b29c59d47838d601609e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
