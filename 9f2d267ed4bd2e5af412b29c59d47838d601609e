@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "df6a7798_ca8564e1",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 1773,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-05-20T16:39:25Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "fbaf531a_8046ba6c",
+      "range": {
+        "startLine": 1773,
+        "startChar": 4,
+        "endLine": 1773,
+        "endChar": 6
+      },
+      "revId": "9f2d267ed4bd2e5af412b29c59d47838d601609e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "64295401_62b54cc4",
@@ -65,6 +89,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aad7a001_76ace871",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 1778,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-05-20T16:39:25Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "64295401_62b54cc4",
+      "range": {
+        "startLine": 1778,
+        "startChar": 8,
+        "endLine": 1778,
+        "endChar": 52
+      },
+      "revId": "9f2d267ed4bd2e5af412b29c59d47838d601609e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cc2f1d78_a7abd4ef",
@@ -88,6 +136,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "97c3c837_3e5a24d7",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 9
+      },
+      "lineNbr": 752,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-05-20T16:39:25Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "cc2f1d78_a7abd4ef",
+      "range": {
+        "startLine": 752,
+        "startChar": 16,
+        "endLine": 752,
+        "endChar": 35
+      },
+      "revId": "9f2d267ed4bd2e5af412b29c59d47838d601609e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3d928224_8776f662",
@@ -101,6 +173,30 @@
       "writtenOn": "2024-05-20T16:00:32Z",
       "side": 1,
       "message": "Similarly, can this logic go into a simplified `$radial_grad_layout` function?",
+      "range": {
+        "startLine": 788,
+        "startChar": 0,
+        "endLine": 788,
+        "endChar": 54
+      },
+      "revId": "9f2d267ed4bd2e5af412b29c59d47838d601609e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6beb52dc_4d2ed76f",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 9
+      },
+      "lineNbr": 788,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-05-20T16:39:25Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "3d928224_8776f662",
       "range": {
         "startLine": 788,
         "startChar": 0,
