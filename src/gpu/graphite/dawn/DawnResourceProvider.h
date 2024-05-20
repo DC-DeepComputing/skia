@@ -36,10 +36,8 @@ public:
 
     wgpu::RenderPipeline findOrCreateBlitWithDrawPipeline(const RenderPassDesc& renderPassDesc);
 
-    sk_sp<DawnBuffer> findOrCreateDawnBuffer(size_t size,
-                                             BufferType type,
-                                             AccessPattern,
-                                             std::string_view label);
+    sk_sp<DawnBuffer> findOrCreateDawnBuffer(
+            size_t size, BufferType type, AccessPattern, Shareable, std::string_view label);
 
     const wgpu::BindGroupLayout& getOrCreateUniformBuffersBindGroupLayout();
     const wgpu::BindGroupLayout& getOrCreateSingleTextureSamplerBindGroupLayout();

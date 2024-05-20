@@ -694,6 +694,7 @@ void DawnCommandBuffer::preprocessViewport(const SkRect& viewport) {
                 fResourceProvider->findOrCreateDawnBuffer(bufferSize,
                                                           BufferType::kUniform,
                                                           AccessPattern::kGpuOnly,
+                                                          Shareable::kYes,
                                                           "InstrinsicConstantBuffer");
 
         fIntrinsicConstantBufferSlotsUsed = 0;
