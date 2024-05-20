@@ -262,8 +262,11 @@ ScratchBuffer DrawBufferManager::getScratchStorage(size_t requiredBytes) {
     size_t bufferSize = sufficient_block_size(requiredBytes, info.fBlockSize);
     sk_sp<Buffer> buffer = this->findReusableSbo(bufferSize);
     if (!buffer) {
-        buffer = fResourceProvider->findOrCreateBuffer(
-                bufferSize, BufferType::kStorage, AccessPattern::kGpuOnly, "ScratchStorageBuffer");
+        buffer = fResourceProvider->findOrCreateBuffer(bufferSize,
+                                                       BufferType::kStorage,
+                                                       AccessPattern::kGpuOnly,
+                                                       Shareable::kNo,
+                                                       "ScratchStorageBuffer");
 
         if (!buffer) {
             this->onFailedBuffer();
@@ -420,10 +423,8 @@ BindBufferInfo DrawBufferManager::prepareBindBuffer(BufferInfo* info,
                                               ? AccessPattern::kGpuOnly
                                               : AccessPattern::kHostVisible;
         size_t bufferSize = sufficient_block_size(requiredBytes, info->fBlockSize);
-        info->fBuffer = fResourceProvider->findOrCreateBuffer(bufferSize,
-                                                              info->fType,
-                                                              accessPattern,
-                                                              std::move(label));
+        info->fBuffer = fResourceProvider->findOrCreateBuffer(
+                bufferSize, info->fType, accessPattern, Shareable::kNo, std::move(label));
         info->fOffset = 0;
         if (!info->fBuffer) {
             this->onFailedBuffer();
@@ -541,8 +542,11 @@ bool StaticBufferManager::BufferInfo::createAndUpdateBindings(
         return true; // No buffer needed
     }
 
-    sk_sp<Buffer> staticBuffer = resourceProvider->findOrCreateBuffer(
-            fTotalRequiredBytes, fBufferType, AccessPattern::kGpuOnly, std::move(label));
+    sk_sp<Buffer> staticBuffer = resourceProvider->findOrCreateBuffer(fTotalRequiredBytes,
+                                                                      fBufferType,
+                                                                      AccessPattern::kGpuOnly,
+                                                                      Shareable::kNo,
+                                                                      std::move(label));
     if (!staticBuffer) {
         SKGPU_LOG_E("Failed to create static buffer for type %d of size %zu bytes.\n",
                     (int) fBufferType, fTotalRequiredBytes);
