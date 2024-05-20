@@ -51,6 +51,7 @@ std::tuple<void*/*mappedPtr*/, BindBufferInfo> UploadBufferManager::makeBindInfo
         sk_sp<Buffer> buffer = fResourceProvider->findOrCreateBuffer(requiredBytes,
                                                                      BufferType::kXferCpuToGpu,
                                                                      AccessPattern::kHostVisible,
+                                                                     Shareable::kNo,
                                                                      std::move(label));
         void* bufferMapPtr = buffer ? buffer->map() : nullptr;
         if (!bufferMapPtr) {
@@ -80,6 +81,7 @@ std::tuple<void*/*mappedPtr*/, BindBufferInfo> UploadBufferManager::makeBindInfo
         fReusedBuffer = fResourceProvider->findOrCreateBuffer(kReusedBufferSize,
                                                               BufferType::kXferCpuToGpu,
                                                               AccessPattern::kHostVisible,
+                                                              Shareable::kNo,
                                                               std::move(label));
         fReusedBufferOffset = 0;
         if (!fReusedBuffer || !fReusedBuffer->map()) {

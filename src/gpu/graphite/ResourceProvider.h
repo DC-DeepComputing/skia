@@ -74,10 +74,8 @@ public:
     sk_sp<Texture> findOrCreateDiscardableMSAAAttachment(SkISize dimensions,
                                                          const TextureInfo&);
 
-    sk_sp<Buffer> findOrCreateBuffer(size_t size,
-                                     BufferType type,
-                                     AccessPattern,
-                                     std::string_view label);
+    sk_sp<Buffer> findOrCreateBuffer(
+            size_t size, BufferType type, AccessPattern, Shareable, std::string_view label);
 
     sk_sp<Sampler> findOrCreateCompatibleSampler(const SamplerDesc&);
 
