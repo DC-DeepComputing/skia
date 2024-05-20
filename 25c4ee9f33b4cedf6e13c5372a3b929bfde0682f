@@ -112,6 +112,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6fc216a5_dc6bbea3",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 848,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-20T14:05:00Z",
+      "side": 1,
+      "message": "THanks, that\u0027s a helpful detail and probably worth including as a comment, since I can otherwise imagine someone coming back in the future and wondering if there are situations where we can get away with simplifying the comment.",
+      "parentUuid": "bd551595_795a655b",
+      "range": {
+        "startLine": 847,
+        "startChar": 0,
+        "endLine": 848,
+        "endChar": 74
+      },
+      "revId": "25c4ee9f33b4cedf6e13c5372a3b929bfde0682f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5e1148d4_4a2d6514",
         "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
         "patchSetId": 1
@@ -165,6 +189,30 @@
       "side": 1,
       "message": "This pipeline is for a workaround pass where neither Dawn\u0027s LoadOp nor MSAARenderToSingleSampled extension is available. In this scenario, the extension struct will never be used to create any pipeline, no matter a render pass has load-resove-to-msaa or not.",
       "parentUuid": "5e1148d4_4a2d6514",
+      "range": {
+        "startLine": 165,
+        "startChar": 28,
+        "endLine": 165,
+        "endChar": 60
+      },
+      "revId": "25c4ee9f33b4cedf6e13c5372a3b929bfde0682f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4586d962_46113251",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-20T14:05:00Z",
+      "side": 1,
+      "message": "In that case, can we have remove the `ignoreLoadResolveToMSAA` parameter in getRenderPassDescKey and simply assert in this function that the load op is not the load-from-resolve?",
+      "parentUuid": "85d53dad_428e9191",
       "range": {
         "startLine": 165,
         "startChar": 28,
