@@ -157,6 +157,7 @@ std::unique_ptr<ResourceProvider> VulkanSharedContext::makeResourceProvider(
         SKGPU_LOG_E("Failed to create intrinsic constant uniform buffer");
         return nullptr;
     }
+    intrinsicConstantBuffer->setLabel("IntrinsicConstantBuffer");
     SkASSERT(static_cast<VulkanBuffer*>(intrinsicConstantBuffer.get())->bufferUsageFlags()
              & VK_BUFFER_USAGE_TRANSFER_DST_BIT);
     intrinsicConstantBuffer->setLabel("IntrinsicConstantBuffer");
@@ -172,6 +173,7 @@ std::unique_ptr<ResourceProvider> VulkanSharedContext::makeResourceProvider(
         SKGPU_LOG_E("Failed to create vertex buffer for loading MSAA from resolve");
         return nullptr;
     }
+    loadMSAAVertexBuffer->setLabel("LoadMSAAVertexBuffer");
     SkASSERT(static_cast<VulkanBuffer*>(loadMSAAVertexBuffer.get())->bufferUsageFlags()
              & VK_BUFFER_USAGE_VERTEX_BUFFER_BIT);
     loadMSAAVertexBuffer->setLabel("LoadMSAAVertexBuffer");
