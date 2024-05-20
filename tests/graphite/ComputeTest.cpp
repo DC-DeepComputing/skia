@@ -64,6 +64,7 @@ sk_sp<Buffer> sync_buffer_to_cpu(Recorder* recorder, const Buffer* buffer) {
             recorder->priv().resourceProvider()->findOrCreateBuffer(buffer->size(),
                                                                     BufferType::kXferGpuToCpu,
                                                                     AccessPattern::kHostVisible,
+                                                                    Shareable::kNo,
                                                                     "ComputeTest_TransferToCpu");
     SkASSERT(xferBuffer);
 

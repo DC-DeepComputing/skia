@@ -200,6 +200,7 @@ sk_sp<Sampler> ResourceProvider::findOrCreateCompatibleSampler(const SamplerDesc
 sk_sp<Buffer> ResourceProvider::findOrCreateBuffer(size_t size,
                                                    BufferType type,
                                                    AccessPattern accessPattern,
+                                                   Shareable shareable,
                                                    std::string_view label) {
     static const ResourceType kType = GraphiteResourceKey::GenerateResourceType();
 
@@ -213,8 +214,7 @@ sk_sp<Buffer> ResourceProvider::findOrCreateBuffer(size_t size,
 
         SkASSERT(static_cast<uint32_t>(type) < (1u << 4));
         SkASSERT(static_cast<uint32_t>(accessPattern) < (1u << 1));
-
-        GraphiteResourceKey::Builder builder(&key, kType, kKeyNum32DataCnt, Shareable::kNo);
+        GraphiteResourceKey::Builder builder(&key, kType, kKeyNum32DataCnt, shareable);
         builder[0] = (static_cast<uint32_t>(type) << 0) |
                      (static_cast<uint32_t>(accessPattern) << 4);
         size_t szKey = size;
