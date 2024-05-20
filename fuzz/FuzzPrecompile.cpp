@@ -87,7 +87,7 @@ SkPath make_path() {
 
 #ifdef SK_DEBUG
 void dump(ShaderCodeDictionary* dict, UniquePaintParamsID id) {
-    dict->lookup(id).dump(dict);
+    dict->dump(id);
 }
 #endif
 
