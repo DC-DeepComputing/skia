@@ -16,6 +16,24 @@
       "message": "Do you have the links to the test failures?",
       "revId": "a8e04de76c3e841297a45000b17d231d3942deb6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b6d7cfd0_8feb4349",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-20T14:41:13Z",
+      "side": 1,
+      "message": "The first chrome roll with that CL was https://chromium-review.googlesource.com/c/chromium/src/+/5548375, which started to fail the `mac-rel` and `mac_optional_gpu_tests` jobs with the info_collection test crashes: https://ci.chromium.org/ui/p/chromium/builders/try/mac-rel/1791525/overview",
+      "parentUuid": "4b4abf05_bffd2d70",
+      "revId": "a8e04de76c3e841297a45000b17d231d3942deb6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
