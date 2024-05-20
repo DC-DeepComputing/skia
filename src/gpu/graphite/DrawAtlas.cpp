@@ -462,11 +462,14 @@ bool DrawAtlas::activateNewPage(Recorder* recorder) {
                                                                     Mipmapped::kNo,
                                                                     recorder->priv().isProtected(),
                                                                     Renderable::kNo);
+
+
+
     fProxies[fNumActivePages] = TextureProxy::Make(caps,
                                                    recorder->priv().resourceProvider(),
                                                    {fTextureWidth, fTextureHeight},
                                                    textureInfo,
-                                                   "DrawAtlasPage",
+                                                   fLabel,
                                                    skgpu::Budgeted::kYes);
     if (!fProxies[fNumActivePages]) {
         return false;
