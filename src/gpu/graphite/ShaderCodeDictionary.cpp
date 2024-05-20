@@ -1461,6 +1461,10 @@ bool ShaderCodeDictionary::isValidID(int snippetID) const {
 
     return false;
 }
+
+void ShaderCodeDictionary::dump(UniquePaintParamsID id) const {
+    this->lookup(id).dump1(id, this);
+}
 #endif
 
 #if defined(GRAPHITE_TEST_UTILS)
