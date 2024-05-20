@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d567d3a_6a78925a",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 14
+      },
+      "lineNbr": 611,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-05-20T20:16:29Z",
+      "side": 1,
+      "message": "Yea, I think this is a happy medium between explicit and concise.",
+      "parentUuid": "f338e87b_9a44b1e1",
+      "range": {
+        "startLine": 611,
+        "startChar": 14,
+        "endLine": 611,
+        "endChar": 38
+      },
+      "revId": "160dd6bce49c730f9e5258d21b6d8a161b77c5b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "88b32a4c_053f21b5",
