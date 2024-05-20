@@ -21,7 +21,6 @@
 #include "src/core/SkRasterPipelineOpList.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkWriteBuffer.h"
-#include "src/shaders/SkLocalMatrixShader.h"
 #include "src/shaders/SkShaderBase.h"
 #include "src/shaders/gradients/SkGradientBaseShader.h"
 
@@ -43,8 +42,8 @@ bool SkConicalGradient::FocalData::set(SkScalar r0, SkScalar r1, SkMatrix* matri
     }
 
     // Map {focal point, (1, 0)} to {(0, 0), (1, 0)}
-    const SkPoint from[2]   = { {fFocalX, 0}, {1, 0} };
-    const SkPoint to[2]     = { {0, 0}, {1, 0} };
+    const SkPoint from[2] = {{fFocalX, 0}, {1, 0}};
+    const SkPoint to[2] = {{0, 0}, {1, 0}};
     SkMatrix focalMatrix;
     if (!focalMatrix.setPolyToPoly(from, to, 2)) {
         return false;
@@ -85,8 +84,8 @@ sk_sp<SkShader> SkConicalGradient::Create(const SkPoint& c0,
 
         gradientType = Type::kRadial;
     } else {
-        const SkPoint centers[2] = { c0    , c1     };
-        const SkPoint unitvec[2] = { {0, 0}, {1, 0} };
+        const SkPoint centers[2] = {c0, c1};
+        const SkPoint unitvec[2] = {{0, 0}, {1, 0}};
 
         if (!gradientMatrix.setPolyToPoly(centers, unitvec, 2)) {
             // Degenerate case.
@@ -103,8 +102,10 @@ sk_sp<SkShader> SkConicalGradient::Create(const SkPoint& c0,
             return nullptr;
         }
     }
-    return SkLocalMatrixShader::MakeWrapped<SkConicalGradient>(
-            localMatrix, c0, r0, c1, r1, desc, gradientType, gradientMatrix, focalData);
+
+    sk_sp<SkShader> s = sk_make_sp<SkConicalGradient>(
+            c0, r0, c1, r1, desc, gradientType, gradientMatrix, focalData);
+    return s->makeWithLocalMatrix(localMatrix ? *localMatrix : SkMatrix::I());
 }
 
 SkConicalGradient::SkConicalGradient(const SkPoint& start,
