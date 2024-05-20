@@ -1606,6 +1606,13 @@ static void aaa_walk_edges(SkAnalyticEdge*  prevHead,
         bool            leftEnds        = false;
         int             prevRite        = SkFixedFloorToInt(leftClip);
 
+        auto setLeft = [&](SkAnalyticEdge* edge) {
+            left     = std::max(edge->fX, leftClip);
+            leftDY   = edge->fDY;
+            leftE    = edge;
+            leftEnds = leftE->fLowerY == nextY;
+        };
+
         nextNextY = SK_MaxS32;
 
         SkASSERT((nextY & ((SK_Fixed1 >> 2) - 1)) == 0);
@@ -1723,10 +1730,7 @@ static void aaa_walk_edges(SkAnalyticEdge*  prevHead,
                 }
             } else {
                 if (isLeft) {
-                    left     = std::max(currE->fX, leftClip);
-                    leftDY   = currE->fDY;
-                    leftE    = currE;
-                    leftEnds = leftE->fLowerY == nextY;
+                    setLeft(currE);
                 }
                 currE->goY(nextY, yShift);
             }
@@ -1775,6 +1779,9 @@ static void aaa_walk_edges(SkAnalyticEdge*  prevHead,
                                              rightClip);
                     }
                     backward_insert_edge_based_on_x(currE);
+                    if (currE->fNext == leftE) {
+                        setLeft(currE);
+                    }
                 } else {
                     prevX = newX;
                 }
@@ -1878,6 +1885,14 @@ static void aaa_fill_path(const SkPath& path,
     SkAnalyticEdge headEdge, tailEdge, *last;
     // this returns the first and last edge after they're sorted into a dlink list
     SkAnalyticEdge* edge = sort_edges(list, count, &last);
+
+#if 0
+    SkAnalyticEdge* eg = edge;
+    for (int i = 0; i < count; ++i) {
+        eg->dump();
+        eg = eg->fNext;
+    }
+#endif
 
     headEdge.fRiteE  = nullptr;
     headEdge.fPrev   = nullptr;

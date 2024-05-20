@@ -11,6 +11,7 @@
 #include "include/core/SkPaint.h"
 #include "include/core/SkPath.h"
 #include "include/core/SkPathEffect.h"
+#include "include/core/SkPathTypes.h"
 #include "include/core/SkPathUtils.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
@@ -22,6 +23,7 @@
 #include "include/utils/SkParsePath.h"
 #include "src/base/SkFloatBits.h"
 #include "src/base/SkRandom.h"
+#include "src/core/SkStroke.h"
 #include "tools/ToolUtils.h"
 
 #include <string.h>
@@ -621,4 +623,62 @@ DEF_SIMPLE_GM(skbug12244, canvas, 150, 150) {
 
     canvas->translate(20.f, 20.f);
     canvas->drawPath(path, p);
+}
+
+DEF_SIMPLE_GM(samsung_bug, canvas, 512, 512) {
+    SkPath path;
+    path.moveTo(17.7333069f, 27.5369568f);
+    path.lineTo(17.4423828f, 31.1975555f);
+    path.lineTo(17.296936f, 32.5793762f);
+
+    SkPaint strokePaint;
+    strokePaint.setAntiAlias(true);
+    strokePaint.setStyle(SkPaint::kStroke_Style);
+    strokePaint.setStrokeCap(SkPaint::kSquare_Cap);
+    strokePaint.setStrokeWidth(29.0908108);
+
+    SkPath filled;
+    SkStroke stroker;
+    stroker.setCap(SkPaint::kSquare_Cap);
+    stroker.setWidth(29.0908108);
+    stroker.strokePath(path, &filled);
+
+    /* Produces:
+    path.moveTo(32.2329941f, 28.689312f);
+    path.lineTo(31.9273376f, 32.5352516f);
+    path.lineTo(30.23983f, 48.5674667f);
+    path.lineTo(1.30884242f, 45.5222702f);
+    path.lineTo(2.97688866f, 29.6749554f);
+    path.lineTo(17.4423828f, 31.1975555f);
+    path.lineTo(2.94269657f, 30.0452003f);
+    path.lineTo(4.38597536f, 11.8849154f);
+    path.lineTo(33.3853493f, 14.1896257f);
+    path.lineTo(32.2329941f, 28.689312f);
+    path.close();
+    */
+
+    SkPaint fillPaint;
+    fillPaint.setAntiAlias(true);
+
+    canvas->drawPath(filled, fillPaint);
+
+    canvas->translate(50, 0);
+    canvas->drawPath(path, strokePaint);
+}
+
+DEF_SIMPLE_GM(overlap_path, canvas, 200, 200) {
+    SkPath path;
+    path.moveTo(30.23983f, 48.5674667f);
+    path.lineTo(1.30884242f, 45.5222702f);
+    path.lineTo(2.97688866f, 29.6749554f);
+    path.lineTo(17.4423828f, 31.1975555f);
+    path.lineTo(2.94269657f, 30.0452003f);
+    path.lineTo(4.38597536f, 11.8849154f);
+    path.lineTo(33.3853493f, 14.1896257f);
+    path.close();
+
+    SkPaint paint;
+    paint.setAntiAlias(true);
+
+    canvas->drawPath(path, paint);
 }
