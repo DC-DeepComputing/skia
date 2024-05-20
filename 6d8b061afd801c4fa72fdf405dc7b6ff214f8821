@@ -22,6 +22,30 @@
       },
       "revId": "6d8b061afd801c4fa72fdf405dc7b6ff214f8821",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b384ce43_3694329f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-05-20T15:29:29Z",
+      "side": 1,
+      "message": "Done\n\nDidn\u0027t realize CL tags were mandatory. I haven\u0027t been using them.",
+      "parentUuid": "b2e6fb53_97c0707c",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 5
+      },
+      "revId": "6d8b061afd801c4fa72fdf405dc7b6ff214f8821",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
