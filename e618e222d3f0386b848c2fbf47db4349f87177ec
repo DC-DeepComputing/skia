@@ -148,6 +148,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c016250_35b5baac",
+        "filename": "include/gpu/graphite/Context.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-05-20T17:45:06Z",
+      "side": 1,
+      "message": "ahhh I didn\u0027t see these we all in private. Disregard all my sets of comments then",
+      "parentUuid": "04058a4e_e595696e",
+      "range": {
+        "startLine": 244,
+        "startChar": 32,
+        "endLine": 244,
+        "endChar": 45
+      },
+      "revId": "e618e222d3f0386b848c2fbf47db4349f87177ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "021d2c51_99785916",
+        "filename": "include/gpu/graphite/Context.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-05-20T17:45:06Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "d59ce44a_49ac508f",
+      "range": {
+        "startLine": 244,
+        "startChar": 7,
+        "endLine": 244,
+        "endChar": 15
+      },
+      "revId": "e618e222d3f0386b848c2fbf47db4349f87177ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "96a2e033_5d9bea30",
@@ -203,6 +251,30 @@
       "side": 1,
       "message": "The recorder is internal and is created under one of three scenarios: rescaling the image to the requested dst size, needing to copy-as-draw from a texturable but not readable format, and converting the RGB[A] data into separate A8 textures to hold the YUVA data.\n\nIt\u0027s theoretically possible that the rescaling operations in a recorder could be combined with the copy-as-draw or yuva plane extraction draws. For a non-rescaling RGBA readback that doesn\u0027t have to fallback to copy-as-draw, we\u0027ll never create a Recorder. For non-scaling RGBA readback with copy-as-draw fallback, there is one extra texture in play so participating in scratch reuse isn\u0027t that important. For any rescaling, and for YUVA plane extraction there will be multiple texture proxies in play (one for each progressive rescaling step, and 3-4 for the plane extraction.\n\nIn particular, if we update the RescaleImage logic to use 2 surfaces (vs. log2 with distinct dimensions), that will be a further improvement but would be follow-up work.",
       "parentUuid": "96a2e033_5d9bea30",
+      "range": {
+        "startLine": 245,
+        "startChar": 52,
+        "endLine": 245,
+        "endChar": 95
+      },
+      "revId": "e618e222d3f0386b848c2fbf47db4349f87177ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "556a1ed2_0dc07b8c",
+        "filename": "include/gpu/graphite/Context.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-05-20T17:45:06Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "ad8b36a7_17d30f3d",
       "range": {
         "startLine": 245,
         "startChar": 52,
