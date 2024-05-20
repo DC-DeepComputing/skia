@@ -16,6 +16,98 @@
       "message": "This should finish it!",
       "revId": "e903aeeba6c5067db54b1dd681ebe77c3731388f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96f82931_8403bee2",
+        "filename": "src/codec/SkJpegMetadataDecoderImpl.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-05-20T13:46:23Z",
+      "side": 1,
+      "message": "No need to check for xmp here (you already returned early above)",
+      "range": {
+        "startLine": 144,
+        "startChar": 56,
+        "endLine": 144,
+        "endChar": 59
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "2ea92b67_604c230f",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/codec/SkJpegMetadataDecoderImpl.cpp",
+              "range": {
+                "startLine": 144,
+                "startChar": 0,
+                "endLine": 145,
+                "endChar": 0
+              },
+              "replacement": "        if (!didPopulateInfo \u0026\u0026 baseImageHasAdobeXmp) {\n"
+            }
+          ]
+        }
+      ],
+      "revId": "e903aeeba6c5067db54b1dd681ebe77c3731388f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aae47fda_b500c6b7",
+        "filename": "src/codec/SkJpegMetadataDecoderImpl.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-05-20T13:46:23Z",
+      "side": 1,
+      "message": "Same thing here",
+      "range": {
+        "startLine": 150,
+        "startChar": 57,
+        "endLine": 150,
+        "endChar": 60
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "006e46c3_45c6cd29",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/codec/SkJpegMetadataDecoderImpl.cpp",
+              "range": {
+                "startLine": 144,
+                "startChar": 0,
+                "endLine": 145,
+                "endChar": 0
+              },
+              "replacement": "        if (!didPopulateInfo \u0026\u0026 baseImageHasAdobeXmp) {\n"
+            },
+            {
+              "path": "src/codec/SkJpegMetadataDecoderImpl.cpp",
+              "range": {
+                "startLine": 150,
+                "startChar": 0,
+                "endLine": 151,
+                "endChar": 0
+              },
+              "replacement": "        if (!didPopulateInfo \u0026\u0026 baseImageHasAppleExif) {\n"
+            }
+          ]
+        }
+      ],
+      "revId": "e903aeeba6c5067db54b1dd681ebe77c3731388f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
