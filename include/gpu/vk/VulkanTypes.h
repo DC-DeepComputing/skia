@@ -68,7 +68,7 @@ struct VulkanYcbcrConversionInfo {
     // External formats are represented by a uint64 and require us to store format feature flags,
     // meaning that we end up with 4 uint32s total - 1 for non-format info, 2 for the format, and 1
     // for format feature flags.
-    static constexpr int kInt32sNeededExternalFormat = 4;
+    static constexpr int kInt32sNeededExternalFormat = 3;
 
     int numInt32sNeeded() const {
         if (!this->isValid()) {
@@ -136,50 +136,6 @@ struct VulkanYcbcrConversionInfo {
                 (static_cast<uint32_t>(fComponents.g               ) << kComponentGShift        ) |
                 (static_cast<uint32_t>(fComponents.b               ) << kComponentBShift        ) |
                 (static_cast<uint32_t>(fComponents.a               ) << kComponentAShift        ));
-    }
-
-    static VulkanYcbcrConversionInfo MakeFromNumericalRepresentation(uint32_t nonFormatYcbcrInfo,
-                                                                     uint64_t formatFeatures,
-                                                                     uint32_t format) {
-
-        VulkanYcbcrConversionInfo info;
-        bool useExternalFormat =  static_cast<bool>(
-                (nonFormatYcbcrInfo & kUseExternalFormatMask) >> kUsesExternalFormatShift);
-
-        info.fFormat = useExternalFormat ? VK_FORMAT_UNDEFINED : static_cast<VkFormat>(format);
-        info.fExternalFormat = useExternalFormat ? format : 0;
-        info.fFormatFeatures = static_cast<VkFormatFeatureFlags>(formatFeatures);
-
-        info.fYcbcrModel = static_cast<VkSamplerYcbcrModelConversion>(
-                (nonFormatYcbcrInfo & kYcbcrModelMask) >> kYcbcrModelShift);
-
-        info.fYcbcrRange = static_cast<VkSamplerYcbcrRange>(
-                (nonFormatYcbcrInfo & kYcbcrRangeMask) >> kYcbcrRangeShift);
-
-        info.fXChromaOffset = static_cast<VkChromaLocation>(
-                (nonFormatYcbcrInfo & kXChromaOffsetMask) >> kXChromaOffsetShift);
-
-        info.fYChromaOffset = static_cast<VkChromaLocation>(
-                (nonFormatYcbcrInfo & kYChromaOffsetMask) >> kYChromaOffsetShift);
-
-        info.fChromaFilter = static_cast<VkFilter>(
-                (nonFormatYcbcrInfo & kChromaFilterMask) >> kChromaFilterShift);
-
-        info.fForceExplicitReconstruction = static_cast<VkBool32>(
-                (nonFormatYcbcrInfo & kForceExplicitReconMask) >> kForceExplicitReconShift);
-
-        info.fComponents = {
-            static_cast<VkComponentSwizzle>(
-                    (nonFormatYcbcrInfo & kComponentRMask) >> kComponentRShift),
-            static_cast<VkComponentSwizzle>(
-                    (nonFormatYcbcrInfo & kComponentGMask) >> kComponentGShift),
-            static_cast<VkComponentSwizzle>(
-                    (nonFormatYcbcrInfo & kComponentBMask) >> kComponentBShift),
-            static_cast<VkComponentSwizzle>(
-                    (nonFormatYcbcrInfo & kComponentAMask) >> kComponentAShift)
-        };
-
-        return info;
     }
 
     // Format of the source image. Must be set to VK_FORMAT_UNDEFINED for external images or

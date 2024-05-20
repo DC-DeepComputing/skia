@@ -26,6 +26,7 @@ class VulkanDescriptorSet;
 class VulkanFramebuffer;
 class VulkanGraphicsPipeline;
 class VulkanRenderPass;
+class VulkanSampler;
 class VulkanSharedContext;
 class VulkanSamplerYcbcrConversion;
 

@@ -57,6 +57,75 @@ sk_sp<VulkanSamplerYcbcrConversion> VulkanSamplerYcbcrConversion::Make(
             new VulkanSamplerYcbcrConversion(context, conversion));
 }
 
+sk_sp<VulkanSamplerYcbcrConversion> VulkanSamplerYcbcrConversion::Make(
+        const VulkanSharedContext* context,
+        uint32_t nonFormatInfo,
+        uint64_t format) {
+    VkSamplerYcbcrConversionCreateInfo ycbcrCreateInfo;
+    bool useExternalFormat =  static_cast<bool>(
+            (nonFormatInfo & VulkanYcbcrConversionInfo::kUseExternalFormatMask) >>
+                    VulkanYcbcrConversionInfo::kUsesExternalFormatShift);
+
+    ycbcrCreateInfo.sType = VK_STRUCTURE_TYPE_SAMPLER_YCBCR_CONVERSION_CREATE_INFO;
+    ycbcrCreateInfo.pNext = nullptr;
+    ycbcrCreateInfo.format = useExternalFormat ? VK_FORMAT_UNDEFINED : static_cast<VkFormat>(format);
+
+    ycbcrCreateInfo.ycbcrModel = static_cast<VkSamplerYcbcrModelConversion>(
+                    (nonFormatInfo & VulkanYcbcrConversionInfo::kYcbcrModelMask) >>
+                            VulkanYcbcrConversionInfo::kYcbcrModelShift);
+    ycbcrCreateInfo.ycbcrRange = static_cast<VkSamplerYcbcrRange>(
+                    (nonFormatInfo & VulkanYcbcrConversionInfo::kYcbcrRangeMask) >>
+                            VulkanYcbcrConversionInfo::kYcbcrRangeShift);
+    ycbcrCreateInfo.components = {
+                static_cast<VkComponentSwizzle>(
+                        (nonFormatInfo & VulkanYcbcrConversionInfo::kComponentRMask) >>
+                                VulkanYcbcrConversionInfo::kComponentRShift),
+                static_cast<VkComponentSwizzle>(
+                        (nonFormatInfo & VulkanYcbcrConversionInfo::kComponentGMask) >>
+                                VulkanYcbcrConversionInfo::kComponentGShift),
+                static_cast<VkComponentSwizzle>(
+                        (nonFormatInfo & VulkanYcbcrConversionInfo::kComponentBMask) >>
+                                VulkanYcbcrConversionInfo::kComponentBShift),
+                static_cast<VkComponentSwizzle>(
+                        (nonFormatInfo & VulkanYcbcrConversionInfo::kComponentAMask) >>
+                                VulkanYcbcrConversionInfo::kComponentAShift)};
+    ycbcrCreateInfo.xChromaOffset = static_cast<VkChromaLocation>(
+                    (nonFormatInfo & VulkanYcbcrConversionInfo::kXChromaOffsetMask) >>
+                            VulkanYcbcrConversionInfo::kXChromaOffsetShift);
+    ycbcrCreateInfo.yChromaOffset = static_cast<VkChromaLocation>(
+                    (nonFormatInfo & VulkanYcbcrConversionInfo::kYChromaOffsetMask) >>
+                            VulkanYcbcrConversionInfo::kYChromaOffsetShift);
+    ycbcrCreateInfo.chromaFilter = static_cast<VkFilter>(
+                    (nonFormatInfo & VulkanYcbcrConversionInfo::kChromaFilterMask) >>
+                            VulkanYcbcrConversionInfo::kChromaFilterShift);
+    ycbcrCreateInfo.forceExplicitReconstruction = static_cast<VkBool32>(
+                    (nonFormatInfo & VulkanYcbcrConversionInfo::kForceExplicitReconMask) >>
+                            VulkanYcbcrConversionInfo::kForceExplicitReconShift);
+
+#ifdef SK_BUILD_FOR_ANDROID
+    VkExternalFormatANDROID externalFormat;
+    if (useExternalFormat) {
+        externalFormat.sType = VK_STRUCTURE_TYPE_EXTERNAL_FORMAT_ANDROID;
+        externalFormat.pNext = nullptr;
+        externalFormat.externalFormat = format;
+        SkASSERT(ycbcrCreateInfo.pNext == nullptr);
+        ycbcrCreateInfo.pNext = &externalFormat;
+    }
+#endif
+
+    VkSamplerYcbcrConversion conversion;
+    VkResult result;
+    VULKAN_CALL_RESULT(context,
+                       result,
+                       CreateSamplerYcbcrConversion(
+                               context->device(), &ycbcrCreateInfo, nullptr, &conversion));
+    if (result != VK_SUCCESS) {
+        return nullptr;
+    }
+    return sk_sp<VulkanSamplerYcbcrConversion>(
+            new VulkanSamplerYcbcrConversion(context, conversion));
+}
+
 namespace {
 // Define this anonymous helper to get a static resource type for YCbCr conversions regardless of
 // which method is used to create it (from VulkanYcbcrConversionInfo or from SamplerDesc)
@@ -108,7 +177,6 @@ GraphiteResourceKey VulkanSamplerYcbcrConversion::GetKeyFromSamplerDesc(
     builder[i++] = (uint32_t)samplerDesc.format();
     if (usesExternalFormat) {
         builder[i++] = (uint32_t)(samplerDesc.format() >> 32);
-        builder[i++] = samplerDesc.formatFeatures();
     }
     SkASSERT(i == num32DataCnt);
 
