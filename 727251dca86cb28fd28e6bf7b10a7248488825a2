@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c228772_840d0e5c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-20T16:46:09Z",
+      "side": 1,
+      "message": "Shader and runtime code changes all look good to me. Before this can land, we\u0027ll need to also update the precompile logic to match the new structure.\n\nI would start in `src/gpu/graphite/FactoryFunctionsPriv.h` and remove `LocalMatrixBothVariants` and remove the adjacent gradient factories that have the `withLM` parameter.  The public gradient factories that are defined in `FactoryFunctions.h` should be updated to match the previous `withLM\u003dtrue` case.",
+      "revId": "727251dca86cb28fd28e6bf7b10a7248488825a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
