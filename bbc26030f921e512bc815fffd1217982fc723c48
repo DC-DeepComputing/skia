@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "112d9c8e_50378ac4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-05-20T14:24:44Z",
+      "side": 1,
+      "message": "`Canary-Chromium` will probably keep failing until https://skia-review.googlesource.com/c/skia/+/855437 lands in Skia and is rolled into Chromium. It should be enough here to just run `linux-rel`.\n\nThough after rebasing to not include `Reland \"GraphiteDawn: use dawn\u0027s LoadResolveTexture extension.\"`. `Canary-Chromium` applies a diff, but running the Chromium tryjobs on Skia changes at the moment checks out the gerrit change (not just apply the diff).",
+      "revId": "bbc26030f921e512bc815fffd1217982fc723c48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
