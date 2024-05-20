@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bff95085_30cf1eb0",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 14
+      },
+      "lineNbr": 611,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-05-20T19:57:05Z",
+      "side": 1,
+      "message": "Nit: could do `length(pos)`? (though, using `distance` is more explicit in its purpose, which isn\u0027t a bad thing)",
+      "range": {
+        "startLine": 611,
+        "startChar": 14,
+        "endLine": 611,
+        "endChar": 38
+      },
+      "revId": "160dd6bce49c730f9e5258d21b6d8a161b77c5b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88b32a4c_053f21b5",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 14
+      },
+      "lineNbr": 662,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-05-20T19:57:05Z",
+      "side": 1,
+      "message": "Nit: space here",
+      "range": {
+        "startLine": 662,
+        "startChar": 8,
+        "endLine": 662,
+        "endChar": 11
+      },
+      "revId": "160dd6bce49c730f9e5258d21b6d8a161b77c5b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
