@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "56f4a41a_2cf2fc46",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-05-20T10:57:12Z",
+      "side": 1,
+      "message": "Can you add yourself to the AUTHORS file?",
+      "revId": "1deb244bb66b8cff6ab9ec70d1084f3c07c6ef92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
