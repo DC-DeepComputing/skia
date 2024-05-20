@@ -95,9 +95,15 @@ struct SkAnalyticEdge {
 
 #ifdef SK_DEBUG
     void dump() const {
-        SkDebugf("edge: upperY:%d lowerY:%d y:%g x:%g dx:%g w:%d\n",
-                 fUpperY, fLowerY, SkFixedToFloat(fY), SkFixedToFloat(fX),
-                 SkFixedToFloat(fDX), fWinding);
+        SkDebugf("edge: XY: (%g, %g) upperXY: (%g, %g) lowerY: %g dXY: (%g, %g) w: %d\n",
+                 SkFixedToFloat(fX),
+                 SkFixedToFloat(fY),
+                 SkFixedToFloat(fUpperX),
+                 SkFixedToFloat(fUpperY),
+                 SkFixedToFloat(fLowerY),
+                 SkFixedToFloat(fDX),
+                 SkFixedToFloat(fDY),
+                 fWinding);
     }
 
     void validate() const {

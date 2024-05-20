@@ -1879,6 +1879,12 @@ static void aaa_fill_path(const SkPath& path,
     // this returns the first and last edge after they're sorted into a dlink list
     SkAnalyticEdge* edge = sort_edges(list, count, &last);
 
+    SkAnalyticEdge* eg = edge;
+    for (int i = 0; i < count; ++i) {
+        eg->dump();
+        eg = eg->fNext;
+    }
+
     headEdge.fRiteE  = nullptr;
     headEdge.fPrev   = nullptr;
     headEdge.fNext   = edge;
