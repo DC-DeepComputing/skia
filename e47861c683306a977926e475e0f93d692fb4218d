@@ -1,0 +1,239 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf828e5c_a68ae42a",
+        "filename": "include/gpu/graphite/Image.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-20T14:34:22Z",
+      "side": 1,
+      "message": "should this one take a label too?",
+      "range": {
+        "startLine": 186,
+        "startChar": 22,
+        "endLine": 186,
+        "endChar": 40
+      },
+      "revId": "e47861c683306a977926e475e0f93d692fb4218d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33689950_97700414",
+        "filename": "include/gpu/graphite/Image.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-20T14:34:22Z",
+      "side": 1,
+      "message": "I\u0027m torn on whether or not we should add labels to these. Initially I thought yes, but then I realized it got complicated if this was called with a graphite-backed image that may or may not be compatible with the required properties, but otherwise had a label. Do we use the new label if we end up not copying?\n\nAnd when it\u0027s a raster-backed image or other lazy image, the labels are already fairly informative as to what\u0027s inside them. Adding a custom label would let you attach an asset ID or filename, but that doesn\u0027t seem as valuable when debugging as SkSurface custom labels.",
+      "range": {
+        "startLine": 250,
+        "startChar": 22,
+        "endLine": 250,
+        "endChar": 38
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "6206dafc_eadc9858",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/gpu/graphite/Image.h",
+              "range": {
+                "startLine": 252,
+                "startChar": 0,
+                "endLine": 253,
+                "endChar": 0
+              },
+              "replacement": "                                       SkImage::RequiredProperties \u003d {},\n                                       std::string_view label \u003d {});\n"
+            },
+            {
+              "path": "include/gpu/graphite/Image.h",
+              "range": {
+                "startLine": 256,
+                "startChar": 0,
+                "endLine": 258,
+                "endChar": 0
+              },
+              "replacement": "                                       SkImage::RequiredProperties props \u003d {},\n                                       std::string_view label \u003d {}) {\n    return TextureFromImage(r, img.get(), props, label);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "e47861c683306a977926e475e0f93d692fb4218d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4067a9bb_88009320",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 401,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-20T14:34:22Z",
+      "side": 1,
+      "message": "nit: just `std::string label \u003d ...`?",
+      "range": {
+        "startLine": 400,
+        "startChar": 16,
+        "endLine": 401,
+        "endChar": 36
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "bfff1a99_fd5efbf5",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/Device.cpp",
+              "range": {
+                "startLine": 400,
+                "startChar": 0,
+                "endLine": 402,
+                "endChar": 0
+              },
+              "replacement": "    std::string label \u003d this-\u003etarget()-\u003elabel();\n"
+            }
+          ]
+        }
+      ],
+      "revId": "e47861c683306a977926e475e0f93d692fb4218d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cba36749_212584d8",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 406,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-20T14:34:22Z",
+      "side": 1,
+      "message": "hopefully we don\u0027t see malloc regressions from string manipulation in these cases. I don\u0027t think we create so many devices that that will move the needle much.",
+      "range": {
+        "startLine": 400,
+        "startChar": 0,
+        "endLine": 406,
+        "endChar": 5
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "44c19ca3_d6af6dba",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/Device.cpp",
+              "range": {
+                "startLine": 400,
+                "startChar": 0,
+                "endLine": 407,
+                "endChar": 0
+              },
+              "replacement": "    std::string label \u003d this-\u003etarget()-\u003elabel();\n    if (label.empty()) { label \u003d \"ChildDevice\"; }\n"
+            },
+            {
+              "path": "src/gpu/graphite/Device.cpp",
+              "range": {
+                "startLine": 438,
+                "startChar": 0,
+                "endLine": 445,
+                "endChar": 0
+              },
+              "replacement": "    std::string label \u003d this-\u003etarget()-\u003elabel();\n    if (label.empty()) { label \u003d \"CopyDeviceTexture\"; }\n"
+            }
+          ]
+        }
+      ],
+      "revId": "e47861c683306a977926e475e0f93d692fb4218d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f75ed65_69194c13",
+        "filename": "src/gpu/graphite/ImageFactories.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 451,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-20T14:34:22Z",
+      "side": 1,
+      "message": "Do you think it\u0027s over much to add the plane index to the label?",
+      "range": {
+        "startLine": 446,
+        "startChar": 0,
+        "endLine": 451,
+        "endChar": 5
+      },
+      "revId": "e47861c683306a977926e475e0f93d692fb4218d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "582a1cfd_7d210fd8",
+        "filename": "src/gpu/graphite/Image_Base_Graphite.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-20T14:34:22Z",
+      "side": 1,
+      "message": "nit: just `std::string label \u003d proxy-\u003elabel();`?",
+      "range": {
+        "startLine": 180,
+        "startChar": 21,
+        "endLine": 181,
+        "endChar": 27
+      },
+      "revId": "e47861c683306a977926e475e0f93d692fb4218d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23d3af2b_a3f6f2fe",
+        "filename": "src/gpu/graphite/Image_Base_Graphite.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-20T14:34:22Z",
+      "side": 1,
+      "message": "nit: same if warranted",
+      "range": {
+        "startLine": 211,
+        "startChar": 16,
+        "endLine": 212,
+        "endChar": 27
+      },
+      "revId": "e47861c683306a977926e475e0f93d692fb4218d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
