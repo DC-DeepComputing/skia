@@ -59,6 +59,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e852bc6_af63d0ab",
+        "filename": "src/codec/SkJpegMetadataDecoderImpl.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2024-05-20T20:38:07Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "96f82931_8403bee2",
+      "range": {
+        "startLine": 144,
+        "startChar": 56,
+        "endLine": 144,
+        "endChar": 59
+      },
+      "revId": "e903aeeba6c5067db54b1dd681ebe77c3731388f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "aae47fda_b500c6b7",
@@ -106,6 +130,30 @@
           ]
         }
       ],
+      "revId": "e903aeeba6c5067db54b1dd681ebe77c3731388f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d6c087e9_3ca3866a",
+        "filename": "src/codec/SkJpegMetadataDecoderImpl.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2024-05-20T20:38:07Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "aae47fda_b500c6b7",
+      "range": {
+        "startLine": 150,
+        "startChar": 57,
+        "endLine": 150,
+        "endChar": 60
+      },
       "revId": "e903aeeba6c5067db54b1dd681ebe77c3731388f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
