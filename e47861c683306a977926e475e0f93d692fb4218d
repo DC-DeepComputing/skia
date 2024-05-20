@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7f2f5573_4967abf5",
+        "filename": "include/gpu/graphite/Image.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-20T15:19:51Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "3fdd54b3_01835abe",
+      "range": {
+        "startLine": 186,
+        "startChar": 22,
+        "endLine": 186,
+        "endChar": 40
+      },
+      "revId": "e47861c683306a977926e475e0f93d692fb4218d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "33689950_97700414",
@@ -113,6 +137,30 @@
       "side": 1,
       "message": "Yeah to be honest, it was all the various complexities and different cases that you mentioned that made me skip this. As you said we already have a lot of generic labels for things that might happen here (like uploaded bitmap), so there is at least some level of information. Thus I was thinking I\u0027d just leave this one off for now until some clients showed good uses cases where have a specific client provided label here would have helped them.",
       "parentUuid": "33689950_97700414",
+      "range": {
+        "startLine": 250,
+        "startChar": 22,
+        "endLine": 250,
+        "endChar": 38
+      },
+      "revId": "e47861c683306a977926e475e0f93d692fb4218d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8dd24c26_1f1a6769",
+        "filename": "include/gpu/graphite/Image.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-20T15:19:51Z",
+      "side": 1,
+      "message": "Sounds good",
+      "parentUuid": "d93d648a_1b446ce1",
       "range": {
         "startLine": 250,
         "startChar": 22,
@@ -300,6 +348,30 @@
       "side": 1,
       "message": "So I thought about it, but the reason I didn\u0027t is because of the way I\u0027m appending things like _subset to labels later on (i.e. I\u0027m just grabbing the label from the first plane to be the base label). So I was thinking seeing something like \"myLabel_plane0_subset\" would be extra confusing since we flatten to RGBA for subsets. Now granted in the current approach there is still going to be a \"plane\" in the label so its not perfect.\n\nAlso I wasn\u0027t sure if it was more interesting to see plane0,1,2 or planeY, planeUV, etc.\n\nIn the end I wasn\u0027t really sure what exact value someone doing memory dumps or tracing was going to get from seeing the specific plane index vs just knowing its some yuv plane texture. Maybe it could be used to validate Skia is binding the right textures in the shader, but that\u0027s really just a one time thing we\u0027d do in Skia while writing the shader.\n\nSo again just decide to leave this off until someone had a good use case where the plane index would have been useful.",
       "parentUuid": "4f75ed65_69194c13",
+      "range": {
+        "startLine": 446,
+        "startChar": 0,
+        "endLine": 451,
+        "endChar": 5
+      },
+      "revId": "e47861c683306a977926e475e0f93d692fb4218d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bcdedfc5_a29cb3dc",
+        "filename": "src/gpu/graphite/ImageFactories.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 451,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-20T15:19:51Z",
+      "side": 1,
+      "message": "Good point.",
+      "parentUuid": "23f0fd3e_5f11ec23",
       "range": {
         "startLine": 446,
         "startChar": 0,
