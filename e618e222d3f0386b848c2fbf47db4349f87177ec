@@ -34,6 +34,111 @@
       "parentUuid": "247e11ad_5946e9c5",
       "revId": "e618e222d3f0386b848c2fbf47db4349f87177ec",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89d3c95a_0ddbe5f5",
+        "filename": "include/gpu/graphite/Context.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-05-20T17:21:44Z",
+      "side": 1,
+      "message": "I assume this also means that we will snap off the Recording internally and submit it. Thus that means if a client had previously Recorded work they will lose the chance to hold onto that work in a Recording. If this is all true this needs to be careful spelled out here for clients and most likely suggested that they snap off a Recording before calling this function.",
+      "range": {
+        "startLine": 244,
+        "startChar": 32,
+        "endLine": 244,
+        "endChar": 45
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "76b679bb_65cb8df2",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/gpu/graphite/Context.h",
+              "range": {
+                "startLine": 245,
+                "startChar": 0,
+                "endLine": 246,
+                "endChar": 0
+              },
+              "replacement": "    // provided but drawing operations are needed, a new Recorder will be created automatically and\n    // the Recording will be snapped and submitted.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "e618e222d3f0386b848c2fbf47db4349f87177ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "adbab0e5_aa06e622",
+        "filename": "include/gpu/graphite/Context.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-05-20T17:21:44Z",
+      "side": 1,
+      "message": "Should we add something that says the Recorder can\u0027t be in use by any other thread?",
+      "range": {
+        "startLine": 244,
+        "startChar": 7,
+        "endLine": 244,
+        "endChar": 15
+      },
+      "revId": "e618e222d3f0386b848c2fbf47db4349f87177ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96a2e033_5d9bea30",
+        "filename": "include/gpu/graphite/Context.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-05-20T17:21:44Z",
+      "side": 1,
+      "message": "Given the two comments above, I wondering what the value is in have the client pass in an optional Recorder. In an ideal world those Recorders would be on different threads and thus not safe to use here. It also starts intermixing what we decided was meant to be a \"non repeatable\" (i.e. not on a recording) with possible recorded work by the client. So it really seems like if a client wanted to pass in a Recorder here, it should be a dedicated Recorder for these asyncReadBack calls only. If that is the case, then does it not just make sense for us to handle all this ourselves under the hood? Either by making a new Recoder each time or letting the Context own a helper Recoder it keeps alive throughout its life time.\n\nNow after saying all that, if what I suggest above is valid, does it really matter if the textures from the async reads are part of the scratch system since they\u0027ll most likely be on internal Recorders/Recordings that don\u0027t even have other draws to share textures with?",
+      "range": {
+        "startLine": 245,
+        "startChar": 52,
+        "endLine": 245,
+        "endChar": 95
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "3679a540_27bef84c",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/gpu/graphite/Context.h",
+              "range": {
+                "startLine": 244,
+                "startChar": 0,
+                "endLine": 246,
+                "endChar": 0
+              },
+              "replacement": "    // Recorder is optional and will be used if drawing operations are required. If drawing\n    // operations are needed but no Recorder is provided, a new Recorder will be created\n    // automatically.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "e618e222d3f0386b848c2fbf47db4349f87177ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
