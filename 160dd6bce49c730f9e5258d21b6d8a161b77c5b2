@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f338e87b_9a44b1e1",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 14
+      },
+      "lineNbr": 611,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-05-20T20:12:02Z",
+      "side": 1,
+      "message": "I changed it to `length` since it still conveys the same purpose, I just forgot about that builtin function when writing this part, I could also inline this into the `float2` constructor though maybe it\u0027s nice to be explicit that it is the `t` value.",
+      "parentUuid": "bff95085_30cf1eb0",
+      "range": {
+        "startLine": 611,
+        "startChar": 14,
+        "endLine": 611,
+        "endChar": 38
+      },
+      "revId": "160dd6bce49c730f9e5258d21b6d8a161b77c5b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "88b32a4c_053f21b5",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-05-20T19:57:05Z",
       "side": 1,
       "message": "Nit: space here",
+      "range": {
+        "startLine": 662,
+        "startChar": 8,
+        "endLine": 662,
+        "endChar": 11
+      },
+      "revId": "160dd6bce49c730f9e5258d21b6d8a161b77c5b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4993cd2e_9101c28f",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 14
+      },
+      "lineNbr": 662,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-05-20T20:12:02Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "88b32a4c_053f21b5",
       "range": {
         "startLine": 662,
         "startChar": 8,
