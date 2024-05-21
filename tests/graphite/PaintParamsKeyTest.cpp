@@ -1095,10 +1095,8 @@ std::pair<sk_sp<SkImageFilter>, SkEnumBitMask<PrecompileImageFilters>> create_im
     SkEnumBitMask<PrecompileImageFilters> imageFilterMask = PrecompileImageFilters::kNone;
 
     switch (type) {
-        case ImageFilterType::kNone:
-            break;
-        case ImageFilterType::kBlur:
-            imgFilter = blur_imagefilter(rand, &imageFilterMask);
+        case ImageFilterType::kNone: break;
+        case ImageFilterType::kBlur: imgFilter = blur_imagefilter(rand, &imageFilterMask); break;
     }
 
     return { std::move(imgFilter), imageFilterMask };
@@ -1349,6 +1347,7 @@ void check_draw(skiatest::Reporter* reporter,
                                                 &originalRenderPassDesc);
 
                 SkDebugf("------- New key from draw:\n");
+                dict->dump(originalPipelineDesc.paintParamsID());
                 afterKey.dump("original key:");
                 UniqueKeyUtils::DumpDescs(rendererProvider, dict,
                                           originalPipelineDesc,
@@ -1634,6 +1633,7 @@ void run_test(skiatest::Reporter* reporter,
 
             paintOptions.setClipShaders({ clipShaderOption });
 
+            std::unordered_set<uint32_t> foo;
             std::vector<UniquePaintParamsID> precompileIDs;
             paintOptions.priv().buildCombinations(precompileKeyContext,
                                                   &precompileGatherer,
@@ -1643,9 +1643,11 @@ void run_test(skiatest::Reporter* reporter,
                                                   [&precompileIDs](UniquePaintParamsID id,
                                                                    DrawTypeFlags,
                                                                    bool /* withPrimitiveBlender */,
-                                                                   Coverage) {
+                                                                   Coverage,
+                                                                   std::unordered_set<uint32_t>& foo2) {
                                                       precompileIDs.push_back(id);
-                                                  });
+                                                  },
+                                                  foo);
 
             // Although we've gathered both sets of uniforms (i.e., from the paint
             // params and the precompilation paths) we can't compare the two since the
@@ -1682,16 +1684,23 @@ void run_test(skiatest::Reporter* reporter,
                 context->priv().globalCache()->resetGraphicsPipelines();
 
                 int before = context->priv().globalCache()->numGraphicsPipelines();
-                Precompile(context, paintOptions, dt);
+                std::unordered_set<uint32_t> precompileIDs2;
+                Precompile(context, paintOptions, dt, precompileIDs2);
                 if (gNeedSKPPaintOption) {
                     // The skp draws a rect w/ a default SkPaint
                     PaintOptions skpPaintOptions;
-                    Precompile(context, skpPaintOptions, DrawTypeFlags::kSimpleShape);
+                    Precompile(context, skpPaintOptions, DrawTypeFlags::kSimpleShape,
+                               precompileIDs2);
                 }
                 int after = context->priv().globalCache()->numGraphicsPipelines();
 
                 REPORTER_ASSERT(reporter, before == 0);
                 REPORTER_ASSERT(reporter, after > before);
+
+                SkDebugf("From Precompile: %d %d\n", before, after);
+                for (auto iter : precompileIDs2) {
+                    dict->dump(UniquePaintParamsID(iter));
+                }
 
                 check_draw(reporter,
                            context,
