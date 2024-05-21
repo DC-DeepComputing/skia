@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3120bd5b_73a78a3b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 30
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-05-21T17:04:18Z",
+      "side": 1,
+      "message": "Please see my response to your other comment and LMK if you have additional feedback in this regard :D",
+      "parentUuid": "f872a946_e3aaf88a",
+      "revId": "be986e08cad2aac25ae997ad89d30b1b6279d957",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6755b05b_21dd05aa",
@@ -82,6 +100,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab4e070e_40944164",
+        "filename": "include/gpu/vk/VulkanTypes.h",
+        "patchSetId": 30
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-05-21T17:04:18Z",
+      "side": 1,
+      "message": "I agree with you, thanks for that perspective. Moved ycbcr packaging utilities into `VulkanGraphiteUtilsPriv`.",
+      "parentUuid": "e84695b9_6169f729",
+      "range": {
+        "startLine": 141,
+        "startChar": 37,
+        "endLine": 141,
+        "endChar": 68
+      },
+      "revId": "be986e08cad2aac25ae997ad89d30b1b6279d957",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d75bd0ea_f70fbdf1",
@@ -119,6 +161,30 @@
           ]
         }
       ],
+      "revId": "be986e08cad2aac25ae997ad89d30b1b6279d957",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9270166d_aadaf2dc",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 1431,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-05-21T17:04:18Z",
+      "side": 1,
+      "message": "Good question - it should be \u003d because ycbcr information requires one int32 for non-format info, and sampler information requires one for the sampler desc numerical representation which includes the nonformat ycbcr info. Added a comment explaining that.",
+      "parentUuid": "d75bd0ea_f70fbdf1",
+      "range": {
+        "startLine": 1431,
+        "startChar": 23,
+        "endLine": 1431,
+        "endChar": 24
+      },
       "revId": "be986e08cad2aac25ae997ad89d30b1b6279d957",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -180,6 +246,30 @@
           ]
         }
       ],
+      "revId": "be986e08cad2aac25ae997ad89d30b1b6279d957",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8692624c_df5fd475",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 1443,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-05-21T17:04:18Z",
+      "side": 1,
+      "message": "Okay, great review feedback. TL;DR: This and your comment about the key re-generation led to me being able to do some streamlining here.\n\nthe nitty-gritty:\nRight now, we use `GraphiteResourceKey`s for samplers and fetch them from the resource provider. Michael and I have talked some about later migrating to a system where we cache samplers instead using a non-heap allocated structure (there\u0027s a bug for it; b/339632367). We can only store sampler data via `ShaderNode`s as ints, so there is some translating back-and-forth for keying (and for keying of ycbcr conversions themselves, which we also may change from being cached resources... b/293923946).\n\nWith that in mind, Michael had recommended using existing methods as much as possible even if it\u0027s less efficient simply because the need for such methods and extra steps should be removed later. However, in doing so, I had gone from ints -\u003e `VulkanYcbcrConversionInfo` -\u003e actual ycbcr conversion. With that, format feature flags were necessary.\n\nHowever, if we simply add a way to go from ints -\u003e actual conversion (circumventing `VulkanYcbcrConversionInfo`) , the need to capture format feature flags at all goes away (and, yes, does not need to be a part of the key).",
+      "parentUuid": "234d3858_02d6bf9a",
+      "range": {
+        "startLine": 1443,
+        "startChar": 12,
+        "endLine": 1443,
+        "endChar": 55
+      },
       "revId": "be986e08cad2aac25ae997ad89d30b1b6279d957",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
