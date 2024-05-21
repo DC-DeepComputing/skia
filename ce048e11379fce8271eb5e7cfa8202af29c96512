@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7748e173_56365037",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-05-21T16:40:48Z",
+      "side": 1,
+      "message": "Nit: link to Android\u0027s public code search: https://cs.android.com/android/platform/superproject/main/+/main:frameworks/base/core/java/android/widget/StackView.java;l\u003d1433;drc\u003d7b2e888fd8b238338b1175cd26611d3638e1532b",
+      "revId": "ce048e11379fce8271eb5e7cfa8202af29c96512",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ff1eb8c_b44a565c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-05-21T16:40:48Z",
+      "side": 1,
+      "message": "Seems fine to me, but I also don\u0027t feel like I have the authority to +1.",
+      "revId": "ce048e11379fce8271eb5e7cfa8202af29c96512",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
