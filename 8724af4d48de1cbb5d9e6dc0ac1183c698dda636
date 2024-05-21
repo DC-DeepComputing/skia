@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4446ee64_13a3e462",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2024-05-21T11:30:31Z",
+      "side": 1,
+      "message": "Turns out the SkGainmapInfo.cpp was already included, so my panic-revert wasn\u0027t helpful.",
+      "revId": "8724af4d48de1cbb5d9e6dc0ac1183c698dda636",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
