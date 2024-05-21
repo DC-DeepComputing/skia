@@ -52,6 +52,23 @@
       "parentUuid": "fdb10f1d_fd822160",
       "revId": "a9c71e98170b0a8766fb50139a57a4487763f3ce",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5cbb6c92_1cc55dbd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-05-21T13:54:43Z",
+      "side": 1,
+      "message": "I can reproduce the paragraph test issues now:\n1) 1 failure reason might need an upstream change: https://github.com/googlefonts/fontations/issues/905\n2) @bungeman@google.com - are the SkParagraphTests running with \"setLinearMetrics(true)\" on the FreeType backend (even though the SkFont default seems to be linear metrics \u003d off? Because somewhat surprisingly, I get fontations to pass if I run in linear metrics mode.",
+      "revId": "a9c71e98170b0a8766fb50139a57a4487763f3ce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
