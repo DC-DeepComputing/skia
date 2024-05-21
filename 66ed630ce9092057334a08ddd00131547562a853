@@ -73,6 +73,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f5f0baa4_7be387be",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2024-05-21T14:39:22Z",
+      "side": 1,
+      "message": "OK. I will do that. \n\nWhat about the comment in https://skia-review.googlesource.com/c/skia/+/855478/4/src/gpu/graphite/BufferManager.cpp . For other uniform and vertex buffer, if WriteBuffer() is used, they can be shareable as well.",
+      "parentUuid": "1614b535_df410bbc",
+      "revId": "66ed630ce9092057334a08ddd00131547562a853",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6b0e76ac_b254a7ad",
         "filename": "src/gpu/graphite/BufferManager.cpp",
         "patchSetId": 4
