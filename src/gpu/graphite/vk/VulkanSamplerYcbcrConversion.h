@@ -31,6 +31,10 @@ public:
     static sk_sp<VulkanSamplerYcbcrConversion> Make(const VulkanSharedContext*,
                                                     const VulkanYcbcrConversionInfo&);
 
+    static sk_sp<VulkanSamplerYcbcrConversion> Make(const VulkanSharedContext*,
+                                                    uint32_t nonFormatInfo,
+                                                    uint64_t format);
+
     // Return a fully-formed GraphiteResourceKey that represents the conversion from conversion info
     static GraphiteResourceKey MakeYcbcrConversionKey(const VulkanSharedContext*,
                                                       const VulkanYcbcrConversionInfo&);

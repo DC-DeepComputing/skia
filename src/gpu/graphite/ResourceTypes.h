@@ -203,9 +203,6 @@ struct ImmutableSamplerInfo {
     uint32_t fNonFormatYcbcrConversionInfo = 0;
     // fFormat represents known OR external format numerical representation.
     uint64_t fFormat = 0;
-    // If sampling from an external format, those format features can be stored here since we cannot
-    // simply query an external format's features later on.
-    uint32_t fFormatFeatures = 0;
 };
 
 
@@ -223,7 +220,6 @@ struct SamplerDesc {
                     (static_cast<int>(samplingOptions.filter)     << kFilterModeShift          ) |
                     (static_cast<int>(samplingOptions.mipmap)     << kMipmapModeShift          ) |
                     (info.fNonFormatYcbcrConversionInfo           << kImmutableSamplerInfoShift) )
-            , fFormatFeatures(info.fFormatFeatures)
             , fFormat(info.fFormat) {
 
         // Cubic sampling is handled in a shader, with the actual texture sampled by with NN,
@@ -239,10 +235,12 @@ struct SamplerDesc {
         SkASSERT(info.fNonFormatYcbcrConversionInfo >> kMaxNumConversionInfoBits == 0);
     }
 
+    SamplerDesc() : fDesc(0), fFormat(0) {}
+
     SamplerDesc(const SamplerDesc&) = default;
 
     bool operator==(const SamplerDesc& o) const {
-        return o.fDesc == fDesc && o.fFormat == fFormat && o.fFormatFeatures == fFormatFeatures;
+        return o.fDesc == fDesc && o.fFormat == fFormat;
     }
 
     bool operator!=(const SamplerDesc& o) const { return !(*this == o); }
@@ -250,7 +248,6 @@ struct SamplerDesc {
     SkTileMode tileModeX()      const { return static_cast<SkTileMode>((fDesc >> 0) & 0b11); }
     SkTileMode tileModeY()      const { return static_cast<SkTileMode>((fDesc >> 2) & 0b11); }
     uint32_t   desc()           const { return fDesc;                                        }
-    uint32_t   formatFeatures() const { return fFormatFeatures;                              }
     uint64_t   format()         const { return fFormat;                                      }
 
     // NOTE: returns the HW sampling options to use, so a bicubic SkSamplingOptions will become
@@ -282,8 +279,8 @@ private:
     uint32_t fDesc;
     // Data fields populated by backend Caps which store texture format information (needed for
     // YCbCr sampling). Only relevant when using immutable samplers. Otherwise, can be ignored.
-    uint32_t fFormatFeatures = 0;
-    uint64_t fFormat = 0;
+    uint32_t fFormat = 0;
+    uint32_t fFormat2 = 0;
 };
 
 };  // namespace skgpu::graphite
