@@ -16,6 +16,24 @@
       "message": "lgtm, but adding the chrome canary job to test before this lands",
       "revId": "5989dd00acfae4383bc9e798aa151933b6436835",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "66836bbf_782f4d21",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-21T19:43:13Z",
+      "side": 1,
+      "message": "canary had a patch error, so the red is not real; if you tested it to confirm that the pipeline load op was the cause of the crash, that makes sense to me and then I\u0027m fine with this going in as-is.",
+      "parentUuid": "21d4a44d_cb1aca30",
+      "revId": "5989dd00acfae4383bc9e798aa151933b6436835",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
