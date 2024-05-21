@@ -441,7 +441,8 @@ namespace {
 
 void create_blur_pipelines(const KeyContext& keyContext,
                            PipelineDataGatherer* gatherer,
-                           const PaintOptions::ProcessCombination& processCombination) {
+                           const PaintOptions::ProcessCombination& processCombination,
+                           std::unordered_set<uint32_t>& foo) {
     PaintOptions blurPaintOptions, imagePaintOptions;
 
     // For blurs we know we don't have alpha-only textures and don't need cubic filtering.
@@ -461,13 +462,15 @@ void create_blur_pipelines(const KeyContext& keyContext,
                                               DrawTypeFlags::kSimpleShape,
                                               /* withPrimitiveBlender= */ false,
                                               Coverage::kSingleChannel,
-                                              processCombination);
+                                              processCombination,
+                                              foo);
     imagePaintOptions.priv().buildCombinations(keyContext,
                                                gatherer,
                                                DrawTypeFlags::kSimpleShape,
                                                /* withPrimitiveBlender= */ false,
                                                Coverage::kSingleChannel,
-                                               processCombination);
+                                               processCombination,
+                                               foo);
 }
 
 } // anonymous namespace
@@ -478,7 +481,8 @@ void PaintOptions::buildCombinations(
         DrawTypeFlags drawTypes,
         bool withPrimitiveBlender,
         Coverage coverage,
-        const ProcessCombination& processCombination) const {
+        const ProcessCombination& processCombination,
+        std::unordered_set<uint32_t>& foo) const {
 
     PaintParamsKeyBuilder builder(keyContext.dict());
 
@@ -491,10 +495,10 @@ void PaintOptions::buildCombinations(
         tmp.setBlendModes(newDrawBlendMode);
 
         tmp.buildCombinations(keyContext, gatherer, drawTypes, withPrimitiveBlender, coverage,
-                              processCombination);
+                              processCombination, foo);
 
         if (fImageFilterOptions & PrecompileImageFilters::kBlur) {
-            create_blur_pipelines(keyContext, gatherer, processCombination);
+            create_blur_pipelines(keyContext, gatherer, processCombination, foo);
         }
     } else {
         int numCombinations = this->numCombinations();
@@ -509,9 +513,10 @@ void PaintOptions::buildCombinations(
             // PaintParamsKey. This serves to reset the builder.
             UniquePaintParamsID paintID = keyContext.dict()->findOrCreate(&builder);
 
-            processCombination(paintID, drawTypes, withPrimitiveBlender, coverage);
+            processCombination(paintID, drawTypes, withPrimitiveBlender, coverage, foo);
         }
     }
+
 }
 
 } // namespace skgpu::graphite

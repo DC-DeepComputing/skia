@@ -36,6 +36,7 @@ void empty_test(const KeyContext& keyContext,
 
     REPORTER_ASSERT(reporter, paintOptions.priv().numCombinations() == 1);
 
+    std::unordered_set<uint32_t> foo;
     std::vector<UniquePaintParamsID> precompileIDs;
     paintOptions.priv().buildCombinations(keyContext,
                                           gatherer,
@@ -45,9 +46,11 @@ void empty_test(const KeyContext& keyContext,
                                           [&precompileIDs](UniquePaintParamsID id,
                                                            DrawTypeFlags,
                                                            bool /* withPrimitiveBlender */,
-                                                           Coverage) {
+                                                           Coverage,
+                                                           std::unordered_set<uint32_t>& foo2) {
                                                                precompileIDs.push_back(id);
-                                                           });
+                                                           },
+                                          foo);
 
     SkASSERT(precompileIDs.size() == 1);
 }
@@ -63,6 +66,7 @@ void no_shader_option_test(const KeyContext& keyContext,
 
     REPORTER_ASSERT(reporter, paintOptions.priv().numCombinations() == 1);
 
+    std::unordered_set<uint32_t> foo;
     std::vector<UniquePaintParamsID> precompileIDs;
     paintOptions.priv().buildCombinations(keyContext,
                                           gatherer,
@@ -72,9 +76,11 @@ void no_shader_option_test(const KeyContext& keyContext,
                                           [&precompileIDs](UniquePaintParamsID id,
                                                            DrawTypeFlags,
                                                            bool /* withPrimitiveBlender */,
-                                                           Coverage) {
+                                                           Coverage,
+                                                           std::unordered_set<uint32_t>& foo2) {
                                                                precompileIDs.push_back(id);
-                                                           });
+                                                           },
+                                          foo);
 
     SkASSERT(precompileIDs.size() == 1);
 }
@@ -88,6 +94,7 @@ void no_blend_mode_option_test(const KeyContext& keyContext,
 
     REPORTER_ASSERT(reporter, paintOptions.priv().numCombinations() == 1);
 
+    std::unordered_set<uint32_t> foo;
     std::vector<UniquePaintParamsID> precompileIDs;
     paintOptions.priv().buildCombinations(keyContext,
                                           gatherer,
@@ -97,9 +104,11 @@ void no_blend_mode_option_test(const KeyContext& keyContext,
                                           [&precompileIDs](UniquePaintParamsID id,
                                                            DrawTypeFlags,
                                                            bool /* withPrimitiveBlender */,
-                                                           Coverage) {
+                                                           Coverage,
+                                                           std::unordered_set<uint32_t>& foo2) {
                                                                precompileIDs.push_back(id);
-                                                           });
+                                                           },
+                                          foo);
 
     SkASSERT(precompileIDs.size() == 1);
 }
@@ -162,6 +171,7 @@ void big_test(const KeyContext& keyContext,
     REPORTER_ASSERT(reporter, paintOptions.priv().numCombinations() == 256,
                     "Actual # of combinations %d", paintOptions.priv().numCombinations());
 
+    std::unordered_set<uint32_t> foo;
     std::vector<UniquePaintParamsID> precompileIDs;
     paintOptions.priv().buildCombinations(keyContext,
                                           gatherer,
@@ -171,9 +181,11 @@ void big_test(const KeyContext& keyContext,
                                           [&precompileIDs](UniquePaintParamsID id,
                                                            DrawTypeFlags,
                                                            bool /* withPrimitiveBlender */,
-                                                           Coverage) {
+                                                           Coverage,
+                                                           std::unordered_set<uint32_t>& foo2) {
                                                                precompileIDs.push_back(id);
-                                                           });
+                                                           },
+                                          foo);
 
     SkASSERT(precompileIDs.size() == 256);
 }
@@ -305,6 +317,7 @@ void runtime_effect_test(const KeyContext& keyContext,
 
     REPORTER_ASSERT(reporter, paintOptions.priv().numCombinations() == 8);
 
+    std::unordered_set<uint32_t> foo;
     std::vector<UniquePaintParamsID> precompileIDs;
     paintOptions.priv().buildCombinations(keyContext,
                                           gatherer,
@@ -314,9 +327,11 @@ void runtime_effect_test(const KeyContext& keyContext,
                                           [&precompileIDs](UniquePaintParamsID id,
                                                            DrawTypeFlags,
                                                            bool /* withPrimitiveBlender */,
-                                                           Coverage) {
+                                                           Coverage,
+                                                           std::unordered_set<uint32_t>& foo2) {
                                                                precompileIDs.push_back(id);
-                                                           });
+                                                           },
+                                          foo);
 
     SkASSERT(precompileIDs.size() == 8);
 }
