@@ -130,7 +130,7 @@ bool TessellationPathRenderer::onDrawPath(const DrawPathArgs& args) {
     float n4 = wangs_formula::worst_case_cubic_p4(tess::kPrecision,
                                                   pathDevBounds.width(),
                                                   pathDevBounds.height());
-    if (n4 > tess::kMaxSegmentsPerCurve_p4) {
+    if (n4 > tess::kMaxSegmentsPerCurve_p4 && (args.fShape->isPath() || args.fShape->isArc())) {
         // The path is extremely large. Pre-chop its curves to keep the number of tessellation
         // segments tractable. This will also flatten curves that fall completely outside the
         // viewport.
