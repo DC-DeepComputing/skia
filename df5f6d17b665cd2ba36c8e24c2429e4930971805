@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "84324655_4739cb33",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2024-05-21T13:07:06Z",
+      "side": 1,
+      "message": "Normally we require adding author email address to the `/AUTHORS` file but in this case looks like the email is obfuscated (\"3580430+namse@users.noreply.github.com\"). I can force submit this instead.",
+      "revId": "df5f6d17b665cd2ba36c8e24c2429e4930971805",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
