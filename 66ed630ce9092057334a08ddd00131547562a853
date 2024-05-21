@@ -55,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1614b535_df410bbc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-05-21T14:35:41Z",
+      "side": 1,
+      "message": "I think we should just store this on the DawnResourceProvider. You could claim this is kind of similar to how we deal with discardable msaa/stencil attachments, but at least with those there is a lot more that goes into getting one (e.g. size and format). In this case we only every want to create one buffer and keep using it for everything, forever. So it seems better to just have the DawnResourceProvider create one and hold onto it.",
+      "parentUuid": "442889de_5afe57d0",
+      "revId": "66ed630ce9092057334a08ddd00131547562a853",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6b0e76ac_b254a7ad",
         "filename": "src/gpu/graphite/BufferManager.cpp",
         "patchSetId": 4
