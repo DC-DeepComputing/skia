@@ -40,6 +40,30 @@
       ],
       "revId": "771a0d118bbd98896b347e13aec4fd8b482600a8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b57b14b2_5bf63f35",
+        "filename": "infra/bots/recipe_modules/build/default.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-21T15:08:36Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "3ec22b89_64479ac4",
+      "range": {
+        "startLine": 141,
+        "startChar": 23,
+        "endLine": 141,
+        "endChar": 27
+      },
+      "revId": "771a0d118bbd98896b347e13aec4fd8b482600a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
