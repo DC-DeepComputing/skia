@@ -29,9 +29,11 @@ public:
             DrawTypeFlags drawTypes,
             bool withPrimitiveBlender,
             Coverage coverage,
-            const PaintOptions::ProcessCombination& processCombination) const {
+            const PaintOptions::ProcessCombination& processCombination,
+            std::unordered_set<uint32_t>& foo) const {
         fPaintOptions->buildCombinations(
-                keyContext, gatherer, drawTypes, withPrimitiveBlender, coverage, processCombination);
+                keyContext, gatherer, drawTypes, withPrimitiveBlender, coverage, processCombination,
+                foo);
     }
 
 private:
