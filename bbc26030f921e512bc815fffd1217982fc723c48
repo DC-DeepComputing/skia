@@ -34,6 +34,24 @@
       "parentUuid": "112d9c8e_50378ac4",
       "revId": "bbc26030f921e512bc815fffd1217982fc723c48",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "efb07c1e_cb994588",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-05-21T08:12:48Z",
+      "side": 1,
+      "message": "No luck trying to schedule linux-rel, back to Canary.",
+      "parentUuid": "ad949235_c1d4b2e9",
+      "revId": "bbc26030f921e512bc815fffd1217982fc723c48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
