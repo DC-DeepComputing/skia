@@ -152,6 +152,30 @@
       },
       "revId": "e356aa512a85a8472e9f8c7b5905a99d8d92d360",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ccc75ad_223827e4",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 707,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-05-21T17:50:48Z",
+      "side": 1,
+      "message": "In DawnBuffer::freeGpuData we call fBuffer.Destroy when we think all the Skia refs are gone. My understanding is this will delete the underlying object immediately regardless of how many internal dawns refs there are. We made this change because memory was staying around since bind groups were keeping things alive with refs.",
+      "parentUuid": "974115ab_0380ed82",
+      "range": {
+        "startLine": 707,
+        "startChar": 14,
+        "endLine": 707,
+        "endChar": 27
+      },
+      "revId": "e356aa512a85a8472e9f8c7b5905a99d8d92d360",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
