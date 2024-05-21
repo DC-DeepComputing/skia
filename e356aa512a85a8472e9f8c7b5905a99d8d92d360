@@ -57,6 +57,30 @@
       ],
       "revId": "e356aa512a85a8472e9f8c7b5905a99d8d92d360",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1fe2289a_7ac623d5",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 707,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-21T16:53:23Z",
+      "side": 1,
+      "message": "Agreed, the CommandBuffer should be tracking this in both cases.",
+      "parentUuid": "6c2ea142_67406e35",
+      "range": {
+        "startLine": 707,
+        "startChar": 14,
+        "endLine": 707,
+        "endChar": 27
+      },
+      "revId": "e356aa512a85a8472e9f8c7b5905a99d8d92d360",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
