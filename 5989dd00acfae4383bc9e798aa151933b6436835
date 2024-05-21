@@ -34,6 +34,24 @@
       "parentUuid": "21d4a44d_cb1aca30",
       "revId": "5989dd00acfae4383bc9e798aa151933b6436835",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8deb3fb2_005e68df",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2024-05-21T20:42:26Z",
+      "side": 1,
+      "message": "I triggered mac-rel from this CL (the same bot that failed and caused the previous CL to be reverted). And it passed.",
+      "parentUuid": "66836bbf_782f4d21",
+      "revId": "5989dd00acfae4383bc9e798aa151933b6436835",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
