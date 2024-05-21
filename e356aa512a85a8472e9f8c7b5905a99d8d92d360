@@ -176,6 +176,30 @@
       },
       "revId": "e356aa512a85a8472e9f8c7b5905a99d8d92d360",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9f55665e_c9b623b6",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 707,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-05-21T17:51:48Z",
+      "side": 1,
+      "message": "Ohhh sorry I misunderstood. Yeah if the commandBuffer is holding a ref itself then it should be fine.",
+      "parentUuid": "3ccc75ad_223827e4",
+      "range": {
+        "startLine": 707,
+        "startChar": 14,
+        "endLine": 707,
+        "endChar": 27
+      },
+      "revId": "e356aa512a85a8472e9f8c7b5905a99d8d92d360",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
