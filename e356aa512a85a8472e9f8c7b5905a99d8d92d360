@@ -16,6 +16,47 @@
       "message": "Greg and Michael, PTAL. Thanks",
       "revId": "e356aa512a85a8472e9f8c7b5905a99d8d92d360",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c2ea142_67406e35",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 707,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-05-21T16:47:27Z",
+      "side": 1,
+      "message": "So I noticed that we don\u0027t do this for the native case. Is this safe? The Recorder and thus ResourceProvider could go away before outstanding command buffers have finished on the GPU. If we were purely using dawns ref counting on objects then I think this would be fine since dawn would have taken a ref to the buffer. However, I thought I saw we were moving somethings to directly call Delete from inside Skia on Dawn Textures and Buffers. In that world I think this would break?",
+      "range": {
+        "startLine": 707,
+        "startChar": 14,
+        "endLine": 707,
+        "endChar": 27
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "bcac6026_f02a7e4c",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+              "range": {
+                "startLine": 707,
+                "startChar": 0,
+                "endLine": 708,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "e356aa512a85a8472e9f8c7b5905a99d8d92d360",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
