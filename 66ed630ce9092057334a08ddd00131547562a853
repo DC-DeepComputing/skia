@@ -110,6 +110,30 @@
       },
       "revId": "66ed630ce9092057334a08ddd00131547562a853",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ae6d54a_c10a1ce5",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 548,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-05-21T14:57:22Z",
+      "side": 1,
+      "message": "Like the actual buffers themselves aren\u0027t logically shareable because they can be mapped. Like we have nothing currently that stops someone from mapping these buffers. Instead this is another use case where we are creating a buffer, uploading data to it once, and then never changing it. Thus that buffer makes sense to just be held by user of it (in this case RenderSteps/global cache).",
+      "parentUuid": "6b0e76ac_b254a7ad",
+      "range": {
+        "startLine": 548,
+        "startChar": 70,
+        "endLine": 548,
+        "endChar": 84
+      },
+      "revId": "66ed630ce9092057334a08ddd00131547562a853",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
