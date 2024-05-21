@@ -91,6 +91,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7cbdedfa_a2277094",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 427,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2024-05-21T15:19:25Z",
+      "side": 1,
+      "message": "[1] The comment should be at here.",
+      "range": {
+        "startLine": 427,
+        "startChar": 56,
+        "endLine": 427,
+        "endChar": 71
+      },
+      "revId": "66ed630ce9092057334a08ddd00131547562a853",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6b0e76ac_b254a7ad",
         "filename": "src/gpu/graphite/BufferManager.cpp",
         "patchSetId": 4
@@ -150,6 +173,30 @@
       "side": 1,
       "message": "These buffers are created once and explicitly shared by just having all the users hold on to the same Buffer object. These buffers are immutable after they are created on Context initialization so there\u0027s never a need to go back to the ResourceCache/Provider for them. A Shareable resource means that multiple users can simultaneously check it out and modify it without worrying about stomping over each other\u0027s data/effects because the actual operations will be sequenced via the command buffer.",
       "parentUuid": "6b0e76ac_b254a7ad",
+      "range": {
+        "startLine": 548,
+        "startChar": 70,
+        "endLine": 548,
+        "endChar": 84
+      },
+      "revId": "66ed630ce9092057334a08ddd00131547562a853",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4e5f532_d8820730",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 548,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2024-05-21T15:19:25Z",
+      "side": 1,
+      "message": "Sorry. I put the comment at wrong spot. It should at [1].",
+      "parentUuid": "4cba9ca4_96412d08",
       "range": {
         "startLine": 548,
         "startChar": 70,
