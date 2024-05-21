@@ -590,11 +590,11 @@ float4 analytic_rrect_vertex_fn(// Vertex Attributes
             yRadii = xRadii; // regular strokes are circular
             strokeParams = xRadiiOrFlags.zw;
 
-            // `sign(strokeParams.y)` evaluates to kMiterScale (1.0) when the
-            // input is positive, and kBevelScale (0.0) when it is zero.
-            // kRoundScale uses the stroke radius to round rectangular corners.
-            joinScale = (strokeParams.y < 0.0) ? kRoundScale
-                                               : sign(strokeParams.y);
+            // `joinScale` is determined based on the sign of strokeParams.y:
+            // - Negative: The expression yields kRoundScale
+            // - Zero:     The expression yields 0.0 (matching kBevelScale)
+            // - Positive: The expression yields 1.0 (matching kMiterScale)
+            joinScale = abs(max(-kRoundScale, sign(strokeParams.y)));
         }
     } else if (any(greaterThan(xRadiiOrFlags, float4(0.0)))) {
         // Filled round rect
