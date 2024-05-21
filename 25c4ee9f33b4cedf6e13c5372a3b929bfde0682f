@@ -134,6 +134,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "12318be0_95fbcab0",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 848,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2024-05-21T09:33:50Z",
+      "side": 1,
+      "message": "Ack. Will be done in the reland CL.",
+      "parentUuid": "6fc216a5_dc6bbea3",
+      "range": {
+        "startLine": 847,
+        "startChar": 0,
+        "endLine": 848,
+        "endChar": 74
+      },
+      "revId": "25c4ee9f33b4cedf6e13c5372a3b929bfde0682f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5e1148d4_4a2d6514",
