@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "66bd3d75_2477b4d1",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 688,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2024-05-21T17:44:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "61e7b084_1cde9904",
+      "range": {
+        "startLine": 688,
+        "startChar": 53,
+        "endLine": 688,
+        "endChar": 54
+      },
+      "revId": "e356aa512a85a8472e9f8c7b5905a99d8d92d360",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6c2ea142_67406e35",
@@ -96,6 +120,30 @@
       "side": 1,
       "message": "Agreed, the CommandBuffer should be tracking this in both cases.",
       "parentUuid": "6c2ea142_67406e35",
+      "range": {
+        "startLine": 707,
+        "startChar": 14,
+        "endLine": 707,
+        "endChar": 27
+      },
+      "revId": "e356aa512a85a8472e9f8c7b5905a99d8d92d360",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "974115ab_0380ed82",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 707,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2024-05-21T17:44:04Z",
+      "side": 1,
+      "message": "`DawnCommandBuffer` will keep a ref of the buffer as well, and it will never be reset like `__EMSCRIPTEN__` case. In that case, is `trackResource()` still necessary?",
+      "parentUuid": "1fe2289a_7ac623d5",
       "range": {
         "startLine": 707,
         "startChar": 14,
