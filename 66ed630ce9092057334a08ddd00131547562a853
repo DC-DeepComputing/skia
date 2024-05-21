@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "442889de_5afe57d0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2024-05-21T14:26:20Z",
+      "side": 1,
+      "message": "Right now, `DawnCommandBuffer::fIntrinsicConstantBuffer` is allocated with `findOrCreateDawnBuffer()` with `Shareable::kNo`. So the buffer cannot be reused until the previous command buffer is submitted and done with GPU. So we found 100s `fIntrinsicConstantBuffer` in WPA trace.\n\nSo we can allocate a single `fIntrinsicConstantBuffer`, and put it in DawnResourceProvider, so all command buffers can just use it. Or we can just allocate the buffer with `Shareable::kYes`.",
+      "parentUuid": "17568b54_c30bd9c4",
+      "revId": "66ed630ce9092057334a08ddd00131547562a853",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6b0e76ac_b254a7ad",
         "filename": "src/gpu/graphite/BufferManager.cpp",
         "patchSetId": 4
