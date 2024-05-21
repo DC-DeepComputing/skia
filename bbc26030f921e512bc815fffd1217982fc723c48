@@ -16,6 +16,24 @@
       "message": "`Canary-Chromium` will probably keep failing until https://skia-review.googlesource.com/c/skia/+/855437 lands in Skia and is rolled into Chromium. It should be enough here to just run `linux-rel`.\n\nThough after rebasing to not include `Reland \"GraphiteDawn: use dawn\u0027s LoadResolveTexture extension.\"`. `Canary-Chromium` applies a diff, but running the Chromium tryjobs on Skia changes at the moment checks out the gerrit change (not just apply the diff).",
       "revId": "bbc26030f921e512bc815fffd1217982fc723c48",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ad949235_c1d4b2e9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-05-21T08:02:41Z",
+      "side": 1,
+      "message": "Replacing canary-chromium in cq-include-trybots to linux-rel and trying to land again.",
+      "parentUuid": "112d9c8e_50378ac4",
+      "revId": "bbc26030f921e512bc815fffd1217982fc723c48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
