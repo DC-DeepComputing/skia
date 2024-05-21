@@ -20,6 +20,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "17568b54_c30bd9c4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-05-21T13:20:09Z",
+      "side": 1,
+      "message": "Why is this change needed? Since dawn native has access to the commandbuffer level WriteBuffer, don\u0027t we just need to allocate a single intrinsic buffer and then we can keep using that every render pass in every frame?",
+      "revId": "66ed630ce9092057334a08ddd00131547562a853",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6b0e76ac_b254a7ad",
         "filename": "src/gpu/graphite/BufferManager.cpp",
         "patchSetId": 4
