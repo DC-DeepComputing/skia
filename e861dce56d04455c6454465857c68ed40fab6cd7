@@ -1,0 +1,126 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40af8787_9b166dd7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 34
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-05-21T18:01:03Z",
+      "side": 1,
+      "message": "Do we need any of the similar logic to what was fixed in https://skia-review.googlesource.com/c/skia/+/854181?",
+      "revId": "e861dce56d04455c6454465857c68ed40fab6cd7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b76f05a9_c7af088d",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 34
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-05-21T18:01:03Z",
+      "side": 1,
+      "message": "std::move?",
+      "range": {
+        "startLine": 166,
+        "startChar": 31,
+        "endLine": 166,
+        "endChar": 46
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "9e02dd6d_6a814ab3",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+              "range": {
+                "startLine": 166,
+                "startChar": 0,
+                "endLine": 167,
+                "endChar": 0
+              },
+              "replacement": "                               std::move(ycbcrConversion));\n"
+            }
+          ]
+        }
+      ],
+      "revId": "e861dce56d04455c6454465857c68ed40fab6cd7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ce3dad7_d39d81c8",
+        "filename": "src/gpu/graphite/vk/VulkanSampler.cpp",
+        "patchSetId": 34
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-05-21T18:01:03Z",
+      "side": 1,
+      "message": "the default value is put in the declaration in the header. The definition here shouldn\u0027t have it.",
+      "range": {
+        "startLine": 42,
+        "startChar": 59,
+        "endLine": 42,
+        "endChar": 69
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "257ef542_b85cbeec",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/vk/VulkanSampler.cpp",
+              "range": {
+                "startLine": 42,
+                "startChar": 0,
+                "endLine": 43,
+                "endChar": 0
+              },
+              "replacement": "        sk_sp\u003cVulkanSamplerYcbcrConversion\u003e ycbcrConversion) {\n"
+            }
+          ]
+        }
+      ],
+      "revId": "e861dce56d04455c6454465857c68ed40fab6cd7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "237a6753_2870c887",
+        "filename": "src/gpu/graphite/vk/VulkanSamplerYcbcrConversion.cpp",
+        "patchSetId": 34
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-05-21T18:01:03Z",
+      "side": 1,
+      "message": "this has been removed as a param to Resource",
+      "range": {
+        "startLine": 196,
+        "startChar": 18,
+        "endLine": 196,
+        "endChar": 59
+      },
+      "revId": "e861dce56d04455c6454465857c68ed40fab6cd7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
