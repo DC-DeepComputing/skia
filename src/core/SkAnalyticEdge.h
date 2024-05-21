@@ -42,10 +42,6 @@ struct SkAnalyticEdge {
     SkFixed fDY;            // abs(1/fDX); may be SK_MaxS32 when fDX is close to 0.
                             // fDY is only used for blitting trapezoids.
 
-    SkFixed fSavedX;        // For deferred blitting
-    SkFixed fSavedY;        // For deferred blitting
-    SkFixed fSavedDY;       // For deferred blitting
-
     Type    fEdgeType;      // Remembers the *initial* edge type
 
     int8_t  fCurveCount;    // only used by kQuad(+) and kCubic(-)
@@ -79,12 +75,6 @@ struct SkAnalyticEdge {
         SkASSERT(fDX == 0 || y - fY == SK_Fixed1 >> yShift);
         fY = y;
         fX += fDX >> yShift;
-    }
-
-    inline void saveXY(SkFixed x, SkFixed y, SkFixed dY) {
-        fSavedX = x;
-        fSavedY = y;
-        fSavedDY = dY;
     }
 
     bool setLine(const SkPoint& p0, const SkPoint& p1);
