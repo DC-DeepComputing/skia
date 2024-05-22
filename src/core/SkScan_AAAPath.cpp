@@ -1606,6 +1606,13 @@ static void aaa_walk_edges(SkAnalyticEdge*  prevHead,
         bool            leftEnds        = false;
         int             prevRite        = SkFixedFloorToInt(leftClip);
 
+        auto setLeft = [&](SkAnalyticEdge* edge) {
+            left     = std::max(edge->fX, leftClip);
+            leftDY   = edge->fDY;
+            leftE    = edge;
+            leftEnds = leftE->fLowerY == nextY;
+        };
+
         nextNextY = SK_MaxS32;
 
         SkASSERT((nextY & ((SK_Fixed1 >> 2) - 1)) == 0);
@@ -1723,10 +1730,7 @@ static void aaa_walk_edges(SkAnalyticEdge*  prevHead,
                 }
             } else {
                 if (isLeft) {
-                    left     = std::max(currE->fX, leftClip);
-                    leftDY   = currE->fDY;
-                    leftE    = currE;
-                    leftEnds = leftE->fLowerY == nextY;
+                    setLeft(currE);
                 }
                 currE->goY(nextY, yShift);
             }
@@ -1754,6 +1758,16 @@ static void aaa_walk_edges(SkAnalyticEdge*  prevHead,
             SkASSERT(currE->fY == nextY);
 
             if (currE->fLowerY <= nextY) {
+#if !SK_USE_LEGACY_DEFERRED_BLIT
+                // We need to do the x-sort, even though we're about to remove this edge from the
+                // list. It might become our new left edge for any pending blit.
+                if (currE->fX < prevX) {
+                    backward_insert_edge_based_on_x(currE);
+                    if (currE->fNext == leftE) {
+                        setLeft(currE);
+                    }
+                }
+#endif
                 remove_edge(currE);
             } else {
                 update_next_next_y(currE->fLowerY, nextY, &nextNextY);
@@ -1775,6 +1789,11 @@ static void aaa_walk_edges(SkAnalyticEdge*  prevHead,
                                              rightClip);
                     }
                     backward_insert_edge_based_on_x(currE);
+#if !SK_USE_LEGACY_DEFERRED_BLIT
+                    if (currE->fNext == leftE) {
+                        setLeft(currE);
+                    }
+#endif
                 } else {
                     prevX = newX;
                 }
