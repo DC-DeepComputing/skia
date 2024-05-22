@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "16936785_3bd6d2ff",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2024-05-22T15:53:55Z",
+      "side": 1,
+      "message": "Looks like I managed to fix the two +1s requirement. Now it only requires one +1. @egdaniel@google.com, still would like to hear your review before submitting this.",
+      "revId": "2ca0c87cbdd9baf236593e174feb7880d36684a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
