@@ -123,6 +123,24 @@
       "parentUuid": "f47e3ee6_86af4712",
       "revId": "56273437ea66d1e8bd7d8f9fcf3d70620fb98191",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1406f4c3_b40af322",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-05-22T18:39:30Z",
+      "side": 1,
+      "message": "Yeah, it\u0027s definitely a torture test. I can\u0027t tell for sure if it\u0027s the same underlying issue, or a related one. I think it\u0027s - like you surmised - about accumulating disjoint coverages from separate pairs of edges (with overlapping edges causing winding to drop to zero and then immediately return back to -1). That\u0027s actually a separate problem from the linked bug, where the edge sorting is briefly incorrect (for the duration of a single scan segment), causing us to do a fill from the wrong left edge.\n\nIn any case, I agree that this appears to make mandoline worse, but I\u0027m less concerned about that (right now). I\u0027ve been talking to folks about working on the scan converter more, so this is a valuable test case for future work.",
+      "parentUuid": "b3929d09_269296b0",
+      "revId": "56273437ea66d1e8bd7d8f9fcf3d70620fb98191",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
