@@ -69,6 +69,24 @@
       "message": "Need to break this out into a `if (!is_clang)`.",
       "revId": "957e86580ac102c07a92d96221c99c5a68268687",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef601032_5cefe689",
+        "filename": "gn/skia/BUILD.gn",
+        "patchSetId": 1
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-05-22T22:00:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7ff79ef9_6a493bbd",
+      "revId": "957e86580ac102c07a92d96221c99c5a68268687",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
