@@ -16,6 +16,23 @@
       "message": "I\u0027ve removed all of the G3 clients with impacted scuba tests from our presubmit, and Chromium is guarded. None of the diffs look bad, to me. You can see the extent of the code that\u0027s disabled/removed by this CL in the follow-up CL.",
       "revId": "56273437ea66d1e8bd7d8f9fcf3d70620fb98191",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5748b6bb_3aae3c7d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-05-22T18:16:24Z",
+      "side": 1,
+      "message": "Looking at the gold changes it looks like `mandoline` on CPU is pointing out the issue you\u0027re planning to fix in the non-deferred mode? Do we want that side of the fix to land first?",
+      "revId": "56273437ea66d1e8bd7d8f9fcf3d70620fb98191",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
