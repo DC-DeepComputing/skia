@@ -38,6 +38,7 @@
 
 namespace {
 
+#if 0
 sk_sp<SkUnicode> get_unicode() {
 #if defined(SK_UNICODE_ICU_IMPLEMENTATION)
     if (auto unicode = SkUnicodes::ICU::Make()) {
@@ -56,6 +57,7 @@ sk_sp<SkUnicode> get_unicode() {
 #endif
     return nullptr;
 }
+#endif
 
 struct RunHandler final : public SkShaper::RunHandler {
     const char* fResource;

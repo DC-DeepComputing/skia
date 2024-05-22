@@ -360,4 +360,3 @@ const VkDescriptorSet* GrVkBuffer::uniformDescriptorSet() const {
     SkASSERT(fUniformDescriptorSet);
     return fUniformDescriptorSet->descriptorSet();
 }
-
