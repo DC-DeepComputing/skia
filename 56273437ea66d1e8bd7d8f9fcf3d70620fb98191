@@ -51,6 +51,24 @@
       "parentUuid": "5748b6bb_3aae3c7d",
       "revId": "56273437ea66d1e8bd7d8f9fcf3d70620fb98191",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cdd30203_654265ef",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-05-22T18:27:12Z",
+      "side": 1,
+      "message": "That is to say, it appears that currently the \"deferred\" mode seems to (at least in some cases) currently be making things better than if it isn\u0027t used, it appears by logically combining areas instead of adding up the disjoint coverages (when possible, and things get complex when they aren\u0027t detected to logically combine, which I assume is the bug on its side). I\u0027m assuming the issue to be fixed with the non-deferred mode is to fix adding up the coverages?",
+      "parentUuid": "5748b6bb_3aae3c7d",
+      "revId": "56273437ea66d1e8bd7d8f9fcf3d70620fb98191",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
