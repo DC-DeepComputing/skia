@@ -69,6 +69,24 @@
       "parentUuid": "5748b6bb_3aae3c7d",
       "revId": "56273437ea66d1e8bd7d8f9fcf3d70620fb98191",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "110c5d90_aa7eb6f1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-05-22T18:29:50Z",
+      "side": 1,
+      "message": "Ah, ok, so `mandoline` is probably a good torture test for this in general, and we still haven\u0027t quite figured it out. Then I suppose it\u0027s fine to stash this \"deferred\" code in the past and fix things up until `mandoline` does work, then if someone wants to resurrect the logic they have a good test.",
+      "parentUuid": "cdd30203_654265ef",
+      "revId": "56273437ea66d1e8bd7d8f9fcf3d70620fb98191",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
