@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8335b880_42f3286c",
+        "filename": "gm/surface.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-05-22T19:05:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0c3c48ca_384fcbe5",
+      "range": {
+        "startLine": 82,
+        "startChar": 19,
+        "endLine": 82,
+        "endChar": 23
+      },
+      "revId": "ab986b9d2f23dc0e6ce1f41586cc624c6af980cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "338b8826_9bc1577e",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-05-22T18:42:45Z",
       "side": 1,
       "message": "So this could be `SkSurfaceProps::kUseDeviceIndependentFonts_Flag`, the idea being that we\u0027re just parameterizing the surface props here (since this is the `SurfacePropsGM`).",
+      "range": {
+        "startLine": 154,
+        "startChar": 34,
+        "endLine": 154,
+        "endChar": 38
+      },
+      "revId": "ab986b9d2f23dc0e6ce1f41586cc624c6af980cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5c7512b_496f9ad5",
+        "filename": "gm/surface.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-05-22T19:05:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "338b8826_9bc1577e",
       "range": {
         "startLine": 154,
         "startChar": 34,
