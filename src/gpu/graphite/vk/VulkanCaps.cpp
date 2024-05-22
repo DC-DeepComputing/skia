@@ -941,8 +941,8 @@ void VulkanCaps::initDepthStencilFormatTable(const skgpu::VulkanInterface* inter
         constexpr VkFormat format = VK_FORMAT_D16_UNORM;
         auto& info = this->getDepthStencilFormatInfo(format);
         info.init(interface, physDev, properties, format);
-        if (info.fFormatProperties.optimalTilingFeatures &
-            VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT) {
+        if ((info.fFormatProperties.optimalTilingFeatures &
+            VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT) && !this->protectedSupport()) {
             set_ds_flags_to_format(fDepthStencilFlagsToFormatTable[depthFlags.value()], format);
         }
     }
@@ -951,8 +951,8 @@ void VulkanCaps::initDepthStencilFormatTable(const skgpu::VulkanInterface* inter
         constexpr VkFormat format = VK_FORMAT_D32_SFLOAT;
         auto& info = this->getDepthStencilFormatInfo(format);
         info.init(interface, physDev, properties, format);
-        if (info.fFormatProperties.optimalTilingFeatures &
-            VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT) {
+        if ((info.fFormatProperties.optimalTilingFeatures &
+             VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT) && !this->protectedSupport()) {
             set_ds_flags_to_format(fDepthStencilFlagsToFormatTable[depthFlags.value()], format);
         }
     }
