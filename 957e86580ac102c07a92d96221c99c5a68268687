@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1da181f4_30269b58",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-05-22T20:35:40Z",
+      "side": 1,
+      "message": "I can reduce this to\n```\nvoid foo() {\n    enum class E {kA};\n    auto l \u003d [](auto\u0026 self, E e \u003d E::kA) -\u003e void {};\n    l(l);\n}\n```\nwhich produces\n```\n\u003csource\u003e(3): error C2653: \u0027E\u0027: is not a class or namespace name\n\u003csource\u003e(3): note: the template instantiation context (the oldest one first) is\n\u003csource\u003e(4): note: see instantiation of default argument expression required for \u0027void foo::\u003clambda_1\u003e::operator ()\u003cfoo::\u003clambda_1\u003e\u003e(_T1 \u0026,foo::E) const\u0027\n        with\n        [\n            _T1\u003dfoo::\u003clambda_1\u003e\n        ]\n\u003csource\u003e(3): error C2065: \u0027kA\u0027: undeclared identifier\n```\nMoving the enum declaration out of the function, not passing `self`, or removing the default-ness of the parameter all alleviate the compiler issue. This appears to be consistent since v19.24 when `/Zc:lambda` was introduced. Other compilers seem fine with it.",
+      "parentUuid": "2799f018_ae255f5e",
+      "revId": "957e86580ac102c07a92d96221c99c5a68268687",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7ff79ef9_6a493bbd",
         "filename": "gn/skia/BUILD.gn",
         "patchSetId": 1
