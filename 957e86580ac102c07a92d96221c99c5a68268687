@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "80c78f8e_bfe7f8cb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-05-22T20:51:06Z",
+      "side": 1,
+      "message": "If I use `/std:c++20` (which also implies `/Zc:lambda`) then this works. I\u0027m not sure if there was an actual specification change or not.",
+      "parentUuid": "1da181f4_30269b58",
+      "revId": "957e86580ac102c07a92d96221c99c5a68268687",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7ff79ef9_6a493bbd",
         "filename": "gn/skia/BUILD.gn",
         "patchSetId": 1
