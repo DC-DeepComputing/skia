@@ -1671,6 +1671,7 @@ bool GrVkGpu::createVkImageForBackendSurface(VkFormat vkFormat,
     SkASSERT(texturable == GrTexturable::kYes || renderable == GrRenderable::kYes);
 
     if (fProtectedContext != isProtected) {
+        SkASSERT(0);
         return false;
     }
 
