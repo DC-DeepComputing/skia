@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f129650b_73fe05ac",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-22T16:13:54Z",
+      "side": 1,
+      "message": "This was causing the vulkan jobs to fail because the VulkanResourceProvider was the only other place outside of hash maps that would use the key \u003d\u003d operator. In hash maps, the hash likely reduced the comparisons to just things that were equal already.\n\nMy 16-bit CL triggered the underlying failure because that was the first time the vulkan backend supported just-depth formats. Previously, needing just depth or depth+stencil would use D24+S8 or D32+S8 and we\u0027d only ever have a single load-msaa pipeline to compare against and they were always the same. Now dstreadshuffle has a mix of w/ or w/o stencil so there were now keys that rightly were comparing as not the same, but were all marked shareable so the assert triggered.\n\nI don\u0027t believe there was any underlying misconfiguration in the vulkan formats or load-msaa-pipeline logic or renderpass key building logic.",
+      "revId": "5d8a0b45b305c0b5235e5d60a91bc05050bc18c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
