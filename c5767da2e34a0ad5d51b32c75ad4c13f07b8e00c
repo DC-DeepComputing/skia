@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d6b71d4_bf44f25d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-05-22T13:26:16Z",
+      "side": 1,
+      "message": "`typefacerendering` looks improved now, PTAL.",
+      "revId": "c5767da2e34a0ad5d51b32c75ad4c13f07b8e00c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
