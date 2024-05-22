@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e1d2dc93_82428647",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 34
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-05-22T15:33:51Z",
+      "side": 1,
+      "message": "Yes, I believe so. Will put that into another CL.",
+      "parentUuid": "40af8787_9b166dd7",
+      "revId": "e861dce56d04455c6454465857c68ed40fab6cd7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b76f05a9_c7af088d",
@@ -55,6 +73,30 @@
           ]
         }
       ],
+      "revId": "e861dce56d04455c6454465857c68ed40fab6cd7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4c2ec56b_2e5a944a",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 34
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-05-22T15:33:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b76f05a9_c7af088d",
+      "range": {
+        "startLine": 166,
+        "startChar": 31,
+        "endLine": 166,
+        "endChar": 46
+      },
       "revId": "e861dce56d04455c6454465857c68ed40fab6cd7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -100,6 +142,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "55ac081e_ef3aa9fb",
+        "filename": "src/gpu/graphite/vk/VulkanSampler.cpp",
+        "patchSetId": 34
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-05-22T15:33:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2ce3dad7_d39d81c8",
+      "range": {
+        "startLine": 42,
+        "startChar": 59,
+        "endLine": 42,
+        "endChar": 69
+      },
+      "revId": "e861dce56d04455c6454465857c68ed40fab6cd7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "237a6753_2870c887",
@@ -113,6 +179,30 @@
       "writtenOn": "2024-05-21T18:01:03Z",
       "side": 1,
       "message": "this has been removed as a param to Resource",
+      "range": {
+        "startLine": 196,
+        "startChar": 18,
+        "endLine": 196,
+        "endChar": 59
+      },
+      "revId": "e861dce56d04455c6454465857c68ed40fab6cd7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "51446750_e5e2f2b6",
+        "filename": "src/gpu/graphite/vk/VulkanSamplerYcbcrConversion.cpp",
+        "patchSetId": 34
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-05-22T15:33:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "237a6753_2870c887",
       "range": {
         "startLine": 196,
         "startChar": 18,
