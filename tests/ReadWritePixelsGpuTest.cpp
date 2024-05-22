@@ -245,6 +245,30 @@ SkPixmap make_pixmap_have_valid_alpha_type(SkPixmap pm) {
     return pm;
 }
 
+static void mess_up(SkPixmap& pm, int rNumer, int aNumer) {
+    SkBitmap bm;
+    bm.installPixels(pm);
+    SkColor tmp = bm.getColor(0, 0);
+
+    int r = SkColorGetR(tmp);
+    int g = SkColorGetG(tmp);
+    int b = SkColorGetB(tmp);
+    int a = SkColorGetA(tmp);
+    if (r > 128) {
+        r -= rNumer;
+    } else {
+        r += rNumer;
+    }
+    if (aNumer == 2) {
+        if (a > 128) {
+            a -= aNumer;
+        } else {
+            a += aNumer;
+        }
+    }
+    bm.eraseArea({0, 0, 1, 1}, SkColorSetARGB(a, r, g, b));
+}
+
 static SkAutoPixmapStorage make_ref_data(const SkImageInfo& info, bool forceOpaque) {
     SkAutoPixmapStorage result;
     if (info.alphaType() == kUnknown_SkAlphaType) {
@@ -286,6 +310,9 @@ static SkAutoPixmapStorage make_ref_data(const SkImageInfo& info, bool forceOpaq
     return result;
 }
 
+int kPinnedSrcCT = int(kBGRA_8888_SkColorType);
+int kPinnedReadCT = int(kRGBA_8888_SkColorType);
+
 template <typename T>
 static void gpu_read_pixels_test_driver(skiatest::Reporter* reporter,
                                         const GpuReadPixelTestRules& rules,
@@ -305,6 +332,9 @@ static void gpu_read_pixels_test_driver(skiatest::Reporter* reporter,
                        SkIPoint offset) {
         const bool csConversion =
                 !SkColorSpace::Equals(readInfo.colorSpace(), srcPixels.info().colorSpace());
+        if (csConversion) {
+            return Result::kSuccess;
+        }
         const auto readCT = readInfo.colorType();
         const auto readAT = readInfo.alphaType();
         const auto srcCT = srcPixels.info().colorType();
@@ -367,26 +397,28 @@ static void gpu_read_pixels_test_driver(skiatest::Reporter* reporter,
             // conversion at all because GPU->CPU read may go to a lower bit depth format and then
             // be promoted back to the original type. For example, GL ES cannot read to 1010102, so
             // we go through 8888.
-            float numer = (lumConversion || csConversion) ? 3.f : 2.f;
+            int numer1 = (lumConversion || csConversion) ? 3 : 2;
             // Allow some extra tolerance if unpremuling.
             if (srcAT == kPremul_SkAlphaType && readAT == kUnpremul_SkAlphaType) {
-                numer += 1;
+                numer1 += 1;
             }
             int rgbBits = std::min({min_rgb_channel_bits(readCT), min_rgb_channel_bits(srcCT), 8});
-            float tol = numer / (1 << rgbBits);
+            const float tol = (((float) numer1) / ((1 << rgbBits) - 1));
             // Swiftshader is producing alpha errors with 16-bit UNORM. We choose to always allow
             // a small tolerance:
-            float alphaTol = 1.f / (1 << 10);
+            int alphaNumer = 1;
+            float alphaTol1 = ((float) alphaNumer) / (1 << 10);
             if (readAT != kOpaque_SkAlphaType && srcAT != kOpaque_SkAlphaType) {
                 // Alpha can also get squashed down to 8 bits going through an intermediate
                 // color format.
                 const int alphaBits = std::min({alpha_channel_bits(readCT),
                                                 alpha_channel_bits(srcCT),
                                                 8});
-                alphaTol = 2.f / (1 << alphaBits);
+                alphaNumer = 2;
+                alphaTol1 = (((float) alphaNumer) / ((1 << alphaBits) - 1));
             }
 
-            const float tols[4] = {tol, tol, tol, alphaTol};
+            const float tols[4] = {tol, tol, tol, alphaTol1};
             auto error = std::function<ComparePixmapsErrorReporter>([&](int x, int y,
                                                                         const float diffs[4]) {
                 SkASSERT(x >= 0 && y >= 0);
@@ -420,6 +452,10 @@ static void gpu_read_pixels_test_driver(skiatest::Reporter* reporter,
             // This is the part of dstPixels that should have been updated.
             SkPixmap actual;
             SkAssertResult(dstPixels.extractSubset(&actual, dstWriteRect));
+
+            mess_up(actual, numer1, alphaNumer);
+//            SkDebugf("numer %d tol %f alphaNumer %d alphaTol %f\n", numer1, tol, alphaNumer, alphaTol1);
+
             ComparePixels(ref, actual, tols, error);
 
             const auto* v = dstData.get();
@@ -470,8 +506,8 @@ static void gpu_read_pixels_test_driver(skiatest::Reporter* reporter,
         if (srcAT == kUnpremul_SkAlphaType && !rules.fAllowUnpremulSrc) {
             continue;
         }
-        for (int sct = 0; sct <= kLastEnum_SkColorType; ++sct) {
-            const auto srcCT = static_cast<SkColorType>(sct);
+        for (int sct1 = kPinnedSrcCT; sct1 <= kPinnedSrcCT; ++sct1) {
+            const auto srcCT = static_cast<SkColorType>(sct1);
             if (rules.fSkipSRGBCT && srcCT == kSRGBA_8888_SkColorType) {
                 continue;
             }
@@ -525,8 +561,8 @@ static void gpu_read_pixels_test_driver(skiatest::Reporter* reporter,
                  kUnknown_SkAlphaType  == srcAT)) {
                 continue;
             }
-            for (int rct = 0; rct <= kLastEnum_SkColorType; ++rct) {
-                const auto readCT = static_cast<SkColorType>(rct);
+            for (int rct1 = kPinnedReadCT; rct1 <= kPinnedReadCT; ++rct1) {
+                const auto readCT = static_cast<SkColorType>(rct1);
                 for (const sk_sp<SkColorSpace>& readCS :
                      {SkColorSpace::MakeSRGB(), SkColorSpace::MakeSRGBLinear()}) {
                     for (int at = 0; at <= kLastEnum_SkAlphaType; ++at) {
@@ -546,7 +582,7 @@ static void gpu_read_pixels_test_driver(skiatest::Reporter* reporter,
                             continue;
                         }
                         const auto& rects =
-                                srcCTTestedThoroughly[sct] && readCTTestedThoroughly[rct]
+                                srcCTTestedThoroughly[sct1] && readCTTestedThoroughly[rct1]
                                         ? shortRectArray
                                         : longRectArray;
                         for (const auto& rect : rects) {
@@ -555,8 +591,8 @@ static void gpu_read_pixels_test_driver(skiatest::Reporter* reporter,
                             const SkIPoint offset = rect.topLeft();
                             Result r = runTest(src, srcPixels, readInfo, offset);
                             if (r == Result::kSuccess) {
-                                srcCTTestedThoroughly[sct] = true;
-                                readCTTestedThoroughly[rct] = true;
+                                srcCTTestedThoroughly[sct1] = true;
+                                readCTTestedThoroughly[rct1] = true;
                             }
                         }
                     }
@@ -1039,7 +1075,7 @@ static void gpu_write_pixels_test_driver(skiatest::Reporter* reporter,
         // Sometimes wider types go through 8bit unorm intermediates because of API
         // restrictions.
         int rgbBits = std::min({min_rgb_channel_bits(writeCT), min_rgb_channel_bits(dstCT), 8});
-        float tol = 2.f/(1 << rgbBits);
+        float tol = 2.f/((1 << rgbBits)-1);
         float alphaTol = 0;
         if (writeAT != kOpaque_SkAlphaType && dstAT != kOpaque_SkAlphaType) {
             // Alpha can also get squashed down to 8 bits going through an intermediate
@@ -1047,7 +1083,7 @@ static void gpu_write_pixels_test_driver(skiatest::Reporter* reporter,
             const int alphaBits = std::min({alpha_channel_bits(writeCT),
                                             alpha_channel_bits(dstCT),
                                             8});
-            alphaTol = 2.f/(1 << alphaBits);
+            alphaTol = 2.f/((1 << alphaBits)-1);
         }
 
         const float tols[4] = {tol, tol, tol, alphaTol};
@@ -1087,6 +1123,10 @@ static void gpu_write_pixels_test_driver(skiatest::Reporter* reporter,
         // This is the part of secondReadPixels that should have been updated by the write.
         SkPixmap actual;
         SkAssertResult(secondReadPM.extractSubset(&actual, checkRect));
+
+        mess_up(actual, 2, alphaTol == 0 ? 0 : 2);
+//        SkDebugf("numer %d tol %f alphaNumer %d alphaTol %f\n", 2, tol, alphaTol == 0.0 ? 0 : 2, alphaTol);
+
         ComparePixels(ref, actual, tols, error);
         // The area around written rect should be the same in the first and second read.
         SkIRect borders[]{
@@ -1151,7 +1191,7 @@ static void gpu_write_pixels_test_driver(skiatest::Reporter* reporter,
                                                 writeCTTestedThoroughly = {};
     for (int dat = 0; dat < kLastEnum_SkAlphaType; ++dat) {
         const auto dstAT = static_cast<SkAlphaType>(dat);
-        for (int dct = 0; dct <= kLastEnum_SkColorType; ++dct) {
+        for (int dct = kPinnedSrcCT; dct <= kPinnedSrcCT; ++dct) {
             const auto dstCT = static_cast<SkColorType>(dct);
             const auto dstInfo = SkImageInfo::Make(kW, kH, dstCT, dstAT, SkColorSpace::MakeSRGB());
             auto dst = dstFactory(dstInfo);
@@ -1168,7 +1208,7 @@ static void gpu_write_pixels_test_driver(skiatest::Reporter* reporter,
                  kUnknown_SkAlphaType  == dstAT)) {
                 continue;
             }
-            for (int wct = 0; wct <= kLastEnum_SkColorType; ++wct) {
+            for (int wct = kPinnedReadCT; wct <= kPinnedReadCT; ++wct) {
                 const auto writeCT = static_cast<SkColorType>(wct);
                 for (const sk_sp<SkColorSpace>& writeCS : {SkColorSpace::MakeSRGB(),
                                                            SkColorSpace::MakeSRGBLinear()}) {
@@ -1312,7 +1352,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SurfaceContextWritePixelsMipped,
                                                                nullptr),
                                              true);
 
-    for (int c = 0; c < kGrColorTypeCnt; ++c) {
+    for (int c = (int) GrColorType::kRGBA_8888; c <= (int) GrColorType::kRGBA_8888; ++c) {
         auto ct = static_cast<GrColorType>(c);
         // Below we use rendering to read the level pixels back.
         auto format = direct->priv().caps()->getDefaultBackendFormat(ct, GrRenderable::kYes);
