@@ -1606,6 +1606,13 @@ static void aaa_walk_edges(SkAnalyticEdge*  prevHead,
         bool            leftEnds        = false;
         int             prevRite        = SkFixedFloorToInt(leftClip);
 
+        auto setLeft = [&](SkAnalyticEdge* edge) {
+            left     = std::max(edge->fX, leftClip);
+            leftDY   = edge->fDY;
+            leftE    = edge;
+            leftEnds = leftE->fLowerY == nextY;
+        };
+
         nextNextY = SK_MaxS32;
 
         SkASSERT((nextY & ((SK_Fixed1 >> 2) - 1)) == 0);
@@ -1723,10 +1730,7 @@ static void aaa_walk_edges(SkAnalyticEdge*  prevHead,
                 }
             } else {
                 if (isLeft) {
-                    left     = std::max(currE->fX, leftClip);
-                    leftDY   = currE->fDY;
-                    leftE    = currE;
-                    leftEnds = leftE->fLowerY == nextY;
+                    setLeft(currE);
                 }
                 currE->goY(nextY, yShift);
             }
@@ -1775,6 +1779,9 @@ static void aaa_walk_edges(SkAnalyticEdge*  prevHead,
                                              rightClip);
                     }
                     backward_insert_edge_based_on_x(currE);
+                    if (currE->fNext == leftE) {
+                        setLeft(currE);
+                    }
                 } else {
                     prevX = newX;
                 }
@@ -1923,10 +1930,6 @@ static void aaa_fill_path(const SkPath& path,
         aaa_walk_convex_edges(
                 &headEdge, blitter, start_y, stop_y, leftBound, rightBound, isUsingMask);
     } else {
-        // Only use deferred blitting if there are many edges.
-        bool useDeferred =
-                count >
-                (SkFixedFloorToInt(tailEdge.fPrev->fLowerY - headEdge.fNext->fUpperY) + 1) * 4;
 
         // We skip intersection computation if there are many points which probably already
         // give us enough fractional scan lines.
@@ -1942,7 +1945,7 @@ static void aaa_fill_path(const SkPath& path,
                        rightBound,
                        isUsingMask,
                        forceRLE,
-                       useDeferred,
+                       /*useDeferred=*/ false,
                        skipIntersect);
     }
 }

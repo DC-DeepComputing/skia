@@ -622,3 +622,35 @@ DEF_SIMPLE_GM(skbug12244, canvas, 150, 150) {
     canvas->translate(20.f, 20.f);
     canvas->drawPath(path, p);
 }
+
+DEF_SIMPLE_GM(scan_convert_bug_stroked, canvas, 512, 512) {
+    SkPath path;
+    path.moveTo(17.7333069f, 27.5369568f);
+    path.lineTo(17.4423828f, 31.1975555f);
+    path.lineTo(17.296936f, 32.5793762f);
+
+    SkPaint strokePaint;
+    strokePaint.setAntiAlias(true);
+    strokePaint.setStyle(SkPaint::kStroke_Style);
+    strokePaint.setStrokeCap(SkPaint::kSquare_Cap);
+    strokePaint.setStrokeWidth(29.0908108);
+
+    canvas->drawPath(path, strokePaint);
+}
+
+DEF_SIMPLE_GM(scan_convert_bug_filled, canvas, 200, 200) {
+    SkPath path;
+    path.moveTo(30.23983f, 48.5674667f);
+    path.lineTo(1.30884242f, 45.5222702f);
+    path.lineTo(2.97688866f, 29.6749554f);
+    path.lineTo(17.4423828f, 31.1975555f);
+    path.lineTo(2.94269657f, 30.0452003f);
+    path.lineTo(4.38597536f, 11.8849154f);
+    path.lineTo(33.3853493f, 14.1896257f);
+    path.close();
+
+    SkPaint paint;
+    paint.setAntiAlias(true);
+
+    canvas->drawPath(path, paint);
+}
