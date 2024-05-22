@@ -157,6 +157,21 @@ public:
         return fShape.isRect();
     }
 
+    /**
+     * Returns true if the shape is a path.
+     */
+    bool isPath() const { return fShape.isPath(); }
+
+    /**
+     * Returns true if the shape is an arc.
+     */
+    bool isArc() const { return fShape.isArc(); }
+
+    /**
+     * Returns true if the shape is round rect.
+     */
+    bool isRRect() const { return fShape.isRRect(); }
+
     /** Returns the unstyled geometry as a rrect if possible. */
     bool asRRect(SkRRect* rrect, SkPathDirection* dir, unsigned* start, bool* inverted) const;
 
