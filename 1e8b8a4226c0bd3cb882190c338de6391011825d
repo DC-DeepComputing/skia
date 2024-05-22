@@ -40,6 +40,30 @@
       ],
       "revId": "1e8b8a4226c0bd3cb882190c338de6391011825d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d24ee126_14fc2bca",
+        "filename": "src/gpu/ganesh/ops/TessellationPathRenderer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 19319
+      },
+      "writtenOn": "2024-05-22T20:34:31Z",
+      "side": 1,
+      "message": "You are right that I was going for a short cut for one case, and not fixing the general problem. Thanks for the suggestion for the real fix. I attempted that in the latest patch.",
+      "parentUuid": "89bdb1ac_07b1f2a8",
+      "range": {
+        "startLine": 133,
+        "startChar": 46,
+        "endLine": 133,
+        "endChar": 93
+      },
+      "revId": "1e8b8a4226c0bd3cb882190c338de6391011825d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
