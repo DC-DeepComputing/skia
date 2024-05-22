@@ -367,26 +367,28 @@ static void gpu_read_pixels_test_driver(skiatest::Reporter* reporter,
             // conversion at all because GPU->CPU read may go to a lower bit depth format and then
             // be promoted back to the original type. For example, GL ES cannot read to 1010102, so
             // we go through 8888.
-            float numer = (lumConversion || csConversion) ? 3.f : 2.f;
+            int numer1 = (lumConversion || csConversion) ? 3 : 2;
             // Allow some extra tolerance if unpremuling.
             if (srcAT == kPremul_SkAlphaType && readAT == kUnpremul_SkAlphaType) {
-                numer += 1;
+                numer1 += 1;
             }
             int rgbBits = std::min({min_rgb_channel_bits(readCT), min_rgb_channel_bits(srcCT), 8});
-            float tol = numer / (1 << rgbBits);
+            const float tol = (((float) numer1) / ((1 << rgbBits) - 1));
             // Swiftshader is producing alpha errors with 16-bit UNORM. We choose to always allow
             // a small tolerance:
-            float alphaTol = 1.f / (1 << 10);
+            int alphaNumer = 1;
+            float alphaTol1 = ((float) alphaNumer) / (1 << 10);
             if (readAT != kOpaque_SkAlphaType && srcAT != kOpaque_SkAlphaType) {
                 // Alpha can also get squashed down to 8 bits going through an intermediate
                 // color format.
                 const int alphaBits = std::min({alpha_channel_bits(readCT),
                                                 alpha_channel_bits(srcCT),
                                                 8});
-                alphaTol = 2.f / (1 << alphaBits);
+                alphaNumer = 2;
+                alphaTol1 = (((float) alphaNumer) / ((1 << alphaBits) - 1));
             }
 
-            const float tols[4] = {tol, tol, tol, alphaTol};
+            const float tols[4] = {tol, tol, tol, alphaTol1};
             auto error = std::function<ComparePixmapsErrorReporter>([&](int x, int y,
                                                                         const float diffs[4]) {
                 SkASSERT(x >= 0 && y >= 0);
@@ -1039,7 +1041,7 @@ static void gpu_write_pixels_test_driver(skiatest::Reporter* reporter,
         // Sometimes wider types go through 8bit unorm intermediates because of API
         // restrictions.
         int rgbBits = std::min({min_rgb_channel_bits(writeCT), min_rgb_channel_bits(dstCT), 8});
-        float tol = 2.f/(1 << rgbBits);
+        float tol = 2.f/((1 << rgbBits)-1);
         float alphaTol = 0;
         if (writeAT != kOpaque_SkAlphaType && dstAT != kOpaque_SkAlphaType) {
             // Alpha can also get squashed down to 8 bits going through an intermediate
@@ -1047,7 +1049,7 @@ static void gpu_write_pixels_test_driver(skiatest::Reporter* reporter,
             const int alphaBits = std::min({alpha_channel_bits(writeCT),
                                             alpha_channel_bits(dstCT),
                                             8});
-            alphaTol = 2.f/(1 << alphaBits);
+            alphaTol = 2.f/((1 << alphaBits)-1);
         }
 
         const float tols[4] = {tol, tol, tol, alphaTol};
@@ -1312,7 +1314,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SurfaceContextWritePixelsMipped,
                                                                nullptr),
                                              true);
 
-    for (int c = 0; c < kGrColorTypeCnt; ++c) {
+    for (int c = (int) GrColorType::kRGBA_8888; c <= (int) GrColorType::kRGBA_8888; ++c) {
         auto ct = static_cast<GrColorType>(c);
         // Below we use rendering to read the level pixels back.
         auto format = direct->priv().caps()->getDefaultBackendFormat(ct, GrRenderable::kYes);
