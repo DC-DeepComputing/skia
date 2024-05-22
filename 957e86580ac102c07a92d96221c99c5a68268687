@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2799f018_ae255f5e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-05-22T20:05:26Z",
+      "side": 1,
+      "message": "It appears the new lambda parser in the msvc++ we have may be taking some sort of issue with passing a lambda with a default argument into itself.",
+      "revId": "957e86580ac102c07a92d96221c99c5a68268687",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ff79ef9_6a493bbd",
+        "filename": "gn/skia/BUILD.gn",
+        "patchSetId": 1
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-05-22T20:05:26Z",
+      "side": 1,
+      "message": "Need to break this out into a `if (!is_clang)`.",
+      "revId": "957e86580ac102c07a92d96221c99c5a68268687",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
