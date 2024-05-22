@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89bdb1ac_07b1f2a8",
+        "filename": "src/gpu/ganesh/ops/TessellationPathRenderer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-05-22T14:26:23Z",
+      "side": 1,
+      "message": "I see how this avoids the current crash linked in the bug here, but I don\u0027t think this really fixes the underlying bug. This is more of an optimization for us to avoid chopping simple shapes that would cause us to create tons of segments anyways (though shouldn\u0027t RRects also be included here)?\n\nAnyways, I think we should actually try to fix the reason why we\u0027re hitting the assert at all. I believe to do that we should basically just copy this logic into onCanDrawPath above. And then if wangs formula for the outset viewport is too high we should just return `CanDrawPath::kNo` there.",
+      "range": {
+        "startLine": 133,
+        "startChar": 46,
+        "endLine": 133,
+        "endChar": 93
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "d7bfb044_545f4431",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/ganesh/ops/TessellationPathRenderer.cpp",
+              "range": {
+                "startLine": 133,
+                "startChar": 0,
+                "endLine": 133,
+                "endChar": 0
+              },
+              "replacement": "    // TODO(robertphillips): This is a temporary fix for crbug.com/1266446. We should really\n    // be chopping all paths, not just those that are simple.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "1e8b8a4226c0bd3cb882190c338de6391011825d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
