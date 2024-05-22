@@ -16,6 +16,29 @@
       "message": "`typefacerendering` looks improved now, PTAL.",
       "revId": "c5767da2e34a0ad5d51b32c75ad4c13f07b8e00c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b27bbe9_22549a81",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 478,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-05-22T14:23:58Z",
+      "side": 1,
+      "message": "Don\u0027t write to this here. Both of these writes would somewhat randomly affect glyphs that are non-bitmap and not-colr. At the very least this should be a local that starts out with the value of `fDoLinearMetrics`. Writing to this value also makes it really difficult to reason about.",
+      "range": {
+        "startLine": 478,
+        "startChar": 12,
+        "endLine": 478,
+        "endChar": 28
+      },
+      "revId": "c5767da2e34a0ad5d51b32c75ad4c13f07b8e00c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
