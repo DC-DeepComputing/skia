@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "89ac86ea_9eeac146",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-05-22T17:19:28Z",
+      "side": 1,
+      "message": "Here\u0027s a GM that shows the bad case, along with the fix in the AAA code. I wonder if there are additional constraints on when I should update the pending left edge, but I can\u0027t come up with any case where it seems necessary.",
+      "revId": "c3bcaf0ce6f873f2b6b023e44d5e8c822352efd7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d6e82c5_66a2e966",
+        "filename": "gm/strokes.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 626,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-05-22T17:19:28Z",
+      "side": 1,
+      "message": "This is the original form of the bug (stroking a longer path that happened to contain this verb sequence).",
+      "revId": "c3bcaf0ce6f873f2b6b023e44d5e8c822352efd7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8fb3c1ef_c3dab74a",
+        "filename": "gm/strokes.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 641,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-05-22T17:19:28Z",
+      "side": 1,
+      "message": "This is the output of the stroker, so you can see the filled path geometry directly. Of course, both GMs exhibit the bug.",
+      "revId": "c3bcaf0ce6f873f2b6b023e44d5e8c822352efd7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a030f687_41cb8ce5",
+        "filename": "src/core/SkScan_AAAPath.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1783,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-05-22T17:19:28Z",
+      "side": 1,
+      "message": "^ Comment out this line to see the bug",
+      "revId": "c3bcaf0ce6f873f2b6b023e44d5e8c822352efd7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d41b0b76_8e81d247",
+        "filename": "src/core/SkScan_AAAPath.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1948,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-05-22T17:19:28Z",
+      "side": 1,
+      "message": "This isn\u0027t directly related to the bug, but `useDeferred` triggers code paths that will assert with the fix (because of ephemeral information being saved on the edge).",
+      "revId": "c3bcaf0ce6f873f2b6b023e44d5e8c822352efd7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
