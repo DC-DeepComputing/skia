@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b726e33_529e6e6b",
+        "filename": "tests/ReadWritePixelsGpuTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1406,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-05-22T17:36:48Z",
+      "side": 1,
+      "message": "Done here",
+      "range": {
+        "startLine": 1404,
+        "startChar": 0,
+        "endLine": 1406,
+        "endChar": 95
+      },
+      "revId": "9e1bcdd244ce49f54092733cd13d478ef43dbb55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
