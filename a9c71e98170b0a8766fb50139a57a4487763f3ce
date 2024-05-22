@@ -69,6 +69,24 @@
       "message": "I can reproduce the paragraph test issues now:\n1) 1 failure reason might need an upstream change: https://github.com/googlefonts/fontations/issues/905\n2) @bungeman@google.com - are the SkParagraphTests running with \"setLinearMetrics(true)\" on the FreeType backend (even though the SkFont default seems to be linear metrics \u003d off? Because somewhat surprisingly, I get fontations to pass if I run in linear metrics mode.",
       "revId": "a9c71e98170b0a8766fb50139a57a4487763f3ce",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0367be8b_1fa6da9d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-05-22T12:27:38Z",
+      "side": 1,
+      "message": "I put in a workaround for 1) while we discuss in upstream.\nFor 2) I figure out that the paragraph tests seem to set slight hinting (enum value 1) most of the time, and that the FT backend does not hint the advances for those.",
+      "parentUuid": "5cbb6c92_1cc55dbd",
+      "revId": "a9c71e98170b0a8766fb50139a57a4487763f3ce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
