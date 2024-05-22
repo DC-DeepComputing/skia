@@ -602,6 +602,7 @@ void ImageShaderBlock::AddBlock(const KeyContext& keyContext,
         add_image_uniform_data(keyContext.dict(), imgData, gatherer);
         builder->addBlock(BuiltInCodeSnippetID::kImageShader);
     }
+    // TODO: builder->adddata() here?
 }
 
 //--------------------------------------------------------------------------------------------------
