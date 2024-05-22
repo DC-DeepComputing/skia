@@ -105,6 +105,24 @@
       "parentUuid": "110c5d90_aa7eb6f1",
       "revId": "56273437ea66d1e8bd7d8f9fcf3d70620fb98191",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3929d09_269296b0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-05-22T18:34:17Z",
+      "side": 1,
+      "message": "Especially since what `mandoline` does is the reported issue on hard mode.",
+      "parentUuid": "f47e3ee6_86af4712",
+      "revId": "56273437ea66d1e8bd7d8f9fcf3d70620fb98191",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
