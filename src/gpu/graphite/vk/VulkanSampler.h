@@ -31,6 +31,8 @@ public:
 
     VkSampler vkSampler() const { return fSampler; }
 
+    const VkSampler* constVkSamplerPtr() const { return &fSampler; }
+
     const VulkanSamplerYcbcrConversion* ycbcrConversion() const { return fYcbcrConversion.get(); }
 
 private:
