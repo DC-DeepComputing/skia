@@ -947,27 +947,6 @@ sk_sp<PrecompileShader> PrecompileShadersPriv::Blur(sk_sp<PrecompileShader> wrap
 }
 
 //--------------------------------------------------------------------------------------------------
-class PrecompileBlurMaskFilter : public PrecompileMaskFilter {
-public:
-    PrecompileBlurMaskFilter() {}
-
-private:
-    void addToKey(const KeyContext& keyContext,
-                  PaintParamsKeyBuilder* builder,
-                  PipelineDataGatherer* gatherer,
-                  int desiredCombination) const override {
-        SkASSERT(desiredCombination == 0);
-
-        // TODO: need to add a BlurMaskFilter Block. This is somewhat blocked on figuring out
-        // what we're going to do with the Blur system.
-    }
-};
-
-sk_sp<PrecompileMaskFilter> PrecompileMaskFilters::Blur() {
-    return sk_make_sp<PrecompileBlurMaskFilter>();
-}
-
-//--------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------
 class PrecompileBlendModeColorFilter : public PrecompileColorFilter {
 public:
