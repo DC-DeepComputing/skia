@@ -28,12 +28,14 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkRegion.h"
 #include "include/core/SkShader.h"
+#include "include/core/SkStream.h"
 #include "include/core/SkStrokeRec.h"
 #include "include/core/SkSurface.h"
 #include "include/core/SkTextBlob.h"
 #include "include/core/SkTileMode.h"
 #include "include/core/SkTypes.h"
 #include "include/core/SkVertices.h"
+#include "include/encode/SkPngEncoder.h"
 #include "include/private/base/SkDebug.h"
 #include "include/private/base/SkFloatingPoint.h"
 #include "include/private/base/SkSafe32.h"
@@ -2068,9 +2070,25 @@ void SkCanvas::drawMesh(const SkMesh& mesh, sk_sp<SkBlender> blender, const SkPa
     this->onDrawMesh(mesh, std::move(blender), paint);
 }
 
+int gPathCount = 0;
+
 void SkCanvas::drawPath(const SkPath& path, const SkPaint& paint) {
     TRACE_EVENT0("skia", TRACE_FUNC);
+//    this->clear(SK_ColorWHITE);
     this->onDrawPath(path, paint);
+#if 0
+    SkPixmap pmap;
+    if (this->peekPixels(&pmap)) {
+        if (gPathCount == 15) {
+//            path.dump();
+        }
+        SkString filename = SkStringPrintf("frames/%04d.png", gPathCount++);
+        SkFILEWStream file(filename.c_str());
+        if (file.isValid()) {
+            SkPngEncoder::Encode(&file, pmap, {});
+        }
+    }
+#endif
 }
 
 // Returns true if the rect can be "filled" : non-empty and finite
