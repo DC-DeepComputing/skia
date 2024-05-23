@@ -82,7 +82,8 @@ RendererProvider::RendererProvider(const Caps* caps, StaticBufferManager* buffer
     fPerEdgeAAQuad = makeFromStep(std::make_unique<PerEdgeAAQuadRenderStep>(bufferManager),
                                   DrawTypeFlags::kSimpleShape);
     fAnalyticBlur = makeFromStep(std::make_unique<AnalyticBlurRenderStep>(),
-                                 DrawTypeFlags::kSimpleShape);
+                                 DrawTypeFlags(DrawTypeFlags::kSimpleShape |
+                                               DrawTypeFlags::kMaskBlurred));
     for (PrimitiveType primType : {PrimitiveType::kTriangles, PrimitiveType::kTriangleStrip}) {
         for (bool color : {false, true}) {
             for (bool texCoords : {false, true}) {

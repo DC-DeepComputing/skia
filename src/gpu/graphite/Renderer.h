@@ -236,7 +236,7 @@ public:
     }
 
     const char*   name()           const { return fName.c_str(); }
-    DrawTypeFlags drawTypes()      const { return fDrawTypes; }
+    DrawTypeFlags drawTypes1()      const { return fDrawTypes; }
     int           numRenderSteps() const { return fStepCount;    }
 
     bool requiresMSAA() const {

@@ -18,7 +18,6 @@ namespace skgpu::graphite {
 class PrecompileBase;
 class PrecompileBlender;
 class PrecompileColorFilter;
-class PrecompileMaskFilter;
 class PrecompileShader;
 
 // All of these factory functions will be moved elsewhere once the pre-compile API becomes public
@@ -115,19 +114,6 @@ namespace PrecompileShaders {
                                                      SkSpan<const sk_sp<SkColorSpace>> colorSpaces);
 
 } // namespace PrecompileShaders
-
-//--------------------------------------------------------------------------------------------------
-// Initially this will go next to SkMaskFilter in include/core/SkMaskFilter.h but the
-// SkMaskFilter::MakeBlur factory should be split out or removed. This namespace will follow
-// where ever that factory goes.
-class PrecompileMaskFilters {
-public:
-    // TODO: change SkMaskFilter::MakeBlur to match this and SkImageFilters::Blur (skbug.com/13441)
-    static sk_sp<PrecompileMaskFilter> Blur();
-
-private:
-    PrecompileMaskFilters() = delete;
-};
 
 //--------------------------------------------------------------------------------------------------
 // This will move to be beside SkColorFilters in include/core/SkColorFilter.h

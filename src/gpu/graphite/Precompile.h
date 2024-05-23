@@ -43,7 +43,6 @@ public:
         kBlender,
         kColorFilter,
         kImageFilter,
-        kMaskFilter,
         kShader,
         // TODO: add others: kDrawable, kPathEffect (?!)
     };
@@ -137,11 +136,6 @@ public:
     sk_sp<PrecompileShader> makeWithCTM();
 };
 
-class PrecompileMaskFilter : public PrecompileBase {
-public:
-    PrecompileMaskFilter() : PrecompileBase(Type::kMaskFilter) {}
-};
-
 class PrecompileColorFilter : public PrecompileBase {
 public:
     PrecompileColorFilter() : PrecompileBase(Type::kColorFilter) {}
@@ -173,21 +167,23 @@ public:
         fShaderOptions.assign(shaders.begin(), shaders.end());
     }
 
+#if 0
     void setMaskFilters(SkSpan<const sk_sp<PrecompileMaskFilter>> maskFilters) {
         fMaskFilterOptions.assign(maskFilters.begin(), maskFilters.end());
         if (fMaskFilterOptions.size()) {
             // Currently Graphite only supports BlurMaskFilters which are implemented
             // via BlurImageFiltering
-            fImageFilterOptions |= PrecompileImageFilters::kBlur;
+            fImageFilterOptions1 |= PrecompileImageFilters::kBlur;
         }
     }
+#endif
 
     void setColorFilters(SkSpan<const sk_sp<PrecompileColorFilter>> colorFilters) {
         fColorFilterOptions.assign(colorFilters.begin(), colorFilters.end());
     }
 
     void setImageFilters(SkEnumBitMask<PrecompileImageFilters> options) {
-        fImageFilterOptions = options;
+        fImageFilterOptions1 = options;
     }
 
     void setBlendModes(SkSpan<SkBlendMode> blendModes) {
@@ -206,6 +202,9 @@ public:
     void setClipShaders(SkSpan<const sk_sp<PrecompileShader>> clipShaders);
 
     void setDither(bool dither) { fDither = dither; }
+    void setBlursMask() {
+        fBlursMask = true;
+    }
 
     typedef std::function<void(UniquePaintParamsID id,
                                DrawTypeFlags,
@@ -220,7 +219,6 @@ private:
     friend class PaintOptionsPriv;
 
     int numShaderCombinations() const;
-    int numMaskFilterCombinations() const;
     int numColorFilterCombinations() const;
     // TODO: need to decompose imagefilters into component draws
     int numBlendModeCombinations() const;
@@ -244,13 +242,13 @@ private:
         const ProcessCombination& processCombination) const;
 
     std::vector<sk_sp<PrecompileShader>> fShaderOptions;
-    std::vector<sk_sp<PrecompileMaskFilter>> fMaskFilterOptions;
     std::vector<sk_sp<PrecompileColorFilter>> fColorFilterOptions;
-    SkEnumBitMask<PrecompileImageFilters> fImageFilterOptions = PrecompileImageFilters::kNone;
+    SkEnumBitMask<PrecompileImageFilters> fImageFilterOptions1 = PrecompileImageFilters::kNone;
     SkTDArray<SkBlendMode> fBlendModeOptions;
     skia_private::TArray<sk_sp<PrecompileBlender>> fBlenderOptions;
     std::vector<sk_sp<PrecompileShader>> fClipShaderOptions;
     bool fDither = false;
+    bool fBlursMask = false; // equivalent to a BlurMaskFilter being used in the main API
 };
 
 } // namespace skgpu::graphite
