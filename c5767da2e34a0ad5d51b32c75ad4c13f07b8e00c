@@ -39,6 +39,30 @@
       },
       "revId": "c5767da2e34a0ad5d51b32c75ad4c13f07b8e00c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf3cb577_4014e3f0",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 478,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-05-23T10:50:16Z",
+      "side": 1,
+      "message": "Good point, switching back and forth between the FT backend and Fontations numerous times, I forgot that this should only be written to in the constructor. Took a copy into a local.",
+      "parentUuid": "0b27bbe9_22549a81",
+      "range": {
+        "startLine": 478,
+        "startChar": 12,
+        "endLine": 478,
+        "endChar": 28
+      },
+      "revId": "c5767da2e34a0ad5d51b32c75ad4c13f07b8e00c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
