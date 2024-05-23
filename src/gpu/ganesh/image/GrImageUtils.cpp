@@ -805,7 +805,12 @@ public:
         return SK_ScalarInfinity;
     }
 
-    bool supportsOnlyDecalTiling() const override { return false; }
+    bool supportsOnlyDecalTiling() const override {
+        // Technically GrBlurUtils::GaussianBlur() supports more tile modes but returning
+        // false would trigger many layout tests in chrome; it's better to just handle those
+        // rebaselines when moving Ganesh off of GrBlurUtils entirely.
+        return true;
+    }
 
     sk_sp<SkSpecialImage> blur(SkSize sigma,
                                sk_sp<SkSpecialImage> input,
