@@ -2210,9 +2210,11 @@ sk_sp<SkSurface> GraphiteSink::makeSurface(skgpu::graphite::Recorder* recorder,
     auto ii = SkImageInfo::Make(dimensions, this->colorInfo());
     switch (fSurfaceType) {
         case SurfaceType::kDefault:
+            SkDebugf("render target surface for DM\n");
             return SkSurfaces::RenderTarget(recorder, ii, skgpu::Mipmapped::kNo, &props);
 
         case SurfaceType::kWrapTextureView:
+            SkDebugf("backend texture view surface for DM\n");
             return sk_gpu_test::MakeBackendTextureViewSurface(recorder,
                                                               ii,
                                                               skgpu::Mipmapped::kNo,
