@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11c4d15e_563f5f0d",
+        "filename": "src/gpu/ganesh/GrGeometryProcessor.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 456,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-05-23T14:25:47Z",
+      "side": 1,
+      "message": "One possible alternative is to move the MSVC builders to C++20 and use `/std\u003dc++20` now. We would still have the clang-cl builders keeping things C++17 on Windows, and it would be an interesting canary for keeping things C++20 compatible.",
+      "revId": "9c56c8087d90703c0226fde1e890c6f8efe175a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
