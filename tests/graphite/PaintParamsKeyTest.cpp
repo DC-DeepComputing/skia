@@ -1541,9 +1541,9 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
 
     MaskFilterType maskFilters[] = {
             MaskFilterType::kNone,
-#if EXPANDED_SET
+//#if EXPANDED_SET
             MaskFilterType::kBlur,
-#endif
+//#endif
     };
 
     ImageFilterType imageFilters[] = {
@@ -1561,11 +1561,11 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
 #endif
     };
 
-#if EXPANDED_SET
+//#if EXPANDED_SET
     size_t kExpected = std::size(shaders) * std::size(blenders) * std::size(colorFilters) *
                        std::size(maskFilters) * std::size(imageFilters) * std::size(clips);
     int current = 0;
-#endif
+//#endif
 
     for (auto shader : shaders) {
         for (auto blender : blenders) {
@@ -1573,10 +1573,10 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
                 for (auto mf : maskFilters) {
                     for (auto imageFilter : imageFilters) {
                         for (auto clip : clips) {
-#if EXPANDED_SET
+//#if EXPANDED_SET
                             SkDebugf("%d/%zu\n", current, kExpected);
                             ++current;
-#endif
+//#endif
 
                             run_test(reporter, context, testContext, precompileKeyContext,
                                      drawData, shader, blender, cf, mf, imageFilter, clip);

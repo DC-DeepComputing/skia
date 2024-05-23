@@ -172,8 +172,7 @@ public:
     }
 
     void setMaskFilters(SkSpan<const sk_sp<PrecompileMaskFilter>> maskFilters) {
-        fMaskFilterOptions.assign(maskFilters.begin(), maskFilters.end());
-        if (fMaskFilterOptions.size()) {
+        if (maskFilters.size()) {
             // Currently Graphite only supports BlurMaskFilters which are implemented
             // via BlurImageFiltering
             fImageFilterOptions |= PrecompileImageFilters::kBlur;
@@ -218,7 +217,6 @@ private:
     friend class PaintOptionsPriv;
 
     int numShaderCombinations() const;
-    int numMaskFilterCombinations() const;
     int numColorFilterCombinations() const;
     // TODO: need to decompose imagefilters into component draws
     int numBlendModeCombinations() const;
@@ -242,7 +240,6 @@ private:
         const ProcessCombination& processCombination) const;
 
     std::vector<sk_sp<PrecompileShader>> fShaderOptions;
-    std::vector<sk_sp<PrecompileMaskFilter>> fMaskFilterOptions;
     std::vector<sk_sp<PrecompileColorFilter>> fColorFilterOptions;
     SkEnumBitMask<PrecompileImageFilters> fImageFilterOptions = PrecompileImageFilters::kNone;
     SkTDArray<SkBlendMode> fBlendModeOptions;
