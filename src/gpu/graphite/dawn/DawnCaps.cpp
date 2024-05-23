@@ -193,6 +193,7 @@ TextureInfo DawnCaps::getDefaultSampledTextureInfo(SkColorType colorType,
 
     wgpu::TextureFormat format = this->getFormatFromColorType(colorType);
     if (format == wgpu::TextureFormat::Undefined) {
+        SkDebugf("unsupported color format: %d\n", (int) colorType);
         return {};
     }
 
@@ -203,6 +204,7 @@ TextureInfo DawnCaps::getDefaultSampledTextureInfo(SkColorType colorType,
     info.fViewFormat = format;
     info.fUsage = usage;
 
+    SkDebugf("valid info, usage = %d\n", (int) usage);
     return info;
 }
 

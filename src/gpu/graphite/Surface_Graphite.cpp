@@ -258,6 +258,10 @@ sk_sp<SkSurface> WrapBackendTexture(Recorder* recorder,
     }
     texture->setReleaseCallback(std::move(releaseHelper));
 
+    DawnTextureInfo dawnInfo;
+    if (texture->textureInfo().getDawnTextureInfo(&dawnInfo)) {
+        SkDebugf("wrapped texture info usage = %d\n", (int) dawnInfo.fUsage);
+    }
     sk_sp<TextureProxy> proxy = TextureProxy::Wrap(std::move(texture));
     SkISize deviceSize = proxy->dimensions();
     // Use kLoad for this device to preserve the existing contents of the wrapped backend texture.
@@ -267,6 +271,7 @@ sk_sp<SkSurface> WrapBackendTexture(Recorder* recorder,
                                         info,
                                         SkSurfacePropsCopyOrDefault(props),
                                         LoadOp::kLoad);
+    SkDebugf("device has read texture view? %d\n", SkToBool(device->readSurfaceView()));
     return device ? sk_make_sp<Surface>(std::move(device)) : nullptr;
 }
 

@@ -195,6 +195,13 @@ sk_sp<ManagedGraphiteTexture> ManagedGraphiteTexture::MakeUnInit(Recorder* recor
         return nullptr;
     }
 
+    skgpu::graphite::DawnTextureInfo dawnInfo;
+    if (info.getDawnTextureInfo(&dawnInfo)) {
+        SkDebugf("valid backend texture with usage = %d\n", (int) dawnInfo.fUsage);
+    }
+    if (mbet->fTexture.info().getDawnTextureInfo(&dawnInfo)) {
+        SkDebugf("actual texture with usage = %d\n", (int) dawnInfo.fUsage);
+    }
     recorder->addFinishInfo({mbet->releaseContext(), FinishedProc});
 
     return mbet;
