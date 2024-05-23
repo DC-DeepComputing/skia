@@ -22,6 +22,7 @@
 #include "include/utils/SkParsePath.h"
 #include "src/base/SkFloatBits.h"
 #include "src/base/SkRandom.h"
+#include "src/core/SkStroke.h"
 #include "tools/ToolUtils.h"
 
 #include <string.h>
@@ -621,4 +622,166 @@ DEF_SIMPLE_GM(skbug12244, canvas, 150, 150) {
 
     canvas->translate(20.f, 20.f);
     canvas->drawPath(path, p);
+}
+
+DEF_SIMPLE_GM(b340982297, canvas, 500, 500) {
+    SkPath path;
+    path.setFillType(SkPathFillType::kWinding);
+    path.moveTo(240.012115f, 136.215744f);
+    path.lineTo(241.054535f, 135.415741f);
+    path.cubicTo(241.975739f, 134.736954f, 242.945435f, 134.082413f, 243.915131f, 133.403625f);
+    path.lineTo(245.393921f, 132.409683f);
+    path.lineTo(246.169678f, 131.924835f);
+    path.lineTo(247.503021f, 130.979385f);
+    path.lineTo(248.763626f, 130.106659f);
+    path.lineTo(249.539383f, 129.597565f);
+    path.lineTo(252.230286f, 127.852112f);
+    path.cubicTo(254.21817f, 126.615753f, 256.303009f, 125.427872f, 258.43634f, 124.288483f);
+    path.lineTo(259.090881f, 123.924835f);
+    path.lineTo(261.248474f, 122.809677f);
+    path.cubicTo(262.84848f, 122.03392f, 264.496948f, 121.258179f, 266.290894f, 120.482422f);
+    path.lineTo(267.503021f, 119.973328f);
+    path.cubicTo(269.709076f, 119.027863f, 271.963623f, 118.179398f, 274.387878f, 117.330902f);
+    path.lineTo(275.575745f, 116.943024f);
+    path.cubicTo(277.903015f, 116.167267f, 280.254517f, 115.48848f, 282.775757f, 114.85817f);
+    path.lineTo(285.757568f, 114.130905f);
+    path.cubicTo(287.69696f, 113.694534f, 289.58786f, 113.330887f, 291.818176f, 112.967255f);
+    path.lineTo(294.387878f, 112.579376f);
+    path.cubicTo(296.424225f, 112.288467f, 298.412109f, 112.070297f, 300.73938f, 111.876358f);
+    path.lineTo(303.115143f, 111.706665f);
+    path.cubicTo(305.272705f, 111.585449f, 307.357544f, 111.512711f, 309.442413f, 111.512711f);
+    path.cubicTo(318.63028f, 111.512711f, 327.721191f, 112.676346f, 336.569672f, 114.955139f);
+    path.cubicTo(345.151489f, 117.161194f, 353.442413f, 120.433929f, 361.248474f, 124.700592f);
+    path.cubicTo(364.303009f, 126.349075f, 367.284821f, 128.191513f, 370.193909f, 130.13089f);
+    path.cubicTo(373.078766f, 132.094543f, 375.866638f, 134.179382f, 378.533325f, 136.409698f);
+    path.cubicTo(385.224213f, 141.936966f, 391.236359f, 148.264221f, 396.424255f, 155.246048f);
+    path.cubicTo(398.509094f, 158.03392f, 400.448456f, 160.918762f, 402.266632f, 163.924835f);
+    path.cubicTo(412.569672f, 180.918762f, 417.975769f, 200.33696f, 417.975769f, 220.312714f);
+    path.cubicTo(417.975769f, 222.276352f, 417.927246f, 224.288467f, 417.80603f, 226.494522f);
+    path.lineTo(417.733307f, 227.536957f);
+    path.lineTo(417.442383f, 231.197556f);
+    path.lineTo(417.296936f, 232.579376f);
+    path.lineTo(417.248474f, 232.991501f);
+    path.lineTo(416.763611f, 236.506653f);
+    path.lineTo(416.618164f, 237.549072f);
+    path.lineTo(416.54541f, 237.912704f);
+    path.lineTo(416.230286f, 239.779373f);
+    path.lineTo(415.575745f, 243.052109f);
+    path.lineTo(415.502991f, 243.391495f);
+    path.lineTo(415.236328f, 244.55513f);
+    path.lineTo(414.945435f, 245.864227f);
+    path.lineTo(414.266663f, 248.482407f);
+    path.lineTo(413.854492f, 250.009674f);
+    path.lineTo(413.345428f, 251.70665f);
+    path.lineTo(412.763611f, 253.597565f);
+    path.lineTo(412.206024f, 255.294525f);
+    path.lineTo(411.624207f, 256.991486f);
+    path.lineTo(411.042419f, 258.567261f);
+    path.lineTo(410.266663f, 260.555145f);
+    path.lineTo(409.563599f, 262.324829f);
+    path.lineTo(409.199951f, 263.149078f);
+    path.lineTo(408.884827f, 263.949066f);
+    path.cubicTo(408.375763f, 265.185425f, 407.818176f, 266.470276f, 407.187866f, 267.82785f);
+    path.lineTo(406.703003f, 268.846039f);
+    path.lineTo(406.557556f, 269.08847f);
+    path.lineTo(406.315125f, 269.694519f);
+    path.lineTo(405.224243f, 272.070282f);
+    path.cubicTo(402.751526f, 277.452087f, 399.260559f, 283.464233f, 394.824219f, 290.106659f);
+    path.lineTo(393.36969f, 292.215729f);
+    path.lineTo(390.945435f, 295.682404f);
+    path.lineTo(389.296936f, 297.985443f);
+    path.lineTo(387.599976f, 300.288452f);
+    path.lineTo(385.878784f, 302.567261f);
+    path.lineTo(384.933319f, 303.779358f);
+    path.lineTo(383.139374f, 306.106659f);
+    path.lineTo(382.169678f, 307.343018f);
+    path.lineTo(380.254517f, 309.743011f);
+    path.lineTo(378.290894f, 312.167236f);
+    path.lineTo(376.303009f, 314.567261f);
+    path.lineTo(375.26059f, 315.82785f);
+    path.lineTo(373.17572f, 318.276337f);
+    path.lineTo(371.06665f, 320.749084f);
+    path.lineTo(368.884827f, 323.246033f);
+    path.lineTo(366.678772f, 325.743011f);
+    path.lineTo(364.448456f, 328.23999f);
+    path.lineTo(362.145447f, 330.736938f);
+    path.lineTo(359.866638f, 333.233917f);
+    path.lineTo(358.654541f, 334.518768f);
+    path.lineTo(356.10907f, 337.209656f);
+    path.cubicTo(354.678772f, 338.688446f, 353.248474f, 340.167236f, 351.745422f, 341.694519f);
+    path.lineTo(348.933319f, 344.506653f);
+    path.cubicTo(341.006042f, 352.336945f, 332.73938f, 359.803619f, 324.351501f, 366.664215f);
+    path.lineTo(321.612122f, 368.894531f);
+    path.cubicTo(312.230286f, 376.409668f, 303.06665f, 382.858154f, 294.751495f, 387.803589f);
+    path.cubicTo(278.193909f, 397.646057f, 259.163635f, 402.712708f, 239.8909f, 402.421814f);
+    path.lineTo(238.412109f, 402.421814f);
+    path.cubicTo(220.812103f, 402.397552f, 203.575745f, 397.961182f, 188.10907f, 389.452087f);
+    path.lineTo(186.678772f, 388.627869f);
+    path.lineTo(185.248474f, 387.803589f);
+    path.cubicTo(165.781799f, 376.23999f, 142.509094f, 356.942993f, 122.460594f, 335.682404f);
+    path.lineTo(121.248474f, 334.421814f);
+    path.lineTo(118.921211f, 331.900574f);
+    path.lineTo(116.618172f, 329.379364f);
+    path.lineTo(114.387871f, 326.906647f);
+    path.lineTo(113.224228f, 325.621796f);
+    path.lineTo(111.018173f, 323.124817f);
+    path.lineTo(108.860596f, 320.6521f);
+    path.lineTo(106.727264f, 318.179382f);
+    path.lineTo(104.642426f, 315.706635f);
+    path.lineTo(102.606049f, 313.258148f);
+    path.lineTo(100.618179f, 310.833923f);
+    path.lineTo(98.678772f, 308.409668f);
+    path.lineTo(96.7878723f, 306.009674f);
+    path.lineTo(94.969696f, 303.658173f);
+    path.lineTo(93.1757355f, 301.306641f);
+    path.lineTo(91.4545441f, 298.97937f);
+    path.lineTo(89.7575684f, 296.6521f);
+    path.lineTo(88.2060547f, 294.470276f);
+    path.lineTo(87.1151428f, 292.942993f);
+    path.lineTo(86.5575714f, 292.118774f);
+    path.lineTo(86.2941284f, 291.730286f);
+
+    SkPaint paint;
+    paint.setStyle(SkPaint::kStroke_Style);
+    paint.setAntiAlias(true);
+    paint.setStrokeCap(SkPaint::kRound_Cap);
+    paint.setStrokeJoin(SkPaint::kRound_Join);
+    paint.setStrokeWidth(29.0908);
+
+    canvas->drawPath(path, paint);
+}
+
+DEF_SIMPLE_GM(b340982297_reduced, canvas, 500, 500) {
+    SkPath path;
+    path.setFillType(SkPathFillType::kWinding);
+    path.moveTo(417.733307f, 227.536957f);
+    path.lineTo(417.442383f, 231.197556f);
+    path.lineTo(417.296936f, 232.579376f);
+    path.lineTo(417.248474f, 232.991501f);
+
+    SkPaint paint;
+    paint.setStyle(SkPaint::kStroke_Style);
+    paint.setAntiAlias(true);
+    paint.setStrokeCap(SkPaint::kSquare_Cap);
+    paint.setStrokeWidth(29.0908);
+
+    canvas->drawPath(path, paint);
+}
+
+DEF_SIMPLE_GM(b340982297_filled, canvas, 500, 500) {
+    SkPath path;
+    path.setFillType(SkPathFillType::kWinding);
+    path.moveTo(33.3853455f, 4.18963623f);
+    path.lineTo(29.995636f, 39.1360626f);
+    path.lineTo(2.83145142f, 21.056778f);
+    path.lineTo(2.97689819f, 19.6749573f);
+    path.lineTo(17.4423828f, 21.1975555f);
+    path.lineTo(2.94268799f, 20.0451965f);
+    path.lineTo(4.38595581f, 1.88491821f);
+    path.close();
+
+    SkPaint paint;
+    paint.setAntiAlias(true);
+
+    canvas->drawPath(path, paint);
 }
