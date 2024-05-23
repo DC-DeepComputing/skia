@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4fc5cefc_7055631e",
+        "filename": "src/gpu/ganesh/ops/TessellationPathRenderer.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-05-23T20:00:32Z",
+      "side": 1,
+      "message": "I would add a comment here saying that we pass in nullptr for the output chopped path, so this just returns if we\u0027d be able to chop the path simple enough for our requirements.",
+      "range": {
+        "startLine": 177,
+        "startChar": 5,
+        "endLine": 177,
+        "endChar": 84
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "bae35ec4_a1b17647",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/ganesh/ops/TessellationPathRenderer.cpp",
+              "range": {
+                "startLine": 177,
+                "startChar": 0,
+                "endLine": 177,
+                "endChar": 0
+              },
+              "replacement": "    // We pass in nullptr for the output chopped path, so this just returns if we\u0027d be able to chop\n    // the path small enough for tessellation.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "f98535d79a34d993ecd923fd1377b1c49413a95a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
