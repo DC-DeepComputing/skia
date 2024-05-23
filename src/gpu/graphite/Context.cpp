@@ -183,29 +183,20 @@ struct Context::AsyncParams {
 
     bool validate() const {
         if (!fSrcImage) {
-            return false;
-        }
-        // SkImage handling. If we used AsyncParams<Image_Base> the is_same_v guard
-        // wouldn't be necessary, but then all of the public functions would have to
-        // handle checking for if the SkImage was graphite-backed.
-        if constexpr (std::is_same_v<SrcPixels, SkImage>) {
-            if (!as_IB(fSrcImage)->isGraphiteBacked() ||
-                static_cast<const Image_Base*>(fSrcImage)->isProtected()) {
-                return false;
-            }
-        } else {
-            if (fSrcImage->isProtected()) {
-                return false;
-            }
-        }
-
-        if (!SkIRect::MakeSize(fSrcImage->dimensions()).contains(fSrcRect)) {
-            return false;
-        }
-        if (!SkImageInfoIsValid(fDstImageInfo)) {
+            SkDebugf("null source\n");
             return false;
         }
         if (fSrcImage->isProtected()) {
+            SkDebugf("source is protected2\n");
+            return false;
+        }
+
+        if (!SkIRect::MakeSize(fSrcImage->dimensions()).contains(fSrcRect)) {
+            SkDebugf("bas src rect\n");
+            return false;
+        }
+        if (!SkImageInfoIsValid(fDstImageInfo)) {
+            SkDebugf("invalid dst image info\n");
             return false;
         }
         return true;
@@ -331,6 +322,7 @@ void Context::asyncReadTexture(std::unique_ptr<Recorder> recorder,
 
     // We can get here directly from surface or testing-only read pixels, so re-validate
     if (!params.validate()) {
+        SkDebugf("asyncReadTexture validation failed\n");
         return params.fail();
     }
     PixelTransferResult transferResult = this->transferPixels(recorder.get(),
@@ -642,6 +634,7 @@ Context::PixelTransferResult Context::transferPixels(Recorder* recorder,
 
     const Caps* caps = fSharedContext->caps();
     if (!srcProxy || !caps->supportsReadPixels(srcProxy->textureInfo())) {
+        SkDebugf("does not support read pixels\n");
         return {};
     }
 
@@ -653,6 +646,7 @@ Context::PixelTransferResult Context::transferPixels(Recorder* recorder,
                                                srcProxy->textureInfo(),
                                                dstColorInfo.colorType());
     if (supportedColorType == kUnknown_SkColorType) {
+        SkDebugf("no supported color type\n");
         return {};
     }
 
@@ -662,6 +656,7 @@ Context::PixelTransferResult Context::transferPixels(Recorder* recorder,
     uint32_t legalReadChannels = SkColorTypeChannelFlags(supportedColorType);
     uint32_t srcChannels = SkColorTypeChannelFlags(srcColorType);
     if ((~legalReadChannels & dstChannels) & srcChannels) {
+        SkDebugf("bad channels\n");
         return {};
     }
 
@@ -671,6 +666,7 @@ Context::PixelTransferResult Context::transferPixels(Recorder* recorder,
     sk_sp<Buffer> buffer = fResourceProvider->findOrCreateBuffer(
             size, BufferType::kXferGpuToCpu, AccessPattern::kHostVisible, "TransferToCpu");
     if (!buffer) {
+        SkDebugf("no transfer buffer\n");
         return {};
     }
 
@@ -684,6 +680,7 @@ Context::PixelTransferResult Context::transferPixels(Recorder* recorder,
     const bool addTasksDirectly = !SkToBool(recorder);
 
     if (!copyTask || (addTasksDirectly && !fQueueManager->addTask(copyTask.get(), this))) {
+        SkDebugf("tasks failed\n");
         return {};
     } else if (!addTasksDirectly) {
         // Add the task to the Recorder instead of the QueueManager if that's been required for
@@ -692,6 +689,7 @@ Context::PixelTransferResult Context::transferPixels(Recorder* recorder,
     }
     sk_sp<SynchronizeToCpuTask> syncTask = SynchronizeToCpuTask::Make(buffer);
     if (!syncTask || (addTasksDirectly && !fQueueManager->addTask(syncTask.get(), this))) {
+        SkDebugf("tasks failed2\n");
         return {};
     } else if (!addTasksDirectly) {
         recorder->priv().add(std::move(syncTask));

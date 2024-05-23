@@ -173,9 +173,14 @@ sk_sp<SkSurface> MakeBackendTextureViewSurface(skgpu::graphite::Recorder* record
     textureInfo.fMipmapped   = mipmapped;
     textureInfo.fSampleCount = texture.GetSampleCount();
     textureInfo.fUsage       = texture.GetUsage();
+    SkDebugf("usage passed to WrapBackendTexture = %d\n", (int) textureInfo.fUsage);
 
     skgpu::graphite::BackendTexture betFromView(ii.dimensions(), textureInfo, view.Get());
 
+    skgpu::graphite::DawnTextureInfo dawnInfo;
+    if (betFromView.info().getDawnTextureInfo(&dawnInfo)) {
+        SkDebugf("view's info usage: %d\n", (int) dawnInfo.fUsage);
+    }
     auto release = [](void* ctx) { static_cast<ManagedGraphiteTexture*>(ctx)->unref(); };
 
     return SkSurfaces::WrapBackendTexture(recorder,
