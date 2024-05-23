@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d985172a_4f628b4d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-05-23T14:47:21Z",
+      "side": 1,
+      "message": "I like the idea of C++20 canary builders. Having all MSVC builders also be the C++20 canaries seems like it would be confusing (easy to mis-diagnose why the MSVC builders are complaining about a change).",
+      "revId": "9c56c8087d90703c0226fde1e890c6f8efe175a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "11c4d15e_563f5f0d",
