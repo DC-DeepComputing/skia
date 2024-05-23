@@ -50,7 +50,6 @@ bool VulkanTexture::MakeVkImage(const VulkanSharedContext* sharedContext,
     bool isLinear = spec.fImageTiling == VK_IMAGE_TILING_LINEAR;
     VkImageLayout initialLayout = isLinear ? VK_IMAGE_LAYOUT_PREINITIALIZED
                                            : VK_IMAGE_LAYOUT_UNDEFINED;
-
     // Create Image
     VkSampleCountFlagBits vkSamples;
     if (!SampleCountToVkSampleCount(info.numSamples(), &vkSamples)) {
