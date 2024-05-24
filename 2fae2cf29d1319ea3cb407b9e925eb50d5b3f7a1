@@ -16,6 +16,23 @@
       "message": "Turns out that there were two slightly different cases to cover. This CL now solves them both (with a GM that exercises each case independently). It\u0027s also guarded to not impact Chromium yet, so I can do the rebaselines for all of these changes at once. G3 canary was clean (just one flake - all impacted clients have been removed from presubmit).",
       "revId": "2fae2cf29d1319ea3cb407b9e925eb50d5b3f7a1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bce603f2_15ac7ae9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-05-24T16:48:22Z",
+      "side": 1,
+      "message": "Some of the changed GMs look to now have too much coverage in some places, an example that\u0027s easier to reason about I think is `polygons` where one of the circles now looks non-symmetrical.",
+      "revId": "2fae2cf29d1319ea3cb407b9e925eb50d5b3f7a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
