@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "95d5a12e_e07eb451",
+        "filename": "src/gpu/ganesh/ops/TessellationPathRenderer.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 19319
+      },
+      "writtenOn": "2024-05-24T16:20:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3ec1320f_66f4b87d",
+      "range": {
+        "startLine": 75,
+        "startChar": 0,
+        "endLine": 81,
+        "endChar": 2
+      },
+      "revId": "8c806970da710aba6fa76c20ca201812c0eec640",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "37ed344d_fe8b6b50",
@@ -82,6 +106,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9c919c25_3872892a",
+        "filename": "src/gpu/ganesh/ops/TessellationPathRenderer.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 19319
+      },
+      "writtenOn": "2024-05-24T16:20:23Z",
+      "side": 1,
+      "message": "Nice! Thanks for the suggestion.",
+      "parentUuid": "37ed344d_fe8b6b50",
+      "range": {
+        "startLine": 93,
+        "startChar": 47,
+        "endLine": 94,
+        "endChar": 63
+      },
+      "revId": "8c806970da710aba6fa76c20ca201812c0eec640",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c855797b_f341abbb",
@@ -95,6 +143,30 @@
       "writtenOn": "2024-05-24T15:23:31Z",
       "side": 1,
       "message": "With `ChopPathIfNecessary` returning a bool, all of this can simply be `SkAssertResult(ChopPathIfNecessary(...));`",
+      "range": {
+        "startLine": 193,
+        "startChar": 4,
+        "endLine": 198,
+        "endChar": 49
+      },
+      "revId": "8c806970da710aba6fa76c20ca201812c0eec640",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f8c399aa_4803af02",
+        "filename": "src/gpu/ganesh/ops/TessellationPathRenderer.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 19319
+      },
+      "writtenOn": "2024-05-24T16:20:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c855797b_f341abbb",
       "range": {
         "startLine": 193,
         "startChar": 4,
