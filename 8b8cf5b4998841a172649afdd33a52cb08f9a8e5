@@ -1,0 +1,65 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad08d1b4_c78e5139",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-24T12:35:39Z",
+      "side": 0,
+      "message": "It turns out that SkImage has an isProtected() method too, so this extra logic was unnecessary and we can just get away with template duck typing.",
+      "range": {
+        "startLine": 191,
+        "startChar": 0,
+        "endLine": 200,
+        "endChar": 9
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "cf7157c8_48184912",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/Context.cpp",
+              "range": {
+                "startLine": 188,
+                "startChar": 0,
+                "endLine": 191,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "src/gpu/graphite/Context.cpp",
+              "range": {
+                "startLine": 207,
+                "startChar": 0,
+                "endLine": 208,
+                "endChar": 0
+              },
+              "replacement": "    if (!params.validate() || params.fSrcImage-\u003eisProtected()) {\n"
+            },
+            {
+              "path": "src/gpu/graphite/Context.cpp",
+              "range": {
+                "startLine": 319,
+                "startChar": 0,
+                "endLine": 320,
+                "endChar": 0
+              },
+              "replacement": "    if (!params.validate() || params.fSrcImage-\u003eisProtected()) {\n"
+            }
+          ]
+        }
+      ],
+      "revId": "8b8cf5b4998841a172649afdd33a52cb08f9a8e5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

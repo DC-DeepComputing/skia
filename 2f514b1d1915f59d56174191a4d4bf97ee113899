@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a51d9822_bc1da21c",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 829,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-24T12:35:39Z",
+      "side": 1,
+      "message": "asyncReadTexture stopped doing copy-as-draw fallback, but the fakewebgpu config uses texture views which aren\u0027t copyable, so copy-as-draw is required.",
+      "range": {
+        "startLine": 806,
+        "startChar": 0,
+        "endLine": 829,
+        "endChar": 5
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "695023f8_b269c185",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/Context.cpp",
+              "range": {
+                "startLine": 818,
+                "startChar": 0,
+                "endLine": 819,
+                "endChar": 0
+              },
+              "replacement": "    if (fContext-\u003efSharedContext-\u003ecaps()-\u003esupportsReadPixels(textureProxy-\u003etextureInfo())) {\n        fContext-\u003easyncReadTexture(/*recorder\u003d*/nullptr,\n                                   {textureProxy, rect, pm.info(), asyncCallback, \u0026asyncContext},\n                                   srcImageInfo.colorInfo());\n    } else {\n"
+            },
+            {
+              "path": "src/gpu/graphite/Context.cpp",
+              "range": {
+                "startLine": 825,
+                "startChar": 0,
+                "endLine": 829,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "2f514b1d1915f59d56174191a4d4bf97ee113899",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
