@@ -10,6 +10,7 @@
 
 #include "include/core/SkData.h"
 #include "include/core/SkRefCnt.h"
+#include "src/base/SkEndian.h"
 
 #include <cstddef>
 #include <cstdint>
@@ -22,18 +23,18 @@
 class SkTiffImageFileDirectory {
 public:
     /*
-     * Parse |data| to read the endian-ness into |outLittleEndian| and the IFD offset into
+     * Parse |data| to read the endian-ness into |outEndian| and the IFD offset into
      * |outIfdOffset|. Return true if the endian-ness was successfully parsed and there was
      * the IFD offset was read.
      */
-    static bool ParseHeader(const SkData* data, bool* outLittleEndian, uint32_t* outIfdOffset);
+    static bool ParseHeader(const SkData* data, SkEndian* outEndian, uint32_t* outIfdOffset);
 
     /*
      * Create an object for parsing an IFD at offset |ifdOffset| inside |data| which has endianness
-     * indicated by |littleEndian|.
+     * indicated by |endian|.
      */
     static std::unique_ptr<SkTiffImageFileDirectory> MakeFromOffset(sk_sp<SkData> data,
-                                                                    bool littleEndian,
+                                                                    SkEndian endian,
                                                                     uint32_t ifdOffset);
 
     /*
@@ -93,7 +94,7 @@ private:
     static size_t BytesForType(uint16_t type);
 
     SkTiffImageFileDirectory(sk_sp<SkData> data,
-                             bool littleEndian,
+                             SkEndian endian,
                              uint32_t offset,
                              uint16_t ifdNumEntries,
                              uint32_t ifdNextOffset);
@@ -121,7 +122,7 @@ private:
     const sk_sp<SkData> fData;
 
     // True if the data is little endian.
-    const bool fLittleEndian;
+    const SkEndian fEndian;
 
     // The offset where the IFD starts.
     const uint32_t fOffset;

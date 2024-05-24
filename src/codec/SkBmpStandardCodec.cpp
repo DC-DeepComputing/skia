@@ -106,14 +106,14 @@ SkCodec::Result SkBmpStandardCodec::onGetPixels(const SkImageInfo& dstInfo,
         // Fill in the color table
         uint32_t i = 0;
         for (; i < numColorsToRead; i++) {
-            uint8_t blue = get_byte(cBuffer.get(), i*fBytesPerColor);
-            uint8_t green = get_byte(cBuffer.get(), i*fBytesPerColor + 1);
-            uint8_t red = get_byte(cBuffer.get(), i*fBytesPerColor + 2);
+            uint8_t blue = get_uint8(cBuffer.get(), i * fBytesPerColor);
+            uint8_t green = get_uint8(cBuffer.get(), i * fBytesPerColor + 1);
+            uint8_t red = get_uint8(cBuffer.get(), i * fBytesPerColor + 2);
             uint8_t alpha;
             if (fIsOpaque) {
                 alpha = 0xFF;
             } else {
-                alpha = get_byte(cBuffer.get(), i*fBytesPerColor + 3);
+                alpha = get_uint8(cBuffer.get(), i * fBytesPerColor + 3);
             }
             colorTable[i] = packARGB(alpha, red, green, blue);
         }

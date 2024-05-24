@@ -196,4 +196,36 @@ static inline void SkEndianSwap64s(uint64_t array[], int count) {
         SK_OT_BYTE f0 : 1;
 #endif
 
+/*
+ * Some functions (e.g, Tiff parsing) can have runtime parameterized endian-ness.
+ * This enum and these functions can be used for such conversions.
+ */
+enum class SkEndian {
+    kBig,
+    kLittle,
+#ifdef SK_CPU_LENDIAN
+    kNative = kLittle,
+#else  // SK_CPU_BENDIAN
+    kNative = kBig,
+#endif
+};
+
+/*
+ * The parameterized SkEndian_Read functions will read a value from |data|, and will convert
+ * from the endian-ness specified by |endian| to the native endian-ness.
+ */
+inline uint16_t SkEndian_ReadU16(const void* data, SkEndian endian) {
+    uint16_t value = *reinterpret_cast<const uint16_t*>(data);
+    return endian == SkEndian::kNative ? value : SkEndianSwap16(value);
+}
+
+inline uint32_t SkEndian_ReadU32(const void* data, SkEndian endian) {
+    uint32_t value = *reinterpret_cast<const uint32_t*>(data);
+    return endian == SkEndian::kNative ? value : SkEndianSwap32(value);
+}
+
+inline uint32_t SkEndian_ReadS32(const void* data, SkEndian endian) {
+    return SkEndian_ReadU32(data, endian);
+}
+
 #endif
