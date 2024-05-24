@@ -424,12 +424,11 @@ public:
 
     static SkPath MakePath(const SkPathVerbAnalysis& analysis,
                            const SkPoint points[],
-                           const uint8_t verbs[],
-                           int verbCount,
+                           SkPathRef::VerbsArray verbs,
                            const SkScalar conics[],
                            SkPathFillType fillType,
                            bool isVolatile) {
-        return SkPath::MakeInternal(analysis, points, verbs, verbCount, conics, fillType,
+      return SkPath::MakeInternal(analysis, points, std::move(verbs), conics, fillType,
                                     isVolatile);
     }
 };

@@ -16,6 +16,7 @@
 #include "include/core/SkScalar.h"
 #include "include/core/SkTypes.h"
 #include "include/private/base/SkDebug.h"
+#include "include/private/base/SkTArray.h"
 #include "include/private/base/SkTo.h"
 #include "include/private/base/SkTypeTraits.h"
 
@@ -29,6 +30,7 @@
 struct SkArc;
 class SkData;
 class SkPathRef;
+class SkRBuffer;
 class SkRRect;
 class SkWStream;
 enum class SkPathConvexity;
@@ -1835,8 +1837,8 @@ private:
     void copyFields(const SkPath& that);
 
     size_t writeToMemoryAsRRect(void* buffer) const;
-    size_t readAsRRect(const void*, size_t);
-    size_t readFromMemory_EQ4Or5(const void*, size_t);
+    size_t readAsRRect(SkRBuffer& buffer, uint32_t packed);
+    size_t readFromMemory_EQ4Or5(SkRBuffer& buffer, uint32_t packed);
 
     friend class Iter;
     friend class SkPathPriv;
@@ -1921,8 +1923,7 @@ private:
     // sk_path_analyze_verbs().
     static SkPath MakeInternal(const SkPathVerbAnalysis& analsis,
                                const SkPoint points[],
-                               const uint8_t verbs[],
-                               int verbCount,
+                               skia_private::STArray<4, uint8_t> verbs,
                                const SkScalar conics[],
                                SkPathFillType fillType,
                                bool isVolatile);

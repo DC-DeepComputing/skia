@@ -3571,7 +3571,8 @@ SkPath SkPath::Make(const SkPoint pts[], int pointCount,
         return SkPath();
     }
 
-    return MakeInternal(info, pts, vbs, verbCount, ws, ft, isVolatile);
+    SkPathRef::VerbsArray verbs(vbs, verbCount);
+    return MakeInternal(info, pts, std::move(verbs), ws, ft, isVolatile);
 }
 
 SkPath SkPath::Rect(const SkRect& r, SkPathDirection dir, unsigned startIndex) {
@@ -3612,14 +3613,13 @@ SkPath SkPath::Polygon(const SkPoint pts[], int count, bool isClosed,
 
 SkPath SkPath::MakeInternal(const SkPathVerbAnalysis& analysis,
                             const SkPoint points[],
-                            const uint8_t verbs[],
-                            int verbCount,
+                            skia_private::STArray<4, uint8_t> verbs,
                             const SkScalar conics[],
                             SkPathFillType fillType,
                             bool isVolatile) {
   return SkPath(sk_sp<SkPathRef>(new SkPathRef(
                                      SkPathRef::PointsArray(points, analysis.points),
-                                     SkPathRef::VerbsArray(verbs, verbCount),
+                                     std::move(verbs),
                                      SkPathRef::ConicWeightsArray(conics, analysis.weights),
                                      analysis.segmentMask)),
                 fillType, isVolatile, SkPathConvexity::kUnknown, SkPathFirstDirection::kUnknown);

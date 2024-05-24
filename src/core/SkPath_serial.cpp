@@ -164,18 +164,12 @@ size_t SkPath::readFromMemory(const void* storage, size_t length) {
     }
 
     if (version == kJustPublicData_Version || version == kVerbsAreStoredForward_Version) {
-        return this->readFromMemory_EQ4Or5(storage, length);
+        return this->readFromMemory_EQ4Or5(buffer, packed);
     }
     return 0;
 }
 
-size_t SkPath::readAsRRect(const void* storage, size_t length) {
-    SkRBuffer buffer(storage, length);
-    uint32_t packed;
-    if (!buffer.readU32(&packed)) {
-        return 0;
-    }
-
+size_t SkPath::readAsRRect(SkRBuffer& buffer, uint32_t packed) {
     SkASSERT(extract_serializationtype(packed) == SerializationType::kRRect);
 
     uint8_t dir = (packed >> kDirection_SerializationShift) & 0x3;
@@ -207,21 +201,12 @@ size_t SkPath::readAsRRect(const void* storage, size_t length) {
     return buffer.pos();
 }
 
-size_t SkPath::readFromMemory_EQ4Or5(const void* storage, size_t length) {
-    SkRBuffer buffer(storage, length);
-    uint32_t packed;
-    if (!buffer.readU32(&packed)) {
-        return 0;
-    }
-
-    bool verbsAreReversed = true;
-    if (extract_version(packed) == kVerbsAreStoredForward_Version) {
-        verbsAreReversed = false;
-    }
+size_t SkPath::readFromMemory_EQ4Or5(SkRBuffer& buffer, uint32_t packed) {
+    const bool verbsAreReversed = (extract_version(packed) != kVerbsAreStoredForward_Version);
 
     switch (extract_serializationtype(packed)) {
         case SerializationType::kRRect:
-            return this->readAsRRect(storage, length);
+            return this->readAsRRect(buffer, packed);
         case SerializationType::kGeneral:
             break;  // fall out
         default:
@@ -240,7 +225,6 @@ size_t SkPath::readFromMemory_EQ4Or5(const void* storage, size_t length) {
     if (!buffer.isValid()) {
         return 0;
     }
-    SkASSERT(buffer.pos() <= length);
 
     if (vbs == 0) {
         if (pts == 0 && cnx == 0) {
@@ -261,11 +245,15 @@ size_t SkPath::readFromMemory_EQ4Or5(const void* storage, size_t length) {
         verbs = tmpVerbs;
     }
 
-    SkPathVerbAnalysis analysis = sk_path_analyze_verbs(verbs, vbs);
+    // Copy the verbs so that if the supplied buffer is modified out from under us it won't matter.
+    // Making a copy is necessary because of the two steps, analyzing the verbs and them
+    // creating the SkPath.
+    SkPathRef::VerbsArray verbs_copy(verbs, vbs);
+    SkPathVerbAnalysis analysis = sk_path_analyze_verbs(verbs_copy.begin(), vbs);
     if (!analysis.valid || analysis.points != pts || analysis.weights != cnx) {
         return 0;
     }
-    *this = SkPathPriv::MakePath(analysis, points, verbs, vbs, conics,
+    *this = SkPathPriv::MakePath(analysis, points, std::move(verbs_copy), conics,
                                  extract_filltype(packed), false);
     return buffer.pos();
 }
