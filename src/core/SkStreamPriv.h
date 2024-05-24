@@ -43,13 +43,48 @@ private:
     size_t fBytesWritten = 0;
 };
 
-/** A SkDynamicMemoryWStream that provides helper functions for writing big-endian data. */
+// A SkDynamicMemoryWStream that provides helper functions for writing big-endian data.
 class SkDynamicMemoryEndianWStream final : public SkDynamicMemoryWStream {
 public:
     // Write the specified value as big-endian.
     bool writeU16BE(uint16_t value) { return write16(SkEndian_SwapBE16(value)); }
     bool writeU32BE(uint32_t value) { return write32(SkEndian_SwapBE32(value)); }
     bool writeS32BE(int32_t value) { return write32(SkEndian_SwapBE32(value)); }
+};
+
+// A SkMemoryStream that provides helper functions for reading big-endian data, or
+// data with parameterized endian-ness.
+class SkMemoryEndianStream final : public SkMemoryStream {
+public:
+    SkMemoryEndianStream(sk_sp<SkData> data) : SkMemoryStream(std::move(data)) {}
+    SkMemoryEndianStream(const void* data, size_t size, bool copyData = false)
+            : SkMemoryStream(data, size, copyData) {}
+
+    [[nodiscard]] bool readU16(uint16_t* value, bool littleEndian) {
+        if (SkMemoryStream::readU16(value)) {
+            *value = littleEndian ? SkEndian_SwapLE16(*value) : SkEndian_SwapBE16(*value);
+            return true;
+        }
+        return false;
+    }
+    [[nodiscard]] bool readU32(uint32_t* value, bool littleEndian) {
+        if (SkMemoryStream::readU32(value)) {
+            *value = littleEndian ? SkEndian_SwapLE32(*value) : SkEndian_SwapBE32(*value);
+            return true;
+        }
+        return false;
+    }
+    [[nodiscard]] bool readS32(int32_t* value, bool littleEndian) {
+        if (SkMemoryStream::readS32(value)) {
+            *value = littleEndian ? SkEndian_SwapLE32(*value) : SkEndian_SwapBE32(*value);
+            return true;
+        }
+        return false;
+    }
+
+    [[nodiscard]] bool readU16BE(uint16_t* value) { return readU16(value, false); }
+    [[nodiscard]] bool readU32BE(uint32_t* value) { return readU32(value, false); }
+    [[nodiscard]] bool readS32BE(int32_t* value) { return readS32(value, false); }
 };
 
 // If the stream supports identifying the current position and total length, this returns
