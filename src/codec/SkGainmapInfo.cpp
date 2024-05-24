@@ -46,60 +46,36 @@ static void write_positive_rational_be(SkDynamicMemoryEndianWStream& s, float x)
     s.writeU32BE(denominator);
 }
 
-static bool read_u16_be(SkStream* s, uint16_t* value) {
-    if (!s->readU16(value)) {
-        return false;
-    }
-    *value = SkEndian_SwapBE16(*value);
-    return true;
-}
-
-static bool read_u32_be(SkStream* s, uint32_t* value) {
-    if (!s->readU32(value)) {
-        return false;
-    }
-    *value = SkEndian_SwapBE32(*value);
-    return true;
-}
-
-static bool read_s32_be(SkStream* s, int32_t* value) {
-    if (!s->readS32(value)) {
-        return false;
-    }
-    *value = SkEndian_SwapBE32(*value);
-    return true;
-}
-
-static bool read_rational_be(SkStream* s, float* value) {
+static bool read_rational_be(SkMemoryEndianStream& s, float* value) {
     int32_t numerator = 0;
     uint32_t denominator = 0;
-    if (!read_s32_be(s, &numerator)) {
+    if (!s.readS32BE(&numerator)) {
         return false;
     }
-    if (!read_u32_be(s, &denominator)) {
+    if (!s.readU32BE(&denominator)) {
         return false;
     }
     *value = static_cast<float>(static_cast<double>(numerator) / static_cast<double>(denominator));
     return true;
 }
 
-static bool read_positive_rational_be(SkStream* s, float* value) {
+static bool read_positive_rational_be(SkMemoryEndianStream& s, float* value) {
     uint32_t numerator = 0;
     uint32_t denominator = 0;
-    if (!read_u32_be(s, &numerator)) {
+    if (!s.readU32BE(&numerator)) {
         return false;
     }
-    if (!read_u32_be(s, &denominator)) {
+    if (!s.readU32BE(&denominator)) {
         return false;
     }
     *value = static_cast<float>(static_cast<double>(numerator) / static_cast<double>(denominator));
     return true;
 }
 
-static bool read_iso_gainmap_version(SkStream* s) {
+static bool read_iso_gainmap_version(SkMemoryEndianStream& s) {
     // Ensure minimum version is 0.
     uint16_t minimum_version = 0;
-    if (!read_u16_be(s, &minimum_version)) {
+    if (!s.readU16BE(&minimum_version)) {
         SkCodecPrintf("Failed to read ISO 21496-1 minimum version.\n");
         return false;
     }
@@ -110,7 +86,7 @@ static bool read_iso_gainmap_version(SkStream* s) {
 
     // Ensure writer version is present. No value is invalid.
     uint16_t writer_version = 0;
-    if (!read_u16_be(s, &writer_version)) {
+    if (!s.readU16BE(&writer_version)) {
         SkCodecPrintf("Failed to read ISO 21496-1 version.\n");
         return false;
     }
@@ -118,14 +94,14 @@ static bool read_iso_gainmap_version(SkStream* s) {
     return true;
 }
 
-static bool read_iso_gainmap_info(SkStream* s, SkGainmapInfo& info) {
+static bool read_iso_gainmap_info(SkMemoryEndianStream& s, SkGainmapInfo& info) {
     if (!read_iso_gainmap_version(s)) {
         SkCodecPrintf("Failed to read ISO 21496-1 version.\n");
         return false;
     }
 
     uint8_t flags = 0;
-    if (!s->readU8(&flags)) {
+    if (!s.readU8(&flags)) {
         SkCodecPrintf("Failed to read ISO 21496-1 flags.\n");
         return false;
     }
@@ -222,16 +198,16 @@ bool SkGainmapInfo::ParseVersion(const SkData* data) {
     if (!data) {
         return false;
     }
-    auto s = SkMemoryStream::MakeDirect(data->data(), data->size());
-    return read_iso_gainmap_version(s.get());
+    SkMemoryEndianStream s(data->data(), data->size());
+    return read_iso_gainmap_version(s);
 }
 
 bool SkGainmapInfo::Parse(const SkData* data, SkGainmapInfo& info) {
     if (!data) {
         return false;
     }
-    auto s = SkMemoryStream::MakeDirect(data->data(), data->size());
-    return read_iso_gainmap_info(s.get(), info);
+    SkMemoryEndianStream s(data->data(), data->size());
+    return read_iso_gainmap_info(s, info);
 }
 
 sk_sp<SkData> SkGainmapInfo::SerializeVersion() {

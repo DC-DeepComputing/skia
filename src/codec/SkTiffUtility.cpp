@@ -17,6 +17,22 @@ constexpr size_t kSizeEntry = 12;
 constexpr size_t kSizeShort = 2;
 constexpr size_t kSizeLong = 4;
 
+static inline uint32_t get_endian_int(const uint8_t* data, bool littleEndian) {
+    if (littleEndian) {
+        return (data[3] << 24) | (data[2] << 16) | (data[1] << 8) | (data[0]);
+    }
+
+    return (data[0] << 24) | (data[1] << 16) | (data[2] << 8) | (data[3]);
+}
+
+static inline uint16_t get_endian_short(const uint8_t* data, bool littleEndian) {
+    if (littleEndian) {
+        return (data[1] << 8) | (data[0]);
+    }
+
+    return (data[0] << 8) | (data[1]);
+}
+
 bool SkTiffImageFileDirectory::IsValidType(uint16_t type) { return type >= 1 && type <= 12; }
 
 size_t SkTiffImageFileDirectory::BytesForType(uint16_t type) {

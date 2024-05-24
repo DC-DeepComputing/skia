@@ -175,36 +175,30 @@ static inline uint32_t get_int(const uint8_t* buffer, uint32_t i) {
 #endif
 }
 
-/*
- * @param data           Buffer to read bytes from
- * @param isLittleEndian Output parameter
- *                       Indicates if the data is little endian
- *                       Is unaffected on false returns
- */
-static inline bool is_valid_endian_marker(const uint8_t* data, bool* isLittleEndian) {
-    // II indicates Intel (little endian) and MM indicates motorola (big endian).
-    if (('I' != data[0] || 'I' != data[1]) && ('M' != data[0] || 'M' != data[1])) {
-        return false;
+// A TIFF endian marker is either {'M', 'M', 0, 42} for big-endian (Motorola) or {'I', 'I', 42, 0}
+// for little-endian (Intel).  Parse the 4 bytes at |data| to determine if this is a valid endian
+// marker, and store in |isLittleEndian| the endian-ness.
+//
+// If |strict| is false, then only require that the first 2 bytes be valid. Otherwise, require that
+// all 4 bytes be valid.
+static inline bool is_valid_endian_marker(const uint8_t* data,
+                                          bool* isLittleEndian,
+                                          bool strict = false) {
+    if (data[0] == 'I' && data[1] == 'I') {
+        if (strict && (data[2] != 42 || data[3] != 0)) {
+            return false;
+        }
+        *isLittleEndian = true;
+        return true;
     }
-
-    *isLittleEndian = ('I' == data[0]);
-    return true;
-}
-
-static inline uint16_t get_endian_short(const uint8_t* data, bool littleEndian) {
-    if (littleEndian) {
-        return (data[1] << 8) | (data[0]);
+    if (data[0] == 'M' && data[1] == 'M') {
+        if (strict && (data[2] != 0 || data[3] != 42)) {
+            return false;
+        }
+        *isLittleEndian = false;
+        return true;
     }
-
-    return (data[0] << 8) | (data[1]);
-}
-
-static inline uint32_t get_endian_int(const uint8_t* data, bool littleEndian) {
-    if (littleEndian) {
-        return (data[3] << 24) | (data[2] << 16) | (data[1] << 8) | (data[0]);
-    }
-
-    return (data[0] << 24) | (data[1] << 16) | (data[2] << 8) | (data[3]);
+    return false;
 }
 
 static inline SkPMColor premultiply_argb_as_rgba(U8CPU a, U8CPU r, U8CPU g, U8CPU b) {
