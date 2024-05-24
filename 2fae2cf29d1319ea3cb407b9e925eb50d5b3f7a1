@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f6324d5_e39cdf9e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-05-24T15:44:58Z",
+      "side": 1,
+      "message": "Turns out that there were two slightly different cases to cover. This CL now solves them both (with a GM that exercises each case independently). It\u0027s also guarded to not impact Chromium yet, so I can do the rebaselines for all of these changes at once. G3 canary was clean (just one flake - all impacted clients have been removed from presubmit).",
+      "revId": "2fae2cf29d1319ea3cb407b9e925eb50d5b3f7a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
