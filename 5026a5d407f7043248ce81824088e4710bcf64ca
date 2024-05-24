@@ -33,6 +33,24 @@
       "message": "On some of the generated `surfaceprops_df` images the \"unknown\" geometry is now getting subpixel antialiased.",
       "revId": "5026a5d407f7043248ce81824088e4710bcf64ca",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c6e73f2_18fa6937",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-05-24T14:42:33Z",
+      "side": 1,
+      "message": "Also, in the `textfilter_*` images some of the text becomes quite heavy.",
+      "parentUuid": "e07da767_200f4077",
+      "revId": "5026a5d407f7043248ce81824088e4710bcf64ca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
