@@ -182,8 +182,7 @@ std::unique_ptr<SkJpegMultiPictureParameters> SkJpegMultiPictureParameters::Make
     }
 
     // Start to prepare the result that we will return.
-    auto result = std::make_unique<SkJpegMultiPictureParameters>();
-    result->images.resize(numberOfImages);
+    auto result = std::make_unique<SkJpegMultiPictureParameters>(numberOfImages);
 
     // The next IFD is the Attribute IFD offset. We will not read or validate the Attribute IFD.
 
@@ -222,55 +221,46 @@ std::unique_ptr<SkJpegMultiPictureParameters> SkJpegMultiPictureParameters::Make
 
 // Return the number of bytes that will be written by SkJpegMultiPictureParametersSerialize, for a
 // given number of images.
-size_t multi_picture_params_serialized_size(size_t numberOfImages) {
-    return sizeof(kMpfSig) +                           // Signature
-           kMpEndianSize +                             // Endianness
-           sizeof(uint32_t) +                          // Index IFD Offset
-           sizeof(uint16_t) +                          // IFD entry count
-           kIfdSerializedEntryCount * kIfdEntrySize +  // 3 IFD entries at 12 bytes each
-           sizeof(uint32_t) +                          // Attribute IFD offset
-           numberOfImages * kMPEntrySize;              // MP Entries for each image
-}
-
-sk_sp<SkData> SkJpegMultiPictureParameters::serialize() const {
+static void write_mpf_header(SkDynamicMemoryWStream& s,
+                             uint32_t numberOfImages,
+                             uint32_t numberOfTags) {
     // Write the MPF signature.
-    SkDynamicMemoryWStream s;
-    if (!s.write(kMpfSig, sizeof(kMpfSig))) {
-        SkCodecPrintf("Failed to write signature.\n");
-        return nullptr;
-    }
+    s.write(kMpfSig, sizeof(kMpfSig));
 
     // We will always write as big-endian.
-    if (!s.write(kMpBigEndian, kMpEndianSize)) {
-        SkCodecPrintf("Failed to write endianness.\n");
-        return nullptr;
-    }
-    // Compute the number of images.
-    uint32_t numberOfImages = static_cast<uint32_t>(images.size());
+    s.write(kMpBigEndian, kMpEndianSize);
 
     // Set the Index IFD offset be the position after the endianness value and this offset.
     constexpr uint32_t indexIfdOffset =
             static_cast<uint16_t>(sizeof(kMpBigEndian) + sizeof(uint32_t));
     SkWStreamWriteU32BE(&s, indexIfdOffset);
 
-    // We will write 3 tags (version, number of images, MP entries).
-    constexpr uint32_t numberOfTags = 3;
+    // We will write 2 or 3 tags (version, number of images, and optionally MP entries).
+    SkASSERT(numberOfTags == 2 || numberOfTags == 3);
     SkWStreamWriteU16BE(&s, numberOfTags);
 
     // Write the version tag.
     SkWStreamWriteU16BE(&s, kVersionTag);
     SkWStreamWriteU16BE(&s, kTypeUndefined);
     SkWStreamWriteU32BE(&s, kVersionCount);
-    if (!s.write(kVersionExpected, kVersionSize)) {
-        SkCodecPrintf("Failed to write version.\n");
-        return nullptr;
-    }
+    s.write(kVersionExpected, kVersionSize);
 
     // Write the number of images.
     SkWStreamWriteU16BE(&s, kNumberOfImagesTag);
     SkWStreamWriteU16BE(&s, kTypeUnsignedLong);
     SkWStreamWriteU32BE(&s, kNumberOfImagesCount);
     SkWStreamWriteU32BE(&s, numberOfImages);
+}
+
+sk_sp<SkData> SkJpegMultiPictureParameters::serializeFirstIndividualImage() const {
+    SkDynamicMemoryWStream s;
+
+    // We will write 3 tags (version, number of images, MP entries).
+    const uint32_t numberOfImages = static_cast<uint32_t>(images.size());
+    constexpr uint32_t numberOfTags = 3;
+
+    // Write the header, version, and number of images tags.
+    write_mpf_header(s, numberOfImages, numberOfTags);
 
     // Write the MP entries.
     SkWStreamWriteU16BE(&s, kMPEntryTag);
@@ -303,7 +293,22 @@ sk_sp<SkData> SkJpegMultiPictureParameters::serialize() const {
         SkWStreamWriteU16BE(&s, 0);
     }
 
-    SkASSERT(s.bytesWritten() == multi_picture_params_serialized_size(images.size()));
+    return s.detachAsData();
+}
+
+sk_sp<SkData> SkJpegMultiPictureParameters::serializeNonFirstIndividualImage() const {
+    SkDynamicMemoryWStream s;
+
+    // We will write 2 tags (version, number of images).
+    const uint32_t numberOfImages = static_cast<uint32_t>(images.size());
+    constexpr uint32_t numberOfTags = 2;
+
+    // Write the header, version, and number of images tags.
+    write_mpf_header(s, numberOfImages, numberOfTags);
+
+    // Write the attribute IFD offset (zero because we don't write it).
+    SkWStreamWriteU32BE(&s, 0);
+
     return s.detachAsData();
 }
 
@@ -318,4 +323,17 @@ size_t SkJpegMultiPictureParameters::GetAbsoluteOffset(uint32_t dataOffset,
            kJpegSegmentParameterLengthSize +  // The parameter length
            sizeof(kMpfSig) +                  // The signature
            dataOffset;
+}
+
+uint32_t SkJpegMultiPictureParameters::GetDataOffset(size_t absoluteOffset,
+                                                     size_t mpSegmentOffset) {
+    // The value of zero is used by the primary image.
+    if (absoluteOffset == 0) {
+        return 0;
+    }
+    return absoluteOffset -                   // The offset of the image itself
+           mpSegmentOffset -                  // The offset to the marker
+           kJpegMarkerCodeSize -              // The marker itself
+           kJpegSegmentParameterLengthSize -  // The parameter length
+           sizeof(kMpfSig);                   // The signature
 }

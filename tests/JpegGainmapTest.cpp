@@ -400,7 +400,7 @@ DEF_TEST(Codec_jpegMultiPicture, r) {
 
     // Verify that we get the same parameters when we re-serialize and de-serialize them
     {
-        auto mpParamsSerialized = mpParams->serialize();
+        auto mpParamsSerialized = mpParams->serializeFirstIndividualImage();
         REPORTER_ASSERT(r, mpParamsSerialized);
         auto mpParamsRoundTripped = SkJpegMultiPictureParameters::Make(mpParamsSerialized);
         REPORTER_ASSERT(r, mpParamsRoundTripped);

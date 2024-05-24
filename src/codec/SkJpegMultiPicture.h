@@ -23,6 +23,8 @@ class SkData;
  * offset parameters from the images in the Index Image File Directory.
  */
 struct SkJpegMultiPictureParameters {
+    explicit SkJpegMultiPictureParameters(size_t numberOfImages) : images(numberOfImages) {}
+
     // An individual image.
     struct Image {
         // The size of the image in bytes.
@@ -46,11 +48,17 @@ struct SkJpegMultiPictureParameters {
             const sk_sp<const SkData>& segmentParameters);
 
     /*
-     * Serialize Jpeg Multi-Picture Format parameters into a segment. This segment will start with
-     * the {'M', 'P', 'F', 0} signature (it will not include the segment marker or parameter
-     * length).
+     * Serialize Jpeg Multi-Picture Format segment parameters for the first individual image.
+     * This segment will start with the {'M', 'P', 'F', 0} signature (it will not include the
+     * segment marker or parameter length).
      */
-    sk_sp<SkData> serialize() const;
+    sk_sp<SkData> serializeFirstIndividualImage() const;
+
+    /*
+     * Serialize Jpeg Multi-Picture Format segment parameters for non-first individual images.
+     * This will not include the MP Entries.
+     */
+    sk_sp<SkData> serializeNonFirstIndividualImage() const;
 
     /*
      * Compute the absolute offset (from the start of the image) for the offset in the multi-picture
@@ -58,6 +66,14 @@ struct SkJpegMultiPictureParameters {
      * marker from the start of the image.
      */
     static size_t GetAbsoluteOffset(uint32_t dataOffset, size_t mpSegmentOffset);
+
+    /*
+     * Compute the data offset (the offset stored in the MPF parameters) for an image that starts
+     * at the specified absolute offset from the start of the first image, and where the MPF
+     * parameter segment starts at the specified absolute offset from the start of the
+     * first image.
+     */
+    static uint32_t GetDataOffset(size_t absoluteOffset, size_t mpSegmentOffset);
 };
 
 #endif
