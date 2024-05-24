@@ -16,6 +16,24 @@
       "message": "This seems fine. `typefacerendering` looks and behaves more like DirectWrite than FreeType, which is fine (hint bi-level in both directions, antialias hints only in y) though the EBDT/EBLC support isn\u0027t there. It looks like this works as one might expect at this stage.",
       "revId": "54a152938baf387f2d8f71e01703be7eb8212e73",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec7ab9e8_07bfa926",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-05-24T07:28:58Z",
+      "side": 1,
+      "message": "Thanks, can you explain how the EBDT/EBLC support manifests in this test case? Would one of the lines switch from rasterized path to showing bitmap glyphs?",
+      "parentUuid": "d9ffc2e7_4b13437e",
+      "revId": "54a152938baf387f2d8f71e01703be7eb8212e73",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
