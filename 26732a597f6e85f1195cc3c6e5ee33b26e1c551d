@@ -40,6 +40,30 @@
       ],
       "revId": "26732a597f6e85f1195cc3c6e5ee33b26e1c551d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b04cb59d_b15fc10c",
+        "filename": "gn/minify_sksl_tests.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-05-24T21:44:01Z",
+      "side": 1,
+      "message": "*sigh* ignore the AI-suggested fix that added itself without being desired.",
+      "parentUuid": "fcbc6d0d_e5f91708",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 16
+      },
+      "revId": "26732a597f6e85f1195cc3c6e5ee33b26e1c551d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
