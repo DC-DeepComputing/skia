@@ -25,8 +25,10 @@
 #include "include/effects/SkBlenders.h"
 #include "include/effects/SkColorMatrix.h"
 #include "include/effects/SkGradientShader.h"
+#include "include/effects/SkHighContrastFilter.h"
 #include "include/effects/SkImageFilters.h"
 #include "include/effects/SkLumaColorFilter.h"
+#include "include/effects/SkOverdrawColorFilter.h"
 #include "include/effects/SkPerlinNoiseShader.h"
 #include "include/effects/SkRuntimeEffect.h"
 #include "include/gpu/graphite/Image.h"
@@ -95,6 +97,7 @@ std::pair<sk_sp<SkColorFilter>, sk_sp<PrecompileColorFilter>> create_random_colo
     M(PerlinNoise)        \
     M(Picture)            \
     M(RadialGradient)     \
+    M(Runtime)            \
     M(SolidColor)         \
     M(SweepGradient)      \
     M(WorkingColorSpace)
@@ -181,12 +184,14 @@ const char* to_str(BlenderType b) {
     M(ColorSpaceXform) \
     M(Compose)         \
     M(Gaussian)        \
+    M(HighContrast)    \
     M(HSLAMatrix)      \
     M(Lerp)            \
     M(Lighting)        \
     M(LinearToSRGB)    \
     M(Luma)            \
     M(Matrix)          \
+    M(Overdraw)        \
     M(Runtime)         \
     M(SRGBToLinear)    \
     M(Table)           \
@@ -497,6 +502,28 @@ std::pair<sk_sp<SkShader>, sk_sp<PrecompileShader>> create_picture_shader(SkRand
     return { s, o };
 }
 
+std::pair<sk_sp<SkShader>, sk_sp<PrecompileShader>> create_runtime_shader(SkRandom* /* rand */) {
+    static SkRuntimeEffect* sEffect = SkMakeRuntimeEffect(
+            SkRuntimeEffect::MakeForShader,
+            // draw a circle centered at "center" w/ inner and outer radii in "radii"
+            "uniform float2 center;"
+            "uniform float2 radii;"
+            "half4 main(float2 xy) {"
+                "float len = length(xy - center);"
+                "half value = len < radii.x ? 0.0 : (len > radii.y ? 0.0 : 1.0);"
+                "return half4(value);"
+            "}"
+    );
+
+    static const float kUniforms[4] = { 50.0f, 50.0f, 40.0f, 50.0f };
+
+    sk_sp<SkData> uniforms = SkData::MakeWithCopy(kUniforms, sizeof(kUniforms));
+
+    sk_sp<SkShader> s = sEffect->makeShader(std::move(uniforms), /* children= */ {});
+    sk_sp<PrecompileShader> o = MakePrecompileShader(sk_ref_sp(sEffect));
+    return { std::move(s), std::move(o) };
+}
+
 std::pair<sk_sp<SkShader>, sk_sp<PrecompileShader>> create_solid_shader(
         SkRandom* rand,
         ColorConstraint constraint = ColorConstraint::kNone) {
@@ -693,6 +720,8 @@ std::pair<sk_sp<SkShader>, sk_sp<PrecompileShader>>  create_shader(SkRandom* ran
             return create_picture_shader(rand);
         case ShaderType::kRadialGradient:
             return create_gradient_shader(rand, SkShaderBase::GradientType::kRadial);
+        case ShaderType::kRuntime:
+            return create_runtime_shader(rand);
         case ShaderType::kSolidColor:
             return create_solid_shader(rand);
         case ShaderType::kSweepGradient:
@@ -740,7 +769,7 @@ std::pair<sk_sp<SkBlender>, sk_sp<PrecompileBlender>> src_blender() {
 
     sk_sp<SkBlender> b = sSrcEffect->makeBlender(/* uniforms= */ nullptr);
     sk_sp<PrecompileBlender> o = MakePrecompileBlender(sk_ref_sp(sSrcEffect));
-    return { b , o };
+    return { std::move(b) , std::move(o) };
 }
 
 std::pair<sk_sp<SkBlender>, sk_sp<PrecompileBlender>> dest_blender() {
@@ -753,7 +782,7 @@ std::pair<sk_sp<SkBlender>, sk_sp<PrecompileBlender>> dest_blender() {
 
     sk_sp<SkBlender> b = sDestEffect->makeBlender(/* uniforms= */ nullptr);
     sk_sp<PrecompileBlender> o = MakePrecompileBlender(sk_ref_sp(sDestEffect));
-    return { b , o };
+    return { std::move(b) , std::move(o) };
 }
 
 
@@ -779,7 +808,7 @@ std::pair<sk_sp<SkBlender>, sk_sp<PrecompileBlender>> combo_blender() {
     sk_sp<SkData> uniforms = SkData::MakeWithCopy(kUniforms, sizeof(kUniforms));
     sk_sp<SkBlender> b = sComboEffect->makeBlender(std::move(uniforms), children);
     sk_sp<PrecompileBlender> o = MakePrecompileBlender(sk_ref_sp(sComboEffect), { childOptions });
-    return { b , o };
+    return { std::move(b) , std::move(o) };
 }
 
 std::pair<sk_sp<SkBlender>, sk_sp<PrecompileBlender>> create_bm_blender(SkRandom* rand,
@@ -966,8 +995,29 @@ std::pair<sk_sp<SkColorFilter>, sk_sp<PrecompileColorFilter>> create_srgb_to_lin
     return { SkColorFilters::SRGBToLinearGamma(), PrecompileColorFilters::SRGBToLinearGamma() };
 }
 
+std::pair<sk_sp<SkColorFilter>, sk_sp<PrecompileColorFilter>> create_high_contrast_colorfilter() {
+    SkHighContrastConfig config(/* grayscale= */ false,
+                                SkHighContrastConfig::InvertStyle::kInvertBrightness,
+                                /* contrast= */ 0.5f);
+    return { SkHighContrastFilter::Make(config), PrecompileColorFilters::HighContrast() };
+}
+
 std::pair<sk_sp<SkColorFilter>, sk_sp<PrecompileColorFilter>> create_luma_colorfilter() {
     return { SkLumaColorFilter::Make(), PrecompileColorFilters::Luma() };
+}
+
+std::pair<sk_sp<SkColorFilter>, sk_sp<PrecompileColorFilter>> create_overdraw_colorfilter() {
+    // Black to red heat map gradation
+    static const SkColor kColors[SkOverdrawColorFilter::kNumColors] = {
+        SK_ColorBLACK,
+        SK_ColorBLUE,
+        SK_ColorCYAN,
+        SK_ColorGREEN,
+        SK_ColorYELLOW,
+        SK_ColorRED
+    };
+
+    return { SkOverdrawColorFilter::MakeWithSkColors(kColors), PrecompileColorFilters::Overdraw() };
 }
 
 std::pair<sk_sp<SkColorFilter>, sk_sp<PrecompileColorFilter>> create_compose_colorfilter(
@@ -1036,6 +1086,8 @@ std::pair<sk_sp<SkColorFilter>, sk_sp<PrecompileColorFilter>> create_colorfilter
             return create_compose_colorfilter(rand);
         case ColorFilterType::kGaussian:
             return create_gaussian_colorfilter();
+        case ColorFilterType::kHighContrast:
+            return create_high_contrast_colorfilter();
         case ColorFilterType::kHSLAMatrix:
             return create_hsla_matrix_colorfilter();
         case ColorFilterType::kLerp:
@@ -1048,6 +1100,8 @@ std::pair<sk_sp<SkColorFilter>, sk_sp<PrecompileColorFilter>> create_colorfilter
             return create_luma_colorfilter();
         case ColorFilterType::kMatrix:
             return create_matrix_colorfilter();
+        case ColorFilterType::kOverdraw:
+            return create_overdraw_colorfilter();
         case ColorFilterType::kRuntime:
             return create_rt_colorfilter(rand);
         case ColorFilterType::kSRGBToLinear:
@@ -1447,6 +1501,7 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
             ShaderType::kLocalMatrix,
             ShaderType::kPerlinNoise,
             ShaderType::kPicture,
+            ShaderType::kRuntime,
             ShaderType::kSweepGradient,
             ShaderType::kWorkingColorSpace,
 #endif
@@ -1470,11 +1525,13 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
             ColorFilterType::kColorSpaceXform,
             ColorFilterType::kCompose,
             ColorFilterType::kGaussian,
+            ColorFilterType::kHighContrast,
             ColorFilterType::kHSLAMatrix,
             ColorFilterType::kLerp,
             ColorFilterType::kLighting,
             ColorFilterType::kLinearToSRGB,
             ColorFilterType::kLuma,
+            ColorFilterType::kOverdraw,
             ColorFilterType::kRuntime,
             ColorFilterType::kSRGBToLinear,
             ColorFilterType::kTable,
