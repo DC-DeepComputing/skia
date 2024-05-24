@@ -16,6 +16,179 @@
       "message": "Noticed a diff on the radial case in dm for blurroundrect so I\u0027m working on that",
       "revId": "cba42bab4d1b428af70a0bb07d78b71727bd6a41",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b2032a1_98e2e2d3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-24T20:26:41Z",
+      "side": 1,
+      "message": "I definitely like the direction this is taking the shader in terms of simplifying it\u0027s logic and it\u0027s great that it\u0027s also working out to be faster. If we can get it fast enough, I wonder if we can map the regular radial gradients to just use this as well.",
+      "revId": "cba42bab4d1b428af70a0bb07d78b71727bd6a41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4747df29_4131f48b",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-24T20:26:41Z",
+      "side": 1,
+      "message": "The shader approach you\u0027ve taken here is doing having the gradient matrix map the two centers to the unit x vector, which is how the paper handled it.  \n\nWhen we did our whiteboard session, we considered instead mapping it so that one radius was 1 and rotating it the centers to be on the x axis but passing in the x distance as a second parameter. I think this avoids the need to differentiate the radial case, but maybe that\u0027s not actually the case if the math breaks down?",
+      "range": {
+        "startLine": 271,
+        "startChar": 0,
+        "endLine": 271,
+        "endChar": 102
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "a97962e7_a8cbd9c1",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/KeyHelpers.cpp",
+              "range": {
+                "startLine": 274,
+                "startChar": 0,
+                "endLine": 277,
+                "endChar": 0
+              },
+              "replacement": "    float invA \u003d0;\n    if (a !\u003d0) {\n      invA \u003d1.0 / (2.0 * a);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "cba42bab4d1b428af70a0bb07d78b71727bd6a41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5340568e_a9f2b6c0",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1802,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-24T20:26:41Z",
+      "side": 1,
+      "message": "It looks like this is what SkConicalGradientShader calculates until it adds the extra focal stuff to the gradient matrix. Can we add a public static helper function in SkConicalGradientShader to reuse this logic between the two places?\n\nThat is, assuming we don\u0027t change to use a normalized radius model instead.",
+      "range": {
+        "startLine": 1791,
+        "startChar": 0,
+        "endLine": 1802,
+        "endChar": 13
+      },
+      "revId": "cba42bab4d1b428af70a0bb07d78b71727bd6a41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59ba398c_33bcdcdf",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 2197,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-24T20:26:41Z",
+      "side": 1,
+      "message": "I know getCenterX1 was already the name in `SkConicalGradient`, but it made me think it was the X coordinate of one of the centers, not the distance between the centers.\n\nCan we add a comment here that says something like `// Since we map the centers to be (0,0) and (1,0) in the gradient matrix, there is a scale of 1/distance-between-scenters that has to be applied to the radii`.\n\nAlso, since the radial case is scaling by 1/diffRadius, do we need to adjust by that as well here?",
+      "range": {
+        "startLine": 2197,
+        "startChar": 20,
+        "endLine": 2197,
+        "endChar": 31
+      },
+      "revId": "cba42bab4d1b428af70a0bb07d78b71727bd6a41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c97cc25_e0d3e2c7",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 6
+      },
+      "lineNbr": 643,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-24T20:26:41Z",
+      "side": 1,
+      "message": "I think we can encode isRadial and onEdge in the `a` and `invA` variables. Both could have `a \u003d 0` and then we look at the sign of `invA` to decide `isRadial` or `onEdge`.",
+      "range": {
+        "startLine": 643,
+        "startChar": 8,
+        "endLine": 643,
+        "endChar": 21
+      },
+      "revId": "cba42bab4d1b428af70a0bb07d78b71727bd6a41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8969438_cef6ef0c",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 6
+      },
+      "lineNbr": 653,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-24T20:26:41Z",
+      "side": 1,
+      "message": "Is this capturing cases other than when `a` would already be 0 (or very near 0)? I think we could pre-compute it and encode onEdge similar to how you checked for isRadial on the CPU.",
+      "range": {
+        "startLine": 653,
+        "startChar": 0,
+        "endLine": 653,
+        "endChar": 66
+      },
+      "revId": "cba42bab4d1b428af70a0bb07d78b71727bd6a41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b26e40c6_c79d1630",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 6
+      },
+      "lineNbr": 683,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-24T20:26:41Z",
+      "side": 1,
+      "message": "This is the same in both the true and false branches, so we could have them just assign to `float t;` and then do this logic outside the if.\n\nI think we can also replace the if with `return float2(t, sign(t*dRadius + radius0Param));`. Technically it\u0027s different when the interpolated radius is 0, but in that case we\u0027d be affecting at most a single pixel if we got it just right anyways.",
+      "range": {
+        "startLine": 679,
+        "startChar": 0,
+        "endLine": 683,
+        "endChar": 32
+      },
+      "revId": "cba42bab4d1b428af70a0bb07d78b71727bd6a41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
