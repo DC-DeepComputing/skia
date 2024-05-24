@@ -59,6 +59,7 @@ enum GrDistanceFieldEffectFlags {
                                             kPerspective_DistanceFieldEffectFlag |
                                             kUseLCD_DistanceFieldEffectFlag |
                                             kBGR_DistanceFieldEffectFlag |
+                                            kPortrait_DistanceFieldEffectFlag |
                                             kGammaCorrect_DistanceFieldEffectFlag,
 };
 
