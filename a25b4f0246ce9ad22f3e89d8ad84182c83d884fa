@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce849ba3_17d2ed4d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2024-05-24T12:41:47Z",
+      "side": 1,
+      "message": "Some of the clean-up that I was threatening earlier.",
+      "revId": "a25b4f0246ce9ad22f3e89d8ad84182c83d884fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
