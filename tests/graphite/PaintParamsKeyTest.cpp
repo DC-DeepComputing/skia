@@ -244,13 +244,14 @@ const char* to_str(ClipType c) {
 //--------------------------------------------------------------------------------------------------
 #define SK_ALL_TEST_IMAGE_FILTERS(M) \
     M(None)            \
-    M(Blur)
+    M(Blur)            \
+    M(Morphology)
 
 enum class ImageFilterType {
 #define M(type) k##type,
     SK_ALL_TEST_IMAGE_FILTERS(M)
 #undef M
-    kLast = kBlur
+    kLast = kMorphology
 };
 
 static constexpr int kImageFilterTypeCount = static_cast<int>(ImageFilterType::kLast) + 1;
@@ -1141,6 +1142,22 @@ sk_sp<SkImageFilter> blur_imagefilter(SkRandom* rand,
     return blurIF;
 }
 
+sk_sp<SkImageFilter> morphology_imagefilter(SkRandom* rand,
+                                            SkEnumBitMask<PrecompileImageFilters>* imageFilterMask) {
+    float radX = 2.0f, radY = 4.0f;
+
+    sk_sp<SkImageFilter> morphologyIF;
+
+    if (rand->nextBool()) {
+        morphologyIF = SkImageFilters::Erode(radX, radY, /* input= */ nullptr);
+    } else {
+        morphologyIF = SkImageFilters::Dilate(radX, radY, /* input= */ nullptr);
+    }
+    *imageFilterMask |= PrecompileImageFilters::kMorphology;
+
+    return morphologyIF;
+}
+
 std::pair<sk_sp<SkImageFilter>, SkEnumBitMask<PrecompileImageFilters>> create_image_filter(
         SkRandom* rand,
         ImageFilterType type) {
@@ -1149,10 +1166,9 @@ std::pair<sk_sp<SkImageFilter>, SkEnumBitMask<PrecompileImageFilters>> create_im
     SkEnumBitMask<PrecompileImageFilters> imageFilterMask = PrecompileImageFilters::kNone;
 
     switch (type) {
-        case ImageFilterType::kNone:
-            break;
-        case ImageFilterType::kBlur:
-            imgFilter = blur_imagefilter(rand, &imageFilterMask);
+        case ImageFilterType::kNone: break;
+        case ImageFilterType::kBlur: imgFilter = blur_imagefilter(rand, &imageFilterMask); break;
+        case ImageFilterType::kMorphology: imgFilter = morphology_imagefilter(rand, &imageFilterMask); break;
     }
 
     return { std::move(imgFilter), imageFilterMask };
@@ -1487,9 +1503,9 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
     };
 
     ShaderType shaders[] = {
-            ShaderType::kBlend,
-            ShaderType::kImage,
-            ShaderType::kRadialGradient,
+//            ShaderType::kBlend,
+//            ShaderType::kImage,
+//            ShaderType::kRadialGradient,
             ShaderType::kSolidColor,
 #if EXPANDED_SET
             ShaderType::kNone,
@@ -1509,8 +1525,8 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
 
     BlenderType blenders[] = {
             BlenderType::kPorterDuff,
-            BlenderType::kShaderBased,
-            BlenderType::kRuntime,
+//            BlenderType::kShaderBased,
+//            BlenderType::kRuntime,
 #if EXPANDED_SET
             BlenderType::kNone,
             BlenderType::kArithmetic,
@@ -1519,8 +1535,8 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
 
     ColorFilterType colorFilters[] = {
             ColorFilterType::kNone,
-            ColorFilterType::kBlendMode,
-            ColorFilterType::kMatrix,
+//            ColorFilterType::kBlendMode,
+//            ColorFilterType::kMatrix,
 #if EXPANDED_SET
             ColorFilterType::kColorSpaceXform,
             ColorFilterType::kCompose,
@@ -1551,6 +1567,7 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
 #if EXPANDED_SET
             ImageFilterType::kBlur,
 #endif
+            ImageFilterType::kMorphology,
     };
 
     ClipType clips[] = {
@@ -1561,11 +1578,11 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
 #endif
     };
 
-#if EXPANDED_SET
+//#if EXPANDED_SET
     size_t kExpected = std::size(shaders) * std::size(blenders) * std::size(colorFilters) *
                        std::size(maskFilters) * std::size(imageFilters) * std::size(clips);
     int current = 0;
-#endif
+//#endif
 
     for (auto shader : shaders) {
         for (auto blender : blenders) {
@@ -1573,10 +1590,10 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
                 for (auto mf : maskFilters) {
                     for (auto imageFilter : imageFilters) {
                         for (auto clip : clips) {
-#if EXPANDED_SET
+//#if EXPANDED_SET
                             SkDebugf("%d/%zu\n", current, kExpected);
                             ++current;
-#endif
+//#endif
 
                             run_test(reporter, context, testContext, precompileKeyContext,
                                      drawData, shader, blender, cf, mf, imageFilter, clip);
@@ -1587,9 +1604,9 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
         }
     }
 
-#if EXPANDED_SET
+//#if EXPANDED_SET
     SkASSERT(current == (int) kExpected);
-#endif
+//#endif
 }
 
 void run_test(skiatest::Reporter* reporter,

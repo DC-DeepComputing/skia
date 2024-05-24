@@ -435,10 +435,32 @@ void PaintOptions::createKey(const KeyContext& keyContext,
 
 namespace {
 
+void create_image_drawing_pipelines(const KeyContext& keyContext,
+                                    PipelineDataGatherer* gatherer,
+                                    const PaintOptions::ProcessCombination& processCombination) {
+    PaintOptions imagePaintOptions;
+
+    // For imagefilters we know we don't have alpha-only textures and don't need cubic filtering.
+    sk_sp<PrecompileShader> imageShader = PrecompileShadersPriv::Image(
+            PrecompileImageShaderFlags::kExcludeAlpha | PrecompileImageShaderFlags::kExcludeCubic);
+
+    SkBlendMode imageBlendModes[] = { SkBlendMode::kSrc, SkBlendMode::kDstOut };
+    imagePaintOptions.setShaders({ imageShader });
+    imagePaintOptions.setBlendModes(imageBlendModes);
+
+    imagePaintOptions.priv().buildCombinations(keyContext,
+                                               gatherer,
+                                               DrawTypeFlags::kSimpleShape,
+                                               /* withPrimitiveBlender= */ false,
+                                               Coverage::kSingleChannel,
+                                               processCombination);
+}
+
 void create_blur_imagefilter_pipelines(const KeyContext& keyContext,
                                        PipelineDataGatherer* gatherer,
                                        const PaintOptions::ProcessCombination& processCombination) {
-    PaintOptions blurPaintOptions, imagePaintOptions;
+
+    PaintOptions blurPaintOptions;
 
     // For blur imagefilters we know we don't have alpha-only textures and don't need cubic
     // filtering.
@@ -449,22 +471,53 @@ void create_blur_imagefilter_pipelines(const KeyContext& keyContext,
     blurPaintOptions.setShaders({ PrecompileShadersPriv::Blur(imageShader) });
     blurPaintOptions.setBlendModes(blurBlendModes);
 
-    SkBlendMode imageBlendModes[] = { SkBlendMode::kSrc, SkBlendMode::kDstOut };
-    imagePaintOptions.setShaders({ imageShader });
-    imagePaintOptions.setBlendModes(imageBlendModes);
-
     blurPaintOptions.priv().buildCombinations(keyContext,
                                               gatherer,
                                               DrawTypeFlags::kSimpleShape,
                                               /* withPrimitiveBlender= */ false,
                                               Coverage::kSingleChannel,
                                               processCombination);
-    imagePaintOptions.priv().buildCombinations(keyContext,
-                                               gatherer,
-                                               DrawTypeFlags::kSimpleShape,
-                                               /* withPrimitiveBlender= */ false,
-                                               Coverage::kSingleChannel,
-                                               processCombination);
+}
+
+void create_morphology_imagefilter_pipelines(
+        const KeyContext& keyContext,
+        PipelineDataGatherer* gatherer,
+        const PaintOptions::ProcessCombination& processCombination) {
+
+    // For morphology imagefilters we know we don't have alpha-only textures and don't need cubic
+    // filtering.
+    sk_sp<PrecompileShader> imageShader = PrecompileShadersPriv::Image(
+            PrecompileImageShaderFlags::kExcludeAlpha | PrecompileImageShaderFlags::kExcludeCubic);
+
+    {
+        PaintOptions sparse;
+
+        SkBlendMode blendModes[] = { SkBlendMode::kSrc };
+        sparse.setShaders({ PrecompileShadersPriv::SparseMorphology(imageShader) });
+        sparse.setBlendModes(blendModes);
+
+        sparse.priv().buildCombinations(keyContext,
+                                        gatherer,
+                                        DrawTypeFlags::kSimpleShape,
+                                        /* withPrimitiveBlender= */ false,
+                                        Coverage::kSingleChannel,
+                                        processCombination);
+    }
+
+    {
+        PaintOptions linear;
+
+        SkBlendMode blendModes[] = { SkBlendMode::kSrcOver };
+        linear.setShaders({ PrecompileShadersPriv::LinearMorphology(std::move(imageShader)) });
+        linear.setBlendModes(blendModes);
+
+        linear.priv().buildCombinations(keyContext,
+                                        gatherer,
+                                        DrawTypeFlags::kSimpleShape,
+                                        /* withPrimitiveBlender= */ false,
+                                        Coverage::kSingleChannel,
+                                        processCombination);
+    }
 }
 
 } // anonymous namespace
@@ -490,8 +543,13 @@ void PaintOptions::buildCombinations(
         tmp.buildCombinations(keyContext, gatherer, drawTypes, withPrimitiveBlender, coverage,
                               processCombination);
 
+        create_image_drawing_pipelines(keyContext, gatherer, processCombination);
+
         if (fImageFilterOptions & PrecompileImageFilters::kBlur) {
             create_blur_imagefilter_pipelines(keyContext, gatherer, processCombination);
+        }
+        if (fImageFilterOptions & PrecompileImageFilters::kMorphology) {
+            create_morphology_imagefilter_pipelines(keyContext, gatherer, processCombination);
         }
     } else {
         int numCombinations = this->numCombinations();
