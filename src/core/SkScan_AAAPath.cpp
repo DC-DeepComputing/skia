@@ -1423,6 +1423,15 @@ static void validate_edges_for_y(const SkAnalyticEdge* edge, SkFixed y) {
 #endif
 }
 
+#if SK_EDGE_DEBUGGING
+void print_edges_for_y(const SkAnalyticEdge* edge, SkFixed y) {
+    while (edge->fUpperY <= y) {
+        edge->dump();
+        edge = edge->fNext;
+    }
+}
+#endif
+
 // Return true if prev->fX, next->fX are too close in the current pixel row.
 static bool edges_too_close(SkAnalyticEdge* prev, SkAnalyticEdge* next, SkFixed lowerY) {
     // When next->fDX == 0, prev->fX >= next->fX - SkAbs32(next->fDX) would be false
@@ -1630,6 +1639,11 @@ static void aaa_walk_edges(SkAnalyticEdge*  prevHead,
         SkASSERT(currE->fPrev == prevHead);
         validate_edges_for_y(currE, y);
 
+#if SK_EDGE_DEBUGGING
+        SkDebugf("y: %g - %g\n", SkFixedToFloat(y), SkFixedToFloat(nextY));
+        print_edges_for_y(currE, y);
+#endif
+
         // Even if next - y == SK_Fixed1, we can still break the left-to-right order requirement
         // of the SKAAClip: |\| (two trapezoids with overlapping middle wedges)
         bool noRealBlitter = forceRLE;  // forceRLE && (nextY - y != SK_Fixed1);
@@ -1703,6 +1717,16 @@ static void aaa_walk_edges(SkAnalyticEdge*  prevHead,
                     SkFixed nextLeft = std::max(leftClip, leftE->fX);
                     rite             = std::min(rightClip, rite);
                     SkFixed nextRite = std::min(rightClip, currE->fX);
+#if SK_EDGE_DEBUGGING
+                    SkDebugf("blit: %d (%d) l: %g - %g (%g) r: %g - %g (%g)\n",
+                             y >> 16, fullAlpha,
+                             SkFixedToFloat(left),
+                             SkFixedToFloat(nextLeft),
+                             SkFixedToFloat(leftDY),
+                             SkFixedToFloat(rite),
+                             SkFixedToFloat(nextRite),
+                             SkFixedToFloat(currE->fDY));
+#endif
                     blit_trapezoid_row(
                             blitter,
                             y >> 16,
@@ -1878,6 +1902,13 @@ static void aaa_fill_path(const SkPath& path,
     SkAnalyticEdge headEdge, tailEdge, *last;
     // this returns the first and last edge after they're sorted into a dlink list
     SkAnalyticEdge* edge = sort_edges(list, count, &last);
+
+#if SK_EDGE_DEBUGGING
+    SkAnalyticEdge* e = edge;
+    for (int i = 0; i < count; i++, e = e->fNext) {
+        e->dump();
+    }
+#endif
 
     headEdge.fRiteE  = nullptr;
     headEdge.fPrev   = nullptr;
