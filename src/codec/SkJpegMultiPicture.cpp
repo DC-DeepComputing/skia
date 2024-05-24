@@ -188,11 +188,21 @@ std::unique_ptr<SkJpegMultiPictureParameters> SkJpegMultiPictureParameters::Make
     // The next IFD is the Attribute IFD offset. We will not read or validate the Attribute IFD.
 
     // Parse the MP Entries data.
+    SkMemoryEndianStream mpEntriesStream(mpEntriesData);
     for (uint32_t i = 0; i < numberOfImages; ++i) {
-        const uint8_t* mpEntryData = mpEntriesData->bytes() + kMPEntrySize * i;
-        const uint32_t attribute = get_endian_int(mpEntryData + 0, littleEndian);
-        const uint32_t size = get_endian_int(mpEntryData + 4, littleEndian);
-        const uint32_t dataOffset = get_endian_int(mpEntryData + 8, littleEndian);
+        uint32_t attribute = 0;
+        uint32_t size = 0;
+        uint32_t dataOffset = 0;
+        uint16_t dependentImage0 = 0;
+        uint16_t dependentImage1 = 0;
+        if (!mpEntriesStream.readU32(&attribute, littleEndian) ||
+            !mpEntriesStream.readU32(&size, littleEndian) ||
+            !mpEntriesStream.readU32(&dataOffset, littleEndian) ||
+            !mpEntriesStream.readU16(&dependentImage0, littleEndian) ||
+            !mpEntriesStream.readU16(&dependentImage1, littleEndian)) {
+            SkCodecPrintf("Failed to read MP entry.\n");
+            return nullptr;
+        }
 
         const bool isPrimary =
                 (attribute & kMPEntryAttributeTypeMask) == kMPEntryAttributeTypePrimary;
@@ -200,7 +210,7 @@ std::unique_ptr<SkJpegMultiPictureParameters> SkJpegMultiPictureParameters::Make
                 (attribute & kMPEntryAttributeFormatMask) == kMPEntryAttributeFormatJpeg;
 
         if (isPrimary != (i == 0)) {
-            SkCodecPrintf("Image must be primary iff it is the first image..\n");
+            SkCodecPrintf("Image must be primary iff it is the first image.\n");
             return nullptr;
         }
         if (!isJpeg) {
