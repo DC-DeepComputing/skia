@@ -51,6 +51,24 @@
       "parentUuid": "e07da767_200f4077",
       "revId": "5026a5d407f7043248ce81824088e4710bcf64ca",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "248bb29e_e590a72d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-05-24T14:45:31Z",
+      "side": 1,
+      "message": "Yup, just noticed that.",
+      "parentUuid": "7c6e73f2_18fa6937",
+      "revId": "5026a5d407f7043248ce81824088e4710bcf64ca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
