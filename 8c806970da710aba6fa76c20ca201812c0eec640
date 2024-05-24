@@ -16,6 +16,93 @@
       "message": "+Michael as I think I need another owner to +1 this.",
       "revId": "8c806970da710aba6fa76c20ca201812c0eec640",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ec1320f_66f4b87d",
+        "filename": "src/gpu/ganesh/ops/TessellationPathRenderer.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-24T15:23:31Z",
+      "side": 1,
+      "message": "I would just have `ChopPathIfNecessary` return a bool as this is all internal code and it\u0027s not a parameter.",
+      "range": {
+        "startLine": 75,
+        "startChar": 0,
+        "endLine": 81,
+        "endChar": 2
+      },
+      "revId": "8c806970da710aba6fa76c20ca201812c0eec640",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "37ed344d_fe8b6b50",
+        "filename": "src/gpu/ganesh/ops/TessellationPathRenderer.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-24T15:23:31Z",
+      "side": 1,
+      "message": "I think you can do the same effective check by querying the shape\u0027s `segmentMask()` for having types other than `SkPath::kLine_SegmentMask`. This also then handles cases where an SkPath is all lines, simple lines, and points, which are also not modified by PreChop.\n\nThis should mean you can avoid modifying the GrStyledShape file entirely.",
+      "range": {
+        "startLine": 93,
+        "startChar": 47,
+        "endLine": 94,
+        "endChar": 63
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "925f2182_3032d4bd",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/ganesh/ops/TessellationPathRenderer.cpp",
+              "range": {
+                "startLine": 93,
+                "startChar": 0,
+                "endLine": 95,
+                "endChar": 0
+              },
+              "replacement": "    if (n4 \u003e tess::kMaxSegmentsPerCurve_p4 \u0026\u0026\n        shape.segmentMask() !\u003d SkPath::kLine_SegmentMask) {\n"
+            }
+          ]
+        }
+      ],
+      "revId": "8c806970da710aba6fa76c20ca201812c0eec640",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c855797b_f341abbb",
+        "filename": "src/gpu/ganesh/ops/TessellationPathRenderer.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-24T15:23:31Z",
+      "side": 1,
+      "message": "With `ChopPathIfNecessary` returning a bool, all of this can simply be `SkAssertResult(ChopPathIfNecessary(...));`",
+      "range": {
+        "startLine": 193,
+        "startChar": 4,
+        "endLine": 198,
+        "endChar": 49
+      },
+      "revId": "8c806970da710aba6fa76c20ca201812c0eec640",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
