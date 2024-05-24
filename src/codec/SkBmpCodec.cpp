@@ -166,8 +166,8 @@ SkCodec::Result SkBmpCodec::ReadHeader(SkStream* stream, bool inIco,
             return kIncompleteInput;
         }
 
-        totalBytes = get_int(hBuffer, 2);
-        offset = get_int(hBuffer, 10);
+        totalBytes = get_uint32_le(hBuffer, 2);
+        offset = get_uint32_le(hBuffer, 10);
         if (offset < kBmpHeaderBytes + kBmpOS2V1Bytes) {
             SkCodecPrintf("Error: invalid starting location for pixel data\n");
             return kInvalidInput;
@@ -176,7 +176,7 @@ SkCodec::Result SkBmpCodec::ReadHeader(SkStream* stream, bool inIco,
         // The size of the second (info) header in bytes
         // The size is the first field of the second header, so we have already
         // read the first four infoBytes.
-        infoBytes = get_int(hBuffer, 14);
+        infoBytes = get_uint32_le(hBuffer, 14);
         if (infoBytes < kBmpOS2V1Bytes) {
             SkCodecPrintf("Error: invalid second header size.\n");
             return kInvalidInput;
@@ -198,7 +198,7 @@ SkCodec::Result SkBmpCodec::ReadHeader(SkStream* stream, bool inIco,
             SkCodecPrintf("Error: unable to read size of second bitmap header.\n");
             return kIncompleteInput;
         }
-        infoBytes = get_int(hBuffer, 0);
+        infoBytes = get_uint32_le(hBuffer, 0);
         if (infoBytes < kBmpOS2V1Bytes) {
             SkCodecPrintf("Error: invalid second header size.\n");
             return kInvalidInput;
@@ -247,16 +247,16 @@ SkCodec::Result SkBmpCodec::ReadHeader(SkStream* stream, bool inIco,
             // We should not reach this point unless the size is large enough for
             // these required fields.
             SkASSERT(infoBytesRemaining >= 12);
-            width = get_int(iBuffer.get(), 0);
-            height = get_int(iBuffer.get(), 4);
-            bitsPerPixel = get_short(iBuffer.get(), 10);
+            width = get_uint32_le(iBuffer.get(), 0);
+            height = get_uint32_le(iBuffer.get(), 4);
+            bitsPerPixel = get_uint16_le(iBuffer.get(), 10);
 
             // Some versions do not have these fields, so we check before
             // overwriting the default value.
             if (infoBytesRemaining >= 16) {
-                compression = get_int(iBuffer.get(), 12);
+                compression = get_uint32_le(iBuffer.get(), 12);
                 if (infoBytesRemaining >= 32) {
-                    numColors = get_int(iBuffer.get(), 28);
+                    numColors = get_uint32_le(iBuffer.get(), 28);
                 }
             }
 
@@ -266,9 +266,9 @@ SkCodec::Result SkBmpCodec::ReadHeader(SkStream* stream, bool inIco,
             break;
         case kOS2V1_BmpHeaderType:
             // The OS2V1 is treated separately because it has a unique format
-            width = (int) get_short(iBuffer.get(), 0);
-            height = (int) get_short(iBuffer.get(), 2);
-            bitsPerPixel = get_short(iBuffer.get(), 6);
+            width = (int)get_uint16_le(iBuffer.get(), 0);
+            height = (int)get_uint16_le(iBuffer.get(), 2);
+            bitsPerPixel = get_uint16_le(iBuffer.get(), 6);
             bytesPerColor = 3;
             break;
         case kUnknown_BmpHeaderType:
@@ -351,9 +351,9 @@ SkCodec::Result SkBmpCodec::ReadHeader(SkStream* stream, bool inIco,
                         return kIncompleteInput;
                     }
                     maskBytes = kBmpMaskBytes;
-                    inputMasks.red = get_int(buffer, 0);
-                    inputMasks.green = get_int(buffer, 4);
-                    inputMasks.blue = get_int(buffer, 8);
+                    inputMasks.red = get_uint32_le(buffer, 0);
+                    inputMasks.green = get_uint32_le(buffer, 4);
+                    inputMasks.blue = get_uint32_le(buffer, 8);
                     break;
                 }
                 case kInfoV2_BmpHeaderType:
@@ -364,9 +364,9 @@ SkCodec::Result SkBmpCodec::ReadHeader(SkStream* stream, bool inIco,
                     // is V2+, we are guaranteed to be able to read at least
                     // this size.
                     SkASSERT(infoBytesRemaining >= 48);
-                    inputMasks.red = get_int(iBuffer.get(), 36);
-                    inputMasks.green = get_int(iBuffer.get(), 40);
-                    inputMasks.blue = get_int(iBuffer.get(), 44);
+                    inputMasks.red = get_uint32_le(iBuffer.get(), 36);
+                    inputMasks.green = get_uint32_le(iBuffer.get(), 40);
+                    inputMasks.blue = get_uint32_le(iBuffer.get(), 44);
 
                     if (kInfoV2_BmpHeaderType == headerType ||
                             (kInfoV3_BmpHeaderType == headerType && !inIco)) {
@@ -387,7 +387,7 @@ SkCodec::Result SkBmpCodec::ReadHeader(SkStream* stream, bool inIco,
                     // Header types are matched based on size.  If the header is
                     // V3+, we are guaranteed to be able to read at least this size.
                     SkASSERT(infoBytesRemaining >= 52);
-                    inputMasks.alpha = get_int(iBuffer.get(), 48);
+                    inputMasks.alpha = get_uint32_le(iBuffer.get(), 48);
                     break;
                 case kOS2VX_BmpHeaderType:
                     // TODO: Decide if we intend to support this.

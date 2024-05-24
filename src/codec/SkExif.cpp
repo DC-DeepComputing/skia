@@ -33,7 +33,7 @@ constexpr uint16_t kPixelYDimensionTag = 0xa003;
 static bool get_maker_note_hdr_headroom(sk_sp<SkData> data, float* hdrHeadroom) {
     // No little endian images that specify this data have been observed. Do not add speculative
     // support.
-    const bool kLittleEndian = false;
+    const SkEndian kEndian = SkEndian::kBig;
     const uint8_t kSig[] = {
             'A', 'p', 'p', 'l', 'e', ' ', 'i', 'O', 'S', 0, 0, 1, 'M', 'M',  //
     };
@@ -43,8 +43,7 @@ static bool get_maker_note_hdr_headroom(sk_sp<SkData> data, float* hdrHeadroom) 
     if (memcmp(data->data(), kSig, sizeof(kSig)) != 0) {
         return false;
     }
-    auto ifd =
-            SkTiffImageFileDirectory::MakeFromOffset(std::move(data), kLittleEndian, sizeof(kSig));
+    auto ifd = SkTiffImageFileDirectory::MakeFromOffset(std::move(data), kEndian, sizeof(kSig));
     if (!ifd) {
         return false;
     }
@@ -97,17 +96,18 @@ SkExifMetadata::SkExifMetadata(sk_sp<SkData> data) : fData(std::move(data)) {
     if (!fData) {
         return;
     }
-    bool littleEndian = false;
+    SkEndian endian = SkEndian::kBig;
     uint32_t ifdOffset = 0;
-    if (!SkTiffImageFileDirectory::ParseHeader(fData.get(), &littleEndian, &ifdOffset)) {
+    if (!SkTiffImageFileDirectory::ParseHeader(fData.get(), &endian, &ifdOffset)) {
         SkCodecPrintf("Failed to parse Exif header.\n");
         return;
     }
-    parseIfd(ifdOffset, littleEndian, /*isRoot=*/true);
+    parseIfd(ifdOffset, endian == SkEndian::kLittle, /*isRoot=*/true);
 }
 
 void SkExifMetadata::parseIfd(uint32_t ifdOffset, bool littleEndian, bool isRoot) {
-    auto ifd = SkTiffImageFileDirectory::MakeFromOffset(fData, littleEndian, ifdOffset);
+    auto ifd = SkTiffImageFileDirectory::MakeFromOffset(
+            fData, littleEndian ? SkEndian::kLittle : SkEndian::kBig, ifdOffset);
     if (!ifd) {
         SkCodecPrintf("Failed to make IFD\n");
         return;

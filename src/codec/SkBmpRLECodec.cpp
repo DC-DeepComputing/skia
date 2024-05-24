@@ -101,9 +101,9 @@ SkCodec::Result SkBmpRLECodec::onGetPixels(const SkImageInfo& dstInfo,
         PackColorProc packARGB = choose_pack_color_proc(false, dstColorType);
         uint32_t i = 0;
         for (; i < numColorsToRead; i++) {
-            uint8_t blue = get_byte(cBuffer.get(), i*fBytesPerColor);
-            uint8_t green = get_byte(cBuffer.get(), i*fBytesPerColor + 1);
-            uint8_t red = get_byte(cBuffer.get(), i*fBytesPerColor + 2);
+            uint8_t blue = get_uint8(cBuffer.get(), i * fBytesPerColor);
+            uint8_t green = get_uint8(cBuffer.get(), i * fBytesPerColor + 1);
+            uint8_t red = get_uint8(cBuffer.get(), i * fBytesPerColor + 2);
             colorTable[i] = packARGB(0xFF, red, green, blue);
         }
 

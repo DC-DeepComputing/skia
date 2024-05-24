@@ -13,6 +13,7 @@
 #include "include/core/SkTypes.h"
 #include "include/private/SkColorData.h"
 #include "include/private/SkEncodedInfo.h"
+#include "src/base/SkEndian.h"
 #include "src/codec/SkColorPalette.h"
 
 #include <string_view>
@@ -143,15 +144,13 @@ static inline size_t compute_row_bytes(int width, uint32_t bitsPerPixel) {
  * Get a byte from a buffer
  * This method is unsafe, the caller is responsible for performing a check
  */
-static inline uint8_t get_byte(const uint8_t* buffer, uint32_t i) {
-    return buffer[i];
-}
+static inline uint8_t get_uint8(const uint8_t* buffer, uint32_t i) { return buffer[i]; }
 
 /*
- * Get a short from a buffer
+ * Get a little endian uint16_t from a buffer
  * This method is unsafe, the caller is responsible for performing a check
  */
-static inline uint16_t get_short(const uint8_t* buffer, uint32_t i) {
+static inline uint16_t get_uint16_le(const uint8_t* buffer, uint32_t i) {
     uint16_t result;
     memcpy(&result, &(buffer[i]), 2);
 #ifdef SK_CPU_BENDIAN
@@ -162,10 +161,10 @@ static inline uint16_t get_short(const uint8_t* buffer, uint32_t i) {
 }
 
 /*
- * Get an int from a buffer
+ * Get a little endian uint32_t from a buffer
  * This method is unsafe, the caller is responsible for performing a check
  */
-static inline uint32_t get_int(const uint8_t* buffer, uint32_t i) {
+static inline uint32_t get_uint32_le(const uint8_t* buffer, uint32_t i) {
     uint32_t result;
     memcpy(&result, &(buffer[i]), 4);
 #ifdef SK_CPU_BENDIAN
@@ -176,35 +175,21 @@ static inline uint32_t get_int(const uint8_t* buffer, uint32_t i) {
 }
 
 /*
- * @param data           Buffer to read bytes from
- * @param isLittleEndian Output parameter
- *                       Indicates if the data is little endian
- *                       Is unaffected on false returns
+ * Read the four bytes from |data| and return in |endian| the endianness specified.
+ * Return false if |data| is not a valid endian marker.
  */
-static inline bool is_valid_endian_marker(const uint8_t* data, bool* isLittleEndian) {
+static inline bool is_valid_endian_marker(const uint8_t* data, SkEndian* endian) {
     // II indicates Intel (little endian) and MM indicates motorola (big endian).
     if (('I' != data[0] || 'I' != data[1]) && ('M' != data[0] || 'M' != data[1])) {
         return false;
     }
 
-    *isLittleEndian = ('I' == data[0]);
+    if ('I' == data[0]) {
+        *endian = SkEndian::kLittle;
+    } else {
+        *endian = SkEndian::kBig;
+    }
     return true;
-}
-
-static inline uint16_t get_endian_short(const uint8_t* data, bool littleEndian) {
-    if (littleEndian) {
-        return (data[1] << 8) | (data[0]);
-    }
-
-    return (data[0] << 8) | (data[1]);
-}
-
-static inline uint32_t get_endian_int(const uint8_t* data, bool littleEndian) {
-    if (littleEndian) {
-        return (data[3] << 24) | (data[2] << 16) | (data[1] << 8) | (data[0]);
-    }
-
-    return (data[0] << 24) | (data[1] << 16) | (data[2] << 8) | (data[3]);
 }
 
 static inline SkPMColor premultiply_argb_as_rgba(U8CPU a, U8CPU r, U8CPU g, U8CPU b) {
