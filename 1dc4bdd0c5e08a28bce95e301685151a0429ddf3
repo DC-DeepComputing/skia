@@ -16,6 +16,24 @@
       "message": "To the contrary, all the `SkWStream::writeFoo` and `SkStream::readFoo` are rather poor API and need to be removed. These shouldn\u0027t be methods on a `SkStream` object but functions that take a stream object or at least just wrap another stream. I\u0027ve removed some of this ugliness in the past, but there\u0027s still some hanging on because it\u0027s just difficult to get rid of them. Probably should try again.\n\nMostly just wanted to point out that we really don\u0027t want this cruft on `SkWStream` or `SkStream`. And I\u0027m against adding more. This particular change is fine for now I suppose since it is internal anyway, but implementation inheritance like this should be generally avoided.",
       "revId": "1dc4bdd0c5e08a28bce95e301685151a0429ddf3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "de3ebbbb_54175c6a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2024-05-24T17:16:06Z",
+      "side": 1,
+      "message": "Good to know! I had previously added a bunch of helper functions that took SkStream pointers in a patch that I felt got out of control ([here](https://skia-review.googlesource.com/c/skia/+/857837)).\n\nI\u0027ll send out a patch that updates that (maybe today, maybe next week). I assume you\u0027d prefer that structure for the other follow-up that I had [here](https://skia-review.googlesource.com/c/skia/+/857857).",
+      "parentUuid": "2e5426cb_6849156f",
+      "revId": "1dc4bdd0c5e08a28bce95e301685151a0429ddf3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
