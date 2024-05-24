@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fcbc6d0d_e5f91708",
+        "filename": "gn/minify_sksl_tests.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-05-24T21:43:34Z",
+      "side": 1,
+      "message": "You also need to update https://github.com/google/skia/blob/0b7d656b9c030e0b73f0bafc9125bed0c0d24ab6/tools/sksl-minify/BUILD.bazel#L116 to pass in this extra argument",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 16
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "22b82c8b_4f4d0d64",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "gn/minify_sksl_tests.py",
+              "range": {
+                "startLine": 79,
+                "startChar": 0,
+                "endLine": 80,
+                "endChar": 0
+              },
+              "replacement": "        worklist.write(rt_shader_module + \"\\n\\n\")\n"
+            }
+          ]
+        }
+      ],
+      "revId": "26732a597f6e85f1195cc3c6e5ee33b26e1c551d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
