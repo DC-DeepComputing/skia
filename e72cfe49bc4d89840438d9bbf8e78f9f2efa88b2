@@ -33,6 +33,24 @@
       "message": "RSLGTM",
       "revId": "e72cfe49bc4d89840438d9bbf8e78f9f2efa88b2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a65c124_60ceafe6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19319
+      },
+      "writtenOn": "2024-05-24T17:26:13Z",
+      "side": 1,
+      "message": "Thanks!",
+      "parentUuid": "4c58506c_67ac6b6b",
+      "revId": "e72cfe49bc4d89840438d9bbf8e78f9f2efa88b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
