@@ -16,6 +16,23 @@
       "message": "PTAL",
       "revId": "5026a5d407f7043248ce81824088e4710bcf64ca",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e07da767_200f4077",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-05-24T14:40:09Z",
+      "side": 1,
+      "message": "On some of the generated `surfaceprops_df` images the \"unknown\" geometry is now getting subpixel antialiased.",
+      "revId": "5026a5d407f7043248ce81824088e4710bcf64ca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
