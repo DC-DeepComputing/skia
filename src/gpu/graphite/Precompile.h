@@ -159,6 +159,7 @@ public:
 enum class PrecompileImageFilters : uint32_t {
     kNone = 0x0,
     kBlur = 0x1,
+    kMorphology = 0x2,
 };
 SK_MAKE_BITMASK_OPS(PrecompileImageFilters)
 

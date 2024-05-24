@@ -467,6 +467,41 @@ void create_blur_imagefilter_pipelines(const KeyContext& keyContext,
                                                processCombination);
 }
 
+void create_morphology_imagefilter_pipelines(
+        const KeyContext& keyContext,
+        PipelineDataGatherer* gatherer,
+        const PaintOptions::ProcessCombination& processCombination) {
+#if 0
+    PaintOptions blurPaintOptions, imagePaintOptions;
+
+    // For blur imagefilters we know we don't have alpha-only textures and don't need cubic
+    // filtering.
+    sk_sp<PrecompileShader> imageShader = PrecompileShadersPriv::Image(
+            PrecompileImageShaderFlags::kExcludeAlpha | PrecompileImageShaderFlags::kExcludeCubic);
+
+    SkBlendMode blurBlendModes[] = { SkBlendMode::kSrc };
+    blurPaintOptions.setShaders({ PrecompileShadersPriv::Blur(imageShader) });
+    blurPaintOptions.setBlendModes(blurBlendModes);
+
+    SkBlendMode imageBlendModes[] = { SkBlendMode::kSrc, SkBlendMode::kDstOut };
+    imagePaintOptions.setShaders({ imageShader });
+    imagePaintOptions.setBlendModes(imageBlendModes);
+
+    blurPaintOptions.priv().buildCombinations(keyContext,
+                                              gatherer,
+                                              DrawTypeFlags::kSimpleShape,
+                                              /* withPrimitiveBlender= */ false,
+                                              Coverage::kSingleChannel,
+                                              processCombination);
+    imagePaintOptions.priv().buildCombinations(keyContext,
+                                               gatherer,
+                                               DrawTypeFlags::kSimpleShape,
+                                               /* withPrimitiveBlender= */ false,
+                                               Coverage::kSingleChannel,
+                                               processCombination);
+#endif
+}
+
 } // anonymous namespace
 
 void PaintOptions::buildCombinations(
@@ -492,6 +527,9 @@ void PaintOptions::buildCombinations(
 
         if (fImageFilterOptions & PrecompileImageFilters::kBlur) {
             create_blur_imagefilter_pipelines(keyContext, gatherer, processCombination);
+        }
+        if (fImageFilterOptions & PrecompileImageFilters::kMorphology) {
+            create_morphology_imagefilter_pipelines(keyContext, gatherer, processCombination);
         }
     } else {
         int numCombinations = this->numCombinations();

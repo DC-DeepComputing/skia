@@ -244,13 +244,14 @@ const char* to_str(ClipType c) {
 //--------------------------------------------------------------------------------------------------
 #define SK_ALL_TEST_IMAGE_FILTERS(M) \
     M(None)            \
-    M(Blur)
+    M(Blur)            \
+    M(Morphology)
 
 enum class ImageFilterType {
 #define M(type) k##type,
     SK_ALL_TEST_IMAGE_FILTERS(M)
 #undef M
-    kLast = kBlur
+    kLast = kMorphology
 };
 
 static constexpr int kImageFilterTypeCount = static_cast<int>(ImageFilterType::kLast) + 1;
@@ -1141,6 +1142,22 @@ sk_sp<SkImageFilter> blur_imagefilter(SkRandom* rand,
     return blurIF;
 }
 
+sk_sp<SkImageFilter> morphology_imagefilter(SkRandom* rand,
+                                            SkEnumBitMask<PrecompileImageFilters>* imageFilterMask) {
+    float radX = 2.0f, radY = 4.0f;
+
+    sk_sp<SkImageFilter> morphologyIF;
+
+    if (rand->nextBool()) {
+        morphologyIF = SkImageFilters::Erode(radX, radY, /* input= */ nullptr);
+    } else {
+        morphologyIF = SkImageFilters::Dilate(radX, radY, /* input= */ nullptr);
+    }
+    *imageFilterMask |= PrecompileImageFilters::kMorphology;
+
+    return morphologyIF;
+}
+
 std::pair<sk_sp<SkImageFilter>, SkEnumBitMask<PrecompileImageFilters>> create_image_filter(
         SkRandom* rand,
         ImageFilterType type) {
@@ -1149,10 +1166,9 @@ std::pair<sk_sp<SkImageFilter>, SkEnumBitMask<PrecompileImageFilters>> create_im
     SkEnumBitMask<PrecompileImageFilters> imageFilterMask = PrecompileImageFilters::kNone;
 
     switch (type) {
-        case ImageFilterType::kNone:
-            break;
-        case ImageFilterType::kBlur:
-            imgFilter = blur_imagefilter(rand, &imageFilterMask);
+        case ImageFilterType::kNone: break;
+        case ImageFilterType::kBlur: imgFilter = blur_imagefilter(rand, &imageFilterMask); break;
+        case ImageFilterType::kMorphology: imgFilter = morphology_imagefilter(rand, &imageFilterMask); break;
     }
 
     return { std::move(imgFilter), imageFilterMask };
@@ -1551,6 +1567,7 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
 #if EXPANDED_SET
             ImageFilterType::kBlur,
 #endif
+            ImageFilterType::kMorphology,
     };
 
     ClipType clips[] = {
