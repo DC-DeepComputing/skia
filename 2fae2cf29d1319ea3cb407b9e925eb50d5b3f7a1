@@ -33,6 +33,24 @@
       "message": "Some of the changed GMs look to now have too much coverage in some places, an example that\u0027s easier to reason about I think is `polygons` where one of the circles now looks non-symmetrical.",
       "revId": "2fae2cf29d1319ea3cb407b9e925eb50d5b3f7a1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f44e7c9_4aaa02f5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-05-24T17:21:47Z",
+      "side": 1,
+      "message": "Aha, thanks! I actually tried to construct examples where this would be incorrect, but failed. Glad to know we have existing cases. I\u0027ll definitely be debugging that when I get back from vacation (and before landing this).",
+      "parentUuid": "bce603f2_15ac7ae9",
+      "revId": "2fae2cf29d1319ea3cb407b9e925eb50d5b3f7a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
