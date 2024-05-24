@@ -34,6 +34,24 @@
       "parentUuid": "d9ffc2e7_4b13437e",
       "revId": "54a152938baf387f2d8f71e01703be7eb8212e73",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "86a28e15_8de70f1f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-05-24T14:29:50Z",
+      "side": 1,
+      "message": "Yes, this font has bitmap strikes at the odd sizes used. (As well as a `gasp` table that permutes through all the settings, a different setting for each set of sizes.)",
+      "parentUuid": "ec7ab9e8_07bfa926",
+      "revId": "54a152938baf387f2d8f71e01703be7eb8212e73",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
