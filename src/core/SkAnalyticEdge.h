@@ -18,6 +18,8 @@
 
 struct SkPoint;
 
+#define SK_EDGE_DEBUGGING 1
+
 struct SkAnalyticEdge {
     // Similar to SkEdge, the conic edges will be converted to quadratic edges
     enum Type {
@@ -95,9 +97,11 @@ struct SkAnalyticEdge {
 
 #ifdef SK_DEBUG
     void dump() const {
-        SkDebugf("edge: upperY:%d lowerY:%d y:%g x:%g dx:%g w:%d\n",
-                 fUpperY, fLowerY, SkFixedToFloat(fY), SkFixedToFloat(fX),
-                 SkFixedToFloat(fDX), fWinding);
+        SkDebugf("edge (%+d): XY: [%g, %g] upperXY: [%g, %g] lowerY: [%g] dXY: [%g, %g]\n",
+                 fWinding,
+                 SkFixedToFloat(fX), SkFixedToFloat(fY),
+                 SkFixedToFloat(fUpperX), SkFixedToFloat(fUpperY), SkFixedToFloat(fLowerY),
+                 SkFixedToFloat(fDX), SkFixedToFloat(fDY));
     }
 
     void validate() const {
