@@ -34,8 +34,10 @@ namespace skiagm {
 
 namespace {
 const SkScalar kTextSizes[] = {12, 18, 30, 120};
-const char kTestFontName[] = "fonts/test_glyphs-glyf_colr_1.ttf";
-const char kTestFontNameVariable[] = "fonts/test_glyphs-glyf_colr_1_variable.ttf";
+// const char kTestFontName[] = "fonts/test_glyphs-glyf_colr_1.ttf";
+const char kTestFontName[] = "fonts/honk.ttf";
+// const char kTestFontNameVariable[] = "fonts/test_glyphs-glyf_colr_1_variable.ttf";
+const char kTestFontNameVariable[] = "fonts/honk.ttf";
 const SkScalar xWidth = 1200;
 const SkScalar xTranslate = 200;
 }  // namespace
@@ -223,6 +225,7 @@ const uint32_t paint_glyph_nested[] = { 0xf1400, 0xf1401, 0xf1402, 0xf1403,
                                         0xf1404, 0xf1405, 0xf1406, 0xf1407,
                                         0xf1408, 0xf1409, 0xf140a, 0xf140b,
                                         0xf140c, 0xf140d, 0xf140e, 0xf140f };
+const uint32_t honk[] = { 't', 'e', 's', 't' };
 // clang-format on
 
 };  // namespace ColrV1TestDefinitions
@@ -318,6 +321,8 @@ DEF_GM(return F(C(variable_alpha),         0.0f,  0.0f, {{"APH2"_t, -0.7f}, {"AP
 DEF_GM(return F(C(paintcolrglyph_cycle),   0.0f,  0.0f, {}))
 DEF_GM(return F(C(sweep_coincident),       0.0f,  0.0f, {}))
 DEF_GM(return F(C(paint_glyph_nested),     0.0f,  0.0f, {}))
+DEF_GM(return F(C(honk),     0.0f,  0.0f, {}))
+
 // clang-format on
 
 }  // namespace skiagm
