@@ -19,6 +19,7 @@
 #include "include/private/base/SkTo.h"
 #include "src/base/SkSafeMath.h"
 #include "src/core/SkOSFile.h"
+#include "src/core/SkStreamEndian.h"
 #include "src/core/SkStreamPriv.h"
 
 #include <algorithm>
@@ -986,3 +987,114 @@ bool StreamRemainingLengthIsBelow(SkStream* stream, size_t len) {
     }
     return false;
 }
+
+///////////////////////////////////////////////////////////////////////////////
+// Endian helpers
+
+bool SkWriteU16(SkWStream* s, uint16_t value, SkEndian endian) {
+  value = (endian == SkEndian::kNative) ? value : SkEndianSwap16(value);
+  return s->write16(value);
+}
+
+bool SkWriteU32(SkWStream* s, uint32_t value, SkEndian endian) {
+  value = (endian == SkEndian::kNative) ? value : SkEndianSwap32(value);
+  return s->write32(value);
+}
+
+bool SkWriteS16(SkWStream* s, int16_t value, SkEndian endian) {
+  value = (endian == SkEndian::kNative) ? value : SkEndianSwap16(value);
+  return s->write16(value);
+}
+
+bool SkWriteS32(SkWStream* s, int32_t value, SkEndian endian) {
+  value = (endian == SkEndian::kNative) ? value : SkEndianSwap32(value);
+  return s->write32(value);
+}
+
+bool SkWriteU16_BE(SkWStream* s, uint16_t value) {
+  return SkWriteU16(s, value, SkEndian::kBig);
+}
+
+bool SkWriteU32_BE(SkWStream* s, uint32_t value) {
+  return SkWriteU32(s, value, SkEndian::kBig);
+}
+
+bool SkWriteS16_BE(SkWStream* s, int16_t value) {
+  return SkWriteS16(s, value, SkEndian::kBig);
+}
+
+bool SkWriteS32_BE(SkWStream* s, int32_t value) {
+  return SkWriteS32(s, value, SkEndian::kBig);
+}
+
+bool SkReadU16(SkStream* s, uint16_t* value, SkEndian endian) {
+  if (!s->readU16(value)) {
+      return false;
+  }
+  *value = (endian == SkEndian::kNative) ? *value : SkEndianSwap16(*value);
+  return true;
+}
+
+bool SkReadU32(SkStream* s, uint32_t* value, SkEndian endian) {
+  if (!s->readU32(value)) {
+      return false;
+  }
+  *value = (endian == SkEndian::kNative) ? *value : SkEndianSwap32(*value);
+  return true;
+}
+
+bool SkReadS16(SkStream* s, int16_t* value, SkEndian endian) {
+  if (!s->readS16(value)) {
+      return false;
+  }
+  *value = (endian == SkEndian::kNative) ? *value : SkEndianSwap16(*value);
+  return true;
+}
+
+bool SkReadS32(SkStream* s, int32_t* value, SkEndian endian) {
+  if (!s->readS32(value)) {
+      return false;
+  }
+  *value = (endian == SkEndian::kNative) ? *value : SkEndianSwap32(*value);
+  return true;
+}
+
+bool SkReadSignedRational(SkStream* s, float* value, SkEndian endian) {
+  uint32_t numerator = 0;
+  if (!SkReadU32(s, &numerator, endian)) {
+      return false;
+  }
+  uint32_t denominator = 0;
+  if (!SkReadU32(s, &denominator, endian)) {
+      return false;
+  }
+  if (denominator == 0) {
+    // The TIFF specification does not indicate a behavior when the denominator is
+    // zero. The behavior of returning zero for a denominator of zero is a
+    // preservation of the behavior introduced in https://crrev.com/767874.
+    *value = 0.f;
+  } else {
+    *value = static_cast<float>(static_cast<double>(numerator) / static_cast<double>(denominator));
+  }
+  return true;
+}
+
+bool SkReadUnsignedRational(SkStream* s, float* value, SkEndian endian) {
+  int32_t numerator = 0;
+  if (!SkReadS32(s, &numerator, endian)) {
+      return false;
+  }
+  uint32_t denominator = 0;
+  if (!SkReadU32(s, &denominator, endian)) {
+      return false;
+  }
+  if (denominator == 0) {
+    // See SkReadSignedRational.
+    *value = 0.f;
+  } else {
+    *value = static_cast<float>(static_cast<double>(numerator) / static_cast<double>(denominator));
+  }
+  return true;
+}
+
+

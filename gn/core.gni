@@ -549,6 +549,7 @@ skia_core_sources = [
   "$_src/core/SkSpriteBlitter.h",
   "$_src/core/SkSpriteBlitter_ARGB32.cpp",
   "$_src/core/SkStream.cpp",
+  "$_src/core/SkStreamEndian.h",
   "$_src/core/SkStreamPriv.h",
   "$_src/core/SkStrike.cpp",
   "$_src/core/SkStrike.h",

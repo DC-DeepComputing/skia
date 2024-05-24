@@ -115,6 +115,7 @@ void SkExifMetadata::parseIfd(uint32_t ifdOffset, bool littleEndian, bool isRoot
     for (uint32_t i = 0; i < ifd->getNumEntries(); ++i) {
         switch (ifd->getEntryTag(i)) {
             case kOriginTag: {
+                printf("Origin\n");
                 uint16_t value = 0;
                 if (!fOriginPresent && ifd->getEntryUnsignedShort(i, 1, &value)) {
                     if (0 < value && value <= kLast_SkEncodedOrigin) {
@@ -125,6 +126,7 @@ void SkExifMetadata::parseIfd(uint32_t ifdOffset, bool littleEndian, bool isRoot
                 break;
             }
             case kMarkerNoteTag:
+                printf("MakerNote\n");
                 if (!fHdrHeadroomPresent) {
                     if (auto makerNoteData = ifd->getEntryUndefinedData(i)) {
                         fHdrHeadroomPresent = get_maker_note_hdr_headroom(std::move(makerNoteData),
@@ -133,6 +135,7 @@ void SkExifMetadata::parseIfd(uint32_t ifdOffset, bool littleEndian, bool isRoot
                 }
                 break;
             case kSubIFDOffsetTag: {
+                printf("SubIFD\n");
                 uint32_t subIfdOffset = 0;
                 if (isRoot && ifd->getEntryUnsignedLong(i, 1, &subIfdOffset)) {
                     parseIfd(subIfdOffset, littleEndian, /*isRoot=*/false);
@@ -140,11 +143,14 @@ void SkExifMetadata::parseIfd(uint32_t ifdOffset, bool littleEndian, bool isRoot
                 break;
             }
             case kXResolutionTag:
+                printf("xResolution\n");
                 if (!fXResolutionPresent) {
                     fXResolutionPresent = ifd->getEntryUnsignedRational(i, 1, &fXResolutionValue);
+                    printf("fXResolutionPresent:%d\n", fXResolutionPresent);
                 }
                 break;
             case kYResolutionTag:
+                printf("yResolution\n");
                 if (!fYResolutionPresent) {
                     fYResolutionPresent = ifd->getEntryUnsignedRational(i, 1, &fYResolutionValue);
                 }

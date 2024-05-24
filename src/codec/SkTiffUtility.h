@@ -10,6 +10,7 @@
 
 #include "include/core/SkData.h"
 #include "include/core/SkRefCnt.h"
+#include "src/core/SkStreamEndian.h"
 
 #include <cstddef>
 #include <cstdint>
@@ -106,8 +107,8 @@ private:
                          uint16_t* outTag,
                          uint16_t* outType,
                          uint32_t* outCount,
-                         const uint8_t** outData,
-                         size_t* outDataSize) const;
+                         uint32_t* outDataOffset,
+                         uint32_t* outDataSize) const;
 
     /*
      * Helper function for assorted getTag functions.
@@ -119,9 +120,10 @@ private:
 
     // The data that the IFD indexes into.
     const sk_sp<SkData> fData;
+    std::unique_ptr<SkMemoryStream> fStream;
 
     // True if the data is little endian.
-    const bool fLittleEndian;
+    const SkEndian fEndian;
 
     // The offset where the IFD starts.
     const uint32_t fOffset;

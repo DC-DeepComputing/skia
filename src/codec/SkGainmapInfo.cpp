@@ -13,6 +13,7 @@
 #include "include/core/SkStream.h"
 #include "src/base/SkEndian.h"
 #include "src/codec/SkCodecPriv.h"
+#include "src/core/SkStreamEndian.h"
 
 #include <cmath>
 #include <cstdint>
@@ -23,21 +24,6 @@ constexpr uint8_t kIsMultiChannelMask = (1u << 7);
 constexpr uint8_t kUseBaseColourSpaceMask = (1u << 6);
 }  // namespace
 
-static void write_u16_be(SkWStream* s, uint16_t value) {
-    value = SkEndian_SwapBE16(value);
-    s->write16(value);
-}
-
-static void write_u32_be(SkWStream* s, uint32_t value) {
-    value = SkEndian_SwapBE32(value);
-    s->write32(value);
-}
-
-static void write_s32_be(SkWStream* s, int32_t value) {
-    value = SkEndian_SwapBE32(value);
-    s->write32(value);
-}
-
 static void write_rational_be(SkWStream* s, float x) {
     // TODO(b/338342146): Select denominator to get maximum precision and robustness.
     uint32_t denominator = 0x10000000;
@@ -45,8 +31,8 @@ static void write_rational_be(SkWStream* s, float x) {
         denominator = 0x1000;
     }
     int32_t numerator = static_cast<int32_t>(std::llround(static_cast<double>(x) * denominator));
-    write_s32_be(s, numerator);
-    write_u32_be(s, denominator);
+    SkWriteS32_BE(s, numerator);
+    SkWriteU32_BE(s, denominator);
 }
 
 static void write_positive_rational_be(SkWStream* s, float x) {
@@ -56,54 +42,17 @@ static void write_positive_rational_be(SkWStream* s, float x) {
         denominator = 0x1000;
     }
     uint32_t numerator = static_cast<uint32_t>(std::llround(static_cast<double>(x) * denominator));
-    write_u32_be(s, numerator);
-    write_u32_be(s, denominator);
+    SkWriteU32_BE(s, numerator);
+    SkWriteU32_BE(s, denominator);
 }
 
-static bool read_u16_be(SkStream* s, uint16_t* value) {
-    if (!s->readU16(value)) {
-        return false;
-    }
-    *value = SkEndian_SwapBE16(*value);
-    return true;
-}
-
-static bool read_u32_be(SkStream* s, uint32_t* value) {
-    if (!s->readU32(value)) {
-        return false;
-    }
-    *value = SkEndian_SwapBE32(*value);
-    return true;
-}
-
-static bool read_s32_be(SkStream* s, int32_t* value) {
-    if (!s->readS32(value)) {
-        return false;
-    }
-    *value = SkEndian_SwapBE32(*value);
-    return true;
-}
-
-static bool read_rational_be(SkStream* s, float* value) {
+static bool SkReadSignedRational(SkStream* s, float* value) {
     int32_t numerator = 0;
     uint32_t denominator = 0;
-    if (!read_s32_be(s, &numerator)) {
+    if (!SkReadS32(s, &numerator, SkEndian::kBig)) {
         return false;
     }
-    if (!read_u32_be(s, &denominator)) {
-        return false;
-    }
-    *value = static_cast<float>(static_cast<double>(numerator) / static_cast<double>(denominator));
-    return true;
-}
-
-static bool read_positive_rational_be(SkStream* s, float* value) {
-    uint32_t numerator = 0;
-    uint32_t denominator = 0;
-    if (!read_u32_be(s, &numerator)) {
-        return false;
-    }
-    if (!read_u32_be(s, &denominator)) {
+    if (!SkReadU32(s, &denominator, SkEndian::kBig)) {
         return false;
     }
     *value = static_cast<float>(static_cast<double>(numerator) / static_cast<double>(denominator));
@@ -113,7 +62,7 @@ static bool read_positive_rational_be(SkStream* s, float* value) {
 static bool read_iso_gainmap_version(SkStream* s) {
     // Ensure minimum version is 0.
     uint16_t minimum_version = 0;
-    if (!read_u16_be(s, &minimum_version)) {
+    if (!SkReadU16(s, &minimum_version, SkEndian::kBig)) {
         SkCodecPrintf("Failed to read ISO 21496-1 minimum version.\n");
         return false;
     }
@@ -124,7 +73,7 @@ static bool read_iso_gainmap_version(SkStream* s) {
 
     // Ensure writer version is present. No value is invalid.
     uint16_t writer_version = 0;
-    if (!read_u16_be(s, &writer_version)) {
+    if (!SkReadU16(s, &writer_version, SkEndian::kBig)) {
         SkCodecPrintf("Failed to read ISO 21496-1 version.\n");
         return false;
     }
@@ -147,12 +96,12 @@ static bool read_iso_gainmap_info(SkStream* s, SkGainmapInfo& info) {
     bool useBaseColourSpace = (flags & kUseBaseColourSpaceMask) != 0;
 
     float baseHdrHeadroom = 0.f;
-    if (!read_positive_rational_be(s, &baseHdrHeadroom)) {
+    if (!SkReadUnsignedRational(s, &baseHdrHeadroom, SkEndian::kBig)) {
         SkCodecPrintf("Failed to read ISO 21496-1 base HDR headroom.\n");
         return false;
     }
     float altrHdrHeadroom = 0.f;
-    if (!read_positive_rational_be(s, &altrHdrHeadroom)) {
+    if (!SkReadUnsignedRational(s, &altrHdrHeadroom, SkEndian::kBig)) {
         SkCodecPrintf("Failed to read ISO 21496-1 altr HDR headroom.\n");
         return false;
     }
@@ -165,23 +114,23 @@ static bool read_iso_gainmap_info(SkStream* s, SkGainmapInfo& info) {
 
     int channelCount = isMultiChannel ? 3 : 1;
     for (int i = 0; i < channelCount; ++i) {
-        if (!read_rational_be(s, gainMapMin + i)) {
+        if (!SkReadSignedRational(s, gainMapMin + i, SkEndian::kBig)) {
             SkCodecPrintf("Failed to read ISO 21496-1 gainmap minimum.\n");
             return false;
         }
-        if (!read_rational_be(s, gainMapMax + i)) {
+        if (!SkReadSignedRational(s, gainMapMax + i, SkEndian::kBig)) {
             SkCodecPrintf("Failed to read ISO 21496-1 gainmap maximum.\n");
             return false;
         }
-        if (!read_positive_rational_be(s, gamma + i)) {
+        if (!SkReadUnsignedRational(s, gamma + i, SkEndian::kBig)) {
             SkCodecPrintf("Failed to read ISO 21496-1 gamma.\n");
             return false;
         }
-        if (!read_rational_be(s, baseOffset + i)) {
+        if (!SkReadSignedRational(s, baseOffset + i, SkEndian::kBig)) {
             SkCodecPrintf("Failed to read ISO 21496-1 base offset.\n");
             return false;
         }
-        if (!read_rational_be(s, altrOffset + i)) {
+        if (!SkReadSignedRational(s, altrOffset + i, SkEndian::kBig)) {
             SkCodecPrintf("Failed to read ISO 21496-1 altr offset.\n");
             return false;
         }
@@ -250,8 +199,8 @@ bool SkGainmapInfo::Parse(const SkData* data, SkGainmapInfo& info) {
 
 sk_sp<SkData> SkGainmapInfo::SerializeVersion() {
     SkDynamicMemoryWStream s;
-    write_u16_be(&s, 0);  // Minimum reader version
-    write_u16_be(&s, 0);  // Writer version
+    SkWriteU16_BE(&s, 0);  // Minimum reader version
+    SkWriteU16_BE(&s, 0);  // Writer version
     return s.detachAsData();
 }
 
@@ -260,8 +209,8 @@ static bool is_single_channel(SkColor4f c) { return c.fR == c.fG && c.fG == c.fB
 sk_sp<SkData> SkGainmapInfo::serialize() const {
     SkDynamicMemoryWStream s;
     // Version.
-    write_u16_be(&s, 0);  // Minimum reader version
-    write_u16_be(&s, 0);  // Writer version
+    SkWriteU16_BE(&s, 0);  // Minimum reader version
+    SkWriteU16_BE(&s, 0);  // Writer version
 
     // Flags.
     bool all_single_channel = is_single_channel(fGainmapRatioMin) &&

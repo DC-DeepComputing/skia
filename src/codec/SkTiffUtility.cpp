@@ -50,11 +50,9 @@ size_t SkTiffImageFileDirectory::BytesForType(uint16_t type) {
 }
 
 // Helper function for computing the address of an entry.
-static const uint8_t* get_entry_address(const SkData* data,
-                                        uint32_t ifdOffset,
-                                        uint16_t entryIndex) {
-    return data->bytes() +           // Base address
-           ifdOffset +               // IFD offset
+static size_t get_entry_offset(uint32_t ifdOffset,
+                                     uint16_t entryIndex) {
+    return ifdOffset +               // IFD offset
            kSizeShort +              // IFD number of entries
            kSizeEntry * entryIndex;  // Entries
 }
@@ -150,57 +148,65 @@ SkTiffImageFileDirectory::SkTiffImageFileDirectory(sk_sp<SkData> data,
                                                    uint16_t numEntries,
                                                    uint32_t nextIfdOffset)
         : fData(std::move(data))
-        , fLittleEndian(littleEndian)
+        , fStream(SkMemoryStream::Make(fData))
+        , fEndian(littleEndian ? SkEndian::kLittle : SkEndian::kBig)
         , fOffset(offset)
         , fNumEntries(numEntries)
         , fNextIfdOffset(nextIfdOffset) {}
 
 uint16_t SkTiffImageFileDirectory::getEntryTag(uint16_t entryIndex) const {
-    const uint8_t* entry = get_entry_address(fData.get(), fOffset, entryIndex);
-    return get_endian_short(entry, fLittleEndian);
+    fStream->seek(get_entry_offset(fOffset, entryIndex));
+    uint16_t result = 0;
+    SkReadU16(fStream.get(), &result, fEndian);
+    return result;
 }
 
 bool SkTiffImageFileDirectory::getEntryRawData(uint16_t entryIndex,
                                                uint16_t* outTag,
                                                uint16_t* outType,
                                                uint32_t* outCount,
-                                               const uint8_t** outData,
-                                               size_t* outDataSize) const {
-    const uint8_t* entry = get_entry_address(fData.get(), fOffset, entryIndex);
+                                               uint32_t* outDataOffset,
+                                               uint32_t* outDataSize) const {
+    fStream->seek(get_entry_offset(fOffset, entryIndex));
 
     // Read the tag
-    const uint16_t tag = get_endian_short(entry, fLittleEndian);
-    entry += kSizeShort;
+    uint16_t tag = 0;
+    if (!SkReadU16(fStream.get(), &tag, fEndian)) {
+        return false;
+    }
 
     // Read the type.
-    const uint16_t type = get_endian_short(entry, fLittleEndian);
-    entry += kSizeShort;
+    uint16_t type = 0;
+    if (!SkReadU16(fStream.get(), &type, fEndian)) {
+        return false;
+    }
     if (!IsValidType(type)) {
         return false;
     }
 
     // Read the count.
-    const uint32_t count = get_endian_int(entry, fLittleEndian);
-    entry += kSizeLong;
+    uint32_t count = 0;
+    if (!SkReadU32(fStream.get(), &count, fEndian)) {
+        return false;
+    }
 
-    // If the entry fits in the remaining 4 bytes, use that.
-    const size_t entryDataBytes = BytesForType(type) * count;
-    const uint8_t* entryData = nullptr;
+    const uint32_t entryDataBytes = BytesForType(type) * count;
+    uint32_t entryDataOffset = 0;
+
     if (entryDataBytes <= kSizeLong) {
-        entryData = entry;
+        // If the entry fits in the remaining 4 bytes, then the data is located in those bytes.
+        entryDataOffset = static_cast<uint32_t>(fStream->getPosition());
     } else {
         // Otherwise, the next 4 bytes specify an offset where the data can be found.
-        const uint32_t entryDataOffset = get_endian_int(entry, fLittleEndian);
-        if (fData->size() < entryDataOffset || fData->size() - entryDataOffset < entryDataBytes) {
+        if (!SkReadU32(fStream.get(), &entryDataOffset, fEndian)) {
             return false;
         }
-        entryData = fData->bytes() + entryDataOffset;
     }
 
     if (outTag) *outTag = tag;
     if (outType) *outType = type;
     if (outCount) *outCount = count;
-    if (outData) *outData = entryData;
+    if (outDataOffset) *outDataOffset = entryDataOffset;
     if (outDataSize) *outDataSize = entryDataBytes;
     return true;
 }
@@ -208,15 +214,15 @@ bool SkTiffImageFileDirectory::getEntryRawData(uint16_t entryIndex,
 sk_sp<SkData> SkTiffImageFileDirectory::getEntryUndefinedData(uint16_t entryIndex) const {
     uint16_t type = 0;
     uint32_t count = 0;
-    const uint8_t* data = nullptr;
-    size_t size = 0;
-    if (!getEntryRawData(entryIndex, nullptr, &type, &count, &data, &size)) {
+    uint32_t offset = 0;
+    uint32_t size = 0;
+    if (!getEntryRawData(entryIndex, nullptr, &type, &count, &offset, &size)) {
         return nullptr;
     }
     if (type != kTypeUndefined) {
         return nullptr;
     }
-    return SkData::MakeSubset(fData.get(), data - fData->bytes(), size);
+    return SkData::MakeSubset(fData.get(), offset, size);
 }
 
 bool SkTiffImageFileDirectory::getEntryValuesGeneric(uint16_t entryIndex,
@@ -225,8 +231,8 @@ bool SkTiffImageFileDirectory::getEntryValuesGeneric(uint16_t entryIndex,
                                                      void* values) const {
     uint16_t entryType = 0;
     uint32_t entryCount = 0;
-    const uint8_t* entryData = nullptr;
-    if (!getEntryRawData(entryIndex, nullptr, &entryType, &entryCount, &entryData, nullptr)) {
+    uint32_t entryDataOffset = 0;
+    if (!getEntryRawData(entryIndex, nullptr, &entryType, &entryCount, &entryDataOffset, nullptr)) {
         return false;
     }
     if (type != entryType) {
@@ -235,39 +241,22 @@ bool SkTiffImageFileDirectory::getEntryValuesGeneric(uint16_t entryIndex,
     if (count != entryCount) {
         return false;
     }
-    for (uint32_t i = 0; i < count; ++i) {
-        const uint8_t* data = entryData + i * BytesForType(kTypeUnsignedLong);
+    bool result = true;
+    fStream->seek(entryDataOffset);
+    for (uint32_t i = 0; result && i < count; ++i) {
         switch (type) {
             case kTypeUnsignedShort:
-                reinterpret_cast<uint16_t*>(values)[i] = get_endian_short(data, fLittleEndian);
+                result &= SkReadU16(fStream.get(), reinterpret_cast<uint16_t*>(values) + i, fEndian);
                 break;
             case kTypeUnsignedLong:
-                reinterpret_cast<uint32_t*>(values)[i] = get_endian_int(data, fLittleEndian);
+                result &= SkReadU32(fStream.get(), reinterpret_cast<uint32_t*>(values) + i, fEndian);
                 break;
             case kTypeSignedRational: {
-                uint32_t numerator = get_endian_int(data, fLittleEndian);
-                uint32_t denominator = get_endian_int(data + kSizeLong, fLittleEndian);
-                if (denominator == 0) {
-                    // The TIFF specification does not indicate a behavior when the denominator is
-                    // zero.  The behavior of returning zero for a denominator of zero is a
-                    // preservation of the behavior introduced in https://crrev.com/767874.
-                    reinterpret_cast<float*>(values)[i] = 0;
-                } else {
-                    reinterpret_cast<float*>(values)[i] =
-                            numerator / static_cast<float>(denominator);
-                }
+                result &= SkReadSignedRational(fStream.get(), reinterpret_cast<float*>(values) + i, fEndian);
                 break;
             }
             case kTypeUnsignedRational: {
-                uint32_t numerator = get_endian_int(data, fLittleEndian);
-                uint32_t denominator = get_endian_int(data + kSizeLong, fLittleEndian);
-                if (denominator == 0) {
-                    // See comments in kTypeSignedRational.
-                    reinterpret_cast<float*>(values)[i] = 0.f;
-                } else {
-                    reinterpret_cast<float*>(values)[i] =
-                            numerator / static_cast<float>(denominator);
-                }
+                result &= SkReadUnsignedRational(fStream.get(), reinterpret_cast<float*>(values) + i, fEndian);
                 break;
             }
             default:
@@ -276,5 +265,6 @@ bool SkTiffImageFileDirectory::getEntryValuesGeneric(uint16_t entryIndex,
                 break;
         }
     }
-    return true;
+    return result;
 }
+

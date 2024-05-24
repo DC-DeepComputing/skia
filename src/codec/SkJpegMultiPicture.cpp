@@ -14,6 +14,7 @@
 #include "src/codec/SkJpegConstants.h"
 #include "src/codec/SkJpegSegmentScan.h"
 #include "src/codec/SkTiffUtility.h"
+#include "src/core/SkStreamEndian.h"
 
 #include <cstring>
 
@@ -231,22 +232,6 @@ size_t multi_picture_params_serialized_size(size_t numberOfImages) {
            numberOfImages * kMPEntrySize;              // MP Entries for each image
 }
 
-// Helper macros for SkJpegMultiPictureParameters::serialize. Byte-swap and write the specified
-// value, and return nullptr on failure.
-#define WRITE_UINT16(value)                         \
-    do {                                            \
-        if (!s.write16(SkEndian_SwapBE16(value))) { \
-            return nullptr;                         \
-        }                                           \
-    } while (0)
-
-#define WRITE_UINT32(value)                         \
-    do {                                            \
-        if (!s.write32(SkEndian_SwapBE32(value))) { \
-            return nullptr;                         \
-        }                                           \
-    } while (0)
-
 sk_sp<SkData> SkJpegMultiPictureParameters::serialize() const {
     // Write the MPF signature.
     SkDynamicMemoryWStream s;
@@ -266,40 +251,40 @@ sk_sp<SkData> SkJpegMultiPictureParameters::serialize() const {
     // Set the Index IFD offset be the position after the endianness value and this offset.
     constexpr uint32_t indexIfdOffset =
             static_cast<uint16_t>(sizeof(kMpBigEndian) + sizeof(uint32_t));
-    WRITE_UINT32(indexIfdOffset);
+    SkWriteU32_BE(&s, indexIfdOffset);
 
     // We will write 3 tags (version, number of images, MP entries).
     constexpr uint32_t numberOfTags = 3;
-    WRITE_UINT16(numberOfTags);
+    SkWriteU16_BE(&s, numberOfTags);
 
     // Write the version tag.
-    WRITE_UINT16(kVersionTag);
-    WRITE_UINT16(kTypeUndefined);
-    WRITE_UINT32(kVersionCount);
+    SkWriteU16_BE(&s, kVersionTag);
+    SkWriteU16_BE(&s, kTypeUndefined);
+    SkWriteU32_BE(&s, kVersionCount);
     if (!s.write(kVersionExpected, kVersionSize)) {
         SkCodecPrintf("Failed to write version.\n");
         return nullptr;
     }
 
     // Write the number of images.
-    WRITE_UINT16(kNumberOfImagesTag);
-    WRITE_UINT16(kTypeUnsignedLong);
-    WRITE_UINT32(kNumberOfImagesCount);
-    WRITE_UINT32(numberOfImages);
+    SkWriteU16_BE(&s, kNumberOfImagesTag);
+    SkWriteU16_BE(&s, kTypeUnsignedLong);
+    SkWriteU32_BE(&s, kNumberOfImagesCount);
+    SkWriteU32_BE(&s, numberOfImages);
 
     // Write the MP entries.
-    WRITE_UINT16(kMPEntryTag);
-    WRITE_UINT16(kTypeUndefined);
-    WRITE_UINT32(kMPEntrySize * numberOfImages);
+    SkWriteU16_BE(&s, kMPEntryTag);
+    SkWriteU16_BE(&s, kTypeUndefined);
+    SkWriteU32_BE(&s, kMPEntrySize * numberOfImages);
     const uint32_t mpEntryOffset =
             static_cast<uint32_t>(s.bytesWritten() -  // The bytes written so far
                                   sizeof(kMpfSig) +   // Excluding the MPF signature
                                   sizeof(uint32_t) +  // The 4 bytes for this offset
                                   sizeof(uint32_t));  // The 4 bytes for the attribute IFD offset.
-    WRITE_UINT32(mpEntryOffset);
+    SkWriteU32_BE(&s, mpEntryOffset);
 
     // Write the attribute IFD offset (zero because we don't write it).
-    WRITE_UINT32(0);
+    SkWriteU32_BE(&s, 0);
 
     // Write the MP entries.
     for (size_t i = 0; i < images.size(); ++i) {
@@ -310,20 +295,17 @@ sk_sp<SkData> SkJpegMultiPictureParameters::serialize() const {
             attribute |= kMPEntryAttributeTypePrimary;
         }
 
-        WRITE_UINT32(attribute);
-        WRITE_UINT32(image.size);
-        WRITE_UINT32(image.dataOffset);
+        SkWriteU32_BE(&s, attribute);
+        SkWriteU32_BE(&s, image.size);
+        SkWriteU32_BE(&s, image.dataOffset);
         // Dependent image 1 and 2 entries are zero.
-        WRITE_UINT16(0);
-        WRITE_UINT16(0);
+        SkWriteU16_BE(&s, 0);
+        SkWriteU16_BE(&s, 0);
     }
 
     SkASSERT(s.bytesWritten() == multi_picture_params_serialized_size(images.size()));
     return s.detachAsData();
 }
-
-#undef WRITE_UINT16
-#undef WRITE_UINT32
 
 size_t SkJpegMultiPictureParameters::GetAbsoluteOffset(uint32_t dataOffset,
                                                        size_t mpSegmentOffset) {

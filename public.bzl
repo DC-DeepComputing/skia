@@ -661,6 +661,7 @@ BASE_SRCS_ALL = [
     "src/core/SkSpriteBlitter.h",
     "src/core/SkSpriteBlitter_ARGB32.cpp",
     "src/core/SkStream.cpp",
+    "src/core/SkStreamEndian.h",
     "src/core/SkStreamPriv.h",
     "src/core/SkStrike.cpp",
     "src/core/SkStrike.h",
