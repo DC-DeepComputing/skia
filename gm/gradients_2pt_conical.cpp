@@ -407,4 +407,16 @@ DEF_GM( return new ConicalGradientsGM(kInside_GradCaseType, false); )
 DEF_GM( return new ConicalGradientsGM(kOutside_GradCaseType, false); )
 DEF_GM( return new ConicalGradientsGM(kEdge_GradCaseType, false); )
 
+DEF_SIMPLE_GM(conical_thingy, canvas, 300, 300) {
+  const SkColor colors[] = {
+      SK_ColorRED, SK_ColorBLUE
+  };
+  const SkScalar offsets[] = {
+      0.0, 1.0
+  };
+  SkPaint paint;
+  paint.setShader(SkGradientShader::MakeTwoPointConical({ 50, 100 }, 10, { 50, 100 }, 40, colors, offsets, 2, SkTileMode::kClamp));
+  canvas->drawRect(SkRect::MakeXYWH(0, 0, 200, 200), paint);
+}
+
 }  // namespace skiagm
