@@ -64,6 +64,30 @@
       },
       "revId": "26732a597f6e85f1195cc3c6e5ee33b26e1c551d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dff2f3e8_30913829",
+        "filename": "gn/minify_sksl_tests.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-05-25T02:32:11Z",
+      "side": 1,
+      "message": "Done.\n\nBTW, trying to test this locally, I noticed that `bazelisk run //tools/sksl-minify:minify_tests --config\u003dfor_linux_x64_with_rbe --jobs\u003d100` fails on Mac. It tries to run a Linux build of python.",
+      "parentUuid": "b04cb59d_b15fc10c",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 16
+      },
+      "revId": "26732a597f6e85f1195cc3c6e5ee33b26e1c551d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
