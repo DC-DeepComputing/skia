@@ -580,7 +580,7 @@ void AutoStack::exit() {
 }
 
 void AutoStack::pushClone(int slots) {
-    this->pushClone(SlotRange{0, slots}, /*offsetFromStackTop=*/slots);
+    this->pushClone(SlotRange{.index = 0, .count = slots}, /*offsetFromStackTop=*/slots);
 }
 
 void AutoStack::pushClone(SlotRange range, int offsetFromStackTop) {
@@ -731,7 +731,7 @@ public:
     }
 
     SlotRange fixedSlotRange(Generator* gen) override {
-        return SlotRange{0, fNumSlots};
+        return SlotRange{.index = 0, .count = fNumSlots};
     }
 
     AutoStack* dynamicSlotRange() override {
@@ -2750,7 +2750,7 @@ std::optional<SlotRange> Generator::findPreexistingImmutableData(
         }
         if (found) {
             // We've found an exact match for the input value; return its slot-range.
-            return SlotRange{firstSlot, slotArray.size()};
+            return SlotRange{.index = firstSlot, .count = slotArray.size()};
         }
     }
 
@@ -3743,7 +3743,7 @@ bool Generator::pushSwizzle(const Swizzle& s) {
         // saves a step.)
         return this->pushVariableReferencePartial(
                 s.base()->as<VariableReference>(),
-                SlotRange{/*index=*/s.components()[0], /*count=*/s.components().size()});
+                SlotRange{.index = s.components()[0], .count = s.components().size()});
     }
     // Push the base expression.
     if (!this->pushExpression(*s.base())) {
@@ -3931,7 +3931,8 @@ bool Generator::pushVariableReference(const VariableReference& var) {
             return this->pushExpression(*var.variable()->initialValue());
         }
     }
-    return this->pushVariableReferencePartial(var, SlotRange{0, (int)var.type().slotCount()});
+    return this->pushVariableReferencePartial(var, SlotRange{.index = 0,
+                                                             .count = (int)var.type().slotCount()});
 }
 
 bool Generator::pushVariableReferencePartial(const VariableReference& v, SlotRange subset) {
