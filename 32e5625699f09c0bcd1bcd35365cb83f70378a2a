@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be98cb1c_17a0041b",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 2591,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-05-26T22:19:28Z",
+      "side": 1,
+      "message": "Reviewer note: `mod_fn` below cannot share the code here because `y` is a scalar in this version, and a vector below.",
+      "range": {
+        "startLine": 2591,
+        "startChar": 15,
+        "endLine": 2591,
+        "endChar": 20
+      },
+      "revId": "32e5625699f09c0bcd1bcd35365cb83f70378a2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
