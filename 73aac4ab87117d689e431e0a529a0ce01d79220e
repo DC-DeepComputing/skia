@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25ff4c8a_ce7985dd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-05-26T22:22:12Z",
+      "side": 1,
+      "message": "It looks like Clang-cl is now breaking on `immintrin.h`.\n\nThe only reference I could find to this error was unhelpful (no answers posted): https://stackoverflow.com/questions/76969351/attribute-target-multiversioning-cannot-be-combined-with-attribute-always-inl",
+      "revId": "73aac4ab87117d689e431e0a529a0ce01d79220e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
