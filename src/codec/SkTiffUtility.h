@@ -37,14 +37,25 @@ public:
                                                                     uint32_t ifdOffset);
 
     /*
+     * Parse the header in |data| and create an object for parsing the first IFD. Return nullptr on
+     * failure.
+     */
+    static std::unique_ptr<SkTiffImageFileDirectory> Make(sk_sp<SkData> data);
+
+    /*
      * Return the number of entries.
      */
     uint16_t getNumEntries() const { return fNumEntries; }
 
     /*
-     * Return the offset (within the specified SkData) of the next IFD in the list of IFDs.
+     * Return the endian-ness of the IFD.
      */
-    uint32_t nextIfdOffset() const { return fNextIfdOffset; }
+    bool isLittleEndian() const { return fLittleEndian; }
+
+    /*
+     * Return an IFD parser for the next IFD in the list of IFDs.
+     */
+    std::unique_ptr<SkTiffImageFileDirectory> getNextIfd() const;
 
     /*
      * Return the tag, of a specific entry.
