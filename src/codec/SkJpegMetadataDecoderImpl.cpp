@@ -441,6 +441,16 @@ SkJpegMetadataDecoderImpl::SkJpegMetadataDecoderImpl(sk_sp<SkData> data) {
 #endif
 }
 
+sk_sp<SkData> SkJpegMetadataDecoderImpl::getMpfMetadata(bool copyData) const {
+    return read_metadata(fMarkerList,
+                         kMpfMarker,
+                         kMpfSig,
+                         sizeof(kMpfSig),
+                         /*signaturePadding=*/0,
+                         /*bytesInIndex=*/0,
+                         copyData);
+}
+
 sk_sp<SkData> SkJpegMetadataDecoderImpl::getExifMetadata(bool copyData) const {
     return read_metadata(fMarkerList,
                          kExifMarker,

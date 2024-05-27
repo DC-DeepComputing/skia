@@ -37,6 +37,8 @@ public:
     std::unique_ptr<SkXmp> getXmpMetadata() const;
 #endif  // SK_CODEC_DECODES_JPEG_GAINMAPS
 
+    sk_sp<SkData> getMpfMetadata(bool copyData) const;
+
     // SkJpegMetadataDecoder implementation:
     sk_sp<SkData> getExifMetadata(bool copyData) const override;
     sk_sp<SkData> getICCProfileData(bool copyData) const override;

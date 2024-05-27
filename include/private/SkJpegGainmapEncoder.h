@@ -38,11 +38,6 @@ public:
                             const SkPixmap& gainmap,
                             const SkJpegEncoder::Options& gainmapOptions,
                             const SkGainmapInfo& gainmapInfo);
-
-    /**
-     *  Write a Multi Picture Format containing the |imageCount| images specified by |images|.
-     */
-    static bool MakeMPF(SkWStream* dst, const SkData** images, size_t imageCount);
 };
 
 #endif

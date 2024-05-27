@@ -25,7 +25,6 @@ constexpr uint16_t kTypeUnsignedLong = 0x4;
 constexpr uint16_t kTypeUndefined = 0x7;
 
 constexpr uint32_t kIfdEntrySize = 12;
-constexpr uint32_t kIfdSerializedEntryCount = 3;
 
 constexpr uint16_t kVersionTag = 0xB000;
 constexpr uint32_t kVersionCount = 4;
@@ -47,6 +46,9 @@ constexpr uint32_t kMPEntryAttributeTypePrimary = 0x030000;
 constexpr uint16_t kIndividualImageUniqueIDTag = 0xB003;
 constexpr uint32_t kIndividualImageUniqueIDSize = 33;
 
+constexpr uint16_t kIndividualImageNumberTag = 0xB101;
+constexpr uint32_t kIndividualImageNumberCount = 1;
+
 constexpr uint16_t kTotalNumberCapturedFramesTag = 0xB004;
 
 std::unique_ptr<SkJpegMultiPictureParameters> SkJpegMultiPictureParameters::Make(
@@ -64,17 +66,8 @@ std::unique_ptr<SkJpegMultiPictureParameters> SkJpegMultiPictureParameters::Make
     SkASSERT(ifdData);
 
     // The rest of this function reads the structure described in Figure 6 of CIPA DC-x007-2009.
-    // Determine the endianness of the values in the structure. See Figure 5 (MP endian tag
-    // structure), and read the Index IFD offset.
-    bool littleEndian = false;
-    uint32_t ifdOffset = 0;
-    if (!SkTiffImageFileDirectory::ParseHeader(ifdData.get(), &littleEndian, &ifdOffset)) {
-        SkCodecPrintf("Failed to parse endian-ness and index IFD offset.\n");
-        return nullptr;
-    }
-
     // Create the Index Image File Directory (Index IFD).
-    auto ifd = SkTiffImageFileDirectory::MakeFromOffset(ifdData, littleEndian, ifdOffset);
+    auto ifd = SkTiffImageFileDirectory::Make(ifdData);
     if (!ifd) {
         SkCodecPrintf("Failed to create MP Index IFD offset.\n");
         return nullptr;
@@ -182,17 +175,16 @@ std::unique_ptr<SkJpegMultiPictureParameters> SkJpegMultiPictureParameters::Make
     }
 
     // Start to prepare the result that we will return.
-    auto result = std::make_unique<SkJpegMultiPictureParameters>();
-    result->images.resize(numberOfImages);
+    auto result = std::make_unique<SkJpegMultiPictureParameters>(numberOfImages);
 
     // The next IFD is the Attribute IFD offset. We will not read or validate the Attribute IFD.
 
     // Parse the MP Entries data.
     for (uint32_t i = 0; i < numberOfImages; ++i) {
         const uint8_t* mpEntryData = mpEntriesData->bytes() + kMPEntrySize * i;
-        const uint32_t attribute = get_endian_int(mpEntryData + 0, littleEndian);
-        const uint32_t size = get_endian_int(mpEntryData + 4, littleEndian);
-        const uint32_t dataOffset = get_endian_int(mpEntryData + 8, littleEndian);
+        const uint32_t attribute = get_endian_int(mpEntryData + 0, ifd->isLittleEndian());
+        const uint32_t size = get_endian_int(mpEntryData + 4, ifd->isLittleEndian());
+        const uint32_t dataOffset = get_endian_int(mpEntryData + 8, ifd->isLittleEndian());
 
         const bool isPrimary =
                 (attribute & kMPEntryAttributeTypeMask) == kMPEntryAttributeTypePrimary;
@@ -220,90 +212,114 @@ std::unique_ptr<SkJpegMultiPictureParameters> SkJpegMultiPictureParameters::Make
     return result;
 }
 
-// Return the number of bytes that will be written by SkJpegMultiPictureParametersSerialize, for a
-// given number of images.
-size_t multi_picture_params_serialized_size(size_t numberOfImages) {
-    return sizeof(kMpfSig) +                           // Signature
-           kMpEndianSize +                             // Endianness
-           sizeof(uint32_t) +                          // Index IFD Offset
-           sizeof(uint16_t) +                          // IFD entry count
-           kIfdSerializedEntryCount * kIfdEntrySize +  // 3 IFD entries at 12 bytes each
-           sizeof(uint32_t) +                          // Attribute IFD offset
-           numberOfImages * kMPEntrySize;              // MP Entries for each image
-}
-
-sk_sp<SkData> SkJpegMultiPictureParameters::serialize() const {
-    // Write the MPF signature.
+sk_sp<SkData> SkJpegMultiPictureParameters::serialize(uint32_t individualImageNumber) const {
     SkDynamicMemoryWStream s;
-    if (!s.write(kMpfSig, sizeof(kMpfSig))) {
-        SkCodecPrintf("Failed to write signature.\n");
-        return nullptr;
-    }
+
+    const uint32_t numberOfImages = static_cast<uint32_t>(images.size());
+
+    // Write the MPF signature.
+    s.write(kMpfSig, sizeof(kMpfSig));
 
     // We will always write as big-endian.
-    if (!s.write(kMpBigEndian, kMpEndianSize)) {
-        SkCodecPrintf("Failed to write endianness.\n");
-        return nullptr;
-    }
-    // Compute the number of images.
-    uint32_t numberOfImages = static_cast<uint32_t>(images.size());
+    s.write(kMpBigEndian, kMpEndianSize);
 
-    // Set the Index IFD offset be the position after the endianness value and this offset.
-    constexpr uint32_t indexIfdOffset =
-            static_cast<uint16_t>(sizeof(kMpBigEndian) + sizeof(uint32_t));
-    SkWStreamWriteU32BE(&s, indexIfdOffset);
+    // Set the first IFD offset be the position after the endianness value and this offset. This
+    // will be the MP Index IFD for the first individual image and the MP Attribute IFD for all
+    // other images.
+    constexpr uint32_t firstIfdOffset = sizeof(kMpBigEndian) +  // Endian-ness
+                                        sizeof(uint32_t);       // Index IFD offset
+    SkWStreamWriteU32BE(&s, firstIfdOffset);
+    SkASSERT(s.bytesWritten() - sizeof(kMpfSig) == firstIfdOffset);
 
-    // We will write 3 tags (version, number of images, MP entries).
-    constexpr uint32_t numberOfTags = 3;
-    SkWStreamWriteU16BE(&s, numberOfTags);
+    if (individualImageNumber == 0) {
+        // The MP Index IFD will write 3 tags (version, number of images, and MP entries).
+        const uint32_t mpIndexIfdNumberOfTags = 3;
+        const uint32_t mpEntryOffset = sizeof(kMpBigEndian) +  // Endian-ness
+                                       sizeof(uint32_t) +      // Index IFD offset
+                                       sizeof(uint16_t) +      // Index IFD Number of tags
+                                       kIfdEntrySize * mpIndexIfdNumberOfTags +  // Index IFD Tags
+                                       sizeof(uint32_t);  // Attribute IFD offset.
+        const uint32_t mpEntriesSize = kMPEntrySize * numberOfImages;
+        const uint32_t mpAttributeIfdOffset = mpEntryOffset + mpEntriesSize;
 
-    // Write the version tag.
-    SkWStreamWriteU16BE(&s, kVersionTag);
-    SkWStreamWriteU16BE(&s, kTypeUndefined);
-    SkWStreamWriteU32BE(&s, kVersionCount);
-    if (!s.write(kVersionExpected, kVersionSize)) {
-        SkCodecPrintf("Failed to write version.\n");
-        return nullptr;
-    }
+        // The MP Attribute IFD will write 1 tag (individual image number).
+        const uint16_t mpAttributeIfdNumberOfTags = 1;
 
-    // Write the number of images.
-    SkWStreamWriteU16BE(&s, kNumberOfImagesTag);
-    SkWStreamWriteU16BE(&s, kTypeUnsignedLong);
-    SkWStreamWriteU32BE(&s, kNumberOfImagesCount);
-    SkWStreamWriteU32BE(&s, numberOfImages);
+        SkWStreamWriteU16BE(&s, mpIndexIfdNumberOfTags);
 
-    // Write the MP entries.
-    SkWStreamWriteU16BE(&s, kMPEntryTag);
-    SkWStreamWriteU16BE(&s, kTypeUndefined);
-    SkWStreamWriteU32BE(&s, kMPEntrySize * numberOfImages);
-    const uint32_t mpEntryOffset =
-            static_cast<uint32_t>(s.bytesWritten() -  // The bytes written so far
-                                  sizeof(kMpfSig) +   // Excluding the MPF signature
-                                  sizeof(uint32_t) +  // The 4 bytes for this offset
-                                  sizeof(uint32_t));  // The 4 bytes for the attribute IFD offset.
-    SkWStreamWriteU32BE(&s, mpEntryOffset);
+        // Write the version.
+        SkWStreamWriteU16BE(&s, kVersionTag);
+        SkWStreamWriteU16BE(&s, kTypeUndefined);
+        SkWStreamWriteU32BE(&s, kVersionCount);
+        s.write(kVersionExpected, kVersionSize);
 
-    // Write the attribute IFD offset (zero because we don't write it).
-    SkWStreamWriteU32BE(&s, 0);
+        // Write the number of images.
+        SkWStreamWriteU16BE(&s, kNumberOfImagesTag);
+        SkWStreamWriteU16BE(&s, kTypeUnsignedLong);
+        SkWStreamWriteU32BE(&s, kNumberOfImagesCount);
+        SkWStreamWriteU32BE(&s, numberOfImages);
 
-    // Write the MP entries.
-    for (size_t i = 0; i < images.size(); ++i) {
-        const auto& image = images[i];
+        // Write the MP entries.
+        SkWStreamWriteU16BE(&s, kMPEntryTag);
+        SkWStreamWriteU16BE(&s, kTypeUndefined);
+        SkWStreamWriteU32BE(&s, mpEntriesSize);
+        SkWStreamWriteU32BE(&s, mpEntryOffset);
 
-        uint32_t attribute = kMPEntryAttributeFormatJpeg;
-        if (i == 0) {
-            attribute |= kMPEntryAttributeTypePrimary;
+        // Write the attribute IFD offset.
+        SkWStreamWriteU32BE(&s, mpAttributeIfdOffset);
+
+        // Write the MP entries.
+        SkASSERT(s.bytesWritten() - sizeof(kMpfSig) == mpEntryOffset);
+        for (size_t i = 0; i < images.size(); ++i) {
+            const auto& image = images[i];
+
+            uint32_t attribute = kMPEntryAttributeFormatJpeg;
+            if (i == 0) {
+                attribute |= kMPEntryAttributeTypePrimary;
+            }
+
+            SkWStreamWriteU32BE(&s, attribute);
+            SkWStreamWriteU32BE(&s, image.size);
+            SkWStreamWriteU32BE(&s, image.dataOffset);
+            // Dependent image 1 and 2 entries are zero.
+            SkWStreamWriteU16BE(&s, 0);
+            SkWStreamWriteU16BE(&s, 0);
         }
 
-        SkWStreamWriteU32BE(&s, attribute);
-        SkWStreamWriteU32BE(&s, image.size);
-        SkWStreamWriteU32BE(&s, image.dataOffset);
-        // Dependent image 1 and 2 entries are zero.
-        SkWStreamWriteU16BE(&s, 0);
-        SkWStreamWriteU16BE(&s, 0);
+        // Write MPF Attribute IFD. Make sure we are the offset that we wrote earlier.
+        SkASSERT(s.bytesWritten() - sizeof(kMpfSig) == mpAttributeIfdOffset);
+
+        // Write the MP Attribute IFD number of tags.
+        SkWStreamWriteU16BE(&s, mpAttributeIfdNumberOfTags);
+
+        // Write the individual image number.
+        SkWStreamWriteU16BE(&s, kIndividualImageNumberTag);
+        SkWStreamWriteU16BE(&s, kTypeUnsignedLong);
+        SkWStreamWriteU32BE(&s, kIndividualImageNumberCount);
+        SkWStreamWriteU32BE(&s, individualImageNumber);
+    } else {
+        // The MP Attribute IFD will write 2 tags: Both version version and individual image number.
+        // See 5.2.4.1. MP Format Version: "Except for the First Individual Image, this tag shall
+        // also be specified when specifying an MP Attribute IFD in any Individual Image".
+        const uint16_t mpAttributeIfdNumberOfTags = 2;
+        SkWStreamWriteU16BE(&s, mpAttributeIfdNumberOfTags);
+
+        // Write the version tag.
+        SkWStreamWriteU16BE(&s, kVersionTag);
+        SkWStreamWriteU16BE(&s, kTypeUndefined);
+        SkWStreamWriteU32BE(&s, kVersionCount);
+        s.write(kVersionExpected, kVersionSize);
     }
 
-    SkASSERT(s.bytesWritten() == multi_picture_params_serialized_size(images.size()));
+    // Write the individual image number.
+    SkWStreamWriteU16BE(&s, kIndividualImageNumberTag);
+    SkWStreamWriteU16BE(&s, kTypeUnsignedLong);
+    SkWStreamWriteU32BE(&s, kIndividualImageNumberCount);
+    SkWStreamWriteU32BE(&s, individualImageNumber);
+
+    // Write the next IFD offset (zero because there is none).
+    SkWStreamWriteU32BE(&s, 0);
+
     return s.detachAsData();
 }
 
@@ -318,4 +334,17 @@ size_t SkJpegMultiPictureParameters::GetAbsoluteOffset(uint32_t dataOffset,
            kJpegSegmentParameterLengthSize +  // The parameter length
            sizeof(kMpfSig) +                  // The signature
            dataOffset;
+}
+
+uint32_t SkJpegMultiPictureParameters::GetDataOffset(size_t absoluteOffset,
+                                                     size_t mpSegmentOffset) {
+    // The value of zero is used by the primary image.
+    if (absoluteOffset == 0) {
+        return 0;
+    }
+    return absoluteOffset -                   // The offset of the image itself
+           mpSegmentOffset -                  // The offset to the marker
+           kJpegMarkerCodeSize -              // The marker itself
+           kJpegSegmentParameterLengthSize -  // The parameter length
+           sizeof(kMpfSig);                   // The signature
 }
