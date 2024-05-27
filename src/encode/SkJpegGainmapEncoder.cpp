@@ -168,9 +168,10 @@ static sk_sp<SkData> encode_to_data(const SkPixmap& pm,
     return encodeStream.detachAsData();
 }
 
-static sk_sp<SkData> get_mpf_segment(const SkJpegMultiPictureParameters& mpParams) {
+static sk_sp<SkData> get_mpf_segment(const SkJpegMultiPictureParameters& mpParams,
+                                     size_t imageNumber) {
     SkDynamicMemoryWStream s;
-    auto segmentParameters = mpParams.serialize();
+    auto segmentParameters = mpParams.serialize(static_cast<uint32_t>(imageNumber));
     const size_t mpParameterLength = kJpegSegmentParameterLengthSize + segmentParameters->size();
     s.write8(0xFF);
     s.write8(kMpfMarker);
@@ -265,85 +266,56 @@ bool SkJpegGainmapEncoder::MakeMPF(SkWStream* dst, const SkData** images, size_t
         return true;
     }
 
-    // Create a scan of the primary image.
-    SkJpegSegmentScanner primaryScan;
-    primaryScan.onBytes(images[0]->data(), images[0]->size());
-    if (!primaryScan.isDone()) {
-        SkCodecPrintf("Failed to scan encoded primary image header.\n");
-        return false;
+    SkJpegMultiPictureParameters mpParams(imageCount);
+
+    // Let |mpSegments| be the full segment that will be added to each image. Initialize them, and
+    // use that to populate sizes in mpParams. Note that the content (but not size) of segment 0 is
+    // still incorrect, because we have not yet computed the appropriate offsets.
+    std::vector<sk_sp<SkData>> mpSegments(imageCount);
+    for (size_t i = 0; i < imageCount; ++i) {
+        mpSegments[i] = get_mpf_segment(mpParams, i);
+        mpParams.images[i].size = static_cast<uint32_t>(images[i]->size() + mpSegments[i]->size());
     }
 
-    // Copy the primary image up to its StartOfScan, then insert the MPF segment, then copy the rest
-    // of the primary image, and all other images.
-    size_t bytesRead = 0;
-    size_t bytesWritten = 0;
-    for (const auto& segment : primaryScan.getSegments()) {
-        // Write all ECD before this segment.
-        {
-            size_t ecdBytesToWrite = segment.offset - bytesRead;
-            if (!dst->write(images[0]->bytes() + bytesRead, ecdBytesToWrite)) {
-                SkCodecPrintf("Failed to write entropy coded data.\n");
-                return false;
-            }
-            bytesWritten += ecdBytesToWrite;
-            bytesRead = segment.offset;
-        }
+    // The MP header offset into the first individual image off of which the other image offsets are
+    // computed.
+    size_t mpHeaderOffset = 0;
 
-        // If this isn't a StartOfScan, write just the segment.
-        if (segment.marker != kJpegMarkerStartOfScan) {
-            const size_t bytesToWrite = kJpegMarkerCodeSize + segment.parameterLength;
-            if (!dst->write(images[0]->bytes() + bytesRead, bytesToWrite)) {
-                SkCodecPrintf("Failed to copy segment.\n");
-                return false;
-            }
-            bytesWritten += bytesToWrite;
-            bytesRead += bytesToWrite;
-            continue;
-        }
+    for (size_t i = 0; i < imageCount; ++i) {
+        auto image = images[i];
 
-        // We're now at the StartOfScan.
-        const size_t bytesRemaining = images[0]->size() - bytesRead;
-
-        // Compute the MPF offsets for the images.
-        SkJpegMultiPictureParameters mpParams;
-        {
-            mpParams.images.resize(imageCount);
-            const size_t mpSegmentSize = kJpegMarkerCodeSize + kJpegSegmentParameterLengthSize +
-                                         mpParams.serialize()->size();
-            mpParams.images[0].size =
-                    static_cast<uint32_t>(bytesWritten + mpSegmentSize + bytesRemaining);
-            uint32_t offset =
-                    static_cast<uint32_t>(bytesRemaining + mpSegmentSize - kJpegMarkerCodeSize -
-                                          kJpegSegmentParameterLengthSize - sizeof(kMpfSig));
-            for (size_t i = 1; i < imageCount; ++i) {
-                mpParams.images[i].dataOffset = offset;
-                mpParams.images[i].size = static_cast<uint32_t>(images[i]->size());
-                offset += mpParams.images[i].size;
-            }
-        }
-
-        // Write the MPF segment.
-        auto mpfSegment = get_mpf_segment(mpParams);
-        if (!dst->write(mpfSegment->data(), mpfSegment->size())) {
-            SkCodecPrintf("Failed to write MPF segment.\n");
+        // Scan the image until StartOfScan marker.
+        SkJpegSegmentScanner scan(kJpegMarkerStartOfScan);
+        scan.onBytes(image->data(), image->size());
+        if (!scan.isDone()) {
+            SkCodecPrintf("Failed to scan encoded image header.\n");
             return false;
         }
 
-        // Write the rest of the primary file.
-        if (!dst->write(images[0]->bytes() + bytesRead, bytesRemaining)) {
+        // We'll insert the MPF segment just before the StartOfScan.
+        size_t mpSegmentOffset = scan.getSegments().back().offset;
+
+        // If this is the first image, we can now compute the MPF offsets, and recompute the first
+        // individiual image's parameters.
+        if (i == 0) {
+            mpHeaderOffset = mpSegmentOffset + kJpegMarkerCodeSize +
+                             kJpegSegmentParameterLengthSize + sizeof(kMpfSig);
+            uint32_t offset = mpParams.images[0].size - mpHeaderOffset;
+            for (size_t j = 1; j < imageCount; ++j) {
+                mpParams.images[j].dataOffset = offset;
+                offset += mpParams.images[j].size;
+            }
+            mpSegments[0] = get_mpf_segment(mpParams, 0);
+        }
+
+        // Write the image up to the MPF segment, then the MPF segment, then the rest of the image.
+        if (!dst->write(image->bytes(), mpSegmentOffset) ||
+            !dst->write(mpSegments[i]->data(), mpSegments[i]->size()) ||
+            !dst->write(image->bytes() + mpSegmentOffset, image->size() - mpSegmentOffset)) {
             SkCodecPrintf("Failed to write remainder of primary image.\n");
             return false;
         }
-        bytesRead += bytesRemaining;
-        SkASSERT(bytesRead == images[0]->size());
-        break;
     }
 
-    // Write the remaining files.
-    for (size_t i = 1; i < imageCount; ++i) {
-        if (!dst->write(images[i]->data(), images[i]->size())) {
-            SkCodecPrintf("Failed to write auxiliary image.\n");
-        }
-    }
     return true;
 }

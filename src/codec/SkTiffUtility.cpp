@@ -144,6 +144,15 @@ std::unique_ptr<SkTiffImageFileDirectory> SkTiffImageFileDirectory::MakeFromOffs
             std::move(data), littleEndian, ifdOffset, numEntries, nextOffset));
 }
 
+std::unique_ptr<SkTiffImageFileDirectory> SkTiffImageFileDirectory::Make(sk_sp<SkData> data) {
+    bool littleEndian = false;
+    uint32_t ifdOffset = 0;
+    if (!ParseHeader(data.get(), &littleEndian, &ifdOffset)) {
+        return nullptr;
+    }
+    return MakeFromOffset(std::move(data), littleEndian, ifdOffset);
+}
+
 SkTiffImageFileDirectory::SkTiffImageFileDirectory(sk_sp<SkData> data,
                                                    bool littleEndian,
                                                    uint32_t offset,
@@ -154,6 +163,13 @@ SkTiffImageFileDirectory::SkTiffImageFileDirectory(sk_sp<SkData> data,
         , fOffset(offset)
         , fNumEntries(numEntries)
         , fNextIfdOffset(nextIfdOffset) {}
+
+std::unique_ptr<SkTiffImageFileDirectory> SkTiffImageFileDirectory::getNextIfd() const {
+    if (!fNextIfdOffset) {
+        return nullptr;
+    }
+    return MakeFromOffset(std::move(fData), fLittleEndian, fNextIfdOffset);
+}
 
 uint16_t SkTiffImageFileDirectory::getEntryTag(uint16_t entryIndex) const {
     const uint8_t* entry = get_entry_address(fData.get(), fOffset, entryIndex);
