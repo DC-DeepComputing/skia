@@ -49,6 +49,13 @@ size_t SkTiffImageFileDirectory::BytesForType(uint16_t type) {
     return 0;
 }
 
+static inline uint16_t get_endian_short(const uint8_t* data, bool littleEndian) {
+    if (littleEndian) {
+        return (data[1] << 8) | (data[0]);
+    }
+    return (data[0] << 8) | (data[1]);
+}
+
 // Helper function for computing the address of an entry.
 static const uint8_t* get_entry_address(const SkData* data,
                                         uint32_t ifdOffset,
@@ -120,7 +127,7 @@ bool SkTiffImageFileDirectory::ParseHeader(const SkData* data,
         SkCodecPrintf("Tiff header must be at least 8 bytes.\n");
         return false;
     }
-    if (!is_valid_endian_marker(data->bytes(), outLittleEndian)) {
+    if (!is_tiff_endian_marker(data->bytes(), outLittleEndian)) {
         SkCodecPrintf("Tiff header had invalid endian marker 0x%x,0x%x,0x%x,0x%x.\n",
                       data->bytes()[0],
                       data->bytes()[1],
