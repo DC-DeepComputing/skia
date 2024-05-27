@@ -557,13 +557,8 @@ public:
             return false;
         }
 
-        // Check if the header is valid (endian info and magic number "42").
-        bool littleEndian;
-        if (!is_valid_endian_marker(header, &littleEndian)) {
-            return false;
-        }
-
-        return 0x2A == get_endian_short(header + 2, littleEndian);
+        // Check if the header is valid.
+        return is_tiff_endian_marker(header, nullptr, /*strict=*/true);
     }
 
 private:
