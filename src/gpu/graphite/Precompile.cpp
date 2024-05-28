@@ -422,7 +422,8 @@ namespace {
 void create_image_drawing_pipelines(const KeyContext& keyContext,
                                     PipelineDataGatherer* gatherer,
                                     const PaintOptions::ProcessCombination& processCombination,
-                                    const PaintOptions& orig) {
+                                    const PaintOptions& orig,
+                                    std::unordered_set<uint32_t>& foo) {
     PaintOptions imagePaintOptions;
 
     // For imagefilters we know we don't have alpha-only textures and don't need cubic filtering.
@@ -438,13 +439,14 @@ void create_image_drawing_pipelines(const KeyContext& keyContext,
                                                DrawTypeFlags::kSimpleShape,
                                                /* withPrimitiveBlender= */ false,
                                                Coverage::kSingleChannel,
-                                               processCombination);
+                                               processCombination,
+                                               foo);
 }
 
 void create_blur_imagefilter_pipelines(const KeyContext& keyContext,
                                        PipelineDataGatherer* gatherer,
-                                       const PaintOptions::ProcessCombination& processCombination) {
-
+                                       const PaintOptions::ProcessCombination& processCombination,
+                                       std::unordered_set<uint32_t>& foo) {
     PaintOptions blurPaintOptions;
 
     // For blur imagefilters we know we don't have alpha-only textures and don't need cubic
@@ -461,13 +463,15 @@ void create_blur_imagefilter_pipelines(const KeyContext& keyContext,
                                               DrawTypeFlags::kSimpleShape,
                                               /* withPrimitiveBlender= */ false,
                                               Coverage::kSingleChannel,
-                                              processCombination);
+                                              processCombination,
+                                              foo);
 }
 
 void create_morphology_imagefilter_pipelines(
         const KeyContext& keyContext,
         PipelineDataGatherer* gatherer,
-        const PaintOptions::ProcessCombination& processCombination) {
+        const PaintOptions::ProcessCombination& processCombination,
+        std::unordered_set<uint32_t>& foo) {
 
     // For morphology imagefilters we know we don't have alpha-only textures and don't need cubic
     // filtering.
@@ -486,7 +490,8 @@ void create_morphology_imagefilter_pipelines(
                                         DrawTypeFlags::kSimpleShape,
                                         /* withPrimitiveBlender= */ false,
                                         Coverage::kSingleChannel,
-                                        processCombination);
+                                        processCombination,
+                                        foo);
     }
 
     {
@@ -501,7 +506,8 @@ void create_morphology_imagefilter_pipelines(
                                         DrawTypeFlags::kSimpleShape,
                                         /* withPrimitiveBlender= */ false,
                                         Coverage::kSingleChannel,
-                                        processCombination);
+                                        processCombination,
+                                        foo);
     }
 }
 
@@ -513,7 +519,8 @@ void PaintOptions::buildCombinations(
         DrawTypeFlags drawTypes,
         bool withPrimitiveBlender,
         Coverage coverage,
-        const ProcessCombination& processCombination) const {
+        const ProcessCombination& processCombination,
+        std::unordered_set<uint32_t>& foo) const {
 
     PaintParamsKeyBuilder builder(keyContext.dict());
 
@@ -525,15 +532,15 @@ void PaintOptions::buildCombinations(
         tmp.addBlendMode(SkBlendMode::kSrcOver);
 
         tmp.buildCombinations(keyContext, gatherer, drawTypes, withPrimitiveBlender, coverage,
-                              processCombination);
+                              processCombination, foo);
 
-        create_image_drawing_pipelines(keyContext, gatherer, processCombination, *this);
+        create_image_drawing_pipelines(keyContext, gatherer, processCombination, *this, foo);
 
         if (fImageFilterOptions & PrecompileImageFilters::kBlur) {
-            create_blur_imagefilter_pipelines(keyContext, gatherer, processCombination);
+            create_blur_imagefilter_pipelines(keyContext, gatherer, processCombination, foo);
         }
         if (fImageFilterOptions & PrecompileImageFilters::kMorphology) {
-            create_morphology_imagefilter_pipelines(keyContext, gatherer, processCombination);
+            create_morphology_imagefilter_pipelines(keyContext, gatherer, processCombination, foo);
         }
     } else {
         int numCombinations = this->numCombinations();
@@ -548,9 +555,10 @@ void PaintOptions::buildCombinations(
             // PaintParamsKey. This serves to reset the builder.
             UniquePaintParamsID paintID = keyContext.dict()->findOrCreate(&builder);
 
-            processCombination(paintID, drawTypes, withPrimitiveBlender, coverage);
+            processCombination(paintID, drawTypes, withPrimitiveBlender, coverage, foo);
         }
     }
+
 }
 
 } // namespace skgpu::graphite
