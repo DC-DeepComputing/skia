@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8cbde5f0_59f2a0bc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-05-28T19:21:33Z",
+      "side": 1,
+      "message": "Hmm, it looks like this won\u0027t roll easily. I don\u0027t fully understand the linker errors on the Windows job. The build succeeds for me locally on my Mac (macOS 14.5) and I don\u0027t get this other build error from the Mac jobs:\n\n```\nIn file included from ../../../../../../skia/third_party/externals/abseil-cpp/absl/hash/hash.h:85:\n../../../../../../skia/third_party/externals/abseil-cpp/absl/hash/internal/hash.h:610:53: error: \u0027path\u0027 is unavailable: introduced in macOS 10.15\n              std::is_same_v\u003cPath, std::filesystem::path\u003e\u003e\u003e\n```\n\nI\u0027ll try a debug build and see if I can reproduce these there.",
+      "revId": "0ab269ee38228e3e35d1f69cb4aa038e489909c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
