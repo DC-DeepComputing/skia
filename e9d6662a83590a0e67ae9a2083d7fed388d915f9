@@ -1,0 +1,129 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "04812ebd_fd905075",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-05-28T20:44:38Z",
+      "side": 1,
+      "message": "Just had some styling nits and suggestions for adding comments",
+      "revId": "e9d6662a83590a0e67ae9a2083d7fed388d915f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f9ba550_8d6ff241",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 273,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-05-28T20:44:38Z",
+      "side": 1,
+      "message": "Nit: we wanna keep lines within 100 characters",
+      "revId": "e9d6662a83590a0e67ae9a2083d7fed388d915f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "24d624b4_ce3b0ee2",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 281,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-05-28T20:44:38Z",
+      "side": 1,
+      "message": "Nit: four-space indentation throughout this block",
+      "revId": "e9d6662a83590a0e67ae9a2083d7fed388d915f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f8c0ef7_84b7c481",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 1796,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-05-28T20:44:38Z",
+      "side": 1,
+      "message": "Might be worth a comment explaining why we can\u0027t just use the gradient matrix we already have in the conical case.",
+      "revId": "e9d6662a83590a0e67ae9a2083d7fed388d915f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd687b3a_3e319313",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 8
+      },
+      "lineNbr": 635,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-05-28T20:44:38Z",
+      "side": 1,
+      "message": "Nit: I\u0027d personally prefer to call this just `radius0` at this point.",
+      "range": {
+        "startLine": 635,
+        "startChar": 40,
+        "endLine": 635,
+        "endChar": 52
+      },
+      "revId": "e9d6662a83590a0e67ae9a2083d7fed388d915f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46c7dc8a_379695a5",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 8
+      },
+      "lineNbr": 640,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-05-28T20:44:38Z",
+      "side": 1,
+      "message": "I think another comment here describing how we encode the different gradient cases in `a` and `invA` would be good.",
+      "revId": "e9d6662a83590a0e67ae9a2083d7fed388d915f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a8cbeb2_5f6ccf7e",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 8
+      },
+      "lineNbr": 663,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-05-28T20:44:38Z",
+      "side": 1,
+      "message": "Might be worth a comment here that we want `t` to be as large as possible in the positive direction, so `sign` should reflect the sign of invA. I suppose we could also just use the sign of invA here.",
+      "revId": "e9d6662a83590a0e67ae9a2083d7fed388d915f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
