@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f3cfbfa_11dd6624",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-05-28T13:59:39Z",
+      "side": 1,
+      "message": "height",
+      "range": {
+        "startLine": 7,
+        "startChar": 42,
+        "endLine": 7,
+        "endChar": 48
+      },
+      "revId": "8955f7fe5a705e81f3649384ac395350a41d32a7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca238c79_f796e681",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-05-28T13:59:39Z",
+      "side": 1,
+      "message": "`fontmgr_bounds_*` tests the underline and strikeout metrics, we should probably also draw some x-height and cap-height somewhere just as a basic check (though I can do that later).",
+      "revId": "8955f7fe5a705e81f3649384ac395350a41d32a7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
