@@ -44,6 +44,46 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "76b4cf8e_b14a3bbf",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 1536,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-05-28T15:15:57Z",
+      "side": 1,
+      "message": "It might be clearer if this were just dstSampleBounds (and not do the above initialization)",
+      "range": {
+        "startLine": 1536,
+        "startChar": 43,
+        "endLine": 1536,
+        "endChar": 58
+      },
+      "revId": "e49fd0b765132f17e6028411d868d18aec76dfbc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dc5bf0ee_52667245",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 1620,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-05-28T15:15:57Z",
+      "side": 1,
+      "message": "Got to here",
+      "revId": "e49fd0b765132f17e6028411d868d18aec76dfbc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "526b7d4d_c6811f5e",
         "filename": "src/core/SkImageFilterTypes.cpp",
         "patchSetId": 12
