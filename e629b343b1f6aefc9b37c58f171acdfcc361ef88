@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92265db7_582f68f5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-05-28T21:17:06Z",
+      "side": 1,
+      "message": "Thanks, John! I approve with the following caveat:\n\nI\u0027ve reviewed the `.sksl` files (and `tests/SkSLTest.cpp`), and these look correct to me. (i.e. the old test now looks like it did before Ie56045d6c92f45ee546d135b4ea40060856894af.) I\u0027m not familiar with the other files; if you think they need a review, please get someone else to approve. (And if not, I\u0027m also fine with just resolving this comment and letting CQ submit it.)",
+      "revId": "e629b343b1f6aefc9b37c58f171acdfcc361ef88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
