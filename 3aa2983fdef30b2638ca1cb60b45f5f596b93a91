@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9aedeb8c_ffb9b940",
+        "filename": "gm/bleed.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 325,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-28T15:37:23Z",
+      "side": 1,
+      "message": "Since the `FakeWebGPU` configuration uses Graphite\u0027s async readback w/ copy-as-draw fallbacks to get the GM\u0027s output, this override was causing approx-fit texture creation to fail (it would round the 1000 up to 1024). On regular configs, the async readback would occur directly on the GM\u0027s surface that had been created with exact-fit (so it stayed under the original 1000 max texture size).",
+      "range": {
+        "startLine": 325,
+        "startChar": 50,
+        "endLine": 325,
+        "endChar": 54
+      },
+      "revId": "3aa2983fdef30b2638ca1cb60b45f5f596b93a91",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
