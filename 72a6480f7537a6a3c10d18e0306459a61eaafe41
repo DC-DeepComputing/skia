@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b9cfcc2_cf84404a",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 328,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-05-28T20:21:22Z",
+      "side": 1,
+      "message": "FYI: We can look at fixing this after this CL since we always are writing the same offset anyways.",
+      "range": {
+        "startLine": 328,
+        "startChar": 12,
+        "endLine": 328,
+        "endChar": 33
+      },
+      "revId": "72a6480f7537a6a3c10d18e0306459a61eaafe41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
