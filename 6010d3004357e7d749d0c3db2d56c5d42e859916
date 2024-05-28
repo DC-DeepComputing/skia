@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e3429de_61effdfa",
+        "filename": "src/gpu/ganesh/text/GrAtlasManager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-05-28T19:27:16Z",
+      "side": 1,
+      "message": "I\u0027m not sure if this is still a good check or not -- it\u0027s what we do in Plot::copySubImage.",
+      "range": {
+        "startLine": 133,
+        "startChar": 23,
+        "endLine": 133,
+        "endChar": 82
+      },
+      "revId": "6010d3004357e7d749d0c3db2d56c5d42e859916",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
