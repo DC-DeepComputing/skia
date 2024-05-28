@@ -464,6 +464,31 @@ void create_blur_imagefilter_pipelines(const KeyContext& keyContext,
                                               processCombination);
 }
 
+void create_lighting_imagefilter_pipelines(
+        const KeyContext& keyContext,
+        PipelineDataGatherer* gatherer,
+        const PaintOptions::ProcessCombination& processCombination) {
+
+    // For lighting imagefilters we know we don't have alpha-only textures and don't need cubic
+    // filtering.
+    sk_sp<PrecompileShader> imageShader = PrecompileShadersPriv::Image(
+            PrecompileImageShaderFlags::kExcludeAlpha | PrecompileImageShaderFlags::kExcludeCubic);
+
+
+    PaintOptions lighting;
+
+//    static const SkBlendMode kBlendModes[] = { SkBlendMode::kSrc };
+    lighting.setShaders({ PrecompileShadersPriv::Lighting(std::move(imageShader)) });
+//    lighting.setBlendModes(kBlendModes);
+
+    lighting.priv().buildCombinations(keyContext,
+                                      gatherer,
+                                      DrawTypeFlags::kSimpleShape,
+                                      /* withPrimitiveBlender= */ false,
+                                      Coverage::kSingleChannel,
+                                      processCombination);
+}
+
 void create_morphology_imagefilter_pipelines(
         const KeyContext& keyContext,
         PipelineDataGatherer* gatherer,
@@ -529,10 +554,13 @@ void PaintOptions::buildCombinations(
 
         create_image_drawing_pipelines(keyContext, gatherer, processCombination, *this);
 
-        if (fImageFilterOptions & PrecompileImageFilters::kBlur) {
+        if (fImageFilterOptions & PrecompileImageFilters::kBlur1) {
             create_blur_imagefilter_pipelines(keyContext, gatherer, processCombination);
         }
-        if (fImageFilterOptions & PrecompileImageFilters::kMorphology) {
+        if (fImageFilterOptions & PrecompileImageFilters::kLighting) {
+            create_lighting_imagefilter_pipelines(keyContext, gatherer, processCombination);
+        }
+        if (fImageFilterOptions & PrecompileImageFilters::kMorphology1) {
             create_morphology_imagefilter_pipelines(keyContext, gatherer, processCombination);
         }
     } else {
