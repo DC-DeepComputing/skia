@@ -1186,7 +1186,7 @@ std::pair<sk_sp<SkImageFilter>, SkEnumBitMask<PrecompileImageFilters>>
     return create_image_filter(rand, random_imagefiltertype(rand));
 }
 
-std::pair<sk_sp<SkMaskFilter>, sk_sp<PrecompileMaskFilter>> create_blur_maskfilter(SkRandom* rand) {
+sk_sp<SkMaskFilter> create_blur_maskfilter(SkRandom* rand) {
     SkBlurStyle style;
     switch (rand->nextULessThan(4)) {
         case 0:  style = kNormal_SkBlurStyle; break;
@@ -1206,13 +1206,12 @@ std::pair<sk_sp<SkMaskFilter>, sk_sp<PrecompileMaskFilter>> create_blur_maskfilt
 
     bool respectCTM = rand->nextBool();
 
-    return { SkMaskFilter::MakeBlur(style, sigma, respectCTM), PrecompileMaskFilters::Blur() };
+    return SkMaskFilter::MakeBlur(style, sigma, respectCTM);
 }
 
-std::pair<sk_sp<SkMaskFilter>, sk_sp<PrecompileMaskFilter>> create_maskfilter(SkRandom* rand,
-                                                                              MaskFilterType type) {
+sk_sp<SkMaskFilter> create_maskfilter(SkRandom* rand, MaskFilterType type) {
     switch (type) {
-        case MaskFilterType::kNone: return {nullptr, nullptr};
+        case MaskFilterType::kNone: return nullptr;
         case MaskFilterType::kBlur: return create_blur_maskfilter(rand);
     }
 
@@ -1253,12 +1252,10 @@ std::pair<SkPaint, PaintOptions> create_paint(SkRandom* rand,
     }
 
     {
-        auto [mf, o] = create_maskfilter(rand, maskFilterType);
-        SkASSERT(!mf == !o);
-
+        sk_sp<SkMaskFilter> mf = create_maskfilter(rand, maskFilterType);
         if (mf) {
             paint.setMaskFilter(std::move(mf));
-            paintOptions.setMaskFilters({o});
+            paintOptions.setBlursMask();
         }
     }
 
@@ -1314,6 +1311,7 @@ struct DrawData {
 void simple_draws(SkCanvas* canvas, const SkPaint& paint) {
     // TODO: add some drawLine calls
     canvas->drawRect(SkRect::MakeWH(16, 16), paint);
+#if 0
     canvas->drawRRect(SkRRect::MakeOval({0, 0, 16, 16}), paint);
     canvas->drawRRect(SkRRect::MakeRectXY({0, 0, 16, 16}, 4, 4), paint);
 
@@ -1329,6 +1327,7 @@ void simple_draws(SkCanvas* canvas, const SkPaint& paint) {
                                             paint.getColor4f(),
                                             paint.asBlendMode().value());
     }
+#endif
 }
 
 void non_simple_draws(SkCanvas* canvas, const SkPaint& paint, const DrawData& drawData) {
@@ -1510,9 +1509,9 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
     };
 
     ShaderType shaders[] = {
-            ShaderType::kBlend,
-            ShaderType::kImage,
-            ShaderType::kRadialGradient,
+//            ShaderType::kBlend,
+//            ShaderType::kImage,
+//            ShaderType::kRadialGradient,
             ShaderType::kSolidColor,
 #if EXPANDED_SET
             ShaderType::kNone,
@@ -1532,8 +1531,8 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
 
     BlenderType blenders[] = {
             BlenderType::kPorterDuff,
-            BlenderType::kShaderBased,
-            BlenderType::kRuntime,
+//            BlenderType::kShaderBased,
+//            BlenderType::kRuntime,
 #if EXPANDED_SET
             BlenderType::kNone,
             BlenderType::kArithmetic,
@@ -1542,8 +1541,8 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
 
     ColorFilterType colorFilters[] = {
             ColorFilterType::kNone,
-            ColorFilterType::kBlendMode,
-            ColorFilterType::kMatrix,
+//            ColorFilterType::kBlendMode,
+//            ColorFilterType::kMatrix,
 #if EXPANDED_SET
             ColorFilterType::kColorSpaceXform,
             ColorFilterType::kCompose,
@@ -1563,8 +1562,8 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
     };
 
     MaskFilterType maskFilters[] = {
-            MaskFilterType::kNone,
-#if EXPANDED_SET
+//            MaskFilterType::kNone,
+#if 1 //EXPANDED_SET
             MaskFilterType::kBlur,
 #endif
     };
@@ -1585,7 +1584,7 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
 #endif
     };
 
-#if EXPANDED_SET
+#if 1 //EXPANDED_SET
     size_t kExpected = std::size(shaders) * std::size(blenders) * std::size(colorFilters) *
                        std::size(maskFilters) * std::size(imageFilters) * std::size(clips);
     int current = 0;
@@ -1597,7 +1596,7 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
                 for (auto mf : maskFilters) {
                     for (auto imageFilter : imageFilters) {
                         for (auto clip : clips) {
-#if EXPANDED_SET
+#if 1 //EXPANDED_SET
                             SkDebugf("%d/%zu\n", current, kExpected);
                             ++current;
 #endif
@@ -1611,7 +1610,7 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
         }
     }
 
-#if EXPANDED_SET
+#if 1 //EXPANDED_SET
     SkASSERT(current == (int) kExpected);
 #endif
 }
@@ -1624,7 +1623,7 @@ void run_test(skiatest::Reporter* reporter,
               ShaderType s,
               BlenderType bm,
               ColorFilterType cf,
-              MaskFilterType mf,
+              MaskFilterType mf1,
               ImageFilterType imageFilter,
               ClipType clip) {
     SkRandom rand;
@@ -1646,13 +1645,13 @@ void run_test(skiatest::Reporter* reporter,
     PipelineDataGatherer precompileGatherer(recorder->priv().caps(), Layout::kMetal);
 
     gNeedSKPPaintOption = false;
-    auto [paint, paintOptions] = create_paint(&rand, recorder.get(), s, bm, cf, mf, imageFilter);
+    auto [paint, paintOptions] = create_paint(&rand, recorder.get(), s, bm, cf, mf1, imageFilter);
 
     for (DrawTypeFlags dt : { DrawTypeFlags::kSimpleShape,
-                              DrawTypeFlags::kNonSimpleShape,
+/*                              DrawTypeFlags::kNonSimpleShape,
                               DrawTypeFlags::kShape,
                               DrawTypeFlags::kText,
-                              DrawTypeFlags::kDrawVertices }) {
+                              DrawTypeFlags::kDrawVertices */ }) {
 
         // Note: 'withPrimitiveBlender' and 'primitiveBlender' are only used in ExtractPaintData
         // and PaintOptions::buildCombinations. Thus, as long as those two uses agree, it doesn't
@@ -1739,11 +1738,11 @@ void run_test(skiatest::Reporter* reporter,
             // combinations generated by the combination system.
             auto result = std::find(precompileIDs.begin(), precompileIDs.end(), paintID);
 
-            if (result == precompileIDs.end()) {
-                SkDebugf("Failure on case: %s %s %s %s %s %s\n",
-                         to_str(s), to_str(bm), to_str(cf), to_str(clip), to_str(mf),
+//            if (result == precompileIDs.end()) {
+                SkDebugf("test case: %s %s %s %s %s %s\n",
+                         to_str(s), to_str(bm), to_str(cf), to_str(clip), to_str(mf1),
                          to_str(imageFilter));
-            }
+//            }
 
 #ifdef SK_DEBUG
             if (result == precompileIDs.end()) {

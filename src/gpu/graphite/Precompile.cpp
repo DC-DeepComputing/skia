@@ -517,7 +517,7 @@ void PaintOptions::buildCombinations(
 
     PaintParamsKeyBuilder builder(keyContext.dict());
 
-    if (fImageFilterOptions != PrecompileImageFilters::kNone) {
+    if (fImageFilterOptions1 != PrecompileImageFilters::kNone) {
         PaintOptions tmp = *this;
 
         // When image filtering, the original blend mode is taken over by the restore paint
@@ -529,10 +529,10 @@ void PaintOptions::buildCombinations(
 
         create_image_drawing_pipelines(keyContext, gatherer, processCombination, *this);
 
-        if (fImageFilterOptions & PrecompileImageFilters::kBlur) {
+        if (fImageFilterOptions1 & PrecompileImageFilters::kBlur) {
             create_blur_imagefilter_pipelines(keyContext, gatherer, processCombination);
         }
-        if (fImageFilterOptions & PrecompileImageFilters::kMorphology) {
+        if (fImageFilterOptions1 & PrecompileImageFilters::kMorphology) {
             create_morphology_imagefilter_pipelines(keyContext, gatherer, processCombination);
         }
     } else {

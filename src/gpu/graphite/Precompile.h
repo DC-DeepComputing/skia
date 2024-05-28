@@ -43,7 +43,6 @@ public:
         kBlender,
         kColorFilter,
         kImageFilter,
-        kMaskFilter,
         kShader,
         // TODO: add others: kDrawable, kPathEffect (?!)
     };
@@ -135,11 +134,6 @@ public:
     sk_sp<PrecompileShader> makeWithWorkingColorSpace(sk_sp<SkColorSpace>);
 };
 
-class PrecompileMaskFilter : public PrecompileBase {
-public:
-    PrecompileMaskFilter() : PrecompileBase(Type::kMaskFilter) {}
-};
-
 class PrecompileColorFilter : public PrecompileBase {
 public:
     PrecompileColorFilter() : PrecompileBase(Type::kColorFilter) {}
@@ -172,23 +166,25 @@ public:
         fShaderOptions.assign(shaders.begin(), shaders.end());
     }
 
+#if 0
     void setMaskFilters(SkSpan<const sk_sp<PrecompileMaskFilter>> maskFilters) {
         for (const sk_sp<PrecompileMaskFilter>& mf : maskFilters) {
             if (mf) {
                 // Currently Graphite only supports BlurMaskFilters which are implemented
                 // via BlurImageFiltering
-                fImageFilterOptions |= PrecompileImageFilters::kBlur;
+                fImageFilterOptions1 |= PrecompileImageFilters::kBlur;
                 break;
             }
         }
     }
+#endif
 
     void setColorFilters(SkSpan<const sk_sp<PrecompileColorFilter>> colorFilters) {
         fColorFilterOptions.assign(colorFilters.begin(), colorFilters.end());
     }
 
     void setImageFilters(SkEnumBitMask<PrecompileImageFilters> options) {
-        fImageFilterOptions = options;
+        fImageFilterOptions1 = options;
     }
 
     void setBlendModes(SkSpan<const SkBlendMode> blendModes) {
@@ -219,6 +215,9 @@ public:
     void setClipShaders(SkSpan<const sk_sp<PrecompileShader>> clipShaders);
 
     void setDither(bool dither) { fDither = dither; }
+    void setBlursMask() {
+        fBlursMask = true;
+    }
 
     typedef std::function<void(UniquePaintParamsID id,
                                DrawTypeFlags,
@@ -257,11 +256,12 @@ private:
 
     std::vector<sk_sp<PrecompileShader>> fShaderOptions;
     std::vector<sk_sp<PrecompileColorFilter>> fColorFilterOptions;
-    SkEnumBitMask<PrecompileImageFilters> fImageFilterOptions = PrecompileImageFilters::kNone;
+    SkEnumBitMask<PrecompileImageFilters> fImageFilterOptions1 = PrecompileImageFilters::kNone;
     SkTDArray<SkBlendMode> fBlendModeOptions;
     skia_private::TArray<sk_sp<PrecompileBlender>> fBlenderOptions;
     std::vector<sk_sp<PrecompileShader>> fClipShaderOptions;
     bool fDither = false;
+    bool fBlursMask = false; // equivalent to a BlurMaskFilter being used in the main API
 };
 
 } // namespace skgpu::graphite

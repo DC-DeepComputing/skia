@@ -128,6 +128,8 @@ enum DrawTypeFlags : uint8_t {
     // All other shapes (e.g., any strokeAndFill shape, non-circular-stroked RRects, SkPaths, ...)
     kNonSimpleShape = 0b1000,
 
+    kMaskBlurred   = 0b10000,
+
     kShape          = kSimpleShape | kNonSimpleShape,
 
     kMostCommon     = kText | kShape,
