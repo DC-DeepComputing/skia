@@ -43,6 +43,7 @@ supported_files_or_dirs=(
   "src/gpu/ganesh/surface/"
   "src/gpu/ganesh/text/"
   "src/gpu/tessellate/"
+  "src/gpu/vk/"
   "src/image/"
   "src/pathops/"
   "src/pdf/"
@@ -111,7 +112,6 @@ supported_files_or_dirs=(
   "src/gpu/ganesh/tessellate/StrokeTessellator.cpp"
   "src/gpu/ganesh/vk/GrVkContextThread"
   "src/gpu/ganesh/vk/GrVkDirectContext.cpp"
-  "src/gpu/vk/VulkanMutableTextureState.cpp"
   "src/pdf/SkJpeg"
   "tools/DecodeUtils.cpp"
   "tools/EncodeUtils.cpp"
@@ -137,6 +137,8 @@ excluded_files=(
   "src/core/SkM44.cpp"
   "src/core/SkPixmap.cpp"
   "modules/skottie/src/effects/MotionBlurEffect.cpp"
+# This file sets and checks for defines in a way that confuses IWYU
+  src/gpu/vk/vulkanmemoryallocator/VulkanMemoryAllocatorWrapper.cpp
 )
 
 function opted_in_to_IWYU_checks() {
