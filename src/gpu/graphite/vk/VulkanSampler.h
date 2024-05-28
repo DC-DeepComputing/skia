@@ -26,10 +26,11 @@ public:
                                      SkTileMode xTileMode,
                                      SkTileMode yTileMode,
                                      sk_sp<VulkanSamplerYcbcrConversion> ycbcrConversion = nullptr);
-
     ~VulkanSampler() override {}
 
     VkSampler vkSampler() const { return fSampler; }
+
+    const VkSampler* constVkSamplerPtr() const { return &fSampler; }
 
     const VulkanSamplerYcbcrConversion* ycbcrConversion() const { return fYcbcrConversion.get(); }
 
