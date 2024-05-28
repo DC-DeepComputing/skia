@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "56075108_9da81374",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2024-05-28T11:53:41Z",
+      "side": 1,
+      "message": "I ran into this issue when trying to delete Chrome\u0027s Exif parser ... turns out I was being too strict!",
+      "revId": "d65aaac665d060fe2a7c23c840e4714c53571f10",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
