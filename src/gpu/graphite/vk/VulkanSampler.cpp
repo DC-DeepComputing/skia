@@ -15,7 +15,7 @@ namespace skgpu::graphite {
 
 VulkanSampler::VulkanSampler(const VulkanSharedContext* sharedContext,
                              VkSampler sampler,
-                             sk_sp<VulkanSamplerYcbcrConversion> ycbcrConversion)
+                             sk_sp<VulkanYcbcrConversion> ycbcrConversion)
         : Sampler(sharedContext)
         , fSampler(sampler)
         , fYcbcrConversion(ycbcrConversion) {}
@@ -39,7 +39,7 @@ sk_sp<VulkanSampler> VulkanSampler::Make(
         const SkSamplingOptions& samplingOptions,
         SkTileMode xTileMode,
         SkTileMode yTileMode,
-        sk_sp<VulkanSamplerYcbcrConversion> ycbcrConversion) {
+        sk_sp<VulkanYcbcrConversion> ycbcrConversion) {
 
     VkSamplerCreateInfo samplerInfo;
     memset(&samplerInfo, 0, sizeof(VkSamplerCreateInfo));
