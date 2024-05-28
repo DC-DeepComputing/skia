@@ -1,0 +1,132 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d4444e3_748563d5",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 1520,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-28T14:17:08Z",
+      "side": 1,
+      "message": "Using the canvas matrix instead of a local matrix to adjust where the src is drawn to allows the paint to produce the same pipeline as the main draw that fills most of the image.  Since the src was hopefully constructed to not require shader-based clamping, this lets us fill in a border of pixels around the main rescaled content with what would have been output by shader-based tiling a single larger draw call.",
+      "range": {
+        "startLine": 1520,
+        "startChar": 0,
+        "endLine": 1520,
+        "endChar": 55
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "d3daca6c_774eb325",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/core/SkImageFilterTypes.cpp",
+              "range": {
+                "startLine": 1520,
+                "startChar": 0,
+                "endLine": 1521,
+                "endChar": 0
+              },
+              "replacement": "        canvas-\u003econcat(SkMatrix::RectToRect(src, dst)); // Using the canvas matrix instead of a local matrix to adjust where the drawRect is sampled\n"
+            }
+          ]
+        }
+      ],
+      "revId": "e49fd0b765132f17e6028411d868d18aec76dfbc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "526b7d4d_c6811f5e",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 1701,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-28T14:17:08Z",
+      "side": 1,
+      "message": "This pixel snapping logic was needed for correctness when viewing a periodic tiled image that fills a larger area. The tile mode is applied at the image boundary so if that doesn\u0027t align with the original high-res image boundary, error would creep in. This hadn\u0027t been accounted for in the original rescale() definition.",
+      "range": {
+        "startLine": 1682,
+        "startChar": 0,
+        "endLine": 1701,
+        "endChar": 5
+      },
+      "revId": "e49fd0b765132f17e6028411d868d18aec76dfbc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73a5e2be_31160864",
+        "filename": "src/core/SkImageFilterTypes.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 884,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-28T14:17:08Z",
+      "side": 1,
+      "message": "Without this extra scope option, the bounds analysis would always trigger shader-based decaling because it would see that the scale factor !\u003d 1. But in this specific case, we actually assume that the linear interpolation scale matches the scale factor of the draw.",
+      "range": {
+        "startLine": 884,
+        "startChar": 0,
+        "endLine": 884,
+        "endChar": 98
+      },
+      "revId": "e49fd0b765132f17e6028411d868d18aec76dfbc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "86f728ff_606201b6",
+        "filename": "tests/FilterResultTest.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 481,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-28T14:17:08Z",
+      "side": 1,
+      "message": "This was a bug fix that I noticed while testing this change. Since the testing rescale logic just does a ceil(), the final image relative to the original resolution wasn\u0027t necessarily `1/s-\u003efScale`. This upscales it to the original resolution more correctly and is the reason why a lot of the high tolerances on the periodic rescaling tests could be reduced so significantly.",
+      "range": {
+        "startLine": 480,
+        "startChar": 20,
+        "endLine": 481,
+        "endChar": 71
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "b9e2b045_c56558fd",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tests/FilterResultTest.cpp",
+              "range": {
+                "startLine": 480,
+                "startChar": 0,
+                "endLine": 481,
+                "endChar": 0
+              },
+              "replacement": "                     canvas.scale(srcWidth / (float) source-\u003ewidth(),\n"
+            }
+          ]
+        }
+      ],
+      "revId": "e49fd0b765132f17e6028411d868d18aec76dfbc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
