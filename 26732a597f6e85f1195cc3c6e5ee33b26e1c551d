@@ -88,6 +88,30 @@
       },
       "revId": "26732a597f6e85f1195cc3c6e5ee33b26e1c551d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab493830_ed6a7baa",
+        "filename": "gn/minify_sksl_tests.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-05-28T11:27:35Z",
+      "side": 1,
+      "message": "That\u0027s possibly due to the `for_linux_x64_with_rbe` config - I think the target has a \"noremote\" tag which is cancelling out the \"with_rbe\" part, but not the \"linux\" part.",
+      "parentUuid": "dff2f3e8_30913829",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 16
+      },
+      "revId": "26732a597f6e85f1195cc3c6e5ee33b26e1c551d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
