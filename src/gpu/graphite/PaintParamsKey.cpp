@@ -52,9 +52,9 @@ void PaintParamsKeyBuilder::popStack() {
 // PaintParamsKey
 
 PaintParamsKey PaintParamsKey::clone(SkArenaAlloc* arena) const {
-    int32_t* newData = arena->makeArrayDefault<int32_t>(fData.size());
+    uint32_t* newData = arena->makeArrayDefault<uint32_t>(fData.size());
     memcpy(newData, fData.data(), fData.size_bytes());
-    return PaintParamsKey({newData, fData.size()});
+    return PaintParamsKey({newData, fData.size()}, fIdxOfStoredSamplerData);
 }
 
 
@@ -80,7 +80,27 @@ const ShaderNode* PaintParamsKey::createNode(const ShaderCodeDictionary* dict,
         childArray[i] = child;
     }
 
-    return arena->make<ShaderNode>(entry, SkSpan(childArray, entry->fNumChildren), id, index);
+    // Gather any additional sampler data that should be passed into ShaderNode creation.
+    SkSpan<const uint32_t> dataSpan = {};
+    // If fIdxOfStoredSamplerData != kInvalidDataIdx, then data at
+    // indices >= fIdxOfStoredSamplerData need to be treated as data as opposed to snippet IDs.
+    if (index == (fIdxOfStoredSamplerData - 1)) {
+        // The first data entry represents the length of the appended data. If 0, then simply skip.
+        if (fData[fIdxOfStoredSamplerData] != 0) {
+            dataSpan = fData.subspan(fIdxOfStoredSamplerData + 1, fData[fIdxOfStoredSamplerData]);
+            // Iterate past the data length index, the data length itself, and one more to account
+            // for the fact that we are checking the index prior to fIdxOfStoredSamplerData.
+            *currentIndex = index + fData[fIdxOfStoredSamplerData] + 2;
+        } else {
+            *currentIndex += 1;
+        }
+    }
+
+    return arena->make<ShaderNode>(entry,
+                                   SkSpan(childArray, entry->fNumChildren),
+                                   id,
+                                   index,
+                                   dataSpan);
 }
 
 SkSpan<const ShaderNode*> PaintParamsKey::getRootNodes(const ShaderCodeDictionary* dict,
@@ -110,11 +130,11 @@ SkSpan<const ShaderNode*> PaintParamsKey::getRootNodes(const ShaderCodeDictionar
 
 static int key_to_string(SkString* str,
                          const ShaderCodeDictionary* dict,
-                         SkSpan<const int32_t> keyData,
+                         SkSpan<const uint32_t> keyData,
                          int currentIndex) {
     SkASSERT(currentIndex < SkTo<int>(keyData.size()));
 
-    int32_t id = keyData[currentIndex++];
+    uint32_t id = keyData[currentIndex++];
     auto entry = dict->getEntry(id);
     if (!entry) {
         str->append("UnknownCodeSnippetID:");
@@ -153,14 +173,14 @@ SkString PaintParamsKey::toString(const ShaderCodeDictionary* dict) const {
 #ifdef SK_DEBUG
 
 static int dump_node(const ShaderCodeDictionary* dict,
-                     SkSpan<const int32_t> keyData,
+                     SkSpan<const uint32_t> keyData,
                      int currentIndex,
                      int indent) {
     SkASSERT(currentIndex < SkTo<int>(keyData.size()));
 
     SkDebugf("%*c", 2 * indent, ' ');
 
-    int32_t id = keyData[currentIndex++];
+    uint32_t id = keyData[currentIndex++];
     auto entry = dict->getEntry(id);
     if (!entry) {
         SkDebugf("[%d] unknown block!\n", id);
