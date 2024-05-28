@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "50fed362_caf49b0b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-28T20:56:16Z",
+      "side": 1,
+      "message": "Sorry if some of my nits overlap with James\u0027",
+      "revId": "e9d6662a83590a0e67ae9a2083d7fed388d915f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7f9ba550_8d6ff241",
@@ -31,6 +48,29 @@
       "writtenOn": "2024-05-28T20:44:38Z",
       "side": 1,
       "message": "Nit: we wanna keep lines within 100 characters",
+      "revId": "e9d6662a83590a0e67ae9a2083d7fed388d915f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f9990d0_71e1ee9d",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 273,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-28T20:56:16Z",
+      "side": 1,
+      "message": "nit: line length",
+      "range": {
+        "startLine": 273,
+        "startChar": 0,
+        "endLine": 273,
+        "endChar": 102
+      },
       "revId": "e9d6662a83590a0e67ae9a2083d7fed388d915f9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -54,6 +94,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ec6c0297_99ea669a",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-28T20:56:16Z",
+      "side": 1,
+      "message": "I think to be consistent with the type-based checks used for the gradient matrix and the radius manipulation for the non-radial case, we should do this division in `add_gradient_to_key` when it has the kRadial type and use the shader\u0027s diff radius to match the math in the LocalMatrix helper block.\n\nIt\u0027s also a little clearer IMO to group the scaling of radii together in the code.",
+      "range": {
+        "startLine": 287,
+        "startChar": 0,
+        "endLine": 287,
+        "endChar": 25
+      },
+      "revId": "e9d6662a83590a0e67ae9a2083d7fed388d915f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9f8c0ef7_84b7c481",
         "filename": "src/gpu/graphite/KeyHelpers.cpp",
         "patchSetId": 8
@@ -65,6 +128,52 @@
       "writtenOn": "2024-05-28T20:44:38Z",
       "side": 1,
       "message": "Might be worth a comment explaining why we can\u0027t just use the gradient matrix we already have in the conical case.",
+      "revId": "e9d6662a83590a0e67ae9a2083d7fed388d915f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e2ba8852_ffb2143e",
+        "filename": "src/shaders/gradients/SkConicalGradient.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-28T20:56:16Z",
+      "side": 1,
+      "message": "nit: line length",
+      "range": {
+        "startLine": 65,
+        "startChar": 35,
+        "endLine": 65,
+        "endChar": 108
+      },
+      "revId": "e9d6662a83590a0e67ae9a2083d7fed388d915f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "189b9a0d_768284b7",
+        "filename": "src/shaders/gradients/SkConicalGradient.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-28T20:56:16Z",
+      "side": 1,
+      "message": "nit: line length\n\nSkia\u0027s style for when we need to return a `bool` and modify an output object is to have the output type be a pointer and have it at the end of the arguments, so the signature here should be `(const SkPoint\u0026 startCenter, const SkPoint\u0026 endCenter, SkMatrix* dstMatrix)`",
+      "range": {
+        "startLine": 53,
+        "startChar": 27,
+        "endLine": 53,
+        "endChar": 102
+      },
       "revId": "e9d6662a83590a0e67ae9a2083d7fed388d915f9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -105,6 +214,52 @@
       "writtenOn": "2024-05-28T20:44:38Z",
       "side": 1,
       "message": "I think another comment here describing how we encode the different gradient cases in `a` and `invA` would be good.",
+      "revId": "e9d6662a83590a0e67ae9a2083d7fed388d915f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25d1a8ad_927128e8",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 8
+      },
+      "lineNbr": 643,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-28T20:56:16Z",
+      "side": 1,
+      "message": "We could just have `dRadius` be +/-1 in this case right?",
+      "range": {
+        "startLine": 643,
+        "startChar": 32,
+        "endLine": 643,
+        "endChar": 41
+      },
+      "revId": "e9d6662a83590a0e67ae9a2083d7fed388d915f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6fd609fe_8f7660c3",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 8
+      },
+      "lineNbr": 655,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-28T20:56:16Z",
+      "side": 1,
+      "message": "what does the b\u003d0 case represent? do we need to check for it?",
+      "range": {
+        "startLine": 655,
+        "startChar": 21,
+        "endLine": 655,
+        "endChar": 22
+      },
       "revId": "e9d6662a83590a0e67ae9a2083d7fed388d915f9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
