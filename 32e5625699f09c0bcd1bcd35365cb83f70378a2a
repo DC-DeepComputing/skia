@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4a5dd8a8_b8a4c080",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 2072,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-05-28T12:30:40Z",
+      "side": 1,
+      "message": "Enable by default for Skia builds?\n\nI\u0027m more used to the inverted guard approach (`#ifndef SK_DISABLE_MAD_IN_RASTER_PIPELINE`), where Skia starts exercising/testing the new code by default, immediately.  Should be the same number of steps for rebaselining clients, but you do need to land the guard defines first.",
+      "range": {
+        "startLine": 2072,
+        "startChar": 7,
+        "endLine": 2072,
+        "endChar": 36
+      },
+      "revId": "32e5625699f09c0bcd1bcd35365cb83f70378a2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "be98cb1c_17a0041b",
         "filename": "src/opts/SkRasterPipeline_opts.h",
         "patchSetId": 6
