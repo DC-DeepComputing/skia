@@ -22,6 +22,30 @@
       },
       "revId": "eb04d1a69ced64e45d9fbdaffd9c46ccbb44b342",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e31f517f_d4b18552",
+        "filename": "src/gpu/graphite/Recorder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-28T20:06:54Z",
+      "side": 1,
+      "message": "The constructors are private, so only the Context is able to use this constructor. Additionally, the ResourceCache that the Recorder uses will actually use the SingleOwner of the Context so that provides some extra guarding.\n\nI played around with trying to allow the Recorder to inherit the Context\u0027s SingleOwner as well but because of how that type changes between debug and release builds, that was more hassle than seems worthwhile in this case.",
+      "parentUuid": "7a959e75_0a680f68",
+      "range": {
+        "startLine": 118,
+        "startChar": 44,
+        "endLine": 118,
+        "endChar": 60
+      },
+      "revId": "eb04d1a69ced64e45d9fbdaffd9c46ccbb44b342",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
