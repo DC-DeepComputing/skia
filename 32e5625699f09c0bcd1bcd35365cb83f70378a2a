@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a7bc2de_127158a7",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 2072,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-05-28T13:45:37Z",
+      "side": 1,
+      "message": "Done\n\nUpdated #ifdefs here to match.",
+      "parentUuid": "9d58bdc7_5744afd0",
+      "range": {
+        "startLine": 2072,
+        "startChar": 7,
+        "endLine": 2072,
+        "endChar": 36
+      },
+      "revId": "32e5625699f09c0bcd1bcd35365cb83f70378a2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "be98cb1c_17a0041b",
@@ -61,6 +85,30 @@
       "writtenOn": "2024-05-26T22:19:28Z",
       "side": 1,
       "message": "Reviewer note: `mod_fn` below cannot share the code here because `y` is a scalar in this version, and a vector below.",
+      "range": {
+        "startLine": 2591,
+        "startChar": 15,
+        "endLine": 2591,
+        "endChar": 20
+      },
+      "revId": "32e5625699f09c0bcd1bcd35365cb83f70378a2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "639e4ed6_48d59657",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 2591,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-05-28T13:45:37Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "be98cb1c_17a0041b",
       "range": {
         "startLine": 2591,
         "startChar": 15,
