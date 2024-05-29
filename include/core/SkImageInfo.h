@@ -9,6 +9,7 @@
 #define SkImageInfo_DEFINED
 
 #include "include/core/SkAlphaType.h"
+#include "include/core/SkColorSpace.h"
 #include "include/core/SkColorType.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
@@ -21,8 +22,6 @@
 #include <cstddef>
 #include <cstdint>
 #include <utility>
-
-class SkColorSpace;
 
 /** Returns the number of bytes required to store a pixel, including unused padding.
     Returns zero if ct is kUnknown_SkColorType or invalid.
