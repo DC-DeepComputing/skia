@@ -61,6 +61,17 @@ def c_plus_plus_deps(ws = "@skia"):
         remote = "https://chromium.googlesource.com/chromium/src/third_party/freetype2.git",
     )
 
+    http_archive(
+        name = "ffmpeg",
+        build_file = ws + "//bazel/external/ffmpeg:BUILD.bazel",
+        strip_prefix = "ffmpeg-7.0.1",
+        urls = gcs_mirror_url(
+            sha256 = "e273eae00b4f833595654c1ee2b2349240e0332f9dbf3c4cadd39df9819ff052",
+            url = "https://ffmpeg.org/releases/ffmpeg-7.0.1.tar.gz",
+        ),
+        sha256 = "e273eae00b4f833595654c1ee2b2349240e0332f9dbf3c4cadd39df9819ff052",
+    )
+
     new_git_repository(
         name = "harfbuzz",
         build_file = ws + "//bazel/external/harfbuzz:BUILD.bazel",

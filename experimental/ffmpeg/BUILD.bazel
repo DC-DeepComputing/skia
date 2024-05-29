@@ -1,0 +1,27 @@
+load("//bazel:skia_rules.bzl", "skia_cc_binary", "skia_cc_library")
+
+skia_cc_library(
+    name = "video_encoder",
+    srcs = [
+        "SkVideoEncoder.cpp",
+    ],
+    hdrs = [
+        "SkVideoEncoder.h",
+    ],
+    deps = [
+        "//:core",
+        "@ffmpeg//:avcodec",
+        "@ffmpeg//:avformat",
+        "@ffmpeg//:avutil",
+        "@ffmpeg//:swscale",
+    ],
+)
+
+skia_cc_binary(
+    name = "sample",
+    srcs = ["example/video_encoder_main.cpp"],
+    deps = [
+        ":video_encoder",
+        "//:core",
+    ],
+)
