@@ -106,6 +106,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d45df25d_8751cbd4",
+        "filename": "src/gpu/ganesh/text/GrAtlasManager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-05-29T15:29:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "46b4e5b3_55ceddc2",
+      "range": {
+        "startLine": 140,
+        "startChar": 25,
+        "endLine": 140,
+        "endChar": 34
+      },
+      "revId": "6010d3004357e7d749d0c3db2d56c5d42e859916",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8dbedd96_d611fdd0",
@@ -119,6 +143,30 @@
       "writtenOn": "2024-05-29T15:16:19Z",
       "side": 1,
       "message": "Same here ?",
+      "range": {
+        "startLine": 138,
+        "startChar": 25,
+        "endLine": 138,
+        "endChar": 34
+      },
+      "revId": "6010d3004357e7d749d0c3db2d56c5d42e859916",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f68cb468_e83f2c54",
+        "filename": "src/gpu/graphite/text/TextAtlasManager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-05-29T15:29:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8dbedd96_d611fdd0",
       "range": {
         "startLine": 138,
         "startChar": 25,
