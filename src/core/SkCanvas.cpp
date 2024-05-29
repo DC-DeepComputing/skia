@@ -831,15 +831,9 @@ void SkCanvas::internalDrawDeviceWithFilter(SkDevice* src,
         }
 
         if (compat == DeviceCompatibleWithFilter::kYes) {
-#if defined(SK_DONT_PAD_LAYER_IMAGES)
-            // Technically not needed, but does change the tile mode of the FilterResult, and this
-            // preserves prior behavior before the layer padding CLs.
-            source = source.applyCrop(ctx, source.layerBounds(), SkTileMode::kClamp);
-#else
             // Padding was added to the source image when the 'src' SkDevice was created, so inset
             // to allow bounds tracking to skip shader-based tiling when possible.
             source = source.insetForSaveLayer();
-#endif
         } else if (source) {
             // A backdrop filter that succeeded in snapSpecial() or snapSpecialScaled(), but since
             // the 'src' device wasn't prepared with 'requiredInput' in mind, add clamping.
@@ -1295,7 +1289,7 @@ void SkCanvas::internalSaveLayer(const SaveLayerRec& rec,
         abortLayer();
         return;
     } else {
-#if !defined(SK_RESOLVE_FILTERS_BEFORE_RESTORE) && !defined(SK_DONT_PAD_LAYER_IMAGES)
+#if !defined(SK_RESOLVE_FILTERS_BEFORE_RESTORE)
         // TODO(b/329700315): Once dithers can be anchored more flexibly, we can return to
         // universally adding padding even for layers w/o filters. This change would simplify layer
         // prep and restore logic and allow us to flexibly switch the sampling to linear if NN has
@@ -1348,7 +1342,7 @@ void SkCanvas::internalSaveLayer(const SaveLayerRec& rec,
         initBackdrop = false;
     }
 
-#if !defined(SK_RESOLVE_FILTERS_BEFORE_RESTORE) && !defined(SK_DONT_PAD_LAYER_IMAGES)
+#if !defined(SK_RESOLVE_FILTERS_BEFORE_RESTORE)
     // Clip while the device coordinate space is the identity so it's easy to define the rect that
     // excludes the added padding pixels. This ensures they remain cleared to transparent black.
     if (!filters.empty()) {
