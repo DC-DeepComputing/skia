@@ -955,7 +955,8 @@ public:
             , fStableKey(stableKey) {
         fNumWrappedCombos = fWrapped->numCombinations();
         SkASSERT(stableKey == SkKnownRuntimeEffects::StableKey::kLinearMorphology ||
-                 stableKey == SkKnownRuntimeEffects::StableKey::kSparseMorphology);
+                 stableKey == SkKnownRuntimeEffects::StableKey::kSparseMorphology ||
+                 stableKey == SkKnownRuntimeEffects::StableKey::kDisplacement);
     }
 
 private:
@@ -991,6 +992,55 @@ sk_sp<PrecompileShader> PrecompileShadersPriv::SparseMorphology(sk_sp<Precompile
     return sk_make_sp<PrecompileMorphologyShader>(
             std::move(wrapped),
             SkKnownRuntimeEffects::StableKey::kSparseMorphology);
+}
+
+//--------------------------------------------------------------------------------------------------
+class PrecompileDisplacementShader : public PrecompileShader {
+public:
+    PrecompileDisplacementShader(sk_sp<PrecompileShader> displacement,
+                                 sk_sp<PrecompileShader> color)
+            : fDisplacement(std::move(displacement))
+            , fColor(std::move(color)) {
+        fNumDisplacementCombos = fDisplacement->numCombinations();
+        fNumColorCombos = fColor->numCombinations();
+    }
+
+private:
+    int numChildCombinations() const override { return fNumDisplacementCombos * fNumColorCombos; }
+
+    void addToKey(const KeyContext& keyContext,
+                  PaintParamsKeyBuilder* builder,
+                  PipelineDataGatherer* gatherer,
+                  int desiredCombination) const override {
+        SkASSERT(desiredCombination < this->numChildCombinations());
+
+        const SkRuntimeEffect* fEffect =
+                GetKnownRuntimeEffect(SkKnownRuntimeEffects::StableKey::kDisplacement);
+
+        KeyContextWithScope childContext(keyContext, KeyContext::Scope::kRuntimeEffect);
+
+        RuntimeEffectBlock::BeginBlock(keyContext, builder, gatherer, { sk_ref_sp(fEffect) });
+            fWrapped->priv().addToKey(childContext, builder, gatherer, desiredCombination);
+        builder->endBlock();
+    }
+
+    sk_sp<PrecompileShader> fDisplacement;
+    int fNumDisplacementCombos;
+    sk_sp<PrecompileShader> fColor;
+    int fNumColorCombos;
+};
+
+//--------------------------------------------------------------------------------------------------
+sk_sp<PrecompileShader> PrecompileShadersPriv::Displacement(sk_sp<PrecompileShader> wrapped) {
+    return sk_make_sp<PrecompileMorphologyShader>(
+            std::move(wrapped),
+            SkKnownRuntimeEffects::StableKey::kDisplacement);
+}
+
+sk_sp<PrecompileShader> PrecompileShadersPriv::MatrixConvolution(sk_sp<PrecompileShader> wrapped) {
+    return sk_make_sp<PrecompileMorphologyShader>(
+            std::move(wrapped),
+            SkKnownRuntimeEffects::StableKey::kMatrixConvTexSm);
 }
 
 //--------------------------------------------------------------------------------------------------

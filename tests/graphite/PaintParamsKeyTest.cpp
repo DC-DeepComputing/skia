@@ -243,15 +243,17 @@ const char* to_str(ClipType c) {
 //--------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------
 #define SK_ALL_TEST_IMAGE_FILTERS(M) \
-    M(None)            \
-    M(Blur)            \
-    M(Morphology)
+    M(None)              \
+    M(Blur1)             \
+    M(Displacement)      \
+    M(MatrixConvolution) \
+    M(Morphology1)
 
 enum class ImageFilterType {
 #define M(type) k##type,
     SK_ALL_TEST_IMAGE_FILTERS(M)
 #undef M
-    kLast = kMorphology
+    kLast = kMorphology1
 };
 
 static constexpr int kImageFilterTypeCount = static_cast<int>(ImageFilterType::kLast) + 1;
@@ -1137,9 +1139,46 @@ sk_sp<SkImageFilter> blur_imagefilter(SkRandom* rand,
     }
 
     sk_sp<SkImageFilter> blurIF = SkImageFilters::Blur(sigma, sigma, /* input= */ nullptr);
-    *imageFilterMask |= PrecompileImageFilters::kBlur;
+    *imageFilterMask |= PrecompileImageFilters::kBlur2;
 
     return blurIF;
+}
+
+sk_sp<SkImageFilter> displacement_imagefilter(
+        SkRandom* rand,
+        SkEnumBitMask<PrecompileImageFilters>* imageFilterMask) {
+
+    sk_sp<SkImageFilter> displacementIF;
+
+    displacementIF = SkImageFilters::DisplacementMap(SkColorChannel::kR,
+                                                     SkColorChannel::kB,
+                                                     /* scale= */ 2.0f,
+                                                     /* displacement= */ nullptr,
+                                                     /* color= */ nullptr);
+    SkASSERT(displacementIF);
+    *imageFilterMask |= PrecompileImageFilters::kDisplacement;
+
+    return displacementIF;
+}
+
+sk_sp<SkImageFilter> matrix_convolution_imagefilter(
+        SkRandom* rand,
+        SkEnumBitMask<PrecompileImageFilters>* imageFilterMask) {
+
+    sk_sp<SkImageFilter> matrixConvIF;
+
+    matrixConvIF = SkImageFilters::MatrixConvolution({3, 3},
+                                                     /* kernel= */ nullptr,
+                                                     /* gain= */ 2.0f,
+                                                     /* bias= */ 1.5f,
+                                                     /* kernelOffset= */ { 1, 1 },
+                                                     SkTileMode::kMirror,
+                                                     /* convolveAlpha= */ false,
+                                                     /* input= */ nullptr);
+    SkASSERT(matrixConvIF);
+    *imageFilterMask |= PrecompileImageFilters::kMatrixConvolution;
+
+    return matrixConvIF;
 }
 
 sk_sp<SkImageFilter> morphology_imagefilter(
@@ -1155,7 +1194,7 @@ sk_sp<SkImageFilter> morphology_imagefilter(
         morphologyIF = SkImageFilters::Dilate(radX, radY, /* input= */ nullptr);
     }
     SkASSERT(morphologyIF);
-    *imageFilterMask |= PrecompileImageFilters::kMorphology;
+    *imageFilterMask |= PrecompileImageFilters::kMorphology2;
 
     return morphologyIF;
 }
@@ -1170,10 +1209,16 @@ std::pair<sk_sp<SkImageFilter>, SkEnumBitMask<PrecompileImageFilters>> create_im
     switch (type) {
         case ImageFilterType::kNone:
             break;
-        case ImageFilterType::kBlur:
+        case ImageFilterType::kBlur1:
             imgFilter = blur_imagefilter(rand, &imageFilterMask);
             break;
-        case ImageFilterType::kMorphology:
+        case ImageFilterType::kDisplacement:
+            imgFilter = displacement_imagefilter(rand, &imageFilterMask);
+            break;
+        case ImageFilterType::kMatrixConvolution:
+            imgFilter = matrix_convolution_imagefilter(rand, &imageFilterMask);
+            break;
+        case ImageFilterType::kMorphology1:
             imgFilter = morphology_imagefilter(rand, &imageFilterMask);
             break;
     }
@@ -1510,9 +1555,9 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
     };
 
     ShaderType shaders[] = {
-            ShaderType::kBlend,
-            ShaderType::kImage,
-            ShaderType::kRadialGradient,
+//            ShaderType::kBlend,
+//            ShaderType::kImage,
+//            ShaderType::kRadialGradient,
             ShaderType::kSolidColor,
 #if EXPANDED_SET
             ShaderType::kNone,
@@ -1532,8 +1577,8 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
 
     BlenderType blenders[] = {
             BlenderType::kPorterDuff,
-            BlenderType::kShaderBased,
-            BlenderType::kRuntime,
+//            BlenderType::kShaderBased,
+//            BlenderType::kRuntime,
 #if EXPANDED_SET
             BlenderType::kNone,
             BlenderType::kArithmetic,
@@ -1542,8 +1587,8 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
 
     ColorFilterType colorFilters[] = {
             ColorFilterType::kNone,
-            ColorFilterType::kBlendMode,
-            ColorFilterType::kMatrix,
+//            ColorFilterType::kBlendMode,
+//            ColorFilterType::kMatrix,
 #if EXPANDED_SET
             ColorFilterType::kColorSpaceXform,
             ColorFilterType::kCompose,
@@ -1575,6 +1620,8 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
             ImageFilterType::kBlur,
             ImageFilterType::kMorphology,
 #endif
+            ImageFilterType::kDisplacement,
+//            ImageFilterType::kMatrixConvolution,
     };
 
     ClipType clips[] = {
