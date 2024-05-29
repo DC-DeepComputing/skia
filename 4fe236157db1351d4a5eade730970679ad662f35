@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "54b1167f_bba3c923",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-05-29T14:48:35Z",
+      "side": 1,
+      "message": "PTAL. There were some Perf slowdowns with the previous approach so I\u0027ve switched to creating separate shaders for the vertical versions. In general we should only ever be creating one of these shaders as the client\u0027s pixel geometry should remain\nconstant.",
+      "revId": "4fe236157db1351d4a5eade730970679ad662f35",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
