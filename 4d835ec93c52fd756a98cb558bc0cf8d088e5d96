@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "786f5eb5_653cec6d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-29T14:10:50Z",
+      "side": 1,
+      "message": "Assuming jobs all turn green, the updated tolerances should account for the debian10 intel/swiftshader thresholds and the mali400 threshold. The android roll was failing the unit test in the same manner and should also be accounted for in the updated thresholds",
+      "revId": "4d835ec93c52fd756a98cb558bc0cf8d088e5d96",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
