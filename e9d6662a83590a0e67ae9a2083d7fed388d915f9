@@ -506,6 +506,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b95ecd68_b90832bb",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 8
+      },
+      "lineNbr": 655,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-29T19:54:36Z",
+      "side": 1,
+      "message": "Talking offline, we decided that this event was very unlikely and if it were to occur, should correspond to a geometric pixel that could go either way so this code should be detecting it as invalid automatically. If we encounter real occurrences of this we can guard the divide.\n\nNow that said, there are some red pixels appearing in gradients_2pt_conical_edge_repeat on Radeon hardware that I wonder if is related to this case? https://gold.skia.org/detail?grouping\u003dname%3Dgradients_2pt_conical_edge_repeat%26source_type%3Dgm\u0026digest\u003d51534737685ec082cfdcee37bfa2f96f\u0026changelist_id\u003d857916\u0026crs\u003dgerrit",
+      "parentUuid": "2c66b649_eb7b8e07",
+      "range": {
+        "startLine": 655,
+        "startChar": 21,
+        "endLine": 655,
+        "endChar": 22
+      },
+      "revId": "e9d6662a83590a0e67ae9a2083d7fed388d915f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2a8cbeb2_5f6ccf7e",
         "filename": "src/sksl/sksl_graphite_frag.sksl",
         "patchSetId": 8
