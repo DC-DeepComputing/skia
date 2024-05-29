@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68693c43_c94896a9",
+        "filename": "tests/sksl/runtime/GLSLTypeNamesES3.wgsl",
+        "patchSetId": 5
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-05-29T19:20:59Z",
+      "side": 1,
+      "message": "Do you want to add a test that generates vec2u and vec3u? It looks like the SkSL compiler is smart and simplified this construction to just a vec4u. Up to you.",
+      "revId": "879afe61dfb4bacdfdbc9bc453a2e311b7fbfa33",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
