@@ -17,6 +17,10 @@ void u2()  { uint2 x; }
 void u3()  { uint3 x; }
 void u4()  { uint4 x; }
 
+void uv2()  { uvec2 x; }
+void uv3()  { uvec3 x; }
+void uv4()  { uvec4 x; }
+
 void us()  { ushort x; }
 void us2() { ushort2 x; }
 void us3() { ushort3 x; }
