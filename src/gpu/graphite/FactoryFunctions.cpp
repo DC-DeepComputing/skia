@@ -947,6 +947,55 @@ sk_sp<PrecompileShader> PrecompileShadersPriv::Blur(sk_sp<PrecompileShader> wrap
 }
 
 //--------------------------------------------------------------------------------------------------
+class PrecompileMatrixConvolutionShader : public PrecompileShader {
+public:
+    PrecompileMatrixConvolutionShader(sk_sp<PrecompileShader> wrapped)
+            : fWrapped(std::move(wrapped)) {
+        fNumWrappedCombos = fWrapped->numCombinations();
+    }
+
+private:
+    inline static constexpr int kNumIntrinsicCombinations = 3;
+
+    int numIntrinsicCombinations() const override { return kNumIntrinsicCombinations; }
+
+    int numChildCombinations() const override { return fNumWrappedCombos; }
+
+    void addToKey(const KeyContext& keyContext,
+                  PaintParamsKeyBuilder* builder,
+                  PipelineDataGatherer* gatherer,
+                  int desiredCombination) const override {
+
+        const int desiredIntrinsicCombination = desiredCombination % kNumIntrinsicCombinations;
+        const int desiredWrappedCombination = desiredCombination / kNumIntrinsicCombinations;
+        SkASSERT(desiredWrappedCombination < fNumWrappedCombos);
+
+        static constexpr SkKnownRuntimeEffects::StableKey kStableKeys[kNumIntrinsicCombinations] = {
+                SkKnownRuntimeEffects::StableKey::kMatrixConvUniforms,
+                SkKnownRuntimeEffects::StableKey::kMatrixConvTexSm,
+                SkKnownRuntimeEffects::StableKey::kMatrixConvTexLg,
+        };
+
+        const SkRuntimeEffect* fEffect =
+                GetKnownRuntimeEffect(kStableKeys[desiredIntrinsicCombination]);
+
+        KeyContextWithScope childContext(keyContext, KeyContext::Scope::kRuntimeEffect);
+
+        RuntimeEffectBlock::BeginBlock(keyContext, builder, gatherer, { sk_ref_sp(fEffect) });
+            fWrapped->priv().addToKey(childContext, builder, gatherer, desiredWrappedCombination);
+        builder->endBlock();
+    }
+
+    sk_sp<PrecompileShader> fWrapped;
+    int fNumWrappedCombos;
+};
+
+sk_sp<PrecompileShader> PrecompileShadersPriv::MatrixConvolution(
+        sk_sp<skgpu::graphite::PrecompileShader> wrapped) {
+    return sk_make_sp<PrecompileMatrixConvolutionShader>(std::move(wrapped));
+}
+
+//--------------------------------------------------------------------------------------------------
 class PrecompileMorphologyShader : public PrecompileShader {
 public:
     PrecompileMorphologyShader(sk_sp<PrecompileShader> wrapped,

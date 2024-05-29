@@ -243,16 +243,17 @@ const char* to_str(ClipType c) {
 //--------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------
 #define SK_ALL_TEST_IMAGE_FILTERS(M) \
-    M(None)            \
-    M(Blur)            \
-    M(Lighting)        \
-    M(Morphology)
+    M(None)              \
+    M(Blur2)             \
+    M(Lighting)          \
+    M(MatrixConvolution) \
+    M(Morphology2)
 
 enum class ImageFilterType {
 #define M(type) k##type,
     SK_ALL_TEST_IMAGE_FILTERS(M)
 #undef M
-    kLast = kMorphology
+    kLast = kMorphology2
 };
 
 static constexpr int kImageFilterTypeCount = static_cast<int>(ImageFilterType::kLast) + 1;
@@ -1138,7 +1139,7 @@ sk_sp<SkImageFilter> blur_imagefilter(SkRandom* rand,
     }
 
     sk_sp<SkImageFilter> blurIF = SkImageFilters::Blur(sigma, sigma, /* input= */ nullptr);
-    *imageFilterMask |= PrecompileImageFilters::kBlur;
+    *imageFilterMask |= PrecompileImageFilters::kBlur1;
 
     return blurIF;
 }
@@ -1198,6 +1199,26 @@ sk_sp<SkImageFilter> lighting_imagefilter(
     SkUNREACHABLE;
 }
 
+sk_sp<SkImageFilter> matrix_convolution_imagefilter(
+        SkRandom* rand,
+        SkEnumBitMask<PrecompileImageFilters>* imageFilterMask) {
+
+    sk_sp<SkImageFilter> matrixConvIF;
+
+    matrixConvIF = SkImageFilters::MatrixConvolution({3, 3},
+                                                     /* kernel= */ nullptr,
+                                                     /* gain= */ 2.0f,
+                                                     /* bias= */ 1.5f,
+                                                     /* kernelOffset= */ { 1, 1 },
+                                                     SkTileMode::kMirror,
+                                                     /* convolveAlpha= */ false,
+                                                     /* input= */ nullptr);
+    SkASSERT(matrixConvIF);
+    *imageFilterMask |= PrecompileImageFilters::kMatrixConvolution;
+
+    return matrixConvIF;
+}
+
 sk_sp<SkImageFilter> morphology_imagefilter(
         SkRandom* rand,
         SkEnumBitMask<PrecompileImageFilters>* imageFilterMask) {
@@ -1211,7 +1232,7 @@ sk_sp<SkImageFilter> morphology_imagefilter(
         morphologyIF = SkImageFilters::Dilate(kRadX, kRadY, /* input= */ nullptr);
     }
     SkASSERT(morphologyIF);
-    *imageFilterMask |= PrecompileImageFilters::kMorphology;
+    *imageFilterMask |= PrecompileImageFilters::kMorphology1;
 
     return morphologyIF;
 }
@@ -1226,13 +1247,16 @@ std::pair<sk_sp<SkImageFilter>, SkEnumBitMask<PrecompileImageFilters>> create_im
     switch (type) {
         case ImageFilterType::kNone:
             break;
-        case ImageFilterType::kBlur:
+        case ImageFilterType::kBlur2:
             imgFilter = blur_imagefilter(rand, &imageFilterMask);
             break;
         case ImageFilterType::kLighting:
             imgFilter = lighting_imagefilter(rand, &imageFilterMask);
             break;
-        case ImageFilterType::kMorphology:
+        case ImageFilterType::kMatrixConvolution:
+            imgFilter = matrix_convolution_imagefilter(rand, &imageFilterMask);
+            break;
+        case ImageFilterType::kMorphology2:
             imgFilter = morphology_imagefilter(rand, &imageFilterMask);
             break;
     }
