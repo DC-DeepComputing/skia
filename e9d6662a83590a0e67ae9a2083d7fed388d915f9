@@ -537,6 +537,24 @@
       "parentUuid": "2a8cbeb2_5f6ccf7e",
       "revId": "e9d6662a83590a0e67ae9a2083d7fed388d915f9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c7d134f4_657cd2d9",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 8
+      },
+      "lineNbr": 663,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-05-29T15:38:56Z",
+      "side": 1,
+      "message": "Actually I think the intuition for the inside case is one of the t values is negative so it would have a negative radius which would fail the isValid check since this seems to be the behavior i see when testing this",
+      "parentUuid": "f3571606_5c62280a",
+      "revId": "e9d6662a83590a0e67ae9a2083d7fed388d915f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
