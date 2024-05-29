@@ -157,9 +157,10 @@ public:
 };
 
 enum class PrecompileImageFilters : uint32_t {
-    kNone = 0x0,
-    kBlur = 0x1,
-    kMorphology = 0x2,
+    kNone              = 0x0,
+    kBlur1             = 0x1,
+    kMatrixConvolution = 0x2,
+    kMorphology1       = 0x4,
 };
 SK_MAKE_BITMASK_OPS(PrecompileImageFilters)
 
@@ -177,7 +178,7 @@ public:
             if (mf) {
                 // Currently Graphite only supports BlurMaskFilters which are implemented
                 // via BlurImageFiltering
-                fImageFilterOptions |= PrecompileImageFilters::kBlur;
+                fImageFilterOptions |= PrecompileImageFilters::kBlur1;
                 break;
             }
         }
