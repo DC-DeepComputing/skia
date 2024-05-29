@@ -16,6 +16,29 @@
       "message": "PTAL. There were some Perf slowdowns with the previous approach so I\u0027ve switched to creating separate shaders for the vertical versions. In general we should only ever be creating one of these shaders as the client\u0027s pixel geometry should remain\nconstant.",
       "revId": "4fe236157db1351d4a5eade730970679ad662f35",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33d718ce_51542ba8",
+        "filename": "src/gpu/ganesh/effects/GrDistanceFieldGeoProc.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 686,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-05-29T14:58:58Z",
+      "side": 1,
+      "message": "??",
+      "range": {
+        "startLine": 686,
+        "startChar": 63,
+        "endLine": 686,
+        "endChar": 88
+      },
+      "revId": "4fe236157db1351d4a5eade730970679ad662f35",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
