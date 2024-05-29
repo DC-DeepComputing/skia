@@ -62,7 +62,7 @@ TestFontDataProvider::TestFontDataProvider(const std::string& fontFilterRegexp,
     const skjson::ObjectValue& root = fJsonDom->root().as<skjson::ObjectValue>();
     fFonts = root["fonts"];
     SkASSERT(fFonts);
-    SkASSERTF(fFonts->size() == kExpectNumFonts,
+    SkASSERTF(fFonts->size() >= kExpectNumFonts,
               "Unable to access all %zu test fonts (only got %zu), check bin/fetch-fonts-testdata.",
               kExpectNumFonts,
               fFonts->size());

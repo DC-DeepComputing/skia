@@ -113,7 +113,8 @@ protected:
                 font.setSize(kFontSize);
                 font.setEdging(SkFont::Edging::kSubpixelAntiAlias);
                 font.setSubpixel(true);
-                font.setHinting(SkFontHinting::kNone);
+                // font.setHinting(SkFontHinting::kNone);
+                // font.setHinting(SkFontHinting::kFull);
             };
 
             SkFont font(testTypeface);
@@ -221,17 +222,25 @@ protected:
                             if (fontationsBitmap.bytesPerPixel() != 4 ||
                                 freetypeBitmap.bytesPerPixel() != 4)
                             {
+                                printf("Dropping out of comparison, mask formats: %d, %d\n", fontationsBitmap.bytesPerPixel(), freetypeBitmap.bytesPerPixel());
                                 break;
                             }
+
 
                             const bool fontationsRead = canvas->readPixels(
                                     fontationsBitmap, copyBoxFontations.x(), copyBoxFontations.y());
                             const bool freetypeRead = canvas->readPixels(
                                     freetypeBitmap, copyBoxFreetype.x(), copyBoxFreetype.y());
 
+
                             // readPixels may fail
                             if (!fontationsRead || !freetypeRead) {
+                                printf("Pixel read failures, ft %d, fontations %d, canvas colortype %d\n", freetypeRead, fontationsRead, canvasImageInfo.colorType());
+                                copyBoxFontations.dump();
+                                copyBoxFreetype.dump();
                                 break;
+                            } else {
+                                printf("Pixel read success, canvas colortype %d\n",canvasImageInfo.colorType());
                             }
 
                             comparePixels(fontationsBitmap,
@@ -334,5 +343,8 @@ DEF_GM(return new FontationsFtCompareGM("NotoSans_Elba", "Noto Sans Elbasan", "s
 DEF_GM(return new FontationsFtCompareGM("NotoSans_Vith", "Noto Sans Vithkuqi", "sq_Vith"));
 
 DEF_GM(return new FontationsFtCompareGM("NotoSans_Guru", "Noto Sans Gurmukhi", "pa_Guru"));
+
+DEF_GM(return new FontationsFtCompareGM("Lemonada", "Lemonada", "en_Latn"));
+DEF_GM(return new FontationsFtCompareGM("Source_Sans", "Source Sans v3", "en_Latn"));
 
 }  // namespace skiagm
