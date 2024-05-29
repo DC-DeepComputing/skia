@@ -464,6 +464,50 @@ void create_blur_imagefilter_pipelines(const KeyContext& keyContext,
                                               processCombination);
 }
 
+void create_displacement_imagefilter_pipelines(
+        const KeyContext& keyContext,
+        PipelineDataGatherer* gatherer,
+        const PaintOptions::ProcessCombination& processCombination) {
+
+    PaintOptions displacement;
+
+    // For displacement imagefilters we know we don't have alpha-only textures and don't need cubic
+    // filtering.
+    sk_sp<PrecompileShader> imageShader = PrecompileShadersPriv::Image(
+            PrecompileImageShaderFlags::kExcludeAlpha | PrecompileImageShaderFlags::kExcludeCubic);
+
+    displacement.setShaders({ PrecompileShadersPriv::Displacement(imageShader, imageShader) });
+
+    displacement.priv().buildCombinations(keyContext,
+                                              gatherer,
+                                              DrawTypeFlags::kSimpleShape,
+                                              /* withPrimitiveBlender= */ false,
+                                              Coverage::kSingleChannel,
+                                              processCombination);
+}
+
+void create_matrix_convolution_imagefilter_pipelines(
+        const KeyContext& keyContext,
+        PipelineDataGatherer* gatherer,
+        const PaintOptions::ProcessCombination& processCombination) {
+
+    PaintOptions matrixConv;
+
+    // For blur imagefilters we know we don't have alpha-only textures and don't need cubic
+    // filtering.
+    sk_sp<PrecompileShader> imageShader = PrecompileShadersPriv::Image(
+            PrecompileImageShaderFlags::kExcludeAlpha | PrecompileImageShaderFlags::kExcludeCubic);
+
+    matrixConv.setShaders({ PrecompileShadersPriv::MatrixConvolution(imageShader) });
+
+    matrixConv.priv().buildCombinations(keyContext,
+                                              gatherer,
+                                              DrawTypeFlags::kSimpleShape,
+                                              /* withPrimitiveBlender= */ false,
+                                              Coverage::kSingleChannel,
+                                              processCombination);
+}
+
 void create_morphology_imagefilter_pipelines(
         const KeyContext& keyContext,
         PipelineDataGatherer* gatherer,
@@ -529,10 +573,16 @@ void PaintOptions::buildCombinations(
 
         create_image_drawing_pipelines(keyContext, gatherer, processCombination, *this);
 
-        if (fImageFilterOptions & PrecompileImageFilters::kBlur) {
+        if (fImageFilterOptions & PrecompileImageFilters::kBlur2) {
             create_blur_imagefilter_pipelines(keyContext, gatherer, processCombination);
         }
-        if (fImageFilterOptions & PrecompileImageFilters::kMorphology) {
+        if (fImageFilterOptions & PrecompileImageFilters::kDisplacement) {
+            create_displacement_imagefilter_pipelines(keyContext, gatherer, processCombination);
+        }
+        if (fImageFilterOptions & PrecompileImageFilters::kMatrixConvolution) {
+            create_matrix_convolution_imagefilter_pipelines(keyContext, gatherer, processCombination);
+        }
+        if (fImageFilterOptions & PrecompileImageFilters::kMorphology2) {
             create_morphology_imagefilter_pipelines(keyContext, gatherer, processCombination);
         }
     } else {
