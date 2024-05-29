@@ -34,6 +34,24 @@
       "parentUuid": "68693c43_c94896a9",
       "revId": "879afe61dfb4bacdfdbc9bc453a2e311b7fbfa33",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a23709ed_ee49f56c",
+        "filename": "tests/sksl/runtime/GLSLTypeNamesES3.wgsl",
+        "patchSetId": 5
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-05-29T19:29:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b0a5b1e1_7788d021",
+      "revId": "879afe61dfb4bacdfdbc9bc453a2e311b7fbfa33",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
