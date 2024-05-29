@@ -75,6 +75,48 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a693e72_8d337ba9",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 273,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-05-29T15:21:12Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "7f9ba550_8d6ff241",
+      "revId": "e9d6662a83590a0e67ae9a2083d7fed388d915f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d7fd0c6_af899bc7",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 273,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-05-29T15:21:12Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "7f9990d0_71e1ee9d",
+      "range": {
+        "startLine": 273,
+        "startChar": 0,
+        "endLine": 273,
+        "endChar": 102
+      },
+      "revId": "e9d6662a83590a0e67ae9a2083d7fed388d915f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "24d624b4_ce3b0ee2",
@@ -88,6 +130,24 @@
       "writtenOn": "2024-05-28T20:44:38Z",
       "side": 1,
       "message": "Nit: four-space indentation throughout this block",
+      "revId": "e9d6662a83590a0e67ae9a2083d7fed388d915f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "87237149_048cd933",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 281,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-05-29T15:21:12Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "24d624b4_ce3b0ee2",
       "revId": "e9d6662a83590a0e67ae9a2083d7fed388d915f9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -115,6 +175,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e8493e52_1f5b0add",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-05-29T15:21:12Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "ec6c0297_99ea669a",
+      "range": {
+        "startLine": 287,
+        "startChar": 0,
+        "endLine": 287,
+        "endChar": 25
+      },
+      "revId": "e9d6662a83590a0e67ae9a2083d7fed388d915f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9f8c0ef7_84b7c481",
@@ -132,6 +216,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c43a94a_7fa75f8f",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 1796,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-05-29T15:21:12Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "9f8c0ef7_84b7c481",
+      "revId": "e9d6662a83590a0e67ae9a2083d7fed388d915f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e2ba8852_ffb2143e",
@@ -145,6 +247,30 @@
       "writtenOn": "2024-05-28T20:56:16Z",
       "side": 1,
       "message": "nit: line length",
+      "range": {
+        "startLine": 65,
+        "startChar": 35,
+        "endLine": 65,
+        "endChar": 108
+      },
+      "revId": "e9d6662a83590a0e67ae9a2083d7fed388d915f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce2a200d_5bc84fa4",
+        "filename": "src/shaders/gradients/SkConicalGradient.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-05-29T15:21:12Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "e2ba8852_ffb2143e",
       "range": {
         "startLine": 65,
         "startChar": 35,
@@ -178,6 +304,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7fcb753_9be617cc",
+        "filename": "src/shaders/gradients/SkConicalGradient.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-05-29T15:21:12Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "189b9a0d_768284b7",
+      "range": {
+        "startLine": 53,
+        "startChar": 27,
+        "endLine": 53,
+        "endChar": 102
+      },
+      "revId": "e9d6662a83590a0e67ae9a2083d7fed388d915f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cd687b3a_3e319313",
@@ -191,6 +341,30 @@
       "writtenOn": "2024-05-28T20:44:38Z",
       "side": 1,
       "message": "Nit: I\u0027d personally prefer to call this just `radius0` at this point.",
+      "range": {
+        "startLine": 635,
+        "startChar": 40,
+        "endLine": 635,
+        "endChar": 52
+      },
+      "revId": "e9d6662a83590a0e67ae9a2083d7fed388d915f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b292e5c3_17db27b5",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 8
+      },
+      "lineNbr": 635,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-05-29T15:21:12Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "cd687b3a_3e319313",
       "range": {
         "startLine": 635,
         "startChar": 40,
@@ -218,6 +392,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "269a5b48_4ef14505",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 8
+      },
+      "lineNbr": 640,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-05-29T15:21:12Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "46c7dc8a_379695a5",
+      "revId": "e9d6662a83590a0e67ae9a2083d7fed388d915f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "25d1a8ad_927128e8",
@@ -231,6 +423,30 @@
       "writtenOn": "2024-05-28T20:56:16Z",
       "side": 1,
       "message": "We could just have `dRadius` be +/-1 in this case right?",
+      "range": {
+        "startLine": 643,
+        "startChar": 32,
+        "endLine": 643,
+        "endChar": 41
+      },
+      "revId": "e9d6662a83590a0e67ae9a2083d7fed388d915f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d068ee4b_8a3f308f",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 8
+      },
+      "lineNbr": 643,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-05-29T15:21:12Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "25d1a8ad_927128e8",
       "range": {
         "startLine": 643,
         "startChar": 32,
@@ -266,6 +482,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2c66b649_eb7b8e07",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 8
+      },
+      "lineNbr": 655,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-05-29T15:21:12Z",
+      "side": 1,
+      "message": "It seems to me like the b\u003d0 case is right on the edge where t becomes (0,-1) due to a negative interpolated radius. To me, it doesn\u0027t seem like we actually see it be 0 though since incoming localCoords look like they always have a .5 which would cause this not to be seen. I\u0027m not sure what the actual behavior would look like but I\u0027d assume if its NaN as a result that would propagate to the sign check in `isValid`, and atleast for metal it seems sign of NaN is 0, and the colorize function only discards if `t.y \u003c 0`, for other shading languages i couldn\u0027t find the behavior with NaN as an argument. Looking at the old quadratic implementation it seems they didnt worry about this case so to me this doesn\u0027t seem to be an issue, thoughts?",
+      "parentUuid": "6fd609fe_8f7660c3",
+      "range": {
+        "startLine": 655,
+        "startChar": 21,
+        "endLine": 655,
+        "endChar": 22
+      },
+      "revId": "e9d6662a83590a0e67ae9a2083d7fed388d915f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2a8cbeb2_5f6ccf7e",
         "filename": "src/sksl/sksl_graphite_frag.sksl",
         "patchSetId": 8
@@ -277,6 +517,24 @@
       "writtenOn": "2024-05-28T20:44:38Z",
       "side": 1,
       "message": "Might be worth a comment here that we want `t` to be as large as possible in the positive direction, so `sign` should reflect the sign of invA. I suppose we could also just use the sign of invA here.",
+      "revId": "e9d6662a83590a0e67ae9a2083d7fed388d915f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f3571606_5c62280a",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 8
+      },
+      "lineNbr": 663,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-05-29T15:21:12Z",
+      "side": 1,
+      "message": "The sign of invA or a isn\u0027t exactly what we want here since it will A is 1 - diffRadius^2, this sign will always be positive when it forms a cone, and for the inside circle case, it can be positive/negative where from my intuition it seems only one of the t values actually works since the other would have a negative interpolated radius due to t being very large",
+      "parentUuid": "2a8cbeb2_5f6ccf7e",
       "revId": "e9d6662a83590a0e67ae9a2083d7fed388d915f9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
