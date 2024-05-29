@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8975d5a0_0593b02c",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1083,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-05-29T15:36:51Z",
+      "side": 1,
+      "message": "It seems like this block should be tabbed over to align w/ the above \u0027?\u0027",
+      "range": {
+        "startLine": 1082,
+        "startChar": 0,
+        "endLine": 1083,
+        "endChar": 56
+      },
+      "revId": "a77408ccdbc6cb7c4374031a21abe9fb04dd91cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1224240b_d8e7aafb",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1094,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-05-29T15:36:51Z",
+      "side": 1,
+      "message": "Maybe isVertical ?",
+      "range": {
+        "startLine": 1094,
+        "startChar": 13,
+        "endLine": 1094,
+        "endChar": 16
+      },
+      "revId": "a77408ccdbc6cb7c4374031a21abe9fb04dd91cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
