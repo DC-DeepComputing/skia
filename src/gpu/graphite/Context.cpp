@@ -433,6 +433,23 @@ void Context::asyncRescaleAndReadPixelsYUVA420(const SkSurface* surface,
                                            callbackContext);
 }
 
+namespace {
+bool is_bgr_colortype(SkColorType ct) {
+    switch (ct) {
+        case kBGRA_8888_SkColorType:
+        case kBGRA_1010102_SkColorType:
+        case kBGR_101010x_SkColorType:
+        case kBGR_101010x_XR_SkColorType:
+        case kBGRA_10101010_XR_SkColorType:
+            return true;
+
+        default:
+            return false;
+    }
+    SkUNREACHABLE;
+}
+}
+
 void Context::asyncReadPixelsYUV420(std::unique_ptr<Recorder> recorder,
                                     const AsyncParams<SkImage>& params,
                                     SkYUVColorSpace yuvColorSpace) {
@@ -503,6 +520,13 @@ void Context::asyncReadPixelsYUV420(std::unique_ptr<Recorder> recorder,
 
     float baseM[20];
     SkColorMatrix_RGB2YUV(yuvColorSpace, baseM);
+    // If we're reading from BGR we need to swap columns to make a BGR2YUV matrix
+    if (is_bgr_colortype(params.fSrcImage->colorType())) {
+        std::swap(baseM[0], baseM[2]);
+        std::swap(baseM[5], baseM[7]);
+        std::swap(baseM[10], baseM[12]);
+        std::swap(baseM[15], baseM[17]);
+    }
     SkMatrix texMatrix = SkMatrix::Translate(params.fSrcRect.fLeft, params.fSrcRect.fTop);
 
     // This matrix generates (r,g,b,a) = (0, 0, 0, y)
