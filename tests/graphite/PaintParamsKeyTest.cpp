@@ -243,9 +243,10 @@ const char* to_str(ClipType c) {
 //--------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------
 #define SK_ALL_TEST_IMAGE_FILTERS(M) \
-    M(None)            \
-    M(Blur)            \
-    M(Lighting)        \
+    M(None)              \
+    M(Blur)              \
+    M(Lighting)          \
+    M(MatrixConvolution) \
     M(Morphology)
 
 enum class ImageFilterType {
@@ -1198,6 +1199,38 @@ sk_sp<SkImageFilter> lighting_imagefilter(
     SkUNREACHABLE;
 }
 
+sk_sp<SkImageFilter> matrix_convolution_imagefilter(
+        SkRandom* rand,
+        SkEnumBitMask<PrecompileImageFilters>* imageFilterMask) {
+
+    int kernelSize = 1;
+
+    int option = rand->nextULessThan(3);
+    switch (option) {
+        case 0: kernelSize = 3;  break;
+        case 1: kernelSize = 7;  break;
+        case 2: kernelSize = 11; break;
+    }
+
+    int center = (kernelSize * kernelSize - 1) / 2;
+    std::vector<float> kernel(kernelSize * kernelSize, SkIntToScalar(1));
+    kernel[center] = 2.0f - kernelSize * kernelSize;
+
+    sk_sp<SkImageFilter> matrixConvIF;
+    matrixConvIF = SkImageFilters::MatrixConvolution({ kernelSize, kernelSize },
+                                                     /* kernel= */ kernel.data(),
+                                                     /* gain= */ 0.3f,
+                                                     /* bias= */ 100.0f,
+                                                     /* kernelOffset= */ { 1, 1 },
+                                                     SkTileMode::kMirror,
+                                                     /* convolveAlpha= */ false,
+                                                     /* input= */ nullptr);
+    SkASSERT(matrixConvIF);
+    *imageFilterMask |= PrecompileImageFilters::kMatrixConvolution;
+
+    return matrixConvIF;
+}
+
 sk_sp<SkImageFilter> morphology_imagefilter(
         SkRandom* rand,
         SkEnumBitMask<PrecompileImageFilters>* imageFilterMask) {
@@ -1231,6 +1264,9 @@ std::pair<sk_sp<SkImageFilter>, SkEnumBitMask<PrecompileImageFilters>> create_im
             break;
         case ImageFilterType::kLighting:
             imgFilter = lighting_imagefilter(rand, &imageFilterMask);
+            break;
+        case ImageFilterType::kMatrixConvolution:
+            imgFilter = matrix_convolution_imagefilter(rand, &imageFilterMask);
             break;
         case ImageFilterType::kMorphology:
             imgFilter = morphology_imagefilter(rand, &imageFilterMask);
@@ -1629,7 +1665,8 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
     };
 
     ImageFilterType imageFilters[] = {
-            ImageFilterType::kNone,
+//            ImageFilterType::kNone,
+            ImageFilterType::kMatrixConvolution,
 #if EXPANDED_SET
             ImageFilterType::kBlur,
             ImageFilterType::kLighting,
@@ -1645,11 +1682,11 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
 #endif
     };
 
-#if EXPANDED_SET
+//#if EXPANDED_SET
     size_t kExpected = std::size(shaders) * std::size(blenders) * std::size(colorFilters) *
                        std::size(maskFilters) * std::size(imageFilters) * std::size(clips);
     int current = 0;
-#endif
+//#endif
 
     for (auto shader : shaders) {
         for (auto blender : blenders) {
@@ -1657,10 +1694,10 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
                 for (auto mf : maskFilters) {
                     for (auto imageFilter : imageFilters) {
                         for (auto clip : clips) {
-#if EXPANDED_SET
+//#if EXPANDED_SET
                             SkDebugf("%d/%zu\n", current, kExpected);
                             ++current;
-#endif
+//#endif
 
                             run_test(reporter, context, testContext, precompileKeyContext,
                                      drawData, shader, blender, cf, mf, imageFilter, clip);
