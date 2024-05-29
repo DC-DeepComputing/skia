@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9659a17e_d2c57b10",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-05-29T14:57:11Z",
+      "side": 1,
+      "message": "The effect seems good, but I\u0027ll leave the GPU code organization question to Robert.\n\nOn the other hand, and I\u0027m sure this is because of the dft in general, its a bit unfortunate that these images in gold seem to show (both before and after) more than one pixel width of subpixel antialiasing. The actual geometry (especially on the vertical and horizontal stems) goes directly from outside to inside (there\u0027s no logical gradient of coverage) so there should be only one \"colorful\" pixel of antialiasing. However, it appears with the DFT that edge does become a gradient and so there is sometimes more than one pixel of anti-aliasing on a hard edge, which is probably due to some effective re-scale/re-sample of the DFT. Is the DFT being sampled in a non-nearest-neighbor way? Would doing so fix the excess \"anti-aliasing\"? Would doing so make the DFT look bad?",
+      "revId": "6010d3004357e7d749d0c3db2d56c5d42e859916",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0e3429de_61effdfa",
