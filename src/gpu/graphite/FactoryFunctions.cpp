@@ -894,6 +894,64 @@ sk_sp<PrecompileShader> PrecompileShadersPriv::CTM(SkSpan<const sk_sp<Precompile
 }
 
 //--------------------------------------------------------------------------------------------------
+class PrecompileArithmeticShader : public PrecompileShader {
+public:
+    PrecompileArithmeticShader(sk_sp<PrecompileShader> foreground,
+                               sk_sp<PrecompileShader> background)
+            : fForeground(std::move(foreground))
+            , fBackground(std::move(background)){
+        fNumForegroundCombos = fForeground->numCombinations();
+        fNumBackgroundCombos = fBackground->numCombinations();
+    }
+
+private:
+    inline static constexpr int kNumIntrinsicCombinations = 1;
+
+    int numIntrinsicCombinations() const override { return kNumIntrinsicCombinations; }
+
+    int numChildCombinations() const override { return fNumForegroundCombos * fNumBackgroundCombos; }
+
+    void addToKey(const KeyContext& keyContext,
+                  PaintParamsKeyBuilder* builder,
+                  PipelineDataGatherer* gatherer,
+                  int desiredCombination) const override {
+        SkASSERT(desiredCombination < this->numCombinations());
+
+        using namespace SkKnownRuntimeEffects;
+
+        int desiredBlurCombination = desiredCombination % kNumIntrinsicCombinations;
+        int desiredWrappedCombination = desiredCombination / kNumIntrinsicCombinations;
+        SkASSERT(desiredWrappedCombination < fNumWrappedCombos);
+
+        static const StableKey kIDs[kNumIntrinsicCombinations] = {
+                StableKey::k1DBlur4,  StableKey::k1DBlur8,  StableKey::k1DBlur12,
+                StableKey::k1DBlur16, StableKey::k1DBlur20, StableKey::k1DBlur28,
+
+                StableKey::k2DBlur4,  StableKey::k2DBlur8,  StableKey::k2DBlur12,
+                StableKey::k2DBlur16, StableKey::k2DBlur20, StableKey::k2DBlur28,
+        };
+
+        const SkRuntimeEffect* fEffect = GetKnownRuntimeEffect(kIDs[desiredBlurCombination]);
+
+        KeyContextWithScope childContext(keyContext, KeyContext::Scope::kRuntimeEffect);
+
+        RuntimeEffectBlock::BeginBlock(keyContext, builder, gatherer, { sk_ref_sp(fEffect) });
+            fWrapped->priv().addToKey(childContext, builder, gatherer, desiredWrappedCombination);
+        builder->endBlock();
+    }
+
+    sk_sp<PrecompileShader> fForeground;
+    int fNumForegroundCombos;
+    sk_sp<PrecompileShader> fBackground;
+    int fNumBackgroundCombos;
+};
+
+sk_sp<PrecompileShader> Arithmetic(sk_sp<PrecompileShader> foreground,
+                                   sk_sp<PrecompileShader> background) {
+    return sk_make_sp<PrecompileArithmeticShader>(std::move(foreground), std::move(background));
+}
+
+//--------------------------------------------------------------------------------------------------
 class PrecompileBlurShader : public PrecompileShader {
 public:
     PrecompileBlurShader(sk_sp<PrecompileShader> wrapped)

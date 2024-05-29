@@ -244,7 +244,8 @@ const char* to_str(ClipType c) {
 //--------------------------------------------------------------------------------------------------
 #define SK_ALL_TEST_IMAGE_FILTERS(M) \
     M(None)            \
-    M(Blur)            \
+    M(Arithmetic)      \
+    M(Blur1)            \
     M(Lighting)        \
     M(Morphology)
 
@@ -1124,6 +1125,22 @@ std::pair<sk_sp<SkColorFilter>, sk_sp<PrecompileColorFilter>> create_random_colo
 
 //--------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------
+sk_sp<SkImageFilter> arithmetic_imagefilter(
+        SkRandom* /* rand */,
+        SkEnumBitMask<PrecompileImageFilters>* imageFilterMask) {
+
+    sk_sp<SkImageFilter> arithmeticIF = SkImageFilters::Arithmetic(/* k1= */ 0.5f,
+                                                                   /* k2= */ 0.5f,
+                                                                   /* k3= */ 0.5f,
+                                                                   /* k4= */ 0.5f,
+                                                                   /* enforcePMColor= */ false,
+                                                                   /* background= */ nullptr,
+                                                                   /* foreground= */ nullptr);
+    *imageFilterMask |= PrecompileImageFilters::kArithmetic;
+
+    return arithmeticIF;
+}
+
 sk_sp<SkImageFilter> blur_imagefilter(SkRandom* rand,
                                       SkEnumBitMask<PrecompileImageFilters>* imageFilterMask) {
 
@@ -1138,7 +1155,7 @@ sk_sp<SkImageFilter> blur_imagefilter(SkRandom* rand,
     }
 
     sk_sp<SkImageFilter> blurIF = SkImageFilters::Blur(sigma, sigma, /* input= */ nullptr);
-    *imageFilterMask |= PrecompileImageFilters::kBlur;
+    *imageFilterMask |= PrecompileImageFilters::kBlur1;
 
     return blurIF;
 }
@@ -1226,7 +1243,10 @@ std::pair<sk_sp<SkImageFilter>, SkEnumBitMask<PrecompileImageFilters>> create_im
     switch (type) {
         case ImageFilterType::kNone:
             break;
-        case ImageFilterType::kBlur:
+        case ImageFilterType::kArithmetic:
+            imgFilter = arithmetic_imagefilter(rand, &imageFilterMask);
+            break;
+        case ImageFilterType::kBlur1:
             imgFilter = blur_imagefilter(rand, &imageFilterMask);
             break;
         case ImageFilterType::kLighting:
