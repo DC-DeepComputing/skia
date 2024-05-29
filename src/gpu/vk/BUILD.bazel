@@ -9,7 +9,6 @@ licenses(["notice"])
 exports_files_legacy()
 
 VK_FILES = [
-    # TODO(kjlubick, egdaniel) Break these out into a module.
     "VulkanAMDMemoryAllocator.cpp",
     "VulkanAMDMemoryAllocator.h",
     "VulkanExtensions.cpp",
@@ -53,4 +52,10 @@ skia_cc_deps(
         "//src/gpu:vulkan_with_vma": ["//third_party/vulkanmemoryallocator"],
         "//conditions:default": [],
     }),
+)
+
+skia_filegroup(
+    name = "headers_to_compile",
+    srcs = ["VulkanMutableTextureStatePriv.h"],
+    visibility = ["//tools:__pkg__"],
 )
