@@ -243,9 +243,10 @@ const char* to_str(ClipType c) {
 //--------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------
 #define SK_ALL_TEST_IMAGE_FILTERS(M) \
-    M(None)            \
-    M(Blur)            \
-    M(Lighting)        \
+    M(None)              \
+    M(Blur)              \
+    M(Lighting)          \
+    M(MatrixConvolution) \
     M(Morphology)
 
 enum class ImageFilterType {
@@ -1198,6 +1199,26 @@ sk_sp<SkImageFilter> lighting_imagefilter(
     SkUNREACHABLE;
 }
 
+sk_sp<SkImageFilter> matrix_convolution_imagefilter(
+        SkRandom* rand,
+        SkEnumBitMask<PrecompileImageFilters>* imageFilterMask) {
+
+    sk_sp<SkImageFilter> matrixConvIF;
+
+    matrixConvIF = SkImageFilters::MatrixConvolution({3, 3},
+                                                     /* kernel= */ nullptr,
+                                                     /* gain= */ 2.0f,
+                                                     /* bias= */ 1.5f,
+                                                     /* kernelOffset= */ { 1, 1 },
+                                                     SkTileMode::kMirror,
+                                                     /* convolveAlpha= */ false,
+                                                     /* input= */ nullptr);
+    SkASSERT(matrixConvIF);
+    *imageFilterMask |= PrecompileImageFilters::kMatrixConvolution;
+
+    return matrixConvIF;
+}
+
 sk_sp<SkImageFilter> morphology_imagefilter(
         SkRandom* rand,
         SkEnumBitMask<PrecompileImageFilters>* imageFilterMask) {
@@ -1231,6 +1252,9 @@ std::pair<sk_sp<SkImageFilter>, SkEnumBitMask<PrecompileImageFilters>> create_im
             break;
         case ImageFilterType::kLighting:
             imgFilter = lighting_imagefilter(rand, &imageFilterMask);
+            break;
+        case ImageFilterType::kMatrixConvolution:
+            imgFilter = matrix_convolution_imagefilter(rand, &imageFilterMask);
             break;
         case ImageFilterType::kMorphology:
             imgFilter = morphology_imagefilter(rand, &imageFilterMask);

@@ -28,6 +28,8 @@ namespace PrecompileShadersPriv {
 
     sk_sp<PrecompileShader> Lighting(sk_sp<PrecompileShader> wrapped);
 
+    sk_sp<PrecompileShader> MatrixConvolution(sk_sp<PrecompileShader> wrapped);
+
     sk_sp<PrecompileShader> LinearMorphology(sk_sp<PrecompileShader> wrapped);
 
     sk_sp<PrecompileShader> SparseMorphology(sk_sp<PrecompileShader> wrapped);
