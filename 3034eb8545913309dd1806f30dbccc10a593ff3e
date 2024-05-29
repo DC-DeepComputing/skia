@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ba00484_0c1d7ae7",
+        "filename": "src/gpu/graphite/FactoryFunctions.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1030,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-05-29T15:35:03Z",
+      "side": 1,
+      "message": "I guess I missed this in the other PrecompileShaders, but I don\u0027t know if this is necessary since it\u0027s derived from fWrapped. Probably not worth changing at this point.",
+      "range": {
+        "startLine": 1030,
+        "startChar": 8,
+        "endLine": 1030,
+        "endChar": 25
+      },
+      "revId": "3034eb8545913309dd1806f30dbccc10a593ff3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
