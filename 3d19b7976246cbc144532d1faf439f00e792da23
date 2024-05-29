@@ -16,6 +16,23 @@
       "message": "This implements the VulkanTexture creation improvements we talked about offline 😄",
       "revId": "3d19b7976246cbc144532d1faf439f00e792da23",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "abd9a623_05a2b248",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-05-29T14:55:19Z",
+      "side": 1,
+      "message": "wow this completely got lost in the reviews awhile ago. Happy to +1 this after the rebase",
+      "revId": "3d19b7976246cbc144532d1faf439f00e792da23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
