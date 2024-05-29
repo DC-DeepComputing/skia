@@ -530,11 +530,7 @@ public:
                 bool renderInParameterSpace,
                 const SkSurfaceProps* props = nullptr)
             : fDstBounds(dstBounds)
-#if defined(SK_DONT_PAD_LAYER_IMAGES)
-            , fBoundary(PixelBoundary::kUnknown) {
-#else
             , fBoundary(boundary) {
-#endif
         // We don't intersect by ctx.desiredOutput() and only use the Context to make the surface.
         // It is assumed the caller has already accounted for the desired output, or it's a
         // situation where the desired output shouldn't apply (e.g. this surface will be transformed
@@ -1676,7 +1672,9 @@ FilterResult FilterResult::MakeFromPicture(const Context& ctx,
     // for layers that are still axis-aligned?
     SkSurfaceProps props = ctx.backend()->surfaceProps()
                                          .cloneWithPixelGeometry(kUnknown_SkPixelGeometry);
-    AutoSurface surface{ctx, dstBounds, PixelBoundary::kTransparent,
+    // TODO(b/329700315): The SkPicture may contain dithered content, which would be affected by any
+    // boundary padding. Until we can control the dither origin, force it to have no padding.
+    AutoSurface surface{ctx, dstBounds, PixelBoundary::kUnknown,
                         /*renderInParameterSpace=*/true, &props};
     if (surface) {
         surface->clipRect(SkRect(cullRect));
@@ -1689,8 +1687,12 @@ FilterResult FilterResult::MakeFromShader(const Context& ctx,
                                           sk_sp<SkShader> shader,
                                           bool dither) {
     SkASSERT(shader);
-    AutoSurface surface{ctx, ctx.desiredOutput(), PixelBoundary::kTransparent,
-                        /*renderInParameterSpace=*/true};
+
+    // TODO(b/329700315): Using a boundary other than unknown shifts the origin of dithering, which
+    // complicates layout test validation in chrome. Until we can control the dither origin,
+    // force dithered shader FilterResults to have no padding.
+    PixelBoundary boundary = dither ? PixelBoundary::kUnknown : PixelBoundary::kTransparent;
+    AutoSurface surface{ctx, ctx.desiredOutput(), boundary, /*renderInParameterSpace=*/true};
     if (surface) {
         SkPaint paint;
         paint.setShader(shader);
