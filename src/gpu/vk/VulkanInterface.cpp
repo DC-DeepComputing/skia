@@ -26,6 +26,9 @@ VulkanInterface::VulkanInterface(VulkanGetProc getProc,
     if (getProc == nullptr) {
         return;
     }
+    if (physicalDeviceVersion < VK_MAKE_VERSION(1, 1, 0)) {
+        SkASSERT_RELEASE(extensions);
+    }
     // Global/Loader Procs.
     ACQUIRE_PROC(CreateInstance, VK_NULL_HANDLE, VK_NULL_HANDLE);
     ACQUIRE_PROC(EnumerateInstanceExtensionProperties, VK_NULL_HANDLE, VK_NULL_HANDLE);
