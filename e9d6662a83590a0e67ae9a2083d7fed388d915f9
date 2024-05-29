@@ -555,6 +555,24 @@
       "parentUuid": "f3571606_5c62280a",
       "revId": "e9d6662a83590a0e67ae9a2083d7fed388d915f9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e2f802ad_d9e4d98c",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 8
+      },
+      "lineNbr": 663,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-05-29T19:47:21Z",
+      "side": 1,
+      "message": "OK, right! It\u0027s a bit confusing to me, though I think your comment describes the situation well. But to spell it out even more for myself I guess `1 - diffRadius^2` (or equivalently `1 - abs(diffRadius)`) is always negative when one circle is inside the other, ignoring order. `1 - diffRadius` ends up negative when circle 0 is inside circle 1 and positive when circle 1 is inside circle 0; it has the opposite sign of `diffRadius` in these cases.\n\nSince we want a sign of `t` such that we have a positive interpolated radius, `t`\u0027s sign should match the sign of `diffRadius`, which it does because we use `1 - diffRadius` and we multiply by `invA` which is negative. All that said, I\u0027m now convinced what we have here is good 😄",
+      "parentUuid": "c7d134f4_657cd2d9",
+      "revId": "e9d6662a83590a0e67ae9a2083d7fed388d915f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
