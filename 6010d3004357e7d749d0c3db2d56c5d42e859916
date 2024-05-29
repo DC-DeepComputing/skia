@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bca75500_2187d02a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-05-29T15:02:57Z",
+      "side": 1,
+      "message": "We need to use bilerp, because otherwise the distance approximation would be too quantized. It\u0027s possible that the width of the smoothstep along the edge is too broad. I can take another look at that, but I\u0027d say it\u0027s outside the purview of this CL.",
+      "parentUuid": "9659a17e_d2c57b10",
+      "revId": "6010d3004357e7d749d0c3db2d56c5d42e859916",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0e3429de_61effdfa",
