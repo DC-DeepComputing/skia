@@ -1,0 +1,39 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b1cdb0c4_46734188",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-05-30T17:15:49Z",
+      "side": 1,
+      "message": "While this isn\u0027t my area of expertise, this seems logical and aligns with the description of `fFormat` and `fExternalFormatMostSignificantBits` in `SamplerDesc`.",
+      "fixSuggestions": [
+        {
+          "fixId": "4ec30ba9_d318fd23",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+              "range": {
+                "startLine": 154,
+                "startChar": 0,
+                "endLine": 155,
+                "endChar": 0
+              },
+              "replacement": "                    (uint64_t)(samplerDesc.fExternalFormatMostSignificantBits) \u003c\u003c 32 |\n                            samplerDesc.fFormat);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "dca281fb69ec8b5aaee2f76b21aed1790ae54fe2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
