@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8118eb98_2434bac5",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 301,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-05-30T19:20:54Z",
+      "side": 1,
+      "message": "Might consider `SkTo\u003cunsigned long\u003e` here?",
+      "range": {
+        "startLine": 301,
+        "startChar": 21,
+        "endLine": 301,
+        "endChar": 47
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "5df96680_27cc5a39",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+              "range": {
+                "startLine": 301,
+                "startChar": 0,
+                "endLine": 304,
+                "endChar": 0
+              },
+              "replacement": "            SkASSERT(SkTo\u003cunsigned long\u003e(descriptorBindingIndex) \u003c\n                     bindUniformBufferInfo.size());\n            SkASSERT(SkTo\u003cunsigned long\u003e(descriptorBindingIndex) \u003c\n"
+            }
+          ]
+        }
+      ],
+      "revId": "504cba2dcb32015b0d5b4a21d42d985da0023e13",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
