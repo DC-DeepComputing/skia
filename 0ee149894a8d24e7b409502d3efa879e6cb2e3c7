@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "310f1133_c9829410",
+        "filename": "src/gpu/graphite/ResourceTypes.h",
+        "patchSetId": 50
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-05-30T16:10:48Z",
+      "side": 0,
+      "message": "This should have been deleted in a past CL - just tidying that up here.",
+      "range": {
+        "startLine": 205,
+        "startChar": 0,
+        "endLine": 207,
+        "endChar": 33
+      },
+      "revId": "0ee149894a8d24e7b409502d3efa879e6cb2e3c7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

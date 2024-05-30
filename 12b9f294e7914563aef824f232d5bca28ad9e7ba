@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ed15b37_c87865c7",
+        "filename": "tools/gpu/vk/VkYcbcrSamplerHelper.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-05-30T16:10:48Z",
+      "side": 1,
+      "message": "A large part of this graphite part is copied from ganesh\u0027s and simply adapted to use graphite Vulkan-style macro calls and graphite equivalents of ganesh structures.\n\nI broke out some parts into helpers, but I welcome more codesharing suggestions if you have any that would have impact.",
+      "range": {
+        "startLine": 75,
+        "startChar": 0,
+        "endLine": 75,
+        "endChar": 18
+      },
+      "revId": "12b9f294e7914563aef824f232d5bca28ad9e7ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "567d8dc0_504e58c1",
+        "filename": "tools/gpu/vk/VkYcbcrSamplerHelper.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-05-30T16:10:48Z",
+      "side": 1,
+      "message": "Renamed to avoid conflict with `skgpu::graphite::BackendTexture fTexture`, and to avoid an overloaded method that only differs from return type (`const GrBackendTexture\u0026 backendTexture()` versus `const skgpu::graphite::BackendTexture\u0026 backendTexture()`). It should be fine considering this class is only used in test files.",
+      "range": {
+        "startLine": 65,
+        "startChar": 0,
+        "endLine": 65,
+        "endChar": 32
+      },
+      "revId": "12b9f294e7914563aef824f232d5bca28ad9e7ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
