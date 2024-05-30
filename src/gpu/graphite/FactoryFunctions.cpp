@@ -1035,6 +1035,45 @@ sk_sp<PrecompileShader> PrecompileShadersPriv::Lighting(sk_sp<PrecompileShader> 
 }
 
 //--------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
+class PrecompileColorFilterImageFilter : public PrecompileImageFilter {
+public:
+    PrecompileColorFilterImageFilter(SkSpan<const sk_sp<PrecompileColorFilter>> colorFilterOptions,
+                                     SkSpan<const sk_sp<PrecompileImageFilter>> inputs)
+        : fColorFilterOptions(colorFilterOptions.begin(), colorFilterOptions.end())
+        , fInputs(inputs.begin(), inputs.end()) {
+        fNumColorFilterCombos = 0;
+        for (const auto& s : fColorFilterOptions) {
+            fNumColorFilterCombos += s->numCombinations();
+        }
+        fNumInputCombos = 0;
+        for (const auto& s : fInputs) {
+            fNumInputCombos += s->numCombinations();
+        }
+    }
+
+private:
+    void addToKey(const KeyContext& keyContext,
+                  PaintParamsKeyBuilder* builder,
+                  PipelineDataGatherer* gatherer,
+                  int desiredCombination) const override {
+        SkASSERT(desiredCombination == 0);
+    }
+
+    std::vector<sk_sp<PrecompileColorFilter>> fColorFilterOptions;
+    int fNumColorFilterCombos;
+    std::vector<sk_sp<PrecompileImageFilter>> fInputs;
+    int fNumInputCombos;
+};
+
+sk_sp<PrecompileImageFilter> PrecompileImageFilters::ColorFilter(
+        SkSpan<const sk_sp<PrecompileColorFilter>> colorFilterOptions,
+        SkSpan<const sk_sp<PrecompileImageFilter>> inputs) {
+    return sk_make_sp<PrecompileColorFilterImageFilter>(std::move(colorFilterOptions),
+                                                        std::move(inputs));
+}
+
+//--------------------------------------------------------------------------------------------------
 // This class doesn't actually add any combinations to a given PaintOptions' combinatorics.
 // Its mere presence triggers the precompilation of the BlurImageFilter's Shaders.
 // TODO(b/342413572): the analytic blurmasks are triggered off of the simple DrawType thus

@@ -42,7 +42,7 @@ public:
     enum class Type {
         kBlender,
         kColorFilter,
-        kImageFilter,
+        kImageFilter1,
         kMaskFilter,
         kShader,
         // TODO: add others: kDrawable, kPathEffect (?!)
@@ -135,6 +135,11 @@ public:
     sk_sp<PrecompileShader> makeWithWorkingColorSpace(sk_sp<SkColorSpace>);
 };
 
+class PrecompileImageFilter : public PrecompileBase {
+public:
+    PrecompileImageFilter() : PrecompileBase(Type::kImageFilter1) {}
+};
+
 class PrecompileMaskFilter : public PrecompileBase {
 public:
     PrecompileMaskFilter() : PrecompileBase(Type::kMaskFilter) {}
@@ -156,13 +161,13 @@ public:
     static sk_sp<PrecompileBlender> Mode(SkBlendMode);
 };
 
-enum class PrecompileImageFilters : uint32_t {
+enum class PrecompileImageFilterFlags : uint32_t {
     kNone = 0x0,
     kBlur = 0x1,
     kLighting = 0x2,
     kMorphology = 0x4,
 };
-SK_MAKE_BITMASK_OPS(PrecompileImageFilters)
+SK_MAKE_BITMASK_OPS(PrecompileImageFilterFlags)
 
 //--------------------------------------------------------------------------------------------------
 class PaintOptionsPriv;
@@ -173,12 +178,20 @@ public:
         fShaderOptions.assign(shaders.begin(), shaders.end());
     }
 
+    void setImageFilters(SkSpan<const sk_sp<PrecompileImageFilter>> imageFilters) {
+        fImageFilterOptions2.assign(imageFilters.begin(), imageFilters.end());
+    }
+
+    void setImageFilterFlags(SkEnumBitMask<PrecompileImageFilterFlags> flags) {
+        fImageFilterFlags = flags;
+    }
+
     void setMaskFilters(SkSpan<const sk_sp<PrecompileMaskFilter>> maskFilters) {
         for (const sk_sp<PrecompileMaskFilter>& mf : maskFilters) {
             if (mf) {
                 // Currently Graphite only supports BlurMaskFilters which are implemented
                 // via BlurImageFiltering
-                fImageFilterOptions |= PrecompileImageFilters::kBlur;
+                fImageFilterFlags |= PrecompileImageFilterFlags::kBlur;
                 break;
             }
         }
@@ -186,10 +199,6 @@ public:
 
     void setColorFilters(SkSpan<const sk_sp<PrecompileColorFilter>> colorFilters) {
         fColorFilterOptions.assign(colorFilters.begin(), colorFilters.end());
-    }
-
-    void setImageFilters(SkEnumBitMask<PrecompileImageFilters> options) {
-        fImageFilterOptions = options;
     }
 
     void setBlendModes(SkSpan<const SkBlendMode> blendModes) {
@@ -258,10 +267,13 @@ private:
 
     std::vector<sk_sp<PrecompileShader>> fShaderOptions;
     std::vector<sk_sp<PrecompileColorFilter>> fColorFilterOptions;
-    SkEnumBitMask<PrecompileImageFilters> fImageFilterOptions = PrecompileImageFilters::kNone;
     SkTDArray<SkBlendMode> fBlendModeOptions;
     skia_private::TArray<sk_sp<PrecompileBlender>> fBlenderOptions;
     std::vector<sk_sp<PrecompileShader>> fClipShaderOptions;
+
+    SkEnumBitMask<PrecompileImageFilterFlags> fImageFilterFlags = PrecompileImageFilterFlags::kNone;
+    std::vector<sk_sp<PrecompileImageFilter>> fImageFilterOptions2;
+
     bool fDither = false;
 };
 
