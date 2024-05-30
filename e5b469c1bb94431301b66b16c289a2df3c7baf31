@@ -1,6 +1,46 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "08e16a6f_12ab9d5f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-05-30T19:32:24Z",
+      "side": 1,
+      "message": "nit: line length",
+      "revId": "e5b469c1bb94431301b66b16c289a2df3c7baf31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "769bd0e0_71d94bf6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-05-30T19:32:24Z",
+      "side": 1,
+      "message": "Love it. (I think the last time I had tried to use `std::optional`, Skia wasn\u0027t C++17 everywhere, but according to a recent chat, it now is.)",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 56
+      },
+      "revId": "e5b469c1bb94431301b66b16c289a2df3c7baf31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "7e6f3778_da762b5e",
@@ -14,6 +54,97 @@
       "writtenOn": "2024-05-30T10:20:03Z",
       "side": 1,
       "message": "ptal -- I\u0027m trying to unify all of the metadata parsing between Skia and Chrome, and I missed this part(!)",
+      "revId": "e5b469c1bb94431301b66b16c289a2df3c7baf31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc11c7ce_79107f4c",
+        "filename": "include/private/SkExif.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-05-30T19:32:24Z",
+      "side": 1,
+      "message": "I\u0027m curious why this change (`class` to `struct`). I don\u0027t have a super strong preference, though. And I guess you don\u0027t need API approval? Seems like you should, since it\u0027s `SK_API`.\n\nI guess the nice thing about the old way is that we could make it constant.",
+      "revId": "e5b469c1bb94431301b66b16c289a2df3c7baf31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fee2ab9a_65b1a71c",
+        "filename": "src/codec/SkExif.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-05-30T19:32:24Z",
+      "side": 1,
+      "message": "Why doesn\u0027t this just return `std::optional\u003cfloat\u003e`? It looks like we assign a value iff it returns `true`? (Looks like you never look at the return value.)",
+      "revId": "e5b469c1bb94431301b66b16c289a2df3c7baf31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "abc397fb_eb15e576",
+        "filename": "src/codec/SkTiffUtility.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-05-30T19:32:24Z",
+      "side": 1,
+      "message": "I think this is a sentinel value? (Logically, the next offset isn\u0027t at zero, is it?)",
+      "revId": "e5b469c1bb94431301b66b16c289a2df3c7baf31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58f4601e_da1269f8",
+        "filename": "src/codec/SkTiffUtility.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-05-30T19:32:24Z",
+      "side": 1,
+      "message": "incomplete?",
+      "range": {
+        "startLine": 34,
+        "startChar": 38,
+        "endLine": 34,
+        "endChar": 50
+      },
+      "revId": "e5b469c1bb94431301b66b16c289a2df3c7baf31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "492340b9_cb8f1749",
+        "filename": "tests/ExifTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-05-30T19:32:24Z",
+      "side": 1,
+      "message": "nit: For some of these, I think checking the value is redundant. As I understand it, the next line\u0027s `\u003d\u003d` will fail if `exif.fResolutionUnit` doesn\u0027t have a value. That said, I also find https://en.cppreference.com/w/cpp/utility/optional/operator_cmp less than super clear.",
       "revId": "e5b469c1bb94431301b66b16c289a2df3c7baf31",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
