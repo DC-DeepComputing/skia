@@ -71,6 +71,7 @@ VkShaderModule createVulkanShaderModule(const VulkanSharedContext* context,
 void DescriptorDataToVkDescSetLayout(const VulkanSharedContext* ctxt,
                                      const SkSpan<DescriptorData>& requestedDescriptors,
                                      VkDescriptorSetLayout* outLayout) {
+    SkDebugf("Making new desc Layout\n");
     skia_private::STArray<kDescriptorTypeCount, VkDescriptorSetLayoutBinding> bindingLayouts;
     for (size_t i = 0; i < requestedDescriptors.size(); i++) {
         if (requestedDescriptors[i].fCount != 0) {
@@ -85,6 +86,10 @@ void DescriptorDataToVkDescSetLayout(const VulkanSharedContext* ctxt,
             // TODO(b/302126498): Set pImmutableSampler to currDescriptor.fImmutableSampler once
             // immutable samplers are created and used within graphite.
             layoutBinding.pImmutableSamplers = nullptr;
+            SkDebugf("new layout binding. binding: %d, type: %d, count: %d\n",
+                     layoutBinding.binding,
+                     layoutBinding.descriptorType,
+                     layoutBinding.descriptorCount);
         }
     }
 
@@ -105,6 +110,7 @@ void DescriptorDataToVkDescSetLayout(const VulkanSharedContext* ctxt,
         SkDebugf("Failed to create VkDescriptorSetLayout\n");
         outLayout = VK_NULL_HANDLE;
     }
+    SkDebugf("DONE Making new desc Layout: %x\n", *outLayout);
 }
 
 VkDescriptorType DsTypeEnumToVkDs(DescriptorType type) {
