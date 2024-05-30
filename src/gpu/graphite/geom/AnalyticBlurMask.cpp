@@ -188,42 +188,69 @@ std::optional<AnalyticBlurMask> AnalyticBlurMask::MakeCircle(Recorder* recorder,
         return std::nullopt;
     }
 
-    // When sigma is really small this becomes a equivalent to convolving a Gaussian with a
-    // half-plane. Similarly, in the extreme high ratio cases circle becomes a point WRT to the
-    // Guassian and the profile texture is a just a Gaussian evaluation. However, we haven't yet
-    // implemented this latter optimization.
-    constexpr float kHalfPlaneThreshold = 0.1f;
-    const float sigmaToRadiusRatio = std::min(devSigma / radius, 8.0f);
-    const bool useHalfPlaneApprox = sigmaToRadiusRatio <= kHalfPlaneThreshold;
+    // Pack profile-dependent properties and derived values into a struct that can be passed into
+    // findOrCreateCachedProxy to lazily invoke the profile creation bitmap factories.
+    struct DerivedParams {
+        float fRadius;
+        float fDevSigma;
 
-    float solidRadius;
-    float textureRadius;
-    if (useHalfPlaneApprox) {
-        solidRadius = radius - 3.0f * devSigma;
-        textureRadius = 6.0f * devSigma;
-    } else {
-        devSigma = radius * sigmaToRadiusRatio;
-        solidRadius = 0.0f;
-        textureRadius = radius + 3.0f * devSigma;
+        float fSolidRadius;
+        float fTextureRadius;
+
+        bool  fUseHalfPlaneApprox;
+
+        DerivedParams(float devSigma, float radius)
+                : fRadius(radius), fDevSigma(devSigma) {
+            // When sigma is really small this becomes a equivalent to convolving a Gaussian with a
+            // half-plane. Similarly, in the extreme high ratio cases circle becomes a point WRT to
+            // the Guassian and the profile texture is a just a Gaussian evaluation. However, we
+            // haven't yet implemented this latter optimization.
+            constexpr float kHalfPlaneThreshold = 0.1f;
+            const float sigmaToRadiusRatio = std::min(devSigma / radius, 8.0f);
+            if (sigmaToRadiusRatio <= kHalfPlaneThreshold) {
+                fUseHalfPlaneApprox = true;
+                fSolidRadius = radius - 3.0f * devSigma;
+                fTextureRadius = 6.0f * devSigma;
+            } else {
+                fUseHalfPlaneApprox = false;
+                fDevSigma = radius * sigmaToRadiusRatio;
+                fSolidRadius = 0.0f;
+                fTextureRadius = radius + 3.0f * fDevSigma;
+            }
+        }
+    } params{devSigma, radius};
+
+    static const UniqueKey::Domain kCircleBlurDomain = UniqueKey::GenerateDomain();
+    UniqueKey key;
+    {
+        // TODO: Should we discretize the sigma to perceptibly meaningful changes to the table?
+        UniqueKey::Builder builder(&key, kCircleBlurDomain, 2, "BlurredCircleIntegralTable");
+        if (params.fUseHalfPlaneApprox) {
+            // There only ever needs to be one half plane approximation table, so store {0,0} into
+            // the key, which never arises under normal use because we reject radius = 0 above.
+            builder[0] = SkFloat2Bits(0.f);
+            builder[1] = SkFloat2Bits(0.f);
+        } else {
+            builder[0] = SkFloat2Bits(devSigma);
+            builder[1] = SkFloat2Bits(radius);
+        }
     }
+    sk_sp<TextureProxy> profile = recorder->priv().proxyCache()->findOrCreateCachedProxy(
+            recorder, key, &params,
+            [](const void* context) {
+                constexpr int kProfileTextureWidth = 512;
+                const DerivedParams* params = static_cast<const DerivedParams*>(context);
+                if (params->fUseHalfPlaneApprox) {
+                    return CreateHalfPlaneProfile(kProfileTextureWidth);
+                } else {
+                    // Rescale params to the size of the texture we're creating.
+                    const float scale = kProfileTextureWidth / params->fTextureRadius;
+                    return CreateCircleProfile(params->fDevSigma * scale,
+                                               params->fRadius * scale,
+                                               kProfileTextureWidth);
+                }
+            });
 
-    constexpr int kProfileTextureWidth = 512;
-
-    SkBitmap profileBitmap;
-    if (useHalfPlaneApprox) {
-        profileBitmap = skgpu::CreateHalfPlaneProfile(kProfileTextureWidth);
-    } else {
-        // Rescale params to the size of the texture we're creating.
-        const float scale = kProfileTextureWidth / textureRadius;
-        profileBitmap =
-                skgpu::CreateCircleProfile(devSigma * scale, radius * scale, kProfileTextureWidth);
-    }
-    if (profileBitmap.empty()) {
-        return std::nullopt;
-    }
-
-    sk_sp<TextureProxy> profile = RecorderPriv::CreateCachedProxy(recorder, profileBitmap,
-                                                                  "BlurredCircleIntegralTable");
     if (!profile) {
         return std::nullopt;
     }
@@ -236,11 +263,11 @@ std::optional<AnalyticBlurMask> AnalyticBlurMask::MakeCircle(Recorder* recorder,
     // "1 / textureRadius" and "(solidRadius - 0.5) / textureRadius" here.
     const Rect shapeData = Rect(devRect.centerX(),
                                 devRect.centerY(),
-                                1.0f / textureRadius,
-                                (solidRadius - 0.5f) / textureRadius);
+                                1.0f / params.fTextureRadius,
+                                (params.fSolidRadius - 0.5f) / params.fTextureRadius);
 
     // Determine how much to outset the draw bounds to ensure we hit pixels within 3*sigma.
-    std::optional<Rect> drawBounds = outset_bounds(localToDevice, devSigma, srcRect);
+    std::optional<Rect> drawBounds = outset_bounds(localToDevice, params.fDevSigma, srcRect);
     if (!drawBounds) {
         return std::nullopt;
     }
