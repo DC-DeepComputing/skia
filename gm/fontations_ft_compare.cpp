@@ -12,9 +12,12 @@
 #include "include/core/SkData.h"
 #include "include/core/SkFont.h"
 #include "include/core/SkRefCnt.h"
+#include "include/core/SkShader.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkString.h"
+#include "include/core/SkSurface.h"
 #include "include/core/SkTypeface.h"
+#include "include/effects/SkRuntimeEffect.h"
 #include "include/ports/SkTypeface_fontations.h"
 #include "modules/skshaper/include/SkShaper.h"
 #include "src/ports/SkTypeface_FreeType.h"
@@ -29,41 +32,7 @@ constexpr int kGmWidth = 1000;
 constexpr int kMargin = 15;
 constexpr float kFontSize = 24;
 constexpr float kLangYIncrementScale = 1.9;
-
-/** Compare bitmap A and B, in this case originating from text rendering results with FreeType and
- * Fontations + Skia path rendering, compute individual pixel differences for the rectangles that
- * must match in size. Produce a highlighted difference bitmap, in which any pixel becomes white for
- * which a difference was determined. */
-void comparePixels(const SkBitmap& bitmapA,
-                   const SkBitmap& bitmapB,
-                   SkBitmap* outPixelDiffBitmap,
-                   SkBitmap* outHighlightDiffBitmap) {
-    SkASSERT(bitmapA.colorType() == bitmapB.colorType() &&
-             bitmapA.colorType() == outPixelDiffBitmap->colorType() &&
-             bitmapA.dimensions() == bitmapB.dimensions() &&
-             bitmapA.dimensions() == outPixelDiffBitmap->dimensions());
-
-    SkASSERT(bitmapA.bytesPerPixel() == 4);
-    SkISize dimensions = bitmapA.dimensions();
-    for (int32_t x = 0; x < dimensions.fWidth; x++) {
-        for (int32_t y = 0; y < dimensions.fHeight; y++) {
-            SkPMColor c0 = *bitmapA.getAddr32(x, y);
-            SkPMColor c1 = *bitmapB.getAddr32(x, y);
-            int dr = SkGetPackedR32(c0) - SkGetPackedR32(c1);
-            int dg = SkGetPackedG32(c0) - SkGetPackedG32(c1);
-            int db = SkGetPackedB32(c0) - SkGetPackedB32(c1);
-
-            *(outPixelDiffBitmap->getAddr32(x, y)) =
-                    SkPackARGB32(0xFF, SkAbs32(dr), SkAbs32(dg), SkAbs32(db));
-
-            if (dr != 0 || dg != 0 || db != 0) {
-                *(outHighlightDiffBitmap->getAddr32(x, y)) = SK_ColorWHITE;
-            } else {
-                *(outHighlightDiffBitmap->getAddr32(x, y)) = SK_ColorBLACK;
-            }
-        }
-    }
-}
+constexpr bool kVerbose = false;
 
 }  // namespace
 
@@ -91,12 +60,61 @@ protected:
                              testSet.langSamples.size() * kFontSize * kLangYIncrementScale + 100);
     }
 
+    void onOnceBeforeDraw() override {
+        SkString diffSkSL(R"(
+            uniform shader before_map;
+            uniform shader after_map;
+
+            half4 main(float2 xy) {
+                half4 before = before_map.eval(xy);
+                half4 after = after_map.eval(xy);
+
+                half4 diff = abs(before - after);
+                diff.a = 1;
+                return diff;
+            }
+        )");
+        auto [diffEffect, diffError] = SkRuntimeEffect::MakeForShader(std::move(diffSkSL));
+        if (!diffEffect) {
+            SkDebugf("RuntimeShader error: %s\n", diffError.c_str());
+        }
+        fDiffEffect = std::move(diffEffect);
+
+        SkString diffMaskSkSL(R"(
+            uniform shader before_map;
+            uniform shader after_map;
+
+            half4 main(float2 xy) {
+                half4 before = before_map.eval(xy);
+                half4 after = after_map.eval(xy);
+
+                half4 diff;
+                if (before != after)
+                    diff = half4(1,1,1,1);
+                else
+                    diff = half4(0,0,0,1);
+                return diff;
+            }
+        )");
+        auto [diffMaskEffect, diffMaskError] = SkRuntimeEffect::MakeForShader(std::move(diffMaskSkSL));
+        if (!diffMaskEffect) {
+            SkDebugf("RuntimeShader error: %s\n", diffMaskError.c_str());
+        }
+        fDiffMaskEffect = std::move(diffMaskEffect);
+    }
+
     DrawResult onDraw(SkCanvas* canvas, SkString* errorMsg) override {
         SkPaint paint;
         paint.setColor(SK_ColorBLACK);
 
         fTestDataIterator.rewind();
         TestFontDataProvider::TestSet testSet;
+
+        SkMatrix l2d = canvas->getLocalToDeviceAs3x3();
+        SkMatrix d2l;
+        if (!l2d.invert(&d2l)) {
+            return DrawResult::kFail;
+        }
 
         while (fTestDataIterator.next(&testSet)) {
             sk_sp<SkTypeface> testTypeface = SkTypeface_Make_Fontations(
@@ -114,6 +132,7 @@ protected:
                 font.setEdging(SkFont::Edging::kSubpixelAntiAlias);
                 font.setSubpixel(true);
                 font.setHinting(SkFontHinting::kNone);
+                font.setBaselineSnap(false);
             };
 
             SkFont font(testTypeface);
@@ -145,38 +164,26 @@ protected:
                         return blob->bounds();
                     };
 
-                    auto roundToDevicePixels = [canvas](SkPoint& point) {
-                        SkMatrix ctm = canvas->getLocalToDeviceAs3x3();
-                        SkPoint mapped = ctm.mapPoint(point);
+                    auto roundToDevicePixels = [l2d, d2l](const SkPoint& point) {
+                        SkPoint mapped = l2d.mapPoint(point);
                         SkPoint mappedRounded =
                                 SkPoint::Make(roundf(mapped.x()), roundf(mapped.y()));
-                        SkMatrix inverse;
-                        bool inverseExists = ctm.invert(&inverse);
-                        SkASSERT(inverseExists);
-                        if (inverseExists) {
-                            point = inverse.mapPoint(mappedRounded);
-                        }
+                        return d2l.mapPoint(mappedRounded);
                     };
 
                     auto fontationsCoord = [yCoord, roundToDevicePixels]() {
-                        SkPoint fontationsCoord = SkPoint::Make(kMargin, yCoord);
-                        roundToDevicePixels(fontationsCoord);
-                        return fontationsCoord;
+                        return roundToDevicePixels(SkPoint::Make(kMargin, yCoord));
                     };
 
                     auto freetypeCoord = [yCoord, maxBounds, roundToDevicePixels]() {
-                        SkPoint freetypeCoord = SkPoint::Make(
-                                2 * kMargin + maxBounds.left() + maxBounds.width(), yCoord);
-                        roundToDevicePixels(freetypeCoord);
-                        return freetypeCoord;
+                        const SkScalar margin = 2 * kMargin + maxBounds.left() + maxBounds.width();
+                        return roundToDevicePixels(SkPoint::Make(margin, yCoord));
                     };
 
                     switch (phase) {
                         case DrawPhase::Fontations: {
-                            SkRect boundsFontations = shapeAndDrawToCanvas(font, fontationsCoord());
                             /* Determine maximum of column width across all language samples. */
-                            boundsFontations.roundOut();
-                            maxBounds.join(boundsFontations);
+                            maxBounds.join(shapeAndDrawToCanvas(font, fontationsCoord()));
                             break;
                         }
                         case DrawPhase::FreeType: {
@@ -184,72 +191,84 @@ protected:
                             break;
                         }
                         case DrawPhase::Comparison: {
-                            /* Read back pixels from equally sized rectangles from the space in
-                             * SkCanvas where Fontations and FreeType sample texts were drawn,
-                             * compare them using pixel comparisons similar to SkDiff, draw a
-                             * comparison as faint pixel differences, and as an amplified
-                             * visualization in which each differing pixel is drawn as white. */
-                            SkPoint copyBoxFontationsCoord = fontationsCoord();
-                            SkPoint copyBoxFreetypeCoord = freetypeCoord();
-                            SkRect copyBoxFontations(maxBounds);
-                            copyBoxFontations.roundOut(&copyBoxFontations);
-                            SkRect copyBoxFreetype(copyBoxFontations);
-                            copyBoxFontations.offset(copyBoxFontationsCoord.x(),
-                                                     copyBoxFontationsCoord.y());
-                            copyBoxFreetype.offset(copyBoxFreetypeCoord.x(),
-                                                   copyBoxFreetypeCoord.y());
+                            SkPoint fontationsOrigin = fontationsCoord();
+                            SkPoint freetypeOrigin = freetypeCoord();
+                            SkRect fontationsBBox(maxBounds.makeOffset(fontationsOrigin));
+                            SkRect freetypeBBox(maxBounds.makeOffset(freetypeOrigin));
+                            if (kVerbose) {
+                                SkPaint p;
+                                p.setColor(SK_ColorRED);
+                                p.setStroke(true);
+                                p.setStrokeWidth(2);
+                                canvas->drawPoint(fontationsOrigin.x(), fontationsOrigin.y(), p);
+                                canvas->drawPoint(freetypeOrigin.x(), freetypeOrigin.y(), p);
+                                p.setColor(SK_ColorGREEN);
+                                canvas->drawRect(fontationsBBox, p);
+                                canvas->drawRect(freetypeBBox, p);
+                            }
 
-                            SkMatrix ctm = canvas->getLocalToDeviceAs3x3();
-                            ctm.mapRect(&copyBoxFontations, copyBoxFontations);
-                            ctm.mapRect(&copyBoxFreetype, copyBoxFreetype);
+                            SkRect fontationsDeviceBBox = l2d.mapRect(fontationsBBox);
+                            SkRect freetypeDeviceBBox = l2d.mapRect(freetypeBBox);
 
-                            SkISize pixelDimensions(copyBoxFontations.roundOut().size());
-                            SkImageInfo canvasImageInfo = canvas->imageInfo();
-                            SkImageInfo copyImageInfo =
-                                    SkImageInfo::Make(pixelDimensions,
-                                                      canvasImageInfo.colorType(),
-                                                      canvasImageInfo.alphaType());
+                            sk_sp<SkSurface> surfaceStorage;
+                            SkSurface* surface = canvas->getSurface();
+                            if (!surface) {
+                                // Unfortunately, it is currently not possible to proxy a surface.
+                                SkPixmap canvasPixmap;
+                                bool canReadPixels = canvas->peekPixels(&canvasPixmap);
+                                if (!canReadPixels) {
+                                    break;
+                                }
+                                surfaceStorage = SkSurfaces::WrapPixels(canvasPixmap);
+                                surface = surfaceStorage.get();
+                            }
 
-                            SkBitmap fontationsBitmap, freetypeBitmap, diffBitmap,
-                                    highlightDiffBitmap;
-                            fontationsBitmap.allocPixels(copyImageInfo, 0);
-                            freetypeBitmap.allocPixels(copyImageInfo, 0);
-                            diffBitmap.allocPixels(copyImageInfo, 0);
-                            highlightDiffBitmap.allocPixels(copyImageInfo, 0);
-
-                            // comparePixels only handles 4 bpp
-                            if (fontationsBitmap.bytesPerPixel() != 4 ||
-                                freetypeBitmap.bytesPerPixel() != 4)
-                            {
+                            SkIRect fontationsDeviceIBox = fontationsDeviceBBox.roundOut();
+                            SkIRect freetypeDeviceIBox = freetypeDeviceBBox.roundOut();
+                            sk_sp<SkImage> fontationsImage = surface->makeImageSnapshot(fontationsDeviceIBox);
+                            sk_sp<SkImage> freetypeImage = surface->makeImageSnapshot(freetypeDeviceIBox);
+                            if (!fontationsImage || !freetypeImage) {
                                 break;
                             }
 
-                            const bool fontationsRead = canvas->readPixels(
-                                    fontationsBitmap, copyBoxFontations.x(), copyBoxFontations.y());
-                            const bool freetypeRead = canvas->readPixels(
-                                    freetypeBitmap, copyBoxFreetype.x(), copyBoxFreetype.y());
+                            sk_sp<SkShader> fontationsShader = fontationsImage->makeShader(SkSamplingOptions());
+                            sk_sp<SkShader> freeTypeShader = freetypeImage->makeShader(SkSamplingOptions());
 
-                            // readPixels may fail
-                            if (!fontationsRead || !freetypeRead) {
-                                break;
+                            // Place comparison results as two extra columns.
+                            if (fDiffEffect) {
+                                SkRuntimeShaderBuilder builder(fDiffEffect);
+                                builder.child("before_map") = fontationsShader;
+                                builder.child("after_map") = freeTypeShader;
+                                SkPaint diffPaint;
+                                SkMatrix d2loffset = d2l;
+                                // Put the image back where it was sampled from in device space.
+                                d2loffset.preTranslate(fontationsDeviceIBox.fLeft,
+                                                       fontationsDeviceIBox.fTop);
+                                // Then offset it in canvas space.
+                                // TODO: round the resulting location to a pixel.
+                                d2loffset.postTranslate(3 * kMargin + maxBounds.width() * 2, 0);
+                                diffPaint.setShader(builder.makeShader(&d2loffset));
+
+                                SkRect rect = SkRect::Make(fontationsImage->imageInfo().dimensions());
+                                canvas->drawRect(d2loffset.mapRect(rect), diffPaint);
                             }
+                            if (fDiffMaskEffect) {
+                                SkRuntimeShaderBuilder builder(fDiffMaskEffect);
+                                builder.child("before_map") = fontationsShader;
+                                builder.child("after_map") = freeTypeShader;
+                                SkPaint diffPaint;
+                                SkMatrix d2loffset = d2l;
+                                // This puts the image back where it was sampled from in device space.
+                                d2loffset.preTranslate(fontationsDeviceIBox.fLeft,
+                                                       fontationsDeviceIBox.fTop);
+                                // Then offset it in canvas space.
+                                // TODO: round the resulting location to a pixel.
+                                d2loffset.postTranslate(4 * kMargin + maxBounds.width() * 3, 0);
+                                diffPaint.setShader(builder.makeShader(&d2loffset));
 
-                            comparePixels(fontationsBitmap,
-                                          freetypeBitmap,
-                                          &diffBitmap,
-                                          &highlightDiffBitmap);
-
-                            /* Place comparison results as two extra columns, shift up to account
-                               for placement of rectangles vs. SkTextBlobs (baseline shift). */
-                            SkPoint comparisonCoord = ctm.mapPoint(SkPoint::Make(
-                                    3 * kMargin + maxBounds.width() * 2, yCoord + maxBounds.top()));
-                            SkPoint whiteCoord = ctm.mapPoint(SkPoint::Make(
-                                    4 * kMargin + maxBounds.width() * 3, yCoord + maxBounds.top()));
-
-                            canvas->writePixels(
-                                    diffBitmap, comparisonCoord.x(), comparisonCoord.y());
-                            canvas->writePixels(
-                                    highlightDiffBitmap, whiteCoord.x(), whiteCoord.y());
+                                SkRect rect = SkRect::Make(fontationsImage->imageInfo().dimensions());
+                                canvas->drawRect(d2loffset.mapRect(rect), diffPaint);
+                            }
                             break;
                         }
                     }
@@ -269,6 +288,8 @@ private:
     SkString fTestName;
     sk_sp<SkTypeface> fReportTypeface;
     std::unique_ptr<SkFontArguments::VariationPosition::Coordinate[]> fCoordinates;
+    sk_sp<SkRuntimeEffect> fDiffEffect;
+    sk_sp<SkRuntimeEffect> fDiffMaskEffect;
 };
 
 DEF_GM(return new FontationsFtCompareGM(
