@@ -57,6 +57,30 @@
       ],
       "revId": "c51687bc7b40b2d377085fda911bbe221be7bf43",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a3896686_5830c805",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 475,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-05-30T16:58:45Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "ccb647c5_15956372",
+      "range": {
+        "startLine": 474,
+        "startChar": 4,
+        "endLine": 475,
+        "endChar": 63
+      },
+      "revId": "c51687bc7b40b2d377085fda911bbe221be7bf43",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
