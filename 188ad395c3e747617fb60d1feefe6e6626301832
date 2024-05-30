@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "66bafc2d_596bcb2f",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 21
+      },
+      "lineNbr": 650,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-05-30T20:43:32Z",
+      "side": 1,
+      "message": "It occurs to me that if we multiplied by positive 2, it would remove some negations from the code. Not a big deal, but feels like a freebie. Although you might want to name it `negB` or something if it maps more clearly to the original algorithm?\n\n`t \u003d c / b;`\n\n`float d \u003d b*b - 4*a*c; // \u003c-- unchanged because b^2 is always positive`\n\n`t \u003d invA * (b + sign * sqrt(d));`",
+      "range": {
+        "startLine": 650,
+        "startChar": 18,
+        "endLine": 650,
+        "endChar": 20
+      },
+      "revId": "188ad395c3e747617fb60d1feefe6e6626301832",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b947aaad_d221a4f2",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 21
+      },
+      "lineNbr": 671,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-05-30T20:43:32Z",
+      "side": 1,
+      "message": "We shouldn\u0027t shadow functions with variable names.",
+      "range": {
+        "startLine": 671,
+        "startChar": 18,
+        "endLine": 671,
+        "endChar": 22
+      },
+      "revId": "188ad395c3e747617fb60d1feefe6e6626301832",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
