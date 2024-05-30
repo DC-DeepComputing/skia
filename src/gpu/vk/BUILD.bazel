@@ -29,7 +29,7 @@ skia_filegroup(
     name = "srcs",
     srcs = [
         ":vk_srcs",
-        ":vma_srcs",
+        "//src/gpu/vk/vulkanmemoryallocator:vma_srcs",
     ],
     visibility = [
         "//src/gpu:__pkg__",
@@ -41,7 +41,7 @@ skia_filegroup(
     name = "private_hdrs",
     srcs = [
         ":vk_hdrs",
-        ":vma_hdrs",
+        "//src/gpu/vk/vulkanmemoryallocator:vma_hdrs",
     ],
     visibility = [
         "//src/gpu:__pkg__",
@@ -62,24 +62,4 @@ skia_filegroup(
     name = "headers_to_compile",
     srcs = ["VulkanMutableTextureStatePriv.h"],
     visibility = ["//tools:__pkg__"],
-)
-
-skia_filegroup(
-    name = "vma_hdrs",
-    srcs = [
-        "VulkanAMDMemoryAllocator.h",
-    ],
-    visibility = [
-        "//src/gpu/ganesh/vk:__pkg__",
-    ],
-)
-
-skia_filegroup(
-    name = "vma_srcs",
-    srcs = [
-        "VulkanAMDMemoryAllocator.cpp",
-    ],
-    visibility = [
-        "//src/gpu/ganesh/vk:__pkg__",
-    ],
 )

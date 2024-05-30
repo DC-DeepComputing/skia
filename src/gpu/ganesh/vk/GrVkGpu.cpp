@@ -53,12 +53,11 @@
 #include "src/gpu/vk/VulkanInterface.h"
 #include "src/gpu/vk/VulkanMemory.h"
 #include "src/gpu/vk/VulkanUtilsPriv.h"
-
 #include "include/gpu/vk/VulkanTypes.h"
 #include "include/private/gpu/vk/SkiaVulkan.h"
 
 #if defined(SK_USE_VMA)
-#include "src/gpu/vk/VulkanAMDMemoryAllocator.h"
+#include "include/gpu/vk/VulkanMemoryAllocatorUtil.h"
 #endif
 
 using namespace skia_private;
@@ -79,71 +78,27 @@ std::unique_ptr<GrGpu> GrVkGpu::Make(const GrVkBackendContext& backendContext,
         return nullptr;
     }
 
-    PFN_vkEnumerateInstanceVersion localEnumerateInstanceVersion =
-            reinterpret_cast<PFN_vkEnumerateInstanceVersion>(
-                    backendContext.fGetProc("vkEnumerateInstanceVersion",
-                                            VK_NULL_HANDLE, VK_NULL_HANDLE));
-    uint32_t instanceVersion = 0;
-    if (!localEnumerateInstanceVersion) {
-        instanceVersion = VK_MAKE_VERSION(1, 0, 0);
+    skgpu::VulkanExtensions ext;
+    const skgpu::VulkanExtensions* extensions = &ext;
+    if (context.fVkExtensions) {
+        extensions = context.fVkExtensions;
     } else {
-        VkResult err = localEnumerateInstanceVersion(&instanceVersion);
-        if (err) {
-            SkDebugf("Failed to enumerate instance version. Err: %d\n", err);
-            return nullptr;
-        }
-    }
-
-    PFN_vkGetPhysicalDeviceProperties localGetPhysicalDeviceProperties =
-            reinterpret_cast<PFN_vkGetPhysicalDeviceProperties>(
-                    backendContext.fGetProc("vkGetPhysicalDeviceProperties",
-                                            backendContext.fInstance,
-                                            VK_NULL_HANDLE));
-
-    if (!localGetPhysicalDeviceProperties) {
-        return nullptr;
-    }
-    VkPhysicalDeviceProperties physDeviceProperties;
-    localGetPhysicalDeviceProperties(backendContext.fPhysicalDevice, &physDeviceProperties);
-    uint32_t physDevVersion = physDeviceProperties.apiVersion;
-
-    uint32_t apiVersion = backendContext.fMaxAPIVersion ? backendContext.fMaxAPIVersion
-                                                        : instanceVersion;
-
-    instanceVersion = std::min(instanceVersion, apiVersion);
-    physDevVersion = std::min(physDevVersion, apiVersion);
-
-    sk_sp<const skgpu::VulkanInterface> interface;
-
-    if (backendContext.fVkExtensions) {
-        interface.reset(new skgpu::VulkanInterface(backendContext.fGetProc,
-                                                   backendContext.fInstance,
-                                                   backendContext.fDevice,
-                                                   instanceVersion,
-                                                   physDevVersion,
-                                                   backendContext.fVkExtensions));
-        if (!interface->validate(instanceVersion, physDevVersion, backendContext.fVkExtensions)) {
-            return nullptr;
-        }
-    } else {
-        skgpu::VulkanExtensions extensions;
+        // TODO(b/309785258) remove this when the deprecated fields are deleted.
         // The only extension flag that may effect the vulkan backend is the swapchain extension. We
         // need to know if this is enabled to know if we can transition to a present layout when
         // flushing a surface.
         if (backendContext.fExtensions & kKHR_swapchain_GrVkExtensionFlag) {
             const char* swapChainExtName = VK_KHR_SWAPCHAIN_EXTENSION_NAME;
-            extensions.init(backendContext.fGetProc, backendContext.fInstance,
-                            backendContext.fPhysicalDevice, 0, nullptr, 1, &swapChainExtName);
+            ext.init(backendContext.fGetProc, backendContext.fInstance,
+                     backendContext.fPhysicalDevice, 0, nullptr, 1, &swapChainExtName);
         }
-        interface.reset(new skgpu::VulkanInterface(backendContext.fGetProc,
-                                                   backendContext.fInstance,
-                                                   backendContext.fDevice,
-                                                   instanceVersion,
-                                                   physDevVersion,
-                                                   &extensions));
-        if (!interface->validate(instanceVersion, physDevVersion, &extensions)) {
-            return nullptr;
-        }
+    }
+
+    uint32_t instanceVersion = 0;
+    uint32_t physDevVersion = 0;
+    sk_sp<const skgpu::VulkanInterface> interface = skgpu::MakeInterface(backendContext, extensions, &instanceVersion, &physDevVersion);
+    if (!interface) {
+        return nullptr;
     }
 
     sk_sp<GrVkCaps> caps;
@@ -193,7 +148,7 @@ std::unique_ptr<GrGpu> GrVkGpu::Make(const GrVkBackendContext& backendContext,
 #if defined(SK_USE_VMA)
     if (!memoryAllocator) {
         // We were not given a memory allocator at creation
-        memoryAllocator = skgpu::VulkanAMDMemoryAllocator::Make(backendContext.fInstance,
+        memoryAllocator = skgpu::VulkanMemoryAllocators::Make(backendContext.fInstance,
                                                                 backendContext.fPhysicalDevice,
                                                                 backendContext.fDevice,
                                                                 physDevVersion,

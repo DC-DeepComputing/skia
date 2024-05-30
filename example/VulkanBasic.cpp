@@ -79,6 +79,36 @@ int main(int argc, char** argv) {
     }
     ACQUIRE_INST_VK_PROC(DestroyDevice);
 
+    PFN_vkGetPhysicalDeviceProperties localGetPhysicalDeviceProperties =
+            reinterpret_cast<PFN_vkGetPhysicalDeviceProperties>(
+                    backendContext.fGetProc("vkGetPhysicalDeviceProperties",
+                                            backendContext.fInstance,
+                                            VK_NULL_HANDLE));
+    VkPhysicalDeviceProperties physDeviceProperties;
+    localGetPhysicalDeviceProperties(backendContext.fPhysicalDevice, &physDeviceProperties);
+    uint32_t physDevVersion = physDeviceProperties.apiVersion;
+
+    uint32_t apiVersion = backendContext.fMaxAPIVersion ? backendContext.fMaxAPIVersion
+                                                        : instanceVersion;
+
+    instanceVersion = std::min(instanceVersion, apiVersion);
+    physDevVersion = std::min(physDevVersion, apiVersion);
+
+    sk_sp<const skgpu::VulkanInterface> interface = new skgpu::VulkanInterface(backendContext.fGetProc,
+                                                   backendContext.fInstance,
+                                                   backendContext.fDevice,
+                                                   instanceVersion,
+                                                   physDevVersion,
+                                                   extensions.get());
+
+    backendContext.fMemoryAllocator = skgpu::VulkanMemoryAllocators::Make(backendContext.fInstance,
+                                                                backendContext.fPhysicalDevice,
+                                                                backendContext.fDevice,
+                                                                physDevVersion,
+                                                                extensions.get(),
+                                                                interface.get(),
+                                                                skgpu::ThreadSafe::kNo);
+
     // Create a GrDirectContext with our GrVkBackendContext
     sk_sp<GrDirectContext> context = GrDirectContexts::MakeVulkan(backendContext);
     if (!context) {

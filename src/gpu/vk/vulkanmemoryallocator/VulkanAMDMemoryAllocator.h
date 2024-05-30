@@ -8,11 +8,11 @@
 #ifndef skgpu_VulkanAMDMemoryAllocator_DEFINED
 #define skgpu_VulkanAMDMemoryAllocator_DEFINED
 
-#include "include/gpu/vk/VulkanMemoryAllocator.h"
-#include "src/gpu/vk/vulkanmemoryallocator/VulkanMemoryAllocatorWrapper.h"
 #include "include/core/SkRefCnt.h"
+#include "include/gpu/vk/VulkanMemoryAllocator.h"
 #include "include/gpu/vk/VulkanTypes.h"
 #include "include/private/gpu/vk/SkiaVulkan.h"
+#include "src/gpu/vk/vulkanmemoryallocator/VulkanMemoryAllocatorWrapper.h"
 
 #include <cstdint>
 #include <utility>
@@ -20,12 +20,8 @@
 namespace skgpu {
 
 class VulkanExtensions;
+enum class ThreadSafe: bool;
 struct VulkanInterface;
-
-enum class ThreadSafe : bool {
-    kNo = false,
-    kYes = true,
-};
 
 class VulkanAMDMemoryAllocator : public VulkanMemoryAllocator {
 public:

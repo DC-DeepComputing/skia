@@ -24,7 +24,7 @@ namespace GrDirectContexts {
  * then it is safe to delete the vulkan objects.
  */
 SK_API sk_sp<GrDirectContext> MakeVulkan(const GrVkBackendContext&, const GrContextOptions&);
-SK_API sk_sp<GrDirectContext> MakeVulkan(const GrVkBackendContext&);
+//SK_API sk_sp<GrDirectContext> MakeVulkan(const GrVkBackendContext&);
 }
 
 #endif

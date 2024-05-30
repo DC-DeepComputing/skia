@@ -1,4 +1,4 @@
-load("//bazel:skia_rules.bzl", "exports_files_legacy", "skia_cc_library")
+load("//bazel:skia_rules.bzl", "exports_files_legacy", "skia_filegroup", "skia_cc_library")
 
 package(
     default_applicable_licenses = ["//:license"],
@@ -12,6 +12,8 @@ skia_cc_library(
     name = "vulkanmemoryallocator",
     srcs = [
         "VulkanMemoryAllocatorWrapper.cpp",
+        "VulkanAMDMemoryAllocator.h",
+        "VulkanAMDMemoryAllocator.cpp",
     ],
     copts = [
         # Because `copts` options don't propagate up the stack, some static errors in
@@ -25,9 +27,33 @@ skia_cc_library(
     textual_hdrs = [
         "VulkanMemoryAllocatorWrapper.h",
     ],
-    visibility = ["//:__subpackages__"],
+    hdrs = ["//include/gpu/vk:vma_hdrs"],
+    visibility = [
+    "//:__pkg__",
+    "//src/gpu/vk:__pkg__"
+    ],
     deps = [
         "//include/third_party/vulkan",
         "@vulkanmemoryallocator//:hdrs",
+    ],
+)
+
+skia_filegroup(
+    name = "vma_hdrs",
+    srcs = [
+        "VulkanAMDMemoryAllocator.h",
+    ],
+    visibility = [
+        "//src/gpu/vk:__pkg__",
+    ],
+)
+
+skia_filegroup(
+    name = "vma_srcs",
+    srcs = [
+        "VulkanAMDMemoryAllocator.cpp",
+    ],
+    visibility = [
+        "//src/gpu/vk:__pkg__",
     ],
 )

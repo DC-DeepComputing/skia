@@ -5,13 +5,16 @@
  * found in the LICENSE file.
  */
 
-#include "src/gpu/vk/VulkanAMDMemoryAllocator.h"
+#include "src/gpu/vk/vulkanmemoryallocator/VulkanAMDMemoryAllocator.h"
 
 #include "include/gpu/vk/VulkanExtensions.h"
 #include "include/private/base/SkAssert.h"
 #include "include/private/base/SkTo.h"
 #include "src/core/SkTraceEvent.h"
 #include "src/gpu/vk/VulkanInterface.h"
+#include "include/gpu/vk/VulkanMemoryAllocatorUtil.h"
+#include "include/gpu/vk/VulkanBackendContext.h"
+#include "src/gpu/vk/VulkanUtilsPriv.h"
 
 #include <algorithm>
 #include <cstring>
@@ -266,4 +269,27 @@ std::pair<uint64_t, uint64_t> VulkanAMDMemoryAllocator::totalAllocatedAndUsedMem
     return {stats.total.statistics.blockBytes, stats.total.statistics.allocationBytes};
 }
 
+namespace VulkanMemoryAllocators {
+sk_sp<VulkanMemoryAllocator> Make(const skgpu::VulkanBackendContext& backendContext,
+                                  ThreadSafe threadSafe) {
+    SkASSERT(backendContext.fInstance != VK_NULL_HANDLE);
+    SkASSERT(backendContext.fPhysicalDevice != VK_NULL_HANDLE);
+    SkASSERT(backendContext.fDevice != VK_NULL_HANDLE);
+    SkASSERT(backendContext.fQueue != VK_NULL_HANDLE);
+    SkASSERT(backendContext.fGetProc);
+    SkASSERT(backendContext.fVkExtensions);
+
+    uint32_t physDevVersion = 0;
+    sk_sp<const skgpu::VulkanInterface> interface = skgpu::MakeInterface(backendContext, &physDevVersion);
+    if (!interface) {
+        return nullptr;
+    }
+
+    return VulkanAMDMemoryAllocator::Make(backendContext.fInstance,
+        backendContext.fPhysicalDevice,
+        backendContext.fDevice, physDevVersion,
+                                          backendContext.fVkExtensions, interface.get(), threadSafe);
+}
+
+} // namespace VulkanMemoryAllocators
 } // namespace skgpu
