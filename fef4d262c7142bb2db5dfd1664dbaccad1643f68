@@ -1,0 +1,262 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd06ecc0_dd7bc071",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 62
+      },
+      "lineNbr": 349,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-30T19:27:54Z",
+      "side": 1,
+      "message": "I think this should be an accessor on `SamplerDesc` like `isImmutableSampler()`",
+      "range": {
+        "startLine": 349,
+        "startChar": 20,
+        "endLine": 349,
+        "endChar": 89
+      },
+      "revId": "fef4d262c7142bb2db5dfd1664dbaccad1643f68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad88112f_bbbdb203",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 62
+      },
+      "lineNbr": 353,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-30T19:27:54Z",
+      "side": 1,
+      "message": "I don\u0027t think we can do this. Besides having the overhead of copying all sampler descs for every texture into `cumulativeSamplerData`, that is then always being added to the key.\n\nThe regular samplers shouldn\u0027t be part of the PaintParamsKey or we will trigger more pipeline compiles than actually necessary. \n\nIn the common case where we never encounter an immutable sampler, we should never append more data to `cumulativeSamplerData` and then never add anything to the paint key either.",
+      "range": {
+        "startLine": 353,
+        "startChar": 0,
+        "endLine": 353,
+        "endChar": 64
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "0bf9ecaf_e04990f6",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/PaintParams.cpp",
+              "range": {
+                "startLine": 348,
+                "startChar": 0,
+                "endLine": 363,
+                "endChar": 0
+              },
+              "replacement": "            cumulativeSamplerData.push_back(samplerDesc.desc() \u003e\u003e\n                                             SamplerDesc::kImmutableSamplerInfoShift);\n            cumulativeSamplerData.push_back(samplerDesc.externalFormatMSBs());\n"
+            }
+          ]
+        }
+      ],
+      "revId": "fef4d262c7142bb2db5dfd1664dbaccad1643f68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd3cda17_b1363139",
+        "filename": "src/gpu/graphite/PaintParamsKey.cpp",
+        "patchSetId": 62
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-30T19:27:54Z",
+      "side": 1,
+      "message": "same as in dump(), toString() should incorporate some encoding of the extra data since this string will go into the pipeline labels and tracing that helps figure out when/why we are triggering a pipeline compilation.",
+      "range": {
+        "startLine": 174,
+        "startChar": 4,
+        "endLine": 174,
+        "endChar": 5
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "2b271b6c_30176a1f",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/PaintParamsKey.cpp",
+              "range": {
+                "startLine": 134,
+                "startChar": 0,
+                "endLine": 138,
+                "endChar": 0
+              },
+              "replacement": "static int key_to_string(SkString* str, const ShaderCodeDictionary* dict,\n                         SkSpan\u003cconst uint32_t\u003e keyData, int currentIndex,\n                         bool includeData) {\n"
+            },
+            {
+              "path": "src/gpu/graphite/PaintParamsKey.cpp",
+              "range": {
+                "startLine": 164,
+                "startChar": 0,
+                "endLine": 164,
+                "endChar": 0
+              },
+              "replacement": "\n    if (includeData) {\n        str-\u003eappend(\"Data: \");\n        for (int i \u003d 0; i \u003c keyData[currentIndex++]; ++i) {\n            str-\u003eappendU32(keyData[currentIndex++]);\n            str-\u003eappend(\" \");\n        }\n    }\n\n"
+            },
+            {
+              "path": "src/gpu/graphite/PaintParamsKey.cpp",
+              "range": {
+                "startLine": 173,
+                "startChar": 0,
+                "endLine": 174,
+                "endChar": 0
+              },
+              "replacement": "        currentIndex \u003d key_to_string(\u0026str, dict, fData, currentIndex,\n                                     fIdxOfStoredSamplerData !\u003d kInvalidDataIdx);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "fef4d262c7142bb2db5dfd1664dbaccad1643f68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51aa5a87_6d9d0fca",
+        "filename": "src/gpu/graphite/PaintParamsKey.cpp",
+        "patchSetId": 62
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-30T19:27:54Z",
+      "side": 1,
+      "message": "This is probably worth moving into a helper function on PaintParamsKey now",
+      "range": {
+        "startLine": 204,
+        "startChar": 0,
+        "endLine": 205,
+        "endChar": 100
+      },
+      "revId": "fef4d262c7142bb2db5dfd1664dbaccad1643f68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ece17d09_d210caf4",
+        "filename": "src/gpu/graphite/PaintParamsKey.cpp",
+        "patchSetId": 62
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-30T19:27:54Z",
+      "side": 1,
+      "message": "We should find a way to print out the extra data if there is any too",
+      "range": {
+        "startLine": 213,
+        "startChar": 4,
+        "endLine": 213,
+        "endChar": 5
+      },
+      "revId": "fef4d262c7142bb2db5dfd1664dbaccad1643f68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9fae1ad1_cc92d63a",
+        "filename": "src/gpu/graphite/PaintParamsKey.h",
+        "patchSetId": 62
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-30T19:27:54Z",
+      "side": 1,
+      "message": "We should add a few asserts to make sure addData() is only called when the rest of the key has finished.\n\n    SkASSERT(fStack.empty());",
+      "range": {
+        "startLine": 145,
+        "startChar": 0,
+        "endLine": 145,
+        "endChar": 41
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "5a652282_3757e03f",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/PaintParamsKey.h",
+              "range": {
+                "startLine": 146,
+                "startChar": 0,
+                "endLine": 146,
+                "endChar": 0
+              },
+              "replacement": "        SkASSERT(fStack.empty());\n"
+            }
+          ]
+        }
+      ],
+      "revId": "fef4d262c7142bb2db5dfd1664dbaccad1643f68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54589844_f8039a21",
+        "filename": "src/gpu/graphite/PaintParamsKey.h",
+        "patchSetId": 62
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-30T19:27:54Z",
+      "side": 1,
+      "message": "Right now the caller is responsible for embedding the size of the data in its own data, but it seems like we could just do that here for them automatically by pushing the size of the span before we copy the span.",
+      "range": {
+        "startLine": 151,
+        "startChar": 8,
+        "endLine": 151,
+        "endChar": 13
+      },
+      "revId": "fef4d262c7142bb2db5dfd1664dbaccad1643f68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "29ca0931_6e03a284",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.h",
+        "patchSetId": 62
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-30T19:27:54Z",
+      "side": 1,
+      "message": "This seems like it could be odd behavior, where any ShaderNode could claim it requires data because data was passed in. It seems better to assert that `data` is only provided if `fRequiredFlags` has `kStoresData` in it.",
+      "range": {
+        "startLine": 153,
+        "startChar": 0,
+        "endLine": 155,
+        "endChar": 9
+      },
+      "revId": "fef4d262c7142bb2db5dfd1664dbaccad1643f68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
