@@ -327,17 +327,38 @@ std::optional<AnalyticBlurMask> AnalyticBlurMask::MakeRRect(Recorder* recorder,
     newRadii[2] = {SkScalarCeilToScalar(devRadiiLR.fX), SkScalarCeilToScalar(devRadiiLR.fY)};
     newRadii[3] = {SkScalarCeilToScalar(devRadiiLL.fX), SkScalarCeilToScalar(devRadiiLL.fY)};
 
-    SkRRect rrectToDraw;
-    rrectToDraw.setRectRadii(newRect, newRadii);
-    const SkISize dimensions =
+    struct DerivedParams {
+        SkRRect fRRectToDraw;
+        SkISize fDimensions;
+        float   fDevSigma;
+    } params;
+    params.fRRectToDraw.setRectRadii(newRect, newRadii);
+    params.fDimensions =
             SkISize::Make(newRRWidth + 2 * devBlurRadius, newRRHeight + 2 * devBlurRadius);
-    SkBitmap ninePatchBitmap = skgpu::CreateRRectBlurMask(rrectToDraw, dimensions, devSigma);
-    if (ninePatchBitmap.empty()) {
-        return std::nullopt;
-    }
+    params.fDevSigma = devSigma;
 
-    sk_sp<TextureProxy> ninePatch = RecorderPriv::CreateCachedProxy(recorder, ninePatchBitmap,
-                                                                    "BlurredRRectNinePatch");
+    // TODO(b/343684954, b/338032240): This is just generating a blurred rrect mask image on the CPU
+    // and uploading it. We should either generate them on the GPU and cache them here, or if we
+    // have a general-purpose blur mask cache, then there's no reason rrects couldn't just use that
+    // since this "analytic" blur isn't actually simplifying work like the circle and rect case.
+    // That would also allow us to support arbitrary blurred rrects and not just ninepatch rrects.
+    static const UniqueKey::Domain kRRectBlurDomain = UniqueKey::GenerateDomain();
+    UniqueKey key;
+    {
+        static constexpr int kKeySize = sizeof(DerivedParams) / sizeof(uint32_t);
+        // TODO: Should we discretize the sigma to perceptibly meaningful changes to the table?
+        UniqueKey::Builder builder(&key, kRRectBlurDomain, kKeySize, "BlurredRRectNinePatch");
+        memcpy(&builder[0], &params, sizeof(DerivedParams));
+    }
+    sk_sp<TextureProxy> ninePatch = recorder->priv().proxyCache()->findOrCreateCachedProxy(
+            recorder, key, &params,
+            [](const void* context) {
+                const DerivedParams* params = static_cast<const DerivedParams*>(context);
+                return CreateRRectBlurMask(params->fRRectToDraw,
+                                           params->fDimensions,
+                                           params->fDevSigma);
+            });
+
     if (!ninePatch) {
         return std::nullopt;
     }
