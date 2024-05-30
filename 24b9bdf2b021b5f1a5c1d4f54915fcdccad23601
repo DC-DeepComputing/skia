@@ -16,6 +16,24 @@
       "message": "Needs `break;`?",
       "revId": "24b9bdf2b021b5f1a5c1d4f54915fcdccad23601",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ac8418a_f59edad0",
+        "filename": "tools/sk_app/mac/Window_mac.mm",
+        "patchSetId": 2
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-05-30T20:13:07Z",
+      "side": 1,
+      "message": "fixed with return",
+      "parentUuid": "0f3932c9_bbfbfdf7",
+      "revId": "24b9bdf2b021b5f1a5c1d4f54915fcdccad23601",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
