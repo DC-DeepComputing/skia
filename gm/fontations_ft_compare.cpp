@@ -14,6 +14,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkString.h"
+#include "include/core/SkSurface.h"
 #include "include/core/SkTypeface.h"
 #include "include/ports/SkTypeface_fontations.h"
 #include "modules/skshaper/include/SkShaper.h"
@@ -209,6 +210,13 @@ protected:
                                     SkImageInfo::Make(pixelDimensions,
                                                       canvasImageInfo.colorType(),
                                                       canvasImageInfo.alphaType());
+                            SkSurfaceProps canvasSurfaceProps;
+                            canvas->getProps(&canvasSurfaceProps);
+
+                            SkIRect copyBoxFontationsInt = SkIRect::MakeEmpty();
+                            copyBoxFontations.roundOut(&copyBoxFontationsInt);
+                            SkIRect copyBoxFreetypeInt = SkIRect::MakeEmpty();
+                            copyBoxFreetype.roundOut(&copyBoxFreetypeInt);
 
                             SkBitmap fontationsBitmap, freetypeBitmap, diffBitmap,
                                     highlightDiffBitmap;
@@ -217,6 +225,12 @@ protected:
                             diffBitmap.allocPixels(copyImageInfo, 0);
                             highlightDiffBitmap.allocPixels(copyImageInfo, 0);
 
+                            SkPixmap fontationsRead;
+                            SkPixmap freeTypeRead;
+                            SkASSERT_RELEASE(fontationsBitmap.peekPixels(&fontationsRead));
+                            SkASSERT_RELEASE(freetypeBitmap.peekPixels(&freeTypeRead));
+
+
                             // comparePixels only handles 4 bpp
                             if (fontationsBitmap.bytesPerPixel() != 4 ||
                                 freetypeBitmap.bytesPerPixel() != 4)
@@ -224,13 +238,24 @@ protected:
                                 break;
                             }
 
-                            const bool fontationsRead = canvas->readPixels(
-                                    fontationsBitmap, copyBoxFontations.x(), copyBoxFontations.y());
-                            const bool freetypeRead = canvas->readPixels(
-                                    freetypeBitmap, copyBoxFreetype.x(), copyBoxFreetype.y());
+                            // Workaround OveridePaintFilterCanvas limitations by getting pixel access
+                            // through peekPixels() instead of readPixels(). Then use same pixmap to
+                            // later write back the comparison results.
 
-                            // readPixels may fail
-                            if (!fontationsRead || !freetypeRead) {
+                            SkPixmap canvasPixmap;
+                            bool canReadPixels = canvas->peekPixels(&canvasPixmap);
+
+                            if (!canReadPixels) {
+                                break;
+                            }
+
+                            bool fontationsReadSuccess = canvasPixmap.readPixels(fontationsRead,
+                                                                          copyBoxFontationsInt.x(),
+                                                                          copyBoxFontationsInt.y());
+                            bool freetypeReadSuccess = canvasPixmap.readPixels(
+                                    freeTypeRead, copyBoxFreetypeInt.x(), copyBoxFreetypeInt.y());
+
+                            if (!fontationsReadSuccess || !freetypeReadSuccess) {
                                 break;
                             }
 
@@ -246,9 +271,12 @@ protected:
                             SkPoint whiteCoord = ctm.mapPoint(SkPoint::Make(
                                     4 * kMargin + maxBounds.width() * 3, yCoord + maxBounds.top()));
 
-                            canvas->writePixels(
+                            sk_sp<SkSurface> writeBackSurface =
+                                    SkSurfaces::WrapPixels(canvasPixmap, &canvasSurfaceProps);
+
+                            writeBackSurface->writePixels(
                                     diffBitmap, comparisonCoord.x(), comparisonCoord.y());
-                            canvas->writePixels(
+                            writeBackSurface->writePixels(
                                     highlightDiffBitmap, whiteCoord.x(), whiteCoord.y());
                             break;
                         }
