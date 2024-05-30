@@ -156,6 +156,13 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
         fSupportsDeviceFaultInfo = true;
     }
 
+    // Populate a ColorTypeInfo struct for use w/ external formats.
+    fExternalFormatColorTypeInfo.fColorType = SkColorType::kRGBA_8888_SkColorType;
+    fExternalFormatColorTypeInfo.fTransferColorType = SkColorType::kRGBA_8888_SkColorType;
+    fExternalFormatColorTypeInfo.fFlags = 0;
+    fExternalFormatColorTypeInfo.fReadSwizzle = skgpu::Swizzle::RGBA();
+    fExternalFormatColorTypeInfo.fWriteSwizzle = skgpu::Swizzle::RGBA();
+
     // Note that format table initialization should be performed at the end of this method to ensure
     // all capability determinations are completed prior to populating the format tables.
     this->initFormatTable(vkInterface, physDev, physDevProperties);
@@ -1240,7 +1247,12 @@ const Caps::ColorTypeInfo* VulkanCaps::getColorTypeInfo(SkColorType ct,
                                                         const TextureInfo& textureInfo) const {
     VkFormat vkFormat = textureInfo.vulkanTextureSpec().fFormat;
     if (vkFormat == VK_FORMAT_UNDEFINED) {
-        return nullptr;
+        // If VkFormat is undefined but there is a valid YCbCr conversion associated with the
+        // texture, then we know we are using an external format and can return color type
+        // info representative of external format color information.
+        return textureInfo.vulkanTextureSpec().fYcbcrConversionInfo.isValid()
+                ? &fExternalFormatColorTypeInfo
+                : nullptr;
     }
 
     const FormatInfo& info = this->getFormatInfo(vkFormat);
@@ -1260,14 +1272,16 @@ bool VulkanCaps::onIsTexturable(const TextureInfo& texInfo) const {
         return false;
     }
 
-    // TODO:
-    // Once we support external formats with associated YCbCr conversion info, check for that
-    // and return true here because we can always texture from an external format.
+    // All images using external formats are required to be able to be sampled per Vulkan spec.
+    // https://registry.khronos.org/vulkan/specs/1.3-extensions/man/html/VkAndroidHardwareBufferFormatPropertiesANDROID.html#_description
+    if (vkInfo.fFormat == VK_FORMAT_UNDEFINED && vkInfo.fYcbcrConversionInfo.isValid()) {
+        return true;
+    }
 
+    // Otherwise, we are working with a known format and can simply reference the format table info.
     const FormatInfo& info = this->getFormatInfo(vkInfo.fFormat);
     return info.isTexturable(vkInfo.fImageTiling);
 }
-
 
 bool VulkanCaps::isRenderable(const TextureInfo& texInfo) const {
     VulkanTextureInfo vkInfo;
