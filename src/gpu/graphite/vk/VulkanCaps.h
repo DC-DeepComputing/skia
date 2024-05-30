@@ -230,6 +230,8 @@ private:
     uint64_t fMaxUniformBufferRange;
     VkPhysicalDeviceMemoryProperties2 fPhysicalDeviceMemoryProperties2;
 
+    ColorTypeInfo fExternalFormatColorTypeInfo;
+
     // Various bools to define whether certain Vulkan features are supported.
     bool fSupportsMemorylessAttachments = false;
     bool fSupportsYcbcrConversion = false;
