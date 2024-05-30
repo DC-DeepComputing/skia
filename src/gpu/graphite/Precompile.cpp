@@ -441,6 +441,27 @@ void create_image_drawing_pipelines(const KeyContext& keyContext,
                                                processCombination);
 }
 
+void create_arithmetic_imagefilter_pipelines(
+        const KeyContext& keyContext,
+        PipelineDataGatherer* gatherer,
+        const PaintOptions::ProcessCombination& processCombination) {
+
+    PaintOptions paintOptions;
+
+    // For arithmetic imagefilters we know we don't have alpha-only textures and don't need cubic
+    // filtering.
+    sk_sp<PrecompileShader> imageShader = PrecompileShadersPriv::Image(
+            PrecompileImageShaderFlags::kExcludeAlpha | PrecompileImageShaderFlags::kExcludeCubic);
+
+    paintOptions.setShaders({ PrecompileShadersPriv::Arithmetic(imageShader, imageShader) });
+
+    paintOptions.priv().buildCombinations(keyContext,
+                                          gatherer,
+                                          DrawTypeFlags::kSimpleShape,
+                                          /* withPrimitiveBlender= */ false,
+                                          Coverage::kSingleChannel,
+                                          processCombination);
+}
 void create_blur_imagefilter_pipelines(const KeyContext& keyContext,
                                        PipelineDataGatherer* gatherer,
                                        const PaintOptions::ProcessCombination& processCombination) {
@@ -550,7 +571,10 @@ void PaintOptions::buildCombinations(
 
         create_image_drawing_pipelines(keyContext, gatherer, processCombination, *this);
 
-        if (fImageFilterOptions & PrecompileImageFilters::kBlur) {
+        if (fImageFilterOptions & PrecompileImageFilters::kArithmetic) {
+            create_arithmetic_imagefilter_pipelines(keyContext, gatherer, processCombination);
+        }
+        if (fImageFilterOptions & PrecompileImageFilters::kBlur1) {
             create_blur_imagefilter_pipelines(keyContext, gatherer, processCombination);
         }
         if (fImageFilterOptions & PrecompileImageFilters::kLighting) {
