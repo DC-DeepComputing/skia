@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5bcc569e_3bb5a1fc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-05-30T22:21:53Z",
+      "side": 1,
+      "message": "I spent a longer than I thought I would trying to get https://skia-review.googlesource.com/c/skia/+/860277 working because it seemed like a more natural and modern way to go about doing this in modern Skia and... still need to peek pixels anyway (though just for reading). And it has the downside of maybe not quite always lining up with pixels like we want to do here.",
+      "revId": "900c33dc575876124609f79675eca155212491a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c6c5d6ea_a82ce5f6",
+        "filename": "gm/fontations_ft_compare.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 214,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-05-30T22:21:53Z",
+      "side": 1,
+      "message": "This one is deprecated. Also, ignoring return value.\n\n`peekPixels` returns the pixels of the root device, so I think `getBaseProps` is what is wanated here?",
+      "range": {
+        "startLine": 214,
+        "startChar": 36,
+        "endLine": 214,
+        "endChar": 44
+      },
+      "revId": "900c33dc575876124609f79675eca155212491a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c9fa6c0c_cf635a09",
+        "filename": "gm/fontations_ft_compare.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-05-30T22:21:53Z",
+      "side": 1,
+      "message": "Seems heavy to create a copy. Instead can do `canvasPixmap.extractSubset(\u0026fontationsRead, copyBoxFontations.roundOut())` and then pass the pixmaps to `comparePixels`.",
+      "revId": "900c33dc575876124609f79675eca155212491a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
