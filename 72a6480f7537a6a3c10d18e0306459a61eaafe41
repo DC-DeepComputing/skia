@@ -3,6 +3,23 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "9e003df7_13824867",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-05-30T14:41:33Z",
+      "side": 1,
+      "message": "Two small nits; kicking off CQ to make sure all the Vulkan tasks are happy.",
+      "revId": "72a6480f7537a6a3c10d18e0306459a61eaafe41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "6b9cfcc2_cf84404a",
         "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
         "patchSetId": 3
@@ -19,6 +36,70 @@
         "startChar": 12,
         "endLine": 328,
         "endChar": 33
+      },
+      "revId": "72a6480f7537a6a3c10d18e0306459a61eaafe41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "124b76d8_7555ecc9",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 356,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-05-30T14:41:33Z",
+      "side": 1,
+      "message": "nit: does this not fit on the line above?",
+      "range": {
+        "startLine": 356,
+        "startChar": 12,
+        "endLine": 356,
+        "endChar": 66
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "419f046a_eaed220e",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+              "range": {
+                "startLine": 355,
+                "startChar": 0,
+                "endLine": 357,
+                "endChar": 0
+              },
+              "replacement": "    sk_sp\u003cVulkanDescriptorSet\u003e newDS \u003d this-\u003efindOrCreateDescriptorSet(\n            requestedDescriptors);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "72a6480f7537a6a3c10d18e0306459a61eaafe41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cb6a0174_239f235b",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 364,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-05-30T14:41:33Z",
+      "side": 1,
+      "message": "nit: align",
+      "range": {
+        "startLine": 361,
+        "startChar": 33,
+        "endLine": 364,
+        "endChar": 57
       },
       "revId": "72a6480f7537a6a3c10d18e0306459a61eaafe41",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
