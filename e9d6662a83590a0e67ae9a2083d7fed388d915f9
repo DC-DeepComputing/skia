@@ -528,6 +528,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "962fba6f_a62fdc65",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 8
+      },
+      "lineNbr": 655,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-30T18:39:36Z",
+      "side": 1,
+      "message": "Talking offline with Nathan we think this is not an issue with the new conical gradient code, but a prior issue with how the colorizer function handles t\u003d0 or t\u003d1 values when there are hard stops.\n\nThis is captured in b/343741981",
+      "parentUuid": "b95ecd68_b90832bb",
+      "range": {
+        "startLine": 655,
+        "startChar": 21,
+        "endLine": 655,
+        "endChar": 22
+      },
+      "revId": "e9d6662a83590a0e67ae9a2083d7fed388d915f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2a8cbeb2_5f6ccf7e",
