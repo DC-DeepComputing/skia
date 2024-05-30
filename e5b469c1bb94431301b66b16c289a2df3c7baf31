@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e6f3778_da762b5e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2024-05-30T10:20:03Z",
+      "side": 1,
+      "message": "ptal -- I\u0027m trying to unify all of the metadata parsing between Skia and Chrome, and I missed this part(!)",
+      "revId": "e5b469c1bb94431301b66b16c289a2df3c7baf31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
