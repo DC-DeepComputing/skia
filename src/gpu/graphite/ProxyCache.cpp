@@ -67,7 +67,7 @@ ProxyCache::ProxyCache(uint32_t recorderID) : fInvalidUniqueKeyInbox(recorderID)
 
 ProxyCache::~ProxyCache() {}
 
-uint32_t ProxyCache::UniqueKeyHash::operator()(const skgpu::UniqueKey& key) const {
+uint32_t ProxyCache::UniqueKeyHash::operator()(const UniqueKey& key) const {
     return key.hash();
 }
 
@@ -80,18 +80,43 @@ sk_sp<TextureProxy> ProxyCache::findOrCreateCachedProxy(Recorder* recorder,
     make_bitmap_key(&key, bitmap);
 
     if (sk_sp<TextureProxy>* cached = fCache.find(key)) {
-        if (Resource* resource = (*cached)->texture(); resource) {
+        if (Resource* resource = (*cached)->texture()) {
             resource->updateAccessTime();
         }
         return *cached;
     }
 
     auto [ view, ct ] = MakeBitmapProxyView(recorder,bitmap, nullptr, Mipmapped::kNo,
-                                            skgpu::Budgeted::kYes, std::move(label));
+                                            Budgeted::kYes, std::move(label));
     if (view) {
         auto listener = make_unique_key_invalidation_listener(key, recorder->priv().uniqueID());
         bitmap.pixelRef()->addGenIDChangeListener(std::move(listener));
 
+        fCache.set(key, view.refProxy());
+    }
+    return view.refProxy();
+}
+
+sk_sp<TextureProxy> ProxyCache::findOrCreateCachedProxy(Recorder* recorder,
+                                                        const UniqueKey& key,
+                                                        BitmapGeneratorContext context,
+                                                        BitmapGeneratorFn generator) {
+    this->processInvalidKeyMsgs();
+
+    if (sk_sp<TextureProxy>* cached = fCache.find(key)) {
+        if (Resource* resource = (*cached)->texture()) {
+            resource->updateAccessTime();
+        }
+        return *cached;
+    }
+
+    SkBitmap bitmap = generator(context);
+    if (bitmap.empty()) {
+        return nullptr;
+    }
+    auto [ view, ct ] = MakeBitmapProxyView(recorder, bitmap, nullptr, Mipmapped::kNo,
+                                            Budgeted::kYes, key.tag());
+    if (view) {
         fCache.set(key, view.refProxy());
     }
     return view.refProxy();
