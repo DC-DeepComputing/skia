@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6384b1c0_992e282e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-05-30T15:06:00Z",
+      "side": 1,
+      "message": "This is a vibes-based rubber stamp of trust. 😜",
+      "revId": "b49ee123505526b104b3aec903a8704145d241ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
