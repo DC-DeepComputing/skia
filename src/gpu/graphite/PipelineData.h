@@ -60,6 +60,9 @@ public:
     bool empty() const { return fTextureData.empty(); }
     int numTextures() const { return SkTo<int>(fTextureData.size()); }
     const SampledTexture& texture(int index) const { return fTextureData[index]; }
+    SkSpan<const SampledTexture> textures() const {
+        return {fTextureData.data(), fTextureData.size()};
+    }
 
     bool operator==(const TextureDataBlock&) const;
     bool operator!=(const TextureDataBlock& other) const { return !(*this == other);  }
