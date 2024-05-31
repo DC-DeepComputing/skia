@@ -245,6 +245,7 @@ const char* to_str(ClipType c) {
 //--------------------------------------------------------------------------------------------------
 #define SK_ALL_TEST_IMAGE_FILTERS(M) \
     M(None)              \
+    M(Arithmetic)        \
     M(Blur)              \
     M(Displacement)      \
     M(Lighting)          \
@@ -1127,6 +1128,22 @@ std::pair<sk_sp<SkColorFilter>, sk_sp<PrecompileColorFilter>> create_random_colo
 
 //--------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------
+sk_sp<SkImageFilter> arithmetic_imagefilter(
+        SkRandom* /* rand */,
+        SkEnumBitMask<PrecompileImageFilters>* imageFilterMask) {
+
+    sk_sp<SkImageFilter> arithmeticIF = SkImageFilters::Arithmetic(/* k1= */ 0.5f,
+                                                                   /* k2= */ 0.5f,
+                                                                   /* k3= */ 0.5f,
+                                                                   /* k4= */ 0.5f,
+                                                                   /* enforcePMColor= */ false,
+                                                                   /* background= */ nullptr,
+                                                                   /* foreground= */ nullptr);
+    *imageFilterMask |= PrecompileImageFilters::kArithmetic;
+
+    return arithmeticIF;
+}
+
 sk_sp<SkImageFilter> blur_imagefilter(SkRandom* rand,
                                       SkEnumBitMask<PrecompileImageFilters>* imageFilterMask) {
 
@@ -1288,6 +1305,9 @@ std::pair<sk_sp<SkImageFilter>, SkEnumBitMask<PrecompileImageFilters>> create_im
 
     switch (type) {
         case ImageFilterType::kNone:
+            break;
+        case ImageFilterType::kArithmetic:
+            imgFilter = arithmetic_imagefilter(rand, &imageFilterMask);
             break;
         case ImageFilterType::kBlur:
             imgFilter = blur_imagefilter(rand, &imageFilterMask);
