@@ -16,6 +16,24 @@
       "message": "This is fine with me if we want to keep as is. But I was wondering if it make sense to make the original findOrCretae just call the new one. The old way can create a generator that just returns the passed in bitmap. Setting the listen is the only missing piece. That way Robs previous comments would all trivially have been done since both paths use the same code.",
       "revId": "5bf36a3ba7af4eda20d27720462f9319678eff19",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76909493_c6c034e0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-05-31T17:10:51Z",
+      "side": 1,
+      "message": "I hate default resolved comments :(",
+      "parentUuid": "ca74f928_9a3cdfb6",
+      "revId": "5bf36a3ba7af4eda20d27720462f9319678eff19",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
