@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f78f1e2d_e0e2ef1a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-31T16:09:24Z",
+      "side": 1,
+      "message": "PS3 fixes the gold issues from PS2. The AnalyticBlurRenderStep was using triangle strips with pure vertex rendering. This never caused an issue before because every analytic draw had its own mask texture so we\u0027d never batch. With the caching, batches were introduced and triangle strips would form between the draws. This switches to just drawing 6 vertices as triangles to avoid that issue.\n\nI also looked and realized that the integral table was already being internally discretized on the table width so I just switched to using that as the explicit key.",
+      "revId": "262f6fbcd47bfd6c65bdb83f2fb69d553d99ec68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
