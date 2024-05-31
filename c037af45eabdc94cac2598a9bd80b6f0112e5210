@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f076fcf1_9297c5e2",
+        "filename": "src/gpu/graphite/geom/AnalyticBlurMask.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-05-31T14:44:19Z",
+      "side": 1,
+      "message": "I think that would be good",
+      "revId": "c037af45eabdc94cac2598a9bd80b6f0112e5210",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
