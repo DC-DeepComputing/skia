@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ea8c48fb_226f172f",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 21
+      },
+      "lineNbr": 650,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-05-31T14:13:05Z",
+      "side": 1,
+      "message": "Thanks for catching this freebie, I addressed these comments in a new cl, https://skia-review.googlesource.com/c/skia/+/860437",
+      "parentUuid": "66bafc2d_596bcb2f",
+      "range": {
+        "startLine": 650,
+        "startChar": 18,
+        "endLine": 650,
+        "endChar": 20
+      },
+      "revId": "188ad395c3e747617fb60d1feefe6e6626301832",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b947aaad_d221a4f2",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-05-30T20:43:32Z",
       "side": 1,
       "message": "We shouldn\u0027t shadow functions with variable names.",
+      "range": {
+        "startLine": 671,
+        "startChar": 18,
+        "endLine": 671,
+        "endChar": 22
+      },
+      "revId": "188ad395c3e747617fb60d1feefe6e6626301832",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "50dace5e_b6149939",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 21
+      },
+      "lineNbr": 671,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-05-31T14:13:05Z",
+      "side": 1,
+      "message": "Fixed in a new cl, https://skia-review.googlesource.com/c/skia/+/860437",
+      "parentUuid": "b947aaad_d221a4f2",
       "range": {
         "startLine": 671,
         "startChar": 18,
