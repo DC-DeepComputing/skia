@@ -12,6 +12,7 @@
 #include "include/core/SkSurface.h"
 #include "include/gpu/GrTypes.h"
 #include "include/gpu/vk/GrVkBackendContext.h"
+#include "include/gpu/vk/VulkanMemoryAllocatorUtil.h"
 #include "tests/TestType.h"
 #include "tools/gpu/ProtectedUtils.h"
 #include "tools/gpu/vk/VkTestUtils.h"
@@ -83,6 +84,7 @@ protected:
             return false;
         }
 
+        SkASSERT(fBackendContext.fMemoryAllocator);
         GrVkBackendContext gr;
         sk_gpu_test::ConvertBackendContext(fBackendContext, &gr);
         fDirectContext = GrDirectContexts::MakeVulkan(gr);
@@ -148,6 +150,7 @@ protected:
         if (!this->setupBackendContext()) {
             return false;
         }
+        SkASSERT(fBackendContext.fMemoryAllocator);
 
         skgpu::graphite::ContextOptions contextOptions;
         skgpu::graphite::ContextOptionsPriv contextOptionsPriv;
@@ -244,6 +247,8 @@ bool VkTestHelper::setupBackendContext() {
     ACQUIRE_DEVICE_VK_PROC(UnmapMemory)
     ACQUIRE_DEVICE_VK_PROC(FlushMappedMemoryRanges)
     ACQUIRE_DEVICE_VK_PROC(GetImageSubresourceLayout)
+    fBackendContext.fMemoryAllocator =
+            skgpu::VulkanMemoryAllocators::Make(fBackendContext, skgpu::ThreadSafe::kNo);
     return true;
 }
 

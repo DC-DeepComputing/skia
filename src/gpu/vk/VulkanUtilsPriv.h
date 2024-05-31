@@ -9,6 +9,7 @@
 #define skgpu_VulkanUtilsPriv_DEFINED
 
 #include "include/core/SkColor.h"
+#include "include/core/SkRefCnt.h"
 #include "include/core/SkTextureCompressionType.h"
 #include "include/gpu/vk/VulkanTypes.h"
 #include "include/private/base/SkAssert.h"
@@ -24,6 +25,8 @@
 #include <string>
 #include <cstddef>
 
+struct GrVkBackendContext;
+
 namespace SkSL {
 
 enum class ProgramKind : int8_t;
@@ -37,6 +40,8 @@ namespace skgpu {
 
 class ShaderErrorHandler;
 struct VulkanInterface;
+struct VulkanBackendContext;
+class VulkanExtensions;
 
 inline bool SkSLToSPIRV(const SkSL::ShaderCaps* caps,
                         const std::string& sksl,
@@ -309,6 +314,17 @@ void InvokeDeviceLostCallback(const skgpu::VulkanInterface* vulkanInterface,
                               skgpu::VulkanDeviceLostContext faultContext,
                               skgpu::VulkanDeviceLostProc faultProc,
                               bool supportsDeviceFaultInfoExtension);
+
+sk_sp<skgpu::VulkanInterface> MakeInterface(const skgpu::VulkanBackendContext&,
+                                            const skgpu::VulkanExtensions* extOverride,
+                                            uint32_t* physDevVersionOut,
+                                            uint32_t* instanceVersionOut);
+
+// TODO(b/309785258) Delete this
+sk_sp<skgpu::VulkanInterface> MakeInterface(const GrVkBackendContext&,
+                                            const skgpu::VulkanExtensions* extOverride,
+                                            uint32_t* physDevVersionOut,
+                                            uint32_t* instanceVersionOut);
 
 }  // namespace skgpu
 

@@ -592,6 +592,8 @@ bool VulkanTestHelper::init(skiatest::Reporter* reporter) {
     ACQUIRE_DEVICE_VK_PROC(GetSemaphoreFdKHR);
     ACQUIRE_DEVICE_VK_PROC(ImportSemaphoreFdKHR);
     ACQUIRE_DEVICE_VK_PROC(DestroySemaphore);
+    fBackendContext.fMemoryAllocator =
+            skgpu::VulkanMemoryAllocators::Make(fBackendContext, skgpu::ThreadSafe::kNo);
 
     fDirectContext = GrDirectContexts::MakeVulkan(fBackendContext);
     REPORTER_ASSERT(reporter, fDirectContext.get());

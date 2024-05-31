@@ -28,6 +28,7 @@
 #include "src/gpu/vk/VulkanInterface.h"
 #include "tools/GpuToolUtils.h"
 #include "tools/ToolUtils.h"
+#include "src/gpu/vk/vulkanmemoryallocator/VulkanAMDMemoryAllocator.h"
 
 #ifdef VK_USE_PLATFORM_WIN32_KHR
 // windows wants to define this as CreateSemaphoreA or CreateSemaphoreW
@@ -127,6 +128,8 @@ void GraphiteVulkanWindowContext::initializeContext() {
     // Needed to make synchronous readPixels work
     contextOptionsPriv.fStoreContextRefInRecorder = true;
     contextOptions.fOptionsPriv = &contextOptionsPriv;
+
+
     fGraphiteContext = skgpu::graphite::ContextFactory::MakeVulkan(backendContext, contextOptions);
     fGraphiteRecorder = fGraphiteContext->makeRecorder(ToolUtils::CreateTestingRecorderOptions());
 

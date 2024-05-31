@@ -18,6 +18,7 @@
 #include "include/gpu/ganesh/vk/GrVkDirectContext.h"
 #include "include/gpu/vk/GrVkBackendContext.h"
 #include "include/gpu/vk/VulkanExtensions.h"
+#include "include/gpu/vk/VulkanMemoryAllocatorUtil.h"
 #include "tools/gpu/vk/VkTestUtils.h"
 
 #include <string.h>
@@ -78,6 +79,9 @@ int main(int argc, char** argv) {
         ACQUIRE_INST_VK_PROC(DestroyDebugReportCallbackEXT);
     }
     ACQUIRE_INST_VK_PROC(DestroyDevice);
+
+    backendContext.fMemoryAllocator =
+            skgpu::VulkanMemoryAllocators::Make(backendContext, skgpu::ThreadSafe::kNo);
 
     // Create a GrDirectContext with our GrVkBackendContext
     sk_sp<GrDirectContext> context = GrDirectContexts::MakeVulkan(backendContext);
