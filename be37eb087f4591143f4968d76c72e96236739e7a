@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9be737dd_e9a3013a",
+        "filename": "gm/fontations_ft_compare.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-05-31T15:44:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f46011df_438ae89e",
+      "revId": "be37eb087f4591143f4968d76c72e96236739e7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "adc51117_8c987e55",
@@ -35,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a02aed7_fb1be5e0",
+        "filename": "gm/fontations_ft_compare.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-05-31T15:44:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "adc51117_8c987e55",
+      "revId": "be37eb087f4591143f4968d76c72e96236739e7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a8f2c695_1c8e43f4",
@@ -48,6 +84,24 @@
       "writtenOn": "2024-05-31T15:27:49Z",
       "side": 1,
       "message": "We don\u0027t really want this color type, since we\u0027re going to be writing SkColor to the diffs and below when the surface writes the pixels the conversion will be handled.",
+      "revId": "be37eb087f4591143f4968d76c72e96236739e7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "659a28f2_4fde0aba",
+        "filename": "gm/fontations_ft_compare.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 214,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-05-31T15:44:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a8f2c695_1c8e43f4",
       "revId": "be37eb087f4591143f4968d76c72e96236739e7a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
