@@ -560,11 +560,13 @@ void PaintOptions::buildCombinations(
 
     PaintParamsKeyBuilder builder(keyContext.dict());
 
-    if (fImageFilterOptions != PrecompileImageFilters::kNone) {
+
+
+    if (fImageFilterFlags != PrecompileImageFilterFlags::kNone || !fImageFilterOptions.empty()) {
         PaintOptions tmp = *this;
 
         // When image filtering, the original blend mode is taken over by the restore paint
-        tmp.setImageFilters(PrecompileImageFilters::kNone);
+        tmp.setImageFilterFlags(PrecompileImageFilterFlags::kNone);
         tmp.addBlendMode(SkBlendMode::kSrcOver);
 
         tmp.buildCombinations(keyContext, gatherer, drawTypes, withPrimitiveBlender, coverage,
@@ -572,17 +574,21 @@ void PaintOptions::buildCombinations(
 
         create_image_drawing_pipelines(keyContext, gatherer, processCombination, *this);
 
-        if (fImageFilterOptions & PrecompileImageFilters::kBlur) {
+        if (fImageFilterFlags & PrecompileImageFilterFlags::kBlur) {
             create_blur_imagefilter_pipelines(keyContext, gatherer, processCombination);
         }
-        if (fImageFilterOptions & PrecompileImageFilters::kDisplacement) {
+        if (fImageFilterFlags & PrecompileImageFilterFlags::kDisplacement) {
             create_displacement_imagefilter_pipelines(keyContext, gatherer, processCombination);
         }
-        if (fImageFilterOptions & PrecompileImageFilters::kLighting) {
+        if (fImageFilterFlags & PrecompileImageFilterFlags::kLighting) {
             create_lighting_imagefilter_pipelines(keyContext, gatherer, processCombination);
         }
-        if (fImageFilterOptions & PrecompileImageFilters::kMorphology) {
+        if (fImageFilterFlags & PrecompileImageFilterFlags::kMorphology) {
             create_morphology_imagefilter_pipelines(keyContext, gatherer, processCombination);
+        }
+
+        for (const sk_sp<PrecompileImageFilter>& o : fImageFilterOptions) {
+            o->createPipelines(keyContext, gatherer, processCombination);
         }
     } else {
         int numCombinations = this->numCombinations();

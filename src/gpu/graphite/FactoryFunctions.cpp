@@ -14,11 +14,13 @@
 #include "src/gpu/graphite/FactoryFunctionsPriv.h"
 #include "src/gpu/graphite/KeyContext.h"
 #include "src/gpu/graphite/KeyHelpers.h"
+#include "src/gpu/graphite/PaintOptionsPriv.h"
 #include "src/gpu/graphite/PaintParams.h"
 #include "src/gpu/graphite/PaintParamsKey.h"
 #include "src/gpu/graphite/Precompile.h"
 #include "src/gpu/graphite/PrecompileBasePriv.h"
 #include "src/gpu/graphite/ReadSwizzle.h"
+#include "src/gpu/graphite/Renderer.h"
 #include "src/shaders/SkShaderBase.h"
 
 namespace skgpu::graphite {
@@ -1081,6 +1083,52 @@ private:
 
 sk_sp<PrecompileShader> PrecompileShadersPriv::Lighting(sk_sp<PrecompileShader> wrapped) {
     return sk_make_sp<PrecompileLightingShader>(std::move(wrapped));
+}
+
+//--------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
+class PrecompileColorFilterImageFilter : public PrecompileImageFilter {
+public:
+    PrecompileColorFilterImageFilter(SkSpan<const sk_sp<PrecompileColorFilter>> colorFilterOptions,
+                                     SkSpan<const sk_sp<PrecompileImageFilter>> inputs)
+            : PrecompileImageFilter(std::move(inputs))
+            , fColorFilterOptions(colorFilterOptions.begin(), colorFilterOptions.end()) {
+        fNumColorFilterCombos = 0;
+        for (const auto& s : fColorFilterOptions) {
+            fNumColorFilterCombos += s->numCombinations();
+        }
+    }
+
+private:
+    void onCreatePipelines(const KeyContext& keyContext,
+                           PipelineDataGatherer* gatherer,
+                           const PaintOptions::ProcessCombination& processCombination) const override {
+        PaintOptions paintOptions;
+
+        sk_sp<PrecompileShader> imageShader = PrecompileShadersPriv::Image(
+                PrecompileImageShaderFlags::kExcludeAlpha |
+                PrecompileImageShaderFlags::kExcludeCubic);
+
+        paintOptions.setShaders({ imageShader });
+        paintOptions.setColorFilters(fColorFilterOptions);
+
+        paintOptions.priv().buildCombinations(keyContext,
+                                              gatherer,
+                                              DrawTypeFlags::kSimpleShape,
+                                              /* withPrimitiveBlender= */ false,
+                                              Coverage::kSingleChannel,
+                                              processCombination);
+    }
+
+    std::vector<sk_sp<PrecompileColorFilter>> fColorFilterOptions;
+    int fNumColorFilterCombos;
+};
+
+sk_sp<PrecompileImageFilter> PrecompileImageFilters::ColorFilter(
+        SkSpan<const sk_sp<PrecompileColorFilter>> colorFilterOptions,
+        SkSpan<const sk_sp<PrecompileImageFilter>> inputs) {
+    return sk_make_sp<PrecompileColorFilterImageFilter>(std::move(colorFilterOptions),
+                                                        std::move(inputs));
 }
 
 //--------------------------------------------------------------------------------------------------
