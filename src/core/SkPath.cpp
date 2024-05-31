@@ -338,6 +338,14 @@ bool SkPath::conservativelyContainsRect(const SkRect& rect) const {
                     if (!check_edge_against_rect(quadPts[2], quadPts[4], rect, direction)) {
                         return false;
                     }
+                } else if (SkPathVerb::kCubic == verb && prevPt == pts[nextPt]) {
+                    SkPoint chopped[10];
+                    SkChopCubicAt(pts, chopped, 1 / 3.0f, 2 / 3.0f);
+                    for (int i = 0; i < 3; ++i) {
+                        if (!check_edge_against_rect(chopped[i * 3], chopped[(i + 1) * 3], rect, direction)) {
+                            return false;
+                        }
+                    }
                 } else {
                     if (!check_edge_against_rect(prevPt, pts[nextPt], rect, direction)) {
                         return false;
