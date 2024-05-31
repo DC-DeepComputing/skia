@@ -14,6 +14,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkString.h"
+#include "include/core/SkSurface.h"
 #include "include/core/SkTypeface.h"
 #include "include/ports/SkTypeface_fontations.h"
 #include "modules/skshaper/include/SkShaper.h"
@@ -26,7 +27,7 @@ namespace skiagm {
 namespace {
 
 constexpr int kGmWidth = 1000;
-constexpr int kMargin = 15;
+constexpr int kMargin = 30;
 constexpr float kFontSize = 24;
 constexpr float kLangYIncrementScale = 1.9;
 
@@ -34,21 +35,24 @@ constexpr float kLangYIncrementScale = 1.9;
  * Fontations + Skia path rendering, compute individual pixel differences for the rectangles that
  * must match in size. Produce a highlighted difference bitmap, in which any pixel becomes white for
  * which a difference was determined. */
-void comparePixels(const SkBitmap& bitmapA,
-                   const SkBitmap& bitmapB,
+void comparePixels(const SkPixmap& pixmapA,
+                   const SkPixmap& pixmapB,
                    SkBitmap* outPixelDiffBitmap,
                    SkBitmap* outHighlightDiffBitmap) {
-    SkASSERT(bitmapA.colorType() == bitmapB.colorType() &&
-             bitmapA.colorType() == outPixelDiffBitmap->colorType() &&
-             bitmapA.dimensions() == bitmapB.dimensions() &&
-             bitmapA.dimensions() == outPixelDiffBitmap->dimensions());
+    SkASSERT(pixmapA.colorType() == pixmapB.colorType());
+    SkASSERT(pixmapA.colorType() == outPixelDiffBitmap->colorType());
+    SkASSERT(pixmapA.dimensions() == pixmapB.dimensions());
+    SkASSERT(pixmapA.dimensions().width() <= outPixelDiffBitmap->dimensions().width() &&
+             pixmapA.dimensions().height() <= outPixelDiffBitmap->dimensions().height());
 
-    SkASSERT(bitmapA.bytesPerPixel() == 4);
-    SkISize dimensions = bitmapA.dimensions();
+    SkASSERT(pixmapA.info().bytesPerPixel() == 4);
+    SkISize dimensions = SkISize::Make(std::max(pixmapA.width(), pixmapB.width()),
+                                       std::max(pixmapA.height(), pixmapB.height()));
     for (int32_t x = 0; x < dimensions.fWidth; x++) {
         for (int32_t y = 0; y < dimensions.fHeight; y++) {
-            SkPMColor c0 = *bitmapA.getAddr32(x, y);
-            SkPMColor c1 = *bitmapB.getAddr32(x, y);
+            SkPMColor c0 = *pixmapA.addr32(x, y);
+            SkPMColor c1 = *pixmapB.addr32(x, y);
+
             int dr = SkGetPackedR32(c0) - SkGetPackedR32(c1);
             int dg = SkGetPackedG32(c0) - SkGetPackedG32(c1);
             int db = SkGetPackedB32(c0) - SkGetPackedB32(c1);
@@ -209,33 +213,45 @@ protected:
                                     SkImageInfo::Make(pixelDimensions,
                                                       canvasImageInfo.colorType(),
                                                       canvasImageInfo.alphaType());
+                            SkSurfaceProps canvasSurfaceProps(canvas->getBaseProps());
 
                             SkBitmap fontationsBitmap, freetypeBitmap, diffBitmap,
                                     highlightDiffBitmap;
-                            fontationsBitmap.allocPixels(copyImageInfo, 0);
-                            freetypeBitmap.allocPixels(copyImageInfo, 0);
                             diffBitmap.allocPixels(copyImageInfo, 0);
                             highlightDiffBitmap.allocPixels(copyImageInfo, 0);
 
-                            // comparePixels only handles 4 bpp
-                            if (fontationsBitmap.bytesPerPixel() != 4 ||
-                                freetypeBitmap.bytesPerPixel() != 4)
-                            {
+                            SkPixmap fontationsRead;
+                            SkPixmap freetypeRead;
+
+                            // Workaround OveridePaintFilterCanvas limitations
+                            // by getting pixel access through peekPixels()
+                            // instead of readPixels(). Then use same pixmap to
+                            // later write back the comparison results.
+
+                            SkPixmap canvasPixmap;
+                            bool canReadPixels = canvas->peekPixels(&canvasPixmap);
+
+                            if (!canReadPixels) {
                                 break;
                             }
 
-                            const bool fontationsRead = canvas->readPixels(
-                                    fontationsBitmap, copyBoxFontations.x(), copyBoxFontations.y());
-                            const bool freetypeRead = canvas->readPixels(
-                                    freetypeBitmap, copyBoxFreetype.x(), copyBoxFreetype.y());
+                            bool fontationsReadSuccess = canvasPixmap.extractSubset(
+                                    &fontationsRead, copyBoxFontations.roundOut());
+                            bool freetypeReadSuccess = canvasPixmap.extractSubset(
+                                    &freetypeRead, copyBoxFreetype.roundOut());
 
-                            // readPixels may fail
-                            if (!fontationsRead || !freetypeRead) {
+                            // comparePixels only handles 4 bpp. Comparison
+                            // also becomes somewhat meaningless
+                            // when parts of the image are outside the canvas bounds.
+                            if (!fontationsReadSuccess || !freetypeReadSuccess ||
+                                fontationsRead.info().bytesPerPixel() != 4 ||
+                                freetypeRead.info().bytesPerPixel() != 4 ||
+                                fontationsRead.dimensions() != freetypeRead.dimensions()) {
                                 break;
                             }
 
-                            comparePixels(fontationsBitmap,
-                                          freetypeBitmap,
+                            comparePixels(fontationsRead,
+                                          freetypeRead,
                                           &diffBitmap,
                                           &highlightDiffBitmap);
 
@@ -246,9 +262,12 @@ protected:
                             SkPoint whiteCoord = ctm.mapPoint(SkPoint::Make(
                                     4 * kMargin + maxBounds.width() * 3, yCoord + maxBounds.top()));
 
-                            canvas->writePixels(
+                            sk_sp<SkSurface> writeBackSurface =
+                                    SkSurfaces::WrapPixels(canvasPixmap, &canvasSurfaceProps);
+
+                            writeBackSurface->writePixels(
                                     diffBitmap, comparisonCoord.x(), comparisonCoord.y());
-                            canvas->writePixels(
+                            writeBackSurface->writePixels(
                                     highlightDiffBitmap, whiteCoord.x(), whiteCoord.y());
                             break;
                         }
