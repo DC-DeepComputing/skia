@@ -24,6 +24,9 @@ SK_MAKE_BITMASK_OPS(PrecompileImageShaderFlags)
 
 //--------------------------------------------------------------------------------------------------
 namespace PrecompileShadersPriv {
+    sk_sp<PrecompileShader> Arithmetic(sk_sp<PrecompileShader> foreground,
+                                       sk_sp<PrecompileShader> background);
+
     sk_sp<PrecompileShader> Blur(sk_sp<PrecompileShader> wrapped);
 
     sk_sp<PrecompileShader> Displacement(sk_sp<PrecompileShader> displacement,
