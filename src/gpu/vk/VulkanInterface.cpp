@@ -29,6 +29,8 @@ VulkanInterface::VulkanInterface(VulkanGetProc getProc,
     if (getProc == nullptr) {
         return;
     }
+    SkASSERT(extensions);
+
     // Global/Loader Procs.
     ACQUIRE_PROC(CreateInstance, VK_NULL_HANDLE, VK_NULL_HANDLE);
     ACQUIRE_PROC(EnumerateInstanceExtensionProperties, VK_NULL_HANDLE, VK_NULL_HANDLE);
