@@ -57,6 +57,6 @@ struct SK_API VulkanBackendContext {
     VulkanBackendContext& operator=(const VulkanBackendContext& other);
 };
 
-} // namespace skgpu
+}  // namespace skgpu
 
 #endif // skgpu_VulkanBackendContext_DEFINED

@@ -6,8 +6,8 @@
  */
 #include "include/gpu/vk/VulkanBackendContext.h"
 
-#include "include/gpu/vk/VulkanMemoryAllocator.h"
 #include <functional>
+#include "include/gpu/vk/VulkanMemoryAllocator.h"
 
 namespace skgpu {
 VulkanBackendContext::VulkanBackendContext() = default;
