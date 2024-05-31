@@ -16,6 +16,24 @@
       "message": "It looks like a few of these have rather wide (conservative) bounds that extend far enough to the left that they don\u0027t completely fit on the page and got truncated, which seems to be why the diffs disappear. Could add more margin.",
       "revId": "3ab28f1c8b4f06d5940cafb708c92f829d3bc47e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1371d306_770fb38f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-05-31T03:34:05Z",
+      "side": 1,
+      "message": "Actually, I\u0027m not really sure why in a few of these the diffs completely disappeared. They should be blank if one or the other source is partially off-canvas, and only disappear if one of the sources is completely off the canvas.\n\nOn the other hand, I think this fixes some color swizzle issues (as well as works in F16 and other color managed modes).",
+      "parentUuid": "2d25e54e_1986d0dd",
+      "revId": "3ab28f1c8b4f06d5940cafb708c92f829d3bc47e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
