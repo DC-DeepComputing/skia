@@ -28,6 +28,7 @@ enum class BuiltInCodeSnippetID : int32_t {
     kLinearGradientShader4,
     kLinearGradientShader8,
     kLinearGradientShaderTexture,
+    kLinearGradientShaderBuffer,
     kRadialGradientShader4,
     kRadialGradientShader8,
     kRadialGradientShaderTexture,

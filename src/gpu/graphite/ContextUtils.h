@@ -63,7 +63,7 @@ struct FragSkSLInfo {
     int fPaintUniformsTotalBytes = 0;
 };
 
-std::tuple<UniquePaintParamsID, const UniformDataBlock*, const TextureDataBlock*> ExtractPaintData(
+std::tuple<UniquePaintParamsID, const UniformDataBlock*, const TextureDataBlock*, SkSpan<const float>> ExtractPaintData(
         Recorder*,
         PipelineDataGatherer* gatherer,
         PaintParamsKeyBuilder* builder,
