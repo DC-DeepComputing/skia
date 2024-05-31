@@ -135,6 +135,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "90252b65_da5303a7",
+        "filename": "include/private/SkExif.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-05-31T19:03:49Z",
+      "side": 1,
+      "message": "LGTM!",
+      "parentUuid": "b124774d_f235a638",
+      "revId": "e5b469c1bb94431301b66b16c289a2df3c7baf31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fee2ab9a_65b1a71c",
@@ -201,6 +219,24 @@
       "side": 1,
       "message": "Yeah, I added a comment making that clear.",
       "parentUuid": "abc397fb_eb15e576",
+      "revId": "e5b469c1bb94431301b66b16c289a2df3c7baf31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "040ed0bc_483913ce",
+        "filename": "src/codec/SkTiffUtility.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-05-31T19:03:49Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "e0ffa7f0_18fe7159",
       "revId": "e5b469c1bb94431301b66b16c289a2df3c7baf31",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -283,6 +319,24 @@
       "side": 1,
       "message": "I know it\u0027s really verbose, but it makes me feel \"safe\" in some way ... if you\u0027d like I can remove them.",
       "parentUuid": "492340b9_cb8f1749",
+      "revId": "e5b469c1bb94431301b66b16c289a2df3c7baf31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "77e5851e_dca73506",
+        "filename": "tests/ExifTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-05-31T19:03:49Z",
+      "side": 1,
+      "message": "Nah, it\u0027s fine with me.",
+      "parentUuid": "b3e319d6_d341b0ab",
       "revId": "e5b469c1bb94431301b66b16c289a2df3c7baf31",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
