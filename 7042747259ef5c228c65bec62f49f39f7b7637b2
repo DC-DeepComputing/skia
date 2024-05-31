@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f446396_e90e94a9",
+        "filename": "src/gpu/graphite/geom/AnalyticBlurMask.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-05-31T18:04:41Z",
+      "side": 1,
+      "message": "We can definitely adjust this, but based on the gold diffs and playing around in viewer, I didn\u0027t see any objectionable popping between sigmas or circle radii.",
+      "range": {
+        "startLine": 183,
+        "startChar": 0,
+        "endLine": 183,
+        "endChar": 62
+      },
+      "revId": "7042747259ef5c228c65bec62f49f39f7b7637b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
