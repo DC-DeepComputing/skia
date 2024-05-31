@@ -59,6 +59,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b231559b_bb1d8529",
+        "filename": "src/gpu/ganesh/vk/GrVkSampler.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-05-31T18:18:00Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "f57deb45_608dbfe4",
+      "range": {
+        "startLine": 102,
+        "startChar": 51,
+        "endLine": 102,
+        "endChar": 58
+      },
+      "revId": "0cd757d119c2dfb5d476587019512f9848c00b71",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5fc38763_bd4d0d4a",
@@ -72,6 +96,30 @@
       "writtenOn": "2024-05-31T18:00:33Z",
       "side": 1,
       "message": "nit: querying",
+      "range": {
+        "startLine": 105,
+        "startChar": 26,
+        "endLine": 105,
+        "endChar": 33
+      },
+      "revId": "0cd757d119c2dfb5d476587019512f9848c00b71",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a8f8b41_cd137132",
+        "filename": "src/gpu/ganesh/vk/GrVkSampler.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-05-31T18:18:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5fc38763_bd4d0d4a",
       "range": {
         "startLine": 105,
         "startChar": 26,
