@@ -42,7 +42,7 @@ public:
     enum class Type {
         kBlender,
         kColorFilter,
-        kImageFilter,
+        kImageFilter1,
         kMaskFilter,
         kShader,
         // TODO: add others: kDrawable, kPathEffect (?!)
@@ -156,17 +156,18 @@ public:
     static sk_sp<PrecompileBlender> Mode(SkBlendMode);
 };
 
-enum class PrecompileImageFilters : uint32_t {
+enum class PrecompileImageFilterFlags : uint32_t {
     kNone              = 0x0,
     kBlur              = 0x1,
     kDisplacement      = 0x2,
     kLighting          = 0x4,
     kMorphology        = 0x8,
 };
-SK_MAKE_BITMASK_OPS(PrecompileImageFilters)
+SK_MAKE_BITMASK_OPS(PrecompileImageFilterFlags)
 
 //--------------------------------------------------------------------------------------------------
 class PaintOptionsPriv;
+class PrecompileImageFilter;
 
 class PaintOptions {
 public:
@@ -174,12 +175,20 @@ public:
         fShaderOptions.assign(shaders.begin(), shaders.end());
     }
 
+    void setImageFilters(SkSpan<const sk_sp<PrecompileImageFilter>> imageFilters) {
+        fImageFilterOptions.assign(imageFilters.begin(), imageFilters.end());
+    }
+
+    void setImageFilterFlags(SkEnumBitMask<PrecompileImageFilterFlags> flags) {
+        fImageFilterFlags = flags;
+    }
+
     void setMaskFilters(SkSpan<const sk_sp<PrecompileMaskFilter>> maskFilters) {
         for (const sk_sp<PrecompileMaskFilter>& mf : maskFilters) {
             if (mf) {
                 // Currently Graphite only supports BlurMaskFilters which are implemented
                 // via BlurImageFiltering
-                fImageFilterOptions |= PrecompileImageFilters::kBlur;
+                fImageFilterFlags |= PrecompileImageFilterFlags::kBlur;
                 break;
             }
         }
@@ -187,10 +196,6 @@ public:
 
     void setColorFilters(SkSpan<const sk_sp<PrecompileColorFilter>> colorFilters) {
         fColorFilterOptions.assign(colorFilters.begin(), colorFilters.end());
-    }
-
-    void setImageFilters(SkEnumBitMask<PrecompileImageFilters> options) {
-        fImageFilterOptions = options;
     }
 
     void setBlendModes(SkSpan<const SkBlendMode> blendModes) {
@@ -259,11 +264,59 @@ private:
 
     std::vector<sk_sp<PrecompileShader>> fShaderOptions;
     std::vector<sk_sp<PrecompileColorFilter>> fColorFilterOptions;
-    SkEnumBitMask<PrecompileImageFilters> fImageFilterOptions = PrecompileImageFilters::kNone;
     SkTDArray<SkBlendMode> fBlendModeOptions;
     skia_private::TArray<sk_sp<PrecompileBlender>> fBlenderOptions;
     std::vector<sk_sp<PrecompileShader>> fClipShaderOptions;
+
+    SkEnumBitMask<PrecompileImageFilterFlags> fImageFilterFlags = PrecompileImageFilterFlags::kNone;
+    std::vector<sk_sp<PrecompileImageFilter>> fImageFilterOptions;
+
     bool fDither = false;
+};
+
+class PrecompileImageFilter : public PrecompileBase {
+public:
+//    PrecompileImageFilter() : PrecompileBase(Type::kImageFilter1) {}
+
+protected:
+    PrecompileImageFilter(SkSpan<sk_sp<PrecompileImageFilter>> inputs)
+            : PrecompileBase(Type::kImageFilter1) {
+        fInputs.reset(inputs.size());
+        for (int i = 0; i < (int) inputs.size(); ++i) {
+            fInputs[i] = inputs[i];
+        }
+    }
+
+private:
+    friend class PaintOptions;  // for traverse() access
+
+    // The PrecompileImageFilter classes do not use the PrecompileBase::addToKey virtual since
+    // they, in general, do not themselves contribute to a given SkPaint/Pipeline but, rather,
+    // create separate SkPaints/Pipelines from whole cloth (in XXX).
+    void addToKey(const KeyContext& keyContext,
+                  PaintParamsKeyBuilder* builder,
+                  PipelineDataGatherer* gatherer,
+                  int desiredCombination) const final {
+        SkASSERT(false);
+    }
+
+    virtual void onCreatePipelines(const KeyContext&,
+                                   PipelineDataGatherer*,
+                                   const PaintOptions::ProcessCombination&) const = 0;
+
+    void createPipelines(const KeyContext& keyContext,
+                         PipelineDataGatherer* gatherer,
+                         const PaintOptions::ProcessCombination& processCombination) {
+        for (const sk_sp<PrecompileImageFilter>& input : fInputs) {
+            if (input) {
+                input->createPipelines(keyContext, gatherer, processCombination);
+            }
+        }
+
+        this->onCreatePipelines(keyContext, gatherer, processCombination);
+    }
+
+    skia_private::AutoSTArray<2, sk_sp<PrecompileImageFilter>> fInputs;
 };
 
 } // namespace skgpu::graphite
