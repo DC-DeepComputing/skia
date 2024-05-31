@@ -9,6 +9,7 @@ licenses(["notice"])
 exports_files_legacy()
 
 VK_FILES = [
+    "VulkanBackendContext.cpp",
     "VulkanExtensions.cpp",
     "VulkanInterface.cpp",
     "VulkanInterface.h",
