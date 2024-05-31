@@ -16,6 +16,23 @@
       "message": "PTAL, thanks!",
       "revId": "e4cabd5df4394c99645ee94821a9abd382f3dcf0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a274f928_d9f22fec",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8036
+      },
+      "writtenOn": "2024-05-31T14:00:26Z",
+      "side": 1,
+      "message": "LGTM but I\u0027m not an OWNER",
+      "revId": "e4cabd5df4394c99645ee94821a9abd382f3dcf0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
