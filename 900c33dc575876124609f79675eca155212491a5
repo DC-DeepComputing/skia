@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "958181e4_171c18cd",
+        "filename": "gm/fontations_ft_compare.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 214,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-05-31T14:59:39Z",
+      "side": 1,
+      "message": "Using `getBaseProps()`.",
+      "parentUuid": "c6c5d6ea_a82ce5f6",
+      "range": {
+        "startLine": 214,
+        "startChar": 36,
+        "endLine": 214,
+        "endChar": 44
+      },
+      "revId": "900c33dc575876124609f79675eca155212491a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c9fa6c0c_cf635a09",
@@ -54,6 +78,24 @@
       "writtenOn": "2024-05-30T22:21:53Z",
       "side": 1,
       "message": "Seems heavy to create a copy. Instead can do `canvasPixmap.extractSubset(\u0026fontationsRead, copyBoxFontations.roundOut())` and then pass the pixmaps to `comparePixels`.",
+      "revId": "900c33dc575876124609f79675eca155212491a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc6b5327_7d85a308",
+        "filename": "gm/fontations_ft_compare.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-05-31T14:59:39Z",
+      "side": 1,
+      "message": "Good point, moved to pixmap subsets.",
+      "parentUuid": "c9fa6c0c_cf635a09",
       "revId": "900c33dc575876124609f79675eca155212491a5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }

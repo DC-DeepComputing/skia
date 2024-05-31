@@ -34,6 +34,24 @@
       "parentUuid": "2d25e54e_1986d0dd",
       "revId": "3ab28f1c8b4f06d5940cafb708c92f829d3bc47e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a4f4db45_5a0f948f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-05-31T14:59:39Z",
+      "side": 1,
+      "message": "I tried implementing something tolerant when part of the text starts to move offscreen, but then other complications arise and it\u0027s not really the purpose of the test to handle that. So I just added some more margin.",
+      "parentUuid": "1371d306_770fb38f",
+      "revId": "3ab28f1c8b4f06d5940cafb708c92f829d3bc47e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
