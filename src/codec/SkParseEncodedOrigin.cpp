@@ -11,8 +11,15 @@
 #include "include/private/SkExif.h"
 #include "include/private/base/SkAssert.h"
 
+#include <optional>
+
 bool SkParseEncodedOrigin(const void* data, size_t data_length, SkEncodedOrigin* orientation) {
     SkASSERT(orientation);
-    SkExifMetadata exif(SkData::MakeWithoutCopy(data, data_length));
-    return exif.getOrigin(orientation);
+    SkExif::Metadata exif;
+    SkExif::Parse(exif, SkData::MakeWithoutCopy(data, data_length).get());
+    if (exif.fOrigin.has_value()) {
+        *orientation = exif.fOrigin.value();
+        return true;
+    }
+    return false;
 }
