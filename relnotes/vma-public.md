@@ -1,0 +1,2 @@
+`skgpu::VulkanMemoryAllocators::Make` has been added for clients to explicitly create their own Vulkan Memory Allocator.
+Using `SK_USE_VMA` to have Skia make one for the client has been deprecated and will be removed shortly.
