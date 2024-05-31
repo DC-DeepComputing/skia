@@ -248,6 +248,26 @@ SkGradientBaseShader::SkGradientBaseShader(const Descriptor& desc, const SkMatri
         // If the stops are uniform, treat them as implicit.
         if (uniformStops) {
             fPositions = nullptr;
+        } else if (fTileMode == SkTileMode::kRepeat || fTileMode == SkTileMode::kMirror) {
+            // Check if we need to deduplicate the first and last stops on periodic tilemodes.
+            for (int i = 0; i < fColorCount - 1; i++) {
+                if (fPositions[i + 1] == 0) {
+                    fColors += 1;
+                    fPositions += 1;
+                    fColorCount -= 1;
+                } else {
+                    break;
+                }
+            }
+
+            for (int i = fColorCount - 1; i > 0; i--) {
+                if (fPositions[i - 1] == 1) {
+                    fColorCount -= 1;
+                    i--;
+                } else {
+                    break;
+                }
+            }
         }
     }
 }
