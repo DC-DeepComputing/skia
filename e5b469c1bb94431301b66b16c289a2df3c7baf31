@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "69b5671d_1adf6d80",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2024-05-31T11:53:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "08e16a6f_12ab9d5f",
+      "revId": "e5b469c1bb94431301b66b16c289a2df3c7baf31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "769bd0e0_71d94bf6",
         "filename": "/COMMIT_MSG",
         "patchSetId": 6
@@ -31,6 +49,30 @@
       "writtenOn": "2024-05-30T19:32:24Z",
       "side": 1,
       "message": "Love it. (I think the last time I had tried to use `std::optional`, Skia wasn\u0027t C++17 everywhere, but according to a recent chat, it now is.)",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 56
+      },
+      "revId": "e5b469c1bb94431301b66b16c289a2df3c7baf31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0babcded_bcdc0467",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2024-05-31T11:53:37Z",
+      "side": 1,
+      "message": "I have a hunch that when I originally wrote this (which was like ~end-of-last-year, but it got interrupted by various things), `std::optional` wasn\u0027t in Skia. At least that\u0027s my excuse for the former awkward API.",
+      "parentUuid": "769bd0e0_71d94bf6",
       "range": {
         "startLine": 21,
         "startChar": 0,
@@ -77,6 +119,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b124774d_f235a638",
+        "filename": "include/private/SkExif.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2024-05-31T11:53:37Z",
+      "side": 1,
+      "message": "When I originally wrote the class, the idea was that, say, `getResolutionUnit` would go and do the searching for that property, and so it had all of these query functions. That\u0027s also why we take the `sk_sp\u003cSkData\u003e` reference instead of just a `const SkData*`.\n\nIt turns out that that was just a bad way of structuring things. If we have to search for any tags, it\u0027s just faster to blast through all of the tags (once!), saving the ones that we recognize as we go.\n\nI also think the absence of `std::optional` at the time of writing contributed to this thinking. (I started this late last year but got pulled into an emergency and had to drop it, which is really unfortunate, because one doesn\u0027t want stuff that\u0027s \"not quite done yet\" in the `include/` directory. I\u0027m finally now moving Chromium to this).\n\nThis random `parse` method is, you\u0027re right, a bit messy. What do you think of the following API shape? I personally like it, so I\u0027ve changed the header to reflect it. But if you have a different preference, let me know.\n```\nnamespace SkExif {\n\nstatic constexpr uint16_t kOriginTag \u003d 0x112;\n...\n\nstruct Metadata {\n    std::optional\u003cSkEncodedOrigin\u003e fOrigin;\n    ...\n};\n\nvoid SK_API Parse(Metadata\u0026 metadata, const SkData* data);\n\n}  // namespace\n```\n\n(I also really wanted the tag constants in the header as self-documentation).",
+      "parentUuid": "dc11c7ce_79107f4c",
+      "revId": "e5b469c1bb94431301b66b16c289a2df3c7baf31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fee2ab9a_65b1a71c",
         "filename": "src/codec/SkExif.cpp",
         "patchSetId": 6
@@ -88,6 +148,24 @@
       "writtenOn": "2024-05-30T19:32:24Z",
       "side": 1,
       "message": "Why doesn\u0027t this just return `std::optional\u003cfloat\u003e`? It looks like we assign a value iff it returns `true`? (Looks like you never look at the return value.)",
+      "revId": "e5b469c1bb94431301b66b16c289a2df3c7baf31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3ec6182_674ba260",
+        "filename": "src/codec/SkExif.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2024-05-31T11:53:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fee2ab9a_65b1a71c",
       "revId": "e5b469c1bb94431301b66b16c289a2df3c7baf31",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -105,6 +183,24 @@
       "writtenOn": "2024-05-30T19:32:24Z",
       "side": 1,
       "message": "I think this is a sentinel value? (Logically, the next offset isn\u0027t at zero, is it?)",
+      "revId": "e5b469c1bb94431301b66b16c289a2df3c7baf31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e0ffa7f0_18fe7159",
+        "filename": "src/codec/SkTiffUtility.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2024-05-31T11:53:37Z",
+      "side": 1,
+      "message": "Yeah, I added a comment making that clear.",
+      "parentUuid": "abc397fb_eb15e576",
       "revId": "e5b469c1bb94431301b66b16c289a2df3c7baf31",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -132,6 +228,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7bb7ede_2ea6ae63",
+        "filename": "src/codec/SkTiffUtility.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2024-05-31T11:53:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "58f4601e_da1269f8",
+      "range": {
+        "startLine": 34,
+        "startChar": 38,
+        "endLine": 34,
+        "endChar": 50
+      },
+      "revId": "e5b469c1bb94431301b66b16c289a2df3c7baf31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "492340b9_cb8f1749",
@@ -145,6 +265,24 @@
       "writtenOn": "2024-05-30T19:32:24Z",
       "side": 1,
       "message": "nit: For some of these, I think checking the value is redundant. As I understand it, the next line\u0027s `\u003d\u003d` will fail if `exif.fResolutionUnit` doesn\u0027t have a value. That said, I also find https://en.cppreference.com/w/cpp/utility/optional/operator_cmp less than super clear.",
+      "revId": "e5b469c1bb94431301b66b16c289a2df3c7baf31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3e319d6_d341b0ab",
+        "filename": "tests/ExifTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2024-05-31T11:53:37Z",
+      "side": 1,
+      "message": "I know it\u0027s really verbose, but it makes me feel \"safe\" in some way ... if you\u0027d like I can remove them.",
+      "parentUuid": "492340b9_cb8f1749",
       "revId": "e5b469c1bb94431301b66b16c289a2df3c7baf31",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
