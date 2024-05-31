@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d25e54e_1986d0dd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-05-31T03:26:28Z",
+      "side": 1,
+      "message": "It looks like a few of these have rather wide (conservative) bounds that extend far enough to the left that they don\u0027t completely fit on the page and got truncated, which seems to be why the diffs disappear. Could add more margin.",
+      "revId": "3ab28f1c8b4f06d5940cafb708c92f829d3bc47e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
