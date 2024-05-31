@@ -1,5 +1,4 @@
-/*
- * Copyright 2022 Google LLC
+/* Copyright 2022 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -119,6 +118,7 @@ struct GradientShaderBlocks {
 
         SkTileMode             fTM;
         int                    fNumStops;
+        mutable int fBufferOffset;
 
         // For gradients w/ <= kNumInternalStorageStops stops we use fColors and fOffsets.
         // The offsets are packed into a single float4 to save space when the layout is std140.
@@ -126,6 +126,7 @@ struct GradientShaderBlocks {
         SkPMColor4f            fColors[kNumInternalStorageStops];
         SkV4                   fOffsets[kNumInternalStorageStops / 4];
         sk_sp<TextureProxy>    fColorsAndOffsetsProxy;
+        std::vector<float>       fColorsAndOffsetsBufData;
 
         SkGradientShader::Interpolation fInterpolation;
     };

@@ -223,6 +223,7 @@ void add_gradient_postamble(const GradientShaderBlocks::GradientData& gradData,
 
     if (gradData.fNumStops > kInternalStopLimit) {
         gatherer->write(gradData.fNumStops);
+        gatherer->write(gradData.fBufferOffset);
     }
 
     gatherer->write(static_cast<int>(gradData.fTM));
@@ -299,6 +300,29 @@ void add_conical_gradient_uniform_data(const ShaderCodeDictionary* dict,
 
 } // anonymous namespace
 
+static std::vector<float> create_color_and_offset_bufdata(int numStops,
+                                                     const SkPMColor4f* colors,
+                                                     const float* offsets) {
+    // Pack data as offset,color,offset,color.
+    std::vector<float> data;
+    data.resize(numStops * 5);
+
+    for (int i = 0; i < numStops; i++) {
+        SkColor4f unpremulColor = colors[i].unpremul();
+
+        float offset = offsets ? offsets[i] : SkIntToFloat(i) / (numStops - 1);
+        SkASSERT(offset >= 0.0f && offset <= 1.0f);
+
+        int stopI = i * 5;
+        data[stopI] = offset;
+        data[stopI + 1] = unpremulColor.fR;
+        data[stopI + 2] = unpremulColor.fG;
+        data[stopI + 3] = unpremulColor.fB;
+        data[stopI + 4] = unpremulColor.fA;
+    }
+
+    return data;
+}
 GradientShaderBlocks::GradientData::GradientData(SkShaderBase::GradientType type, int numStops)
         : fType(type)
         , fPoints{{0.0f, 0.0f}, {0.0f, 0.0f}}
@@ -353,6 +377,7 @@ GradientShaderBlocks::GradientData::GradientData(SkShaderBase::GradientType type
         }
     } else {
         fColorsAndOffsetsProxy = std::move(colorsAndOffsetsProxy);
+        fColorsAndOffsetsBufData = create_color_and_offset_bufdata(numStops, colors, offsets);
         SkASSERT(fColorsAndOffsetsProxy);
     }
 }
@@ -369,6 +394,10 @@ void GradientShaderBlocks::AddBlock(const KeyContext& keyContext,
         static constexpr SkSamplingOptions kNearest(SkFilterMode::kNearest, SkMipmapMode::kNone);
         static constexpr SkTileMode kClampTiling[2] = {SkTileMode::kClamp, SkTileMode::kClamp};
         gatherer->add(kNearest, kClampTiling, gradData.fColorsAndOffsetsProxy);
+
+        auto bufData = gradData.fColorsAndOffsetsBufData;
+
+        gradData.fBufferOffset = gatherer->writeGradientData(bufData);
     }
 
     BuiltInCodeSnippetID codeSnippetID = BuiltInCodeSnippetID::kSolidColorShader;
@@ -377,7 +406,7 @@ void GradientShaderBlocks::AddBlock(const KeyContext& keyContext,
             codeSnippetID =
                     gradData.fNumStops <= 4 ? BuiltInCodeSnippetID::kLinearGradientShader4
                     : gradData.fNumStops <= 8 ? BuiltInCodeSnippetID::kLinearGradientShader8
-                                              : BuiltInCodeSnippetID::kLinearGradientShaderTexture;
+                                              : BuiltInCodeSnippetID::kLinearGradientShaderBuffer;
             add_linear_gradient_uniform_data(dict, codeSnippetID, gradData, gatherer);
             break;
         case SkShaderBase::GradientType::kRadial:
@@ -2046,6 +2075,7 @@ static void notify_in_use(Recorder* recorder,
     NotifyImagesInUse(recorder, drawContext, shader->shader().get());
 }
 
+
 static SkBitmap create_color_and_offset_bitmap(int numStops,
                                                const SkPMColor4f* colors,
                                                const float* offsets) {
@@ -2155,6 +2185,7 @@ static void add_gradient_to_key(const KeyContext& keyContext,
 
     sk_sp<TextureProxy> proxy;
 
+    std::vector<float> gradBufData;
     if (colorCount > GradientShaderBlocks::GradientData::kNumInternalStorageStops) {
         if (shader->cachedBitmap().empty()) {
             SkBitmap colorsAndOffsetsBitmap =

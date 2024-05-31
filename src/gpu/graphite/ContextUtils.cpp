@@ -29,7 +29,7 @@
 
 namespace skgpu::graphite {
 
-std::tuple<UniquePaintParamsID, const UniformDataBlock*, const TextureDataBlock*> ExtractPaintData(
+std::tuple<UniquePaintParamsID, const UniformDataBlock*, const TextureDataBlock*, SkSpan<const float>> ExtractPaintData(
         Recorder* recorder,
         PipelineDataGatherer* gatherer,
         PaintParamsKeyBuilder* builder,
@@ -58,6 +58,7 @@ std::tuple<UniquePaintParamsID, const UniformDataBlock*, const TextureDataBlock*
     UniquePaintParamsID paintID = recorder->priv().shaderCodeDictionary()->findOrCreate(builder);
     const UniformDataBlock* uniforms = nullptr;
     const TextureDataBlock* textures = nullptr;
+    SkSpan<const float> gradData;
     if (paintID.isValid()) {
         if (gatherer->hasUniforms()) {
             UniformDataCache* uniformDataCache = recorder->priv().uniformDataCache();
@@ -67,9 +68,12 @@ std::tuple<UniquePaintParamsID, const UniformDataBlock*, const TextureDataBlock*
             TextureDataCache* textureDataCache = recorder->priv().textureDataCache();
             textures = textureDataCache->insert(gatherer->textureDataBlock());
         }
+        if (gatherer->hasGradientBufferData()) {
+            gradData = gatherer->gradientBufferData();
+        }
     }
 
-    return { paintID, uniforms, textures };
+    return { paintID, uniforms, textures, gradData };
 }
 
 std::tuple<const UniformDataBlock*, const TextureDataBlock*> ExtractRenderStepData(

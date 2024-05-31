@@ -1401,3 +1401,32 @@ DEF_POWERLESS_HUE_GM(LCH)
 DEF_POWERLESS_HUE_GM(OKLCH)
 DEF_POWERLESS_HUE_GM(HSL)
 DEF_POWERLESS_HUE_GM(HWB)
+
+DEF_SIMPLE_GM(gradient_blend_many_stops, canvas, 800, 800) {
+  SkPaint paint;
+
+  const SkColor red = 0xffff0000;
+  const SkColor blue = 0xff0000ff;
+  const SkColor green = 0xff00ff00;
+  SkColor colors[] = { red, blue, red, blue, red, blue, red, blue, red, blue, red };
+  SkColor colors2[] = { red, red, blue, blue, red, red, blue, blue, red, red, blue };
+  SkColor colors3[] = { red, green, blue, red, green, blue, red, green, blue, red, green };
+  SkScalar stops[] = { 0.0, 0.1,  0.2, 0.3,  0.4, 0.5,  0.6, 0.7,  0.8, 0.9,  1.0 };
+
+  SkPoint points1[] = {{0, 0}, {300, 300}};
+  sk_sp<SkShader> linear1 = SkGradientShader::MakeLinear(points1, colors, stops, 10, SkTileMode::kClamp);
+
+  SkPoint points2[] = {{0, 300}, {300, 0}};
+  sk_sp<SkShader> linear2 = SkGradientShader::MakeLinear(points2, colors2, stops, 10, SkTileMode::kClamp);
+
+  paint.setShader(SkShaders::Blend(SkBlendMode::kPlus, linear1, linear2));
+  //paint.setShader(linear1);
+  canvas->drawRect(SkRect::MakeXYWH(0, 0, 300, 300), paint);
+
+  SkPaint paint2;
+
+  SkPoint points3[] = {{400, 0}, {700, 300}};
+  paint2.setShader(SkGradientShader::MakeLinear(points3, colors3, stops, 10, SkTileMode::kClamp));
+  canvas->drawRect(SkRect::MakeXYWH(400, 0, 300, 300), paint2);
+}
+

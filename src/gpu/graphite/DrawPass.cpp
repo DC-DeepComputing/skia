@@ -308,6 +308,40 @@ private:
     UniformCache::Index fLastIndex = UniformCache::kInvalidIndex;
 };
 
+class StorageBufferTracker {
+public:
+    void trackData(SkSpan<const float> gradData) {
+        fCpuData = gradData;
+    }
+
+    bool writeData(DrawBufferManager* bufferMgr) {
+        if(fCpuData.empty()) {
+            return false;
+        }
+
+        auto [writer, bufferInfo] = bufferMgr->getSsboWriter(fCpuData.size_bytes());
+
+        if (!writer) {
+            return false;
+        }
+
+        writer.write(fCpuData.data(), fCpuData.size_bytes());
+
+        fBufferInfo.fBuffer = bufferInfo.fBuffer;
+        fBufferInfo.fOffset = bufferInfo.fOffset;
+        fBufferInfo.fBindingSize = fCpuData.size_bytes();
+
+        return true;
+    }
+
+    void bind(DrawPassCommands::List* commandList) {
+        commandList->bindUniformBuffer(fBufferInfo, UniformSlot::kGradient);
+    }
+private:
+    SkSpan<const float> fCpuData;
+    BindUniformBufferInfo fBufferInfo;
+};
+
 } // namespace
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -481,6 +515,7 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
     UniformTracker geometryUniformTracker(useStorageBuffers);
     UniformTracker shadingUniformTracker(useStorageBuffers);
     TextureBindingTracker textureBindingTracker;
+    StorageBufferTracker storageBufferTracker;
 
     ShaderCodeDictionary* dict = recorder->priv().shaderCodeDictionary();
     PaintParamsKeyBuilder builder(dict);
@@ -499,12 +534,14 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
         UniquePaintParamsID shaderID;
         const UniformDataBlock* shadingUniforms = nullptr;
         const TextureDataBlock* paintTextures = nullptr;
+        SkSpan<const float> gradBuffer;
+
         if (draw.fPaintParams.has_value()) {
             sk_sp<TextureProxy> curDst =
                     draw.fPaintParams->dstReadRequirement() == DstReadRequirement::kTextureCopy
                             ? dstCopy
                             : nullptr;
-            std::tie(shaderID, shadingUniforms, paintTextures) =
+            std::tie(shaderID, shadingUniforms, paintTextures, gradBuffer) =
                     ExtractPaintData(recorder,
                                      &gatherer,
                                      &builder,
@@ -536,6 +573,7 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
                     pipelineIndex, performsShading ? shadingUniforms : nullptr);
             TextureBindingCache::Index textureIndex = textureBindingTracker.trackTextures(
                     performsShading ? paintTextures : nullptr, stepTextures);
+            storageBufferTracker.trackData(gradBuffer);
 
             keys.push_back({&draw, stepIndex, pipelineIndex,
                             geomUniformIndex, shadingUniformIndex, textureIndex});
@@ -547,7 +585,8 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
     }
 
     if (!geometryUniformTracker.writeUniforms(bufferMgr) ||
-        !shadingUniformTracker.writeUniforms(bufferMgr)) {
+        !shadingUniformTracker.writeUniforms(bufferMgr) ||
+        !storageBufferTracker.writeData(bufferMgr)) {
         // The necessary uniform data couldn't be written to the GPU, so the DrawPass is invalid.
         // Early out now since the next Recording snap will fail.
         return nullptr;
@@ -622,6 +661,8 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
                 lastScissor = *newScissor;
             }
         }
+
+        storageBufferTracker.bind(&drawPass->fCommandList);
 
         UniformCache::Index geometrySsboIndex =
                 (key.geometryUniformIndex() == UniformCache::kInvalidIndex)
