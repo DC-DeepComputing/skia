@@ -273,7 +273,6 @@ bool SkTiffImageFileDirectory::getEntryValuesGeneric(uint16_t entryIndex,
             default:
                 SkCodecPrintf("Unsupported type %u\n", type);
                 return false;
-                break;
         }
     }
     return true;
