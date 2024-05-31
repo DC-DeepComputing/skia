@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "704ee2a1_b5aa0bd1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18764
+      },
+      "writtenOn": "2024-05-31T16:02:36Z",
+      "side": 1,
+      "message": "Would you mind reviewing the code? Thanks!\n\nThis PR attempts to fix https://issues.skia.org/issues/340844138. The issue occurs because Ganesh\u0027s \u0027ClipStack::RawElement::contains\u0027 methods rely on \u0027SkPath::conservativelyContainsRect\u0027, which causes the problem.",
+      "revId": "76954f8a7bc309dee3f57d249d27f4fc9577d687",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
