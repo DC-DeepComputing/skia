@@ -8,13 +8,18 @@
 #ifndef skgpu_VulkanBackendContext_DEFINED
 #define skgpu_VulkanBackendContext_DEFINED
 
+#include "include/core/SkRefCnt.h"
 #include "include/gpu/GpuTypes.h"
-#include "include/gpu/vk/VulkanMemoryAllocator.h"
 #include "include/gpu/vk/VulkanTypes.h"
+#include "include/private/base/SkAPI.h"
+#include "include/private/gpu/vk/SkiaVulkan.h"
+
+#include <cstdint>
 
 namespace skgpu {
 
 class VulkanExtensions;
+class VulkanMemoryAllocator;
 
 // The VkBackendContext contains all of the base Vk objects needed by the skia Vulkan context.
 struct SK_API VulkanBackendContext {
@@ -45,8 +50,13 @@ struct SK_API VulkanBackendContext {
     // be in the pNext chain of VkDeviceCreateInfo).
     skgpu::VulkanDeviceLostContext   fDeviceLostContext = nullptr;
     skgpu::VulkanDeviceLostProc      fDeviceLostProc = nullptr;
+
+    VulkanBackendContext();
+    ~VulkanBackendContext();
+    VulkanBackendContext(const VulkanBackendContext& other);
+    VulkanBackendContext& operator=(const VulkanBackendContext& other);
 };
 
-} // namespace skgpu::graphite
+} // namespace skgpu
 
 #endif // skgpu_VulkanBackendContext_DEFINED
