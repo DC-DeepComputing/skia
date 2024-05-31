@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f46011df_438ae89e",
+        "filename": "gm/fontations_ft_compare.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-05-31T15:27:49Z",
+      "side": 1,
+      "message": "We\u0027d also like to avoid most of these asserts. We really don\u0027t want GMs to be randomly crashing on normal things, as that means the whole test run gets thrown out.",
+      "revId": "be37eb087f4591143f4968d76c72e96236739e7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "adc51117_8c987e55",
+        "filename": "gm/fontations_ft_compare.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-05-31T15:27:49Z",
+      "side": 1,
+      "message": "If we use `.getColor` here the conversions are all handled and we don\u0027t need to worry about the layout or color space or any of the other things. Most of the asserts go away.",
+      "revId": "be37eb087f4591143f4968d76c72e96236739e7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a8f2c695_1c8e43f4",
+        "filename": "gm/fontations_ft_compare.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 214,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-05-31T15:27:49Z",
+      "side": 1,
+      "message": "We don\u0027t really want this color type, since we\u0027re going to be writing SkColor to the diffs and below when the surface writes the pixels the conversion will be handled.",
+      "revId": "be37eb087f4591143f4968d76c72e96236739e7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
