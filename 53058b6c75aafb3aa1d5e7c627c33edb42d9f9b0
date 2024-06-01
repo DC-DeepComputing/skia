@@ -22,6 +22,30 @@
       },
       "revId": "53058b6c75aafb3aa1d5e7c627c33edb42d9f9b0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b72404c_5e69904b",
+        "filename": "include/private/SkExif.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2024-06-01T07:25:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "57ef5d11_fdd0ae01",
+      "range": {
+        "startLine": 49,
+        "startChar": 61,
+        "endLine": 49,
+        "endChar": 65
+      },
+      "revId": "53058b6c75aafb3aa1d5e7c627c33edb42d9f9b0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
