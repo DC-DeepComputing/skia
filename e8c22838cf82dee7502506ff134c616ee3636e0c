@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb5ed25f_8d434835",
+        "filename": "tests/sksl/runtime/IfElseBinding.minified.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-06-02T16:38:22Z",
+      "side": 1,
+      "message": "^ Error is here",
+      "range": {
+        "startLine": 1,
+        "startChar": 185,
+        "endLine": 1,
+        "endChar": 189
+      },
+      "revId": "e8c22838cf82dee7502506ff134c616ee3636e0c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
