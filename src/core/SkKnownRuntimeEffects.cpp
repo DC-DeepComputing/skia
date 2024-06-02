@@ -203,6 +203,7 @@ SkRuntimeEffect* make_matrix_conv_effect(MatrixConvolutionImpl impl,
 
 const SkRuntimeEffect* GetKnownRuntimeEffect(StableKey stableKey) {
     SkRuntimeEffect::Options options;
+    SkRuntimeEffectPriv::AllowPrivateAccess(&options);
     SkRuntimeEffectPriv::SetStableKey(&options, static_cast<uint32_t>(stableKey));
 
     switch (stableKey) {
@@ -525,9 +526,7 @@ const SkRuntimeEffect* GetKnownRuntimeEffect(StableKey stableKey) {
                 "uniform half flip;"
 
                 "half4 main(float2 coord) {"
-                    "half4 aggregate = max(flip*child.eval(coord + offset),"
-                                          "flip*child.eval(coord - offset));"
-                    "return flip*aggregate;"
+                    "return sparse_morphology_fn(child, coord, offset, flip);"
                 "}";
 
             static const SkRuntimeEffect* sSparseMorphologyEffect =

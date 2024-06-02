@@ -21,6 +21,7 @@
 #include "src/sksl/SkSLProgramSettings.h"
 #include "src/sksl/SkSLString.h"
 #include "src/sksl/SkSLStringStream.h"
+#include "src/sksl/analysis/SkSLProgramVisitor.h"
 #include "src/sksl/ir/SkSLBinaryExpression.h"
 #include "src/sksl/ir/SkSLBlock.h"
 #include "src/sksl/ir/SkSLChildCall.h"
@@ -79,6 +80,15 @@ public:
 
 private:
     using Precedence = OperatorPrecedence;
+
+    // Child effects used by one specialization; maps <function parameter, global child effect>.
+    using SpecializedParameters = THashMap<const Variable*, const Variable*>;
+    // The set of specializated implementations needed for a given function.
+    using Specializations = TArray<SpecializedParameters>;
+    // The full set of all specializations required by the program.
+    using SpecializationMap = THashMap<const FunctionDeclaration*, Specializations>;
+
+    void determineSpecializations();
 
     void write(std::string_view s);
     void writeLine(std::string_view s = std::string_view());
@@ -149,11 +159,17 @@ private:
     THashMap<const FunctionDeclaration*, std::string> fFunctionNames;
     THashMap<const Type*, std::string>                fStructNames;
 
+    SpecializationMap          fSpecializationMap;
     StringStream*              fBuffer = nullptr;
     bool                       fCastReturnsToHalf = false;
     const FunctionDeclaration* fCurrentFunction = nullptr;
 };
 
+static bool has_child_parameter(SkSpan<Variable* const> params) {
+    return std::any_of(params.begin(), params.end(), [](const Variable* param) {
+        return param->type().isEffectChild();
+    });
+}
 
 void PipelineStageCodeGenerator::write(std::string_view s) {
     fBuffer->write(s.data(), s.length());
@@ -360,6 +376,11 @@ void PipelineStageCodeGenerator::writeFunction(const FunctionDefinition& f) {
         return;
     }
 
+    if (has_child_parameter(f.declaration().parameters())) {
+        // We can't emit these until we know what child parameters will be passed in.
+        return;
+    }
+
     SkASSERT(!fCurrentFunction);
     fCurrentFunction = &f.declaration();
 
@@ -409,11 +430,11 @@ std::string PipelineStageCodeGenerator::functionDeclaration(const FunctionDeclar
         declString.append(this->typedVariable(p->type(), p->name()).c_str());
     }
 
-    return declString + ")";
+    return declString + ')';
 }
 
 void PipelineStageCodeGenerator::writeFunctionDeclaration(const FunctionDeclaration& decl) {
-    if (!decl.isMain() && !decl.isBuiltin()) {
+    if (!decl.isMain() && !decl.isBuiltin() && !has_child_parameter(decl.parameters())) {
         std::string prototype = this->functionDeclaration(decl) + ';';
         fCallbacks->declareFunction(prototype.c_str());
     }
@@ -763,7 +784,7 @@ void PipelineStageCodeGenerator::writeDoStatement(const DoStatement& d) {
 }
 
 void PipelineStageCodeGenerator::writeForStatement(const ForStatement& f) {
-    // Emit loops of the form 'for(;test;)' as 'while(test)', which is probably how they started
+    // Emit loops of the form 'for (;test;)' as 'while (test)', which is probably how they started.
     if (!f.initializer() && f.test() && !f.next()) {
         this->write("while (");
         this->writeExpression(*f.test(), Precedence::kExpression);
@@ -789,7 +810,125 @@ void PipelineStageCodeGenerator::writeForStatement(const ForStatement& f) {
     this->writeStatement(*f.statement());
 }
 
+template <typename K, typename V>
+static bool maps_are_equal(const THashMap<K, V>& left, const THashMap<K, V>& right) {
+    if (left.count() != right.count()) {
+        return false;
+    }
+    for (const auto& [key, leftValue] : left) {
+        const V* rightValue = right.find(key);
+        if (!rightValue) {
+            return false;
+        }
+        if (leftValue != *rightValue) {
+            return false;
+        }
+    }
+    return true;
+}
+
+//static std::string describe_specialization(const THashMap<const Variable*,
+//                                                          const Variable*>& params) {
+//    std::string result;
+//    auto separator = SkSL::String::Separator();
+//    for (const auto& [param, effect] : params) {
+//        result += separator();
+//        result += param->name();
+//        result += '=';
+//        result += effect->name();
+//    }
+//    return result;
+//}
+
+void PipelineStageCodeGenerator::determineSpecializations() {
+//    // Child effects used by one specialization; maps <function parameter, global child effect>.
+//    using SpecializedParameters = THashMap<const Variable*, const Variable*>;
+//    // The set of specializated implementations needed for a given function.
+//    using Specializations = TArray<SpecializedParameters>;
+//    // The full set of all specializations required by the program.
+//    using SpecializationMap = THashMap<const FunctionDeclaration*, Specializations>;
+
+    class Searcher : public ProgramVisitor {
+    public:
+        Searcher(SpecializationMap* m) : fSpecializationMap(*m) {}
+
+        using ProgramVisitor::visitProgramElement;
+
+        bool visitExpression(const Expression& expr) override {
+            if (expr.is<FunctionCall>()) {
+                const FunctionCall& call = expr.as<FunctionCall>();
+                const FunctionDeclaration& decl = call.function();
+                if (!decl.isIntrinsic()) {
+                    // Determine if any child effects are being passed to this function.
+                    SpecializedParameters specialization;
+                    const int numParams = decl.parameters().size();
+                    SkASSERT(call.arguments().size() == numParams);
+                    for (int index = 0; index < numParams; ++index) {
+                        // Child effects are always a straight variable reference, and can't be
+                        // used in a more complex expression.
+                        const Expression& arg = *call.arguments()[index];
+                        if (!arg.is<VariableReference>() || !arg.type().isEffectChild()) {
+                            continue;
+                        }
+                        const Variable* var = arg.as<VariableReference>().variable();
+                        const Variable* param = decl.parameters()[index];
+                        if (var->modifierFlags().isUniform()) {
+                            // This parameter is a uniform child effect. We can specialize on it.
+                            specialization[param] = var;
+                        } else if (var->storage() == VariableStorage::kParameter) {
+                            // This parameter is a passed-in child effect.
+                            const Variable** effect = fInheritedSpecializations.find(var);
+                            SkASSERT(effect);
+                            SkASSERT((*effect)->modifierFlags().isUniform());
+                            specialization[param] = *effect;
+                        } else {
+                            SK_ABORT("specialization requires a uniform or parameter child effect");
+                        }
+                    }
+
+                    Specializations& specializations = fSpecializationMap[&call.function()];
+
+                    // Determine if we are already queueing up a specialization for this function.
+                    for (const SpecializedParameters& entry : specializations) {
+                        if (maps_are_equal(specialization, entry)) {
+                            // This specialization has already been fully walked. We don't need to
+                            // do anything more.
+                            return false;
+                        }
+                    }
+
+                    // This is a unique specialization that we haven't walked before. We are going
+                    // to remember it, and continue walking the call graph from this point.
+                    specializations.push_back(specialization);
+
+                    fInheritedSpecializations.swap(specialization);
+
+                    this->visitProgramElement(*decl.definition());
+
+                    fInheritedSpecializations.swap(specialization);
+                }
+            }
+            return false;
+        }
+
+    private:
+        SpecializationMap& fSpecializationMap;
+        SpecializedParameters fInheritedSpecializations;
+    };
+
+    // Walk the function call graph, starting from main, to determine the required specializations.
+    for (const std::unique_ptr<ProgramElement>& elem : fProgram.fOwnedElements) {
+        if (elem->is<FunctionDefinition>() &&
+            elem->as<FunctionDefinition>().declaration().isMain()) {
+            Searcher{&fSpecializationMap}.visitProgramElement(*elem);
+            break;
+        }
+    }
+}
+
 void PipelineStageCodeGenerator::generateCode() {
+    this->determineSpecializations();
+
     // Write all the program elements except for functions; prototype all the functions.
     for (const ProgramElement* e : fProgram.elements()) {
         this->writeProgramElementFirstPass(*e);

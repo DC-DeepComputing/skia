@@ -1,2 +1,4 @@
 static constexpr char SKSL_MINIFIED_sksl_rt_shader[] =
-"layout(builtin=15)float4 sk_FragCoord;";
+"layout(builtin=15)float4 sk_FragCoord;$pure half4 sparse_morphology_fn(shader"
+" child,float2 coord,float2 offset,half flip){half4 aggregate=max(flip*child"
+".eval(coord+offset),flip*child.eval(coord-offset));return flip*aggregate;}";
