@@ -22,6 +22,53 @@
       },
       "revId": "e8c22838cf82dee7502506ff134c616ee3636e0c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "49cedf89_951a2130",
+        "filename": "tests/sksl/runtime/IfElseBinding.minified.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-03T15:56:55Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "bb5ed25f_8d434835",
+      "range": {
+        "startLine": 1,
+        "startChar": 185,
+        "endLine": 1,
+        "endChar": 189
+      },
+      "revId": "e8c22838cf82dee7502506ff134c616ee3636e0c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb711da1_f320d4d2",
+        "filename": "tests/sksl/runtime/IfElseBinding.stage",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-03T15:56:55Z",
+      "side": 1,
+      "message": "will clang-tidy or similar complain about these whitespace lines?",
+      "range": {
+        "startLine": 9,
+        "startChar": 19,
+        "endLine": 9,
+        "endChar": 20
+      },
+      "revId": "e8c22838cf82dee7502506ff134c616ee3636e0c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
