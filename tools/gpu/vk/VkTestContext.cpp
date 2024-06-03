@@ -111,7 +111,11 @@ private:
                       bool ownsContext,
                       VkDebugReportCallbackEXT debugCallback,
                       PFN_vkDestroyDebugReportCallbackEXT destroyCallback)
-            : VkTestContext(backendContext, extensions, features, ownsContext, debugCallback,
+            : VkTestContext(backendContext,
+                            extensions,
+                            features,
+                            ownsContext,
+                            debugCallback,
                             destroyCallback) {
         fFenceSupport = true;
     }

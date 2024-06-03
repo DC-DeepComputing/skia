@@ -52,6 +52,6 @@ struct SK_API VulkanBackendContext {
     skgpu::VulkanDeviceLostProc      fDeviceLostProc = nullptr;
 };
 
-} // namespace skgpu
+}  // namespace skgpu
 
 #endif // skgpu_VulkanBackendContext_DEFINED
