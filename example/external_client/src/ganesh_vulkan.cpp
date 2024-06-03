@@ -16,13 +16,13 @@
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/ganesh/SkSurfaceGanesh.h"
 #include "include/gpu/ganesh/vk/GrVkDirectContext.h"
-#include "include/gpu/vk/GrVkBackendContext.h"
+#include "include/gpu/vk/VulkanBackendContext.h"
 #include "include/gpu/vk/VulkanExtensions.h"
 
 int main(int argc, char** argv) {
     // This will not run (since it's missing all the Vulkan setup code),
     // but it should compile and link to test the build system.
-    GrVkBackendContext backendContext;
+    skgpu::VulkanBackendContext backendContext;
 
     std::unique_ptr<skgpu::VulkanExtensions> extensions(new skgpu::VulkanExtensions());
     backendContext.fInstance = VK_NULL_HANDLE;
