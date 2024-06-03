@@ -1,6 +1,40 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "67dd443f_20a4029d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-06-03T02:15:56Z",
+      "side": 1,
+      "message": "This is going into a git repo, so 50 characters or so for description (though we\u0027re fine with up to ~72).",
+      "revId": "c4ce9d809e949bb5892e2b5bfa38d92c8a1fce39",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e9e6a12_445da47e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-06-03T02:15:56Z",
+      "side": 1,
+      "message": "Once again, this is git, so hard line breaks every 72 characters.",
+      "revId": "c4ce9d809e949bb5892e2b5bfa38d92c8a1fce39",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "906b07f9_c1dbabc3",
@@ -31,6 +65,23 @@
       "writtenOn": "2024-06-01T11:52:03Z",
       "side": 1,
       "message": "Hi :) is there anything that I can do to help get this merged?",
+      "revId": "c4ce9d809e949bb5892e2b5bfa38d92c8a1fce39",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c6f94a0_53441596",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-06-03T02:15:56Z",
+      "side": 1,
+      "message": "It looks like you\u0027ll need to add yourself to the `AUTHORS` file.",
       "revId": "c4ce9d809e949bb5892e2b5bfa38d92c8a1fce39",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
