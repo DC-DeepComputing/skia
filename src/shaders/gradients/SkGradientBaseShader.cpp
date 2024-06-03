@@ -189,6 +189,37 @@ SkGradientBaseShader::SkGradientBaseShader(const Descriptor& desc, const SkMatri
     SkASSERT((unsigned)desc.fTileMode < kSkTileModeCount);
     fTileMode = desc.fTileMode;
 
+    // Remove duplicate stops with more than two of the same stop, keeping the outer stop colors.
+    // i.e.      0, 0, 0,   0.2, 0.2, 0.3, 0.3, 0.3, 1, 1
+    // w/ clamp  0,    0,   0.2, 0.2, 0.3,      0.3, 1, 1
+    // wo/ clamp       0,   0.2, 0.2, 0.3,      0.3, 1
+    auto inColors = desc.fPositions ? TArray<SkColor4f, true>()
+                        : TArray<SkColor4f, true>(desc.fColors, desc.fColorCount);
+    auto inPositions = TArray<SkScalar, true>();
+    if (desc.fPositions) {
+        int i = 0;
+        int j = 1;
+        while (j <= desc.fColorCount) {
+            if (j == desc.fColorCount || desc.fPositions[i] != desc.fPositions[j]) {
+                bool dupStop = j - i > 1;
+
+                // For non-clamp tilemodes, only keep the inner stop for
+                // duplicate 0.0 or 1.0 stops, else always keep the outer stops.
+                if (!(dupStop && fTileMode != SkTileMode::kClamp && desc.fPositions[i] == 0)) {
+                    inPositions.push_back(desc.fPositions[i]);
+                    inColors.push_back(desc.fColors[i]);
+                }
+
+                if (dupStop && !(fTileMode != SkTileMode::kClamp && desc.fPositions[i] == 1)) {
+                    inPositions.push_back(desc.fPositions[j - 1]);
+                    inColors.push_back(desc.fColors[j - 1]);
+                }
+                i = j;
+            }
+            j++;
+        }
+    }
+
     /*  Note: we let the caller skip the first and/or last position.
         i.e. pos[0] = 0.3, pos[1] = 0.7
         In these cases, we insert entries to ensure that the final data
@@ -200,8 +231,9 @@ SkGradientBaseShader::SkGradientBaseShader(const Descriptor& desc, const SkMatri
             colorCount = 2
             fColorCount = 4
      */
-    fColorCount = desc.fColorCount;
-    // check if we need to add in start and/or end position/colors
+    fColorCount = inColors.size();
+
+    // Check if we need to add in start and/or end position/colors
     if (desc.fPositions) {
         fFirstStopIsImplicit = desc.fPositions[0] != 0;
         fLastStopIsImplicit = desc.fPositions[desc.fColorCount - 1] != SK_Scalar1;
@@ -216,15 +248,15 @@ SkGradientBaseShader::SkGradientBaseShader(const Descriptor& desc, const SkMatri
     // Now copy over the colors, adding the duplicates at t=0 and t=1 as needed
     SkColor4f* colors = fColors;
     if (fFirstStopIsImplicit) {
-        *colors++ = desc.fColors[0];
+        *colors++ = inColors[0];
     }
-    for (int i = 0; i < desc.fColorCount; ++i) {
-        colors[i] = desc.fColors[i];
-        fColorsAreOpaque = fColorsAreOpaque && (desc.fColors[i].fA == 1);
+    for (int i = 0; i < inColors.size(); ++i) {
+        colors[i] = inColors[i];
+        fColorsAreOpaque = fColorsAreOpaque && (inColors[i].fA == 1);
     }
     if (fLastStopIsImplicit) {
-        colors += desc.fColorCount;
-        *colors = desc.fColors[desc.fColorCount - 1];
+        colors += inColors.size();
+        *colors = inColors[inColors.size() - 1];
     }
 
     if (desc.fPositions) {
@@ -233,13 +265,13 @@ SkGradientBaseShader::SkGradientBaseShader(const Descriptor& desc, const SkMatri
         *positions++ = prev;  // force the first pos to 0
 
         int startIndex = fFirstStopIsImplicit ? 0 : 1;
-        int count = desc.fColorCount + fLastStopIsImplicit;
+        int count = inColors.size() + fLastStopIsImplicit;
 
         bool uniformStops = true;
-        const SkScalar uniformStep = desc.fPositions[startIndex] - prev;
+        const SkScalar uniformStep = inPositions[startIndex] - prev;
         for (int i = startIndex; i < count; i++) {
             // Pin the last value to 1.0, and make sure pos is monotonic.
-            auto curr = (i == desc.fColorCount) ? 1 : SkTPin(desc.fPositions[i], prev, 1.0f);
+            auto curr = (i == inColors.size()) ? 1 : SkTPin(inPositions[i], prev, 1.0f);
             uniformStops &= SkScalarNearlyEqual(uniformStep, curr - prev);
 
             *positions++ = prev = curr;
