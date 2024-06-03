@@ -2104,9 +2104,6 @@ FilterResult FilterResult::Builder::blur(const LayerSpace<SkSize>& sigma) {
         // outset, so redo the max output analysis with the 'outputBounds' mapped into pixel space.
         // SkAssertResult(lowResImage.fTransform.inverseMapRect(outputBounds, &srcRelativeOutput));
         srcRelativeOutput = layerToLowRes.mapRect(outputBounds);
-        // Include 1px of blur output so that it can be sampled during the upscale, which is needed
-        // to correctly seem large blurs across crop/raster tiles (crbug.com/1500021).
-        srcRelativeOutput.outset(PixelSpace<SkISize>({1, 1}));
 
         // NOTE: Since 'lowResMaxOutput' is based on the actual image and deferred tiling, this can
         // be smaller than the pessimistic filling for a clamp-tiled blur.
@@ -2114,9 +2111,14 @@ FilterResult FilterResult::Builder::blur(const LayerSpace<SkSize>& sigma) {
                                                    3.f * lowResSigma.height()}).ceil());
         srcRelativeOutput = lowResMaxOutput.relevantSubset(srcRelativeOutput,
                                                            lowResImage.tileMode());
+
         // Clamp won't return empty from relevantSubset() and a non-intersecting decal should have
         // been caught earlier.
         SkASSERT(!srcRelativeOutput.isEmpty());
+
+        // Include 1px of blur output so that it can be sampled during the upscale, which is needed
+        // to correctly seam large blurs across crop/raster tiles (crbug.com/1500021).
+        srcRelativeOutput.outset(PixelSpace<SkISize>({1, 1}));
     }
 
     sk_sp<SkSpecialImage> lowResBlur = lowResImage.refImage();
