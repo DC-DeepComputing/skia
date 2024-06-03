@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c7a50f29_eb030514",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-03T14:26:14Z",
+      "side": 1,
+      "message": "Thank you for digging into this, this is a really good find. I understand how your solution fixes the issue for a single cubic, but I believe that the fundamental issue with `check_edge_against_rect` would also present itself for quadratic curves.  Conics likely avoid this because they are always being chopping into quads already.\n\nIt makes me wonder if:\n - Should we always chop the cubic at 1/3 and 2/3 to avoid this issue and benefit from more accurate contains checks?\n - For quadratics, chopping at 1/2 would just create two lines w/ zero area between them so wouldn\u0027t actually contain anything.\n - Instead of chopping, we could just evaluate the curves at t\u003d1/3 and t\u003d2/3 and test the edges between t\u003d0 -\u003e 1/3, t\u003d1/3 -\u003e 2/3, and t\u003d2/3 -\u003e 1. We already know that the path is convex so we shouldn\u0027t have to worry about cubic complexities. This would also give us a more accurate quadratic contains too.\n - OR since this is a conservative contains check, is this extra overhead worthwhile? Instead of checking `!AllPointsEq` should we check if `prevPt !\u003d nextPt` and remember that if we never encountered a non-zero edge then the contains check should be false?\n \n Adding a few others to weigh in on what\u0027s the best direction to pursue for SkPath.",
+      "revId": "6aee59c5d4944ae0ae507aabec449e656914176c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
