@@ -2154,6 +2154,7 @@ MTL_SRCS = [
 ]
 
 VULKAN_SRCS = [
+    "src/gpu/vk/VulkanBackendContext.cpp",
     "src/gpu/vk/VulkanMutableTextureState.cpp",
     "src/gpu/vk/VulkanMutableTextureStatePriv.h",
     "src/gpu/ganesh/vk/GrVkBackendSemaphore.cpp",
