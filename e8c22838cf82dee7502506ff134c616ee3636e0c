@@ -69,6 +69,30 @@
       },
       "revId": "e8c22838cf82dee7502506ff134c616ee3636e0c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "808f7509_474c355e",
+        "filename": "tests/sksl/runtime/IfElseBinding.stage",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-06-03T20:01:20Z",
+      "side": 1,
+      "message": "Nah, clang-tidy doesn\u0027t care about .stage files.",
+      "parentUuid": "fb711da1_f320d4d2",
+      "range": {
+        "startLine": 9,
+        "startChar": 19,
+        "endLine": 9,
+        "endChar": 20
+      },
+      "revId": "e8c22838cf82dee7502506ff134c616ee3636e0c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
