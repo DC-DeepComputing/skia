@@ -22,6 +22,30 @@
       },
       "revId": "2b28aff7c3abecf46189e725ff2bc32a8889c7d9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "04fe1990_0a4756ac",
+        "filename": "src/gpu/ganesh/vk/GrVkGpu.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-06-04T18:51:11Z",
+      "side": 0,
+      "message": "Not that I could find, but I punted deleting them to the next CL, just in case.",
+      "parentUuid": "5705a681_b1652221",
+      "range": {
+        "startLine": 164,
+        "startChar": 0,
+        "endLine": 182,
+        "endChar": 9
+      },
+      "revId": "2b28aff7c3abecf46189e725ff2bc32a8889c7d9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
