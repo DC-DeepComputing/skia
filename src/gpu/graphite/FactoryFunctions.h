@@ -127,6 +127,8 @@ namespace PrecompileImageFilters {
             SkSpan<const sk_sp<PrecompileColorFilter>> colorFilterOptions,
             sk_sp<PrecompileImageFilter> input);
 
+    SK_API sk_sp<PrecompileImageFilter> Lighting(sk_sp<PrecompileImageFilter> input);
+
 } // namespace PrecompileImageFilters
 
 //--------------------------------------------------------------------------------------------------

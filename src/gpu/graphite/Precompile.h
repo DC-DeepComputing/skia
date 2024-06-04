@@ -160,7 +160,6 @@ enum class PrecompileImageFilterFlags : uint32_t {
     kNone              = 0x00,
     kBlur              = 0x01,
     kDisplacement      = 0x02,
-    kLighting          = 0x04,
     kMatrixConvolution = 0x08,
     kMorphology        = 0x10,
 };

@@ -1183,7 +1183,7 @@ std::pair<sk_sp<SkImageFilter>, sk_sp<PrecompileImageFilter>> colorfilter_imagef
 
     sk_sp<SkImageFilter> cfIF = SkImageFilters::ColorFilter(std::move(cf), /* input= */ nullptr);
     sk_sp<PrecompileImageFilter> cfIFO = PrecompileImageFilters::ColorFilter({ std::move(o)},
-                                                                             /* input= */ {});
+                                                                             /* input= */ nullptr);
 
     return { std::move(cfIF), std::move(cfIFO) };
 }
@@ -1195,7 +1195,6 @@ std::pair<sk_sp<SkImageFilter>, sk_sp<PrecompileImageFilter>> lighting_imagefilt
     static constexpr SkPoint3 kTarget{0, 0, 0};
     static constexpr SkPoint3 kDirection{0, 1, 0};
 
-    *imageFilterMask |= PrecompileImageFilterFlags::kLighting;
     sk_sp<SkImageFilter> lightingIF;
 
     int option = rand->nextULessThan(6);
@@ -1247,7 +1246,8 @@ std::pair<sk_sp<SkImageFilter>, sk_sp<PrecompileImageFilter>> lighting_imagefilt
             break;
     }
 
-    return { std::move(lightingIF), nullptr };
+    sk_sp<PrecompileImageFilter> lightingO = PrecompileImageFilters::Lighting(/* input= */ nullptr);
+    return { std::move(lightingIF), std::move(lightingO) };
 }
 
 std::pair<sk_sp<SkImageFilter>, sk_sp<PrecompileImageFilter>>  matrix_convolution_imagefilter(

@@ -1216,6 +1216,40 @@ sk_sp<PrecompileImageFilter> PrecompileImageFilters::ColorFilter(
                                                         SkSpan(&input, 1));
 }
 
+class PrecompileLightingImageFilter : public PrecompileImageFilter {
+public:
+    PrecompileLightingImageFilter(SkSpan<sk_sp<PrecompileImageFilter>> inputs)
+            : PrecompileImageFilter(std::move(inputs)) {
+    }
+
+private:
+    void onCreatePipelines(
+            const KeyContext& keyContext,
+            PipelineDataGatherer* gatherer,
+            const PaintOptions::ProcessCombination& processCombination) const override {
+
+        sk_sp<PrecompileShader> imageShader = PrecompileShadersPriv::Image(
+                PrecompileImageShaderFlags::kExcludeAlpha |
+                PrecompileImageShaderFlags::kExcludeCubic);
+
+        PaintOptions lighting;
+        lighting.setShaders({ PrecompileShadersPriv::Lighting(std::move(imageShader)) });
+
+        lighting.priv().buildCombinations(keyContext,
+                                          gatherer,
+                                          DrawTypeFlags::kSimpleShape,
+                                          /* withPrimitiveBlender= */ false,
+                                          Coverage::kSingleChannel,
+                                          processCombination);
+    }
+
+};
+
+sk_sp<PrecompileImageFilter> PrecompileImageFilters::Lighting(
+            sk_sp<PrecompileImageFilter> input) {
+    return sk_make_sp<PrecompileLightingImageFilter>(SkSpan(&input, 1));
+}
+
 //--------------------------------------------------------------------------------------------------
 // This class doesn't actually add any combinations to a given PaintOptions' combinatorics.
 // Its mere presence triggers the precompilation of the BlurImageFilter's Shaders.

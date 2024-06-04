@@ -491,27 +491,6 @@ void create_displacement_imagefilter_pipelines(
                                           processCombination);
 }
 
-void create_lighting_imagefilter_pipelines(
-        const KeyContext& keyContext,
-        PipelineDataGatherer* gatherer,
-        const PaintOptions::ProcessCombination& processCombination) {
-
-    // For lighting imagefilters we know we don't have alpha-only textures and don't need cubic
-    // filtering.
-    sk_sp<PrecompileShader> imageShader = PrecompileShadersPriv::Image(
-            PrecompileImageShaderFlags::kExcludeAlpha | PrecompileImageShaderFlags::kExcludeCubic);
-
-    PaintOptions lighting;
-    lighting.setShaders({ PrecompileShadersPriv::Lighting(std::move(imageShader)) });
-
-    lighting.priv().buildCombinations(keyContext,
-                                      gatherer,
-                                      DrawTypeFlags::kSimpleShape,
-                                      /* withPrimitiveBlender= */ false,
-                                      Coverage::kSingleChannel,
-                                      processCombination);
-}
-
 void create_matrix_convolution_imagefilter_pipelines(
         const KeyContext& keyContext,
         PipelineDataGatherer* gatherer,
@@ -641,9 +620,6 @@ void PaintOptions::buildCombinations(
         }
         if (fImageFilterFlags & PrecompileImageFilterFlags::kDisplacement) {
             create_displacement_imagefilter_pipelines(keyContext, gatherer, processCombination);
-        }
-        if (fImageFilterFlags & PrecompileImageFilterFlags::kLighting) {
-            create_lighting_imagefilter_pipelines(keyContext, gatherer, processCombination);
         }
         if (fImageFilterFlags & PrecompileImageFilterFlags::kMatrixConvolution) {
             create_matrix_convolution_imagefilter_pipelines(keyContext, gatherer,
