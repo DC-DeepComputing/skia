@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4eda65e9_4af9087f",
+        "filename": "src/shaders/gradients/SkGradientBaseShader.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-04T15:52:27Z",
+      "side": 1,
+      "message": "We can avoid having to copy the de-duplicated color data if we move the logic down to after we allocate `fStorage` and assign `fColors`. \n\nIt\u0027s a relatively rare case to need to prune duplicate colors (and when they are pruned, it probably won\u0027t be that many to remove), so it\u0027s not unreasonable to allocate with the original `fColorCount` and then reduce it as we encounter duplicate stops.\n\nAlternatively, we can do an iteration here to count the number of duplicates that would get removed in order to keep the count exact.",
+      "range": {
+        "startLine": 192,
+        "startChar": 3,
+        "endLine": 197,
+        "endChar": 82
+      },
+      "revId": "b909c54c0921455dc115372d897d33541c4b40c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05feac18_868a4eac",
+        "filename": "src/shaders/gradients/SkGradientBaseShader.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-04T15:52:27Z",
+      "side": 1,
+      "message": "Thinking about terminology, `leftmost` and `rightmost` are bit easier to interpret from the inner/outer that we\u0027d been using initially. Assigning to `bools` with descriptive names can also help here, something like:\n\n    // Include the leftmost (i) when not a duplicate, or not already on the left\n    // edge (t \u003d 0), or we are on the left edge but are clamping to it.\n    const bool includeLeftmost \u003d !dupStop || desc.fPositions[i] !\u003d 0 || fTileMode \u003d\u003d SkTileMode::kClamp;\n    // Include the rightmost (j-1) when it is a duplicate range and we aren\u0027t\n    // already on the right edge (t \u003d 1), or we are on the right edge but are\n    // clamping to it\n    const bool includeRightmost \u003d dupStop \u0026\u0026 (desc.fPosition[j-1] !\u003d 1 || fTileMode \u003d\u003d SkTileMode::kClamp);\n    \n    \nI also think in the check for desc.fPosition \u003d\u003d 1 (or !\u003d1), we should be checking `j-1` to see if the RHS of the duplicate interval is at t\u003d1.",
+      "range": {
+        "startLine": 206,
+        "startChar": 0,
+        "endLine": 216,
+        "endChar": 17
+      },
+      "revId": "b909c54c0921455dc115372d897d33541c4b40c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
