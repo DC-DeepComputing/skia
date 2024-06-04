@@ -234,7 +234,7 @@ struct SamplerDesc {
         // the conversion information can fit within an uint32.
         SkASSERT(info.fNonFormatYcbcrConversionInfo >> kMaxNumConversionInfoBits == 0);
     }
-
+    SamplerDesc() = default;
     SamplerDesc(const SamplerDesc&) = default;
 
     bool operator==(const SamplerDesc& o) const {
