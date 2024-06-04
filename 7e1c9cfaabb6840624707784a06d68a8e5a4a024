@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c6e57fbc_32fc1026",
+        "filename": "src/gpu/graphite/geom/AnalyticBlurMask.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 330,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-04T17:54:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b902ff25_187ba532",
+      "revId": "7e1c9cfaabb6840624707784a06d68a8e5a4a024",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2ee5bb91_f1c43d73",
@@ -35,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ebabaa99_e7bd3f29",
+        "filename": "src/gpu/graphite/geom/AnalyticBlurMask.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-04T17:54:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2ee5bb91_f1c43d73",
+      "revId": "7e1c9cfaabb6840624707784a06d68a8e5a4a024",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "32fe78c1_1bd5314d",
@@ -48,6 +84,24 @@
       "writtenOn": "2024-06-04T15:43:38Z",
       "side": 1,
       "message": "Definitely - but that could be a separate CL",
+      "revId": "7e1c9cfaabb6840624707784a06d68a8e5a4a024",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e8517c19_20b5f205",
+        "filename": "src/gpu/graphite/geom/AnalyticBlurMask.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 349,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-04T17:54:49Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "32fe78c1_1bd5314d",
       "revId": "7e1c9cfaabb6840624707784a06d68a8e5a4a024",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
