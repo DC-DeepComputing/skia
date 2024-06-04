@@ -201,7 +201,8 @@ SkGradientBaseShader::SkGradientBaseShader(const Descriptor& desc, const SkMatri
             fColorCount = 4
      */
     fColorCount = desc.fColorCount;
-    // check if we need to add in start and/or end position/colors
+
+    // Check if we need to add in start and/or end position/colors
     if (desc.fPositions) {
         fFirstStopIsImplicit = desc.fPositions[0] != 0;
         fLastStopIsImplicit = desc.fPositions[desc.fColorCount - 1] != SK_Scalar1;
@@ -245,9 +246,46 @@ SkGradientBaseShader::SkGradientBaseShader(const Descriptor& desc, const SkMatri
             *positions++ = prev = curr;
         }
 
-        // If the stops are uniform, treat them as implicit.
         if (uniformStops) {
+            // If the stops are uniform, treat them as implicit.
             fPositions = nullptr;
+        } else {
+            // Remove duplicate stops with more than two of the same stop,
+            // keeping the leftmost and rightmost stop colors.
+            // i.e.       0, 0, 0,   0.2, 0.2, 0.3, 0.3, 0.3, 1, 1
+            // w/  clamp  0,    0,   0.2, 0.2, 0.3,      0.3, 1, 1
+            // w/o clamp        0,   0.2, 0.2, 0.3,      0.3, 1
+            int i = 0;
+            int j = 1;
+            int dedupedColorCount = 0;
+            while (j <= desc.fColorCount) {
+                if (j == desc.fColorCount || desc.fPositions[i] != desc.fPositions[j]) {
+                    bool dupStop = j - i > 1;
+
+                    // Ignore the leftmost stop (i) if it is a non-clamp tilemode with
+                    // a duplicate stop on t = 0.
+                    bool ignoreLeftmost = dupStop && fTileMode != SkTileMode::kClamp
+                                                    && desc.fPositions[i] == 0;
+                    if (!ignoreLeftmost) {
+                        fPositions[dedupedColorCount] = desc.fPositions[i];
+                        fColors[dedupedColorCount] =  desc.fColors[i];
+                        dedupedColorCount++;
+                    }
+
+                    // Include the rightmost stop (j-1) only if the stop has a duplicate,
+                    // ignoring the rightmost stop if it is a non-clamp tilemode with t = 1.
+                    bool ignoreRightmost = fTileMode != SkTileMode::kClamp
+                                                    && desc.fPositions[j - 1] == 1;
+                    if (dupStop && !ignoreRightmost) {
+                        fPositions[dedupedColorCount] = desc.fPositions[j - 1];
+                        fColors[dedupedColorCount] = desc.fColors[j - 1];
+                        dedupedColorCount++;
+                    }
+                    i = j;
+                }
+                j++;
+            }
+            fColorCount = dedupedColorCount;
         }
     }
 }
