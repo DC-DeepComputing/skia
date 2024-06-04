@@ -30,6 +30,8 @@
 #include <cstdint>
 #include <cstring>
 
+bool gFixScanConverter = true;
+
 /*
 
 The following is a high-level overview of our analytic anti-aliasing
@@ -1758,16 +1760,14 @@ static void aaa_walk_edges(SkAnalyticEdge*  prevHead,
             SkASSERT(currE->fY == nextY);
 
             if (currE->fLowerY <= nextY) {
-#if !SK_USE_LEGACY_DEFERRED_BLIT
                 // We need to do the x-sort, even though we're about to remove this edge from the
                 // list. It might become our new left edge for any pending blit.
-                if (currE->fX < prevX) {
+                if (gFixScanConverter && currE->fX < prevX) {
                     backward_insert_edge_based_on_x(currE);
                     if (currE->fNext == leftE) {
                         setLeft(currE);
                     }
                 }
-#endif
                 remove_edge(currE);
             } else {
                 update_next_next_y(currE->fLowerY, nextY, &nextNextY);
@@ -1789,11 +1789,9 @@ static void aaa_walk_edges(SkAnalyticEdge*  prevHead,
                                              rightClip);
                     }
                     backward_insert_edge_based_on_x(currE);
-#if !SK_USE_LEGACY_DEFERRED_BLIT
-                    if (currE->fNext == leftE) {
+                    if (gFixScanConverter && currE->fNext == leftE) {
                         setLeft(currE);
                     }
-#endif
                 } else {
                     prevX = newX;
                 }

@@ -144,6 +144,8 @@
 #include "include/codec/SkRawDecoder.h"
 #endif
 
+extern bool gFixScanConverter;
+
 using namespace skia_private;
 
 class CapturingShaderErrorHandler : public GrContextOptions::ShaderErrorHandler {
@@ -858,6 +860,11 @@ Viewer::Viewer(int argc, char** argv, void* platformData)
         this->updateTitle();
         fWindow->inval();
     });
+    fCommands.addCommand('.', "Modes", "Toggle AAA Fix", [this](){
+        gFixScanConverter = !gFixScanConverter;
+        this->updateTitle();
+        fWindow->inval();
+    });
 
     // set up slides
     this->initSlides();
@@ -1303,6 +1310,8 @@ void Viewer::updateTitle() {
     } else if (kPerspective_Fake == fPerspectiveMode) {
         title.append(" Perspective (Fake)");
     }
+
+    title.append(gFixScanConverter ? " [Fix]" : " [Base]");
 
     fWindow->setTitle(title.c_str());
 }
