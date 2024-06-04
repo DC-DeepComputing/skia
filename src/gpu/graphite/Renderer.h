@@ -163,14 +163,14 @@ public:
     //    - Does each DrawList::Draw have extra space (e.g. 8 bytes) that steps can cache data in?
 protected:
     enum class Flags : unsigned {
-        kNone                  = 0b0000000,
-        kRequiresMSAA          = 0b0000001,
-        kPerformsShading       = 0b0000010,
-        kHasTextures           = 0b0000100,
-        kEmitsCoverage         = 0b0001000,
-        kLCDCoverage           = 0b0010000,
-        kEmitsPrimitiveColor   = 0b0100000,
-        kOutsetBoundsForAA     = 0b1000000,
+        kNone                  = 0b00000000,
+        kRequiresMSAA          = 0b00000001,
+        kPerformsShading       = 0b00000010,
+        kHasTextures           = 0b00000100,
+        kEmitsCoverage         = 0b00001000,
+        kLCDCoverage           = 0b00010000,
+        kEmitsPrimitiveColor   = 0b00100000,
+        kOutsetBoundsForAA     = 0b01000000,
     };
     SK_DECL_BITMASK_OPS_FRIENDS(Flags)
 

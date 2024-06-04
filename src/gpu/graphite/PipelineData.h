@@ -84,6 +84,7 @@ private:
     std::vector<SampledTexture> fTextureData;
 };
 
+
 // The PipelineDataGatherer is just used to collect information for a given PaintParams object.
 //   The UniformData is added to a cache and uniquified. Only that unique ID is passed around.
 //   The TextureData is also added to a cache and uniquified. Only that ID is passed around.
@@ -124,9 +125,21 @@ public:
 
     bool hasUniforms() const { return fUniformManager.size(); }
 
+    bool hasGradientBufferData() const { return !fGradientStorage.empty(); }
+
+    SkSpan<const float> gradientBufferData() const { return fGradientStorage; }
+
     // Returns the uniform data written so far. Will automatically pad the end of the data as needed
     // to the overall required alignment, and so should only be called when all writing is done.
     UniformDataBlock finishUniformDataBlock() { return fUniformManager.finishUniformDataBlock(); }
+
+    // Returns the buffer offset the data will begin at.
+    int writeGradientData(SkSpan<float> data) {
+        int lastSize = fGradientStorage.size();
+        fGradientStorage.append(data.size(), data.data());
+
+        return lastSize;
+    }
 
 private:
 #ifdef SK_DEBUG
@@ -136,9 +149,11 @@ private:
     void doneWithExpectedUniforms() { fUniformManager.doneWithExpectedUniforms(); }
 #endif // SK_DEBUG
 
-    const Caps* const fCaps;
-    TextureDataBlock  fTextureDataBlock;
-    UniformManager    fUniformManager;
+    const Caps* const    fCaps;
+    TextureDataBlock     fTextureDataBlock;
+    UniformManager       fUniformManager;
+
+    SkTDArray<float> fGradientStorage;
 };
 
 #ifdef SK_DEBUG
