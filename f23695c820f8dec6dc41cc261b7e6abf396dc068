@@ -22,6 +22,30 @@
       },
       "revId": "f23695c820f8dec6dc41cc261b7e6abf396dc068",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "636a339b_4005b764",
+        "filename": "site/docs/user/special/vulkan.md",
+        "patchSetId": 11
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-06-04T19:03:08Z",
+      "side": 0,
+      "message": "The interface is not in BackendContext (anymore?) and GrVkCreateInterface is not a public API (anymore?) so I presumed this was just out of date.",
+      "parentUuid": "cf8403d9_2a86c6e9",
+      "range": {
+        "startLine": 60,
+        "startChar": 0,
+        "endLine": 60,
+        "endChar": 98
+      },
+      "revId": "f23695c820f8dec6dc41cc261b7e6abf396dc068",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
