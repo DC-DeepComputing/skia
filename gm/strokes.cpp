@@ -22,6 +22,7 @@
 #include "include/utils/SkParsePath.h"
 #include "src/base/SkFloatBits.h"
 #include "src/base/SkRandom.h"
+#include "src/core/SkStroke.h"
 #include "tools/ToolUtils.h"
 
 #include <string.h>
@@ -595,6 +596,112 @@ DEF_SIMPLE_GM(inner_join_geometry, canvas, 1000, 700) {
             canvas->translate(-800, 200);
         }
     }
+}
+
+DEF_SIMPLE_GM(overfill_zoom, canvas, 2000, 2000) {
+    // Bottom segment of the "circle" (linearized with 32 segments) from polygons GM:
+    SkPath path;
+    path.moveTo(47.9036674f, 39.2275925f);
+    path.lineTo(44.1518059f, 40.3657074f);
+    path.lineTo(40.25f, 40.75f);
+    path.lineTo(36.3481941f, 40.3657074f);
+    path.lineTo(32.5963287f, 39.2275925f);
+
+    SkPaint paint;
+    paint.setAntiAlias(true);
+    paint.setStyle(SkPaint::kStroke_Style);
+    paint.setStrokeWidth(10);
+
+    static constexpr float kScaleFactor = 16.0f;
+
+    auto surf = SkSurfaces::Raster(SkImageInfo::MakeN32Premul(100, 100));
+    surf->getCanvas()->drawPath(path, paint);
+
+    canvas->save();
+    canvas->scale(kScaleFactor, kScaleFactor);
+    canvas->drawImage(surf->makeImageSnapshot(), 0, 0);
+
+    SkPath outlinePath;
+    SkStroke stroker;
+    stroker.setWidth(10);
+    stroker.strokePath(path, &outlinePath);
+
+    SkPaint outlinePaint;
+    outlinePaint.setStyle(SkPaint::kStroke_Style);
+    outlinePaint.setColor(SK_ColorYELLOW);
+    canvas->drawPath(outlinePath, outlinePaint);
+    outlinePaint.setColor(SK_ColorGREEN);
+    canvas->drawPath(path, outlinePaint);
+    canvas->restore();
+
+    canvas->drawPath(path, paint);
+}
+
+DEF_SIMPLE_GM(overfill_zoom_2, canvas, 2000, 2000) {
+    // Bottom segment of the "circle" (linearized with 32 segments) from polygons GM,
+    // stroked to 10 pixels wide:
+    SkPath path;
+    path.moveTo(19.3550911f, 14.0122948f);
+    path.lineTo(1.144907f, 14.0122948f);
+    path.lineTo(4.04775238f, 4.44289017f);
+    path.lineTo(7.79961777f, 5.5810051f);
+    path.lineTo(6.34819412f, 10.3657074f);
+    path.lineTo(6.83827591f, 5.38978195f);
+    path.lineTo(10.7400818f, 5.77407455f);
+    path.lineTo(10.25f, 10.75f);
+    path.lineTo(9.75991821f, 5.77407455f);
+    path.lineTo(13.6617241f, 5.38978195f);
+    path.lineTo(14.1518059f, 10.3657074f);
+    path.lineTo(12.7003822f, 5.5810051f);
+    path.lineTo(16.4522438f, 4.44289017f);
+    path.lineTo(19.3550911f, 14.0122948f);
+    path.close();
+
+    SkPaint paint;
+    paint.setAntiAlias(true);
+
+    static constexpr float kScaleFactor = 64.0f;
+
+    auto surf = SkSurfaces::Raster(SkImageInfo::MakeN32Premul(60, 60));
+    surf->getCanvas()->drawPath(path, paint);
+
+    canvas->save();
+    canvas->scale(kScaleFactor, kScaleFactor);
+    canvas->drawImage(surf->makeImageSnapshot(), 0, 0);
+
+    SkPaint outlinePaint;
+    outlinePaint.setStyle(SkPaint::kStroke_Style);
+    outlinePaint.setColor(SK_ColorYELLOW);
+    canvas->drawPath(path, outlinePaint);
+    canvas->restore();
+
+    canvas->drawPath(path, paint);
+}
+
+DEF_SIMPLE_GM(overfill_circle, canvas, 2000, 2000) {
+    // Bottom segment of the "circle" (linearized with 32 segments) from polygons GM,
+    // stroked to 10 pixels wide:
+    SkPath path;
+    path.moveTo(19.3550911f, 14.0122948f);
+    path.lineTo(1.144907f, 14.0122948f);
+    path.lineTo(4.04775238f, 4.44289017f);
+    path.lineTo(7.79961777f, 5.5810051f);
+    path.lineTo(6.34819412f, 10.3657074f);
+    path.lineTo(6.83827591f, 5.38978195f);
+    path.lineTo(10.7400818f, 5.77407455f);
+    path.lineTo(10.25f, 10.75f);
+    path.lineTo(9.75991821f, 5.77407455f);
+    path.lineTo(13.6617241f, 5.38978195f);
+    path.lineTo(14.1518059f, 10.3657074f);
+    path.lineTo(12.7003822f, 5.5810051f);
+    path.lineTo(16.4522438f, 4.44289017f);
+    path.lineTo(19.3550911f, 14.0122948f);
+    path.close();
+
+    SkPaint paint;
+    paint.setAntiAlias(true);
+
+    canvas->drawPath(path, paint);
 }
 
 DEF_SIMPLE_GM(skbug12244, canvas, 150, 150) {
