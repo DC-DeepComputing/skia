@@ -22,6 +22,7 @@
 #include "include/utils/SkParsePath.h"
 #include "src/base/SkFloatBits.h"
 #include "src/base/SkRandom.h"
+#include "src/core/SkStroke.h"
 #include "tools/ToolUtils.h"
 
 #include <string.h>
@@ -595,6 +596,52 @@ DEF_SIMPLE_GM(inner_join_geometry, canvas, 1000, 700) {
             canvas->translate(-800, 200);
         }
     }
+}
+
+DEF_SIMPLE_GM(overfill_circle, canvas, 2000, 2000) {
+    static constexpr int kNumPoints = 32;
+    auto pt = [](int idx) {
+        SkScalar angle = 2 * SK_ScalarPI * idx / kNumPoints;
+        return SkPoint{20 * SkScalarCos(angle) + 40, 20 * SkScalarSin(angle) + 40};
+    };
+
+    SkPath path;
+    int i = 0; // 5
+    path.moveTo(pt(i++));
+    for (; i < 32; ++i) { // 12
+        path.lineTo(pt(i));
+    }
+    path.close();
+
+    SkPaint paint;
+    paint.setAntiAlias(true);
+    paint.setStyle(SkPaint::kStroke_Style);
+    paint.setStrokeWidth(10);
+
+    static constexpr float kScaleFactor = 16.0f;
+
+    auto surf = SkSurfaces::Raster(SkImageInfo::MakeN32Premul(100, 100));
+    surf->getCanvas()->translate(0.25f, 0.75f);
+    surf->getCanvas()->drawPath(path, paint);
+
+    canvas->save();
+    canvas->scale(kScaleFactor, kScaleFactor);
+    canvas->drawImage(surf->makeImageSnapshot(), 0, 0);
+
+    SkPath outlinePath;
+    SkStroke stroker;
+    stroker.setWidth(10);
+    stroker.strokePath(path, &outlinePath);
+
+    SkPaint outlinePaint;
+    outlinePaint.setStyle(SkPaint::kStroke_Style);
+    outlinePaint.setColor(SK_ColorYELLOW);
+    canvas->translate(0.25f, 0.75f);
+    canvas->drawPath(outlinePath, outlinePaint);
+    canvas->restore();
+
+    canvas->translate(0.25f, 0.75f);
+    canvas->drawPath(path, paint);
 }
 
 DEF_SIMPLE_GM(skbug12244, canvas, 150, 150) {
