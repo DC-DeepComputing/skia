@@ -33,6 +33,24 @@
       "message": "Do you expect to be using this for actually-opaque images that are 10101010 encoded? If so, we could add two different scanline functions, and switch the bytes-per-pixel here (similar to what we do for 4444 and 8888 above).",
       "revId": "da3e4957b1c67a4af7cd9639e8cd673a08864f4b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20c08092_2dfaa841",
+        "filename": "src/encode/SkPngEncoderImpl.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 9944
+      },
+      "writtenOn": "2024-06-04T17:28:32Z",
+      "side": 1,
+      "message": "I\u0027m not sure.  I was following `kRGBA_1010102_SkColorType`.  I think it\u0027s likely that the contents will frequently be opaque since the reproduction is rendering snapshots of ui then writing them to PNG.  I don\u0027t know if anywhere in that process we are smart enough to set \"isOpaque()\" though?  That isn\u0027t hunting through all the pixels looking at the alpha channels is it?\n\nYou know better than me, let me know what you think is right.",
+      "parentUuid": "64a4a2be_90056470",
+      "revId": "da3e4957b1c67a4af7cd9639e8cd673a08864f4b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
