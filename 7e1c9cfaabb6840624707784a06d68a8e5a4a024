@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b902ff25_187ba532",
+        "filename": "src/gpu/graphite/geom/AnalyticBlurMask.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 330,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-06-04T15:43:38Z",
+      "side": 1,
+      "message": "wdyt about wrapping this in SK_BEGIN_REQUIRE_DENSE/SK_END_REQUIRE_DENSE ?",
+      "revId": "7e1c9cfaabb6840624707784a06d68a8e5a4a024",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ee5bb91_f1c43d73",
+        "filename": "src/gpu/graphite/geom/AnalyticBlurMask.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-06-04T15:43:38Z",
+      "side": 1,
+      "message": "Do we want to assert SkIsAlign4(sizeof(DerivedParams)) ?",
+      "revId": "7e1c9cfaabb6840624707784a06d68a8e5a4a024",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32fe78c1_1bd5314d",
+        "filename": "src/gpu/graphite/geom/AnalyticBlurMask.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 349,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-06-04T15:43:38Z",
+      "side": 1,
+      "message": "Definitely - but that could be a separate CL",
+      "revId": "7e1c9cfaabb6840624707784a06d68a8e5a4a024",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
