@@ -62,7 +62,7 @@ enum class SnippetRequirementFlags : uint32_t {
     kPriorStageOutput = 0x2,  // AKA the "input" color, or the "src" argument for a blender
     kBlenderDstColor  = 0x4,  // The "dst" argument for a blender
     kSurfaceColor     = 0x8,
-    kStoresData       = 0x10, // Indicates that the node stores numerical sampler data
+    kCanStoreData     = 0x10, // Indicates that the node can optionally store numerical sampler data
 };
 SK_MAKE_BITMASK_OPS(SnippetRequirementFlags)
 
@@ -101,7 +101,9 @@ struct ShaderSnippet {
         , fStaticFunctionName(functionName)
         , fExpressionGenerator(expressionGenerator)
         , fPreambleGenerator(preambleGenerator)
-        , fNumChildren(numChildren) {}
+        , fNumChildren(numChildren) {
+
+        }
 
     bool needsLocalCoords() const {
         return SkToBool(fSnippetRequirementFlags & SnippetRequirementFlags::kLocalCoords);
@@ -112,9 +114,9 @@ struct ShaderSnippet {
     bool needsBlenderDstColor() const {
         return SkToBool(fSnippetRequirementFlags & SnippetRequirementFlags::kBlenderDstColor);
     }
-    bool storesData() const {
-        return SkToBool(fSnippetRequirementFlags & SnippetRequirementFlags::kStoresData);
-    }
+    // bool storesImmutableSamplerData() const {
+    //     return fStoresImmutableSamplerData;
+    // }
 
     const char* fName = nullptr;
     SkSpan<const Uniform> fUniforms;
@@ -124,6 +126,7 @@ struct ShaderSnippet {
     GenerateExpressionForSnippetFn fExpressionGenerator = nullptr;
     GeneratePreambleForSnippetFn fPreambleGenerator = nullptr;
     int fNumChildren = 0;
+    // bool fStoresImmutableSamplerData = false;
 };
 
 // ShaderNodes organize snippets into an effect tree, and provide random access to the dynamically
@@ -150,9 +153,9 @@ public:
         for (const ShaderNode* child : children) {
             fRequiredFlags |= child->requiredFlags();
         }
-        if (!fData.empty()) {
-            fRequiredFlags |= SnippetRequirementFlags::kStoresData;
-        }
+        // Data should only be provided if the snippet has the kCanStoreData requirement flag.
+        SkASSERT(fData.empty() ||
+                 (snippet->fSnippetRequirementFlags & SnippetRequirementFlags::kCanStoreData));
     }
 
     int32_t codeSnippetId() const { return fCodeID; }
@@ -229,7 +232,7 @@ private:
     SkBlendMode fBlendMode = SkBlendMode::kClear;
     skgpu::BlendInfo fBlendInfo;
     SkEnumBitMask<SnippetRequirementFlags> fSnippetRequirementFlags;
-    SkSpan<const uint32_t> fData;
+    skia_private::TArray<uint32_t> fData;
 };
 
 // ShaderCodeDictionary is a thread-safe dictionary of ShaderSnippets to code IDs for use with
@@ -261,9 +264,9 @@ public:
 #endif
 
     // This method can return nullptr
-    const ShaderSnippet* getEntry(int codeSnippetID) const SK_EXCLUDES(fSpinLock);
+    const ShaderSnippet* getEntry(uint32_t codeSnippetID) const SK_EXCLUDES(fSpinLock);
     const ShaderSnippet* getEntry(BuiltInCodeSnippetID codeSnippetID) const SK_EXCLUDES(fSpinLock) {
-        return this->getEntry(SkTo<int>(codeSnippetID));
+        return this->getEntry(SkTo<uint32_t>(codeSnippetID));
     }
 
     int findOrCreateRuntimeEffectSnippet(const SkRuntimeEffect* effect);

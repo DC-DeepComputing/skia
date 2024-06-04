@@ -14,6 +14,7 @@
 #include "include/private/base/SkTArray.h"
 #include "src/core/SkChecksum.h"
 #include "src/gpu/graphite/BuiltInCodeSnippetID.h"
+#include "src/gpu/graphite/Caps.h"
 
 #include <limits>
 #include <cstring> // for memcmp
@@ -81,11 +82,8 @@ public:
 private:
     friend class PaintParamsKeyBuilder;   // for the parented-data ctor
 
-    static constexpr int kInvalidDataIdx = -1;
-    constexpr PaintParamsKey(SkSpan<const uint32_t> span,
-                             int beginningIdxOfStoredSamplerData = kInvalidDataIdx)
-            : fData(span)
-            , fIdxOfStoredSamplerData(beginningIdxOfStoredSamplerData) {}
+    constexpr PaintParamsKey(SkSpan<const uint32_t> span)
+            : fData(span) {}
 
     // Returns null if the node or any of its children have an invalid snippet ID. Recursively
     // creates a node and all of its children, incrementing 'currentIndex' by the total number of
@@ -94,10 +92,14 @@ private:
                                  int* currentIndex,
                                  SkArenaAlloc* arena) const;
 
+    // Returns the size of the key excluding any appended data.
+    int keySnippetSize() const {
+        return SkTo<int>(fData.size());
+    }
+
     // The memory referenced in 'fData' is always owned by someone else. It either shares the span
     // of from the Builder, or clone() puts the span in an arena.
     SkSpan<const uint32_t> fData;
-    int fIdxOfStoredSamplerData = kInvalidDataIdx;
 };
 
 // The PaintParamsKeyBuilder and the PaintParamsKeys snapped from it share the same
@@ -118,8 +120,8 @@ public:
 
     ~PaintParamsKeyBuilder() { SkASSERT(!fLocked); }
 
-    void beginBlock(BuiltInCodeSnippetID id) { this->beginBlock(static_cast<int32_t>(id)); }
-    void beginBlock(int32_t codeSnippetID) {
+    void beginBlock(BuiltInCodeSnippetID id) { this->beginBlock(static_cast<uint32_t>(id)); }
+    void beginBlock(uint32_t codeSnippetID) {
         SkASSERT(!fLocked);
         SkDEBUGCODE(this->pushStack(codeSnippetID);)
         fData.push_back(codeSnippetID);
@@ -142,12 +144,39 @@ public:
         this->endBlock();
     }
 
+    void addImmutableSamplerDataIfApplicable(const Caps* caps,
+                                             const SkSamplingOptions& sampling,
+                                             const SkTileMode tileModes[2],
+                                             const TextureProxy* proxy) {
+        if (!proxy || !caps) {
+            return;
+        }
+        ImmutableSamplerInfo info = caps->getImmutableSamplerInfo(proxy);
+
+        if (!(info.fNonFormatYcbcrConversionInfo || info.fFormat)) {
+            // Means we have a regular dynamic sampler for which no data needs to be appended.
+            // Push "0" as the data length.
+            this->addData({});
+            return;
+        }
+
+        //compile into samplerdesc
+        SamplerDesc desc{sampling, tileModes, info};
+        SkASSERT(desc.isImmutable());
+
+        skia_private::TArray<uint32_t> samplerData;
+        samplerData.push_back(desc.desc());
+        if (desc.usesExternalFormat()) {
+            samplerData.push_back(desc.externalFormatMSBs());
+        }
+        samplerData.push_back(desc.format());
+
+        this->addData({samplerData});
+    }
+
     void addData(SkSpan<uint32_t> data) {
-        // Graphite depends upon addData() only be called once to append all cumulative addt'l data
-        SkASSERT(fIdxOfAdditionalData == PaintParamsKey::kInvalidDataIdx);
-        // Store the starting index of sampler data such that we know when to stop interpretting
-        // fData's contents as snippet IDs but instead as appended numerical data.
-        fIdxOfAdditionalData = fData.size();
+        // First push the data size followed by the actual data.
+        fData.push_back(data.size());
         fData.push_back_n(data.size(), data.begin());
     }
 
@@ -161,14 +190,13 @@ private:
         SkASSERT(fStack.empty()); // All beginBlocks() had a matching endBlock()
 
         SkDEBUGCODE(fLocked = true;)
-        return PaintParamsKey({fData.data(), fData.size()}, fIdxOfAdditionalData);
+        return PaintParamsKey({fData.data(), fData.size()});
     }
 
     // Invalidates any PaintParamsKey returned by lockAsKey() unless it has been cloned.
     void unlock() {
         SkASSERT(fLocked);
         fData.clear();
-        fIdxOfAdditionalData = PaintParamsKey::kInvalidDataIdx;
 
         SkDEBUGCODE(fLocked = false;)
         SkDEBUGCODE(fStack.clear();)
@@ -178,15 +206,14 @@ private:
     // The data array uses clear() on unlock so that it's underlying storage and repeated use of the
     // builder will hit a high-water mark and avoid lots of allocations when recording draws.
     skia_private::TArray<uint32_t> fData;
-    int fIdxOfAdditionalData = PaintParamsKey::kInvalidDataIdx;
 
 #ifdef SK_DEBUG
-    void pushStack(int32_t codeSnippetID);
+    void pushStack(uint32_t codeSnippetID);
     void popStack();
 
     // Information about the current block being written
     struct StackFrame {
-        int fCodeSnippetID;
+        uint32_t fCodeSnippetID;
         int fNumExpectedChildren;
         int fNumActualChildren = 0;
     };
