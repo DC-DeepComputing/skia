@@ -5,13 +5,17 @@
  * found in the LICENSE file.
  */
 
-#include "src/gpu/vk/VulkanAMDMemoryAllocator.h"
+#include "src/gpu/vk/vulkanmemoryallocator/VulkanAMDMemoryAllocator.h"
 
+#include "include/gpu/GpuTypes.h"
+#include "include/gpu/vk/VulkanBackendContext.h"
 #include "include/gpu/vk/VulkanExtensions.h"
+#include "include/gpu/vk/VulkanMemoryAllocatorUtil.h"
 #include "include/private/base/SkAssert.h"
 #include "include/private/base/SkTo.h"
 #include "src/core/SkTraceEvent.h"
 #include "src/gpu/vk/VulkanInterface.h"
+#include "src/gpu/vk/VulkanUtilsPriv.h"
 
 #include <algorithm>
 #include <cstring>
@@ -77,7 +81,7 @@ sk_sp<VulkanMemoryAllocator> VulkanAMDMemoryAllocator::Make(VkInstance instance,
     // It seems to be a good compromise of not wasting unused allocated space and not making too
     // many small allocations. The AMD allocator will start making blocks at 1/8 the max size and
     // builds up block size as needed before capping at the max set here.
-    info.preferredLargeHeapBlockSize = 4*1024*1024;
+    info.preferredLargeHeapBlockSize = 4 * 1024 * 1024;
     info.pAllocationCallbacks = nullptr;
     info.pDeviceMemoryCallbacks = nullptr;
     info.pHeapSizeLimit = nullptr;
@@ -226,15 +230,14 @@ void VulkanAMDMemoryAllocator::getAllocInfo(const VulkanBackendMemory& memoryHan
         flags |= VulkanAlloc::kLazilyAllocated_Flag;
     }
 
-    alloc->fMemory        = vmaInfo.deviceMemory;
-    alloc->fOffset        = vmaInfo.offset;
-    alloc->fSize          = vmaInfo.size;
-    alloc->fFlags         = flags;
+    alloc->fMemory = vmaInfo.deviceMemory;
+    alloc->fOffset = vmaInfo.offset;
+    alloc->fSize = vmaInfo.size;
+    alloc->fFlags = flags;
     alloc->fBackendMemory = memoryHandle;
 }
 
-VkResult VulkanAMDMemoryAllocator::mapMemory(const VulkanBackendMemory& memoryHandle,
-                                             void** data) {
+VkResult VulkanAMDMemoryAllocator::mapMemory(const VulkanBackendMemory& memoryHandle, void** data) {
     TRACE_EVENT0("skia.gpu", TRACE_FUNC);
     const VmaAllocation allocation = (VmaAllocation)memoryHandle;
     return vmaMapMemory(fAllocator, allocation, data);
@@ -247,14 +250,16 @@ void VulkanAMDMemoryAllocator::unmapMemory(const VulkanBackendMemory& memoryHand
 }
 
 VkResult VulkanAMDMemoryAllocator::flushMemory(const VulkanBackendMemory& memoryHandle,
-                                               VkDeviceSize offset, VkDeviceSize size) {
+                                               VkDeviceSize offset,
+                                               VkDeviceSize size) {
     TRACE_EVENT0("skia.gpu", TRACE_FUNC);
     const VmaAllocation allocation = (VmaAllocation)memoryHandle;
     return vmaFlushAllocation(fAllocator, allocation, offset, size);
 }
 
 VkResult VulkanAMDMemoryAllocator::invalidateMemory(const VulkanBackendMemory& memoryHandle,
-                                                    VkDeviceSize offset, VkDeviceSize size) {
+                                                    VkDeviceSize offset,
+                                                    VkDeviceSize size) {
     TRACE_EVENT0("skia.gpu", TRACE_FUNC);
     const VmaAllocation allocation = (VmaAllocation)memoryHandle;
     return vmaInvalidateAllocation(fAllocator, allocation, offset, size);
@@ -266,4 +271,38 @@ std::pair<uint64_t, uint64_t> VulkanAMDMemoryAllocator::totalAllocatedAndUsedMem
     return {stats.total.statistics.blockBytes, stats.total.statistics.allocationBytes};
 }
 
-} // namespace skgpu
+namespace VulkanMemoryAllocators {
+sk_sp<VulkanMemoryAllocator> Make(const skgpu::VulkanBackendContext& backendContext,
+                                  ThreadSafe threadSafe) {
+    SkASSERT(backendContext.fInstance != VK_NULL_HANDLE);
+    SkASSERT(backendContext.fPhysicalDevice != VK_NULL_HANDLE);
+    SkASSERT(backendContext.fDevice != VK_NULL_HANDLE);
+    SkASSERT(backendContext.fQueue != VK_NULL_HANDLE);
+    SkASSERT(backendContext.fGetProc);
+    SkASSERT(backendContext.fVkExtensions);
+
+    // It does seem a bit superfluous to create a VulkanInterface here, just to make the
+    // memory allocator, and then to have Ganesh or Graphite also create a second VulkanInterface
+    // but there's not really a good way to persist this interface for potential re-use, unless
+    // we wanted to make an implementation of VulkanMemoryAllocator hold onto the interface,
+    // but given that it currently "borrows" a pointer to it, that seems like a lot of work for
+    // not much payoff, given that this is a cost paid once during initialization and creating
+    // the interface is not *too* expensive.
+    uint32_t physDevVersion = 0;
+    sk_sp<const skgpu::VulkanInterface> interface =
+            skgpu::MakeInterface(backendContext, nullptr, &physDevVersion, nullptr);
+    if (!interface) {
+        return nullptr;
+    }
+
+    return VulkanAMDMemoryAllocator::Make(backendContext.fInstance,
+                                          backendContext.fPhysicalDevice,
+                                          backendContext.fDevice,
+                                          physDevVersion,
+                                          backendContext.fVkExtensions,
+                                          interface.get(),
+                                          threadSafe);
+}
+
+}  // namespace VulkanMemoryAllocators
+}  // namespace skgpu

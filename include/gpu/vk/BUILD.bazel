@@ -43,6 +43,18 @@ skia_filegroup(
     visibility = [
         "//include/gpu:__pkg__",
         "//src/gpu/ganesh/vk:__pkg__",
+        "//src/gpu/vk:__pkg__",
+    ],
+)
+
+skia_filegroup(
+    name = "vma_hdrs",
+    srcs = [
+        "VulkanMemoryAllocatorUtil.h",
+    ],
+    visibility = [
+        "//src/gpu/ganesh/vk/vulkanmemoryallocator:__pkg__",
+        "//src/gpu/vk/vulkanmemoryallocator:__pkg__",
     ],
 )
 

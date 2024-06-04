@@ -161,6 +161,14 @@ alias(
     visibility = ["//visibility:public"],
 )
 
+# If clients don't want to implement their own memory allocator for Vulkan,
+# they should use this implementation explicitly.
+alias(
+    name = "vulkan_memory_allocator",
+    actual = "//src/gpu/vk/vulkanmemoryallocator:vulkanmemoryallocator",
+    visibility = ["//visibility:public"],
+)
+
 ###
 
 alias(

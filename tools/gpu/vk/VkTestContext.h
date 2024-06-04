@@ -46,7 +46,7 @@ protected:
             , fDebugCallback(debugCallback)
             , fDestroyDebugReportCallbackEXT(destroyCallback) {}
 
-    skgpu::VulkanBackendContext         fVk;
+    skgpu::VulkanBackendContext fVk;
     const skgpu::VulkanExtensions*      fExtensions;
     const VkPhysicalDeviceFeatures2*    fFeatures;
     bool                                fOwnsContext;
