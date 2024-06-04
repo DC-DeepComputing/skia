@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5705a681_b1652221",
+        "filename": "src/gpu/ganesh/vk/GrVkGpu.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-06-04T16:36:04Z",
+      "side": 0,
+      "message": "Are `GrVkFeatureFlags` or `GrVkExtensionFlags` even referenced anywhere anymore if we don\u0027t check `backendContext.fFeatures` or create `VkPhysicalDeviceFeatures2`, `extensions` based upon those flags?",
+      "range": {
+        "startLine": 164,
+        "startChar": 0,
+        "endLine": 182,
+        "endChar": 9
+      },
+      "revId": "2b28aff7c3abecf46189e725ff2bc32a8889c7d9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
