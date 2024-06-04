@@ -201,7 +201,8 @@ SkGradientBaseShader::SkGradientBaseShader(const Descriptor& desc, const SkMatri
             fColorCount = 4
      */
     fColorCount = desc.fColorCount;
-    // check if we need to add in start and/or end position/colors
+
+    // Check if we need to add in start and/or end position/colors
     if (desc.fPositions) {
         fFirstStopIsImplicit = desc.fPositions[0] != 0;
         fLastStopIsImplicit = desc.fPositions[desc.fColorCount - 1] != SK_Scalar1;
@@ -213,6 +214,7 @@ SkGradientBaseShader::SkGradientBaseShader(const Descriptor& desc, const SkMatri
     fColors = reinterpret_cast<SkColor4f*>(fStorage.reset(storageSize));
     fPositions = desc.fPositions ? reinterpret_cast<SkScalar*>(fColors + fColorCount) : nullptr;
 
+
     // Now copy over the colors, adding the duplicates at t=0 and t=1 as needed
     SkColor4f* colors = fColors;
     if (fFirstStopIsImplicit) {
@@ -223,8 +225,8 @@ SkGradientBaseShader::SkGradientBaseShader(const Descriptor& desc, const SkMatri
         fColorsAreOpaque = fColorsAreOpaque && (desc.fColors[i].fA == 1);
     }
     if (fLastStopIsImplicit) {
-        colors += desc.fColorCount;
-        *colors = desc.fColors[desc.fColorCount - 1];
+        colors += fColorCount;
+        *colors = fColors[fColorCount - 1];
     }
 
     if (desc.fPositions) {
@@ -239,15 +241,55 @@ SkGradientBaseShader::SkGradientBaseShader(const Descriptor& desc, const SkMatri
         const SkScalar uniformStep = desc.fPositions[startIndex] - prev;
         for (int i = startIndex; i < count; i++) {
             // Pin the last value to 1.0, and make sure pos is monotonic.
-            auto curr = (i == desc.fColorCount) ? 1 : SkTPin(desc.fPositions[i], prev, 1.0f);
+            auto curr = (i == fColorCount) ? 1 : SkTPin(desc.fPositions[i], prev, 1.0f);
             uniformStops &= SkScalarNearlyEqual(uniformStep, curr - prev);
 
             *positions++ = prev = curr;
         }
 
-        // If the stops are uniform, treat them as implicit.
         if (uniformStops) {
+            // If the stops are uniform, treat them as implicit.
             fPositions = nullptr;
+        } else {
+            // Remove duplicate stops with more than two of the same stop,
+            // keeping the leftmost and rightmost stop colors.
+            // i.e.       0, 0, 0,   0.2, 0.2, 0.3, 0.3, 0.3, 1, 1
+            // w/  clamp  0,    0,   0.2, 0.2, 0.3,      0.3, 1, 1
+            // w/o clamp        0,   0.2, 0.2, 0.3,      0.3, 1
+            int i = 0;
+            int j = 1;
+            int dedupedColorCount = 0;
+            while (j <= desc.fColorCount) {
+                if (j == desc.fColorCount || desc.fPositions[i] != desc.fPositions[j]) {
+                    bool dupStop = j - i > 1;
+
+                    // Ignore the leftmost stop (i) if it is a non-clamp tilemode with
+                    // a duplicate stop on t = 0.
+                    bool ignoreLeftmost = dupStop && fTileMode != SkTileMode::kClamp
+                                                    && desc.fPositions[i] == 0;
+                    // Ignore the rightmost stop (j-1) if it is a non-clamp tilemode with
+                    // a duplicate stop on t = 1, since the rightmost stop is only added
+                    // if there is a duplicate stop, that can be assumed true here.
+                    bool ignoreRightmost = fTileMode != SkTileMode::kClamp
+                                                    && desc.fPositions[j - 1] == 0;
+                    // For non-clamp tilemodes, only keep the inner stop for
+                    // duplicate 0.0 or 1.0 stops, else always keep the outer stops.
+                    if (!ignoreLeftmost) {
+                        fPositions[dedupedColorCount] = desc.fPositions[i];
+                        fColors[dedupedColorCount] =  desc.fColors[i];
+                        dedupedColorCount++;
+                    }
+
+                    if (dupStop && !ignoreRightmost) {
+                        fPositions[dedupedColorCount] = desc.fPositions[j - 1];
+                        fColors[dedupedColorCount] = desc.fColors[j - 1];
+                        dedupedColorCount++;
+                    }
+                    i = j;
+                }
+                j++;
+            }
+            fColorCount = dedupedColorCount;
         }
     }
 }
