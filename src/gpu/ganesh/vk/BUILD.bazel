@@ -123,8 +123,6 @@ skia_cc_library(
         ":vk_hdrs",
         ":vk_srcs",
         "//include/private/gpu/vk:private_hdrs",
-        "//src/gpu/vk:private_hdrs",
-        "//src/gpu/vk:srcs",
     ],
     hdrs = [
         "//include/gpu:ganesh_hdrs",
@@ -137,7 +135,7 @@ skia_cc_library(
     ],
     features = ["layering_check"],
     local_defines = [
-        "SK_USE_VMA",  # TODO(kjlubick, egdaniel) Turn this off by default and make a module.
+        "SK_USE_VMA",  # TODO(kjlubick, egdaniel) Turn this off by default and remove.
     ],
     visibility = ["//:__pkg__"],
     deps = [
@@ -146,8 +144,8 @@ skia_cc_library(
         "//src/core:core_priv",
         "//src/gpu",
         "//src/gpu/ganesh",
-        "//src/gpu/vk/vulkanmemoryallocator",
-        "//src/sksl/codegen:spirv",
+        "//src/gpu/vk",
+        "//src/gpu/vk/vulkanmemoryallocator:vulkanmemoryallocator_priv",
         "@vulkan_headers",
     ],
 )
@@ -161,7 +159,6 @@ skia_cc_library(
         ":vk_srcs",
         "//include/private/gpu/vk:private_hdrs",
         "//src/gpu/vk:private_hdrs",
-        "//src/gpu/vk:srcs",
     ],
     hdrs = [
         "//include/gpu:ganesh_hdrs",
@@ -177,7 +174,6 @@ skia_cc_library(
     local_defines = [
         "GR_TEST_UTILS",
         "SK_USE_EXTERNAL_VULKAN_HEADERS",
-        "SK_USE_VMA",
     ],
     visibility = ["//tools:__subpackages__"],
     deps = [
@@ -186,8 +182,8 @@ skia_cc_library(
         "//src/core:core_priv",
         "//src/gpu",
         "//src/gpu/ganesh:ganesh_TEST_UTIL",
-        "//src/gpu/vk/vulkanmemoryallocator",
-        "//src/sksl/codegen:spirv",
+        "//src/gpu/vk",
+        "//src/gpu/vk/vulkanmemoryallocator:vulkanmemoryallocator_priv",
         "@vulkan_headers",
     ],
 )
