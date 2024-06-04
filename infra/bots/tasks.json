@@ -27579,14 +27579,6 @@
           "path": "cache/git_cache"
         },
         {
-          "name": "go_cache",
-          "path": "cache/go_cache"
-        },
-        {
-          "name": "gopath",
-          "path": "cache/gopath"
-        },
-        {
           "name": "vpython3",
           "path": "cache/vpython3"
         },
@@ -28189,14 +28181,6 @@
           "path": "cache/git_cache"
         },
         {
-          "name": "go_cache",
-          "path": "cache/go_cache"
-        },
-        {
-          "name": "gopath",
-          "path": "cache/gopath"
-        },
-        {
           "name": "vpython3",
           "path": "cache/vpython3"
         }
@@ -28483,14 +28467,6 @@
         {
           "name": "git_cache",
           "path": "cache/git_cache"
-        },
-        {
-          "name": "go_cache",
-          "path": "cache/go_cache"
-        },
-        {
-          "name": "gopath",
-          "path": "cache/gopath"
         },
         {
           "name": "vpython3",

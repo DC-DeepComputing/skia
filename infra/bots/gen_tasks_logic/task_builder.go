@@ -245,7 +245,7 @@ func (b *taskBuilder) usesGit() {
 // "with api.context(env=api.infra.go_env)".
 func (b *taskBuilder) usesGo() {
 	b.usesGit() // Go requires Git.
-	b.cache(CACHES_GO...)
+	//b.cache(CACHES_GO...)
 	pkg := b.MustGetCipdPackageFromAsset("go")
 	if b.matchOs("Win") || b.matchExtraConfig("Win") {
 		pkg = b.MustGetCipdPackageFromAsset("go_win")
