@@ -156,14 +156,6 @@ public:
     static sk_sp<PrecompileBlender> Mode(SkBlendMode);
 };
 
-enum class PrecompileImageFilterFlags : uint32_t {
-    kNone              = 0x0,
-    kBlur              = 0x1,
-    kDisplacement      = 0x2,
-    kMatrixConvolution = 0x4,
-};
-SK_MAKE_BITMASK_OPS(PrecompileImageFilterFlags)
-
 //--------------------------------------------------------------------------------------------------
 class PaintOptionsPriv;
 class PrecompileImageFilter;
@@ -178,16 +170,12 @@ public:
         fImageFilterOptions.assign(imageFilters.begin(), imageFilters.end());
     }
 
-    void setImageFilterFlags(SkEnumBitMask<PrecompileImageFilterFlags> flags) {
-        fImageFilterFlags = flags;
-    }
-
     void setMaskFilters(SkSpan<const sk_sp<PrecompileMaskFilter>> maskFilters) {
         for (const sk_sp<PrecompileMaskFilter>& mf : maskFilters) {
             if (mf) {
                 // Currently Graphite only supports BlurMaskFilters which are implemented
                 // via BlurImageFiltering
-                fImageFilterFlags |= PrecompileImageFilterFlags::kBlur;
+//                fImageFilterFlags |= PrecompileImageFilterFlags::kBlur;
                 break;
             }
         }
@@ -273,7 +261,6 @@ private:
     skia_private::TArray<sk_sp<PrecompileBlender>> fBlenderOptions;
     std::vector<sk_sp<PrecompileShader>> fClipShaderOptions;
 
-    SkEnumBitMask<PrecompileImageFilterFlags> fImageFilterFlags = PrecompileImageFilterFlags::kNone;
     std::vector<sk_sp<PrecompileImageFilter>> fImageFilterOptions;
 
     bool fDither = false;
