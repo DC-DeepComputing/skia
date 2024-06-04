@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf8403d9_2a86c6e9",
+        "filename": "site/docs/user/special/vulkan.md",
+        "patchSetId": 11
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-06-04T17:14:42Z",
+      "side": 0,
+      "message": "do we no longer need to reset the interface here?",
+      "range": {
+        "startLine": 60,
+        "startChar": 0,
+        "endLine": 60,
+        "endChar": 98
+      },
+      "revId": "f23695c820f8dec6dc41cc261b7e6abf396dc068",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

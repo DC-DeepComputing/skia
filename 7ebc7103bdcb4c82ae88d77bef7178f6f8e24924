@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76140f3c_06796e0e",
+        "filename": "include/gpu/ganesh/vk/GrVkDirectContext.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-06-04T17:14:42Z",
+      "side": 1,
+      "message": "nit: Fix line wrapping",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 102
+      },
+      "revId": "7ebc7103bdcb4c82ae88d77bef7178f6f8e24924",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
