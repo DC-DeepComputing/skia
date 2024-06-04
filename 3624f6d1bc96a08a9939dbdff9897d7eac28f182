@@ -16,6 +16,29 @@
       "message": "To be \"really compliant\", I need to include this (I\u0027m pretty sure) and I definitely need to include Exif. Since we\u0027re going to be sending out test compliance images, I\u0027m doing all of this stuff, even though all readers will be robust to not having it.",
       "revId": "3624f6d1bc96a08a9939dbdff9897d7eac28f182",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b63db623_fee91724",
+        "filename": "src/encode/SkJpegGainmapEncoder.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-06-04T15:31:08Z",
+      "side": 1,
+      "message": "Can we give these magic numbers names?",
+      "range": {
+        "startLine": 236,
+        "startChar": 82,
+        "endLine": 236,
+        "endChar": 87
+      },
+      "revId": "3624f6d1bc96a08a9939dbdff9897d7eac28f182",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
