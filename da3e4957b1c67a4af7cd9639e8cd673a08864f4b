@@ -16,6 +16,23 @@
       "message": "This requires the skcms change but I thought I\u0027d send it so you can see the full code.",
       "revId": "da3e4957b1c67a4af7cd9639e8cd673a08864f4b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64a4a2be_90056470",
+        "filename": "src/encode/SkPngEncoderImpl.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-06-04T17:13:09Z",
+      "side": 1,
+      "message": "Do you expect to be using this for actually-opaque images that are 10101010 encoded? If so, we could add two different scanline functions, and switch the bytes-per-pixel here (similar to what we do for 4444 and 8888 above).",
+      "revId": "da3e4957b1c67a4af7cd9639e8cd673a08864f4b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
