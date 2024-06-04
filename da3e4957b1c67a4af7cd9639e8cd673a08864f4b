@@ -51,6 +51,24 @@
       "parentUuid": "64a4a2be_90056470",
       "revId": "da3e4957b1c67a4af7cd9639e8cd673a08864f4b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c6fda21_471aeecb",
+        "filename": "src/encode/SkPngEncoderImpl.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-06-04T17:33:18Z",
+      "side": 1,
+      "message": "Yeah, it\u0027s unlikely that we\u0027re ever setting the opaque bit (it\u0027s normally never worth the time to figure that out for small wins down the road). This should be fine.",
+      "parentUuid": "20c08092_2dfaa841",
+      "revId": "da3e4957b1c67a4af7cd9639e8cd673a08864f4b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
