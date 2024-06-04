@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "86d40875_b0ef742f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-06-04T15:15:03Z",
+      "side": 1,
+      "message": "Note that Skia already runs IWYU (and has been doing so for several years). IWYU prefers the forward declarations for sk_sp held type, and all of Skia is able to build like this. It\u0027s actually possible to create an instance of an SkImageInfo without the definition of SkColorSpace, the default constructor for sk_sp simply sets the pointer to null, and SkColorInfo\u0027s destructor is out-of-line.",
+      "revId": "1e621d55694aec8b6c8d454d8c1e31d6f4dca5ca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
