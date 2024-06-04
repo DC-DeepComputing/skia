@@ -339,32 +339,18 @@ void PaintParams::toKey(const KeyContext& keyContext,
         SkSpan<const TextureDataBlock::SampledTexture> sampledTextures =
                 gatherer->textureDataBlock().textures();
 
-        // The first index will be reserved to encapsulate data length. Initialize at 0 and populate
-        // after iterating.
-        skia_private::TArray<uint32_t> cumulativeSamplerData = {0};
-        cumulativeSamplerData.reserve(sampledTextures.size());
+        skia_private::TArray<uint32_t> cumulativeSamplerData;
         for (const TextureDataBlock::SampledTexture& texture : sampledTextures) {
             const SamplerDesc& samplerDesc = texture.second;
-            bool containsAdditionalInfo =
-                    (samplerDesc.desc() >> SamplerDesc::kImmutableSamplerInfoShift) != 0;
-            // Even if no additional data is appended, push back the "regular" sampler description
-            // regardless. This way, if there are any immutable samplers, their binding index is
-            // preserved.
-            cumulativeSamplerData.push_back(samplerDesc.desc());
-            if (!containsAdditionalInfo) {
-                continue;
+            if (samplerDesc.isImmutable()) {
+                // TODO(nicolettep): "Just" ycbcr info instead of desc?
+                cumulativeSamplerData.push_back(samplerDesc.desc());
+                if (samplerDesc.usesExternalFormat()) {
+                    cumulativeSamplerData.push_back(samplerDesc.externalFormatMSBs());
+                }
+                cumulativeSamplerData.push_back(samplerDesc.format());
             }
-
-            bool usesExternalFormat =
-                    (samplerDesc.desc() >> SamplerDesc::kImmutableSamplerInfoShift) & 0b1;
-            if (usesExternalFormat) {
-                cumulativeSamplerData.push_back(samplerDesc.externalFormatMSBs());
-            }
-            cumulativeSamplerData.push_back(samplerDesc.format());
         }
-        // Store the data length at index 0.
-        cumulativeSamplerData[0] = cumulativeSamplerData.size() - 1;
-
         builder->addData(cumulativeSamplerData);
     }
 }

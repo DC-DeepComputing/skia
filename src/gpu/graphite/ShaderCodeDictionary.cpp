@@ -201,7 +201,7 @@ ShaderInfo::ShaderInfo(UniquePaintParamsID id,
     for (const ShaderNode* root : fRootNodes) {
         // If a snippet within this node tree requires additional sampler data to be stored, append
         // it to fData.
-        if (root->requiredFlags() & SnippetRequirementFlags::kStoresData) {
+        if (root->requiredFlags() & SnippetRequirementFlags::kCanStoreData) {
             fData = root->data();
         }
 
@@ -1806,7 +1806,7 @@ ShaderCodeDictionary::ShaderCodeDictionary() {
     fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kImageShader] = {
             "ImageShader",
             SkSpan(kImageShaderUniforms),
-            (SnippetRequirementFlags::kLocalCoords | SnippetRequirementFlags::kStoresData),
+            (SnippetRequirementFlags::kLocalCoords | SnippetRequirementFlags::kCanStoreData),
             SkSpan(kISTexturesAndSamplers),
             kImageShaderName,
             GenerateDefaultExpression,

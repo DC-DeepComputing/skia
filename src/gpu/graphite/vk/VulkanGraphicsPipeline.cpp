@@ -9,7 +9,6 @@
 
 #include "include/gpu/ShaderErrorHandler.h"
 #include "include/gpu/graphite/TextureInfo.h"
-#include "include/private/base/SkTArray.h"
 #include "src/core/SkSLTypeShared.h"
 #include "src/core/SkTraceEvent.h"
 #include "src/gpu/PipelineUtils.h"
@@ -23,11 +22,14 @@
 #include "src/gpu/graphite/vk/VulkanCaps.h"
 #include "src/gpu/graphite/vk/VulkanGraphicsPipeline.h"
 #include "src/gpu/graphite/vk/VulkanRenderPass.h"
+#include "src/gpu/graphite/vk/VulkanResourceProvider.h"
 #include "src/gpu/graphite/vk/VulkanSharedContext.h"
 #include "src/gpu/vk/VulkanUtilsPriv.h"
 #include "src/sksl/SkSLProgramKind.h"
 #include "src/sksl/SkSLProgramSettings.h"
 #include "src/sksl/ir/SkSLProgram.h"
+
+#include "src/gpu/graphite/ResourceTypes.h"
 
 namespace skgpu::graphite {
 
@@ -474,7 +476,8 @@ static VkPipelineLayout setup_pipeline_layout(const VulkanSharedContext* sharedC
                                               bool hasStepUniforms,
                                               int numPaintUniforms,
                                               int numTextureSamplers,
-                                              int numInputAttachments) {
+                                              int numInputAttachments,
+                                              SkSpan<sk_sp<VulkanSampler>> immutableSamplers) {
     // Determine descriptor set layouts for this pipeline based upon render pass information.
     skia_private::STArray<3, VkDescriptorSetLayout> setLayouts;
 
@@ -520,12 +523,20 @@ static VkPipelineLayout setup_pipeline_layout(const VulkanSharedContext* sharedC
     // Determine texture/sampler descriptor set layout
     if (numTextureSamplers > 0) {
         skia_private::TArray<DescriptorData> textureSamplerDescs(numTextureSamplers);
+        SkASSERT(immutableSamplers.empty() || immutableSamplers.size() == numTextureSamplers);
+
         for (int i = 0; i < numTextureSamplers; i++) {
+            Sampler* immutableSampler = nullptr;
+            if (!immutableSamplers.empty() && immutableSamplers[i]) {
+                immutableSampler = immutableSamplers[i].get();
+            }
             textureSamplerDescs.push_back({DescriptorType::kCombinedTextureSampler,
-                                            /*count=*/1,
-                                            /*bindingIdx=*/i,
-                                            PipelineStageFlags::kFragmentShader});
+                                           /*count=*/1,
+                                           /*bindingIdx=*/i,
+                                           PipelineStageFlags::kFragmentShader,
+                                           immutableSampler});
         }
+
         VkDescriptorSetLayout textureSamplerDescSetLayout =
                 descriptor_data_to_layout(sharedContext, {textureSamplerDescs});
 
@@ -595,7 +606,8 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
         const GraphicsPipelineDesc& pipelineDesc,
         const RenderPassDesc& renderPassDesc,
         const sk_sp<VulkanRenderPass>& compatibleRenderPass,
-        VkPipelineCache pipelineCache) {
+        VkPipelineCache pipelineCache,
+        VulkanResourceProvider* rsrcProvider) {
 
     SkSL::Program::Interface vsInterface, fsInterface;
     SkSL::ProgramSettings settings;
@@ -620,6 +632,43 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
                                                 renderPassDesc.fWriteSwizzle);
     std::string& fsSkSL = fsSkSLInfo.fSkSL;
     const bool localCoordsNeeded = fsSkSLInfo.fRequiresLocalCoords;
+
+    SkASSERT(rsrcProvider);
+    // Populate an array of immutable samplers where their index within the array indicates their
+    // binding index within the descriptor set. Nullptr indicates a "regular", dynamic sampler at
+    // that index.
+    skia_private::TArray<sk_sp<VulkanSampler>> immutableSamplers;
+    immutableSamplers.reserve(fsSkSLInfo.fNumTexturesAndSamplers);
+    size_t i = 0;
+    while (i < fsSkSLInfo.fData.size()) {
+        // First, check whether a sampler is dynamic or immutable. If any immutable sampler data
+        // is included in the sampler desc, then we know we are processing an immutable sampler.
+        bool samplerIsImmutable =
+                (fsSkSLInfo.fData[i] >> SamplerDesc::kImmutableSamplerInfoShift) != 0;
+        if (!samplerIsImmutable) {
+            i++;
+            immutableSamplers.push_back(nullptr);
+            continue;
+        }
+
+        // Check whether the immutable sampler uses a known or external format.
+        bool usesExternalFormat =
+                (fsSkSLInfo.fData[i] >> SamplerDesc::kImmutableSamplerInfoShift) & 0b1;
+
+        // Sampler key length depends upon whether we use an external or known format.
+        int keyStride = usesExternalFormat ? ycbcrPackaging::kInt32sNeededExternalFormat
+                                           : ycbcrPackaging::kInt32sNeededKnownFormat;
+        // Request a suitable immutable sampler from the resource provider
+        SamplerDesc samplerDesc;
+        memcpy(&samplerDesc, fsSkSLInfo.fData.subspan(i, keyStride).begin(), sizeof(SamplerDesc));
+        sk_sp<Sampler> immutableSampler = rsrcProvider->findOrCreateCompatibleSampler(samplerDesc);
+        sk_sp<VulkanSampler> vulkanSampler =
+                sk_ref_sp<VulkanSampler>(static_cast<VulkanSampler*>(immutableSampler.get()));
+        immutableSamplers.push_back(std::move(vulkanSampler));
+
+        i += keyStride;
+        SkASSERT(immutableSamplers.back());
+    }
 
     bool hasFragmentSkSL = !fsSkSL.empty();
     std::string vsSPIRV, fsSPIRV;
@@ -710,12 +759,15 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
 
     // TODO: Query RenderPassDesc for input attachment information. For now, we only use one for
     // loading MSAA from resolve so we can simply pass in 0 when not doing that.
-    VkPipelineLayout pipelineLayout = setup_pipeline_layout(sharedContext,
-                                                            /*usesIntrinsicConstantUbo=*/true,
-                                                            !step->uniforms().empty(),
-                                                            fsSkSLInfo.fNumPaintUniforms,
-                                                            fsSkSLInfo.fNumTexturesAndSamplers,
-                                                            /*numInputAttachments=*/0);
+    VkPipelineLayout pipelineLayout =
+            setup_pipeline_layout(sharedContext,
+                                  /*usesIntrinsicConstantUbo=*/true,
+                                  !step->uniforms().empty(),
+                                  fsSkSLInfo.fNumPaintUniforms,
+                                  fsSkSLInfo.fNumTexturesAndSamplers,
+                                  /*numInputAttachments=*/0,
+                                  SkSpan<sk_sp<VulkanSampler>>(immutableSamplers));
+
     if (pipelineLayout == VK_NULL_HANDLE) {
         destroy_shader_modules(sharedContext, vsModule, fsModule);
         return nullptr;
@@ -791,7 +843,8 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
                                        fsSkSLInfo.fNumPaintUniforms > 0,
                                        !step->uniforms().empty(),
                                        fsSkSLInfo.fNumTexturesAndSamplers,
-                                       /*ownsPipelineLayout=*/true));
+                                       /*ownsPipelineLayout=*/true,
+                                       std::move(immutableSamplers)));
 }
 
 bool VulkanGraphicsPipeline::InitializeMSAALoadPipelineStructs(
@@ -874,7 +927,8 @@ bool VulkanGraphicsPipeline::InitializeMSAALoadPipelineStructs(
                                                /*hasStepUniforms=*/false,
                                                /*numPaintUniforms=*/0,
                                                /*numTextureSamplers=*/0,
-                                               /*numInputAttachments=*/1);
+                                               /*numInputAttachments=*/1,
+                                               /*immutableSamplers=*/{});
 
     if (*outPipelineLayout == VK_NULL_HANDLE) {
         destroy_shader_modules(sharedContext, *outVertexShaderModule, *outFragShaderModule);
@@ -981,24 +1035,28 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::MakeLoadMSAAPipeline(
                                        /*hasFragmentUniforms=*/false,
                                        /*hasStepUniforms=*/false,
                                        /*numTextureSamplers*/0,
-                                       /*ownsPipelineLayout=*/false));
+                                       /*ownsPipelineLayout=*/false,
+                                       /*immutableSamplers=*/{}));
 }
 
-VulkanGraphicsPipeline::VulkanGraphicsPipeline(const skgpu::graphite::SharedContext* sharedContext,
-                                               PipelineInfo* pipelineInfo,
-                                               VkPipelineLayout pipelineLayout,
-                                               VkPipeline pipeline,
-                                               bool hasFragmentUniforms,
-                                               bool hasStepUniforms,
-                                               int numTextureSamplers,
-                                               bool ownsPipelineLayout)
+VulkanGraphicsPipeline::VulkanGraphicsPipeline(
+        const skgpu::graphite::SharedContext* sharedContext,
+        PipelineInfo* pipelineInfo,
+        VkPipelineLayout pipelineLayout,
+        VkPipeline pipeline,
+        bool hasFragmentUniforms,
+        bool hasStepUniforms,
+        int numTextureSamplers,
+        bool ownsPipelineLayout,
+        skia_private::TArray<sk_sp<VulkanSampler>> immutableSamplers)
         : GraphicsPipeline(sharedContext, pipelineInfo)
         , fPipelineLayout(pipelineLayout)
         , fPipeline(pipeline)
         , fHasFragmentUniforms(hasFragmentUniforms)
         , fHasStepUniforms(hasStepUniforms)
         , fNumTextureSamplers(numTextureSamplers)
-        , fOwnsPipelineLayout(ownsPipelineLayout) {}
+        , fOwnsPipelineLayout(ownsPipelineLayout)
+        , fImmutableSamplers(std::move(immutableSamplers)) {}
 
 void VulkanGraphicsPipeline::freeGpuData() {
     auto sharedCtxt = static_cast<const VulkanSharedContext*>(this->sharedContext());

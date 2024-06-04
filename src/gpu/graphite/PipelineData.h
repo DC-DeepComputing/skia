@@ -74,7 +74,7 @@ public:
              sk_sp<TextureProxy> proxy) {
         // Before relinquishing ownership of the proxy, query Caps to gather any relevant sampler
         // conversion information for the SamplerDesc.
-        ImmutableSamplerInfo info = caps->getImmutableSamplerInfo(proxy);
+        ImmutableSamplerInfo info = caps->getImmutableSamplerInfo(proxy.get());
         fTextureData.push_back({std::move(proxy), SamplerDesc{sampling, tileModes, info}});
     }
 

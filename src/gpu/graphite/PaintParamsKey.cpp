@@ -54,7 +54,7 @@ void PaintParamsKeyBuilder::popStack() {
 PaintParamsKey PaintParamsKey::clone(SkArenaAlloc* arena) const {
     uint32_t* newData = arena->makeArrayDefault<uint32_t>(fData.size());
     memcpy(newData, fData.data(), fData.size_bytes());
-    return PaintParamsKey({newData, fData.size()}, fIdxOfStoredSamplerData);
+    return PaintParamsKey({newData, fData.size()});
 }
 
 
@@ -71,6 +71,14 @@ const ShaderNode* PaintParamsKey::createNode(const ShaderCodeDictionary* dict,
         return nullptr;
     }
 
+    SkSpan<const uint32_t> dataSpan = {};
+    if (entry->fSnippetRequirementFlags & SnippetRequirementFlags::kCanStoreData) {
+        // Gather any additional sampler data that should be passed into ShaderNode creation.
+        // if next entry is 0, then do nothing.
+        // Otherwise, yoink the data, skip over the indices that are data, and then pass
+        // that data into the shadernode creation.
+    }
+
     const ShaderNode** childArray = arena->makeArray<const ShaderNode*>(entry->fNumChildren);
     for (int i = 0; i < entry->fNumChildren; ++i) {
         const ShaderNode* child = this->createNode(dict, currentIndex, arena);
@@ -78,22 +86,6 @@ const ShaderNode* PaintParamsKey::createNode(const ShaderCodeDictionary* dict,
             return nullptr;
         }
         childArray[i] = child;
-    }
-
-    // Gather any additional sampler data that should be passed into ShaderNode creation.
-    SkSpan<const uint32_t> dataSpan = {};
-    // If fIdxOfStoredSamplerData != kInvalidDataIdx, then data at
-    // indices >= fIdxOfStoredSamplerData need to be treated as data as opposed to snippet IDs.
-    if (index == (fIdxOfStoredSamplerData - 1)) {
-        // The first data entry represents the length of the appended data. If 0, then simply skip.
-        if (fData[fIdxOfStoredSamplerData] != 0) {
-            dataSpan = fData.subspan(fIdxOfStoredSamplerData + 1, fData[fIdxOfStoredSamplerData]);
-            // Iterate past the data length index, the data length itself, and one more to account
-            // for the fact that we are checking the index prior to fIdxOfStoredSamplerData.
-            *currentIndex = index + fData[fIdxOfStoredSamplerData] + 2;
-        } else {
-            *currentIndex += 1;
-        }
     }
 
     return arena->make<ShaderNode>(entry,
