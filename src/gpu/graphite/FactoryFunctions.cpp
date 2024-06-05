@@ -1171,15 +1171,15 @@ sk_sp<PrecompileShader> PrecompileShadersPriv::Lighting(sk_sp<PrecompileShader> 
 //--------------------------------------------------------------------------------------------------
 class PrecompileColorFilterImageFilter : public PrecompileImageFilter {
 public:
-    PrecompileColorFilterImageFilter(SkSpan<const sk_sp<PrecompileColorFilter>> colorFilterOptions,
-                                     SkSpan<sk_sp<PrecompileImageFilter>> inputs)
-            : PrecompileImageFilter(std::move(inputs))
-            , fColorFilterOptions(colorFilterOptions.begin(), colorFilterOptions.end()) {
+    PrecompileColorFilterImageFilter(sk_sp<PrecompileColorFilter> colorFilterOption,
+                                     sk_sp<PrecompileImageFilter> input)
+            : PrecompileImageFilter(SkSpan(&input, 1))
+            , fColorFilterOption(std::move(colorFilterOption)) {
     }
 
 private:
-    SkSpan<const sk_sp<PrecompileColorFilter>> onColorFilterOptions() const override {
-        return fColorFilterOptions;
+    sk_sp<PrecompileColorFilter> isColorFilterNode() const override {
+        return fColorFilterOption;
     }
 
     void onCreatePipelines(
@@ -1194,7 +1194,7 @@ private:
 
         static const SkBlendMode kBlendModes[] = { SkBlendMode::kDstOut };
         paintOptions.setShaders({ std::move(imageShader) });
-        paintOptions.setColorFilters(fColorFilterOptions);
+        paintOptions.setColorFilters({ fColorFilterOption });
         paintOptions.setBlendModes(kBlendModes);
 
         paintOptions.priv().buildCombinations(keyContext,
@@ -1205,15 +1205,22 @@ private:
                                               processCombination);
     }
 
-    std::vector<sk_sp<PrecompileColorFilter>> fColorFilterOptions;
+    sk_sp<PrecompileColorFilter> fColorFilterOption;
 };
 
 sk_sp<PrecompileImageFilter> PrecompileImageFilters::ColorFilter(
-        SkSpan<const sk_sp<PrecompileColorFilter>> colorFilterOptions,
+        sk_sp<PrecompileColorFilter> colorFilterOption,
         sk_sp<PrecompileImageFilter> input) {
+    if (colorFilterOption) {
+        if (input && input->isColorFilterNode()) {
+            colorFilterOption = colorFilterOption->makeComposed(nullptr);
+            input = sk_ref_sp(input->getInput(0));
+        }
+    }
+
     // TODO: handle the merging of colorFilters as in SkImageFilters::ColorFilter
-    return sk_make_sp<PrecompileColorFilterImageFilter>(std::move(colorFilterOptions),
-                                                        SkSpan(&input, 1));
+    return sk_make_sp<PrecompileColorFilterImageFilter>(std::move(colorFilterOption),
+                                                        std::move(input));
 }
 
 //--------------------------------------------------------------------------------------------------
