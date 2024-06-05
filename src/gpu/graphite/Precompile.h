@@ -280,6 +280,16 @@ private:
 };
 
 class PrecompileImageFilter : public PrecompileBase {
+public:
+    virtual sk_sp<PrecompileColorFilter> isColorFilterNode() const { return nullptr; }
+
+    int countInputs() const { return fInputs.count(); }
+
+    const PrecompileImageFilter* getInput(int index) const {
+        SkASSERT(index < this->countInputs());
+        return fInputs[index].get();
+    }
+
 protected:
     PrecompileImageFilter(SkSpan<sk_sp<PrecompileImageFilter>> inputs)
             : PrecompileBase(Type::kImageFilter) {
@@ -302,24 +312,14 @@ private:
         SkASSERT(false);
     }
 
-    virtual SkSpan<const sk_sp<PrecompileColorFilter>> onColorFilterOptions() const { return {}; }
-
-    int countInputs() const { return fInputs.count(); }
-
-    const PrecompileImageFilter* getInput(int index) const {
-        SkASSERT(index < this->countInputs());
-        return fInputs[index].get();
-    }
-
-    SkSpan<const sk_sp<PrecompileColorFilter>> colorFilterOptions() const {
-        SkASSERT(this->countInputs() == 1);
-        if (this->getInput(0)) {
+    sk_sp<PrecompileColorFilter> asAColorFilter() const {
+        sk_sp<PrecompileColorFilter> tmp = this->isColorFilterNode();
+        if (!tmp) {
             return {};
         }
-
-        SkSpan<const sk_sp<PrecompileColorFilter>> tmp = this->onColorFilterOptions();
-        if (tmp.empty()) {
-            return {};
+        SkASSERT(this->countInputs() == 1);
+        if (this->getInput(0)) {
+            return nullptr;
         }
         // TODO: as in SkImageFilter::asAColorFilter, handle the special case of
         // affectsTransparentBlack. This is tricky for precompilation since we don't,

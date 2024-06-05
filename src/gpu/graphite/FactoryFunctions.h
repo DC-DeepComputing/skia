@@ -117,15 +117,14 @@ namespace PrecompileShaders {
 
 } // namespace PrecompileShaders
 
+// TODO: For all of the PrecompileImageFilter factories, should we have a CropRect parameter or
+// have clients explicitly create a crop PrecompileImageFilter?
+// Note: In order to make analysis more tractable we don't allow options for the internals of an
+// ImageFilter nor in the structure of the DAG.
 namespace PrecompileImageFilters {
     // This is the Precompile correlate to SkImageFilters::ColorFilter.
-    // Note: In order to make analysis tractable we only allow options for the internals of an
-    // ImageFilter but not in the structure of the DAG.
-    // TODO: Should we have a CropRect parameter or force clients to explicitly create
-    // a crop PrecompileImageFilter?
-    SK_API sk_sp<PrecompileImageFilter> ColorFilter(
-            SkSpan<const sk_sp<PrecompileColorFilter>> colorFilterOptions,
-            sk_sp<PrecompileImageFilter> input);
+    SK_API sk_sp<PrecompileImageFilter> ColorFilter(sk_sp<PrecompileColorFilter> colorFilter,
+                                                    sk_sp<PrecompileImageFilter> input);
 
     // This is the Precompile correlate to all of SkImageFilters::
     //      DistantLitDiffuse,  PointLitDiffuse,  SpotLitDiffuse
