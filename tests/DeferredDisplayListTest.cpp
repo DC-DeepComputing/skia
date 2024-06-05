@@ -138,16 +138,17 @@ public:
             , fIsProtected(skgpu::Protected::kNo)
             , fVkRTSupportsInputAttachment(false)
             , fForVulkanSecondaryCommandBuffer(false) {
-#ifdef SK_VULKAN
-        if (rContext->backend() == GrBackendApi::kVulkan) {
-            auto vkCaps = static_cast<const GrVkCaps*>(rContext->priv().caps());
-            fCanBeProtected = vkCaps->supportsProtectedContent();
+        const GrCaps* caps = rContext->priv().caps();
+
+        if (rContext->backend() == GrBackendApi::kOpenGL ||
+            rContext->backend() == GrBackendApi::kVulkan) {
+            fCanBeProtected = caps->supportsProtectedContent();
             if (fCanBeProtected) {
                 fIsProtected = skgpu::Protected::kYes;
             }
         }
-#endif
-        if (!rContext->priv().caps()->mipmapSupport()) {
+
+        if (!caps->mipmapSupport()) {
             fShouldCreateMipMaps = skgpu::Mipmapped::kNo;
         }
     }
