@@ -4,8 +4,6 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
-
-#define SK_OPTS_NS skslc_standalone
 #include "include/core/SkGraphics.h"
 #include "include/core/SkStream.h"
 #include "src/base/SkStringView.h"
@@ -44,10 +42,6 @@ void SkDebugf(const char format[], ...) {
     va_start(args, format);
     vfprintf(stderr, format, args);
     va_end(args);
-}
-
-namespace SkOpts {
-    size_t raster_pipeline_highp_stride = 1;
 }
 
 static std::unique_ptr<SkWStream> as_SkWStream(SkSL::OutputStream& s) {
