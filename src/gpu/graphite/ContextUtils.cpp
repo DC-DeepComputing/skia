@@ -579,7 +579,7 @@ FragSkSLInfo BuildFragmentSkSL(const Caps* caps,
     // that changes the HW blending choice to handle analytic coverage.
     result.fBlendInfo = shaderInfo.blendInfo();
     result.fRequiresLocalCoords = shaderInfo.needsLocalCoords();
-    result.fData = shaderInfo.data();
+    result.fData = {shaderInfo.data()};
     result.fLabel = writeSwizzle.asString().c_str();
     result.fLabel += " + ";
     result.fLabel = step->name();

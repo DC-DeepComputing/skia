@@ -1549,7 +1549,7 @@ void VulkanCaps::buildKeyForTexture(SkISize dimensions,
     SkASSERT(i == num32DataCnt);
 }
 
-ImmutableSamplerInfo VulkanCaps::getImmutableSamplerInfo(sk_sp<TextureProxy> proxy) const {
+ImmutableSamplerInfo VulkanCaps::getImmutableSamplerInfo(const TextureProxy* proxy) const {
     if (proxy) {
         const skgpu::VulkanYcbcrConversionInfo& ycbcrConversionInfo =
                 proxy->textureInfo().vulkanTextureSpec().fYcbcrConversionInfo;

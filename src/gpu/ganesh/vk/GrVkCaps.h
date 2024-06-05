@@ -119,7 +119,7 @@ public:
         }
     }
 
-    // Returns whether the device supports VK_KHR_Swapchain. Internally Skia never uses any of the
+// Returns whether the device supports VK_KHR_Swapchain. Internally Skia never uses any of the
     // swapchain functions, but we may need to transition to and from the
     // VK_IMAGE_LAYOUT_PRESENT_SRC_KHR image layout, so we must know whether that layout is
     // supported.

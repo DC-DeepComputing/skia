@@ -201,8 +201,22 @@ ShaderInfo::ShaderInfo(UniquePaintParamsID id,
     for (const ShaderNode* root : fRootNodes) {
         // If a snippet within this node tree requires additional sampler data to be stored, append
         // it to fData.
-        if (root->requiredFlags() & SnippetRequirementFlags::kStoresData) {
-            fData = root->data();
+        if (root->requiredFlags() & SnippetRequirementFlags::kCanStoreData) {
+            // ShaderInfo houses the cumulative sampler data for all shader snippets.
+            if (!root->data().empty()) {
+                for (auto rootData : root->data()) {
+                    fData.push_back(rootData);
+                }
+            }
+            if (root->numChildren() != 0) {
+                for (auto childNode : root->children()) {
+                    if (childNode->requiredFlags() & SnippetRequirementFlags::kCanStoreData) {
+                        for (auto childData : childNode->data()){
+                            fData.push_back(childData);
+                        }
+                    }
+                }
+            }
         }
 
         // TODO: This is brittle as it relies on PaintParams::toKey() putting the final fixed
@@ -520,10 +534,10 @@ SkSpan<const Uniform> ShaderCodeDictionary::getUniforms(BuiltInCodeSnippetID id)
     return fBuiltInCodeSnippets[(int) id].fUniforms;
 }
 
-const ShaderSnippet* ShaderCodeDictionary::getEntry(int codeSnippetID) const {
-    if (codeSnippetID < 0) {
-        return nullptr;
-    }
+const ShaderSnippet* ShaderCodeDictionary::getEntry(uint32_t codeSnippetID) const {
+    // if (codeSnippetID < 0) {
+    //     return nullptr;
+    // }
 
     if (codeSnippetID < kBuiltInCodeSnippetIDCount) {
         return &fBuiltInCodeSnippets[codeSnippetID];
@@ -1806,7 +1820,7 @@ ShaderCodeDictionary::ShaderCodeDictionary() {
     fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kImageShader] = {
             "ImageShader",
             SkSpan(kImageShaderUniforms),
-            (SnippetRequirementFlags::kLocalCoords | SnippetRequirementFlags::kStoresData),
+            (SnippetRequirementFlags::kLocalCoords | SnippetRequirementFlags::kCanStoreData),
             SkSpan(kISTexturesAndSamplers),
             kImageShaderName,
             GenerateDefaultExpression,
@@ -1826,7 +1840,7 @@ ShaderCodeDictionary::ShaderCodeDictionary() {
     fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kHWImageShader] = {
             "HardwareImageShader",
             SkSpan(kHWImageShaderUniforms),
-            SnippetRequirementFlags::kLocalCoords,
+            SnippetRequirementFlags::kLocalCoords | SnippetRequirementFlags::kCanStoreData,
             SkSpan(kISTexturesAndSamplers),
             kHWImageShaderName,
             GenerateDefaultExpression,
