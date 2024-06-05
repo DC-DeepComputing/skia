@@ -616,12 +616,27 @@ void ImageShaderBlock::AddBlock(const KeyContext& keyContext,
     if (doTilingInHw) {
         add_hw_image_uniform_data(keyContext.dict(), imgData, gatherer);
         builder->addBlock(BuiltInCodeSnippetID::kHWImageShader);
+        builder->addImmutableSamplerDataIfApplicable(keyContext.caps(),
+                                                     imgData.fSampling,
+                                                     doTilingInHw ? imgData.fTileModes
+                                                                  : kDefaultTileModes,
+                                                     imgData.fTextureProxy.get());
     } else if (imgData.fSampling.useCubic) {
         add_cubic_image_uniform_data(keyContext.dict(), imgData, gatherer);
         builder->addBlock(BuiltInCodeSnippetID::kCubicImageShader);
+        builder->addImmutableSamplerDataIfApplicable(keyContext.caps(),
+                                                     imgData.fSampling,
+                                                     doTilingInHw ? imgData.fTileModes
+                                                                  : kDefaultTileModes,
+                                                     imgData.fTextureProxy.get());
     } else {
         add_image_uniform_data(keyContext.dict(), imgData, gatherer);
         builder->addBlock(BuiltInCodeSnippetID::kImageShader);
+        builder->addImmutableSamplerDataIfApplicable(keyContext.caps(),
+                                                     imgData.fSampling,
+                                                     doTilingInHw ? imgData.fTileModes
+                                                                  : kDefaultTileModes,
+                                                     imgData.fTextureProxy.get());
     }
 }
 
