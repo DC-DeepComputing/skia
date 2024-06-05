@@ -29,7 +29,7 @@ void PaintParamsKeyBuilder::checkReset() {
     SkASSERT(fStack.empty());
 }
 
-void PaintParamsKeyBuilder::pushStack(int32_t codeSnippetID) {
+void PaintParamsKeyBuilder::pushStack(uint32_t codeSnippetID) {
     SkASSERT(fDict->isValidID(codeSnippetID));
 
     if (!fStack.empty()) {
@@ -93,13 +93,22 @@ const ShaderNode* PaintParamsKey::createNode(const ShaderCodeDictionary* dict,
                                              SkArenaAlloc* arena) const {
     SkASSERT(*currentIndex < SkTo<int>(fData.size()));
     const int32_t index = (*currentIndex)++;
-    const int32_t id = fData[index];
+    const uint32_t id = fData[index];
 
     const ShaderSnippet* entry = dict->getEntry(id);
     if (!entry) {
         SKGPU_LOG_E("Unknown snippet ID in key: %d", id);
         return nullptr;
     }
+
+    if (index == 0) {
+        SkDebugf("data: ");
+        for (const auto dataMember : fData) {
+            SkDebugf(" %d ", dataMember);
+        }
+        SkDebugf("\n");
+    }
+
 
     SkSpan<const uint32_t> dataSpan = {};
     if (entry->fSnippetRequirementFlags & SnippetRequirementFlags::kStoresData) {
@@ -112,7 +121,7 @@ const ShaderNode* PaintParamsKey::createNode(const ShaderCodeDictionary* dict,
             // for the fact that we are checking the index prior to fIdxOfStoredSamplerData.
             *currentIndex = index + fData[storedDataLengthIdx] + 2;
         } else {
-            // Iterate past data length index to continue iterating over snippet IDs.
+            // Iterate past data length index of 0.
             *currentIndex += 1;
         }
     }
@@ -139,7 +148,7 @@ SkSpan<const ShaderNode*> PaintParamsKey::getRootNodes(const ShaderCodeDictionar
     // the final blend, there will only be a single root node and this can be simplified.
     // For now, we don't know how many roots there are, so collect them into a local array before
     // copying into the arena.
-    int keySize = SkTo<int>(fData.size());
+    const int keySize = SkTo<int>(fData.size());
 
     // Normal PaintParams creation will have up to 7 roots for the different stages.
     STArray<7, const ShaderNode*> roots;
@@ -193,7 +202,7 @@ static int key_to_string(SkString* str,
 
 SkString PaintParamsKey::toString(const ShaderCodeDictionary* dict) const {
     SkString str;
-    int keySize = SkTo<int>(fData.size());
+    const int keySize = SkTo<int>(fData.size());
     for (int currentIndex = 0; currentIndex < keySize;) {
         currentIndex = key_to_string(&str, dict, fData, currentIndex);
     }
