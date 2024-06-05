@@ -34,6 +34,65 @@
       ],
       "revId": "60060992bf1fccac20df29019d4b6e855ded2642",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8a5afda4_10617a00",
+        "filename": "src/shaders/gradients/SkGradientBaseShader.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 243,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-05T20:50:14Z",
+      "side": 1,
+      "message": "Yes, I think that it looks good to me",
+      "parentUuid": "eaeeb2bb_7fefd8d5",
+      "revId": "60060992bf1fccac20df29019d4b6e855ded2642",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f03d801_7a10074b",
+        "filename": "src/shaders/gradients/SkGradientBaseShader.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-05T20:50:14Z",
+      "side": 1,
+      "message": "MSVC will complain about this potentially, should just be `1.0f`.",
+      "range": {
+        "startLine": 249,
+        "startChar": 27,
+        "endLine": 249,
+        "endChar": 31
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "802781e0_681fd1dd",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/shaders/gradients/SkGradientBaseShader.cpp",
+              "range": {
+                "startLine": 249,
+                "startChar": 0,
+                "endLine": 250,
+                "endChar": 0
+              },
+              "replacement": "                if (curr \u003d\u003d 1.0f \u0026\u0026 fLastStopIsImplicit) {\n"
+            }
+          ]
+        }
+      ],
+      "revId": "60060992bf1fccac20df29019d4b6e855ded2642",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
