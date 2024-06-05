@@ -51,4 +51,12 @@ void DrawList::recordDraw(const Renderer* renderer,
     }
 }
 
+void DrawList::Clear() {
+  fRenderStepCount = 0;
+  SkDEBUGCODE(fCoverageMaskShapeDrawCount = 0;)
+  fDstCopyBounds = Rect::InfiniteInverted();
+  fDraws.clear();
+  fTransforms.clear();
+}
+
 } // namespace skgpu::graphite

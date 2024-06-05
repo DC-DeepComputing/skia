@@ -9,7 +9,7 @@
 #define skgpu_graphite_DrawList_DEFINED
 
 #include "include/core/SkPaint.h"
-#include "src/base/SkTBlockList.h"
+#include "include/private/base/SkTArray.h"
 
 #include "src/gpu/graphite/DrawOrder.h"
 #include "src/gpu/graphite/DrawParams.h"
@@ -88,6 +88,9 @@ public:
 
     SkDEBUGCODE(bool hasCoverageMaskDraws() const { return fCoverageMaskShapeDrawCount > 0; })
 
+    // Clears all state in the DrawList.
+    void Clear();
+
 private:
     friend class DrawPass;
 
@@ -107,8 +110,8 @@ private:
     // The returned Transform reference remains valid for the lifetime of the DrawList.
     const Transform& deduplicateTransform(const Transform&);
 
-    SkTBlockList<Transform, 16> fTransforms{SkBlockAllocator::GrowthPolicy::kFibonacci};
-    SkTBlockList<Draw, 16>      fDraws{SkBlockAllocator::GrowthPolicy::kFibonacci};
+    skia_private::STArray<16, Transform> fTransforms;
+    skia_private::STArray<16, Draw>      fDraws;
 
     // Running total of RenderSteps for all draws, assuming nothing is culled
     int fRenderStepCount = 0;
