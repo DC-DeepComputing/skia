@@ -88,6 +88,9 @@ public:
 
     SkDEBUGCODE(bool hasCoverageMaskDraws() const { return fCoverageMaskShapeDrawCount > 0; })
 
+    // Clears all state in the DrawList.
+    void Clear();
+
 private:
     friend class DrawPass;
 

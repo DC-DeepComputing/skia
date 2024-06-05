@@ -253,14 +253,14 @@ void DrawContext::flush(Recorder* recorder) {
                                      skgpu::Budgeted::kYes);
     }
     std::unique_ptr<DrawPass> pass = DrawPass::Make(recorder,
-                                                    std::move(fPendingDraws),
+                                                    *fPendingDraws,
                                                     fTarget,
                                                     this->imageInfo(),
                                                     std::make_pair(fPendingLoadOp, fPendingStoreOp),
                                                     fPendingClearColor,
                                                     dstCopy,
                                                     dstCopyPixelBounds.topLeft());
-    fPendingDraws = std::make_unique<DrawList>();
+    fPendingDraws->Clear();
     // Now that there is content drawn to the target, that content must be loaded on any subsequent
     // render pass.
     fPendingLoadOp = LoadOp::kLoad;

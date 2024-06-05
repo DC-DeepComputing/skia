@@ -422,7 +422,7 @@ DrawPass::DrawPass(sk_sp<TextureProxy> target,
 DrawPass::~DrawPass() = default;
 
 std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
-                                         std::unique_ptr<DrawList> draws,
+                                         const DrawList& draws,
                                          sk_sp<TextureProxy> target,
                                          const SkImageInfo& targetInfo,
                                          std::pair<LoadOp, StoreOp> ops,
@@ -446,7 +446,7 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
     static_assert(sizeof(DrawPass::SortKey) ==
                   SkAlignTo(16 + sizeof(void*), alignof(DrawPass::SortKey)));
 
-    TRACE_EVENT1("skia.gpu", TRACE_FUNC, "draw count", draws->fDraws.count());
+    TRACE_EVENT1("skia.gpu", TRACE_FUNC, "draw count", draws.fDraws.count());
 
     // The DrawList is converted directly into the DrawPass' data structures, but once the DrawPass
     // is returned from Make(), it is considered immutable.
@@ -464,7 +464,7 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
         return nullptr;
     }
     // Ensure there's a destination copy if required
-    if (!draws->dstCopyBounds().isEmptyNegativeOrNaN() && !dstCopy) {
+    if (!draws.dstCopyBounds().isEmptyNegativeOrNaN() && !dstCopy) {
         SKGPU_LOG_W("Failed to copy destination for reading. Dropping draw pass!");
         return nullptr;
     }
@@ -490,9 +490,9 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
     PipelineDataGatherer gatherer(recorder->priv().caps(), uniformLayout);
 
     std::vector<SortKey> keys;
-    keys.reserve(draws->renderStepCount());
+    keys.reserve(draws.renderStepCount());
 
-    for (const DrawList::Draw& draw : draws->fDraws.items()) {
+    for (const DrawList::Draw& draw : draws.fDraws.items()) {
         // If we have two different descriptors, such that the uniforms from the PaintParams can be
         // bound independently of those used by the rest of the RenderStep, then we can upload now
         // and remember the location for re-use on any RenderStep that does shading.

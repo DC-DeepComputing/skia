@@ -161,6 +161,16 @@ public:
         fAllocator->reset();
     }
 
+  void resetLeavingAllocations() {
+        // Invoke destructors in reverse order if not trivially destructible
+        if constexpr (!std::is_trivially_destructible<T>::value) {
+            for (T& t : this->ritems()) {
+                t.~T();
+            }
+        }
+        fAllocator->setMetadata(0);
+  }
+
     /**
      * Returns the item count.
      */

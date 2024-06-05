@@ -59,7 +59,7 @@ public:
     // from in the shader, it must be provided in `dstCopy` and a copy task must be executed before
     // the DrawPass is executed.
     static std::unique_ptr<DrawPass> Make(Recorder*,
-                                          std::unique_ptr<DrawList>,
+                                          const DrawList&,
                                           sk_sp<TextureProxy> target,
                                           const SkImageInfo& targetInfo,
                                           std::pair<LoadOp, StoreOp>,
