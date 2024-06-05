@@ -52,6 +52,24 @@
       "parentUuid": "532fa5d5_4f5a5928",
       "revId": "47ec6322a82f6ba2c8033145629507aaca7992c0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ca45434_8a46a3c3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 20059
+      },
+      "writtenOn": "2024-06-05T23:27:45Z",
+      "side": 1,
+      "message": "Interesting, I appreciate the background. That makes sense. \n\nI\u0027m not familiar with `SkRefCnt`, but I now see that it overloads the `\u003d` operator to free the existing memory before re-assigning, so it\u0027s indeed not leaking.\n\nI\u0027ll see if `SkGraphics::PurgeFontCache` does what I\u0027m looking for.",
+      "parentUuid": "b0365c01_74c9d2a4",
+      "revId": "47ec6322a82f6ba2c8033145629507aaca7992c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
