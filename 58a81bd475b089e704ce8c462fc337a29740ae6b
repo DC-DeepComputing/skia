@@ -16,6 +16,24 @@
       "message": "Hello! Can you review my change?",
       "revId": "58a81bd475b089e704ce8c462fc337a29740ae6b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9aecf00d_ca541b1c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-06-05T13:37:12Z",
+      "side": 1,
+      "message": "Sure thing!",
+      "parentUuid": "9ed07c54_3ffcb046",
+      "revId": "58a81bd475b089e704ce8c462fc337a29740ae6b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
