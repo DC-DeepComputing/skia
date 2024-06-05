@@ -275,6 +275,8 @@ std::string ShaderInfo::toSkSL(const Caps* caps,
     const bool hasStepUniforms = step->numUniforms() > 0 && step->coverage() != Coverage::kNone;
     const bool useStepStorageBuffer = useStorageBuffers && hasStepUniforms;
     const bool useShadingStorageBuffer = useStorageBuffers && step->performsShading();
+    const bool useGradientStorageBuffer = useStorageBuffers && (fSnippetRequirementFlags
+                                                    & SnippetRequirementFlags::kGradientBuffer);
 
     const bool defineLocalCoordsVarying = this->needsLocalCoords();
     std::string preamble = EmitVaryings(step,
@@ -312,6 +314,13 @@ std::string ShaderInfo::toSkSL(const Caps* caps,
                                             numPaintUniforms,
                                             paintUniformsTotalBytes,
                                             &wrotePaintColor);
+    }
+
+    if (useGradientStorageBuffer) {
+        SkSL::String::appendf(&preamble,
+                              "layout (binding=5) readonly buffer FSGradientBuffer {\n"
+                              "    float fsGradientBuffer[];\n"
+                              "};\n");
     }
 
     {
@@ -781,8 +790,12 @@ static constexpr Uniform kLinearGradientUniformsTexture[] = {
         { "doUnPremul",  SkSLType::kInt },
 };
 
-static constexpr TextureAndSampler kTextureGradientTexturesAndSamplers[] = {
-        {"colorAndOffsetSampler"},
+static constexpr Uniform kLinearGradientUniformsBuffer[] = {
+        { "numStops",    SkSLType::kInt },
+        { "bufOffset",   SkSLType::kInt },
+        { "tilemode",    SkSLType::kInt },
+        { "colorSpace",  SkSLType::kInt },
+        { "doUnPremul",  SkSLType::kInt },
 };
 
 static constexpr Uniform kRadialGradientUniforms4[] = {
@@ -801,6 +814,13 @@ static constexpr Uniform kRadialGradientUniforms8[] = {
 };
 static constexpr Uniform kRadialGradientUniformsTexture[] = {
         { "numStops",    SkSLType::kInt },
+        { "tilemode",    SkSLType::kInt },
+        { "colorSpace",  SkSLType::kInt },
+        { "doUnPremul",  SkSLType::kInt },
+};
+static constexpr Uniform kRadialGradientUniformsBuffer[] = {
+        { "numStops",    SkSLType::kInt },
+        { "bufOffset",   SkSLType::kInt },
         { "tilemode",    SkSLType::kInt },
         { "colorSpace",  SkSLType::kInt },
         { "doUnPremul",  SkSLType::kInt },
@@ -828,6 +848,15 @@ static constexpr Uniform kSweepGradientUniformsTexture[] = {
         { "bias",        SkSLType::kFloat },
         { "scale",       SkSLType::kFloat },
         { "numStops",    SkSLType::kInt },
+        { "tilemode",    SkSLType::kInt },
+        { "colorSpace",  SkSLType::kInt },
+        { "doUnPremul",  SkSLType::kInt },
+};
+static constexpr Uniform kSweepGradientUniformsBuffer[] = {
+        { "bias",        SkSLType::kFloat },
+        { "scale",       SkSLType::kFloat },
+        { "numStops",    SkSLType::kInt },
+        { "bufOffset",   SkSLType::kInt },
         { "tilemode",    SkSLType::kInt },
         { "colorSpace",  SkSLType::kInt },
         { "doUnPremul",  SkSLType::kInt },
@@ -865,22 +894,143 @@ static constexpr Uniform kConicalGradientUniformsTexture[] = {
         { "colorSpace",  SkSLType::kInt },
         { "doUnPremul",  SkSLType::kInt },
 };
+static constexpr Uniform kConicalGradientUniformsBuffer[] = {
+        { "radius0",     SkSLType::kFloat },
+        { "dRadius",     SkSLType::kFloat },
+        { "a",           SkSLType::kFloat },
+        { "invA",        SkSLType::kFloat },
+        { "numStops",    SkSLType::kInt },
+        { "bufOffset",   SkSLType::kInt },
+        { "tilemode",    SkSLType::kInt },
+        { "colorSpace",  SkSLType::kInt },
+        { "doUnPremul",  SkSLType::kInt },
+};
+
+static constexpr TextureAndSampler kTextureGradientTexturesAndSamplers[] = {
+        {"colorAndOffsetSampler"},
+};
 
 static constexpr char kLinearGradient4Name[] = "sk_linear_grad_4_shader";
 static constexpr char kLinearGradient8Name[] = "sk_linear_grad_8_shader";
 static constexpr char kLinearGradientTextureName[] = "sk_linear_grad_tex_shader";
+static constexpr char kLinearGradientBufferName[] = "sk_linear_grad_buf_shader";
 
 static constexpr char kRadialGradient4Name[] = "sk_radial_grad_4_shader";
 static constexpr char kRadialGradient8Name[] = "sk_radial_grad_8_shader";
 static constexpr char kRadialGradientTextureName[] = "sk_radial_grad_tex_shader";
+static constexpr char kRadialGradientBufferName[] = "sk_radial_grad_buf_shader";
 
 static constexpr char kSweepGradient4Name[] = "sk_sweep_grad_4_shader";
 static constexpr char kSweepGradient8Name[] = "sk_sweep_grad_8_shader";
 static constexpr char kSweepGradientTextureName[] = "sk_sweep_grad_tex_shader";
+static constexpr char kSweepGradientBufferName[] = "sk_sweep_grad_buf_shader";
 
 static constexpr char kConicalGradient4Name[] = "sk_conical_grad_4_shader";
 static constexpr char kConicalGradient8Name[] = "sk_conical_grad_8_shader";
 static constexpr char kConicalGradientTextureName[] = "sk_conical_grad_tex_shader";
+static constexpr char kConicalGradientBufferName[] = "sk_conical_grad_buf_shader";
+
+std::string GenerateGradientBufferExpression(const ShaderInfo& shaderInfo,
+                                            const ShaderNode* node,
+                                            const ShaderSnippet::Args& args) {
+    std::string helperFnName =
+            get_mangled_name(node->entry()->fStaticFunctionName, node->keyIndex());
+    return helperFnName + append_default_snippet_arguments(shaderInfo, node, args, {});
+}
+
+std::string GenerateGradientBufferPreamble(const ShaderInfo& shaderInfo,
+                                        const ShaderNode* node) {
+    SkASSERT(node->codeSnippetId() == (int) BuiltInCodeSnippetID::kLinearGradientShaderBuffer ||
+             node->codeSnippetId() == (int) BuiltInCodeSnippetID::kRadialGradientShaderBuffer ||
+             node->codeSnippetId() == (int) BuiltInCodeSnippetID::kSweepGradientShaderBuffer ||
+             node->codeSnippetId() == (int) BuiltInCodeSnippetID::kConicalGradientShaderBuffer);
+    SkASSERT(node->numChildren() == 0);
+
+    const char* gradArgs;
+    const char* layoutFnCall;
+    switch (node->codeSnippetId()) {
+        case (int) BuiltInCodeSnippetID::kLinearGradientShaderBuffer:
+            gradArgs = "float2 coords";
+            layoutFnCall = "linear_grad_layout(coords)";
+            break;
+        case (int) BuiltInCodeSnippetID::kRadialGradientShaderBuffer:
+            gradArgs = "float2 coords";
+            layoutFnCall = "radial_grad_layout(coords)";
+            break;
+        case (int) BuiltInCodeSnippetID::kSweepGradientShaderBuffer:
+            gradArgs = "float2 coords, float biasParam, float scaleParam";
+            layoutFnCall = "sweep_grad_layout(biasParam, scaleParam, coords)";
+            break;
+        case (int) BuiltInCodeSnippetID::kConicalGradientShaderBuffer:
+            gradArgs = "float2 coords, float radius0Param, float dRadiusParam, "
+                            "float aParam, float invAParam";
+            layoutFnCall = "conical_grad_layout(radius0Param, dRadiusParam, "
+                                "aParam, invAParam, coords)";
+            break;
+    }
+
+    std::string helperFnName =
+            get_mangled_name(node->entry()->fStaticFunctionName, node->keyIndex());
+    return SkSL::String::printf("half4 %s(%s, int numStops, int bufOffset, int tileMode, "
+                                "int colorSpace, int doUnpremul) {"
+                                "   float2 t = %s;"
+                                "   t = tile_grad(tileMode, t);"
+
+                                // Colorize
+                                "   half4 color = half4(0);"
+                                "   if (t.y >= 0) {"
+                                "       if (t.x == 0) {"
+                                "           color = half4(fsGradientBuffer[1], fsGradientBuffer[2],"
+                                "                         fsGradientBuffer[3], fsGradientBuffer[4]);"
+                                "       } else if (t.x == 1) {"
+                                "           int endIdx = numStops * 5;"
+                                "           color = half4(fsGradientBuffer[endIdx - 4],"
+                                "                         fsGradientBuffer[endIdx - 3],"
+                                "                         fsGradientBuffer[endIdx - 2],"
+                                "                         fsGradientBuffer[endIdx - 1]);"
+                                "       } else {"
+                                            // Binary search for the matching adjacent offsets
+                                        // running log(numStops).
+                                "           int low = 0;"
+                                "           int high = numStops - 1;"
+                                "           for (int i = 1; i < numStops; i += i) {"
+                                "               int mid = (low + high) / 2;"
+                                "               float offset = fsGradientBuffer[bufOffset + mid * 5];"
+                                "               if (t.x < offset) {"
+                                "                   high = mid;"
+                                "               } else {"
+                                "                   low = mid;"
+                                "               }"
+                                "           }"
+                                "           int lowIdx = bufOffset + low * 5;"
+                                "           half4 lowColor = half4(fsGradientBuffer[lowIdx + 1],"
+                                "                                  fsGradientBuffer[lowIdx + 2],"
+                                "                                  fsGradientBuffer[lowIdx + 3],"
+                                "                                  fsGradientBuffer[lowIdx + 4]);"
+                                "           float lowOffset = fsGradientBuffer[lowIdx];"
+
+                                "           int highIdx = bufOffset + high * 5;"
+                                "           half4 highColor = half4(fsGradientBuffer[highIdx + 1],"
+                                "                                  fsGradientBuffer[highIdx + 2],"
+                                "                                  fsGradientBuffer[highIdx + 3],"
+                                "                                  fsGradientBuffer[highIdx + 4]);"
+                                "           float highOffset = fsGradientBuffer[highIdx];"
+                                "           color = half4(mix(lowColor,"
+                                "                             highColor,"
+                                "                             (t.x - lowOffset) /"
+                                "                             (highOffset - lowOffset)));"
+                                "       }"
+                                "   }"
+
+                                "   return interpolated_to_rgb_unpremul(color,"
+                                "                                       colorSpace,"
+                                "                                       doUnpremul);"
+                                "}",
+                                helperFnName.c_str(),
+                                gradArgs,
+                                layoutFnCall);
+}
+
 
 //--------------------------------------------------------------------------------------------------
 static constexpr Uniform kSolidShaderUniforms[] = {
@@ -1697,6 +1847,16 @@ ShaderCodeDictionary::ShaderCodeDictionary() {
             GenerateDefaultPreamble,
             kNoChildren
     };
+    fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kLinearGradientShaderBuffer] = {
+            "LinearGradientBuffer",
+            SkSpan(kLinearGradientUniformsBuffer),
+            SnippetRequirementFlags::kLocalCoords | SnippetRequirementFlags::kGradientBuffer,
+            { },     // no samplers
+            kLinearGradientBufferName,
+            GenerateGradientBufferExpression,
+            GenerateGradientBufferPreamble,
+            kNoChildren
+    };
     fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kRadialGradientShader4] = {
             "RadialGradient4",
             SkSpan(kRadialGradientUniforms4),
@@ -1725,6 +1885,16 @@ ShaderCodeDictionary::ShaderCodeDictionary() {
             kRadialGradientTextureName,
             GenerateDefaultExpression,
             GenerateDefaultPreamble,
+            kNoChildren
+    };
+    fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kRadialGradientShaderBuffer] = {
+            "RadialGradientBuffer",
+            SkSpan(kRadialGradientUniformsBuffer),
+            SnippetRequirementFlags::kLocalCoords | SnippetRequirementFlags::kGradientBuffer,
+            { },     // no samplers
+            kRadialGradientBufferName,
+            GenerateGradientBufferExpression,
+            GenerateGradientBufferPreamble,
             kNoChildren
     };
     fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kSweepGradientShader4] = {
@@ -1757,6 +1927,16 @@ ShaderCodeDictionary::ShaderCodeDictionary() {
             GenerateDefaultPreamble,
             kNoChildren
     };
+    fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kSweepGradientShaderBuffer] = {
+            "SweepGradientBuffer",
+            SkSpan(kSweepGradientUniformsBuffer),
+            SnippetRequirementFlags::kLocalCoords | SnippetRequirementFlags::kGradientBuffer,
+            { },     // no samplers
+            kSweepGradientBufferName,
+            GenerateGradientBufferExpression,
+            GenerateGradientBufferPreamble,
+            kNoChildren
+    };
     fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kConicalGradientShader4] = {
             "ConicalGradient4",
             SkSpan(kConicalGradientUniforms4),
@@ -1785,6 +1965,16 @@ ShaderCodeDictionary::ShaderCodeDictionary() {
             kConicalGradientTextureName,
             GenerateDefaultExpression,
             GenerateDefaultPreamble,
+            kNoChildren
+    };
+    fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kConicalGradientShaderBuffer] = {
+            "ConicalGradientBuffer",
+            SkSpan(kConicalGradientUniformsBuffer),
+            SnippetRequirementFlags::kLocalCoords | SnippetRequirementFlags::kGradientBuffer,
+            { },     // no samplers
+            kConicalGradientBufferName,
+            GenerateGradientBufferExpression,
+            GenerateGradientBufferPreamble,
             kNoChildren
     };
     fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kLocalMatrixShader] = {
