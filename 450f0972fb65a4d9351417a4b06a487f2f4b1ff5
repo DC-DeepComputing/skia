@@ -16,6 +16,29 @@
       "message": "Robert, could I get an OWNERS approval on this?",
       "revId": "450f0972fb65a4d9351417a4b06a487f2f4b1ff5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6fc10b22_1fa65757",
+        "filename": "relnotes/deprecated-vulkan-fields.md",
+        "patchSetId": 12
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-06-05T16:55:02Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 5,
+        "startChar": 32,
+        "endLine": 5,
+        "endChar": 42
+      },
+      "revId": "450f0972fb65a4d9351417a4b06a487f2f4b1ff5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
