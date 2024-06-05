@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f4ba696_572aea65",
+        "filename": "src/shaders/gradients/SkGradientBaseShader.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 261,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-06-05T15:12:47Z",
+      "side": 1,
+      "message": "Changed to the for loop.",
+      "parentUuid": "3808f29d_a08fc996",
+      "range": {
+        "startLine": 261,
+        "startChar": 0,
+        "endLine": 261,
+        "endChar": 38
+      },
+      "revId": "90c4dd1c0252681f8f5828c7fabcc935f1be209b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3fa81a2d_dbbad68c",
