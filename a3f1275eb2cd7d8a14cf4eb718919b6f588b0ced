@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ea8e8b65_8184e602",
+        "filename": "BUILD.gn",
+        "patchSetId": 2
+      },
+      "lineNbr": 310,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-06-05T15:39:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "04cd9da2_7beb9334",
+      "revId": "a3f1275eb2cd7d8a14cf4eb718919b6f588b0ced",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "507d767f_ba1d050c",
@@ -52,6 +70,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b8a5efb3_49b556e8",
+        "filename": "BUILD.gn",
+        "patchSetId": 2
+      },
+      "lineNbr": 416,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-06-05T15:39:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "507d767f_ba1d050c",
+      "revId": "a3f1275eb2cd7d8a14cf4eb718919b6f588b0ced",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e061353a_fd92d6d6",
@@ -65,6 +101,24 @@
       "writtenOn": "2024-06-05T13:56:32Z",
       "side": 1,
       "message": "Do we need a `skia_ports_fontmgr_android_public` for `include/ports/SkFontMgr_android.h`? I think Chromium should be pulling that in, though at the moment it may be invisible and implicit.",
+      "revId": "a3f1275eb2cd7d8a14cf4eb718919b6f588b0ced",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f3aed0fd_c307eb91",
+        "filename": "gn/ports.gni",
+        "patchSetId": 2
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-06-05T15:39:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e061353a_fd92d6d6",
       "revId": "a3f1275eb2cd7d8a14cf4eb718919b6f588b0ced",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
