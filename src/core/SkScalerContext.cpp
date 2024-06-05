@@ -136,8 +136,11 @@ static const SkMaskGamma& cached_mask_gamma(SkScalar contrast, SkScalar paintGam
         return *gLinearMaskGamma;
     }
     if (gContrast != contrast || gPaintGamma != paintGamma || gDeviceGamma != deviceGamma) {
-        SkSafeUnref(gMaskGamma);
-        gMaskGamma = new SkMaskGamma(contrast, paintGamma, deviceGamma);
+        if (gMaskGamma) {
+            gMaskGamma->UpdateLUT(contrast, paintGamma, deviceGamma);
+        } else {
+            gMaskGamma = new SkMaskGamma(contrast, paintGamma, deviceGamma);
+        }
         gContrast = contrast;
         gPaintGamma = paintGamma;
         gDeviceGamma = deviceGamma;
