@@ -903,6 +903,86 @@ sk_sp<PrecompileShader> PrecompileShadersPriv::CTM(SkSpan<const sk_sp<Precompile
 }
 
 //--------------------------------------------------------------------------------------------------
+class PrecompileBlendShader1 : public PrecompileShader {
+public:
+    PrecompileBlendShader1(sk_sp<PrecompileShader> foreground,
+                          sk_sp<PrecompileShader> background)
+            : fForeground(std::move(foreground))
+            , fBackground(std::move(background)){
+        fNumForegroundCombos = fForeground->numCombinations();
+        fNumBackgroundCombos = fBackground->numCombinations();
+    }
+
+private:
+    inline static constexpr int kNumIntrinsicCombinations = 1;
+
+    int numIntrinsicCombinations() const override { return kNumIntrinsicCombinations; }
+
+    int numChildCombinations() const override {
+        return fNumForegroundCombos * fNumBackgroundCombos;
+    }
+
+    void addToKey(const KeyContext& keyContext,
+                  PaintParamsKeyBuilder* builder,
+                  PipelineDataGatherer* gatherer,
+                  int desiredCombination) const override {
+        SkASSERT(desiredCombination < this->numCombinations());
+
+#if 0
+        int desiredBlurCombination = desiredCombination % kNumIntrinsicCombinations;
+        int desiredWrappedCombination = desiredCombination / kNumIntrinsicCombinations;
+        SkASSERT(desiredWrappedCombination < fNumWrappedCombos);
+
+        static const StableKey kIDs[kNumIntrinsicCombinations] = {
+                StableKey::k1DBlur4,  StableKey::k1DBlur8,  StableKey::k1DBlur12,
+                StableKey::k1DBlur16, StableKey::k1DBlur20, StableKey::k1DBlur28,
+
+                StableKey::k2DBlur4,  StableKey::k2DBlur8,  StableKey::k2DBlur12,
+                StableKey::k2DBlur16, StableKey::k2DBlur20, StableKey::k2DBlur28,
+        };
+
+        const SkRuntimeEffect* fEffect = GetKnownRuntimeEffect(kIDs[desiredBlurCombination]);
+
+        KeyContextWithScope childContext(keyContext, KeyContext::Scope::kRuntimeEffect);
+
+        RuntimeEffectBlock::BeginBlock(keyContext, builder, gatherer, { sk_ref_sp(fEffect) });
+            fWrapped->priv().addToKey(childContext, builder, gatherer, desiredWrappedCombination);
+        builder->endBlock();
+#endif
+    }
+
+    sk_sp<PrecompileShader> fForeground;
+    int fNumForegroundCombos;
+    sk_sp<PrecompileShader> fBackground;
+    int fNumBackgroundCombos;
+};
+
+sk_sp<PrecompileShader> PrecompileShadersPriv::Arithmetic(sk_sp<PrecompileShader> foreground,
+                                                          sk_sp<PrecompileShader> background) {
+    sk_sp<PrecompileBlender> blender = PrecompileBlenders::Arithmetic();
+    return sk_make_sp<PrecompileBlendShader1>(//std::move(blender),
+                                             std::move(foreground),
+                                             std::move(background));
+}
+
+sk_sp<PrecompileShader> Blend(SkBlendMode mode,
+                              sk_sp<PrecompileShader> foreground,
+                              sk_sp<PrecompileShader> background) {
+    sk_sp<PrecompileBlender> blender = PrecompileBlendModeBlender::Mode(mode);
+    return sk_make_sp<PrecompileBlendShader1>(std::move(foreground), std::move(background));
+}
+
+sk_sp<PrecompileShader> Blend(sk_sp<SkBlender> blender,
+                              sk_sp<PrecompileShader> foreground,
+                              sk_sp<PrecompileShader> background) {
+//    if (as_BB(blender)->asBlenderMode().has_value()) {
+//        return Blend(as_BB(blender)->asBlendMode().value(), std::move(foreground), std::move(background));
+//    } else {
+        return nullptr;
+//    }
+}
+
+//--------------------------------------------------------------------------------------------------
 class PrecompileBlurShader : public PrecompileShader {
 public:
     PrecompileBlurShader(sk_sp<PrecompileShader> wrapped)
@@ -1169,6 +1249,80 @@ sk_sp<PrecompileShader> PrecompileShadersPriv::Lighting(sk_sp<PrecompileShader> 
 
 //--------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------
+class PrecompileBlendFilterImageFilter : public PrecompileImageFilter {
+public:
+    PrecompileBlendFilterImageFilter(sk_sp<PrecompileBlender> blender,
+                                     SkSpan<sk_sp<PrecompileImageFilter>> inputs)
+            : PrecompileImageFilter(std::move(inputs))
+            , fBlender(std::move(blender)) {
+    }
+
+private:
+    void onCreatePipelines(
+            const KeyContext& keyContext,
+            PipelineDataGatherer* gatherer,
+            const PaintOptions::ProcessCombination& processCombination) const override {
+
+        PaintOptions paintOptions;
+
+        sk_sp<PrecompileShader> imageShader = PrecompileShadersPriv::Image(
+                PrecompileImageShaderFlags::kExcludeAlpha |
+                PrecompileImageShaderFlags::kExcludeCubic);
+
+        sk_sp<PrecompileShader> blendShader = PrecompileShaders::Blend(
+                SkSpan<const sk_sp<PrecompileBlender>>(&fBlender, 1),
+                { imageShader },
+                { imageShader });
+
+        paintOptions.setShaders({ std::move(blendShader) });
+
+        paintOptions.priv().buildCombinations(keyContext,
+                                              gatherer,
+                                              DrawTypeFlags::kSimpleShape,
+                                              /* withPrimitiveBlender= */ false,
+                                              Coverage::kSingleChannel,
+                                              processCombination);
+    }
+
+    sk_sp<PrecompileBlender> fBlender;
+};
+
+sk_sp<PrecompileImageFilter> PrecompileImageFilters::Arithmetic(
+        sk_sp<PrecompileImageFilter> background,
+        sk_sp<PrecompileImageFilter> foreground) {
+    return Blend(PrecompileBlenders::Arithmetic(), std::move(background), std::move(foreground));
+}
+
+sk_sp<PrecompileImageFilter> PrecompileImageFilters::Blend(
+        SkBlendMode bm,
+        sk_sp<PrecompileImageFilter> background,
+        sk_sp<PrecompileImageFilter> foreground) {
+    return Blend(PrecompileBlender::Mode(bm), std::move(background), std::move(foreground));
+}
+
+sk_sp<PrecompileImageFilter> PrecompileImageFilters::Blend(
+        sk_sp<PrecompileBlender> blender,
+        sk_sp<PrecompileImageFilter> background,
+        sk_sp<PrecompileImageFilter> foreground) {
+
+    if (!blender) {
+        blender = PrecompileBlender::Mode(SkBlendMode::kSrcOver);
+    }
+
+    if (std::optional<SkBlendMode> bm = blender->asBlendMode()) {
+        if (bm == SkBlendMode::kSrc) {
+            return foreground;
+        } else if (bm == SkBlendMode::kDst) {
+            return background;
+        } else if (bm == SkBlendMode::kClear) {
+            return nullptr; // TODO: actually return PrecompileImageFilters::Empty
+        }
+    }
+
+    sk_sp<PrecompileImageFilter> inputs[2] = { std::move(background), std::move(foreground) };
+    return sk_make_sp<PrecompileBlendFilterImageFilter>(std::move(blender), inputs);
+}
+
 class PrecompileColorFilterImageFilter : public PrecompileImageFilter {
 public:
     PrecompileColorFilterImageFilter(SkSpan<const sk_sp<PrecompileColorFilter>> colorFilterOptions,

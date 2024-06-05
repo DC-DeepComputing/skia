@@ -447,6 +447,27 @@ void create_image_drawing_pipelines(const KeyContext& keyContext,
                                                processCombination);
 }
 
+void create_arithmetic_imagefilter_pipelines(
+        const KeyContext& keyContext,
+        PipelineDataGatherer* gatherer,
+        const PaintOptions::ProcessCombination& processCombination) {
+
+    PaintOptions paintOptions;
+
+    // For arithmetic imagefilters we know we don't have alpha-only textures and don't need cubic
+    // filtering.
+    sk_sp<PrecompileShader> imageShader = PrecompileShadersPriv::Image(
+            PrecompileImageShaderFlags::kExcludeAlpha | PrecompileImageShaderFlags::kExcludeCubic);
+
+    paintOptions.setShaders({ PrecompileShadersPriv::Arithmetic(imageShader, imageShader) });
+
+    paintOptions.priv().buildCombinations(keyContext,
+                                          gatherer,
+                                          DrawTypeFlags::kSimpleShape,
+                                          /* withPrimitiveBlender= */ false,
+                                          Coverage::kSingleChannel,
+                                          processCombination);
+}
 void create_blur_imagefilter_pipelines(const KeyContext& keyContext,
                                        PipelineDataGatherer* gatherer,
                                        const PaintOptions::ProcessCombination& processCombination) {
@@ -552,6 +573,7 @@ void PaintOptions::buildCombinations(
                 // This double level of precompilation options is a bit much. Perhaps we shouldn't
                 // allow precompilation image filters to have internal options (e.g., color filter
                 // options).
+                if (!o) continue;
                 SkSpan<const sk_sp<PrecompileColorFilter>> iFCFs = o->colorFilterOptions();
                 for (const sk_sp<PrecompileColorFilter>& iFCF : iFCFs) {
                     if (!tmp.fColorFilterOptions.empty()) {
@@ -575,6 +597,9 @@ void PaintOptions::buildCombinations(
 
         create_image_drawing_pipelines(keyContext, gatherer, processCombination, *this);
 
+        if (fImageFilterFlags & PrecompileImageFilterFlags::kArithmetic) {
+            create_arithmetic_imagefilter_pipelines(keyContext, gatherer, processCombination);
+        }
         if (fImageFilterFlags & PrecompileImageFilterFlags::kBlur) {
             create_blur_imagefilter_pipelines(keyContext, gatherer, processCombination);
         }
