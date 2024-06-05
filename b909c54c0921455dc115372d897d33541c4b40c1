@@ -93,6 +93,30 @@
       },
       "revId": "b909c54c0921455dc115372d897d33541c4b40c1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3db983f9_9105c55c",
+        "filename": "src/shaders/gradients/SkGradientBaseShader.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-05T14:38:49Z",
+      "side": 1,
+      "message": "Oh right, because they are all duplicates :p\n\nI agree that this ignoreLeftmost/rightmost is the easiest to follow",
+      "parentUuid": "7ff694b6_f0b21382",
+      "range": {
+        "startLine": 206,
+        "startChar": 0,
+        "endLine": 216,
+        "endChar": 17
+      },
+      "revId": "b909c54c0921455dc115372d897d33541c4b40c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

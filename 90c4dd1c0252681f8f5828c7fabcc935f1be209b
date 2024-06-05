@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3808f29d_a08fc996",
+        "filename": "src/shaders/gradients/SkGradientBaseShader.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 261,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-05T14:38:49Z",
+      "side": 1,
+      "message": "This loop might be easier to read as a for:\n\n    for (int j \u003d 1; j \u003c\u003d fColorCount; ++j) \n    \nand just keep `int i \u003d 0;` managed manually.",
+      "range": {
+        "startLine": 261,
+        "startChar": 0,
+        "endLine": 261,
+        "endChar": 38
+      },
+      "revId": "90c4dd1c0252681f8f5828c7fabcc935f1be209b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3fa81a2d_dbbad68c",
+        "filename": "src/shaders/gradients/SkGradientBaseShader.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-05T14:38:49Z",
+      "side": 1,
+      "message": "both `ignoreLeftmost` and `ignoreRightmost` include `dupStop \u0026\u0026` (although for rightmost it\u0027s in the if expression).  We could move the `j-i\u003e1` check into the above if statement.",
+      "range": {
+        "startLine": 265,
+        "startChar": 20,
+        "endLine": 265,
+        "endChar": 45
+      },
+      "revId": "90c4dd1c0252681f8f5828c7fabcc935f1be209b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
