@@ -14,6 +14,7 @@
 #include "include/private/base/SkTArray.h"
 #include "src/core/SkChecksum.h"
 #include "src/gpu/graphite/BuiltInCodeSnippetID.h"
+#include "src/gpu/graphite/Caps.h"
 
 #include <limits>
 #include <cstring> // for memcmp
@@ -94,6 +95,11 @@ private:
                                  int* currentIndex,
                                  SkArenaAlloc* arena) const;
 
+    // Returns the size of the key excluding any appended data.
+    int keySnippetSize() const {
+        return SkTo<int>(fData.size());
+    }
+
     // The memory referenced in 'fData' is always owned by someone else. It either shares the span
     // of from the Builder, or clone() puts the span in an arena.
     SkSpan<const uint32_t> fData;
@@ -117,8 +123,8 @@ public:
 
     ~PaintParamsKeyBuilder() { SkASSERT(!fLocked); }
 
-    void beginBlock(BuiltInCodeSnippetID id) { this->beginBlock(static_cast<int32_t>(id)); }
-    void beginBlock(int32_t codeSnippetID) {
+    void beginBlock(BuiltInCodeSnippetID id) { this->beginBlock(static_cast<uint32_t>(id)); }
+    void beginBlock(uint32_t codeSnippetID) {
         SkASSERT(!fLocked);
         SkDEBUGCODE(this->pushStack(codeSnippetID);)
         fData.push_back(codeSnippetID);
@@ -180,12 +186,12 @@ private:
     skia_private::TArray<uint32_t> fData;
 
 #ifdef SK_DEBUG
-    void pushStack(int32_t codeSnippetID);
+    void pushStack(uint32_t codeSnippetID);
     void popStack();
 
     // Information about the current block being written
     struct StackFrame {
-        int fCodeSnippetID;
+        uint32_t fCodeSnippetID;
         int fNumExpectedChildren;
         int fNumActualChildren = 0;
     };

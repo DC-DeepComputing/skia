@@ -235,6 +235,10 @@ struct SamplerDesc {
         SkASSERT(info.fNonFormatYcbcrConversionInfo >> kMaxNumConversionInfoBits == 0);
     }
     SamplerDesc() = default;
+    SamplerDesc(uint32_t desc, uint64_t format)
+            : fDesc(desc)
+            , fFormat(format)
+            , fExternalFormatMostSignificantBits(format >> 32) {}
     SamplerDesc(const SamplerDesc&) = default;
 
     bool operator==(const SamplerDesc& o) const {
