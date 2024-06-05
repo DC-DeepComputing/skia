@@ -153,6 +153,7 @@ void add_dst_read_sample_uniform_data(const ShaderCodeDictionary* dict,
                                       SkIPoint dstOffset) {
     static const SkTileMode kTileModes[2] = {SkTileMode::kClamp, SkTileMode::kClamp};
     gatherer->add(SkSamplingOptions(), kTileModes, dstTexture);
+    // TODO add immutable sampler data
 
     VALIDATE_UNIFORMS(gatherer, dict, BuiltInCodeSnippetID::kDstReadSample)
 
@@ -369,6 +370,10 @@ void GradientShaderBlocks::AddBlock(const KeyContext& keyContext,
         static constexpr SkSamplingOptions kNearest(SkFilterMode::kNearest, SkMipmapMode::kNone);
         static constexpr SkTileMode kClampTiling[2] = {SkTileMode::kClamp, SkTileMode::kClamp};
         gatherer->add(kNearest, kClampTiling, gradData.fColorsAndOffsetsProxy);
+        // builder->addImmutableSamplerDataIfApplicable(keyContext.caps(),
+        //                                              kNearest,
+        //                                              kClampTiling,
+        //                                              gradData.fColorsAndOffsetsProxy.get());
     }
 
     BuiltInCodeSnippetID codeSnippetID = BuiltInCodeSnippetID::kSolidColorShader;
@@ -716,10 +721,34 @@ void YUVImageShaderBlock::AddBlock(const KeyContext& keyContext,
                                           ? SkTileMode::kClamp : imgData.fTileModes[0],
                                   imgData.fTileModes[1] == SkTileMode::kDecal
                                           ? SkTileMode::kClamp : imgData.fTileModes[1] };
+    // TODO: Make this a helper for adding to gatherer and to builder
     gatherer->add(imgData.fSampling, imgData.fTileModes, imgData.fTextureProxies[0]);
+    // builder->addImmutableSamplerDataIfApplicable(
+    //             keyContext.caps(),
+    //             imgData.fSampling,
+    //             imgData.fTileModes,
+    //             imgData.fTextureProxies[0]);
+
     gatherer->add(imgData.fSamplingUV, uvTileModes, imgData.fTextureProxies[1]);
+    // builder->addImmutableSamplerDataIfApplicable(
+    //             keyContext.caps(),
+    //             imgData.fSamplingUV,
+    //             uvTileModes,
+    //             imgData.fTextureProxies[1]);
+
     gatherer->add(imgData.fSamplingUV, uvTileModes, imgData.fTextureProxies[2]);
+    // builder->addImmutableSamplerDataIfApplicable(
+    //             keyContext.caps(),
+    //             imgData.fSamplingUV,
+    //             uvTileModes,
+    //             imgData.fTextureProxies[2]);
+
     gatherer->add(imgData.fSampling, imgData.fTileModes, imgData.fTextureProxies[3]);
+    // builder->addImmutableSamplerDataIfApplicable(
+    //             keyContext.caps(),
+    //             imgData.fSampling,
+    //             imgData.fTileModes,
+    //             imgData.fTextureProxies[3]);
 
     if (imgData.fSampling.useCubic) {
         add_cubic_yuv_image_uniform_data(keyContext.dict(), imgData, gatherer);
@@ -780,6 +809,11 @@ void DitherShaderBlock::AddBlock(const KeyContext& keyContext,
     gatherer->add(kNearest, kRepeatTiling, data.fLUTProxy);
 
     builder->addBlock(BuiltInCodeSnippetID::kDitherShader);
+    // builder->addImmutableSamplerDataIfApplicable(
+    //             keyContext.caps(),
+    //             kNearest,
+    //             kRepeatTiling,
+    //             data.fLUTProxy.get());
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -802,6 +836,7 @@ void add_perlin_noise_uniform_data(const ShaderCodeDictionary* dict,
 
     gatherer->add(kNearestSampling, kRepeatXTileModes, noiseData.fPermutationsProxy);
     gatherer->add(kNearestSampling, kRepeatXTileModes, noiseData.fNoiseProxy);
+    // TODO add immutable sampler data?
 }
 
 } // anonymous namespace
@@ -813,6 +848,7 @@ void PerlinNoiseShaderBlock::AddBlock(const KeyContext& keyContext,
     add_perlin_noise_uniform_data(keyContext.dict(), noiseData, gatherer);
 
     builder->addBlock(BuiltInCodeSnippetID::kPerlinNoiseShader);
+    // TODO add immutable sampler data
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -904,6 +940,8 @@ void add_table_colorfilter_uniform_data(const ShaderCodeDictionary* dict,
 
     static const SkTileMode kTileModes[2] = { SkTileMode::kClamp, SkTileMode::kClamp };
     gatherer->add(SkSamplingOptions(), kTileModes, data.fTextureProxy);
+    // TODO add immutable sampler data
+
 }
 
 } // anonymous namespace

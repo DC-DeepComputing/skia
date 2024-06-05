@@ -29,7 +29,7 @@ void PaintParamsKeyBuilder::checkReset() {
     SkASSERT(fStack.empty());
 }
 
-void PaintParamsKeyBuilder::pushStack(int32_t codeSnippetID) {
+void PaintParamsKeyBuilder::pushStack(uint32_t codeSnippetID) {
     SkASSERT(fDict->isValidID(codeSnippetID));
 
     if (!fStack.empty()) {
@@ -93,7 +93,7 @@ const ShaderNode* PaintParamsKey::createNode(const ShaderCodeDictionary* dict,
                                              SkArenaAlloc* arena) const {
     SkASSERT(*currentIndex < SkTo<int>(fData.size()));
     const int32_t index = (*currentIndex)++;
-    const int32_t id = fData[index];
+    const uint32_t id = fData[index];
 
     const ShaderSnippet* entry = dict->getEntry(id);
     if (!entry) {
@@ -101,12 +101,22 @@ const ShaderNode* PaintParamsKey::createNode(const ShaderCodeDictionary* dict,
         return nullptr;
     }
 
+    if (index == 0) {
+        SkDebugf("data: ");
+        for (const auto dataMember : fData) {
+            SkDebugf(" %d ", dataMember);
+        }
+        SkDebugf("\n");
+    }
+
+
     SkSpan<const uint32_t> dataSpan = {};
     if (entry->fSnippetRequirementFlags & SnippetRequirementFlags::kStoresData) {
         // Gather any additional sampler data that should be passed into ShaderNode creation. If the
         // next entry is 0, that indicates there is no immutable sampler data to store.
         const int storedDataLengthIdx = index + 1;
         SkASSERT(storedDataLengthIdx < SkTo<int>(fData.size()));
+
         const int dataLength = fData[storedDataLengthIdx];
         SkASSERT(storedDataLengthIdx + dataLength < SkTo<int>(fData.size()));
 
@@ -141,7 +151,7 @@ SkSpan<const ShaderNode*> PaintParamsKey::getRootNodes(const ShaderCodeDictionar
     // the final blend, there will only be a single root node and this can be simplified.
     // For now, we don't know how many roots there are, so collect them into a local array before
     // copying into the arena.
-    int keySize = SkTo<int>(fData.size());
+    const int keySize = SkTo<int>(fData.size());
 
     // Normal PaintParams creation will have up to 7 roots for the different stages.
     STArray<7, const ShaderNode*> roots;
@@ -181,6 +191,10 @@ static int key_to_string(SkString* str,
     }
     str->append(name);
 
+    if (entry->fSnippetRequirementFlags & SnippetRequirementFlags::kStoresData) {
+        // TODO: Print data
+    }
+
     if (entry->fNumChildren > 0) {
         str->append(" [ ");
         for (int i = 0; i < entry->fNumChildren; ++i) {
@@ -195,7 +209,7 @@ static int key_to_string(SkString* str,
 
 SkString PaintParamsKey::toString(const ShaderCodeDictionary* dict) const {
     SkString str;
-    int keySize = SkTo<int>(fData.size());
+    const int keySize = SkTo<int>(fData.size());
     for (int currentIndex = 0; currentIndex < keySize;) {
         currentIndex = key_to_string(&str, dict, fData, currentIndex);
     }
@@ -219,17 +233,19 @@ static int dump_node(const ShaderCodeDictionary* dict,
         return currentIndex;
     }
 
+    SkDebugf("[%d] %s\n", id, entry->fStaticFunctionName);
+
     if (entry->fSnippetRequirementFlags & SnippetRequirementFlags::kStoresData) {
         SkASSERT(currentIndex + 1 < SkTo<int>(keyData.size()));
-        const int dataLength = keyData[++currentIndex];
+        const int dataLength = keyData[currentIndex++];
         SkASSERT(currentIndex + dataLength < SkTo<int>(keyData.size()));
-        SkDebugf("%*c", (2 * indent + 1), ' ');
-        SkDebugf("Snippet data (size: %i): ", dataLength);
+        SkDebugf("%*c", 4 * indent, ' ');
+        SkDebugf("Snippet data (%i entries): ", dataLength);
 
         if (dataLength == 0) {
             SkDebugf("0 (no data)\n");
         } else {
-            for (int i = currentIndex; i < dataLength; i++) {
+            for (int i = 0; i < dataLength; i++) {
                 SkDebugf( "%d ", keyData[currentIndex + i]);
             }
             SkDebugf("\n");
@@ -237,7 +253,6 @@ static int dump_node(const ShaderCodeDictionary* dict,
         }
     }
 
-    SkDebugf("[%d] %s\n", id, entry->fStaticFunctionName);
     for (int i = 0; i < entry->fNumChildren; ++i) {
         currentIndex = dump_node(dict, keyData, currentIndex, indent + 1);
     }
