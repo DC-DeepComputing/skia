@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4d54a23_cdf11c62",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-06-05T13:56:32Z",
+      "side": 1,
+      "message": "After making a few comments about the output, went and took a look at what created that output. It would be nice to add all the things now so that Chromium\u0027s `BUILD.gn` can also be less bad, in addition to making our `BUILD.gn` a little more consistent.",
+      "revId": "a3f1275eb2cd7d8a14cf4eb718919b6f588b0ced",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04cd9da2_7beb9334",
+        "filename": "BUILD.gn",
+        "patchSetId": 2
+      },
+      "lineNbr": 310,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-06-05T13:56:32Z",
+      "side": 1,
+      "message": "It seems that every `include/` in listed in `skia/ext/font_utils.cc` should be abstracted, as was done for CoreText and Fuchsia below? I\u0027m assuming this wasn\u0027t done here because this particular file isn\u0027t currently directly referenced by Chromium\u0027s `skia/BUILD.gn`, but that seems to be a rather glaring deficiency that should be rectified.",
+      "revId": "a3f1275eb2cd7d8a14cf4eb718919b6f588b0ced",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "507d767f_ba1d050c",
+        "filename": "BUILD.gn",
+        "patchSetId": 2
+      },
+      "lineNbr": 416,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-06-05T13:56:32Z",
+      "side": 1,
+      "message": "Here the `public` is abstracted, but in many others it isn\u0027t? Any reason why? I\u0027m assuming that Chromium\u0027s `BUILD.gn` is just rather a mess and doesn\u0027t list all the headers that are actually needed. On the Skia side it seems we should be consistent here.",
+      "revId": "a3f1275eb2cd7d8a14cf4eb718919b6f588b0ced",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e061353a_fd92d6d6",
+        "filename": "gn/ports.gni",
+        "patchSetId": 2
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-06-05T13:56:32Z",
+      "side": 1,
+      "message": "Do we need a `skia_ports_fontmgr_android_public` for `include/ports/SkFontMgr_android.h`? I think Chromium should be pulling that in, though at the moment it may be invisible and implicit.",
+      "revId": "a3f1275eb2cd7d8a14cf4eb718919b6f588b0ced",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
