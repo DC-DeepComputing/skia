@@ -308,11 +308,7 @@ optional("fontmgr_android") {
   ]
   public_defines = [ "SK_FONTMGR_ANDROID_AVAILABLE" ]
   public = [ "include/ports/SkFontMgr_android.h" ]
-  sources = [
-    "src/ports/SkFontMgr_android.cpp",
-    "src/ports/SkFontMgr_android_parser.cpp",
-    "src/ports/SkFontMgr_android_parser.h",
-  ]
+  sources = skia_ports_fontmgr_android_sources
   sources_for_tests = [ "tests/FontMgrAndroidParserTest.cpp" ]
 }
 
@@ -322,8 +318,7 @@ optional("fontmgr_custom") {
       skia_enable_fontmgr_custom_embedded || skia_enable_fontmgr_custom_empty
 
   deps = [ ":typeface_freetype" ]
-  public = [ "src/ports/SkFontMgr_custom.h" ]
-  sources = [ "src/ports/SkFontMgr_custom.cpp" ]
+  sources = skia_ports_fontmgr_custom_sources
 }
 
 optional("fontmgr_custom_directory") {
@@ -381,13 +376,7 @@ optional("fontmgr_FontConfigInterface") {
     "include/ports/SkFontConfigInterface.h",
     "include/ports/SkFontMgr_FontConfigInterface.h",
   ]
-  sources = [
-    "src/ports/SkFontConfigInterface.cpp",
-    "src/ports/SkFontConfigInterface_direct.cpp",
-    "src/ports/SkFontConfigInterface_direct_factory.cpp",
-    "src/ports/SkFontConfigTypeface.h",
-    "src/ports/SkFontMgr_FontConfigInterface.cpp",
-  ]
+  sources = skia_ports_fci_sources + [ "src/ports/SkFontConfigTypeface.h" ]
   sources_for_tests = [ "tests/FCITest.cpp" ]
 }
 
@@ -413,8 +402,8 @@ optional("fontmgr_fuchsia") {
   } else {
     deps = [ "//sdk/fidl/fuchsia.fonts" ]
   }
-  public = [ "src/ports/SkFontMgr_fuchsia.h" ]
-  sources = [ "src/ports/SkFontMgr_fuchsia.cpp" ]
+  public = skia_ports_fontmgr_fuchsia_public
+  sources = skia_ports_fontmgr_fuchsia_sources
 }
 
 optional("fontmgr_mac_ct") {
@@ -424,17 +413,8 @@ optional("fontmgr_mac_ct") {
     "SK_TYPEFACE_FACTORY_CORETEXT",
     "SK_FONTMGR_CORETEXT_AVAILABLE",
   ]
-  public = [
-    "include/ports/SkFontMgr_mac_ct.h",
-    "include/ports/SkTypeface_mac.h",
-  ]
-  sources = [
-    "src/ports/SkFontMgr_mac_ct.cpp",
-    "src/ports/SkScalerContext_mac_ct.cpp",
-    "src/ports/SkScalerContext_mac_ct.h",
-    "src/ports/SkTypeface_mac_ct.cpp",
-    "src/ports/SkTypeface_mac_ct.h",
-  ]
+  public = skia_ports_fontmgr_coretext_public
+  sources = skia_ports_fontmgr_coretext_sources
   sources_for_tests = [ "tests/TypefaceMacTest.cpp" ]
 
   if (is_mac) {
@@ -465,13 +445,7 @@ optional("fontmgr_win") {
     "SK_FONTMGR_DIRECTWRITE_AVAILABLE",
   ]
   public = [ "include/ports/SkTypeface_win.h" ]
-  sources = [
-    "src/ports/SkFontMgr_win_dw.cpp",
-    "src/ports/SkScalerContext_win_dw.cpp",
-    "src/ports/SkScalerContext_win_dw.h",
-    "src/ports/SkTypeface_win_dw.cpp",
-    "src/ports/SkTypeface_win_dw.h",
-  ]
+  sources = skia_ports_windows_fonts_sources
   if (skia_dwritecore_sdk != "") {
     defines = [ "DWRITE_CORE" ]
     if (is_win && is_clang) {
@@ -594,7 +568,7 @@ if (skia_compile_modules) {
       sources += [ "tools/SkGetExecutablePath_linux.cpp" ]
     }
     if (is_win) {
-      sources += [ "src/ports/SkOSFile_win.cpp" ]
+      sources += skia_ports_windows_sources
     } else {
       sources += [ "src/ports/SkOSFile_posix.cpp" ]
       libs += [ "dl" ]
@@ -723,7 +697,7 @@ if (skia_compile_sksl_tests) {
       sources += [ "tools/SkGetExecutablePath_linux.cpp" ]
     }
     if (is_win) {
-      sources += [ "src/ports/SkOSFile_win.cpp" ]
+      sources += skia_ports_windows_sources
     } else {
       sources += [ "src/ports/SkOSFile_posix.cpp" ]
       libs += [ "dl" ]
@@ -1281,12 +1255,7 @@ optional("typeface_freetype") {
 
   public_defines = [ "SK_TYPEFACE_FACTORY_FREETYPE" ]
   deps = [ "//third_party/freetype2" ]
-  sources = [
-    "src/ports/SkFontHost_FreeType.cpp",
-    "src/ports/SkFontHost_FreeType_common.cpp",
-    "src/ports/SkFontHost_FreeType_common.h",
-    "src/ports/SkTypeface_FreeType.h",
-  ]
+  sources = skia_ports_freetype_sources
 }
 
 if (skia_use_fontations) {
@@ -1365,12 +1334,10 @@ optional("typeface_fontations") {
     "$root_out_dir/libfontations_ffi.a",
     "$root_out_dir/libbridge_rust_side.a",
   ]
-  sources = [
-    "src/ports/SkFontScanner_fontations.cpp",
-    "src/ports/SkFontScanner_fontations.h",
-    "src/ports/SkTypeface_fontations.cpp",
-    "src/ports/SkTypeface_fontations_priv.h",
-  ]
+  sources = skia_ports_typeface_fontations_sources + [
+              "src/ports/SkFontScanner_fontations.cpp",
+              "src/ports/SkFontScanner_fontations.h",
+            ]
 
   sources_for_tests = [
     "tests/FontationsTest.cpp",
@@ -1504,6 +1471,7 @@ skia_component("skia") {
   sources += skia_encode_srcs
   sources += skia_sksl_sources
   sources += skia_sksl_tracing_sources
+  sources += skia_ports_sources
   sources += [
     "src/android/SkAndroidFrameworkUtils.cpp",
     "src/android/SkAnimatedImage.cpp",
@@ -1513,9 +1481,7 @@ skia_component("skia") {
     "src/codec/SkParseEncodedOrigin.cpp",
     "src/codec/SkSampledCodec.cpp",
     "src/ports/SkDiscardableMemory_none.cpp",
-    "src/ports/SkGlobalInitialization_default.cpp",
     "src/ports/SkMemory_malloc.cpp",
-    "src/ports/SkOSFile_stdio.cpp",
     "src/sfnt/SkOTTable_name.cpp",
     "src/sfnt/SkOTUtils.cpp",
   ]
@@ -1538,12 +1504,11 @@ skia_component("skia") {
   }
 
   if (is_win) {
-    sources += [
-      "src/ports/SkDebug_win.cpp",
-      "src/ports/SkImageGeneratorWIC.cpp",
-      "src/ports/SkOSFile_win.cpp",
-      "src/ports/SkOSLibrary_win.cpp",
-    ]
+    sources += skia_ports_windows_sources + [
+                 "src/ports/SkDebug_win.cpp",
+                 "src/ports/SkImageGeneratorWIC.cpp",
+                 "src/ports/SkOSLibrary_win.cpp",
+               ]
     libs += [
       "Ole32.lib",
       "OleAut32.lib",

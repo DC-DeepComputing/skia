@@ -54,6 +54,11 @@ skia_filegroup(
 )
 
 skia_filegroup(
+    name = "fuchsia_fontmgr_hdrs",
+    srcs = ["SkFontMgr_fuchsia.h"],
+)
+
+skia_filegroup(
     name = "fci_fontmgr_hdrs",
     srcs = [
         "SkFontConfigInterface.h",
