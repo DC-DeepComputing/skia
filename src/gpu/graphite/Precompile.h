@@ -301,8 +301,8 @@ private:
         SkASSERT(false);
     }
 
-    virtual SkSpan<const sk_sp<PrecompileColorFilter>> onColorFilterOptions() const { return {}; }
-
+public:
+    virtual sk_sp<PrecompileColorFilter> isColorFilterNode() const { return nullptr; }
     int countInputs() const { return fInputs.count(); }
 
     const PrecompileImageFilter* getInput(int index) const {
@@ -310,14 +310,15 @@ private:
         return fInputs[index].get();
     }
 
-    SkSpan<const sk_sp<PrecompileColorFilter>> colorFilterOptions() const {
+private:
+    sk_sp<PrecompileColorFilter> asAColorFilter() const {
         SkASSERT(this->countInputs() == 1);
         if (this->getInput(0)) {
             return {};
         }
 
-        SkSpan<const sk_sp<PrecompileColorFilter>> tmp = this->onColorFilterOptions();
-        if (tmp.empty()) {
+        sk_sp<PrecompileColorFilter> tmp = this->isColorFilterNode();
+        if (!tmp) {
             return {};
         }
         // TODO: as in SkImageFilter::asAColorFilter, handle the special case of
