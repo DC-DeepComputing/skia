@@ -39,6 +39,30 @@
       },
       "revId": "50594e1a11d9080fa76b507e69c5769a8e28ec80",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d509d372_9462e4ca",
+        "filename": "src/gpu/ganesh/effects/GrConvexPolyEffect.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-06-05T15:39:22Z",
+      "side": 1,
+      "message": "It seems like the array itself has enough precision to represent the values we want, but we run into catastrophic cancellation when computing the dot products. So I don\u0027t see a need to increase the size of the uniforms unless future evidence shows we need to.",
+      "parentUuid": "75f292f9_eaa09890",
+      "range": {
+        "startLine": 121,
+        "startChar": 75,
+        "endLine": 121,
+        "endChar": 81
+      },
+      "revId": "50594e1a11d9080fa76b507e69c5769a8e28ec80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
