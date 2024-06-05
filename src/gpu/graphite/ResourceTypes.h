@@ -234,7 +234,7 @@ struct SamplerDesc {
         // the conversion information can fit within an uint32.
         SkASSERT(info.fNonFormatYcbcrConversionInfo >> kMaxNumConversionInfoBits == 0);
     }
-
+    SamplerDesc() = default;
     SamplerDesc(const SamplerDesc&) = default;
 
     bool operator==(const SamplerDesc& o) const {
@@ -249,6 +249,8 @@ struct SamplerDesc {
     uint32_t   desc()               const { return fDesc;                                        }
     uint32_t   format()             const { return fFormat;                                      }
     uint32_t   externalFormatMSBs() const { return fExternalFormatMostSignificantBits;           }
+    bool       isImmutable()        const { return (fDesc >> kImmutableSamplerInfoShift) != 0;   }
+    bool       usesExternalFormat() const { return (fDesc >> kImmutableSamplerInfoShift) & 0b1;  }
 
     // NOTE: returns the HW sampling options to use, so a bicubic SkSamplingOptions will become
     // nearest-neighbor sampling in HW.
