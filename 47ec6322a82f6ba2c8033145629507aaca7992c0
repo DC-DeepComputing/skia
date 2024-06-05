@@ -34,6 +34,24 @@
       "parentUuid": "669d2bac_2d27479f",
       "revId": "47ec6322a82f6ba2c8033145629507aaca7992c0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b0365c01_74c9d2a4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-06-05T22:58:46Z",
+      "side": 1,
+      "message": "I\u0027m guessing that those other references are the SkScalerContexts that already exist and those are being held in the SkStrikeCache. Mutating the SkMaskGamma object out from under them would be bad, as their mask gamma settings are part of their cache key and part of their public behavior. If you want to clear the cache, I think you want `SkGraphics::PurgeFontCache()`.\n\nThat being said, it is true that because there is no actual cache of SkMaskGamma here that if it changes quite often then it could be as bad as a new one for each SkScalerContext, in theory. However, that\u0027s just using a lot of memory, not a leak.",
+      "parentUuid": "532fa5d5_4f5a5928",
+      "revId": "47ec6322a82f6ba2c8033145629507aaca7992c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
