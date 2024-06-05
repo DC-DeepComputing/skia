@@ -93,6 +93,30 @@
       ],
       "revId": "60060992bf1fccac20df29019d4b6e855ded2642",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed578e2e_f6513cde",
+        "filename": "src/shaders/gradients/SkGradientBaseShader.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-06-05T20:55:39Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "2f03d801_7a10074b",
+      "range": {
+        "startLine": 249,
+        "startChar": 27,
+        "endLine": 249,
+        "endChar": 31
+      },
+      "revId": "60060992bf1fccac20df29019d4b6e855ded2642",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
