@@ -1450,17 +1450,13 @@ GraphiteResourceKey VulkanCaps::makeSamplerKey(const SamplerDesc& samplerDesc) c
     bool usesYcbcrConversion = nonFormatYcbcrInfo != 0;
 
     int uint32Quantity = 1;
-    bool usesExternalFormat = false;
     if (usesYcbcrConversion) {
-        // If using a YCbCr conversion, check nonFormatYcbcrInfo to see if we are using an external
-        // format and update uint32Quantity accordingly.
-        usesExternalFormat = static_cast<bool>(
-                ((nonFormatYcbcrInfo & ycbcrPackaging::kUseExternalFormatMask) >>
-                        ycbcrPackaging::kUsesExternalFormatShift));
-        // Reassign uint32Quantity. This is an assignment instead of an additive operation because
-        // non-format ycbcr information and sampler information cam be fit into just one int32.
-        uint32Quantity = usesExternalFormat ? ycbcrPackaging::kInt32sNeededExternalFormat
-                                            : ycbcrPackaging::kInt32sNeededKnownFormat;
+        // If using a YCbCr conversion, check to see if we are using an external format and update
+        // uint32Quantity accordingly. We reassign uint32Quantity as opposed to  performing an
+        // additive operation because non-format ycbcr and sampler info can both fit into one int32.
+        uint32Quantity =
+                samplerDesc.usesExternalFormat() ? ycbcrPackaging::kInt32sNeededExternalFormat
+                                                 : ycbcrPackaging::kInt32sNeededKnownFormat;
     }
     static const ResourceType kSamplerType = GraphiteResourceKey::GenerateResourceType();
     GraphiteResourceKey::Builder builder(&samplerKey, kSamplerType, uint32Quantity,
@@ -1468,7 +1464,7 @@ GraphiteResourceKey VulkanCaps::makeSamplerKey(const SamplerDesc& samplerDesc) c
     int i = 0;
     builder[i++] = samplerDesc.desc();
     if (usesYcbcrConversion) {
-        if (usesExternalFormat) {
+        if (samplerDesc.usesExternalFormat()) {
             builder[i++] = samplerDesc.externalFormatMSBs();
         }
         builder[i++] = samplerDesc.format();
@@ -1549,7 +1545,7 @@ void VulkanCaps::buildKeyForTexture(SkISize dimensions,
     SkASSERT(i == num32DataCnt);
 }
 
-ImmutableSamplerInfo VulkanCaps::getImmutableSamplerInfo(sk_sp<TextureProxy> proxy) const {
+ImmutableSamplerInfo VulkanCaps::getImmutableSamplerInfo(const TextureProxy* proxy) const {
     if (proxy) {
         const skgpu::VulkanYcbcrConversionInfo& ycbcrConversionInfo =
                 proxy->textureInfo().vulkanTextureSpec().fYcbcrConversionInfo;

@@ -9,6 +9,7 @@
 
 #include "src/base/SkArenaAlloc.h"
 #include "src/base/SkStringView.h"
+#include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/KeyHelpers.h"
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/ShaderCodeDictionary.h"
@@ -48,11 +49,40 @@ void PaintParamsKeyBuilder::popStack() {
 
 #endif // SK_DEBUG
 
+void PaintParamsKeyBuilder::addImmutableSamplerDataIfApplicable(const Caps* caps,
+                                                                const SkSamplingOptions& sampling,
+                                                                const SkTileMode tileModes[2],
+                                                                const TextureProxy* proxy) {
+    if (!proxy || !caps) {
+        return;
+    }
+    ImmutableSamplerInfo info = caps->getImmutableSamplerInfo(proxy);
+
+    if (!(info.fNonFormatYcbcrConversionInfo || info.fFormat)) {
+        // Means we have a regular dynamic sampler for which no data needs to be appended.
+        // Call addData() regardless w/ an empty span such that a data legnth of '0' is added.
+        this->addData({});
+        return;
+    }
+
+    SamplerDesc desc{sampling, tileModes, info};
+    SkASSERT(desc.isImmutable());
+
+    skia_private::TArray<uint32_t> samplerData;
+    samplerData.push_back(desc.desc());
+    if (desc.usesExternalFormat()) {
+        samplerData.push_back(desc.externalFormatMSBs());
+    }
+    samplerData.push_back(desc.format());
+
+    this->addData({samplerData});
+}
+
 //--------------------------------------------------------------------------------------------------
 // PaintParamsKey
 
 PaintParamsKey PaintParamsKey::clone(SkArenaAlloc* arena) const {
-    int32_t* newData = arena->makeArrayDefault<int32_t>(fData.size());
+    uint32_t* newData = arena->makeArrayDefault<uint32_t>(fData.size());
     memcpy(newData, fData.data(), fData.size_bytes());
     return PaintParamsKey({newData, fData.size()});
 }
@@ -71,6 +101,24 @@ const ShaderNode* PaintParamsKey::createNode(const ShaderCodeDictionary* dict,
         return nullptr;
     }
 
+    SkSpan<const uint32_t> dataSpan = {};
+    if (entry->fSnippetRequirementFlags & SnippetRequirementFlags::kStoresData) {
+        // Gather any additional sampler data that should be passed into ShaderNode creation. If the
+        // next entry is 0, that indicates there is no immutable sampler data to store.
+        const int storedDataLengthIdx = index + 1;
+        SkASSERT(storedDataLengthIdx < SkTo<int>(fData.size()));
+        const int dataLength = fData[storedDataLengthIdx];
+        SkASSERT(storedDataLengthIdx + dataLength < SkTo<int>(fData.size()));
+
+        // Iterate past data length index
+        *currentIndex += 1;
+        if (dataLength) {
+            dataSpan = fData.subspan(storedDataLengthIdx + 1, dataLength);
+            // Iterate past the length of data
+            *currentIndex += dataLength;
+        }
+    }
+
     const ShaderNode** childArray = arena->makeArray<const ShaderNode*>(entry->fNumChildren);
     for (int i = 0; i < entry->fNumChildren; ++i) {
         const ShaderNode* child = this->createNode(dict, currentIndex, arena);
@@ -80,7 +128,11 @@ const ShaderNode* PaintParamsKey::createNode(const ShaderCodeDictionary* dict,
         childArray[i] = child;
     }
 
-    return arena->make<ShaderNode>(entry, SkSpan(childArray, entry->fNumChildren), id, index);
+    return arena->make<ShaderNode>(entry,
+                                   SkSpan(childArray, entry->fNumChildren),
+                                   id,
+                                   index,
+                                   dataSpan);
 }
 
 SkSpan<const ShaderNode*> PaintParamsKey::getRootNodes(const ShaderCodeDictionary* dict,
@@ -89,7 +141,7 @@ SkSpan<const ShaderNode*> PaintParamsKey::getRootNodes(const ShaderCodeDictionar
     // the final blend, there will only be a single root node and this can be simplified.
     // For now, we don't know how many roots there are, so collect them into a local array before
     // copying into the arena.
-    const int keySize = SkTo<int>(fData.size());
+    int keySize = SkTo<int>(fData.size());
 
     // Normal PaintParams creation will have up to 7 roots for the different stages.
     STArray<7, const ShaderNode*> roots;
@@ -110,11 +162,11 @@ SkSpan<const ShaderNode*> PaintParamsKey::getRootNodes(const ShaderCodeDictionar
 
 static int key_to_string(SkString* str,
                          const ShaderCodeDictionary* dict,
-                         SkSpan<const int32_t> keyData,
+                         SkSpan<const uint32_t> keyData,
                          int currentIndex) {
     SkASSERT(currentIndex < SkTo<int>(keyData.size()));
 
-    int32_t id = keyData[currentIndex++];
+    uint32_t id = keyData[currentIndex++];
     auto entry = dict->getEntry(id);
     if (!entry) {
         str->append("UnknownCodeSnippetID:");
@@ -143,8 +195,8 @@ static int key_to_string(SkString* str,
 
 SkString PaintParamsKey::toString(const ShaderCodeDictionary* dict) const {
     SkString str;
-    const int keySize = SkTo<int>(fData.size());
-    for (int currentIndex = 0; currentIndex < keySize; ) {
+    int keySize = SkTo<int>(fData.size());
+    for (int currentIndex = 0; currentIndex < keySize;) {
         currentIndex = key_to_string(&str, dict, fData, currentIndex);
     }
     return str.isEmpty() ? SkString("(empty)") : str;
@@ -153,18 +205,36 @@ SkString PaintParamsKey::toString(const ShaderCodeDictionary* dict) const {
 #ifdef SK_DEBUG
 
 static int dump_node(const ShaderCodeDictionary* dict,
-                     SkSpan<const int32_t> keyData,
+                     SkSpan<const uint32_t> keyData,
                      int currentIndex,
                      int indent) {
     SkASSERT(currentIndex < SkTo<int>(keyData.size()));
 
     SkDebugf("%*c", 2 * indent, ' ');
 
-    int32_t id = keyData[currentIndex++];
+    uint32_t id = keyData[currentIndex++];
     auto entry = dict->getEntry(id);
     if (!entry) {
         SkDebugf("[%d] unknown block!\n", id);
         return currentIndex;
+    }
+
+    if (entry->fSnippetRequirementFlags & SnippetRequirementFlags::kStoresData) {
+        SkASSERT(currentIndex + 1 < SkTo<int>(keyData.size()));
+        const int dataLength = keyData[++currentIndex];
+        SkASSERT(currentIndex + dataLength < SkTo<int>(keyData.size()));
+        SkDebugf("%*c", (2 * indent + 1), ' ');
+        SkDebugf("Snippet data (size: %i): ", dataLength);
+
+        if (dataLength == 0) {
+            SkDebugf("0 (no data)\n");
+        } else {
+            for (int i = currentIndex; i < dataLength; i++) {
+                SkDebugf( "%d ", keyData[currentIndex + i]);
+            }
+            SkDebugf("\n");
+            currentIndex += dataLength;
+        }
     }
 
     SkDebugf("[%d] %s\n", id, entry->fStaticFunctionName);
