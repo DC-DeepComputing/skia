@@ -1,0 +1,39 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eaeeb2bb_7fefd8d5",
+        "filename": "src/shaders/gradients/SkGradientBaseShader.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 243,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-06-05T20:38:20Z",
+      "side": 1,
+      "message": "@michaelludwig@google.com Just want to make sure the implementation code of the fix we discussed offline looks good to you before submitting, it passed the tests last patchset I just made another patchset to be explicit about the float.",
+      "fixSuggestions": [
+        {
+          "fixId": "d9ba72e0_9cd93065",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/shaders/gradients/SkGradientBaseShader.cpp",
+              "range": {
+                "startLine": 243,
+                "startChar": 0,
+                "endLine": 244,
+                "endChar": 0
+              },
+              "replacement": "            float curr \u003d 0.0f;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "60060992bf1fccac20df29019d4b6e855ded2642",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
