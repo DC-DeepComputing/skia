@@ -158,9 +158,10 @@ public:
 
 enum class PrecompileImageFilterFlags : uint32_t {
     kNone              = 0x0,
-    kBlur              = 0x1,
-    kDisplacement      = 0x2,
-    kMatrixConvolution = 0x4,
+    kArithmetic        = 0x1,
+    kBlur              = 0x2,
+    kDisplacement      = 0x4,
+    kMatrixConvolution = 0x8,
 };
 SK_MAKE_BITMASK_OPS(PrecompileImageFilterFlags)
 

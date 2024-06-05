@@ -245,6 +245,7 @@ const char* to_str(ClipType c) {
 //--------------------------------------------------------------------------------------------------
 #define SK_ALL_TEST_IMAGE_FILTERS(M) \
     M(None)              \
+    M(Arithmetic)        \
     M(Blur)              \
     M(ColorFilter)       \
     M(Displacement)      \
@@ -1129,10 +1130,25 @@ std::pair<sk_sp<SkColorFilter>, sk_sp<PrecompileColorFilter>> create_random_colo
 
 //--------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------
+std::pair<sk_sp<SkImageFilter>, sk_sp<PrecompileImageFilter>> arithmetic_imagefilter(
+        SkRandom* /* rand */,
+        SkEnumBitMask<PrecompileImageFilterFlags>* imageFilterMask) {
+
+    sk_sp<SkImageFilter> arithmeticIF = SkImageFilters::Arithmetic(/* k1= */ 0.5f,
+                                                                   /* k2= */ 0.5f,
+                                                                   /* k3= */ 0.5f,
+                                                                   /* k4= */ 0.5f,
+                                                                   /* enforcePMColor= */ false,
+                                                                   /* background= */ nullptr,
+                                                                   /* foreground= */ nullptr);
+    *imageFilterMask |= PrecompileImageFilterFlags::kArithmetic;
+
+    return { std::move(arithmeticIF), nullptr };
+}
+
 std::pair<sk_sp<SkImageFilter>, sk_sp<PrecompileImageFilter>> blur_imagefilter(
         SkRandom* rand,
         SkEnumBitMask<PrecompileImageFilterFlags>* imageFilterMask) {
-
     int option = rand->nextULessThan(3);
 
     float sigma;
@@ -1307,6 +1323,8 @@ std::pair<sk_sp<SkImageFilter>, sk_sp<PrecompileImageFilter>> create_image_filte
     switch (type) {
         case ImageFilterType::kNone:
             return {};
+        case ImageFilterType::kArithmetic:
+            return arithmetic_imagefilter(rand, imageFilterMask);
         case ImageFilterType::kBlur:
             return blur_imagefilter(rand, imageFilterMask);
         case ImageFilterType::kColorFilter:
