@@ -105,8 +105,8 @@ public:
     SkTMaskGamma() : fIsLinear(true) { }
 
     /**
-     * Creates tables to convert linear alpha values to gamma correcting alpha
-     * values.
+     * Creates a non-linear SkTMaskGamma, initializing tables to convert linear alpha values to gamma
+     * correcting alpha values.
      *
      * @param contrast A value in the range [0.0, 1.0] which indicates the
      *                 amount of artificial contrast to add.
@@ -114,6 +114,21 @@ public:
      * @param device The color space of the target device.
      */
     SkTMaskGamma(SkScalar contrast, SkScalar paintGamma, SkScalar deviceGamma) : fIsLinear(false) {
+        UpdateLUT(contrast, paintGamma, deviceGamma);
+    }
+
+    /**
+     * Updates tables to convert linear alpha values to gamma correcting alpha values on an existing
+     * SkTMaskGamma. Useful when any of the parameters change on a previously created SkTMaskGamma.
+     * Not applicable for linear SkTMaskGamma objects.
+     *
+     * @param contrast A value in the range [0.0, 1.0] which indicates the
+     *                 amount of artificial contrast to add.
+     * @param paint The color space in which the paint color was chosen.
+     * @param device The color space of the target device.
+     */
+    void UpdateLUT(SkScalar contrast, SkScalar paintGamma, SkScalar deviceGamma) {
+        SkASSERT(!fIsLinear);
         const SkColorSpaceLuminance& paintConvert = SkColorSpaceLuminance::Fetch(paintGamma);
         const SkColorSpaceLuminance& deviceConvert = SkColorSpaceLuminance::Fetch(deviceGamma);
         for (U8CPU i = 0; i < (1 << MAX_LUM_BITS); ++i) {
