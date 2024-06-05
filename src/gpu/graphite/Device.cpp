@@ -964,6 +964,7 @@ void Device::drawAtlasSubRun(const sktext::gpu::AtlasSubRun* subRun,
                                                    glyphsRegenerated,
                                                    SkPaintPriv::ComputeLuminanceColor(subRunPaint),
                                                    useGammaCorrectDistanceTable,
+                                                   this->surfaceProps().pixelGeometry(),
                                                    fRecorder,
                                                    rendererData)),
                                subRunPaint,
@@ -1321,7 +1322,9 @@ std::pair<const Renderer*, PathAtlas*> Device::chooseRenderer(const Transform& l
         if (!rendererData.isSDF) {
             return {renderers->bitmapText(rendererData.isLCD), nullptr};
         }
-        return {renderers->sdfText(rendererData.isLCD), nullptr};
+        bool useLCD = rendererData.isLCD &&
+                      this->surfaceProps().pixelGeometry() != kUnknown_SkPixelGeometry;
+        return {renderers->sdfText(useLCD), nullptr};
     } else if (geometry.isVertices()) {
         SkVerticesPriv info(geometry.vertices()->priv());
         return {renderers->vertices(info.mode(), info.hasColors(), info.hasTexCoords()), nullptr};
