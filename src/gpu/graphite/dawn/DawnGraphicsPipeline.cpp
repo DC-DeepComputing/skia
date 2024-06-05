@@ -602,6 +602,7 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(const DawnSharedContext* 
                                      depthStencilSettings.fStencilReferenceValue,
                                      /*hasStepUniforms=*/!step->uniforms().empty(),
                                      /*hasPaintUniforms=*/fsSkSLInfo.fNumPaintUniforms > 0,
+                                     /*hasGradientbuffer=*/fsSkSLInfo.fHasGradientBuffer,
                                      numTexturesAndSamplers));
 }
 
@@ -613,6 +614,7 @@ DawnGraphicsPipeline::DawnGraphicsPipeline(const skgpu::graphite::SharedContext*
                                            uint32_t refValue,
                                            bool hasStepUniforms,
                                            bool hasPaintUniforms,
+                                           bool hasGradientBuffer,
                                            int numFragmentTexturesAndSamplers)
         : GraphicsPipeline(sharedContext, pipelineInfo)
         , fAsyncPipelineCreation(std::move(asyncCreationInfo))
@@ -621,6 +623,7 @@ DawnGraphicsPipeline::DawnGraphicsPipeline(const skgpu::graphite::SharedContext*
         , fStencilReferenceValue(refValue)
         , fHasStepUniforms(hasStepUniforms)
         , fHasPaintUniforms(hasPaintUniforms)
+        , fHasGradientBuffer(hasGradientBuffer)
         , fNumFragmentTexturesAndSamplers(numFragmentTexturesAndSamplers) {}
 
 DawnGraphicsPipeline::~DawnGraphicsPipeline() {

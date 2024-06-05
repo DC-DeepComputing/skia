@@ -511,6 +511,9 @@ void DawnCommandBuffer::bindUniformBuffer(const BindUniformBufferInfo& info, Uni
         case UniformSlot::kPaint:
             bufferIndex = DawnGraphicsPipeline::kPaintUniformBufferIndex;
             break;
+        case UniformSlot::kGradient:
+            bufferIndex = DawnGraphicsPipeline::kGradientBufferIndex;
+            break;
         default:
             SkASSERT(false);
     }
@@ -608,7 +611,7 @@ void DawnCommandBuffer::syncUniformBuffers() {
         fBoundUniformBuffersDirty = false;
 
         std::array<uint32_t, 3> dynamicOffsets;
-        std::array<std::pair<const DawnBuffer*, uint32_t>, 3> boundBuffersAndSizes;
+        std::array<std::pair<const DawnBuffer*, uint32_t>, 4> boundBuffersAndSizes;
         boundBuffersAndSizes[0].first = fIntrinsicConstantBuffer.get();
         boundBuffersAndSizes[0].second = sizeof(IntrinsicConstant);
 
@@ -640,7 +643,18 @@ void DawnCommandBuffer::syncUniformBuffers() {
         } else {
             // Unused buffer entry
             boundBuffersAndSizes[2].first = nullptr;
-            dynamicOffsets[2] = 0;
+            dynamicOffsets[2] = 00;
+        }
+
+        if (fActiveGraphicsPipeline->hasGradientBuffer() &&
+            fBoundUniformBuffers[DawnGraphicsPipeline::kGradientBufferIndex]) {
+            boundBuffersAndSizes[3].first =
+                    fBoundUniformBuffers[DawnGraphicsPipeline::kGradientBufferIndex];
+            boundBuffersAndSizes[3].second =
+                    fBoundUniformBufferSizes[DawnGraphicsPipeline::kGradientBufferIndex];
+        } else {
+            // Unused buffer entry
+            boundBuffersAndSizes[3].first = nullptr;
         }
 
         auto bindGroup =

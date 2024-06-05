@@ -19,6 +19,7 @@
 #include "include/effects/SkGradientShader.h"
 #include "include/gpu/graphite/Context.h"
 #include "include/private/SkColorData.h"
+#include "include/private/base/SkTArray.h"
 #include "src/core/SkColorSpaceXformSteps.h"
 #include "src/gpu/graphite/TextureProxy.h"
 #include "src/shaders/SkShaderBase.h"
@@ -103,6 +104,7 @@ struct GradientShaderBlocks {
                      const SkPMColor4f* colors,
                      const float* offsets,
                      sk_sp<TextureProxy> colorsAndOffsetsProxy,
+                     bool useStorageBuffer,
                      const SkGradientShader::Interpolation&);
 
         bool operator==(const GradientData& rhs) const = delete;
@@ -119,13 +121,16 @@ struct GradientShaderBlocks {
 
         SkTileMode             fTM;
         int                    fNumStops;
+        bool                   fUseStorageBuffer;
 
         // For gradients w/ <= kNumInternalStorageStops stops we use fColors and fOffsets.
         // The offsets are packed into a single float4 to save space when the layout is std140.
-        // Otherwise we use fColorsAndOffsetsProxy.
-        SkPMColor4f            fColors[kNumInternalStorageStops];
-        SkV4                   fOffsets[kNumInternalStorageStops / 4];
-        sk_sp<TextureProxy>    fColorsAndOffsetsProxy;
+        // Otherwise when storage buffers are preferred, we use fColorsAndOffsetsBufData,
+        // else we pack the data into fColorsAndOffsetsProxy.
+        SkPMColor4f                   fColors[kNumInternalStorageStops];
+        SkV4                          fOffsets[kNumInternalStorageStops / 4];
+        sk_sp<TextureProxy>           fColorsAndOffsetsProxy;
+        skia_private::TArray<float>   fColorsAndOffsetsBufData;
 
         SkGradientShader::Interpolation fInterpolation;
     };
