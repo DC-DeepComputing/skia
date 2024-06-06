@@ -623,6 +623,14 @@ void ImageShaderBlock::AddBlock(const KeyContext& keyContext,
         add_image_uniform_data(keyContext.dict(), imgData, gatherer);
         builder->addBlock(BuiltInCodeSnippetID::kImageShader);
     }
+
+    // Image shaders can store immutable sampler data in the PaintParamsKey, so append that data
+    // (or 0) after the snippet ID.
+    builder->addImmutableSamplerDataIfApplicable(keyContext.caps(),
+                                                 imgData.fSampling,
+                                                 doTilingInHw ? imgData.fTileModes
+                                                             : kDefaultTileModes,
+                                                 imgData.fTextureProxy.get());
 }
 
 //--------------------------------------------------------------------------------------------------
