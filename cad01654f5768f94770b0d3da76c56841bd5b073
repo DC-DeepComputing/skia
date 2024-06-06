@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d25287b_ee65a009",
+        "filename": "src/gpu/graphite/PaintParamsKey.h",
+        "patchSetId": 68
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-06-06T14:48:57Z",
+      "side": 1,
+      "message": "Right now I only ever pass `true` in for `includeData`. Is there a specific place you feel we would want to exclude it? If not, perhaps we should just include it all the time.\n\nAlso, in a case where includeData is set to false, I imagine we\u0027d still want to print out that there are `x data entries` to explain the discrepancy b/w snippet printout quantity and key `fData` size. LMKWYT! Such as `data[4]` rather than `data[4]: [ 0 1 2 3 ]` for example",
+      "range": {
+        "startLine": 67,
+        "startChar": 61,
+        "endLine": 67,
+        "endChar": 72
+      },
+      "revId": "cad01654f5768f94770b0d3da76c56841bd5b073",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
