@@ -141,7 +141,7 @@ SkSpan<const ShaderNode*> PaintParamsKey::getRootNodes(const ShaderCodeDictionar
     // the final blend, there will only be a single root node and this can be simplified.
     // For now, we don't know how many roots there are, so collect them into a local array before
     // copying into the arena.
-    const int keySize = SkTo<int>(fData.size());
+    int keySize = SkTo<int>(fData.size());
 
     // Normal PaintParams creation will have up to 7 roots for the different stages.
     STArray<7, const ShaderNode*> roots;
@@ -215,7 +215,7 @@ static int key_to_string(SkString* str,
 
 SkString PaintParamsKey::toString(const ShaderCodeDictionary* dict, bool includeData) const {
     SkString str;
-    const int keySize = SkTo<int>(fData.size());
+    int keySize = SkTo<int>(fData.size());
     for (int currentIndex = 0; currentIndex < keySize;) {
         currentIndex = key_to_string(&str, dict, fData, currentIndex, includeData);
     }

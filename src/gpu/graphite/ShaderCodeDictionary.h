@@ -62,7 +62,7 @@ enum class SnippetRequirementFlags : uint32_t {
     kPriorStageOutput = 0x2,  // AKA the "input" color, or the "src" argument for a blender
     kBlenderDstColor  = 0x4,  // The "dst" argument for a blender
     kSurfaceColor     = 0x8,
-    kStoresData       = 0x10, // Indicates that the node may store numerical data
+    kStoresData       = 0x10, // Indicates that the node stores numerical sampler data
 };
 SK_MAKE_BITMASK_OPS(SnippetRequirementFlags)
 
