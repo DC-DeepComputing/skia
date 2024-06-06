@@ -1161,7 +1161,9 @@ Clip ClipStack::visitClipStackForDraw(const Transform& localToDevice,
             }
         }
 
-        transformedShapeBounds = localToDevice.mapRect(transformedShapeBounds);
+       if (localToDevice.type() != Transform::Type::kIdentity) {
+         transformedShapeBounds = localToDevice.mapRect(transformedShapeBounds);
+       }
 
         // Hairlines get an extra pixel *after* transforming to device space, unless the renderer
         // has already defined an outset
