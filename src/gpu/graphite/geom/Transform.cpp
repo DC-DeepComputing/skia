@@ -240,6 +240,9 @@ float Transform::localAARadius(const Rect& bounds) const {
 
 Rect Transform::mapRect(const Rect& rect) const {
     SkASSERT(this->valid());
+    if (fType == Type::kIdentity) {
+      return rect;
+    }
     return map_rect(fM, rect);
 }
 Rect Transform::inverseMapRect(const Rect& rect) const {
