@@ -41,6 +41,7 @@
 #include "src/core/SkSpecialImage.h"
 #include "src/gpu/ResourceKey.h"
 #include "src/gpu/SkBackingFit.h"
+#include "src/gpu/BlurUtils.h"
 #include "src/gpu/Swizzle.h"
 #include "src/gpu/ganesh/Device.h"
 #include "src/gpu/ganesh/GrBlurUtils.h"
@@ -802,8 +803,11 @@ public:
     // SkBlurEngine::Algorithm
     float maxSigma() const override {
         // GrBlurUtils handles resizing at the moment
-        return SK_ScalarInfinity;
+        // return SK_ScalarInfinity;
+        return skgpu::kMaxLinearBlurSigma;
     }
+
+    bool useLegacyFilterResultBlur() const override { return false; }
 
     bool supportsOnlyDecalTiling() const override { return false; }
 

@@ -145,7 +145,7 @@ private:
 
 // This GM draws an image with a tiled blur that animates from large to small sigmas
 class AnimatedTiledImageBlur : public skiagm::GM {
-static constexpr float kMaxBlurSigma = 250.f;
+static constexpr float kMaxBlurSigma = 20.f; //250.f;
 static constexpr float kAnimationDuration = 12.f; // seconds
 public:
     AnimatedTiledImageBlur() : fBlurSigma(0.3f * kMaxBlurSigma) {
@@ -175,10 +175,10 @@ protected:
             canvas->restore();
         };
 
-        drawBlurredImage(10.f,  10.f,  SkTileMode::kDecal);
-        drawBlurredImage(270.f, 10.f,  SkTileMode::kClamp);
-        drawBlurredImage(10.f,  270.f, SkTileMode::kRepeat);
-        drawBlurredImage(270.f, 270.f, SkTileMode::kMirror);
+        drawBlurredImage(10.f,  10.f,  SkTileMode::kClamp);
+        drawBlurredImage(270.f, 10.f,  SkTileMode::kDecal);
+        // drawBlurredImage(10.f,  270.f, SkTileMode::kRepeat);
+        // drawBlurredImage(270.f, 270.f, SkTileMode::kMirror);
     }
 
     bool onAnimate(double nanos) override {
