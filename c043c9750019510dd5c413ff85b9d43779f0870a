@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f31ed29_d4b1b1db",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-06-06T18:27:40Z",
+      "side": 1,
+      "message": "FreeType has `ftview` but we don\u0027t currently have anything like this to use with Fontations, so make one.",
+      "revId": "c043c9750019510dd5c413ff85b9d43779f0870a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
