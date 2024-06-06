@@ -1,0 +1,205 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e717101_f6fa9415",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 70
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-06T17:11:53Z",
+      "side": 1,
+      "message": "Awesome updates",
+      "revId": "54d5d2a33f3829911500a9a869b06397da0623f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "82cc8c30_26cd0f36",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 70
+      },
+      "lineNbr": 614,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-06T17:11:53Z",
+      "side": 1,
+      "message": "This is already creating the same `SamplerDesc` that we want to include in `addImmutableSamplerDataIfApplicable`. I think both the builder and the gatherer will be simplified if we modify them to take a `const SamplerDesc\u0026` and this function is responsible for querying Caps and building the SamplerDesc.\n\nAlternatively, we could have `TextureDataBlock::add` and `PipelineDataGatherer::add` return the SamplerDesc that it creates.",
+      "range": {
+        "startLine": 612,
+        "startChar": 4,
+        "endLine": 614,
+        "endChar": 41
+      },
+      "revId": "54d5d2a33f3829911500a9a869b06397da0623f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "61da1bcd_6fff00e5",
+        "filename": "src/gpu/graphite/PaintParamsKey.cpp",
+        "patchSetId": 70
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-06T17:11:53Z",
+      "side": 1,
+      "message": "nit: length",
+      "range": {
+        "startLine": 63,
+        "startChar": 71,
+        "endLine": 63,
+        "endChar": 77
+      },
+      "revId": "54d5d2a33f3829911500a9a869b06397da0623f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e2a7ed33_41afbdc1",
+        "filename": "src/gpu/graphite/PaintParamsKey.cpp",
+        "patchSetId": 70
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-06T17:11:53Z",
+      "side": 1,
+      "message": "We can simplify this by just treating `desc` as a span of uint32_t\u0027s (which could either be a helper added to SamplerDesc, or could be declaring a fixed-size uint32_t array here and memcpy\u0027ing desc into it).\n\nIf we want to keep the variable size of the sampler desc data, we can avoid the dynamic allocation of `samplerData` because we know the max size of the span already (3 uint32_t\u0027s), and then we just adjust the size of the span based on `usesExternalFormat()`.\n\n3 uints vs 2 uints isn\u0027t that different for fairly uncommonly used textures (and will likely be textures that are used in a simple shader so the rest of the key will be pretty small). I think then the simplicity of just copying in and out the SamplerDesc is better since the serialization and deserialization is handled in very different parts of the code.",
+      "range": {
+        "startLine": 71,
+        "startChar": 0,
+        "endLine": 76,
+        "endChar": 41
+      },
+      "revId": "54d5d2a33f3829911500a9a869b06397da0623f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa2cf9d7_b0906c29",
+        "filename": "src/gpu/graphite/PaintParamsKey.cpp",
+        "patchSetId": 70
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-06T17:11:53Z",
+      "side": 1,
+      "message": "nit: \"no embedded data to store\" since it\u0027s not necessarily going to be limited to immutable samplers",
+      "range": {
+        "startLine": 107,
+        "startChar": 54,
+        "endLine": 107,
+        "endChar": 87
+      },
+      "revId": "54d5d2a33f3829911500a9a869b06397da0623f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33b965f3_2845968c",
+        "filename": "src/gpu/graphite/PaintParamsKey.cpp",
+        "patchSetId": 70
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-06T17:11:53Z",
+      "side": 1,
+      "message": "We could replace this and the later `*currentIndex +\u003d 1` with just `storedDataLengthIdx \u003d (*currentIndex)++;`",
+      "range": {
+        "startLine": 108,
+        "startChar": 40,
+        "endLine": 108,
+        "endChar": 49
+      },
+      "revId": "54d5d2a33f3829911500a9a869b06397da0623f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6de24767_34b0cec4",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 70
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-06T17:11:53Z",
+      "side": 1,
+      "message": "This loop only iterates over the root\u0027s direct children so wouldn\u0027t get any images that were embedded deeper in the paint key.",
+      "range": {
+        "startLine": 209,
+        "startChar": 12,
+        "endLine": 209,
+        "endChar": 66
+      },
+      "revId": "54d5d2a33f3829911500a9a869b06397da0623f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "262146ff_1f7cf0ce",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 70
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-06T17:11:53Z",
+      "side": 1,
+      "message": "Do we need to collect everything together here? When we do that we lose the associated ShaderNode and snippet ID that stored that data, which could lead to problems if we ever start writing different types of data depending on the snippet type.\n\nThe slit between ShaderInfo and the ContextUtil\u0027s FragSkSLInfo is fairly arbitrary and has just grown as different parts needed different information. If it works for reconstructing immutable samplers, we can just return the ShaderInfo in that struct.",
+      "range": {
+        "startLine": 206,
+        "startChar": 0,
+        "endLine": 213,
+        "endChar": 13
+      },
+      "revId": "54d5d2a33f3829911500a9a869b06397da0623f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60310fea_b3639d05",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.h",
+        "patchSetId": 70
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-06T17:11:53Z",
+      "side": 1,
+      "message": "I think in this case we should have `includeData\u003dfalse` since this is going to be the resource label and trace text, both of which are a little more character limited.",
+      "range": {
+        "startLine": 248,
+        "startChar": 0,
+        "endLine": 248,
+        "endChar": 69
+      },
+      "revId": "54d5d2a33f3829911500a9a869b06397da0623f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
