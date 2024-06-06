@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05b7d4d6_3a439fab",
+        "filename": "site/docs/dev/tools/markdown.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-06-06T19:09:16Z",
+      "side": 1,
+      "message": "I think you need to add `..` before this (because the generator ends up appending an extra level of directory for the markdown -\u003e html conversion)",
+      "range": {
+        "startLine": 18,
+        "startChar": 10,
+        "endLine": 18,
+        "endChar": 18
+      },
+      "revId": "a1c98c5e820b42d80b0592646fcbfd13c3ca96fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
