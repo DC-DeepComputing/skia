@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "15ac99de_543197c9",
+        "filename": "src/gpu/graphite/render/SDFTextLCDRenderStep.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-06-06T14:26:03Z",
+      "side": 1,
+      "message": "I\u0027m going to do a second pass on all the SDF code to clean some things up, so I\u0027ll change this then.",
+      "parentUuid": "1f38a78d_dca45547",
+      "range": {
+        "startLine": 106,
+        "startChar": 54,
+        "endLine": 106,
+        "endChar": 64
+      },
+      "revId": "ea50f125a9203ded7d2d74b25a9a5e9f5fc5cc3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d4e87f65_825d9497",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-06-06T13:01:57Z",
       "side": 1,
       "message": "What does the \"af\" stand for ?",
+      "range": {
+        "startLine": 1240,
+        "startChar": 9,
+        "endLine": 1240,
+        "endChar": 16
+      },
+      "revId": "ea50f125a9203ded7d2d74b25a9a5e9f5fc5cc3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2153e7aa_6045dd2f",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 5
+      },
+      "lineNbr": 1240,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-06-06T14:26:03Z",
+      "side": 1,
+      "message": "It could be \"adjusted\" or \"alternative\" or \"accurate\" fwidth. It\u0027s from Gustavson\u0027s SDF code. Same as above, I\u0027ll see what I can come up with during the second pass.",
+      "parentUuid": "d4e87f65_825d9497",
       "range": {
         "startLine": 1240,
         "startChar": 9,
