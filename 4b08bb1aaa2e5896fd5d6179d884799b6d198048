@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e3f617f0_4d50e02f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-06T19:50:56Z",
+      "side": 1,
+      "message": "nit: Add `[graphite]` to tag this CL",
+      "revId": "4b08bb1aaa2e5896fd5d6179d884799b6d198048",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad39a907_3b95796f",
+        "filename": "src/gpu/graphite/geom/Transform.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-06T19:50:56Z",
+      "side": 1,
+      "message": "Most other transforms will probably have `fType \u003d\u003d Type::kSimpleRectStaysRect`, which should be computable as:\n\n    float sx \u003d fM.get(0,0);\n    float sy \u003d fM.get(1,1);\n    float tx \u003d fM.get(0,3);\n    float ty \u003d fM.get(1,3);\n    \n    auto s \u003d skvx::float4{sx,sy,sx,sy};\n    auto t \u003d skvx::float4{tx,ty,-tx,-ty};\n    return Rect::FromVals(rect.vals() * s + t);\n    \nIs it easy enough for you to test this to see if it further reduces the presence of `mapRect` in profiles?",
+      "revId": "4b08bb1aaa2e5896fd5d6179d884799b6d198048",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
