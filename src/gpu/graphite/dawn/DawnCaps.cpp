@@ -448,6 +448,10 @@ void DawnCaps::initCaps(const DawnBackendContext& backendContext, const ContextO
     fResourceBindingReqs.fStorageBufferLayout = Layout::kStd430;
     fResourceBindingReqs.fSeparateTextureAndSamplerBinding = true;
 
+<<<<<<< PATCH SET (90982f [graphite] Re-enable SSBOs for D3D11)
+    fStorageBufferSupport = true;
+    fStorageBufferPreferred = true;
+=======
     fResourceBindingReqs.fIntrinsicBufferBinding =
             DawnGraphicsPipeline::kIntrinsicUniformBufferIndex;
     fResourceBindingReqs.fRenderStepBufferBinding =
@@ -470,6 +474,7 @@ void DawnCaps::initCaps(const DawnBackendContext& backendContext, const ContextO
     // can always be enabled.
     fStorageBufferSupport = false;
 #endif
+>>>>>>> BASE      (b3401c Roll vulkan-deps from aa1dd6b24b8b to d2c4e780b012 (6 revisi)
 
     fDrawBufferCanBeMapped = false;
 
