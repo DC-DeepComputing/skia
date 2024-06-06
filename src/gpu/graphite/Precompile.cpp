@@ -99,7 +99,7 @@ int PaintOptions::numColorFilterCombinations() const {
     return numColorFilterCombinations ? numColorFilterCombinations : 1;
 }
 
-int PaintOptions::numBlendModeCombinations() const {
+int PaintOptions::numBlendCombinations() const {
     int numBlendCombos = fBlendModeOptions.size();
     for (const sk_sp<PrecompileBlender>& b: fBlenderOptions) {
         SkASSERT(!b->asBlendMode().has_value());
@@ -130,10 +130,9 @@ int PaintOptions::numClipShaderCombinations() const {
 
 
 int PaintOptions::numCombinations() const {
-    // TODO: we need to handle ImageFilters separately
     return this->numShaderCombinations() *
            this->numColorFilterCombinations() *
-           this->numBlendModeCombinations() *
+           this->numBlendCombinations() *
            this->numClipShaderCombinations();
 }
 
@@ -372,7 +371,7 @@ void PaintOptions::createKey(const KeyContext& keyContext,
     SkASSERT(desiredCombination < this->numCombinations());
 
     const int numClipShaderCombos = this->numClipShaderCombinations();
-    const int numBlendModeCombos = this->numBlendModeCombinations();
+    const int numBlendModeCombos = this->numBlendCombinations();
     const int numColorFilterCombinations = this->numColorFilterCombinations();
 
     const int desiredClipShaderCombination = desiredCombination % numClipShaderCombos;
@@ -434,9 +433,9 @@ void create_image_drawing_pipelines(const KeyContext& keyContext,
             PrecompileImageShaderFlags::kExcludeAlpha | PrecompileImageShaderFlags::kExcludeCubic);
 
     imagePaintOptions.setShaders({ imageShader });
-    imagePaintOptions.setBlendModes(orig.blendModes());
-    imagePaintOptions.setBlenders(orig.blenders());
-    imagePaintOptions.setColorFilters(orig.colorFilters());
+    imagePaintOptions.setBlendModes(orig.getBlendModes());
+    imagePaintOptions.setBlenders(orig.getBlenders());
+    imagePaintOptions.setColorFilters(orig.getColorFilters());
     imagePaintOptions.addColorFilter(nullptr);
 
     imagePaintOptions.priv().buildCombinations(keyContext,
@@ -448,6 +447,16 @@ void create_image_drawing_pipelines(const KeyContext& keyContext,
 }
 
 } // anonymous namespace
+
+void PaintOptions::setBlenders(SkSpan<const sk_sp<PrecompileBlender>> blenders) {
+    for (const sk_sp<PrecompileBlender>& b: blenders) {
+        if (b->asBlendMode().has_value()) {
+            fBlendModeOptions.push_back(b->asBlendMode().value());
+        } else {
+            fBlenderOptions.push_back(b);
+        }
+    }
+}
 
 void PaintOptions::buildCombinations(
         const KeyContext& keyContext,
