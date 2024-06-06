@@ -41,6 +41,8 @@ std::unique_ptr<GraphiteTestContext> DawnTestContext::Make(wgpu::BackendType bac
         // Robustness impacts performance and is always disabled when running Graphite in Chrome,
         // so this keeps Skia's tests operating closer to real-use behavior.
         "disable_robustness",
+        "disable_symbol_renaming",
+        "dump_shaders",
         // Must be last to correctly respond to `useTintIR` parameter.
         "use_tint_ir",
     };
