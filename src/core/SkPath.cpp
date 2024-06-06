@@ -3504,11 +3504,13 @@ bool SkPath::IsCubicDegenerate(const SkPoint& p1, const SkPoint& p2,
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 SkPathVerbAnalysis sk_path_analyze_verbs(const uint8_t vbs[], int verbCount) {
-    SkPathVerbAnalysis info = {false, 0, 0, 0};
+    // Initialize `points` to `verbCount` so that for lines/moves no operation is
+    // necessary. The loop below assumes `points` is initialized to `verbCount`.
+    SkPathVerbAnalysis info = {false, verbCount, 0, 0};
     bool needMove = true;
     bool invalid = false;
 
-    if (verbCount >= (INT_MAX / 3)) {
+    if (verbCount >= (INT_MAX / 3)) SK_UNLIKELY {
         // A path with an extremely high number of quad, conic or cubic verbs could cause
         // `info.points` to overflow. To prevent against this, we reject extremely large paths. This
         // check is conservative and assumes the worst case (in particular, it assumes that every
@@ -3520,34 +3522,34 @@ SkPathVerbAnalysis sk_path_analyze_verbs(const uint8_t vbs[], int verbCount) {
             switch ((SkPathVerb)vbs[i]) {
                 case SkPathVerb::kMove:
                     needMove = false;
-                    info.points += 1;
                     break;
                 case SkPathVerb::kLine:
                     invalid |= needMove;
                     info.segmentMask |= kLine_SkPathSegmentMask;
-                    info.points += 1;
                     break;
                 case SkPathVerb::kQuad:
                     invalid |= needMove;
                     info.segmentMask |= kQuad_SkPathSegmentMask;
-                    info.points += 2;
+                    info.points += 1;
                     break;
                 case SkPathVerb::kConic:
                     invalid |= needMove;
                     info.segmentMask |= kConic_SkPathSegmentMask;
-                    info.points += 2;
+                    info.points += 1;
                     info.weights += 1;
                     break;
                 case SkPathVerb::kCubic:
                     invalid |= needMove;
                     info.segmentMask |= kCubic_SkPathSegmentMask;
-                    info.points += 3;
+                    info.points += 2;
                     break;
                 case SkPathVerb::kClose:
                     invalid |= needMove;
                     needMove = true;
+                    --info.points;
                     break;
                 default:
+                    --info.points;
                     invalid = true;
                     break;
             }
