@@ -528,10 +528,10 @@ SkSpan<const Uniform> ShaderCodeDictionary::getUniforms(BuiltInCodeSnippetID id)
     return fBuiltInCodeSnippets[(int) id].fUniforms;
 }
 
-const ShaderSnippet* ShaderCodeDictionary::getEntry(int codeSnippetID) const {
-    if (codeSnippetID < 0) {
-        return nullptr;
-    }
+const ShaderSnippet* ShaderCodeDictionary::getEntry(uint32_t codeSnippetID) const {
+    // if (codeSnippetID < 0) {
+    //     return nullptr;
+    // }
 
     if (codeSnippetID < kBuiltInCodeSnippetIDCount) {
         return &fBuiltInCodeSnippets[codeSnippetID];
