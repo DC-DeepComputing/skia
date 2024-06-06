@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1656b120_13408d19",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-06-06T15:29:01Z",
+      "side": 1,
+      "message": "Considering the current issues, I may end up putting Simplify behind a flag for the other SkScalerContext implementations as well.",
+      "revId": "bb46e43ff111739901d1f45655bc3be4627919a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
