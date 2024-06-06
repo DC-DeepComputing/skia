@@ -16,6 +16,29 @@
       "message": "Just some minor stuff, PTAL.",
       "revId": "ab1c704cdde7930d1c35e5d4be8a2833a95d78aa",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1219dd93_71831216",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 3
+      },
+      "lineNbr": 1203,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-06T19:58:38Z",
+      "side": 1,
+      "message": "Should this be `jacobian * pixelGeometryDelta` since the old code was dotting against `jacobian.xz` which would be the top row assuming it was storing column major data (I think it was before as dFdx and dFdy should each be columns of the Jacobian, right? Or am I flipping things?)",
+      "range": {
+        "startLine": 1203,
+        "startChar": 25,
+        "endLine": 1203,
+        "endChar": 54
+      },
+      "revId": "ab1c704cdde7930d1c35e5d4be8a2833a95d78aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
