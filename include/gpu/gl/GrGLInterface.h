@@ -186,6 +186,7 @@ public:
         GrGLFunction<GrGLGetStringiFn> fGetStringi;
         GrGLFunction<GrGLGetTexLevelParameterivFn> fGetTexLevelParameteriv;
         GrGLFunction<GrGLGetUniformLocationFn> fGetUniformLocation;
+        GrGLFunction<GrGLHintFn> fHint;
         GrGLFunction<GrGLInsertEventMarkerFn> fInsertEventMarker;
         GrGLFunction<GrGLInvalidateBufferDataFn> fInvalidateBufferData;
         GrGLFunction<GrGLInvalidateBufferSubDataFn> fInvalidateBufferSubData;

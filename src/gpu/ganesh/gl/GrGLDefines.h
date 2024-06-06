@@ -344,6 +344,7 @@
 
 /* HintTarget */
 #define GR_GL_GENERATE_MIPMAP_HINT            0x8192
+#define GR_GL_FRAGMENT_SHADER_DERIVATIVE_HINT 0x8B8B
 
 /* DataType */
 #define GR_GL_BYTE                           0x1400

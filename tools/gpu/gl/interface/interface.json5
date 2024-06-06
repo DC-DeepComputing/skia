@@ -35,7 +35,7 @@
       "GetFloatv", "GetIntegerv", "GetProgramInfoLog",
       "GetProgramiv", "GetShaderInfoLog",
       "GetShaderiv", "GetString",
-      "GetUniformLocation", "IsTexture", "LineWidth", "LinkProgram", "PixelStorei",
+      "GetUniformLocation", "Hint", "IsTexture", "LineWidth", "LinkProgram", "PixelStorei",
       "ReadPixels", "Scissor", "ShaderSource", "StencilFunc",
       "StencilFuncSeparate", "StencilMask", "StencilMaskSeparate", "StencilOp",
       "StencilOpSeparate", "TexImage2D", "TexParameterf", "TexParameterfv", "TexParameteri",

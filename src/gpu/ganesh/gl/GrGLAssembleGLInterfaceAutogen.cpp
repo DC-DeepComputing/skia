@@ -102,6 +102,7 @@ sk_sp<const GrGLInterface> GrGLMakeAssembledGLInterface(void *ctx, GrGLGetProc g
     GET_PROC(GetShaderiv);
     GET_PROC(GetString);
     GET_PROC(GetUniformLocation);
+    GET_PROC(Hint);
     GET_PROC(IsTexture);
     GET_PROC(LineWidth);
     GET_PROC(LinkProgram);

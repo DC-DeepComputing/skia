@@ -116,6 +116,7 @@ using GrGLGetStringFn = const GrGLubyte* GR_GL_FUNCTION_TYPE(GrGLenum name);
 using GrGLGetStringiFn = const GrGLubyte* GR_GL_FUNCTION_TYPE(GrGLenum name, GrGLuint index);
 using GrGLGetTexLevelParameterivFn = GrGLvoid GR_GL_FUNCTION_TYPE(GrGLenum target, GrGLint level, GrGLenum pname, GrGLint* params);
 using GrGLGetUniformLocationFn = GrGLint GR_GL_FUNCTION_TYPE(GrGLuint program, const char* name);
+using GrGLHintFn = void GR_GL_FUNCTION_TYPE(GrGLenum target, GrGLenum mode);
 using GrGLInsertEventMarkerFn = GrGLvoid GR_GL_FUNCTION_TYPE(GrGLsizei length, const char* marker);
 using GrGLInvalidateBufferDataFn = GrGLvoid GR_GL_FUNCTION_TYPE(GrGLuint buffer);
 using GrGLInvalidateBufferSubDataFn = GrGLvoid GR_GL_FUNCTION_TYPE(GrGLuint buffer, GrGLintptr offset, GrGLsizeiptr length);

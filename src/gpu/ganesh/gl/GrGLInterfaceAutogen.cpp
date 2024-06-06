@@ -133,6 +133,7 @@ bool GrGLInterface::validate() const {
         !fFunctions.fGetShaderiv ||
         !fFunctions.fGetString ||
         !fFunctions.fGetUniformLocation ||
+        !fFunctions.fHint ||
         !fFunctions.fIsTexture ||
         !fFunctions.fLineWidth ||
         !fFunctions.fLinkProgram ||

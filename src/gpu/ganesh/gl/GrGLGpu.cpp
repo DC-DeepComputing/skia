@@ -634,6 +634,11 @@ void GrGLGpu::onResetContext(uint32_t resetBits) {
         GL_CALL(LineWidth(1));
         GL_CALL(Disable(GR_GL_DITHER));
 
+        // we want the best quality shader derivatives
+        if (this->caps()->shaderCaps()->fShaderDerivativeSupport) {
+            GL_CALL(Hint(GR_GL_FRAGMENT_SHADER_DERIVATIVE_HINT, GR_GL_NICEST));
+        }
+
         fHWClearColor[0] = fHWClearColor[1] = fHWClearColor[2] = fHWClearColor[3] = SK_FloatNaN;
     }
 
