@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f38a78d_dca45547",
+        "filename": "src/gpu/graphite/render/SDFTextLCDRenderStep.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-06-06T13:01:57Z",
+      "side": 1,
+      "message": "Why don\u0027t we call this gammaDistAdjust ?",
+      "range": {
+        "startLine": 106,
+        "startChar": 54,
+        "endLine": 106,
+        "endChar": 64
+      },
+      "revId": "ea50f125a9203ded7d2d74b25a9a5e9f5fc5cc3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4e87f65_825d9497",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 5
+      },
+      "lineNbr": 1240,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-06-06T13:01:57Z",
+      "side": 1,
+      "message": "What does the \"af\" stand for ?",
+      "range": {
+        "startLine": 1240,
+        "startChar": 9,
+        "endLine": 1240,
+        "endChar": 16
+      },
+      "revId": "ea50f125a9203ded7d2d74b25a9a5e9f5fc5cc3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
