@@ -119,4 +119,7 @@
  */
 //#define SK_API __declspec(dllexport)
 
+#define SK_PRINT_SKSL_SHADERS
+#define SK_PRINT_NATIVE_SHADERS
+
 #endif
