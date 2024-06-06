@@ -28,7 +28,7 @@
 #include "src/gpu/graphite/PaintParams.h"
 #include "src/gpu/graphite/PaintParamsKey.h"
 #include "src/gpu/graphite/PipelineData.h"
-#include "src/gpu/graphite/Precompile.h"
+#include "src/gpu/graphite/PrecompileInternal.h"
 #include "src/gpu/graphite/PublicPrecompile.h"
 #include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/Renderer.h"
