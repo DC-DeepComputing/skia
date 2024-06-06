@@ -19,11 +19,13 @@
 class SkColorSpace;
 class SkDevice;
 class SkRuntimeEffect;
+class SkRuntimeShaderBuilder;
 class SkShader;
 class SkSpecialImage;
 struct SkImageInfo;
 struct SkIRect;
 
+enum class SkFilterMode;
 enum class SkTileMode;
 enum SkColorType : int;
 
@@ -124,10 +126,13 @@ private:
     // Create a new surface, which can be approx-fit and have undefined contents.
     virtual sk_sp<SkDevice> makeDevice(const SkImageInfo&) const = 0;
 
-    sk_sp<SkSpecialImage> renderBlur(sk_sp<SkShader> blurEffect,
-                                     const SkIRect& dstRect,
-                                     SkColorType colorType,
-                                     sk_sp<SkColorSpace> colorSpace) const;
+    sk_sp<SkSpecialImage> renderBlur(SkRuntimeShaderBuilder* blurEffectBuilder,
+                                     SkFilterMode filter,
+                                     SkISize radii,
+                                     sk_sp<SkSpecialImage> input,
+                                     const SkIRect& srcRect,
+                                     SkTileMode tileMode,
+                                     const SkIRect& dstRect) const;
     sk_sp<SkSpecialImage> evalBlur2D(SkSize sigma,
                                      SkISize radii,
                                      sk_sp<SkSpecialImage> input,

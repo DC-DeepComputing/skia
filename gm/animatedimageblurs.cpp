@@ -175,8 +175,8 @@ protected:
             canvas->restore();
         };
 
-        drawBlurredImage(10.f,  10.f,  SkTileMode::kClamp);
-        drawBlurredImage(270.f, 10.f,  SkTileMode::kDecal);
+        drawBlurredImage(10.f,  10.f,  SkTileMode::kDecal);
+        // drawBlurredImage(270.f, 10.f,  SkTileMode::kClamp);
         // drawBlurredImage(10.f,  270.f, SkTileMode::kRepeat);
         // drawBlurredImage(270.f, 270.f, SkTileMode::kMirror);
     }
@@ -184,6 +184,7 @@ protected:
     bool onAnimate(double nanos) override {
         fBlurSigma = TimeUtils::PingPong(1e-9 * nanos, kAnimationDuration,
                                          0.f, 0.0f, kMaxBlurSigma);
+        SkDebugf("%f %f\n", fBlurSigma, kMaxBlurSigma);
         return true;
     }
 

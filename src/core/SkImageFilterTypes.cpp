@@ -1477,7 +1477,7 @@ int downscale_step_count(float netScaleFactor) {
         // For a multipass rescale, we allow for a lot of tolerance when deciding to collapse the
         // final step. If there's only a single pass, we require the scale factor to be very close
         // to the identity since it causes the step count to go to 0.
-        static constexpr float kMultiPassLimit = 0.9f;
+        static constexpr float kMultiPassLimit = 0.99f;
         static constexpr float kNearIdentityLimit = 1.f - kRoundEpsilon; // 1px error in 1000px img
 
         float finalStepScale = netScaleFactor * (1 << (steps - 1));
@@ -1755,6 +1755,24 @@ FilterResult FilterResult::rescale(const Context& ctx,
         // Downscale relative to the center of the image, which better distributes any sort of
         // sampling errors across the image (vs. emphasizing the bottom right edges).
         PixelSpace<SkRect> dstBoundsF = scale_about_center(stepBoundsF, sx, sy);
+        if (xSteps == 0 && ySteps == 0) {
+            // The last scaling step so consider just generating the low-res desired output exactly,
+            // even if it will trigger shader tiling
+            // FIXME: We don't universally want to do this, only if the desired output is actually
+            // not that far off.
+            // FIXME2: For periodic tiles, we might have really large desired outputs, but if we
+            // produce a 1-radius outset src image, and an exact period dst image, then we can avoid
+            // shader-tiling within the blur and still tile across the large desired output on the
+            // upscale. That is harder to convey through this upfront rescale at the moment though.
+            // FIXME3: It definitely helps sometimes with being able to do a fast interior, but
+            // the goal would be able to do 100% fast and not need either a single strict fill or
+            // any follow-up strict border corrections so I need to look at what the 1D blurs are doing.
+            // dstBoundsF = scale_about_center(PixelSpace<SkRect>(ctx.desiredOutput()),
+            //                                 finalScaleX, finalScaleY);
+            // image.fTileMode = tileMode; // Restore FIXME I think the period will be off because we need to inset ....
+            // tileMode = SkTileMode::kDecal;
+            // deferPeriodicTiling = false;
+        }
 
         // NOTE: Rounding out is overly conservative when dstBoundsF has an odd integer width/height
         // but with coordinates at 1/2. In this case, we could create a pixel grid that has a
@@ -2116,6 +2134,7 @@ FilterResult FilterResult::Builder::blur(const LayerSpace<SkSize>& sigma) {
 
     float sx = sigma.width()  > algorithm->maxSigma() ? algorithm->maxSigma()/sigma.width()  : 1.f;
     float sy = sigma.height() > algorithm->maxSigma() ? algorithm->maxSigma()/sigma.height() : 1.f;
+    SkDebugf("scaling factors = %f, %f\n", sx, sy);
 
     // For identity scale factors, this rescale() is a no-op when possible, but otherwise it will
     // also handle resolving any color filters or transform similar to a resolve() except that it
@@ -2134,7 +2153,10 @@ FilterResult FilterResult::Builder::blur(const LayerSpace<SkSize>& sigma) {
     // from the blur engine.
     PixelSpace<SkMatrix> layerToLowRes;
     SkAssertResult(lowResImage.fTransform.invert(&layerToLowRes));
+    SkMatrix(layerToLowRes).dump();
     PixelSpace<SkSize> lowResSigma = layerToLowRes.mapSize(sigma);
+    SkDebugf("orig sigma = %f,%f, low res = %f,%f\n", sigma.width(), sigma.height(),
+        lowResSigma.width(), lowResSigma.height());
     // The layerToLowRes mapped size should be <= maxSigma, but clamp it just in case floating point
     // error made it slightly higher.
     lowResSigma = PixelSpace<SkSize>{{std::min(algorithm->maxSigma(), lowResSigma.width()),
