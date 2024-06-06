@@ -99,7 +99,7 @@ int PaintOptions::numColorFilterCombinations() const {
     return numColorFilterCombinations ? numColorFilterCombinations : 1;
 }
 
-int PaintOptions::numBlendModeCombinations() const {
+int PaintOptions::numBlendCombinations() const {
     int numBlendCombos = fBlendModeOptions.size();
     for (const sk_sp<PrecompileBlender>& b: fBlenderOptions) {
         SkASSERT(!b->asBlendMode().has_value());
@@ -130,10 +130,9 @@ int PaintOptions::numClipShaderCombinations() const {
 
 
 int PaintOptions::numCombinations() const {
-    // TODO: we need to handle ImageFilters separately
     return this->numShaderCombinations() *
            this->numColorFilterCombinations() *
-           this->numBlendModeCombinations() *
+           this->numBlendCombinations() *
            this->numClipShaderCombinations();
 }
 
@@ -372,7 +371,7 @@ void PaintOptions::createKey(const KeyContext& keyContext,
     SkASSERT(desiredCombination < this->numCombinations());
 
     const int numClipShaderCombos = this->numClipShaderCombinations();
-    const int numBlendModeCombos = this->numBlendModeCombinations();
+    const int numBlendModeCombos = this->numBlendCombinations();
     const int numColorFilterCombinations = this->numColorFilterCombinations();
 
     const int desiredClipShaderCombination = desiredCombination % numClipShaderCombos;
@@ -515,6 +514,29 @@ void create_matrix_convolution_imagefilter_pipelines(
 }
 
 } // anonymous namespace
+
+PaintOptions::PaintOptions() : fImageFilterFlags(PrecompileImageFilterFlags::kNone) {}
+
+void PaintOptions::setBlenders(SkSpan<const sk_sp<PrecompileBlender>> blenders) {
+    for (const sk_sp<PrecompileBlender>& b: blenders) {
+        if (b->asBlendMode().has_value()) {
+            fBlendModeOptions.push_back(b->asBlendMode().value());
+        } else {
+            fBlenderOptions.push_back(b);
+        }
+    }
+}
+
+void PaintOptions::setMaskFilters(SkSpan<const sk_sp<PrecompileMaskFilter>> maskFilters) {
+    for (const sk_sp<PrecompileMaskFilter>& mf : maskFilters) {
+        if (mf) {
+            // Currently Graphite only supports BlurMaskFilters which are implemented
+            // via BlurImageFiltering
+            fImageFilterFlags |= PrecompileImageFilterFlags::kBlur;
+            break;
+        }
+    }
+}
 
 void PaintOptions::buildCombinations(
         const KeyContext& keyContext,
