@@ -121,7 +121,8 @@ sk_sp<GraphicsPipeline> VulkanResourceProvider::createGraphicsPipeline(
                                         pipelineDesc,
                                         renderPassDesc,
                                         compatibleRenderPass,
-                                        this->pipelineCache());
+                                        this->pipelineCache(),
+                                        this);
 }
 
 sk_sp<ComputePipeline> VulkanResourceProvider::createComputePipeline(const ComputePipelineDesc&) {
@@ -169,7 +170,7 @@ sk_sp<Sampler> VulkanResourceProvider::createSampler(const SamplerDesc& samplerD
                     this->vulkanSharedContext(),
                     static_cast<uint32_t>(
                             samplerDesc.desc() >> SamplerDesc::kImmutableSamplerInfoShift),
-                    (uint64_t)(samplerDesc.externalFormatMSBs()) << 32 | samplerDesc.format());
+                   (uint64_t)(samplerDesc.externalFormatMSBs()) << 32 | samplerDesc.format());
             SkASSERT(ycbcrConversion);
 
             ycbcrConversion->setKey(ycbcrKey);
@@ -676,6 +677,7 @@ BackendTexture VulkanResourceProvider::onCreateBackendTexture(AHardwareBuffer* h
                         "format properties.\n");
             return {};
         }
+        vkTexInfo.fYcbcrConversionInfo = ycbcrInfo;
         externalFormat.externalFormat = hwbFormatProps.externalFormat;
     }
     const VkExternalMemoryImageCreateInfo externalMemoryImageInfo{
