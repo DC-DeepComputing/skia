@@ -23,7 +23,6 @@
 #include "src/text/gpu/DistanceFieldAdjustTable.h"
 #include "src/text/gpu/SubRunContainer.h"
 #include "src/text/gpu/VertexFiller.h"
-
 namespace skgpu::graphite {
 
 namespace {
