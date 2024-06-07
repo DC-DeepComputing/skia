@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "15b1deef_3b5b9c41",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-06-07T16:13:03Z",
+      "side": 1,
+      "message": "This is my first stab, but I realize that (from a file location perspective), it still looks like a dependency from sksl on tools. I\u0027m going to relocate the file-based provider into tools (so there will be a //tools:tools_skslc_hdrs). Then I need to actually change minify and skslc to make an instance and replace the default one. At that point, I think this will be good to go.",
+      "revId": "fb32224b146c2298ae883213f92197867acee951",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
