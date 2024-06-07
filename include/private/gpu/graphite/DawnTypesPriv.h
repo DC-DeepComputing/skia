@@ -20,11 +20,20 @@ struct DawnTextureSpec {
             , fViewFormat(info.fViewFormat)
             , fUsage(info.fUsage)
             , fAspect(info.fAspect)
+#if !defined(__EMSCRIPTEN__)
+            , fYcbcrVkDescriptor(info.fYcbcrVkDescriptor)
+#endif
             , fSlice(info.fSlice) {}
 
     bool operator==(const DawnTextureSpec& that) const {
         return fUsage == that.fUsage && fFormat == that.fFormat &&
                fViewFormat == that.fViewFormat && fAspect == that.fAspect &&
+// TODO(blundell): Resolve
+#if 0
+#if !defined(__EMSCRIPTEN__)
+               fYcbcrVkDescriptor == that.fYcbcrVkDescriptor &&
+#endif
+#endif
                fSlice == that.fSlice;
     }
 
@@ -47,6 +56,9 @@ struct DawnTextureSpec {
     wgpu::TextureFormat fViewFormat = wgpu::TextureFormat::Undefined;
     wgpu::TextureUsage fUsage = wgpu::TextureUsage::None;
     wgpu::TextureAspect fAspect = wgpu::TextureAspect::All;
+#if !defined(__EMSCRIPTEN__)
+    wgpu::YCbCrVkDescriptor fYcbcrVkDescriptor = {};
+#endif
     uint32_t fSlice = 0;
 };
 

@@ -42,6 +42,7 @@ DawnTextureInfo DawnTextureSpecToTextureInfo(const DawnTextureSpec& dawnSpec,
     info.fViewFormat = dawnSpec.fViewFormat;
     info.fUsage = dawnSpec.fUsage;
     info.fAspect = dawnSpec.fAspect;
+    info.fYcbcrVkDescriptor = dawnSpec.fYcbcrVkDescriptor;
 
     return info;
 }
