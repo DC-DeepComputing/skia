@@ -69,6 +69,24 @@
       "parentUuid": "ad39a907_3b95796f",
       "revId": "4b08bb1aaa2e5896fd5d6179d884799b6d198048",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7369cde4_2c533433",
+        "filename": "src/gpu/graphite/geom/Transform.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-07T13:22:19Z",
+      "side": 1,
+      "message": "Ok, I will consider adding the other optimization as a follow up to see if there\u0027s an effect elsewhere.",
+      "parentUuid": "bea204ff_8216b303",
+      "revId": "4b08bb1aaa2e5896fd5d6179d884799b6d198048",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
