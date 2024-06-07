@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "362429d8_2b54939c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-06-07T18:22:32Z",
+      "side": 1,
+      "message": "I\u0027m not too sure if the sweep epsilon is valuable since it does fix some noise in some of the GMs but is still present in some others and I don\u0027t want to make the epsilon too large. For the linear case it does look like it clears up the issues on the `hardstop_gradients_many` gm though that I noticed earlier. Curious on thoughts for the sweep one?",
+      "revId": "a123df6ba29144f77c894581f66b88b682797bc1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
