@@ -541,6 +541,11 @@ protected:
             : TArray{storage, size} {
         this->copy(array);
     }
+    template <int InitialCapacity>
+    TArray(SkSpan<const T> data, SkAlignedSTStorage<InitialCapacity, T>* storage)
+          : TArray{storage, data.size()} {
+        this->copy(data.begin());
+    }
 
 private:
     // Growth factors for checkRealloc.
@@ -759,6 +764,10 @@ public:
     STArray(const T* array, int count)
         : Storage{}
         , TArray<T, MEM_MOVE>{array, count, this} {}
+
+    STArray(SkSpan<const T> data)
+        : Storage{}
+        , TArray<T, MEM_MOVE>{data, this} {}
 
     STArray(std::initializer_list<T> data)
         : STArray{data.begin(), SkToInt(data.size())} {}
