@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "95b423e2_6be7a0de",
+        "filename": "tools/sksl-minify/SkSLMinify.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-06-07T14:13:16Z",
+      "side": 1,
+      "message": "These are required (at least right now), because `SkSLRasterPipelineBuilder.cpp` uses this value. In any binary that\u0027s linked against core, the definition comes from `SkOpts.cpp`. But these two tools link against a subset of core (`skslc_deps` in GN, generated from a list of bazel rules).",
+      "revId": "49f89c2a3c429f9d87a4fbc2f7b6c52cf2d706cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
