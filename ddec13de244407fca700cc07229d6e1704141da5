@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "88babf13_c099f2f1",
+        "filename": "src/core/SkPath.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 328,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-06-07T20:11:41Z",
+      "side": 1,
+      "message": "Yeah, that looks equivalent to what\u0027s currently happening, though it\u0027s a little strange to put before the conic splitting since that returns false in this case for a different reason. There are only one split into two halves so there will be no \"inside\", but if there were three or more splits there could still be an inside.",
+      "parentUuid": "ea45d04b_5854c4eb",
+      "range": {
+        "startLine": 328,
+        "startChar": 16,
+        "endLine": 328,
+        "endChar": 49
+      },
+      "revId": "ddec13de244407fca700cc07229d6e1704141da5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "61d5e770_8f73c9f8",
         "filename": "src/core/SkPath.cpp",
         "patchSetId": 4
