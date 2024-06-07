@@ -338,7 +338,10 @@ bool SkPath::conservativelyContainsRect(const SkRect& rect) const {
                     if (!check_edge_against_rect(quadPts[2], quadPts[4], rect, direction)) {
                         return false;
                     }
+                } else if (SkPathVerb::kCubic == verb && prevPt == pts[nextPt]) {
+                    return false;
                 } else {
+                    SkASSERT(prevPt != pts[nextPt]);
                     if (!check_edge_against_rect(prevPt, pts[nextPt], rect, direction)) {
                         return false;
                     }
