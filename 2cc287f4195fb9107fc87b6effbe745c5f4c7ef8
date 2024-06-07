@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee2980a5_28bc7f66",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-06-07T13:19:41Z",
+      "side": 1,
+      "message": "I think this is good to go. Still planning to remove the deferred blit path, even if it\u0027s not technically necessary. (Removing it resolved some integer overflow fuzzer bugs, and I want this code to trend towards simpler and maintainable).\n\nGiven that, this is all guarded with the (now misnamed) guard I added before. Android had no image diff failures (yay!), and two G3 clients had scuba failures. I\u0027ve got open CLs to remove them from presubmit.",
+      "revId": "2cc287f4195fb9107fc87b6effbe745c5f4c7ef8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

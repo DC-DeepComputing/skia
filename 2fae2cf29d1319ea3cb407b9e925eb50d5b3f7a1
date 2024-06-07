@@ -51,6 +51,24 @@
       "parentUuid": "bce603f2_15ac7ae9",
       "revId": "2fae2cf29d1319ea3cb407b9e925eb50d5b3f7a1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c2a0e843_f7453200",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-06-07T13:19:41Z",
+      "side": 1,
+      "message": "OK, this new fix seems MUCH better. Looking through the diffs (check PS8 in gold), many of them are subtle, but a few are clearly fixing existing bugs. Best examples I\u0027ve found are the crossbar on the sloped text in glyph_pos_n_s, and all of the diffs in drawTextRSXform.",
+      "parentUuid": "5f44e7c9_4aaa02f5",
+      "revId": "2fae2cf29d1319ea3cb407b9e925eb50d5b3f7a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
