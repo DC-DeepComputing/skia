@@ -10,6 +10,7 @@
 #include "src/core/SkOpts.h"
 #include "src/sksl/SkSLCompiler.h"
 #include "src/sksl/SkSLFileOutputStream.h"
+#include "src/sksl/SkSLModuleLoader.h"
 #include "src/sksl/SkSLProgramSettings.h"
 #include "src/sksl/SkSLStringStream.h"
 #include "src/sksl/SkSLUtil.h"
@@ -26,12 +27,14 @@
 #include "src/sksl/ir/SkSLVarDeclarations.h"
 #include "src/sksl/tracing/SkSLDebugTracePriv.h"
 #include "src/utils/SkShaderUtils.h"
+#include "tools/skslc/ModuleDataFileProvider.h"
 #include "tools/skslc/ProcessWorklist.h"
 
 #include "spirv-tools/libspirv.hpp"
 
 #include <fstream>
 #include <limits.h>
+#include <memory>
 #include <optional>
 #include <stdarg.h>
 #include <stdio.h>
@@ -578,6 +581,10 @@ static ResultCode process_command(SkSpan<std::string> args) {
             return ResultCode::kInputError;
         }
     }
+
+    // Replace the default (embedded) module data provider with one that will read the raw
+    // (human edited) sources from disk:
+    SkSL::ModuleLoader::Get().setDataProvider(std::make_unique<ModuleDataFileProvider>());
 
     // This tells the compiler where the rt-flip uniform will live should it be required. For
     // testing purposes we don't care where that is, but the compiler will report an error if we

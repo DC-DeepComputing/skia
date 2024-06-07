@@ -13,6 +13,7 @@ skia_cc_binary_with_flags(
     name = "skslc",
     srcs = [
         "Main.cpp",
+        ":tools_skslc_hdrs",
     ],
     set_flags = {
         "enable_skslc": ["True"],
@@ -30,6 +31,11 @@ skia_cc_library(
     hdrs = ["ProcessWorklist.h"],
     visibility = ["//tools/sksl-minify:__pkg__"],
     deps = ["//:skia_internal"],
+)
+
+skia_filegroup(
+    name = "tools_skslc_hdrs",
+    srcs = [ "ModuleDataFileProvider.h"],
 )
 
 skia_filegroup(

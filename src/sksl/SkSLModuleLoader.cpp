@@ -7,13 +7,14 @@
 #include "src/sksl/SkSLModuleLoader.h"
 
 #include "include/core/SkTypes.h"
+#include "include/private/base/SkAssert.h"
 #include "include/private/base/SkMutex.h"
 #include "src/base/SkNoDestructor.h"
 #include "src/sksl/SkSLBuiltinTypes.h"
 #include "src/sksl/SkSLCompiler.h"
+#include "src/sksl/SkSLModuleDataProvider.h"
 #include "src/sksl/SkSLPosition.h"
 #include "src/sksl/SkSLProgramKind.h"
-#include "src/sksl/ir/SkSLIRNode.h"
 #include "src/sksl/ir/SkSLLayout.h"
 #include "src/sksl/ir/SkSLModifierFlags.h"
 #include "src/sksl/ir/SkSLProgramElement.h"
@@ -22,73 +23,72 @@
 #include "src/sksl/ir/SkSLVariable.h"
 
 #include <algorithm>
+#include <memory>
 #include <string>
 #include <utility>
 #include <vector>
 
-#if SKSL_STANDALONE
-
-#include "include/core/SkString.h"
-#include "src/utils/SkOSPath.h"
-#include "tools/SkGetExecutablePath.h"
-
-    // In standalone mode, we load the original SkSL source files. GN is responsible for copying
-    // these files from src/sksl/ to the directory where the executable is located.
-    #include <fstream>
-
-    static std::string load_module_file(const char* moduleFilename) {
-        std::string exePath = SkGetExecutablePath();
-        SkString exeDir = SkOSPath::Dirname(exePath.c_str());
-        SkString modulePath = SkOSPath::Join(exeDir.c_str(), moduleFilename);
-        std::ifstream in(std::string{modulePath.c_str()});
-        std::string moduleSource{std::istreambuf_iterator<char>(in),
-                                 std::istreambuf_iterator<char>()};
-        if (in.rdstate()) {
-            SK_ABORT("Error reading %s\n", modulePath.c_str());
-        }
-        return moduleSource;
-    }
-
-    #define MODULE_DATA(name) #name, load_module_file(#name ".sksl")
-
-#else
-
-    // We include minified SkSL module code and pass it directly to the compiler.
-    #if defined(SK_ENABLE_OPTIMIZE_SIZE) || !defined(SK_DEBUG)
-        #include "src/sksl/generated/sksl_shared.minified.sksl"
-        #include "src/sksl/generated/sksl_compute.minified.sksl"
-        #include "src/sksl/generated/sksl_frag.minified.sksl"
-        #include "src/sksl/generated/sksl_gpu.minified.sksl"
-        #include "src/sksl/generated/sksl_public.minified.sksl"
-        #include "src/sksl/generated/sksl_rt_shader.minified.sksl"
-        #include "src/sksl/generated/sksl_vert.minified.sksl"
-        #if defined(SK_GRAPHITE)
-        #include "src/sksl/generated/sksl_graphite_frag.minified.sksl"
-        #include "src/sksl/generated/sksl_graphite_vert.minified.sksl"
-        #include "src/sksl/generated/sksl_graphite_frag_es2.minified.sksl"
-        #include "src/sksl/generated/sksl_graphite_vert_es2.minified.sksl"
-        #endif
-    #else
-        #include "src/sksl/generated/sksl_shared.unoptimized.sksl"
-        #include "src/sksl/generated/sksl_compute.unoptimized.sksl"
-        #include "src/sksl/generated/sksl_frag.unoptimized.sksl"
-        #include "src/sksl/generated/sksl_gpu.unoptimized.sksl"
-        #include "src/sksl/generated/sksl_public.unoptimized.sksl"
-        #include "src/sksl/generated/sksl_rt_shader.unoptimized.sksl"
-        #include "src/sksl/generated/sksl_vert.unoptimized.sksl"
-        #if defined(SK_GRAPHITE)
-        #include "src/sksl/generated/sksl_graphite_frag.unoptimized.sksl"
-        #include "src/sksl/generated/sksl_graphite_vert.unoptimized.sksl"
-        #include "src/sksl/generated/sksl_graphite_frag_es2.unoptimized.sksl"
-        #include "src/sksl/generated/sksl_graphite_vert_es2.unoptimized.sksl"
-        #endif
+// We include minified SkSL module code and pass it directly to the compiler.
+#if defined(SK_ENABLE_OPTIMIZE_SIZE) || !defined(SK_DEBUG)
+    #include "src/sksl/generated/sksl_shared.minified.sksl"
+    #include "src/sksl/generated/sksl_compute.minified.sksl"
+    #include "src/sksl/generated/sksl_frag.minified.sksl"
+    #include "src/sksl/generated/sksl_gpu.minified.sksl"
+    #include "src/sksl/generated/sksl_public.minified.sksl"
+    #include "src/sksl/generated/sksl_rt_shader.minified.sksl"
+    #include "src/sksl/generated/sksl_vert.minified.sksl"
+    #if defined(SK_GRAPHITE)
+    #include "src/sksl/generated/sksl_graphite_frag.minified.sksl"
+    #include "src/sksl/generated/sksl_graphite_vert.minified.sksl"
+    #include "src/sksl/generated/sksl_graphite_frag_es2.minified.sksl"
+    #include "src/sksl/generated/sksl_graphite_vert_es2.minified.sksl"
     #endif
-
-    #define MODULE_DATA(name) #name, std::string(SKSL_MINIFIED_##name)
-
+#else
+    #include "src/sksl/generated/sksl_shared.unoptimized.sksl"
+    #include "src/sksl/generated/sksl_compute.unoptimized.sksl"
+    #include "src/sksl/generated/sksl_frag.unoptimized.sksl"
+    #include "src/sksl/generated/sksl_gpu.unoptimized.sksl"
+    #include "src/sksl/generated/sksl_public.unoptimized.sksl"
+    #include "src/sksl/generated/sksl_rt_shader.unoptimized.sksl"
+    #include "src/sksl/generated/sksl_vert.unoptimized.sksl"
+    #if defined(SK_GRAPHITE)
+    #include "src/sksl/generated/sksl_graphite_frag.unoptimized.sksl"
+    #include "src/sksl/generated/sksl_graphite_vert.unoptimized.sksl"
+    #include "src/sksl/generated/sksl_graphite_frag_es2.unoptimized.sksl"
+    #include "src/sksl/generated/sksl_graphite_vert_es2.unoptimized.sksl"
+    #endif
 #endif
 
+#define MODULE_DATA(name) #name, fModuleLoader.fDataProvider->get(ModuleName::name, #name ".sksl")
+
 namespace SkSL {
+
+// The default provider returns the embedded copies of the module sources
+class ModuleDataDefaultProvider : public ModuleDataProvider {
+public:
+    ~ModuleDataDefaultProvider() override = default;
+
+    std::string get(ModuleName name, const char* /*filename*/) const override {
+#define M(name) case ModuleName::name: return std::string(SKSL_MINIFIED_##name);
+        switch (name) {
+            M(sksl_shared)
+            M(sksl_compute)
+            M(sksl_frag)
+            M(sksl_gpu)
+            M(sksl_public)
+            M(sksl_rt_shader)
+            M(sksl_vert)
+            #if defined(SK_GRAPHITE)
+            M(sksl_graphite_frag)
+            M(sksl_graphite_frag_es2)
+            M(sksl_graphite_vert)
+            M(sksl_graphite_vert_es2)
+            #endif
+            default: SkUNREACHABLE;
+        }
+#undef M
+    }
+};
 
 #define TYPE(t) &BuiltinTypes::f ## t
 
@@ -155,6 +155,8 @@ struct ModuleLoader::Impl {
     SkMutex fMutex;
     const BuiltinTypes fBuiltinTypes;
 
+    std::unique_ptr<ModuleDataProvider> fDataProvider;
+
     std::unique_ptr<const Module> fRootModule;
 
     std::unique_ptr<const Module> fSharedModule;            // [Root] + Public intrinsics
@@ -186,6 +188,10 @@ ModuleLoader::~ModuleLoader() {
     fModuleLoader.fMutex.release();
 }
 
+void ModuleLoader::setDataProvider(std::unique_ptr<ModuleDataProvider> dataProvider) {
+    fModuleLoader.fDataProvider = std::move(dataProvider);
+}
+
 void ModuleLoader::unloadModules() {
     fModuleLoader.fSharedModule           = nullptr;
     fModuleLoader.fGPUModule              = nullptr;
@@ -198,7 +204,7 @@ void ModuleLoader::unloadModules() {
     fModuleLoader.fRuntimeShaderModule    = nullptr;
 }
 
-ModuleLoader::Impl::Impl() {
+ModuleLoader::Impl::Impl() : fDataProvider(std::make_unique<ModuleDataDefaultProvider>()) {
     this->makeRootSymbolTable();
 }
 
