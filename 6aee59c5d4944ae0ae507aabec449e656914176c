@@ -70,6 +70,24 @@
       "parentUuid": "c0bc2b97_0f27c8cd",
       "revId": "6aee59c5d4944ae0ae507aabec449e656914176c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7cc7ed5_6ae6dada",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-07T16:56:01Z",
+      "side": 1,
+      "message": "lgtm, assuming the try jobs all pass, but will need another +1 before it can be landed.",
+      "parentUuid": "669e06e9_4009aeeb",
+      "revId": "6aee59c5d4944ae0ae507aabec449e656914176c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
