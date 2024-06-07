@@ -15,6 +15,7 @@ namespace SkSL {
 
 class Compiler;
 struct Module;
+class ModuleDataProvider;
 class Type;
 
 using BuiltinTypePtr = const std::unique_ptr<Type> BuiltinTypes::*;
@@ -31,6 +32,8 @@ public:
     // Acquires a mutex-locked reference to the singleton ModuleLoader. When the ModuleLoader is
     // allowed to fall out of scope, the mutex will be released.
     static ModuleLoader Get();
+
+    void setDataProvider(std::unique_ptr<ModuleDataProvider> dataProvider);
 
     // The built-in types and root module are universal, immutable, and shared by every Compiler.
     // They are created when the ModuleLoader is instantiated and never change.

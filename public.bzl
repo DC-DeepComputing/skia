@@ -1504,6 +1504,7 @@ BASE_SRCS_ALL = [
     "src/sksl/SkSLMangler.h",
     "src/sksl/SkSLMemoryLayout.h",
     "src/sksl/SkSLMemoryPool.h",
+    "src/sksl/SkSLModuleDataProvider.h",
     "src/sksl/SkSLModuleLoader.cpp",
     "src/sksl/SkSLModuleLoader.h",
     "src/sksl/SkSLOperator.cpp",

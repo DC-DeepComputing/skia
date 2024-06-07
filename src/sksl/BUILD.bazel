@@ -55,6 +55,14 @@ skia_filegroup(
     visibility = ["//tools/sksl-minify:__pkg__"],
 )
 
+# In own group for exporting to sksl.gni:skslc_deps
+skia_filegroup(
+    name = "sksl_skslc_hdrs",
+    srcs = [
+        "SkSLModuleDataFileProvider.h",
+    ]
+)
+
 SKSL_SRCS = [
     "SkSLAnalysis.cpp",
     "SkSLAnalysis.h",
@@ -81,6 +89,7 @@ SKSL_SRCS = [
     "SkSLMangler.h",
     "SkSLMemoryLayout.h",
     "SkSLMemoryPool.h",
+    "SkSLModuleDataProvider.h",
     "SkSLModuleLoader.cpp",
     "SkSLModuleLoader.h",
     "SkSLOperator.cpp",
