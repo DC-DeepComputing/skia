@@ -219,6 +219,9 @@ build:cpu --config=cpu_only
 build:gl --config=gl_ganesh
 build:vk --config=vulkan_ganesh
 
+# We can remove this after the module loader is modularized
+build:compile_sksl --copt="-DSKSL_STANDALONE=1" --cc_output_directory_tag=compile_sksl
+
 # Layering check does not work without sandboxing because the system headers are not in the
 # right spot and so they are not found.
 build:no_sandbox --spawn_strategy=local --features=-layering_check

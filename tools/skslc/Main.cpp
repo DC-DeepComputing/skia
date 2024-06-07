@@ -4,7 +4,6 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
-
 #include "include/core/SkStream.h"
 #include "src/base/SkStringView.h"
 #include "src/core/SkOpts.h"
@@ -13,6 +12,7 @@
 #include "src/sksl/SkSLProgramSettings.h"
 #include "src/sksl/SkSLStringStream.h"
 #include "src/sksl/SkSLUtil.h"
+#include "src/sksl/codegen/SkSLCodeGenTypes.h"
 #include "src/sksl/codegen/SkSLGLSLCodeGenerator.h"
 #include "src/sksl/codegen/SkSLHLSLCodeGenerator.h"
 #include "src/sksl/codegen/SkSLMetalCodeGenerator.h"
@@ -41,10 +41,6 @@ void SkDebugf(const char format[], ...) {
     va_start(args, format);
     vfprintf(stderr, format, args);
     va_end(args);
-}
-
-namespace SkOpts {
-    size_t raster_pipeline_highp_stride = 1;
 }
 
 static std::unique_ptr<SkWStream> as_SkWStream(SkSL::OutputStream& s) {
@@ -675,7 +671,9 @@ static ResultCode process_command(SkSpan<std::string> args) {
                 [](SkSL::Compiler& compiler,
                    const SkSL::ShaderCaps* shaderCaps,
                    SkSL::Program& program,
-                   SkSL::OutputStream& out) { return SkSL::ToMetal(program, shaderCaps, out); });
+                   SkSL::OutputStream& out) {
+                    return SkSL::ToMetal(program, shaderCaps, out, SkSL::PrettyPrint::kYes);
+                });
     } else if (skstd::ends_with(outputPath, ".hlsl")) {
         return compileProgram(
                 [](SkSL::Compiler& compiler,

@@ -26,7 +26,7 @@
 #include <utility>
 #include <vector>
 
-#if SKSL_STANDALONE
+#if defined(SKSL_STANDALONE)
 
 #include "include/core/SkString.h"
 #include "src/utils/SkOSPath.h"
