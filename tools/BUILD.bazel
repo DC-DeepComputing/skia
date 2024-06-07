@@ -18,6 +18,13 @@ exports_files_legacy(label_list = [
     "ResourceFactory.h",
 ])
 
+skia_filegroup(
+    name = "tools_skslc_hdrs",
+    srcs = [
+        "SkSLModuleDataFileProvider.h",
+    ]
+)
+
 skia_cc_library(
     name = "legacy_tool_utils",
     testonly = True,
