@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a7ed5d9_240425bc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18764
+      },
+      "writtenOn": "2024-06-07T16:32:13Z",
+      "side": 1,
+      "message": "Make the patch simple.Add the \u0027SkASSERT\u0027 and test case about quadratic curve.",
+      "revId": "ddec13de244407fca700cc07229d6e1704141da5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
