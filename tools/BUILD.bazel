@@ -1,5 +1,5 @@
 load("//bazel:macros.bzl", "py_binary")
-load("//bazel:skia_rules.bzl", "exports_files_legacy", "skia_cc_library", "skia_objc_library")
+load("//bazel:skia_rules.bzl", "exports_files_legacy", "skia_cc_library", "skia_objc_library", "skia_filegroup")
 
 package(
     default_applicable_licenses = ["//:license"],
@@ -17,6 +17,13 @@ exports_files_legacy(label_list = [
     "Resources.cpp",
     "ResourceFactory.h",
 ])
+
+skia_filegroup(
+    name = "tools_skslc_hdrs",
+    srcs = [
+        "SkSLModuleDataFileProvider.h",
+    ]
+)
 
 skia_cc_library(
     name = "legacy_tool_utils",

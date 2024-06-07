@@ -315,6 +315,7 @@ var gniExportDescs = []exporter.GNIExportDesc{
 				"//src/utils:utils_skslc_hdrs",
 				"//src/utils:utils_skslc_srcs",
 				"//src/utils:json_srcs",
+				"//tools:tools_skslc_hdrs",
 			}}},
 	},
 	{GNI: "gn/sksl_tests.gni", Vars: []exporter.GNIFileListExportDesc{
