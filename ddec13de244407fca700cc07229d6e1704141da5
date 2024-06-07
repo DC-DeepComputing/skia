@@ -20,6 +20,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ea45d04b_5854c4eb",
+        "filename": "src/core/SkPath.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 328,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-07T20:06:25Z",
+      "side": 1,
+      "message": "Given Ben\u0027s comment, are you suggesting that instead we just add an initial if condition like:\n\n    if (prevPt \u003d\u003d pts[nextPt]) {\n        // A pre-condition to getting here is that the path is convex, so if a \n        // verb\u0027s start and end points are the same, it means it\u0027s the only \n        // verb in the contour (and the only contour). While it\u0027s possible for\n        // such a single verb to be a convex curve, we do not have any non-zero\n        // length edges to conservatively test against without splitting or\n        // evaluating the curve. For simplicity, just reject the rectangle.\n        return false;",
+      "range": {
+        "startLine": 328,
+        "startChar": 16,
+        "endLine": 328,
+        "endChar": 49
+      },
+      "revId": "ddec13de244407fca700cc07229d6e1704141da5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "61d5e770_8f73c9f8",
         "filename": "src/core/SkPath.cpp",
         "patchSetId": 4
