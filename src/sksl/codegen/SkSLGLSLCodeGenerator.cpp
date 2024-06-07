@@ -236,7 +236,7 @@ void GLSLCodeGenerator::write(std::string_view s) {
     if (s.empty()) {
         return;
     }
-#if defined(SK_DEBUG) || defined(SKSL_STANDALONE)
+#if 1
     if (fAtLineStart) {
         for (int i = 0; i < fIndentation; i++) {
             fOut->writeText("    ");
