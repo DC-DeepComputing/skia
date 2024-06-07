@@ -16,6 +16,29 @@
       "message": "Make the patch simple.Add the \u0027SkASSERT\u0027 and test case about quadratic curve.",
       "revId": "ddec13de244407fca700cc07229d6e1704141da5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "61d5e770_8f73c9f8",
+        "filename": "src/core/SkPath.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 341,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-06-07T20:00:50Z",
+      "side": 1,
+      "message": "I don\u0027t think we need or want this extra check? Then we could also remove the assert.\n\nSo the general idea here is that if the path is already known to be convex then a rect is contained inside the path if each verb of the path is outside and on the right \"side\" of the the rect (given the verb\u0027s slope), where quad and cubic verbs are approximated by the line between their start and end points. The issue being that if the start and end points are the same then that verb\u0027s edge line is zero length and doesn\u0027t have a direction and is \"outside\" all rects.\n\nThe argument is that completely degenerate verbs are ignored and quads get away with this because if the start and end points are at the same location then it is degenerate and currently any path which such a segment will not be considered convex. A conic will get chopped into two quads, so any convex conic should produce quads without the same start and end (but this will always return false for a circle?).\n\nHowever, a cubic with the same start and end points can be convex. However, by the conservative rules here it should never contain any rects because the entire rectangle will always be on the \"other side\" of the verb\u0027s line edge away from the curve of the cubic. However, since this edge is degenerate it currently contains all rects instead of no rects.\n\nAs a result, it seems like testing for `SkPathVerb::kCubic` here isn\u0027t really needed? As the assert states, if we ever have `prevPt \u003d\u003d pts[nextPt]` here we want to return false (since it means all rectangles are \"outside\" by the logic of this check). Since that\u0027s the case it could even be pushed down to `check_edge_against_rect` as a `if (p0 \u003d\u003d p1) { return false; }`? Admittedly, this is probably extra work for the conic case and maybe the \"segmentCount\" use below, so I don\u0027t think we should do that, but it is logically what we want.\n\nSo while we can convince ourselves that at the moment only cubics need this check, it is generally true that in this conservative algorithm that if the first and last points a verb are the same then all rects are conservatively \"outside\" and we should immediately return false. So I don\u0027t think we need the extra check. We\u0027re going to fetch `pts[nextPt]` anyway, so it doesn\u0027t even avoid the load (which should be hot anyway, since it was just written).",
+      "range": {
+        "startLine": 341,
+        "startChar": 27,
+        "endLine": 341,
+        "endChar": 56
+      },
+      "revId": "ddec13de244407fca700cc07229d6e1704141da5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
