@@ -217,6 +217,7 @@ CPU_GMS = [
     # "encode_platform.cpp",
     # "encode_srgb.cpp",
     # "exoticformats.cpp",
+    # "extremely_small_quad.cpp",
     # "fadefilter.cpp",
     # "fatpathfill.cpp",
     # "fiddle.cpp",

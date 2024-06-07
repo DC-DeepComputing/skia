@@ -15,6 +15,7 @@
 #include "include/core/SkStrokeRec.h"
 #include "include/private/base/SkAssert.h"
 #include "src/core/SkPathPriv.h"
+#include "src/core/SkPointPriv.h"
 
 #include <array>
 
@@ -43,6 +44,10 @@ public:
         SkPathPriv::Iterate it(path);
         fIter = it.begin();
         fEnd = it.end();
+        SkScalar max_scale = SkScalarAbs(fViewMatrix->getMaxScale());
+        fTolerance = SkScalarNearlyZero(max_scale)
+                             ? SK_Scalar1
+                             : SK_ScalarNearlyZero * SkScalarInvert(max_scale);
     }
 
     enum class Verb {
@@ -84,14 +89,14 @@ public:
                     }
                     break;
                 case SkPathVerb::kCubic:
-                    if (pts[3] == pts[2]) {
+                    if (SkPointPriv::EqualsWithinTolerance(pts[3], pts[2], fTolerance)) {
                         [[fallthrough]];  // i.e., "if (p3 == p2 && p2 == p1 && p1 == p0)"
                 case SkPathVerb::kConic:
                 case SkPathVerb::kQuad:
-                    if (pts[2] == pts[1]) {
+                    if (SkPointPriv::EqualsWithinTolerance(pts[2], pts[1], fTolerance)) {
                         [[fallthrough]];  // i.e., "if (p2 == p1 && p1 == p0)"
                 case SkPathVerb::kLine:
-                    if (pts[1] == pts[0]) {
+                    if (SkPointPriv::EqualsWithinTolerance(pts[1], pts[0], fTolerance)) {
                         fLastDegenerateStrokePt = pts;
                         continue;
                     }}}
@@ -348,7 +353,7 @@ private:
     }
 
     // Info and iterators from the original path.
-    const SkMatrix* const fViewMatrix;  // For hairlines.
+    const SkMatrix* const fViewMatrix;  // For hairlines and tolerance.
     const SkStrokeRec* const fStroke;
     SkPathPriv::RangeIter fIter;
     SkPathPriv::RangeIter fEnd;
@@ -365,6 +370,7 @@ private:
     const float* fW[kQueueBufferCount];
     int fQueueFrontIdx = 0;
     int fQueueCount = 0;
+    SkScalar fTolerance;
 
     // Storage space for geometry that gets defined implicitly by the path, but does not have
     // actual points in memory to reference.
