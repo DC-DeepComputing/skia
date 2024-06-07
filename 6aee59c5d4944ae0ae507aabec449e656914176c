@@ -34,6 +34,24 @@
       "parentUuid": "c7a50f29_eb030514",
       "revId": "6aee59c5d4944ae0ae507aabec449e656914176c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c0bc2b97_0f27c8cd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-07T13:10:10Z",
+      "side": 1,
+      "message": "I think that a simple patch like that is my preferred solution, so we aren\u0027t chopping the cubic at all, and it\u0027s treated the same as the other curve types that have the same starting and ending point.",
+      "parentUuid": "da62a5fe_ee35d570",
+      "revId": "6aee59c5d4944ae0ae507aabec449e656914176c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
