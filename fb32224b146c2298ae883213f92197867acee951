@@ -16,6 +16,69 @@
       "message": "This is my first stab, but I realize that (from a file location perspective), it still looks like a dependency from sksl on tools. I\u0027m going to relocate the file-based provider into tools (so there will be a //tools:tools_skslc_hdrs). Then I need to actually change minify and skslc to make an instance and replace the default one. At that point, I think this will be good to go.",
       "revId": "fb32224b146c2298ae883213f92197867acee951",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "734309ae_f11d55d1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-06-07T16:25:28Z",
+      "side": 1,
+      "message": "I like the structure of this, just a few questions",
+      "revId": "fb32224b146c2298ae883213f92197867acee951",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5401bcbd_e6a570f9",
+        "filename": "src/sksl/SkSLModuleLoader.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-06-07T16:25:28Z",
+      "side": 1,
+      "message": "Will this one day let us remove the SK_GRAPHITE #ifdef above and be able to have a Ganesh module loader and/or a Graphite module loader in the same file? Or is that too tough a problem to plan for at the moment?",
+      "range": {
+        "startLine": 67,
+        "startChar": 6,
+        "endLine": 67,
+        "endChar": 31
+      },
+      "revId": "fb32224b146c2298ae883213f92197867acee951",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c74fff95_940b9f1e",
+        "filename": "src/sksl/SkSLModuleLoader.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-06-07T16:25:28Z",
+      "side": 1,
+      "message": "Do these need to be guarded by an SK_GRAPHITE #ifdef?",
+      "range": {
+        "startLine": 81,
+        "startChar": 12,
+        "endLine": 81,
+        "endChar": 13
+      },
+      "revId": "fb32224b146c2298ae883213f92197867acee951",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
