@@ -151,6 +151,7 @@ skia_cc_library(
     }),
     hdrs = ["SkGetExecutablePath.h"],
     visibility = [
+        "//src/core:__pkg__",  # TODO(b/345537973)
         "//src/sksl:__pkg__",
         "//tools/sksl-minify:__pkg__",
     ],

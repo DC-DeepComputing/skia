@@ -28,6 +28,7 @@
 #include "src/sksl/SkSLString.h"
 #include "src/sksl/SkSLStringStream.h"
 #include "src/sksl/SkSLUtil.h"
+#include "src/sksl/codegen/SkSLCodeGenTypes.h"
 #include "src/sksl/codegen/SkSLCodeGenerator.h"
 #include "src/sksl/ir/SkSLBinaryExpression.h"
 #include "src/sksl/ir/SkSLBlock.h"
@@ -84,8 +85,10 @@ public:
     GLSLCodeGenerator(const Context* context,
                       const ShaderCaps* caps,
                       const Program* program,
-                      OutputStream* out)
-            : INHERITED(context, caps, program, out) {}
+                      OutputStream* out,
+                      PrettyPrint pp)
+            : INHERITED(context, caps, program, out)
+            , fPrettyPrint(pp) {}
 
     bool generateCode() override;
 
@@ -222,6 +225,7 @@ protected:
     bool fSetupClockwise = false;
     bool fSetupFragPosition = false;
     bool fSetupFragCoordWorkaround = false;
+    PrettyPrint fPrettyPrint;
 
     // Workaround/polyfill flags
     bool fWrittenAbsEmulation = false;
@@ -236,13 +240,11 @@ void GLSLCodeGenerator::write(std::string_view s) {
     if (s.empty()) {
         return;
     }
-#if defined(SK_DEBUG) || defined(SKSL_STANDALONE)
-    if (fAtLineStart) {
+    if (fAtLineStart && fPrettyPrint == PrettyPrint::kYes) {
         for (int i = 0; i < fIndentation; i++) {
             fOut->writeText("    ");
         }
     }
-#endif
     fOut->write(s.data(), s.length());
     fAtLineStart = false;
 }
@@ -2020,16 +2022,25 @@ bool GLSLCodeGenerator::generateCode() {
     return fContext.fErrors->errorCount() == 0;
 }
 
-bool ToGLSL(Program& program, const ShaderCaps* caps, OutputStream& out) {
+bool ToGLSL(Program& program, const ShaderCaps* caps, OutputStream& out, PrettyPrint pp) {
     TRACE_EVENT0("skia.shaders", "SkSL::ToGLSL");
     SkASSERT(caps != nullptr);
 
     program.fContext->fErrors->setSource(*program.fSource);
-    GLSLCodeGenerator cg(program.fContext.get(), caps, &program, &out);
+    GLSLCodeGenerator cg(program.fContext.get(), caps, &program, &out, pp);
     bool result = cg.generateCode();
     program.fContext->fErrors->setSource(std::string_view());
 
     return result;
+}
+
+bool ToGLSL(Program& program, const ShaderCaps* caps, OutputStream& out) {
+#if defined(SK_DEBUG)
+    constexpr PrettyPrint defaultPrintOpts = PrettyPrint::kYes;
+#else
+    constexpr PrettyPrint defaultPrintOpts = PrettyPrint::kNo;
+#endif
+    return ToGLSL(program, caps, out, defaultPrintOpts);
 }
 
 bool ToGLSL(Program& program, const ShaderCaps* caps, std::string* out) {

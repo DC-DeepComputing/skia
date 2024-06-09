@@ -16,7 +16,7 @@ class OutputStream;
 struct Program;
 struct ShaderCaps;
 
-/** Converts a Program into HLSL code. (SPIRV-Cross must be enabled.) */
+/** Converts a Program into HLSL code. */
 bool ToHLSL(Program& program, const ShaderCaps* caps, OutputStream& out);
 bool ToHLSL(Program& program, const ShaderCaps* caps, std::string* out);
 

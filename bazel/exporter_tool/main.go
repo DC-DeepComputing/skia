@@ -300,8 +300,18 @@ var gniExportDescs = []exporter.GNIExportDesc{
 			}},
 		{Var: "skia_sksl_gpu_sources",
 			Rules: []string{
-				"//src/sksl/codegen:legacy_gpu_hdrs",
-				"//src/sksl/codegen:legacy_gpu_srcs",
+				"//src/sksl/codegen:gpu",
+			}},
+		{Var: "skia_sksl_codegen_sources",
+			Rules: []string{
+				"//src/sksl/codegen:glsl",
+				"//src/sksl/codegen:metal",
+				"//src/sksl/codegen:spirv",
+				"//src/sksl/codegen:wgsl",
+			}},
+		{Var: "skia_sksl_hlsl_sources",
+			Rules: []string{
+				"//src/sksl/codegen:hlsl",
 			}},
 		{Var: "skslc_deps",
 			Rules: []string{
