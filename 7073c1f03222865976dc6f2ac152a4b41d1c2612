@@ -34,6 +34,24 @@
       "parentUuid": "b7e8b163_06fd99f5",
       "revId": "7073c1f03222865976dc6f2ac152a4b41d1c2612",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f1ecaa8_8ac77f35",
+        "filename": "include/private/gpu/graphite/DawnTypesPriv.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 10537
+      },
+      "writtenOn": "2024-06-10T15:53:11Z",
+      "side": 1,
+      "message": "+enga@\n\nThanks, Greg!\n\nAs far as I see it, this information comes straight from the AHB and Dawn would never have any reason to modify it. Austin, do you see any nuances that I\u0027m missing?",
+      "parentUuid": "0a32ab53_2179ac19",
+      "revId": "7073c1f03222865976dc6f2ac152a4b41d1c2612",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
