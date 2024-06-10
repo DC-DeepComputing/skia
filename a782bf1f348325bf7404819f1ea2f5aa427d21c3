@@ -34,6 +34,24 @@
       "parentUuid": "3cc37df1_395d78c2",
       "revId": "a782bf1f348325bf7404819f1ea2f5aa427d21c3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b49f026a_1524813e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-06-10T20:57:55Z",
+      "side": 1,
+      "message": "Yeah, it looks like almost everything else is working, to the point where it seems like just updating `infra/bots/assets/skp/VERSION` to 459 (since the upload already happened, and that\u0027s the current newest version) and `make train` is enough to do the rest of the work? I suppose that does sound more like something a roller should do.",
+      "parentUuid": "aa224bb1_6abfbe0b",
+      "revId": "a782bf1f348325bf7404819f1ea2f5aa427d21c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
