@@ -198,6 +198,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "46eecd92_f95883bb",
+        "filename": "site/docs/dev/tools/android-capture.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-06-10T19:40:51Z",
+      "side": 1,
+      "message": "Oh actually this could be a relative link too.",
+      "range": {
+        "startLine": 82,
+        "startChar": 15,
+        "endLine": 82,
+        "endChar": 56
+      },
+      "revId": "579384142b07a418913dc9affaaecc10fc9b197a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5915cd75_d1f2426f",
         "filename": "site/docs/dev/tools/debugger.md",
         "patchSetId": 1
@@ -233,6 +256,30 @@
           ]
         }
       ],
+      "revId": "579384142b07a418913dc9affaaecc10fc9b197a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca9b34c4_7aae1cd6",
+        "filename": "site/docs/dev/tools/debugger.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-06-10T19:40:51Z",
+      "side": 1,
+      "message": "\u003e ... similar to the `[download and build Skia](/docs/user/build)` one above.\n\nJust to be clear, I meant the other link \"above\" in this file. I was not referring to my other comment, but this specific example link actually aligns with my other comment about linking to the build page lol",
+      "parentUuid": "5915cd75_d1f2426f",
+      "range": {
+        "startLine": 196,
+        "startChar": 4,
+        "endLine": 196,
+        "endChar": 52
+      },
       "revId": "579384142b07a418913dc9affaaecc10fc9b197a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
