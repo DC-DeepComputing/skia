@@ -99,6 +99,30 @@
       },
       "revId": "a123df6ba29144f77c894581f66b88b682797bc1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ccf34e2_acc23830",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 8
+      },
+      "lineNbr": 633,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-10T14:49:12Z",
+      "side": 1,
+      "message": "You\u0027re right that the local matrix doesn\u0027t encode the bias/starting angle, but I think the polar space is still consistently having `angle \u003d 0` or `angle \u003d 360` on the right positive X axis, and it\u0027s `atan` bouncing between those two extremes that shows the speckling artifacts on that axis. This should be resolvable by adding epsilon to the y value before atan (possibly with the `x*epsilon`).\n\nThen for the case where the bias is pi/2 to create a vertical t\u003d0 position (this is the case you\u0027re thinking about, right?), an epsilon bias added to the final `t` value would help keep that value stable.\n\nI think sweep gradients have two sources of discontinuity:\n1. A hard stop, where the colors change, but the t value is fixed, so it\u0027s roughly equivalent to the linear gradient. We just bias `t` to make the choice of color stable but aren\u0027t really changing `t` itself.\n2. A discontinuity in `t` itself because of the angular wrapping around and then we bounce between `t\u003d0` and `t\u003d1`. This can happen whether or not the gradient data has hard stops at all.",
+      "parentUuid": "12055e8e_474988b2",
+      "range": {
+        "startLine": 633,
+        "startChar": 0,
+        "endLine": 633,
+        "endChar": 25
+      },
+      "revId": "a123df6ba29144f77c894581f66b88b682797bc1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
