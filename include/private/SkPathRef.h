@@ -90,6 +90,27 @@ public:
         SkDEBUGCODE(this->validate();)
     }
 
+    SkPathRef(SkSpan<const SkPoint> points, SkSpan<const uint8_t> verbs, SkSpan<const SkScalar> weights, unsigned segmentMask)
+        : fPoints(points)
+        , fVerbs(verbs)
+        , fConicWeights(weights)
+    {
+        fBoundsIsDirty = true;    // this also invalidates fIsFinite
+        fGenerationID = 0;        // recompute
+        fSegmentMask = segmentMask;
+        fType = PathType::kGeneral;
+        // The next two values don't matter unless fType is kOval or kRRect
+        fRRectOrOvalIsCCW = false;
+        fRRectOrOvalStartIdx = 0xAC;
+        fArcOval.setEmpty();
+        fArcStartAngle = fArcSweepAngle = 0.0f;
+        fArcType = SkArc::Type::kArc;
+        SkDEBUGCODE(fEditorsAttached.store(0);)
+
+        this->computeBounds();  // do this now, before we worry about multiple owners/threads
+        SkDEBUGCODE(this->validate();)
+    }
+
     class Editor {
     public:
         Editor(sk_sp<SkPathRef>* pathRef,

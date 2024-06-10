@@ -3620,9 +3620,9 @@ SkPath SkPath::MakeInternal(const SkPathVerbAnalysis& analysis,
                             SkPathFillType fillType,
                             bool isVolatile) {
   return SkPath(sk_sp<SkPathRef>(new SkPathRef(
-                                     SkPathRef::PointsArray(points, analysis.points),
-                                     SkPathRef::VerbsArray(verbs, verbCount),
-                                     SkPathRef::ConicWeightsArray(conics, analysis.weights),
+                                     SkSpan(points, analysis.points),
+                                     SkSpan(verbs, verbCount),
+                                     SkSpan(conics, analysis.weights),
                                      analysis.segmentMask)),
                 fillType, isVolatile, SkPathConvexity::kUnknown, SkPathFirstDirection::kUnknown);
 }
