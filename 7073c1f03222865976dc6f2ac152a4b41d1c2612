@@ -52,6 +52,24 @@
       "parentUuid": "0a32ab53_2179ac19",
       "revId": "7073c1f03222865976dc6f2ac152a4b41d1c2612",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9f07024_0194d711",
+        "filename": "include/private/gpu/graphite/DawnTypesPriv.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 9562
+      },
+      "writtenOn": "2024-06-10T19:06:05Z",
+      "side": 1,
+      "message": "I don\u0027t think Dawn would modify it",
+      "parentUuid": "4f1ecaa8_8ac77f35",
+      "revId": "7073c1f03222865976dc6f2ac152a4b41d1c2612",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
