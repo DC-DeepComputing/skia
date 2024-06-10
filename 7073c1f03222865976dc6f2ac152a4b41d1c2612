@@ -16,6 +16,24 @@
       "message": "I discussed the need to add this here with Corentin. In general Dawn doesn\u0027t support this kind of equality operator because there are problematic cases where two representations of the same object would end up being unequal (e.g. comparing a client-side representation that has had information stripped off to a server-side representation that has that information). We can discuss further to see if it could make sense in this particular case, but in the meantime, it\u0027s good to keep moving forward here.",
       "revId": "7073c1f03222865976dc6f2ac152a4b41d1c2612",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a32ab53_2179ac19",
+        "filename": "include/private/gpu/graphite/DawnTypesPriv.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-06-10T14:28:35Z",
+      "side": 1,
+      "message": "I guess I would need more information about where the wgpu::YCbCrVkDescriptor is coming from. Like I agree completely with Corentin that if this is an object that is used internally and on the gpu in Dawn (e.g. like a Texture), querying information off of it is very risky unless if there is no guarantee that Dawn doesn\u0027t change the values of it after passed in during creation by the client.\n\nThen again if this is just a general description of a property/set of properties (like a texture Format), then I think this is inherently fine in this class. Like this class just stores a \"description\" of a texture. So it seems completely reasonable to be able to compare two descriptions and say if they are equal.\n\nIn the end the big question is where are these descriptions coming from. If they are being pulled from a Dawn object which is allowed to alter them (i.e. don\u0027t necessarily match the requested version at create) then we can easily get into situations where these don\u0027t match. So in that case we\u0027d either need to store the original description on the Skia object to use for comparisons, have Dawn store the original requested properties (and keep any changes internal and hidden from the client), or have Dawn add an \"isCompatible\" query which can do whatever transformations it might do internally before comparing.\n\nFWIW I think Skia is already doing the first option and stores that TextureInfo and creation and is never recreating it from querying Dawn objects. So I think we may be safe.",
+      "parentUuid": "b7e8b163_06fd99f5",
+      "revId": "7073c1f03222865976dc6f2ac152a4b41d1c2612",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
