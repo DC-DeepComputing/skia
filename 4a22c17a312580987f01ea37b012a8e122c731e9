@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e6838e3_b8a31f15",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-06-10T18:55:56Z",
+      "side": 1,
+      "message": "We may wanna add a comment a la https://crsrc.org/c/third_party/skia/src/gpu/ganesh/gradients/GrGradientShader.cpp;l\u003d926;drc\u003d611c457d. We could also link to https://crbug.com/40616713 in this CL (not super important).",
+      "revId": "4a22c17a312580987f01ea37b012a8e122c731e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
