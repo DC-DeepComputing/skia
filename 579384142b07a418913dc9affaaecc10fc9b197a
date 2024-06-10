@@ -16,6 +16,225 @@
       "message": "PTAL",
       "revId": "579384142b07a418913dc9affaaecc10fc9b197a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e909ae9_e58681a6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-06-10T19:36:16Z",
+      "side": 1,
+      "message": "Thanks for bumping, I totally missed this. LGTM modulo suggestions",
+      "revId": "579384142b07a418913dc9affaaecc10fc9b197a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b0fa900_6b00b908",
+        "filename": "site/docs/dev/tools/android-capture.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-06-10T19:36:16Z",
+      "side": 1,
+      "message": "Nit: capital `S`",
+      "range": {
+        "startLine": 16,
+        "startChar": 36,
+        "endLine": 16,
+        "endChar": 37
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "60c92e3a_9819ad71",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "site/docs/dev/tools/android-capture.md",
+              "range": {
+                "startLine": 16,
+                "startChar": 0,
+                "endLine": 17,
+                "endChar": 0
+              },
+              "replacement": "MSKP files may capture any use of a Skia canvas, and there are two uses in\n"
+            }
+          ]
+        }
+      ],
+      "revId": "579384142b07a418913dc9affaaecc10fc9b197a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef25c4a1_20c0ecc5",
+        "filename": "site/docs/dev/tools/android-capture.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-06-10T19:36:16Z",
+      "side": 1,
+      "message": "Nit: capital `A`",
+      "range": {
+        "startLine": 36,
+        "startChar": 48,
+        "endLine": 36,
+        "endChar": 55
+      },
+      "revId": "579384142b07a418913dc9affaaecc10fc9b197a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c288868e_50eef553",
+        "filename": "site/docs/dev/tools/android-capture.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-06-10T19:36:16Z",
+      "side": 1,
+      "message": "Maybe link somewhere like https://source.android.com/docs/setup/download ?",
+      "range": {
+        "startLine": 36,
+        "startChar": 56,
+        "endLine": 36,
+        "endChar": 60
+      },
+      "revId": "579384142b07a418913dc9affaaecc10fc9b197a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1e11cac_0020acab",
+        "filename": "site/docs/dev/tools/android-capture.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-06-10T19:36:16Z",
+      "side": 1,
+      "message": "Nit: capital `A`",
+      "range": {
+        "startLine": 49,
+        "startChar": 50,
+        "endLine": 49,
+        "endChar": 57
+      },
+      "revId": "579384142b07a418913dc9affaaecc10fc9b197a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d764597f_66f54e8c",
+        "filename": "site/docs/dev/tools/android-capture.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-06-10T19:36:16Z",
+      "side": 1,
+      "message": "This is context switching from an Android checkout to Skia checkout (after building `dm`). I\u0027m not sure how to phrase it, but maybe we should link to somewhere like https://skia.org/docs/user/build/ ? Unsure",
+      "range": {
+        "startLine": 76,
+        "startChar": 0,
+        "endLine": 76,
+        "endChar": 14
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "ed379b1a_70f0ac8b",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "site/docs/dev/tools/android-capture.md",
+              "range": {
+                "startLine": 73,
+                "startChar": 0,
+                "endLine": 74,
+                "endChar": 0
+              },
+              "replacement": "also use the [Skia Viewer] to view it, or rasterize it with dm (see [Skia\nBuild Instructions] for how to build dm):\n"
+            },
+            {
+              "path": "site/docs/dev/tools/android-capture.md",
+              "range": {
+                "startLine": 82,
+                "startChar": 0,
+                "endLine": 82,
+                "endChar": 0
+              },
+              "replacement": "[Skia Build Instructions]: https://skia.org/user/build\n"
+            }
+          ]
+        }
+      ],
+      "revId": "579384142b07a418913dc9affaaecc10fc9b197a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5915cd75_d1f2426f",
+        "filename": "site/docs/dev/tools/debugger.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-06-10T19:36:16Z",
+      "side": 1,
+      "message": "I think this should be a named and relative link, similar to the `[download and build Skia](/docs/user/build)` one above. Perhaps named with the new page\u0027s title of \"How to capture an SKP file from the Android Framework\", but I don\u0027t have a strong opinion if you prefer something shorter.",
+      "range": {
+        "startLine": 196,
+        "startChar": 4,
+        "endLine": 196,
+        "endChar": 52
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "e4ddbb51_91b224e6",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "site/docs/dev/tools/debugger.md",
+              "range": {
+                "startLine": 196,
+                "startChar": 0,
+                "endLine": 197,
+                "endChar": 0
+              },
+              "replacement": "See [How to capture an SKP file from the Android framework](/docs/dev/tools/android-capture)\n"
+            }
+          ]
+        }
+      ],
+      "revId": "579384142b07a418913dc9affaaecc10fc9b197a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
