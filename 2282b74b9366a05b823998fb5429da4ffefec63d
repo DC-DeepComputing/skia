@@ -1,0 +1,383 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "efebc041_2ac1d98c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-10T14:35:43Z",
+      "side": 1,
+      "message": "Very exciting to see all this progress!",
+      "revId": "2282b74b9366a05b823998fb5429da4ffefec63d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1db0a0e3_0b1948a4",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 338,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-10T14:35:43Z",
+      "side": 1,
+      "message": "nit: both of these functions can be marked `const`\n\nAnother alternative is we could combine these two functions together into a `bindIfNeeded` function to simplify the call site in `Make()`?",
+      "range": {
+        "startLine": 334,
+        "startChar": 3,
+        "endLine": 338,
+        "endChar": 17
+      },
+      "revId": "2282b74b9366a05b823998fb5429da4ffefec63d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a93733e_c08df9b6",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 341,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-10T14:35:43Z",
+      "side": 1,
+      "message": "nit: newline above this",
+      "range": {
+        "startLine": 341,
+        "startChar": 0,
+        "endLine": 341,
+        "endChar": 7
+      },
+      "revId": "2282b74b9366a05b823998fb5429da4ffefec63d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73abf0fc_a3d745b1",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 612,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-10T14:35:43Z",
+      "side": 1,
+      "message": "Can we add a comment here like `// All large gradients pack their data into a single buffer, so this only needs to be bound once`?",
+      "range": {
+        "startLine": 612,
+        "startChar": 0,
+        "endLine": 612,
+        "endChar": 49
+      },
+      "revId": "2282b74b9366a05b823998fb5429da4ffefec63d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "159e95ee_f849ff65",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 387,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-10T14:35:43Z",
+      "side": 1,
+      "message": "WDYT about having `GradientData` just saving the pointers to `colors` and `offsets` when it\u0027s to use storage buffers, and then modify `create_color_and_offset_bufdata` to take in the `PipelineDataGatherer` so that it can append the color/offset data directly to its array to avoid the intermediate copy that happens right now?",
+      "range": {
+        "startLine": 387,
+        "startChar": 0,
+        "endLine": 387,
+        "endChar": 98
+      },
+      "revId": "2282b74b9366a05b823998fb5429da4ffefec63d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c740a5bf_fb18a491",
+        "filename": "src/gpu/graphite/PipelineData.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-10T14:35:43Z",
+      "side": 1,
+      "message": "nit: these alignments should be fixed back to where they were, and add a space to `fGradientStorage`",
+      "range": {
+        "startLine": 151,
+        "startChar": 22,
+        "endLine": 151,
+        "endChar": 26
+      },
+      "revId": "2282b74b9366a05b823998fb5429da4ffefec63d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ee3b437_e9b3b70c",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-10T14:35:43Z",
+      "side": 1,
+      "message": "Can we add an assert here that `caps-\u003estorageBufferSupport()` is true?",
+      "range": {
+        "startLine": 321,
+        "startChar": 0,
+        "endLine": 321,
+        "endChar": 76
+      },
+      "revId": "2282b74b9366a05b823998fb5429da4ffefec63d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "49500ca1_9afdb127",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 935,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-10T14:35:43Z",
+      "side": 1,
+      "message": "Let\u0027s add a comment here that these preamble and expression generators are only needed until we can pass unsized arrays into module functions, and then it can use the default generators, and all the internal utility functions can be marked private again.",
+      "revId": "2282b74b9366a05b823998fb5429da4ffefec63d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c0bf77b_940e062d",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 937,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-10T14:35:43Z",
+      "side": 1,
+      "message": "nit: line up with first arg",
+      "range": {
+        "startLine": 937,
+        "startChar": 44,
+        "endLine": 937,
+        "endChar": 49
+      },
+      "revId": "2282b74b9366a05b823998fb5429da4ffefec63d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "90a6122a_f9449263",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 945,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-10T14:35:43Z",
+      "side": 1,
+      "message": "nit: line up with first arg",
+      "range": {
+        "startLine": 945,
+        "startChar": 40,
+        "endLine": 945,
+        "endChar": 45
+      },
+      "revId": "2282b74b9366a05b823998fb5429da4ffefec63d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad8a06d2_1bebee56",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 979,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-10T14:35:43Z",
+      "side": 1,
+      "message": "In the past we\u0027ve found that white space embedded in shader programs like this can add up to a surprising number of kilobytes for binary codesize. To achieve similar layout, we just move the `\"` tight with the starting instruction and use spaces outside of the quotes to line things up.  Pretty-printing after compiling should still produce fairly readable shaders",
+      "range": {
+        "startLine": 979,
+        "startChar": 33,
+        "endLine": 979,
+        "endChar": 36
+      },
+      "revId": "2282b74b9366a05b823998fb5429da4ffefec63d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa5a82ab_ecf9a948",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 986,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-10T14:35:43Z",
+      "side": 1,
+      "message": "It could be helpful here to have a comment that `buffOffset + 0` is holding the color stop\u0027s t value",
+      "range": {
+        "startLine": 986,
+        "startChar": 0,
+        "endLine": 986,
+        "endChar": 91
+      },
+      "revId": "2282b74b9366a05b823998fb5429da4ffefec63d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "540a5971_b2122882",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 1011,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-10T14:35:43Z",
+      "side": 1,
+      "message": "nit: `lowBufferIdx` to further differentiate it from `low`?",
+      "range": {
+        "startLine": 1011,
+        "startChar": 48,
+        "endLine": 1011,
+        "endChar": 54
+      },
+      "revId": "2282b74b9366a05b823998fb5429da4ffefec63d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83e7fe23_792484c5",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 1018,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-10T14:35:43Z",
+      "side": 1,
+      "message": "nit: `highBufferIdx`",
+      "range": {
+        "startLine": 1018,
+        "startChar": 48,
+        "endLine": 1018,
+        "endChar": 55
+      },
+      "revId": "2282b74b9366a05b823998fb5429da4ffefec63d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e04ec8d9_ab1e8d28",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 1027,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-10T14:35:43Z",
+      "side": 1,
+      "message": "if a pixel center lands on a stop exactly, we could end up with `highOffset \u003d\u003d lowOffset` right? We\u0027d end up passing in `0/0` for the mix fraction, which would hopefully just return `highColor` or `lowColor`, but I\u0027d be worried that some GPUs might not actually do that and return a NaN color (particularly if they just did the linear math).",
+      "range": {
+        "startLine": 1027,
+        "startChar": 63,
+        "endLine": 1027,
+        "endChar": 85
+      },
+      "revId": "2282b74b9366a05b823998fb5429da4ffefec63d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2840f6c2_3c14a52c",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 646,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-10T14:35:43Z",
+      "side": 1,
+      "message": "nit extra 0",
+      "range": {
+        "startLine": 646,
+        "startChar": 33,
+        "endLine": 646,
+        "endChar": 34
+      },
+      "revId": "2282b74b9366a05b823998fb5429da4ffefec63d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8f1c032_3955b5a4",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 660,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-10T14:35:43Z",
+      "side": 1,
+      "message": "nit: extra 0",
+      "range": {
+        "startLine": 660,
+        "startChar": 33,
+        "endLine": 660,
+        "endChar": 34
+      },
+      "revId": "2282b74b9366a05b823998fb5429da4ffefec63d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
