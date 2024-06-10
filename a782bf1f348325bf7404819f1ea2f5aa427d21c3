@@ -16,6 +16,24 @@
       "message": "Seems to be related to https://github.com/bazelbuild/rules_go/issues/3178 and https://github.com/golang/go/issues/59924 ? Though this doesn\u0027t look like bazel is involved, just `go run`?\n\nThe error message is\n```\n/b/s/w/ir/go/go/src/crypto/internal/nistec/p256_asm.go:322:12: pattern p256_asm_table.bin: cannot embed irregular file p256_asm_table.bin\n```\n\nwhich implies that `p256_asm_table.bin` is a symlink, which would imply that every file here (including `p256_asm.go`) is also a symlink. It can also be seen that\n```\nGOROOT\u003d/b/s/w/ir/go/go\n```\n\nso it isn\u0027t clear why these are symlinks, since it looks like all of this is direct `go`? Perhaps these were present previously as symlinks and that is causing them not to be replaced with real files?",
       "revId": "a782bf1f348325bf7404819f1ea2f5aa427d21c3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa224bb1_6abfbe0b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-06-10T20:09:16Z",
+      "side": 1,
+      "message": "My hypothesis was that the caches, which are symlinked to /b/s/w/ir, were causing the problem, but removing the cache didn\u0027t fix it.  I believe isolated/CAS inputs and CIPD packages are also symlinked, but that doesn\u0027t appear to be the problem here.\n\nAt some point we need to stop having normal CI tasks commit code, so I\u0027ll need to either port this whole process to Louhi, or stop this process after CIPD package generation and use a roller, etc.  Maybe it\u0027s not worth the effort to get it working in this context.",
+      "parentUuid": "3cc37df1_395d78c2",
+      "revId": "a782bf1f348325bf7404819f1ea2f5aa427d21c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
