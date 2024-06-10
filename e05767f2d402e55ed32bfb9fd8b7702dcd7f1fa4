@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ce8e9f6_b8cdda60",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2024-06-10T11:56:08Z",
+      "side": 1,
+      "message": "ptal -- I split this off from the second patch (which you\u0027ve already reviewed) to fix a merge conflict and to make things more clear.",
+      "revId": "e05767f2d402e55ed32bfb9fd8b7702dcd7f1fa4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
