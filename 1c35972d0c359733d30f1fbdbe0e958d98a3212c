@@ -34,6 +34,24 @@
       "parentUuid": "bf768e45_8e0762ac",
       "revId": "1c35972d0c359733d30f1fbdbe0e958d98a3212c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f23a0167_13136d6a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-06-10T19:34:27Z",
+      "side": 1,
+      "message": "Without a compelling reason, I don\u0027t want to land this. The current code clearly expresses what it\u0027s doing, and I see the revised version as worse in that regard. If there\u0027s a performance win on any kind of real content or benchmark, then it\u0027s fine. But if the win is just speculative ... I\u0027m going to favor simplicity and clarity.",
+      "parentUuid": "dfd49f26_bbf964dd",
+      "revId": "1c35972d0c359733d30f1fbdbe0e958d98a3212c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
