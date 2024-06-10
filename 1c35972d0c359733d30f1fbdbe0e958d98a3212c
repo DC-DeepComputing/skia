@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf768e45_8e0762ac",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-06-10T19:06:03Z",
+      "side": 1,
+      "message": "Does this move the needle on any profiling? Lines may be the most common verb in paths, but this seems more complicated to reason about (especially the bit where we have to *subtract* when we see a close).",
+      "revId": "1c35972d0c359733d30f1fbdbe0e958d98a3212c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
