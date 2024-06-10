@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0b502c7f_1b5e45d2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18764
+      },
+      "writtenOn": "2024-06-10T13:57:22Z",
+      "side": 1,
+      "message": "Change the patch based on the suggestion.",
+      "revId": "ab0306b5ec8620a9f8734666a81745c17ad1ce27",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
