@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b0b297d_007af65e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-06-10T20:05:48Z",
+      "side": 1,
+      "message": "LGTM after Greg\u0027s question was addressed!",
+      "revId": "7073c1f03222865976dc6f2ac152a4b41d1c2612",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b7e8b163_06fd99f5",
