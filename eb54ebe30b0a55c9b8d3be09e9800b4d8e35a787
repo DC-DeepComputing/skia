@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "45424138_738046a1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-10T13:35:42Z",
+      "side": 1,
+      "message": "ps3 tweaked the tolerance one more time for the g72, but otherwise I think all the suspect GPUs have been tested and pass.",
+      "revId": "eb54ebe30b0a55c9b8d3be09e9800b4d8e35a787",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
