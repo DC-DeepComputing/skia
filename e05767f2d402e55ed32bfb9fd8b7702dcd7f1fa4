@@ -16,6 +16,139 @@
       "message": "ptal -- I split this off from the second patch (which you\u0027ve already reviewed) to fix a merge conflict and to make things more clear.",
       "revId": "e05767f2d402e55ed32bfb9fd8b7702dcd7f1fa4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "109d5e23_dba89dc7",
+        "filename": "src/encode/SkJpegGainmapEncoder.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 282,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-06-10T13:48:53Z",
+      "side": 1,
+      "message": "nit: except?",
+      "range": {
+        "startLine": 282,
+        "startChar": 76,
+        "endLine": 282,
+        "endChar": 82
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "cc334a81_845de32d",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/encode/SkJpegGainmapEncoder.cpp",
+              "range": {
+                "startLine": 282,
+                "startChar": 0,
+                "endLine": 283,
+                "endChar": 0
+              },
+              "replacement": "        // immediately after the Exif Attributes in the APP1 marker segment except as specified in\n"
+            }
+          ]
+        }
+      ],
+      "revId": "e05767f2d402e55ed32bfb9fd8b7702dcd7f1fa4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71498fdb_4206651a",
+        "filename": "src/encode/SkJpegGainmapEncoder.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-06-10T13:48:53Z",
+      "side": 1,
+      "message": "Failed to write?",
+      "range": {
+        "startLine": 321,
+        "startChar": 27,
+        "endLine": 321,
+        "endChar": 48
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "e118e79f_55984726",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/encode/SkJpegGainmapEncoder.cpp",
+              "range": {
+                "startLine": 321,
+                "startChar": 0,
+                "endLine": 322,
+                "endChar": 0
+              },
+              "replacement": "            SkCodecPrintf(\"Failed to write MPF segment.\\n\");\n"
+            }
+          ]
+        }
+      ],
+      "revId": "e05767f2d402e55ed32bfb9fd8b7702dcd7f1fa4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b061e1f_f6b844b9",
+        "filename": "src/encode/SkJpegGainmapEncoder.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 336,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-06-10T13:48:53Z",
+      "side": 1,
+      "message": "Failed to write?",
+      "range": {
+        "startLine": 336,
+        "startChar": 27,
+        "endLine": 336,
+        "endChar": 47
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "476c8477_add2aefb",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/encode/SkJpegGainmapEncoder.cpp",
+              "range": {
+                "startLine": 327,
+                "startChar": 0,
+                "endLine": 328,
+                "endChar": 0
+              },
+              "replacement": "            SkCodecPrintf(\"Failed to write image body.\\n\");\n"
+            },
+            {
+              "path": "src/encode/SkJpegGainmapEncoder.cpp",
+              "range": {
+                "startLine": 336,
+                "startChar": 0,
+                "endLine": 337,
+                "endChar": 0
+              },
+              "replacement": "            SkCodecPrintf(\"Failed to write image body.\\n\");\n"
+            }
+          ]
+        }
+      ],
+      "revId": "e05767f2d402e55ed32bfb9fd8b7702dcd7f1fa4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
