@@ -52,6 +52,24 @@
       "parentUuid": "aa224bb1_6abfbe0b",
       "revId": "a782bf1f348325bf7404819f1ea2f5aa427d21c3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18327d5e_453db448",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-06-10T21:27:56Z",
+      "side": 1,
+      "message": "Did that with https://skia-review.googlesource.com/c/skia/+/864476 .",
+      "parentUuid": "b49f026a_1524813e",
+      "revId": "a782bf1f348325bf7404819f1ea2f5aa427d21c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
