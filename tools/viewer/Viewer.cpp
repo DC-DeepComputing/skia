@@ -1894,6 +1894,8 @@ void Viewer::onResize(int width, int height) {
         if (fApplyBackingScale) {
             scaleFactor = fWindow->scaleFactor();
         }
+        // resizing can reset the context on some backends so just tear it all down
+        fSlides[fCurrentSlide]->gpuTeardown();
         fSlides[fCurrentSlide]->resize(width / scaleFactor, height / scaleFactor);
     }
 }
