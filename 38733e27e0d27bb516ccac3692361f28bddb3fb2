@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed7a7be8_2af838d3",
+        "filename": "src/core/SkScan_AAAPath.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1960,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-06-10T19:57:07Z",
+      "side": 0,
+      "message": "This is all just code that falls out transitively from `useDeferred` always being `false`.",
+      "revId": "38733e27e0d27bb516ccac3692361f28bddb3fb2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
