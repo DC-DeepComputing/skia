@@ -16,6 +16,47 @@
       "message": "I\u0027m not too sure if the sweep epsilon is valuable since it does fix some noise in some of the GMs but is still present in some others and I don\u0027t want to make the epsilon too large. For the linear case it does look like it clears up the issues on the `hardstop_gradients_many` gm though that I noticed earlier. Curious on thoughts for the sweep one?",
       "revId": "a123df6ba29144f77c894581f66b88b682797bc1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "968cf257_a2f4d90e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-10T13:46:06Z",
+      "side": 1,
+      "message": "We can certainly split this CL into two, one for linear and one for sweep. The linear case makes graphite consistent with ganesh so I think it\u0027s absolutely the right thing to do. Separating them will also help in triaging the changes to the sweep gradient since the gold diffs will be isolated to each gradient type and CL.",
+      "parentUuid": "362429d8_2b54939c",
+      "revId": "a123df6ba29144f77c894581f66b88b682797bc1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "058a0278_5cbcfc1e",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 8
+      },
+      "lineNbr": 633,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-10T13:46:06Z",
+      "side": 1,
+      "message": "Tthe problematic line is the horizontal axis where we cross from a\u003d0 to a\u003d360.\nIn the gradient coords, it\u0027s always the x axis; if the sweep is oriented to have a vertical axis it should be factored into the preceding local matrix transform and we don\u0027t have to worry about it here.\n\nCan we just add the epsilon to pos.y in both this case and in the later atan2 case?\n\nSince we are (modulo quadrant) calculating atan(y/x), I wonder if something like `atan((y+epsilon*|x|)/x)` would help keep the offset stable as X increases?",
+      "range": {
+        "startLine": 633,
+        "startChar": 0,
+        "endLine": 633,
+        "endChar": 25
+      },
+      "revId": "a123df6ba29144f77c894581f66b88b682797bc1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
