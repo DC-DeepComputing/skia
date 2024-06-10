@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b7e8b163_06fd99f5",
+        "filename": "include/private/gpu/graphite/DawnTypesPriv.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 10537
+      },
+      "writtenOn": "2024-06-10T14:13:47Z",
+      "side": 1,
+      "message": "I discussed the need to add this here with Corentin. In general Dawn doesn\u0027t support this kind of equality operator because there are problematic cases where two representations of the same object would end up being unequal (e.g. comparing a client-side representation that has had information stripped off to a server-side representation that has that information). We can discuss further to see if it could make sense in this particular case, but in the meantime, it\u0027s good to keep moving forward here.",
+      "revId": "7073c1f03222865976dc6f2ac152a4b41d1c2612",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
