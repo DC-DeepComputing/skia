@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a777e96f_37b9fa10",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19319
+      },
+      "writtenOn": "2024-06-10T22:20:37Z",
+      "side": 1,
+      "message": "How about this one? This does show a slight improvement to arcs. It may actually improve paths too, but other (external) changes are needed for it to show an overall improvement.\n\nIf you do like it, I\u0027ll rebase it on top of main so that it doesn\u0027t include the other changes.",
+      "revId": "761bd01c80f387ad656dbb49a904bb6575bee646",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
