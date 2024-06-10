@@ -1182,8 +1182,8 @@ $pure half4 sdf_text_coverage_fn(half texColor,
     // This gives us a smooth step across approximately one fragment.
     half approxFragWidth = 0.65 * length(grad);
 
-    // TODO: handle aliased and sRGB rendering
-    return half4(smoothstep(-approxFragWidth, approxFragWidth, dist));
+    // TODO: handle aliased rendering
+    return half4(saturate((dist + approxFragWidth) / (2.0 * approxFragWidth)));
 }
 
 $pure half4 sdf_text_lcd_coverage_fn(float2 textureCoords,
@@ -1235,10 +1235,10 @@ $pure half4 sdf_text_lcd_coverage_fn(float2 textureCoords,
     half2 grad = half2(jacobian * dist_grad);
 
     // This gives us a smooth step across approximately one fragment.
-    half approxFragWidth = 0.65 * length(grad);
+    half3 approxFragWidth = half3(0.65 * length(grad));
 
-    // TODO: handle aliased and sRGB rendering
-    return half4(smoothstep(half3(-approxFragWidth), half3(approxFragWidth), dist), 1);
+    // TODO: handle aliased rendering
+    return half4(saturate((dist + approxFragWidth / (2.0 * approxFragWidth))), 1);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
