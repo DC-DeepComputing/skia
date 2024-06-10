@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "370dc37c_35700bda",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2024-06-10T11:56:14Z",
+      "side": 1,
+      "message": "Thanks! I split this into two parts to clean things up a bit and lost the +1 :/",
+      "revId": "80a263cf6c55212ad57e2f3fcb7a4d32fdc1d281",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

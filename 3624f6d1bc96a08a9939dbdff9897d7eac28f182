@@ -39,6 +39,30 @@
       },
       "revId": "3624f6d1bc96a08a9939dbdff9897d7eac28f182",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32217903_595fd7e1",
+        "filename": "src/encode/SkJpegGainmapEncoder.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2024-06-10T11:56:14Z",
+      "side": 1,
+      "message": "Separated creating the params structure out and added a comment (image of index 1 from a 2-image MPF).",
+      "parentUuid": "b63db623_fee91724",
+      "range": {
+        "startLine": 236,
+        "startChar": 82,
+        "endLine": 236,
+        "endChar": 87
+      },
+      "revId": "3624f6d1bc96a08a9939dbdff9897d7eac28f182",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
