@@ -118,6 +118,7 @@ static SkMutex& mask_gamma_cache_mutex() {
 
 static SkMaskGamma* gLinearMaskGamma = nullptr;
 static SkMaskGamma* gMaskGamma = nullptr;
+static SkMaskGamma* gDefaultMaskGamma = nullptr;
 static SkScalar gContrast = SK_ScalarMin;
 static SkScalar gPaintGamma = SK_ScalarMin;
 static SkScalar gDeviceGamma = SK_ScalarMin;
@@ -134,6 +135,18 @@ static const SkMaskGamma& cached_mask_gamma(SkScalar contrast, SkScalar paintGam
             gLinearMaskGamma = new SkMaskGamma;
         }
         return *gLinearMaskGamma;
+    }
+    // Contrast and gamma values may have been stored in an SkScalerContextRec,
+    // which downgrades the float values to uint8_t. The tolerance for these values
+    // needs to take data loss from that conversion into account.
+    constexpr SkScalar tolerance = 1.0f / ((1 << 8) - 1);
+    if (SkScalarNearlyEqual(contrast, SK_GAMMA_CONTRAST, tolerance) &&
+        SkScalarNearlyEqual(paintGamma, SK_GAMMA_EXPONENT, tolerance) &&
+        SkScalarNearlyEqual(deviceGamma, SK_GAMMA_EXPONENT, tolerance) ) {
+        if (nullptr == gDefaultMaskGamma) {
+            gDefaultMaskGamma = new SkMaskGamma(contrast, paintGamma, deviceGamma);
+        }
+        return *gDefaultMaskGamma;
     }
     if (gContrast != contrast || gPaintGamma != paintGamma || gDeviceGamma != deviceGamma) {
         SkSafeUnref(gMaskGamma);
