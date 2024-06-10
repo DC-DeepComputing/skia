@@ -913,6 +913,41 @@ UniqueKey DawnCaps::makeComputePipelineKey(const ComputePipelineDesc& pipelineDe
     return pipelineKey;
 }
 
+GraphiteResourceKey DawnCaps::makeSamplerKey(const SamplerDesc& samplerDesc) const {
+    GraphiteResourceKey samplerKey;
+    // Non-zero conversion information means the sampler utilizes a ycbcr conversion.
+    uint32_t nonFormatYcbcrInfo =
+            (uint32_t)(samplerDesc.desc() >> SamplerDesc::kImmutableSamplerInfoShift);
+    bool usesYcbcrConversion = nonFormatYcbcrInfo != 0;
+
+    int uint32Quantity = 1;
+    static constexpr int kInt32sNeededExternalFormat = 2;
+    static constexpr int kInt32sNeededKnownFormat = 3;
+    if (usesYcbcrConversion) {
+        // If using a YCbCr conversion, check to see if we are using an external format and update
+        // uint32Quantity accordingly. We reassign uint32Quantity as opposed to  performing an
+        // additive operation because non-format ycbcr and sampler info can both fit into one int32.
+        uint32Quantity =
+                samplerDesc.usesExternalFormat() ? kInt32sNeededExternalFormat
+                                                 : kInt32sNeededKnownFormat;
+    }
+    static const ResourceType kSamplerType = GraphiteResourceKey::GenerateResourceType();
+    GraphiteResourceKey::Builder builder(&samplerKey, kSamplerType, uint32Quantity,
+                                         Shareable::kYes);
+    int i = 0;
+    builder[i++] = samplerDesc.desc();
+    if (usesYcbcrConversion) {
+        if (samplerDesc.usesExternalFormat()) {
+            builder[i++] = samplerDesc.externalFormatMSBs();
+        }
+        builder[i++] = samplerDesc.format();
+    }
+    SkASSERT(i == uint32Quantity);
+
+    builder.finish();
+    return samplerKey;
+}
+
 void DawnCaps::buildKeyForTexture(SkISize dimensions,
                                   const TextureInfo& info,
                                   ResourceType type,
