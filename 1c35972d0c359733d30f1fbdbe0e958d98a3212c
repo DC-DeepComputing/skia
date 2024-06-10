@@ -16,6 +16,24 @@
       "message": "Does this move the needle on any profiling? Lines may be the most common verb in paths, but this seems more complicated to reason about (especially the bit where we have to *subtract* when we see a close).",
       "revId": "1c35972d0c359733d30f1fbdbe0e958d98a3212c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dfd49f26_bbf964dd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19319
+      },
+      "writtenOn": "2024-06-10T19:08:06Z",
+      "side": 1,
+      "message": "It improves a micro-benchmark, but it doesn\u0027t really move the needle overall. I\u0027m happy to add more comments or whatever to make it more obvious.",
+      "parentUuid": "bf768e45_8e0762ac",
+      "revId": "1c35972d0c359733d30f1fbdbe0e958d98a3212c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
