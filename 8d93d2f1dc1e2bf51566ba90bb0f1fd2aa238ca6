@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb94889d_51a4185b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-10T14:41:34Z",
+      "side": 1,
+      "message": "nit: Add a new line before `Change-Id`, since it seems to be confusing Gerrit\u0027s title extraction",
+      "revId": "8d93d2f1dc1e2bf51566ba90bb0f1fd2aa238ca6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
