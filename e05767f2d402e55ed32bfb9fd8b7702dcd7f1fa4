@@ -59,6 +59,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d38ff6a1_e25a6393",
+        "filename": "src/encode/SkJpegGainmapEncoder.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 282,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2024-06-10T14:26:22Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "109d5e23_dba89dc7",
+      "range": {
+        "startLine": 282,
+        "startChar": 76,
+        "endLine": 282,
+        "endChar": 82
+      },
+      "revId": "e05767f2d402e55ed32bfb9fd8b7702dcd7f1fa4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "71498fdb_4206651a",
@@ -96,6 +120,30 @@
           ]
         }
       ],
+      "revId": "e05767f2d402e55ed32bfb9fd8b7702dcd7f1fa4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "04611b19_035d9594",
+        "filename": "src/encode/SkJpegGainmapEncoder.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2024-06-10T14:26:22Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "71498fdb_4206651a",
+      "range": {
+        "startLine": 321,
+        "startChar": 27,
+        "endLine": 321,
+        "endChar": 48
+      },
       "revId": "e05767f2d402e55ed32bfb9fd8b7702dcd7f1fa4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -147,6 +195,30 @@
           ]
         }
       ],
+      "revId": "e05767f2d402e55ed32bfb9fd8b7702dcd7f1fa4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e735a73e_c0b0321c",
+        "filename": "src/encode/SkJpegGainmapEncoder.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 336,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2024-06-10T14:26:22Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "6b061e1f_f6b844b9",
+      "range": {
+        "startLine": 336,
+        "startChar": 27,
+        "endLine": 336,
+        "endChar": 47
+      },
       "revId": "e05767f2d402e55ed32bfb9fd8b7702dcd7f1fa4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
