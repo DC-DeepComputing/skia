@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dea527f1_6f668939",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-06-10T14:33:37Z",
+      "side": 1,
+      "message": "I think I\u0027ll split it up and move the linear change to another cl since we already have the discussion on the sweep epsilon on here.",
+      "parentUuid": "968cf257_a2f4d90e",
+      "revId": "a123df6ba29144f77c894581f66b88b682797bc1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "058a0278_5cbcfc1e",
@@ -49,6 +67,30 @@
       "writtenOn": "2024-06-10T13:46:06Z",
       "side": 1,
       "message": "Tthe problematic line is the horizontal axis where we cross from a\u003d0 to a\u003d360.\nIn the gradient coords, it\u0027s always the x axis; if the sweep is oriented to have a vertical axis it should be factored into the preceding local matrix transform and we don\u0027t have to worry about it here.\n\nCan we just add the epsilon to pos.y in both this case and in the later atan2 case?\n\nSince we are (modulo quadrant) calculating atan(y/x), I wonder if something like `atan((y+epsilon*|x|)/x)` would help keep the offset stable as X increases?",
+      "range": {
+        "startLine": 633,
+        "startChar": 0,
+        "endLine": 633,
+        "endChar": 25
+      },
+      "revId": "a123df6ba29144f77c894581f66b88b682797bc1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "12055e8e_474988b2",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 8
+      },
+      "lineNbr": 633,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-06-10T14:33:37Z",
+      "side": 1,
+      "message": "I don\u0027t think we can isolate it just to the x-axis since we don\u0027t actually apply any rotation for the start angle in the local matrix transform but we apply it as our bias below so I believe the vertical axis may still be affected because of this.",
+      "parentUuid": "058a0278_5cbcfc1e",
       "range": {
         "startLine": 633,
         "startChar": 0,
