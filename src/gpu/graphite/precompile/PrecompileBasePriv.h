@@ -17,6 +17,10 @@ namespace skgpu::graphite {
     data members or virtual methods. */
 class PrecompileBasePriv {
 public:
+    int numChildCombinations() const {
+        return fPrecompileBase->numChildCombinations();
+    }
+
     bool isALocalMatrixShader() const {
         return fPrecompileBase->isALocalMatrixShader();
     }
