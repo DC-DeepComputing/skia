@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "032465fd_0c9bb006",
+        "filename": "include/gpu/graphite/precompile/PaintOptions.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-06-11T13:26:03Z",
+      "side": 1,
+      "message": "Is there something special about color filters that we have this add call but not for shaders, imageFilters, and maskFilters? In general I feel like the APIs should all parallel each other if possible.",
+      "range": {
+        "startLine": 96,
+        "startChar": 9,
+        "endLine": 96,
+        "endChar": 23
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "1e7fdbb1_a749305f",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/gpu/graphite/precompile/PaintOptions.h",
+              "range": {
+                "startLine": 96,
+                "startChar": 0,
+                "endLine": 97,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "805669b89dbd55ef62b2d0d1584ccca043e24ef3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
