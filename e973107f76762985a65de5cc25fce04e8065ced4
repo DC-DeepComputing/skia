@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "12d32739_ba236c4c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-06-11T17:33:23Z",
+      "side": 1,
+      "message": "The skpbench stuff seems clean. Along the way, I discovered that we haven\u0027t had any Mskp jobs since March of 2022: http://review.skia.org/514276\n\nI guess we don\u0027t miss that?",
+      "revId": "e973107f76762985a65de5cc25fce04e8065ced4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
