@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "01fecbfa_b1b314e7",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-06-11T13:58:44Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "e4df5927_e75e4803",
+      "range": {
+        "startLine": 314,
+        "startChar": 8,
+        "endLine": 314,
+        "endChar": 11
+      },
+      "revId": "587a2d5be3ba2f14a70afd7cf7dcc535d9b8ba16",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "da2f4859_71a55711",
@@ -54,6 +78,24 @@
       "writtenOn": "2024-06-10T21:38:28Z",
       "side": 1,
       "message": "Extra newline",
+      "revId": "587a2d5be3ba2f14a70afd7cf7dcc535d9b8ba16",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f09bfdc_d60702d0",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 611,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-06-11T13:58:44Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "da2f4859_71a55711",
       "revId": "587a2d5be3ba2f14a70afd7cf7dcc535d9b8ba16",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -81,6 +123,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "089b4a0a_16533559",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-06-11T13:58:44Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "36e0378b_d08c7e4d",
+      "range": {
+        "startLine": 229,
+        "startChar": 8,
+        "endLine": 229,
+        "endChar": 11
+      },
+      "revId": "587a2d5be3ba2f14a70afd7cf7dcc535d9b8ba16",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5fcc818d_1c26689e",
@@ -94,6 +160,24 @@
       "writtenOn": "2024-06-10T21:38:28Z",
       "side": 1,
       "message": "Too-long line\n\nAlternatively, since SkSamplingOptions can be constructed just using an SkFilterMode, you can pass SkFilterMode::kNearest directly to gatherer-\u003eadd() if you prefer.",
+      "revId": "587a2d5be3ba2f14a70afd7cf7dcc535d9b8ba16",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f187d5df_db43e4f9",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 416,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-06-11T13:58:44Z",
+      "side": 1,
+      "message": "I opted to pass it directly since it just works out that way.",
+      "parentUuid": "5fcc818d_1c26689e",
       "revId": "587a2d5be3ba2f14a70afd7cf7dcc535d9b8ba16",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -115,6 +199,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "60f3191f_9add4c67",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 428,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-06-11T13:58:44Z",
+      "side": 1,
+      "message": "I agree I don\u0027t think the parenthesis are necessary but the indentations is needed to not exceed the character limit. If you\u0027re talking about the indentations for the line `: (gradData.fUseStorageBuffer` I tried out unindenting that but I personally think it looks more readable/nicer as it is right now without parenthesis and one less indentation on the last two lines.",
+      "parentUuid": "0fcb0c0e_5a866ad2",
+      "revId": "587a2d5be3ba2f14a70afd7cf7dcc535d9b8ba16",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "39631728_8ff5cd68",
@@ -128,6 +230,30 @@
       "writtenOn": "2024-06-10T21:38:28Z",
       "side": 1,
       "message": "These numbers feel particularly magic; could we add a comment here explaining the choices of 3 and 5?",
+      "range": {
+        "startLine": 323,
+        "startChar": 70,
+        "endLine": 323,
+        "endChar": 75
+      },
+      "revId": "587a2d5be3ba2f14a70afd7cf7dcc535d9b8ba16",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6edc18f3_b0c3fae3",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 323,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-06-11T13:58:44Z",
+      "side": 1,
+      "message": "I added a comment.",
+      "parentUuid": "39631728_8ff5cd68",
       "range": {
         "startLine": 323,
         "startChar": 70,
@@ -161,6 +287,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "37e03db2_7c9733da",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 1047,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-06-11T13:58:44Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "a40ab52d_7180fd84",
+      "range": {
+        "startLine": 1046,
+        "startChar": 0,
+        "endLine": 1047,
+        "endChar": 34
+      },
+      "revId": "587a2d5be3ba2f14a70afd7cf7dcc535d9b8ba16",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "628e8ee6_76e73137",
@@ -178,6 +328,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "30ba50f3_78cd812b",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 1051,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-06-11T13:58:44Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "628e8ee6_76e73137",
+      "revId": "587a2d5be3ba2f14a70afd7cf7dcc535d9b8ba16",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0536f321_1bf354aa",
@@ -191,6 +359,24 @@
       "writtenOn": "2024-06-10T21:38:28Z",
       "side": 1,
       "message": "Extra newline",
+      "revId": "587a2d5be3ba2f14a70afd7cf7dcc535d9b8ba16",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ef86b25_dee33a9d",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 380,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-06-11T13:58:44Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "0536f321_1bf354aa",
       "revId": "587a2d5be3ba2f14a70afd7cf7dcc535d9b8ba16",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
