@@ -40,6 +40,30 @@
       ],
       "revId": "805669b89dbd55ef62b2d0d1584ccca043e24ef3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e76ef97e_0f52538f",
+        "filename": "include/gpu/graphite/precompile/PaintOptions.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-06-11T14:17:48Z",
+      "side": 1,
+      "message": "Done - made addColorFilter and addBlendMode private.",
+      "parentUuid": "032465fd_0c9bb006",
+      "range": {
+        "startLine": 96,
+        "startChar": 9,
+        "endLine": 96,
+        "endChar": 23
+      },
+      "revId": "805669b89dbd55ef62b2d0d1584ccca043e24ef3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
