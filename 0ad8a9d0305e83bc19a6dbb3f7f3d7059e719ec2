@@ -34,6 +34,29 @@
       ],
       "revId": "0ad8a9d0305e83bc19a6dbb3f7f3d7059e719ec2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "336a64be_c1aac2c9",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-06-11T14:45:54Z",
+      "side": 1,
+      "message": "The exponents only have (1 \u003c\u003c 6), since they don\u0027t have the same range. Instead we should map `SK_GAMMA_CONTRAST` and `SK_GAMMA_EXPONENT` the way any requested values would be. In fact, it\u0027s a bit silly that this method takes floats, at least for the key.\n\nThat being said, it isn\u0027t super simple to compile time run `SK_GAMMA_CONTRAST` and `SK_GAMMA_EXPONENT` through the current code because of the use of `floor` which isn\u0027t `constexpr`.\n\nInstead of adding another special case cache here, it\u0027s probably better to have a generic cache (with maybe 2 or 3 entries). Before we do that we should probably get rid of the distinction between `paintGamma` and `deviceGamma`. It\u0027s far more correct to treat the differently, but we cannot generally let them be different because currently force coverage to be [0, 1] and allowing them to be different would require coverage values outside this range. I\u0027ll take a look into removing the `paintGamma`.",
+      "range": {
+        "startLine": 142,
+        "startChar": 49,
+        "endLine": 142,
+        "endChar": 50
+      },
+      "revId": "0ad8a9d0305e83bc19a6dbb3f7f3d7059e719ec2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
