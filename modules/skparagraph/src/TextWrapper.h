@@ -162,7 +162,6 @@ class TextWrapper {
 
 public:
     TextWrapper() {
-         fLineNumber = 1;
          fHardLineBreak = false;
          fExceededMaxLines = false;
     }
@@ -172,9 +171,9 @@ public:
                                                   TextRange textIncludingNewlines,
                                                   ClusterRange clusters,
                                                   ClusterRange clustersWithGhosts,
-                                                  SkScalar AddLineToParagraph,
-                                                  size_t startClip,
-                                                  size_t endClip,
+                                                  SkScalar widthWithSpaces,
+                                                  //size_t startClip,
+                                                  //size_t endClip,
                                                   SkVector offset,
                                                   SkVector advance,
                                                   InternalLineMetrics metrics,
@@ -193,7 +192,6 @@ private:
     TextStretch fClusters;
     TextStretch fClip;
     TextStretch fEndLine;
-    size_t fLineNumber;
     bool fTooLongWord;
     bool fTooLongCluster;
 
@@ -214,9 +212,9 @@ private:
     }
 
     void lookAhead(SkScalar maxWidth, Cluster* endOfClusters, bool applyRoundingHack);
-    void moveForward(bool hasEllipsis);
-    void trimEndSpaces(TextAlign align);
-    std::tuple<Cluster*, size_t, SkScalar> trimStartSpaces(Cluster* endOfClusters);
+    inline void lookAheadForLongWords(SkScalar maxWidth, Cluster* cluster, Cluster* endOfClusters, bool applyRoundingHack);
+    inline void moveForward(bool hasEllipsis);
+    inline std::tuple<Cluster*, size_t, SkScalar> trimSpaces(Cluster* endOfClusters);
     SkScalar getClustersTrimmedWidth();
 };
 }  // namespace textlayout

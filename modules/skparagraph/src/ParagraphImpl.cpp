@@ -644,8 +644,8 @@ void ParagraphImpl::breakShapedTextIntoLines(SkScalar maxWidth) {
                 ClusterRange clusters,
                 ClusterRange clustersWithGhosts,
                 SkScalar widthWithSpaces,
-                size_t startPos,
-                size_t endPos,
+                //size_t startPos,
+                //size_t endPos,
                 SkVector offset,
                 SkVector advance,
                 InternalLineMetrics metrics,
@@ -769,6 +769,7 @@ TextLine& ParagraphImpl::addLine(SkVector offset,
                                  ClusterRange clustersWithGhosts,
                                  SkScalar widthWithSpaces,
                                  InternalLineMetrics sizes) {
+    fMaxWidthWithTrailingSpaces = std::max(fMaxWidthWithTrailingSpaces, widthWithSpaces);
     // Define a list of styles that covers the line
     auto blocks = findAllBlocks(textExcludingSpaces);
     return fLines.emplace_back(this, offset, advance, blocks,
