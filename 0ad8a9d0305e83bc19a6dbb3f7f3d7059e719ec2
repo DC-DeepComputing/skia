@@ -1,0 +1,39 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8e59cc4_f5b108c5",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-06-11T13:25:55Z",
+      "side": 1,
+      "message": "I think the tolerance should be half of this, right? That would account for rounding of any values that fell exactly halfway between two encodable values -- but with the tolerance being 1/255, you can end up matching values that are encoded to different 8-bit values.",
+      "fixSuggestions": [
+        {
+          "fixId": "078e2629_1ff088bc",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/core/SkScalerContext.cpp",
+              "range": {
+                "startLine": 142,
+                "startChar": 0,
+                "endLine": 143,
+                "endChar": 0
+              },
+              "replacement": "    constexpr SkScalar tolerance \u003d 0.5f / ((1 \u003c\u003c 8) - 1);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "0ad8a9d0305e83bc19a6dbb3f7f3d7059e719ec2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
