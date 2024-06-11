@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d1b869c_b21278ce",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-06-11T15:33:34Z",
+      "side": 1,
+      "message": "Per recent chat discussion. WDYT? (There\u0027s obviously a bunch of other support code that could be removed in a follow-up, this is just the removal of the actual jobs).",
+      "revId": "c047e88d5e9bc64e76d657cc274de66640ea9130",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
