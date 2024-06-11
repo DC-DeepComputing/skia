@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d330508_3315ee67",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-11T14:39:05Z",
+      "side": 1,
+      "message": "Awesome, one minor nit and then there\u0027s a merge conflict to resolve, but otherwise lgtm.",
+      "revId": "9cf07244dfe7d52f9e9fbf76bf68c2b4b442e128",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7ea5611_ca7e8c95",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-11T14:39:05Z",
+      "side": 1,
+      "message": "nit: now that it\u0027s not copying, maybe `write_` or `append_` would be a better prefix than `create_`",
+      "range": {
+        "startLine": 314,
+        "startChar": 11,
+        "endLine": 314,
+        "endChar": 42
+      },
+      "revId": "9cf07244dfe7d52f9e9fbf76bf68c2b4b442e128",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
