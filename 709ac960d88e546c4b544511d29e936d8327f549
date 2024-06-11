@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0218f4d_386557be",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 10537
+      },
+      "writtenOn": "2024-06-11T14:07:56Z",
+      "side": 1,
+      "message": "git cl format did this",
+      "revId": "709ac960d88e546c4b544511d29e936d8327f549",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
