@@ -16,6 +16,75 @@
       "message": "How about this one? This does show a slight improvement to arcs. It may actually improve paths too, but other (external) changes are needed for it to show an overall improvement.\n\nIf you do like it, I\u0027ll rebase it on top of main so that it doesn\u0027t include the other changes.",
       "revId": "761bd01c80f387ad656dbb49a904bb6575bee646",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e40b974_23fb39f6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-06-11T13:21:18Z",
+      "side": 1,
+      "message": "Couple minor things, but yes - I like this. The span plumbing is better, and simplifying the deserialization looks good too.",
+      "revId": "761bd01c80f387ad656dbb49a904bb6575bee646",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8395153e_82e96f11",
+        "filename": "include/private/SkPathRef.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-06-11T13:21:18Z",
+      "side": 1,
+      "message": "nit: 100 columns",
+      "fixSuggestions": [
+        {
+          "fixId": "ece4de3d_494e8bc5",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/private/SkPathRef.h",
+              "range": {
+                "startLine": 71,
+                "startChar": 0,
+                "endLine": 72,
+                "endChar": 0
+              },
+              "replacement": "    SkPathRef(SkSpan\u003cconst SkPoint\u003e points, SkSpan\u003cconst uint8_t\u003e verbs,\n              SkSpan\u003cconst SkScalar\u003e weights, unsigned segmentMask)\n"
+            }
+          ]
+        }
+      ],
+      "revId": "761bd01c80f387ad656dbb49a904bb6575bee646",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7dd873b0_05243ea0",
+        "filename": "include/private/base/SkTArray.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 545,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-06-11T13:21:18Z",
+      "side": 1,
+      "message": "Would you mind adding a public TArray constructor that takes SkSpan, too? It\u0027s a much better API, and keeps things consistent between TArray and STArray. (TArray pre-dates span, which is why it didn\u0027t already exist).",
+      "revId": "761bd01c80f387ad656dbb49a904bb6575bee646",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
