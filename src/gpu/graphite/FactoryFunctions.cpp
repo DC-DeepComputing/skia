@@ -7,6 +7,7 @@
 
 #include "src/gpu/graphite/FactoryFunctions.h"
 
+#include "include/gpu/graphite/precompile/PrecompileBlender.h"
 #include "include/private/base/SkTArray.h"
 #include "src/core/SkColorSpacePriv.h"
 #include "src/core/SkKnownRuntimeEffects.h"
@@ -16,11 +17,11 @@
 #include "src/gpu/graphite/KeyHelpers.h"
 #include "src/gpu/graphite/PaintParams.h"
 #include "src/gpu/graphite/PaintParamsKey.h"
-#include "src/gpu/graphite/PrecompileBasePriv.h"
 #include "src/gpu/graphite/PrecompileInternal.h"
 #include "src/gpu/graphite/ReadSwizzle.h"
 #include "src/gpu/graphite/Renderer.h"
 #include "src/gpu/graphite/precompile/PaintOptionsPriv.h"
+#include "src/gpu/graphite/precompile/PrecompileBasePriv.h"
 #include "src/shaders/SkShaderBase.h"
 
 namespace skgpu::graphite {
@@ -83,6 +84,8 @@ private:
 
     SkBlendMode fBlendMode;
 };
+
+PrecompileBlender::~PrecompileBlender() = default;
 
 sk_sp<PrecompileBlender> PrecompileBlender::Mode(SkBlendMode blendMode) {
     return sk_make_sp<PrecompileBlendModeBlender>(blendMode);

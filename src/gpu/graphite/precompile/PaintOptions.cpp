@@ -7,6 +7,7 @@
 
 #include "include/gpu/graphite/precompile/PaintOptions.h"
 
+#include "include/gpu/graphite/precompile/PrecompileBlender.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/ContextUtils.h"
 #include "src/gpu/graphite/FactoryFunctionsPriv.h"
@@ -17,6 +18,7 @@
 #include "src/gpu/graphite/ShaderCodeDictionary.h"
 #include "src/gpu/graphite/precompile/PaintOption.h"
 #include "src/gpu/graphite/precompile/PaintOptionsPriv.h"
+#include "src/gpu/graphite/precompile/PrecompileBasePriv.h"
 
 namespace skgpu::graphite {
 
@@ -108,7 +110,7 @@ int PaintOptions::numBlendCombinations() const {
     int numBlendCombos = fBlendModeOptions.size();
     for (const sk_sp<PrecompileBlender>& b: fBlenderOptions) {
         SkASSERT(!b->asBlendMode().has_value());
-        numBlendCombos += b->numChildCombinations();
+        numBlendCombos += b->priv().numChildCombinations();
     }
 
     if (!numBlendCombos) {
@@ -123,7 +125,7 @@ int PaintOptions::numClipShaderCombinations() const {
     int numClipShaderCombos = 0;
     for (const sk_sp<PrecompileShader>& cs: fClipShaderOptions) {
         if (cs) {
-            numClipShaderCombos += cs->numChildCombinations();
+            numClipShaderCombos += cs->priv().numChildCombinations();
         } else {
             ++numClipShaderCombos;
         }

@@ -8,12 +8,13 @@
 #include "src/gpu/graphite/precompile/PaintOption.h"
 
 #include "include/core/SkBlender.h"
+#include "include/gpu/graphite/precompile/PrecompileBlender.h"
 #include "src/gpu/graphite/KeyContext.h"
 #include "src/gpu/graphite/KeyHelpers.h"
 #include "src/gpu/graphite/PaintParams.h"
 #include "src/gpu/graphite/PaintParamsKey.h"
-#include "src/gpu/graphite/PrecompileBasePriv.h"
 #include "src/gpu/graphite/PrecompileInternal.h"
+#include "src/gpu/graphite/precompile/PrecompileBasePriv.h"
 
 namespace skgpu::graphite {
 
