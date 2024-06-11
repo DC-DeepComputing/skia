@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "509d8cd8_d7d621c8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2024-06-11T21:29:01Z",
+      "side": 1,
+      "message": "Shuffling things around (was part of the next change but got too big)",
+      "revId": "cd06431ab0901281f1673f4e49f17a0f14d7e857",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
