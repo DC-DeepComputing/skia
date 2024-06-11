@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "11472d73_5fbe7110",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-06-11T19:53:37Z",
+      "side": 1,
+      "message": "Related to our discussion last week about SkSL ModuleLoader (and follow-up chat) - I iterated for a while before I got to this. I think it works, but it\u0027s still a little klunky (I\u0027d have to stage this with chromium by adding the new \"skia_sksl_default_module_sources\" as an empty list temporarily).\n\nThoughts?",
+      "revId": "df25ff4c8f7692c1d67ddbeadb0c5ec41861c754",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

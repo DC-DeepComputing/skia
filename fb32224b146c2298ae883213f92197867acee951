@@ -58,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aafe5404_0ab16d24",
+        "filename": "src/sksl/SkSLModuleLoader.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-06-11T19:53:37Z",
+      "side": 1,
+      "message": "I thought about it for a bit, but I think it\u0027s going to be a different (and slightly more complex) problem - the module loader itself has API that\u0027s actually specific to each backend.",
+      "parentUuid": "5401bcbd_e6a570f9",
+      "range": {
+        "startLine": 67,
+        "startChar": 6,
+        "endLine": 67,
+        "endChar": 31
+      },
+      "revId": "fb32224b146c2298ae883213f92197867acee951",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c74fff95_940b9f1e",
@@ -71,6 +95,30 @@
       "writtenOn": "2024-06-07T16:25:28Z",
       "side": 1,
       "message": "Do these need to be guarded by an SK_GRAPHITE #ifdef?",
+      "range": {
+        "startLine": 81,
+        "startChar": 12,
+        "endLine": 81,
+        "endChar": 13
+      },
+      "revId": "fb32224b146c2298ae883213f92197867acee951",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b8639dac_49278dd3",
+        "filename": "src/sksl/SkSLModuleLoader.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-06-11T19:53:37Z",
+      "side": 1,
+      "message": "Ah yeah, they probably do. I expect this won\u0027t compile otherwise.",
+      "parentUuid": "c74fff95_940b9f1e",
       "range": {
         "startLine": 81,
         "startChar": 12,
