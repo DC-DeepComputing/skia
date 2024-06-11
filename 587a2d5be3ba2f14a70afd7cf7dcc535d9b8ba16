@@ -266,6 +266,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9bb737f0_f22dcdf3",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 323,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-06-11T14:44:03Z",
+      "side": 1,
+      "message": "Hmm, it still feels brittle to me, though of course so are the hardcoded \"1\" and \"2\" above. I suppose we\u0027ve always hardcoded these because it\u0027s inconvenient to pipe anything from *GraphicsPipeline.h here. Maybe we could add the binding indices to ResourceBindingRequirements?",
+      "parentUuid": "6edc18f3_b0c3fae3",
+      "range": {
+        "startLine": 323,
+        "startChar": 70,
+        "endLine": 323,
+        "endChar": 75
+      },
+      "revId": "587a2d5be3ba2f14a70afd7cf7dcc535d9b8ba16",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a40ab52d_7180fd84",
         "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
         "patchSetId": 15
