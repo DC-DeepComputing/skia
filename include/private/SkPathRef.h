@@ -52,7 +52,15 @@ SkPathVerbAnalysis sk_path_analyze_verbs(const uint8_t verbs[], int count);
  * logical verb or the last verb in memory).
  */
 
-class SK_API SkPathRef final : public SkNVRefCnt<SkPathRef> {
+class SkPathRef;
+
+// Enables recycling of SkPathRefs when the ref count reaches zero. Recyling
+// only happens if the patch cache is enabled.
+struct SkPathRefRefCountedTraits {
+    static bool Recycle(SkPathRef* value);
+};
+
+class SK_API SkPathRef final : public SkNVRefCnt<SkPathRef, SkPathRefRefCountedTraits> {
 public:
     // See https://bugs.chromium.org/p/skia/issues/detail?id=13817 for how these sizes were
     // determined.
@@ -341,6 +349,12 @@ public:
 
     bool operator== (const SkPathRef& ref) const;
 
+    /**
+     * Returns an estimate of the number of bytes used by this SkPathRef. This
+     * may not be exact, but is a close approximation.
+     */
+    size_t sizeInBytesEstimate() const;
+
     void interpolate(const SkPathRef& ending, SkScalar weight, SkPathRef* out) const;
 
     /**
@@ -367,7 +381,19 @@ public:
         return fGenerationID == kEmptyGenID;
     }
 
+    /**
+     * Sets the size of the patch cache, in bytes.
+     */
+    static void SetPathCacheLimit(size_t bytes);
+
+    /**
+     * Empties the path cache.
+     */
+    static void PurgeCache();
+
 private:
+    friend struct SkPathRefRefCountedTraits;
+
     enum SerializationOffsets {
         kLegacyRRectOrOvalStartIdx_SerializationShift = 28, // requires 3 bits, ignored.
         kLegacyRRectOrOvalIsCCW_SerializationShift = 27,    // requires 1 bit, ignored.

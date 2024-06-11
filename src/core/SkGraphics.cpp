@@ -7,6 +7,7 @@
 
 #include "include/core/SkGraphics.h"
 
+#include "include/private/SkPathRef.h"
 #include "src/core/SkBitmapProcState.h"
 #include "src/core/SkBlitMask.h"
 #include "src/core/SkBlitRow.h"
@@ -41,6 +42,15 @@ void SkGraphics::PurgeAllCaches() {
     SkGraphics::PurgeFontCache();
     SkGraphics::PurgeResourceCache();
     SkImageFilter_Base::PurgeCache();
+    SkPathRef::PurgeCache();
+}
+
+void SkGraphics::SetPathCacheLimit(size_t bytes) {
+    SkPathRef::SetPathCacheLimit(bytes);
+}
+
+void SkGraphics::PurgePathCache() {
+    SkPathRef::PurgeCache();
 }
 
 ///////////////////////////////////////////////////////////////////////////////

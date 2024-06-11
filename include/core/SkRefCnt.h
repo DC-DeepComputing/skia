@@ -154,9 +154,17 @@ template <typename T> static inline void SkSafeUnref(T* obj) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
+template <typename T>
+struct DefaultRefCountedTraits {
+    // Called when the ref count reaches 0. If Recycle() does not delete the
+    // object, then it should return true. Returning false results in the object
+    // being deleted.
+    static bool Recycle(T* value) { return false; }
+};
+
 // This is a variant of SkRefCnt that's Not Virtual, so weighs 4 bytes instead of 8 or 16.
 // There's only benefit to using this if the deriving class does not otherwise need a vtable.
-template <typename Derived>
+template <typename Derived, typename Traits=DefaultRefCountedTraits<Derived>>
 class SkNVRefCnt {
 public:
     SkNVRefCnt() : fRefCnt(1) {}
@@ -175,10 +183,8 @@ public:
     bool unique() const { return 1 == fRefCnt.load(std::memory_order_acquire); }
     void ref() const { (void)fRefCnt.fetch_add(+1, std::memory_order_relaxed); }
     void unref() const {
-        if (1 == fRefCnt.fetch_add(-1, std::memory_order_acq_rel)) {
-            // restore the 1 for our destructor's assert
-            SkDEBUGCODE(fRefCnt.store(1, std::memory_order_relaxed));
-            delete (const Derived*)this;
+        if (1 == fRefCnt.fetch_add(-1, std::memory_order_acq_rel) && !Traits::Recycle((Derived*)this)) {
+            commonDelete();
         }
     }
     void  deref() const { this->unref(); }
@@ -195,13 +201,26 @@ public:
         return cnt > threadIsolatedTestCnt;
     }
 
+protected:
+    // Call when an object that was recycled needs to be deleted.
+    void deleteRecycled() {
+        commonDelete();
+    }
+
 private:
+    friend struct DefaultRefCountedTraits<Derived>;
     mutable std::atomic<int32_t> fRefCnt;
 
     SkNVRefCnt(SkNVRefCnt&&) = delete;
     SkNVRefCnt(const SkNVRefCnt&) = delete;
     SkNVRefCnt& operator=(SkNVRefCnt&&) = delete;
     SkNVRefCnt& operator=(const SkNVRefCnt&) = delete;
+
+    void commonDelete() const {
+        // restore the 1 for our destructor's assert
+        SkDEBUGCODE(fRefCnt.store(1, std::memory_order_relaxed));
+        delete (const Derived*)this;
+    }
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

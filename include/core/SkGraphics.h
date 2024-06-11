@@ -140,6 +140,16 @@ public:
      */
     static void PurgeAllCaches();
 
+    /**
+     *  Specify the max number of bytes that should be used by the path cache.
+     */
+    static void SetPathCacheLimit(size_t bytes);
+
+    /**
+     * Frees all memory from the path cache.
+     */
+    static void PurgePathCache();
+
     typedef std::unique_ptr<SkImageGenerator>
                                             (*ImageGeneratorFromEncodedDataFactory)(sk_sp<SkData>);
 

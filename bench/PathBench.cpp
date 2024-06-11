@@ -5,6 +5,8 @@
  * found in the LICENSE file.
  */
 
+#include <vector>
+
 #include "bench/Benchmark.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -1152,11 +1154,104 @@ private:
 };
 
 
+// This test is an approximation of what the canvas lines MotionMark test
+// does and how blink/cc use SkPath. Each frame roughly does the following:
+// . There are four circles, each using two calls to arcTo.
+// . Draws a ton of lines. Each line is a a single moveTo and lineTo.
+// Blink/cc doesn't actually draw these paths, rather it accumulates them
+// (meaning adds the SkPaths to a vector and then serializes all the paths
+// later on). Accumulation is roughly:
+// . Calling getBounds().
+// . Copying the SkPath for later serialization.
+// . setFillType() (not included, as not all that interesting).
+// When the frame data is processed all accumulated SkPaths are serialized
+// using writeToMemory().
+class MotionMarkPathBench : public Benchmark {
+public:
+  MotionMarkPathBench() = default;
+
+protected:
+    const char* onGetName() override {
+        return "motion_mark_path";
+    }
+    void onDraw(int loops, SkCanvas*) override {
+        // Moved outside loop so doesn't impact overall timing.
+        std::vector<SkPath> framePaths;
+        std::unique_ptr<char[]> serializedPathBuffer;
+        size_t bufferSize = 0;
+        SkPath path;
+        const int numLinesPerCircle = 5000;
+        for (int i = 0; i < loops; ++i) {
+            // MotionMark creates 4 circles. Chrome draws each circle as two arcs.
+            for (int j = 0; j < 4; ++j) {
+                path.arcTo(SkRect::MakeXYWH(SkFloatToScalar(66.1875),
+                                            SkFloatToScalar(331.5),
+                                            SkFloatToScalar(177.0),
+                                            SkFloatToScalar(177.0)),
+                           SkIntToScalar(0),
+                           SkIntToScalar(180),
+                           false);
+                path.arcTo(SkRect::MakeXYWH(SkFloatToScalar(66.1875),
+                                            SkFloatToScalar(331.5),
+                                            SkFloatToScalar(177.0),
+                                            SkFloatToScalar(177.0)),
+                           SkIntToScalar(180),
+                           SkIntToScalar(180),
+                           false);
+                // Blink/cc may call getBounds() numerous times, but only the
+                // first really matters.
+                path.getBounds();
+                framePaths.push_back(path);
+                path.reset();
+
+                // The lines
+                for (int k = 0; k < numLinesPerCircle; ++k) {
+                  // The benchmark uses a bunch of different locations.
+                    path.moveTo(SkIntToScalar(200), SkIntToScalar(200));
+                    path.lineTo(SkIntToScalar(300), SkIntToScalar(300));
+                    path.getBounds();
+                    framePaths.push_back(path);
+                    path.reset();
+                }
+            }
+
+            // Serialization pass. This is not quite the same as what chrome
+            // does, but covers the key things: calls writeToMemory() twice
+            // (once to get size, and again to do actual writing).
+            size_t currentFrameBufferSize = 0;
+            for (auto& p : framePaths) {
+                currentFrameBufferSize = std::max(currentFrameBufferSize, p.writeToMemory(nullptr));
+            }
+
+            if (currentFrameBufferSize > bufferSize) {
+                bufferSize = currentFrameBufferSize;
+                serializedPathBuffer.reset(new char[currentFrameBufferSize]);
+            }
+
+            for (auto& p : framePaths) {
+                p.writeToMemory(serializedPathBuffer.get());
+            }
+            framePaths.clear();
+        }
+    }
+
+    virtual int calculateLoops(int defaultLoops) const {
+      // MotionMark runs a number of times in a loop, force to 10 to ensure
+      // a handful of loops are run.
+      return 5;
+    }
+
+private:
+    using INHERITED = Benchmark;
+};
+
 const SkRect ConservativelyContainsBench::kBounds = SkRect::MakeWH(SkIntToScalar(100), SkIntToScalar(100));
 const SkSize ConservativelyContainsBench::kQueryMin = {SkIntToScalar(1), SkIntToScalar(1)};
 const SkSize ConservativelyContainsBench::kQueryMax = {SkIntToScalar(40), SkIntToScalar(40)};
 const SkRect ConservativelyContainsBench::kBaseRect = SkRect::MakeXYWH(SkIntToScalar(25), SkIntToScalar(25), SkIntToScalar(50), SkIntToScalar(50));
 const SkScalar ConservativelyContainsBench::kRRRadii[2] = {SkIntToScalar(5), SkIntToScalar(10)};
+
+DEF_BENCH( return new MotionMarkPathBench; )
 
 DEF_BENCH( return new TrianglePathBench(FLAGS00); )
 DEF_BENCH( return new TrianglePathBench(FLAGS01); )
