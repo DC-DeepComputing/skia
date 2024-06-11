@@ -39,6 +39,30 @@
       },
       "revId": "9cf07244dfe7d52f9e9fbf76bf68c2b4b442e128",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "16545683_6bca1394",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-06-11T15:01:51Z",
+      "side": 1,
+      "message": "I renamed it to `write_` since the other gatherer functions also use `write`",
+      "parentUuid": "a7ea5611_ca7e8c95",
+      "range": {
+        "startLine": 314,
+        "startChar": 11,
+        "endLine": 314,
+        "endChar": 42
+      },
+      "revId": "9cf07244dfe7d52f9e9fbf76bf68c2b4b442e128",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
