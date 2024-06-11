@@ -15,6 +15,29 @@
 #include <cstdint>
 #include <memory>
 
+namespace SkTiff {
+
+// Constants for endian signature.
+static constexpr size_t kEndianSize = 4;
+static constexpr uint8_t kEndianBig[SkTiff::kEndianSize] = {'M', 'M', 0, 42};
+static constexpr uint8_t kEndianLittle[SkTiff::kEndianSize] = {'I', 'I', 42, 0};
+
+// Constants for types.
+static constexpr uint16_t kTypeUnsignedByte = 1;
+static constexpr uint16_t kTypeAsciiString = 2;
+static constexpr uint16_t kTypeUnsignedShort = 3;
+static constexpr uint16_t kTypeUnsignedLong = 4;
+static constexpr uint16_t kTypeUnsignedRational = 5;
+static constexpr uint16_t kTypeSignedByte = 6;
+static constexpr uint16_t kTypeUndefined = 7;
+static constexpr uint16_t kTypeSignedShort = 8;
+static constexpr uint16_t kTypeSignedLong = 9;
+static constexpr uint16_t kTypeSignedRational = 10;
+static constexpr uint16_t kTypeSingleFloat = 11;
+static constexpr uint16_t kTypeDoubleFloat = 12;
+
+}  // namespace SkTiff
+
 /*
  * Helper function for parsing a Tiff Image File Directory (IFD) structure. This structure is used
  * by EXIF tags, multi-picture, and maker note metadata.
@@ -59,16 +82,16 @@ public:
      * return false.
      */
     bool getEntryUnsignedShort(uint16_t entryIndex, uint32_t count, uint16_t* values) const {
-        return getEntryValuesGeneric(entryIndex, kTypeUnsignedShort, count, values);
+        return getEntryValuesGeneric(entryIndex, SkTiff::kTypeUnsignedShort, count, values);
     }
     bool getEntryUnsignedLong(uint16_t entryIndex, uint32_t count, uint32_t* values) const {
-        return getEntryValuesGeneric(entryIndex, kTypeUnsignedLong, count, values);
+        return getEntryValuesGeneric(entryIndex, SkTiff::kTypeUnsignedLong, count, values);
     }
     bool getEntrySignedRational(uint16_t entryIndex, uint32_t count, float* values) const {
-        return getEntryValuesGeneric(entryIndex, kTypeSignedRational, count, values);
+        return getEntryValuesGeneric(entryIndex, SkTiff::kTypeSignedRational, count, values);
     }
     bool getEntryUnsignedRational(uint16_t entryIndex, uint32_t count, float* values) const {
-        return getEntryValuesGeneric(entryIndex, kTypeUnsignedRational, count, values);
+        return getEntryValuesGeneric(entryIndex, SkTiff::kTypeUnsignedRational, count, values);
     }
 
     /*
@@ -78,19 +101,6 @@ public:
     sk_sp<SkData> getEntryUndefinedData(uint16_t entryIndex) const;
 
 private:
-    static constexpr uint16_t kTypeUnsignedByte = 1;
-    static constexpr uint16_t kTypeAsciiString = 2;
-    static constexpr uint16_t kTypeUnsignedShort = 3;
-    static constexpr uint16_t kTypeUnsignedLong = 4;
-    static constexpr uint16_t kTypeUnsignedRational = 5;
-    static constexpr uint16_t kTypeSignedByte = 6;
-    static constexpr uint16_t kTypeUndefined = 7;
-    static constexpr uint16_t kTypeSignedShort = 8;
-    static constexpr uint16_t kTypeSignedLong = 9;
-    static constexpr uint16_t kTypeSignedRational = 10;
-    static constexpr uint16_t kTypeSingleFloat = 11;
-    static constexpr uint16_t kTypeDoubleFloat = 12;
-
     static bool IsValidType(uint16_t type);
     static size_t BytesForType(uint16_t type);
 

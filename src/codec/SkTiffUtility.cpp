@@ -13,6 +13,8 @@
 #include <cstddef>
 #include <utility>
 
+using namespace SkTiff;
+
 constexpr size_t kSizeEntry = 12;
 constexpr size_t kSizeShort = 2;
 constexpr size_t kSizeLong = 4;
