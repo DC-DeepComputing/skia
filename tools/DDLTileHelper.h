@@ -117,17 +117,6 @@ public:
     void createComposeDDL();
     const sk_sp<GrDeferredDisplayList>& composeDDL() const { return fComposeDDL; }
 
-    // For each tile, create its DDL and then draw it - all on a single thread. This is to allow
-    // comparison w/ just drawing the SKP directly (i.e., drawAllTilesDirectly). The
-    // DDL creations and draws are interleaved to prevent starvation of the GPU.
-    // Note: this is somewhat of a misuse/pessimistic-use of DDLs since they are supposed to
-    // be created on a separate thread.
-    void interleaveDDLCreationAndDraw(GrDirectContext*, SkPicture*);
-
-    // This draws all the per-tile SKPs directly into all of the tiles w/o converting them to
-    // DDLs first - all on a single thread.
-    void drawAllTilesDirectly(GrDirectContext*, SkPicture*);
-
     void dropCallbackContexts();
     void resetAllTiles();
 

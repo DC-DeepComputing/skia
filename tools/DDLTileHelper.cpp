@@ -329,21 +329,6 @@ void DDLTileHelper::kickOffThreadedWork(SkTaskGroup* recordingTaskGroup,
     recordingTaskGroup->add([this] { this->createComposeDDL(); });
 }
 
-// Only called from skpbench
-void DDLTileHelper::interleaveDDLCreationAndDraw(GrDirectContext* dContext, SkPicture* picture) {
-    for (int i = 0; i < this->numTiles(); ++i) {
-        fTiles[i].createDDL(picture);
-        fTiles[i].draw(dContext);
-    }
-}
-
-// Only called from skpbench
-void DDLTileHelper::drawAllTilesDirectly(GrDirectContext* dContext, SkPicture* picture) {
-    for (int i = 0; i < this->numTiles(); ++i) {
-        fTiles[i].drawSKPDirectly(dContext, picture);
-    }
-}
-
 void DDLTileHelper::dropCallbackContexts() {
     for (int i = 0; i < this->numTiles(); ++i) {
         fTiles[i].dropCallbackContext();

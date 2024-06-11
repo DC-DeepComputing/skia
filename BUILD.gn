@@ -2471,21 +2471,6 @@ if (skia_enable_tools) {
     }
   }
 
-  test_app("skpbench") {
-    sources = [
-      "bench/BigPath.cpp",
-      "tools/skpbench/skpbench.cpp",
-    ]
-    deps = [
-      ":common_flags_config",
-      ":common_flags_gpu",
-      ":flags",
-      ":gpu_tool_utils",
-      ":skia",
-      ":tool_utils",
-    ]
-  }
-
   if (is_linux && skia_use_icu) {
     test_app("sktexttopdf") {
       sources = [ "tools/using_skia_and_harfbuzz.cpp" ]
