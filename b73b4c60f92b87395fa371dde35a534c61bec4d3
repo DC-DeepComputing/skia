@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "34790507_9c3d27dd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 18
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-06-11T16:08:18Z",
+      "side": 1,
+      "message": "This patch also expands the PaintOptions comment to give some insight into how the combinations work.",
+      "revId": "b73b4c60f92b87395fa371dde35a534c61bec4d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

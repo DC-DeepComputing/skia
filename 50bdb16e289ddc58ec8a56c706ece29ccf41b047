@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c236353_0a63f0a1",
+        "filename": "include/gpu/graphite/precompile/PaintOptions.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-06-11T16:08:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b7191c09_0a5e9126",
+      "range": {
+        "startLine": 177,
+        "startChar": 4,
+        "endLine": 177,
+        "endChar": 13
+      },
+      "revId": "50bdb16e289ddc58ec8a56c706ece29ccf41b047",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8f3da5d0_efc4c1fe",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-06-11T14:32:28Z",
       "side": 1,
       "message": "Would it make sense to move the `DrawTypeFlags` enum to this file?",
+      "range": {
+        "startLine": 30,
+        "startChar": 22,
+        "endLine": 30,
+        "endChar": 23
+      },
+      "revId": "50bdb16e289ddc58ec8a56c706ece29ccf41b047",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e34e694_a7e36f5e",
+        "filename": "include/gpu/graphite/precompile/Precompile.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-06-11T16:08:18Z",
+      "side": 1,
+      "message": "Probably not. The precompile stuff should be optionally compilable so could go away. We would want to keep the Renderers independent of any Precompile header.",
+      "parentUuid": "8f3da5d0_efc4c1fe",
       "range": {
         "startLine": 30,
         "startChar": 22,
