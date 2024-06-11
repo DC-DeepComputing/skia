@@ -10,7 +10,6 @@
 
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkRefCnt.h"
-#include "include/core/SkSpan.h"
 #include "include/gpu/graphite/precompile/PaintOptions.h"
 #include "include/private/base/SkTArray.h"
 #include "include/private/base/SkTDArray.h"
@@ -26,9 +25,8 @@ namespace skgpu::graphite {
 
 enum class Coverage;
 class Context;
-class KeyContext;
-class PipelineDataGatherer;
-class PrecompileBasePriv;
+
+
 class UniquePaintParamsID;
 
 // Create the Pipelines specified by 'options' by combining the shading portion w/ the specified
@@ -39,62 +37,6 @@ void PrecompileCombinations(Context* context,
                             DrawTypeFlags drawTypes,
                             bool withPrimitiveBlender,
                             Coverage coverage);
-
-class PrecompileBase : public SkRefCnt {
-public:
-    enum class Type {
-        kBlender,
-        kColorFilter,
-        kImageFilter,
-        kMaskFilter,
-        kShader,
-        // TODO: add others: kDrawable, kPathEffect (?!)
-    };
-
-    PrecompileBase(Type type) : fType(type) {}
-
-    Type type() const { return fType; }
-
-    // TODO: Maybe convert these two to be parameters passed into PrecompileBase from all the
-    // derived classes and then make them non-virtual.
-    virtual int numIntrinsicCombinations() const { return 1; }
-    virtual int numChildCombinations() const { return 1; }
-
-    int numCombinations() const {
-        return this->numIntrinsicCombinations() * this->numChildCombinations();
-    }
-
-    // Provides access to functions that aren't part of the public API.
-    PrecompileBasePriv priv();
-    const PrecompileBasePriv priv() const;  // NOLINT(readability-const-return-type)
-
-protected:
-    // This returns the desired option along with the child options.
-    template<typename T>
-    static std::pair<sk_sp<T>, int> SelectOption(SkSpan<const sk_sp<T>> options, int desiredOption);
-
-    // In general, derived classes should use AddToKey to select the desired child option from
-    // a vector and then have it added to the key with its reduced/nested child option.
-    template<typename T>
-    static void AddToKey(const KeyContext&,
-                         PaintParamsKeyBuilder*,
-                         PipelineDataGatherer*,
-                         SkSpan<const sk_sp<T>> options,
-                         int desiredOption);
-
-private:
-    friend class PaintOptions;
-    friend class PrecompileBasePriv;
-
-    virtual bool isALocalMatrixShader() const { return false; }
-
-    virtual void addToKey(const KeyContext&,
-                          PaintParamsKeyBuilder*,
-                          PipelineDataGatherer*,
-                          int desiredCombination) const = 0;
-
-    Type fType;
-};
 
 //--------------------------------------------------------------------------------------------------
 

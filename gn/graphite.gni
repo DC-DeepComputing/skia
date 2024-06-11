@@ -353,6 +353,8 @@ skia_graphite_vello_sources = [
 
 skia_graphite_precompile_public = [
   "$_include/precompile/Precompile.h",
+  "$_include/precompile/PrecompileBase.h",
+  "$_include/precompile/PrecompileBlender.h",
   "$_include/precompile/PaintOptions.h",
 ]
 
