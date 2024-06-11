@@ -70,6 +70,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd61f38a_f5cc4a1c",
+        "filename": "include/private/SkPathRef.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 19319
+      },
+      "writtenOn": "2024-06-11T18:05:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8395153e_82e96f11",
+      "revId": "761bd01c80f387ad656dbb49a904bb6575bee646",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7dd873b0_05243ea0",
@@ -83,6 +101,24 @@
       "writtenOn": "2024-06-11T13:21:18Z",
       "side": 1,
       "message": "Would you mind adding a public TArray constructor that takes SkSpan, too? It\u0027s a much better API, and keeps things consistent between TArray and STArray. (TArray pre-dates span, which is why it didn\u0027t already exist).",
+      "revId": "761bd01c80f387ad656dbb49a904bb6575bee646",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a03f4d6_6c5fdd22",
+        "filename": "include/private/base/SkTArray.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 545,
+      "author": {
+        "id": 19319
+      },
+      "writtenOn": "2024-06-11T18:05:48Z",
+      "side": 1,
+      "message": "Done. I was torn between whether new one should call one of the existing constructors, or reimplement the existing one in terms of the new one taking SkSpan. I opted for the former, but happy to change.",
+      "parentUuid": "7dd873b0_05243ea0",
       "revId": "761bd01c80f387ad656dbb49a904bb6575bee646",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
