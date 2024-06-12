@@ -1,0 +1,176 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad60c49c_a2d47ad3",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1067,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-06-12T16:41:27Z",
+      "side": 1,
+      "message": "I didn\u0027t add these non-logging code changes -- they\u0027re actually from https://skia-review.googlesource.com/c/skia/+/859976/14/src/gpu/graphite/vk/VulkanCommandBuffer.cpp, but rebasing onto that makes things funky",
+      "range": {
+        "startLine": 1063,
+        "startChar": 8,
+        "endLine": 1067,
+        "endChar": 92
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "07a15cde_822cc308",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+              "range": {
+                "startLine": 1057,
+                "startChar": 0,
+                "endLine": 1058,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+              "range": {
+                "startLine": 1062,
+                "startChar": 0,
+                "endLine": 1063,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+              "range": {
+                "startLine": 1065,
+                "startChar": 0,
+                "endLine": 1066,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+              "range": {
+                "startLine": 1068,
+                "startChar": 0,
+                "endLine": 1069,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+              "range": {
+                "startLine": 1084,
+                "startChar": 0,
+                "endLine": 1089,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+              "range": {
+                "startLine": 1094,
+                "startChar": 0,
+                "endLine": 1095,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+              "range": {
+                "startLine": 1112,
+                "startChar": 0,
+                "endLine": 1113,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+              "range": {
+                "startLine": 1126,
+                "startChar": 0,
+                "endLine": 1127,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+              "range": {
+                "startLine": 1132,
+                "startChar": 0,
+                "endLine": 1133,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+              "range": {
+                "startLine": 1138,
+                "startChar": 0,
+                "endLine": 1139,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "dd730ec904550f77fc79a11f635d97c097c6af47",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dbd2020d_74d4a320",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1126,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-06-12T16:41:27Z",
+      "side": 1,
+      "message": "Flagging this question for review (will `\u0026textureInfo` returned by `push_back()` be stable after another iteration of the loop?)",
+      "range": {
+        "startLine": 1126,
+        "startChar": 8,
+        "endLine": 1126,
+        "endChar": 188
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "a130175c_45f15699",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+              "range": {
+                "startLine": 1126,
+                "startChar": 0,
+                "endLine": 1127,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "dd730ec904550f77fc79a11f635d97c097c6af47",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
