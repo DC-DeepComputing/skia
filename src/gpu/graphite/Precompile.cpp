@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "include/gpu/graphite/precompile/PrecompileShader.h"
 #include "src/gpu/DitherUtils.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/ContextUtils.h"
@@ -23,6 +24,8 @@
 namespace skgpu::graphite {
 
 //--------------------------------------------------------------------------------------------------
+PrecompileShader::~PrecompileShader() = default;
+
 sk_sp<PrecompileShader> PrecompileShader::makeWithLocalMatrix() {
     if (this->priv().isALocalMatrixShader()) {
         // SkShader::makeWithLocalMatrix collapses chains of localMatrix shaders so we need to
