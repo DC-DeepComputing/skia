@@ -52,6 +52,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "14aec77f_31cf9305",
+        "filename": "include/gpu/graphite/precompile/PrecompileBase.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-06-12T14:37:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ab85a93d_d48adc43",
+      "range": {
+        "startLine": 40,
+        "startChar": 4,
+        "endLine": 42,
+        "endChar": 5
+      },
+      "revId": "32a569e34f635d8bf0fb74dff537934f52f2b719",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e87108c2_9cb1d94b",
@@ -65,6 +89,30 @@
       "writtenOn": "2024-06-12T13:41:04Z",
       "side": 1,
       "message": "why would a client need this?",
+      "range": {
+        "startLine": 23,
+        "startChar": 4,
+        "endLine": 23,
+        "endChar": 73
+      },
+      "revId": "32a569e34f635d8bf0fb74dff537934f52f2b719",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "93ee9d99_47dff515",
+        "filename": "include/gpu/graphite/precompile/PrecompileBlender.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-06-12T14:37:47Z",
+      "side": 1,
+      "message": "Hidden now",
+      "parentUuid": "e87108c2_9cb1d94b",
       "range": {
         "startLine": 23,
         "startChar": 4,
@@ -122,6 +170,30 @@
           ]
         }
       ],
+      "revId": "32a569e34f635d8bf0fb74dff537934f52f2b719",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "52ac1429_67fd23ad",
+        "filename": "include/gpu/graphite/precompile/PrecompileBlender.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-06-12T14:37:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4f6d9dc5_637a98cb",
+      "range": {
+        "startLine": 29,
+        "startChar": 4,
+        "endLine": 29,
+        "endChar": 53
+      },
       "revId": "32a569e34f635d8bf0fb74dff537934f52f2b719",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
