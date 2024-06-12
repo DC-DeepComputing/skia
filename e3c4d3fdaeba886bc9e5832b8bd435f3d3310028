@@ -35,6 +35,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "497cb07c_05aae091",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-06-12T12:33:23Z",
+      "side": 1,
+      "message": "The imageblur GMs seem to be having some subtle darkened edge diff",
+      "revId": "e3c4d3fdaeba886bc9e5832b8bd435f3d3310028",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d1368426_1adffe2a",
