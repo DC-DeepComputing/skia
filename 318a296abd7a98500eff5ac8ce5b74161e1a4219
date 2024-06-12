@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e511f8c_eeb9f1ea",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 20059
+      },
+      "writtenOn": "2024-06-12T23:42:49Z",
+      "side": 1,
+      "message": "Yes, I was thinking the same thing. In the latest version, I borrowed your `Internal*FromExternal` methods from https://skia-review.googlesource.com/c/skia/+/865619",
+      "parentUuid": "9047b2e5_e694b1af",
+      "revId": "318a296abd7a98500eff5ac8ce5b74161e1a4219",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a76e527b_32f1402c",
@@ -31,6 +49,30 @@
       "writtenOn": "2024-06-12T21:06:49Z",
       "side": 1,
       "message": "This cache doesn\u0027t own its entries! At the very least this would need to be `sk_sp\u003cSkMaskGamma\u003e`. Right here the only thing keeping these cache entries valid are the `SkScalerContext` holding onto `SkTMaskPreBlend` instances which hold onto the `SkTMaskGamma`.",
+      "range": {
+        "startLine": 160,
+        "startChar": 30,
+        "endLine": 160,
+        "endChar": 42
+      },
+      "revId": "318a296abd7a98500eff5ac8ce5b74161e1a4219",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "44b48108_faba9071",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 20059
+      },
+      "writtenOn": "2024-06-12T23:42:49Z",
+      "side": 1,
+      "message": "Yikes! Fixed in the latest version.",
+      "parentUuid": "a76e527b_32f1402c",
       "range": {
         "startLine": 160,
         "startChar": 30,

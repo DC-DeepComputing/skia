@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8256464_4ed2f7db",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 20059
+      },
+      "writtenOn": "2024-06-12T23:42:49Z",
+      "side": 1,
+      "message": "The big advantage of this approach over https://skia-review.googlesource.com/c/skia/+/865619 is that the slightly-different contrast values are only used for hashing, so there will be no text rendering difference in Chromium. \n\nUp to you to decide which version to take - I\u0027m fine with this one being abandoned if we instead go with https://skia-review.googlesource.com/c/skia/+/865619.",
+      "revId": "00aad3cb788141abd8a9b665cb2bf30dcbaab3eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
