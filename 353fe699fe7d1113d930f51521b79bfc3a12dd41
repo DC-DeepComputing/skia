@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "973a0864_494602a1",
+        "filename": "src/core/SkScalerContext.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-06-12T18:14:36Z",
+      "side": 0,
+      "message": "This one was `Round`, not `Floor`.",
+      "range": {
+        "startLine": 99,
+        "startChar": 20,
+        "endLine": 99,
+        "endChar": 38
+      },
+      "revId": "353fe699fe7d1113d930f51521b79bfc3a12dd41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
