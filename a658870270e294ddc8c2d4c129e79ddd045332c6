@@ -34,6 +34,24 @@
       "parentUuid": "972d55fc_fc9a501b",
       "revId": "a658870270e294ddc8c2d4c129e79ddd045332c6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "853caef5_fe886ec4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-06-12T16:49:22Z",
+      "side": 1,
+      "message": "Chromium CL seems to have stuck this time.",
+      "parentUuid": "ddfeea25_6d08efc7",
+      "revId": "a658870270e294ddc8c2d4c129e79ddd045332c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
