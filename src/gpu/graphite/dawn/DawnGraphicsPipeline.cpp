@@ -416,6 +416,7 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(const DawnSharedContext* 
     // Pipeline layout
     BindGroupLayouts groupLayouts;
     {
+        // TODO: Assess for immutable samplers here such that
         groupLayouts[0] = resourceProvider->getOrCreateUniformBuffersBindGroupLayout();
         if (!groupLayouts[0]) {
             return {};
