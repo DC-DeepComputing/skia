@@ -34,6 +34,7 @@
 #include "src/core/SkDrawBase.h"
 #include "src/core/SkFontPriv.h"
 #include "src/core/SkGlyph.h"
+#include "src/core/SkLRUCache.h"
 #include "src/core/SkMaskFilterBase.h"
 #include "src/core/SkPaintPriv.h"
 #include "src/core/SkRasterClip.h"
@@ -116,11 +117,47 @@ static SkMutex& mask_gamma_cache_mutex() {
     return mutex;
 }
 
-static SkMaskGamma* gLinearMaskGamma = nullptr;
-static SkMaskGamma* gMaskGamma = nullptr;
-static SkScalar gContrast = SK_ScalarMin;
-static SkScalar gPaintGamma = SK_ScalarMin;
-static SkScalar gDeviceGamma = SK_ScalarMin;
+struct MaskGammaCacheKey {
+    SkScalar contrast;
+    SkScalar paintGamma;
+    SkScalar deviceGamma;
+
+    bool operator== (const MaskGammaCacheKey& other) const {
+        return contrast == other.contrast &&
+               paintGamma == other.paintGamma &&
+               deviceGamma == other.deviceGamma;
+    }
+
+    bool operator!= (const MaskGammaCacheKey& other) const {
+        return !(*this == other);
+    }
+
+    /**
+    * Contrast ranges from [0,1] and gamma ranges from [0,4). We can pack
+    * all 3 values into a unique 32-bit int by taking an 8 bit int value
+    * of each. To prevent overflow of the max gamma value, use a multiplier of 32.
+    */
+    const uint32_t asKey() const {
+        constexpr float kMultiplier = 32;
+        const uint32_t contrast_part = SkScalarTruncToInt(contrast * kMultiplier) & 0xFF;
+        const uint32_t paint_gamma_part = (SkScalarTruncToInt(paintGamma * kMultiplier) & 0xFF) << 8;
+        const uint32_t device_gamma_part = (SkScalarTruncToInt(deviceGamma * kMultiplier) & 0xFF) << 16;
+        return contrast_part | paint_gamma_part | device_gamma_part;
+    }
+};
+
+struct MaskGammaCacheKeyHash {
+    const uint32_t operator()(MaskGammaCacheKey state) const {
+        return state.asKey();
+    }
+};
+
+/**
+ * A maximum size of 3 LUT's will cover linear, platform-default values,
+ * and custom values.
+ */
+static constexpr int kMaxMaskGammaEntries = 3;
+SkLRUCache<MaskGammaCacheKey, SkMaskGamma*, MaskGammaCacheKeyHash> kMaskGammaCache{kMaxMaskGammaEntries};
 
 /**
  * The caller must hold the mask_gamma_cache_mutex() and continue to hold it until
@@ -129,20 +166,19 @@ static SkScalar gDeviceGamma = SK_ScalarMin;
 static const SkMaskGamma& cached_mask_gamma(SkScalar contrast, SkScalar paintGamma,
                                             SkScalar deviceGamma) {
     mask_gamma_cache_mutex().assertHeld();
-    if (0 == contrast && SK_Scalar1 == paintGamma && SK_Scalar1 == deviceGamma) {
-        if (nullptr == gLinearMaskGamma) {
-            gLinearMaskGamma = new SkMaskGamma;
-        }
-        return *gLinearMaskGamma;
+
+    MaskGammaCacheKey key{contrast, paintGamma, deviceGamma};
+    SkMaskGamma** mask_gamma_result = kMaskGammaCache.find(key);
+
+    if (mask_gamma_result) {
+        SkMaskGamma* mask_gamma = *mask_gamma_result;
+        return *mask_gamma;
+    } else {
+        const bool is_linear = (0 == contrast && SK_Scalar1 == paintGamma && SK_Scalar1 == deviceGamma);
+        SkMaskGamma* mask_gamma  = is_linear ? new SkMaskGamma : new SkMaskGamma(contrast, paintGamma, deviceGamma);
+        kMaskGammaCache.insert(key, mask_gamma);
+        return *mask_gamma;
     }
-    if (gContrast != contrast || gPaintGamma != paintGamma || gDeviceGamma != deviceGamma) {
-        SkSafeUnref(gMaskGamma);
-        gMaskGamma = new SkMaskGamma(contrast, paintGamma, deviceGamma);
-        gContrast = contrast;
-        gPaintGamma = paintGamma;
-        gDeviceGamma = deviceGamma;
-    }
-    return *gMaskGamma;
 }
 
 /**
