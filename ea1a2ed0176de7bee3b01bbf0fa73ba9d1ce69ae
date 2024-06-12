@@ -52,6 +52,24 @@
       "parentUuid": "97c9da4e_17290692",
       "revId": "ea1a2ed0176de7bee3b01bbf0fa73ba9d1ce69ae",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9f8a0614_5f065486",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 20059
+      },
+      "writtenOn": "2024-06-12T22:41:51Z",
+      "side": 1,
+      "message": "Note that I don\u0027t have the ability to +1 this CL but this lgtm.",
+      "parentUuid": "52aee8ca_f8186320",
+      "revId": "ea1a2ed0176de7bee3b01bbf0fa73ba9d1ce69ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
