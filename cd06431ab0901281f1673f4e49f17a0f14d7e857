@@ -33,6 +33,24 @@
       "message": "Can we make this `inline constexpr` while we\u0027re here? (We started doing this elsewhere in Skia, per http://go/c-readability-advice#constants-in-headers)",
       "revId": "cd06431ab0901281f1673f4e49f17a0f14d7e857",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7bd205f7_54231e58",
+        "filename": "src/codec/SkTiffUtility.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2024-06-12T17:44:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "33e94bed_8ffda339",
+      "revId": "cd06431ab0901281f1673f4e49f17a0f14d7e857",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
