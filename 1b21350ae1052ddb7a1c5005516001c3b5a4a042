@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ed2c264_43db9fbf",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 72
+      },
+      "lineNbr": 584,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-12T17:33:23Z",
+      "side": 1,
+      "message": "nit: `STArray` is still a container that can change size like `TArray`, this should just be `std::array\u003c3, uint32_t\u003e`.",
+      "range": {
+        "startLine": 584,
+        "startChar": 0,
+        "endLine": 584,
+        "endChar": 55
+      },
+      "revId": "1b21350ae1052ddb7a1c5005516001c3b5a4a042",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41feb2ef_afc1a6fd",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 72
+      },
+      "lineNbr": 588,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-12T17:33:23Z",
+      "side": 1,
+      "message": "given this coupling, wdyt think about having a `SamplerDesc::asSpan() -\u003e SkSpan\u003cuint32_t\u003e` function that does:\n   - size of 1 w/ just fDesc for regular samplers\n   - size of 2 w/ fDesc and fFormat for regular immutable samplers\n   - size of 3 w/ all the fields for external formats\n   \nI think this could also simplify the Vulkan resource key creation, see message below.",
+      "range": {
+        "startLine": 586,
+        "startChar": 0,
+        "endLine": 588,
+        "endChar": 90
+      },
+      "revId": "1b21350ae1052ddb7a1c5005516001c3b5a4a042",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21b4e0fa_cf1dd04b",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 72
+      },
+      "lineNbr": 1467,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-12T17:33:23Z",
+      "side": 1,
+      "message": "If `SamplerDesc` has a span that returns 1,2, or 3 ints based on having ycbcr conversion info and/or external formats, then we can remove this branching and just have `uint32Quantity \u003d span.size()`",
+      "range": {
+        "startLine": 1455,
+        "startChar": 0,
+        "endLine": 1467,
+        "endChar": 5
+      },
+      "revId": "1b21350ae1052ddb7a1c5005516001c3b5a4a042",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d02e787_b773eb2e",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 72
+      },
+      "lineNbr": 1478,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-12T17:33:23Z",
+      "side": 1,
+      "message": "and this would be a for loop direct copy from the span to builder.",
+      "range": {
+        "startLine": 1471,
+        "startChar": 0,
+        "endLine": 1478,
+        "endChar": 5
+      },
+      "revId": "1b21350ae1052ddb7a1c5005516001c3b5a4a042",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3174357e_3a0e9725",
+        "filename": "src/gpu/graphite/vk/VulkanYcbcrConversion.cpp",
+        "patchSetId": 72
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-12T17:33:23Z",
+      "side": 1,
+      "message": "This function could almost be just as simplified with the samplerDesc.asSpan() function, although we have to still shift the first int to remove the non-ycbcr desc bits.",
+      "range": {
+        "startLine": 160,
+        "startChar": 0,
+        "endLine": 175,
+        "endChar": 5
+      },
+      "revId": "1b21350ae1052ddb7a1c5005516001c3b5a4a042",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

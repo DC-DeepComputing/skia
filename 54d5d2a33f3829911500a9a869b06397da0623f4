@@ -159,6 +159,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f09c271d_69b9cff0",
+        "filename": "src/gpu/graphite/PaintParamsKey.cpp",
+        "patchSetId": 70
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-12T17:33:23Z",
+      "side": 1,
+      "message": "Yes, I think having the external format MSB be at the end makes sense, it\u0027s now in the same order as the fields in the SamplerDesc.",
+      "parentUuid": "5c926b50_6d0a8489",
+      "range": {
+        "startLine": 71,
+        "startChar": 0,
+        "endLine": 76,
+        "endChar": 41
+      },
+      "revId": "54d5d2a33f3829911500a9a869b06397da0623f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "aa2cf9d7_b0906c29",
@@ -300,6 +324,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8666f6d7_7c8acb74",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 70
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-12T17:33:23Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "ee648ce2_41972b53",
+      "range": {
+        "startLine": 209,
+        "startChar": 12,
+        "endLine": 209,
+        "endChar": 66
+      },
+      "revId": "54d5d2a33f3829911500a9a869b06397da0623f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "262146ff_1f7cf0ce",
@@ -337,6 +385,30 @@
       "side": 1,
       "message": "I see precisely what you\u0027re saying - however, adding `ShaderInfo` to `FragSkSLInfo` gets a little messy. Perhaps you\u0027ll be able to point out something I simply didn\u0027t think of or be okay with one of the options I thought of, so I\u0027ll type out some of my thought process. Enabling snippets to include other types of data may make the most sense to be a TODO here.\n\n--------------------------------------------------------------------------\n\n`ShaderInfo` currently gets created in `BuildFragmentSkSL(...)` and houses `SkArenaAlloc fShaderNodeAlloc`, which explicitly deletes its move ctor and assignment operator (which I\u0027m not suggesting we change). `ShaderInfo` also does not have a default ctor to initialize to as an invalid `ShaderInfo` for `FragSkSLInfo` to initialize its hypothetical `fShaderInfo` to.\n\nEven if we wanted to have `FragSkSLInfo` instead store ptrs to the root shader nodes of `ShaderInfo`, which is what the graphics pipeline could use to traverse the nodes for data, those root nodes are stored as an `SkSpan` backed by the `ShaderInfo` arena. So, unless I\u0027m misunderstanding, those node ptrs are garbage once we return from `BuildFragmentSkSL`.\n\nOne option is we could include snippet IDs in `ShaderInfo`\u0027s `fData` as well. I don\u0027t love this approach because it just tacks on more data, but it\u0027s an option. Then we would use the shader code dictionary to `getSnippetRequirementFlags(id)`, maybe adding a `reportDataType(snippetId)` that could return an enum of the type of data that snippet stores (sampler data and whatever else we decide to store in the future).\n\nAnother option could be to clone the arena, but that seems unideal.\n\nA third option would be to have `ShaderInfo::toSkSL` check snippet IDs and, if \u003d\u003d any of the image shaders that store sampler data specifically, could add that numerical information to a member attribute called something like `ShaderInfo.fSamplerData` (later checking for other IDs and creating different attributes or otherwise having ways to store data gathered from nodes into meaningful data arrays for the pipeline to ingest).\n\nThis is primarily a question of 1) implementation but 2) where we want to be discerning data by checking snippet IDs/data types. LMKWYT, we can chat in person but I wanted to get down my initial thoughts :D",
       "parentUuid": "262146ff_1f7cf0ce",
+      "range": {
+        "startLine": 206,
+        "startChar": 0,
+        "endLine": 213,
+        "endChar": 13
+      },
+      "revId": "54d5d2a33f3829911500a9a869b06397da0623f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4745fa54_c82c3a10",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 70
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-12T17:33:23Z",
+      "side": 1,
+      "message": "You\u0027re right that the shader nodes become garbage if the `ShaderInfo` goes away. Since we can\u0027t move it as a value type, we\u0027d have to add ` std::unique_ptr\u003cShaderInfo\u003e` to the `FragSkSLInfo` struct.\n\nOn the other hand, almost everything that is stored on `FragSkSLInfo` is determined by `ShaderInfo`, so with a little re-arranging of exactly when the sksl is generated and adding some accessors, I think we could just remove FragSkSLInfo in favor of `BuildFragmentSkSL` returning a `std::unique_ptr\u003cShaderInfo\u003e`.\n\nBut I agree that these are not blockers for this CL, but will be things to keep in mind for when the data traversal is implemented in the vulkan backend.",
+      "parentUuid": "5ab4f1eb_923c0bc4",
       "range": {
         "startLine": 206,
         "startChar": 0,
