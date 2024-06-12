@@ -15,6 +15,7 @@
 #include "src/gpu/graphite/DescriptorData.h"
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/RenderPassDesc.h"
+#include "src/gpu/graphite/ResourceTypes.h"
 #include "src/gpu/graphite/Surface_Graphite.h"
 #include "src/gpu/graphite/TextureProxy.h"
 #include "src/gpu/graphite/vk/VulkanBuffer.h"
@@ -1053,15 +1054,29 @@ void VulkanCommandBuffer::recordTextureAndSamplerDescSet(
         fBindTextureSamplers = false;
         return;
     }
+<<<<<<< PATCH SET (e3f954 DO NOT SUBMIT: hack to incorporate VulanSampler's ycbcrConve)
+    SkDebugf("nscobie-debug: in VulkanCommandBuffer::recordTextureAndSamplerDescSet");
+=======
+>>>>>>> BASE      (631185 [graphite] Hook up YCbCr functionality and enable GM)
 
     // Query resource provider to obtain a descriptor set for the texture/samplers
     TArray<DescriptorData> descriptors(command.fNumTexSamplers);
     for (int i = 0; i < command.fNumTexSamplers; i++) {
+<<<<<<< PATCH SET (e3f954 DO NOT SUBMIT: hack to incorporate VulanSampler's ycbcrConve)
+        SkDebugf("nscobie-debug: setting up descriptors[i:%d]", i);
+        auto sampler = static_cast<const VulkanSampler*>(
+                drawPass.getSampler(command.fSamplerIndices[i]));
+        SkDebugf("nscobie-debug: Sampler: %s", sampler ? "non-null" : "null");
+        const Sampler* immutableSampler = (sampler && sampler->ycbcrConversion()) ? sampler
+                                                                                  : nullptr;
+        SkDebugf("nscobie-debug: Immutable sampler: %s", immutableSampler ? "non-null" : "null");
+=======
         auto sampler = static_cast<const VulkanSampler*>(
                 drawPass.getSampler(command.fSamplerIndices[i]));
 
         const Sampler* immutableSampler = (sampler && sampler->ycbcrConversion()) ? sampler
                                                                                   : nullptr;
+>>>>>>> BASE      (631185 [graphite] Hook up YCbCr functionality and enable GM)
         descriptors.push_back({DescriptorType::kCombinedTextureSampler,
                                /*count=*/1,
                                /*bindingIdx=*/i,
@@ -1078,10 +1093,17 @@ void VulkanCommandBuffer::recordTextureAndSamplerDescSet(
         fBindTextureSamplers = false;
         return;
     }
+
+    // for (int i = 0; i < command.fNumTexSamplers; i++) {
+    //     SkDebugf("nscobie-debug: checking resulting set->descriptorSet()[i:%d]", i);
+    //     // auto descriptorData = set->descriptorSet().
+    // }
+
     // Populate the descriptor set with texture/sampler descriptors
     TArray<VkWriteDescriptorSet> writeDescriptorSets(command.fNumTexSamplers);
     TArray<VkDescriptorImageInfo> descriptorImageInfos(command.fNumTexSamplers);
     for (int i = 0; i < command.fNumTexSamplers; ++i) {
+        SkDebugf("nscobie-debug: setting up writeDescriptorSets[i:%d]", i);
         auto texture = const_cast<VulkanTexture*>(static_cast<const VulkanTexture*>(
                 drawPass.getTexture(command.fTextureIndices[i])));
         auto sampler = static_cast<const VulkanSampler*>(
@@ -1099,6 +1121,10 @@ void VulkanCommandBuffer::recordTextureAndSamplerDescSet(
         VkDescriptorImageInfo& textureInfo = descriptorImageInfos.push_back();
         memset(&textureInfo, 0, sizeof(VkDescriptorImageInfo));
         textureInfo.sampler = sampler->ycbcrConversion() ? VK_NULL_HANDLE : sampler->vkSampler();
+<<<<<<< PATCH SET (e3f954 DO NOT SUBMIT: hack to incorporate VulanSampler's ycbcrConve)
+        SkDebugf("nscobie-debug: textureInfo.sampler: %s", textureInfo.sampler ? "non-null" : "null"); // textureinfo.sampler
+=======
+>>>>>>> BASE      (631185 [graphite] Hook up YCbCr functionality and enable GM)
         textureInfo.imageView =
                 texture->getImageView(VulkanImageView::Usage::kShaderInput)->imageView();
         textureInfo.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
@@ -1112,16 +1138,19 @@ void VulkanCommandBuffer::recordTextureAndSamplerDescSet(
         writeInfo.dstArrayElement = 0;
         writeInfo.descriptorCount = 1;
         writeInfo.descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
+        // TODO: ask Nicolette if it's safe to reference this, since reference can be invalidated by subsequent descriptorImageInfos.push_back() (maybe it's OK because space was reserved?)
         writeInfo.pImageInfo = &textureInfo;
         writeInfo.pBufferInfo = nullptr;
         writeInfo.pTexelBufferView = nullptr;
     }
 
+    SkDebugf("nscobie-debug: before vkUpdateDescriptorSets");
     VULKAN_CALL(fSharedContext->interface(), UpdateDescriptorSets(fSharedContext->device(),
                                                                   command.fNumTexSamplers,
                                                                   &writeDescriptorSets[0],
                                                                   /*descriptorCopyCount=*/0,
                                                                   /*pDescriptorCopies=*/nullptr));
+    SkDebugf("nscobie-debug: after vkUpdateDescriptorSets");
 
     // Store the updated descriptor set to be actually bound later on. This avoids binding and
     // potentially having to re-bind in cases where earlier descriptor sets change while going

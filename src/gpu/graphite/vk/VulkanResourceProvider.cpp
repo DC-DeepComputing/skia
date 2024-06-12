@@ -208,19 +208,33 @@ namespace {
 GraphiteResourceKey build_desc_set_key(const SkSpan<DescriptorData>& requestedDescriptors) {
     static const ResourceType kType = GraphiteResourceKey::GenerateResourceType();
 
-    const int num32DataCnt = requestedDescriptors.size() + 1;
+    // const int num32DataCnt = requestedDescriptors.size() + 1;
+    const int num32DataCnt = requestedDescriptors.size() * 2 + 1; // nscobie-debug: hack to incorporate presence of immutable sampler into key
 
     GraphiteResourceKey key;
     GraphiteResourceKey::Builder builder(&key, kType, num32DataCnt, Shareable::kNo);
 
     builder[0] = requestedDescriptors.size();
-    for (int i = 1; i < num32DataCnt; i++) {
-        const auto& currDesc = requestedDescriptors[i - 1];
+    // for (int i = 1; i < num32DataCnt; i++) {
+    for (int i = 1; i < num32DataCnt; i += 2) { // nscobie-debug: hack to incorporate presence of immutable sampler into key
+        // const auto& currDesc = requestedDescriptors[i - 1];
+        const auto& currDesc = requestedDescriptors[(i - 1)/2]; // nscobie-debug: hack to incorporate presence of immutable sampler into key
         // TODO: Consider making the DescriptorData struct itself just use uint16_t.
         uint16_t smallerCount = static_cast<uint16_t>(currDesc.fCount);
         builder[i] = static_cast<uint8_t>(currDesc.fType) << 24 |
                      currDesc.fBindingIndex << 16 |
                      smallerCount;
+        // nscobie-debug: initial hack to incorporate presence of immutable sampler into key
+        // builder[i+1] = currDesc.fImmutableSampler ? 1 : 0;
+        // nscobie-debug: improved hack to incorporate actual sampler into key
+        if (currDesc.fImmutableSampler) {
+            const auto vulkanSampler = static_cast<const VulkanSampler*>(currDesc.fImmutableSampler);
+            // TODO: maybe use vulkanSampler->key() instead of ycbcrConversion()->key() ??? I think VulkanResourceProvider::createSampler would need to call setKey when creating VulkanSampler
+            builder[i+1] = vulkanSampler->ycbcrConversion()->key().hash(); // TODO: figure out if there's a way to concatenate the underlying data onto this new key instead of hashing the subkey
+        }
+        else {
+            builder[i+1] = 0;
+        }
     }
     builder.finish();
     return key;
@@ -250,7 +264,11 @@ sk_sp<VulkanDescriptorSet> VulkanResourceProvider::findOrCreateDescriptorSet(
     GraphiteResourceKey key = build_desc_set_key(requestedDescriptors);
     if (auto descSet = fResourceCache->findAndRefResource(key, skgpu::Budgeted::kYes)) {
         // A non-null resource pointer indicates we have found an available descriptor set.
+        SkDebugf("nscobie-debug: Found existing descriptor set matching key.hash():%" PRIu32 " (%p)", key.hash(), descSet);
         return sk_sp<VulkanDescriptorSet>(static_cast<VulkanDescriptorSet*>(descSet));
+    }
+    else {
+        SkDebugf("nscobie-debug: creating new descriptor set(s) for key.hash():%" PRIu32, key.hash());
     }
 
 
