@@ -117,6 +117,7 @@ static SkMutex& mask_gamma_cache_mutex() {
 }
 
 static SkMaskGamma* gLinearMaskGamma = nullptr;
+static SkMaskGamma* gDefaultMaskGamma = nullptr;
 static SkMaskGamma* gMaskGamma = nullptr;
 static SkScalar gContrast = SK_ScalarMin;
 static SkScalar gDeviceGamma = SK_ScalarMin;
@@ -132,6 +133,14 @@ static const SkMaskGamma& cached_mask_gamma(SkScalar contrast, SkScalar deviceGa
             gLinearMaskGamma = new SkMaskGamma;
         }
         return *gLinearMaskGamma;
+    }
+    constexpr SkScalar defaultContrast = SkScalerContextRec::GetDefaultContrast();
+    constexpr SkScalar defaultGamma = SkScalerContextRec::GetDefaultGamma();
+    if (defaultContrast == contrast && defaultGamma == deviceGamma) {
+        if (nullptr == gDefaultMaskGamma) {
+            gDefaultMaskGamma = new SkMaskGamma(contrast, deviceGamma);
+        }
+        return *gDefaultMaskGamma;
     }
     if (gContrast != contrast || gDeviceGamma != deviceGamma) {
         SkSafeUnref(gMaskGamma);
