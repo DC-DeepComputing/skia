@@ -171,6 +171,30 @@
       ],
       "revId": "dd730ec904550f77fc79a11f635d97c097c6af47",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ca1e30e_92a0ba77",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1126,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-06-12T16:44:15Z",
+      "side": 1,
+      "message": "Note: the video crash I was encountering only took one iteration of the loop, so it\u0027s just a hypothetical question.",
+      "parentUuid": "dbd2020d_74d4a320",
+      "range": {
+        "startLine": 1126,
+        "startChar": 8,
+        "endLine": 1126,
+        "endChar": 188
+      },
+      "revId": "dd730ec904550f77fc79a11f635d97c097c6af47",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
