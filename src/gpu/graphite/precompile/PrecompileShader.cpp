@@ -263,7 +263,7 @@ sk_sp<PrecompileShader> PrecompileShaders::Blend(
 }
 
 sk_sp<PrecompileShader> PrecompileShaders::Blend(
-        SkSpan<SkBlendMode> blendModes,
+        SkSpan<const SkBlendMode> blendModes,
         SkSpan<const sk_sp<PrecompileShader>> dsts,
         SkSpan<const sk_sp<PrecompileShader>> srcs) {
 

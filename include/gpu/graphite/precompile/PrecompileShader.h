@@ -55,7 +55,7 @@ namespace PrecompileShaders {
     SK_API sk_sp<PrecompileShader> Empty();
     SK_API sk_sp<PrecompileShader> Color();
     SK_API sk_sp<PrecompileShader> Color(sk_sp<SkColorSpace>);
-    SK_API sk_sp<PrecompileShader> Blend(SkSpan<SkBlendMode> blendModes,
+    SK_API sk_sp<PrecompileShader> Blend(SkSpan<const SkBlendMode> blendModes,
                                          SkSpan<const sk_sp<PrecompileShader>> dsts,
                                          SkSpan<const sk_sp<PrecompileShader>> srcs);
     SK_API sk_sp<PrecompileShader> Blend(SkSpan<const sk_sp<PrecompileBlender>> blenders,
