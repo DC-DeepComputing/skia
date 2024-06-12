@@ -77,26 +77,48 @@ private:
     uint8_t       fContrast;    //0.8+1, [0.0, 1.0] artificial contrast
     const uint8_t fReservedAlign{0};
 
+    static constexpr SkScalar ExternalGammaFromInternal(uint8_t g) {
+        return SkIntToScalar(g) / (1 << 6);
+    }
+    static constexpr uint8_t InternalGammaFromExternal(SkScalar g) {
+        // C++23 use constexpr std::floor
+        return static_cast<uint8_t>(g * (1 << 6));
+    }
+    static constexpr SkScalar ExternalContrastFromInternal(uint8_t c) {
+        return SkIntToScalar(c) / ((1 << 8) - 1);
+    }
+    static constexpr uint8_t InternalContrastFromExternal(SkScalar c) {
+        // C++23 use constexpr std::round
+        return static_cast<uint8_t>((c * ((1 << 8) - 1)) + 0.5f);
+    }
 public:
 
     SkScalar getDeviceGamma() const {
         sk_ignore_unused_variable(fReservedAlign2);
-        return SkIntToScalar(fDeviceGamma) / (1 << 6);
+        return ExternalGammaFromInternal(fDeviceGamma);
     }
-    void setDeviceGamma(SkScalar dg) {
-        SkASSERT(SkSurfaceProps::kMinGammaInclusive <= dg &&
-                 dg < SkIntToScalar(SkSurfaceProps::kMaxGammaExclusive));
-        fDeviceGamma = SkScalarFloorToInt(dg * (1 << 6));
+    void setDeviceGamma(SkScalar g) {
+        SkASSERT(SkSurfaceProps::kMinGammaInclusive <= g &&
+                 g < SkIntToScalar(SkSurfaceProps::kMaxGammaExclusive));
+        fDeviceGamma = InternalGammaFromExternal(g);
+    }
+    static constexpr SkScalar GetDefaultGamma() {
+        uint8_t g = InternalGammaFromExternal(SK_GAMMA_EXPONENT);
+        return ExternalGammaFromInternal(g);
     }
 
     SkScalar getContrast() const {
         sk_ignore_unused_variable(fReservedAlign);
-        return SkIntToScalar(fContrast) / ((1 << 8) - 1);
+        return ExternalContrastFromInternal(fContrast);
     }
     void setContrast(SkScalar c) {
         SkASSERT(SkSurfaceProps::kMinContrastInclusive <= c &&
                  c <= SkIntToScalar(SkSurfaceProps::kMaxContrastInclusive));
-        fContrast = SkScalarRoundToInt(c * ((1 << 8) - 1));
+        fContrast = InternalContrastFromExternal(c);
+    }
+    static constexpr SkScalar GetDefaultContrast() {
+        uint8_t c = InternalContrastFromExternal(SK_GAMMA_CONTRAST);
+        return ExternalContrastFromInternal(c);
     }
 
     /**
