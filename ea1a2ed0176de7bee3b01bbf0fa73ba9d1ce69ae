@@ -16,6 +16,24 @@
       "message": "Does this approach solve the issues you\u0027re investigating?",
       "revId": "ea1a2ed0176de7bee3b01bbf0fa73ba9d1ce69ae",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "97c9da4e_17290692",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 20059
+      },
+      "writtenOn": "2024-06-12T22:09:48Z",
+      "side": 1,
+      "message": "Yes! I walked through this with a debugger and it\u0027s working. One note is that the contrast value has changed slightly - it\u0027s now 0.498039 instead of being slightly above 0.5. Is this going to break reference image tests in Chromium?",
+      "parentUuid": "9813379d_339c3516",
+      "revId": "ea1a2ed0176de7bee3b01bbf0fa73ba9d1ce69ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
