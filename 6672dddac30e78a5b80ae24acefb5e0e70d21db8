@@ -57,6 +57,30 @@
       ],
       "revId": "6672dddac30e78a5b80ae24acefb5e0e70d21db8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "00cbc7b2_881c24e0",
+        "filename": "src/encode/SkJpegGainmapEncoder.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 343,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2024-06-12T17:45:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "67579a39_d76b581e",
+      "range": {
+        "startLine": 343,
+        "startChar": 15,
+        "endLine": 343,
+        "endChar": 21
+      },
+      "revId": "6672dddac30e78a5b80ae24acefb5e0e70d21db8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
