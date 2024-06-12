@@ -1,0 +1,129 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab85a93d_d48adc43",
+        "filename": "include/gpu/graphite/precompile/PrecompileBase.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-06-12T13:41:04Z",
+      "side": 1,
+      "message": "Is this query valuable to expose to public clients? I suppose I could see clients interested if they realize they\u0027re making massive PaintOptions to know there are a lot of shaders, but at the same time I don\u0027t really see them being able to act on this value during runtime. Maybe we hide this in priv for now until we get requests from clients to be able to see this value?",
+      "range": {
+        "startLine": 40,
+        "startChar": 4,
+        "endLine": 42,
+        "endChar": 5
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "e84de338_49ae42bb",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/gpu/graphite/precompile/PrecompileBase.h",
+              "range": {
+                "startLine": 35,
+                "startChar": 0,
+                "endLine": 43,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "include/gpu/graphite/precompile/PrecompileBase.h",
+              "range": {
+                "startLine": 51,
+                "startChar": 0,
+                "endLine": 53,
+                "endChar": 0
+              },
+              "replacement": "    int numCombinations() const {\n        return this-\u003enumIntrinsicCombinations() * this-\u003enumChildCombinations();\n    }\n"
+            }
+          ]
+        }
+      ],
+      "revId": "32a569e34f635d8bf0fb74dff537934f52f2b719",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e87108c2_9cb1d94b",
+        "filename": "include/gpu/graphite/precompile/PrecompileBlender.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-06-12T13:41:04Z",
+      "side": 1,
+      "message": "why would a client need this?",
+      "range": {
+        "startLine": 23,
+        "startChar": 4,
+        "endLine": 23,
+        "endChar": 73
+      },
+      "revId": "32a569e34f635d8bf0fb74dff537934f52f2b719",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f6d9dc5_637a98cb",
+        "filename": "include/gpu/graphite/precompile/PrecompileBlender.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-06-12T13:41:04Z",
+      "side": 1,
+      "message": "Having astatic factirt in the class and then a factory in the namespace below seems wrong. We should probably stick to one or the other. Seeing the direction Skia has shifted I think keeping it all in the namespace makes sense?",
+      "range": {
+        "startLine": 29,
+        "startChar": 4,
+        "endLine": 29,
+        "endChar": 53
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "c099abec_a753e52b",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/gpu/graphite/precompile/PrecompileBlender.h",
+              "range": {
+                "startLine": 29,
+                "startChar": 0,
+                "endLine": 30,
+                "endChar": 0
+              },
+              "replacement": "    static sk_sp\u003cPrecompileBlender\u003e Mode(SkBlendMode mode);\n"
+            },
+            {
+              "path": "include/gpu/graphite/precompile/PrecompileBlender.h",
+              "range": {
+                "startLine": 43,
+                "startChar": 0,
+                "endLine": 44,
+                "endChar": 0
+              },
+              "replacement": "    static sk_sp\u003cPrecompileBlender\u003e Arithmetic();\n"
+            }
+          ]
+        }
+      ],
+      "revId": "32a569e34f635d8bf0fb74dff537934f52f2b719",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
