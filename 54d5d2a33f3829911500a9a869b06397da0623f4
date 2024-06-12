@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8244a5d8_393e69e0",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 70
+      },
+      "lineNbr": 614,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-06-12T02:22:30Z",
+      "side": 1,
+      "message": "That makes sense and is super helpful feedback for streamlining; thank you!😊 I hadn\u0027t considered that having *everything* now pass an entire SamplerDesc ref into the gatherer isn\u0027t a huge difference from what we currently pass in (as in, doesn\u0027t bloat other calls unnecessarily just for this one case). Done! I went w/ your former suggestion.",
+      "parentUuid": "82cc8c30_26cd0f36",
+      "range": {
+        "startLine": 612,
+        "startChar": 4,
+        "endLine": 614,
+        "endChar": 41
+      },
+      "revId": "54d5d2a33f3829911500a9a869b06397da0623f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "61da1bcd_6fff00e5",
@@ -54,6 +78,30 @@
       "writtenOn": "2024-06-06T17:11:53Z",
       "side": 1,
       "message": "nit: length",
+      "range": {
+        "startLine": 63,
+        "startChar": 71,
+        "endLine": 63,
+        "endChar": 77
+      },
+      "revId": "54d5d2a33f3829911500a9a869b06397da0623f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ae720e9_a274dc75",
+        "filename": "src/gpu/graphite/PaintParamsKey.cpp",
+        "patchSetId": 70
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-06-12T02:22:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "61da1bcd_6fff00e5",
       "range": {
         "startLine": 63,
         "startChar": 71,
@@ -89,6 +137,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5c926b50_6d0a8489",
+        "filename": "src/gpu/graphite/PaintParamsKey.cpp",
+        "patchSetId": 70
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-06-12T02:22:30Z",
+      "side": 1,
+      "message": "Hmm, I agree this could be handled better, but it gets a little wonky considering that the external format MSBs value (when present/real) is sandwiched between the two values that are always present. So instead of getting a subspan or just chopping off the last value, we would just want samplerData[0] and samplerData[2].\n\nFor this latest patch I\u0027ve made the external format MSBs be appended at the end and gone with your `memcpy` suggestion, simply chopping off the last value if we are using a known format. LMKWYT!",
+      "parentUuid": "e2a7ed33_41afbdc1",
+      "range": {
+        "startLine": 71,
+        "startChar": 0,
+        "endLine": 76,
+        "endChar": 41
+      },
+      "revId": "54d5d2a33f3829911500a9a869b06397da0623f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "aa2cf9d7_b0906c29",
         "filename": "src/gpu/graphite/PaintParamsKey.cpp",
         "patchSetId": 70
@@ -100,6 +172,30 @@
       "writtenOn": "2024-06-06T17:11:53Z",
       "side": 1,
       "message": "nit: \"no embedded data to store\" since it\u0027s not necessarily going to be limited to immutable samplers",
+      "range": {
+        "startLine": 107,
+        "startChar": 54,
+        "endLine": 107,
+        "endChar": 87
+      },
+      "revId": "54d5d2a33f3829911500a9a869b06397da0623f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9bf486f_79f379e3",
+        "filename": "src/gpu/graphite/PaintParamsKey.cpp",
+        "patchSetId": 70
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-06-12T02:22:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aa2cf9d7_b0906c29",
       "range": {
         "startLine": 107,
         "startChar": 54,
@@ -123,6 +219,30 @@
       "writtenOn": "2024-06-06T17:11:53Z",
       "side": 1,
       "message": "We could replace this and the later `*currentIndex +\u003d 1` with just `storedDataLengthIdx \u003d (*currentIndex)++;`",
+      "range": {
+        "startLine": 108,
+        "startChar": 40,
+        "endLine": 108,
+        "endChar": 49
+      },
+      "revId": "54d5d2a33f3829911500a9a869b06397da0623f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d09d0b7c_e26fc98d",
+        "filename": "src/gpu/graphite/PaintParamsKey.cpp",
+        "patchSetId": 70
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-06-12T02:22:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "33b965f3_2845968c",
       "range": {
         "startLine": 108,
         "startChar": 40,
@@ -158,6 +278,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ee648ce2_41972b53",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 70
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-06-12T02:22:30Z",
+      "side": 1,
+      "message": "Ah, I see. Thank you! I can spruce this up once we decide where we are traversing the nodes (here to accumulate the data or elsewhere, such as if we return `ShaderInfo` as you suggested in https://skia-review.googlesource.com/c/skia/+/820157/comment/262146ff_1f7cf0ce/). Leaving as unresolved for now.",
+      "parentUuid": "6de24767_34b0cec4",
+      "range": {
+        "startLine": 209,
+        "startChar": 12,
+        "endLine": 209,
+        "endChar": 66
+      },
+      "revId": "54d5d2a33f3829911500a9a869b06397da0623f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "262146ff_1f7cf0ce",
         "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
         "patchSetId": 70
@@ -181,6 +325,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5ab4f1eb_923c0bc4",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 70
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-06-12T02:22:30Z",
+      "side": 1,
+      "message": "I see precisely what you\u0027re saying - however, adding `ShaderInfo` to `FragSkSLInfo` gets a little messy. Perhaps you\u0027ll be able to point out something I simply didn\u0027t think of or be okay with one of the options I thought of, so I\u0027ll type out some of my thought process. Enabling snippets to include other types of data may make the most sense to be a TODO here.\n\n--------------------------------------------------------------------------\n\n`ShaderInfo` currently gets created in `BuildFragmentSkSL(...)` and houses `SkArenaAlloc fShaderNodeAlloc`, which explicitly deletes its move ctor and assignment operator (which I\u0027m not suggesting we change). `ShaderInfo` also does not have a default ctor to initialize to as an invalid `ShaderInfo` for `FragSkSLInfo` to initialize its hypothetical `fShaderInfo` to.\n\nEven if we wanted to have `FragSkSLInfo` instead store ptrs to the root shader nodes of `ShaderInfo`, which is what the graphics pipeline could use to traverse the nodes for data, those root nodes are stored as an `SkSpan` backed by the `ShaderInfo` arena. So, unless I\u0027m misunderstanding, those node ptrs are garbage once we return from `BuildFragmentSkSL`.\n\nOne option is we could include snippet IDs in `ShaderInfo`\u0027s `fData` as well. I don\u0027t love this approach because it just tacks on more data, but it\u0027s an option. Then we would use the shader code dictionary to `getSnippetRequirementFlags(id)`, maybe adding a `reportDataType(snippetId)` that could return an enum of the type of data that snippet stores (sampler data and whatever else we decide to store in the future).\n\nAnother option could be to clone the arena, but that seems unideal.\n\nA third option would be to have `ShaderInfo::toSkSL` check snippet IDs and, if \u003d\u003d any of the image shaders that store sampler data specifically, could add that numerical information to a member attribute called something like `ShaderInfo.fSamplerData` (later checking for other IDs and creating different attributes or otherwise having ways to store data gathered from nodes into meaningful data arrays for the pipeline to ingest).\n\nThis is primarily a question of 1) implementation but 2) where we want to be discerning data by checking snippet IDs/data types. LMKWYT, we can chat in person but I wanted to get down my initial thoughts :D",
+      "parentUuid": "262146ff_1f7cf0ce",
+      "range": {
+        "startLine": 206,
+        "startChar": 0,
+        "endLine": 213,
+        "endChar": 13
+      },
+      "revId": "54d5d2a33f3829911500a9a869b06397da0623f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "60310fea_b3639d05",
         "filename": "src/gpu/graphite/ShaderCodeDictionary.h",
         "patchSetId": 70
@@ -192,6 +360,30 @@
       "writtenOn": "2024-06-06T17:11:53Z",
       "side": 1,
       "message": "I think in this case we should have `includeData\u003dfalse` since this is going to be the resource label and trace text, both of which are a little more character limited.",
+      "range": {
+        "startLine": 248,
+        "startChar": 0,
+        "endLine": 248,
+        "endChar": 69
+      },
+      "revId": "54d5d2a33f3829911500a9a869b06397da0623f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "674bdf64_e30005ee",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.h",
+        "patchSetId": 70
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-06-12T02:22:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "60310fea_b3639d05",
       "range": {
         "startLine": 248,
         "startChar": 0,
