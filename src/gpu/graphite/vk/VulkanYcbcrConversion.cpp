@@ -161,21 +161,18 @@ GraphiteResourceKey VulkanYcbcrConversion::GetKeyFromSamplerDesc(const SamplerDe
             (uint32_t)(samplerDesc.desc() >> SamplerDesc::kImmutableSamplerInfoShift);
     SkASSERT(nonFormatYcbcrInfo != 0);
 
-    bool usesExternalFormat =  static_cast<bool>(
-                ((nonFormatYcbcrInfo & ycbcrPackaging::kUseExternalFormatMask) >>
-                        ycbcrPackaging::kUsesExternalFormatShift));
     int num32DataCnt =
-            usesExternalFormat ? ycbcrPackaging::kInt32sNeededExternalFormat
-                               : ycbcrPackaging::kInt32sNeededKnownFormat;
+            samplerDesc.usesExternalFormat() ? ycbcrPackaging::kInt32sNeededExternalFormat
+                                             : ycbcrPackaging::kInt32sNeededKnownFormat;
     GraphiteResourceKey::Builder builder(&key, conversion_rsrc_type(), num32DataCnt,
                                          Shareable::kYes);
 
     int i = 0;
     builder[i++] = nonFormatYcbcrInfo;
-    if (usesExternalFormat) {
+    builder[i++] = samplerDesc.format();
+    if (samplerDesc.usesExternalFormat()) {
         builder[i++] = samplerDesc.externalFormatMSBs();
     }
-    builder[i++] = samplerDesc.format();
     SkASSERT(i == num32DataCnt);
 
     builder.finish();
