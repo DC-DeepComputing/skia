@@ -78,7 +78,14 @@ private:
     const uint8_t fReservedAlign{0};
 
 public:
-
+    static constexpr uint8_t InternalGammaFromExternal(SkScalar g) {
+        // C++23 use constexpr std::floor
+        return static_cast<uint8_t>(g * (1 << 6));
+    }
+    static constexpr uint8_t InternalContrastFromExternal(SkScalar c) {
+        // C++23 use constexpr std::round
+        return static_cast<uint8_t>((c * ((1 << 8) - 1)) + 0.5f);
+    }
     SkScalar getDeviceGamma() const {
         sk_ignore_unused_variable(fReservedAlign2);
         return SkIntToScalar(fDeviceGamma) / (1 << 6);
