@@ -16,6 +16,47 @@
       "message": "Last part needed for ISO compliance (!!!)",
       "revId": "6672dddac30e78a5b80ae24acefb5e0e70d21db8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67579a39_d76b581e",
+        "filename": "src/encode/SkJpegGainmapEncoder.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 343,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-06-12T14:19:12Z",
+      "side": 1,
+      "message": "except",
+      "range": {
+        "startLine": 343,
+        "startChar": 15,
+        "endLine": 343,
+        "endChar": 21
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "c92a2874_3ab2e284",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/encode/SkJpegGainmapEncoder.cpp",
+              "range": {
+                "startLine": 343,
+                "startChar": 0,
+                "endLine": 344,
+                "endChar": 0
+              },
+              "replacement": "    // segment except as specified in section 7\".\n"
+            }
+          ]
+        }
+      ],
+      "revId": "6672dddac30e78a5b80ae24acefb5e0e70d21db8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
