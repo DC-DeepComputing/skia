@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9047b2e5_e694b1af",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-06-12T21:06:49Z",
+      "side": 1,
+      "message": "If using a packed key, the values going into the key really need to be the values as they would be in `SkScalerContextRec`. These values don\u0027t need to be tortured any more than they already have. There needs to be one place in the code that has the tricky (and policy heavy) packing.",
+      "revId": "318a296abd7a98500eff5ac8ce5b74161e1a4219",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a76e527b_32f1402c",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-06-12T21:06:49Z",
+      "side": 1,
+      "message": "This cache doesn\u0027t own its entries! At the very least this would need to be `sk_sp\u003cSkMaskGamma\u003e`. Right here the only thing keeping these cache entries valid are the `SkScalerContext` holding onto `SkTMaskPreBlend` instances which hold onto the `SkTMaskGamma`.",
+      "range": {
+        "startLine": 160,
+        "startChar": 30,
+        "endLine": 160,
+        "endChar": 42
+      },
+      "revId": "318a296abd7a98500eff5ac8ce5b74161e1a4219",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
