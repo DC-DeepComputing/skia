@@ -349,6 +349,14 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(CombinationBuilderTest, reporter, context,
         run_test(keyContext, &gatherer, reporter, paintOptions, /* expectedNumOptions= */ 1);
     }
 
+    {
+
+    }
+
+    {
+
+    }
+
     no_blend_mode_option_test(keyContext, &gatherer, reporter);
     big_test(keyContext, &gatherer, reporter);
     runtime_effect_test(keyContext, &gatherer, reporter);
