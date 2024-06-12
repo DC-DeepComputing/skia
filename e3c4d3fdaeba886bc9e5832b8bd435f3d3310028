@@ -52,6 +52,41 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "039bbd63_c4110ac0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-12T15:30:11Z",
+      "side": 1,
+      "message": "PTAL, in particular, SkBlurImageFilter\u0027s changes",
+      "revId": "e3c4d3fdaeba886bc9e5832b8bd435f3d3310028",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f50c14ab_6de8dbeb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-12T15:30:11Z",
+      "side": 1,
+      "message": "I didn\u0027t see anything objectionable in the imageblur GMs, but in general I\u0027m more confident about how FilterResult::rescale() preserves boundary pixels compared to what Graphite had been doing before.\n\nI did notice some edge issues in `rotate_imagefilter`, and this was because of an unnecessary propagation of theoretic output bounds that caused the rounded-out low-res image to think it needed to be clipped to its layer bounds when drawing. The artifacts were the result of the MSAA clipRect in Graphite. What happened was:\n - SkBlurImageFilter calculated its `maxOutput` and provided that as the desired output to the blur() call.\n - blur() calculated the same max output in `outputBounds` and intersected it with the desired output (no change in this case)\n - the low res result just used `outputBounds` as its layer bounds directly\n - the low res output image\u0027s bounds actually scaled up to be about 1px outside of the theoretic \"max output\" that is reported as the desired output\n - when drawing back into the original surface, which actually had a much larger real desired output that had been shadowed by SkBlurImageFilter\u0027s context manipulation, the drawing code sees that the restrictive layer bounds has an effect on the image bounds and clips it.\n \nTo fix this, I just moved the max-output calculations in SkBlurImageFilter to be only for the two legacy modes (legacy tiling, and CPU blur that doesn\u0027t go through FilterResult::blur() at all). This way FilterResult::blur() sees the original desired output. Additionally, the low-res output recalculates its layer bounds from its actual image and transform to account for any such rounding. In cases where the incoming desired output is actually needing to crop, the blur\u0027s layer bounds will still respect it, but in these simple cases we avoid the clip entirely.",
+      "parentUuid": "497cb07c_05aae091",
+      "revId": "e3c4d3fdaeba886bc9e5832b8bd435f3d3310028",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d1368426_1adffe2a",
@@ -65,6 +100,30 @@
       "writtenOn": "2024-06-11T19:19:20Z",
       "side": 1,
       "message": "??",
+      "range": {
+        "startLine": 2139,
+        "startChar": 0,
+        "endLine": 2139,
+        "endChar": 99
+      },
+      "revId": "e3c4d3fdaeba886bc9e5832b8bd435f3d3310028",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "003c05d6_76c55569",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 2139,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-12T15:30:11Z",
+      "side": 1,
+      "message": "oops, that was old testing code that was incorrect and I forgot to delete",
+      "parentUuid": "d1368426_1adffe2a",
       "range": {
         "startLine": 2139,
         "startChar": 0,
@@ -98,6 +157,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "65ff379f_232d4c1a",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 2153,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-12T15:30:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9ac0abd7_32bb31a1",
+      "range": {
+        "startLine": 2153,
+        "startChar": 24,
+        "endLine": 2153,
+        "endChar": 28
+      },
+      "revId": "e3c4d3fdaeba886bc9e5832b8bd435f3d3310028",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0cdd3ff8_942a7090",
@@ -111,6 +194,24 @@
       "writtenOn": "2024-06-11T19:19:20Z",
       "side": 1,
       "message": "misaligned by a \u0027 \u0027",
+      "revId": "e3c4d3fdaeba886bc9e5832b8bd435f3d3310028",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "20462229_d6516606",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 2168,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-12T15:30:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0cdd3ff8_942a7090",
       "revId": "e3c4d3fdaeba886bc9e5832b8bd435f3d3310028",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
