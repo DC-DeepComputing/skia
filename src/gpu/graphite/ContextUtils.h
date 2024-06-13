@@ -62,6 +62,7 @@ struct FragSkSLInfo {
     int fRenderStepUniformsTotalBytes = 0;
     int fPaintUniformsTotalBytes = 0;
     bool fHasGradientBuffer = false;
+    skia_private::TArray<uint32_t> fData = {};
 };
 
 std::tuple<UniquePaintParamsID, const UniformDataBlock*, const TextureDataBlock*> ExtractPaintData(
