@@ -296,6 +296,111 @@ void runtime_effect_test(const KeyContext& keyContext,
     SkASSERT(precompileIDs.size() == 8);
 }
 
+void blend_subtest(const KeyContext& keyContext,
+                   PipelineDataGatherer* gatherer,
+                   skiatest::Reporter* reporter) {
+    // The BlendMode PrecompileBlender only ever has 1 combination
+    {
+        PaintOptions paintOptions;
+        paintOptions.setBlenders({ PrecompileBlenders::Mode(SkBlendMode::kColorDodge) });
+
+        run_test(keyContext, gatherer, reporter, paintOptions, /* expectedNumOptions= */ 1);
+    }
+
+    // Specifying the BlendMode PrecompileBlender by SkBlendMode should also only ever
+    // yield 1 combination.
+    {
+        PaintOptions paintOptions;
+        paintOptions.setBlendModes({ SkBlendMode::kSrcOver });
+
+        run_test(keyContext, gatherer, reporter, paintOptions, /* expectedNumOptions= */ 1);
+    }
+
+    // The Arithmetic PrecompileBlender only ever has 1 combination
+    {
+        PaintOptions paintOptions;
+        paintOptions.setBlenders({ PrecompileBlenders::Arithmetic() });
+
+        run_test(keyContext, gatherer, reporter, paintOptions, /* expectedNumOptions= */ 1);
+    }
+}
+
+void shader_subtest(const KeyContext& keyContext,
+                    PipelineDataGatherer* gatherer,
+                    skiatest::Reporter* reporter) {
+    {
+        PaintOptions paintOptions;
+        paintOptions.setShaders({ PrecompileShaders::Empty() });
+
+        run_test(keyContext, gatherer, reporter, paintOptions, /* expectedNumOptions= */ 1);
+    }
+
+    {
+        PaintOptions paintOptions;
+        paintOptions.setShaders({ PrecompileShaders::Color() });
+
+        run_test(keyContext, gatherer, reporter, paintOptions, /* expectedNumOptions= */ 1);
+    }
+
+    {
+        const SkBlendMode kBlendModes[] = { SkBlendMode::kModulate };
+        PaintOptions paintOptions;
+        paintOptions.setShaders(
+                { PrecompileShaders::Blend(SkSpan<const SkBlendMode>(kBlendModes),
+                                           { PrecompileShaders::Color() },
+                                           { PrecompileShaders::MakeFractalNoise() }) });
+
+        run_test(keyContext, gatherer, reporter, paintOptions, /* expectedNumOptions= */ 1);
+    }
+
+    {
+        PaintOptions paintOptions;
+        paintOptions.setShaders({ PrecompileShaders::CoordClamp({ PrecompileShaders::Image() }) });
+
+        run_test(keyContext, gatherer, reporter, paintOptions, /* expectedNumOptions= */ 1);
+    }
+
+    {
+        PaintOptions paintOptions;
+        paintOptions.setShaders({ PrecompileShaders::Image(), PrecompileShaders::RawImage() });
+
+        run_test(keyContext, gatherer, reporter, paintOptions, /* expectedNumOptions= */ 2);
+    }
+
+    {
+        PaintOptions paintOptions;
+        paintOptions.setShaders({ PrecompileShaders::MakeFractalNoise(),
+                                  PrecompileShaders::MakeTurbulence() });
+
+        run_test(keyContext, gatherer, reporter, paintOptions, /* expectedNumOptions= */ 2);
+    }
+
+    {
+        PaintOptions paintOptions;
+        paintOptions.setShaders({ PrecompileShaders::LinearGradient(),
+                                  PrecompileShaders::RadialGradient(),
+                                  PrecompileShaders::TwoPointConicalGradient(),
+                                  PrecompileShaders::SweepGradient() });
+
+        run_test(keyContext, gatherer, reporter, paintOptions, /* expectedNumOptions= */ 2);
+    }
+
+    {
+        PaintOptions paintOptions;
+        paintOptions.setShaders({ PrecompileShaders::Picture() });
+
+        run_test(keyContext, gatherer, reporter, paintOptions, /* expectedNumOptions= */ 2);
+    }
+
+    {
+        PaintOptions paintOptions;
+        paintOptions.setShaders(
+                { PrecompileShaders::LocalMatrix({ PrecompileShaders::LinearGradient() }) });
+
+        run_test(keyContext, gatherer, reporter, paintOptions, /* expectedNumOptions= */ 2);
+    }
+}
+
 } // anonymous namespace
 
 DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(CombinationBuilderTest, reporter, context,
@@ -322,32 +427,8 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(CombinationBuilderTest, reporter, context,
         run_test(keyContext, &gatherer, reporter, paintOptions, /* expectedNumOptions= */ 1);
     }
 
-    // The BlendMode PrecompileBlender only ever has 1 combination
-    {
-        PaintOptions paintOptions;
-        paintOptions.setBlenders({ PrecompileBlenders::Mode(SkBlendMode::kColorDodge) });
-
-        run_test(keyContext, &gatherer, reporter, paintOptions, /* expectedNumOptions= */ 1);
-    }
-
-    // Specifying the BlendMode PrecompileBlender by SkBlendMode should also only ever
-    // yield 1 combination.
-    {
-        SkBlendMode blendModes[] = { SkBlendMode::kSrcOver };
-
-        PaintOptions paintOptions;
-        paintOptions.setBlendModes(blendModes);
-
-        run_test(keyContext, &gatherer, reporter, paintOptions, /* expectedNumOptions= */ 1);
-    }
-
-    // The Arithmetic PrecompileBlender only ever has 1 combination
-    {
-        PaintOptions paintOptions;
-        paintOptions.setBlenders({ PrecompileBlenders::Arithmetic() });
-
-        run_test(keyContext, &gatherer, reporter, paintOptions, /* expectedNumOptions= */ 1);
-    }
+    blend_subtest(keyContext, &gatherer, reporter);
+    shader_subtest(keyContext, &gatherer, reporter);
 
     no_blend_mode_option_test(keyContext, &gatherer, reporter);
     big_test(keyContext, &gatherer, reporter);
