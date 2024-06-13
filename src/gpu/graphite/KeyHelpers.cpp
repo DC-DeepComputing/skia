@@ -226,7 +226,7 @@ void add_gradient_postamble(const GradientShaderBlocks::GradientData& gradData,
 
     if (gradData.fNumStops > kInternalStopLimit) {
         gatherer->write(gradData.fNumStops);
-        if (gradData.fUseStorageBuffer) {
+        if (gradData.fUseStorageBuffer1) {
             gatherer->write(bufferOffset);
         }
     }
@@ -312,9 +312,9 @@ void add_conical_gradient_uniform_data(const ShaderCodeDictionary* dict,
 // Writes the color and offset data directly in the gatherer gradient buffer and returns the
 // offset the data begins at in the buffer.
 static int write_color_and_offset_bufdata(int numStops,
-                                           const SkPMColor4f* colors,
-                                           const float* offsets,
-                                           PipelineDataGatherer* gatherer) {
+                                          const SkPMColor4f* colors,
+                                          const float* offsets,
+                                          PipelineDataGatherer* gatherer) {
     auto [dstData, bufferOffset] = gatherer->allocateGradientData(numStops * 5);
     for (int i = 0; i < numStops; i++) {
         SkColor4f unpremulColor = colors[i].unpremul();
@@ -333,14 +333,19 @@ static int write_color_and_offset_bufdata(int numStops,
     return bufferOffset;
 }
 
-GradientShaderBlocks::GradientData::GradientData(SkShaderBase::GradientType type, int numStops)
+GradientShaderBlocks::GradientData::GradientData(SkShaderBase::GradientType type,
+                                                 int numStops,
+                                                 bool useStorageBuffer)
         : fType(type)
         , fPoints{{0.0f, 0.0f}, {0.0f, 0.0f}}
         , fRadii{0.0f, 0.0f}
         , fBias(0.0f)
         , fScale(0.0f)
         , fTM(SkTileMode::kClamp)
-        , fNumStops(numStops) {
+        , fNumStops(numStops)
+        , fUseStorageBuffer1(useStorageBuffer)
+        , fSrcColors1(nullptr)
+        , fSrcOffsets1(nullptr) {
     sk_bzero(fColors, sizeof(fColors));
     sk_bzero(fOffsets, sizeof(fOffsets));
 }
@@ -355,15 +360,16 @@ GradientShaderBlocks::GradientData::GradientData(SkShaderBase::GradientType type
                                                  const float* offsets,
                                                  sk_sp<TextureProxy> colorsAndOffsetsProxy,
                                                  bool useStorageBuffer,
-                                                 const SkGradientShader::Interpolation& interp)
+                                                 const SkGradientShader::Interpolation& interp,
+                                                 bool foo)
         : fType(type)
         , fBias(bias)
         , fScale(scale)
         , fTM(tm)
         , fNumStops(numStops)
-        , fUseStorageBuffer(useStorageBuffer)
-        , fSrcColors(colors)
-        , fSrcOffsets(offsets)
+        , fUseStorageBuffer1(useStorageBuffer)
+        , fSrcColors1(colors)
+        , fSrcOffsets1(offsets)
         , fInterpolation(interp) {
     SkASSERT(fNumStops >= 1);
 
@@ -390,7 +396,7 @@ GradientShaderBlocks::GradientData::GradientData(SkShaderBase::GradientType type
             rawOffsets[i] = rawOffsets[fNumStops-1];
         }
     } else {
-        if (!fUseStorageBuffer) {
+        if (!fUseStorageBuffer1) {
             fColorsAndOffsetsProxy = std::move(colorsAndOffsetsProxy);
             SkASSERT(fColorsAndOffsetsProxy);
         }
@@ -404,11 +410,12 @@ void GradientShaderBlocks::AddBlock(const KeyContext& keyContext,
     auto dict = keyContext.dict();
 
     int bufferOffset = 0;
-    if (gradData.fNumStops > GradientData::kNumInternalStorageStops && gatherer) {
-        if (gradData.fUseStorageBuffer) {
+    if (gradData.fNumStops > GradientData::kNumInternalStorageStops && gatherer &&
+        gradData.fSrcColors1 && gradData.fSrcOffsets1) {
+        if (gradData.fUseStorageBuffer1) {
             bufferOffset = write_color_and_offset_bufdata(gradData.fNumStops,
-                                                          gradData.fSrcColors,
-                                                          gradData.fSrcOffsets,
+                                                          gradData.fSrcColors1,
+                                                          gradData.fSrcOffsets1,
                                                           gatherer);
         } else {
             SkASSERT(gradData.fColorsAndOffsetsProxy);
@@ -424,7 +431,7 @@ void GradientShaderBlocks::AddBlock(const KeyContext& keyContext,
             codeSnippetID =
                     gradData.fNumStops <= 4 ? BuiltInCodeSnippetID::kLinearGradientShader4
                     : gradData.fNumStops <= 8 ? BuiltInCodeSnippetID::kLinearGradientShader8
-                        : gradData.fUseStorageBuffer
+                        : gradData.fUseStorageBuffer1
                             ? BuiltInCodeSnippetID::kLinearGradientShaderBuffer
                             : BuiltInCodeSnippetID::kLinearGradientShaderTexture;
             add_linear_gradient_uniform_data(dict, codeSnippetID, gradData, bufferOffset, gatherer);
@@ -433,7 +440,7 @@ void GradientShaderBlocks::AddBlock(const KeyContext& keyContext,
             codeSnippetID =
                     gradData.fNumStops <= 4 ? BuiltInCodeSnippetID::kRadialGradientShader4
                     : gradData.fNumStops <= 8 ? BuiltInCodeSnippetID::kRadialGradientShader8
-                        : gradData.fUseStorageBuffer
+                        : gradData.fUseStorageBuffer1
                             ? BuiltInCodeSnippetID::kRadialGradientShaderBuffer
                             : BuiltInCodeSnippetID::kRadialGradientShaderTexture;
             add_radial_gradient_uniform_data(dict, codeSnippetID, gradData, bufferOffset, gatherer);
@@ -442,7 +449,7 @@ void GradientShaderBlocks::AddBlock(const KeyContext& keyContext,
             codeSnippetID =
                     gradData.fNumStops <= 4 ? BuiltInCodeSnippetID::kSweepGradientShader4
                     : gradData.fNumStops <= 8 ? BuiltInCodeSnippetID::kSweepGradientShader8
-                        : gradData.fUseStorageBuffer
+                        : gradData.fUseStorageBuffer1
                             ? BuiltInCodeSnippetID::kSweepGradientShaderBuffer
                             : BuiltInCodeSnippetID::kSweepGradientShaderTexture;
             add_sweep_gradient_uniform_data(dict, codeSnippetID, gradData, bufferOffset, gatherer);
@@ -451,7 +458,7 @@ void GradientShaderBlocks::AddBlock(const KeyContext& keyContext,
             codeSnippetID =
                     gradData.fNumStops <= 4 ? BuiltInCodeSnippetID::kConicalGradientShader4
                     : gradData.fNumStops <= 8 ? BuiltInCodeSnippetID::kConicalGradientShader8
-                        : gradData.fUseStorageBuffer
+                        : gradData.fUseStorageBuffer1
                             ? BuiltInCodeSnippetID::kConicalGradientShaderBuffer
                             : BuiltInCodeSnippetID::kConicalGradientShaderTexture;
             add_conical_gradient_uniform_data(dict, codeSnippetID, gradData, bufferOffset, gatherer);
@@ -2211,7 +2218,7 @@ static void add_gradient_to_key(const KeyContext& keyContext,
     sk_sp<TextureProxy> proxy;
 
     bool useStorageBuffer = keyContext.caps()->storageBufferSupport() &&
-                                keyContext.caps()->storageBufferPreferred();
+                                keyContext.caps()->storageBufferPreferred(); //$$
     if (colorCount > GradientShaderBlocks::GradientData::kNumInternalStorageStops
             && !useStorageBuffer) {
         if (shader->cachedBitmap().empty()) {
@@ -2247,7 +2254,8 @@ static void add_gradient_to_key(const KeyContext& keyContext,
                                             positions,
                                             std::move(proxy),
                                             useStorageBuffer,
-                                            shader->getInterpolation());
+                                            shader->getInterpolation(),
+                                            true); //$$
 
     make_interpolated_to_dst(keyContext,
                              builder,
