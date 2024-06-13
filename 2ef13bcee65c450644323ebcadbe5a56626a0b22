@@ -16,6 +16,24 @@
       "message": "Would it make more sense to do something like:\n```\nconstexpr uint8_t defaultContrast \u003d InternalContrastFromExternal(SK_GAMMA_CONTRAST);\nif (InternalContrastFromExternal(contrast) \u003d\u003d defaultContrast) { ... }\n```\n\nAs it stands, you still won\u0027t get cache hits passing in SK_GAMMA_CONTRAST/SK_GAMMA_EXPONENT. Alternately, we could round-trip the passed in contrast and gamma values through the toInternal/toExternal, and then compare those to the defaults that you already have here?",
       "revId": "2ef13bcee65c450644323ebcadbe5a56626a0b22",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ebc1d81_1a679893",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-06-13T15:22:54Z",
+      "side": 1,
+      "message": "Yeah, this is excessively difficult to follow due to the hacks to get DFT to work. Need to clean this up to make things more obvious.",
+      "parentUuid": "b33667ba_673177ca",
+      "revId": "2ef13bcee65c450644323ebcadbe5a56626a0b22",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
