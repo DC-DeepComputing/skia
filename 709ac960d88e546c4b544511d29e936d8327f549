@@ -16,6 +16,24 @@
       "message": "git cl format did this",
       "revId": "709ac960d88e546c4b544511d29e936d8327f549",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6bffb444_9815a6e7",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-06-13T13:33:34Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "a0218f4d_386557be",
+      "revId": "709ac960d88e546c4b544511d29e936d8327f549",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
