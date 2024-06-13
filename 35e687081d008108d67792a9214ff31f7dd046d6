@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fbf5050f_f555f365",
+        "filename": "include/gpu/graphite/precompile/PrecompileShader.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-06-13T13:37:36Z",
+      "side": 1,
+      "message": "comments on what these do? Even just pointers to the main API if that makes sense",
+      "range": {
+        "startLine": 28,
+        "startChar": 4,
+        "endLine": 32,
+        "endChar": 75
+      },
+      "revId": "35e687081d008108d67792a9214ff31f7dd046d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
