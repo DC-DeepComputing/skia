@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c0db7373_6c465c03",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-06-13T15:40:58Z",
+      "side": 1,
+      "message": "whoops, need to convert these",
+      "range": {
+        "startLine": 150,
+        "startChar": 37,
+        "endLine": 150,
+        "endChar": 52
+      },
+      "revId": "cc8942025c5fb52012d699531c1bd67a44ac877c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
