@@ -199,7 +199,16 @@ public:
         return SkImages::RasterFromBitmap(data);
     }
 
+#if defined(SK_USE_LEGACY_BLUR_RASTER)
     const SkBlurEngine* getBlurEngine() const override { return nullptr; }
+#else
+    bool useLegacyFilterResultBlur() const override { return false; }
+
+    const SkBlurEngine* getBlurEngine() const override {
+        return SkBlurEngine::GetRasterBlurEngine();
+    }
+#endif
+
 };
 
 } // anonymous namespace
