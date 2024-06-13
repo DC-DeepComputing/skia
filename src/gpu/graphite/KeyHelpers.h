@@ -91,7 +91,7 @@ struct GradientShaderBlocks {
         // This ctor is used during pre-compilation when we don't have enough information to
         // extract uniform data. However, we must be able to provide enough data to make all the
         // relevant decisions about which code snippets to use.
-        GradientData(SkShaderBase::GradientType, int numStops);
+        GradientData(SkShaderBase::GradientType, int numStops, bool useStorageBuffer);
 
         // This ctor is used when extracting information from PaintParams. It must provide
         // enough data to generate the uniform data the selected code snippet will require.
@@ -105,7 +105,8 @@ struct GradientShaderBlocks {
                      const float* offsets,
                      sk_sp<TextureProxy> colorsAndOffsetsProxy,
                      bool useStorageBuffer,
-                     const SkGradientShader::Interpolation&);
+                     const SkGradientShader::Interpolation&,
+                     bool foo);
 
         bool operator==(const GradientData& rhs) const = delete;
         bool operator!=(const GradientData& rhs) const = delete;
@@ -121,7 +122,7 @@ struct GradientShaderBlocks {
 
         SkTileMode             fTM;
         int                    fNumStops;
-        bool                   fUseStorageBuffer;
+        bool                   fUseStorageBuffer1;
 
         // For gradients w/ <= kNumInternalStorageStops stops we use fColors and fOffsets.
         // The offsets are packed into a single float4 to save space when the layout is std140.
@@ -132,8 +133,8 @@ struct GradientShaderBlocks {
         SkPMColor4f                   fColors[kNumInternalStorageStops];
         SkV4                          fOffsets[kNumInternalStorageStops / 4];
         sk_sp<TextureProxy>           fColorsAndOffsetsProxy;
-        const SkPMColor4f*            fSrcColors;
-        const float*                  fSrcOffsets;
+        const SkPMColor4f*            fSrcColors1;
+        const float*                  fSrcOffsets1;
 
         SkGradientShader::Interpolation fInterpolation;
     };
