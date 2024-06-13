@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b87a9a51_95ea8d31",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-06-13T15:46:04Z",
+      "side": 1,
+      "message": "All three of these should probably just be on SkScalerContextRec since that\u0027s the source of truth for the actual values, but that can be handled later.",
+      "range": {
+        "startLine": 162,
+        "startChar": 22,
+        "endLine": 162,
+        "endChar": 37
+      },
+      "revId": "36520d91d86528b347da6e8aa5887c99cbfc116e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
