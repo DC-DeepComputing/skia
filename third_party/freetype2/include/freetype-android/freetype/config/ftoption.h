@@ -729,7 +729,7 @@ FT_BEGIN_HEADER
    * the near future, since it is assumed that eventually those features are
    * added to the OpenType standard.
    */
-#define TT_CONFIG_OPTION_NO_BORING_EXPANSION
+/* #define TT_CONFIG_OPTION_NO_BORING_EXPANSION */
 
 
   /**************************************************************************
