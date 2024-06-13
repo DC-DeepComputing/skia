@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "59de3065_6d6d0f12",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-06-13T12:41:43Z",
+      "side": 1,
+      "message": "This cl makes the precompilation system sad",
+      "revId": "08b961cc9ee9a97c48a8bb8d9884725464da8727",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71e5aa8f_761b2e1c",
+        "filename": "src/core/SkBlurEngine.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-06-13T12:41:43Z",
+      "side": 1,
+      "message": "duplicate",
+      "range": {
+        "startLine": 321,
+        "startChar": 22,
+        "endLine": 321,
+        "endChar": 42
+      },
+      "revId": "08b961cc9ee9a97c48a8bb8d9884725464da8727",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
