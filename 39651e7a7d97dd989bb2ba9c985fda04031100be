@@ -16,6 +16,24 @@
       "message": "For both of these I\u0027m going to have to think about palettes a bit and the proper way to expose them. The current setup of index+overrides seems needed (in the sense that it models how a request is done and preserves information) but a case could be made for just returning the resolved palette (what actually gets used).\n\nWhat is returned from `SkTypeface::getVariationDesignPosition` is the resolved values, which makes the case for returning the fully resolved values of the palette. This would then logically treat the palette index as just a shorthand for one of the internal tables. On the other hand, it seems less likely that palettes end up modified than axes are modified, though maybe that is of little importance.\n\nIn any event I\u0027m thinking about it.",
       "revId": "39651e7a7d97dd989bb2ba9c985fda04031100be",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "26aa03f8_1a37e149",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-06-13T07:50:22Z",
+      "side": 1,
+      "message": "What do you mean \"both of these\"? - Did you intend to +1 this? An LGTM would be welcome as this change is needed to unblock activating fontations for COLRv0/COLRv1 in Chromium and implements the treatment of OOB `base_palette` analogously to what we\u0027re doing in the FreeType backend, compare:\nhttps://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/ports/SkFontHost_FreeType.cpp;l\u003d332?q\u003dskfonthost%20freetype",
+      "parentUuid": "1879ae0b_bc665ddf",
+      "revId": "39651e7a7d97dd989bb2ba9c985fda04031100be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
