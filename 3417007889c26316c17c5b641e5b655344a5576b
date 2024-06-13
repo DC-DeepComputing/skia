@@ -16,6 +16,23 @@
       "message": "Greg, Nicolette: Do the values that I\u0027m setting here make sense? I observed the need for this while continuing to exercise video decoding in Clank/Graphite locally to see the next place that it falls down and whether that\u0027s something that\u0027s hitting the core Skia hookup of external sampling or is before that core hookup.",
       "revId": "3417007889c26316c17c5b641e5b655344a5576b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2bb156f4_e5436f4e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 10537
+      },
+      "writtenOn": "2024-06-13T07:26:56Z",
+      "side": 1,
+      "message": "Greg: friendly ping, thanks!",
+      "revId": "3417007889c26316c17c5b641e5b655344a5576b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
