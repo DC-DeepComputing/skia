@@ -50,6 +50,30 @@
       ],
       "revId": "0f47a9333edb589e6908370882d24eb68705db8f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "31b26fee_bc44f185",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 413,
+      "author": {
+        "id": 9562
+      },
+      "writtenOn": "2024-06-14T16:20:26Z",
+      "side": 0,
+      "message": "I\u0027m only doing the assert in the non-emscripten path because in the emscripten path it currently still returns a bool. It\u0027ll take some extra time for us to update the emscripten bindings.\n\nI\u0027m not sure it\u0027s going to be worthwhile to keep the old path once Emscripten is fully updated because there will be quite a few additional breaking changes in Emscripten, so old versions of Emscripten used to build Skia wasm won\u0027t work anyway",
+      "parentUuid": "68c8526e_5744bfc4",
+      "range": {
+        "startLine": 411,
+        "startChar": 5,
+        "endLine": 413,
+        "endChar": 92
+      },
+      "revId": "0f47a9333edb589e6908370882d24eb68705db8f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
