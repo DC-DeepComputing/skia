@@ -16,6 +16,24 @@
       "message": "Unfortunately, when we remove this file it needs to be removed from the Bazel build and the `gn/ports.gni` updated. I was trying to verify all of this locally, but now I\"m fighting with Bazel not wanting to build Rust for some reason on my machine.",
       "revId": "da894802d05c142fd854ecde33a9598521eb3152",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7337050_d32dc8da",
+        "filename": "src/ports/SkFontMgr_fontations_empty.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-06-14T18:24:27Z",
+      "side": 1,
+      "message": "Turns out the reason Bazel wasn\u0027t building Rust was because I was trying to do an IWYU build and https://skbug.com/347279222 has more details about that.",
+      "parentUuid": "6fc5f953_91723b76",
+      "revId": "da894802d05c142fd854ecde33a9598521eb3152",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
