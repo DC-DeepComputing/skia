@@ -183,6 +183,7 @@ private:
         kAtomicStore_SpecialIntrinsic,
         kStorageBarrier_SpecialIntrinsic,
         kWorkgroupBarrier_SpecialIntrinsic,
+        kLoadFloatBuffer_SpecialIntrinsic,
     };
 
     enum class Precision {
@@ -898,6 +899,8 @@ SPIRVCodeGenerator::Intrinsic SPIRVCodeGenerator::getIntrinsic(IntrinsicKind ik)
 
         case k_storageBarrier_IntrinsicKind:   return SPECIAL(StorageBarrier);
         case k_workgroupBarrier_IntrinsicKind: return SPECIAL(WorkgroupBarrier);
+
+        case k_loadFloatBuffer_IntrinsicKind: return SPECIAL(LoadFloatBuffer);
         default:
             return Intrinsic{kInvalid_IntrinsicOpcodeKind, 0, 0, 0, 0};
     }
@@ -2364,6 +2367,30 @@ SpvId SPIRVCodeGenerator::writeSpecialIntrinsic(const FunctionCall& c, SpecialIn
                                    scopeId,  // memory scope
                                    memorySemanticsId,
                                    out);
+            break;
+        }
+        case kLoadFloatBuffer_SpecialIntrinsic: {
+            const Symbol* floatBufferArraySymbol =
+                this->fProgram.fSymbols->find(this->fCaps.fFloatBufferArrayName);
+            SkASSERT(floatBufferArraySymbol->is<FieldSymbol>());
+
+            const FieldSymbol& floatBufferArrayField = floatBufferArraySymbol->as<FieldSymbol>();
+            auto floatBufferArrayAccess = std::make_unique<FieldAccess>(
+                                                c.position(),
+                                                std::make_unique<VariableReference>(
+                                                   c.position(),
+                                                   &floatBufferArrayField.owner(),
+                                                   VariableRefKind::kRead
+                                               ),
+                                               floatBufferArrayField.fieldIndex(),
+                                               FieldAccessOwnerKind::kAnonymousInterfaceBlock);
+            IndexExpression floatBufferArrayIndex(
+                                fContext,
+                                c.position(),
+                                std::move(floatBufferArrayAccess),
+                                c.arguments()[0]->clone());
+
+            result = this->writeIndexExpression(floatBufferArrayIndex, out);
             break;
         }
     }
