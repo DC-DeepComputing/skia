@@ -40,15 +40,6 @@ void PrecompileCombinations(Context* context,
                             Coverage coverage);
 
 //--------------------------------------------------------------------------------------------------
-
-class PrecompileColorFilter : public PrecompileBase {
-public:
-    PrecompileColorFilter() : PrecompileBase(Type::kColorFilter) {}
-
-    sk_sp<PrecompileColorFilter> makeComposed(sk_sp<PrecompileColorFilter> inner) const;
-};
-
-//--------------------------------------------------------------------------------------------------
 class PrecompileImageFilter : public PrecompileBase {
 public:
     virtual sk_sp<PrecompileColorFilter> isColorFilterNode() const { return nullptr; }
