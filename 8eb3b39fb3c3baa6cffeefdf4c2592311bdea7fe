@@ -52,6 +52,24 @@
       "parentUuid": "dc55cd7f_e8827a75",
       "revId": "8eb3b39fb3c3baa6cffeefdf4c2592311bdea7fe",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cb426b2c_fe0b1428",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-06-14T18:45:53Z",
+      "side": 1,
+      "message": "Ah, it is, it\u0027s just not obvious. `SkFontMgr_Fontations.h` declares `SK_SPI SkFontMgr_New_Fontations_Empty` and by being included here the definition is actually `SK_API`. It is kinda difficult to see, since it isn\u0027t actually present in this CL.",
+      "parentUuid": "651f48a9_620f7fce",
+      "revId": "8eb3b39fb3c3baa6cffeefdf4c2592311bdea7fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
