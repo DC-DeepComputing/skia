@@ -21,9 +21,9 @@ class PaintOptionsPriv {
 public:
     using ProcessCombination = PaintOptions::ProcessCombination;
 
-    void addColorFilter(sk_sp<PrecompileColorFilter> cf) {
-        fPaintOptions->addColorFilter(std::move(cf));
-    }
+    void addColorFilter(sk_sp<PrecompileColorFilter> cf); // {
+        //fPaintOptions->addColorFilter(std::move(cf));
+    //}
 
     void setClipShaders(SkSpan<const sk_sp<PrecompileShader>> clipShaders) {
         fPaintOptions->setClipShaders(std::move(clipShaders));
