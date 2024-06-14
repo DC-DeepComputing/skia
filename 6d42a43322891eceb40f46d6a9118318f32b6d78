@@ -33,6 +33,29 @@
       "message": "Adding Greg for second +1",
       "revId": "6d42a43322891eceb40f46d6a9118318f32b6d78",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "24887818_9ff0eba7",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 434,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-06-14T13:13:18Z",
+      "side": 1,
+      "message": "Mostly just commenting to remind ourselves later, but I don\u0027t think this is good to be querying the backend of Dawn. The entire point of using Dawn is to not know this. We really need to get Dawn to add a query for us that can be used in native and WebGPU to say if storage buffer support is available.",
+      "range": {
+        "startLine": 434,
+        "startChar": 28,
+        "endLine": 434,
+        "endChar": 73
+      },
+      "revId": "6d42a43322891eceb40f46d6a9118318f32b6d78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
