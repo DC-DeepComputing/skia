@@ -43,6 +43,7 @@
 #include "src/sksl/ir/SkSLExpressionStatement.h"
 #include "src/sksl/ir/SkSLExtension.h"
 #include "src/sksl/ir/SkSLFieldAccess.h"
+#include "src/sksl/ir/SkSLFieldSymbol.h"
 #include "src/sksl/ir/SkSLForStatement.h"
 #include "src/sksl/ir/SkSLFunctionCall.h"
 #include "src/sksl/ir/SkSLFunctionDeclaration.h"
@@ -1310,6 +1311,31 @@ bool MetalCodeGenerator::writeIntrinsicCall(const FunctionCall& c, IntrinsicKind
             this->writeExpression(*c.arguments()[1], Precedence::kSequence);
             this->write(", memory_order_relaxed)");
             return true;
+        case k_loadFloatBuffer_IntrinsicKind: {
+            const Symbol* floatBufferArraySymbol =
+                this->fProgram.fSymbols->find(this->fCaps.fFloatBufferArrayName);
+            SkASSERT(floatBufferArraySymbol->is<FieldSymbol>());
+
+            const FieldSymbol& floatBufferArrayField = floatBufferArraySymbol->as<FieldSymbol>();
+            auto floatBufferArrayAccess = std::make_unique<FieldAccess>(
+                                                c.position(),
+                                                std::make_unique<VariableReference>(
+                                                   c.position(),
+                                                   &floatBufferArrayField.owner(),
+                                                   VariableRefKind::kRead
+                                               ),
+                                               floatBufferArrayField.fieldIndex(),
+                                               FieldAccessOwnerKind::kAnonymousInterfaceBlock);
+
+            IndexExpression floatBufferArrayIndex(
+                                fContext,
+                                c.position(),
+                                std::move(floatBufferArrayAccess),
+                                c.arguments()[0]->clone());
+
+            this->writeIndexExpression(floatBufferArrayIndex);
+            return true;
+        }
         default:
             return false;
     }
@@ -3583,6 +3609,14 @@ MetalCodeGenerator::Requirements MetalCodeGenerator::requirements(const Function
                     return reqs;
                 }
             }
+        }
+
+        // Loading data from the instrinsic gradient buffer requires access to the Globals struct.
+        if (f.intrinsicKind() == IntrinsicKind::k_loadFloatBuffer_IntrinsicKind) {
+            Requirements reqs = kGlobals_Requirement;
+            fRequirements.set(&f, reqs);
+            return reqs;
+
         }
         // We never found a definition for this declared function, but it's legal to prototype a
         // function without ever giving a definition, as long as you don't call it.

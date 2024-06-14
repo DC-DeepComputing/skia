@@ -1876,8 +1876,8 @@ ShaderCodeDictionary::ShaderCodeDictionary() {
             SnippetRequirementFlags::kLocalCoords | SnippetRequirementFlags::kGradientBuffer,
             { },     // no samplers
             kLinearGradientBufferName,
-            GenerateGradientBufferExpression,
-            GenerateGradientBufferPreamble,
+            GenerateDefaultExpression,
+            GenerateDefaultPreamble,
             kNoChildren
     };
     fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kRadialGradientShader4] = {
@@ -1916,8 +1916,8 @@ ShaderCodeDictionary::ShaderCodeDictionary() {
             SnippetRequirementFlags::kLocalCoords | SnippetRequirementFlags::kGradientBuffer,
             { },     // no samplers
             kRadialGradientBufferName,
-            GenerateGradientBufferExpression,
-            GenerateGradientBufferPreamble,
+            GenerateDefaultExpression,
+            GenerateDefaultPreamble,
             kNoChildren
     };
     fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kSweepGradientShader4] = {
@@ -1956,8 +1956,8 @@ ShaderCodeDictionary::ShaderCodeDictionary() {
             SnippetRequirementFlags::kLocalCoords | SnippetRequirementFlags::kGradientBuffer,
             { },     // no samplers
             kSweepGradientBufferName,
-            GenerateGradientBufferExpression,
-            GenerateGradientBufferPreamble,
+            GenerateDefaultExpression,
+            GenerateDefaultPreamble,
             kNoChildren
     };
     fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kConicalGradientShader4] = {
@@ -1996,8 +1996,8 @@ ShaderCodeDictionary::ShaderCodeDictionary() {
             SnippetRequirementFlags::kLocalCoords | SnippetRequirementFlags::kGradientBuffer,
             { },     // no samplers
             kConicalGradientBufferName,
-            GenerateGradientBufferExpression,
-            GenerateGradientBufferPreamble,
+            GenerateDefaultExpression,
+            GenerateDefaultPreamble,
             kNoChildren
     };
     fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kLocalMatrixShader] = {
