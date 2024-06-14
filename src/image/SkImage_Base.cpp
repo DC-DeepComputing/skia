@@ -8,10 +8,13 @@
 #include "src/image/SkImage_Base.h"
 
 #include "include/core/SkBitmap.h"
+#include "include/core/SkBlendMode.h"
+#include "include/core/SkCanvas.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkColorType.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkImageInfo.h"
+#include "include/core/SkPaint.h"
 #include "include/core/SkPixmap.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkSize.h"
@@ -75,6 +78,22 @@ bool SkImage_Base::onAsLegacyBitmap(GrDirectContext* dContext, SkBitmap* bitmap)
 
     bitmap->setImmutable();
     return true;
+}
+
+sk_sp<SkImage> SkImage_Base::onMakeScaled(const SkImageInfo& info,
+                                          const SkSamplingOptions& sampling) const {
+    auto surf = this->onMakeSurface(info);
+    if (!surf) {
+        return nullptr;
+    }
+
+    SkPaint paint;
+    paint.setBlendMode(SkBlendMode::kSrc);
+    surf->getCanvas()->drawImageRect(this,
+                                     SkRect::MakeIWH(info.width(), info.height()),
+                                     sampling,
+                                     &paint);
+    return surf->makeImageSnapshot();
 }
 
 sk_sp<SkImage> SkImage_Base::makeSubset(GrDirectContext* direct, const SkIRect& subset) const {
