@@ -10,6 +10,7 @@
 #include "include/core/SkSamplingOptions.h"
 #include "include/gpu/graphite/precompile/PrecompileBase.h"
 #include "include/gpu/graphite/precompile/PrecompileBlender.h"
+#include "include/gpu/graphite/precompile/PrecompileColorFilter.h"
 #include "include/gpu/graphite/precompile/PrecompileShader.h"
 #include "src/core/SkColorSpacePriv.h"
 #include "src/core/SkKnownRuntimeEffects.h"
