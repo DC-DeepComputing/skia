@@ -10,6 +10,7 @@
 
 #include "src/base/SkEnumBitMask.h"
 #include "src/gpu/graphite/FactoryFunctions.h"
+#include "src/gpu/graphite/precompile/PaintOptionsPriv.h"
 
 namespace skgpu::graphite {
 
@@ -54,6 +55,11 @@ namespace PrecompileShadersPriv {
     // TODO: this factory function should go away (it is only used by the PrecompileShaders::Picture
     // entry point now).
     sk_sp<PrecompileShader> LocalMatrixBothVariants(SkSpan<const sk_sp<PrecompileShader>> wrapped);
+
+    void CreateBlurImagefilterPipelines(
+            const KeyContext& keyContext,
+            PipelineDataGatherer* gatherer,
+            const PaintOptionsPriv::ProcessCombination& processCombination);
 
 } // namespace PrecompileShadersPriv
 
