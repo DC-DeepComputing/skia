@@ -98,6 +98,30 @@
       },
       "revId": "0f47a9333edb589e6908370882d24eb68705db8f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d7258bab_90877932",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 413,
+      "author": {
+        "id": 9562
+      },
+      "writtenOn": "2024-06-14T16:37:46Z",
+      "side": 0,
+      "message": "Updated. also brought back the version checks for now",
+      "parentUuid": "79c69ec2_4de91987",
+      "range": {
+        "startLine": 411,
+        "startChar": 5,
+        "endLine": 413,
+        "endChar": 92
+      },
+      "revId": "0f47a9333edb589e6908370882d24eb68705db8f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
