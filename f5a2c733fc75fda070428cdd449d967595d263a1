@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8cd22b13_36ac01b9",
+        "filename": "src/ports/SkFontMgr_fontations_empty.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-06-14T14:17:07Z",
+      "side": 1,
+      "message": "In fact, at this point it seems a little strange that this header exists? It seems the entirety of `SkFontMgr_Fontations_Empty` would be better declared and defined in an anonymous namespace in the .cpp file.",
+      "revId": "f5a2c733fc75fda070428cdd449d967595d263a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6a89d3a1_6f774d94",
         "filename": "src/ports/SkFontMgr_fontations_empty.cpp",
         "patchSetId": 1
