@@ -312,9 +312,9 @@ void add_conical_gradient_uniform_data(const ShaderCodeDictionary* dict,
 // Writes the color and offset data directly in the gatherer gradient buffer and returns the
 // offset the data begins at in the buffer.
 static int write_color_and_offset_bufdata(int numStops,
-                                           const SkPMColor4f* colors,
-                                           const float* offsets,
-                                           PipelineDataGatherer* gatherer) {
+                                          const SkPMColor4f* colors,
+                                          const float* offsets,
+                                          PipelineDataGatherer* gatherer) {
     auto [dstData, bufferOffset] = gatherer->allocateGradientData(numStops * 5);
     for (int i = 0; i < numStops; i++) {
         SkColor4f unpremulColor = colors[i].unpremul();
@@ -333,14 +333,19 @@ static int write_color_and_offset_bufdata(int numStops,
     return bufferOffset;
 }
 
-GradientShaderBlocks::GradientData::GradientData(SkShaderBase::GradientType type, int numStops)
+GradientShaderBlocks::GradientData::GradientData(SkShaderBase::GradientType type,
+                                                 int numStops,
+                                                 bool useStorageBuffer)
         : fType(type)
         , fPoints{{0.0f, 0.0f}, {0.0f, 0.0f}}
         , fRadii{0.0f, 0.0f}
         , fBias(0.0f)
         , fScale(0.0f)
         , fTM(SkTileMode::kClamp)
-        , fNumStops(numStops) {
+        , fNumStops(numStops)
+        , fUseStorageBuffer(useStorageBuffer)
+        , fSrcColors(nullptr)
+        , fSrcOffsets(nullptr) {
     sk_bzero(fColors, sizeof(fColors));
     sk_bzero(fOffsets, sizeof(fOffsets));
 }
@@ -404,7 +409,7 @@ void GradientShaderBlocks::AddBlock(const KeyContext& keyContext,
     auto dict = keyContext.dict();
 
     int bufferOffset = 0;
-    if (gradData.fNumStops > GradientData::kNumInternalStorageStops && gatherer) {
+    if (gradData.fNumStops > GradientData::kNumInternalStorageStops && keyContext.recorder()) {
         if (gradData.fUseStorageBuffer) {
             bufferOffset = write_color_and_offset_bufdata(gradData.fNumStops,
                                                           gradData.fSrcColors,
@@ -2211,7 +2216,7 @@ static void add_gradient_to_key(const KeyContext& keyContext,
     sk_sp<TextureProxy> proxy;
 
     bool useStorageBuffer = keyContext.caps()->storageBufferSupport() &&
-                                keyContext.caps()->storageBufferPreferred();
+                            keyContext.caps()->storageBufferPreferred();
     if (colorCount > GradientShaderBlocks::GradientData::kNumInternalStorageStops
             && !useStorageBuffer) {
         if (shader->cachedBitmap().empty()) {
