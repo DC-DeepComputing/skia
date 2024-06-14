@@ -41,6 +41,7 @@ size_t DawnFormatBytesPerBlock(wgpu::TextureFormat format) {
 #if !defined(__EMSCRIPTEN__)
         case wgpu::TextureFormat::R16Unorm:              return 2;
         case wgpu::TextureFormat::RG16Unorm:             return 4;
+        case wgpu::TextureFormat::External:              return 4;
 #endif
         default:
             SkUNREACHABLE;
