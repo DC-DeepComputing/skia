@@ -1,0 +1,107 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b65e4c01_e345ba90",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-14T18:56:41Z",
+      "side": 1,
+      "message": "Awesome!",
+      "revId": "5de65dde31d04f90d0f66084b79901617b543468",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85375683_900c7d88",
+        "filename": "resources/sksl/intrinsics/LoadFloatBuffer.sksl",
+        "patchSetId": 6
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-14T18:56:41Z",
+      "side": 1,
+      "message": "nit: for this test, maybe just have it be named `FloatBuffer`?",
+      "range": {
+        "startLine": 1,
+        "startChar": 32,
+        "endLine": 1,
+        "endChar": 48
+      },
+      "revId": "5de65dde31d04f90d0f66084b79901617b543468",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b66ba42b_90a32edd",
+        "filename": "src/sksl/SkSLUtil.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-14T18:56:41Z",
+      "side": 1,
+      "message": "what do you think about initializing this to null and if it\u0027s not set then we would generate an error when attempting to use the new intrinsic load function?",
+      "range": {
+        "startLine": 160,
+        "startChar": 41,
+        "endLine": 160,
+        "endChar": 57
+      },
+      "revId": "5de65dde31d04f90d0f66084b79901617b543468",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a54e0a59_d8163f6e",
+        "filename": "src/sksl/codegen/SkSLGLSLCodeGenerator.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 934,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-14T18:56:41Z",
+      "side": 1,
+      "message": "This is basically the same for all the backends. Setting aside the complexities of directly writing spir-v, we could just have this write the `floatBufferArrayField.owner()` and then construct the field access and index expression manually in each language with a hard-coded set of appends to avoid having to re-create IR.\n\nThat said, creating the FieldAccess and VariableReference are pretty lightweight if we\u0027re coming from a memory pool. Do we have to clone the index expression node `c.arguments()[0]`? Or can we just reference it in `floatBufferArrayIndex`?\n\nIf we can avoid that clone, maybe instead of having a per-backend hard-coded handling of the expression (as I initially proposed), we just take this IR construction logic and move it to a shared function for the backend generators to call? @Arman do you know if such a place exists for universal polyfills?",
+      "range": {
+        "startLine": 918,
+        "startChar": 0,
+        "endLine": 934,
+        "endChar": 62
+      },
+      "revId": "5de65dde31d04f90d0f66084b79901617b543468",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d24dd233_2b310140",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 3619,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-14T18:56:41Z",
+      "side": 1,
+      "message": "nit: remove newline",
+      "revId": "5de65dde31d04f90d0f66084b79901617b543468",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
