@@ -45,6 +45,7 @@
 #include "src/sksl/ir/SkSLExpression.h"
 #include "src/sksl/ir/SkSLExpressionStatement.h"
 #include "src/sksl/ir/SkSLFieldAccess.h"
+#include "src/sksl/ir/SkSLFieldSymbol.h"
 #include "src/sksl/ir/SkSLForStatement.h"
 #include "src/sksl/ir/SkSLFunctionCall.h"
 #include "src/sksl/ir/SkSLFunctionDeclaration.h"
@@ -3284,6 +3285,30 @@ std::string WGSLCodeGenerator::assembleIntrinsicCall(const FunctionCall& call,
 
         case k_unpackUnorm4x8_IntrinsicKind:
             return this->assembleSimpleIntrinsic("unpack4x8unorm", call);
+
+        case k_loadFloatBuffer_IntrinsicKind: {
+            const Symbol* floatBufferArraySymbol =
+                this->fProgram.fSymbols->find(this->fCaps.fFloatBufferArrayName);
+            SkASSERT(floatBufferArraySymbol->is<FieldSymbol>());
+
+            const FieldSymbol& floatBufferArrayField = floatBufferArraySymbol->as<FieldSymbol>();
+            auto floatBufferArrayAccess = std::make_unique<FieldAccess>(
+                                                call.position(),
+                                                std::make_unique<VariableReference>(
+                                                   call.position(),
+                                                   &floatBufferArrayField.owner(),
+                                                   VariableRefKind::kRead
+                                               ),
+                                               floatBufferArrayField.fieldIndex(),
+                                               FieldAccessOwnerKind::kAnonymousInterfaceBlock);
+            IndexExpression floatBufferArrayIndex(
+                                fContext,
+                                call.position(),
+                                std::move(floatBufferArrayAccess),
+                                call.arguments()[0]->clone());
+
+            return this->assembleIndexExpression(floatBufferArrayIndex);
+        }
 
         case k_clamp_IntrinsicKind:
         case k_max_IntrinsicKind:
