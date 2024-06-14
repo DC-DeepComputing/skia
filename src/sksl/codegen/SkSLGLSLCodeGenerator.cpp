@@ -40,6 +40,7 @@
 #include "src/sksl/ir/SkSLExpressionStatement.h"
 #include "src/sksl/ir/SkSLExtension.h"
 #include "src/sksl/ir/SkSLFieldAccess.h"
+#include "src/sksl/ir/SkSLFieldSymbol.h"
 #include "src/sksl/ir/SkSLForStatement.h"
 #include "src/sksl/ir/SkSLFunctionCall.h"
 #include "src/sksl/ir/SkSLFunctionDeclaration.h"
@@ -64,6 +65,8 @@
 #include "src/sksl/ir/SkSLSwitchCase.h"
 #include "src/sksl/ir/SkSLSwitchStatement.h"
 #include "src/sksl/ir/SkSLSwizzle.h"
+#include "src/sksl/ir/SkSLSymbol.h"
+#include "src/sksl/ir/SkSLSymbolTable.h"
 #include "src/sksl/ir/SkSLTernaryExpression.h"
 #include "src/sksl/ir/SkSLType.h"
 #include "src/sksl/ir/SkSLVarDeclarations.h"
@@ -75,6 +78,7 @@
 #include <cstdint>
 #include <memory>
 #include <string_view>
+#include <utility>
 #include <vector>
 
 namespace SkSL {
@@ -906,6 +910,30 @@ void GLSLCodeGenerator::writeFunctionCall(const FunctionCall& c) {
                 return;
             }
             break;
+        case k_loadFloatBuffer_IntrinsicKind: {
+            const Symbol* floatBufferArraySymbol =
+                this->fProgram.fSymbols->find(this->fCaps.fFloatBufferArrayName);
+            SkASSERT(floatBufferArraySymbol->is<FieldSymbol>());
+
+            const FieldSymbol& floatBufferArrayField = floatBufferArraySymbol->as<FieldSymbol>();
+            auto floatBufferArrayAccess = std::make_unique<FieldAccess>(
+                                                c.position(),
+                                                std::make_unique<VariableReference>(
+                                                   c.position(),
+                                                   &floatBufferArrayField.owner(),
+                                                   VariableRefKind::kRead
+                                               ),
+                                               floatBufferArrayField.fieldIndex(),
+                                               FieldAccessOwnerKind::kAnonymousInterfaceBlock);
+            IndexExpression floatBufferArrayIndex(
+                                fContext,
+                                c.position(),
+                                std::move(floatBufferArrayAccess),
+                                c.arguments()[0]->clone());
+
+            this->writeIndexExpression(floatBufferArrayIndex);
+            return;
+        }
         default:
             break;
     }
