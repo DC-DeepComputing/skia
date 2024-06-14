@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "45617264_d43ece89",
+        "filename": "src/ports/SkFontMgr_fontations_empty.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-06-14T14:59:21Z",
+      "side": 1,
+      "message": "Header deleted, class declaration and implementations moved to anonymous namespace.",
+      "parentUuid": "8cd22b13_36ac01b9",
+      "revId": "f5a2c733fc75fda070428cdd449d967595d263a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6a89d3a1_6f774d94",
@@ -31,6 +49,24 @@
       "writtenOn": "2024-06-14T14:14:27Z",
       "side": 1,
       "message": "The issue is that `include/ports/SkFontMgr_Fontations.h` isn\u0027t included here, so there was no prior declaration of `SkFontMgr_New_Fontations_Empty` as `SK_API`. We would prefer only the public declaration have `SK_API` (and not the internal definition).",
+      "revId": "f5a2c733fc75fda070428cdd449d967595d263a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d536e44_5a7ea546",
+        "filename": "src/ports/SkFontMgr_fontations_empty.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-06-14T14:59:21Z",
+      "side": 1,
+      "message": "`include/ports/SkFontMgr_Fontations.h` included.",
+      "parentUuid": "6a89d3a1_6f774d94",
       "revId": "f5a2c733fc75fda070428cdd449d967595d263a1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
