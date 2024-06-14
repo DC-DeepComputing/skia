@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0b848151_7bdf0471",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3490583
+      },
+      "writtenOn": "2024-06-14T13:01:21Z",
+      "side": 1,
+      "message": "I\u0027ve added `No-Presubmit: true` so that the +1 triggers properly SkCQ.",
+      "revId": "c83128c09e3f657a94c7b8fc0f7257f60fab7f52",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
