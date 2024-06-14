@@ -16,6 +16,23 @@
       "message": "Thanks, PTAL!",
       "revId": "17e36ef91359591fee070c04574f7641cb742240",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "00becf6b_8d991b55",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 10537
+      },
+      "writtenOn": "2024-06-14T13:20:51Z",
+      "side": 1,
+      "message": "Thanks! Nicolette, I\u0027ll CQ this to get it in as it seems so straightforward, but I\u0027m happy to address any feedback in a followup!",
+      "revId": "17e36ef91359591fee070c04574f7641cb742240",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
