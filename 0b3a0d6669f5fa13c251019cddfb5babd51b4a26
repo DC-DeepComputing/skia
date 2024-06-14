@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a240dd71_c14a1c29",
+        "filename": "src/gpu/graphite/dawn/DawnUtils.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-06-14T12:48:50Z",
+      "side": 1,
+      "message": "maybe we add a comment here that we don\u0027t actually know the size of external formats and this is just an arbitrary value. However, we will only see external formats on wrapped SkImages, so the size will never impact our internal budgeting.",
+      "range": {
+        "startLine": 44,
+        "startChar": 8,
+        "endLine": 44,
+        "endChar": 66
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "815b67ca_aafc816e",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/dawn/DawnUtils.cpp",
+              "range": {
+                "startLine": 44,
+                "startChar": 0,
+                "endLine": 44,
+                "endChar": 0
+              },
+              "replacement": "        // We don\u0027t actually know the size of external formats and this is just an arbitrary value.\n        // However, we will only see them in Dawn\u0027s Metal backend.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "0b3a0d6669f5fa13c251019cddfb5babd51b4a26",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
