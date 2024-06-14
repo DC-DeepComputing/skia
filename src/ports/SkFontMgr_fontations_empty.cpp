@@ -56,6 +56,6 @@ sk_sp<SkTypeface> SkFontMgr_Fontations_Empty::onLegacyMakeTypeface(const char fa
     return nullptr;
 }
 
-sk_sp<SkFontMgr> SkFontMgr_New_Fontations_Empty() {
+SK_API sk_sp<SkFontMgr> SkFontMgr_New_Fontations_Empty() {
     return sk_make_sp<SkFontMgr_Fontations_Empty>();
 }
