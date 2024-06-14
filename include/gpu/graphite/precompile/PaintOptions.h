@@ -144,6 +144,7 @@ public:
 
 private:
     friend class PaintOptionsPriv;
+    friend class PrecompileMaskFilter; // for ProcessCombination access
 
     void addColorFilter(sk_sp<PrecompileColorFilter> cf);
     void addBlendMode(SkBlendMode bm) {
@@ -165,12 +166,12 @@ private:
                    int desiredCombination,
                    bool addPrimitiveBlender,
                    Coverage coverage) const;
-
+public:
     typedef std::function<void(UniquePaintParamsID id,
                                DrawTypeFlags,
                                bool withPrimitiveBlender,
                                Coverage)> ProcessCombination;
-
+private:
     void buildCombinations(const KeyContext&,
                            PipelineDataGatherer*,
                            DrawTypeFlags drawTypes,
