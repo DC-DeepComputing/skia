@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6735346d_64281e93",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-06-14T20:07:07Z",
+      "side": 1,
+      "message": "PTAL. This alone gives a significant speed-up (44ms/frame -\u003e 24ms/frame) when running the tagged images test in Viewer.",
+      "revId": "9aa66eee1bb9163baeb0af510b7f2c39f1af9ba9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
