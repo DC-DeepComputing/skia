@@ -74,6 +74,30 @@
       },
       "revId": "0f47a9333edb589e6908370882d24eb68705db8f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79c69ec2_4de91987",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 413,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-06-14T16:30:36Z",
+      "side": 0,
+      "message": "Even though it is more code/typing, can we not use auto on status? I get the use since it now could return a bool or a wgpu::Status based on the context, but I think it is better to be explicit about the type. So that would require and extra define branch to declare status for emscripten and not. It looks uglier but I think it more important to be clear and explicit on object types.",
+      "parentUuid": "31b26fee_bc44f185",
+      "range": {
+        "startLine": 411,
+        "startChar": 5,
+        "endLine": 413,
+        "endChar": 92
+      },
+      "revId": "0f47a9333edb589e6908370882d24eb68705db8f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
