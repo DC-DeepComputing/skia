@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "95ed5ea7_c4186a78",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-06-17T21:14:04Z",
+      "side": 1,
+      "message": "Of course we haven\u0027t set this up because the required `kCTFontPaletteAttribute` and `kCTFontPaletteColorsAttribute` are currently still SPI, but it seems unlikely that the actual string values should change any time soon.",
+      "parentUuid": "f171e0de_c31ee510",
+      "revId": "5a8a4330af48a7c796283ce170c91f43f4463c7f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "66217404_ee50a869",
