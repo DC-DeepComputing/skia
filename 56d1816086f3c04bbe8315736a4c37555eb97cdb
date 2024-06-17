@@ -71,6 +71,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0be2ee98_a544fa21",
+        "filename": "include/core/SkImage.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 709,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2024-06-17T17:07:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6d0ac21f_dd1253c6",
+      "revId": "56d1816086f3c04bbe8315736a4c37555eb97cdb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9114e369_1a16a105",
@@ -102,6 +120,24 @@
       "side": 1,
       "message": "Again, might want to optimize resizing picture and other lazies w/o drawing (e.g. can imaging passing in the new dimensions to the codec, as some of them (like JPEG) know how to decode efficiently at smaller sizes).",
       "parentUuid": "9114e369_1a16a105",
+      "revId": "56d1816086f3c04bbe8315736a4c37555eb97cdb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c0461c62_11f0c3f9",
+        "filename": "src/image/SkImage_Lazy.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2024-06-17T17:07:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "66c574a9_606af3ee",
       "revId": "56d1816086f3c04bbe8315736a4c37555eb97cdb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
