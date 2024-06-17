@@ -80,6 +80,12 @@ bool SkImage_Raster::getROPixels(GrDirectContext*, SkBitmap* dst, CachingHint) c
     return true;
 }
 
+sk_sp<SkSurface> SkImage_Raster::onMakeSurface(const SkImageInfo& info,
+                                               const SkSurfaceProps* props) const {
+    const size_t rowBytes = 0;
+    return SkSurfaces::Raster(info, rowBytes, props);
+}
+
 static SkBitmap copy_bitmap_subset(const SkBitmap& orig, const SkIRect& subset) {
     SkImageInfo info = orig.info().makeDimensions(subset.size());
     SkBitmap bitmap;

@@ -68,6 +68,7 @@ public:
     sk_sp<SkImage> onMakeSubset(skgpu::graphite::Recorder*,
                                 const SkIRect&,
                                 RequiredProperties) const override;
+    sk_sp<SkSurface> onMakeSurface(const SkImageInfo&, const SkSurfaceProps*) const override;
 
     bool getROPixels(GrDirectContext*, SkBitmap*, CachingHint) const override;
     SkImage_Base::Type type() const override { return SkImage_Base::Type::kLazy; }

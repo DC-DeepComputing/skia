@@ -34,6 +34,7 @@ class SkPaint;
 class SkPicture;
 class SkPixmap;
 class SkShader;
+class SkSurface;
 class SkSurfaceProps;
 enum SkColorType : int;
 enum class SkTextureCompressionType;
@@ -701,6 +702,14 @@ public:
     bool scalePixels(const SkPixmap& dst, const SkSamplingOptions&,
                      CachingHint cachingHint = kAllow_CachingHint) const;
 
+    /**
+     * Create a new surface whose backend is compatible with this Image.
+     * If the image is lazy generated, then a software raster backend will be used.
+     *
+     * return nullptr if the requested ColorInfo is not supported, or its dimesions are out of range.
+     */
+    sk_sp<SkSurface> makeSurface(const SkImageInfo&, const SkSurfaceProps* = nullptr) const;
+
     /** Returns encoded SkImage pixels as SkData, if SkImage was created from supported
         encoded stream format. Platform support for formats vary and may require building
         with one or more of: SK_ENCODE_JPEG, SK_ENCODE_PNG, SK_ENCODE_WEBP.
@@ -712,6 +721,7 @@ public:
         example: https://fiddle.skia.org/c/@Image_refEncodedData
     */
     sk_sp<SkData> refEncodedData() const;
+
 
     /** Returns subset of this image.
 
