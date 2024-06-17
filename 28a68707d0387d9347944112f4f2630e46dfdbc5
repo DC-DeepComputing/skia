@@ -16,6 +16,24 @@
       "message": "nit: I think Brandon pretty-formatted all assets in resources/skottie, let\u0027s convert this one too.",
       "revId": "28a68707d0387d9347944112f4f2630e46dfdbc5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9367f447_e9553f88",
+        "filename": "resources/skottie/skottie-dropshadow-ramp.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2024-06-17T16:19:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f4c63874_43875f55",
+      "revId": "28a68707d0387d9347944112f4f2630e46dfdbc5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
