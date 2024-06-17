@@ -51,6 +51,24 @@
       "parentUuid": "2eacf693_49969d85",
       "revId": "dff5d99f9c91be787a9f6839501522737eb65f85",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb65f550_7017610f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2024-06-17T19:54:39Z",
+      "side": 1,
+      "message": "Original motivation is resizing to save memory for subsequent uses, so resizing during the draw misses the point.\n\nIf you think makeScaled() is doable in graphite, recognizing that the \"results\" are not immediately available, I think that\u0027s fine -- they just want to hold onto something that is going to take less RAM (and draw it later).",
+      "parentUuid": "63831e30_f2e06793",
+      "revId": "dff5d99f9c91be787a9f6839501522737eb65f85",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
