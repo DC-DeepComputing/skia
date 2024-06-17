@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4422ca76_fd06b481",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2024-06-17T20:46:52Z",
+      "side": 1,
+      "message": "New thought...\n\n- I revert back to the latest version of \"makeScaled()\"\n- Add optional graphite::Recorder* parameter (if null, the image must be non-graphite)\n\nShould I sketch out?",
+      "revId": "3301869bd93d9ff98200c8878a41b6671b9989c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
