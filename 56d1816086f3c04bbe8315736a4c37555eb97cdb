@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c646b92f_a5c8d7cf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2024-06-17T15:46:08Z",
+      "side": 1,
+      "message": "Ganesh impl lupdated.",
+      "parentUuid": "75f786cb_30a114fe",
+      "revId": "56d1816086f3c04bbe8315736a4c37555eb97cdb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0c5e04a8_30ba907d",
@@ -37,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6d0ac21f_dd1253c6",
+        "filename": "include/core/SkImage.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 709,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2024-06-17T15:46:08Z",
+      "side": 1,
+      "message": "Not clear they should always be rasterized (esp. Picture) -- may be document that scaling *might* result in rasterizing lazy images ...?",
+      "parentUuid": "0c5e04a8_30ba907d",
+      "revId": "56d1816086f3c04bbe8315736a4c37555eb97cdb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9114e369_1a16a105",
         "filename": "src/image/SkImage_Lazy.h",
         "patchSetId": 7
@@ -48,6 +84,24 @@
       "writtenOn": "2024-06-17T12:33:09Z",
       "side": 1,
       "message": "This is the only override for onMakeScaled, what would be the implication of using onMakeSurface + drawImage as everything else?  I\u0027m guessing caching?",
+      "revId": "56d1816086f3c04bbe8315736a4c37555eb97cdb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "66c574a9_606af3ee",
+        "filename": "src/image/SkImage_Lazy.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2024-06-17T15:46:08Z",
+      "side": 1,
+      "message": "Again, might want to optimize resizing picture and other lazies w/o drawing (e.g. can imaging passing in the new dimensions to the codec, as some of them (like JPEG) know how to decode efficiently at smaller sizes).",
+      "parentUuid": "9114e369_1a16a105",
       "revId": "56d1816086f3c04bbe8315736a4c37555eb97cdb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
