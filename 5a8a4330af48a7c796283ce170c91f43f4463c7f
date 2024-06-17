@@ -16,6 +16,46 @@
       "message": "Unfortunately, CoreText is currently passing this test because it doesn\u0027t support palettes at all. Will need to do something like [addAttributesForCustomFontPalettes](https://github.com/WebKit/WebKit/blob/a88244b5498eb6ffaf664481942e2b11b95c19c9/Source/WebCore/platform/graphics/cocoa/UnrealizedCoreTextFont.cpp#L160) to at least set them and maybe read them back off for serialization.",
       "revId": "5a8a4330af48a7c796283ce170c91f43f4463c7f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2af94283_78f235c7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-06-17T21:09:47Z",
+      "side": 1,
+      "message": "LGTM, thanks! Indeed keeping the identical base index and canonicalized minimal overrides would be a nice improvement.",
+      "revId": "5a8a4330af48a7c796283ce170c91f43f4463c7f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "66217404_ee50a869",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 977,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-06-17T21:09:47Z",
+      "side": 1,
+      "message": "This one might be worth filing as a bug to track? You mean keep the base balette as a member in SkTypeface_Fontations?",
+      "range": {
+        "startLine": 977,
+        "startChar": 4,
+        "endLine": 977,
+        "endChar": 13
+      },
+      "revId": "5a8a4330af48a7c796283ce170c91f43f4463c7f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
