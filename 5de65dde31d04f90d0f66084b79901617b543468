@@ -89,6 +89,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "103fbd77_96708503",
+        "filename": "resources/sksl/intrinsics/LoadFloatBuffer.sksl",
+        "patchSetId": 6
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-06-17T14:46:37Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "34503a76_aaa73d7d",
+      "range": {
+        "startLine": 1,
+        "startChar": 32,
+        "endLine": 1,
+        "endChar": 48
+      },
+      "revId": "5de65dde31d04f90d0f66084b79901617b543468",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b66ba42b_90a32edd",
@@ -150,6 +174,30 @@
       "side": 1,
       "message": "I think that seems reasonable. Since this intrinsic only works if there\u0027s the buffer setup in the rest of the program I think it makes sense to be opt-in.",
       "parentUuid": "49fca1c4_89bcff1f",
+      "range": {
+        "startLine": 160,
+        "startChar": 41,
+        "endLine": 160,
+        "endChar": 57
+      },
+      "revId": "5de65dde31d04f90d0f66084b79901617b543468",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0cc19f97_cf12de14",
+        "filename": "src/sksl/SkSLUtil.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-06-17T14:46:37Z",
+      "side": 1,
+      "message": "I set the name in all the shader caps, right now its all hard coded as `fsGradientBuffer` but to clean up that duplication, in the next CL in this chain when I move the logic back to the modules, I\u0027ll introduce a constant for the gradient buffer name to keep things more consistent.",
+      "parentUuid": "c4c98bac_cd4319b1",
       "range": {
         "startLine": 160,
         "startChar": 41,
@@ -231,6 +279,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "134d8d5a_aa90ef26",
+        "filename": "src/sksl/codegen/SkSLGLSLCodeGenerator.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 934,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-06-17T14:46:37Z",
+      "side": 1,
+      "message": "I agree I think `SkSLIRHelpers.h` is the best spot for this so I moved all the code there which cleaned up the duplication.",
+      "parentUuid": "fc490dd9_ac6ec55b",
+      "range": {
+        "startLine": 918,
+        "startChar": 0,
+        "endLine": 934,
+        "endChar": 62
+      },
+      "revId": "5de65dde31d04f90d0f66084b79901617b543468",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d24dd233_2b310140",
@@ -244,6 +316,24 @@
       "writtenOn": "2024-06-14T18:56:41Z",
       "side": 1,
       "message": "nit: remove newline",
+      "revId": "5de65dde31d04f90d0f66084b79901617b543468",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "39be5cf6_e213dda8",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 3619,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-06-17T14:46:37Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "d24dd233_2b310140",
       "revId": "5de65dde31d04f90d0f66084b79901617b543468",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
