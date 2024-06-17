@@ -40,11 +40,13 @@
 #include "src/sksl/ir/SkSLExpressionStatement.h"
 #include "src/sksl/ir/SkSLExtension.h"
 #include "src/sksl/ir/SkSLFieldAccess.h"
+#include "src/sksl/ir/SkSLFieldSymbol.h"
 #include "src/sksl/ir/SkSLForStatement.h"
 #include "src/sksl/ir/SkSLFunctionCall.h"
 #include "src/sksl/ir/SkSLFunctionDeclaration.h"
 #include "src/sksl/ir/SkSLFunctionDefinition.h"
 #include "src/sksl/ir/SkSLFunctionPrototype.h"
+#include "src/sksl/ir/SkSLIRHelpers.h"
 #include "src/sksl/ir/SkSLIRNode.h"
 #include "src/sksl/ir/SkSLIfStatement.h"
 #include "src/sksl/ir/SkSLIndexExpression.h"
@@ -64,6 +66,8 @@
 #include "src/sksl/ir/SkSLSwitchCase.h"
 #include "src/sksl/ir/SkSLSwitchStatement.h"
 #include "src/sksl/ir/SkSLSwizzle.h"
+#include "src/sksl/ir/SkSLSymbol.h"
+#include "src/sksl/ir/SkSLSymbolTable.h"
 #include "src/sksl/ir/SkSLTernaryExpression.h"
 #include "src/sksl/ir/SkSLType.h"
 #include "src/sksl/ir/SkSLVarDeclarations.h"
@@ -75,6 +79,7 @@
 #include <cstdint>
 #include <memory>
 #include <string_view>
+#include <utility>
 #include <vector>
 
 namespace SkSL {
@@ -906,6 +911,16 @@ void GLSLCodeGenerator::writeFunctionCall(const FunctionCall& c) {
                 return;
             }
             break;
+        case k_loadFloatBuffer_IntrinsicKind: {
+            auto indexExpression = IRHelpers::LoadFloatBuffer(
+                                        fContext,
+                                        fCaps,
+                                        c.position(),
+                                        c.arguments()[0]->clone());
+
+            this->writeExpression(*indexExpression, Precedence::kExpression);
+            return;
+        }
         default:
             break;
     }
