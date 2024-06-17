@@ -213,6 +213,24 @@ static int dump_node(const ShaderCodeDictionary* dict,
         return currentIndex;
     }
 
+    if (entry->fSnippetRequirementFlags & SnippetRequirementFlags::kStoresData) {
+        SkASSERT(currentIndex + 1 < SkTo<int>(keyData.size()));
+        const int dataLength = keyData[++currentIndex];
+        SkASSERT(currentIndex + dataLength < SkTo<int>(keyData.size()));
+        SkDebugf("%*c", (2 * indent + 1), ' ');
+        SkDebugf("Snippet data (size: %i): ", dataLength);
+
+        if (dataLength == 0) {
+            SkDebugf("0 (no data)\n");
+        } else {
+            for (int i = currentIndex; i < dataLength; i++) {
+                SkDebugf( "%d ", keyData[currentIndex + i]);
+            }
+            SkDebugf("\n");
+            currentIndex += dataLength;
+        }
+    }
+
     SkDebugf("[%d] %s\n", id, entry->fStaticFunctionName);
     for (int i = 0; i < entry->fNumChildren; ++i) {
         currentIndex = dump_node(dict, keyData, currentIndex, indent + 1);
