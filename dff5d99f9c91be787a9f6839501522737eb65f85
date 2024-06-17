@@ -69,6 +69,24 @@
       "parentUuid": "63831e30_f2e06793",
       "revId": "dff5d99f9c91be787a9f6839501522737eb65f85",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88fa084b_33389d0e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-06-17T20:08:38Z",
+      "side": 1,
+      "message": "Hmm, in that case I\u0027m not sure. The implementation I was picturing would really defer the resizing until the image was drawn, which doesn\u0027t help with the memory savings.\n\nIdeally we\u0027d have some universal context object that can be used to submit draws, regardless of backend (something that\u0027s never been formalized in Skia -- leading to all the APIs that took GrRecordingContext*, etc...).\n\nHowever: Technically we have a couple objects that do fit the bill: Either `SkCanvas` or `SkSurface`. Using one of those as a context object definitely feels awkward (especially because you won\u0027t be doing anything \"to\" that surface/canvas, but it would work). Let me think this over a bit - we could also think about extracting the idea:\n\n```\n// Needs a better name? Basically a reference to a device object\nclass SkContext {\n  virtual GrRecordingContext* recordingContext() \u003d 0;\n  virtual Recorder* recorder() \u003d 0;\n};\n\n// In SkCanvas and SkSurface, replace the two above methods with:\n  sk_sp\u003cSkContext\u003e getContext();\n```\n\nThat lets the client extract that object once and keep it around (separate from any particular canvas/surface) and use it to make new surfaces, etc.",
+      "parentUuid": "fb65f550_7017610f",
+      "revId": "dff5d99f9c91be787a9f6839501522737eb65f85",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
