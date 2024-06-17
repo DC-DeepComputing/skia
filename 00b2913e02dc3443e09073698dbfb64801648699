@@ -1,0 +1,137 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6d24bb9_82dc175b",
+        "filename": "example/external_client/.bazelrc",
+        "patchSetId": 12
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-06-17T19:47:12Z",
+      "side": 1,
+      "message": "Is there a reason this change to enforcing C++17 is done here instead of in a separate CL?",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 2,
+        "endChar": 27
+      },
+      "revId": "00b2913e02dc3443e09073698dbfb64801648699",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc19dca4_828d8281",
+        "filename": "src/gpu/vk/vulkanmemoryallocator/VulkanAMDMemoryAllocator.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-06-17T19:47:12Z",
+      "side": 1,
+      "message": "D: does clang-tidy not like lining up the `\u003d`? Is not doing that or doing that within the Skia style standard?",
+      "range": {
+        "startLine": 233,
+        "startChar": 0,
+        "endLine": 237,
+        "endChar": 41
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "302288ef_a66d1a8f",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/vk/vulkanmemoryallocator/VulkanAMDMemoryAllocator.cpp",
+              "range": {
+                "startLine": 233,
+                "startChar": 0,
+                "endLine": 237,
+                "endChar": 0
+              },
+              "replacement": "    alloc-\u003efMemory        \u003d vmaInfo.deviceMemory;\n    alloc-\u003efOffset        \u003d vmaInfo.offset;\n    alloc-\u003efSize          \u003d vmaInfo.size;\n    alloc-\u003efFlags         \u003d flags;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "00b2913e02dc3443e09073698dbfb64801648699",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6b054a0_80695195",
+        "filename": "src/gpu/vk/vulkanmemoryallocator/VulkanAMDMemoryAllocator.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 274,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-06-17T19:47:12Z",
+      "side": 1,
+      "message": "Why plural `Allocators` as opposed to singular?",
+      "range": {
+        "startLine": 274,
+        "startChar": 10,
+        "endLine": 274,
+        "endChar": 33
+      },
+      "revId": "00b2913e02dc3443e09073698dbfb64801648699",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4fa00f83_f99f84ff",
+        "filename": "src/gpu/vk/vulkanmemoryallocator/VulkanAMDMemoryAllocator.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 296,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-06-17T19:47:12Z",
+      "side": 1,
+      "message": "nit: some grammar; perhaps this? slightly more concise/definitive:\n\n`It is a bit superfluous to create a VulkanInterface here just to create a memory allocator given that ganesh and graphite will create their own. However, there\u0027s not a clean way to have the interface created here persist for potential re-use without refactoring VulkanMemoryAllocator to hold onto its interface as opposed to \"borrowing\" it. Such a refactor could get messy without much actual benefit since interface creation is not too expensive and this cost is only paid once during initialization.`",
+      "range": {
+        "startLine": 290,
+        "startChar": 0,
+        "endLine": 296,
+        "endChar": 44
+      },
+      "revId": "00b2913e02dc3443e09073698dbfb64801648699",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "49ec9e76_c6866118",
+        "filename": "tools/gpu/vk/VkTestContext.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-06-17T19:47:12Z",
+      "side": 1,
+      "message": "nit: align w/ the rest",
+      "range": {
+        "startLine": 49,
+        "startChar": 0,
+        "endLine": 49,
+        "endChar": 36
+      },
+      "revId": "00b2913e02dc3443e09073698dbfb64801648699",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
