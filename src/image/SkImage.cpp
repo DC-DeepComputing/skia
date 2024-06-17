@@ -44,6 +44,21 @@ bool SkImage::readPixels(GrDirectContext* dContext, const SkImageInfo& dstInfo, 
     return as_IB(this)->onReadPixels(dContext, dstInfo, dstPixels, dstRowBytes, srcX, srcY, chint);
 }
 
+sk_sp<SkImage> SkImage::makeScaled(SkISize dim, const SkSamplingOptions& sampling) const {
+    return this->makeScaled(this->imageInfo().makeWH(dim.fWidth, dim.fHeight), sampling);
+}
+
+sk_sp<SkImage> SkImage::makeScaled(const SkImageInfo& newInfo,
+                                   const SkSamplingOptions& sampling) const {
+    if (newInfo.width() <= 0 || newInfo.height() <= 0) {
+        return nullptr;
+    }
+    if (newInfo == this->imageInfo()) {
+        return sk_ref_sp(this);
+    }
+    return as_IB(this)->onMakeScaled(newInfo, sampling);
+}
+
 #ifndef SK_IMAGE_READ_PIXELS_DISABLE_LEGACY_API
 bool SkImage::readPixels(const SkImageInfo& dstInfo, void* dstPixels,
                          size_t dstRowBytes, int srcX, int srcY, CachingHint chint) const {
