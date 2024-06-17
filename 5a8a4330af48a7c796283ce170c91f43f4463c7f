@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f171e0de_c31ee510",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-06-17T21:09:04Z",
+      "side": 1,
+      "message": "Unfortunately, CoreText is currently passing this test because it doesn\u0027t support palettes at all. Will need to do something like [addAttributesForCustomFontPalettes](https://github.com/WebKit/WebKit/blob/a88244b5498eb6ffaf664481942e2b11b95c19c9/Source/WebCore/platform/graphics/cocoa/UnrealizedCoreTextFont.cpp#L160) to at least set them and maybe read them back off for serialization.",
+      "revId": "5a8a4330af48a7c796283ce170c91f43f4463c7f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
