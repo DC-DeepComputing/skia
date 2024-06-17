@@ -33,6 +33,24 @@
       "message": "Consensus is to expose makeSurface() instead -- sgtm\n\n(tho I think example code somewhere showing how to do some things like resize might be good)",
       "revId": "dff5d99f9c91be787a9f6839501522737eb65f85",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "63831e30_f2e06793",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-06-17T19:49:11Z",
+      "side": 1,
+      "message": "Sorry - I think the second half of my earlier comment still stands: There\u0027s unfortunately no way to implement this in Graphite. I certainly like the idea of just having `makeSurface`, but unless we force the user to supply the `Recorder` (which creates the mess of per-backend APIs that we\u0027re trying to avoid), it probably doesn\u0027t work.\n\nWith `makeScaled`, we could probably implement it (but the Graphite version would have to be deferred until you actually do something with the image).\n\nBut given that ... I\u0027m now wondering what the original use-case is/was? Is it important that the results be realized immediately? That filtering control be included? I\u0027m trying to understand when it\u0027s helpful to ask for a scaled SkImage (specifically) that isn\u0027t satisfied by just adjusting the scale at point-of-use (eg, during drawImageRect, or by creating an image shader with a local matrix applied, etc). Not saying other use-cases don\u0027t exist, but it\u0027s helpful to intersect the client needs with Graphite\u0027s constraints to figure out what direction we should go.",
+      "parentUuid": "2eacf693_49969d85",
+      "revId": "dff5d99f9c91be787a9f6839501522737eb65f85",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
