@@ -69,6 +69,14 @@ public:
                                 const SkIRect&,
                                 RequiredProperties) const override;
 
+    sk_sp<SkImage> onMakeScaled(const SkImageInfo& info,
+                                const SkSamplingOptions& options) const override {
+        if (auto raster = this->makeRasterImage(nullptr)) {
+            return raster->makeScaled(info, options);
+        }
+        return nullptr;
+    }
+
     bool getROPixels(GrDirectContext*, SkBitmap*, CachingHint) const override;
     SkImage_Base::Type type() const override { return SkImage_Base::Type::kLazy; }
     sk_sp<SkImage> onMakeColorTypeAndColorSpace(SkColorType, sk_sp<SkColorSpace>,
