@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "35ff8b2d_823526fe",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-06-17T17:25:06Z",
+      "side": 1,
+      "message": "In line with Florin\u0027s comments (and the most recent update to the CL), I was also going to suggest that we just do the makeSurface route.\n\n... However, you won\u0027t be able to implement this in Graphite - those SkImages don\u0027t know about their recorder - this lets them be reused across threads safely. (Note that the recorder might not even exist any longer).",
+      "revId": "dff5d99f9c91be787a9f6839501522737eb65f85",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
