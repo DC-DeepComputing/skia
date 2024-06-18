@@ -17,10 +17,12 @@
 #include "include/core/SkTileMode.h"
 #include "include/private/SkColorData.h"
 #include "src/base/SkEnumBitMask.h"
+#include "src/core/SkTHash.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/DrawTypes.h"
 #include "src/gpu/graphite/TextureProxy.h"
 #include "src/gpu/graphite/UniformManager.h"
+#include "src/shaders/gradients/SkGradientBaseShader.h"
 
 class SkArenaAlloc;
 
@@ -84,6 +86,67 @@ private:
     std::vector<SampledTexture> fTextureData;
 };
 
+struct GradDataCouple {
+    const SkColor4f* fColors;
+    const float* fOffsets;
+    int fNumStops;
+
+    GradDataCouple(int numStops, const SkColor4f* colors, const float* offsets)
+        : fColors(colors)
+        , fOffsets(offsets)
+        , fNumStops(numStops) {}
+
+    bool operator==(const GradDataCouple& other) const {
+        if (fNumStops != other.fNumStops) {
+            return false;
+        }
+        if (fOffsets != nullptr && other.fOffsets == nullptr) {
+            return false;
+        }
+        if (other.fOffsets != nullptr && fOffsets == nullptr) {
+            return false;
+        }
+
+        bool checkOffsets = fOffsets;
+
+        for (int i = 0; i < fNumStops; i++) {
+            if (fColors[i] != other.fColors[i]) {
+                return false;
+            }
+
+            if (checkOffsets && fOffsets[i] != other.fOffsets[i]) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    struct Hash {
+        size_t operator ()(const GradDataCouple& k) {
+            int hash = 0;
+            for (int i = 0; i < k.fNumStops; i++) {
+                auto color = k.fColors[i];
+                color.fR *= (i + 1);
+                color.fG *= (i + 1) * 37;
+                color.fB *= (i + 1) * 17;
+                color.fB *= (i + 1) * 61;
+                hash ^= SkChecksum::Mix(*(int*)&color.fR);
+                hash ^= SkChecksum::Mix(*(int*)&color.fG);
+                hash ^= SkChecksum::Mix(*(int*)&color.fB);
+                hash ^= SkChecksum::Mix(*(int*)&color.fA);
+
+                if (k.fOffsets) {
+                    float offset = k.fOffsets[i] * (i + 1) * 23;
+                    hash ^= SkChecksum::Mix(*(const int*)&offset);
+                }
+            }
+
+            return hash;
+        }
+    };
+};
+
 // The PipelineDataGatherer is just used to collect information for a given PaintParams object.
 //   The UniformData is added to a cache and uniquified. Only that unique ID is passed around.
 //   The TextureData is also added to a cache and uniquified. Only that ID is passed around.
@@ -132,9 +195,26 @@ public:
     // to the overall required alignment, and so should only be called when all writing is done.
     UniformDataBlock finishUniformDataBlock() { return fUniformManager.finishUniformDataBlock(); }
 
-    // Allocates the data for the requested number of stops and returns the
+    // Checks if data already exists for the requested gradient shader, and returns a nullptr
+    // and the offset the data begins at. If it doesn't exist, it allocates the data for the
+    // required number of stops and caches the start index, returning the data pointer
+    // and index offset the data will begin at.
+    std::pair<float*, int> allocateGradientData(int numStops, const SkGradientBaseShader* shader) {
+        int* existingOfffset = fGradientMap.find(shader);
+        if (existingOfffset) {
+            return std::make_pair(nullptr, *existingOfffset);
+        }
+
+        auto dataPair = allocateFloatData(numStops * 5);
+        fGradientMap.set(shader, dataPair.second);
+
+        return dataPair;
+    }
+
+private:
+    // Allocates the data for the requested number of bytes and returns the
     // pointer and buffer index offset the data will begin at.
-    std::pair<float*, int> allocateGradientData(int size) {
+    std::pair<float*, int> allocateFloatData(int size) {
         int lastSize = fGradientStorage.size();
         fGradientStorage.resize(lastSize + size);
         float* startPtr = fGradientStorage.begin() + lastSize;
@@ -142,7 +222,6 @@ public:
         return std::make_pair(startPtr, lastSize);
     }
 
-private:
 #ifdef SK_DEBUG
     friend class UniformExpectationsValidator;
 
@@ -155,6 +234,7 @@ private:
     UniformManager    fUniformManager;
 
     SkTDArray<float>  fGradientStorage;
+    skia_private::THashMap<const SkGradientBaseShader*, int> fGradientMap;
 };
 
 #ifdef SK_DEBUG
