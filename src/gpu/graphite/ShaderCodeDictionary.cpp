@@ -553,7 +553,11 @@ namespace {
 std::string append_default_snippet_arguments(const ShaderInfo& shaderInfo,
                                              const ShaderNode* node,
                                              const ShaderSnippet::Args& args,
-                                             SkSpan<const std::string> childOutputs) {
+                                             SkSpan<const std::string> childOutputs,
+                                             bool skipUniformParams = false) {
+    SkASSERT(!shaderInfo.ssboIndex() || !skipUniformParams);
+    SkASSERT(!node->numChildren() || !skipUniformParams);
+
     std::string code = "(";
 
     const char* separator = "";
@@ -581,10 +585,12 @@ std::string append_default_snippet_arguments(const ShaderInfo& shaderInfo,
     }
 
     // Append uniform names.
-    for (size_t i = 0; i < entry->fUniforms.size(); ++i) {
-        code += separator;
-        separator = ", ";
-        code += get_mangled_uniform_name(shaderInfo, entry->fUniforms[i], node->keyIndex());
+    if (!skipUniformParams) {
+        for (size_t i = 0; i < entry->fUniforms.size(); ++i) {
+            code += separator;
+            separator = ", ";
+            code += get_mangled_uniform_name(shaderInfo, entry->fUniforms[i], node->keyIndex());
+        }
     }
 
     // Append samplers.
@@ -675,6 +681,130 @@ std::string GenerateDefaultPreamble(const ShaderInfo& shaderInfo,
         // We don't need a helper function
         return "";
     }
+}
+
+std::string GenerateColorSpaceXformExpression(const ShaderInfo& shaderInfo,
+                                              const ShaderNode* node,
+                                              const ShaderSnippet::Args& args) {
+    SkASSERT(node->numChildren() == 0);
+    if (shaderInfo.ssboIndex()) {
+        return GenerateDefaultExpression(shaderInfo, node, args);
+    }
+
+    std::string helperFnName = get_mangled_name("apply_color_space_transform", node->keyIndex());
+    return helperFnName +
+           append_default_snippet_arguments(
+                   shaderInfo, node, args, /*childOutputs=*/{}, /*skipUniformParams=*/true);
+}
+
+std::string GenerateColorSpaceXformPreamble(const ShaderInfo& shaderInfo, const ShaderNode* node) {
+    SkASSERT(node->numChildren() == 0);
+    if (shaderInfo.ssboIndex()) {
+        return GenerateDefaultPreamble(shaderInfo, node);
+    }
+
+    const ShaderSnippet* entry = node->entry();
+
+    SkASSERT(std::string(entry->fUniforms[0].name()) == "flags");
+    std::string flagsUniformName =
+            get_mangled_uniform_name(shaderInfo, entry->fUniforms[0], node->keyIndex());
+    SkASSERT(std::string(entry->fUniforms[1].name()) == "srcKind");
+    std::string srcKindUniformName =
+            get_mangled_uniform_name(shaderInfo, entry->fUniforms[1], node->keyIndex());
+    SkASSERT(std::string(entry->fUniforms[2].name()) == "gamutTransform");
+    std::string gamutTransformUniformName =
+            get_mangled_uniform_name(shaderInfo, entry->fUniforms[2], node->keyIndex());
+    SkASSERT(std::string(entry->fUniforms[3].name()) == "dstKind");
+    std::string dstKindUniformName =
+            get_mangled_uniform_name(shaderInfo, entry->fUniforms[3], node->keyIndex());
+    SkASSERT(std::string(entry->fUniforms[4].name()) == "csXformCoeffs");
+    std::string csXformCoeffsUniformName =
+            get_mangled_uniform_name(shaderInfo, entry->fUniforms[4], node->keyIndex());
+
+    std::string helperFnName = get_mangled_name("apply_color_space_transform", node->keyIndex());
+
+    return SkSL::String::printf(R"tmpl(
+float apply_src_xfer_fn(float x) {
+    half4x4 coeffs = %s;
+    float G = coeffs[0][0], A = coeffs[0][1], B = coeffs[0][2],
+          C = coeffs[0][3], D = coeffs[1][0], E = coeffs[1][1],
+          F = coeffs[1][2];
+    float s = sign(x);
+    x = abs(x);
+    int tf = %s;
+    if (tf == kTFTypeSRGB) {
+        return s * sk_apply_srgb_xfer_fn(x, G, A, B, C, D, E, F);
+    }
+    if (tf == kTFTypePQ) {
+        return s * sk_apply_pq_xfer_fn(x, G, A, B, C, D, E, F);
+    }
+    if (tf == kTFTypeHLG) {
+        return s * sk_apply_hlg_xfer_fn(x, G, A, B, C, D, E, F);
+    }
+    if (tf == kTFTypeHLGinv) {
+        return s * sk_apply_hlg_inv_xfer_fn(x, G, A, B, C, D, E, F);
+    }
+    return s * x;
+}
+
+float apply_dst_xfer_fn(float x) {
+    half4x4 coeffs = %s;
+    float G = coeffs[2][0], A = coeffs[2][1], B = coeffs[2][2],
+          C = coeffs[2][3], D = coeffs[3][0], E = coeffs[3][1],
+          F = coeffs[3][2];
+    float s = sign(x);
+    x = abs(x);
+    int tf = %s;
+    if (tf == kTFTypeSRGB) {
+        return s * sk_apply_srgb_xfer_fn(x, G, A, B, C, D, E, F);
+    }
+    if (tf == kTFTypePQ) {
+        return s * sk_apply_pq_xfer_fn(x, G, A, B, C, D, E, F);
+    }
+    if (tf == kTFTypeHLG) {
+        return s * sk_apply_hlg_xfer_fn(x, G, A, B, C, D, E, F);
+    }
+    if (tf == kTFTypeHLGinv) {
+        return s * sk_apply_hlg_inv_xfer_fn(x, G, A, B, C, D, E, F);
+    }
+    return s * x;
+}
+
+half4 %s(half4 halfColor) {
+    int flags = %s;
+    float4 color = float4(halfColor);
+
+    if (bool(flags & kColorSpaceXformFlagUnpremul)) {
+        color = unpremul(color);
+    }
+
+    if (bool(flags & kColorSpaceXformFlagLinearize)) {
+        color.r = apply_src_xfer_fn(color.r);
+        color.g = apply_src_xfer_fn(color.g);
+        color.b = apply_src_xfer_fn(color.b);
+    }
+    if (bool(flags & kColorSpaceXformFlagGamutTransform)) {
+        color.rgb = %s * color.rgb;
+    }
+    if (bool(flags & kColorSpaceXformFlagEncode)) {
+        color.r = apply_dst_xfer_fn(color.r);
+        color.g = apply_dst_xfer_fn(color.g);
+        color.b = apply_dst_xfer_fn(color.b);
+    }
+
+    if (bool(flags & kColorSpaceXformFlagPremul)) {
+        color.rgb *= color.a;
+    }
+    return half4(color);
+}
+)tmpl",
+                                csXformCoeffsUniformName.c_str(),
+                                srcKindUniformName.c_str(),
+                                csXformCoeffsUniformName.c_str(),
+                                dstKindUniformName.c_str(),
+                                helperFnName.c_str(),
+                                flagsUniformName.c_str(),
+                                gamutTransformUniformName.c_str());
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -1915,8 +2045,8 @@ ShaderCodeDictionary::ShaderCodeDictionary() {
             SnippetRequirementFlags::kPriorStageOutput,
             { },     // no samplers
             kColorSpaceTransformName,
-            GenerateDefaultExpression,
-            GenerateDefaultPreamble,
+            GenerateColorSpaceXformExpression,
+            GenerateColorSpaceXformPreamble,
             kNoChildren
     };
 
