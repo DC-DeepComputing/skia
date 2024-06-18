@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e01bafd_8775d864",
+        "filename": "src/gpu/graphite/PipelineData.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-06-18T19:41:33Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "dbe60e28_336a7b98",
+      "range": {
+        "startLine": 147,
+        "startChar": 24,
+        "endLine": 147,
+        "endChar": 41
+      },
+      "revId": "9a0b94c55cb2662ac71a53175e92812d4c4e9ca7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "855b41cc_fea7cda9",
@@ -54,6 +78,30 @@
       "writtenOn": "2024-06-18T19:35:10Z",
       "side": 1,
       "message": "Let\u0027s rename this to be a bit more descriptive, like `fGradientOffsetCache`?\n\nIt would also be good to add a comment here that says we are using the address of the originating shader as a proxy for comparing all of the colors and offsets in the entire array to keep lookup fast.",
+      "range": {
+        "startLine": 176,
+        "startChar": 61,
+        "endLine": 176,
+        "endChar": 73
+      },
+      "revId": "9a0b94c55cb2662ac71a53175e92812d4c4e9ca7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6899d89d_8e9044bd",
+        "filename": "src/gpu/graphite/PipelineData.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-06-18T19:41:33Z",
+      "side": 1,
+      "message": "Sounds good to me.",
+      "parentUuid": "855b41cc_fea7cda9",
       "range": {
         "startLine": 176,
         "startChar": 61,
