@@ -50,6 +50,10 @@ namespace SkSL::RP {
 class Program;
 }
 
+namespace skgpu::graphite {
+class ShaderCodeDictionary;
+}
+
 /*
  * SkRuntimeEffect supports creating custom SkShader and SkColorFilter objects using Skia's SkSL
  * shading language.
@@ -311,6 +315,7 @@ private:
     friend class SkRuntimeShader;       // fBaseProgram, fMain, fSampleUsages, getRPProgram()
     friend class SkRuntimeBlender;      //
     friend class SkRuntimeColorFilter;  //
+    friend class skgpu::graphite::ShaderCodeDictionary;
 
     friend class SkRuntimeEffectPriv;
 

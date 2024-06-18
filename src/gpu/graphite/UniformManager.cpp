@@ -135,6 +135,8 @@ void UniformManager::write(const Uniform& u, const void* data) {
 #ifdef SK_DEBUG
 
 bool UniformManager::checkExpected(const void* dst, SkSLType type, int count) {
+    SkDebugf("check expected %d %d\n", (int) type, count);
+    SkDebugf("expected uniform size %d\n", (int) fExpectedUniforms.size());
     if (fExpectedUniformIndex >= (int) fExpectedUniforms.size()) {
         // A write() outside of a UniformExpectationsVisitor or too many uniforms written for what
         // is expected.
@@ -142,6 +144,7 @@ bool UniformManager::checkExpected(const void* dst, SkSLType type, int count) {
     }
 
     const Uniform& expected = fExpectedUniforms[fExpectedUniformIndex++];
+    SkDebugf("expected %d %d\n", (int) expected.type(), (int) expected.count());
     if (!SkSLTypeCanBeUniformValue(expected.type())) {
         // Not all types are supported as uniforms or supported by UniformManager
         return false;

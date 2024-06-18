@@ -16,6 +16,8 @@
 #include <memory>
 #include <string>
 
+#define SK_PRINT_SKSL_SHADERS
+
 namespace skgpu {
 
 bool SkSLToBackend(const SkSL::ShaderCaps* caps,
