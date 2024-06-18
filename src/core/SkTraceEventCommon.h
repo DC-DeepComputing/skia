@@ -120,32 +120,34 @@
 // Currently kept entirely separate from SkPerfettoTrace for simplicity, which uses dynamic
 // categories and doesn't need these static category definitions.
 PERFETTO_DEFINE_CATEGORIES(
-    perfetto::Category("GM"),
-    perfetto::Category("skia"),
-    perfetto::Category("skia.android"),
-    perfetto::Category("skia.gpu"),
-    perfetto::Category("skia.gpu.cache"),
-    perfetto::Category("skia.objects"),
-    perfetto::Category("skia.shaders"),
-    perfetto::Category("skottie"),
-    perfetto::Category("test"),
-    perfetto::Category("test_cpu"),
-    perfetto::Category("test_ganesh"),
-    perfetto::Category("test_graphite"),
-    // ".always" variants are currently required for any category used in TRACE_EVENTx_ALWAYS.
-    perfetto::Category("GM.always").SetTags("skia.always"),
-    perfetto::Category("skia.always").SetTags("skia.always"),
-    perfetto::Category("skia.android.always").SetTags("skia.always"),
-    perfetto::Category("skia.gpu.always").SetTags("skia.always"),
-    perfetto::Category("skia.gpu.cache.always").SetTags("skia.always"),
-    perfetto::Category("skia.objects.always").SetTags("skia.always"),
-    perfetto::Category("skia.shaders.always").SetTags("skia.always"),
-    perfetto::Category("skottie.always").SetTags("skia.always"),
-    perfetto::Category("test.always").SetTags("skia.always"),
-    perfetto::Category("test_cpu.always").SetTags("skia.always"),
-    perfetto::Category("test_ganesh.always").SetTags("skia.always"),
-    perfetto::Category("test_graphite.always").SetTags("skia.always"),
-);
+        perfetto::Category("GM"),
+        perfetto::Category("skia"),
+        perfetto::Category("skia.android"),
+        perfetto::Category("skia.gpu"),
+        perfetto::Category("skia.gpu.cache"),
+        perfetto::Category("skia.objects"),
+        perfetto::Category("skia.shaders"),
+        perfetto::Category("skia.graphitedawnpipeline"),
+        perfetto::Category("skottie"),
+        perfetto::Category("test"),
+        perfetto::Category("test_cpu"),
+        perfetto::Category("test_ganesh"),
+        perfetto::Category("test_graphite"),
+        // ".always" variants are currently required for any category used in TRACE_EVENTx_ALWAYS.
+        perfetto::Category("GM.always").SetTags("skia.always"),
+        perfetto::Category("skia.always").SetTags("skia.always"),
+        perfetto::Category("skia.android.always").SetTags("skia.always"),
+        perfetto::Category("skia.gpu.always").SetTags("skia.always"),
+        perfetto::Category("skia.gpu.cache.always").SetTags("skia.always"),
+        perfetto::Category("skia.objects.always").SetTags("skia.always"),
+        perfetto::Category("skia.shaders.always").SetTags("skia.always"),
+        perfetto::Category("skia.graphitedawnpipeline.always")
+                .SetTags("skia.graphitedawnpipeline.always"),
+        perfetto::Category("skottie.always").SetTags("skia.always"),
+        perfetto::Category("test.always").SetTags("skia.always"),
+        perfetto::Category("test_cpu.always").SetTags("skia.always"),
+        perfetto::Category("test_ganesh.always").SetTags("skia.always"),
+        perfetto::Category("test_graphite.always").SetTags("skia.always"), );
 
 #endif // SK_ANDROID_FRAMEWORK_USE_PERFETTO
 

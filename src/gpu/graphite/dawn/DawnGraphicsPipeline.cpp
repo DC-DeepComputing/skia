@@ -8,6 +8,7 @@
 #include "src/gpu/graphite/dawn/DawnGraphicsPipeline.h"
 
 #include "include/gpu/graphite/TextureInfo.h"
+#include "src/core/SkTraceEvent.h"
 #include "src/gpu/PipelineUtils.h"
 #include "src/gpu/Swizzle.h"
 #include "src/gpu/graphite/Attribute.h"
@@ -292,6 +293,9 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(const DawnSharedContext* 
     const BlendInfo& blendInfo = fsSkSLInfo.fBlendInfo;
     const bool localCoordsNeeded = fsSkSLInfo.fRequiresLocalCoords;
     const int numTexturesAndSamplers = fsSkSLInfo.fNumTexturesAndSamplers;
+
+    // TRACE_EVENT0("skia.graphitedawnpipeline", "DawnGraphicsPipeline::Make");
+    TRACE_EVENT0("skia.graphitedawnpipeline", TRACE_STR_COPY(fsSkSLInfo.fLabel.c_str()));
 
     bool hasFragmentSkSL = !fsSkSL.empty();
     if (hasFragmentSkSL) {
