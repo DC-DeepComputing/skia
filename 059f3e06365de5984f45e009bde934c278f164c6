@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8a4341d7_59a6e978",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 21754
+      },
+      "writtenOn": "2024-06-18T21:42:44Z",
+      "side": 1,
+      "message": "PTAL (diff between PS1 and PS2 shows the additional fixes)",
+      "revId": "059f3e06365de5984f45e009bde934c278f164c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
