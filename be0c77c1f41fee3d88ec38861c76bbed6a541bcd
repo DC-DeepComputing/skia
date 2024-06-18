@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "372e3f36_729f24e9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-18T19:29:40Z",
+      "side": 1,
+      "message": "Most of this info should be traced already in ResourceProvider::findOrCreateGraphicsPipeline under the `skia.shaders` category. Is that not working? or is it missing something?",
+      "revId": "be0c77c1f41fee3d88ec38861c76bbed6a541bcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
