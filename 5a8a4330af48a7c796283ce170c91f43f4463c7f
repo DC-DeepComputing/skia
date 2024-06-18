@@ -74,6 +74,30 @@
       },
       "revId": "5a8a4330af48a7c796283ce170c91f43f4463c7f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3fcae6b7_28069abd",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 977,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-06-18T13:38:25Z",
+      "side": 1,
+      "message": "Yes. At the moment it doesn\u0027t make any real difference though, unless for some reason a font has a huge palette and specifying all the entries on serialization becomes an issue. It may make a difference if we ever want to provide an API that states the name of the current palette, though now that I think about it we may never do that and just allow the name for a given index to be accessed (if and when that ever happens).\n\nPart of the reason to keep deferring having any information about the palette available has been that CoreText doesn\u0027t have any public API around the palette so we don\u0027t really have general consensus around what information we actually have and what can be exposed in a generic interface like SkTypeface.",
+      "parentUuid": "66217404_ee50a869",
+      "range": {
+        "startLine": 977,
+        "startChar": 4,
+        "endLine": 977,
+        "endChar": 13
+      },
+      "revId": "5a8a4330af48a7c796283ce170c91f43f4463c7f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
