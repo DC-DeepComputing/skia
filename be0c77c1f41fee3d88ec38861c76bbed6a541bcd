@@ -16,6 +16,24 @@
       "message": "Most of this info should be traced already in ResourceProvider::findOrCreateGraphicsPipeline under the `skia.shaders` category. Is that not working? or is it missing something?",
       "revId": "be0c77c1f41fee3d88ec38861c76bbed6a541bcd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ef3174a_5aca8d6c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18114
+      },
+      "writtenOn": "2024-06-18T19:39:01Z",
+      "side": 1,
+      "message": "Ah I didn\u0027t know about that. Yeah looks like the trace event in  ResourceProvider::findOrCreateGraphicsPipeline emits label that is the same as this does? I guess I could just emit that instead then.. \n\nAlthough, with cluster telemetry for generic_trace I\u0027m unsure if using existing `skia.shaders` is fine. I\u0027ll try it out locally as well",
+      "parentUuid": "372e3f36_729f24e9",
+      "revId": "be0c77c1f41fee3d88ec38861c76bbed6a541bcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
