@@ -419,6 +419,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "af6db6c8_91f9a836",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 70
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-06-18T17:04:58Z",
+      "side": 1,
+      "message": "Yeah, the thought had occurred to me to change the return type or to use a unique_ptr, but I\u0027m glad to have your approval before proceeding.",
+      "parentUuid": "4745fa54_c82c3a10",
+      "range": {
+        "startLine": 206,
+        "startChar": 0,
+        "endLine": 213,
+        "endChar": 13
+      },
+      "revId": "54d5d2a33f3829911500a9a869b06397da0623f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "60310fea_b3639d05",
