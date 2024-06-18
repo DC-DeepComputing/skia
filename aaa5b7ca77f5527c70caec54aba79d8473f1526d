@@ -16,6 +16,23 @@
       "message": "The chrome red was from a job patching failure, but all the layout jobs passed.  Once ag/27871798 lands to guard the change in Android, this is submittable. Skia\u0027s CQ will use the new behavior for Ganesh.",
       "revId": "aaa5b7ca77f5527c70caec54aba79d8473f1526d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "189321c0_5c6f2108",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-18T14:22:46Z",
+      "side": 1,
+      "message": "Oops, sent it for review without any reviewers the first time.",
+      "revId": "aaa5b7ca77f5527c70caec54aba79d8473f1526d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
