@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "96a14967_de8cffe9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-18T19:35:10Z",
+      "side": 1,
+      "message": "lgtm modulo minor nits",
+      "revId": "9a0b94c55cb2662ac71a53175e92812d4c4e9ca7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dbe60e28_336a7b98",
+        "filename": "src/gpu/graphite/PipelineData.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-18T19:35:10Z",
+      "side": 1,
+      "message": "nit: this-\u003e",
+      "range": {
+        "startLine": 147,
+        "startChar": 24,
+        "endLine": 147,
+        "endChar": 41
+      },
+      "revId": "9a0b94c55cb2662ac71a53175e92812d4c4e9ca7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "855b41cc_fea7cda9",
+        "filename": "src/gpu/graphite/PipelineData.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-18T19:35:10Z",
+      "side": 1,
+      "message": "Let\u0027s rename this to be a bit more descriptive, like `fGradientOffsetCache`?\n\nIt would also be good to add a comment here that says we are using the address of the originating shader as a proxy for comparing all of the colors and offsets in the entire array to keep lookup fast.",
+      "range": {
+        "startLine": 176,
+        "startChar": 61,
+        "endLine": 176,
+        "endChar": 73
+      },
+      "revId": "9a0b94c55cb2662ac71a53175e92812d4c4e9ca7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
