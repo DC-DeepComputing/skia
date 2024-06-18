@@ -16,6 +16,23 @@
       "message": "This looks good to me, test updates all look right as well. CC\u0027ing John just so it\u0027s on his radar when he returns.",
       "revId": "95164e7fed9b1821cba3867a991c50f4610087f8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "535ce2ee_612dfa49",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 21754
+      },
+      "writtenOn": "2024-06-18T18:48:10Z",
+      "side": 1,
+      "message": "Thanks!",
+      "revId": "95164e7fed9b1821cba3867a991c50f4610087f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
