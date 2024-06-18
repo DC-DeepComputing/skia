@@ -84,21 +84,21 @@ struct ShaderSnippet {
                                                            const ShaderNode*,
                                                            const Args& args);
 
-    ShaderSnippet() = default;
+    // ShaderSnippet() = default;
 
     ShaderSnippet(const char* name,
-                  SkSpan<const Uniform> uniforms,
+                  const char* function,
                   SkEnumBitMask<SnippetRequirementFlags> snippetRequirementFlags,
-                  SkSpan<const TextureAndSampler> texturesAndSamplers,
-                  const char* functionName,
-                  GenerateExpressionForSnippetFn expressionGenerator,
-                  GeneratePreambleForSnippetFn preambleGenerator,
-                  int numChildren)
+                  SkSpan<const Uniform> uniforms,
+                  SkSpan<const TextureAndSampler> textures = {},
+                  GenerateExpressionForSnippetFn expressionGenerator = nullptr,
+                  GeneratePreambleForSnippetFn preambleGenerator = nullptr,
+                  int numChildren = 0)
         : fName(name)
         , fUniforms(uniforms)
         , fSnippetRequirementFlags(snippetRequirementFlags)
-        , fTexturesAndSamplers(texturesAndSamplers)
-        , fStaticFunctionName(functionName)
+        , fTexturesAndSamplers(textures)
+        , fStaticFunctionName(function)
         , fExpressionGenerator(expressionGenerator)
         , fPreambleGenerator(preambleGenerator)
         , fNumChildren(numChildren) {}
@@ -113,14 +113,16 @@ struct ShaderSnippet {
         return SkToBool(fSnippetRequirementFlags & SnippetRequirementFlags::kBlenderDstColor);
     }
 
-    const char* fName = nullptr;
+    const char* fName;
+    const char* fStaticFunctionName;
+    SkEnumBitMask<SnippetRequirementFlags> fSnippetRequirementFlags;
+
     SkSpan<const Uniform> fUniforms;
-    SkEnumBitMask<SnippetRequirementFlags> fSnippetRequirementFlags{SnippetRequirementFlags::kNone};
     SkSpan<const TextureAndSampler> fTexturesAndSamplers;
-    const char* fStaticFunctionName = nullptr;
-    GenerateExpressionForSnippetFn fExpressionGenerator = nullptr;
-    GeneratePreambleForSnippetFn fPreambleGenerator = nullptr;
-    int fNumChildren = 0;
+    int fNumChildren;
+
+    GenerateExpressionForSnippetFn fExpressionGenerator;
+    GeneratePreambleForSnippetFn fPreambleGenerator;
 };
 
 // ShaderNodes organize snippets into an effect tree, and provide random access to the dynamically
@@ -188,6 +190,8 @@ public:
         return fRuntimeEffectDictionary;
     }
     const char* ssboIndex() const { return fSsboIndex; }
+
+    bool useStorageBuffer() const { return SkToBool(fSsboIndex); }
 
     const skgpu::BlendInfo& blendInfo() const { return fBlendInfo; }
 
