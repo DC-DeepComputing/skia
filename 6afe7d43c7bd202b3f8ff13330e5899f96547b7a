@@ -33,6 +33,69 @@
       "message": "Okay, PTAL :^)",
       "revId": "6afe7d43c7bd202b3f8ff13330e5899f96547b7a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fa389208_856c419e",
+        "filename": "src/gpu/graphite/PaintParamsKey.cpp",
+        "patchSetId": 77
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-18T17:47:03Z",
+      "side": 1,
+      "message": "nit: space between `//` and `c`",
+      "revId": "6afe7d43c7bd202b3f8ff13330e5899f96547b7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "953bf148_fdd395d5",
+        "filename": "src/gpu/graphite/ResourceTypes.h",
+        "patchSetId": 77
+      },
+      "lineNbr": 267,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-18T17:47:03Z",
+      "side": 1,
+      "message": "nice 😊",
+      "range": {
+        "startLine": 267,
+        "startChar": 23,
+        "endLine": 267,
+        "endChar": 76
+      },
+      "revId": "6afe7d43c7bd202b3f8ff13330e5899f96547b7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64464c78_0a50b6ee",
+        "filename": "src/gpu/graphite/vk/VulkanYcbcrConversion.cpp",
+        "patchSetId": 77
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-18T17:47:03Z",
+      "side": 1,
+      "message": "nit: remove?",
+      "range": {
+        "startLine": 160,
+        "startChar": 3,
+        "endLine": 160,
+        "endChar": 40
+      },
+      "revId": "6afe7d43c7bd202b3f8ff13330e5899f96547b7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
