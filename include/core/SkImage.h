@@ -701,6 +701,22 @@ public:
     bool scalePixels(const SkPixmap& dst, const SkSamplingOptions&,
                      CachingHint cachingHint = kAllow_CachingHint) const;
 
+    /**
+     * Create a new image by copying this image, scaling to fit the ImageInfo's dimensions,
+     * and converting the pixels into the ImageInfo's ColorInfo.
+     * If the image was not created with a graphite Recorder, pass null for it.
+     *
+     * return nullptr if the requested ColorInfo is not supported, or its dimesions are out of range.
+     */
+    sk_sp<SkImage> makeScaled(skgpu::graphite::Recorder*,
+                              const SkImageInfo&,
+                              const SkSamplingOptions&) const;
+
+    sk_sp<SkImage> makeScaled(const SkImageInfo& info,
+                              const SkSamplingOptions& sampling) const {
+        return this->makeScaled(nullptr, info, sampling);
+    }
+
     /** Returns encoded SkImage pixels as SkData, if SkImage was created from supported
         encoded stream format. Platform support for formats vary and may require building
         with one or more of: SK_ENCODE_JPEG, SK_ENCODE_PNG, SK_ENCODE_WEBP.
@@ -712,6 +728,7 @@ public:
         example: https://fiddle.skia.org/c/@Image_refEncodedData
     */
     sk_sp<SkData> refEncodedData() const;
+
 
     /** Returns subset of this image.
 

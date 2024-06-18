@@ -68,6 +68,8 @@ public:
 
     sk_sp<SkImage> onMakeSubset(GrDirectContext*, const SkIRect& subset) const final;
 
+    sk_sp<SkSurface> onMakeSurface(skgpu::graphite::Recorder*, const SkImageInfo&) const override;
+
     bool onReadPixels(GrDirectContext* dContext,
                       const SkImageInfo& dstInfo,
                       void* dstPixels,
