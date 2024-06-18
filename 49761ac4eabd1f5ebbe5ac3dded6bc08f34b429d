@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2daeb991_1312ec5e",
+        "filename": "src/ports/SkTypeface_mac_ct.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1291,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-06-18T20:09:27Z",
+      "side": 1,
+      "message": "Need to extend this lifetime to keep the alternate `ctFont` alive.",
+      "range": {
+        "startLine": 1291,
+        "startChar": 8,
+        "endLine": 1291,
+        "endChar": 46
+      },
+      "revId": "49761ac4eabd1f5ebbe5ac3dded6bc08f34b429d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
