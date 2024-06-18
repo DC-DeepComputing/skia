@@ -1,0 +1,56 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0bbaa94d_f2e81e05",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-06-18T22:43:19Z",
+      "side": 1,
+      "message": "Nice! Just one comment around shader caps initialization. LGTM, otherwise.",
+      "revId": "9811bb4c93ee40d2155d19b2336b09bfb4488618",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5184218_e0de7132",
+        "filename": "src/sksl/ir/SkSLIRHelpers.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-06-18T22:43:19Z",
+      "side": 1,
+      "message": "I believe `floatBufferArraySymbol` may be `nullptr` if `fFloatBufferArrayName` is `nullptr`? AFAICT it is possible for `fFloatBufferArrayName` to be uninitialized if the backend is SK_GANESH. I would either explicitly guard against that case here (perhaps by returning an empty/NOP expression?) or add an assertion if we know for sure that this will never be called on those backends.",
+      "fixSuggestions": [
+        {
+          "fixId": "b1461e38_487c8f03",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/sksl/ir/SkSLIRHelpers.h",
+              "range": {
+                "startLine": 113,
+                "startChar": 0,
+                "endLine": 113,
+                "endChar": 0
+              },
+              "replacement": "        SkASSERT(shaderCaps.fFloatBufferArrayName !\u003d nullptr);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "9811bb4c93ee40d2155d19b2336b09bfb4488618",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
