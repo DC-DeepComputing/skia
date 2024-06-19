@@ -13,6 +13,7 @@
 #include "include/core/SkImageGenerator.h"
 #include "include/core/SkPixmap.h"
 #include "include/core/SkSize.h"
+#include "include/core/SkSurface.h"
 #include "include/core/SkYUVAInfo.h"
 #include "src/core/SkBitmapCache.h"
 #include "src/core/SkCachedData.h"
@@ -205,6 +206,16 @@ sk_sp<SkImage> SkImage_Lazy::onMakeSubset(skgpu::graphite::Recorder*,
         return nullptr;
     }
     return nonLazyImg->makeSubset(nullptr, subset, props);
+}
+
+sk_sp<SkSurface> SkImage_Lazy::onMakeSurface(skgpu::graphite::Recorder* recorder,
+                                             const SkImageInfo& info) const {
+    if (recorder) {
+        return nullptr; // recorder is only for graphite-backed images
+    }
+    const SkSurfaceProps* props = nullptr;
+    const size_t rowBytes = 0;
+    return SkSurfaces::Raster(info, rowBytes, props);
 }
 
 sk_sp<SkImage> SkImage_Lazy::onMakeColorTypeAndColorSpace(SkColorType targetCT,
