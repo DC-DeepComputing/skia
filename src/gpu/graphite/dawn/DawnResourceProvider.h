@@ -23,6 +23,11 @@ class DawnBuffer;
 
 class DawnResourceProvider final : public ResourceProvider {
 public:
+    struct BindGroupKeyTraits {
+        static constexpr size_t kStaticStorageSize32 = 8;
+    };
+    using BindGroupKey = UniqueKeyT<BindGroupKeyTraits>;
+
     DawnResourceProvider(SharedContext* sharedContext,
                          SingleOwner*,
                          uint32_t recorderID,
@@ -86,10 +91,10 @@ private:
     sk_sp<DawnBuffer> fIntrinsicConstantBuffer;
 
     struct UniqueKeyHash {
-        uint32_t operator()(const skgpu::UniqueKey& key) const { return key.hash(); }
+        uint32_t operator()(const BindGroupKey& key) const { return key.hash(); }
     };
 
-    using BindGroupCache = SkLRUCache<UniqueKey, wgpu::BindGroup, UniqueKeyHash>;
+    using BindGroupCache = SkLRUCache<BindGroupKey, wgpu::BindGroup, UniqueKeyHash>;
 
     BindGroupCache fUniformBufferBindGroupCache;
     BindGroupCache fSingleTextureSamplerBindGroups;
