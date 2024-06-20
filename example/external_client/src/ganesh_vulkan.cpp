@@ -13,11 +13,14 @@
 #include "include/core/SkRRect.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSurface.h"
+#include "include/gpu/GpuTypes.h"
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/ganesh/SkSurfaceGanesh.h"
 #include "include/gpu/ganesh/vk/GrVkDirectContext.h"
 #include "include/gpu/vk/VulkanBackendContext.h"
 #include "include/gpu/vk/VulkanExtensions.h"
+#include "include/gpu/vk/VulkanMemoryAllocator.h"
+#include "include/gpu/vk/VulkanMemoryAllocatorUtil.h"
 
 int main(int argc, char** argv) {
     // This will not run (since it's missing all the Vulkan setup code),
@@ -27,6 +30,8 @@ int main(int argc, char** argv) {
     std::unique_ptr<skgpu::VulkanExtensions> extensions(new skgpu::VulkanExtensions());
     backendContext.fInstance = VK_NULL_HANDLE;
     backendContext.fDevice = VK_NULL_HANDLE;
+    backendContext.fMemoryAllocator =
+            skgpu::VulkanMemoryAllocators::Make(backendContext, skgpu::ThreadSafe::kNo);
 
     // This call will fail if run, due to the context not being set up.
     sk_sp<GrDirectContext> ctx = GrDirectContexts::MakeVulkan(backendContext);

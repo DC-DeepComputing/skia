@@ -79,6 +79,11 @@ enum class Origin : unsigned {
     kBottomLeft,
 };
 
+enum class ThreadSafe : bool {
+    kNo = false,
+    kYes = true,
+};
+
 } // namespace skgpu
 
 
