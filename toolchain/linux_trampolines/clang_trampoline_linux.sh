@@ -141,6 +141,7 @@ excluded_files=(
   "src/core/SkPixmap.cpp"
   "modules/skottie/src/effects/MotionBlurEffect.cpp"
 # This file sets and checks for defines in a way that confuses IWYU
+  "src/gpu/ResourceKey.cpp"
   "src/gpu/vk/vulkanmemoryallocator/VulkanMemoryAllocatorWrapper.cpp"
 )
 
