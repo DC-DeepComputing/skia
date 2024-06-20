@@ -616,6 +616,17 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
         const DrawList::Draw& draw = key.draw();
         const RenderStep& renderStep = key.renderStep();
 
+        TRACE_EVENT_INSTANT2("skia.gpu", "RenderStep Info [1/3]", TRACE_EVENT_SCOPE_THREAD,
+                             "name", renderStep.name(), "requiresMSAA", renderStep.requiresMSAA());
+
+        TRACE_EVENT_INSTANT2("skia.gpu", "RenderStep Info [2/3]", TRACE_EVENT_SCOPE_THREAD,
+                             "performsShading", renderStep.performsShading(),
+                             "hasTextures", renderStep.hasTextures());
+
+        TRACE_EVENT_INSTANT2("skia.gpu", "RenderStep Info [3/3]", TRACE_EVENT_SCOPE_THREAD,
+                             "emitsPrimitiveColor", renderStep.emitsPrimitiveColor(),
+                             "outsetBoundsForAA", renderStep.outsetBoundsForAA());
+
         const bool pipelineChange = key.pipelineIndex() != lastPipeline;
 
         const bool geomBindingChange    = geometryUniformTracker.setCurrentUniforms(
