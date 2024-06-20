@@ -151,6 +151,30 @@
       },
       "revId": "52a19d8d03c558f6f9447885b5446be84e734cf1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c38118b8_050610bd",
+        "filename": "src/image/SkImage_Lazy.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-06-20T20:43:43Z",
+      "side": 1,
+      "message": "I think it\u0027s helpful to have them be ignored. That way, if you are using one of the GPU backends, you know you can always pass your context/recorder, and it will work (as long as you\u0027re not mixing graphite/ganesh, which should remain an error). Otherwise, you need to check if the image is raster or not before deciding how you call the function.\n\nAlso (and this is related to your question about lazy images) - having the second signature include the GrDirectContext is helpful - it lets us directly generate a texture-backed image from a lazy image.",
+      "parentUuid": "724a227b_04cf94f8",
+      "range": {
+        "startLine": 213,
+        "startChar": 0,
+        "endLine": 215,
+        "endChar": 5
+      },
+      "revId": "52a19d8d03c558f6f9447885b5446be84e734cf1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
