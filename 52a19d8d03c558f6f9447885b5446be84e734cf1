@@ -73,6 +73,30 @@
       },
       "revId": "52a19d8d03c558f6f9447885b5446be84e734cf1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "724a227b_04cf94f8",
+        "filename": "src/image/SkImage_Lazy.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2024-06-20T20:10:43Z",
+      "side": 1,
+      "message": "Is that the right behavior? Seems misleading to me, to return an object \"as if\" its part of that recorder, when it isn\u0027t.\n\nI agree that makeSubset does do this -- guess I\u0027m using this CL to understand if that is what is best.",
+      "parentUuid": "5536dda0_9c33951a",
+      "range": {
+        "startLine": 213,
+        "startChar": 0,
+        "endLine": 215,
+        "endChar": 5
+      },
+      "revId": "52a19d8d03c558f6f9447885b5446be84e734cf1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
