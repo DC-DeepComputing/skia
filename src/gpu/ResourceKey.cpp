@@ -13,26 +13,26 @@
 
 namespace skgpu {
 
-ScratchKey::ResourceType ScratchKey::GenerateResourceType() {
-    static std::atomic<int32_t> nextType{ResourceKey::kInvalidDomain + 1};
+int32_t GenerateScratchKeyResourceType(int32_t initialValue) {
+    static std::atomic<int32_t> nextType{initialValue};
 
     int32_t type = nextType.fetch_add(1, std::memory_order_relaxed);
     if (type > SkTo<int32_t>(UINT16_MAX)) {
         SK_ABORT("Too many Resource Types");
     }
 
-    return static_cast<ResourceType>(type);
+    return type;
 }
 
-UniqueKey::Domain UniqueKey::GenerateDomain() {
-    static std::atomic<int32_t> nextDomain{ResourceKey::kInvalidDomain + 1};
+int32_t GenerateUniqueKeyDomain(int32_t initialValue) {
+    static std::atomic<int32_t> nextDomain{initialValue};
 
     int32_t domain = nextDomain.fetch_add(1, std::memory_order_relaxed);
     if (domain > SkTo<int32_t>(UINT16_MAX)) {
         SK_ABORT("Too many skgpu::UniqueKey Domains");
     }
 
-    return static_cast<Domain>(domain);
+    return domain;
 }
 
 uint32_t ResourceKeyHash(const uint32_t* data, size_t size) {

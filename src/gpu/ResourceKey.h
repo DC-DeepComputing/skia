@@ -27,12 +27,28 @@ class TestResource;
 namespace skgpu {
 
 uint32_t ResourceKeyHash(const uint32_t* data, size_t size);
+int32_t GenerateScratchKeyResourceType(int32_t initialValue);
+int32_t GenerateUniqueKeyDomain(int32_t initialValue);
+
+struct DefaultResourceKeyTraits {
+    // The number of uint32_t keys the static storage can contain without dynamic memory allocation.
+    // For Ganesh, bmp textures require 5 uint32_t values. Graphite requires 6 (due to
+    // storing mipmap status as part of the key).
+    static constexpr size_t kStaticStorageSize32 = 6;
+};
 
 /**
  * Base class for all gpu Resource cache keys. There are two types of cache keys. Refer to the
  * comments for each key type below.
+ * Logic for each specialization can be customized using a Traits type that looks
+ * like the following:
+ *
+ *  struct {
+ *      static constexpr size_t kStaticStorageSize32 = ...;
+ *  };
  */
-class ResourceKey {
+template <typename Traits>
+class ResourceKeyT {
 public:
     uint32_t hash() const {
         this->validate();
@@ -77,7 +93,7 @@ public:
         }
 
     protected:
-        Builder(ResourceKey* key, uint32_t domain, int data32Count) : fKey(key) {
+        Builder(ResourceKeyT* key, uint32_t domain, int data32Count) : fKey(key) {
             size_t count = SkToSizeT(data32Count);
             SkASSERT(domain != kInvalidDomain);
             key->fKey.reset(kMetaDataCnt + count);
@@ -88,22 +104,22 @@ public:
         }
 
     private:
-        ResourceKey* fKey;
+        ResourceKeyT* fKey;
     };
 
 protected:
     static const uint32_t kInvalidDomain = 0;
 
-    ResourceKey() { this->reset(); }
+    ResourceKeyT() { this->reset(); }
 
-    bool operator==(const ResourceKey& that) const {
+    bool operator==(const ResourceKeyT& that) const {
         // Both keys should be sized to at least contain the meta data. The metadata contains each
         // key's length. So the second memcmp should only run if the keys have the same length.
         return 0 == memcmp(fKey.get(), that.fKey.get(), kMetaDataCnt*sizeof(uint32_t)) &&
                0 == memcmp(&fKey[kMetaDataCnt], &that.fKey[kMetaDataCnt], this->dataSize());
     }
 
-    ResourceKey& operator=(const ResourceKey& that) {
+    ResourceKeyT& operator=(const ResourceKeyT& that) {
         if (this != &that) {
             if (!that.isValid()) {
                 this->reset();
@@ -168,9 +184,12 @@ private:
 
     friend class ::TestResource;  // For unit test to access kMetaDataCnt.
 
-    // For Ganesh, bmp textures require 5 uint32_t values. Graphite requires 6 (due to
-    // storing mipmap status as part of the key).
-    skia_private::AutoSTMalloc<kMetaDataCnt + 6, uint32_t> fKey;
+    skia_private::AutoSTMalloc<kMetaDataCnt + Traits::kStaticStorageSize32, uint32_t> fKey;
+};
+
+class ResourceKey : public ResourceKeyT<DefaultResourceKeyTraits> {
+protected:
+    using ResourceKeyT<DefaultResourceKeyTraits>::ResourceKeyT;
 };
 
 /**
@@ -194,34 +213,47 @@ private:
  *  consume_blur(texture[0]);
  *  texture[0]->unref();  // texture 0 can now be recycled for the next request with scratchKey
  */
-class ScratchKey : public ResourceKey {
+template <typename Traits>
+class ScratchKeyT : public ResourceKeyT<Traits> {
 public:
     /** Uniquely identifies the type of resource that is cached as scratch. */
     typedef uint32_t ResourceType;
 
     /** Generate a unique ResourceType. */
-    static ResourceType GenerateResourceType();
+    static ResourceType GenerateResourceType() {
+        return static_cast<ResourceType>(
+                GenerateScratchKeyResourceType(ResourceKeyT<Traits>::kInvalidDomain + 1));
+    }
 
     /** Creates an invalid scratch key. It must be initialized using a Builder object before use. */
-    ScratchKey() {}
+    ScratchKeyT() {}
 
-    ScratchKey(const ScratchKey& that) { *this = that; }
+    ScratchKeyT(const ScratchKeyT& that) { *this = that; }
 
     ResourceType resourceType() const { return this->domain(); }
 
-    ScratchKey& operator=(const ScratchKey& that) {
-        this->ResourceKey::operator=(that);
+    ScratchKeyT& operator=(const ScratchKeyT& that) {
+        this->ResourceKeyT<Traits>::operator=(that);
         return *this;
     }
 
-    bool operator==(const ScratchKey& that) const { return this->ResourceKey::operator==(that); }
-    bool operator!=(const ScratchKey& that) const { return !(*this == that); }
+    bool operator==(const ScratchKeyT& that) const {
+        return this->ResourceKeyT<Traits>::operator==(that);
+    }
+    bool operator!=(const ScratchKeyT& that) const { return !(*this == that); }
 
-    class Builder : public ResourceKey::Builder {
+    class Builder : public ResourceKeyT<Traits>::Builder {
     public:
-        Builder(ScratchKey* key, ResourceType type, int data32Count)
-                : ResourceKey::Builder(key, type, data32Count) {}
+        Builder(ScratchKeyT* key, ResourceType type, int data32Count)
+                : ResourceKeyT<Traits>::Builder(key, type, data32Count) {}
     };
+};
+
+class ScratchKey : public ScratchKeyT<DefaultResourceKeyTraits> {
+public:
+    using ScratchKeyT<DefaultResourceKeyTraits>::ScratchKeyT;
+    using ScratchKeyT<DefaultResourceKeyTraits>::GenerateResourceType;
+    using ScratchKeyT<DefaultResourceKeyTraits>::Builder;
 };
 
 /**
@@ -238,26 +270,32 @@ public:
  * Unique keys preempt scratch keys. While a resource has a unique key it is inaccessible via its
  * scratch key. It can become scratch again if the unique key is removed.
  */
-class UniqueKey : public ResourceKey {
+template <typename Traits>
+class UniqueKeyT : public ResourceKeyT<Traits> {
 public:
     typedef uint32_t Domain;
     /** Generate a Domain for unique keys. */
-    static Domain GenerateDomain();
+    static Domain GenerateDomain() {
+        return static_cast<Domain>(
+                GenerateUniqueKeyDomain(ResourceKeyT<Traits>::kInvalidDomain + 1));
+    }
 
     /** Creates an invalid unique key. It must be initialized using a Builder object before use. */
-    UniqueKey() : fTag(nullptr) {}
+    UniqueKeyT() : fTag(nullptr) {}
 
-    UniqueKey(const UniqueKey& that) { *this = that; }
+    UniqueKeyT(const UniqueKeyT& that) { *this = that; }
 
-    UniqueKey& operator=(const UniqueKey& that) {
-        this->ResourceKey::operator=(that);
+    UniqueKeyT& operator=(const UniqueKeyT& that) {
+        this->ResourceKeyT<Traits>::operator=(that);
         this->setCustomData(sk_ref_sp(that.getCustomData()));
         fTag = that.fTag;
         return *this;
     }
 
-    bool operator==(const UniqueKey& that) const { return this->ResourceKey::operator==(that); }
-    bool operator!=(const UniqueKey& that) const { return !(*this == that); }
+    bool operator==(const UniqueKeyT& that) const {
+        return this->ResourceKeyT<Traits>::operator==(that);
+    }
+    bool operator!=(const UniqueKeyT& that) const { return !(*this == that); }
 
     void setCustomData(sk_sp<SkData> data) { fData = std::move(data); }
     SkData* getCustomData() const { return fData.get(); }
@@ -265,31 +303,33 @@ public:
 
     const char* tag() const { return fTag; }
 
-    const uint32_t* data() const { return this->ResourceKey::data(); }
+    const uint32_t* data() const { return this->ResourceKeyT<Traits>::data(); }
 
 #ifdef SK_DEBUG
-    uint32_t domain() const { return this->ResourceKey::domain(); }
-    size_t dataSize() const { return this->ResourceKey::dataSize(); }
+    uint32_t domain() const { return this->ResourceKeyT<Traits>::domain(); }
+    size_t dataSize() const { return this->ResourceKeyT<Traits>::dataSize(); }
 
     void dump(const char* label) const {
         SkDebugf("%s tag: %s\n", label, fTag ? fTag : "None");
-        this->ResourceKey::dump();
+        this->ResourceKeyT<Traits>::dump();
     }
 #endif
 
-    class Builder : public ResourceKey::Builder {
+    class Builder : public ResourceKeyT<Traits>::Builder {
     public:
-        Builder(UniqueKey* key, Domain type, int data32Count, const char* tag = nullptr)
-                : ResourceKey::Builder(key, type, data32Count) {
+        Builder(UniqueKeyT* key, Domain type, int data32Count, const char* tag = nullptr)
+                : ResourceKeyT<Traits>::Builder(key, type, data32Count) {
             key->fTag = tag;
         }
 
         /** Used to build a key that wraps another key and adds additional data. */
-        Builder(UniqueKey* key, const UniqueKey& innerKey, Domain domain, int extraData32Cnt,
+        Builder(UniqueKeyT* key,
+                const UniqueKeyT& innerKey,
+                Domain domain,
+                int extraData32Cnt,
                 const char* tag = nullptr)
-                : ResourceKey::Builder(key,
-                                       domain,
-                                       Data32CntForInnerKey(innerKey) + extraData32Cnt) {
+                : ResourceKeyT<Traits>::Builder(
+                          key, domain, Data32CntForInnerKey(innerKey) + extraData32Cnt) {
             SkASSERT(&innerKey != key);
             // add the inner key to the end of the key so that op[] can be indexed normally.
             uint32_t* innerKeyData = &this->operator[](extraData32Cnt);
@@ -300,7 +340,7 @@ public:
         }
 
     private:
-        static int Data32CntForInnerKey(const UniqueKey& innerKey) {
+        static int Data32CntForInnerKey(const UniqueKeyT& innerKey) {
             // key data + domain
             return SkToInt((innerKey.dataSize() >> 2) + 1);
         }
@@ -311,8 +351,15 @@ private:
     const char* fTag;
 };
 
+class UniqueKey : public UniqueKeyT<DefaultResourceKeyTraits> {
+public:
+    using UniqueKeyT<DefaultResourceKeyTraits>::UniqueKeyT;
+    using UniqueKeyT<DefaultResourceKeyTraits>::GenerateDomain;
+    using UniqueKeyT<DefaultResourceKeyTraits>::Builder;
+};
+
 /**
- * It is common to need a frequently reused UniqueKey where the only requirement is that the key
+ * It is common to need a frequently reused UniqueKeyT where the only requirement is that the key
  * is unique. These macros create such a key in a thread safe manner so the key can be truly global
  * and only constructed once.
  */

@@ -26,7 +26,7 @@ namespace skgpu::graphite {
 namespace {
 
 constexpr int kBufferBindingSizeAlignment = 16;
-constexpr int kMaxNumberOfCachedBufferBindGroups = 32;
+constexpr int kMaxNumberOfCachedBufferBindGroups = 1024;
 constexpr int kMaxNumberOfCachedTextureBindGroups = 4096;
 
 wgpu::ShaderModule create_shader_module(const wgpu::Device& device, const char* source) {
@@ -97,18 +97,19 @@ wgpu::RenderPipeline create_blit_render_pipeline(const DawnSharedContext* shared
     return pipeline;
 }
 
-UniqueKey make_ubo_bind_group_key(
+using BindGroupKey = DawnResourceProvider::BindGroupKey;
+BindGroupKey make_ubo_bind_group_key(
         const std::array<std::pair<const DawnBuffer*, uint32_t>, 4>& boundBuffersAndSizes) {
-    static const UniqueKey::Domain kBufferBindGroupDomain = UniqueKey::GenerateDomain();
+    static const BindGroupKey::Domain kBufferBindGroupDomain = BindGroupKey::GenerateDomain();
 
-    UniqueKey uniqueKey;
+    BindGroupKey uniqueKey;
     {
         // Each entry in the bind group needs 2 uint32_t in the key:
         //  - buffer's unique ID: 32 bits.
         //  - buffer's binding size: 32 bits.
         // We need total of 4 entries in the uniform buffer bind group.
         // Unused entries will be assigned zero values.
-        UniqueKey::Builder builder(
+        BindGroupKey::Builder builder(
                 &uniqueKey, kBufferBindGroupDomain, 8, "GraphicsPipelineBufferBindGroup");
 
         for (uint32_t i = 0; i < boundBuffersAndSizes.size(); ++i) {
@@ -129,15 +130,15 @@ UniqueKey make_ubo_bind_group_key(
     return uniqueKey;
 }
 
-UniqueKey make_texture_bind_group_key(const DawnSampler* sampler, const DawnTexture* texture) {
-    static const UniqueKey::Domain kTextureBindGroupDomain = UniqueKey::GenerateDomain();
+BindGroupKey make_texture_bind_group_key(const DawnSampler* sampler, const DawnTexture* texture) {
+    static const BindGroupKey::Domain kTextureBindGroupDomain = BindGroupKey::GenerateDomain();
 
-    UniqueKey uniqueKey;
+    BindGroupKey uniqueKey;
     {
-        UniqueKey::Builder builder(&uniqueKey,
-                                   kTextureBindGroupDomain,
-                                   2,
-                                   "GraphicsPipelineSingleTextureSamplerBindGroup");
+        BindGroupKey::Builder builder(&uniqueKey,
+                                      kTextureBindGroupDomain,
+                                      2,
+                                      "GraphicsPipelineSingleTextureSamplerBindGroup");
 
         builder[0] = sampler->uniqueID().asUInt();
         builder[1] = texture->uniqueID().asUInt();
