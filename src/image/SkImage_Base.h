@@ -23,6 +23,7 @@ class GrImageContext;
 class SkBitmap;
 class SkColorSpace;
 class SkPixmap;
+class SkSurface;
 enum SkColorType : int;
 enum SkYUVColorSpace : int;
 struct SkIRect;
@@ -58,6 +59,7 @@ public:
 
     size_t textureSize() const override { return 0; }
 
+
     // Methods that we want to use elsewhere in Skia, but not be a part of the public API.
     virtual bool onPeekPixels(SkPixmap*) const { return false; }
 
@@ -70,6 +72,10 @@ public:
                               int srcX,
                               int srcY,
                               CachingHint) const = 0;
+
+    // used by makeScaled()
+    virtual sk_sp<SkSurface> onMakeSurface(skgpu::graphite::Recorder*,
+                                           const SkImageInfo&) const = 0;
 
 #if defined(GRAPHITE_TEST_UTILS)
     virtual bool onReadPixelsGraphite(skgpu::graphite::Recorder*,

@@ -23,6 +23,7 @@
 #include "include/gpu/GrRecordingContext.h"
 #include "include/gpu/GrTypes.h"
 #include "include/gpu/ganesh/SkImageGanesh.h"
+#include "include/gpu/ganesh/SkSurfaceGanesh.h"
 #include "include/private/chromium/GrPromiseImageTexture.h"
 #include "include/private/chromium/SkImageChromium.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
@@ -227,6 +228,22 @@ sk_sp<SkImage> SkImage_GaneshBase::makeColorTypeAndColorSpace(skgpu::graphite::R
                                                               sk_sp<SkColorSpace>,
                                                               RequiredProperties) const {
     SkDEBUGFAIL("Cannot convert Ganesh-backed image to Graphite");
+    return nullptr;
+}
+
+sk_sp<SkSurface> SkImage_GaneshBase::onMakeSurface(skgpu::graphite::Recorder* recorder,
+                                                   const SkImageInfo& info) const {
+    if (recorder) {
+        return nullptr; // recorder is only for graphite images
+    }
+    if (auto ictx = this->context()) {
+        // note: directContext is overkill -- asRecordingContext() would catch more cases
+        if (auto dctx = ictx->asDirectContext()) {
+            GrRecordingContext* rctx = dctx;
+            auto isBudgeted = skgpu::Budgeted::kNo;  // Assuming we're a one-shot surface
+            return SkSurfaces::RenderTarget(rctx, isBudgeted, info);
+        }
+    }
     return nullptr;
 }
 
