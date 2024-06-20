@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1a96ed33_b11f2ef9",
+        "filename": "include/core/SkImage.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 705,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2024-06-20T20:16:03Z",
+      "side": 1,
+      "message": "I will update the dox.  ... what is the domain of a deferred Image?",
+      "parentUuid": "aad22b24_fed94874",
+      "revId": "52a19d8d03c558f6f9447885b5446be84e734cf1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c84b9016_424926b7",
         "filename": "include/core/SkImage.h",
         "patchSetId": 5
@@ -48,6 +66,24 @@
       "writtenOn": "2024-06-20T15:16:16Z",
       "side": 1,
       "message": "(or if passing a null Recorder to a Graphite image)",
+      "revId": "52a19d8d03c558f6f9447885b5446be84e734cf1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "12579aa0_2875deb2",
+        "filename": "include/core/SkImage.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 709,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2024-06-20T20:16:03Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "c84b9016_424926b7",
       "revId": "52a19d8d03c558f6f9447885b5446be84e734cf1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
