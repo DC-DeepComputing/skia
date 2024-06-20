@@ -142,6 +142,9 @@ excluded_files=(
   "modules/skottie/src/effects/MotionBlurEffect.cpp"
 # This file sets and checks for defines in a way that confuses IWYU
   "src/gpu/vk/vulkanmemoryallocator/VulkanMemoryAllocatorWrapper.cpp"
+# This file sets cause IWYU to (incorrectly) recommend forward declaring an inner
+# class
+  "src/gpu/ResourceKey.cpp"
 )
 
 function opted_in_to_IWYU_checks() {
