@@ -51,6 +51,24 @@
       ],
       "revId": "9811bb4c93ee40d2155d19b2336b09bfb4488618",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "75faf3db_caa75b05",
+        "filename": "src/sksl/ir/SkSLIRHelpers.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-06-20T14:26:20Z",
+      "side": 1,
+      "message": "I added an assert to ensure `fFloatBufferArrayName` is initialized since it shouldn\u0027t be called from ganesh.",
+      "parentUuid": "f5184218_e0de7132",
+      "revId": "9811bb4c93ee40d2155d19b2336b09bfb4488618",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
