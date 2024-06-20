@@ -1,0 +1,62 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c680eca7_808259d7",
+        "filename": "src/ports/SkTypeface_mac_ct.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1252,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-06-20T17:10:54Z",
+      "side": 1,
+      "message": "Up to you, but you could also do:\n```\nSkColor4f c4f \u003d SkColor4f::FromColor(bgra);\nCGFloat components[4] \u003d { ... };\n```",
+      "revId": "e86bd1eb52b1dedc7ad2d261eb1daf225cc9daf5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "364dec78_558f1744",
+        "filename": "src/ports/SkTypeface_mac_ct.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1255,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-06-20T17:10:54Z",
+      "side": 1,
+      "message": "nit: Extra `;`",
+      "range": {
+        "startLine": 1255,
+        "startChar": 60,
+        "endLine": 1255,
+        "endChar": 61
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "c83c1b37_7cba7676",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/ports/SkTypeface_mac_ct.cpp",
+              "range": {
+                "startLine": 1255,
+                "startChar": 0,
+                "endLine": 1256,
+                "endChar": 0
+              },
+              "replacement": "    components[3] \u003d (CGFloat)SkColorGetA(bgra) * (1/255.0f);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "e86bd1eb52b1dedc7ad2d261eb1daf225cc9daf5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
