@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aad22b24_fed94874",
+        "filename": "include/core/SkImage.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 705,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-06-20T15:16:16Z",
+      "side": 1,
+      "message": "Make it explicit that the image domain is preserved, since that\u0027s the most interesting part about this API?",
+      "revId": "52a19d8d03c558f6f9447885b5446be84e734cf1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c84b9016_424926b7",
+        "filename": "include/core/SkImage.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 709,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-06-20T15:16:16Z",
+      "side": 1,
+      "message": "(or if passing a null Recorder to a Graphite image)",
+      "revId": "52a19d8d03c558f6f9447885b5446be84e734cf1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5536dda0_9c33951a",
+        "filename": "src/image/SkImage_Lazy.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-06-20T15:16:16Z",
+      "side": 1,
+      "message": "Hmm, maybe we should just ignore the recorder for non-Graphite images?\n\nThat\u0027s what `makeSubset`, `makeColorSpace` \u0026 friends seem to do, we should at least keep them consistent.",
+      "range": {
+        "startLine": 213,
+        "startChar": 0,
+        "endLine": 215,
+        "endChar": 5
+      },
+      "revId": "52a19d8d03c558f6f9447885b5446be84e734cf1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
