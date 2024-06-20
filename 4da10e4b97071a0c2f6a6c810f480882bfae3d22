@@ -16,6 +16,23 @@
       "message": "PTAL :) nits addressed",
       "revId": "4da10e4b97071a0c2f6a6c810f480882bfae3d22",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd9668cb_3b74230f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 80
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-06-20T17:24:15Z",
+      "side": 1,
+      "message": "API changes lgtm",
+      "revId": "4da10e4b97071a0c2f6a6c810f480882bfae3d22",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
