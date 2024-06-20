@@ -23,6 +23,44 @@ class DawnBuffer;
 
 class DawnResourceProvider final : public ResourceProvider {
 public:
+    template <size_t NumEntries> class BindGroupKey {
+    public:
+        static constexpr size_t kNumEntries = NumEntries;
+
+        uint32_t hash() const { return fHash; }
+
+        bool operator==(const BindGroupKey& that) const {
+            return fHash == that.fHash &&
+                   0 == memcmp(fPackedData, that.fPackedData, sizeof(fPackedData));
+        }
+
+        class Builder {
+        public:
+            Builder(BindGroupKey* key) : fKey(key) {}
+
+            void finish() {
+                SkASSERT(fKey);
+                fKey->fHash = ResourceKeyHash(fKey->fPackedData, sizeof(fKey->fPackedData));
+                fKey = nullptr;
+            }
+
+            uint32_t& operator[](int dataIdx) {
+                SkASSERT(fKey);
+                SkASSERT(SkToU32(dataIdx) < kNumEntries * 2);
+                return fKey->fPackedData[dataIdx];
+            }
+
+        private:
+            BindGroupKey* fKey = nullptr;
+        };
+
+    private:
+        uint32_t fHash = 0;
+        uint32_t fPackedData[2 * NumEntries] = {};
+    };
+
+    using UniformBindGroupKey = BindGroupKey<4>;
+
     DawnResourceProvider(SharedContext* sharedContext,
                          SingleOwner*,
                          uint32_t recorderID,
@@ -85,16 +123,18 @@ private:
 
     sk_sp<DawnBuffer> fIntrinsicConstantBuffer;
 
-    struct UniqueKeyHash {
-        uint32_t operator()(const skgpu::UniqueKey& key) const { return key.hash(); }
+    template <size_t NumEntries> struct UniqueKeyHash {
+        uint32_t operator()(const BindGroupKey<NumEntries>& key) const { return key.hash(); }
     };
 
-    using BindGroupCache = SkLRUCache<UniqueKey, wgpu::BindGroup, UniqueKeyHash>;
+    template <size_t NumEntries>
+    using BindGroupCache =
+            SkLRUCache<BindGroupKey<NumEntries>, wgpu::BindGroup, UniqueKeyHash<NumEntries>>;
 
-    BindGroupCache fUniformBufferBindGroupCache;
-    BindGroupCache fSingleTextureSamplerBindGroups;
+    BindGroupCache<UniformBindGroupKey::kNumEntries> fUniformBufferBindGroupCache;
+    BindGroupCache<1> fSingleTextureSamplerBindGroups;
 };
 
-} // namespace skgpu::graphite
+}  // namespace skgpu::graphite
 
-#endif // skgpu_graphite_DawnResourceProvider_DEFINED
+#endif  // skgpu_graphite_DawnResourceProvider_DEFINED
