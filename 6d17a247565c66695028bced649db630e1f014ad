@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bdda44f4_1dd52a0e",
+        "filename": "toolchain/linux_trampolines/clang_trampoline_linux.sh",
+        "patchSetId": 6
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-06-20T17:45:46Z",
+      "side": 1,
+      "message": "Can you put this below line 145 with a distinct comment about causing IWYU to (incorrectly) recommend forward declaring an inner class?",
+      "range": {
+        "startLine": 144,
+        "startChar": 11,
+        "endLine": 144,
+        "endChar": 22
+      },
+      "revId": "6d17a247565c66695028bced649db630e1f014ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
