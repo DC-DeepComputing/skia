@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb788daf_1ce8195d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2024-06-20T20:17:45Z",
+      "side": 1,
+      "message": "Brian, any thoughts on how (all) should respond if a recorder is passed in for a non-graphite image?",
+      "revId": "bf8369a7f3dff1d70bcbda661299bb41d9b67396",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
