@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "18af9376_99ed427a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2024-06-20T15:20:50Z",
+      "side": 1,
+      "message": "Couple of observations\n\n1. Given the docs for AsImage and AsImageCopy, perhaps Image_graphite should not supply a onMakeSurface, but we (re)introduce a virtual onMakeScaled so that it can use AsImage to create the \"snapshot\" image (after the draw) w/o incurring a copy (which the docs seem to say must happen if we call surface-\u003emakeImageSnapshot()). I guess a different spin could be to keep the onMakeSurface override in Image_graphite, but add a virtual called onSnapshot(canvas) so that most backends could call makeImageSnapshot(), while graphite would call AsImage.\n\n2. BrianS points out that, if we added a subrect parameter, that we could create a mostly-universal virtual onMakeCopy(subset, imageinfo, sampling) that could subsume many of the current methods: makeSubset, makeScaled, makeColorSpace, makeFiltered, ... Seems like a big refactor internally, but might make things more maintainable if done.",
+      "revId": "52a19d8d03c558f6f9447885b5446be84e734cf1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "aad22b24_fed94874",
