@@ -217,8 +217,14 @@ static int dump_node(const ShaderCodeDictionary* dict,
     }
 
     if (entry->storesData()) {
-        SkASSERT(currentIndex + 1 < SkTo<int>(keyData.size()));
-        const int dataLength = keyData[++currentIndex];
+        SkDebugf("keydata: ");
+        for (int i = 0; i < keyData.size(); i++) {
+            SkDebugf("%d ", keyData[i]);
+        }
+        SkDebugf("\n");
+
+        SkASSERT(currentIndex < SkTo<int>(keyData.size()));
+        const int dataLength = keyData[currentIndex++];
         SkASSERT(currentIndex + dataLength < SkTo<int>(keyData.size()));
         SkDebugf("%*c", (2 * indent + 1), ' ');
         SkDebugf("Snippet data (size: %i): ", dataLength);
