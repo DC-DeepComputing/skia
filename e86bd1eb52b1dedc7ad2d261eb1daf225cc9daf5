@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "753a5487_5f0d74da",
+        "filename": "src/ports/SkTypeface_mac_ct.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1252,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-06-20T19:35:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c680eca7_808259d7",
+      "revId": "e86bd1eb52b1dedc7ad2d261eb1daf225cc9daf5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "364dec78_558f1744",
@@ -55,6 +73,30 @@
           ]
         }
       ],
+      "revId": "e86bd1eb52b1dedc7ad2d261eb1daf225cc9daf5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ed1d851_8816a4da",
+        "filename": "src/ports/SkTypeface_mac_ct.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1255,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-06-20T19:35:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "364dec78_558f1744",
+      "range": {
+        "startLine": 1255,
+        "startChar": 60,
+        "endLine": 1255,
+        "endChar": 61
+      },
       "revId": "e86bd1eb52b1dedc7ad2d261eb1daf225cc9daf5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
