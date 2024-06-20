@@ -22,6 +22,30 @@
       },
       "revId": "6d17a247565c66695028bced649db630e1f014ad",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7fa3194b_c3195c0f",
+        "filename": "toolchain/linux_trampolines/clang_trampoline_linux.sh",
+        "patchSetId": 6
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2024-06-20T18:25:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bdda44f4_1dd52a0e",
+      "range": {
+        "startLine": 144,
+        "startChar": 11,
+        "endLine": 144,
+        "endChar": 22
+      },
+      "revId": "6d17a247565c66695028bced649db630e1f014ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
