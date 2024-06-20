@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b079fdc2_1d7ebfae",
+        "filename": "example/external_client/.bazelrc",
+        "patchSetId": 12
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-06-20T14:47:32Z",
+      "side": 1,
+      "message": "This was already enforced via one-off copts in example/external_client/BUILD.bazel. However, that ends up being insufficient because the dependencies also need to be compiled with C++17, so this flag applies it to all the things. Note that this enforcement applies only when we are building the targets in example/external_client/, not for all Skia clients.\nIf you still prefer, I can extract that to a dependent CL.",
+      "parentUuid": "d6d24bb9_82dc175b",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 2,
+        "endChar": 27
+      },
+      "revId": "00b2913e02dc3443e09073698dbfb64801648699",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bc19dca4_828d8281",
         "filename": "src/gpu/vk/vulkanmemoryallocator/VulkanAMDMemoryAllocator.cpp",
         "patchSetId": 12
@@ -65,6 +89,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3bc396a_dd26bb56",
+        "filename": "src/gpu/vk/vulkanmemoryallocator/VulkanAMDMemoryAllocator.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-06-20T14:47:32Z",
+      "side": 1,
+      "message": "Done. clang-tidy doesn\u0027t like lineing up \u003d with our current settings.",
+      "parentUuid": "bc19dca4_828d8281",
+      "range": {
+        "startLine": 233,
+        "startChar": 0,
+        "endLine": 237,
+        "endChar": 41
+      },
+      "revId": "00b2913e02dc3443e09073698dbfb64801648699",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d6b054a0_80695195",
@@ -78,6 +126,30 @@
       "writtenOn": "2024-06-17T19:47:12Z",
       "side": 1,
       "message": "Why plural `Allocators` as opposed to singular?",
+      "range": {
+        "startLine": 274,
+        "startChar": 10,
+        "endLine": 274,
+        "endChar": 33
+      },
+      "revId": "00b2913e02dc3443e09073698dbfb64801648699",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "70221fcc_b8cbeaaf",
+        "filename": "src/gpu/vk/vulkanmemoryallocator/VulkanAMDMemoryAllocator.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 274,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-06-20T14:47:32Z",
+      "side": 1,
+      "message": "We have a naming convention for having \"helper namespaces\" be plural and the related classes being singular. E.g. SkImages and SkImage; SkSurfaces and SkSurface.\n\nWhy not declare Make as a static function in the VulkanMemoryAllocator class? The reason for the above \"helper namespaces\" is to allow us to define members across different files. Those different files allow us to make things more modular. In specific, we have the class VulkanMemoryAllocator be built into the \"//src/gpu/vk:vk\" module (everybody gets it), but the VulkanMemoryAllocators namespace (and Make function) exist in a different module, so it can be optional to include this implementation. If this was a static function in the class, it would always be available at compile time, but wouldn\u0027t be available at link time unless a client knew to depend on the right module. I think compile/visibility errors are easier to diagnose (Bazel goes \"Hey, you can\u0027t actually see this header unless you depend on something that provides it\") than link errors and the bifurcation feels cleaner.",
+      "parentUuid": "d6b054a0_80695195",
       "range": {
         "startLine": 274,
         "startChar": 10,
@@ -111,6 +183,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1da0c11b_6c03a35e",
+        "filename": "src/gpu/vk/vulkanmemoryallocator/VulkanAMDMemoryAllocator.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 296,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-06-20T14:47:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4fa00f83_f99f84ff",
+      "range": {
+        "startLine": 290,
+        "startChar": 0,
+        "endLine": 296,
+        "endChar": 44
+      },
+      "revId": "00b2913e02dc3443e09073698dbfb64801648699",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "49ec9e76_c6866118",
@@ -124,6 +220,30 @@
       "writtenOn": "2024-06-17T19:47:12Z",
       "side": 1,
       "message": "nit: align w/ the rest",
+      "range": {
+        "startLine": 49,
+        "startChar": 0,
+        "endLine": 49,
+        "endChar": 36
+      },
+      "revId": "00b2913e02dc3443e09073698dbfb64801648699",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5db08331_17e90a6d",
+        "filename": "tools/gpu/vk/VkTestContext.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-06-20T14:47:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "49ec9e76_c6866118",
       "range": {
         "startLine": 49,
         "startChar": 0,
