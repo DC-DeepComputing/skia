@@ -6170,3 +6170,19 @@ DEF_TEST(path_walk_simple_edges_1154864, r) {
     paint.setAntiAlias(true);
     surface->getCanvas()->drawPath(path, paint);
 }
+
+// https://crbug.com/oss-fuzz/69807
+DEF_TEST(path_smooth_enough_overflow_69807, r) {
+    // Drawing this path triggered an integer overflow in is_smooth_enough
+    auto surface = SkSurfaces::Raster(SkImageInfo::MakeN32Premul(8084, 4));
+
+    SkPath path;
+    path.moveTo(8082.00391f, 1.33495712f);
+    path.lineTo(6680.99951f, 3);
+    path.lineTo(6680.99951f, 3);
+    path.lineTo(-1.61187512e+10f, -461184.156f);
+
+    SkPaint paint;
+    paint.setAntiAlias(true);
+    surface->getCanvas()->drawPath(path, paint);
+}

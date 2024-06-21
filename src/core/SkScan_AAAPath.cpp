@@ -1008,6 +1008,12 @@ static bool is_smooth_enough(SkAnalyticEdge* thisEdge, SkAnalyticEdge* nextEdge,
                // current Dy is (fQDy - fQDDy) >> shift
                (qEdge.fQDy - qEdge.fQDDy) >> qEdge.fCurveShift >= SK_Fixed1;
     }
+    if (nextEdge->fDX == -52466834 && thisEdge->fDX == 2118647808) {
+        SkDebugf("First fail\n");
+    }
+    if (nextEdge->fLowerY == -52466834 && nextEdge->fUpperY == 2118647808) {
+        SkDebugf("Second fail\n");
+    }
     return SkAbs32(nextEdge->fDX - thisEdge->fDX) <= SK_Fixed1 &&  // DDx should be small
            nextEdge->fLowerY - nextEdge->fUpperY >= SK_Fixed1;     // Dy should be large
 }
