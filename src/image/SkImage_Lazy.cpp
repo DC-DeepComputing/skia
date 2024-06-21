@@ -195,6 +195,12 @@ sk_sp<SkImage> SkImage_Lazy::onMakeSubset(GrDirectContext*, const SkIRect& subse
     return pixels ? pixels->makeSubset(nullptr, subset) : nullptr;
 }
 
+sk_sp<SkSurface> SkImage_Lazy::onMakeSurface(const SkImageInfo& info,
+                                             const SkSurfaceProps* props) const {
+    const size_t rowBytes = 0;
+    return SkSurfaces::Raster(info, rowBytes, props);
+}
+
 sk_sp<SkImage> SkImage_Lazy::onMakeSubset(skgpu::graphite::Recorder*,
                                           const SkIRect& subset,
                                           RequiredProperties props) const {

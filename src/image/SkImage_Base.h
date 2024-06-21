@@ -11,6 +11,7 @@
 #include "include/core/SkData.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkRefCnt.h"
+#include "include/core/SkSurface.h"
 #include "include/core/SkTypes.h"
 #include "src/core/SkMipmap.h"
 
@@ -58,6 +59,7 @@ public:
 
     size_t textureSize() const override { return 0; }
 
+
     // Methods that we want to use elsewhere in Skia, but not be a part of the public API.
     virtual bool onPeekPixels(SkPixmap*) const { return false; }
 
@@ -70,6 +72,8 @@ public:
                               int srcX,
                               int srcY,
                               CachingHint) const = 0;
+
+    virtual sk_sp<SkSurface> onMakeSurface(const SkImageInfo&, const SkSurfaceProps*) const = 0;
 
 #if defined(GRAPHITE_TEST_UTILS)
     virtual bool onReadPixelsGraphite(skgpu::graphite::Recorder*,

@@ -44,6 +44,14 @@ bool SkImage::readPixels(GrDirectContext* dContext, const SkImageInfo& dstInfo, 
     return as_IB(this)->onReadPixels(dContext, dstInfo, dstPixels, dstRowBytes, srcX, srcY, chint);
 }
 
+sk_sp<SkSurface> SkImage::makeSurface(const SkImageInfo& info,
+                                      const SkSurfaceProps* props) const {
+    if (info.width() <= 0 || info.height() <= 0) {
+        return nullptr;
+    }
+    return as_IB(this)->onMakeSurface(info, props);
+}
+
 #ifndef SK_IMAGE_READ_PIXELS_DISABLE_LEGACY_API
 bool SkImage::readPixels(const SkImageInfo& dstInfo, void* dstPixels,
                          size_t dstRowBytes, int srcX, int srcY, CachingHint chint) const {

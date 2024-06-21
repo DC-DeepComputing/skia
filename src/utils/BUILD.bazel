@@ -40,6 +40,7 @@ UTIL_FILES = [
     "SkFloatToDecimal.cpp",
     "SkFloatToDecimal.h",
     "SkFloatUtils.h",
+    "SkImageInfo.cpp",
     "SkMatrix22.cpp",
     "SkMatrix22.h",
     "SkMultiPictureDocument.cpp",

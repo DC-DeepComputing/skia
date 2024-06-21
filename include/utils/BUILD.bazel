@@ -15,6 +15,7 @@ skia_filegroup(
         "SkCanvasStateUtils.h",
         "SkCustomTypeface.h",
         "SkEventTracer.h",
+        "SkImageUtils.h",
         "SkNWayCanvas.h",
         "SkNoDrawCanvas.h",
         "SkNullCanvas.h",
