@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a1229865_d0d438ec",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2024-06-21T21:01:09Z",
+      "side": 1,
+      "message": "ptal\n\nI didn\u0027t know how to update \"release notes\" ...",
+      "revId": "f972ac632e1e4f98215272853370fa40b05a5564",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
