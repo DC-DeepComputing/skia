@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "58e35b10_87c0a158",
+        "filename": "src/gpu/graphite/PaintParamsKey.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-21T20:10:49Z",
+      "side": 1,
+      "message": "Oh right, `addBlock()` just calls `beginBlock()` and `endBlock()`, so the image shader block was technically being closed before data was added.  Structurally since endBlock() doesn\u0027t write anything into the paint key, the data was always in the right place. \n\nI updated `ImageShaderBlock::AddBlock` to just call beginBlock() and then endBlock() after it calls addData().",
+      "parentUuid": "fe40128c_4c2f1902",
+      "range": {
+        "startLine": 58,
+        "startChar": 4,
+        "endLine": 58,
+        "endChar": 37
+      },
+      "revId": "b292e62b401447e9edcbb072ec2496741ba94747",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e2f939a3_842d4479",
@@ -61,6 +85,30 @@
           ]
         }
       ],
+      "revId": "b292e62b401447e9edcbb072ec2496741ba94747",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4457b1f5_efcfcb29",
+        "filename": "src/gpu/graphite/PaintParamsKey.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-21T20:10:49Z",
+      "side": 1,
+      "message": "Ah you\u0027re right size() isn\u0027t in bytes. size() is what we write into the key, so I\u0027ll keep with that but will update the variable names to not have byte in them anymore.\n\nI think we still want `data.size() \u003e\u003d 0` since this size is the user-supplied size and not the final size that includes the data size we push back automatically now.",
+      "parentUuid": "e2f939a3_842d4479",
+      "range": {
+        "startLine": 147,
+        "startChar": 39,
+        "endLine": 147,
+        "endChar": 50
+      },
       "revId": "b292e62b401447e9edcbb072ec2496741ba94747",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
