@@ -1,6 +1,40 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "de6898d0_2ff15bbd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-06-21T15:18:05Z",
+      "side": 1,
+      "message": "Just a couple minor nits, but this lgtm otherwise",
+      "revId": "c8223b047fa70fb4ac77d5dfcd28e9c2df8fc596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "abbdc968_5b743f59",
+        "filename": "include/core/SkImage.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 736,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-06-21T15:18:05Z",
+      "side": 1,
+      "message": "nit: Spurious newline",
+      "revId": "c8223b047fa70fb4ac77d5dfcd28e9c2df8fc596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e69e13be_191a7094",
@@ -116,6 +150,64 @@
         "endLine": 238,
         "endChar": 50
       },
+      "revId": "c8223b047fa70fb4ac77d5dfcd28e9c2df8fc596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c45227f_2eb87c2b",
+        "filename": "src/image/SkImage.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-06-21T15:18:05Z",
+      "side": 1,
+      "message": "I\u0027d replace this a call to SkImageInfoIsValid (catches these conditions, and several others)",
+      "range": {
+        "startLine": 54,
+        "startChar": 0,
+        "endLine": 56,
+        "endChar": 5
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "a14d88ab_68d14238",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/image/SkImage.cpp",
+              "range": {
+                "startLine": 54,
+                "startChar": 0,
+                "endLine": 55,
+                "endChar": 0
+              },
+              "replacement": "    if (!SkImageInfoIsValid(newInfo)) {\n"
+            }
+          ]
+        }
+      ],
+      "revId": "c8223b047fa70fb4ac77d5dfcd28e9c2df8fc596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "301764c8_67b651d5",
+        "filename": "src/image/SkImage_Base.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-06-21T15:18:05Z",
+      "side": 1,
+      "message": "another newline",
       "revId": "c8223b047fa70fb4ac77d5dfcd28e9c2df8fc596",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
