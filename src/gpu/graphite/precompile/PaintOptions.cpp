@@ -236,7 +236,7 @@ void create_image_drawing_pipelines(const KeyContext& keyContext,
     imagePaintOptions.setBlendModes(orig.getBlendModes());
     imagePaintOptions.setBlenders(orig.getBlenders());
     imagePaintOptions.setColorFilters(orig.getColorFilters());
-    imagePaintOptions.priv().addColorFilter(nullptr);
+//    imagePaintOptions.priv().addColorFilter(nullptr);
 
     imagePaintOptions.priv().buildCombinations(keyContext,
                                                gatherer,
@@ -265,7 +265,7 @@ void PaintOptions::buildCombinations(
         // When image filtering, the original blend mode is taken over by the restore paint
         tmp.setImageFilters({});
         tmp.setMaskFilters({});
-        tmp.addBlendMode(SkBlendMode::kSrcOver);
+        tmp.setBlendModes({ SkBlendMode::kSrcOver });
 
         if (!fImageFilterOptions.empty()) {
             std::vector<sk_sp<PrecompileColorFilter>> newCFs(tmp.fColorFilterOptions.begin(),
@@ -321,7 +321,7 @@ void PaintOptions::buildCombinations(
 
             // The 'findOrCreate' calls lockAsKey on builder and then destroys the returned
             // PaintParamsKey. This serves to reset the builder.
-            UniquePaintParamsID paintID = keyContext.dict()->findOrCreate(&builder);
+            UniquePaintParamsID paintID = keyContext.dict()->findOrCreate1(&builder);
 
             processCombination(paintID, drawTypes, withPrimitiveBlender, coverage);
         }

@@ -247,7 +247,7 @@ class ShaderCodeDictionary {
 public:
     ShaderCodeDictionary();
 
-    UniquePaintParamsID findOrCreate(PaintParamsKeyBuilder*) SK_EXCLUDES(fSpinLock);
+    UniquePaintParamsID findOrCreate1(PaintParamsKeyBuilder*) SK_EXCLUDES(fSpinLock);
 
     PaintParamsKey lookup(UniquePaintParamsID) const SK_EXCLUDES(fSpinLock);
 
