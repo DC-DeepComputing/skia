@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7081bb0f_8fcad3dc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-06-21T17:42:00Z",
+      "side": 1,
+      "message": "Tiny FYI to @nicolettep@google.com about this convergence, though you\u0027re likely already aware.",
+      "revId": "cd4ebdf28f3bd0e1c210ae16f0c6e43b59d88356",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
