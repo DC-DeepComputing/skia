@@ -9,7 +9,7 @@
 #define GrVkImageView_DEFINED
 
 #include "include/gpu/GrTypes.h"
-#include "include/gpu/vk/GrVkTypes.h"
+#include "include/gpu/vk/VulkanTypes.h"
 #include "src/gpu/ganesh/vk/GrVkManagedResource.h"
 
 #include <cinttypes>
@@ -25,7 +25,7 @@ public:
 
     static sk_sp<const GrVkImageView> Make(GrVkGpu* gpu, VkImage image, VkFormat format,
                                            Type viewType, uint32_t miplevels,
-                                           const GrVkYcbcrConversionInfo& ycbcrInfo);
+                                           const skgpu::VulkanYcbcrConversionInfo& ycbcrInfo);
 
     VkImageView imageView() const { return fImageView; }
 

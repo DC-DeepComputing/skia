@@ -4,9 +4,9 @@
 * Use of this source code is governed by a BSD-style license that can be
 * found in the LICENSE file.
 */
+#include "src/gpu/ganesh/vk/GrVkImageView.h"
 
 #include "src/gpu/ganesh/vk/GrVkGpu.h"
-#include "src/gpu/ganesh/vk/GrVkImageView.h"
 #include "src/gpu/ganesh/vk/GrVkSamplerYcbcrConversion.h"
 #include "src/gpu/ganesh/vk/GrVkUtil.h"
 
@@ -14,7 +14,7 @@ sk_sp<const GrVkImageView> GrVkImageView::Make(GrVkGpu* gpu,
                                                VkImage image,
                                                VkFormat format,
                                                Type viewType, uint32_t miplevels,
-                                               const GrVkYcbcrConversionInfo& ycbcrInfo) {
+                                               const skgpu::VulkanYcbcrConversionInfo& ycbcrInfo) {
 
     void* pNext = nullptr;
     VkSamplerYcbcrConversionInfo conversionInfo;

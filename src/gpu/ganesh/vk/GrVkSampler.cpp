@@ -37,7 +37,7 @@ static VkSamplerMipmapMode mipmap_mode_to_vk_sampler_mipmap_mode(GrSamplerState:
 }
 
 GrVkSampler* GrVkSampler::Create(GrVkGpu* gpu, GrSamplerState samplerState,
-                                 const GrVkYcbcrConversionInfo& ycbcrInfo) {
+                                 const skgpu::VulkanYcbcrConversionInfo& ycbcrInfo) {
     static VkFilter vkMinFilterModes[] = {
         VK_FILTER_NEAREST,
         VK_FILTER_LINEAR,
@@ -139,7 +139,7 @@ void GrVkSampler::freeGPUData() const {
 }
 
 GrVkSampler::Key GrVkSampler::GenerateKey(GrSamplerState samplerState,
-                                          const GrVkYcbcrConversionInfo& ycbcrInfo) {
+                                          const skgpu::VulkanYcbcrConversionInfo& ycbcrInfo) {
     // In VK the max aniso value is specified in addition to min/mag/mip filters and the
     // driver is encouraged to consider the other filter settings when doing aniso.
     return {samplerState.asKey(/*anisoIsOrthogonal=*/true),
