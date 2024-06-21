@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b9cc1bb_ec38a164",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-06-21T21:06:39Z",
+      "side": 1,
+      "message": "I think that these GN files are going to require staging chrome and pdfium? That was the reason I went with the subtraction (rather than addition) model in my previous CL.",
+      "revId": "22e324e8ee9e118d371b71eccdca9dedbe0cbd85",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
