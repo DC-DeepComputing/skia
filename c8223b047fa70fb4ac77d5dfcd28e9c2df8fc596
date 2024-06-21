@@ -22,6 +22,30 @@
       },
       "revId": "c8223b047fa70fb4ac77d5dfcd28e9c2df8fc596",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ef0086b_6e301299",
+        "filename": "src/gpu/ganesh/image/SkImage_GaneshBase.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-06-21T15:03:33Z",
+      "side": 1,
+      "message": "(virtual makeSubset -\u003e virtual onMakeSubset)",
+      "parentUuid": "e69e13be_191a7094",
+      "range": {
+        "startLine": 236,
+        "startChar": 0,
+        "endLine": 238,
+        "endChar": 50
+      },
+      "revId": "c8223b047fa70fb4ac77d5dfcd28e9c2df8fc596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
