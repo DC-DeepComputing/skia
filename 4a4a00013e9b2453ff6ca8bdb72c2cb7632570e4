@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "25e70792_bc3e97e2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-06-21T18:48:26Z",
+      "side": 1,
+      "message": "https://dawn-review.googlesource.com/c/dawn/+/195095 should fix the roll",
+      "revId": "4a4a00013e9b2453ff6ca8bdb72c2cb7632570e4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
