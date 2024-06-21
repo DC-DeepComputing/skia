@@ -1,0 +1,68 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe40128c_4c2f1902",
+        "filename": "src/gpu/graphite/PaintParamsKey.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-06-21T19:04:48Z",
+      "side": 1,
+      "message": "This assert is failing for `skottie_multiframe` during `ImageShaderBlock::addBlock`, though I\u0027m not sure it\u0027s related to the other comment I\u0027ve left.",
+      "range": {
+        "startLine": 58,
+        "startChar": 4,
+        "endLine": 58,
+        "endChar": 37
+      },
+      "revId": "b292e62b401447e9edcbb072ec2496741ba94747",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e2f939a3_842d4479",
+        "filename": "src/gpu/graphite/PaintParamsKey.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-06-21T19:04:48Z",
+      "side": 1,
+      "message": "If you want to pass in size in bytes, you would need to do `data.size_bytes()`. Alternatively, you could check that `data.size() \u003e\u003d 1`, since if the block needs data it should always at least be appending a \"0\" so data size is \u003e\u003d1.",
+      "range": {
+        "startLine": 147,
+        "startChar": 39,
+        "endLine": 147,
+        "endChar": 50
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "aa95d481_dcd11ee7",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/PaintParamsKey.h",
+              "range": {
+                "startLine": 147,
+                "startChar": 0,
+                "endLine": 148,
+                "endChar": 0
+              },
+              "replacement": "        SkDEBUGCODE(this-\u003evalidateData(data.size_bytes()));\n"
+            }
+          ]
+        }
+      ],
+      "revId": "b292e62b401447e9edcbb072ec2496741ba94747",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
