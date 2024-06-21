@@ -575,6 +575,7 @@ FragSkSLInfo BuildFragmentSkSL(const Caps* caps,
                                      &result.fPaintUniformsTotalBytes,
                                      &result.fHasGradientBuffer,
                                      writeSwizzle);
+    printf("Frag code: %s\n", result.fSkSL.c_str());
 
     // Extract blend info after integrating the RenderStep into the final fragment shader in case
     // that changes the HW blending choice to handle analytic coverage.
