@@ -482,13 +482,29 @@ static VkPipelineLayout setup_pipeline_layout(const VulkanSharedContext* sharedC
     skia_private::STArray<VulkanGraphicsPipeline::kNumUniformBuffers, DescriptorData>
             uniformDescriptors;
     if (usesIntrinsicConstantUbo) {
-        uniformDescriptors.push_back(VulkanGraphicsPipeline::kIntrinsicUniformBufferDescriptor);
+        uniformDescriptors.push_back(DescriptorData{
+                DescriptorType::kUniformBuffer,
+                /*count=*/1,
+                VulkanGraphicsPipeline::kIntrinsicUniformBufferIndex,
+                PipelineStageFlags::kVertexShader | PipelineStageFlags::kFragmentShader});
     }
     if (hasStepUniforms) {
-        uniformDescriptors.push_back(VulkanGraphicsPipeline::kRenderStepUniformDescriptor);
+        uniformDescriptors.push_back(DescriptorData{
+                sharedContext->caps()->storageBufferPreferred()
+                    ? DescriptorType::kStorageBuffer
+                    : DescriptorType::kUniformBuffer,
+                /*count=*/1,
+                VulkanGraphicsPipeline::kRenderStepUniformBufferIndex,
+                PipelineStageFlags::kVertexShader | PipelineStageFlags::kFragmentShader});
     }
     if (numPaintUniforms > 0) {
-        uniformDescriptors.push_back(VulkanGraphicsPipeline::kPaintUniformDescriptor);
+        uniformDescriptors.push_back(DescriptorData{
+                sharedContext->caps()->storageBufferPreferred()
+                    ? DescriptorType::kStorageBuffer
+                    : DescriptorType::kUniformBuffer,
+                /*count=*/1,
+                VulkanGraphicsPipeline::kPaintUniformBufferIndex,
+                PipelineStageFlags::kFragmentShader});
     }
 
     if (!uniformDescriptors.empty()) {

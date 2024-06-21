@@ -524,7 +524,10 @@ bool CreateVkBackendContext(PFN_vkGetInstanceProcAddr getInstProc,
         instanceLayerNames.push_back(instanceLayers[i].layerName);
     }
     for (int i = 0; i < instanceExtensions.size(); ++i) {
-        if (strncmp(instanceExtensions[i].extensionName, "VK_KHX", 6) != 0) {
+        if (strncmp(instanceExtensions[i].extensionName, "VK_KHX", 6) != 0&&
+                0 != strcmp(instanceExtensions[i].extensionName, "VK_EXT_swapchain_colorspace")
+) {
+            printf("extension: %s\n", instanceExtensions[i].extensionName);
             instanceExtensionNames.push_back(instanceExtensions[i].extensionName);
         }
     }
@@ -718,7 +721,7 @@ bool CreateVkBackendContext(PFN_vkGetInstanceProcAddr getInstProc,
             // avoid enabling those.
             if (0 == strcmp(deviceExtensions[i].extensionName, "VK_EXT_provoking_vertex")     ||
                 0 == strcmp(deviceExtensions[i].extensionName, "VK_EXT_shader_object")        ||
-                0 == strcmp(deviceExtensions[i].extensionName, "VK_KHR_dynamic_rendering")    ||
+            //    0 == strcmp(deviceExtensions[i].extensionName, "VK_KHR_dynamic_rendering")    ||
                 0 == strcmp(deviceExtensions[i].extensionName, "VK_NV_acquire_winrt_display") ||
                 0 == strcmp(deviceExtensions[i].extensionName, "VK_NV_cuda_kernel_launch")    ||
                 0 == strcmp(deviceExtensions[i].extensionName, "VK_NV_low_latency")           ||
