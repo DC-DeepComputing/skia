@@ -19,6 +19,7 @@ skia_filegroup(
 # TODO(kjlubick) Could this be split up so we don't need to compile the SkSLMetalCodeGenerator
 # on platforms that don't support metal (e.g. WebGL, Linux)?
 GPU_SRCS = [
+    "SkSLCodeGenTypes.h",
     "SkSLCodeGenerator.h",
     "SkSLGLSLCodeGenerator.cpp",
     "SkSLGLSLCodeGenerator.h",
@@ -128,11 +129,42 @@ skia_cc_library(
         "SkSLCodeGenerator.h",
         "SkSLGLSLCodeGenerator.cpp",
     ],
-    hdrs = ["SkSLGLSLCodeGenerator.h"],
+    hdrs = [
+        "SkSLCodeGenTypes.h",
+        "SkSLGLSLCodeGenerator.h",
+    ],
     features = ["layering_check"],
-    visibility = ["//src/gpu/ganesh/gl:__pkg__"],
+    visibility = [
+        "//src/gpu/ganesh/gl:__pkg__",
+        "//tools/skslc:__pkg__",
+    ],
     deps = [
         ":gpu",
+        "//:core",
+        "//src/base",
+        "//src/core:core_priv",
+    ],
+)
+
+skia_cc_library(
+    name = "hlsl",
+    srcs = [
+        "SkSLCodeGenerator.h",
+        "SkSLHLSLCodeGenerator.cpp",
+        "SkSLSPIRVtoHLSL.cpp",
+        "SkSLSPIRVtoHLSL.h",
+    ],
+    hdrs = [
+        "SkSLCodeGenTypes.h",
+        "SkSLHLSLCodeGenerator.h",
+    ],
+    features = ["layering_check"],
+    visibility = [
+        "//tools/skslc:__pkg__",
+    ],
+    deps = [
+        ":gpu",
+        ":spirv",
         "//:core",
         "//src/base",
         "//src/core:core_priv",
@@ -145,11 +177,15 @@ skia_cc_library(
         "SkSLCodeGenerator.h",
         "SkSLMetalCodeGenerator.cpp",
     ],
-    hdrs = ["SkSLMetalCodeGenerator.h"],
+    hdrs = [
+        "SkSLCodeGenTypes.h",
+        "SkSLMetalCodeGenerator.h",
+    ],
     features = ["layering_check"],
     visibility = [
         "//src/gpu/ganesh/mtl:__pkg__",
         "//src/gpu/mtl:__pkg__",
+        "//tools/skslc:__pkg__",
     ],
     deps = [
         ":gpu",
@@ -166,9 +202,37 @@ skia_cc_library(
         "SkSLSPIRVCodeGenerator.cpp",
         "//src/sksl:gpu_hdrs",
     ],
-    hdrs = ["SkSLSPIRVCodeGenerator.h"],
+    hdrs = [
+        "SkSLCodeGenTypes.h",
+        "SkSLSPIRVCodeGenerator.h",
+    ],
     features = ["layering_check"],
-    visibility = ["//src/gpu/ganesh/vk:__pkg__"],
+    visibility = [
+        "//src/gpu/ganesh/vk:__pkg__",
+        "//tools/skslc:__pkg__",
+    ],
+    deps = [
+        ":gpu",
+        "//:core",
+        "//src/base",
+        "//src/core:core_priv",
+    ],
+)
+
+skia_cc_library(
+    name = "wgsl",
+    srcs = [
+        "SkSLCodeGenerator.h",
+        "SkSLWGSLCodeGenerator.cpp",
+    ],
+    hdrs = [
+        "SkSLCodeGenTypes.h",
+        "SkSLWGSLCodeGenerator.h",
+    ],
+    features = ["layering_check"],
+    visibility = [
+        "//tools/skslc:__pkg__",
+    ],
     deps = [
         ":gpu",
         "//:core",

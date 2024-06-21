@@ -850,6 +850,7 @@ skia_cc_library(
         "//src/base",
         "//src/opts",
         "//src/sksl:generated_sksl",
+        "//tools:get_executable_path",  # FIXME(kjlubick) do not land this
     ],
 )
 
