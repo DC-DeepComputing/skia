@@ -16,6 +16,24 @@
       "message": "Changelog update?",
       "revId": "89ade640df0b1d5f33b50566fa310b06be9a40f7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "67834be0_62460604",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-06-21T21:00:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bc492811_ada8d197",
+      "revId": "89ade640df0b1d5f33b50566fa310b06be9a40f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
