@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "863d16e1_3138ea44",
+        "filename": "include/gpu/graphite/precompile/PrecompileMaskFilter.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-21T14:08:52Z",
+      "side": 1,
+      "message": "Do we want to let them restrict by the blur style? Or save that knob for later?",
+      "range": {
+        "startLine": 44,
+        "startChar": 39,
+        "endLine": 44,
+        "endChar": 45
+      },
+      "revId": "8421bd450b44b182ca034ecb682bca88caa65f12",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b0726356_e9b394bb",
+        "filename": "src/gpu/graphite/precompile/PrecompileMaskFilter.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-21T14:08:52Z",
+      "side": 1,
+      "message": "Depending on the blur style, we may also need some blend mode image filter pipelines.  These are also going to be specific to A8 formats, so they are a little orthogonal to the regular combinations",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 42,
+        "endChar": 87
+      },
+      "revId": "8421bd450b44b182ca034ecb682bca88caa65f12",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
