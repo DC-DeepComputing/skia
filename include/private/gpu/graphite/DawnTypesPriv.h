@@ -65,6 +65,7 @@ struct DawnTextureSpec {
 
 private:
 #if !defined(__EMSCRIPTEN__)
+    // TODO(nicolettep): Could we just define the == operator for wgpu::YCbCrVkDescriptor?
     bool IsEqualToYCbCrVkDescriptorField(wgpu::YCbCrVkDescriptor that) const {
         return fYcbcrVkDescriptor.vkFormat == that.vkFormat &&
                fYcbcrVkDescriptor.vkYCbCrRange == that.vkYCbCrRange &&

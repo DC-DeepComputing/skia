@@ -63,7 +63,7 @@ enum class SnippetRequirementFlags : uint32_t {
     kBlenderDstColor  = 0x4,  // The "dst" argument for a blender
     kSurfaceColor     = 0x8,
     kGradientBuffer   = 0x10,
-    kStoresData       = 0x20, // Indicates that the node stores numerical data
+    kStoresData       = 0x20, // Indicates that the node may store numerical data
 };
 SK_MAKE_BITMASK_OPS(SnippetRequirementFlags)
 
