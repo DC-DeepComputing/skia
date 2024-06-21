@@ -936,14 +936,32 @@ void VulkanCommandBuffer::bindUniformBuffers() {
     // We always bind at least one uniform buffer descriptor for intrinsic uniforms, but can bind
     // up to three (one for render step uniforms, one for paint uniforms).
     STArray<VulkanGraphicsPipeline::kNumUniformBuffers, DescriptorData> descriptors;
-    descriptors.push_back(VulkanGraphicsPipeline::kIntrinsicUniformBufferDescriptor);
+    descriptors.push_back(DescriptorData{
+                DescriptorType::kUniformBuffer,
+                /*count=*/1,
+                VulkanGraphicsPipeline::kIntrinsicUniformBufferIndex,
+                PipelineStageFlags::kVertexShader | PipelineStageFlags::kFragmentShader});
+
     if (fActiveGraphicsPipeline->hasStepUniforms() &&
         fUniformBuffersToBind[VulkanGraphicsPipeline::kRenderStepUniformBufferIndex].fBuffer) {
-        descriptors.push_back(VulkanGraphicsPipeline::kRenderStepUniformDescriptor);
+        descriptors.push_back(DescriptorData{
+                fSharedContext->caps()->storageBufferPreferred()
+                    ? DescriptorType::kStorageBuffer
+                    : DescriptorType::kUniformBuffer,
+                /*count=*/1,
+                VulkanGraphicsPipeline::kRenderStepUniformBufferIndex,
+                PipelineStageFlags::kVertexShader | PipelineStageFlags::kFragmentShader});
     }
+
     if (fActiveGraphicsPipeline->hasFragmentUniforms() &&
         fUniformBuffersToBind[VulkanGraphicsPipeline::kPaintUniformBufferIndex].fBuffer) {
-        descriptors.push_back(VulkanGraphicsPipeline::kPaintUniformDescriptor);
+        descriptors.push_back(DescriptorData{
+                fSharedContext->caps()->storageBufferPreferred()
+                    ? DescriptorType::kStorageBuffer
+                    : DescriptorType::kUniformBuffer,
+                /*count=*/1,
+                VulkanGraphicsPipeline::kPaintUniformBufferIndex,
+                PipelineStageFlags::kFragmentShader});
     }
 
     sk_sp<VulkanDescriptorSet> descSet = fResourceProvider->findOrCreateUniformBuffersDescriptorSet(
@@ -967,7 +985,8 @@ void VulkanCommandBuffer::bindUniformBuffers() {
                                       VulkanGraphicsPipeline::kUniformBufferDescSetIndex,
                                       /*setCount=*/1,
                                       descSet->descriptorSet(),
-                                      descriptors.size(),
+                                      fSharedContext->caps()->storageBufferPreferred()
+                                        ? 1 : descriptors.size(),
                                       dynamicOffsets.get()));
     this->trackResource(std::move(descSet));
 }
