@@ -174,6 +174,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cc7d93ff_7402d86c",
+        "filename": "src/gpu/ganesh/image/SkImage_GaneshBase.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-06-21T21:02:17Z",
+      "side": 1,
+      "message": "Brian your summary is pretty close. But, yeah, the tl;dr is that we were moving towards always passing in the explicit context but never got there.",
+      "parentUuid": "a18aa8bf_56f6b409",
+      "range": {
+        "startLine": 236,
+        "startChar": 0,
+        "endLine": 238,
+        "endChar": 50
+      },
+      "revId": "c8223b047fa70fb4ac77d5dfcd28e9c2df8fc596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9c45227f_2eb87c2b",
         "filename": "src/image/SkImage.cpp",
         "patchSetId": 7
