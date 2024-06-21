@@ -94,6 +94,30 @@
       },
       "revId": "c8223b047fa70fb4ac77d5dfcd28e9c2df8fc596",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a18aa8bf_56f6b409",
+        "filename": "src/gpu/ganesh/image/SkImage_GaneshBase.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-06-21T15:15:50Z",
+      "side": 1,
+      "message": "Should `makeScaled` do the same?  Or is that direction obsolete?",
+      "parentUuid": "59017bcb_5dc40a25",
+      "range": {
+        "startLine": 236,
+        "startChar": 0,
+        "endLine": 238,
+        "endChar": 50
+      },
+      "revId": "c8223b047fa70fb4ac77d5dfcd28e9c2df8fc596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
