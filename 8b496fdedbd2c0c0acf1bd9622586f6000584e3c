@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7923f8c8_63dfc82b",
+        "filename": "src/ports/SkTypeface_mac_ct.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 546,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-06-21T21:39:50Z",
+      "side": 0,
+      "message": "Turns out the reason there was no diff on macOS was because the new code wan\u0027t actually being used (I had been testing on Linux) because this line made everything \"TrueType\" and no fonts were seen a \"CFF \".",
+      "revId": "8b496fdedbd2c0c0acf1bd9622586f6000584e3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

@@ -16,6 +16,24 @@
       "message": "This should have changed the hash for (but not the image for) `stroketext_native`. Locally I\u0027ve verified that this is the case, but I\u0027m not sure why `dm` didn\u0027t upload a \"new\" image.",
       "revId": "fd74017794ec7ace27596065e989e9cd67438afe",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d74b899a_b35585cc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-06-21T21:39:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8e4294ed_a7694376",
+      "revId": "fd74017794ec7ace27596065e989e9cd67438afe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
