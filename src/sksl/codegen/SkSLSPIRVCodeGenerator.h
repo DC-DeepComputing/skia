@@ -9,17 +9,21 @@
 #define SKSL_SPIRVCODEGENERATOR
 
 #include <string>
+#include <string_view>
 
 namespace SkSL {
 
+class ErrorReporter;
 class OutputStream;
 struct Program;
 struct ShaderCaps;
 
+using ValidateSPIRVProc = bool (*)(ErrorReporter&, std::string_view);
+
 /**
  * Converts a Program into a SPIR-V binary.
  */
-bool ToSPIRV(Program& program, const ShaderCaps* caps, OutputStream& out);
+bool ToSPIRV(Program& program, const ShaderCaps* caps, OutputStream& out, ValidateSPIRVProc = nullptr);
 bool ToSPIRV(Program& program, const ShaderCaps* caps, std::string* out);
 
 }  // namespace SkSL

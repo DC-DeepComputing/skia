@@ -569,8 +569,7 @@ if (skia_compile_modules) {
       libs += [ "dl" ]
     }
     sources += skia_sksl_sources
-    sources += skia_sksl_gpu_sources
-    sources -= skia_sksl_default_module_sources
+    sources += skia_sksl_codegen_sources
     include_dirs = [ "." ]
     deps = [ ":run_sksllex" ]
   }
@@ -674,9 +673,6 @@ if (skia_compile_sksl_tests) {
     defines = [
       "SKSL_STANDALONE",
       "SK_DISABLE_TRACING",
-      "SK_ENABLE_SPIRV_CROSS",
-      "SK_ENABLE_SPIRV_VALIDATION",
-      "SK_ENABLE_WGSL_VALIDATION",
     ]
     sources = skslc_deps
     sources += [
@@ -700,8 +696,9 @@ if (skia_compile_sksl_tests) {
     }
     sources += skia_sksl_sources
     sources += skia_sksl_gpu_sources
+    sources += skia_sksl_codegen_sources
+    sources += skia_sksl_hlsl_sources
     sources += skia_sksl_tracing_sources
-    sources -= skia_sksl_default_module_sources
     include_dirs = [ "." ]
     deps = [
       ":run_sksllex",
@@ -845,7 +842,9 @@ optional("gpu_shared") {
   public_deps = []
   frameworks = []
 
-  sources = skia_shared_gpu_sources + skia_sksl_gpu_sources
+  sources = skia_shared_gpu_sources
+  sources += skia_sksl_gpu_sources
+  sources += skia_sksl_codegen_sources
 
   if (skia_use_dawn) {
     public_defines += [ "SK_DAWN" ]
@@ -876,9 +875,7 @@ optional("gpu_shared") {
   }
 
   if (skia_use_direct3d) {
-    # Must be defined when 'skia_sksl_gpu_sources' is built, even if the rest of skia_use_direct3d
-    # is handled only in the 'gpu' component.
-    public_defines += [ "SK_ENABLE_SPIRV_CROSS" ]
+    sources += skia_sksl_hlsl_sources
     deps += [ "//third_party/spirv-cross:spirv_cross" ]
   }
 
