@@ -46,6 +46,30 @@
       },
       "revId": "c8223b047fa70fb4ac77d5dfcd28e9c2df8fc596",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59017bcb_5dc40a25",
+        "filename": "src/gpu/ganesh/image/SkImage_GaneshBase.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-06-21T15:08:59Z",
+      "side": 1,
+      "message": "There was a time when all the image functions used the internally stored context to do their work. Eventually, we realized it was a bit of an antipattern. Even though Ganesh was never really thread-safe, it was too easy to accidentally call a method like that on an SkImage from the wrong thread, and cause wild problems. Before graphite, we were working towards making some operations safe across threads -- eg, images that just wrap textures owned by the client could potentially be accessed by more than one thread with some APIs, so we worked to add explicit context parameters. We never got all the way, so we have this state where the images still know their context, but we also got as far as expecting the caller to supply the \"correct\" context to use (and we do the validation because we never figured out which operations were going to be safe in the ganesh resource caching world).",
+      "parentUuid": "6ef0086b_6e301299",
+      "range": {
+        "startLine": 236,
+        "startChar": 0,
+        "endLine": 238,
+        "endChar": 50
+      },
+      "revId": "c8223b047fa70fb4ac77d5dfcd28e9c2df8fc596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
