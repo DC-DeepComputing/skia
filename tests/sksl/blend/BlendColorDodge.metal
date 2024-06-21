@@ -16,13 +16,9 @@ struct Outputs {
 };
 half color_dodge_component_Qhh2h2(half2 s, half2 d);
 half color_dodge_component_Qhh2h2(half2 s, half2 d) {
-    if (d.x == 0.0h) {
-        return s.x * (1.0h - d.y);
-    } else {
+    if (d.x == 0.0h) return s.x * (1.0h - d.y); else {
         half delta = s.y - s.x;
-        if (delta == 0.0h) {
-            return (s.y * d.y + s.x * (1.0h - d.y)) + d.x * (1.0h - s.y);
-        } else {
+        if (delta == 0.0h) return (s.y * d.y + s.x * (1.0h - d.y)) + d.x * (1.0h - s.y); else {
             delta = min(d.y, (d.x * s.y) / (delta + sk_PrivkGuardedDivideEpsilon));
             return (delta * s.y + s.x * (1.0h - d.y)) + d.x * (1.0h - s.y);
         }

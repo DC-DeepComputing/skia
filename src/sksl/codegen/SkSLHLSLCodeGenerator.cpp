@@ -38,10 +38,7 @@ bool ToHLSL(Program& program, const ShaderCaps* caps, std::string* out) {
     if (!ToSPIRV(program, caps, &spirv)) {
         return false;
     }
-    if (!SPIRVtoHLSL(spirv, out)) {
-        program.fContext->fErrors->error(Position(), "HLSL cross-compilation not enabled");
-        return false;
-    }
+    SPIRVtoHLSL(spirv, out);
     return true;
 }
 

@@ -24,9 +24,7 @@ half soft_light_component_Qhh2h2(half2 s, half2 d) {
         half DaSqd = d.y * d.y;
         half DaCub = DaSqd * d.y;
         return (((DaSqd * (s.x - d.x * ((3.0h * s.y - 6.0h * s.x) - 1.0h)) + ((12.0h * d.y) * DSqd) * (s.y - 2.0h * s.x)) - (16.0h * DCub) * (s.y - 2.0h * s.x)) - DaCub * s.x) / (DaSqd + sk_PrivkGuardedDivideEpsilon);
-    } else {
-        return ((d.x * ((s.y - 2.0h * s.x) + 1.0h) + s.x) - sqrt(d.y * d.x) * (s.y - 2.0h * s.x)) - d.y * s.x;
-    }
+    } else return ((d.x * ((s.y - 2.0h * s.x) + 1.0h) + s.x) - sqrt(d.y * d.x) * (s.y - 2.0h * s.x)) - d.y * s.x;
 }
 fragment Outputs fragmentMain(Inputs _in [[stage_in]], constant Uniforms& _uniforms [[buffer(0)]], bool _frontFacing [[front_facing]], float4 _fragCoord [[position]]) {
     Outputs _out;
