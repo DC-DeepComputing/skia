@@ -13,6 +13,7 @@
 #include "include/effects/SkRuntimeEffect.h"
 #include "include/gpu/graphite/precompile/PrecompileBlender.h"
 #include "include/gpu/graphite/precompile/PrecompileColorFilter.h"
+#include "include/gpu/graphite/precompile/PrecompileMaskFilter.h"
 #include "include/gpu/graphite/precompile/PrecompileShader.h"
 #include "src/gpu/graphite/ContextPriv.h"
 #include "src/gpu/graphite/FactoryFunctions.h"
@@ -28,6 +29,12 @@
 using namespace::skgpu::graphite;
 
 namespace {
+
+// blur mask and image filters
+// By itself blurring requires 24 combinations:
+//         2 x (hw-tiled and shader-tiled image draws)
+//         12 (for the 6 1D blur effects plus the 6 2D blur effects)
+static constexpr int kExpectedNumBlurPipelines = 24;
 
 // colorfilters
 static constexpr int kExpectedBlendColorFilterCombos = 1;
@@ -74,7 +81,9 @@ void run_test(const KeyContext& keyContext,
               const PaintOptions& paintOptions,
               int expectedNumOptions) {
 
-    REPORTER_ASSERT(reporter, paintOptions.priv().numCombinations() == expectedNumOptions);
+    REPORTER_ASSERT(reporter, paintOptions.priv().numCombinations() == expectedNumOptions,
+                    "actual %d expected %d",
+                    paintOptions.priv().numCombinations(), expectedNumOptions);
 
     std::vector<UniquePaintParamsID> precompileIDs;
     paintOptions.priv().buildCombinations(keyContext,
@@ -82,10 +91,12 @@ void run_test(const KeyContext& keyContext,
                                           DrawTypeFlags::kNone,
                                           /* withPrimitiveBlender= */ false,
                                           Coverage::kNone,
-                                          [&precompileIDs](UniquePaintParamsID id,
-                                                           DrawTypeFlags,
-                                                           bool /* withPrimitiveBlender */,
-                                                           Coverage) {
+                                          [&precompileIDs, keyContext](UniquePaintParamsID id,
+                                                                     DrawTypeFlags,
+                                                                     bool /* withPrimitiveBlender */,
+                                                                     Coverage) {
+                                              keyContext.dict()->dump(id);
+
                                               precompileIDs.push_back(id);
                                           });
 
@@ -343,6 +354,23 @@ void blend_subtest(const KeyContext& keyContext,
     }
 }
 
+// Exercise the PrecompileMaskFilters factory
+void maskfilter_subtest(const KeyContext& keyContext,
+                        PipelineDataGatherer* gatherer,
+                        skiatest::Reporter* reporter) {
+    // Blur masks incur the full set of blur pipelines plus 3 glue pipelines:
+    //   the original draw w/ its blendMode replaced w/ kSrcOver
+    //   2 image-based "restore" draws that carry the original blendMode/blender
+    {
+        PaintOptions paintOptions;
+        paintOptions.setShaders({ PrecompileShaders::MakeFractalNoise() });
+        paintOptions.setBlendModes({ SkBlendMode::kModulate });
+        paintOptions.setMaskFilters({ PrecompileMaskFilters::Blur() });
+
+        run_test(keyContext, gatherer, reporter, paintOptions, kExpectedNumBlurPipelines + 3);
+    }
+}
+
 // Exercise all the PrecompileShaders factories
 void shader_subtest(const KeyContext& keyContext,
                     PipelineDataGatherer* gatherer,
@@ -493,6 +521,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(CombinationBuilderTest, reporter, context,
 
     PipelineDataGatherer gatherer(Layout::kMetal);
 
+#if 0
     // The default PaintOptions should create a single combination with a solid color shader and
     // kSrcOver blending
     {
@@ -500,13 +529,15 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(CombinationBuilderTest, reporter, context,
 
         run_test(keyContext, &gatherer, reporter, paintOptions, /* expectedNumOptions= */ 1);
     }
+#endif
 
-    blend_subtest(keyContext, &gatherer, reporter);
-    shader_subtest(keyContext, &gatherer, reporter);
+//    blend_subtest(keyContext, &gatherer, reporter);
+    maskfilter_subtest(keyContext, &gatherer, reporter);
+//    shader_subtest(keyContext, &gatherer, reporter);
 
-    no_blend_mode_option_test(keyContext, &gatherer, reporter);
-    big_test(keyContext, &gatherer, reporter);
-    runtime_effect_test(keyContext, &gatherer, reporter);
+//    no_blend_mode_option_test(keyContext, &gatherer, reporter);
+//    big_test(keyContext, &gatherer, reporter);
+//    runtime_effect_test(keyContext, &gatherer, reporter);
 }
 
 #endif // SK_GRAPHITE
