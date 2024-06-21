@@ -339,14 +339,12 @@ std::string ShaderInfo::toSkSL(const Caps* caps,
     if (useGradientStorageBuffer) {
         SkASSERT(caps->storageBufferSupport());
 
-        // In metal the vertex and instance buffer occupy slots 3 and 4 so we use slot 5 in that
-        // case. In dawn and vulkan that is not the case so we can occupy slot 3, and those two
-        // apis also do separate texture/sampler bindings.
-        int binding = bindingReqs.fSeparateTextureAndSamplerBinding ? 3 : 5;
         SkSL::String::appendf(&preamble,
                               "layout (binding=%d) readonly buffer FSGradientBuffer {\n"
                               "    float %s[];\n"
-                              "};\n", binding, caps->shaderCaps()->fFloatBufferArrayName);
+                              "};\n",
+                              bindingReqs.fGradientBufferBinding,
+                              caps->shaderCaps()->fFloatBufferArrayName);
         *hasGradientBuffer = true;
     }
 
