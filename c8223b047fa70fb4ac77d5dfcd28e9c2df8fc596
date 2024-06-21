@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e69e13be_191a7094",
+        "filename": "src/gpu/ganesh/image/SkImage_GaneshBase.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-06-21T15:01:51Z",
+      "side": 1,
+      "message": "Tangential question (Brian?): looks like we can derive dctx from the image itself - why can\u0027t other similar helpers do the same?  E.g. `makeSubset` takes an explicit dctx, and goes through extra hoops to reject the request if it doesn\u0027t match the internal one (to the point where we\u0027re now chaining two virtual calls just for that check, sigh).",
+      "range": {
+        "startLine": 236,
+        "startChar": 0,
+        "endLine": 238,
+        "endChar": 50
+      },
+      "revId": "c8223b047fa70fb4ac77d5dfcd28e9c2df8fc596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
