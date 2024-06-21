@@ -202,7 +202,6 @@ class sk_sp_SynthProvider:
         except:
             pass
 
-
 def __lldb_init_module(debugger, dict):
     debugger.HandleCommand(
         'type summary add -F skia.SkString_SummaryProvider "SkString" -w skia')
@@ -220,4 +219,6 @@ def __lldb_init_module(debugger, dict):
         'type synthetic add -l skia.AutoTArray_SynthProvider -x "^skia_private::AutoS?TArray<.+>$" -w skia')
     debugger.HandleCommand(
         'type summary add --summary-string "size=${svar%#}" -e -x "^skia_private::AutoS?TArray<.+>$" -w skia')
+    debugger.HandleCommand(
+        'type summary add --python-script "v = valobj.GetValueAsSigned(0);return str(v) + \' (\' + str(v/65536.0) + \')\';" SkFixed')
     debugger.HandleCommand("type category enable skia")
