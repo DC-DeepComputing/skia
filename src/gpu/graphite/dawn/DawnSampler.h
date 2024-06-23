@@ -30,8 +30,7 @@ public:
     const wgpu::Sampler& dawnSampler() const { return fSampler; }
 
 private:
-    DawnSampler(const DawnSharedContext* sharedContext,
-                wgpu::Sampler sampler);
+    DawnSampler(const DawnSharedContext* sharedContext, wgpu::Sampler sampler);
 
     void freeGpuData() override;
 
