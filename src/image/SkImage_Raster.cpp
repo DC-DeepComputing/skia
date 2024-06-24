@@ -17,6 +17,7 @@
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSize.h"
+#include "include/core/SkSurface.h"
 #include "include/core/SkTypes.h"
 #include "src/base/SkRectMemcpy.h"
 #include "src/core/SkImageInfoPriv.h"
@@ -78,6 +79,13 @@ bool SkImage_Raster::onPeekPixels(SkPixmap* pm) const {
 bool SkImage_Raster::getROPixels(GrDirectContext*, SkBitmap* dst, CachingHint) const {
     *dst = fBitmap;
     return true;
+}
+
+sk_sp<SkSurface> SkImage_Raster::onMakeSurface(skgpu::graphite::Recorder*,
+                                               const SkImageInfo& info) const {
+    const SkSurfaceProps* props = nullptr;
+    const size_t rowBytes = 0;
+    return SkSurfaces::Raster(info, rowBytes, props);
 }
 
 static SkBitmap copy_bitmap_subset(const SkBitmap& orig, const SkIRect& subset) {
