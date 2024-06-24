@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "22d879d8_85b83d17",
+        "filename": "example/external_client/.bazelrc",
+        "patchSetId": 12
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-06-24T15:58:07Z",
+      "side": 1,
+      "message": "No, that\u0027s fine. Thanks :D",
+      "parentUuid": "b079fdc2_1d7ebfae",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 2,
+        "endChar": 27
+      },
+      "revId": "00b2913e02dc3443e09073698dbfb64801648699",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bc19dca4_828d8281",
@@ -150,6 +174,30 @@
       "side": 1,
       "message": "We have a naming convention for having \"helper namespaces\" be plural and the related classes being singular. E.g. SkImages and SkImage; SkSurfaces and SkSurface.\n\nWhy not declare Make as a static function in the VulkanMemoryAllocator class? The reason for the above \"helper namespaces\" is to allow us to define members across different files. Those different files allow us to make things more modular. In specific, we have the class VulkanMemoryAllocator be built into the \"//src/gpu/vk:vk\" module (everybody gets it), but the VulkanMemoryAllocators namespace (and Make function) exist in a different module, so it can be optional to include this implementation. If this was a static function in the class, it would always be available at compile time, but wouldn\u0027t be available at link time unless a client knew to depend on the right module. I think compile/visibility errors are easier to diagnose (Bazel goes \"Hey, you can\u0027t actually see this header unless you depend on something that provides it\") than link errors and the bifurcation feels cleaner.",
       "parentUuid": "d6b054a0_80695195",
+      "range": {
+        "startLine": 274,
+        "startChar": 10,
+        "endLine": 274,
+        "endChar": 33
+      },
+      "revId": "00b2913e02dc3443e09073698dbfb64801648699",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cbdd4b58_691efc25",
+        "filename": "src/gpu/vk/vulkanmemoryallocator/VulkanAMDMemoryAllocator.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 274,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-06-24T15:58:07Z",
+      "side": 1,
+      "message": "Thank you for the clarification!",
+      "parentUuid": "70221fcc_b8cbeaaf",
       "range": {
         "startLine": 274,
         "startChar": 10,
