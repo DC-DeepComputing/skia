@@ -412,7 +412,11 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(const DawnSharedContext* 
     // Pipeline layout
     BindGroupLayouts groupLayouts;
     skia_private::TArray<sk_sp<DawnSampler>> immutableSamplers;
-    immutableSamplers.push_back_n(numTexturesAndSamplers / 2);
+
+    // TODO(): This change was necessary to avoid a crash. However, the logic
+    // on the mapping between indexing of `entries` and `immutableSamplers`
+    // needs to be checked to be sure it is correct.
+    immutableSamplers.push_back_n(numTexturesAndSamplers);
 
     {
         SkASSERT(resourceProvider);
@@ -488,15 +492,20 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(const DawnSharedContext* 
                         resourceProvider->getOrCreateSingleTextureSamplerBindGroupLayout();
             } else {
                 std::vector<wgpu::BindGroupLayoutEntry> entries(numTexturesAndSamplers);
+
+                // NOTE: The StaticSamplerBindingLayout entries must remain
+                // alive for the duration of their usage by
+                // `numTexturesAndSamplers`.
+                std::vector<wgpu::StaticSamplerBindingLayout> staticSamplerBindingLayouts(numTexturesAndSamplers);
                 for (int i = 0; i < numTexturesAndSamplers;) {
                     entries[i].binding = static_cast<uint32_t>(i);
                     entries[i].visibility = wgpu::ShaderStage::Fragment;
-                    entries[i].sampler.type = wgpu::SamplerBindingType::Filtering;
 // #if defined(__EMSCRIPTEN__)
                     if (immutableSamplers[i]) {
-                        wgpu::StaticSamplerBindingLayout staticSamplerBindingLayout;
-                        staticSamplerBindingLayout.sampler = immutableSamplers[i]->dawnSampler();
-                        entries[i].nextInChain = &staticSamplerBindingLayout;
+                        staticSamplerBindingLayouts[i].sampler = immutableSamplers[i]->dawnSampler();
+                        entries[i].nextInChain = &staticSamplerBindingLayouts[i];
+                    } else {
+                      entries[i].sampler.type = wgpu::SamplerBindingType::Filtering;
                     }
 // #endif
                     ++i;
