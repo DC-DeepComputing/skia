@@ -75,9 +75,9 @@ skia_cc_library(
     deps = [
         "//:core",
         "//:ganesh_gl",
-        "//:ganesh_glx_factory",
         "//tools/fonts:font_tool_utils",
     ] + select({
+        "@platforms//os:linux": ["//:ganesh_glx_factory"],
         # TODO(kjlubick): Add Android support.
         # "@platforms//os:android": ["//tools/window/android:deps"],
         "//conditions:default": [],
