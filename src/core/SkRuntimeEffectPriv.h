@@ -137,6 +137,10 @@ public:
     static bool UsesColorTransform(const SkRuntimeEffect* effect) {
         return effect->usesColorTransform();
     }
+
+    static bool UsesSampleCoords(const SkRuntimeEffect* effect) {
+        return effect->usesSampleCoords();
+    }
 };
 
 // These internal APIs for creating runtime effects vary from the public API in two ways:
