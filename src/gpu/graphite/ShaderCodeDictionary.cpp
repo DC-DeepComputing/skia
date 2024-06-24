@@ -513,7 +513,7 @@ std::string ShaderInfo::toSkSL(const Caps* caps,
 //--------------------------------------------------------------------------------------------------
 // ShaderCodeDictionary
 
-UniquePaintParamsID ShaderCodeDictionary::findOrCreate(PaintParamsKeyBuilder* builder) {
+UniquePaintParamsID ShaderCodeDictionary::findOrCreate1(PaintParamsKeyBuilder* builder) {
     AutoLockBuilderAsKey keyView{builder};
     if (!keyView->isValid()) {
         return UniquePaintParamsID::InvalidID();

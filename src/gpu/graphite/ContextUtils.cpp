@@ -55,7 +55,9 @@ std::tuple<UniquePaintParamsID, const UniformDataBlock*, const TextureDataBlock*
                           dstOffset);
     p.toKey(keyContext, builder, gatherer);
 
-    UniquePaintParamsID paintID = recorder->priv().shaderCodeDictionary()->findOrCreate(builder);
+    UniquePaintParamsID paintID = recorder->priv().shaderCodeDictionary()->findOrCreate1(builder);
+    recorder->priv().shaderCodeDictionary()->dump(paintID);
+
     const UniformDataBlock* uniforms = nullptr;
     const TextureDataBlock* textures = nullptr;
     if (paintID.isValid()) {
