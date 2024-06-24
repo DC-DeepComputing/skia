@@ -52,6 +52,7 @@ public:
     UniqueKey makeGraphicsPipelineKey(const GraphicsPipelineDesc&,
                                       const RenderPassDesc&) const override;
     UniqueKey makeComputePipelineKey(const ComputePipelineDesc&) const override;
+    GraphiteResourceKey makeSamplerKey(const SamplerDesc&) const override;
     uint32_t channelMask(const TextureInfo&) const override;
     bool isRenderable(const TextureInfo&) const override;
     bool isStorage(const TextureInfo&) const override;
@@ -61,6 +62,7 @@ public:
                             Shareable,
                             GraphiteResourceKey*) const override;
     uint64_t getRenderPassDescKeyForPipeline(const RenderPassDesc& renderPassDesc) const;
+    ImmutableSamplerInfo getImmutableSamplerInfo(const TextureProxy* proxy) const override;
 
     static constexpr size_t kFormatCnt = 18;
 

@@ -938,6 +938,119 @@ UniqueKey DawnCaps::makeComputePipelineKey(const ComputePipelineDesc& pipelineDe
     return pipelineKey;
 }
 
+GraphiteResourceKey DawnCaps::makeSamplerKey(const SamplerDesc& samplerDesc) const {
+    GraphiteResourceKey samplerKey;
+    const SkSpan<const uint32_t>& samplerData = samplerDesc.asSpan();
+    static const ResourceType kSamplerType = GraphiteResourceKey::GenerateResourceType();
+    // Non-format ycbcr and sampler information are guaranteed to fit within one uint32, so the size
+    // of the returned span accurately captures the quantity of uint32s needed whether the sampler
+    // is immutable or not.
+    GraphiteResourceKey::Builder builder(&samplerKey, kSamplerType, samplerData.size(),
+                                         Shareable::kYes);
+
+    for (size_t i = 0; i < samplerData.size(); i++) {
+        builder[i] = samplerData[i];
+    }
+    builder.finish();
+    return samplerKey;
+}
+
+namespace {
+bool are_ycbcr_descriptors_equivalent(const wgpu::YCbCrVkDescriptor& desc1,
+                                      const wgpu::YCbCrVkDescriptor& desc2) {
+    return desc1.vkFormat                    == desc2.vkFormat                    &&
+           desc1.vkYCbCrRange                == desc2.vkYCbCrRange                &&
+           desc1.vkComponentSwizzleRed       == desc2.vkComponentSwizzleRed       &&
+           desc1.vkComponentSwizzleGreen     == desc2.vkComponentSwizzleGreen     &&
+           desc1.vkComponentSwizzleBlue      == desc2.vkComponentSwizzleBlue      &&
+           desc1.vkComponentSwizzleAlpha     == desc2.vkComponentSwizzleAlpha     &&
+           desc1.vkXChromaOffset             == desc2.vkXChromaOffset             &&
+           desc1.vkYChromaOffset             == desc2.vkYChromaOffset             &&
+           desc1.vkChromaFilter              == desc2.vkChromaFilter              &&
+           desc1.forceExplicitReconstruction == desc2.forceExplicitReconstruction &&
+           desc1.externalFormat              == desc2.externalFormat;
+}
+
+bool is_ycbcr_descriptor_valid(const wgpu::YCbCrVkDescriptor& desc) {
+    static const wgpu::YCbCrVkDescriptor kDefaultYcbcrDescriptor = {};
+    return !are_ycbcr_descriptors_equivalent(desc, kDefaultYcbcrDescriptor);
+}
+
+// TODO(nicolettep): Clean this repeated code up to be shared b/w dawn and vulkan.
+uint32_t ycbcr_descriptor_nonformat_info_as_uint32(const wgpu::YCbCrVkDescriptor& conversionInfo) {
+    static constexpr int kUsesExternalFormatBits  = 1;
+    static constexpr int kYcbcrModelBits          = 3;
+    static constexpr int kYcbcrRangeBits          = 1;
+    static constexpr int kXChromaOffsetBits       = 1;
+    static constexpr int kYChromaOffsetBits       = 1;
+    static constexpr int kChromaFilterBits        = 1;
+    static constexpr int kForceExplicitReconBits  = 1;
+    static constexpr int kComponentBits           = 3;
+
+    static constexpr int kUsesExternalFormatShift = 0;
+    static constexpr int kYcbcrModelShift         = kUsesExternalFormatShift +
+                                                    kUsesExternalFormatBits;
+    static constexpr int kYcbcrRangeShift         = kYcbcrModelShift         + kYcbcrModelBits;
+    static constexpr int kXChromaOffsetShift      = kYcbcrRangeShift         + kYcbcrRangeBits;
+    static constexpr int kYChromaOffsetShift      = kXChromaOffsetShift      + kXChromaOffsetBits;
+    static constexpr int kChromaFilterShift       = kYChromaOffsetShift      + kYChromaOffsetBits;
+    static constexpr int kForceExplicitReconShift = kChromaFilterShift       + kChromaFilterBits;
+    static constexpr int kComponentRShift         = kForceExplicitReconShift + kComponentBits;
+    static constexpr int kComponentGShift         = kComponentRShift         + kComponentBits;
+    static constexpr int kComponentBShift         = kComponentGShift         + kComponentBits;
+    static constexpr int kComponentAShift         = kComponentBShift         + kComponentBits;
+
+    static_assert(kComponentAShift + kComponentBits <= 32);
+
+    static constexpr uint32_t kUseExternalFormatMask =
+            ((1 << kUsesExternalFormatBits) - 1) << kUsesExternalFormatShift;
+    static constexpr uint32_t kYcbcrModelMask =
+            ((1 << kYcbcrModelBits) - 1) << kYcbcrModelShift;
+    static constexpr uint32_t kYcbcrRangeMask =
+            ((1 << kYcbcrRangeBits) - 1) << kYcbcrRangeShift;
+    static constexpr uint32_t kXChromaOffsetMask =
+            ((1 << kXChromaOffsetBits) - 1) << kXChromaOffsetShift;
+    static constexpr uint32_t kYChromaOffsetMask =
+            ((1 << kYChromaOffsetBits) - 1) << kYChromaOffsetShift;
+    static constexpr uint32_t kChromaFilterMask =
+            ((1 << kChromaFilterBits) - 1) << kChromaFilterShift;
+    static constexpr uint32_t kForceExplicitReconMask =
+            ((1 << kForceExplicitReconBits) - 1) << kForceExplicitReconShift;
+    static constexpr uint32_t kComponentRMask = ((1 << kComponentBits) - 1) << kComponentRShift;
+    static constexpr uint32_t kComponentBMask = ((1 << kComponentBits) - 1) << kComponentGShift;
+    static constexpr uint32_t kComponentGMask = ((1 << kComponentBits) - 1) << kComponentBShift;
+    static constexpr uint32_t kComponentAMask = ((1 << kComponentBits) - 1) << kComponentAShift;
+
+    SkASSERT(conversionInfo.vkYCbCrModel                          < (1u << kYcbcrModelBits    ));
+    SkASSERT(conversionInfo.vkYCbCrRange                          < (1u << kYcbcrRangeBits    ));
+    SkASSERT(conversionInfo.vkXChromaOffset                       < (1u << kXChromaOffsetBits ));
+    SkASSERT(conversionInfo.vkYChromaOffset                       < (1u << kYChromaOffsetBits ));
+    SkASSERT(static_cast<uint32_t>(conversionInfo.vkChromaFilter) < (1u << kChromaFilterBits  ));
+    SkASSERT(conversionInfo.vkComponentSwizzleRed                 < (1u << kComponentBits     ));
+    SkASSERT(conversionInfo.vkComponentSwizzleGreen               < (1u << kComponentBits     ));
+    SkASSERT(conversionInfo.vkComponentSwizzleBlue                < (1u << kComponentBits     ));
+    SkASSERT(conversionInfo.vkComponentSwizzleAlpha               < (1u << kComponentBits     ));
+    SkASSERT(static_cast<uint32_t>(conversionInfo.forceExplicitReconstruction)
+             < (1u << kForceExplicitReconBits));
+
+
+    // TODO(nicolettep): Confirm that this is a correct assumption. Usually we check for
+    // VK_FORMAT_UNDEFINED.
+    bool usesExternalFormat = conversionInfo.vkFormat == 0;
+
+    return (((uint32_t)(usesExternalFormat                         ) << kUsesExternalFormatShift) |
+            ((uint32_t)(conversionInfo.vkYCbCrModel                ) << kYcbcrModelShift        ) |
+            ((uint32_t)(conversionInfo.vkYCbCrRange                ) << kYcbcrRangeShift        ) |
+            ((uint32_t)(conversionInfo.vkXChromaOffset             ) << kXChromaOffsetShift     ) |
+            ((uint32_t)(conversionInfo.vkYChromaOffset             ) << kYChromaOffsetShift     ) |
+            ((uint32_t)(conversionInfo.vkChromaFilter              ) << kChromaFilterShift      ) |
+            ((uint32_t)(conversionInfo.forceExplicitReconstruction ) << kForceExplicitReconShift) |
+            ((uint32_t)(conversionInfo.vkComponentSwizzleRed       ) << kComponentRShift        ) |
+            ((uint32_t)(conversionInfo.vkComponentSwizzleGreen     ) << kComponentGShift        ) |
+            ((uint32_t)(conversionInfo.vkComponentSwizzleBlue      ) << kComponentBShift        ) |
+            ((uint32_t)(conversionInfo.vkComponentSwizzleAlpha     ) << kComponentAShift        ));
+}
+}
 void DawnCaps::buildKeyForTexture(SkISize dimensions,
                                   const TextureInfo& info,
                                   ResourceType type,
@@ -948,6 +1061,8 @@ void DawnCaps::buildKeyForTexture(SkISize dimensions,
     SkASSERT(!dimensions.isEmpty());
 
     SkASSERT(dawnSpec.getViewFormat() != wgpu::TextureFormat::Undefined);
+    // TODO(nicolettep): Do we need to account for/ check for ycbcr descriptor format here? What
+    // are the expected values of the view's format/the texture's format when using ycbcr?
     uint32_t formatKey = static_cast<uint32_t>(dawnSpec.getViewFormat());
 
     uint32_t samplesKey = SamplesToKey(info.numSamples());
@@ -962,9 +1077,17 @@ void DawnCaps::buildKeyForTexture(SkISize dimensions,
     SkASSERT(static_cast<uint32_t>(dawnSpec.fUsage) < (1u << 28)); // usage is remaining 28 bits
 
     // We need two uint32_ts for dimensions, 1 for format, and 1 for the rest of the key;
-    static int kNum32DataCnt = 2 + 1 + 1;
+    int num32DataCnt = 2 + 1 + 1;
 
-    GraphiteResourceKey::Builder builder(key, type, kNum32DataCnt, shareable);
+    bool hasYcbcrInfo = false;
+// #if !defined(__EMSCRIPTEN__)
+    // If we are using ycbcr texture/sampling, more key information is needed.
+    if (hasYcbcrInfo = is_ycbcr_descriptor_valid(dawnSpec.fYcbcrVkDescriptor)) {
+        num32DataCnt += dawnSpec.numInt32sNeededForYcbcrInfo();
+    }
+// #endif
+
+    GraphiteResourceKey::Builder builder(key, type, num32DataCnt, shareable);
 
     builder[0] = dimensions.width();
     builder[1] = dimensions.height();
@@ -972,6 +1095,49 @@ void DawnCaps::buildKeyForTexture(SkISize dimensions,
     builder[3] = (samplesKey                                   << 0) |
                  (static_cast<uint32_t>(isMipped)              << 3) |
                  (static_cast<uint32_t>(dawnSpec.fUsage)       << 4);
+
+// #if !defined(__EMSCRIPTEN__)
+    if (hasYcbcrInfo) {
+        builder[4] = ycbcr_descriptor_nonformat_info_as_uint32(dawnSpec.fYcbcrVkDescriptor);
+
+        // TODO(nicolettep): We may not need to store format information on the key here if that
+        // info instead gets encapsulated by the formatKey. For now, appending even if it's
+        // superfluous data.
+        if (!dawnSpec.ycbcrDescriptorUsesExternalFormat()) {
+            builder[5] = dawnSpec.fYcbcrVkDescriptor.vkFormat;
+        } else {
+            builder[5] = (uint32_t)(dawnSpec.fYcbcrVkDescriptor.externalFormat >> 32);
+            builder[6] = (uint32_t)dawnSpec.fYcbcrVkDescriptor.externalFormat;
+        }
+    }
+// #endif
+}
+
+ImmutableSamplerInfo DawnCaps::getImmutableSamplerInfo(const TextureProxy* proxy) const {
+// #if !defined(__EMSCRIPTEN__)
+    if (proxy) {
+        const wgpu::YCbCrVkDescriptor& ycbcrConversionInfo =
+                proxy->textureInfo().dawnTextureSpec().fYcbcrVkDescriptor;
+
+        if (is_ycbcr_descriptor_valid(ycbcrConversionInfo)) {
+            ImmutableSamplerInfo immutableSamplerInfo;
+            // ycbcrConversionInfo's vkFormat being VK_FORMAT_UNDEFINED indicates we are using an
+            // external format rather than a known one.
+            // TODO(nicolettep): Confirm that this is a correct assumption. Usually we check for
+            // VK_FORMAT_UNDEFINED.
+            immutableSamplerInfo.fFormat = (ycbcrConversionInfo.vkFormat == 0)
+                    ? ycbcrConversionInfo.externalFormat
+                    : ycbcrConversionInfo.vkFormat;
+            immutableSamplerInfo.fNonFormatYcbcrConversionInfo =
+                    ycbcr_descriptor_nonformat_info_as_uint32(ycbcrConversionInfo);
+            return immutableSamplerInfo;
+        }
+    }
+// #endif
+
+    // If the proxy is null or the YCbCr conversion for that proxy is invalid, then return a
+    // default ImmutableSamplerInfo struct.
+    return {};
 }
 
 } // namespace skgpu::graphite
