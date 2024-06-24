@@ -424,6 +424,10 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 				// Shader doesn't compile
 				// https://skbug.com/14105
 				skip(ALL, "gm", ALL, "runtime_intrinsics_matrix")
+				// Non-multiple of 4 compressed textures are not yet supported within Skia/Dawn for
+				// certain texture formats on certain platforms.
+				// b/349154897
+				skip(ALL, "gm", ALL, "compressed_textures_nmof");
 				// Crashes and failures
 				// https://skbug.com/14105
 				skip(ALL, "test", ALL, "BackendTextureTest")
