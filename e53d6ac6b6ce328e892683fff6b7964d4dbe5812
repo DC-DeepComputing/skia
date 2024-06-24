@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "102fffad_0693e17b",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1778,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-06-24T21:05:59Z",
+      "side": 1,
+      "message": "Nit: the formatting on some of these static asserts got messed up",
+      "revId": "e53d6ac6b6ce328e892683fff6b7964d4dbe5812",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e3851fe_3e6e69ca",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-06-24T21:05:59Z",
+      "side": 1,
+      "message": "Should this check that both expressionGenerator and preambleGenerator are non-null?",
+      "revId": "e53d6ac6b6ce328e892683fff6b7964d4dbe5812",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
