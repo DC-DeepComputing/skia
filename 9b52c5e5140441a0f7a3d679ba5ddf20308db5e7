@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "47b5c6d5_fadd61d6",
+        "filename": "gn/gn_to_cmake.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-06-24T21:33:51Z",
+      "side": 1,
+      "message": "Apparently, using `set_target_properties(target, PROPERTIES COMPILE_OPTIONS \"SHELL:...`  does magic `SHELL:` things, but `set_source_files_properties(srcs, PROPERTIES COMPILE_OPTIONS \"SHELL:...` does not. As a result the later just throws the whole string in without shell parsing.\n\nUse this as an excuse to use generator expressions to set per-language compiler flags.",
+      "revId": "9b52c5e5140441a0f7a3d679ba5ddf20308db5e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
