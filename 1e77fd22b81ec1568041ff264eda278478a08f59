@@ -16,6 +16,24 @@
       "message": "The plan this time is to try to run a few of every job to get the caches warmed up first a few at a time and then land this on a slower office day. Maybe that will avoid the thundering herd issues?\n\nAlso, I suppose we could land this at an opportune time for someone with access to monitor the machines and their network access to get a better idea of what the issues might be,",
       "revId": "1e77fd22b81ec1568041ff264eda278478a08f59",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f97e5aa2_1c5246dc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-06-24T02:41:10Z",
+      "side": 1,
+      "message": "Even running these at possibly the quietest time for the network a few at a time (probably only one fetching at a time) the output for a few of these states\n\nAndroid: `finished DownloadFiles api call, took 22.644136992s`\nAndroid: `finished DownloadFiles api call, took 24.507112412s`\nChromeOS: `finished DownloadFiles api call, took 46.975635267s`\nChromeOS: `finished DownloadFiles api call, took 45.17678438s`\n\nand similar. So it seems when there is network contention it would be quite easy for this to take more than the 60 second timeout. Also explains why in the previous roll attempt the ChromeOS jobs never recovered the but the Android jobs slowly did.",
+      "parentUuid": "2887ebd2_1bf05ff5",
+      "revId": "1e77fd22b81ec1568041ff264eda278478a08f59",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
