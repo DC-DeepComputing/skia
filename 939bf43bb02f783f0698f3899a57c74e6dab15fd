@@ -33,6 +33,23 @@
       "message": "This will need a second reviewer",
       "revId": "939bf43bb02f783f0698f3899a57c74e6dab15fd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e6b907d2_6581dd94",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 21785
+      },
+      "writtenOn": "2024-06-24T13:34:26Z",
+      "side": 1,
+      "message": "Thanks! Will need to make sure this CL (https://chromium-review.googlesource.com/c/chromium/src/+/5644809\n) gots merged before the other reviewer +2.",
+      "revId": "939bf43bb02f783f0698f3899a57c74e6dab15fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
