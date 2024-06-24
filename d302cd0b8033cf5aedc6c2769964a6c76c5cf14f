@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5a4bc4b6_c0f71cb5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-06-24T14:45:51Z",
+      "side": 1,
+      "message": "Overall, this looks good. Definitely like the structure of the new plumbed options. Just a couple nits on the review.\n\nAlso: Having `skslc` and `minify` built for the target platform is a mixed bag, in my opinion. Realistically, I don\u0027t think it will cause any problems - anyone building/running those tools is doing so on a build for their own local machine (or similarly, it\u0027s part of a host \u003d\u003d target build on the check-generated-files jobs). In the wacky world of bazel future, it also means that skslc can function even more like a test-binary (so you could run and debug skslc to test codegen independent of everything else, on whatever target platform you\u0027re interested in). Overall, I think it\u0027s okay, but thanks for adding the comments to the bzl files.",
+      "revId": "d302cd0b8033cf5aedc6c2769964a6c76c5cf14f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f2ff963_aa17da9f",
+        "filename": "src/sksl/codegen/SkSLCodeGenTypes.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-06-24T14:45:51Z",
+      "side": 1,
+      "message": "We shouldn\u0027t need this header here, right?",
+      "revId": "d302cd0b8033cf5aedc6c2769964a6c76c5cf14f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee992ba7_3040988c",
+        "filename": "src/sksl/codegen/SkSLSPIRVValidator.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-06-24T14:45:51Z",
+      "side": 1,
+      "message": "This comment was more obviously accurate before (because the \"return error string\" vs. `SkDEBUGFAIL` cases were clearly tied to a preprocessor guard that matched up with skslc). Now, it\u0027s dependent on whether or not `disassemble` is true, which might map to the same circumstances (but I\u0027m not actually sure).\n\nCan we hoist the abort up to somewhere that can more clearly distinguish? I guess that\u0027s hard to determine even from inside the code generator, so it would need to be even higher up, but it\u0027s really an internal error if this happens, so we want to treat it differently from a regular compile failure. Bleh. Maybe the current setup is fine, with a revised comment that maps out how `disassemble` effectively means that we\u0027re in `skslc`.",
+      "range": {
+        "startLine": 32,
+        "startChar": 29,
+        "endLine": 33,
+        "endChar": 90
+      },
+      "revId": "d302cd0b8033cf5aedc6c2769964a6c76c5cf14f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
