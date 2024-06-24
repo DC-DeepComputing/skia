@@ -97,6 +97,15 @@ std::pair<wgpu::TextureView, wgpu::TextureView> DawnTexture::CreateTextureViews(
         viewDesc.dimension = wgpu::TextureViewDimension::e2D;
         viewDesc.baseArrayLayer = info.dawnTextureSpec().fSlice;
         viewDesc.arrayLayerCount = 1;
+
+        // Ensure that the TextureView is configured to use external sampling
+        // if the Texture is doing so.
+        // TODO: Is this the right way to check for YCbCr sampling being used
+        // here?
+        auto* yCbCrDesc = &info.dawnTextureSpec().fYcbcrVkDescriptor;
+        if (yCbCrDesc->externalFormat) {
+          viewDesc.nextInChain = yCbCrDesc;
+        }
         wgpu::TextureView sampleTextureView = texture.CreateView(&viewDesc);
         wgpu::TextureView renderTextureView;
         if (info.mipmapped() == Mipmapped::kYes) {

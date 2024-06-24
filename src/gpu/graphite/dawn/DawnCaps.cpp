@@ -983,7 +983,10 @@ uint32_t ycbcr_descriptor_nonformat_info_as_uint32(const wgpu::YCbCrVkDescriptor
     static constexpr int kYcbcrRangeBits          = 1;
     static constexpr int kXChromaOffsetBits       = 1;
     static constexpr int kYChromaOffsetBits       = 1;
-    static constexpr int kChromaFilterBits        = 1;
+
+    // wgpu::FilterMode contains Undefined/Nearest/Linear entries (Linear is
+    // 2).
+    static constexpr int kChromaFilterBits        = 2;
     static constexpr int kForceExplicitReconBits  = 1;
     static constexpr int kComponentBits           = 3;
 
@@ -1082,7 +1085,7 @@ void DawnCaps::buildKeyForTexture(SkISize dimensions,
     bool hasYcbcrInfo = false;
 // #if !defined(__EMSCRIPTEN__)
     // If we are using ycbcr texture/sampling, more key information is needed.
-    if (hasYcbcrInfo = is_ycbcr_descriptor_valid(dawnSpec.fYcbcrVkDescriptor)) {
+    if ((hasYcbcrInfo = is_ycbcr_descriptor_valid(dawnSpec.fYcbcrVkDescriptor))) {
         num32DataCnt += dawnSpec.numInt32sNeededForYcbcrInfo();
     }
 // #endif
