@@ -28,7 +28,18 @@ public:
     }
 
     int numCombinations() const {
-        return fPaintOptions->numCombinations();
+        int numCombinations = fPaintOptions->numCombinations();
+
+        // TODO (b/349144902): For mask filters we don't actually actually want the unmodified
+        // paint options since the blend mode will be stolen by the image filtering.
+        for (const sk_sp<PrecompileMaskFilter>& mf : fPaintOptions->getMaskFilters()) {
+            if (mf) {
+                numCombinations += 27;
+                break;
+            }
+        }
+
+        return numCombinations;
     }
 
     void buildCombinations(
