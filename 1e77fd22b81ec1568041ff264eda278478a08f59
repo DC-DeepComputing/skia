@@ -34,6 +34,24 @@
       "parentUuid": "2887ebd2_1bf05ff5",
       "revId": "1e77fd22b81ec1568041ff264eda278478a08f59",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e42dc69_1393ea5d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-06-24T12:21:21Z",
+      "side": 1,
+      "message": "Strange, both Android and ChromeOS devices are hosted in RPI, so I wouldn\u0027t think there would be a difference in download speeds.",
+      "parentUuid": "f97e5aa2_1c5246dc",
+      "revId": "1e77fd22b81ec1568041ff264eda278478a08f59",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
