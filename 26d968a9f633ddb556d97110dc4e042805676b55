@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "673414b7_314d4265",
+        "filename": "tests/graphite/CombinationBuilderTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 497,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-06-24T21:34:27Z",
+      "side": 1,
+      "message": "Why not set a constant?",
+      "range": {
+        "startLine": 497,
+        "startChar": 89,
+        "endLine": 497,
+        "endChar": 90
+      },
+      "revId": "26d968a9f633ddb556d97110dc4e042805676b55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a7887e0_34c1d9ce",
+        "filename": "tests/graphite/CombinationBuilderTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 536,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-06-24T21:34:27Z",
+      "side": 1,
+      "message": "Same here?",
+      "range": {
+        "startLine": 536,
+        "startChar": 89,
+        "endLine": 536,
+        "endChar": 90
+      },
+      "revId": "26d968a9f633ddb556d97110dc4e042805676b55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
