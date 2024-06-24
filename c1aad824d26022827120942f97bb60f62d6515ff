@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1809f2c7_2275d049",
+        "filename": "gn/gn_to_cmake.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-06-24T21:34:55Z",
+      "side": 1,
+      "message": "This probably also needs to be generator escaped?",
+      "range": {
+        "startLine": 129,
+        "startChar": 14,
+        "endLine": 129,
+        "endChar": 37
+      },
+      "revId": "c1aad824d26022827120942f97bb60f62d6515ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
