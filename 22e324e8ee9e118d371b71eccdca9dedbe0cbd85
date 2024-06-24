@@ -52,6 +52,24 @@
       "parentUuid": "11695368_f818eb03",
       "revId": "22e324e8ee9e118d371b71eccdca9dedbe0cbd85",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "91ee5f87_65bba608",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-06-24T14:18:25Z",
+      "side": 1,
+      "message": "After removing the hlsl bits from the staging group, Canaries seem happy (Chromium failures seem unrelated).",
+      "parentUuid": "2192fedf_856f333a",
+      "revId": "22e324e8ee9e118d371b71eccdca9dedbe0cbd85",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
