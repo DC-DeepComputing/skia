@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c5abc504_760ae428",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-06-24T15:20:53Z",
+      "side": 1,
+      "message": "Thanks! I\u0027d like to try this out locally, and update any documentation if necessary. Unfortunately, we\u0027ve run into problems where we can build Viewer or other Skia-Android apps on some people\u0027s machines but not others. (I have a few things to do that are higher priority, but please bump this if I\u0027m slow or if it\u0027s urgent!)",
+      "revId": "fa8ad9044bb2790934f25c68b93263148d8c267e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
