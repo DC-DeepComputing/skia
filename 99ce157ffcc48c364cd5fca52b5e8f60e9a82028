@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0fb21b7b_98acaf86",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-06-24T17:04:41Z",
+      "side": 1,
+      "message": "WDYT? This seems totally safe (especially with all the other work I did to make the blitters fine with non-premul inputs). There are callers of the NoCheck version in chromium and pdfium that I\u0027ll fix if we land this.",
+      "revId": "99ce157ffcc48c364cd5fca52b5e8f60e9a82028",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
