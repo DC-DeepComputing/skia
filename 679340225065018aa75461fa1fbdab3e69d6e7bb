@@ -50,6 +50,24 @@
       "message": "Part of my wonders if we really want to templatize the current UniqueKey class like this. Like some of the main benefits of UniqueKey is the handling of different Domains, allowing keys for all different types to be cached together, a flexible builder for key sizes, etc. In your case you always know the exact size of the key and all keys will be for the same object type in a cache. There is also a slight awkwardness in the API where (for non default) the template value is always going to match the size passed into the Builders ctor, seems redundant.\n\nIt makes me wonder if it would be better to just make the templatized version its own class that only has stack storage. You can then also drop the Domain/KeyHeader stuff. Really it would just be an stack array template Size, plus room for he hash.",
       "revId": "679340225065018aa75461fa1fbdab3e69d6e7bb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a6f76516_43c0295c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2024-06-24T18:48:02Z",
+      "side": 1,
+      "message": "That makes sense. I have created a new key class with static size. PTAL.",
+      "parentUuid": "cff8954a_cc76e3fd",
+      "revId": "679340225065018aa75461fa1fbdab3e69d6e7bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
