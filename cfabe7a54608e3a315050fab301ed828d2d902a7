@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7cc598cd_02fb8196",
+        "filename": "include/gpu/vk/VulkanMemoryAllocatorUtil.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-06-24T16:40:27Z",
+      "side": 1,
+      "message": "Why do we need this to be public? We want all clients to making their own VulkanMemoryAllocator. But in the short term we need to continue having the fallback when we create the GrVkGpu object so I get the need to have something to make this internally. But why can\u0027t this just be a private helper for us until all clients can move to making their own?",
+      "range": {
+        "startLine": 23,
+        "startChar": 36,
+        "endLine": 23,
+        "endChar": 40
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "318c5d70_c037c041",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/gpu/vk/VulkanMemoryAllocatorUtil.h",
+              "range": {
+                "startLine": 23,
+                "startChar": 0,
+                "endLine": 24,
+                "endChar": 0
+              },
+              "replacement": "sk_sp\u003cVulkanMemoryAllocator\u003e Make(const skgpu::VulkanBackendContext\u0026, ThreadSafe);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "cfabe7a54608e3a315050fab301ed828d2d902a7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
