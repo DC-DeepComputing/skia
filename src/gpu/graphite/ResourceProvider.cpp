@@ -76,6 +76,24 @@ sk_sp<GraphicsPipeline> ResourceProvider::findOrCreateGraphicsPipeline(
             pipeline = globalCache->addGraphicsPipeline(pipelineKey, std::move(pipeline));
         }
     }
+
+    const RenderStep* step =
+            fSharedContext->rendererProvider()->lookup(pipelineDesc.renderStepID());
+    if (step) {
+        TRACE_EVENT_INSTANT2("skia.gpu", "RenderStep Info [1/3]", TRACE_EVENT_SCOPE_THREAD,
+                            "name", step->name(), "requiresMSAA", step->requiresMSAA());
+
+        TRACE_EVENT_INSTANT2("skia.gpu", "RenderStep Info [2/3]", TRACE_EVENT_SCOPE_THREAD,
+                            "performsShading", step->performsShading(),
+                            "hasTextures", step->hasTextures());
+
+        TRACE_EVENT_INSTANT2("skia.gpu", "RenderStep Info [3/3]", TRACE_EVENT_SCOPE_THREAD,
+                            "emitsPrimitiveColor", step->emitsPrimitiveColor(),
+                            "outsetBoundsForAA", step->outsetBoundsForAA());
+    } else {
+        SKGPU_LOG_W("Renderstep for graphics pipeline is null.");
+    }
+
     return pipeline;
 }
 
