@@ -52,6 +52,27 @@ struct DawnTextureSpec {
 
     SkString toString() const;
 
+// #if !defined(__EMSCRIPTEN__)
+    bool ycbcrDescriptorUsesExternalFormat() const {
+        // TODO(nicolettep): Confirm that this is a correct assumption. Usually we check for
+        // VK_FORMAT_UNDEFINED.
+        return fYcbcrVkDescriptor.vkFormat == 0 && fYcbcrVkDescriptor.externalFormat != 0;
+    }
+
+    int numInt32sNeededForYcbcrInfo() const {
+        static constexpr int kIntsNeededKnownFormat = 2;
+        static constexpr int kIntsNeededExternalFormat = 3;
+
+        return fYcbcrVkDescriptor.vkFormat == 0 && fYcbcrVkDescriptor.externalFormat != 0
+                ? kIntsNeededExternalFormat
+                : kIntsNeededKnownFormat;
+    }
+
+    bool ycbcrDescriptorIsEqual(wgpu::YCbCrVkDescriptor that) {
+        return IsEqualToYCbCrVkDescriptorField(that);
+    }
+// #endif
+
     wgpu::TextureFormat fFormat = wgpu::TextureFormat::Undefined;
     // `fViewFormat` is always single plane format or plane view format for a multiplanar
     // wgpu::Texture.
@@ -65,6 +86,7 @@ struct DawnTextureSpec {
 
 private:
 #if !defined(__EMSCRIPTEN__)
+    // TODO(nicolettep): Could we just define the == operator for wgpu::YCbCrVkDescriptor?
     bool IsEqualToYCbCrVkDescriptorField(wgpu::YCbCrVkDescriptor that) const {
         return fYcbcrVkDescriptor.vkFormat == that.vkFormat &&
                fYcbcrVkDescriptor.vkYCbCrRange == that.vkYCbCrRange &&
