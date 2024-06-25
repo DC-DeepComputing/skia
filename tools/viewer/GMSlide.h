@@ -27,6 +27,8 @@ public:
 
     void gpuTeardown() override;
     void draw(SkCanvas* canvas) override;
+    void draw(SkCanvas* canvas,
+              skiatest::graphite::GraphiteTestContext* graphiteContext = nullptr) override;
     bool animate(double nanos) override;
 
     bool onChar(SkUnichar c) override;

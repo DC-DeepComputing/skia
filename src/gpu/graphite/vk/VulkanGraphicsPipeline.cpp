@@ -613,6 +613,7 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
     SkSL::Program::Interface vsInterface, fsInterface;
     SkSL::ProgramSettings settings;
     settings.fForceNoRTFlip = true; // TODO: Confirm
+    settings.fSharpenTextures = true;
     ShaderErrorHandler* errorHandler = sharedContext->caps()->shaderErrorHandler();
 
     const RenderStep* step = sharedContext->rendererProvider()->lookup(pipelineDesc.renderStepID());
@@ -685,8 +686,74 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
     VkShaderModule fsModule = VK_NULL_HANDLE, vsModule = VK_NULL_HANDLE;
 
     if (hasFragmentSkSL) {
+
+        std::string fakeFS = "layout(location=0) in float2 localCoordsVar;\n"
+                             "layout(location = 1) in float4 edgeDistances;\n"
+                             "layout(binding = 2) uniform FSUniform\ns"
+                             "{\n"
+                                 "// 0 - LocalMatrixShader uniforms\n"
+                                 "layout(offset = 0) float4x4 localMatrix_0;\n"
+                                 "// 1 - HardwareImageShader uniforms\n"
+                                 "layout(offset = 64) float2 invImgSize_1;\n"
+                                 "layout(offset = 72) int csXformFlags_1;\n"
+                                 " layout(offset = 76) int csXformSrcKind_1;\n"
+                                 "layout(offset = 80) half3x3 csXformGamutTransform_1;\n"
+                                 "layout(offset = 128) int csXformDstKind_1;\n"
+                                 "layout(offset = 144) half4x4 csXformCoeffs_1;\n"
+                             "};\n"
+                              "// 1 - HardwareImageShader samplers\n"
+                             "layout(set = 1, binding = 0) sampler2D sampler_1;\n"
+#if 0
+                              "$pure half4 $sample_image(float2 pos, float2 invImgSize, sampler2D s)"
+                              "{"
+                                   "return sample(s, pos * invImgSize);"
+                               "}"
+#endif
+                              "// [0]   0: LocalMatrixShader\n"
+                              "half4 LocalMatrix_0(half4 inColor, half4 destColor, float2 coords)\n"
+                              "{\n"
+#if 0
+                                  "coords = (localMatrix_0 * coords.xy01).xy;\n"
+                                  "return sk_hw_image_shader(coords,\n"
+                                                             "invImgSize_1,\n"
+                                                             "csXformFlags_1,\n"
+                                                             "csXformSrcKind_1,\n"
+                                                             "csXformGamutTransform_1,\n"
+                                                             "csXformDstKind_1,\n"
+                                                             "csXformCoeffs_1,\n"
+                                                             "sampler_1);\n"
+#else
+                                  "coords = (localMatrix_0 * coords.xy01).xy;\n"
+#if 0
+                                  "return  $sample_image(coords, invImgSize_1, sampler_1);\n"
+#else
+                                  "return sample(sampler_1, coords*invImgSize_1);\n"
+#endif
+#endif
+                             "}\n"
+                             "void main() {\n"
+                                 "half4 initialColor = half4(0);\n"
+#if 0
+                                 "// [0] LocalMatrixShader\n"
+                                 "half4 outColor_0 = LocalMatrix_0(initialColor, half4(1), localCoordsVar)\n;"
+                                 "half4 outputCoverage = half4(1);\n"
+                                 "outputCoverage = per_edge_aa_quad_coverage_fn(sk_FragCoord, edgeDistances);\n"
+                                 "sk_FragColor = outColor_0 * outputCoverage;\n"
+#endif
+#if 0
+                                 " float2 _1_coords = localCoordsVar;\n"
+                                 "_1_coords = (localMatrix_0 * float4(_1_coords, 0.0, 1.0)).xy;\n"
+                                 "half4 outColor_0  = sample(sampler_1, _1_coords*invImgSize_1);\n"
+#else
+                                 "half4 outColor_0 = LocalMatrix_0(initialColor, half4(1), localCoordsVar)\n;"
+#endif
+                                 "half4 outputCoverage = half4(1);\n"
+                                 "outputCoverage = per_edge_aa_quad_coverage_fn(sk_FragCoord, edgeDistances);\n"
+                                 "sk_FragColor = outColor_0 * outputCoverage;\n"
+                            "}";
+
         if (!skgpu::SkSLToSPIRV(sharedContext->caps()->shaderCaps(),
-                                fsSkSL,
+                                fakeFS,
                                 SkSL::ProgramKind::kGraphiteFragment,
                                 settings,
                                 &fsSPIRV,
