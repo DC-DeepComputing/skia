@@ -43,12 +43,17 @@ public:
 
     const char* getResourceType() const override { return "Vulkan YCbCr Conversion"; }
 
+    bool usesExternalFormat() const { return fUsesExternalFormat; }
+
 private:
-    VulkanYcbcrConversion(const VulkanSharedContext*, VkSamplerYcbcrConversion);
+    VulkanYcbcrConversion(const VulkanSharedContext*,
+                          VkSamplerYcbcrConversion,
+                          bool usesExternalFormat);
 
     void freeGpuData() override;
 
     VkSamplerYcbcrConversion fYcbcrConversion;
+    const bool fUsesExternalFormat;
 };
 } // namespace skgpu::graphite
 

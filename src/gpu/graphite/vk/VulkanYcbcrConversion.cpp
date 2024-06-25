@@ -52,7 +52,10 @@ sk_sp<VulkanYcbcrConversion> VulkanYcbcrConversion::Make(
     if (result != VK_SUCCESS) {
         return nullptr;
     }
-    return sk_sp<VulkanYcbcrConversion>(new VulkanYcbcrConversion(context, conversion));
+    return sk_sp<VulkanYcbcrConversion>(
+            new VulkanYcbcrConversion(context,
+                                      conversion,
+                                      (conversionInfo.fExternalFormat && !conversionInfo.fFormat)));
 }
 
 sk_sp<VulkanYcbcrConversion> VulkanYcbcrConversion::Make(const VulkanSharedContext* context,
@@ -121,7 +124,8 @@ sk_sp<VulkanYcbcrConversion> VulkanYcbcrConversion::Make(const VulkanSharedConte
     if (result != VK_SUCCESS) {
         return nullptr;
     }
-    return sk_sp<VulkanYcbcrConversion>(new VulkanYcbcrConversion(context, conversion));
+    return sk_sp<VulkanYcbcrConversion>(
+            new VulkanYcbcrConversion(context, conversion, useExternalFormat));
 }
 
 namespace {
@@ -172,12 +176,14 @@ GraphiteResourceKey VulkanYcbcrConversion::GetKeyFromSamplerDesc(const SamplerDe
 }
 
 VulkanYcbcrConversion::VulkanYcbcrConversion(const VulkanSharedContext* context,
-                                             VkSamplerYcbcrConversion ycbcrConversion)
+                                             VkSamplerYcbcrConversion ycbcrConversion,
+                                             bool usesExternalFormat)
         : Resource(context,
                    Ownership::kOwned,
                    skgpu::Budgeted::kYes, // Shareable, so must be budgeted
                    /*gpuMemorySize=*/0)
-        , fYcbcrConversion (ycbcrConversion) {}
+        , fYcbcrConversion (ycbcrConversion)
+        , fUsesExternalFormat(usesExternalFormat) {}
 
 void VulkanYcbcrConversion::freeGpuData() {
     auto sharedContext = static_cast<const VulkanSharedContext*>(this->sharedContext());

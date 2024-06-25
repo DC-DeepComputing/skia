@@ -11,6 +11,7 @@
 #include "include/gpu/graphite/BackendSemaphore.h"
 #include "include/gpu/vk/VulkanMutableTextureState.h"
 #include "include/private/base/SkTArray.h"
+#include "src/core/SkTraceEvent.h"
 #include "src/gpu/DataUtils.h"
 #include "src/gpu/graphite/DescriptorData.h"
 #include "src/gpu/graphite/Log.h"
@@ -880,6 +881,8 @@ void VulkanCommandBuffer::addDrawPass(const DrawPass* drawPass) {
 
 void VulkanCommandBuffer::bindGraphicsPipeline(const GraphicsPipeline* graphicsPipeline) {
     fActiveGraphicsPipeline = static_cast<const VulkanGraphicsPipeline*>(graphicsPipeline);
+    TRACE_EVENT_INSTANT1("skia.gpu", TRACE_FUNC, TRACE_EVENT_SCOPE_THREAD,
+                         "numTextures", fActiveGraphicsPipeline->numTextureSamplers());
     SkASSERT(fActiveRenderPass);
     VULKAN_CALL(fSharedContext->interface(), CmdBindPipeline(fPrimaryCommandBuffer,
                                                              VK_PIPELINE_BIND_POINT_GRAPHICS,
@@ -1086,6 +1089,14 @@ void VulkanCommandBuffer::recordTextureAndSamplerDescSet(
                 drawPass.getTexture(command.fTextureIndices[i])));
         auto sampler = static_cast<const VulkanSampler*>(
                 drawPass.getSampler(command.fSamplerIndices[i]));
+
+        bool samplerUsesYcbcr = sampler->ycbcrConversion() != nullptr;
+        bool samplerUsesExternalFormat =
+                samplerUsesYcbcr && sampler->ycbcrConversion()->usesExternalFormat();
+        TRACE_EVENT_INSTANT2("skia.gpu", TRACE_FUNC, TRACE_EVENT_SCOPE_THREAD,
+                             "boundSamplerUsesYcbcr", samplerUsesYcbcr,
+                             "samplerUsesExternalFormat", samplerUsesExternalFormat);
+
         if (!texture || !sampler) {
             // TODO(b/294198324): Investigate the root cause for null texture or samplers on
             // Ubuntu QuadP400 GPU
