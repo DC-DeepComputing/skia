@@ -52,6 +52,24 @@
       "parentUuid": "839351c5_9cea5963",
       "revId": "752c8219b05932011a98d2d46785c701007b264d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03b48c3a_526a2bc4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-06-25T02:47:41Z",
+      "side": 1,
+      "message": "Apparently the \"Expected maxsize to be an integer or None\" generally means one is using too old a version of python3. This appears to be python3.7 and we need python3.8+. In particular this appears to be happening because `FindGclientRoot` is annotated with `@functools.lru_cache`. Unsurprisingly, this is a [fairly recent change](https://source.chromium.org/chromium/chromium/tools/depot_tools/+/6e8c18239d9dc4da5045778d5ed87888611bf848) after most users got to python3.8.",
+      "parentUuid": "fbbcac6b_3d6768e5",
+      "revId": "752c8219b05932011a98d2d46785c701007b264d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
