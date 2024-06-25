@@ -183,9 +183,9 @@ bool VkYcbcrSamplerHelper::createBackendTexture(uint32_t width, uint32_t height)
 
     // Wrap the image into SkImage.
     VkFormatProperties formatProperties;
-    SkASSERT(fPhysDev != VK_NULL_HANDLE);
+    SkASSERT(fSharedCtxt->physDevice() != VK_NULL_HANDLE);
     VULKAN_CALL(fSharedCtxt->interface(),
-                GetPhysicalDeviceFormatProperties(fPhysDev,
+                GetPhysicalDeviceFormatProperties(fSharedCtxt->physDevice(),
                                                   VK_FORMAT_G8_B8R8_2PLANE_420_UNORM,
                                                   &formatProperties));
     SkDEBUGCODE(auto linFlags = formatProperties.linearTilingFeatures;)
@@ -372,6 +372,7 @@ GrVkGpu* VkYcbcrSamplerHelper::vkGpu() {
 
 VkYcbcrSamplerHelper::VkYcbcrSamplerHelper(GrDirectContext* dContext) : fDContext(dContext) {
     SkASSERT_RELEASE(dContext->backend() == GrBackendApi::kVulkan);
+    fSharedCtxt = nullptr;
 }
 
 VkYcbcrSamplerHelper::~VkYcbcrSamplerHelper() {
@@ -411,11 +412,11 @@ bool VkYcbcrSamplerHelper::isYCbCrSupported() {
             return false;
         }
 
-        SkASSERT(fPhysDev != VK_NULL_HANDLE);
+        SkASSERT(fSharedCtxt->physDevice() != VK_NULL_HANDLE);
         VULKAN_CALL(fSharedCtxt->interface(),
-                    GetPhysicalDeviceFormatProperties(fPhysDev,
-                                                    VK_FORMAT_G8_B8R8_2PLANE_420_UNORM,
-                                                    &formatProperties));
+                    GetPhysicalDeviceFormatProperties(fSharedCtxt->physDevice(),
+                                                      VK_FORMAT_G8_B8R8_2PLANE_420_UNORM,
+                                                      &formatProperties));
     } else
 #endif
     {

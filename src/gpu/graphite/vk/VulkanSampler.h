@@ -26,12 +26,13 @@ public:
                                      SkTileMode xTileMode,
                                      SkTileMode yTileMode,
                                      sk_sp<VulkanYcbcrConversion> ycbcrConversion = nullptr);
-
     ~VulkanSampler() override {}
 
     VkSampler vkSampler() const { return fSampler; }
 
     const VulkanYcbcrConversion* ycbcrConversion() const { return fYcbcrConversion.get(); }
+
+    const VkSampler* constVkSamplerPtr() const { return &fSampler; }
 
 private:
     VulkanSampler(const VulkanSharedContext*, VkSampler, sk_sp<VulkanYcbcrConversion>);
