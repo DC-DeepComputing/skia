@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "784b9b91_7d6fba01",
+        "filename": "gm/wacky_yuv_formats.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 853,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-06-25T16:53:37Z",
+      "side": 1,
+      "message": "This seems like it\u0027s liable to break pretty quickly (if someone adds a new color space that throws off the math?). What about adding a switch-based `SkYUVColorSpaceIsLimitedRange()` ?",
+      "revId": "1046f9f83ebfc0a079132bfeec5957590ee4442e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
