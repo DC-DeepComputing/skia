@@ -34,6 +34,87 @@
       "parentUuid": "cf0a1a7e_ff222bc6",
       "revId": "90073998a843bd19201925ce21b0c21305a67ad9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d8710833_c96ea58c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-25T13:36:30Z",
+      "side": 1,
+      "message": "I like `HashKey` or maybe `FixedSizeKey`?",
+      "parentUuid": "fbc2e11c_71c61770",
+      "revId": "90073998a843bd19201925ce21b0c21305a67ad9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e31cdde7_eaae3ce4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-25T13:36:30Z",
+      "side": 1,
+      "message": "I also like this direction, thanks Quyen!",
+      "revId": "90073998a843bd19201925ce21b0c21305a67ad9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a5256e7_d35fb911",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-25T13:36:30Z",
+      "side": 1,
+      "message": "nit: skia style usually puts the `template\u003cT\u003e` on its own line before the `class` etc.",
+      "range": {
+        "startLine": 26,
+        "startChar": 4,
+        "endLine": 26,
+        "endChar": 32
+      },
+      "revId": "90073998a843bd19201925ce21b0c21305a67ad9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2424f3e1_ac10f11b",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-25T13:36:30Z",
+      "side": 1,
+      "message": "Can this be a member type of `BindGroupKey` (or whatever final name it has)? It seems likely that any other user will want to have it available for use in a cache or map.",
+      "range": {
+        "startLine": 126,
+        "startChar": 4,
+        "endLine": 128,
+        "endChar": 6
+      },
+      "revId": "90073998a843bd19201925ce21b0c21305a67ad9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
