@@ -40,6 +40,30 @@
       ],
       "revId": "cfabe7a54608e3a315050fab301ed828d2d902a7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9010c21_1ed95213",
+        "filename": "include/gpu/vk/VulkanMemoryAllocatorUtil.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-06-25T18:27:02Z",
+      "side": 1,
+      "message": "As per the suggestion, I\u0027ve moved it to be a private header and we\u0027ll need to add a G3 implementation (and eventually Flutter and Android).",
+      "parentUuid": "7cc598cd_02fb8196",
+      "range": {
+        "startLine": 23,
+        "startChar": 36,
+        "endLine": 23,
+        "endChar": 40
+      },
+      "revId": "cfabe7a54608e3a315050fab301ed828d2d902a7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
