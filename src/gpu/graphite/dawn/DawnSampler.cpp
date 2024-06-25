@@ -61,13 +61,33 @@ static inline wgpu::AddressMode tile_mode_to_dawn_address_mode(SkTileMode tileMo
     SkUNREACHABLE;
 }
 
+
+namespace {
+wgpu::YCbCrVkDescriptor populate_ycbcr_descriptor_from_sampler_desc(const SamplerDesc& desc) {
+    YCbCrVkDescriptor desc;
+    if (desc.isImmutable()) {
+        // TODO(nicolettep): Determine these values from sampler desc numerical information
+        // desc.vkFormat = 0;
+        // desc.vkYCbCrRange = 0;
+        // desc.vkComponentSwizzleRed = 0;
+        // desc.vkComponentSwizzleGreen = 0;
+        // desc.vkComponentSwizzleBlue = 0;
+        // desc.vkComponentSwizzleAlpha = 0;
+        // desc.vkXChromaOffset = 0;
+        // desc.vkYChromaOffset = 0;
+        // desc.vkChromaFilter = 0;
+        // desc.forceExplicitReconstruction = 0;
+        // desc.externalFormat = 0;
+    }
+    return desc;
+}
+} // anonymous
 sk_sp<DawnSampler> DawnSampler::Make(const DawnSharedContext* sharedContext,
-                                     const SkSamplingOptions& samplingOptions,
-                                     SkTileMode xTileMode,
-                                     SkTileMode yTileMode) {
+                                     const SamplerDesc& desc) {
     wgpu::SamplerDescriptor desc;
-    desc.addressModeU  = tile_mode_to_dawn_address_mode(xTileMode);
-    desc.addressModeV  = tile_mode_to_dawn_address_mode(yTileMode);
+    desc.addressModeU  = tile_mode_to_dawn_address_mode(desc.tileModeX());
+    desc.addressModeV  = tile_mode_to_dawn_address_mode(desc.tileModeY());
+    const SkSamplingOptions& samplingOptions = desc.samplingOptions();
     desc.magFilter     = filter_mode_to_dawn_filter_mode(samplingOptions.filter);
     desc.minFilter     = desc.magFilter;
     desc.mipmapFilter  = mipmap_mode_to_dawn_filter_mode(samplingOptions.mipmap);
@@ -80,6 +100,9 @@ sk_sp<DawnSampler> DawnSampler::Make(const DawnSharedContext* sharedContext,
     }
     desc.maxAnisotropy = 1;
     desc.compare       = wgpu::CompareFunction::Undefined;
+    // TODO(nicolettep): If the sampler description indicates we are using YCbCr sampling, chain
+    // that information into Dawn's sampler creation.
+    // desc.nextInChain   = ...
 
     std::string label;
     if (sharedContext->caps()->setBackendLabels()) {
@@ -90,6 +113,7 @@ sk_sp<DawnSampler> DawnSampler::Make(const DawnSharedContext* sharedContext,
         label.append("Y").append(tileModeLabels[static_cast<int>(yTileMode)]);
         label.append(minMagFilterLabels[static_cast<int>(samplingOptions.filter)]);
         label.append(mipFilterLabels[static_cast<int>(samplingOptions.mipmap)]);
+        // TODO: Add ycbcr information to this label as applicable
         desc.label = label.c_str();
     }
 
