@@ -22,6 +22,30 @@
       },
       "revId": "c1aad824d26022827120942f97bb60f62d6515ff",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "450f960e_4f61158d",
+        "filename": "gn/gn_to_cmake.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-06-25T17:32:45Z",
+      "side": 1,
+      "message": "Everything after `SHELL` needs to be Unix Shell escaped. Then everything in the generator expression needs to be generator expression escaped (if it is in a generator expression). Then the whole thing needs to be string escaped so that it can be in a double quoted string so that it\u0027s all one parameter.",
+      "parentUuid": "1809f2c7_2275d049",
+      "range": {
+        "startLine": 129,
+        "startChar": 14,
+        "endLine": 129,
+        "endChar": 37
+      },
+      "revId": "c1aad824d26022827120942f97bb60f62d6515ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
