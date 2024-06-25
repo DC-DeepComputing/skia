@@ -483,10 +483,10 @@ VertSkSLInfo BuildVertexSkSL(const ResourceBindingRequirements& bindingReqs,
 
     // Fixed program header
     std::string sksl =
-        "layout (binding=0) uniform intrinsicUniforms {\n"
-        "    layout(offset=0) float4 rtAdjust;\n"
-        "};\n"
-        "\n";
+        SkSL::String::printf("layout (binding=%d) uniform intrinsicUniforms {\n"
+                             "    layout(offset=0) float4 rtAdjust;\n"
+                             "};\n"
+                             "\n", bindingReqs.fIntrinsicBufferBinding);
 
     if (step->numVertexAttributes() > 0 || step->numInstanceAttributes() > 0) {
         sksl += emit_attributes(step->vertexAttributes(), step->instanceAttributes());
@@ -497,9 +497,10 @@ VertSkSLInfo BuildVertexSkSL(const ResourceBindingRequirements& bindingReqs,
     // TODO: replace hard-coded bufferID with the backend's renderstep uniform-buffer index.
     if (hasStepUniforms) {
         if (useStepStorageBuffer) {
-            sksl += EmitRenderStepStorageBuffer(/* bufferID= */ 1, step->uniforms());
+            sksl += EmitRenderStepStorageBuffer(bindingReqs.fRenderStepBufferBinding,
+                                                step->uniforms());
         } else {
-            sksl += EmitRenderStepUniforms(/* bufferID= */ 1,
+            sksl += EmitRenderStepUniforms(bindingReqs.fRenderStepBufferBinding,
                                            bindingReqs.fUniformBufferLayout,
                                            step->uniforms(),
                                            &result.fRenderStepUniformsTotalBytes);
