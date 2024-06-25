@@ -16,6 +16,24 @@
       "message": "I like this, but let\u0027s make this a real class that others can use as well. I know of at least a couple places I\u0027d want to replace the current UniqueKey usages.",
       "revId": "90073998a843bd19201925ce21b0c21305a67ad9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fbc2e11c_71c61770",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2024-06-25T10:20:53Z",
+      "side": 1,
+      "message": "What do you think should be the name of that class? `StaticSizedKey` `HashKey`? Can it be in ResourceKey.h or a separate file?",
+      "parentUuid": "cf0a1a7e_ff222bc6",
+      "revId": "90073998a843bd19201925ce21b0c21305a67ad9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
