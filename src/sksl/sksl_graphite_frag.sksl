@@ -326,8 +326,9 @@ $pure half4 sk_hw_image_shader(float2 coords,
                                half4x4 csXformCoeffs,
                                sampler2D s) {
     half4 sampleColor = $sample_image(coords, invImgSize, s);
-    return $color_space_transform_swizzle(sampleColor, csXformFlags, csXformSrcKind,
-                                          csXformGamutTransform, csXformDstKind, csXformCoeffs);
+    return sampleColor;
+  //  return $color_space_transform_swizzle(sampleColor, csXformFlags, csXformSrcKind,
+                                          //csXformGamutTransform, csXformDstKind, csXformCoeffs);
 }
 
 $pure half4 $yuv_to_rgb(half4 sampleColorY,
