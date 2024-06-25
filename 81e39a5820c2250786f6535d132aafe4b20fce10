@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51740a8d_36e9325e",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 25
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-06-25T16:58:09Z",
+      "side": 1,
+      "message": "Now that we pass `VulkanResourceProvider` into this call anyhow (such that the graphics pipeline can request an immutable sampler once we have access to the data span from PaintParamsKey), do we want to create the render pass within `VulkanGraphicsPipeline::Make`?",
+      "range": {
+        "startLine": 117,
+        "startChar": 0,
+        "endLine": 118,
+        "endChar": 82
+      },
+      "revId": "81e39a5820c2250786f6535d132aafe4b20fce10",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
