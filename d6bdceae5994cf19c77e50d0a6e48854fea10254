@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c7ad1fb_584399b9",
+        "filename": "tools/fiddle/make_all_examples_cpp.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-06-25T13:13:13Z",
+      "side": 1,
+      "message": "Can you add some reminder comments for the seek/truncate? e.g. \"Read all the content and then delete it\".\n\nAlternatively, because this isn\u0027t performance critical, open the file twice - once to read it in, then once in w mode which automatically truncates. That might be more clear in intent.",
+      "revId": "d6bdceae5994cf19c77e50d0a6e48854fea10254",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ad0fe4e_24b2a18f",
+        "filename": "tools/fiddle/make_all_examples_cpp.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-06-25T13:13:13Z",
+      "side": 1,
+      "message": "similar suggestion: because this is not performance critical, is opening the file multiple times more clear on intent than the calls to seek?",
+      "range": {
+        "startLine": 39,
+        "startChar": 10,
+        "endLine": 39,
+        "endChar": 14
+      },
+      "revId": "d6bdceae5994cf19c77e50d0a6e48854fea10254",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
