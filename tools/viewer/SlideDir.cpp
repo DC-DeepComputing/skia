@@ -369,7 +369,8 @@ SkISize SlideDir::getDimensions() const {
                         fCellSize.height() * (1 + (fSlides.size() - 1) / fColumns)).toCeil();
 }
 
-void SlideDir::draw(SkCanvas* canvas) {
+void SlideDir::draw(SkCanvas* canvas,
+                    skiatest::graphite::GraphiteTestContext* graphiteContext) {
     fScene->render(canvas);
 }
 

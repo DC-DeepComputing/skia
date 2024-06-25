@@ -27,7 +27,8 @@ SKPSlide::SKPSlide(const SkString& name, std::unique_ptr<SkStream> stream)
 
 SKPSlide::~SKPSlide() {}
 
-void SKPSlide::draw(SkCanvas* canvas) {
+void SKPSlide::draw(SkCanvas* canvas,
+                    skiatest::graphite::GraphiteTestContext* graphiteContext) {
     if (fPic) {
         bool isOffset = SkToBool(fCullRect.left() | fCullRect.top());
         if (isOffset) {

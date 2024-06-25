@@ -9,7 +9,6 @@
 
 #include "include/gpu/ShaderErrorHandler.h"
 #include "include/gpu/graphite/TextureInfo.h"
-#include "include/private/base/SkTArray.h"
 #include "src/core/SkSLTypeShared.h"
 #include "src/core/SkTraceEvent.h"
 #include "src/gpu/PipelineUtils.h"
@@ -23,11 +22,14 @@
 #include "src/gpu/graphite/vk/VulkanCaps.h"
 #include "src/gpu/graphite/vk/VulkanGraphicsPipeline.h"
 #include "src/gpu/graphite/vk/VulkanRenderPass.h"
+#include "src/gpu/graphite/vk/VulkanResourceProvider.h"
 #include "src/gpu/graphite/vk/VulkanSharedContext.h"
 #include "src/gpu/vk/VulkanUtilsPriv.h"
 #include "src/sksl/SkSLProgramKind.h"
 #include "src/sksl/SkSLProgramSettings.h"
 #include "src/sksl/ir/SkSLProgram.h"
+
+#include "src/gpu/graphite/ResourceTypes.h"
 
 namespace skgpu::graphite {
 
@@ -474,7 +476,8 @@ static VkPipelineLayout setup_pipeline_layout(const VulkanSharedContext* sharedC
                                               bool hasStepUniforms,
                                               int numPaintUniforms,
                                               int numTextureSamplers,
-                                              int numInputAttachments) {
+                                              int numInputAttachments,
+                                              SkSpan<sk_sp<VulkanSampler>> immutableSamplers) {
     // Determine descriptor set layouts for this pipeline based upon render pass information.
     skia_private::STArray<3, VkDescriptorSetLayout> setLayouts;
 
@@ -520,12 +523,21 @@ static VkPipelineLayout setup_pipeline_layout(const VulkanSharedContext* sharedC
     // Determine texture/sampler descriptor set layout
     if (numTextureSamplers > 0) {
         skia_private::TArray<DescriptorData> textureSamplerDescs(numTextureSamplers);
+        SkASSERT(immutableSamplers.empty() ||
+                 SkTo<int>(immutableSamplers.size()) == numTextureSamplers);
+
         for (int i = 0; i < numTextureSamplers; i++) {
+            Sampler* immutableSampler = nullptr;
+            if (!immutableSamplers.empty() && immutableSamplers[i]) {
+                immutableSampler = immutableSamplers[i].get();
+            }
             textureSamplerDescs.push_back({DescriptorType::kCombinedTextureSampler,
-                                            /*count=*/1,
-                                            /*bindingIdx=*/i,
-                                            PipelineStageFlags::kFragmentShader});
+                                           /*count=*/1,
+                                           /*bindingIdx=*/i,
+                                           PipelineStageFlags::kFragmentShader,
+                                           immutableSampler});
         }
+
         VkDescriptorSetLayout textureSamplerDescSetLayout =
                 descriptor_data_to_layout(sharedContext, {textureSamplerDescs});
 
@@ -595,11 +607,13 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
         const GraphicsPipelineDesc& pipelineDesc,
         const RenderPassDesc& renderPassDesc,
         const sk_sp<VulkanRenderPass>& compatibleRenderPass,
-        VkPipelineCache pipelineCache) {
+        VkPipelineCache pipelineCache,
+        VulkanResourceProvider* rsrcProvider) {
 
     SkSL::Program::Interface vsInterface, fsInterface;
     SkSL::ProgramSettings settings;
     settings.fForceNoRTFlip = true; // TODO: Confirm
+    settings.fSharpenTextures = true;
     ShaderErrorHandler* errorHandler = sharedContext->caps()->shaderErrorHandler();
 
     const RenderStep* step = sharedContext->rendererProvider()->lookup(pipelineDesc.renderStepID());
@@ -621,13 +635,124 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
     std::string& fsSkSL = fsSkSLInfo.fSkSL;
     const bool localCoordsNeeded = fsSkSLInfo.fRequiresLocalCoords;
 
+    SkASSERT(rsrcProvider);
+    // Populate an array of immutable samplers where their index within the array indicates their
+    // binding index within the descriptor set. Nullptr indicates a "regular", dynamic sampler at
+    // that index.
+    skia_private::TArray<sk_sp<VulkanSampler>> immutableSamplers;
+    immutableSamplers.reserve(fsSkSLInfo.fNumTexturesAndSamplers);
+    size_t i = 0;
+    const SkSpan<uint32_t> dataSpan = {fsSkSLInfo.fData};
+    while (i < dataSpan.size()) {
+        // Any legitimate immutable sampler will have a sampler description != 0.
+        if (fsSkSLInfo.fData[i] == 0) {
+            i++;
+            immutableSamplers.push_back(nullptr);
+            continue;
+        }
+
+        // Check whether the immutable sampler uses a known or external format to determine
+        // key stride.
+        uint32_t immutableSamplerInfo = dataSpan[i] >> SamplerDesc::kImmutableSamplerInfoShift;
+        bool usesExternalFormat = static_cast<bool>(
+                ((immutableSamplerInfo & ycbcrPackaging::kUseExternalFormatMask) >>
+                        ycbcrPackaging::kUsesExternalFormatShift));
+        int keyStride = usesExternalFormat ? ycbcrPackaging::kInt32sNeededExternalFormat
+                                           : ycbcrPackaging::kInt32sNeededKnownFormat;
+
+        static_assert(sizeof(SamplerDesc) == sizeof(uint32_t) * 3);
+        std::array<uint32_t, 3> samplerData = {0, 0, 0};
+        for (int j = 0; j < keyStride; j++) {
+            samplerData[j] = dataSpan[i + j];
+        }
+
+        // Request a suitable immutable sampler from the resource provider
+        SamplerDesc samplerDesc;
+        memcpy(&samplerDesc, &samplerData, sizeof(SamplerDesc));
+
+        sk_sp<Sampler> immutableSampler = rsrcProvider->findOrCreateCompatibleSampler(samplerDesc);
+        sk_sp<VulkanSampler> vulkanSampler =
+                sk_ref_sp<VulkanSampler>(static_cast<VulkanSampler*>(immutableSampler.get()));
+        SkASSERT(vulkanSampler);
+        immutableSamplers.push_back(std::move(vulkanSampler));
+
+        i += keyStride;
+        SkASSERT(immutableSamplers.back());
+    }
+
     bool hasFragmentSkSL = !fsSkSL.empty();
     std::string vsSPIRV, fsSPIRV;
     VkShaderModule fsModule = VK_NULL_HANDLE, vsModule = VK_NULL_HANDLE;
 
     if (hasFragmentSkSL) {
+
+        std::string fakeFS = "layout(location=0) in float2 localCoordsVar;\n"
+                             "layout(location = 1) in float4 edgeDistances;\n"
+                             "layout(binding = 2) uniform FSUniform\ns"
+                             "{\n"
+                                 "// 0 - LocalMatrixShader uniforms\n"
+                                 "layout(offset = 0) float4x4 localMatrix_0;\n"
+                                 "// 1 - HardwareImageShader uniforms\n"
+                                 "layout(offset = 64) float2 invImgSize_1;\n"
+                                 "layout(offset = 72) int csXformFlags_1;\n"
+                                 " layout(offset = 76) int csXformSrcKind_1;\n"
+                                 "layout(offset = 80) half3x3 csXformGamutTransform_1;\n"
+                                 "layout(offset = 128) int csXformDstKind_1;\n"
+                                 "layout(offset = 144) half4x4 csXformCoeffs_1;\n"
+                             "};\n"
+                              "// 1 - HardwareImageShader samplers\n"
+                             "layout(set = 1, binding = 0) sampler2D sampler_1;\n"
+#if 0
+                              "$pure half4 $sample_image(float2 pos, float2 invImgSize, sampler2D s)"
+                              "{"
+                                   "return sample(s, pos * invImgSize);"
+                               "}"
+#endif
+                              "// [0]   0: LocalMatrixShader\n"
+                              "half4 LocalMatrix_0(half4 inColor, half4 destColor, float2 coords)\n"
+                              "{\n"
+#if 0
+                                  "coords = (localMatrix_0 * coords.xy01).xy;\n"
+                                  "return sk_hw_image_shader(coords,\n"
+                                                             "invImgSize_1,\n"
+                                                             "csXformFlags_1,\n"
+                                                             "csXformSrcKind_1,\n"
+                                                             "csXformGamutTransform_1,\n"
+                                                             "csXformDstKind_1,\n"
+                                                             "csXformCoeffs_1,\n"
+                                                             "sampler_1);\n"
+#else
+                                  "coords = (localMatrix_0 * coords.xy01).xy;\n"
+#if 0
+                                  "return  $sample_image(coords, invImgSize_1, sampler_1);\n"
+#else
+                                  "return sample(sampler_1, coords*invImgSize_1);\n"
+#endif
+#endif
+                             "}\n"
+                             "void main() {\n"
+                                 "half4 initialColor = half4(0);\n"
+#if 0
+                                 "// [0] LocalMatrixShader\n"
+                                 "half4 outColor_0 = LocalMatrix_0(initialColor, half4(1), localCoordsVar)\n;"
+                                 "half4 outputCoverage = half4(1);\n"
+                                 "outputCoverage = per_edge_aa_quad_coverage_fn(sk_FragCoord, edgeDistances);\n"
+                                 "sk_FragColor = outColor_0 * outputCoverage;\n"
+#endif
+#if 0
+                                 " float2 _1_coords = localCoordsVar;\n"
+                                 "_1_coords = (localMatrix_0 * float4(_1_coords, 0.0, 1.0)).xy;\n"
+                                 "half4 outColor_0  = sample(sampler_1, _1_coords*invImgSize_1);\n"
+#else
+                                 "half4 outColor_0 = LocalMatrix_0(initialColor, half4(1), localCoordsVar)\n;"
+#endif
+                                 "half4 outputCoverage = half4(1);\n"
+                                 "outputCoverage = per_edge_aa_quad_coverage_fn(sk_FragCoord, edgeDistances);\n"
+                                 "sk_FragColor = outColor_0 * outputCoverage;\n"
+                            "}";
+
         if (!skgpu::SkSLToSPIRV(sharedContext->caps()->shaderCaps(),
-                                fsSkSL,
+                                fakeFS,
                                 SkSL::ProgramKind::kGraphiteFragment,
                                 settings,
                                 &fsSPIRV,
@@ -710,12 +835,15 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
 
     // TODO: Query RenderPassDesc for input attachment information. For now, we only use one for
     // loading MSAA from resolve so we can simply pass in 0 when not doing that.
-    VkPipelineLayout pipelineLayout = setup_pipeline_layout(sharedContext,
-                                                            /*usesIntrinsicConstantUbo=*/true,
-                                                            !step->uniforms().empty(),
-                                                            fsSkSLInfo.fNumPaintUniforms,
-                                                            fsSkSLInfo.fNumTexturesAndSamplers,
-                                                            /*numInputAttachments=*/0);
+    VkPipelineLayout pipelineLayout =
+            setup_pipeline_layout(sharedContext,
+                                  /*usesIntrinsicConstantUbo=*/true,
+                                  !step->uniforms().empty(),
+                                  fsSkSLInfo.fNumPaintUniforms,
+                                  fsSkSLInfo.fNumTexturesAndSamplers,
+                                  /*numInputAttachments=*/0,
+                                  SkSpan<sk_sp<VulkanSampler>>(immutableSamplers));
+
     if (pipelineLayout == VK_NULL_HANDLE) {
         destroy_shader_modules(sharedContext, vsModule, fsModule);
         return nullptr;
@@ -791,7 +919,8 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
                                        fsSkSLInfo.fNumPaintUniforms > 0,
                                        !step->uniforms().empty(),
                                        fsSkSLInfo.fNumTexturesAndSamplers,
-                                       /*ownsPipelineLayout=*/true));
+                                       /*ownsPipelineLayout=*/true,
+                                       std::move(immutableSamplers)));
 }
 
 bool VulkanGraphicsPipeline::InitializeMSAALoadPipelineStructs(
@@ -874,7 +1003,8 @@ bool VulkanGraphicsPipeline::InitializeMSAALoadPipelineStructs(
                                                /*hasStepUniforms=*/false,
                                                /*numPaintUniforms=*/0,
                                                /*numTextureSamplers=*/0,
-                                               /*numInputAttachments=*/1);
+                                               /*numInputAttachments=*/1,
+                                               /*immutableSamplers=*/{});
 
     if (*outPipelineLayout == VK_NULL_HANDLE) {
         destroy_shader_modules(sharedContext, *outVertexShaderModule, *outFragShaderModule);
@@ -981,24 +1111,28 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::MakeLoadMSAAPipeline(
                                        /*hasFragmentUniforms=*/false,
                                        /*hasStepUniforms=*/false,
                                        /*numTextureSamplers*/0,
-                                       /*ownsPipelineLayout=*/false));
+                                       /*ownsPipelineLayout=*/false,
+                                       /*immutableSamplers=*/{}));
 }
 
-VulkanGraphicsPipeline::VulkanGraphicsPipeline(const skgpu::graphite::SharedContext* sharedContext,
-                                               PipelineInfo* pipelineInfo,
-                                               VkPipelineLayout pipelineLayout,
-                                               VkPipeline pipeline,
-                                               bool hasFragmentUniforms,
-                                               bool hasStepUniforms,
-                                               int numTextureSamplers,
-                                               bool ownsPipelineLayout)
+VulkanGraphicsPipeline::VulkanGraphicsPipeline(
+        const skgpu::graphite::SharedContext* sharedContext,
+        PipelineInfo* pipelineInfo,
+        VkPipelineLayout pipelineLayout,
+        VkPipeline pipeline,
+        bool hasFragmentUniforms,
+        bool hasStepUniforms,
+        int numTextureSamplers,
+        bool ownsPipelineLayout,
+        skia_private::TArray<sk_sp<VulkanSampler>> immutableSamplers)
         : GraphicsPipeline(sharedContext, pipelineInfo)
         , fPipelineLayout(pipelineLayout)
         , fPipeline(pipeline)
         , fHasFragmentUniforms(hasFragmentUniforms)
         , fHasStepUniforms(hasStepUniforms)
         , fNumTextureSamplers(numTextureSamplers)
-        , fOwnsPipelineLayout(ownsPipelineLayout) {}
+        , fOwnsPipelineLayout(ownsPipelineLayout)
+        , fImmutableSamplers(std::move(immutableSamplers)) {}
 
 void VulkanGraphicsPipeline::freeGpuData() {
     auto sharedCtxt = static_cast<const VulkanSharedContext*>(this->sharedContext());
