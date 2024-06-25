@@ -70,6 +70,24 @@
       "parentUuid": "fbbcac6b_3d6768e5",
       "revId": "752c8219b05932011a98d2d46785c701007b264d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e3960f1e_8eeef0b0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-06-25T02:58:52Z",
+      "side": 1,
+      "message": "Modified `gn_to_cmake.py` to take extra parameters to the location of `ninja` so that we can avoid the unnecessary trip through `depot_tools`.",
+      "parentUuid": "03b48c3a_526a2bc4",
+      "revId": "752c8219b05932011a98d2d46785c701007b264d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
