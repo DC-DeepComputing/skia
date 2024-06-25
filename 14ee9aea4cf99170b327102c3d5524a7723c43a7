@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dd63951e_eb6d1964",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-06-25T20:21:45Z",
+      "side": 1,
+      "message": "Manually tested locally that this resolves the \"-imsvc path with spaces\" issue when using CMake with Clang on Windows.",
+      "revId": "14ee9aea4cf99170b327102c3d5524a7723c43a7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
