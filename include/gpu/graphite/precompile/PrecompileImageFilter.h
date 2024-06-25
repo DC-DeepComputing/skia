@@ -1,0 +1,131 @@
+/*
+ * Copyright 2024 Google LLC
+ *
+ * Use of this source code is governed by a BSD-style license that can be
+ * found in the LICENSE file.
+ */
+
+#ifndef skgpu_graphite_precompile_PrecompileImageFilter_DEFINED
+#define skgpu_graphite_precompile_PrecompileImageFilter_DEFINED
+
+#include "include/gpu/graphite/precompile/PrecompileBase.h"
+
+#include "include/core/SkBlendMode.h"
+#include "include/gpu/graphite/precompile/PaintOptions.h"
+#include "include/private/base/SkTemplates.h"
+
+namespace skgpu::graphite {
+
+class PrecompileBlender;
+class PrecompileColorFilter;
+
+/** \class PrecompileImageFilter
+    This class corresponds to the SkImageFilter class in the main API.
+*/
+class PrecompileImageFilter : public PrecompileBase {
+public:
+    virtual sk_sp<PrecompileColorFilter> isColorFilterNode() const { return nullptr; }
+
+    int countInputs() const { return fInputs.count(); }
+
+    const PrecompileImageFilter* getInput(int index) const {
+        SkASSERT(index < this->countInputs());
+        return fInputs[index].get();
+    }
+
+protected:
+    PrecompileImageFilter(SkSpan<sk_sp<PrecompileImageFilter>> inputs)
+            : PrecompileBase(Type::kImageFilter) {
+        fInputs.reset(inputs.size());
+        for (int i = 0; i < (int) inputs.size(); ++i) {
+            fInputs[i] = inputs[i];
+        }
+    }
+
+private:
+    friend class PaintOptions;  // for createPipelines() access
+
+    // The PrecompileImageFilter classes do not use the PrecompileBase::addToKey virtual since
+    // they, in general, do not themselves contribute to a given SkPaint/Pipeline but, rather,
+    // create separate SkPaints/Pipelines from whole cloth (in onCreatePipelines).
+    void addToKey(const KeyContext& keyContext,
+                  PaintParamsKeyBuilder* builder,
+                  PipelineDataGatherer* gatherer,
+                  int desiredCombination) const final {
+        SkASSERT(false);
+    }
+
+    sk_sp<PrecompileColorFilter> asAColorFilter() const;
+
+    virtual void onCreatePipelines(const KeyContext&,
+                                   PipelineDataGatherer*,
+                                   const PaintOptions::ProcessCombination&) const = 0;
+
+    void createPipelines(const KeyContext& keyContext,
+                         PipelineDataGatherer* gatherer,
+                         const PaintOptions::ProcessCombination& processCombination) {
+        // TODO: we will want to mark already visited nodes to prevent loops and track
+        // already created Pipelines so we don't over-generate too much (e.g., if a DAG
+        // has multiple blurs we don't want to keep trying to create all the blur pipelines).
+        this->onCreatePipelines(keyContext, gatherer, processCombination);
+
+        for (const sk_sp<PrecompileImageFilter>& input : fInputs) {
+            if (input) {
+                input->createPipelines(keyContext, gatherer, processCombination);
+            }
+        }
+    }
+
+    skia_private::AutoSTArray<2, sk_sp<PrecompileImageFilter>> fInputs;
+};
+
+//--------------------------------------------------------------------------------------------------
+// This is the Precompile correlate to the SkImageFilters class' factories in the main API
+//
+// Note: In order to make precompilation analysis more tractable we don't allow options for the
+// internals of an PrecompileImageFilter nor in the structure of the DAG.
+//
+// TODO: For all of the PrecompileImageFilter factories, should we have a CropRect parameter or
+// have clients explicitly create a crop PrecompileImageFilter?
+namespace PrecompileImageFilters {
+
+    // This is the Precompile correlate to SkImageFilters::Arithmetic
+    SK_API sk_sp<PrecompileImageFilter> Arithmetic(sk_sp<PrecompileImageFilter> background,
+                                                   sk_sp<PrecompileImageFilter> foreground);
+
+    // This is the Precompile correlate to SkImageFilters::Blend(SkBlendMode, ...)
+    SK_API sk_sp<PrecompileImageFilter> Blend(SkBlendMode bm,
+                                              sk_sp<PrecompileImageFilter> background,
+                                              sk_sp<PrecompileImageFilter> foreground);
+
+    // This is the Precompile correlate to SkImageFilters::Blend(sk_sp<SkBlender>, ...)
+    SK_API sk_sp<PrecompileImageFilter> Blend(sk_sp<PrecompileBlender> blender,
+                                              sk_sp<PrecompileImageFilter> background,
+                                              sk_sp<PrecompileImageFilter> foreground);
+
+    // This is the Precompile correlate to the two SkImageFilters::Blur factories
+    SK_API sk_sp<PrecompileImageFilter> Blur(sk_sp<PrecompileImageFilter> input);
+
+    // This is the Precompile correlate to SkImageFilters::ColorFilter.
+    SK_API sk_sp<PrecompileImageFilter> ColorFilter(sk_sp<PrecompileColorFilter> colorFilter,
+                                                    sk_sp<PrecompileImageFilter> input);
+
+    // This is the Precompile correlate to SkImageFilters::DisplacementMap
+    SK_API sk_sp<PrecompileImageFilter> DisplacementMap(sk_sp<PrecompileImageFilter> input);
+
+    // This is the Precompile correlate to all of SkImageFilters::
+    //      DistantLitDiffuse,  PointLitDiffuse,  SpotLitDiffuse
+    //      DistantLitSpecular, PointLitSpecular, SpotLitSpecular
+    SK_API sk_sp<PrecompileImageFilter> Lighting(sk_sp<PrecompileImageFilter> input);
+
+    // This is the Precompile correlate to SkImageFilters::MatrixConvolution
+    SK_API sk_sp<PrecompileImageFilter> MatrixConvolution(sk_sp<PrecompileImageFilter> input);
+
+    // This is the Precompile correlate to SkImageFilters::Erode and SkImageFilters::Dilate
+    SK_API sk_sp<PrecompileImageFilter> Morphology(sk_sp<PrecompileImageFilter> input);
+
+} // namespace PrecompileImageFilters
+
+} // namespace skgpu::graphite
+
+#endif // skgpu_graphite_precompile_PrecompileImageFilter_DEFINED
