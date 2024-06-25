@@ -195,6 +195,30 @@
       },
       "revId": "dd730ec904550f77fc79a11f635d97c097c6af47",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68634ec0_cc8d9bdd",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1126,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-06-25T18:29:21Z",
+      "side": 1,
+      "message": "Good question!\n\n`descriptorImageInfos` is defined outside of this loop, and `push_back` adds one new default-initialized value and returns it by reference but you\u0027re correct in that subsequent push_back calls technically invalidate that reference. But getting the address of the reference should still be pointing to the same spot...\n\nTo be safer, perhaps I could do `writeInfo.pImageInfo \u003d descriptorImageInfos.end();`? then the next call, when another is pushed back, end() will be pointing to the subsequent entry? \nLMKWYT!",
+      "parentUuid": "0ca1e30e_92a0ba77",
+      "range": {
+        "startLine": 1126,
+        "startChar": 8,
+        "endLine": 1126,
+        "endChar": 188
+      },
+      "revId": "dd730ec904550f77fc79a11f635d97c097c6af47",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
