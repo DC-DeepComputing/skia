@@ -219,6 +219,30 @@
       },
       "revId": "dd730ec904550f77fc79a11f635d97c097c6af47",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d135c2a_7810ef44",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1126,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-06-25T19:35:53Z",
+      "side": 1,
+      "message": "\u003e But getting the address of the reference should still be pointing to the same spot...\n\nMakes sense, sounds like it\u0027s fine as-is then. Thanks for taking a look 😊\n\n(replied over chat, but replying here too for posterity)",
+      "parentUuid": "68634ec0_cc8d9bdd",
+      "range": {
+        "startLine": 1126,
+        "startChar": 8,
+        "endLine": 1126,
+        "endChar": 188
+      },
+      "revId": "dd730ec904550f77fc79a11f635d97c097c6af47",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
