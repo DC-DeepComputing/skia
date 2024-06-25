@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "79b8b2a0_17f47c79",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1778,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-25T14:51:10Z",
+      "side": 1,
+      "message": "I cleaned up some internal alignment so the assert similarities are more apparent. Line length going over is okay, though, because this is all inside a `clang-format off` block. This is more readable in an actual editor and matches the formatting that was used for the fixed function blend mode asserts above.",
+      "parentUuid": "102fffad_0693e17b",
+      "revId": "e53d6ac6b6ce328e892683fff6b7964d4dbe5812",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5e3851fe_3e6e69ca",
@@ -31,6 +49,24 @@
       "writtenOn": "2024-06-24T21:05:59Z",
       "side": 1,
       "message": "Should this check that both expressionGenerator and preambleGenerator are non-null?",
+      "revId": "e53d6ac6b6ce328e892683fff6b7964d4dbe5812",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cb6158be_cd68dd70",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-25T14:51:10Z",
+      "side": 1,
+      "message": "It\u0027s pretty common for `preambleGenerator` to be non-null but still use the default expression generator. Expression generators will be going away in a CL or to, though so the assert will simplify.",
+      "parentUuid": "5e3851fe_3e6e69ca",
       "revId": "e53d6ac6b6ce328e892683fff6b7964d4dbe5812",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
