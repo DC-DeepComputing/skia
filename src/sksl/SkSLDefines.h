@@ -35,7 +35,9 @@ using StatementArray = skia_private::STArray<2, std::unique_ptr<Statement>>;
 // accounts for the number of calls being inlined--i.e., a function called five times (that is, with
 // five inlining opportunities) would be considered 5x larger than if it were called once. This
 // default threshold value is arbitrary, but tends to work well in practice.
-static constexpr int kDefaultInlineThreshold = 50;
+static constexpr int kDefaultInlineThreshold = 1;
+//static constexpr int kDefaultInlineThreshold = 50;
+
 
 // A hard upper limit on the number of variable slots allowed in a function/global scope.
 // This is an arbitrary limit, but is needed to prevent code generation from taking unbounded

@@ -40,13 +40,20 @@ sk_sp<VulkanSampler> VulkanSampler::Make(
         SkTileMode xTileMode,
         SkTileMode yTileMode,
         sk_sp<VulkanYcbcrConversion> ycbcrConversion) {
-
     VkSamplerCreateInfo samplerInfo;
     memset(&samplerInfo, 0, sizeof(VkSamplerCreateInfo));
     samplerInfo.sType = VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO;
-    // TODO(b/311392779): If a ycbcrConversion is passed in, assign pNext to
-    // VkSamplerYcbcrConversion.
-    samplerInfo.pNext = nullptr;
+
+    void* pNext = nullptr;
+    VkSamplerYcbcrConversionInfo conversionInfo;
+    if (ycbcrConversion) {
+        conversionInfo.sType = VK_STRUCTURE_TYPE_SAMPLER_YCBCR_CONVERSION_INFO;
+        conversionInfo.pNext = nullptr;
+        conversionInfo.conversion = ycbcrConversion->ycbcrConversion();
+        pNext = &conversionInfo;
+    }
+
+    samplerInfo.pNext = pNext;
     samplerInfo.flags = 0;
 
     VkFilter minMagFilter = [&] {
