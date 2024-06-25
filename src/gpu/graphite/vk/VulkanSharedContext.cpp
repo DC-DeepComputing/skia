@@ -140,6 +140,7 @@ VulkanSharedContext::VulkanSharedContext(const VulkanBackendContext& backendCont
         : skgpu::graphite::SharedContext(std::move(caps), BackendApi::kVulkan)
         , fInterface(std::move(interface))
         , fMemoryAllocator(std::move(memoryAllocator))
+        , fPhysDevice(backendContext.fPhysicalDevice)
         , fDevice(std::move(backendContext.fDevice))
         , fQueueIndex(backendContext.fGraphicsQueueIndex)
         , fDeviceLostContext(backendContext.fDeviceLostContext)

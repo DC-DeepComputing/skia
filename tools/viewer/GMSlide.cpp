@@ -42,6 +42,18 @@ void GMSlide::draw(SkCanvas* canvas) {
     fGM->draw(canvas, &msg);
 }
 
+void GMSlide::draw(SkCanvas* canvas,
+                   skiatest::graphite::GraphiteTestContext* graphiteContext) {
+    SkString msg;
+
+    auto result = fGM->gpuSetup(canvas, &msg, graphiteContext);
+    if (result != skiagm::GM::DrawResult::kOk) {
+        return;
+    }
+
+    fGM->draw(canvas, &msg);
+}
+
 bool GMSlide::animate(double nanos) { return fGM->animate(nanos); }
 
 bool GMSlide::onChar(SkUnichar c) { return fGM->onChar(c); }

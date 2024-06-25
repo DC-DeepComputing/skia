@@ -42,7 +42,8 @@ protected:
 
     SkISize getDimensions() const override;
 
-    void draw(SkCanvas*) override;
+    void draw(SkCanvas*,
+              skiatest::graphite::GraphiteTestContext* graphiteContext = nullptr) override;
     bool animate(double) override;
 
     bool onChar(SkUnichar) override;
