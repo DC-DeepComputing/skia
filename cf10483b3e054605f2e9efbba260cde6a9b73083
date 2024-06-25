@@ -16,6 +16,41 @@
       "message": "Got to here",
       "revId": "cf10483b3e054605f2e9efbba260cde6a9b73083",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "58d3b11c_3d0807ef",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1190,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-06-25T17:31:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9fc20aef_5f5e8d96",
+      "revId": "cf10483b3e054605f2e9efbba260cde6a9b73083",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f78eeeab_963dc1b9",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1631,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-06-25T17:31:37Z",
+      "side": 1,
+      "message": "I guess we should probably have an issue for that so we don\u0027t forget. It will certainly cause some combinatorial increase so we might want to delay until there is a strong performance argument for it.",
+      "revId": "cf10483b3e054605f2e9efbba260cde6a9b73083",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
