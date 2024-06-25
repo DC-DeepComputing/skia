@@ -51,6 +51,24 @@
       "parentUuid": "f720fa96_1a5c74c6",
       "revId": "5feca309571941ba047f1fafb77c0f28e077ac7d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7b58c8f_ef29f68f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-06-25T16:56:45Z",
+      "side": 1,
+      "message": "There are too many columns in the image matrix so with your CL we exceed the maximum dimension for textures on some devices. I\u0027ve changed it to split some GMs into two separate images instead: full and limited, each with fewer columns than before. You\u0027ll need to add your new labels but don\u0027t need to change the color_spaces_array (I\u0027ve removed it).",
+      "parentUuid": "8996c7c2_3d407bcf",
+      "revId": "5feca309571941ba047f1fafb77c0f28e077ac7d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
