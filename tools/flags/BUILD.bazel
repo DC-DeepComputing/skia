@@ -74,3 +74,25 @@ skia_cc_library(
         "//src/core:core_priv",
     ],
 )
+
+skia_cc_library(
+    name = "ganesh_flags",
+    testonly = True,
+    srcs = [
+        "CommonFlagsGanesh.cpp",
+    ],
+    hdrs = [
+        "CommonFlagsGanesh.h",
+    ],
+    visibility = [
+        "//bench:__pkg__",
+        "//dm:__pkg__",
+        "//tools/skpbench:__pkg__",
+        "//tools/viewer:__pkg__",
+    ],
+    deps = [
+        ":cmd_flags",
+        "//:core",
+        "//src/gpu/ganesh:ganesh_TEST_UTIL",
+    ],
+)

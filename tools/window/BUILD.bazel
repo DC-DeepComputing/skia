@@ -48,36 +48,48 @@ skia_cc_library(
 )
 
 skia_cc_library(
-    name = "window",
+    name = "core",
     testonly = True,
     srcs = [
         "RasterWindowContext.h",
         "WindowContext.cpp",
-        "GLWindowContext.cpp",
-        # TODO(kjlubick): Add Vulkan support.
-        # "VulkanWindowContext.cpp",
-    ] + select({
-        "@platforms//os:android": ["//tools/window/android:srcs"],
-        "//conditions:default": [],
-    }) + select({
-        "@platforms//os:linux": ["//tools/window/unix:srcs"],
-        "//conditions:default": [],
-        # TODO(kjlubick) add Windows/Mac support
-    }),
+    ],
     hdrs = [
         "DisplayParams.h",
         "WindowContext.h",
+    ],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//:core",
+        "//src/gpu/ganesh:ganesh_TEST_UTIL",
+    ],
+)
+
+skia_cc_library(
+    name = "window_gl",
+    testonly = True,
+    srcs = [
+        "GLWindowContext.cpp",
+        "RasterWindowContext.h",
+        "WindowContext.cpp",
+    ] + select({
+        "@platforms//os:linux": [
+            "//tools/window/unix:gl_srcs",
+            "//tools/window/unix:unix_srcs",
+        ],
+    }),
+    hdrs = [
+        "DisplayParams.h",
         "GLWindowContext.h",
-        # TODO(kjlubick): Add Vulkan support.
-        # "VulkanWindowContext.h",
+        "WindowContext.h",
     ],
     visibility = ["//:__subpackages__"],
     deps = [
         "//:core",
         "//:ganesh_gl",
-        "//:ganesh_glx_factory",
         "//tools/fonts:font_tool_utils",
     ] + select({
+        "@platforms//os:linux": ["//:ganesh_glx_factory"],
         # TODO(kjlubick): Add Android support.
         # "@platforms//os:android": ["//tools/window/android:deps"],
         "//conditions:default": [],

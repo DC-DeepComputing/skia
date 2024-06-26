@@ -22,6 +22,25 @@ skia_filegroup(
     visibility = ["//tools/window:__pkg__"],
 )
 
+skia_filegroup(
+    name = "unix_srcs",
+    testonly = True,
+    srcs = [
+        "RasterWindowContext_unix.cpp",
+        "WindowContextFactory_unix.h",
+    ],
+    visibility = ["//tools/window:__pkg__"],
+)
+
+skia_filegroup(
+    name = "gl_srcs",
+    testonly = True,
+    srcs = [
+        "GLWindowContext_unix.cpp",
+    ],
+    visibility = ["//tools/window:__pkg__"],
+)
+
 skia_cc_deps(
     name = "deps",
     testonly = True,
