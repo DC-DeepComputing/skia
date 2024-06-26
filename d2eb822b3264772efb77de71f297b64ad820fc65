@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0adde845_fa5b6e9d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-26T13:56:15Z",
+      "side": 1,
+      "message": "Thanks this is great cleanup!",
+      "revId": "d2eb822b3264772efb77de71f297b64ad820fc65",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "36c6303e_436e31e4",
+        "filename": "src/gpu/graphite/mtl/MtlCaps.mm",
+        "patchSetId": 4
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-26T13:56:15Z",
+      "side": 1,
+      "message": "nit: line length",
+      "range": {
+        "startLine": 161,
+        "startChar": 4,
+        "endLine": 162,
+        "endChar": 103
+      },
+      "revId": "d2eb822b3264772efb77de71f297b64ad820fc65",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
