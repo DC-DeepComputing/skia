@@ -8481,3 +8481,37 @@ UNIX_ONLY_TEST(SkParagraph_ICU4X_EmojiRuns, reporter) {
     SkUnicode_Emoji(SkUnicodes::ICU4X::Make(), reporter);
 }
 #endif
+
+
+UNIX_ONLY_TEST(SkParagraph_Visitor, reporter) {
+    auto paraFonts = sk_make_sp<ResourceFontCollection>();
+    SKIP_IF_FONTS_NOT_FOUND(reporter, paraFonts)
+    paraFonts->disableFontFallback();
+
+    auto paraUnicode = SkUnicodes::ICU::Make();
+
+    auto paraStyle = skia::textlayout::ParagraphStyle();
+    auto builder = skia::textlayout::ParagraphBuilder::make(paraStyle, paraFonts, paraUnicode);
+
+    skia::textlayout::TextStyle textStyle;
+    textStyle.setFontFamilies({SkString("Source Han Sans VF")});
+
+    std::vector<std::string> locales = {"ko", "ja", "zh-Hant", "zh-Hans"};
+    for (const auto &locale: locales) {
+        textStyle.setLocale(SkString(locale.c_str()));
+        builder->pushStyle(textStyle);
+        std::string payload("曜\n");
+        builder->addText(payload.c_str(), payload.size());
+    }
+
+    auto paragraph = builder->Build();
+    paragraph->layout(1600);
+
+    paragraph->visit([&](int lineNumber, const skia::textlayout::Paragraph::VisitorInfo *info) {
+        // this case will never crash because the code is using the size of the entire text as a buffer so it will never be 0
+    });
+
+    paragraph->extendedVisit([&](int lineNumber, const skia::textlayout::Paragraph::ExtendedVisitorInfo *info) {
+        // crash
+    });
+}
