@@ -16,6 +16,24 @@
       "message": "Michael, as I understand it, we want to head in the direction of not having the CropRect parameter in the main API, right? If so, I\u0027m inclined to make that the case in the Precompile API.",
       "revId": "fec086f54b28c3a3c152008e512a049e7e65ecb4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "566fadb3_e398e3e3",
+        "filename": "include/gpu/graphite/precompile/PrecompileImageFilter.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-26T18:22:55Z",
+      "side": 1,
+      "message": "Internally, the CropRect parameter in a real image filter equates to a use of the `SkImageFilters::Crop` with the decal tile mode. I don\u0027t feel strongly about whether or not that CropRect remains in the public API because it can be convenient to inline that for simple cases.\n\nThe legacy tile mode that `::Blur()` takes in definitely should be going away.\n\nI think it makes sense to not worry about crop rects for now, as long as we are able to handle the case where crops occur in the wild. For the most part, `CropRect` implied a decal crop after the affect of the filter, which pretty universally just modified the geometry we\u0027d use to render it, so it may not even contribute to shader combinations.",
+      "parentUuid": "0bbaf2ac_8b0edaae",
+      "revId": "fec086f54b28c3a3c152008e512a049e7e65ecb4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
