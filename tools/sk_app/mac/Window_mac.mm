@@ -32,7 +32,7 @@ namespace sk_app {
 
 SkTDynamicHash<Window_mac, NSInteger> Window_mac::gWindowMap;
 
-Window* Window::CreateNativeWindow(void*) {
+Window* Windows::CreateNativeWindow(void*) {
     Window_mac* window = new Window_mac();
     if (!window->initWindow()) {
         delete window;
