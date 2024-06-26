@@ -94,6 +94,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6d55008_afb4b046",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2024-06-26T16:18:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5a5256e7_d35fb911",
+      "range": {
+        "startLine": 26,
+        "startChar": 4,
+        "endLine": 26,
+        "endChar": 32
+      },
+      "revId": "90073998a843bd19201925ce21b0c21305a67ad9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2424f3e1_ac10f11b",
@@ -107,6 +131,30 @@
       "writtenOn": "2024-06-25T13:36:30Z",
       "side": 1,
       "message": "Can this be a member type of `BindGroupKey` (or whatever final name it has)? It seems likely that any other user will want to have it available for use in a cache or map.",
+      "range": {
+        "startLine": 126,
+        "startChar": 4,
+        "endLine": 128,
+        "endChar": 6
+      },
+      "revId": "90073998a843bd19201925ce21b0c21305a67ad9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cf6f61c8_0d0b5fc1",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2024-06-26T16:18:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2424f3e1_ac10f11b",
       "range": {
         "startLine": 126,
         "startChar": 4,
