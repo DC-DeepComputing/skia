@@ -177,7 +177,6 @@ void GrCaps::applyOptionsOverrides(const GrContextOptions& options) {
 }
 
 
-#ifdef SK_ENABLE_DUMP_GPU
 #include "src/gpu/ganesh/GrTestUtils.h"
 #include "src/utils/SkJSONWriter.h"
 
@@ -225,23 +224,18 @@ void GrCaps::dumpJSON(SkJSONWriter* writer) const {
     writer->appendBool("Conservative Raster Support", fConservativeRasterSupport);
     writer->appendBool("Wireframe Support", fWireframeSupport);
     writer->appendBool("MSAA Resolves Automatically", fMSAAResolvesAutomatically);
+    writer->appendBool("Prefer Discardable MSAA attachments", fPreferDiscardableMSAAAttachment);
     writer->appendBool("Use primitive restart", fUsePrimitiveRestart);
     writer->appendBool("Prefer client-side dynamic buffers", fPreferClientSideDynamicBuffers);
     writer->appendBool("Prefer fullscreen clears (and stencil discard)", fPreferFullscreenClears);
     writer->appendBool("Two-sided Stencil Refs And Masks Must Match",
                        fTwoSidedStencilRefsAndMasksMustMatch);
     writer->appendBool("Must clear buffer memory", fMustClearUploadedBufferData);
-    writer->appendBool("Should initialize textures", fShouldInitializeTextures);
     writer->appendBool("Buffers are initially zero", fBuffersAreInitiallyZero);
+    writer->appendBool("Should initialize textures", fShouldInitializeTextures);
     writer->appendBool("Supports importing AHardwareBuffers", fSupportsAHardwareBufferImages);
-    writer->appendBool("Semaphore support", fSemaphoreSupport);
-    writer->appendBool("Backend Semaphore support", fBackendSemaphoreSupport);
-    writer->appendBool("FinishedProc async callback support", fFinishedProcAsyncCallbackSupport);
-    writer->appendBool("Cross context texture support", fCrossContextTextureSupport);
     writer->appendBool("Half float vertex attribute support", fHalfFloatVertexAttributeSupport);
-    writer->appendBool("Specify GeometryProcessor textures as a dynamic state array",
-                       fDynamicStateArrayGeometryProcessorTextureSupport);
-    writer->appendBool("Supports Protected content", fSupportsProtectedContent);
+    writer->appendBool("Clamp-to-border", fClampToBorderSupport);
     writer->appendBool("Use draws for partial clears", fPerformPartialClearsAsDraws);
     writer->appendBool("Use draws for color clears", fPerformColorClearsAsDraws);
     writer->appendBool("Avoid Large IndexBuffer Draws", fAvoidLargeIndexBufferDraws);
@@ -250,14 +244,17 @@ void GrCaps::dumpJSON(SkJSONWriter* writer) const {
                        fTransferFromBufferToTextureSupport);
     writer->appendBool("Supports transfers from textures to buffers",
                        fTransferFromSurfaceToBufferSupport);
-    writer->appendBool("Write pixels row bytes support", fWritePixelsRowBytesSupport);
+    writer->appendBool("Supports transfers from buffers to buffers",
+                       fTransferFromBufferToBufferSupport);
     writer->appendBool("Transfer pixels to row bytes support", fTransferPixelsToRowBytesSupport);
+    writer->appendBool("Write pixels row bytes support", fWritePixelsRowBytesSupport);
     writer->appendBool("Read pixels row bytes support", fReadPixelsRowBytesSupport);
+    writer->appendBool("Collapse SrcOver to Src when able", fShouldCollapseSrcOverToSrcWhenAble);
+    writer->appendBool("Must sync GPU during abandon", fMustSyncGpuDuringAbandon);
+
+    // Driver workaround
     writer->appendBool("Disable TessellationPathRenderer current driver [workaround]",
                        fDisableTessellationPathRenderer);
-    writer->appendBool("Clamp-to-border", fClampToBorderSupport);
-
-    writer->appendBool("Prefer VRAM Use over flushes [workaround]", fPreferVRAMUseOverFlushes);
     writer->appendBool("Avoid stencil buffers [workaround]", fAvoidStencilBuffers);
     writer->appendBool("Avoid writePixels fast path [workaround]", fAvoidWritePixelsFastPath);
     writer->appendBool("Native draw indexed indirect is broken [workaround]",
@@ -265,17 +262,22 @@ void GrCaps::dumpJSON(SkJSONWriter* writer) const {
     writer->appendBool("Avoid DAG reordering [workaround]", fAvoidReorderingRenderTasks);
     writer->appendBool("Avoid Dithering [workaround]", fAvoidDithering);
     writer->appendBool("Disable perspective SDF Text [workaround]", fDisablePerspectiveSDFText);
+    writer->appendBool("Avoid line draws [workaround]", fAvoidLineDraws);
 
-    if (this->advancedBlendEquationSupport()) {
-        writer->appendHexU32("Advanced Blend Equation Disable Flags", fAdvBlendEqDisableFlags);
-    }
 
-    writer->appendS32("Max Vertex Attributes", fMaxVertexAttributes);
-    writer->appendS32("Max Texture Size", fMaxTextureSize);
-    writer->appendS32("Max Render Target Size", fMaxRenderTargetSize);
-    writer->appendS32("Max Preferred Render Target Size", fMaxPreferredRenderTargetSize);
-    writer->appendS32("Max Window Rectangles", fMaxWindowRectangles);
-    writer->appendS32("Sample Count for Internal MSAA", fInternalMultisampleCount);
+    // ANGLE performance workaround
+    writer->appendBool("Prefer VRAM Use over flushes [workaround]", fPreferVRAMUseOverFlushes);
+
+    writer->appendBool("Semaphore support", fSemaphoreSupport);
+    writer->appendBool("Backend Semaphore support", fBackendSemaphoreSupport);
+    writer->appendBool("FinishedProc async callback support", fFinishedProcAsyncCallbackSupport);
+
+    writer->appendBool("Cross context texture support", fCrossContextTextureSupport);
+
+    writer->appendBool("Specify GeometryProcessor textures as a dynamic state array",
+                       fDynamicStateArrayGeometryProcessorTextureSupport);
+
+    writer->appendBool("Supports Protected content", fSupportsProtectedContent);
 
     static const char* kBlendEquationSupportNames[] = {
         "Basic",
@@ -289,18 +291,33 @@ void GrCaps::dumpJSON(SkJSONWriter* writer) const {
 
     writer->appendCString("Blend Equation Support",
                           kBlendEquationSupportNames[fBlendEquationSupport]);
+
+    if (this->advancedBlendEquationSupport()) {
+        writer->appendHexU32("Advanced Blend Equation Disable Flags", fAdvBlendEqDisableFlags);
+    }
+
     writer->appendString("Map Buffer Support", map_flags_to_string(fMapBufferFlags));
+    writer->appendS32("Map Buffer Threshold", fBufferMapThreshold);
+
+
+    writer->appendS32("Max Render Target Size", fMaxRenderTargetSize);
+    writer->appendS32("Max Preferred Render Target Size", fMaxPreferredRenderTargetSize);
+    writer->appendS32("Max Vertex Attributes", fMaxVertexAttributes);
+    writer->appendS32("Max Texture Size", fMaxTextureSize);
+    writer->appendS32("Max Window Rectangles", fMaxWindowRectangles);
+    writer->appendS32("Sample Count for Internal MSAA", fInternalMultisampleCount);
+    writer->appendU32("Max Push Constants Size", fMaxPushConstantsSize);
+    writer->appendU32("Transfer Buffer Row Bytes Alignment", fTransferBufferRowBytesAlignment);
+    writer->appendU32("Transfer From Buffer To Buffe Alignment", fTransferFromBufferToBufferAlignment);
+    writer->appendU32("BufferUpdate Data Preserve Alignment", fBufferUpdateDataPreserveAlignment);
 
     this->onDumpJSON(writer);
 
-    writer->appendName("shaderCaps");
+     writer->appendName("shaderCaps");
     this->shaderCaps()->dumpJSON(writer);
 
     writer->endObject();
 }
-#else
-void GrCaps::dumpJSON(SkJSONWriter* writer) const { }
-#endif
 
 bool GrCaps::surfaceSupportsWritePixels(const GrSurface* surface) const {
     return surface->readOnly() ? false : this->onSurfaceSupportsWritePixels(surface);

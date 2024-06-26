@@ -1127,7 +1127,6 @@ bool GrDirectContext::precompileShader(const SkData& key, const SkData& data) {
     return fGpu->precompileShader(key, data);
 }
 
-#ifdef SK_ENABLE_DUMP_GPU
 #include "include/core/SkString.h"
 #include "src/utils/SkJSONWriter.h"
 SkString GrDirectContext::dump() const {
@@ -1140,11 +1139,11 @@ SkString GrDirectContext::dump() const {
     writer.appendName("caps");
     this->caps()->dumpJSON(&writer);
 
-    writer.appendName("gpu");
-    this->fGpu->dumpJSON(&writer);
+    // writer.appendName("gpu");
+    // this->fGpu->dumpJSON(&writer);
 
-    writer.appendName("context");
-    this->dumpJSON(&writer);
+    // writer.appendName("context");
+    // this->dumpJSON(&writer);
 
     // Flush JSON to the memory stream
     writer.endObject();
@@ -1158,7 +1157,6 @@ SkString GrDirectContext::dump() const {
     stream.copyToAndReset(result.data());
     return result;
 }
-#endif
 
 /*************************************************************************************************/
 sk_sp<GrDirectContext> GrDirectContext::MakeMock(const GrMockOptions* mockOptions) {

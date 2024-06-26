@@ -1201,7 +1201,6 @@ void GrGLCaps::initStencilSupport(const GrGLContextInfo& ctxInfo) {
     }
 }
 
-#ifdef SK_ENABLE_DUMP_GPU
 #include "src/utils/SkJSONWriter.h"
 
 static const char* multi_draw_type_name(GrGLCaps::MultiDrawType multiDrawType) {
@@ -1269,15 +1268,47 @@ void GrGLCaps::onDumpJSON(SkJSONWriter* writer) const {
         SkUNREACHABLE;
     };
 
-    writer->appendBool("Core Profile", fIsCoreProfile);
+    auto transferBufferTypeStr = [&] {
+        switch (fTransferBufferType) {
+            case TransferBufferType::kNone:     return "None";
+            case TransferBufferType::kNV_PBO:   return "NV PBO";
+            case TransferBufferType::kARB_PBO:  return "ARB PBO";
+            case TransferBufferType::kChromium: return "Chromium pixel transfer buffer object";
+        }
+        SkUNREACHABLE;
+    };
+
+    auto fenceTypeStr = [&] {
+        switch (fFenceType) {
+            case FenceType::kNone:       return "None";
+            case FenceType::kSyncObject: return "SyncObject";
+            case FenceType::kNVFence:    return "NV Fence";
+        }
+        SkUNREACHABLE;
+    };
+
+    auto regenerateMipmapTypeStr = [&] {
+        switch (fRegenerateMipmapType) {
+            case RegenerateMipmapType::kBaseLevel: return "Base Level";
+            case RegenerateMipmapType::kBasePlusMaxLevel: return "Base Plus Max Level";
+            case RegenerateMipmapType::kBasePlusSync: return "Base Level Plus Sync";
+        }
+        SkUNREACHABLE;
+    };
+
+    writer->appendS32("Max FS Uniform Vectors", fMaxFragmentUniformVectors);
+    writer->appendFloat("Max texture anisotropy", fMaxTextureMaxAnisotropy);
+
     writer->appendCString("MSAA Type", msfboStr());
     writer->appendCString("Invalidate FB Type", invalidateFBTypeStr());
     writer->appendCString("Invalidate Buffer Type", invalidateBufferTypeStr());
     writer->appendCString("Map Buffer Type", mapBufferTypeStr());
+    writer->appendCString("Transfer Buffer Type", transferBufferTypeStr());
+    writer->appendCString("Fence Type", fenceTypeStr());
     writer->appendCString("Multi Draw Type", multi_draw_type_name(fMultiDrawType));
-    writer->appendS32("Max FS Uniform Vectors", fMaxFragmentUniformVectors);
-    writer->appendBool("Pack Flip Y support", fPackFlipYSupport);
+    writer->appendCString("Regenerate Mipmap Type", regenerateMipmapTypeStr());
 
+    writer->appendBool("Pack Flip Y support", fPackFlipYSupport);
     writer->appendBool("Texture Usage support", fTextureUsageSupport);
     writer->appendBool("GL_ARB_imaging support", fImagingSupport);
     writer->appendBool("Vertex array object support", fVertexArrayObjectSupport);
@@ -1285,10 +1316,12 @@ void GrGLCaps::onDumpJSON(SkJSONWriter* writer) const {
     writer->appendBool("ES2 compatibility support", fES2CompatibilitySupport);
     writer->appendBool("drawRangeElements support", fDrawRangeElementsSupport);
     writer->appendBool("Base (vertex base) instance support", fBaseVertexBaseInstanceSupport);
+    writer->appendBool("Core Profile", fIsCoreProfile);
+    writer->appendBool("Bind frag data location support", fBindFragDataLocationSupport);
     writer->appendBool("Bind uniform location support", fBindUniformLocationSupport);
     writer->appendBool("Rectangle texture support", fRectangleTextureSupport);
-    writer->appendBool("Mipmap LOD control support", fMipmapLodControlSupport);
     writer->appendBool("Mipmap level control support", fMipmapLevelControlSupport);
+    writer->appendBool("Mipmap LOD control support", fMipmapLodControlSupport);
     writer->appendBool("Clear texture support", fClearTextureSupport);
     writer->appendBool("Program binary support", fProgramBinarySupport);
     writer->appendBool("Program parameters support", fProgramParameterSupport);
@@ -1299,13 +1332,34 @@ void GrGLCaps::onDumpJSON(SkJSONWriter* writer) const {
     writer->appendBool("Fence sync support", fFenceSyncSupport);
     writer->appendBool("FB fetch requires enable per sample", fFBFetchRequiresEnablePerSample);
     writer->appendBool("sRGB Write Control", fSRGBWriteControl);
+    writer->appendBool("Skip error checks", fSkipErrorChecks);
+    writer->appendBool("Client can disable multisampling", fClientCanDisableMultisample);
 
-    writer->appendBool("Intermediate texture for partial updates of unorm textures ever bound to FBOs",
+    // Workarounds
+    writer->appendBool("Do manual mipmapping [workaround]", fDoManualMipmapping);
+    writer->appendBool("Clear to boundary values is broken [workaround]", fClearToBoundaryValuesIsBroken);
+    writer->appendBool("Draw arrays base vertex is broken [workaround]", fDrawArraysBaseVertexIsBroken);
+    writer->appendBool("Intermediate texture for partial updates of unorm textures ever bound to FBOs [workaround]",
                        fDisallowTexSubImageForUnormConfigTexturesEverBoundToFBO);
-    writer->appendBool("Intermediate texture for all updates of textures bound to FBOs",
+    writer->appendBool("Intermediate texture for all updates of textures bound to FBOs [workaround]",
                        fUseDrawInsteadOfAllRenderTargetWrites);
-    writer->appendBool("Max instances per draw without crashing (or zero)",
+    writer->appendBool("Toggle cull face enabled state when drawing lines after non-lines [workaround]", fRequiresCullFaceEnableDisableWhenDrawingLinesAfterNonLines);
+    writer->appendBool("Don't set base or max level for external textures [workaround]", fDontSetBaseOrMaxLevelForExternalTextures);
+    writer->appendBool("Never disable color writes [workaround]", fNeverDisableColorWrites);
+    writer->appendBool("Must set any texture parameter to enable mipmapping [workaround]", fMustSetAnyTexParameterToEnableMipmapping);
+    writer->appendBool("Allow BGRA8 CopyTexSubImage [workaround]", fAllowBGRA8CopyTexSubImage);
+    writer->appendBool("Allow sRGB CopyTexSubImage [workaround]", fAllowSRGBCopyTexSubImage);
+    writer->appendBool("Disallow dynamic MSAA [workaround]", fDisallowDynamicMSAA);
+    writer->appendBool("Must reset blend func between dual source blending and disabled blending [workaround]", fMustResetBlendFuncBetweenDualSourceAndDisable);
+    writer->appendBool("Bind texture 0 when changing texture FBO multisample count [workaround]", fBindTexture0WhenChangingTextureFBOMultisampleCount);
+    writer->appendBool("Rebind color attachments after checking framebuffer status [workaround]", fRebindColorAttachmentAfterCheckFramebufferStatus);
+    writer->appendBool("Flush before WritePixels [workaround]", fFlushBeforeWritePixels);
+    writer->appendBool("Disable scaling copy as draws [workaround]", fDisableScalingCopyAsDraws);
+    writer->appendBool("Pad RG88 transfer alignment [workaround]", fPadRG88TransferAlignment);
+    writer->appendBool("Max instances per draw without crashing (or zero) [workaround]",
                        fMaxInstancesPerDrawWithoutCrashing);
+
+    writer->appendHexU32("BlitFramebuffer flags", fBlitFramebufferFlags);
 
     writer->beginArray("formats");
 
@@ -1347,9 +1401,6 @@ void GrGLCaps::onDumpJSON(SkJSONWriter* writer) const {
     writer->endArray();
     writer->endObject();
 }
-#else
-void GrGLCaps::onDumpJSON(SkJSONWriter* writer) const { }
-#endif
 
 void GrGLCaps::getTexImageExternalFormatAndType(GrGLFormat surfaceFormat, GrGLenum* externalFormat,
                                                 GrGLenum* externalType) const {
