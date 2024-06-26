@@ -472,6 +472,7 @@ static void destroy_desc_set_layouts(const VulkanSharedContext* sharedContext,
 static VkPipelineLayout setup_pipeline_layout(const VulkanSharedContext* sharedContext,
                                               bool usesIntrinsicConstantUbo,
                                               bool hasStepUniforms,
+                                              bool hasGradientBuffer,
                                               int numPaintUniforms,
                                               int numTextureSamplers,
                                               int numInputAttachments) {
@@ -484,15 +485,33 @@ static VkPipelineLayout setup_pipeline_layout(const VulkanSharedContext* sharedC
     if (usesIntrinsicConstantUbo) {
         uniformDescriptors.push_back(VulkanGraphicsPipeline::kIntrinsicUniformBufferDescriptor);
     }
+
+    DescriptorType uniformBufferType = sharedContext->caps()->storageBufferSupport()
+                                            ? DescriptorType::kStorageBuffer
+                                            : DescriptorType::kUniformBuffer;
     if (hasStepUniforms) {
-        uniformDescriptors.push_back(VulkanGraphicsPipeline::kRenderStepUniformDescriptor);
-    }
-    if (numPaintUniforms > 0) {
-        uniformDescriptors.push_back(VulkanGraphicsPipeline::kPaintUniformDescriptor);
+        uniformDescriptors.push_back({
+            uniformBufferType,
+            /*count=*/1,
+            VulkanGraphicsPipeline::kRenderStepUniformBufferIndex,
+            PipelineStageFlags::kVertexShader | PipelineStageFlags::kFragmentShader});
     }
 
-    if (!uniformDescriptors.empty()) {
-        VkDescriptorSetLayout uniformSetLayout =
+    if (numPaintUniforms > 0) {
+        uniformDescriptors.push_back({
+            uniformBufferType,
+            /*count=*/1,
+            VulkanGraphicsPipeline::kPaintUniformBufferIndex,
+            PipelineStageFlags::kFragmentShader});
+    }
+
+    if (hasGradientBuffer) {
+        uniformDescriptors.push_back({
+                DescriptorType::kStorageBuffer,
+                /*count=*/1,
+                VulkanGraphicsPipeline::kGradientBufferIndex,
+                PipelineStageFlags::kFragmentShader});
+    }    if (!uniformDescriptors.empty()) {        VkDescriptorSetLayout uniformSetLayout =
                 descriptor_data_to_layout(sharedContext, {uniformDescriptors});
         if (uniformSetLayout == VK_NULL_HANDLE) { return VK_NULL_HANDLE; }
         setLayouts.push_back(uniformSetLayout);
@@ -713,6 +732,7 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
     VkPipelineLayout pipelineLayout = setup_pipeline_layout(sharedContext,
                                                             /*usesIntrinsicConstantUbo=*/true,
                                                             !step->uniforms().empty(),
+                                                            fsSkSLInfo.fHasGradientBuffer,
                                                             fsSkSLInfo.fNumPaintUniforms,
                                                             fsSkSLInfo.fNumTexturesAndSamplers,
                                                             /*numInputAttachments=*/0);
@@ -790,6 +810,7 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
                                        vkPipeline,
                                        fsSkSLInfo.fNumPaintUniforms > 0,
                                        !step->uniforms().empty(),
+                                       fsSkSLInfo.fHasGradientBuffer,
                                        fsSkSLInfo.fNumTexturesAndSamplers,
                                        /*ownsPipelineLayout=*/true));
 }
@@ -872,6 +893,7 @@ bool VulkanGraphicsPipeline::InitializeMSAALoadPipelineStructs(
     *outPipelineLayout = setup_pipeline_layout(sharedContext,
                                                /*usesIntrinsicConstantUbo=*/false,
                                                /*hasStepUniforms=*/false,
+                                               /*hasGradientBuffer=*/false,
                                                /*numPaintUniforms=*/0,
                                                /*numTextureSamplers=*/0,
                                                /*numInputAttachments=*/1);
@@ -980,6 +1002,7 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::MakeLoadMSAAPipeline(
                                        vkPipeline,
                                        /*hasFragmentUniforms=*/false,
                                        /*hasStepUniforms=*/false,
+                                       /*hasGradientBuffer=*/false,
                                        /*numTextureSamplers*/0,
                                        /*ownsPipelineLayout=*/false));
 }
@@ -990,6 +1013,7 @@ VulkanGraphicsPipeline::VulkanGraphicsPipeline(const skgpu::graphite::SharedCont
                                                VkPipeline pipeline,
                                                bool hasFragmentUniforms,
                                                bool hasStepUniforms,
+                                               bool hasGradientBuffer,
                                                int numTextureSamplers,
                                                bool ownsPipelineLayout)
         : GraphicsPipeline(sharedContext, pipelineInfo)
@@ -997,6 +1021,7 @@ VulkanGraphicsPipeline::VulkanGraphicsPipeline(const skgpu::graphite::SharedCont
         , fPipeline(pipeline)
         , fHasFragmentUniforms(hasFragmentUniforms)
         , fHasStepUniforms(hasStepUniforms)
+        , fHasGradientBuffer(hasGradientBuffer)
         , fNumTextureSamplers(numTextureSamplers)
         , fOwnsPipelineLayout(ownsPipelineLayout) {}
 
