@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0bbaf2ac_8b0edaae",
+        "filename": "include/gpu/graphite/precompile/PrecompileImageFilter.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-06-26T15:53:12Z",
+      "side": 1,
+      "message": "Michael, as I understand it, we want to head in the direction of not having the CropRect parameter in the main API, right? If so, I\u0027m inclined to make that the case in the Precompile API.",
+      "revId": "fec086f54b28c3a3c152008e512a049e7e65ecb4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
