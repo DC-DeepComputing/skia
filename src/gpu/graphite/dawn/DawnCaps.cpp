@@ -438,7 +438,6 @@ void DawnCaps::initCaps(const DawnBackendContext& backendContext, const ContextO
 
 #if !defined(__EMSCRIPTEN__)
     // TODO(b/318817249): SSBOs trigger FXC compiler failures when attempting to unroll loops
-    fStorageBufferSupport = info.backendType != wgpu::BackendType::D3D11;
     fStorageBufferPreferred = info.backendType != wgpu::BackendType::D3D11;
 #else
     // WASM doesn't provide a way to query the backend, so can't tell if we are on d3d11 or not.
