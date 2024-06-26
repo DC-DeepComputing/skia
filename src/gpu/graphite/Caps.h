@@ -231,11 +231,8 @@ public:
     // If false then calling Context::submit with SyncToCpu::kYes is an error.
     bool allowCpuSync() const { return fAllowCpuSync; }
 
-    // Returns whether storage buffers are supported.
-    bool storageBufferSupport() const { return fStorageBufferSupport; }
-
-    // Returns whether storage buffers are preferred over uniform buffers, when both will yield
-    // correct results.
+    // Returns whether storage buffers are available and preferred over uniform buffers,
+    // meaning both uniform buffers and storage buffers will not be used together.
     bool storageBufferPreferred() const { return fStorageBufferPreferred; }
 
     // Returns whether a draw buffer can be mapped.
@@ -366,7 +363,6 @@ protected:
     bool fProtectedSupport = false;
     bool fSemaphoreSupport = false;
     bool fAllowCpuSync = true;
-    bool fStorageBufferSupport = false;
     bool fStorageBufferPreferred = false;
     bool fDrawBufferCanBeMapped = true;
     bool fBufferMapsAreAsync = false;
