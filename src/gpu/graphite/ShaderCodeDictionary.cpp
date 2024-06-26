@@ -466,7 +466,7 @@ std::string ShaderInfo::toSkSL(const Caps* caps,
     }
 
     if (useGradientStorageBuffer) {
-        SkASSERT(caps->storageBufferSupport());
+        SkASSERT(caps->storageBufferPreferred());
 
         SkSL::String::appendf(&preamble,
                               "layout (binding=%d) readonly buffer FSGradientBuffer {\n"
