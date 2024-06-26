@@ -1419,7 +1419,7 @@ void ParagraphImpl::extendedVisit(const ExtendedVisitor& visitor) {
                                           nullptr);
                     STArray<128, uint32_t> clusterStorage;
                     const uint32_t* clusterPtr = run->clusterIndexes().data();
-                    if (run->fClusterStart > 0) {
+                    if (context.size > 0) {
                         clusterStorage.reset(context.size);
                         for (size_t i = 0; i < context.size; ++i) {
                           clusterStorage[i] =
