@@ -1191,7 +1191,7 @@ void ParagraphImpl::visit(const Visitor& visitor) {
             const Run* R = rec.fVisitor_Run;
             const uint32_t* clusterPtr = &R->fClusterIndexes[0];
 
-            if (R->fClusterStart > 0) {
+            if ((R->fClusterIndexes.size() > 0) && (R->fClusterStart > 0)) {
                 int count = R->fClusterIndexes.size();
                 clusterStorage.reset(count);
                 for (int i = 0; i < count; ++i) {
@@ -1419,7 +1419,7 @@ void ParagraphImpl::extendedVisit(const ExtendedVisitor& visitor) {
                                           nullptr);
                     STArray<128, uint32_t> clusterStorage;
                     const uint32_t* clusterPtr = run->clusterIndexes().data();
-                    if (run->fClusterStart > 0) {
+                    if ((context.size > 0) && (run->fClusterStart > 0)) {
                         clusterStorage.reset(context.size);
                         for (size_t i = 0; i < context.size; ++i) {
                           clusterStorage[i] =
