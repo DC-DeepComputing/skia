@@ -22,6 +22,30 @@
       },
       "revId": "3e6485fead26b319fa42a002a0cfcd284425b800",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "90190a84_dd575460",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2024-06-26T16:34:21Z",
+      "side": 1,
+      "message": "Yes. I think it\u0027s a small change, if you want I can move it to a separate CL.",
+      "parentUuid": "9c36786d_d2f4fa70",
+      "range": {
+        "startLine": 29,
+        "startChar": 51,
+        "endLine": 29,
+        "endChar": 55
+      },
+      "revId": "3e6485fead26b319fa42a002a0cfcd284425b800",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
