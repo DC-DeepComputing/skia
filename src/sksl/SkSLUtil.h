@@ -149,6 +149,10 @@ struct ShaderCaps {
     // validation errors would result if sk_Clockwise was missing. Now, it's just (Adreno) driver
     // bugs that drop or corrupt draws if they're missing.
     bool fMustDeclareFragmentFrontFacing = false;
+    // When using storage buffers in Vulkan, the default memory layout used should be std430
+    // when generating SPIR-V. Because of the default, storage buffers and uniform buffers
+    // cannot be used together in the same SkSL shader.
+    bool fSpirVDefaultToStd430 = false;
 
     const char* fVersionDeclString = "";
 

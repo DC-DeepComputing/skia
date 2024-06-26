@@ -146,7 +146,10 @@ public:
                        const ShaderCaps* caps,
                        const Program* program,
                        OutputStream* out)
-            : INHERITED(context, caps, program, out) {}
+            : INHERITED(context, caps, program, out)
+            , fDefaultMemoryLayout(MemoryLayout(caps->fSpirVDefaultToStd430
+                        ? MemoryLayout::Standard::k430 : MemoryLayout::Standard::k140)) {
+            }
 
     bool generateCode() override;
 
@@ -591,7 +594,7 @@ private:
     std::tuple<const Variable*, const Variable*> synthesizeTextureAndSampler(
             const Variable& combinedSampler);
 
-    const MemoryLayout fDefaultMemoryLayout{MemoryLayout::Standard::k140};
+    MemoryLayout fDefaultMemoryLayout{MemoryLayout::Standard::k140};
 
     uint64_t fCapabilities = 0;
     SpvId fIdCount = 1;
@@ -4435,6 +4438,7 @@ MemoryLayout SPIRVCodeGenerator::memoryLayoutForStorageClass(SpvStorageClass_ st
 
 MemoryLayout SPIRVCodeGenerator::memoryLayoutForVariable(const Variable& v) const {
     bool pushConstant = SkToBool(v.layout().fFlags & LayoutFlag::kPushConstant);
+
     return pushConstant ? MemoryLayout(MemoryLayout::Standard::k430)
                         : fDefaultMemoryLayout;
 }

@@ -82,9 +82,10 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
     fResourceBindingReqs.fUniformBufferLayout = Layout::kStd140;
     // TODO(skia:14639): We cannot use std430 layout for SSBOs until SkSL gracefully handles
     // implicit array stride.
-    fResourceBindingReqs.fStorageBufferLayout = Layout::kStd140;
+    fResourceBindingReqs.fStorageBufferLayout = Layout::kStd430;
     fResourceBindingReqs.fSeparateTextureAndSamplerBinding = false;
     fResourceBindingReqs.fDistinctIndexRanges = false;
+    fResourceBindingReqs.fGradientBufferBinding = VulkanGraphicsPipeline::kGradientBufferIndex;
 
     fResourceBindingReqs.fIntrinsicBufferBinding =
             VulkanGraphicsPipeline::kIntrinsicUniformBufferIndex;
@@ -92,6 +93,9 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
             VulkanGraphicsPipeline::kRenderStepUniformBufferIndex;
     fResourceBindingReqs.fPaintParamsBufferBinding =
             VulkanGraphicsPipeline::kPaintUniformBufferIndex;
+
+    fStorageBufferSupport = true;
+    fStorageBufferPreferred = true;
 
     VkPhysicalDeviceMemoryProperties deviceMemoryProperties;
     VULKAN_CALL(vkInterface, GetPhysicalDeviceMemoryProperties(physDev, &deviceMemoryProperties));
@@ -165,6 +169,9 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
     }
 
     fShaderCaps->fFloatBufferArrayName = "fsGradientBuffer";
+    fShaderCaps->fSpirVDefaultToStd430 =
+            fStorageBufferSupport && fStorageBufferPreferred
+                && fResourceBindingReqs.fStorageBufferLayout == Layout::kStd430;
 
     // Note that format table initialization should be performed at the end of this method to ensure
     // all capability determinations are completed prior to populating the format tables.
