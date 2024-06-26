@@ -86,8 +86,7 @@ static constexpr int kForceExplicitReconBits  = 1;
 static constexpr int kComponentBits           = 3;
 
 static constexpr int kUsesExternalFormatShift = 0;
-static constexpr int kYcbcrModelShift         = kUsesExternalFormatShift +
-                                                kUsesExternalFormatBits;
+static constexpr int kYcbcrModelShift         = kUsesExternalFormatShift + kUsesExternalFormatBits;
 static constexpr int kYcbcrRangeShift         = kYcbcrModelShift         + kYcbcrModelBits;
 static constexpr int kXChromaOffsetShift      = kYcbcrRangeShift         + kYcbcrRangeBits;
 static constexpr int kYChromaOffsetShift      = kXChromaOffsetShift      + kXChromaOffsetBits;
