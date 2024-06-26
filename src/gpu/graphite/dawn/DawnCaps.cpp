@@ -444,6 +444,13 @@ void DawnCaps::initCaps(const DawnBackendContext& backendContext, const ContextO
     fResourceBindingReqs.fPaintParamsBufferBinding = DawnGraphicsPipeline::kPaintUniformBufferIndex;
     fResourceBindingReqs.fGradientBufferBinding = DawnGraphicsPipeline::kGradientBufferIndex;
 
+    fResourceBindingReqs.fIntrinsicBufferBinding =
+            DawnGraphicsPipeline::kIntrinsicUniformBufferIndex;
+    fResourceBindingReqs.fRenderStepBufferBinding =
+            DawnGraphicsPipeline::kRenderStepUniformBufferIndex;
+    fResourceBindingReqs.fPaintParamsBufferBinding = DawnGraphicsPipeline::kPaintUniformBufferIndex;
+    fResourceBindingReqs.fGradientBufferBinding = DawnGraphicsPipeline::kGradientBufferIndex;
+
 #if !defined(__EMSCRIPTEN__)
     // TODO(b/318817249): SSBOs trigger FXC compiler failures when attempting to unroll loops
     fStorageBufferSupport = info.backendType != wgpu::BackendType::D3D11;
