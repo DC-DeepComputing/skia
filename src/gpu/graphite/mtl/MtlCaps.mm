@@ -189,7 +189,7 @@ void MtlCaps::initShaderCaps() {
 
     // Dual source blending requires Metal 1.2.
     if (@available(macOS 10.12, iOS 10.0, tvOS 10.0, *)) {
-        shaderCaps->fDualSourceBlendingSupport = true;
+        shaderCaps->fDualSourceBlendingSupport = false;
     }
 
     // Setting this true with the assumption that this cap will eventually mean we support varying
@@ -202,7 +202,7 @@ void MtlCaps::initShaderCaps() {
 
     if (@available(macOS 11.0, *)) {
         if (this->isApple()) {
-            shaderCaps->fFBFetchSupport = true;
+            shaderCaps->fFBFetchSupport = false;
             shaderCaps->fFBFetchColorName = "sk_LastFragColor";
         }
     }
