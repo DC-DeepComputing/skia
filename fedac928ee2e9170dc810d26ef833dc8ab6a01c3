@@ -16,6 +16,23 @@
       "message": "I found that i use a wrong email address. Could I submit another gerrit later? @jlavrova@google.com",
       "revId": "fedac928ee2e9170dc810d26ef833dc8ab6a01c3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05382bf0_d3e33b30",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3509657
+      },
+      "writtenOn": "2024-06-26T16:19:49Z",
+      "side": 1,
+      "message": "I resubmitted it at https://skia-review.googlesource.com/c/skia/+/870856 . \nI am so sorry to let you review it again.\n@jlavrova@google.com",
+      "revId": "fedac928ee2e9170dc810d26ef833dc8ab6a01c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
