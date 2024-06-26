@@ -241,6 +241,15 @@ public:
     // within the same shader.
     bool storageBufferPreferred() const { return fStorageBufferPreferred; }
 
+    // The gradient buffer is an unsized float array so it is only optimal memory-wise to use it if
+    // the storage buffer memory layout is std430 or in metal, which is the only supported way the
+    // data is packed.
+    bool gradientBufferSupported() const {
+        return fStorageBufferPreferred &&
+               (fResourceBindingReqs.fStorageBufferLayout == Layout::kStd430 ||
+                    fResourceBindingReqs.fStorageBufferLayout == Layout::kMetal);
+    }
+
     // Returns whether a draw buffer can be mapped.
     bool drawBufferCanBeMapped() const { return fDrawBufferCanBeMapped; }
 
