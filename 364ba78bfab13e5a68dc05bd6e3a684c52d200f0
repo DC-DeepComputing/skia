@@ -16,6 +16,23 @@
       "message": "All the canary failures appear to be flakes",
       "revId": "364ba78bfab13e5a68dc05bd6e3a684c52d200f0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "abd4c6b6_13e9c58b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2024-06-26T18:26:17Z",
+      "side": 1,
+      "message": "Not sure why the canaries are red but other than that lgtm",
+      "revId": "364ba78bfab13e5a68dc05bd6e3a684c52d200f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
