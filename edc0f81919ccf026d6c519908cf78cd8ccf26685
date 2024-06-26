@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d632260_74b987ed",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-06-26T20:28:11Z",
+      "side": 1,
+      "message": "I agree that this is the right scope. And I also think this is the right team. It includes you and me.",
+      "revId": "edc0f81919ccf026d6c519908cf78cd8ccf26685",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
