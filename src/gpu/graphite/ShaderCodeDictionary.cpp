@@ -337,7 +337,7 @@ std::string ShaderInfo::toSkSL(const Caps* caps,
     }
 
     if (useGradientStorageBuffer) {
-        SkASSERT(caps->storageBufferSupport());
+        SkASSERT(caps->storageBufferPreferred());
 
         // In metal the vertex and instance buffer occupy slots 3 and 4 so we use slot 5 in that
         // case. In dawn and vulkan that is not the case so we can occupy slot 3, and those two
