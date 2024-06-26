@@ -2278,7 +2278,7 @@ static void add_gradient_to_key(const KeyContext& keyContext,
 
     sk_sp<TextureProxy> proxy;
 
-    bool useStorageBuffer = keyContext.caps()->storageBufferPreferred();
+    bool useStorageBuffer = keyContext.caps()->gradientBufferSupported();
     if (colorCount > GradientShaderBlocks::GradientData::kNumInternalStorageStops
             && !useStorageBuffer) {
         if (shader->cachedBitmap().empty()) {
