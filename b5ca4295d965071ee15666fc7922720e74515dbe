@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b9b0b12_d1e7c5fa",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 510,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-06-26T19:41:25Z",
+      "side": 1,
+      "message": "nit: Why did you make this a `for` loop for only one string? (Are you expecting more?) This could follow the pattern of \"LoopFloat\" above.",
+      "revId": "b5ca4295d965071ee15666fc7922720e74515dbe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
