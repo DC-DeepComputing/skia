@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "57bf4dda_ca36666e",
+        "filename": "include/gpu/graphite/precompile/PrecompileImageFilter.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-26T18:13:36Z",
+      "side": 1,
+      "message": "should the destructor be public?",
+      "range": {
+        "startLine": 34,
+        "startChar": 0,
+        "endLine": 34,
+        "endChar": 38
+      },
+      "revId": "e6864d5b167ee16f69262a39bfc5c75008647ad3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
