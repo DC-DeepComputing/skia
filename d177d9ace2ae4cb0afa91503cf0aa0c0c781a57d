@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9954bb5b_e3a1dffd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-06-26T20:37:00Z",
+      "side": 1,
+      "message": "I don\u0027t know Chinese, but fwiw, Google Translate agrees with your suggestions. Happy to rubber stamp. We need two internal reviewers, so adding someone else.",
+      "revId": "d177d9ace2ae4cb0afa91503cf0aa0c0c781a57d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
