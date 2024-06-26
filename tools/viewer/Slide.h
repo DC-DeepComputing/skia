@@ -22,6 +22,10 @@ class Slide;
 using SlideFactory = Slide* (*)();
 using SlideRegistry = sk_tools::Registry<SlideFactory>;
 
+namespace skiatest::graphite {
+class GraphiteTestContext;
+}
+
 #define DEF_SLIDE(code) \
     static Slide*          SK_MACRO_APPEND_LINE(F_)() { code } \
     static SlideRegistry   SK_MACRO_APPEND_LINE(R_)(SK_MACRO_APPEND_LINE(F_));
@@ -35,7 +39,9 @@ public:
     virtual SkISize getDimensions() const { return SkISize::MakeEmpty(); }
 
     virtual void gpuTeardown() { }
-    virtual void draw(SkCanvas* canvas) = 0;
+    virtual void draw(SkCanvas* canvas){}
+    virtual void draw(SkCanvas* canvas,
+                      skiatest::graphite::GraphiteTestContext* graphiteContext) {}
     virtual bool animate(double nanos) { return false; }
     virtual void load(SkScalar winWidth, SkScalar winHeight) {}
     virtual void resize(SkScalar winWidth, SkScalar winHeight) {}

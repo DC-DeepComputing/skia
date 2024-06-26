@@ -11,6 +11,7 @@
 #include "include/gpu/graphite/BackendSemaphore.h"
 #include "include/gpu/vk/VulkanMutableTextureState.h"
 #include "include/private/base/SkTArray.h"
+#include "src/core/SkTraceEvent.h"
 #include "src/gpu/DataUtils.h"
 #include "src/gpu/graphite/DescriptorData.h"
 #include "src/gpu/graphite/Log.h"
@@ -880,6 +881,8 @@ void VulkanCommandBuffer::addDrawPass(const DrawPass* drawPass) {
 
 void VulkanCommandBuffer::bindGraphicsPipeline(const GraphicsPipeline* graphicsPipeline) {
     fActiveGraphicsPipeline = static_cast<const VulkanGraphicsPipeline*>(graphicsPipeline);
+    TRACE_EVENT_INSTANT1("skia.gpu", TRACE_FUNC, TRACE_EVENT_SCOPE_THREAD,
+                         "numTextures", fActiveGraphicsPipeline->numTextureSamplers());
     SkASSERT(fActiveRenderPass);
     VULKAN_CALL(fSharedContext->interface(), CmdBindPipeline(fPrimaryCommandBuffer,
                                                              VK_PIPELINE_BIND_POINT_GRAPHICS,
@@ -918,6 +921,7 @@ void VulkanCommandBuffer::recordBufferBindingInfo(const BindUniformBufferInfo& i
 }
 
 void VulkanCommandBuffer::syncDescriptorSets() {
+    TRACE_EVENT0("skia.gpu", "Sync descriptor sets");
     if (fBindUniformBuffers) {
         this->bindUniformBuffers();
         // Changes to descriptor sets in lower slot numbers disrupt later set bindings. Currently,
@@ -1053,13 +1057,20 @@ void VulkanCommandBuffer::recordTextureAndSamplerDescSet(
         fBindTextureSamplers = false;
         return;
     }
+
     // Query resource provider to obtain a descriptor set for the texture/samplers
     TArray<DescriptorData> descriptors(command.fNumTexSamplers);
     for (int i = 0; i < command.fNumTexSamplers; i++) {
+        auto sampler = static_cast<const VulkanSampler*>(
+                drawPass.getSampler(command.fSamplerIndices[i]));
+
+        const Sampler* immutableSampler = (sampler && sampler->ycbcrConversion()) ? sampler
+                                                                                  : nullptr;
         descriptors.push_back({DescriptorType::kCombinedTextureSampler,
                                /*count=*/1,
                                /*bindingIdx=*/i,
-                               PipelineStageFlags::kFragmentShader});
+                               PipelineStageFlags::kFragmentShader,
+                               immutableSampler});
     }
     sk_sp<VulkanDescriptorSet> set = fResourceProvider->findOrCreateDescriptorSet(
             SkSpan<DescriptorData>{&descriptors.front(), descriptors.size()});
@@ -1079,6 +1090,14 @@ void VulkanCommandBuffer::recordTextureAndSamplerDescSet(
                 drawPass.getTexture(command.fTextureIndices[i])));
         auto sampler = static_cast<const VulkanSampler*>(
                 drawPass.getSampler(command.fSamplerIndices[i]));
+
+        bool samplerUsesYcbcr = sampler->ycbcrConversion() != nullptr;
+        bool samplerUsesExternalFormat =
+                samplerUsesYcbcr && sampler->ycbcrConversion()->usesExternalFormat();
+        TRACE_EVENT_INSTANT2("skia.gpu", TRACE_FUNC, TRACE_EVENT_SCOPE_THREAD,
+                             "boundSamplerUsesYcbcr", samplerUsesYcbcr,
+                             "samplerUsesExternalFormat", samplerUsesExternalFormat);
+
         if (!texture || !sampler) {
             // TODO(b/294198324): Investigate the root cause for null texture or samplers on
             // Ubuntu QuadP400 GPU
@@ -1091,7 +1110,7 @@ void VulkanCommandBuffer::recordTextureAndSamplerDescSet(
 
         VkDescriptorImageInfo& textureInfo = descriptorImageInfos.push_back();
         memset(&textureInfo, 0, sizeof(VkDescriptorImageInfo));
-        textureInfo.sampler = sampler->vkSampler();
+        textureInfo.sampler = sampler->ycbcrConversion() ? VK_NULL_HANDLE : sampler->vkSampler();
         textureInfo.imageView =
                 texture->getImageView(VulkanImageView::Usage::kShaderInput)->imageView();
         textureInfo.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
@@ -1159,6 +1178,7 @@ void VulkanCommandBuffer::draw(PrimitiveType,
                                unsigned int vertexCount) {
     SkASSERT(fActiveRenderPass);
     this->syncDescriptorSets();
+    TRACE_EVENT0("skia.gpu", "VkCmdDraw");
     // TODO: set primitive type via dynamic state if available
     VULKAN_CALL(fSharedContext->interface(),
                 CmdDraw(fPrimaryCommandBuffer,
@@ -1174,6 +1194,7 @@ void VulkanCommandBuffer::drawIndexed(PrimitiveType,
                                       unsigned int baseVertex) {
     SkASSERT(fActiveRenderPass);
     this->syncDescriptorSets();
+    TRACE_EVENT0("skia.gpu", "VkCmdDrawIndexed");
     // TODO: set primitive type via dynamic state if available
     VULKAN_CALL(fSharedContext->interface(),
                 CmdDrawIndexed(fPrimaryCommandBuffer,
@@ -1191,6 +1212,8 @@ void VulkanCommandBuffer::drawInstanced(PrimitiveType,
                                         unsigned int instanceCount) {
     SkASSERT(fActiveRenderPass);
     this->syncDescriptorSets();
+
+    TRACE_EVENT0("skia.gpu", "VkCmdDraw_Instanced");
     // TODO: set primitive type via dynamic state if available
     VULKAN_CALL(fSharedContext->interface(),
                 CmdDraw(fPrimaryCommandBuffer,
@@ -1208,6 +1231,7 @@ void VulkanCommandBuffer::drawIndexedInstanced(PrimitiveType,
                                                unsigned int instanceCount) {
     SkASSERT(fActiveRenderPass);
     this->syncDescriptorSets();
+    TRACE_EVENT0("skia.gpu", "VkCmdDrawIndexed");
     // TODO: set primitive type via dynamic state if available
     VULKAN_CALL(fSharedContext->interface(),
                 CmdDrawIndexed(fPrimaryCommandBuffer,
@@ -1224,6 +1248,7 @@ void VulkanCommandBuffer::drawIndirect(PrimitiveType) {
     // TODO: set primitive type via dynamic state if available
     // Currently we can only support doing one indirect draw operation at a time,
     // so stride is irrelevant.
+    TRACE_EVENT0("skia.gpu", "VkCmdDrawIndirect");
     VULKAN_CALL(fSharedContext->interface(),
                 CmdDrawIndirect(fPrimaryCommandBuffer,
                                 fBoundIndirectBuffer,
@@ -1238,6 +1263,7 @@ void VulkanCommandBuffer::drawIndexedIndirect(PrimitiveType) {
     // TODO: set primitive type via dynamic state if available
     // Currently we can only support doing one indirect draw operation at a time,
     // so stride is irrelevant.
+    TRACE_EVENT0("skia.gpu", "VkCmdDrawIndexedIndirect");
     VULKAN_CALL(fSharedContext->interface(),
                 CmdDrawIndexedIndirect(fPrimaryCommandBuffer,
                                        fBoundIndirectBuffer,
