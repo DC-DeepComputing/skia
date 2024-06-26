@@ -22,6 +22,30 @@
       },
       "revId": "81e39a5820c2250786f6535d132aafe4b20fce10",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18770c61_d28ec9a7",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 25
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-06-26T17:34:15Z",
+      "side": 1,
+      "message": "Yeah it would be fine to move it into the factory. Moot side point if you move it but we should have been std::moving it in the call below.",
+      "parentUuid": "51740a8d_36e9325e",
+      "range": {
+        "startLine": 117,
+        "startChar": 0,
+        "endLine": 118,
+        "endChar": 82
+      },
+      "revId": "81e39a5820c2250786f6535d132aafe4b20fce10",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
