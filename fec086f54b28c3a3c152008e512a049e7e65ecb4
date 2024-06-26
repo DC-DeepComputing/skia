@@ -34,6 +34,24 @@
       "parentUuid": "0bbaf2ac_8b0edaae",
       "revId": "fec086f54b28c3a3c152008e512a049e7e65ecb4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec5ed237_415259e2",
+        "filename": "include/gpu/graphite/precompile/PrecompileImageFilter.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-06-26T19:09:21Z",
+      "side": 1,
+      "message": "sg - for now I\u0027ve just removed the comment.",
+      "parentUuid": "566fadb3_e398e3e3",
+      "revId": "fec086f54b28c3a3c152008e512a049e7e65ecb4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
