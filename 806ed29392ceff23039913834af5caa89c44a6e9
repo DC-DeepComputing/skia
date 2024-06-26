@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "02f98bd3_50a889d2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-06-26T17:29:50Z",
+      "side": 1,
+      "message": "PTAL ^-^ CL 1 of [a few] that considers Dawn\u0027s usage of immutable YCbCr samplers within Skia. Conglomerate CL that is currently being used for testing: https://skia-review.googlesource.com/c/skia/+/864438",
+      "revId": "806ed29392ceff23039913834af5caa89c44a6e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a8ade8a_21e3cea0",
+        "filename": "src/gpu/graphite/dawn/DawnGraphiteUtils.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-06-26T17:29:50Z",
+      "side": 1,
+      "message": "Note: These utils are quite similar to, but different from, Vulkan\u0027s ycbcr utilities in that they use Dawn\u0027s structs instead of native Vulkan structs.",
+      "range": {
+        "startLine": 193,
+        "startChar": 1,
+        "endLine": 242,
+        "endChar": 25
+      },
+      "revId": "806ed29392ceff23039913834af5caa89c44a6e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d7fefd4_1a6b29ca",
+        "filename": "src/gpu/graphite/dawn/DawnGraphiteUtilsPriv.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-06-26T17:29:50Z",
+      "side": 1,
+      "message": "Note: All of these values, with the exception of `kChromaFilterBits`, are the same b/w Dawn and Vulkan. Sharing the rest of the values but not this one though seems a bit convoluted, especially when you consider that defining Dawn\u0027s own static values isn\u0027t expensive.",
+      "range": {
+        "startLine": 54,
+        "startChar": 0,
+        "endLine": 55,
+        "endChar": 50
+      },
+      "revId": "806ed29392ceff23039913834af5caa89c44a6e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
