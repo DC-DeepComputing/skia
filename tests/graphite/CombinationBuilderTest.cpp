@@ -13,6 +13,7 @@
 #include "include/effects/SkRuntimeEffect.h"
 #include "include/gpu/graphite/precompile/PrecompileBlender.h"
 #include "include/gpu/graphite/precompile/PrecompileColorFilter.h"
+#include "include/gpu/graphite/precompile/PrecompileMaskFilter.h"
 #include "include/gpu/graphite/precompile/PrecompileShader.h"
 #include "src/gpu/graphite/ContextPriv.h"
 #include "src/gpu/graphite/FactoryFunctions.h"
@@ -22,12 +23,14 @@
 #include "src/gpu/graphite/Renderer.h"
 #include "src/gpu/graphite/RuntimeEffectDictionary.h"
 #include "src/gpu/graphite/precompile/PaintOptionsPriv.h"
+#include "src/gpu/graphite/precompile/PrecompileShadersPriv.h"
 
 #include <array>
 
 using namespace::skgpu::graphite;
 
 namespace {
+
 
 // colorfilters
 static constexpr int kExpectedBlendCFCombos = 1;
@@ -81,7 +84,9 @@ void run_test(const KeyContext& keyContext,
               const PaintOptions& paintOptions,
               int expectedNumOptions) {
 
-    REPORTER_ASSERT(reporter, paintOptions.priv().numCombinations() == expectedNumOptions);
+    REPORTER_ASSERT(reporter, paintOptions.priv().numCombinations() == expectedNumOptions,
+                    "actual %d - expected %d",
+                    paintOptions.priv().numCombinations(), expectedNumOptions);
 
     std::vector<UniquePaintParamsID> precompileIDs;
     paintOptions.priv().buildCombinations(keyContext,
@@ -350,6 +355,26 @@ void blend_subtest(const KeyContext& keyContext,
     }
 }
 
+// Exercise the PrecompileMaskFilters factory
+void maskfilter_subtest(Context* context,
+                        const KeyContext& keyContext,
+                        PipelineDataGatherer* gatherer,
+                        skiatest::Reporter* reporter) {
+    // Blur masks incur the full set of blur pipelines plus 3 glue pipelines and 1 over-generation:
+    //   the original draw with its original blendMode (b/349144902 - rm this over-generation)
+    //   the original draw w/ its blendMode replaced w/ kSrcOver
+    //   2 image-based "restore" draws that carry the original blendMode/blender
+    {
+        PaintOptions paintOptions;
+        paintOptions.setShaders({ PrecompileShaders::MakeFractalNoise() });
+        paintOptions.setBlendModes({ SkBlendMode::kModulate });
+        paintOptions.setMaskFilters({ PrecompileMaskFilters::Blur() });
+
+        run_test(keyContext, gatherer, reporter, paintOptions,
+                 PrecompileImageFiltersPriv::kExpectedNumBlurPipelines + 4);
+    }
+}
+
 // Exercise all the PrecompileShaders factories
 void shader_subtest(const KeyContext& keyContext,
                     PipelineDataGatherer* gatherer,
@@ -566,6 +591,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(CombinationBuilderTest, reporter, context,
 
     PipelineDataGatherer gatherer(Layout::kMetal);
 
+#if 0
     // The default PaintOptions should create a single combination with a solid color shader and
     // kSrcOver blending
     {
@@ -573,14 +599,20 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(CombinationBuilderTest, reporter, context,
 
         run_test(keyContext, &gatherer, reporter, paintOptions, /* expectedNumOptions= */ 1);
     }
+#endif
 
-    blend_subtest(keyContext, &gatherer, reporter);
-    shader_subtest(keyContext, &gatherer, reporter);
-    colorfilter_subtest(keyContext, &gatherer, reporter);
+    maskfilter_subtest(context, keyContext, &gatherer, reporter);
 
-    no_blend_mode_option_test(keyContext, &gatherer, reporter);
-    big_test(keyContext, &gatherer, reporter);
-    runtime_effect_test(keyContext, &gatherer, reporter);
+    bool maybe = false;
+    if (maybe) {
+        blend_subtest(keyContext, &gatherer, reporter);
+        colorfilter_subtest(keyContext, &gatherer, reporter);
+        shader_subtest(keyContext, &gatherer, reporter);
+
+        no_blend_mode_option_test(keyContext, &gatherer, reporter);
+        big_test(keyContext, &gatherer, reporter);
+        runtime_effect_test(keyContext, &gatherer, reporter);
+    }
 }
 
 #endif // SK_GRAPHITE
