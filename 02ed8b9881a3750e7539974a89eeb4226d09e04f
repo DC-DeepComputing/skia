@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "65c14cce_5ee88f08",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-06-26T19:00:06Z",
+      "side": 1,
+      "message": "I don\u0027t see any lint warnings on the canary, so I\u0027m assuming this is formatted correctly.",
+      "revId": "02ed8b9881a3750e7539974a89eeb4226d09e04f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
