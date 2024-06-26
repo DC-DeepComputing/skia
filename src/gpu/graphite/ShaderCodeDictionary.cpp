@@ -418,9 +418,7 @@ std::string ShaderInfo::toSkSL(const Caps* caps,
                                const RenderStep* step,
                                bool useStorageBuffers,
                                int* numTexturesAndSamplersUsed,
-                               int* numPaintUniforms,
-                               int* renderStepUniformTotalBytes,
-                               int* paintUniformsTotalBytes,
+                               bool* hasPaintUniforms,
                                bool* hasGradientBuffer,
                                Swizzle writeSwizzle) {
     // If we're doing analytic coverage, we must also be doing shading.
@@ -448,8 +446,7 @@ std::string ShaderInfo::toSkSL(const Caps* caps,
         } else {
             preamble += EmitRenderStepUniforms(/*bufferID=*/1,
                                                bindingReqs.fUniformBufferLayout,
-                                               step->uniforms(),
-                                               renderStepUniformTotalBytes);
+                                               step->uniforms());
         }
     }
 
@@ -457,15 +454,14 @@ std::string ShaderInfo::toSkSL(const Caps* caps,
     if (useShadingStorageBuffer) {
         preamble += EmitPaintParamsStorageBuffer(/*bufferID=*/2,
                                                  fRootNodes,
-                                                 numPaintUniforms,
+                                                 hasPaintUniforms,
                                                  &wrotePaintColor);
         SkSL::String::appendf(&preamble, "uint %s;\n", this->ssboIndex());
     } else {
         preamble += EmitPaintParamsUniforms(/*bufferID=*/2,
                                             bindingReqs.fUniformBufferLayout,
                                             fRootNodes,
-                                            numPaintUniforms,
-                                            paintUniformsTotalBytes,
+                                            hasPaintUniforms,
                                             &wrotePaintColor);
     }
 
