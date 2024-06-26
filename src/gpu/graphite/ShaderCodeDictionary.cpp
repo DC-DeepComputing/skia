@@ -295,8 +295,9 @@ std::string ShaderInfo::toSkSL(const Caps* caps,
     const bool hasStepUniforms = step->numUniforms() > 0 && step->coverage() != Coverage::kNone;
     const bool useStepStorageBuffer = useStorageBuffers && hasStepUniforms;
     const bool useShadingStorageBuffer = useStorageBuffers && step->performsShading();
-    const bool useGradientStorageBuffer = useStorageBuffers && (fSnippetRequirementFlags
-                                                    & SnippetRequirementFlags::kGradientBuffer);
+    const bool useGradientStorageBuffer = caps->gradientBufferSupported() &&
+                                          (fSnippetRequirementFlags
+                                                & SnippetRequirementFlags::kGradientBuffer);
 
     const bool defineLocalCoordsVarying = this->needsLocalCoords();
     std::string preamble = EmitVaryings(step,
@@ -337,8 +338,6 @@ std::string ShaderInfo::toSkSL(const Caps* caps,
     }
 
     if (useGradientStorageBuffer) {
-        SkASSERT(caps->storageBufferPreferred());
-
         // In metal the vertex and instance buffer occupy slots 3 and 4 so we use slot 5 in that
         // case. In dawn and vulkan that is not the case so we can occupy slot 3, and those two
         // apis also do separate texture/sampler bindings.
