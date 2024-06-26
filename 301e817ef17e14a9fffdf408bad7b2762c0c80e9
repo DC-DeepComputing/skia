@@ -16,6 +16,24 @@
       "message": "Personally I would rather get rid of the \"preferred\" field and keep the \"support\" field; either way there\u0027s an implication that the two are equivalent, but \"support\" is more consistent with other caps fields. Just my 2 cents.",
       "revId": "301e817ef17e14a9fffdf408bad7b2762c0c80e9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "472471c3_69a85b5b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-26T16:21:47Z",
+      "side": 1,
+      "message": "I don\u0027t feel super strongly, but slightly leaning towards \"support\" as well.",
+      "parentUuid": "bd255f28_ea9067d8",
+      "revId": "301e817ef17e14a9fffdf408bad7b2762c0c80e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
