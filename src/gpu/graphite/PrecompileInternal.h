@@ -12,6 +12,7 @@
 
 namespace skgpu::graphite {
 
+    sdfs
 enum class Coverage;
 class Context;
 class KeyContext;
