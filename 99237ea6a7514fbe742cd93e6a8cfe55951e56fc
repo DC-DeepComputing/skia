@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f9efaa5_893167b5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-06-26T15:26:07Z",
+      "side": 1,
+      "message": "Gerrit seems to always complain there is a merge conflict when there is a CL chain, it should be resolved once the previous CL in the chain is submitted.",
+      "revId": "99237ea6a7514fbe742cd93e6a8cfe55951e56fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
