@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f777b71d_4c5acf20",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-06-27T18:56:28Z",
+      "side": 1,
+      "message": "Exploring what goes wrong when adding more gms to the existing Bazel gm setup, just to see what is needed. Findings:\n\nBazel is kinda bad about test `data`.\n\nNeed to associate gms with what they depend on. Like the `fontations` gm.\n\nSplitting gms into CPU vs GPU isn\u0027t interesting unless we\u0027re also splitting by all the other things as well and cross cutting across them also. Most of the \"CPU\" ones are actually \"generic\" (should be run both \"CPU\" and \"GPU\") and even the \"GPU\" ones are more like \"ganesh\" or \"graphite\" or even more specific.",
+      "revId": "eeb9b7dafe9f2bfba0695cf568a616b80f14a032",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
