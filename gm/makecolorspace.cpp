@@ -17,14 +17,18 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSize.h"
 #include "include/core/SkString.h"
-#include "include/gpu/GrDirectContext.h"
-#include "include/gpu/ganesh/SkImageGanesh.h"
 #include "src/core/SkImagePriv.h"
 #include "tools/DecodeUtils.h"
+#include "tools/GpuToolUtils.h"
 #include "tools/Resources.h"
 
 #include <initializer_list>
 #include <memory>
+
+#if defined(SK_GANESH)
+#include "include/gpu/GrDirectContext.h"
+#include "include/gpu/ganesh/SkImageGanesh.h"
+#endif
 
 #if defined(SK_GRAPHITE)
 #include "include/gpu/graphite/Image.h"
@@ -45,13 +49,10 @@ sk_sp<SkImage> make_color_space(sk_sp<SkImage> orig,
     }
 
     sk_sp<SkImage> xform;
-#if defined(SK_GRAPHITE)
     if (auto recorder = canvas->recorder()) {
         xform = orig->makeColorSpace(recorder, colorSpace, {});
-    } else
-#endif
-    {
-        auto direct = GrAsDirectContext(canvas->recordingContext());
+    } else {
+        auto direct = ToolUtils::GrAsDirectContext(canvas->recordingContext());
         xform = orig->makeColorSpace(direct, colorSpace);
     }
 
@@ -109,7 +110,7 @@ DEF_SIMPLE_GM_BG(makecolortypeandspace, canvas, 128 * 3, 128 * 4, SK_ColorWHITE)
     auto rec2020 = SkColorSpace::MakeRGB(SkNamedTransferFn::kSRGB, SkNamedGamut::kRec2020);
 
     // Use the lazy images on the first iteration, and concrete (raster/GPU) images on the second
-    auto direct = GrAsDirectContext(canvas->recordingContext());
+    auto direct = ToolUtils::GrAsDirectContext(canvas->recordingContext());
     for (bool lazy : {true, false}) {
         for (size_t j = 0; j < std::size(images); ++j) {
             const SkImage* image = images[j].get();
@@ -128,14 +129,10 @@ DEF_SIMPLE_GM_BG(makecolortypeandspace, canvas, 128 * 3, 128 * 4, SK_ColorWHITE)
             // 565 in a wide color space (should be visibly quantized). Fails with the color_wheel,
             // because of the codec issues mentioned above.
             sk_sp<SkImage> image565;
-
-#if defined(SK_GRAPHITE)
             if (auto recorder = canvas->recorder()) {
                 image565 = image->makeColorTypeAndColorSpace(
                         recorder, kRGB_565_SkColorType, rec2020, {});
-            } else
-#endif
-            {
+            } else {
                 image565 = image->makeColorTypeAndColorSpace(direct, kRGB_565_SkColorType, rec2020);
             }
             if (image565) {
@@ -147,13 +144,10 @@ DEF_SIMPLE_GM_BG(makecolortypeandspace, canvas, 128 * 3, 128 * 4, SK_ColorWHITE)
             // Grayscale in the original color space. This fails in even more cases, due to the
             // above opaque issue, and because Ganesh doesn't support drawing to gray, at all.
             sk_sp<SkImage> imageGray;
-#if defined(SK_GRAPHITE)
             if (auto recorder = canvas->recorder()) {
                 imageGray = image->makeColorTypeAndColorSpace(
                         recorder, kGray_8_SkColorType, image->refColorSpace(), {});
-            } else
-#endif
-            {
+            } else {
                 imageGray = image->makeColorTypeAndColorSpace(
                         direct, kGray_8_SkColorType, image->refColorSpace());
             }
@@ -163,17 +157,16 @@ DEF_SIMPLE_GM_BG(makecolortypeandspace, canvas, 128 * 3, 128 * 4, SK_ColorWHITE)
                 }
             }
 
+            if ([[maybe_unused]] auto recorder = canvas->recorder()) {
 #if defined(SK_GRAPHITE)
-            if (auto recorder = canvas->recorder()) {
                 images[j] = SkImages::TextureFromImage(recorder, image, {});
-            } else
 #endif
-            {
-                if (direct) {
-                    images[j] = SkImages::TextureFromImage(direct, image);
-                } else {
-                    images[j] = image->makeRasterImage(nullptr);
-                }
+            } else if (direct) {
+#if defined(SK_GANESH)
+                images[j] = SkImages::TextureFromImage(direct, image);
+#endif
+            } else {
+                images[j] = image->makeRasterImage(nullptr);
             }
 
             canvas->translate(0, 128);
@@ -219,16 +212,19 @@ DEF_SIMPLE_GM_CAN_FAIL(reinterpretcolorspace, canvas, errorMsg, 128 * 3, 128 * 3
     canvas->translate(0.0f, 128.0f);
 
     // GPU images
-    auto direct = GrAsDirectContext(canvas->recordingContext());
+#if defined(SK_GANESH)
+    GrDirectContext* direct = ToolUtils::GrAsDirectContext(canvas->recordingContext());
+#endif
 
     sk_sp<SkImage> gpuImage;
+    if ([[maybe_unused]] auto recorder = canvas->recorder()) {
 #if defined(SK_GRAPHITE)
-    if (auto recorder = canvas->recorder()) {
         gpuImage = SkImages::TextureFromImage(recorder, image, {});
-    } else
 #endif
-    {
+    } else {
+#if defined(SK_GANESH)
         gpuImage = SkImages::TextureFromImage(direct, image);
+#endif
     }
     if (gpuImage) {
         image = gpuImage;
@@ -237,13 +233,14 @@ DEF_SIMPLE_GM_CAN_FAIL(reinterpretcolorspace, canvas, errorMsg, 128 * 3, 128 * 3
     canvas->drawImage(image, 0.0f, 0.0f);
     canvas->drawImage(image->reinterpretColorSpace(spin), 128.0f, 0.0f);
 
+    if ([[maybe_unused]] auto recorder = canvas->recorder()) {
 #if defined(SK_GRAPHITE)
-    if (auto recorder = canvas->recorder()) {
         gpuImage = image->makeColorSpace(recorder, spin, {});
-    } else
 #endif
-    {
+    } else {
+#if defined(SK_GANESH)
         gpuImage = image->makeColorSpace(direct, spin);
+#endif
     }
     if (gpuImage) {
         canvas->drawImage(gpuImage->reinterpretColorSpace(srgb), 256.0f, 0.0f);
