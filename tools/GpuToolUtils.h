@@ -12,6 +12,8 @@
 #include "include/core/SkTypes.h"
 #include "include/private/base/SkDebug.h"
 
+class GrDirectContext;
+class GrRecordingContext;
 class SkCanvas;
 class SkImage;
 
@@ -23,6 +25,7 @@ struct RecorderOptions;
 
 namespace ToolUtils {
 
+GrDirectContext* GrAsDirectContext(GrRecordingContext* base);
 sk_sp<SkImage> MakeTextureImage(SkCanvas* canvas, sk_sp<SkImage> orig);
 
 #if defined(SK_GRAPHITE)

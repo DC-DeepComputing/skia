@@ -22,17 +22,20 @@
 #include "include/core/SkTypeface.h"
 #include "include/core/SkTypes.h"
 #include "include/effects/SkGradientShader.h"
-#include "include/gpu/GrRecordingContext.h"
-#include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/core/SkCanvasPriv.h"
-#include "src/gpu/ganesh/GrCanvas.h"
-#include "src/gpu/ganesh/GrPaint.h"
-#include "src/gpu/ganesh/SkGr.h"
-#include "src/gpu/ganesh/SurfaceDrawContext.h"
 #include "tools/ToolUtils.h"
 #include "tools/fonts/FontToolUtils.h"
 
 #include <utility>
+
+#if defined(SK_GANESH)
+#include "include/gpu/GrRecordingContext.h"
+#include "include/private/gpu/ganesh/GrTypesPriv.h"
+#include "src/gpu/ganesh/GrCanvas.h"
+#include "src/gpu/ganesh/GrPaint.h"
+#include "src/gpu/ganesh/SkGr.h"
+#include "src/gpu/ganesh/SurfaceDrawContext.h"
+#endif
 
 static constexpr SkScalar kTileWidth = 40;
 static constexpr SkScalar kTileHeight = 30;
@@ -50,9 +53,12 @@ static void draw_gradient_tiles(SkCanvas* canvas, bool alignGradients) {
     static constexpr SkPoint pts[] = { {0.f, 0.f}, {0.25f * kTileWidth, 0.25f * kTileHeight} };
     static constexpr SkColor colors[] = { SK_ColorBLUE, SK_ColorWHITE };
 
+#if defined(SK_GANESH)
     auto sdc = skgpu::ganesh::TopDeviceSurfaceDrawContext(canvas);
-
     auto rContext = canvas->recordingContext();
+#else
+    void* sdc = nullptr;
+#endif
 
     auto gradient = SkGradientShader::MakeLinear(pts, colors, nullptr, 2, SkTileMode::kMirror);
     SkPaint paint;
@@ -83,6 +89,7 @@ static void draw_gradient_tiles(SkCanvas* canvas, bool alignGradients) {
             }
 
             if (sdc) {
+#if defined(SK_GANESH)
                 // Use non-public API to leverage general GrPaint capabilities
                 const SkMatrix& view = canvas->getTotalMatrix();
                 SkSurfaceProps props;
@@ -90,6 +97,7 @@ static void draw_gradient_tiles(SkCanvas* canvas, bool alignGradients) {
                 SkPaintToGrPaint(rContext, sdc->colorInfo(), paint, view, props, &grPaint);
                 sdc->fillRectWithEdgeAA(nullptr, std::move(grPaint),
                                         static_cast<GrQuadAAFlags>(aa), view, tile);
+#endif
             } else {
                 // Fallback to solid color on raster backend since the public API only has color
                 SkColor color = alignGradients ? SK_ColorBLUE

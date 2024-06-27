@@ -209,8 +209,12 @@ static sk_sp<SkShader> make_grad(SkScalar width) {
                                         SkTileMode::kClamp);
 }
 
-DEF_SIMPLE_GM(HSL_duck, canvas, 1110, 620) {
+DEF_SIMPLE_GM_CAN_FAIL(HSL_duck, canvas, errMsg, 1110, 620) {
     auto src = ToolUtils::GetResourceAsImage("images/ducky.png");
+    if (!src) {
+        *errMsg = "could not create ducky image";
+        return skiagm::DrawResult::kFail;
+    }
     auto dst = make_grad(src->width());
     SkRect r = SkRect::MakeIWH(src->width(), src->height());
 
@@ -261,4 +265,5 @@ DEF_SIMPLE_GM(HSL_duck, canvas, 1110, 620) {
         canvas->restore();
         canvas->translate(0, r.height() + 10);
     }
+    return skiagm::DrawResult::kOk;
 }

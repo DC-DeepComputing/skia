@@ -26,11 +26,13 @@
 #include "include/core/SkTypes.h"
 #include "include/effects/SkGradientShader.h"
 #include "include/effects/SkImageFilters.h"
-#include "include/gpu/GrContextOptions.h"
 #include "src/core/SkFontPriv.h"
 #include "tools/ToolUtils.h"
 #include "tools/fonts/FontToolUtils.h"
 
+#if defined(SK_GANESH)
+#include "include/gpu/GrContextOptions.h"
+#endif
 #if defined(SK_GRAPHITE)
 #include "include/gpu/graphite/ContextOptions.h"
 #endif
@@ -88,12 +90,13 @@ protected:
 
     SkISize getISize() override { return SkISize::Make(650, 1200); }
 
+#if defined(SK_GANESH)
     void modifyGrContextOptions(GrContextOptions* ctxOptions) override {
         // This will force multitexturing to verify that color text works with this,
         // as well as with any additional color transformations.
         ctxOptions->fGlyphCacheTextureMaximumBytes = 256 * 256 * 4;
     }
-
+#endif
 #if defined(SK_GRAPHITE)
     void modifyGraphiteContextOptions(skgpu::graphite::ContextOptions* ctxOptions) const override {
         // This will force multitexturing to verify that color text works with this,

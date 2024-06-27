@@ -91,6 +91,9 @@ protected:
 
     void onOnceBeforeDraw() override {
         sk_sp<SkImage> mandrill = ToolUtils::GetResourceAsImage("images/mandrill_256.png");
+        if (!mandrill) {
+            return;
+        }
         const auto lm = SkMatrix::RectToRect(SkRect::MakeWH(mandrill->width(), mandrill->height()),
                                              SkRect::MakeWH(kWheelSize, kWheelSize));
         fShaders.push_back(mandrill->makeShader(SkSamplingOptions(), &lm));
@@ -108,8 +111,13 @@ protected:
         }
     }
 
-    void onDraw(SkCanvas* canvas) override {
+    DrawResult onDraw(SkCanvas* canvas, SkString* errMsg) override {
         using std::make_tuple;
+
+        if (fShaders.empty()) {
+            *errMsg = "Could not get resource image.";
+            return DrawResult::kFail;
+        }
 
         static constexpr struct {
             std::tuple<float, float> h, s, l;
@@ -152,6 +160,7 @@ protected:
             }
             canvas->translate(0, kWheelSize * 0.1f);
         }
+        return DrawResult::kOk;
     }
 
 private:
