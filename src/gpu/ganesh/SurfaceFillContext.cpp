@@ -8,6 +8,8 @@
 #include "src/gpu/ganesh/SurfaceFillContext.h"
 
 #include "src/gpu/ganesh/GrCaps.h"
+#include "src/gpu/ganesh/GrDrawingManager.h"
+#include "src/gpu/ganesh/GrTextureResolveManager.h"
 #include "src/gpu/ganesh/effects/GrMatrixEffect.h"
 #include "src/gpu/ganesh/effects/GrTextureEffect.h"
 #include "src/gpu/ganesh/geometry/GrRect.h"
