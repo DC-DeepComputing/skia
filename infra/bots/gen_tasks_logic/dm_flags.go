@@ -925,7 +925,9 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 
 	if b.model("Wembley") {
 		// These tests run forever on the Wembley.
-		skip(ALL, "gm", ALL, "wacky_yuv_formats_cubic")
+		skip("glesmsaa4", "gm", ALL, "wacky_yuv_formats")
+		skip("glesmsaa4", "gm", ALL, "wacky_yuv_formats_cubic")
+		skip("glesmsaa4", "gm", ALL, "wacky_yuv_formats_imggen")
 	}
 
 	if b.os("iOS") {
