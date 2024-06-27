@@ -269,6 +269,8 @@ std::string EmitPaintParamsUniforms(int bufferID,
 
     std::string result = get_uniform_header(bufferID, "FS");
     for (const ShaderNode* n : nodes) {
+        // TODO: Generate a single field pointing to a struct instance of the given type.
+        SkASSERT(!n->entry()->fUniformStructName);
         result += get_node_uniforms(layout, n, &offset, wrotePaintColor);
     }
     result.append("};\n\n");
@@ -304,6 +306,8 @@ std::string EmitPaintParamsStorageBuffer(
     std::string result;
     result += "struct FSUniformData {\n";
     for (const ShaderNode* n : nodes) {
+        // TODO: Generate a single field pointing to a struct instance of the given type.
+        SkASSERT(!n->entry()->fUniformStructName);
         *hasUniforms |= !n->entry()->fUniforms.empty();
         result += get_node_ssbo_fields(n, wrotePaintColor);
     }
