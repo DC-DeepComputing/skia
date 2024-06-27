@@ -137,6 +137,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "296407b7_8c8e5c3e",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-06-27T19:54:31Z",
+      "side": 1,
+      "message": "Personally I prefer leaving off the `{` here",
+      "parentUuid": "92a7e3d8_452f2729",
+      "range": {
+        "startLine": 219,
+        "startChar": 46,
+        "endLine": 219,
+        "endChar": 48
+      },
+      "revId": "74cfc6a6ad83dbe88a8436098b66ad116d1dcd87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6671bd57_f139e1e2",
         "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
         "patchSetId": 8
@@ -148,6 +172,52 @@
       "writtenOn": "2024-06-27T16:58:06Z",
       "side": 1,
       "message": "got to here",
+      "revId": "74cfc6a6ad83dbe88a8436098b66ad116d1dcd87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4746d818_a13924f4",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 727,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-06-27T19:54:31Z",
+      "side": 1,
+      "message": "Nit: \"is violated\"",
+      "range": {
+        "startLine": 727,
+        "startChar": 82,
+        "endLine": 727,
+        "endChar": 90
+      },
+      "revId": "74cfc6a6ad83dbe88a8436098b66ad116d1dcd87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1efa73a_92ef694d",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 804,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-06-27T19:54:31Z",
+      "side": 1,
+      "message": "Could we wrap this in SK_DEBUG?",
+      "range": {
+        "startLine": 801,
+        "startChar": 0,
+        "endLine": 804,
+        "endChar": 87
+      },
       "revId": "74cfc6a6ad83dbe88a8436098b66ad116d1dcd87",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
