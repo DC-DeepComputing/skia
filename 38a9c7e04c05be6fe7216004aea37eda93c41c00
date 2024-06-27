@@ -22,6 +22,30 @@
       },
       "revId": "38a9c7e04c05be6fe7216004aea37eda93c41c00",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "391d692f_43de7728",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 527,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-27T17:23:05Z",
+      "side": 0,
+      "message": "I decided to switch it to have `args \u003d kDefaultArgs` followed by an assignment to `fFragCoord` for the local coords varying. Since these are meant to be unused, it doesn\u0027t really matter what their values are but this has the benefit of triggering a compilation failure if the root paint structure doesn\u0027t reflect that. I added a comment detailing this.",
+      "parentUuid": "8ff71bcc_40c68821",
+      "range": {
+        "startLine": 527,
+        "startChar": 26,
+        "endLine": 527,
+        "endChar": 44
+      },
+      "revId": "38a9c7e04c05be6fe7216004aea37eda93c41c00",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

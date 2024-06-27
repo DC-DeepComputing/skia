@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "18927147_f18ed296",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-27T17:23:05Z",
+      "side": 1,
+      "message": "I started revising with Rob\u0027s early comments before I realized he wasn\u0027t done. So here are my responses but I won\u0027t update a PS until all of the feedback is in.",
+      "revId": "74cfc6a6ad83dbe88a8436098b66ad116d1dcd87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8622ab42_7e3a469d",
@@ -14,6 +31,30 @@
       "writtenOn": "2024-06-27T16:58:06Z",
       "side": 1,
       "message": "\u0027*\u0027 since it is changing ? In append_uniforms too?",
+      "range": {
+        "startLine": 115,
+        "startChar": 40,
+        "endLine": 115,
+        "endChar": 41
+      },
+      "revId": "74cfc6a6ad83dbe88a8436098b66ad116d1dcd87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d30b48cb_1276b1c2",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-27T17:23:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8622ab42_7e3a469d",
       "range": {
         "startLine": 115,
         "startChar": 40,
@@ -42,6 +83,53 @@
         "startChar": 86,
         "endLine": 154,
         "endChar": 87
+      },
+      "revId": "74cfc6a6ad83dbe88a8436098b66ad116d1dcd87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0bcff5eb_55a6655f",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-27T17:23:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4e18ffd6_9a27cee2",
+      "range": {
+        "startLine": 154,
+        "startChar": 86,
+        "endLine": 154,
+        "endChar": 87
+      },
+      "revId": "74cfc6a6ad83dbe88a8436098b66ad116d1dcd87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92a7e3d8_452f2729",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-27T17:23:05Z",
+      "side": 1,
+      "message": "I\u0027m wondering if it\u0027s better to leave this `{` off?  It can be just as easily included in the a number of users of `emit_helper_declaration` where instead of appending `\"return %s; }\"` they can append `\"{ return %s; }\"`. This seems more readable to me, and allows forward-declarations to use it if desired in the future since we can just then append a `;` instead.\n\nThe one beneficiary of the current form is `generate_default_preamble` because it has a more complex function body. That would just need an explicit `{` append but that doesn\u0027t seem terrible.",
+      "range": {
+        "startLine": 219,
+        "startChar": 46,
+        "endLine": 219,
+        "endChar": 48
       },
       "revId": "74cfc6a6ad83dbe88a8436098b66ad116d1dcd87",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
