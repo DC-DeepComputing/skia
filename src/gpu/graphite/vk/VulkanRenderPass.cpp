@@ -77,8 +77,6 @@ void add_subpass_info_to_key(ResourceKey::Builder& builder,
     // subpass from RenderPassDesc. For now, determine subpass data based upon whether we are
     // loading from MSAA or not.
     const int mainSubpassIdx = loadMSAAFromResolve ? 1 : 0;
-    // Assign a smaller value to represent VK_ATTACHMENT_UNUSED.
-    static constexpr int kAttachmentUnused = std::numeric_limits<uint8_t>::max();
 
     // The following key structure assumes that we only have up to one reference of each type per
     // subpass and that attachments are indexed in order of color, resolve, depth/stencil, then
@@ -87,23 +85,23 @@ void add_subpass_info_to_key(ResourceKey::Builder& builder,
         if (j == mainSubpassIdx) {
             uint32_t attachmentIdxKeyInfo;
             attachmentIdxKeyInfo = hasColorAttachment ? VulkanRenderPass::kColorAttachmentIdx
-                                                      : kAttachmentUnused;
+                                                      : VulkanRenderPass::kAttachmentUnused;
             attachmentIdxKeyInfo |=
                     (hasColorResolveAttachment ? VulkanRenderPass::kColorResolveAttachmentIdx
-                                               : kAttachmentUnused) << 8;
+                                               : VulkanRenderPass::kAttachmentUnused) << 8;
             attachmentIdxKeyInfo |=
                     (hasDepthStencilAttachment ? VulkanRenderPass::kDepthStencilAttachmentIdx
-                                               : kAttachmentUnused) << 16;
+                                               : VulkanRenderPass::kAttachmentUnused) << 16;
             // TODO: Add input attachment info to key once supported for use in main subpass
-            attachmentIdxKeyInfo |= kAttachmentUnused << 24;
+            attachmentIdxKeyInfo |= VulkanRenderPass::kAttachmentUnused << 24;
 
             builder[builderIdx++] = attachmentIdxKeyInfo;
         } else { // Loading MSAA from resolve subpass
             SkASSERT(hasColorAttachment);
             builder[builderIdx++] =
-                    VulkanRenderPass::kColorAttachmentIdx | // color attachment
-                    (kAttachmentUnused << 8)              | // No color resolve attachment
-                    (kAttachmentUnused << 16)             | // No depth/stencil attachment
+                    VulkanRenderPass::kColorAttachmentIdx       | // color attachment
+                    (VulkanRenderPass::kAttachmentUnused << 8)  | // No color resolve attachment
+                    (VulkanRenderPass::kAttachmentUnused << 16) | // No depth/stencil attachment
                     // The input attachment for the load subpass is the color resolve texture.
                     (VulkanRenderPass::kColorResolveAttachmentIdx << 24);
         }
@@ -191,7 +189,7 @@ VulkanRenderPass::VulkanRenderPassMetaData::VulkanRenderPassMetaData(
     fSubpassCount = fLoadMSAAFromResolve ? 2 : 1;
     fSubpassDependencyCount = fLoadMSAAFromResolve ? 1 : 0;
     fUint32DataCnt = determine_uint32_count(
-            fAttachments.size(), fSubpassCount,  fSubpassDependencyCount);
+            fAttachments.size(), fSubpassCount, fSubpassDependencyCount);
 }
 
 GraphiteResourceKey VulkanRenderPass::MakeRenderPassKey(

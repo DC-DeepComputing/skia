@@ -40,6 +40,8 @@ public:
     static constexpr int kColorAttachmentIdx = 0;
     static constexpr int kColorResolveAttachmentIdx = 1;
     static constexpr int kDepthStencilAttachmentIdx = 2;
+    // Assign a smaller value to represent VK_ATTACHMENT_UNUSED.
+    static constexpr int kAttachmentUnused = std::numeric_limits<uint8_t>::max();
 
     static constexpr int kMaxExpectedAttachmentCount = kDepthStencilAttachmentIdx + 1;
 
