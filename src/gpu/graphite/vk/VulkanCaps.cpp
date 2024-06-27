@@ -96,6 +96,8 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
 
     fStorageBufferSupport = true;
 
+    fStorageBufferSupport = true;
+
     VkPhysicalDeviceMemoryProperties deviceMemoryProperties;
     VULKAN_CALL(vkInterface, GetPhysicalDeviceMemoryProperties(physDev, &deviceMemoryProperties));
     fSupportsMemorylessAttachments = false;

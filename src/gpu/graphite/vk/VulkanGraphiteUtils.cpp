@@ -6,6 +6,7 @@
  */
 
 #include "include/gpu/graphite/vk/VulkanGraphiteUtils.h"
+#include "include/third_party/vulkan/vulkan/vulkan_core.h"
 #include "src/gpu/graphite/vk/VulkanGraphiteUtilsPriv.h"
 
 #include "include/gpu/ShaderErrorHandler.h"

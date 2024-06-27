@@ -496,6 +496,7 @@ static VkPipelineLayout setup_pipeline_layout(const VulkanSharedContext* sharedC
             VulkanGraphicsPipeline::kRenderStepUniformBufferIndex,
             PipelineStageFlags::kVertexShader | PipelineStageFlags::kFragmentShader});
     }
+
     if (numPaintUniforms > 0) {
         uniformDescriptors.push_back({
             uniformBufferType,
@@ -511,8 +512,13 @@ static VkPipelineLayout setup_pipeline_layout(const VulkanSharedContext* sharedC
                 PipelineStageFlags::kFragmentShader});
     }
 
-    if (!uniformDescriptors.empty()) {
-        VkDescriptorSetLayout uniformSetLayout =
+    if (hasGradientBuffer) {
+        uniformDescriptors.push_back({
+                DescriptorType::kStorageBuffer,
+                /*count=*/1,
+                VulkanGraphicsPipeline::kGradientBufferIndex,
+                PipelineStageFlags::kFragmentShader});
+    }    if (!uniformDescriptors.empty()) {        VkDescriptorSetLayout uniformSetLayout =
                 descriptor_data_to_layout(sharedContext, {uniformDescriptors});
         if (uniformSetLayout == VK_NULL_HANDLE) { return VK_NULL_HANDLE; }
         setLayouts.push_back(uniformSetLayout);
