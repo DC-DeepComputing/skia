@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8622ab42_7e3a469d",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-06-27T16:58:06Z",
+      "side": 1,
+      "message": "\u0027*\u0027 since it is changing ? In append_uniforms too?",
+      "range": {
+        "startLine": 115,
+        "startChar": 40,
+        "endLine": 115,
+        "endChar": 41
+      },
+      "revId": "74cfc6a6ad83dbe88a8436098b66ad116d1dcd87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e18ffd6_9a27cee2",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-06-27T16:58:06Z",
+      "side": 1,
+      "message": "missing a \u0027)\u0027 ?",
+      "range": {
+        "startLine": 154,
+        "startChar": 86,
+        "endLine": 154,
+        "endChar": 87
+      },
+      "revId": "74cfc6a6ad83dbe88a8436098b66ad116d1dcd87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6671bd57_f139e1e2",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 723,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-06-27T16:58:06Z",
+      "side": 1,
+      "message": "got to here",
+      "revId": "74cfc6a6ad83dbe88a8436098b66ad116d1dcd87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

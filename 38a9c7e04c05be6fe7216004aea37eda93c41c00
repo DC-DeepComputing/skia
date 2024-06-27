@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ff71bcc_40c68821",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 527,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-06-27T16:58:06Z",
+      "side": 0,
+      "message": "I think losing the intent from these names is a net lose. Maybe add a comment?",
+      "range": {
+        "startLine": 527,
+        "startChar": 26,
+        "endLine": 527,
+        "endChar": 44
+      },
+      "revId": "38a9c7e04c05be6fe7216004aea37eda93c41c00",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
