@@ -573,9 +573,9 @@ public:
     PrecompileRTEffect(sk_sp<SkRuntimeEffect> effect,
                        SkSpan<const PrecompileChildOptions> childOptions)
             : fEffect(std::move(effect)) {
-        fChildOptions.reserve(childOptions.size());
+        fChildOptions1.reserve(childOptions.size());
         for (PrecompileChildOptions c : childOptions) {
-            fChildOptions.push_back({ c.begin(), c.end() });
+            fChildOptions1.push_back({ c.begin(), c.end() });
         }
     }
 
@@ -616,7 +616,7 @@ private:
     }
 
     sk_sp<SkRuntimeEffect> fEffect;
-    std::vector<std::vector<PrecompileChildPtr>> fChildOptions;
+    std::vector<std::vector<PrecompileChildPtr>> fChildOptions1;
 };
 
 sk_sp<PrecompileShader> MakePrecompileShader(
