@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "08aa866b_d5d0a747",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-06-27T14:11:08Z",
+      "side": 1,
+      "message": "lgtm but you should probably try to run the trybots before submitting.",
+      "revId": "1d1f5c4bb9101df56bc1663f9a90397cfa6ba1da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "873c5b79_6135fb8c",
@@ -155,6 +172,54 @@
       "side": 1,
       "message": "As far as getting a performance baseline for multithreading work, we\u0027ll be comparing ES3 to ES3 right? And I wouldn\u0027t be surprised if we actually never have Dawn ES2 bots since it would be hard to find and maintain those devices. Maybe we could have Dawn ES2 Angle bots and those configs could be more specific about version number?",
       "parentUuid": "a39211bb_dba395d8",
+      "range": {
+        "startLine": 70,
+        "startChar": 12,
+        "endLine": 70,
+        "endChar": 32
+      },
+      "revId": "1d1f5c4bb9101df56bc1663f9a90397cfa6ba1da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c1bf3cfe_8bf5d292",
+        "filename": "infra/bots/recipe_modules/build/util.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-06-27T14:11:08Z",
+      "side": 1,
+      "message": "Oh I recognize that change",
+      "parentUuid": "65cac474_7b2b7ffa",
+      "range": {
+        "startLine": 70,
+        "startChar": 12,
+        "endLine": 70,
+        "endChar": 32
+      },
+      "revId": "1d1f5c4bb9101df56bc1663f9a90397cfa6ba1da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "40bef391_a9e3d1c4",
+        "filename": "infra/bots/recipe_modules/build/util.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-06-27T14:11:08Z",
+      "side": 1,
+      "message": "Yeah we should probably have some bot for es2 at some point. Probably we either be angle or targeting WebGL1.\n\nWe can leave things as is for now and see how things shake out later with how dawn exposes versions. Its not that hard or disruptive to change the names later if needed.",
+      "parentUuid": "1de2af72_50bb23c0",
       "range": {
         "startLine": 70,
         "startChar": 12,
