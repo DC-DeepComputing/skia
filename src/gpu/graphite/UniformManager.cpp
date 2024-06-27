@@ -68,20 +68,11 @@ int UniformOffsetCalculator::advanceStruct(const UniformOffsetCalculator& substr
 
 //////////////////////////////////////////////////////////////////////////////
 
-UniformDataBlock UniformManager::finishUniformDataBlock() {
-    size_t size = SkAlignTo(fStorage.size(), fReqAlignment);
-    size_t paddingSize = size - fStorage.size();
-    if (paddingSize > 0) {
-        char* padding = fStorage.append(paddingSize);
-        memset(padding, 0, paddingSize);
-    }
-    return UniformDataBlock(SkSpan(fStorage.begin(), size));
-}
-
 void UniformManager::resetWithNewLayout(Layout layout) {
     fStorage.clear();
     fLayout = layout;
     fReqAlignment = 0;
+    fStructBaseAlignment = 0;
     fWrotePaintColor = false;
 
 #ifdef SK_DEBUG
