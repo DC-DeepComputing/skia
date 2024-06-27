@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d51e930f_3c69b76f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-06-27T17:27:15Z",
+      "side": 1,
+      "message": "I think it would make sense to expose this limit in Graphite caps, and I\u0027d be happy to do that in this CL if y\u0027all want. I would also accept any hints on how to set the caps limit in Metal and Vulkan.",
+      "revId": "3e3fb53ace49ce8f8e2507b074a9c14eeb10c763",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
