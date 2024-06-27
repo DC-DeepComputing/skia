@@ -560,7 +560,9 @@ void FillRectOp::AddFillRectOps(skgpu::ganesh::SurfaceDrawContext* sdc,
 
 uint32_t skgpu::ganesh::FillRectOp::ClassID() { return FillRectOpImpl::ClassID(); }
 
+#include "src/base/SkRandom.h"
 #include "src/gpu/ganesh/GrDrawOpTest.h"
+#include "src/gpu/ganesh/GrTestUtils.h"
 #include "src/gpu/ganesh/SkGr.h"
 
 GR_DRAW_OP_TEST_DEFINE(FillRectOp) {

@@ -10,6 +10,7 @@
 #include "include/core/SkString.h"
 #include "include/gpu/GrDirectContext.h"
 #include "src/base/SkHalf.h"
+#include "src/base/SkRandom.h"
 #include "src/core/SkColorSpacePriv.h"
 #include "src/gpu/KeyBuilder.h"
 #include "src/gpu/ganesh/GrCaps.h"

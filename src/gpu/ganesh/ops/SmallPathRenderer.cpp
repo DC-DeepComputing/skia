@@ -731,6 +731,9 @@ bool SmallPathRenderer::onDrawPath(const DrawPathArgs& args) {
 
 #if defined(GR_TEST_UTILS)
 
+#include "src/base/SkRandom.h"
+#include "src/gpu/ganesh/GrTestUtils.h"
+
 GR_DRAW_OP_TEST_DEFINE(SmallPathOp) {
     SkMatrix viewMatrix = GrTest::TestMatrix(random);
     bool gammaCorrect = random->nextBool();
