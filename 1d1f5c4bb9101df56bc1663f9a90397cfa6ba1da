@@ -139,6 +139,30 @@
       },
       "revId": "1d1f5c4bb9101df56bc1663f9a90397cfa6ba1da",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1de2af72_50bb23c0",
+        "filename": "infra/bots/recipe_modules/build/util.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-06-27T14:00:24Z",
+      "side": 1,
+      "message": "As far as getting a performance baseline for multithreading work, we\u0027ll be comparing ES3 to ES3 right? And I wouldn\u0027t be surprised if we actually never have Dawn ES2 bots since it would be hard to find and maintain those devices. Maybe we could have Dawn ES2 Angle bots and those configs could be more specific about version number?",
+      "parentUuid": "a39211bb_dba395d8",
+      "range": {
+        "startLine": 70,
+        "startChar": 12,
+        "endLine": 70,
+        "endChar": 32
+      },
+      "revId": "1d1f5c4bb9101df56bc1663f9a90397cfa6ba1da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
