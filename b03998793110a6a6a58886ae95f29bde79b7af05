@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3baee24e_4723c5a3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-06-27T15:28:09Z",
+      "side": 1,
+      "message": "Needed this while figuring out what was going on with some Fontations stuff.",
+      "revId": "b03998793110a6a6a58886ae95f29bde79b7af05",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
