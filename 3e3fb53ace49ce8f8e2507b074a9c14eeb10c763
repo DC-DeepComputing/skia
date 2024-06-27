@@ -16,6 +16,24 @@
       "message": "I think it would make sense to expose this limit in Graphite caps, and I\u0027d be happy to do that in this CL if y\u0027all want. I would also accept any hints on how to set the caps limit in Metal and Vulkan.",
       "revId": "3e3fb53ace49ce8f8e2507b074a9c14eeb10c763",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "946f2627_3ee24456",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-06-27T20:27:13Z",
+      "side": 1,
+      "message": "That\u0027s a good idea (for a later CL). The limits for Metal are here https://developer.apple.com/metal/Metal-Feature-Set-Tables.pdf though I don\u0027t think see the equivalent param. I\u0027m also not sure what to tell you for the \"not available\" cases other than guess at a reasonable value.",
+      "parentUuid": "d51e930f_3c69b76f",
+      "revId": "3e3fb53ace49ce8f8e2507b074a9c14eeb10c763",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
