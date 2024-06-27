@@ -29,6 +29,14 @@
 
 namespace ToolUtils {
 
+GrDirectContext* GrAsDirectContext(GrRecordingContext* base) {
+#if defined(SK_GANESH)
+    return ::GrAsDirectContext(base);
+#else
+    return nullptr;
+#endif
+}
+
 sk_sp<SkImage> MakeTextureImage(SkCanvas* canvas, sk_sp<SkImage> orig) {
     if (!orig) {
         return nullptr;

@@ -8,6 +8,8 @@ package(
 licenses(["notice"])
 
 exports_files_legacy(label_list = [
+    "GpuToolUtils.h",
+    "GpuToolUtils.cpp",
     "ToolUtils.h",
     "ToolUtils.cpp",
     "SkMetaData.h",
@@ -160,10 +162,12 @@ skia_cc_library(
     name = "tool_utils",
     testonly = True,
     srcs = [
+        "GpuToolUtils.cpp",
         "SkMetaData.cpp",
         "ToolUtils.cpp",
     ],
     hdrs = [
+        "GpuToolUtils.h",
         "SkMetaData.h",
         "ToolUtils.h",
     ],
