@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "873c5b79_6135fb8c",
+        "filename": "infra/bots/recipe_modules/build/util.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-06-27T13:31:22Z",
+      "side": 1,
+      "message": "Since we\u0027re not explicitly enabling Vulkan does that just cause dawn to default to GL? I would have thought that we\u0027d need to update something to trigger us to use grdawn_gles31 config",
+      "range": {
+        "startLine": 70,
+        "startChar": 12,
+        "endLine": 70,
+        "endChar": 32
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "fc72c0cb_24b47802",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "infra/bots/recipe_modules/build/util.py",
+              "range": {
+                "startLine": 62,
+                "startChar": 0,
+                "endLine": 63,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "1d1f5c4bb9101df56bc1663f9a90397cfa6ba1da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4178f335_0e44b9ff",
+        "filename": "infra/bots/recipe_modules/build/util.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-06-27T13:31:22Z",
+      "side": 1,
+      "message": "I guess as of now dawn doesn\u0027t have anything to explicitly request the 3.1 back right? Not that they would have any other options but it would have been ideal to be as specific as possible now so we don\u0027t need to change the names of the tasks and stuff later to request 2 vs 3. Though I do think we should make sure that the tools are running something called grdawn_gles31 config so at least perf and gold will keep traces consistent in the long run.",
+      "range": {
+        "startLine": 70,
+        "startChar": 12,
+        "endLine": 70,
+        "endChar": 32
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "6d554b4c_cd78195e",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "infra/bots/recipe_modules/build/util.py",
+              "range": {
+                "startLine": 63,
+                "startChar": 0,
+                "endLine": 64,
+                "endChar": 0
+              },
+              "replacement": "    args[\u0027dawn_enable_opengles\u0027] \u003d \u0027true\u0027\n"
+            },
+            {
+              "path": "infra/bots/recipe_modules/build/util.py",
+              "range": {
+                "startLine": 69,
+                "startChar": 0,
+                "endLine": 71,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "1d1f5c4bb9101df56bc1663f9a90397cfa6ba1da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
