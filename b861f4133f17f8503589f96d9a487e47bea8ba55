@@ -87,6 +87,30 @@
       },
       "revId": "b861f4133f17f8503589f96d9a487e47bea8ba55",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd8545d4_6205b6b3",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 498,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-06-27T15:58:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f7ec6f17_4331fca0",
+      "range": {
+        "startLine": 498,
+        "startChar": 17,
+        "endLine": 498,
+        "endChar": 96
+      },
+      "revId": "b861f4133f17f8503589f96d9a487e47bea8ba55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
