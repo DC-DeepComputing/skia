@@ -16,6 +16,23 @@
       "message": "Exploring what goes wrong when adding more gms to the existing Bazel gm setup, just to see what is needed. Findings:\n\nBazel is kinda bad about test `data`.\n\nNeed to associate gms with what they depend on. Like the `fontations` gm.\n\nSplitting gms into CPU vs GPU isn\u0027t interesting unless we\u0027re also splitting by all the other things as well and cross cutting across them also. Most of the \"CPU\" ones are actually \"generic\" (should be run both \"CPU\" and \"GPU\") and even the \"GPU\" ones are more like \"ganesh\" or \"graphite\" or even more specific.",
       "revId": "eeb9b7dafe9f2bfba0695cf568a616b80f14a032",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e2d0218_906f611f",
+        "filename": "gm/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 514,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-06-27T18:59:15Z",
+      "side": 1,
+      "message": "Which is probably why the Bazel runfiles library was never (a far as I can tell) released, because it doesn\u0027t seem to be a good idea. Obviously Bazel\u0027s test runner should just pass the location of the `data` directory to the test executable... but they don\u0027t seem to want to do that for some reason.",
+      "revId": "eeb9b7dafe9f2bfba0695cf568a616b80f14a032",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
