@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b7e687d6_23e8abd4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-06-27T17:00:03Z",
+      "side": 1,
+      "message": "Pull back and nuke them from orbit. It\u0027s the only way to be sure.",
+      "revId": "ae4f3928af4dbaf748b29c73d27aced25629a6c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
