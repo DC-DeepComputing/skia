@@ -228,6 +228,30 @@
       },
       "revId": "1d1f5c4bb9101df56bc1663f9a90397cfa6ba1da",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d7892ef_566b81fd",
+        "filename": "infra/bots/recipe_modules/build/util.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-06-27T21:03:43Z",
+      "side": 1,
+      "message": "👈😉",
+      "parentUuid": "c1bf3cfe_8bf5d292",
+      "range": {
+        "startLine": 70,
+        "startChar": 12,
+        "endLine": 70,
+        "endChar": 32
+      },
+      "revId": "1d1f5c4bb9101df56bc1663f9a90397cfa6ba1da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
