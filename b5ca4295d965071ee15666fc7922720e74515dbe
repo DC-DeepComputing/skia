@@ -16,6 +16,24 @@
       "message": "nit: Why did you make this a `for` loop for only one string? (Are you expecting more?) This could follow the pattern of \"LoopFloat\" above.",
       "revId": "b5ca4295d965071ee15666fc7922720e74515dbe",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fdbb98db_328eeff0",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 510,
+      "author": {
+        "id": 22160
+      },
+      "writtenOn": "2024-06-27T01:06:10Z",
+      "side": 1,
+      "message": "Yes, I used a for loop to make it easier to add additional tesetcases later.\nBecause I cannot see any sections for Samsung vendor.",
+      "parentUuid": "9b9b0b12_d1e7c5fa",
+      "revId": "b5ca4295d965071ee15666fc7922720e74515dbe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
