@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f44c363_94cb5816",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-06-27T17:03:33Z",
+      "side": 1,
+      "message": "This makes sense to me since the gradient buffer logic isn\u0027t actually being tested yet by the bots also until it is enabled with std430 for ssbos",
+      "parentUuid": "7c0bd6c1_7cecfc66",
+      "range": {
+        "startLine": 97,
+        "startChar": 4,
+        "endLine": 97,
+        "endChar": 33
+      },
+      "revId": "7038d9a4a925c5116fdeeef1ae2d884542d1274e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "532920c0_6c9d1e2b",
@@ -54,6 +78,30 @@
       "writtenOn": "2024-06-27T15:47:48Z",
       "side": 1,
       "message": "We should use the new FixedSizeKey class since we\u0027re increasing the key to be bigger than the default static allocation. See https://skia-review.googlesource.com/c/skia/+/868416 for discussion and example",
+      "range": {
+        "startLine": 309,
+        "startChar": 8,
+        "endLine": 310,
+        "endChar": 88
+      },
+      "revId": "7038d9a4a925c5116fdeeef1ae2d884542d1274e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "acfe0992_99c87882",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 310,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-06-27T17:03:33Z",
+      "side": 1,
+      "message": "I\u0027ll be moving the gradient buffer addition to another CL to isolate any perf changes so I\u0027ll be sure to implement that what I increase the key size there since this will now stay the same as 6",
+      "parentUuid": "532920c0_6c9d1e2b",
       "range": {
         "startLine": 309,
         "startChar": 8,
