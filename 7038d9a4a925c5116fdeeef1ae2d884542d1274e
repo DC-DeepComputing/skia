@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "48b6d2b5_ff9b5b68",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-06-27T15:47:48Z",
+      "side": 1,
+      "message": "just quick drive by review comment",
+      "revId": "7038d9a4a925c5116fdeeef1ae2d884542d1274e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "532920c0_6c9d1e2b",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 310,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-06-27T15:47:48Z",
+      "side": 1,
+      "message": "We should use the new FixedSizeKey class since we\u0027re increasing the key to be bigger than the default static allocation. See https://skia-review.googlesource.com/c/skia/+/868416 for discussion and example",
+      "range": {
+        "startLine": 309,
+        "startChar": 8,
+        "endLine": 310,
+        "endChar": 88
+      },
+      "revId": "7038d9a4a925c5116fdeeef1ae2d884542d1274e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
