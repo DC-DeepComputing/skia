@@ -201,6 +201,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f356af50_ed567f35",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-27T20:41:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "693b7496_26bc712e",
+      "range": {
+        "startLine": 219,
+        "startChar": 46,
+        "endLine": 219,
+        "endChar": 48
+      },
+      "revId": "74cfc6a6ad83dbe88a8436098b66ad116d1dcd87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6671bd57_f139e1e2",
@@ -259,6 +283,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "31696260_fccabd02",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 727,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-27T20:41:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4746d818_a13924f4",
+      "range": {
+        "startLine": 727,
+        "startChar": 82,
+        "endLine": 727,
+        "endChar": 90
+      },
+      "revId": "74cfc6a6ad83dbe88a8436098b66ad116d1dcd87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d1efa73a_92ef694d",
@@ -272,6 +320,30 @@
       "writtenOn": "2024-06-27T19:54:31Z",
       "side": 1,
       "message": "Could we wrap this in SK_DEBUG?",
+      "range": {
+        "startLine": 801,
+        "startChar": 0,
+        "endLine": 804,
+        "endChar": 87
+      },
+      "revId": "74cfc6a6ad83dbe88a8436098b66ad116d1dcd87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "de6f7c8e_29140af7",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 804,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-27T20:41:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d1efa73a_92ef694d",
       "range": {
         "startLine": 801,
         "startChar": 0,
