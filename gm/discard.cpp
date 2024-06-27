@@ -16,11 +16,14 @@
 #include "include/core/SkString.h"
 #include "include/core/SkSurface.h"
 #include "include/core/SkTypes.h"
+#include "src/base/SkRandom.h"
+#include "tools/ToolUtils.h"
+
+#if defined(SK_GANESH)
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/GrRecordingContext.h"
 #include "include/gpu/ganesh/SkSurfaceGanesh.h"
-#include "src/base/SkRandom.h"
-#include "tools/ToolUtils.h"
+#endif
 
 #if defined(SK_GRAPHITE)
 #include "include/gpu/graphite/Surface.h"
@@ -50,10 +53,12 @@ protected:
         SkImageInfo info = SkImageInfo::MakeN32Premul(size);
         sk_sp<SkSurface> surface;
 
+#if defined(SK_GRAPHITE)
         auto dContext = GrAsDirectContext(canvas->recordingContext());
         if (dContext && !dContext->abandoned()) {
             surface = SkSurfaces::RenderTarget(dContext, skgpu::Budgeted::kNo, info);
         }
+#endif
 
 #if defined(SK_GRAPHITE)
         auto recorder = canvas->recorder();

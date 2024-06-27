@@ -8,7 +8,6 @@
 #include "gm/gm.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkPaint.h"
-#include "include/gpu/GrRecordingContext.h"
 #include "src/core/SkCachedData.h"
 #include "src/image/SkImage_Base.h"
 #include "tools/DecodeUtils.h"
@@ -28,7 +27,7 @@ DEF_SIMPLE_GM_CAN_FAIL(ducky_yuv_blend, canvas, errorMsg, 560, 1130) {
 
     // If we're on the GPU we do a second round of draws where the source image is YUV planes.
     // Otherwise we just draw the original again,
-    if (auto* rContext = canvas->recordingContext(); rContext && !rContext->abandoned()) {
+    if (auto* rContext = canvas->recordingContext(); rContext) {
         auto lazyYUV = sk_gpu_test::LazyYUVImage::Make(GetResourceAsData("images/ducky.jpg"),
                                                        skgpu::Mipmapped::kYes);
         if (lazyYUV) {

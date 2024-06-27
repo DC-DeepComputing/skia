@@ -211,8 +211,12 @@ DEF_GM(return new ComplexClipGM(true, true, false);)
 DEF_GM(return new ComplexClipGM(true, true, true);)
 }  // namespace skiagm
 
-DEF_SIMPLE_GM(clip_shader, canvas, 840, 650) {
+DEF_SIMPLE_GM_CAN_FAIL(clip_shader, canvas, errMsg, 840, 650) {
     auto img = ToolUtils::GetResourceAsImage("images/yellow_rose.png");
+    if (!img) {
+        *errMsg = "Could not get image resource.";
+        return skiagm::DrawResult::kFail;
+    }
     auto sh = img->makeShader(SkSamplingOptions());
 
     SkRect r = SkRect::MakeIWH(img->width(), img->height());
@@ -246,10 +250,16 @@ DEF_SIMPLE_GM(clip_shader, canvas, 840, 650) {
 
     canvas->restore();
     canvas->restore();
+
+    return skiagm::DrawResult::kOk;
 }
 
-DEF_SIMPLE_GM(clip_shader_layer, canvas, 430, 320) {
+DEF_SIMPLE_GM_CAN_FAIL(clip_shader_layer, canvas, errMsg, 430, 320) {
     auto img = ToolUtils::GetResourceAsImage("images/yellow_rose.png");
+    if (!img) {
+        *errMsg = "Could not get image resource.";
+        return skiagm::DrawResult::kFail;
+    }
     auto sh = img->makeShader(SkSamplingOptions());
 
     SkRect r = SkRect::MakeIWH(img->width(), img->height());
@@ -262,6 +272,8 @@ DEF_SIMPLE_GM(clip_shader_layer, canvas, 430, 320) {
     canvas->saveLayer(&r, nullptr);
     canvas->drawColor(0xFFFF0000);
     canvas->restore();
+
+    return skiagm::DrawResult::kOk;
 }
 
 DEF_SIMPLE_GM(clip_shader_nested, canvas, 256, 256) {
@@ -348,7 +360,14 @@ static void draw_banner(SkCanvas* canvas, Config config) {
 
 }  // namespace
 
-DEF_SIMPLE_GM(clip_shader_persp, canvas, 1370, 1030) {
+DEF_SIMPLE_GM_CAN_FAIL(clip_shader_persp, canvas, errMsg, 1370, 1030) {
+    // The image that is drawn
+    auto img = ToolUtils::GetResourceAsImage("images/yellow_rose.png");
+    if (!img) {
+        *errMsg = "Could not get image resource.";
+        return skiagm::DrawResult::kFail;
+    }
+
     // Each draw has a clipShader(image-shader), a clipShader(gradient-shader), a concat(persp-mat),
     // and each shader may or may not be wrapped with a perspective local matrix.
 
@@ -366,8 +385,6 @@ DEF_SIMPLE_GM(clip_shader_persp, canvas, 1370, 1030) {
              {kConcatAfterClips,   kDoesntMatter,      kGradientWithLocalMat}}
     };
 
-    // The image that is drawn
-    auto img = ToolUtils::GetResourceAsImage("images/yellow_rose.png");
     // Scale factor always applied to the image shader so that it tiles
     SkMatrix scale = SkMatrix::Scale(1.f / 4.f, 1.f / 4.f);
     // The perspective matrix applied wherever needed
@@ -442,10 +459,15 @@ DEF_SIMPLE_GM(clip_shader_persp, canvas, 1370, 1030) {
 
         canvas->translate(grid.width(), 0.f);
     }
+    return skiagm::DrawResult::kOk;
 }
 
-DEF_SIMPLE_GM(clip_shader_difference, canvas, 512, 512) {
+DEF_SIMPLE_GM_CAN_FAIL(clip_shader_difference, canvas, errMsg, 512, 512) {
     auto image = ToolUtils::GetResourceAsImage("images/yellow_rose.png");
+    if (!image) {
+        *errMsg = "Could not get image resource.";
+        return skiagm::DrawResult::kFail;
+    }
     canvas->clear(SK_ColorGRAY);
 
     SkRect rect = SkRect::MakeWH(256, 256);
@@ -505,4 +527,5 @@ DEF_SIMPLE_GM(clip_shader_difference, canvas, 512, 512) {
         }
         canvas->restore();
     }
+    return skiagm::DrawResult::kOk;
 }
