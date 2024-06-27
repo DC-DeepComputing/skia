@@ -109,9 +109,11 @@ public:
         }
 
         builder->addText(gSpeech, strlen(gSpeech));
-
+        SkDebugf("builder->addText(gSpeech, strlen(gSpeech));");
         fPara = builder->Build();
+        SkDebugf("fPara = builder->Build();");
         fPara->layout(400);
+        SkDebugf("        fPara->layout(400);");
     }
 
 protected:
@@ -150,15 +152,19 @@ protected:
         underp.setColor(p.getColor());
         const SkScalar GAP = 2;
 
+        SkDebugf("Before visit");
         para->visit([&](int, const skia::textlayout::Paragraph::VisitorInfo* info) {
             if (!info) {
                 return;
             }
+            SkDebugf("visit: start");
             canvas->drawGlyphs(info->count, info->glyphs, info->positions, info->origin,
                                info->font, p);
+            SkDebugf("visit: drawGlyphs");
 
             if (fFlags & kUseUnderline) {
                 // Need to modify positions to roll-in the orign
+                SkDebugf("visit: underline1");
                 std::vector<SkPoint> pos;
                 for (int i = 0; i < info->count; ++i) {
                     pos.push_back({info->origin.fX + info->positions[i].fX,
@@ -170,7 +176,7 @@ protected:
                 const SkScalar Y  = pos[0].fY;
                 auto sects = info->font.getIntercepts(info->glyphs, info->count, pos.data(),
                                                       Y+1, Y+3);
-
+                SkDebugf("visit: underline2");
                 SkScalar x0 = X0;
                 for (size_t i = 0; i < sects.size(); i += 2) {
                     SkScalar x1 = sects[i] - GAP;
@@ -179,7 +185,9 @@ protected:
                     }
                     x0 = sects[i+1] + GAP;
                 }
+                SkDebugf("visit: underline3");
                 canvas->drawLine(x0, Y+2, X1, Y+2, underp);
+                SkDebugf("visit: end");
             }
 
             if ((false)) {
@@ -198,6 +206,7 @@ protected:
                 }
             }
         });
+        SkDebugf("After visit");
     }
 
     DrawResult onDraw(SkCanvas* canvas, SkString* errorMsg) override {
@@ -214,6 +223,7 @@ protected:
             this->drawFromVisitor(canvas, fPara.get());
             return DrawResult::kOk;
         }
+        SkDebugf("loop: 1");
 
         const int loop = (this->getMode() == kGM_Mode) ? 1 : 50;
 
@@ -227,12 +237,15 @@ protected:
             }
             fPara->paint(canvas, 10, 10);
         }
+        SkDebugf("loop: 2");
+
         // clean up if we've been looping
         if (loop > 1) {
             canvas->clear(SK_ColorWHITE);
             fPara->layout(400);
             fPara->paint(canvas, 10, 10);
         }
+        SkDebugf("loop: 3");
 
         if ((this->getMode() == kGM_Mode) && (fFlags & kTimeLayout)) {
             return DrawResult::kSkip;
