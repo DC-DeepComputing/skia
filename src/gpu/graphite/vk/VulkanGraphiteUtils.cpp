@@ -6,6 +6,7 @@
  */
 
 #include "include/gpu/graphite/vk/VulkanGraphiteUtils.h"
+#include "include/third_party/vulkan/vulkan/vulkan_core.h"
 #include "src/gpu/graphite/vk/VulkanGraphiteUtilsPriv.h"
 
 #include "include/gpu/ShaderErrorHandler.h"
@@ -120,7 +121,7 @@ VkDescriptorType DsTypeEnumToVkDs(DescriptorType type) {
         case DescriptorType::kCombinedTextureSampler:
             return VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
         case DescriptorType::kStorageBuffer:
-            return VK_DESCRIPTOR_TYPE_STORAGE_BUFFER;
+            return VK_DESCRIPTOR_TYPE_STORAGE_BUFFER_DYNAMIC;
         case DescriptorType::kInputAttachment:
             return VK_DESCRIPTOR_TYPE_INPUT_ATTACHMENT;
     }
