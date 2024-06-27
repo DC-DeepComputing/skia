@@ -169,7 +169,6 @@ std::string get_uniforms(Layout layout,
 std::string get_node_uniforms(Layout layout,
                               const ShaderNode* node,
                               int* offset,
-                              int* numUniforms,
                               bool* wrotePaintColor) {
     std::string result;
     SkSpan<const Uniform> uniforms = node->entry()->fUniforms;
@@ -180,9 +179,8 @@ std::string get_node_uniforms(Layout layout,
         result += get_uniforms(layout, uniforms, offset, node->keyIndex(), wrotePaintColor);
     }
 
-    *numUniforms += uniforms.size();
     for (const ShaderNode* child : node->children()) {
-        result += get_node_uniforms(layout, child, offset, numUniforms, wrotePaintColor);
+        result += get_node_uniforms(layout, child, offset, wrotePaintColor);
     }
     return result;
 }
@@ -220,7 +218,7 @@ std::string get_ssbo_fields(SkSpan<const Uniform> uniforms,
     return result;
 }
 
-std::string get_node_ssbo_fields(const ShaderNode* node, int* numUniforms, bool* wrotePaintColor) {
+std::string get_node_ssbo_fields(const ShaderNode* node, bool* wrotePaintColor) {
     std::string result;
     SkSpan<const Uniform> uniforms = node->entry()->fUniforms;
 
@@ -231,9 +229,8 @@ std::string get_node_ssbo_fields(const ShaderNode* node, int* numUniforms, bool*
         result += get_ssbo_fields(uniforms, node->keyIndex(), wrotePaintColor);
     }
 
-    *numUniforms += uniforms.size();
     for (const ShaderNode* child : node->children()) {
-        result += get_node_ssbo_fields(child, numUniforms, wrotePaintColor);
+        result += get_node_ssbo_fields(child, wrotePaintColor);
     }
     return result;
 }
@@ -266,24 +263,20 @@ std::string get_node_texture_samplers(const ResourceBindingRequirements& binding
 std::string EmitPaintParamsUniforms(int bufferID,
                                     const Layout layout,
                                     SkSpan<const ShaderNode*> nodes,
-                                    int* numUniforms,
-                                    int* uniformsTotalBytes,
+                                    bool* hasUniforms,
                                     bool* wrotePaintColor) {
     int offset = 0;
 
     std::string result = get_uniform_header(bufferID, "FS");
     for (const ShaderNode* n : nodes) {
-        result += get_node_uniforms(layout, n, &offset, numUniforms, wrotePaintColor);
+        result += get_node_uniforms(layout, n, &offset, wrotePaintColor);
     }
     result.append("};\n\n");
 
-    if (!*numUniforms) {
+    *hasUniforms = offset > 0;
+    if (!*hasUniforms) {
         // No uniforms were added
         return {};
-    }
-
-    if (uniformsTotalBytes) {
-        *uniformsTotalBytes = offset;
     }
 
     return result;
@@ -291,17 +284,12 @@ std::string EmitPaintParamsUniforms(int bufferID,
 
 std::string EmitRenderStepUniforms(int bufferID,
                                    const Layout layout,
-                                   SkSpan<const Uniform> uniforms,
-                                   int* renderStepUniformsTotalBytes) {
+                                   SkSpan<const Uniform> uniforms) {
     int offset = 0;
 
     std::string result = get_uniform_header(bufferID, "Step");
     result += get_uniforms(layout, uniforms, &offset, -1, /* wrotePaintColor= */ nullptr);
     result.append("};\n\n");
-
-    if (renderStepUniformsTotalBytes) {
-        *renderStepUniformsTotalBytes = offset;
-    }
 
     return result;
 }
@@ -309,17 +297,19 @@ std::string EmitRenderStepUniforms(int bufferID,
 std::string EmitPaintParamsStorageBuffer(
         int bufferID,
         SkSpan<const ShaderNode*> nodes,
-        int* numUniforms,
+        bool* hasUniforms,
         bool* wrotePaintColor) {
+    *hasUniforms = false;
 
     std::string result;
     result += "struct FSUniformData {\n";
     for (const ShaderNode* n : nodes) {
-        result += get_node_ssbo_fields(n, numUniforms, wrotePaintColor);
+        *hasUniforms |= !n->entry()->fUniforms.empty();
+        result += get_node_ssbo_fields(n, wrotePaintColor);
     }
     result += "};\n\n";
 
-    if (!*numUniforms) {
+    if (!*hasUniforms) {
         // No uniforms were added
         return {};
     }
@@ -501,8 +491,7 @@ VertSkSLInfo BuildVertexSkSL(const ResourceBindingRequirements& bindingReqs,
         } else {
             sksl += EmitRenderStepUniforms(bindingReqs.fRenderStepBufferBinding,
                                            bindingReqs.fUniformBufferLayout,
-                                           step->uniforms(),
-                                           &result.fRenderStepUniformsTotalBytes);
+                                           step->uniforms());
         }
     }
 
@@ -570,9 +559,7 @@ FragSkSLInfo BuildFragmentSkSL(const Caps* caps,
                                      step,
                                      useStorageBuffers,
                                      &result.fNumTexturesAndSamplers,
-                                     &result.fNumPaintUniforms,
-                                     &result.fRenderStepUniformsTotalBytes,
-                                     &result.fPaintUniformsTotalBytes,
+                                     &result.fHasPaintUniforms,
                                      &result.fHasGradientBuffer,
                                      writeSwizzle);
 

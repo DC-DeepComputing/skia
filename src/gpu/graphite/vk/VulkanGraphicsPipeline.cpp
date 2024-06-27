@@ -472,7 +472,7 @@ static void destroy_desc_set_layouts(const VulkanSharedContext* sharedContext,
 static VkPipelineLayout setup_pipeline_layout(const VulkanSharedContext* sharedContext,
                                               bool usesIntrinsicConstantUbo,
                                               bool hasStepUniforms,
-                                              int numPaintUniforms,
+                                              bool hasPaintUniforms,
                                               int numTextureSamplers,
                                               int numInputAttachments) {
     // Determine descriptor set layouts for this pipeline based upon render pass information.
@@ -487,7 +487,7 @@ static VkPipelineLayout setup_pipeline_layout(const VulkanSharedContext* sharedC
     if (hasStepUniforms) {
         uniformDescriptors.push_back(VulkanGraphicsPipeline::kRenderStepUniformDescriptor);
     }
-    if (numPaintUniforms > 0) {
+    if (hasPaintUniforms) {
         uniformDescriptors.push_back(VulkanGraphicsPipeline::kPaintUniformDescriptor);
     }
 
@@ -713,7 +713,7 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
     VkPipelineLayout pipelineLayout = setup_pipeline_layout(sharedContext,
                                                             /*usesIntrinsicConstantUbo=*/true,
                                                             !step->uniforms().empty(),
-                                                            fsSkSLInfo.fNumPaintUniforms,
+                                                            fsSkSLInfo.fHasPaintUniforms,
                                                             fsSkSLInfo.fNumTexturesAndSamplers,
                                                             /*numInputAttachments=*/0);
     if (pipelineLayout == VK_NULL_HANDLE) {
@@ -788,7 +788,7 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
                                        pipelineInfoPtr,
                                        pipelineLayout,
                                        vkPipeline,
-                                       fsSkSLInfo.fNumPaintUniforms > 0,
+                                       fsSkSLInfo.fHasPaintUniforms,
                                        !step->uniforms().empty(),
                                        fsSkSLInfo.fNumTexturesAndSamplers,
                                        /*ownsPipelineLayout=*/true));
@@ -872,7 +872,7 @@ bool VulkanGraphicsPipeline::InitializeMSAALoadPipelineStructs(
     *outPipelineLayout = setup_pipeline_layout(sharedContext,
                                                /*usesIntrinsicConstantUbo=*/false,
                                                /*hasStepUniforms=*/false,
-                                               /*numPaintUniforms=*/0,
+                                               /*hasPaintUniforms=*/false,
                                                /*numTextureSamplers=*/0,
                                                /*numInputAttachments=*/1);
 
