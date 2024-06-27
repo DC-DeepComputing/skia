@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f470fa24_6fd0e034",
+        "filename": "tests/graphite/ComputeTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 776,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-06-27T17:29:39Z",
+      "side": 1,
+      "message": "nit: update comment here and other areas where this was updated",
+      "range": {
+        "startLine": 776,
+        "startChar": 35,
+        "endLine": 776,
+        "endChar": 40
+      },
+      "revId": "667643901f7d930882e291a2dba478dba29883bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
