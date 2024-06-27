@@ -130,6 +130,47 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d7e2c30e_3c3ca005",
+        "filename": "src/gpu/graphite/dawn/DawnGraphiteUtilsPriv.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-06-27T13:22:50Z",
+      "side": 1,
+      "message": "Just to confirm, I don\u0027t see these masks used in this CL or the follow up CL linked to this. I assume though that some CL down the line is using them?",
+      "range": {
+        "startLine": 71,
+        "startChar": 26,
+        "endLine": 71,
+        "endChar": 48
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "e25c9098_1a91fa73",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/dawn/DawnGraphiteUtilsPriv.h",
+              "range": {
+                "startLine": 71,
+                "startChar": 0,
+                "endLine": 73,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "806ed29392ceff23039913834af5caa89c44a6e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d241f567_760c4762",
         "filename": "src/gpu/graphite/dawn/DawnGraphiteUtilsPriv.h",
         "patchSetId": 5
