@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "28f690ea_1da2df8d",
+        "filename": "infra/bots/gen_tasks_logic/dm_flags.go",
+        "patchSetId": 8
+      },
+      "lineNbr": 456,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-06-27T18:46:42Z",
+      "side": 1,
+      "message": "Note: This test still fails and I will enable in a follow-up CL with the relevant Vulkan changes.",
+      "range": {
+        "startLine": 456,
+        "startChar": 0,
+        "endLine": 456,
+        "endChar": 49
+      },
+      "revId": "42a561c1071266baf8f63e224e67051778677206",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
