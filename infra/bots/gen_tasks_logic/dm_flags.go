@@ -417,9 +417,13 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 				}
 				if b.extraConfig("GL") {
 					configs = []string{"grdawn_gl"}
+					// This GM is larger than the maximum texture size in Dawn compat.
+					skip(ALL, "gm", ALL, "wacky_yuv_formats_domain")
 				}
 				if b.extraConfig("GLES") {
 					configs = []string{"grdawn_gles"}
+					// This GM is larger than the maximum texture size in Dawn compat.
+					skip(ALL, "gm", ALL, "wacky_yuv_formats_domain")
 				}
 				// Shader doesn't compile
 				// https://skbug.com/14105
