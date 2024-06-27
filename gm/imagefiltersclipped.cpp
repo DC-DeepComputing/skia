@@ -154,8 +154,13 @@ private:
 DEF_GM(return new ImageFiltersClippedGM;)
 }  // namespace skiagm
 
-DEF_SIMPLE_GM(imagefilter_convolve_subset, canvas, 160, 180) {
+DEF_SIMPLE_GM_CAN_FAIL(imagefilter_convolve_subset, canvas, errMsg, 160, 180) {
     sk_sp<SkImage> reference = ToolUtils::GetResourceAsImage("images/filter_reference.png");
+    if (!reference) {
+        *errMsg = "could not create image";
+        return skiagm::DrawResult::kFail;
+    }
+
     SkRect crop = SkRect::Make(reference->dimensions()).makeInset(10, 10);
     auto drawFilteredImage = [&](sk_sp<SkImageFilter> filter) {
         SkPaint p;
@@ -173,4 +178,5 @@ DEF_SIMPLE_GM(imagefilter_convolve_subset, canvas, 160, 180) {
     }
 
     drawFilteredImage(SkImageFilters::Blur(10.f, 10.f, SkTileMode::kMirror, nullptr, crop));
+    return skiagm::DrawResult::kOk;
 }

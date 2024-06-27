@@ -181,13 +181,18 @@ public:
         fMandrill = ToolUtils::GetResourceAsImage("images/mandrill_256.png");
     }
 
-    void onDraw(SkCanvas* canvas) override {
+    skiagm::DrawResult onDraw(SkCanvas* canvas, SkString* errMsg) override {
+        if (!fMandrill) {
+            *errMsg = "could not create image";
+            return skiagm::DrawResult::kFail;
+        }
         canvas->drawImage(fMandrill, 0, 0);
         canvas->translate(256, 0);
         KawaseBlurFilter blurFilter;
         blurFilter.draw(canvas, fMandrill, 45);
         canvas->translate(512, 0);
         blurFilter.draw(canvas, fMandrill, 55);
+        return skiagm::DrawResult::kOk;
     }
 
 private:

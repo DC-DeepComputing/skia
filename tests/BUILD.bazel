@@ -47,6 +47,7 @@ skia_cc_library(
         "//tools:SkMetaData.cpp",
         "//tools:SkMetaData.h",
         "//tools:ToolUtils.cpp",
+        "//tools:GpuToolUtils.cpp",
         "//tools/fonts:test_font_manager_srcs",
     ],
     hdrs = [
@@ -55,6 +56,7 @@ skia_cc_library(
         "TestType.h",
         "//tools:Resources.h",
         "//tools:ToolUtils.h",
+        "//tools:GpuToolUtils.h",
         "//tools/flags:CommandLineFlags.h",
         "//tools/fonts:test_empty_typeface",
     ],

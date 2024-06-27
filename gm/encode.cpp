@@ -34,9 +34,12 @@ protected:
 
     SkISize getISize() override { return SkISize::Make(1024, 600); }
 
-    void onDraw(SkCanvas* canvas) override {
+    skiagm::DrawResult onDraw(SkCanvas* canvas, SkString* errMsg) override {
         SkBitmap orig;
-        ToolUtils::GetResourceAsBitmap("images/mandrill_512_q075.jpg", &orig);
+        if (!ToolUtils::GetResourceAsBitmap("images/mandrill_512_q075.jpg", &orig)) {
+            *errMsg = "could not create bitmap";
+            return skiagm::DrawResult::kFail;
+        }
         SkDynamicMemoryWStream stream;
         SkASSERT_RELEASE(SkPngEncoder::Encode(&stream, orig.pixmap(), {}));
         sk_sp<SkData> pngData = stream.detachAsData();
@@ -53,6 +56,7 @@ protected:
         SkFont font = ToolUtils::DefaultPortableFont();
         font.setEdging(SkFont::Edging::kAlias);
         canvas->drawString("Images should look identical.", 450.0f, 550.0f, font, SkPaint());
+        return skiagm::DrawResult::kOk;
     }
 
 private:

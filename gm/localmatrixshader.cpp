@@ -47,10 +47,11 @@ static sk_sp<SkImage> make_image(SkCanvas* rootCanvas) {
     return ToolUtils::MakeTextureImage(rootCanvas, std::move(img));
 }
 
-DEF_SIMPLE_GM(localmatrixshader_nested, canvas, 450, 1200) {
+DEF_SIMPLE_GM_CAN_FAIL(localmatrixshader_nested, canvas, errMsg, 450, 1200) {
     auto image = make_image(canvas);
     if (!image) {
-        return;
+        *errMsg = "could not make image";
+        return skiagm::DrawResult::kFail;
     }
 
     using FactoryT = sk_sp<SkShader> (*)(const sk_sp<SkImage>&,
@@ -118,10 +119,15 @@ DEF_SIMPLE_GM(localmatrixshader_nested, canvas, 450, 1200) {
     canvas->translate(rect.width() * 1.5f, 0);
     canvas->scale(2, 2);
     drawColumn();
+    return skiagm::DrawResult::kOk;
 }
 
-DEF_SIMPLE_GM(localmatrixshader_persp, canvas, 542, 266) {
+DEF_SIMPLE_GM_CAN_FAIL(localmatrixshader_persp, canvas, errMsg, 542, 266) {
     auto image = ToolUtils::GetResourceAsImage("images/yellow_rose.png");
+    if (!image) {
+        *errMsg = "could not make image";
+        return skiagm::DrawResult::kFail;
+    }
 
     SkBitmap downsized;
     downsized.allocPixels(image->imageInfo().makeWH(128, 128));
@@ -216,6 +222,7 @@ DEF_SIMPLE_GM(localmatrixshader_persp, canvas, 542, 266) {
                               ->makeWithLocalMatrix(perspScale);
     draw(g4, false);
     canvas->restore();
+    return skiagm::DrawResult::kOk;
 }
 
 namespace skiagm {
@@ -231,6 +238,9 @@ protected:
     void onOnceBeforeDraw() override {
         auto mandrill = ToolUtils::GetResourceAsImage("images/mandrill_256.png");  // 256x256
         auto example5 = ToolUtils::GetResourceAsImage("images/example_5.png");     // 128x128
+        if (!mandrill || !example5) {
+            return;
+        }
 
         auto mshader = mandrill->makeShader(
                 SkTileMode::kRepeat,
@@ -249,7 +259,12 @@ protected:
         fShader = SkShaders::Blend(SkBlendMode::kModulate, mshader, eshader);
     }
 
-    void onDraw(SkCanvas* canvas) override {
+    skiagm::DrawResult onDraw(SkCanvas* canvas, SkString* errMsg) override {
+        if (!fShader) {
+            *errMsg = "could not make shader";
+            return skiagm::DrawResult::kFail;
+        }
+
         // Rotate fShader about the canvas center
         auto center = SkRect::Make(canvas->imageInfo().bounds()).center();
 
@@ -264,6 +279,7 @@ protected:
         SkPaint paint;
         paint.setShader(shader);
         canvas->drawPaint(paint);
+        return skiagm::DrawResult::kOk;
     }
 
     bool onAnimate(double nanos) override {

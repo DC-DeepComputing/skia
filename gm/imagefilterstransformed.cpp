@@ -239,13 +239,19 @@ protected:
         fImage = ToolUtils::GetResourceAsImage("images/mandrill_256.png");
     }
 
-    void onDraw(SkCanvas* canvas) override {
+    skiagm::DrawResult onDraw(SkCanvas* canvas, SkString* errMsg) override {
+        if (!fImage) {
+            *errMsg = "could not create image";
+            return skiagm::DrawResult::kFail;
+        }
+
         SkMatrix matrix = SkMatrix::RotateDeg(fDegrees);
         // All four quadrants should render the same
         this->drawFilter(canvas, 0.f, 0.f, this->makeDirectFilter(matrix));
         this->drawFilter(canvas, 256.f, 0.f, this->makeEarlyComposeFilter(matrix));
         this->drawFilter(canvas, 0.f, 256.f, this->makeLateComposeFilter(matrix));
         this->drawFilter(canvas, 256.f, 256.f, this->makeFullComposeFilter(matrix));
+        return skiagm::DrawResult::kOk;
     }
 
 private:
@@ -313,8 +319,12 @@ private:
 DEF_GM(return new ImageFilterComposedTransform();)
 
 // Tests SkImageFilters::Image under tricky matrices (mirrors and perspective)
-DEF_SIMPLE_GM(imagefilter_transformed_image, canvas, 256, 256) {
+DEF_SIMPLE_GM_CAN_FAIL(imagefilter_transformed_image, canvas, errMsg, 256, 256) {
     sk_sp<SkImage> image = ToolUtils::GetResourceAsImage("images/color_wheel.png");
+    if (!image) {
+        *errMsg = "could not create image";
+        return skiagm::DrawResult::kFail;
+    }
     sk_sp<SkImageFilter> imageFilter = SkImageFilters::Image(image, SkFilterMode::kLinear);
 
     const SkRect imageRect = SkRect::MakeIWH(image->width(), image->height());
@@ -358,4 +368,5 @@ DEF_SIMPLE_GM(imagefilter_transformed_image, canvas, 256, 256) {
 
         canvas->translate(0.f, image->height());
     }
+    return skiagm::DrawResult::kOk;
 }
