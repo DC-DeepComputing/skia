@@ -271,16 +271,18 @@ protected:
 
         auto rContext = canvas->recordingContext();
         // In a DDL context, we can't use the GPU code paths and we will drop the work – skip.
-        auto dContext = GrAsDirectContext(rContext);
+        auto dContext = ToolUtils::GrAsDirectContext(rContext);
         if (rContext) {
             if (!dContext) {
                 *errorMsg = "Requires a direct context.";
                 return DrawResult::kSkip;
             }
+#if defined(SK_GANESH)
             if (dContext->abandoned()) {
                 *errorMsg = "Direct context abandoned.";
                 return DrawResult::kSkip;
             }
+#endif
         }
 
         // These need to be GPU-backed when on the GPU to ensure that the image filters use the GPU

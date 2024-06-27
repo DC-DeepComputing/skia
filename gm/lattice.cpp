@@ -21,6 +21,7 @@
 #include "include/core/SkSurface.h"
 #include "include/gpu/GrDirectContext.h"
 #include "include/private/base/SkMalloc.h"
+#include "tools/GpuToolUtils.h"
 #include "tools/ToolUtils.h"
 
 static sk_sp<SkSurface> make_surface(SkCanvas* root, int N, int padLeft, int padTop,
@@ -205,7 +206,7 @@ protected:
 
     DrawResult onDraw(SkCanvas* canvas, SkString* errorMsg) override {
         auto rContext = canvas->recordingContext();
-        auto dContext = GrAsDirectContext(rContext);
+        GrDirectContext* dContext = ToolUtils::GrAsDirectContext(rContext);
         if (rContext && !dContext) {
             *errorMsg = "not supported in ddl";
             return DrawResult::kSkip;

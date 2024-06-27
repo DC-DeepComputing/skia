@@ -26,13 +26,16 @@
 #include "include/core/SkTileMode.h"
 #include "include/core/SkTypes.h"
 #include "include/effects/SkGradientShader.h"
-#include "include/gpu/GrDirectContext.h"
 #include "tools/GpuToolUtils.h"
 #include "tools/ToolUtils.h"
 
 #include <algorithm>
 #include <initializer_list>
 #include <utility>
+
+#if defined(SK_GANESH)
+#include "include/gpu/GrDirectContext.h"
+#endif
 
 // Makes a set of m x n tiled images to be drawn with SkCanvas::experimental_drawImageSetV1().
 static void make_image_tiles(int tileW, int tileH, int m, int n, const SkColor colors[4],
@@ -299,10 +302,9 @@ private:
     SkISize getISize() override { return {kM * kTileW, 2 * kN * kTileH}; }
 
     DrawResult onGpuSetup(SkCanvas* canvas, SkString*, GraphiteTestContext*) override {
-        auto direct = GrAsDirectContext(canvas->recordingContext());
-#if defined(SK_GRAPHITE)
-        auto recorder = canvas->recorder();
-#endif
+        GrDirectContext* direct = ToolUtils::GrAsDirectContext(canvas->recordingContext());
+        skgpu::graphite::Recorder* recorder = canvas->recorder();
+
         static constexpr SkColor kColors[] = {SK_ColorBLUE, SK_ColorTRANSPARENT,
                                               SK_ColorRED,  SK_ColorTRANSPARENT};
         static constexpr SkColor kBGColor = SkColorSetARGB(128, 128, 128, 128);
@@ -316,13 +318,10 @@ private:
                 int i = y * kM + x;
                 fSet[i].fAlpha = (kM - x) / (float) kM;
                 if (y % 2 == 0) {
-#if defined(SK_GRAPHITE)
                     if (recorder) {
                         fSet[i].fImage = fSet[i].fImage->makeColorTypeAndColorSpace(
                                 recorder, kAlpha_8_SkColorType, alphaSpace, {});
-                    } else
-#endif
-                    {
+                    } else {
                         fSet[i].fImage = fSet[i].fImage->makeColorTypeAndColorSpace(
                                 direct, kAlpha_8_SkColorType, alphaSpace);
                     }
