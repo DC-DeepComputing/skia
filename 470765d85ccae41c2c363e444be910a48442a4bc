@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0ed733f_cd37d8d8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-27T20:35:30Z",
+      "side": 1,
+      "message": "Here is the work I\u0027d started to switching to a single ID/index in the sort key for the unique triple of {paint uniforms, renderstep uniforms, textures}, as well as uploading them as-needed to the current SSBO",
+      "revId": "470765d85ccae41c2c363e444be910a48442a4bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
