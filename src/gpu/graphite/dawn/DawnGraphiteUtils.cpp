@@ -248,6 +248,31 @@ int numInt32sNeeded(const wgpu::YCbCrVkDescriptor& desc) {
     return usesExternalFormat(desc) ? kIntsNeededExternalFormat : kIntsNeededKnownFormat;
 }
 
+wgpu::YCbCrVkDescriptor getDescriptorFromSamplerDesc(const SamplerDesc& samplerDesc) {
+    wgpu::YCbCrVkDescriptor desc;
+    if (samplerDesc.isImmutable()) {
+        uint32_t nonFormatInfo =
+                (uint32_t)(samplerDesc.desc() >> SamplerDesc::kImmutableSamplerInfoShift);
+
+        desc.vkFormat = samplerDesc.usesExternalFormat() ? 0 : samplerDesc.format();
+        desc.vkYCbCrModel = (nonFormatInfo & kYcbcrModelMask) >> kYcbcrModelShift;
+        desc.vkYCbCrRange = (nonFormatInfo & kYcbcrRangeMask) >> kYcbcrRangeShift;
+        desc.vkComponentSwizzleRed = (nonFormatInfo & kComponentRMask) >> kComponentRShift;
+        desc.vkComponentSwizzleGreen = (nonFormatInfo & kComponentGMask) >> kComponentGShift;
+        desc.vkComponentSwizzleBlue = (nonFormatInfo & kComponentBMask) >> kComponentBShift;
+        desc.vkComponentSwizzleAlpha = (nonFormatInfo & kComponentAMask) >> kComponentAShift;
+        desc.vkXChromaOffset = (nonFormatInfo & kXChromaOffsetMask) >> kXChromaOffsetShift;
+        desc.vkYChromaOffset = (nonFormatInfo & kYChromaOffsetMask) >> kYChromaOffsetShift;
+        desc.vkChromaFilter =
+                (wgpu::FilterMode)((nonFormatInfo & kChromaFilterMask) >> kChromaFilterShift);
+        desc.forceExplicitReconstruction =
+                (nonFormatInfo & kForceExplicitReconMask) >> kForceExplicitReconShift;
+        desc.externalFormat = samplerDesc.usesExternalFormat() ?
+                (uint64_t)(samplerDesc.externalFormatMSBs()) << 32 | samplerDesc.format() : 0;
+    }
+    return desc;
+}
+
 } // namespace ycbcrUtils
 #endif // !defined(__EMSCRIPTEN__)
 } // namespace skgpu::graphite
