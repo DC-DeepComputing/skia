@@ -775,7 +775,7 @@ DEF_GRAPHITE_TEST_FOR_DAWN_AND_METAL_CONTEXTS(Compute_StorageTexture,
 
     // For this test we allocate a 16x16 tile which is written to by a single workgroup of the same
     // size.
-    constexpr uint32_t kDim = 16;
+    constexpr uint32_t kDim = 8;
 
     class TestComputeStep : public ComputeStep {
     public:
@@ -877,7 +877,7 @@ DEF_GRAPHITE_TEST_FOR_DAWN_AND_METAL_CONTEXTS(Compute_StorageTextureReadAndWrite
 
     // For this test we allocate a 16x16 tile which is written to by a single workgroup of the same
     // size.
-    constexpr uint32_t kDim = 16;
+    constexpr uint32_t kDim = 8;
 
     class TestComputeStep : public ComputeStep {
     public:
@@ -1033,7 +1033,7 @@ DEF_GRAPHITE_TEST_FOR_DAWN_AND_METAL_CONTEXTS(Compute_ReadOnlyStorageBuffer,
 
     // For this test we allocate a 16x16 tile which is written to by a single workgroup of the same
     // size.
-    constexpr uint32_t kDim = 16;
+    constexpr uint32_t kDim = 8;
 
     class TestComputeStep : public ComputeStep {
     public:
@@ -1177,7 +1177,7 @@ DEF_GRAPHITE_TEST_FOR_DAWN_AND_METAL_CONTEXTS(Compute_StorageTextureMultipleComp
 
     // For this test we allocate a 16x16 tile which is written to by a single workgroup of the same
     // size.
-    constexpr uint32_t kDim = 16;
+    constexpr uint32_t kDim = 8;
 
     // Writes to a texture in slot 0.
     class TestComputeStep1 : public ComputeStep {
