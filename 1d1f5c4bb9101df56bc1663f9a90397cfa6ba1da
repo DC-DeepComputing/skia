@@ -91,6 +91,54 @@
       ],
       "revId": "1d1f5c4bb9101df56bc1663f9a90397cfa6ba1da",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "65cac474_7b2b7ffa",
+        "filename": "infra/bots/recipe_modules/build/util.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-06-27T13:56:41Z",
+      "side": 1,
+      "message": "I believe that\u0027s all been hooked up as part of http://review.skia.org/787439",
+      "parentUuid": "873c5b79_6135fb8c",
+      "range": {
+        "startLine": 70,
+        "startChar": 12,
+        "endLine": 70,
+        "endChar": 32
+      },
+      "revId": "1d1f5c4bb9101df56bc1663f9a90397cfa6ba1da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a39211bb_dba395d8",
+        "filename": "infra/bots/recipe_modules/build/util.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-06-27T13:56:41Z",
+      "side": 1,
+      "message": "This is a good question; I had assumed Dawn would use the highest available ES version when you request an ES context, but maybe not, and anyways it\u0027s all complicated by the fact that they may only want to expose ES2 to Skia and not to general clients.\n\nI would say let\u0027s discuss with the Dawn team about what they want the API to be long-term, unless you\u0027re really sure you want the version in the config (though I will note we don\u0027t include the version in Ganesh configs, except for Angle).",
+      "parentUuid": "4178f335_0e44b9ff",
+      "range": {
+        "startLine": 70,
+        "startChar": 12,
+        "endLine": 70,
+        "endChar": 32
+      },
+      "revId": "1d1f5c4bb9101df56bc1663f9a90397cfa6ba1da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
