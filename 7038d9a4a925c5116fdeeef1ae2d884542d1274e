@@ -20,6 +20,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7c0bd6c1_7cecfc66",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-27T15:59:42Z",
+      "side": 1,
+      "message": "Since `gradientBufferSupport()` will return false still, I think we should split this change into two parts. First we just enable storage buffer support without any of the rest of the changes to the command buffer or pipeline layout. This will help isolate any performance changes from that switch.\n\nThen we can have the bulk of this CL in one labeled more like \"Add gradient buffer binding to Vulkan backend\"\n\nWDYT?",
+      "range": {
+        "startLine": 97,
+        "startChar": 4,
+        "endLine": 97,
+        "endChar": 33
+      },
+      "revId": "7038d9a4a925c5116fdeeef1ae2d884542d1274e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "532920c0_6c9d1e2b",
         "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
         "patchSetId": 17
