@@ -31,7 +31,6 @@ std::tuple<UniquePaintParamsID, const UniformDataBlock*, const TextureDataBlock*
 ExtractPaintData(Recorder* recorder,
                  PipelineDataGatherer* gatherer,
                  PaintParamsKeyBuilder* builder,
-                 const Layout layout,
                  const SkM44& local2Dev,
                  const PaintParams& p,
                  sk_sp<TextureProxy> dstTexture,
@@ -39,7 +38,7 @@ ExtractPaintData(Recorder* recorder,
                  const SkColorInfo& targetColorInfo) {
     SkDEBUGCODE(builder->checkReset());
 
-    gatherer->resetWithNewLayout(layout);
+    gatherer->reset();
 
     KeyContext keyContext(
             recorder, local2Dev, targetColorInfo, p.color(), std::move(dstTexture), dstOffset);
@@ -66,10 +65,9 @@ std::tuple<const UniformDataBlock*, const TextureDataBlock*> ExtractRenderStepDa
         UniformDataCache* uniformDataCache,
         TextureDataCache* textureDataCache,
         PipelineDataGatherer* gatherer,
-        const Layout layout,
         const RenderStep* step,
         const DrawParams& params) {
-    gatherer->resetWithNewLayout(layout);
+    gatherer->reset();
     step->writeUniformsAndTextures(params, gatherer);
 
     const UniformDataBlock* uniforms =

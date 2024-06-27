@@ -376,9 +376,7 @@ void PaintOptions::buildCombinations(
 
     int numCombinations = this->numCombinations();
     for (int i = 0; i < numCombinations; ++i) {
-        // Since the precompilation path's uniforms aren't used and don't change the key,
-        // the exact layout doesn't matter
-        gatherer->resetWithNewLayout(Layout::kMetal);
+        gatherer->reset();
 
         this->createKey(keyContext, &builder, gatherer, i, addPrimitiveBlender, coverage);
 

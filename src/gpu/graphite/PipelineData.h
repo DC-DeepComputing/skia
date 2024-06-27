@@ -31,11 +31,15 @@ class UniformDataBlock {
 public:
     static UniformDataBlock* Make(const UniformDataBlock&, SkArenaAlloc*);
 
-    UniformDataBlock(SkSpan<const char> data) : fData(data) {}
-    UniformDataBlock() = default;
+    UniformDataBlock(SkSpan<const char> data, int requiredAlignment)
+            : fData(data), fRequiredAlignment(requiredAlignment) {
+        SkASSERT(requiredAlignment > 0);
+    }
 
     const char* data() const { return fData.data(); }
     size_t size() const { return fData.size(); }
+
+    int requiredAlignment() const { return fRequiredAlignment; }
 
     uint32_t hash() const;
 
@@ -47,6 +51,7 @@ public:
 
 private:
     SkSpan<const char> fData;
+    int fRequiredAlignment; // internal starting alignment based on collected field types
 };
 
 class TextureDataBlock {
@@ -54,7 +59,6 @@ public:
     using SampledTexture = std::pair<sk_sp<TextureProxy>, SamplerDesc>;
 
     static TextureDataBlock* Make(const TextureDataBlock&, SkArenaAlloc*);
-    TextureDataBlock() = default;
 
     bool empty() const { return fTextureData.empty(); }
     int numTextures() const { return SkTo<int>(fTextureData.size()); }
@@ -89,9 +93,12 @@ private:
 // obviously, vastly complicate uniform accumulation.
 class PipelineDataGatherer {
 public:
-    PipelineDataGatherer(Layout layout);
+    PipelineDataGatherer(Layout layout) : fUniformManager(layout) {}
 
-    void resetWithNewLayout(Layout layout);
+    void reset() {
+        fUniformManager.reset();
+        fTextureDataBlock.reset();
+    }
 
     // Check that the gatherer has been reset to its initial state prior to collecting new data.
     SkDEBUGCODE(void checkReset();)

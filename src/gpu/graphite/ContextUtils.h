@@ -59,7 +59,6 @@ std::tuple<UniquePaintParamsID, const UniformDataBlock*, const TextureDataBlock*
 ExtractPaintData(Recorder*,
                  PipelineDataGatherer* gatherer,
                  PaintParamsKeyBuilder* builder,
-                 const Layout layout,
                  const SkM44& local2Dev,
                  const PaintParams&,
                  sk_sp<TextureProxy> dstTexture,
@@ -70,7 +69,6 @@ std::tuple<const UniformDataBlock*, const TextureDataBlock*> ExtractRenderStepDa
         UniformDataCache* uniformDataCache,
         TextureDataCache* textureDataCache,
         PipelineDataGatherer* gatherer,
-        const Layout layout,
         const RenderStep* step,
         const DrawParams& params);
 

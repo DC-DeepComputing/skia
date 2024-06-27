@@ -55,7 +55,7 @@ UniformDataBlock UniformManager::finishUniformDataBlock() {
         char* padding = fStorage.append(paddingSize);
         memset(padding, 0, paddingSize);
     }
-    return UniformDataBlock(SkSpan(fStorage.begin(), size));
+    return UniformDataBlock(SkSpan(fStorage.begin(), size), fReqAlignment);
 }
 
 void UniformManager::resetWithNewLayout(Layout layout) {

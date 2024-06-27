@@ -144,6 +144,15 @@ public:
         this->add<BindUniformBuffer>(info, slot);
     }
 
+    // Caller must set the returned 'int*' to the number of bytes of the binding once known
+    // (before the commands are issued to the backend). This allows the caller to fill in the
+    // missing information needed for the BindUniformBufferInfo's fBindingSize field.
+    uint32_t* bindDeferredUniformBuffer(BindBufferInfo info, UniformSlot slot) {
+        BindUniformBuffer* cmd = this->add<BindUniformBuffer>(
+                BindUniformBufferInfo{{info.fBuffer, info.fOffset}, 0}, slot);
+        return &cmd->fInfo.fBindingSize;
+    }
+
     // Caller must write 'numTexSamplers' texture and sampler indices into the two returned arrays.
     std::pair<int*, int*>
     bindDeferredTexturesAndSamplers(int numTexSamplers) {
@@ -205,13 +214,13 @@ public:
 
 private:
     template <typename T, typename... Args>
-    void add(Args&&... args) {
+    T* add(Args&&... args) {
         T* cmd = fAlloc.make<T>(T{std::forward<Args>(args)...});
         fCommands.push_back(std::make_pair(T::kType, cmd));
+        return cmd;
     }
 
-    // This copy() is for arrays.
-    // It will work with POD only arrays.
+    // This copy() is for arrays. It will work with POD only arrays.
     template <typename T>
     T* copy(const T src[], size_t count) {
         static_assert(std::is_trivially_copyable<T>::value);

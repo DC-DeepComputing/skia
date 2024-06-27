@@ -12,13 +12,6 @@
 
 namespace skgpu::graphite {
 
-PipelineDataGatherer::PipelineDataGatherer(Layout layout) : fUniformManager(layout) {}
-
-void PipelineDataGatherer::resetWithNewLayout(Layout layout) {
-    fUniformManager.resetWithNewLayout(layout);
-    fTextureDataBlock.reset();
-}
-
 #ifdef SK_DEBUG
 void PipelineDataGatherer::checkReset() {
     SkASSERT(fTextureDataBlock.empty());
@@ -37,7 +30,8 @@ UniformDataBlock* UniformDataBlock::Make(const UniformDataBlock& other, SkArenaA
     memcpy(mem, other.data(), other.size());
 
     return arena->make([&](void* ptr) {
-        return new (ptr) UniformDataBlock(SkSpan<const char>(mem, other.size()));
+        return new (ptr) UniformDataBlock(SkSpan<const char>(mem, other.size()),
+                                          other.requiredAlignment());
     });
 }
 
