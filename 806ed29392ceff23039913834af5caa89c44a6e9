@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bbbdc504_0ebe0388",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 10537
+      },
+      "writtenOn": "2024-06-27T11:22:24Z",
+      "side": 1,
+      "message": "Thanks! LGTM with comments addressed.",
+      "revId": "806ed29392ceff23039913834af5caa89c44a6e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bb356752_581ac64f",
@@ -31,6 +48,30 @@
       "writtenOn": "2024-06-26T17:30:54Z",
       "side": 1,
       "message": "I know in a past review we talked about why we can\u0027t simply define a `\u003d\u003d` operator for `wgpu::YCbCrVkDescriptor`, but I do not recall why that is. @blundell@chromium.org?",
+      "range": {
+        "startLine": 194,
+        "startChar": 0,
+        "endLine": 207,
+        "endChar": 1
+      },
+      "revId": "806ed29392ceff23039913834af5caa89c44a6e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53a9e473_d355eca3",
+        "filename": "src/gpu/graphite/dawn/DawnGraphiteUtils.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 10537
+      },
+      "writtenOn": "2024-06-27T11:22:24Z",
+      "side": 1,
+      "message": "It\u0027s the discussion here [1]. It seems like we should be able to unify this util with the util added there?\n\n[1] https://skia-review.googlesource.com/c/skia/+/863356/comment/b7e8b163_06fd99f5/",
+      "parentUuid": "bb356752_581ac64f",
       "range": {
         "startLine": 194,
         "startChar": 0,
@@ -83,6 +124,40 @@
         "endLine": 55,
         "endChar": 50
       },
+      "revId": "806ed29392ceff23039913834af5caa89c44a6e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d241f567_760c4762",
+        "filename": "src/gpu/graphite/dawn/DawnGraphiteUtilsPriv.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 10537
+      },
+      "writtenOn": "2024-06-27T11:22:24Z",
+      "side": 1,
+      "message": "\u003c\u003c kComponentBShift",
+      "revId": "806ed29392ceff23039913834af5caa89c44a6e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5db412b2_0b6a7396",
+        "filename": "src/gpu/graphite/dawn/DawnGraphiteUtilsPriv.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 10537
+      },
+      "writtenOn": "2024-06-27T11:22:24Z",
+      "side": 1,
+      "message": "\u003c\u003c kComponentGShift",
       "revId": "806ed29392ceff23039913834af5caa89c44a6e9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
