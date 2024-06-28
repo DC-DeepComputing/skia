@@ -502,7 +502,14 @@ void LocalMatrixShaderBlock::BeginBlock(const KeyContext& keyContext,
 
     add_localmatrixshader_uniform_data(keyContext.dict(), lmShaderData.fLocalMatrix, gatherer);
 
-    builder->beginBlock(BuiltInCodeSnippetID::kLocalMatrixShader);
+    // Check if the last row of the matrix doesn't follow the identity, in that case perspective
+    // is most likely applied.
+    SkV4 perspRow = lmShaderData.fLocalMatrix.row(3);
+    bool hasPersp = perspRow.x != 0 || perspRow.y != 0 ||
+                    perspRow.z != 0 || perspRow.w != 1;
+
+    builder->beginBlock(hasPersp ? BuiltInCodeSnippetID::kLocalMatrixShaderPersp
+                                 : BuiltInCodeSnippetID::kLocalMatrixShader);
 }
 
 //--------------------------------------------------------------------------------------------------

@@ -788,7 +788,8 @@ static constexpr int kNumLocalMatrixShaderChildren = 1;
 // special GenerateLocalMatrixExpression.
 std::string GenerateLocalMatrixPreamble(const ShaderInfo& shaderInfo,
                                         const ShaderNode* node) {
-    SkASSERT(node->codeSnippetId() == (int) BuiltInCodeSnippetID::kLocalMatrixShader);
+    SkASSERT(node->codeSnippetId() == (int) BuiltInCodeSnippetID::kLocalMatrixShader ||
+             node->codeSnippetId() == (int) BuiltInCodeSnippetID::kLocalMatrixShaderPersp);
     SkASSERT(node->numChildren() == kNumLocalMatrixShaderChildren);
 
     // Get the child's evaluation expression.
@@ -798,13 +799,24 @@ std::string GenerateLocalMatrixPreamble(const ShaderInfo& shaderInfo,
     std::string localMatrixUni =
             get_mangled_uniform_name(shaderInfo, node->entry()->fUniforms[0], node->keyIndex());
 
+    std::string transform;
+    if (node->codeSnippetId() == (int) BuiltInCodeSnippetID::kLocalMatrixShaderPersp) {
+        transform = SkSL::String::printf("float4 preCoords = %s * coords.xy01;"
+                                         "coords = preCoords.xy / preCoords.w;",
+                                         localMatrixUni.c_str());
+    } else {
+        transform = SkSL::String::printf("coords = (%s * coords.xy01).xy;",
+                                         localMatrixUni.c_str());
+    }
+
+
     std::string helperFnName = get_mangled_name(node->entry()->fName, node->keyIndex());
     return SkSL::String::printf("half4 %s(half4 inColor, half4 destColor, float2 coords) {"
-                                    "coords = (%s * coords.xy01).xy;"
+                                    "%s"
                                     "return %s;"
                                 "}",
                                 helperFnName.c_str(),
-                                localMatrixUni.c_str(),
+                                transform.c_str(),
                                 childExpr.c_str());
 }
 
@@ -1470,6 +1482,16 @@ ShaderCodeDictionary::ShaderCodeDictionary() {
     // actually use coordinates.
     fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kLocalMatrixShader] = {
             /*name=*/"LocalMatrixShader",
+            /*staticFn=*/nullptr,
+            SnippetRequirementFlags::kLocalCoords,
+            /*uniforms=*/{ { "localMatrix", SkSLType::kFloat4x4 } },
+            /*textures=*/{},
+            /*expressionGenerator=*/nullptr,
+            GenerateLocalMatrixPreamble,
+            /*numChildren=*/kNumLocalMatrixShaderChildren
+    };
+    fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kLocalMatrixShaderPersp] = {
+            /*name=*/"LocalMatrixShaderPersp",
             /*staticFn=*/nullptr,
             SnippetRequirementFlags::kLocalCoords,
             /*uniforms=*/{ { "localMatrix", SkSLType::kFloat4x4 } },
