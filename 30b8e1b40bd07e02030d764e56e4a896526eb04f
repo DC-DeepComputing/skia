@@ -16,6 +16,23 @@
       "message": "PTAL",
       "revId": "30b8e1b40bd07e02030d764e56e4a896526eb04f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cf23b344_166f8703",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 21754
+      },
+      "writtenOn": "2024-06-28T16:02:11Z",
+      "side": 1,
+      "message": "+egdaniel for OWNERS stamp",
+      "revId": "30b8e1b40bd07e02030d764e56e4a896526eb04f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
