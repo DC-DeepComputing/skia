@@ -46,6 +46,30 @@
       },
       "revId": "38a9c7e04c05be6fe7216004aea37eda93c41c00",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "99af5924_f8dd2c05",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 527,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-28T13:21:41Z",
+      "side": 0,
+      "message": "So this actually did catch a \"bug\" or at least an unexpected scenario with how SkEmptyShader is handled. Right now that\u0027s the only shader node that requires an input color since it maps to `sk_passthrough` but it had been relying on \"initialColor\" being set to transparent black.\n\nI brought that back with a comment pointing to b/349997190, since ideally we\u0027d just match Ganesh\u0027s behavior and skip the draw entirely. That can happen once we determine the paint key early.",
+      "parentUuid": "391d692f_43de7728",
+      "range": {
+        "startLine": 527,
+        "startChar": 26,
+        "endLine": 527,
+        "endChar": 44
+      },
+      "revId": "38a9c7e04c05be6fe7216004aea37eda93c41c00",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
