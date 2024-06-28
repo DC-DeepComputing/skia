@@ -53,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d835b0a0_138cfa10",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-06-28T15:57:03Z",
+      "side": 1,
+      "message": "If I run viewer and adjust the Color Mode values while looking at the emoji GMs, the other backends change color and Graphite does not. However, if we end up drawing the glyphs as paths, they are affected by the Color Mode. So something is\nnot working with atlas text.",
+      "parentUuid": "454c4f92_70547602",
+      "revId": "a67f51a8350e448289d60d8fa8c7346974cbc99a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "75869f00_7e039c5e",
