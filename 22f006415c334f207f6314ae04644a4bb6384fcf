@@ -46,6 +46,30 @@
       },
       "revId": "22f006415c334f207f6314ae04644a4bb6384fcf",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aaebe7be_5b030bd7",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 943,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-06-28T17:16:06Z",
+      "side": 1,
+      "message": "Yes I believe so, since when we enable storage buffer support in the caps, the SkSL code stitching assumes to use buffer bindings for the render step and paint params uniforms, and the uniform manager when writing uniforms also uses the ssbo memory layout if storage buffers are supported.",
+      "parentUuid": "fba4fc2e_06553aec",
+      "range": {
+        "startLine": 941,
+        "startChar": 39,
+        "endLine": 943,
+        "endChar": 77
+      },
+      "revId": "22f006415c334f207f6314ae04644a4bb6384fcf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
