@@ -151,6 +151,30 @@
       },
       "revId": "a67f51a8350e448289d60d8fa8c7346974cbc99a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d02fcada_c97f4ba2",
+        "filename": "src/gpu/graphite/render/BitmapTextRenderStep.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-28T16:11:20Z",
+      "side": 1,
+      "message": "Ah, shucks, stepping back into the hedge then",
+      "parentUuid": "7b9ea0b0_5098d49c",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 57
+      },
+      "revId": "a67f51a8350e448289d60d8fa8c7346974cbc99a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
