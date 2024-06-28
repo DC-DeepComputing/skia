@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6cce65ef_fe3ef1a1",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 942,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-06-28T16:55:08Z",
+      "side": 0,
+      "message": "It looks like this static variable isn\u0027t used anywhere anymore - we should delete it from `src/gpu/graphite/vk/VulkanGraphicsPipeline.h`",
+      "range": {
+        "startLine": 942,
+        "startChar": 54,
+        "endLine": 942,
+        "endChar": 82
+      },
+      "revId": "edb5e3e9f150cc6ae2d6c4ef78cdd1d5cfd389ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c9478181_5da27946",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 946,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-06-28T16:55:08Z",
+      "side": 0,
+      "message": "Same here",
+      "range": {
+        "startLine": 946,
+        "startChar": 54,
+        "endLine": 946,
+        "endChar": 77
+      },
+      "revId": "edb5e3e9f150cc6ae2d6c4ef78cdd1d5cfd389ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

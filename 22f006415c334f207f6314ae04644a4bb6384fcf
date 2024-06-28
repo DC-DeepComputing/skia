@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fba4fc2e_06553aec",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 943,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-06-28T16:55:08Z",
+      "side": 1,
+      "message": "Do we want to use storage buffers for all render step uniforms, not just gradients?",
+      "range": {
+        "startLine": 941,
+        "startChar": 39,
+        "endLine": 943,
+        "endChar": 77
+      },
+      "revId": "22f006415c334f207f6314ae04644a4bb6384fcf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
