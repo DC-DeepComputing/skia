@@ -173,7 +173,9 @@ namespace LayoutRules {
 class UniformOffsetCalculator {
 public:
     UniformOffsetCalculator() = default;
-    UniformOffsetCalculator(Layout layout, int offset) : fLayout(layout), fOffset(offset) {}
+
+    explicit UniformOffsetCalculator(Layout layout, int offset=0)
+            : fLayout(layout), fOffset(offset) {}
 
     // NOTE: The returned size represents the last consumed byte (if the recorded
     // uniforms are embedded within a struct, this will need to be rounded up to a multiple of
@@ -188,6 +190,14 @@ public:
     // of `type` (while the return value equals the aligned start offset). Subsequent calls will
     // calculate the new start offset starting at `size()`.
     int advanceOffset(SkSLType type, int count = Uniform::kNonArray);
+
+    // Calculates the correctly aligned offset to accomodate `count` instances of a custom struct
+    // type that has had its own fields passed into the `substruct` offset calculator.
+    //
+    // After a call to this method, `size()` will return the offset to the end of `count` instances
+    // of the struct types (while the return value equals the aligned start offset). This includes
+    // any required padding of the struct size per rule #9.
+    int advanceStruct(const UniformOffsetCalculator& substruct, int count = Uniform::kNonArray);
 
 private:
     Layout fLayout    = Layout::kInvalid;
