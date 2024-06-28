@@ -10,23 +10,29 @@
 
 #include "src/gpu/graphite/Renderer.h"
 
+namespace skgpu {
+enum class MaskFormat : int;
+}
+
 namespace skgpu::graphite {
 
 class BitmapTextRenderStep final : public RenderStep {
 public:
-    BitmapTextRenderStep(bool isLCD);
+    BitmapTextRenderStep(skgpu::MaskFormat variant);
 
     ~BitmapTextRenderStep() override;
 
     std::string vertexSkSL() const override;
     std::string texturesAndSamplersSkSL(const ResourceBindingRequirements&,
                                         int* nextBindingIndex) const override;
+    const char* fragmentColorSkSL() const override;
     const char* fragmentCoverageSkSL() const override;
 
     void writeVertices(DrawWriter*, const DrawParams&, skvx::ushort2 ssboIndices) const override;
     void writeUniformsAndTextures(const DrawParams&, PipelineDataGatherer*) const override;
 
 private:
+    static SkEnumBitMask<Flags> Flags(skgpu::MaskFormat);
 };
 
 }  // namespace skgpu::graphite
