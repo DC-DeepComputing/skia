@@ -22,6 +22,30 @@
       },
       "revId": "22f006415c334f207f6314ae04644a4bb6384fcf",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77722e9a_a07f8fd4",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 943,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-06-28T17:11:22Z",
+      "side": 1,
+      "message": "Paint and renderstep uniforms are always handled the same (SSBO if supported, UBO if no storage buffer support). Gradient buffers only work with SSBOs *and* if the float array can be packed tightly so we can have 3 possible scenarios that are all valid:\n\nNo SSBO support, so paint/renderstep uniforms are UBOs and the gradient buffer shaders are never used.\nSSBO support but using std140 layout, so paint/renderstep uniforms use SSBOs but the gradient buffer isn\u0027t used.\nSSBO support and we use std430, so everything can be in storage buffers",
+      "parentUuid": "fba4fc2e_06553aec",
+      "range": {
+        "startLine": 941,
+        "startChar": 39,
+        "endLine": 943,
+        "endChar": 77
+      },
+      "revId": "22f006415c334f207f6314ae04644a4bb6384fcf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
