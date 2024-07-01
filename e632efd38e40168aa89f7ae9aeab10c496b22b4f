@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9fc906d_10022057",
+        "filename": "bazel/exporter/gni_exporter.go",
+        "patchSetId": 18
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-01T16:22:19Z",
+      "side": 1,
+      "message": "Remove what?\n\nPlease consider `TODO(b/xxxxxx)` and add details to the bug (also useful to reduce the bus value factor overall).",
+      "range": {
+        "startLine": 99,
+        "startChar": 0,
+        "endLine": 99,
+        "endChar": 60
+      },
+      "revId": "e632efd38e40168aa89f7ae9aeab10c496b22b4f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
