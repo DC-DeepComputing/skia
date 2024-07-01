@@ -87,6 +87,60 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1743507e_a58cfa49",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-07-01T16:53:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1eb0d0a3_73ddceec",
+      "revId": "bb50c0084afbd105bb7e31249dcb026f13289be5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ef8f8e0_da40ebd9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-07-01T16:53:55Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "1a63b33c_85af4346",
+      "revId": "bb50c0084afbd105bb7e31249dcb026f13289be5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cb59b728_f74532ac",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-07-01T16:53:55Z",
+      "side": 1,
+      "message": "Looks like this was failing due to the IS_SIGNED check?",
+      "parentUuid": "35214178_8dccf06c",
+      "revId": "bb50c0084afbd105bb7e31249dcb026f13289be5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a0b544df_194abbfb",
@@ -100,6 +154,30 @@
       "writtenOn": "2024-07-01T15:27:45Z",
       "side": 1,
       "message": "`LOAD_LIBRARY_SEARCH_DEFAULT_DIRS` might be right?",
+      "range": {
+        "startLine": 37,
+        "startChar": 27,
+        "endLine": 37,
+        "endChar": 55
+      },
+      "revId": "bb50c0084afbd105bb7e31249dcb026f13289be5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "71f2cfdd_dda36c7f",
+        "filename": "src/utils/win/SkDWrite.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-07-01T16:53:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a0b544df_194abbfb",
       "range": {
         "startLine": 37,
         "startChar": 27,
