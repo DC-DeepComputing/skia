@@ -72,6 +72,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1a63b33c_85af4346",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-07-01T15:36:26Z",
+      "side": 1,
+      "message": "Also, this is Windows so I don\u0027t understand how this is more of a security issue than just running Windows. If something could drop a malicious `.dll` into your search path then it can pretty much do anything anyway (it\u0027s either an automated installer that already has write, or this is a compromised user and the attacker can just direct the user to do anything).",
+      "revId": "bb50c0084afbd105bb7e31249dcb026f13289be5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a0b544df_194abbfb",
         "filename": "src/utils/win/SkDWrite.cpp",
         "patchSetId": 1
