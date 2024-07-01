@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5a3dab5e_de6b9cbf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-07-01T13:01:30Z",
+      "side": 1,
+      "message": "PathKit and CanvasKit are not currently prioritized projects. PathKit in particular could probably eventually use some API re-evaluation, such as opening up the API a bit more.\nFrom a performance standpoint, I\u0027m not sure we really need to expose points as their own class, so if we wanted PathMeasure, one would probably want to write some helper JS for that.",
+      "revId": "104bc1ede0aa5cc24952debf7c72b94c94d52580",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
