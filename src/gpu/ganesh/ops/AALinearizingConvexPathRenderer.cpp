@@ -416,6 +416,9 @@ bool AALinearizingConvexPathRenderer::onDrawPath(const DrawPathArgs& args) {
 
 #if defined(GR_TEST_UTILS)
 
+#include "src/base/SkRandom.h"
+#include "src/gpu/ganesh/GrTestUtils.h"
+
 GR_DRAW_OP_TEST_DEFINE(AAFlatteningConvexPathOp) {
     SkMatrix viewMatrix = GrTest::TestMatrixPreservesRightAngles(random);
     const SkPath& path = GrTest::TestPathConvex(random);

@@ -9,9 +9,9 @@
  * be overwritten.
  */
 
-#include "include/gpu/gl/GrGLAssembleHelpers.h"
+#include "include/core/SkRefCnt.h"
 #include "include/gpu/gl/GrGLAssembleInterface.h"
-#include "src/gpu/ganesh/gl/GrGLUtil.h"
+struct GrGLInterface;
 
 #if SK_DISABLE_WEBGL_INTERFACE || !defined(__EMSCRIPTEN__)
 sk_sp<const GrGLInterface> GrGLMakeAssembledWebGLInterface(void *ctx, GrGLGetProc get) {
