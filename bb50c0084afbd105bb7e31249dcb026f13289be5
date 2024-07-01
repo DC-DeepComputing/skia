@@ -51,6 +51,29 @@
       "parentUuid": "87c24e60_ccf1a331",
       "revId": "bb50c0084afbd105bb7e31249dcb026f13289be5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0b544df_194abbfb",
+        "filename": "src/utils/win/SkDWrite.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-07-01T15:27:45Z",
+      "side": 1,
+      "message": "`LOAD_LIBRARY_SEARCH_DEFAULT_DIRS` might be right?",
+      "range": {
+        "startLine": 37,
+        "startChar": 27,
+        "endLine": 37,
+        "endChar": 55
+      },
+      "revId": "bb50c0084afbd105bb7e31249dcb026f13289be5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
