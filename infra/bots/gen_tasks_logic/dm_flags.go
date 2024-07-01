@@ -1236,6 +1236,10 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 	}
 
 	if b.extraConfig("Vulkan") && b.gpu("RadeonVega6") {
+		if b.matchOs("Debian11") {  // b/350513632
+			skip(ALL, "gm", ALL, "textureimage_and_shader")
+			skip(ALL, "gm", ALL, "drawimage_sampling")
+		}
 		skip(ALL, "gm", ALL, "ycbcrimage")                                 // skia:13265
 		skip(ALL, "test", ALL, "VkYCbcrSampler_DrawImageWithYcbcrSampler") // skia:13265
 	}
