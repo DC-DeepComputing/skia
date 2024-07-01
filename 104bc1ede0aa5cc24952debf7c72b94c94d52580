@@ -16,6 +16,23 @@
       "message": "PathKit and CanvasKit are not currently prioritized projects. PathKit in particular could probably eventually use some API re-evaluation, such as opening up the API a bit more.\nFrom a performance standpoint, I\u0027m not sure we really need to expose points as their own class, so if we wanted PathMeasure, one would probably want to write some helper JS for that.",
       "revId": "104bc1ede0aa5cc24952debf7c72b94c94d52580",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cf915749_284d41ba",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-07-01T15:38:47Z",
+      "side": 1,
+      "message": "Per Kaylee\u0027s comments: If you look at canvaskit_bindings.cpp, you can see how other APIs that return/accept points have been written to usually just operate on arrays of floats. I think that\u0027s preferable, for consistency.\n\nAlso: That same file has existing bindings for SkContourMeasure. Can you use that set of bindings, rather than creating new ones for PathMeasure? If we want to add those same bindings to pathkit, that\u0027s fine, but it should look the same.",
+      "revId": "104bc1ede0aa5cc24952debf7c72b94c94d52580",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
