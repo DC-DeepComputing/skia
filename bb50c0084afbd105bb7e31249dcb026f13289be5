@@ -16,6 +16,23 @@
       "message": "This should work, right?",
       "revId": "bb50c0084afbd105bb7e31249dcb026f13289be5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "87c24e60_ccf1a331",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-07-01T15:16:34Z",
+      "side": 1,
+      "message": "I\u0027m not sure that `dwritecore.dll` is ever installed in `system32`. It\u0027s kind of the reason it exists. Also this will probably break our tester which requires being able to find the dll next to the binary, so there would need to be some change for that at least.",
+      "revId": "bb50c0084afbd105bb7e31249dcb026f13289be5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
