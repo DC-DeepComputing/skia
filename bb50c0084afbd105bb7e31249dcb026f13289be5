@@ -141,6 +141,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a4f1c13d_90bcdb49",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-07-01T16:56:11Z",
+      "side": 1,
+      "message": "Turns out one cannot use `LOAD_LIBRARY_REQUIRE_SIGNED_TARGET` with `dwrite.dll` because, while it is signed, it does not appear to have been built with `/INTEGRITYCHECK` (it doesn\u0027t have the IMAGE_DLLCHARACTERISTICS_FORCE_INTEGRITY flag set). Same for most other Windows distributed dlls.",
+      "parentUuid": "35214178_8dccf06c",
+      "revId": "bb50c0084afbd105bb7e31249dcb026f13289be5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a0b544df_194abbfb",
