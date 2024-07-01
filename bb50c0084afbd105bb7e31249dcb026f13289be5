@@ -55,6 +55,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "35214178_8dccf06c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-07-01T15:30:34Z",
+      "side": 1,
+      "message": "Also, it would be good to know why Patchset 1 prevents loading even the regular `dwrite.dll` on our test machines.",
+      "revId": "bb50c0084afbd105bb7e31249dcb026f13289be5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a0b544df_194abbfb",
         "filename": "src/utils/win/SkDWrite.cpp",
         "patchSetId": 1
