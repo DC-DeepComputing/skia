@@ -33,6 +33,24 @@
       "message": "Is this just about cross compiling? Skia\u0027s GN build already supports this (for instance we use it to compile for ARM on x64 machines). See https://gn.googlesource.com/gn/+/main/docs/cross_compiles.md for a description and the `Build-Win-MSVC-arm64-Release` for an example.\n\nIf this particular cross compile method doesn\u0027t work, we should make it work rather than adding more flags like this.",
       "revId": "d0d47fbbb2d499e7030c2533d78e7cc16809e3c8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8371a4ff_d1627ac1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-07-02T13:45:03Z",
+      "side": 1,
+      "message": "We also have a set of generic GN arguments that can be used to append anything you want: `extra_cflags`, `extra_ldflags`, and `extra_asmflags`. Seems like those would work?",
+      "parentUuid": "2e025804_aba2a19f",
+      "revId": "d0d47fbbb2d499e7030c2533d78e7cc16809e3c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
