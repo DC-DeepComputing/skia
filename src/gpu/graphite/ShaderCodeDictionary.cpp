@@ -837,7 +837,7 @@ std::string GenerateComposePreamble(const ShaderInfo& shaderInfo, const ShaderNo
 std::string GeneratePrimitiveColorExpression(const ShaderInfo&,
                                              const ShaderNode* node,
                                              const ShaderSnippet::Args&) {
-    return "primitiveColor";
+    return "sk_primitive_color(primitiveColor)";
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -1623,7 +1623,7 @@ ShaderCodeDictionary::ShaderCodeDictionary() {
             /*name=*/"PrimitiveColor",
             /*staticFn=*/nullptr,
             SnippetRequirementFlags::kNone,
-            /*uniforms=*/{},
+            /*uniforms=*/{ /* TODO: add colorspace info */ },
             /*textures=*/{},
             GeneratePrimitiveColorExpression
     };
