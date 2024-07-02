@@ -1236,6 +1236,18 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 	}
 
 	if b.extraConfig("Vulkan") && b.gpu("RadeonVega6") {
+		if b.matchOs("Debian11") {  // b/350513632
+			skip(ALL, "gm", ALL, "imageblur")
+			skip(ALL, "gm", ALL, "new_texture_image")
+			skip(ALL, "gm", ALL, "textureimage_and_shader")
+			skip(ALL, "gm", ALL, "drawimage_sampling")
+			skip(ALL, "gm", ALL, "image-shader")
+			skip(ALL, "gm", ALL, "image-surface")
+			skip(ALL, "gm", ALL, "scale-pixels")
+			skip(ALL, "gm", ALL, "path_huge_aa")
+			skip(ALL, "gm", ALL, "path_huge_aa_manual")
+			skip(ALL, "gm", ALL, "path_huge_crbug_800804")
+		}
 		skip(ALL, "gm", ALL, "ycbcrimage")                                 // skia:13265
 		skip(ALL, "test", ALL, "VkYCbcrSampler_DrawImageWithYcbcrSampler") // skia:13265
 	}
