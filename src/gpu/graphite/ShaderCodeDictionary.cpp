@@ -1600,7 +1600,11 @@ ShaderCodeDictionary::ShaderCodeDictionary() {
             /*name=*/"PrimitiveColor",
             /*staticFn=*/"sk_primitive_color",
             SnippetRequirementFlags::kPrimitiveColor,
-            /*uniforms=*/{ /* TODO: add colorspace info */ },
+            /*uniforms=*/{ { "csXformFlags",          SkSLType::kInt },
+                           { "csXformSrcKind",        SkSLType::kInt },
+                           { "csXformGamutTransform", SkSLType::kHalf3x3 },
+                           { "csXformDstKind",        SkSLType::kInt },
+                           { "csXformCoeffs",         SkSLType::kHalf4x4 } },
             /*textures=*/{}
     };
 
