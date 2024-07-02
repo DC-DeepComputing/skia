@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "974395e6_4451443c",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 4
+      },
+      "lineNbr": 1264,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-07-02T21:32:29Z",
+      "side": 1,
+      "message": "Can simplify this, and probably just remove sk_primitive_color(), by using sk_color_space_transform().",
+      "range": {
+        "startLine": 1264,
+        "startChar": 12,
+        "endLine": 1264,
+        "endChar": 41
+      },
+      "revId": "eacc0723b639eb73ccafd0f28dee1135dca6bd10",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
