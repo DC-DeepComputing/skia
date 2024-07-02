@@ -50,6 +50,7 @@
 
 #include "src/core/SkBlenderBase.h"
 #include "src/core/SkBlurMaskFilterImpl.h"
+#include "src/core/SkColorFilterPriv.h"
 #include "src/core/SkColorSpacePriv.h"
 #include "src/core/SkConvertPixels.h"
 #include "src/core/SkImageFilterTypes.h"
@@ -946,9 +947,19 @@ void Device::drawAtlasSubRun(const sktext::gpu::AtlasSubRun* subRun,
             auto [bounds, localToDevice] = subRun->vertexFiller().boundsAndDeviceMatrix(
                                                    this->localToDeviceTransform(), drawOrigin);
             SkPaint subRunPaint = paint;
-            // For color emoji, shaders don't affect the final color
+            // For color emoji, shaders don't affect the final color.
             if (subRun->maskFormat() == skgpu::MaskFormat::kARGB) {
                 subRunPaint.setShader(nullptr);
+                // Add any necessary colorspace transform.
+                sk_sp<SkColorSpace> srgb = SkColorSpace::MakeSRGB();
+                if (!SkColorSpace::Equals(srgb.get(), this->imageInfo().colorSpace())) {
+                    sk_sp<SkColorFilter> cf = SkColorFilterPriv::MakeColorSpaceXform(
+                            srgb, this->imageInfo().refColorSpace());
+                    if (subRunPaint.getColorFilter()) {
+                        cf = subRunPaint.getColorFilter()->makeComposed(cf);
+                    }
+                    subRunPaint.setColorFilter(cf);
+                }
             }
 
             bool useGammaCorrectDistanceTable =
