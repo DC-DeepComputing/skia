@@ -16,6 +16,23 @@
       "message": "PTAL",
       "revId": "9614b20539e235dbc7d859ab070978438aa51b61",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b91e791_38f4e404",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-07-02T15:02:48Z",
+      "side": 1,
+      "message": "I suspect this differs from Ganesh/CPU if there is paint alpha? I don\u0027t love it, but the model today is that the SkShader runs, converting everything to the destination color space. Then, paint alpha is applied to the result. After the paint alpha, the color gets fed to the color filter. With this implementation, the paint-alpha multiplication will happen in the original sRGB space, not in the destination space.\n\nHonestly, I\u0027m not even sure that color text works like I described in the other backends - it\u0027s such a special case that it might have slipped through the cracks. The easiest way to test this is probably to have a color-text GM that uses 50% paint alpha, and render to a linear color space target. That would make it clear if the multiply is happening before or after the transfer function change.",
+      "revId": "9614b20539e235dbc7d859ab070978438aa51b61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
