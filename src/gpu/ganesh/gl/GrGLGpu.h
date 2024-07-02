@@ -636,7 +636,7 @@ private:
         }
     } fHWScissorSettings;
 
-    class {
+    class HWWindowRectsState {
     public:
         bool valid() const { return kInvalidSurfaceOrigin != fRTOrigin; }
         void invalidate() { fRTOrigin = kInvalidSurfaceOrigin; }
@@ -667,7 +667,7 @@ private:
         }
 
     private:
-        enum { kInvalidSurfaceOrigin = -1 };
+        static constexpr int kInvalidSurfaceOrigin = -1;
 
         int                  fRTOrigin;
         int                  fWidth;
