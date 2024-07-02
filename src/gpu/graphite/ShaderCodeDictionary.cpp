@@ -1598,9 +1598,9 @@ ShaderCodeDictionary::ShaderCodeDictionary() {
 
     fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kPrimitiveColor] = {
             /*name=*/"PrimitiveColor",
-            /*staticFn=*/"sk_passthrough",
+            /*staticFn=*/"sk_primitive_color",
             SnippetRequirementFlags::kPrimitiveColor,
-            /*uniforms=*/{},
+            /*uniforms=*/{ /* TODO: add colorspace info */ },
             /*textures=*/{}
     };
 
