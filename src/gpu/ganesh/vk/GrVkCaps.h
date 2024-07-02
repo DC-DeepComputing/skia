@@ -368,15 +368,14 @@ private:
     struct ColorTypeInfo {
         GrColorType fColorType = GrColorType::kUnknown;
         GrColorType fTransferColorType = GrColorType::kUnknown;
-        enum {
-            kUploadData_Flag = 0x1,
-            // Does Ganesh itself support rendering to this colorType & format pair. Renderability
-            // still additionally depends on if the format itself is renderable.
-            kRenderable_Flag = 0x2,
-            // Indicates that this colorType is supported only if we are wrapping a texture with
-            // the given format and colorType. We do not allow creation with this pair.
-            kWrappedOnly_Flag = 0x4,
-        };
+        static constexpr uint32_t kUploadData_Flag = 0x1;
+        // Does Ganesh itself support rendering to this colorType & format pair. Renderability
+        // still additionally depends on if the format itself is renderable.
+        static constexpr uint32_t kRenderable_Flag = 0x2;
+        // Indicates that this colorType is supported only if we are wrapping a texture with
+        // the given format and colorType. We do not allow creation with this pair.
+        static constexpr uint32_t kWrappedOnly_Flag = 0x4;
+
         uint32_t fFlags = 0;
 
         skgpu::Swizzle fReadSwizzle;
@@ -405,12 +404,10 @@ private:
                               const VkPhysicalDeviceProperties&,
                               VkFormat);
 
-        enum {
-            kTexturable_Flag = 0x1,
-            kRenderable_Flag = 0x2,
-            kBlitSrc_Flag    = 0x4,
-            kBlitDst_Flag    = 0x8,
-        };
+        static constexpr uint16_t kTexturable_Flag = 0x1;
+        static constexpr uint16_t kRenderable_Flag = 0x2;
+        static constexpr uint16_t kBlitSrc_Flag    = 0x4;
+        static constexpr uint16_t kBlitDst_Flag    = 0x8;
 
         uint16_t fOptimalFlags = 0;
         uint16_t fLinearFlags = 0;

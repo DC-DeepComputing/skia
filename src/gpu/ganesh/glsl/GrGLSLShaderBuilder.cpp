@@ -29,7 +29,7 @@ GrGLSLShaderBuilder::GrGLSLShaderBuilder(GrGLSLProgramBuilder* program)
     , fFinalized(false)
     , fTmpVariableCounter(0) {
     // We push back some placeholder pointers which will later become our header
-    for (int i = 0; i <= kCode; i++) {
+    for (size_t i = 0; i <= kCode; i++) {
         fShaderStrings.push_back();
     }
 
