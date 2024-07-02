@@ -1598,9 +1598,13 @@ ShaderCodeDictionary::ShaderCodeDictionary() {
 
     fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kPrimitiveColor] = {
             /*name=*/"PrimitiveColor",
-            /*staticFn=*/"sk_passthrough",
+            /*staticFn=*/"sk_primitive_color",
             SnippetRequirementFlags::kPrimitiveColor,
-            /*uniforms=*/{},
+            /*uniforms=*/{ { "csXformFlags",          SkSLType::kInt },
+                           { "csXformSrcKind",        SkSLType::kInt },
+                           { "csXformGamutTransform", SkSLType::kHalf3x3 },
+                           { "csXformDstKind",        SkSLType::kInt },
+                           { "csXformCoeffs",         SkSLType::kHalf4x4 } },
             /*textures=*/{}
     };
 

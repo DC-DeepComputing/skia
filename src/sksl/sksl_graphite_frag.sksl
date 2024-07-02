@@ -1255,6 +1255,16 @@ $pure half4 sk_coeff_blend(half4 src, half4 dst, half4 coeffs) {
     return blend_porter_duff(coeffs, src, dst);
 }
 
+$pure half4 sk_primitive_color(half4 color,
+                               int csXformFlags,
+                               int csXformSrcKind,
+                               half3x3 csXformGamutTransform,
+                               int csXformDstKind,
+                               half4x4 csXformCoeffs) {
+    return $color_space_transform_swizzle(color, csXformFlags, csXformSrcKind,
+                                          csXformGamutTransform, csXformDstKind, csXformCoeffs);
+}
+
 $pure half4 sk_table_colorfilter(half4 inColor, sampler2D s) {
     half4 coords = unpremul(inColor) * (255.0/256.0) + (0.5/256.0);
     half4 color = half4(sample(s, half2(coords.r, 3.0/8.0)).r,
