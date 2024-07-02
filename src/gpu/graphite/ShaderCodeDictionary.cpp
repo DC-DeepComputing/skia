@@ -837,7 +837,9 @@ std::string GenerateComposePreamble(const ShaderInfo& shaderInfo, const ShaderNo
 std::string GeneratePrimitiveColorExpression(const ShaderInfo&,
                                              const ShaderNode* node,
                                              const ShaderSnippet::Args&) {
-    return "sk_primitive_color(primitiveColor)";
+    return "sk_primitive_color(primitiveColor, fsUniformData[ssboIndicesVar].csXformFlags_2,"
+                              "fsUniformData[ssboIndicesVar].csXformSrcKind_2, fsUniformData[ssboIndicesVar].csXformGamutTransform_2,"
+                              "fsUniformData[ssboIndicesVar].csXformDstKind_2, fsUniformData[ssboIndicesVar].csXformCoeffs_2)";
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -1623,7 +1625,11 @@ ShaderCodeDictionary::ShaderCodeDictionary() {
             /*name=*/"PrimitiveColor",
             /*staticFn=*/nullptr,
             SnippetRequirementFlags::kNone,
-            /*uniforms=*/{ /* TODO: add colorspace info */ },
+            /*uniforms=*/{ { "csXformFlags",          SkSLType::kInt },
+                           { "csXformSrcKind",        SkSLType::kInt },
+                           { "csXformGamutTransform", SkSLType::kHalf3x3 },
+                           { "csXformDstKind",        SkSLType::kInt },
+                           { "csXformCoeffs",         SkSLType::kHalf4x4 } },
             /*textures=*/{},
             GeneratePrimitiveColorExpression
     };
