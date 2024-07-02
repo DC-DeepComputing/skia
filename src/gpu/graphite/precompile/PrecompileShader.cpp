@@ -31,16 +31,6 @@ namespace skgpu::graphite {
 
 PrecompileShader::~PrecompileShader() = default;
 
-sk_sp<PrecompileShader> PrecompileShader::makeWithLocalMatrix() {
-    if (this->priv().isALocalMatrixShader()) {
-        // SkShader::makeWithLocalMatrix collapses chains of localMatrix shaders so we need to
-        // follow suit here
-        return sk_ref_sp(this);
-    }
-
-    return PrecompileShaders::LocalMatrix({ sk_ref_sp(this) });
-}
-
 sk_sp<PrecompileShader> PrecompileShader::makeWithColorFilter(sk_sp<PrecompileColorFilter> cf) {
     if (!cf) {
         return sk_ref_sp(this);
@@ -570,6 +560,7 @@ class PrecompileLocalMatrixShader final : public PrecompileShader {
 public:
     enum class Flags {
         kNone,
+        kWithPerspective,
         kIncludeWithOutVariant,
     };
 
@@ -600,6 +591,10 @@ public:
         }
 
         return false;
+    }
+
+    void setPerspectiveFlag() {
+        fFlags = Flags::kWithPerspective;
     }
 
 private:
@@ -656,8 +651,12 @@ private:
 };
 
 sk_sp<PrecompileShader> PrecompileShaders::LocalMatrix(
-        SkSpan<const sk_sp<PrecompileShader>> wrapped) {
-    return sk_make_sp<PrecompileLocalMatrixShader>(std::move(wrapped));
+        SkSpan<const sk_sp<PrecompileShader>> wrapped,
+        bool hasPerspective) {
+    return sk_make_sp<PrecompileLocalMatrixShader>(
+            std::move(wrapped),
+            hasPerspective ? PrecompileLocalMatrixShader::Flags::kWithPerspective
+                           : PrecompileLocalMatrixShader::Flags::kNone);
 }
 
 sk_sp<PrecompileShader> PrecompileShadersPriv::LocalMatrixBothVariants(
@@ -665,6 +664,21 @@ sk_sp<PrecompileShader> PrecompileShadersPriv::LocalMatrixBothVariants(
     return sk_make_sp<PrecompileLocalMatrixShader>(
             std::move(wrapped),
             PrecompileLocalMatrixShader::Flags::kIncludeWithOutVariant);
+}
+
+sk_sp<PrecompileShader> PrecompileShader::makeWithLocalMatrix(bool hasPerspective) {
+    if (this->priv().isALocalMatrixShader()) {
+        // SkShader::makeWithLocalMatrix collapses chains of localMatrix shaders so we need to
+        // follow suit here, applying any new perspective flags if needed.
+        if (hasPerspective) {
+            auto lmShader = static_cast<PrecompileLocalMatrixShader*>(this);
+            lmShader->setPerspectiveFlag();
+        }
+
+        return sk_ref_sp(this);
+    }
+
+    return PrecompileShaders::LocalMatrix({ sk_ref_sp(this) }, hasPerspective);
 }
 
 //--------------------------------------------------------------------------------------------------
