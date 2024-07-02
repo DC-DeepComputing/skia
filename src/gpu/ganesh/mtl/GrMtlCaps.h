@@ -127,12 +127,11 @@ private:
     // ColorTypeInfo for a specific format
     struct ColorTypeInfo {
         GrColorType fColorType = GrColorType::kUnknown;
-        enum {
-            kUploadData_Flag = 0x1,
-            // Does Ganesh itself support rendering to this colorType & format pair. Renderability
-            // still additionally depends on if the format itself is renderable.
-            kRenderable_Flag = 0x2,
-        };
+        static constexpr uint32_t kUploadData_Flag = 0x1;
+        // Does Ganesh itself support rendering to this colorType & format pair. Renderability
+        // still additionally depends on if the format itself is renderable.
+        static constexpr uint32_t kRenderable_Flag = 0x2;
+
         uint32_t fFlags = 0;
 
         skgpu::Swizzle fReadSwizzle;
@@ -149,14 +148,12 @@ private:
             return 0;
         }
 
-        enum {
-            kTexturable_Flag  = 0x1,
-            kRenderable_Flag  = 0x2, // Color attachment and blendable
-            kMSAA_Flag        = 0x4,
-            kResolve_Flag     = 0x8,
-        };
-        static const uint16_t kAllFlags = kTexturable_Flag | kRenderable_Flag |
-                                          kMSAA_Flag | kResolve_Flag;
+        static constexpr uint16_t kTexturable_Flag = 0x1;
+        static constexpr uint16_t kRenderable_Flag = 0x2;  // Color attachment and blendable
+        static constexpr uint16_t kMSAA_Flag       = 0x4;
+        static constexpr uint16_t kResolve_Flag    = 0x8;
+        static constexpr uint16_t kAllFlags        =
+                kTexturable_Flag | kRenderable_Flag | kMSAA_Flag | kResolve_Flag;
 
         uint16_t fFlags = 0;
 

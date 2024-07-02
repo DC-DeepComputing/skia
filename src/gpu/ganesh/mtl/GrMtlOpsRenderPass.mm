@@ -535,7 +535,7 @@ void GrMtlOpsRenderPass::setVertexBuffer(GrMtlRenderCommandEncoder* encoder,
         return;
     }
 
-    constexpr static int kFirstBufferBindingIdx = GrMtlUniformHandler::kLastUniformBinding + 1;
+    constexpr static int kFirstBufferBindingIdx = GrMtlUniformHandler::kUniformBindingCount;
     int index = inputBufferIndex + kFirstBufferBindingIdx;
     SkASSERT(index < 4);
     auto mtlBuffer = static_cast<const GrMtlBuffer*>(buffer);

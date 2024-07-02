@@ -10,6 +10,10 @@
 #include "src/gpu/ganesh/GrUtil.h"
 #include "src/gpu/ganesh/glsl/GrGLSLProgramBuilder.h"
 
+static constexpr int kSamplerTextureDescriptorSet = 1;
+static constexpr int kUniformBinding = 0;
+static constexpr size_t kUniformsPerBlock = 8;
+
 GrSPIRVUniformHandler::GrSPIRVUniformHandler(GrGLSLProgramBuilder* program)
     : INHERITED(program)
     , fUniforms(kUniformsPerBlock)
