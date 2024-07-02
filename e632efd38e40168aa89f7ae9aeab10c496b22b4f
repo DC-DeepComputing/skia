@@ -22,6 +22,30 @@
       },
       "revId": "e632efd38e40168aa89f7ae9aeab10c496b22b4f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c1542516_b9d211c9",
+        "filename": "bazel/exporter/gni_exporter.go",
+        "patchSetId": 18
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-07-02T13:57:54Z",
+      "side": 1,
+      "message": "Ack. I was planning on handling this TODO today/tomorrow, so a bug seems a bit overkill, but if it\u0027s tougher than I expected, I will.",
+      "parentUuid": "f9fc906d_10022057",
+      "range": {
+        "startLine": 99,
+        "startChar": 0,
+        "endLine": 99,
+        "endChar": 60
+      },
+      "revId": "e632efd38e40168aa89f7ae9aeab10c496b22b4f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
