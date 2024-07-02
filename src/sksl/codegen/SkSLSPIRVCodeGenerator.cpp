@@ -146,6 +146,21 @@ public:
 
     bool generateCode() override;
 
+    // This holds extra information about a storage class for a uniform storage class so when
+    // deciding the memory layout, std430 can be used when the underlying StorageClassUniform
+    // is actually referencing a storage buffer.
+    struct StorageClassPair {
+        StorageClassPair(SpvStorageClass storageClass)
+            : StorageClassPair(storageClass, false) {}
+
+        StorageClassPair(SpvStorageClass storageClass, bool isBufferAsUniformClass)
+            : fStorageClass(storageClass)
+            , fIsBufferAsUniformClass(isBufferAsUniformClass) {}
+
+        SpvStorageClass fStorageClass;
+        bool fIsBufferAsUniformClass;
+    };
+
 private:
     enum IntrinsicOpcodeKind {
         kGLSL_STD_450_IntrinsicOpcodeKind,
@@ -210,7 +225,7 @@ private:
 
     SpvId getFunctionParameterType(const Type& parameterType, const Layout& parameterLayout);
 
-    SpvId getPointerType(const Type& type, SpvStorageClass_ storageClass);
+    SpvId getPointerType(const Type& type, StorageClassPair storageClass);
 
     SpvId getPointerType(const Type& type,
                          const Layout& typeLayout,
@@ -237,7 +252,7 @@ private:
 
     bool writeGlobalVarDeclaration(ProgramKind kind, const VarDeclaration& v);
 
-    SpvId writeGlobalVar(ProgramKind kind, SpvStorageClass_, const Variable& v);
+    SpvId writeGlobalVar(ProgramKind kind, StorageClassPair storageClass, const Variable& v);
 
     void writeVarDeclaration(const VarDeclaration& var, OutputStream& out);
 
@@ -562,7 +577,7 @@ private:
     void writeLabel(SpvId label, BranchingLabelType type, ConditionalOpCounts ops,
                     OutputStream& out);
 
-    MemoryLayout memoryLayoutForStorageClass(SpvStorageClass_ storageClass);
+    MemoryLayout memoryLayoutForStorageClass(StorageClassPair storageClass);
     MemoryLayout memoryLayoutForVariable(const Variable&) const;
 
     struct EntrypointAdapter {
@@ -1840,11 +1855,11 @@ SpvId SPIRVCodeGenerator::getFunctionParameterType(const Type& parameterType,
                                 storageClass);
 }
 
-SpvId SPIRVCodeGenerator::getPointerType(const Type& type, SpvStorageClass_ storageClass) {
+SpvId SPIRVCodeGenerator::getPointerType(const Type& type, StorageClassPair storageClass) {
     return this->getPointerType(type,
                                 kDefaultTypeLayout,
                                 this->memoryLayoutForStorageClass(storageClass),
-                                storageClass);
+                                storageClass.fStorageClass);
 }
 
 SpvId SPIRVCodeGenerator::getPointerType(const Type& type,
@@ -2974,7 +2989,7 @@ SpvId SPIRVCodeGenerator::writeConstructorMatrixResize(const ConstructorMatrixRe
     return this->writeMatrixCopy(argument, c.argument()->type(), c.type(), out);
 }
 
-static SpvStorageClass_ get_storage_class_for_global_variable(
+static SPIRVCodeGenerator::StorageClassPair get_storage_class_for_global_variable(
         const Variable& var, SpvStorageClass_ fallbackStorageClass) {
     SkASSERT(var.storage() == Variable::Storage::kGlobal);
 
@@ -3007,7 +3022,7 @@ static SpvStorageClass_ get_storage_class_for_global_variable(
         // 1.0, we have to use the deprecated approach which is well supported in Vulkan and
         // addresses SkSL use cases (notably SkSL currently doesn't support pointer features that
         // would benefit from SPV_KHR_variable_pointers capabilities).
-        return SpvStorageClassUniform;
+        return SPIRVCodeGenerator::StorageClassPair(SpvStorageClassUniform, true);
     }
     if (flags.isWorkgroup()) {
         return SpvStorageClassWorkgroup;
@@ -3015,7 +3030,7 @@ static SpvStorageClass_ get_storage_class_for_global_variable(
     return fallbackStorageClass;
 }
 
-static SpvStorageClass_ get_storage_class(const Expression& expr) {
+static SPIRVCodeGenerator::StorageClassPair get_storage_class(const Expression& expr) {
     switch (expr.kind()) {
         case Expression::Kind::kVariableReference: {
             const Variable& var = *expr.as<VariableReference>().variable();
@@ -3239,9 +3254,9 @@ std::unique_ptr<SPIRVCodeGenerator::LValue> SPIRVCodeGenerator::getLValue(const 
                 var.layout().fBuiltin == SK_SAMPLEMASK_BUILTIN) {
                 // Access sk_SampleMask and sk_SampleMaskIn via an array access, since Vulkan
                 // represents sample masks as an array of uints.
-                SpvStorageClass_ storageClass =
+                StorageClassPair storageClass =
                         get_storage_class_for_global_variable(var, SpvStorageClassPrivate);
-                SkASSERT(storageClass != SpvStorageClassPrivate);
+                SkASSERT(storageClass.fStorageClass != SpvStorageClassPrivate);
                 SkASSERT(type.matches(*fContext.fTypes.fUInt));
 
                 SpvId accessId = this->nextId(nullptr);
@@ -3253,19 +3268,21 @@ std::unique_ptr<SPIRVCodeGenerator::LValue> SPIRVCodeGenerator::getLValue(const 
                                                        /*isMemoryObjectPointer=*/true,
                                                        this->getType(type),
                                                        precision,
-                                                       storageClass);
+                                                       storageClass.fStorageClass);
             }
 
             SpvId typeId = this->getType(type, var.layout(), this->memoryLayoutForVariable(var));
             return std::make_unique<PointerLValue>(*this, *entry,
                                                    /*isMemoryObjectPointer=*/true,
-                                                   typeId, precision, get_storage_class(expr));
+                                                   typeId,
+                                                   precision,
+                                                   get_storage_class(expr).fStorageClass);
         }
         case Expression::Kind::kIndex: // fall through
         case Expression::Kind::kFieldAccess: {
             TArray<SpvId> chain = this->getAccessChain(expr, out);
             SpvId member = this->nextId(nullptr);
-            SpvStorageClass_ storageClass = get_storage_class(expr);
+            StorageClassPair storageClass = get_storage_class(expr);
             this->writeOpCode(SpvOpAccessChain, (SpvId) (3 + chain.size()), out);
             this->writeWord(this->getPointerType(type, storageClass), out);
             this->writeWord(member, out);
@@ -3280,7 +3297,7 @@ std::unique_ptr<SPIRVCodeGenerator::LValue> SPIRVCodeGenerator::getLValue(const 
                                   kDefaultTypeLayout,
                                   this->memoryLayoutForStorageClass(storageClass)),
                     precision,
-                    storageClass);
+                    storageClass.fStorageClass);
         }
         case Expression::Kind::kSwizzle: {
             const Swizzle& swizzle = expr.as<Swizzle>();
@@ -3293,7 +3310,7 @@ std::unique_ptr<SPIRVCodeGenerator::LValue> SPIRVCodeGenerator::getLValue(const 
                 fContext.fErrors->error(swizzle.fPosition,
                         "unable to retrieve lvalue from swizzle");
             }
-            SpvStorageClass_ storageClass = get_storage_class(*swizzle.base());
+            StorageClassPair storageClass = get_storage_class(*swizzle.base());
             if (swizzle.components().size() == 1) {
                 SpvId member = this->nextId(nullptr);
                 SpvId typeId = this->getPointerType(type, storageClass);
@@ -3302,10 +3319,12 @@ std::unique_ptr<SPIRVCodeGenerator::LValue> SPIRVCodeGenerator::getLValue(const 
                 return std::make_unique<PointerLValue>(*this, member,
                                                        /*isMemoryObjectPointer=*/false,
                                                        this->getType(type),
-                                                       precision, storageClass);
+                                                       precision,
+                                                       storageClass.fStorageClass);
             } else {
                 return std::make_unique<SwizzleLValue>(*this, base, swizzle.components(),
-                                                       swizzle.base()->type(), type, storageClass);
+                                                       swizzle.base()->type(), type,
+                                                       storageClass.fStorageClass);
             }
         }
         default: {
@@ -4422,14 +4441,17 @@ void SPIRVCodeGenerator::writeFieldLayout(const Layout& layout, SpvId target, in
     }
 }
 
-MemoryLayout SPIRVCodeGenerator::memoryLayoutForStorageClass(SpvStorageClass_ storageClass) {
-    return storageClass == SpvStorageClassPushConstant ? MemoryLayout(MemoryLayout::Standard::k430)
-                                                       : fDefaultMemoryLayout;
+MemoryLayout SPIRVCodeGenerator::memoryLayoutForStorageClass(StorageClassPair storageClass) {
+    return storageClass.fStorageClass == SpvStorageClassPushConstant ||
+           (storageClass.fStorageClass == SpvStorageClassUniform &&
+                storageClass.fIsBufferAsUniformClass) ? MemoryLayout(MemoryLayout::Standard::k430)
+                                                      : fDefaultMemoryLayout;
 }
 
 MemoryLayout SPIRVCodeGenerator::memoryLayoutForVariable(const Variable& v) const {
     bool pushConstant = SkToBool(v.layout().fFlags & LayoutFlag::kPushConstant);
-    return pushConstant ? MemoryLayout(MemoryLayout::Standard::k430)
+    bool buffer = v.modifierFlags().isBuffer();
+    return pushConstant || buffer ? MemoryLayout(MemoryLayout::Standard::k430)
                         : fDefaultMemoryLayout;
 }
 
@@ -4443,7 +4465,7 @@ SpvId SPIRVCodeGenerator::writeInterfaceBlock(const InterfaceBlock& intf, bool a
                                                 "' is not permitted here");
         return this->nextId(nullptr);
     }
-    SpvStorageClass_ storageClass =
+    StorageClassPair storageClass =
             get_storage_class_for_global_variable(intfVar, SpvStorageClassFunction);
     if (fProgram.fInterface.fRTFlipUniform != Program::Interface::kRTFlip_None && appendRTFlip &&
         !fWroteRTFlip && type.isStruct()) {
@@ -4507,10 +4529,12 @@ SpvId SPIRVCodeGenerator::writeInterfaceBlock(const InterfaceBlock& intf, bool a
                                fDecorationBuffer);
     }
     SpvId ptrType = this->nextId(nullptr);
-    this->writeInstruction(SpvOpTypePointer, ptrType, storageClass, typeId, fConstantBuffer);
-    this->writeInstruction(SpvOpVariable, ptrType, result, storageClass, fConstantBuffer);
+    this->writeInstruction(SpvOpTypePointer, ptrType, storageClass.fStorageClass,
+                           typeId, fConstantBuffer);
+    this->writeInstruction(SpvOpVariable, ptrType, result, storageClass.fStorageClass,
+                           fConstantBuffer);
     Layout layout = intfVar.layout();
-    if (storageClass == SpvStorageClassUniform && layout.fSet < 0) {
+    if (storageClass.fStorageClass == SpvStorageClassUniform && layout.fSet < 0) {
         layout.fSet = fProgram.fConfig->fSettings.fDefaultUniformSet;
     }
     this->writeLayout(layout, result, intfVar.fPosition);
@@ -4552,9 +4576,9 @@ bool SPIRVCodeGenerator::writeGlobalVarDeclaration(ProgramKind kind,
         return true;
     }
 
-    SpvStorageClass_ storageClass =
+    StorageClassPair storageClass =
             get_storage_class_for_global_variable(*var, SpvStorageClassPrivate);
-    if (storageClass == SpvStorageClassUniform) {
+    if (storageClass.fStorageClass == SpvStorageClassUniform) {
         // Top-level uniforms are emitted in writeUniformBuffer.
         fTopLevelUniforms.push_back(&varDecl);
         return true;
@@ -4566,7 +4590,7 @@ bool SPIRVCodeGenerator::writeGlobalVarDeclaration(ProgramKind kind,
                                                     "and sampler indices");
             return false;
         }
-        SkASSERT(storageClass == SpvStorageClassUniformConstant);
+        SkASSERT(storageClass.fStorageClass == SpvStorageClassUniformConstant);
 
         auto [texture, sampler] = this->synthesizeTextureAndSampler(*var);
         this->writeGlobalVar(kind, storageClass, *texture);
@@ -4580,14 +4604,14 @@ bool SPIRVCodeGenerator::writeGlobalVarDeclaration(ProgramKind kind,
         SkASSERT(!fCurrentBlock);
         fCurrentBlock = NA;
         SpvId value = this->writeExpression(*varDecl.value(), fGlobalInitializersBuffer);
-        this->writeOpStore(storageClass, id, value, fGlobalInitializersBuffer);
+        this->writeOpStore(storageClass.fStorageClass, id, value, fGlobalInitializersBuffer);
         fCurrentBlock = 0;
     }
     return true;
 }
 
 SpvId SPIRVCodeGenerator::writeGlobalVar(ProgramKind kind,
-                                         SpvStorageClass_ storageClass,
+                                         StorageClassPair storageClass,
                                          const Variable& var) {
     Layout layout = var.layout();
     const ModifierFlags flags = var.modifierFlags();
@@ -4613,15 +4637,15 @@ SpvId SPIRVCodeGenerator::writeGlobalVar(ProgramKind kind,
     SpvId id = this->nextId(type);
     fVariableMap.set(&var, id);
 
-    if (layout.fSet < 0 && storageClass == SpvStorageClassUniformConstant) {
+    if (layout.fSet < 0 && storageClass.fStorageClass == SpvStorageClassUniformConstant) {
         layout.fSet = fProgram.fConfig->fSettings.fDefaultUniformSet;
     }
 
     SpvId typeId = this->getPointerType(*type,
                                         layout,
                                         this->memoryLayoutForStorageClass(storageClass),
-                                        storageClass);
-    this->writeInstruction(SpvOpVariable, typeId, id, storageClass, fConstantBuffer);
+                                        storageClass.fStorageClass);
+    this->writeInstruction(SpvOpVariable, typeId, id, storageClass.fStorageClass, fConstantBuffer);
     this->writeInstruction(SpvOpName, id, var.name(), fNameBuffer);
     this->writeLayout(layout, id, var.fPosition);
     if (flags & ModifierFlag::kFlat) {
