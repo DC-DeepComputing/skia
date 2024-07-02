@@ -22,6 +22,8 @@ declare_args() {
   malloc = ""
   werror = false
   xcode_sysroot = ""
+  skia_sysroot = ""
+  skia_cross_target = ""
 }
 
 if (is_ios && xcode_sysroot == "") {
@@ -172,6 +174,23 @@ config("default") {
       "-mlsx",
       "-mlasx",
       "-Wno-switch-default",
+    ]
+  }
+
+  if (is_linux && skia_sysroot != "") {
+    cflags += [
+      "--target=$skia_cross_target",
+      "--sysroot="+rebase_path("$skia_sysroot"),
+    ]
+    #For gen/third_party/icu/icudtl_dat.S
+    asmflags += [
+      "--target=$skia_cross_target",
+      "--sysroot="+rebase_path("$skia_sysroot"),
+    ]
+    #For dm
+    ldflags += [
+      "--target=$skia_cross_target",
+      "--sysroot="+rebase_path("$skia_sysroot"),
     ]
   }
 
