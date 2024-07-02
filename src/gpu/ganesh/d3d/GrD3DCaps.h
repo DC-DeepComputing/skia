@@ -148,15 +148,13 @@ private:
     // ColorTypeInfo for a specific format
     struct ColorTypeInfo {
         GrColorType fColorType = GrColorType::kUnknown;
-        enum {
-            kUploadData_Flag = 0x1,
-            // Does Ganesh itself support rendering to this colorType & format pair. Renderability
-            // still additionally depends on if the format itself is renderable.
-            kRenderable_Flag = 0x2,
-            // Indicates that this colorType is supported only if we are wrapping a texture with
-            // the given format and colorType. We do not allow creation with this pair.
-            kWrappedOnly_Flag = 0x4,
-        };
+        static constexpr uint32_t kUploadData_Flag  = 0x1;
+        // Does Ganesh itself support rendering to this colorType & format pair. Renderability
+        // still additionally depends on if the format itself is renderable.
+        static constexpr uint32_t kRenderable_Flag  = 0x2;
+        // Indicates that this colorType is supported only if we are wrapping a texture with
+        // the given format and colorType. We do not allow creation with this pair.
+        static constexpr uint32_t kWrappedOnly_Flag = 0x4;
         uint32_t fFlags = 0;
 
         skgpu::Swizzle fReadSwizzle;
@@ -177,13 +175,11 @@ private:
         static void InitFormatFlags(const D3D12_FEATURE_DATA_FORMAT_SUPPORT&, uint16_t* flags);
         void initSampleCounts(const DXGI_ADAPTER_DESC& adapterDesc, ID3D12Device*, DXGI_FORMAT);
 
-        enum {
-            kTexturable_Flag = 0x1, // Can be sampled in a shader
-            kRenderable_Flag = 0x2, // Rendertarget and blendable
-            kMSAA_Flag = 0x4,
-            kResolve_Flag = 0x8,
-            kUnorderedAccess_Flag = 0x10,
-        };
+        static constexpr uint16_t kTexturable_Flag = 0x1;  // Can be sampled in a shader
+        static constexpr uint16_t kRenderable_Flag = 0x2;  // Rendertarget and blendable
+        static constexpr uint16_t kMSAA_Flag = 0x4;
+        static constexpr uint16_t kResolve_Flag = 0x8;
+        static constexpr uint16_t kUnorderedAccess_Flag = 0x10;
 
         uint16_t fFlags = 0;
 
@@ -197,7 +193,7 @@ private:
         std::unique_ptr<ColorTypeInfo[]> fColorTypeInfos;
         int fColorTypeInfoCount = 0;
     };
-    static const size_t kNumDxgiFormats = 15;
+    static constexpr size_t kNumDxgiFormats = 15;
     FormatInfo fFormatTable[kNumDxgiFormats];
 
     FormatInfo& getFormatInfo(DXGI_FORMAT);
