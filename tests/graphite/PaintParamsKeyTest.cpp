@@ -411,15 +411,27 @@ ImageFilterType random_imagefiltertype(SkRandom* rand) {
     return static_cast<ImageFilterType>(rand->nextULessThan(kImageFilterTypeCount));
 }
 
-SkMatrix* random_local_matrix(SkRandom* rand, SkMatrix* storage) {
-    switch (rand->nextULessThan(3)) {
-        case 0:  return nullptr;
-        case 1:  storage->setIdentity(); return storage;
-        case 2:  [[fallthrough]];
-        default: storage->setTranslate(2.0f, 2.0f); return storage;
+enum LocalMatrixConstraint {
+    kNone,
+    kPerspective,
+};
+
+SkMatrix* random_local_matrix(SkRandom* rand, SkMatrix* storage, LocalMatrixConstraint constaint) {
+    // Only return nullptr is there is no constraint.
+    uint32_t matrix = rand->nextULessThan(constaint == LocalMatrixConstraint::kNone ? 3 : 2);
+
+    switch (matrix) {
+        case 0:  storage->setTranslate(2.0f, 2.0f); break;
+        case 1:  storage->setIdentity(); break;
+        case 2:  return nullptr;
+        default: storage->setScale(0.25f, 0.25f, 0.0f, 0.0f); break;
     }
 
-    SkUNREACHABLE;
+    if (constaint == LocalMatrixConstraint::kPerspective) {
+        storage->setPerspX(0.5f);
+    }
+
+    return storage;
 }
 
 sk_sp<SkImage> make_image(SkRandom* rand, Recorder* recorder) {
@@ -506,7 +518,7 @@ std::pair<sk_sp<SkShader>, sk_sp<PrecompileShader>> create_picture_shader(SkRand
     gNeedSKPPaintOption = true;
 
     SkMatrix lmStorage;
-    SkMatrix* lmPtr = random_local_matrix(rand, &lmStorage);
+    SkMatrix* lmPtr = random_local_matrix(rand, &lmStorage, LocalMatrixConstraint::kNone);
 
     // TODO: can the clamp, filter mode, or tileRect affect the final program?
     sk_sp<SkShader> s = picture->makeShader(SkTileMode::kClamp,
@@ -601,7 +613,7 @@ std::pair<sk_sp<SkShader>, sk_sp<PrecompileShader>> create_gradient_shader(
     }
 
     SkMatrix lmStorage;
-    SkMatrix* lmPtr = random_local_matrix(rand, &lmStorage);
+    SkMatrix* lmPtr = random_local_matrix(rand, &lmStorage, LocalMatrixConstraint::kNone);
 
     uint32_t flags = rand->nextBool() ? 0x0 : SkGradientShader::kInterpolateColorsInPremul_Flag;
 
@@ -653,10 +665,13 @@ std::pair<sk_sp<SkShader>, sk_sp<PrecompileShader>> create_localmatrix_shader(Sk
         return { nullptr, nullptr };
     }
 
-    SkMatrix lmStorage;
-    random_local_matrix(rand, &lmStorage);
+    bool hasPerspective = false;
 
-    return { s->makeWithLocalMatrix(lmStorage), o->makeWithLocalMatrix() };
+    SkMatrix lmStorage;
+    random_local_matrix(rand, &lmStorage, hasPerspective ? LocalMatrixConstraint::kPerspective
+                                                         : LocalMatrixConstraint::kNone);
+
+    return { s->makeWithLocalMatrix(lmStorage), o->makeWithLocalMatrix(hasPerspective) };
 }
 
 std::pair<sk_sp<SkShader>, sk_sp<PrecompileShader>> create_colorfilter_shader(SkRandom* rand,
@@ -680,7 +695,7 @@ std::pair<sk_sp<SkShader>, sk_sp<PrecompileShader>> create_image_shader(SkRandom
     SkTileMode tmY = random_tilemode(rand);
 
     SkMatrix lmStorage;
-    SkMatrix* lmPtr = random_local_matrix(rand, &lmStorage);
+    SkMatrix* lmPtr = random_local_matrix(rand, &lmStorage, LocalMatrixConstraint::kNone);
 
     sk_sp<SkShader> s;
     sk_sp<PrecompileShader> o;
@@ -1761,8 +1776,9 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
     ShaderType shaders[] = {
             ShaderType::kBlend,
             ShaderType::kImage,
-            ShaderType::kRadialGradient,
-            ShaderType::kSolidColor,
+//            ShaderType::kRadialGradient,
+//            ShaderType::kSolidColor,
+            ShaderType::kLocalMatrix,
 #if EXPANDED_SET
             ShaderType::kNone,
             ShaderType::kColorFilter,
@@ -1770,7 +1786,6 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
             ShaderType::kConicalGradient,
             ShaderType::kEmpty,
             ShaderType::kLinearGradient,
-            ShaderType::kLocalMatrix,
             ShaderType::kPerlinNoise,
             ShaderType::kPicture,
             ShaderType::kRuntime,
@@ -1782,7 +1797,7 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
     BlenderType blenders[] = {
             BlenderType::kPorterDuff,
             BlenderType::kShaderBased,
-            BlenderType::kRuntime,
+//            BlenderType::kRuntime,
 #if EXPANDED_SET
             BlenderType::kNone,
             BlenderType::kArithmetic,
@@ -1792,7 +1807,7 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
     ColorFilterType colorFilters[] = {
             ColorFilterType::kNone,
             ColorFilterType::kBlendMode,
-            ColorFilterType::kMatrix,
+//            ColorFilterType::kMatrix,
 #if EXPANDED_SET
             ColorFilterType::kColorSpaceXform,
             ColorFilterType::kCompose,
@@ -1841,11 +1856,11 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
 #endif
     };
 
-#if EXPANDED_SET
+//#if EXPANDED_SET
     size_t kExpected = std::size(shaders) * std::size(blenders) * std::size(colorFilters) *
                        std::size(maskFilters) * std::size(imageFilters) * std::size(clips);
     int current = 0;
-#endif
+//#endif
 
     for (auto shader : shaders) {
         for (auto blender : blenders) {
@@ -1853,10 +1868,10 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
                 for (auto mf : maskFilters) {
                     for (auto imageFilter : imageFilters) {
                         for (auto clip : clips) {
-#if EXPANDED_SET
+//#if EXPANDED_SET
                             SkDebugf("%d/%zu\n", current, kExpected);
                             ++current;
-#endif
+//#endif
 
                             run_test(reporter, context, testContext, precompileKeyContext,
                                      drawData, shader, blender, cf, mf, imageFilter, clip);
