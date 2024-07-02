@@ -29,6 +29,7 @@ class ShaderErrorHandler;
 bool SkSLToBackend(const SkSL::ShaderCaps* caps,
                    bool (*toBackend)(SkSL::Program&, const SkSL::ShaderCaps*, std::string*),
                    const char* backendLabel,
+                   const char* shaderLabel,
                    const std::string& sksl,
                    SkSL::ProgramKind programKind,
                    const SkSL::ProgramSettings& settings,

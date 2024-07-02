@@ -27,14 +27,23 @@ namespace skgpu {
 class ShaderErrorHandler;
 
 inline bool SkSLToWGSL(const SkSL::ShaderCaps* caps,
+                       const std::string& shaderLabel,
                        const std::string& sksl,
                        SkSL::ProgramKind programKind,
                        const SkSL::ProgramSettings& settings,
                        std::string* wgsl,
                        SkSL::ProgramInterface* outInterface,
                        ShaderErrorHandler* errorHandler) {
-    return SkSLToBackend(caps, &SkSL::ToWGSL, "WGSL",
-                         sksl, programKind, settings, wgsl, outInterface, errorHandler);
+    return SkSLToBackend(caps,
+                         &SkSL::ToWGSL,
+                         "WGSL",
+                         shaderLabel.c_str(),
+                         sksl,
+                         programKind,
+                         settings,
+                         wgsl,
+                         outInterface,
+                         errorHandler);
 }
 
 namespace graphite {

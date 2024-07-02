@@ -55,6 +55,7 @@ static ShaderInfo compile_shader_module(const DawnSharedContext* sharedContext,
 
         std::string sksl = BuildComputeSkSL(caps, step);
         if (skgpu::SkSLToWGSL(caps->shaderCaps(),
+                              "",
                               sksl,
                               SkSL::ProgramKind::kCompute,
                               settings,

@@ -21,6 +21,7 @@ namespace skgpu {
 bool SkSLToBackend(const SkSL::ShaderCaps* caps,
                    bool (*toBackend)(SkSL::Program&, const SkSL::ShaderCaps*, std::string*),
                    const char* backendLabel,
+                   const char* shaderLabel,
                    const std::string& sksl,
                    SkSL::ProgramKind programKind,
                    const SkSL::ProgramSettings& settings,
@@ -55,6 +56,9 @@ bool SkSLToBackend(const SkSL::ShaderCaps* caps,
 
     if (kPrintSkSL || kSkSLPostCompilation || printBackendSL) {
         SkShaderUtils::PrintShaderBanner(programKind);
+        if (shaderLabel) {
+            SkDebugf("Label: %s\n", shaderLabel);
+        }
         if (kPrintSkSL) {
             SkDebugf("SkSL:\n");
             SkShaderUtils::PrintLineByLine(SkShaderUtils::PrettyPrint(sksl));

@@ -296,6 +296,7 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(const DawnSharedContext* 
     bool hasFragmentSkSL = !fsSkSL.empty();
     if (hasFragmentSkSL) {
         if (!skgpu::SkSLToWGSL(caps.shaderCaps(),
+                               fsSkSLInfo.fLabel,
                                fsSkSL,
                                SkSL::ProgramKind::kGraphiteFragment,
                                settings,
@@ -316,6 +317,7 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(const DawnSharedContext* 
                                               localCoordsNeeded);
     const std::string& vsSkSL = vsSkSLInfo.fSkSL;
     if (!skgpu::SkSLToWGSL(caps.shaderCaps(),
+                           vsSkSLInfo.fLabel,
                            vsSkSL,
                            SkSL::ProgramKind::kGraphiteVertex,
                            settings,
