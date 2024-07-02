@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "61a298b3_fbc4478c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-07-02T18:36:49Z",
+      "side": 1,
+      "message": "PTAL. Doing this first to make sure there are no GM changes.",
+      "revId": "2a6a17da9e196429df8b1131d8245a2bf4c8f6d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
