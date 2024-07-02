@@ -22,9 +22,9 @@
 #include "src/gpu/ganesh/effects/GrTextureEffect.h"
 #include "src/gpu/ganesh/glsl/GrGLSLFragmentShaderBuilder.h"
 
-enum {
-    kSamplerOrImageTypeKeyBits = 4
-};
+// Currently we allow 8 bits for the class id
+static constexpr uint32_t kClassIDBits = 8;
+static constexpr uint32_t kSamplerOrImageTypeKeyBits = 4;
 
 static inline uint16_t texture_type_key(GrTextureType type) {
     int value = UINT16_MAX;
@@ -71,9 +71,6 @@ static void add_geomproc_sampler_keys(skgpu::KeyBuilder* b,
         caps.addExtraSamplerKey(b, sampler.samplerState(), backendFormat);
     }
 }
-
-// Currently we allow 8 bits for the class id
-static constexpr uint32_t kClassIDBits = 8;
 
 /**
  * Functions which emit processor key info into the key builder.

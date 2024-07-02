@@ -20,8 +20,6 @@
  */
 class GrSPIRVUniformHandler : public GrGLSLUniformHandler {
 public:
-    static const int kUniformsPerBlock = 8;
-
     const GrShaderVar& getUniformVariable(UniformHandle u) const override;
     const char* getUniformCStr(UniformHandle u) const override;
 
@@ -29,11 +27,7 @@ public:
         int fUBOOffset;
     };
     typedef SkTBlockList<SPIRVUniformInfo> UniformInfoArray;
-    enum {
-        kUniformBinding = 0,
-        kUniformDescriptorSet = 0,
-        kSamplerTextureDescriptorSet = 1,
-    };
+
     uint32_t getRTFlipOffset() const;
 
     int numUniforms() const override {

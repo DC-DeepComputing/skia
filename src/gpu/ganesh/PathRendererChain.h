@@ -60,9 +60,8 @@ public:
     }
 
 private:
-    enum {
-        kPreAllocCount = 8,
-    };
+    static constexpr size_t kPreAllocCount = 8;
+
     skia_private::STArray<kPreAllocCount, sk_sp<PathRenderer>> fChain;
     AtlasPathRenderer* fAtlasPathRenderer = nullptr;
     PathRenderer* fTessellationPathRenderer = nullptr;

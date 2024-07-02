@@ -249,21 +249,19 @@ protected:
 
     virtual void onFinalize() = 0;
 
-    enum {
-        kExtensions,
-        kDefinitions,
-        kPrecisionQualifier,
-        kLayoutQualifiers,
-        kUniforms,
-        kInputs,
-        kOutputs,
-        kFunctions,
-        kMain,
-        kCode,
-
-        kPrealloc = kCode + 6,  // 6 == Reasonable upper bound on number of processor stages
-    };
-
+private:
+    static constexpr size_t kExtensions = 0;
+    static constexpr size_t kDefinitions = 1;
+    static constexpr size_t kPrecisionQualifier = 2;
+    static constexpr size_t kLayoutQualifiers = 3;
+    static constexpr size_t kUniforms = 4;
+    static constexpr size_t kInputs = 5;
+    static constexpr size_t kOutputs = 6;
+    static constexpr size_t kFunctions = 7;
+    static constexpr size_t kMain = 8;
+    static constexpr size_t kCode = 9;
+    static constexpr size_t kPrealloc = kCode + 6;  // 6 == Reasonable upper bound on number of processor stages
+protected:
     GrGLSLProgramBuilder* fProgramBuilder;
     std::string fCompilerString;
     skia_private::STArray<kPrealloc, SkString> fShaderStrings;
