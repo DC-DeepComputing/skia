@@ -33,6 +33,24 @@
       "message": "Which is probably why the Bazel runfiles library was never (a far as I can tell) released, because it doesn\u0027t seem to be a good idea. Obviously Bazel\u0027s test runner should just pass the location of the `data` directory to the test executable... but they don\u0027t seem to want to do that for some reason.",
       "revId": "eeb9b7dafe9f2bfba0695cf568a616b80f14a032",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46096843_cf285335",
+        "filename": "gm/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 514,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-07-02T21:22:04Z",
+      "side": 1,
+      "message": "To make any resources work it looks like somewhere around `TestRunner::InitAndLogCmdlineArgs` the environment will need to be inspected to find the resource path.",
+      "parentUuid": "3e2d0218_906f611f",
+      "revId": "eeb9b7dafe9f2bfba0695cf568a616b80f14a032",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
