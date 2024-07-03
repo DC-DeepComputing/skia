@@ -1,0 +1,137 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d24a696f_3cd04b71",
+        "filename": "src/gpu/graphite/UniformManager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-03T03:16:14Z",
+      "side": 1,
+      "message": "Such a shame we have `SkIsAlign2/4/8` but not `16`! (Nothing to fix, unless you want to add a new function to `SkAlign.h`.)",
+      "range": {
+        "startLine": 56,
+        "startChar": 57,
+        "endLine": 56,
+        "endChar": 82
+      },
+      "revId": "f6cb5c9a24312a65a3c8610901f98cd781215c61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a08b629d_bd46d44f",
+        "filename": "src/gpu/graphite/UniformManager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-03T03:16:14Z",
+      "side": 1,
+      "message": "Would be helpful to include a link or something here (or in the header, which also references rule #9). I\u0027m guessing https://registry.khronos.org/OpenGL/extensions/ARB/ARB_uniform_buffer_object.txt ? But a reader might struggle to figure this out on their own.",
+      "range": {
+        "startLine": 58,
+        "startChar": 11,
+        "endLine": 58,
+        "endChar": 18
+      },
+      "revId": "f6cb5c9a24312a65a3c8610901f98cd781215c61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1836379c_1609287e",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-03T03:16:14Z",
+      "side": 1,
+      "message": "Random idea, up to you: it might flow better if we make helper functions instead of having an `isStruct` param. I\u0027m not advocating for these exact method names per se, just for the idea of helpers instead of the bool param. \n\n```\nstatic UniformOffsetCalculator ForTopLevel(Layout layout, int offset) { ... }\nstatic UniformOffsetCalculator ForSubstruct(Layout layout, int offset) { ... }\n\nauto calc \u003d UniformOffsetCalculator::ForTopLevel(layout, kStart);\nauto substruct \u003d UniformOffsetCalculator::ForSubstruct(layout, kStart);\n```\n\nIf we keep it as-is, tiny nit: add spaces around equals signs.",
+      "range": {
+        "startLine": 179,
+        "startChar": 57,
+        "endLine": 179,
+        "endChar": 85
+      },
+      "revId": "f6cb5c9a24312a65a3c8610901f98cd781215c61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6600fbcc_59f275fe",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-03T03:16:14Z",
+      "side": 1,
+      "message": "accommodate",
+      "range": {
+        "startLine": 200,
+        "startChar": 50,
+        "endLine": 200,
+        "endChar": 60
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "4e60f0ba_76fbefd6",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/UniformManager.h",
+              "range": {
+                "startLine": 200,
+                "startChar": 0,
+                "endLine": 201,
+                "endChar": 0
+              },
+              "replacement": "    // Calculates the correctly aligned offset to accommodate `count` instances of a custom struct\n"
+            }
+          ]
+        }
+      ],
+      "revId": "f6cb5c9a24312a65a3c8610901f98cd781215c61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58713e28_7b9455b7",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-03T03:16:14Z",
+      "side": 1,
+      "message": "We should explicitly document what the return value is. \n\nIt\u0027s probably possible to rephrase the above sentence to include that information, or we could just add `Returns the correctly aligned start offset.`?",
+      "range": {
+        "startLine": 201,
+        "startChar": 85,
+        "endLine": 201,
+        "endChar": 86
+      },
+      "revId": "f6cb5c9a24312a65a3c8610901f98cd781215c61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
