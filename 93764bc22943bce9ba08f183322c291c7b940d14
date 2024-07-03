@@ -1,0 +1,173 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98364f63_a75b9e30",
+        "filename": "src/gpu/ganesh/BUILD.bazel",
+        "patchSetId": 11
+      },
+      "lineNbr": 510,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-07-03T19:40:08Z",
+      "side": 1,
+      "message": "nit: line length",
+      "range": {
+        "startLine": 510,
+        "startChar": 6,
+        "endLine": 510,
+        "endChar": 102
+      },
+      "revId": "93764bc22943bce9ba08f183322c291c7b940d14",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "854350b2_3dec809e",
+        "filename": "src/gpu/ganesh/GrRecordingContextPriv.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-07-03T19:40:08Z",
+      "side": 1,
+      "message": "nit/question: I think these should simply be left-aligned even though the namespaces are embedded",
+      "range": {
+        "startLine": 50,
+        "startChar": 0,
+        "endLine": 59,
+        "endChar": 31
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "e61f3e5b_14311c5e",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/ganesh/GrRecordingContextPriv.h",
+              "range": {
+                "startLine": 49,
+                "startChar": 0,
+                "endLine": 60,
+                "endChar": 0
+              },
+              "replacement": "class Swizzle;\nclass RefCntedCallback;\nnamespace ganesh {\nclass SurfaceContext;\nclass SurfaceFillContext;\n}  // namespace ganesh\n}  // namespace skgpu\nnamespace sktext::gpu {\nclass SubRunAllocator;\nclass TextBlobRedrawCoordinator;\n}  // namespace sktext::gpu\n"
+            }
+          ]
+        }
+      ],
+      "revId": "93764bc22943bce9ba08f183322c291c7b940d14",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3a442daf_2c75a8b2",
+        "filename": "src/gpu/ganesh/GrShaderVar.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-07-03T19:40:08Z",
+      "side": 1,
+      "message": "IIRC we decided in the Skia chat to use constexpr instead of enums w/ one value defined; should we change this accordingly?",
+      "range": {
+        "startLine": 33,
+        "startChar": 0,
+        "endLine": 37,
+        "endChar": 0
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "cfd2b030_ca058073",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/ganesh/GrShaderVar.h",
+              "range": {
+                "startLine": 33,
+                "startChar": 0,
+                "endLine": 37,
+                "endChar": 0
+              },
+              "replacement": "    /** We allow 1-sized arrays. */\n    static constexpr int kNonArray \u003d 0;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "93764bc22943bce9ba08f183322c291c7b940d14",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9177bc80_92dd0d01",
+        "filename": "src/gpu/ganesh/gradients/GrGradientShader.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 985,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-07-03T19:40:08Z",
+      "side": 1,
+      "message": "Is this manual change purposeful? Typically I\u0027ve seen no new line after `#ifdef`s",
+      "range": {
+        "startLine": 983,
+        "startChar": 21,
+        "endLine": 985,
+        "endChar": 23
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "1230ba52_82886a2f",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/ganesh/gradients/GrGradientShader.cpp",
+              "range": {
+                "startLine": 984,
+                "startChar": 0,
+                "endLine": 985,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "93764bc22943bce9ba08f183322c291c7b940d14",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7679eb0_36135d45",
+        "filename": "src/gpu/ganesh/ops/AAConvexPathRenderer.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-07-03T19:40:08Z",
+      "side": 1,
+      "message": "nit: I think this should be condensed w/o the new lines b/w the `#if...` and `#endif`",
+      "range": {
+        "startLine": 40,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 6
+      },
+      "revId": "93764bc22943bce9ba08f183322c291c7b940d14",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
