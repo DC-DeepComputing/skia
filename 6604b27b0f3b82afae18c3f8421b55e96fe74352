@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e495269_58a9a4ba",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-07-03T13:24:13Z",
+      "side": 1,
+      "message": "Trying unpremul alpha for the source colorspace, maybe that will fix it.",
+      "revId": "6604b27b0f3b82afae18c3f8421b55e96fe74352",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
