@@ -102,9 +102,7 @@ def compile_fn(api, checkout_root, out_dir):
     # https://en.wikipedia.org/wiki/Xcode#Version_comparison_table
     # Use lowercase letters.
     # https://chrome-infra-packages.appspot.com/p/infra_internal/ios/xcode
-    XCODE_BUILD_VERSION = '12c33'
-    if compiler == 'Xcode11.4.1':
-      XCODE_BUILD_VERSION = '11e503a'
+    XCODE_BUILD_VERSION = '12d4e' # Xcode 12.4, last version supporting macOS 10.5.7
     extra_cflags.append(
         '-DREBUILD_IF_CHANGED_xcode_build_version=%s' % XCODE_BUILD_VERSION)
     mac_toolchain_cmd = api.vars.workdir.join(
