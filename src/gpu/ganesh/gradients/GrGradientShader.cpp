@@ -27,6 +27,11 @@
 #include "src/gpu/ganesh/gradients/GrGradientBitmapCache.h"
 #include "src/shaders/gradients/SkGradientBaseShader.h"
 
+#if defined(GR_TEST_UTILS)
+#include "src/base/SkRandom.h"
+#include "src/gpu/ganesh/GrTestUtils.h"
+#endif
+
 using namespace skia_private;
 
 using Vec4 = skvx::Vec<4, float>;
@@ -942,6 +947,7 @@ std::unique_ptr<GrFragmentProcessor> MakeLinear(const SkLinearGradient& shader,
 }
 
 #if defined(GR_TEST_UTILS)
+
 RandomParams::RandomParams(SkRandom* random) {
     // Set color count to min of 2 so that we don't trigger the const color optimization and make
     // a non-gradient processor.
