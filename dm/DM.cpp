@@ -1602,12 +1602,19 @@ int main(int argc, char** argv) {
     if (nullptr == GetResourceAsData("images/color_wheel.png")) {
         info("Some resources are missing.  Do you need to set --resourcePath?\n");
     }
+info("Gathering gold\n");
     gather_gold();
+info("Gathered gold!\n");
+info("Gathering uninteresting hashes\n");
     gather_uninteresting_hashes();
+info("Gathered uninteresting hashes!\n");
 
+info("Gathering sources\n");
     if (!gather_srcs()) {
+info("Failed to gather sources, exiting.\n");
         return 1;
     }
+info("Gathered sources!\n");
     bool defaultConfigs = true;
     for (int i = 0; i < argc; i++) {
         if (strcmp(argv[i], "--config") == 0) {
@@ -1615,15 +1622,22 @@ int main(int argc, char** argv) {
             break;
         }
     }
+info("Gathering sinks\n");
     if (!gather_sinks(grCtxOptions, defaultConfigs)) {
+info("failed to gather sinks\n");
         return 1;
     }
+info("Gathered sinks!\n");
+info("Gathering tests\n");
     gather_tests();
+info("Gathered tests!\n");
     int testCount = gCPUTests->size() + gCPUSerialTests->size() +
                     gGaneshTests->size() + gGraphiteTests->size();
     gPending = gSrcs->size() * gSinks->size() + testCount;
     gTotalCounts = gPending;
+info("Getting time\n");
     gLastUpdate = SkTime::GetNSecs();
+info("Got time!\n");
     info("%d srcs * %d sinks + %d tests == %d tasks\n",
          gSrcs->size(), gSinks->size(), testCount,
          gPending);
