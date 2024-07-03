@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02ef83eb_50823089",
+        "filename": "infra/bots/recipe_modules/build/default.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-07-03T17:31:50Z",
+      "side": 0,
+      "message": "Can we also get rid of all the jobs that specify this compiler?",
+      "range": {
+        "startLine": 106,
+        "startChar": 20,
+        "endLine": 106,
+        "endChar": 31
+      },
+      "revId": "9fd1dc7795896a7744edca4ef6080285f083b34a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
