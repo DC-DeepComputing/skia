@@ -510,6 +510,8 @@ static bool in_shard() {
 }
 
 static void push_src(const char* tag, ImplicitString options, Src* inSrc) {
+info("Pushing source of type %s\n", tag);
+info("Pushing source with name %s\n", inSrc->name().c_str());
     std::unique_ptr<Src> src(inSrc);
     if (in_shard() && FLAGS_src.contains(tag) &&
         !CommandLineFlags::ShouldSkip(FLAGS_match, src->name().c_str())) {
@@ -517,6 +519,7 @@ static void push_src(const char* tag, ImplicitString options, Src* inSrc) {
         s.reset(src.release());  // NOLINT(misc-uniqueptr-reset-release)
         s.tag = tag;
         s.options = options;
+info("Pushed source!\n");
     }
 }
 
@@ -894,39 +897,64 @@ void gather_file_srcs(const CommandLineFlags::StringArray& flags,
         // With the exception of Lottie files, the source name is the extension.
         src_name = ext;
     }
+info("Gather file sources ext:%s src_name:%s flagsSize:%d\n", ext, src_name, flags.size());
 
     for (int i = 0; i < flags.size(); i++) {
         const char* path = flags[i];
+info("Gather file sources path:%s\n", path);
         if (sk_isdir(path)) {
+info("Gather file sources path is directory.\n");
             SkOSFile::Iter it(path, ext);
+info("Gather file sources iterating.\n");
             for (SkString file; it.next(&file); ) {
                 push_src(src_name, "", new T(SkOSPath::Join(path, file.c_str())));
             }
         } else {
+info("Gather file sources path is file.\n");
             push_src(src_name, "", new T(path));
         }
     }
 }
 
 static bool gather_srcs() {
-    for (const skiagm::GMFactory& f : skiagm::GMRegistry::Range()) {
-        push_src("gm", "", new GMSrc(f));
+//    for (const skiagm::GMFactory& f : skiagm::GMRegistry::Range()) {
+//info("push_src f:%p", &f);
+//        push_src("gm", "", new GMSrc(f));
+//    }
+    {
+        auto&& range = skiagm::GMRegistry::Range();
+        auto begin = range.begin();
+        auto end = range.end();
+        for ( ; begin != end; ++begin)
+        {
+info("Dereferencing factory %p\n", begin.fPtr);
+            const skiagm::GMFactory& f = *begin;
+info("Creating GMSrc(%p)\n", &f);
+            GMSrc* gmsrc = new GMSrc(f);
+info("push_src\n");
+            push_src("gm", "", gmsrc);
+        }
     }
-
+info("Gathering skp\n");
     gather_file_srcs<SKPSrc>(FLAGS_skps, "skp");
+info("Gathering mskp\n");
     gather_file_srcs<MSKPSrc>(FLAGS_mskps, "mskp");
 #if defined(SK_ENABLE_SKOTTIE)
+info("Gathering json\n");
     gather_file_srcs<SkottieSrc>(FLAGS_lotties, "json", "lottie");
 #endif
 #if defined(SK_ENABLE_SVG)
+info("Gathering svg\n");
     gather_file_srcs<SVGSrc>(FLAGS_svgs, "svg");
 #endif
     if (!FLAGS_bisect.isEmpty()) {
+info("Gathering bisect\n");
         // An empty l/r trail string will draw all the paths.
         push_src("bisect", "",
                  new BisectSrc(FLAGS_bisect[0], FLAGS_bisect.size() > 1 ? FLAGS_bisect[1] : ""));
     }
 
+info("Gathering images\n");
     TArray<SkString> images;
     if (!CommonFlags::CollectImages(FLAGS_images, &images)) {
         return false;
@@ -935,7 +963,7 @@ static bool gather_srcs() {
     for (const SkString& image : images) {
         push_codec_srcs(image);
     }
-
+info("Gathering color images\n");
     TArray<SkString> colorImages;
     if (!CommonFlags::CollectImages(FLAGS_colorImages, &colorImages)) {
         return false;
@@ -1602,12 +1630,19 @@ int main(int argc, char** argv) {
     if (nullptr == GetResourceAsData("images/color_wheel.png")) {
         info("Some resources are missing.  Do you need to set --resourcePath?\n");
     }
+info("Gathering gold\n");
     gather_gold();
+info("Gathered gold!\n");
+info("Gathering uninteresting hashes\n");
     gather_uninteresting_hashes();
+info("Gathered uninteresting hashes!\n");
 
+info("Gathering sources\n");
     if (!gather_srcs()) {
+info("Failed to gather sources, exiting.\n");
         return 1;
     }
+info("Gathered sources!\n");
     bool defaultConfigs = true;
     for (int i = 0; i < argc; i++) {
         if (strcmp(argv[i], "--config") == 0) {
@@ -1615,15 +1650,22 @@ int main(int argc, char** argv) {
             break;
         }
     }
+info("Gathering sinks\n");
     if (!gather_sinks(grCtxOptions, defaultConfigs)) {
+info("failed to gather sinks\n");
         return 1;
     }
+info("Gathered sinks!\n");
+info("Gathering tests\n");
     gather_tests();
+info("Gathered tests!\n");
     int testCount = gCPUTests->size() + gCPUSerialTests->size() +
                     gGaneshTests->size() + gGraphiteTests->size();
     gPending = gSrcs->size() * gSinks->size() + testCount;
     gTotalCounts = gPending;
+info("Getting time\n");
     gLastUpdate = SkTime::GetNSecs();
+info("Got time!\n");
     info("%d srcs * %d sinks + %d tests == %d tasks\n",
          gSrcs->size(), gSinks->size(), testCount,
          gPending);

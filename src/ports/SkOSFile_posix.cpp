@@ -153,6 +153,7 @@ SkOSFile::Iter::~Iter() {
 }
 
 void SkOSFile::Iter::reset(const char path[], const char suffix[]) {
+SkDebugf("SkOSFile::Iter::reset(%s, %suffix)\n", path, suffix);
     SkOSFileIterData& self = *reinterpret_cast<SkOSFileIterData*>(fSelf);
     if (self.fDIR) {
         ::closedir(self.fDIR);
@@ -161,15 +162,18 @@ void SkOSFile::Iter::reset(const char path[], const char suffix[]) {
     self.fPath.set(path);
 
     if (path) {
+SkDebugf("SkOSFile::Iter::reset with path.\n");
         self.fDIR = ::opendir(path);
 #ifdef SK_BUILD_FOR_IOS
         // check bundle for directory
         if (!self.fDIR && ios_get_path_in_bundle(path, &self.fPath)) {
+SkDebugf("SkOSFile::Iter::reset resolved to %s\n", self.fPath.c_str());
             self.fDIR = ::opendir(self.fPath.c_str());
         }
 #endif
         self.fSuffix.set(suffix);
     } else {
+SkDebugf("SkOSFile::Iter::reset no path.\n");
         self.fSuffix.reset();
     }
 }
@@ -197,6 +201,7 @@ bool SkOSFile::Iter::next(SkString* name, bool getDir) {
             }
             str.append(entry->d_name);
 
+SkDebugf("SkOSFile::Iter::next stat(%s)\n", str.c_str());
             if (0 == stat(str.c_str(), &s)) {
                 if (getDir) {
                     if (s.st_mode & S_IFDIR) {
@@ -213,8 +218,10 @@ bool SkOSFile::Iter::next(SkString* name, bool getDir) {
             if (name) {
                 name->set(entry->d_name);
             }
+SkDebugf("SkOSFile::Iter::next found: %s\n", entry->d_name);
             return true;
         }
     }
+SkDebugf("SkOSFile::Iter::next not found\n");
     return false;
 }
