@@ -187,23 +187,29 @@ private:
 
 public:
     AnimCodecPlayerGM() {
-        const char* root = "/skia/anim/";
-        SkOSFile::Iter iter(root);
-        SkString path;
-        while (iter.next(&path)) {
-            SkString completepath;
-            completepath.printf("%s%s", root, path.c_str());
-            auto codec = load_codec(completepath.c_str());
-            if (codec) {
-                fPlayers.push_back(std::make_unique<SkAnimCodecPlayer>(std::move(codec)));
-            }
-        }
+        SkDebugf("AnimCodecPlayerGM()\n");
     }
 
 private:
     SkString getName() const override { return SkString("AnimCodecPlayer"); }
 
     SkISize getISize() override { return {1024, 768}; }
+
+    void onOnceBeforeDraw() override {
+        if ((false)) {
+            const char* root = "/skia/anim/";
+            SkOSFile::Iter iter(root);
+            SkString path;
+            while (iter.next(&path)) {
+                SkString completepath;
+                completepath.printf("%s%s", root, path.c_str());
+                auto codec = load_codec(completepath.c_str());
+                if (codec) {
+                    fPlayers.push_back(std::make_unique<SkAnimCodecPlayer>(std::move(codec)));
+                }
+            }
+        }
+    }
 
     void onDraw(SkCanvas* canvas) override {
         canvas->scale(0.25f, 0.25f);

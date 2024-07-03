@@ -11,7 +11,7 @@
 #include "include/core/SkPaint.h"
 #include "include/utils/SkParse.h"
 
-template BenchRegistry* BenchRegistry::gHead;
+template<> BenchRegistry* BenchRegistry::gHead = nullptr;
 
 Benchmark::Benchmark() {}
 
