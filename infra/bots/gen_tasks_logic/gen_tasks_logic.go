@@ -1806,6 +1806,8 @@ func (b *jobBuilder) dm() {
 			b.timeout(6 * time.Hour)
 		} else if b.matchOs("Mac11") {
 			b.timeout(30 * time.Minute)
+		} else if b.extraConfig("iOS11") {
+			b.timeout(10 * time.Minute)
 		}
 		b.maybeAddIosDevImage()
 	})

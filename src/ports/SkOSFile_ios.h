@@ -15,21 +15,44 @@
 
 #include "include/ports/SkCFObject.h"
 
+static void iosSkStringFromCFString(CFStringRef src, SkString* dst) {
+    // Reserve enough room for the worst-case string,
+    // plus 1 byte for the trailing null.
+    CFIndex length = CFStringGetMaximumSizeForEncoding(CFStringGetLength(src),
+                                                       kCFStringEncodingUTF8) + 1;
+    dst->resize(length);
+    CFStringGetCString(src, dst->data(), length, kCFStringEncodingUTF8);
+    // Resize to the actual UTF-8 length used, stripping the null character.
+    dst->resize(strlen(dst->c_str()));
+}
+
 static bool ios_get_path_in_bundle(const char path[], SkString* result) {
+    if (strncmp(path, "resources", strlen("resources")) != 0) {
+        return false;
+    }
+SkDebugf("ios_get_path_in_bundle(%s, %p)\n", path, result);
     // Get a reference to the main bundle
     CFBundleRef mainBundle = CFBundleGetMainBundle();
-
+    if (!mainBundle) {
+        return false;
+    }
+SkDebugf("Got mainBundle: %p.\n", mainBundle);
     // Get a reference to the file's URL
     // Use this to normalize the path
     sk_cfp<CFURLRef> pathURL(CFURLCreateFromFileSystemRepresentation(/*allocator=*/nullptr,
                                                                      (const UInt8*)path,
                                                                      strlen(path),
                                                                      /*isDirectory=*/false));
+SkDebugf("Got pathURL: %p\n", pathURL.get());
     sk_cfp<CFStringRef> pathRef(CFURLCopyFileSystemPath(pathURL.get(), kCFURLPOSIXPathStyle));
+SkString pathRefString;
+iosSkStringFromCFString(pathRef.get(), &pathRefString);
+SkDebugf("Got pathRef: %p '%s'\n", pathRef.get(), pathRefString.c_str());
     // We use "data" as our subdirectory to match {{bundle_resources_dir}}/data in GN
     // Unfortunately "resources" is not a valid top-level name in iOS, so we push it one level down
     sk_cfp<CFURLRef> fileURL(CFBundleCopyResourceURL(mainBundle, pathRef.get(),
                                                      /*resourceType=*/nullptr, CFSTR("data")));
+SkDebugf("Got fileURL: %p\n", fileURL.get());
     if (!fileURL) {
         return false;
     }
@@ -39,12 +62,14 @@ static bool ios_get_path_in_bundle(const char path[], SkString* result) {
 
     // Convert the URL reference into a string reference
     sk_cfp<CFStringRef> filePath(CFURLCopyFileSystemPath(fileURL.get(), kCFURLPOSIXPathStyle));
+SkDebugf("Got filePath: %p\n", filePath.get());
 
     // Get the system encoding method
     CFStringEncoding encodingMethod = CFStringGetSystemEncoding();
 
     // Convert the string reference into an SkString
     result->set(CFStringGetCStringPtr(filePath.get(), encodingMethod));
+SkDebugf("Got result: %s\n", result->c_str());
     return true;
 }
 #endif
