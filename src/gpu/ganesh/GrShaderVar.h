@@ -9,8 +9,11 @@
 #define GrShaderVar_DEFINED
 
 #include "include/core/SkString.h"
-#include "include/private/gpu/ganesh/GrTypesPriv.h"
+#include "include/private/base/SkAssert.h"
 #include "src/core/SkSLTypeShared.h"
+
+#include <string.h>
+#include <utility>
 
 struct GrShaderCaps;
 
@@ -29,7 +32,7 @@ public:
 
     /** Values for array count that have special meaning. We allow 1-sized arrays. */
     enum {
-        kNonArray     =  0, // not an array
+        kNonArray = 0,  // not an array
     };
 
     /** Defaults to a void with no type modifier or layout qualifier. */
