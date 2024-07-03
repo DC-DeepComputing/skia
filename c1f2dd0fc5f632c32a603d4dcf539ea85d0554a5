@@ -16,6 +16,24 @@
       "message": "This appears to have broken the iOS build.",
       "revId": "c1f2dd0fc5f632c32a603d4dcf539ea85d0554a5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f775e10_06d8eb06",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-07-03T14:50:25Z",
+      "side": 1,
+      "message": "While `kCTFontVariationAxesAttribute` is available in iOS11+, it wasn\u0027t actually in the SDK until iPhoneOS14.0.sdk. The failing builds are using iPhoneOS13.4.sdk which is too old to list it.\n\nWhile XCode 14 requires macOS 12.5+, XCode 13 requires macOS 11.3+ but Skia\u0027s builds are apparently running with its compiler and SDK on macOS10.15.7. So maybe we can update?",
+      "parentUuid": "47aa6590_d2381e4c",
+      "revId": "c1f2dd0fc5f632c32a603d4dcf539ea85d0554a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
