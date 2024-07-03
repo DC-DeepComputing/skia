@@ -9,6 +9,7 @@
 #define SkTHash_DEFINED
 
 #include "include/core/SkTypes.h"
+#include "src/base/SkMathPriv.h"
 #include "src/core/SkChecksum.h"
 
 #include <initializer_list>
@@ -82,6 +83,20 @@ public:
 
     void swap(THashTable&& that) {
         *this = std::move(that);
+    }
+
+    // Starting with an empty hash table, populate it with the values from the passed-in range.
+    void initializeWithValues(const T* rangeBegin, const T* rangeEnd) {
+        SkASSERT(fCount == 0);
+
+        int size = rangeEnd - rangeBegin;
+        if (size > 0) {
+            int capacity = SkNextPow2(size * 5 / 3);
+            this->resize(std::max(capacity, 4));
+            for (const T* iter = rangeBegin; iter != rangeEnd; ++iter) {
+                this->set(*iter);
+            }
+        }
     }
 
     // !!!!!!!!!!!!!!!!!                 CAUTION                   !!!!!!!!!!!!!!!!!
@@ -161,7 +176,12 @@ public:
     // Hash tables will automatically resize themselves when set() and remove() are called, but
     // resize() can be called to manually grow capacity before a bulk insertion.
     void resize(int capacity) {
+        // We must have enough capacity to hold every key.
         SkASSERT(capacity >= fCount);
+        // `capacity` must be a power of two, because we use `hash & (capacity-1)` to look up keys
+        // in the table (since this is faster than a modulo).
+        SkASSERT((capacity & (capacity - 1)) == 0);
+
         int oldCapacity = fCapacity;
         SkDEBUGCODE(int oldCount = fCount);
 
@@ -458,10 +478,7 @@ public:
     };
 
     THashMap(std::initializer_list<Pair> pairs) {
-        fTable.resize(pairs.size() * 5 / 3);
-        for (const Pair& p : pairs) {
-            fTable.set(p);
-        }
+        fTable.initializeWithValues(pairs.begin(), pairs.end());
     }
 
     // Clear the map.
@@ -566,10 +583,7 @@ public:
 
     // Construct with an initializer list of Ts.
     THashSet(std::initializer_list<T> vals) {
-        fTable.resize(vals.size() * 5 / 3);
-        for (const T& val : vals) {
-            fTable.set(val);
-        }
+        fTable.initializeWithValues(vals.begin(), vals.end());
     }
 
     // Clear the set.
