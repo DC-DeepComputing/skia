@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d8ffbfc_77561e88",
+        "filename": "include/gpu/graphite/precompile/PrecompileShader.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-03T17:46:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ea8cf0b7_0955147f",
+      "range": {
+        "startLine": 38,
+        "startChar": 85,
+        "endLine": 38,
+        "endChar": 87
+      },
+      "revId": "bfb2b5830361157e46ae47372955fb1c587ebd9a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3f394478_6ef6b2b5",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f27b28f_a604a529",
+        "filename": "src/gpu/graphite/precompile/PrecompileShader.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 596,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-03T17:46:12Z",
+      "side": 1,
+      "message": "Since we are no longer modifying `this` in `makeWithLocalMatrix` I no longer need this function, I did change the flags to a bitmask. \n\nI also changed the naming to `LocalMatrixFlags::kHasPerspective` since it\u0027s more clear and it would make sense for both flags to be enabled since for example, if a picture shader was made the resulting keys would be like `LMS(PictureShader)` where the LMS has the flag `LocalMatrixFlags::kIncludeWithOutVariant`, then if that was wrapped once again with a LMS that has perspective like `LMS(LMS(PictureShader)) -\u003e LMS(PictureShader)` then we apply the perspective flag, so now the LMS has both possible flags, that way the number of intrinsic combinations stays 3.",
+      "parentUuid": "3f394478_6ef6b2b5",
+      "range": {
+        "startLine": 596,
+        "startChar": 9,
+        "endLine": 596,
+        "endChar": 27
+      },
+      "revId": "bfb2b5830361157e46ae47372955fb1c587ebd9a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6c760d13_a9f0a5c1",
@@ -60,6 +108,24 @@
       "writtenOn": "2024-07-03T15:20:43Z",
       "side": 1,
       "message": "It probably isn\u0027t okay to modify \u0027this\u0027",
+      "revId": "bfb2b5830361157e46ae47372955fb1c587ebd9a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca579cef_14753af4",
+        "filename": "src/gpu/graphite/precompile/PrecompileShader.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 675,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-03T17:46:12Z",
+      "side": 1,
+      "message": "Changed it to create a new precompile LMS with the same wrapped values and the perspective flag ORed in.",
+      "parentUuid": "6c760d13_a9f0a5c1",
       "revId": "bfb2b5830361157e46ae47372955fb1c587ebd9a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
