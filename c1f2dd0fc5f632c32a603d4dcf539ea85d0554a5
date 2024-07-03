@@ -34,6 +34,24 @@
       "parentUuid": "47aa6590_d2381e4c",
       "revId": "c1f2dd0fc5f632c32a603d4dcf539ea85d0554a5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "625833a9_bc5cdb7b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-03T15:57:57Z",
+      "side": 1,
+      "message": "It\u0027s far past time to stop building on macOS 10.15. :)\n\nWe will want to update to Xcode 16 soon after it releases in September, since this is a blocker for C++20 adoption. It would make sense to do a trial run and update to Xcode 15 now, working out whatever kinks we find along the way, since it\u0027s been so long.\n\nSwitching to Xcode 15 will require building on Apple Silicon with macOS 13.5 or later. (Xcode 16 will require macOS 14 but we don\u0027t have this anywhere on our tree at the moment.)\n\nThis work already has an open bug, http://skbug.com/338243739",
+      "parentUuid": "8f775e10_06d8eb06",
+      "revId": "c1f2dd0fc5f632c32a603d4dcf539ea85d0554a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
