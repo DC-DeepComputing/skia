@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "37b29cdd_780d7b1e",
+        "filename": "src/gpu/graphite/precompile/PrecompileShader.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 609,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-07-03T18:53:13Z",
+      "side": 1,
+      "message": "Doesn\u0027t this need to be:\nthree potential variants: \n  w/o the LocalMatrixShader\n  w/ a LocalMatrixShader but non-perspective\n  w/ a LocalMatrixShader but w/o perspective\n?",
+      "range": {
+        "startLine": 606,
+        "startChar": 0,
+        "endLine": 609,
+        "endChar": 56
+      },
+      "revId": "01f8ca6bf68892bb527fc14139ec7f110212831a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a21a35c5_199890f4",
+        "filename": "src/gpu/graphite/precompile/PrecompileShader.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 615,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-07-03T18:53:13Z",
+      "side": 1,
+      "message": "Doesn\u0027t this need to change w/ the kIncludePerspective setting ?",
+      "range": {
+        "startLine": 615,
+        "startChar": 19,
+        "endLine": 615,
+        "endChar": 20
+      },
+      "revId": "01f8ca6bf68892bb527fc14139ec7f110212831a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
