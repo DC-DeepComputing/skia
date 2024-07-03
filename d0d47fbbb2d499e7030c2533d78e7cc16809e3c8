@@ -51,6 +51,24 @@
       "parentUuid": "2e025804_aba2a19f",
       "revId": "d0d47fbbb2d499e7030c2533d78e7cc16809e3c8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "54b8e5d4_3e202c60",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 20234
+      },
+      "writtenOn": "2024-07-03T01:55:41Z",
+      "side": 1,
+      "message": "Thanks for your advice.\n\n@Ben I also noticed that gn/skia/BUILD.gn does have cross-compilation support, but it only supports android, ios, mac, and fuchisa systems, not linux. Maybe we should find a better way to meet different needs.\n\nThis CL provide a way，for example ones build arm64 in linux x86-64 platform: \n./buildtools/linux64/gn gen out/arm64_Release \u0027--args\u003dis_debug\u003dfalse is_official_build\u003dfalse target_cpu \u003d \"arm64\" skia_sysroot \u003d \"/mnt/sysroot/linux/debian_bullseye_arm64-sysroot\" skia_cross_target \u003d \"aarch64-linux-gnu\"\u0027\n\n@brian  Yes, those extra_xxxflags also can. But now the skia build system lacks an entry to specify sysroot and target flags where current_os \u003d\u003d \"linux\".",
+      "parentUuid": "8371a4ff_d1627ac1",
+      "revId": "d0d47fbbb2d499e7030c2533d78e7cc16809e3c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
