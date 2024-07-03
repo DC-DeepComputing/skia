@@ -133,7 +133,7 @@ static void shade_rect(SkCanvas* canvas, sk_sp<SkShader> shader, int cellRow, in
 class AnalyticGradientShaderGM : public skiagm::GM {
 public:
     AnalyticGradientShaderGM() {
-
+        SkDebugf("AnalyticGradientShaderGM()");
     }
 
 protected:

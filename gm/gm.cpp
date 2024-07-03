@@ -181,7 +181,7 @@ void GM::drawSizeBounds(SkCanvas* canvas, SkColor color) {
 }
 
 // need to explicitly declare this, or we get some weird infinite loop llist
-template GMRegistry* GMRegistry::gHead;
+template<> GMRegistry* GMRegistry::gHead = nullptr;
 
 #if defined(SK_GANESH)
 DrawResult GpuGM::onDraw(GrRecordingContext* rContext, SkCanvas* canvas, SkString* errorMsg) {

@@ -19,7 +19,7 @@
 #include "include/ports/SkFontMgr_directory.h"
 #endif
 
-template sk_tools::Registry<fiddle::Example>* sk_tools::Registry<fiddle::Example>::gHead;
+template<> sk_tools::Registry<fiddle::Example>* sk_tools::Registry<fiddle::Example>::gHead = nullptr;
 
 // These globals are needed by fiddles:
 GrBackendTexture backEndTexture;

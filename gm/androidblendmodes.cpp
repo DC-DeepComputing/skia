@@ -23,12 +23,13 @@
 
 #include <initializer_list>
 
-namespace skiagm {
+namespace {
 
 // This GM recreates the blend mode images from the Android documentation
-class AndroidBlendModesGM : public GM {
+class AndroidBlendModesGM : public skiagm::GM {
 public:
     AndroidBlendModesGM() {
+        SkDebugf("AndroidBlendModesGM()");
         this->setBGColor(SK_ColorBLACK);
     }
 
@@ -129,7 +130,6 @@ private:
     using INHERITED = GM;
 };
 
-//////////////////////////////////////////////////////////////////////////////
+}
 
 DEF_GM(return new AndroidBlendModesGM;)
-}  // namespace skiagm

@@ -20,7 +20,9 @@
 
 class AlphaGradientsGM : public skiagm::GM {
 public:
-    AlphaGradientsGM() {}
+    AlphaGradientsGM() {
+        SkDebugf("AlphaGradientsGM()");
+    }
 
 protected:
     SkString getName() const override { return SkString("alphagradients"); }
