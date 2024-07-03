@@ -70,6 +70,30 @@
       },
       "revId": "e632efd38e40168aa89f7ae9aeab10c496b22b4f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "67167511_ba3ea66f",
+        "filename": "bazel/exporter/gni_exporter.go",
+        "patchSetId": 18
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-03T14:08:07Z",
+      "side": 1,
+      "message": "LGTM, thanks.",
+      "parentUuid": "7265df26_f2ed95c4",
+      "range": {
+        "startLine": 99,
+        "startChar": 0,
+        "endLine": 99,
+        "endChar": 60
+      },
+      "revId": "e632efd38e40168aa89f7ae9aeab10c496b22b4f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
