@@ -1093,10 +1093,11 @@ namespace {
 
 void add_primitive_color_uniform_data(
         const ShaderCodeDictionary* dict,
+        const SkColorSpaceXformSteps& steps,
         PipelineDataGatherer* gatherer) {
 
-    // VALIDATE_UNIFORMS(gatherer, dict, BuiltInCodeSnippetID::kPrimitiveColor);
-    // TODO: add colorspace uniforms
+    VALIDATE_UNIFORMS(gatherer, dict, BuiltInCodeSnippetID::kPrimitiveColor);
+    add_color_space_uniforms(steps, ReadSwizzle::kRGBA, gatherer);
 }
 
 }  // anonymous namespace
@@ -1104,7 +1105,11 @@ void add_primitive_color_uniform_data(
 void PrimitiveColorBlock::AddBlock(const KeyContext& keyContext,
                                    PaintParamsKeyBuilder* builder,
                                    PipelineDataGatherer* gatherer) {
-    add_primitive_color_uniform_data(keyContext.dict(), gatherer);
+    SkColorSpaceXformSteps steps = SkColorSpaceXformSteps(SkColorSpace::MakeSRGB().get(),
+                                                          kUnpremul_SkAlphaType,
+                                                          keyContext.dstColorInfo().colorSpace(),
+                                                          keyContext.dstColorInfo().alphaType());
+    add_primitive_color_uniform_data(keyContext.dict(), steps, gatherer);
 
     builder->addBlock(BuiltInCodeSnippetID::kPrimitiveColor);
 }
