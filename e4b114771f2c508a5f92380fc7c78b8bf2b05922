@@ -22,6 +22,30 @@
       },
       "revId": "e4b114771f2c508a5f92380fc7c78b8bf2b05922",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0346070a_e0a0ac58",
+        "filename": "infra/bots/recipe_modules/build/default.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-07-03T17:37:02Z",
+      "side": 1,
+      "message": "Yes, the name is misleading. We also have `Test-iOS-Xcode11.4.1-iPhone11-GPU-AppleA13-arm64-Debug-All` and the like and it isn\u0027t so much about having an older compiler as having an older deployment target to ensure that things keep compiling when targeting iOS11. The `Xcode11.4.1` bit should probably be replaced with a tag like `iOS11` since all the other jobs appear to be building for iOS13.",
+      "parentUuid": "13059f85_122f9694",
+      "range": {
+        "startLine": 129,
+        "startChar": 11,
+        "endLine": 129,
+        "endChar": 19
+      },
+      "revId": "e4b114771f2c508a5f92380fc7c78b8bf2b05922",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
