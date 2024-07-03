@@ -732,6 +732,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f0a5938c_6b893a99",
+        "filename": "src/gpu/ganesh/mtl/GrMtlOpsRenderPass.mm",
+        "patchSetId": 9
+      },
+      "lineNbr": 538,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-03T19:47:40Z",
+      "side": 1,
+      "message": "This still seems less intuitive to me than how it used to be. Unless you feel strongly, please consider restoring to the way it was or double check with any GPU team member to see if they like the new way better.",
+      "parentUuid": "6f524694_a4c948df",
+      "range": {
+        "startLine": 538,
+        "startChar": 71,
+        "endLine": 538,
+        "endChar": 91
+      },
+      "revId": "4cdf49f54b059b9dbce8a0d2c4df2f07360a5f09",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c8ffaf0f_70666a5e",
         "filename": "src/gpu/ganesh/mtl/GrMtlPipelineStateBuilder.mm",
         "patchSetId": 9
