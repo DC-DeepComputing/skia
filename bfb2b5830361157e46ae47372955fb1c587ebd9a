@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea8cf0b7_0955147f",
+        "filename": "include/gpu/graphite/precompile/PrecompileShader.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-07-03T15:20:43Z",
+      "side": 1,
+      "message": "I guess having \", false\" could make the parallel w/ the above code clearer",
+      "range": {
+        "startLine": 38,
+        "startChar": 85,
+        "endLine": 38,
+        "endChar": 87
+      },
+      "revId": "bfb2b5830361157e46ae47372955fb1c587ebd9a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f394478_6ef6b2b5",
+        "filename": "src/gpu/graphite/precompile/PrecompileShader.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 596,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-07-03T15:20:43Z",
+      "side": 1,
+      "message": "Do we actually need this call? If so, you\u0027re going to want to \u0027|\u0027 in the new flag.",
+      "range": {
+        "startLine": 596,
+        "startChar": 9,
+        "endLine": 596,
+        "endChar": 27
+      },
+      "revId": "bfb2b5830361157e46ae47372955fb1c587ebd9a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c760d13_a9f0a5c1",
+        "filename": "src/gpu/graphite/precompile/PrecompileShader.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 675,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-07-03T15:20:43Z",
+      "side": 1,
+      "message": "It probably isn\u0027t okay to modify \u0027this\u0027",
+      "revId": "bfb2b5830361157e46ae47372955fb1c587ebd9a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
