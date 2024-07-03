@@ -97,6 +97,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d3b3f9bb_e0d135bf",
+        "filename": "src/gpu/ganesh/GrProgramDesc.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-03T19:36:19Z",
+      "side": 1,
+      "message": "Before, the enum values and KeyType were both `protected`, which is not public (only subclasses can see them).\n\nNow, the enum values are `private` and the KeyType is `public`. This leaks out KeyType, which was hidden before, and prevents subclasses from seeing a few values which seem reasonable to expose to a subclass.\n\nI think we should leave the access levels the way they were before.",
+      "parentUuid": "2de8743e_b032a792",
+      "range": {
+        "startLine": 91,
+        "startChar": 0,
+        "endLine": 91,
+        "endChar": 8
+      },
+      "revId": "4cdf49f54b059b9dbce8a0d2c4df2f07360a5f09",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "be0b0f16_2b4e6154",
         "filename": "src/gpu/ganesh/GrSPIRVUniformHandler.h",
         "patchSetId": 9
