@@ -64,7 +64,7 @@ const (
 	OLD_OS_LINUX_GCE               = "Debian-9.8"
 	COMPILE_TASK_NAME_OS_LINUX     = "Debian10"
 	COMPILE_TASK_NAME_OS_LINUX_OLD = "Debian9"
-	DEFAULT_OS_MAC                 = "Mac-10.15.7"
+	DEFAULT_OS_MAC                 = "Mac-14.5"
 	DEFAULT_OS_WIN                 = "Windows-Server-17763"
 
 	// Small is a 2-core machine.
@@ -194,7 +194,7 @@ var (
 			Path: "mac_toolchain",
 			// When this is updated, also update
 			// https://skia.googlesource.com/skcms.git/+/f1e2b45d18facbae2dece3aca673fe1603077846/infra/bots/gen_tasks.go#56
-			Version: "git_revision:796d2b92cff93fc2059623ce0a66284373ceea0a",
+			Version: "git_revision:e018acef6f136ec8bbf378a026a910b40ba3a7a9",
 		},
 	}
 
@@ -852,7 +852,7 @@ func (b *taskBuilder) defaultSwarmDimensions() {
 			"Debian11":   DEBIAN_11_OS,
 			"Mac":        DEFAULT_OS_MAC,
 			"Mac10.15.1": "Mac-10.15.1",
-			"Mac10.15.7": "Mac-10.15.7", // Same as 'Mac', but explicit.
+			"Mac10.15.7": "Mac-10.15.7",
 			"Mac11":      "Mac-11.4",
 			"Mac12":      "Mac-12",
 			"Mac13":      "Mac-13",
@@ -1802,6 +1802,8 @@ func (b *jobBuilder) dm() {
 			b.timeout(6 * time.Hour)
 		} else if b.matchOs("Mac11") {
 			b.timeout(30 * time.Minute)
+		//} else if b.extraConfig("iOS11") {
+		//	b.timeout(5 * time.Minute)
 		}
 		b.maybeAddIosDevImage()
 	})
