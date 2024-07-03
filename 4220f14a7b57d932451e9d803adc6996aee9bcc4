@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "927294e6_b138757b",
+        "filename": "src/core/SkTHash.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-07-03T17:51:04Z",
+      "side": 1,
+      "message": "Should this be `SkNextPow2(4*n/3)` (or something like that) to avoid needing to resize when growing to size `n`?",
+      "revId": "4220f14a7b57d932451e9d803adc6996aee9bcc4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
