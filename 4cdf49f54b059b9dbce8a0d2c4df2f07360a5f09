@@ -70,6 +70,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "46738faa_6e1c2e7f",
+        "filename": "src/gpu/ganesh/GrSPIRVUniformHandler.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-03T17:16:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "be0b0f16_2b4e6154",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 2
+      },
+      "revId": "4cdf49f54b059b9dbce8a0d2c4df2f07360a5f09",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6abfd481_989a7d54",
@@ -272,6 +296,190 @@
         "startChar": 0,
         "endLine": 266,
         "endChar": 0
+      },
+      "revId": "4cdf49f54b059b9dbce8a0d2c4df2f07360a5f09",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a3e28fb_7823eb38",
+        "filename": "src/gpu/ganesh/mtl/GrMtlCaps.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-03T17:16:21Z",
+      "side": 1,
+      "message": "Please keep flags as-is.",
+      "range": {
+        "startLine": 130,
+        "startChar": 0,
+        "endLine": 134,
+        "endChar": 0
+      },
+      "revId": "4cdf49f54b059b9dbce8a0d2c4df2f07360a5f09",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e9c2dc10_55e8f35a",
+        "filename": "src/gpu/ganesh/mtl/GrMtlCaps.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-03T17:16:21Z",
+      "side": 1,
+      "message": "Please keep flags as-is.",
+      "range": {
+        "startLine": 151,
+        "startChar": 0,
+        "endLine": 156,
+        "endChar": 0
+      },
+      "revId": "4cdf49f54b059b9dbce8a0d2c4df2f07360a5f09",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e2b75b4d_8b08394e",
+        "filename": "src/gpu/ganesh/mtl/GrMtlOpsRenderPass.mm",
+        "patchSetId": 9
+      },
+      "lineNbr": 538,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-03T17:16:21Z",
+      "side": 1,
+      "message": "This seems less intuitive to me. Maybe run it past the original author and see if they have an opinion on it.",
+      "range": {
+        "startLine": 538,
+        "startChar": 71,
+        "endLine": 538,
+        "endChar": 91
+      },
+      "revId": "4cdf49f54b059b9dbce8a0d2c4df2f07360a5f09",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8ffaf0f_70666a5e",
+        "filename": "src/gpu/ganesh/mtl/GrMtlPipelineStateBuilder.mm",
+        "patchSetId": 9
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-03T17:16:21Z",
+      "side": 1,
+      "message": "Same as above",
+      "range": {
+        "startLine": 180,
+        "startChar": 43,
+        "endLine": 180,
+        "endChar": 63
+      },
+      "revId": "4cdf49f54b059b9dbce8a0d2c4df2f07360a5f09",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "875d7165_6d25f4d8",
+        "filename": "src/gpu/ganesh/ops/AAConvexPathRenderer.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-03T17:16:21Z",
+      "side": 1,
+      "message": "This should be left as an enum.",
+      "range": {
+        "startLine": 43,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 0
+      },
+      "revId": "4cdf49f54b059b9dbce8a0d2c4df2f07360a5f09",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ae7ff6c7_f8f4889a",
+        "filename": "src/gpu/ganesh/vk/GrVkCaps.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 378,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-03T17:16:21Z",
+      "side": 1,
+      "message": "Please keep flags as-is.",
+      "range": {
+        "startLine": 371,
+        "startChar": 0,
+        "endLine": 378,
+        "endChar": 0
+      },
+      "revId": "4cdf49f54b059b9dbce8a0d2c4df2f07360a5f09",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3bc7320e_6147c4f9",
+        "filename": "src/gpu/ganesh/vk/GrVkCaps.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 411,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-03T17:16:21Z",
+      "side": 1,
+      "message": "Please keep flags as-is.",
+      "range": {
+        "startLine": 408,
+        "startChar": 0,
+        "endLine": 411,
+        "endChar": 0
+      },
+      "revId": "4cdf49f54b059b9dbce8a0d2c4df2f07360a5f09",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a99c7101_543ba934",
+        "filename": "src/gpu/ganesh/vk/GrVkDescriptorSetManager.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-03T17:16:21Z",
+      "side": 1,
+      "message": "Please re-add comment ` // must be less than kMaxUniformDescriptors`",
+      "range": {
+        "startLine": 75,
+        "startChar": 56,
+        "endLine": 75,
+        "endChar": 58
       },
       "revId": "4cdf49f54b059b9dbce8a0d2c4df2f07360a5f09",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
