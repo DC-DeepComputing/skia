@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47aa6590_d2381e4c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-03T02:42:32Z",
+      "side": 1,
+      "message": "This appears to have broken the iOS build.",
+      "revId": "c1f2dd0fc5f632c32a603d4dcf539ea85d0554a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
