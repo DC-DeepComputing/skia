@@ -31,16 +31,6 @@ namespace skgpu::graphite {
 
 PrecompileShader::~PrecompileShader() = default;
 
-sk_sp<PrecompileShader> PrecompileShader::makeWithLocalMatrix() const {
-    if (this->priv().isALocalMatrixShader()) {
-        // SkShader::makeWithLocalMatrix collapses chains of localMatrix shaders so we need to
-        // follow suit here
-        return sk_ref_sp(this);
-    }
-
-    return PrecompileShaders::LocalMatrix({ sk_ref_sp(this) });
-}
-
 sk_sp<PrecompileShader> PrecompileShader::makeWithColorFilter(
         sk_sp<PrecompileColorFilter> cf) const {
     if (!cf) {
@@ -563,19 +553,22 @@ sk_sp<PrecompileShader> PrecompileShadersPriv::Picture(bool withLM) {
     return s;
 }
 
+enum class LocalMatrixFlags {
+    kNone                  = 0b00,
+    kHasPerspective        = 0b01,
+    kIncludeWithOutVariant = 0b10,
+};
+SK_MAKE_BITMASK_OPS(LocalMatrixFlags)
+
 //--------------------------------------------------------------------------------------------------
 // In the main Skia API the SkLocalMatrixShader is optimized away when the LM is the identity
 // or omitted. The PrecompileLocalMatrixShader captures this by adding two intrinsic options.
 // One with the LMShader wrapping the child and one without the LMShader.
 class PrecompileLocalMatrixShader final : public PrecompileShader {
 public:
-    enum class Flags {
-        kNone,
-        kIncludeWithOutVariant,
-    };
 
     PrecompileLocalMatrixShader(SkSpan<const sk_sp<PrecompileShader>> wrapped,
-                                Flags flags = Flags::kNone)
+                                LocalMatrixFlags flags = LocalMatrixFlags::kNone)
             : fWrapped(wrapped.begin(), wrapped.end())
             , fFlags(flags) {
         fNumWrappedCombos = 0;
@@ -603,6 +596,12 @@ public:
         return false;
     }
 
+    SkSpan<const sk_sp<PrecompileShader>> getWrapped() const {
+        return fWrapped;
+    }
+
+    LocalMatrixFlags getFlags() const { return fFlags; }
+
 private:
     // The LocalMatrixShader has two potential variants: with and without the LocalMatrixShader
     inline static constexpr int kNumIntrinsicCombinations = 2;
@@ -612,7 +611,7 @@ private:
     bool isALocalMatrixShader() const override { return true; }
 
     int numIntrinsicCombinations() const override {
-        if (fFlags != Flags::kIncludeWithOutVariant) {
+        if (fFlags != LocalMatrixFlags::kIncludeWithOutVariant) {
             return 1;   // just kWithLocalMatrix
         }
         return kNumIntrinsicCombinations;
@@ -628,7 +627,7 @@ private:
 
         int desiredLMCombination, desiredWrappedCombination;
 
-        if (fFlags != Flags::kIncludeWithOutVariant) {
+        if (fFlags != LocalMatrixFlags::kIncludeWithOutVariant) {
             desiredLMCombination = kWithLocalMatrix;
             desiredWrappedCombination = desiredCombination;
         } else {
@@ -653,19 +652,40 @@ private:
 
     std::vector<sk_sp<PrecompileShader>> fWrapped;
     int fNumWrappedCombos;
-    Flags fFlags;
+    LocalMatrixFlags fFlags;
 };
 
 sk_sp<PrecompileShader> PrecompileShaders::LocalMatrix(
-        SkSpan<const sk_sp<PrecompileShader>> wrapped) {
-    return sk_make_sp<PrecompileLocalMatrixShader>(std::move(wrapped));
+        SkSpan<const sk_sp<PrecompileShader>> wrapped,
+        bool hasPerspective) {
+    return sk_make_sp<PrecompileLocalMatrixShader>(
+            std::move(wrapped),
+            hasPerspective ? LocalMatrixFlags::kHasPerspective
+                           : LocalMatrixFlags::kNone);
 }
 
 sk_sp<PrecompileShader> PrecompileShadersPriv::LocalMatrixBothVariants(
         SkSpan<const sk_sp<PrecompileShader>> wrapped) {
     return sk_make_sp<PrecompileLocalMatrixShader>(
             std::move(wrapped),
-            PrecompileLocalMatrixShader::Flags::kIncludeWithOutVariant);
+            LocalMatrixFlags::kIncludeWithOutVariant);
+}
+
+sk_sp<PrecompileShader> PrecompileShader::makeWithLocalMatrix(bool hasPerspective) const {
+    if (this->priv().isALocalMatrixShader()) {
+        // SkShader::makeWithLocalMatrix collapses chains of localMatrix shaders so we need to
+        // follow suit here, applying any new perspective flag if needed.
+        if (hasPerspective) {
+            auto lmShader = static_cast<const PrecompileLocalMatrixShader*>(this);
+            return sk_make_sp<PrecompileLocalMatrixShader>(
+                lmShader->getWrapped(),
+                lmShader->getFlags() | LocalMatrixFlags::kHasPerspective);
+        }
+
+        return sk_ref_sp(this);
+    }
+
+    return PrecompileShaders::LocalMatrix({ sk_ref_sp(this) }, hasPerspective);
 }
 
 //--------------------------------------------------------------------------------------------------
