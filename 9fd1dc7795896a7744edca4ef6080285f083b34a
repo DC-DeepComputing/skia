@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a14a6df7_f146ad8e",
+        "filename": "infra/bots/recipe_modules/build/default.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-07-03T17:33:11Z",
+      "side": 0,
+      "message": "This was 12.3",
+      "range": {
+        "startLine": 105,
+        "startChar": 27,
+        "endLine": 105,
+        "endChar": 32
+      },
+      "revId": "9fd1dc7795896a7744edca4ef6080285f083b34a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "02ef83eb_50823089",
