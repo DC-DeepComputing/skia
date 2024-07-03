@@ -16,6 +16,24 @@
       "message": "Should this be `SkNextPow2(4*n/3)` (or something like that) to avoid needing to resize when growing to size `n`?",
       "revId": "4220f14a7b57d932451e9d803adc6996aee9bcc4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eaa33144_c53c96dc",
+        "filename": "src/core/SkTHash.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-03T20:18:29Z",
+      "side": 1,
+      "message": "Good catch! That is what callers will expect. Done.",
+      "parentUuid": "927294e6_b138757b",
+      "revId": "4220f14a7b57d932451e9d803adc6996aee9bcc4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
