@@ -69,6 +69,24 @@
       "parentUuid": "8371a4ff_d1627ac1",
       "revId": "d0d47fbbb2d499e7030c2533d78e7cc16809e3c8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c6ea83a_f5cf8851",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-07-03T14:35:08Z",
+      "side": 1,
+      "message": "The cross compilation support is not in `gn/skia/BUILD.gn` but in `gn/toolchain/BUILD.gn`. See the templates and instantiations there and how they are used at the end of `gn/BUILDCONFIG.gn`.",
+      "parentUuid": "54b8e5d4_3e202c60",
+      "revId": "d0d47fbbb2d499e7030c2533d78e7cc16809e3c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
