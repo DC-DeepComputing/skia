@@ -655,17 +655,13 @@ void Device::drawPaint(const SkPaint& paint) {
         }
     }
 
-    const Transform& localToDevice = this->localToDeviceTransform();
-    if (!localToDevice.valid()) {
-        // TBD: This matches legacy behavior for drawPaint() that requires local coords, although
-        // v1 handles arbitrary transforms when the paint is solid color because it just fills the
-        // device bounds directly. In the new world it might be nice to have non-invertible
-        // transforms formalized (i.e. no drawing ever, handled at SkCanvas level possibly?)
-        return;
-    }
-    Rect localCoveringBounds = localToDevice.inverseMapRect(fClip.conservativeBounds());
-    this->drawGeometry(localToDevice,
-                       Geometry(Shape(localCoveringBounds)),
+    Shape inverseFill; // defaults to empty
+    inverseFill.setInverted(true);
+    // An empty shape with an inverse fill completely floods the clip
+    SkASSERT(inverseFill.isEmpty() && inverseFill.inverted());
+
+    this->drawGeometry(this->localToDeviceTransform(),
+                       Geometry(inverseFill),
                        paint,
                        DefaultFillStyle(),
                        DrawFlags::kIgnorePathEffect);
@@ -1350,6 +1346,11 @@ std::pair<const Renderer*, PathAtlas*> Device::chooseRenderer(const Transform& l
     // We can't use this renderer if we require MSAA for an effect (i.e. clipping or stroke+fill).
     if (!requireMSAA && is_simple_shape(shape, type)) {
         return {renderers->analyticRRect(), nullptr};
+    } else if (shape.isEmpty() && shape.inverted()) {
+        // This is a clip fill, which should only be coming from drawPaint(). In theory we could use
+        // this with clip draws to support non-AA clip rects, but for now it shouldn't happen.
+        SkASSERT(!requireMSAA);
+        return {renderers->nonAABounds(), nullptr};
     }
 
     // Path rendering options. For now the strategy is very simple and not optimal:
