@@ -178,7 +178,9 @@ SkISize GMSrc::size() const {
 }
 
 Name GMSrc::name() const {
+    SkDebugf("About to call %p()\n", &fFactory);
     std::unique_ptr<skiagm::GM> gm(fFactory());
+    SkDebugf("Getting name from gm\n");
     return gm->getName();
 }
 
