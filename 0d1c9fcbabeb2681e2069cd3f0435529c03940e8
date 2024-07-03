@@ -3,6 +3,40 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1cc49db3_bbd339cd",
+        "filename": "src/gpu/graphite/precompile/PrecompileShader.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 556,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-07-03T18:37:49Z",
+      "side": 1,
+      "message": "Can these still be inside PrecompileLocalMatrixShader ? I think you would have to switch to SK_DECL_BITMASK_OPS_FRIENDS",
+      "revId": "0d1c9fcbabeb2681e2069cd3f0435529c03940e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b30c9b6_9b024ac6",
+        "filename": "src/gpu/graphite/precompile/PrecompileShader.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 679,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-07-03T18:37:49Z",
+      "side": 1,
+      "message": "I would move this line up to 676 and change the if-test to be:\n  if (hasPerspective \u0026\u0026 !(lmShader-\u003egetFlags() \u0026 LocalMatrixFlags::kIncludePerspective))\nSo, only create the new LMS if it is actually needed.",
+      "revId": "0d1c9fcbabeb2681e2069cd3f0435529c03940e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8f29b859_8eae9897",
         "filename": "tests/graphite/PaintParamsKeyTest.cpp",
         "patchSetId": 10
