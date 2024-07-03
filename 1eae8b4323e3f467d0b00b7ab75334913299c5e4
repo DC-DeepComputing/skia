@@ -51,6 +51,24 @@
       "parentUuid": "7054142f_3fffd5d4",
       "revId": "1eae8b4323e3f467d0b00b7ab75334913299c5e4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3023fdf_36884ba7",
+        "filename": "third_party/libpng/BUILD.gn",
+        "patchSetId": 1
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-07-03T14:36:58Z",
+      "side": 1,
+      "message": "That\u0027s not the point, if this really is the machine architecture it should be set globally or as part of a config or something. It is not a good idea to be randomly setting machine architecture flags.",
+      "parentUuid": "92815002_1c60a62f",
+      "revId": "1eae8b4323e3f467d0b00b7ab75334913299c5e4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
