@@ -139,21 +139,25 @@ void sk_fclose(FILE* f) {
 }
 
 bool sk_isdir(const char *path) {
+SkDebugf("sk_isdir(%s)\n", path);
     struct stat status = {};
-    if (0 != stat(path, &status)) {
-#ifdef SK_BUILD_FOR_IOS
-        // check the bundle directory if not in default path
-        SkString bundlePath;
-        if (ios_get_path_in_bundle(path, &bundlePath)) {
-            if (0 != stat(bundlePath.c_str(), &status)) {
-                return false;
-            }
-        }
-#else
-        return false;
-#endif
+    if (stat(path, &status) == 0) {
+        return SkToBool(status.st_mode & S_IFDIR);
     }
-    return SkToBool(status.st_mode & S_IFDIR);
+#ifdef SK_BUILD_FOR_IOS
+    // check the bundle directory if not in default path
+    SkString bundlePath;
+    if (!ios_get_path_in_bundle(path, &bundlePath)) {
+        SkDebugf("sk_isdir returning ios false\n");
+        return false;
+    }
+SkDebugf("sk_isdir bundlePath: %s\n", bundlePath.c_str());
+    if (stat(bundlePath.c_str(), &status) == 0) {
+        return SkToBool(status.st_mode & S_IFDIR);
+    }
+#endif
+SkDebugf("sk_isdir returning false\n");
+    return false;
 }
 
 bool sk_mkdir(const char* path) {
