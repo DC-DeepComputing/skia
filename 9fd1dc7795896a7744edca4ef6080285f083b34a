@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60f0792d_32626f87",
+        "filename": "src/gpu/ganesh/ops/AAConvexPathRenderer.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-03T19:44:37Z",
+      "side": 0,
+      "message": "Please restore this static assertion (move it next to the enum if you like, matching the other version of this code)",
+      "range": {
+        "startLine": 58,
+        "startChar": 0,
+        "endLine": 58,
+        "endChar": 48
+      },
+      "revId": "9fd1dc7795896a7744edca4ef6080285f083b34a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
