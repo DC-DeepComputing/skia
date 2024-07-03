@@ -74,10 +74,6 @@ public:
     void setMatrix4fv(UniformHandle, int arrayCount, const float matrices[]) const override;
 
 private:
-    enum {
-        kUnusedUniform = -1,
-    };
-
     struct Uniform {
         GrGLint     fLocation;
 #ifdef SK_DEBUG
