@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b87f580f_0a2e53eb",
+        "filename": "infra/bots/recipe_modules/build/default.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-07-03T18:53:16Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "cfc92927_f45479f4",
+      "range": {
+        "startLine": 105,
+        "startChar": 27,
+        "endLine": 105,
+        "endChar": 32
+      },
+      "revId": "e4b114771f2c508a5f92380fc7c78b8bf2b05922",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "13059f85_122f9694",
@@ -109,6 +133,30 @@
       "side": 1,
       "message": "So the `Xcode11.4.1` is currently the \"compiler\". Most of the iOS builders are just `Clang` as the \"compiler\", though this is the Xcode clang (I think).\n\nSo to reflect reality these could use `Clang_iOS11` as the compiler (a simple search and replace) or these could use `Clang` as the compiler and then use `iOS11` as an extra token instead of (though probably in addition to) `iOS` (which which would then mean something like `iOS13` if left unmodified).",
       "parentUuid": "ea950356_3179811d",
+      "range": {
+        "startLine": 129,
+        "startChar": 11,
+        "endLine": 129,
+        "endChar": 19
+      },
+      "revId": "e4b114771f2c508a5f92380fc7c78b8bf2b05922",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f3f4f0a8_751bb424",
+        "filename": "infra/bots/recipe_modules/build/default.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-07-03T18:53:16Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "4d7259a1_626b0d27",
       "range": {
         "startLine": 129,
         "startChar": 11,
