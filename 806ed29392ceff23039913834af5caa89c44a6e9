@@ -82,6 +82,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "bcc0ff35_f13d9cce",
+        "filename": "src/gpu/graphite/dawn/DawnGraphiteUtils.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-07-03T14:10:47Z",
+      "side": 1,
+      "message": "Yes, in the subsequent CL (https://skia-review.googlesource.com/c/skia/+/870936) I actually remove the original method added there (`IsEqualToYCbCrVkDescriptorField`) and instead have that class utilize this function when needing to compare. This way, this one function can be used to compare any 2 arbitrary ycbcr descriptors for equality rather than not just for comparison against the `fYcbcrVkDescriptor` member of `DawnTextureSpec`. \n\nWould you like me to move that change into this CL? I can also wait to submit this one until the follow-up CL is also approved. LMK 😊",
+      "parentUuid": "53a9e473_d355eca3",
+      "range": {
+        "startLine": 194,
+        "startChar": 0,
+        "endLine": 207,
+        "endChar": 1
+      },
+      "revId": "806ed29392ceff23039913834af5caa89c44a6e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "0a8ade8a_21e3cea0",
@@ -169,6 +193,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "031804c0_a11eabdb",
+        "filename": "src/gpu/graphite/dawn/DawnGraphiteUtilsPriv.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-07-03T14:10:47Z",
+      "side": 1,
+      "message": "Yes, they\u0027re used in a later CL now. Namely, when translating between graphite\u0027s ycbcr structure and numerical representation to Dawn\u0027s ycbcr info struct.",
+      "parentUuid": "d7e2c30e_3c3ca005",
+      "range": {
+        "startLine": 71,
+        "startChar": 26,
+        "endLine": 71,
+        "endChar": 48
+      },
+      "revId": "806ed29392ceff23039913834af5caa89c44a6e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d241f567_760c4762",
@@ -186,6 +234,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "545d3348_86114dfd",
+        "filename": "src/gpu/graphite/dawn/DawnGraphiteUtilsPriv.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-07-03T14:10:47Z",
+      "side": 1,
+      "message": "Good catch; thanks! ^-^",
+      "parentUuid": "d241f567_760c4762",
+      "revId": "806ed29392ceff23039913834af5caa89c44a6e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5db412b2_0b6a7396",
@@ -199,6 +265,24 @@
       "writtenOn": "2024-06-27T11:22:24Z",
       "side": 1,
       "message": "\u003c\u003c kComponentGShift",
+      "revId": "806ed29392ceff23039913834af5caa89c44a6e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3444b604_4180cad6",
+        "filename": "src/gpu/graphite/dawn/DawnGraphiteUtilsPriv.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-07-03T14:10:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5db412b2_0b6a7396",
       "revId": "806ed29392ceff23039913834af5caa89c44a6e9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
