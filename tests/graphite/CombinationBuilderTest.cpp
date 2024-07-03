@@ -40,11 +40,12 @@ static constexpr int kExpectedOverdrawCFCombos = 1;
 static constexpr int kExpectedTableCFCombos = 1;
 
 // shaders
-static constexpr int kExpectedGradientCombos = 3;
-static constexpr int kExpectedImageCombos = 6;
+static constexpr int kExpectedLocalMatrixCombos = 12;
+static constexpr int kExpectedGradientCombos = 6;
+static constexpr int kExpectedImageCombos = 12;
 static constexpr int kExpectedPerlinNoiseCombos = 1;
-static constexpr int kExpectedPictureCombos = 12;
-static constexpr int kExpectedRawImageCombos = 3;
+static constexpr int kExpectedPictureCombos = 36;
+static constexpr int kExpectedRawImageCombos = 6;
 static constexpr int kExpectedSolidColorCombos = 1;
 
 
@@ -103,17 +104,17 @@ void big_test(const KeyContext& keyContext,
               PipelineDataGatherer* gatherer,
               skiatest::Reporter* reporter) {
 
-    static constexpr int kNumExpected = 444;
-    // paintOptions (444 = 4*111)
-    //  |- (111 = 3+108) sweepGrad_0 (3) |
-    //  |                blendShader_0 (108 = 1*4*27)
+    static constexpr int kNumExpected = 2544;
+    // paintOptions (2544 = 4*636)
+    //  |- (636 = 6+630) sweepGrad_0 (6) |
+    //  |                blendShader_0 (630 = 1*7*90)
     //  |                 |- 0: (1)       kSrc (1)
-    //  |                 |- 1: (4=3+1)   (dsts) linearGrad_0 (3) | solid_0 (1)
-    //  |                 |- 2: (27=3+24) (srcs) linearGrad_1 (3) |
-    //  |                                        blendShader_1 (24=1*4*6)
+    //  |                 |- 1: (7=6+1)   (dsts) linearGrad_0 (6) | solid_0 (1)
+    //  |                 |- 2: (90=6+84) (srcs) linearGrad_1 (6) |
+    //  |                                        blendShader_1 (84=1*7*12)
     //  |                                         |- 0: (1) kDst (1)
-    //  |                                         |- 1: (4=3+1) (dsts) radGrad_0 (3) | solid_1 (1)
-    //  |                                         |- 2: (6) (srcs) imageShader_0 (6)
+    //  |                                         |- 1: (7=6+1) (dsts) radGrad_0 (6) | solid_1 (1)
+    //  |                                         |- 2: (12) (srcs) imageShader_0 (12)
     //  |
     //  |- (4) 4-built-in-blend-modes
 
@@ -395,7 +396,7 @@ void shader_subtest(const KeyContext& keyContext,
                                            kExpectedPerlinNoiseCombos);
     }
 
-    // The ImageShaders have 6 combinations (3 sampling/tiling x 2 alpha/non-alpha)
+    // The ImageShaders have 12 combinations (2 lms x 3 sampling/tiling x 2 alpha/non-alpha)
     // The CoordClamp shader doesn't add any additional combinations to its wrapped shader.
     {
         PaintOptions paintOptions;
@@ -405,7 +406,7 @@ void shader_subtest(const KeyContext& keyContext,
                  /* expectedNumOptions= */ kExpectedImageCombos);
     }
 
-    // RawImageShaders only have 3 combinations (since they never incorporate alpha)
+    // Each RawImageShaders has 6 combinations (2 lms x 3 sampling/tiling x 1 non-alpha)
     {
         PaintOptions paintOptions;
         paintOptions.setShaders({ PrecompileShaders::RawImage() });
@@ -424,7 +425,8 @@ void shader_subtest(const KeyContext& keyContext,
                  /* expectedNumOptions= */ kExpectedPerlinNoiseCombos + kExpectedPerlinNoiseCombos);
     }
 
-    // Each gradient shader generates 3 combinations
+    // Each gradient shader generates 6 combinations
+    //      2 (LMS variations) x 3 (gradientShader variations)
     {
         PaintOptions paintOptions;
         paintOptions.setShaders({ PrecompileShaders::LinearGradient(),
@@ -437,8 +439,8 @@ void shader_subtest(const KeyContext& keyContext,
                                            kExpectedGradientCombos + kExpectedGradientCombos);
     }
 
-    // Each picture shader generates 12 combinations:
-    //    2 (pictureShader LM) x 6 (imageShader variations)
+    // Each picture shader generates 36 combinations:
+    //    3 (pictureShader LM) x (2 (LMS variations) x 6 (imageShader variations))
     {
         PaintOptions paintOptions;
         paintOptions.setShaders({ PrecompileShaders::Picture() });
@@ -447,15 +449,16 @@ void shader_subtest(const KeyContext& keyContext,
                  /* expectedNumOptions= */ kExpectedPictureCombos);
     }
 
-    // In general, the local matrix shader just generates however many options its wrapped
-    // shader generates.
+    // The local matrix shader generates 2 combinations, with or without perspective.
+    // In this case there would be 12 total combinations.
+    //     2 (LMS variations) x (2 (LMS variations) x 3 (gradientShader variations))
     {
         PaintOptions paintOptions;
         paintOptions.setShaders(
                 { PrecompileShaders::LocalMatrix({ PrecompileShaders::LinearGradient() }) });
 
         run_test(keyContext, gatherer, reporter, paintOptions,
-                 /* expectedNumOptions= */ kExpectedGradientCombos);
+                 /* expectedNumOptions= */ kExpectedLocalMatrixCombos);
     }
 
     // The ColorFilter shader just creates the cross product of its child options
