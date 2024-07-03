@@ -1,0 +1,280 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89b1f954_78714de1",
+        "filename": "src/gpu/ganesh/GrDistanceFieldGenFromVector.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-03T03:41:31Z",
+      "side": 1,
+      "message": "This is better expressed as an enum. e.g. `kLine` or `kQuad` will be shown in the debugger, not `0` or `1`.",
+      "range": {
+        "startLine": 200,
+        "startChar": 0,
+        "endLine": 203,
+        "endChar": 0
+      },
+      "revId": "4cdf49f54b059b9dbce8a0d2c4df2f07360a5f09",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c091fbd4_5cc14536",
+        "filename": "src/gpu/ganesh/GrProgramDesc.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-03T03:41:31Z",
+      "side": 1,
+      "message": "Why change the access levels here? I agree with the conversion to constexpr, but the access level changes seem unrelated and I don\u0027t see any justification to altering this...",
+      "range": {
+        "startLine": 91,
+        "startChar": 0,
+        "endLine": 91,
+        "endChar": 8
+      },
+      "revId": "4cdf49f54b059b9dbce8a0d2c4df2f07360a5f09",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be0b0f16_2b4e6154",
+        "filename": "src/gpu/ganesh/GrSPIRVUniformHandler.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-03T03:41:31Z",
+      "side": 1,
+      "message": "^ note to self: continue review here",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 2
+      },
+      "revId": "4cdf49f54b059b9dbce8a0d2c4df2f07360a5f09",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6abfd481_989a7d54",
+        "filename": "src/gpu/ganesh/GrShaderVar.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-03T03:41:31Z",
+      "side": 1,
+      "message": "Was removing the blank line intentional?",
+      "range": {
+        "startLine": 29,
+        "startChar": 0,
+        "endLine": 29,
+        "endChar": 1
+      },
+      "revId": "4cdf49f54b059b9dbce8a0d2c4df2f07360a5f09",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68f18687_5867f9c3",
+        "filename": "src/gpu/ganesh/d3d/GrD3DCaps.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-03T03:41:31Z",
+      "side": 1,
+      "message": "I don\u0027t think we should start changing all the flags from enum to constexpr ints unless there\u0027s a good reason to do so. We don\u0027t _want_ to perform arithmetic on flags (`kUploadData_Flag * 7.0` is meaningless) so enums are actually a safeguard. Also, the style guide recommends flags in enum format: https://screenshot.googleplex.com/8ECza94L9oZ2B6P\n\n(The style guide can be changed, of course, but I think we\u0027d need to seek a group consensus.)",
+      "range": {
+        "startLine": 151,
+        "startChar": 0,
+        "endLine": 158,
+        "endChar": 0
+      },
+      "revId": "4cdf49f54b059b9dbce8a0d2c4df2f07360a5f09",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18acca57_3aba4f19",
+        "filename": "src/gpu/ganesh/d3d/GrD3DCaps.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-03T03:41:31Z",
+      "side": 1,
+      "message": "Please keep flags as-is",
+      "range": {
+        "startLine": 178,
+        "startChar": 0,
+        "endLine": 183,
+        "endChar": 0
+      },
+      "revId": "4cdf49f54b059b9dbce8a0d2c4df2f07360a5f09",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "09f77ec7_da6b601a",
+        "filename": "src/gpu/ganesh/gl/GrGLCaps.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 677,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-03T03:41:31Z",
+      "side": 1,
+      "message": "Please keep flags as-is",
+      "range": {
+        "startLine": 673,
+        "startChar": 0,
+        "endLine": 677,
+        "endChar": 0
+      },
+      "revId": "4cdf49f54b059b9dbce8a0d2c4df2f07360a5f09",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab479ae4_d708b4df",
+        "filename": "src/gpu/ganesh/gl/GrGLCaps.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 774,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-03T03:41:31Z",
+      "side": 1,
+      "message": "Please keep flags as-is",
+      "range": {
+        "startLine": 763,
+        "startChar": 0,
+        "endLine": 774,
+        "endChar": 0
+      },
+      "revId": "4cdf49f54b059b9dbce8a0d2c4df2f07360a5f09",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "56694630_8fa35238",
+        "filename": "src/gpu/ganesh/gl/GrGLGpu.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 676,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-03T03:41:31Z",
+      "side": 1,
+      "message": "Good cleanup; as long as we\u0027re here, let\u0027s declare the variable on its own line:\n\n```\n};\nHWWindowRectsState fHWWindowRectsState;\n```",
+      "range": {
+        "startLine": 676,
+        "startChar": 4,
+        "endLine": 676,
+        "endChar": 26
+      },
+      "revId": "4cdf49f54b059b9dbce8a0d2c4df2f07360a5f09",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "683fe644_e9b0b6f8",
+        "filename": "src/gpu/ganesh/gl/GrGLRenderTarget.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-03T03:41:31Z",
+      "side": 1,
+      "message": "I\u0027m not super familiar with this code, but this change doesn\u0027t seem right to me given the method name `isFBO0`. Check with a GPU team member to be sure.",
+      "range": {
+        "startLine": 50,
+        "startChar": 73,
+        "endLine": 50,
+        "endChar": 91
+      },
+      "revId": "4cdf49f54b059b9dbce8a0d2c4df2f07360a5f09",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d55ffb3_3ec0005f",
+        "filename": "src/gpu/ganesh/gl/GrGLRenderTarget.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-03T03:41:31Z",
+      "side": 1,
+      "message": "This might be correct, but I\u0027d verify the intent with a GPU team member.",
+      "range": {
+        "startLine": 54,
+        "startChar": 15,
+        "endLine": 54,
+        "endChar": 54
+      },
+      "revId": "4cdf49f54b059b9dbce8a0d2c4df2f07360a5f09",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f62dd16_87af1c82",
+        "filename": "src/gpu/ganesh/glsl/GrGLSLShaderBuilder.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-03T03:41:31Z",
+      "side": 1,
+      "message": "Why change these? An enum seems quite appropriate for a list like this.",
+      "range": {
+        "startLine": 252,
+        "startChar": 0,
+        "endLine": 266,
+        "endChar": 0
+      },
+      "revId": "4cdf49f54b059b9dbce8a0d2c4df2f07360a5f09",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
