@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "599a5cf0_c2fe35d5",
+        "filename": "gm/animated_gif.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-07-04T02:22:12Z",
+      "side": 1,
+      "message": "Every image in Gold for `AnimCodecPlayer` is blank, as one would expect. Either this needs to point to resources and draw something, become a slide in Viewer for random developer use, or just be removed.",
+      "revId": "8af122ed560dce0679e60a3b47c99cbc5d4d7599",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
