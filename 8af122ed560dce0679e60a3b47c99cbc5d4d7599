@@ -16,6 +16,24 @@
       "message": "Every image in Gold for `AnimCodecPlayer` is blank, as one would expect. Either this needs to point to resources and draw something, become a slide in Viewer for random developer use, or just be removed.",
       "revId": "8af122ed560dce0679e60a3b47c99cbc5d4d7599",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a34f0d6f_efdf4cc3",
+        "filename": "gm/animated_gif.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-07-04T02:43:57Z",
+      "side": 1,
+      "message": "So this change gets us past registering gms and now seems to be hung up on json/lottie? It\u0027s possible that `SkOSFile::Iter` needs some work to be compatible with newer versions of iOS? (Building with newer SDKs can change runtime behavior, especially when actually running on newer devices.)",
+      "parentUuid": "599a5cf0_c2fe35d5",
+      "revId": "8af122ed560dce0679e60a3b47c99cbc5d4d7599",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
