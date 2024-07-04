@@ -34,6 +34,24 @@
       "parentUuid": "aea027eb_502051b9",
       "revId": "8be9283c982e8e5a6ca4a6a7082656829ef22caa",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2614344d_f25dcbfe",
+        "filename": "gm/gm.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-07-04T02:18:38Z",
+      "side": 1,
+      "message": "I\u0027m not sure what AnimCodecPlayer is supposed to really even do. It appears to try to (in the constructor) open the absolute directory path `/skia/anim/` and see what\u0027s in there. On most platforms this will just iterate over nothing, but I can totally see this as not being allowed on iOS.",
+      "parentUuid": "04aae8f4_63c8eb39",
+      "revId": "8be9283c982e8e5a6ca4a6a7082656829ef22caa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
