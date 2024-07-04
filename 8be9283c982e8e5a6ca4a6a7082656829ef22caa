@@ -16,6 +16,24 @@
       "message": "These should probably be fixed anyway, but I thought the issue might be that this was previously just a declaration and the last entry wasn\u0027t nullptr for some reason. But it doesn\u0027t appear to be getting to the end, things always stop after processing the gms in `animated_gif.cpp` and points toward something going on with processing the gms in `androidblendmodes.cpp` or one of the other `a` file names (coming earlier in the list of gm .cpp files).",
       "revId": "8be9283c982e8e5a6ca4a6a7082656829ef22caa",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "04aae8f4_63c8eb39",
+        "filename": "gm/gm.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-07-04T02:06:42Z",
+      "side": 1,
+      "message": "It turns out the next one is probably `AnimCodecPlayer`, which makes sense in hindsight because its the next one up in `animated_gif.cpp` (didn\u0027t realize there were more `DEF_GM` in this file). This one is suspicious because it does a lot of work in the constructor, which is quite bad since we construct and destroy these things just to get their names and whatnot.",
+      "parentUuid": "aea027eb_502051b9",
+      "revId": "8be9283c982e8e5a6ca4a6a7082656829ef22caa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
