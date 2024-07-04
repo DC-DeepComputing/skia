@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "384ce043_50d819dd",
+        "filename": "gm/androidblendmodes.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-07-04T00:51:43Z",
+      "side": 0,
+      "message": "It probably isn\u0027t a good idea to put the `DEF_GM` inside the `skiagm` namespace, though I\u0027m not sure if that should make any difference?",
+      "revId": "d5f8dde714e4653a0e7d0af520f8cbb7548c068f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
