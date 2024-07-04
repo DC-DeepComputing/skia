@@ -87,6 +87,24 @@
       "parentUuid": "54b8e5d4_3e202c60",
       "revId": "d0d47fbbb2d499e7030c2533d78e7cc16809e3c8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45880c67_95f4bfc7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 20234
+      },
+      "writtenOn": "2024-07-04T03:31:56Z",
+      "side": 1,
+      "message": "Thanks for your reply. I am sorry I\u0027m still not sure where to set the sysroot path. Are you mean I can do cross compilation for loong64 use below?\n$ ./buildtools/linux64/gn gen out/la64_Release \u0027--args\u003dextra_cflags\u003d[\"--target\u003dloongarch64-linux-gnu\", \"--sysroot\u003d/mnt/linux/debian_bullseye_loong64-sysroot\"] extra_ldflags\u003d[\"--target\u003dloongarch64-linux-gnu\", \"--sysroot\u003d/mnt/linux/debian_bullseye_loong64-sysroot\"] extra_asmflags\u003d[\"--target\u003dloongarch64-linux-gnu\", \"--sysroot\u003d/mnt/linux/debian_bullseye_loong64-sysroot\"] target_cpu \u003d \"loong64\"\u0027",
+      "parentUuid": "9c6ea83a_f5cf8851",
+      "revId": "d0d47fbbb2d499e7030c2533d78e7cc16809e3c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
