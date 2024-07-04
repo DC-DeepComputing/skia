@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aea027eb_502051b9",
+        "filename": "gm/gm.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-07-04T00:31:19Z",
+      "side": 1,
+      "message": "These should probably be fixed anyway, but I thought the issue might be that this was previously just a declaration and the last entry wasn\u0027t nullptr for some reason. But it doesn\u0027t appear to be getting to the end, things always stop after processing the gms in `animated_gif.cpp` and points toward something going on with processing the gms in `androidblendmodes.cpp` or one of the other `a` file names (coming earlier in the list of gm .cpp files).",
+      "revId": "8be9283c982e8e5a6ca4a6a7082656829ef22caa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
