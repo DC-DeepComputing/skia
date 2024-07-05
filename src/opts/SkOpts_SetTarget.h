@@ -128,6 +128,16 @@
             #include <fmaintrin.h>
         #endif
 
+    #elif SK_OPTS_TARGET == SK_OPTS_TARGET_LASX
+
+        #define SK_CPU_LSX_LEVEL SK_CPU_LSX_LEVEL_LASX
+        #define SK_OPTS_NS lasx
+
+        #if defined(__clang__)
+          // Not support 'lasx' currently, this is only for formal unity.
+          #pragma clang attribute push(__attribute__((target("lasx"))), apply_to=function)
+        #endif
+
     #else
         #error Unexpected value of SK_OPTS_TARGET
 
