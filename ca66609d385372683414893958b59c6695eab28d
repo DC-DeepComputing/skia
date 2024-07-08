@@ -52,6 +52,24 @@
       "parentUuid": "7899642e_e52615ae",
       "revId": "ca66609d385372683414893958b59c6695eab28d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "55fd9208_c7e2e7d1",
+        "filename": "src/gpu/graphite/precompile/PrecompileShader.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 635,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-07-08T18:21:27Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "5136fb5a_2acc7856",
+      "revId": "ca66609d385372683414893958b59c6695eab28d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
