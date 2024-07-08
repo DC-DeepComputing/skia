@@ -1,0 +1,39 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7899642e_e52615ae",
+        "filename": "src/gpu/graphite/precompile/PrecompileShader.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 635,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-08T15:38:24Z",
+      "side": 1,
+      "message": "I just noticed this, it wouldn\u0027t work out correctly right now choosing the right variant so I\u0027m making a quick edit to fix this",
+      "fixSuggestions": [
+        {
+          "fixId": "fdb20bb6_5c459f54",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/precompile/PrecompileShader.cpp",
+              "range": {
+                "startLine": 635,
+                "startChar": 0,
+                "endLine": 637,
+                "endChar": 0
+              },
+              "replacement": "            desiredLMCombination \u003d desiredCombination / kNumIntrinsicCombinations;\n            desiredWrappedCombination \u003d desiredCombination % kNumIntrinsicCombinations;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "ca66609d385372683414893958b59c6695eab28d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
