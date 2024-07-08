@@ -405,12 +405,10 @@ private:
                               const VkPhysicalDeviceProperties&,
                               VkFormat);
 
-        enum {
-            kTexturable_Flag = 0x1,
-            kRenderable_Flag = 0x2,
-            kBlitSrc_Flag    = 0x4,
-            kBlitDst_Flag    = 0x8,
-        };
+        static constexpr uint16_t kTexturable_Flag = 0x1;
+        static constexpr uint16_t kRenderable_Flag = 0x2;
+        static constexpr uint16_t kBlitSrc_Flag    = 0x4;
+        static constexpr uint16_t kBlitDst_Flag    = 0x8;
 
         uint16_t fOptimalFlags = 0;
         uint16_t fLinearFlags = 0;

@@ -133,6 +133,7 @@ private:
             // still additionally depends on if the format itself is renderable.
             kRenderable_Flag = 0x2,
         };
+
         uint32_t fFlags = 0;
 
         skgpu::Swizzle fReadSwizzle;
