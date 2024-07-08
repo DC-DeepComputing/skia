@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cf346706_339de4fe",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-07-08T18:29:48Z",
+      "side": 1,
+      "message": "go/skia-client-search shows nobody using it (even though they aren\u0027t supposed to).",
+      "revId": "dabcb646cbe1d5a32b4523b076294208070b842c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
