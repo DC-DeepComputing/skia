@@ -211,6 +211,30 @@
       },
       "revId": "b4141e2216b6272600089872109d323b7a35c489",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cc969f52_544c62ac",
+        "filename": "gm/pathopsblend.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-07-08T20:11:08Z",
+      "side": 1,
+      "message": "Oh, right. Yeah, this is fine. And for Xor ... I\u0027m not sure why I thought that needed a second layer, ever. It works just fine without it. So that simplifies the GM quite a bit. Thanks!",
+      "parentUuid": "fd98c498_76bb4c99",
+      "range": {
+        "startLine": 116,
+        "startChar": 16,
+        "endLine": 123,
+        "endChar": 34
+      },
+      "revId": "b4141e2216b6272600089872109d323b7a35c489",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
