@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "141fad1c_43f7e885",
+        "filename": "src/gpu/graphite/precompile/PrecompileShader.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 605,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-08T18:30:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d31ded4b_b0060710",
+      "revId": "2f82ac6ae9a2553a200bd2cc747b58181bc11a47",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7d596b72_49020a71",
@@ -54,6 +72,30 @@
       "writtenOn": "2024-07-08T18:23:50Z",
       "side": 1,
       "message": "*can\u0027t keep",
+      "parentUuid": "7d596b72_49020a71",
+      "range": {
+        "startLine": 637,
+        "startChar": 33,
+        "endLine": 637,
+        "endChar": 55
+      },
+      "revId": "2f82ac6ae9a2553a200bd2cc747b58181bc11a47",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "01d498d7_4814387c",
+        "filename": "src/gpu/graphite/precompile/PrecompileShader.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 637,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-08T18:30:49Z",
+      "side": 1,
+      "message": "My mistake, I had this before when I had kWithLocalMatrixPersp but since I got rid of that I changed it back since the !\u003d isn\u0027t needed anymore.",
       "parentUuid": "7d596b72_49020a71",
       "range": {
         "startLine": 637,
