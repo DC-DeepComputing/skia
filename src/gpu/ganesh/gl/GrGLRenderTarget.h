@@ -38,7 +38,7 @@ public:
 
     // set fSingleSampleFBOID to this value to indicate that it is multisampled but
     // Gr doesn't know how to resolve it.
-    enum { kUnresolvableFBOID = 0 };
+    static constexpr GrGLuint kUnresolvableFBOID = 0;
 
     struct IDs {
         GrGLuint                   fMultisampleFBOID;
@@ -58,11 +58,11 @@ public:
                                                std::string_view label);
 
     bool isFBO0(bool multisample) const {
-        return (multisample ? fMultisampleFBOID : fSingleSampleFBOID) == 0;
+        return (multisample ? fMultisampleFBOID : fSingleSampleFBOID) == kUnresolvableFBOID;
     }
 
     bool isMultisampledRenderToTexture() const {
-        return fMultisampleFBOID != 0 && fMultisampleFBOID == fSingleSampleFBOID;
+        return fMultisampleFBOID != kUnresolvableFBOID && fMultisampleFBOID == fSingleSampleFBOID;
     }
 
     GrBackendRenderTarget getBackendRenderTarget() const override;
