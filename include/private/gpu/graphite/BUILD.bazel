@@ -1,0 +1,25 @@
+load("//bazel:skia_rules.bzl", "skia_filegroup")
+
+package(
+    default_applicable_licenses = ["//:license"],
+)
+
+licenses(["notice"])
+
+# FIXME(kjlubick) this can go into //src
+skia_filegroup(
+    name = "hdrs",
+    srcs = ["ContextOptionsPriv.h"],
+    visibility = ["//src/gpu/graphite:__subpackages__"],
+)
+
+# TODO(kjlubick) this can go into //src after TextureInfo.h
+# is decoupled.
+skia_filegroup(
+    name = "mtl_hdrs",
+    srcs = ["MtlGraphiteTypesPriv.h"],
+    visibility = [
+        "//src/gpu/graphite:__subpackages__",  # TODO(kjlubick) remove after decoupling
+        "//src/gpu/graphite/mtl:__pkg__",
+    ],
+)

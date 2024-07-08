@@ -8,6 +8,7 @@
 #include "src/gpu/graphite/mtl/MtlGraphicsPipeline.h"
 
 #include "include/gpu/graphite/TextureInfo.h"
+#include "include/private/gpu/graphite/MtlGraphiteTypesPriv.h"
 #include "src/gpu/graphite/Attribute.h"
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/RenderPassDesc.h"

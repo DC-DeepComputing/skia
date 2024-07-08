@@ -47,6 +47,7 @@ skia_filegroup(
     visibility = [
         "//src:__pkg__",
         "//src/gpu/ganesh:__pkg__",
+        "//src/gpu/graphite:__pkg__",
     ],
 )
 
@@ -56,5 +57,6 @@ skia_filegroup(
     visibility = [
         "//src:__pkg__",
         "//src/gpu/ganesh:__pkg__",
+        "//src/gpu/graphite:__pkg__",
     ],
 )
