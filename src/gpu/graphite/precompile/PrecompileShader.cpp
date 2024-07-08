@@ -604,14 +604,15 @@ public:
 private:
     // The LocalMatrixShader has two potential variants: with and without the LocalMatrixShader
     inline static constexpr int kNumIntrinsicCombinations = 2;
-    inline static constexpr int kWithLocalMatrix    = 1;
-    inline static constexpr int kWithoutLocalMatrix = 0;
+    inline static constexpr int kWithLocalMatrix      = 0;
+    inline static constexpr int kWithLocalMatrixPersp = 1;
+    inline static constexpr int kWithoutLocalMatrix   = 2;
 
     bool isALocalMatrixShader() const override { return true; }
 
     int numIntrinsicCombinations() const override {
         if (!(fFlags & Flags::kIncludeWithOutVariant)) {
-            return 1;   // just kWithLocalMatrix
+            return 1;   // just kWithLocalMatrix or kWithLocalMatrixPersp
         }
         return kNumIntrinsicCombinations;
     }
@@ -627,7 +628,8 @@ private:
         int desiredLMCombination, desiredWrappedCombination;
 
         if (!(fFlags & Flags::kIncludeWithOutVariant)) {
-            desiredLMCombination = kWithLocalMatrix;
+            desiredLMCombination = fFlags & Flags::kIsPerspective ? kWithLocalMatrixPersp
+                                                                  : kWithLocalMatrix;
             desiredWrappedCombination = desiredCombination;
         } else {
             desiredLMCombination = desiredCombination % kNumIntrinsicCombinations;
@@ -635,16 +637,20 @@ private:
         }
         SkASSERT(desiredWrappedCombination < fNumWrappedCombos);
 
-        if (desiredLMCombination == kWithLocalMatrix) {
-            LocalMatrixShaderBlock::LMShaderData kIgnoredLMShaderData(SkMatrix::I());
+        if (desiredLMCombination != kWithoutLocalMatrix) {
+            SkMatrix matrix = SkMatrix::I();
+            if (desiredLMCombination == kWithLocalMatrixPersp) {
+                matrix.setPerspX(0.1f);
+            }
+            LocalMatrixShaderBlock::LMShaderData lmShaderData(matrix);
 
-            LocalMatrixShaderBlock::BeginBlock(keyContext, builder, gatherer, kIgnoredLMShaderData);
+            LocalMatrixShaderBlock::BeginBlock(keyContext, builder, gatherer, matrix);
         }
 
-            AddToKey<PrecompileShader>(keyContext, builder, gatherer, fWrapped,
-                                       desiredWrappedCombination);
+        AddToKey<PrecompileShader>(keyContext, builder, gatherer, fWrapped,
+                                   desiredWrappedCombination);
 
-        if (desiredLMCombination == kWithLocalMatrix) {
+        if (desiredLMCombination != kWithoutLocalMatrix) {
             builder->endBlock();
         }
     }
