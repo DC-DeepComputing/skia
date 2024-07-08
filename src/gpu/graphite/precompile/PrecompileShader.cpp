@@ -634,16 +634,20 @@ private:
         }
         SkASSERT(desiredWrappedCombination < fNumWrappedCombos);
 
-        if (desiredLMCombination == kWithLocalMatrix) {
-            LocalMatrixShaderBlock::LMShaderData kIgnoredLMShaderData(SkMatrix::I());
+        if (desiredLMCombination != kWithoutLocalMatrix) {
+            SkMatrix matrix = SkMatrix::I();
+            if (fFlags & Flags::kIsPerspective) {
+                matrix.setPerspX(0.1f);
+            }
+            LocalMatrixShaderBlock::LMShaderData lmShaderData(matrix);
 
-            LocalMatrixShaderBlock::BeginBlock(keyContext, builder, gatherer, kIgnoredLMShaderData);
+            LocalMatrixShaderBlock::BeginBlock(keyContext, builder, gatherer, matrix);
         }
 
-            AddToKey<PrecompileShader>(keyContext, builder, gatherer, fWrapped,
-                                       desiredWrappedCombination);
+        AddToKey<PrecompileShader>(keyContext, builder, gatherer, fWrapped,
+                                   desiredWrappedCombination);
 
-        if (desiredLMCombination == kWithLocalMatrix) {
+        if (desiredLMCombination != kWithoutLocalMatrix) {
             builder->endBlock();
         }
     }
