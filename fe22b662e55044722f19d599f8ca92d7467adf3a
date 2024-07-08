@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8dbdaff2_83c00e67",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-08T18:53:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e1219524_ab4d8d0a",
+      "range": {
+        "startLine": 109,
+        "startChar": 1,
+        "endLine": 109,
+        "endChar": 4
+      },
+      "revId": "fe22b662e55044722f19d599f8ca92d7467adf3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9ddd238a_f639e48c",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "19fc2542_18667abe",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-08T18:53:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9ddd238a_f639e48c",
+      "range": {
+        "startLine": 110,
+        "startChar": 0,
+        "endLine": 122,
+        "endChar": 0
+      },
+      "revId": "fe22b662e55044722f19d599f8ca92d7467adf3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "eb0c69d1_cf5d8255",
@@ -77,6 +125,30 @@
       "writtenOn": "2024-07-08T17:49:40Z",
       "side": 1,
       "message": "Should use Skia static function naming convention:\n\n`static SpvStorageClass get_storage_class_spvid(`",
+      "range": {
+        "startLine": 124,
+        "startChar": 0,
+        "endLine": 124,
+        "endChar": 36
+      },
+      "revId": "fe22b662e55044722f19d599f8ca92d7467adf3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b815b2dd_801ad2de",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-08T18:53:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eb0c69d1_cf5d8255",
       "range": {
         "startLine": 124,
         "startChar": 0,
