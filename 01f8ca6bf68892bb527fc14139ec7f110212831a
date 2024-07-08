@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e8f4c27_6c7ec290",
+        "filename": "src/gpu/graphite/precompile/PrecompileShader.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 609,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-08T15:34:31Z",
+      "side": 1,
+      "message": "I haven\u0027t changed it in this CL, but I did in the next CL in the chain where I add the new snippet, this CL I just added the flags and propagating the `isPerspective` bool through the api to be used in the follow up CL where I implement the perspective variant.",
+      "parentUuid": "37b29cdd_780d7b1e",
+      "range": {
+        "startLine": 606,
+        "startChar": 0,
+        "endLine": 609,
+        "endChar": 56
+      },
+      "revId": "01f8ca6bf68892bb527fc14139ec7f110212831a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a21a35c5_199890f4",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-07-03T18:53:13Z",
       "side": 1,
       "message": "Doesn\u0027t this need to change w/ the kIncludePerspective setting ?",
+      "range": {
+        "startLine": 615,
+        "startChar": 19,
+        "endLine": 615,
+        "endChar": 20
+      },
+      "revId": "01f8ca6bf68892bb527fc14139ec7f110212831a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e85b6d40_06814eb9",
+        "filename": "src/gpu/graphite/precompile/PrecompileShader.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 615,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-08T15:34:31Z",
+      "side": 1,
+      "message": "See the other comment I left regarding adding the other variant in this CL.",
+      "parentUuid": "a21a35c5_199890f4",
       "range": {
         "startLine": 615,
         "startChar": 19,
