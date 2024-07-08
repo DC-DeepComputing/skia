@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33549235_dcbb1313",
+        "filename": "src/gpu/graphite/precompile/PrecompileShader.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 663,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-07-08T15:43:20Z",
+      "side": 1,
+      "message": "Line this up w/ the above \u0027?\u0027",
+      "range": {
+        "startLine": 663,
+        "startChar": 27,
+        "endLine": 663,
+        "endChar": 28
+      },
+      "revId": "d8fc7b9411b069e6a916ec238a8616df4354a372",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "712bbcfe_51768e24",
+        "filename": "src/gpu/graphite/precompile/PrecompileShader.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 676,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-07-08T15:43:20Z",
+      "side": 1,
+      "message": "folding in ?",
+      "range": {
+        "startLine": 676,
+        "startChar": 29,
+        "endLine": 676,
+        "endChar": 37
+      },
+      "revId": "d8fc7b9411b069e6a916ec238a8616df4354a372",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "685af657_6b3dc32c",
+        "filename": "src/gpu/graphite/precompile/PrecompileShader.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 677,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-07-08T15:43:20Z",
+      "side": 1,
+      "message": "Maybe \"thisAsLMShader\" ?",
+      "range": {
+        "startLine": 677,
+        "startChar": 13,
+        "endLine": 677,
+        "endChar": 21
+      },
+      "revId": "d8fc7b9411b069e6a916ec238a8616df4354a372",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
