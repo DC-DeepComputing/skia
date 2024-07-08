@@ -187,6 +187,30 @@
       },
       "revId": "b4141e2216b6272600089872109d323b7a35c489",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd98c498_76bb4c99",
+        "filename": "gm/pathopsblend.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-08T19:15:53Z",
+      "side": 1,
+      "message": "For intersection, at least, I don\u0027t think anything gets messed up:\n\nIf the first layer has the alpha mask of shape A, and then we drew inv(B) with kClear. We are doing src-over blending based on the inv(B)\u0027s coverage so, the final layer\u0027s alpha value would be:\n\n    dstAlpha \u003d coverage(A)\n    srcAlpha \u003d 1.0\n    blend \u003d clear\n    output \u003d coverage(inv(B))*blend(clear, dstAlpha, srcAlpha) + (1-coverage(inv(B)))*dstAlpha\n           \u003d coverage(inv(B))*0 + (1-coverage(inv(B)))*dstAlpha\n    output ~ coverage(B)*coverage(A)\n\nThis works because (1-coverage(inv(B))) should be roughly equivalent to just coverage(B) so we end up with the product of the two shape\u0027s coverage while touching every pixel that needs clear A\u0027s value that isn\u0027t in B.",
+      "parentUuid": "01e4da5e_b25a79dc",
+      "range": {
+        "startLine": 116,
+        "startChar": 16,
+        "endLine": 123,
+        "endChar": 34
+      },
+      "revId": "b4141e2216b6272600089872109d323b7a35c489",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
