@@ -24,6 +24,7 @@
 #include "src/gpu/graphite/precompile/PrecompileBaseComplete.h"
 #include "src/gpu/graphite/precompile/PrecompileBasePriv.h"
 #include "src/gpu/graphite/precompile/PrecompileBlenderPriv.h"
+#include "src/gpu/graphite/precompile/PrecompileImageFiltersPriv.h"
 #include "src/gpu/graphite/precompile/PrecompileShaderPriv.h"
 #include "src/gpu/graphite/precompile/PrecompileShadersPriv.h"
 
@@ -331,6 +332,29 @@ void PaintOptions::buildCombinations(
 
 void PaintOptionsPriv::addColorFilter(sk_sp<PrecompileColorFilter> cf) {
     fPaintOptions->addColorFilter(std::move(cf));
+}
+
+int PaintOptionsPriv::numCombinations() const {
+    int numCombinations = fPaintOptions->numCombinations();
+
+    // TODO (b/349144902): For mask filters we don't actually actually want the unmodified
+    // paint options (above) since the blend mode will be stolen by the image filtering.
+    // What we actually need to do here is, optionally, make a copy of the paint options and
+    // modify its blend mode. Then, count its options (if kSrcOver wasn't one of the original
+    // possibilities) and combine the two counts.
+    for (const sk_sp<PrecompileMaskFilter>& mf : fPaintOptions->getMaskFilters()) {
+        if (mf) {
+            // Blur masks incur the full set of blur pipelines plus extra glue pipelines:
+            //   the original draws w/ their blendMode(s)/blender(s) replaced w/ kSrcOver
+            //   2 image-based "restore" draws that carry the original blendMode/blender
+            numCombinations += PrecompileImageFiltersPriv::kExpectedNumBlurPipelines +
+                               numCombinations +
+                               2;
+            break;
+        }
+    }
+
+    return numCombinations;
 }
 
 } // namespace skgpu::graphite
