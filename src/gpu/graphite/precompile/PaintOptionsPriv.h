@@ -27,9 +27,7 @@ public:
         fPaintOptions->setClipShaders(std::move(clipShaders));
     }
 
-    int numCombinations() const {
-        return fPaintOptions->numCombinations();
-    }
+    int numCombinations() const;
 
     void buildCombinations(
             const KeyContext& keyContext,

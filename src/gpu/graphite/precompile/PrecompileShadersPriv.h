@@ -61,6 +61,4 @@ namespace PrecompileShadersPriv {
 
 } // namespace PrecompileShadersPriv
 
-} // namespace skgpu::graphite
-
 #endif // skgpu_graphite_precompile_PrecompileShadersPriv_DEFINED
