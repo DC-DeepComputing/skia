@@ -20,6 +20,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7ebdb4a3_839d835c",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 604,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-08T19:05:46Z",
+      "side": 1,
+      "message": "^",
+      "range": {
+        "startLine": 601,
+        "startChar": 0,
+        "endLine": 604,
+        "endChar": 0
+      },
+      "revId": "29462ef5cdc173fc185e7cc869064d99c25b01b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d016ef10_963727f8",
         "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
         "patchSetId": 1
@@ -31,6 +54,30 @@
       "writtenOn": "2024-07-08T19:02:35Z",
       "side": 1,
       "message": "Q: how was this working before if the pow intrinsic wasn\u0027t being handled here?",
+      "range": {
+        "startLine": 918,
+        "startChar": 13,
+        "endLine": 918,
+        "endChar": 32
+      },
+      "revId": "29462ef5cdc173fc185e7cc869064d99c25b01b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e79f211a_7e5d9f74",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 918,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-08T19:05:46Z",
+      "side": 1,
+      "message": "`writeIntrinsicCall()` is meant to rewrite intrinsic calls that don\u0027t look exactly like their SkSL/GLSL equivalent. If the intrinsic call doesn\u0027t require any special handling, `writeIntrinsicCall()` returns false, and `writeFunctionCall()` just emits the function call as specified in the input program.",
+      "parentUuid": "d016ef10_963727f8",
       "range": {
         "startLine": 918,
         "startChar": 13,
