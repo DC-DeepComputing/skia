@@ -19,6 +19,7 @@ skia_filegroup(
     srcs = ["SkCFObject.h"],
     visibility = [
         "//src/gpu/ganesh/mtl:__pkg__",
+        "//src/gpu/graphite/mtl:__pkg__",
         "//src/ports:__pkg__",
     ],
 )
