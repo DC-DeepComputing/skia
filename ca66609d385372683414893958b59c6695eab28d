@@ -34,6 +34,24 @@
       ],
       "revId": "ca66609d385372683414893958b59c6695eab28d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5136fb5a_2acc7856",
+        "filename": "src/gpu/graphite/precompile/PrecompileShader.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 635,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-08T15:52:03Z",
+      "side": 1,
+      "message": "I changed it to use `kWithLocalMatrix` for both with and without perspective cases and used the flag to apply the perspective below to generate the right variation, this made the code cleaner leaving out some ternaries that made the code more confusing to read/follow, I could add a `kWithLocalMatrixPerspective` if that is preferred though",
+      "parentUuid": "7899642e_e52615ae",
+      "revId": "ca66609d385372683414893958b59c6695eab28d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
