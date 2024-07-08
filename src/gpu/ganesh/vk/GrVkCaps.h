@@ -405,7 +405,7 @@ private:
                               const VkPhysicalDeviceProperties&,
                               VkFormat);
 
-        enum {
+       enum {
             kTexturable_Flag = 0x1,
             kRenderable_Flag = 0x2,
             kBlitSrc_Flag    = 0x4,
