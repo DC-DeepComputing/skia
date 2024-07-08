@@ -670,12 +670,10 @@ private:
     // ColorTypeInfo for a specific format
     struct ColorTypeInfo {
         GrColorType fColorType = GrColorType::kUnknown;
-        enum {
-            kUploadData_Flag = 0x1,
-            // Does Ganesh itself support rendering to this colorType & format pair. Renderability
-            // still additionally depends on if the format can be an FBO color attachment.
-            kRenderable_Flag = 0x2,
-        };
+        static constexpr uint32_t kUploadData_Flag = 0x1;
+        // Does Ganesh itself support rendering to this colorType & format pair. Renderability
+        // still additionally depends on if the format can be an FBO color attachment.
+        static constexpr uint32_t kRenderable_Flag = 0x2;
         uint32_t fFlags = 0;
 
         skgpu::Swizzle fReadSwizzle;
@@ -762,19 +760,17 @@ private:
             return 0;
         }
 
-        enum {
-            kTexturable_Flag                 = 0x01,
-            /** kFBOColorAttachment means that even if the format cannot be a GrRenderTarget, we can
-                still attach it to a FBO for blitting or reading pixels. */
-            kFBOColorAttachment_Flag         = 0x02,
-            kFBOColorAttachmentWithMSAA_Flag = 0x04,
-            kUseTexStorage_Flag              = 0x08,
-            /**
-             * Are pixel buffer objects supported in/out of this format? Ignored if PBOs are not
-             * supported at all.
-             */
-            kTransfers_Flag                  = 0x10,
-        };
+        static constexpr uint32_t kTexturable_Flag                 = 0x01;
+        /** kFBOColorAttachment means that even if the format cannot be a GrRenderTarget, we can
+            still attach it to a FBO for blitting or reading pixels. */
+        static constexpr uint32_t kFBOColorAttachment_Flag         = 0x02;
+        static constexpr uint32_t kFBOColorAttachmentWithMSAA_Flag = 0x04;
+        static constexpr uint32_t kUseTexStorage_Flag              = 0x08;
+        /**
+         * Are pixel buffer objects supported in/out of this format? Ignored if PBOs are not
+         * supported at all.
+         */
+        static constexpr uint32_t kTransfers_Flag                  = 0x10;
         uint32_t fFlags = 0;
 
         FormatType fFormatType = FormatType::kUnknown;
@@ -802,12 +798,10 @@ private:
 
         bool fHaveQueriedImplementationReadSupport = false;
 
-        enum {
-            // This indicates that a stencil format has not yet been determined for the config.
-            kUnknown_StencilIndex = -1,
-            // This indicates that there is no supported stencil format for the config.
-            kUnsupported_StencilFormatIndex = -2
-        };
+        // This indicates that a stencil format has not yet been determined for the config.
+        static constexpr int kUnknown_StencilIndex = -1;
+        // This indicates that there is no supported stencil format for the config.
+        static constexpr int kUnsupported_StencilFormatIndex = -2;
 
         // Index fStencilFormats.
         int fStencilFormatIndex = kUnknown_StencilIndex;
