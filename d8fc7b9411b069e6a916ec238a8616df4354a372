@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d93e7baa_afa6131e",
+        "filename": "src/gpu/graphite/precompile/PrecompileShader.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 663,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-08T15:59:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "33549235_dcbb1313",
+      "range": {
+        "startLine": 663,
+        "startChar": 27,
+        "endLine": 663,
+        "endChar": 28
+      },
+      "revId": "d8fc7b9411b069e6a916ec238a8616df4354a372",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "712bbcfe_51768e24",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bbf7f76d_12dc1e24",
+        "filename": "src/gpu/graphite/precompile/PrecompileShader.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 676,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-08T15:59:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "712bbcfe_51768e24",
+      "range": {
+        "startLine": 676,
+        "startChar": 29,
+        "endLine": 676,
+        "endChar": 37
+      },
+      "revId": "d8fc7b9411b069e6a916ec238a8616df4354a372",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "685af657_6b3dc32c",
@@ -60,6 +108,30 @@
       "writtenOn": "2024-07-08T15:43:20Z",
       "side": 1,
       "message": "Maybe \"thisAsLMShader\" ?",
+      "range": {
+        "startLine": 677,
+        "startChar": 13,
+        "endLine": 677,
+        "endChar": 21
+      },
+      "revId": "d8fc7b9411b069e6a916ec238a8616df4354a372",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0781a7b_578135f7",
+        "filename": "src/gpu/graphite/precompile/PrecompileShader.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 677,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-08T15:59:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "685af657_6b3dc32c",
       "range": {
         "startLine": 677,
         "startChar": 13,
