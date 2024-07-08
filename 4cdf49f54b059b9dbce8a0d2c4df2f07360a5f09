@@ -804,6 +804,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9f8bf867_b7ef1e0e",
+        "filename": "src/gpu/ganesh/mtl/GrMtlOpsRenderPass.mm",
+        "patchSetId": 9
+      },
+      "lineNbr": 538,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-08T15:36:41Z",
+      "side": 1,
+      "message": "Skia style recommends the Last style enum. \nhttps://screenshot.googleplex.com/AZr85P3GfFGLYj9",
+      "parentUuid": "2b5e1d41_b8007d5b",
+      "range": {
+        "startLine": 538,
+        "startChar": 71,
+        "endLine": 538,
+        "endChar": 91
+      },
+      "revId": "4cdf49f54b059b9dbce8a0d2c4df2f07360a5f09",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c8ffaf0f_70666a5e",
         "filename": "src/gpu/ganesh/mtl/GrMtlPipelineStateBuilder.mm",
         "patchSetId": 9
