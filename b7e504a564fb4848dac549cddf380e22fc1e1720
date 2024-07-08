@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8374bdb5_5ee8286c",
+        "filename": "src/gpu/ganesh/gl/GrGLCaps.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 809,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-07-08T11:06:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b27ed23d_615239cf",
+      "range": {
+        "startLine": 809,
+        "startChar": 1,
+        "endLine": 809,
+        "endChar": 2
+      },
+      "revId": "b7e504a564fb4848dac549cddf380e22fc1e1720",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "371906ec_2314353c",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "afecd459_b4992333",
+        "filename": "src/gpu/ganesh/ops/AAConvexPathRenderer.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-07-08T11:06:33Z",
+      "side": 1,
+      "message": "*sigh* darn copypasta. Done",
+      "parentUuid": "371906ec_2314353c",
+      "range": {
+        "startLine": 47,
+        "startChar": 0,
+        "endLine": 49,
+        "endChar": 0
+      },
+      "revId": "b7e504a564fb4848dac549cddf380e22fc1e1720",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4cbe1f3b_a9611f41",
@@ -77,6 +125,30 @@
       "writtenOn": "2024-07-03T19:44:37Z",
       "side": 1,
       "message": "Suggestion: since we are already touching this code, we could delete the ctor entirely and initialize Stage right here.\n\n`Stage fStage \u003d Stage::kInitial;`",
+      "range": {
+        "startLine": 196,
+        "startChar": 0,
+        "endLine": 196,
+        "endChar": 23
+      },
+      "revId": "b7e504a564fb4848dac549cddf380e22fc1e1720",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d075fc5_4d3c341c",
+        "filename": "src/gpu/ganesh/ops/AAConvexPathRenderer.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-07-08T11:06:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4cbe1f3b_a9611f41",
       "range": {
         "startLine": 196,
         "startChar": 0,

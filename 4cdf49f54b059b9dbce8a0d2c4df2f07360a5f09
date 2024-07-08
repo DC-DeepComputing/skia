@@ -119,6 +119,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a6d83a6_04ba03f4",
+        "filename": "src/gpu/ganesh/GrProgramDesc.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-07-08T11:06:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d3b3f9bb_e0d135bf",
+      "range": {
+        "startLine": 91,
+        "startChar": 0,
+        "endLine": 91,
+        "endChar": 8
+      },
+      "revId": "4cdf49f54b059b9dbce8a0d2c4df2f07360a5f09",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "be0b0f16_2b4e6154",
@@ -744,6 +768,30 @@
       "side": 1,
       "message": "This still seems less intuitive to me than how it used to be. Unless you feel strongly, please consider restoring to the way it was or double check with any GPU team member to see if they like the new way better.",
       "parentUuid": "6f524694_a4c948df",
+      "range": {
+        "startLine": 538,
+        "startChar": 71,
+        "endLine": 538,
+        "endChar": 91
+      },
+      "revId": "4cdf49f54b059b9dbce8a0d2c4df2f07360a5f09",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b5e1d41_b8007d5b",
+        "filename": "src/gpu/ganesh/mtl/GrMtlOpsRenderPass.mm",
+        "patchSetId": 9
+      },
+      "lineNbr": 538,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-07-08T11:06:33Z",
+      "side": 1,
+      "message": "Agreed, restored it to be more clearly after the uniformBinding. Adding a `kLastUniformBinding` seemed a bit frivolous since there\u0027s only the one binding spot, but I think `kUniformBinding + 1` expresses the intent.",
+      "parentUuid": "f0a5938c_6b893a99",
       "range": {
         "startLine": 538,
         "startChar": 71,
