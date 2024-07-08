@@ -15,12 +15,14 @@
 #include "src/gpu/graphite/KeyHelpers.h"
 #include "src/gpu/graphite/PaintParams.h"
 #include "src/gpu/graphite/PaintParamsKey.h"
+#include "src/gpu/graphite/precompile/PrecompileBaseComplete.h"
 #include "src/gpu/graphite/precompile/PrecompileBasePriv.h"
 #include "src/gpu/graphite/precompile/PrecompileBlenderPriv.h"
 #include "src/gpu/graphite/precompile/PrecompileShaderPriv.h"
 
 namespace skgpu::graphite {
 
+#if 0
 namespace {
 
 #ifdef SK_DEBUG
@@ -43,6 +45,7 @@ bool precompilebase_is_valid_as_child(const PrecompileBase *child) {
 #endif // SK_DEBUG
 
 } // anonymous namespace
+#endif
 
 //--------------------------------------------------------------------------------------------------
 class PrecompileYUVImageShader : public PrecompileShader {
@@ -79,6 +82,7 @@ sk_sp<PrecompileShader> PrecompileShaders::YUVImage() {
 
 //--------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------
+#if 0
 PrecompileChildPtr::PrecompileChildPtr(sk_sp<PrecompileShader> s) : fChild(std::move(s)) {}
 PrecompileChildPtr::PrecompileChildPtr(sk_sp<PrecompileColorFilter> cf)
         : fChild(std::move(cf)) {
@@ -106,92 +110,40 @@ std::optional<SkRuntimeEffect::ChildType> PrecompileChildPtr::type() const {
     return std::nullopt;
 }
 
-PrecompileShader* PrecompileChildPtr::shader() const {
+PrecompileShader* PrecompileChildPtr::shader1() const {
     return (fChild && fChild->type() == PrecompileBase::Type::kShader)
            ? static_cast<PrecompileShader*>(fChild.get())
            : nullptr;
 }
 
-PrecompileColorFilter* PrecompileChildPtr::colorFilter() const {
+PrecompileColorFilter* PrecompileChildPtr::colorFilter1() const {
     return (fChild && fChild->type() == PrecompileBase::Type::kColorFilter)
            ? static_cast<PrecompileColorFilter*>(fChild.get())
            : nullptr;
 }
 
-PrecompileBlender* PrecompileChildPtr::blender() const {
+PrecompileBlender* PrecompileChildPtr::blender1() const {
     return (fChild && fChild->type() == PrecompileBase::Type::kBlender)
            ? static_cast<PrecompileBlender*>(fChild.get())
            : nullptr;
 }
+#endif
 
 //--------------------------------------------------------------------------------------------------
 namespace {
 
-int num_options_in_set(const std::vector<PrecompileChildPtr>& optionSet) {
-    int numOptions = 1;
-    for (const PrecompileChildPtr& childOption : optionSet) {
+int num_options_in_set2(const SkSpan<const sk_sp<PrecompileBase>>& optionSet) {
+    int numOptions = 0;
+    for (const sk_sp<PrecompileBase>& childOption : optionSet) {
         // A missing child will fall back to a passthrough object
-        if (childOption.base()) {
-            numOptions *= childOption.base()->priv().numCombinations();
+        if (childOption) {
+            numOptions += childOption->priv().numCombinations();
+        } else {
+            ++numOptions;
         }
     }
 
     return numOptions;
-}
-
-// This is the precompile correlate to KeyHelper.cpp's add_children_to_key
-void add_children_to_key(const KeyContext& keyContext,
-                         PaintParamsKeyBuilder* builder,
-                         PipelineDataGatherer* gatherer,
-                         int desiredCombination,
-                         const std::vector<PrecompileChildPtr>& optionSet,
-                         SkSpan<const SkRuntimeEffect::Child> childInfo) {
-    using ChildType = SkRuntimeEffect::ChildType;
-
-    SkASSERT(optionSet.size() == childInfo.size());
-
-    KeyContextWithScope childContext(keyContext, KeyContext::Scope::kRuntimeEffect);
-
-    int remainingCombinations = desiredCombination;
-
-    for (size_t index = 0; index < optionSet.size(); ++index) {
-        const PrecompileChildPtr& childOption = optionSet[index];
-
-        const int numChildCombos = childOption.base() ? childOption.base()->priv().numCombinations()
-                                                      : 1;
-        const int curCombo = remainingCombinations % numChildCombos;
-        remainingCombinations /= numChildCombos;
-
-        std::optional<ChildType> type = childOption.type();
-        if (type == ChildType::kShader) {
-            childOption.shader()->priv().addToKey(childContext, builder, gatherer, curCombo);
-        } else if (type == ChildType::kColorFilter) {
-            childOption.colorFilter()->priv().addToKey(childContext, builder, gatherer, curCombo);
-        } else if (type == ChildType::kBlender) {
-            childOption.blender()->priv().addToKey(childContext, builder, gatherer, curCombo);
-        } else {
-            SkASSERT(curCombo == 0);
-
-            // We don't have a child effect. Substitute in a no-op effect.
-            switch (childInfo[index].type) {
-                case ChildType::kShader:
-                    // A missing shader returns transparent black
-                    SolidColorShaderBlock::AddBlock(childContext, builder, gatherer,
-                                                    SK_PMColor4fTRANSPARENT);
-                    break;
-
-                case ChildType::kColorFilter:
-                    // A "passthrough" shader returns the input color as-is.
-                    builder->addBlock(BuiltInCodeSnippetID::kPriorOutput);
-                    break;
-
-                case ChildType::kBlender:
-                    // A "passthrough" blender performs `blend_src_over(src, dest)`.
-                    AddKnownModeBlend(childContext, builder, gatherer, SkBlendMode::kSrcOver);
-                    break;
-            }
-        }
-    }
 }
 
 } // anonymous namespace
@@ -202,21 +154,23 @@ public:
     PrecompileRTEffect(sk_sp<SkRuntimeEffect> effect,
                        SkSpan<const PrecompileChildOptions> childOptions)
             : fEffect(std::move(effect)) {
-        fChildOptions.reserve(childOptions.size());
+        fChildOptions1.reserve(childOptions.size());
         for (PrecompileChildOptions c : childOptions) {
-            fChildOptions.push_back({ c.begin(), c.end() });
+            fChildOptions1.push_back({ c.begin(), c.end() });
         }
+
+        fNumSlotCombinations.reserve(childOptions.size());
+        fNumChildCombinations = 1;
+        for (const std::vector<sk_sp<PrecompileBase>>& optionSet : fChildOptions1) {
+            fNumSlotCombinations.push_back(num_options_in_set2(optionSet));
+            fNumChildCombinations *= fNumSlotCombinations.back();
+        }
+
+        SkASSERT(fChildOptions1.size() == fEffect->children().size());
     }
 
 private:
-    int numChildCombinations() const override {
-        int numOptions = 0;
-        for (const std::vector<PrecompileChildPtr>& optionSet : fChildOptions) {
-            numOptions += num_options_in_set(optionSet);
-        }
-
-        return numOptions ? numOptions : 1;
-    }
+    int numChildCombinations() const override { return fNumChildCombinations; }
 
     void addToKey(const KeyContext& keyContext,
                   PaintParamsKeyBuilder* builder,
@@ -229,23 +183,94 @@ private:
 
         RuntimeEffectBlock::BeginBlock(keyContext, builder, gatherer, { fEffect });
 
-        for (const std::vector<PrecompileChildPtr>& optionSet : fChildOptions) {
-            int numOptionsInSet = num_options_in_set(optionSet);
+        KeyContextWithScope childContext(keyContext, KeyContext::Scope::kRuntimeEffect);
 
-            if (desiredCombination < numOptionsInSet) {
-                add_children_to_key(keyContext, builder, gatherer, desiredCombination, optionSet,
-                                    childInfo);
-                break;
+        int remainingCombinations = desiredCombination;
+
+        for (size_t rowIndex = 0; rowIndex < fChildOptions1.size(); ++rowIndex) {
+            const std::vector<sk_sp<PrecompileBase>>& slotOptions = fChildOptions1[rowIndex];
+            int numSlotCombinations = fNumSlotCombinations[rowIndex];
+
+            const int slotOption = remainingCombinations % numSlotCombinations;
+            remainingCombinations /= numSlotCombinations;
+
+            auto [option, childOptions] = PrecompileBase::SelectOption(
+                    SkSpan<const sk_sp<PrecompileBase>>(slotOptions),
+                    slotOption);
+            if (option) {
+                option->priv().addToKey(keyContext, builder, gatherer, childOptions);
+            } else {
+                SkASSERT(childOptions == 0);
+
+                // We don't have a child effect. Substitute in a no-op effect.
+                switch (childInfo[rowIndex].type) {
+                    case SkRuntimeEffect::ChildType::kShader:
+                        // A missing shader returns transparent black
+                        SolidColorShaderBlock::AddBlock(childContext, builder, gatherer,
+                                                        SK_PMColor4fTRANSPARENT);
+                        break;
+
+                    case SkRuntimeEffect::ChildType::kColorFilter:
+                        // A "passthrough" shader returns the input color as-is.
+                        builder->addBlock(BuiltInCodeSnippetID::kPriorOutput);
+                        break;
+
+                    case SkRuntimeEffect::ChildType::kBlender:
+                        // A "passthrough" blender performs `blend_src_over(src, dest)`.
+                        AddKnownModeBlend(childContext, builder, gatherer, SkBlendMode::kSrcOver);
+                        break;
+                }
             }
-
-            desiredCombination -= numOptionsInSet;
         }
+
+#if 0
+        for (size_t index = 0; index < optionSet.size(); ++index) {
+            const PrecompileChildPtr& childOption = optionSet[index];
+
+            const int numChildCombos = childOption.base() ? childOption.base()->priv().numCombinations()
+                                                          : 1;
+            const int curCombo = remainingCombinations % numChildCombos;
+            remainingCombinations /= numChildCombos;
+
+            std::optional<ChildType> type = childOption.type();
+            if (type == ChildType::kShader) {
+                childOption.shader()->priv().addToKey(childContext, builder, gatherer, curCombo);
+            } else if (type == ChildType::kColorFilter) {
+                childOption.colorFilter()->priv().addToKey(childContext, builder, gatherer, curCombo);
+            } else if (type == ChildType::kBlender) {
+                childOption.blender()->priv().addToKey(childContext, builder, gatherer, curCombo);
+            } else {
+                SkASSERT(curCombo == 0);
+
+                // We don't have a child effect. Substitute in a no-op effect.
+                switch (childInfo[index].type) {
+                    case SkRuntimeEffect::ChildType::kShader:
+                        // A missing shader returns transparent black
+                        SolidColorShaderBlock::AddBlock(childContext, builder, gatherer,
+                                                        SK_PMColor4fTRANSPARENT);
+                        break;
+
+                    case SkRuntimeEffect::ChildType::kColorFilter:
+                        // A "passthrough" shader returns the input color as-is.
+                        builder->addBlock(BuiltInCodeSnippetID::kPriorOutput);
+                        break;
+
+                    case SkRuntimeEffect::ChildType::kBlender:
+                        // A "passthrough" blender performs `blend_src_over(src, dest)`.
+                        AddKnownModeBlend(childContext, builder, gatherer, SkBlendMode::kSrcOver);
+                        break;
+                }
+            }
+        }
+#endif
 
         builder->endBlock();
     }
 
     sk_sp<SkRuntimeEffect> fEffect;
-    std::vector<std::vector<PrecompileChildPtr>> fChildOptions;
+    std::vector<std::vector<sk_sp<PrecompileBase>>> fChildOptions1;
+    skia_private::TArray<int> fNumSlotCombinations;
+    int fNumChildCombinations;
 };
 
 sk_sp<PrecompileShader> MakePrecompileShader(
