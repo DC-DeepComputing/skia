@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5664a4dd_913ec9c9",
+        "filename": "src/gpu/ganesh/BUILD.bazel",
+        "patchSetId": 11
+      },
+      "lineNbr": 510,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-07-08T11:17:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "98364f63_a75b9e30",
+      "range": {
+        "startLine": 510,
+        "startChar": 6,
+        "endLine": 510,
+        "endChar": 102
+      },
+      "revId": "93764bc22943bce9ba08f183322c291c7b940d14",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "854350b2_3dec809e",
@@ -61,6 +85,30 @@
           ]
         }
       ],
+      "revId": "93764bc22943bce9ba08f183322c291c7b940d14",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "289b134f_8cb2a7bb",
+        "filename": "src/gpu/ganesh/GrRecordingContextPriv.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-07-08T11:17:18Z",
+      "side": 1,
+      "message": "Huh. I expected clang-format to handle this nicer than it did. Fixed.",
+      "parentUuid": "854350b2_3dec809e",
+      "range": {
+        "startLine": 50,
+        "startChar": 0,
+        "endLine": 59,
+        "endChar": 31
+      },
       "revId": "93764bc22943bce9ba08f183322c291c7b940d14",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -106,6 +154,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "93d6d405_a5698cda",
+        "filename": "src/gpu/ganesh/GrShaderVar.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-07-08T11:17:18Z",
+      "side": 1,
+      "message": "Oops, this change partially leaked out of https://skia-review.googlesource.com/c/skia/+/872716",
+      "parentUuid": "3a442daf_2c75a8b2",
+      "range": {
+        "startLine": 33,
+        "startChar": 0,
+        "endLine": 37,
+        "endChar": 0
+      },
+      "revId": "93764bc22943bce9ba08f183322c291c7b940d14",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9177bc80_92dd0d01",
@@ -147,6 +219,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f300fd4_17ca9c5e",
+        "filename": "src/gpu/ganesh/gradients/GrGradientShader.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 985,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-07-08T11:17:18Z",
+      "side": 1,
+      "message": "Fixed. In an earlier draft, I had put some #includes here, but this is in a namespace, so that crashed and burned.",
+      "parentUuid": "9177bc80_92dd0d01",
+      "range": {
+        "startLine": 983,
+        "startChar": 21,
+        "endLine": 985,
+        "endChar": 23
+      },
+      "revId": "93764bc22943bce9ba08f183322c291c7b940d14",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f7679eb0_36135d45",
@@ -160,6 +256,30 @@
       "writtenOn": "2024-07-03T19:40:08Z",
       "side": 1,
       "message": "nit: I think this should be condensed w/o the new lines b/w the `#if...` and `#endif`",
+      "range": {
+        "startLine": 40,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 6
+      },
+      "revId": "93764bc22943bce9ba08f183322c291c7b940d14",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "44c30749_ea3df8ae",
+        "filename": "src/gpu/ganesh/ops/AAConvexPathRenderer.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-07-08T11:17:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f7679eb0_36135d45",
       "range": {
         "startLine": 40,
         "startChar": 0,
