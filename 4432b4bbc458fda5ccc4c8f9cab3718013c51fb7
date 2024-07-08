@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d0c53337_5d58b612",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-08T18:56:41Z",
+      "side": 1,
+      "message": "`kUniformConstant`, not `kStorageClassUniformConstant` (etc)",
+      "range": {
+        "startLine": 110,
+        "startChar": 4,
+        "endLine": 110,
+        "endChar": 32
+      },
+      "revId": "4432b4bbc458fda5ccc4c8f9cab3718013c51fb7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
