@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bbb3d046_ae5d6116",
+        "filename": "src/gpu/ganesh/gl/GrGLRenderTarget.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 336,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-08T14:24:20Z",
+      "side": 1,
+      "message": "Maybe merge-damage regression?",
+      "range": {
+        "startLine": 327,
+        "startChar": 0,
+        "endLine": 336,
+        "endChar": 0
+      },
+      "revId": "158fe96ee78128ad87d041faaeeada32c785706e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "684886be_871ea525",
+        "filename": "src/gpu/ganesh/gl/GrGLRenderTarget.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-08T14:24:20Z",
+      "side": 1,
+      "message": "Merge-damage regression?",
+      "range": {
+        "startLine": 61,
+        "startChar": 0,
+        "endLine": 66,
+        "endChar": 0
+      },
+      "revId": "158fe96ee78128ad87d041faaeeada32c785706e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
