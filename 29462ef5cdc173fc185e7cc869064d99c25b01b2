@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9ce92ce_c70886a3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 21754
+      },
+      "writtenOn": "2024-07-08T19:02:35Z",
+      "side": 1,
+      "message": "lgtm if it matters",
+      "revId": "29462ef5cdc173fc185e7cc869064d99c25b01b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d016ef10_963727f8",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 918,
+      "author": {
+        "id": 21754
+      },
+      "writtenOn": "2024-07-08T19:02:35Z",
+      "side": 1,
+      "message": "Q: how was this working before if the pow intrinsic wasn\u0027t being handled here?",
+      "range": {
+        "startLine": 918,
+        "startChar": 13,
+        "endLine": 918,
+        "endChar": 32
+      },
+      "revId": "29462ef5cdc173fc185e7cc869064d99c25b01b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
