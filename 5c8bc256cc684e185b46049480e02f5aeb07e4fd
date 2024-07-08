@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "95c46157_9813199a",
+        "filename": "src/gpu/ganesh/mtl/GrMtlOpsRenderPass.mm",
+        "patchSetId": 17
+      },
+      "lineNbr": 539,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-08T15:34:24Z",
+      "side": 1,
+      "message": "`kLastUniformBinding` (as it was before)",
+      "range": {
+        "startLine": 539,
+        "startChar": 71,
+        "endLine": 539,
+        "endChar": 86
+      },
+      "revId": "5c8bc256cc684e185b46049480e02f5aeb07e4fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec25bd16_b1923add",
+        "filename": "src/gpu/ganesh/mtl/GrMtlPipelineStateBuilder.mm",
+        "patchSetId": 17
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-08T15:34:24Z",
+      "side": 1,
+      "message": "`kLastUniformBinding` (as it was before)",
+      "range": {
+        "startLine": 180,
+        "startChar": 43,
+        "endLine": 180,
+        "endChar": 58
+      },
+      "revId": "5c8bc256cc684e185b46049480e02f5aeb07e4fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
