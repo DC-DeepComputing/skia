@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4b57c6cf_8b0b4cb0",
+        "filename": "gm/pathopsblend.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-08T14:43:20Z",
+      "side": 1,
+      "message": "Can we assert that it\u0027s just kReverseDifference?",
+      "range": {
+        "startLine": 57,
+        "startChar": 0,
+        "endLine": 57,
+        "endChar": 42
+      },
+      "revId": "b4141e2216b6272600089872109d323b7a35c489",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "35b4082a_f036db9f",
+        "filename": "gm/pathopsblend.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-08T14:43:20Z",
+      "side": 1,
+      "message": "Because we have to use a null paint here (since the color layers will ignore any color and shader), the alpha channel of the layer is also being interpreted as alpha, so it\u0027s only really valid if the main restore paint wants a src-over blend.\n\nIf we expose the the layer-as-coverage capability for mask filters to regular layers, then we could have it accumulate the alpha-only layer image and then treat it as coverage here w/ the restore paint supporting all blend modes and color/shaders correctly.",
+      "range": {
+        "startLine": 100,
+        "startChar": 54,
+        "endLine": 100,
+        "endChar": 61
+      },
+      "revId": "b4141e2216b6272600089872109d323b7a35c489",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "627ee175_32e33794",
+        "filename": "gm/pathopsblend.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-08T14:43:20Z",
+      "side": 1,
+      "message": "kSrcOver should also be valid here since it\u0027s iniitally transparent black, and then we aren\u0027t mixing coverage+kSrc when rendering on the GPU",
+      "range": {
+        "startLine": 108,
+        "startChar": 40,
+        "endLine": 108,
+        "endChar": 44
+      },
+      "revId": "b4141e2216b6272600089872109d323b7a35c489",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad55b3e1_63897c51",
+        "filename": "gm/pathopsblend.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-08T14:43:20Z",
+      "side": 1,
+      "message": "Alternatively, if we toggle to an inverse fill, we can avoid the second layer? With appropriately changed blend modes",
+      "range": {
+        "startLine": 116,
+        "startChar": 16,
+        "endLine": 123,
+        "endChar": 34
+      },
+      "revId": "b4141e2216b6272600089872109d323b7a35c489",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
