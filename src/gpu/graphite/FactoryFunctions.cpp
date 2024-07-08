@@ -187,6 +187,9 @@ private:
 sk_sp<PrecompileShader> MakePrecompileShader(
         sk_sp<SkRuntimeEffect> effect,
         SkSpan<const PrecompileChildOptions> childOptions) {
+    if (!effect || !effect->allowShader()) {
+        return nullptr;
+    }
     // TODO: check that 'effect' has the kAllowShader_Flag bit set and:
     //  for each entry in childOptions:
     //    all the SkPrecompileChildPtrs have the same type as the corresponding child in the effect
@@ -196,6 +199,15 @@ sk_sp<PrecompileShader> MakePrecompileShader(
 sk_sp<PrecompileColorFilter> MakePrecompileColorFilter(
         sk_sp<SkRuntimeEffect> effect,
         SkSpan<const PrecompileChildOptions> childOptions) {
+    if (!effect || !effect->allowColorFilter()) {
+        return nullptr;
+    }
+
+    SkSpan<const SkRuntimeEffect::Child> childInfo = effect->children();
+    for (int i = 0; i < childInfo.size(); ++i) {
+        for
+        if (childInfo[i].type() != child)
+    }
     // TODO: check that 'effect' has the kAllowColorFilter_Flag bit set and:
     //  for each entry in childOptions:
     //    all the SkPrecompileChildPtrs have the same type as the corresponding child in the effect
@@ -205,6 +217,9 @@ sk_sp<PrecompileColorFilter> MakePrecompileColorFilter(
 sk_sp<PrecompileBlender> MakePrecompileBlender(
         sk_sp<SkRuntimeEffect> effect,
         SkSpan<const PrecompileChildOptions> childOptions) {
+    if (!effect || !effect->allowBlender()) {
+        return nullptr;
+    }
     // TODO: check that 'effect' has the kAllowBlender_Flag bit set and:
     //  for each entry in childOptions:
     //    all the SkPrecompileChildPtrs have the same type as the corresponding child in the effect
