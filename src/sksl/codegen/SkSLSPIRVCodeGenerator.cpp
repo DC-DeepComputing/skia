@@ -1735,13 +1735,21 @@ SpvId SPIRVCodeGenerator::getType(const Type& rawType,
                     fConstantBuffer);
         }
         case Type::TypeKind::kArray: {
-            if (!memoryLayout.isSupported(*type)) {
+            // Forces the array layout to std430 if fForceStd430ArrayLayout is true, otherwise the
+            // array keeps it's original memory layout.
+            const MemoryLayout arrayMemoryLayout =
+                                    fCaps.fForceStd430ArrayLayout ||
+                                    memoryLayout.getStandard() == MemoryLayout::Standard::k430
+                                         ? MemoryLayout(MemoryLayout::Standard::k430)
+                                         : MemoryLayout(MemoryLayout::Standard::k140);
+
+            if (!arrayMemoryLayout.isSupported(*type)) {
                 fContext.fErrors->error(type->fPosition, "type '" + type->displayName() +
                                                          "' is not permitted here");
                 return NA;
             }
-            size_t stride = memoryLayout.stride(*type);
-            SpvId typeId = this->getType(type->componentType(), typeLayout, memoryLayout);
+            size_t stride = arrayMemoryLayout.stride(*type);
+            SpvId typeId = this->getType(type->componentType(), typeLayout, arrayMemoryLayout);
             SpvId result = NA;
             if (type->isUnsizedArray()) {
                 result = this->writeInstruction(SpvOpTypeRuntimeArray,
