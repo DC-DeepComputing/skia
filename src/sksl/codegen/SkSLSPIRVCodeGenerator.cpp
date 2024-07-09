@@ -3353,11 +3353,12 @@ SpvId SPIRVCodeGenerator::writeVariableReference(const VariableReference& ref, O
             return this->getLValue(*this->identifier("sk_Clockwise"), out)->load(out);
         }
         case SK_SECONDARYFRAGCOLOR_BUILTIN: {
-            // sk_SecondaryFragColor corresponds to gl_SecondaryFragColorEXT, which isn't supposed
-            // to appear in a SPIR-V program (it's only valid in ES2). Report an error.
-            fContext.fErrors->error(ref.fPosition,
-                                    "sk_SecondaryFragColor is not allowed in SPIR-V");
-            return NA;
+            if (fCaps.fDualSourceBlendingSupport) {
+                return this->getLValue(*this->identifier("sk_SecondaryFragColor"), out)->load(out);
+            } else {
+                fContext.fErrors->error(ref.position(), "'sk_SecondaryFragColor' not supported");
+                return NA;
+            }
         }
         case SK_FRAGCOORD_BUILTIN: {
             if (fProgram.fConfig->fSettings.fForceNoRTFlip) {
