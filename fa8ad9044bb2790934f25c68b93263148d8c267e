@@ -228,6 +228,24 @@
       "parentUuid": "4595b698_fcd76827",
       "revId": "fa8ad9044bb2790934f25c68b93263148d8c267e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "87a40b90_f6a3ab17",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2024-07-09T19:24:40Z",
+      "side": 1,
+      "message": "Yes, but after updating my ndk. Do we have documentation of our latest supported ndk? It would be helpful to include in our build instructions.\n(The one that didn\u0027t work for me was 21.3.6528147)",
+      "parentUuid": "78b5208e_2cb9cf5e",
+      "revId": "fa8ad9044bb2790934f25c68b93263148d8c267e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
