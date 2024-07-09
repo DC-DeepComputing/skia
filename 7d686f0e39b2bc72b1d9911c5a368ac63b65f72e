@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "340e1f8a_cd5c42b0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-09T14:33:04Z",
+      "side": 1,
+      "message": "This does since the uniforms that function is checking for is \"constant\" uniforms such as samplers and textures.",
+      "parentUuid": "22315a07_e3c17e7a",
+      "revId": "7d686f0e39b2bc72b1d9911c5a368ac63b65f72e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8da7c4b2_014c7e4b",
@@ -41,6 +59,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9860e9b7_2336c960",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-09T14:33:04Z",
+      "side": 1,
+      "message": "Made the mirrored enum for storage classes in the previous CL.",
+      "parentUuid": "8da7c4b2_014c7e4b",
+      "range": {
+        "startLine": 152,
+        "startChar": 11,
+        "endLine": 152,
+        "endChar": 27
+      },
+      "revId": "7d686f0e39b2bc72b1d9911c5a368ac63b65f72e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1d0aec3e_9d5f0455",
@@ -54,6 +96,30 @@
       "writtenOn": "2024-07-08T14:52:10Z",
       "side": 1,
       "message": "tiny nit: fix indentation (`:` should be below `?`)",
+      "range": {
+        "startLine": 4455,
+        "startChar": 23,
+        "endLine": 4455,
+        "endChar": 24
+      },
+      "revId": "7d686f0e39b2bc72b1d9911c5a368ac63b65f72e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe707948_daa476eb",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 4455,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-09T14:33:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1d0aec3e_9d5f0455",
       "range": {
         "startLine": 4455,
         "startChar": 23,

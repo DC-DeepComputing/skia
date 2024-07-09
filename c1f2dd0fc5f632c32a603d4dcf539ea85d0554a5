@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b399b9b1_6ecde127",
+        "filename": "resources/sksl/spirv/ArrayStrideInDifferentLayouts.sksl",
+        "patchSetId": 10
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-09T14:33:04Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "045de8ec_40e69d72",
+      "range": {
+        "startLine": 9,
+        "startChar": 8,
+        "endLine": 9,
+        "endChar": 19
+      },
+      "revId": "c1f2dd0fc5f632c32a603d4dcf539ea85d0554a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f067f847_837f5512",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-07-08T14:52:10Z",
       "side": 0,
       "message": "Please add `Bug: 40045541` to the CL description.",
+      "range": {
+        "startLine": 83,
+        "startChar": 12,
+        "endLine": 83,
+        "endChar": 22
+      },
+      "revId": "c1f2dd0fc5f632c32a603d4dcf539ea85d0554a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "562dc526_c7edda54",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-09T14:33:04Z",
+      "side": 0,
+      "message": "I made another CL before this that would force std430 for array strides to bypass this problem as for right now since the only time ubos and ssbos are mixed is when storage buffers are enabled and we have our intrinsic uniform buffer, however that buffer only contains a single `float4` so we would not have any mixing of layouts.",
+      "parentUuid": "f067f847_837f5512",
       "range": {
         "startLine": 83,
         "startChar": 12,
