@@ -80,9 +80,10 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
     fRequiredTransferBufferAlignment = 4;
 
     fResourceBindingReqs.fUniformBufferLayout = Layout::kStd140;
-    // TODO(skia:14639): We cannot use std430 layout for SSBOs until SkSL gracefully handles
-    // implicit array stride.
-    fResourceBindingReqs.fStorageBufferLayout = Layout::kStd140;
+    // We can enable std430 since RenderStep and PaintParams will also be the same interface type
+    // depending on if storage buffers are enabled or not, and intrinsic uniforms which always
+    // use uniform buffers are not passed as function arguments.
+    fResourceBindingReqs.fStorageBufferLayout = Layout::kStd430;
     fResourceBindingReqs.fSeparateTextureAndSamplerBinding = false;
     fResourceBindingReqs.fDistinctIndexRanges = false;
 
