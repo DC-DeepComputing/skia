@@ -16,6 +16,23 @@
       "message": "Hello, could you please review this change? Thanks.",
       "revId": "231df3149fbde2e1834872cb881b44515f7f3f99",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d1dad73_9190d068",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-07-09T13:23:00Z",
+      "side": 1,
+      "message": "This makes sense, and looks good to me. It\u0027s unfortunate that we need to add the `-mlasx` to the opts files, but I understand the LLVM doesn\u0027t allow enabling that architecture with the attribute. Is there a plan to update LLVM in the future?",
+      "revId": "231df3149fbde2e1834872cb881b44515f7f3f99",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
