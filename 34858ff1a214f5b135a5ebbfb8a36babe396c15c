@@ -70,6 +70,24 @@
       "parentUuid": "e4acab14_1cf2da6d",
       "revId": "34858ff1a214f5b135a5ebbfb8a36babe396c15c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bfe64c25_f85e87b8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-09T17:26:51Z",
+      "side": 1,
+      "message": "OK, so just full-on UBO or SSBO all the time. Ack.",
+      "parentUuid": "d517bc2d_0e7fbc28",
+      "revId": "34858ff1a214f5b135a5ebbfb8a36babe396c15c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
