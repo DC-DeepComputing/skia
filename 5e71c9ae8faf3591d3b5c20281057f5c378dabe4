@@ -16,6 +16,98 @@
       "message": "Since I added SkAlign.h, your +1 got reset. PTAL again",
       "revId": "5e71c9ae8faf3591d3b5c20281057f5c378dabe4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "381fddc4_622a4a39",
+        "filename": "include/private/base/SkAlign.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-09T15:11:32Z",
+      "side": 1,
+      "message": "AFAIK, the 128-bit pointer case is not something we intend to support in Skia (and I\u0027m unaware of any existing platforms). I would prefer something like:\n\n`static_assert(sizeof(void*) \u003d\u003d 4 || sizeof(void*) \u003d\u003d 8);`",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 47
+      },
+      "revId": "5e71c9ae8faf3591d3b5c20281057f5c378dabe4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46db6099_e626f454",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-09T15:11:32Z",
+      "side": 1,
+      "message": "tiny nit: `Returns`\n\nRationale at http://go/cstyle#function_declarations\n\n\u003e Function comments should be written with an implied subject of `This function` and should start with the verb phrase; for example, \"Opens the file\", rather than \"Open the file\".",
+      "range": {
+        "startLine": 193,
+        "startChar": 7,
+        "endLine": 193,
+        "endChar": 13
+      },
+      "revId": "5e71c9ae8faf3591d3b5c20281057f5c378dabe4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3e69d85_dd53e298",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-09T15:11:32Z",
+      "side": 1,
+      "message": "tiny nit: second sentence is redundant now?",
+      "range": {
+        "startLine": 194,
+        "startChar": 37,
+        "endLine": 194,
+        "endChar": 80
+      },
+      "revId": "5e71c9ae8faf3591d3b5c20281057f5c378dabe4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e97f555_cb225ffa",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-09T15:11:32Z",
+      "side": 1,
+      "message": "tiny nit: `Returns`",
+      "range": {
+        "startLine": 201,
+        "startChar": 7,
+        "endLine": 201,
+        "endChar": 13
+      },
+      "revId": "5e71c9ae8faf3591d3b5c20281057f5c378dabe4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

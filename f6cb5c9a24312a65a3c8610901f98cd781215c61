@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d6d8dd4f_228f6ffa",
+        "filename": "src/gpu/graphite/UniformManager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-09T15:11:32Z",
+      "side": 1,
+      "message": "I am unaware of any platform with 128-bit pointers or 16 byte pointer alignment requirement. SIMD data might be 16 byte aligned, but never `void*`. I\u0027m also pretty sure other parts of Skia are not compatible with 16 byte pointers. (e.g. Raster Pipeline?)",
+      "parentUuid": "38f2d5fc_e8679555",
+      "range": {
+        "startLine": 56,
+        "startChar": 57,
+        "endLine": 56,
+        "endChar": 82
+      },
+      "revId": "f6cb5c9a24312a65a3c8610901f98cd781215c61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a08b629d_bd46d44f",
         "filename": "src/gpu/graphite/UniformManager.cpp",
         "patchSetId": 10
@@ -85,6 +109,30 @@
       "side": 1,
       "message": "I added a link to https://registry.khronos.org/OpenGL/specs/gl/glspec45.core.pdf#page\u003d159 in the header and here, which is where the its rule text was copied from.",
       "parentUuid": "a08b629d_bd46d44f",
+      "range": {
+        "startLine": 58,
+        "startChar": 11,
+        "endLine": 58,
+        "endChar": 18
+      },
+      "revId": "f6cb5c9a24312a65a3c8610901f98cd781215c61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc611c96_ae27e28c",
+        "filename": "src/gpu/graphite/UniformManager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-09T15:11:32Z",
+      "side": 1,
+      "message": "Aha. I didn\u0027t find the rule list in the header. I wonder if there is some non-intrusive way to hint to a reader of this comment that the header has the rule list.",
+      "parentUuid": "c6bba821_bfc6b627",
       "range": {
         "startLine": 58,
         "startChar": 11,
