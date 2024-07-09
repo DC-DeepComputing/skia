@@ -510,7 +510,6 @@ void colorfilter_subtest(const KeyContext& keyContext,
                          PipelineDataGatherer* gatherer,
                          skiatest::Reporter* reporter) {
 
-
     {
         // The compose colorfilter just generates the cross product of its children.
         static constexpr int kExpectedNumOptions =
@@ -569,6 +568,23 @@ void colorfilter_subtest(const KeyContext& keyContext,
     }
 }
 
+void runtime_effect_subtest(const KeyContext& keyContext,
+                            PipelineDataGatherer* gatherer,
+                            skiatest::Reporter* reporter) {
+
+    {
+        static constexpr int kExpectedNumOptions = 600;
+
+        PaintOptions paintOptions;
+
+//        paintOptions.setShaders();
+//        paintOptions.setColorFilters();
+//        paintOptions.setBlenders();
+        run_test(keyContext, gatherer, reporter, paintOptions, kExpectedNumOptions);
+    }
+
+}
+
 } // anonymous namespace
 
 DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(CombinationBuilderTest, reporter, context,
@@ -598,6 +614,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(CombinationBuilderTest, reporter, context,
     blend_subtest(keyContext, &gatherer, reporter);
     shader_subtest(keyContext, &gatherer, reporter);
     colorfilter_subtest(keyContext, &gatherer, reporter);
+    runtime_effect_subtest(keyContext, &gatherer, reporter);
 
     no_blend_mode_option_test(keyContext, &gatherer, reporter);
     big_test(keyContext, &gatherer, reporter);

@@ -68,6 +68,7 @@
 #include "tools/fonts/FontToolUtils.h"
 #include "tools/graphite/GraphiteTestContext.h"
 #include "tools/graphite/UniqueKeyUtils.h"
+#include "tools/precompile/RuntimeEffectUtils.h"
 
 // Set this to 1 for more expansive (aka far slower) local testing
 #define EXPANDED_SET 0
@@ -812,56 +813,38 @@ std::pair<sk_sp<SkShader>, sk_sp<PrecompileShader>> create_clip_shader(SkRandom*
 
 //--------------------------------------------------------------------------------------------------
 std::pair<sk_sp<SkBlender>, sk_sp<PrecompileBlender>> src_blender() {
-    static SkRuntimeEffect* sSrcEffect = SkMakeRuntimeEffect(
-            SkRuntimeEffect::MakeForBlender,
-            "half4 main(half4 src, half4 dst) {"
-                "return src;"
-            "}"
-    );
+    RuntimeEffectUtils::Result result;
+    RuntimeEffectUtils::DestBlender(&result);
 
-    sk_sp<SkBlender> b = sSrcEffect->makeBlender(/* uniforms= */ nullptr);
+    sk_sp<SkBlender> b = result.fEffect->makeBlender(std::move(result.fUniforms));
     sk_sp<PrecompileBlender> o =
-            PrecompileRuntimeEffects::MakePrecompileBlender(sk_ref_sp(sSrcEffect));
+            PrecompileRuntimeEffects::MakePrecompileBlender(std::move(result.fEffect));
     return { std::move(b) , std::move(o) };
 }
 
 std::pair<sk_sp<SkBlender>, sk_sp<PrecompileBlender>> dest_blender() {
-    static SkRuntimeEffect* sDestEffect = SkMakeRuntimeEffect(
-            SkRuntimeEffect::MakeForBlender,
-            "half4 main(half4 src, half4 dst) {"
-                "return dst;"
-            "}"
-    );
+    RuntimeEffectUtils::Result result;
+    RuntimeEffectUtils::DestBlender(&result);
 
-    sk_sp<SkBlender> b = sDestEffect->makeBlender(/* uniforms= */ nullptr);
+    sk_sp<SkBlender> b = result.fEffect->makeBlender(std::move(result.fUniforms));
     sk_sp<PrecompileBlender> o =
-            PrecompileRuntimeEffects::MakePrecompileBlender(sk_ref_sp(sDestEffect));
+            PrecompileRuntimeEffects::MakePrecompileBlender(std::move(result.fEffect));
     return { std::move(b) , std::move(o) };
 }
 
 
 std::pair<sk_sp<SkBlender>, sk_sp<PrecompileBlender>> combo_blender() {
-    static SkRuntimeEffect* sComboEffect = SkMakeRuntimeEffect(
-            SkRuntimeEffect::MakeForBlender,
-            "uniform float blendFrac;"
-            "uniform blender a;"
-            "uniform blender b;"
-            "half4 main(half4 src, half4 dst) {"
-                "return (blendFrac * a.eval(src, dst)) + ((1 - blendFrac) * b.eval(src, dst));"
-            "}"
-    );
+    RuntimeEffectUtils::Result result;
+    RuntimeEffectUtils::ComboBlender(&result);
 
     auto [src, srcO] = src_blender();
     auto [dst, dstO] = dest_blender();
 
     SkRuntimeEffect::ChildPtr children[] = { src, dst };
 
-    const float kUniforms[] = { 1.0f };
-
-    sk_sp<SkData> uniforms = SkData::MakeWithCopy(kUniforms, sizeof(kUniforms));
-    sk_sp<SkBlender> b = sComboEffect->makeBlender(std::move(uniforms), children);
+    sk_sp<SkBlender> b = result.fEffect->makeBlender(std::move(result.fUniforms), children);
     sk_sp<PrecompileBlender> o = PrecompileRuntimeEffects::MakePrecompileBlender(
-            sk_ref_sp(sComboEffect),
+            std::move(result.fEffect),
             { { srcO }, { dstO } });
     return { std::move(b) , std::move(o) };
 }

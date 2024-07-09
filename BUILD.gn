@@ -2158,6 +2158,12 @@ if (skia_enable_tools) {
         "tools/SvgPathExtractor.h",
       ]
     }
+    if (skia_enable_precompile) {
+      sources += [
+        "tools/precompile/RuntimeEffectUtils.cpp",
+        "tools/precompile/RuntimeEffectUtils.h",
+      ]
+    }
     if (target_cpu != "wasm") {
       sources += [ "tools/CrashHandler.cpp" ]
     }
