@@ -42,6 +42,7 @@ BackendTexture& BackendTexture::operator=(const BackendTexture& that) {
         case BackendApi::kDawn:
             fDawnTexture = that.fDawnTexture;
             fDawnTextureView = that.fDawnTextureView;
+            fDawnSharedRefCnt = that.fDawnSharedRefCnt;
             break;
 #endif
 #ifdef SK_METAL
@@ -80,6 +81,9 @@ bool BackendTexture::operator==(const BackendTexture& that) const {
             if (fDawnTextureView != that.fDawnTextureView) {
                 return false;
             }
+            if (fDawnSharedRefCnt != that.fDawnSharedRefCnt) {
+                return false;
+            }
             break;
 #endif
 #ifdef SK_METAL
@@ -116,7 +120,13 @@ BackendTexture::BackendTexture(WGPUTexture texture)
                       static_cast<int32_t>(wgpuTextureGetHeight(texture))}
         , fInfo(DawnTextureInfoFromWGPUTexture(texture))
         , fDawnTexture(texture)
-        , fDawnTextureView(nullptr) {}
+        , fDawnTextureView(nullptr)
+        , fDawnSharedRefCnt(nullptr) {}
+
+BackendTexture::BackendTexture(WGPUTexture texture, SkRefCnt* sharedRefCnt)
+        : BackendTexture(texture) {
+    fDawnSharedRefCnt = sharedRefCnt;
+}
 
 BackendTexture::BackendTexture(SkISize planeDimensions,
                                const DawnTextureInfo& info,
@@ -124,7 +134,8 @@ BackendTexture::BackendTexture(SkISize planeDimensions,
         : fDimensions(planeDimensions)
         , fInfo(info)
         , fDawnTexture(texture)
-        , fDawnTextureView(nullptr) {
+        , fDawnTextureView(nullptr)
+        , fDawnSharedRefCnt(nullptr) {
 
 #if defined(__EMSCRIPTEN__)
     SkASSERT(info.fAspect == wgpu::TextureAspect::All);
@@ -150,7 +161,8 @@ BackendTexture::BackendTexture(SkISize dimensions,
         : fDimensions(dimensions)
         , fInfo(strip_copy_usage(info))
         , fDawnTexture(nullptr)
-        , fDawnTextureView(textureView) {}
+        , fDawnTextureView(textureView)
+        , fDawnSharedRefCnt(nullptr) {}
 
 WGPUTexture BackendTexture::getDawnTexturePtr() const {
     if (this->isValid() && this->backend() == BackendApi::kDawn) {
@@ -164,6 +176,13 @@ WGPUTextureView BackendTexture::getDawnTextureViewPtr() const {
         return fDawnTextureView;
     }
     return {};
+}
+
+SkRefCnt* BackendTexture::getDawnSharedRefCnt() const {
+    if (this->isValid() && this->backend() == BackendApi::kDawn) {
+        return fDawnSharedRefCnt;
+    }
+    return nullptr;
 }
 #endif
 
