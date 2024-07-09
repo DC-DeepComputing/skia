@@ -30,12 +30,14 @@ public:
     static sk_sp<Texture> MakeWrapped(const DawnSharedContext*,
                                       SkISize dimensions,
                                       const TextureInfo&,
-                                      wgpu::Texture);
+                                      wgpu::Texture,
+                                      sk_sp<SkRefCnt> sharedRefCnt = nullptr);
 
     static sk_sp<Texture> MakeWrapped(const DawnSharedContext*,
                                       SkISize dimensions,
                                       const TextureInfo&,
-                                      const wgpu::TextureView&);
+                                      const wgpu::TextureView&,
+                                      sk_sp<SkRefCnt> sharedRefCnt = nullptr);
 
     ~DawnTexture() override {}
 
@@ -50,6 +52,7 @@ private:
                 wgpu::Texture,
                 wgpu::TextureView sampleTextureView,
                 wgpu::TextureView renderTextureView,
+                sk_sp<SkRefCnt> sharedRefCnt,
                 Ownership,
                 skgpu::Budgeted);
 
@@ -63,6 +66,10 @@ private:
     wgpu::Texture     fTexture;
     wgpu::TextureView fSampleTextureView;
     wgpu::TextureView fRenderTextureView;
+
+    // The shared ref count for the wrapped texture. It is usually used for sharing ownership of the
+    // texture with a BackendTexture.
+    sk_sp<SkRefCnt> fWrappedTextureSharedRefCnt;
 };
 
 }  // namespace skgpu::graphite
