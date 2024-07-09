@@ -484,6 +484,9 @@ VertSkSLInfo BuildVertexSkSL(const ResourceBindingRequirements& bindingReqs,
     // Fixed program header
     std::string sksl =
         SkSL::String::printf("layout (binding=%d) uniform intrinsicUniforms {\n"
+                             // Fixed sized arrays are not supported as intrinsic uniforms since
+                             // Vulkan forces std430 for array stride layouts when Vulkan enables
+                             // storage buffers using std430.
                              "    layout(offset=0) float4 rtAdjust;\n"
                              "};\n"
                              "\n", bindingReqs.fIntrinsicBufferBinding);
