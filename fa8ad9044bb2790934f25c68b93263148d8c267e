@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c0d34ff3_2a6938d3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-07-09T16:11:55Z",
+      "side": 1,
+      "message": "When I try building without this, I get\n\n```\nCould not initialize class org.codehaus.groovy.reflection.ReflectionCache\n\u003e Exception java.lang.NoClassDefFoundError: Could not initialize class org.codehaus.groovy.vmplugin.v7.Java7\n```\n\nSo I\u0027m guessing there\u0027s some kind of mismatch between the different build tools on my machine; advice online generally seems to suggest updating tools, but I\u0027m open to alternatives.",
+      "parentUuid": "9c4c9809_249a271b",
+      "revId": "fa8ad9044bb2790934f25c68b93263148d8c267e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e577ef6e_0e0d0641",
         "filename": "/COMMIT_MSG",
         "patchSetId": 1
@@ -31,6 +49,24 @@
       "writtenOn": "2024-07-09T15:47:19Z",
       "side": 1,
       "message": "Is this required?",
+      "revId": "fa8ad9044bb2790934f25c68b93263148d8c267e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "52e5a367_5b0bf1cc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-07-09T16:11:55Z",
+      "side": 1,
+      "message": "With the latest version of gradle, yea.",
+      "parentUuid": "e577ef6e_0e0d0641",
       "revId": "fa8ad9044bb2790934f25c68b93263148d8c267e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -101,6 +137,24 @@
       "side": 1,
       "message": "I haven\u0027t dug into why yet, but I was able to build `viewer` without this change, but with it, I am not. I get the following error:\n\n```\nSet executable permissions for: /Users/scroggo/.gradle/wrapper/dists/gradle-8.8-all/3d1515b4t5j7imd1gr6esoc57p/gradle-8.8/bin/gradle\n\nWelcome to Gradle 8.8!\n\nHere are the highlights of this release:\n - Running Gradle on Java 22\n - Configurable Gradle daemon JVM\n - Improved IDE performance for large projects\n\nFor more details see https://docs.gradle.org/8.8/release-notes.html\n\nStarting a Gradle Daemon (subsequent builds will be faster)\n\nFAILURE: Build failed with an exception.\n\n* Where:\nBuild file \u0027/Users/scroggo/skia/platform_tools/android/apps/jetski/build.gradle\u0027 line: 2\n\n* What went wrong:\nAn exception occurred applying plugin request [id: \u0027com.android.library\u0027]\n\u003e Failed to apply plugin \u0027com.android.internal.library\u0027.\n   \u003e Android Gradle plugin requires Java 17 to run. You are currently using Java 11.\n      Your current JDK is located in /Library/Java/JavaVirtualMachines/zulu-11.jdk/Contents/Home\n      You can try some of the following options:\n       - changing the IDE settings.\n       - changing the JAVA_HOME environment variable.\n       - changing `org.gradle.java.home` in `gradle.properties`.\n\n* Try:\n\u003e Run with --stacktrace option to get the stack trace.\n\u003e Run with --info or --debug option to get more log output.\n\u003e Run with --scan to get full insights.\n\u003e Get more help at https://help.gradle.org.\n\nDeprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.\n\nYou can use \u0027--warning-mode all\u0027 to show the individual deprecation warnings and determine if they come from your own scripts or plugins.\n\nFor more on this, please refer to https://docs.gradle.org/8.8/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.\n\nBUILD FAILED in 38s\nCommand \u0027[\u0027./apps/gradlew\u0027, \u0027:viewer:assemblearm64debug\u0027, \u0027-papps/viewer\u0027, \u0027-Parm64.out.dir\u003d/Users/scroggo/skia/out/Arm64\u0027, \u0027--daemon\u0027]\u0027 returned non-zero exit status 1.\ngradle build failed\n```\n\nOddly, this points to `platform_tools/android/apps/jetski/build.gradle` line 2, but you didn\u0027t modify this line. I\u0027m guessing that\u0027s because the newer Gradle requires a newer Java.\n\nAnd sure enough, I downloaded a new Java from https://www.oracle.com/java/technologies/downloads/, and now I\u0027m able to build with your patch! (Note: we should probably update Android\u0027s build instructions, since they don\u0027t seem to say anything about Java.)\n\nBut I\u0027m still trying to understand why/whether we need all of these changes. My ideal would be that this is easy for all Skia devs to build, as needed. It seems like part of this makes people do some updates, but that should be fine if it has other benefits.",
       "parentUuid": "07da323f_d06038f1",
+      "revId": "fa8ad9044bb2790934f25c68b93263148d8c267e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4595b698_fcd76827",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-07-09T16:11:55Z",
+      "side": 1,
+      "message": "See my comment below for the specific error I got with an older version of gradle. For all I know I just needed to downgrade Java.\n\nI don\u0027t think there\u0027s going to be a very easy way forward here -- my understanding is that maintaining Android applications is always a pain. It may come down to whether it\u0027s more trouble to wrestle with old versions of tools or force people to update things continuously.\n\nMy personal opinion is that it\u0027s worth keeping tools relatively up-to-date; I think people are likely to hit issues regardless but my intuition tells me newer versions of things are likelier to work in general. Regardless we would want to strive to document issues we hit, like the one you described here.",
+      "parentUuid": "f0dabe62_e9c12d9a",
       "revId": "fa8ad9044bb2790934f25c68b93263148d8c267e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
