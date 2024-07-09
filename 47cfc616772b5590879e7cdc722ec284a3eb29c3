@@ -56,6 +56,30 @@
       },
       "revId": "47cfc616772b5590879e7cdc722ec284a3eb29c3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2230216a_15365b68",
+        "filename": "src/gpu/ganesh/vk/GrVkResourceProvider.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 19305
+      },
+      "writtenOn": "2024-07-09T18:56:27Z",
+      "side": 1,
+      "message": "good call.",
+      "parentUuid": "20e4632e_9c10876d",
+      "range": {
+        "startLine": 38,
+        "startChar": 37,
+        "endLine": 38,
+        "endChar": 47
+      },
+      "revId": "47cfc616772b5590879e7cdc722ec284a3eb29c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
