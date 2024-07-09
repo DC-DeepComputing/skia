@@ -7,9 +7,11 @@
 
 #include "src/gpu/graphite/dawn/DawnResourceProvider.h"
 
+#include "include/gpu/MutableTextureState.h"
 #include "include/gpu/graphite/BackendTexture.h"
 #include "include/gpu/graphite/TextureInfo.h"
 #include "include/private/base/SkAlign.h"
+#include "src/gpu/MutableTextureStatePriv.h"
 #include "src/gpu/graphite/ComputePipeline.h"
 #include "src/gpu/graphite/RenderPassDesc.h"
 #include "src/gpu/graphite/dawn/DawnBuffer.h"
@@ -28,6 +30,28 @@ namespace {
 constexpr int kBufferBindingSizeAlignment = 16;
 constexpr int kMaxNumberOfCachedBufferBindGroups = 1024;
 constexpr int kMaxNumberOfCachedTextureBindGroups = 4096;
+
+// A class that manages non-dawn reference count for a BackendTexture's wgpu::Texture.
+// Non-dawn references are references inside Skia and not managed by Dawn itself.
+// This is important because some textures are cached in BindGroups. And BindGroups
+// indirectly (inside Dawn) keep a reference of the textures. When we delete
+// a BackendTexture, we want to delete the wgpu::Texture once it is done being used by
+// any command buffer regardless of whethere there is any cached Bingroup containing this
+// texture or not. We can do that by managing a separate references inside Skia.
+//
+// This class' pointer can be shared with any DawnTexture wrapping the BackendTexture's
+// wgpu::Texture. Once skia knows that no command buffer uses the wgpu::Texture anymore, it can drop
+// the ref count of BackendTextureNonDawnRefCnt to zero, and the registered destroy function will be
+// invoked. The registed function would be used to do any necessary cleanup.
+class BackendTextureNonDawnRefCnt : public SkRefCnt {
+public:
+    BackendTextureNonDawnRefCnt(std::function<void()> destroyFunc)
+            : fDestroyFunc(std::move(destroyFunc)) {}
+    ~BackendTextureNonDawnRefCnt() override { fDestroyFunc(); }
+
+private:
+    std::function<void()> fDestroyFunc;
+};
 
 wgpu::ShaderModule create_shader_module(const wgpu::Device& device, const char* source) {
     wgpu::ShaderModuleWGSLDescriptor wgslDesc;
@@ -222,12 +246,14 @@ sk_sp<Texture> DawnResourceProvider::onCreateWrappedTexture(const BackendTexture
         return DawnTexture::MakeWrapped(this->dawnSharedContext(),
                                         texture.dimensions(),
                                         texture.info(),
-                                        std::move(dawnTexture));
+                                        std::move(dawnTexture),
+                                        sk_ref_sp(texture.getDawnSharedRefCnt()));
     } else {
         return DawnTexture::MakeWrapped(this->dawnSharedContext(),
                                         texture.dimensions(),
                                         texture.info(),
-                                        std::move(dawnTextureView));
+                                        std::move(dawnTextureView),
+                                        sk_ref_sp(texture.getDawnSharedRefCnt()));
     }
 }
 
@@ -303,24 +329,22 @@ BackendTexture DawnResourceProvider::onCreateBackendTexture(SkISize dimensions,
         return {};
     }
 
-    return BackendTexture(texture.MoveToCHandle());
+    auto nonDawnRefCnt = new BackendTextureNonDawnRefCnt([texture] {
+        // Destroy the texture once there is no non-Dawn references.
+        texture.Destroy();
+    });
+
+    return BackendTexture(texture.Get(), nonDawnRefCnt);
 }
 
 void DawnResourceProvider::onDeleteBackendTexture(const BackendTexture& texture) {
     SkASSERT(texture.isValid());
     SkASSERT(texture.backend() == BackendApi::kDawn);
 
-    // Automatically release the pointers in wgpu::TextureView & wgpu::Texture's dtor.
-    // Acquire() won't increment the ref count.
-    wgpu::TextureView::Acquire(texture.getDawnTextureViewPtr());
-    // We need to explicitly call Destroy() here since since that is the recommended way to delete
-    // a Dawn texture predictably versus just dropping a ref and relying on garbage collection.
-    //
-    // Additionally this helps to work around an issue where Skia may have cached a BindGroup that
-    // references the underlying texture. Skia currently doesn't destroy BindGroups when its use of
-    // the texture goes away, thus a ref to the texture remains on the BindGroup and memory is never
-    // cleared up unless we call Destroy() here.
-    wgpu::Texture::Acquire(texture.getDawnTexturePtr()).Destroy();
+    // Release the BackendTextureNonDawnRefCnt pointer. The underlying texture will be
+    // destroyed once there is no Skia's reference.
+    SkRefCnt* sharedRefCnt = texture.getDawnSharedRefCnt();
+    SkSafeUnref(sharedRefCnt);
 }
 
 DawnSharedContext* DawnResourceProvider::dawnSharedContext() const {

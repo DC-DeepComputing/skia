@@ -46,6 +46,8 @@ public:
     // However, any SkImage or SkSurface that wraps the BackendTexture *will* retain and release
     // the WGPUTexture.
     BackendTexture(WGPUTexture texture);
+    // Same as above but with additional shared ref count pointer.
+    BackendTexture(WGPUTexture texture, SkRefCnt* sharedRefCnt);
 
     // Create a BackendTexture from a WGPUTexture. Texture planeDimensions, plane aspect and
     // info have to be provided. This is intended to be used only when accessing a plane
@@ -111,6 +113,7 @@ public:
     void setMutableState(const skgpu::MutableTextureState&);
 
 #ifdef SK_DAWN
+    SkRefCnt* getDawnSharedRefCnt() const;
     WGPUTexture getDawnTexturePtr() const;
     WGPUTextureView getDawnTextureViewPtr() const;
 #endif
@@ -146,6 +149,7 @@ private:
         struct {
             WGPUTexture fDawnTexture;
             WGPUTextureView fDawnTextureView;
+            SkRefCnt* fDawnSharedRefCnt;
         };
 #endif
 #ifdef SK_METAL
