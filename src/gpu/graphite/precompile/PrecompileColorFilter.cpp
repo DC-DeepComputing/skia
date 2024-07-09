@@ -7,17 +7,19 @@
 
 #include "include/gpu/graphite/precompile/PrecompileColorFilter.h"
 
+#include "include/effects/SkRuntimeEffect.h"
+#include "include/gpu/graphite/precompile/PrecompileRuntimeEffect.h"
 #include "include/private/SkColorData.h"
 #include "src/core/SkColorSpacePriv.h"
 #include "src/core/SkKnownRuntimeEffects.h"
 #include "src/gpu/graphite/BuiltInCodeSnippetID.h"
-#include "src/gpu/graphite/FactoryFunctions.h"
 #include "src/gpu/graphite/KeyHelpers.h"
 #include "src/gpu/graphite/PaintParams.h"
 #include "src/gpu/graphite/PaintParamsKey.h"
 #include "src/gpu/graphite/precompile/PrecompileBaseComplete.h"
 #include "src/gpu/graphite/precompile/PrecompileBasePriv.h"
 #include "src/gpu/graphite/precompile/PrecompileColorFiltersPriv.h"
+//#include "src/gpu/graphite/FactoryFunctions.h"
 
 namespace skgpu::graphite {
 
@@ -234,7 +236,8 @@ sk_sp<PrecompileColorFilter> PrecompileColorFilters::Lerp(
         srcs.push_back(s);
     }
 
-    return MakePrecompileColorFilter(sk_ref_sp(lerpEffect), { dsts, srcs });
+    return PrecompileRuntimeEffects::MakePrecompileColorFilter(sk_ref_sp(lerpEffect),
+                                                               { dsts, srcs });
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -265,7 +268,8 @@ sk_sp<PrecompileColorFilter> PrecompileColorFilters::HighContrast() {
     const SkRuntimeEffect* highContrastEffect =
             GetKnownRuntimeEffect(SkKnownRuntimeEffects::StableKey::kHighContrast);
 
-    sk_sp<PrecompileColorFilter> cf = MakePrecompileColorFilter(sk_ref_sp(highContrastEffect));
+    sk_sp<PrecompileColorFilter> cf =
+            PrecompileRuntimeEffects::MakePrecompileColorFilter(sk_ref_sp(highContrastEffect));
     if (!cf) {
         return nullptr;
     }
@@ -277,7 +281,7 @@ sk_sp<PrecompileColorFilter> PrecompileColorFilters::Luma() {
     const SkRuntimeEffect* lumaEffect =
             GetKnownRuntimeEffect(SkKnownRuntimeEffects::StableKey::kLuma);
 
-    return MakePrecompileColorFilter(sk_ref_sp(lumaEffect));
+    return PrecompileRuntimeEffects::MakePrecompileColorFilter(sk_ref_sp(lumaEffect));
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -285,7 +289,7 @@ sk_sp<PrecompileColorFilter> PrecompileColorFilters::Overdraw() {
     const SkRuntimeEffect* overdrawEffect =
             GetKnownRuntimeEffect(SkKnownRuntimeEffects::StableKey::kOverdraw);
 
-    return MakePrecompileColorFilter(sk_ref_sp(overdrawEffect));
+    return PrecompileRuntimeEffects::MakePrecompileColorFilter(sk_ref_sp(overdrawEffect));
 }
 
 //--------------------------------------------------------------------------------------------------
