@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b7383b6_84f64d08",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-09T14:54:04Z",
+      "side": 1,
+      "message": "Since I added SkAlign.h, your +1 got reset. PTAL again",
+      "revId": "5e71c9ae8faf3591d3b5c20281057f5c378dabe4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

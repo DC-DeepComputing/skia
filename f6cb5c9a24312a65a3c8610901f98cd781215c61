@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "38f2d5fc_e8679555",
+        "filename": "src/gpu/graphite/UniformManager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-09T14:54:04Z",
+      "side": 1,
+      "message": "I added an SkAlign16/SkIsAlign16 (and added it to the branches in SkAlignPtr since there are platforms where pointers are 16-byte aligned and this would have been aligning them to 4 bytes)",
+      "parentUuid": "d24a696f_3cd04b71",
+      "range": {
+        "startLine": 56,
+        "startChar": 57,
+        "endLine": 56,
+        "endChar": 82
+      },
+      "revId": "f6cb5c9a24312a65a3c8610901f98cd781215c61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a08b629d_bd46d44f",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c6bba821_bfc6b627",
+        "filename": "src/gpu/graphite/UniformManager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-09T14:54:04Z",
+      "side": 1,
+      "message": "I added a link to https://registry.khronos.org/OpenGL/specs/gl/glspec45.core.pdf#page\u003d159 in the header and here, which is where the its rule text was copied from.",
+      "parentUuid": "a08b629d_bd46d44f",
+      "range": {
+        "startLine": 58,
+        "startChar": 11,
+        "endLine": 58,
+        "endChar": 18
+      },
+      "revId": "f6cb5c9a24312a65a3c8610901f98cd781215c61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1836379c_1609287e",
@@ -60,6 +108,30 @@
       "writtenOn": "2024-07-03T03:16:14Z",
       "side": 1,
       "message": "Random idea, up to you: it might flow better if we make helper functions instead of having an `isStruct` param. I\u0027m not advocating for these exact method names per se, just for the idea of helpers instead of the bool param. \n\n```\nstatic UniformOffsetCalculator ForTopLevel(Layout layout, int offset) { ... }\nstatic UniformOffsetCalculator ForSubstruct(Layout layout, int offset) { ... }\n\nauto calc \u003d UniformOffsetCalculator::ForTopLevel(layout, kStart);\nauto substruct \u003d UniformOffsetCalculator::ForSubstruct(layout, kStart);\n```\n\nIf we keep it as-is, tiny nit: add spaces around equals signs.",
+      "range": {
+        "startLine": 179,
+        "startChar": 57,
+        "endLine": 179,
+        "endChar": 85
+      },
+      "revId": "f6cb5c9a24312a65a3c8610901f98cd781215c61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "07967f33_517210a1",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-09T14:54:04Z",
+      "side": 1,
+      "message": "Done, I went with the static functions as I agree that flows better.",
+      "parentUuid": "1836379c_1609287e",
       "range": {
         "startLine": 179,
         "startChar": 57,
@@ -111,6 +183,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba1a8305_0a902dd3",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-09T14:54:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6600fbcc_59f275fe",
+      "range": {
+        "startLine": 200,
+        "startChar": 50,
+        "endLine": 200,
+        "endChar": 60
+      },
+      "revId": "f6cb5c9a24312a65a3c8610901f98cd781215c61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "58713e28_7b9455b7",
@@ -124,6 +220,30 @@
       "writtenOn": "2024-07-03T03:16:14Z",
       "side": 1,
       "message": "We should explicitly document what the return value is. \n\nIt\u0027s probably possible to rephrase the above sentence to include that information, or we could just add `Returns the correctly aligned start offset.`?",
+      "range": {
+        "startLine": 201,
+        "startChar": 85,
+        "endLine": 201,
+        "endChar": 86
+      },
+      "revId": "f6cb5c9a24312a65a3c8610901f98cd781215c61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "75543482_81207b8f",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-09T14:54:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "58713e28_7b9455b7",
       "range": {
         "startLine": 201,
         "startChar": 85,
