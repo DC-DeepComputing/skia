@@ -52,6 +52,24 @@
       "parentUuid": "a34f0d6f_efdf4cc3",
       "revId": "8af122ed560dce0679e60a3b47c99cbc5d4d7599",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fff939e5_e0b4da44",
+        "filename": "gm/animated_gif.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-07-09T14:25:40Z",
+      "side": 1,
+      "message": "It\u0027s possible but I\u0027m not aware of what might have changed in the SDK.",
+      "parentUuid": "923ade20_d359ffa3",
+      "revId": "8af122ed560dce0679e60a3b47c99cbc5d4d7599",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
