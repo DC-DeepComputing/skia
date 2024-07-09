@@ -164,6 +164,8 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
         fSupportsDeviceFaultInfo = true;
     }
 
+    fShaderCaps->fForceStd430ArrayLayout =
+        fResourceBindingReqs.fStorageBufferLayout == Layout::kStd430;
     fShaderCaps->fFloatBufferArrayName = "fsGradientBuffer";
 
     // Note that format table initialization should be performed at the end of this method to ensure
