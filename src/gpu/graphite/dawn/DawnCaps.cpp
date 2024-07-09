@@ -13,6 +13,7 @@
 #include "include/gpu/graphite/ContextOptions.h"
 #include "include/gpu/graphite/TextureInfo.h"
 #include "include/gpu/graphite/dawn/DawnBackendContext.h"
+#include "src/core/SkTHash.h"
 #include "src/gpu/graphite/ComputePipelineDesc.h"
 #include "src/gpu/graphite/GraphicsPipelineDesc.h"
 #include "src/gpu/graphite/GraphiteResourceKey.h"
@@ -55,8 +56,6 @@ static constexpr wgpu::TextureFormat kFormats[skgpu::graphite::DawnCaps::kFormat
 #if !defined(__EMSCRIPTEN__)
         wgpu::TextureFormat::External,
 #endif
-
-        wgpu::TextureFormat::Undefined,
 };
 
 #if !defined(__EMSCRIPTEN__)
@@ -811,13 +810,6 @@ void DawnCaps::initFormatTable(const wgpu::Device& device) {
     }
 #endif
 
-    // Format: Undefined
-    {
-        info = &fFormatTable[GetFormatIndex(wgpu::TextureFormat::Undefined)];
-        info->fFlags = 0;
-        info->fColorTypeInfoCount = 0;
-    }
-
     ////////////////////////////////////////////////////////////////////////////
     // Map SkColorTypes (used for creating SkSurfaces) to wgpu::TextureFormat.
     // The order in which the formats are passed into the setColorType function
@@ -847,16 +839,20 @@ void DawnCaps::initFormatTable(const wgpu::Device& device) {
 
 // static
 size_t DawnCaps::GetFormatIndex(wgpu::TextureFormat format) {
-    for (size_t i = 0; i < std::size(kFormats); ++i) {
-        if (format == kFormats[i]) {
-            return i;
+    static const auto format_to_index_map = []() {
+        skia_private::THashMap<wgpu::TextureFormat, size_t> map;
+        map.reserve(std::size(kFormats));
+        for (size_t i = 0; i < std::size(kFormats); ++i) {
+            map[kFormats[i]] = i;
         }
-        if (kFormats[i] == wgpu::TextureFormat::Undefined) {
-            SkDEBUGFAILF("Unsupported wgpu::TextureFormat: %d\n", static_cast<int>(format));
-            return i;
-        }
+        return map;
+    }();
+
+    if (size_t* index = format_to_index_map.find(format)) {
+        return *index;
     }
-    SkUNREACHABLE;
+
+    SkDEBUGFAILF("Unsupported wgpu::TextureFormat: 0x%08X\n", static_cast<uint32_t>(format));
     return 0;
 }
 
@@ -880,9 +876,13 @@ uint64_t DawnCaps::getRenderPassDescKeyForPipeline(const RenderPassDesc& renderP
     DawnTextureInfo colorInfo, depthStencilInfo;
     renderPassDesc.fColorAttachment.fTextureInfo.getDawnTextureInfo(&colorInfo);
     renderPassDesc.fDepthStencilAttachment.fTextureInfo.getDawnTextureInfo(&depthStencilInfo);
-    SkASSERT(static_cast<uint32_t>(colorInfo.getViewFormat()) <= 0xffff &&
-             static_cast<uint32_t>(depthStencilInfo.getViewFormat()) <= 0xffff &&
-             colorInfo.fSampleCount < 0x7fff);
+
+    uint32_t colorFormatIndex = GetFormatIndex(colorInfo.getViewFormat());
+    uint32_t depthStencilFormatIndex = GetFormatIndex(depthStencilInfo.getViewFormat());
+
+    SkASSERT(colorFormatIndex <= 0xffff);
+    SkASSERT(depthStencilFormatIndex <= 0xffff);
+    SkASSERT(colorInfo.fSampleCount < 0x7fff);
 
     // Note: if Dawn supports ExpandResolveTexture load op and the render pass uses it to load
     // the resolve texture, a render pipeline will need to be created with
@@ -900,11 +900,9 @@ uint64_t DawnCaps::getRenderPassDescKeyForPipeline(const RenderPassDesc& renderP
         loadResolveAttachmentKey = 1;
     }
 
-    uint32_t colorAttachmentKey = static_cast<uint32_t>(colorInfo.getViewFormat()) << 16 |
-                                  colorInfo.fSampleCount << 1 | loadResolveAttachmentKey;
-
-    uint32_t dsAttachmentKey = static_cast<uint32_t>(depthStencilInfo.getViewFormat()) << 16 |
-                               depthStencilInfo.fSampleCount;
+    uint32_t colorAttachmentKey =
+            colorFormatIndex << 16 | colorInfo.fSampleCount << 1 | loadResolveAttachmentKey;
+    uint32_t dsAttachmentKey = depthStencilFormatIndex << 16 | depthStencilInfo.fSampleCount;
     return (((uint64_t)colorAttachmentKey) << 32) | dsAttachmentKey;
 }
 
