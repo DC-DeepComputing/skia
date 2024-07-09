@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bfe67475_8a8d4e78",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-07-09T12:43:42Z",
+      "side": 1,
+      "message": "Thanks for the contribution!\n\nFor future reference, these macros are defined in https://github.com/libjpeg-turbo/libjpeg-turbo/blob/e287a35762cba20e2253efb3260007289a2f2186/jmorecfg.h#L195-L210",
+      "revId": "839ba9b65a4dc38bd3e7f293c2ae2ed652ed5d44",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
