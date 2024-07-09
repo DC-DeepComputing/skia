@@ -78,6 +78,16 @@ is_chromeos = false
 # This is to make the ANGLE build files happy. Skia always uses is_mac and/or is_ios.
 is_apple = is_mac || is_ios
 
+# This is to make the PartitionAlloc build files happy. Skia itself doesn't
+# depend on these variables. In the context of Skia standalone, there are no
+# bots on ChromeCast / Chronet / NaCL / CastOS / etc...
+is_cast_android = false
+is_cronet_build = false
+is_nacl = false
+is_castos = false
+is_posix = !is_win && !is_fuchsia
+is_asan = sanitize == "address"
+
 if (target_cpu == "") {
   target_cpu = host_cpu
   if (is_android || is_ios) {
