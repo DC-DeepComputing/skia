@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64c116c4_340da780",
+        "filename": "include/private/gpu/graphite/DawnTypesPriv.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-09T14:47:19Z",
+      "side": 1,
+      "message": "It\u0027s not valid to #include `src/` from inside `include/`.",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 56
+      },
+      "revId": "71b4adec76d5217cd72ccdcbcc2ae99e3a889fc1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
