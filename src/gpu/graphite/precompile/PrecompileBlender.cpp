@@ -7,6 +7,8 @@
 
 #include "include/gpu/graphite/precompile/PrecompileBlender.h"
 
+#include "include/effects/SkRuntimeEffect.h"
+#include "include/gpu/graphite/precompile/PrecompileRuntimeEffect.h"
 #include "src/core/SkKnownRuntimeEffects.h"
 #include "src/gpu/graphite/FactoryFunctions.h"
 #include "src/gpu/graphite/PaintParams.h"
@@ -45,7 +47,7 @@ sk_sp<PrecompileBlender> PrecompileBlenders::Arithmetic() {
     const SkRuntimeEffect* arithmeticEffect =
             GetKnownRuntimeEffect(SkKnownRuntimeEffects::StableKey::kArithmetic);
 
-    return MakePrecompileBlender(sk_ref_sp(arithmeticEffect));
+    return PrecompileRuntimeEffects::MakePrecompileBlender(sk_ref_sp(arithmeticEffect));
 }
 
 } // namespace skgpu::graphite
