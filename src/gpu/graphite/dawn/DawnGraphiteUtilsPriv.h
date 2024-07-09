@@ -44,7 +44,20 @@ bool descriptorsAreEquivalent(const wgpu::YCbCrVkDescriptor&, const wgpu::YCbCrV
 
 bool descriptorIsValid(const wgpu::YCbCrVkDescriptor&);
 
+// Returns all non-format information compacted into one uint32_t
 uint32_t nonformatInfoAsUint32(const wgpu::YCbCrVkDescriptor&);
+
+bool usesExternalFormat(const wgpu::YCbCrVkDescriptor&);
+
+// Returns the number of uint32_ts required to represent all distincitive YCbCrVkDescriptor info
+int numInt32sNeeded(const wgpu::YCbCrVkDescriptor&);
+
+// The number of uint32s required to represent all relevant YCbCr conversion info depends upon
+// whether we are using a known VkFormat or an external format. With a known format, we only
+// require 2 - one for non-format information and another to store the VkFormat. External formats
+// are represented as a uint64 and thus require an additional uint32.
+static constexpr int kIntsNeededKnownFormat = 2;
+static constexpr int kIntsNeededExternalFormat = 3;
 
 static constexpr int kUsesExternalFormatBits  = 1;
 static constexpr int kYcbcrModelBits          = 3;

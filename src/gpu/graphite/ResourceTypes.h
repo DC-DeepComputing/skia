@@ -215,10 +215,10 @@ struct SamplerDesc {
     SamplerDesc(const SkSamplingOptions& samplingOptions,
                 const SkTileMode tileModes[2],
                 const ImmutableSamplerInfo info = {})
-            : fDesc((static_cast<int>(tileModes[0])               << kTileModeXShift           ) |
-                    (static_cast<int>(tileModes[1])               << kTileModeYShift           ) |
-                    (static_cast<int>(samplingOptions.filter)     << kFilterModeShift          ) |
-                    (static_cast<int>(samplingOptions.mipmap)     << kMipmapModeShift          ) |
+            : fDesc((static_cast<uint8_t>(tileModes[0])           << kTileModeXShift           ) |
+                    (static_cast<uint8_t>(tileModes[1])           << kTileModeYShift           ) |
+                    (static_cast<uint8_t>(samplingOptions.filter) << kFilterModeShift          ) |
+                    (static_cast<uint8_t>(samplingOptions.mipmap) << kMipmapModeShift          ) |
                     (info.fNonFormatYcbcrConversionInfo           << kImmutableSamplerInfoShift) )
             , fFormat(info.fFormat)
             , fExternalFormatMostSignificantBits(info.fFormat >> 32) {

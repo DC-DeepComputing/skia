@@ -239,7 +239,15 @@ uint32_t nonformatInfoAsUint32(const wgpu::YCbCrVkDescriptor& conversionInfo) {
             ((uint32_t)(conversionInfo.vkComponentSwizzleBlue      ) << kComponentBShift        ) |
             ((uint32_t)(conversionInfo.vkComponentSwizzleAlpha     ) << kComponentAShift        ));
 }
+
+bool usesExternalFormat(const wgpu::YCbCrVkDescriptor& desc) {
+    return desc.vkFormat == 0 && desc.externalFormat != 0;
+}
+
+int numInt32sNeeded(const wgpu::YCbCrVkDescriptor& desc) {
+    return usesExternalFormat(desc) ? kIntsNeededExternalFormat : kIntsNeededKnownFormat;
+}
+
 } // namespace ycbcrUtils
 #endif // !defined(__EMSCRIPTEN__)
-
 } // namespace skgpu::graphite
