@@ -16,6 +16,29 @@
       "message": "Raph\u0027s bug report (https://g-issues.skia.org/issues/336617138) explains what\u0027s happening here very well. Indeed, all of our previous bugs that involved the stroker hitting the recursion limit appear to be solved, as well as the newer timeout-inducing fuzzer case (It generates ~200 verbs, rather than 700k).",
       "revId": "efbb9a2dae8181ba5262efe5d4cd22a30e20e241",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be7340c8_44ce0375",
+        "filename": "src/core/SkStroke.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 570,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-07-09T18:42:26Z",
+      "side": 1,
+      "message": "nit - could this be written in vector form?\n\n`const SkPoint hit \u003d lineStart + tangent * t;`",
+      "range": {
+        "startLine": 568,
+        "startChar": 0,
+        "endLine": 570,
+        "endChar": 47
+      },
+      "revId": "efbb9a2dae8181ba5262efe5d4cd22a30e20e241",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
