@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f6df4dc4_dacef83f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-07-09T19:43:54Z",
+      "side": 1,
+      "message": "LGTM. If this somehow is an issue for other clients that ends up creating too much tracing overhead or spam it can be reverted, but it should be quite small.",
+      "revId": "b9458178a067838d9c9677558ed2f694664d4773",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
