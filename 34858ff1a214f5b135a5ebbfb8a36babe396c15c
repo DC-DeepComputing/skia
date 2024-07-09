@@ -52,6 +52,24 @@
       "parentUuid": "cdcab256_ffc0105c",
       "revId": "34858ff1a214f5b135a5ebbfb8a36babe396c15c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d517bc2d_0e7fbc28",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-09T17:26:12Z",
+      "side": 1,
+      "message": "No since if SSBOs are supported they are used everywhere (except the intrinsic uniform buffer which contain no arrays just a single float4), and if they are not supported for whatever reason, then UBOs are used everywhere. So there would be no possible mixing of array strides since either only one or the other is used depending on the storageBufferSupport cap",
+      "parentUuid": "e4acab14_1cf2da6d",
+      "revId": "34858ff1a214f5b135a5ebbfb8a36babe396c15c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
