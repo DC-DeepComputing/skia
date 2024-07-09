@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b869de2b_9154a75b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-07-09T16:25:44Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "c0d34ff3_2a6938d3",
+      "revId": "fa8ad9044bb2790934f25c68b93263148d8c267e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e577ef6e_0e0d0641",
@@ -67,6 +85,24 @@
       "side": 1,
       "message": "With the latest version of gradle, yea.",
       "parentUuid": "e577ef6e_0e0d0641",
+      "revId": "fa8ad9044bb2790934f25c68b93263148d8c267e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "29afea58_bf8c5171",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-07-09T16:25:44Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "52e5a367_5b0bf1cc",
       "revId": "fa8ad9044bb2790934f25c68b93263148d8c267e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -155,6 +191,41 @@
       "side": 1,
       "message": "See my comment below for the specific error I got with an older version of gradle. For all I know I just needed to downgrade Java.\n\nI don\u0027t think there\u0027s going to be a very easy way forward here -- my understanding is that maintaining Android applications is always a pain. It may come down to whether it\u0027s more trouble to wrestle with old versions of tools or force people to update things continuously.\n\nMy personal opinion is that it\u0027s worth keeping tools relatively up-to-date; I think people are likely to hit issues regardless but my intuition tells me newer versions of things are likelier to work in general. Regardless we would want to strive to document issues we hit, like the one you described here.",
       "parentUuid": "f0dabe62_e9c12d9a",
+      "revId": "fa8ad9044bb2790934f25c68b93263148d8c267e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "78b5208e_2cb9cf5e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-07-09T16:25:44Z",
+      "side": 1,
+      "message": "@jmbetancourt@google.com, @nscobie@google.com, can you build with these changes?\n\nHow about @egdaniel@google.com? I know you were having problems in the past, but I don\u0027t remember the specifics.",
+      "revId": "fa8ad9044bb2790934f25c68b93263148d8c267e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c914d7d_82054114",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-07-09T16:25:44Z",
+      "side": 1,
+      "message": "Yeah, I think you\u0027re right that it\u0027s probably better to use more recent versions. I\u0027d still like to confirm with others that they can build it, but maybe that\u0027s just running on a treadmill.",
+      "parentUuid": "4595b698_fcd76827",
       "revId": "fa8ad9044bb2790934f25c68b93263148d8c267e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
