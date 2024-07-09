@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4cccd1ed_8fa5494e",
+        "filename": "modules/jetski/src/SurfaceThread.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-07-09T14:51:23Z",
+      "side": 1,
+      "message": "Fixed in I9d6d79698261bc35499275911e91db8cc1070dff",
+      "parentUuid": "f6b3e40f_8cae3463",
+      "range": {
+        "startLine": 90,
+        "startChar": 32,
+        "endLine": 90,
+        "endChar": 47
+      },
+      "revId": "3b3b1edf5e43627ba9dce3383104e3c77508acf0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8a1089d9_d6a0f3b0",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-05-09T12:30:01Z",
       "side": 1,
       "message": "nit: ALooper_pollOnce",
+      "range": {
+        "startLine": 227,
+        "startChar": 32,
+        "endLine": 227,
+        "endChar": 47
+      },
+      "revId": "3b3b1edf5e43627ba9dce3383104e3c77508acf0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2adf66dc_beb61928",
+        "filename": "tools/sk_app/android/surface_glue_android.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-07-09T14:51:23Z",
+      "side": 1,
+      "message": "Fixed in I9d6d79698261bc35499275911e91db8cc1070dff",
+      "parentUuid": "8a1089d9_d6a0f3b0",
       "range": {
         "startLine": 227,
         "startChar": 32,
