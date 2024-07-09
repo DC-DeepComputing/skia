@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ab90108d_cfc6d3a0",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 490,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-09T17:47:49Z",
+      "side": 1,
+      "message": "This comment was placed so if this snippet is ever changed, it\u0027s known that arrays are not supported here. I realized I can actually use string::find here in an assert so I removed the comment and did that which I think is more clear.",
+      "parentUuid": "3320daf8_70f0cfb2",
+      "range": {
+        "startLine": 487,
+        "startChar": 0,
+        "endLine": 490,
+        "endChar": 0
+      },
+      "revId": "78ab534f439430efb7a1ca0eb198d185928d56a7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8e77ad00_5b963ce9",
         "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
         "patchSetId": 10
@@ -37,6 +61,30 @@
       "writtenOn": "2024-07-09T17:06:18Z",
       "side": 1,
       "message": "being passed",
+      "range": {
+        "startLine": 166,
+        "startChar": 41,
+        "endLine": 166,
+        "endChar": 48
+      },
+      "revId": "78ab534f439430efb7a1ca0eb198d185928d56a7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "690b5269_3fbe017f",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-09T17:47:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8e77ad00_5b963ce9",
       "range": {
         "startLine": 166,
         "startChar": 41,
@@ -60,6 +108,30 @@
       "writtenOn": "2024-07-09T17:06:18Z",
       "side": 1,
       "message": "Would this simpler form be equivalent? (Assuming `memoryLayout` can\u0027t be Metal/WGSL)\n\n```\nfCaps.fForceStd430ArrayLayout ? MemoryLayout(MemoryLayout::Standard::k430)\n                              : memoryLayout.getStandard()\n```",
+      "range": {
+        "startLine": 1741,
+        "startChar": 36,
+        "endLine": 1744,
+        "endChar": 84
+      },
+      "revId": "78ab534f439430efb7a1ca0eb198d185928d56a7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "15c1b4cf_8138da8b",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 1744,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-09T17:47:49Z",
+      "side": 1,
+      "message": "Done, I also removed the comment too since I feel the ternary is now self explanatory since the comment explains the same info as just reading the code.",
+      "parentUuid": "10436c89_ab606056",
       "range": {
         "startLine": 1741,
         "startChar": 36,
