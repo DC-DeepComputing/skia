@@ -16,6 +16,24 @@
       "message": "Logically this all seems correct but for reasons I don\u0027t understand it\u0027s producing incorrect results for some blend modes in dm. For example, Dodge and Burn should work similarly but Burn is wrong. Both convert the text color via the colorspace transform to the same value and feed that and the dst color into the sk_blend function. I\u0027m thinking I should land it anyway as it\u0027s better than what was there before.",
       "revId": "5f6686a82ea68b39cb8c4fcef00688565a2850c7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "916d9e3b_69bbb5fa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-07-09T19:47:09Z",
+      "side": 1,
+      "message": "Ah, you mentioning Dodge and Burn jogged my memory: https://g-issues.skia.org/issues/328296294\n\nYes, something is wrong, even in other backends with those blend modes. So yeah, I wouldn\u0027t let that block landing this,.",
+      "parentUuid": "059204fa_24e39287",
+      "revId": "5f6686a82ea68b39cb8c4fcef00688565a2850c7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
