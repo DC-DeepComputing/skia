@@ -215,12 +215,12 @@ struct SamplerDesc {
     SamplerDesc(const SkSamplingOptions& samplingOptions,
                 const SkTileMode tileModes[2],
                 const ImmutableSamplerInfo info = {})
-            : fDesc((static_cast<int>(tileModes[0])               << kTileModeXShift           ) |
-                    (static_cast<int>(tileModes[1])               << kTileModeYShift           ) |
-                    (static_cast<int>(samplingOptions.filter)     << kFilterModeShift          ) |
-                    (static_cast<int>(samplingOptions.mipmap)     << kMipmapModeShift          ) |
+            : fDesc((static_cast<uint8_t>(tileModes[0])           << kTileModeXShift           ) |
+                    (static_cast<uint8_t>(tileModes[1])           << kTileModeYShift           ) |
+                    (static_cast<uint8_t>(samplingOptions.filter) << kFilterModeShift          ) |
+                    (static_cast<uint8_t>(samplingOptions.mipmap) << kMipmapModeShift          ) |
                     (info.fNonFormatYcbcrConversionInfo           << kImmutableSamplerInfoShift) )
-            , fFormat(info.fFormat)
+            , fFormat(static_cast<uint32_t>(info.fFormat))
             , fExternalFormatMostSignificantBits(info.fFormat >> 32) {
 
         // Cubic sampling is handled in a shader, with the actual texture sampled by with NN,
@@ -275,11 +275,11 @@ struct SamplerDesc {
     static constexpr int kMaxNumConversionInfoBits =
             32 - kNumFilterModeBits - kNumMipmapModeBits - kNumTileModeBits;
 
-    static constexpr int kTileModeXShift            = 0;
-    static constexpr int kTileModeYShift            = kTileModeXShift  + kNumTileModeBits;
-    static constexpr int kFilterModeShift           = kTileModeYShift  + kNumTileModeBits;
-    static constexpr int kMipmapModeShift           = kFilterModeShift + kNumFilterModeBits;
-    static constexpr int kImmutableSamplerInfoShift = kMipmapModeShift + kNumMipmapModeBits;
+    static constexpr uint8_t kTileModeXShift            = 0;
+    static constexpr uint8_t kTileModeYShift            = kTileModeXShift  + kNumTileModeBits;
+    static constexpr uint8_t kFilterModeShift           = kTileModeYShift  + kNumTileModeBits;
+    static constexpr uint8_t kMipmapModeShift           = kFilterModeShift + kNumFilterModeBits;
+    static constexpr uint8_t kImmutableSamplerInfoShift = kMipmapModeShift + kNumMipmapModeBits;
 
 private:
     // Note: The order of these member attributes matters to keep unique object representation
