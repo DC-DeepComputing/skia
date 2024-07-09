@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c013aaa4_7c7fcf22",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 19
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-09T13:47:52Z",
+      "side": 1,
+      "message": "Good work! This has been a long-standing correctness issue that is nice to have resolved.\n\nAs some follow-up work with this split, we have more flexibility in what uniforms we use to represent the transforms:\n\n - For the non-persp case, we can do 3 vec2\u0027s (2 rows of the upper 2x2 and translation), so the math simplifies to `{dot(row1, x1), dot(row2, xy)} + t`\n - For the persp case, we are always doing z\u003d0, so we could flatten the 4x4 to a 3x3 at this point and not lose any information.",
+      "revId": "35717c870a3461cf665cd56d7142c11d48508ba9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
