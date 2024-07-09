@@ -165,6 +165,9 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
     }
 
     fShaderCaps->fFloatBufferArrayName = "fsGradientBuffer";
+    if (features && features->features.dualSrcBlend) {
+        fShaderCaps->fDualSourceBlendingSupport = true;
+    }
 
     // Note that format table initialization should be performed at the end of this method to ensure
     // all capability determinations are completed prior to populating the format tables.
