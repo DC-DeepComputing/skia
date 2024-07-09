@@ -72,6 +72,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "022c2b6d_be4ff5f9",
+        "filename": "src/gpu/graphite/UniformManager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-09T15:38:18Z",
+      "side": 1,
+      "message": "You\u0027re right; pointers won\u0027t themselves be 16-byte aligned. I had been thinking about std::max_align_t, which can be 16, and thinking that `SkAlignPtr` would produce a value that was an aligned address, not a value that could hold a `void*` value.",
+      "parentUuid": "d6d8dd4f_228f6ffa",
+      "range": {
+        "startLine": 56,
+        "startChar": 57,
+        "endLine": 56,
+        "endChar": 82
+      },
+      "revId": "f6cb5c9a24312a65a3c8610901f98cd781215c61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a08b629d_bd46d44f",

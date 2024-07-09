@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ecdb8405_b3308bae",
+        "filename": "include/private/base/SkAlign.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-09T15:38:18Z",
+      "side": 1,
+      "message": "Done; I realize now I was getting `std::max_align_t` conflated with this, where the actual addresses of the pointers might be 16-byte aligned (`long double` on some platforms is 16), but the type itself is not a 16-byte address. But I added the static asserts so this assumption is enforced.",
+      "parentUuid": "381fddc4_622a4a39",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 47
+      },
+      "revId": "5e71c9ae8faf3591d3b5c20281057f5c378dabe4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "46db6099_e626f454",
@@ -54,6 +78,30 @@
       "writtenOn": "2024-07-09T15:11:32Z",
       "side": 1,
       "message": "tiny nit: `Returns`\n\nRationale at http://go/cstyle#function_declarations\n\n\u003e Function comments should be written with an implied subject of `This function` and should start with the verb phrase; for example, \"Opens the file\", rather than \"Open the file\".",
+      "range": {
+        "startLine": 193,
+        "startChar": 7,
+        "endLine": 193,
+        "endChar": 13
+      },
+      "revId": "5e71c9ae8faf3591d3b5c20281057f5c378dabe4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fee790b5_d44a20f9",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-09T15:38:18Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "46db6099_e626f454",
       "range": {
         "startLine": 193,
         "startChar": 7,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d4e958d4_ceb406c6",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-09T15:38:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f3e69d85_dd53e298",
+      "range": {
+        "startLine": 194,
+        "startChar": 37,
+        "endLine": 194,
+        "endChar": 80
+      },
+      "revId": "5e71c9ae8faf3591d3b5c20281057f5c378dabe4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8e97f555_cb225ffa",
@@ -100,6 +172,30 @@
       "writtenOn": "2024-07-09T15:11:32Z",
       "side": 1,
       "message": "tiny nit: `Returns`",
+      "range": {
+        "startLine": 201,
+        "startChar": 7,
+        "endLine": 201,
+        "endChar": 13
+      },
+      "revId": "5e71c9ae8faf3591d3b5c20281057f5c378dabe4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ff27fb9_e8ebbf37",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-09T15:38:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8e97f555_cb225ffa",
       "range": {
         "startLine": 201,
         "startChar": 7,
