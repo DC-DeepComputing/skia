@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a16c66c8_ab9314b8",
+        "filename": "PRESUBMIT.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-07-09T15:51:27Z",
+      "side": 1,
+      "message": "Might be worth mentioning that this also helps with distribution. Well structured libraries can be compiled, and then distributed as a `.a` plus a collection of headers. If we have headers that reach outside of `include`, it\u0027s much more difficult for our users to treat Skia like that.",
+      "revId": "25ae5afeec07326415430baa022d41a3837c4684",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
