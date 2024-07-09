@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8353517d_f2c72ccf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-07-09T18:40:52Z",
+      "side": 1,
+      "message": "Small change enabling dual-source blending usage on Vulkan devices where it\u0027s supported.",
+      "revId": "f81ba277f775405bf5154dee0432ec3685e3df43",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
