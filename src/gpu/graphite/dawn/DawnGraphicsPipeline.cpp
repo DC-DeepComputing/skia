@@ -393,13 +393,9 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(const DawnSharedContext* 
         depthStencil.format =
                 DawnFormatIsDepthOrStencil(dsFormat) ? dsFormat : wgpu::TextureFormat::Undefined;
         if (depthStencilSettings.fDepthTestEnabled) {
-#ifdef WGPU_BREAKING_CHANGE_DEPTH_WRITE_ENABLED
             depthStencil.depthWriteEnabled = depthStencilSettings.fDepthWriteEnabled
                                                      ? wgpu::OptionalBool::True
                                                      : wgpu::OptionalBool::False;
-#else
-            depthStencil.depthWriteEnabled = depthStencilSettings.fDepthWriteEnabled;
-#endif
         }
         depthStencil.depthCompare = compare_op_to_dawn(depthStencilSettings.fDepthCompareOp);
 

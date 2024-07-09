@@ -56,11 +56,7 @@ wgpu::RenderPipeline create_blit_render_pipeline(const DawnSharedContext* shared
     wgpu::DepthStencilState depthStencil;
     if (renderPassDepthStencilFormat != wgpu::TextureFormat::Undefined) {
         depthStencil.format = renderPassDepthStencilFormat;
-#ifdef WGPU_BREAKING_CHANGE_DEPTH_WRITE_ENABLED
         depthStencil.depthWriteEnabled = wgpu::OptionalBool::False;
-#else
-        depthStencil.depthWriteEnabled = false;
-#endif
         depthStencil.depthCompare = wgpu::CompareFunction::Always;
 
         descriptor.depthStencil = &depthStencil;
