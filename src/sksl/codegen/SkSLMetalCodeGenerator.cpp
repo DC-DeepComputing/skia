@@ -3200,12 +3200,23 @@ void MetalCodeGenerator::writeOutputStruct() {
                     fContext.fErrors->error(var.fPosition,
                                             "Metal out variables must have 'layout(location=...)'");
                 } else if (ProgramConfig::IsVertex(fProgram.fConfig->fKind)) {
-                    this->write(" [[user(locn" + std::to_string(location) + ")]]");
+                    this->write(" [[user(locn" + std::to_string(location) + ")");
+                    if (var.modifierFlags() & ModifierFlag::kFlat) {
+                        this->write(" flat");
+                    } else if (var.modifierFlags() & ModifierFlag::kNoPerspective) {
+                        this->write(" center_no_perspective");
+                    }
+                    this->write("]]");
                 } else if (ProgramConfig::IsFragment(fProgram.fConfig->fKind)) {
                     this->write(" [[color(" + std::to_string(location) + ")");
                     int colorIndex = var.layout().fIndex;
                     if (colorIndex) {
                         this->write(", index(" + std::to_string(colorIndex) + ")");
+                    }
+                    if (var.modifierFlags() & ModifierFlag::kFlat) {
+                        this->write(" flat");
+                    } else if (var.modifierFlags() & ModifierFlag::kNoPerspective) {
+                        this->write(" center_no_perspective");
                     }
                     this->write("]]");
                 }

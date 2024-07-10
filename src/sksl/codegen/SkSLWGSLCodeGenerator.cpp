@@ -186,10 +186,12 @@ private:
     // Helpers to declare a pipeline stage IO parameter declaration.
     void writePipelineIODeclaration(const Layout& layout,
                                     const Type& type,
+                                    ModifierFlags modifiers,
                                     std::string_view name,
                                     Delimiter delimiter);
     void writeUserDefinedIODecl(const Layout& layout,
                                 const Type& type,
+                                ModifierFlags modifiers,
                                 std::string_view name,
                                 Delimiter delimiter);
     void writeBuiltinIODecl(const Type& type,
@@ -1596,6 +1598,7 @@ void WGSLCodeGenerator::writeVariableDecl(const Layout& layout,
 
 void WGSLCodeGenerator::writePipelineIODeclaration(const Layout& layout,
                                                    const Type& type,
+                                                   ModifierFlags modifiers,
                                                    std::string_view name,
                                                    Delimiter delimiter) {
     // In WGSL, an entry-point IO parameter is "one of either a built-in value or assigned a
@@ -1611,7 +1614,7 @@ void WGSLCodeGenerator::writePipelineIODeclaration(const Layout& layout,
     // https://www.w3.org/TR/WGSL/#attribute-location
     // https://www.w3.org/TR/WGSL/#builtin-inputs-outputs
     if (layout.fLocation >= 0) {
-        this->writeUserDefinedIODecl(layout, type, name, delimiter);
+        this->writeUserDefinedIODecl(layout, type, modifiers, name, delimiter);
         return;
     }
     if (layout.fBuiltin >= 0) {
@@ -1622,6 +1625,7 @@ void WGSLCodeGenerator::writePipelineIODeclaration(const Layout& layout,
         }
         auto builtin = builtin_from_sksl_name(layout.fBuiltin);
         if (builtin.has_value()) {
+            // We silently ignore modifiers for anything that is a built-in
             this->writeBuiltinIODecl(type, name, *builtin, delimiter);
             return;
         }
@@ -1631,6 +1635,7 @@ void WGSLCodeGenerator::writePipelineIODeclaration(const Layout& layout,
 
 void WGSLCodeGenerator::writeUserDefinedIODecl(const Layout& layout,
                                                const Type& type,
+                                               ModifierFlags flags,
                                                std::string_view name,
                                                Delimiter delimiter) {
     this->write("@location(" + std::to_string(layout.fLocation) + ") ");
@@ -1642,8 +1647,15 @@ void WGSLCodeGenerator::writeUserDefinedIODecl(const Layout& layout,
 
     // "User-defined IO of scalar or vector integer type must always be specified as
     // @interpolate(flat)" (see https://www.w3.org/TR/WGSL/#interpolation)
-    if (type.isInteger() || (type.isVector() && type.componentType().isInteger())) {
+    if (flags & ModifierFlag::kFlat ||
+        type.isInteger() || (type.isVector() && type.componentType().isInteger())) {
+        // TODO (b/): Dawn doesn't support the new `either` option but we should use it here.
+        // Use 'either' to hint to WebGPU that we don't care about the provoking vertex and avoid
+        // any expensive shader or data rewriting to ensure 'first'. Skia has a long standing policy
+        // to only use flat shading when its constant for a primitive so the vertex doesn't matter.
         this->write("@interpolate(flat) ");
+    } else if (flags & ModifierFlag::kNoPerspective) {
+        this->write("@interpolate(linear) ");
     }
 
     this->writeVariableDecl(layout, type, name, delimiter);
@@ -4293,11 +4305,12 @@ void WGSLCodeGenerator::writeStageInputStruct() {
     for (const Variable* v : fPipelineInputs) {
         if (v->type().isInterfaceBlock()) {
             for (const Field& f : v->type().fields()) {
-                this->writePipelineIODeclaration(f.fLayout, *f.fType, f.fName, Delimiter::kComma);
+                this->writePipelineIODeclaration(f.fLayout, *f.fType, f.fModifierFlags, f.fName,
+                                                 Delimiter::kComma);
             }
         } else {
-            this->writePipelineIODeclaration(v->layout(), v->type(), v->mangledName(),
-                                             Delimiter::kComma);
+            this->writePipelineIODeclaration(v->layout(), v->type(), v->modifierFlags(),
+                                             v->mangledName(), Delimiter::kComma);
         }
     }
 
@@ -4330,7 +4343,8 @@ void WGSLCodeGenerator::writeStageOutputStruct() {
     for (const Variable* v : fPipelineOutputs) {
         if (v->type().isInterfaceBlock()) {
             for (const auto& f : v->type().fields()) {
-                this->writePipelineIODeclaration(f.fLayout, *f.fType, f.fName, Delimiter::kComma);
+                this->writePipelineIODeclaration(f.fLayout, *f.fType, f.fModifierFlags, f.fName,
+                                                 Delimiter::kComma);
                 if (f.fLayout.fBuiltin == SK_POSITION_BUILTIN) {
                     declaredPositionBuiltin = true;
                 } else if (f.fLayout.fBuiltin == SK_POINTSIZE_BUILTIN) {
@@ -4341,8 +4355,8 @@ void WGSLCodeGenerator::writeStageOutputStruct() {
                 }
             }
         } else {
-            this->writePipelineIODeclaration(v->layout(), v->type(), v->mangledName(),
-                                             Delimiter::kComma);
+            this->writePipelineIODeclaration(v->layout(), v->type(), v->modifierFlags(),
+                                             v->mangledName(), Delimiter::kComma);
         }
     }
 
