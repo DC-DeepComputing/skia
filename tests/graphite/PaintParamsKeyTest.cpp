@@ -2008,6 +2008,36 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
 #endif
 }
 
+bool sub_test_1(skiatest::Reporter* reporter,
+                Context* context,
+                Recorder* recorder,
+                const SkPaint& paint,
+                const PaintOptions& paintOptions,
+//                skiatest::graphite::GraphiteTestContext* testContext,
+                const KeyContext& precompileKeyContext,
+//                ShaderType s,
+//                BlenderType bm,
+//                ColorFilterType cf,
+//                MaskFilterType mf,
+//                ImageFilterType imageFilter,
+                ClipType clip,
+                sk_sp<SkShader> clipShader,
+                DrawTypeFlags dt,
+                SkRandom* rand,
+//                uint32_t seed,
+                bool verbose);
+
+void sub_test_2(skiatest::Reporter* reporter,
+                Context* context,
+                skiatest::graphite::GraphiteTestContext* testContext,
+                Recorder* recorder,
+                const SkPaint& paint,
+                const PaintOptions& paintOptions,
+                ClipType clip,
+                sk_sp<SkShader> clipShader,
+                DrawTypeFlags dt,
+                bool verbose);
+
 void run_test(skiatest::Reporter* reporter,
               Context* context,
               skiatest::graphite::GraphiteTestContext* testContext,
@@ -2017,7 +2047,7 @@ void run_test(skiatest::Reporter* reporter,
               ColorFilterType cf,
               MaskFilterType mf,
               ImageFilterType imageFilter,
-              ClipType clip,
+              ClipType clipType,
               DrawTypeFlags dt,
               uint32_t seed,
               bool verbose) {
@@ -2025,28 +2055,59 @@ void run_test(skiatest::Reporter* reporter,
 
     std::unique_ptr<Recorder> recorder = context->makeRecorder();
 
-    ShaderCodeDictionary* dict = context->priv().shaderCodeDictionary();
-
     sk_sp<SkShader> clipShader;
     sk_sp<PrecompileShader> clipShaderOption;
 
-    if (clip == ClipType::kShader || clip == ClipType::kShader_Diff) {
+    if (clipType == ClipType::kShader || clipType == ClipType::kShader_Diff) {
         std::tie(clipShader, clipShaderOption) = create_clip_shader(&rand, recorder.get());
         SkASSERT(!clipShader == !clipShaderOption);
     }
+
+    gNeedSKPPaintOption = false;
+    auto [paint, paintOptions] = create_paint(&rand, recorder.get(), s, bm, cf, mf, imageFilter);
+
+    // The PaintOptions' clipShader can be handled here
+    paintOptions.priv().setClipShaders({clipShaderOption});
+
+    sub_test_1(reporter, context, recorder.get(), paint, paintOptions, precompileKeyContext,
+               clipType, clipShader, dt, &rand, verbose);
+    sub_test_2(reporter, context, testContext, recorder.get(), paint, paintOptions, clipType,
+               clipShader, dt, verbose);
+}
+
+bool sub_test_1(skiatest::Reporter* reporter,
+                Context* context,
+                Recorder* recorder,
+                const SkPaint& paint,
+                const PaintOptions& paintOptions,
+//                skiatest::graphite::GraphiteTestContext* testContext,
+                const KeyContext& precompileKeyContext,
+//                ShaderType s,
+//                BlenderType bm,
+//                ColorFilterType cf,
+//                MaskFilterType mf,
+//                ImageFilterType imageFilter,
+                ClipType clipType,
+                sk_sp<SkShader> clipShader,
+                DrawTypeFlags dt,
+                SkRandom* rand,
+//                uint32_t seed,
+                bool verbose
+                ) {
+
+    ShaderCodeDictionary* dict = context->priv().shaderCodeDictionary();
 
     PaintParamsKeyBuilder builder(dict);
     PipelineDataGatherer paramsGatherer(Layout::kMetal);
     PipelineDataGatherer precompileGatherer(Layout::kMetal);
 
-    gNeedSKPPaintOption = false;
-    auto [paint, paintOptions] = create_paint(&rand, recorder.get(), s, bm, cf, mf, imageFilter);
+    bool failedTest = false;
 
     // Note: 'withPrimitiveBlender' and 'primitiveBlender' are only used in ExtractPaintData
     // and PaintOptions::buildCombinations. Thus, as long as those two uses agree, it doesn't
     // matter if the actual draw uses a primitive blender (i.e., those variables are only used
     // in a local unit test independent of the follow-on Precompile/check_draw test)
-    for (bool withPrimitiveBlender : { false, true }) {
+    for (bool withPrimitiveBlender: {false, true}) {
 
         sk_sp<SkBlender> primitiveBlender;
         if (withPrimitiveBlender) {
@@ -2059,8 +2120,9 @@ void run_test(skiatest::Reporter* reporter,
         }
 
         constexpr Coverage coverageOptions[3] = {
-                Coverage::kNone, Coverage::kSingleChannel, Coverage::kLCD};
-        Coverage coverage = coverageOptions[rand.nextULessThan(3)];
+                Coverage::kNone, Coverage::kSingleChannel, Coverage::kLCD
+        };
+        Coverage coverage = coverageOptions[rand->nextULessThan(3)];
 
         DstReadRequirement dstReadReq = DstReadRequirement::kNone;
         const SkBlenderBase* blender = as_BB(paint.getBlender());
@@ -2077,16 +2139,16 @@ void run_test(skiatest::Reporter* reporter,
         // In the normal API this modification happens in SkDevice::clipShader()
         // All clipShaders get wrapped in a CTMShader
         sk_sp<SkShader> modifiedClipShader = clipShader
-                                               ? as_SB(clipShader)->makeWithCTM(SkMatrix::I())
-                                               : nullptr;
-        if (clip == ClipType::kShader_Diff && modifiedClipShader) {
+                                             ? as_SB(clipShader)->makeWithCTM(SkMatrix::I())
+                                             : nullptr;
+        if (clipType == ClipType::kShader_Diff && modifiedClipShader) {
             // The CTMShader gets further wrapped in a ColorFilterShader for kDifference clips
             modifiedClipShader = modifiedClipShader->makeWithColorFilter(
                     SkColorFilters::Blend(0xFFFFFFFF, SkBlendMode::kSrcOut));
         }
 
         auto [paintID, uData, tData] =
-                ExtractPaintData(recorder.get(),
+                ExtractPaintData(recorder,
                                  &paramsGatherer,
                                  &builder,
                                  Layout::kMetal,
@@ -2095,13 +2157,11 @@ void run_test(skiatest::Reporter* reporter,
                                              primitiveBlender,
                                              std::move(modifiedClipShader),
                                              dstReadReq,
-                                             /* skipColorXform= */ false),
+                                         /* skipColorXform= */ false),
                                  {},
                                  curDst,
                                  precompileKeyContext.dstOffset(),
                                  precompileKeyContext.dstColorInfo());
-
-        paintOptions.priv().setClipShaders({ clipShaderOption });
 
         std::vector<UniquePaintParamsID> precompileIDs;
         paintOptions.priv().buildCombinations(precompileKeyContext,
@@ -2132,7 +2192,8 @@ void run_test(skiatest::Reporter* reporter,
         auto result = std::find(precompileIDs.begin(), precompileIDs.end(), paintID);
 
         if (result == precompileIDs.end()) {
-            log_run("Failure on case", seed, s, bm, cf, mf, imageFilter, clip, dt);
+            failedTest = true;
+//            log_run("Failure on case", seed, s, bm, cf, mf, imageFilter, clip, dt);
         }
 
 #ifdef SK_DEBUG
@@ -2141,39 +2202,50 @@ void run_test(skiatest::Reporter* reporter,
             dict->dump(paintID);
 
             SkDebugf("From combination builder [%d]:", static_cast<int>(precompileIDs.size()));
-            for (auto iter : precompileIDs) {
+            for (auto iter: precompileIDs) {
                 dict->dump(iter);
             }
         }
 #endif
 
         REPORTER_ASSERT(reporter, result != precompileIDs.end());
-
-        {
-            context->priv().globalCache()->resetGraphicsPipelines();
-
-            int before = context->priv().globalCache()->numGraphicsPipelines();
-            Precompile(context, paintOptions, dt);
-            if (gNeedSKPPaintOption) {
-                // The skp draws a rect w/ a default SkPaint
-                PaintOptions skpPaintOptions;
-                Precompile(context, skpPaintOptions, DrawTypeFlags::kSimpleShape);
-            }
-            int after = context->priv().globalCache()->numGraphicsPipelines();
-
-            REPORTER_ASSERT(reporter, before == 0);
-            REPORTER_ASSERT(reporter, after > before);
-
-            check_draw(reporter,
-                       context,
-                       testContext,
-                       recorder.get(),
-                       paint,
-                       dt,
-                       clip,
-                       clipShader);
-        }
     }
+
+    return !failedTest;
+}
+
+void sub_test_2(skiatest::Reporter* reporter,
+                Context* context,
+                skiatest::graphite::GraphiteTestContext* testContext,
+                Recorder* recorder,
+                const SkPaint& paint,
+                const PaintOptions& paintOptions,
+                ClipType clip,
+                sk_sp<SkShader> clipShader,
+                DrawTypeFlags dt,
+                bool /* verbose */) {
+    context->priv().globalCache()->resetGraphicsPipelines();
+
+    int before = context->priv().globalCache()->numGraphicsPipelines();
+    Precompile(context, paintOptions, dt);
+    if (gNeedSKPPaintOption) {
+        // The skp draws a rect w/ a default SkPaint
+        PaintOptions skpPaintOptions;
+        Precompile(context, skpPaintOptions, DrawTypeFlags::kSimpleShape);
+    }
+    int after = context->priv().globalCache()->numGraphicsPipelines();
+
+    REPORTER_ASSERT(reporter, before == 0);
+    REPORTER_ASSERT(reporter, after > before);
+
+    check_draw(reporter,
+               context,
+               testContext,
+               recorder,
+               paint,
+               dt,
+               clip,
+               clipShader);
 }
 
 #endif // SK_GRAPHITE
