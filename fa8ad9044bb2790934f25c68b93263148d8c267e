@@ -246,6 +246,42 @@
       "parentUuid": "78b5208e_2cb9cf5e",
       "revId": "fa8ad9044bb2790934f25c68b93263148d8c267e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "53387f68_a1c237dc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-07-10T20:32:02Z",
+      "side": 1,
+      "message": "\u003e (Note: we should probably update Android\u0027s build instructions, since they don\u0027t seem to say anything about Java.)\n\nUploaded I91ea6cd550b509fb29b6047bdcf9881bf15c9ce7.",
+      "parentUuid": "0c914d7d_82054114",
+      "revId": "fa8ad9044bb2790934f25c68b93263148d8c267e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "56208fdf_5e610c05",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-07-10T20:32:02Z",
+      "side": 1,
+      "message": "I\u0027ve uploaded I91ea6cd550b509fb29b6047bdcf9881bf15c9ce7 to update some other documentation, so let\u0027s continue that discussion there.",
+      "parentUuid": "87a40b90_f6a3ab17",
+      "revId": "fa8ad9044bb2790934f25c68b93263148d8c267e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
