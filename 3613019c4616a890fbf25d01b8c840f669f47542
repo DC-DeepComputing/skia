@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b4c0f40_226fb1cd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3509657
+      },
+      "writtenOn": "2024-07-10T15:33:37Z",
+      "side": 1,
+      "message": "Hello, is this patch planned to be merged? It bothers my workflow currently.",
+      "revId": "3613019c4616a890fbf25d01b8c840f669f47542",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
