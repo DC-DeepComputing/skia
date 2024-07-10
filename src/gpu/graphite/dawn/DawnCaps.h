@@ -62,8 +62,6 @@ public:
                             GraphiteResourceKey*) const override;
     uint64_t getRenderPassDescKeyForPipeline(const RenderPassDesc& renderPassDesc) const;
 
-    static constexpr size_t kFormatCnt = 18;
-
 private:
     const ColorTypeInfo* getColorTypeInfo(SkColorType, const TextureInfo&) const override;
     bool onIsTexturable(const TextureInfo&) const override;
@@ -117,7 +115,8 @@ private:
         int fColorTypeInfoCount = 0;
     };
     // Size here must match size of kFormats in DawnCaps.cpp
-    std::array<FormatInfo, kFormatCnt> fFormatTable;
+    static constexpr size_t kFormatCount = 17;
+    std::array<FormatInfo, kFormatCount> fFormatTable;
 
     static size_t GetFormatIndex(wgpu::TextureFormat format);
     const FormatInfo& getFormatInfo(wgpu::TextureFormat format) const {
