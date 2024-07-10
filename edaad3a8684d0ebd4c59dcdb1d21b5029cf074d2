@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b223e2c1_6352d2ad",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1656,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-10T18:39:13Z",
+      "side": 1,
+      "message": "This will actually land very soon: https://dawn-review.googlesource.com/c/dawn/+/195234",
+      "range": {
+        "startLine": 1652,
+        "startChar": 8,
+        "endLine": 1656,
+        "endChar": 18
+      },
+      "revId": "edaad3a8684d0ebd4c59dcdb1d21b5029cf074d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
