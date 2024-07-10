@@ -18,11 +18,30 @@ namespace skgpu::graphite {
 
 namespace {
 
-Rect map_rect(const SkM44& m, const Rect& r) {
-    // TODO: Can Rect's (l,t,-r,-b) structure be used to optimize mapRect?
-    // TODO: Can take this opportunity to implement 100% accurate perspective plane clipping since
-    //       it doesn't have to match raster/ganesh rendering behavior.
-    return SkMatrixPriv::MapRect(m, r.asSkRect());
+Rect scale_translate_rect(const Rect& r, float sx, float sy, float tx, float ty) {
+    // The (-tx,-ty) terms preserve the calculated values in (l,t,-r,-b) form for use with
+    // FromVals() to avoid extra negation operations in ltrb().
+    return Rect::FromVals(r.vals() * skvx::float4{sx,sy,sx,sy} + skvx::float4{tx,ty,-tx,-ty});
+}
+
+Rect map_rect(Transform::Type type, const SkM44& m, const Rect& r) {
+    switch (type) {
+        case Transform::Type::kIdentity:
+            return r;
+        case Transform::Type::kSimpleRectStaysRect:
+            // Since scale factors are positive, the returned rectangle is already sorted
+            return scale_translate_rect(r, m.rc(0,0), m.rc(1,1), m.rc(3,0), m.rc(3,1));
+        case Transform::Type::kRectStaysRect:
+            // Which is not the case for general rect-stays-rect transforms
+            return scale_translate_rect(r, m.rc(0,0), m.rc(1,1), m.rc(3,0), m.rc(3,1)).sort();
+        case Transform::Type::kAffine:
+            [[fallthrough]];
+        case Transform::Type::kPerspective:
+            return SkMatrixPriv::MapRect(m, r.asSkRect());
+        case Transform::Type::kInvalid:
+            return Rect::InfiniteInverted();
+    }
+    SkUNREACHABLE;
 }
 
 void map_points(const SkM44& m, const SkV4* in, SkV4* out, int count) {
@@ -240,17 +259,11 @@ float Transform::localAARadius(const Rect& bounds) const {
 
 Rect Transform::mapRect(const Rect& rect) const {
     SkASSERT(this->valid());
-    if (fType == Type::kIdentity) {
-        return rect;
-    }
-    return map_rect(fM, rect);
+    return map_rect(fType, fM, rect);
 }
 Rect Transform::inverseMapRect(const Rect& rect) const {
     SkASSERT(this->valid());
-    if (fType == Type::kIdentity) {
-        return rect;
-    }
-    return map_rect(fInvM, rect);
+    return map_rect(fType, fInvM, rect);
 }
 
 void Transform::mapPoints(const Rect& localRect, SkV4 deviceOut[4]) const {
