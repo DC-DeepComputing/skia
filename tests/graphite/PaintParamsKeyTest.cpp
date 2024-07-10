@@ -142,6 +142,8 @@ enum class MaskFilterType {
     kLast = kBlur
 };
 
+static constexpr int kMaskFilterTypeCount = static_cast<int>(MaskFilterType::kLast) + 1;
+
 const char* to_str(MaskFilterType mf) {
     switch (mf) {
 #define M(type) case MaskFilterType::k##type : return "MaskFilterType::k" #type;
@@ -236,7 +238,11 @@ enum class ClipType {
 #define M(type) k##type,
     SK_ALL_TEST_CLIPS(M)
 #undef M
+
+    kLast = kShader_Diff
 };
+
+static constexpr int kClipTypeCount = static_cast<int>(ClipType::kLast) + 1;
 
 const char* to_str(ClipType c) {
     switch (c) {
@@ -278,6 +284,28 @@ const char* to_str(ImageFilterType c) {
 #undef M
     }
     SkUNREACHABLE;
+}
+
+void log_run(const char* label,
+             uint32_t seed,
+             ShaderType s,
+             BlenderType bm,
+             ColorFilterType cf,
+             MaskFilterType mf,
+             ImageFilterType imageFilter,
+             ClipType clip) {
+    SkDebugf("%s:\n"
+             "//----------------------\n"
+             "uint32_t seed = %d;\n"
+             "ShaderType shaderType = %s;\n"
+             "BlenderType blenderType = %s;\n"
+             "ColorFilterType colorFilterType = %s;\n"
+             "MaskFilterType maskFilterType = %s;\n"
+             "ImageFilterType imageFilterType = %s;\n"
+             "ClipType clipType = %s;\n"
+             "//----------------------\n",
+             label, seed,
+             to_str(s), to_str(bm), to_str(cf), to_str(mf), to_str(imageFilter), to_str(clip));
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -398,6 +426,10 @@ SkBlendMode random_blend_mode(SkRandom* rand) {
     return static_cast<SkBlendMode>(rand->nextULessThan(kSkBlendModeCount));
 }
 
+[[maybe_unused]] MaskFilterType random_maskfiltertype(SkRandom* rand) {
+    return static_cast<MaskFilterType>(rand->nextULessThan(kMaskFilterTypeCount));
+}
+
 BlenderType random_blendertype(SkRandom* rand) {
     return static_cast<BlenderType>(rand->nextULessThan(kBlenderTypeCount));
 }
@@ -408,6 +440,10 @@ ColorFilterType random_colorfiltertype(SkRandom* rand) {
 
 ImageFilterType random_imagefiltertype(SkRandom* rand) {
     return static_cast<ImageFilterType>(rand->nextULessThan(kImageFilterTypeCount));
+}
+
+[[maybe_unused]] ClipType random_cliptype(SkRandom* rand) {
+    return static_cast<ClipType>(rand->nextULessThan(kClipTypeCount));
 }
 
 SkMatrix* random_local_matrix(SkRandom* rand, SkMatrix* storage) {
@@ -1556,6 +1592,23 @@ SkPath make_path() {
 }
 
 struct DrawData {
+    DrawData() {
+        SkFont font(ToolUtils::DefaultPortableTypeface(), 16);
+        const char text[] = "hambur";
+
+        constexpr int kNumVerts = 4;
+        constexpr SkPoint kPositions[kNumVerts] { { 0, 0 }, { 0, 16 }, { 16, 16 }, { 16, 0 } };
+        constexpr SkColor kColors[kNumVerts] = { SK_ColorBLUE, SK_ColorGREEN,
+                                                 SK_ColorCYAN, SK_ColorYELLOW };
+
+        fPath = make_path();
+        fBlob = SkTextBlob::MakeFromText(text, strlen(text), font);
+        fVertsWithColors = SkVertices::MakeCopy(SkVertices::kTriangleFan_VertexMode, kNumVerts,
+                                                kPositions, kPositions, kColors);
+        fVertsWithOutColors = SkVertices::MakeCopy(SkVertices::kTriangleFan_VertexMode, kNumVerts,
+                                                   kPositions, kPositions, /* colors= */ nullptr);
+    }
+
     SkPath fPath;
     sk_sp<SkTextBlob> fBlob;
     sk_sp<SkVertices> fVertsWithColors;
@@ -1593,8 +1646,10 @@ void check_draw(skiatest::Reporter* reporter,
                 Recorder* recorder,
                 const SkPaint& paint,
                 DrawTypeFlags dt,
-                ClipType clip, sk_sp<SkShader> clipShader,
-                const DrawData& drawData) {
+                ClipType clip,
+                sk_sp<SkShader> clipShader) {
+
+    static const DrawData kDrawData;
 
     int before = context->priv().globalCache()->numGraphicsPipelines();
 
@@ -1631,18 +1686,18 @@ void check_draw(skiatest::Reporter* reporter,
                 simple_draws(canvas, paint);
                 break;
             case DrawTypeFlags::kNonSimpleShape:
-                non_simple_draws(canvas, paint, drawData);
+                non_simple_draws(canvas, paint, kDrawData);
                 break;
             case DrawTypeFlags::kShape:
                 simple_draws(canvas, paint);
-                non_simple_draws(canvas, paint, drawData);
+                non_simple_draws(canvas, paint, kDrawData);
                 break;
             case DrawTypeFlags::kText:
-                canvas->drawTextBlob(drawData.fBlob, 0, 16, paint);
+                canvas->drawTextBlob(kDrawData.fBlob, 0, 16, paint);
                 break;
             case DrawTypeFlags::kDrawVertices:
-                canvas->drawVertices(drawData.fVertsWithColors, SkBlendMode::kDst, paint);
-                canvas->drawVertices(drawData.fVertsWithOutColors, SkBlendMode::kDst, paint);
+                canvas->drawVertices(kDrawData.fVertsWithColors, SkBlendMode::kDst, paint);
+                canvas->drawVertices(kDrawData.fVertsWithOutColors, SkBlendMode::kDst, paint);
                 break;
             default:
                 SkASSERT(false);
@@ -1693,33 +1748,19 @@ void run_test(skiatest::Reporter*,
               Context*,
               skiatest::graphite::GraphiteTestContext*,
               const KeyContext& precompileKeyContext,
-              const DrawData&,
               ShaderType,
               BlenderType,
               ColorFilterType,
               MaskFilterType,
               ImageFilterType,
-              ClipType);
+              ClipType,
+              uint32_t seed);
 
-// This is intended to be a smoke test for the agreement between the two ways of creating a
-// PaintParamsKey:
-//    via ExtractPaintData (i.e., from an SkPaint)
-//    and via the pre-compilation system
-//
-// TODO: keep this as a smoke test but add a fuzzer that reuses all the helpers
-// TODO(b/306174708): enable in SkQP (if it's feasible)
-DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
-                                               reporter,
-                                               context,
-                                               testContext,
-                                               true,
-                                               CtsEnforcement::kNever) {
+KeyContext create_key_context(Context* context, RuntimeEffectDictionary* rtDict) {
     ShaderCodeDictionary* dict = context->priv().shaderCodeDictionary();
 
     SkColorInfo destColorInfo = SkColorInfo(kRGBA_8888_SkColorType, kPremul_SkAlphaType,
                                             SkColorSpace::MakeSRGB());
-
-    std::unique_ptr<RuntimeEffectDictionary> rtDict = std::make_unique<RuntimeEffectDictionary>();
 
     auto dstTexInfo = context->priv().caps()->getDefaultSampledTextureInfo(
             kRGBA_8888_SkColorType,
@@ -1736,29 +1777,66 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
                                                             skgpu::Budgeted::kYes);
     constexpr SkIPoint kFakeDstOffset = SkIPoint::Make(0, 0);
 
-    KeyContext precompileKeyContext(context->priv().caps(),
-                                    dict,
-                                    rtDict.get(),
-                                    destColorInfo,
-                                    fakeDstTexture,
-                                    kFakeDstOffset);
+    return KeyContext(context->priv().caps(),
+                      dict,
+                      rtDict,
+                      destColorInfo,
+                      fakeDstTexture,
+                      kFakeDstOffset);
+}
 
-    SkFont font(ToolUtils::DefaultPortableTypeface(), 16);
-    const char text[] = "hambur";
+DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTestReduced,
+                                               reporter,
+                                               context,
+                                               testContext,
+                                               true,
+                                               CtsEnforcement::kNever) {
+    std::unique_ptr<RuntimeEffectDictionary> rtDict = std::make_unique<RuntimeEffectDictionary>();
 
-    constexpr int kNumVerts = 4;
-    constexpr SkPoint kPositions[kNumVerts] { {0,0}, {0,16}, {16,16}, {16,0} };
-    constexpr SkColor kColors[kNumVerts] = { SK_ColorBLUE, SK_ColorGREEN,
-                                             SK_ColorCYAN, SK_ColorYELLOW };
+    //----------------------
+    uint32_t seed = std::time(nullptr) % std::numeric_limits<uint32_t>::max();
+    SkRandom rand(seed);
+    ShaderType shaderType = random_shadertype(&rand);
+    BlenderType blenderType = random_blendertype(&rand);
+    ColorFilterType colorFilterType = random_colorfiltertype(&rand);
+    MaskFilterType maskFilterType = random_maskfiltertype(&rand);
+    ImageFilterType imageFilterType = random_imagefiltertype(&rand);
+    ClipType clipType = random_cliptype(&rand);
+    //----------------------
 
-    DrawData drawData = {
-            make_path(),
-            SkTextBlob::MakeFromText(text, strlen(text), font),
-            SkVertices::MakeCopy(SkVertices::kTriangleFan_VertexMode, kNumVerts,
-                                 kPositions, kPositions, kColors),
-            SkVertices::MakeCopy(SkVertices::kTriangleFan_VertexMode, kNumVerts,
-                                 kPositions, kPositions, /* colors= */ nullptr),
-    };
+    log_run("Running", seed, shaderType, blenderType, colorFilterType, maskFilterType,
+            imageFilterType, clipType);
+
+    run_test(reporter,
+             context,
+             testContext,
+             create_key_context(context, rtDict.get()),
+             shaderType,
+             blenderType,
+             colorFilterType,
+             maskFilterType,
+             imageFilterType,
+             clipType,
+             seed);
+}
+
+// This is intended to be a smoke test for the agreement between the two ways of creating a
+// PaintParamsKey:
+//    via ExtractPaintData (i.e., from an SkPaint)
+//    and via the pre-compilation system
+//
+// TODO: keep this as a smoke test but add a fuzzer that reuses all the helpers
+// TODO(b/306174708): enable in SkQP (if it's feasible)
+DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
+                                               reporter,
+                                               context,
+                                               testContext,
+                                               true,
+                                               CtsEnforcement::kNever) {
+
+    std::unique_ptr<RuntimeEffectDictionary> rtDict = std::make_unique<RuntimeEffectDictionary>();
+
+    KeyContext precompileKeyContext(create_key_context(context, rtDict.get()));
 
     ShaderType shaders[] = {
             ShaderType::kBlend,
@@ -1860,8 +1938,9 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
                             ++current;
 #endif
 
+                            uint32_t seed = std::time(nullptr) % std::numeric_limits<uint32_t>::max();
                             run_test(reporter, context, testContext, precompileKeyContext,
-                                     drawData, shader, blender, cf, mf, imageFilter, clip);
+                                     shader, blender, cf, mf, imageFilter, clip, seed);
                         }
                     }
                 }
@@ -1878,14 +1957,14 @@ void run_test(skiatest::Reporter* reporter,
               Context* context,
               skiatest::graphite::GraphiteTestContext* testContext,
               const KeyContext& precompileKeyContext,
-              const DrawData& drawData,
               ShaderType s,
               BlenderType bm,
               ColorFilterType cf,
               MaskFilterType mf,
               ImageFilterType imageFilter,
-              ClipType clip) {
-    SkRandom rand;
+              ClipType clip,
+              uint32_t seed) {
+    SkRandom rand(seed);
 
     std::unique_ptr<Recorder> recorder = context->makeRecorder();
 
@@ -1998,9 +2077,7 @@ void run_test(skiatest::Reporter* reporter,
             auto result = std::find(precompileIDs.begin(), precompileIDs.end(), paintID);
 
             if (result == precompileIDs.end()) {
-                SkDebugf("Failure on case: %s %s %s %s %s %s\n",
-                         to_str(s), to_str(bm), to_str(cf), to_str(clip), to_str(mf),
-                         to_str(imageFilter));
+                log_run("Failure on case", 0, s, bm, cf, mf, imageFilter, clip);
             }
 
 #ifdef SK_DEBUG
@@ -2039,8 +2116,7 @@ void run_test(skiatest::Reporter* reporter,
                            paint,
                            dt,
                            clip,
-                           clipShader,
-                           drawData);
+                           clipShader);
             }
         }
     }
