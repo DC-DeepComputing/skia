@@ -34,6 +34,23 @@
       "parentUuid": "400ddf4f_0a03dfad",
       "revId": "ca208136e47ab9b86422e3c18349546bcf36501f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af24b8b8_563611f9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-10T20:04:00Z",
+      "side": 1,
+      "message": "OK, it looks like we will need some special handling for the secondary-color builtin. Since we don\u0027t have any, the validator notices our made-up builtin-ID (10012) and reports it as an error.",
+      "revId": "ca208136e47ab9b86422e3c18349546bcf36501f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
