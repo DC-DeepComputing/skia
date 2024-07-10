@@ -72,6 +72,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "769ecbf4_435f8949",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 853,
+      "author": {
+        "id": 21754
+      },
+      "writtenOn": "2024-07-10T22:20:16Z",
+      "side": 1,
+      "message": "Removed the hash map for now.\n\nI also changed it so that format indices take 12 bits each and sample counts take 4 bits each. And I also added the write swizzle as part of the render pass desc key since we can make it all fit in 64 bits now and it seems more correct too since we use the render pass desc key to cache the blit with draw pipelines elsewhere.",
+      "parentUuid": "2cfba226_955c5cdd",
+      "range": {
+        "startLine": 842,
+        "startChar": 0,
+        "endLine": 853,
+        "endChar": 5
+      },
+      "revId": "9b253eded2ff793d1aa0d20887453ee99bc845e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5f61aa34_378b878f",
@@ -95,6 +119,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d720a207_e8cb7bc3",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 856,
+      "author": {
+        "id": 21754
+      },
+      "writtenOn": "2024-07-10T22:20:16Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "5f61aa34_378b878f",
+      "range": {
+        "startLine": 855,
+        "startChar": 4,
+        "endLine": 856,
+        "endChar": 13
+      },
+      "revId": "9b253eded2ff793d1aa0d20887453ee99bc845e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1e523275_c683d202",
@@ -108,6 +156,24 @@
       "writtenOn": "2024-07-10T00:45:27Z",
       "side": 1,
       "message": "Can we add a comment here along the lines of \"wgpu::TextureFormat with Dawn\u0027s extended formats do not fit into 16 bits so use the corresponding format index\"",
+      "revId": "9b253eded2ff793d1aa0d20887453ee99bc845e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "57c35855_e55c89e7",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 879,
+      "author": {
+        "id": 21754
+      },
+      "writtenOn": "2024-07-10T22:20:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1e523275_c683d202",
       "revId": "9b253eded2ff793d1aa0d20887453ee99bc845e7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
