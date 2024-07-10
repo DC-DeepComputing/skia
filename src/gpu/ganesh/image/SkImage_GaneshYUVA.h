@@ -46,6 +46,8 @@ enum class Mipmapped : bool;
 // proxy will be stored and used for any future rendering.
 class SkImage_GaneshYUVA final : public SkImage_GaneshBase {
 public:
+    static constexpr auto kAssumedColorType = kRGBA_8888_SkColorType;
+
     SkImage_GaneshYUVA(sk_sp<GrImageContext>,
                        uint32_t uniqueID,
                        GrYUVATextureProxies proxies,
