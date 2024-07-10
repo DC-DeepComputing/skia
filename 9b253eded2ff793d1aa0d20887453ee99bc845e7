@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8eae71b_60cee024",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 853,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-10T00:45:27Z",
+      "side": 1,
+      "message": "As a first pass, let\u0027s see if your thought that it would be fast enough with just a linear search holds true. Then we can use this map if we need to",
+      "range": {
+        "startLine": 842,
+        "startChar": 0,
+        "endLine": 853,
+        "endChar": 5
+      },
+      "revId": "9b253eded2ff793d1aa0d20887453ee99bc845e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f61aa34_378b878f",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 856,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-10T00:45:27Z",
+      "side": 1,
+      "message": "But I like this clean up around `::Undefined`, so I\u0027d leave that.",
+      "range": {
+        "startLine": 855,
+        "startChar": 4,
+        "endLine": 856,
+        "endChar": 13
+      },
+      "revId": "9b253eded2ff793d1aa0d20887453ee99bc845e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e523275_c683d202",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 879,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-10T00:45:27Z",
+      "side": 1,
+      "message": "Can we add a comment here along the lines of \"wgpu::TextureFormat with Dawn\u0027s extended formats do not fit into 16 bits so use the corresponding format index\"",
+      "revId": "9b253eded2ff793d1aa0d20887453ee99bc845e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
