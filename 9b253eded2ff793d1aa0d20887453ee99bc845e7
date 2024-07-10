@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2cfba226_955c5cdd",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 853,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-10T13:31:59Z",
+      "side": 1,
+      "message": "If there is a constant exported along with `wgpu::TextureFormat` like `kLast` or `kTextureFormatCount` that we can use in a static assert, then I would be in favor of trying this approach. The static assert should do a better job catching any such changes much sooner than the SkASSERT did.\n\nI think it would be good to use 4 bits. MSAA16 is not terribly uncommonly available, but MSAA32 is probably something we will ever want to enable. If we need more bits, I wonder if we actually need both sample counts since the color attachment and depth attachment should have the same sample count.",
+      "parentUuid": "7ee55956_ce9e5ce9",
+      "range": {
+        "startLine": 842,
+        "startChar": 0,
+        "endLine": 853,
+        "endChar": 5
+      },
+      "revId": "9b253eded2ff793d1aa0d20887453ee99bc845e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5f61aa34_378b878f",
         "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
         "patchSetId": 2
