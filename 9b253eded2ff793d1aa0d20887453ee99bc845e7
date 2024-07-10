@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7ee55956_ce9e5ce9",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 853,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2024-07-10T10:50:03Z",
+      "side": 1,
+      "message": "I think if we want to optimize further, it might make sense to adjust to use 29 bits for format and 2-3 bits for sample count. 29 bits can hold 536870912 values (max is 0x1FFF_FFFF), should be extensively enough. I have just noticed that currently sample count occupies 15-16 bits in the key, it seems to be very wasteful. Dawn only supports 4 samples, and even 16 samples only need 4 bits to represent (as 15).\n\nFurthermore, even if Dawn changes the enums again, we can place some static_assert here to guard against breakages.\n\nOtherwise, I guess the time we need to query for pipelines is not very frequent, so linear search or hash table should be enough?",
+      "parentUuid": "f8eae71b_60cee024",
+      "range": {
+        "startLine": 842,
+        "startChar": 0,
+        "endLine": 853,
+        "endChar": 5
+      },
+      "revId": "9b253eded2ff793d1aa0d20887453ee99bc845e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5f61aa34_378b878f",
         "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
         "patchSetId": 2
