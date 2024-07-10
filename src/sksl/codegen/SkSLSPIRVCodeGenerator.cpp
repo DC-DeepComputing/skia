@@ -4990,6 +4990,7 @@ SPIRVCodeGenerator::EntrypointAdapter SPIRVCodeGenerator::writeEntrypointAdapter
                                                   Position(),
                                                   ModifierFlag::kNone,
                                                   "_entrypoint",
+                                                  /*specializedName=*/"",
                                                   /*parameters=*/TArray<Variable*>{},
                                                   /*returnType=*/fContext.fTypes.fVoid.get(),
                                                   kNotIntrinsic);

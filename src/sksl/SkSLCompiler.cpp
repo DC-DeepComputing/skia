@@ -18,6 +18,7 @@
 #include "src/sksl/SkSLPool.h"
 #include "src/sksl/SkSLProgramKind.h"
 #include "src/sksl/SkSLProgramSettings.h"
+#include "src/sksl/SkSLTemplater.h"
 #include "src/sksl/analysis/SkSLProgramUsage.h"
 #include "src/sksl/ir/SkSLProgram.h"
 #include "src/sksl/ir/SkSLSymbolTable.h"  // IWYU pragma: keep
@@ -363,6 +364,9 @@ bool Compiler::optimize(Program& program) {
         // Make sure that variables are still declared in the correct symbol tables.
         SkDEBUGCODE(Analysis::CheckSymbolTableCorrectness(program));
     }
+
+    Templater templater;
+    bool templateResult = templater.specialize(program);
 
     return this->errorCount() == 0;
 }

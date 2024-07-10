@@ -362,6 +362,7 @@ static bool find_existing_declaration(const Context& context,
                                    pos,
                                    modifierFlags,
                                    name,
+                                   /*specializedName=*/"",
                                    std::move(paramPtrs),
                                    returnType,
                                    intrinsicKind)
@@ -416,6 +417,7 @@ FunctionDeclaration::FunctionDeclaration(const Context& context,
                                          Position pos,
                                          ModifierFlags modifierFlags,
                                          std::string_view name,
+                                         std::string specializedName,
                                          TArray<Variable*> parameters,
                                          const Type* returnType,
                                          IntrinsicKind intrinsicKind)
@@ -426,7 +428,8 @@ FunctionDeclaration::FunctionDeclaration(const Context& context,
         , fModifierFlags(modifierFlags)
         , fIntrinsicKind(intrinsicKind)
         , fBuiltin(context.fConfig->fIsBuiltinCode)
-        , fIsMain(name == "main") {
+        , fIsMain(name == "main")
+        , fSpecializedName(specializedName) {
     int builtinColorIndex = 0;
     for (const Variable* param : fParameters) {
         // None of the parameters are allowed to be be null.
@@ -504,6 +507,7 @@ FunctionDeclaration* FunctionDeclaration::Convert(const Context& context,
                                                   pos,
                                                   modifierFlags,
                                                   name,
+                                                  /*specializedName=*/"",
                                                   std::move(finalParameters),
                                                   returnType,
                                                   intrinsicKind));
@@ -527,6 +531,9 @@ std::string FunctionDeclaration::mangledName() const {
                          this->returnType().abbreviatedName();
     for (const Variable* p : this->parameters()) {
         result += p->type().abbreviatedName();
+    }
+    if (!fSpecializedName.empty()) {
+        result += "_" + fSpecializedName;
     }
     return result;
 }
