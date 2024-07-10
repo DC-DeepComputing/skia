@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51217554_73e44d66",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 950,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-07-10T13:02:10Z",
+      "side": 1,
+      "message": "Maybe expand as to why this needs to be done here ?",
+      "range": {
+        "startLine": 950,
+        "startChar": 12,
+        "endLine": 950,
+        "endChar": 47
+      },
+      "revId": "3b37028662df4b604e744f42e81ab2d95ea22cdf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d0b8ae71_01a6742b",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 958,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-07-10T13:02:10Z",
+      "side": 1,
+      "message": "std::move ?",
+      "range": {
+        "startLine": 958,
+        "startChar": 28,
+        "endLine": 958,
+        "endChar": 32
+      },
+      "revId": "3b37028662df4b604e744f42e81ab2d95ea22cdf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7d29cb0_b3ccdc6d",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 960,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-07-10T13:02:10Z",
+      "side": 1,
+      "message": "std::move ?",
+      "range": {
+        "startLine": 960,
+        "startChar": 72,
+        "endLine": 960,
+        "endChar": 74
+      },
+      "revId": "3b37028662df4b604e744f42e81ab2d95ea22cdf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8064854_2772da02",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 962,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-07-10T13:02:10Z",
+      "side": 1,
+      "message": "std::move ?",
+      "range": {
+        "startLine": 962,
+        "startChar": 47,
+        "endLine": 962,
+        "endChar": 49
+      },
+      "revId": "3b37028662df4b604e744f42e81ab2d95ea22cdf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
