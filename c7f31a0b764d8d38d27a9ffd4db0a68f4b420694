@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "832d583b_b190f6cf",
+        "filename": "site/docs/user/build.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-07-10T20:40:58Z",
+      "side": 1,
+      "message": "Porting over [this comment](https://skia-review.googlesource.com/c/skia/+/868496/comments/78b5208e_2cb9cf5e) from @jmbetancourt@google.com:\n\n\u003e Do we have documentation of our latest supported ndk? It would be helpful to include in our build instructions.\n\u003e (The one that didn\u0027t work for me was 21.3.6528147)\n\nFWIW, it looks like I\u0027m currently using 23.0.7599858, which works. Latest version today is 26.3.11579264. I think you mean *earliest* supported NDK? I suspect this could easily get out of date, and honestly I don\u0027t know what is the earliest one we support.\n\nWhat was the error you got? What do you think we should say here?",
+      "range": {
+        "startLine": 123,
+        "startChar": 0,
+        "endLine": 123,
+        "endChar": 59
+      },
+      "revId": "c7f31a0b764d8d38d27a9ffd4db0a68f4b420694",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "91f5d649_e2cf9474",
+        "filename": "site/docs/user/build.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-07-10T20:40:58Z",
+      "side": 1,
+      "message": "I\u0027m a little nervous that this link might end up getting out of date, but I think it\u0027s worthwhile to provide a link that works right now. I\u0027m open to other suggestions.",
+      "range": {
+        "startLine": 124,
+        "startChar": 10,
+        "endLine": 124,
+        "endChar": 61
+      },
+      "revId": "c7f31a0b764d8d38d27a9ffd4db0a68f4b420694",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
