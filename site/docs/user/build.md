@@ -120,7 +120,8 @@ ninja -C out/Static
 ## Android
 
 To build Skia for Android you need an
-[Android NDK](https://developer.android.com/ndk/index.html).
+[Android NDK](https://developer.android.com/ndk/index.html) and a recent version
+of [Java](https://www.oracle.com/java/technologies/downloads/).
 
 If you do not have an NDK and have access to CIPD, you can use one of these
 commands to fetch the NDK our bots use:
