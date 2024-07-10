@@ -63,7 +63,6 @@ SkSpan<const float> GetPorterDuffBlendConstants(SkBlendMode mode) {
     static constexpr float kSrcATop[]    = {0, 0,  1, -1};
     static constexpr float kDstATop[]    = {0, 0, -1,  1};
     static constexpr float kXor[]        = {0, 0, -1, -1};
-    static constexpr float kPlus[]       = {1, 1,  0,  0};
 
     switch (mode) {
         case SkBlendMode::kClear:      return SkSpan(kClear);
@@ -78,7 +77,6 @@ SkSpan<const float> GetPorterDuffBlendConstants(SkBlendMode mode) {
         case SkBlendMode::kSrcATop:    return SkSpan(kSrcATop);
         case SkBlendMode::kDstATop:    return SkSpan(kDstATop);
         case SkBlendMode::kXor:        return SkSpan(kXor);
-        case SkBlendMode::kPlus:       return SkSpan(kPlus);
         default:                       return {};
     }
 }
@@ -107,9 +105,9 @@ ReducedBlendModeInfo GetReducedBlendModeInfo(SkBlendMode mode) {
         case SkBlendMode::kDstOut:
         case SkBlendMode::kSrcATop:
         case SkBlendMode::kDstATop:
-        case SkBlendMode::kXor:
-        case SkBlendMode::kPlus:    return {"blend_porter_duff", GetPorterDuffBlendConstants(mode)};
+        case SkBlendMode::kXor:     return {"blend_porter_duff", GetPorterDuffBlendConstants(mode)};
 
+        case SkBlendMode::kPlus:       return {"blend_plus", {}};
         case SkBlendMode::kHue:        return {"blend_hslc", SkSpan(kHue)};
         case SkBlendMode::kSaturation: return {"blend_hslc", SkSpan(kSaturation)};
         case SkBlendMode::kColor:      return {"blend_hslc", SkSpan(kColor)};
