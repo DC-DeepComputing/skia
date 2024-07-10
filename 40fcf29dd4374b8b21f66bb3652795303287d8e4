@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f4facb95_5ad24e74",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-10T14:26:13Z",
+      "side": 1,
+      "message": "Split up into multiple sentences; this is hard to follow.",
+      "range": {
+        "startLine": 83,
+        "startChar": 0,
+        "endLine": 86,
+        "endChar": 0
+      },
+      "revId": "40fcf29dd4374b8b21f66bb3652795303287d8e4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
