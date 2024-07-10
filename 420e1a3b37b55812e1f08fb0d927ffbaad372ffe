@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "23cd89c3_1bff6228",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-10T20:27:42Z",
+      "side": 1,
+      "message": "Should be fixed now after editing the assert, had to revert because grvk was failing on the wacky_yuv_formats_limited_fromimages gm from an assert since the binding range went over the `maxUniformBufferRange`. The binding range got larger when switching to storage buffers because we bind all the uniform blocks in the UniformTracker when SSBOs are enabled. And this makes sense because storage buffers generally have a much larger allowed binding size.",
+      "revId": "420e1a3b37b55812e1f08fb0d927ffbaad372ffe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
