@@ -96,6 +96,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cbc55df7_4239ec79",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 853,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-11T01:51:54Z",
+      "side": 1,
+      "message": "I don\u0027t think we want the write swizzle in the for the blit-as-draw/load-to-msaa operations. If the source texture is a 1-1 copy of the target, it will still have its data matching whatever original write swizzle was applied when the target was rendered originally (e.g. mapping the shader\u0027s alpha to the red channel). For these blits, we are just `textureLoad`\u0027ing them as-is so the applied swizzle should be fine.\n\nNow since we aren\u0027t using the write swizzle in the pipeline shaders either, this specific change doesn\u0027t affect correctness (we aren\u0027t going to double swizzle things). But I think we would end up creating more blit-as-draw pipelines than are actually needed (should then be caught in the Dawn/tint caching).\n\nThat said, it\u0027s nice to reduce the key size by another int. We could in a follow-up just change it so the write swizzle is |\u0027ed into the same lower 32-bits as the renderpass desc key, knowing that it\u0027s available, but leaving the low 16-bits as 0s when the renderpass desc key is used directly for the blit-as-draws.\n\nBut since I don\u0027t think it\u0027s going to significantly impact performance (due to caching) and shouldn\u0027t lead to incorrect loading into the msaa attachment, I think we should submit this as-is to fix the bug in the wild.",
+      "parentUuid": "769ecbf4_435f8949",
+      "range": {
+        "startLine": 842,
+        "startChar": 0,
+        "endLine": 853,
+        "endChar": 5
+      },
+      "revId": "9b253eded2ff793d1aa0d20887453ee99bc845e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5f61aa34_378b878f",
