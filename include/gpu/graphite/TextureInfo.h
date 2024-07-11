@@ -11,13 +11,11 @@
 #include "include/core/SkString.h"
 #include "include/core/SkTextureCompressionType.h"
 #include "include/gpu/graphite/GraphiteTypes.h"
+#include "include/private/base/SkAPI.h"
+#include "include/private/base/SkAnySubclass.h"
 
 #ifdef SK_DAWN
 #include "include/private/gpu/graphite/DawnTypesPriv.h"
-#endif
-
-#ifdef SK_METAL
-#include "include/private/gpu/graphite/MtlGraphiteTypesPriv.h"
 #endif
 
 #ifdef SK_VULKAN
@@ -28,9 +26,15 @@ struct SkISize;
 
 namespace skgpu::graphite {
 
+class TextureInfoData;
+
+#if defined(SK_METAL) && !defined(SK_DISABLE_LEGACY_TEXTURE_INFO_FUNCS)
+struct MtlTextureInfo;
+#endif
+
 class SK_API TextureInfo {
 public:
-    TextureInfo() {}
+    TextureInfo();
 #ifdef SK_DAWN
     TextureInfo(const DawnTextureInfo& dawnInfo)
             : fBackend(BackendApi::kDawn)
@@ -41,14 +45,8 @@ public:
             , fDawnSpec(dawnInfo) {}
 #endif
 
-#ifdef SK_METAL
-    TextureInfo(const MtlTextureInfo& mtlInfo)
-            : fBackend(BackendApi::kMetal)
-            , fValid(true)
-            , fSampleCount(mtlInfo.fSampleCount)
-            , fMipmapped(mtlInfo.fMipmapped)
-            , fProtected(Protected::kNo)
-            , fMtlSpec(mtlInfo) {}
+#if defined(SK_METAL) && !defined(SK_DISABLE_LEGACY_TEXTURE_INFO_FUNCS)
+        TextureInfo(const MtlTextureInfo& mtlInfo);
 #endif
 
 #ifdef SK_VULKAN
@@ -65,8 +63,8 @@ public:
     }
 #endif
 
-    ~TextureInfo() {}
-    TextureInfo(const TextureInfo&) = default;
+    ~TextureInfo();
+    TextureInfo(const TextureInfo&);
     TextureInfo& operator=(const TextureInfo&);
 
     bool operator==(const TextureInfo&) const;
@@ -82,16 +80,6 @@ public:
 
 #ifdef SK_DAWN
     bool getDawnTextureInfo(DawnTextureInfo* info) const;
-#endif
-
-#ifdef SK_METAL
-    bool getMtlTextureInfo(MtlTextureInfo* info) const {
-        if (!this->isValid() || fBackend != BackendApi::kMetal) {
-            return false;
-        }
-        *info = MtlTextureSpecToTextureInfo(fMtlSpec, fSampleCount, fMipmapped);
-        return true;
-    }
 #endif
 
 #ifdef SK_VULKAN
@@ -111,6 +99,28 @@ public:
     SkString toRPAttachmentString() const;
 
 private:
+    friend class TextureInfoData;
+    friend class TextureInfoPriv;
+
+    // Size determined by looking at the TextureInfoData subclasses, then guessing-and-checking.
+    // Compiler will complain if this is too small - in that case, just increase the number.
+    inline constexpr static size_t kMaxSubclassSize = 24;
+    using AnyTextureInfoData = SkAnySubclass<TextureInfoData, kMaxSubclassSize>;
+
+    template <typename SomeTextureInfoData>
+    TextureInfo(BackendApi backend,
+                uint32_t sampleCount,
+                skgpu::Mipmapped mipped,
+                skgpu::Protected isProtected,
+                const SomeTextureInfoData& textureInfoData)
+            : fBackend(backend)
+            , fValid(true)
+            , fSampleCount(sampleCount)
+            , fMipmapped(mipped)
+            , fProtected(isProtected) {
+        fTextureInfoData.emplace<SomeTextureInfoData>(textureInfoData);
+    }
+
     friend size_t ComputeSize(SkISize dimensions, const TextureInfo&);  // for bytesPerPixel
 
     size_t bytesPerPixel() const;
@@ -125,16 +135,6 @@ private:
     const DawnTextureSpec& dawnTextureSpec() const {
         SkASSERT(fValid && fBackend == BackendApi::kDawn);
         return fDawnSpec;
-    }
-#endif
-
-#ifdef SK_METAL
-    friend class MtlCaps;
-    friend class MtlGraphicsPipeline;
-    friend class MtlTexture;
-    const MtlTextureSpec& mtlTextureSpec() const {
-        SkASSERT(fValid && fBackend == BackendApi::kMetal);
-        return fMtlSpec;
     }
 #endif
 
@@ -158,12 +158,11 @@ private:
     Mipmapped fMipmapped = Mipmapped::kNo;
     Protected fProtected = Protected::kNo;
 
+    AnyTextureInfoData fTextureInfoData;
+
     union {
 #ifdef SK_DAWN
         DawnTextureSpec fDawnSpec;
-#endif
-#ifdef SK_METAL
-        MtlTextureSpec fMtlSpec;
 #endif
 #ifdef SK_VULKAN
         VulkanTextureSpec fVkSpec;
