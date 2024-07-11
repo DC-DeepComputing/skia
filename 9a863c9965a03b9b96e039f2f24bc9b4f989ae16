@@ -1,0 +1,165 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20a35fb7_cf17b3af",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 3209,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-11T13:10:32Z",
+      "side": 1,
+      "message": "It seems like we should be able to move this logic outside of the if-elseif chain in order to avoid repeating it.\n\nIn the case of compute, we\u0027re reporting an error, so the output is irrelevant.\n\nFor fragment and vertex, we\u0027re doing the same logic just with a slightly different binding specifier.\n\nFor runtime programs, they don\u0027t output direct to Metal anyway (and wouldn\u0027t have an output struct regardless).",
+      "range": {
+        "startLine": 3204,
+        "startChar": 0,
+        "endLine": 3209,
+        "endChar": 0
+      },
+      "revId": "9a863c9965a03b9b96e039f2f24bc9b4f989ae16",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4611c3bb_6a827611",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1628,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-11T13:10:32Z",
+      "side": 1,
+      "message": "This kind of sounds like we are doing something wrong, but I think it\u0027s working as intended? We don\u0027t have any cases where a built-in would need any modifiers applied.",
+      "range": {
+        "startLine": 1628,
+        "startChar": 15,
+        "endLine": 1628,
+        "endChar": 75
+      },
+      "revId": "9a863c9965a03b9b96e039f2f24bc9b4f989ae16",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19dde152_69eb028a",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1650,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-11T13:10:32Z",
+      "side": 1,
+      "message": "up to you: Feel free to add `.isFlat()` to `ModifierFlags` if you prefer accessors. I retrofitted all the accessors recently and prioritized doing the ones that were more commonly used, and didn\u0027t go back and do every single flag.",
+      "range": {
+        "startLine": 1650,
+        "startChar": 8,
+        "endLine": 1650,
+        "endChar": 35
+      },
+      "revId": "9a863c9965a03b9b96e039f2f24bc9b4f989ae16",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3d8e60d_c8db19c4",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1653,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-11T13:10:32Z",
+      "side": 1,
+      "message": "It turns out to be very difficult to do a web search for a keyword named \"either\". Could you please add a link which explains this? e.g.:\n\nhttps://www.w3.org/TR/WGSL/#interpolation-sampling-either",
+      "range": {
+        "startLine": 1652,
+        "startChar": 31,
+        "endLine": 1653,
+        "endChar": 15
+      },
+      "revId": "9a863c9965a03b9b96e039f2f24bc9b4f989ae16",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e7e0e860_69df8c63",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1653,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-11T13:10:32Z",
+      "side": 1,
+      "message": "We can use",
+      "range": {
+        "startLine": 1653,
+        "startChar": 17,
+        "endLine": 1653,
+        "endChar": 20
+      },
+      "revId": "9a863c9965a03b9b96e039f2f24bc9b4f989ae16",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2be9526f_4dd1be43",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1654,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-11T13:10:32Z",
+      "side": 1,
+      "message": "long-standing",
+      "range": {
+        "startLine": 1654,
+        "startChar": 86,
+        "endLine": 1654,
+        "endChar": 99
+      },
+      "revId": "9a863c9965a03b9b96e039f2f24bc9b4f989ae16",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "132c8cf0_d46e3a1d",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1655,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-11T13:10:32Z",
+      "side": 1,
+      "message": "it\u0027s",
+      "range": {
+        "startLine": 1655,
+        "startChar": 48,
+        "endLine": 1655,
+        "endChar": 51
+      },
+      "revId": "9a863c9965a03b9b96e039f2f24bc9b4f989ae16",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
