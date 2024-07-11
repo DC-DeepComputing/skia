@@ -60,6 +60,7 @@ enum class BuiltInCodeSnippetID : int32_t {
     kTableColorFilter,
     kGaussianColorFilter,
     kColorSpaceXformColorFilter,
+    kColorSpaceXformSwizzleColorFilter,
 
     // SkBlender code snippets
     kBlendShader,

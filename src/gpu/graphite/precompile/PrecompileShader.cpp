@@ -371,7 +371,6 @@ private:
 
         static constexpr SkSamplingOptions kDefaultCubicSampling(SkCubicResampler::Mitchell());
         static constexpr SkSamplingOptions kDefaultSampling;
-        constexpr ReadSwizzle kIgnoredSwizzle = ReadSwizzle::kRGBA;
 
         // ImageShaderBlock will use hardware tiling when the subset covers the entire image, so we
         // create subset + image size combinations where subset == imgSize (for a shader that uses
@@ -385,7 +384,7 @@ private:
                                                             : kDefaultSampling,
                 SkTileMode::kClamp, SkTileMode::kClamp,
                 desiredSamplingTilingCombo == kHWTiled ? kHWTileableSize : kShaderTileableSize,
-                kSubset, kIgnoredSwizzle);
+                kSubset);
 
         if (desiredAlphaCombo == kAlphaOnly) {
             SkASSERT(!(fFlags & PrecompileImageShaderFlags::kExcludeAlpha));
@@ -395,12 +394,14 @@ private:
                       AddKnownModeBlend(keyContext, builder, gatherer, SkBlendMode::kDstIn);
                   },
                   /* addSrcToKey= */ [&] () -> void {
+                      // TODO: Compose color transform block here?
                       ImageShaderBlock::AddBlock(keyContext, builder, gatherer, imgData);
                   },
                   /* addDstToKey= */ [&]() -> void {
                       RGBPaintColorBlock::AddBlock(keyContext, builder, gatherer);
                   });
         } else {
+            // TODO: Compose color transform block here?
             ImageShaderBlock::AddBlock(keyContext, builder, gatherer, imgData);
         }
     }

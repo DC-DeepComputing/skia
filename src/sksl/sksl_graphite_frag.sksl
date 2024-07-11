@@ -118,12 +118,12 @@ $pure half4 sk_color_space_transform(half4 halfColor,
     return half4(color);
 }
 
-$pure half4 $color_space_transform_swizzle(half4 halfColor,
-                                           int flags,
-                                           int srcKind,
-                                           half3x3 gamutTransform,
-                                           int dstKind,
-                                           half4x4 coeffs) {
+$pure half4 sk_color_space_transform_swizzle(half4 halfColor,
+                                             int flags,
+                                             int srcKind,
+                                             half3x3 gamutTransform,
+                                             int dstKind,
+                                             half4x4 coeffs) {
     if (flags == 0) {
         return halfColor;
     } else {
@@ -287,16 +287,9 @@ $pure half4 sk_image_shader(float2 coords,
                             int tileModeX,
                             int tileModeY,
                             int filterMode,
-                            int csXformFlags,
-                            int csXformSrcKind,
-                            half3x3 csXformGamutTransform,
-                            int csXformDstKind,
-                            half4x4 csXformCoeffs,
                             sampler2D s) {
-    half4 sampleColor = $sample_image_subset(coords, invImgSize, subset, tileModeX, tileModeY,
-                                             filterMode, float2($kLinearInset), s);
-    return $color_space_transform_swizzle(sampleColor, csXformFlags, csXformSrcKind,
-                                          csXformGamutTransform, csXformDstKind, csXformCoeffs);
+    return $sample_image_subset(coords, invImgSize, subset, tileModeX, tileModeY,
+                                filterMode, float2($kLinearInset), s);
 }
 
 $pure half4 sk_cubic_image_shader(float2 coords,
@@ -305,29 +298,14 @@ $pure half4 sk_cubic_image_shader(float2 coords,
                                   int tileModeX,
                                   int tileModeY,
                                   half4x4 cubicCoeffs,
-                                  int csXformFlags,
-                                  int csXformSrcKind,
-                                  half3x3 csXformGamutTransform,
-                                  int csXformDstKind,
-                                  half4x4 csXformCoeffs,
                                   sampler2D s) {
-    half4 sampleColor = $cubic_filter_image(coords, invImgSize, subset, tileModeX, tileModeY,
-                                            cubicCoeffs, s);
-    return $color_space_transform_swizzle(sampleColor, csXformFlags, csXformSrcKind,
-                                          csXformGamutTransform, csXformDstKind, csXformCoeffs);
+    return $cubic_filter_image(coords, invImgSize, subset, tileModeX, tileModeY, cubicCoeffs, s);
 }
 
 $pure half4 sk_hw_image_shader(float2 coords,
                                float2 invImgSize,
-                               int csXformFlags,
-                               int csXformSrcKind,
-                               half3x3 csXformGamutTransform,
-                               int csXformDstKind,
-                               half4x4 csXformCoeffs,
                                sampler2D s) {
-    half4 sampleColor = $sample_image(coords, invImgSize, s);
-    return $color_space_transform_swizzle(sampleColor, csXformFlags, csXformSrcKind,
-                                          csXformGamutTransform, csXformDstKind, csXformCoeffs);
+    return $sample_image(coords, invImgSize, s);
 }
 
 $pure half4 $yuv_to_rgb_no_swizzle(half Y,
