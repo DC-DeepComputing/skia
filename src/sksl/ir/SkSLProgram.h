@@ -8,6 +8,7 @@
 #ifndef SKSL_PROGRAM
 #define SKSL_PROGRAM
 
+#include "src/sksl/SkSLTemplater.h"
 #include "src/sksl/ir/SkSLType.h"
 
 #include <cstdint>
@@ -162,6 +163,10 @@ struct Program {
     // Contains *only* elements owned by a built-in module that are included in this program.
     // Use elements() to iterate over the combined set of owned + shared elements.
     std::vector<const ProgramElement*> fSharedElements;
+
+    Templater::SpecializationMap fSpecializationMap;
+    Templater::SpecializedCalls fSpecializedCalls;
+
     ProgramInterface fInterface;
 
     using Interface = ProgramInterface;
