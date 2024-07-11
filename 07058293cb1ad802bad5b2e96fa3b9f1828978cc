@@ -22,6 +22,46 @@
       },
       "revId": "07058293cb1ad802bad5b2e96fa3b9f1828978cc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9628bff5_aa6f654c",
+        "filename": "src/gpu/graphite/UniformManager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-07-11T20:02:32Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 163,
+        "startChar": 18,
+        "endLine": 163,
+        "endChar": 28
+      },
+      "revId": "07058293cb1ad802bad5b2e96fa3b9f1828978cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a1e73c0_165660ea",
+        "filename": "tests/graphite/UniformManagerTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 891,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-07-11T20:02:32Z",
+      "side": 1,
+      "message": "It seems like it would be good to test out a scenario w/ two structs in a row",
+      "revId": "07058293cb1ad802bad5b2e96fa3b9f1828978cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
