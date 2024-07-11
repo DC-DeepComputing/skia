@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e4a75f95_3b224d7b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-11T15:34:21Z",
+      "side": 1,
+      "message": "PS2 contains the fixes",
+      "revId": "f35708b0b5f083a62cf84f4781224f29838632f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "61602528_5ae94567",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1099,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-11T15:34:21Z",
+      "side": 1,
+      "message": "This fixes the validation layer crashes in native-vulkan and the tint compilation failures in dawn-vulkan on Android. Neither of those backends/platforms support dual source blending, so should be returning a DstReadRequirement other than kNone.\n\nPreviously, the `clip_shader_persp` GM had clears/drawPaints that would use the AA rect render step so was claiming coverage and thus triggering the required dst read. With the non-AA CoverBoundsRenderStep being used for clears, the generated paint key did not include any dst read block so the generated SkSL assumed there was support for dual-source blending and used that given the presence of a clip shader.\n\nOnce that sksl became wgsl or spir-v (without the requisite configuration to support the secondary color), we were in a bad state. Upgrading the coverage to be at least single channel when the clip has a shader means the dst read req is correctly set to kTextureCopy or kTextureSample when the backend doesn\u0027t support dual source blending (vs. accidentally getting it from the RenderStep using coverage).\n\nIf we had a GM that tested clipShader() with a drawPath, so those RenderSteps weren\u0027t reporting analytic coverage, we would have encountered this issue outside of the non-AA fill change.",
+      "range": {
+        "startLine": 1093,
+        "startChar": 4,
+        "endLine": 1099,
+        "endChar": 5
+      },
+      "revId": "f35708b0b5f083a62cf84f4781224f29838632f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
