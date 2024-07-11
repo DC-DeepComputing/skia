@@ -951,13 +951,13 @@ std::pair<sk_sp<SkBlender>, sk_sp<PrecompileBlender>> combo_blender() {
     auto [dst, dstO] = dest_blender();
 
     SkRuntimeEffect::ChildPtr children[] = { src, dst };
-    const sk_sp<PrecompileBase> childOptions[] = { srcO, dstO };
 
     const float kUniforms[] = { 1.0f };
 
     sk_sp<SkData> uniforms = SkData::MakeWithCopy(kUniforms, sizeof(kUniforms));
     sk_sp<SkBlender> b = sComboEffect->makeBlender(std::move(uniforms), children);
-    sk_sp<PrecompileBlender> o = MakePrecompileBlender(sk_ref_sp(sComboEffect), { childOptions });
+    sk_sp<PrecompileBlender> o = MakePrecompileBlender(sk_ref_sp(sComboEffect),
+                                                       { { srcO }, { dstO } });
     return { std::move(b) , std::move(o) };
 }
 
@@ -1865,7 +1865,10 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTestReduced,
     DrawTypeFlags drawTypeFlags = random_drawtype(&rand);
     //----------------------
 
-    log_run("Running", seed, shaderType, blenderType, colorFilterType, maskFilterType,
+    SkString logMsg("Running ");
+    logMsg += BackendApiToStr(context->backend());
+
+    log_run(logMsg.c_str(), seed, shaderType, blenderType, colorFilterType, maskFilterType,
             imageFilterType, clipType, drawTypeFlags);
 
     run_test(reporter,
