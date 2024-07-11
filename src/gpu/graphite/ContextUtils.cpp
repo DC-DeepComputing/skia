@@ -371,12 +371,6 @@ std::string EmitUniformsFromStorageBuffer(const char* bufferNamePrefix,
     return result;
 }
 
-std::string EmitStorageBufferAccess(const char* bufferNamePrefix,
-                                    const char* ssboIndex,
-                                    const char* uniformName) {
-    return SkSL::String::printf("%sUniformData[%s].%s", bufferNamePrefix, ssboIndex, uniformName);
-}
-
 std::string EmitTexturesAndSamplers(const ResourceBindingRequirements& bindingReqs,
                                     SkSpan<const ShaderNode*> nodes,
                                     int* binding) {
@@ -566,10 +560,7 @@ FragSkSLInfo BuildFragmentSkSL(const Caps* caps,
         return {};
     }
 
-    const char* shadingSsboIndex =
-            useStorageBuffers && step->performsShading() ? "shadingSsboIndex" : nullptr;
-    ShaderInfo shaderInfo(paintID, dict, rteDict, shadingSsboIndex);
-
+    ShaderInfo shaderInfo(paintID, dict, rteDict, useStorageBuffers);
     result.fSkSL = shaderInfo.toSkSL(caps,
                                      step,
                                      useStorageBuffers,

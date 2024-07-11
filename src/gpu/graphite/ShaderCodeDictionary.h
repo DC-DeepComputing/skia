@@ -214,7 +214,9 @@ public:
     ShaderInfo(UniquePaintParamsID id,
                const ShaderCodeDictionary* dict,
                const RuntimeEffectDictionary* rteDict,
-               const char* ssboIndex);
+               bool useSSBOs);
+
+    bool useSSBOs() const { return fUseSSBOs; }
 
     bool needsLocalCoords() const {
         return SkToBool(fSnippetRequirementFlags & SnippetRequirementFlags::kLocalCoords);
@@ -225,7 +227,6 @@ public:
     const RuntimeEffectDictionary* runtimeEffectDictionary() const {
         return fRuntimeEffectDictionary;
     }
-    const char* ssboIndex() const { return fSsboIndex; }
 
     const skgpu::BlendInfo& blendInfo() const { return fBlendInfo; }
 
@@ -250,7 +251,11 @@ private:
     SkArenaAlloc fShaderNodeAlloc{256};
 
     const RuntimeEffectDictionary* fRuntimeEffectDictionary;
-    const char* fSsboIndex;
+
+    // If true, the generated SkSL will be configured to read "uniforms" from a storage buffer
+    // accessed by the RenderStep's SSBO index varying. Otherwise, the generated SkSL will use
+    // a top-level interface block and assume standard UBO bindings.
+    bool fUseSSBOs;
 
     // De-compressed shader tree from a PaintParamsKey with accumulated blend info and requirements.
     // The blendInfo doesn't contribute to the program's SkSL but contains the fixed-function state
