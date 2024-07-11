@@ -11,6 +11,7 @@
 #include "src/gpu/graphite/Attribute.h"
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/RenderPassDesc.h"
+#include "src/gpu/graphite/mtl/MtlGraphiteTypesPriv.h"
 #include "src/gpu/graphite/mtl/MtlResourceProvider.h"
 #include "src/gpu/graphite/mtl/MtlSharedContext.h"
 #include "src/gpu/mtl/MtlUtilsPriv.h"
@@ -284,7 +285,7 @@ sk_sp<MtlGraphicsPipeline> MtlGraphicsPipeline::Make(const MtlSharedContext* sha
     (*psoDescriptor).vertexDescriptor = create_vertex_descriptor(vertexAttrs, instanceAttrs);
 
     const MtlTextureSpec& mtlColorSpec =
-            renderPassDesc.fColorAttachment.fTextureInfo.mtlTextureSpec();
+            TextureInfos::GetMtlTextureSpec(renderPassDesc.fColorAttachment.fTextureInfo);
     auto mtlColorAttachment = create_color_attachment((MTLPixelFormat)mtlColorSpec.fFormat,
                                                       blendInfo);
     (*psoDescriptor).colorAttachments[0] = mtlColorAttachment;
@@ -293,7 +294,7 @@ sk_sp<MtlGraphicsPipeline> MtlGraphicsPipeline::Make(const MtlSharedContext* sha
             renderPassDesc.fColorAttachment.fTextureInfo.numSamples();
 
     const MtlTextureSpec& mtlDSSpec =
-            renderPassDesc.fDepthStencilAttachment.fTextureInfo.mtlTextureSpec();
+            TextureInfos::GetMtlTextureSpec(renderPassDesc.fDepthStencilAttachment.fTextureInfo);
     MTLPixelFormat depthStencilFormat = (MTLPixelFormat)mtlDSSpec.fFormat;
     if (MtlFormatIsStencil(depthStencilFormat)) {
         (*psoDescriptor).stencilAttachmentPixelFormat = depthStencilFormat;
