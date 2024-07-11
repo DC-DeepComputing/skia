@@ -282,7 +282,8 @@ ClipStack::SimplifyResult ClipStack::Simplify(const TransformedShape& a,
 ClipStack::RawElement::RawElement(const Rect& deviceBounds,
                                   const Transform& localToDevice,
                                   const Shape& shape,
-                                  SkClipOp op)
+                                  SkClipOp op,
+                                  PixelSnapping snapping)
         : Element{shape, localToDevice, op}
         , fUsageBounds{Rect::InfiniteInverted()}
         , fOrder(DrawOrder::kNoIntersection)
@@ -309,6 +310,9 @@ ClipStack::RawElement::RawElement(const Rect& deviceBounds,
         if (fShape.isRect()) {
             // The actual geometry can be updated to the device-intersected bounds and we know the
             // inner bounds are equal to the outer.
+            if (snapping == PixelSnapping::kYes) {
+                fOuterBounds.round();
+            }
             fShape.setRect(fOuterBounds);
             fLocalToDevice = kIdentity;
             fInnerBounds = fOuterBounds;
@@ -317,6 +321,24 @@ ClipStack::RawElement::RawElement(const Rect& deviceBounds,
             // ill-formed scale+translate matrices can cause invalid rrect radii.
             SkRRect xformed;
             if (fShape.rrect().transform(fLocalToDevice, &xformed)) {
+                if (snapping == PixelSnapping::kYes) {
+                    // The rounded corners will still be anti-aliased, but snap the horizontal and
+                    // vertical edges to pixel values.
+                    SkIRect snappedBounds = xformed.rect().round();
+                    // Adjust the radii so that the curve ends at the same position along the
+                    // adjacent edge after the rounding as it did before.
+                    float leftDelta  = xformed.rect().fLeft  - snappedBounds.fLeft;
+                    float topDelta   = xformed.rect().fTop   - snappedBounds.fTop;
+                    float rightDelta = snappedBounds.fRight  - xformed.rect().fRight;
+                    float botDelta   = snappedBounds.fBottom - xformed.rect().fBottom;
+                    SkVector snappedRadii[4] = {
+                        xformed.radii(SkRRect::kUpperLeft_Corner)  + SkVector{leftDelta,  topDelta},
+                        xformed.radii(SkRRect::kUpperRight_Corner) + SkVector{rightDelta, topDelta},
+                        xformed.radii(SkRRect::kLowerRight_Corner) + SkVector{rightDelta, botDelta},
+                        xformed.radii(SkRRect::kLowerLeft_Corner)  + SkVector{leftDelta,  botDelta}
+                    };
+                    xformed.setRectRadii(SkRect::Make(snappedBounds), snappedRadii);
+                }
                 fShape.setRRect(xformed);
                 fLocalToDevice = kIdentity;
                 // Refresh outer bounds to match the transformed round rect in case
@@ -1048,7 +1070,8 @@ void ClipStack::clipShader(sk_sp<SkShader> shader) {
 
 void ClipStack::clipShape(const Transform& localToDevice,
                           const Shape& shape,
-                          SkClipOp op) {
+                          SkClipOp op,
+                          PixelSnapping snapping) {
     if (this->currentSaveRecord().state() == ClipState::kEmpty) {
         return;
     }
@@ -1058,7 +1081,7 @@ void ClipStack::clipShape(const Transform& localToDevice,
     // effect of all elements while device bounds clipping happens implicitly. During addElement,
     // we may still be able to invalidate some older elements).
     // NOTE: Does not try to simplify the shape type by inspecting the SkPath.
-    RawElement element{this->deviceBounds(), localToDevice, shape, op};
+    RawElement element{this->deviceBounds(), localToDevice, shape, op, snapping};
 
     // An empty op means do nothing (for difference), or close the save record, so we try and detect
     // that early before doing additional unnecessary save record allocation.
