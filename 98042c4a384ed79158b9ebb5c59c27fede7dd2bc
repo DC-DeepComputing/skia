@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d0354c5_9baf570a",
+        "filename": "tests/graphite/PaintParamsKeyTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-07-11T18:38:53Z",
+      "side": 1,
+      "message": "Not DEADBEEF?",
+      "range": {
+        "startLine": 81,
+        "startChar": 34,
+        "endLine": 81,
+        "endChar": 35
+      },
+      "revId": "98042c4a384ed79158b9ebb5c59c27fede7dd2bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
