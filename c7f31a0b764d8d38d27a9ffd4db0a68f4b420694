@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a73416f_8fe42314",
+        "filename": "site/docs/user/build.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2024-07-11T15:43:58Z",
+      "side": 1,
+      "message": "Whoops, yes I meant earliest. The compilation errors I got were along the lines of `/Users/jmbetancourt/Library/Android/sdk/ndk/21.3.6528147/toolchains/llvm/prebuilt/darwin-x86_64/lib64/clang/9.0.8/include/arm_neon.h:48377:49: error: ...`\n\nSomething like \"Confirmed to work with NDK versions above 23.0.7599858\" would serve as a hint to guide people to a working version.",
+      "parentUuid": "832d583b_b190f6cf",
+      "range": {
+        "startLine": 123,
+        "startChar": 0,
+        "endLine": 123,
+        "endChar": 59
+      },
+      "revId": "c7f31a0b764d8d38d27a9ffd4db0a68f4b420694",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "91f5d649_e2cf9474",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-07-10T20:40:58Z",
       "side": 1,
       "message": "I\u0027m a little nervous that this link might end up getting out of date, but I think it\u0027s worthwhile to provide a link that works right now. I\u0027m open to other suggestions.",
+      "range": {
+        "startLine": 124,
+        "startChar": 10,
+        "endLine": 124,
+        "endChar": 61
+      },
+      "revId": "c7f31a0b764d8d38d27a9ffd4db0a68f4b420694",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b091b8d8_f6b98708",
+        "filename": "site/docs/user/build.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2024-07-11T15:43:58Z",
+      "side": 1,
+      "message": "Maybe don\u0027t even link to Oracle\u0027s site then? It\u0027s probably been too long since I\u0027ve built from scratch, but I\u0027m pretty sure downloading Android\u0027s SDK as specified in the viewer build [instructions](https://skia.org/docs/user/sample/viewer/#android) works for building Skia for android.",
+      "parentUuid": "91f5d649_e2cf9474",
       "range": {
         "startLine": 124,
         "startChar": 10,
