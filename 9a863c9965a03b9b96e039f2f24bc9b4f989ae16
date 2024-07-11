@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a6a0d12_8ccd0c0f",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 3209,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-11T18:43:02Z",
+      "side": 1,
+      "message": "Oh that\u0027s embarrassing, I added the flat and no-perspective code to the fragment *output*.  The fragment annotations need to be handled in `writeInputStruct`.\n\nI added a `writeInterpolatedAttributes()` function that handles the user location and these new attributes that is called for vertex outputs and fragment inputs.",
+      "parentUuid": "20a35fb7_cf17b3af",
+      "range": {
+        "startLine": 3204,
+        "startChar": 0,
+        "endLine": 3209,
+        "endChar": 0
+      },
+      "revId": "9a863c9965a03b9b96e039f2f24bc9b4f989ae16",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4611c3bb_6a827611",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4811a1b5_1a2afce3",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1628,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-11T18:43:02Z",
+      "side": 1,
+      "message": "I tweaked the language and added an assert that there aren\u0027t actually any modifiers to be discarded in the first place.",
+      "parentUuid": "4611c3bb_6a827611",
+      "range": {
+        "startLine": 1628,
+        "startChar": 15,
+        "endLine": 1628,
+        "endChar": 75
+      },
+      "revId": "9a863c9965a03b9b96e039f2f24bc9b4f989ae16",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "19dde152_69eb028a",
@@ -77,6 +125,30 @@
       "writtenOn": "2024-07-11T13:10:32Z",
       "side": 1,
       "message": "up to you: Feel free to add `.isFlat()` to `ModifierFlags` if you prefer accessors. I retrofitted all the accessors recently and prioritized doing the ones that were more commonly used, and didn\u0027t go back and do every single flag.",
+      "range": {
+        "startLine": 1650,
+        "startChar": 8,
+        "endLine": 1650,
+        "endChar": 35
+      },
+      "revId": "9a863c9965a03b9b96e039f2f24bc9b4f989ae16",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "84cd2bf4_1eadfa03",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1650,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-11T18:43:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "19dde152_69eb028a",
       "range": {
         "startLine": 1650,
         "startChar": 8,
@@ -133,6 +205,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "66f638b2_c4cbf3ef",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1653,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-11T18:43:02Z",
+      "side": 1,
+      "message": "Re-arranged the comment and the TODO so that the spec link goes with the comment that will remain once we switch to \"flat,either\"",
+      "parentUuid": "f3d8e60d_c8db19c4",
+      "range": {
+        "startLine": 1652,
+        "startChar": 31,
+        "endLine": 1653,
+        "endChar": 15
+      },
+      "revId": "9a863c9965a03b9b96e039f2f24bc9b4f989ae16",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bec4d1d4_a4b5a423",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1653,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-11T18:43:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e7e0e860_69df8c63",
+      "range": {
+        "startLine": 1653,
+        "startChar": 17,
+        "endLine": 1653,
+        "endChar": 20
+      },
+      "revId": "9a863c9965a03b9b96e039f2f24bc9b4f989ae16",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2be9526f_4dd1be43",
@@ -156,6 +276,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "16591621_f507a492",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1654,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-11T18:43:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2be9526f_4dd1be43",
+      "range": {
+        "startLine": 1654,
+        "startChar": 86,
+        "endLine": 1654,
+        "endChar": 99
+      },
+      "revId": "9a863c9965a03b9b96e039f2f24bc9b4f989ae16",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "132c8cf0_d46e3a1d",
@@ -169,6 +313,30 @@
       "writtenOn": "2024-07-11T13:10:32Z",
       "side": 1,
       "message": "it\u0027s",
+      "range": {
+        "startLine": 1655,
+        "startChar": 48,
+        "endLine": 1655,
+        "endChar": 51
+      },
+      "revId": "9a863c9965a03b9b96e039f2f24bc9b4f989ae16",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ce9206c_8ba316d7",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1655,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-11T18:43:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "132c8cf0_d46e3a1d",
       "range": {
         "startLine": 1655,
         "startChar": 48,
