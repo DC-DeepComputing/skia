@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "59764536_88bf5c3c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-11T13:12:12Z",
+      "side": 1,
+      "message": "SkSL changes LGTM % nits",
+      "revId": "9a863c9965a03b9b96e039f2f24bc9b4f989ae16",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "20a35fb7_cf17b3af",
