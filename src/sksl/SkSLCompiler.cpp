@@ -18,7 +18,9 @@
 #include "src/sksl/SkSLPool.h"
 #include "src/sksl/SkSLProgramKind.h"
 #include "src/sksl/SkSLProgramSettings.h"
+#include "src/sksl/SkSLTemplater.h"
 #include "src/sksl/analysis/SkSLProgramUsage.h"
+#include "src/sksl/analysis/SkSLProgramVisitor.h"
 #include "src/sksl/ir/SkSLProgram.h"
 #include "src/sksl/ir/SkSLSymbolTable.h"  // IWYU pragma: keep
 #include "src/sksl/transform/SkSLTransform.h"
@@ -237,7 +239,8 @@ std::unique_ptr<SkSL::Program> Compiler::releaseProgram(
     fContext->fSymbolTable = nullptr;
 
     bool success = this->finalize(*result) &&
-                   this->optimize(*result);
+                   this->optimize(*result) &&
+                   Templater::findSpecializations(*result);
     if (pool) {
         pool->detachFromThread();
     }
