@@ -41,6 +41,7 @@ public:
                         Position pos,
                         ModifierFlags modifierFlags,
                         std::string_view name,
+                        std::string specializedName,
                         skia_private::TArray<Variable*> parameters,
                         const Type* returnType,
                         IntrinsicKind intrinsicKind);
@@ -161,6 +162,7 @@ private:
     bool fHasMainCoordsParameter = false;
     bool fHasMainInputColorParameter = false;
     bool fHasMainDestColorParameter = false;
+    std::string fSpecializedName;
 
     using INHERITED = Symbol;
 };

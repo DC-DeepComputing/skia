@@ -112,6 +112,7 @@ SKSL_SRCS = [
     "SkSLProgramKind.h",
     "SkSLProgramSettings.h",
     "SkSLSampleUsage.cpp",
+    "SkSLTemplater.cpp",
     "SkSLString.cpp",
     "SkSLString.h",
     "SkSLStringStream.h",
