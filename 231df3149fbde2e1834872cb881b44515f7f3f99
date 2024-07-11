@@ -33,6 +33,24 @@
       "message": "This makes sense, and looks good to me. It\u0027s unfortunate that we need to add the `-mlasx` to the opts files, but I understand the LLVM doesn\u0027t allow enabling that architecture with the attribute. Is there a plan to update LLVM in the future?",
       "revId": "231df3149fbde2e1834872cb881b44515f7f3f99",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9eb562d_c7324cbc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 20234
+      },
+      "writtenOn": "2024-07-11T11:31:14Z",
+      "side": 1,
+      "message": "Sorry, I made a mistake. LLVM actually supports the attribute for loong64, but it does not automatically define the __loongarch_asx macro compared to the \"-mlasx\" flag. The intrinsic declaration in the header file (lasxintrin.h) is wrapped by __loongarch_asx macro, which causes undeclared compile error. We have already fixed this usage and all tests passed. Please review this change again, thanks.",
+      "parentUuid": "7d1dad73_9190d068",
+      "revId": "231df3149fbde2e1834872cb881b44515f7f3f99",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
