@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f30b5b7_c706d657",
+        "filename": "site/docs/user/build.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-07-11T18:26:23Z",
+      "side": 1,
+      "message": "\u003e Something like \"Confirmed to work with NDK versions above 23.0.7599858\" would serve as a hint to guide people to a working version.\n\nBut that\u0027s just what works today - it would at least need a date of that confirmation. What if we instead say something like\n\n\u003e Certain build errors may be resolved by updating your NDK.\n\nI don\u0027t see much detail on your build error, so I don\u0027t know if we could make this more specific. But we could generally stick with the idea that you should try to update your tools?",
+      "parentUuid": "9a73416f_8fe42314",
+      "range": {
+        "startLine": 123,
+        "startChar": 0,
+        "endLine": 123,
+        "endChar": 59
+      },
+      "revId": "c7f31a0b764d8d38d27a9ffd4db0a68f4b420694",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "91f5d649_e2cf9474",
@@ -85,6 +109,30 @@
       "side": 1,
       "message": "Maybe don\u0027t even link to Oracle\u0027s site then? It\u0027s probably been too long since I\u0027ve built from scratch, but I\u0027m pretty sure downloading Android\u0027s SDK as specified in the viewer build [instructions](https://skia.org/docs/user/sample/viewer/#android) works for building Skia for android.",
       "parentUuid": "91f5d649_e2cf9474",
+      "range": {
+        "startLine": 124,
+        "startChar": 10,
+        "endLine": 124,
+        "endChar": 61
+      },
+      "revId": "c7f31a0b764d8d38d27a9ffd4db0a68f4b420694",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4842f6db_95b6494a",
+        "filename": "site/docs/user/build.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-07-11T18:26:23Z",
+      "side": 1,
+      "message": "But maybe you had Java installed another way?\n\nI kinda think it\u0027s nice to propose a solution - I assumed Java was installed some other way, but I really don\u0027t remember anymore, and maybe I had some other way to update it, but I have no idea what that would be.",
+      "parentUuid": "b091b8d8_f6b98708",
       "range": {
         "startLine": 124,
         "startChar": 10,
