@@ -16,6 +16,75 @@
       "message": "Bots are stuck but I verified locally that there are no visible image diffs.",
       "revId": "6e4b33514813189f4dd4d7af898dd6332d9bc7dd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "528c6d68_5efc9a40",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1065,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-11T19:58:38Z",
+      "side": 1,
+      "message": "Should we assert here that the swizzle doesn\u0027t modify the alpha?",
+      "range": {
+        "startLine": 1065,
+        "startChar": 42,
+        "endLine": 1065,
+        "endChar": 59
+      },
+      "revId": "6e4b33514813189f4dd4d7af898dd6332d9bc7dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5093a950_d3c6634e",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1089,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-11T19:58:38Z",
+      "side": 1,
+      "message": "Assuming we don\u0027t just consolidate to one block that always supports swizzles, this seems like it will lead to more pipeline compilations around non-yuv image shaders and we lose the identity colorspace xform short-circuiting for the image shaders when the swizzle is RGBA or BGRA.\n\nWhat if we had two different `AddBlocks`, one for the non-image case that always does the no-swizzle version w/ no short-circuit, and one for the image+swizzle case (and probably have YUV images use that one to get the short circuiting)?",
+      "range": {
+        "startLine": 1089,
+        "startChar": 2,
+        "endLine": 1089,
+        "endChar": 93
+      },
+      "revId": "6e4b33514813189f4dd4d7af898dd6332d9bc7dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f699eb0_c9097044",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-11T19:58:38Z",
+      "side": 1,
+      "message": "WDYT about having this just be the behavior `sk_color_space_transform`? Both snippets have the same amount of data being uploaded. We do add a possible branch on whether or not to apply the swizzle but get the benefit of the early out for when `flags \u003d\u003d 0`.",
+      "range": {
+        "startLine": 121,
+        "startChar": 12,
+        "endLine": 121,
+        "endChar": 44
+      },
+      "revId": "6e4b33514813189f4dd4d7af898dd6332d9bc7dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
