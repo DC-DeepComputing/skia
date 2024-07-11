@@ -87,7 +87,8 @@ std::string get_mangled_uniform_name(const ShaderInfo& shaderInfo,
         result = uniform.name() + std::string("_") + std::to_string(manglingSuffix);
     }
     if (shaderInfo.ssboIndex()) {
-        result = EmitStorageBufferAccess("fs", shaderInfo.ssboIndex(), result.c_str());
+        result = "uniforms." + result;
+        // result = EmitStorageBufferAccess("fs", shaderInfo.ssboIndex(), result.c_str());
     }
     return result;
 }
@@ -101,7 +102,8 @@ std::string get_mangled_struct_reference(const ShaderInfo& shaderInfo,
     SkASSERT(node->entry()->fUniformStructName);
     std::string result = "node_" + std::to_string(node->keyIndex()); // Field holding the struct
     if (shaderInfo.ssboIndex()) {
-        result = EmitStorageBufferAccess("fs", shaderInfo.ssboIndex(), result.c_str());
+        result = "uniforms." + result;
+        // result = EmitStorageBufferAccess("fs", shaderInfo.ssboIndex(), result.c_str());
     }
     return result;
 }
@@ -123,6 +125,7 @@ static const ShaderSnippet::Args kDefaultArgs{"inColor", "destColor", "pos"};
 // If 'args' is null, the generated list is assumed to be for parameter declarations. If it's non
 // null, it is assumed to be the expressions to invoke the default signature.
 void append_defaults(TArray<std::string>* list,
+                     bool useSSBOs,
                      const ShaderNode* node,
                      const ShaderSnippet::Args* args) {
     // Use the node's aggregate required flags so that the provided dynamic variables propagate
@@ -139,6 +142,9 @@ void append_defaults(TArray<std::string>* list,
 
     // Special variables and/or "global" scope variables that have to propagate
     // through the node tree.
+    if (useSSBOs) {
+        list->push_back(args ? "uniforms" : "const FSUniformData uniforms");
+    }
     if (node->requiredFlags() & SnippetRequirementFlags::kPrimitiveColor) {
         list->push_back(args ? "primitiveColor" : "half4 primitiveColor");
     }
@@ -190,13 +196,13 @@ std::string invoke_node(const ShaderInfo& shaderInfo,
         // We didn't generate a helper function in the preamble, so add uniforms to the parameter
         // list and call the static function directly.
         fnName = node->entry()->fStaticFunctionName;
-        append_defaults(&params, node, &args);
+        append_defaults(&params, /*useSSBOs=*/false, node, &args);
         append_uniforms(&params, shaderInfo, node, /*childOutputs=*/{});
     } else {
         // Invoke the generated helper function added to the preamble, which will handle invoking
         // any children and appending their values to the rest of the static fn's arguments.
         fnName = get_mangled_name(node->entry()->fName, node->keyIndex());
-        append_defaults(&params, node, &args);
+        append_defaults(&params, SkToBool(shaderInfo.ssboIndex()), node, &args);
     }
 
     return SkSL::String::printf("%s(%s)", fnName.c_str(), stitch_csv(params).c_str());
@@ -229,7 +235,7 @@ std::string emit_helper_declaration(const ShaderInfo& shaderInfo, const ShaderNo
     std::string helperFnName = get_mangled_name(entry->fName, node->keyIndex());
 
     STArray<3, std::string> params;
-    append_defaults(&params, node, /*args=*/nullptr); // null args emits declarations
+    append_defaults(&params, SkToBool(shaderInfo.ssboIndex()), node, /*args=*/nullptr); // null args emits declarations
 
     return SkSL::String::printf("half4 %s(%s)", helperFnName.c_str(), stitch_csv(params).c_str());
 }
@@ -262,7 +268,7 @@ std::string generate_default_preamble(const ShaderInfo& shaderInfo,
 
     // Finally, invoke the snippet from the helper function, passing uniforms and child outputs.
     STArray<3, std::string> params;
-    append_defaults(&params, node, &kDefaultArgs);
+    append_defaults(&params, /*useSSBOs=*/false, node, &kDefaultArgs);
     append_uniforms(&params, shaderInfo, node, childOutputVarNames);
 
     SkSL::String::appendf(&code,
@@ -473,7 +479,7 @@ std::string ShaderInfo::toSkSL(const Caps* caps,
                                                  fRootNodes,
                                                  hasPaintUniforms,
                                                  &wrotePaintColor);
-        SkSL::String::appendf(&preamble, "uint %s;\n", this->ssboIndex());
+        // SkSL::String::appendf(&preamble, "uint %s;\n", this->ssboIndex());
     } else {
         preamble += EmitPaintParamsUniforms(bindingReqs.fPaintParamsBufferBinding,
                                             bindingReqs.fUniformBufferLayout,
@@ -513,9 +519,13 @@ std::string ShaderInfo::toSkSL(const Caps* caps,
     std::string mainBody = "void main() {";
 
     if (useShadingStorageBuffer) {
+        // SkSL::String::appendf(&mainBody,
+        //                       "%s = %s.y;\n",
+        //                       this->ssboIndex(),
+        //                       RenderStep::ssboIndicesVarying());
         SkSL::String::appendf(&mainBody,
-                              "%s = %s.y;\n",
-                              this->ssboIndex(),
+                              "ushort uniformIndex = %s.y;"
+                              "FSUniformData uniforms = fsUniformData[uniformIndex];",
                               RenderStep::ssboIndicesVarying());
     }
 
@@ -1446,7 +1456,8 @@ ShaderCodeDictionary::ShaderCodeDictionary(Layout layout)
 
     fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kYUVImageShader] = {
             /*name=*/"YUVImageShader",
-            /*staticFn=*/"sk_yuv_image_shader",
+            // /*staticFn=*/"sk_yuv_image_shader",
+            {"sk_yuv_image_shader2", "YUVParams"},
             SnippetRequirementFlags::kLocalCoords,
             /*uniforms=*/{ { "invImgSizeY",         SkSLType::kFloat2 },
                            { "invImgSizeUV",        SkSLType::kFloat2 },  // Relative to Y's texels
@@ -1507,8 +1518,9 @@ ShaderCodeDictionary::ShaderCodeDictionary(Layout layout)
     };
 
     fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kHWYUVNoSwizzleImageShader] = {
-            /*name=*/"HWYUVImageShader",
-            /*staticFn=*/"sk_hw_yuv_no_swizzle_image_shader",
+            /*name=*/"HWYUVNoSwizzleImageShader",
+            /*staticFn=*/{"sk_hw_yuv_no_swizzle_image_shader2", "HWNoSwizzleYUVParams"},
+            // "sk_hw_yuv_no_swizzle_image_shader",
             SnippetRequirementFlags::kLocalCoords,
             /*uniforms=*/{ { "invImgSizeY",              SkSLType::kFloat2 },
                            { "invImgSizeUV",             SkSLType::kFloat2 }, // Relative to Y space
@@ -1517,7 +1529,8 @@ ShaderCodeDictionary::ShaderCodeDictionary(Layout layout)
             /*textures=*/ {{ "samplerY" },
                            { "samplerU" },
                            { "samplerV" },
-                           { "samplerA" }}
+                           { "samplerA" },
+                           }
     };
 
     // Like the local matrix shader, this is a no-op if the child doesn't need coords
@@ -1577,7 +1590,8 @@ ShaderCodeDictionary::ShaderCodeDictionary(Layout layout)
     };
     fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kColorSpaceXformColorFilter] = {
             /*name=*/"ColorSpaceTransform",
-            /*staticFn=*/"sk_color_space_transform",
+            /*staticFn=*/{"sk_color_space_transform2", "ColorSpaceXformParams"},
+            // "sk_color_space_transform",
             SnippetRequirementFlags::kPriorStageOutput,
             /*uniforms=*/{ { "flags",          SkSLType::kInt },
                            { "srcKind",        SkSLType::kInt },

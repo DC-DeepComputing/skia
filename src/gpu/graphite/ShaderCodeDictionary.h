@@ -108,6 +108,23 @@ struct ShaderSnippet {
         SkASSERT(staticFn || preambleGenerator);
     }
 
+    ShaderSnippet(const char* name,
+                  std::pair<const char* /*staticFn*/, const char* /*structName*/> defn,
+                  SkEnumBitMask<SnippetRequirementFlags> snippetRequirementFlags,
+                  SkSpan<const Uniform> uniforms,
+                  SkSpan<const TextureAndSampler> textures = {})
+            : fName(name)
+            , fStaticFunctionName(std::get<0>(defn))
+            , fSnippetRequirementFlags(snippetRequirementFlags)
+            , fUniformStructName(std::get<1>(defn))
+            , fUniforms(uniforms)
+            , fTexturesAndSamplers(textures)
+            , fNumChildren(0)
+            , fPreambleGenerator(nullptr) {
+        SkASSERT(name);
+        SkASSERT(fStaticFunctionName && fUniformStructName);
+    }
+
     bool needsLocalCoords() const {
         return SkToBool(fSnippetRequirementFlags & SnippetRequirementFlags::kLocalCoords);
     }

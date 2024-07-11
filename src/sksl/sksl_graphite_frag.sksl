@@ -52,29 +52,32 @@ $pure half4 sk_alpha_only(float4 colorParam) {
     return half4(0.0, 0.0, 0.0, colorParam.a);
 }
 
-$pure float $apply_xfer_fn(int kind, float x, half4 cs[2]) {
+$pure float3 $apply_xfer_fn(int kind, float3 x, half4 cs[2]) {
     float G = cs[0][0], A = cs[0][1], B = cs[0][2], C = cs[0][3],
           D = cs[1][0], E = cs[1][1], F = cs[1][2];
-    float s = sign(x);
+    float3 s = sign(x);
     x = abs(x);
     switch (kind) {
         case $kTFTypeSRGB:
-            x = (x < D) ? (C * x) + F
-                        : pow(A * x + B, G) + E;
+            x = mix(pow(A * x + B, float3(G)) + E, // false
+                     (C * x) + F, // true
+                     lessThan(x, float3(D)));
             break;
         case $kTFTypePQ:
-            float x_C = pow(x, C);
-            x = pow(max(A + B * x_C, 0) / (D + E * x_C), F);
+            float3 x_C = pow(x, float3(C));
+            x = pow(max(A + B * x_C, 0) / (D + E * x_C), float3(F));
             break;
         case $kTFTypeHLG:
-            x = (x * A <= 1) ? pow(x * A, B)
-                             : exp((x - E) * C) + D;
+            x = mix(exp((x - E) * C) + D, // false
+                    pow(x * A, float3(B)), // true
+                    lessThanEqual(x * A, float3(1)));
             x *= (F + 1);
             break;
         case $kTFTypeHLGinv:
             x /= (F + 1);
-            x = (x <= 1) ? A * pow(x, B)
-                         : C * log(x - D) + E;
+            x = mix( C * log(x - D) + E, // false
+                    A * pow(x, float3(B)),
+                    lessThanEqual(x, float3(1)));
             break;
     }
     return s * x;
@@ -96,9 +99,10 @@ $pure half4 sk_color_space_transform(half4 halfColor,
         half4 srcCoeffs[2];
         srcCoeffs[0] = coeffs[0];
         srcCoeffs[1] = coeffs[1];
-        color.r = $apply_xfer_fn(srcKind, color.r, srcCoeffs);
-        color.g = $apply_xfer_fn(srcKind, color.g, srcCoeffs);
-        color.b = $apply_xfer_fn(srcKind, color.b, srcCoeffs);
+        color.rgb = $apply_xfer_fn(srcKind, color.rgb, srcCoeffs);
+        // color.r = $apply_xfer_fn(srcKind, color.r, srcCoeffs);
+        // color.g = $apply_xfer_fn(srcKind, color.g, srcCoeffs);
+        // color.b = $apply_xfer_fn(srcKind, color.b, srcCoeffs);
     }
     if (bool(flags & $kColorSpaceXformFlagGamutTransform)) {
         color.rgb = gamutTransform * color.rgb;
@@ -107,12 +111,54 @@ $pure half4 sk_color_space_transform(half4 halfColor,
         half4 dstCoeffs[2];
         dstCoeffs[0] = coeffs[2];
         dstCoeffs[1] = coeffs[3];
-        color.r = $apply_xfer_fn(dstKind, color.r, dstCoeffs);
-        color.g = $apply_xfer_fn(dstKind, color.g, dstCoeffs);
-        color.b = $apply_xfer_fn(dstKind, color.b, dstCoeffs);
+        color.rgb = $apply_xfer_fn(dstKind, color.rgb, dstCoeffs);
+        // color.r = $apply_xfer_fn(dstKind, color.r, dstCoeffs);
+        // color.g = $apply_xfer_fn(dstKind, color.g, dstCoeffs);
+        // color.b = $apply_xfer_fn(dstKind, color.b, dstCoeffs);
     }
 
     if (bool(flags & $kColorSpaceXformFlagPremul)) {
+        color.rgb *= color.a;
+    }
+    return half4(color);
+}
+
+struct ColorSpaceXformParams {
+    int flags;
+    int srcKind;
+    half3x3 gamutTransform;
+    int dstKind;
+    half4x4 coeffs;
+};
+$pure half4 sk_color_space_transform2(half4 halfColor,
+                                     const ColorSpaceXformParams params) {
+    float4 color = float4(halfColor);
+
+    if (bool(params.flags & $kColorSpaceXformFlagUnpremul)) {
+        color = unpremul(color);
+    }
+
+    if (bool(params.flags & $kColorSpaceXformFlagLinearize)) {
+        half4 srcCoeffs[2];
+        srcCoeffs[0] = params.coeffs[0];
+        srcCoeffs[1] = params.coeffs[1];
+        color.rgb = $apply_xfer_fn(params.srcKind, color.rgb, srcCoeffs);
+        // color.g = $apply_xfer_fn(params.srcKind, color.g, srcCoeffs);
+        // color.b = $apply_xfer_fn(params.srcKind, color.b, srcCoeffs);
+    }
+    if (bool(params.flags & $kColorSpaceXformFlagGamutTransform)) {
+        color.rgb = params.gamutTransform * color.rgb;
+    }
+    if (bool(params.flags & $kColorSpaceXformFlagEncode)) {
+        half4 dstCoeffs[2];
+        dstCoeffs[0] = params.coeffs[2];
+        dstCoeffs[1] = params.coeffs[3];
+        color.rgb = $apply_xfer_fn(params.dstKind, color.rgb, dstCoeffs);
+        // color.g = $apply_xfer_fn(params.dstKind, color.g, dstCoeffs);
+        // color.b = $apply_xfer_fn(params.dstKind, color.b, dstCoeffs);
+    }
+
+    if (bool(params.flags & $kColorSpaceXformFlagPremul)) {
         color.rgb *= color.a;
     }
     return half4(color);
@@ -131,6 +177,7 @@ $pure half4 $color_space_transform_swizzle(half4 halfColor,
             halfColor.a = dot(halfColor.r1, half2(coeffs[1][3], coeffs[3][3]));
         }
         return sk_color_space_transform(halfColor, flags, srcKind, gamutTransform, dstKind, coeffs);
+        // return sk_color_space_transform(halfColor, ColorSpaceXformParams(flags, srcKind, gamutTransform, dstKind, coeffs));
     }
 }
 
@@ -249,6 +296,99 @@ $pure half4 $sample_image_subset(float2 pos,
     return color;
 }
 
+struct ImageSubsetParams {
+                                     float4 subset;
+float2 invImgSize;
+                                 float2 linearFilterInset;
+                                 int tileModeX;
+                                 int tileModeY;
+                                 int filterMode;
+};
+$pure half4 $sample_image_subset2(float2 pos,
+                                    const ImageSubsetParams params,
+                                 sampler2D s) {
+    // Do hard-edge shader transitions to the border color for nearest-neighbor decal tiling at the
+    // subset boundaries. Snap the input coordinates to nearest neighbor before comparing to the
+    // subset rect, to avoid GPU interpolation errors. See https://crbug.com/skia/10403.
+    if (params.tileModeX == $kTileModeDecal && params.filterMode == $kFilterModeNearest) {
+        float snappedX = floor(pos.x) + 0.5;
+        if (snappedX < params.subset.x || snappedX > params.subset.z) {
+            return half4(0);
+        }
+    }
+    if (params.tileModeY == $kTileModeDecal && params.filterMode == $kFilterModeNearest) {
+        float snappedY = floor(pos.y) + 0.5;
+        if (snappedY < params.subset.y || snappedY > params.subset.w) {
+            return half4(0);
+        }
+    }
+
+    pos.x = $tile(params.tileModeX, pos.x, params.subset.x, params.subset.z);
+    pos.y = $tile(params.tileModeY, pos.y, params.subset.y, params.subset.w);
+
+    // Clamp to an inset subset to prevent sampling neighboring texels when coords fall exactly at
+    // texel boundaries.
+    float4 insetClamp;
+    if (params.filterMode == $kFilterModeNearest) {
+        insetClamp = float4(floor(params.subset.xy) + $kLinearInset, ceil(params.subset.zw) - $kLinearInset);
+    } else {
+        insetClamp = float4(params.subset.xy + params.linearFilterInset.x, params.subset.zw - params.linearFilterInset.y);
+    }
+    float2 clampedPos = clamp(pos, insetClamp.xy, insetClamp.zw);
+    half4 color = $sample_image(clampedPos, params.invImgSize, s);
+
+    if (params.filterMode == $kFilterModeLinear) {
+        // Remember the amount the coord moved for clamping. This is used to implement shader-based
+        // filtering for repeat and decal tiling.
+        half2 error = half2(pos - clampedPos);
+        half2 absError = abs(error);
+
+        // Do 1 or 3 more texture reads depending on whether both x and y tiling modes are repeat
+        // and whether we're near a single subset edge or a corner. Then blend the multiple reads
+        // using the error values calculated above.
+        bool sampleExtraX = params.tileModeX == $kTileModeRepeat;
+        bool sampleExtraY = params.tileModeY == $kTileModeRepeat;
+        if (sampleExtraX || sampleExtraY) {
+            float extraCoordX;
+            float extraCoordY;
+            half4 extraColorX;
+            half4 extraColorY;
+            if (sampleExtraX) {
+                extraCoordX = error.x > 0 ? insetClamp.x : insetClamp.z;
+                extraColorX = $sample_image(float2(extraCoordX, clampedPos.y),
+                                            params.invImgSize, s);
+            }
+            if (sampleExtraY) {
+                extraCoordY = error.y > 0 ? insetClamp.y : insetClamp.w;
+                extraColorY = $sample_image(float2(clampedPos.x, extraCoordY),
+                                            params.invImgSize, s);
+            }
+            if (sampleExtraX && sampleExtraY) {
+                half4 extraColorXY = $sample_image(float2(extraCoordX, extraCoordY),
+                                                   params.invImgSize, s);
+                color = mix(mix(color, extraColorX, absError.x),
+                            mix(extraColorY, extraColorXY, absError.x),
+                            absError.y);
+            } else if (sampleExtraX) {
+                color = mix(color, extraColorX, absError.x);
+            } else if (sampleExtraY) {
+                color = mix(color, extraColorY, absError.y);
+            }
+        }
+
+        // Do soft edge shader filtering for decal tiling and linear filtering using the error
+        // values calculated above.
+        if (params.tileModeX == $kTileModeDecal) {
+            color *= max(1 - absError.x, 0);
+        }
+        if (params.tileModeY == $kTileModeDecal) {
+            color *= max(1 - absError.y, 0);
+        }
+    }
+
+    return color;
+}
+
 $pure half4 $cubic_filter_image(float2 pos,
                                 float2 invImgSize,
                                 float4 subset,
@@ -341,7 +481,7 @@ $pure half4 $yuv_to_rgb_no_swizzle(half Y,
     sampleColor.rgb = saturate(yuvToRGBMatrix * preColor.rgb + yuvToRGBTranslate);
     sampleColor.a = alpha;
     // premul alpha
-    sampleColor.rgb *= sampleColor.a;
+    // sampleColor.rgb *= sampleColor.a;
 
     return sampleColor;
 }
@@ -358,8 +498,13 @@ $pure half4 $yuv_to_rgb(half4 sampleColorY,
     half Y = dot(channelSelectY, sampleColorY);
     half U = dot(channelSelectU, sampleColorU);
     half V = dot(channelSelectV, sampleColorV);
-    return $yuv_to_rgb_no_swizzle(Y, U, V, alpha, yuvToRGBMatrix, yuvToRGBTranslate);
+
+    return half4(saturate(yuvToRGBMatrix*half3(Y,U,V) + yuvToRGBTranslate), alpha);
+
+
+    // return $yuv_to_rgb_no_swizzle(Y, U, V, alpha, yuvToRGBMatrix, yuvToRGBTranslate);
 }
+
 
 $pure half4 sk_yuv_image_shader(float2 coords,
                                 float2 invImgSizeY,
@@ -410,6 +555,66 @@ $pure half4 sk_yuv_image_shader(float2 coords,
                        channelSelectY, channelSelectU, channelSelectV,
                        yuvToRGBMatrix, yuvToRGBTranslate);
 }
+
+struct YUVParams {
+    float2 invImgSizeY;
+    float2 invImgSizeUV;  // Relative to Y's coordinate space
+    float4 subset;
+    float2 linearFilterUVInset;
+    int tileModeX;
+    int tileModeY;
+    int filterModeY;
+    int filterModeUV;
+    half4 channelSelectY;
+    half4 channelSelectU;
+    half4 channelSelectV;
+    half4 channelSelectA;
+    half3x3 yuvToRGBMatrix;
+    half3 yuvToRGBTranslate;
+};
+
+$pure half4 sk_yuv_image_shader2(float2 coords,
+                                const YUVParams params,
+                                sampler2D sY,
+                                sampler2D sU,
+                                sampler2D sV,
+                                sampler2D sA) {
+    // If the filter modes are different between Y and UV, this means that
+    // the base filtermode is nearest and we have to snap the coords to Y's
+    // texel centers to get the correct positions for UV.
+    if (params.filterModeY != params.filterModeUV) {
+        coords = floor(coords) + 0.5;
+    }
+
+    int tileModeX_UV = params.tileModeX == $kTileModeDecal ? $kTileModeClamp : params.tileModeX;
+    int tileModeY_UV = params.tileModeY == $kTileModeDecal ? $kTileModeClamp : params.tileModeY;
+
+    ImageSubsetParams ya = ImageSubsetParams(params.subset, params.invImgSizeY, float2($kLinearInset), params.tileModeX, params.tileModeY, params.filterModeY);
+    ImageSubsetParams uv = ImageSubsetParams(params.subset, params.invImgSizeUV, params.linearFilterUVInset, tileModeX_UV, tileModeY_UV, params.filterModeUV);
+
+    half4 sampleColorY, sampleColorU, sampleColorV;
+    sampleColorY = $sample_image_subset2(coords, ya, sY);
+    sampleColorU = $sample_image_subset2(coords, uv, sU);
+    sampleColorV = $sample_image_subset2(coords, uv, sV);
+    half alpha;
+    if (params.channelSelectA == half4(1)) {
+        alpha = 1;
+    } else {
+        half4 sampleColorA = $sample_image_subset2(coords, ya, sA);
+        alpha = dot(params.channelSelectA, sampleColorA);
+    }
+
+    half Y = dot(params.channelSelectY, sampleColorY);
+    half U = dot(params.channelSelectU, sampleColorU);
+    half V = dot(params.channelSelectV, sampleColorV);
+
+    return half4(saturate(params.yuvToRGBMatrix*half3(Y,U,V) + params.yuvToRGBTranslate), alpha);
+
+    // return $yuv_to_rgb(sampleColorY, sampleColorU, sampleColorV, alpha,
+    //                    channelSelectY, channelSelectU, channelSelectV,
+    //                    yuvToRGBMatrix, yuvToRGBTranslate);
+}
+
 
 $pure half4 sk_cubic_yuv_image_shader(float2 coords,
                                       float2 invImgSizeY,
@@ -502,6 +707,38 @@ $pure half4 sk_hw_yuv_no_swizzle_image_shader(float2 coords,
 
     return $yuv_to_rgb_no_swizzle(Y, U, V, alpha,
                                   yuvToRGBMatrix, yuvToRGBXlateAlphaParam.xyz);
+}
+
+struct HWNoSwizzleYUVParams {
+    float2 invImgSizeY;
+    float2 invImgSizeUV;  // Relative to Y's coord space
+    half3x3 yuvToRGBMatrix;
+    half4 yuvToRGBXlateAlphaParam;
+};
+
+$pure half4 sk_hw_yuv_no_swizzle_image_shader2(float2 coords,
+                                              const HWNoSwizzleYUVParams params,
+                                              sampler2D sY,
+                                              sampler2D sU,
+                                              sampler2D sV,
+                                              sampler2D sA) {
+    half4 sampleColorY, sampleColorU, sampleColorV, sampleColorA;
+    half Y = $sample_image(coords, params.invImgSizeY, sY).r;
+    half U = $sample_image(coords, params.invImgSizeUV, sU).r;
+    half V = $sample_image(coords, params.invImgSizeUV, sV).r;
+    // When it's a Y_U_V_A texture, yuvToRGBXlateAlphaParam.w is 0 and we have a real A sampler so
+    // alpha is just that saturated value (should be a no-op). For Y_U_V, we set
+    // yuvToRGBXlateAlphaParam.w to 1 and sample from Y, which after the saturate is always 1.
+    half alpha = saturate($sample_image(coords, params.invImgSizeY, sA).r + params.yuvToRGBXlateAlphaParam.a);
+
+    return half4(saturate(params.yuvToRGBMatrix*half3(Y,U,V) + params.yuvToRGBXlateAlphaParam.rgb), alpha);
+    // half3 preColor = half3(Y, U, V);
+//     half4 sampleColor;
+//     sampleColor.rgb = saturate(yuvToRGBMatrix * preColor.rgb + yuvToRGBTranslate);
+//     sampleColor.a = alpha;
+
+    // return $yuv_to_rgb_no_swizzle(Y, U, V, alpha,
+    //                               params.yuvToRGBMatrix, params.yuvToRGBXlateAlphaParam.xyz);
 }
 
 $pure half4 sk_dither(half4 colorIn, half range, sampler2D lut) {

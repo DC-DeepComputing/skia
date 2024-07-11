@@ -117,6 +117,8 @@ wgpu::Device GraphiteDawnWindowContext::createDevice(wgpu::BackendType type) {
     static constexpr const char* kAdapterToggles[] = {
         "allow_unsafe_apis",  // Needed for dual-source blending, BufferMapExtendedUsages.
         "use_user_defined_labels_in_backend",
+        "disable_robustness",
+        "skip_validation"
     };
     wgpu::DawnTogglesDescriptor adapterTogglesDesc;
     adapterTogglesDesc.enabledToggleCount  = std::size(kAdapterToggles);
@@ -184,6 +186,7 @@ wgpu::Device GraphiteDawnWindowContext::createDevice(wgpu::BackendType type) {
     if (fDisplayParams.fDisableTintSymbolRenaming) {
         static constexpr const char* kOptionalDeviceToggles[] = {
             "disable_symbol_renaming",
+            "use_user_defined_labels_in_backend",
         };
         deviceTogglesDesc.enabledToggleCount = std::size(kOptionalDeviceToggles);
         deviceTogglesDesc.enabledToggles     = kOptionalDeviceToggles;

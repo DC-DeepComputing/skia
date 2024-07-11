@@ -80,6 +80,10 @@ RendererProvider::RendererProvider(const Caps* caps, StaticBufferManager* buffer
                             : makeFromStep(std::make_unique<SDFTextRenderStep>(),
                                            DrawTypeFlags::kText);
     }
+
+    fNonAARect = makeFromStep(std::make_unique<CoverBoundsRenderStep>(kDirectDepthGreaterPass, "non-aa"),
+                DrawTypeFlags::kSimpleShape);
+
     fAnalyticRRect = makeFromStep(std::make_unique<AnalyticRRectRenderStep>(bufferManager),
                                   DrawTypeFlags::kSimpleShape);
     fPerEdgeAAQuad = makeFromStep(std::make_unique<PerEdgeAAQuadRenderStep>(bufferManager),
@@ -98,8 +102,8 @@ RendererProvider::RendererProvider(const Caps* caps, StaticBufferManager* buffer
     }
 
     // The tessellating path renderers that use stencil can share the cover steps.
-    auto coverFill = std::make_unique<CoverBoundsRenderStep>(false);
-    auto coverInverse = std::make_unique<CoverBoundsRenderStep>(true);
+    auto coverFill = std::make_unique<CoverBoundsRenderStep>(kRegularCoverPass, "regular");
+    auto coverInverse = std::make_unique<CoverBoundsRenderStep>(kInverseCoverPass, "inverse", true);
 
     for (bool evenOdd : {false, true}) {
         // These steps can be shared by regular and inverse fills

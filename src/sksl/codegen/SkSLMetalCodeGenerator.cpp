@@ -2566,7 +2566,7 @@ bool MetalCodeGenerator::writeFunctionDeclaration(const FunctionDeclaration& f) 
                 if (is_readonly(intf)) {
                     this->write("const ");
                 }
-                this->write(is_buffer(intf) ? "device " : "constant ");
+                this->write(is_buffer(intf) && ((false) || !is_readonly(intf)) ? "device " : "constant ");
                 this->writeType(intf.var()->type());
                 this->write("& " );
                 this->write(fInterfaceBlockNameMap[&intf.var()->type()]);
@@ -2617,6 +2617,7 @@ bool MetalCodeGenerator::writeFunctionDeclaration(const FunctionDeclaration& f) 
         this->write(separator);
         separator = ", ";
         this->writeModifiers(param->modifierFlags());
+        // FIXME: structs passed in via const&?
         this->writeType(param->type());
         if (pass_by_reference(param->type(), param->modifierFlags())) {
             this->write("&");
@@ -2811,6 +2812,7 @@ void MetalCodeGenerator::writeFields(SkSpan<const Field> fields, Position parent
             // the struct without the unsized array member and replace variable references with a
             // buffer offset calculation based on sizeof().
             this->writeModifiers(field.fModifierFlags);
+            this->write("const ");
             this->writeType(fieldType->componentType());
             this->write(" ");
             this->writeName(field.fName);
@@ -2844,8 +2846,23 @@ void MetalCodeGenerator::writeName(std::string_view name) {
 
 void MetalCodeGenerator::writeVarDeclaration(const VarDeclaration& varDecl) {
     this->writeModifiers(varDecl.var()->modifierFlags());
-    this->writeType(varDecl.var()->type());
-    this->write(" ");
+
+    if (varDecl.var()->type().isInteger() && varDecl.var()->name() == "uniformIndex") {
+        this->write("uniform<ushort> ");
+    } else {
+        bool structRef = varDecl.var()->type().isStruct() &&
+                        varDecl.value() && !varDecl.value()->isAnyConstructor();
+        if (structRef) {
+            SkDebugf("hit this path %s\n", std::string(varDecl.var()->name()).c_str());
+            // this->write("const constant ");
+        }
+
+        this->writeType(varDecl.var()->type());
+        if (structRef) {
+            // this->write("&");
+        }
+        this->write(" ");
+    }
     this->writeName(varDecl.var()->mangledName());
     if (varDecl.value()) {
         this->write(" = ");
@@ -3140,8 +3157,11 @@ void MetalCodeGenerator::writeInputStruct() {
                         this->write("  [[attribute(" + std::to_string(var.layout().fLocation) +
                                     ")]]");
                     } else if (ProgramConfig::IsFragment(fProgram.fConfig->fKind)) {
-                        this->write("  [[user(locn" + std::to_string(var.layout().fLocation) +
-                                    ")]]");
+                        this->write("  [[user(locn" + std::to_string(var.layout().fLocation) + ")");
+                        if (var.modifierFlags() & ModifierFlag::kFlat) {
+                           this->write(" flat");
+                        }
+                        this->write("]]");
                     }
                 }
                 this->write(";\n");
@@ -3190,7 +3210,11 @@ void MetalCodeGenerator::writeOutputStruct() {
                     fContext.fErrors->error(var.fPosition,
                                             "Metal out variables must have 'layout(location=...)'");
                 } else if (ProgramConfig::IsVertex(fProgram.fConfig->fKind)) {
-                    this->write(" [[user(locn" + std::to_string(location) + ")]]");
+                    this->write(" [[user(locn" + std::to_string(location) + ")");
+                    if (var.modifierFlags() & ModifierFlag::kFlat) {
+                        this->write(" flat");
+                    }
+                    this->write("]]");
                 } else if (ProgramConfig::IsFragment(fProgram.fConfig->fKind)) {
                     this->write(" [[color(" + std::to_string(location) + ")");
                     int colorIndex = var.layout().fIndex;
@@ -3285,6 +3309,9 @@ void MetalCodeGenerator::visitGlobalStruct(GlobalStructVisitor* visitor) {
     }
 }
 
+// FIXME: something about constant or adding struct const refs hurts ganesh metal A LOT
+// So something about const refs was making it so that when viewing the stats page, Ganesh was
+// recompiling the entire time...
 void MetalCodeGenerator::writeGlobalStruct() {
     class : public GlobalStructVisitor {
     public:
@@ -3295,7 +3322,7 @@ void MetalCodeGenerator::writeGlobalStruct() {
             if (is_readonly(block)) {
                 fCodeGen->write("const ");
             }
-            fCodeGen->write(is_buffer(block) ? "device " : "constant ");
+            fCodeGen->write(is_buffer(block) && ((false) || !is_readonly(block))  ? "device " : "constant ");
             fCodeGen->write(block.typeName());
             fCodeGen->write("* ");
             fCodeGen->writeName(blockName);

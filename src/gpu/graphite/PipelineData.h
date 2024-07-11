@@ -113,11 +113,12 @@ public:
     }
 
     void write(const Uniform& u, const void* data) { fUniformManager.write(u, data); }
-
     void writePaintColor(const SkPMColor4f& color) { fUniformManager.writePaintColor(color); }
 
-    bool hasUniforms() const { return fUniformManager.size(); }
+    void beginStruct(int baseAligment) { fUniformManager.beginStruct(baseAligment); }
+    void endStruct() { fUniformManager.endStruct(); }
 
+    bool hasUniforms() const { return fUniformManager.size(); }
     bool hasGradientBufferData() const { return !fGradientStorage.empty(); }
 
     SkSpan<const float> gradientBufferData() const { return fGradientStorage; }

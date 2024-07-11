@@ -1197,6 +1197,7 @@ void Device::drawGeometry(const Transform& localToDevice,
                         dstReadReq,
                         skipColorXform};
     const bool dependsOnDst = rendererCoverage != Coverage::kNone || paint_depends_on_dst(shading);
+    // DrawOrder nonCoverageOrder = order;
     if (dependsOnDst) {
         CompressedPaintersOrder prevDraw =
             fColorDepthBoundsManager->getMostRecentDraw(clip.drawBounds());
@@ -1240,6 +1241,28 @@ void Device::drawGeometry(const Transform& localToDevice,
         if (styleType == SkStrokeRec::kFill_Style ||
             styleType == SkStrokeRec::kStrokeAndFill_Style) {
             fDC->recordDraw(renderer, localToDevice, geometry, clip, order, &shading, nullptr);
+
+            // if (dependsOnDst) {
+            //     std::optional<Rect> innerRect;
+            //     if (geometry.isEdgeAAQuad() && geometry.edgeAAQuad().isRect()) {
+            //         innerRect = geometry.bounds();
+            //     } else if (geometry.isShape() && geometry.shape().isRect()) {
+            //         innerRect = geometry.bounds();
+            //     } else if (geometry.isShape() && geometry.shape().isRRect()) {
+            //         innerRect = SkRRectPriv::InnerBounds(geometry.shape().rrect());
+            //     }
+
+            //     if (innerRect.has_value()) { // FIXME: size basis for this extra draw?
+            //     // FIXME: don't do coverage draw if there is no visible extents
+            //         float aaInset = localToDevice.localAARadius(*innerRect);
+            //         if (std::isfinite(aaInset)) {
+            //             innerRect->inset(aaInset);
+            //             fDC->recordDraw(fRecorder->priv().rendererProvider()->nonAARect(),
+            //                             localToDevice, Geometry(Shape(*innerRect)),
+            //                             clip, nonCoverageOrder, &shading, nullptr);
+            //         }
+            //     }
+            // }
         }
     }
 
@@ -1337,6 +1360,11 @@ std::pair<const Renderer*, PathAtlas*> Device::chooseRenderer(const Transform& l
         return {renderers->coverageMask(), nullptr};
     } else if (geometry.isEdgeAAQuad()) {
         SkASSERT(!requireMSAA && style.isFillStyle());
+        // FIXME: Should we opt into a Blit geometry? check AA flags, base AA flags on paint?
+        // if (geometry.edgeAAQuad().isRect()) {
+            // return {renderers->nonAARect(), nullptr};
+        // }
+
         // handled by specialized system, simplified from rects and round rects
         return {renderers->perEdgeAAQuad(), nullptr};
     } else if (geometry.isAnalyticBlur()) {
@@ -1349,6 +1377,10 @@ std::pair<const Renderer*, PathAtlas*> Device::chooseRenderer(const Transform& l
     const Shape& shape = geometry.shape();
     // We can't use this renderer if we require MSAA for an effect (i.e. clipping or stroke+fill).
     if (!requireMSAA && is_simple_shape(shape, type)) {
+        // if (shape.isRect() && style.isFillStyle()) {
+        //     // FIXME: need to know AA-ness or pixel-aligned-ness
+        //     return {renderers->nonAARect(), nullptr};
+        // }
         return {renderers->analyticRRect(), nullptr};
     }
 

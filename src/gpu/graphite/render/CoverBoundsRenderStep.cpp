@@ -14,13 +14,13 @@
 
 namespace skgpu::graphite {
 
-CoverBoundsRenderStep::CoverBoundsRenderStep(bool inverseFill)
+CoverBoundsRenderStep::CoverBoundsRenderStep(DepthStencilSettings settings, const char* tag, bool inverseFill)
         : RenderStep("CoverBoundsRenderStep",
-                     inverseFill ? "inverse" : "regular",
+                     tag,
                      Flags::kPerformsShading,
                      /*uniforms=*/{},
                      PrimitiveType::kTriangleStrip,
-                     inverseFill ? kInverseCoverPass : kRegularCoverPass,
+                     settings,
                      /*vertexAttrs=*/  {},
                      /*instanceAttrs=*/{{"bounds", VertexAttribType::kFloat4, SkSLType::kFloat4},
                                         {"depth", VertexAttribType::kFloat, SkSLType::kFloat},

@@ -283,6 +283,8 @@ sk_sp<MtlGraphicsPipeline> MtlGraphicsPipeline::Make(const MtlSharedContext* sha
     // TODO: I *think* this gets cleaned up by the pipelineDescriptor?
     (*psoDescriptor).vertexDescriptor = create_vertex_descriptor(vertexAttrs, instanceAttrs);
 
+    (*psoDescriptor).fragmentBuffers[2].mutability = MTLMutabilityImmutable;
+
     const MtlTextureSpec& mtlColorSpec =
             renderPassDesc.fColorAttachment.fTextureInfo.mtlTextureSpec();
     auto mtlColorAttachment = create_color_attachment((MTLPixelFormat)mtlColorSpec.fFormat,

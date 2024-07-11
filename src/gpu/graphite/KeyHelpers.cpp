@@ -81,17 +81,50 @@
 
 using namespace skia_private;
 
-#define VALIDATE_UNIFORMS(gatherer, dict, codeSnippetID)                               \
-    SkDEBUGCODE(const ShaderSnippet* entry = dict->getEntry(codeSnippetID);)           \
-    SkDEBUGCODE(UniformExpectationsValidator uev(gatherer,                             \
-                                                 entry->fUniforms,                     \
-                                                 SkToBool(entry->fUniformStructName));)
+// #define VALIDATE_UNIFORMS(gatherer, dict, codeSnippetID)                                \
+//     const ShaderSnippet* entry = dict->getEntry(codeSnippetID);                         \
+//     SkDEBUGCODE(UniformExpectationsValidator uev(gatherer,                              \
+//                                                  entry->fUniforms,                      \
+//                                                  SkToBool(entry->fUniformStructName));) \
+
 
 namespace skgpu::graphite {
 
 //--------------------------------------------------------------------------------------------------
 
 namespace {
+
+class ScopedUniformWriter {
+public:
+    ScopedUniformWriter(PipelineDataGatherer* gatherer,
+                        const ShaderCodeDictionary* dict,
+                        BuiltInCodeSnippetID codeSnippetID)
+            : ScopedUniformWriter(gatherer, dict->getEntry(codeSnippetID)) {}
+
+    ~ScopedUniformWriter() {
+        if (fGatherer) {
+            fGatherer->endStruct();
+        }
+    }
+
+private:
+    ScopedUniformWriter(PipelineDataGatherer* gatherer, const ShaderSnippet* snippet)
+            SkDEBUGCODE(: fValidator(gatherer, snippet->fUniforms, SkToBool(snippet->fUniformStructName)))
+    {
+        if (snippet->fUniformStructName) {
+            gatherer->beginStruct(snippet->fRequiredAlignment);
+            fGatherer = gatherer;
+        } else {
+            fGatherer = nullptr;
+        }
+    }
+
+    PipelineDataGatherer* fGatherer;
+    SkDEBUGCODE(UniformExpectationsValidator fValidator;)
+};
+
+#define VALIDATE_UNIFORMS(gatherer, dict, codeSnippetID) \
+    ScopedUniformWriter scope{gatherer, dict, codeSnippetID};
 
 void add_solid_uniform_data(const ShaderCodeDictionary* dict,
                             const SkPMColor4f& premulColor,
@@ -1777,7 +1810,8 @@ static void add_yuv_image_to_key(const KeyContext& keyContext,
     SkASSERT(steps.flags.mask() == 0);   // By default, the colorspace should have no effect
     if (!origShader->isRaw()) {
         steps = SkColorSpaceXformSteps(imageToDraw->colorSpace(),
-                                       imageToDraw->alphaType(),
+                                    //    imageToDraw->alphaType(),
+                                       kUnpremul_SkAlphaType, // YUV snippet produces unpremul color
                                        keyContext.dstColorInfo().colorSpace(),
                                        keyContext.dstColorInfo().alphaType());
     }

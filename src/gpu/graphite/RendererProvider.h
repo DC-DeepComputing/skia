@@ -65,6 +65,9 @@ public:
         return &fVertices[4*triStrip + 2*hasColors + hasTexCoords];
     }
 
+    // Filled non-AA rects
+    const Renderer* nonAARect() const { return &fNonAARect; }
+
     // Filled and stroked [r]rects
     const Renderer* analyticRRect() const { return &fAnalyticRRect; }
 
@@ -117,6 +120,7 @@ private:
     Renderer fBitmapText[2];  // bool isLCD
     Renderer fSDFText[2]; // bool isLCD
 
+    Renderer fNonAARect;
     Renderer fAnalyticRRect;
     Renderer fPerEdgeAAQuad;
 

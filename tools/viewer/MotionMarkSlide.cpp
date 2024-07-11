@@ -848,7 +848,10 @@ public:
 
             canvas->save();
             canvas->concat(object->transform());
-            canvas->drawImageRect(fImages[i % kImageCount], object->rect(), sampling, nullptr);
+
+            SkPaint p;
+            // p.setAntiAlias(true);
+            canvas->drawImageRect(fImages[i % kImageCount], object->rect(), sampling, &p);
 
             canvas->restore();
         }
