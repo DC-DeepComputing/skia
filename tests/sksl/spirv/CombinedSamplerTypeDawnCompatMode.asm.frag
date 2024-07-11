@@ -1,3 +1,8 @@
+### Compilation failed:
+
+error: SPIR-V validation error: Too many OpFunctionParameters for 2: expected 0 based on the function's type
+  %21 = OpFunctionParameter %_ptr_UniformConstant_13
+
                OpCapability Shader
           %1 = OpExtInstImport "GLSL.std.450"
                OpMemoryModel Logical GLSL450
@@ -8,9 +13,11 @@
                OpName %aSampler_sampler "aSampler_sampler"
                OpName %anotherSampler_texture "anotherSampler_texture"
                OpName %anotherSampler_sampler "anotherSampler_sampler"
-               OpName %helpers_helper_h4Z "helpers_helper_h4Z"
-               OpName %helper_h4Z "helper_h4Z"
-               OpName %helper2_h4ZZ "helper2_h4ZZ"
+               OpName %helpers_helper_h4Z_aSampler "helpers_helper_h4Z_aSampler"
+               OpName %helpers_helper_h4Z_anotherSampler "helpers_helper_h4Z_anotherSampler"
+               OpName %helper_h4Z_aSampler "helper_h4Z_aSampler"
+               OpName %helper_h4Z_anotherSampler "helper_h4Z_anotherSampler"
+               OpName %helper2_h4ZZ_anotherSampler_aSampler "helper2_h4ZZ_anotherSampler_aSampler"
                OpName %main "main"
                OpDecorate %sk_FragColor RelaxedPrecision
                OpDecorate %sk_FragColor Location 0
@@ -23,72 +30,90 @@
                OpDecorate %anotherSampler_texture DescriptorSet 1
                OpDecorate %anotherSampler_sampler Binding 5
                OpDecorate %anotherSampler_sampler DescriptorSet 1
-               OpDecorate %45 RelaxedPrecision
-               OpDecorate %56 RelaxedPrecision
-               OpDecorate %58 RelaxedPrecision
+               OpDecorate %57 RelaxedPrecision
+               OpDecorate %68 RelaxedPrecision
+               OpDecorate %70 RelaxedPrecision
       %float = OpTypeFloat 32
     %v4float = OpTypeVector %float 4
 %_ptr_Output_v4float = OpTypePointer Output %v4float
 %sk_FragColor = OpVariable %_ptr_Output_v4float Output
-         %11 = OpTypeImage %float 2D 0 0 0 1 Unknown
-%_ptr_UniformConstant_11 = OpTypePointer UniformConstant %11
-%aSampler_texture = OpVariable %_ptr_UniformConstant_11 UniformConstant
-         %14 = OpTypeSampler
-%_ptr_UniformConstant_14 = OpTypePointer UniformConstant %14
-%aSampler_sampler = OpVariable %_ptr_UniformConstant_14 UniformConstant
-%anotherSampler_texture = OpVariable %_ptr_UniformConstant_11 UniformConstant
-%anotherSampler_sampler = OpVariable %_ptr_UniformConstant_14 UniformConstant
-         %18 = OpTypeFunction %v4float %_ptr_UniformConstant_11 %_ptr_UniformConstant_14
-         %26 = OpTypeSampledImage %11
+         %13 = OpTypeImage %float 2D 0 0 0 1 Unknown
+%_ptr_UniformConstant_13 = OpTypePointer UniformConstant %13
+%aSampler_texture = OpVariable %_ptr_UniformConstant_13 UniformConstant
+         %16 = OpTypeSampler
+%_ptr_UniformConstant_16 = OpTypePointer UniformConstant %16
+%aSampler_sampler = OpVariable %_ptr_UniformConstant_16 UniformConstant
+%anotherSampler_texture = OpVariable %_ptr_UniformConstant_13 UniformConstant
+%anotherSampler_sampler = OpVariable %_ptr_UniformConstant_16 UniformConstant
+         %20 = OpTypeFunction %v4float
+         %28 = OpTypeSampledImage %13
     %float_1 = OpConstant %float 1
     %v2float = OpTypeVector %float 2
-         %29 = OpConstantComposite %v2float %float_1 %float_1
-         %34 = OpTypeFunction %v4float %_ptr_UniformConstant_11 %_ptr_UniformConstant_14 %_ptr_UniformConstant_11 %_ptr_UniformConstant_14
+         %31 = OpConstantComposite %v2float %float_1 %float_1
        %void = OpTypeVoid
-         %47 = OpTypeFunction %void
+         %59 = OpTypeFunction %void
     %float_0 = OpConstant %float 0
-         %54 = OpConstantComposite %v2float %float_0 %float_0
-%helpers_helper_h4Z = OpFunction %v4float None %18
-         %19 = OpFunctionParameter %_ptr_UniformConstant_11
-         %20 = OpFunctionParameter %_ptr_UniformConstant_14
-         %21 = OpLabel
-         %23 = OpLoad %11 %19
-         %24 = OpLoad %14 %20
-         %25 = OpSampledImage %26 %23 %24
-         %22 = OpImageSampleImplicitLod %v4float %25 %29
-               OpReturnValue %22
+         %66 = OpConstantComposite %v2float %float_0 %float_0
+%helpers_helper_h4Z_aSampler = OpFunction %v4float None %20
+         %21 = OpFunctionParameter %_ptr_UniformConstant_13
+         %22 = OpFunctionParameter %_ptr_UniformConstant_16
+         %23 = OpLabel
+         %25 = OpLoad %13 %21
+         %26 = OpLoad %16 %22
+         %27 = OpSampledImage %28 %25 %26
+         %24 = OpImageSampleImplicitLod %v4float %27 %31
+               OpReturnValue %24
                OpFunctionEnd
- %helper_h4Z = OpFunction %v4float None %18
-         %30 = OpFunctionParameter %_ptr_UniformConstant_11
-         %31 = OpFunctionParameter %_ptr_UniformConstant_14
-         %32 = OpLabel
-         %33 = OpFunctionCall %v4float %helpers_helper_h4Z %30 %31
-               OpReturnValue %33
+%helpers_helper_h4Z_anotherSampler = OpFunction %v4float None %20
+         %32 = OpFunctionParameter %_ptr_UniformConstant_13
+         %33 = OpFunctionParameter %_ptr_UniformConstant_16
+         %34 = OpLabel
+         %36 = OpLoad %13 %32
+         %37 = OpLoad %16 %33
+         %38 = OpSampledImage %28 %36 %37
+         %35 = OpImageSampleImplicitLod %v4float %38 %31
+               OpReturnValue %35
                OpFunctionEnd
-%helper2_h4ZZ = OpFunction %v4float None %34
-         %35 = OpFunctionParameter %_ptr_UniformConstant_11
-         %36 = OpFunctionParameter %_ptr_UniformConstant_14
-         %37 = OpFunctionParameter %_ptr_UniformConstant_11
-         %38 = OpFunctionParameter %_ptr_UniformConstant_14
-         %39 = OpLabel
-         %41 = OpLoad %11 %35
-         %42 = OpLoad %14 %36
-         %43 = OpSampledImage %26 %41 %42
-         %40 = OpImageSampleImplicitLod %v4float %43 %29
-         %44 = OpFunctionCall %v4float %helper_h4Z %37 %38
-         %45 = OpFAdd %v4float %40 %44
-               OpReturnValue %45
+%helper_h4Z_aSampler = OpFunction %v4float None %20
+         %39 = OpFunctionParameter %_ptr_UniformConstant_13
+         %40 = OpFunctionParameter %_ptr_UniformConstant_16
+         %41 = OpLabel
+         %42 = OpFunctionCall %v4float %helpers_helper_h4Z_aSampler
+               OpReturnValue %42
                OpFunctionEnd
-       %main = OpFunction %void None %47
-         %48 = OpLabel
-         %50 = OpLoad %11 %aSampler_texture
-         %51 = OpLoad %14 %aSampler_sampler
-         %52 = OpSampledImage %26 %50 %51
-         %49 = OpImageSampleImplicitLod %v4float %52 %54
-         %55 = OpFunctionCall %v4float %helper_h4Z %aSampler_texture %aSampler_sampler
-         %56 = OpFAdd %v4float %49 %55
-         %57 = OpFunctionCall %v4float %helper2_h4ZZ %aSampler_texture %aSampler_sampler %anotherSampler_texture %anotherSampler_sampler
-         %58 = OpFAdd %v4float %56 %57
-               OpStore %sk_FragColor %58
+%helper_h4Z_anotherSampler = OpFunction %v4float None %20
+         %43 = OpFunctionParameter %_ptr_UniformConstant_13
+         %44 = OpFunctionParameter %_ptr_UniformConstant_16
+         %45 = OpLabel
+         %46 = OpFunctionCall %v4float %helpers_helper_h4Z_anotherSampler
+               OpReturnValue %46
+               OpFunctionEnd
+%helper2_h4ZZ_anotherSampler_aSampler = OpFunction %v4float None %20
+         %47 = OpFunctionParameter %_ptr_UniformConstant_13
+         %48 = OpFunctionParameter %_ptr_UniformConstant_16
+         %49 = OpFunctionParameter %_ptr_UniformConstant_13
+         %50 = OpFunctionParameter %_ptr_UniformConstant_16
+         %51 = OpLabel
+         %53 = OpLoad %13 %47
+         %54 = OpLoad %16 %48
+         %55 = OpSampledImage %28 %53 %54
+         %52 = OpImageSampleImplicitLod %v4float %55 %31
+         %56 = OpFunctionCall %v4float %helper_h4Z_anotherSampler
+         %57 = OpFAdd %v4float %52 %56
+               OpReturnValue %57
+               OpFunctionEnd
+       %main = OpFunction %void None %59
+         %60 = OpLabel
+         %62 = OpLoad %13 %aSampler_texture
+         %63 = OpLoad %16 %aSampler_sampler
+         %64 = OpSampledImage %28 %62 %63
+         %61 = OpImageSampleImplicitLod %v4float %64 %66
+         %67 = OpFunctionCall %v4float %helper_h4Z_aSampler
+         %68 = OpFAdd %v4float %61 %67
+         %69 = OpFunctionCall %v4float %helper2_h4ZZ_anotherSampler_aSampler
+         %70 = OpFAdd %v4float %68 %69
+               OpStore %sk_FragColor %70
                OpReturn
                OpFunctionEnd
+
+1 error
