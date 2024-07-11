@@ -52,6 +52,24 @@
       "parentUuid": "7e056b9d_beb93b31",
       "revId": "25ae5afeec07326415430baa022d41a3837c4684",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "16189ab3_fe0f21d3",
+        "filename": "PRESUBMIT.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-07-11T12:56:36Z",
+      "side": 1,
+      "message": "Done for real. (upload got stuck)",
+      "parentUuid": "ac182c4f_f17bff8e",
+      "revId": "25ae5afeec07326415430baa022d41a3837c4684",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
