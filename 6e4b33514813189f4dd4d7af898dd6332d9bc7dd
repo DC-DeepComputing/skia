@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "47a56585_b156eaa1",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1065,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-07-11T21:36:04Z",
+      "side": 1,
+      "message": "No longer relevant since sk_color_space_transform now handles alpha swizzle.",
+      "parentUuid": "528c6d68_5efc9a40",
+      "range": {
+        "startLine": 1065,
+        "startChar": 42,
+        "endLine": 1065,
+        "endChar": 59
+      },
+      "revId": "6e4b33514813189f4dd4d7af898dd6332d9bc7dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5093a950_d3c6634e",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "771ea2af_0faa1efc",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1089,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-07-11T21:36:04Z",
+      "side": 1,
+      "message": "I\u0027ve consolidated to one block that also supports swizzles.",
+      "parentUuid": "5093a950_d3c6634e",
+      "range": {
+        "startLine": 1089,
+        "startChar": 2,
+        "endLine": 1089,
+        "endChar": 93
+      },
+      "revId": "6e4b33514813189f4dd4d7af898dd6332d9bc7dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4f699eb0_c9097044",
@@ -77,6 +125,30 @@
       "writtenOn": "2024-07-11T19:58:38Z",
       "side": 1,
       "message": "WDYT about having this just be the behavior `sk_color_space_transform`? Both snippets have the same amount of data being uploaded. We do add a possible branch on whether or not to apply the swizzle but get the benefit of the early out for when `flags \u003d\u003d 0`.",
+      "range": {
+        "startLine": 121,
+        "startChar": 12,
+        "endLine": 121,
+        "endChar": 44
+      },
+      "revId": "6e4b33514813189f4dd4d7af898dd6332d9bc7dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7ae0856_79abafcb",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-07-11T21:36:04Z",
+      "side": 1,
+      "message": "I don\u0027t recall why I made them separate. I\u0027m consolidating them because it\u0027s certainly cleaner this way and it\u0027ll be clearer what the best approach is when I look at optimizing all this.",
+      "parentUuid": "4f699eb0_c9097044",
       "range": {
         "startLine": 121,
         "startChar": 12,
