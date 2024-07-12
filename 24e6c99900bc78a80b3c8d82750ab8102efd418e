@@ -88,6 +88,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7fd8fa7c_a34beec1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-12T18:24:20Z",
+      "side": 1,
+      "message": "I don\u0027t think it\u0027s necessary, in this case the unit test validates the fix and we don\u0027t need to put more gold images into the system if there are analytic ways to verify correct behavior IMO.",
+      "parentUuid": "e79d986a_b654580a",
+      "revId": "24e6c99900bc78a80b3c8d82750ab8102efd418e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0e7c3f55_e8f3be2a",
@@ -101,6 +119,30 @@
       "writtenOn": "2024-07-12T17:50:45Z",
       "side": 1,
       "message": "Not a new concern, but it feels like we should be `SkASSERT`ing this instead of just claiming it in a comment.",
+      "range": {
+        "startLine": 493,
+        "startChar": 0,
+        "endLine": 495,
+        "endChar": 0
+      },
+      "revId": "24e6c99900bc78a80b3c8d82750ab8102efd418e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "091a088c_8e1562b1",
+        "filename": "src/core/SkRRect.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 495,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-12T18:24:20Z",
+      "side": 1,
+      "message": "I added an assert that the scale components are 0 and the skew components are non-zero 0. Since there can be non-uniform scales applied to the rotated axes it\u0027s tricky to get a more explicit assert than that.",
+      "parentUuid": "0e7c3f55_e8f3be2a",
       "range": {
         "startLine": 493,
         "startChar": 0,
@@ -134,6 +176,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f64dbf21_3d3c48b7",
+        "filename": "tests/RoundRectTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 823,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-12T18:24:20Z",
+      "side": 1,
+      "message": "Oh yes, it\u0027s meant to be the same as \"flip x, rotate 90\" (which is now the test case just above it). It\u0027s kind of funny how I went test by test updating the pre/vs post expectations but due to the mirroring, it worked out to basically a cut and paste.",
+      "parentUuid": "ceafb1e4_a2d5ea4a",
+      "range": {
+        "startLine": 823,
+        "startChar": 27,
+        "endLine": 823,
+        "endChar": 47
+      },
+      "revId": "24e6c99900bc78a80b3c8d82750ab8102efd418e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a3d5d654_107dcf62",
@@ -157,6 +223,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b4f4f24_dd1cac24",
+        "filename": "tests/RoundRectTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 858,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-12T18:24:20Z",
+      "side": 1,
+      "message": "Technically yes, so I have changed it to show a single step of flipX+Y. Originally I kept it separate to see how the two flips arrived at the final form and flipX+flipY is identical to flipY+flipX.",
+      "parentUuid": "a3d5d654_107dcf62",
+      "range": {
+        "startLine": 858,
+        "startChar": 34,
+        "endLine": 858,
+        "endChar": 56
+      },
+      "revId": "24e6c99900bc78a80b3c8d82750ab8102efd418e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0cd05bc0_0ea27e6b",
@@ -170,6 +260,30 @@
       "writtenOn": "2024-07-12T18:09:53Z",
       "side": 1,
       "message": "Again, flip X/Y happens in the same step",
+      "range": {
+        "startLine": 897,
+        "startChar": 35,
+        "endLine": 897,
+        "endChar": 56
+      },
+      "revId": "24e6c99900bc78a80b3c8d82750ab8102efd418e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8c41af7_f566b13a",
+        "filename": "tests/RoundRectTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 897,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-12T18:24:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0cd05bc0_0ea27e6b",
       "range": {
         "startLine": 897,
         "startChar": 35,
