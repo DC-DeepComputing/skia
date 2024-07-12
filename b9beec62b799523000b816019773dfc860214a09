@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef4718c0_a7494d20",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 291,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-07-12T13:58:55Z",
+      "side": 1,
+      "message": "Can this be removed then ?",
+      "range": {
+        "startLine": 291,
+        "startChar": 76,
+        "endLine": 291,
+        "endChar": 98
+      },
+      "revId": "b9beec62b799523000b816019773dfc860214a09",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
