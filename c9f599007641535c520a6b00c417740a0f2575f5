@@ -22,6 +22,30 @@
       },
       "revId": "c9f599007641535c520a6b00c417740a0f2575f5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "97991345_494ee8e6",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 1767,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-12T14:28:06Z",
+      "side": 1,
+      "message": "Yes this is happening in the following CL which is why I made the `fForceStd430ArrayLayout` cap only set if SSBOs layout are also set to std430 and enabled.",
+      "parentUuid": "ace2e9ce_97d29a8c",
+      "range": {
+        "startLine": 1767,
+        "startChar": 44,
+        "endLine": 1767,
+        "endChar": 56
+      },
+      "revId": "c9f599007641535c520a6b00c417740a0f2575f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
