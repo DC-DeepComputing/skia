@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bfa8bb10_8931f15f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-12T17:46:15Z",
+      "side": 1,
+      "message": "I also confirmed locally that the fiddle in the bug report rendered correctly on the GPU after this change.",
+      "revId": "24e6c99900bc78a80b3c8d82750ab8102efd418e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
