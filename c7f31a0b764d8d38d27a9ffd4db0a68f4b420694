@@ -96,6 +96,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9ec140e_14c09b18",
+        "filename": "site/docs/user/build.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-07-12T18:39:57Z",
+      "side": 1,
+      "message": "As I was writing this, I noticed that I already said a *recent* version of Java, so I\u0027ve used that language for the NDK as well. How\u0027s this sound?",
+      "parentUuid": "1c5ab8e0_2d0545df",
+      "range": {
+        "startLine": 123,
+        "startChar": 0,
+        "endLine": 123,
+        "endChar": 59
+      },
+      "revId": "c7f31a0b764d8d38d27a9ffd4db0a68f4b420694",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "91f5d649_e2cf9474",
