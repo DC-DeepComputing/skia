@@ -46,6 +46,30 @@
       },
       "revId": "c59c16dfb7fc4b12f364fbc2ed31f01eab0e0bd4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dfe98770_bb0cd964",
+        "filename": "tests/BlendTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-12T14:24:00Z",
+      "side": 1,
+      "message": "Rob reminded me that `SkColorSetRGB` implies opaque alpha. Done.",
+      "parentUuid": "3c616b84_44c71fd1",
+      "range": {
+        "startLine": 175,
+        "startChar": 24,
+        "endLine": 175,
+        "endChar": 81
+      },
+      "revId": "c59c16dfb7fc4b12f364fbc2ed31f01eab0e0bd4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
