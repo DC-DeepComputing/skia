@@ -22,6 +22,30 @@
       },
       "revId": "c59c16dfb7fc4b12f364fbc2ed31f01eab0e0bd4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c616b84_44c71fd1",
+        "filename": "tests/BlendTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-12T13:52:31Z",
+      "side": 1,
+      "message": "We aren\u0027t checking the alpha values, so I\u0027m not even sure what we would expect in that channel. I think it\u0027d be better to check the alpha channel and log it, if you know what the expectation is.",
+      "parentUuid": "3ebbceb6_dd8a15bd",
+      "range": {
+        "startLine": 175,
+        "startChar": 24,
+        "endLine": 175,
+        "endChar": 81
+      },
+      "revId": "c59c16dfb7fc4b12f364fbc2ed31f01eab0e0bd4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
