@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a185d5cf_8927385c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-12T15:22:15Z",
+      "side": 1,
+      "message": "I haven\u0027t got task scheduler to actually run the failing d3d12 job to confirm, but this is the main way in which I can imagine we were encountering an \u0027undefined\u0027 texture format after Sunny\u0027s change.",
+      "revId": "b10c3141bdc26d691b97a47feba5ac9fddd75fde",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
