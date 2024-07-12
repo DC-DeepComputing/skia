@@ -22,6 +22,30 @@
       },
       "revId": "df0dc672b09f22212c1463caa4f7bfc04719189e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ee5c8a2_7d7c99b7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-07-12T18:50:32Z",
+      "side": 1,
+      "message": "```\nconst MtlTextureSpec\u0026 GetMtlTextureSpec2(const TextureInfo\u0026 info) {\n    SkASSERT(info.isValid() \u0026\u0026 info.backend() \u003d\u003d skgpu::BackendApi::kMetal);\n    const MtlTextureInfoData* mtlData \u003d get_and_cast_data(info);\n    SkASSERT(mtlData);\n    return mtlData-\u003espec();\n}\n```\n\n```\n../../src/gpu/graphite/mtl/MtlTextureInfo.mm:115:12: warning: returning reference to local temporary object [-Wreturn-stack-address]\n    return mtlData-\u003espec();\n           ^~~~~~~~~~~~~~~\n1 warning generated.\n```",
+      "parentUuid": "235387fd_8e2e7528",
+      "range": {
+        "startLine": 22,
+        "startChar": 36,
+        "endLine": 23,
+        "endChar": 33
+      },
+      "revId": "df0dc672b09f22212c1463caa4f7bfc04719189e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
