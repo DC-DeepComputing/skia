@@ -496,8 +496,10 @@ bool SkRRect::transform(const SkMatrix& matrix, SkRRect* dst) const {
         const bool isClockwise = matrix.getSkewX() < 0;
 
         // The matrix location for scale changes if there is a rotation.
-        xScale = matrix.getSkewY() * (isClockwise ? 1 : -1);
-        yScale = matrix.getSkewX() * (isClockwise ? -1 : 1);
+        // xScale and yScale represent scales applied to the dst radii, so we store the src x scale
+        // in yScale and vice versa.
+        yScale = matrix.getSkewY() * (isClockwise ? 1 : -1);
+        xScale = matrix.getSkewX() * (isClockwise ? -1 : 1);
 
         const int dir = isClockwise ? 3 : 1;
         for (int i = 0; i < 4; ++i) {
