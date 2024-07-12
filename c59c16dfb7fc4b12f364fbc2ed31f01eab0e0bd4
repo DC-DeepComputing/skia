@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ebbceb6_dd8a15bd",
+        "filename": "tests/BlendTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-07-12T13:49:53Z",
+      "side": 1,
+      "message": "Just out of paranoia, do you think it is worth adding logging of the alpha values here?",
+      "range": {
+        "startLine": 175,
+        "startChar": 24,
+        "endLine": 175,
+        "endChar": 81
+      },
+      "revId": "c59c16dfb7fc4b12f364fbc2ed31f01eab0e0bd4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
