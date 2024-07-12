@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ace2e9ce_97d29a8c",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 1767,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-12T13:37:34Z",
+      "side": 1,
+      "message": "structs should also be forced to std430, right? Is this happening automatically elsewhere?",
+      "range": {
+        "startLine": 1767,
+        "startChar": 44,
+        "endLine": 1767,
+        "endChar": 56
+      },
+      "revId": "c9f599007641535c520a6b00c417740a0f2575f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
