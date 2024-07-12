@@ -48,9 +48,7 @@ BackendSemaphore& BackendSemaphore::operator=(const BackendSemaphore& that) {
 
 #ifdef SK_VULKAN
 BackendSemaphore::BackendSemaphore(VkSemaphore semaphore)
-        : fBackend(BackendApi::kVulkan)
-        , fIsValid(true)
-        , fVkSemaphore(semaphore) {}
+        : fBackend(BackendApi::kVulkan), fIsValid(true), fVkSemaphore(semaphore) {}
 
 VkSemaphore BackendSemaphore::getVkSemaphore() const {
     if (this->isValid() && this->backend() == BackendApi::kVulkan) {
