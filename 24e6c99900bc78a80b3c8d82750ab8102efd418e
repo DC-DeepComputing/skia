@@ -16,6 +16,23 @@
       "message": "I also confirmed locally that the fiddle in the bug report rendered correctly on the GPU after this change.",
       "revId": "24e6c99900bc78a80b3c8d82750ab8102efd418e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b7b4376_c5e2e08c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-07-12T17:48:58Z",
+      "side": 1,
+      "message": "Driveby: I really appreciate the improvements you made to the unit test coverage 😊",
+      "revId": "24e6c99900bc78a80b3c8d82750ab8102efd418e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
