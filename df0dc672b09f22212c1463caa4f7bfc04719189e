@@ -46,6 +46,30 @@
       },
       "revId": "df0dc672b09f22212c1463caa4f7bfc04719189e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7b4aec9_003768ad",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-07-12T19:05:06Z",
+      "side": 1,
+      "message": "I removed the ref from the callers as per your second suggestion.",
+      "parentUuid": "2ee5c8a2_7d7c99b7",
+      "range": {
+        "startLine": 22,
+        "startChar": 36,
+        "endLine": 23,
+        "endChar": 33
+      },
+      "revId": "df0dc672b09f22212c1463caa4f7bfc04719189e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
