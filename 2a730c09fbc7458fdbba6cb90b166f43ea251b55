@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "20d6f3f0_9a3a8a4a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 21754
+      },
+      "writtenOn": "2024-07-12T16:38:54Z",
+      "side": 1,
+      "message": "lgtm",
+      "revId": "2a730c09fbc7458fdbba6cb90b166f43ea251b55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5941c9b_c71a8657",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 904,
+      "author": {
+        "id": 21754
+      },
+      "writtenOn": "2024-07-12T16:38:54Z",
+      "side": 1,
+      "message": "nit:\n```suggestion\n    // 11 bits for the format indices and 4 bits for sample count.\n```",
+      "range": {
+        "startLine": 904,
+        "startChar": 7,
+        "endLine": 904,
+        "endChar": 9
+      },
+      "revId": "2a730c09fbc7458fdbba6cb90b166f43ea251b55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
