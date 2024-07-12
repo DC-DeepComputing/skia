@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1216d7c3_15728203",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 873,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-12T15:53:44Z",
+      "side": 1,
+      "message": "Ah yes, since even if size(kFormats) \u003d\u003d kUnusedAttachmentIndex, the max real index would be (kUnusedAttachmentIndex-1) so everything still fits into kFormatBits.",
+      "parentUuid": "158e00ac_26372ebb",
+      "range": {
+        "startLine": 873,
+        "startChar": 38,
+        "endLine": 873,
+        "endChar": 39
+      },
+      "revId": "b10c3141bdc26d691b97a47feba5ac9fddd75fde",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "623f8fc0_58beeab8",
@@ -54,6 +78,30 @@
       "writtenOn": "2024-07-12T15:40:30Z",
       "side": 1,
       "message": "Isn\u0027t just just a duplicate of the above assert ?",
+      "range": {
+        "startLine": 882,
+        "startChar": 0,
+        "endLine": 882,
+        "endChar": 69
+      },
+      "revId": "b10c3141bdc26d691b97a47feba5ac9fddd75fde",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bfb32412_73d503a6",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 882,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-12T15:53:44Z",
+      "side": 1,
+      "message": "Oops that was stale.",
+      "parentUuid": "623f8fc0_58beeab8",
       "range": {
         "startLine": 882,
         "startChar": 0,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba603460_75aba6a8",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 886,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-12T15:53:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "10321afb_a6f1daa5",
+      "range": {
+        "startLine": 886,
+        "startChar": 13,
+        "endLine": 886,
+        "endChar": 35
+      },
+      "revId": "b10c3141bdc26d691b97a47feba5ac9fddd75fde",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d6e7f26a_6e973d98",
@@ -104,6 +176,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a0fab557_2e698191",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 905,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-12T15:53:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d6e7f26a_6e973d98",
+      "revId": "b10c3141bdc26d691b97a47feba5ac9fddd75fde",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ca14eb88_4e44d4ce",
@@ -117,6 +207,30 @@
       "writtenOn": "2024-07-12T15:40:30Z",
       "side": 1,
       "message": "Maybe numSamples to match below ? Same with the next line.",
+      "range": {
+        "startLine": 907,
+        "startChar": 23,
+        "endLine": 907,
+        "endChar": 35
+      },
+      "revId": "b10c3141bdc26d691b97a47feba5ac9fddd75fde",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b333008c_136c52a5",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 907,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-12T15:53:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ca14eb88_4e44d4ce",
       "range": {
         "startLine": 907,
         "startChar": 23,
