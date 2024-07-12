@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "61ccef4b_8f5fd4b7",
+        "filename": "src/gpu/ganesh/Device.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1505,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-07-12T14:51:57Z",
+      "side": 1,
+      "message": "There are now three copies of (some variation of) this code: This one, `VertexFiller.cpp`, and `TextBlob.cpp`. I\u0027d like to unify them in a follow-up, but there are some subtle differences, so I\u0027d like to land this first, and then spend some time thinking about how to arrange these checks.",
+      "revId": "b510488bffc7cd3da74cc7490b6937bcc1f4e926",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
