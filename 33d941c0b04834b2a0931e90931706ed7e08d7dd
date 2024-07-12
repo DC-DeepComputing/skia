@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee85fbfc_7d0e43f5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-12T15:10:56Z",
+      "side": 1,
+      "message": "Thanks for tackling this John. I believe this all does the right thing for Graphite\u0027s blend snippets since the known blends use the exact functions (e.g. `blend_plus`) and kPlus is no longer considered a coefficient blend mode (so it will not trigger the CoeffBlendMode snippet), and you\u0027ve updated the generic table blend snippet.\n\nOne weird quirk of this behavior, though, is that kPlus is still considered a coefficient blend mode in terms of `SkBlendMode::kLastCoeffMode`. And when rendering to a clamping render target like RGBA8, it technically can be coefficient based because the clamp is handled in HW.\n\nGanesh still has logic for handling that https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/gpu/ganesh/effects/GrPorterDuffXferProcessor.cpp;drc\u003dd144795a0e79a3d31173846e6b5e0eaf9d29a7a5;l\u003d396, which we need to add in Graphite still. James had started on this, so I will file a more specific bug to follow up with the plus HW blending fixes needed in graphite for him to complete.",
+      "revId": "33d941c0b04834b2a0931e90931706ed7e08d7dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
