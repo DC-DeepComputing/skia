@@ -48,7 +48,6 @@ int BlendKey(SkBlendMode mode) {
         case SkBlendMode::kSrcATop:
         case SkBlendMode::kDstATop:
         case SkBlendMode::kXor:
-        case SkBlendMode::kPlus:
             return -1;
 
         case SkBlendMode::kHue:
