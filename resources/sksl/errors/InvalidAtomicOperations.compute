@@ -1,12 +1,12 @@
-workgroup atomicUint wgCounterA;
-workgroup atomicUint wgCounterB;
+workgroup atomic_uint wgCounterA;
+workgroup atomic_uint wgCounterB;
 
 struct S {
-    atomicUint memberAtomic;
+    atomic_uint memberAtomic;
 };
 workgroup S wgStructWithAtomicMember;
-workgroup atomicUint wgAtomicArray[2];
-workgroup atomicUint wgAtomicArray2[2];
+workgroup atomic_uint wgAtomicArray[2];
+workgroup atomic_uint wgAtomicArray2[2];
 workgroup S wgStructWithAtomicMemberArray[2];
 
 struct NestedS {
@@ -16,7 +16,7 @@ workgroup NestedS wgNestedStructWithAtomicMember;
 
 void main() {
     wgCounterA = 1;
-    wgCounterA = atomicUint(1);
+    wgCounterA = atomic_uint(1);
 
     +wgCounterA;
     -wgCounterA;
@@ -58,13 +58,13 @@ void main() {
 
     uint a = wgCounterA;
     wgStructWithAtomicMember = S(1);
-    wgStructWithAtomicMember = S(atomicUint(1));
+    wgStructWithAtomicMember = S(atomic_uint(1));
     wgStructWithAtomicMember = S(wgCounterA);
 
     wgAtomicArray[0] = wgCounterA;
     wgAtomicArray[1] = wgCounterB;
     wgAtomicArray = wgAtomicArray2;
-    wgAtomicArray = atomicUint[2](wgCounterA, wgCounterB);
+    wgAtomicArray = atomic_uint[2](wgCounterA, wgCounterB);
 
     wgStructWithAtomicMemberArray[0] = wgStructWithAtomicMember;
     wgStructWithAtomicMemberArray = S[2](wgStructWithAtomicMember,
@@ -73,50 +73,50 @@ void main() {
 }
 
 /*%%*
-type mismatch: '=' cannot operate on 'atomicUint', 'int'
-cannot construct 'atomicUint'
-'+' cannot operate on 'atomicUint'
-'-' cannot operate on 'atomicUint'
-'!' cannot operate on 'atomicUint'
-'~' cannot operate on 'atomicUint'
-'++' cannot operate on 'atomicUint'
-'--' cannot operate on 'atomicUint'
-'++' cannot operate on 'atomicUint'
-'--' cannot operate on 'atomicUint'
-'-' cannot operate on 'atomicUint'
-'+' cannot operate on 'atomicUint'
-assignments to opaque type 'atomicUint' are not permitted
-type mismatch: '+=' cannot operate on 'atomicUint', 'atomicUint'
-type mismatch: '-=' cannot operate on 'atomicUint', 'atomicUint'
-type mismatch: '*=' cannot operate on 'atomicUint', 'atomicUint'
-type mismatch: '/=' cannot operate on 'atomicUint', 'atomicUint'
-type mismatch: '+' cannot operate on 'atomicUint', 'int'
-type mismatch: '-' cannot operate on 'atomicUint', 'int'
-type mismatch: '*' cannot operate on 'atomicUint', 'int'
-type mismatch: '/' cannot operate on 'atomicUint', 'int'
-type mismatch: '+' cannot operate on 'atomicUint', 'atomicUint'
-type mismatch: '-' cannot operate on 'atomicUint', 'atomicUint'
-type mismatch: '*' cannot operate on 'atomicUint', 'atomicUint'
-type mismatch: '/' cannot operate on 'atomicUint', 'atomicUint'
-type mismatch: '==' cannot operate on 'atomicUint', 'atomicUint'
-type mismatch: '!=' cannot operate on 'atomicUint', 'atomicUint'
-type mismatch: '<' cannot operate on 'atomicUint', 'atomicUint'
-type mismatch: '<=' cannot operate on 'atomicUint', 'atomicUint'
-type mismatch: '>' cannot operate on 'atomicUint', 'atomicUint'
-type mismatch: '>=' cannot operate on 'atomicUint', 'atomicUint'
-type mismatch: '&&' cannot operate on 'atomicUint', 'atomicUint'
-type mismatch: '||' cannot operate on 'atomicUint', 'atomicUint'
-type mismatch: '&' cannot operate on 'atomicUint', 'atomicUint'
-type mismatch: '|' cannot operate on 'atomicUint', 'atomicUint'
-expected 'uint', but found 'atomicUint'
+type mismatch: '=' cannot operate on 'atomic_uint', 'int'
+cannot construct 'atomic_uint'
+'+' cannot operate on 'atomic_uint'
+'-' cannot operate on 'atomic_uint'
+'!' cannot operate on 'atomic_uint'
+'~' cannot operate on 'atomic_uint'
+'++' cannot operate on 'atomic_uint'
+'--' cannot operate on 'atomic_uint'
+'++' cannot operate on 'atomic_uint'
+'--' cannot operate on 'atomic_uint'
+'-' cannot operate on 'atomic_uint'
+'+' cannot operate on 'atomic_uint'
+assignments to opaque type 'atomic_uint' are not permitted
+type mismatch: '+=' cannot operate on 'atomic_uint', 'atomic_uint'
+type mismatch: '-=' cannot operate on 'atomic_uint', 'atomic_uint'
+type mismatch: '*=' cannot operate on 'atomic_uint', 'atomic_uint'
+type mismatch: '/=' cannot operate on 'atomic_uint', 'atomic_uint'
+type mismatch: '+' cannot operate on 'atomic_uint', 'int'
+type mismatch: '-' cannot operate on 'atomic_uint', 'int'
+type mismatch: '*' cannot operate on 'atomic_uint', 'int'
+type mismatch: '/' cannot operate on 'atomic_uint', 'int'
+type mismatch: '+' cannot operate on 'atomic_uint', 'atomic_uint'
+type mismatch: '-' cannot operate on 'atomic_uint', 'atomic_uint'
+type mismatch: '*' cannot operate on 'atomic_uint', 'atomic_uint'
+type mismatch: '/' cannot operate on 'atomic_uint', 'atomic_uint'
+type mismatch: '==' cannot operate on 'atomic_uint', 'atomic_uint'
+type mismatch: '!=' cannot operate on 'atomic_uint', 'atomic_uint'
+type mismatch: '<' cannot operate on 'atomic_uint', 'atomic_uint'
+type mismatch: '<=' cannot operate on 'atomic_uint', 'atomic_uint'
+type mismatch: '>' cannot operate on 'atomic_uint', 'atomic_uint'
+type mismatch: '>=' cannot operate on 'atomic_uint', 'atomic_uint'
+type mismatch: '&&' cannot operate on 'atomic_uint', 'atomic_uint'
+type mismatch: '||' cannot operate on 'atomic_uint', 'atomic_uint'
+type mismatch: '&' cannot operate on 'atomic_uint', 'atomic_uint'
+type mismatch: '|' cannot operate on 'atomic_uint', 'atomic_uint'
+expected 'uint', but found 'atomic_uint'
 construction of struct type 'S' with atomic member is not allowed
-cannot construct 'atomicUint'
+cannot construct 'atomic_uint'
 construction of struct type 'S' with atomic member is not allowed
 construction of struct type 'S' with atomic member is not allowed
-assignments to opaque type 'atomicUint' are not permitted
-assignments to opaque type 'atomicUint' are not permitted
-assignments to opaque type 'atomicUint[2]' are not permitted
-construction of array type 'atomicUint[2]' with atomic member is not allowed
+assignments to opaque type 'atomic_uint' are not permitted
+assignments to opaque type 'atomic_uint' are not permitted
+assignments to opaque type 'atomic_uint[2]' are not permitted
+construction of array type 'atomic_uint[2]' with atomic member is not allowed
 assignments to opaque type 'S' are not permitted
 construction of array type 'S[2]' with atomic member is not allowed
 construction of struct type 'NestedS' with atomic member is not allowed
