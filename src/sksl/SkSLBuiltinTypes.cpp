@@ -209,6 +209,6 @@ BuiltinTypes::BuiltinTypes()
         , fColorFilter(Type::MakeSpecialType("colorFilter", "CF", Type::TypeKind::kColorFilter))
         , fShader(Type::MakeSpecialType("shader", "SH", Type::TypeKind::kShader))
         , fBlender(Type::MakeSpecialType("blender", "B", Type::TypeKind::kBlender))
-        , fAtomicUInt(Type::MakeAtomicType("atomicUint", "au")) {}
+        , fAtomicUInt(Type::MakeAtomicType("atomic_uint", "au")) {}
 
 }  // namespace SkSL

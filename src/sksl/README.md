@@ -71,44 +71,44 @@ MSL, SPIR-V, and WGSL, and differ from the corresponding primitives in GLSL.
 
 ## Atomics
 
-SkSL provides the `atomicUint` type. This is an opaque type that requires the use of an
+SkSL provides the `atomic_uint` type. This is an opaque type that requires the use of an
 atomic intrinsic (such as `atomicLoad`, `atomicStore`, and `atomicAdd`) to act on its value (which
 is of type `uint`).
 
-A variable with the `atomicUint` type must be declared inside a writable storage buffer block or as
+A variable with the `atomic_uint` type must be declared inside a writable storage buffer block or as
 a workgroup-shared variable. When declared inside a buffer block, it is guaranteed to conform to the
 same size and stride as a `uint`.
 
 ```
-workgroup atomicUint myLocalAtomicUint;
+workgroup atomic_uint myLocalAtomicUint;
 
 layout(set = 0, binding = 0) buffer mySSBO {
-    atomicUint myGlobalAtomicUint;
+    atomic_uint myGlobalAtomicUint;
 };
 
 ```
 
-An `atomicUint` can be declared as a struct member or the element type of an array, provided that
+An `atomic_uint` can be declared as a struct member or the element type of an array, provided that
 the struct/array type is only instantiated in a workgroup-shared or storage buffer block variable.
 
 ### Backend considerations and differences from GLSL
 
-`atomicUint` should not be confused with the GLSL [`atomic_uint` (aka Atomic
+`atomic_uint` should not be confused with the GLSL [`atomic_uint` (aka Atomic
 Counter)](https://www.khronos.org/opengl/wiki/Atomic_Counter) type. The semantics provided by
-`atomicUint` are more similar to GLSL ["Atomic Memory
+`atomic_uint` are more similar to GLSL ["Atomic Memory
 Functions"](https://www.khronos.org/opengl/wiki/Atomic_Variable_Operations)
 (see GLSL Spec v4.3, 8.11 "Atomic Memory Functions"). The key difference is that SkSL atomic
-operations only operate on a variable of type `atomicUint` while GLSL Atomic Memory Functions can
+operations only operate on a variable of type `atomic_uint` while GLSL Atomic Memory Functions can
 operate over arbitrary memory locations (such as a component of a vector).
 
-* The semantics of `atomicUint` are similar to Metal's `atomic<uint>` and WGSL's `atomic<u32>`.
-  These are the types that an `atomicUint` is translated to when targeting Metal and WGSL.
+* The semantics of `atomic_uint` are similar to Metal's `atomic<uint>` and WGSL's `atomic<u32>`.
+  These are the types that an `atomic_uint` is translated to when targeting Metal and WGSL.
 * When translated to Metal, the atomic intrinsics use relaxed memory order semantics.
 * When translated to SPIR-V, the atomic intrinsics use relaxed [memory
   semantics](https://registry.khronos.org/SPIR-V/specs/unified1/SPIRV.html#Memory_Semantics_-id-)
   (i.e. `0x0 None`). The [memory
   scope](https://registry.khronos.org/SPIR-V/specs/unified1/SPIRV.html#Scope_-id-) is either `1
-  Device` or `2 Workgroup` depending on whether the `atomicUint` is declared in a buffer block or
+  Device` or `2 Workgroup` depending on whether the `atomic_uint` is declared in a buffer block or
   workgroup variable.
 
 ## Barriers
