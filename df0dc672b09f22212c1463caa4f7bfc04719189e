@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "235387fd_8e2e7528",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-07-12T18:27:38Z",
+      "side": 1,
+      "message": "What warning were you hitting? It would be nice to have that functionality still, I think. If not, there are spots calling `GetMtlTextureSpec` and storing the result in a `const\u0026` - I\u0027d change those to just be `const MtlTextureSpec`, so the reader realizes those are value copies, rather than references keeping a temporary alive.",
+      "range": {
+        "startLine": 22,
+        "startChar": 36,
+        "endLine": 23,
+        "endChar": 33
+      },
+      "revId": "df0dc672b09f22212c1463caa4f7bfc04719189e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
