@@ -33,6 +33,65 @@
       "message": "Driveby: I really appreciate the improvements you made to the unit test coverage 😊",
       "revId": "24e6c99900bc78a80b3c8d82750ab8102efd418e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d65d3fb7_7255c7ef",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-12T17:50:45Z",
+      "side": 1,
+      "message": "+1!",
+      "parentUuid": "9b7b4376_c5e2e08c",
+      "revId": "24e6c99900bc78a80b3c8d82750ab8102efd418e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e79d986a_b654580a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-12T17:50:45Z",
+      "side": 1,
+      "message": "Should we add a GM for it? Since we know Android uses this pattern, could be worth it...",
+      "parentUuid": "bfa8bb10_8931f15f",
+      "revId": "24e6c99900bc78a80b3c8d82750ab8102efd418e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e7c3f55_e8f3be2a",
+        "filename": "src/core/SkRRect.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 495,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-12T17:50:45Z",
+      "side": 1,
+      "message": "Not a new concern, but it feels like we should be `SkASSERT`ing this instead of just claiming it in a comment.",
+      "range": {
+        "startLine": 493,
+        "startChar": 0,
+        "endLine": 495,
+        "endChar": 0
+      },
+      "revId": "24e6c99900bc78a80b3c8d82750ab8102efd418e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
