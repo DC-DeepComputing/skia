@@ -92,6 +92,29 @@
       },
       "revId": "24e6c99900bc78a80b3c8d82750ab8102efd418e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ceafb1e4_a2d5ea4a",
+        "filename": "tests/RoundRectTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 823,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-12T18:01:03Z",
+      "side": 1,
+      "message": "Did you intend to reverse the order here? \"Rotate 90, Flip Y\" isn\u0027t the same as \"Rotate 90, Flip X\" AFAICS.",
+      "range": {
+        "startLine": 823,
+        "startChar": 27,
+        "endLine": 823,
+        "endChar": 47
+      },
+      "revId": "24e6c99900bc78a80b3c8d82750ab8102efd418e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
