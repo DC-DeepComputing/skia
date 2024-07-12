@@ -19,31 +19,31 @@
 
 namespace skgpu::graphite {
 
-TextureInfo::TextureInfo() {};
+TextureInfo::TextureInfo(){};
 TextureInfo::~TextureInfo() = default;
 
 #ifdef SK_DAWN
 TextureInfo::TextureInfo(const DawnTextureInfo& dawnInfo)
-            : fBackend(BackendApi::kDawn)
-            , fValid(true)
-            , fSampleCount(dawnInfo.fSampleCount)
-            , fMipmapped(dawnInfo.fMipmapped)
-            , fProtected(Protected::kNo)
-            , fDawnSpec(dawnInfo) {}
+        : fBackend(BackendApi::kDawn)
+        , fValid(true)
+        , fSampleCount(dawnInfo.fSampleCount)
+        , fMipmapped(dawnInfo.fMipmapped)
+        , fProtected(Protected::kNo)
+        , fDawnSpec(dawnInfo) {}
 #endif
 
 #ifdef SK_VULKAN
 TextureInfo::TextureInfo(const VulkanTextureInfo& vkInfo)
-            : fBackend(BackendApi::kVulkan)
-            , fValid(true)
-            , fSampleCount(vkInfo.fSampleCount)
-            , fMipmapped(vkInfo.fMipmapped)
-            , fProtected(Protected::kNo)
-            , fVkSpec(vkInfo) {
-        if (vkInfo.fFlags & VK_IMAGE_CREATE_PROTECTED_BIT) {
-            fProtected = Protected::kYes;
-        }
+        : fBackend(BackendApi::kVulkan)
+        , fValid(true)
+        , fSampleCount(vkInfo.fSampleCount)
+        , fMipmapped(vkInfo.fMipmapped)
+        , fProtected(Protected::kNo)
+        , fVkSpec(vkInfo) {
+    if (vkInfo.fFlags & VK_IMAGE_CREATE_PROTECTED_BIT) {
+        fProtected = Protected::kYes;
     }
+}
 #endif
 
 TextureInfo::TextureInfo(const TextureInfo& that)

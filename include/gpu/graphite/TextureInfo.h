@@ -40,7 +40,7 @@ public:
 #endif
 
 #if defined(SK_METAL) && !defined(SK_DISABLE_LEGACY_TEXTURE_INFO_FUNCS)
-        TextureInfo(const MtlTextureInfo& mtlInfo);
+    TextureInfo(const MtlTextureInfo& mtlInfo);
 #endif
 
 #ifdef SK_VULKAN
