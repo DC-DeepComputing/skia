@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9cc4f8f4_5c211900",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 3172,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-12T13:24:10Z",
+      "side": 1,
+      "message": "that are consistent",
+      "range": {
+        "startLine": 3172,
+        "startChar": 67,
+        "endLine": 3172,
+        "endChar": 82
+      },
+      "revId": "fe2e694328a64d8d3cbc556f969546aa32c4c3c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
