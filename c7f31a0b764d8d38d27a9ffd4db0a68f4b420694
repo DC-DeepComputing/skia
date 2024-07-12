@@ -72,6 +72,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c5ab8e0_2d0545df",
+        "filename": "site/docs/user/build.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2024-07-12T15:53:22Z",
+      "side": 1,
+      "message": "I like your edit, that makes sense and is way more future proof.",
+      "parentUuid": "2f30b5b7_c706d657",
+      "range": {
+        "startLine": 123,
+        "startChar": 0,
+        "endLine": 123,
+        "endChar": 59
+      },
+      "revId": "c7f31a0b764d8d38d27a9ffd4db0a68f4b420694",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "91f5d649_e2cf9474",
@@ -133,6 +157,30 @@
       "side": 1,
       "message": "But maybe you had Java installed another way?\n\nI kinda think it\u0027s nice to propose a solution - I assumed Java was installed some other way, but I really don\u0027t remember anymore, and maybe I had some other way to update it, but I have no idea what that would be.",
       "parentUuid": "b091b8d8_f6b98708",
+      "range": {
+        "startLine": 124,
+        "startChar": 10,
+        "endLine": 124,
+        "endChar": 61
+      },
+      "revId": "c7f31a0b764d8d38d27a9ffd4db0a68f4b420694",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b513779a_d2b73f05",
+        "filename": "site/docs/user/build.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2024-07-12T15:53:22Z",
+      "side": 1,
+      "message": "I like the idea of having a solution, and I just looked into it more and yes, you do need the JDK separately from the Android SDK and NDK. It\u0027s good as is.",
+      "parentUuid": "4842f6db_95b6494a",
       "range": {
         "startLine": 124,
         "startChar": 10,
