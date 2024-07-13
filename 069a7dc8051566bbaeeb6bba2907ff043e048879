@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "49a5724d_07e59d33",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-13T02:54:06Z",
+      "side": 1,
+      "message": "And I missed the 90/270 case in kRectStaysRect types, so it\u0027s probably worth a re-look",
+      "revId": "069a7dc8051566bbaeeb6bba2907ff043e048879",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
