@@ -39,6 +39,30 @@
       },
       "revId": "2a730c09fbc7458fdbba6cb90b166f43ea251b55",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "457ce5de_c0524073",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 904,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-13T01:21:10Z",
+      "side": 1,
+      "message": "I just removed that whole comment since the bit counts are now defined above.",
+      "parentUuid": "a5941c9b_c71a8657",
+      "range": {
+        "startLine": 904,
+        "startChar": 7,
+        "endLine": 904,
+        "endChar": 9
+      },
+      "revId": "2a730c09fbc7458fdbba6cb90b166f43ea251b55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

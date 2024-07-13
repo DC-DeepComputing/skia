@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "19910372_aaccd9a4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-13T01:21:10Z",
+      "side": 1,
+      "message": "On PS3, the debug d3d12 build was able to get past the `xfermodes` GM that was failing on the tree, so this does in fact fix the issue.",
+      "revId": "ae2e37694f45c0ad34118c3b782feddd8ee8c24d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
