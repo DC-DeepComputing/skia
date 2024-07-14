@@ -871,13 +871,13 @@ std::pair<sk_sp<SkBlender>, sk_sp<PrecompileBlender>> combo_blender() {
     auto [dst, dstO] = dest_blender();
 
     SkRuntimeEffect::ChildPtr children[] = { src, dst };
-    const sk_sp<PrecompileBase> childOptions[] = { srcO, dstO };
 
     const float kUniforms[] = { 1.0f };
 
     sk_sp<SkData> uniforms = SkData::MakeWithCopy(kUniforms, sizeof(kUniforms));
     sk_sp<SkBlender> b = sComboEffect->makeBlender(std::move(uniforms), children);
-    sk_sp<PrecompileBlender> o = MakePrecompileBlender(sk_ref_sp(sComboEffect), { childOptions });
+    sk_sp<PrecompileBlender> o = MakePrecompileBlender(sk_ref_sp(sComboEffect),
+                                                       { { srcO }, { dstO } });
     return { std::move(b) , std::move(o) };
 }
 
@@ -1720,6 +1720,35 @@ void check_draw(skiatest::Reporter* reporter,
 #endif // SK_DEBUG
 }
 
+KeyContext create_key_context(Context* context, RuntimeEffectDictionary* rtDict) {
+    ShaderCodeDictionary* dict = context->priv().shaderCodeDictionary();
+
+    SkColorInfo destColorInfo = SkColorInfo(kRGBA_8888_SkColorType, kPremul_SkAlphaType,
+                                            SkColorSpace::MakeSRGB());
+
+    auto dstTexInfo = context->priv().caps()->getDefaultSampledTextureInfo(
+            kRGBA_8888_SkColorType,
+            skgpu::Mipmapped::kNo,
+            skgpu::Protected::kNo,
+            skgpu::Renderable::kNo);
+    // Use Budgeted::kYes to avoid instantiating the proxy immediately; this test doesn't need
+    // a full resource.
+    sk_sp<TextureProxy> fakeDstTexture = TextureProxy::Make(context->priv().caps(),
+                                                            context->priv().resourceProvider(),
+                                                            SkISize::Make(1, 1),
+                                                            dstTexInfo,
+                                                            "PaintParamsKeyTestFakeDstTexture",
+                                                            skgpu::Budgeted::kYes);
+    constexpr SkIPoint kFakeDstOffset = SkIPoint::Make(0, 0);
+
+    return KeyContext(context->priv().caps(),
+                      dict,
+                      rtDict,
+                      destColorInfo,
+                      fakeDstTexture,
+                      kFakeDstOffset);
+}
+
 } // anonymous namespace
 
 void run_test(skiatest::Reporter*,
@@ -1746,34 +1775,9 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
                                                testContext,
                                                true,
                                                CtsEnforcement::kNever) {
-    ShaderCodeDictionary* dict = context->priv().shaderCodeDictionary();
-
-    SkColorInfo destColorInfo = SkColorInfo(kRGBA_8888_SkColorType, kPremul_SkAlphaType,
-                                            SkColorSpace::MakeSRGB());
-
     std::unique_ptr<RuntimeEffectDictionary> rtDict = std::make_unique<RuntimeEffectDictionary>();
 
-    auto dstTexInfo = context->priv().caps()->getDefaultSampledTextureInfo(
-            kRGBA_8888_SkColorType,
-            skgpu::Mipmapped::kNo,
-            skgpu::Protected::kNo,
-            skgpu::Renderable::kNo);
-    // Use Budgeted::kYes to avoid instantiating the proxy immediately; this test doesn't need
-    // a full resource.
-    sk_sp<TextureProxy> fakeDstTexture = TextureProxy::Make(context->priv().caps(),
-                                                            context->priv().resourceProvider(),
-                                                            SkISize::Make(1, 1),
-                                                            dstTexInfo,
-                                                            "PaintParamsKeyTestFakeDstTexture",
-                                                            skgpu::Budgeted::kYes);
-    constexpr SkIPoint kFakeDstOffset = SkIPoint::Make(0, 0);
-
-    KeyContext precompileKeyContext(context->priv().caps(),
-                                    dict,
-                                    rtDict.get(),
-                                    destColorInfo,
-                                    fakeDstTexture,
-                                    kFakeDstOffset);
+    KeyContext precompileKeyContext(create_key_context(context, rtDict.get()));
 
     ShaderType shaders[] = {
             ShaderType::kBlend,
