@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d5b1e282_6cf537bc",
+        "filename": "src/sksl/ir/SkSLProgram.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-15T14:37:39Z",
+      "side": 1,
+      "message": "I don\u0027t think we want these inside the `Program`. They are only needed by the backend code generator, and only briefly, and some backends don\u0027t need them at all--so we\u0027d pay to construct the data and then never use it.",
+      "range": {
+        "startLine": 167,
+        "startChar": 0,
+        "endLine": 169,
+        "endChar": 0
+      },
+      "revId": "a87d157812ec5a731f0cc02a99484bfafb57b5b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
