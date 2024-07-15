@@ -1073,12 +1073,26 @@ ColorSpaceTransformBlock::ColorSpaceTransformData::ColorSpaceTransformData(const
                                                                            SkAlphaType dstAT)
         : fSteps(src, srcAT, dst, dstAT) {}
 
+static bool is_premul_alpha_only(const ColorSpaceTransformBlock::ColorSpaceTransformData& data) {
+    // A mask value of 16 means premul only.
+    if (SkTo<int>(data.fSteps.flags.mask()) != 16) {
+        return false;
+    }
+
+    // If read swizzle is RGBA or BGRA we don't need to do alpha swizzle
+    return (data.fReadSwizzle == ReadSwizzle::kRGBA || data.fReadSwizzle == ReadSwizzle::kBGRA);
+}
+
 void ColorSpaceTransformBlock::AddBlock(const KeyContext& keyContext,
                                         PaintParamsKeyBuilder* builder,
                                         PipelineDataGatherer* gatherer,
                                         const ColorSpaceTransformData& data) {
-    add_color_space_xform_uniform_data(keyContext.dict(), data, gatherer);
-    builder->addBlock(BuiltInCodeSnippetID::kColorSpaceXformColorFilter);
+    if (is_premul_alpha_only(data)) {
+        builder->addBlock(BuiltInCodeSnippetID::kPremulAlphaColorFilter);
+    } else {
+        add_color_space_xform_uniform_data(keyContext.dict(), data, gatherer);
+        builder->addBlock(BuiltInCodeSnippetID::kColorSpaceXformColorFilter);
+    }
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -1784,9 +1798,16 @@ static void add_yuv_image_to_key(const KeyContext& keyContext,
 
     SkColorSpaceXformSteps steps;
     SkASSERT(steps.flags.mask() == 0);   // By default, the colorspace should have no effect
-    if (!origShader->isRaw()) {
+    // Output color from the YUV image shaders is always unpremul, so we ignore the image alphaType
+    if (origShader->isRaw()) {
+        // We need to at least do premul alpha conversion
         steps = SkColorSpaceXformSteps(imageToDraw->colorSpace(),
-                                       imageToDraw->alphaType(),
+                                       kUnpremul_SkAlphaType,
+                                       imageToDraw->colorSpace(),
+                                       kPremul_SkAlphaType);
+    } else {
+        steps = SkColorSpaceXformSteps(imageToDraw->colorSpace(),
+                                       kUnpremul_SkAlphaType,
                                        keyContext.dstColorInfo().colorSpace(),
                                        keyContext.dstColorInfo().alphaType());
     }
