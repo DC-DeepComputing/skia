@@ -142,6 +142,8 @@ enum class MaskFilterType {
     kLast = kBlur
 };
 
+static constexpr int kMaskFilterTypeCount = static_cast<int>(MaskFilterType::kLast) + 1;
+
 const char* to_str(MaskFilterType mf) {
     switch (mf) {
 #define M(type) case MaskFilterType::k##type : return "MaskFilterType::k" #type;
@@ -236,7 +238,11 @@ enum class ClipType {
 #define M(type) k##type,
     SK_ALL_TEST_CLIPS(M)
 #undef M
+
+    kLast = kShader_Diff
 };
+
+static constexpr int kClipTypeCount = static_cast<int>(ClipType::kLast) + 1;
 
 const char* to_str(ClipType c) {
     switch (c) {
@@ -278,6 +284,28 @@ const char* to_str(ImageFilterType c) {
 #undef M
     }
     SkUNREACHABLE;
+}
+
+void log_run(const char* label,
+             uint32_t seed,
+             ShaderType s,
+             BlenderType bm,
+             ColorFilterType cf,
+             MaskFilterType mf,
+             ImageFilterType imageFilter,
+             ClipType clip) {
+    SkDebugf("%s:\n"
+             "//----------------------\n"
+             "uint32_t seed = %d;\n"
+             "ShaderType shaderType = %s;\n"
+             "BlenderType blenderType = %s;\n"
+             "ColorFilterType colorFilterType = %s;\n"
+             "MaskFilterType maskFilterType = %s;\n"
+             "ImageFilterType imageFilterType = %s;\n"
+             "ClipType clipType = %s;\n"
+             "//----------------------\n",
+             label, seed,
+             to_str(s), to_str(bm), to_str(cf), to_str(mf), to_str(imageFilter), to_str(clip));
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -398,6 +426,14 @@ SkBlendMode random_blend_mode(SkRandom* rand) {
     return static_cast<SkBlendMode>(rand->nextULessThan(kSkBlendModeCount));
 }
 
+[[maybe_unused]] MaskFilterType random_maskfiltertype(SkRandom* rand) {
+    if (rand->nextBool()) {
+        return MaskFilterType::kNone; // bias this towards no mask filter
+    }
+
+    return static_cast<MaskFilterType>(rand->nextULessThan(kMaskFilterTypeCount));
+}
+
 BlenderType random_blendertype(SkRandom* rand) {
     return static_cast<BlenderType>(rand->nextULessThan(kBlenderTypeCount));
 }
@@ -408,6 +444,14 @@ ColorFilterType random_colorfiltertype(SkRandom* rand) {
 
 ImageFilterType random_imagefiltertype(SkRandom* rand) {
     return static_cast<ImageFilterType>(rand->nextULessThan(kImageFilterTypeCount));
+}
+
+[[maybe_unused]] ClipType random_cliptype(SkRandom* rand) {
+    if (rand->nextBool()) {
+        return ClipType::kNone;  // bias this towards no clip
+    }
+
+    return static_cast<ClipType>(rand->nextULessThan(kClipTypeCount));
 }
 
 enum LocalMatrixConstraint {
@@ -1733,27 +1777,15 @@ void run_test(skiatest::Reporter*,
               ColorFilterType,
               MaskFilterType,
               ImageFilterType,
-              ClipType);
+              ClipType,
+              uint32_t seed,
+              bool verbose);
 
-// This is intended to be a smoke test for the agreement between the two ways of creating a
-// PaintParamsKey:
-//    via ExtractPaintData (i.e., from an SkPaint)
-//    and via the pre-compilation system
-//
-// TODO: keep this as a smoke test but add a fuzzer that reuses all the helpers
-// TODO(b/306174708): enable in SkQP (if it's feasible)
-DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
-                                               reporter,
-                                               context,
-                                               testContext,
-                                               true,
-                                               CtsEnforcement::kNever) {
+KeyContext create_key_context(Context* context, RuntimeEffectDictionary* rtDict) {
     ShaderCodeDictionary* dict = context->priv().shaderCodeDictionary();
 
     SkColorInfo destColorInfo = SkColorInfo(kRGBA_8888_SkColorType, kPremul_SkAlphaType,
                                             SkColorSpace::MakeSRGB());
-
-    std::unique_ptr<RuntimeEffectDictionary> rtDict = std::make_unique<RuntimeEffectDictionary>();
 
     auto dstTexInfo = context->priv().caps()->getDefaultSampledTextureInfo(
             kRGBA_8888_SkColorType,
@@ -1770,12 +1802,67 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
                                                             skgpu::Budgeted::kYes);
     constexpr SkIPoint kFakeDstOffset = SkIPoint::Make(0, 0);
 
-    KeyContext precompileKeyContext(context->priv().caps(),
-                                    dict,
-                                    rtDict.get(),
-                                    destColorInfo,
-                                    fakeDstTexture,
-                                    kFakeDstOffset);
+    return KeyContext(context->priv().caps(),
+                      dict,
+                      rtDict,
+                      destColorInfo,
+                      fakeDstTexture,
+                      kFakeDstOffset);
+}
+
+DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTestReduced,
+                                               reporter,
+                                               context,
+                                               testContext,
+                                               true,
+                                               CtsEnforcement::kNever) {
+    std::unique_ptr<RuntimeEffectDictionary> rtDict = std::make_unique<RuntimeEffectDictionary>();
+
+    //----------------------
+    uint32_t seed = std::time(nullptr) % std::numeric_limits<uint32_t>::max();
+    SkRandom rand(seed);
+    ShaderType shaderType = random_shadertype(&rand);
+    BlenderType blenderType = random_blendertype(&rand);
+    ColorFilterType colorFilterType = random_colorfiltertype(&rand);
+    MaskFilterType maskFilterType = random_maskfiltertype(&rand);
+    ImageFilterType imageFilterType = random_imagefiltertype(&rand);
+    ClipType clipType = random_cliptype(&rand);
+    //----------------------
+
+    log_run("Running", seed, shaderType, blenderType, colorFilterType, maskFilterType,
+            imageFilterType, clipType);
+
+    run_test(reporter,
+             context,
+             testContext,
+             create_key_context(context, rtDict.get()),
+             shaderType,
+             blenderType,
+             colorFilterType,
+             maskFilterType,
+             imageFilterType,
+             clipType,
+             seed,
+             /* verbose= */ true);
+}
+
+// This is intended to be a smoke test for the agreement between the two ways of creating a
+// PaintParamsKey:
+//    via ExtractPaintData (i.e., from an SkPaint)
+//    and via the pre-compilation system
+//
+// TODO: keep this as a smoke test but add a fuzzer that reuses all the helpers
+// TODO(b/306174708): enable in SkQP (if it's feasible)
+DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
+                                               reporter,
+                                               context,
+                                               testContext,
+                                               true,
+                                               CtsEnforcement::kNever) {
+
+    std::unique_ptr<RuntimeEffectDictionary> rtDict = std::make_unique<RuntimeEffectDictionary>();
+
+    KeyContext precompileKeyContext(create_key_context(context, rtDict.get()));
 
     ShaderType shaders[] = {
             ShaderType::kBlend,
@@ -1877,8 +1964,11 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
                             ++current;
 #endif
 
+                            uint32_t seed = std::time(nullptr) %
+                                            std::numeric_limits<uint32_t>::max();
                             run_test(reporter, context, testContext, precompileKeyContext,
-                                     shader, blender, cf, mf, imageFilter, clip);
+                                     shader, blender, cf, mf, imageFilter, clip, seed,
+                                     /* verbose= */ false);
                         }
                     }
                 }
@@ -1900,8 +1990,10 @@ void run_test(skiatest::Reporter* reporter,
               ColorFilterType cf,
               MaskFilterType mf,
               ImageFilterType imageFilter,
-              ClipType clip) {
-    SkRandom rand;
+              ClipType clip,
+              uint32_t seed,
+              bool verbose) {
+    SkRandom rand(seed);
 
     std::unique_ptr<Recorder> recorder = context->makeRecorder();
 
@@ -2002,6 +2094,10 @@ void run_test(skiatest::Reporter* reporter,
                                                       precompileIDs.push_back(id);
                                                   });
 
+            if (verbose) {
+                SkDebugf("Precompilation generated %lu unique keys\n", precompileIDs.size());
+            }
+
             // Although we've gathered both sets of uniforms (i.e., from the paint
             // params and the precompilation paths) we can't compare the two since the
             // precompilation path may have generated multiple sets
@@ -2014,9 +2110,7 @@ void run_test(skiatest::Reporter* reporter,
             auto result = std::find(precompileIDs.begin(), precompileIDs.end(), paintID);
 
             if (result == precompileIDs.end()) {
-                SkDebugf("Failure on case: %s %s %s %s %s %s\n",
-                         to_str(s), to_str(bm), to_str(cf), to_str(clip), to_str(mf),
-                         to_str(imageFilter));
+                log_run("Failure on case", seed, s, bm, cf, mf, imageFilter, clip);
             }
 
 #ifdef SK_DEBUG
