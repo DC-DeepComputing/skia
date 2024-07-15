@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21d4b6ca_84ef2924",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 2509,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-15T16:55:42Z",
+      "side": 1,
+      "message": "If `ignoreParam` is true but the parameter isn\u0027t a sampler, isn\u0027t that an error? Should we assert on it?\nI\u0027m less confident about what it would mean if `ignoreParam` is true but `fUseTextureSamplerPairs` is set, but same deal--if something is wrong, assert.",
+      "range": {
+        "startLine": 2509,
+        "startChar": 20,
+        "endLine": 2509,
+        "endChar": 76
+      },
+      "revId": "12480b09b535da6c78401c641ae6b21487244300",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
