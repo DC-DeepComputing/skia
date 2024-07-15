@@ -141,6 +141,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e55d8a76_f4126771",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-15T19:19:47Z",
+      "side": 1,
+      "message": "Move to `SPIRVCodeGenerator::writeInstructions`.",
+      "range": {
+        "startLine": 147,
+        "startChar": 0,
+        "endLine": 150,
+        "endChar": 0
+      },
+      "revId": "2604a67c62928f727cbe008c56397a82c3a0fd3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf4257f4_44e5c49c",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 624,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-15T19:19:47Z",
+      "side": 1,
+      "message": "Replace `pair` with a struct, move the hasher into the struct, similar to the code in the specialization map builder.",
+      "range": {
+        "startLine": 624,
+        "startChar": 27,
+        "endLine": 624,
+        "endChar": 95
+      },
+      "revId": "2604a67c62928f727cbe008c56397a82c3a0fd3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "25a91e79_38551d2a",
         "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
         "patchSetId": 11
