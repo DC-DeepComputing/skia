@@ -32,6 +32,7 @@
 #include "src/sksl/SkSLProgramSettings.h"
 #include "src/sksl/SkSLStringStream.h"
 #include "src/sksl/SkSLUtil.h"
+#include "src/sksl/analysis/SkSLSpecialization.h"
 #include "src/sksl/codegen/SkSLCodeGenerator.h"
 #include "src/sksl/ir/SkSLBinaryExpression.h"
 #include "src/sksl/ir/SkSLBlock.h"
@@ -142,7 +143,11 @@ public:
                        const ShaderCaps* caps,
                        const Program* program,
                        OutputStream* out)
-            : CodeGenerator(context, caps, program, out) {}
+            : CodeGenerator(context, caps, program, out) {
+        Analysis::FindFunctionsToSpecialize(*program, [](const Variable& param) {
+                return param.type().isSampler();
+        }, &fSpecializationInfo);
+    }
 
     bool generateCode() override;
 
@@ -206,7 +211,8 @@ private:
 
     SpvId getType(const Type& type, const Layout& typeLayout, const MemoryLayout& memoryLayout);
 
-    SpvId getFunctionType(const FunctionDeclaration& function);
+    SpvId getFunctionType(const FunctionDeclaration& function,
+                          Analysis::SpecializedParameters* specializedParams);
 
     SpvId getFunctionParameterType(const Type& parameterType, const Layout& parameterLayout);
 
@@ -229,11 +235,17 @@ private:
 
     SpvId writeInterfaceBlock(const InterfaceBlock& intf, bool appendRTFlip = true);
 
-    SpvId writeFunctionStart(const FunctionDeclaration& f, OutputStream& out);
+    SpvId writeFunctionStart(const FunctionDeclaration& f,
+                             Analysis::SpecializationIndex specializationIndex,
+                             OutputStream& out);
 
     SpvId writeFunctionDeclaration(const FunctionDeclaration& f, OutputStream& out);
 
-    SpvId writeFunction(const FunctionDefinition& f, OutputStream& out);
+    // Writes the function with the defined specializationIndex, if the index is -1, then it is
+    // assumed that the function has no specializations.
+    SpvId writeFunction(const FunctionDefinition& f,
+                        Analysis::SpecializationIndex specializationIndex,
+                        OutputStream& out);
 
     bool writeGlobalVarDeclaration(ProgramKind kind, const VarDeclaration& v);
 
@@ -255,6 +267,7 @@ private:
                                     int argIndex,
                                     std::vector<TempVar>* tempVars,
                                     OutputStream& out,
+                                    Analysis::SpecializedParameters* specializedParams = nullptr,
                                     SpvId* outSynthesizedSamplerId = nullptr);
 
     void copyBackTempVars(const std::vector<TempVar>& tempVars, OutputStream& out);
@@ -600,7 +613,24 @@ private:
         int32_t boolOp;
     };
     Intrinsic getIntrinsic(IntrinsicKind) const;
-    skia_private::THashMap<const FunctionDeclaration*, SpvId> fFunctionMap;
+
+    struct SpecializedFunctionDeclHash {
+        size_t operator()(const std::pair<const FunctionDeclaration*,
+                                          Analysis::SpecializationIndex> entry) {
+            return SkGoodHash()(entry.first) ^ SkGoodHash()(entry.second);
+        }
+    };
+
+    skia_private::THashMap<std::pair<const FunctionDeclaration*, Analysis::SpecializationIndex>,
+                           SpvId,
+                           SpecializedFunctionDeclHash> fFunctionMap;
+
+    // The current index of the specialization function being walked through, used to
+    // track what the proper specialization function call should be if walking through a
+    // specialized function call stack.
+    Analysis::SpecializationIndex fInheritedSpecializationIndex = Analysis::kUnspecialized;
+    Analysis::SpecializationInfo fSpecializationInfo;
+
     skia_private::THashMap<const Variable*, SpvId> fVariableMap;
     skia_private::THashMap<const Type*, SpvId> fStructMap;
     StringStream fGlobalInitializersBuffer;
@@ -1776,7 +1806,8 @@ SpvId SPIRVCodeGenerator::getType(const Type& rawType,
     }
 }
 
-SpvId SPIRVCodeGenerator::getFunctionType(const FunctionDeclaration& function) {
+SpvId SPIRVCodeGenerator::getFunctionType(const FunctionDeclaration& function,
+                                          Analysis::SpecializedParameters* specializedParams) {
     Words words;
     words.push_back(Word::Result());
     words.push_back(this->getType(function.returnType()));
@@ -1784,9 +1815,14 @@ SpvId SPIRVCodeGenerator::getFunctionType(const FunctionDeclaration& function) {
         if (fUseTextureSamplerPairs && parameter->type().isSampler()) {
             words.push_back(this->getFunctionParameterType(parameter->type().textureType(),
                                                            parameter->layout()));
-            words.push_back(this->getFunctionParameterType(*fContext.fTypes.fSampler,
-                                                           kDefaultTypeLayout));
+            if (!(specializedParams && specializedParams->find(parameter))) {
+                words.push_back(this->getFunctionParameterType(*fContext.fTypes.fSampler,
+                                                               kDefaultTypeLayout));
+            }
         } else {
+            if (specializedParams && specializedParams->find(parameter)) {
+                continue;
+            }
             words.push_back(this->getFunctionParameterType(parameter->type(), parameter->layout()));
         }
     }
@@ -2461,29 +2497,20 @@ SpvId SPIRVCodeGenerator::writeFunctionCallArgument(const FunctionCall& call,
                                                     int argIndex,
                                                     std::vector<TempVar>* tempVars,
                                                     OutputStream& out,
+                                                    Analysis::SpecializedParameters*
+                                                        specializedParams,
                                                     SpvId* outSynthesizedSamplerId) {
     const FunctionDeclaration& funcDecl = call.function();
     const Expression& arg = *call.arguments()[argIndex];
-    ModifierFlags paramFlags = funcDecl.parameters()[argIndex]->modifierFlags();
+    const Variable* param = funcDecl.parameters()[argIndex];
+    bool ignoreParam = specializedParams && specializedParams->find(param);
+    ModifierFlags paramFlags = param->modifierFlags();
 
-    // ID of temporary variable that we will use to hold this argument, or 0 if it is being
-    // passed directly
-    SpvId tmpVar;
-    // if we need a temporary var to store this argument, this is the value to store in the var
-    SpvId tmpValueId = NA;
+    if (ignoreParam && param->type().isSampler() && !fUseTextureSamplerPairs) {
+        return NA;
+    }
 
-    if (is_out(paramFlags)) {
-        std::unique_ptr<LValue> lv = this->getLValue(arg, out);
-        // We handle out params with a temp var that we copy back to the original variable at the
-        // end of the call. GLSL guarantees that the original variable will be unchanged until the
-        // end of the call, and also that out params are written back to their original variables in
-        // a specific order (left-to-right), so it's unsafe to pass a pointer to the original value.
-        if (is_in(paramFlags)) {
-            tmpValueId = lv->load(out);
-        }
-        tmpVar = this->nextId(&arg.type());
-        tempVars->push_back(TempVar{tmpVar, &arg.type(), std::move(lv)});
-    } else if (funcDecl.isIntrinsic()) {
+    if (funcDecl.isIntrinsic() && !is_out(paramFlags)) {
         // Unlike user function calls, non-out intrinsic arguments don't need pointer parameters.
         return this->writeExpression(arg, out);
     } else if (arg.is<VariableReference>() &&
@@ -2505,11 +2532,13 @@ SpvId SPIRVCodeGenerator::writeFunctionCallArgument(const FunctionCall& call,
                 SkASSERT(outSynthesizedSamplerId);
 
                 SpvId* img = fVariableMap.find((*p)->fTexture.get());
-                SpvId* sampler = fVariableMap.find((*p)->fSampler.get());
                 SkASSERT(img);
-                SkASSERT(sampler);
 
-                *outSynthesizedSamplerId = *sampler;
+                if (!ignoreParam) {
+                    SpvId* sampler = fVariableMap.find((*p)->fSampler.get());
+                    SkASSERT(sampler);
+                    *outSynthesizedSamplerId = *sampler;
+                }
                 return *img;
             }
             SkDEBUGFAIL("sampler missing from fSynthesizedSamplerMap");
@@ -2518,6 +2547,25 @@ SpvId SPIRVCodeGenerator::writeFunctionCallArgument(const FunctionCall& call,
         SpvId* entry = fVariableMap.find(var);
         SkASSERTF(entry, "%s", arg.description().c_str());
         return *entry;
+    }
+
+    // ID of temporary variable that we will use to hold this argument, or 0 if it is being
+    // passed directly
+    SpvId tmpVar;
+    // if we need a temporary var to store this argument, this is the value to store in the var
+    SpvId tmpValueId = NA;
+
+    if (is_out(paramFlags)) {
+        std::unique_ptr<LValue> lv = this->getLValue(arg, out);
+        // We handle out params with a temp var that we copy back to the original variable at the
+        // end of the call. GLSL guarantees that the original variable will be unchanged until the
+        // end of the call, and also that out params are written back to their original variables in
+        // a specific order (left-to-right), so it's unsafe to pass a pointer to the original value.
+        if (is_in(paramFlags)) {
+            tmpValueId = lv->load(out);
+        }
+        tmpVar = this->nextId(&arg.type());
+        tempVars->push_back(TempVar{tmpVar, &arg.type(), std::move(lv)});
     } else {
         // We always use pointer parameters when calling user functions.
         // See getFunctionParameterType for further explanation.
@@ -2549,11 +2597,27 @@ SpvId SPIRVCodeGenerator::writeFunctionCall(const FunctionCall& c, OutputStream&
         return this->writeIntrinsicCall(c, out);
     }
     const ExpressionArray& arguments = c.arguments();
-    SpvId* entry = fFunctionMap.find(&function);
+
+    Analysis::SpecializationIndex* specializationIndex =
+        fSpecializationInfo.fSpecializedCalls.find({&c, fInheritedSpecializationIndex});
+    SpvId* entry =
+        fFunctionMap.find(std::make_pair(&function,
+                                         specializationIndex ? *specializationIndex
+                                                             : Analysis::kUnspecialized));
     if (!entry) {
         fContext.fErrors->error(c.fPosition, "function '" + function.description() +
                 "' is not defined");
         return NA;
+    }
+
+    // If we are calling a specialized function, we need to gather the specialized parameters
+    // so we can remove them from the argument list.
+    Analysis::SpecializedParameters* specializedParams = nullptr;
+    if (specializationIndex) {
+        Analysis::Specializations* specializations =
+            fSpecializationInfo.fSpecializationMap.find(&function);
+        SkASSERT(specializations);
+        specializedParams = &specializations->at(*specializationIndex);
     }
     // Temp variables are used to write back out-parameters after the function call is complete.
     std::vector<TempVar> tempVars;
@@ -2561,7 +2625,11 @@ SpvId SPIRVCodeGenerator::writeFunctionCall(const FunctionCall& c, OutputStream&
     argumentIds.reserve_exact(arguments.size());
     for (int i = 0; i < arguments.size(); i++) {
         SpvId samplerId = NA;
-        argumentIds.push_back(this->writeFunctionCallArgument(c, i, &tempVars, out, &samplerId));
+        SpvId argId = this->writeFunctionCallArgument(c, i, &tempVars, out,
+                                                      specializedParams, &samplerId);
+        if (argId != NA) {
+            argumentIds.push_back(argId);
+        }
         if (samplerId != NA) {
             argumentIds.push_back(samplerId);
         }
@@ -4301,51 +4369,93 @@ SpvId SPIRVCodeGenerator::writeLiteral(double value, const Type& type) {
     }
 }
 
-SpvId SPIRVCodeGenerator::writeFunctionStart(const FunctionDeclaration& f, OutputStream& out) {
-    SpvId result = fFunctionMap[&f];
+SpvId SPIRVCodeGenerator::writeFunctionStart(const FunctionDeclaration& f,
+                                             Analysis::SpecializationIndex specializationIndex,
+                                             OutputStream& out) {
+    Analysis::SpecializedParameters* specializedParams = nullptr;
+    if (specializationIndex != Analysis::kUnspecialized) {
+        Analysis::Specializations* specializations
+            = fSpecializationInfo.fSpecializationMap.find(&f);
+        SkASSERT(specializations);
+        specializedParams = &specializations->at(specializationIndex);
+    }
+
+    SpvId result = fFunctionMap[{&f, specializationIndex}];
     SpvId returnTypeId = this->getType(f.returnType());
-    SpvId functionTypeId = this->getFunctionType(f);
+    SpvId functionTypeId = this->getFunctionType(f, specializedParams);
     this->writeInstruction(SpvOpFunction, returnTypeId, result,
                            SpvFunctionControlMaskNone, functionTypeId, out);
     std::string mangledName = f.mangledName();
+    if (specializedParams) {
+        for (auto [_, uniform]: *specializedParams) {
+            mangledName += "_" + std::string(uniform->name());
+        }
+    }
     this->writeInstruction(SpvOpName,
                            result,
                            std::string_view(mangledName.c_str(), mangledName.size()),
                            fNameBuffer);
     for (const Variable* parameter : f.parameters()) {
+        bool ignoreParam = specializedParams && specializedParams->find(parameter);
+
         if (fUseTextureSamplerPairs && parameter->type().isSampler()) {
             auto [texture, sampler] = this->synthesizeTextureAndSampler(*parameter);
 
             SpvId textureId = this->nextId(nullptr);
-            SpvId samplerId = this->nextId(nullptr);
             fVariableMap.set(texture, textureId);
-            fVariableMap.set(sampler, samplerId);
 
             SpvId textureType = this->getFunctionParameterType(texture->type(), texture->layout());
-            SpvId samplerType = this->getFunctionParameterType(sampler->type(), kDefaultTypeLayout);
-
             this->writeInstruction(SpvOpFunctionParameter, textureType, textureId, out);
-            this->writeInstruction(SpvOpFunctionParameter, samplerType, samplerId, out);
-        } else {
-            SpvId id = this->nextId(nullptr);
-            fVariableMap.set(parameter, id);
 
-            SpvId type = this->getFunctionParameterType(parameter->type(), parameter->layout());
-            this->writeInstruction(SpvOpFunctionParameter, type, id, out);
+            if (ignoreParam) {
+                SkASSERT(specializedParams);
+                const Variable** uniformVar = specializedParams->find(parameter);
+                SkASSERT(uniformVar);
+                const auto* p = fSynthesizedSamplerMap.find(*uniformVar);
+                SkASSERT(p);
+                SpvId* uniformId = fVariableMap.find((*p)->fSampler.get());
+                SkASSERT(uniformId);
+                fVariableMap.set(sampler, *uniformId);
+            } else {
+                SpvId samplerId = this->nextId(nullptr);
+                fVariableMap.set(sampler, samplerId);
+
+                SpvId samplerType = this->getFunctionParameterType(sampler->type(), kDefaultTypeLayout);
+                this->writeInstruction(SpvOpFunctionParameter, samplerType, samplerId, out);
+            }
+        } else {
+            if (ignoreParam) {
+                SkASSERT(specializedParams);
+                const Variable** uniformVar = specializedParams->find(parameter);
+                SkASSERT(uniformVar);
+                SpvId* uniformId = fVariableMap.find(*uniformVar);
+                SkASSERT(uniformId);
+                fVariableMap.set(parameter, *uniformId);
+            } else {
+                SpvId id = this->nextId(nullptr);
+                fVariableMap.set(parameter, id);
+
+                SpvId type = this->getFunctionParameterType(parameter->type(), parameter->layout());
+                this->writeInstruction(SpvOpFunctionParameter, type, id, out);
+            }
         }
     }
     return result;
 }
 
-SpvId SPIRVCodeGenerator::writeFunction(const FunctionDefinition& f, OutputStream& out) {
+SpvId SPIRVCodeGenerator::writeFunction(const FunctionDefinition& f,
+                                        Analysis::SpecializationIndex specializationIndex,
+                                        OutputStream& out) {
     ConditionalOpCounts conditionalOps = this->getConditionalOpCounts();
 
     fVariableBuffer.reset();
-    SpvId result = this->writeFunctionStart(f.declaration(), out);
+    SpvId result = this->writeFunctionStart(f.declaration(), specializationIndex, out);
     fCurrentBlock = 0;
     this->writeLabel(this->nextId(nullptr), kBranchlessBlock, out);
     StringStream bodyBuffer;
+    std::swap(fInheritedSpecializationIndex, specializationIndex);
     this->writeBlock(f.body()->as<Block>(), bodyBuffer);
+    std::swap(fInheritedSpecializationIndex, specializationIndex);
     write_stringstream(fVariableBuffer, out);
     if (f.declaration().isMain()) {
         write_stringstream(fGlobalInitializersBuffer, out);
@@ -5174,7 +5284,15 @@ void SPIRVCodeGenerator::writeInstructions(const Program& program, OutputStream&
                 // Assign SpvIds to functions.
                 const FunctionDefinition& funcDef = e->as<FunctionDefinition>();
                 const FunctionDeclaration& funcDecl = funcDef.declaration();
-                fFunctionMap.set(&funcDecl, this->nextId(nullptr));
+                Analysis::Specializations* specializations =
+                    fSpecializationInfo.fSpecializationMap.find(&funcDecl);
+                if (specializations) {
+                    for (int i = 0; i < specializations->size(); i++) {
+                        fFunctionMap.set({&funcDecl, i}, this->nextId(nullptr));
+                    }
+                } else {
+                    fFunctionMap.set({&funcDecl, Analysis::kUnspecialized}, this->nextId(nullptr));
+                }
                 if (funcDecl.isMain()) {
                     main = &funcDecl;
                 }
@@ -5286,15 +5404,24 @@ void SPIRVCodeGenerator::writeInstructions(const Program& program, OutputStream&
     if (main->returnType().matches(*fContext.fTypes.fHalf4)) {
         adapter = this->writeEntrypointAdapter(*main);
         if (adapter.entrypointDecl) {
-            fFunctionMap.set(adapter.entrypointDecl.get(), this->nextId(nullptr));
-            this->writeFunction(*adapter.entrypointDef, body);
+            fFunctionMap.set({adapter.entrypointDecl.get(), Analysis::kUnspecialized},
+                              this->nextId(nullptr));
+            this->writeFunction(*adapter.entrypointDef, Analysis::kUnspecialized, body);
             main = adapter.entrypointDecl.get();
         }
     }
     // Emit all the functions.
     for (const ProgramElement* e : program.elements()) {
         if (e->is<FunctionDefinition>()) {
-            this->writeFunction(e->as<FunctionDefinition>(), body);
+            Analysis::Specializations* specializations =
+                fSpecializationInfo.fSpecializationMap.find(&e->as<FunctionDefinition>().declaration());
+            if (specializations) {
+                for (int i = 0; i < specializations->size(); i++) {
+                    this->writeFunction(e->as<FunctionDefinition>(), i, body);
+                }
+            } else {
+                this->writeFunction(e->as<FunctionDefinition>(), Analysis::kUnspecialized, body);
+            }
         }
     }
     // Add global in/out variables to the list of interface variables.
@@ -5319,7 +5446,7 @@ void SPIRVCodeGenerator::writeInstructions(const Program& program, OutputStream&
     } else {
         SK_ABORT("cannot write this kind of program to SPIR-V\n");
     }
-    SpvId entryPoint = fFunctionMap[main];
+    SpvId entryPoint = fFunctionMap[{main, Analysis::kUnspecialized}];
     this->writeWord(entryPoint, out);
     this->writeString(main->name(), out);
     for (int var : interfaceVars) {
@@ -5327,12 +5454,12 @@ void SPIRVCodeGenerator::writeInstructions(const Program& program, OutputStream&
     }
     if (ProgramConfig::IsFragment(program.fConfig->fKind)) {
         this->writeInstruction(SpvOpExecutionMode,
-                               fFunctionMap[main],
+                               fFunctionMap[{main, Analysis::kUnspecialized}],
                                SpvExecutionModeOriginUpperLeft,
                                out);
     } else if (ProgramConfig::IsCompute(program.fConfig->fKind)) {
         this->writeInstruction(SpvOpExecutionMode,
-                               fFunctionMap[main],
+                               fFunctionMap[{main, Analysis::kUnspecialized}],
                                SpvExecutionModeLocalSize,
                                localSizeX, localSizeY, localSizeZ,
                                out);
