@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef047eb9_7acf790d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-07-15T14:54:11Z",
+      "side": 1,
+      "message": "I cross my fingers and hold my breath with every one of these changes. (AGSL)",
+      "revId": "7cd8022613af9598a3234cad42ef52dc43c16c0d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
