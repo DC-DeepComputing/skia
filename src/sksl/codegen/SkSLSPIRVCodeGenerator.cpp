@@ -1761,7 +1761,7 @@ SpvId SPIRVCodeGenerator::getType(const Type& rawType,
                                           fConstantBuffer);
         }
         case Type::TypeKind::kAtomic: {
-            // SkSL currently only supports the atomicUint type.
+            // SkSL currently only supports the atomic_uint type.
             SkASSERT(type->matches(*fContext.fTypes.fAtomicUInt));
             // SPIR-V doesn't have atomic types. Rather, it allows atomic operations on primitive
             // types. The SPIR-V type of an SkSL atomic is simply the underlying type.
@@ -2395,7 +2395,7 @@ SpvId SPIRVCodeGenerator::writeAtomicIntrinsic(const FunctionCall& c,
 
     SpvId memoryScopeId = NA;
     {
-        // In SkSL, the atomicUint type can only be declared as a workgroup variable or SSBO block
+        // In SkSL, the atomic_uint type can only be declared as a workgroup variable or SSBO block
         // member. The two memory scopes that these map to are "workgroup" and "device",
         // respectively.
         SpvScope memoryScope;

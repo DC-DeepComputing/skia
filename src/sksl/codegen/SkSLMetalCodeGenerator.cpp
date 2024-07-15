@@ -458,7 +458,7 @@ std::string MetalCodeGenerator::typeName(const Type& raw) {
             SkUNREACHABLE;
 
         case Type::TypeKind::kAtomic:
-            // SkSL currently only supports the atomicUint type.
+            // SkSL currently only supports the atomic_uint type.
             SkASSERT(type.matches(*fContext.fTypes.fAtomicUInt));
             return "atomic_uint";
 

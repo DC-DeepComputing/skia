@@ -167,7 +167,7 @@ public:
                 return 4;
 
             case Type::TypeKind::kAtomic:
-                // Our atomic types (currently atomicUint) always occupy 4 bytes.
+                // Our atomic types (currently atomic_uint) always occupy 4 bytes.
                 return 4;
 
             case Type::TypeKind::kVector:

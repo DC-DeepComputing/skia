@@ -1508,7 +1508,7 @@ DEF_GRAPHITE_TEST_FOR_DAWN_AND_METAL_CONTEXTS(Compute_AtomicOperationsTest,
                         /*flow=*/DataFlow::kShared,
                         /*policy=*/ResourcePolicy::kMapped,
                         /*slot=*/0,
-                        /*sksl=*/"ssbo { atomicUint globalCounter; }",
+                        /*sksl=*/"ssbo { atomic_uint globalCounter; }",
                     }
                 }) {}
         ~TestComputeStep() override = default;
@@ -1521,7 +1521,7 @@ DEF_GRAPHITE_TEST_FOR_DAWN_AND_METAL_CONTEXTS(Compute_AtomicOperationsTest,
         // and workgroup address spaces.
         std::string computeSkSL() const override {
             return R"(
-                workgroup atomicUint localCounter;
+                workgroup atomic_uint localCounter;
 
                 void main() {
                     // Initialize the local counter.
@@ -1639,8 +1639,8 @@ DEF_GRAPHITE_TEST_FOR_DAWN_AND_METAL_CONTEXTS(Compute_AtomicOperationsOverArrayA
                         /*policy=*/ResourcePolicy::kMapped,
                         /*slot=*/0,
                         /*sksl=*/"ssbo {\n"
-                            "   atomicUint globalCountsFirstHalf;\n"
-                            "   atomicUint globalCountsSecondHalf;\n"
+                            "   atomic_uint globalCountsFirstHalf;\n"
+                            "   atomic_uint globalCountsSecondHalf;\n"
                             "}\n"
                     }
                 }) {}
@@ -1656,7 +1656,7 @@ DEF_GRAPHITE_TEST_FOR_DAWN_AND_METAL_CONTEXTS(Compute_AtomicOperationsOverArrayA
             return R"(
                 const uint WORKGROUP_SIZE = 128;
 
-                workgroup atomicUint localCounts[2];
+                workgroup atomic_uint localCounts[2];
 
                 void main() {
                     // Initialize the local counts.
@@ -2174,13 +2174,13 @@ DEF_GRAPHITE_TEST_FOR_DAWN_AND_METAL_CONTEXTS(Compute_IndirectDispatch,
                                   /*flow=*/DataFlow::kShared,
                                   /*policy=*/ResourcePolicy::kMapped,
                                   /*slot=*/1,
-                                  /*sksl=*/"ssbo { atomicUint globalCounter; }",
+                                  /*sksl=*/"ssbo { atomic_uint globalCounter; }",
                           }}) {}
         ~CountStep() override = default;
 
         std::string computeSkSL() const override {
             return R"(
-                workgroup atomicUint localCounter;
+                workgroup atomic_uint localCounter;
 
                 void main() {
                     // Initialize the local counter.
