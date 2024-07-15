@@ -16,6 +16,24 @@
       "message": "Can we instead keep `atomicUint`, and make `atomic_uint` be a type alias? That should achieve the same goal (making it reserved), but also keep the SkSL type names consistent (rather than having 1 snake_case outlier).",
       "revId": "19416556322e09479871c474668797fc6f29e791",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "62fc4566_c0bf07c8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-15T15:55:54Z",
+      "side": 1,
+      "message": "Good idea. Done at http://review.skia.org/877337",
+      "parentUuid": "09e8bad3_61f751e8",
+      "revId": "19416556322e09479871c474668797fc6f29e791",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
