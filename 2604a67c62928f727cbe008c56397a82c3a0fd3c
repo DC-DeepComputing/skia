@@ -207,6 +207,29 @@
       },
       "revId": "2604a67c62928f727cbe008c56397a82c3a0fd3c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d7ac87cf_efff017f",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 5427,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-15T19:18:17Z",
+      "side": 1,
+      "message": "Consider moving the specialization lookup/loop into `writeFunction`? Seems harmless and moves the logic out of the top-level method closer to where it is really needed.",
+      "range": {
+        "startLine": 5425,
+        "startChar": 0,
+        "endLine": 5427,
+        "endChar": 0
+      },
+      "revId": "2604a67c62928f727cbe008c56397a82c3a0fd3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
