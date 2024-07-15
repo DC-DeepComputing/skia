@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3945fe5d_687e2f4f",
+        "filename": "src/sksl/analysis/SkSLSpecialization.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-15T21:26:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f59ab88d_9c738de2",
+      "range": {
+        "startLine": 2,
+        "startChar": 18,
+        "endLine": 2,
+        "endChar": 29
+      },
+      "revId": "2604a67c62928f727cbe008c56397a82c3a0fd3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "472353af_93a8e943",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-07-15T19:15:34Z",
       "side": 1,
       "message": "Google LLC",
+      "range": {
+        "startLine": 2,
+        "startChar": 18,
+        "endLine": 2,
+        "endChar": 29
+      },
+      "revId": "2604a67c62928f727cbe008c56397a82c3a0fd3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8cdbccae_c4a53979",
+        "filename": "src/sksl/analysis/SkSLSpecialization.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-15T21:26:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "472353af_93a8e943",
       "range": {
         "startLine": 2,
         "startChar": 18,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9e39403_502aad87",
+        "filename": "src/sksl/analysis/SkSLSpecialization.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-15T21:26:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "714102dd_464b2478",
+      "range": {
+        "startLine": 28,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 35
+      },
+      "revId": "2604a67c62928f727cbe008c56397a82c3a0fd3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e11b28c7_2870cffa",
@@ -83,6 +155,30 @@
       "writtenOn": "2024-07-15T19:15:34Z",
       "side": 1,
       "message": "I\u0027m surprised this didn\u0027t warn, but -1 can\u0027t go into a `size_t`.",
+      "range": {
+        "startLine": 29,
+        "startChar": 54,
+        "endLine": 29,
+        "endChar": 56
+      },
+      "revId": "2604a67c62928f727cbe008c56397a82c3a0fd3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf438608_c3c63d47",
+        "filename": "src/sksl/analysis/SkSLSpecialization.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-15T21:26:16Z",
+      "side": 1,
+      "message": "Changed to `UINT32_MAX`",
+      "parentUuid": "e11b28c7_2870cffa",
       "range": {
         "startLine": 29,
         "startChar": 54,
@@ -116,6 +212,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7726d8e_5e52f323",
+        "filename": "src/sksl/analysis/SkSLSpecialization.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-15T21:26:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "350ba9d6_55496099",
+      "range": {
+        "startLine": 40,
+        "startChar": 27,
+        "endLine": 40,
+        "endChar": 78
+      },
+      "revId": "2604a67c62928f727cbe008c56397a82c3a0fd3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1be456b1_3354ab67",
@@ -129,6 +249,30 @@
       "writtenOn": "2024-07-15T19:15:34Z",
       "side": 1,
       "message": "How about `ParameterMatchesFn`?",
+      "range": {
+        "startLine": 51,
+        "startChar": 6,
+        "endLine": 51,
+        "endChar": 22
+      },
+      "revId": "2604a67c62928f727cbe008c56397a82c3a0fd3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "af65ec5b_9620cdf0",
+        "filename": "src/sksl/analysis/SkSLSpecialization.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-15T21:26:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1be456b1_3354ab67",
       "range": {
         "startLine": 51,
         "startChar": 6,
@@ -162,6 +306,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "75b55651_17b97a9e",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-15T21:26:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e55d8a76_f4126771",
+      "range": {
+        "startLine": 147,
+        "startChar": 0,
+        "endLine": 150,
+        "endChar": 0
+      },
+      "revId": "2604a67c62928f727cbe008c56397a82c3a0fd3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bf4257f4_44e5c49c",
@@ -185,6 +353,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0544abab_60a975ee",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 624,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-15T21:26:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bf4257f4_44e5c49c",
+      "range": {
+        "startLine": 624,
+        "startChar": 27,
+        "endLine": 624,
+        "endChar": 95
+      },
+      "revId": "2604a67c62928f727cbe008c56397a82c3a0fd3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "25a91e79_38551d2a",
@@ -198,6 +390,30 @@
       "writtenOn": "2024-07-15T19:15:34Z",
       "side": 1,
       "message": "Remove here, migrate this to specialization header.",
+      "range": {
+        "startLine": 628,
+        "startChar": 0,
+        "endLine": 631,
+        "endChar": 0
+      },
+      "revId": "2604a67c62928f727cbe008c56397a82c3a0fd3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e17151d_3a9139ef",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 631,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-15T21:26:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "25a91e79_38551d2a",
       "range": {
         "startLine": 628,
         "startChar": 0,
@@ -255,6 +471,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e3f7aa27_63d39be4",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 5426,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-15T21:26:16Z",
+      "side": 1,
+      "message": "Seems like the script it tries to run for that under `skia/buildtools/clang_format` doesn\u0027t exist as that directory is empty. I did look through my changes and fixed any formatting issues.",
+      "parentUuid": "bf669b67_43b7249c",
+      "range": {
+        "startLine": 5426,
+        "startChar": 0,
+        "endLine": 5426,
+        "endChar": 104
+      },
+      "revId": "2604a67c62928f727cbe008c56397a82c3a0fd3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d7ac87cf_efff017f",
@@ -268,6 +508,30 @@
       "writtenOn": "2024-07-15T19:18:17Z",
       "side": 1,
       "message": "Consider moving the specialization lookup/loop into `writeFunction`? Seems harmless and moves the logic out of the top-level method closer to where it is really needed.",
+      "range": {
+        "startLine": 5425,
+        "startChar": 0,
+        "endLine": 5427,
+        "endChar": 0
+      },
+      "revId": "2604a67c62928f727cbe008c56397a82c3a0fd3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a4dd228_4e94dd5a",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 5427,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-15T21:26:16Z",
+      "side": 1,
+      "message": "Moved it in and I also changed to return type of `writeFunction` and `writeFunctionStart` to void since they weren\u0027t actually used anywhere.",
+      "parentUuid": "d7ac87cf_efff017f",
       "range": {
         "startLine": 5425,
         "startChar": 0,
