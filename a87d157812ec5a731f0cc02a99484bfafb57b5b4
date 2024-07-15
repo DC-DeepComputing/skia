@@ -22,6 +22,30 @@
       },
       "revId": "a87d157812ec5a731f0cc02a99484bfafb57b5b4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb3abd81_7ec345db",
+        "filename": "src/sksl/ir/SkSLProgram.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-15T17:30:01Z",
+      "side": 1,
+      "message": "Moved the call to the backend and generified the specialization criteria for a parameter so that each backend can perform their own specialization requirements (samplers for spir-v, child runtime effects for runtime shaders)",
+      "parentUuid": "d5b1e282_6cf537bc",
+      "range": {
+        "startLine": 167,
+        "startChar": 0,
+        "endLine": 169,
+        "endChar": 0
+      },
+      "revId": "a87d157812ec5a731f0cc02a99484bfafb57b5b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

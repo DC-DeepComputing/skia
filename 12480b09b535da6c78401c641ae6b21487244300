@@ -22,6 +22,30 @@
       },
       "revId": "12480b09b535da6c78401c641ae6b21487244300",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f3302771_71944599",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 2509,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-15T17:30:01Z",
+      "side": 1,
+      "message": "You\u0027re right, I fixed the condition and added a comment explaining that the case where the argument is a sampler and `fUseTextureSamplerPairs` is handled further down when writing the texture and sampler arguments. I added an assert lower down to make sure we are not writing a ignored parameter.",
+      "parentUuid": "21d4b6ca_84ef2924",
+      "range": {
+        "startLine": 2509,
+        "startChar": 20,
+        "endLine": 2509,
+        "endChar": 76
+      },
+      "revId": "12480b09b535da6c78401c641ae6b21487244300",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
