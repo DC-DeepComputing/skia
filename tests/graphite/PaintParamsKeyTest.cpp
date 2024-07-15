@@ -1967,7 +1967,7 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
 
                             run_test(reporter, context, testContext, precompileKeyContext,
                                      shader, blender, cf, mf, imageFilter, clip, kDefaultSeed,
-                                    /* verbose= */ false);
+                                     /* verbose= */ false);
                         }
                     }
                 }
