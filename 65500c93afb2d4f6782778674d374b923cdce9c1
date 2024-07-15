@@ -140,6 +140,30 @@
       },
       "revId": "65500c93afb2d4f6782778674d374b923cdce9c1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "91355776_80f33fcf",
+        "filename": "src/gpu/graphite/geom/Rect.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-07-15T17:34:06Z",
+      "side": 1,
+      "message": "Ah I think the additional part that confused me at first was not realizing `ltrb()` internally was doing the negation as well. But I suppose someone working in the private functions graphites rect class would be aware of that.",
+      "parentUuid": "5a46e229_674cc490",
+      "range": {
+        "startLine": 136,
+        "startChar": 11,
+        "endLine": 136,
+        "endChar": 90
+      },
+      "revId": "65500c93afb2d4f6782778674d374b923cdce9c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
