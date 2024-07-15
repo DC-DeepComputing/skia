@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "481329b8_8be7c0ca",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-15T17:19:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8e7242d9_110399c8",
+      "range": {
+        "startLine": 10,
+        "startChar": 61,
+        "endLine": 10,
+        "endChar": 63
+      },
+      "revId": "65500c93afb2d4f6782778674d374b923cdce9c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d57190bc_28eb3aee",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "48028a89_c10ee655",
+        "filename": "include/core/SkRRect.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 273,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-15T17:19:29Z",
+      "side": 1,
+      "message": "Done (it\u0027s ordered the same as `Corner`).",
+      "parentUuid": "d57190bc_28eb3aee",
+      "range": {
+        "startLine": 273,
+        "startChar": 4,
+        "endLine": 273,
+        "endChar": 70
+      },
+      "revId": "65500c93afb2d4f6782778674d374b923cdce9c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a40c778a_82dad2ac",
@@ -60,6 +108,30 @@
       "writtenOn": "2024-07-15T16:49:11Z",
       "side": 1,
       "message": "the way the code is written it looks like you\u0027re flooring before the negation.",
+      "range": {
+        "startLine": 136,
+        "startChar": 11,
+        "endLine": 136,
+        "endChar": 90
+      },
+      "revId": "65500c93afb2d4f6782778674d374b923cdce9c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5a46e229_674cc490",
+        "filename": "src/gpu/graphite/geom/Rect.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-15T17:19:29Z",
+      "side": 1,
+      "message": "Switched to `return LTRB(floor(ltrb() + 0.5));`",
+      "parentUuid": "a40c778a_82dad2ac",
       "range": {
         "startLine": 136,
         "startChar": 11,
