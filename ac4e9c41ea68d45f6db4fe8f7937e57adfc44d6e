@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "337620df_231dc933",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-07-15T20:33:34Z",
+      "side": 1,
+      "message": "Going to wait a day or two to land this (in case the chromium rebaseline gets reverted).",
+      "revId": "ac4e9c41ea68d45f6db4fe8f7937e57adfc44d6e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
