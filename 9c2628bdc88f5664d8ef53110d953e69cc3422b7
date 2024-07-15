@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1fd902ff_5476f73a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-07-15T20:38:55Z",
+      "side": 1,
+      "message": "It looks like the original CL was slower because it was depending on using the colorspace transform to do the premul work, rather than having the early out when the flags \u003d\u003d 0. My revision replaces the base colorspace transform function with one that only does the premul alpha calculation if that\u0027s all we need. On my laptop it drops the frame time from ~9ms to ~8ms.",
+      "revId": "9c2628bdc88f5664d8ef53110d953e69cc3422b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
