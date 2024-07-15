@@ -16,6 +16,24 @@
       "message": "I cross my fingers and hold my breath with every one of these changes. (AGSL)",
       "revId": "7cd8022613af9598a3234cad42ef52dc43c16c0d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7b8965a_9e5ed194",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-15T15:01:41Z",
+      "side": 1,
+      "message": "I\u0027m going to add the extra sampler and image types to the ban-list, but for words which might actually be used by a reasonable program like `filter` or `centroid`, I\u0027m just going to detect and rename them in the code generator.",
+      "parentUuid": "ef047eb9_7acf790d",
+      "revId": "7cd8022613af9598a3234cad42ef52dc43c16c0d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
