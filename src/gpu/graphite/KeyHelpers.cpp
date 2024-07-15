@@ -721,7 +721,7 @@ void add_yuv_image_uniform_data(const ShaderCodeDictionary* dict,
     gatherer->write(SkTo<int>(imgData.fSamplingUV.filter));
 
     for (int i = 0; i < 4; ++i) {
-        gatherer->writeHalf(imgData.fChannelSelect[i]);
+        gatherer->writeHalf(imgData.fChannelSelect1[i]);
     }
     gatherer->writeHalf(imgData.fYUVtoRGBMatrix);
     gatherer->writeHalf(imgData.fYUVtoRGBTranslate);
@@ -741,7 +741,7 @@ void add_cubic_yuv_image_uniform_data(const ShaderCodeDictionary* dict,
     gatherer->writeHalf(SkImageShader::CubicResamplerMatrix(cubic.B, cubic.C));
 
     for (int i = 0; i < 4; ++i) {
-        gatherer->writeHalf(imgData.fChannelSelect[i]);
+        gatherer->writeHalf(imgData.fChannelSelect1[i]);
     }
     gatherer->writeHalf(imgData.fYUVtoRGBMatrix);
     gatherer->writeHalf(imgData.fYUVtoRGBTranslate);
@@ -755,7 +755,7 @@ void add_hw_yuv_image_uniform_data(const ShaderCodeDictionary* dict,
     gatherer->write(SkSize::Make(1.f/imgData.fImgSize.width(), 1.f/imgData.fImgSize.height()));
     gatherer->write(SkSize::Make(1.f/imgData.fImgSizeUV.width(), 1.f/imgData.fImgSizeUV.height()));
     for (int i = 0; i < 4; ++i) {
-        gatherer->writeHalf(imgData.fChannelSelect[i]);
+        gatherer->writeHalf(imgData.fChannelSelect1[i]);
     }
     gatherer->writeHalf(imgData.fYUVtoRGBMatrix);
     gatherer->writeHalf(imgData.fYUVtoRGBTranslate);
@@ -815,10 +815,10 @@ static bool can_do_yuv_tiling_in_hw(const Caps* caps,
 
 static bool no_yuv_swizzle(const YUVImageShaderBlock::ImageData& imgData) {
     // Y_U_V or U_Y_V format, reading from R channel for each texture
-    if (imgData.fChannelSelect[0].x == 1 &&
-        imgData.fChannelSelect[1].x == 1 &&
-        imgData.fChannelSelect[2].x == 1 &&
-        imgData.fChannelSelect[3].x == 1) {
+    if (imgData.fChannelSelect1[0].x == 1 &&
+        imgData.fChannelSelect1[1].x == 1 &&
+        imgData.fChannelSelect1[2].x == 1 &&
+        imgData.fChannelSelect1[3].x == 1) {
         return true;
     }
 
@@ -850,15 +850,19 @@ void YUVImageShaderBlock::AddBlock(const KeyContext& keyContext,
     gatherer->add(imgData.fTextureProxies[3], {imgData.fSampling, imgData.fTileModes});
 
     if (doTilingInHw && noYUVSwizzle) {
+        SkDebugf("-----1\n");
         add_hw_yuv_no_swizzle_image_uniform_data(keyContext.dict(), imgData, gatherer);
         builder->addBlock(BuiltInCodeSnippetID::kHWYUVNoSwizzleImageShader);
     } else if (doTilingInHw) {
+        SkDebugf("-----2\n");
         add_hw_yuv_image_uniform_data(keyContext.dict(), imgData, gatherer);
         builder->addBlock(BuiltInCodeSnippetID::kHWYUVImageShader);
     } else if (imgData.fSampling.useCubic) {
+        SkDebugf("-----3\n");
         add_cubic_yuv_image_uniform_data(keyContext.dict(), imgData, gatherer);
         builder->addBlock(BuiltInCodeSnippetID::kCubicYUVImageShader);
     } else {
+        SkDebugf("-----4\n");
         add_yuv_image_uniform_data(keyContext.dict(), imgData, gatherer);
         builder->addBlock(BuiltInCodeSnippetID::kYUVImageShader);
     }
@@ -1696,12 +1700,12 @@ static void add_yuv_image_to_key(const KeyContext& keyContext,
             // The view's swizzle has the data channel for the YUVA location in all slots, so read
             // the 0th slot to determine fChannelSelect
             switch(view.swizzle()[0]) {
-                case 'r': imgData.fChannelSelect[locIndex] = {1.f, 0.f, 0.f, 0.f}; break;
-                case 'g': imgData.fChannelSelect[locIndex] = {0.f, 1.f, 0.f, 0.f}; break;
-                case 'b': imgData.fChannelSelect[locIndex] = {0.f, 0.f, 1.f, 0.f}; break;
-                case 'a': imgData.fChannelSelect[locIndex] = {0.f, 0.f, 0.f, 1.f}; break;
+                case 'r': imgData.fChannelSelect1[locIndex] = {1.f, 0.f, 0.f, 0.f}; break;
+                case 'g': imgData.fChannelSelect1[locIndex] = {0.f, 1.f, 0.f, 0.f}; break;
+                case 'b': imgData.fChannelSelect1[locIndex] = {0.f, 0.f, 1.f, 0.f}; break;
+                case 'a': imgData.fChannelSelect1[locIndex] = {0.f, 0.f, 0.f, 1.f}; break;
                 default:
-                    imgData.fChannelSelect[locIndex] = {0.f, 0.f, 0.f, 0.f};
+                    imgData.fChannelSelect1[locIndex] = {0.f, 0.f, 0.f, 0.f};
                     SkDEBUGFAILF("Unexpected swizzle for YUVA data: %c", view.swizzle()[0]);
                     break;
             }
@@ -1710,7 +1714,7 @@ static void add_yuv_image_to_key(const KeyContext& keyContext,
             // pass validation and send all 1s for the channel selection to signal opaque alpha.
             SkASSERT(locIndex == 3);
             imgData.fTextureProxies[locIndex] = yuvaImage->proxyView(SkYUVAInfo::kY).refProxy();
-            imgData.fChannelSelect[locIndex] = {1.f, 1.f, 1.f, 1.f};
+            imgData.fChannelSelect1[locIndex] = {1.f, 1.f, 1.f, 1.f};
             // For the hardcoded sampling no-swizzle case, we use this to set constant alpha
             imgData.fAlphaParam = 1;
         }
