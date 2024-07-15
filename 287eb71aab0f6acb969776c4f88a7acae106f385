@@ -16,6 +16,23 @@
       "message": "This entry is an resubmittion of https://skia-review.googlesource.com/c/skia/+/870656",
       "revId": "287eb71aab0f6acb969776c4f88a7acae106f385",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b7ea6fa2_3581799e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-07-15T17:01:12Z",
+      "side": 1,
+      "message": "It seems that the issue is not fixed. See one of the failing tests",
+      "revId": "287eb71aab0f6acb969776c4f88a7acae106f385",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
