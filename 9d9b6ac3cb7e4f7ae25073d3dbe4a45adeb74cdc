@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9ddc49ce_0ce0b13a",
+        "filename": "src/sksl/SkSLLexer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1834,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-15T21:05:18Z",
+      "side": 1,
+      "message": "At long last, we\u0027ve exceeded 2^9 states, but this is safe and harmless.\nIf we exceed 2^10, though, we\u0027ll have some thinking to do.",
+      "range": {
+        "startLine": 1834,
+        "startChar": 9,
+        "endLine": 1834,
+        "endChar": 11
+      },
+      "revId": "9d9b6ac3cb7e4f7ae25073d3dbe4a45adeb74cdc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
