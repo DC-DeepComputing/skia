@@ -183,6 +183,30 @@
       },
       "revId": "2604a67c62928f727cbe008c56397a82c3a0fd3c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf669b67_43b7249c",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 5426,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-15T19:16:28Z",
+      "side": 1,
+      "message": "Oops, didn\u0027t finish this comment.\n\nPlease run `git cl format` to clean it up automatically (as well as some other spacing nits).",
+      "parentUuid": "2c565e98_c93d5578",
+      "range": {
+        "startLine": 5426,
+        "startChar": 0,
+        "endLine": 5426,
+        "endChar": 104
+      },
+      "revId": "2604a67c62928f727cbe008c56397a82c3a0fd3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
