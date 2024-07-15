@@ -162,6 +162,7 @@ struct Program {
     // Contains *only* elements owned by a built-in module that are included in this program.
     // Use elements() to iterate over the combined set of owned + shared elements.
     std::vector<const ProgramElement*> fSharedElements;
+
     ProgramInterface fInterface;
 
     using Interface = ProgramInterface;
