@@ -129,9 +129,6 @@ skia_cc_library(
         "//include/gpu/vk:public_hdrs",
     ],
     features = ["layering_check"],
-    local_defines = [
-        "SK_USE_VMA",  # TODO(kjlubick, egdaniel) Turn this off by default and remove.
-    ],
     visibility = ["//:__pkg__"],
     deps = [
         "//:core",
@@ -140,12 +137,11 @@ skia_cc_library(
         "//src/gpu",
         "//src/gpu/ganesh",
         "//src/gpu/vk",
-        "//src/gpu/vk/vulkanmemoryallocator:vulkanmemoryallocator_priv",
         "@vulkan_headers",
     ],
 )
 
-# TODO(lovisolo, kjlubick): Do this with a macro.
+# TODO(kjlubick): Do this with a macro.
 skia_cc_library(
     name = "ganesh_vulkan_TEST_UTIL",
     testonly = True,
@@ -178,7 +174,6 @@ skia_cc_library(
         "//src/gpu",
         "//src/gpu/ganesh:ganesh_TEST_UTIL",
         "//src/gpu/vk",
-        "//src/gpu/vk/vulkanmemoryallocator:vulkanmemoryallocator_priv",
         "@vulkan_headers",
     ],
 )
