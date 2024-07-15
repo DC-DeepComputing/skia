@@ -13,9 +13,9 @@
 #include "src/gpu/graphite/dawn/DawnUtilsPriv.h"
 #endif
 
-#ifdef SK_VULKAN
-#include "src/gpu/vk/VulkanUtilsPriv.h"
-#endif
+// #ifdef SK_VULKAN
+// #include "src/gpu/vk/VulkanUtilsPriv.h"
+// #endif
 
 namespace skgpu::graphite {
 
@@ -32,19 +32,19 @@ TextureInfo::TextureInfo(const DawnTextureInfo& dawnInfo)
         , fDawnSpec(dawnInfo) {}
 #endif
 
-#ifdef SK_VULKAN
-TextureInfo::TextureInfo(const VulkanTextureInfo& vkInfo)
-        : fBackend(BackendApi::kVulkan)
-        , fValid(true)
-        , fSampleCount(vkInfo.fSampleCount)
-        , fMipmapped(vkInfo.fMipmapped)
-        , fProtected(Protected::kNo)
-        , fVkSpec(vkInfo) {
-    if (vkInfo.fFlags & VK_IMAGE_CREATE_PROTECTED_BIT) {
-        fProtected = Protected::kYes;
-    }
-}
-#endif
+// #ifdef SK_VULKAN
+// TextureInfo::TextureInfo(const VulkanTextureInfo& vkInfo)
+//         : fBackend(BackendApi::kVulkan)
+//         , fValid(true)
+//         , fSampleCount(vkInfo.fSampleCount)
+//         , fMipmapped(vkInfo.fMipmapped)
+//         , fProtected(Protected::kNo)
+//         , fVkSpec(vkInfo) {
+//     if (vkInfo.fFlags & VK_IMAGE_CREATE_PROTECTED_BIT) {
+//         fProtected = Protected::kYes;
+//     }
+// }
+// #endif
 
 TextureInfo::TextureInfo(const TextureInfo& that)
         : fBackend(that.fBackend)
@@ -66,11 +66,11 @@ TextureInfo::TextureInfo(const TextureInfo& that)
             fDawnSpec = that.fDawnSpec;
             break;
 #endif
-#ifdef SK_VULKAN
-        case BackendApi::kVulkan:
-            fVkSpec = that.fVkSpec;
-            break;
-#endif
+// #ifdef SK_VULKAN
+//         case BackendApi::kVulkan:
+//             fVkSpec = that.fVkSpec;
+//             break;
+// #endif
         default:
             SK_ABORT("Unsupport Backend");
     }
@@ -109,10 +109,10 @@ bool TextureInfo::operator==(const TextureInfo& that) const {
         case BackendApi::kDawn:
             return fDawnSpec == that.fDawnSpec;
 #endif
-#ifdef SK_VULKAN
-        case BackendApi::kVulkan:
-            return fVkSpec == that.fVkSpec;
-#endif
+// #ifdef SK_VULKAN
+//         case BackendApi::kVulkan:
+//             return fVkSpec == that.fVkSpec;
+// #endif
         default:
             return false;
     }
@@ -140,10 +140,10 @@ bool TextureInfo::isCompatible(const TextureInfo& that) const {
         case BackendApi::kDawn:
             return fDawnSpec.isCompatible(that.fDawnSpec);
 #endif
-#ifdef SK_VULKAN
-        case BackendApi::kVulkan:
-            return fVkSpec.isCompatible(that.fVkSpec);
-#endif
+// #ifdef SK_VULKAN
+//         case BackendApi::kVulkan:
+//             return fVkSpec.isCompatible(that.fVkSpec);
+// #endif
         default:
             return false;
     }
@@ -170,11 +170,11 @@ SkString TextureInfo::toString() const {
             ret.appendf("Dawn(%s,", fDawnSpec.toString().c_str());
             break;
 #endif
-#ifdef SK_VULKAN
-        case BackendApi::kVulkan:
-            ret.appendf("Vulkan(%s,", fVkSpec.toString().c_str());
-            break;
-#endif
+// #ifdef SK_VULKAN
+//         case BackendApi::kVulkan:
+//             ret.appendf("Vulkan(%s,", fVkSpec.toString().c_str());
+//             break;
+// #endif
         case BackendApi::kMock:
             ret += "Mock(";
             break;
@@ -200,11 +200,11 @@ SkString TextureInfo::toRPAttachmentString() const {
             return SkStringPrintf("Dawn(f=%u,s=%u)",
                                   static_cast<unsigned int>(fDawnSpec.fViewFormat), fSampleCount);
 #endif
-#ifdef SK_VULKAN
-        case BackendApi::kVulkan:
-            return SkStringPrintf("Vulkan(f%u,s=%u)",
-                                  static_cast<unsigned int>(fVkSpec.fFormat), fSampleCount);
-#endif
+// #ifdef SK_VULKAN
+//         case BackendApi::kVulkan:
+//             return SkStringPrintf("Vulkan(f%u,s=%u)",
+//                                   static_cast<unsigned int>(fVkSpec.fFormat), fSampleCount);
+// #endif
         case BackendApi::kMock:
             return SkStringPrintf("Mock(s=%u)", fSampleCount);
         default:
@@ -224,10 +224,10 @@ size_t TextureInfo::bytesPerPixel() const {
         case BackendApi::kDawn:
             return DawnFormatBytesPerBlock(this->dawnTextureSpec().getViewFormat());
 #endif
-#ifdef SK_VULKAN
-        case BackendApi::kVulkan:
-            return VkFormatBytesPerBlock(this->vulkanTextureSpec().fFormat);
-#endif
+// #ifdef SK_VULKAN
+//         case BackendApi::kVulkan:
+//             return VkFormatBytesPerBlock(this->vulkanTextureSpec().fFormat);
+// #endif
         default:
             return 0;
     }
@@ -245,10 +245,10 @@ SkTextureCompressionType TextureInfo::compressionType() const {
         case BackendApi::kDawn:
             return DawnFormatToCompressionType(this->dawnTextureSpec().getViewFormat());
 #endif
-#ifdef SK_VULKAN
-        case BackendApi::kVulkan:
-            return VkFormatToCompressionType(this->vulkanTextureSpec().fFormat);
-#endif
+// #ifdef SK_VULKAN
+//         case BackendApi::kVulkan:
+//             return VkFormatToCompressionType(this->vulkanTextureSpec().fFormat);
+// #endif
         default:
             return SkTextureCompressionType::kNone;
     }

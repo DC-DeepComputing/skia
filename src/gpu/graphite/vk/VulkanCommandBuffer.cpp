@@ -9,6 +9,7 @@
 
 #include "include/gpu/MutableTextureState.h"
 #include "include/gpu/graphite/BackendSemaphore.h"
+#include "include/gpu/graphite/vk/VulkanGraphiteTypes.h"
 #include "include/gpu/vk/VulkanMutableTextureState.h"
 #include "include/private/base/SkTArray.h"
 #include "src/gpu/DataUtils.h"
@@ -1307,7 +1308,7 @@ bool VulkanCommandBuffer::onCopyTextureToBuffer(const Texture* texture,
 
     // Obtain the VkFormat of the source texture so we can determine bytes per block.
     VulkanTextureInfo srcTextureInfo;
-    texture->textureInfo().getVulkanTextureInfo(&srcTextureInfo);
+    SkAssertResult(TextureInfos::GetVulkanTextureInfo(texture->textureInfo(), &srcTextureInfo));
     size_t bytesPerBlock = VkFormatBytesPerBlock(srcTextureInfo.fFormat);
 
     // Set up copy region
@@ -1354,7 +1355,7 @@ bool VulkanCommandBuffer::onCopyBufferToTexture(const Buffer* buffer,
 
     // Obtain the VkFormat of the destination texture so we can determine bytes per block.
     VulkanTextureInfo dstTextureInfo;
-    dstTexture->textureInfo().getVulkanTextureInfo(&dstTextureInfo);
+    TextureInfos::GetVulkanTextureInfo(dstTexture->textureInfo(), &dstTextureInfo);
     size_t bytesPerBlock = VkFormatBytesPerBlock(dstTextureInfo.fFormat);
     SkISize oneBlockDims = CompressedDimensions(dstTexture->textureInfo().compressionType(),
                                                 {1, 1});

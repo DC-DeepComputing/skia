@@ -15,6 +15,7 @@
 #endif
 
 #ifdef SK_VULKAN
+#include "include/gpu/graphite/vk/VulkanGraphiteTypes.h"
 #include "include/gpu/vk/VulkanMutableTextureState.h"
 #endif
 
@@ -170,7 +171,7 @@ BackendTexture::BackendTexture(SkISize dimensions,
                                VkImage image,
                                VulkanAlloc vulkanMemoryAllocation)
         : fDimensions(dimensions)
-        , fInfo(info)
+        , fInfo(TextureInfos::MakeVulkan(info))
         , fMutableState(sk_make_sp<skgpu::MutableTextureState>(
                   skgpu::MutableTextureStates::MakeVulkan(layout, queueFamilyIndex)))
         , fMemoryAlloc(vulkanMemoryAllocation)
