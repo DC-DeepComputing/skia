@@ -1571,6 +1571,23 @@ SkPath make_path() {
 }
 
 struct DrawData {
+    DrawData() {
+        SkFont font(ToolUtils::DefaultPortableTypeface(), 16);
+        const char text[] = "hambur1";
+
+        constexpr int kNumVerts = 4;
+        constexpr SkPoint kPositions[kNumVerts] { { 0, 0 }, { 0, 16 }, { 16, 16 }, { 16, 0 } };
+        constexpr SkColor kColors[kNumVerts] = { SK_ColorBLUE, SK_ColorGREEN,
+                                                 SK_ColorCYAN, SK_ColorYELLOW };
+
+        fPath = make_path();
+        fBlob = SkTextBlob::MakeFromText(text, strlen(text), font);
+        fVertsWithColors = SkVertices::MakeCopy(SkVertices::kTriangleFan_VertexMode, kNumVerts,
+                                                kPositions, kPositions, kColors);
+        fVertsWithOutColors = SkVertices::MakeCopy(SkVertices::kTriangleFan_VertexMode, kNumVerts,
+                                                   kPositions, kPositions, /* colors= */ nullptr);
+    }
+
     SkPath fPath;
     sk_sp<SkTextBlob> fBlob;
     sk_sp<SkVertices> fVertsWithColors;
@@ -1608,8 +1625,9 @@ void check_draw(skiatest::Reporter* reporter,
                 Recorder* recorder,
                 const SkPaint& paint,
                 DrawTypeFlags dt,
-                ClipType clip, sk_sp<SkShader> clipShader,
-                const DrawData& drawData) {
+                ClipType clip,
+                sk_sp<SkShader> clipShader) {
+    static const DrawData kDrawData;
 
     int before = context->priv().globalCache()->numGraphicsPipelines();
 
@@ -1646,18 +1664,18 @@ void check_draw(skiatest::Reporter* reporter,
                 simple_draws(canvas, paint);
                 break;
             case DrawTypeFlags::kNonSimpleShape:
-                non_simple_draws(canvas, paint, drawData);
+                non_simple_draws(canvas, paint, kDrawData);
                 break;
             case DrawTypeFlags::kShape:
                 simple_draws(canvas, paint);
-                non_simple_draws(canvas, paint, drawData);
+                non_simple_draws(canvas, paint, kDrawData);
                 break;
             case DrawTypeFlags::kText:
-                canvas->drawTextBlob(drawData.fBlob, 0, 16, paint);
+                canvas->drawTextBlob(kDrawData.fBlob, 0, 16, paint);
                 break;
             case DrawTypeFlags::kDrawVertices:
-                canvas->drawVertices(drawData.fVertsWithColors, SkBlendMode::kDst, paint);
-                canvas->drawVertices(drawData.fVertsWithOutColors, SkBlendMode::kDst, paint);
+                canvas->drawVertices(kDrawData.fVertsWithColors, SkBlendMode::kDst, paint);
+                canvas->drawVertices(kDrawData.fVertsWithOutColors, SkBlendMode::kDst, paint);
                 break;
             default:
                 SkASSERT(false);
@@ -1708,7 +1726,6 @@ void run_test(skiatest::Reporter*,
               Context*,
               skiatest::graphite::GraphiteTestContext*,
               const KeyContext& precompileKeyContext,
-              const DrawData&,
               ShaderType,
               BlenderType,
               ColorFilterType,
@@ -1757,23 +1774,6 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
                                     destColorInfo,
                                     fakeDstTexture,
                                     kFakeDstOffset);
-
-    SkFont font(ToolUtils::DefaultPortableTypeface(), 16);
-    const char text[] = "hambur";
-
-    constexpr int kNumVerts = 4;
-    constexpr SkPoint kPositions[kNumVerts] { {0,0}, {0,16}, {16,16}, {16,0} };
-    constexpr SkColor kColors[kNumVerts] = { SK_ColorBLUE, SK_ColorGREEN,
-                                             SK_ColorCYAN, SK_ColorYELLOW };
-
-    DrawData drawData = {
-            make_path(),
-            SkTextBlob::MakeFromText(text, strlen(text), font),
-            SkVertices::MakeCopy(SkVertices::kTriangleFan_VertexMode, kNumVerts,
-                                 kPositions, kPositions, kColors),
-            SkVertices::MakeCopy(SkVertices::kTriangleFan_VertexMode, kNumVerts,
-                                 kPositions, kPositions, /* colors= */ nullptr),
-    };
 
     ShaderType shaders[] = {
             ShaderType::kBlend,
@@ -1876,7 +1876,7 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
 #endif
 
                             run_test(reporter, context, testContext, precompileKeyContext,
-                                     drawData, shader, blender, cf, mf, imageFilter, clip);
+                                     shader, blender, cf, mf, imageFilter, clip);
                         }
                     }
                 }
@@ -1893,7 +1893,6 @@ void run_test(skiatest::Reporter* reporter,
               Context* context,
               skiatest::graphite::GraphiteTestContext* testContext,
               const KeyContext& precompileKeyContext,
-              const DrawData& drawData,
               ShaderType s,
               BlenderType bm,
               ColorFilterType cf,
@@ -2054,8 +2053,7 @@ void run_test(skiatest::Reporter* reporter,
                            paint,
                            dt,
                            clip,
-                           clipShader,
-                           drawData);
+                           clipShader);
             }
         }
     }
