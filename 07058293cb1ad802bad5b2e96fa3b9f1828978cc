@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eee16d64_79a8cf5b",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-15T19:19:37Z",
+      "side": 1,
+      "message": "Per offline discussion, since `entry` will be going away in the next CL, we\u0027re just leaving it as is for now.",
+      "parentUuid": "eed096e3_07f64dd2",
+      "range": {
+        "startLine": 85,
+        "startChar": 37,
+        "endLine": 85,
+        "endChar": 42
+      },
+      "revId": "07058293cb1ad802bad5b2e96fa3b9f1828978cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9628bff5_aa6f654c",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2cc9f434_db82b254",
+        "filename": "src/gpu/graphite/UniformManager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-15T19:19:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9628bff5_aa6f654c",
+      "range": {
+        "startLine": 163,
+        "startChar": 18,
+        "endLine": 163,
+        "endChar": 28
+      },
+      "revId": "07058293cb1ad802bad5b2e96fa3b9f1828978cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4a1e73c0_165660ea",
@@ -60,6 +108,24 @@
       "writtenOn": "2024-07-11T20:02:32Z",
       "side": 1,
       "message": "It seems like it would be good to test out a scenario w/ two structs in a row",
+      "revId": "07058293cb1ad802bad5b2e96fa3b9f1828978cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c0c1690_c907f9ff",
+        "filename": "tests/graphite/UniformManagerTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 891,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-15T19:19:37Z",
+      "side": 1,
+      "message": "It wasn\u0027t too bad to just add an option for `fPreStruct` to also be considered a struct, so I added a test using that to achieve two structs in a row.",
+      "parentUuid": "4a1e73c0_165660ea",
       "revId": "07058293cb1ad802bad5b2e96fa3b9f1828978cc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
