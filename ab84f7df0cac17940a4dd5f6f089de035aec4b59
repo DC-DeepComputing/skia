@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a75cf97d_c89bebdb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 20234
+      },
+      "writtenOn": "2024-07-15T01:13:54Z",
+      "side": 1,
+      "message": "Hello, Brian, do you have any other questions about this CL? Could you help start the SKCQ?",
+      "revId": "ab84f7df0cac17940a4dd5f6f089de035aec4b59",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
