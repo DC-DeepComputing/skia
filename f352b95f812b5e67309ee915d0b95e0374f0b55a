@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2403752a_c9fe4d7c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-07-15T20:34:11Z",
+      "side": 1,
+      "message": "... and this is the promised clean up to make the code use SkPoint to express semantics more clearly.",
+      "revId": "f352b95f812b5e67309ee915d0b95e0374f0b55a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
