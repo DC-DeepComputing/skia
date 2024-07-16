@@ -519,6 +519,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f8771a2_9baf1f4a",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 5426,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-16T16:39:47Z",
+      "side": 1,
+      "message": "I wasn\u0027t able to get `git cl format` working but I did run `git clang-format origin/main` and it seems like that did that same thing formatting wise.",
+      "parentUuid": "c48ebddd_9e16f2a5",
+      "range": {
+        "startLine": 5426,
+        "startChar": 0,
+        "endLine": 5426,
+        "endChar": 104
+      },
+      "revId": "2604a67c62928f727cbe008c56397a82c3a0fd3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d7ac87cf_efff017f",

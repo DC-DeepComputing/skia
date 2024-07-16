@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d175bf27_8c2a0abe",
+        "filename": "src/sksl/analysis/SkSLSpecialization.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-16T16:39:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "433cea97_af683384",
+      "range": {
+        "startLine": 91,
+        "startChar": 28,
+        "endLine": 91,
+        "endChar": 49
+      },
+      "revId": "3e1355823246dc1b1f6f568b9b98c5774d52c6c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "657bf456_6c06047e",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-07-16T13:12:44Z",
       "side": 1,
       "message": "This will prevent the tree walk from descending into subexpressions. We need to make sure we handle the `INHERITED::visitExpression(expr)` or we would miss specializing `bar` in `foo(arg1, bar(arg2))`.",
+      "range": {
+        "startLine": 101,
+        "startChar": 39,
+        "endLine": 101,
+        "endChar": 44
+      },
+      "revId": "3e1355823246dc1b1f6f568b9b98c5774d52c6c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9488ddc_6844b9e8",
+        "filename": "src/sksl/analysis/SkSLSpecialization.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-16T16:39:47Z",
+      "side": 1,
+      "message": "Good catch I didn\u0027t think about this, I just did `return INHERITED::visitExpression` here, I think a goto with a label at the end also would\u0027ve worked but not sure how appropriate that is and repeating this return twice feels fine.",
+      "parentUuid": "657bf456_6c06047e",
       "range": {
         "startLine": 101,
         "startChar": 39,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "259f11ad_f8f61626",
+        "filename": "src/sksl/analysis/SkSLSpecialization.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-16T16:39:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "90234f2a_82bb82b7",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 24,
+        "endChar": 0
+      },
+      "revId": "3e1355823246dc1b1f6f568b9b98c5774d52c6c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0d7fd90b_985134ca",
@@ -83,6 +155,30 @@
       "writtenOn": "2024-07-16T13:12:44Z",
       "side": 1,
       "message": "1 - Do you mean `SIZE_MAX`? `UINT32_MAX` is the maximum value for a `uint32_t`, not a `size_t`.\n\n2 - Is there a reason not to just use `int` for the specialization index? `size_t` is 64 bits, versus 32 bits for an int, and an int seems totally sufficient for what we need.",
+      "range": {
+        "startLine": 29,
+        "startChar": 54,
+        "endLine": 29,
+        "endChar": 64
+      },
+      "revId": "3e1355823246dc1b1f6f568b9b98c5774d52c6c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "51c98103_ee970e0c",
+        "filename": "src/sksl/analysis/SkSLSpecialization.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-16T16:39:47Z",
+      "side": 1,
+      "message": "I initially chose `size_t` since I knew it would be indexing into the `Specializations` array, I did change it to `int` though because I agree it probably works better here.",
+      "parentUuid": "0d7fd90b_985134ca",
       "range": {
         "startLine": 29,
         "startChar": 54,
@@ -116,6 +212,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b86afba4_a0408ef6",
+        "filename": "src/sksl/analysis/SkSLSpecialization.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-16T16:39:47Z",
+      "side": 1,
+      "message": "I was thinking this too when calling the lambda but I knew the output arguments go last, but it\u0027s subjective in this case I like the lambda being last too.",
+      "parentUuid": "127fe01b_8dc6e615",
+      "range": {
+        "startLine": 74,
+        "startChar": 31,
+        "endLine": 74,
+        "endChar": 73
+      },
+      "revId": "3e1355823246dc1b1f6f568b9b98c5774d52c6c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "56281aa8_ed3bc305",
@@ -129,6 +249,30 @@
       "writtenOn": "2024-07-16T13:35:14Z",
       "side": 1,
       "message": "Up to you: could be simplified to\n\n```\n            if (const Variable** uniform \u003d specializedParams-\u003efind(parameter)) {\n```",
+      "range": {
+        "startLine": 4399,
+        "startChar": 0,
+        "endLine": 4401,
+        "endChar": 0
+      },
+      "revId": "3e1355823246dc1b1f6f568b9b98c5774d52c6c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9cbb7baa_30671de3",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 4401,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-16T16:39:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "56281aa8_ed3bc305",
       "range": {
         "startLine": 4399,
         "startChar": 0,
@@ -162,6 +306,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "804c4d18_db6f932f",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 4410,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-16T16:39:47Z",
+      "side": 1,
+      "message": "There is no `findOrNull` but I was essentially able to do the same thing changing with `find` and changing it to a `const Variable**`",
+      "parentUuid": "b9130195_4ab40d61",
+      "range": {
+        "startLine": 4410,
+        "startChar": 0,
+        "endLine": 4410,
+        "endChar": 83
+      },
+      "revId": "3e1355823246dc1b1f6f568b9b98c5774d52c6c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b27ef39c_375cc4b2",
@@ -175,6 +343,30 @@
       "writtenOn": "2024-07-16T13:35:14Z",
       "side": 1,
       "message": "Then we could remove the lookup code here...\n\n```\n    if (specializedVar) {\n        const auto* p \u003d fSynthesizedSamplerMap.find(specializedVar);\n```",
+      "range": {
+        "startLine": 4421,
+        "startChar": 0,
+        "endLine": 4425,
+        "endChar": 0
+      },
+      "revId": "3e1355823246dc1b1f6f568b9b98c5774d52c6c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b69562f4_b79a53b8",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 4425,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-16T16:39:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b27ef39c_375cc4b2",
       "range": {
         "startLine": 4421,
         "startChar": 0,
@@ -208,6 +400,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ffe7e71_7ab5da1f",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 4444,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-16T16:39:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f257cf7d_a0fc9f0a",
+      "range": {
+        "startLine": 4439,
+        "startChar": 0,
+        "endLine": 4444,
+        "endChar": 0
+      },
+      "revId": "3e1355823246dc1b1f6f568b9b98c5774d52c6c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "40ed6190_3c5c7959",
@@ -221,6 +437,30 @@
       "writtenOn": "2024-07-16T13:35:14Z",
       "side": 1,
       "message": "The structuring here seems a bit weird; it feels like it would be better structured as two functions. `writeFunction` would become basically the new block that you\u0027ve added here; it is responsible for calling `writeFunctionInstantiation`, which is basically the original `writeFunction` code. `writeFunctionInstantiation` would emit one instantiation of a function.  \n\nThis seems cleaner and makes it obvious that the code won\u0027t lead to runaway recursion. (As written, it is far from obvious!) It also does less work since we only need to search the `fSpecializationMap` one time.",
+      "range": {
+        "startLine": 4460,
+        "startChar": 0,
+        "endLine": 4468,
+        "endChar": 0
+      },
+      "revId": "3e1355823246dc1b1f6f568b9b98c5774d52c6c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e19b7a12_8154b116",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 4468,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-16T16:39:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "40ed6190_3c5c7959",
       "range": {
         "startLine": 4460,
         "startChar": 0,
@@ -267,6 +507,54 @@
       "writtenOn": "2024-07-16T13:35:14Z",
       "side": 1,
       "message": "Up to you: it would scope the variable more tightly if it were written as\n\n```\n  if (Analysis::Specializations* specializations \u003d\n                    fSpecializationInfo.fSpecializationMap.find(\u0026funcDecl)) {\n```",
+      "range": {
+        "startLine": 5310,
+        "startChar": 0,
+        "endLine": 5313,
+        "endChar": 0
+      },
+      "revId": "3e1355823246dc1b1f6f568b9b98c5774d52c6c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f629a8ab_c4edf57e",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 5313,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-16T16:39:47Z",
+      "side": 1,
+      "message": "Changed `SpecializationIndex` to an `int` so this solves itself.",
+      "parentUuid": "86d4890d_196ef285",
+      "range": {
+        "startLine": 5313,
+        "startChar": 25,
+        "endLine": 5313,
+        "endChar": 28
+      },
+      "revId": "3e1355823246dc1b1f6f568b9b98c5774d52c6c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b71dc409_00ae29f9",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 5313,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-16T16:39:47Z",
+      "side": 1,
+      "message": "Done, and did a similar scoping when calling `writeFunctionInstantiation`",
+      "parentUuid": "403f9ec5_078afb85",
       "range": {
         "startLine": 5310,
         "startChar": 0,
