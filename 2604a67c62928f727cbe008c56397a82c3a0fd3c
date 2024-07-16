@@ -497,6 +497,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c48ebddd_9e16f2a5",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 5426,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-16T13:12:44Z",
+      "side": 1,
+      "message": "Please run `bin/fetch-clang-format` and try again.",
+      "parentUuid": "e3f7aa27_63d39be4",
+      "range": {
+        "startLine": 5426,
+        "startChar": 0,
+        "endLine": 5426,
+        "endChar": 104
+      },
+      "revId": "2604a67c62928f727cbe008c56397a82c3a0fd3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d7ac87cf_efff017f",
         "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
         "patchSetId": 11

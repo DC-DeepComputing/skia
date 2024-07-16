@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "433cea97_af683384",
+        "filename": "src/sksl/analysis/SkSLSpecialization.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-16T13:12:44Z",
+      "side": 1,
+      "message": "create a specialization",
+      "range": {
+        "startLine": 91,
+        "startChar": 28,
+        "endLine": 91,
+        "endChar": 49
+      },
+      "revId": "3e1355823246dc1b1f6f568b9b98c5774d52c6c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "657bf456_6c06047e",
+        "filename": "src/sksl/analysis/SkSLSpecialization.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-16T13:12:44Z",
+      "side": 1,
+      "message": "This will prevent the tree walk from descending into subexpressions. We need to make sure we handle the `INHERITED::visitExpression(expr)` or we would miss specializing `bar` in `foo(arg1, bar(arg2))`.",
+      "range": {
+        "startLine": 101,
+        "startChar": 39,
+        "endLine": 101,
+        "endChar": 44
+      },
+      "revId": "3e1355823246dc1b1f6f568b9b98c5774d52c6c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "90234f2a_82bb82b7",
+        "filename": "src/sksl/analysis/SkSLSpecialization.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-16T13:12:44Z",
+      "side": 1,
+      "message": "Delete",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 24,
+        "endChar": 0
+      },
+      "revId": "3e1355823246dc1b1f6f568b9b98c5774d52c6c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d7fd90b_985134ca",
+        "filename": "src/sksl/analysis/SkSLSpecialization.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-16T13:12:44Z",
+      "side": 1,
+      "message": "1 - Do you mean `SIZE_MAX`? `UINT32_MAX` is the maximum value for a `uint32_t`, not a `size_t`.\n\n2 - Is there a reason not to just use `int` for the specialization index? `size_t` is 64 bits, versus 32 bits for an int, and an int seems totally sufficient for what we need.",
+      "range": {
+        "startLine": 29,
+        "startChar": 54,
+        "endLine": 29,
+        "endChar": 64
+      },
+      "revId": "3e1355823246dc1b1f6f568b9b98c5774d52c6c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "127fe01b_8dc6e615",
+        "filename": "src/sksl/analysis/SkSLSpecialization.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-16T13:12:44Z",
+      "side": 1,
+      "message": "Up to you: I find that putting a lambda in the middle of a parameter list makes call sites hard to read. Arguments past the lambda tend to get lost in the noise. Consider moving the std::function to the end of the parameter list. (This suggestion is in conflict with the idea that \"output arguments go last,\" but IMO it\u0027s subjective.)",
+      "range": {
+        "startLine": 74,
+        "startChar": 31,
+        "endLine": 74,
+        "endChar": 73
+      },
+      "revId": "3e1355823246dc1b1f6f568b9b98c5774d52c6c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
