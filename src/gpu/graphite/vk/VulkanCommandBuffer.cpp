@@ -909,6 +909,9 @@ void VulkanCommandBuffer::recordBufferBindingInfo(const BindUniformBufferInfo& i
         case UniformSlot::kPaint:
             bufferIndex = VulkanGraphicsPipeline::kPaintUniformBufferIndex;
             break;
+        case UniformSlot::kGradient:
+            bufferIndex = VulkanGraphicsPipeline::kGradientBufferIndex;
+            break;
         default:
             SkASSERT(false);
     }
@@ -957,6 +960,14 @@ void VulkanCommandBuffer::bindUniformBuffers() {
             VulkanGraphicsPipeline::kPaintUniformBufferIndex,
             PipelineStageFlags::kFragmentShader});
     }
+    if (fActiveGraphicsPipeline->hasGradientBuffer() &&
+        fUniformBuffersToBind[VulkanGraphicsPipeline::kGradientBufferIndex].fBuffer) {
+        descriptors.push_back({
+            uniformBufferType,
+            /*count=*/1,
+            VulkanGraphicsPipeline::kGradientBufferIndex,
+            PipelineStageFlags::kFragmentShader});
+    }
 
     sk_sp<VulkanDescriptorSet> descSet = fResourceProvider->findOrCreateUniformBuffersDescriptorSet(
             descriptors, fUniformBuffersToBind);
@@ -964,7 +975,7 @@ void VulkanCommandBuffer::bindUniformBuffers() {
         SKGPU_LOG_E("Unable to find or create uniform descriptor set");
         return;
     }
-    skia_private::AutoSTMalloc<3, uint32_t> dynamicOffsets(descriptors.size());
+    skia_private::AutoSTMalloc<4, uint32_t> dynamicOffsets(descriptors.size());
     for (int i = 0; i < descriptors.size(); i++) {
         int descriptorBindingIndex = descriptors[i].fBindingIndex;
         SkASSERT(static_cast<unsigned long>(descriptorBindingIndex) < fUniformBuffersToBind.size());
