@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "50940fa4_bdf00f1f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-07-16T14:32:37Z",
+      "side": 1,
+      "message": "Our \"include what you use\" job thinks that the includes in the _lasx files are unnecessary. I think it\u0027s a bug, because we don\u0027t have a loong toolchain. I added comments that show how to suppress the error. You can just click `Apply Edit` on those. Sorry!",
+      "revId": "cfc4b40f5e266217cc4e247c0efcfa7761630f2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3abf94b0_79b7449b",
+        "filename": "src/core/SkBitmapProcState_opts_lasx.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-07-16T14:32:37Z",
+      "side": 1,
+      "message": "```suggestion\n#include \"include/private/base/SkFeatures.h\" // IWYU pragma: keep\n#include \"src/core/SkOptsTargets.h\" // IWYU pragma: keep\n```",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 35
+      },
+      "revId": "cfc4b40f5e266217cc4e247c0efcfa7761630f2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c42489e_8ab01732",
+        "filename": "src/core/SkBlitRow_opts_lasx.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-07-16T14:32:37Z",
+      "side": 1,
+      "message": "```suggestion\n#include \"include/private/base/SkFeatures.h\" // IWYU pragma: keep\n#include \"src/core/SkBlitRow.h\" // IWYU pragma: keep\n#include \"src/core/SkOptsTargets.h\" // IWYU pragma: keep\n```",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 35
+      },
+      "revId": "cfc4b40f5e266217cc4e247c0efcfa7761630f2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89145570_c6cf8997",
+        "filename": "src/core/SkSwizzler_opts_lasx.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-07-16T14:32:37Z",
+      "side": 1,
+      "message": "```suggestion\n#include \"include/private/base/SkFeatures.h\" // IWYU pragma: keep\n#include \"src/core/SkOptsTargets.h\" // IWYU pragma: keep\n#include \"src/core/SkSwizzlePriv.h\" // IWYU pragma: keep\n```",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 35
+      },
+      "revId": "cfc4b40f5e266217cc4e247c0efcfa7761630f2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
