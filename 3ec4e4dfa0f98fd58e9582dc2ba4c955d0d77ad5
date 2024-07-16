@@ -16,6 +16,23 @@
       "message": "Looking at complex_clip this seems to push the left and top edges in a pixel too much? It looked like there was some of that in the previous CL as well though it was hard to tell.",
       "revId": "3ec4e4dfa0f98fd58e9582dc2ba4c955d0d77ad5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "06149da9_319d4d55",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-07-16T21:16:22Z",
+      "side": 1,
+      "message": "Same as previous CL in sequence -- it seems fine in principle but it doesn\u0027t seem to be snapping to the pixel value matching the other GMs.",
+      "revId": "3ec4e4dfa0f98fd58e9582dc2ba4c955d0d77ad5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
