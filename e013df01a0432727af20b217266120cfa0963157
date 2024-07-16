@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a50746c2_d650d98c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-16T18:49:08Z",
+      "side": 1,
+      "message": "I just patched this CL locally and noticed that you are not building the HLSL test outputs. When I rebuild it, I get matching changes in `FunctionParametersOfTextureAndSamplerType.hlsl`.\n\nOffhand I\u0027m not sure why this wouldn\u0027t be building, though.",
+      "revId": "e013df01a0432727af20b217266120cfa0963157",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
