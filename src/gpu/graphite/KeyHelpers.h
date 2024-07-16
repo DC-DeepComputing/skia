@@ -204,7 +204,7 @@ struct YUVImageShaderBlock {
         SkISize fImgSizeUV;  // Size of UV planes relative to Y's texel space
         SkRect fSubset;
         SkPoint fLinearFilterUVInset = { 0.50001f, 0.50001f };
-        SkV4 fChannelSelect[4];
+        SkV4 fChannelSelect1[4]; // SkYUVAInfo::kYUVAChannelCount];
         float fAlphaParam = 0;
         SkMatrix fYUVtoRGBMatrix;
         SkPoint3 fYUVtoRGBTranslate;
@@ -218,7 +218,8 @@ struct YUVImageShaderBlock {
     static void AddBlock(const KeyContext&,
                          PaintParamsKeyBuilder*,
                          PipelineDataGatherer*,
-                         const ImageData&);
+                         const ImageData&,
+                         const char*);
 };
 
 struct CoordClampShaderBlock {

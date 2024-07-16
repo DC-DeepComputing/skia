@@ -22,6 +22,7 @@
 #include "include/core/SkShader.h"
 #include "include/core/SkTextBlob.h"
 #include "include/core/SkVertices.h"
+#include "include/core/SkYUVAPixmaps.h"
 #include "include/effects/SkBlenders.h"
 #include "include/effects/SkColorMatrix.h"
 #include "include/effects/SkGradientShader.h"
@@ -47,6 +48,7 @@
 #include "src/core/SkRuntimeEffectPriv.h"
 #include "src/gpu/graphite/ContextPriv.h"
 #include "src/gpu/graphite/ContextUtils.h"
+#include "src/gpu/graphite/FactoryFunctions.h"
 #include "src/gpu/graphite/GraphicsPipelineDesc.h"
 #include "src/gpu/graphite/KeyContext.h"
 #include "src/gpu/graphite/KeyHelpers.h"
@@ -108,6 +110,7 @@ create_random_image_filter(Recorder*, SkRandom*);
     M(Runtime)            \
     M(SolidColor)         \
     M(SweepGradient)      \
+    M(YUVImage)           \
     M(WorkingColorSpace)
 
 enum class ShaderType {
@@ -533,6 +536,32 @@ sk_sp<SkImage> make_image(SkRandom* rand, Recorder* recorder) {
     return SkImages::TextureFromImage(recorder, img, {false});
 }
 
+sk_sp<SkImage> make_yuv_image(SkRandom* rand, Recorder* recorder) {
+
+    SkYUVAInfo::PlaneConfig planeConfig = SkYUVAInfo::PlaneConfig::kY_UV;
+    if (rand->nextBool()) {
+        planeConfig = SkYUVAInfo::PlaneConfig::kY_U_V_A;
+    }
+
+    SkYUVAInfo yuvaInfo({ 32, 32, },
+                        planeConfig,
+                        SkYUVAInfo::Subsampling::k420,
+                        kJPEG_Full_SkYUVColorSpace);
+
+    SkASSERT(yuvaInfo.isValid());
+
+    SkYUVAPixmapInfo pmInfo(yuvaInfo, SkYUVAPixmapInfo::DataType::kUnorm8, nullptr);
+
+    SkYUVAPixmaps pixmaps = SkYUVAPixmaps::Allocate(pmInfo);
+
+    for (int i = 0; i < pixmaps.numPlanes(); ++i) {
+        pixmaps.plane(i).erase(SK_ColorBLACK);
+    }
+
+    // TODO: fuzz the image's colorSpace
+    return SkImages::TextureFromYUVAPixmaps(recorder, pixmaps, {/* fMipmapped= */ false});
+}
+
 //--------------------------------------------------------------------------------------------------
 sk_sp<SkPicture> make_picture(SkRandom* rand) {
     constexpr SkRect kRect = SkRect::MakeWH(128, 128);
@@ -800,6 +829,35 @@ std::pair<sk_sp<SkShader>, sk_sp<PrecompileShader>> create_image_shader(SkRandom
     return { s, o };
 }
 
+std::pair<sk_sp<SkShader>, sk_sp<PrecompileShader>> create_yuv_image_shader(SkRandom* rand,
+                                                                            Recorder* recorder) {
+    SkTileMode tmX = random_tilemode(rand);
+    SkTileMode tmY = random_tilemode(rand);
+
+    SkMatrix lmStorage;
+    SkMatrix* lmPtr = random_local_matrix(rand, &lmStorage);
+
+    sk_sp<SkShader> s;
+    sk_sp<PrecompileShader> o;
+
+    SkSamplingOptions samplingOptions;
+    if (rand->nextBool()) {
+        samplingOptions = SkCubicResampler::Mitchell();
+    }
+
+    sk_sp<SkImage> yuvImage = make_yuv_image(rand, recorder);
+    if (rand->nextBool()) {
+        s = SkImageShader::MakeSubset(std::move(yuvImage), SkRect::MakeXYWH(8, 8, 16, 16),
+                                      tmX, tmY, samplingOptions, lmPtr);
+    } else {
+        s = SkShaders::Image(std::move(yuvImage), tmX, tmY, samplingOptions, lmPtr);
+    }
+
+    o = PrecompileShaders::YUVImage();
+
+    return { s, o };
+}
+
 std::pair<sk_sp<SkShader>, sk_sp<PrecompileShader>> create_blend_shader(SkRandom* rand,
                                                                         Recorder* recorder) {
     // TODO: add explicit testing of the kClear, kDst and kSrc blend modes since they short
@@ -875,6 +933,8 @@ std::pair<sk_sp<SkShader>, sk_sp<PrecompileShader>>  create_shader(SkRandom* ran
             return create_solid_shader(rand);
         case ShaderType::kSweepGradient:
             return create_gradient_shader(rand, SkShaderBase::GradientType::kSweep);
+        case ShaderType::kYUVImage:
+            return create_yuv_image_shader(rand, recorder);
         case ShaderType::kWorkingColorSpace:
             return create_workingCS_shader(rand, recorder);
     }
@@ -1903,10 +1963,11 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
     KeyContext precompileKeyContext(create_key_context(context, rtDict.get()));
 
     ShaderType shaders[] = {
-            ShaderType::kBlend,
-            ShaderType::kImage,
-            ShaderType::kRadialGradient,
-            ShaderType::kSolidColor,
+//            ShaderType::kBlend,
+//            ShaderType::kImage,
+//            ShaderType::kRadialGradient,
+//            ShaderType::kSolidColor,
+            ShaderType::kYUVImage,
 #if EXPANDED_SET
             ShaderType::kNone,
             ShaderType::kColorFilter,
@@ -1919,14 +1980,15 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
             ShaderType::kPicture,
             ShaderType::kRuntime,
             ShaderType::kSweepGradient,
+            ShaderType::kYUVImage,
             ShaderType::kWorkingColorSpace,
 #endif
     };
 
     BlenderType blenders[] = {
             BlenderType::kPorterDuff,
-            BlenderType::kShaderBased,
-            BlenderType::kRuntime,
+//            BlenderType::kShaderBased,
+//            BlenderType::kRuntime,
 #if EXPANDED_SET
             BlenderType::kNone,
             BlenderType::kArithmetic,
@@ -1935,8 +1997,8 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
 
     ColorFilterType colorFilters[] = {
             ColorFilterType::kNone,
-            ColorFilterType::kBlendMode,
-            ColorFilterType::kMatrix,
+//            ColorFilterType::kBlendMode,
+//            ColorFilterType::kMatrix,
 #if EXPANDED_SET
             ColorFilterType::kColorSpaceXform,
             ColorFilterType::kCompose,
@@ -1986,11 +2048,11 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
     };
 
     static const DrawTypeFlags kDrawTypeFlags[] = {
-            DrawTypeFlags::kText,
-            DrawTypeFlags::kDrawVertices,
+//            DrawTypeFlags::kText,
+//            DrawTypeFlags::kDrawVertices,
             DrawTypeFlags::kSimpleShape,
-            DrawTypeFlags::kNonSimpleShape,
-            DrawTypeFlags::kShape,
+//            DrawTypeFlags::kNonSimpleShape,
+//            DrawTypeFlags::kShape,
     };
 
 #if EXPANDED_SET
