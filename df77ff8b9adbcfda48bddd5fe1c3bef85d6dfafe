@@ -16,6 +16,23 @@
       "message": "I had to fix up some bugs where if a runtime effect and paint had no uniforms, we wouldn\u0027t emit the `FSUniformData` struct, but the rest of the generated functions and preamble were now trying to reference the `uniforms` variable.\n\nThis reset your initial +1.",
       "revId": "df77ff8b9adbcfda48bddd5fe1c3bef85d6dfafe",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c5235f6_cb2ba35c",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-07-16T20:10:50Z",
+      "side": 1,
+      "message": "line this up ?",
+      "revId": "df77ff8b9adbcfda48bddd5fe1c3bef85d6dfafe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
