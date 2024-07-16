@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "106187d5_8de234b9",
+        "filename": "src/sksl/analysis/SkSLSpecialization.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-16T18:51:23Z",
+      "side": 1,
+      "message": "Created bug b/353532475. I don\u0027t think it would be able to trigger as of now since samplers cannot be defined locally or in interface blocks, but in the future it could be possible. \n\nI also don\u0027t think a variable as the argument could be passed in that is the wrong type due to the compiler type checking but I\u0027m less sure about that since those are implementation details I\u0027m unaware of.",
+      "parentUuid": "5babcfc7_75098357",
+      "range": {
+        "startLine": 87,
+        "startChar": 0,
+        "endLine": 87,
+        "endChar": 96
+      },
+      "revId": "97a6bee36ec60cd13df4fc61a249a83df2f87801",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7bc1f0c4_26a2af7d",
@@ -54,6 +78,30 @@
       "writtenOn": "2024-07-16T17:23:10Z",
       "side": 1,
       "message": "Can this be `const`?",
+      "range": {
+        "startLine": 1814,
+        "startChar": 41,
+        "endLine": 1814,
+        "endChar": 42
+      },
+      "revId": "97a6bee36ec60cd13df4fc61a249a83df2f87801",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fc489bbe_c577a867",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 1814,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-16T18:51:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7bc1f0c4_26a2af7d",
       "range": {
         "startLine": 1814,
         "startChar": 41,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9c93b64_df43a229",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 1819,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-16T18:51:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d0520b02_26219d7c",
+      "range": {
+        "startLine": 1819,
+        "startChar": 2,
+        "endLine": 1819,
+        "endChar": 7
+      },
+      "revId": "97a6bee36ec60cd13df4fc61a249a83df2f87801",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "940e2b88_e027b548",
@@ -100,6 +172,30 @@
       "writtenOn": "2024-07-16T17:23:10Z",
       "side": 1,
       "message": "Could flatten this a bit:\n\n```\n        } else if (!paramIsSpecialized) {\n            words.push_back(this-\u003egetFunctionParameterType(parameter-\u003etype(), parameter-\u003elayout()));\n        }\n```",
+      "range": {
+        "startLine": 1826,
+        "startChar": 0,
+        "endLine": 1832,
+        "endChar": 0
+      },
+      "revId": "97a6bee36ec60cd13df4fc61a249a83df2f87801",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cb287138_23583a20",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 1832,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-16T18:51:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "940e2b88_e027b548",
       "range": {
         "startLine": 1826,
         "startChar": 0,
@@ -133,6 +229,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "89c0eac6_62039e3f",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 2505,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-16T18:51:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cee813e1_c28fd452",
+      "range": {
+        "startLine": 2505,
+        "startChar": 7,
+        "endLine": 2505,
+        "endChar": 8
+      },
+      "revId": "97a6bee36ec60cd13df4fc61a249a83df2f87801",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "254fb6f1_2e5f19be",
@@ -146,6 +266,30 @@
       "writtenOn": "2024-07-16T17:23:10Z",
       "side": 1,
       "message": "Let\u0027s call it `paramIsSpecialized` which is IMO more descriptive.",
+      "range": {
+        "startLine": 2510,
+        "startChar": 9,
+        "endLine": 2510,
+        "endChar": 20
+      },
+      "revId": "97a6bee36ec60cd13df4fc61a249a83df2f87801",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dc4f0af2_09dc8970",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 2510,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-16T18:51:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "254fb6f1_2e5f19be",
       "range": {
         "startLine": 2510,
         "startChar": 9,
@@ -179,6 +323,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9173bd72_8a2e853d",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 2519,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-16T18:51:23Z",
+      "side": 1,
+      "message": "I think it does make things more simpler to follow regarding what we are doing with the specialized sampler.",
+      "parentUuid": "a69d4e3b_01a14246",
+      "range": {
+        "startLine": 2513,
+        "startChar": 0,
+        "endLine": 2519,
+        "endChar": 0
+      },
+      "revId": "97a6bee36ec60cd13df4fc61a249a83df2f87801",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6e43b3c7_d033625d",
@@ -192,6 +360,30 @@
       "writtenOn": "2024-07-16T17:23:10Z",
       "side": 1,
       "message": "Let\u0027s initialize it with `NA` just to be defensive.",
+      "range": {
+        "startLine": 2562,
+        "startChar": 10,
+        "endLine": 2562,
+        "endChar": 17
+      },
+      "revId": "97a6bee36ec60cd13df4fc61a249a83df2f87801",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b6d1522b_70ef0b0a",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 2562,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-16T18:51:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6e43b3c7_d033625d",
       "range": {
         "startLine": 2562,
         "startChar": 10,
@@ -225,6 +417,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c861fbf9_ec927403",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 2609,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-16T18:51:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2fd81b76_87e8df61",
+      "range": {
+        "startLine": 2609,
+        "startChar": 3,
+        "endLine": 2609,
+        "endChar": 4
+      },
+      "revId": "97a6bee36ec60cd13df4fc61a249a83df2f87801",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "80b7f578_f6976ece",
@@ -238,6 +454,30 @@
       "writtenOn": "2024-07-16T17:23:10Z",
       "side": 1,
       "message": "Can this be `const`?",
+      "range": {
+        "startLine": 2622,
+        "startChar": 3,
+        "endLine": 2622,
+        "endChar": 4
+      },
+      "revId": "97a6bee36ec60cd13df4fc61a249a83df2f87801",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe6a1843_bd849acb",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 2622,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-16T18:51:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "80b7f578_f6976ece",
       "range": {
         "startLine": 2622,
         "startChar": 3,
@@ -271,6 +511,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9ecc9dc_a789f926",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 4389,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-16T18:51:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ae3c141c_dd029854",
+      "range": {
+        "startLine": 4382,
+        "startChar": 0,
+        "endLine": 4389,
+        "endChar": 0
+      },
+      "revId": "97a6bee36ec60cd13df4fc61a249a83df2f87801",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bd9b831e_38a01746",
@@ -284,6 +548,30 @@
       "writtenOn": "2024-07-16T17:23:10Z",
       "side": 1,
       "message": "`const`?",
+      "range": {
+        "startLine": 4425,
+        "startChar": 14,
+        "endLine": 4425,
+        "endChar": 15
+      },
+      "revId": "97a6bee36ec60cd13df4fc61a249a83df2f87801",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cfdcf081_76224e57",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 4425,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-16T18:51:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bd9b831e_38a01746",
       "range": {
         "startLine": 4425,
         "startChar": 14,
@@ -311,6 +599,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3c877a65_108dc563",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 4438,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-16T18:51:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f83bd29b_72b5a444",
+      "revId": "97a6bee36ec60cd13df4fc61a249a83df2f87801",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3a8f5f89_6031367d",
@@ -324,6 +630,30 @@
       "writtenOn": "2024-07-16T17:23:10Z",
       "side": 1,
       "message": "`const`?",
+      "range": {
+        "startLine": 4453,
+        "startChar": 7,
+        "endLine": 4453,
+        "endChar": 8
+      },
+      "revId": "97a6bee36ec60cd13df4fc61a249a83df2f87801",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8a90449_3d8d6dbb",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 4453,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-16T18:51:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3a8f5f89_6031367d",
       "range": {
         "startLine": 4453,
         "startChar": 7,
@@ -357,6 +687,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "357fc429_13ecef5b",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 4456,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-16T18:51:23Z",
+      "side": 1,
+      "message": "Done, did `specialization-\u003eat()` since specializations is a pointer but semantically is the same thing as `[]`.",
+      "parentUuid": "7b25bc78_e8aa5844",
+      "range": {
+        "startLine": 4456,
+        "startChar": 18,
+        "endLine": 4456,
+        "endChar": 44
+      },
+      "revId": "97a6bee36ec60cd13df4fc61a249a83df2f87801",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bad16bef_cc73a396",
@@ -370,6 +724,30 @@
       "writtenOn": "2024-07-16T17:23:10Z",
       "side": 1,
       "message": "`const`?",
+      "range": {
+        "startLine": 5308,
+        "startChar": 19,
+        "endLine": 5308,
+        "endChar": 20
+      },
+      "revId": "97a6bee36ec60cd13df4fc61a249a83df2f87801",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "70290c7a_984b3a1a",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 5308,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-16T18:51:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bad16bef_cc73a396",
       "range": {
         "startLine": 5308,
         "startChar": 19,
