@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4dcec370_2496a7cb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-07-16T21:21:20Z",
+      "side": 1,
+      "message": "Looks good to me.",
+      "revId": "654903a6234c31d0a7e667d1d83d9e3a6c216d9a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "42af3c45_3e71bbed",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1271,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-07-16T21:21:20Z",
+      "side": 1,
+      "message": "Is there a way to make this conditional on what\u0027s actually happening?",
+      "range": {
+        "startLine": 1271,
+        "startChar": 71,
+        "endLine": 1271,
+        "endChar": 84
+      },
+      "revId": "654903a6234c31d0a7e667d1d83d9e3a6c216d9a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
