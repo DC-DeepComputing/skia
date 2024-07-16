@@ -16,6 +16,24 @@
       "message": "This appears to break the denegerate_gradients GM.",
       "revId": "6a98d0670ea81c3b602ac8ed644e89749e63102e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e06acb6_ae5c9ee6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-16T19:56:26Z",
+      "side": 1,
+      "message": "PS3-\u003ePS5 should be the fix for that, but I forgot to kick off another dry run to confirm.",
+      "parentUuid": "3936c194_a1db712c",
+      "revId": "6a98d0670ea81c3b602ac8ed644e89749e63102e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
