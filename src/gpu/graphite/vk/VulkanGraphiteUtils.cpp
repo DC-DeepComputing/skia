@@ -193,13 +193,24 @@ uint32_t nonFormatInfoAsUInt32(const VulkanYcbcrConversionInfo& conversionInfo) 
     SkASSERT(conversionInfo.fComponents.a                < (1u << kComponentBits         ));
 
     bool usesExternalFormat = conversionInfo.fFormat == VK_FORMAT_UNDEFINED;
+    VkFilter chromaFilter = conversionInfo.fChromaFilter;
+    // TODO: Check for separate reconstruction support and make chroma filter nearest if needed
+    // This doesn't explicitly do anything itself, but if we don't support separate
+    // reconstruction filters below, then we need the chromaFilter to match the mag/min here
+    // so we set it nearest. Because we don't currently update the VulkanYcbcrConversionInfo
+    // that we're querying here, this logic around the chromaFilter must match the logic in
+    // the SetupSamplerYcbcrConversionInfo helper function.
+    if (!SkToBool(conversionInfo.fFormatFeatures &
+                  VK_FORMAT_FEATURE_SAMPLED_IMAGE_FILTER_LINEAR_BIT)) {
+        chromaFilter = VK_FILTER_NEAREST;
+    }
 
     return (((uint32_t)(usesExternalFormat                         ) << kUsesExternalFormatShift) |
             ((uint32_t)(conversionInfo.fYcbcrModel                 ) << kYcbcrModelShift        ) |
             ((uint32_t)(conversionInfo.fYcbcrRange                 ) << kYcbcrRangeShift        ) |
             ((uint32_t)(conversionInfo.fXChromaOffset              ) << kXChromaOffsetShift     ) |
             ((uint32_t)(conversionInfo.fYChromaOffset              ) << kYChromaOffsetShift     ) |
-            ((uint32_t)(conversionInfo.fChromaFilter               ) << kChromaFilterShift      ) |
+            ((uint32_t)(chromaFilter                               ) << kChromaFilterShift      ) |
             ((uint32_t)(conversionInfo.fForceExplicitReconstruction) << kForceExplicitReconShift) |
             ((uint32_t)(conversionInfo.fComponents.r               ) << kComponentRShift        ) |
             ((uint32_t)(conversionInfo.fComponents.g               ) << kComponentGShift        ) |

@@ -92,8 +92,15 @@ void GetYcbcrConversionInfoFromFormatProps(
     outConversionInfo->fForceExplicitReconstruction = VK_FALSE;
     outConversionInfo->fExternalFormat = formatProps.externalFormat;
     outConversionInfo->fFormatFeatures = formatProps.formatFeatures;
-    if (VK_FORMAT_FEATURE_SAMPLED_IMAGE_YCBCR_CONVERSION_LINEAR_FILTER_BIT &
-        formatProps.formatFeatures) {
+
+    // Only use linear filtering when the format supports it AND separate filter reconstruction.
+    // Without separate reconstruction support, then the min, mag and chroma filter must all match
+    // so we force the usage of VK_FILTER_NEAREST.
+    Even if VK_FORMAT_FEATURE_SAMPLED_IMAGE_YCBCR_CONVERSION_LINEAR_FILTER_BIT is supported by
+    if ((formatProps.formatFeatures &
+         VK_FORMAT_FEATURE_SAMPLED_IMAGE_YCBCR_CONVERSION_LINEAR_FILTER_BIT) &&
+        (formatProps.formatFeatures &
+         VK_FORMAT_FEATURE_SAMPLED_IMAGE_YCBCR_CONVERSION_SEPARATE_RECONSTRUCTION_FILTER_BIT)){
         outConversionInfo->fChromaFilter = VK_FILTER_LINEAR;
     } else {
         outConversionInfo->fChromaFilter = VK_FILTER_NEAREST;
