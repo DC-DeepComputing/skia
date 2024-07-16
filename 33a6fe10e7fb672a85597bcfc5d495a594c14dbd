@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6be36e7a_b5399055",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-16T20:19:56Z",
+      "side": 1,
+      "message": "This is following the same key structure as dawn to prevent an extra allocation with \u003e6 entries. reference: https://skia-review.googlesource.com/c/skia/+/868416",
+      "revId": "33a6fe10e7fb672a85597bcfc5d495a594c14dbd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
