@@ -65,6 +65,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e61a3a31_af81c3b4",
+        "filename": "src/sksl/analysis/SkSLSpecialization.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-16T18:52:30Z",
+      "side": 1,
+      "message": "OK, it may be that it\u0027s impossible after all and I\u0027m overthinking it. All the same I\u0027m used to the fuzzer proving me wrong when I think something is unreachable. :)",
+      "parentUuid": "106187d5_8de234b9",
+      "range": {
+        "startLine": 87,
+        "startChar": 0,
+        "endLine": 87,
+        "endChar": 96
+      },
+      "revId": "97a6bee36ec60cd13df4fc61a249a83df2f87801",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7bc1f0c4_26a2af7d",
