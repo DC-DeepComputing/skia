@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "53c086d4_686157fe",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-16T19:53:11Z",
+      "side": 1,
+      "message": "I had to fix up some bugs where if a runtime effect and paint had no uniforms, we wouldn\u0027t emit the `FSUniformData` struct, but the rest of the generated functions and preamble were now trying to reference the `uniforms` variable.\n\nThis reset your initial +1.",
+      "revId": "df77ff8b9adbcfda48bddd5fe1c3bef85d6dfafe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
