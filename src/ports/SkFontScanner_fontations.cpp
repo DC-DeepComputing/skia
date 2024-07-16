@@ -49,9 +49,18 @@ bool SkFontScanner_Fontations::scanFace(SkStreamAsset* stream,
         return false;
     }
 
-    // TODO: For now assume only the default instance (not variation)
-    *numInstances = 1;
-    return true;
+    return fontations_ffi::named_instances_collection(*fontRef, *numInstances);
+}
+
+rust::Box<fontations_ffi::BridgeNormalizedCoords> make_normalized_coords(
+        fontations_ffi::BridgeFontRef const& bridgeFontRef,
+        const SkFontArguments::VariationPosition& variationPosition) {
+    // Cast is safe because of static_assert matching the structs above.
+    rust::Slice<const fontations_ffi::SkiaDesignCoordinate> coordinates(
+            reinterpret_cast<const fontations_ffi::SkiaDesignCoordinate*>(
+                    variationPosition.coordinates),
+            variationPosition.coordinateCount);
+    return resolve_into_normalized_coords(bridgeFontRef, coordinates);
 }
 
 // TODO: For now assume only the default instance (not variation)
@@ -62,30 +71,48 @@ bool SkFontScanner_Fontations::scanInstance(SkStreamAsset* stream,
                                             SkFontStyle* style,
                                             bool* isFixedPitch,
                                             AxisDefinitions* axes) const {
-    SkASSERT(instanceIndex == 0);
-    rust::Box<fontations_ffi::BridgeFontRef> fontRef =
+
+    rust::Box<fontations_ffi::BridgeFontRef> bridgeFontRef =
             make_bridge_font_ref(SkData::MakeFromStream(stream, stream->getLength()), faceIndex);
-    if (!fontations_ffi::font_ref_is_valid(*fontRef)) {
+    stream->rewind();
+    if (!fontations_ffi::font_ref_is_valid(*bridgeFontRef)) {
         return false;
     }
 
     if (name != nullptr) {
-        rust::String readFamilyName = fontations_ffi::family_name(*fontRef);
+        rust::String readFamilyName = fontations_ffi::family_name(*bridgeFontRef);
         *name = SkString(readFamilyName.data(), readFamilyName.size());
     }
 
-    if (style != nullptr) {
-        rust::Slice<const fontations_ffi::SkiaDesignCoordinate> coordinates;
-        rust::Box<fontations_ffi::BridgeNormalizedCoords> normalizedCoords =
-            resolve_into_normalized_coords(*fontRef, coordinates);
-        fontations_ffi::BridgeFontStyle fontStyle;
-        if (fontations_ffi::get_font_style(*fontRef, *normalizedCoords, fontStyle)) {
-            *style = SkFontStyle(fontStyle.weight, fontStyle.width,  (SkFontStyle::Slant)fontStyle.slant);
-        } else {
-            *style = SkFontStyle::Normal();
-        }
-    }
+    rust::Box<fontations_ffi::BridgeMappingIndex> mappingIndex =
+            fontations_ffi::make_mapping_index(*bridgeFontRef);
 
+    std::unique_ptr<SkFontArguments::VariationPosition::Coordinate[]> concatenatedCoords = nullptr;
+    size_t numNamedInstanceCoords =
+            fontations_ffi::coordinates_for_shifted_named_instance_index(
+                    *bridgeFontRef,
+                instanceIndex << 16,
+                    rust::cxxbridge1::Slice<fontations_ffi::SkiaDesignCoordinate>());
+    concatenatedCoords.reset(new SkFontArguments::VariationPosition::Coordinate[numNamedInstanceCoords]);
+
+    rust::cxxbridge1::Slice<::fontations_ffi::SkiaDesignCoordinate> targetSlice(
+            reinterpret_cast<fontations_ffi::SkiaDesignCoordinate*>(concatenatedCoords.get()),
+            numNamedInstanceCoords);
+    size_t retrievedNamedInstanceCoords =
+            fontations_ffi::coordinates_for_shifted_named_instance_index(
+                    *bridgeFontRef, instanceIndex << 16, targetSlice);
+    if (numNamedInstanceCoords != retrievedNamedInstanceCoords) {
+        return false;
+    }
+    /*
+    auto normalizedCoords = make_normalized_coords(*bridgeFontRef, *concatenatedCoords);
+    fontations_ffi::BridgeFontStyle fontStyle;
+    if (fontations_ffi::get_font_style(*bridgeFontRef, *normalizedCoords, fontStyle)) {
+        *style = SkFontStyle(fontStyle.weight,
+                            fontStyle.width,
+                            static_cast<SkFontStyle::Slant>(fontStyle.slant));
+    }
+    */
     if (isFixedPitch != nullptr) {
         *isFixedPitch = false;  // TODO
     }
