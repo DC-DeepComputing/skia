@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5ff08d6_88f69edc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-16T19:15:54Z",
+      "side": 1,
+      "message": "I regenerated that file manually so it is there now.",
+      "parentUuid": "a50746c2_d650d98c",
+      "revId": "e013df01a0432727af20b217266120cfa0963157",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "61051b66_a13c01ba",
@@ -58,6 +76,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0cbebf58_3a1f8e09",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 2520,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-16T19:15:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "61051b66_a13c01ba",
+      "range": {
+        "startLine": 2520,
+        "startChar": 6,
+        "endLine": 2520,
+        "endChar": 10
+      },
+      "revId": "e013df01a0432727af20b217266120cfa0963157",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f85c3db2_97920e5c",
@@ -71,6 +113,30 @@
       "writtenOn": "2024-07-16T18:58:36Z",
       "side": 1,
       "message": "tiny nit: add readability tip  `/*specializedParams\u003d*/nullptr`",
+      "range": {
+        "startLine": 4453,
+        "startChar": 70,
+        "endLine": 4453,
+        "endChar": 77
+      },
+      "revId": "e013df01a0432727af20b217266120cfa0963157",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4d796b3_d847ee58",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 4453,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-16T19:15:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f85c3db2_97920e5c",
       "range": {
         "startLine": 4453,
         "startChar": 70,
