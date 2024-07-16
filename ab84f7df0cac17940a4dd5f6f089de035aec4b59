@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd867907_11aa1214",
+        "filename": "gn/core.gni",
+        "patchSetId": 2
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 20234
+      },
+      "writtenOn": "2024-07-16T02:53:40Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "7af3f27e_ec6b210e",
+      "revId": "ab84f7df0cac17940a4dd5f6f089de035aec4b59",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a003bde6_5ee42e58",
@@ -48,6 +66,24 @@
       "writtenOn": "2024-07-15T18:18:52Z",
       "side": 1,
       "message": "The changes in this file need to be made in `src/core/BUILD.bazel`. We have a script that generates the `.gni` files from the `.bazel` files. If you look for the other `_opts` files in that bazel file, you will see them listed, you can just add the `_lasx` versions there. If you install Bazelisk [1], it\u0027s easy to run the script and make sure that everything is correct.\n\n[1] https://github.com/bazelbuild/bazelisk",
+      "revId": "ab84f7df0cac17940a4dd5f6f089de035aec4b59",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd2a52e5_0f787115",
+        "filename": "gn/core.gni",
+        "patchSetId": 2
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 20234
+      },
+      "writtenOn": "2024-07-16T02:53:40Z",
+      "side": 1,
+      "message": "ok.",
+      "parentUuid": "a003bde6_5ee42e58",
       "revId": "ab84f7df0cac17940a4dd5f6f089de035aec4b59",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
