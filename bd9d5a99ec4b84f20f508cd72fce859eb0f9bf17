@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a0ca7e71_2106ed89",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1707,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-07-16T15:03:59Z",
+      "side": 1,
+      "message": "Sigh - this isn\u0027t your problem but, the way the ColorSpaceTransformData handles flags is a bit unfortunate.",
+      "range": {
+        "startLine": 1707,
+        "startChar": 23,
+        "endLine": 1707,
+        "endChar": 25
+      },
+      "revId": "bd9d5a99ec4b84f20f508cd72fce859eb0f9bf17",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
