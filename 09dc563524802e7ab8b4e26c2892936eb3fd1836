@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c8cd352_7132cb1c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-16T20:00:03Z",
+      "side": 1,
+      "message": "I need to do a further look through the gold images, but when I\u0027ve dug into them before, they were all primarily image sampling changes due to how the local coords get interpolated differently.\n\nThe CoverBoundsRenderStep has 2 triangles covering the rectangle, while the AnalyticAARRect has 4 (which we\u0027d use if it was a drawRect+image shader). Even with drawImageRect using the per-edgeAA renderer, which uses 2 triangles, we could encounter interpolation differences if the the triangle vertex order was different. I should double check that and see if we can at least make those more consistent.",
+      "revId": "09dc563524802e7ab8b4e26c2892936eb3fd1836",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
