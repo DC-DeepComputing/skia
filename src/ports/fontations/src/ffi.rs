@@ -843,6 +843,16 @@ fn font_or_collection<'a>(font_data: &'a [u8], num_fonts: &mut u32) -> bool {
     }
 }
 
+fn named_instances_collection(font_ref: &BridgeFontRef, num_instances: &mut i32) -> bool {
+    font_ref
+        .with_font(|f| {
+            let nic = f.named_instances();
+            *num_instances = i32::try_from(nic.len()).unwrap_or_default();
+            Some(true)
+        })
+        .unwrap_or_default()
+}
+
 fn resolve_into_normalized_coords(
     font_ref: &BridgeFontRef,
     design_coords: &[SkiaDesignCoordinate],
@@ -1444,6 +1454,8 @@ mod ffi {
         /// Returns false if the data cannot be interpreted as a font or collection.
         unsafe fn font_or_collection<'a>(font_data: &'a [u8], num_fonts: &mut u32) -> bool;
 
+        unsafe fn named_instances_collection(font_ref: &BridgeFontRef, num_instances: &mut i32) -> bool;
+
         type BridgeMappingIndex;
         unsafe fn make_mapping_index<'a>(font_ref: &'a BridgeFontRef) -> Box<BridgeMappingIndex>;
 
@@ -1718,14 +1730,14 @@ mod test {
         coordinates_for_shifted_named_instance_index,
         ffi::{BridgeFontStyle, PaletteOverride, SkiaDesignCoordinate},
         font_or_collection, font_ref_is_valid, get_font_style, make_font_ref,
-        resolve_into_normalized_coords, resolve_palette,
+        named_instances_collection, resolve_into_normalized_coords, resolve_palette,
     };
     use std::fs;
 
     const TEST_FONT_FILENAME: &str = "resources/fonts/test_glyphs-glyf_colr_1_variable.ttf";
     const TEST_COLLECTION_FILENAME: &str = "resources/fonts/test.ttc";
     const TEST_CONDENSED_BOLD_ITALIC: &str = "resources/fonts/cond-bold-italic.ttf";
-    const TEST_VARIABLE: &str = "resources/fonts/Variable.ttf";
+    const TEST_VARIABLE: &str = "/usr/local/google/home/jlavrova/Sources/skia/resources/fonts/Variable.ttf";
 
     #[test]
     fn test_palette_override() {
@@ -1851,6 +1863,18 @@ mod test {
         assert_eq!(font_style.width, 5); // Skia normal
         assert_eq!(font_style.slant, 0); // Skia upright
         assert_eq!(font_style.weight, 400); // Skia normal
+    }
+
+    #[test]
+    fn test_named_instances() {
+        let font_buffer =
+            fs::read(TEST_VARIABLE).expect("Font to test font styles could not be opened.");
+
+        let font_ref = make_font_ref(&font_buffer, 0);
+        let mut num_instances = 0;
+        let result = named_instances_collection(font_ref.as_ref(), &mut num_instances);
+        assert!(num_instances == 5);
+
     }
 
     #[test]

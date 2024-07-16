@@ -49,9 +49,7 @@ bool SkFontScanner_Fontations::scanFace(SkStreamAsset* stream,
         return false;
     }
 
-    // TODO: For now assume only the default instance (not variation)
-    *numInstances = 1;
-    return true;
+    return fontations_ffi::named_instances_collection(*fontRef, *numInstances);
 }
 
 // TODO: For now assume only the default instance (not variation)
