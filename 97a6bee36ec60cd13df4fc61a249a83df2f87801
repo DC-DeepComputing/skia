@@ -1,0 +1,383 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f7bb26f_d1c3add5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-16T17:23:10Z",
+      "side": 1,
+      "message": "This is looking great! I think this should be the last go-round. Thank you for persevering with this long code review!",
+      "revId": "97a6bee36ec60cd13df4fc61a249a83df2f87801",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5babcfc7_75098357",
+        "filename": "src/sksl/analysis/SkSLSpecialization.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-16T17:23:10Z",
+      "side": 1,
+      "message": "I suspect it\u0027s possible to trigger this abort if we pass nonsense through? We really don\u0027t want the compiler to abort here; we\u0027d rather report an error via the `ErrorReporter`. \n\nI would be OK with fixing this in a followup, since we\u0027ve already polished this CL pretty well, and it\u0027s not something that a user can reach from SkRuntimeEffect. (The fuzzer will likely discover it eventually, though.) \n\nPlease add `TODO(b/xxxxxxxxxxx): report an error instead of aborting`",
+      "range": {
+        "startLine": 87,
+        "startChar": 0,
+        "endLine": 87,
+        "endChar": 96
+      },
+      "revId": "97a6bee36ec60cd13df4fc61a249a83df2f87801",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7bc1f0c4_26a2af7d",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 1814,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-16T17:23:10Z",
+      "side": 1,
+      "message": "Can this be `const`?",
+      "range": {
+        "startLine": 1814,
+        "startChar": 41,
+        "endLine": 1814,
+        "endChar": 42
+      },
+      "revId": "97a6bee36ec60cd13df4fc61a249a83df2f87801",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d0520b02_26219d7c",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 1819,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-16T17:23:10Z",
+      "side": 1,
+      "message": "Let\u0027s put `bool paramIsSpecialized \u003d specializedParams \u0026\u0026 specializedParams-\u003efind(parameter);` up top here. Then we can use it below instead of repeating the expression twice.",
+      "range": {
+        "startLine": 1819,
+        "startChar": 2,
+        "endLine": 1819,
+        "endChar": 7
+      },
+      "revId": "97a6bee36ec60cd13df4fc61a249a83df2f87801",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "940e2b88_e027b548",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 1832,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-16T17:23:10Z",
+      "side": 1,
+      "message": "Could flatten this a bit:\n\n```\n        } else if (!paramIsSpecialized) {\n            words.push_back(this-\u003egetFunctionParameterType(parameter-\u003etype(), parameter-\u003elayout()));\n        }\n```",
+      "range": {
+        "startLine": 1826,
+        "startChar": 0,
+        "endLine": 1832,
+        "endChar": 0
+      },
+      "revId": "97a6bee36ec60cd13df4fc61a249a83df2f87801",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cee813e1_c28fd452",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 2505,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-16T17:23:10Z",
+      "side": 1,
+      "message": "Can it be `const`?",
+      "range": {
+        "startLine": 2505,
+        "startChar": 7,
+        "endLine": 2505,
+        "endChar": 8
+      },
+      "revId": "97a6bee36ec60cd13df4fc61a249a83df2f87801",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "254fb6f1_2e5f19be",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 2510,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-16T17:23:10Z",
+      "side": 1,
+      "message": "Let\u0027s call it `paramIsSpecialized` which is IMO more descriptive.",
+      "range": {
+        "startLine": 2510,
+        "startChar": 9,
+        "endLine": 2510,
+        "endChar": 20
+      },
+      "revId": "97a6bee36ec60cd13df4fc61a249a83df2f87801",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a69d4e3b_01a14246",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 2519,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-16T17:23:10Z",
+      "side": 1,
+      "message": "I am not 100% sure, but it feels like we could change up the order of operations here and make this easier to understand. e.g. if we moved up the block with `if (arg.is\u003cVariableReference\u003e() \u0026\u0026\n               (arg.type().typeKind() \u003d\u003d Type::TypeKind::kSampler ||\n                arg.type().typeKind() \u003d\u003d Type::TypeKind::kSeparateSampler ||\n                arg.type().typeKind() \u003d\u003d Type::TypeKind::kTexture))`, would we break anything? Would it simplify the control flow?",
+      "range": {
+        "startLine": 2513,
+        "startChar": 0,
+        "endLine": 2519,
+        "endChar": 0
+      },
+      "revId": "97a6bee36ec60cd13df4fc61a249a83df2f87801",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e43b3c7_d033625d",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 2562,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-16T17:23:10Z",
+      "side": 1,
+      "message": "Let\u0027s initialize it with `NA` just to be defensive.",
+      "range": {
+        "startLine": 2562,
+        "startChar": 10,
+        "endLine": 2562,
+        "endChar": 17
+      },
+      "revId": "97a6bee36ec60cd13df4fc61a249a83df2f87801",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2fd81b76_87e8df61",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 2609,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-16T17:23:10Z",
+      "side": 1,
+      "message": "Can this be `const`?",
+      "range": {
+        "startLine": 2609,
+        "startChar": 3,
+        "endLine": 2609,
+        "endChar": 4
+      },
+      "revId": "97a6bee36ec60cd13df4fc61a249a83df2f87801",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80b7f578_f6976ece",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 2622,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-16T17:23:10Z",
+      "side": 1,
+      "message": "Can this be `const`?",
+      "range": {
+        "startLine": 2622,
+        "startChar": 3,
+        "endLine": 2622,
+        "endChar": 4
+      },
+      "revId": "97a6bee36ec60cd13df4fc61a249a83df2f87801",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ae3c141c_dd029854",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 4389,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-16T17:23:10Z",
+      "side": 1,
+      "message": "This could be passed to `writeFunctionStart` and then we could remove this lookup logic.",
+      "range": {
+        "startLine": 4382,
+        "startChar": 0,
+        "endLine": 4389,
+        "endChar": 0
+      },
+      "revId": "97a6bee36ec60cd13df4fc61a249a83df2f87801",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd9b831e_38a01746",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 4425,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-16T17:23:10Z",
+      "side": 1,
+      "message": "`const`?",
+      "range": {
+        "startLine": 4425,
+        "startChar": 14,
+        "endLine": 4425,
+        "endChar": 15
+      },
+      "revId": "97a6bee36ec60cd13df4fc61a249a83df2f87801",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f83bd29b_72b5a444",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 4438,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-16T17:23:10Z",
+      "side": 1,
+      "message": "`const`?",
+      "revId": "97a6bee36ec60cd13df4fc61a249a83df2f87801",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3a8f5f89_6031367d",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 4453,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-16T17:23:10Z",
+      "side": 1,
+      "message": "`const`?",
+      "range": {
+        "startLine": 4453,
+        "startChar": 7,
+        "endLine": 4453,
+        "endChar": 8
+      },
+      "revId": "97a6bee36ec60cd13df4fc61a249a83df2f87801",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b25bc78_e8aa5844",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 4456,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-16T17:23:10Z",
+      "side": 1,
+      "message": "Pass `specializations[i]` to `writeFunctionInstantiation`, and then pass it along again to `writeFunctionStart`, and you won\u0027t have to look it up a second time.",
+      "range": {
+        "startLine": 4456,
+        "startChar": 18,
+        "endLine": 4456,
+        "endChar": 44
+      },
+      "revId": "97a6bee36ec60cd13df4fc61a249a83df2f87801",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bad16bef_cc73a396",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 5308,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-16T17:23:10Z",
+      "side": 1,
+      "message": "`const`?",
+      "range": {
+        "startLine": 5308,
+        "startChar": 19,
+        "endLine": 5308,
+        "endChar": 20
+      },
+      "revId": "97a6bee36ec60cd13df4fc61a249a83df2f87801",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
