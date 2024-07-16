@@ -33,6 +33,23 @@
       "message": "It is also inheriting a lot of diffs from the earlier snapping CLs at the moment.",
       "revId": "09dc563524802e7ab8b4e26c2892936eb3fd1836",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "85430536_c39cc073",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-07-16T21:18:52Z",
+      "side": 1,
+      "message": "In principle seems fine to me.",
+      "revId": "09dc563524802e7ab8b4e26c2892936eb3fd1836",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
