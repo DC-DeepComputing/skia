@@ -330,6 +330,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "311f00e9_b11e6e41",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 4410,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-16T16:55:51Z",
+      "side": 1,
+      "message": "Oh, sorry, `findOrNull` is in `THashTable` but not its subclasses. Maybe I should fix that, but NBD for now.",
+      "parentUuid": "804c4d18_db6f932f",
+      "range": {
+        "startLine": 4410,
+        "startChar": 0,
+        "endLine": 4410,
+        "endChar": 83
+      },
+      "revId": "3e1355823246dc1b1f6f568b9b98c5774d52c6c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b27ef39c_375cc4b2",
