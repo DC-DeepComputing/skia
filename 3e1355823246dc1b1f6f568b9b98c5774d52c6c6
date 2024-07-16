@@ -114,6 +114,167 @@
       },
       "revId": "3e1355823246dc1b1f6f568b9b98c5774d52c6c6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "56281aa8_ed3bc305",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 4401,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-16T13:35:14Z",
+      "side": 1,
+      "message": "Up to you: could be simplified to\n\n```\n            if (const Variable** uniform \u003d specializedParams-\u003efind(parameter)) {\n```",
+      "range": {
+        "startLine": 4399,
+        "startChar": 0,
+        "endLine": 4401,
+        "endChar": 0
+      },
+      "revId": "3e1355823246dc1b1f6f568b9b98c5774d52c6c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9130195_4ab40d61",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 4410,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-16T13:35:14Z",
+      "side": 1,
+      "message": "It looks like there is some repeated code below which we could hoist here.\n\n```\n    const Variable* specializedVar \u003d specializedParams ? specializedParams-\u003efindOrNull(parameter) \n                                                       : nullptr;\n```",
+      "range": {
+        "startLine": 4410,
+        "startChar": 0,
+        "endLine": 4410,
+        "endChar": 83
+      },
+      "revId": "3e1355823246dc1b1f6f568b9b98c5774d52c6c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b27ef39c_375cc4b2",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 4425,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-16T13:35:14Z",
+      "side": 1,
+      "message": "Then we could remove the lookup code here...\n\n```\n    if (specializedVar) {\n        const auto* p \u003d fSynthesizedSamplerMap.find(specializedVar);\n```",
+      "range": {
+        "startLine": 4421,
+        "startChar": 0,
+        "endLine": 4425,
+        "endChar": 0
+      },
+      "revId": "3e1355823246dc1b1f6f568b9b98c5774d52c6c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f257cf7d_a0fc9f0a",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 4444,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-16T13:35:14Z",
+      "side": 1,
+      "message": "And here...\n\n```\n            if (specializedVar) {\n                SpvId* uniformId \u003d fVariableMap.find(specializedVar);\n```",
+      "range": {
+        "startLine": 4439,
+        "startChar": 0,
+        "endLine": 4444,
+        "endChar": 0
+      },
+      "revId": "3e1355823246dc1b1f6f568b9b98c5774d52c6c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40ed6190_3c5c7959",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 4468,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-16T13:35:14Z",
+      "side": 1,
+      "message": "The structuring here seems a bit weird; it feels like it would be better structured as two functions. `writeFunction` would become basically the new block that you\u0027ve added here; it is responsible for calling `writeFunctionInstantiation`, which is basically the original `writeFunction` code. `writeFunctionInstantiation` would emit one instantiation of a function.  \n\nThis seems cleaner and makes it obvious that the code won\u0027t lead to runaway recursion. (As written, it is far from obvious!) It also does less work since we only need to search the `fSpecializationMap` one time.",
+      "range": {
+        "startLine": 4460,
+        "startChar": 0,
+        "endLine": 4468,
+        "endChar": 0
+      },
+      "revId": "3e1355823246dc1b1f6f568b9b98c5774d52c6c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "86d4890d_196ef285",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 5313,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-16T13:35:14Z",
+      "side": 1,
+      "message": "Make this `Analysis::SpecializationIndex` and you should be able to remove the cast. (Then again, if `SpecializationIndex` is just an int, it also solves itself.)",
+      "range": {
+        "startLine": 5313,
+        "startChar": 25,
+        "endLine": 5313,
+        "endChar": 28
+      },
+      "revId": "3e1355823246dc1b1f6f568b9b98c5774d52c6c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "403f9ec5_078afb85",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 5313,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-16T13:35:14Z",
+      "side": 1,
+      "message": "Up to you: it would scope the variable more tightly if it were written as\n\n```\n  if (Analysis::Specializations* specializations \u003d\n                    fSpecializationInfo.fSpecializationMap.find(\u0026funcDecl)) {\n```",
+      "range": {
+        "startLine": 5310,
+        "startChar": 0,
+        "endLine": 5313,
+        "endChar": 0
+      },
+      "revId": "3e1355823246dc1b1f6f568b9b98c5774d52c6c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
