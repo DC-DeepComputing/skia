@@ -56,6 +56,30 @@
       },
       "revId": "9c2628bdc88f5664d8ef53110d953e69cc3422b7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "46bc8385_0c8318f4",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 3
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-07-16T14:53:54Z",
+      "side": 1,
+      "message": "It\u0027s done both ways in the shader code, I wasn\u0027t sure what the preference was.",
+      "parentUuid": "2e88e1b6_15dea2d7",
+      "range": {
+        "startLine": 84,
+        "startChar": 33,
+        "endLine": 84,
+        "endChar": 36
+      },
+      "revId": "9c2628bdc88f5664d8ef53110d953e69cc3422b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
