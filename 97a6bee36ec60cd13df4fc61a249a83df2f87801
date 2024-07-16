@@ -371,6 +371,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d5c7acd0_2e4f4e99",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 2519,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-16T18:58:36Z",
+      "side": 1,
+      "message": "Yes, big improvement! Thanks!",
+      "parentUuid": "9173bd72_8a2e853d",
+      "range": {
+        "startLine": 2513,
+        "startChar": 0,
+        "endLine": 2519,
+        "endChar": 0
+      },
+      "revId": "97a6bee36ec60cd13df4fc61a249a83df2f87801",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6e43b3c7_d033625d",
@@ -725,6 +749,30 @@
       "side": 1,
       "message": "Done, did `specialization-\u003eat()` since specializations is a pointer but semantically is the same thing as `[]`.",
       "parentUuid": "7b25bc78_e8aa5844",
+      "range": {
+        "startLine": 4456,
+        "startChar": 18,
+        "endLine": 4456,
+        "endChar": 44
+      },
+      "revId": "97a6bee36ec60cd13df4fc61a249a83df2f87801",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6aef5233_c3ca249f",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 4456,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-16T18:58:36Z",
+      "side": 1,
+      "message": "Yup, that\u0027s the way to go!",
+      "parentUuid": "357fc429_13ecef5b",
       "range": {
         "startLine": 4456,
         "startChar": 18,

@@ -16,6 +16,69 @@
       "message": "I just patched this CL locally and noticed that you are not building the HLSL test outputs. When I rebuild it, I get matching changes in `FunctionParametersOfTextureAndSamplerType.hlsl`.\n\nOffhand I\u0027m not sure why this wouldn\u0027t be building, though.",
       "revId": "e013df01a0432727af20b217266120cfa0963157",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e73805ac_5723cc03",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-16T18:58:36Z",
+      "side": 1,
+      "message": "Thank you for persevering! Looking amazing!",
+      "revId": "e013df01a0432727af20b217266120cfa0963157",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "61051b66_a13c01ba",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 2520,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-16T18:58:36Z",
+      "side": 1,
+      "message": "tiny nit: You don\u0027t need an `else` after an if block ending in `return`.",
+      "range": {
+        "startLine": 2520,
+        "startChar": 6,
+        "endLine": 2520,
+        "endChar": 10
+      },
+      "revId": "e013df01a0432727af20b217266120cfa0963157",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f85c3db2_97920e5c",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 4453,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-16T18:58:36Z",
+      "side": 1,
+      "message": "tiny nit: add readability tip  `/*specializedParams\u003d*/nullptr`",
+      "range": {
+        "startLine": 4453,
+        "startChar": 70,
+        "endLine": 4453,
+        "endChar": 77
+      },
+      "revId": "e013df01a0432727af20b217266120cfa0963157",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
