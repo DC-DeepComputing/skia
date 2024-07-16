@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b2c4da2_3afb53f8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-07-16T14:47:52Z",
+      "side": 1,
+      "message": "This all seems okay. It\u0027s too bad that you need to do this. It would be better if clang vector extensions generated better code for LSX/LASX. (Actually - we\u0027ve never really tested to see if SSE/AVX code is as good as it could be - maybe similar changes would help other platforms).",
+      "revId": "82060505906471700b2bb61162d9bca2fbb1a5c7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
