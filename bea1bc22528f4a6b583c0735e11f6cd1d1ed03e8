@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "92965ed8_7f270f84",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-07-16T21:13:10Z",
+      "side": 1,
+      "message": "In principle this seems fine, but it\u0027s insetting those blue rectangles in crop_imagefilter more than I would expect. It\u0027s a little hard to tell if that\u0027s a legit GM to compare to though.",
+      "revId": "bea1bc22528f4a6b583c0735e11f6cd1d1ed03e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
