@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e1f5664_6d34081c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-07-17T13:30:32Z",
+      "side": 1,
+      "message": "Sorry, I think you hit the wrong button, there is no new patchset. There is a button that makes a comment, but doesn\u0027t apply the fix. The `APPLY EDIT` button will make a new patchset with the fixes applied. (Or you can just make those fixes locally and upload a new patchset - that might be easier).",
+      "revId": "cfc4b40f5e266217cc4e247c0efcfa7761630f2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3abf94b0_79b7449b",
