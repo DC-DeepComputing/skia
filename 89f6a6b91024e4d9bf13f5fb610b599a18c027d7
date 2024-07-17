@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c9f44a4_13e67cb8",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 965,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-17T18:42:08Z",
+      "side": 1,
+      "message": "Can we assert that if we got into this that `caps()-\u003estorageBufferSupport()` is true?",
+      "range": {
+        "startLine": 965,
+        "startChar": 0,
+        "endLine": 965,
+        "endChar": 31
+      },
+      "revId": "89f6a6b91024e4d9bf13f5fb610b599a18c027d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c2be110e_d36734c5",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-17T18:42:08Z",
+      "side": 1,
+      "message": "For the vulkan backend, I don\u0027t think we need to the flexibility of carrying the template parameter forward, we could just say the `VulkanResourceProvider::BindGroupKey \u003d FixedSizeKey\u003c2 * kNumUniformBuffers\u003e`, right?",
+      "range": {
+        "startLine": 40,
+        "startChar": 0,
+        "endLine": 40,
+        "endChar": 32
+      },
+      "revId": "89f6a6b91024e4d9bf13f5fb610b599a18c027d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
