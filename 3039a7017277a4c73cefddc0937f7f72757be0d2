@@ -33,6 +33,24 @@
       "message": "Most of this code is VERY close to the skvx version. What parts are generating different code? Is it possible to get the same performance by adding some specializations to skvx? (Like store and load)?",
       "revId": "3039a7017277a4c73cefddc0937f7f72757be0d2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b66f63da_4e80013d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 20234
+      },
+      "writtenOn": "2024-07-17T07:20:49Z",
+      "side": 1,
+      "message": "Indeed, loong64 clang toolchain not generate enough good lsx code in some context， and we still don\u0027t know what the other contexts are. I counted the number of generated instructions for GaussPass::blurSegment as belows：\nloong64 lsx default： 330\nthis CL： 240\nx86 SSE: 211\nThis reflects that loong64\u0027s toolchain can still do better in the future, but it can\u0027t be done in short term. \n\nWith such complex functions, it is difficult to tell which parts generate worse code. So it is unpossible to put some specializations into skvx. But if you need I can try it.",
+      "parentUuid": "be38bb9c_a29282d8",
+      "revId": "3039a7017277a4c73cefddc0937f7f72757be0d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
