@@ -34,6 +34,24 @@
       "parentUuid": "5b41fd26_7ec091f8",
       "revId": "893caf772e72cf342f4214beeecc106d1e001e79",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "917dd3a7_4ea23459",
+        "filename": "infra/bots/recipe_modules/build/default.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-07-17T21:52:12Z",
+      "side": 1,
+      "message": "And even when it did work we\u0027re still getting a hang right after `Got pathRef: 0xcca1cb15d77a7372 \u0027lotties\u0027` is printed. Possibly the issue is with the iOS version on the device? Did not reproduce on iPhone 8 with iOS 13.3.1. The physical device here appears to be an iPhone 11 so it must be running iOS 13 or newer.",
+      "parentUuid": "5df34bd2_f3c1ab60",
+      "revId": "893caf772e72cf342f4214beeecc106d1e001e79",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
