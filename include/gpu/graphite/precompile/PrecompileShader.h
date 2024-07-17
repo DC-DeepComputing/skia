@@ -113,6 +113,11 @@ namespace PrecompileShaders {
     // program structure to be created without needing the SkImage.
     SK_API sk_sp<PrecompileShader> RawImage();
 
+    // In the main Skia API, the specifics of the SkImage used for the SkImage::makeShader call
+    // can determine whether normal or YUV sampling is required. This entry point allows clients
+    // to specify that the future image will be a YUV image.
+    SK_API sk_sp<PrecompileShader> YUVImage();
+
     // --- This block of two matches the SkShaders factories in SkPerlinNoiseShader.h
     // Again, most of the details have been elided.
     SK_API sk_sp<PrecompileShader> MakeFractalNoise();
