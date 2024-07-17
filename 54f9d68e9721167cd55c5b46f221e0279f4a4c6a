@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6bc41893_70a0a6aa",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-07-17T20:43:21Z",
+      "side": 1,
+      "message": "Need a newer one of these too, since this one is six years old. Do we need to update skcms still?",
+      "revId": "54f9d68e9721167cd55c5b46f221e0279f4a4c6a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
