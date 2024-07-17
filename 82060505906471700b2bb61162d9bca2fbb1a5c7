@@ -33,6 +33,42 @@
       "message": "LGTM, although I\u0027m not a huge fan of how we are building up nested/complex #ifs due to the micro-optimizations needed on LSX. It might be better to just move the LSX code into an entirely separate function, e.g.\n\n```\n#if defined(JUMPER_IS_LSX)\nSI void from_8888(U32 rgba, ...) {\n   ...\n}\n#else\nSI void from_8888(U32 rgba, ...) {\n   ...\n}\n#endif\n```",
       "revId": "82060505906471700b2bb61162d9bca2fbb1a5c7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8789d25_52a4fe19",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 20234
+      },
+      "writtenOn": "2024-07-17T01:16:36Z",
+      "side": 1,
+      "message": "I\u0027ve already tested it and SSE perform well.",
+      "parentUuid": "5b2c4da2_3afb53f8",
+      "revId": "82060505906471700b2bb61162d9bca2fbb1a5c7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "30309766_85665998",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 20234
+      },
+      "writtenOn": "2024-07-17T01:16:36Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "56ce6cce_a5f0a489",
+      "revId": "82060505906471700b2bb61162d9bca2fbb1a5c7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
