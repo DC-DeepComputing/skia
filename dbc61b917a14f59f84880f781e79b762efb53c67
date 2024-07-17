@@ -34,6 +34,24 @@
       "parentUuid": "f19cf998_9e5b0fd1",
       "revId": "dbc61b917a14f59f84880f781e79b762efb53c67",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d4121c0a_b83f98d7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-17T19:52:52Z",
+      "side": 1,
+      "message": "Digging into `stroke_rect_anisotropic`, Rob and I are willing to accept the current subpixel behavior as the best of a difficult scenario. Ganesh just randomly discards those very skinny edges depending on how it hits pixels, so the quality bar is not high here.\n\nAdding logic to try and account for the increased outset on a subpixel axis creates too much coupling between the snapping and the rendering algorithm, and also tends to then introduce partial coverage along the perpendicular edges of the wide stroke (since those do not have the wide coverage ramp).\n\nThe weird coverage interpolation issue can be reproduced even with an AA paint w/ no snapping if we adjust the subpixel translation in the viewer app. It appears there are cases where the geometry of the inside edge is riding right along a pixel center and the interpolated value is not very stable. Because of the pixel snapping for the non-AA case it just makes it easier to arrive to that bad state.\n\nI filed b/353739350 to address that latent issue.",
+      "parentUuid": "45dbc6ef_428a9c83",
+      "revId": "dbc61b917a14f59f84880f781e79b762efb53c67",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a4152852_25f4d349",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-17T19:52:52Z",
+      "side": 1,
+      "message": "PS8 has one additional fix around stroke width snapping. Switching from `ceil` to `max(round(width), 1)`.\n\nIn the follow-up RRect CL, this https://gold.skia.org/diff?grouping\u003dname%3Dskbug_257%26source_type%3Dgm\u0026left\u003d2a24010a5d93b6d1d01b1222c8390f57\u0026right\u003d6d32dad2a8a006e7be94795a3c06f3da\u0026changelist_id\u003d877417\u0026crs\u003dgerrit shows some unexpected increase in the apparent width of the cyan circle.\n\nIt turns out that the device stroke width was 5.0084 and ceil would bump that up to 6.  round() keeps it at 5, which is much closer visually, but we have to clamp to be at least 1 so that we don\u0027t lose content. \n\nI opted to fix it in this CL from the get go, since you could concoct a rect-only scenario that showed the same stroke popping.",
+      "revId": "e296f44ca112179a72c4eed25fb49be56547926c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
