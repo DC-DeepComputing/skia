@@ -16,6 +16,24 @@
       "message": "This also tried to do a bunch of work in its constructor, which is now frowned upon.",
       "revId": "485bf4ff886bc6ed37556968f2a02e691427302b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0139b512_75bb2322",
+        "filename": "gm/animated_gif.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-07-17T17:42:14Z",
+      "side": 0,
+      "message": "Acknowledged",
+      "parentUuid": "7f1853c6_ec02a156",
+      "revId": "485bf4ff886bc6ed37556968f2a02e691427302b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
