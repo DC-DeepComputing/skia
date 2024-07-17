@@ -118,6 +118,8 @@ public:
 
     ~PaintParamsKeyBuilder() { SkASSERT(!fLocked); }
 
+    void raiseError() { fError = true; }
+
     void beginBlock(BuiltInCodeSnippetID id) { this->beginBlock(static_cast<int32_t>(id)); }
     void beginBlock(int32_t codeSnippetID) {
         SkASSERT(!fLocked);
@@ -175,6 +177,7 @@ private:
     // The data array uses clear() on unlock so that it's underlying storage and repeated use of the
     // builder will hit a high-water mark and avoid lots of allocations when recording draws.
     skia_private::TArray<uint32_t> fData;
+    bool fError = false;
 
 #ifdef SK_DEBUG
     void pushStack(int32_t codeSnippetID);

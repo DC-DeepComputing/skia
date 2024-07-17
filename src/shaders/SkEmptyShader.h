@@ -21,7 +21,9 @@ struct SkStageRec;
  */
 class SkEmptyShader : public SkShaderBase {
 public:
-    SkEmptyShader() {}
+    SkEmptyShader() {
+
+    }
 
 protected:
     void flatten(SkWriteBuffer& buffer) const override {

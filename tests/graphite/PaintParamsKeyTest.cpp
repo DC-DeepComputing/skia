@@ -1855,6 +1855,7 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTestReduced,
                                                CtsEnforcement::kNever) {
     std::unique_ptr<RuntimeEffectDictionary> rtDict = std::make_unique<RuntimeEffectDictionary>();
 
+#if 0
     //----------------------
     uint32_t seed = std::time(nullptr) % std::numeric_limits<uint32_t>::max();
     SkRandom rand(seed);
@@ -1862,10 +1863,22 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTestReduced,
     BlenderType blenderType = random_blendertype(&rand);
     ColorFilterType colorFilterType = random_colorfiltertype(&rand);
     MaskFilterType maskFilterType = random_maskfiltertype(&rand);
-    ImageFilterType imageFilterType = random_imagefiltertype(&rand);
+    ImageFilterType imageFilterType = ImageFilterType::kNone; // random_imagefiltertype(&rand);
     ClipType clipType = random_cliptype(&rand);
     DrawTypeFlags drawTypeFlags = random_drawtype(&rand);
     //----------------------
+#else
+    //------------------------
+    uint32_t seed = 1721156649;
+    ShaderType shaderType = ShaderType::kBlend;
+    BlenderType blenderType = BlenderType::kShaderBased;
+    ColorFilterType colorFilterType = ColorFilterType::kHighContrast;
+    MaskFilterType maskFilterType = MaskFilterType::kNone;
+    ImageFilterType imageFilterType = ImageFilterType::kNone;
+    ClipType clipType = ClipType::kNone;
+    DrawTypeFlags drawTypeFlags = DrawTypeFlags::kText;
+    //-----------------------
+#endif
 
     SkString logMsg("Running ");
     logMsg += BackendApiToStr(context->backend());

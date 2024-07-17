@@ -1697,7 +1697,9 @@ static void add_to_key(const KeyContext& keyContext,
                        PaintParamsKeyBuilder* builder,
                        PipelineDataGatherer* gatherer,
                        const SkEmptyShader*) {
-    builder->addBlock(BuiltInCodeSnippetID::kPriorOutput);
+    builder->raiseError();
+//    gatherer->raiseError();
+//    builder->addBlock(BuiltInCodeSnippetID::kPriorOutput);
 }
 static void notify_in_use(Recorder*, DrawContext*, const SkEmptyShader*) {
     // No-op
@@ -2559,7 +2561,8 @@ static void notify_in_use(Recorder*, DrawContext*, const SkGradientBaseShader*) 
 void AddToKey(const KeyContext& keyContext,
               PaintParamsKeyBuilder* builder,
               PipelineDataGatherer* gatherer,
-              const SkShader* shader) {
+              const SkShader* shader,
+              bool) {
     if (!shader) {
         return;
     }

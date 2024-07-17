@@ -50,6 +50,10 @@ sk_sp<PrecompileShader> PrecompileShader::makeWithWorkingColorSpace(sk_sp<SkColo
 
 //--------------------------------------------------------------------------------------------------
 class PrecompileEmptyShader final : public PrecompileShader {
+public:
+    PrecompileEmptyShader() {
+
+    }
 private:
     void addToKey(const KeyContext& keyContext,
                   PaintParamsKeyBuilder* builder,

@@ -27,6 +27,7 @@ void PaintParamsKeyBuilder::checkReset() {
     SkASSERT(!fLocked);
     SkASSERT(fData.empty());
     SkASSERT(fStack.empty());
+    SkASSERT(!fError);
 }
 
 void PaintParamsKeyBuilder::pushStack(int32_t codeSnippetID) {
