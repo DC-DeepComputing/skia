@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a1b4b2de_e62150b1",
+        "filename": "infra/bots/recipe_modules/build/default.py",
+        "patchSetId": 14
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-07-17T20:23:22Z",
+      "side": 1,
+      "message": "must be lower case `f`.",
+      "range": {
+        "startLine": 105,
+        "startChar": 29,
+        "endLine": 105,
+        "endChar": 30
+      },
+      "revId": "e594dcb3968afd10d5d78edd0887d32cdb8bfbe4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
