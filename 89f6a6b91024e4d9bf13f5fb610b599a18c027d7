@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4773660_0f58c97e",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 965,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-17T19:02:43Z",
+      "side": 1,
+      "message": "I think `gradientBufferSupport()` is more appropriate here but I asserted for both since it can\u0027t hurt since it would also catch the case if there is gradient buffer support but not ssbo support for some reason.",
+      "parentUuid": "4c9f44a4_13e67cb8",
+      "range": {
+        "startLine": 965,
+        "startChar": 0,
+        "endLine": 965,
+        "endChar": 31
+      },
+      "revId": "89f6a6b91024e4d9bf13f5fb610b599a18c027d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c2be110e_d36734c5",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-07-17T18:42:08Z",
       "side": 1,
       "message": "For the vulkan backend, I don\u0027t think we need to the flexibility of carrying the template parameter forward, we could just say the `VulkanResourceProvider::BindGroupKey \u003d FixedSizeKey\u003c2 * kNumUniformBuffers\u003e`, right?",
+      "range": {
+        "startLine": 40,
+        "startChar": 0,
+        "endLine": 40,
+        "endChar": 32
+      },
+      "revId": "89f6a6b91024e4d9bf13f5fb610b599a18c027d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fc01a10f_bc816520",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-17T19:02:43Z",
+      "side": 1,
+      "message": "That\u0027s right, I change it to `UniformBindGroupKey` to be more specific and changed some of the usings since it doesn\u0027t seem necessary anymore.",
+      "parentUuid": "c2be110e_d36734c5",
       "range": {
         "startLine": 40,
         "startChar": 0,
