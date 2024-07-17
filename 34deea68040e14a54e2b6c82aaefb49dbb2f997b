@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c41343b0_5618b47d",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 4400,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-17T20:37:20Z",
+      "side": 1,
+      "message": "What happens if you do\n\n```\n    if (layout.fBuiltin \u003e\u003d 0 \u0026\u0026 (layout.fBuiltin !\u003d SK_FRAGCOLOR_BUILTIN \u0026\u0026\n                                 layout.fBuiltin !\u003d SK_SECONDARYFRAGCOLOR_BUILTIN)) {\n```\n\nWe want the Location and Index to get assigned, but not the Decoration.",
+      "range": {
+        "startLine": 4398,
+        "startChar": 0,
+        "endLine": 4400,
+        "endChar": 0
+      },
+      "revId": "34deea68040e14a54e2b6c82aaefb49dbb2f997b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
