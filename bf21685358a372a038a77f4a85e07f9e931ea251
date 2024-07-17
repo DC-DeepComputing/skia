@@ -33,6 +33,24 @@
       "message": "This is not printed.\n\nLocally building with newer XCode 15.0 and running on iOS 13.3.1 this prints `Got fileURL: 0x0` and does not hang.",
       "revId": "bf21685358a372a038a77f4a85e07f9e931ea251",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83bd5fea_677ed5dc",
+        "filename": "src/ports/SkOSFile_ios.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-07-17T17:00:51Z",
+      "side": 1,
+      "message": "Since building with a newer Xcode seems to work, it is probably best to focus on updating the builders to a newer macOS so we can update to much newer Xcode (which will be needed anyway for C++20 support). See https://skbug.com/353704411",
+      "parentUuid": "ec349c26_f8533ec4",
+      "revId": "bf21685358a372a038a77f4a85e07f9e931ea251",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
