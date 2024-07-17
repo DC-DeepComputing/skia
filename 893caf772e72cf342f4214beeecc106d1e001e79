@@ -16,6 +16,24 @@
       "message": "Unfortunately, this isn\u0027t passing verification\n\n`The downloaded Xcode app is possibly corrupted. The app has been deleted. Please retry...`\n\nThis also happens locally.",
       "revId": "893caf772e72cf342f4214beeecc106d1e001e79",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5df34bd2_f3c1ab60",
+        "filename": "infra/bots/recipe_modules/build/default.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-07-17T21:33:52Z",
+      "side": 1,
+      "message": "And then for some reason it worked on a retry???",
+      "parentUuid": "5b41fd26_7ec091f8",
+      "revId": "893caf772e72cf342f4214beeecc106d1e001e79",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
