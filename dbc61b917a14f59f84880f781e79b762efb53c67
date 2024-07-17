@@ -16,6 +16,24 @@
       "message": "% looking into some of the Gold diffs",
       "revId": "dbc61b917a14f59f84880f781e79b762efb53c67",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "45dbc6ef_428a9c83",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-17T17:33:24Z",
+      "side": 1,
+      "message": "The pixel gap seen in `yuv_image_from_image` now matches the pixel gap seen in ganesh\u0027s `yuv_image_from_texture`. This is due to the underlying geometry of the drawn image landing on a fraction of 0.4 and rounding down on the right/bottom edges. However, the GM manually takes this fractional width/height and ceiling\u0027s it, then adds an additional pixel to calculate what border rect to draw. Since it adds +1 and ceils when the regular rounding goes down, we end up with a gap.\n\nI need to look more into `stroke_rect_anisotropic` differences, but I think a lot of this is WAI. There\u0027s a stroke width of 10 and an X scale factor of .03 and a Y scale factor of 20. For the non-aa rows, this is an unsnapped device stroke width of .3px in X and 20px in Y. Since it\u0027s non-uniform, the code snaps along the largest axis (which is 20px and already pixel aligned in this case). This leaves the final rendering with an x axis stroke that is subpixel, so the AARect renderer expands the geometry out to 2px and fades out the coverage.  \n\nSince it is now outsetting by more than just 1/2, we end up losing the precise pixel bound we\u0027d tried to snap to.\n\nThe more pressing concern is the crummy coverage interpolation along the insides on some of the GPUs. This is probably an existing quality issue with the AARect renderer under these extreme non-uniform scale transforms but this change perhaps exacerbates it on those hardware with lower quality varying interpolation.",
+      "parentUuid": "f19cf998_9e5b0fd1",
+      "revId": "dbc61b917a14f59f84880f781e79b762efb53c67",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
