@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f19cf998_9e5b0fd1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-07-17T16:17:11Z",
+      "side": 1,
+      "message": "% looking into some of the Gold diffs",
+      "revId": "dbc61b917a14f59f84880f781e79b762efb53c67",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
