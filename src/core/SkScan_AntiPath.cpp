@@ -165,6 +165,6 @@ void SkScan::AntiFillPath(const SkPath& path, const SkRasterClip& clip, SkBlitte
 
         tmp.setRect(clip.getBounds());
         aaBlitter.init(blitter, &clip.aaRgn());
-        AntiFillPath(path, tmp, &aaBlitter, true); // SkAAClipBlitter can blitMask, why forceRLE?
+        AntiFillPath(path, tmp, &aaBlitter, false); // SkAAClipBlitter can blitMask, why forceRLE?
     }
 }
