@@ -33,6 +33,24 @@
       "message": "Same as previous CL in sequence -- it seems fine in principle but it doesn\u0027t seem to be snapping to the pixel value matching the other GMs.",
       "revId": "3ec4e4dfa0f98fd58e9582dc2ba4c955d0d77ad5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "93734bc6_b17021f6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-17T01:47:37Z",
+      "side": 1,
+      "message": "Good catch! I wasn\u0027t seeing this in viewer at first because of the default 2x hi-dpi scale factor, but at 1x, these round rects had fractional coords of `2/3`. \n\nWith the original hairline snapping code I wrote, this would round the left and top edges up to the next integer and then we\u0027d inset 1/2px from there. All the other backends, and the equivalent behavior for a non-hairline 1px stroke with identity scale, would be to outset by 1/2, then round, and then inset again by 1/2. In that case, the outset fraction becomes less than 1/2 and rounds down.\n\nWith that implemented for hairline strokes, I am now seeing the complexclip2_rrect case aligning exactly with the raster backend whereas previously the top and left edges were in by one pixel.",
+      "parentUuid": "c108f426_fe8b52c0",
+      "revId": "3ec4e4dfa0f98fd58e9582dc2ba4c955d0d77ad5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
