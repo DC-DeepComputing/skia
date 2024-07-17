@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f8f185ed_2d6f4617",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-17T19:53:53Z",
+      "side": 1,
+      "message": "skbug_257 showed some issues, but this is fixed in the base CL now so shouldn\u0027t show up in this next dry run.",
+      "revId": "6ca00e3f4bed2cc8e01b2a108ab26f45f95a9643",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

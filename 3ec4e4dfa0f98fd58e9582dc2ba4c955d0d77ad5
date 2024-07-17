@@ -51,6 +51,24 @@
       "parentUuid": "c108f426_fe8b52c0",
       "revId": "3ec4e4dfa0f98fd58e9582dc2ba4c955d0d77ad5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3df854cd_795d9c67",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-17T19:53:53Z",
+      "side": 1,
+      "message": "With the fix to the hairline rounding in the prior CL, the `complexclip2_rrect_aa` GM now snaps correctly.",
+      "parentUuid": "93734bc6_b17021f6",
+      "revId": "3ec4e4dfa0f98fd58e9582dc2ba4c955d0d77ad5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
