@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f1853c6_ec02a156",
+        "filename": "gm/animated_gif.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-07-17T17:18:51Z",
+      "side": 0,
+      "message": "This also tried to do a bunch of work in its constructor, which is now frowned upon.",
+      "revId": "485bf4ff886bc6ed37556968f2a02e691427302b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
