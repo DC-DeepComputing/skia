@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7cd9b59_640dfcbd",
+        "filename": "gn/graphite.gni",
+        "patchSetId": 3
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-07-17T13:54:00Z",
+      "side": 0,
+      "message": "AFAICT this header doesn\u0027t exist anymore",
+      "range": {
+        "startLine": 279,
+        "startChar": 2,
+        "endLine": 279,
+        "endChar": 45
+      },
+      "revId": "def61bdd977a9d3012178998d44ff5af3e565b3f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
