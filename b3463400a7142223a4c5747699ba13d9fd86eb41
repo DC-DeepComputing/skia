@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a2ae6f97_e8b800c0",
+        "filename": "tests/SkSLPipelineStageTestbed.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-18T17:25:46Z",
+      "side": 1,
+      "message": "These test-only callbacks could be factored out and shared across skslc and the testbed if you think it\u0027s useful.",
+      "range": {
+        "startLine": 24,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 0
+      },
+      "revId": "b3463400a7142223a4c5747699ba13d9fd86eb41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
