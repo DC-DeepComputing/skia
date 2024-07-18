@@ -18,9 +18,9 @@
 #include "include/private/gpu/graphite/DawnTypesPriv.h"
 #endif
 
-#ifdef SK_VULKAN
-#include "include/private/gpu/graphite/VulkanGraphiteTypesPriv.h"
-#endif
+// #ifdef SK_VULKAN
+// #include "include/gpu/graphite/vk/VulkanGraphiteTypes.h"
+// #endif
 
 struct SkISize;
 
@@ -43,9 +43,9 @@ public:
     TextureInfo(const MtlTextureInfo& mtlInfo);
 #endif
 
-#ifdef SK_VULKAN
-    TextureInfo(const VulkanTextureInfo& vkInfo);
-#endif
+// #ifdef SK_VULKAN
+//     TextureInfo(const VulkanTextureInfo& vkInfo);
+// #endif
 
     ~TextureInfo();
     TextureInfo(const TextureInfo&);
@@ -66,15 +66,15 @@ public:
     bool getDawnTextureInfo(DawnTextureInfo* info) const;
 #endif
 
-#ifdef SK_VULKAN
-    bool getVulkanTextureInfo(VulkanTextureInfo* info) const {
-        if (!this->isValid() || fBackend != BackendApi::kVulkan) {
-            return false;
-        }
-        *info = VulkanTextureSpecToTextureInfo(fVkSpec, fSampleCount, fMipmapped);
-        return true;
-    }
-#endif
+// #ifdef SK_VULKAN
+//     bool getVulkanTextureInfo(VulkanTextureInfo* info) const {
+//         if (!this->isValid() || fBackend != BackendApi::kVulkan) {
+//             return false;
+//         }
+//         *info = VulkanTextureSpecToTextureInfo(fVkSpec, fSampleCount, fMipmapped);
+//         return true;
+//     }
+// #endif
 
     bool isCompatible(const TextureInfo& that) const;
     // Return a string containing the full description of this TextureInfo.
@@ -122,18 +122,18 @@ private:
     }
 #endif
 
-#ifdef SK_VULKAN
-    friend class VulkanCaps;
-    friend class VulkanResourceProvider;
-    friend class VulkanTexture;
-    // For querying texture for YCbCr information when generating a PaintParamsKey
-    friend class PaintParamsKey;
+// #ifdef SK_VULKAN
+//     friend class VulkanCaps;
+//     friend class VulkanResourceProvider;
+//     friend class VulkanTexture;
+//     // For querying texture for YCbCr information when generating a PaintParamsKey
+//     friend class PaintParamsKey;
 
-    const VulkanTextureSpec& vulkanTextureSpec() const {
-        SkASSERT(fValid && fBackend == BackendApi::kVulkan);
-        return fVkSpec;
-    }
-#endif
+//     const VulkanTextureSpec& vulkanTextureSpec() const {
+//         SkASSERT(fValid && fBackend == BackendApi::kVulkan);
+//         return fVkSpec;
+//     }
+// #endif
 
     BackendApi fBackend = BackendApi::kMock;
     bool fValid = false;
@@ -148,9 +148,9 @@ private:
 #ifdef SK_DAWN
         DawnTextureSpec fDawnSpec;
 #endif
-#ifdef SK_VULKAN
-        VulkanTextureSpec fVkSpec;
-#endif
+// #ifdef SK_VULKAN
+//         VulkanTextureSpec fVkSpec;
+// #endif
         void* fEnsureUnionNonEmpty;
     };
 };
