@@ -94,7 +94,7 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
     fResourceBindingReqs.fPaintParamsBufferBinding =
             VulkanGraphicsPipeline::kPaintUniformBufferIndex;
 
-    fStorageBufferSupport = true;
+    fStorageBufferSupport = false;
 
     VkPhysicalDeviceMemoryProperties deviceMemoryProperties;
     VULKAN_CALL(vkInterface, GetPhysicalDeviceMemoryProperties(physDev, &deviceMemoryProperties));
