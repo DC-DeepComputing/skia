@@ -59,6 +59,7 @@ std::string get_mangled_name(const std::string& baseName, int manglingSuffix) {
 std::string get_mangled_uniform_name(const ShaderInfo& shaderInfo,
                                      const Uniform& uniform,
                                      int manglingSuffix) {
+    SkASSERT(shaderInfo.hasPaintUniforms());
     std::string result;
 
     if (uniform.isPaintColor()) {
@@ -67,8 +68,10 @@ std::string get_mangled_uniform_name(const ShaderInfo& shaderInfo,
     } else {
         result = uniform.name() + std::string("_") + std::to_string(manglingSuffix);
     }
-    if (shaderInfo.ssboIndex()) {
-        result = EmitStorageBufferAccess("fs", shaderInfo.ssboIndex(), result.c_str());
+    if (shaderInfo.useSSBOs()) {
+        // The uniform accessed by the variable held in `result` is passed in via a struct parameter
+        // with the name "uniforms".
+        result = "uniforms." + result;
     }
     return result;
 }
@@ -80,9 +83,10 @@ std::string get_mangled_sampler_name(const TextureAndSampler& tex, int manglingS
 std::string get_mangled_struct_reference(const ShaderInfo& shaderInfo,
                                          const ShaderNode* node) {
     SkASSERT(node->entry()->fUniformStructName);
+    SkASSERT(shaderInfo.hasPaintUniforms());
     std::string result = "node_" + std::to_string(node->keyIndex()); // Field holding the struct
-    if (shaderInfo.ssboIndex()) {
-        result = EmitStorageBufferAccess("fs", shaderInfo.ssboIndex(), result.c_str());
+    if (shaderInfo.useSSBOs()) {
+        result = "uniforms." + result;
     }
     return result;
 }
@@ -104,6 +108,7 @@ static const ShaderSnippet::Args kDefaultArgs{"inColor", "destColor", "pos"};
 // If 'args' is null, the generated list is assumed to be for parameter declarations. If it's non
 // null, it is assumed to be the expressions to invoke the default signature.
 void append_defaults(TArray<std::string>* list,
+                     bool useSSBOs,
                      const ShaderNode* node,
                      const ShaderSnippet::Args* args) {
     // Use the node's aggregate required flags so that the provided dynamic variables propagate
@@ -120,6 +125,9 @@ void append_defaults(TArray<std::string>* list,
 
     // Special variables and/or "global" scope variables that have to propagate
     // through the node tree.
+    if (useSSBOs) {
+        list->push_back(args ? "uniforms" : "const FSUniformData uniforms");
+    }
     if (node->requiredFlags() & SnippetRequirementFlags::kPrimitiveColor) {
         list->push_back(args ? "primitiveColor" : "half4 primitiveColor");
     }
@@ -171,13 +179,17 @@ std::string invoke_node(const ShaderInfo& shaderInfo,
         // We didn't generate a helper function in the preamble, so add uniforms to the parameter
         // list and call the static function directly.
         fnName = node->entry()->fStaticFunctionName;
-        append_defaults(&params, node, &args);
+        // Since this is preparing args for the static function, pass useSSBOs as false to not
+        // include the aggregate uniform parameter (the fields the static function needs are
+        // extracted by append_uniforms).
+        append_defaults(&params, /*useSSBOs=*/false, node, &args);
         append_uniforms(&params, shaderInfo, node, /*childOutputs=*/{});
     } else {
         // Invoke the generated helper function added to the preamble, which will handle invoking
         // any children and appending their values to the rest of the static fn's arguments.
         fnName = get_mangled_name(node->entry()->fName, node->keyIndex());
-        append_defaults(&params, node, &args);
+        append_defaults(&params, shaderInfo.useSSBOs() && shaderInfo.hasPaintUniforms(),
+                        node, &args);
     }
 
     return SkSL::String::printf("%s(%s)", fnName.c_str(), stitch_csv(params).c_str());
@@ -210,7 +222,9 @@ std::string emit_helper_declaration(const ShaderInfo& shaderInfo, const ShaderNo
     std::string helperFnName = get_mangled_name(entry->fName, node->keyIndex());
 
     STArray<3, std::string> params;
-    append_defaults(&params, node, /*args=*/nullptr); // null args emits declarations
+    // null "args" emits declarations
+    append_defaults(&params, shaderInfo.useSSBOs() && shaderInfo.hasPaintUniforms(),
+                    node, /*args=*/nullptr);
 
     return SkSL::String::printf("half4 %s(%s)", helperFnName.c_str(), stitch_csv(params).c_str());
 }
@@ -243,7 +257,7 @@ std::string generate_default_preamble(const ShaderInfo& shaderInfo,
 
     // Finally, invoke the snippet from the helper function, passing uniforms and child outputs.
     STArray<3, std::string> params;
-    append_defaults(&params, node, &kDefaultArgs);
+    append_defaults(&params, /*useSSBOs=*/false, node, &kDefaultArgs);
     append_uniforms(&params, shaderInfo, node, childOutputVarNames);
 
     SkSL::String::appendf(&code,
@@ -318,9 +332,9 @@ static constexpr skgpu::BlendInfo gBlendTable[kNumCoeffModes] = {
 ShaderInfo::ShaderInfo(UniquePaintParamsID id,
                        const ShaderCodeDictionary* dict,
                        const RuntimeEffectDictionary* rteDict,
-                       const char* ssboIndex)
+                       bool useSSBOs)
         : fRuntimeEffectDictionary(rteDict)
-        , fSsboIndex(ssboIndex)
+        , fUseSSBOs(useSSBOs)
         , fSnippetRequirementFlags(SnippetRequirementFlags::kNone) {
     PaintParamsKey key = dict->lookup(id);
     SkASSERT(key.isValid()); // invalid keys should have been caught by invalid paint ID earlier
@@ -415,19 +429,15 @@ void append_color_output(std::string* mainBody,
 //   overridden to not use a static function.
 std::string ShaderInfo::toSkSL(const Caps* caps,
                                const RenderStep* step,
-                               bool useStorageBuffers,
-                               int* numTexturesAndSamplersUsed,
-                               bool* hasPaintUniforms,
-                               bool* hasGradientBuffer,
                                Swizzle writeSwizzle) {
     // If we're doing analytic coverage, we must also be doing shading.
     SkASSERT(step->coverage() == Coverage::kNone || step->performsShading());
     const bool hasStepUniforms = step->numUniforms() > 0 && step->coverage() != Coverage::kNone;
-    const bool useStepStorageBuffer = useStorageBuffers && hasStepUniforms;
-    const bool useShadingStorageBuffer = useStorageBuffers && step->performsShading();
-    const bool useGradientStorageBuffer = caps->gradientBufferSupport() &&
-                                          (fSnippetRequirementFlags
-                                                & SnippetRequirementFlags::kGradientBuffer);
+    const bool useStepStorageBuffer = fUseSSBOs && hasStepUniforms;
+    const bool useShadingStorageBuffer = fUseSSBOs && step->performsShading();
+
+    fHasGradientBuffer = caps->gradientBufferSupport() &&
+            (fSnippetRequirementFlags & SnippetRequirementFlags::kGradientBuffer);
 
     const bool defineLocalCoordsVarying = this->needsLocalCoords();
     std::string preamble = EmitVaryings(step,
@@ -452,37 +462,30 @@ std::string ShaderInfo::toSkSL(const Caps* caps,
     if (useShadingStorageBuffer) {
         preamble += EmitPaintParamsStorageBuffer(bindingReqs.fPaintParamsBufferBinding,
                                                  fRootNodes,
-                                                 hasPaintUniforms,
+                                                 &fHasPaintUniforms,
                                                  &wrotePaintColor);
-        SkSL::String::appendf(&preamble, "uint %s;\n", this->ssboIndex());
     } else {
         preamble += EmitPaintParamsUniforms(bindingReqs.fPaintParamsBufferBinding,
                                             bindingReqs.fUniformBufferLayout,
                                             fRootNodes,
-                                            hasPaintUniforms,
+                                            &fHasPaintUniforms,
                                             &wrotePaintColor);
     }
 
-    if (useGradientStorageBuffer) {
+    if (fHasGradientBuffer) {
         SkSL::String::appendf(&preamble,
                               "layout (binding=%d) readonly buffer FSGradientBuffer {\n"
                               "    float %s[];\n"
                               "};\n",
                               bindingReqs.fGradientBufferBinding,
                               caps->shaderCaps()->fFloatBufferArrayName);
-        *hasGradientBuffer = true;
     }
 
     {
-        int binding = 0;
-        preamble += EmitTexturesAndSamplers(bindingReqs, fRootNodes, &binding);
+        fNumTexturesAndSamplersUsed = 0;
+        preamble += EmitTexturesAndSamplers(bindingReqs, fRootNodes, &fNumTexturesAndSamplersUsed);
         if (step->hasTextures()) {
-            preamble += step->texturesAndSamplersSkSL(bindingReqs, &binding);
-        }
-
-        // Report back to the caller how many textures and samplers are used.
-        if (numTexturesAndSamplersUsed) {
-            *numTexturesAndSamplersUsed = binding;
+            preamble += step->texturesAndSamplersSkSL(bindingReqs, &fNumTexturesAndSamplersUsed);
         }
     }
 
@@ -493,10 +496,9 @@ std::string ShaderInfo::toSkSL(const Caps* caps,
 
     std::string mainBody = "void main() {";
 
-    if (useShadingStorageBuffer) {
+    if (useShadingStorageBuffer && fHasPaintUniforms) {
         SkSL::String::appendf(&mainBody,
-                              "%s = %s.y;\n",
-                              this->ssboIndex(),
+                              "FSUniformData uniforms = fsUniformData[%s.y];\n",
                               RenderStep::ssboIndicesVarying());
     }
 
@@ -835,9 +837,12 @@ public:
     }
 
     std::string declareUniform(const SkSL::VarDeclaration* decl) override {
+        // NOTE: This is equivalent to get_mangled_uniform_name except that it operates on the
+        // SkSL IR types and not the built-in snippet declaration types.
+        SkASSERT(fShaderInfo.hasPaintUniforms());
         std::string result = get_mangled_name(std::string(decl->var()->name()), fNode->keyIndex());
-        if (fShaderInfo.ssboIndex()) {
-            result = EmitStorageBufferAccess("fs", fShaderInfo.ssboIndex(), result.c_str());
+        if (fShaderInfo.useSSBOs()) {
+            result = "uniforms." + result;
         }
         return result;
     }
