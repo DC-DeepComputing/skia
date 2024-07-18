@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "065d2471_8b5dbea7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-18T14:14:04Z",
+      "side": 1,
+      "message": "The lit_shader_linear_rt sksl compilation failures are addressed by https://skia-review.googlesource.com/c/skia/+/878622",
+      "revId": "df77ff8b9adbcfda48bddd5fe1c3bef85d6dfafe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7c5235f6_cb2ba35c",
@@ -31,6 +48,24 @@
       "writtenOn": "2024-07-16T20:10:50Z",
       "side": 1,
       "message": "line this up ?",
+      "revId": "df77ff8b9adbcfda48bddd5fe1c3bef85d6dfafe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "09c98fe9_1d10c5c7",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-18T14:14:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7c5235f6_cb2ba35c",
       "revId": "df77ff8b9adbcfda48bddd5fe1c3bef85d6dfafe",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
