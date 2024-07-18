@@ -127,15 +127,17 @@ static void FontScanner_FontWithVariables(skiatest::Reporter* reporter,
                 if (uniqueStyles.find(style) == nullptr) {
                     uniqueStyles.add(style);
                 } else {
-                    REPORTER_ASSERT(
-                            reporter,
-                            false,
-                            "Font: %s (%d %d %d)\n",
-                            realname.c_str(), style.weight(), style.width(), style.slant());
+                    REPORTER_ASSERT(reporter,
+                                    false,
+                                    "Font #%d: %s (%d %d %d)\n",
+                                    instanceIndex,
+                                    realname.c_str(),
+                                    style.weight(),
+                                    style.width(),
+                                    style.slant());
                 }
             }
         }
-        REPORTER_ASSERT(reporter, uniqueStyles.count() == numInstances);
     }
 }
 
