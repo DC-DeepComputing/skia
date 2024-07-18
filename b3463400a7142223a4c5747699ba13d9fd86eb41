@@ -22,6 +22,30 @@
       },
       "revId": "b3463400a7142223a4c5747699ba13d9fd86eb41",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2bda3ec7_dcd741e9",
+        "filename": "tests/SkSLPipelineStageTestbed.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-18T18:06:42Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "a2ae6f97_e8b800c0",
+      "range": {
+        "startLine": 24,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 0
+      },
+      "revId": "b3463400a7142223a4c5747699ba13d9fd86eb41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
