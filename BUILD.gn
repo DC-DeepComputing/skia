@@ -819,6 +819,18 @@ if (skia_compile_sksl_tests) {
     lang = "--wgsl"
     settings = "--settings"
   }
+
+  group("compile_all_sksl_tests") {
+    deps = [
+      ":compile_sksl_glsl_nosettings_tests",
+      ":compile_sksl_glsl_tests",
+      ":compile_sksl_hlsl_tests",
+      ":compile_sksl_metal_tests",
+      ":compile_sksl_skrp_tests",
+      ":compile_sksl_spirv_tests",
+      ":compile_sksl_wgsl_tests",
+    ]
+  }
 } else {
   group("compile_sksl_glsl_tests") {
   }
@@ -833,6 +845,8 @@ if (skia_compile_sksl_tests) {
   group("compile_sksl_spirv_tests") {
   }
   group("compile_sksl_wgsl_tests") {
+  }
+  group("compile_all_sksl_tests") {
   }
 }
 
@@ -907,13 +921,7 @@ optional("gpu_shared") {
 optional("gpu") {
   enabled = skia_enable_ganesh
   deps = [
-    ":compile_sksl_glsl_nosettings_tests",
-    ":compile_sksl_glsl_tests",
-    ":compile_sksl_hlsl_tests",
-    ":compile_sksl_metal_tests",
-    ":compile_sksl_skrp_tests",
-    ":compile_sksl_spirv_tests",
-    ":compile_sksl_wgsl_tests",
+    ":compile_all_sksl_tests",
     ":gpu_shared",
     ":minify_sksl",
     ":run_sksllex",
