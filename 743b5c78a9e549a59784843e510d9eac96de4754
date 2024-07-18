@@ -16,6 +16,29 @@
       "message": "This fixes the compilation failures from https://skia-review.googlesource.com/c/skia/+/876078 where the injected toLinearSrgb and fromLinearSrgb functions didn\u0027t get the uniforms struct in their signature automatically.\n\nBy moving them to child nodes, we get to consolidate the uniform definitions and rely on the existing `invoke_node` functionality to handle extra parameters.",
       "revId": "743b5c78a9e549a59784843e510d9eac96de4754",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fca828f7_fc6657f3",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 893,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-07-18T14:56:14Z",
+      "side": 1,
+      "message": "Nit: should this closing paren be earlier in the sentence?",
+      "range": {
+        "startLine": 893,
+        "startChar": 46,
+        "endLine": 893,
+        "endChar": 47
+      },
+      "revId": "743b5c78a9e549a59784843e510d9eac96de4754",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
