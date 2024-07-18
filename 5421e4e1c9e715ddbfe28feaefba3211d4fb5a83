@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d061196_cce7733a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-07-18T16:48:27Z",
+      "side": 1,
+      "message": "I\u0027m open to expanding this to check dst properties, but I was curious to get y\u0027all\u0027s opinion on whether that\u0027s worth it considering the precompilation concerns. I figure Plus blending is uncommon enough that it\u0027s not worth worrying too much about, but not sure if that\u0027s naive.",
+      "revId": "5421e4e1c9e715ddbfe28feaefba3211d4fb5a83",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
