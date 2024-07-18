@@ -16,6 +16,24 @@
       "message": "But might need to be guarded for rollout?",
       "revId": "f06cf1dabadc7c6f6cf458bcbe0690d8a04719e0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c22c352f_ec3c959e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-07-18T19:37:29Z",
+      "side": 1,
+      "message": "I\u0027ll trigger the chrome canary. I was assuming that the actual coverage values generated would be identical, but that might not hold if the order of operations changes, for example.",
+      "parentUuid": "6f884a3f_a3e06c36",
+      "revId": "f06cf1dabadc7c6f6cf458bcbe0690d8a04719e0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
