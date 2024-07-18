@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7060d96_73d7a8ad",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-18T21:54:02Z",
+      "side": 1,
+      "message": "This didn\u0027t work because the inliner rewrites the position of inlined statements/expressions; this puts inliner-related errors at the call site instead of at the source of the error. In an ideal world we\u0027d get both the position of the call site and the position of the error. So, position is not actually as stable as I had hoped.",
+      "revId": "6ab91fd1f6b8a27d2bb54dee57639cd220817e71",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
