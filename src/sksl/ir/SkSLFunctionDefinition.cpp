@@ -108,7 +108,8 @@ std::unique_ptr<FunctionDefinition> FunctionDefinition::Convert(const Context& c
 
         void addLocalVariable(const Variable* var, Position pos) {
             if (var->type().isOrContainsUnsizedArray()) {
-                fContext.fErrors->error(pos, "unsized arrays are not permitted here");
+                // Number of slots does not apply to unsized arrays since they are
+                // dynamically sized and are not supported for the raster pipeline.
                 return;
             }
             // We count the number of slots used, but don't consider the precision of the base type.
