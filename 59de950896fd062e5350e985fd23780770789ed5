@@ -22,6 +22,30 @@
       },
       "revId": "59de950896fd062e5350e985fd23780770789ed5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f68b07b9_42c063c6",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 5156,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-18T18:42:59Z",
+      "side": 1,
+      "message": "Makes sense to me since the position shouldn\u0027t possibly conflict due to the key also also relying on the parent function and the position is at the very end.",
+      "parentUuid": "33117d0b_7158612d",
+      "range": {
+        "startLine": 5156,
+        "startChar": 39,
+        "endLine": 5156,
+        "endChar": 51
+      },
+      "revId": "59de950896fd062e5350e985fd23780770789ed5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
