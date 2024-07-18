@@ -16,6 +16,24 @@
       "message": "So updating the Xcode updated the SDK, which updated the GR_METAL_SDK_VERSION which caused different code to be compiled into `*MtlCaps.mm` which caused the assert `src/gpu/ganesh/mtl/GrMtlCaps.mm:225: fatal error: \"check([device supportsFamily:MTLGPUFamilyMac2])\"` which appears to imply that this device does not support Metal2. Which should be more or less impossible. Adding diagnostics to see what the old code would have done we see the output\n\n```\ndevice supportsFamily:MTLGPUFamilyMac1: true\ndevice supportsFamily:MTLGPUFamilyMac2: false\ndevice supportsFamily:MTLGPUFamilyMacCatalyst1: false\ndevice supportsFamily:MTLGPUFamilyMacCatalyst2: false\n```\n\nFor the newer SDK all of MTLGPUFamilyMac1, MTLGPUFamilyMacCatalyst1, and MTLGPUFamilyMacCatalyst2 are all deprecated and one is supposed to use just MTLGPUFamilyMac2. However, there are obviously macOS 10.15.1 boxes for which this isn\u0027t quite correct.",
       "revId": "d653022d68a0a31c20b8948fa8f3137e13b483a5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f851a23b_7e3b0168",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-07-18T20:48:41Z",
+      "side": 1,
+      "message": "Not sure what it means because Apples \"documentation\" but\n\n```\ndevice supportsFamily:MTLGPUFamilyCommon1: true\ndevice supportsFamily:MTLGPUFamilyCommon2: true\ndevice supportsFamily:MTLGPUFamilyCommon3: false\n```",
+      "parentUuid": "60d6aff0_c789ed4b",
+      "revId": "d653022d68a0a31c20b8948fa8f3137e13b483a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
