@@ -106,6 +106,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2fb15732_cfe24102",
+        "filename": "src/core/SkBitmapProcState_opts_lasx.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 20234
+      },
+      "writtenOn": "2024-07-18T01:23:43Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "18066b98_6b679192",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 35
+      },
+      "revId": "cfc4b40f5e266217cc4e247c0efcfa7761630f2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1c42489e_8ab01732",
@@ -177,6 +201,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "56777b70_e1d3e2d7",
+        "filename": "src/core/SkBlitRow_opts_lasx.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 20234
+      },
+      "writtenOn": "2024-07-18T01:23:43Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "af1d265b_2aba6212",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 35
+      },
+      "revId": "cfc4b40f5e266217cc4e247c0efcfa7761630f2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "89145570_c6cf8997",
@@ -238,6 +286,30 @@
       "side": 1,
       "message": "^",
       "parentUuid": "abe5650e_c8793ee9",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 35
+      },
+      "revId": "cfc4b40f5e266217cc4e247c0efcfa7761630f2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e69ff5ec_8c43a192",
+        "filename": "src/core/SkSwizzler_opts_lasx.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 20234
+      },
+      "writtenOn": "2024-07-18T01:23:43Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "eabe1961_9dda1414",
       "range": {
         "startLine": 9,
         "startChar": 0,
