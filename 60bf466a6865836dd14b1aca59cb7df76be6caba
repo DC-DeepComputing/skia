@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07f5fa83_7187ce6a",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-07-18T14:59:12Z",
+      "side": 1,
+      "message": "I wonder if there\u0027s a better name for this, since it\u0027s sometimes false even when we are using SSBOs. But I\u0027m struggling to come up with something good. Maybe \"includeUniformStruct\"?",
+      "range": {
+        "startLine": 111,
+        "startChar": 26,
+        "endLine": 111,
+        "endChar": 34
+      },
+      "revId": "60bf466a6865836dd14b1aca59cb7df76be6caba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
