@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "45c93702_6e72ba17",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 268,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-18T20:19:29Z",
+      "side": 1,
+      "message": "Updated to 64x64 and filed b/354016506 to figure out a better threshold. Also fixed it so it used an approximation for device-space area, not the local area.",
+      "parentUuid": "1a8e3437_a7860fe1",
+      "range": {
+        "startLine": 268,
+        "startChar": 48,
+        "endLine": 268,
+        "endChar": 55
+      },
+      "revId": "e6bf3a00a287030c51c3db4407877b7748935fa3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "90c98dbb_ca69879e",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-07-18T18:32:47Z",
       "side": 1,
       "message": "Let\u0027s discuss offline",
+      "range": {
+        "startLine": 1280,
+        "startChar": 0,
+        "endLine": 1281,
+        "endChar": 95
+      },
+      "revId": "e6bf3a00a287030c51c3db4407877b7748935fa3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c7129b12_cabf8796",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 1281,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-18T20:19:29Z",
+      "side": 1,
+      "message": "Cleaned this up to be based off the `renderer` and a `secondaryRenderer` pointer that gets filled in.",
+      "parentUuid": "90c98dbb_ca69879e",
       "range": {
         "startLine": 1280,
         "startChar": 0,

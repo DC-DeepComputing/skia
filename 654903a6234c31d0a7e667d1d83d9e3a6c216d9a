@@ -39,6 +39,30 @@
       },
       "revId": "654903a6234c31d0a7e667d1d83d9e3a6c216d9a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dd118bef_7d2a0662",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1271,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-18T20:19:29Z",
+      "side": 1,
+      "message": "I reorganized the drawGeometry() function so that `dependsOnDst` and the `PaintParams` could be calculated much earlier to check all the preconditions for taking the inner fill path. Then I updated the render step counting to also just call the `get_inner_bounds` function so that it would know if it was being taken or not later on.\n\nThen instead of redoing that logic and checking the conditions when recording the draws, it just checks if the inner bounds are empty or not.",
+      "parentUuid": "42af3c45_3e71bbed",
+      "range": {
+        "startLine": 1271,
+        "startChar": 71,
+        "endLine": 1271,
+        "endChar": 84
+      },
+      "revId": "654903a6234c31d0a7e667d1d83d9e3a6c216d9a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
