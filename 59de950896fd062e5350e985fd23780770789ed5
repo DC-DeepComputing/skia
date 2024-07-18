@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33117d0b_7158612d",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 5156,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-18T18:23:52Z",
+      "side": 1,
+      "message": "We synthesize a function call here, and it needs some sort of valid Position. Otherwise, we assert inside the hash-key computation because `Position::startOffset` fails.",
+      "range": {
+        "startLine": 5156,
+        "startChar": 39,
+        "endLine": 5156,
+        "endChar": 51
+      },
+      "revId": "59de950896fd062e5350e985fd23780770789ed5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
