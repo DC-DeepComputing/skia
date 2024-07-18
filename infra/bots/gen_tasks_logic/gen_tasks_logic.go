@@ -745,7 +745,11 @@ func (b *jobBuilder) deriveCompileTaskName() string {
 			task_os = COMPILE_TASK_NAME_OS_LINUX
 		} else if b.os("iOS") {
 			ec = append([]string{task_os}, ec...)
-			task_os = "Mac"
+			if b.parts["compiler"] == "Xcode11.4.1" {
+				task_os = "Mac10.15.7"
+			} else {
+				task_os = "Mac"
+			}
 		} else if b.matchOs("Win") {
 			task_os = "Win"
 		} else if b.compiler("GCC") {
