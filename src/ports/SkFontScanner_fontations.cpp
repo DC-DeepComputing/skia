@@ -72,49 +72,91 @@ bool SkFontScanner_Fontations::scanInstance(SkStreamAsset* stream,
                                             bool* isFixedPitch,
                                             AxisDefinitions* axes) const {
 
-    rust::Box<fontations_ffi::BridgeFontRef> bridgeFontRef =
+    rust::Box<fontations_ffi::BridgeFontRef> bridgeFontFaceRef =
             make_bridge_font_ref(SkData::MakeFromStream(stream, stream->getLength()), faceIndex);
     stream->rewind();
-    if (!fontations_ffi::font_ref_is_valid(*bridgeFontRef)) {
+    if (!fontations_ffi::font_ref_is_valid(*bridgeFontFaceRef)) {
         return false;
     }
 
     if (name != nullptr) {
-        rust::String readFamilyName = fontations_ffi::family_name(*bridgeFontRef);
+        rust::String readFamilyName = fontations_ffi::family_name(*bridgeFontFaceRef);
         *name = SkString(readFamilyName.data(), readFamilyName.size());
     }
 
-    rust::Box<fontations_ffi::BridgeMappingIndex> mappingIndex =
-            fontations_ffi::make_mapping_index(*bridgeFontRef);
-
-    std::unique_ptr<SkFontArguments::VariationPosition::Coordinate[]> concatenatedCoords = nullptr;
-    size_t numNamedInstanceCoords =
-            fontations_ffi::coordinates_for_shifted_named_instance_index(
-                    *bridgeFontRef,
-                instanceIndex << 16,
-                    rust::cxxbridge1::Slice<fontations_ffi::SkiaDesignCoordinate>());
-    concatenatedCoords.reset(new SkFontArguments::VariationPosition::Coordinate[numNamedInstanceCoords]);
-
-    rust::cxxbridge1::Slice<::fontations_ffi::SkiaDesignCoordinate> targetSlice(
-            reinterpret_cast<fontations_ffi::SkiaDesignCoordinate*>(concatenatedCoords.get()),
-            numNamedInstanceCoords);
-    size_t retrievedNamedInstanceCoords =
-            fontations_ffi::coordinates_for_shifted_named_instance_index(
-                    *bridgeFontRef, instanceIndex << 16, targetSlice);
-    if (numNamedInstanceCoords != retrievedNamedInstanceCoords) {
-        return false;
-    }
-    /*
-    auto normalizedCoords = make_normalized_coords(*bridgeFontRef, *concatenatedCoords);
-    fontations_ffi::BridgeFontStyle fontStyle;
-    if (fontations_ffi::get_font_style(*bridgeFontRef, *normalizedCoords, fontStyle)) {
-        *style = SkFontStyle(fontStyle.weight,
-                            fontStyle.width,
-                            static_cast<SkFontStyle::Slant>(fontStyle.slant));
-    }
-    */
     if (isFixedPitch != nullptr) {
         *isFixedPitch = false;  // TODO
+    }
+
+    if (style != nullptr) {
+        if (instanceIndex == 0) {
+            // This is the default instance
+            rust::Slice<const fontations_ffi::SkiaDesignCoordinate> coordinates;
+            rust::Box<fontations_ffi::BridgeNormalizedCoords> normalizedCoords =
+                    resolve_into_normalized_coords(*bridgeFontFaceRef, coordinates);
+            fontations_ffi::BridgeFontStyle fontStyle;
+            if (fontations_ffi::get_font_style(*bridgeFontFaceRef, *normalizedCoords, fontStyle)) {
+                *style = SkFontStyle(
+                        fontStyle.weight, fontStyle.width, (SkFontStyle::Slant)fontStyle.slant);
+            } else {
+                *style = SkFontStyle::Normal();
+            }
+        } else {
+            std::unique_ptr<SkFontArguments::VariationPosition::Coordinate[]> extractedCoords =
+                    nullptr;
+            size_t numNamedInstanceCoords =
+                    fontations_ffi::coordinates_for_shifted_named_instance_index(
+                            *bridgeFontFaceRef,
+                            instanceIndex << 16,
+                            rust::cxxbridge1::Slice<fontations_ffi::SkiaDesignCoordinate>());
+            extractedCoords.reset(
+                    new SkFontArguments::VariationPosition::Coordinate[numNamedInstanceCoords]);
+
+            rust::cxxbridge1::Slice<fontations_ffi::SkiaDesignCoordinate> targetSlice(
+                    reinterpret_cast<fontations_ffi::SkiaDesignCoordinate*>(extractedCoords.get()),
+                    numNamedInstanceCoords);
+            size_t retrievedNamedInstanceCoords =
+                    fontations_ffi::coordinates_for_shifted_named_instance_index(
+                            *bridgeFontFaceRef, instanceIndex << 16, targetSlice);
+            if (numNamedInstanceCoords != retrievedNamedInstanceCoords) {
+                return false;
+            }
+
+            SkFontArguments::VariationPosition variationPosition;
+            variationPosition.coordinateCount = numNamedInstanceCoords;
+            variationPosition.coordinates = extractedCoords.get();
+
+            rust::Box<fontations_ffi::BridgeNormalizedCoords> normalizedCoords =
+                    make_normalized_coords(*bridgeFontFaceRef, variationPosition);
+            fontations_ffi::BridgeFontStyle fontStyle;
+            if (fontations_ffi::get_font_style(*bridgeFontFaceRef, *normalizedCoords, fontStyle)) {
+                *style = SkFontStyle(fontStyle.weight,
+                                     fontStyle.width,
+                                     static_cast<SkFontStyle::Slant>(fontStyle.slant));
+            }
+        }
+    }
+
+    if (axes != nullptr) {
+        rust::Box<fontations_ffi::BridgeFontRef> bridgeFontNamedInstanceRef =
+                make_bridge_font_ref(SkData::MakeFromStream(stream, stream->getLength()), faceIndex + (instanceIndex << 16));
+        stream->rewind();
+        auto size = fontations_ffi::number_axes(*bridgeFontNamedInstanceRef);
+        if (size < 0) {
+            return true;
+        }
+        axes->reset(size);
+        auto variationAxes = std::make_unique<SkFontParameters::Variation::Axis[]>(size);
+        sk_fontations::AxisWrapper axisWrapper(variationAxes.get(), size);
+        auto size1 = fontations_ffi::populate_axes(*bridgeFontNamedInstanceRef, axisWrapper);
+        SkASSERT(size == size1);
+        for (int i = 0; i < size; ++i) {
+            const auto var = variationAxes[i];
+            (*axes)[i].fTag = var.tag;
+            (*axes)[i].fMinimum = var.min;
+            (*axes)[i].fDefault = var.def;
+            (*axes)[i].fMaximum = var.max;
+        }
     }
 
     return true;
