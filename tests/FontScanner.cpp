@@ -22,8 +22,7 @@
 
 [[maybe_unused]]
 static void FontScanner_VariableFont(skiatest::Reporter* reporter,
-                                     SkFontScanner* scanner,
-                                     bool defaultInstanceOnly) {
+                                     SkFontScanner* scanner) {
     SkString name = GetResourcePath("fonts/Variable.ttf");
 
     std::unique_ptr<SkStreamAsset> stream = SkStream::MakeFromFile(name.c_str());
@@ -44,10 +43,7 @@ static void FontScanner_VariableFont(skiatest::Reporter* reporter,
             REPORTER_ASSERT(reporter, false, "Cannot scanFace\n");
             continue;
         }
-        if (defaultInstanceOnly) {
-            REPORTER_ASSERT(reporter, numInstances == 1);
-            continue;
-        }
+
         REPORTER_ASSERT(reporter, numInstances == 5);
         for (int instanceIndex = 1; instanceIndex <= numInstances; ++instanceIndex) {
             bool isFixedPitch;
@@ -127,22 +123,24 @@ static void FontScanner_FontWithVariables(skiatest::Reporter* reporter,
                 if (uniqueStyles.find(style) == nullptr) {
                     uniqueStyles.add(style);
                 } else {
-                    REPORTER_ASSERT(
-                            reporter,
-                            false,
-                            "Font: %s (%d %d %d)\n",
-                            realname.c_str(), style.weight(), style.width(), style.slant());
+                    REPORTER_ASSERT(reporter,
+                                    false,
+                                    "Font #%d: %s (%d %d %d)\n",
+                                    instanceIndex,
+                                    realname.c_str(),
+                                    style.weight(),
+                                    style.width(),
+                                    style.slant());
                 }
             }
         }
-        REPORTER_ASSERT(reporter, uniqueStyles.count() == numInstances);
     }
 }
 
 #ifdef SK_TYPEFACE_FACTORY_FREETYPE
 DEF_TEST(FontScanner_FreeType_VariableFont, reporter) {
     SkFontScanner_FreeType free_type;
-    FontScanner_VariableFont(reporter, &free_type, /*defaultInstanceOnly=*/ false);
+    FontScanner_VariableFont(reporter, &free_type);
 }
 
 DEF_TEST(FontScanner_FreeType_FontWithVariables, reporter) {
@@ -154,7 +152,7 @@ DEF_TEST(FontScanner_FreeType_FontWithVariables, reporter) {
 #ifdef SK_TYPEFACE_FACTORY_FONTATIONS
 DEF_TEST(FontScanner_Fontations_VariableFont, reporter) {
     SkFontScanner_Fontations fontations;
-    FontScanner_VariableFont(reporter, &fontations,/*defaultInstanceOnly=*/ true);
+    FontScanner_VariableFont(reporter, &fontations);
 }
 
 DEF_TEST(FontScanner_Fontations_FontWithVariables, reporter) {
