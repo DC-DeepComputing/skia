@@ -16,6 +16,24 @@
       "message": "I would say let\u0027s add a comment with a link to the bug.",
       "revId": "343c4a5f9b232569de8097787683df7af80bb294",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd8981df_76de0131",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-18T18:10:03Z",
+      "side": 1,
+      "message": "+1",
+      "parentUuid": "a7cb54dc_0de3b508",
+      "revId": "343c4a5f9b232569de8097787683df7af80bb294",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
