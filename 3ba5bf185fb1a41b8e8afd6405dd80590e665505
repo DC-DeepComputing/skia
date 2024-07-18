@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb61ec11_7bd995e8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3528990
+      },
+      "writtenOn": "2024-07-18T05:25:21Z",
+      "side": 1,
+      "message": "Hello Jorge,\n\nI am contributing this patch to skia for the canvaskit-wasm package.  \n\nI am making a small change to the exports field. By adding the package.json to the exports field, it is possible to import the package.json in JavaScript code. Without it, the exports field disallows importing the package.json and throws an error. Importing and reading the package.json from code is important to be able to access version information, metadata, etc. for bundlers, libraries, projects, etc.\n\nThank you for reviewing this patch!\n\nBest,\nJohn",
+      "revId": "3ba5bf185fb1a41b8e8afd6405dd80590e665505",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
