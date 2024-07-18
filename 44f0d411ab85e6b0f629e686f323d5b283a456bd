@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cb329b1a_6e4e6bb8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-07-18T14:42:33Z",
+      "side": 1,
+      "message": "Reported at https://groups.google.com/g/skia-discuss/c/lnXJQyzRsw4/m/A1r5UqOmAgAJ",
+      "revId": "44f0d411ab85e6b0f629e686f323d5b283a456bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
