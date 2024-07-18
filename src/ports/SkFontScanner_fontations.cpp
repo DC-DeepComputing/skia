@@ -84,37 +84,58 @@ bool SkFontScanner_Fontations::scanInstance(SkStreamAsset* stream,
         *name = SkString(readFamilyName.data(), readFamilyName.size());
     }
 
-    rust::Box<fontations_ffi::BridgeMappingIndex> mappingIndex =
-            fontations_ffi::make_mapping_index(*bridgeFontRef);
-
-    std::unique_ptr<SkFontArguments::VariationPosition::Coordinate[]> concatenatedCoords = nullptr;
-    size_t numNamedInstanceCoords =
-            fontations_ffi::coordinates_for_shifted_named_instance_index(
-                    *bridgeFontRef,
-                instanceIndex << 16,
-                    rust::cxxbridge1::Slice<fontations_ffi::SkiaDesignCoordinate>());
-    concatenatedCoords.reset(new SkFontArguments::VariationPosition::Coordinate[numNamedInstanceCoords]);
-
-    rust::cxxbridge1::Slice<::fontations_ffi::SkiaDesignCoordinate> targetSlice(
-            reinterpret_cast<fontations_ffi::SkiaDesignCoordinate*>(concatenatedCoords.get()),
-            numNamedInstanceCoords);
-    size_t retrievedNamedInstanceCoords =
-            fontations_ffi::coordinates_for_shifted_named_instance_index(
-                    *bridgeFontRef, instanceIndex << 16, targetSlice);
-    if (numNamedInstanceCoords != retrievedNamedInstanceCoords) {
-        return false;
-    }
-    /*
-    auto normalizedCoords = make_normalized_coords(*bridgeFontRef, *concatenatedCoords);
-    fontations_ffi::BridgeFontStyle fontStyle;
-    if (fontations_ffi::get_font_style(*bridgeFontRef, *normalizedCoords, fontStyle)) {
-        *style = SkFontStyle(fontStyle.weight,
-                            fontStyle.width,
-                            static_cast<SkFontStyle::Slant>(fontStyle.slant));
-    }
-    */
     if (isFixedPitch != nullptr) {
         *isFixedPitch = false;  // TODO
+    }
+
+    if (style == nullptr) {
+        // No need to perform extra steps for now
+        return true;
+    }
+
+    if (instanceIndex == 0) {
+        // This is the default instance
+        rust::Slice<const fontations_ffi::SkiaDesignCoordinate> coordinates;
+        rust::Box<fontations_ffi::BridgeNormalizedCoords> normalizedCoords =
+                resolve_into_normalized_coords(*bridgeFontRef, coordinates);
+        fontations_ffi::BridgeFontStyle fontStyle;
+        if (fontations_ffi::get_font_style(*bridgeFontRef, *normalizedCoords, fontStyle)) {
+            *style = SkFontStyle(fontStyle.weight, fontStyle.width,  (SkFontStyle::Slant)fontStyle.slant);
+        } else {
+            *style = SkFontStyle::Normal();
+        }
+    } else {
+        std::unique_ptr<SkFontArguments::VariationPosition::Coordinate[]> extractedCoords = nullptr;
+        size_t numNamedInstanceCoords =
+                fontations_ffi::coordinates_for_shifted_named_instance_index(
+                        *bridgeFontRef,
+                        instanceIndex << 16,
+                        rust::cxxbridge1::Slice<fontations_ffi::SkiaDesignCoordinate>());
+        extractedCoords.reset(
+                new SkFontArguments::VariationPosition::Coordinate[numNamedInstanceCoords]);
+
+        rust::cxxbridge1::Slice<fontations_ffi::SkiaDesignCoordinate> targetSlice(
+                reinterpret_cast<fontations_ffi::SkiaDesignCoordinate*>(extractedCoords.get()),
+                numNamedInstanceCoords);
+        size_t retrievedNamedInstanceCoords =
+                fontations_ffi::coordinates_for_shifted_named_instance_index(
+                        *bridgeFontRef, instanceIndex << 16, targetSlice);
+        if (numNamedInstanceCoords != retrievedNamedInstanceCoords) {
+            return false;
+        }
+
+        SkFontArguments::VariationPosition variationPosition;
+        variationPosition.coordinateCount = numNamedInstanceCoords;
+        variationPosition.coordinates = extractedCoords.get();
+
+        rust::Box<fontations_ffi::BridgeNormalizedCoords> normalizedCoords =
+                make_normalized_coords(*bridgeFontRef, variationPosition);
+        fontations_ffi::BridgeFontStyle fontStyle;
+        if (fontations_ffi::get_font_style(*bridgeFontRef, *normalizedCoords, fontStyle)) {
+            *style = SkFontStyle(fontStyle.weight,
+                                 fontStyle.width,
+                                 static_cast<SkFontStyle::Slant>(fontStyle.slant));
+        }
     }
 
     return true;

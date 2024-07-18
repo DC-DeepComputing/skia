@@ -1873,8 +1873,46 @@ mod test {
         let font_ref = make_font_ref(&font_buffer, 0);
         let mut num_instances = 0;
         let result = named_instances_collection(font_ref.as_ref(), &mut num_instances);
-        assert!(num_instances == 5);
+        assert!(result && num_instances == 5);
 
+        let mut index = 0;
+        loop {
+            if index >= num_instances {
+                break;
+            }
+            let named_instance_index : u32 = ((index + 1) << 16) as u32;
+            let num_coords = coordinates_for_shifted_named_instance_index(
+                &font_ref,
+                named_instance_index,
+                &mut [],
+            );
+            assert_eq!(num_coords, 2);
+
+            let mut received_coords: [SkiaDesignCoordinate; 2] = Default::default();
+            let num_coords = coordinates_for_shifted_named_instance_index(
+                &font_ref,
+                named_instance_index,
+                &mut received_coords,
+            );
+            if index == 5 {
+                assert_eq!(num_coords, 2);
+                assert_eq!(
+                    received_coords[0],
+                    SkiaDesignCoordinate {
+                        axis: u32::from_be_bytes([b'w', b'g', b'h', b't']),
+                        value: 400.0
+                    }
+                );
+                assert_eq!(
+                    received_coords[1],
+                    SkiaDesignCoordinate {
+                        axis: u32::from_be_bytes([b'w', b'd', b't', b'h']),
+                        value: 200.0
+                    }
+                );
+            };
+            index += 1;
+        }
     }
 
     #[test]
