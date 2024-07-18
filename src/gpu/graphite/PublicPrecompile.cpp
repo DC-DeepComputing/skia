@@ -40,6 +40,10 @@ void compile(const RendererProvider* rendererProvider,
              bool withPrimitiveBlender,
              Coverage coverage) {
     for (const Renderer* r : rendererProvider->renderers()) {
+        if (r->renderStepID() == 36 && uniqueID.asUInt() == 4) {
+            SkDebugf("here\n");
+        }
+
         if (!(r->drawTypes() & drawTypes)) {
             continue;
         }
