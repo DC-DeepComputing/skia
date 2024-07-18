@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f285fba1_13e40078",
+        "filename": "tests/sksl/errors/ArrayUnspecifiedDimensions.glsl",
+        "patchSetId": 9
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-18T22:21:49Z",
+      "side": 0,
+      "message": "This change will probably cause failures in `dm -m ErrorTest`.\n\nYou will need to open up `resources/sksl/errors/ArrayUnspecifiedDimensions.sksl` and update the expectations at the bottom of the file (removing these lines).\n\nThe newly-allowed forms should probably be moved out to your new test SkSL file to make sure they continue to work as expected. `T foo[]` should behave the same as `T[] foo` and we also allow anonymous params like `T[]`.",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 48
+      },
+      "revId": "9aba916f22fd931bb4d6ab9a9122cab36a60017d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
