@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab0ffdf6_bbb2b3fc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-18T14:16:43Z",
+      "side": 1,
+      "message": "This fixes the compilation failures from https://skia-review.googlesource.com/c/skia/+/876078 where the injected toLinearSrgb and fromLinearSrgb functions didn\u0027t get the uniforms struct in their signature automatically.\n\nBy moving them to child nodes, we get to consolidate the uniform definitions and rely on the existing `invoke_node` functionality to handle extra parameters.",
+      "revId": "743b5c78a9e549a59784843e510d9eac96de4754",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
