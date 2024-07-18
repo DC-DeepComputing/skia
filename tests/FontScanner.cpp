@@ -22,8 +22,7 @@
 
 [[maybe_unused]]
 static void FontScanner_VariableFont(skiatest::Reporter* reporter,
-                                     SkFontScanner* scanner,
-                                     bool defaultInstanceOnly) {
+                                     SkFontScanner* scanner) {
     SkString name = GetResourcePath("fonts/Variable.ttf");
 
     std::unique_ptr<SkStreamAsset> stream = SkStream::MakeFromFile(name.c_str());
@@ -44,22 +43,20 @@ static void FontScanner_VariableFont(skiatest::Reporter* reporter,
             REPORTER_ASSERT(reporter, false, "Cannot scanFace\n");
             continue;
         }
-        if (defaultInstanceOnly) {
-            REPORTER_ASSERT(reporter, numInstances == 1);
-            continue;
-        }
+
         REPORTER_ASSERT(reporter, numInstances == 5);
+        // Not including the default instance
         for (int instanceIndex = 1; instanceIndex <= numInstances; ++instanceIndex) {
             bool isFixedPitch;
-            SkString realname;
+            SkString realName;
             SkFontStyle style = SkFontStyle(); // avoid uninitialized warning
             if (!scanner->scanInstance(stream.get(),
-                                        faceIndex,
-                                        instanceIndex,
-                                        &realname,
-                                        &style,
-                                        &isFixedPitch,
-                                        nullptr)) {
+                                       faceIndex,
+                                       instanceIndex,
+                                       &realName,
+                                       &style,
+                                       &isFixedPitch,
+                                       nullptr)) {
                 REPORTER_ASSERT(reporter,
                                 false,
                                 "Cannot scanInstance %s %d\n",
@@ -67,14 +64,16 @@ static void FontScanner_VariableFont(skiatest::Reporter* reporter,
                                 faceIndex);
                 continue;
             } else {
-                if (uniqueStyles.find(style) == nullptr) {
+                if (instanceIndex == 0) {
+                    // Do not add it to the set
+                } else if (uniqueStyles.find(style) == nullptr) {
                     uniqueStyles.add(style);
                 } else {
                     REPORTER_ASSERT(
                         reporter,
                         false,
                         "Font: %s (%d %d %d)\n",
-                        realname.c_str(), style.weight(), style.width(), style.slant());
+                            realName.c_str(), style.weight(), style.width(), style.slant());
                 }
             }
         }
@@ -83,8 +82,7 @@ static void FontScanner_VariableFont(skiatest::Reporter* reporter,
 }
 
 [[maybe_unused]]
-static void FontScanner_FontWithVariables(skiatest::Reporter* reporter,
-                         SkFontScanner* scanner) {
+static void FontScanner_NamedInstances(skiatest::Reporter* reporter, SkFontScanner* scanner) {
     SkString name = GetResourcePath("fonts/Variable.ttf");
 
     std::unique_ptr<SkStreamAsset> stream = SkStream::MakeFromFile(name.c_str());
@@ -106,17 +104,19 @@ static void FontScanner_FontWithVariables(skiatest::Reporter* reporter,
             continue;
         }
         REPORTER_ASSERT(reporter, numInstances == 5);
+        // Not including the default instance (most time it will be listed anyway)
         for (int instanceIndex = 1; instanceIndex <= numInstances; ++instanceIndex) {
             bool isFixedPitch;
-            SkString realname;
+            SkString realName;
             SkFontStyle style = SkFontStyle(); // avoid uninitialized warning
+            SkFontScanner::AxisDefinitions axes;
             if (!scanner->scanInstance(stream.get(),
                                        faceIndex,
                                        instanceIndex,
-                                       &realname,
+                                       &realName,
                                        &style,
                                        &isFixedPitch,
-                                       nullptr)) {
+                                       &axes)) {
                 REPORTER_ASSERT(reporter,
                                 false,
                                 "Cannot scanInstance %s %d\n",
@@ -126,39 +126,54 @@ static void FontScanner_FontWithVariables(skiatest::Reporter* reporter,
             } else {
                 if (uniqueStyles.find(style) == nullptr) {
                     uniqueStyles.add(style);
+                    REPORTER_ASSERT(reporter, axes.size() == 2);
+                    if (instanceIndex == 5) {
+                        SkFourByteTag weight = SkSetFourByteTag('w', 'g', 'h', 't');
+                        SkFourByteTag width = SkSetFourByteTag('w', 'd', 't', 'h');
+                        REPORTER_ASSERT(reporter, axes[0].fTag == weight);
+                        REPORTER_ASSERT(reporter, axes[0].fDefault == 400.0f);
+                        REPORTER_ASSERT(reporter, axes[0].fMinimum == 100.0f);
+                        REPORTER_ASSERT(reporter, axes[0].fMaximum == 900.0f);
+                        REPORTER_ASSERT(reporter, axes[1].fTag == width);
+                        REPORTER_ASSERT(reporter, axes[1].fDefault == 100.0f);
+                        REPORTER_ASSERT(reporter, axes[1].fMinimum == 050.0f);
+                        REPORTER_ASSERT(reporter, axes[1].fMaximum == 200.0f);
+                    }
                 } else {
-                    REPORTER_ASSERT(
-                            reporter,
-                            false,
-                            "Font: %s (%d %d %d)\n",
-                            realname.c_str(), style.weight(), style.width(), style.slant());
+                    REPORTER_ASSERT(reporter,
+                                    false,
+                                    "Font #%d: %s (%d %d %d)\n",
+                                    instanceIndex,
+                                    realName.c_str(),
+                                    style.weight(),
+                                    style.width(),
+                                    style.slant());
                 }
             }
         }
-        REPORTER_ASSERT(reporter, uniqueStyles.count() == numInstances);
     }
 }
 
 #ifdef SK_TYPEFACE_FACTORY_FREETYPE
 DEF_TEST(FontScanner_FreeType_VariableFont, reporter) {
     SkFontScanner_FreeType free_type;
-    FontScanner_VariableFont(reporter, &free_type, /*defaultInstanceOnly=*/ false);
+    FontScanner_VariableFont(reporter, &free_type);
 }
 
-DEF_TEST(FontScanner_FreeType_FontWithVariables, reporter) {
+DEF_TEST(FontScanner_FreeType__NamedInstances, reporter) {
     SkFontScanner_FreeType free_type;
-    FontScanner_FontWithVariables(reporter, &free_type);
+    FontScanner_NamedInstances(reporter, &free_type);
 }
 #endif
 
 #ifdef SK_TYPEFACE_FACTORY_FONTATIONS
 DEF_TEST(FontScanner_Fontations_VariableFont, reporter) {
     SkFontScanner_Fontations fontations;
-    FontScanner_VariableFont(reporter, &fontations,/*defaultInstanceOnly=*/ true);
+    FontScanner_VariableFont(reporter, &fontations);
 }
 
-DEF_TEST(FontScanner_Fontations_FontWithVariables, reporter) {
+DEF_TEST(FontScanner_Fontations_NamedInstances, reporter) {
     SkFontScanner_Fontations fontations;
-    FontScanner_FontWithVariables(reporter, &fontations);
+    FontScanner_NamedInstances(reporter, &fontations);
 }
 #endif
