@@ -1,0 +1,13 @@
+
+// TODO(b/xxxx): Unsized array parameters only work with readonly buffers.
+layout(set = 0, binding = 0) readonly buffer testStorageBuffer {
+    float[] testArr;
+};
+
+noinline half4 getColor(float[] arr) {
+    return half4(arr[0], arr[1], arr[2], arr[3]);
+}
+
+void main() {
+    sk_FragColor = getColor(testArr);
+}
