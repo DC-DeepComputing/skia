@@ -86,6 +86,14 @@ bool MtlCaps::GetGPUFamily(id<MTLDevice> device, GPUFamily* gpuFamily, int* grou
         // Older Macs
 #if SKGPU_GRAPHITE_METAL_SDK_VERSION >= 300
         // TODO: replace with Metal 3 definitions
+        SkDebugf("device supportsFamily:MTLGPUFamilyMac1: %s\n", [device supportsFamily:MTLGPUFamilyMac1] ? "true": "false");
+        SkDebugf("device supportsFamily:MTLGPUFamilyMac2: %s\n", [device supportsFamily:MTLGPUFamilyMac2] ? "true": "false");
+        SkDebugf("device supportsFamily:MTLGPUFamilyMacCatalyst1: %s\n", [device supportsFamily:MTLGPUFamilyMacCatalyst1] ? "true": "false");
+        SkDebugf("device supportsFamily:MTLGPUFamilyMacCatalyst2: %s\n", [device supportsFamily:MTLGPUFamilyMacCatalyst2] ? "true": "false");
+
+        SkDebugf("device supportsFamily:MTLGPUFamilyCommon1: %s\n", [device supportsFamily:MTLGPUFamilyCommon1] ? "true": "false");
+        SkDebugf("device supportsFamily:MTLGPUFamilyCommon2: %s\n", [device supportsFamily:MTLGPUFamilyCommon2] ? "true": "false");
+        SkDebugf("device supportsFamily:MTLGPUFamilyCommon3: %s\n", [device supportsFamily:MTLGPUFamilyCommon3] ? "true": "false");
         SkASSERT([device supportsFamily:MTLGPUFamilyMac2]);
         *gpuFamily = GPUFamily::kMac;
         *group = 2;
