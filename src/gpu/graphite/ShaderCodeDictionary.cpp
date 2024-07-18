@@ -168,6 +168,10 @@ void append_uniforms(TArray<std::string>* list,
         list->push_back(get_mangled_sampler_name(entry->fTexturesAndSamplers[i], node->keyIndex()));
     }
 
+    if (node->requiredFlags() & SnippetRequirementFlags::kGradientBuffer) {
+        list->push_back("fsGradientBuffer");
+    }
+
     // Append child output names.
     if (!childOutputs.empty()) {
         list->push_back_n(childOutputs.size(), childOutputs.data());

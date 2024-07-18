@@ -27,7 +27,4 @@ error: 19: multi-dimensional arrays are not supported
 error: 23: unsized arrays are not permitted here
     int[] i;
     ^^^^^^^
-error: 23: unsized arrays are not permitted here
-    int[] i;
-    ^^^^^^^
-10 errors
+9 errors
