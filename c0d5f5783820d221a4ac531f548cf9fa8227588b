@@ -16,6 +16,23 @@
       "message": "PTAL",
       "revId": "c0d5f5783820d221a4ac531f548cf9fa8227588b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5477a768_7729875d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-18T14:26:36Z",
+      "side": 1,
+      "message": "It looks like Ganesh also has used `freeGpuResources()` as the place to clear the strike cache.",
+      "revId": "c0d5f5783820d221a4ac531f548cf9fa8227588b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
