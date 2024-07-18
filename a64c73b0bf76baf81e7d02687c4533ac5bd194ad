@@ -16,6 +16,24 @@
       "message": "I\u0027m not so sure about this change...",
       "revId": "a64c73b0bf76baf81e7d02687c4533ac5bd194ad",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b95d9612_d0364584",
+        "filename": "infra/bots/tasks.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 21233,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-07-18T15:40:23Z",
+      "side": 0,
+      "message": "Yep, that\u0027s bad since there are no bots that match.",
+      "parentUuid": "523d3b4a_af133150",
+      "revId": "a64c73b0bf76baf81e7d02687c4533ac5bd194ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
