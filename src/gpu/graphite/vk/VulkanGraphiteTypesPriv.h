@@ -78,6 +78,12 @@ VulkanTextureInfo VulkanTextureSpecToTextureInfo(const VulkanTextureSpec& vkSpec
                                                  uint32_t sampleCount,
                                                  Mipmapped mipmapped);
 
+namespace TextureInfos {
+VulkanTextureSpec GetVulkanTextureSpec(const TextureInfo&);
+VulkanYcbcrConversionInfo GetYcbcrConversionInfo(const TextureInfo&);
+VkFormat GetVkFormat(const TextureInfo&);
+}  // namespace TextureInfos
+
 } // namespace skgpu::graphite
 
 #endif // skgpu_graphite_VulkanGraphiteTypesPriv_DEFINED
