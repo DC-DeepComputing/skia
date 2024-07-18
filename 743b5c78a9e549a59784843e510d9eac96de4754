@@ -39,6 +39,63 @@
       },
       "revId": "743b5c78a9e549a59784843e510d9eac96de4754",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f43101b_70d5fd04",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 895,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-07-18T16:15:55Z",
+      "side": 1,
+      "message": "Is there anything we could assert here to ensure we got the correct child or, at least, it is a color space xform ?\n\nMaybe:\n SkASSERT(toLinearSrgbNode-\u003ecodeSnippetId() \u003d\u003d BuiltInCodeSnippetID::kColorSpaceXformColorFilter)",
+      "revId": "743b5c78a9e549a59784843e510d9eac96de4754",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a900cf82_1c2de2b7",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 911,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-07-18T16:15:55Z",
+      "side": 1,
+      "message": "Maybe assert here too ?",
+      "revId": "743b5c78a9e549a59784843e510d9eac96de4754",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb74a165_faab1c27",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1067,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-07-18T16:15:55Z",
+      "side": 1,
+      "message": "Maybe numChildrenIncColorTransforms ?",
+      "range": {
+        "startLine": 1067,
+        "startChar": 8,
+        "endLine": 1067,
+        "endChar": 34
+      },
+      "revId": "743b5c78a9e549a59784843e510d9eac96de4754",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
