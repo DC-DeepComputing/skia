@@ -51,6 +51,24 @@
       "message": "LGTM but no voting privileges",
       "revId": "65ac32dd4dff119560e06b4210f4a790304aa628",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dad6a4c0_1f26f357",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-19T16:29:04Z",
+      "side": 1,
+      "message": "SGTM; in that case, we can land this now and you can fix ANGLE later.",
+      "parentUuid": "696eed63_68e4b16c",
+      "revId": "65ac32dd4dff119560e06b4210f4a790304aa628",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
