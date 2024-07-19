@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed1a045d_85e1ed67",
+        "filename": "src/gpu/ganesh/mtl/GrMtlCaps.mm",
+        "patchSetId": 1
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-07-19T16:58:56Z",
+      "side": 1,
+      "message": "Maybe link to an online reference where these are defined? e.g. an online copy of the original header.",
+      "range": {
+        "startLine": 223,
+        "startChar": 49,
+        "endLine": 223,
+        "endChar": 53
+      },
+      "revId": "b2ae813f415a3c0f2ae6a94431b60129bf992f22",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
