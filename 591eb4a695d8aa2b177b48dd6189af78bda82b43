@@ -22,6 +22,30 @@
       },
       "revId": "591eb4a695d8aa2b177b48dd6189af78bda82b43",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "95cdd529_c47a1abe",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 4456,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-19T21:57:29Z",
+      "side": 1,
+      "message": "I moved it into `synthesizeTextureAndSampler`.",
+      "parentUuid": "95d6cdf7_3a5fe50f",
+      "range": {
+        "startLine": 4451,
+        "startChar": 0,
+        "endLine": 4456,
+        "endChar": 0
+      },
+      "revId": "591eb4a695d8aa2b177b48dd6189af78bda82b43",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
