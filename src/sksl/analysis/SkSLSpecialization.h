@@ -37,29 +37,35 @@ using Specializations = skia_private::TArray<SpecializedParameters>;
 // The full set of all specializations required by the program.
 using SpecializationMap = skia_private::THashMap<const FunctionDeclaration*, Specializations>;
 
-// A function call to specialized function and the function specialization index of the function
-// body the call is within.
-struct SpecializedCall {
+// Our map of specialized calls is keyed on three things: the function containing the call, the
+// specialization index of the parent function, and the index of the call within the
+// function. Tracking the parent function and position is more roundabout than tracking a
+// FunctionCall* directly, but it will still match an Expression that has been cloned or otherwise
+// reconstructed, whereas a pointer won't.
+struct SpecializationState {
     struct Hash {
-        size_t operator()(const SpecializedCall& entry) {
-            return SkGoodHash()(entry.fFunctionCall) ^
-                   SkGoodHash()(entry.fParentSpecializationIndex);
+        size_t operator()(const SpecializationState& entry) {
+            return SkGoodHash()(entry.fParentFunction) ^
+                   SkGoodHash()(entry.fParentSpecializationIndex) ^
+                   SkGoodHash()(entry.fCallIndex);
         }
     };
 
-    bool operator==(const SpecializedCall& other) const {
-        return fFunctionCall == other.fFunctionCall &&
-               fParentSpecializationIndex == other.fParentSpecializationIndex;
+    bool operator==(const SpecializationState& other) const {
+        return fParentFunction == other.fParentFunction &&
+               fParentSpecializationIndex == other.fParentSpecializationIndex &&
+               fCallIndex == other.fCallIndex;
     }
 
-    const FunctionCall* fFunctionCall;
-    SpecializationIndex fParentSpecializationIndex;
+    const FunctionDeclaration* fParentFunction = nullptr;
+    SpecializationIndex fParentSpecializationIndex = kUnspecialized;
+    size_t fCallIndex = 0;
 };
 
 // The mapping of function calls and their inherited specialization to their corresponding
 // specialization index in `Specializations`
 using SpecializedCallMap =
-        skia_private::THashMap<SpecializedCall, SpecializationIndex, SpecializedCall::Hash>;
+        skia_private::THashMap<SpecializationState, SpecializationIndex, SpecializationState::Hash>;
 
 struct SpecializationInfo {
     SpecializationMap fSpecializationMap;

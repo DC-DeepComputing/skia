@@ -678,8 +678,8 @@ private:
             THashMap<SpecializedFunctionDeclaration, SpvId, SpecializedFunctionDeclaration::Hash>
                     fFunctionMap;
 
-    Analysis::SpecializationIndex fInheritedSpecializationIndex = Analysis::kUnspecialized;
     Analysis::SpecializationInfo fSpecializationInfo;
+    Analysis::SpecializationState fSpecializationState;
 
     skia_private::THashMap<const Variable*, SpvId> fVariableMap;
     skia_private::THashMap<const Type*, SpvId> fStructMap;
@@ -2648,6 +2648,8 @@ void SPIRVCodeGenerator::copyBackTempVars(const std::vector<TempVar>& tempVars, 
 }
 
 SpvId SPIRVCodeGenerator::writeFunctionCall(const FunctionCall& c, OutputStream& out) {
+    fSpecializationState.fCallIndex++;
+
     const FunctionDeclaration& function = c.function();
     if (function.isIntrinsic() && !function.definition()) {
         return this->writeIntrinsicCall(c, out);
@@ -2655,7 +2657,7 @@ SpvId SPIRVCodeGenerator::writeFunctionCall(const FunctionCall& c, OutputStream&
     const ExpressionArray& arguments = c.arguments();
 
     const Analysis::SpecializationIndex* specializationIndex =
-            fSpecializationInfo.fSpecializedCallMap.find({&c, fInheritedSpecializationIndex});
+            fSpecializationInfo.fSpecializedCallMap.find(fSpecializationState);
 
     SpvId* entry = fFunctionMap.find(
             {&function, specializationIndex ? *specializationIndex : Analysis::kUnspecialized});
@@ -4511,9 +4513,10 @@ void SPIRVCodeGenerator::writeFunctionInstantiation(
     fCurrentBlock = 0;
     this->writeLabel(this->nextId(nullptr), kBranchlessBlock, out);
     StringStream bodyBuffer;
-    std::swap(fInheritedSpecializationIndex, specializationIndex);
+
+    fSpecializationState = Analysis::SpecializationState{&f.declaration(), specializationIndex, 0};
     this->writeBlock(f.body()->as<Block>(), bodyBuffer);
-    std::swap(fInheritedSpecializationIndex, specializationIndex);
+
     write_stringstream(fVariableBuffer, out);
     if (f.declaration().isMain()) {
         write_stringstream(fGlobalInitializersBuffer, out);

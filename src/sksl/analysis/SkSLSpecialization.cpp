@@ -58,8 +58,25 @@ void Analysis::FindFunctionsToSpecialize(const Program& program,
                 , fSpecializedCallMap(info.fSpecializedCallMap)
                 , fParameterMatchesFn(parameterMatchesFn) {}
 
+        bool visitProgramElement(const ProgramElement& p) override {
+            const FunctionDeclaration* previousFunction = fSpecializationState.fParentFunction;
+            size_t previousCallIndex = fSpecializationState.fCallIndex;
+            if (p.is<FunctionDefinition>()) {
+                fSpecializationState.fParentFunction = &p.as<FunctionDefinition>().declaration();
+                fSpecializationState.fCallIndex = 0;
+            }
+            bool result = INHERITED::visitProgramElement(p);
+            fSpecializationState.fParentFunction = previousFunction;
+            fSpecializationState.fCallIndex = previousCallIndex;
+            return result;
+        }
+
         bool visitExpression(const Expression& expr) override {
+            SkASSERT(fSpecializationState.fParentFunction);
+
             if (expr.is<FunctionCall>()) {
+                fSpecializationState.fCallIndex++;
+
                 const FunctionCall& call = expr.as<FunctionCall>();
                 const FunctionDeclaration& decl = call.function();
 
@@ -109,7 +126,7 @@ void Analysis::FindFunctionsToSpecialize(const Program& program,
                             const SpecializedParameters& entry = specializations[i];
                             if (maps_are_equal(specialization, entry)) {
                                 // This specialization has already been tracked.
-                                fSpecializedCallMap[{&call, fInheritedSpecializationIndex}] = i;
+                                fSpecializedCallMap[fSpecializationState] = i;
                                 return INHERITED::visitExpression(expr);
                             }
                         }
@@ -118,18 +135,19 @@ void Analysis::FindFunctionsToSpecialize(const Program& program,
                         // requires, also tracking the inherited specialization this function
                         // call is in so the right specialized function can be called.
                         SpecializationIndex specializationIndex = specializations.size();
-                        fSpecializedCallMap[{&call, fInheritedSpecializationIndex}] =
-                                specializationIndex;
+                        fSpecializedCallMap[fSpecializationState] = specializationIndex;
                         specializations.push_back(specialization);
 
                         // We swap so we don't lose when our last inherited specializations were
                         // once we are done traversing this specific specialization.
                         fInheritedSpecializations.swap(specialization);
-                        std::swap(fInheritedSpecializationIndex, specializationIndex);
+                        std::swap(fSpecializationState.fParentSpecializationIndex,
+                                  specializationIndex);
 
                         this->visitProgramElement(*decl.definition());
 
-                        std::swap(fInheritedSpecializationIndex, specializationIndex);
+                        std::swap(fSpecializationState.fParentSpecializationIndex,
+                                  specializationIndex);
                         fInheritedSpecializations.swap(specialization);
                     }
                 }
@@ -143,7 +161,7 @@ void Analysis::FindFunctionsToSpecialize(const Program& program,
         const ParameterMatchesFn& fParameterMatchesFn;
 
         SpecializedParameters fInheritedSpecializations;
-        SpecializationIndex fInheritedSpecializationIndex = kUnspecialized;
+        SpecializationState fSpecializationState;
     };
 
     for (const std::unique_ptr<ProgramElement>& elem : program.fOwnedElements) {
