@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c403225_7b50f460",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-07-19T17:54:07Z",
+      "side": 1,
+      "message": "FYI: nscobie@ and nicolettep@ since I think Android Framework uses the Graphite Vulkan backend.",
+      "revId": "9300fb8147196fd7a11f5f7b68aab3c13a26da52",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
