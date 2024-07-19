@@ -1,4 +1,4 @@
-30 instructions
+29 instructions
 
 store_src_rg                   coords = src.rg
 init_lane_masks                CondMask = LoopMask = RetMask = true
@@ -25,8 +25,7 @@ label                          label 0x00000001
 copy_slot_unmasked             $1 = index
 cmplt_imm_int                  $1 = lessThan($1, 0x00000005)
 merge_loop_mask                LoopMask &= $1
-stack_rewind
-branch_if_any_lanes_active     branch_if_any_lanes_active -21 (label 2 at #6)
+branch_if_any_lanes_active     branch_if_any_lanes_active -20 (label 2 at #6)
 label                          label 0
 load_loop_mask                 LoopMask = $0
 copy_4_uniforms                $0..3 = colorGreen
