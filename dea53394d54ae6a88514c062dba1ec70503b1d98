@@ -33,6 +33,24 @@
       "message": "Thanks for finding this. I realized that we also could be holding on to textures via the raster path atlas (if tessellation were disabled). I think it\u0027s better to just have the AtlasProvider manager all of this so have put together this CL instead: https://skia-review.googlesource.com/c/skia/+/879656",
       "revId": "dea53394d54ae6a88514c062dba1ec70503b1d98",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eec176fe_7ac7335d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 21754
+      },
+      "writtenOn": "2024-07-19T16:17:55Z",
+      "side": 1,
+      "message": "SG!",
+      "parentUuid": "87b99e6e_48ad36b4",
+      "revId": "dea53394d54ae6a88514c062dba1ec70503b1d98",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
