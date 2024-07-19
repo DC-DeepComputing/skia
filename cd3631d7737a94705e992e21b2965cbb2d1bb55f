@@ -16,6 +16,24 @@
       "message": "Is there a reason that we need a new synthesized sampler/texture pair per each specialization? Can\u0027t each specialized function use the same synthesized sampler/texture pair?\n\nOriginally `writeFunctionStart` always emitted one because a function only gets written once, but it seems like it could detect that one already exists and just keep using it?\n\nOr am I missing a subtlety?",
       "revId": "cd3631d7737a94705e992e21b2965cbb2d1bb55f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "57f69c64_fd9f697b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-19T18:43:48Z",
+      "side": 1,
+      "message": "Thinking about it you\u0027re right since thats what it\u0027s essentially doing with any other type of specialized parameter as well. The same parameter is being set in the variable map multiple times, but since we are using the variables in the variable map within the scope of writing a function, it works out.\n\nI updated the code to just reuse any existing synthesized sampler for the function.",
+      "parentUuid": "2426380a_68949ca1",
+      "revId": "cd3631d7737a94705e992e21b2965cbb2d1bb55f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
