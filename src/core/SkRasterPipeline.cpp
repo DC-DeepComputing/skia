@@ -34,7 +34,6 @@ SkRasterPipeline::SkRasterPipeline(SkArenaAlloc* alloc) : fAlloc(alloc) {
 
 void SkRasterPipeline::reset() {
     // We intentionally leave the alloc alone here; we don't own it.
-    fRewindCtx   = nullptr;
     fStages      = nullptr;
     fTailPointer = nullptr;
     fNumStages   = 0;
@@ -51,8 +50,6 @@ void SkRasterPipeline::append(SkRasterPipelineOp op, void* ctx) {
     SkASSERT(op != Op::PQish);                    // Please use appendTransferFunction().
     SkASSERT(op != Op::HLGish);                   // Please use appendTransferFunction().
     SkASSERT(op != Op::HLGinvish);                // Please use appendTransferFunction().
-    SkASSERT(op != Op::stack_checkpoint);         // Please use appendStackRewind().
-    SkASSERT(op != Op::stack_rewind);             // Please use appendStackRewind().
     this->uncheckedAppend(op, ctx);
 }
 
@@ -168,12 +165,6 @@ void SkRasterPipeline::extend(const SkRasterPipeline& src) {
     if (src.empty()) {
         return;
     }
-    // Create a rewind context if `src` has one already, but we don't. If we _do_ already have one,
-    // we need to keep it, since we already have rewind ops that reference it. Either way, we need
-    // to rewrite all the rewind ops to point to _our_ rewind context; we only get that checkpoint.
-    if (src.fRewindCtx && !fRewindCtx) {
-        fRewindCtx = fAlloc->make<SkRasterPipeline_RewindCtx>();
-    }
     auto stages = fAlloc->makeArrayDefault<StageList>(src.fNumStages);
 
     int n = src.fNumStages;
@@ -184,10 +175,6 @@ void SkRasterPipeline::extend(const SkRasterPipeline& src) {
 
         // We make sure that all ops use _our_ stack context and tail pointer.
         switch (stages[n].stage) {
-            case Op::stack_rewind: {
-                stages[n].ctx = fRewindCtx;
-                break;
-            }
             case Op::init_lane_masks: {
                 auto* ctx = (SkRasterPipeline_InitLaneMasksCtx*)stages[n].ctx;
                 ctx->tail = this->tailPointer();
@@ -537,13 +524,6 @@ void SkRasterPipeline::appendClampIfNormalized(const SkImageInfo& info) {
     }
 }
 
-void SkRasterPipeline::appendStackRewind() {
-    if (!fRewindCtx) {
-        fRewindCtx = fAlloc->make<SkRasterPipeline_RewindCtx>();
-    }
-    this->uncheckedAppend(Op::stack_rewind, fRewindCtx);
-}
-
 static void prepend_to_pipeline(SkRasterPipelineStage*& ip, SkOpts::StageFn stageFn, void* ctx) {
     --ip;
     ip->fn = stageFn;
@@ -551,7 +531,7 @@ static void prepend_to_pipeline(SkRasterPipelineStage*& ip, SkOpts::StageFn stag
 }
 
 bool SkRasterPipeline::buildLowpPipeline(SkRasterPipelineStage* ip) const {
-    if (gForceHighPrecisionRasterPipeline || fRewindCtx) {
+    if (gForceHighPrecisionRasterPipeline) {
         return false;
     }
     // Stages are stored backwards in fStages; to compensate, we assemble the pipeline in reverse
@@ -575,15 +555,6 @@ void SkRasterPipeline::buildHighpPipeline(SkRasterPipelineStage* ip) const {
         int opIndex = (int)st->stage;
         prepend_to_pipeline(ip, SkOpts::ops_highp[opIndex], st->ctx);
     }
-
-    // stack_checkpoint and stack_rewind are only implemented in highp. We only need these stages
-    // when generating long (or looping) pipelines from SkSL. The other stages used by the SkSL
-    // Raster Pipeline generator will only have highp implementations, because we can't execute SkSL
-    // code without floating point.
-    if (fRewindCtx) {
-        const int rewindIndex = (int)Op::stack_checkpoint;
-        prepend_to_pipeline(ip, SkOpts::ops_highp[rewindIndex], fRewindCtx);
-    }
 }
 
 SkRasterPipeline::StartPipelineFn SkRasterPipeline::buildPipeline(SkRasterPipelineStage* ip) const {
@@ -600,10 +571,6 @@ int SkRasterPipeline::stagesNeeded() const {
     // Add 1 to budget for a `just_return` stage at the end.
     int stages = fNumStages + 1;
 
-    // If we have any stack_rewind stages, we will need to inject a stack_checkpoint stage.
-    if (fRewindCtx) {
-        stages += 1;
-    }
     return stages;
 }
 

@@ -1,4 +1,4 @@
-117 instructions
+113 instructions
 
 [immutable slots]
 i0 = 0x40400000 (3.0)
@@ -19,14 +19,14 @@ i13 = 0
 store_src_rg                   coords = src.rg
 init_lane_masks                CondMask = LoopMask = RetMask = true
 store_condition_mask           $12 = CondMask
-branch_if_no_lanes_active      branch_if_no_lanes_active +57 (label 2 at #61)
+branch_if_no_lanes_active      branch_if_no_lanes_active +55 (label 2 at #59)
 store_return_mask              $13 = RetMask
 copy_3_immutables_unmasked     expected = i0..2 [0x40400000 (3.0), 0x40000000 (2.0), 0x3F800000 (1.0)]
 splat_4_constants              vec, c = 0
 store_loop_mask                $14 = LoopMask
-jump                           jump +40 (label 4 at #49)
+jump                           jump +39 (label 4 at #48)
 label                          label 0x00000005
-branch_if_no_lanes_active      branch_if_no_lanes_active +19 (label 6 at #30)
+branch_if_no_lanes_active      branch_if_no_lanes_active +18 (label 6 at #29)
 copy_constant                  r = 0
 label                          label 0x00000007
 copy_slot_unmasked             $23 = r
@@ -43,8 +43,7 @@ copy_slot_unmasked             $15 = r
 add_imm_int                    $15 += 0x00000001
 copy_slot_masked               r = Mask($15)
 cmplt_imm_int                  $15 = lessThan($15, 0x00000003)
-stack_rewind
-branch_if_no_active_lanes_eq   branch -16 (label 7 at #13) if no lanes of $15 == 0
+branch_if_no_active_lanes_eq   branch -15 (label 7 at #13) if no lanes of $15 == 0
 label                          label 0x00000006
 store_condition_mask           $15 = CondMask
 copy_3_slots_unmasked          $16..18 = vec
@@ -68,8 +67,7 @@ label                          label 0x00000004
 copy_slot_unmasked             $15 = c
 cmplt_imm_int                  $15 = lessThan($15, 0x00000003)
 merge_loop_mask                LoopMask &= $15
-stack_rewind
-branch_if_any_lanes_active     branch_if_any_lanes_active -44 (label 5 at #10)
+branch_if_any_lanes_active     branch_if_any_lanes_active -42 (label 5 at #10)
 label                          label 0x00000003
 load_loop_mask                 LoopMask = $14
 copy_constant                  $14 = 0xFFFFFFFF
@@ -79,15 +77,15 @@ copy_slot_unmasked             $13 = [test3x3].result
 label                          label 0x00000002
 copy_constant                  $0 = 0
 merge_condition_mask           CondMask = $12 & $13
-branch_if_no_lanes_active      branch_if_no_lanes_active +60 (label 1 at #124)
+branch_if_no_lanes_active      branch_if_no_lanes_active +58 (label 1 at #120)
 store_return_mask              $1 = RetMask
 copy_4_immutables_unmasked     expected₁ = i6..9 [0x40800000 (4.0), 0x40400000 (3.0), 0x40000000 (2.0), 0x3F800000 (1.0)]
 splat_4_constants              vec₁ = 0
 copy_constant                  c₁ = 0
 store_loop_mask                $2 = LoopMask
-jump                           jump +40 (label 10 at #110)
+jump                           jump +39 (label 10 at #107)
 label                          label 0x0000000B
-branch_if_no_lanes_active      branch_if_no_lanes_active +19 (label 12 at #91)
+branch_if_no_lanes_active      branch_if_no_lanes_active +18 (label 12 at #88)
 copy_constant                  r₁ = 0
 label                          label 0x0000000D
 copy_slot_unmasked             $27 = r₁
@@ -104,8 +102,7 @@ copy_slot_unmasked             $3 = r₁
 add_imm_int                    $3 += 0x00000001
 copy_slot_masked               r₁ = Mask($3)
 cmplt_imm_int                  $3 = lessThan($3, 0x00000004)
-stack_rewind
-branch_if_no_active_lanes_eq   branch -16 (label 13 at #74) if no lanes of $3 == 0
+branch_if_no_active_lanes_eq   branch -15 (label 13 at #72) if no lanes of $3 == 0
 label                          label 0x0000000C
 store_condition_mask           $3 = CondMask
 copy_4_slots_unmasked          $4..7 = vec₁
@@ -129,8 +126,7 @@ label                          label 0x0000000A
 copy_slot_unmasked             $3 = c₁
 cmplt_imm_int                  $3 = lessThan($3, 0x00000004)
 merge_loop_mask                LoopMask &= $3
-stack_rewind
-branch_if_any_lanes_active     branch_if_any_lanes_active -44 (label 11 at #71)
+branch_if_any_lanes_active     branch_if_any_lanes_active -42 (label 11 at #69)
 label                          label 0x00000009
 load_loop_mask                 LoopMask = $2
 copy_constant                  $2 = 0xFFFFFFFF

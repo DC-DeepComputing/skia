@@ -1620,18 +1620,6 @@ void Program::appendAdjacentMultiSlotTernaryOp(TArray<Stage>* pipeline, SkArenaA
     }
 }
 
-void Program::appendStackRewindForNonTailcallers(TArray<Stage>* pipeline) const {
-#if defined(SKSL_STANDALONE) || !SK_HAS_MUSTTAIL
-    // When SK_HAS_MUSTTAIL is not enabled, stack rewinds are critical because because the stack may
-    // grow after every single SkSL stage.
-    this->appendStackRewind(pipeline);
-#endif
-}
-
-void Program::appendStackRewind(TArray<Stage>* pipeline) const {
-    pipeline->push_back({ProgramOp::stack_rewind, nullptr});
-}
-
 void Builder::invoke_shader(int childIdx) {
     this->appendInstruction(BuilderOp::invoke_shader, {}, childIdx);
 }
@@ -1713,10 +1701,6 @@ bool Program::appendStages(SkRasterPipeline* pipeline,
 
     for (const Stage& stage : stages) {
         switch (stage.op) {
-            case ProgramOp::stack_rewind:
-                pipeline->appendStackRewind();
-                break;
-
             case ProgramOp::invoke_shader:
                 if (!callbacks || !callbacks->appendShader(sk_bit_cast<intptr_t>(stage.ctx))) {
                     return false;
@@ -1810,7 +1794,6 @@ void Program::makeStages(TArray<Stage>* pipeline,
     SkASSERT(fNumUniformSlots == SkToInt(uniforms.size()));
 
     const int N = SkOpts::raster_pipeline_highp_stride;
-    int mostRecentRewind = 0;
 
     // Assemble a map holding the current stack-top for each temporary stack. Position each temp
     // stack immediately after the previous temp stack; temp stacks are never allowed to overlap.
@@ -1825,28 +1808,6 @@ void Program::makeStages(TArray<Stage>* pipeline,
     // Track labels that we have reached in processing.
     TArray<int> labelToInstructionIndex;
     labelToInstructionIndex.push_back_n(fNumLabels, -1);
-
-    int mostRecentInvocationInstructionIdx = 0;
-
-    auto EmitStackRewindForBackwardsBranch = [&](int labelID) {
-        // If we have already encountered the label associated with this branch, this is a
-        // backwards branch. Add a stack-rewind immediately before the branch to ensure that
-        // long-running loops don't use an unbounded amount of stack space.
-        int labelInstructionIdx = labelToInstructionIndex[labelID];
-        if (labelInstructionIdx >= 0) {
-            if (mostRecentInvocationInstructionIdx > labelInstructionIdx) {
-                // The backwards-branch range includes an external invocation to another shader,
-                // color filter, blender, or colorspace conversion. In this case, we always emit a
-                // stack rewind, since the non-tailcall stages may exist on the stack.
-                this->appendStackRewind(pipeline);
-            } else {
-                // The backwards-branch range only includes SkSL ops. If tailcalling is supported,
-                // stack rewinding isn't needed. If the platform cannot tailcall, we need to rewind.
-                this->appendStackRewindForNonTailcallers(pipeline);
-            }
-            mostRecentRewind = pipeline->size();
-        }
-    };
 
     auto* const basePtr = (std::byte*)slots.values.data();
     auto OffsetFromBase = [&](const void* ptr) -> SkRPOffset {
@@ -1893,8 +1854,6 @@ void Program::makeStages(TArray<Stage>* pipeline,
             case BuilderOp::branch_if_any_lanes_active:
             case BuilderOp::branch_if_no_lanes_active: {
                 SkASSERT(inst.fImmA >= 0 && inst.fImmA < fNumLabels);
-                EmitStackRewindForBackwardsBranch(inst.fImmA);
-
                 auto* ctx = alloc->make<SkRasterPipeline_BranchCtx>();
                 ctx->offset = inst.fImmA;
                 pipeline->push_back({(ProgramOp)inst.fOp, ctx});
@@ -1902,8 +1861,6 @@ void Program::makeStages(TArray<Stage>* pipeline,
             }
             case BuilderOp::branch_if_all_lanes_active: {
                 SkASSERT(inst.fImmA >= 0 && inst.fImmA < fNumLabels);
-                EmitStackRewindForBackwardsBranch(inst.fImmA);
-
                 auto* ctx = alloc->make<SkRasterPipeline_BranchIfAllLanesActiveCtx>();
                 ctx->offset = inst.fImmA;
                 pipeline->push_back({ProgramOp::branch_if_all_lanes_active, ctx});
@@ -1911,8 +1868,6 @@ void Program::makeStages(TArray<Stage>* pipeline,
             }
             case BuilderOp::branch_if_no_active_lanes_on_stack_top_equal: {
                 SkASSERT(inst.fImmA >= 0 && inst.fImmA < fNumLabels);
-                EmitStackRewindForBackwardsBranch(inst.fImmA);
-
                 auto* ctx = alloc->make<SkRasterPipeline_BranchIfEqualCtx>();
                 ctx->offset = inst.fImmA;
                 ctx->value = inst.fImmB;
@@ -2398,13 +2353,11 @@ void Program::makeStages(TArray<Stage>* pipeline,
             case BuilderOp::invoke_color_filter:
             case BuilderOp::invoke_blender:
                 pipeline->push_back({(ProgramOp)inst.fOp, context_bit_pun(inst.fImmA)});
-                mostRecentInvocationInstructionIdx = instructionIdx;
                 break;
 
             case BuilderOp::invoke_to_linear_srgb:
             case BuilderOp::invoke_from_linear_srgb:
                 pipeline->push_back({(ProgramOp)inst.fOp, tempStackMap[inst.fImmA] - (4 * N)});
-                mostRecentInvocationInstructionIdx = instructionIdx;
                 break;
 
             case BuilderOp::trace_line: {
@@ -2458,16 +2411,6 @@ void Program::makeStages(TArray<Stage>* pipeline,
             tempStackPtr += stackUsage * N;
             SkASSERT(tempStackPtr >= slots.stack.begin());
             SkASSERT(tempStackPtr <= slots.stack.end());
-        }
-
-        // Periodically rewind the stack every 500 instructions. When SK_HAS_MUSTTAIL is set,
-        // rewinds are not actually used; the appendStackRewind call becomes a no-op. On platforms
-        // that don't support SK_HAS_MUSTTAIL, rewinding the stack periodically can prevent a
-        // potential stack overflow when running a long program.
-        int numPipelineStages = pipeline->size();
-        if (numPipelineStages - mostRecentRewind > 500) {
-            this->appendStackRewindForNonTailcallers(pipeline);
-            mostRecentRewind = numPipelineStages;
         }
     }
 }

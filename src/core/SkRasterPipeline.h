@@ -131,8 +131,6 @@ public:
 
     void appendTransferFunction(const skcms_TransferFunction&);
 
-    void appendStackRewind();
-
     bool empty() const { return fStages == nullptr; }
 
 private:
@@ -152,7 +150,6 @@ private:
     uint8_t* tailPointer();
 
     SkArenaAlloc*               fAlloc;
-    SkRasterPipeline_RewindCtx* fRewindCtx;
     StageList*                  fStages;
     uint8_t*                    fTailPointer;
     int                         fNumStages;
