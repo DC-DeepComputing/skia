@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65542e5a_1106bd41",
+        "filename": "src/gpu/ganesh/mtl/GrMtlCaps.mm",
+        "patchSetId": 6
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-07-19T16:54:56Z",
+      "side": 1,
+      "message": "`supportsFeatureSet` was also deprecated at the same time. So I\u0027m not entirely sure of the purpose of the rest of this change, as use of `supportsFeatureSet` should still be causing deprecation warnings.",
+      "range": {
+        "startLine": 159,
+        "startChar": 20,
+        "endLine": 159,
+        "endChar": 38
+      },
+      "revId": "6ba4a259c3930bedbbfea1badcdf5d5d3b45b6bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8ebe08b_7ec57ad6",
+        "filename": "src/gpu/ganesh/mtl/GrMtlCaps.mm",
+        "patchSetId": 6
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-07-19T16:54:56Z",
+      "side": 1,
+      "message": "Still need to test for `supportsFamily` instead of checking here, as there are supported machines (like our test MacBook Air7,2 running macOS 10.15.1) which do not pass this assert. Though note that this machine does not actually claim support for Metal2, instead the system report states the gpu family instead (may need a newer version of macOS 10.15?).",
+      "revId": "6ba4a259c3930bedbbfea1badcdf5d5d3b45b6bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
