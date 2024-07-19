@@ -642,7 +642,8 @@ private:
     std::unique_ptr<Expression> identifier(std::string_view name);
 
     std::tuple<const Variable*, const Variable*> synthesizeTextureAndSampler(
-            const Variable& combinedSampler);
+            const Variable& combinedSampler,
+            const Analysis::SpecializationIndex specializationIndex);
 
     const MemoryLayout fDefaultMemoryLayout{MemoryLayout::Standard::k140};
 
@@ -692,6 +693,24 @@ private:
     // Mapping from combined sampler declarations to synthesized texture/sampler variables.
     // This is used when the sampler is declared as `layout(webgpu)` or `layout(direct3d)`.
     bool fUseTextureSamplerPairs = false;
+    // A struct that tracks the sampler function parameter the synthesized texture/sampler pair
+    // corresponds to, and the function specialization index of the function being written.
+    struct SynthesizedTextureSamplerParamKey {
+        struct Hash {
+            size_t operator()(const SynthesizedTextureSamplerParamKey& entry) {
+                return SkGoodHash()(entry.fCombinedSamplerParam) ^
+                       SkGoodHash()(entry.fFunctionSpecializationIndex);
+            }
+        };
+
+        bool operator==(const SynthesizedTextureSamplerParamKey& other) const {
+            return fCombinedSamplerParam == other.fCombinedSamplerParam &&
+                   fFunctionSpecializationIndex == other.fFunctionSpecializationIndex;
+        }
+
+        const Variable* fCombinedSamplerParam;
+        const Analysis::SpecializationIndex fFunctionSpecializationIndex;
+    };
     struct SynthesizedTextureSamplerPair {
         // The names of the synthesized variables. The Variable objects themselves store string
         // views referencing these strings. It is important for the std::string instances to have a
@@ -702,8 +721,9 @@ private:
         std::unique_ptr<Variable> fTexture;
         std::unique_ptr<Variable> fSampler;
     };
-    skia_private::THashMap<const Variable*, std::unique_ptr<SynthesizedTextureSamplerPair>>
-            fSynthesizedSamplerMap;
+    skia_private::THashMap<SynthesizedTextureSamplerParamKey,
+                           std::unique_ptr<SynthesizedTextureSamplerPair>,
+                           SynthesizedTextureSamplerParamKey::Hash> fSynthesizedSamplerMap;
 
     // These caches map SpvIds to Instructions, and vice-versa. This enables us to deduplicate code
     // (by detecting an Instruction we've already issued and reusing the SpvId), and to introspect
@@ -2580,7 +2600,7 @@ SpvId SPIRVCodeGenerator::writeFunctionCallArgument(
 
         // In Dawn-mode the texture and sampler arguments are forwarded to the helper function.
         if (fUseTextureSamplerPairs && var->type().isSampler()) {
-            if (const auto* p = fSynthesizedSamplerMap.find(var)) {
+            if (const auto* p = fSynthesizedSamplerMap.find({var, fInheritedSpecializationIndex})) {
                 SkASSERT(outSynthesizedSamplerId);
 
                 SpvId* img = fVariableMap.find((*p)->fTexture.get());
@@ -3588,7 +3608,8 @@ SpvId SPIRVCodeGenerator::writeVariableReference(const VariableReference& ref, O
             // Variable references to opaque handles (texture/sampler) that appear as the argument
             // of a user-defined function call are explicitly handled in writeFunctionCallArgument.
             if (fUseTextureSamplerPairs && variable->type().isSampler()) {
-                if (const auto* p = fSynthesizedSamplerMap.find(variable)) {
+                if (const auto* p =
+                        fSynthesizedSamplerMap.find({variable, fInheritedSpecializationIndex})) {
                     SpvId* imgPtr = fVariableMap.find((*p)->fTexture.get());
                     SpvId* samplerPtr = fVariableMap.find((*p)->fSampler.get());
                     SkASSERT(imgPtr);
@@ -4448,7 +4469,8 @@ void SPIRVCodeGenerator::writeFunctionStart(
                 specializedParams ? specializedParams->find(parameter) : nullptr;
 
         if (fUseTextureSamplerPairs && parameter->type().isSampler()) {
-            auto [texture, sampler] = this->synthesizeTextureAndSampler(*parameter);
+            auto [texture, sampler] =
+                this->synthesizeTextureAndSampler(*parameter, specializationIndex);
 
             SpvId textureId = this->nextId(nullptr);
             fVariableMap.set(texture, textureId);
@@ -4457,7 +4479,8 @@ void SPIRVCodeGenerator::writeFunctionStart(
             this->writeInstruction(SpvOpFunctionParameter, textureType, textureId, out);
 
             if (specializedVar) {
-                const auto* p = fSynthesizedSamplerMap.find(*specializedVar);
+                const auto* p = fSynthesizedSamplerMap.find({*specializedVar,
+                                                             Analysis::kUnspecialized});
                 SkASSERT(p);
                 const SpvId* uniformId = fVariableMap.find((*p)->fSampler.get());
                 SkASSERT(uniformId);
@@ -4742,7 +4765,7 @@ bool SPIRVCodeGenerator::writeGlobalVarDeclaration(ProgramKind kind,
         }
         SkASSERT(storageClass == StorageClass::kUniformConstant);
 
-        auto [texture, sampler] = this->synthesizeTextureAndSampler(*var);
+        auto [texture, sampler] = this->synthesizeTextureAndSampler(*var, Analysis::kUnspecialized);
         this->writeGlobalVar(kind, storageClass, *texture);
         this->writeGlobalVar(kind, storageClass, *sampler);
 
@@ -5290,7 +5313,8 @@ void SPIRVCodeGenerator::addRTFlipUniform(Position pos) {
 }
 
 std::tuple<const Variable*, const Variable*> SPIRVCodeGenerator::synthesizeTextureAndSampler(
-        const Variable& combinedSampler) {
+        const Variable& combinedSampler,
+        const Analysis::SpecializationIndex specializationIndex) {
     SkASSERT(fUseTextureSamplerPairs);
     SkASSERT(combinedSampler.type().typeKind() == Type::TypeKind::kSampler);
 
@@ -5329,7 +5353,8 @@ std::tuple<const Variable*, const Variable*> SPIRVCodeGenerator::synthesizeTextu
     const Variable* s = sampler.get();
     data->fTexture = std::move(texture);
     data->fSampler = std::move(sampler);
-    fSynthesizedSamplerMap.set(&combinedSampler, std::move(data));
+
+    fSynthesizedSamplerMap.set({&combinedSampler, specializationIndex}, std::move(data));
 
     return {t, s};
 }
