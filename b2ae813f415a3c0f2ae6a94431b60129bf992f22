@@ -22,6 +22,30 @@
       },
       "revId": "b2ae813f415a3c0f2ae6a94431b60129bf992f22",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77064cce_b86b8ced",
+        "filename": "src/gpu/ganesh/mtl/GrMtlCaps.mm",
+        "patchSetId": 1
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-07-19T17:42:56Z",
+      "side": 1,
+      "message": "I suppose we could link to the current documentation that lists these at https://developer.apple.com/documentation/metal/mtlgpufamily?language\u003dobjc . However, Apple\u0027s documentation on deprecated things isn\u0027t known for sticking around forever.\n\nI did pull these values from `MacOSX14.0.sdk/System/Library/Frameworks/Metal.framework/Headers/MTLDevice.h` but any directly linkable version of this I can find is bootleg.\n\nMaybe commenting this here on the review is enough for future time travelers?",
+      "parentUuid": "ed1a045d_85e1ed67",
+      "range": {
+        "startLine": 223,
+        "startChar": 49,
+        "endLine": 223,
+        "endChar": 53
+      },
+      "revId": "b2ae813f415a3c0f2ae6a94431b60129bf992f22",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
