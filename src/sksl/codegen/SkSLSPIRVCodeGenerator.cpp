@@ -4448,7 +4448,11 @@ void SPIRVCodeGenerator::writeFunctionStart(
                 specializedParams ? specializedParams->find(parameter) : nullptr;
 
         if (fUseTextureSamplerPairs && parameter->type().isSampler()) {
-            auto [texture, sampler] = this->synthesizeTextureAndSampler(*parameter);
+            auto* synthesizedSamplerPtr = fSynthesizedSamplerMap.find(parameter);
+            auto [texture, sampler] =
+                synthesizedSamplerPtr ? std::make_tuple((*synthesizedSamplerPtr)->fTexture.get(),
+                                                        (*synthesizedSamplerPtr)->fSampler.get())
+                                      : this->synthesizeTextureAndSampler(*parameter);
 
             SpvId textureId = this->nextId(nullptr);
             fVariableMap.set(texture, textureId);
