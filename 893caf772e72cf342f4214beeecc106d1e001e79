@@ -52,6 +52,24 @@
       "parentUuid": "5df34bd2_f3c1ab60",
       "revId": "893caf772e72cf342f4214beeecc106d1e001e79",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b312dac_b63f452f",
+        "filename": "infra/bots/recipe_modules/build/default.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-07-19T20:17:46Z",
+      "side": 1,
+      "message": "It\u0027s an iPhone 11 running iOS 13.6.",
+      "parentUuid": "917dd3a7_4ea23459",
+      "revId": "893caf772e72cf342f4214beeecc106d1e001e79",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
