@@ -16,6 +16,24 @@
       "message": "I\u0027m not sure this is safe until we move to a minimum of Xcode 12?\n\nhttps://screenshot.googleplex.com/5X9s65AqYWmXUek",
       "revId": "946386390b7323d33d06316fe23c330883f1930e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "522955a8_a88330c8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-19T15:48:54Z",
+      "side": 1,
+      "message": "Oh, never mind, we only need Xcode 9.3: https://screenshot.googleplex.com/AFpDkcQvGMZ5Mcr",
+      "parentUuid": "88d0c3ed_c300fbfc",
+      "revId": "946386390b7323d33d06316fe23c330883f1930e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
