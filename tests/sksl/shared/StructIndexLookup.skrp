@@ -1,4 +1,4 @@
-107 instructions
+104 instructions
 
 [immutable slots]
 i0 = 0x3F800000 (1.0)
@@ -58,11 +58,11 @@ copy_3_immutables_unmasked     $0..2 = i24..26 [0x41100000 (9.0), 0x42B40000 (90
 copy_3_slots_masked            data.outer[2].inner[2].values = Mask($0..2)
 splat_4_constants              expected, i = 0
 store_loop_mask                $0 = LoopMask
-jump                           jump +75 (label 1 at #105)
+jump                           jump +73 (label 1 at #103)
 label                          label 0x00000002
 copy_constant                  j = 0
 store_loop_mask                $1 = LoopMask
-jump                           jump +60 (label 4 at #94)
+jump                           jump +59 (label 4 at #93)
 label                          label 0x00000005
 copy_3_slots_unmasked          $2..4 = expected
 copy_3_immutables_unmasked     $5..7 = i0..2 [0x3F800000 (1.0), 0x41200000 (10.0), 0x42C80000 (100.0)]
@@ -115,8 +115,7 @@ label                          label 0x00000007
 copy_slot_unmasked             $3 = k
 cmplt_imm_int                  $3 = lessThan($3, 0x00000003)
 merge_loop_mask                LoopMask &= $3
-stack_rewind
-branch_if_any_lanes_active     branch_if_any_lanes_active -28 (label 8 at #60)
+branch_if_any_lanes_active     branch_if_any_lanes_active -27 (label 8 at #60)
 label                          label 0x00000006
 load_loop_mask                 LoopMask = $2
 copy_slot_unmasked             $2 = j
@@ -126,8 +125,7 @@ label                          label 0x00000004
 copy_slot_unmasked             $2 = j
 cmplt_imm_int                  $2 = lessThan($2, 0x00000003)
 merge_loop_mask                LoopMask &= $2
-stack_rewind
-branch_if_any_lanes_active     branch_if_any_lanes_active -64 (label 5 at #35)
+branch_if_any_lanes_active     branch_if_any_lanes_active -62 (label 5 at #35)
 label                          label 0x00000003
 load_loop_mask                 LoopMask = $1
 copy_slot_unmasked             $1 = i
@@ -137,8 +135,7 @@ label                          label 0x00000001
 copy_slot_unmasked             $1 = i
 cmplt_imm_int                  $1 = lessThan($1, 0x00000003)
 merge_loop_mask                LoopMask &= $1
-stack_rewind
-branch_if_any_lanes_active     branch_if_any_lanes_active -79 (label 2 at #31)
+branch_if_any_lanes_active     branch_if_any_lanes_active -76 (label 2 at #31)
 label                          label 0
 load_loop_mask                 LoopMask = $0
 copy_4_uniforms                $0..3 = colorGreen

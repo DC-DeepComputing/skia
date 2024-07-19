@@ -1,4 +1,4 @@
-94 instructions
+93 instructions
 
 store_src_rg                   xy = src.rg
 init_lane_masks                CondMask = LoopMask = RetMask = true
@@ -65,7 +65,7 @@ label                          label 0x00000002
 load_condition_mask            CondMask = $17
 copy_constant                  $0 = 0
 merge_condition_mask           CondMask = $12 & $13
-branch_if_no_lanes_active      branch_if_no_lanes_active +38 (label 1 at #104)
+branch_if_no_lanes_active      branch_if_no_lanes_active +37 (label 1 at #103)
 store_return_mask              $1 = RetMask
 copy_constant                  x = 0
 store_loop_mask                $2 = LoopMask
@@ -90,8 +90,7 @@ label                          label 0x0000000D
 copy_slot_unmasked             $3 = x
 cmple_imm_int                  $3 = lessThanEqual($3, 0x00000001)
 merge_loop_mask                LoopMask &= $3
-stack_rewind
-branch_if_any_lanes_active     branch_if_any_lanes_active -21 (label 14 at #71)
+branch_if_any_lanes_active     branch_if_any_lanes_active -20 (label 14 at #71)
 label                          label 0x0000000C
 load_loop_mask                 LoopMask = $2
 copy_slot_unmasked             $2 = scratchVar
