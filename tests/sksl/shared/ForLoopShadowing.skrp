@@ -1,4 +1,4 @@
-33 instructions
+32 instructions
 
 [immutable slots]
 i0 = 0x00000001 (1.401298e-45)
@@ -29,8 +29,7 @@ label                          label 0x00000001
 copy_slot_unmasked             $1 = i
 cmplt_imm_int                  $1 = lessThan($1, 0x0000000A)
 merge_loop_mask                LoopMask &= $1
-stack_rewind
-branch_if_any_lanes_active     branch_if_any_lanes_active -20 (label 2 at #7)
+branch_if_any_lanes_active     branch_if_any_lanes_active -19 (label 2 at #7)
 label                          label 0
 load_loop_mask                 LoopMask = $0
 copy_slot_unmasked             $0 = counter

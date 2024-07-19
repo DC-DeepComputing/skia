@@ -1391,6 +1391,7 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 	if b.extraConfig("HWASAN") {
 		// HWASAN adds tag bytes to pointers. That's incompatible with this test -- it compares
 		// pointers from unrelated stack frames to check that RP isn't growing the stack.
+		// TODO(brianosman): Remove this when test is gone
 		skip(ALL, "test", ALL, "SkRasterPipeline_stack_rewind")
 	}
 

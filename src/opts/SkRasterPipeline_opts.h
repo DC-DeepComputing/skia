@@ -1478,248 +1478,34 @@ static constexpr size_t N = sizeof(F) / sizeof(float);
 
 // We're finally going to get to what a Stage function looks like!
 
-// Any custom ABI to use for all (non-externally-facing) stage functions?
-// Also decide here whether to use narrow (compromise) or wide (ideal) stages.
-#if defined(SK_CPU_ARM32) && defined(JUMPER_IS_NEON)
-    // This lets us pass vectors more efficiently on 32-bit ARM.
-    // We can still only pass 16 floats, so best as 4x {r,g,b,a}.
-    #define ABI __attribute__((pcs("aapcs-vfp")))
-    #define JUMPER_NARROW_STAGES 1
-#elif defined(_MSC_VER)
-    // Even if not vectorized, this lets us pass {r,g,b,a} as registers,
-    // instead of {b,a} on the stack.  Narrow stages work best for __vectorcall.
-    #define ABI __vectorcall
-    #define JUMPER_NARROW_STAGES 1
-#elif defined(__x86_64__) || defined(SK_CPU_ARM64) || defined(SK_CPU_LOONGARCH)
-    // These platforms are ideal for wider stages, and their default ABI is ideal.
-    #define ABI
-    #define JUMPER_NARROW_STAGES 0
-#else
-    // 32-bit or unknown... shunt them down the narrow path.
-    // Odds are these have few registers and are better off there.
-    #define ABI
-    #define JUMPER_NARROW_STAGES 1
-#endif
+using Stage = void(*)(SkRasterPipelineStage* program, size_t dx, size_t dy,
+                      std::byte* base, F,F,F,F, F,F,F,F);
 
-#if JUMPER_NARROW_STAGES
-    struct Params {
-        size_t dx, dy;
-        std::byte* base;
-        F dr,dg,db,da;
-    };
-    using Stage = void(ABI*)(Params*, SkRasterPipelineStage* program, F r, F g, F b, F a);
-#else
-    using Stage = void(ABI*)(SkRasterPipelineStage* program, size_t dx, size_t dy,
-                             std::byte* base, F,F,F,F, F,F,F,F);
-#endif
+#define DECLARE_STAGE(name, ARG, STAGE_RET, INC, OFFSET)                                     \
+    SI STAGE_RET name##_k(ARG, size_t dx, size_t dy, std::byte*& base,                       \
+                            F& r, F& g, F& b, F& a, F& dr, F& dg, F& db, F& da);             \
+    static void name(SkRasterPipelineStage* program, size_t dx, size_t dy,                   \
+                     std::byte* base, F r, F g, F b, F a, F dr, F dg, F db, F da) {          \
+        OFFSET name##_k(Ctx{program}, dx,dy,base, r,g,b,a, dr,dg,db,da);                     \
+        INC;                                                                                 \
+        auto fn = (Stage)program->fn;                                                        \
+        return fn(program, dx,dy,base, r,g,b,a, dr,dg,db,da);                                \
+    }                                                                                        \
+    SI STAGE_RET name##_k(ARG, size_t dx, size_t dy, std::byte*& base,                       \
+                            F& r, F& g, F& b, F& a, F& dr, F& dg, F& db, F& da)
 
-static void start_pipeline(size_t dx, size_t dy,
-                           size_t xlimit, size_t ylimit,
-                           SkRasterPipelineStage* program,
-                           SkSpan<SkRasterPipeline_MemoryCtxPatch> memoryCtxPatches,
-                           uint8_t* tailPointer) {
-    uint8_t unreferencedTail;
-    if (!tailPointer) {
-        tailPointer = &unreferencedTail;
-    }
-    auto start = (Stage)program->fn;
-    const size_t x0 = dx;
-    std::byte* const base = nullptr;
-    for (; dy < ylimit; dy++) {
-    #if JUMPER_NARROW_STAGES
-        Params params = { x0,dy,base, F0,F0,F0,F0 };
-        while (params.dx + N <= xlimit) {
-            start(&params,program, F0,F0,F0,F0);
-            params.dx += N;
-        }
-        if (size_t tail = xlimit - params.dx) {
-            *tailPointer = tail;
-            patch_memory_contexts(memoryCtxPatches, params.dx, dy, tail);
-            start(&params,program, F0,F0,F0,F0);
-            restore_memory_contexts(memoryCtxPatches, params.dx, dy, tail);
-            *tailPointer = 0xFF;
-        }
-    #else
-        dx = x0;
-        while (dx + N <= xlimit) {
-            start(program,dx,dy,base, F0,F0,F0,F0, F0,F0,F0,F0);
-            dx += N;
-        }
-        if (size_t tail = xlimit - dx) {
-            *tailPointer = tail;
-            patch_memory_contexts(memoryCtxPatches, dx, dy, tail);
-            start(program,dx,dy,base, F0,F0,F0,F0, F0,F0,F0,F0);
-            restore_memory_contexts(memoryCtxPatches, dx, dy, tail);
-            *tailPointer = 0xFF;
-        }
-    #endif
-    }
-}
-
-#if SK_HAS_MUSTTAIL
-    #define JUMPER_MUSTTAIL [[clang::musttail]]
-#else
-    #define JUMPER_MUSTTAIL
-#endif
-
-#if JUMPER_NARROW_STAGES
-    #define DECLARE_STAGE(name, ARG, STAGE_RET, INC, OFFSET, MUSTTAIL)                     \
-        SI STAGE_RET name##_k(ARG, size_t dx, size_t dy, std::byte*& base,                 \
-                              F& r, F& g, F& b, F& a, F& dr, F& dg, F& db, F& da);         \
-        static void ABI name(Params* params, SkRasterPipelineStage* program,               \
-                             F r, F g, F b, F a) {                                         \
-            OFFSET name##_k(Ctx{program}, params->dx,params->dy,params->base,              \
-                            r,g,b,a, params->dr, params->dg, params->db, params->da);      \
-            INC;                                                                           \
-            auto fn = (Stage)program->fn;                                                  \
-            MUSTTAIL return fn(params, program, r,g,b,a);                                  \
-        }                                                                                  \
-        SI STAGE_RET name##_k(ARG, size_t dx, size_t dy, std::byte*& base,                 \
-                              F& r, F& g, F& b, F& a, F& dr, F& dg, F& db, F& da)
-#else
-    #define DECLARE_STAGE(name, ARG, STAGE_RET, INC, OFFSET, MUSTTAIL)                           \
-        SI STAGE_RET name##_k(ARG, size_t dx, size_t dy, std::byte*& base,                       \
-                              F& r, F& g, F& b, F& a, F& dr, F& dg, F& db, F& da);               \
-        static void ABI name(SkRasterPipelineStage* program, size_t dx, size_t dy,               \
-                             std::byte* base, F r, F g, F b, F a, F dr, F dg, F db, F da) {      \
-            OFFSET name##_k(Ctx{program}, dx,dy,base, r,g,b,a, dr,dg,db,da);                     \
-            INC;                                                                                 \
-            auto fn = (Stage)program->fn;                                                        \
-            MUSTTAIL return fn(program, dx,dy,base, r,g,b,a, dr,dg,db,da);                       \
-        }                                                                                        \
-        SI STAGE_RET name##_k(ARG, size_t dx, size_t dy, std::byte*& base,                       \
-                              F& r, F& g, F& b, F& a, F& dr, F& dg, F& db, F& da)
-#endif
-
-// A typical stage returns void, always increments the program counter by 1, and lets the optimizer
-// decide whether or not tail-calling is appropriate.
+// A typical stage returns void, and always increments the program counter by 1
 #define STAGE(name, arg) \
-    DECLARE_STAGE(name, arg, void, ++program, /*no offset*/, /*no musttail*/)
+    DECLARE_STAGE(name, arg, void, ++program, /*no offset*/)
 
-// A tail stage returns void, always increments the program counter by 1, and uses tail-calling.
-// Tail-calling is necessary in SkSL-generated programs, which can be thousands of ops long, and
-// could overflow the stack (particularly in debug).
-#define STAGE_TAIL(name, arg) \
-    DECLARE_STAGE(name, arg, void, ++program, /*no offset*/, JUMPER_MUSTTAIL)
-
-// A branch stage returns an integer, which is added directly to the program counter, and tailcalls.
+// A branch stage returns an integer, which is added directly to the program counter
 #define STAGE_BRANCH(name, arg) \
-    DECLARE_STAGE(name, arg, int, /*no increment*/, program +=, JUMPER_MUSTTAIL)
+    DECLARE_STAGE(name, arg, int, /*no increment*/, program +=)
 
 // just_return() is a simple no-op stage that only exists to end the chain,
 // returning back up to start_pipeline(), and from there to the caller.
-#if JUMPER_NARROW_STAGES
-    static void ABI just_return(Params*, SkRasterPipelineStage*, F,F,F,F) {}
-#else
-    static void ABI just_return(SkRasterPipelineStage*, size_t,size_t, std::byte*,
-                                F,F,F,F, F,F,F,F) {}
-#endif
-
-// Note that in release builds, most stages consume no stack (thanks to tail call optimization).
-// However: certain builds (especially with non-clang compilers) may fail to optimize tail
-// calls, resulting in actual stack frames being generated.
-//
-// stack_checkpoint() and stack_rewind() are special stages that can be used to manage stack growth.
-// If a pipeline contains a stack_checkpoint, followed by any number of stack_rewind (at any point),
-// the C++ stack will be reset to the state it was at when the stack_checkpoint was initially hit.
-//
-// All instances of stack_rewind (as well as the one instance of stack_checkpoint near the start of
-// a pipeline) share a single context (of type SkRasterPipeline_RewindCtx). That context holds the
-// full state of the mutable registers that are normally passed to the next stage in the program.
-//
-// stack_rewind is the only stage other than just_return that actually returns (rather than jumping
-// to the next stage in the program). Before it does so, it stashes all of the registers in the
-// context. This includes the updated `program` pointer. Unlike stages that tail call exactly once,
-// stack_checkpoint calls the next stage in the program repeatedly, as long as the `program` in the
-// context is overwritten (i.e., as long as a stack_rewind was the reason the pipeline returned,
-// rather than a just_return).
-//
-// Normally, just_return is the only stage that returns, and no other stage does anything after a
-// subsequent (called) stage returns, so the stack just unwinds all the way to start_pipeline.
-// With stack_checkpoint on the stack, any stack_rewind stages will return all the way up to the
-// stack_checkpoint. That grabs the values that would have been passed to the next stage (from the
-// context), and continues the linear execution of stages, but has reclaimed all of the stack frames
-// pushed before the stack_rewind before doing so.
-#if JUMPER_NARROW_STAGES
-    static void ABI stack_checkpoint(Params* params, SkRasterPipelineStage* program,
-                                     F r, F g, F b, F a) {
-        SkRasterPipeline_RewindCtx* ctx = Ctx{program};
-        while (program) {
-            auto next = (Stage)(++program)->fn;
-
-            ctx->stage = nullptr;
-            next(params, program, r, g, b, a);
-            program = ctx->stage;
-
-            if (program) {
-                r            = sk_unaligned_load<F>(ctx->r );
-                g            = sk_unaligned_load<F>(ctx->g );
-                b            = sk_unaligned_load<F>(ctx->b );
-                a            = sk_unaligned_load<F>(ctx->a );
-                params->dr   = sk_unaligned_load<F>(ctx->dr);
-                params->dg   = sk_unaligned_load<F>(ctx->dg);
-                params->db   = sk_unaligned_load<F>(ctx->db);
-                params->da   = sk_unaligned_load<F>(ctx->da);
-                params->base = ctx->base;
-            }
-        }
-    }
-    static void ABI stack_rewind(Params* params, SkRasterPipelineStage* program,
-                                 F r, F g, F b, F a) {
-        SkRasterPipeline_RewindCtx* ctx = Ctx{program};
-        sk_unaligned_store(ctx->r , r );
-        sk_unaligned_store(ctx->g , g );
-        sk_unaligned_store(ctx->b , b );
-        sk_unaligned_store(ctx->a , a );
-        sk_unaligned_store(ctx->dr, params->dr);
-        sk_unaligned_store(ctx->dg, params->dg);
-        sk_unaligned_store(ctx->db, params->db);
-        sk_unaligned_store(ctx->da, params->da);
-        ctx->base  = params->base;
-        ctx->stage = program;
-    }
-#else
-    static void ABI stack_checkpoint(SkRasterPipelineStage* program,
-                                     size_t dx, size_t dy, std::byte* base,
-                                     F r, F g, F b, F a, F dr, F dg, F db, F da) {
-        SkRasterPipeline_RewindCtx* ctx = Ctx{program};
-        while (program) {
-            auto next = (Stage)(++program)->fn;
-
-            ctx->stage = nullptr;
-            next(program, dx, dy, base, r, g, b, a, dr, dg, db, da);
-            program = ctx->stage;
-
-            if (program) {
-                r    = sk_unaligned_load<F>(ctx->r );
-                g    = sk_unaligned_load<F>(ctx->g );
-                b    = sk_unaligned_load<F>(ctx->b );
-                a    = sk_unaligned_load<F>(ctx->a );
-                dr   = sk_unaligned_load<F>(ctx->dr);
-                dg   = sk_unaligned_load<F>(ctx->dg);
-                db   = sk_unaligned_load<F>(ctx->db);
-                da   = sk_unaligned_load<F>(ctx->da);
-                base = ctx->base;
-            }
-        }
-    }
-    static void ABI stack_rewind(SkRasterPipelineStage* program,
-                                 size_t dx, size_t dy, std::byte* base,
-                                 F r, F g, F b, F a, F dr, F dg, F db, F da) {
-        SkRasterPipeline_RewindCtx* ctx = Ctx{program};
-        sk_unaligned_store(ctx->r , r );
-        sk_unaligned_store(ctx->g , g );
-        sk_unaligned_store(ctx->b , b );
-        sk_unaligned_store(ctx->a , a );
-        sk_unaligned_store(ctx->dr, dr);
-        sk_unaligned_store(ctx->dg, dg);
-        sk_unaligned_store(ctx->db, db);
-        sk_unaligned_store(ctx->da, da);
-        ctx->base  = base;
-        ctx->stage = program;
-    }
-#endif
-
+static void just_return(SkRasterPipelineStage*, size_t,size_t, std::byte*,
+                        F,F,F,F, F,F,F,F) {}
 
 // We could start defining normal Stages now.  But first, some helper functions.
 
@@ -3820,7 +3606,7 @@ STAGE(callback, SkRasterPipeline_CallbackCtx* c) {
     load4(c->read_from, &r,&g,&b,&a);
 }
 
-STAGE_TAIL(set_base_pointer, std::byte* p) {
+STAGE(set_base_pointer, std::byte* p) {
     base = p;
 }
 
@@ -3835,7 +3621,7 @@ STAGE_TAIL(set_base_pointer, std::byte* p) {
                                                    sk_bit_cast<I32>(g) & \
                                                    sk_bit_cast<I32>(b))
 
-STAGE_TAIL(init_lane_masks, SkRasterPipeline_InitLaneMasksCtx* ctx) {
+STAGE(init_lane_masks, SkRasterPipeline_InitLaneMasksCtx* ctx) {
     uint32_t iota[] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
     static_assert(std::size(iota) >= SkRasterPipeline_kMaxStride_highp);
 
@@ -3843,7 +3629,7 @@ STAGE_TAIL(init_lane_masks, SkRasterPipeline_InitLaneMasksCtx* ctx) {
     r = g = b = a = sk_bit_cast<F>(mask);
 }
 
-STAGE_TAIL(store_device_xy01, F* dst) {
+STAGE(store_device_xy01, F* dst) {
     // This is very similar to `seed_shader + store_src`, but b/a are backwards.
     // (sk_FragCoord actually puts w=1 in the w slot.)
     static constexpr float iota[] = {
@@ -3858,7 +3644,7 @@ STAGE_TAIL(store_device_xy01, F* dst) {
     dst[3] = F1;
 }
 
-STAGE_TAIL(exchange_src, F* rgba) {
+STAGE(exchange_src, F* rgba) {
     // Swaps r,g,b,a registers with the values at `rgba`.
     F temp[4] = {r, g, b, a};
     r = rgba[0];
@@ -3871,57 +3657,57 @@ STAGE_TAIL(exchange_src, F* rgba) {
     rgba[3] = temp[3];
 }
 
-STAGE_TAIL(load_condition_mask, F* ctx) {
+STAGE(load_condition_mask, F* ctx) {
     r = sk_unaligned_load<F>(ctx);
     update_execution_mask();
 }
 
-STAGE_TAIL(store_condition_mask, F* ctx) {
+STAGE(store_condition_mask, F* ctx) {
     sk_unaligned_store(ctx, r);
 }
 
-STAGE_TAIL(merge_condition_mask, I32* ptr) {
+STAGE(merge_condition_mask, I32* ptr) {
     // Set the condition-mask to the intersection of two adjacent masks at the pointer.
     r = sk_bit_cast<F>(ptr[0] & ptr[1]);
     update_execution_mask();
 }
 
-STAGE_TAIL(merge_inv_condition_mask, I32* ptr) {
+STAGE(merge_inv_condition_mask, I32* ptr) {
     // Set the condition-mask to the intersection of the first mask and the inverse of the second.
     r = sk_bit_cast<F>(ptr[0] & ~ptr[1]);
     update_execution_mask();
 }
 
-STAGE_TAIL(load_loop_mask, F* ctx) {
+STAGE(load_loop_mask, F* ctx) {
     g = sk_unaligned_load<F>(ctx);
     update_execution_mask();
 }
 
-STAGE_TAIL(store_loop_mask, F* ctx) {
+STAGE(store_loop_mask, F* ctx) {
     sk_unaligned_store(ctx, g);
 }
 
-STAGE_TAIL(mask_off_loop_mask, NoCtx) {
+STAGE(mask_off_loop_mask, NoCtx) {
     // We encountered a break statement. If a lane was active, it should be masked off now, and stay
     // masked-off until the termination of the loop.
     g = sk_bit_cast<F>(sk_bit_cast<I32>(g) & ~execution_mask());
     update_execution_mask();
 }
 
-STAGE_TAIL(reenable_loop_mask, I32* ptr) {
+STAGE(reenable_loop_mask, I32* ptr) {
     // Set the loop-mask to the union of the current loop-mask with the mask at the pointer.
     g = sk_bit_cast<F>(sk_bit_cast<I32>(g) | ptr[0]);
     update_execution_mask();
 }
 
-STAGE_TAIL(merge_loop_mask, I32* ptr) {
+STAGE(merge_loop_mask, I32* ptr) {
     // Set the loop-mask to the intersection of the current loop-mask with the mask at the pointer.
     // (Note: this behavior subtly differs from merge_condition_mask!)
     g = sk_bit_cast<F>(sk_bit_cast<I32>(g) & ptr[0]);
     update_execution_mask();
 }
 
-STAGE_TAIL(continue_op, I32* continueMask) {
+STAGE(continue_op, I32* continueMask) {
     // Set any currently-executing lanes in the continue-mask to true.
     *continueMask |= execution_mask();
 
@@ -3930,7 +3716,7 @@ STAGE_TAIL(continue_op, I32* continueMask) {
     update_execution_mask();
 }
 
-STAGE_TAIL(case_op, SkRasterPipeline_CaseOpCtx* packed) {
+STAGE(case_op, SkRasterPipeline_CaseOpCtx* packed) {
     auto ctx = SkRPCtxUtils::Unpack(packed);
 
     // Check each lane to see if the case value matches the expectation.
@@ -3946,16 +3732,16 @@ STAGE_TAIL(case_op, SkRasterPipeline_CaseOpCtx* packed) {
     *defaultMask &= ~caseMatches;
 }
 
-STAGE_TAIL(load_return_mask, F* ctx) {
+STAGE(load_return_mask, F* ctx) {
     b = sk_unaligned_load<F>(ctx);
     update_execution_mask();
 }
 
-STAGE_TAIL(store_return_mask, F* ctx) {
+STAGE(store_return_mask, F* ctx) {
     sk_unaligned_store(ctx, b);
 }
 
-STAGE_TAIL(mask_off_return_mask, NoCtx) {
+STAGE(mask_off_return_mask, NoCtx) {
     // We encountered a return statement. If a lane was active, it should be masked off now, and
     // stay masked-off until the end of the function.
     b = sk_bit_cast<F>(sk_bit_cast<I32>(b) & ~execution_mask());
@@ -3991,28 +3777,28 @@ STAGE_BRANCH(branch_if_no_active_lanes_eq, SkRasterPipeline_BranchIfEqualCtx* ct
     return any(match) ? 1 : ctx->offset;
 }
 
-STAGE_TAIL(trace_line, SkRasterPipeline_TraceLineCtx* ctx) {
+STAGE(trace_line, SkRasterPipeline_TraceLineCtx* ctx) {
     const I32* traceMask = (const I32*)ctx->traceMask;
     if (any(execution_mask() & *traceMask)) {
         ctx->traceHook->line(ctx->lineNumber);
     }
 }
 
-STAGE_TAIL(trace_enter, SkRasterPipeline_TraceFuncCtx* ctx) {
+STAGE(trace_enter, SkRasterPipeline_TraceFuncCtx* ctx) {
     const I32* traceMask = (const I32*)ctx->traceMask;
     if (any(execution_mask() & *traceMask)) {
         ctx->traceHook->enter(ctx->funcIdx);
     }
 }
 
-STAGE_TAIL(trace_exit, SkRasterPipeline_TraceFuncCtx* ctx) {
+STAGE(trace_exit, SkRasterPipeline_TraceFuncCtx* ctx) {
     const I32* traceMask = (const I32*)ctx->traceMask;
     if (any(execution_mask() & *traceMask)) {
         ctx->traceHook->exit(ctx->funcIdx);
     }
 }
 
-STAGE_TAIL(trace_scope, SkRasterPipeline_TraceScopeCtx* ctx) {
+STAGE(trace_scope, SkRasterPipeline_TraceScopeCtx* ctx) {
     // Note that trace_scope intentionally does not incorporate the execution mask. Otherwise, the
     // scopes would become unbalanced if the execution mask changed in the middle of a block. The
     // caller is responsible for providing a combined trace- and execution-mask.
@@ -4022,7 +3808,7 @@ STAGE_TAIL(trace_scope, SkRasterPipeline_TraceScopeCtx* ctx) {
     }
 }
 
-STAGE_TAIL(trace_var, SkRasterPipeline_TraceVarCtx* ctx) {
+STAGE(trace_var, SkRasterPipeline_TraceVarCtx* ctx) {
     const I32* traceMask = (const I32*)ctx->traceMask;
     I32 mask = execution_mask() & *traceMask;
     if (any(mask)) {
@@ -4048,25 +3834,25 @@ STAGE_TAIL(trace_var, SkRasterPipeline_TraceVarCtx* ctx) {
     }
 }
 
-STAGE_TAIL(copy_uniform, SkRasterPipeline_UniformCtx* ctx) {
+STAGE(copy_uniform, SkRasterPipeline_UniformCtx* ctx) {
     const int* src = ctx->src;
     I32* dst = (I32*)ctx->dst;
     dst[0] = I32_(src[0]);
 }
-STAGE_TAIL(copy_2_uniforms, SkRasterPipeline_UniformCtx* ctx) {
+STAGE(copy_2_uniforms, SkRasterPipeline_UniformCtx* ctx) {
     const int* src = ctx->src;
     I32* dst = (I32*)ctx->dst;
     dst[0] = I32_(src[0]);
     dst[1] = I32_(src[1]);
 }
-STAGE_TAIL(copy_3_uniforms, SkRasterPipeline_UniformCtx* ctx) {
+STAGE(copy_3_uniforms, SkRasterPipeline_UniformCtx* ctx) {
     const int* src = ctx->src;
     I32* dst = (I32*)ctx->dst;
     dst[0] = I32_(src[0]);
     dst[1] = I32_(src[1]);
     dst[2] = I32_(src[2]);
 }
-STAGE_TAIL(copy_4_uniforms, SkRasterPipeline_UniformCtx* ctx) {
+STAGE(copy_4_uniforms, SkRasterPipeline_UniformCtx* ctx) {
     const int* src = ctx->src;
     I32* dst = (I32*)ctx->dst;
     dst[0] = I32_(src[0]);
@@ -4075,25 +3861,25 @@ STAGE_TAIL(copy_4_uniforms, SkRasterPipeline_UniformCtx* ctx) {
     dst[3] = I32_(src[3]);
 }
 
-STAGE_TAIL(copy_constant, SkRasterPipeline_ConstantCtx* packed) {
+STAGE(copy_constant, SkRasterPipeline_ConstantCtx* packed) {
     auto ctx = SkRPCtxUtils::Unpack(packed);
     I32* dst = (I32*)(base + ctx.dst);
     I32 value = I32_(ctx.value);
     dst[0] = value;
 }
-STAGE_TAIL(splat_2_constants, SkRasterPipeline_ConstantCtx* packed) {
+STAGE(splat_2_constants, SkRasterPipeline_ConstantCtx* packed) {
     auto ctx = SkRPCtxUtils::Unpack(packed);
     I32* dst = (I32*)(base + ctx.dst);
     I32 value = I32_(ctx.value);
     dst[0] = dst[1] = value;
 }
-STAGE_TAIL(splat_3_constants, SkRasterPipeline_ConstantCtx* packed) {
+STAGE(splat_3_constants, SkRasterPipeline_ConstantCtx* packed) {
     auto ctx = SkRPCtxUtils::Unpack(packed);
     I32* dst = (I32*)(base + ctx.dst);
     I32 value = I32_(ctx.value);
     dst[0] = dst[1] = dst[2] = value;
 }
-STAGE_TAIL(splat_4_constants, SkRasterPipeline_ConstantCtx* packed) {
+STAGE(splat_4_constants, SkRasterPipeline_ConstantCtx* packed) {
     auto ctx = SkRPCtxUtils::Unpack(packed);
     I32* dst = (I32*)(base + ctx.dst);
     I32 value = I32_(ctx.value);
@@ -4108,16 +3894,16 @@ SI void copy_n_slots_unmasked_fn(SkRasterPipeline_BinaryOpCtx* packed, std::byte
     memcpy(dst, src, sizeof(F) * NumSlots);
 }
 
-STAGE_TAIL(copy_slot_unmasked, SkRasterPipeline_BinaryOpCtx* packed) {
+STAGE(copy_slot_unmasked, SkRasterPipeline_BinaryOpCtx* packed) {
     copy_n_slots_unmasked_fn<1>(packed, base);
 }
-STAGE_TAIL(copy_2_slots_unmasked, SkRasterPipeline_BinaryOpCtx* packed) {
+STAGE(copy_2_slots_unmasked, SkRasterPipeline_BinaryOpCtx* packed) {
     copy_n_slots_unmasked_fn<2>(packed, base);
 }
-STAGE_TAIL(copy_3_slots_unmasked, SkRasterPipeline_BinaryOpCtx* packed) {
+STAGE(copy_3_slots_unmasked, SkRasterPipeline_BinaryOpCtx* packed) {
     copy_n_slots_unmasked_fn<3>(packed, base);
 }
-STAGE_TAIL(copy_4_slots_unmasked, SkRasterPipeline_BinaryOpCtx* packed) {
+STAGE(copy_4_slots_unmasked, SkRasterPipeline_BinaryOpCtx* packed) {
     copy_n_slots_unmasked_fn<4>(packed, base);
 }
 
@@ -4138,16 +3924,16 @@ SI void copy_n_immutable_unmasked_fn(SkRasterPipeline_BinaryOpCtx* packed, std::
     }
 }
 
-STAGE_TAIL(copy_immutable_unmasked, SkRasterPipeline_BinaryOpCtx* packed) {
+STAGE(copy_immutable_unmasked, SkRasterPipeline_BinaryOpCtx* packed) {
     copy_n_immutable_unmasked_fn<1>(packed, base);
 }
-STAGE_TAIL(copy_2_immutables_unmasked, SkRasterPipeline_BinaryOpCtx* packed) {
+STAGE(copy_2_immutables_unmasked, SkRasterPipeline_BinaryOpCtx* packed) {
     copy_n_immutable_unmasked_fn<2>(packed, base);
 }
-STAGE_TAIL(copy_3_immutables_unmasked, SkRasterPipeline_BinaryOpCtx* packed) {
+STAGE(copy_3_immutables_unmasked, SkRasterPipeline_BinaryOpCtx* packed) {
     copy_n_immutable_unmasked_fn<3>(packed, base);
 }
-STAGE_TAIL(copy_4_immutables_unmasked, SkRasterPipeline_BinaryOpCtx* packed) {
+STAGE(copy_4_immutables_unmasked, SkRasterPipeline_BinaryOpCtx* packed) {
     copy_n_immutable_unmasked_fn<4>(packed, base);
 }
 
@@ -4163,16 +3949,16 @@ SI void copy_n_slots_masked_fn(SkRasterPipeline_BinaryOpCtx* packed, std::byte* 
     }
 }
 
-STAGE_TAIL(copy_slot_masked, SkRasterPipeline_BinaryOpCtx* packed) {
+STAGE(copy_slot_masked, SkRasterPipeline_BinaryOpCtx* packed) {
     copy_n_slots_masked_fn<1>(packed, base, execution_mask());
 }
-STAGE_TAIL(copy_2_slots_masked, SkRasterPipeline_BinaryOpCtx* packed) {
+STAGE(copy_2_slots_masked, SkRasterPipeline_BinaryOpCtx* packed) {
     copy_n_slots_masked_fn<2>(packed, base, execution_mask());
 }
-STAGE_TAIL(copy_3_slots_masked, SkRasterPipeline_BinaryOpCtx* packed) {
+STAGE(copy_3_slots_masked, SkRasterPipeline_BinaryOpCtx* packed) {
     copy_n_slots_masked_fn<3>(packed, base, execution_mask());
 }
-STAGE_TAIL(copy_4_slots_masked, SkRasterPipeline_BinaryOpCtx* packed) {
+STAGE(copy_4_slots_masked, SkRasterPipeline_BinaryOpCtx* packed) {
     copy_n_slots_masked_fn<4>(packed, base, execution_mask());
 }
 
@@ -4214,19 +4000,19 @@ SI void small_swizzle_fn(SkRasterPipeline_SwizzleCtx* packed, std::byte* base) {
     shuffle_fn<N>(base + ctx.dst, ctx.offsets, N);
 }
 
-STAGE_TAIL(swizzle_1, SkRasterPipeline_SwizzleCtx* packed) {
+STAGE(swizzle_1, SkRasterPipeline_SwizzleCtx* packed) {
     small_swizzle_fn<1>(packed, base);
 }
-STAGE_TAIL(swizzle_2, SkRasterPipeline_SwizzleCtx* packed) {
+STAGE(swizzle_2, SkRasterPipeline_SwizzleCtx* packed) {
     small_swizzle_fn<2>(packed, base);
 }
-STAGE_TAIL(swizzle_3, SkRasterPipeline_SwizzleCtx* packed) {
+STAGE(swizzle_3, SkRasterPipeline_SwizzleCtx* packed) {
     small_swizzle_fn<3>(packed, base);
 }
-STAGE_TAIL(swizzle_4, SkRasterPipeline_SwizzleCtx* packed) {
+STAGE(swizzle_4, SkRasterPipeline_SwizzleCtx* packed) {
     small_swizzle_fn<4>(packed, base);
 }
-STAGE_TAIL(shuffle, SkRasterPipeline_ShuffleCtx* ctx) {
+STAGE(shuffle, SkRasterPipeline_ShuffleCtx* ctx) {
     shuffle_fn<16>((std::byte*)ctx->ptr, ctx->offsets, ctx->count);
 }
 
@@ -4241,20 +4027,20 @@ SI void swizzle_copy_masked_fn(I32* dst, const I32* src, uint16_t* offsets, I32 
     }
 }
 
-STAGE_TAIL(swizzle_copy_slot_masked, SkRasterPipeline_SwizzleCopyCtx* ctx) {
+STAGE(swizzle_copy_slot_masked, SkRasterPipeline_SwizzleCopyCtx* ctx) {
     swizzle_copy_masked_fn<1>((I32*)ctx->dst, (const I32*)ctx->src, ctx->offsets, execution_mask());
 }
-STAGE_TAIL(swizzle_copy_2_slots_masked, SkRasterPipeline_SwizzleCopyCtx* ctx) {
+STAGE(swizzle_copy_2_slots_masked, SkRasterPipeline_SwizzleCopyCtx* ctx) {
     swizzle_copy_masked_fn<2>((I32*)ctx->dst, (const I32*)ctx->src, ctx->offsets, execution_mask());
 }
-STAGE_TAIL(swizzle_copy_3_slots_masked, SkRasterPipeline_SwizzleCopyCtx* ctx) {
+STAGE(swizzle_copy_3_slots_masked, SkRasterPipeline_SwizzleCopyCtx* ctx) {
     swizzle_copy_masked_fn<3>((I32*)ctx->dst, (const I32*)ctx->src, ctx->offsets, execution_mask());
 }
-STAGE_TAIL(swizzle_copy_4_slots_masked, SkRasterPipeline_SwizzleCopyCtx* ctx) {
+STAGE(swizzle_copy_4_slots_masked, SkRasterPipeline_SwizzleCopyCtx* ctx) {
     swizzle_copy_masked_fn<4>((I32*)ctx->dst, (const I32*)ctx->src, ctx->offsets, execution_mask());
 }
 
-STAGE_TAIL(copy_from_indirect_unmasked, SkRasterPipeline_CopyIndirectCtx* ctx) {
+STAGE(copy_from_indirect_unmasked, SkRasterPipeline_CopyIndirectCtx* ctx) {
     // Clamp the indirect offsets to stay within the limit.
     U32 offsets = *(const U32*)ctx->indirectOffset;
     offsets = min(offsets, U32_(ctx->indirectLimit));
@@ -4278,7 +4064,7 @@ STAGE_TAIL(copy_from_indirect_unmasked, SkRasterPipeline_CopyIndirectCtx* ctx) {
     } while (dst != end);
 }
 
-STAGE_TAIL(copy_from_indirect_uniform_unmasked, SkRasterPipeline_CopyIndirectCtx* ctx) {
+STAGE(copy_from_indirect_uniform_unmasked, SkRasterPipeline_CopyIndirectCtx* ctx) {
     // Clamp the indirect offsets to stay within the limit.
     U32 offsets = *(const U32*)ctx->indirectOffset;
     offsets = min(offsets, U32_(ctx->indirectLimit));
@@ -4294,7 +4080,7 @@ STAGE_TAIL(copy_from_indirect_uniform_unmasked, SkRasterPipeline_CopyIndirectCtx
     } while (dst != end);
 }
 
-STAGE_TAIL(copy_to_indirect_masked, SkRasterPipeline_CopyIndirectCtx* ctx) {
+STAGE(copy_to_indirect_masked, SkRasterPipeline_CopyIndirectCtx* ctx) {
     // Clamp the indirect offsets to stay within the limit.
     U32 offsets = *(const U32*)ctx->indirectOffset;
     offsets = min(offsets, U32_(ctx->indirectLimit));
@@ -4319,7 +4105,7 @@ STAGE_TAIL(copy_to_indirect_masked, SkRasterPipeline_CopyIndirectCtx* ctx) {
     } while (src != end);
 }
 
-STAGE_TAIL(swizzle_copy_to_indirect_masked, SkRasterPipeline_SwizzleCopyIndirectCtx* ctx) {
+STAGE(swizzle_copy_to_indirect_masked, SkRasterPipeline_SwizzleCopyIndirectCtx* ctx) {
     // Clamp the indirect offsets to stay within the limit.
     U32 offsets = *(const U32*)ctx->indirectOffset;
     offsets = min(offsets, U32_(ctx->indirectLimit));
@@ -4398,22 +4184,22 @@ SI void invsqrt_fn(F* dst) {
 }
 
 #define DECLARE_UNARY_FLOAT(name)                                                              \
-    STAGE_TAIL(name##_float, F* dst) { apply_adjacent_unary<F, &name##_fn>(dst, dst + 1); }    \
-    STAGE_TAIL(name##_2_floats, F* dst) { apply_adjacent_unary<F, &name##_fn>(dst, dst + 2); } \
-    STAGE_TAIL(name##_3_floats, F* dst) { apply_adjacent_unary<F, &name##_fn>(dst, dst + 3); } \
-    STAGE_TAIL(name##_4_floats, F* dst) { apply_adjacent_unary<F, &name##_fn>(dst, dst + 4); }
+    STAGE(name##_float, F* dst) { apply_adjacent_unary<F, &name##_fn>(dst, dst + 1); }    \
+    STAGE(name##_2_floats, F* dst) { apply_adjacent_unary<F, &name##_fn>(dst, dst + 2); } \
+    STAGE(name##_3_floats, F* dst) { apply_adjacent_unary<F, &name##_fn>(dst, dst + 3); } \
+    STAGE(name##_4_floats, F* dst) { apply_adjacent_unary<F, &name##_fn>(dst, dst + 4); }
 
 #define DECLARE_UNARY_INT(name)                                                                  \
-    STAGE_TAIL(name##_int, I32* dst) { apply_adjacent_unary<I32, &name##_fn>(dst, dst + 1); }    \
-    STAGE_TAIL(name##_2_ints, I32* dst) { apply_adjacent_unary<I32, &name##_fn>(dst, dst + 2); } \
-    STAGE_TAIL(name##_3_ints, I32* dst) { apply_adjacent_unary<I32, &name##_fn>(dst, dst + 3); } \
-    STAGE_TAIL(name##_4_ints, I32* dst) { apply_adjacent_unary<I32, &name##_fn>(dst, dst + 4); }
+    STAGE(name##_int, I32* dst) { apply_adjacent_unary<I32, &name##_fn>(dst, dst + 1); }    \
+    STAGE(name##_2_ints, I32* dst) { apply_adjacent_unary<I32, &name##_fn>(dst, dst + 2); } \
+    STAGE(name##_3_ints, I32* dst) { apply_adjacent_unary<I32, &name##_fn>(dst, dst + 3); } \
+    STAGE(name##_4_ints, I32* dst) { apply_adjacent_unary<I32, &name##_fn>(dst, dst + 4); }
 
 #define DECLARE_UNARY_UINT(name)                                                                  \
-    STAGE_TAIL(name##_uint, U32* dst) { apply_adjacent_unary<U32, &name##_fn>(dst, dst + 1); }    \
-    STAGE_TAIL(name##_2_uints, U32* dst) { apply_adjacent_unary<U32, &name##_fn>(dst, dst + 2); } \
-    STAGE_TAIL(name##_3_uints, U32* dst) { apply_adjacent_unary<U32, &name##_fn>(dst, dst + 3); } \
-    STAGE_TAIL(name##_4_uints, U32* dst) { apply_adjacent_unary<U32, &name##_fn>(dst, dst + 4); }
+    STAGE(name##_uint, U32* dst) { apply_adjacent_unary<U32, &name##_fn>(dst, dst + 1); }    \
+    STAGE(name##_2_uints, U32* dst) { apply_adjacent_unary<U32, &name##_fn>(dst, dst + 2); } \
+    STAGE(name##_3_uints, U32* dst) { apply_adjacent_unary<U32, &name##_fn>(dst, dst + 3); } \
+    STAGE(name##_4_uints, U32* dst) { apply_adjacent_unary<U32, &name##_fn>(dst, dst + 4); }
 
 DECLARE_UNARY_INT(cast_to_float_from) DECLARE_UNARY_UINT(cast_to_float_from)
 DECLARE_UNARY_FLOAT(cast_to_int_from)
@@ -4428,19 +4214,19 @@ DECLARE_UNARY_INT(abs)
 #undef DECLARE_UNARY_UINT
 
 // For complex unary ops, we only provide a 1-slot version to reduce code bloat.
-STAGE_TAIL(sin_float, F* dst)  { *dst = sin_(*dst); }
-STAGE_TAIL(cos_float, F* dst)  { *dst = cos_(*dst); }
-STAGE_TAIL(tan_float, F* dst)  { *dst = tan_(*dst); }
-STAGE_TAIL(asin_float, F* dst) { *dst = asin_(*dst); }
-STAGE_TAIL(acos_float, F* dst) { *dst = acos_(*dst); }
-STAGE_TAIL(atan_float, F* dst) { *dst = atan_(*dst); }
-STAGE_TAIL(sqrt_float, F* dst) { *dst = sqrt_(*dst); }
-STAGE_TAIL(exp_float, F* dst)  { *dst = approx_exp(*dst); }
-STAGE_TAIL(exp2_float, F* dst) { *dst = approx_pow2(*dst); }
-STAGE_TAIL(log_float, F* dst)  { *dst = approx_log(*dst); }
-STAGE_TAIL(log2_float, F* dst) { *dst = approx_log2(*dst); }
+STAGE(sin_float, F* dst)  { *dst = sin_(*dst); }
+STAGE(cos_float, F* dst)  { *dst = cos_(*dst); }
+STAGE(tan_float, F* dst)  { *dst = tan_(*dst); }
+STAGE(asin_float, F* dst) { *dst = asin_(*dst); }
+STAGE(acos_float, F* dst) { *dst = acos_(*dst); }
+STAGE(atan_float, F* dst) { *dst = atan_(*dst); }
+STAGE(sqrt_float, F* dst) { *dst = sqrt_(*dst); }
+STAGE(exp_float, F* dst)  { *dst = approx_exp(*dst); }
+STAGE(exp2_float, F* dst) { *dst = approx_pow2(*dst); }
+STAGE(log_float, F* dst)  { *dst = approx_log(*dst); }
+STAGE(log2_float, F* dst) { *dst = approx_log2(*dst); }
 
-STAGE_TAIL(inverse_mat2, F* dst) {
+STAGE(inverse_mat2, F* dst) {
     F a00 = dst[0], a01 = dst[1],
       a10 = dst[2], a11 = dst[3];
     F det = nmad(a01, a10, a00 * a11),
@@ -4451,7 +4237,7 @@ STAGE_TAIL(inverse_mat2, F* dst) {
     dst[3] =  invdet * a00;
 }
 
-STAGE_TAIL(inverse_mat3, F* dst) {
+STAGE(inverse_mat3, F* dst) {
     F a00 = dst[0], a01 = dst[1], a02 = dst[2],
       a10 = dst[3], a11 = dst[4], a12 = dst[5],
       a20 = dst[6], a21 = dst[7], a22 = dst[8];
@@ -4471,7 +4257,7 @@ STAGE_TAIL(inverse_mat3, F* dst) {
     dst[8] = invdet * nmad(a01, a10, a11 * a00);
 }
 
-STAGE_TAIL(inverse_mat4, F* dst) {
+STAGE(inverse_mat4, F* dst) {
     F a00 = dst[0],  a01 = dst[1],  a02 = dst[2],  a03 = dst[3],
       a10 = dst[4],  a11 = dst[5],  a12 = dst[6],  a13 = dst[7],
       a20 = dst[8],  a21 = dst[9],  a22 = dst[10], a23 = dst[11],
@@ -4639,39 +4425,39 @@ SI void mod_fn(F* dst, F* src) {
 }
 
 #define DECLARE_N_WAY_BINARY_FLOAT(name)                                \
-    STAGE_TAIL(name##_n_floats, SkRasterPipeline_BinaryOpCtx* packed) { \
+    STAGE(name##_n_floats, SkRasterPipeline_BinaryOpCtx* packed) { \
         apply_adjacent_binary_packed<F, &name##_fn>(packed, base);      \
     }
 
 #define DECLARE_BINARY_FLOAT(name)                                                              \
-    STAGE_TAIL(name##_float, F* dst) { apply_adjacent_binary<F, &name##_fn>(dst, dst + 1); }    \
-    STAGE_TAIL(name##_2_floats, F* dst) { apply_adjacent_binary<F, &name##_fn>(dst, dst + 2); } \
-    STAGE_TAIL(name##_3_floats, F* dst) { apply_adjacent_binary<F, &name##_fn>(dst, dst + 3); } \
-    STAGE_TAIL(name##_4_floats, F* dst) { apply_adjacent_binary<F, &name##_fn>(dst, dst + 4); } \
+    STAGE(name##_float, F* dst) { apply_adjacent_binary<F, &name##_fn>(dst, dst + 1); }    \
+    STAGE(name##_2_floats, F* dst) { apply_adjacent_binary<F, &name##_fn>(dst, dst + 2); } \
+    STAGE(name##_3_floats, F* dst) { apply_adjacent_binary<F, &name##_fn>(dst, dst + 3); } \
+    STAGE(name##_4_floats, F* dst) { apply_adjacent_binary<F, &name##_fn>(dst, dst + 4); } \
     DECLARE_N_WAY_BINARY_FLOAT(name)
 
 #define DECLARE_N_WAY_BINARY_INT(name)                                \
-    STAGE_TAIL(name##_n_ints, SkRasterPipeline_BinaryOpCtx* packed) { \
+    STAGE(name##_n_ints, SkRasterPipeline_BinaryOpCtx* packed) { \
         apply_adjacent_binary_packed<I32, &name##_fn>(packed, base);  \
     }
 
 #define DECLARE_BINARY_INT(name)                                                                  \
-    STAGE_TAIL(name##_int, I32* dst) { apply_adjacent_binary<I32, &name##_fn>(dst, dst + 1); }    \
-    STAGE_TAIL(name##_2_ints, I32* dst) { apply_adjacent_binary<I32, &name##_fn>(dst, dst + 2); } \
-    STAGE_TAIL(name##_3_ints, I32* dst) { apply_adjacent_binary<I32, &name##_fn>(dst, dst + 3); } \
-    STAGE_TAIL(name##_4_ints, I32* dst) { apply_adjacent_binary<I32, &name##_fn>(dst, dst + 4); } \
+    STAGE(name##_int, I32* dst) { apply_adjacent_binary<I32, &name##_fn>(dst, dst + 1); }    \
+    STAGE(name##_2_ints, I32* dst) { apply_adjacent_binary<I32, &name##_fn>(dst, dst + 2); } \
+    STAGE(name##_3_ints, I32* dst) { apply_adjacent_binary<I32, &name##_fn>(dst, dst + 3); } \
+    STAGE(name##_4_ints, I32* dst) { apply_adjacent_binary<I32, &name##_fn>(dst, dst + 4); } \
     DECLARE_N_WAY_BINARY_INT(name)
 
 #define DECLARE_N_WAY_BINARY_UINT(name)                                \
-    STAGE_TAIL(name##_n_uints, SkRasterPipeline_BinaryOpCtx* packed) { \
+    STAGE(name##_n_uints, SkRasterPipeline_BinaryOpCtx* packed) { \
         apply_adjacent_binary_packed<U32, &name##_fn>(packed, base);   \
     }
 
 #define DECLARE_BINARY_UINT(name)                                                                  \
-    STAGE_TAIL(name##_uint, U32* dst) { apply_adjacent_binary<U32, &name##_fn>(dst, dst + 1); }    \
-    STAGE_TAIL(name##_2_uints, U32* dst) { apply_adjacent_binary<U32, &name##_fn>(dst, dst + 2); } \
-    STAGE_TAIL(name##_3_uints, U32* dst) { apply_adjacent_binary<U32, &name##_fn>(dst, dst + 3); } \
-    STAGE_TAIL(name##_4_uints, U32* dst) { apply_adjacent_binary<U32, &name##_fn>(dst, dst + 4); } \
+    STAGE(name##_uint, U32* dst) { apply_adjacent_binary<U32, &name##_fn>(dst, dst + 1); }    \
+    STAGE(name##_2_uints, U32* dst) { apply_adjacent_binary<U32, &name##_fn>(dst, dst + 2); } \
+    STAGE(name##_3_uints, U32* dst) { apply_adjacent_binary<U32, &name##_fn>(dst, dst + 3); } \
+    STAGE(name##_4_uints, U32* dst) { apply_adjacent_binary<U32, &name##_fn>(dst, dst + 4); } \
     DECLARE_N_WAY_BINARY_UINT(name)
 
 // Many ops reuse the int stages when performing uint arithmetic, since they're equivalent on a
@@ -4698,28 +4484,28 @@ DECLARE_N_WAY_BINARY_FLOAT(pow)
 
 // Some ops have an optimized version when the right-side is an immediate value.
 #define DECLARE_IMM_BINARY_FLOAT(name)                                   \
-    STAGE_TAIL(name##_imm_float, SkRasterPipeline_ConstantCtx* packed) { \
+    STAGE(name##_imm_float, SkRasterPipeline_ConstantCtx* packed) { \
         apply_binary_immediate<1, F, float, &name##_fn>(packed, base);   \
     }
 #define DECLARE_IMM_BINARY_INT(name)                                       \
-    STAGE_TAIL(name##_imm_int, SkRasterPipeline_ConstantCtx* packed) {     \
+    STAGE(name##_imm_int, SkRasterPipeline_ConstantCtx* packed) {     \
         apply_binary_immediate<1, I32, int32_t, &name##_fn>(packed, base); \
     }
 #define DECLARE_MULTI_IMM_BINARY_INT(name)                                 \
-    STAGE_TAIL(name##_imm_int, SkRasterPipeline_ConstantCtx* packed) {     \
+    STAGE(name##_imm_int, SkRasterPipeline_ConstantCtx* packed) {     \
         apply_binary_immediate<1, I32, int32_t, &name##_fn>(packed, base); \
     }                                                                      \
-    STAGE_TAIL(name##_imm_2_ints, SkRasterPipeline_ConstantCtx* packed) {  \
+    STAGE(name##_imm_2_ints, SkRasterPipeline_ConstantCtx* packed) {  \
         apply_binary_immediate<2, I32, int32_t, &name##_fn>(packed, base); \
     }                                                                      \
-    STAGE_TAIL(name##_imm_3_ints, SkRasterPipeline_ConstantCtx* packed) {  \
+    STAGE(name##_imm_3_ints, SkRasterPipeline_ConstantCtx* packed) {  \
         apply_binary_immediate<3, I32, int32_t, &name##_fn>(packed, base); \
     }                                                                      \
-    STAGE_TAIL(name##_imm_4_ints, SkRasterPipeline_ConstantCtx* packed) {  \
+    STAGE(name##_imm_4_ints, SkRasterPipeline_ConstantCtx* packed) {  \
         apply_binary_immediate<4, I32, int32_t, &name##_fn>(packed, base); \
     }
 #define DECLARE_IMM_BINARY_UINT(name)                                       \
-    STAGE_TAIL(name##_imm_uint, SkRasterPipeline_ConstantCtx* packed) {     \
+    STAGE(name##_imm_uint, SkRasterPipeline_ConstantCtx* packed) {     \
         apply_binary_immediate<1, U32, uint32_t, &name##_fn>(packed, base); \
     }
 
@@ -4747,18 +4533,18 @@ DECLARE_IMM_BINARY_FLOAT(cmpne) DECLARE_IMM_BINARY_INT(cmpne)
 
 // Dots can be represented with multiply and add ops, but they are so foundational that it's worth
 // having dedicated ops.
-STAGE_TAIL(dot_2_floats, F* dst) {
+STAGE(dot_2_floats, F* dst) {
     dst[0] = mad(dst[0],  dst[2],
                  dst[1] * dst[3]);
 }
 
-STAGE_TAIL(dot_3_floats, F* dst) {
+STAGE(dot_3_floats, F* dst) {
     dst[0] = mad(dst[0],  dst[3],
              mad(dst[1],  dst[4],
                  dst[2] * dst[5]));
 }
 
-STAGE_TAIL(dot_4_floats, F* dst) {
+STAGE(dot_4_floats, F* dst) {
     dst[0] = mad(dst[0],  dst[4],
              mad(dst[1],  dst[5],
              mad(dst[2],  dst[6],
@@ -4814,21 +4600,21 @@ SI void matrix_multiply(SkRasterPipeline_MatrixMultiplyCtx* packed, std::byte* b
     }
 }
 
-STAGE_TAIL(matrix_multiply_2, SkRasterPipeline_MatrixMultiplyCtx* packed) {
+STAGE(matrix_multiply_2, SkRasterPipeline_MatrixMultiplyCtx* packed) {
     matrix_multiply<2>(packed, base);
 }
 
-STAGE_TAIL(matrix_multiply_3, SkRasterPipeline_MatrixMultiplyCtx* packed) {
+STAGE(matrix_multiply_3, SkRasterPipeline_MatrixMultiplyCtx* packed) {
     matrix_multiply<3>(packed, base);
 }
 
-STAGE_TAIL(matrix_multiply_4, SkRasterPipeline_MatrixMultiplyCtx* packed) {
+STAGE(matrix_multiply_4, SkRasterPipeline_MatrixMultiplyCtx* packed) {
     matrix_multiply<4>(packed, base);
 }
 
 // Refract always operates on 4-wide incident and normal vectors; for narrower inputs, the code
 // generator fills in the input columns with zero, and discards the extra output columns.
-STAGE_TAIL(refract_4_floats, F* dst) {
+STAGE(refract_4_floats, F* dst) {
     // Algorithm adapted from https://registry.khronos.org/OpenGL-Refpages/gl4/html/refract.xhtml
     F *incident = dst + 0;
     F *normal = dst + 4;
@@ -4890,23 +4676,23 @@ SI void smoothstep_fn(F* edge0, F* edge1, F* x) {
 }
 
 #define DECLARE_N_WAY_TERNARY_FLOAT(name)                                \
-    STAGE_TAIL(name##_n_floats, SkRasterPipeline_TernaryOpCtx* packed) { \
+    STAGE(name##_n_floats, SkRasterPipeline_TernaryOpCtx* packed) { \
         apply_adjacent_ternary_packed<F, &name##_fn>(packed, base);      \
     }
 
 #define DECLARE_TERNARY_FLOAT(name)                                                           \
-    STAGE_TAIL(name##_float, F* p) { apply_adjacent_ternary<F, &name##_fn>(p, p+1, p+2); }    \
-    STAGE_TAIL(name##_2_floats, F* p) { apply_adjacent_ternary<F, &name##_fn>(p, p+2, p+4); } \
-    STAGE_TAIL(name##_3_floats, F* p) { apply_adjacent_ternary<F, &name##_fn>(p, p+3, p+6); } \
-    STAGE_TAIL(name##_4_floats, F* p) { apply_adjacent_ternary<F, &name##_fn>(p, p+4, p+8); } \
+    STAGE(name##_float, F* p) { apply_adjacent_ternary<F, &name##_fn>(p, p+1, p+2); }    \
+    STAGE(name##_2_floats, F* p) { apply_adjacent_ternary<F, &name##_fn>(p, p+2, p+4); } \
+    STAGE(name##_3_floats, F* p) { apply_adjacent_ternary<F, &name##_fn>(p, p+3, p+6); } \
+    STAGE(name##_4_floats, F* p) { apply_adjacent_ternary<F, &name##_fn>(p, p+4, p+8); } \
     DECLARE_N_WAY_TERNARY_FLOAT(name)
 
 #define DECLARE_TERNARY_INT(name)                                                               \
-    STAGE_TAIL(name##_int, I32* p) { apply_adjacent_ternary<I32, &name##_fn>(p, p+1, p+2); }    \
-    STAGE_TAIL(name##_2_ints, I32* p) { apply_adjacent_ternary<I32, &name##_fn>(p, p+2, p+4); } \
-    STAGE_TAIL(name##_3_ints, I32* p) { apply_adjacent_ternary<I32, &name##_fn>(p, p+3, p+6); } \
-    STAGE_TAIL(name##_4_ints, I32* p) { apply_adjacent_ternary<I32, &name##_fn>(p, p+4, p+8); } \
-    STAGE_TAIL(name##_n_ints, SkRasterPipeline_TernaryOpCtx* packed) {                          \
+    STAGE(name##_int, I32* p) { apply_adjacent_ternary<I32, &name##_fn>(p, p+1, p+2); }    \
+    STAGE(name##_2_ints, I32* p) { apply_adjacent_ternary<I32, &name##_fn>(p, p+2, p+4); } \
+    STAGE(name##_3_ints, I32* p) { apply_adjacent_ternary<I32, &name##_fn>(p, p+3, p+6); } \
+    STAGE(name##_4_ints, I32* p) { apply_adjacent_ternary<I32, &name##_fn>(p, p+4, p+8); } \
+    STAGE(name##_n_ints, SkRasterPipeline_TernaryOpCtx* packed) {                          \
         apply_adjacent_ternary_packed<I32, &name##_fn>(packed, base);                           \
     }
 
@@ -5041,6 +4827,34 @@ STAGE(swizzle, void* ctx) {
             case '0': *o[i] = F0; break;
             case '1': *o[i] = F1; break;
             default:              break;
+        }
+    }
+}
+
+static void start_pipeline(size_t dx, size_t dy,
+                           size_t xlimit, size_t ylimit,
+                           SkRasterPipelineStage* program,
+                           SkSpan<SkRasterPipeline_MemoryCtxPatch> memoryCtxPatches,
+                           uint8_t* tailPointer) {
+    uint8_t unreferencedTail;
+    if (!tailPointer) {
+        tailPointer = &unreferencedTail;
+    }
+    auto start = (Stage)program->fn;
+    const size_t x0 = dx;
+    std::byte* const base = nullptr;
+    for (; dy < ylimit; dy++) {
+        dx = x0;
+        while (dx + N <= xlimit) {
+            start(program,dx,dy,base, F0,F0,F0,F0, F0,F0,F0,F0);
+            dx += N;
+        }
+        if (size_t tail = xlimit - dx) {
+            *tailPointer = tail;
+            patch_memory_contexts(memoryCtxPatches, dx, dy, tail);
+            start(program,dx,dy,base, F0,F0,F0,F0, F0,F0,F0,F0);
+            restore_memory_contexts(memoryCtxPatches, dx, dy, tail);
+            *tailPointer = 0xFF;
         }
     }
 }

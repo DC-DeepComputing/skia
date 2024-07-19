@@ -1,4 +1,4 @@
-489 instructions, 1 invocations
+488 instructions, 1 invocations
 
 [immutable slots]
 i0 = 0x40490FDB (3.14159274)
@@ -430,8 +430,7 @@ copy_slot_unmasked             s = $0
 add_imm_float                  i += 0x3F800000 (1.0)
 copy_slot_unmasked             $0 = i
 cmplt_imm_float                $0 = lessThan($0, 0x40800000 (4.0))
-stack_rewind
-branch_if_no_active_lanes_eq   branch -35 (label 16 at #388) if no lanes of $0 == 0
+branch_if_no_active_lanes_eq   branch -34 (label 16 at #388) if no lanes of $0 == 0
 label                          label 0x0000000F
 copy_slot_unmasked             $0 = s
 max_imm_float                  $0 = max($0, 0)
@@ -496,7 +495,7 @@ copy_uniform                   sparkleColor(3) = in_sparkleColor(3)
 copy_3_slots_unmasked          sparkleColor(0..2) = $0..2
 copy_uniform                   $12 = in_hasMask
 cmpeq_imm_float                $12 = equal($12, 0x3F800000 (1.0))
-branch_if_no_active_lanes_eq   branch +10 (label 18 at #498) if no lanes of $12 == 0xFFFFFFFF
+branch_if_no_active_lanes_eq   branch +10 (label 18 at #497) if no lanes of $12 == 0xFFFFFFFF
 copy_constant                  $0 = 0
 copy_2_slots_unmasked          $1..2 = p
 exchange_src                   swap(src.rgba, $1..4)
@@ -505,7 +504,7 @@ exchange_src                   swap(src.rgba, $1..4)
 copy_slot_unmasked             $1 = $4
 cmplt_float                    $0 = lessThan($0, $1)
 bitwise_and_imm_int            $0 &= 0x3F800000
-jump                           jump +3 (label 19 at #500)
+jump                           jump +3 (label 19 at #499)
 label                          label 0x00000012
 copy_constant                  $0 = 0x3F800000 (1.0)
 label                          label 0x00000013
