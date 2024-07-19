@@ -24,6 +24,8 @@ namespace PipelineStage {
 
         virtual std::string getMainName() { return "main"; }
         virtual std::string getMangledName(const char* name) { return name; }
+        // NOTE: Names of types and functions embedded within the `declaration` and `definition`
+        // strings have already been mangled by getMangledName().
         virtual void   defineFunction(const char* declaration, const char* body, bool isMain) = 0;
         virtual void   declareFunction(const char* declaration) = 0;
         virtual void   defineStruct(const char* definition) = 0;
@@ -36,6 +38,14 @@ namespace PipelineStage {
 
         virtual std::string toLinearSrgb(std::string color) = 0;
         virtual std::string fromLinearSrgb(std::string color) = 0;
+
+        // Optionally augment the function signature for non-main, non-built-in functions declared
+        // by the program. If `isInvocation` is true, `parameterList` and the return value
+        // represent the comma-separated list of expressions passed into the function call.
+        // If `isInvocation` is false, they represent the list of typed variable parameters.
+        virtual std::string functionParameters(const char* parameterList, bool isInvocation) {
+            return parameterList;
+        }
     };
 
     /*

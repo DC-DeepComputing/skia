@@ -261,12 +261,23 @@ void PipelineStageCodeGenerator::writeFunctionCall(const FunctionCall& c) {
         this->write(this->functionName(function));
     }
 
-    this->write("(");
-    auto separator = SkSL::String::Separator();
-    for (const auto& arg : c.arguments()) {
-        this->write(separator());
-        this->writeExpression(*arg, Precedence::kSequence);
+
+    std::string paramString;
+    {
+        AutoOutputBuffer paramBuffer(this);
+        auto separator = SkSL::String::Separator();
+        for (const auto& arg : c.arguments()) {
+            this->write(separator());
+            this->writeExpression(*arg, Precedence::kSequence);
+        }
+        paramString = paramBuffer.fBuffer.str();
     }
+    if (!function.isBuiltin() && !function.isMain()) {
+        paramString = fCallbacks->functionParameters(paramString.c_str(), /*isInvocation=*/true);
+    }
+
+    this->write("(");
+    this->write(paramString);
     this->write(")");
 }
 
@@ -392,21 +403,24 @@ void PipelineStageCodeGenerator::writeFunction(const FunctionDefinition& f) {
 
 std::string PipelineStageCodeGenerator::functionDeclaration(const FunctionDeclaration& decl) {
     // This is similar to decl.description(), but substitutes a mangled name, and handles modifiers
-    // on the function (e.g. `inline`) and its parameters (e.g. `inout`).
-    std::string declString =
-            String::printf("%s%s%s %s(",
-                           decl.modifierFlags().isInline() ? "inline " : "",
-                           decl.modifierFlags().isNoInline() ? "noinline " : "",
-                           this->typeName(decl.returnType()).c_str(),
-                           this->functionName(decl).c_str());
-    auto separator = SkSL::String::Separator();
-    for (const Variable* p : decl.parameters()) {
-        declString.append(separator());
-        declString.append(this->modifierString(p->modifierFlags()));
-        declString.append(this->typedVariable(p->type(), p->name()).c_str());
-    }
+    // on the function (e.g. `inline`) and its parameters (e.g. `inout`). It also allows the
+    // callbacks to add parameters to the function signature.
 
-    return declString + ")";
+    std::string paramString;
+    auto separator = SkSL::String::Separator();
+
+    for (const Variable* p : decl.parameters()) {
+        paramString.append(separator());
+        paramString.append(this->modifierString(p->modifierFlags()));
+        paramString.append(this->typedVariable(p->type(), p->name()).c_str());
+    }
+    paramString = fCallbacks->functionParameters(paramString.c_str(), /*isInvocation=*/false);
+    return String::printf("%s%s%s %s(%s)",
+                          decl.modifierFlags().isInline() ? "inline " : "",
+                          decl.modifierFlags().isNoInline() ? "noinline " : "",
+                          this->typeName(decl.returnType()).c_str(),
+                          this->functionName(decl).c_str(),
+                          paramString.c_str());
 }
 
 void PipelineStageCodeGenerator::writeFunctionDeclaration(const FunctionDeclaration& decl) {
