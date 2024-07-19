@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d7495d42_74a18544",
+        "filename": "src/opts/SkOpts_SetTarget.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-19T18:25:46Z",
+      "side": 1,
+      "message": "nit: line \u003e100 characters",
+      "range": {
+        "startLine": 136,
+        "startChar": 0,
+        "endLine": 136,
+        "endChar": 108
+      },
+      "revId": "7ef2095c665d3867e299f453c6ea4ab609776628",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
