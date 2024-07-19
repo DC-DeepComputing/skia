@@ -1,5 +1,23 @@
 {
-  "comments": [],
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "66ebe33b_1300f93d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8036
+      },
+      "writtenOn": "2024-07-19T08:06:35Z",
+      "side": 1,
+      "message": "Kaylee, FYI this roll seems to be failing because of an issue unrelated to Dawn\n\n`../../../../../../skia/src/gpu/ganesh/mtl/GrMtlCaps.mm:221: fatal error: \"check([device supportsFamily:MTLGPUFamilyMac2])\"`",
+      "revId": "519e56945a4ef3c07ca5fbf9d16057ac2c7f6732",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ],
   "submitRequirementResults": [
     {
       "submitRequirement": {
