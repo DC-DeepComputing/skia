@@ -16,6 +16,24 @@
       "message": "Geoff, do you want to tackle this inside ANGLE instead? This is broken on the Skia tree since ANGLE rolled.",
       "revId": "65ac32dd4dff119560e06b4210f4a790304aa628",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "696eed63_68e4b16c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 7100
+      },
+      "writtenOn": "2024-07-19T16:24:41Z",
+      "side": 1,
+      "message": "I will fix it in ANGLE as well but we don\u0027t have nvidia GL driver version parsing right now and I need to test it out.",
+      "parentUuid": "67ea6523_59caa8cf",
+      "revId": "65ac32dd4dff119560e06b4210f4a790304aa628",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
