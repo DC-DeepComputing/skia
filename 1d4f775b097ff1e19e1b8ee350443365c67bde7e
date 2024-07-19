@@ -51,6 +51,24 @@
       "parentUuid": "7715f6f6_ee4247c6",
       "revId": "1d4f775b097ff1e19e1b8ee350443365c67bde7e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f52065f2_bce5e4ec",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-19T20:00:33Z",
+      "side": 1,
+      "message": "I am averse to global variables for human-authored code. But at the compiler level, we don\u0027t need to worry that the code generator will get mixed up and put in the wrong name, or worry that we will clutter the namespace. I\u0027m also hesitant to make the pipeline-stage callbacks more complex. I think it\u0027d be worth trying a global?",
+      "parentUuid": "06cbb2f0_577e0194",
+      "revId": "1d4f775b097ff1e19e1b8ee350443365c67bde7e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
