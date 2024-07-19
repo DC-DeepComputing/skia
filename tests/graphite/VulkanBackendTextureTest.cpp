@@ -35,13 +35,13 @@ DEF_GRAPHITE_TEST_FOR_VULKAN_CONTEXT(VulkanBackendTextureSimpleCreationTest, rep
     textureInfo.fImageUsageFlags = VK_IMAGE_USAGE_SAMPLED_BIT;
     textureInfo.fSharingMode = VK_SHARING_MODE_EXCLUSIVE;
 
-    auto beTexture = recorder->createBackendTexture(kSize, textureInfo);
+    auto beTexture = recorder->createBackendTexture(kSize, TextureInfos::MakeVulkan(textureInfo));
     REPORTER_ASSERT(reporter, beTexture.isValid());
     recorder->deleteBackendTexture(beTexture);
 
     // It should also pass if we set the usage to be a render target
     textureInfo.fImageUsageFlags |= VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
-    beTexture = recorder->createBackendTexture(kSize, textureInfo);
+    beTexture = recorder->createBackendTexture(kSize, TextureInfos::MakeVulkan(textureInfo));
     REPORTER_ASSERT(reporter, beTexture.isValid());
     recorder->deleteBackendTexture(beTexture);
 }
@@ -62,7 +62,8 @@ DEF_GRAPHITE_TEST_FOR_VULKAN_CONTEXT(VulkanBackendTextureCopyVariableTest, repor
     textureInfo.fImageUsageFlags = VK_IMAGE_USAGE_SAMPLED_BIT;
     textureInfo.fSharingMode = VK_SHARING_MODE_EXCLUSIVE;
 
-    BackendTexture beTexture = recorder->createBackendTexture(kSize, textureInfo);
+    BackendTexture beTexture =
+            recorder->createBackendTexture(kSize, TextureInfos::MakeVulkan(textureInfo));
     REPORTER_ASSERT(reporter, beTexture.isValid());
 
     BackendTexture beTexture2;
