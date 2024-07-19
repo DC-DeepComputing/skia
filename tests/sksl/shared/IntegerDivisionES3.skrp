@@ -1,4 +1,4 @@
-70 instructions
+67 instructions
 
 store_src_rg                   coords = src.rg
 init_lane_masks                CondMask = LoopMask = RetMask = true
@@ -10,11 +10,11 @@ cast_to_int_from_float         $0 = FloatToInt($0)
 copy_slot_unmasked             one = $0
 copy_slot_unmasked             x = zero
 store_loop_mask                $0 = LoopMask
-jump                           jump +57 (label 1 at #68)
+jump                           jump +55 (label 1 at #66)
 label                          label 0x00000002
 copy_slot_unmasked             y = one
 store_loop_mask                $1 = LoopMask
-jump                           jump +42 (label 4 at #57)
+jump                           jump +41 (label 4 at #56)
 label                          label 0x00000005
 copy_slot_unmasked             _0_x = x
 copy_constant                  _1_result = 0
@@ -32,8 +32,7 @@ label                          label 0x00000007
 copy_2_slots_unmasked          $3..4 = y, _0_x
 cmple_int                      $3 = lessThanEqual($3, $4)
 merge_loop_mask                LoopMask &= $3
-stack_rewind
-branch_if_any_lanes_active     branch_if_any_lanes_active -13 (label 8 at #21)
+branch_if_any_lanes_active     branch_if_any_lanes_active -12 (label 8 at #21)
 label                          label 0x00000006
 load_loop_mask                 LoopMask = $2
 store_condition_mask           $2 = CondMask
@@ -60,8 +59,7 @@ label                          label 0x00000004
 copy_slot_unmasked             $2 = y
 cmplt_imm_int                  $2 = lessThan($2, 0x00000064)
 merge_loop_mask                LoopMask &= $2
-stack_rewind
-branch_if_any_lanes_active     branch_if_any_lanes_active -46 (label 5 at #16)
+branch_if_any_lanes_active     branch_if_any_lanes_active -44 (label 5 at #16)
 label                          label 0x00000003
 load_loop_mask                 LoopMask = $1
 copy_slot_unmasked             $1 = x
@@ -71,8 +69,7 @@ label                          label 0x00000001
 copy_slot_unmasked             $1 = x
 cmplt_imm_int                  $1 = lessThan($1, 0x00000064)
 merge_loop_mask                LoopMask &= $1
-stack_rewind
-branch_if_any_lanes_active     branch_if_any_lanes_active -61 (label 2 at #12)
+branch_if_any_lanes_active     branch_if_any_lanes_active -58 (label 2 at #12)
 label                          label 0
 load_loop_mask                 LoopMask = $0
 copy_4_uniforms                $0..3 = colorGreen

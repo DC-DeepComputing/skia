@@ -274,12 +274,6 @@ private:
                                      ProgramOp stage, std::byte* basePtr, SkRPOffset dst,
                                      SkRPOffset src0, SkRPOffset src1, int numSlots) const;
 
-    // Appends a stack_rewind op on platforms where it is needed (when SK_HAS_MUSTTAIL is not set).
-    void appendStackRewindForNonTailcallers(skia_private::TArray<Stage>* pipeline) const;
-
-    // Appends a stack_rewind op unilaterally.
-    void appendStackRewind(skia_private::TArray<Stage>* pipeline) const;
-
     class Dumper;
     friend class Dumper;
 

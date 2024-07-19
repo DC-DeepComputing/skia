@@ -1,4 +1,4 @@
-106 instructions
+103 instructions
 
 [immutable slots]
 i0 = 0x3F800000 (1.0)
@@ -64,20 +64,17 @@ copy_to_indirect_masked        Indirect(data.outer[0].inner[0].values(0) + $15) 
 add_imm_int                    k += 0x00000001
 copy_slot_unmasked             $0 = k
 cmplt_imm_int                  $0 = lessThan($0, 0x00000003)
-stack_rewind
-branch_if_no_active_lanes_eq   branch -17 (label 5 at #20) if no lanes of $0 == 0
+branch_if_no_active_lanes_eq   branch -16 (label 5 at #20) if no lanes of $0 == 0
 label                          label 0x00000004
 add_imm_int                    j += 0x00000001
 copy_slot_unmasked             $0 = j
 cmplt_imm_int                  $0 = lessThan($0, 0x00000003)
-stack_rewind
-branch_if_no_active_lanes_eq   branch -29 (label 3 at #14) if no lanes of $0 == 0
+branch_if_no_active_lanes_eq   branch -27 (label 3 at #14) if no lanes of $0 == 0
 label                          label 0x00000002
 add_imm_int                    i += 0x00000001
 copy_slot_unmasked             $0 = i
 cmplt_imm_int                  $0 = lessThan($0, 0x00000003)
-stack_rewind
-branch_if_no_active_lanes_eq   branch -37 (label 1 at #12) if no lanes of $0 == 0
+branch_if_no_active_lanes_eq   branch -34 (label 1 at #12) if no lanes of $0 == 0
 label                          label 0
 copy_slot_unmasked             $0 = data.valueAtRoot
 cmpeq_imm_int                  $0 = equal($0, 0x000004D2)

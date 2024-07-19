@@ -152,7 +152,6 @@
 // includes all of SkSL.
 #define SK_RASTER_PIPELINE_OPS_HIGHP_ONLY(M)                                   \
     M(callback)                                                                \
-    M(stack_checkpoint) M(stack_rewind)                                        \
     M(unbounded_set_rgb) M(unbounded_uniform_color)                            \
     M(unpremul) M(unpremul_polar) M(dither)                                    \
     M(load_16161616) M(load_16161616_dst) M(store_16161616) M(gather_16161616) \

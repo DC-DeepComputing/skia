@@ -154,22 +154,6 @@ struct SkRasterPipeline_CallbackCtx {
     float* read_from = rgba;
 };
 
-// state shared by stack_checkpoint and stack_rewind
-struct SkRasterPipelineStage;
-
-struct SkRasterPipeline_RewindCtx {
-    float  r[SkRasterPipeline_kMaxStride_highp];
-    float  g[SkRasterPipeline_kMaxStride_highp];
-    float  b[SkRasterPipeline_kMaxStride_highp];
-    float  a[SkRasterPipeline_kMaxStride_highp];
-    float dr[SkRasterPipeline_kMaxStride_highp];
-    float dg[SkRasterPipeline_kMaxStride_highp];
-    float db[SkRasterPipeline_kMaxStride_highp];
-    float da[SkRasterPipeline_kMaxStride_highp];
-    std::byte* base;
-    SkRasterPipelineStage* stage;
-};
-
 struct SkRasterPipeline_GradientCtx {
     size_t stopCount;
     float* fs[4];

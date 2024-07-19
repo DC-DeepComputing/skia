@@ -1,4 +1,4 @@
-29 instructions
+27 instructions
 
 store_src_rg                   coords = src.rg
 init_lane_masks                CondMask = LoopMask = RetMask = true
@@ -22,8 +22,7 @@ label                          label 0x00000005
 copy_uniform                   $1 = colorWhite(0)
 cmpeq_imm_float                $1 = equal($1, 0x40000000 (2.0))
 merge_loop_mask                LoopMask &= $1
-stack_rewind
-branch_if_any_lanes_active     branch_if_any_lanes_active -6 (label 6 at #18)
+branch_if_any_lanes_active     branch_if_any_lanes_active -5 (label 6 at #18)
 label                          label 0x00000004
 load_loop_mask                 LoopMask = $0
 store_loop_mask                $0 = LoopMask
@@ -31,8 +30,7 @@ label                          label 0x00000008
 copy_uniform                   $1 = colorWhite(0)
 cmpeq_imm_float                $1 = equal($1, 0x40000000 (2.0))
 merge_loop_mask                LoopMask &= $1
-stack_rewind
-branch_if_any_lanes_active     branch_if_any_lanes_active -5 (label 8 at #28)
+branch_if_any_lanes_active     branch_if_any_lanes_active -4 (label 8 at #27)
 label                          label 0x00000007
 load_loop_mask                 LoopMask = $0
 copy_4_slots_unmasked          $0..3 = color
