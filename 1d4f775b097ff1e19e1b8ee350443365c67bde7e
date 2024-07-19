@@ -87,6 +87,24 @@
       "parentUuid": "f52065f2_bce5e4ec",
       "revId": "1d4f775b097ff1e19e1b8ee350443365c67bde7e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e0a22c16_f2f4e047",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-19T20:32:06Z",
+      "side": 1,
+      "message": "We pass around the globals by reference, not by copy, so even if the compiler can\u0027t figure out how to avoid the copy, it\u0027s still efficient. If we are passing around a copy of the entire uniforms struct and the compiler can\u0027t eliminate the copy for whatever reason, performance falls off a cliff.\n\nSince you\u0027ve already managed to code it up and it works at the same level of performance, would you be OK with doing it that way?",
+      "parentUuid": "7ed11945_09d21808",
+      "revId": "1d4f775b097ff1e19e1b8ee350443365c67bde7e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
