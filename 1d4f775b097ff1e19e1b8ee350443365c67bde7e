@@ -16,6 +16,23 @@
       "message": "John, can you review the SkSLPipelineStageCodeGenerator callback changes in PS4-\u003ePS5?\n\nRob and James reviewed the rest of the graphite changes, but I had missed a case where runtime effects could declare functions that referenced their own uniforms. This lets the graphite shader code gen add the SSBO struct parameter to those functions so that we can get rid of the global index variable.",
       "revId": "1d4f775b097ff1e19e1b8ee350443365c67bde7e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7715f6f6_ee4247c6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-19T19:52:12Z",
+      "side": 1,
+      "message": "Is there any reason that we can\u0027t just copy the uniform data to a global, instead of putting it on the stack and then passing it around across all the functions?\n\nPassing a function parameter around is technically a copy that we are hoping the compiler might optimize away, but there\u0027s a real risk that the compiler fails to eliminate the copy. Using a global eliminates that risk.\n\nIf this were Metal or something we could pass a reference but GLSL is purely pass-by-copy.",
+      "revId": "1d4f775b097ff1e19e1b8ee350443365c67bde7e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
