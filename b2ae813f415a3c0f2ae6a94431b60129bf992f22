@@ -46,6 +46,30 @@
       },
       "revId": "b2ae813f415a3c0f2ae6a94431b60129bf992f22",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c3eac4e_fe2b6b51",
+        "filename": "src/gpu/ganesh/mtl/GrMtlCaps.mm",
+        "patchSetId": 1
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-07-19T17:43:24Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "77064cce_b86b8ced",
+      "range": {
+        "startLine": 223,
+        "startChar": 49,
+        "endLine": 223,
+        "endChar": 53
+      },
+      "revId": "b2ae813f415a3c0f2ae6a94431b60129bf992f22",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
