@@ -16,6 +16,29 @@
       "message": "FYI: nscobie@ and nicolettep@ since I think Android Framework uses the Graphite Vulkan backend.",
       "revId": "9300fb8147196fd7a11f5f7b68aab3c13a26da52",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "28b035a0_5f686331",
+        "filename": "src/gpu/graphite/vk/VulkanTextureInfo.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-19T18:24:17Z",
+      "side": 1,
+      "message": "This is unfortunate, what local variable is it complaining about? It\u0027s not obvious to me why just returning a `const VulkanTextureSpec\u0026` would be invalid here since it\u0027s stored on `info`.",
+      "range": {
+        "startLine": 99,
+        "startChar": 0,
+        "endLine": 100,
+        "endChar": 45
+      },
+      "revId": "9300fb8147196fd7a11f5f7b68aab3c13a26da52",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
