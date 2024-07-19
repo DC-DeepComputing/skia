@@ -76,7 +76,7 @@ protected:
             // draw a yellow rect through a rect clip
             canvas->save();
                 emulateDeviceRestriction(canvas, SkIRect::MakeLTRB(100, 100, 300, 300));
-                canvas->drawColor(SK_ColorGREEN);
+                canvas->drawColor(SkColorSetARGB(128, 0, 255, 0));
                 emulateClipRectReplace(canvas, SkRect::MakeLTRB(100, 200, 400, 500), fDoAAClip);
                 canvas->drawRect(SkRect::MakeLTRB(100, 200, 400, 500), p);
             canvas->restore();
@@ -84,7 +84,7 @@ protected:
             // draw a yellow rect through a diamond clip
             canvas->save();
                 emulateDeviceRestriction(canvas, SkIRect::MakeLTRB(500, 100, 800, 300));
-                canvas->drawColor(SK_ColorGREEN);
+                canvas->drawColor(SkColorSetARGB(128, 0, 255, 0));
 
                 SkPath pathClip = SkPath::Polygon({
                     {650, 200},
@@ -99,7 +99,7 @@ protected:
             // draw a yellow rect through a round rect clip
             canvas->save();
                 emulateDeviceRestriction(canvas, SkIRect::MakeLTRB(500, 500, 800, 700));
-                canvas->drawColor(SK_ColorGREEN);
+                canvas->drawColor(SkColorSetARGB(128, 0, 255, 0));
 
                 emulateClipRRectReplace(
                         canvas, SkRRect::MakeOval(SkRect::MakeLTRB(500, 600, 900, 750)), fDoAAClip);
@@ -111,7 +111,7 @@ protected:
             canvas->save();
                 canvas->clipRect(SkRect::MakeLTRB(100, 400, 300, 750),
                                  SkClipOp::kIntersect, fDoAAClip);
-                canvas->drawColor(SK_ColorGREEN);
+                canvas->drawColor(SkColorSetARGB(128, 0, 255, 0));
                 // should not affect the device-space clip
                 canvas->rotate(20.f);
                 canvas->translate(50.f, 50.f);
