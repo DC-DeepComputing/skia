@@ -34,6 +34,24 @@
       "parentUuid": "88d0c3ed_c300fbfc",
       "revId": "946386390b7323d33d06316fe23c330883f1930e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e088641d_4de5241d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-07-19T15:50:51Z",
+      "side": 1,
+      "message": "Yeah, apple clang 9 (shipped with xcode 9) ~\u003d LLVM 5, and those are both ancient.",
+      "parentUuid": "522955a8_a88330c8",
+      "revId": "946386390b7323d33d06316fe23c330883f1930e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
