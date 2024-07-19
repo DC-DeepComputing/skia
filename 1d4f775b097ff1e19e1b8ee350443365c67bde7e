@@ -69,6 +69,24 @@
       "parentUuid": "06cbb2f0_577e0194",
       "revId": "1d4f775b097ff1e19e1b8ee350443365c67bde7e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ed11945_09d21808",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-19T20:25:33Z",
+      "side": 1,
+      "message": "I tested it out and saw now perf difference. Ironically, the sksl-\u003emsl codegeneration defines a `Globals` struct and all global variables become fields of a stack-allocated instance of that; any reference to a global then has its signature augmented to include a reference to that struct.\n\nSo it ends up being equivalent to what I was trying to do here at the sksl level but guarantees that we are passing a reference around to the stack variable. The main benefit of then keeping a global `uniforms` value in this code gen is that the callbacks remain simple and we aren\u0027t changing any signatures to include extra parameters.",
+      "parentUuid": "f52065f2_bce5e4ec",
+      "revId": "1d4f775b097ff1e19e1b8ee350443365c67bde7e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
