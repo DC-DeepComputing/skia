@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca913d6f_3fdcd51d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-19T19:28:03Z",
+      "side": 1,
+      "message": "John, can you review the SkSLPipelineStageCodeGenerator callback changes in PS4-\u003ePS5?\n\nRob and James reviewed the rest of the graphite changes, but I had missed a case where runtime effects could declare functions that referenced their own uniforms. This lets the graphite shader code gen add the SSBO struct parameter to those functions so that we can get rid of the global index variable.",
+      "revId": "1d4f775b097ff1e19e1b8ee350443365c67bde7e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
