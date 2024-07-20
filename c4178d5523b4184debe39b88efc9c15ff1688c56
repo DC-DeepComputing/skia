@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "00644e42_6a8d9305",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 5297,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-20T00:21:21Z",
+      "side": 1,
+      "message": "`std::unique_ptr\u003cSynthesizedTextureSamplerPair\u003e*`\n\nhttp://go/cstyle#Type_deduction\n\n\"Use type deduction only if it makes the code clearer to readers who aren\u0027t familiar with the project, or if it makes the code safer. Do not use it merely to avoid the inconvenience of writing an explicit type.\"",
+      "range": {
+        "startLine": 5297,
+        "startChar": 8,
+        "endLine": 5297,
+        "endChar": 12
+      },
+      "revId": "c4178d5523b4184debe39b88efc9c15ff1688c56",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65ec5c45_4d97418f",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 5298,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-20T00:21:21Z",
+      "side": 1,
+      "message": "tiny nit: missing space after comma",
+      "range": {
+        "startLine": 5298,
+        "startChar": 48,
+        "endLine": 5298,
+        "endChar": 49
+      },
+      "revId": "c4178d5523b4184debe39b88efc9c15ff1688c56",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
