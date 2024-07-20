@@ -12,9 +12,12 @@
 #include "src/sksl/SkSLDefines.h"
 #include "src/sksl/SkSLProgramKind.h"
 
+#include <optional>
 #include <vector>
 
 namespace SkSL {
+
+enum class ModuleType : int8_t;
 
 /**
  * Holds the compiler settings for a program.
@@ -80,9 +83,13 @@ struct ProgramSettings {
  */
 struct ProgramConfig {
     /** True if we are currently processing one of the built-in SkSL include modules. */
-    bool fIsBuiltinCode;
+    std::optional<ModuleType> fModuleType;
     ProgramKind fKind;
     ProgramSettings fSettings;
+
+    bool isBuiltinCode() {
+        return fModuleType.has_value();
+    }
 
     // When enforcesSkSLVersion() is true, this determines the available feature set that will be
     // enforced. This is set automatically when the `#version` directive is parsed.
