@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d3abbf7e_5b27a609",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-20T13:31:43Z",
+      "side": 1,
+      "message": "\"which is copied into a global variable\"? Or something?",
+      "range": {
+        "startLine": 254,
+        "startChar": 54,
+        "endLine": 254,
+        "endChar": 55
+      },
+      "revId": "53b6e5c93cf4dae0248f040731d171fc16c814b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
