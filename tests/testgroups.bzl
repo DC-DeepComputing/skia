@@ -116,6 +116,7 @@ CORE_TESTS = [
     "SkColor4fTest.cpp",
     "SkColorSpaceXformStepsTest.cpp",
     "SkContainersTest.cpp",
+    "SkcmsTransformTest.cpp",
     "SkDOMTest.cpp",
     "SkEnumBitMaskTest.cpp",
     "SkGaussFilterTest.cpp",
