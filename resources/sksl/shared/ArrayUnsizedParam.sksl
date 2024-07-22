@@ -10,11 +10,15 @@ noinline half4 getColor(float[] arr) {
     return half4(arr[0], arr[1], arr[2], arr[3]);
 }
 
+noinline half4 getColor_helper(float[] arr) {
+    return getColor(arr);
+}
+
 noinline half4 getColorSecond(float arr[]) {
     return half4(arr[0], arr[1], arr[2], arr[3]);
 }
 
 void main() {
-    sk_FragColor = getColor(testArr);
+    sk_FragColor = getColor_helper(testArr);
     sk_FragColor = getColorSecond(testArr);
 }

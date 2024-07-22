@@ -25,33 +25,36 @@ error: 10: expected array, but found 'float'
     return half4(arr[0], arr[1], arr[2], arr[3]);
                                          ^^^
 error: 13: unsized arrays are not permitted here
+noinline half4 getColor_helper(float[] arr) {
+                                    ^^
+error: 17: unsized arrays are not permitted here
 noinline half4 getColorSecond(float arr[]) {
                               ^^^^^^^^^^^
-error: 14: expected array, but found 'float'
+error: 18: expected array, but found 'float'
     return half4(arr[0], arr[1], arr[2], arr[3]);
                  ^^^
-error: 14: expected array, but found 'float'
+error: 18: expected array, but found 'float'
     return half4(arr[0], arr[1], arr[2], arr[3]);
                          ^^^
-error: 14: expected array, but found 'float'
+error: 18: expected array, but found 'float'
     return half4(arr[0], arr[1], arr[2], arr[3]);
                                  ^^^
-error: 14: expected array, but found 'float'
+error: 18: expected array, but found 'float'
     return half4(arr[0], arr[1], arr[2], arr[3]);
                                          ^^^
-error: 17: 'main' must return: 'vec4', 'float4', or 'half4'
+error: 21: 'main' must return: 'vec4', 'float4', or 'half4'
 void main() {
 ^^^^^^^^^^^
-error: 18: unknown identifier 'sk_FragColor'
-    sk_FragColor = getColor(testArr);
+error: 22: unknown identifier 'sk_FragColor'
+    sk_FragColor = getColor_helper(testArr);
     ^^^^^^^^^^^^
-error: 18: unknown identifier 'testArr'
-    sk_FragColor = getColor(testArr);
-                            ^^^^^^^
-error: 19: unknown identifier 'sk_FragColor'
+error: 22: unknown identifier 'testArr'
+    sk_FragColor = getColor_helper(testArr);
+                                   ^^^^^^^
+error: 23: unknown identifier 'sk_FragColor'
     sk_FragColor = getColorSecond(testArr);
     ^^^^^^^^^^^^
-error: 19: unknown identifier 'testArr'
+error: 23: unknown identifier 'testArr'
     sk_FragColor = getColorSecond(testArr);
                                   ^^^^^^^
-18 errors
+19 errors
