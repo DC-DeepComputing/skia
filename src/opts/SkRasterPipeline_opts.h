@@ -4884,6 +4884,53 @@ static void start_pipeline(size_t dx, size_t dy,
     }
 }
 
+#if 0
+static void exec_pipeline(size_t dx, size_t dy,
+                           size_t xlimit, size_t ylimit,
+                           SkRasterPipelineStage* program,
+                           SkSpan<SkRasterPipeline_MemoryCtxPatch> memoryCtxPatches,
+                           uint8_t* tailPointer) {
+    // Pipeline state variables: (reset inside loop!)
+    F r, g, b, a, dr, dg, db, da;
+    std::byte* const base = nullptr;
+
+    // First, an array of all the op labels, indexed by the op enum:
+    static constexpr void* kOpLabels[] = {
+#define M(op) && l_ ## op,
+        SK_RASTER_PIPELINE_OPS_ALL(M)
+#undef M
+    };
+
+    // Next, all of the "simple" ops:
+#define M(op) \
+    l_##op: op##_k(Ctx{program}, dx, dy, base, r, g, b, a, dr, dg, db, da); \
+    program++; \
+
+
+
+    uint8_t unreferencedTail;
+    if (!tailPointer) {
+        tailPointer = &unreferencedTail;
+    }
+    auto start = (Stage)program->fn;
+    const size_t x0 = dx;
+    for (; dy < ylimit; dy++) {
+        dx = x0;
+        while (dx + N <= xlimit) {
+            start(program,dx,dy,base, F0,F0,F0,F0, F0,F0,F0,F0);
+            dx += N;
+        }
+        if (size_t tail = xlimit - dx) {
+            *tailPointer = tail;
+            patch_memory_contexts(memoryCtxPatches, dx, dy, tail);
+            start(program,dx,dy,base, F0,F0,F0,F0, F0,F0,F0,F0);
+            restore_memory_contexts(memoryCtxPatches, dx, dy, tail);
+            *tailPointer = 0xFF;
+        }
+    }
+}
+#endif
+
 namespace lowp {
 #if defined(JUMPER_IS_SCALAR) || defined(SK_ENABLE_OPTIMIZE_SIZE) || \
         defined(SK_BUILD_FOR_GOOGLE3) || defined(SK_DISABLE_LOWP_RASTER_PIPELINE)
