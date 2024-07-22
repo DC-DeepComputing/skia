@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ad1c3aaf_c05ef075",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-07-22T20:31:14Z",
+      "side": 1,
+      "message": "These are some updates that were spurred by compiler complaints when I did a goof and included a src/ file from within include/ where we have stricter compiler settings. Although I fixed that (thanks John for identifying), I figured it might be a good idea to land these changes anyway.",
+      "revId": "2413145c327910c526eff41ced34d9d0bc3570e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
