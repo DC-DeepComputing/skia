@@ -20,6 +20,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b4f89607_145b1a04",
+        "filename": "resources/sksl/errors/ArrayUnspecifiedDimensions.sksl",
+        "patchSetId": 11
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-22T19:13:48Z",
+      "side": 1,
+      "message": "Please add tests for these various equivalent forms of specifying an unsized array (both of built-in types and of struct-based types).",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 0
+      },
+      "revId": "1dfff01a9c8388e100cd5d8163fd6ff5789da8bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64ee7248_01093ebf",
+        "filename": "src/sksl/ir/SkSLFunctionDefinition.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-22T19:13:48Z",
+      "side": 1,
+      "message": "This part of the comment can be deleted; even if we added SkRP support for dynamically sized arrays somehow, we wouldn\u0027t be able to assign a constant number of slots without more information.",
+      "range": {
+        "startLine": 115,
+        "startChar": 37,
+        "endLine": 115,
+        "endChar": 82
+      },
+      "revId": "1dfff01a9c8388e100cd5d8163fd6ff5789da8bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "127f560e_231bea14",
         "filename": "tests/sksl/shared/ArrayUnsizedParam.glsl",
         "patchSetId": 11
