@@ -249,26 +249,26 @@ protected:
     }
 
     void onDraw(SkCanvas* canvas) override {
-        auto draw_image = [canvas](SkImage* image, const SkSamplingOptions& sampling) -> SkSize {
-            if (!image) {
-                return {0, 0};
-            }
-            canvas->drawImage(image, 0, 0, sampling, nullptr);
-            return {SkIntToScalar(image->width()), SkIntToScalar(image->height())};
-        };
-
-        auto draw_image_rect = [canvas](SkImage* image,
-                                        const SkSamplingOptions& sampling) -> SkSize {
-            if (!image) {
-                return {0, 0};
-            }
-            auto subset = SkRect::Make(image->dimensions());
-            subset.inset(subset.width() * .05f, subset.height() * .1f);
-            auto dst = SkRect::MakeWH(subset.width(), subset.height());
-            canvas->drawImageRect(image, subset, dst, sampling, nullptr,
-                                  SkCanvas::kStrict_SrcRectConstraint);
-            return {dst.width(), dst.height()};
-        };
+//        auto draw_image = [canvas](SkImage* image, const SkSamplingOptions& sampling) -> SkSize {
+//            if (!image) {
+//                return {0, 0};
+//            }
+//            canvas->drawImage(image, 0, 0, sampling, nullptr);
+//            return {SkIntToScalar(image->width()), SkIntToScalar(image->height())};
+//        };
+//
+//        auto draw_image_rect = [canvas](SkImage* image,
+//                                        const SkSamplingOptions& sampling) -> SkSize {
+//            if (!image) {
+//                return {0, 0};
+//            }
+//            auto subset = SkRect::Make(image->dimensions());
+//            subset.inset(subset.width() * .05f, subset.height() * .1f);
+//            auto dst = SkRect::MakeWH(subset.width(), subset.height());
+//            canvas->drawImageRect(image, subset, dst, sampling, nullptr,
+//                                  SkCanvas::kStrict_SrcRectConstraint);
+//            return {dst.width(), dst.height()};
+//        };
 
         auto draw_image_shader = [canvas](SkImage* image,
                                           const SkSamplingOptions& sampling) -> SkSize {
@@ -289,10 +289,11 @@ protected:
         int imageIndex = 0;
         using DrawSig = SkSize(SkImage* image, const SkSamplingOptions&);
         using DF = std::function<DrawSig>;
-        for (const auto& draw : {DF(draw_image), DF(draw_image_rect), DF(draw_image_shader)}) {
+        for (const auto& draw : {//DF(draw_image), DF(draw_image_rect),
+                DF(draw_image_shader)}) {
             float wForDrawFunc = 0;
             canvas->save();
-            for (auto scale : {1.f, 1.5f, 0.3f}) {
+            for (auto scale : {1.5f}) { //}, 1.5f, 0.3f}) {
                 float hForScale = 0;
                 float wForScale = 0;
                 canvas->save();
@@ -311,14 +312,15 @@ protected:
                         auto s1 = draw(this->getYUVAImage(imageIndex++), sampling);
                         yuvAndRefH = kPad + std::ceil(scale * s1.height());
                     canvas->restore();
-                    canvas->save();
-                        canvas->translate(0, yuvAndRefH);
-                        canvas->scale(scale, scale);
-                        auto s2 = draw(fReferenceImage.get(), sampling);
-                        yuvAndRefH += std::ceil(scale * s2.height());
-                    canvas->restore();
+                    // canvas->save();
+                    //     canvas->translate(0, yuvAndRefH);
+                    //     canvas->scale(scale, scale);
+                    //     auto s2 = draw(fReferenceImage.get(), sampling);
+                    //     yuvAndRefH += std::ceil(scale * s2.height());
+                    // canvas->restore();
 
-                    float thisW = std::ceil(scale * std::max(s1.width(), s2.width()));
+                    // float thisW = std::ceil(scale * std::max(s1.width(), s2.width()));
+                    float thisW = std::ceil(scale*s1.width());
 
                     SkPaint outline;
                     outline.setColor(SK_ColorBLACK);
