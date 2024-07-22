@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "50d727cc_ef1171a4",
+        "filename": "src/gpu/graphite/ResourceTypes.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-22T21:01:17Z",
+      "side": 1,
+      "message": "Bit shifting promotes the type up to the basic integral type anyway so this cast is misleading. What was the warning you saw?",
+      "range": {
+        "startLine": 218,
+        "startChar": 33,
+        "endLine": 218,
+        "endChar": 40
+      },
+      "revId": "f53c6fe158e3f0630a47db6eda75ad9c913e538f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0976c9f8_4443f3af",
+        "filename": "src/sksl/SkSLPosition.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-22T21:01:17Z",
+      "side": 1,
+      "message": "What was the warning you saw?",
+      "range": {
+        "startLine": 30,
+        "startChar": 42,
+        "endLine": 30,
+        "endChar": 58
+      },
+      "revId": "f53c6fe158e3f0630a47db6eda75ad9c913e538f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
