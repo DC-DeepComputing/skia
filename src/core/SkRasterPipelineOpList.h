@@ -8,6 +8,8 @@
 #ifndef SkRasterPipelineOpList_DEFINED
 #define SkRasterPipelineOpList_DEFINED
 
+#include <cstdint>
+
 // `SK_RASTER_PIPELINE_OPS_LOWP` defines ops that have parallel lowp and highp implementations.
 #define SK_RASTER_PIPELINE_OPS_LOWP(M)                             \
     M(move_src_dst) M(move_dst_src) M(swap_src_dst)                \
@@ -226,10 +228,11 @@
     SK_RASTER_PIPELINE_OPS_SKSL_BRANCHING(M)
 
 // An enumeration of every RasterPipeline op:
-enum class SkRasterPipelineOp {
+enum class SkRasterPipelineOp : intptr_t {
 #define M(op) op,
     SK_RASTER_PIPELINE_OPS_ALL(M)
 #undef M
+    just_return,
 };
 
 // A count of raster pipeline ops:
