@@ -24,6 +24,7 @@
 #include "src/gpu/graphite/vk/VulkanDescriptorSet.h"
 #include "src/gpu/graphite/vk/VulkanFramebuffer.h"
 #include "src/gpu/graphite/vk/VulkanGraphicsPipeline.h"
+#include "src/gpu/graphite/vk/VulkanGraphiteTypesPriv.h"
 #include "src/gpu/graphite/vk/VulkanRenderPass.h"
 #include "src/gpu/graphite/vk/VulkanSampler.h"
 #include "src/gpu/graphite/vk/VulkanSharedContext.h"
@@ -85,9 +86,9 @@ const VulkanSharedContext* VulkanResourceProvider::vulkanSharedContext() const {
 
 sk_sp<Texture> VulkanResourceProvider::onCreateWrappedTexture(const BackendTexture& texture) {
     sk_sp<VulkanYcbcrConversion> ycbcrConversion;
-    if (texture.info().vulkanTextureSpec().fYcbcrConversionInfo.isValid()) {
+    if (TextureInfos::GetVulkanYcbcrConversionInfo(texture.info()).isValid()) {
         ycbcrConversion = this->findOrCreateCompatibleYcbcrConversion(
-                texture.info().vulkanTextureSpec().fYcbcrConversionInfo);
+                TextureInfos::GetVulkanYcbcrConversionInfo(texture.info()));
         if (!ycbcrConversion) {
             return nullptr;
         }
@@ -128,9 +129,9 @@ sk_sp<Texture> VulkanResourceProvider::createTexture(SkISize size,
                                                      const TextureInfo& info,
                                                      skgpu::Budgeted budgeted) {
     sk_sp<VulkanYcbcrConversion> ycbcrConversion;
-    if (info.vulkanTextureSpec().fYcbcrConversionInfo.isValid()) {
+    if (TextureInfos::GetVulkanYcbcrConversionInfo(info).isValid()) {
         ycbcrConversion = this->findOrCreateCompatibleYcbcrConversion(
-                info.vulkanTextureSpec().fYcbcrConversionInfo);
+                TextureInfos::GetVulkanYcbcrConversionInfo(info));
         if (!ycbcrConversion) {
             return nullptr;
         }
@@ -181,7 +182,7 @@ sk_sp<Sampler> VulkanResourceProvider::createSampler(const SamplerDesc& samplerD
 BackendTexture VulkanResourceProvider::onCreateBackendTexture(SkISize dimensions,
                                                               const TextureInfo& info) {
     VulkanTextureInfo vkTexInfo;
-    if (!info.getVulkanTextureInfo(&vkTexInfo)) {
+    if (!TextureInfos::GetVulkanTextureInfo(info, &vkTexInfo)) {
         return {};
     }
     VulkanTexture::CreatedImageInfo createdTextureInfo;
