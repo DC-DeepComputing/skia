@@ -22,6 +22,29 @@
       },
       "revId": "d81f3981da2ece42d0f464ebe51bc1d46d8298d8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b919bc9_470af61b",
+        "filename": "src/sksl/codegen/SkSLGLSLCodeGenerator.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 1375,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-22T21:56:08Z",
+      "side": 1,
+      "message": "`Type::kUnsizedArray`",
+      "range": {
+        "startLine": 1375,
+        "startChar": 21,
+        "endLine": 1375,
+        "endChar": 23
+      },
+      "revId": "d81f3981da2ece42d0f464ebe51bc1d46d8298d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
