@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8917c1ea_94e5fc55",
+        "filename": "resources/sksl/shared/ArrayUnsizedParam.sksl",
+        "patchSetId": 13
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-22T21:33:40Z",
+      "side": 1,
+      "message": "Call all six functions so that they are not eliminated as dead code. It doesn\u0027t matter how you use them so long as they appear in the output.\n\nThe versions which take anonymous params can just return zero or something.",
+      "range": {
+        "startLine": 32,
+        "startChar": 19,
+        "endLine": 32,
+        "endChar": 66
+      },
+      "revId": "d81f3981da2ece42d0f464ebe51bc1d46d8298d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
