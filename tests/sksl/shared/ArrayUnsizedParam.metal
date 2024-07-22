@@ -19,6 +19,9 @@ half4 anonymousParam_h4f(const device float* );
 half4 getColor_h4f(const device float* arr) {
     return half4(half(arr[0]), half(arr[1]), half(arr[2]), half(arr[3]));
 }
+half4 getColor_helper_h4f(const device float* arr) {
+    return getColor_h4f(arr);
+}
 half4 getColorSecond_h4f(const device float* arr) {
     return half4(half(arr[0]), half(arr[1]), half(arr[2]), half(arr[3]));
 }
@@ -27,7 +30,7 @@ fragment Outputs fragmentMain(Inputs _in [[stage_in]], const device testStorageB
     (void)_globals;
     Outputs _out;
     (void)_out;
-    _out.sk_FragColor = getColor_h4f(_globals._anonInterface0->testArr);
+    _out.sk_FragColor = getColor_helper_h4f(_globals._anonInterface0->testArr);
     _out.sk_FragColor = getColorSecond_h4f(_globals._anonInterface0->testArr);
     return _out;
 }
