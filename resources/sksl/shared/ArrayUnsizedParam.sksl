@@ -1,0 +1,33 @@
+struct S {
+    int y;
+};
+
+// Unsized array parameters only work with readonly buffers.
+layout(set = 0, binding = 0) readonly buffer testStorageBuffer {
+    float[] testArr;
+};
+layout(set = 0, binding = 1) readonly buffer testStorageBufferStruct {
+    S[] testArrStruct;
+};
+
+// Test that these versions of unsized array parameters compile successfully.
+noinline int unsizedInParameterA(int x[]) { return x[0]; }
+noinline int unsizedInParameterB(S x[]) { return x[0].y; }
+noinline int unsizedInParameterC(int[] x) { return x[0]; }
+noinline int unsizedInParameterD(S[] x) { return x[0].y; }
+noinline void unsizedInParameterE(int[]) {}
+noinline void unsizedInParameterF(S[]) {}
+
+noinline half4 getColor(float[] arr) {
+    return half4(arr[0], arr[1], arr[2], arr[3]);
+}
+
+noinline half4 getColorSecond(float arr[]) {
+    return half4(arr[0], arr[1], arr[2], arr[3]);
+}
+
+void main() {
+    sk_FragColor = getColor(testArr);
+    sk_FragColor = getColorSecond(testArr);
+    sk_FragColor = half4(half(unsizedInParameterD(testArrStruct)));
+}
