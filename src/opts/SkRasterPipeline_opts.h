@@ -16,6 +16,7 @@
 #include "src/base/SkUtils.h"  // unaligned_{load,store}
 #include "src/core/SkRasterPipeline.h"
 #include "src/core/SkRasterPipelineContextUtils.h"
+#include "src/core/SkRasterPipelineOpList.h"
 #include "src/shaders/SkPerlinNoiseShaderType.h"
 #include "src/sksl/tracing/SkSLTraceHook.h"
 
@@ -1486,35 +1487,17 @@ static void restore_memory_contexts(SkSpan<SkRasterPipeline_MemoryCtxPatch> memo
 static constexpr size_t N = sizeof(F) / sizeof(float);
 
 // We're finally going to get to what a Stage function looks like!
-
-using Stage = void(*)(SkRasterPipelineStage* program, size_t dx, size_t dy,
-                      std::byte* base, F,F,F,F, F,F,F,F);
-
-#define DECLARE_STAGE(name, ARG, STAGE_RET, INC, OFFSET)                                     \
-    SI STAGE_RET name##_k(ARG, size_t dx, size_t dy, std::byte*& base,                       \
-                            F& r, F& g, F& b, F& a, F& dr, F& dg, F& db, F& da);             \
-    static void name(SkRasterPipelineStage* program, size_t dx, size_t dy,                   \
-                     std::byte* base, F r, F g, F b, F a, F dr, F dg, F db, F da) {          \
-        OFFSET name##_k(Ctx{program}, dx,dy,base, r,g,b,a, dr,dg,db,da);                     \
-        INC;                                                                                 \
-        auto fn = (Stage)program->fn;                                                        \
-        return fn(program, dx,dy,base, r,g,b,a, dr,dg,db,da);                                \
-    }                                                                                        \
-    SI STAGE_RET name##_k(ARG, size_t dx, size_t dy, std::byte*& base,                       \
-                            F& r, F& g, F& b, F& a, F& dr, F& dg, F& db, F& da)
+#define DECLARE_STAGE(name, ARG, STAGE_RET)                                   \
+    SI STAGE_RET name##_k(ARG, size_t dx, size_t dy, std::byte*& base,        \
+                          F& r, F& g, F& b, F& a, F& dr, F& dg, F& db, F& da)
 
 // A typical stage returns void, and always increments the program counter by 1
 #define STAGE(name, arg) \
-    DECLARE_STAGE(name, arg, void, ++program, /*no offset*/)
+    DECLARE_STAGE(name, arg, void)
 
 // A branch stage returns an integer, which is added directly to the program counter
 #define STAGE_BRANCH(name, arg) \
-    DECLARE_STAGE(name, arg, int, /*no increment*/, program +=)
-
-// just_return() is a simple no-op stage that only exists to end the chain,
-// returning back up to start_pipeline(), and from there to the caller.
-static void just_return(SkRasterPipelineStage*, size_t,size_t, std::byte*,
-                        F,F,F,F, F,F,F,F) {}
+    DECLARE_STAGE(name, arg, int)
 
 // We could start defining normal Stages now.  But first, some helper functions.
 
@@ -4856,30 +4839,58 @@ STAGE(swizzle, void* ctx) {
     }
 }
 
+
+#if 0
+    static void name(SkRasterPipelineStage* program, size_t dx, size_t dy,                   \
+                     std::byte* base, F r, F g, F b, F a, F dr, F dg, F db, F da) {          \
+        OFFSET name##_k(Ctx{program}, dx,dy,base, r,g,b,a, dr,dg,db,da);                     \
+        INC;                                                                                 \
+        auto fn = (Stage)program->fn;                                                        \
+        return fn(program, dx,dy,base, r,g,b,a, dr,dg,db,da);                                \
+    }
+#endif
+
 static void start_pipeline(size_t dx, size_t dy,
                            size_t xlimit, size_t ylimit,
                            SkRasterPipelineStage* program,
                            SkSpan<SkRasterPipeline_MemoryCtxPatch> memoryCtxPatches,
                            uint8_t* tailPointer) {
+    F r, g, b, a, dr, dg, db, da;
     uint8_t unreferencedTail;
     if (!tailPointer) {
         tailPointer = &unreferencedTail;
     }
-    auto start = (Stage)program->fn;
+
     const size_t x0 = dx;
-    std::byte* const base = nullptr;
+    std::byte* base = nullptr;
     for (; dy < ylimit; dy++) {
         dx = x0;
-        while (dx + N <= xlimit) {
-            start(program,dx,dy,base, F0,F0,F0,F0, F0,F0,F0,F0);
+        while (dx < xlimit) {
+            size_t tail = xlimit = dx;
+            if (tail) {
+                *tailPointer = tail;
+                patch_memory_contexts(memoryCtxPatches, dx, dy, tail);
+            }
+            r = g = b = a = dr = dg = db = da = F0;
+            base = nullptr;
+            while (true) {
+                switch (program->op) {
+#define M(op)                                                           \
+    case SkRasterPipelineOp::op:                                        \
+        op##_k(Ctx{program}, dx, dy, base, r, g, b, a, dr, dg, db, da); \
+        break;
+                    SK_RASTER_PIPELINE_OPS_ALL(M)
+#undef M
+                    case SkRasterPipelineOp::just_return:
+                        goto endOfLoop;
+                }
+            }
+        endOfLoop:
+            if (tail) {
+                restore_memory_contexts(memoryCtxPatches, dx, dy, tail);
+                *tailPointer = 0xFF;
+            }
             dx += N;
-        }
-        if (size_t tail = xlimit - dx) {
-            *tailPointer = tail;
-            patch_memory_contexts(memoryCtxPatches, dx, dy, tail);
-            start(program,dx,dy,base, F0,F0,F0,F0, F0,F0,F0,F0);
-            restore_memory_contexts(memoryCtxPatches, dx, dy, tail);
-            *tailPointer = 0xFF;
         }
     }
 }

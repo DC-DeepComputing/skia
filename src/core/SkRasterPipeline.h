@@ -26,13 +26,6 @@ enum SkColorType : int;
 struct SkImageInfo;
 struct skcms_TransferFunction;
 
-#if __has_cpp_attribute(clang::musttail) && !defined(__EMSCRIPTEN__) && !defined(SK_CPU_ARM32) && \
-        !defined(SK_CPU_LOONGARCH)
-    #define SK_HAS_MUSTTAIL 1
-#else
-    #define SK_HAS_MUSTTAIL 0
-#endif
-
 /**
  * SkRasterPipeline provides a cheap way to chain together a pixel processing pipeline.
  *
@@ -41,29 +34,20 @@ struct skcms_TransferFunction;
  * No one wants to write specialized routines for all those combinations, and if we did, we'd
  * end up bloating our code size dramatically.  SkRasterPipeline stages can be chained together
  * at runtime, so we can scale this problem linearly rather than combinatorically.
- *
- * Each stage is represented by a function conforming to a common interface and by an
- * arbitrary context pointer.  The stage function arguments and calling convention are
- * designed to maximize the amount of data we can pass along the pipeline cheaply, and
- * vary depending on CPU feature detection.
  */
 
 // Raster pipeline programs are stored as a contiguous array of SkRasterPipelineStages.
-SK_BEGIN_REQUIRE_DENSE
+//SK_BEGIN_REQUIRE_DENSE
 struct SkRasterPipelineStage {
-    // `fn` holds a function pointer from `ops_lowp` or `ops_highp` in SkOpts.cpp. These functions
-    // correspond to operations from the SkRasterPipelineOp enum in SkRasterPipelineOpList.h. The
-    // exact function pointer type varies depending on architecture (specifically, look for `using
-    // Stage =` in SkRasterPipeline_opts.h).
-    void (*fn)();
+    SkRasterPipelineOp op;
 
-    // `ctx` holds data used by the stage function.
+    // `ctx` holds data used by the stage.
     // Most context structures are declared in SkRasterPipelineOpContexts.h, and have names ending
     // in Ctx (e.g. "SkRasterPipeline_SamplerCtx"). Some Raster Pipeline stages pack non-pointer
     // data into this field using `SkRPCtxUtils::Pack`.
     void* ctx;
 };
-SK_END_REQUIRE_DENSE
+//SK_END_REQUIRE_DENSE
 
 class SkRasterPipeline {
 public:
@@ -134,9 +118,6 @@ public:
     bool empty() const { return fStages == nullptr; }
 
 private:
-    bool buildLowpPipeline(SkRasterPipelineStage* ip) const;
-    void buildHighpPipeline(SkRasterPipelineStage* ip) const;
-
     using StartPipelineFn = void (*)(size_t, size_t, size_t, size_t,
                                      SkRasterPipelineStage* program,
                                      SkSpan<SkRasterPipeline_MemoryCtxPatch>,

@@ -213,6 +213,7 @@ enum class SkRasterPipelineOp {
 #define M(op) op,
     SK_RASTER_PIPELINE_OPS_ALL(M)
 #undef M
+    just_return,
 };
 
 // A count of raster pipeline ops:
