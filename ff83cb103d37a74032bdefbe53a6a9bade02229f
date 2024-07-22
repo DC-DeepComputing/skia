@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "94aaef17_b69d6e48",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-07-22T17:23:31Z",
+      "side": 1,
+      "message": "@brianosman, can you PTAL?",
+      "revId": "ff83cb103d37a74032bdefbe53a6a9bade02229f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60c6c29c_7972e3f3",
+        "filename": "modules/skcms/skcms.cc",
+        "patchSetId": 6
+      },
+      "lineNbr": 2453,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-07-22T17:23:31Z",
+      "side": 1,
+      "message": "I had to undo `git cl format` here to retain the alignment/formatting.  I guess this is okay as-is.  But maybe you\u0027d like me to insert `// clang-format off` and `// clang-format on` above/below?  I dunno...\n\n(Same in a few other places here.)",
+      "range": {
+        "startLine": 2453,
+        "startChar": 63,
+        "endLine": 2453,
+        "endChar": 64
+      },
+      "revId": "ff83cb103d37a74032bdefbe53a6a9bade02229f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "743186ee_06c17b5d",
+        "filename": "modules/skcms/src/Transform_inl.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 844,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-07-22T17:23:31Z",
+      "side": 1,
+      "message": "`gfx_unittests` tests with the same value of gray and alpha and (of course!) I initially messed up LE vs BE... Fortunately this was caught by the new Skia tests in this CL (I am mostly copying them from my old prototype).  I\u0027ll tweak `gfx_unittests` tests in a separate CL - see the `MakeGrayscaleAlphaImage` changes here: https://chromium-review.googlesource.com/c/chromium/src/+/4720150/38/ui/gfx/codec/png_codec_unittest.cc#110",
+      "range": {
+        "startLine": 844,
+        "startChar": 0,
+        "endLine": 844,
+        "endChar": 1
+      },
+      "revId": "ff83cb103d37a74032bdefbe53a6a9bade02229f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c73929f_a2b065ec",
+        "filename": "tests/SkcmsTransformTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-07-22T17:23:31Z",
+      "side": 1,
+      "message": "`git cl format` will mess this up, so maybe I should add `// clang-format off` and `// clang-format on` here?  I dunno...",
+      "range": {
+        "startLine": 66,
+        "startChar": 44,
+        "endLine": 66,
+        "endChar": 46
+      },
+      "revId": "ff83cb103d37a74032bdefbe53a6a9bade02229f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8eee42fa_282e584c",
+        "filename": "tests/SkcmsTransformTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-07-22T17:23:31Z",
+      "side": 1,
+      "message": "In the email you mentioned `test_AliasedTransforms` and \"skcms\u0027 tests.c\" but I was unable to find either one ([search1](https://source.chromium.org/search?q\u003daliased.*transforms\u0026ss\u003dchromium), [search2](https://source.chromium.org/search?q\u003df:skcms%20f:test\u0026ss\u003dchromium)).  So... I am adding a new test source file here instead.\n\nThe new tests cover only the scenarios that are relevant for Rust\u0027s PNG decoding (G8 \u003d\u003e RGBA8, GA8 \u003d\u003e RGBA8, RGB8 \u003d\u003e RGBA8).  Please shout if you\u0027d like me to add coverage for some other things in follow-up CLs (I may need some hand-holding wrt what to test).\n\nThe test inputs I\u0027ve picked are a bit arbitrary.  I picked 5-pixels-long \"images\" because it seems to nicely exercise 128-bit-wide SIMD (first 4 pixels) and falling back to non-SIMD (last 1 pixel).  But maybe I should have used 9 or 17 pixels instead (for 256-bit-wide or 512-bit-wide SIMD)?\n\nThe new tests pass on my machine via `bazel test //tests:core_tests_SkcmsTransformTest --test_output\u003dstreamed`, but for some reason the CQ is upset at me: https://skia-review.googlesource.com/c/skia/+/879958?tab\u003dchecks.  I tried looking at https://task-scheduler.skia.org/job/nFvfV1Ur4PNbXO8AnukE and https://ci.chromium.org/ui/p/skia/builders/skia.primary/BazelBuild-all_tests-release-linux_x64/b8741792551493999697/overview but I see no test steps and no test logs, so I don\u0027t know what happened...",
+      "range": {
+        "startLine": 91,
+        "startChar": 0,
+        "endLine": 91,
+        "endChar": 1
+      },
+      "revId": "ff83cb103d37a74032bdefbe53a6a9bade02229f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
