@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93500a1b_8905fbc5",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 3542,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-22T19:09:03Z",
+      "side": 1,
+      "message": "Could be expressed more simply as:\n\n```\n        // A variable reference to an unsized array should always be a parameter,\n        // because unsized arrays coming from uniforms will have `FieldAccess`\n        // expression type.\n        SkASSERT(v-\u003estorage() \u003d\u003d Variable::Storage::kParameter);\n        expr +\u003d this-\u003eassembleName(v-\u003emangledName());\n```",
+      "range": {
+        "startLine": 3536,
+        "startChar": 0,
+        "endLine": 3542,
+        "endChar": 17
+      },
+      "revId": "ee4ed7db98ee26ba6712fb03073122c295a6fa47",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
