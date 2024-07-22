@@ -67,12 +67,6 @@ namespace SkOpts {
     // Called by SkGraphics::Init().
     void Init();
 
-    // We can't necessarily express the type of SkRasterPipeline stage functions here,
-    // so we just use this void(*)(void) as a stand-in.
-    using StageFn = void(*)(void);
-    extern StageFn ops_highp[kNumRasterPipelineHighpOps], just_return_highp;
-    extern StageFn ops_lowp [kNumRasterPipelineLowpOps ], just_return_lowp;
-
     extern void (*start_pipeline_highp)(size_t,size_t,size_t,size_t, SkRasterPipelineStage*,
                                         SkSpan<SkRasterPipeline_MemoryCtxPatch>,
                                         uint8_t*);

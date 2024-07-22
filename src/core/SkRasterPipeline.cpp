@@ -207,6 +207,7 @@ const char* SkRasterPipeline::GetOpName(SkRasterPipelineOp op) {
     #define M(x) case Op::x: name = #x; break;
         SK_RASTER_PIPELINE_OPS_ALL(M)
     #undef M
+        case Op::just_return: name = "just_return";
     }
     return name;
 }
@@ -524,47 +525,29 @@ void SkRasterPipeline::appendClampIfNormalized(const SkImageInfo& info) {
     }
 }
 
-static void prepend_to_pipeline(SkRasterPipelineStage*& ip, SkOpts::StageFn stageFn, void* ctx) {
+static bool op_supported_in_lowp(SkRasterPipelineOp op) {
+    // The lowp ops are at the beginning of the enum:
+    return static_cast<int>(op) < kNumRasterPipelineLowpOps;
+}
+
+static void prepend_to_pipeline(SkRasterPipelineStage*& ip, SkRasterPipelineOp op, void* ctx) {
     --ip;
-    ip->fn = stageFn;
+    ip->op = op;
     ip->ctx = ctx;
 }
 
-bool SkRasterPipeline::buildLowpPipeline(SkRasterPipelineStage* ip) const {
-    if (gForceHighPrecisionRasterPipeline) {
-        return false;
-    }
+SkRasterPipeline::StartPipelineFn SkRasterPipeline::buildPipeline(SkRasterPipelineStage* ip) const {
+    bool supportsLowp = !gForceHighPrecisionRasterPipeline;
+
     // Stages are stored backwards in fStages; to compensate, we assemble the pipeline in reverse
     // here, back to front.
-    prepend_to_pipeline(ip, SkOpts::just_return_lowp, /*ctx=*/nullptr);
+    prepend_to_pipeline(ip, SkRasterPipelineOp::just_return, /*ctx=*/nullptr);
     for (const StageList* st = fStages; st; st = st->prev) {
-        int opIndex = (int)st->stage;
-        if (opIndex >= kNumRasterPipelineLowpOps || !SkOpts::ops_lowp[opIndex]) {
-            // This program contains a stage that doesn't exist in lowp.
-            return false;
-        }
-        prepend_to_pipeline(ip, SkOpts::ops_lowp[opIndex], st->ctx);
-    }
-    return true;
-}
-
-void SkRasterPipeline::buildHighpPipeline(SkRasterPipelineStage* ip) const {
-    // We assemble the pipeline in reverse, since the stage list is stored backwards.
-    prepend_to_pipeline(ip, SkOpts::just_return_highp, /*ctx=*/nullptr);
-    for (const StageList* st = fStages; st; st = st->prev) {
-        int opIndex = (int)st->stage;
-        prepend_to_pipeline(ip, SkOpts::ops_highp[opIndex], st->ctx);
-    }
-}
-
-SkRasterPipeline::StartPipelineFn SkRasterPipeline::buildPipeline(SkRasterPipelineStage* ip) const {
-    // We try to build a lowp pipeline first; if that fails, we fall back to a highp float pipeline.
-    if (this->buildLowpPipeline(ip)) {
-        return SkOpts::start_pipeline_lowp;
+        supportsLowp = supportsLowp && op_supported_in_lowp(st->stage);
+        prepend_to_pipeline(ip, st->stage, st->ctx);
     }
 
-    this->buildHighpPipeline(ip);
-    return SkOpts::start_pipeline_highp;
+    return supportsLowp ? SkOpts::start_pipeline_lowp : SkOpts::start_pipeline_highp;
 }
 
 int SkRasterPipeline::stagesNeeded() const {
