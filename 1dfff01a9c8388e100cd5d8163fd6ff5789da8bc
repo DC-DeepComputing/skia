@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fdf589e6_4f89fd2c",
+        "filename": "resources/sksl/errors/ArrayUnspecifiedDimensions.sksl",
+        "patchSetId": 11
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-22T20:43:56Z",
+      "side": 1,
+      "message": "Done, they just get optimized out but I added it to ensure that these types compile successfully. I think it\u0027s ok to just check that they compile successfully except the struct case I tested to make sure the struct member access works properly after indexing into the struct array.",
+      "parentUuid": "b4f89607_145b1a04",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 0
+      },
+      "revId": "1dfff01a9c8388e100cd5d8163fd6ff5789da8bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "64ee7248_01093ebf",
@@ -66,6 +90,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "467096e0_3a4bc769",
+        "filename": "src/sksl/ir/SkSLFunctionDefinition.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-22T20:43:56Z",
+      "side": 1,
+      "message": "Done, thinking about it though if support is added for SkRP wouldn\u0027t there be slots but it would be the size of a pointer in this case?",
+      "parentUuid": "64ee7248_01093ebf",
+      "range": {
+        "startLine": 115,
+        "startChar": 37,
+        "endLine": 115,
+        "endChar": 82
+      },
+      "revId": "1dfff01a9c8388e100cd5d8163fd6ff5789da8bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "127f560e_231bea14",
         "filename": "tests/sksl/shared/ArrayUnsizedParam.glsl",
         "patchSetId": 11
@@ -77,6 +125,30 @@
       "writtenOn": "2024-07-22T19:10:19Z",
       "side": 1,
       "message": "We don\u0027t support GLSL unsized arrays yet, but this feels pretty janky. We should detect this and emit `[]`.",
+      "range": {
+        "startLine": 7,
+        "startChar": 27,
+        "endLine": 7,
+        "endChar": 31
+      },
+      "revId": "1dfff01a9c8388e100cd5d8163fd6ff5789da8bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1fd10d47_6e1e409d",
+        "filename": "tests/sksl/shared/ArrayUnsizedParam.glsl",
+        "patchSetId": 11
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-22T20:43:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "127f560e_231bea14",
       "range": {
         "startLine": 7,
         "startChar": 27,
