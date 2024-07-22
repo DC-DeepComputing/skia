@@ -4859,6 +4859,37 @@ static void start_pipeline(size_t dx, size_t dy,
     }
 }
 
+static void exec_pipeline(size_t dx, size_t dy,
+                           size_t xlimit, size_t ylimit,
+                           SkRasterPipelineStage* program,
+                           SkSpan<SkRasterPipeline_MemoryCtxPatch> memoryCtxPatches,
+                           uint8_t* tailPointer) {
+    uint8_t unreferencedTail;
+    if (!tailPointer) {
+        tailPointer = &unreferencedTail;
+    }
+    auto start = (Stage)program->fn;
+    const size_t x0 = dx;
+    std::byte* const base = nullptr;
+    for (; dy < ylimit; dy++) {
+        dx = x0;
+        while (dx + N <= xlimit) {
+            start(program,dx,dy,base, F0,F0,F0,F0, F0,F0,F0,F0);
+            dx += N;
+        }
+        if (size_t tail = xlimit - dx) {
+            *tailPointer = tail;
+            patch_memory_contexts(memoryCtxPatches, dx, dy, tail);
+            start(program,dx,dy,base, F0,F0,F0,F0, F0,F0,F0,F0);
+            restore_memory_contexts(memoryCtxPatches, dx, dy, tail);
+            *tailPointer = 0xFF;
+        }
+    }
+
+#define M(st) \
+    st ## _lbl: 
+}
+
 namespace lowp {
 #if defined(JUMPER_IS_SCALAR) || defined(SK_ENABLE_OPTIMIZE_SIZE) || \
         defined(SK_BUILD_FOR_GOOGLE3) || defined(SK_DISABLE_LOWP_RASTER_PIPELINE)
