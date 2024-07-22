@@ -52,6 +52,15 @@
     M(emboss)                                                      \
     M(swizzle)
 
+//`SK_RASTER_PIPELINE_OPS_SKSL_BRANCHING` defines ops that branch, causing the next stage to be
+// computed, rather than merely incremented.
+#define SK_RASTER_PIPELINE_OPS_SKSL_BRANCHING(M) \
+    M(branch_if_all_lanes_active)                \
+    M(branch_if_any_lanes_active)                \
+    M(branch_if_no_lanes_active)                 \
+    M(branch_if_no_active_lanes_eq)              \
+    M(jump)
+
 // `SK_RASTER_PIPELINE_OPS_SKSL` defines ops used by SkSL.
 #define SK_RASTER_PIPELINE_OPS_SKSL(M)                                                          \
     M(init_lane_masks) M(store_device_xy01) M(exchange_src)                                     \
@@ -60,8 +69,7 @@
     M(load_loop_mask)       M(store_loop_mask)      M(mask_off_loop_mask)                       \
     M(reenable_loop_mask)   M(merge_loop_mask)      M(case_op)   M(continue_op)                 \
     M(load_return_mask)     M(store_return_mask)    M(mask_off_return_mask)                     \
-    M(branch_if_all_lanes_active) M(branch_if_any_lanes_active) M(branch_if_no_lanes_active)    \
-    M(branch_if_no_active_lanes_eq) M(jump)                                                     \
+    SK_RASTER_PIPELINE_OPS_SKSL_BRANCHING(M)                                                    \
     M(bitwise_and_imm_4_ints)                                                                   \
         M(bitwise_and_imm_3_ints) M(bitwise_and_imm_2_ints) M(bitwise_and_imm_int)              \
         M(bitwise_and_n_ints)     M(bitwise_and_int)        M(bitwise_and_2_ints)               \
