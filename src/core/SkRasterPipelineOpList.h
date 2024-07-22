@@ -52,16 +52,23 @@
     M(emboss)                                                      \
     M(swizzle)
 
-// `SK_RASTER_PIPELINE_OPS_SKSL` defines ops used by SkSL.
-#define SK_RASTER_PIPELINE_OPS_SKSL(M)                                                          \
+//`SK_RASTER_PIPELINE_OPS_SKSL_BRANCHING` defines ops that branch, causing the next stage to be
+// computed, rather than merely incremented.
+#define SK_RASTER_PIPELINE_OPS_SKSL_BRANCHING(M) \
+    M(branch_if_all_lanes_active)                \
+    M(branch_if_any_lanes_active)                \
+    M(branch_if_no_lanes_active)                 \
+    M(branch_if_no_active_lanes_eq)              \
+    M(jump)
+
+// `SK_RASTER_PIPELINE_OPS_SKSL` defines ops used by SkSL, except those that involve flow control.
+#define SK_RASTER_PIPELINE_OPS_SKSL_SIMPLE(M)                                                   \
     M(init_lane_masks) M(store_device_xy01) M(exchange_src)                                     \
     M(load_condition_mask)  M(store_condition_mask)                                             \
     M(merge_condition_mask) M(merge_inv_condition_mask)                                         \
     M(load_loop_mask)       M(store_loop_mask)      M(mask_off_loop_mask)                       \
     M(reenable_loop_mask)   M(merge_loop_mask)      M(case_op)   M(continue_op)                 \
     M(load_return_mask)     M(store_return_mask)    M(mask_off_return_mask)                     \
-    M(branch_if_all_lanes_active) M(branch_if_any_lanes_active) M(branch_if_no_lanes_active)    \
-    M(branch_if_no_active_lanes_eq) M(jump)                                                     \
     M(bitwise_and_imm_4_ints)                                                                   \
         M(bitwise_and_imm_3_ints) M(bitwise_and_imm_2_ints) M(bitwise_and_imm_int)              \
         M(bitwise_and_n_ints)     M(bitwise_and_int)        M(bitwise_and_2_ints)               \
@@ -148,9 +155,9 @@
         M(cmpne_n_ints)   M(cmpne_int)    M(cmpne_2_ints)   M(cmpne_3_ints)   M(cmpne_4_ints)   \
     M(trace_line)         M(trace_var)    M(trace_enter)    M(trace_exit)     M(trace_scope)
 
-// `SK_RASTER_PIPELINE_OPS_HIGHP_ONLY` defines ops that are only available in highp; this subset
-// includes all of SkSL.
-#define SK_RASTER_PIPELINE_OPS_HIGHP_ONLY(M)                                   \
+// `SK_RASTER_PIPELINE_OPS_HIGHP_ONLY_SIMPLE` defines ops that are only available in highp, and do
+// not involve flow control; this subset includes all simple SkSL ops.
+#define SK_RASTER_PIPELINE_OPS_HIGHP_ONLY_SIMPLE(M)                            \
     M(callback)                                                                \
     M(unbounded_set_rgb) M(unbounded_uniform_color)                            \
     M(unpremul) M(unpremul_polar) M(dither)                                    \
@@ -201,12 +208,17 @@
     M(mask_2pt_conical_nan)                                                    \
     M(mask_2pt_conical_degenerates) M(apply_vector_mask)                       \
     M(set_base_pointer)                                                        \
-    SK_RASTER_PIPELINE_OPS_SKSL(M)
+    SK_RASTER_PIPELINE_OPS_SKSL_SIMPLE(M)
+
+// The combined set of all RasterPipeline ops that do not involve flow control:
+#define SK_RASTER_PIPELINE_OPS_ALL_SIMPLE(M) \
+    SK_RASTER_PIPELINE_OPS_LOWP(M)           \
+    SK_RASTER_PIPELINE_OPS_HIGHP_ONLY_SIMPLE(M)
 
 // The combined set of all RasterPipeline ops:
 #define SK_RASTER_PIPELINE_OPS_ALL(M)    \
-    SK_RASTER_PIPELINE_OPS_LOWP(M)       \
-    SK_RASTER_PIPELINE_OPS_HIGHP_ONLY(M)
+    SK_RASTER_PIPELINE_OPS_ALL_SIMPLE(M) \
+    SK_RASTER_PIPELINE_OPS_SKSL_BRANCHING(M)
 
 // An enumeration of every RasterPipeline op:
 enum class SkRasterPipelineOp {
