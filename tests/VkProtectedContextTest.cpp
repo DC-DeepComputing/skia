@@ -254,8 +254,10 @@ void async_callback(void* c, std::unique_ptr<const SkSurface::AsyncReadResult> r
 
 void async_read_from_protected_surface(skiatest::Reporter* reporter,
                                               skiatest::TestType testType) {
+    SkDebugf("here 1\n");
     std::unique_ptr<VkTestHelper> helper = VkTestHelper::Make(testType, /* isProtected= */ true);
     if (!helper) {
+        SkDebugf("here 2\n");
         return;
     }
 
@@ -274,6 +276,7 @@ void async_read_from_protected_surface(skiatest::Reporter* reporter,
                                              SkSurface::RescaleMode::kNearest,
                                              &async_callback, &cbContext);
 
+    SkDebugf("here 3\n");
     helper->submitAndWaitForCompletion(&cbContext.fCalled);
     REPORTER_ASSERT(reporter, !cbContext.fResult);
 }
