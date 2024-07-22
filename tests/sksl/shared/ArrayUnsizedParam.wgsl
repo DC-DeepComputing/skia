@@ -1,7 +1,3 @@
-### Compilation failed:
-
-error: Tint compilation failed.
-
 diagnostic(off, derivative_uniformity);
 diagnostic(off, chromium.unreachable_code);
 struct FSOut {
@@ -11,22 +7,28 @@ struct testStorageBuffer {
   testArr: array<f32>,
 };
 @group(0) @binding(0) var<storage, read> _storage0 : testStorageBuffer;
-fn getColor_h4f(arr: array<f32>) -> vec4<f32> {
+fn getColor_h4f(arr: ptr<storage, array<f32>, read>) -> vec4<f32> {
   {
-    return vec4<f32>(f32(arr[0]), f32(arr[1]), f32(arr[2]), f32(arr[3]));
+    return vec4<f32>(f32((*arr)[0]), f32((*arr)[1]), f32((*arr)[2]), f32((*arr)[3]));
   }
 }
-fn getColorSecond_h4f(arr: array<f32>) -> vec4<f32> {
+fn getColor_helper_h4f(arr: ptr<storage, array<f32>, read>) -> vec4<f32> {
   {
-    return vec4<f32>(f32(arr[0]), f32(arr[1]), f32(arr[2]), f32(arr[3]));
+    let _skTemp1 = getColor_h4f(arr);
+    return _skTemp1;
+  }
+}
+fn getColorSecond_h4f(arr: ptr<storage, array<f32>, read>) -> vec4<f32> {
+  {
+    return vec4<f32>(f32((*arr)[0]), f32((*arr)[1]), f32((*arr)[2]), f32((*arr)[3]));
   }
 }
 fn _skslMain(_stageOut: ptr<function, FSOut>) {
   {
-    let _skTemp1 = getColor_h4f(_storage0.testArr);
-    (*_stageOut).sk_FragColor = _skTemp1;
-    let _skTemp2 = getColorSecond_h4f(_storage0.testArr);
+    let _skTemp2 = getColor_helper_h4f(&(_storage0.testArr));
     (*_stageOut).sk_FragColor = _skTemp2;
+    let _skTemp3 = getColorSecond_h4f(&(_storage0.testArr));
+    (*_stageOut).sk_FragColor = _skTemp3;
   }
 }
 @fragment fn main() -> FSOut {
@@ -34,5 +36,3 @@ fn _skslMain(_stageOut: ptr<function, FSOut>) {
   _skslMain(&_stageOut);
   return _stageOut;
 }
-
-1 error
