@@ -1,8 +1,8 @@
 ### Compilation failed:
 
-error: SPIR-V validation error: [VUID-StandaloneSpirv-OpTypeRuntimeArray-04680] OpVariable, <id> '50[%50]', is attempting to create memory for an illegal type, OpTypeRuntimeArray.
+error: SPIR-V validation error: [VUID-StandaloneSpirv-OpTypeRuntimeArray-04680] OpVariable, <id> '36[%36]', is attempting to create memory for an illegal type, OpTypeRuntimeArray.
 For Vulkan OpTypeRuntimeArray can only appear as the final member of an OpTypeStruct, thus cannot be instantiated via OpVariable
-  %50 = OpVariable %_ptr_Function__runtimearr_float_0 Function
+  %36 = OpVariable %_ptr_Function__runtimearr_float_0 Function
 
                OpCapability Shader
           %1 = OpExtInstImport "GLSL.std.450"
@@ -13,7 +13,7 @@ For Vulkan OpTypeRuntimeArray can only appear as the final member of an OpTypeSt
                OpMemberName %testStorageBuffer 0 "testArr"
                OpName %sk_FragColor "sk_FragColor"
                OpName %getColor_h4f "getColor_h4f"
-               OpName %getColorSecond_h4f "getColorSecond_h4f"
+               OpName %helper_h4f "helper_h4f"
                OpName %main "main"
                OpDecorate %_runtimearr_float ArrayStride 4
                OpMemberDecorate %testStorageBuffer 0 Offset 0
@@ -25,7 +25,6 @@ For Vulkan OpTypeRuntimeArray can only appear as the final member of an OpTypeSt
                OpDecorate %sk_FragColor Index 0
                OpDecorate %_runtimearr_float_0 ArrayStride 16
                OpDecorate %32 RelaxedPrecision
-               OpDecorate %43 RelaxedPrecision
       %float = OpTypeFloat 32
 %_runtimearr_float = OpTypeRuntimeArray %float
 %testStorageBuffer = OpTypeStruct %_runtimearr_float
@@ -44,7 +43,7 @@ For Vulkan OpTypeRuntimeArray can only appear as the final member of an OpTypeSt
       %int_2 = OpConstant %int 2
       %int_3 = OpConstant %int 3
        %void = OpTypeVoid
-         %45 = OpTypeFunction %void
+         %39 = OpTypeFunction %void
 %_ptr_Uniform__runtimearr_float = OpTypePointer Uniform %_runtimearr_float
 %getColor_h4f = OpFunction %v4float None %15
          %16 = OpFunctionParameter %_ptr_Function__runtimearr_float_0
@@ -60,34 +59,23 @@ For Vulkan OpTypeRuntimeArray can only appear as the final member of an OpTypeSt
          %32 = OpCompositeConstruct %v4float %22 %25 %28 %31
                OpReturnValue %32
                OpFunctionEnd
-%getColorSecond_h4f = OpFunction %v4float None %15
+ %helper_h4f = OpFunction %v4float None %15
          %33 = OpFunctionParameter %_ptr_Function__runtimearr_float_0
          %34 = OpLabel
-         %35 = OpAccessChain %_ptr_Function_float %33 %int_0
-         %36 = OpLoad %float %35
-         %37 = OpAccessChain %_ptr_Function_float %33 %int_1
-         %38 = OpLoad %float %37
-         %39 = OpAccessChain %_ptr_Function_float %33 %int_2
-         %40 = OpLoad %float %39
-         %41 = OpAccessChain %_ptr_Function_float %33 %int_3
-         %42 = OpLoad %float %41
-         %43 = OpCompositeConstruct %v4float %36 %38 %40 %42
-               OpReturnValue %43
+         %36 = OpVariable %_ptr_Function__runtimearr_float_0 Function
+         %35 = OpLoad %_runtimearr_float_0 %33
+               OpStore %36 %35
+         %37 = OpFunctionCall %v4float %getColor_h4f %36
+               OpReturnValue %37
                OpFunctionEnd
-       %main = OpFunction %void None %45
-         %46 = OpLabel
-         %50 = OpVariable %_ptr_Function__runtimearr_float_0 Function
-         %54 = OpVariable %_ptr_Function__runtimearr_float_0 Function
-         %47 = OpAccessChain %_ptr_Uniform__runtimearr_float %5 %int_0
-         %49 = OpLoad %_runtimearr_float %47
-               OpStore %50 %49
-         %51 = OpFunctionCall %v4float %getColor_h4f %50
-               OpStore %sk_FragColor %51
-         %52 = OpAccessChain %_ptr_Uniform__runtimearr_float %5 %int_0
-         %53 = OpLoad %_runtimearr_float %52
-               OpStore %54 %53
-         %55 = OpFunctionCall %v4float %getColorSecond_h4f %54
-               OpStore %sk_FragColor %55
+       %main = OpFunction %void None %39
+         %40 = OpLabel
+         %44 = OpVariable %_ptr_Function__runtimearr_float_0 Function
+         %41 = OpAccessChain %_ptr_Uniform__runtimearr_float %5 %int_0
+         %43 = OpLoad %_runtimearr_float %41
+               OpStore %44 %43
+         %45 = OpFunctionCall %v4float %helper_h4f %44
+               OpStore %sk_FragColor %45
                OpReturn
                OpFunctionEnd
 
