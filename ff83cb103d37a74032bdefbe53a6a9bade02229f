@@ -20,6 +20,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "189dfecb_c42fbc0b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-22T17:30:46Z",
+      "side": 1,
+      "message": "I am a little concerned that `G` is ambiguously used as \"gray\" and \"green\" in our enum. This isn\u0027t a new issue (we already had G8 above) so it\u0027s not Lukasz\u0027 bug to fix, but it seems weird to me, especially since SkColorType `kR8G8_unorm_SkColorType` is red + green. \n\nGanesh spells out \"Gray\" and \"GrayAlpha\" for its G8 and GA88 types: https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/include/private/gpu/ganesh/GrTypesPriv.h;l\u003d554-556;drc\u003d949b8cefbf87776b257b54176c46cefa34b17a26",
+      "revId": "ff83cb103d37a74032bdefbe53a6a9bade02229f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "60c6c29c_7972e3f3",
         "filename": "modules/skcms/skcms.cc",
         "patchSetId": 6
@@ -31,6 +48,30 @@
       "writtenOn": "2024-07-22T17:23:31Z",
       "side": 1,
       "message": "I had to undo `git cl format` here to retain the alignment/formatting.  I guess this is okay as-is.  But maybe you\u0027d like me to insert `// clang-format off` and `// clang-format on` above/below?  I dunno...\n\n(Same in a few other places here.)",
+      "range": {
+        "startLine": 2453,
+        "startChar": 63,
+        "endLine": 2453,
+        "endChar": 64
+      },
+      "revId": "ff83cb103d37a74032bdefbe53a6a9bade02229f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "44336d51_abb8941a",
+        "filename": "modules/skcms/skcms.cc",
+        "patchSetId": 6
+      },
+      "lineNbr": 2453,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-22T17:30:46Z",
+      "side": 1,
+      "message": "AFAIK, skcms was originally authored without the benefit of `clang-format` so there are probably lots of places in the code which would do poorly with auto-formatting. I wouldn\u0027t worry about it for the time being. It\u0027s fairly at-rest as code goes.",
+      "parentUuid": "60c6c29c_7972e3f3",
       "range": {
         "startLine": 2453,
         "startChar": 63,
