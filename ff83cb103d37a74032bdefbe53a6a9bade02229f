@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3eec202_efe2d40f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-07-22T17:36:43Z",
+      "side": 1,
+      "message": "Agreed - when I was looking at the enum (discussing this idea over email), I had the same reaction. I\u0027m strongly tempted to add new values, fix clients, then remove the old names. (https://g-issues.skia.org/issues/354724696)",
+      "parentUuid": "189dfecb_c42fbc0b",
+      "revId": "ff83cb103d37a74032bdefbe53a6a9bade02229f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "60c6c29c_7972e3f3",
