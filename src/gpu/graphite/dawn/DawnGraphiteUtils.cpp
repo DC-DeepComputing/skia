@@ -191,21 +191,6 @@ bool DawnCompileWGSLShaderModule(const DawnSharedContext* sharedContext,
 
 #if !defined(__EMSCRIPTEN__)
 namespace ycbcrUtils {
-bool descriptorsAreEquivalent(const wgpu::YCbCrVkDescriptor& desc1,
-                              const wgpu::YCbCrVkDescriptor& desc2) {
-    return desc1.vkFormat                    == desc2.vkFormat                    &&
-           desc1.vkYCbCrRange                == desc2.vkYCbCrRange                &&
-           desc1.vkComponentSwizzleRed       == desc2.vkComponentSwizzleRed       &&
-           desc1.vkComponentSwizzleGreen     == desc2.vkComponentSwizzleGreen     &&
-           desc1.vkComponentSwizzleBlue      == desc2.vkComponentSwizzleBlue      &&
-           desc1.vkComponentSwizzleAlpha     == desc2.vkComponentSwizzleAlpha     &&
-           desc1.vkXChromaOffset             == desc2.vkXChromaOffset             &&
-           desc1.vkYChromaOffset             == desc2.vkYChromaOffset             &&
-           desc1.vkChromaFilter              == desc2.vkChromaFilter              &&
-           desc1.forceExplicitReconstruction == desc2.forceExplicitReconstruction &&
-           desc1.externalFormat              == desc2.externalFormat;
-}
-
 bool descriptorIsValid(const wgpu::YCbCrVkDescriptor& desc) {
     static const wgpu::YCbCrVkDescriptor kDefaultYcbcrDescriptor = {};
     return !descriptorsAreEquivalent(desc, kDefaultYcbcrDescriptor);
@@ -238,6 +223,14 @@ uint32_t nonformatInfoAsUint32(const wgpu::YCbCrVkDescriptor& conversionInfo) {
             ((uint32_t)(conversionInfo.vkComponentSwizzleGreen     ) << kComponentGShift        ) |
             ((uint32_t)(conversionInfo.vkComponentSwizzleBlue      ) << kComponentBShift        ) |
             ((uint32_t)(conversionInfo.vkComponentSwizzleAlpha     ) << kComponentAShift        ));
+}
+
+bool usesExternalFormat(const wgpu::YCbCrVkDescriptor& desc) {
+    return desc.vkFormat == 0 && desc.externalFormat != 0;
+}
+
+int numInt32sNeeded(const wgpu::YCbCrVkDescriptor& desc) {
+    return usesExternalFormat(desc) ? kIntsNeededExternalFormat : kIntsNeededKnownFormat;
 }
 } // namespace ycbcrUtils
 #endif // !defined(__EMSCRIPTEN__)
