@@ -1,0 +1,6 @@
+### Compilation failed:
+
+error: 3: 'main' parameter must be 'float2' or 'vec2'
+half4 main() {
+^^^^^^^^^^^^
+1 error
