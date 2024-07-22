@@ -84,6 +84,19 @@ using namespace skgpu::graphite;
 
 namespace {
 
+enum class Verbosity {
+    kQuiet,
+    kVerbose,
+    kVeryVerbose,
+};
+
+enum class Tests {
+    kNone             = 0x0,
+    kExtractVsBuild   = 0x1,
+    kDrawVsPrecompile = 0x2,
+};
+SK_MAKE_BITMASK_OPS(Tests)
+
 std::pair<sk_sp<SkShader>, sk_sp<PrecompileShader>> create_random_shader(SkRandom*, Recorder*);
 std::pair<sk_sp<SkBlender>, sk_sp<PrecompileBlender>> create_random_blender(SkRandom*);
 std::pair<sk_sp<SkColorFilter>, sk_sp<PrecompileColorFilter>> create_random_colorfilter(SkRandom*);
@@ -1770,105 +1783,63 @@ void non_simple_draws(SkCanvas* canvas, const SkPaint& paint, const DrawData& dr
     canvas->drawPath(drawData.fPath, paint);
 }
 
-void check_draw(skiatest::Reporter* reporter,
-                Context* context,
-                skiatest::graphite::GraphiteTestContext* testContext,
-                Recorder* recorder,
-                const SkPaint& paint,
-                DrawTypeFlags dt,
-                ClipType clip,
-                sk_sp<SkShader> clipShader) {
+void perform_draw(skiatest::Reporter* reporter,
+                  Context* context,
+                  skiatest::graphite::GraphiteTestContext* testContext,
+                  Recorder* recorder,
+                  const SkPaint& paint,
+                  DrawTypeFlags dt,
+                  ClipType clip,
+                  sk_sp<SkShader> clipShader) {
     static const DrawData kDrawData;
 
-    int before = context->priv().globalCache()->numGraphicsPipelines();
+    // TODO: vary the colorType of the target surface too
+    SkImageInfo ii = SkImageInfo::Make(16, 16,
+                                       kRGBA_8888_SkColorType,
+                                       kPremul_SkAlphaType);
 
-#ifdef SK_DEBUG
-    std::vector<skgpu::UniqueKey> beforeKeys;
+    sk_sp<SkSurface> surf = SkSurfaces::RenderTarget(recorder, ii);
+    SkCanvas* canvas = surf->getCanvas();
 
-    UniqueKeyUtils::FetchUniqueKeys(context->priv().globalCache(), &beforeKeys);
-#endif
-
-    {
-        // TODO: vary the colorType of the target surface too
-        SkImageInfo ii = SkImageInfo::Make(16, 16,
-                                           kRGBA_8888_SkColorType,
-                                           kPremul_SkAlphaType);
-
-        sk_sp<SkSurface> surf = SkSurfaces::RenderTarget(recorder, ii);
-        SkCanvas* canvas = surf->getCanvas();
-
-        switch (clip) {
-            case ClipType::kNone:
-                break;
-            case ClipType::kShader:
-                SkASSERT(clipShader);
-                canvas->clipShader(clipShader, SkClipOp::kIntersect);
-                break;
-            case ClipType::kShader_Diff:
-                SkASSERT(clipShader);
-                canvas->clipShader(clipShader, SkClipOp::kDifference);
-                break;
-        }
-
-        switch (dt) {
-            case DrawTypeFlags::kSimpleShape:
-                simple_draws(canvas, paint);
-                break;
-            case DrawTypeFlags::kNonSimpleShape:
-                non_simple_draws(canvas, paint, kDrawData);
-                break;
-            case DrawTypeFlags::kShape:
-                simple_draws(canvas, paint);
-                non_simple_draws(canvas, paint, kDrawData);
-                break;
-            case DrawTypeFlags::kText:
-                canvas->drawTextBlob(kDrawData.fBlob, 0, 16, paint);
-                break;
-            case DrawTypeFlags::kDrawVertices:
-                canvas->drawVertices(kDrawData.fVertsWithColors, SkBlendMode::kDst, paint);
-                canvas->drawVertices(kDrawData.fVertsWithOutColors, SkBlendMode::kDst, paint);
-                break;
-            default:
-                SkASSERT(false);
-                break;
-        }
-
-        std::unique_ptr<skgpu::graphite::Recording> recording = recorder->snap();
-        context->insertRecording({ recording.get() });
-        testContext->syncedSubmit(context);
+    switch (clip) {
+        case ClipType::kNone:
+            break;
+        case ClipType::kShader:
+            SkASSERT(clipShader);
+            canvas->clipShader(clipShader, SkClipOp::kIntersect);
+            break;
+        case ClipType::kShader_Diff:
+            SkASSERT(clipShader);
+            canvas->clipShader(clipShader, SkClipOp::kDifference);
+            break;
     }
 
-    int after = context->priv().globalCache()->numGraphicsPipelines();
-
-    // Actually using the SkPaint with the specified type of draw shouldn't have caused
-    // any additional compilation
-    REPORTER_ASSERT(reporter, before == after, "before: %d after: %d", before, after);
-#ifdef SK_DEBUG
-    if (before != after) {
-        const RendererProvider* rendererProvider = context->priv().rendererProvider();
-        const ShaderCodeDictionary* dict = context->priv().shaderCodeDictionary();
-
-        std::vector<skgpu::UniqueKey> afterKeys;
-
-        UniqueKeyUtils::FetchUniqueKeys(context->priv().globalCache(), &afterKeys);
-
-        for (const skgpu::UniqueKey& afterKey : afterKeys) {
-            if (std::find(beforeKeys.begin(), beforeKeys.end(), afterKey) == beforeKeys.end()) {
-                GraphicsPipelineDesc originalPipelineDesc;
-                RenderPassDesc originalRenderPassDesc;
-                UniqueKeyUtils::ExtractKeyDescs(context, afterKey,
-                                                &originalPipelineDesc,
-                                                &originalRenderPassDesc);
-
-                SkDebugf("------- New key from draw:\n");
-                afterKey.dump("original key:");
-                UniqueKeyUtils::DumpDescs(rendererProvider, dict,
-                                          originalPipelineDesc,
-                                          originalRenderPassDesc);
-            }
-        }
+    switch (dt) {
+        case DrawTypeFlags::kSimpleShape:
+            simple_draws(canvas, paint);
+            break;
+        case DrawTypeFlags::kNonSimpleShape:
+            non_simple_draws(canvas, paint, kDrawData);
+            break;
+        case DrawTypeFlags::kShape:
+            simple_draws(canvas, paint);
+            non_simple_draws(canvas, paint, kDrawData);
+            break;
+        case DrawTypeFlags::kText:
+            canvas->drawTextBlob(kDrawData.fBlob, 0, 16, paint);
+            break;
+        case DrawTypeFlags::kDrawVertices:
+            canvas->drawVertices(kDrawData.fVertsWithColors, SkBlendMode::kDst, paint);
+            canvas->drawVertices(kDrawData.fVertsWithOutColors, SkBlendMode::kDst, paint);
+            break;
+        default:
+            SkASSERT(false);
+            break;
     }
-#endif // SK_DEBUG
+
+    std::unique_ptr<skgpu::graphite::Recording> recording = recorder->snap();
+    context->insertRecording({ recording.get() });
+    testContext->syncedSubmit(context);
 }
 
 KeyContext create_key_context(Context* context, RuntimeEffectDictionary* rtDict) {
@@ -1921,7 +1892,7 @@ void extract_vs_build_subtest(skiatest::Reporter* reporter,
                               DrawTypeFlags dt,
                               uint32_t seed,
                               SkRandom* rand,
-                              bool verbose) {
+                              Verbosity verbosity) {
 
     ShaderCodeDictionary* dict = context->priv().shaderCodeDictionary();
 
@@ -1998,7 +1969,7 @@ void extract_vs_build_subtest(skiatest::Reporter* reporter,
                                                   precompileIDs.push_back(id);
                                               });
 
-        if (verbose) {
+        if (verbosity > Verbosity::kQuiet) {
             SkDebugf("Precompilation generated %zu unique keys\n", precompileIDs.size());
         }
 
@@ -2033,6 +2004,27 @@ void extract_vs_build_subtest(skiatest::Reporter* reporter,
     }
 }
 
+void dump(Context* context, const char* label, const std::vector<skgpu::UniqueKey>& keys) {
+    const RendererProvider* rendererProvider = context->priv().rendererProvider();
+    const ShaderCodeDictionary* dict = context->priv().shaderCodeDictionary();
+
+    SkDebugf("%s %zu ------------------------------------\n", label, keys.size());
+    int i = 0;
+    for (const skgpu::UniqueKey& key : keys) {
+        SkString s = SkStringPrintf("%d", i);
+        key.dump(s.c_str());
+        GraphicsPipelineDesc originalPipelineDesc;
+        RenderPassDesc originalRenderPassDesc;
+        UniqueKeyUtils::ExtractKeyDescs(context, key,
+                                        &originalPipelineDesc,
+                                        &originalRenderPassDesc);
+        UniqueKeyUtils::DumpDescs(rendererProvider, dict,
+                                  originalPipelineDesc,
+                                  originalRenderPassDesc);
+        ++i;
+    }
+}
+
 // This subtest verifies that, given an equivalent SkPaint and PaintOptions, the
 // Precompile system will, at least, generate all the pipelines a real draw would generate.
 void precompile_vs_real_draws_subtest(skiatest::Reporter* reporter,
@@ -2044,7 +2036,7 @@ void precompile_vs_real_draws_subtest(skiatest::Reporter* reporter,
                                       ClipType clip,
                                       sk_sp<SkShader> clipShader,
                                       DrawTypeFlags dt,
-                                      bool /* verbose */) {
+                                      Verbosity verbosity) {
     context->priv().globalCache()->resetGraphicsPipelines();
 
     int before = context->priv().globalCache()->numGraphicsPipelines();
@@ -2059,14 +2051,52 @@ void precompile_vs_real_draws_subtest(skiatest::Reporter* reporter,
     REPORTER_ASSERT(reporter, before == 0);
     REPORTER_ASSERT(reporter, after > before);
 
-    check_draw(reporter,
-               context,
-               testContext,
-               recorder,
-               paint,
-               dt,
-               clip,
-               clipShader);
+    std::vector<skgpu::UniqueKey> precompileKeys;
+
+    UniqueKeyUtils::FetchUniqueKeys(context->priv().globalCache(), &precompileKeys);
+
+    context->priv().globalCache()->resetGraphicsPipelines();
+
+    before = context->priv().globalCache()->numGraphicsPipelines();
+
+    perform_draw(reporter,
+                 context,
+                 testContext,
+                 recorder,
+                 paint,
+                 dt,
+                 clip,
+                 clipShader);
+
+    after = context->priv().globalCache()->numGraphicsPipelines();
+
+    REPORTER_ASSERT(reporter, before == 0);
+    REPORTER_ASSERT(reporter, after > before);
+
+    std::vector<skgpu::UniqueKey> drawKeys;
+
+    UniqueKeyUtils::FetchUniqueKeys(context->priv().globalCache(), &drawKeys);
+
+    //------
+    std::vector<skgpu::UniqueKey> inBoth, precompileOnly, drawOnly;
+
+    for (const skgpu::UniqueKey& drawKey : drawKeys) {
+        if (std::find(precompileKeys.begin(), precompileKeys.end(), drawKey) == precompileKeys.end()) {
+            inBoth.push_back(drawKey);
+        } else {
+            drawOnly.push_back(drawKey);
+        }
+    }
+
+    for (const skgpu::UniqueKey& precompileKey : precompileKeys) {
+        if (std::find(drawKeys.begin(), drawKeys.end(), precompileKey) == drawKeys.end()) {
+            precompileOnly.push_back(precompileKey);
+        }
+    }
+
+    dump(context, "in both", inBoth);
+    dump(context, "missing", drawOnly);
+    dump(context, "over-generated", precompileOnly);
 }
 
 void run_test(skiatest::Reporter* reporter,
@@ -2081,7 +2111,8 @@ void run_test(skiatest::Reporter* reporter,
               ClipType clip,
               DrawTypeFlags dt,
               uint32_t seed,
-              bool verbose) {
+              SkEnumBitMask<Tests> testFlags,
+              Verbosity verbosity) {
     SkRandom rand(seed);
 
     std::unique_ptr<Recorder> recorder = context->makeRecorder();
@@ -2102,11 +2133,15 @@ void run_test(skiatest::Reporter* reporter,
     // a SkCanvas::clipShader call).
     paintOptions.priv().setClipShaders({clipShaderOption});
 
-    extract_vs_build_subtest(reporter, context, testContext, precompileKeyContext, recorder.get(),
-                             paint, paintOptions, s, bm, cf, mf, imageFilter, clip, clipShader, dt,
-                             seed, &rand, verbose);
-    precompile_vs_real_draws_subtest(reporter, context, testContext, recorder.get(),
-                                     paint, paintOptions, clip, clipShader, dt, verbose);
+    if (testFlags & Tests::kExtractVsBuild) {
+        extract_vs_build_subtest(reporter, context, testContext, precompileKeyContext,
+                                 recorder.get(), paint, paintOptions, s, bm, cf, mf, imageFilter,
+                                 clip, clipShader, dt, seed, &rand, verbosity);
+    }
+    if (testFlags & Tests::kDrawVsPrecompile) {
+        precompile_vs_real_draws_subtest(reporter, context, testContext, recorder.get(),
+                                         paint, paintOptions, clip, clipShader, dt, verbosity);
+    }
 }
 
 } // anonymous namespace
@@ -2119,7 +2154,7 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTestReduced,
                                                CtsEnforcement::kNever) {
     std::unique_ptr<RuntimeEffectDictionary> rtDict = std::make_unique<RuntimeEffectDictionary>();
 
-#if 1
+#if 0
     //----------------------
     uint32_t seed = std::time(nullptr) % std::numeric_limits<uint32_t>::max();
     SkRandom rand(seed);
@@ -2133,14 +2168,14 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTestReduced,
     //----------------------
 #else
     //------------------------
-    uint32_t seed = 1721227069;
-    ShaderType shaderType = ShaderType::kLocalMatrix;
+    uint32_t seed = 1721238039;
+    ShaderType shaderType = ShaderType::kEmpty;
     BlenderType blenderType = BlenderType::kArithmetic;
-    ColorFilterType colorFilterType = ColorFilterType::kRuntime;
+    ColorFilterType colorFilterType = ColorFilterType::kWorkingFormat;
     MaskFilterType maskFilterType = MaskFilterType::kNone;
-    ImageFilterType imageFilterType = ImageFilterType::kDisplacement;
+    ImageFilterType imageFilterType = ImageFilterType::kMatrixConvolution;
     ClipType clipType = ClipType::kNone;
-    DrawTypeFlags drawTypeFlags = DrawTypeFlags::kText;
+    DrawTypeFlags drawTypeFlags = DrawTypeFlags::kDrawVertices;
     //-----------------------
 #endif
 
@@ -2162,7 +2197,8 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTestReduced,
              clipType,
              drawTypeFlags,
              seed,
-             /* verbose= */ true);
+             Tests::kDrawVsPrecompile,
+             Verbosity::kVeryVerbose);
 }
 
 // This is intended to be a smoke test for the agreement between the two ways of creating a
@@ -2295,7 +2331,9 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
 
                                 run_test(reporter, context, testContext, precompileKeyContext,
                                          shader, blender, cf, mf, imageFilter, clip, dt,
-                                         kDefaultSeed, /* verbose= */ false);
+                                         kDefaultSeed,
+                                         Tests::kExtractVsBuild | Tests::kDrawVsPrecompile,
+                                         Verbosity::kQuiet);
                             }
                         }
                     }

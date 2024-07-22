@@ -914,6 +914,13 @@ UniqueKey MtlCaps::makeGraphicsPipelineKey(const GraphicsPipelineDesc& pipelineD
         builder[3] = (renderPassKey >> 32) & 0xFFFFFFFF;
         builder[4] = renderPassDesc.fWriteSwizzle.asKey();
 
+        SkDebugf("++++ UniqueKey %d %d %d %d %d\n",
+                 pipelineDesc.renderStepID(),
+                 pipelineDesc.paintParamsID().asUInt(),
+                 (int) (renderPassKey & 0xFFFFFFFF),
+                 (int) ((renderPassKey >> 32) & 0xFFFFFFFF),
+                 renderPassDesc.fWriteSwizzle.asKey());
+
         builder.finish();
     }
 
@@ -1005,7 +1012,13 @@ uint64_t MtlCaps::getRenderPassDescKey(const RenderPassDesc& renderPassDesc) con
     SkASSERT(colorInfo.fFormat < 65535 && depthStencilInfo.fFormat < 65535);
     uint32_t colorAttachmentKey = colorInfo.fFormat << 16 | colorInfo.fSampleCount;
     uint32_t dsAttachmentKey = depthStencilInfo.fFormat << 16 | depthStencilInfo.fSampleCount;
-    return (((uint64_t) colorAttachmentKey) << 32) | dsAttachmentKey;
+
+    uint64_t finalAns = (((uint64_t) colorAttachmentKey) << 32) | dsAttachmentKey;
+    SkDebugf("%d %d: color-format: %d color-sampleCount: %d ds-format: %d ds-sampleCount: %d\n",
+             colorAttachmentKey, dsAttachmentKey,
+             (int) colorInfo.fFormat, colorInfo.fSampleCount,
+             (int) depthStencilInfo.fFormat, depthStencilInfo.fSampleCount);
+    return finalAns;
 }
 
 UniqueKey MtlCaps::makeComputePipelineKey(const ComputePipelineDesc& pipelineDesc) const {
