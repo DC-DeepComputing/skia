@@ -16,6 +16,29 @@
       "message": "Whoops, forgot to send the replies.",
       "revId": "1dfff01a9c8388e100cd5d8163fd6ff5789da8bc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "127f560e_231bea14",
+        "filename": "tests/sksl/shared/ArrayUnsizedParam.glsl",
+        "patchSetId": 11
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-22T19:10:19Z",
+      "side": 1,
+      "message": "We don\u0027t support GLSL unsized arrays yet, but this feels pretty janky. We should detect this and emit `[]`.",
+      "range": {
+        "startLine": 7,
+        "startChar": 27,
+        "endLine": 7,
+        "endChar": 31
+      },
+      "revId": "1dfff01a9c8388e100cd5d8163fd6ff5789da8bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
