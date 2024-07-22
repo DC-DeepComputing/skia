@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c236e68_bf620f0d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-07-22T18:42:38Z",
+      "side": 1,
+      "message": "I\u0027ll abandon this CL after copying it to the right repo.  For now, let me flush the queue of comment drafts below...",
+      "revId": "7fbbb939686963d8dfa8902daa677d95fee2e037",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
