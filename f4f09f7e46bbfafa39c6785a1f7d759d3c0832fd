@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b7328a0c_89007aef",
+        "filename": "src/sksl/codegen/SkSLWGSLValidator.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-22T18:39:10Z",
+      "side": 1,
+      "message": "We could add `requires unrestricted_pointer_parameters;` to our generated wgsl file however it is not necessary and works more as a hint to the wgsl compiler if the language feature hasn\u0027t been implemented yet.\n\nSince this affects every wgsl test this could be done in a separate CL. I don\u0027t believe we can add the require in retroactively if we see an unsized array as a parameter since all `requires` directives must be at the start of the file.",
+      "revId": "f4f09f7e46bbfafa39c6785a1f7d759d3c0832fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
