@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b1e02911_3179dcf5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-07-22T18:06:13Z",
+      "side": 1,
+      "message": "PTAL at latest changes including ignore rules; looks like I need a new +1",
+      "revId": "e0347a12bd072b3502485cdd3f786c712bdb86b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
