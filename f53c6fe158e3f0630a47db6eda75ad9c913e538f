@@ -45,6 +45,29 @@
       },
       "revId": "f53c6fe158e3f0630a47db6eda75ad9c913e538f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7e81d9c_3270906e",
+        "filename": "src/sksl/ir/SkSLType.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-22T21:29:01Z",
+      "side": 1,
+      "message": "Let\u0027s do `/*errorPosition*/` so the name is still there for humans.",
+      "range": {
+        "startLine": 257,
+        "startChar": 45,
+        "endLine": 257,
+        "endChar": 46
+      },
+      "revId": "f53c6fe158e3f0630a47db6eda75ad9c913e538f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
