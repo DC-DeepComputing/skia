@@ -16,6 +16,23 @@
       "message": "Nice test!",
       "revId": "6b54a4ec7b85069a081e0cddeca1787a5d523e5e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f553fada_940a5257",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-07-22T15:00:17Z",
+      "side": 1,
+      "message": "Seems like some GPUs are having trouble with the new test on Ganesh in the advanced blend mode cases, namely Darken, Lighten, Difference, Exclusion and Multiply. I\u0027d be fine with taking those out of the test, or adding ignore rules for these GPUs, or if y\u0027all think there\u0027s an actual issue this is surfacing please let me know (it seems like a driver issue to me).",
+      "revId": "6b54a4ec7b85069a081e0cddeca1787a5d523e5e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
