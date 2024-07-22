@@ -25,23 +25,14 @@ namespace SkOpts {
     size_t raster_pipeline_lowp_stride  = SK_OPTS_NS::raster_pipeline_lowp_stride();
     size_t raster_pipeline_highp_stride = SK_OPTS_NS::raster_pipeline_highp_stride();
 
-#define M(st) (StageFn)SK_OPTS_NS::st,
-    StageFn ops_highp[] = { SK_RASTER_PIPELINE_OPS_ALL(M) };
-    StageFn just_return_highp = (StageFn)SK_OPTS_NS::just_return;
     void (*start_pipeline_highp)(size_t, size_t, size_t, size_t, SkRasterPipelineStage*,
                                  SkSpan<SkRasterPipeline_MemoryCtxPatch>,
                                  uint8_t*) =
             SK_OPTS_NS::start_pipeline;
-#undef M
-
-#define M(st) (StageFn)SK_OPTS_NS::lowp::st,
-    StageFn ops_lowp[] = { SK_RASTER_PIPELINE_OPS_LOWP(M) };
-    StageFn just_return_lowp = (StageFn)SK_OPTS_NS::lowp::just_return;
     void (*start_pipeline_lowp)(size_t, size_t, size_t, size_t, SkRasterPipelineStage*,
                                 SkSpan<SkRasterPipeline_MemoryCtxPatch>,
                                 uint8_t*) =
             SK_OPTS_NS::lowp::start_pipeline;
-#undef M
 
     // Each Init_foo() is defined in src/opts/SkOpts_foo.cpp.
     void Init_hsw();
