@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18d1c003_b38718d7",
+        "filename": "src/sksl/analysis/SkSLSpecialization.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-23T15:50:54Z",
+      "side": 1,
+      "message": "Use `Analysis::IsSameExpressionTree`?",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 50,
+        "endChar": 0
+      },
+      "revId": "be252f8d5b9ca6f701419296b746a6b83703395a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
