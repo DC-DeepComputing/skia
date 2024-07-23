@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f544727_d2367ae8",
+        "filename": "src/sksl/analysis/SkSLSpecialization.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-23T17:26:27Z",
+      "side": 1,
+      "message": "This no longer works on arbitrary maps, so... `parameter_mappings_are_equal`?",
+      "range": {
+        "startLine": 33,
+        "startChar": 12,
+        "endLine": 33,
+        "endChar": 26
+      },
+      "revId": "6a9d0a6285adae1d604ede25c6164349b377d32a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
