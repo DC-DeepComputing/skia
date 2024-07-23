@@ -16,6 +16,75 @@
       "message": "PTAL! CL 2 of 3 for dawn ycbcr impl.",
       "revId": "0667987fdbbbd28270c313697ab001e75d3d7b39",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8cac095_28a5ecbd",
+        "filename": "include/private/gpu/graphite/DawnTypesPriv.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-07-23T13:27:54Z",
+      "side": 1,
+      "message": "should this name space have \"dawn\" in the name somewhere? Or move the helper function to mention dawn? Right now by the namespace and function name its not obvious this wouldn\u0027t be Vulkan backend",
+      "range": {
+        "startLine": 16,
+        "startChar": 10,
+        "endLine": 16,
+        "endChar": 21
+      },
+      "revId": "0667987fdbbbd28270c313697ab001e75d3d7b39",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d8abe0c_c31ed1cd",
+        "filename": "src/gpu/graphite/dawn/DawnGraphiteUtils.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-07-23T13:27:54Z",
+      "side": 1,
+      "message": "At the point this helper function is called, is possible for `desc.vkFormat !\u003d 0 \u0026\u0026 desc.externalFormat !\u003d 0` to be true? Can we just check the external format and have an assert that both can\u0027t be non-zero?",
+      "range": {
+        "startLine": 229,
+        "startChar": 4,
+        "endLine": 229,
+        "endChar": 58
+      },
+      "revId": "0667987fdbbbd28270c313697ab001e75d3d7b39",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c59bde7_7680ba61",
+        "filename": "src/gpu/graphite/dawn/DawnGraphiteUtilsPriv.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-07-23T13:27:54Z",
+      "side": 1,
+      "message": "I know you said the uses of these functions will be in follow on CLs so we\u0027ll see for sure then, but I just wanted to check now if this is really something that should be in a header and is used by multiple things? Generally this types of calls are pretty private and just needed in a specific function and/or cpp file.",
+      "range": {
+        "startLine": 54,
+        "startChar": 4,
+        "endLine": 54,
+        "endChar": 19
+      },
+      "revId": "0667987fdbbbd28270c313697ab001e75d3d7b39",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
