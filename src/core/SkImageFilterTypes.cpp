@@ -1603,17 +1603,25 @@ void draw_tiled_border(SkCanvas* canvas,
 
 FilterResult FilterResult::rescale(const Context& ctx,
                                    const LayerSpace<SkSize>& scale,
+                                   LayerSpace<SkISize>* sampleRadius,
                                    bool enforceDecal) const {
     LayerSpace<SkIRect> visibleLayerBounds = fLayerBounds;
+    visibleLayerBounds.outset(*sampleRadius);
     if (!fImage || !visibleLayerBounds.intersect(ctx.desiredOutput()) ||
         scale.width() <= 0.f || scale.height() <= 0.f) {
         return {};
     }
 
+    // Calculate the source pixels that are read assuming a shader using the `sampleRadius` is
+    // evaluated on geometry to cover `visibleLayerBounds`.
+    // FIXME: I think this is a name collision
+    LayerSpace<SkIRect> sampleBounds = visibleLayerBounds;
+    sampleBounds.outset(*sampleRadius);
+
     // NOTE: For the first pass, PixelSpace and LayerSpace are equivalent
     PixelSpace<SkIPoint> origin;
     const bool pixelAligned = is_nearly_integer_translation(fTransform, &origin);
-    SkEnumBitMask<BoundsAnalysis> analysis = this->analyzeBounds(ctx.desiredOutput(),
+    SkEnumBitMask<BoundsAnalysis> analysis = this->analyzeBounds(sampleBounds,
                                                                  BoundsScope::kRescale);
 
     // If there's no actual scaling, and no other effects that have to be resolved for blur(),
@@ -1621,14 +1629,14 @@ FilterResult FilterResult::rescale(const Context& ctx,
     // scale factor (possibly identity).
     const bool canDeferTiling =
             pixelAligned &&
-            !(analysis & BoundsAnalysis::kRequiresLayerCrop) &&
-            !(enforceDecal && (analysis & BoundsAnalysis::kHasLayerFillingEffect));
+            !(analysis & BoundsAnalysis::kRequiresLayerCrop);
 
     const bool hasEffectsToApply =
             !canDeferTiling ||
             SkToBool(fColorFilter) ||
             fImage->colorType() != ctx.backend()->colorType() ||
-            !SkColorSpace::Equals(fImage->getColorSpace(), ctx.colorSpace());
+            !SkColorSpace::Equals(fImage->getColorSpace(), ctx.colorSpace()) ||
+            (enforceDecal && (analysis & BoundsAnalysis::kHasLayerFillingEffect));
 
     int xSteps = downscale_step_count(scale.width());
     int ySteps = downscale_step_count(scale.height());
@@ -1637,11 +1645,17 @@ FilterResult FilterResult::rescale(const Context& ctx,
             // At this point, the only effects that could be visible is a non-decal mode, so just
             // return the image with adjusted layer bounds to match desired output.
             FilterResult noop = *this;
-            noop.fLayerBounds = visibleLayerBounds;
+            noop.fLayerBounds = sampleBounds;
             return noop;
         } else {
-            // The visible layer bounds represents a tighter bounds than the image itself
-            return this->subset(origin, visibleLayerBounds);
+            // The sampled bounds represents a tighter bounds than the image itself
+            // FIXME: are we going to still need this case if we have blur() pick the original src
+            // image with valid data and then calculate the proper src rect?
+
+            // like what if we just have this return *this directly with no restriction?
+            // same for the `noop` case? Is it just to keep the unit tests happy since they don't
+            // have calling logic to go into the blur engine and then repack?
+            return this->subset(origin, sampleBounds);
         }
     }
 
@@ -1670,6 +1684,16 @@ FilterResult FilterResult::rescale(const Context& ctx,
         // image than the original image data.
         srcRect = visibleLayerBounds;
         tileMode = SkTileMode::kDecal;
+
+        // FIXME so if we take this branch and the visible layer bounds are purely from the
+        // desired output, which includes the radius, then we are going to have enough data to
+        // be able to just consume the output image (ignoring any ceil'ing of the lower resolution
+        // sigma causing a mismatch).
+        //
+        // but if we take this branch because the image's layer bounds restricted the data that is
+        // of interest, then what we might produce at the end won't have enough data.
+
+        // in our last loop, we calculate the low res sample radius
     }
 
     srcRect = srcRect.relevantSubset(ctx.desiredOutput(), tileMode);
@@ -2129,6 +2153,7 @@ FilterResult FilterResult::Builder::blur(const LayerSpace<SkSize>& sigma) {
     FilterResult lowResImage = fInputs[0].fImage.rescale(
             fContext.withNewDesiredOutput(sampleBounds),
             LayerSpace<SkSize>({sx, sy}),
+            &radii,
             algorithm->supportsOnlyDecalTiling());
     if (!lowResImage) {
         return {};
@@ -2145,6 +2170,23 @@ FilterResult FilterResult::Builder::blur(const LayerSpace<SkSize>& sigma) {
     // error made it slightly higher.
     lowResSigma = PixelSpace<SkSize>{{std::min(algorithm->maxSigma(), lowResSigma.width()),
                                       std::min(algorithm->maxSigma(), lowResSigma.height())}};
+
+
+    /*
+
+    So lowResMaxOutput holds the low res image size if there was deferred tiling. If we choose not
+    to defer the tiling entirely, we can produce an image that is lowResSigma outset by the
+    low res sigma.
+
+    so we could invoke rescale() with a desired sample radius in high res, then on its last step
+    it calculates the equivalent low res sample radius.
+
+    The output image will be the original low res outset by the low res sample radius, and both
+    are returned. This then means we can reconstruct the original geometry of the base low res image
+    by insetting the low res image bounds and work out the required low res output bounds from that
+
+    */
+
     PixelSpace<SkIRect> lowResMaxOutput{SkISize{lowResImage.fImage->width(),
                                                 lowResImage.fImage->height()}};
 
