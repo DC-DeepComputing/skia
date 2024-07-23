@@ -159,11 +159,18 @@ void SkSurface::asyncRescaleAndReadPixelsYUV420(SkYUVColorSpace yuvColorSpace,
                                                 RescaleMode rescaleMode,
                                                 ReadPixelsCallback callback,
                                                 ReadPixelsContext context) {
+    SkDebugf("here 11 this- w: %d h: %d srcRect: %d %d %d %d dstSize- w: %d h: %d contains: %d\n",
+             this->width(), this->height(),
+             srcRect.fLeft, srcRect.fTop, srcRect.fRight, srcRect.fBottom,
+             dstSize.width(), dstSize.height(),
+             SkIRect::MakeWH(this->width(), this->height()).contains(srcRect));
     if (!SkIRect::MakeWH(this->width(), this->height()).contains(srcRect) || dstSize.isZero() ||
         (dstSize.width() & 0b1) || (dstSize.height() & 0b1)) {
         callback(context, nullptr);
+        SkDebugf("here 2020\n");
         return;
     }
+    SkDebugf("here 22\n");
     asSB(this)->onAsyncRescaleAndReadPixelsYUV420(yuvColorSpace,
                                                   /*readAlpha=*/false,
                                                   std::move(dstColorSpace),
