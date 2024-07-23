@@ -69,10 +69,10 @@ namespace SkOpts {
 
     extern void (*start_pipeline_highp)(size_t,size_t,size_t,size_t, SkRasterPipelineStage*,
                                         SkSpan<SkRasterPipeline_MemoryCtxPatch>,
-                                        uint8_t*);
+                                        uint8_t*, bool*);
     extern void (*start_pipeline_lowp )(size_t,size_t,size_t,size_t, SkRasterPipelineStage*,
                                         SkSpan<SkRasterPipeline_MemoryCtxPatch>,
-                                        uint8_t*);
+                                        uint8_t*, bool*);
 
     extern size_t raster_pipeline_lowp_stride;
     extern size_t raster_pipeline_highp_stride;
