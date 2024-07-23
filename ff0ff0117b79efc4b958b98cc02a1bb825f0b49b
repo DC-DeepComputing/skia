@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e05718cc_b0a09a60",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-23T03:13:22Z",
+      "side": 1,
+      "message": "This was actually https://crbug.com/oss-fuzz/70583, not 70589.",
+      "revId": "ff0ff0117b79efc4b958b98cc02a1bb825f0b49b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
