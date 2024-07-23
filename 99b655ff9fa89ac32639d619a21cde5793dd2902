@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2963b03c_3e989208",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-23T03:36:14Z",
+      "side": 1,
+      "message": "I don\u0027t fully understand some of the code size increases here, but I guess it\u0027s the cost of making a method virtual when it wasn\u0027t before?",
+      "revId": "99b655ff9fa89ac32639d619a21cde5793dd2902",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
