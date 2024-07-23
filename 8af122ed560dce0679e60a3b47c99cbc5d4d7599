@@ -70,6 +70,24 @@
       "parentUuid": "923ade20_d359ffa3",
       "revId": "8af122ed560dce0679e60a3b47c99cbc5d4d7599",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bffd7c61_94d7e93f",
+        "filename": "gm/animated_gif.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-07-23T17:25:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fff939e5_e0b4da44",
+      "revId": "8af122ed560dce0679e60a3b47c99cbc5d4d7599",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

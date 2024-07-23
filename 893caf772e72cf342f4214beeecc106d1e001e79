@@ -88,6 +88,24 @@
       "parentUuid": "7b312dac_b63f452f",
       "revId": "893caf772e72cf342f4214beeecc106d1e001e79",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5cf90ade_bd4f27bd",
+        "filename": "infra/bots/recipe_modules/build/default.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-07-23T17:25:19Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "a56a6786_73414034",
+      "revId": "893caf772e72cf342f4214beeecc106d1e001e79",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4d154cc_94cc1e05",
+        "filename": "src/ports/SkOSFile_ios.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-07-23T17:25:19Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "cbeaabf3_dd47dd94",
+      "revId": "bf21685358a372a038a77f4a85e07f9e931ea251",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ec349c26_f8533ec4",
@@ -67,6 +85,24 @@
       "side": 1,
       "message": "The device with the apparent hang on CFBundleCopyResourceURL is an iPhone11 running iOS 13.6. Upgrading to Xcode 15.4 does not seem to have fixed the hang issue.",
       "parentUuid": "83bd5fea_677ed5dc",
+      "revId": "bf21685358a372a038a77f4a85e07f9e931ea251",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14a0cad8_33896c6e",
+        "filename": "src/ports/SkOSFile_ios.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-07-23T17:25:19Z",
+      "side": 1,
+      "message": "After trying various setups, it appears that building with Xcode 12+ and running on iOS 13.6 causes CFBundleCopyResourceURL to hang when it should return NULL.\n\nThe plan is to move all the oldest supported iOS testing to the iPhone 8 with iOS 13.3.1 (which does not have the CFBundleCopyResourceURL issue). After doing this we can update the iPhone 11 devices to a much newer iOS version for better testing.",
+      "parentUuid": "2ca6838b_a92db7df",
       "revId": "bf21685358a372a038a77f4a85e07f9e931ea251",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
