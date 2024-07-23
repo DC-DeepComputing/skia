@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b05daee9_f1b4a573",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-07-23T21:12:29Z",
+      "side": 1,
+      "message": "I think this broke the Bazel build of Viewer on Linux, which at the moment doesn\u0027t draw anything. Reverting this change allows it to draw again. It doesn\u0027t look like anything in the Bazel build ever defines `SK_GLX` so `make_interface` just always returns nullptr. In `//BUILD.gn` this is configured with `skia_use_gl`, `skia_use_egl`, and `skia_use_x11` (as well as others).",
+      "revId": "511fd84b36e4f449a7d05723de4f354effc28bf4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
