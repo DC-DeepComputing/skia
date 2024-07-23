@@ -917,6 +917,7 @@ private:
     // to pass to the blur engine.
     FilterResult rescale(const Context& ctx,
                          const LayerSpace<SkSize>& scale,
+                         LayerSpace<SkISize>* sampleRadius,
                          bool enforceDecal) const;
     // Draw directly to the device, which draws the same image as produced by resolve() but can be
     // useful if multiple operations need to be performed on the canvas.
