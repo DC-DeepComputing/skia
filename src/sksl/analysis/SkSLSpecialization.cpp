@@ -17,6 +17,7 @@
 #include "src/sksl/ir/SkSLFunctionDefinition.h"
 #include "src/sksl/ir/SkSLProgram.h"
 #include "src/sksl/ir/SkSLProgramElement.h"
+#include "src/sksl/ir/SkSLType.h"
 #include "src/sksl/ir/SkSLVariable.h"
 #include "src/sksl/ir/SkSLVariableReference.h"
 
@@ -28,17 +29,22 @@ using namespace skia_private;
 
 namespace SkSL::Analysis {
 
-template <typename K, typename V>
-static bool maps_are_equal(const THashMap<K, V>& left, const THashMap<K, V>& right) {
+static bool maps_are_equal(const SpecializedParameters& left, const SpecializedParameters& right) {
     if (left.count() != right.count()) {
         return false;
     }
-    for (const auto& [key, leftValue] : left) {
-        const V* rightValue = right.find(key);
-        if (!rightValue) {
+    for (const auto& [key, leftExpr] : left) {
+        const Expression** rightExpr = right.find(key);
+        if (!rightExpr) {
             return false;
         }
-        if (leftValue != *rightValue) {
+        if (!leftExpr->type().matches((*rightExpr)->type())) {
+            return false;
+        }
+
+        SkASSERT(leftExpr->is<VariableReference>());
+        if (leftExpr->as<VariableReference>().variable() !=
+            (*rightExpr)->as<VariableReference>().variable()) {
             return false;
         }
     }
@@ -88,12 +94,12 @@ void FindFunctionsToSpecialize(const Program& program,
                         }
 
                         if (var->storage() == Variable::Storage::kGlobal) {
-                            specialization[param] = var;
+                            specialization[param] = &arg;
                         } else if (var->storage() == Variable::Storage::kParameter) {
-                            const Variable** uniformVar = fInheritedSpecializations.find(var);
-                            SkASSERT(uniformVar);
+                            const Expression** uniformExpr = fInheritedSpecializations.find(var);
+                            SkASSERT(uniformExpr);
 
-                            specialization[param] = *uniformVar;
+                            specialization[param] = *uniformExpr;
                         } else {
                             // TODO(b/353532475): Report an error instead of aborting.
                             SK_ABORT("Specialization requires a uniform or parameter variable");
