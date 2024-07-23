@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5dc6a6cf_085e95f8",
+        "filename": "src/sksl/analysis/SkSLSpecialization.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-23T16:47:14Z",
+      "side": 1,
+      "message": "Done, that\u0027s helpful!",
+      "parentUuid": "18d1c003_b38718d7",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 50,
+        "endChar": 0
+      },
+      "revId": "be252f8d5b9ca6f701419296b746a6b83703395a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cd7c6412_662cb205",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-07-23T15:57:07Z",
       "side": 1,
       "message": "`uniformExpr-\u003edescription()` would give the same result.",
+      "range": {
+        "startLine": 4441,
+        "startChar": 24,
+        "endLine": 4441,
+        "endChar": 92
+      },
+      "revId": "be252f8d5b9ca6f701419296b746a6b83703395a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dd3706da_9e1b6aa4",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 4441,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-23T16:47:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cd7c6412_662cb205",
       "range": {
         "startLine": 4441,
         "startChar": 24,
