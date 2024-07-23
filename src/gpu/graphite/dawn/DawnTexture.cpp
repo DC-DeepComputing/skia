@@ -97,6 +97,20 @@ std::pair<wgpu::TextureView, wgpu::TextureView> DawnTexture::CreateTextureViews(
         viewDesc.dimension = wgpu::TextureViewDimension::e2D;
         viewDesc.baseArrayLayer = info.dawnTextureSpec().fSlice;
         viewDesc.arrayLayerCount = 1;
+
+        // Ensure that the TextureView is configured to use YCbCr sampling if the Texture is
+        // doing so.
+        // TODO(nicolettep): It probably makes sense to have a method defined somewhere to check
+        // if a ycbcrVkDescriptor is valid or at least initialized/present. One way to do this is by
+        // ensuring either the external format is non-zero (initialized to non-default values), but
+        // having all that logic (such as isExternal(), isValid(), etc.) easily accessible from one
+        // location to any  Dawn files working w/ ycbcr descriptors would be helpful. Technically,
+        // all valid ycbcr descriptors *should* have a nonzero external format value given that
+        // AHardwareBuffers always provide one as a fallback to using a defined VkFormat.
+        const wgpu::YCbCrVkDescriptor& ycbcrDesc = info.dawnTextureSpec().fYcbcrVkDescriptor;
+        if (ycbcrDesc.externalFormat) {
+            viewDesc.nextInChain = &ycbcrDesc;
+        }
         wgpu::TextureView sampleTextureView = texture.CreateView(&viewDesc);
         wgpu::TextureView renderTextureView;
         if (info.mipmapped() == Mipmapped::kYes) {

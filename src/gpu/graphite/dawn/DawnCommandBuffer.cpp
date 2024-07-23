@@ -561,18 +561,28 @@ void DawnCommandBuffer::bindTextureAndSamplers(
     SkASSERT(fActiveGraphicsPipeline);
 
     wgpu::BindGroup bindGroup;
+    bool usingSingleStaticSampler = false;
     if (command.fNumTexSamplers == 1) {
-        // Optimize for single texture.
+        const auto* texture =
+                static_cast<const DawnTexture*>(drawPass.getTexture(command.fTextureIndices[0]));
+        auto yCbCrDesc = texture->textureInfo().dawnTextureSpec().fYcbcrVkDescriptor;
+
+        // TODO: Is this the right way to check for YCbCr sampling being used
+        // here?
+        usingSingleStaticSampler = yCbCrDesc.externalFormat != 0;
+    }
+
+    // Optimize for single texture with dynamic sampling.
+    if (command.fNumTexSamplers == 1 && !usingSingleStaticSampler) {
         SkASSERT(fActiveGraphicsPipeline->numTexturesAndSamplers() == 2);
 
         const auto* texture =
                 static_cast<const DawnTexture*>(drawPass.getTexture(command.fTextureIndices[0]));
         const auto* sampler =
                 static_cast<const DawnSampler*>(drawPass.getSampler(command.fSamplerIndices[0]));
-
         bindGroup = fResourceProvider->findOrCreateSingleTextureSamplerBindGroup(sampler, texture);
     } else {
-        std::vector<wgpu::BindGroupEntry> entries(2 * command.fNumTexSamplers);
+        std::vector<wgpu::BindGroupEntry> entries;
 
         for (int i = 0; i < command.fNumTexSamplers; ++i) {
             const auto* texture = static_cast<const DawnTexture*>(
@@ -587,11 +597,22 @@ void DawnCommandBuffer::bindTextureAndSamplers(
             // 2 * i as base binding index of the sampler and texture.
             // TODO: https://b.corp.google.com/issues/259457090:
             // Better configurable way of assigning samplers and textures' bindings.
-            entries[2 * i].binding = 2 * i;
-            entries[2 * i].sampler = wgpuSampler;
 
-            entries[2 * i + 1].binding = 2 * i + 1;
-            entries[2 * i + 1].textureView = wgpuTextureView;
+            // Dawn does not expect (or accept) static samplers being provided
+            // in the bind group, since they were already fully specified in
+            // the bind group layout.
+            auto yCbCrDesc = texture->textureInfo().dawnTextureSpec().fYcbcrVkDescriptor;
+            if (!yCbCrDesc.externalFormat) {
+              wgpu::BindGroupEntry samplerEntry;
+              samplerEntry.binding = 2 * i;
+              samplerEntry.sampler = wgpuSampler;
+              entries.push_back(samplerEntry);
+            }
+
+            wgpu::BindGroupEntry textureEntry;
+            textureEntry.binding = 2 * i + 1;
+            textureEntry.textureView = wgpuTextureView;
+            entries.push_back(textureEntry);
         }
 
         wgpu::BindGroupDescriptor desc;

@@ -1480,7 +1480,6 @@ GraphiteResourceKey VulkanCaps::makeSamplerKey(const SamplerDesc& samplerDesc) c
     for (size_t i = 0; i < samplerData.size(); i++) {
         builder[i] = samplerData[i];
     }
-
     builder.finish();
     return samplerKey;
 }
