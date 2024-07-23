@@ -101,6 +101,7 @@ void Surface::onAsyncRescaleAndReadPixelsYUV420(SkYUVColorSpace yuvColorSpace,
                                                 RescaleMode rescaleMode,
                                                 ReadPixelsCallback callback,
                                                 ReadPixelsContext context) {
+    SkDebugf("Here a\n");
     // Not supported for Graphite. Use Context::asyncRescaleAndReadPixelsYUV420 instead.
     callback(context, nullptr);
 }
