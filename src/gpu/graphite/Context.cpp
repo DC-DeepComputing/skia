@@ -195,17 +195,22 @@ struct Context::AsyncParams {
 
     bool validate() const {
         if (!fSrcImage) {
+            SkDebugf("Failing for wrong reason\n");
             return false;
         }
         if (fSrcImage->isProtected()) {
+            SkDebugf("Failing for right reason --- yay!\n");
             return false;
         }
         if (!SkIRect::MakeSize(fSrcImage->dimensions()).contains(fSrcRect)) {
+            SkDebugf("Failing for wrong reason\n");
             return false;
         }
         if (!SkImageInfoIsValid(fDstImageInfo)) {
+            SkDebugf("Failing for wrong reason\n");
             return false;
         }
+        SkDebugf("succeeding ?\n");
         return true;
     }
 };
@@ -216,6 +221,7 @@ void Context::asyncRescaleAndReadImpl(ReadFn Context::* asyncRead,
                                       SkImage::RescaleMode rescaleMode,
                                       const AsyncParams<SkImage>& params,
                                       ExtraArgs... extraParams) {
+    SkDebugf("here !!\n");
     if (!params.validate()) {
         return params.fail();
     }
@@ -357,6 +363,8 @@ void Context::asyncRescaleAndReadPixelsYUV420(const SkImage* image,
                                               SkImage::RescaleMode rescaleMode,
                                               SkImage::ReadPixelsCallback callback,
                                               SkImage::ReadPixelsContext callbackContext) {
+    SkDebugf("here bb\n");
+
     // Use kOpaque alpha type to signal that we don't read back the alpha channel
     SkImageInfo dstImageInfo = SkImageInfo::Make(dstSize,
                                                  kRGBA_8888_SkColorType,
@@ -377,6 +385,7 @@ void Context::asyncRescaleAndReadPixelsYUV420(const SkSurface* surface,
                                               SkImage::RescaleMode rescaleMode,
                                               SkImage::ReadPixelsCallback callback,
                                               SkImage::ReadPixelsContext callbackContext) {
+    SkDebugf("here aa\n");
     // YUV[A] readback requires the surface to be texturable since the plane conversion is performed
     // by draws. If AsImage() returns null, the image version of asyncRescaleAndReadback will
     // automatically fail.
