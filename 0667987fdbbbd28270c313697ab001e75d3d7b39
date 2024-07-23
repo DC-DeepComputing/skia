@@ -138,6 +138,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6f485ed3_bb921352",
+        "filename": "src/gpu/graphite/dawn/DawnGraphiteUtils.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-07-23T19:37:14Z",
+      "side": 1,
+      "message": "Ok, I think it makes sense to perform this check when creating the DawnTexture as you had originally assumed we were doing. That way, we return an invalid `DawnTexture` more quickly if we were provided bad information. I then kept this check as-is. LMKWYT!",
+      "parentUuid": "cf108413_a3120eec",
+      "range": {
+        "startLine": 229,
+        "startChar": 4,
+        "endLine": 229,
+        "endChar": 58
+      },
+      "revId": "0667987fdbbbd28270c313697ab001e75d3d7b39",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6c59bde7_7680ba61",
         "filename": "src/gpu/graphite/dawn/DawnGraphiteUtilsPriv.h",
         "patchSetId": 9

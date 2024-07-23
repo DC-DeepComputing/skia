@@ -67,6 +67,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "74f34409_3fbdd657",
+        "filename": "include/private/gpu/graphite/DawnTypesPriv.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-07-23T19:37:14Z",
+      "side": 1,
+      "message": "No problem; I appreciate the feedback! Done and done ^-^",
+      "parentUuid": "c5edd181_e98e7096",
+      "range": {
+        "startLine": 16,
+        "startChar": 10,
+        "endLine": 16,
+        "endChar": 26
+      },
+      "revId": "2d28551eb5b08b5be1f626c6ff9a50bce9f883a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "1db284ec_3307d08f",
         "filename": "src/gpu/graphite/dawn/DawnGraphiteUtils.cpp",
         "patchSetId": 11
