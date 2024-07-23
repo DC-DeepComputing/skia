@@ -954,6 +954,23 @@ UniqueKey DawnCaps::makeComputePipelineKey(const ComputePipelineDesc& pipelineDe
     return pipelineKey;
 }
 
+GraphiteResourceKey DawnCaps::makeSamplerKey(const SamplerDesc& samplerDesc) const {
+    GraphiteResourceKey samplerKey;
+    const SkSpan<const uint32_t>& samplerData = samplerDesc.asSpan();
+    static const ResourceType kSamplerType = GraphiteResourceKey::GenerateResourceType();
+    // Non-format ycbcr and sampler information are guaranteed to fit within one uint32, so the size
+    // of the returned span accurately captures the quantity of uint32s needed whether the sampler
+    // is immutable or not.
+    GraphiteResourceKey::Builder builder(&samplerKey, kSamplerType, samplerData.size(),
+                                         Shareable::kYes);
+
+    for (size_t i = 0; i < samplerData.size(); i++) {
+        builder[i] = samplerData[i];
+    }
+    builder.finish();
+    return samplerKey;
+}
+
 void DawnCaps::buildKeyForTexture(SkISize dimensions,
                                   const TextureInfo& info,
                                   ResourceType type,
@@ -964,6 +981,8 @@ void DawnCaps::buildKeyForTexture(SkISize dimensions,
     SkASSERT(!dimensions.isEmpty());
 
     SkASSERT(dawnSpec.getViewFormat() != wgpu::TextureFormat::Undefined);
+    // TODO(nicolettep): Do we need to account for/ check for ycbcr descriptor format here? What
+    // are the expected values of the view's format/the texture's format when using ycbcr?
     uint32_t formatKey = static_cast<uint32_t>(dawnSpec.getViewFormat());
 
     uint32_t samplesKey = SamplesToKey(info.numSamples());
@@ -978,9 +997,17 @@ void DawnCaps::buildKeyForTexture(SkISize dimensions,
     SkASSERT(static_cast<uint32_t>(dawnSpec.fUsage) < (1u << 28)); // usage is remaining 28 bits
 
     // We need two uint32_ts for dimensions, 1 for format, and 1 for the rest of the key;
-    static int kNum32DataCnt = 2 + 1 + 1;
+    int num32DataCnt = 2 + 1 + 1;
 
-    GraphiteResourceKey::Builder builder(key, type, kNum32DataCnt, shareable);
+    bool hasYcbcrInfo = false;
+// #if !defined(__EMSCRIPTEN__)
+    // If we are using ycbcr texture/sampling, more key information is needed.
+    if ((hasYcbcrInfo = ycbcrUtils::ycbcrDescriptorIsValid(dawnSpec.fYcbcrVkDescriptor))) {
+        num32DataCnt += dawnSpec.numInt32sNeededForYcbcrInfo();
+    }
+// #endif
+
+    GraphiteResourceKey::Builder builder(key, type, num32DataCnt, shareable);
 
     builder[0] = dimensions.width();
     builder[1] = dimensions.height();
@@ -988,6 +1015,49 @@ void DawnCaps::buildKeyForTexture(SkISize dimensions,
     builder[3] = (samplesKey                                   << 0) |
                  (static_cast<uint32_t>(isMipped)              << 3) |
                  (static_cast<uint32_t>(dawnSpec.fUsage)       << 4);
+
+// #if !defined(__EMSCRIPTEN__)
+    if (hasYcbcrInfo) {
+        builder[4] = ycbcrUtils::ycbcrDescriptorNonformatInfoAsUint32(dawnSpec.fYcbcrVkDescriptor);
+
+        // TODO(nicolettep): We may not need to store format information on the key here if that
+        // info instead gets encapsulated by the formatKey. For now, appending even if it's
+        // superfluous data.
+        if (!dawnSpec.ycbcrDescriptorUsesExternalFormat()) {
+            builder[5] = dawnSpec.fYcbcrVkDescriptor.vkFormat;
+        } else {
+            builder[5] = (uint32_t)(dawnSpec.fYcbcrVkDescriptor.externalFormat >> 32);
+            builder[6] = (uint32_t)dawnSpec.fYcbcrVkDescriptor.externalFormat;
+        }
+    }
+// #endif
+}
+
+ImmutableSamplerInfo DawnCaps::getImmutableSamplerInfo(const TextureProxy* proxy) const {
+// #if !defined(__EMSCRIPTEN__)
+    if (proxy) {
+        const wgpu::YCbCrVkDescriptor& ycbcrConversionInfo =
+                proxy->textureInfo().dawnTextureSpec().fYcbcrVkDescriptor;
+
+        if (ycbcrUtils::ycbcrDescriptorIsValid(ycbcrConversionInfo)) {
+            ImmutableSamplerInfo immutableSamplerInfo;
+            // ycbcrConversionInfo's vkFormat being VK_FORMAT_UNDEFINED indicates we are using an
+            // external format rather than a known one.
+            // TODO(nicolettep): Confirm that this is a correct assumption. Usually we check for
+            // VK_FORMAT_UNDEFINED.
+            immutableSamplerInfo.fFormat = (ycbcrConversionInfo.vkFormat == 0)
+                    ? ycbcrConversionInfo.externalFormat
+                    : ycbcrConversionInfo.vkFormat;
+            immutableSamplerInfo.fNonFormatYcbcrConversionInfo =
+                    ycbcrUtils::ycbcrDescriptorNonformatInfoAsUint32(ycbcrConversionInfo);
+            return immutableSamplerInfo;
+        }
+    }
+// #endif
+
+    // If the proxy is null or the YCbCr conversion for that proxy is invalid, then return a
+    // default ImmutableSamplerInfo struct.
+    return {};
 }
 
 } // namespace skgpu::graphite

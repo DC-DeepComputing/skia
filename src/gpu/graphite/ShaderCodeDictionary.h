@@ -67,7 +67,7 @@ enum class SnippetRequirementFlags : uint32_t {
     kSurfaceColor     = 0x8,
     kPrimitiveColor   = 0x10,
     kGradientBuffer   = 0x20,
-    kStoresData       = 0x40, // Indicates that the node stores numerical data
+    kStoresData       = 0x40, // Indicates that the node may store numerical data
 };
 SK_MAKE_BITMASK_OPS(SnippetRequirementFlags)
 

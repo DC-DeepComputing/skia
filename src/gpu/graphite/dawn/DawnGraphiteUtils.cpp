@@ -189,4 +189,83 @@ bool DawnCompileWGSLShaderModule(const DawnSharedContext* sharedContext,
     return check_shader_module(sharedContext, module, wgsl.c_str(), errorHandler);
 }
 
+namespace ycbcrUtils {
+bool ycbcrDescriptorsAreEquivalent(const wgpu::YCbCrVkDescriptor& desc1,
+                                   const wgpu::YCbCrVkDescriptor& desc2) {
+    return desc1.vkFormat                    == desc2.vkFormat                    &&
+           desc1.vkYCbCrRange                == desc2.vkYCbCrRange                &&
+           desc1.vkComponentSwizzleRed       == desc2.vkComponentSwizzleRed       &&
+           desc1.vkComponentSwizzleGreen     == desc2.vkComponentSwizzleGreen     &&
+           desc1.vkComponentSwizzleBlue      == desc2.vkComponentSwizzleBlue      &&
+           desc1.vkComponentSwizzleAlpha     == desc2.vkComponentSwizzleAlpha     &&
+           desc1.vkXChromaOffset             == desc2.vkXChromaOffset             &&
+           desc1.vkYChromaOffset             == desc2.vkYChromaOffset             &&
+           desc1.vkChromaFilter              == desc2.vkChromaFilter              &&
+           desc1.forceExplicitReconstruction == desc2.forceExplicitReconstruction &&
+           desc1.externalFormat              == desc2.externalFormat;
+}
+
+bool ycbcrDescriptorIsValid(const wgpu::YCbCrVkDescriptor& desc) {
+    static const wgpu::YCbCrVkDescriptor kDefaultYcbcrDescriptor = {};
+    return !ycbcrDescriptorsAreEquivalent(desc, kDefaultYcbcrDescriptor);
+}
+
+// TODO(nicolettep): Clean this repeated code up to be shared b/w dawn and vulkan.
+uint32_t ycbcrDescriptorNonformatInfoAsUint32(const wgpu::YCbCrVkDescriptor& conversionInfo) {
+    static_assert(kComponentAShift + kComponentBits <= 32);
+    SkASSERT(conversionInfo.vkYCbCrModel                          < (1u << kYcbcrModelBits    ));
+    SkASSERT(conversionInfo.vkYCbCrRange                          < (1u << kYcbcrRangeBits    ));
+    SkASSERT(conversionInfo.vkXChromaOffset                       < (1u << kXChromaOffsetBits ));
+    SkASSERT(conversionInfo.vkYChromaOffset                       < (1u << kYChromaOffsetBits ));
+    SkASSERT(static_cast<uint32_t>(conversionInfo.vkChromaFilter) < (1u << kChromaFilterBits  ));
+    SkASSERT(conversionInfo.vkComponentSwizzleRed                 < (1u << kComponentBits     ));
+    SkASSERT(conversionInfo.vkComponentSwizzleGreen               < (1u << kComponentBits     ));
+    SkASSERT(conversionInfo.vkComponentSwizzleBlue                < (1u << kComponentBits     ));
+    SkASSERT(conversionInfo.vkComponentSwizzleAlpha               < (1u << kComponentBits     ));
+    SkASSERT(static_cast<uint32_t>(conversionInfo.forceExplicitReconstruction)
+             < (1u << kForceExplicitReconBits));
+
+    // TODO(nicolettep): Confirm that this is a correct assumption. Usually we check for
+    // VK_FORMAT_UNDEFINED.
+    bool usesExternalFormat = conversionInfo.vkFormat == 0;
+
+    return (((uint32_t)(usesExternalFormat                         ) << kUsesExternalFormatShift) |
+            ((uint32_t)(conversionInfo.vkYCbCrModel                ) << kYcbcrModelShift        ) |
+            ((uint32_t)(conversionInfo.vkYCbCrRange                ) << kYcbcrRangeShift        ) |
+            ((uint32_t)(conversionInfo.vkXChromaOffset             ) << kXChromaOffsetShift     ) |
+            ((uint32_t)(conversionInfo.vkYChromaOffset             ) << kYChromaOffsetShift     ) |
+            ((uint32_t)(conversionInfo.vkChromaFilter              ) << kChromaFilterShift      ) |
+            ((uint32_t)(conversionInfo.forceExplicitReconstruction ) << kForceExplicitReconShift) |
+            ((uint32_t)(conversionInfo.vkComponentSwizzleRed       ) << kComponentRShift        ) |
+            ((uint32_t)(conversionInfo.vkComponentSwizzleGreen     ) << kComponentGShift        ) |
+            ((uint32_t)(conversionInfo.vkComponentSwizzleBlue      ) << kComponentBShift        ) |
+            ((uint32_t)(conversionInfo.vkComponentSwizzleAlpha     ) << kComponentAShift        ));
+}
+
+wgpu::YCbCrVkDescriptor getYcbcrDescriptorFromSamplerDesc(const SamplerDesc& samplerDesc) {
+    wgpu::YCbCrVkDescriptor desc;
+    if (samplerDesc.isImmutable()) {
+        uint32_t nonFormatInfo =
+                (uint32_t)(samplerDesc.desc() >> SamplerDesc::kImmutableSamplerInfoShift);
+
+        desc.vkFormat = samplerDesc.usesExternalFormat() ? 0 : samplerDesc.format();
+        desc.vkYCbCrModel = (nonFormatInfo & kYcbcrModelMask) >> kYcbcrModelShift;
+        desc.vkYCbCrRange = (nonFormatInfo & kYcbcrRangeMask) >> kYcbcrRangeShift;
+        desc.vkComponentSwizzleRed = (nonFormatInfo & kComponentRMask) >> kComponentRShift;
+        desc.vkComponentSwizzleGreen = (nonFormatInfo & kComponentGMask) >> kComponentGShift;
+        desc.vkComponentSwizzleBlue = (nonFormatInfo & kComponentBMask) >> kComponentBShift;
+        desc.vkComponentSwizzleAlpha = (nonFormatInfo & kComponentAMask) >> kComponentAShift;
+        desc.vkXChromaOffset = (nonFormatInfo & kXChromaOffsetMask) >> kXChromaOffsetShift;
+        desc.vkYChromaOffset = (nonFormatInfo & kYChromaOffsetMask) >> kYChromaOffsetShift;
+        desc.vkChromaFilter =
+                (wgpu::FilterMode)((nonFormatInfo & kChromaFilterMask) >> kChromaFilterShift);
+        desc.forceExplicitReconstruction =
+                (nonFormatInfo & kForceExplicitReconMask) >> kForceExplicitReconShift;
+        desc.externalFormat = samplerDesc.usesExternalFormat() ?
+                (uint64_t)(samplerDesc.externalFormatMSBs()) << 32 | samplerDesc.format() : 0;
+    }
+    return desc;
+}
+} // namespace ycbcrUtils
+
 } // namespace skgpu::graphite
