@@ -114,6 +114,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cf108413_a3120eec",
+        "filename": "src/gpu/graphite/dawn/DawnGraphiteUtils.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-07-23T18:06:18Z",
+      "side": 1,
+      "message": "So I wouldn\u0027t depend on how the client is filling out the struct to determine what we should check for. A different client could fill those values in arbitrarily. I was thinking if we had some level of validation of the struct higher up (like when we are first creating an SkImage with a dawn ycbcr descriptor) that confirmed we only had one format or the other, then down here we could just assert that case. If we don\u0027t have the early validation then we need to leave this as you had it since we\u0027re checking values on a user supplied struct.",
+      "parentUuid": "f572cdd0_2de27840",
+      "range": {
+        "startLine": 229,
+        "startChar": 4,
+        "endLine": 229,
+        "endChar": 58
+      },
+      "revId": "0667987fdbbbd28270c313697ab001e75d3d7b39",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6c59bde7_7680ba61",
         "filename": "src/gpu/graphite/dawn/DawnGraphiteUtilsPriv.h",
         "patchSetId": 9

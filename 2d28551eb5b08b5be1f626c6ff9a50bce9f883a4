@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "c5edd181_e98e7096",
+        "filename": "include/private/gpu/graphite/DawnTypesPriv.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-07-23T18:06:18Z",
+      "side": 1,
+      "message": "So I don\u0027t think doing dawn:: as a namespace is good. We kind of moved away from having backend specific namespaces for all our other files/classes so I don\u0027t think we should introduce that just for these helpers.\n\n`dawnaYcbcrUtils` is a little better but is just kind of a \"hack\" around our current style decisions. Thinking about this more (sorry this is going to cause some refactoring), we should put Dawn in the utility function names. Also our style has use capitalize these helper functions first word. So I think `DawnDescriptorsAreEquivalent` is probably where we want to land",
+      "parentUuid": "502f0a75_cf4580ed",
+      "range": {
+        "startLine": 16,
+        "startChar": 10,
+        "endLine": 16,
+        "endChar": 26
+      },
+      "revId": "2d28551eb5b08b5be1f626c6ff9a50bce9f883a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "1db284ec_3307d08f",
