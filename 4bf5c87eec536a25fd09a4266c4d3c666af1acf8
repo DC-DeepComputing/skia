@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a19600d_d47bde9a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-07-23T16:43:58Z",
+      "side": 1,
+      "message": "Where are the actual diffs in this one? I only see whitespace/formatting changes.",
+      "revId": "4bf5c87eec536a25fd09a4266c4d3c666af1acf8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
