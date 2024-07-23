@@ -123,9 +123,36 @@ public:
         fData[fSize++] = x;
     }
 
+    T* push_back_n(int n) {
+        SkASSERT(n >= 0);
+        SkASSERT(fSize + n <= N);
+        T* ptr = fData + fSize;
+        for (int index = 0; index < n; ++index) {
+            ptr[index] = T();
+        }
+        fSize += n;
+        return ptr;
+    }
+
+    T* push_back_n(int n, const T& t) {
+        SkASSERT(n >= 0);
+        SkASSERT(fSize + n <= N);
+        T* ptr = fData + fSize;
+        for (int index = 0; index < n; ++index) {
+            ptr[index] = t;
+        }
+        fSize += n;
+        return ptr;
+    }
+
     void pop_back() {
-        SkASSERT(fSize > 0);
+        SkASSERT(fSize >= 1);
         --fSize;
+    }
+
+    void pop_back_n(int n) {
+        SkASSERT(fSize >= n);
+        fSize -= n;
     }
 
     void removeShuffle(int n) {
