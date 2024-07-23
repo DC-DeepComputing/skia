@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae4f0c3b_fe72ed7c",
+        "filename": "include/private/gpu/graphite/DawnTypesPriv.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-07-23T17:21:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c8cac095_28a5ecbd",
+      "range": {
+        "startLine": 16,
+        "startChar": 10,
+        "endLine": 16,
+        "endChar": 21
+      },
+      "revId": "0667987fdbbbd28270c313697ab001e75d3d7b39",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2d8abe0c_c31ed1cd",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f572cdd0_2de27840",
+        "filename": "src/gpu/graphite/dawn/DawnGraphiteUtils.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-07-23T17:21:25Z",
+      "side": 1,
+      "message": "Based on `src/dawn/tests/end2end/YCbCrInfoTests.cpp` within Dawn, they do seem to set *either* the VkFormat OR the external format, although they do not explicitly check for validity if setting both to valid values. When querying an AHardwareBuffer, external format should never get returned as 0 (https://registry.khronos.org/vulkan/specs/1.3-extensions/man/html/VkAndroidHardwareBufferFormatPropertiesANDROID.html)... but Dawn can choose to assign one format to 0 to clearly indicate usage of a known or external format. \n\nAnyhow, changed as you described as I see no problem with that given Dawn\u0027s impl.",
+      "parentUuid": "2d8abe0c_c31ed1cd",
+      "range": {
+        "startLine": 229,
+        "startChar": 4,
+        "endLine": 229,
+        "endChar": 58
+      },
+      "revId": "0667987fdbbbd28270c313697ab001e75d3d7b39",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6c59bde7_7680ba61",
@@ -77,6 +125,30 @@
       "writtenOn": "2024-07-23T13:27:54Z",
       "side": 1,
       "message": "I know you said the uses of these functions will be in follow on CLs so we\u0027ll see for sure then, but I just wanted to check now if this is really something that should be in a header and is used by multiple things? Generally this types of calls are pretty private and just needed in a specific function and/or cpp file.",
+      "range": {
+        "startLine": 54,
+        "startChar": 4,
+        "endLine": 54,
+        "endChar": 19
+      },
+      "revId": "0667987fdbbbd28270c313697ab001e75d3d7b39",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a59fad7_19de7e59",
+        "filename": "src/gpu/graphite/dawn/DawnGraphiteUtilsPriv.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-07-23T17:21:25Z",
+      "side": 1,
+      "message": "TL;DR: Removed this function but kept the `kIntsNeededKnownFormat` and `kIntsNeededExternalFormat` definitions.\n\nI see what you mean - we do need to know the number of int32s required when forming the ycbcr descriptor key within `DawnCaps`, but also from within `DawnGraphicsPipeline` in the next CL when we determine the key stride for parsing ycbcr information from numerical key representation. However, in the latter case, we are not going from a `YCbCrVkDescriptor` but from whether or not we are using an external format, so this function would end up just being used in one area. Good callout",
+      "parentUuid": "6c59bde7_7680ba61",
       "range": {
         "startLine": 54,
         "startChar": 4,
