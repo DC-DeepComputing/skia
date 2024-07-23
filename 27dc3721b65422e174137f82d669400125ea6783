@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8dacae6_ad829bf8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-07-23T21:15:18Z",
+      "side": 1,
+      "message": "Well, looks like we do need to handle linking somehow, though it isn\u0027t clear how one would know when to link and when not. We really need this set up like a host build / target build.",
+      "revId": "27dc3721b65422e174137f82d669400125ea6783",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
