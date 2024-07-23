@@ -11,6 +11,7 @@
 #include "include/private/base/SkTArray.h"
 #include "src/core/SkChecksum.h"
 #include "src/core/SkTHash.h"
+#include "src/sksl/ir/SkSLExpression.h"
 
 #include <cstddef>
 #include <cstdint>
@@ -18,9 +19,11 @@
 
 namespace SkSL {
 
+class FieldAccess;
 class FunctionCall;
 class FunctionDeclaration;
 class Variable;
+class VariableReference;
 struct Program;
 
 namespace Analysis {
@@ -32,7 +35,7 @@ using SpecializationIndex = int;
 static constexpr SpecializationIndex kUnspecialized = -1;
 
 // Global uniforms used by a specialization, maps <function parameter, global uniform>
-using SpecializedParameters = skia_private::THashMap<const Variable*, const Variable*>;
+using SpecializedParameters = skia_private::THashMap<const Variable*, const Expression*>;
 // The set of specializated implementations needed for a given function.
 using Specializations = skia_private::TArray<SpecializedParameters>;
 // The full set of all specializations required by the program.
