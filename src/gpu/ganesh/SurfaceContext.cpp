@@ -743,6 +743,7 @@ void SurfaceContext::asyncRescaleAndReadPixelsYUV420(GrDirectContext* dContext,
     using AsyncReadResult = skgpu::TAsyncReadResult<GrGpuBuffer, GrDirectContext::DirectContextID,
                                                     PixelTransferResult>;
 
+    SkDebugf("here ##\n");
     SkASSERT(srcRect.fLeft >= 0 && srcRect.fRight <= this->width());
     SkASSERT(srcRect.fTop >= 0 && srcRect.fBottom <= this->height());
     SkASSERT(!dstSize.isZero());
@@ -762,6 +763,7 @@ void SurfaceContext::asyncRescaleAndReadPixelsYUV420(GrDirectContext* dContext,
         return;
     }
     if (this->asSurfaceProxy()->isProtected() == GrProtected::kYes) {
+        SkDebugf("what what\n");
         callback(callbackContext, nullptr);
         return;
     }
