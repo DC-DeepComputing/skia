@@ -33,6 +33,24 @@
       "message": "Does the array logic need to happen for arrays inside structs? As written, this will only trigger for top-level arrays, right?",
       "revId": "99b655ff9fa89ac32639d619a21cde5793dd2902",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4aa055d2_93d81326",
+        "filename": "src/sksl/ir/SkSLType.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-23T13:49:47Z",
+      "side": 1,
+      "message": "AFAICS no. The type-matching check isn\u0027t recursive. The struct type-matching is checked based on pointer equality of the `StructType` object without looking at the fields at all.",
+      "parentUuid": "714267da_49afc315",
+      "revId": "99b655ff9fa89ac32639d619a21cde5793dd2902",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
