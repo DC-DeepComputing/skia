@@ -574,11 +574,12 @@ void SkRasterPipeline::run(size_t x, size_t y, size_t w, size_t h) const {
         patches[i].backup = nullptr;
         memset(patches[i].scratch, 0, sizeof(patches[i].scratch));
     }
+    bool compiled = false;
 
     auto start_pipeline = this->buildPipeline(program.get() + stagesNeeded);
     start_pipeline(x, y, x + w, y + h, program.get(),
                    SkSpan{patches.data(), numMemoryCtxs},
-                   fTailPointer);
+                   fTailPointer, &compiled);
 }
 
 std::function<void(size_t, size_t, size_t, size_t)> SkRasterPipeline::compile() const {
@@ -599,12 +600,13 @@ std::function<void(size_t, size_t, size_t, size_t)> SkRasterPipeline::compile() 
         memset(patches[i].scratch, 0, sizeof(patches[i].scratch));
     }
     uint8_t* tailPointer = fTailPointer;
+    bool* compiled = fAlloc->make<bool>(false);
 
     auto start_pipeline = this->buildPipeline(program + stagesNeeded);
     return [=](size_t x, size_t y, size_t w, size_t h) {
         start_pipeline(x, y, x + w, y + h, program,
                        SkSpan{patches, numMemoryCtxs},
-                       tailPointer);
+                       tailPointer, compiled);
     };
 }
 

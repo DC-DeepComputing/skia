@@ -4854,11 +4854,30 @@ STAGE(swizzle, void* ctx) {
     }
 #endif
 
+#define SK_USE_COMPUTED_GOTO 1
+
 static void start_pipeline(size_t dx, size_t dy,
                            size_t xlimit, size_t ylimit,
                            SkRasterPipelineStage* program,
                            SkSpan<SkRasterPipeline_MemoryCtxPatch> memoryCtxPatches,
-                           uint8_t* tailPointer) {
+                           uint8_t* tailPointer, bool* compiled) {
+#if SK_USE_COMPUTED_GOTO
+    static void* kLabels[] = {
+#define M(op) && l_##op,
+        SK_RASTER_PIPELINE_OPS_ALL(M)
+#undef M
+    };
+
+    if (!*compiled) {
+        SkRasterPipelineStage* p = program;
+        for (; p->op != SkRasterPipelineOp::just_return; p++) {
+            p->target = kLabels[static_cast<int>(p->op)];
+        }
+        p->target = &&endOfLoop;
+        *compiled = true;
+    }
+#endif
+
     F r, g, b, a, dr, dg, db, da;
     uint8_t unreferencedTail;
     if (!tailPointer) {
@@ -4868,6 +4887,7 @@ static void start_pipeline(size_t dx, size_t dy,
     const size_t x0 = dx;
     SkRasterPipelineStage* program0 = program;
     std::byte* base = nullptr;
+
     for (; dy < ylimit; dy++) {
         dx = x0;
         while (dx < xlimit) {
@@ -4879,6 +4899,27 @@ static void start_pipeline(size_t dx, size_t dy,
             r = g = b = a = dr = dg = db = da = F0;
             base = nullptr;
             program = program0;
+#if SK_USE_COMPUTED_GOTO
+            goto *program->target;
+
+#define M(op)                                                           \
+    l_##op:                                                             \
+        op##_k(Ctx{program}, dx, dy, base, r, g, b, a, dr, dg, db, da); \
+        program++;                                                      \
+        goto *program->target;
+
+    SK_RASTER_PIPELINE_OPS_ALL_SIMPLE(M)
+#undef M
+
+#define M(op) \
+    l_##op: \
+    program += op##_k(Ctx{program}, dx, dy, base, r, g, b, a, dr, dg, db, da); \
+    goto *program->target;
+
+    SK_RASTER_PIPELINE_OPS_SKSL_BRANCHING(M)
+#undef M
+
+#else  // One-big-switch implementation:
             while (true) {
                 switch (program->op) {
 #define M(op)                                                           \
@@ -4900,6 +4941,8 @@ static void start_pipeline(size_t dx, size_t dy,
                         goto endOfLoop;
                 }
             }
+#endif
+
         endOfLoop:
             if (tail) {
                 restore_memory_contexts(memoryCtxPatches, dx, dy, tail);
@@ -4927,7 +4970,7 @@ namespace lowp {
 
     static void start_pipeline(size_t,size_t,size_t,size_t, SkRasterPipelineStage*,
                                SkSpan<SkRasterPipeline_MemoryCtxPatch>,
-                               uint8_t* tailPointer) {}
+                               uint8_t* tailPointer, bool* compiled) {}
 
 #else  // We are compiling vector code with Clang... let's make some lowp stages!
 
@@ -4984,7 +5027,7 @@ static void start_pipeline(size_t x0,     size_t y0,
                            size_t xlimit, size_t ylimit,
                            SkRasterPipelineStage* program,
                            SkSpan<SkRasterPipeline_MemoryCtxPatch> memoryCtxPatches,
-                           uint8_t* tailPointer) {
+                           uint8_t* tailPointer, bool* compiled) {
     uint8_t unreferencedTail;
     if (!tailPointer) {
         tailPointer = &unreferencedTail;

@@ -39,7 +39,10 @@ struct skcms_TransferFunction;
 // Raster pipeline programs are stored as a contiguous array of SkRasterPipelineStages.
 SK_BEGIN_REQUIRE_DENSE
 struct SkRasterPipelineStage {
-    SkRasterPipelineOp op;
+    union {
+        SkRasterPipelineOp op;
+        void* target;
+    };
 
     // `ctx` holds data used by the stage.
     // Most context structures are declared in SkRasterPipelineOpContexts.h, and have names ending
@@ -121,7 +124,7 @@ private:
     using StartPipelineFn = void (*)(size_t, size_t, size_t, size_t,
                                      SkRasterPipelineStage* program,
                                      SkSpan<SkRasterPipeline_MemoryCtxPatch>,
-                                     uint8_t*);
+                                     uint8_t*, bool*);
     StartPipelineFn buildPipeline(SkRasterPipelineStage*) const;
 
     void uncheckedAppend(SkRasterPipelineOp, void*);

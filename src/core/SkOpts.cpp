@@ -27,11 +27,11 @@ namespace SkOpts {
 
     void (*start_pipeline_highp)(size_t, size_t, size_t, size_t, SkRasterPipelineStage*,
                                  SkSpan<SkRasterPipeline_MemoryCtxPatch>,
-                                 uint8_t*) =
+                                 uint8_t*, bool*) =
             SK_OPTS_NS::start_pipeline;
     void (*start_pipeline_lowp)(size_t, size_t, size_t, size_t, SkRasterPipelineStage*,
                                 SkSpan<SkRasterPipeline_MemoryCtxPatch>,
-                                uint8_t*) =
+                                uint8_t*, bool*) =
             SK_OPTS_NS::lowp::start_pipeline;
 
     // Each Init_foo() is defined in src/opts/SkOpts_foo.cpp.
