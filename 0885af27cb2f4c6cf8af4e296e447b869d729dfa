@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "74d22718_4d63778a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-07-23T14:50:42Z",
+      "side": 1,
+      "message": "LGTM! :D",
+      "revId": "0885af27cb2f4c6cf8af4e296e447b869d729dfa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "03fb676d_b90f9f27",
@@ -14,6 +31,30 @@
       "writtenOn": "2024-07-23T14:47:19Z",
       "side": 1,
       "message": "the various extension changes here just allow vulkan to run on windows. I\u0027m planning on doing a refactor of how we add extensions to have an allow list of what we use instead of allowing all and then trying to remove things when they have issues with layers.",
+      "range": {
+        "startLine": 528,
+        "startChar": 59,
+        "endLine": 528,
+        "endChar": 69
+      },
+      "revId": "0885af27cb2f4c6cf8af4e296e447b869d729dfa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b20dd39_5470bdc7",
+        "filename": "tools/gpu/vk/VkTestUtils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 528,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-07-23T14:50:42Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "03fb676d_b90f9f27",
       "range": {
         "startLine": 528,
         "startChar": 59,
