@@ -960,14 +960,14 @@ ImmutableSamplerInfo DawnCaps::getImmutableSamplerInfo(const TextureProxy* proxy
         const wgpu::YCbCrVkDescriptor& ycbcrConversionInfo =
                 proxy->textureInfo().dawnTextureSpec().fYcbcrVkDescriptor;
 
-        if (ycbcrUtils::descriptorIsValid(ycbcrConversionInfo)) {
+        if (dawn::ycbcrUtils::descriptorIsValid(ycbcrConversionInfo)) {
             ImmutableSamplerInfo immutableSamplerInfo;
             // A vkFormat of 0 indicates we are using an external format rather than a known one.
             immutableSamplerInfo.fFormat = (ycbcrConversionInfo.vkFormat == 0)
                     ? ycbcrConversionInfo.externalFormat
                     : ycbcrConversionInfo.vkFormat;
             immutableSamplerInfo.fNonFormatYcbcrConversionInfo =
-                    ycbcrUtils::nonformatInfoAsUint32(ycbcrConversionInfo);
+                    dawn::ycbcrUtils::nonformatInfoAsUint32(ycbcrConversionInfo);
             return immutableSamplerInfo;
         }
     }
@@ -1019,9 +1019,17 @@ void DawnCaps::buildKeyForTexture(SkISize dimensions,
     SkASSERT(static_cast<uint32_t>(dawnSpec.fUsage) < (1u << 28)); // usage is remaining 28 bits
 
     // We need two uint32_ts for dimensions, 1 for format, and 1 for the rest of the key;
-    static int kNum32DataCnt = 2 + 1 + 1;
-
-    GraphiteResourceKey::Builder builder(key, type, kNum32DataCnt, shareable);
+    int num32DataCnt = 2 + 1 + 1;
+    bool hasYcbcrInfo = false;
+#if !defined(__EMSCRIPTEN__)
+    // If we are using ycbcr texture/sampling, more key information is needed.
+    if ((hasYcbcrInfo = dawn::ycbcrUtils::descriptorIsValid(dawnSpec.fYcbcrVkDescriptor))) {
+        num32DataCnt += dawn::ycbcrUtils::usesExternalFormat(dawnSpec.fYcbcrVkDescriptor)
+                ? dawn::ycbcrUtils::kIntsNeededExternalFormat
+                : dawn::ycbcrUtils::kIntsNeededKnownFormat;
+    }
+#endif
+    GraphiteResourceKey::Builder builder(key, type, num32DataCnt, shareable);
 
     builder[0] = dimensions.width();
     builder[1] = dimensions.height();
@@ -1029,6 +1037,21 @@ void DawnCaps::buildKeyForTexture(SkISize dimensions,
     builder[3] = (samplesKey                                   << 0) |
                  (static_cast<uint32_t>(isMipped)              << 3) |
                  (static_cast<uint32_t>(dawnSpec.fUsage)       << 4);
+
+#if !defined(__EMSCRIPTEN__)
+    if (hasYcbcrInfo) {
+        builder[4] = dawn::ycbcrUtils::nonformatInfoAsUint32(dawnSpec.fYcbcrVkDescriptor);
+        // Even though we already have formatKey appended to the texture key, we still need to add
+        // fYcbcrVkDescriptor's vkFormat or externalFormat. The latter two are distinct from
+        // dawnSpec's wgpu::TextureFormat.
+        if (!dawn::ycbcrUtils::usesExternalFormat(dawnSpec.fYcbcrVkDescriptor)) {
+            builder[5] = dawnSpec.fYcbcrVkDescriptor.vkFormat;
+        } else {
+            builder[5] = (uint32_t)(dawnSpec.fYcbcrVkDescriptor.externalFormat >> 32);
+            builder[6] = (uint32_t)dawnSpec.fYcbcrVkDescriptor.externalFormat;
+        }
+    }
+#endif
 }
 
 } // namespace skgpu::graphite
