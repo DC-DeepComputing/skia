@@ -254,7 +254,7 @@ public:
      * Note that runtime effects enforce additional, much stricter rules about uniforms; these
      * limitations are not handled here.
      */
-    virtual bool isAllowedInUniform(Position* errorPosition = nullptr) const {
+    virtual bool isAllowedInUniform(Position* = nullptr) const {
         // We don't allow samplers, textures or atomics to be marked as uniforms.
         // This rules out all opaque types.
         return !this->isOpaque();

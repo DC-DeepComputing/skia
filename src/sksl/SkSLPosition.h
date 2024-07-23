@@ -27,7 +27,7 @@ public:
         int length = endOffset - startOffset;
         Position result;
         result.fStartOffset = startOffset;
-        result.fLength = length <= 0xFF ? length : 0xFF;
+        result.fLength = length <= 0xFF ? (uint32_t)length : 0xFF;
         return result;
     }
 

@@ -53,6 +53,8 @@ bool usesExternalFormat(const wgpu::YCbCrVkDescriptor&);
 // Returns the number of uint32_ts required to represent all distincitive YCbCrVkDescriptor info
 int numInt32sNeeded(const wgpu::YCbCrVkDescriptor&);
 
+wgpu::YCbCrVkDescriptor getDescriptorFromSamplerDesc(const SamplerDesc&);
+
 // The number of uint32s required to represent all relevant YCbCr conversion info depends upon
 // whether we are using a known VkFormat or an external format. With a known format, we only
 // require 2 - one for non-format information and another to store the VkFormat. External formats

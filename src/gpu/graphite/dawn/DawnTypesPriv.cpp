@@ -11,6 +11,7 @@ namespace skgpu::graphite {
 
 #if !defined(__EMSCRIPTEN__)
 namespace dawn::ycbcrUtils {
+
 bool descriptorsAreEquivalent(const wgpu::YCbCrVkDescriptor& desc1,
                               const wgpu::YCbCrVkDescriptor& desc2) {
     return desc1.vkFormat                    == desc2.vkFormat                    &&
