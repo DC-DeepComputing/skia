@@ -16,6 +16,23 @@
       "message": "I don\u0027t fully understand some of the code size increases here, but I guess it\u0027s the cost of making a method virtual when it wasn\u0027t before?",
       "revId": "99b655ff9fa89ac32639d619a21cde5793dd2902",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "714267da_49afc315",
+        "filename": "src/sksl/ir/SkSLType.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-07-23T13:48:00Z",
+      "side": 1,
+      "message": "Does the array logic need to happen for arrays inside structs? As written, this will only trigger for top-level arrays, right?",
+      "revId": "99b655ff9fa89ac32639d619a21cde5793dd2902",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
