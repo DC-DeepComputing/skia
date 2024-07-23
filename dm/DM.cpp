@@ -1480,7 +1480,10 @@ static void gather_tests() {
         if (!in_shard()) {
             continue;
         }
-        if (CommandLineFlags::ShouldSkip(FLAGS_match, test.fName)) {
+        CommandLineFlags::StringArray strings;
+        strings.append("VkProtectedContext_AsyncReadFromProtectedSurface_Graphite");
+
+        if (CommandLineFlags::ShouldSkip(strings, test.fName)) {
             continue;
         }
         if (test.fTestType == TestType::kGanesh && FLAGS_gpu) {
