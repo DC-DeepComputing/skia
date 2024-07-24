@@ -517,13 +517,7 @@ void add_localmatrixshader_uniform_data(const ShaderCodeDictionary* dict,
                                         PipelineDataGatherer* gatherer) {
     BEGIN_WRITE_UNIFORMS(gatherer, dict, BuiltInCodeSnippetID::kLocalMatrixShader)
 
-    SkM44 lmInverse;
-    bool wasInverted = localMatrix.invert(&lmInverse);  // TODO: handle failure up stack
-    if (!wasInverted) {
-        lmInverse.setIdentity();
-    }
-
-    gatherer->write(lmInverse);
+    gatherer->write(localMatrix);
 }
 
 } // anonymous namespace
@@ -1618,13 +1612,18 @@ static void add_to_key(const KeyContext& keyContext,
                        const SkCTMShader* shader) {
     // CTM shaders are always given device coordinates, so we don't have to modify the CTM itself
     // with keyContext's local transform.
-    LocalMatrixShaderBlock::LMShaderData lmShaderData(shader->ctm());
+    SkMatrix lmInverse;
+    if (!shader->ctm().invert(&lmInverse)) {
+        lmInverse.setIdentity();
+    }
 
-    KeyContextWithLocalMatrix newContext(keyContext, shader->ctm());
+    LocalMatrixShaderBlock::LMShaderData lmShaderData(lmInverse);
+
+    KeyContextWithLocalMatrix newContext(keyContext, lmInverse);
 
     LocalMatrixShaderBlock::BeginBlock(newContext, builder, gatherer, lmShaderData);
 
-        AddToKey(newContext, builder, gatherer, shader->proxyShader().get());
+    AddToKey(newContext, builder, gatherer, shader->proxyShader().get());
 
     builder->endBlock();
 }
@@ -2032,27 +2031,30 @@ static void add_to_key(const KeyContext& keyContext,
         // require that in the ImageProvider utility. Also Graphite YUV images are assumed to be
         // TopLeft origin.
         auto imgBase = as_IB(imgShader->image());
+
+        SkMatrix imgMatrix;
         if (imgBase->isGraphiteBacked()) {
             // The YUV formats can encode their own origin including reflection and rotation,
             // so we need to concat that to the local matrix transform.
             if (imgBase->isYUVA()) {
                 auto imgYUVA = static_cast<const Image_YUVA*>(imgBase);
                 SkASSERT(imgYUVA);
-                matrix = imgYUVA->yuvaInfo().originMatrix();
+                imgMatrix = imgYUVA->yuvaInfo().originMatrix();
             } else {
                 auto imgGraphite = static_cast<Image*>(imgBase);
                 SkASSERT(imgGraphite);
                 const auto& view = imgGraphite->textureProxyView();
                 if (view.origin() == Origin::kBottomLeft) {
-                    matrix.setScaleY(-1);
-                    matrix.setTranslateY(view.height());
+                    imgMatrix.setScaleY(-1);
+                    imgMatrix.setTranslateY(view.height());
                 }
             }
         }
 
+        SkAssertResult(imgMatrix.invert(&matrix));
     } else if (wrappedShaderBase->type() == SkShaderBase::ShaderType::kGradientBase) {
         auto gradShader = static_cast<const SkGradientBaseShader*>(wrappedShader);
-        auto gradMatrix = gradShader->getGradientMatrix();
+        matrix = gradShader->getGradientMatrix();
 
         // Override the conical gradient matrix since graphite uses a different algorithm
         // than the ganesh and raster backends.
@@ -2071,16 +2073,16 @@ static void add_to_key(const KeyContext& keyContext,
                                                              conicalShader->getEndCenter(),
                                                              &conicalMatrix));
             }
-            gradMatrix = conicalMatrix;
+            matrix = conicalMatrix;
         }
-
-        SkMatrix invGradMatrix;
-        SkAssertResult(gradMatrix.invert(&invGradMatrix));
-
-        matrix.postConcat(invGradMatrix);
     }
 
-    matrix.postConcat(shader->localMatrix());
+    SkMatrix lmInverse;
+    if (!shader->localMatrix().invert(&lmInverse)) {
+        lmInverse.setIdentity();
+    }
+    matrix.preConcat(lmInverse);
+
     LocalMatrixShaderBlock::LMShaderData lmShaderData(matrix);
 
     KeyContextWithLocalMatrix newContext(keyContext, matrix);
