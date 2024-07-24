@@ -69,6 +69,24 @@
       "parentUuid": "2efffe4e_59472ebe",
       "revId": "fc96fab9e2de814039eec8a47e117e13a4ec90f3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc2a1e10_16c509f4",
+        "filename": "src/image/SkTiledImageUtils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-24T16:56:03Z",
+      "side": 1,
+      "message": "Looks like this was resolved in https://skia-review.googlesource.com/c/skia/+/745936",
+      "parentUuid": "eb3d319e_af490a08",
+      "revId": "fc96fab9e2de814039eec8a47e117e13a4ec90f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
