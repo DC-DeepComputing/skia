@@ -163,7 +163,7 @@ bool Image::onReadPixelsGraphite(Recorder* recorder,
         if (!context->insertRecording(info)) {
             return false;
         }
-        return context->priv().readPixels(dst,
+        return context->priv().readPixels1(dst,
                                           fTextureProxyView.proxy(),
                                           this->imageInfo(),
                                           srcX,

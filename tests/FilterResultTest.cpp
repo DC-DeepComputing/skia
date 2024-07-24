@@ -900,7 +900,7 @@ private:
             SkASSERT(specialImage->isGraphiteBacked());
             auto view = skgpu::graphite::AsView(specialImage->asImage());
             auto proxyII = ii.makeWH(view.width(), view.height());
-            SkAssertResult(fRecorder->priv().context()->priv().readPixels(
+            SkAssertResult(fRecorder->priv().context()->priv().readPixels1(
                     bm.pixmap(), view.proxy(), proxyII, srcX, srcY));
         } else
 #endif

@@ -59,6 +59,7 @@ public:
     /** Returns true if there is work that was submitted to the GPU that has not finished. */
     bool hasUnfinishedGpuWork() const;
 
+    // To: asyncRescaleAndReadImpl(asyncReadPixels)
     void asyncRescaleAndReadPixels(const SkImage* image,
                                    const SkImageInfo& dstImageInfo,
                                    const SkIRect& srcRect,
@@ -67,6 +68,7 @@ public:
                                    SkImage::ReadPixelsCallback callback,
                                    SkImage::ReadPixelsContext context);
 
+    // To: asyncRescaleAndReadImpl (via above call) + possibly asyncReadTexture
     void asyncRescaleAndReadPixels(const SkSurface* surface,
                                    const SkImageInfo& dstImageInfo,
                                    const SkIRect& srcRect,
@@ -75,6 +77,7 @@ public:
                                    SkImage::ReadPixelsCallback callback,
                                    SkImage::ReadPixelsContext context);
 
+    // To: asyncRescaleAndReadImpl(asyncReadPixelsYUV420)
     void asyncRescaleAndReadPixelsYUV420(const SkImage*,
                                          SkYUVColorSpace yuvColorSpace,
                                          sk_sp<SkColorSpace> dstColorSpace,
@@ -85,6 +88,7 @@ public:
                                          SkImage::ReadPixelsCallback callback,
                                          SkImage::ReadPixelsContext context);
 
+    // To: asyncRescaleAndReadImpl (via above call)
     void asyncRescaleAndReadPixelsYUV420(const SkSurface*,
                                          SkYUVColorSpace yuvColorSpace,
                                          sk_sp<SkColorSpace> dstColorSpace,
@@ -95,6 +99,7 @@ public:
                                          SkImage::ReadPixelsCallback callback,
                                          SkImage::ReadPixelsContext context);
 
+    // To: asyncRescaleAndReadImpl (asyncReadPixelsYUV420)
     void asyncRescaleAndReadPixelsYUVA420(const SkImage*,
                                           SkYUVColorSpace yuvColorSpace,
                                           sk_sp<SkColorSpace> dstColorSpace,
@@ -105,6 +110,7 @@ public:
                                           SkImage::ReadPixelsCallback callback,
                                           SkImage::ReadPixelsContext context);
 
+    // To: asyncRescaleAndReadImpl (via above call)
     void asyncRescaleAndReadPixelsYUVA420(const SkSurface*,
                                           SkYUVColorSpace yuvColorSpace,
                                           sk_sp<SkColorSpace> dstColorSpace,
@@ -236,6 +242,7 @@ private:
 
     template <typename SrcPixels> struct AsyncParams;
 
+    // guarded
     template <typename ReadFn, typename... ExtraArgs>
     void asyncRescaleAndReadImpl(ReadFn Context::* asyncRead,
                                  SkImage::RescaleGamma rescaleGamma,
@@ -245,11 +252,13 @@ private:
 
     // Recorder is optional and will be used if drawing operations are required. If no Recorder is
     // provided but drawing operations are needed, a new Recorder will be created automatically.
-    void asyncReadPixels(std::unique_ptr<Recorder>, const AsyncParams<SkImage>&);
+    void asyncReadPixels1(std::unique_ptr<Recorder>, const AsyncParams<SkImage>&);
+    // guarded (via asyncRescaleAndReadImpl)
     void asyncReadPixelsYUV420(std::unique_ptr<Recorder>,
                                const AsyncParams<SkImage>&,
                                SkYUVColorSpace);
 
+    // guarded
     // Like asyncReadPixels() except it performs no fallbacks, and requires that the texture be
     // readable. However, the texture does not need to be sampleable.
     void asyncReadTexture(std::unique_ptr<Recorder>,

@@ -552,7 +552,7 @@ bool Device::onReadPixels(const SkPixmap& pm, int srcX, int srcY) {
         if (!context->insertRecording(info)) {
             return false;
         }
-        return context->priv().readPixels(pm, fDC->target(), this->imageInfo(), srcX, srcY);
+        return context->priv().readPixels1(pm, fDC->target(), this->imageInfo(), srcX, srcY);
     }
 #endif
     // We have no access to a context to do a read pixels here.

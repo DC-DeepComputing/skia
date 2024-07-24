@@ -370,7 +370,9 @@ public:
         Copies each readable pixel intersecting both rectangles, without scaling,
         converting to dst.colorType() and dst.alphaType() if required.
 
-        Pixels are readable when SkSurface is raster, or backed by a GPU.
+        Pixels are readable when SkSurface is raster, or backed by a Ganesh GPU backend. Graphite
+        has deprecated this API in favor of the equivalent asynchronous API on
+        skgpu::graphite::Context (with an optional explicit synchonization).
 
         The destination pixel storage must be allocated by the caller.
 
@@ -401,7 +403,9 @@ public:
         Copies each readable pixel intersecting both rectangles, without scaling,
         converting to dstInfo.colorType() and dstInfo.alphaType() if required.
 
-        Pixels are readable when SkSurface is raster, or backed by a GPU.
+        Pixels are readable when SkSurface is raster, or backed by a Ganesh GPU backend. Graphite
+        has deprecated this API in favor of the equivalent asynchronous API on
+        skgpu::graphite::Context (with an optional explicit synchonization).
 
         The destination pixel storage must be allocated by the caller.
 
@@ -433,7 +437,9 @@ public:
         Copies each readable pixel intersecting both rectangles, without scaling,
         converting to bitmap.colorType() and bitmap.alphaType() if required.
 
-        Pixels are readable when SkSurface is raster, or backed by a GPU.
+        Pixels are readable when SkSurface is raster, or backed by a Ganesh GPU backend. Graphite
+        has deprecated this API in favor of the equivalent asynchronous API on
+        skgpu::graphite::Context (with an optional explicit synchonization).
 
         The destination pixel storage must be allocated by the caller.
 
@@ -477,9 +483,12 @@ public:
     /** Makes surface pixel data available to caller, possibly asynchronously. It can also rescale
         the surface pixels.
 
-        Currently asynchronous reads are only supported on the GPU backend and only when the
+        Currently asynchronous reads are only supported in the Ganesh GPU backend and only when the
         underlying 3D API supports transfer buffers and CPU/GPU synchronization primitives. In all
         other cases this operates synchronously.
+
+        For the Graphite backend this API has been deprecated in favor of the equivalent API
+        on skgpu::graphite::Context.
 
         Data is read from the source sub-rectangle, is optionally converted to a linear gamma, is
         rescaled to the size indicated by 'info', is then converted to the color space, color type,
@@ -504,6 +513,7 @@ public:
         @param callback        function to call with result of the read
         @param context         passed to callback
      */
+     // onAsyncRescaleAndReadPixels
     void asyncRescaleAndReadPixels(const SkImageInfo& info,
                                    const SkIRect& srcRect,
                                    RescaleGamma rescaleGamma,
@@ -540,6 +550,7 @@ public:
         @param callback       function to call with the planar read result
         @param context        passed to callback
      */
+     // onAsyncRescaleAndReadPixelsYUV420
     void asyncRescaleAndReadPixelsYUV420(SkYUVColorSpace yuvColorSpace,
                                          sk_sp<SkColorSpace> dstColorSpace,
                                          const SkIRect& srcRect,
@@ -554,6 +565,7 @@ public:
      * AsyncReadResult passed to 'callback'. The fourth plane contains the alpha chanel at the
      * same full resolution as the Y plane.
      */
+     // onAsyncRescaleAndReadPixelsYUV420
     void asyncRescaleAndReadPixelsYUVA420(SkYUVColorSpace yuvColorSpace,
                                           sk_sp<SkColorSpace> dstColorSpace,
                                           const SkIRect& srcRect,

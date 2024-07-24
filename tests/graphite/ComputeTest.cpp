@@ -849,7 +849,7 @@ DEF_GRAPHITE_TEST_FOR_DAWN_AND_METAL_CONTEXTS(Compute_StorageTexture,
     bool peekPixelsSuccess = bitmap.peekPixels(&pixels);
     REPORTER_ASSERT(reporter, peekPixelsSuccess);
 
-    bool readPixelsSuccess = context->priv().readPixels(pixels, texture.get(), imgInfo, 0, 0);
+    bool readPixelsSuccess = context->priv().readPixels1(pixels, texture.get(), imgInfo, 0, 0);
     REPORTER_ASSERT(reporter, readPixelsSuccess);
 
     for (uint32_t x = 0; x < kDim; ++x) {
@@ -1006,7 +1006,7 @@ DEF_GRAPHITE_TEST_FOR_DAWN_AND_METAL_CONTEXTS(Compute_StorageTextureReadAndWrite
     bool peekPixelsSuccess = bitmap.peekPixels(&pixels);
     REPORTER_ASSERT(reporter, peekPixelsSuccess);
 
-    bool readPixelsSuccess = context->priv().readPixels(pixels, dst.get(), imgInfo, 0, 0);
+    bool readPixelsSuccess = context->priv().readPixels1(pixels, dst.get(), imgInfo, 0, 0);
     REPORTER_ASSERT(reporter, readPixelsSuccess);
 
     for (uint32_t x = 0; x < kDim; ++x) {
@@ -1145,7 +1145,7 @@ DEF_GRAPHITE_TEST_FOR_DAWN_AND_METAL_CONTEXTS(Compute_ReadOnlyStorageBuffer,
     bool peekPixelsSuccess = bitmap.peekPixels(&pixels);
     REPORTER_ASSERT(reporter, peekPixelsSuccess);
 
-    bool readPixelsSuccess = context->priv().readPixels(pixels, dst.get(), imgInfo, 0, 0);
+    bool readPixelsSuccess = context->priv().readPixels1(pixels, dst.get(), imgInfo, 0, 0);
     REPORTER_ASSERT(reporter, readPixelsSuccess);
 
     for (uint32_t x = 0; x < kDim; ++x) {
@@ -1295,7 +1295,7 @@ DEF_GRAPHITE_TEST_FOR_DAWN_AND_METAL_CONTEXTS(Compute_StorageTextureMultipleComp
     bool peekPixelsSuccess = bitmap.peekPixels(&pixels);
     REPORTER_ASSERT(reporter, peekPixelsSuccess);
 
-    bool readPixelsSuccess = context->priv().readPixels(pixels, dst.get(), imgInfo, 0, 0);
+    bool readPixelsSuccess = context->priv().readPixels1(pixels, dst.get(), imgInfo, 0, 0);
     REPORTER_ASSERT(reporter, readPixelsSuccess);
 
     for (uint32_t x = 0; x < kDim; ++x) {
@@ -1463,7 +1463,7 @@ DEF_GRAPHITE_TEST_FOR_DAWN_AND_METAL_CONTEXTS(Compute_SampledTexture,
     bool peekPixelsSuccess = bitmap.peekPixels(&pixels);
     REPORTER_ASSERT(reporter, peekPixelsSuccess);
 
-    bool readPixelsSuccess = context->priv().readPixels(pixels, dst.get(), imgInfo, 0, 0);
+    bool readPixelsSuccess = context->priv().readPixels1(pixels, dst.get(), imgInfo, 0, 0);
     REPORTER_ASSERT(reporter, readPixelsSuccess);
 
     for (uint32_t x = 0; x < kDstDim; ++x) {
