@@ -184,6 +184,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "af72f748_1af1c09b",
+        "filename": "src/gpu/graphite/dawn/DawnGraphiteUtils.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 10537
+      },
+      "writtenOn": "2024-07-24T10:05:04Z",
+      "side": 1,
+      "message": "When creating the promise texture, Chromium will [explicitly set the VkFormat to 0](https://source.chromium.org/chromium/chromium/src/+/main:gpu/command_buffer/service/shared_image/android_video_image_backing.cc;l\u003d135-137?q\u003dandroid_video_image_backing\u0026ss\u003dchromium).\n\nHowever, when creating the fulfill texture, Chromium will just [pass along](https://source.chromium.org/chromium/chromium/src/+/main:gpu/command_buffer/service/shared_image/video_image_reader_image_backing.cc;l\u003d447-450?q\u003dimage_reader_ima\u0026ss\u003dchromium) the properties from Dawn, which come [straight from the VkDevice](https://source.chromium.org/chromium/chromium/src/+/main:third_party/angle/third_party/dawn/src/dawn/native/vulkan/DeviceVk.cpp;l\u003d924-925).\n\nIn production Chromium will only enter the YCbCr codepaths for AHBs that *must* use YCbCr sampling, so the VkFormat will be 0. However, my understanding from Vasiliy is that in some emulator contexts we can end up doing video decoding for AHBs that have valid VkFormats. So I think it\u0027s best to leave the check as it currently is for safety?",
+      "parentUuid": "703b047d_0b027bd8",
+      "range": {
+        "startLine": 229,
+        "startChar": 4,
+        "endLine": 229,
+        "endChar": 58
+      },
+      "revId": "0667987fdbbbd28270c313697ab001e75d3d7b39",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6c59bde7_7680ba61",
