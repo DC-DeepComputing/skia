@@ -64,6 +64,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d06bd686_65396ce3",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 502,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-07-24T16:57:52Z",
+      "side": 1,
+      "message": "Commented out until change lands and our Dawn version within Skia is updated (added TODO for me)",
+      "parentUuid": "983d5cfb_10365863",
+      "range": {
+        "startLine": 502,
+        "startChar": 24,
+        "endLine": 502,
+        "endChar": 85
+      },
+      "revId": "0d98bde69beb7c23851dbcf43f2c71cffa40fd7c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e8fa008c_0e56bfad",
