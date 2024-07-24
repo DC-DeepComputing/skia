@@ -411,7 +411,13 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(const DawnSharedContext* 
 
     // Pipeline layout
     BindGroupLayouts groupLayouts;
+    // Compile any immutable samplers to be included in the pipeline layout. Populate an array of
+    // immutable samplers where their index within the array indicates their binding index within
+    // the descriptor set. Nullptr indicates a "regular", dynamic sampler OR a texture at that index
+    skia_private::TArray<sk_sp<DawnSampler>> immutableSamplers;
+    immutableSamplers.push_back_n(numTexturesAndSamplers);
     {
+        SkASSERT(resourceProvider);
         groupLayouts[0] = resourceProvider->getOrCreateUniformBuffersBindGroupLayout();
         if (!groupLayouts[0]) {
             return {};
@@ -419,16 +425,81 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(const DawnSharedContext* 
 
         bool hasFragmentSamplers = hasFragmentSkSL && numTexturesAndSamplers > 0;
         if (hasFragmentSamplers) {
-            if (numTexturesAndSamplers == 2) {
-                // Common case: single texture + sampler.
+            // Consult the FragSkSLInfo to check for any immutable samplers used by this pipeline.
+            const SkSpan<uint32_t> dataSpan = {fsSkSLInfo.fData};
+            if (!dataSpan.empty()) {
+                size_t dataIdx = 0, samplerIdx = 0;
+                while (dataIdx < dataSpan.size()) {
+                    // Any legitimate immutable sampler will have a sampler description != 0.
+                    if (dataSpan[dataIdx] == 0) {
+                        dataIdx++;
+                        samplerIdx++;
+                        continue;
+                    }
+
+                    // Check whether the immutable sampler uses a known or external format to
+                    // determine key stride.
+                    uint32_t immutableSamplerInfo =
+                            dataSpan[dataIdx] >> SamplerDesc::kImmutableSamplerInfoShift;
+                    SkASSERT(immutableSamplerInfo != 0);
+
+                    bool usesExternalFormat = static_cast<bool>(
+                            immutableSamplerInfo & ycbcrUtils::kUseExternalFormatMask);
+
+#if !defined(__EMSCRIPTEN__)
+                    const int keyStride = usesExternalFormat ? ycbcrUtils::kIntsNeededExternalFormat
+                                                             : ycbcrUtils::kIntsNeededKnownFormat;
+#else
+                    static constexpr int keyStride = 1; // Non-ycbcr samplers only use one uint32.
+#endif
+                    // Using the provided data, create a SamplerDesc to query the resource
+                    // provider for a compatible sampler.
+                    static_assert(sizeof(SamplerDesc) == sizeof(uint32_t) * 3);
+                    std::array<uint32_t, 3> samplerData = {0, 0, 0};
+                    for (int i = 0; i < keyStride; i++) {
+                        samplerData[i] = dataSpan[dataIdx + i];
+                    }
+
+                    // Request a suitable immutable sampler from the resource provider
+                    SamplerDesc samplerDesc;
+                    memcpy(&samplerDesc, &samplerData, sizeof(SamplerDesc));
+                    sk_sp<Sampler> immutableSampler =
+                            resourceProvider->findOrCreateCompatibleSampler(samplerDesc);
+                    sk_sp<DawnSampler> dawnImmutableSampler = sk_ref_sp<DawnSampler>(
+                            static_cast<DawnSampler*>(immutableSampler.get()));
+                    SkASSERT(dawnImmutableSampler);
+
+                    immutableSamplers[samplerIdx++] = std::move(dawnImmutableSampler);
+                    dataIdx += keyStride;
+                }
+            }
+
+            if (numTexturesAndSamplers == 2 && !immutableSamplers.at(0)) {
+                // Common case: single texture + dynamic sampler.
                 groupLayouts[1] =
                         resourceProvider->getOrCreateSingleTextureSamplerBindGroupLayout();
             } else {
                 std::vector<wgpu::BindGroupLayoutEntry> entries(numTexturesAndSamplers);
+                std::vector<wgpu::StaticSamplerBindingLayout>
+                        staticSamplerBindingLayouts(numTexturesAndSamplers);
+
                 for (int i = 0; i < numTexturesAndSamplers;) {
                     entries[i].binding = static_cast<uint32_t>(i);
                     entries[i].visibility = wgpu::ShaderStage::Fragment;
-                    entries[i].sampler.type = wgpu::SamplerBindingType::Filtering;
+
+                    if (immutableSamplers[i]) {
+                        staticSamplerBindingLayouts[i].sampler =
+                                immutableSamplers[i]->dawnSampler();
+                        // In the case of immutable samplers, Dawn stores bind group entries in
+                        // sampler then texture order.
+                        // TODO(nicolettep): Once sampledTextureBinding is added to
+                        // wgpu::StaticSamplerBindingLayout as proposed, assign that value here.
+                        // staticSamplerBindingLayouts[i].sampledTextureBinding = i + 1;
+                        entries[i].nextInChain = &staticSamplerBindingLayouts[i];
+                    } else {
+                        entries[i].sampler.type = wgpu::SamplerBindingType::Filtering;
+                    }
+
                     ++i;
                     entries[i].binding = i;
                     entries[i].visibility = wgpu::ShaderStage::Fragment;
@@ -597,19 +668,22 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(const DawnSharedContext* 
                                      /*hasStepUniforms=*/!step->uniforms().empty(),
                                      /*hasPaintUniforms=*/fsSkSLInfo.fHasPaintUniforms,
                                      /*hasGradientbuffer=*/fsSkSLInfo.fHasGradientBuffer,
-                                     numTexturesAndSamplers));
+                                     numTexturesAndSamplers,
+                                     std::move(immutableSamplers)));
 }
 
-DawnGraphicsPipeline::DawnGraphicsPipeline(const skgpu::graphite::SharedContext* sharedContext,
-                                           PipelineInfo* pipelineInfo,
-                                           std::unique_ptr<AsyncPipelineCreation> asyncCreationInfo,
-                                           BindGroupLayouts groupLayouts,
-                                           PrimitiveType primitiveType,
-                                           uint32_t refValue,
-                                           bool hasStepUniforms,
-                                           bool hasPaintUniforms,
-                                           bool hasGradientBuffer,
-                                           int numFragmentTexturesAndSamplers)
+DawnGraphicsPipeline::DawnGraphicsPipeline(
+        const skgpu::graphite::SharedContext* sharedContext,
+        PipelineInfo* pipelineInfo,
+        std::unique_ptr<AsyncPipelineCreation> asyncCreationInfo,
+        BindGroupLayouts groupLayouts,
+        PrimitiveType primitiveType,
+        uint32_t refValue,
+        bool hasStepUniforms,
+        bool hasPaintUniforms,
+        bool hasGradientBuffer,
+        int numFragmentTexturesAndSamplers,
+        skia_private::TArray<sk_sp<DawnSampler>> immutableSamplers)
         : GraphicsPipeline(sharedContext, pipelineInfo)
         , fAsyncPipelineCreation(std::move(asyncCreationInfo))
         , fGroupLayouts(std::move(groupLayouts))
@@ -618,7 +692,8 @@ DawnGraphicsPipeline::DawnGraphicsPipeline(const skgpu::graphite::SharedContext*
         , fHasStepUniforms(hasStepUniforms)
         , fHasPaintUniforms(hasPaintUniforms)
         , fHasGradientBuffer(hasGradientBuffer)
-        , fNumFragmentTexturesAndSamplers(numFragmentTexturesAndSamplers) {}
+        , fNumFragmentTexturesAndSamplers(numFragmentTexturesAndSamplers)
+        , fImmutableSamplers(std::move(immutableSamplers)) {}
 
 DawnGraphicsPipeline::~DawnGraphicsPipeline() {
     this->freeGpuData();
