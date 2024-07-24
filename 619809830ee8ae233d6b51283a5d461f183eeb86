@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "77bce60b_3465caff",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-07-24T17:45:20Z",
+      "side": 1,
+      "message": "Incorporated offline feedback ^-^",
+      "revId": "619809830ee8ae233d6b51283a5d461f183eeb86",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
