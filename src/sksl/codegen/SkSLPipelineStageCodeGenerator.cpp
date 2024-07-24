@@ -410,7 +410,7 @@ std::string PipelineStageCodeGenerator::functionDeclaration(const FunctionDeclar
 }
 
 void PipelineStageCodeGenerator::writeFunctionDeclaration(const FunctionDeclaration& decl) {
-    if (!decl.isMain() && !decl.isBuiltin()) {
+    if (!decl.isMain()) {
         std::string prototype = this->functionDeclaration(decl) + ';';
         fCallbacks->declareFunction(prototype.c_str());
     }
