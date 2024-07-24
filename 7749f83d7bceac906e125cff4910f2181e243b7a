@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58142d5f_7e460212",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 430,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-07-24T20:14:16Z",
+      "side": 1,
+      "message": "Is this fData used for anything besides immutable samplers? It is very non-obvious in this code that someone should be checking this value to know if there are immutable samplers in the data.\n\nI think either this name should be changed to something like fImmutableSamplerData or if fData is meant to be generic, we need some mechanism to verify that the values stored in are meant for immutable samplers in this case",
+      "range": {
+        "startLine": 430,
+        "startChar": 58,
+        "endLine": 430,
+        "endChar": 63
+      },
+      "revId": "7749f83d7bceac906e125cff4910f2181e243b7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "216cb8be_f7cbc13d",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 457,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-07-24T20:14:16Z",
+      "side": 1,
+      "message": "This seems like a lot of magic that isn\u0027t understandable at all. Like is it expected to have dataSpan to be incremented by 2 on each loop here? Why? Also when we do have immutable sampler data this looks like it will increment i keyStride number of times. However, if we failed the check above `dataSpan[i] \u003d\u003d 0` then we are only incrementing i by 1 before trying again. This is not obvious at all why this is.\n\nI think this and surrounding code would benefit a lot from things like more descriptively named member variables, possibly structs instead of raw uint32_ts for connecting values, and just more comments if the above can\u0027t clear things up.",
+      "range": {
+        "startLine": 454,
+        "startChar": 11,
+        "endLine": 457,
+        "endChar": 17
+      },
+      "revId": "7749f83d7bceac906e125cff4910f2181e243b7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f051426d_6267ac02",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 461,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-07-24T20:14:16Z",
+      "side": 1,
+      "message": "Why do we need this copy here? Could we not have just filled out the samplerDesc above instead of samplerData?",
+      "range": {
+        "startLine": 461,
+        "startChar": 16,
+        "endLine": 461,
+        "endChar": 72
+      },
+      "revId": "7749f83d7bceac906e125cff4910f2181e243b7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75323120_4b9d9f01",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 464,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-07-24T20:14:16Z",
+      "side": 1,
+      "message": "is this safe if `immutableSampler` from above was nullptr? Or can we assert that findOrCreateCompatibleSampler will never fail?",
+      "range": {
+        "startLine": 464,
+        "startChar": 58,
+        "endLine": 464,
+        "endChar": 67
+      },
+      "revId": "7749f83d7bceac906e125cff4910f2181e243b7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f86fac1e_a34dc809",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 470,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-07-24T20:14:16Z",
+      "side": 1,
+      "message": "If we\u0027re doing emscripten, this isn\u0027t valid right since we would have never pushed anything back?",
+      "range": {
+        "startLine": 470,
+        "startChar": 47,
+        "endLine": 470,
+        "endChar": 71
+      },
+      "revId": "7749f83d7bceac906e125cff4910f2181e243b7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b5cc57f0_fe85aa47",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 485,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-07-24T20:14:16Z",
+      "side": 1,
+      "message": "Can this be empty in the non emscripten case?",
+      "range": {
+        "startLine": 485,
+        "startChar": 25,
+        "endLine": 485,
+        "endChar": 50
+      },
+      "revId": "7749f83d7bceac906e125cff4910f2181e243b7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
