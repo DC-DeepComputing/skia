@@ -195,17 +195,22 @@ struct Context::AsyncParams {
 
     bool validate() const {
         if (!fSrcImage) {
+            SkDebugf("Failing for wrong reason 1\n");
             return false;
         }
         if (fSrcImage->isProtected()) {
-            return false;
+            SkDebugf("Failing for right reason --- yay!\n");
+//            return false;
         }
         if (!SkIRect::MakeSize(fSrcImage->dimensions()).contains(fSrcRect)) {
+            SkDebugf("Failing for wrong reason 2\n");
             return false;
         }
         if (!SkImageInfoIsValid(fDstImageInfo)) {
+            SkDebugf("Failing for wrong reason 3\n");
             return false;
         }
+        SkDebugf("succeeding ?\n");
         return true;
     }
 };
@@ -216,12 +221,14 @@ void Context::asyncRescaleAndReadImpl(ReadFn Context::* asyncRead,
                                       SkImage::RescaleMode rescaleMode,
                                       const AsyncParams<SkImage>& params,
                                       ExtraArgs... extraParams) {
+    SkDebugf("here !!\n");
     if (!params.validate()) {
         return params.fail();
     }
 
     if (params.fSrcRect.size() == params.fDstImageInfo.dimensions()) {
         // No need to rescale so do a direct readback
+        SkDebugf("Direct readback\n");
         return (this->*asyncRead)(/*recorder=*/nullptr, params, extraParams...);
     }
 
@@ -237,6 +244,7 @@ void Context::asyncRescaleAndReadImpl(ReadFn Context::* asyncRead,
         SKGPU_LOG_W("AsyncRead failed because rescaling failed");
         return params.fail();
     }
+    SkDebugf("Scaled readback\n");
     (this->*asyncRead)(std::move(recorder),
                        params.withNewSource(scaledImage.get(), params.fDstImageInfo.bounds()),
                        extraParams...);
@@ -288,8 +296,11 @@ void Context::asyncReadPixels(std::unique_ptr<Recorder> recorder,
     TRACE_EVENT2("skia.gpu", TRACE_FUNC,
                  "width", params.fSrcRect.width(),
                  "height", params.fSrcRect.height());
-    SkASSERT(params.validate());
     SkASSERT(params.fSrcRect.size() == params.fDstImageInfo.dimensions());
+
+    if (!params.validate()) {
+        return params.fail();
+    }
 
     const Caps* caps = fSharedContext->caps();
     TextureProxyView view = AsView(params.fSrcImage);
@@ -300,13 +311,13 @@ void Context::asyncReadPixels(std::unique_ptr<Recorder> recorder,
             recorder = this->makeInternalRecorder();
         }
         sk_sp<SkImage> flattened = CopyAsDraw(recorder.get(),
-                                            params.fSrcImage,
-                                            params.fSrcRect,
-                                            params.fDstImageInfo.colorInfo(),
-                                            Budgeted::kYes,
-                                            Mipmapped::kNo,
-                                            SkBackingFit::kApprox,
-                                            "AsyncReadPixelsFallbackTexture");
+                                              params.fSrcImage,
+                                              params.fSrcRect,
+                                              params.fDstImageInfo.colorInfo(),
+                                              Budgeted::kYes,
+                                              Mipmapped::kNo,
+                                              SkBackingFit::kApprox,
+                                              "AsyncReadPixelsFallbackTexture");
         if (!flattened) {
             SKGPU_LOG_W("AsyncRead failed because copy-as-drawing into a readable format failed");
             return params.fail();
@@ -357,6 +368,8 @@ void Context::asyncRescaleAndReadPixelsYUV420(const SkImage* image,
                                               SkImage::RescaleMode rescaleMode,
                                               SkImage::ReadPixelsCallback callback,
                                               SkImage::ReadPixelsContext callbackContext) {
+    SkDebugf("here bb\n");
+
     // Use kOpaque alpha type to signal that we don't read back the alpha channel
     SkImageInfo dstImageInfo = SkImageInfo::Make(dstSize,
                                                  kRGBA_8888_SkColorType,
@@ -377,6 +390,7 @@ void Context::asyncRescaleAndReadPixelsYUV420(const SkSurface* surface,
                                               SkImage::RescaleMode rescaleMode,
                                               SkImage::ReadPixelsCallback callback,
                                               SkImage::ReadPixelsContext callbackContext) {
+    SkDebugf("here aa\n");
     // YUV[A] readback requires the surface to be texturable since the plane conversion is performed
     // by draws. If AsImage() returns null, the image version of asyncRescaleAndReadback will
     // automatically fail.
@@ -452,6 +466,7 @@ void Context::asyncReadPixelsYUV420(std::unique_ptr<Recorder> recorder,
                          float rgb2yuv[20],
                          const SkMatrix& texMatrix,
                          PixelTransferResult* result) {
+        SkDebugf("in copyPlane\n");
         sk_sp<Surface> dstSurface = Surface::MakeScratch(recorder.get(),
                                                          planeInfo,
                                                          std::move(label),
@@ -489,6 +504,7 @@ void Context::asyncReadPixelsYUV420(std::unique_ptr<Recorder> recorder,
                                        dstSurface->imageInfo().colorInfo(),
                                        planeInfo.colorInfo(),
                                        planeInfo.bounds());
+        SkDebugf("copyPlane exit w/ %d\n", SkToBool(result->fTransferBuffer));
         return SkToBool(result->fTransferBuffer);
     };
 
@@ -638,7 +654,8 @@ Context::PixelTransferResult Context::transferPixels(Recorder* recorder,
     SkASSERT(SkColorInfoIsValid(dstColorInfo));
 
     const Caps* caps = fSharedContext->caps();
-    if (!srcProxy || !caps->supportsReadPixels(srcProxy->textureInfo())) {
+    if (!srcProxy) { // || !caps->supportsReadPixels(srcProxy->textureInfo())) {
+        SkDebugf("transferPixels\n");
         return {};
     }
 
@@ -671,6 +688,7 @@ Context::PixelTransferResult Context::transferPixels(Recorder* recorder,
         return {};
     }
 
+    SkDebugf("Creating copy task\n");
     // Set up copy task. Since we always use a new buffer the offset can be 0 and we don't need to
     // worry about aligning it to the required transfer buffer alignment.
     sk_sp<CopyTextureToBufferTask> copyTask = CopyTextureToBufferTask::Make(sk_ref_sp(srcProxy),
