@@ -2791,6 +2791,9 @@ bool Generator::pushConstructorCompound(const AnyConstructor& c) {
 
 bool Generator::pushChildCall(const ChildCall& c) {
     int* childIdx = fChildEffectMap.find(&c.child());
+    if (!childIdx) {
+        return unsupported();
+    }
     SkASSERT(childIdx != nullptr);
     SkASSERT(!c.arguments().empty());
 
