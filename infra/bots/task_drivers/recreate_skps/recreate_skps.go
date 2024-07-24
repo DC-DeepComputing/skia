@@ -231,7 +231,7 @@ func main() {
 			gn := filepath.Join(chromiumDir, "buildtools", "linux64", "gn")
 			if _, err := exec.RunCommand(ctx, &exec.Command{
 				Name: gn,
-				Args: []string{"gen", outDir},
+				Args: []string{"gen", outDir, "--args='is_debug=false'"},
 				Dir:  chromiumDir,
 				Env: []string{
 					"CPPFLAGS=-DSK_ALLOW_CROSSPROCESS_PICTUREIMAGEFILTERS=1",
