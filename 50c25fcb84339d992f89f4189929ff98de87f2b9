@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f174ca5d_51ae7e70",
+        "filename": "toolchain/linux_amd64_toolchain_config.bzl",
+        "patchSetId": 2
+      },
+      "lineNbr": 377,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-07-24T12:37:27Z",
+      "side": 1,
+      "message": "We probably could do the same thing with this define if there end up being problems compiling the host tooling (which might happen if we ever remove the \"opt-in\" list).",
+      "range": {
+        "startLine": 377,
+        "startChar": 22,
+        "endLine": 377,
+        "endChar": 40
+      },
+      "revId": "50c25fcb84339d992f89f4189929ff98de87f2b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
