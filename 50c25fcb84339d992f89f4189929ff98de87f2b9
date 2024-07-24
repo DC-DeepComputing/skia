@@ -3,6 +3,23 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "457ed913_3d98bcd1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-07-24T14:54:53Z",
+      "side": 1,
+      "message": "This seems like a place where treating iwyu as a platform target with a toolchain would work out well https://bazel.build/tutorials/ccp-toolchain-config . However, this works for now and we\u0027re not on Bazel 7 yet.",
+      "revId": "50c25fcb84339d992f89f4189929ff98de87f2b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "f174ca5d_51ae7e70",
         "filename": "toolchain/linux_amd64_toolchain_config.bzl",
         "patchSetId": 2
