@@ -4367,25 +4367,26 @@ public:
     ParagraphSlideLast() { fName = "ParagraphSlideLast"; }
     void draw(SkCanvas* canvas) override {
         canvas->drawColor(SK_ColorWHITE);
-        auto fontCollection = sk_make_sp<FontCollection>();
+        auto fontCollection = sk_make_sp<TestFontCollection>(GetResourcePath("fonts").c_str(), false);
+        fontCollection->addFontFromFile("Variable.ttf", "Variable");
         fontCollection->setDefaultFontManager(ToolUtils::TestFontMgr(), std::vector<SkString>());
-        fontCollection->enableFontFallback();
+        fontCollection->disableFontFallback();
         TextStyle text_style;
-        text_style.setFontFamilies({SkString("Roboto"), SkString("Noto Color Emoji")});
+        text_style.setFontFamilies({SkString("Variable")});
         text_style.setFontSize(20);
         text_style.setColor(SK_ColorBLACK);
         ParagraphStyle paragraph_style;
-        paragraph_style.setTextStyle(text_style);
-
-        auto test = [&](const char* text) {
+        auto draw = [&]() {
+            paragraph_style.setTextStyle(text_style);
             ParagraphBuilderImpl builder(paragraph_style, fontCollection, get_unicode());
             builder.pushStyle(text_style);
-            builder.addText(text);
+            builder.addText("abcd");
             auto paragraph = builder.Build();
             paragraph->layout(this->size().width());
             paragraph->paint(canvas, 0, 0);
-            if ((false)) {
-                SkDebugf("Paragraph '%s'\n", text);
+            canvas->translate(0, paragraph->getHeight() + 10);
+            if ((true)) {
+                SkDebugf("Paragraph '%s'\n", "abcd");
                 auto impl = static_cast<ParagraphImpl*>(paragraph.get());
                 for (auto& run: impl->runs()) {
                     SkString ff;
@@ -4395,7 +4396,16 @@ public:
             }
         };
 
-        test("​🇳​🇩🇮🇩⃢");
+        draw();
+
+        text_style.setFontStyle(SkFontStyle::Bold());
+        draw();
+
+        text_style.setFontStyle(SkFontStyle::Italic());
+        draw();
+
+        text_style.setFontStyle(SkFontStyle::BoldItalic());
+        draw();
     }
 };
 

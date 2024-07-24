@@ -258,7 +258,22 @@ sk_sp<SkFontMgr> TestFontMgr() {
 #endif
 #if defined(SK_FONTMGR_FONTATIONS_AVAILABLE)
         else if (FLAGS_fontations) {
-            mgr = SkFontMgr_New_Fontations_Empty();
+            constexpr char fontsXmlFilename[] = "fonts/variable.xml";
+            SkString basePath = GetResourcePath("fonts/");
+            SkString fontsXml = GetResourcePath(fontsXmlFilename);
+
+            if (!sk_exists(fontsXml.c_str())) {
+                SkDebugf("file missing: %s\n", fontsXmlFilename);
+                return;
+            }
+
+            SkFontMgr_Android_CustomFonts custom;
+            custom.fSystemFontUse = SkFontMgr_Android_CustomFonts::kOnlyCustom;
+            custom.fBasePath = basePath.c_str();
+            custom.fFontsXml = fontsXml.c_str();
+            custom.fFallbackFontsXml = nullptr;
+            custom.fIsolated = false;
+            mgr = SkFontMgr_New_Fontations(&custom);
         }
 #endif
         else {

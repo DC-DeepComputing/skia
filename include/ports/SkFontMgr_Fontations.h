@@ -8,6 +8,7 @@
 #ifndef SkFontMgr_fontations_DEFINED
 #define SkFontMgr_fontations_DEFINED
 
+#include "SkFontMgr_android.h"
 #include "include/core/SkRefCnt.h"
 
 class SkFontMgr;
@@ -16,5 +17,5 @@ class SkFontMgr;
  * This font manager does not support matching fonts, only instantiation.
  */
 SK_API sk_sp<SkFontMgr> SkFontMgr_New_Fontations_Empty();
-
+SK_API sk_sp<SkFontMgr> SkFontMgr_New_Fontations(const SkFontMgr_Android_CustomFonts* custom);
 #endif // #ifndef SkFontMgr_fontations_DEFINED
