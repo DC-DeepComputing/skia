@@ -1,0 +1,253 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eda0a045_65e8451a",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-07-24T20:53:51Z",
+      "side": 1,
+      "message": "naming nit: fContentSize?",
+      "range": {
+        "startLine": 100,
+        "startChar": 16,
+        "endLine": 100,
+        "endChar": 27
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "1c53ebf3_15732e66",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "modules/skottie/src/effects/SkSLEffect.cpp",
+              "range": {
+                "startLine": 54,
+                "startChar": 0,
+                "endLine": 55,
+                "endChar": 0
+              },
+              "replacement": "    explicit SkSLShaderNode(sk_sp\u003cRenderNode\u003e child, const SkSize\u0026 content_size)\n"
+            },
+            {
+              "path": "modules/skottie/src/effects/SkSLEffect.cpp",
+              "range": {
+                "startLine": 56,
+                "startChar": 0,
+                "endLine": 57,
+                "endChar": 0
+              },
+              "replacement": "        , fContentSize(content_size) {}\n"
+            },
+            {
+              "path": "modules/skottie/src/effects/SkSLEffect.cpp",
+              "range": {
+                "startLine": 64,
+                "startChar": 0,
+                "endLine": 65,
+                "endChar": 0
+              },
+              "replacement": "            child-\u003erender(recorder.beginRecording(SkRect::MakeSize(fContentSize)));\n"
+            },
+            {
+              "path": "modules/skottie/src/effects/SkSLEffect.cpp",
+              "range": {
+                "startLine": 100,
+                "startChar": 0,
+                "endLine": 101,
+                "endChar": 0
+              },
+              "replacement": "    const SkSize fContentSize;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "5f2c969825b8b0cd0e2395b6f1ea2daa49b0e27a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a58b1a1e_9e04a684",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-07-24T20:53:51Z",
+      "side": 1,
+      "message": "Instead of hardcoding the uniform name and index, can you use a different `ty` to handle just like a regular uniform?\n\nI think that may require tracking some extra info to know how to update in `onSync`, but that would be handy to have for images too.",
+      "revId": "5f2c969825b8b0cd0e2395b6f1ea2daa49b0e27a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76c94b07_fb44428b",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-07-24T20:53:51Z",
+      "side": 1,
+      "message": "Does this break existing assets which don\u0027t have a `ty` prop?  Maybe default to 0 for compat.",
+      "range": {
+        "startLine": 148,
+        "startChar": 57,
+        "endLine": 148,
+        "endChar": 59
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "339188f5_d21605a8",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "modules/skottie/src/effects/SkSLEffect.cpp",
+              "range": {
+                "startLine": 148,
+                "startChar": 0,
+                "endLine": 149,
+                "endChar": 0
+              },
+              "replacement": "            int type \u003d ParseDefault\u003cint\u003e((*jprop)[\"ty\"], 0);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "5f2c969825b8b0cd0e2395b6f1ea2daa49b0e27a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d9fc825_42c2fad3",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-07-24T20:53:51Z",
+      "side": 1,
+      "message": "Instead of encoding all image props at this level, it would nicer to piggy-back on existing image asset support:\n\n  - assume all referenced images are in `assets`\n  - expect just a `refId` at this level to point to an asset\n  - then I think you should be able to use `AnimationBuilder::ScopedAssetRef` and `AnimationBuilder::loadFootageAsset` to locate and parse the asset, similar to how it\u0027s done in FootageLayer.cpp",
+      "range": {
+        "startLine": 158,
+        "startChar": 0,
+        "endLine": 163,
+        "endChar": 85
+      },
+      "revId": "5f2c969825b8b0cd0e2395b6f1ea2daa49b0e27a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a2b9cfff_b1fd7b65",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-07-24T20:53:51Z",
+      "side": 1,
+      "message": "We can lookup child effects by name using `SkRuntimeEffect::findChild`, it seems we should be able to do something similar to `buildUniformData`.\n\nJust need to store more info in `fChildren`: name, shader, optional type (would allow treating the layer content case in a similar manner) - then we should be able to write the equivalent `buildChildEffectData` that allocates a zero-initialized vector of `SkRuntimeEffect::ChildPtr`s (size given by `SkRuntimeEffect::children().size()`), iterates over `fChildren`, looks up child metadata and then stores the child shader at the right vector index.",
+      "range": {
+        "startLine": 165,
+        "startChar": 0,
+        "endLine": 168,
+        "endChar": 91
+      },
+      "revId": "5f2c969825b8b0cd0e2395b6f1ea2daa49b0e27a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7289842_c5c028bd",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-07-24T20:53:51Z",
+      "side": 1,
+      "message": "This excludes animated image support, which is probably ok for now - but it would make for some cool demos :)\n\nWe could support that if we keep the image asset around and resolve to a shader in `onSync`, for every frame (there is also a way to tell whether an image asset is animating, so we only have to rebuild those shaders).\n\nMaybe add a comment/todo.",
+      "range": {
+        "startLine": 169,
+        "startChar": 37,
+        "endLine": 169,
+        "endChar": 59
+      },
+      "revId": "5f2c969825b8b0cd0e2395b6f1ea2daa49b0e27a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e748a42_cb0ab89f",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-07-24T20:53:51Z",
+      "side": 1,
+      "message": "Unrelated to this CL, but we can get rid of `sk_bzero` if we use `SkData::MakeZeroInitialized` instead.",
+      "range": {
+        "startLine": 180,
+        "startChar": 0,
+        "endLine": 182,
+        "endChar": 68
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "a8a6a4b2_2a77108a",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "modules/skottie/src/effects/SkSLEffect.cpp",
+              "range": {
+                "startLine": 180,
+                "startChar": 0,
+                "endLine": 181,
+                "endChar": 0
+              },
+              "replacement": "        auto uniformData \u003d SkData::MakeZeroInitialized(fEffect-\u003euniformSize());\n"
+            },
+            {
+              "path": "modules/skottie/src/effects/SkSLEffect.cpp",
+              "range": {
+                "startLine": 182,
+                "startChar": 0,
+                "endLine": 183,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "5f2c969825b8b0cd0e2395b6f1ea2daa49b0e27a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

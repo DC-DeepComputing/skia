@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25494800_70d4f0a5",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-07-24T20:53:51Z",
+      "side": 0,
+      "message": "Is this needed? I think these all could stay in anonymous ns.",
+      "revId": "004c81523e44cef6144df28252cbfc9ceade0d8c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
