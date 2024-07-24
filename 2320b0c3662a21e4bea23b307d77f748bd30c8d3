@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9fed398b_0d7b8c37",
+        "filename": "src/base/SkFixedArray.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-07-24T00:01:03Z",
+      "side": 1,
+      "message": "Update this comment?",
+      "range": {
+        "startLine": 23,
+        "startChar": 38,
+        "endLine": 23,
+        "endChar": 49
+      },
+      "revId": "2320b0c3662a21e4bea23b307d77f748bd30c8d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
