@@ -184,7 +184,7 @@ SkBitSet FindSpecializedArgumentsForCall(const FunctionCall& call,
             }
         }
     }
-    
+
     return result;
 }
 
