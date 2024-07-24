@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0099b27e_229a85da",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-07-24T19:36:51Z",
+      "side": 1,
+      "message": "Just documenting the new reality (I doubt anything we built for iOS11 recently would have actually run on a physical device with iOS11).",
+      "revId": "88ae1fe5edee1f7054de836a6b8ecf31c40b6dda",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
