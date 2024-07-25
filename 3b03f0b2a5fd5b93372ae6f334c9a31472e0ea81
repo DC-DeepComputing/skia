@@ -16,6 +16,23 @@
       "message": "PTAL",
       "revId": "3b03f0b2a5fd5b93372ae6f334c9a31472e0ea81",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "605654c3_e51d325e",
+        "filename": "src/gpu/ganesh/gl/GrGLCaps.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 499,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-07-25T18:36:14Z",
+      "side": 1,
+      "message": "Does this work correctly? `ctxInfo.vendor()` isn\u0027t populated if we\u0027re running over ANGLE, AFAIK. There is a separate `angleVendor` that might need to be checked.",
+      "revId": "3b03f0b2a5fd5b93372ae6f334c9a31472e0ea81",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
