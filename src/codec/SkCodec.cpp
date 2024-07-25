@@ -265,11 +265,18 @@ void SkCodec::setSrcXformFormat(XformFormat pixelFormat) {
 }
 
 bool SkCodec::queryYUVAInfo(const SkYUVAPixmapInfo::SupportedDataTypes& supportedDataTypes,
+                            float desiredScale,
                             SkYUVAPixmapInfo* yuvaPixmapInfo) const {
+    if (desiredScale <= 0.f) {
+        return false;
+    }
+    desiredScale = std::min(1.f, desiredScale);
+
     if (!yuvaPixmapInfo) {
         return false;
     }
-    return this->onQueryYUVAInfo(supportedDataTypes, yuvaPixmapInfo) &&
+
+    return this->onQueryYUVAInfo(supportedDataTypes, desiredScale, yuvaPixmapInfo) &&
            yuvaPixmapInfo->isSupported(supportedDataTypes);
 }
 
@@ -279,6 +286,9 @@ SkCodec::Result SkCodec::getYUVAPlanes(const SkYUVAPixmaps& yuvaPixmaps) {
     }
     if (!this->rewindIfNeeded()) {
         return kCouldNotRewind;
+    }
+    if (!this->dimensionsSupported(yuvaPixmaps.pixmapsInfo().yuvaInfo().dimensions())) {
+        return kInvalidScale;
     }
     return this->onGetYUVAPlanes(yuvaPixmaps);
 }

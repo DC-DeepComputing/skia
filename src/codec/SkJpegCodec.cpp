@@ -226,10 +226,8 @@ void calc_output_dimensions(jpeg_decompress_struct* dinfo, unsigned int num, uns
     jpeg_calc_output_dimensions(dinfo);
 }
 
-/*
- * Return a valid set of output dimensions for this decoder, given an input scale
- */
-SkISize SkJpegCodec::onGetScaledDimensions(float desiredScale) const {
+static std::tuple<unsigned, unsigned> get_scaled_num_and_denom(float desiredScale,
+                                                               SkISize originalDimensions) {
     // libjpeg-turbo supports scaling by 1/8, 1/4, 3/8, 1/2, 5/8, 3/4, 7/8, and 1/1, so we will
     // support these as well
     unsigned int num;
@@ -251,6 +249,15 @@ SkISize SkJpegCodec::onGetScaledDimensions(float desiredScale) const {
     } else {
         num = 1;
     }
+
+    return {num, denom};
+}
+
+/*
+ * Return a valid set of output dimensions for this decoder, given an input scale
+ */
+SkISize SkJpegCodec::onGetScaledDimensions(float desiredScale) const {
+    auto [num, denom] = get_scaled_num_and_denom(desiredScale, this->dimensions());
 
     // Set up a fake decompress struct in order to use libjpeg to calculate output dimensions
     jpeg_decompress_struct dinfo;
@@ -694,9 +701,6 @@ static bool is_yuv_supported(const jpeg_decompress_struct* dinfo,
                              const SkJpegCodec& codec,
                              const SkYUVAPixmapInfo::SupportedDataTypes* supportedDataTypes,
                              SkYUVAPixmapInfo* yuvaPixmapInfo) {
-    // Scaling is not supported in raw data mode.
-    SkASSERT(dinfo->scale_num == dinfo->scale_denom);
-
     // I can't imagine that this would ever change, but we do depend on it.
     static_assert(8 == DCTSIZE, "DCTSIZE (defined in jpeg library) should always be 8.");
 
@@ -718,43 +722,61 @@ static bool is_yuv_supported(const jpeg_decompress_struct* dinfo,
     // there will be.  Ex:
     //     U_plane_width = image_width * (U_h_samp_factor / max_h_samp_factor)
     //
-    // Supporting cases where the samp_factors for U or V were larger than
-    // that of Y would be an extremely difficult change, given that clients
-    // allocate memory as if the size of the Y plane is always the size of the
-    // image.  However, this case is very, very rare.
-    if  ((1 != dinfo->comp_info[1].h_samp_factor) ||
-         (1 != dinfo->comp_info[1].v_samp_factor) ||
-         (1 != dinfo->comp_info[2].h_samp_factor) ||
-         (1 != dinfo->comp_info[2].v_samp_factor))
-    {
+    // Supporting arbitrary configurations of samp_factors would require changes to output params
+    // tin onGetYUVAPlanes that use fixed stack sizes. However, the restrictions below capture
+    // all usual cases (Y is the full image size, U and V are the same size, and Y is at most 2
+    // times as tall as U and V).
+    if (dinfo->comp_info[1].h_samp_factor != 1 || dinfo->comp_info[1].v_samp_factor != 1 ||
+        dinfo->comp_info[2].h_samp_factor != 1 || dinfo->comp_info[2].v_samp_factor != 1 ||
+        dinfo->comp_info[1].DCT_scaled_size != dinfo->comp_info[2].DCT_scaled_size) {
+        return false;
+    }
+    if (dinfo->comp_info[0].v_samp_factor > 2) {
         return false;
     }
 
-    // Support all common cases of Y samp_factors.
-    // TODO (msarett): As mentioned above, it would be possible to support
-    //                 more combinations of samp_factors.  The issues are:
-    //                 (1) Are there actually any images that are not covered
-    //                     by these cases?
-    //                 (2) How much complexity would be added to the
-    //                     implementation in order to support these rare
-    //                     cases?
-    int hSampY = dinfo->comp_info[0].h_samp_factor;
-    int vSampY = dinfo->comp_info[0].v_samp_factor;
-    SkASSERT(hSampY == dinfo->max_h_samp_factor);
-    SkASSERT(vSampY == dinfo->max_v_samp_factor);
+    // The h_samp_factor and v_samp_factor values all reflect the encoding of the full image.
+    // We want to know the sizes of the planes as decoded using the scale_num and scale_denom values
+    // that we set. These are indicated by each jpeg_component_info's downsampled size.
+    auto componentDimensions = [](const jpeg_component_info& comp) {
+        return SkISize::Make(comp.downsampled_width, comp.downsampled_height);
+    };
+
+    auto dimensions = SkISize::Make(dinfo->output_width, dinfo->output_height);
+
+    // SkYUVAInfo cannot represent subsamled y planes.
+    if (componentDimensions(dinfo->comp_info[0]) != dimensions) {
+        return false;
+    }
+
+    auto uvDimensions = componentDimensions(dinfo->comp_info[1]);
+
+    // U and V must have the same dimensions.
+    if (componentDimensions(dinfo->comp_info[1]) != uvDimensions) {
+        return false;
+    }
+
+    // Figure out the subsampling configuration of the codec's output. This can be different
+    // than the subsampling of a full scale decode. E.g. a 4:2:0 image at 0.5 scale will produce
+    // a 4:4:4 result.
+    int yBlockW = dinfo->comp_info[0].DCT_scaled_size * dinfo->comp_info[0].h_samp_factor;
+    int yBlockH = dinfo->comp_info[0].DCT_scaled_size * dinfo->comp_info[0].v_samp_factor;
+
+    int uvBlockW = dinfo->comp_info[1].DCT_scaled_size * dinfo->comp_info[1].h_samp_factor;
+    int uvBlockH = dinfo->comp_info[1].DCT_scaled_size * dinfo->comp_info[1].v_samp_factor;
 
     SkYUVAInfo::Subsampling tempSubsampling;
-    if        (1 == hSampY && 1 == vSampY) {
+    if        (yBlockW == 1 * uvBlockW && yBlockH == 1 * uvBlockH) {
         tempSubsampling = SkYUVAInfo::Subsampling::k444;
-    } else if (2 == hSampY && 1 == vSampY) {
+    } else if (yBlockW == 2 * uvBlockW && yBlockH == 1 * uvBlockH) {
         tempSubsampling = SkYUVAInfo::Subsampling::k422;
-    } else if (2 == hSampY && 2 == vSampY) {
+    } else if (yBlockW == 2 * uvBlockW && yBlockH == 2 * uvBlockH) {
         tempSubsampling = SkYUVAInfo::Subsampling::k420;
-    } else if (1 == hSampY && 2 == vSampY) {
+    } else if (yBlockW == 1 * uvBlockW && yBlockH == 2 * uvBlockH) {
         tempSubsampling = SkYUVAInfo::Subsampling::k440;
-    } else if (4 == hSampY && 1 == vSampY) {
+    } else if (yBlockW == 4 * uvBlockW && yBlockH == 1 * uvBlockH) {
         tempSubsampling = SkYUVAInfo::Subsampling::k411;
-    } else if (4 == hSampY && 2 == vSampY) {
+    } else if (yBlockW == 4 * uvBlockW && yBlockH == 2 * uvBlockH) {
         tempSubsampling = SkYUVAInfo::Subsampling::k410;
     } else {
         return false;
@@ -769,9 +791,9 @@ static bool is_yuv_supported(const jpeg_decompress_struct* dinfo,
         size_t rowBytes[SkYUVAPixmapInfo::kMaxPlanes];
         for (int i = 0; i < 3; ++i) {
             colorTypes[i] = kAlpha_8_SkColorType;
-            rowBytes[i] = dinfo->comp_info[i].width_in_blocks * DCTSIZE;
+            rowBytes[i] = dinfo->comp_info[i].width_in_blocks * dinfo->comp_info[i].DCT_scaled_size;
         }
-        SkYUVAInfo yuvaInfo(codec.dimensions(),
+        SkYUVAInfo yuvaInfo(dimensions,
                             SkYUVAInfo::PlaneConfig::kY_U_V,
                             tempSubsampling,
                             kJPEG_Full_SkYUVColorSpace,
@@ -784,15 +806,43 @@ static bool is_yuv_supported(const jpeg_decompress_struct* dinfo,
 }
 
 bool SkJpegCodec::onQueryYUVAInfo(const SkYUVAPixmapInfo::SupportedDataTypes& supportedDataTypes,
+                                  float desiredScale,
                                   SkYUVAPixmapInfo* yuvaPixmapInfo) const {
-    jpeg_decompress_struct* dinfo = fDecoderMgr->dinfo();
-    return is_yuv_supported(dinfo, *this, &supportedDataTypes, yuvaPixmapInfo);
+    SkASSERT(desiredScale > 0.f && desiredScale <= 1.f);
+
+    // We need to make libjpeg compute the per-component downscale info, but we don't want to
+    // modify our real dinfo for this query.
+    jpeg_decompress_struct tempDInfo = *fDecoderMgr->dinfo();
+    if (tempDInfo.num_components != 3) {
+        return false;
+    }
+
+    std::tie(tempDInfo.scale_num, tempDInfo.scale_denom) =
+            get_scaled_num_and_denom(desiredScale, this->dimensions());
+
+    jpeg_component_info tempCompInfo[3];
+    for (int i = 0; i < 3; ++i) {
+        tempCompInfo[i] = tempDInfo.comp_info[i];
+    }
+    tempDInfo.comp_info = tempCompInfo;
+
+    jpeg_calc_output_dimensions(&tempDInfo);
+    SkASSERT(SkToInt(tempDInfo.output_width)  <= dimensions().width() );
+    SkASSERT(SkToInt(tempDInfo.output_height) <= dimensions().height());
+
+    return is_yuv_supported(&tempDInfo, *this, &supportedDataTypes, yuvaPixmapInfo);
 }
 
 SkCodec::Result SkJpegCodec::onGetYUVAPlanes(const SkYUVAPixmaps& yuvaPixmaps) {
     // Get a pointer to the decompress info since we will use it quite frequently
     jpeg_decompress_struct* dinfo = fDecoderMgr->dinfo();
-    if (!is_yuv_supported(dinfo, *this, nullptr, nullptr)) {
+    // The scale factors should have already been set by onDimensionsSupported() but we need
+    // to update the output size and component downscale info for the scale factor before we
+    // validate the input SkYUVAPixmaps. Otherwise, they won't be updated until we start decoding.
+    jpeg_calc_output_dimensions(dinfo);
+    SkYUVAPixmapInfo infoCheck;
+    if (!is_yuv_supported(dinfo, *this, nullptr, &infoCheck) ||
+        infoCheck != yuvaPixmaps.pixmapsInfo()) {
         return fDecoderMgr->returnFailure("onGetYUVAPlanes", kInvalidInput);
     }
     // Set the jump location for libjpeg errors
@@ -814,12 +864,11 @@ SkCodec::Result SkJpegCodec::onGetYUVAPlanes(const SkYUVAPixmaps& yuvaPixmaps) {
         // may change after calling jpeg_start_decompress().  It looks to me like this
         // was caused by a bug in the old code, but we'll be safe and check here.
         // Also check that pixmap properties agree with expectations.
-        SkYUVAPixmapInfo info;
-        SkASSERT(is_yuv_supported(dinfo, *this, nullptr, &info));
-        SkASSERT(info.yuvaInfo() == yuvaPixmaps.yuvaInfo());
-        for (int i = 0; i < info.numPlanes(); ++i) {
+        SkASSERT(is_yuv_supported(dinfo, *this, nullptr, &infoCheck));
+        SkASSERT(infoCheck.yuvaInfo() == yuvaPixmaps.yuvaInfo());
+        for (int i = 0; i < infoCheck.numPlanes(); ++i) {
             SkASSERT(planes[i].colorType() == kAlpha_8_SkColorType);
-            SkASSERT(info.planeInfo(i) == planes[i].info());
+            SkASSERT(infoCheck.planeInfo(i) == planes[i].info());
         }
     }
 #endif
@@ -828,31 +877,46 @@ SkCodec::Result SkJpegCodec::onGetYUVAPlanes(const SkYUVAPixmaps& yuvaPixmaps) {
     // a 2-D array of pixels for each of the components (Y, U, V) in the image.
     // Cheat Sheet:
     //     JSAMPIMAGE == JSAMPLEARRAY* == JSAMPROW** == JSAMPLE***
-    JSAMPARRAY yuv[3];
 
-    // Set aside enough space for pointers to rows of Y, U, and V.
-    JSAMPROW rowptrs[2 * DCTSIZE + DCTSIZE + DCTSIZE];
-    yuv[0] = &rowptrs[0];            // Y rows (DCTSIZE or 2 * DCTSIZE)
-    yuv[1] = &rowptrs[2 * DCTSIZE];  // U rows (DCTSIZE)
-    yuv[2] = &rowptrs[3 * DCTSIZE];  // V rows (DCTSIZE)
+    // Set aside enough space for pointers to rows of Y, U, and V. We ensured that the Y plane's
+    // v_samp_factor is <= 2 in is_yuv_supported().
+    // For U/V it may seem that we only need DCTSIZE rows. However, when downscaling the codec may
+    // actually enlarge the U/V plane. For example a 128 x 128 4:2:0 image will have 64 x 64 U/V
+    // planes at full scale. However, at 7/8 scale the UV planes will be the full downscaled size,
+    // i.e. 112 x 112. In this case the U/V DCT_scaled_size values will be 14. (Note that in this
+    // example the downscaled image is actually larger in total bytes!)
+    JSAMPROW yRowPtrs[2 * DCTSIZE];
+    JSAMPROW uRowPtrs[2 * DCTSIZE];
+    JSAMPROW vRowPtrs[2 * DCTSIZE];
+    /*const*/ JSAMPARRAY yuv[] = {yRowPtrs, uRowPtrs, vRowPtrs};
 
-    // Initialize rowptrs.
-    int numYRowsPerBlock = DCTSIZE * dinfo->comp_info[0].v_samp_factor;
+    // Initialize row ptrs. We left enough space for based on blocks with DCTSIZE. But we may be
+    // downscaling so use each plane's DCT_scaled_size for the actual number of rows/columns per
+    // block.
+    int numYRowsPerBlock = dinfo->comp_info[0].DCT_scaled_size * dinfo->comp_info[0].v_samp_factor;
+    SkASSERT(dinfo->comp_info[0].DCT_scaled_size <= DCTSIZE);
+    SkASSERT(SkToSizeT(numYRowsPerBlock) <= std::size(yRowPtrs));
     static_assert(sizeof(JSAMPLE) == 1);
     for (int i = 0; i < numYRowsPerBlock; i++) {
-        rowptrs[i] = static_cast<JSAMPLE*>(planes[0].writable_addr()) + i* planes[0].rowBytes();
-    }
-    for (int i = 0; i < DCTSIZE; i++) {
-        rowptrs[i + 2 * DCTSIZE] =
-                static_cast<JSAMPLE*>(planes[1].writable_addr()) + i* planes[1].rowBytes();
-        rowptrs[i + 3 * DCTSIZE] =
-                static_cast<JSAMPLE*>(planes[2].writable_addr()) + i* planes[2].rowBytes();
+        yRowPtrs[i] = static_cast<JSAMPLE*>(planes[0].writable_addr()) + i * planes[0].rowBytes();
     }
 
-    // After each loop iteration, we will increment pointers to Y, U, and V.
-    size_t blockIncrementY = numYRowsPerBlock * planes[0].rowBytes();
-    size_t blockIncrementU = DCTSIZE * planes[1].rowBytes();
-    size_t blockIncrementV = DCTSIZE * planes[2].rowBytes();
+    SkASSERT(dinfo->comp_info[1].DCT_scaled_size == dinfo->comp_info[2].DCT_scaled_size);
+    SkASSERT(dinfo->comp_info[1].DCT_scaled_size <= 2 * DCTSIZE);
+
+    SkASSERT(dinfo->comp_info[1].h_samp_factor == 1 && dinfo->comp_info[1].v_samp_factor == 1);
+    SkASSERT(dinfo->comp_info[2].h_samp_factor == 1 && dinfo->comp_info[2].v_samp_factor == 1);
+    int numUVRowsPerBlock = dinfo->comp_info[1].DCT_scaled_size;
+    SkASSERT(SkToSizeT(numUVRowsPerBlock) <= std::size(uRowPtrs));
+    for (int i = 0; i < numUVRowsPerBlock; i++) {
+        uRowPtrs[i] = static_cast<JSAMPLE*>(planes[1].writable_addr()) + i * planes[1].rowBytes();
+        vRowPtrs[i] = static_cast<JSAMPLE*>(planes[2].writable_addr()) + i * planes[2].rowBytes();
+    }
+
+    // After each loop iteration, we will increment all the Y, U, and V row pointers.
+    size_t blockIncrementY = numYRowsPerBlock  * planes[0].rowBytes();
+    size_t blockIncrementU = numUVRowsPerBlock * planes[1].rowBytes();
+    size_t blockIncrementV = numUVRowsPerBlock * planes[2].rowBytes();
 
     uint32_t numRowsPerBlock = numYRowsPerBlock;
 
@@ -869,11 +933,11 @@ SkCodec::Result SkJpegCodec::onGetYUVAPlanes(const SkYUVAPixmaps& yuvaPixmaps) {
 
         // Update rowptrs.
         for (int j = 0; j < numYRowsPerBlock; j++) {
-            rowptrs[j] += blockIncrementY;
+            yRowPtrs[j] += blockIncrementY;
         }
-        for (int j = 0; j < DCTSIZE; j++) {
-            rowptrs[j + 2 * DCTSIZE] += blockIncrementU;
-            rowptrs[j + 3 * DCTSIZE] += blockIncrementV;
+        for (int j = 0; j < numUVRowsPerBlock; j++) {
+            uRowPtrs[j] += blockIncrementU;
+            vRowPtrs[j] += blockIncrementV;
         }
     }
 
@@ -887,12 +951,13 @@ SkCodec::Result SkJpegCodec::onGetYUVAPlanes(const SkYUVAPixmaps& yuvaPixmaps) {
         //        all of the implementations that use temporary/garbage memory?
         AutoTMalloc<JSAMPLE> extraRow(planes[0].rowBytes());
         for (int i = remainingRows; i < numYRowsPerBlock; i++) {
-            rowptrs[i] = extraRow.get();
+            yRowPtrs[i] = extraRow.get();
         }
-        int remainingUVRows = dinfo->comp_info[1].downsampled_height - DCTSIZE * numIters;
-        for (int i = remainingUVRows; i < DCTSIZE; i++) {
-            rowptrs[i + 2 * DCTSIZE] = extraRow.get();
-            rowptrs[i + 3 * DCTSIZE] = extraRow.get();
+        int remainingUVRows = dinfo->comp_info[1].downsampled_height
+                            - dinfo->comp_info[1].DCT_scaled_size * numIters;
+        for (int i = remainingUVRows; i < numUVRowsPerBlock; i++) {
+            uRowPtrs[i] = extraRow.get();
+            vRowPtrs[i] = extraRow.get();
         }
 
         JDIMENSION linesRead = jpeg_read_raw_data(dinfo, yuv, numRowsPerBlock);
