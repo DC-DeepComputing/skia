@@ -33,6 +33,24 @@
       "message": "Does this work correctly? `ctxInfo.vendor()` isn\u0027t populated if we\u0027re running over ANGLE, AFAIK. There is a separate `angleVendor` that might need to be checked.",
       "revId": "3b03f0b2a5fd5b93372ae6f334c9a31472e0ea81",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee2f42e6_1a58624d",
+        "filename": "src/gpu/ganesh/gl/GrGLCaps.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 499,
+      "author": {
+        "id": 7100
+      },
+      "writtenOn": "2024-07-25T18:50:29Z",
+      "side": 1,
+      "message": "I observed it working locally. Looks like the `.vendor` getter handles this:\n\n```       \n        if (this-\u003eangleBackend() \u003d\u003d GrGLANGLEBackend::kOpenGL) {\n            return this-\u003eangleVendor();\n        } else {\n            return fDriverInfo.fVendor;\n        }\n```",
+      "parentUuid": "605654c3_e51d325e",
+      "revId": "3b03f0b2a5fd5b93372ae6f334c9a31472e0ea81",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
