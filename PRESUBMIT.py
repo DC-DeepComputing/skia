@@ -10,12 +10,11 @@ See http://dev.chromium.org/developers/how-tos/depottools/presubmit-scripts
 for more details about the presubmit API built into gcl.
 """
 
-import fnmatch
+import difflib
 import os
 import re
 import subprocess
 import sys
-import traceback
 
 
 RELEASE_NOTES_DIR = 'relnotes'
@@ -308,13 +307,17 @@ def _CheckGeneratedBazelBUILDFiles(input_api, output_api):
     if 'darwin' in sys.platform:
       # This takes too long on Mac with default settings. Probably due to sandboxing.
       return []
+    files = []
     for affected_file in input_api.AffectedFiles(include_deletes=True):
       affected_file_path = affected_file.LocalPath()
       if (affected_file_path.endswith('.go') or
           affected_file_path.endswith('BUILD.bazel')):
-        return _RunCommandAndCheckGitDiff(output_api,
-                                          ['make', '-C', 'bazel', 'generate_go'])
-    return []  # No modified Go source files.
+        files.append(affected_file)
+    if not files:
+      return []
+    return _RunCommandAndCheckDiff(input_api, output_api,
+                                      ['make', '-C', 'bazel', 'generate_go'],
+                                      files)
 
 
 def _CheckBazelBUILDFiles(input_api, output_api):
@@ -354,13 +357,18 @@ def _CheckBazelBUILDFiles(input_api, output_api):
   return results
 
 
-def _RunCommandAndCheckGitDiff(output_api, command):
-  """Run an arbitrary command. Fail if it produces any diffs."""
+def _RunCommandAndCheckDiff(input_api, output_api, command, files_to_check):
+  """Run an arbitrary command. Fail if it produces any diffs on the given files."""
+  prev_content = {}
+  for file in files_to_check:
+    # NewContents just reads the file.
+    prev_content[file.LocalPath()] = file.NewContents()
+
   command_str = ' '.join(command)
   results = []
 
   try:
-    output = subprocess.check_output(
+    subprocess.check_output(
         command,
         stderr=subprocess.STDOUT, encoding='utf-8')
   except subprocess.CalledProcessError as e:
@@ -372,14 +380,20 @@ def _RunCommandAndCheckGitDiff(output_api, command):
         )
     )]
 
-  git_diff_output = subprocess.check_output(
-      ['git', 'diff', '--no-ext-diff'], encoding='utf-8')
-  if git_diff_output:
+  # Compare the new content to the previous content.
+  diffs = []
+  for file, prev_content in files_to_check.entries():
+    new_content = file.NewContents()
+    if new_content != prev_content:
+      diff = difflib.unified_diff(prev_content, new_content)
+      diffs.append(''.join(diff))
+
+  if diffs:
     results += [output_api.PresubmitError(
         'Diffs found after running "%s":\n\n%s\n'
         'Please commit or discard the above changes.' % (
             command_str,
-            git_diff_output,
+            '\n'.join(diffs),
         )
     )]
 
@@ -404,15 +418,15 @@ def _CheckGNIGenerated(input_api, output_api):
   if 'darwin' in sys.platform:
       # This takes too long on Mac with default settings. Probably due to sandboxing.
       return []
-  should_run = False
+  files = []
   for affected_file in input_api.AffectedFiles(include_deletes=True):
     affected_file_path = affected_file.LocalPath()
     if affected_file_path.endswith('BUILD.bazel') or affected_file_path.endswith('.gni'):
-      should_run = True
+      files.append(affected_file)
   # Generate GNI files and verify no changes.
-  if should_run:
-    return _RunCommandAndCheckGitDiff(output_api,
-            ['make', '-C', 'bazel', 'generate_gni'])
+  if files:
+    return _RunCommandAndCheckDiff(input_api, output_api,
+            ['make', '-C', 'bazel', 'generate_gni'], files)
 
   # No Bazel build files changed.
   return []
@@ -434,7 +448,7 @@ def _CheckBuildifier(input_api, output_api):
         not "bazel/rbe/gce_linux/" in affected_file_path and \
         not affected_file_path.startswith("third_party/externals/") and \
         not "node_modules/" in affected_file_path:  # Skip generated files.
-        files.append(affected_file_path)
+        files.append(affected_file)
   if not files:
     return []
   try:
@@ -446,13 +460,13 @@ def _CheckBuildifier(input_api, output_api):
       'Skipping buildifier check because it is not on PATH. \n' +
       'You can download it from https://github.com/bazelbuild/buildtools/releases')]
 
-  return _RunCommandAndCheckGitDiff(
+  return _RunCommandAndCheckDiff(
     # One can change --lint=warn to --lint=fix to have things automatically fixed where possible.
     # However, --lint=fix will not cause a presubmit error if there are things that require
     # manual intervention, so we leave --lint=warn on by default.
     #
     # Please keep the below arguments in sync with those in the //:buildifier rule definition.
-    output_api, [
+    input_api, output_api, [
       'buildifier',
       '--mode=fix',
       '--lint=warn',
@@ -462,7 +476,7 @@ def _CheckBuildifier(input_api, output_api):
         '-native-cc',
         '-native-py',
       ])
-    ] + files)
+    ] + files, files)
 
 
 def _CheckBannedAPIs(input_api, output_api):
@@ -524,13 +538,12 @@ def _CheckBannedAPIs(input_api, output_api):
 
 def _CheckDEPS(input_api, output_api):
   """If DEPS was modified, run the deps_parser to update bazel/deps.bzl"""
-  needs_running = False
+  files = []
   for affected_file in input_api.AffectedFiles(include_deletes=False):
     affected_file_path = affected_file.LocalPath()
     if affected_file_path.endswith('DEPS') or affected_file_path.endswith('deps.bzl'):
-      needs_running = True
-      break
-  if not needs_running:
+      files.append(affected_file)
+  if not files:
     return []
   try:
     subprocess.check_output(
@@ -541,8 +554,8 @@ def _CheckDEPS(input_api, output_api):
       'Skipping DEPS check because bazelisk is not on PATH. \n' +
       'You can download it from https://github.com/bazelbuild/bazelisk/releases/tag/v1.14.0')]
 
-  return _RunCommandAndCheckGitDiff(
-    output_api, ['bazelisk', 'run', '//bazel/deps_parser'])
+  return _RunCommandAndCheckDiff(
+    input_api, output_api, ['bazelisk', 'run', '//bazel/deps_parser'], files)
 
 
 def _CommonChecks(input_api, output_api):
