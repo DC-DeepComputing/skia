@@ -15,10 +15,11 @@
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkColorType.h"
 #include "include/core/SkData.h"
-#include "include/core/SkImage.h" // IWYU pragma: keep
+#include "include/core/SkImage.h"  // IWYU pragma: keep
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkStream.h"
+#include "include/core/SkYUVAInfo.h"
 #include "include/private/base/SkTemplates.h"
 #include "modules/skcms/skcms.h"
 #include "src/base/SkNoDestructor.h"
@@ -27,6 +28,7 @@
 #include "src/codec/SkPixmapUtilsPriv.h"
 #include "src/codec/SkSampler.h"
 
+#include <algorithm>
 #include <string>
 #include <string_view>
 #include <utility>
@@ -265,11 +267,18 @@ void SkCodec::setSrcXformFormat(XformFormat pixelFormat) {
 }
 
 bool SkCodec::queryYUVAInfo(const SkYUVAPixmapInfo::SupportedDataTypes& supportedDataTypes,
+                            float desiredScale,
                             SkYUVAPixmapInfo* yuvaPixmapInfo) const {
+    if (desiredScale <= 0.f) {
+        return false;
+    }
+    desiredScale = std::min(1.f, desiredScale);
+
     if (!yuvaPixmapInfo) {
         return false;
     }
-    return this->onQueryYUVAInfo(supportedDataTypes, yuvaPixmapInfo) &&
+
+    return this->onQueryYUVAInfo(supportedDataTypes, desiredScale, yuvaPixmapInfo) &&
            yuvaPixmapInfo->isSupported(supportedDataTypes);
 }
 
@@ -279,6 +288,9 @@ SkCodec::Result SkCodec::getYUVAPlanes(const SkYUVAPixmaps& yuvaPixmaps) {
     }
     if (!this->rewindIfNeeded()) {
         return kCouldNotRewind;
+    }
+    if (!this->dimensionsSupported(yuvaPixmaps.pixmapsInfo().yuvaInfo().dimensions())) {
+        return kInvalidScale;
     }
     return this->onGetYUVAPlanes(yuvaPixmaps);
 }
