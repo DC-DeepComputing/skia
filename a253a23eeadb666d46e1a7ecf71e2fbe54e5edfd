@@ -49,6 +49,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a3451c92_81229aa0",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 2042,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-25T20:27:29Z",
+      "side": 1,
+      "message": "I had it like this in one of my patchsets but realized this would result in 2 matrix inversions when we could just have one, which is why I introduced the `matrixNeedsInversion` variable. If we are fine with two inversions though then this makes sense since I\u0027m assuming calculations like this are mostly negligible on the cpu.",
+      "parentUuid": "865797d7_4ea427a3",
+      "range": {
+        "startLine": 2042,
+        "startChar": 0,
+        "endLine": 2042,
+        "endChar": 60
+      },
+      "revId": "a253a23eeadb666d46e1a7ecf71e2fbe54e5edfd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e3266a18_cd893e6d",
         "filename": "src/gpu/graphite/KeyHelpers.cpp",
         "patchSetId": 9
