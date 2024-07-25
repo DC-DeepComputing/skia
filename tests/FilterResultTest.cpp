@@ -1358,7 +1358,7 @@ sk_sp<SkColorFilter> affect_transparent(SkColor4f color) {
 // ----------------------------------------------------------------------------
 // Empty input/output tests
 
-DEF_TEST_SUITE(EmptySource, r, CtsEnforcement::kApiLevel_T, CtsEnforcement::kNextRelease) {
+DEF_TEST_SUITE(EmptySource, r, CtsEnforcement::kApiLevel_T, CtsEnforcement::kApiLevel_V) {
     // This is testing that an empty input image is handled by the applied actions without having
     // to generate new images, or that it can produce a new image from nothing when it affects
     // transparent black.
@@ -1386,7 +1386,7 @@ DEF_TEST_SUITE(EmptySource, r, CtsEnforcement::kApiLevel_T, CtsEnforcement::kNex
             .run(/*requestedOutput=*/{0, 0, 10, 10});
 }
 
-DEF_TEST_SUITE(EmptyDesiredOutput, r, CtsEnforcement::kApiLevel_T, CtsEnforcement::kNextRelease) {
+DEF_TEST_SUITE(EmptyDesiredOutput, r, CtsEnforcement::kApiLevel_T, CtsEnforcement::kApiLevel_V) {
     // This is testing that an empty requested output is propagated through the applied actions so
     // that no actual images are generated.
     for (SkTileMode tm : kTileModes) {
@@ -1415,7 +1415,7 @@ DEF_TEST_SUITE(EmptyDesiredOutput, r, CtsEnforcement::kApiLevel_T, CtsEnforcemen
 // ----------------------------------------------------------------------------
 // applyCrop() tests
 
-DEF_TEST_SUITE(Crop, r, CtsEnforcement::kApiLevel_T, CtsEnforcement::kNextRelease) {
+DEF_TEST_SUITE(Crop, r, CtsEnforcement::kApiLevel_T, CtsEnforcement::kApiLevel_V) {
     // This is testing all the combinations of how the src, crop, and requested output rectangles
     // can interact while still resulting in a deferred image. The exception is non-decal tile
     // modes where the crop rect includes transparent pixels not filled by the source, which
@@ -1463,7 +1463,7 @@ DEF_TEST_SUITE(Crop, r, CtsEnforcement::kApiLevel_T, CtsEnforcement::kNextReleas
 }
 
 DEF_TEST_SUITE(CropDisjointFromSourceAndOutput, r, CtsEnforcement::kApiLevel_T,
-               CtsEnforcement::kNextRelease) {
+               CtsEnforcement::kApiLevel_V) {
     // This tests all the combinations of src, crop, and requested output rectangles that result in
     // an empty image without any of the rectangles being empty themselves. The exception is for
     // non-decal tile modes when the source and crop still intersect. In that case the non-empty
@@ -1508,7 +1508,7 @@ DEF_TEST_SUITE(CropDisjointFromSourceAndOutput, r, CtsEnforcement::kApiLevel_T,
     }
 }
 
-DEF_TEST_SUITE(EmptyCrop, r, CtsEnforcement::kApiLevel_T, CtsEnforcement::kNextRelease) {
+DEF_TEST_SUITE(EmptyCrop, r, CtsEnforcement::kApiLevel_T, CtsEnforcement::kApiLevel_V) {
     for (SkTileMode tm : kTileModes) {
         TestCase(r, "applyCrop() is empty")
                 .source({0, 0, 10, 10})
@@ -1523,7 +1523,7 @@ DEF_TEST_SUITE(EmptyCrop, r, CtsEnforcement::kApiLevel_T, CtsEnforcement::kNextR
     }
 }
 
-DEF_TEST_SUITE(DisjointCrops, r, CtsEnforcement::kApiLevel_T, CtsEnforcement::kNextRelease) {
+DEF_TEST_SUITE(DisjointCrops, r, CtsEnforcement::kApiLevel_T, CtsEnforcement::kApiLevel_V) {
     for (SkTileMode tm : kTileModes) {
         TestCase(r, "Disjoint applyCrop() after kDecal become empty")
                 .source({0, 0, 10, 10})
@@ -1548,7 +1548,7 @@ DEF_TEST_SUITE(DisjointCrops, r, CtsEnforcement::kApiLevel_T, CtsEnforcement::kN
     }
 }
 
-DEF_TEST_SUITE(IntersectingCrops, r, CtsEnforcement::kApiLevel_T, CtsEnforcement::kNextRelease) {
+DEF_TEST_SUITE(IntersectingCrops, r, CtsEnforcement::kApiLevel_T, CtsEnforcement::kApiLevel_V) {
     for (SkTileMode tm : kTileModes) {
         TestCase(r, "Decal applyCrop() always combines with any other crop")
                 .source({0, 0, 20, 20})
@@ -1574,7 +1574,7 @@ DEF_TEST_SUITE(IntersectingCrops, r, CtsEnforcement::kApiLevel_T, CtsEnforcement
     }
 }
 
-DEF_TEST_SUITE(PeriodicTileCrops, r, CtsEnforcement::kApiLevel_T, CtsEnforcement::kNextRelease) {
+DEF_TEST_SUITE(PeriodicTileCrops, r, CtsEnforcement::kApiLevel_T, CtsEnforcement::kApiLevel_V) {
     for (SkTileMode tm : {SkTileMode::kRepeat, SkTileMode::kMirror}) {
         // In these tests, the crop periodically tiles such that it covers the desired output so
         // the prior image can be simply transformed.
@@ -1620,7 +1620,7 @@ DEF_TEST_SUITE(PeriodicTileCrops, r, CtsEnforcement::kApiLevel_T, CtsEnforcement
     }
 }
 
-DEF_TEST_SUITE(DecalThenClamp, r, CtsEnforcement::kApiLevel_T, CtsEnforcement::kNextRelease) {
+DEF_TEST_SUITE(DecalThenClamp, r, CtsEnforcement::kApiLevel_T, CtsEnforcement::kApiLevel_V) {
     TestCase(r, "Decal then clamp crop uses 1px buffer around intersection")
             .source({0, 0, 20, 20})
             .applyCrop({3, 3, 17, 17}, SkTileMode::kDecal, Expect::kDeferredImage)
@@ -1639,7 +1639,7 @@ DEF_TEST_SUITE(DecalThenClamp, r, CtsEnforcement::kApiLevel_T, CtsEnforcement::k
 // ----------------------------------------------------------------------------
 // applyTransform() tests
 
-DEF_TEST_SUITE(Transform, r, CtsEnforcement::kApiLevel_T, CtsEnforcement::kNextRelease) {
+DEF_TEST_SUITE(Transform, r, CtsEnforcement::kApiLevel_T, CtsEnforcement::kApiLevel_V) {
     TestCase(r, "applyTransform() integer translate")
             .source({0, 0, 10, 10})
             .applyTransform(SkMatrix::Translate(5, 5), Expect::kDeferredImage)
@@ -1663,7 +1663,7 @@ DEF_TEST_SUITE(Transform, r, CtsEnforcement::kApiLevel_T, CtsEnforcement::kNextR
 }
 
 DEF_TEST_SUITE(CompatibleSamplingConcatsTransforms, r, CtsEnforcement::kApiLevel_T,
-               CtsEnforcement::kNextRelease) {
+               CtsEnforcement::kApiLevel_V) {
     TestCase(r, "linear + linear combine")
             .source({0, 0, 8, 8})
             .applyTransform(SkMatrix::RotateDeg(2.f, {4.f, 4.f}),
@@ -1736,7 +1736,7 @@ DEF_TEST_SUITE(CompatibleSamplingConcatsTransforms, r, CtsEnforcement::kApiLevel
 }
 
 DEF_TEST_SUITE(IncompatibleSamplingResolvesImages, r, CtsEnforcement::kApiLevel_T,
-               CtsEnforcement::kNextRelease) {
+               CtsEnforcement::kApiLevel_V) {
     TestCase(r, "different bicubics do not combine")
             .source({0, 0, 8, 8})
             .applyTransform(SkMatrix::RotateDeg(2.f, {4.f, 4.f}),
@@ -1787,7 +1787,7 @@ DEF_TEST_SUITE(IncompatibleSamplingResolvesImages, r, CtsEnforcement::kApiLevel_
 }
 
 DEF_TEST_SUITE(IntegerOffsetIgnoresNearestSampling, r, CtsEnforcement::kApiLevel_T,
-               CtsEnforcement::kNextRelease) {
+               CtsEnforcement::kApiLevel_V) {
     // Bicubic is used here to reflect that it should use the non-NN sampling and just needs to be
     // something other than the default to detect that it got carried through.
     TestCase(r, "integer translate+NN then bicubic combines")
@@ -1813,7 +1813,7 @@ DEF_TEST_SUITE(IntegerOffsetIgnoresNearestSampling, r, CtsEnforcement::kApiLevel
 // applyTransform() interacting with applyCrop()
 
 DEF_TEST_SUITE(TransformBecomesEmpty, r, CtsEnforcement::kApiLevel_T,
-               CtsEnforcement::kNextRelease) {
+               CtsEnforcement::kApiLevel_V) {
     TestCase(r, "Transform moves src image outside of requested output")
             .source({0, 0, 8, 8})
             .applyTransform(SkMatrix::Translate(10.f, 10.f), Expect::kEmptyImage)
@@ -1832,7 +1832,7 @@ DEF_TEST_SUITE(TransformBecomesEmpty, r, CtsEnforcement::kApiLevel_T,
             .run(/*requestedOutput=*/{0, 0, 8, 8});
 }
 
-DEF_TEST_SUITE(TransformAndCrop, r, CtsEnforcement::kApiLevel_T, CtsEnforcement::kNextRelease) {
+DEF_TEST_SUITE(TransformAndCrop, r, CtsEnforcement::kApiLevel_T, CtsEnforcement::kApiLevel_V) {
     TestCase(r, "Crop after transform can always apply")
             .source({0, 0, 16, 16})
             .applyTransform(SkMatrix::RotateDeg(45.f, {3.f, 4.f}), Expect::kDeferredImage)
@@ -1877,7 +1877,7 @@ DEF_TEST_SUITE(TransformAndCrop, r, CtsEnforcement::kApiLevel_T, CtsEnforcement:
             .run(/*requestedOutput=*/{0, 0, 64, 64});
 }
 
-DEF_TEST_SUITE(TransformAndTile, r, CtsEnforcement::kApiLevel_T, CtsEnforcement::kNextRelease) {
+DEF_TEST_SUITE(TransformAndTile, r, CtsEnforcement::kApiLevel_T, CtsEnforcement::kApiLevel_V) {
     // Test interactions of non-decal tile modes and transforms
     for (SkTileMode tm : kTileModes) {
         if (tm == SkTileMode::kDecal) {
@@ -1914,7 +1914,7 @@ DEF_TEST_SUITE(TransformAndTile, r, CtsEnforcement::kApiLevel_T, CtsEnforcement:
 // ----------------------------------------------------------------------------
 // applyColorFilter() and interactions with transforms/crops
 
-DEF_TEST_SUITE(ColorFilter, r, CtsEnforcement::kApiLevel_T, CtsEnforcement::kNextRelease) {
+DEF_TEST_SUITE(ColorFilter, r, CtsEnforcement::kApiLevel_T, CtsEnforcement::kApiLevel_V) {
     TestCase(r, "applyColorFilter() defers image")
             .source({0, 0, 24, 24})
             .applyColorFilter(alpha_modulate(0.5f), Expect::kDeferredImage)
@@ -1953,7 +1953,7 @@ DEF_TEST_SUITE(ColorFilter, r, CtsEnforcement::kApiLevel_T, CtsEnforcement::kNex
 }
 
 DEF_TEST_SUITE(TransformedColorFilter, r, CtsEnforcement::kApiLevel_T,
-               CtsEnforcement::kNextRelease) {
+               CtsEnforcement::kApiLevel_V) {
     TestCase(r, "Transform composes with regular CF")
             .source({0, 0, 24, 24})
             .applyTransform(SkMatrix::RotateDeg(45.f, {12, 12}), Expect::kDeferredImage)
@@ -1984,7 +1984,7 @@ DEF_TEST_SUITE(TransformedColorFilter, r, CtsEnforcement::kApiLevel_T,
 }
 
 DEF_TEST_SUITE(TransformBetweenColorFilters, r, CtsEnforcement::kApiLevel_T,
-               CtsEnforcement::kNextRelease) {
+               CtsEnforcement::kApiLevel_V) {
     // NOTE: The lack of explicit crops allows all of these operations to be optimized as well.
     TestCase(r, "Transform between regular color filters")
             .source({0, 0, 24, 24})
@@ -2016,7 +2016,7 @@ DEF_TEST_SUITE(TransformBetweenColorFilters, r, CtsEnforcement::kApiLevel_T,
 }
 
 DEF_TEST_SUITE(ColorFilterBetweenTransforms, r, CtsEnforcement::kApiLevel_T,
-               CtsEnforcement::kNextRelease) {
+               CtsEnforcement::kApiLevel_V) {
     TestCase(r, "Regular color filter between transforms")
             .source({0, 0, 24, 24})
             .applyTransform(SkMatrix::RotateDeg(20.f, {12, 12}), Expect::kDeferredImage)
@@ -2032,7 +2032,7 @@ DEF_TEST_SUITE(ColorFilterBetweenTransforms, r, CtsEnforcement::kApiLevel_T,
             .run(/*requestedOutput=*/{0, 0, 24, 24});
 }
 
-DEF_TEST_SUITE(CroppedColorFilter, r, CtsEnforcement::kApiLevel_T, CtsEnforcement::kNextRelease) {
+DEF_TEST_SUITE(CroppedColorFilter, r, CtsEnforcement::kApiLevel_T, CtsEnforcement::kApiLevel_V) {
     for (SkTileMode tm : kTileModes) {
         TestCase(r, "Regular color filter after empty crop stays empty")
                 .source({0, 0, 16, 16})
@@ -2075,7 +2075,7 @@ DEF_TEST_SUITE(CroppedColorFilter, r, CtsEnforcement::kApiLevel_T, CtsEnforcemen
 }
 
 DEF_TEST_SUITE(CropBetweenColorFilters, r, CtsEnforcement::kApiLevel_T,
-               CtsEnforcement::kNextRelease) {
+               CtsEnforcement::kApiLevel_V) {
     for (SkTileMode tm : kTileModes) {
         TestCase(r, "Crop between regular color filters")
                 .source({0, 0, 32, 32})
@@ -2124,7 +2124,7 @@ DEF_TEST_SUITE(CropBetweenColorFilters, r, CtsEnforcement::kApiLevel_T,
 }
 
 DEF_TEST_SUITE(ColorFilterBetweenCrops, r, CtsEnforcement::kApiLevel_T,
-               CtsEnforcement::kNextRelease) {
+               CtsEnforcement::kApiLevel_V) {
     for (SkTileMode firstTM : kTileModes) {
         for (SkTileMode secondTM : kTileModes) {
             Expect newImageIfNotDecalOrDoubleClamp =
@@ -2152,7 +2152,7 @@ DEF_TEST_SUITE(ColorFilterBetweenCrops, r, CtsEnforcement::kApiLevel_T,
 }
 
 DEF_TEST_SUITE(CroppedTransformedColorFilter, r, CtsEnforcement::kApiLevel_T,
-               CtsEnforcement::kNextRelease) {
+               CtsEnforcement::kApiLevel_V) {
     TestCase(r, "Transform -> crop -> regular color filter")
             .source({0, 0, 32, 32})
             .applyTransform(SkMatrix::RotateDeg(30.f, {16, 16}), Expect::kDeferredImage)
@@ -2197,7 +2197,7 @@ DEF_TEST_SUITE(CroppedTransformedColorFilter, r, CtsEnforcement::kApiLevel_T,
 }
 
 DEF_TEST_SUITE(CroppedTransformedTransparencyAffectingColorFilter, r, CtsEnforcement::kApiLevel_T,
-               CtsEnforcement::kNextRelease) {
+               CtsEnforcement::kApiLevel_V) {
     // When the crop is not between the transform and transparency-affecting color filter,
     // either the order of operations or the bounds propagation means that every action can be
     // deferred. Below, when the crop is between the two actions, new images are triggered.
@@ -2264,7 +2264,7 @@ DEF_TEST_SUITE(CroppedTransformedTransparencyAffectingColorFilter, r, CtsEnforce
 }
 
 DEF_TEST_SUITE(BackdropFilterRotated, r,
-               CtsEnforcement::kNextRelease, CtsEnforcement::kNextRelease) {
+               CtsEnforcement::kApiLevel_V, CtsEnforcement::kApiLevel_V) {
     // These values are extracted from a cc_unittest that had a 200x200 image, with a 10-degree
     // rotated 100x200 layer over the right half of the base image, with a backdrop blur. The
     // rotation forces SkCanvas to crop and transform the base device's content to be aligned with
@@ -2292,7 +2292,7 @@ DEF_TEST_SUITE(BackdropFilterRotated, r,
 static constexpr SkSize kNearlyIdentity = {0.999f, 0.999f};
 
 DEF_TEST_SUITE(RescaleWithTileMode, r,
-               CtsEnforcement::kNextRelease, CtsEnforcement::kNextRelease) {
+               CtsEnforcement::kApiLevel_V, CtsEnforcement::kApiLevel_V) {
     for (SkTileMode tm : kTileModes) {
         TestCase(r, "Identity rescale is a no-op")
                 .source({0, 0, 50, 50})
@@ -2442,7 +2442,7 @@ DEF_TEST_SUITE(RescaleWithTileMode, r,
 }
 
 DEF_TEST_SUITE(RescaleWithTransform, r,
-               CtsEnforcement::kNextRelease, CtsEnforcement::kNextRelease) {
+               CtsEnforcement::kApiLevel_V, CtsEnforcement::kApiLevel_V) {
     for (SkTileMode tm : kTileModes) {
         TestCase(r, "Identity rescale defers integer translation")
                 .source({0, 0, 50, 50})
@@ -2534,7 +2534,7 @@ DEF_TEST_SUITE(RescaleWithTransform, r,
 }
 
 DEF_TEST_SUITE(RescaleWithColorFilter, r,
-               CtsEnforcement::kNextRelease, CtsEnforcement::kNextRelease) {
+               CtsEnforcement::kApiLevel_V, CtsEnforcement::kApiLevel_V) {
     for (SkTileMode tm : kTileModes) {
         TestCase(r, "Identity rescale applies color filter but defers tile mode")
                 .source({0, 0, 50, 50})
@@ -2574,7 +2574,7 @@ DEF_TEST_SUITE(RescaleWithColorFilter, r,
     }
 }
 
-DEF_TEST_SUITE(MakeFromImage, r, CtsEnforcement::kNextRelease, CtsEnforcement::kNextRelease) {
+DEF_TEST_SUITE(MakeFromImage, r, CtsEnforcement::kApiLevel_V, CtsEnforcement::kApiLevel_V) {
     static constexpr SkISize kSrcSize = {128,128};
     static constexpr SkIRect kIdentitySrc = {0,0,128,128};
     static constexpr SkIRect kSubsetSrc = {16,16,112,112};

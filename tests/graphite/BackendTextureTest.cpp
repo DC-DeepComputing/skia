@@ -29,7 +29,7 @@ namespace {
 }
 
 DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(BackendTextureTest, reporter, context,
-                                   CtsEnforcement::kNextRelease) {
+                                   CtsEnforcement::kApiLevel_V) {
     // TODO: Remove this check once Vulkan supports creating default TexutreInfo from caps and we
     // implement createBackendTexture.
     if (context->backend() == BackendApi::kVulkan) {
@@ -88,7 +88,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(BackendTextureTest, reporter, context,
 
 // Tests the wrapping of a BackendTexture in an SkSurface
 DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(SurfaceBackendTextureTest, reporter, context,
-                                   CtsEnforcement::kNextRelease) {
+                                   CtsEnforcement::kApiLevel_V) {
     // TODO: Right now this just tests very basic combinations of surfaces. This should be expanded
     // to cover a much broader set of things once we add more support in Graphite for different
     // formats, color types, etc.
@@ -150,7 +150,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(SurfaceBackendTextureTest, reporter, context,
 
 // Tests the wrapping of a BackendTexture in an SkImage
 DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ImageBackendTextureTest, reporter, context,
-                                   CtsEnforcement::kNextRelease) {
+                                   CtsEnforcement::kApiLevel_V) {
     // TODO: Right now this just tests very basic combinations of images. This should be expanded
     // to cover a much broader set of things once we add more support in Graphite for different
     // formats, color types, etc.
@@ -201,7 +201,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ImageBackendTextureTest, reporter, context,
 
 #ifdef SK_VULKAN
 DEF_GRAPHITE_TEST_FOR_VULKAN_CONTEXT(VulkanBackendTextureMutableStateTest, reporter, context,
-                                     CtsEnforcement::kNextRelease) {
+                                     CtsEnforcement::kApiLevel_V) {
     VulkanTextureInfo info(/*sampleCount=*/1,
                            /*mipmapped=*/Mipmapped::kNo,
                            /*flags=*/0,
