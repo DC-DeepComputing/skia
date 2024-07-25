@@ -40,6 +40,7 @@
 #include "include/gpu/graphite/BackendTexture.h"
 #include "include/gpu/graphite/Recorder.h"
 #include "include/gpu/graphite/TextureInfo.h"
+#include "include/gpu/graphite/vk/VulkanGraphiteTypes.h"
 #endif
 
 #include <memory>
@@ -193,7 +194,7 @@ void create_backend_texture_graphite(skiatest::Reporter* reporter,
     vkTextureInfo.fImageUsageFlags = VK_IMAGE_USAGE_SAMPLED_BIT |
                                      VK_IMAGE_USAGE_TRANSFER_SRC_BIT |
                                      VK_IMAGE_USAGE_TRANSFER_DST_BIT;
-    TextureInfo textureInfo(vkTextureInfo);
+    TextureInfo textureInfo = TextureInfos::MakeVulkan(vkTextureInfo);
 
     BackendTexture backendTex = helper->recorder()->createBackendTexture({ kSize, kSize },
                                                                          textureInfo);
