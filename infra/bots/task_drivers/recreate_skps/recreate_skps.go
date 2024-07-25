@@ -77,7 +77,10 @@ solutions = [
     "managed"     : False,
     "custom_deps" : {
     },
-    "custom_vars": {},
+    "custom_vars": {
+      "download_remoteexec_cfg": True,
+      "rbe_instance": "projects/rbe-chromium-untrusted/instances/default_instance",
+    },
   },
 ]
 `
@@ -231,7 +234,7 @@ func main() {
 			gn := filepath.Join(chromiumDir, "buildtools", "linux64", "gn")
 			if _, err := exec.RunCommand(ctx, &exec.Command{
 				Name: gn,
-				Args: []string{"gen", outDir},
+				Args: []string{"gen", outDir, "--args=\"is_debug=false use_remoteexec=true\""},
 				Dir:  chromiumDir,
 				Env: []string{
 					"CPPFLAGS=-DSK_ALLOW_CROSSPROCESS_PICTUREIMAGEFILTERS=1",
