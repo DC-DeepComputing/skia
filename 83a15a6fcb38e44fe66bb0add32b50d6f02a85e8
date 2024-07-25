@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "50ddba46_8ad63d27",
+        "filename": "PRESUBMIT.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 427,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-07-25T18:45:15Z",
+      "side": 1,
+      "message": "To be consistent with the other checks, can you make this `if not files`?",
+      "range": {
+        "startLine": 427,
+        "startChar": 5,
+        "endLine": 427,
+        "endChar": 10
+      },
+      "revId": "83a15a6fcb38e44fe66bb0add32b50d6f02a85e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
