@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02cf7b03_1aacb111",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 1618,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-25T18:59:03Z",
+      "side": 1,
+      "message": "can we add a static helper function in this file like `SkMatrix invert_or_identity(const SkMatrix\u0026)` since we use this pattern several times?",
+      "range": {
+        "startLine": 1615,
+        "startChar": 0,
+        "endLine": 1618,
+        "endChar": 5
+      },
+      "revId": "a253a23eeadb666d46e1a7ecf71e2fbe54e5edfd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "865797d7_4ea427a3",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 2042,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-25T18:59:03Z",
+      "side": 1,
+      "message": "If we invert this origin matrix, that means we can assume that `matrix` is already inverted and don\u0027t need the `matrixNeedsInversion` variable.\n\nThis is relying on the origin flip being the inverse of itself.",
+      "range": {
+        "startLine": 2042,
+        "startChar": 0,
+        "endLine": 2042,
+        "endChar": 60
+      },
+      "revId": "a253a23eeadb666d46e1a7ecf71e2fbe54e5edfd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e3266a18_cd893e6d",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 2080,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-25T18:59:03Z",
+      "side": 1,
+      "message": "It\u0027s a bit of a breaking change, but the only consumers of this matrix (as children from the `KeyContextWithLocalMatrix`) are picture shaders and picture images. Neither of these do anything to `matrix`, so we could simplify `newContext` to just take in `shader-\u003elocalMatrix()`.",
+      "range": {
+        "startLine": 2080,
+        "startChar": 0,
+        "endLine": 2080,
+        "endChar": 80
+      },
+      "revId": "a253a23eeadb666d46e1a7ecf71e2fbe54e5edfd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b9b8b08_bcf179ae",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 2093,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-25T18:59:03Z",
+      "side": 1,
+      "message": "With the changes to creating the `newContext` and assuming `matrix` is already pre-inverted, these are the only lines we should need to create the LMShaderData matrix. Which can also be further simplified by using the `inverse_or_identity` helper.",
+      "range": {
+        "startLine": 2090,
+        "startChar": 0,
+        "endLine": 2093,
+        "endChar": 37
+      },
+      "revId": "a253a23eeadb666d46e1a7ecf71e2fbe54e5edfd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
