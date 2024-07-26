@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ef6c3bd_bc6c00a1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-26T17:34:26Z",
+      "side": 1,
+      "message": "All the tests that failed in PS2 on the canary have passed on the canary run on PS3 (even though it hasn\u0027t officially finished yet), so this should not cause a roll failure.",
+      "revId": "1ebc30389ff238a2b8348c6454dc5c16a510bd37",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
