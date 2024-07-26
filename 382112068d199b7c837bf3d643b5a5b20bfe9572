@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b473bf7d_086dc566",
+        "filename": "tests/graphite/CombinationBuilderTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 575,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-07-26T17:18:33Z",
+      "side": 1,
+      "message": "@robertphillips@google.com, this won\u0027t work, because Id63c8b87eb602c796e9b34b432419d9744fd9047 expands the behavior of this test. So we have two choices:\n\n1. Split the new behavior into a new test. The original behavior is tested on devices that launched with V (and newer), and the new behavior will only be enforced on new devices.\n2. Change this back to `kNextRelease`. This is simpler, but it means that we cannot keep enforcing the old behavior on devices that launched with V.",
+      "revId": "382112068d199b7c837bf3d643b5a5b20bfe9572",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "733f0c14_e5c0a037",
+        "filename": "tests/graphite/GraphiteResourceCacheTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 538,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-07-26T17:18:33Z",
+      "side": 1,
+      "message": "@nscobie@google.com, as referenced [in this comment](https://b.corp.google.com/issues/355493709#comment2), I think this is okay because this fix went into 15\u0027s AOSP release?",
+      "revId": "382112068d199b7c837bf3d643b5a5b20bfe9572",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8435cd40_489b4407",
+        "filename": "tests/graphite/UniformManagerTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-07-26T17:18:33Z",
+      "side": 1,
+      "message": "@michaelludwig@google.com, many of these tests changed in I419d6d18e9ffb17680f4ce3c667911db954e9c22, but I cannot tell whether they\u0027re requiring new, previously untested behavior from the hardware. Can you help answer that question?",
+      "revId": "382112068d199b7c837bf3d643b5a5b20bfe9572",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
