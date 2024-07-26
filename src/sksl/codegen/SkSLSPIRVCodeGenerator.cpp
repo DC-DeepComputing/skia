@@ -5117,9 +5117,8 @@ SPIRVCodeGenerator::EntrypointAdapter SPIRVCodeGenerator::writeEntrypointAdapter
         args.push_back(ConstructorCompound::MakeFromConstants(fContext, Position{},
                                                               *fContext.fTypes.fFloat2, kZero));
     }
-    uint32_t callMainStableID = FunctionCall::MakeStableID(ModuleType::unknown, Position());
     auto callMainFn = FunctionCall::Make(fContext, Position(), &main.returnType(),
-                                         main, std::move(args), callMainStableID);
+                                         main, std::move(args));
 
     // Synthesize `skFragColor = main()` as a BinaryExpression.
     auto assignmentStmt = std::make_unique<ExpressionStatement>(std::make_unique<BinaryExpression>(
