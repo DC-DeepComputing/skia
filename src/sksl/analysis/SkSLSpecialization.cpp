@@ -13,6 +13,7 @@
 #include "src/sksl/SkSLDefines.h"
 #include "src/sksl/analysis/SkSLProgramVisitor.h"
 #include "src/sksl/ir/SkSLExpression.h"
+#include "src/sksl/ir/SkSLFieldAccess.h"
 #include "src/sksl/ir/SkSLFunctionCall.h"
 #include "src/sksl/ir/SkSLFunctionDeclaration.h"
 #include "src/sksl/ir/SkSLFunctionDefinition.h"
@@ -76,11 +77,22 @@ void FindFunctionsToSpecialize(const Program& program,
                         // Specializations can only be made on arguments that are not complex
                         // expressions but only a variable reference since this reference will
                         // be inlined in the generated specialized functions.
-                        if (!arg.is<VariableReference>()) {
+                        if (!arg.is<VariableReference>() && !arg.is<FieldAccess>()) {
                             continue;
                         }
 
-                        const Variable* var = arg.as<VariableReference>().variable();
+                        const Variable* var = nullptr;
+                        if (arg.is<VariableReference>()) {
+                            var = arg.as<VariableReference>().variable();
+                        } else if (arg.is<FieldAccess>()) {
+                            const std::unique_ptr<Expression>& accessBase =
+                                    arg.as<FieldAccess>().base();
+                            SkASSERT(accessBase->is<VariableReference>());
+
+                            var = accessBase->as<VariableReference>().variable();
+                        }
+                        SkASSERT(var);
+
                         const Variable* param = decl.parameters()[i];
 
                         // Check that this parameter fits the criteria to create a specialization.
