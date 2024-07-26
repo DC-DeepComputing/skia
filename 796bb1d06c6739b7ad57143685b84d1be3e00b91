@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9a3dbc5_02f861a1",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 2054,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-26T15:02:24Z",
+      "side": 1,
+      "message": "I don\u0027t think we want to negate this.\n\n`matrix` was originally equal to \n    [1  0  0]\n    [0 -1  h]\n    [0  0  1]\n    \nbut that times itself is equal to the identity, so it\u0027s its own inverse. Since \n    [1  0  0]\n    [0 -1 -h]\n    [0  0  1]\n    \nis the same form, it\u0027s also it\u0027s own inverse but they aren\u0027t inverses of each other.",
+      "range": {
+        "startLine": 2054,
+        "startChar": 0,
+        "endLine": 2054,
+        "endChar": 57
+      },
+      "revId": "796bb1d06c6739b7ad57143685b84d1be3e00b91",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
