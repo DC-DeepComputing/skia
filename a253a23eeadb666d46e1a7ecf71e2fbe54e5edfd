@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9f02be68_c16bfdcb",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 1618,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-26T14:32:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "02cf7b03_1aacb111",
+      "range": {
+        "startLine": 1615,
+        "startChar": 0,
+        "endLine": 1618,
+        "endChar": 5
+      },
+      "revId": "a253a23eeadb666d46e1a7ecf71e2fbe54e5edfd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "865797d7_4ea427a3",
@@ -95,6 +119,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a71b0bac_897f7386",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 2042,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-26T14:32:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3c3c4ae5_a7fe1078",
+      "range": {
+        "startLine": 2042,
+        "startChar": 0,
+        "endLine": 2042,
+        "endChar": 60
+      },
+      "revId": "a253a23eeadb666d46e1a7ecf71e2fbe54e5edfd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e3266a18_cd893e6d",
@@ -118,6 +166,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b8c71040_4fdb34fd",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 2080,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-26T14:32:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e3266a18_cd893e6d",
+      "range": {
+        "startLine": 2080,
+        "startChar": 0,
+        "endLine": 2080,
+        "endChar": 80
+      },
+      "revId": "a253a23eeadb666d46e1a7ecf71e2fbe54e5edfd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8b9b8b08_bcf179ae",
@@ -131,6 +203,30 @@
       "writtenOn": "2024-07-25T18:59:03Z",
       "side": 1,
       "message": "With the changes to creating the `newContext` and assuming `matrix` is already pre-inverted, these are the only lines we should need to create the LMShaderData matrix. Which can also be further simplified by using the `inverse_or_identity` helper.",
+      "range": {
+        "startLine": 2090,
+        "startChar": 0,
+        "endLine": 2093,
+        "endChar": 37
+      },
+      "revId": "a253a23eeadb666d46e1a7ecf71e2fbe54e5edfd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a234856f_67731eb5",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 2093,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-26T14:32:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8b9b8b08_bcf179ae",
       "range": {
         "startLine": 2090,
         "startChar": 0,
