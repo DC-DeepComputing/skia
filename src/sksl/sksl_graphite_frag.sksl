@@ -995,9 +995,9 @@ $pure half4 sk_matrix_colorfilter(half4 colorIn, float4x4 m, float4 v, int inHSL
     half4 colorOut = half4((m * colorIn) + v);
 
     if (bool(inHSLA)) {
-        colorOut = $hsl_to_rgb(colorOut.rgb, colorOut.a); // includes clamp and premul
+        colorOut = $hsl_to_rgb(colorOut.rgb, colorOut.a); // includes alpha clamp and premul
     } else {
-        colorOut = saturate(colorOut);
+        colorOut.a = saturate(colorOut.a);
         colorOut.rgb *= colorOut.a;
     }
 
