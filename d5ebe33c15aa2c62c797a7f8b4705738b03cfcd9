@@ -1,0 +1,159 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b261bf32_bdf63635",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 6
+      },
+      "lineNbr": 771,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-07-26T17:20:38Z",
+      "side": 1,
+      "message": "Why not `usize`?",
+      "range": {
+        "startLine": 771,
+        "startChar": 44,
+        "endLine": 771,
+        "endChar": 49
+      },
+      "revId": "d5ebe33c15aa2c62c797a7f8b4705738b03cfcd9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72cfd06a_2095ceb1",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 6
+      },
+      "lineNbr": 777,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-07-26T17:20:38Z",
+      "side": 1,
+      "message": "Why -1? A font with 0 axes is fine.",
+      "revId": "d5ebe33c15aa2c62c797a7f8b4705738b03cfcd9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "43df1e80_ba5fa47b",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 6
+      },
+      "lineNbr": 858,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-07-26T17:20:38Z",
+      "side": 1,
+      "message": "Why `nic`? Why name this at all?",
+      "range": {
+        "startLine": 858,
+        "startChar": 16,
+        "endLine": 858,
+        "endChar": 19
+      },
+      "revId": "d5ebe33c15aa2c62c797a7f8b4705738b03cfcd9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "29939322_0b6e977a",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 6
+      },
+      "lineNbr": 1466,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-07-26T17:20:38Z",
+      "side": 1,
+      "message": "It seems like this should just be `num_instances` and return `usize`.",
+      "range": {
+        "startLine": 1466,
+        "startChar": 18,
+        "endLine": 1466,
+        "endChar": 44
+      },
+      "revId": "d5ebe33c15aa2c62c797a7f8b4705738b03cfcd9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dafdff84_9d2f44d3",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 6
+      },
+      "lineNbr": 1579,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-07-26T17:20:38Z",
+      "side": 1,
+      "message": "For consistency with the existing names, this should be `num_axes`.",
+      "range": {
+        "startLine": 1579,
+        "startChar": 11,
+        "endLine": 1579,
+        "endChar": 22
+      },
+      "revId": "d5ebe33c15aa2c62c797a7f8b4705738b03cfcd9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f423ef8_6c77370c",
+        "filename": "tests/FontScanner.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-07-26T17:20:38Z",
+      "side": 1,
+      "message": "Not used?",
+      "range": {
+        "startLine": 172,
+        "startChar": 40,
+        "endLine": 172,
+        "endChar": 52
+      },
+      "revId": "d5ebe33c15aa2c62c797a7f8b4705738b03cfcd9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be89c112_52ab09a8",
+        "filename": "tests/FontScanner.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-07-26T17:20:38Z",
+      "side": 1,
+      "message": "Not used?",
+      "range": {
+        "startLine": 231,
+        "startChar": 40,
+        "endLine": 231,
+        "endChar": 52
+      },
+      "revId": "d5ebe33c15aa2c62c797a7f8b4705738b03cfcd9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
