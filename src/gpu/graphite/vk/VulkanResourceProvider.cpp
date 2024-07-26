@@ -304,7 +304,7 @@ namespace {
 
 VulkanResourceProvider::UniformBindGroupKey make_ubo_bind_group_key(
         SkSpan<DescriptorData> requestedDescriptors,
-        SkSpan<BindUniformBufferInfo> bindUniformBufferInfo) {
+        SkSpan<BindBufferInfo> bindUniformBufferInfo) {
     VulkanResourceProvider::UniformBindGroupKey uniqueKey;
     {
         // Each entry in the bind group needs 2 uint32_t in the key:
@@ -327,9 +327,8 @@ VulkanResourceProvider::UniformBindGroupKey make_ubo_bind_group_key(
             const auto& bindInfo = bindUniformBufferInfo[descriptorBindingIndex];
             const VulkanBuffer* boundBuffer = static_cast<const VulkanBuffer*>(bindInfo.fBuffer);
             SkASSERT(boundBuffer);
-            const uint32_t bindingSize = bindInfo.fBindingSize;
             builder[2 * descriptorBindingIndex] = boundBuffer->uniqueID().asUInt();
-            builder[2 * descriptorBindingIndex + 1] = bindingSize;
+            builder[2 * descriptorBindingIndex + 1] = bindInfo.fSize;
         }
 
         builder.finish();
@@ -339,7 +338,7 @@ VulkanResourceProvider::UniformBindGroupKey make_ubo_bind_group_key(
 }
 
 void update_uniform_descriptor_set(SkSpan<DescriptorData> requestedDescriptors,
-                                   SkSpan<BindUniformBufferInfo> bindUniformBufferInfo,
+                                   SkSpan<BindBufferInfo> bindUniformBufferInfo,
                                    VkDescriptorSet descSet,
                                    const VulkanSharedContext* sharedContext) {
     for (size_t i = 0; i < requestedDescriptors.size(); i++) {
@@ -352,14 +351,14 @@ void update_uniform_descriptor_set(SkSpan<DescriptorData> requestedDescriptors,
                 sharedContext->caps()->storageBufferSupport()
                     ? sharedContext->vulkanCaps().maxStorageBufferRange()
                     : sharedContext->vulkanCaps().maxUniformBufferRange();
-            SkASSERT(bindInfo.fBindingSize <= maxBufferRange);
+            SkASSERT(bindInfo.fSize <= maxBufferRange);
 #endif
             VkDescriptorBufferInfo bufferInfo;
             memset(&bufferInfo, 0, sizeof(VkDescriptorBufferInfo));
             auto vulkanBuffer = static_cast<const VulkanBuffer*>(bindInfo.fBuffer);
             bufferInfo.buffer = vulkanBuffer->vkBuffer();
             bufferInfo.offset = 0; // We always use dynamic ubos so we set the base offset to 0
-            bufferInfo.range = bindInfo.fBindingSize;
+            bufferInfo.range = bindInfo.fSize;
 
             VkWriteDescriptorSet writeInfo;
             memset(&writeInfo, 0, sizeof(VkWriteDescriptorSet));
@@ -393,7 +392,7 @@ void update_uniform_descriptor_set(SkSpan<DescriptorData> requestedDescriptors,
 
 sk_sp<VulkanDescriptorSet> VulkanResourceProvider::findOrCreateUniformBuffersDescriptorSet(
         SkSpan<DescriptorData> requestedDescriptors,
-        SkSpan<BindUniformBufferInfo> bindUniformBufferInfo) {
+        SkSpan<BindBufferInfo> bindUniformBufferInfo) {
     SkASSERT(requestedDescriptors.size() <= VulkanGraphicsPipeline::kNumUniformBuffers);
 
     auto key = make_ubo_bind_group_key(requestedDescriptors, bindUniformBufferInfo);

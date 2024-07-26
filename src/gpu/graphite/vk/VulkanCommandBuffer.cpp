@@ -899,8 +899,7 @@ void VulkanCommandBuffer::setBlendConstants(float* blendConstants) {
     }
 }
 
-void VulkanCommandBuffer::recordBufferBindingInfo(const BindUniformBufferInfo& info,
-                                                  UniformSlot slot) {
+void VulkanCommandBuffer::recordBufferBindingInfo(const BindBufferInfo& info, UniformSlot slot) {
     unsigned int bufferIndex = 0;
     switch (slot) {
         case UniformSlot::kRenderStep:
