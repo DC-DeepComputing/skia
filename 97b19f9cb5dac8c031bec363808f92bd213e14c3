@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8fede408_67b35cbe",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 645,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-26T23:40:56Z",
+      "side": 1,
+      "message": "Your call: I wonder if a helper function is in order:\n\n```\nhalf4 half4_from_array(float[] buf, int offset) {\n        return half4(buf[offset + 0],\n                     buf[offset + 1],\n                     buf[offset + 2],\n                     buf[offset + 3]);\n}\n```",
+      "range": {
+        "startLine": 641,
+        "startChar": 0,
+        "endLine": 645,
+        "endChar": 0
+      },
+      "revId": "97b19f9cb5dac8c031bec363808f92bd213e14c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
