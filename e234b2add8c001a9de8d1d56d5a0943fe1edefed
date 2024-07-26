@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b69feeaf_594bfe28",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 2058,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-26T14:44:33Z",
+      "side": 1,
+      "message": "Can this be moved to inside the `if (imgBase-\u003eisYUVA())` block?",
+      "range": {
+        "startLine": 2058,
+        "startChar": 0,
+        "endLine": 2058,
+        "endChar": 55
+      },
+      "revId": "e234b2add8c001a9de8d1d56d5a0943fe1edefed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
