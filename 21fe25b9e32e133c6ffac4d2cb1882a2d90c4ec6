@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df9330c2_55bc82ad",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-26T19:08:22Z",
+      "side": 1,
+      "message": "I think this will merge-conflict with http://review.skia.org/882896.",
+      "revId": "21fe25b9e32e133c6ffac4d2cb1882a2d90c4ec6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d71d93de_36e496c8",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 3367,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-26T19:08:22Z",
+      "side": 1,
+      "message": "`this-\u003egetStorageClass` (throughout)",
+      "range": {
+        "startLine": 3367,
+        "startChar": 70,
+        "endLine": 3367,
+        "endChar": 85
+      },
+      "revId": "21fe25b9e32e133c6ffac4d2cb1882a2d90c4ec6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
