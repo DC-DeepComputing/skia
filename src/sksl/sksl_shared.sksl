@@ -304,7 +304,7 @@ $export $pure half4 $rgb_to_hsl(half3 c, half a) {
     return half4(H, S, L, a);
 }
 
-// Convert HSLA -> RGBA (including clamp and premul).
+// Convert HSLA -> RGBA (including premul).
 //
 // Based on work by Sam Hocevar, Emil Persson, and Ian Taylor [1][2][3].
 //
@@ -321,7 +321,8 @@ $export $pure half3 $hsl_to_rgb(half3 hsl) {
 }
 
 $export $pure half4 $hsl_to_rgb(half3 hsl, half a) {
-    return saturate(half4($hsl_to_rgb(hsl) * a, a));
+    a = saturate(a);
+    return half4($hsl_to_rgb(hsl) * a, a);
 }
 
 // Color conversion functions used in gradient interpolation, based on

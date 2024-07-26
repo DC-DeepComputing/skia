@@ -401,7 +401,7 @@ static GrFPResult make_colorfilter_fp(GrRecordingContext*,
             return GrFPSuccess(GrFragmentProcessor::ColorMatrix(std::move(inputFP),
                                                                 filter->matrix(),
                                                                 /* unpremulInput = */ true,
-                                                                /* clampRGBOutput = */ true,
+                                                                /* clampRGBOutput = */ false,
                                                                 /* premulOutput = */ true));
 
         case SkMatrixColorFilter::Domain::kHSLA: {

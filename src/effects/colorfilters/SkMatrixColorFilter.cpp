@@ -75,11 +75,11 @@ bool SkMatrixColorFilter::appendStages(const SkStageRec& rec, bool shaderIsOpaqu
     if (true) {
         p->append(SkRasterPipelineOp::matrix_4x5, fMatrix);
     }
+    if (true) {
+        p->append(SkRasterPipelineOp::clamp_a_01);
+    }
     if (hsla) {
         p->append(SkRasterPipelineOp::hsl_to_rgb);
-    }
-    if (true) {
-        p->append(SkRasterPipelineOp::clamp_01);
     }
     if (!willStayOpaque) {
         p->append(SkRasterPipelineOp::premul);
