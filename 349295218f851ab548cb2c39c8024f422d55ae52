@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9d327b7_3bb96441",
+        "filename": "src/gpu/graphite/AtlasProvider.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-07-26T15:51:19Z",
+      "side": 1,
+      "message": "change to just \"garbage collection\"?",
+      "range": {
+        "startLine": 82,
+        "startChar": 18,
+        "endLine": 82,
+        "endChar": 60
+      },
+      "revId": "349295218f851ab548cb2c39c8024f422d55ae52",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
