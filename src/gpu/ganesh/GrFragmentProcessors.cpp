@@ -10,6 +10,7 @@
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkColor.h"
+#include "include/core/SkColorFilter.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkColorType.h"
 #include "include/core/SkData.h"
@@ -398,11 +399,12 @@ static GrFPResult make_colorfilter_fp(GrRecordingContext*,
                                       const SkSurfaceProps&) {
     switch (filter->domain()) {
         case SkMatrixColorFilter::Domain::kRGBA:
-            return GrFPSuccess(GrFragmentProcessor::ColorMatrix(std::move(inputFP),
-                                                                filter->matrix(),
-                                                                /* unpremulInput = */ true,
-                                                                /* clampRGBOutput = */ true,
-                                                                /* premulOutput = */ true));
+            return GrFPSuccess(GrFragmentProcessor::ColorMatrix(
+                    std::move(inputFP),
+                    filter->matrix(),
+                    /* unpremulInput = */ true,
+                    /* clampRGBOutput = */ filter->clamp() == SkMatrixColorFilter::Clamp::kYes,
+                    /* premulOutput = */ true));
 
         case SkMatrixColorFilter::Domain::kHSLA: {
             auto fp = rgb_to_hsl(std::move(inputFP));

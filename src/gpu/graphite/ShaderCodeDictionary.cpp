@@ -1514,7 +1514,8 @@ ShaderCodeDictionary::ShaderCodeDictionary(Layout layout)
             SnippetRequirementFlags::kPriorStageOutput,
             /*uniforms=*/{ { "matrix",    SkSLType::kFloat4x4 },
                            { "translate", SkSLType::kFloat4 },
-                           { "inHSL",     SkSLType::kInt } }
+                           { "inHSL",     SkSLType::kInt },
+                           { "clampRGB",  SkSLType::kInt } }
     };
     fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kTableColorFilter] = {
             /*name=*/"TableColorFilter",
