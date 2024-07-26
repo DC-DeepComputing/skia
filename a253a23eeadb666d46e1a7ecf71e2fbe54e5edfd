@@ -73,6 +73,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3c3c4ae5_a7fe1078",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 2042,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-26T01:28:06Z",
+      "side": 1,
+      "message": "That is true, but I think it\u0027s fine, or at least worth the tradeoff. My thinking is:\n - the origin matrix is almost always identity or some scale/translate/90-degree rotation, which will have a fast path for inverting inside SkMatrix. This should make doing it separately not that much overhead.\n - it keeps the code calculating the same inverse (just the shader\u0027s local matrix), so we are less likely to hit a case similar to the original bug where because of the product of matrices we get something that isn\u0027t invertible.",
+      "parentUuid": "a3451c92_81229aa0",
+      "range": {
+        "startLine": 2042,
+        "startChar": 0,
+        "endLine": 2042,
+        "endChar": 60
+      },
+      "revId": "a253a23eeadb666d46e1a7ecf71e2fbe54e5edfd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e3266a18_cd893e6d",
         "filename": "src/gpu/graphite/KeyHelpers.cpp",
         "patchSetId": 9
