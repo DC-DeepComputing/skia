@@ -339,6 +339,30 @@
       },
       "revId": "0851d67a15cd45082591a9fd7e3b73aa53def326",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf144c2d_b8544ea9",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 905,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-26T15:30:22Z",
+      "side": 1,
+      "message": "I like your no-temp-variable rewrite :)",
+      "parentUuid": "88682413_d6749699",
+      "range": {
+        "startLine": 902,
+        "startChar": 0,
+        "endLine": 905,
+        "endChar": 0
+      },
+      "revId": "0851d67a15cd45082591a9fd7e3b73aa53def326",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
