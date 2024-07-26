@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f889ae70_07b7fd0e",
+        "filename": "src/sksl/analysis/SkSLSpecialization.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-26T22:35:18Z",
+      "side": 1,
+      "message": "Please update comment",
+      "range": {
+        "startLine": 78,
+        "startChar": 43,
+        "endLine": 78,
+        "endChar": 68
+      },
+      "revId": "61461e66f0b6a52351c9b99ac4d7c43b39b985ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "821b6c93_db22f485",
+        "filename": "src/sksl/analysis/SkSLSpecialization.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-26T22:35:18Z",
+      "side": 1,
+      "message": "Maybe this needs a more descriptive name now, like `paramRoot` or `base` or something?",
+      "range": {
+        "startLine": 84,
+        "startChar": 40,
+        "endLine": 84,
+        "endChar": 43
+      },
+      "revId": "61461e66f0b6a52351c9b99ac4d7c43b39b985ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "31394e2a_99f90c1a",
+        "filename": "src/sksl/analysis/SkSLSpecialization.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-26T22:35:18Z",
+      "side": 1,
+      "message": "We don\u0027t care about the `unique_ptr`-ness. Use:\n\n`const Expression* accessBase \u003d arg.as\u003cFieldAccess\u003e().base().get();`\n\nor\n\n`const Expression\u0026 accessBase \u003d *arg.as\u003cFieldAccess\u003e().base();`",
+      "range": {
+        "startLine": 88,
+        "startChar": 28,
+        "endLine": 89,
+        "endChar": 65
+      },
+      "revId": "61461e66f0b6a52351c9b99ac4d7c43b39b985ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "573c332b_b772b11d",
+        "filename": "src/sksl/analysis/SkSLSpecialization.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-26T22:35:18Z",
+      "side": 1,
+      "message": "A `FieldAccess`\u0027 base doesn\u0027t necessarily have to be a plain `VariableReference`, right? Rather than assert, we could just refuse to specialize the call by doing `continue` if this happens. (Is it possible to craft a test for this case?)",
+      "range": {
+        "startLine": 90,
+        "startChar": 28,
+        "endLine": 90,
+        "endChar": 74
+      },
+      "revId": "61461e66f0b6a52351c9b99ac4d7c43b39b985ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fcc3af07_cb9a53f6",
+        "filename": "src/sksl/analysis/SkSLSpecialization.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-26T22:35:18Z",
+      "side": 1,
+      "message": "If we put `} else { continue; }` here, we could avoid the separate if-check above.",
+      "range": {
+        "startLine": 93,
+        "startChar": 24,
+        "endLine": 93,
+        "endChar": 25
+      },
+      "revId": "61461e66f0b6a52351c9b99ac4d7c43b39b985ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
