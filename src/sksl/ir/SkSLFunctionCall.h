@@ -66,6 +66,9 @@ public:
                                                               const FunctionDeclaration* overloads,
                                                               const ExpressionArray& arguments);
 
+    // Given a module type and an offset into the code, returns a stable ID.
+    static uint32_t MakeStableID(ModuleType moduleType, Position pos);
+
     const FunctionDeclaration& function() const {
         return fFunction;
     }

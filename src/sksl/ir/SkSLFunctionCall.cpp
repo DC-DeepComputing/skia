@@ -1238,7 +1238,8 @@ std::unique_ptr<Expression> FunctionCall::Convert(const Context& context,
         return ChildCall::Make(context, pos, returnType, child, std::move(arguments));
     }
 
-    return Make(context, pos, returnType, function, std::move(arguments));
+    return Make(context, pos, returnType, function, std::move(arguments),
+                MakeStableID(context.fConfig->fModuleType, pos));
 }
 
 std::unique_ptr<Expression> FunctionCall::Make(const Context& context,
