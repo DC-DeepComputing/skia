@@ -223,6 +223,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a55e509_1b32cf43",
+        "filename": "src/codec/SkCodec.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 275,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-26T15:29:30Z",
+      "side": 1,
+      "message": "SGTM",
+      "parentUuid": "144bd7fb_edf261b7",
+      "range": {
+        "startLine": 275,
+        "startChar": 0,
+        "endLine": 275,
+        "endChar": 47
+      },
+      "revId": "0851d67a15cd45082591a9fd7e3b73aa53def326",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5c8a4246_040fa3b3",
