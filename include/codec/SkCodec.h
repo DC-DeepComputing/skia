@@ -437,8 +437,32 @@ public:
      *                        orientation, chroma siting, plane color types, and row bytes.
      */
     bool queryYUVAInfo(const SkYUVAPixmapInfo::SupportedDataTypes& supportedDataTypes,
-                       SkYUVAPixmapInfo* yuvaPixmapInfo) const;
+                       SkYUVAPixmapInfo* yuvaPixmapInfo) const {
+        return queryYUVAInfo(supportedDataTypes, /*desiredScale=*/1, yuvaPixmapInfo);
+    }
 
+    /**
+     *  If decoding to YUV is supported and scale is > 0 then this returns true. Otherwise,
+     *  this returns false and the caller will ignore output parameter yuvaPixmapInfo.
+     *
+     * @param  supportedDataTypes Indicates the data type/planar config combinations that are
+     *                            supported by the caller. If the generator supports decoding to
+     *                            YUV(A), but not as a type in supportedDataTypes, this method
+     *                            returns false.
+     *
+     *  @param desiredScale This is used to determine the dimensions of output parameter
+     *                      yuvaPixmapInfo in the same fashion as getScaledDimensions()
+     *                      determines its output size. A value less than or equal to zero
+     *                      will cause failure. The scale is clamped at 1 (upscaling is not
+     *                      supported.)
+     *
+     *  @param yuvaPixmapInfo Output parameter that specifies the planar configuration,
+     *                        subsampling orientation, chroma siting, plane color types,
+     *                        dimensions, and row bytes.
+     */
+    bool queryYUVAInfo(const SkYUVAPixmapInfo::SupportedDataTypes& supportedDataTypes,
+                       float desiredScale,
+                       SkYUVAPixmapInfo* yuvaPixmapInfo) const;
     /**
      *  Returns kSuccess, or another value explaining the type of failure.
      *  This always attempts to perform a full decode. To get the planar
@@ -829,6 +853,7 @@ protected:
                                int* rowsDecoded) = 0;
 
     virtual bool onQueryYUVAInfo(const SkYUVAPixmapInfo::SupportedDataTypes&,
+                                 float /*desiredScale*/,
                                  SkYUVAPixmapInfo*) const { return false; }
 
     virtual Result onGetYUVAPlanes(const SkYUVAPixmaps&) { return kUnimplemented; }
@@ -953,7 +978,7 @@ private:
      *  Return whether these dimensions are supported as a scale.
      *
      *  The codec may choose to cache the information about scale and subset.
-     *  Either way, the same information will be passed to onGetPixels/onStart
+     *  Either way, the same information will be passed to onGetPixels/onStart/onGetYUVAPlanes
      *  on success.
      *
      *  This must return true for a size returned from getScaledDimensions.
