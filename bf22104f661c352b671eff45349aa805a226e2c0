@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "213bfa84_54b5c473",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 17814
+      },
+      "writtenOn": "2024-07-26T22:51:21Z",
+      "side": 1,
+      "message": "PTAL, I had to rework this CL a bit after https://crrev.com/c/5740609",
+      "revId": "bf22104f661c352b671eff45349aa805a226e2c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
