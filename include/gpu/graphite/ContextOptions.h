@@ -106,6 +106,17 @@ struct SK_API ContextOptions {
 #endif
 
     /**
+     * If Skia is creating a default VMA allocator for the Vulkan backend this value will be used
+     * for the preferredLargeHeapBlockSize. If the value is left as 0, then Skia will use an
+     * inernally defined default size.
+     *
+     * However, it is highly discouraged to have Skia make a default allocator (and support for
+     * doing so will be removed soon). Instead clients should create their own allocator to pass
+     * into Skia where they can fine tune this value themeselves.
+     */
+    uint64_t fVulkanVMALargeHeapBlockSize = 0;
+
+    /**
      * Private options that are only meant for testing within Skia's tools.
      */
     ContextOptionsPriv* fOptionsPriv = nullptr;

@@ -31,7 +31,8 @@ public:
                                              uint32_t physicalDeviceVersion,
                                              const VulkanExtensions* extensions,
                                              const VulkanInterface* interface,
-                                             ThreadSafe);
+                                             ThreadSafe,
+                                             VkDeviceSize blockSize);
 
     ~VulkanAMDMemoryAllocator() override;
 

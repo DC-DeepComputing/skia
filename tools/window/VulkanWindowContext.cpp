@@ -128,7 +128,8 @@ void VulkanWindowContext::initializeContext() {
                                                   physDevVersion,
                                                   &extensions,
                                                   fInterface.get(),
-                                                  skgpu::ThreadSafe::kNo);
+                                                  skgpu::ThreadSafe::kNo,
+                                                  /*blockSize=*/0);
 
     fContext = GrDirectContexts::MakeVulkan(backendContext, fDisplayParams.fGrContextOptions);
 
