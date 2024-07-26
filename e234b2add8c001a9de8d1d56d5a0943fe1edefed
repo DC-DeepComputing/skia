@@ -22,6 +22,30 @@
       },
       "revId": "e234b2add8c001a9de8d1d56d5a0943fe1edefed",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7e51d39_068563bc",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 2058,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-26T14:53:58Z",
+      "side": 1,
+      "message": "Done, since we also need the inverse with the origin shift, I just negated `view.height()` which I believe should have the same effect as the inverse as well. And since the inverse of a scale of `-1` is `-1` I believe that can stay the same.",
+      "parentUuid": "b69feeaf_594bfe28",
+      "range": {
+        "startLine": 2058,
+        "startChar": 0,
+        "endLine": 2058,
+        "endChar": 55
+      },
+      "revId": "e234b2add8c001a9de8d1d56d5a0943fe1edefed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
