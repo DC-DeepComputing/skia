@@ -16,6 +16,7 @@
 #include "src/sksl/SkSLContext.h"
 #include "src/sksl/SkSLDefines.h"
 #include "src/sksl/SkSLErrorReporter.h"
+#include "src/sksl/SkSLModule.h"
 #include "src/sksl/SkSLPosition.h"
 #include "src/sksl/SkSLProgramKind.h"
 #include "src/sksl/SkSLProgramSettings.h"
@@ -512,7 +513,7 @@ FunctionDeclaration* FunctionDeclaration::Convert(const Context& context,
 }
 
 std::string FunctionDeclaration::mangledName() const {
-    if ((this->isBuiltin() && !this->definition()) || this->isMain()) {
+    if (this->isMain() || (this->moduleType() != ModuleType::program && !this->definition())) {
         // Builtins without a definition (like `sin` or `sqrt`) must use their real names.
         return std::string(this->name());
     }
