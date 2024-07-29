@@ -94,6 +94,30 @@
       },
       "revId": "a34a6c00aa6bf8265f461b85cbc1687cec66bf4d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d4e3d70_7e818dc9",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 4449,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-29T19:29:49Z",
+      "side": 1,
+      "message": "`fActiveSpecializationIndex` can\u0027t do it?",
+      "parentUuid": "2695a690_4f058361",
+      "range": {
+        "startLine": 4440,
+        "startChar": 0,
+        "endLine": 4449,
+        "endChar": 9
+      },
+      "revId": "a34a6c00aa6bf8265f461b85cbc1687cec66bf4d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
