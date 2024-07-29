@@ -16,6 +16,29 @@
       "message": "The last version didn\u0027t compiled even. I switch to another computer and missed use_fontation\u003dtrue in args, so all the tests were just fine.",
       "revId": "e1df40c0d9b259b0415a27645f2af6b9d920ddb1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf9a18dc_dc825b64",
+        "filename": "src/ports/SkFontScanner_fontations.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-07-29T17:59:56Z",
+      "side": 1,
+      "message": "four space indent",
+      "range": {
+        "startLine": 53,
+        "startChar": 4,
+        "endLine": 53,
+        "endChar": 6
+      },
+      "revId": "e1df40c0d9b259b0415a27645f2af6b9d920ddb1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
