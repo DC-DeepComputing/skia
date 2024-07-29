@@ -190,6 +190,11 @@ class DefaultFlavor(object):
         env['ASAN_OPTIONS'] += ' fast_unwind_on_malloc=0'
         env['LSAN_OPTIONS'] += ' fast_unwind_on_malloc=0'
 
+      # AddressSanitizer: CHECK failed: sanitizer_posix_libcdep.cpp:189 "((0)) == ((sigaltstack(&altstack, &oldstack)))" (0x0, 0xffffffffffffffff)
+      # https://github.com/google/sanitizers/issues/1171
+      if 'Mac' in os:
+        env['ASAN_OPTIONS'] += ' use_sigaltstack=0'
+
     if 'TSAN' in extra_tokens:
       # We don't care about malloc(), fprintf, etc. used in signal handlers.
       # If we're in a signal handler, we're already crashing...
