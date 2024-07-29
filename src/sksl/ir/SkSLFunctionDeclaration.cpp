@@ -16,6 +16,7 @@
 #include "src/sksl/SkSLContext.h"
 #include "src/sksl/SkSLDefines.h"
 #include "src/sksl/SkSLErrorReporter.h"
+#include "src/sksl/SkSLModule.h"
 #include "src/sksl/SkSLPosition.h"
 #include "src/sksl/SkSLProgramKind.h"
 #include "src/sksl/SkSLProgramSettings.h"
