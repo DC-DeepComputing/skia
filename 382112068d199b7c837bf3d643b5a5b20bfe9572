@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d1b33c9a_b6636b12",
+        "filename": "tests/FilterResultTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1350,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-29T17:18:01Z",
+      "side": 1,
+      "message": "I need to have some spare cycles to update the test running code to do image readbacks correctly in graphite (right now, if you define these tests they crash in a logic bug). In theory they should be just as ready (other than that harness bug) as the ganesh test cases, so I think enforcing them by next year is okay.",
+      "parentUuid": "7c4114a7_46e27d92",
+      "revId": "382112068d199b7c837bf3d643b5a5b20bfe9572",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "18f78197_b23a4e47",
         "filename": "tests/SkSLTest.cpp",
         "patchSetId": 2
@@ -100,6 +118,24 @@
       "writtenOn": "2024-07-29T16:46:04Z",
       "side": 1,
       "message": "@scroggo@google.com Since this was skipped internally at the V branch, I think we should punt enforcement to next year when it\u0027s actually enabled.\n\nNote: `BackendTextureTest`, `SurfaceBackendTextureTest`, and `ImageBackendTextureTest` share this pattern in this file, but `VulkanBackendTextureMutableStateTest` should be enforced in V.\n\n@michaelludwig@google.com Do you think these are ready to be enabled going forward? (To be enforced next year)",
+      "revId": "382112068d199b7c837bf3d643b5a5b20bfe9572",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96811447_eac2e087",
+        "filename": "tests/graphite/BackendTextureTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-29T17:18:01Z",
+      "side": 1,
+      "message": "Yes, they should be ready. I believe these were being skipped solely because the graphite native vulkan backend wasn\u0027t as fleshed out when the tests were written.",
+      "parentUuid": "f7c980ba_b932acbb",
       "revId": "382112068d199b7c837bf3d643b5a5b20bfe9572",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -229,6 +265,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7fef2855_044d68ae",
+        "filename": "tests/graphite/ShapeTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-29T17:18:01Z",
+      "side": 1,
+      "message": "These tests aren\u0027t written yet, and are not going to be testing GPU code, so it\u0027s fine to wait on enforcing them.",
+      "parentUuid": "b2637945_3321ffda",
+      "revId": "382112068d199b7c837bf3d643b5a5b20bfe9572",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3316aff4_e125a3bc",
         "filename": "tests/graphite/TransformTest.cpp",
         "patchSetId": 2
@@ -240,6 +294,24 @@
       "writtenOn": "2024-07-29T16:46:04Z",
       "side": 1,
       "message": "Another one that I think we should wait to enforce (FYI @michaelludwig@google.com)",
+      "revId": "382112068d199b7c837bf3d643b5a5b20bfe9572",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d53cda03_d23d8771",
+        "filename": "tests/graphite/TransformTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-29T17:18:01Z",
+      "side": 1,
+      "message": "Same as the Shape case.",
+      "parentUuid": "3316aff4_e125a3bc",
       "revId": "382112068d199b7c837bf3d643b5a5b20bfe9572",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
