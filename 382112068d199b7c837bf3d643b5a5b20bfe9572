@@ -1,6 +1,91 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f48e4b40_b29c0eb0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-07-29T16:46:04Z",
+      "side": 1,
+      "message": "Eek, I\u0027m glad you remembered this, I forgot! LGTM modulo a few cases that I think we should punt",
+      "revId": "382112068d199b7c837bf3d643b5a5b20bfe9572",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c4114a7_46e27d92",
+        "filename": "tests/FilterResultTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1350,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-07-29T16:46:04Z",
+      "side": 1,
+      "message": "@scroggo@google.com It looks like the Graphite variant in this macro wasn\u0027t actually enabled at branch cut, so we can\u0027t enforce any of the Graphite variants in V. But it looks like we could still update the first parameter (for the Ganesh variant) to V for some of them, like `BackdropFilterRotated`, `RescaleWithTileMode`, `RescaleWithTransform`, `RescaleWithColorFilter`, and `MakeFromImage`.\n\n@michaelludwig@google.com Do you think the Graphite variants of these tests are ready to be enabled (to be enforced next year), or need more work?",
+      "revId": "382112068d199b7c837bf3d643b5a5b20bfe9572",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18f78197_b23a4e47",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1186,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-07-29T16:46:04Z",
+      "side": 1,
+      "message": "@johnstiles@google.com Does this bug indicate we should hold off on enforcing `StructComparison`, or has it been resolved? The CL chain attached to the bug makes me think it might be fix, but the bug is open so I\u0027m unsure. Sorry, I didn\u0027t dig too deeply.",
+      "revId": "382112068d199b7c837bf3d643b5a5b20bfe9572",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e7d42a32_52c97d53",
+        "filename": "tests/VkProtectedContextTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-07-29T16:46:04Z",
+      "side": 1,
+      "message": "@robertphillips@google.com Do you have context for this older Ganesh test not being enforced? I\u0027m wondering if we should enforce it next year, or if it might be implying a precedent that we shouldn\u0027t actually enforce the Graphite variant? IDK, just curious, and the blame I tried spelunking seemed to have a memory gap where `kNever` was added.\n\nDitto for `VkProtectedContext_CreateProtectedSkSurface` below.",
+      "revId": "382112068d199b7c837bf3d643b5a5b20bfe9572",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7c980ba_b932acbb",
+        "filename": "tests/graphite/BackendTextureTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-07-29T16:46:04Z",
+      "side": 1,
+      "message": "@scroggo@google.com Since this was skipped internally at the V branch, I think we should punt enforcement to next year when it\u0027s actually enabled.\n\nNote: `BackendTextureTest`, `SurfaceBackendTextureTest`, and `ImageBackendTextureTest` share this pattern in this file, but `VulkanBackendTextureMutableStateTest` should be enforced in V.\n\n@michaelludwig@google.com Do you think these are ready to be enabled going forward? (To be enforced next year)",
+      "revId": "382112068d199b7c837bf3d643b5a5b20bfe9572",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b473bf7d_086dc566",
@@ -38,6 +123,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8eebab3f_f373b31b",
+        "filename": "tests/graphite/CombinationBuilderTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 575,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-07-29T16:46:04Z",
+      "side": 1,
+      "message": "I\u0027m wondering if we might want to mark this as `kNever` if we expect it to continue to grow, or do we expect it to stabilize by next year?",
+      "parentUuid": "8fb1b5e7_8cb237f4",
+      "revId": "382112068d199b7c837bf3d643b5a5b20bfe9572",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "733f0c14_e5c0a037",
         "filename": "tests/graphite/GraphiteResourceCacheTest.cpp",
         "patchSetId": 2
@@ -49,6 +152,58 @@
       "writtenOn": "2024-07-26T17:18:33Z",
       "side": 1,
       "message": "@nscobie@google.com, as referenced [in this comment](https://b.corp.google.com/issues/355493709#comment2), I think this is okay because this fix went into 15\u0027s AOSP release?",
+      "revId": "382112068d199b7c837bf3d643b5a5b20bfe9572",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd1f311b_96bb136e",
+        "filename": "tests/graphite/GraphiteResourceCacheTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 538,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-07-29T16:46:04Z",
+      "side": 1,
+      "message": "Should be good, yes! I think technically speaking the fix went into the side branch which the official CTS bundle that gets distributed to partners is built from, rather than the release branch itself, but I believe that is WAI.",
+      "parentUuid": "733f0c14_e5c0a037",
+      "revId": "382112068d199b7c837bf3d643b5a5b20bfe9572",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2637945_3321ffda",
+        "filename": "tests/graphite/ShapeTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-07-29T16:46:04Z",
+      "side": 1,
+      "message": "It looks like this test isn\u0027t doing much yet, but will expand in the future? I think we should wait to enforce it until it\u0027s filled out.\n\nFYI @michaelludwig@google.com",
+      "revId": "382112068d199b7c837bf3d643b5a5b20bfe9572",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3316aff4_e125a3bc",
+        "filename": "tests/graphite/TransformTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-07-29T16:46:04Z",
+      "side": 1,
+      "message": "Another one that I think we should wait to enforce (FYI @michaelludwig@google.com)",
       "revId": "382112068d199b7c837bf3d643b5a5b20bfe9572",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
