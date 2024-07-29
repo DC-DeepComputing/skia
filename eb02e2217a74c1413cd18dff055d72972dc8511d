@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2fbb2c67_05583313",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-29T14:22:22Z",
+      "side": 1,
+      "message": "See https://chrome-public-gold.skia.org/search?issue\u003d5742044\u0026crs\u003dgerrit\u0026patchsets\u003d2\u0026corpus\u003dchrome-gpu",
+      "revId": "eb02e2217a74c1413cd18dff055d72972dc8511d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
