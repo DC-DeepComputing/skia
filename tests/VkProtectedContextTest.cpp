@@ -254,19 +254,23 @@ void async_callback(void* c, std::unique_ptr<const SkSurface::AsyncReadResult> r
 }
 
 void async_read_from_protected_surface(skiatest::Reporter* reporter, skiatest::TestType testType) {
+    SkDebugf("Entering test\n");
     std::unique_ptr<VkTestHelper> helper = VkTestHelper::Make(testType, /* isProtected= */ true);
     if (!helper) {
+        SkDebugf("Exiting test early (couldn't create helper)\n");
         return;
     }
 
     REPORTER_ASSERT(reporter, helper->isValid());
+
+    static constexpr int kSrcSize = 6;
 
     sk_sp<SkSurface> surface = helper->createSurface({ kSize, kSize },
                                                      /* textureable= */ true,
                                                      /* isProtected= */ true);
     REPORTER_ASSERT(reporter, surface);
     AsyncContext cbContext;
-    const SkImageInfo imageInfo = SkImageInfo::Make(6, 6, kRGBA_8888_SkColorType,
+    const SkImageInfo imageInfo = SkImageInfo::Make(kSrcSize, kSrcSize, kRGBA_8888_SkColorType,
                                                     kPremul_SkAlphaType, SkColorSpace::MakeSRGB());
 
     if (testType == skiatest::TestType::kGanesh) {
@@ -299,6 +303,7 @@ void async_read_from_protected_surface(skiatest::Reporter* reporter, skiatest::T
 
     helper->submitAndWaitForCompletion(&cbContext.fCalled);
     REPORTER_ASSERT(reporter, !cbContext.fResult);
+    SkDebugf("Exiting test\n");
 }
 
 }  // anonymous namespace
@@ -313,7 +318,9 @@ DEF_GANESH_TEST(VkProtectedContext_AsyncReadFromProtectedSurface,
 DEF_GRAPHITE_TEST(VkProtectedContext_AsyncReadFromProtectedSurface_Graphite,
                   reporter,
                   CtsEnforcement::kNextRelease) {
+    SkDebugf("enter\n");
     async_read_from_protected_surface(reporter, skiatest::TestType::kGraphite);
+    SkDebugf("exit\n");
 }
 
 namespace {

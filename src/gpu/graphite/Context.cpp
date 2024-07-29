@@ -195,17 +195,22 @@ struct Context::AsyncParams {
 
     bool validate() const {
         if (!fSrcImage) {
+            SkDebugf("Failing for wrong reason --- missing srcImage\n");
             return false;
         }
         if (fSrcImage->isProtected()) {
+            SkDebugf("Failing for right reason --- yay!\n");
             return false;
         }
         if (!SkIRect::MakeSize(fSrcImage->dimensions()).contains(fSrcRect)) {
+            SkDebugf("Failing for wrong reason --- srcRect not subset of srcImage\n");
             return false;
         }
         if (!SkImageInfoIsValid(fDstImageInfo)) {
+            SkDebugf("Failing for wrong reason --- dstImageInfo is invalid\n");
             return false;
         }
+        SkDebugf("AsyncParams are (incorrectly) valid\n");
         return true;
     }
 };

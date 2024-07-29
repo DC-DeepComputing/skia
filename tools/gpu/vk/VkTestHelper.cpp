@@ -185,11 +185,13 @@ std::unique_ptr<VkTestHelper> VkTestHelper::Make(skiatest::TestType testType,
     switch (testType) {
 #if defined(SK_GANESH)
         case skiatest::TestType::kGanesh:
+            SkDebugf("1\n");
             helper = std::make_unique<GaneshVkTestHelper>(isProtected);
             break;
 #endif
 #if defined(SK_GRAPHITE)
         case skiatest::TestType::kGraphite:
+            SkDebugf("2\n");
             helper = std::make_unique<GraphiteVkTestHelper>(isProtected);
             break;
 #endif
@@ -197,6 +199,7 @@ std::unique_ptr<VkTestHelper> VkTestHelper::Make(skiatest::TestType testType,
             return nullptr;
     }
     if (!helper->init()) {
+        SkDebugf("3\n");
         return nullptr;
     }
 
