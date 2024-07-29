@@ -22,6 +22,30 @@
       },
       "revId": "d584a52deffcadeefcca7282ec3c0f7cf9087c84",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b21043f2_64de17d9",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 3
+      },
+      "lineNbr": 650,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-29T16:44:04Z",
+      "side": 1,
+      "message": "Good idea that does make more conventional sense, done.",
+      "parentUuid": "b1bdaccd_127174ca",
+      "range": {
+        "startLine": 650,
+        "startChar": 12,
+        "endLine": 650,
+        "endChar": 24
+      },
+      "revId": "d584a52deffcadeefcca7282ec3c0f7cf9087c84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

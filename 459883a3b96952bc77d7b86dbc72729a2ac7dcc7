@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b7e85289_bc5bf957",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 483,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-29T16:44:04Z",
+      "side": 1,
+      "message": "Creating a new constant instead of using the one in `ShaderCaps` since we will be removing the `loadFloatBuffer` intrinsic so we no longer need that cap.",
+      "revId": "459883a3b96952bc77d7b86dbc72729a2ac7dcc7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
