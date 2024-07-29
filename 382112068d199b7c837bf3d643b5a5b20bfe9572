@@ -159,6 +159,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9b561ad4_21241213",
+        "filename": "tests/graphite/CombinationBuilderTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 575,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-07-29T17:13:41Z",
+      "side": 1,
+      "message": "Maybe I don\u0027t follow the point of `kNever`. (I think there are multiple purposes.) It looks like it\u0027s used for CPU, Metal, D3D and Dawn tests. Maybe we\u0027ll care about Dawn at some point - maybe we already do, if Chromium is going to be using Dawn?\n\nIt\u0027s also used for \"mock\" contexts, which I\u0027m guessing means that we\u0027re not using a GPU, so it makes sense to be `kNever`.\n\nI see it\u0027s already used for some `ImageFilterTests`. If it\u0027s never enforced in CTS, does that mean we just test it in DM? I see where some of the above tests are inapplicable, but why would these (image filters or this one) be `kNever`? @nscobie@google.com\u0027s idea seems to be that maybe the test is expanding, and *someday* we might actually lock in for a release?\n\nFor some context, here\u0027s the documentation of `kNever`:\n\n```\n        /* When used as fStrictVersion, always skip this test. It is not relevant to CTS.\n         * When used as fWorkaroundsVersion, there are no api levels that should run the\n         * test with workarounds.\n         */\n```",
+      "parentUuid": "8eebab3f_f373b31b",
+      "revId": "382112068d199b7c837bf3d643b5a5b20bfe9572",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "733f0c14_e5c0a037",
         "filename": "tests/graphite/GraphiteResourceCacheTest.cpp",
         "patchSetId": 2
