@@ -938,16 +938,6 @@ void GLSLCodeGenerator::writeFunctionCall(const FunctionCall& c) {
                 return;
             }
             break;
-        case k_loadFloatBuffer_IntrinsicKind: {
-            auto indexExpression = IRHelpers::LoadFloatBuffer(
-                                        fContext,
-                                        fCaps,
-                                        c.position(),
-                                        c.arguments()[0]->clone());
-
-            this->writeExpression(*indexExpression, Precedence::kExpression);
-            return;
-        }
         default:
             break;
     }
