@@ -70,6 +70,24 @@
       "parentUuid": "4eacb17c_191816cf",
       "revId": "7f85d8dad34c35c8e4d6fb6c247e680cdeab311b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "345806ed_dbee70dc",
+        "filename": "src/sksl/SkSLModuleLoader.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-29T15:15:18Z",
+      "side": 1,
+      "message": "I got nerd-sniped good by this. I found an `addlicense` tool (https://github.com/google/addlicense/) which we use to add on copyright notices when we open-source something. Check it out.\n\nbefore: https://github.com/google/addlicense/blob/master/testdata/initial/file.cc\n\nafter: https://github.com/google/addlicense/blob/master/testdata/expected/file.cc",
+      "parentUuid": "c54a7ce7_888329ea",
+      "revId": "7f85d8dad34c35c8e4d6fb6c247e680cdeab311b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
