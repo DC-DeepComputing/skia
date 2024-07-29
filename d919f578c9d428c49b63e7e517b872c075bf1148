@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "28fba097_44e4e71a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-07-29T16:55:53Z",
+      "side": 1,
+      "message": "It appears that `longjmp` isn\u0027t supported with `use_signalstack\u003d0` on macOS.",
+      "revId": "d919f578c9d428c49b63e7e517b872c075bf1148",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
