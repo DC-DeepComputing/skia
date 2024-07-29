@@ -17,6 +17,7 @@
 #include "src/gpu/graphite/dawn/DawnSharedContext.h"
 #include "src/gpu/graphite/dawn/DawnUtilsPriv.h"
 #include "src/sksl/SkSLProgramSettings.h"
+#include "src/gpu/graphite/dawn/DawnGraphiteTypesPriv.h"
 
 namespace skgpu::graphite {
 namespace {
@@ -132,7 +133,7 @@ sk_sp<DawnComputePipeline> DawnComputePipeline::Make(const DawnSharedContext* sh
 
                 auto [_, colorType] = step->calculateTextureParameters(declarationIndex, r);
                 auto textureInfo = sharedContext->caps()->getDefaultStorageTextureInfo(colorType);
-                entry.storageTexture.format = textureInfo.dawnTextureSpec().getViewFormat();
+                entry.storageTexture.format = TextureInfos::GetDawnViewFormat(textureInfo);
                 break;
             }
             case ComputeStep::ResourceType::kSampledTexture: {

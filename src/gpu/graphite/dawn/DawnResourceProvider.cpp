@@ -13,12 +13,14 @@
 #include "src/gpu/graphite/ComputePipeline.h"
 #include "src/gpu/graphite/RenderPassDesc.h"
 #include "src/gpu/graphite/dawn/DawnBuffer.h"
+#include "include/gpu/graphite/dawn/DawnTypes.h"
 #include "src/gpu/graphite/dawn/DawnComputePipeline.h"
 #include "src/gpu/graphite/dawn/DawnErrorChecker.h"
 #include "src/gpu/graphite/dawn/DawnGraphicsPipeline.h"
 #include "src/gpu/graphite/dawn/DawnSampler.h"
 #include "src/gpu/graphite/dawn/DawnSharedContext.h"
 #include "src/gpu/graphite/dawn/DawnTexture.h"
+#include "src/gpu/graphite/dawn/DawnGraphiteTypesPriv.h"
 #include "src/sksl/SkSLCompiler.h"
 
 namespace skgpu::graphite {
@@ -192,11 +194,10 @@ wgpu::RenderPipeline DawnResourceProvider::findOrCreateBlitWithDrawPipeline(
                 std::move(vsModule),
                 std::move(fsModule),
                 /*renderPassColorFormat=*/
-                renderPassDesc.fColorAttachment.fTextureInfo.dawnTextureSpec().getViewFormat(),
+                TextureInfos::GetDawnViewFormat(renderPassDesc.fColorAttachment.fTextureInfo),
                 /*renderPassDepthStencilFormat=*/
                 renderPassDesc.fDepthStencilAttachment.fTextureInfo.isValid()
-                        ? renderPassDesc.fDepthStencilAttachment.fTextureInfo.dawnTextureSpec()
-                                  .getViewFormat()
+                        ? TextureInfos::GetDawnViewFormat(renderPassDesc.fDepthStencilAttachment.fTextureInfo)
                         : wgpu::TextureFormat::Undefined,
                 /*numSamples=*/renderPassDesc.fColorAttachment.fTextureInfo.numSamples());
 
@@ -210,8 +211,8 @@ wgpu::RenderPipeline DawnResourceProvider::findOrCreateBlitWithDrawPipeline(
 
 sk_sp<Texture> DawnResourceProvider::onCreateWrappedTexture(const BackendTexture& texture) {
     // Convert to smart pointers. wgpu::Texture* constructor will increment the ref count.
-    wgpu::Texture dawnTexture         = texture.getDawnTexturePtr();
-    wgpu::TextureView dawnTextureView = texture.getDawnTextureViewPtr();
+    wgpu::Texture dawnTexture         = BackendTextures::GetDawnTexturePtr(texture);
+    wgpu::TextureView dawnTextureView = BackendTextures::GetDawnTextureViewPtr(texture);
     SkASSERT(!dawnTexture || !dawnTextureView);
 
     if (!dawnTexture && !dawnTextureView) {
@@ -237,7 +238,7 @@ sk_sp<DawnTexture> DawnResourceProvider::findOrCreateDiscardableMSAALoadTexture(
 
     // Derive the load texture's info from MSAA texture's info.
     DawnTextureInfo dawnMsaaLoadTextureInfo;
-    msaaInfo.getDawnTextureInfo(&dawnMsaaLoadTextureInfo);
+    SkAssertResult(TextureInfos::GetDawnTextureInfo(msaaInfo, &dawnMsaaLoadTextureInfo));
     dawnMsaaLoadTextureInfo.fSampleCount = 1;
     dawnMsaaLoadTextureInfo.fUsage |= wgpu::TextureUsage::TextureBinding;
 
@@ -251,7 +252,8 @@ sk_sp<DawnTexture> DawnResourceProvider::findOrCreateDiscardableMSAALoadTexture(
     dawnMsaaLoadTextureInfo.fUsage &= (~wgpu::TextureUsage::TransientAttachment);
 #endif
 
-    auto texture = this->findOrCreateDiscardableMSAAAttachment(dimensions, dawnMsaaLoadTextureInfo);
+    auto texture = this->findOrCreateDiscardableMSAAAttachment(dimensions,
+        TextureInfos::MakeDawn(dawnMsaaLoadTextureInfo));
 
     return sk_sp<DawnTexture>(static_cast<DawnTexture*>(texture.release()));
 }
@@ -303,7 +305,7 @@ BackendTexture DawnResourceProvider::onCreateBackendTexture(SkISize dimensions,
         return {};
     }
 
-    return BackendTexture(texture.MoveToCHandle());
+    return BackendTextures::MakeDawn(texture.MoveToCHandle());
 }
 
 void DawnResourceProvider::onDeleteBackendTexture(const BackendTexture& texture) {
@@ -312,7 +314,7 @@ void DawnResourceProvider::onDeleteBackendTexture(const BackendTexture& texture)
 
     // Automatically release the pointers in wgpu::TextureView & wgpu::Texture's dtor.
     // Acquire() won't increment the ref count.
-    wgpu::TextureView::Acquire(texture.getDawnTextureViewPtr());
+    wgpu::TextureView::Acquire(BackendTextures::GetDawnTextureViewPtr(texture));
     // We need to explicitly call Destroy() here since since that is the recommended way to delete
     // a Dawn texture predictably versus just dropping a ref and relying on garbage collection.
     //
@@ -320,7 +322,7 @@ void DawnResourceProvider::onDeleteBackendTexture(const BackendTexture& texture)
     // references the underlying texture. Skia currently doesn't destroy BindGroups when its use of
     // the texture goes away, thus a ref to the texture remains on the BindGroup and memory is never
     // cleared up unless we call Destroy() here.
-    wgpu::Texture::Acquire(texture.getDawnTexturePtr()).Destroy();
+    wgpu::Texture::Acquire(BackendTextures::GetDawnTexturePtr(texture)).Destroy();
 }
 
 DawnSharedContext* DawnResourceProvider::dawnSharedContext() const {

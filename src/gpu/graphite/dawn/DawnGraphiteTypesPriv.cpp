@@ -5,7 +5,7 @@
  * found in the LICENSE file.
  */
 
-#include "include/private/gpu/graphite/DawnTypesPriv.h"
+#include "src/gpu/graphite/dawn/DawnGraphiteTypesPriv.h"
 
 namespace skgpu::graphite {
 
