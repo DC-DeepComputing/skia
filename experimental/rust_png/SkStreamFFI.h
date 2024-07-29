@@ -1,0 +1,34 @@
+/*
+ * Copyright 2024 Google Inc.
+ *
+ * Use of this source code is governed by a BSD-style license that can be
+ * found in the LICENSE file.
+ */
+
+#ifndef SkStreamRustThunks_DEFINED
+#define SkStreamRustThunks_DEFINED
+
+#include <memory>
+
+#include "include/core/SkStream.h"
+#include "third_party/rust/cxx/v1/cxx.h"
+
+// An FFI-friendly wrapper around `SkStream::read`.
+//
+// Arguments against directly calling `SkStream::read` from Rust:
+//
+// * C++ and Rust represent empty spans/slices differently - naive
+//   passing of the data pointer may run into issues.  See also:
+//   https://davidben.net/2024/01/15/empty-slices.html
+// * The `cxx` crate does not currently support passing `void*`.
+//   See: https://github.com/dtolnay/cxx/issues/1049
+//
+// TODO(https://crbug.com/40278281): Consider moving this helper
+// into `SkStream.h` / `SkStream.cpp` (behind a `ENABLE_RUST` or similar
+// `#define`).
+size_t SkStreamRead(SkStream& stream, rust::Slice<uint8_t> buffer);
+
+// An FFI-friendly wrapper around `SkMemoryStream::MakeCopy`.
+std::unique_ptr<SkStream> SkMemoryStreamMakeCopy(rust::Slice<const uint8_t> data);
+
+#endif  // SkStreamRustThunks_DEFINED
