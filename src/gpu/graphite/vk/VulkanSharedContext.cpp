@@ -29,6 +29,8 @@ namespace skgpu::graphite {
 
 sk_sp<SharedContext> VulkanSharedContext::Make(const VulkanBackendContext& context,
                                                const ContextOptions& options) {
+    SkDebugf("-----------  VulkanSharedContext::Make %d\n", context.fProtectedContext == skgpu::Protected::kYes);
+
     if (context.fInstance == VK_NULL_HANDLE ||
         context.fPhysicalDevice == VK_NULL_HANDLE ||
         context.fDevice == VK_NULL_HANDLE ||
@@ -81,6 +83,7 @@ sk_sp<SharedContext> VulkanSharedContext::Make(const VulkanBackendContext& conte
     sk_sp<skgpu::VulkanMemoryAllocator> memoryAllocator = context.fMemoryAllocator;
 #if defined(SK_USE_VMA)
     if (!memoryAllocator) {
+        SkDebugf("------------------ creating VMA\n");
         // We were not given a memory allocator at creation
         skgpu::ThreadSafe threadSafe = options.fClientWillExternallySynchronizeAllThreads
                                                ? skgpu::ThreadSafe::kNo
@@ -96,13 +99,14 @@ sk_sp<SharedContext> VulkanSharedContext::Make(const VulkanBackendContext& conte
     return sk_sp<SharedContext>(new VulkanSharedContext(context,
                                                         std::move(interface),
                                                         std::move(memoryAllocator),
-                                                        std::move(caps)));
+                                                        std::move(caps), true));
 }
 
 VulkanSharedContext::VulkanSharedContext(const VulkanBackendContext& backendContext,
                                          sk_sp<const skgpu::VulkanInterface> interface,
                                          sk_sp<skgpu::VulkanMemoryAllocator> memoryAllocator,
-                                         std::unique_ptr<const VulkanCaps> caps)
+                                         std::unique_ptr<const VulkanCaps> caps,
+bool foo)
         : skgpu::graphite::SharedContext(std::move(caps), BackendApi::kVulkan)
         , fInterface(std::move(interface))
         , fMemoryAllocator(std::move(memoryAllocator))

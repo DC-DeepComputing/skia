@@ -108,9 +108,11 @@ Context::~Context() {
 bool Context::finishInitialization() {
     SkASSERT(!fSharedContext->rendererProvider()); // Can only initialize once
 
+    SkDebugf("-------------- e1\n");
     StaticBufferManager bufferManager{fResourceProvider.get(), fSharedContext->caps()};
     std::unique_ptr<RendererProvider> renderers{
             new RendererProvider(fSharedContext->caps(), &bufferManager)};
+    SkDebugf("-------------- e2\n");
 
     auto result = bufferManager.finalize(this, fQueueManager.get(), fSharedContext->globalCache());
     if (result == StaticBufferManager::FinishResult::kFailure) {
@@ -118,11 +120,13 @@ bool Context::finishInitialization() {
         // use it will draw incorrectly, so it's better to fail the Context creation.
         return false;
     }
+    SkDebugf("-------------- e3\n");
     if (result == StaticBufferManager::FinishResult::kSuccess &&
         !fQueueManager->submitToGpu()) {
         SKGPU_LOG_W("Failed to submit initial command buffer for Context creation.\n");
         return false;
     } // else result was kNoWork so skip submitting to the GPU
+    SkDebugf("-------------- e4\n");
     fSharedContext->setRendererProvider(std::move(renderers));
     return true;
 }
@@ -195,17 +199,22 @@ struct Context::AsyncParams {
 
     bool validate() const {
         if (!fSrcImage) {
+            SkDebugf("Failing for wrong reason --- missing srcImage\n");
             return false;
         }
         if (fSrcImage->isProtected()) {
+            SkDebugf("Failing for right reason --- yay!\n");
             return false;
         }
         if (!SkIRect::MakeSize(fSrcImage->dimensions()).contains(fSrcRect)) {
+            SkDebugf("Failing for wrong reason --- srcRect not subset of srcImage\n");
             return false;
         }
         if (!SkImageInfoIsValid(fDstImageInfo)) {
+            SkDebugf("Failing for wrong reason --- dstImageInfo is invalid\n");
             return false;
         }
+        SkDebugf("AsyncParams are (incorrectly) valid\n");
         return true;
     }
 };
@@ -911,10 +920,15 @@ std::unique_ptr<Context> ContextCtorAccessor::MakeContext(
         sk_sp<SharedContext> sharedContext,
         std::unique_ptr<QueueManager> queueManager,
         const ContextOptions& options) {
+    SkDebugf("------------------ c1\n");
+
     auto context = std::unique_ptr<Context>(new Context(std::move(sharedContext),
                                                         std::move(queueManager),
                                                         options));
+    SkDebugf("------------------ c2\n");
     if (context && context->finishInitialization()) {
+        SkDebugf("------------------ c3\n");
+
         return context;
     } else {
         return nullptr;
