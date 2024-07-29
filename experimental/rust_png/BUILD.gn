@@ -1,0 +1,45 @@
+# Copyright 2024 Google LLC
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build/rust/rust_static_library.gni")
+
+group("rust_png") {
+  public_deps = [ ":sk_stream_rust_bindings" ]
+}
+
+group("unittests") {
+  testonly = true
+  deps = [ ":sk_stream_rust_unittests" ]
+}
+
+rust_static_library("sk_stream_rust_bindings") {
+  allow_unsafe = true  # For FFI
+  crate_root = "SkStreamFFI.rs"
+  sources = [ "SkStreamFFI.rs" ]
+  cxx_bindings = [ "SkStreamFFI.rs" ]
+  configs += [ "//skia:skia_config" ]
+  deps = [ ":sk_stream_rust_thunks" ]
+}
+
+static_library("sk_stream_rust_thunks") {
+  visibility = [ ":*" ]
+  sources = [
+    "SkStreamFFI.cpp",
+    "SkStreamFFI.h",
+  ]
+  configs += [ "//skia:skia_config" ]
+  deps = [ "//skia" ]
+}
+
+rust_static_library("sk_stream_rust_unittests") {
+  visibility = [ ":unittests" ]
+  testonly = true
+  is_gtest_unittests = true
+  crate_root = "SkStreamUnittests.rs"
+  sources = [ "SkStreamUnittests.rs" ]
+  deps = [
+    ":sk_stream_rust_bindings",
+    "//testing/rust_gtest_interop",
+  ]
+}
