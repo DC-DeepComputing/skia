@@ -86,6 +86,7 @@
 #include "src/sksl/transform/SkSLTransform.h"
 #include "src/utils/SkBitSet.h"
 
+#include <algorithm>
 #include <cstdint>
 #include <cstring>
 #include <functional>
@@ -262,6 +263,8 @@ private:
                          const Layout& typeLayout,
                          const MemoryLayout& memoryLayout,
                          StorageClass storageClass);
+
+    StorageClass getStorageClass(const Expression& expr);
 
     TArray<SpvId> getAccessChain(const Expression& expr, OutputStream& out);
 
@@ -660,8 +663,9 @@ private:
     THashMap<Analysis::SpecializedFunctionKey, SpvId, Analysis::SpecializedFunctionKey::Hash>
             fFunctionMap;
 
-    Analysis::SpecializationIndex fInheritedSpecializationIndex = Analysis::kUnspecialized;
     Analysis::SpecializationInfo fSpecializationInfo;
+    Analysis::SpecializationIndex fActiveSpecializationIndex = Analysis::kUnspecialized;
+    const Analysis::SpecializedParameters* fActiveSpecialization = nullptr;
 
     THashMap<const Variable*, SpvId> fVariableMap;
     THashMap<const Type*, SpvId> fStructMap;
@@ -2640,7 +2644,7 @@ SpvId SPIRVCodeGenerator::writeFunctionCall(const FunctionCall& c, OutputStream&
 
     // Look up this function (or its specialization, if any) in our map of function SpvIds.
     Analysis::SpecializationIndex specializationIndex = Analysis::FindSpecializationIndexForCall(
-            c, fSpecializationInfo, fInheritedSpecializationIndex);
+            c, fSpecializationInfo, fActiveSpecializationIndex);
     SpvId* entry = fFunctionMap.find({&function, specializationIndex});
     if (!entry) {
         fContext.fErrors->error(c.fPosition, "function '" + function.description() +
@@ -3104,19 +3108,25 @@ static StorageClass get_storage_class_for_global_variable(
     return fallbackStorageClass;
 }
 
-static StorageClass get_storage_class(const Expression& expr) {
+StorageClass SPIRVCodeGenerator::getStorageClass(const Expression& expr) {
     switch (expr.kind()) {
         case Expression::Kind::kVariableReference: {
             const Variable& var = *expr.as<VariableReference>().variable();
+            if (fActiveSpecialization) {
+                const Expression** specializedExpr = fActiveSpecialization->find(&var);
+                if (specializedExpr && (*specializedExpr)->is<FieldAccess>()) {
+                    return this->getStorageClass(**specializedExpr);
+                }
+            }
             if (var.storage() != Variable::Storage::kGlobal) {
                 return StorageClass::kFunction;
             }
             return get_storage_class_for_global_variable(var, StorageClass::kPrivate);
         }
         case Expression::Kind::kFieldAccess:
-            return get_storage_class(*expr.as<FieldAccess>().base());
+            return this->getStorageClass(*expr.as<FieldAccess>().base());
         case Expression::Kind::kIndex:
-            return get_storage_class(*expr.as<IndexExpression>().base());
+            return this->getStorageClass(*expr.as<IndexExpression>().base());
         default:
             return StorageClass::kFunction;
     }
@@ -3142,6 +3152,16 @@ TArray<SpvId> SPIRVCodeGenerator::getAccessChain(const Expression& expr, OutputS
             TArray<SpvId> chain = this->getAccessChain(*fieldExpr.base(), out);
             chain.push_back(this->writeLiteral(fieldExpr.fieldIndex(), *fContext.fTypes.fInt));
             return chain;
+        }
+        case Expression::Kind::kVariableReference: {
+            if (fActiveSpecialization) {
+                const Expression** specializedFieldIndex =
+                        fActiveSpecialization->find(expr.as<VariableReference>().variable());
+                if (specializedFieldIndex && (*specializedFieldIndex)->is<FieldAccess>()) {
+                    return this->getAccessChain(**specializedFieldIndex, out);
+                }
+            }
+            [[fallthrough]];
         }
         default: {
             SpvId id = this->getLValue(expr, out)->getPointer();
@@ -3348,13 +3368,13 @@ std::unique_ptr<SPIRVCodeGenerator::LValue> SPIRVCodeGenerator::getLValue(const 
             SpvId typeId = this->getType(type, var.layout(), this->memoryLayoutForVariable(var));
             return std::make_unique<PointerLValue>(*this, *entry,
                                                    /*isMemoryObjectPointer=*/true,
-                                                   typeId, precision, get_storage_class(expr));
+                                                   typeId, precision, this->getStorageClass(expr));
         }
         case Expression::Kind::kIndex: // fall through
         case Expression::Kind::kFieldAccess: {
             TArray<SpvId> chain = this->getAccessChain(expr, out);
             SpvId member = this->nextId(nullptr);
-            StorageClass storageClass = get_storage_class(expr);
+            StorageClass storageClass = this->getStorageClass(expr);
             this->writeOpCode(SpvOpAccessChain, (SpvId) (3 + chain.size()), out);
             this->writeWord(this->getPointerType(type, storageClass), out);
             this->writeWord(member, out);
@@ -3382,7 +3402,7 @@ std::unique_ptr<SPIRVCodeGenerator::LValue> SPIRVCodeGenerator::getLValue(const 
                 fContext.fErrors->error(swizzle.fPosition,
                         "unable to retrieve lvalue from swizzle");
             }
-            StorageClass storageClass = get_storage_class(*swizzle.base());
+            StorageClass storageClass = this->getStorageClass(*swizzle.base());
             if (swizzle.components().size() == 1) {
                 SpvId member = this->nextId(nullptr);
                 SpvId typeId = this->getPointerType(type, storageClass);
@@ -4406,8 +4426,10 @@ void SPIRVCodeGenerator::writeFunctionStart(
     Analysis::GetParameterMappingsForFunction(
             f, fSpecializationInfo, specializationIndex,
             [&](int, const Variable*, const Expression* expr) {
-                mangledName += '_';
-                mangledName += expr->description();
+                std::string name = expr->description();
+                std::replace_if(name.begin(), name.end(), [](char c) { return !isalnum(c); }, '_');
+
+                mangledName += "_" + name;
             });
 
     this->writeInstruction(SpvOpName,
@@ -4421,6 +4443,10 @@ void SPIRVCodeGenerator::writeFunctionStart(
                 specializedExpr && (*specializedExpr)->is<VariableReference>()
                         ? (*specializedExpr)->as<VariableReference>().variable()
                         : nullptr;
+
+        if (specializedExpr && (*specializedExpr)->is<FieldAccess>()) {
+            continue;
+        }
 
         if (fUseTextureSamplerPairs && parameter->type().isSampler()) {
             auto [texture, sampler] = this->synthesizeTextureAndSampler(*parameter);
@@ -4486,10 +4512,12 @@ void SPIRVCodeGenerator::writeFunctionInstantiation(
     this->writeFunctionStart(f.declaration(), specializationIndex, specializedParams, out);
     fCurrentBlock = 0;
     this->writeLabel(this->nextId(nullptr), kBranchlessBlock, out);
+    fActiveSpecialization = specializedParams;
+    fActiveSpecializationIndex = specializationIndex;
     StringStream bodyBuffer;
-    std::swap(fInheritedSpecializationIndex, specializationIndex);
     this->writeBlock(f.body()->as<Block>(), bodyBuffer);
-    std::swap(fInheritedSpecializationIndex, specializationIndex);
+    fActiveSpecialization = nullptr;
+    fActiveSpecializationIndex = Analysis::kUnspecialized;
     write_stringstream(fVariableBuffer, out);
     if (f.declaration().isMain()) {
         write_stringstream(fGlobalInitializersBuffer, out);
@@ -5316,7 +5344,7 @@ std::tuple<const Variable*, const Variable*> SPIRVCodeGenerator::synthesizeTextu
 
 void SPIRVCodeGenerator::writeInstructions(const Program& program, OutputStream& out) {
     Analysis::FindFunctionsToSpecialize(program, &fSpecializationInfo, [](const Variable& param) {
-        return param.type().isSampler();
+        return param.type().isSampler() || param.type().isUnsizedArray();
     });
 
     fGLSLExtendedInstructions = this->nextId(nullptr);
