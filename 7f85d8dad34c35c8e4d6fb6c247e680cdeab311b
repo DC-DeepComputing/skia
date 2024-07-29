@@ -16,6 +16,24 @@
       "message": "Was this intentional?",
       "revId": "7f85d8dad34c35c8e4d6fb6c247e680cdeab311b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "685e3f21_b4db4492",
+        "filename": "src/sksl/SkSLModuleLoader.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-29T15:07:30Z",
+      "side": 1,
+      "message": "Yes, there should be a blank line between the copyright header and initial include.",
+      "parentUuid": "485a416d_ded17820",
+      "revId": "7f85d8dad34c35c8e4d6fb6c247e680cdeab311b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
