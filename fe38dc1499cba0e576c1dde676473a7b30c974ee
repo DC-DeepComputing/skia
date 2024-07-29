@@ -22,6 +22,30 @@
       },
       "revId": "fe38dc1499cba0e576c1dde676473a7b30c974ee",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "187b9230_ae8651c5",
+        "filename": "tests/SkRuntimeEffectTest.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 720,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-29T16:04:09Z",
+      "side": 1,
+      "message": "Good catch!\n\nFixing this turned out to expose a real bug (SkRP support for passing child effects is not implemented). It turns out that the inliner is aggressive enough that this never came up with the real KnownRuntimeEffects (they always inline across our dm suite) but the `noinline` here caught it. \n\nI will see about fixing SkRP.",
+      "parentUuid": "efda8fea_f2f43b10",
+      "range": {
+        "startLine": 720,
+        "startChar": 60,
+        "endLine": 720,
+        "endChar": 65
+      },
+      "revId": "fe38dc1499cba0e576c1dde676473a7b30c974ee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
