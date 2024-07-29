@@ -283,6 +283,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "de4faf95_8aa6b5a8",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 3120,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-29T17:34:28Z",
+      "side": 1,
+      "message": "Since we no longer do a map lookup when `fActiveSpecialization` is null, this seems OK to me.",
+      "parentUuid": "6a2e2506_80b052ab",
+      "range": {
+        "startLine": 3115,
+        "startChar": 0,
+        "endLine": 3120,
+        "endChar": 0
+      },
+      "revId": "61461e66f0b6a52351c9b99ac4d7c43b39b985ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1756cef7_f8c556f3",
@@ -424,6 +448,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a6e5627_d6f93b15",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 4444,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-29T17:34:28Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "a45e9ad4_18bc664c",
+      "range": {
+        "startLine": 4444,
+        "startChar": 0,
+        "endLine": 4444,
+        "endChar": 71
+      },
+      "revId": "61461e66f0b6a52351c9b99ac4d7c43b39b985ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5d33364b_1383055a",
@@ -461,6 +509,30 @@
       "side": 1,
       "message": "Done, added an `expr-\u003eis\u003cFieldAccess\u003e()` check when needed to ensure the variable key is part of this subset and a check that `fActiveSpecializations` is not `nullptr`. Though since these check will probably be in frequently access functions `getStorageClass` and `getAccessChain`, I could see value in a separate subset hashmap with a better name like `fActiveFieldAccessSpecializations` to avoid the two extra condition checks, WDYT?",
       "parentUuid": "5d33364b_1383055a",
+      "range": {
+        "startLine": 4445,
+        "startChar": 0,
+        "endLine": 4445,
+        "endChar": 70
+      },
+      "revId": "61461e66f0b6a52351c9b99ac4d7c43b39b985ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "232f58ee_e905865f",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 4445,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-29T17:34:28Z",
+      "side": 1,
+      "message": "I think the majority of the time we won\u0027t have a specialization at all--so as long as we can quickly process things in the case where `fActiveSpecialization` is null, we\u0027re good.",
+      "parentUuid": "526d5bd1_77502fff",
       "range": {
         "startLine": 4445,
         "startChar": 0,

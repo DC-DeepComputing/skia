@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e82b3f03_9718013e",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 4449,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-29T17:34:28Z",
+      "side": 1,
+      "message": "We can skip processing a lot sooner if we don\u0027t have any specialization active. Let\u0027s replace this block with:\n\n```\n        const Variable* specializedVar \u003d nullptr;\n        \n        if (specializedParams) {\n            if (const Expression** specializedExpr \u003d specializedParams-\u003efind(parameter)) {\n                if ((*specializedExpr)-\u003eis\u003cFieldAccess\u003e() {\n                    continue;\n                }\n                SkASSERT((*specializedExpr)-\u003eis\u003cVariableReference\u003e());\n                specializedVar \u003d (*specializedExpr)-\u003eas\u003cVariableReference\u003e().variable();\n            }\n        }\n```",
+      "range": {
+        "startLine": 4440,
+        "startChar": 0,
+        "endLine": 4449,
+        "endChar": 9
+      },
+      "revId": "a34a6c00aa6bf8265f461b85cbc1687cec66bf4d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
