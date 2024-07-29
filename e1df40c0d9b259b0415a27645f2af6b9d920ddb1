@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "48ab3615_cf223d53",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-07-29T17:55:44Z",
+      "side": 1,
+      "message": "The last version didn\u0027t compiled even. I switch to another computer and missed use_fontation\u003dtrue in args, so all the tests were just fine.",
+      "revId": "e1df40c0d9b259b0415a27645f2af6b9d920ddb1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1aaf5d8c_dd3fa87a",
+        "filename": "src/ports/SkFontScanner_fontations.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-07-29T17:55:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "29e551f0_838ab0ed",
+      "range": {
+        "startLine": 52,
+        "startChar": 27,
+        "endLine": 52,
+        "endChar": 53
+      },
+      "revId": "2c310ed6d571125a34070e63208e3fe38c7e3ab1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bec62d28_f9785179",
@@ -37,6 +61,24 @@
       "writtenOn": "2024-07-29T16:44:38Z",
       "side": 1,
       "message": "If `instanceIndex \u003e num_named_instances()` this should return `false`.",
+      "revId": "2c310ed6d571125a34070e63208e3fe38c7e3ab1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "491202ae_f21ba964",
+        "filename": "src/ports/SkFontScanner_fontations.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-07-29T17:55:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bec62d28_f9785179",
       "revId": "2c310ed6d571125a34070e63208e3fe38c7e3ab1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
