@@ -52,6 +52,24 @@
       "parentUuid": "685e3f21_b4db4492",
       "revId": "7f85d8dad34c35c8e4d6fb6c247e680cdeab311b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c54a7ce7_888329ea",
+        "filename": "src/sksl/SkSLModuleLoader.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-29T15:12:10Z",
+      "side": 1,
+      "message": "(Just by convention--there\u0027s no rule about it. However, if you look at existing code, you will be hard pressed to find counterexamples.)",
+      "parentUuid": "4eacb17c_191816cf",
+      "revId": "7f85d8dad34c35c8e4d6fb6c247e680cdeab311b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
