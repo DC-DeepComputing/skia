@@ -41,6 +41,7 @@
 #include "src/core/SkOSFile.h"
 #include "src/core/SkTaskGroup.h"
 #include "src/core/SkTraceEvent.h"
+#include "src/partition_alloc/test_support.h"
 #include "src/utils/SkJSONWriter.h"
 #include "src/utils/SkOSPath.h"
 #include "src/utils/SkShaderUtils.h"
@@ -1347,6 +1348,11 @@ class NanobenchShaderErrorHandler : public GrContextOptions::ShaderErrorHandler 
 };
 
 int main(int argc, char** argv) {
+    // Memory allocations are handled by PartitionAlloc, if available. It brings performance
+    // benefits, but also memory safety features to detect additional types of memory corruption
+    // bugs that could be missed otherwise.
+    InitializePartitionAllocForTesting();
+
     CommandLineFlags::Parse(argc, argv);
 
     initializeEventTracingForTools();
