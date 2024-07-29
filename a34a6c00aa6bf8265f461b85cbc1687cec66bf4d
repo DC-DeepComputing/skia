@@ -142,6 +142,30 @@
       },
       "revId": "a34a6c00aa6bf8265f461b85cbc1687cec66bf4d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "859b00aa_161d92d4",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 4449,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-29T19:36:31Z",
+      "side": 1,
+      "message": "Nice, looks cleaner! TY!",
+      "parentUuid": "7d8647f2_23b51a14",
+      "range": {
+        "startLine": 4440,
+        "startChar": 0,
+        "endLine": 4449,
+        "endChar": 9
+      },
+      "revId": "a34a6c00aa6bf8265f461b85cbc1687cec66bf4d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
