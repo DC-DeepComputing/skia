@@ -16,6 +16,7 @@
 #include "src/core/SkPointPriv.h"
 #include "src/core/SkRasterClip.h"
 #include "src/gpu/BufferWriter.h"
+#include "src/gpu/ganesh/GrAuditTrail.h"
 #include "src/gpu/ganesh/GrBuffer.h"
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrDistanceFieldGenFromVector.h"

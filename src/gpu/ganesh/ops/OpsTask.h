@@ -25,6 +25,7 @@
 #include "src/gpu/ganesh/GrDstProxyView.h"
 #include "src/gpu/ganesh/GrGeometryProcessor.h"
 #include "src/gpu/ganesh/GrProcessorSet.h"
+#include "src/gpu/ganesh/GrRenderTargetProxy.h"
 #include "src/gpu/ganesh/GrRenderTask.h"
 #include "src/gpu/ganesh/ops/GrOp.h"
 

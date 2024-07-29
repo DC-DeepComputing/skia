@@ -4,24 +4,47 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
-
-
 #include "src/gpu/ganesh/ops/TriangulatingPathRenderer.h"
 
+#include "include/core/SkData.h"
+#include "include/core/SkMatrix.h"
+#include "include/core/SkPath.h"
+#include "include/core/SkPoint.h"
+#include "include/core/SkRect.h"
+#include "include/core/SkRefCnt.h"
+#include "include/core/SkScalar.h"
+#include "include/core/SkString.h"
+#include "include/core/SkSurfaceProps.h"
+#include "include/core/SkTypes.h"
+#include "include/gpu/GrRecordingContext.h"
+#include "include/private/SkColorData.h"
 #include "include/private/SkIDChangeListener.h"
-#include "src/core/SkGeometry.h"
+#include "include/private/base/SkMalloc.h"
+#include "include/private/gpu/ganesh/GrTypesPriv.h"
+#include "src/base/SkRandom.h"
+#include "src/core/SkMessageBus.h"
+#include "src/core/SkTraceEvent.h"
+#include "src/gpu/ResourceKey.h"
+#include "src/gpu/ganesh/GrAppliedClip.h"
 #include "src/gpu/ganesh/GrAuditTrail.h"
+#include "src/gpu/ganesh/GrBuffer.h"
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrDefaultGeoProcFactory.h"
 #include "src/gpu/ganesh/GrDrawOpTest.h"
 #include "src/gpu/ganesh/GrEagerVertexAllocator.h"
+#include "src/gpu/ganesh/GrGeometryProcessor.h"
+#include "src/gpu/ganesh/GrGpuBuffer.h"
+#include "src/gpu/ganesh/GrMeshDrawTarget.h"
 #include "src/gpu/ganesh/GrOpFlushState.h"
+#include "src/gpu/ganesh/GrPaint.h"
+#include "src/gpu/ganesh/GrProcessorAnalysis.h"
+#include "src/gpu/ganesh/GrProcessorSet.h"
 #include "src/gpu/ganesh/GrProgramInfo.h"
 #include "src/gpu/ganesh/GrRecordingContextPriv.h"
-#include "src/gpu/ganesh/GrResourceCache.h"
 #include "src/gpu/ganesh/GrResourceProvider.h"
 #include "src/gpu/ganesh/GrSimpleMesh.h"
 #include "src/gpu/ganesh/GrStyle.h"
+#include "src/gpu/ganesh/GrTestUtils.h"
 #include "src/gpu/ganesh/GrThreadSafeCache.h"
 #include "src/gpu/ganesh/SurfaceDrawContext.h"
 #include "src/gpu/ganesh/geometry/GrAATriangulator.h"
@@ -29,9 +52,14 @@
 #include "src/gpu/ganesh/geometry/GrStyledShape.h"
 #include "src/gpu/ganesh/geometry/GrTriangulator.h"
 #include "src/gpu/ganesh/ops/GrMeshDrawOp.h"
+#include "src/gpu/ganesh/ops/GrOp.h"
 #include "src/gpu/ganesh/ops/GrSimpleMeshDrawOpHelperWithStencil.h"
 
-#include <cstdio>
+#include <array>
+#include <cstdint>
+#include <cstring>
+#include <utility>
+
 
 #if !defined(SK_ENABLE_OPTIMIZE_SIZE)
 

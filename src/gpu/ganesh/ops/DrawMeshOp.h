@@ -16,6 +16,7 @@
 
 class GrColorSpaceXform;
 class GrPaint;
+class GrFragmentProcessor;
 class GrRecordingContext;
 class SkMatrix;
 class SkMesh;

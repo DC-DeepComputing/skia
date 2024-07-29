@@ -22,6 +22,7 @@
 
 class GrCaps;
 class GrColorSpaceXform;
+class GrOpsRenderPass;
 class GrMeshDrawTarget;
 struct GrShaderCaps;
 struct VertexWriter;
