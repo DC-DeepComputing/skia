@@ -640,42 +640,41 @@ half4 $half4_from_array(float[] arr, int offset) {
 }
 
 half4 $colorize_grad_buf(float[] arr, int bufferOffset, int numStops, float2 t) {
+    int colorOffset = bufferOffset + numStops;
     if (t.y < 0) {
         return half4(0);
     } else if (t.x == 0) {
-        // Start from 1 since bufferOffset + 0 is holding the
-        // color stop's offset value.
-        return $half4_from_array(arr, bufferOffset + 1);
+        return $half4_from_array(arr, colorOffset);
     } else if (t.x == 1) {
-        int lastBufferIdx = bufferOffset + (numStops - 1) * 5;
-        return $half4_from_array(arr, lastBufferIdx + 1);
+        int lastColorIdx = colorOffset + (numStops - 1) * 4;
+        return $half4_from_array(arr, lastColorIdx);
     } else {
         // Binary search for the matching adjacent offsets
         // running log(numStops).
-        int low = 0;
-        int high = numStops - 1;
+        int lowOffsetIdx = bufferOffset;
+        int highOffsetIdx = bufferOffset + numStops - 1;
         for (int i = 1; i < numStops; i += i) {
-            int mid = (low + high) / 2;
-            float offset = arr[bufferOffset + mid * 5];
+            int mid = (lowOffsetIdx + highOffsetIdx) / 2;
+            float offset = arr[mid];
             if (t.x < offset) {
-                high = mid;
+                highOffsetIdx = mid;
             } else {
-                low = mid;
+                lowOffsetIdx = mid;
             }
         }
-        int lowBufferIdx = bufferOffset + low * 5;
-        float lowOffset = arr[lowBufferIdx];
-        half4 lowColor = $half4_from_array(arr, lowBufferIdx + 1);
+        int lowColorIdx = (lowOffsetIdx - bufferOffset) * 4 + colorOffset;
+        float lowOffset = arr[lowOffsetIdx];
+        half4 lowColor = $half4_from_array(arr, lowColorIdx);
 
-        int highBufferIdx = bufferOffset + high * 5;
-        float highOffset = arr[highBufferIdx];
+        int highColorIdx = (highOffsetIdx - bufferOffset) * 4 + colorOffset;
+        float highOffset = arr[highOffsetIdx];
         if (highOffset == lowOffset) {
             // If the t value falls exactly on a color stop, both lowOffset
             // and highOffset will be exactly the same so we avoid having
             // 0/0=NaN as our mix value.
             return lowColor;
         } else {
-            half4 highColor = $half4_from_array(arr, highBufferIdx + 1);
+            half4 highColor = $half4_from_array(arr, highColorIdx);
 
             return half4(mix(lowColor,
                               highColor,
