@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f442f3f9_15183ef4",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 6
+      },
+      "lineNbr": 771,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-07-29T14:43:14Z",
+      "side": 1,
+      "message": "Mainly, because I tried to follow the pattern:\nfn populate_axes(font_ref: \u0026BridgeFontRef, mut axis_wrapper: Pin\u003c\u0026mut AxisWrapper\u003e) -\u003e isize\nFixed.",
+      "parentUuid": "b261bf32_bdf63635",
+      "range": {
+        "startLine": 771,
+        "startChar": 44,
+        "endLine": 771,
+        "endChar": 49
+      },
+      "revId": "d5ebe33c15aa2c62c797a7f8b4705738b03cfcd9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "72cfd06a_2095ceb1",
@@ -41,6 +65,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3effe096_b2ac788f",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 6
+      },
+      "lineNbr": 777,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-07-29T14:43:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "72cfd06a_2095ceb1",
+      "revId": "d5ebe33c15aa2c62c797a7f8b4705738b03cfcd9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "43df1e80_ba5fa47b",
@@ -54,6 +96,30 @@
       "writtenOn": "2024-07-26T17:20:38Z",
       "side": 1,
       "message": "Why `nic`? Why name this at all?",
+      "range": {
+        "startLine": 858,
+        "startChar": 16,
+        "endLine": 858,
+        "endChar": 19
+      },
+      "revId": "d5ebe33c15aa2c62c797a7f8b4705738b03cfcd9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e34d7ca6_f719e5c5",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 6
+      },
+      "lineNbr": 858,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-07-29T14:43:14Z",
+      "side": 1,
+      "message": "Bad abbreviation. Removed.",
+      "parentUuid": "43df1e80_ba5fa47b",
       "range": {
         "startLine": 858,
         "startChar": 16,
@@ -87,6 +153,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ef4517c_ca917fe6",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 6
+      },
+      "lineNbr": 1466,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-07-29T14:43:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "29939322_0b6e977a",
+      "range": {
+        "startLine": 1466,
+        "startChar": 18,
+        "endLine": 1466,
+        "endChar": 44
+      },
+      "revId": "d5ebe33c15aa2c62c797a7f8b4705738b03cfcd9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dafdff84_9d2f44d3",
@@ -100,6 +190,30 @@
       "writtenOn": "2024-07-26T17:20:38Z",
       "side": 1,
       "message": "For consistency with the existing names, this should be `num_axes`.",
+      "range": {
+        "startLine": 1579,
+        "startChar": 11,
+        "endLine": 1579,
+        "endChar": 22
+      },
+      "revId": "d5ebe33c15aa2c62c797a7f8b4705738b03cfcd9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d2bff937_fd50b53f",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 6
+      },
+      "lineNbr": 1579,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-07-29T14:43:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dafdff84_9d2f44d3",
       "range": {
         "startLine": 1579,
         "startChar": 11,
@@ -133,6 +247,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f1649c4_03d584d8",
+        "filename": "tests/FontScanner.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-07-29T14:43:14Z",
+      "side": 1,
+      "message": "Not anymore.",
+      "parentUuid": "8f423ef8_6c77370c",
+      "range": {
+        "startLine": 172,
+        "startChar": 40,
+        "endLine": 172,
+        "endChar": 52
+      },
+      "revId": "d5ebe33c15aa2c62c797a7f8b4705738b03cfcd9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "be89c112_52ab09a8",
@@ -146,6 +284,30 @@
       "writtenOn": "2024-07-26T17:20:38Z",
       "side": 1,
       "message": "Not used?",
+      "range": {
+        "startLine": 231,
+        "startChar": 40,
+        "endLine": 231,
+        "endChar": 52
+      },
+      "revId": "d5ebe33c15aa2c62c797a7f8b4705738b03cfcd9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b2abb91_bae880ce",
+        "filename": "tests/FontScanner.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-07-29T14:43:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "be89c112_52ab09a8",
       "range": {
         "startLine": 231,
         "startChar": 40,
