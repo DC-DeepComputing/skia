@@ -68,6 +68,24 @@
       "message": "@michaelludwig@google.com, many of these tests changed in I419d6d18e9ffb17680f4ce3c667911db954e9c22, but I cannot tell whether they\u0027re requiring new, previously untested behavior from the hardware. Can you help answer that question?",
       "revId": "382112068d199b7c837bf3d643b5a5b20bfe9572",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b6e57b48_67c67a14",
+        "filename": "tests/graphite/UniformManagerTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-29T14:28:03Z",
+      "side": 1,
+      "message": "No, the changes to those tests isn\u0027t changing what\u0027s being validated. All the new behavior is in `UniformManagerStructLayout`.",
+      "parentUuid": "8435cd40_489b4407",
+      "revId": "382112068d199b7c837bf3d643b5a5b20bfe9572",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
