@@ -141,6 +141,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6a2e2506_80b052ab",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 3120,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-29T14:15:50Z",
+      "side": 1,
+      "message": "I could duplicate this function and call that duplicate function on line 3375 where it is needed, but I don\u0027t think I can extract the if statement out of this function. There could be a case with an access like `array[2].structMember.innerStructMember.floatMember` which from what I can tell, would all get resolved through the same `getStorageClass` call. So 4 recursive iterations deep we would need to be resolve the specialized `array` reference.",
+      "parentUuid": "abde971f_d9361011",
+      "range": {
+        "startLine": 3115,
+        "startChar": 0,
+        "endLine": 3120,
+        "endChar": 0
+      },
+      "revId": "61461e66f0b6a52351c9b99ac4d7c43b39b985ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1756cef7_f8c556f3",
         "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
         "patchSetId": 8
