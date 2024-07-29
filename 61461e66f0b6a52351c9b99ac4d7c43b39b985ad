@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "253fb092_377f40de",
+        "filename": "src/sksl/analysis/SkSLSpecialization.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-29T15:54:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f889ae70_07b7fd0e",
+      "range": {
+        "startLine": 78,
+        "startChar": 43,
+        "endLine": 78,
+        "endChar": 68
+      },
+      "revId": "61461e66f0b6a52351c9b99ac4d7c43b39b985ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "821b6c93_db22f485",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-07-26T22:35:18Z",
       "side": 1,
       "message": "Maybe this needs a more descriptive name now, like `paramRoot` or `base` or something?",
+      "range": {
+        "startLine": 84,
+        "startChar": 40,
+        "endLine": 84,
+        "endChar": 43
+      },
+      "revId": "61461e66f0b6a52351c9b99ac4d7c43b39b985ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8a96901b_1345bf33",
+        "filename": "src/sksl/analysis/SkSLSpecialization.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-29T15:54:15Z",
+      "side": 1,
+      "message": "Changed to `argBase` since it is the base variable of the argument being passed into the function call.",
+      "parentUuid": "821b6c93_db22f485",
       "range": {
         "startLine": 84,
         "startChar": 40,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a3c25342_9cc70402",
+        "filename": "src/sksl/analysis/SkSLSpecialization.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-29T15:54:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "31394e2a_99f90c1a",
+      "range": {
+        "startLine": 88,
+        "startChar": 28,
+        "endLine": 89,
+        "endChar": 65
+      },
+      "revId": "61461e66f0b6a52351c9b99ac4d7c43b39b985ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "573c332b_b772b11d",
@@ -93,6 +165,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "51cbc25f_d0a73ee8",
+        "filename": "src/sksl/analysis/SkSLSpecialization.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-29T15:54:15Z",
+      "side": 1,
+      "message": "Your right, I think we just didn\u0027t assert anywhere in the tests since we don\u0027t access a member in a struct in a struct as an argument. I think we should still only resolve a simple `FieldAccess` where the base is a `VariableReference` since there would be no foreseeable reason to specialize on something more complex. I reworked the `if` to check for this so expressions not matching this pattern fall into the `continue` else block. I also added a test under `spirv/SpecializedFieldAccess.sksl` since SPIR-V in one of the only backends to use specialization ATM.",
+      "parentUuid": "573c332b_b772b11d",
+      "range": {
+        "startLine": 90,
+        "startChar": 28,
+        "endLine": 90,
+        "endChar": 74
+      },
+      "revId": "61461e66f0b6a52351c9b99ac4d7c43b39b985ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fcc3af07_cb9a53f6",
@@ -106,6 +202,30 @@
       "writtenOn": "2024-07-26T22:35:18Z",
       "side": 1,
       "message": "If we put `} else { continue; }` here, we could avoid the separate if-check above.",
+      "range": {
+        "startLine": 93,
+        "startChar": 24,
+        "endLine": 93,
+        "endChar": 25
+      },
+      "revId": "61461e66f0b6a52351c9b99ac4d7c43b39b985ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e5986bb_30596b9e",
+        "filename": "src/sksl/analysis/SkSLSpecialization.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-29T15:54:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fcc3af07_cb9a53f6",
       "range": {
         "startLine": 93,
         "startChar": 24,
@@ -186,6 +306,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "75507fc4_c5241a9b",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 3156,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-29T15:54:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1756cef7_f8c556f3",
+      "range": {
+        "startLine": 3156,
+        "startChar": 0,
+        "endLine": 3156,
+        "endChar": 47
+      },
+      "revId": "61461e66f0b6a52351c9b99ac4d7c43b39b985ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5e03dfd0_a5fa1a06",
@@ -199,6 +343,30 @@
       "writtenOn": "2024-07-26T23:33:04Z",
       "side": 1,
       "message": "We could make it a little more robust by nuking any non-alphanumerics:\n\n`std::replace_if(name.begin(), name.end(), [](char c) { return !isalnum(c); }, \u0027_\u0027);`\n \nFWIW, by the letter of the law, we don\u0027t have to do anything--the OpName in SPIR-V is basically just a comment. (However, there are known cases where SPIR-V compilers will misbehave if two things are given overlapping names, so it\u0027s better to be safe here!)",
+      "range": {
+        "startLine": 4427,
+        "startChar": 0,
+        "endLine": 4427,
+        "endChar": 65
+      },
+      "revId": "61461e66f0b6a52351c9b99ac4d7c43b39b985ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "752bfdd7_59783d99",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 4427,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-29T15:54:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5e03dfd0_a5fa1a06",
       "range": {
         "startLine": 4427,
         "startChar": 0,
@@ -234,6 +402,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a45e9ad4_18bc664c",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 4444,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-29T15:54:15Z",
+      "side": 1,
+      "message": "I think `is\u003cFieldAccess\u003e` is more future proof along with the change to just use `fActiveSpecialization` since this wouldn\u0027t then just be specific for unsized arrays but for any field access. And since the only two expression types are `VariableReferences` and `FieldAccess`, I think we should be handling the `FieldAccess` case explicitly",
+      "parentUuid": "0e29e0b0_c9db8331",
+      "range": {
+        "startLine": 4444,
+        "startChar": 0,
+        "endLine": 4444,
+        "endChar": 71
+      },
+      "revId": "61461e66f0b6a52351c9b99ac4d7c43b39b985ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5d33364b_1383055a",
         "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
         "patchSetId": 8
@@ -245,6 +437,30 @@
       "writtenOn": "2024-07-26T23:33:04Z",
       "side": 1,
       "message": "Isn\u0027t this just a subset of the data in our `SpecializedParameters`? Why do we need to build a new map here?\n\nOne approach I used in http://review.skia.org/881296 which might make things simpler for you: I keep track of a `fActiveSpecialization` pointer when writing out each function instantiation. This means I rarely needed to pass around the active specialization (or specialization index) which simplified things a lot, and it would let you access the `SpecializedParameters` during expression handling.",
+      "range": {
+        "startLine": 4445,
+        "startChar": 0,
+        "endLine": 4445,
+        "endChar": 70
+      },
+      "revId": "61461e66f0b6a52351c9b99ac4d7c43b39b985ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "526d5bd1_77502fff",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 4445,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-29T15:54:15Z",
+      "side": 1,
+      "message": "Done, added an `expr-\u003eis\u003cFieldAccess\u003e()` check when needed to ensure the variable key is part of this subset and a check that `fActiveSpecializations` is not `nullptr`. Though since these check will probably be in frequently access functions `getStorageClass` and `getAccessChain`, I could see value in a separate subset hashmap with a better name like `fActiveFieldAccessSpecializations` to avoid the two extra condition checks, WDYT?",
+      "parentUuid": "5d33364b_1383055a",
       "range": {
         "startLine": 4445,
         "startChar": 0,
