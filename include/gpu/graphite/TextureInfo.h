@@ -14,9 +14,9 @@
 #include "include/private/base/SkAPI.h"
 #include "include/private/base/SkAnySubclass.h"
 
-#ifdef SK_DAWN
-#include "include/private/gpu/graphite/DawnTypesPriv.h"
-#endif
+// #ifdef SK_DAWN
+// #include "src/gpu/graphite/dawn/DawnGraphiteTypesPriv.h"
+// #endif
 
 struct SkISize;
 
@@ -31,9 +31,9 @@ struct VulkanTextureInfo;
 class SK_API TextureInfo {
 public:
     TextureInfo();
-#ifdef SK_DAWN
-    TextureInfo(const DawnTextureInfo& dawnInfo);
-#endif
+// #ifdef SK_DAWN
+//     TextureInfo(const DawnTextureInfo& dawnInfo);
+// #endif
 
 #if defined(SK_VULKAN) && !defined(SK_DISABLE_LEGACY_VK_TEXTURE_INFO_FUNCS)
     TextureInfo(const VulkanTextureInfo& vkInfo);
@@ -54,9 +54,9 @@ public:
     Protected isProtected() const { return fProtected; }
     SkTextureCompressionType compressionType() const;
 
-#ifdef SK_DAWN
-    bool getDawnTextureInfo(DawnTextureInfo* info) const;
-#endif
+// #ifdef SK_DAWN
+//     bool getDawnTextureInfo(DawnTextureInfo* info) const;
+// #endif
 
     bool isCompatible(const TextureInfo& that) const;
     // Return a string containing the full description of this TextureInfo.
@@ -91,18 +91,18 @@ private:
 
     size_t bytesPerPixel() const;
 
-#ifdef SK_DAWN
-    friend class DawnCaps;
-    friend class DawnCommandBuffer;
-    friend class DawnComputePipeline;
-    friend class DawnGraphicsPipeline;
-    friend class DawnResourceProvider;
-    friend class DawnTexture;
-    const DawnTextureSpec& dawnTextureSpec() const {
-        SkASSERT(fValid && fBackend == BackendApi::kDawn);
-        return fDawnSpec;
-    }
-#endif
+// #ifdef SK_DAWN
+//     friend class DawnCaps;
+//     friend class DawnCommandBuffer;
+//     friend class DawnComputePipeline;
+//     friend class DawnGraphicsPipeline;
+//     friend class DawnResourceProvider;
+//     friend class DawnTexture;
+//     const DawnTextureSpec& dawnTextureSpec() const {
+//         SkASSERT(fValid && fBackend == BackendApi::kDawn);
+//         return fDawnSpec;
+//     }
+// #endif
 
     BackendApi fBackend = BackendApi::kMock;
     bool fValid = false;
@@ -113,12 +113,12 @@ private:
 
     AnyTextureInfoData fTextureInfoData;
 
-    union {
-#ifdef SK_DAWN
-        DawnTextureSpec fDawnSpec;
-#endif
-        void* fEnsureUnionNonEmpty;
-    };
+//     union {
+// #ifdef SK_DAWN
+//         DawnTextureSpec fDawnSpec;
+// #endif
+//         void* fEnsureUnionNonEmpty;
+//     };
 };
 
 }  // namespace skgpu::graphite

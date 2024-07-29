@@ -237,7 +237,6 @@ skia_graphite_dawn_public = [
 ]
 
 skia_graphite_dawn_sources = [
-  "$_include_private/DawnTypesPriv.h",
   "$_src/dawn/DawnAsyncWait.cpp",
   "$_src/dawn/DawnAsyncWait.h",
   "$_src/dawn/DawnBuffer.cpp",
@@ -252,6 +251,8 @@ skia_graphite_dawn_sources = [
   "$_src/dawn/DawnErrorChecker.h",
   "$_src/dawn/DawnGraphicsPipeline.cpp",
   "$_src/dawn/DawnGraphicsPipeline.h",
+  "$_src/dawn/DawnGraphiteTypesPriv.cpp",
+  "$_src/dawn/DawnGraphiteTypesPriv.h",
   "$_src/dawn/DawnGraphiteUtils.cpp",
   "$_src/dawn/DawnGraphiteUtilsPriv.h",
   "$_src/dawn/DawnQueueManager.cpp",
@@ -264,7 +265,6 @@ skia_graphite_dawn_sources = [
   "$_src/dawn/DawnSharedContext.h",
   "$_src/dawn/DawnTexture.cpp",
   "$_src/dawn/DawnTexture.h",
-  "$_src/dawn/DawnTypesPriv.cpp",
   "$_src/dawn/DawnUtils.cpp",
   "$_src/dawn/DawnUtilsPriv.h",
 ]

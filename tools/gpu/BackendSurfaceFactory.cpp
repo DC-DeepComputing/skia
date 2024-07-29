@@ -14,9 +14,11 @@
 #include "src/gpu/ganesh/GrGpu.h"
 #include "tools/gpu/ManagedBackendTexture.h"
 
-#ifdef SK_GRAPHITE
+#if defined(SK_GRAPHITE)
 #include "include/gpu/graphite/Surface.h"
-#ifdef SK_DAWN
+#if defined(SK_DAWN)
+#include "include/gpu/graphite/dawn/DawnTypes.h"
+
 #include "webgpu/webgpu_cpp.h"  // NO_G3_REWRITE
 #endif
 #endif
@@ -161,7 +163,7 @@ sk_sp<SkSurface> MakeBackendTextureViewSurface(skgpu::graphite::Recorder* record
         return nullptr;
     }
 
-    wgpu::Texture texture(mbet->texture().getDawnTexturePtr());
+    wgpu::Texture texture(BackendTextures::GetDawnTexturePtr(mbet->texture()));
     SkASSERT(texture);
 
     wgpu::TextureView view = texture.CreateView();
