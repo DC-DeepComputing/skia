@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4d918f4_fc3346a8",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 6
+      },
+      "lineNbr": 635,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-29T19:38:59Z",
+      "side": 1,
+      "message": "nit: Let\u0027s mark `$pure` since it has no side effects",
+      "range": {
+        "startLine": 635,
+        "startChar": 0,
+        "endLine": 635,
+        "endChar": 5
+      },
+      "revId": "9da5ac66a3523a6fcd9731ec2d27236075118313",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40d09e54_92b44870",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 6
+      },
+      "lineNbr": 642,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-29T19:38:59Z",
+      "side": 1,
+      "message": "up to you: preexisting in the code, but this function could also be marked `$pure` since AFAICS it can\u0027t possibly cause a side effect",
+      "range": {
+        "startLine": 642,
+        "startChar": 0,
+        "endLine": 642,
+        "endChar": 5
+      },
+      "revId": "9da5ac66a3523a6fcd9731ec2d27236075118313",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
