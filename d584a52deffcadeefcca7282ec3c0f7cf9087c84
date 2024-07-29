@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b1bdaccd_127174ca",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 3
+      },
+      "lineNbr": 650,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-29T16:07:30Z",
+      "side": 1,
+      "message": "Maybe `lastBufferIdx` for clarity? STL has taught us that an `end` iterator should point past the end of the array.",
+      "range": {
+        "startLine": 650,
+        "startChar": 12,
+        "endLine": 650,
+        "endChar": 24
+      },
+      "revId": "d584a52deffcadeefcca7282ec3c0f7cf9087c84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
