@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba4b5d1b_79aac63e",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 3241878
+      },
+      "writtenOn": "2024-07-30T21:21:20Z",
+      "side": 1,
+      "message": "Nit: Would it make sense to define the type numbers as constants somewhere? I\u0027m not sure what the Skia/C++ standard convention is here...",
+      "range": {
+        "startLine": 152,
+        "startChar": 24,
+        "endLine": 152,
+        "endChar": 25
+      },
+      "revId": "8f8c2b96251381cde5028598d39430792560b4f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
