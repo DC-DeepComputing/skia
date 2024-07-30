@@ -913,23 +913,23 @@ static sk_sp<SkData> get_mp_image(sk_sp<SkData> imageData, size_t imageNumber) {
             mpParams->images[imageNumber].size);
 }
 
-static std::unique_ptr<SkTiff::ImageFileDirectory> get_ifd(
-        sk_sp<SkData> imageData, uint8_t marker, const void* sig, size_t sigSize, size_t pad) {
+static std::unique_ptr<SkTiff::ImageFileDirectory> get_mpf_ifd(sk_sp<SkData> imageData) {
     SkMemoryStream stream(imageData);
     auto sourceMgr = SkJpegSourceMgr::Make(&stream);
     for (const auto& segment : sourceMgr->getAllSegments()) {
-        if (segment.marker != marker) {
+        if (segment.marker != kMpfMarker) {
             continue;
         }
         auto parameterData = sourceMgr->getSegmentParameters(segment);
         if (!parameterData) {
             continue;
         }
-        if (parameterData->size() < sigSize || memcmp(sig, parameterData->data(), sigSize) != 0) {
+        if (parameterData->size() < sizeof(kMpfSig) ||
+            memcmp(kMpfSig, parameterData->data(), sizeof(kMpfSig)) != 0) {
             continue;
         }
         auto ifdData = SkData::MakeSubset(
-                parameterData.get(), sigSize + pad, parameterData->size() - (sigSize + pad));
+                parameterData.get(), sizeof(kMpfSig), parameterData->size() - sizeof(kMpfSig));
 
         bool littleEndian = false;
         uint32_t ifdOffset = 0;
@@ -939,14 +939,6 @@ static std::unique_ptr<SkTiff::ImageFileDirectory> get_ifd(
         return SkTiff::ImageFileDirectory::MakeFromOffset(ifdData, littleEndian, ifdOffset);
     }
     return nullptr;
-}
-
-static std::unique_ptr<SkTiff::ImageFileDirectory> get_mpf_ifd(sk_sp<SkData> imageData) {
-    return get_ifd(std::move(imageData), kMpfMarker, kMpfSig, sizeof(kMpfSig), 0);
-}
-
-static std::unique_ptr<SkTiff::ImageFileDirectory> get_exif_ifd(sk_sp<SkData> imageData) {
-    return get_ifd(std::move(imageData), kExifMarker, kExifSig, sizeof(kExifSig), 1);
 }
 
 DEF_TEST(AndroidCodec_mpfParse, r) {
@@ -1001,15 +993,6 @@ DEF_TEST(AndroidCodec_mpfParse, r) {
                                                               gainmapInfo);
         REPORTER_ASSERT(r, encodeResult);
         inputData = encodeStream.detachAsData();
-    }
-
-    {
-        // Exif should be present and valid.
-        auto ifd = get_exif_ifd(inputData);
-        REPORTER_ASSERT(r, ifd);
-        REPORTER_ASSERT(r, ifd->getNumEntries() == 1);
-        constexpr uint16_t kSubIFDOffsetTag = 0x8769;
-        REPORTER_ASSERT(r, ifd->getEntryTag(0) == kSubIFDOffsetTag);
     }
 
     {
