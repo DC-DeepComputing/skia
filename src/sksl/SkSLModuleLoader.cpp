@@ -317,7 +317,6 @@ const Module* ModuleLoader::loadComputeModule(SkSL::Compiler* compiler) {
 }
 
 const Module* ModuleLoader::loadGraphiteFragmentModule(SkSL::Compiler* compiler) {
-#if defined(SK_GRAPHITE)
     if (!fModuleLoader.fGraphiteFragmentModule) {
         const Module* fragmentModule = this->loadFragmentModule(compiler);
         fModuleLoader.fGraphiteFragmentModule = compile_and_shrink(compiler,
@@ -326,13 +325,9 @@ const Module* ModuleLoader::loadGraphiteFragmentModule(SkSL::Compiler* compiler)
                                                                    fragmentModule);
     }
     return fModuleLoader.fGraphiteFragmentModule.get();
-#else
-    return this->loadFragmentModule(compiler);
-#endif
 }
 
 const Module* ModuleLoader::loadGraphiteFragmentES2Module(SkSL::Compiler* compiler) {
-#if defined(SK_GRAPHITE)
     if (!fModuleLoader.fGraphiteFragmentES2Module) {
         const Module* fragmentModule = this->loadFragmentModule(compiler);
         fModuleLoader.fGraphiteFragmentES2Module =
@@ -342,13 +337,9 @@ const Module* ModuleLoader::loadGraphiteFragmentES2Module(SkSL::Compiler* compil
                                    fragmentModule);
     }
     return fModuleLoader.fGraphiteFragmentES2Module.get();
-#else
-    return this->loadFragmentModule(compiler);
-#endif
 }
 
 const Module* ModuleLoader::loadGraphiteVertexModule(SkSL::Compiler* compiler) {
-#if defined(SK_GRAPHITE)
     if (!fModuleLoader.fGraphiteVertexModule) {
         const Module* vertexModule = this->loadVertexModule(compiler);
         fModuleLoader.fGraphiteVertexModule = compile_and_shrink(compiler,
@@ -357,13 +348,9 @@ const Module* ModuleLoader::loadGraphiteVertexModule(SkSL::Compiler* compiler) {
                                                                  vertexModule);
     }
     return fModuleLoader.fGraphiteVertexModule.get();
-#else
-    return this->loadVertexModule(compiler);
-#endif
 }
 
 const Module* ModuleLoader::loadGraphiteVertexES2Module(SkSL::Compiler* compiler) {
-#if defined(SK_GRAPHITE)
     if (!fModuleLoader.fGraphiteVertexES2Module) {
         const Module* vertexModule = this->loadVertexModule(compiler);
         fModuleLoader.fGraphiteVertexES2Module =
@@ -373,9 +360,6 @@ const Module* ModuleLoader::loadGraphiteVertexES2Module(SkSL::Compiler* compiler
                                    vertexModule);
     }
     return fModuleLoader.fGraphiteVertexES2Module.get();
-#else
-    return this->loadVertexModule(compiler);
-#endif
 }
 
 void ModuleLoader::Impl::makeRootSymbolTable() {

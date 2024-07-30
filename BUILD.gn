@@ -1160,6 +1160,7 @@ optional("graphite") {
   ]
   public = skia_graphite_public
   sources = skia_graphite_sources
+  sources += ["src/sksl/SkSLGraphiteModules.cpp"]
 
   if (is_android) {
     sources += skia_graphite_android_private

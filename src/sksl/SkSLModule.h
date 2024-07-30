@@ -55,6 +55,18 @@ const char* ModuleTypeToString(ModuleType type);
 
 std::string GetModuleData(ModuleType type, const char* filename);
 
+namespace Loader {
+using LoadFn = std::string (*)();
+struct GraphiteModules {
+    LoadFn fFragmentShader;
+    LoadFn fFragmentShaderES2;
+    LoadFn fVertexShader;
+    LoadFn fVertexShaderES2;
+};
+
+void SetGraphiteModuleLoader(const GraphiteModules&);
+}
+
 }  // namespace SkSL
 
 #endif  // SKSL_MODULE
