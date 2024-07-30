@@ -122,7 +122,7 @@ protected:
                 }
 #endif
                 canvas->save();
-                    canvas->translate(SkIntToScalar(x), SkIntToScalar(y));
+                    canvas->translate(SkIntToScalar(x) + 0.223f, SkIntToScalar(y) + 0.7234f);
 
                     SkRRect rrect = fRRects[curRRect];
                     if (curRRect == kNumRRects - 1) {
