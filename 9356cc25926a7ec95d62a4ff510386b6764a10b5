@@ -16,6 +16,52 @@
       "message": "Addressed feedback, please take another look.",
       "revId": "9356cc25926a7ec95d62a4ff510386b6764a10b5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b2c2bca_e8876809",
+        "filename": "src/gpu/graphite/dawn/DawnTexture.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-30T19:53:36Z",
+      "side": 1,
+      "message": "This should probably stay on `DawnResourceProvider` since we will want to share this with every single texture+sampler bind group, right? I am not seeing any property that depends on the actual texture.",
+      "range": {
+        "startLine": 257,
+        "startChar": 42,
+        "endLine": 257,
+        "endChar": 75
+      },
+      "revId": "9356cc25926a7ec95d62a4ff510386b6764a10b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1aac994_a8fa77f7",
+        "filename": "src/gpu/graphite/dawn/DawnTexture.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 291,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-30T19:53:36Z",
+      "side": 1,
+      "message": "This can just take the `DawnResourceProvider*` and it can get the single owner from the provider. `ResourceProvider` exposes its shared context as a protected field and if GR_TEST_UTILS is defined. It seems fine to either make it publicly exposed or to have `DawnResourceProvider` choose to expose the `DawnSharedContext` by casting its parent field.",
+      "range": {
+        "startLine": 290,
+        "startChar": 56,
+        "endLine": 291,
+        "endChar": 80
+      },
+      "revId": "9356cc25926a7ec95d62a4ff510386b6764a10b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
