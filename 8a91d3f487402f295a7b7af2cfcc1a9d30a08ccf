@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce118f80_0f5f68f1",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 4
+      },
+      "lineNbr": 642,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-30T20:00:13Z",
+      "side": 1,
+      "message": "I actually kept `arr` as `arr` but changed `bufferOffset` to `offsetsBaseIndex` to signify this is where the stop offsets data begins. Then under it changed `colorOffset` to `colorsBaseIndex` so fetching stop offset data can be `arr[offsetsBaseIndex + x]` and color data being `$half4_from_array(colorsBaseIndex + x)`",
+      "parentUuid": "c91fcb57_89c2d4e0",
+      "range": {
+        "startLine": 642,
+        "startChar": 42,
+        "endLine": 642,
+        "endChar": 54
+      },
+      "revId": "8a91d3f487402f295a7b7af2cfcc1a9d30a08ccf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "36db910c_11d48869",
@@ -49,6 +73,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "41e2c08a_e3aeb708",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 4
+      },
+      "lineNbr": 656,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-30T20:00:13Z",
+      "side": 1,
+      "message": "I agree its easier to follow from `0` to `numStops - 1`, however there is a measurable improvement of 1-2% by keeping it this way since we can eliminate integer addition in each loop iteration.",
+      "parentUuid": "36db910c_11d48869",
+      "range": {
+        "startLine": 654,
+        "startChar": 0,
+        "endLine": 656,
+        "endChar": 0
+      },
+      "revId": "8a91d3f487402f295a7b7af2cfcc1a9d30a08ccf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9d011f01_dac6ed15",
         "filename": "src/sksl/sksl_graphite_frag.sksl",
         "patchSetId": 4
@@ -60,6 +108,30 @@
       "writtenOn": "2024-07-30T00:37:40Z",
       "side": 1,
       "message": "tiny nit: variable `offset` doesn\u0027t really do anything.\nThis can be simplified to: `if (t.x \u003c arr[mid]) {`",
+      "range": {
+        "startLine": 658,
+        "startChar": 0,
+        "endLine": 660,
+        "endChar": 0
+      },
+      "revId": "8a91d3f487402f295a7b7af2cfcc1a9d30a08ccf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9f844ac3_87d8142f",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 4
+      },
+      "lineNbr": 660,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-30T20:00:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9d011f01_dac6ed15",
       "range": {
         "startLine": 658,
         "startChar": 0,
@@ -95,6 +167,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c454e264_e27aa013",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 4
+      },
+      "lineNbr": 666,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-30T20:00:13Z",
+      "side": 1,
+      "message": "A \"color stop\" I believe generally includes the color and stop/offset/position. I think there are many terms that can signify the `t-value` but in all the other gradient code we stick with `offset` so I think sticking with `offset` is the right choice here for consistency. I think renaming `bufferOffset` to `offsetsBaseIndex` should help in keeping consistent in what `offset` means in this context.",
+      "parentUuid": "50fb96e0_d57d3908",
+      "range": {
+        "startLine": 666,
+        "startChar": 14,
+        "endLine": 666,
+        "endChar": 23
+      },
+      "revId": "8a91d3f487402f295a7b7af2cfcc1a9d30a08ccf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f5a30c65_30d18111",
         "filename": "src/sksl/sksl_graphite_frag.sksl",
         "patchSetId": 4
@@ -106,6 +202,30 @@
       "writtenOn": "2024-07-30T00:37:40Z",
       "side": 1,
       "message": "very tiny nit: It was this way before, but I don\u0027t think the half4 cast is necessary (the inputs are already half4). Also, once the cast is gone, I suspect this will fit in 100 chars.",
+      "range": {
+        "startLine": 679,
+        "startChar": 19,
+        "endLine": 682,
+        "endChar": 56
+      },
+      "revId": "8a91d3f487402f295a7b7af2cfcc1a9d30a08ccf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b9f682f_8a65b2ff",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 4
+      },
+      "lineNbr": 682,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-30T20:00:13Z",
+      "side": 1,
+      "message": "The `half4` cast is necessary since `mix` returns a `float4`.",
+      "parentUuid": "f5a30c65_30d18111",
       "range": {
         "startLine": 679,
         "startChar": 19,
