@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "54da2c65_e1e9e821",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 4
+      },
+      "lineNbr": 642,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-30T20:13:32Z",
+      "side": 1,
+      "message": "I don\u0027t think this helped readability for me. There\u0027s nothing that suggests upon casual inspection that `arr` and `offsetsBaseIndex` are related, and `offsetsBaseIndex` is wordy. \n\nIn other words: there are too many things called \"offset\" here. We need to avoid calling everything an offset or readability suffers.",
+      "parentUuid": "ce118f80_0f5f68f1",
+      "range": {
+        "startLine": 642,
+        "startChar": 42,
+        "endLine": 642,
+        "endChar": 54
+      },
+      "revId": "8a91d3f487402f295a7b7af2cfcc1a9d30a08ccf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "36db910c_11d48869",
         "filename": "src/sksl/sksl_graphite_frag.sksl",
         "patchSetId": 4
