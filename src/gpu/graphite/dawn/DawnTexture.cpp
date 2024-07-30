@@ -224,7 +224,7 @@ void DawnTexture::freeGpuData() {
         // Destroy the texture even if it is still referenced by other BindGroup or views.
         // Graphite should already guarantee that all command buffers using this texture (indirectly
         // via BindGroup or views) are already completed.
-        fTexture.Destroy();
+        // fTexture.Destroy();
     }
     // Clear out cached resources before the allocator is removed.
     fSamplerBindGroups.reset();

@@ -300,6 +300,7 @@ void DawnResourceProvider::onDeleteBackendTexture(const BackendTexture& texture)
     // Automatically release the pointers in wgpu::TextureView & wgpu::Texture's dtor.
     // Acquire() won't increment the ref count.
     wgpu::TextureView::Acquire(BackendTextures::GetDawnTextureViewPtr(texture));
+    wgpu::Texture::Acquire(BackendTextures::GetDawnTexturePtr(texture));
     // We need to explicitly call Destroy() here since since that is the recommended way to delete
     // a Dawn texture predictably versus just dropping a ref and relying on garbage collection.
     //
@@ -307,7 +308,7 @@ void DawnResourceProvider::onDeleteBackendTexture(const BackendTexture& texture)
     // references the underlying texture. Skia currently doesn't destroy BindGroups when its use of
     // the texture goes away, thus a ref to the texture remains on the BindGroup and memory is never
     // cleared up unless we call Destroy() here.
-    wgpu::Texture::Acquire(BackendTextures::GetDawnTexturePtr(texture)).Destroy();
+    // wgpu::Texture::Acquire(BackendTextures::GetDawnTexturePtr(texture)).Destroy();
 }
 
 DawnSharedContext* DawnResourceProvider::dawnSharedContext() const {
