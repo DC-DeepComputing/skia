@@ -146,15 +146,19 @@ public:
 
 protected:
     bool init() override {
+        SkDebugf("------------------ a\n");
         if (!this->setupBackendContext()) {
             return false;
         }
 
+        SkDebugf("------------------ b\n");
         skgpu::graphite::ContextOptions contextOptions;
         skgpu::graphite::ContextOptionsPriv contextOptionsPriv;
         // Needed to make ManagedGraphiteTexture::ReleaseProc (w/in CreateProtectedSkSurface) work
         contextOptionsPriv.fStoreContextRefInRecorder = true;
         contextOptions.fOptionsPriv = &contextOptionsPriv;
+
+        SkDebugf("------------------ c\n");
 
         fContext = skgpu::graphite::ContextFactory::MakeVulkan(fBackendContext, contextOptions);
         if (!fContext) {
@@ -163,10 +167,14 @@ protected:
 
         SkASSERT(fContext->supportsProtectedContent() == fIsProtected);
 
+        SkDebugf("------------------ d\n");
+
         fRecorder = fContext->makeRecorder();
         if (!fRecorder) {
             return false;
         }
+
+        SkDebugf("------------------ e\n");
 
         return true;
     }
@@ -185,11 +193,13 @@ std::unique_ptr<VkTestHelper> VkTestHelper::Make(skiatest::TestType testType,
     switch (testType) {
 #if defined(SK_GANESH)
         case skiatest::TestType::kGanesh:
+            SkDebugf("1\n");
             helper = std::make_unique<GaneshVkTestHelper>(isProtected);
             break;
 #endif
 #if defined(SK_GRAPHITE)
         case skiatest::TestType::kGraphite:
+            SkDebugf("2\n");
             helper = std::make_unique<GraphiteVkTestHelper>(isProtected);
             break;
 #endif
@@ -197,9 +207,11 @@ std::unique_ptr<VkTestHelper> VkTestHelper::Make(skiatest::TestType testType,
             return nullptr;
     }
     if (!helper->init()) {
+        SkDebugf("3\n");
         return nullptr;
     }
 
+    SkDebugf("------------------------ 4\n");
     return helper;
 }
 

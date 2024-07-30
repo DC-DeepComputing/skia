@@ -22,17 +22,20 @@ namespace skgpu::graphite::ContextFactory {
 
 std::unique_ptr<Context> MakeVulkan(const VulkanBackendContext& backendContext,
                                     const ContextOptions& options) {
+    SkDebugf("------------------ b1\n");
     sk_sp<SharedContext> sharedContext = VulkanSharedContext::Make(backendContext, options);
     if (!sharedContext) {
         return nullptr;
     }
 
+    SkDebugf("------------------ b2\n");
     std::unique_ptr<QueueManager> queueManager(new VulkanQueueManager(backendContext.fQueue,
                                                                       sharedContext.get()));
     if (!queueManager) {
         return nullptr;
     }
 
+    SkDebugf("------------------ b3\n");
     return ContextCtorAccessor::MakeContext(std::move(sharedContext),
                                             std::move(queueManager),
                                             options);
