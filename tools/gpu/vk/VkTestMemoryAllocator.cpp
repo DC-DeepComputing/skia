@@ -136,12 +136,16 @@ VkResult VkTestMemoryAllocator::allocateBufferMemory(VkBuffer buffer,
     info.pool = VK_NULL_HANDLE;
     info.pUserData = nullptr;
 
+//    SkDebugf("++++++++++++++++++++++++++++++++++++++++\n");
+
     switch (usage) {
         case BufferUsage::kGpuOnly:
+//            SkDebugf("++++++++++++++++++ kGpuOnly\n");
             info.requiredFlags = VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT;
             info.preferredFlags = 0;
             break;
         case BufferUsage::kCpuWritesGpuReads:
+//            SkDebugf("++++++++++++++++++ kCpuWritesGpuReads\n");
             // When doing cpu writes and gpu reads the general rule of thumb is to use coherent
             // memory. Though this depends on the fact that we are not doing any cpu reads and the
             // cpu writes are sequential. For sparse writes we'd want cpu cached memory, however we
@@ -159,28 +163,40 @@ VkResult VkTestMemoryAllocator::allocateBufferMemory(VkBuffer buffer,
             info.preferredFlags = VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT;
             break;
         case BufferUsage::kTransfersFromCpuToGpu:
+//            SkDebugf("++++++++++++++++++ kTransfersFromCpuToGpu\n");
             info.requiredFlags =
                     VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT;
             info.preferredFlags = 0;
             break;
         case BufferUsage::kTransfersFromGpuToCpu:
+//            SkDebugf("++++++++++++++++++ kTransfersFromGpuToCpu\n");
             info.requiredFlags = VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT;
             info.preferredFlags = VK_MEMORY_PROPERTY_HOST_CACHED_BIT;
             break;
     }
 
     if (kDedicatedAllocation_AllocationPropertyFlag & allocationPropertyFlags) {
+//        SkDebugf("++++++++++++++++++ kDedicatedAllocation_AllocationPropertyFlag\n");
         info.flags |= VMA_ALLOCATION_CREATE_DEDICATED_MEMORY_BIT;
     }
     if ((kLazyAllocation_AllocationPropertyFlag & allocationPropertyFlags) &&
         BufferUsage::kGpuOnly == usage) {
+//        SkDebugf("++++++++++++++++++ kLazyAllocation_AllocationPropertyFlag\n");
         info.preferredFlags |= VK_MEMORY_PROPERTY_LAZILY_ALLOCATED_BIT;
     }
 
     if (kPersistentlyMapped_AllocationPropertyFlag & allocationPropertyFlags) {
+//        SkDebugf("++++++++++++++++++ kPersistentlyMapped_AllocationPropertyFlag\n");
         SkASSERT(BufferUsage::kGpuOnly != usage);
         info.flags |= VMA_ALLOCATION_CREATE_MAPPED_BIT;
     }
+
+    if (kProtected_AllocationPropertyFlag & allocationPropertyFlags) {
+//        SkDebugf("++++++++++++++++++ kProtected_AllocationPropertyFlag\n");
+        info.requiredFlags |= VK_MEMORY_PROPERTY_PROTECTED_BIT;
+    }
+
+//    SkDebugf("----------------- here here here 1\n");
 
     VmaAllocation allocation;
     VkResult result = vmaAllocateMemoryForBuffer(fAllocator, buffer, &info, &allocation, nullptr);

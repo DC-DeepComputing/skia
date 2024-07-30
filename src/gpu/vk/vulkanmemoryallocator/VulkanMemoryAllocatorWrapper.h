@@ -11,6 +11,8 @@
 #ifndef VulkanMemoryAllocatorWrapper_DEFINED
 #define VulkanMemoryAllocatorWrapper_DEFINED
 
+#include "include/core/SkTypes.h"
+
 // We only ever include this from src files which have already included vulkan.
 #ifndef VULKAN_CORE_H_
 #error "vulkan_core.h has not been included before trying to include the GrVulkanMemoryAllocator"

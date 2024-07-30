@@ -24,12 +24,16 @@ sk_sp<Buffer> VulkanBuffer::Make(const VulkanSharedContext* sharedContext,
     VkBuffer buffer;
     skgpu::VulkanAlloc alloc;
 
+    // if protected and kGpuOnly then make it not mappable
+
+    bool isProtected = sharedContext->isProtected() == Protected::kYes && accessPattern == AccessPattern::kGpuOnly;
+
     // The only time we don't require mappable buffers is when we're on a device where gpu only
     // memory has faster reads on the gpu than memory that is also mappable on the cpu. Protected
     // memory always uses mappable buffers.
-    bool requiresMappable = sharedContext->isProtected() == Protected::kYes ||
-                            accessPattern == AccessPattern::kHostVisible ||
-                            !sharedContext->vulkanCaps().gpuOnlyBuffersMorePerformant();
+    bool requiresMappable = (accessPattern == AccessPattern::kHostVisible ||
+                            !sharedContext->vulkanCaps().gpuOnlyBuffersMorePerformant()) &&
+                            !isProtected;
 
     using BufferUsage = skgpu::VulkanMemoryAllocator::BufferUsage;
 
@@ -42,7 +46,8 @@ sk_sp<Buffer> VulkanBuffer::Make(const VulkanSharedContext* sharedContext,
     VkBufferCreateInfo bufInfo;
     memset(&bufInfo, 0, sizeof(VkBufferCreateInfo));
     bufInfo.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
-    bufInfo.flags = 0;
+    bufInfo.flags = isProtected ? VK_BUFFER_CREATE_PROTECTED_BIT : 0;
+//    SkDebugf("VulkanBuffer::Make %d %d\n", bufInfo.flags, requiresMappable);
     bufInfo.size = size;
 
     // To support SkMesh buffer updates we make Vertex and Index buffers capable of being transfer
@@ -70,7 +75,7 @@ sk_sp<Buffer> VulkanBuffer::Make(const VulkanSharedContext* sharedContext,
             break;
         case BufferType::kUniform:
             bufInfo.usage = VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT;
-            allocUsage = BufferUsage::kCpuWritesGpuReads;
+//            allocUsage = BufferUsage::kCpuWritesGpuReads;
             break;
         case BufferType::kXferCpuToGpu:
             bufInfo.usage = VK_BUFFER_USAGE_TRANSFER_SRC_BIT;
@@ -102,6 +107,7 @@ sk_sp<Buffer> VulkanBuffer::Make(const VulkanSharedContext* sharedContext,
                                     nullptr, /*const VkAllocationCallbacks*/
                                     &buffer));
     if (result != VK_SUCCESS) {
+        SkDebugf("---------------------- failed 1\n");
         return nullptr;
     }
 
@@ -110,17 +116,23 @@ sk_sp<Buffer> VulkanBuffer::Make(const VulkanSharedContext* sharedContext,
         sharedContext->vulkanCaps().shouldPersistentlyMapCpuToGpuBuffers();
     //AllocBufferMemory
     auto checkResult = [](VkResult result) {
+//        SkDebugf("checkResult %d\n", result);
         return result == VK_SUCCESS;
     };
     if (!skgpu::VulkanMemory::AllocBufferMemory(allocator,
                                                 buffer,
+                                                skgpu::Protected(isProtected),
                                                 allocUsage,
                                                 shouldPersistentlyMapCpuToGpu,
                                                 checkResult,
                                                 &alloc)) {
-        VULKAN_CALL(sharedContext->interface(), DestroyBuffer(sharedContext->device(),
-                buffer,
-                /*const VkAllocationCallbacks*=*/nullptr));
+        VULKAN_CALL(sharedContext->interface(),
+                    DestroyBuffer(sharedContext->device(),
+                                  buffer,
+                                  /*const VkAllocationCallbacks*=*/nullptr));
+        SkDebugf("---------------------- failed 2 %d 0x%x\n",
+                 shouldPersistentlyMapCpuToGpu,
+                 bufInfo.usage);
         return nullptr;
     }
 
@@ -134,6 +146,7 @@ sk_sp<Buffer> VulkanBuffer::Make(const VulkanSharedContext* sharedContext,
         VULKAN_CALL(sharedContext->interface(), DestroyBuffer(sharedContext->device(),
                 buffer,
                 /*const VkAllocationCallbacks*=*/nullptr));
+        SkDebugf("---------------------- failed 3\n");
         return nullptr;
     }
 
