@@ -451,7 +451,7 @@ public:
 protected:
     GlyphMetrics generateMetrics(const SkGlyph&, SkArenaAlloc*) override;
     void generateImage(const SkGlyph&, void*) override;
-    bool generatePath(const SkGlyph& glyph, SkPath* path) override;
+    bool generatePath(const SkGlyph& glyph, SkPath* path, bool* modified) override;
     sk_sp<SkDrawable> generateDrawable(const SkGlyph&) override;
     void generateFontMetrics(SkFontMetrics*) override;
 
@@ -496,7 +496,7 @@ private:
     void updateGlyphBoundsIfLCD(GlyphMetrics* mx);
     // Caller must lock f_t_mutex() before calling this function.
     // update FreeType2 glyph slot with glyph emboldened
-    void emboldenIfNeeded(FT_Face face, FT_GlyphSlot glyph, SkGlyphID gid);
+    bool emboldenIfNeeded(FT_Face face, FT_GlyphSlot glyph, SkGlyphID gid);
     bool shouldSubpixelBitmap(const SkGlyph&, const SkMatrix&);
 };
 
@@ -1468,7 +1468,7 @@ sk_sp<SkDrawable> SkScalerContext_FreeType::generateDrawable(const SkGlyph& glyp
     return nullptr;
 }
 
-bool SkScalerContext_FreeType::generatePath(const SkGlyph& glyph, SkPath* path) {
+bool SkScalerContext_FreeType::generatePath(const SkGlyph& glyph, SkPath* path, bool* modified) {
     SkASSERT(path);
 
     SkAutoMutexExclusive  ac(f_t_mutex());
@@ -1489,7 +1489,7 @@ bool SkScalerContext_FreeType::generatePath(const SkGlyph& glyph, SkPath* path) 
         path->reset();
         return false;
     }
-    emboldenIfNeeded(fFace, fFace->glyph, glyphID);
+    *modified |= emboldenIfNeeded(fFace, fFace->glyph, glyphID);
 
     if (!fUtils.generateGlyphPath(fFace, path)) {
         path->reset();
@@ -1504,6 +1504,7 @@ bool SkScalerContext_FreeType::generatePath(const SkGlyph& glyph, SkPath* path) 
         vector.y = -fFace->glyph->metrics.vertBearingY - fFace->glyph->metrics.horiBearingY;
         FT_Vector_Transform(&vector, &fMatrix22);
         path->offset(SkFDot6ToScalar(vector.x), -SkFDot6ToScalar(vector.y));
+        *modified = true;
     }
     return true;
 }
@@ -1674,29 +1675,27 @@ void SkScalerContext_FreeType::generateFontMetrics(SkFontMetrics* metrics) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void SkScalerContext_FreeType::emboldenIfNeeded(FT_Face face, FT_GlyphSlot glyph, SkGlyphID gid) {
+bool SkScalerContext_FreeType::emboldenIfNeeded(FT_Face face, FT_GlyphSlot glyph, SkGlyphID gid) {
     // check to see if the embolden bit is set
     if (0 == (fRec.fFlags & SkScalerContext::kEmbolden_Flag)) {
-        return;
+        return false;
     }
 
-    switch (glyph->format) {
-        case FT_GLYPH_FORMAT_OUTLINE:
-            FT_Pos strength;
-            strength = FT_MulFix(face->units_per_EM, face->size->metrics.y_scale)
-                       / SK_OUTLINE_EMBOLDEN_DIVISOR;
-            FT_Outline_Embolden(&glyph->outline, strength);
-            break;
-        case FT_GLYPH_FORMAT_BITMAP:
-            if (!fFace->glyph->bitmap.buffer) {
-                FT_Load_Glyph(fFace, gid, fLoadGlyphFlags);
-            }
-            FT_GlyphSlot_Own_Bitmap(glyph);
-            FT_Bitmap_Embolden(glyph->library, &glyph->bitmap, kBitmapEmboldenStrength, 0);
-            break;
-        default:
-            SkDEBUGFAIL("unknown glyph format");
+    if (glyph->format == FT_GLYPH_FORMAT_OUTLINE) {
+        FT_Pos strength;
+        strength = FT_MulFix(face->units_per_EM, face->size->metrics.y_scale)
+                    / SK_OUTLINE_EMBOLDEN_DIVISOR;
+        return 0 == FT_Outline_Embolden(&glyph->outline, strength);
+    } else if (glyph->format == FT_GLYPH_FORMAT_BITMAP) {
+        if (!fFace->glyph->bitmap.buffer) {
+            FT_Load_Glyph(fFace, gid, fLoadGlyphFlags);
+        }
+        FT_GlyphSlot_Own_Bitmap(glyph);
+        return 0 == FT_Bitmap_Embolden(glyph->library, &glyph->bitmap, kBitmapEmboldenStrength, 0);
+    } else {
+        SkDEBUGFAIL("unknown glyph format");
     }
+    return false;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

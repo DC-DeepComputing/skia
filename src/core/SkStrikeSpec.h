@@ -78,9 +78,6 @@ public:
     // Create a strike spec without a device, and does not switch over to path for large sizes.
     static SkStrikeSpec MakeWithNoDevice(const SkFont& font, const SkPaint* paint = nullptr);
 
-    // Make a strike spec for PDF Vector strikes
-    static SkStrikeSpec MakePDFVector(const SkTypeface& typeface, int* size);
-
     sk_sp<sktext::StrikeForGPU> findOrCreateScopedStrike(
             sktext::StrikeForGPUCacheInterface* cache) const;
 
@@ -95,6 +92,7 @@ public:
 
     const SkDescriptor& descriptor() const { return *fAutoDescriptor.getDesc(); }
     const SkTypeface& typeface() const { return *fTypeface; }
+    bool hasMaskFilter() const { return bool(fMaskFilter); }
     static bool ShouldDrawAsPath(const SkPaint& paint, const SkFont& font, const SkMatrix& matrix);
     SkString dump() const;
 
