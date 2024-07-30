@@ -22,6 +22,30 @@
       },
       "revId": "3c49a894e56bea1b8017471a77eafc4c08ed9f5c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a4e6ea97_4f6e7f4d",
+        "filename": "src/sksl/ir/SkSLFunctionDeclaration.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 403,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-30T14:54:16Z",
+      "side": 1,
+      "message": "You\u0027re right. Updated the message to \"duplicate definition of intrinsic function \u0027....\u0027\".",
+      "parentUuid": "34adb7dd_792b6bcf",
+      "range": {
+        "startLine": 402,
+        "startChar": 0,
+        "endLine": 403,
+        "endChar": 48
+      },
+      "revId": "3c49a894e56bea1b8017471a77eafc4c08ed9f5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
