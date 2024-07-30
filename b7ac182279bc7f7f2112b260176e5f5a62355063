@@ -39,6 +39,30 @@
       },
       "revId": "b7ac182279bc7f7f2112b260176e5f5a62355063",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "132a37ff_e6d86317",
+        "filename": "src/gpu/graphite/dawn/DawnTexture.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 18114
+      },
+      "writtenOn": "2024-07-30T19:30:23Z",
+      "side": 1,
+      "message": "Thanks! As per offline discussion, updated to use the singleOwner plumbed from ResourceCache to check here.",
+      "parentUuid": "45394e63_8c558516",
+      "range": {
+        "startLine": 82,
+        "startChar": 0,
+        "endLine": 83,
+        "endChar": 37
+      },
+      "revId": "b7ac182279bc7f7f2112b260176e5f5a62355063",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
