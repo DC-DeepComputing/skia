@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c91fcb57_89c2d4e0",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 4
+      },
+      "lineNbr": 642,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-30T00:37:40Z",
+      "side": 1,
+      "message": "tiny nit: the name `arr` doesn\u0027t really obviously pair with `bufferOffset`. Also, any value is an offset--this is the _base_ offset.\n\nIdeas:\n\n- `arr` and `arrBase`? \n- `buffer` and `bufferBase`?\n- Simplify: `buffer` and `base`?",
+      "range": {
+        "startLine": 642,
+        "startChar": 42,
+        "endLine": 642,
+        "endChar": 54
+      },
+      "revId": "8a91d3f487402f295a7b7af2cfcc1a9d30a08ccf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "36db910c_11d48869",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 4
+      },
+      "lineNbr": 656,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-30T00:37:40Z",
+      "side": 1,
+      "message": "I think this code might be easier to follow, and likely no less efficient, if these ran from zero to `numStops - 1` and we always did lookups as `arr[whatever + base]`.",
+      "range": {
+        "startLine": 654,
+        "startChar": 0,
+        "endLine": 656,
+        "endChar": 0
+      },
+      "revId": "8a91d3f487402f295a7b7af2cfcc1a9d30a08ccf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9d011f01_dac6ed15",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 4
+      },
+      "lineNbr": 660,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-30T00:37:40Z",
+      "side": 1,
+      "message": "tiny nit: variable `offset` doesn\u0027t really do anything.\nThis can be simplified to: `if (t.x \u003c arr[mid]) {`",
+      "range": {
+        "startLine": 658,
+        "startChar": 0,
+        "endLine": 660,
+        "endChar": 0
+      },
+      "revId": "8a91d3f487402f295a7b7af2cfcc1a9d30a08ccf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "50fb96e0_d57d3908",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 4
+      },
+      "lineNbr": 666,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-30T00:37:40Z",
+      "side": 1,
+      "message": "These are typically called \"color stops\". The name \"offset\" is confusing/overloaded here. It took me a while to figure out what this variable (and `highOffset`) represented.",
+      "range": {
+        "startLine": 666,
+        "startChar": 14,
+        "endLine": 666,
+        "endChar": 23
+      },
+      "revId": "8a91d3f487402f295a7b7af2cfcc1a9d30a08ccf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5a30c65_30d18111",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 4
+      },
+      "lineNbr": 682,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-30T00:37:40Z",
+      "side": 1,
+      "message": "very tiny nit: It was this way before, but I don\u0027t think the half4 cast is necessary (the inputs are already half4). Also, once the cast is gone, I suspect this will fit in 100 chars.",
+      "range": {
+        "startLine": 679,
+        "startChar": 19,
+        "endLine": 682,
+        "endChar": 56
+      },
+      "revId": "8a91d3f487402f295a7b7af2cfcc1a9d30a08ccf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
