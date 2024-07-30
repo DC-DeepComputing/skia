@@ -3158,6 +3158,17 @@ TArray<SpvId> SPIRVCodeGenerator::getAccessChain(const Expression& expr, OutputS
             [[fallthrough]];
         }
         default: {
+            if (expr.is<VariableReference>()) {
+                if (const Expression** specializedFieldIndex =
+                        fUnsizedArrayVariableMap.find(expr.as<VariableReference>().variable())) {
+                    SkASSERT((*specializedFieldIndex)->is<FieldAccess>());
+
+                    return this->getAccessChain(**specializedFieldIndex, out);
+                }
+            }
+            [[fallthrough]];
+        }
+        default: {
             SpvId id = this->getLValue(expr, out)->getPointer();
             SkASSERT(id != NA);
             return TArray<SpvId>{id};
@@ -4438,6 +4449,10 @@ void SPIRVCodeGenerator::writeFunctionStart(const FunctionDeclaration& f, Output
             }
         }
 
+        if (specializedExpr && (*specializedExpr)->is<FieldAccess>()) {
+            continue;
+        }
+
         if (fUseTextureSamplerPairs && parameter->type().isSampler()) {
             auto [texture, sampler] = this->synthesizeTextureAndSampler(*parameter);
 
@@ -4502,6 +4517,11 @@ void SPIRVCodeGenerator::writeFunctionInstantiation(
     fActiveSpecialization = specializedParams;
     fActiveSpecializationIndex = specializationIndex;
     this->writeFunctionStart(f.declaration(), out);
+    fCurrentBlock = 0;
+    this->writeLabel(this->nextId(nullptr), kBranchlessBlock, out);
+    fActiveSpecialization = specializedParams;
+    fActiveSpecializationIndex = specializationIndex;
+    this->writeFunctionStart(f.declaration(), specializationIndex, out);
     fCurrentBlock = 0;
     this->writeLabel(this->nextId(nullptr), kBranchlessBlock, out);
     StringStream bodyBuffer;
