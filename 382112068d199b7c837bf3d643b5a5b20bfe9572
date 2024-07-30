@@ -53,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0def7d47_95905851",
+        "filename": "tests/FilterResultTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1350,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-07-30T17:06:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d1b33c9a_b6636b12",
+      "revId": "382112068d199b7c837bf3d643b5a5b20bfe9572",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "18f78197_b23a4e47",
@@ -84,6 +102,24 @@
       "side": 1,
       "message": "We aren\u0027t testing it on GPU at all, only CPU. (It would be `ES3 | GPU_ES3` if we were testing GPU.) So the TODO is accurate as written but won\u0027t affect SkQP because we have disabled the non-working part entirely.",
       "parentUuid": "18f78197_b23a4e47",
+      "revId": "382112068d199b7c837bf3d643b5a5b20bfe9572",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e3ca502_8f2ee364",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1186,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-07-30T17:06:15Z",
+      "side": 1,
+      "message": "Ack, though it sounds like we might add it to GPU in the future, so I think `kNextRelease` makes sense for now.",
+      "parentUuid": "46b2acab_8c3d1b76",
       "revId": "382112068d199b7c837bf3d643b5a5b20bfe9572",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -123,6 +159,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "10d4b5fd_ec3cac5e",
+        "filename": "tests/VkProtectedContextTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-07-30T17:06:15Z",
+      "side": 1,
+      "message": "I\u0027ve filed the below bug to enable the Ganesh test. As mentioned there, we\u0027ll still need to support Ganesh for a while.\n\nhttp://b/356393322 Change VkProtectedContext_CreateProtectedContext enforcement to kNextRelease",
+      "parentUuid": "009f7011_edc2b7db",
+      "revId": "382112068d199b7c837bf3d643b5a5b20bfe9572",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f7c980ba_b932acbb",
@@ -154,6 +208,24 @@
       "side": 1,
       "message": "Yes, they should be ready. I believe these were being skipped solely because the graphite native vulkan backend wasn\u0027t as fleshed out when the tests were written.",
       "parentUuid": "f7c980ba_b932acbb",
+      "revId": "382112068d199b7c837bf3d643b5a5b20bfe9572",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3136ec0f_451b69f0",
+        "filename": "tests/graphite/BackendTextureTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-07-30T17:06:15Z",
+      "side": 1,
+      "message": "Done. Would it be helpful to have a bug to reenable the graphite tests, or is this already on the radar?",
+      "parentUuid": "96811447_eac2e087",
       "revId": "382112068d199b7c837bf3d643b5a5b20bfe9572",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -249,6 +321,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f175df75_ddc9012c",
+        "filename": "tests/graphite/CombinationBuilderTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 575,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-07-30T17:06:15Z",
+      "side": 1,
+      "message": "I can see benefits to either way, but my default is to stick with `kNextRelease` - I\u0027d rather accidentally change in for the next release than forget to ever update it. (If we pick `kNever`, I\u0027d want a `TODO`, preferably with a bug.)",
+      "parentUuid": "98999ec3_f4309942",
+      "revId": "382112068d199b7c837bf3d643b5a5b20bfe9572",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "733f0c14_e5c0a037",
         "filename": "tests/graphite/GraphiteResourceCacheTest.cpp",
         "patchSetId": 2
@@ -317,6 +407,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "437ca59e_c10e9624",
+        "filename": "tests/graphite/ShapeTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-07-30T17:06:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7fef2855_044d68ae",
+      "revId": "382112068d199b7c837bf3d643b5a5b20bfe9572",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3316aff4_e125a3bc",
@@ -348,6 +456,24 @@
       "side": 1,
       "message": "Same as the Shape case.",
       "parentUuid": "3316aff4_e125a3bc",
+      "revId": "382112068d199b7c837bf3d643b5a5b20bfe9572",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "98393e2d_cca07511",
+        "filename": "tests/graphite/TransformTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-07-30T17:06:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d53cda03_d23d8771",
       "revId": "382112068d199b7c837bf3d643b5a5b20bfe9572",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
