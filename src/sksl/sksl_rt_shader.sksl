@@ -126,9 +126,12 @@ half4 sk_normal(shader alphaMap, float2 coord, float4 edgeBounds, half negSurfac
 //--- Lighting ---------------------------------------------------------------------
 
 $pure half3 $surface_to_light(half lightType, half3 lightPos, half3 lightDir, half3 coord) {
-    // Spot (> 0) and point (== 0) have the same equation
-    return lightType >= 0 ? normalize(lightPos - coord)
-                          : lightDir;
+    if (lightType < 0) {
+        return lightDir;
+    } else {
+        // Spot (> 0) and point (== 0) have the same equation.
+        return normalize(lightPos - coord);
+    }
 }
 
 $pure half $spotlight_scale(half3 lightDir, half3 surfaceToLight, half cosCutoffAngle,
@@ -139,11 +142,12 @@ $pure half $spotlight_scale(half3 lightDir, half3 surfaceToLight, half cosCutoff
     half cosAngle = -dot(surfaceToLight, lightDir);
     if (cosAngle < cosCutoffAngle) {
         return 0.0;
+    }
+    half scale = pow(cosAngle, spotFalloff);
+    if (cosAngle < cosCutoffAngle + kConeAAThreshold) {
+        return scale * (cosAngle - cosCutoffAngle) * kConeScale;
     } else {
-        half scale = pow(cosAngle, spotFalloff);
-        return (cosAngle < cosCutoffAngle + kConeAAThreshold)
-                    ? scale * (cosAngle - cosCutoffAngle) * kConeScale
-                    : scale;
+        return scale;
     }
 }
 
