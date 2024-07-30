@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "34adb7dd_792b6bcf",
+        "filename": "src/sksl/ir/SkSLFunctionDeclaration.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 403,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-07-30T01:19:40Z",
+      "side": 1,
+      "message": "This message also seems misleading to me. Isn\u0027t it the case that we can overload intrinsic functions, we just can\u0027t redefine them? For example, from OverloadedBuiltin,\n\n```\nfloat pow(float2 x, float y)\n```\n\nis valid because it overloads `pow`, but\n\n```\nfloat pow(float x, float y)\n```\n\nis invalid because it redefines the intrinsic.",
+      "range": {
+        "startLine": 402,
+        "startChar": 0,
+        "endLine": 403,
+        "endChar": 48
+      },
+      "revId": "3c49a894e56bea1b8017471a77eafc4c08ed9f5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
