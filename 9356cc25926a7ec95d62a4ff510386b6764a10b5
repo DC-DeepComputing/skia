@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e41e8235_79b6082b",
+        "filename": "src/gpu/graphite/dawn/DawnTexture.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 18114
+      },
+      "writtenOn": "2024-07-30T20:30:08Z",
+      "side": 1,
+      "message": "Sounds good, updated to use method from DawnResourceProvider.",
+      "parentUuid": "5b2c2bca_e8876809",
+      "range": {
+        "startLine": 257,
+        "startChar": 42,
+        "endLine": 257,
+        "endChar": 75
+      },
+      "revId": "9356cc25926a7ec95d62a4ff510386b6764a10b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a1aac994_a8fa77f7",
@@ -54,6 +78,30 @@
       "writtenOn": "2024-07-30T19:53:36Z",
       "side": 1,
       "message": "This can just take the `DawnResourceProvider*` and it can get the single owner from the provider. `ResourceProvider` exposes its shared context as a protected field and if GR_TEST_UTILS is defined. It seems fine to either make it publicly exposed or to have `DawnResourceProvider` choose to expose the `DawnSharedContext` by casting its parent field.",
+      "range": {
+        "startLine": 290,
+        "startChar": 56,
+        "endLine": 291,
+        "endChar": 80
+      },
+      "revId": "9356cc25926a7ec95d62a4ff510386b6764a10b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff61889f_89caa1d1",
+        "filename": "src/gpu/graphite/dawn/DawnTexture.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 291,
+      "author": {
+        "id": 18114
+      },
+      "writtenOn": "2024-07-30T20:30:08Z",
+      "side": 1,
+      "message": "Passing in DawnResourceProvider sounds good. I just exposed the dawnSharedContext method on DawnResourceProvider.",
+      "parentUuid": "a1aac994_a8fa77f7",
       "range": {
         "startLine": 290,
         "startChar": 56,
