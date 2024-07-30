@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0a8b42e_2db032fb",
+        "filename": "src/gpu/ganesh/effects/GrRRectEffect.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-07-30T15:26:27Z",
+      "side": 1,
+      "message": "Might be able to simplify the innerRect to this in all cases.",
+      "range": {
+        "startLine": 260,
+        "startChar": 0,
+        "endLine": 260,
+        "endChar": 43
+      },
+      "revId": "c4c83eb1949a5108bdc4b38386bf3bd1a2f23894",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
