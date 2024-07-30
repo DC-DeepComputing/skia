@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3a49885_a28e345e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-30T13:44:56Z",
+      "side": 1,
+      "message": "I am pretty sure this change has broken the Chrome roll since it causes a handful of pixel diffs.",
+      "revId": "c3adc713eb4a8ea0176bb8ded28f2bbd57d1f925",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
