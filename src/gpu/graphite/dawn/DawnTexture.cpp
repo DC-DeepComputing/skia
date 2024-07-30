@@ -15,9 +15,32 @@
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/dawn/DawnCaps.h"
 #include "src/gpu/graphite/dawn/DawnGraphiteUtilsPriv.h"
+#include "src/gpu/graphite/dawn/DawnSampler.h"
 #include "src/gpu/graphite/dawn/DawnSharedContext.h"
 
 namespace skgpu::graphite {
+
+namespace {
+
+constexpr int kMaxNumberOfCachedTextureBindGroups = 4096;
+
+using BindGroupKey = typename DawnTexture::BindGroupKey;
+
+BindGroupKey make_texture_bind_group_key(const DawnSampler* sampler, const DawnTexture* texture) {
+    BindGroupKey uniqueKey;
+    {
+        BindGroupKey::Builder builder(&uniqueKey);
+
+        builder[0] = sampler->uniqueID().asUInt();
+        builder[1] = texture->uniqueID().asUInt();
+
+        builder.finish();
+    }
+
+    return uniqueKey;
+}
+
+}  // namespace
 
 wgpu::Texture DawnTexture::MakeDawnTexture(const DawnSharedContext* sharedContext,
                                            SkISize dimensions,
@@ -96,7 +119,8 @@ DawnTexture::DawnTexture(const DawnSharedContext* sharedContext,
                   budgeted)
         , fTexture(std::move(texture))
         , fSampleTextureView(std::move(sampleTextureView))
-        , fRenderTextureView(std::move(renderTextureView)) {}
+        , fRenderTextureView(std::move(renderTextureView))
+        , fSamplerBindGroups(kMaxNumberOfCachedTextureBindGroups) {}
 
 // static
 std::pair<wgpu::TextureView, wgpu::TextureView> DawnTexture::CreateTextureViews(
@@ -225,6 +249,62 @@ void DawnTexture::setBackendLabel(char const* label) {
         fSampleTextureView.SetLabel(SkStringPrintf("%s_%s", label, "_SampleTextureView").c_str());
         fRenderTextureView.SetLabel(SkStringPrintf("%s_%s", label, "_RenderTextureView").c_str());
     }
+}
+
+const wgpu::BindGroupLayout& DawnTexture::getOrCreateSamplerBindGroupLayout(
+        const DawnSharedContext* context) const {
+    if (fSamplerBindGroupLayout) {
+        return fSamplerBindGroupLayout;
+    }
+
+    std::array<wgpu::BindGroupLayoutEntry, 2> entries;
+
+    entries[0].binding = 0;
+    entries[0].visibility = wgpu::ShaderStage::Fragment;
+    entries[0].sampler.type = wgpu::SamplerBindingType::Filtering;
+
+    entries[1].binding = 1;
+    entries[1].visibility = wgpu::ShaderStage::Fragment;
+    entries[1].texture.sampleType = wgpu::TextureSampleType::Float;
+    entries[1].texture.viewDimension = wgpu::TextureViewDimension::e2D;
+    entries[1].texture.multisampled = false;
+
+    wgpu::BindGroupLayoutDescriptor groupLayoutDesc;
+    if (context->dawnCaps()->setBackendLabels()) {
+        groupLayoutDesc.label = "Single texture + sampler bind group layout";
+    }
+
+    groupLayoutDesc.entryCount = entries.size();
+    groupLayoutDesc.entries = entries.data();
+    fSamplerBindGroupLayout = context->device().CreateBindGroupLayout(&groupLayoutDesc);
+
+    return fSamplerBindGroupLayout;
+}
+
+const wgpu::BindGroup& DawnTexture::findOrCreateSamplerBindGroup(
+        const DawnSampler* sampler, const DawnSharedContext* context) const {
+    auto key = make_texture_bind_group_key(sampler, this);
+    auto* existingBindGroup = fSamplerBindGroups.find(key);
+    if (existingBindGroup) {
+        // cache hit.
+        return *existingBindGroup;
+    }
+
+    std::array<wgpu::BindGroupEntry, 2> entries;
+
+    entries[0].binding = 0;
+    entries[0].sampler = sampler->dawnSampler();
+    entries[1].binding = 1;
+    entries[1].textureView = sampleTextureView();
+
+    wgpu::BindGroupDescriptor desc;
+    desc.layout = getOrCreateSamplerBindGroupLayout(context);
+    desc.entryCount = entries.size();
+    desc.entries = entries.data();
+
+    auto bindGroup = context->device().CreateBindGroup(&desc);
+
+    return *fSamplerBindGroups.insert(key, bindGroup);
 }
 
 } // namespace skgpu::graphite
