@@ -56,10 +56,6 @@ public:
             const std::array<std::pair<const DawnBuffer*, uint32_t>, kNumUniformEntries>&
                     boundBuffersAndSizes);
 
-    // Find or create a bind group containing the given sampler & texture.
-    const wgpu::BindGroup& findOrCreateSingleTextureSamplerBindGroup(const DawnSampler* sampler,
-                                                                     const DawnTexture* texture);
-
     const sk_sp<DawnBuffer>& getOrCreateIntrinsicConstantBuffer();
 
 private:
@@ -97,7 +93,6 @@ private:
                                       typename BindGroupKey<NumEntries>::Hash>;
 
     BindGroupCache<kNumUniformEntries> fUniformBufferBindGroupCache;
-    BindGroupCache<1> fSingleTextureSamplerBindGroups;
 };
 
 }  // namespace skgpu::graphite
