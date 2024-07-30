@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "abf99e39_17959cfc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-30T17:57:40Z",
+      "side": 1,
+      "message": "Please add new file to `BUILD.bazel` in `\"sksl_spirv_tests\"`, and `gn/sksl_tests.gni` --\u003e `sksl_spirv_tests`.",
+      "revId": "1c708a839127c4de62ab039ebc4f8190e47d017c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
