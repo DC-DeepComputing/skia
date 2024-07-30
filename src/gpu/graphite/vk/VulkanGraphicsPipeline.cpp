@@ -11,7 +11,6 @@
 #include "include/gpu/graphite/TextureInfo.h"
 #include "src/core/SkSLTypeShared.h"
 #include "src/core/SkTraceEvent.h"
-#include "src/gpu/SkSLToBackend.h"
 #include "src/gpu/graphite/Attribute.h"
 #include "src/gpu/graphite/ContextUtils.h"
 #include "src/gpu/graphite/GraphicsPipelineDesc.h"
@@ -628,6 +627,8 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
         const RuntimeEffectDictionary* runtimeDict,
         const GraphicsPipelineDesc& pipelineDesc,
         const RenderPassDesc& renderPassDesc) {
+    SkSL::Loader::SetGraphiteModuleLoader(SkSL::GetGraphiteModules());
+
     SkASSERT(rsrcProvider);
     SkSL::Program::Interface vsInterface, fsInterface;
     SkSL::ProgramSettings settings;
@@ -882,6 +883,8 @@ bool VulkanGraphicsPipeline::InitializeMSAALoadPipelineStructs(
         VkShaderModule* outFragShaderModule,
         VkPipelineShaderStageCreateInfo* outShaderStageInfo,
         VkPipelineLayout* outPipelineLayout) {
+    SkSL::Loader::SetGraphiteModuleLoader(SkSL::GetGraphiteModules());
+
     SkSL::Program::Interface vsInterface, fsInterface;
     SkSL::ProgramSettings settings;
     settings.fForceNoRTFlip = true;

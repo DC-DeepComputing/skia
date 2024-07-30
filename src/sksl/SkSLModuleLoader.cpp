@@ -29,6 +29,7 @@
 #include <vector>
 
 #define MODULE_DATA(type) ModuleType::type, GetModuleData(ModuleType::type, #type ".sksl")
+#define GRAPHITE_MODULE_DATA(type) ModuleType::type, GetGraphiteModuleData(ModuleType::type, #type ".sksl")
 
 namespace SkSL {
 
