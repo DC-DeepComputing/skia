@@ -119,6 +119,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "620e8298_d1ecf9f9",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 4
+      },
+      "lineNbr": 656,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-30T20:17:35Z",
+      "side": 1,
+      "message": "Bummer--I\u0027m surprised at this, but can\u0027t argue with hard data.",
+      "parentUuid": "41e2c08a_e3aeb708",
+      "range": {
+        "startLine": 654,
+        "startChar": 0,
+        "endLine": 656,
+        "endChar": 0
+      },
+      "revId": "8a91d3f487402f295a7b7af2cfcc1a9d30a08ccf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9d011f01_dac6ed15",
