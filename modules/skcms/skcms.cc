@@ -2492,6 +2492,8 @@ static bool prep_for_destination(const skcms_ICCProfile* profile,
         && skcms_Matrix3x3_invert(&profile->toXYZD50, fromXYZD50);
 }
 
+#include <iostream>  // DO NOT SUBMIT
+
 bool skcms_Transform(const void*             src,
                      skcms_PixelFormat       srcFmt,
                      skcms_AlphaFormat       srcAlpha,
@@ -2756,6 +2758,7 @@ bool skcms_Transform(const void*             src,
     if (dstFmt & 1) {
         add_op(Op::swap_rb);
     }
+    std::cerr << "HMPF;  dstFmt = " << static_cast<int>(dstFmt) << "\n";
     switch (dstFmt >> 1) {
         default: return false;
         case skcms_PixelFormat_A_8             >> 1: add_op(Op::store_a8);         break;
@@ -2782,6 +2785,7 @@ bool skcms_Transform(const void*             src,
             add_op(Op::store_8888);
             break;
     }
+    std::cerr << "OKAY 8 \n";
 
     assert(ops      <= program + ARRAY_COUNT(program));
     assert(contexts <= context + ARRAY_COUNT(context));

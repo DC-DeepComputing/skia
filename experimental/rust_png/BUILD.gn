@@ -1,0 +1,44 @@
+# Copyright 2024 Google LLC
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build/rust/rust_static_library.gni")
+
+group("rust_png") {
+  public_deps = [ ":sk_png_rust_codec" ]
+}
+
+static_library("sk_png_rust_codec") {
+  visibility = [ ":*" ]
+  sources = [
+    "SkPngRustCodec.cpp",
+    "SkPngRustCodec.h",
+  ]
+  configs += [ "//skia:skia_config" ]
+  deps = [
+    ":sk_png_rust_codec_ffi",
+    "//skia",
+  ]
+}
+
+rust_static_library("sk_png_rust_codec_ffi") {
+  allow_unsafe = true  # For FFI
+  crate_root = "SkPngRustCodecFFI.rs"
+  sources = [ "SkPngRustCodecFFI.rs" ]
+  cxx_bindings = [ "SkPngRustCodecFFI.rs" ]
+  visibility = [ ":sk_png_rust_codec" ]
+  deps = [
+    ":sk_png_rust_codec_ffi_thunks",
+    "//third_party/rust/png/v0_17:lib",
+  ]
+}
+
+static_library("sk_png_rust_codec_ffi_thunks") {
+  visibility = [ ":*" ]
+  sources = [
+    "SkPngRustCodecFFI.cpp",
+    "SkPngRustCodecFFI.h",
+  ]
+  configs += [ "//skia:skia_config" ]
+  deps = [ "//skia" ]
+}

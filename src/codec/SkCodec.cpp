@@ -801,11 +801,16 @@ bool sk_select_xform_format(SkColorType colorType, bool forColorTable,
     return true;
 }
 
+#include <iostream>
+
 bool SkCodec::initializeColorXform(const SkImageInfo& dstInfo, SkEncodedInfo::Alpha encodedAlpha,
                                    bool srcIsOpaque) {
+    std::cerr << "SkCodec::initializeColorXform:" << __LINE__ << "\n";
+
     fXformTime = kNo_XformTime;
     bool needsColorXform = false;
     if (this->usesColorXform()) {
+        std::cerr << "SkCodec::initializeColorXform:" << __LINE__ << "\n";
         if (kRGBA_F16_SkColorType == dstInfo.colorType() ||
                 kBGR_101010x_XR_SkColorType == dstInfo.colorType()) {
             needsColorXform = true;
@@ -817,6 +822,7 @@ bool SkCodec::initializeColorXform(const SkImageInfo& dstInfo, SkEncodedInfo::Al
                 fDstProfile = srcProfile ? *srcProfile : *skcms_sRGB_profile();
             }
         } else if (dstInfo.colorSpace()) {
+            std::cerr << "SkCodec::initializeColorXform:" << __LINE__ << "\n";
             dstInfo.colorSpace()->toProfile(&fDstProfile);
             const auto* srcProfile = fEncodedInfo.profile();
             if (!srcProfile) {
@@ -827,12 +833,15 @@ bool SkCodec::initializeColorXform(const SkImageInfo& dstInfo, SkEncodedInfo::Al
             }
         }
     }
+    std::cerr << "SkCodec::initializeColorXform:" << __LINE__ << "\n";
 
     if (!this->conversionSupported(dstInfo, srcIsOpaque, needsColorXform)) {
+        std::cerr << "SkCodec::initializeColorXform:" << __LINE__ << "\n";
         return false;
     }
 
     if (needsColorXform) {
+        std::cerr << "SkCodec::initializeColorXform:" << __LINE__ << "\n";
         fXformTime = SkEncodedInfo::kPalette_Color != fEncodedInfo.color()
                           || kRGBA_F16_SkColorType == dstInfo.colorType()
                 ? kDecodeRow_XformTime : kPalette_XformTime;
@@ -847,6 +856,7 @@ bool SkCodec::initializeColorXform(const SkImageInfo& dstInfo, SkEncodedInfo::Al
             fDstXformAlphaFormat = skcms_AlphaFormat_Unpremul;
         }
     }
+    std::cerr << "SkCodec::initializeColorXform:" << __LINE__ << "\n";
     return true;
 }
 
