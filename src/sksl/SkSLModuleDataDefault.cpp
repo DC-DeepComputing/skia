@@ -19,12 +19,12 @@
     #include "src/sksl/generated/sksl_public.minified.sksl"
     #include "src/sksl/generated/sksl_rt_shader.minified.sksl"
     #include "src/sksl/generated/sksl_vert.minified.sksl"
-    #if defined(SK_GRAPHITE)
+    // #if defined(SK_GRAPHITE)
     #include "src/sksl/generated/sksl_graphite_frag.minified.sksl"
     #include "src/sksl/generated/sksl_graphite_vert.minified.sksl"
     #include "src/sksl/generated/sksl_graphite_frag_es2.minified.sksl"
     #include "src/sksl/generated/sksl_graphite_vert_es2.minified.sksl"
-    #endif
+    // #endif
 #else
     #include "src/sksl/generated/sksl_shared.unoptimized.sksl"
     #include "src/sksl/generated/sksl_compute.unoptimized.sksl"
@@ -33,12 +33,12 @@
     #include "src/sksl/generated/sksl_public.unoptimized.sksl"
     #include "src/sksl/generated/sksl_rt_shader.unoptimized.sksl"
     #include "src/sksl/generated/sksl_vert.unoptimized.sksl"
-    #if defined(SK_GRAPHITE)
+    // #if defined(SK_GRAPHITE)
     #include "src/sksl/generated/sksl_graphite_frag.unoptimized.sksl"
     #include "src/sksl/generated/sksl_graphite_vert.unoptimized.sksl"
     #include "src/sksl/generated/sksl_graphite_frag_es2.unoptimized.sksl"
     #include "src/sksl/generated/sksl_graphite_vert_es2.unoptimized.sksl"
-    #endif
+    // #endif
 #endif
 
 namespace SkSL {
@@ -53,12 +53,12 @@ std::string GetModuleData(ModuleType type, const char* /*filename*/) {
         M(sksl_public)
         M(sksl_rt_shader)
         M(sksl_vert)
-#if defined(SK_GRAPHITE)
+//#if defined(SK_GRAPHITE)
         M(sksl_graphite_frag)
         M(sksl_graphite_frag_es2)
         M(sksl_graphite_vert)
         M(sksl_graphite_vert_es2)
-#endif
+//#endif
         default:
             SkUNREACHABLE;
     }
