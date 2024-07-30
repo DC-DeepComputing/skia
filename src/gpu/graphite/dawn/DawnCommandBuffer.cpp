@@ -570,7 +570,8 @@ void DawnCommandBuffer::bindTextureAndSamplers(
         const auto* sampler =
                 static_cast<const DawnSampler*>(drawPass.getSampler(command.fSamplerIndices[0]));
 
-        bindGroup = fResourceProvider->findOrCreateSingleTextureSamplerBindGroup(sampler, texture);
+        bindGroup = texture->getSamplerBindGroup(
+                sampler, fSharedContext, fResourceProvider->singleOwner());
     } else {
         std::vector<wgpu::BindGroupEntry> entries(2 * command.fNumTexSamplers);
 
