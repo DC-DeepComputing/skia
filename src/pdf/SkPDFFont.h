@@ -12,6 +12,8 @@
 #include "include/core/SkTypes.h"
 #include "src/base/SkUTF.h"
 #include "src/core/SkAdvancedTypefaceMetrics.h"
+#include "src/core/SkStrikeSpec.h"
+#include "src/core/SkTHash.h"
 #include "src/pdf/SkPDFGlyphUse.h"
 #include "src/pdf/SkPDFTypes.h"
 
@@ -20,7 +22,34 @@
 
 class SkGlyph;
 class SkPDFDocument;
+class SkPDFFont;
 class SkString;
+
+class SkPDFStrikeSpec {
+public:
+    SkPDFStrikeSpec(SkStrikeSpec, SkScalar em, bool hasMaskFilter);
+
+    const SkStrikeSpec fStrikeSpec;
+    const SkScalar fUnitsPerEM;
+    const bool fHasMaskFilter;
+};
+
+class SkPDFStrike : public SkRefCnt {
+public:
+    static sk_sp<SkPDFStrike> Make(const SkFont&, const SkPaint&);
+
+    const SkPDFStrikeSpec fPath;
+    const SkPDFStrikeSpec fImage;
+
+    skia_private::THashMap<SkGlyphID, SkPDFFont> fFontMap;
+
+    struct Traits {
+        static const SkDescriptor& GetKey(const sk_sp<SkPDFStrike>& strike);
+        static uint32_t Hash(const SkDescriptor& descriptor);
+    };
+private:
+    SkPDFStrike(SkPDFStrikeSpec path, SkPDFStrikeSpec image);
+};
 
 /** \class SkPDFFont
     A PDF Object class representing a font.  The font may have resources
@@ -33,19 +62,14 @@ class SkPDFFont {
 public:
     ~SkPDFFont();
     SkPDFFont(SkPDFFont&&);
-    SkPDFFont& operator=(SkPDFFont&&);
-
-    /** Returns the typeface represented by this class. Returns nullptr for the
-     *  default typeface.
-     */
-    SkTypeface* typeface() const { return fTypeface.get(); }
+    SkPDFFont& operator=(SkPDFFont&&) = delete;
 
     /** Returns the font type represented in this font.  For Type0 fonts,
      *  returns the type of the descendant font.
      */
     SkAdvancedTypefaceMetrics::FontType getType() const { return fFontType; }
 
-    static SkAdvancedTypefaceMetrics::FontType FontType(const SkTypeface&,
+    static SkAdvancedTypefaceMetrics::FontType FontType(const SkPDFStrikeSpec&,
                                                         const SkAdvancedTypefaceMetrics&);
     static void GetType1GlyphNames(const SkTypeface&, SkString*);
 
@@ -82,26 +106,23 @@ public:
 
     SkPDFIndirectReference indirectReference() const { return fIndirectReference; }
 
-    /** Get the font resource for the passed typeface and glyphID. The
-     *  reference count of the object is incremented and it is the caller's
-     *  responsibility to unreference it when done.  This is needed to
-     *  accommodate the weak reference pattern used when the returned object
-     *  is new and has no other references.
-     *  @param typeface  The typeface to find, not nullptr.
-     *  @param glyphID   Specify which section of a large font is of interest.
+    /** Get the font resource for the passed strike and glyph.
+     *  The returned SkPDFFont is owned by the doc.
+     *  @param strike  The strike of interest
+     *  @param glyph  The glyph of interest
      */
     static SkPDFFont* GetFontResource(SkPDFDocument* doc,
-                                      const SkGlyph* glyphs,
-                                      SkTypeface* typeface);
+                                      const SkGlyph* glyph,
+                                      const SkPDFStrike& strike);
 
     /** Gets SkAdvancedTypefaceMetrics, and caches the result.
      *  @param typeface can not be nullptr.
      *  @return nullptr only when typeface is bad.
      */
-    static const SkAdvancedTypefaceMetrics* GetMetrics(const SkTypeface* typeface,
+    static const SkAdvancedTypefaceMetrics* GetMetrics(const SkTypeface& typeface,
                                                        SkPDFDocument* canon);
 
-    static const std::vector<SkUnichar>& GetUnicodeMap(const SkTypeface* typeface,
+    static const std::vector<SkUnichar>& GetUnicodeMap(const SkTypeface& typeface,
                                                        SkPDFDocument* canon);
 
     static void PopulateCommonFontDescriptor(SkPDFDict* descriptor,
@@ -111,24 +132,22 @@ public:
 
     void emitSubset(SkPDFDocument*) const;
 
-    /**
-     *  Return false iff the typeface has its NotEmbeddable flag set.
-     *  typeface is not nullptr
-     */
-    static bool CanEmbedTypeface(SkTypeface*, SkPDFDocument*);
+    /** Return false iff the typeface has its NotEmbeddable flag set. */
+    static bool CanEmbedTypeface(const SkTypeface&, SkPDFDocument*);
 
     SkGlyphID firstGlyphID() const { return fGlyphUsage.firstNonZero(); }
     SkGlyphID lastGlyphID() const { return fGlyphUsage.lastGlyph(); }
     const SkPDFGlyphUse& glyphUsage() const { return fGlyphUsage; }
-    sk_sp<SkTypeface> refTypeface() const { return fTypeface; }
+
+    const SkPDFStrike& strike() const { return *fStrike; }
 
 private:
-    sk_sp<SkTypeface> fTypeface;
+    sk_sp<SkPDFStrike> fStrike;
     SkPDFGlyphUse fGlyphUsage;
     SkPDFIndirectReference fIndirectReference;
     SkAdvancedTypefaceMetrics::FontType fFontType;
 
-    SkPDFFont(sk_sp<SkTypeface>,
+    SkPDFFont(sk_sp<SkPDFStrike>,
               SkGlyphID firstGlyphID,
               SkGlyphID lastGlyphID,
               SkAdvancedTypefaceMetrics::FontType fontType,

@@ -131,27 +131,6 @@ SkString SkStrikeSpec::dump() const {
     return fAutoDescriptor.getDesc()->dumpRec();
 }
 
-SkStrikeSpec SkStrikeSpec::MakePDFVector(const SkTypeface& typeface, int* size) {
-    SkFont font;
-    font.setHinting(SkFontHinting::kNone);
-    font.setEdging(SkFont::Edging::kAlias);
-    font.setTypeface(sk_ref_sp(&typeface));
-    int unitsPerEm = typeface.getUnitsPerEm();
-    if (unitsPerEm <= 0) {
-        unitsPerEm = 1024;
-    }
-    if (size) {
-        *size = unitsPerEm;
-    }
-    font.setSize((SkScalar)unitsPerEm);
-
-    return SkStrikeSpec(font,
-                        SkPaint(),
-                        SkSurfaceProps(),
-                        SkScalerContextFlags::kFakeGammaAndBoostContrast,
-                        SkMatrix::I());
-}
-
 SkStrikeSpec::SkStrikeSpec(const SkFont& font, const SkPaint& paint,
                            const SkSurfaceProps& surfaceProps,
                            SkScalerContextFlags scalerContextFlags,
