@@ -72,6 +72,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "146a56de_43afbce8",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2024-07-30T20:20:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eda0a045_65e8451a",
+      "range": {
+        "startLine": 100,
+        "startChar": 16,
+        "endLine": 100,
+        "endChar": 27
+      },
+      "revId": "5f2c969825b8b0cd0e2395b6f1ea2daa49b0e27a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a58b1a1e_9e04a684",
@@ -85,6 +109,24 @@
       "writtenOn": "2024-07-24T20:53:51Z",
       "side": 1,
       "message": "Instead of hardcoding the uniform name and index, can you use a different `ty` to handle just like a regular uniform?\n\nI think that may require tracking some extra info to know how to update in `onSync`, but that would be handy to have for images too.",
+      "revId": "5f2c969825b8b0cd0e2395b6f1ea2daa49b0e27a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ddcad22_2ac2ab7c",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2024-07-30T20:20:13Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "a58b1a1e_9e04a684",
       "revId": "5f2c969825b8b0cd0e2395b6f1ea2daa49b0e27a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -130,6 +172,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f87fad2c_c1d42f36",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2024-07-30T20:20:13Z",
+      "side": 1,
+      "message": "Done. However, I am worried in cases where we default to 0 (uniform property), and it is malformed. We might have to revisit this if issues come up with broken uniforms.",
+      "parentUuid": "76c94b07_fb44428b",
+      "range": {
+        "startLine": 148,
+        "startChar": 57,
+        "endLine": 148,
+        "endChar": 59
+      },
+      "revId": "5f2c969825b8b0cd0e2395b6f1ea2daa49b0e27a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8d9fc825_42c2fad3",
@@ -143,6 +209,30 @@
       "writtenOn": "2024-07-24T20:53:51Z",
       "side": 1,
       "message": "Instead of encoding all image props at this level, it would nicer to piggy-back on existing image asset support:\n\n  - assume all referenced images are in `assets`\n  - expect just a `refId` at this level to point to an asset\n  - then I think you should be able to use `AnimationBuilder::ScopedAssetRef` and `AnimationBuilder::loadFootageAsset` to locate and parse the asset, similar to how it\u0027s done in FootageLayer.cpp",
+      "range": {
+        "startLine": 158,
+        "startChar": 0,
+        "endLine": 163,
+        "endChar": 85
+      },
+      "revId": "5f2c969825b8b0cd0e2395b6f1ea2daa49b0e27a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "77bc6c91_7629b566",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2024-07-30T20:20:13Z",
+      "side": 1,
+      "message": "This makes tons of sense. Done. Take a look and let me know if that\u0027s what you had in mind.",
+      "parentUuid": "8d9fc825_42c2fad3",
       "range": {
         "startLine": 158,
         "startChar": 0,
@@ -176,6 +266,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "443bac95_b5a897f9",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2024-07-30T20:20:13Z",
+      "side": 1,
+      "message": "Done. Lmk if this is what you had in mind.",
+      "parentUuid": "a2b9cfff_b1fd7b65",
+      "range": {
+        "startLine": 165,
+        "startChar": 0,
+        "endLine": 168,
+        "endChar": 91
+      },
+      "revId": "5f2c969825b8b0cd0e2395b6f1ea2daa49b0e27a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a7289842_c5c028bd",
@@ -189,6 +303,30 @@
       "writtenOn": "2024-07-24T20:53:51Z",
       "side": 1,
       "message": "This excludes animated image support, which is probably ok for now - but it would make for some cool demos :)\n\nWe could support that if we keep the image asset around and resolve to a shader in `onSync`, for every frame (there is also a way to tell whether an image asset is animating, so we only have to rebuild those shaders).\n\nMaybe add a comment/todo.",
+      "range": {
+        "startLine": 169,
+        "startChar": 37,
+        "endLine": 169,
+        "endChar": 59
+      },
+      "revId": "5f2c969825b8b0cd0e2395b6f1ea2daa49b0e27a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "15df4866_5461762e",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2024-07-30T20:20:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a7289842_c5c028bd",
       "range": {
         "startLine": 169,
         "startChar": 37,
@@ -246,6 +384,30 @@
           ]
         }
       ],
+      "revId": "5f2c969825b8b0cd0e2395b6f1ea2daa49b0e27a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b7f1489c_3ccf3cf6",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2024-07-30T20:20:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9e748a42_cb0ab89f",
+      "range": {
+        "startLine": 180,
+        "startChar": 0,
+        "endLine": 182,
+        "endChar": 68
+      },
       "revId": "5f2c969825b8b0cd0e2395b6f1ea2daa49b0e27a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
