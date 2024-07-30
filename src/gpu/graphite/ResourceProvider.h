@@ -93,6 +93,8 @@ public:
         fResourceCache->dumpMemoryStatistics(traceMemoryDump);
     }
 
+    SingleOwner* singleOwner() const { return fResourceCache->singleOwner(); }
+
     void freeGpuResources();
     void purgeResourcesNotUsedSince(StdSteadyClock::time_point purgeTime);
 
