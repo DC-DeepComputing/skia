@@ -21,7 +21,7 @@ struct SkPDFGraphicStackState {
         SkMatrix fMatrix = SkMatrix::I();
         uint32_t fClipStackGenID = SkClipStack::kWideOpenGenID;
         SkColor4f fColor = {SK_FloatNaN, SK_FloatNaN, SK_FloatNaN, SK_FloatNaN};
-        SkScalar fTextScaleX = 1;  // Zero means we don't care what the value is.
+        SkScalar fTextScaleX = 1;  // Zero means we don't care what the value is. //TODO: do we still want this?
         int fShaderIndex = -1;
         int fGraphicStateIndex = -1;
     };
