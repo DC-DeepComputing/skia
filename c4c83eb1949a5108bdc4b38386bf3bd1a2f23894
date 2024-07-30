@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "40138f61_880bbbc0",
+        "filename": "src/gpu/ganesh/effects/GrRRectEffect.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-30T15:38:06Z",
+      "side": 1,
+      "message": "Is there any way we can use this rect uniform and not need the innerRect uniform? For the `dxy0` and `dxy1` expressions we could inset by the radius. In the event that we aren\u0027t a circular corner the final circleCornerAlpha value would be junk but wouldn\u0027t be selected in the mix.",
+      "range": {
+        "startLine": 228,
+        "startChar": 68,
+        "endLine": 228,
+        "endChar": 88
+      },
+      "revId": "c4c83eb1949a5108bdc4b38386bf3bd1a2f23894",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f0a8b42e_2db032fb",
         "filename": "src/gpu/ganesh/effects/GrRRectEffect.cpp",
         "patchSetId": 1
