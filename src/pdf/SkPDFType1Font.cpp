@@ -248,10 +248,10 @@ inline static SkScalar from_font_units(SkScalar scaled, uint16_t emSize) {
 }
 
 static SkPDFIndirectReference make_type1_font_descriptor(SkPDFDocument* doc,
-                                                         const SkTypeface* typeface,
+                                                         const SkTypeface& typeface,
                                                          const SkAdvancedTypefaceMetrics* info) {
     SkPDFDict descriptor("FontDescriptor");
-    uint16_t emSize = SkToU16(typeface->getUnitsPerEm());
+    uint16_t emSize = SkToU16(typeface.getUnitsPerEm()); // TODO: fix this
     if (info) {
         SkPDFFont::PopulateCommonFontDescriptor(&descriptor, *info, emSize, 0);
         if (can_embed(*info)) {
@@ -259,7 +259,7 @@ static SkPDFIndirectReference make_type1_font_descriptor(SkPDFDocument* doc,
             size_t header SK_INIT_TO_AVOID_WARNING;
             size_t data SK_INIT_TO_AVOID_WARNING;
             size_t trailer SK_INIT_TO_AVOID_WARNING;
-            std::unique_ptr<SkStreamAsset> rawFontData = typeface->openStream(&ttcIndex);
+            std::unique_ptr<SkStreamAsset> rawFontData = typeface.openStream(&ttcIndex);
             sk_sp<SkData> fontData = convert_type1_font_stream(std::move(rawFontData),
                                                                &header, &data, &trailer);
             if (fontData) {
@@ -279,12 +279,12 @@ static SkPDFIndirectReference make_type1_font_descriptor(SkPDFDocument* doc,
 
 
 static const std::vector<SkString>& type_1_glyphnames(SkPDFDocument* canon,
-                                                      const SkTypeface* typeface) {
-    SkTypefaceID typefaceID = typeface->uniqueID();
+                                                      const SkTypeface& typeface) {
+    SkTypefaceID typefaceID = typeface.uniqueID();
     const std::vector<SkString>* glyphNames = canon->fType1GlyphNames.find(typefaceID);
     if (!glyphNames) {
-        std::vector<SkString> names(typeface->countGlyphs());
-        SkPDFFont::GetType1GlyphNames(*typeface, names.data());
+        std::vector<SkString> names(typeface.countGlyphs());
+        SkPDFFont::GetType1GlyphNames(typeface, names.data());
         glyphNames = canon->fType1GlyphNames.set(typefaceID, std::move(names));
     }
     SkASSERT(glyphNames);
@@ -292,8 +292,8 @@ static const std::vector<SkString>& type_1_glyphnames(SkPDFDocument* canon,
 }
 
 static SkPDFIndirectReference type1_font_descriptor(SkPDFDocument* doc,
-                                                    const SkTypeface* typeface) {
-    SkTypefaceID typefaceID = typeface->uniqueID();
+                                                    const SkTypeface& typeface) {
+    SkTypefaceID typefaceID = typeface.uniqueID();
     if (SkPDFIndirectReference* ptr = doc->fFontDescriptors.find(typefaceID)) {
         return *ptr;
     }
@@ -305,7 +305,7 @@ static SkPDFIndirectReference type1_font_descriptor(SkPDFDocument* doc,
 
 
 void SkPDFEmitType1Font(const SkPDFFont& pdfFont, SkPDFDocument* doc) {
-    SkTypeface* typeface = pdfFont.typeface();
+    const SkTypeface& typeface = pdfFont.strike().fPath.fStrikeSpec.typeface();
     const std::vector<SkString>& glyphNames = type_1_glyphnames(doc, typeface);
     SkGlyphID firstGlyphID = pdfFont.firstGlyphID();
     SkGlyphID lastGlyphID = pdfFont.lastGlyphID();
@@ -323,7 +323,7 @@ void SkPDFEmitType1Font(const SkPDFFont& pdfFont, SkPDFDocument* doc) {
     font.insertInt("FirstChar", (size_t)0);
     font.insertInt("LastChar", (size_t)glyphCount);
     {
-        int emSize;
+        int emSize = pdfFont.strike().fPath.fUnitsPerEM;
         auto widths = SkPDFMakeArray();
 
         int glyphRangeSize = lastGlyphID - firstGlyphID + 2;
@@ -332,8 +332,7 @@ void SkPDFEmitType1Font(const SkPDFFont& pdfFont, SkPDFDocument* doc) {
         for (unsigned gId = firstGlyphID; gId <= lastGlyphID; gId++) {
             glyphIDs[gId - firstGlyphID + 1] = gId;
         }
-        SkStrikeSpec strikeSpec = SkStrikeSpec::MakePDFVector(*typeface, &emSize);
-        SkBulkGlyphMetrics metrics{strikeSpec};
+        SkBulkGlyphMetrics metrics{pdfFont.strike().fPath.fStrikeSpec};
         auto glyphs = metrics.glyphs(SkSpan(glyphIDs.get(), glyphRangeSize));
         for (int i = 0; i < glyphRangeSize; ++i) {
             widths->appendScalar(from_font_units(glyphs[i]->advanceX(), SkToU16(emSize)));

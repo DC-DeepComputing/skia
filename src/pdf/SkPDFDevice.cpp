@@ -714,7 +714,7 @@ public:
         fPDFFont = pdfFont;
         // Reader 2020.013.20064 incorrectly advances some Type3 fonts https://crbug.com/1226960
         bool convertedToType3 = fPDFFont->getType() == SkAdvancedTypefaceMetrics::kOther_Font;
-        bool thousandEM = fPDFFont->typeface()->getUnitsPerEm() == 1000;
+        bool thousandEM = fPDFFont->strike().fPath.fUnitsPerEM == 1000;
         fViewersAgreeOnAdvancesInFont = thousandEM || !convertedToType3;
     }
     void writeGlyph(uint16_t glyph, SkScalar advanceWidth, SkPoint xy) {
@@ -837,20 +837,20 @@ void SkPDFDevice::drawGlyphRunAsPath(
 }
 
 static bool needs_new_font(SkPDFFont* font, const SkGlyph* glyph,
-                           SkAdvancedTypefaceMetrics::FontType fontType) {
+                           SkAdvancedTypefaceMetrics::FontType initialFontType) {
     if (!font || !font->hasGlyph(glyph->getGlyphID())) {
         return true;
     }
-    if (fontType == SkAdvancedTypefaceMetrics::kOther_Font) {
+    if (initialFontType == SkAdvancedTypefaceMetrics::kOther_Font) {
         return false;
     }
     if (glyph->isEmpty()) {
         return false;
     }
 
-    bool bitmapOnly = nullptr == glyph->path();
-    bool convertedToType3 = (font->getType() == SkAdvancedTypefaceMetrics::kOther_Font);
-    return convertedToType3 != bitmapOnly;
+    bool hasUnmodifiedPath = glyph->path() && !glyph->pathIsModified();
+    bool convertedToType3 = font->getType() == SkAdvancedTypefaceMetrics::kOther_Font;
+    return convertedToType3 == hasUnmodifiedPath;
 }
 
 void SkPDFDevice::internalDrawGlyphRun(
@@ -863,44 +863,47 @@ void SkPDFDevice::internalDrawGlyphRun(
     if (!glyphCount || !glyphIDs || glyphRunFont.getSize() <= 0 || this->hasEmptyClip()) {
         return;
     }
-    if (runPaint.getPathEffect()
-        || runPaint.getMaskFilter()
-        || glyphRunFont.isEmbolden()
-        || this->localToDevice().hasPerspective()
-        || SkPaint::kFill_Style != runPaint.getStyle()) {
-        // Stroked Text doesn't work well with Type3 fonts.
+
+    if (this->localToDevice().hasPerspective()) {
         this->drawGlyphRunAsPath(glyphRun, offset, runPaint);
         return;
     }
-    SkTypeface* typeface = glyphRunFont.getTypeface();
-    if (!typeface) {
-        SkDebugf("SkPDF: glyphRunFont has no typeface.\n");
-        return;
-    }
 
-    const SkAdvancedTypefaceMetrics* metrics = SkPDFFont::GetMetrics(typeface, fDocument);
+    // Right here we want to create a proto-SkPDFStrike with just the descriptors.
+    // Thing is we really just need the em size one, but to create the small one we need the font and paint anyway.
+    sk_sp<SkPDFStrike> pdfStrike = SkPDFStrike::Make(glyphRunFont, runPaint);
+
+    const SkAdvancedTypefaceMetrics* metrics = SkPDFFont::GetMetrics(pdfStrike->fPath.fStrikeSpec.typeface(), fDocument);
     if (!metrics) {
         return;
     }
-    SkAdvancedTypefaceMetrics::FontType fontType = SkPDFFont::FontType(*typeface, *metrics);
+    // FontType should probably be on SkPDFStrike?
+    SkAdvancedTypefaceMetrics::FontType initialFontType = SkPDFFont::FontType(pdfStrike->fPath, *metrics);
 
-    const std::vector<SkUnichar>& glyphToUnicode = SkPDFFont::GetUnicodeMap(typeface, fDocument);
+    const std::vector<SkUnichar>& glyphToUnicode = SkPDFFont::GetUnicodeMap(pdfStrike->fPath.fStrikeSpec.typeface(), fDocument);
 
     SkClusterator clusterator(glyphRun);
 
-    int emSize;
-    SkStrikeSpec strikeSpec = SkStrikeSpec::MakePDFVector(*typeface, &emSize);
-
+    // TODO: need to clean these up, we now bake the scale and skew into the strike
     SkScalar textSize = glyphRunFont.getSize();
-    SkScalar advanceScale = textSize * glyphRunFont.getScaleX() / emSize;
+    SkScalar advanceScale = textSize * glyphRunFont.getScaleX() / pdfStrike->fPath.fUnitsPerEM;
 
     // textScaleX and textScaleY are used to get a conservative bounding box for glyphs.
-    SkScalar textScaleY = textSize / emSize;
+    SkScalar textScaleY = textSize / pdfStrike->fPath.fUnitsPerEM;
     SkScalar textScaleX = advanceScale + glyphRunFont.getSkewX() * textScaleY;
 
     SkRect clipStackBounds = this->cs().bounds(this->bounds());
 
-    SkTCopyOnFirstWrite<SkPaint> paint(clean_paint(runPaint));
+    //TODO: need to clear the maskfilter, path effect, etc from the content entry paint.
+    // Will also always want to set fill style unless hairline.
+    // These will be handled by the glyph entries.
+    SkPaint fillPaint(runPaint);
+    if (fillPaint.getStrokeWidth() > 0) {
+        fillPaint.setStroke(false);
+    }
+    fillPaint.setPathEffect(nullptr);
+    fillPaint.setMaskFilter(nullptr);
+    SkTCopyOnFirstWrite<SkPaint> paint(clean_paint(fillPaint));
     ScopedContentEntry content(this, *paint, glyphRunFont.getScaleX());
     if (!content) {
         return;
@@ -920,7 +923,7 @@ void SkPDFDevice::internalDrawGlyphRun(
         fDocument->addNodeTitle(fNodeId, glyphRun.text());
     }
 
-    const int numGlyphs = typeface->countGlyphs();
+    const int numGlyphs = pdfStrike->fPath.fStrikeSpec.typeface().countGlyphs();
 
     if (clusterator.reversedChars()) {
         out->writeText("/ReversedChars BMC\n");
@@ -929,7 +932,13 @@ void SkPDFDevice::internalDrawGlyphRun(
     GlyphPositioner glyphPositioner(out, glyphRunFont.getSkewX(), offset);
     SkPDFFont* font = nullptr;
 
-    SkBulkGlyphMetricsAndPaths paths{strikeSpec};
+    // This creates a strike and a scaler context.
+    // What we want back is if anything about these paths is different from the path data in the font.
+    // We don't actually know until this, because the SkTypeface itself may internally do things (like scale or force fake bold).
+    // One can't just look at the SkPaint and SkFont and know ahead of time.
+    // Or really, we need this on the SkGlyph's path, a bit that states if the path has been modified
+    // from what a normal user would consider to be "what is in the font".
+    SkBulkGlyphMetricsAndPaths paths{pdfStrike->fPath.fStrikeSpec};
     auto glyphs = paths.glyphs(glyphRun.glyphsIDs());
 
     while (SkClusterator::Cluster c = clusterator.next()) {
@@ -980,9 +989,9 @@ void SkPDFDevice::internalDrawGlyphRun(
                     continue;  // reject glyphs as out of bounds
                 }
             }
-            if (needs_new_font(font, glyphs[index], fontType)) {
+            if (needs_new_font(font, glyphs[index], initialFontType)) {
                 // Not yet specified font or need to switch font.
-                font = SkPDFFont::GetFontResource(fDocument, glyphs[index], typeface);
+                font = SkPDFFont::GetFontResource(fDocument, glyphs[index], *pdfStrike);
                 SkASSERT(font);  // All preconditions for SkPDFFont::GetFontResource are met.
                 glyphPositioner.setFont(font);
                 SkPDFWriteResourceName(out, SkPDFResourceType::kFont,

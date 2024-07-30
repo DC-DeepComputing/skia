@@ -38,6 +38,7 @@
 #include "src/core/SkScalerContext.h"
 #include "src/core/SkStrike.h"
 #include "src/core/SkStrikeSpec.h"
+#include "src/core/SkStrikeSpec.h"
 #include "src/core/SkTHash.h"
 #include "src/pdf/SkPDFBitmap.h"
 #include "src/pdf/SkPDFDevice.h"
@@ -65,7 +66,6 @@ namespace {
 // symbols vs. characters.  Rarely is a font the right character set to call it
 // non-symbolic, so always call it symbolic.  (PDF 1.4 spec, section 5.7.1)
 static const int32_t kPdfSymbolic = 4;
-static const SkFontTableTag kCOLRTableTag = SkSetFourByteTag('C', 'O', 'L', 'R');
 
 // scale from em-units to base-1000, returning as a SkScalar
 inline SkScalar from_font_units(SkScalar scaled, uint16_t emSize) {
@@ -92,6 +92,110 @@ void setGlyphWidthAndBoundingBox(SkScalar width, SkIRect box,
 }
 }  // namespace
 
+static bool scale_paint(SkPaint& paint, SkScalar scale) {
+    if (paint.getMaskFilter()) {
+        // Don't know how to scale a mask filter.
+        return false;
+    }
+
+    if (paint.getPathEffect()) {
+        //sk_sp<SkPathEffect> original = paint.refPathEffect();
+        //SkScalar invScale = 1/scale;
+        //sk_sp<SkPathEffect> scaleFromTargetToOriginal = SkPathEffect::MakeTransform(SkMatrix::Scale(invScale));
+        //sk_sp<SkPathEffect> scaleFromOriginalToTarget = SkPathEffect::MakeTransform(SkMatrix::Scale(scale));
+        //path.maskEffect(SkPathEffect::MakeCompose(SkPathEffect::MakeCompose(std::move(scaleFromTargetToOriginal), std::move(original)), std::move(scaleFromOriginalToTarget)));
+        return false;
+    }
+
+    if (paint.getStyle() != SkPaint::kFill_Style && paint.getStrokeWidth() > 0) {
+        paint.setStrokeMiter(paint.getStrokeMiter() * scale);
+        paint.setStrokeWidth(paint.getStrokeWidth() * scale);
+    }
+
+    return true;
+}
+
+
+SkPDFStrikeSpec::SkPDFStrikeSpec(SkStrikeSpec strikeSpec, SkScalar em, bool hasMaskFilter)
+    : fStrikeSpec(std::move(strikeSpec))
+    , fUnitsPerEM(em)
+    , fHasMaskFilter(hasMaskFilter)
+{}
+
+sk_sp<SkPDFStrike> SkPDFStrike::Make(const SkFont& font, const SkPaint& paint) {
+#ifdef SK_PDF_BITMAP_GLYPH_RASTER_SIZE
+    static constexpr float kBitmapFontSize = SK_PDF_BITMAP_GLYPH_RASTER_SIZE;
+#else
+    static constexpr float kBitmapFontSize = 64;
+#endif
+
+    SkScalar unitsPerEm = static_cast<SkScalar>(font.getTypeface()->getUnitsPerEm());
+    SkASSERT(0 < unitsPerEm);
+
+    SkFont canonFont(font);
+    canonFont.setBaselineSnap(false);
+    canonFont.setEdging(SkFont::Edging::kAntiAlias);
+    canonFont.setEmbeddedBitmaps(false);
+    //canonFont.setEmbolden();
+    canonFont.setForceAutoHinting(false);
+    canonFont.setHinting(SkFontHinting::kNone);
+    canonFont.setLinearMetrics(true);
+    //canonFont.setScaleX(1.0f);
+    //canonFont.setSize(unitsPerEm);
+    //canonFont.setSkewX(0.0f);
+    canonFont.setSubpixel(false);
+    //canonFont.setTypeface();
+
+    // This has been getting the font at em size because the fill should scale.
+    // However, this is not true for stroke where the stroke needs to be scaled.
+    // It might be best to detect non-hairline strokes and just leave their size alone?
+    // This means possibly putting duplicated strikes into the PDF.
+    // Same for mask filters (and anything else on the paint).
+    // Also, how does one know when drawing a fill and then stroke (for effect) if the text should "double up".
+    // Currently this does cause a double up with invisible text anyway.
+    // Of course for non-path glyphs stroking and path effects don't apply (though mask filters do).
+
+    SkPaint pathPaint(paint);
+    if (scale_paint(pathPaint, unitsPerEm / font.getSize())) {
+        canonFont.setSize(unitsPerEm);
+    } else {
+        canonFont.setSize(font.getSize());
+    }
+    SkScalar pathStrikeEM = canonFont.getSize();
+    SkStrikeSpec pathStrikeSpec = SkStrikeSpec::MakeWithNoDevice(canonFont, &pathPaint);
+
+    if (kBitmapFontSize <= 0) {
+        // old code path compatibility
+        return sk_sp(new SkPDFStrike(SkPDFStrikeSpec(pathStrikeSpec, pathStrikeEM, pathPaint.getMaskFilter()),
+                                     SkPDFStrikeSpec(pathStrikeSpec, pathStrikeEM, pathPaint.getMaskFilter())));
+    }
+
+    SkPaint imagePaint(paint);
+    if (scale_paint(imagePaint, kBitmapFontSize / font.getSize())) {
+        canonFont.setSize(kBitmapFontSize);
+    } else {
+        canonFont.setSize(font.getSize());
+    }
+    SkScalar imageStrikeEM = canonFont.getSize();
+    SkStrikeSpec imageStrikeSpec = SkStrikeSpec::MakeWithNoDevice(canonFont, &imagePaint);
+
+    return sk_sp(new SkPDFStrike(SkPDFStrikeSpec(pathStrikeSpec, pathStrikeEM, pathPaint.getMaskFilter()),
+                                 SkPDFStrikeSpec(imageStrikeSpec, imageStrikeEM, imagePaint.getMaskFilter())));
+
+}
+
+SkPDFStrike::SkPDFStrike(SkPDFStrikeSpec path, SkPDFStrikeSpec image)
+    : fPath(std::move(path))
+    , fImage(std::move(image))
+{}
+
+const SkDescriptor& SkPDFStrike::SpTraits::GetKey(const sk_sp<SkPDFStrike>& strike) {
+    return strike->fPath.fStrikeSpec.descriptor();
+}
+uint32_t SkPDFStrike::SpTraits::Hash(const SkDescriptor& descriptor) {
+    return descriptor.getChecksum();
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // class SkPDFFont
 ///////////////////////////////////////////////////////////////////////////////
@@ -105,8 +209,6 @@ SkPDFFont::~SkPDFFont() = default;
 
 SkPDFFont::SkPDFFont(SkPDFFont&&) = default;
 
-SkPDFFont& SkPDFFont::operator=(SkPDFFont&&) = default;
-
 static bool can_embed(const SkAdvancedTypefaceMetrics& metrics) {
     return !SkToBool(metrics.fFlags & SkAdvancedTypefaceMetrics::kNotEmbeddable_FontFlag);
 }
@@ -115,28 +217,28 @@ static bool can_subset(const SkAdvancedTypefaceMetrics& metrics) {
     return !SkToBool(metrics.fFlags & SkAdvancedTypefaceMetrics::kNotSubsettable_FontFlag);
 }
 
-const SkAdvancedTypefaceMetrics* SkPDFFont::GetMetrics(const SkTypeface* typeface,
+const SkAdvancedTypefaceMetrics* SkPDFFont::GetMetrics(const SkTypeface& typeface,
                                                        SkPDFDocument* canon) {
-    SkASSERT(typeface);
-    SkTypefaceID id = typeface->uniqueID();
+    SkTypefaceID id = typeface.uniqueID();
     if (std::unique_ptr<SkAdvancedTypefaceMetrics>* ptr = canon->fTypefaceMetrics.find(id)) {
         return ptr->get();  // canon retains ownership.
     }
-    int count = typeface->countGlyphs();
+
+    int count = typeface.countGlyphs();
     if (count <= 0 || count > 1 + SkTo<int>(UINT16_MAX)) {
         // Cache nullptr to skip this check.  Use SkSafeUnref().
         canon->fTypefaceMetrics.set(id, nullptr);
         return nullptr;
     }
-    std::unique_ptr<SkAdvancedTypefaceMetrics> metrics = typeface->getAdvancedMetrics();
+
+    std::unique_ptr<SkAdvancedTypefaceMetrics> metrics = typeface.getAdvancedMetrics();
     if (!metrics) {
         metrics = std::make_unique<SkAdvancedTypefaceMetrics>();
     }
-
     if (0 == metrics->fStemV || 0 == metrics->fCapHeight) {
         SkFont font;
         font.setHinting(SkFontHinting::kNone);
-        font.setTypeface(sk_ref_sp(typeface));
+        font.setTypeface(sk_ref_sp(&typeface));
         font.setSize(1000);  // glyph coordinate system
         if (0 == metrics->fStemV) {
             // Figure out a good guess for StemV - Min width of i, I, !, 1.
@@ -167,21 +269,34 @@ const SkAdvancedTypefaceMetrics* SkPDFFont::GetMetrics(const SkTypeface* typefac
     return canon->fTypefaceMetrics.set(id, std::move(metrics))->get();
 }
 
-const std::vector<SkUnichar>& SkPDFFont::GetUnicodeMap(const SkTypeface* typeface,
+const std::vector<SkUnichar>& SkPDFFont::GetUnicodeMap(const SkTypeface& typeface,
                                                        SkPDFDocument* canon) {
-    SkASSERT(typeface);
     SkASSERT(canon);
-    SkTypefaceID id = typeface->uniqueID();
+    SkTypefaceID id = typeface.uniqueID();
     if (std::vector<SkUnichar>* ptr = canon->fToUnicodeMap.find(id)) {
         return *ptr;
     }
-    std::vector<SkUnichar> buffer(typeface->countGlyphs());
-    typeface->getGlyphToUnicodeMap(buffer.data());
+    std::vector<SkUnichar> buffer(typeface.countGlyphs());
+    typeface.getGlyphToUnicodeMap(buffer.data());
     return *canon->fToUnicodeMap.set(id, std::move(buffer));
 }
 
-SkAdvancedTypefaceMetrics::FontType SkPDFFont::FontType(const SkTypeface& typeface,
+SkAdvancedTypefaceMetrics::FontType SkPDFFont::FontType(const SkPDFStrikeSpec& pdfStrikeSpec,
                                                         const SkAdvancedTypefaceMetrics& metrics) {
+    // Really what we want here is to take the strikeSpec and look into it and see if there is anything in there
+    // which would cause any paths to draw differently from the raw paths.
+    // So any 2x2 matrix, path effect, non-fill, etc.
+    // To get that information we would need to create a scaler context and get the rec and effects.
+    // But that seems a bit inefficient. They would be uncached because the only cached ones come
+    // from the SkStrike which comes from the SkStrikeCache, but it doesn't expose the scaler context (though it could).
+    // We would need to get this scaler context once per glyph run drawn
+    // Currently this is called once per GetFontResource which seems excessive,
+    // since it's called with the same value each time (which is heavy given the getTableSize that's no longer needed.)
+    // And there must already be a Strike around at this point anyway, since we need it to know if we have glyphs.
+    // (The SkBulkGlyphMetricsAndPaths goes and creates a strike with a scaler context.)
+    // It seems best to get this information straight off the glyph, since it's the only one that knows.
+    // It is possible the typeface itself is mucking with the underlying paths and metrics somehow,
+    // so just looking at the font and paint and such isn't enough.
     if (SkToBool(metrics.fFlags & SkAdvancedTypefaceMetrics::kVariable_FontFlag) ||
         // PDF is actually interested in the encoding of the data, not just the logical format.
         // If the TrueType is actually wOFF or wOF2 then it should not be directly embedded in PDF.
@@ -189,13 +304,13 @@ SkAdvancedTypefaceMetrics::FontType SkPDFFont::FontType(const SkTypeface& typefa
         // See https://github.com/harfbuzz/harfbuzz/issues/3609 and
         // https://skia-review.googlesource.com/c/skia/+/543485
         SkToBool(metrics.fFlags & SkAdvancedTypefaceMetrics::kAltDataFormat_FontFlag) ||
-        SkToBool(metrics.fFlags & SkAdvancedTypefaceMetrics::kNotEmbeddable_FontFlag)) {
+        SkToBool(metrics.fFlags & SkAdvancedTypefaceMetrics::kNotEmbeddable_FontFlag) ||
+        // || the strike has a path effect, which will need to be applied or will need to just be done with a glyph image.
+        // but this is now handled by checking on the glyph if the path was modified.
+        // || the paint /strike has a mask effect, which will need to be applied or will need to just be done with a glyph image (glyph image is probably better here)
+        pdfStrikeSpec.fHasMaskFilter)
+    {
         // force Type3 fallback.
-        return SkAdvancedTypefaceMetrics::kOther_Font;
-    }
-    if (typeface.getTableSize(kCOLRTableTag)) {
-        // https://bugs.chromium.org/p/skia/issues/detail?id=12650
-        // Don't embed COLRv0 / COLRv1 fonts, fall back to bitmaps.
         return SkAdvancedTypefaceMetrics::kOther_Font;
     }
     return metrics.fType;
@@ -207,34 +322,44 @@ static SkGlyphID first_nonzero_glyph_for_single_byte_encoding(SkGlyphID gid) {
 
 SkPDFFont* SkPDFFont::GetFontResource(SkPDFDocument* doc,
                                       const SkGlyph* glyph,
-                                      SkTypeface* face) {
+                                      const SkPDFStrike& requestedStrike) {
     SkASSERT(doc);
-    SkASSERT(face);  // All SkPDFDevice::internalDrawText ensures this.
-    const SkAdvancedTypefaceMetrics* fontMetrics = SkPDFFont::GetMetrics(face, doc);
+
+    sk_sp<SkPDFStrike>* strike = doc->fStrikeMap.find(requestedStrike.fPath.fStrikeSpec.descriptor());
+    if (!strike) {
+        strike = doc->fStrikeMap.set(sk_ref_sp(&requestedStrike));
+    }
+
+    const SkTypeface& typeface = (*strike)->fPath.fStrikeSpec.typeface();
+    const SkAdvancedTypefaceMetrics* fontMetrics = SkPDFFont::GetMetrics(typeface, doc);
     SkASSERT(fontMetrics);  // SkPDFDevice::internalDrawText ensures the typeface is good.
                             // GetMetrics only returns null to signify a bad typeface.
     const SkAdvancedTypefaceMetrics& metrics = *fontMetrics;
-    SkAdvancedTypefaceMetrics::FontType type = SkPDFFont::FontType(*face, metrics);
-    if (!(glyph->isEmpty() || glyph->path())) {
+
+    // How to determine the FontType.
+    // First we want to know if the "original" font data is something we can just use directly
+    // (is it simple OpenType, no non-default variations, not WOFF, etc).
+    // Second we want to know if the glyph itself is to be drawn unmodified from the font data
+    // (no path effect, stroking, fake bolding, extra matrix, mask filter).
+    // Third we want to check that PDF viewers will draw this glyph the way we want
+    // (at the moment this means an unmodified glyph path).
+    SkAdvancedTypefaceMetrics::FontType type = SkPDFFont::FontType((*strike)->fPath, metrics);
+    // Keep the type (and original data) if the glyph is empty or the glyph has an unmodified path.
+    // Otherwise, fall back to Type3.
+    if (!(glyph->isEmpty() || (glyph->path() && !glyph->pathIsModified()))) {
         type = SkAdvancedTypefaceMetrics::kOther_Font;
     }
+
     bool multibyte = SkPDFFont::IsMultiByte(type);
     SkGlyphID subsetCode =
             multibyte ? 0 : first_nonzero_glyph_for_single_byte_encoding(glyph->getGlyphID());
-    uint64_t typefaceID = (static_cast<uint64_t>(face->uniqueID()) << 16) | subsetCode;
-
-    if (SkPDFFont* found = doc->fFontMap.find(typefaceID)) {
-        SkASSERT(multibyte == found->multiByteGlyphs());
-        return found;
+    if (SkPDFFont* font = (*strike)->fFontMap.find(subsetCode)) {
+        SkASSERT(multibyte == font->multiByteGlyphs());
+        return font;
     }
 
-    sk_sp<SkTypeface> typeface(sk_ref_sp(face));
-    SkASSERT(typeface);
-
-    SkGlyphID lastGlyph = SkToU16(typeface->countGlyphs() - 1);
-
-    // should be caught by SkPDFDevice::internalDrawText
-    SkASSERT(glyph->getGlyphID() <= lastGlyph);
+    SkGlyphID lastGlyph = SkToU16(typeface.countGlyphs() - 1);
+    SkASSERT(glyph->getGlyphID() <= lastGlyph); // should be caught by SkPDFDevice::internalDrawText
 
     SkGlyphID firstNonZeroGlyph;
     if (multibyte) {
@@ -244,16 +369,16 @@ SkPDFFont* SkPDFFont::GetFontResource(SkPDFDocument* doc,
         lastGlyph = SkToU16(std::min<int>((int)lastGlyph, 254 + (int)subsetCode));
     }
     auto ref = doc->reserveRef();
-    return doc->fFontMap.set(
-            typefaceID, SkPDFFont(std::move(typeface), firstNonZeroGlyph, lastGlyph, type, ref));
+    return (*strike)->fFontMap.set(
+            subsetCode, SkPDFFont(*strike, firstNonZeroGlyph, lastGlyph, type, ref));
 }
 
-SkPDFFont::SkPDFFont(sk_sp<SkTypeface> typeface,
+SkPDFFont::SkPDFFont(sk_sp<SkPDFStrike> strike,
                      SkGlyphID firstGlyphID,
                      SkGlyphID lastGlyphID,
                      SkAdvancedTypefaceMetrics::FontType fontType,
                      SkPDFIndirectReference indirectReference)
-    : fTypeface(std::move(typeface))
+    : fStrike(std::move(strike))
     , fGlyphUsage(firstGlyphID, lastGlyphID)
     , fIndirectReference(indirectReference)
     , fFontType(fontType)
@@ -293,7 +418,8 @@ void SkPDFFont::PopulateCommonFontDescriptor(SkPDFDict* descriptor,
 ///////////////////////////////////////////////////////////////////////////////
 
 static void emit_subset_type0(const SkPDFFont& font, SkPDFDocument* doc) {
-    const SkAdvancedTypefaceMetrics* metricsPtr = SkPDFFont::GetMetrics(font.typeface(), doc);
+    const SkTypeface& typeface = font.strike().fPath.fStrikeSpec.typeface();
+    const SkAdvancedTypefaceMetrics* metricsPtr = SkPDFFont::GetMetrics(typeface, doc);
     SkASSERT(metricsPtr);
     if (!metricsPtr) {
         return;
@@ -301,27 +427,25 @@ static void emit_subset_type0(const SkPDFFont& font, SkPDFDocument* doc) {
     const SkAdvancedTypefaceMetrics& metrics = *metricsPtr;
     SkASSERT(can_embed(metrics));
     SkAdvancedTypefaceMetrics::FontType type = font.getType();
-    SkTypeface* face = font.typeface();
-    SkASSERT(face);
 
     auto descriptor = SkPDFMakeDict("FontDescriptor");
-    uint16_t emSize = SkToU16(font.typeface()->getUnitsPerEm());
+    uint16_t emSize = SkToU16(SkScalarRoundToInt(font.strike().fPath.fUnitsPerEM));
     SkPDFFont::PopulateCommonFontDescriptor(descriptor.get(), metrics, emSize, 0);
 
     int ttcIndex;
-    std::unique_ptr<SkStreamAsset> fontAsset = face->openStream(&ttcIndex);
+    std::unique_ptr<SkStreamAsset> fontAsset = typeface.openStream(&ttcIndex);
     size_t fontSize = fontAsset ? fontAsset->getLength() : 0;
     if (0 == fontSize) {
         SkDebugf("Error: (SkTypeface)(%p)::openStream() returned "
                  "empty stream (%p) when identified as kType1CID_Font "
-                 "or kTrueType_Font.\n", face, fontAsset.get());
+                 "or kTrueType_Font.\n", &typeface, fontAsset.get());
     } else if (type == SkAdvancedTypefaceMetrics::kTrueType_Font ||
                type == SkAdvancedTypefaceMetrics::kCFF_Font)
     {
         sk_sp<SkData> subsetFontData;
         if (can_subset(metrics)) {
             SkASSERT(font.firstGlyphID() == 1);
-            subsetFontData = SkPDFSubsetFont(*face, font.glyphUsage());
+            subsetFontData = SkPDFSubsetFont(typeface, font.glyphUsage());
         }
         std::unique_ptr<SkStreamAsset> subsetFontAsset;
         if (subsetFontData) {
@@ -382,7 +506,7 @@ static void emit_subset_type0(const SkPDFFont& font, SkPDFDocument* doc) {
     int32_t defaultWidth = 0;
     {
         std::unique_ptr<SkPDFArray> widths = SkPDFMakeCIDGlyphWidthsArray(
-                *face, font.glyphUsage(), &defaultWidth);
+                font.strike().fPath, font.glyphUsage(), &defaultWidth);
         if (widths && widths->size() > 0) {
             newCIDFont->insertObject("W", std::move(widths));
         }
@@ -400,8 +524,8 @@ static void emit_subset_type0(const SkPDFFont& font, SkPDFDocument* doc) {
     fontDict.insertObject("DescendantFonts", std::move(descendantFonts));
 
     const std::vector<SkUnichar>& glyphToUnicode =
-        SkPDFFont::GetUnicodeMap(font.typeface(), doc);
-    SkASSERT(SkToSizeT(font.typeface()->countGlyphs()) == glyphToUnicode.size());
+        SkPDFFont::GetUnicodeMap(typeface, doc);
+    SkASSERT(SkToSizeT(typeface.countGlyphs()) == glyphToUnicode.size());
     std::unique_ptr<SkStreamAsset> toUnicode =
             SkPDFMakeToUnicodeCmap(glyphToUnicode.data(),
                                    &font.glyphUsage(),
@@ -494,9 +618,9 @@ static ImageAndOffset to_image(SkGlyphID gid, SkBulkGlyphMetricsAndImages* small
 }
 
 static SkPDFIndirectReference type3_descriptor(SkPDFDocument* doc,
-                                               const SkTypeface* typeface,
+                                               const SkTypeface& typeface,
                                                SkScalar xHeight) {
-    if (SkPDFIndirectReference* ptr = doc->fType3FontDescriptors.find(typeface->uniqueID())) {
+    if (SkPDFIndirectReference* ptr = doc->fType3FontDescriptors.find(typeface.uniqueID())) {
         return *ptr;
     }
 
@@ -505,7 +629,7 @@ static SkPDFIndirectReference type3_descriptor(SkPDFDocument* doc,
 
     /** PDF32000_2008: FontFamily should be used for Type3 fonts in Tagged PDF documents. */
     SkString familyName;
-    typeface->getFamilyName(&familyName);
+    typeface.getFamilyName(&familyName);
     if (!familyName.isEmpty()) {
         descriptor.insertByteString("FontFamily", familyName);
     }
@@ -522,11 +646,11 @@ static SkPDFIndirectReference type3_descriptor(SkPDFDocument* doc,
         "ExtraExpanded",
         "UltraExpanded",
     };
-    const char* stretchName = stretchNames[typeface->fontStyle().width() - 1];
+    const char* stretchName = stretchNames[typeface.fontStyle().width() - 1];
     descriptor.insertName("FontStretch", stretchName);
 
     /** PDF32000_2008: FontWeight should be used for Type3 fonts in Tagged PDF documents. */
-    int weight = (typeface->fontStyle().weight() + 50) / 100;
+    int weight = (typeface.fontStyle().weight() + 50) / 100;
     descriptor.insertInt("FontWeight", SkTPin(weight, 1, 9) * 100);
 
     if (const SkAdvancedTypefaceMetrics* metrics = SkPDFFont::GetMetrics(typeface, doc)) {
@@ -544,29 +668,12 @@ static SkPDFIndirectReference type3_descriptor(SkPDFDocument* doc,
     }
     descriptor.insertInt("Flags", fontDescriptorFlags);
     SkPDFIndirectReference ref = doc->emit(descriptor);
-    doc->fType3FontDescriptors.set(typeface->uniqueID(), ref);
+    doc->fType3FontDescriptors.set(typeface.uniqueID(), ref);
     return ref;
 }
 
-#ifdef SK_PDF_BITMAP_GLYPH_RASTER_SIZE
-static constexpr float kBitmapFontSize = SK_PDF_BITMAP_GLYPH_RASTER_SIZE;
-#else
-static constexpr float kBitmapFontSize = 64;
-#endif
-
-SkStrikeSpec make_small_strike(const SkTypeface& typeface) {
-    SkFont font(sk_ref_sp(&typeface), kBitmapFontSize);
-    font.setHinting(SkFontHinting::kNone);
-    font.setEdging(SkFont::Edging::kAlias);
-    return SkStrikeSpec::MakeMask(font,
-                                  SkPaint(),
-                                  SkSurfaceProps(),
-                                  SkScalerContextFlags::kFakeGammaAndBoostContrast,
-                                  SkMatrix::I());
-}
-
 static void emit_subset_type3(const SkPDFFont& pdfFont, SkPDFDocument* doc) {
-    SkTypeface* typeface = pdfFont.typeface();
+    const SkPDFStrike& pdfStrike = pdfFont.strike();
     SkGlyphID firstGlyphID = pdfFont.firstGlyphID();
     SkGlyphID lastGlyphID = pdfFont.lastGlyphID();
     const SkPDFGlyphUse& subset = pdfFont.glyphUsage();
@@ -576,20 +683,15 @@ static void emit_subset_type3(const SkPDFFont& pdfFont, SkPDFDocument* doc) {
     while (lastGlyphID > firstGlyphID && !subset.has(lastGlyphID)) {
         --lastGlyphID;
     }
-    int unitsPerEm;
-    SkStrikeSpec strikeSpec = SkStrikeSpec::MakePDFVector(*typeface, &unitsPerEm);
-    auto strike = strikeSpec.findOrCreateStrike();
+    SkScalar emSize = pdfStrike.fPath.fUnitsPerEM;
+    sk_sp<SkStrike> strike = pdfStrike.fPath.fStrikeSpec.findOrCreateStrike();
     SkASSERT(strike);
-    SkScalar emSize = (SkScalar)unitsPerEm;
     SkScalar xHeight = strike->getFontMetrics().fXHeight;
     SkBulkGlyphMetricsAndPaths metricsAndPaths((sk_sp<SkStrike>(strike)));
     SkBulkGlyphMetricsAndDrawables metricsAndDrawables(std::move(strike));
 
-    SkStrikeSpec strikeSpecSmall = kBitmapFontSize > 0 ? make_small_strike(*typeface)
-                                                       : strikeSpec;
-
-    SkBulkGlyphMetricsAndImages smallGlyphs(strikeSpecSmall);
-    float bitmapScale = kBitmapFontSize > 0 ? emSize / kBitmapFontSize : 1.0f;
+    SkBulkGlyphMetricsAndImages smallGlyphs(pdfFont.strike().fImage.fStrikeSpec);
+    float bitmapScale = emSize / pdfStrike.fImage.fUnitsPerEM;
 
     SkPDFDict font("Font");
     font.insertName("Subtype", "Type3");
@@ -649,10 +751,20 @@ static void emit_subset_type3(const SkPDFFont& pdfFont, SkPDFDocument* doc) {
                 content.writeText(" 0 d0\n1 0 0 1 0 0 cm\n/X");
                 content.write(characterName.c_str(), characterName.size());
                 content.writeText(" Do\n");
-            } else if (path && !path->isEmpty()) {
+            } else if (path && !path->isEmpty() && !pdfStrike.fPath.fHasMaskFilter) {
                 setGlyphWidthAndBoundingBox(pathGlyph->advanceX(), glyphBBox, &content);
-                SkPDFUtils::EmitPath(*path, SkPaint::kFill_Style, &content);
-                SkPDFUtils::PaintPath(SkPaint::kFill_Style, path->getFillType(), &content);
+                // TODO: want SkPDFDevice::internalDrawPath here to handle mask filter?
+                // The 2x2, stroke, path effect, have already been applied (everything that can be baked into the path)
+                // Maybe handle mask filter like drawable above?
+                // However, mask filter is a thing that happens after the path, so the glyph kinda does have a path+mask filter
+                // Just have mask filters go through the small case? Might make sense even for drawables.
+                // Of course that also loses the current color.
+                // Maybe have not simple path glyphs (mask filters) be drawables and not paths?
+                // Does that drop the current color?
+                // TODO: pathGlyph->pathIsHairline(); may already be handled by ScopedContentEntry in effect?
+                SkPaint::Style style = pathGlyph->pathIsHairline() ? SkPaint::kStroke_Style : SkPaint::kFill_Style;
+                SkPDFUtils::EmitPath(*path, style, &content);
+                SkPDFUtils::PaintPath(style, path->getFillType(), &content);
             } else {
                 auto pimg = to_image(gID, &smallGlyphs);
                 if (!pimg.fImage) {
@@ -707,15 +819,15 @@ static void emit_subset_type3(const SkPDFFont& pdfFont, SkPDFDocument* doc) {
 
     font.insertName("CIDToGIDMap", "Identity");
 
-    const std::vector<SkUnichar>& glyphToUnicode = SkPDFFont::GetUnicodeMap(typeface, doc);
-    SkASSERT(glyphToUnicode.size() == SkToSizeT(typeface->countGlyphs()));
+    const std::vector<SkUnichar>& glyphToUnicode = SkPDFFont::GetUnicodeMap(pdfStrike.fPath.fStrikeSpec.typeface(), doc);
+    SkASSERT(glyphToUnicode.size() == SkToSizeT(pdfStrike.fPath.fStrikeSpec.typeface().countGlyphs()));
     auto toUnicodeCmap = SkPDFMakeToUnicodeCmap(glyphToUnicode.data(),
                                                 &subset,
                                                 false,
                                                 firstGlyphID,
                                                 lastGlyphID);
     font.insertRef("ToUnicode", SkPDFStreamOut(nullptr, std::move(toUnicodeCmap), doc));
-    font.insertRef("FontDescriptor", type3_descriptor(doc, typeface, xHeight));
+    font.insertRef("FontDescriptor", type3_descriptor(doc, pdfStrike.fPath.fStrikeSpec.typeface(), xHeight));
     font.insertObject("Widths", std::move(widthArray));
     font.insertObject("Encoding", std::move(encoding));
     font.insertObject("CharProcs", std::move(charProcs));
@@ -740,7 +852,7 @@ void SkPDFFont::emitSubset(SkPDFDocument* doc) const {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-bool SkPDFFont::CanEmbedTypeface(SkTypeface* typeface, SkPDFDocument* doc) {
+bool SkPDFFont::CanEmbedTypeface(const SkTypeface& typeface, SkPDFDocument* doc) {
     const SkAdvancedTypefaceMetrics* metrics = SkPDFFont::GetMetrics(typeface, doc);
     return metrics && can_embed(*metrics);
 }
