@@ -16,6 +16,29 @@
       "message": "Addressed feedback, PTAL.",
       "revId": "b7ac182279bc7f7f2112b260176e5f5a62355063",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45394e63_8c558516",
+        "filename": "src/gpu/graphite/dawn/DawnTexture.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-30T17:34:10Z",
+      "side": 1,
+      "message": "I don\u0027t think we need a separate SingleOwner for each texture. These guarded functions should only ever be happening during `Context::insertRecording` so we can assert against the context\u0027s single owner.\n\nThat field is private right now, but I think it\u0027s okay to expose it on `ContextPriv`, and then we can adjust the `ASSERT_SINGLE_OWNER` helper macro in the CPP file to call `context-\u003epriv().singleOwner()`",
+      "range": {
+        "startLine": 82,
+        "startChar": 0,
+        "endLine": 83,
+        "endChar": 37
+      },
+      "revId": "b7ac182279bc7f7f2112b260176e5f5a62355063",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
