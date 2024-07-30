@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9bca6b94_cd5a9928",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 280,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-07-30T20:23:38Z",
+      "side": 1,
+      "message": "do we know that is will always fit in a uint32_t (or previous size_t)?",
+      "range": {
+        "startLine": 280,
+        "startChar": 43,
+        "endLine": 280,
+        "endChar": 67
+      },
+      "revId": "743537919bb89f6eaaccd8749c4bb066f7a81656",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3fa82b7a_57aa1982",
+        "filename": "src/gpu/graphite/ResourceTypes.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-07-30T20:23:38Z",
+      "side": 1,
+      "message": "Do we need to check fSize here?",
+      "range": {
+        "startLine": 167,
+        "startChar": 9,
+        "endLine": 167,
+        "endChar": 19
+      },
+      "revId": "743537919bb89f6eaaccd8749c4bb066f7a81656",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
