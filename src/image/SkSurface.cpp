@@ -162,6 +162,13 @@ void SkSurface::asyncRescaleAndReadPixelsYUV420(SkYUVColorSpace yuvColorSpace,
     if (!SkIRect::MakeWH(this->width(), this->height()).contains(srcRect) || dstSize.isZero() ||
         (dstSize.width() & 0b1) || (dstSize.height() & 0b1)) {
         callback(context, nullptr);
+        SkDebugf("Failing for incorrect reason: \n"
+                 "surfSize: %d,%d srcRect: %d,%d,%d,%d dstSize: %d,%d srcContained: %s\n",
+                 this->width(), this->height(),
+                 srcRect.fLeft, srcRect.fTop, srcRect.fRight, srcRect.fBottom,
+                 dstSize.width(), dstSize.height(),
+                 SkIRect::MakeWH(this->width(), this->height()).contains(srcRect) ? "true"
+                                                                                  : "false");
         return;
     }
     asSB(this)->onAsyncRescaleAndReadPixelsYUV420(yuvColorSpace,

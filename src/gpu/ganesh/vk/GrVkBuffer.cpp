@@ -146,6 +146,7 @@ sk_sp<GrVkBuffer> GrVkBuffer::Make(GrVkGpu* gpu,
     auto allocator = gpu->memoryAllocator();
     if (!skgpu::VulkanMemory::AllocBufferMemory(allocator,
                                                 buffer,
+                                                skgpu::Protected::kNo,
                                                 allocUsage,
                                                 shouldPersistentlyMapCpuToGpu,
                                                 checkResult,
@@ -360,4 +361,3 @@ const VkDescriptorSet* GrVkBuffer::uniformDescriptorSet() const {
     SkASSERT(fUniformDescriptorSet);
     return fUniformDescriptorSet->descriptorSet();
 }
-

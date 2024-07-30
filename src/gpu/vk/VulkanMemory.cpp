@@ -20,6 +20,7 @@ using BufferUsage = VulkanMemoryAllocator::BufferUsage;
 
 bool VulkanMemory::AllocBufferMemory(VulkanMemoryAllocator* allocator,
                                      VkBuffer buffer,
+                                     Protected isProtected,
                                      BufferUsage usage,
                                      bool shouldPersistentlyMapCpuToGpu,
                                      const std::function<CheckResult>& checkResult,
@@ -35,8 +36,15 @@ bool VulkanMemory::AllocBufferMemory(VulkanMemoryAllocator* allocator,
         propFlags = VulkanMemoryAllocator::kNone_AllocationPropertyFlag;
     }
 
+    if (isProtected == Protected::kYes) {
+        propFlags = propFlags | VulkanMemoryAllocator::kProtected_AllocationPropertyFlag;
+    }
+
+//    SkDebugf("--------------------- here here 2\n");
+
     VkResult result = allocator->allocateBufferMemory(buffer, usage, propFlags, &memory);
     if (!checkResult(result)) {
+        SkDebugf("---------------------- failing in allocator %d\n", isProtected == skgpu::Protected::kYes);
         return false;
     }
     allocator->getAllocInfo(memory, alloc);
@@ -164,4 +172,3 @@ void VulkanMemory::InvalidateMappedAlloc(VulkanMemoryAllocator* allocator,
 }
 
 }  // namespace skgpu
-

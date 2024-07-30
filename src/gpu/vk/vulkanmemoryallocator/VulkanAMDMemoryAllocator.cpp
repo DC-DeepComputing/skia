@@ -195,6 +195,11 @@ VkResult VulkanAMDMemoryAllocator::allocateBufferMemory(VkBuffer buffer,
         info.flags |= VMA_ALLOCATION_CREATE_MAPPED_BIT;
     }
 
+    if (kProtected_AllocationPropertyFlag & allocationPropertyFlags) {
+        info.requiredFlags |= VK_MEMORY_PROPERTY_PROTECTED_BIT;
+    }
+    SkDebugf("----------------- here here here 2\n");
+
     VmaAllocation allocation;
     VkResult result = vmaAllocateMemoryForBuffer(fAllocator, buffer, &info, &allocation, nullptr);
     if (VK_SUCCESS == result) {
@@ -299,6 +304,7 @@ sk_sp<VulkanMemoryAllocator> Make(const skgpu::VulkanBackendContext& backendCont
         return nullptr;
     }
 
+    SkDebugf("---------------- VulkanAMDMemoryAllocator\n");
     return VulkanAMDMemoryAllocator::Make(backendContext.fInstance,
                                           backendContext.fPhysicalDevice,
                                           backendContext.fDevice,

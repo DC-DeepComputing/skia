@@ -557,6 +557,8 @@ bool StaticBufferManager::BufferInfo::createAndUpdateBindings(
         data.fTarget->fBuffer = staticBuffer.get();
         data.fTarget->fOffset = offset;
 
+//        SkDebugf("-------------- staticBuffer %d\n", context->supportsProtectedContent());
+
         auto copyTask = CopyBufferToBufferTask::Make(
                 data.fSource.fBuffer, data.fSource.fOffset,
                 sk_ref_sp(data.fTarget->fBuffer), data.fTarget->fOffset,
