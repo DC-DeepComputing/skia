@@ -355,6 +355,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a831401_bd8273d5",
+        "filename": "tests/graphite/CombinationBuilderTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 575,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-07-30T18:31:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1ca112c2_90283537",
+      "revId": "382112068d199b7c837bf3d643b5a5b20bfe9572",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "733f0c14_e5c0a037",
