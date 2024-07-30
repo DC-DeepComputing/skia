@@ -60,6 +60,7 @@ public:
     uint32_t channelMask(const TextureInfo&) const override;
 
     bool isRenderable(const TextureInfo&) const override;
+    bool isRenderable(const VulkanTextureInfo&) const;
     bool isStorage(const TextureInfo&) const override;
 
     void buildKeyForTexture(SkISize dimensions,

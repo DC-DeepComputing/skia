@@ -1303,9 +1303,12 @@ bool VulkanCaps::isRenderable(const TextureInfo& texInfo) const {
     if (!TextureInfos::GetVulkanTextureInfo(texInfo, &vkInfo)) {
         return false;
     }
+    return this->isRenderable(vkInfo);
+}
 
+bool VulkanCaps::isRenderable(const VulkanTextureInfo& vkInfo) const {
     const FormatInfo& info = this->getFormatInfo(vkInfo.fFormat);
-    return info.isRenderable(vkInfo.fImageTiling, texInfo.numSamples());
+    return info.isRenderable(vkInfo.fImageTiling, vkInfo.fSampleCount);
 }
 
 bool VulkanCaps::isStorage(const TextureInfo& texInfo) const {
