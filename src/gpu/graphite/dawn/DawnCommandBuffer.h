@@ -150,6 +150,15 @@ private:
     wgpu::Buffer fCurrentIndirectBuffer;
     size_t fCurrentIndirectBufferOffset = 0;
 
+    using IntrinsicConstant = std::array<float, 4>;
+
+    static constexpr int kBufferBindingOffsetAlignment = 256;
+    static constexpr int kIntrinsicConstantAlignedSize =
+            SkAlignTo(sizeof(IntrinsicConstant), kBufferBindingOffsetAlignment);
+    static constexpr int kNumSlotsForIntrinsicConstantBuffer = 8;
+
+    IntrinsicConstant fCurrentRTAdjust = {};
+
     sk_sp<DawnBuffer> fIntrinsicConstantBuffer;
     int fIntrinsicConstantBufferSlotsUsed = 0;
 
