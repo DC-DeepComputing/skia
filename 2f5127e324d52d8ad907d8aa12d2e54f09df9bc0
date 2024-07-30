@@ -105,6 +105,70 @@
       "message": "I think we need to assert that only one thread is calling this function.\n\nMaybe use similar assert in Context. https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/gpu/graphite/Context.cpp;drc\u003dbb121553e09483ce7b55445481ae465996ed9577;l\u003d68\n\nWe should add the same assertion in `getOrCreateSamplerBindGroupLayout`",
       "revId": "2f5127e324d52d8ad907d8aa12d2e54f09df9bc0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53393195_53118d5f",
+        "filename": "src/gpu/graphite/dawn/DawnTexture.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-30T15:24:37Z",
+      "side": 1,
+      "message": "Yes, asserting that the context has a single owner is the right thing to do here.",
+      "parentUuid": "134e004d_dc6107ca",
+      "revId": "2f5127e324d52d8ad907d8aa12d2e54f09df9bc0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "943dc06e_43b6e6f3",
+        "filename": "src/gpu/graphite/dawn/DawnTexture.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-30T15:24:37Z",
+      "side": 1,
+      "message": "nit: I would just call this `getSamplerBindGroup`",
+      "range": {
+        "startLine": 48,
+        "startChar": 27,
+        "endLine": 48,
+        "endChar": 55
+      },
+      "revId": "2f5127e324d52d8ad907d8aa12d2e54f09df9bc0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "49a51516_4036f24e",
+        "filename": "src/gpu/graphite/dawn/DawnTexture.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-30T15:24:37Z",
+      "side": 1,
+      "message": "Can we add a comment here that these are only to be modified on the context\u0027s thread so do not need to be otherwise locked.",
+      "range": {
+        "startLine": 80,
+        "startChar": 0,
+        "endLine": 81,
+        "endChar": 58
+      },
+      "revId": "2f5127e324d52d8ad907d8aa12d2e54f09df9bc0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
