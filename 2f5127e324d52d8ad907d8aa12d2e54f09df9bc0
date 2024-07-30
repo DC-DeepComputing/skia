@@ -16,6 +16,95 @@
       "message": "Please take a look.",
       "revId": "2f5127e324d52d8ad907d8aa12d2e54f09df9bc0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c6f3044_5f13c8dc",
+        "filename": "src/gpu/graphite/dawn/DawnTexture.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2024-07-30T14:06:22Z",
+      "side": 1,
+      "message": "Every BindGroup cached in DawnTexture will have same the texture. It\u0027s not necessary to include the texture in the key.",
+      "fixSuggestions": [
+        {
+          "fixId": "a6ea09d9_49107d03",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/dawn/DawnTexture.cpp",
+              "range": {
+                "startLine": 29,
+                "startChar": 0,
+                "endLine": 30,
+                "endChar": 0
+              },
+              "replacement": "BindGroupKey make_texture_bind_group_key(const DawnSampler* sampler) {\n"
+            },
+            {
+              "path": "src/gpu/graphite/dawn/DawnTexture.cpp",
+              "range": {
+                "startLine": 35,
+                "startChar": 0,
+                "endLine": 36,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "src/gpu/graphite/dawn/DawnTexture.cpp",
+              "range": {
+                "startLine": 286,
+                "startChar": 0,
+                "endLine": 287,
+                "endChar": 0
+              },
+              "replacement": "    auto key \u003d make_texture_bind_group_key(sampler);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "2f5127e324d52d8ad907d8aa12d2e54f09df9bc0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9273f7b5_517c84e6",
+        "filename": "src/gpu/graphite/dawn/DawnTexture.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2024-07-30T14:06:22Z",
+      "side": 1,
+      "message": "I think we also need to clear the cache here.",
+      "revId": "2f5127e324d52d8ad907d8aa12d2e54f09df9bc0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "134e004d_dc6107ca",
+        "filename": "src/gpu/graphite/dawn/DawnTexture.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2024-07-30T14:06:22Z",
+      "side": 1,
+      "message": "I think we need to assert that only one thread is calling this function.\n\nMaybe use similar assert in Context. https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/gpu/graphite/Context.cpp;drc\u003dbb121553e09483ce7b55445481ae465996ed9577;l\u003d68\n\nWe should add the same assertion in `getOrCreateSamplerBindGroupLayout`",
+      "revId": "2f5127e324d52d8ad907d8aa12d2e54f09df9bc0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
