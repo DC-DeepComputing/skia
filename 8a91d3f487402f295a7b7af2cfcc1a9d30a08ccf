@@ -258,6 +258,30 @@
       },
       "revId": "8a91d3f487402f295a7b7af2cfcc1a9d30a08ccf",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "67608c19_d4fd1a5e",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 4
+      },
+      "lineNbr": 682,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-30T20:16:40Z",
+      "side": 1,
+      "message": "Ah, because the third parameter is still float.\n\nNot that it matters (it almost certainly doesn\u0027t), but I bet you\u0027d get the half4 form of mix if you did this:\n\n`return mix(lowColor, highColor, half((t.x - lowOffset) / (highOffset - lowOffset)));`",
+      "parentUuid": "1b9f682f_8a65b2ff",
+      "range": {
+        "startLine": 679,
+        "startChar": 19,
+        "endLine": 682,
+        "endChar": 56
+      },
+      "revId": "8a91d3f487402f295a7b7af2cfcc1a9d30a08ccf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
