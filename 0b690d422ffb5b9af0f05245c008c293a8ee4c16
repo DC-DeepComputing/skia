@@ -22,6 +22,30 @@
       },
       "revId": "0b690d422ffb5b9af0f05245c008c293a8ee4c16",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "25483db5_95891fe7",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 720,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2024-07-31T12:35:45Z",
+      "side": 1,
+      "message": "nvm. It\u0027s not true. we still need to update the offsets when setting the uniform bindgroup.",
+      "parentUuid": "9ce48a51_5866acbc",
+      "range": {
+        "startLine": 720,
+        "startChar": 4,
+        "endLine": 720,
+        "endChar": 29
+      },
+      "revId": "0b690d422ffb5b9af0f05245c008c293a8ee4c16",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
