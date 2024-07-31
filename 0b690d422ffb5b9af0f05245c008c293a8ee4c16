@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a1e14ad2_98fcf363",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 684,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-31T14:40:50Z",
+      "side": 1,
+      "message": "I\u0027m fine with landing this as-is, because it just matches the semantics we currently have had with setting the intrinsic values. But WDYT about having a map from viewport to buffer offset, so if we are cycling through several repeated viewports we could reach a steady state where we never have to fill up new buffers?",
+      "range": {
+        "startLine": 681,
+        "startChar": 0,
+        "endLine": 684,
+        "endChar": 5
+      },
+      "revId": "0b690d422ffb5b9af0f05245c008c293a8ee4c16",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9ce48a51_5866acbc",
         "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
         "patchSetId": 2
