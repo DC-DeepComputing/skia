@@ -9,15 +9,20 @@
 #define skgpu_graphite_DawnTexture_DEFINED
 
 #include "include/core/SkRefCnt.h"
+#include "src/core/SkLRUCache.h"
 #include "src/gpu/graphite/Texture.h"
 
 #include "webgpu/webgpu_cpp.h"  // NO_G3_REWRITE
 
 namespace skgpu::graphite {
 class DawnSharedContext;
+class DawnSampler;
+class DawnResourceProvider;
 
 class DawnTexture : public Texture {
 public:
+    using BindGroupKey = FixedSizeKey<1>;
+
     static wgpu::Texture MakeDawnTexture(const DawnSharedContext*,
                                          SkISize dimensions,
                                          const TextureInfo&);
@@ -38,6 +43,10 @@ public:
                                       const wgpu::TextureView&);
 
     ~DawnTexture() override {}
+
+    // Find or create a bind group containing the given sampler for this texture.
+    const wgpu::BindGroup& getSamplerBindGroup(const DawnSampler* sampler,
+                                               DawnResourceProvider* resourceProvider) const;
 
     const wgpu::Texture& dawnTexture() const { return fTexture; }
     const wgpu::TextureView& sampleTextureView() const { return fSampleTextureView; }
@@ -63,6 +72,11 @@ private:
     wgpu::Texture     fTexture;
     wgpu::TextureView fSampleTextureView;
     wgpu::TextureView fRenderTextureView;
+
+    using BindGroupCache = SkLRUCache<BindGroupKey, wgpu::BindGroup, typename BindGroupKey::Hash>;
+    // `fSamplerBindGroups` and `fSamplerBindGroupLayout` should only be modified on the Context's
+    // thread and thus do not need to be otherwise locked.
+    mutable BindGroupCache fSamplerBindGroups;
 };
 
 }  // namespace skgpu::graphite
