@@ -239,6 +239,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "33735d0e_5a3c3b4f",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 4
+      },
+      "lineNbr": 666,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-31T12:34:27Z",
+      "side": 1,
+      "message": "I agree with Nathan\u0027s plan. `offset` is overloaded but the rest of the gradient code uses that terminology for the location of the color stop. Changing `bufferOffset` alleviates the overloading so that makes sense to me.",
+      "parentUuid": "c454e264_e27aa013",
+      "range": {
+        "startLine": 666,
+        "startChar": 14,
+        "endLine": 666,
+        "endChar": 23
+      },
+      "revId": "8a91d3f487402f295a7b7af2cfcc1a9d30a08ccf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f5a30c65_30d18111",
         "filename": "src/sksl/sksl_graphite_frag.sksl",
         "patchSetId": 4
