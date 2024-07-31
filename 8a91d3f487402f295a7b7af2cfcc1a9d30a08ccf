@@ -98,6 +98,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "475a565b_55dfcd2c",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 4
+      },
+      "lineNbr": 642,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-31T14:00:59Z",
+      "side": 1,
+      "message": "We now have more things named `offset` than before.",
+      "parentUuid": "c7fbda46_28af2142",
+      "range": {
+        "startLine": 642,
+        "startChar": 42,
+        "endLine": 642,
+        "endChar": 54
+      },
+      "revId": "8a91d3f487402f295a7b7af2cfcc1a9d30a08ccf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "36db910c_11d48869",
         "filename": "src/sksl/sksl_graphite_frag.sksl",
         "patchSetId": 4
