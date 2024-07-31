@@ -33,6 +33,24 @@
       "message": "Thanks! Holding off pending discussion on other CL.",
       "revId": "8ad508db4e381bbad7b37148c1b7cd0fe75c5286",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "98f81ec9_0e3c431e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3490583
+      },
+      "writtenOn": "2024-07-31T11:36:27Z",
+      "side": 1,
+      "message": "Hopefully with https://chromium-review.googlesource.com/c/chromium/src/+/5691772/2..4/gpu/command_buffer/service/shared_image/iosurface_image_backing.mm#b1396, we should be good to go.",
+      "parentUuid": "53c917ce_d1a442f4",
+      "revId": "8ad508db4e381bbad7b37148c1b7cd0fe75c5286",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
