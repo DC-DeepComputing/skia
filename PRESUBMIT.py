@@ -383,7 +383,7 @@ def _RunCommandAndCheckDiff(output_api, command, files_to_check):
   # Compare the new content to the previous content.
   diffs = []
   for file, prev_content in prev_contents.items():
-    new_content = file.NewContents(flush_cache=True)
+    new_content = file.NewContents()
     if new_content != prev_content:
       path = file.LocalPath()
       diff = difflib.unified_diff(prev_content, new_content, path, path, lineterm='')
