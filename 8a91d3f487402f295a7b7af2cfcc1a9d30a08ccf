@@ -261,6 +261,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a102695_9f27802e",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 4
+      },
+      "lineNbr": 666,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-31T12:54:03Z",
+      "side": 1,
+      "message": "I concur; if we have fewer things called \"offset\" then it\u0027s less of an issue overall.",
+      "parentUuid": "33735d0e_5a3c3b4f",
+      "range": {
+        "startLine": 666,
+        "startChar": 14,
+        "endLine": 666,
+        "endChar": 23
+      },
+      "revId": "8a91d3f487402f295a7b7af2cfcc1a9d30a08ccf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f5a30c65_30d18111",
