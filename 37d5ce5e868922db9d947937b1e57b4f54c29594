@@ -16,6 +16,24 @@
       "message": "So, as long as we don\u0027t want to host any apps that use sk_app, this works for now. And that seem unlikely since sk_app is mostly about local windowing.",
       "revId": "37d5ce5e868922db9d947937b1e57b4f54c29594",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4dd2764_18326ae4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-07-31T15:21:59Z",
+      "side": 1,
+      "message": "Yeah, I think the only consumer of skia-release is fiddle.skia.org (the fiddler backend to be precise)",
+      "parentUuid": "6a0c7de9_9e2f64bc",
+      "revId": "37d5ce5e868922db9d947937b1e57b4f54c29594",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
