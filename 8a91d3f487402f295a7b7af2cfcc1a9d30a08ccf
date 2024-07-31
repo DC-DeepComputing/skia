@@ -74,6 +74,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c7fbda46_28af2142",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 4
+      },
+      "lineNbr": 642,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-31T13:59:47Z",
+      "side": 1,
+      "message": "I renamed `arr` to `colorAndOffsetData` to match the same naming convention the sampler in the texture approach has. And this is also the name of the array in the shader functions that gets passed in for this argument.",
+      "parentUuid": "54da2c65_e1e9e821",
+      "range": {
+        "startLine": 642,
+        "startChar": 42,
+        "endLine": 642,
+        "endChar": 54
+      },
+      "revId": "8a91d3f487402f295a7b7af2cfcc1a9d30a08ccf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "36db910c_11d48869",
         "filename": "src/sksl/sksl_graphite_frag.sksl",
         "patchSetId": 4
