@@ -144,6 +144,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ac4ee81a_1e19622a",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 4
+      },
+      "lineNbr": 642,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-07-31T14:08:18Z",
+      "side": 1,
+      "message": "Looking at this holistically, the code is much more readable after your CL than before it. I think there might be opportunities for extra comments or something to make things even clearer, but I don\u0027t want to stand in the way of progress. LGTM.",
+      "parentUuid": "fe996d1f_5a54d8a4",
+      "range": {
+        "startLine": 642,
+        "startChar": 42,
+        "endLine": 642,
+        "endChar": 54
+      },
+      "revId": "8a91d3f487402f295a7b7af2cfcc1a9d30a08ccf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "36db910c_11d48869",
