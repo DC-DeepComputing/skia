@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4fdcadd4_1c090414",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-07-31T13:42:11Z",
+      "side": 1,
+      "message": "Unfortunately DawnBuffer with emscripten still needs the DeleteASAP flag so we can\u0027t remove it.",
+      "revId": "d8a4c8847c46903148087c325152b866f2f2994d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
