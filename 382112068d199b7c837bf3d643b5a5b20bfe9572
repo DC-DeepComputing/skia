@@ -230,6 +230,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5287ad7_25f5e831",
+        "filename": "tests/graphite/BackendTextureTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-07-31T17:19:03Z",
+      "side": 1,
+      "message": "Filed https://issuetracker.google.com/356634064 Enable BackendTextureTest on Vulkan",
+      "parentUuid": "3136ec0f_451b69f0",
+      "revId": "382112068d199b7c837bf3d643b5a5b20bfe9572",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b473bf7d_086dc566",
