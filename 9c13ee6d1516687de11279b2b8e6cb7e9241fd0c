@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5945657a_7ae01267",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-07-31T13:47:15Z",
+      "side": 1,
+      "message": "lg for once Chrome has been updated",
+      "revId": "9c13ee6d1516687de11279b2b8e6cb7e9241fd0c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
