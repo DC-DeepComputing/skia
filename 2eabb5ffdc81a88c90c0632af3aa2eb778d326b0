@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0379bf1f_2483ea4f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-07-31T18:01:50Z",
+      "side": 1,
+      "message": "The code looks fine but let\u0027s discuss some of the image diffs",
+      "revId": "2eabb5ffdc81a88c90c0632af3aa2eb778d326b0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da5a0389_7a92d3b9",
+        "filename": "src/effects/imagefilters/SkBlurImageFilter.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-07-31T18:01:50Z",
+      "side": 1,
+      "message": "successive ?",
+      "range": {
+        "startLine": 217,
+        "startChar": 47,
+        "endLine": 217,
+        "endChar": 54
+      },
+      "revId": "2eabb5ffdc81a88c90c0632af3aa2eb778d326b0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
