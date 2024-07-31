@@ -1464,6 +1464,9 @@ static void gather_tests() {
         if (!in_shard()) {
             continue;
         }
+//        CommandLineFlags::StringArray strings;
+//        strings.append("VkProtectedContext_AsyncReadFromProtectedSurface_Graphite");
+
         if (CommandLineFlags::ShouldSkip(FLAGS_match, test.fName)) {
             continue;
         }

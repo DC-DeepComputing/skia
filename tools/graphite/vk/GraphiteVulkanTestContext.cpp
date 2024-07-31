@@ -28,11 +28,14 @@ std::unique_ptr<GraphiteTestContext> VulkanTestContext::Make() {
     VkDebugReportCallbackEXT debugCallback = VK_NULL_HANDLE;
     PFN_vkDestroyDebugReportCallbackEXT destroyCallback = nullptr;
 
+//    SkDebugf("--------------- a0\n");
+
     PFN_vkGetInstanceProcAddr instProc;
     if (!sk_gpu_test::LoadVkLibraryAndGetProcAddrFuncs(&instProc)) {
         return nullptr;
     }
 
+    //SkDebugf("--------------- a1\n");
     extensions = new skgpu::VulkanExtensions();
     features = new VkPhysicalDeviceFeatures2;
     memset(features, 0, sizeof(VkPhysicalDeviceFeatures2));
@@ -49,6 +52,8 @@ std::unique_ptr<GraphiteTestContext> VulkanTestContext::Make() {
         destroyCallback = (PFN_vkDestroyDebugReportCallbackEXT) instProc(
                 backendContext.fInstance, "vkDestroyDebugReportCallbackEXT");
     }
+
+//    SkDebugf("--------------- a2\n");
 
     return std::unique_ptr<GraphiteTestContext>(new VulkanTestContext(backendContext,
                                                                       extensions,

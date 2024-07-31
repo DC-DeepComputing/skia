@@ -303,6 +303,7 @@ sk_sp<VulkanMemoryAllocator> Make(const skgpu::VulkanBackendContext& backendCont
         return nullptr;
     }
 
+    SkDebugf("---------------- VulkanAMDMemoryAllocator\n");
     return VulkanAMDMemoryAllocator::Make(backendContext.fInstance,
                                           backendContext.fPhysicalDevice,
                                           backendContext.fDevice,

@@ -44,11 +44,15 @@ static std::vector<SkQP::UnitTest> get_unit_tests(int enforcedAndroidAPILevel) {
     std::vector<SkQP::UnitTest> unitTests;
     for (const skiatest::Test& test : skiatest::TestRegistry::Range()) {
         const auto ctsMode = test.fCTSEnforcement.eval(enforcedAndroidAPILevel);
-        if (ctsMode != CtsEnforcement::RunMode::kSkip) {
+//        if (!strstr(test.fName, "VkProtectedContext_AsyncReadFromProtectedSurface_Graphite")) {
+//            continue;
+//        }
+        SkDebugf("%s\n", test.fName);
+//        if (ctsMode != CtsEnforcement::RunMode::kSkip) {
             SkASSERTF(test.fTestType != skiatest::TestType::kCPU,
                       "Non-GPU test was included in SkQP: %s\n", test.fName);
             unitTests.push_back(&test);
-        }
+//        }
     }
     auto lt = [](SkQP::UnitTest u, SkQP::UnitTest v) { return strcmp(u->fName, v->fName) < 0; };
     std::sort(unitTests.begin(), unitTests.end(), lt);
@@ -145,6 +149,7 @@ void SkQP::init(SkQPAssetManager* assetManager, const char* reportDirectory) {
 }
 
 std::vector<std::string> SkQP::executeTest(SkQP::UnitTest test) {
+//    SkDebugf("baz\n");
     struct : public skiatest::Reporter {
         std::vector<std::string> fErrors;
         void reportFailed(const skiatest::Failure& failure) override {
@@ -166,6 +171,7 @@ std::vector<std::string> SkQP::executeTest(SkQP::UnitTest test) {
     }
 #ifdef SK_GRAPHITE
     else if (test->fTestType == skiatest::TestType::kGraphite) {
+//        SkDebugf("foo\n");
         skiatest::graphite::TestOptions options;
         if (test->fCTSEnforcement.eval(fEnforcedAndroidAPILevel) ==
             CtsEnforcement::RunMode::kRunStrict) {
@@ -175,6 +181,7 @@ std::vector<std::string> SkQP::executeTest(SkQP::UnitTest test) {
             test->fGraphiteContextOptionsProc(&options.fContextOptions);
         }
         test->graphite(&r, options);
+//        SkDebugf("bar\n");
     }
 #endif
 
