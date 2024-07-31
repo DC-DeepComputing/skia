@@ -27,6 +27,10 @@
 #include <limits>
 #include <new>
 
+#ifdef ENABLE_RUST_PNG
+#include "third_party/rust/cxx/v1/cxx.h"
+#endif
+
 ///////////////////////////////////////////////////////////////////////////////
 
 bool SkStream::readS8(int8_t* i) {
@@ -67,6 +71,18 @@ bool SkStream::readPackedUInt(size_t* i) {
     }
     return true;
 }
+
+#if ENABLE_RUST_PNG
+size_t SkStream::read(rust::Slice<uint8_t> buffer) {
+    // Avoiding operating on `buffer.data()` if the slice is empty helps to avoid
+    // UB risk described at https://davidben.net/2024/01/15/empty-slices.html.
+    if (buffer.empty()) {
+        return 0;
+    }
+
+    return this->read(buffer.data(), buffer.size());
+}
+#endif
 
 //////////////////////////////////////////////////////////////////////////////////////
 
