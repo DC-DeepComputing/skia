@@ -20,13 +20,22 @@
 #include <cstring>
 #include <memory>
 #include <utility>
+
+#ifdef ENABLE_RUST_PNG
+#include "experimental/rust_png/ffi/FFI.h"
+#endif
+
 class SkStreamAsset;
 
 /**
  *  SkStream -- abstraction for a source of bytes. Subclasses can be backed by
  *  memory, or a file, or something else.
  */
-class SK_API SkStream {
+class SK_API SkStream
+#ifdef ENABLE_RUST_PNG
+        : public rust_png::ReadTrait
+#endif
+{
 public:
     virtual ~SkStream() {}
     SkStream() {}
@@ -142,6 +151,11 @@ public:
     virtual sk_sp<SkData> getData() const { return nullptr; }
 
 private:
+#if ENABLE_RUST_PNG
+    // `rust_png::ReadTrait` override:
+    size_t read(rust::Slice<uint8_t> buffer) override;
+#endif
+
     virtual SkStream* onDuplicate() const { return nullptr; }
     virtual SkStream* onFork() const { return nullptr; }
 
@@ -370,6 +384,11 @@ public:
 
     /** Creates the stream to read from the specified data */
     SkMemoryStream(sk_sp<SkData> data);
+
+    // DO NOT SUBMIT:
+    ~SkMemoryStream() override {
+      abort();
+    }
 
     /** Returns a stream with a copy of the input data. */
     static std::unique_ptr<SkMemoryStream> MakeCopy(const void* data, size_t length);
