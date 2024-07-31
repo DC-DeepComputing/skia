@@ -221,13 +221,10 @@ sk_sp<Texture> DawnTexture::MakeWrapped(const DawnSharedContext* sharedContext,
 }
 
 void DawnTexture::freeGpuData() {
-    if (this->ownership() != Ownership::kWrapped && fTexture) {
-        // Destroy the texture even if it is still referenced by other BindGroup or views.
-        // Graphite should already guarantee that all command buffers using this texture (indirectly
-        // via BindGroup or views) are already completed.
-        fTexture.Destroy();
-    }
-    // Clear out cached resources before the allocator is removed.
+    // NOTE: We avoid destroying `fTexture` here as Skia should not have any caches holding the
+    // texture, and destruction should be handled through proper ref-counting within Dawn. This is
+    // done to allow other refs are kept alive until the command buffer is submitted. Clear out
+    // cached resources before the allocator is removed.
     fSamplerBindGroups.reset();
 
     fTexture = nullptr;
