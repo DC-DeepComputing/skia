@@ -34,6 +34,24 @@
       "parentUuid": "b05daee9_f1b4a573",
       "revId": "511fd84b36e4f449a7d05723de4f354effc28bf4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "226f77cb_d3a316a4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-07-31T15:13:37Z",
+      "side": 1,
+      "message": "See http://review.skia.org/884616 and https://skia-review.googlesource.com/c/skia/+/884596 for hopefully better fixes (although we might need two subclasses of GLWindowContext for unix if we do want to run viewer on EGL",
+      "parentUuid": "a2f2b852_66b71997",
+      "revId": "511fd84b36e4f449a7d05723de4f354effc28bf4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
