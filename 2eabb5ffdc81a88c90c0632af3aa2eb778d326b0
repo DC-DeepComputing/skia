@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a628ecc4_70f416bd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-31T20:33:54Z",
+      "side": 1,
+      "message": "Going through the diffs offline, everything was falling into three categories:\n1. It was a large blur being rescaled and then hitting the simd algorithm, but being compared against a GPU implementation instead of a CPU image.\n2. It was a very small blur that used to be dropped as \"identity\" that was now being handled with the shader-based blur, so we were going from incorrectly having no blur to having some blur.\n3. It was a small blur that wasn\u0027t the identity, but was below the ~2 sigma value that is where the box blur approach\u0027s approximations break down, so we were switching from the simd algorithm to the more accurate shader algorithm.",
+      "parentUuid": "0379bf1f_2483ea4f",
+      "revId": "2eabb5ffdc81a88c90c0632af3aa2eb778d326b0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "da5a0389_7a92d3b9",
@@ -31,6 +49,30 @@
       "writtenOn": "2024-07-31T18:01:50Z",
       "side": 1,
       "message": "successive ?",
+      "range": {
+        "startLine": 217,
+        "startChar": 47,
+        "endLine": 217,
+        "endChar": 54
+      },
+      "revId": "2eabb5ffdc81a88c90c0632af3aa2eb778d326b0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1045cfbf_e8273bf0",
+        "filename": "src/effects/imagefilters/SkBlurImageFilter.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-31T20:33:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "da5a0389_7a92d3b9",
       "range": {
         "startLine": 217,
         "startChar": 47,
