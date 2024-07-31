@@ -1,0 +1,25 @@
+# Copyright 2024 Google LLC
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# TODO(https://crbug.com/40278281): Once the FFI API matures we should move the
+# `experimental/rust_png/ffi` directory to `third_party/rust/png/v0_x/ffi`.
+# This directory is temporarily in Skia to avoid having to coordinate changes
+# across Skia and Chromium repos.
+
+import("//build/rust/rust_static_library.gni")
+
+rust_static_library("ffi") {
+  allow_unsafe = true  # For FFI
+  crate_root = "FFI.rs"
+  sources = [ "FFI.rs" ]
+  cxx_bindings = [ "FFI.rs" ]
+  public_deps = [ ":ffi_cpp" ]
+  deps = [ "//third_party/rust/png/v0_17:lib" ]
+}
+
+static_library("ffi_cpp") {
+  visibility = [ ":*" ]
+  public = [ "FFI.h" ]
+  public_deps = [ "//build/rust:cxx_cppdeps" ]
+}
