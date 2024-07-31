@@ -22,6 +22,30 @@
       },
       "revId": "d1a63fadf029f6df5274cfbec5de0cce8b680f77",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "164970b8_7486e2ba",
+        "filename": "PRESUBMIT.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 386,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-07-31T19:56:20Z",
+      "side": 0,
+      "message": "Try running `update_depot_tools` - we need this flush_cache set",
+      "parentUuid": "bbaa239b_07e9eca1",
+      "range": {
+        "startLine": 386,
+        "startChar": 35,
+        "endLine": 386,
+        "endChar": 51
+      },
+      "revId": "d1a63fadf029f6df5274cfbec5de0cce8b680f77",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
