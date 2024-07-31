@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "43b0c48a_03b4a9be",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1501,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-31T01:10:37Z",
+      "side": 1,
+      "message": "The stability is helped with `downscale_step_count` being the main decider on whether or not there\u0027s a no-op or how many iterations to do per axis. That has some fuzzy tolerance in it. Once an axis\u0027 steps has reached 0, the controlling logic hard codes the scale to 1.0 (vs a division/multiply that would be expected to work out to near 1ish).\n\nI did miss one spot that calls `scale_about_center` before entering the for loop that passes in the original scale factors, so I\u0027ve modified that to reflect the step count too.",
+      "parentUuid": "1429dd11_e5ab433b",
+      "range": {
+        "startLine": 1501,
+        "startChar": 15,
+        "endLine": 1501,
+        "endChar": 24
+      },
+      "revId": "66e7592cdb7ec402a2724a0e867183494d6d40b0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2c6d36bf_b1a2d56c",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-07-30T20:19:43Z",
       "side": 1,
       "message": "Not srcCS ?",
+      "range": {
+        "startLine": 1642,
+        "startChar": 70,
+        "endLine": 1642,
+        "endChar": 87
+      },
+      "revId": "66e7592cdb7ec402a2724a0e867183494d6d40b0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8af14cb0_ba0a5fa6",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1642,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-31T01:10:37Z",
+      "side": 1,
+      "message": "d\u0027oh!",
+      "parentUuid": "2c6d36bf_b1a2d56c",
       "range": {
         "startLine": 1642,
         "startChar": 70,
