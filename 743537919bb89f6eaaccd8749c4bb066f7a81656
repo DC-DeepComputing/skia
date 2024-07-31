@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "112aab1b_6c70b64a",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 280,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-31T18:57:10Z",
+      "side": 1,
+      "message": "Per offline discussion I\u0027m handling this in a follow-up CL that has BufferManager take the count and stride in separately and validate the product fits into 32 bits.\n\nhttps://skia-review.googlesource.com/c/skia/+/884621",
+      "parentUuid": "9bca6b94_cd5a9928",
+      "range": {
+        "startLine": 280,
+        "startChar": 43,
+        "endLine": 280,
+        "endChar": 67
+      },
+      "revId": "743537919bb89f6eaaccd8749c4bb066f7a81656",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3fa82b7a_57aa1982",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-07-30T20:23:38Z",
       "side": 1,
       "message": "Do we need to check fSize here?",
+      "range": {
+        "startLine": 167,
+        "startChar": 9,
+        "endLine": 167,
+        "endChar": 19
+      },
+      "revId": "743537919bb89f6eaaccd8749c4bb066f7a81656",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "96b69160_99cafdbf",
+        "filename": "src/gpu/graphite/ResourceTypes.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-31T18:57:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3fa82b7a_57aa1982",
       "range": {
         "startLine": 167,
         "startChar": 9,
