@@ -22,6 +22,30 @@
       },
       "revId": "ce339f79a5315d3365ca0f81f85d09298643ed79",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "afe31b4b_035a603f",
+        "filename": "src/gpu/ganesh/vk/GrVkBuffer.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-07-31T19:12:22Z",
+      "side": 1,
+      "message": "I think this is okay",
+      "parentUuid": "d9fd7061_060a72c1",
+      "range": {
+        "startLine": 77,
+        "startChar": 0,
+        "endLine": 77,
+        "endChar": 64
+      },
+      "revId": "ce339f79a5315d3365ca0f81f85d09298643ed79",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
