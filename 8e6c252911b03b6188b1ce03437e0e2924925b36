@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dc94f224_99835173",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-07-31T20:38:10Z",
+      "side": 1,
+      "message": "This looks fine to me, but can you outline the plan for how it will be embedded in the PaintParamsKey?",
+      "revId": "8e6c252911b03b6188b1ce03437e0e2924925b36",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
