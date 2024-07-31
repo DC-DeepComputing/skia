@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9fd7061_060a72c1",
+        "filename": "src/gpu/ganesh/vk/GrVkBuffer.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-07-31T16:46:37Z",
+      "side": 1,
+      "message": "I\u0027m a bit unsure of this part.",
+      "range": {
+        "startLine": 77,
+        "startChar": 0,
+        "endLine": 77,
+        "endChar": 64
+      },
+      "revId": "ce339f79a5315d3365ca0f81f85d09298643ed79",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
