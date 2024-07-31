@@ -160,13 +160,14 @@ def create_apk_impl(opts):
             makedirs(dst)
             shutil.copy(os.path.join(build, lib), dst)
 
-        accept_android_license(opts.android_home)
+#        accept_android_license(opts.android_home)
         env_copy = os.environ.copy()
         env_copy['ANDROID_HOME'] = opts.android_home
         env_copy['ANDROID_NDK_HOME'] = opts.android_ndk
         # Why does gradlew need to be called from this directory?
         check_call(['apps/gradlew', '-p' 'apps/' + app,
                     '-P', 'suppressNativeBuild',
+                    '--warning-mode', 'all',
                     ':%s:assembleUniversalDebug' % app],
                     env=env_copy, cwd='platform_tools/android')
 
@@ -217,7 +218,7 @@ class SkQP_Build_Options(object):
 
     def gn_args(self, arch):
         return skqp_gn_args.GetGNArgs(arch=arch, ndk=self.android_ndk, debug=self.debug,
-                                      api_level=26)
+                                      api_level=35)
 
     def write(self, o):
         for k, v in [('ANDROID_NDK_HOME', self.android_ndk),

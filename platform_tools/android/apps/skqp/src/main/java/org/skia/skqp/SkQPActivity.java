@@ -3,8 +3,10 @@ package org.skia.skqp;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+//import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
+//import android.support.v7.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import java.io.File;
 import java.io.IOException;
@@ -81,4 +83,3 @@ public class SkQPActivity extends AppCompatActivity implements Runnable {
         }
     }
 }
-

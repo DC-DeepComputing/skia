@@ -108,6 +108,7 @@ sk_sp<Buffer> VulkanBuffer::Make(const VulkanSharedContext* sharedContext,
                                     nullptr, /*const VkAllocationCallbacks*/
                                     &buffer));
     if (result != VK_SUCCESS) {
+        SkDebugf("---------------------- failed 1\n");
         return nullptr;
     }
 
@@ -116,6 +117,7 @@ sk_sp<Buffer> VulkanBuffer::Make(const VulkanSharedContext* sharedContext,
         sharedContext->vulkanCaps().shouldPersistentlyMapCpuToGpuBuffers();
     //AllocBufferMemory
     auto checkResult = [](VkResult result) {
+//        SkDebugf("checkResult %d\n", result);
         return result == VK_SUCCESS;
     };
     if (!skgpu::VulkanMemory::AllocBufferMemory(allocator,
@@ -142,6 +144,7 @@ sk_sp<Buffer> VulkanBuffer::Make(const VulkanSharedContext* sharedContext,
         VULKAN_CALL(sharedContext->interface(), DestroyBuffer(sharedContext->device(),
                 buffer,
                 /*const VkAllocationCallbacks*=*/nullptr));
+        SkDebugf("---------------------- failed 3\n");
         return nullptr;
     }
 
