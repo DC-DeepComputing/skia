@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1e91d3a_9cb33ad5",
+        "filename": "src/gpu/ganesh/effects/GrRRectEffect.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-07-31T15:37:15Z",
+      "side": 1,
+      "message": "Why do we need this line ?",
+      "range": {
+        "startLine": 216,
+        "startChar": 0,
+        "endLine": 216,
+        "endChar": 64
+      },
+      "revId": "9ff0f595c3014a8b41c8726adcfa5ef0e5eba045",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
