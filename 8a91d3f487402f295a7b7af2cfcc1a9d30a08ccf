@@ -122,6 +122,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fe996d1f_5a54d8a4",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 4
+      },
+      "lineNbr": 642,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-07-31T14:05:00Z",
+      "side": 1,
+      "message": "Yes but its still the same semantic meaning of `offset` throughout all the gradient code. If `offset` is a confusing term I feel that should be refactored throughout all the gradient code and not just here.",
+      "parentUuid": "475a565b_55dfcd2c",
+      "range": {
+        "startLine": 642,
+        "startChar": 42,
+        "endLine": 642,
+        "endChar": 54
+      },
+      "revId": "8a91d3f487402f295a7b7af2cfcc1a9d30a08ccf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "36db910c_11d48869",
         "filename": "src/sksl/sksl_graphite_frag.sksl",
         "patchSetId": 4
