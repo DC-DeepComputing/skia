@@ -111,6 +111,30 @@
       },
       "revId": "f6d3f83e407a738f7eba91e3be06f3b74de638ad",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e47d71f1_abb544f6",
+        "filename": "src/gpu/graphite/dawn/DawnTexture.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 18114
+      },
+      "writtenOn": "2024-08-01T14:27:08Z",
+      "side": 1,
+      "message": "The resourceProvider here comes from DawnCommandBuffer\u0027s fResourceProvider which comes from [QueueManager](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/gpu/graphite/QueueManager.cpp;drc\u003dc1b9831c8c232ab9470645977a18527cfa7bb993;l\u003d57). Unless I\u0027m missing something, it looks like it should be the same as Context\u0027s resourceProvider so it should be from the same thread.",
+      "parentUuid": "ea0d24d9_7d38cd93",
+      "range": {
+        "startLine": 260,
+        "startChar": 3,
+        "endLine": 260,
+        "endChar": 6
+      },
+      "revId": "f6d3f83e407a738f7eba91e3be06f3b74de638ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
