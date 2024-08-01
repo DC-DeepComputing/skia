@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a359d6e9_d5ef6855",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-08-01T20:31:33Z",
+      "side": 1,
+      "message": "A note on perf regressions seen in original CL on the car SVG:\nIt has 139 blurs. \n62 of them are classified as \"small\" by the new logic in SkBlurEngine and using the RP-based SkSL shader blur algorithm instead of the inaccurate-at-those-sigmas SIMD algorithm.\n26 of those 62 small blurs would have been classified as having a box window size of 1 and been a no-op in the SIMD blur so they represent a change from no work to extra work.\nThe other 36 small blurs represent a change in algorithm (very likely more expensive work).\n\nThe legacy blur approach runs carsvg in nanobench in 39ms on my Linux workstation.\nThe hybrid approach runs carsvg in 68ms.\nForcing the RP SkSL for all blurs runs carsvg in 175ms.\nUsing hybrid but skipping all legacy identity blurs brings it to to 61ms.\nFurther reducing the \"small\" blur threshold to a sigma of 1 (instead of 2) brings timing down to 47ms. \n\nI think it\u0027s not surprising that RP is about 4-5x slower than the SIMD code, but given that at least some of that was by cheating and by being inaccurate, I think we accept these regressions as necessary in the name of correctness.  Looking at GMs with Rob, there were definitely noticeable improvements in the blur accuracy for sigmas between 0-2 that we\u0027d be truncating if we lowered the SIMD threshold to something like 1.",
+      "revId": "f5ba2e91ae3371b0ee111a8b8eb80452a22a3c15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
