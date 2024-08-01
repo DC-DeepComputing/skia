@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0953c0f6_0afabbb2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-08-01T13:07:46Z",
+      "side": 1,
+      "message": "Are there plans to do this for the other BindGroup types? For example there is a cache for uniform buffer bind groups on the ResourceProvider. This seems like it would have all the same memory issues. So if we thing having Texture hold \"refs\" to its BindGroups that it is part of, then I think we should also have all Buffers hold refs to BindGroups as well. If this was simply about being more efficient in cache look ups, then sure just having this on Texture is fine. But the main driver for this change is to not be leaking GPU memory. So I think the system here needs to be expanded to a more general model that includes any resource that may be held in a BindGroup.",
+      "revId": "f6d3f83e407a738f7eba91e3be06f3b74de638ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea0d24d9_7d38cd93",
+        "filename": "src/gpu/graphite/dawn/DawnTexture.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-08-01T13:07:46Z",
+      "side": 1,
+      "message": "This either seems unnecessary or inefficient. There is already an issue if two different resourceProviders are used then the assert will not trigger (different singleOwner objects) but we\u0027ll still have thread issues with the binding cache.\n\nFirst we could find a way to make sure this is only ever called from the Context thread and guarantee that the resourceProvider here is always that of the Context\u0027s. This approach could lead to some ugly APIs but probably is doable.\n\nAlternatively we just need to make access to this function thread safe.",
+      "range": {
+        "startLine": 260,
+        "startChar": 3,
+        "endLine": 260,
+        "endChar": 6
+      },
+      "revId": "f6d3f83e407a738f7eba91e3be06f3b74de638ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
