@@ -74,6 +74,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a708733b_44ad9ca5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2024-08-01T13:53:41Z",
+      "side": 1,
+      "message": "TLDR, yes, I think we can still use `Destroy` on buffers because it\u0027s ok to do so. But for textures, we don\u0027t want to use that anymore because it prevents `submit` calls from being deferred.\n\nSince buffers are entirely controlled by Graphite. When we call `Buffer::freeGpuResources`, we know that this is the last reference of the buffer, so we can use `Destroy()` safely.\n\nHowever, which external texture, when `Texture::freeGpuResources` is called, it is not safe to call `Destroy()` because the texture is owned externally. So now we have two different places that control the lifetime of the texture. I think it\u0027s complicated to guarantee the leak free across all places. We have to make sure that client calls `Destroy` properly on the textures.\n\nWith the change in this CL, everything will be in Graphite\u0027s control. Whether client calls `texture.Destroy` or not, there won\u0027t be any leak.\n\nThe second reason is that this is for Chrome\u0027s shared images (SI) system. For SI, only textures are relevant, and we don\u0027t want to call `Destroy` on them, because we want to be able to defer the `Context::submit` to the end of a frame, past the lifetime of the SI. As of now, we have to call `Destroy` when a SI is deleted, and it\u0027s not valid to call `Context::submit` that has pending commands using the texture after that.\n\nFWIW, I think we can also use a general approach of making buffers and textures BindGroups follow the same mechanism as you suggested:\n- Cleaning up BindGroups properly. Holding BG refs in textures and buffers.\n- Don\u0027t call `Destroy` on any buffers or textures.\n\nBut IMO it\u0027s more complicated, and not necessary at this point, because calling `Destroy` on buffers is not a problem so we don\u0027t have to fix it. Also as you mentioned, for single texture BG, caching in DawnTexture indeed has faster lookups.",
+      "parentUuid": "ee3bcc33_54253423",
+      "revId": "f6d3f83e407a738f7eba91e3be06f3b74de638ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ea0d24d9_7d38cd93",
         "filename": "src/gpu/graphite/dawn/DawnTexture.cpp",
         "patchSetId": 11
