@@ -92,6 +92,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "889c275c_f2336c45",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-08-01T18:24:42Z",
+      "side": 1,
+      "message": "Yeah I\u0027m not against landing this change now as it is the most impactful and there are good reasons to move things in this direction.\n\nI just want to make sure there is a plan to improve all our BindGroup handling so we are not leaking memory at all. I don\u0027t want this change to go in and we don\u0027t do anything for a while, and then we are living in world with two different caching systems for these BindGroups.\n\nAlso, the argument for why this is needed specifically for the SI system is a little worrying. IIUC the issue is Chrome wants to delete the SI before submitting, but then needs the Texture to stay valid and alive after then. This really seems like a fundamental issue with SI and not really Skia. Chrome needs to be making sure they are keeping the Texture reffed/alive for as long as it is needed and then unref/Delete at once done. It seems like Chrome has tied Texture lifetime and the need for synchronization stuff that triggers when SI is deleted together. This really should be fixed. Maybe actually using ReleaseProcs form Skia can help this.\n\nFinally, I think Skia should continue using Delete for textures that it owns internally. Calling Delete is more efficient memory wise as it can skip webgpus garbage collecting delays. This should all be safe for the same reasons it is safe to do so for Buffers Skia owns.",
+      "parentUuid": "a708733b_44ad9ca5",
+      "revId": "f6d3f83e407a738f7eba91e3be06f3b74de638ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ea0d24d9_7d38cd93",
         "filename": "src/gpu/graphite/dawn/DawnTexture.cpp",
         "patchSetId": 11
@@ -222,6 +240,30 @@
       "writtenOn": "2024-08-01T18:21:06Z",
       "side": 1,
       "message": "The reason I didn\u0027t want to have a SingleOwner on the texture is that while it does ensure the texture\u0027s data is accessed safely, it\u0027s not really ensuring the currently intended behavior of being only called on the Context thread.\n\nIt\u0027s also a non-zero sized object even in release mode, so I didn\u0027t love that impact on the class size for DawnTexture.\n\nWhat we really want for the assert is a way to say that we are called from within the stack of a Context call, which we could probably implement with a static thread local managed by Context. For now we can remove the assert and add a suffix to the function call like `_ContextThreadOnly`.",
+      "parentUuid": "bc2ad953_0d0983d7",
+      "range": {
+        "startLine": 260,
+        "startChar": 3,
+        "endLine": 260,
+        "endChar": 6
+      },
+      "revId": "f6d3f83e407a738f7eba91e3be06f3b74de638ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "36c87400_b7f2ea09",
+        "filename": "src/gpu/graphite/dawn/DawnTexture.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-08-01T18:24:42Z",
+      "side": 1,
+      "message": "Something like that could be a possible solution, but I think for now we can go with a much simpler and sillier solution since the usage pattern today (and planned future work as of now) is safe.\n\n1) Rename this function to `getSamplerBindGroup_callFromContextsCommandBufferOnly()` or some other ridiculous name. This way it will be very obvious if someone tries to call this from any other location that they\u0027ll ask themselves it is safe. If we really need it elsewhere in the future then we can look into adding the needed checks and/or asserts.\n\n2) Add a comment to make it clear why this is only safe to call from the one Context/thread.\n\n3) Remove the current assert and added plumbing for single owner.",
       "parentUuid": "bc2ad953_0d0983d7",
       "range": {
         "startLine": 260,
