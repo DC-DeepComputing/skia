@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c105ad1_a755d2ee",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-08-01T20:35:59Z",
+      "side": 1,
+      "message": "Graphite Context change LGTM",
+      "revId": "49099fba370a3d278c82336fc48d2b3555e32cb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b11e818b_4fee9bde",
+        "filename": "src/sksl/SkSLModuleDataDefault.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-08-01T20:35:59Z",
+      "side": 1,
+      "message": "compilers seem mad about these cstr comparisons. Maybe change them to an strlen \u003d\u003d 0?\n\nAlternatively we could initialize them to `nullptr` and test against that?",
+      "range": {
+        "startLine": 75,
+        "startChar": 14,
+        "endLine": 75,
+        "endChar": 44
+      },
+      "revId": "49099fba370a3d278c82336fc48d2b3555e32cb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
