@@ -207,6 +207,30 @@
       },
       "revId": "f6d3f83e407a738f7eba91e3be06f3b74de638ad",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ed16810_904fa3f6",
+        "filename": "src/gpu/graphite/dawn/DawnTexture.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-08-01T18:21:06Z",
+      "side": 1,
+      "message": "The reason I didn\u0027t want to have a SingleOwner on the texture is that while it does ensure the texture\u0027s data is accessed safely, it\u0027s not really ensuring the currently intended behavior of being only called on the Context thread.\n\nIt\u0027s also a non-zero sized object even in release mode, so I didn\u0027t love that impact on the class size for DawnTexture.\n\nWhat we really want for the assert is a way to say that we are called from within the stack of a Context call, which we could probably implement with a static thread local managed by Context. For now we can remove the assert and add a suffix to the function call like `_ContextThreadOnly`.",
+      "parentUuid": "bc2ad953_0d0983d7",
+      "range": {
+        "startLine": 260,
+        "startChar": 3,
+        "endLine": 260,
+        "endChar": 6
+      },
+      "revId": "f6d3f83e407a738f7eba91e3be06f3b74de638ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
