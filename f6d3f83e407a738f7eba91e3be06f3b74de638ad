@@ -183,6 +183,30 @@
       },
       "revId": "f6d3f83e407a738f7eba91e3be06f3b74de638ad",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc2ad953_0d0983d7",
+        "filename": "src/gpu/graphite/dawn/DawnTexture.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 18114
+      },
+      "writtenOn": "2024-08-01T18:11:55Z",
+      "side": 1,
+      "message": "I did have a SingleOwner earlier in DawnTexture class in PS#4 but it wasn\u0027t preferred and instead decided to pass it in. I could revert back to that if it is preferred.",
+      "parentUuid": "6d600c70_cf083144",
+      "range": {
+        "startLine": 260,
+        "startChar": 3,
+        "endLine": 260,
+        "endChar": 6
+      },
+      "revId": "f6d3f83e407a738f7eba91e3be06f3b74de638ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
