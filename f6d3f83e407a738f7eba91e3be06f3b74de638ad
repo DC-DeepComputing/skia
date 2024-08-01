@@ -273,6 +273,30 @@
       },
       "revId": "f6d3f83e407a738f7eba91e3be06f3b74de638ad",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9c307bc_56b7cf75",
+        "filename": "src/gpu/graphite/dawn/DawnTexture.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-08-01T18:26:33Z",
+      "side": 1,
+      "message": "Plumbing through the SingleOwner has the same problem as plumbing through a ResourceProvider in order to assert on the single owner. There\u0027s nothing stopping a caller from passing in the Recorder\u0027s singleowner to the call at a future point and that wouldn\u0027t prevent simultaneous races when called with the Context\u0027s singleowner.",
+      "parentUuid": "36c87400_b7f2ea09",
+      "range": {
+        "startLine": 260,
+        "startChar": 3,
+        "endLine": 260,
+        "endChar": 6
+      },
+      "revId": "f6d3f83e407a738f7eba91e3be06f3b74de638ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
