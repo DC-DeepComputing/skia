@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9abba0aa_3a584e3f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2024-08-01T13:24:33Z",
+      "side": 1,
+      "message": "Buffers BindGroups contain multiple buffers, it\u0027s more complicated to clear than the texture BindGroups (specifically handled in this CL) which contain only one texture. Furthermore, we don\u0027t have external buffers like textures (i.e. `BackendTexture`). So we don\u0027t need to clear the buffers\u0027 BindGroups to avoid memory leaks.\n\nFor textures, since currently we only cache single texture\u0027s BindGroups and it\u0027s 90% of the usecases, I think it\u0027s valid to move the texture cache to be owned by DawnTexture.\n\nDawn currently doesn\u0027t cache the BindGroups. Unlike Dawn, Graphite has full knowledge about how many buffers, textures should be in a BindGroup, hence IMO it\u0027s much more easier and faster to cache in Graphite because of static sized keys.",
+      "parentUuid": "f951fc27_3619c75a",
+      "revId": "f6d3f83e407a738f7eba91e3be06f3b74de638ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ea0d24d9_7d38cd93",
         "filename": "src/gpu/graphite/dawn/DawnTexture.cpp",
         "patchSetId": 11
