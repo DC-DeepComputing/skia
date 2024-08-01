@@ -1,0 +1,149 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ea4d44f_91e9c757",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-08-01T14:32:53Z",
+      "side": 1,
+      "message": "This looks problematic, and the main issue is it\u0027s being called from the animators tick (`onSync`) as opposed to the revalidation phase (`onRevalidate`):\n\n  - the animator evaluation order is not well defined, so this may run before other animations mutate the layer props -\u003e `hasChildrenInval` could return a false negative at this stage and we\u0027d be ignoring animated layer content\n  \n  - passing an identity CTM ignores layer transforms\n  \n\nI think the solution is to move the shader instantiation from `SkSkShaderAdapter::onSync` to `SkSLShaderNode::onRevalidate`, where you have access to IC/CTM and it is also guaranteed to run after all the animator updates.  That means we\u0027ll likely need to have all the uniforms pushed to `SkSLShaderNode` also, as `SG_ATTRIBUTE`s.  That\u0027s a significant refactor though, we can tackle in a follow-up.",
+      "range": {
+        "startLine": 59,
+        "startChar": 0,
+        "endLine": 61,
+        "endChar": 54
+      },
+      "revId": "21147436bb5a9d61db5c6c4a7d9fc81c43e62cde",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a2e7fad_1f977da9",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-08-01T14:32:53Z",
+      "side": 1,
+      "message": "`SkRuntimeShader::ChildPtr`?",
+      "range": {
+        "startLine": 145,
+        "startChar": 8,
+        "endLine": 145,
+        "endChar": 28
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "a940d530_5947f84c",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "modules/skottie/src/effects/SkSLEffect.cpp",
+              "range": {
+                "startLine": 145,
+                "startChar": 0,
+                "endLine": 146,
+                "endChar": 0
+              },
+              "replacement": "        SkRuntimeShader::ChildPtr child;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "21147436bb5a9d61db5c6c4a7d9fc81c43e62cde",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18b85890_c1c89d2c",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-08-01T14:32:53Z",
+      "side": 1,
+      "message": "`loadFootageAsset` can return nullptr, we should guard against that too.  Maybe combine in the conditional below -\n\n`if (asset_info \u0026\u0026 asset_info-\u003efAsset) ...`",
+      "range": {
+        "startLine": 168,
+        "startChar": 29,
+        "endLine": 168,
+        "endChar": 47
+      },
+      "revId": "21147436bb5a9d61db5c6c4a7d9fc81c43e62cde",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d305f114_dc8d9afb",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-08-01T14:32:53Z",
+      "side": 1,
+      "message": "nit: not needed?",
+      "range": {
+        "startLine": 219,
+        "startChar": 36,
+        "endLine": 219,
+        "endChar": 38
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "efee612f_df6fbed8",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "modules/skottie/src/effects/SkSLEffect.cpp",
+              "range": {
+                "startLine": 219,
+                "startChar": 0,
+                "endLine": 220,
+                "endChar": 0
+              },
+              "replacement": "    std::vector\u003cChildData\u003e fChildren;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "21147436bb5a9d61db5c6c4a7d9fc81c43e62cde",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d981debf_1aa8bc0e",
+        "filename": "resources/skottie/skottie-sksl-effect-2.json",
+        "patchSetId": 5
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-08-01T14:32:53Z",
+      "side": 1,
+      "message": "I think we need this checked in under `resources/skottie/images`.",
+      "revId": "21147436bb5a9d61db5c6c4a7d9fc81c43e62cde",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

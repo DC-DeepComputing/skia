@@ -34,6 +34,24 @@
       "parentUuid": "25494800_70d4f0a5",
       "revId": "004c81523e44cef6144df28252cbfc9ceade0d8c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "58c23310_c1d9442c",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-08-01T14:32:53Z",
+      "side": 0,
+      "message": "Ack.  You could de-anonymize just SkSLEffectBase, but it\u0027s not critical.",
+      "parentUuid": "065da67f_2f94f910",
+      "revId": "004c81523e44cef6144df28252cbfc9ceade0d8c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
