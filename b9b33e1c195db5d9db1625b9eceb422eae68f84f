@@ -16,6 +16,29 @@
       "message": "Maybe give this a quick scan again to make sure the optional stuff was all done correctly",
       "revId": "b9b33e1c195db5d9db1625b9eceb422eae68f84f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc734988_57947468",
+        "filename": "example/VulkanBasic.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-08-01T15:54:32Z",
+      "side": 1,
+      "message": "Should this be `std::nullopt`?",
+      "range": {
+        "startLine": 89,
+        "startChar": 88,
+        "endLine": 89,
+        "endChar": 89
+      },
+      "revId": "b9b33e1c195db5d9db1625b9eceb422eae68f84f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
