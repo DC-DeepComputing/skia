@@ -1,0 +1,34 @@
+uniform shader X, Y;
+uniform half4 colorGreen;
+
+half4 fn(shader a, shader b, shader c, shader d, shader e, shader f, shader g) {
+    return colorGreen;
+}
+
+half4 fn(shader a, shader b, shader c, shader d, shader e, shader f) {
+    return fn(a, b, c, d, e, f, X) * fn(a, b, c, d, e, f, Y);
+}
+
+half4 fn(shader a, shader b, shader c, shader d, shader e) {
+    return fn(a, b, c, d, e, X) * fn(a, b, c, d, e, Y);
+}
+
+half4 fn(shader a, shader b, shader c, shader d) {
+    return fn(a, b, c, d, X) * fn(a, b, c, d, Y);
+}
+
+half4 fn(shader a, shader b, shader c) {
+    return fn(a, b, c, X) * fn(a, b, c, Y);
+}
+
+half4 fn(shader a, shader b) {
+    return fn(a, b, X) * fn(a, b, Y);
+}
+
+half4 fn(shader a) {
+    return fn(a, X) * fn(a, Y);
+}
+
+half4 main(float2 xy) {
+    return fn(X) * fn(Y);
+}
