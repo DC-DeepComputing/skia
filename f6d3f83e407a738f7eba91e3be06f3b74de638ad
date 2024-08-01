@@ -110,6 +110,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "376fd969_7940a851",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18114
+      },
+      "writtenOn": "2024-08-01T19:25:36Z",
+      "side": 1,
+      "message": "Calling Delete/Destroy for internal textures makes sense. I agree there\u0027s more thinking/discussion to be had here regarding how to defer submits. \n\n@sunnyps@chromium.org had a local change that seemed reasonable to me for deferring command buffer submission from a SharedImage point of view, so we could explore that bit more. The basic idea was that we don\u0027t cache the external wgpu::Textures in SharedImage but only cache SharedTextureMemory, and then PostTask to the decoder to submit on SIRepresentation::EndAccess. Maybe Sunny can expand on this (I\u0027m definitely missing some details here).",
+      "parentUuid": "889c275c_f2336c45",
+      "revId": "f6d3f83e407a738f7eba91e3be06f3b74de638ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ea0d24d9_7d38cd93",
         "filename": "src/gpu/graphite/dawn/DawnTexture.cpp",
         "patchSetId": 11
@@ -289,6 +307,30 @@
       "side": 1,
       "message": "Plumbing through the SingleOwner has the same problem as plumbing through a ResourceProvider in order to assert on the single owner. There\u0027s nothing stopping a caller from passing in the Recorder\u0027s singleowner to the call at a future point and that wouldn\u0027t prevent simultaneous races when called with the Context\u0027s singleowner.",
       "parentUuid": "36c87400_b7f2ea09",
+      "range": {
+        "startLine": 260,
+        "startChar": 3,
+        "endLine": 260,
+        "endChar": 6
+      },
+      "revId": "f6d3f83e407a738f7eba91e3be06f3b74de638ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4fffa340_062dda6a",
+        "filename": "src/gpu/graphite/dawn/DawnTexture.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 18114
+      },
+      "writtenOn": "2024-08-01T19:25:36Z",
+      "side": 1,
+      "message": "Thanks adding the method suffix and removing the assert sounds good. I\u0027ve also added a comment with a TODO to add an assert or make it thread-safe. Thanks!",
+      "parentUuid": "b9c307bc_56b7cf75",
       "range": {
         "startLine": 260,
         "startChar": 3,
