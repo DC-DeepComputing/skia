@@ -159,6 +159,30 @@
       },
       "revId": "f6d3f83e407a738f7eba91e3be06f3b74de638ad",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d600c70_cf083144",
+        "filename": "src/gpu/graphite/dawn/DawnTexture.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2024-08-01T14:56:31Z",
+      "side": 1,
+      "message": "How about we place a single owner in the DawnTexture object and assert that there is only one thread calls this method? That would avoid an extra mutex I think.",
+      "parentUuid": "8e608d03_5dc9a048",
+      "range": {
+        "startLine": 260,
+        "startChar": 3,
+        "endLine": 260,
+        "endChar": 6
+      },
+      "revId": "f6d3f83e407a738f7eba91e3be06f3b74de638ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
