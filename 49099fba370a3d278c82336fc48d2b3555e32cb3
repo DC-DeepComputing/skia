@@ -39,6 +39,30 @@
       },
       "revId": "49099fba370a3d278c82336fc48d2b3555e32cb3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c3902dd_ea9d72a9",
+        "filename": "src/sksl/SkSLModuleDataDefault.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 12019
+      },
+      "writtenOn": "2024-08-01T20:37:56Z",
+      "side": 1,
+      "message": "Consider sdata_sksl_graphite_frag[0] \u003d\u003d \u0027\\0\u0027",
+      "parentUuid": "b11e818b_4fee9bde",
+      "range": {
+        "startLine": 75,
+        "startChar": 14,
+        "endLine": 75,
+        "endChar": 44
+      },
+      "revId": "49099fba370a3d278c82336fc48d2b3555e32cb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
