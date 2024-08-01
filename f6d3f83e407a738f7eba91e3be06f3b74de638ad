@@ -135,6 +135,30 @@
       },
       "revId": "f6d3f83e407a738f7eba91e3be06f3b74de638ad",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e608d03_5dc9a048",
+        "filename": "src/gpu/graphite/dawn/DawnTexture.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-08-01T14:30:03Z",
+      "side": 1,
+      "message": "Yes right now all usages should be fine. But this is in just a public member function on Texture. It could be in the future someone tries to use it on another thread. Like maybe we decide later it might be code to create BindGroups during Recorder snap as well which is on a different thread. However, each of those threads has a different ResourceProvider so this assert isn\u0027t going to catch anything to protect us from the threading issues.",
+      "parentUuid": "e47d71f1_abb544f6",
+      "range": {
+        "startLine": 260,
+        "startChar": 3,
+        "endLine": 260,
+        "endChar": 6
+      },
+      "revId": "f6d3f83e407a738f7eba91e3be06f3b74de638ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
