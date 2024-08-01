@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f951fc27_3619c75a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-08-01T13:10:45Z",
+      "side": 1,
+      "message": "Another alternative to all this is we remove the BindGroup caching from Graphite entirely and instead have Dawn cache them. Is there something that is blocking Dawn from just have a cache of them it can returning one when you ask to create a new one?",
+      "parentUuid": "0953c0f6_0afabbb2",
+      "revId": "f6d3f83e407a738f7eba91e3be06f3b74de638ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ea0d24d9_7d38cd93",
         "filename": "src/gpu/graphite/dawn/DawnTexture.cpp",
         "patchSetId": 11
