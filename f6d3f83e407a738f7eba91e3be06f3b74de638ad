@@ -56,6 +56,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ee3bcc33_54253423",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-08-01T13:31:49Z",
+      "side": 1,
+      "message": "That makes sense about why it is probably better to cache in Graphite instead of Dawn.\n\nI\u0027m confused why textures being external impacts whether memory leaks or not. Like today if we drop all our refs to a Buffer, but we\u0027re still keeping a BindGroup that references that Buffer in our cache, we\u0027ll never clean up the memory right? Or is the idea that we\u0027ll continue to call Delete on Buffer objects (so bind group holding refs should matter), but want to stop calling Delete for Textures because the last usage of a Texture might be external to Skia and we don\u0027t want to force clients to use dawns Delete methods if they don\u0027t want to?",
+      "parentUuid": "9abba0aa_3a584e3f",
+      "revId": "f6d3f83e407a738f7eba91e3be06f3b74de638ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ea0d24d9_7d38cd93",
         "filename": "src/gpu/graphite/dawn/DawnTexture.cpp",
         "patchSetId": 11
