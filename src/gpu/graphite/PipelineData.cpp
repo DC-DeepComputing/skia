@@ -34,7 +34,8 @@ UniformDataBlock* UniformDataBlock::Make(const UniformDataBlock& other, SkArenaA
     memcpy(mem, other.data(), other.size());
 
     return arena->make([&](void* ptr) {
-        return new (ptr) UniformDataBlock(SkSpan<const char>(mem, other.size()));
+        return new (ptr) UniformDataBlock(SkSpan<const char>(mem, other.size()),
+                                          other.reqAlignment());
     });
 }
 

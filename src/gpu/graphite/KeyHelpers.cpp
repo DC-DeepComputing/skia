@@ -128,6 +128,7 @@ void add_solid_uniform_data(const ShaderCodeDictionary* dict,
                             PipelineDataGatherer* gatherer) {
     BEGIN_WRITE_UNIFORMS(gatherer, dict, BuiltInCodeSnippetID::kSolidColorShader)
     gatherer->write(premulColor);
+    printf("write color r: %f, g: %f, b: %f\n", premulColor.fR, premulColor.fG, premulColor.fB);
 }
 
 } // anonymous namespace
