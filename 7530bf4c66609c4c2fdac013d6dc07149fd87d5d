@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3216a7bb_544359ff",
+        "filename": "src/sksl/SkSLGraphiteModules.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-08-01T19:49:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b9f14f95_d75e1309",
+      "range": {
+        "startLine": 24,
+        "startChar": 5,
+        "endLine": 24,
+        "endChar": 28
+      },
+      "revId": "7530bf4c66609c4c2fdac013d6dc07149fd87d5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a37b72bd_bac9f813",
@@ -54,6 +78,30 @@
       "writtenOn": "2024-08-01T19:01:29Z",
       "side": 1,
       "message": "`static`-global variables should be prefixed with `s`, not `g`.\n\nAlso, wrapping in an anonymous namespace is redundant with `static` here--either `static` or `namespace {` marks these variables as having internal linkage. There\u0027s no benefit to doing both. I think `static` is more common throughout our codebase.",
+      "range": {
+        "startLine": 38,
+        "startChar": 19,
+        "endLine": 38,
+        "endChar": 25
+      },
+      "revId": "7530bf4c66609c4c2fdac013d6dc07149fd87d5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b74cdcef_48052049",
+        "filename": "src/sksl/SkSLModuleDataDefault.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-08-01T19:49:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a37b72bd_bac9f813",
       "range": {
         "startLine": 38,
         "startChar": 19,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5044f50_0d181015",
+        "filename": "src/sksl/SkSLModuleDataDefault.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-08-01T19:49:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3173854f_1f31a693",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 42,
+        "endChar": 0
+      },
+      "revId": "7530bf4c66609c4c2fdac013d6dc07149fd87d5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "223fa7d5_e9ee86cf",
@@ -100,6 +172,30 @@
       "writtenOn": "2024-08-01T19:01:29Z",
       "side": 1,
       "message": "... at which point, this boils down to `return std::string(gLoad_##name);`",
+      "range": {
+        "startLine": 51,
+        "startChar": 0,
+        "endLine": 56,
+        "endChar": 0
+      },
+      "revId": "7530bf4c66609c4c2fdac013d6dc07149fd87d5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d7adb803_f8f6fcc1",
+        "filename": "src/sksl/SkSLModuleDataDefault.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-08-01T19:49:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "223fa7d5_e9ee86cf",
       "range": {
         "startLine": 51,
         "startChar": 0,
