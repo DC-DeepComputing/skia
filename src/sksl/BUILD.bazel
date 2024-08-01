@@ -218,3 +218,17 @@ skia_cc_library(
     textual_hdrs = [":txts"],
     visibility = ["//src/core:__pkg__"],
 )
+
+skia_filegroup(
+    name = "sksl_graphite_modules_hdrs",
+    srcs = [
+        "SkSLGraphiteModules.h",
+    ],
+)
+
+skia_filegroup(
+    name = "sksl_graphite_modules_srcs",
+    srcs = [
+        "SkSLGraphiteModules.cpp",
+    ],
+)
