@@ -181,8 +181,17 @@ std::unique_ptr<Module> Compiler::compileModule(ProgramKind kind,
                                                 const Module* parentModule,
                                                 bool shouldInline) {
     SkASSERT(parentModule);
-    SkASSERT(!moduleSource.empty());
     SkASSERT(this->errorCount() == 0);
+
+    // If we have no source code, immediately return an empty module.
+    if (moduleSource.empty()) {
+        auto module = std::make_unique<Module>();
+        module->fParent = parentModule;
+        module->fSymbols = std::make_unique<SymbolTable>(parentModule->fSymbols.get(),
+                                                         /*builtin=*/true);
+        module->fModuleType = moduleType;
+        return module;
+    }
 
     // Wrap the program source in a pointer so it is guaranteed to be stable across moves.
     auto sourcePtr = std::make_unique<std::string>(std::move(moduleSource));
