@@ -65,6 +65,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae851131_b21d2f47",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2024-08-01T17:25:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7a2e7fad_1f977da9",
+      "range": {
+        "startLine": 145,
+        "startChar": 8,
+        "endLine": 145,
+        "endChar": 28
+      },
+      "revId": "21147436bb5a9d61db5c6c4a7d9fc81c43e62cde",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "18b85890_c1c89d2c",
@@ -78,6 +102,30 @@
       "writtenOn": "2024-08-01T14:32:53Z",
       "side": 1,
       "message": "`loadFootageAsset` can return nullptr, we should guard against that too.  Maybe combine in the conditional below -\n\n`if (asset_info \u0026\u0026 asset_info-\u003efAsset) ...`",
+      "range": {
+        "startLine": 168,
+        "startChar": 29,
+        "endLine": 168,
+        "endChar": 47
+      },
+      "revId": "21147436bb5a9d61db5c6c4a7d9fc81c43e62cde",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c114f21e_f8c63c10",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2024-08-01T17:25:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "18b85890_c1c89d2c",
       "range": {
         "startLine": 168,
         "startChar": 29,
@@ -129,6 +177,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e612b3bc_b7aaa8d5",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2024-08-01T17:25:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d305f114_dc8d9afb",
+      "range": {
+        "startLine": 219,
+        "startChar": 36,
+        "endLine": 219,
+        "endChar": 38
+      },
+      "revId": "21147436bb5a9d61db5c6c4a7d9fc81c43e62cde",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d981debf_1aa8bc0e",
@@ -142,6 +214,24 @@
       "writtenOn": "2024-08-01T14:32:53Z",
       "side": 1,
       "message": "I think we need this checked in under `resources/skottie/images`.",
+      "revId": "21147436bb5a9d61db5c6c4a7d9fc81c43e62cde",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "06726f6f_e49e6b12",
+        "filename": "resources/skottie/skottie-sksl-effect-2.json",
+        "patchSetId": 5
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2024-08-01T17:25:50Z",
+      "side": 1,
+      "message": "My bad, I had it in my personal gitignore. Done.",
+      "parentUuid": "d981debf_1aa8bc0e",
       "revId": "21147436bb5a9d61db5c6c4a7d9fc81c43e62cde",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
