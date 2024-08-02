@@ -226,6 +226,19 @@ cc_binary(
 )
 
 cc_binary(
+    name = "use_graphite_dawn",
+    srcs = ["src/graphite_dawn.cpp"],
+    linkopts = [
+        "-lpthread",
+    ],
+    deps = [
+        "@skia//:core",
+        "@skia//:graphite_dawn",
+        "@skia//:png_encode_codec",
+    ],
+)
+
+cc_binary(
     name = "use_skresources",
     srcs = ["src/use_skresources.cpp"],
     linkopts = [
