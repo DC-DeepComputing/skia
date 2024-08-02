@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4581a5f1_c83c8b9d",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2024-08-02T17:51:54Z",
+      "side": 1,
+      "message": "Removing the \"binding cache\" would put this change more in line with how it was before in terms of performance. It seems the access of this cache here and in the `find` above took most of the time according to profiling due to computing the hash and resizes. The cache also doesn\u0027t seem to speed up perf and only would possibly reduce the GPU memory footprint. With a large number of bindings and sortkeys the slowdown with the cache is far more noticeable like in the nanobench `shapes_mixed_10000_32x32`.\n\nTLDR: With the cache there was a 14% perf regression, without the cache was only a \u003c1% regression, which could probably be made up or even improve perf with a faster sorting implemented. This is with the `shapes_mixed_10000_32x32` benchmark and performance difference is similar with UBOs and SSBOs.",
+      "revId": "81798dcebdf7918559fd521968ab384a07422e9c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
