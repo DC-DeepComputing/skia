@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "73eb2a86_b42ecd48",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-08-02T15:14:50Z",
+      "side": 1,
+      "message": "Canary issues seem unrelated",
+      "revId": "5012a5cbaf6f76fc2d8c9ebec61aae5f35139e91",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
