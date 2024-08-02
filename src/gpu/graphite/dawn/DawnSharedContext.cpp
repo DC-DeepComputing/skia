@@ -7,6 +7,7 @@
 
 #include "src/gpu/graphite/dawn/DawnSharedContext.h"
 
+#include "include/gpu/graphite/Context.h"
 #include "include/gpu/graphite/ContextOptions.h"
 #include "include/gpu/graphite/dawn/DawnBackendContext.h"
 #include "src/gpu/graphite/Log.h"
@@ -71,5 +72,12 @@ std::unique_ptr<ResourceProvider> DawnSharedContext::makeResourceProvider(
                                                                       recorderID,
                                                                       resourceBudget));
 }
+
+void DawnSharedContext::deviceTick(Context* context) {
+#if !defined(__EMSCRIPTEN__)
+    this->device().Tick();
+#endif
+    context->checkAsyncWorkCompletion();
+};
 
 } // namespace skgpu::graphite
