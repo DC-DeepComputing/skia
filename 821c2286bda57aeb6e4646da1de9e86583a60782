@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a5afa88_703b90b7",
+        "filename": "src/gpu/graphite/KeyHelpers.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 334,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-08-02T13:09:33Z",
+      "side": 1,
+      "message": "Could this be a single flags field?",
+      "range": {
+        "startLine": 333,
+        "startChar": 8,
+        "endLine": 334,
+        "endChar": 21
+      },
+      "revId": "821c2286bda57aeb6e4646da1de9e86583a60782",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
