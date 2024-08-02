@@ -30,7 +30,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PipelineDataCacheTest, reporter, context,
     static const char kMemory1[kSize] = {
             7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22
     };
-    UniformDataBlock udb1(SkSpan(kMemory1, kSize));
+    UniformDataBlock udb1(SkSpan(kMemory1, kSize), /*reqAlignment=*/0);
     const UniformDataBlock* id1;
     {
         id1 = cache->insert(udb1);
@@ -46,7 +46,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PipelineDataCacheTest, reporter, context,
         static const char kMemory2[kSize] = {
                 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22
         };
-        UniformDataBlock udb2(SkSpan(kMemory2, kSize));
+        UniformDataBlock udb2(SkSpan(kMemory2, kSize), /*reqAlignment=*/0);
         const UniformDataBlock* id2 = cache->insert(udb2);
         REPORTER_ASSERT(reporter, id2 == id1);
 
@@ -58,7 +58,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PipelineDataCacheTest, reporter, context,
         static const char kMemory3[kSize] = {
                 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21
         };
-        UniformDataBlock udb3(SkSpan(kMemory3, kSize));
+        UniformDataBlock udb3(SkSpan(kMemory3, kSize), /*reqAlignment=*/0);
         const UniformDataBlock* id3 = cache->insert(udb3);
         REPORTER_ASSERT(reporter, SkToBool(id3));
         REPORTER_ASSERT(reporter, id3 != id1);
