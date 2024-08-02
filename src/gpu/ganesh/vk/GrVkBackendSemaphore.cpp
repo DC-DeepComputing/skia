@@ -9,6 +9,7 @@
 #include "include/gpu/GrTypes.h"
 #include "include/private/base/SkAssert.h"
 #include "src/gpu/ganesh/GrBackendSemaphorePriv.h"
+#include "include/private/base/SkDebug.h"
 
 class GrVkBackendSemaphoreData final : public GrBackendSemaphoreData {
 public:

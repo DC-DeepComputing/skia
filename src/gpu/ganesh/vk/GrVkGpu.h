@@ -26,6 +26,7 @@ class GrVkCommandPool;
 class GrVkFramebuffer;
 class GrVkOpsRenderPass;
 class GrVkPipeline;
+class GrVkImageInfo;
 class GrVkPipelineState;
 class GrVkPrimaryCommandBuffer;
 class GrVkRenderPass;

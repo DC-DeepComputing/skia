@@ -18,6 +18,7 @@
 #include "src/gpu/ganesh/vk/GrVkPipelineState.h"
 #include "src/gpu/ganesh/vk/GrVkPipelineStateBuilder.h"
 #include "src/gpu/ganesh/vk/GrVkResourceProvider.h"
+#include "include/gpu/vk/VulkanTypes.h"
 
 #ifdef SK_DEBUG
 // Display pipeline state cache usage

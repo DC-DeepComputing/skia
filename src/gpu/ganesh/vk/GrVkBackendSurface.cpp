@@ -16,18 +16,20 @@
 #include "include/gpu/vk/VulkanMutableTextureState.h"
 #include "include/gpu/vk/VulkanTypes.h"
 #include "include/private/base/SkAssert.h"
-#include "include/private/base/SkTo.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/gpu/ganesh/GrBackendSurfacePriv.h"
 #include "src/gpu/ganesh/vk/GrVkTypesPriv.h"
 #include "src/gpu/ganesh/vk/GrVkUtil.h"
+#include "include/gpu/ganesh/vk/GrVkBackendSurface.h"
 #include "src/gpu/vk/VulkanMutableTextureStatePriv.h"
 #include "src/gpu/vk/VulkanUtilsPriv.h"
+#include "include/private/base/SkDebug.h"
 
 #include <algorithm>
 #include <cstddef>
 #include <cstdint>
 #include <string>
+#include <utility>
 
 class GrVkBackendFormatData final : public GrBackendFormatData {
 public:

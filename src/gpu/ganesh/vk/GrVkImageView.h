@@ -4,16 +4,21 @@
 * Use of this source code is governed by a BSD-style license that can be
 * found in the LICENSE file.
 */
-
 #ifndef GrVkImageView_DEFINED
 #define GrVkImageView_DEFINED
 
-#include "include/gpu/GrTypes.h"
-#include "include/gpu/vk/VulkanTypes.h"
+#include "include/core/SkRefCnt.h"
+#include "include/private/gpu/vk/SkiaVulkan.h"
+#include "include/private/base/SkDebug.h"
+#include "src/gpu/ganesh/GrManagedResource.h"
 #include "src/gpu/ganesh/vk/GrVkManagedResource.h"
 
-#include <cinttypes>
+#include <vulkan/vulkan_core.h>
 
+#include <cinttypes>
+#include <cstdint>
+
+class GrVkGpu;
 class GrVkSamplerYcbcrConversion;
 
 class GrVkImageView : public GrVkManagedResource {

@@ -9,17 +9,18 @@
 #define GrVkRenderPass_DEFINED
 
 #include "include/gpu/GrTypes.h"
-#include "include/gpu/vk/GrVkTypes.h"
+#include "include/private/base/SkDebug.h"
 #include "include/private/base/SkMacros.h"
+#include "src/gpu/ganesh/GrManagedResource.h"
 #include "src/gpu/ganesh/vk/GrVkManagedResource.h"
+#include "include/private/gpu/vk/SkiaVulkan.h"
 
 #include <cinttypes>
+#include <cstdint>
 
 class GrVkGpu;
 class GrVkRenderTarget;
-namespace skgpu {
-class KeyBuilder;
-}
+namespace skgpu { class KeyBuilder; }
 
 class GrVkRenderPass : public GrVkManagedResource {
 public:
