@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd3f2525_70328e42",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18114
+      },
+      "writtenOn": "2024-08-02T14:00:16Z",
+      "side": 1,
+      "message": "Thanks for all the reviews!\n\nLooks like using sso git protocol for upload seems to link account fine now.",
+      "revId": "35bd01ea1d189b2acd42d87641e72a6cced412b6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
