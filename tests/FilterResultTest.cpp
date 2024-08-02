@@ -59,6 +59,7 @@
 #include "src/gpu/graphite/SpecialImage_Graphite.h"
 #include "src/gpu/graphite/TextureProxyView.h"
 #include "src/gpu/graphite/TextureUtils.h"
+#include "tools/graphite/TickUtils.h"
 #endif
 
 
@@ -901,7 +902,12 @@ private:
             auto view = skgpu::graphite::AsView(specialImage->asImage());
             auto proxyII = ii.makeWH(view.width(), view.height());
             SkAssertResult(fRecorder->priv().context()->priv().readPixels(
-                    bm.pixmap(), view.proxy(), proxyII, srcX, srcY));
+                    bm.pixmap(),
+                    view.proxy(),
+                    proxyII,
+                    srcX,
+                    srcY,
+                    skiatest::graphite::TickCallbackImpl()));
         } else
 #endif
         {

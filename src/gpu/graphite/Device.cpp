@@ -574,24 +574,7 @@ sk_sp<Image> Device::makeImageCopy(const SkIRect& subset,
 
 bool Device::onReadPixels(const SkPixmap& pm, int srcX, int srcY) {
 #if defined(GRAPHITE_TEST_UTILS)
-    // This testing-only function should only be called before the Device has detached from its
-    // Recorder, since it's accessed via the test-held Surface.
-    ASSERT_SINGLE_OWNER
-    if (Context* context = fRecorder->priv().context()) {
-        // Add all previous commands generated to the command buffer.
-        // If the client snaps later they'll only get post-read commands in their Recording,
-        // but since they're doing a readPixels in the middle that shouldn't be unexpected.
-        std::unique_ptr<Recording> recording = fRecorder->snap();
-        if (!recording) {
-            return false;
-        }
-        InsertRecordingInfo info;
-        info.fRecording = recording.get();
-        if (!context->insertRecording(info)) {
-            return false;
-        }
-        return context->priv().readPixels(pm, fDC->target(), this->imageInfo(), srcX, srcY);
-    }
+    SK_ABORT("No access to do a read pixels");
 #endif
     // We have no access to a context to do a read pixels here.
     return false;

@@ -146,10 +146,11 @@ sk_sp<SkImage> Image::onReinterpretColorSpace(sk_sp<SkColorSpace> newCS) const {
 }
 
 #if defined(GRAPHITE_TEST_UTILS)
-bool Image::onReadPixelsGraphite(Recorder* recorder,
-                                 const SkPixmap& dst,
-                                 int srcX,
-                                 int srcY) const {
+bool Image::readPixelsGraphite(Recorder* recorder,
+                               const SkPixmap& dst,
+                               int srcX,
+                               int srcY,
+                               TickCallback tickCallback) const {
     if (Context* context = recorder->priv().context()) {
         // Add all previous commands generated to the command buffer.
         // If the client snaps later they'll only get post-read commands in their Recording,
@@ -163,11 +164,8 @@ bool Image::onReadPixelsGraphite(Recorder* recorder,
         if (!context->insertRecording(info)) {
             return false;
         }
-        return context->priv().readPixels(dst,
-                                          fTextureProxyView.proxy(),
-                                          this->imageInfo(),
-                                          srcX,
-                                          srcY);
+        return context->priv().readPixels(
+                dst, fTextureProxyView.proxy(), this->imageInfo(), srcX, srcY, tickCallback);
     }
     return false;
 }

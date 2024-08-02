@@ -24,6 +24,8 @@ class RendererProvider;
 class ResourceProvider;
 class ShaderCodeDictionary;
 
+using TickCallback = void (*)(Context*, SharedContext*);
+
 /** Class that adds methods to Context that are only intended for use internal to Skia.
     This class is purely a privileged window into Context. It should never have additional
     data members or virtual methods. */
@@ -63,7 +65,9 @@ public:
     bool readPixels(const SkPixmap&,
                     const TextureProxy*,
                     const SkImageInfo& srcImageInfo,
-                    int srcX, int srcY);
+                    int srcX,
+                    int srcY,
+                    TickCallback);
 
     bool supportsPathRendererStrategy(PathRendererStrategy);
 #endif
