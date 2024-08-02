@@ -34,11 +34,14 @@ class UniformDataBlock {
 public:
     static UniformDataBlock* Make(const UniformDataBlock&, SkArenaAlloc*);
 
-    UniformDataBlock(SkSpan<const char> data) : fData(data) {}
+    UniformDataBlock(SkSpan<const char> data, size_t reqAlignment)
+        : fData(data)
+        , fReqAlignment(reqAlignment) {}
     UniformDataBlock() = default;
 
     const char* data() const { return fData.data(); }
     size_t size() const { return fData.size(); }
+    size_t reqAlignment() const { return fReqAlignment; }
 
     uint32_t hash() const;
 
@@ -50,6 +53,7 @@ public:
 
 private:
     SkSpan<const char> fData;
+    size_t fReqAlignment;
 };
 
 class TextureDataBlock {
@@ -127,7 +131,9 @@ public:
 
     // Returns the uniform data written so far. Will automatically pad the end of the data as needed
     // to the overall required alignment, and so should only be called when all writing is done.
-    UniformDataBlock finishUniformDataBlock() { return UniformDataBlock(fUniformManager.finish()); }
+    UniformDataBlock finishUniformDataBlock() {
+        return UniformDataBlock(fUniformManager.finish(), fUniformManager.reqAlignment());
+    }
 
     // Checks if data already exists for the requested gradient shader, and returns a nullptr
     // and the offset the data begins at. If it doesn't exist, it allocates the data for the

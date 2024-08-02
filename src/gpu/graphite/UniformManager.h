@@ -226,6 +226,8 @@ public:
         return SkSpan(fStorage);
     }
 
+    size_t reqAlignment() const { return fReqAlignment; }
+
     size_t size() const { return fStorage.size(); }
 
     void resetWithNewLayout(Layout layout);
