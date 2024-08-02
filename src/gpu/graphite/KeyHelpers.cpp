@@ -1117,9 +1117,9 @@ void add_circular_rrect_clip_data(
         const CircularRRectClipBlock::CircularRRectClipData& data,
         PipelineDataGatherer* gatherer) {
     BEGIN_WRITE_UNIFORMS(gatherer, dict, BuiltInCodeSnippetID::kCircularRRectClip)
-    gatherer->write(data.fRect);
-    gatherer->write(data.fRadiusPlusHalf);
+    gatherer->writeHalf(data.fRect);
     gatherer->writeHalf(data.fEdgeSelect);
+    gatherer->writeHalf(data.fRadiusPlusHalf);
 }
 
 }  // anonymous namespace
