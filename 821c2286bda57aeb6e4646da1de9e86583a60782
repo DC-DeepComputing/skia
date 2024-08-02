@@ -22,6 +22,30 @@
       },
       "revId": "821c2286bda57aeb6e4646da1de9e86583a60782",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07bc8ddd_849ebbb0",
+        "filename": "src/gpu/graphite/KeyHelpers.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 334,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-08-02T13:42:39Z",
+      "side": 1,
+      "message": "It could - does that save any space in the key (the struct would still be the same size due to alignment)?",
+      "parentUuid": "5a5afa88_703b90b7",
+      "range": {
+        "startLine": 333,
+        "startChar": 8,
+        "endLine": 334,
+        "endChar": 21
+      },
+      "revId": "821c2286bda57aeb6e4646da1de9e86583a60782",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
