@@ -1,0 +1,167 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85313af2_f2dc4929",
+        "filename": "experimental/rust_png/ffi/FFI.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-08-02T13:33:49Z",
+      "side": 1,
+      "message": "nit: LLC",
+      "range": {
+        "startLine": 2,
+        "startChar": 25,
+        "endLine": 2,
+        "endChar": 29
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "c439c05a_95895d80",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "experimental/rust_png/ffi/FFI.h",
+              "range": {
+                "startLine": 2,
+                "startChar": 0,
+                "endLine": 3,
+                "endChar": 0
+              },
+              "replacement": " * Copyright 2024 Google LLC.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "c7170f4cc6aa359c75c84a63c5bac5af4cf751ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67f446ea_22560780",
+        "filename": "experimental/rust_png/ffi/FFI.rs",
+        "patchSetId": 12
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-08-02T13:33:49Z",
+      "side": 1,
+      "message": "```suggestion\n//! The public API of this crate is the C++ API declared in the `#[cxx::bridge]`\n```",
+      "range": {
+        "startLine": 7,
+        "startChar": 48,
+        "endLine": 7,
+        "endChar": 55
+      },
+      "revId": "c7170f4cc6aa359c75c84a63c5bac5af4cf751ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6373feb2_e1063eb2",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-08-02T13:33:49Z",
+      "side": 1,
+      "message": "I saw the comment earlier about `EXPAND` ensuring that bit depth is at least 8, but does `rust_png` support 16-bit PNGs?",
+      "revId": "c7170f4cc6aa359c75c84a63c5bac5af4cf751ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fde1204a_a66dae8d",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-08-02T13:33:49Z",
+      "side": 1,
+      "message": "of",
+      "range": {
+        "startLine": 22,
+        "startChar": 59,
+        "endLine": 22,
+        "endChar": 61
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "8e991e49_1563e4a7",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "experimental/rust_png/impl/SkPngRustCodec.h",
+              "range": {
+                "startLine": 22,
+                "startChar": 0,
+                "endLine": 23,
+                "endChar": 0
+              },
+              "replacement": "// should not be considered compliant with Chromium\u0027s Rule-of-2.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "c7170f4cc6aa359c75c84a63c5bac5af4cf751ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5408bea8_ac1bda09",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-08-02T13:33:49Z",
+      "side": 1,
+      "message": "There are still some instances of this in Skia, but we\u0027ve moved away from this pattern in our coding standard. (Looks like it\u0027s unused, so we can just remove it here).",
+      "range": {
+        "startLine": 28,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 30
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "4a234fb3_4ee62ca4",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "experimental/rust_png/impl/SkPngRustCodec.h",
+              "range": {
+                "startLine": 28,
+                "startChar": 0,
+                "endLine": 30,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "c7170f4cc6aa359c75c84a63c5bac5af4cf751ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
