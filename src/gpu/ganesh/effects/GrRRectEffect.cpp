@@ -662,6 +662,7 @@ void EllipticalRRectEffect::Impl::onSetData(const GrGLSLProgramDataManager& pdma
                                                      1.f / (r0.fY * r0.fY));
                 }
                 break;
+
             case SkRRect::kNinePatch_Type: {
                 const SkVector& r1 = rrect.radii(SkRRect::kLowerRight_Corner);
                 SkASSERT(r1.fX >= kRadiusMin);
