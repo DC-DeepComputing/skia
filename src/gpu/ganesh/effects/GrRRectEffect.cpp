@@ -179,16 +179,16 @@ void CircularRRectEffect::Impl::emitCode(EmitArgs& args) {
     // edges correspond to components x, y, z, and w, respectively. When a side of the rrect has
     // only rectangular corners, that side's value corresponds to the rect edge's value outset by
     // half a pixel.
-    fRectUniform = uniformHandler->addUniform(&crre, kFragment_GrShaderFlag, SkSLType::kFloat4,
+    fRectUniform = uniformHandler->addUniform(&crre, kFragment_GrShaderFlag, SkSLType::kHalf4,
                                               "rect", &rectName);
-    // x is (r + .5) and y is 1/(r + .5)
-    fRadiusPlusHalfUniform = uniformHandler->addUniform(&crre, kFragment_GrShaderFlag,
-                                                        SkSLType::kHalf2, "radiusPlusHalf",
-                                                        &radiusPlusHalfName);
     // Selects whether the edge is adjacent to a rounded corner or not. 1 == rounded, 0 == 90°.
     fEdgeSelectUniform = uniformHandler->addUniform(&crre, kFragment_GrShaderFlag,
                                                     SkSLType::kHalf4, "edgeSelect",
                                                     &edgeSelectName);
+    // x is (r + .5) and y is 1/(r + .5)
+    fRadiusPlusHalfUniform = uniformHandler->addUniform(&crre, kFragment_GrShaderFlag,
+                                                        SkSLType::kHalf2, "radiusPlusHalf",
+                                                        &radiusPlusHalfName);
 
     // If we're on a device where float != fp32 then the length calculation could overflow.
     SkString clampedCircleDistance;
@@ -200,6 +200,9 @@ void CircularRRectEffect::Impl::emitCode(EmitArgs& args) {
     }
 
     GrGLSLFPFragmentBuilder* fragBuilder = args.fFragBuilder;
+    // We copy fragCoord here to avoid re-evaluation of the RTFlip math.
+    fragBuilder->codeAppend("float2 fragCoord = sk_FragCoord.xy;");
+
     // At each quarter-circle corner we compute a vector that is the offset of the fragment position
     // from the circle center. The vector is pinned in x and y to be in the quarter-plane relevant
     // to that corner. This means that points near the interior near the rrect top edge will have
@@ -213,31 +216,30 @@ void CircularRRectEffect::Impl::emitCode(EmitArgs& args) {
     // need be computed to determine the min alpha. The edgeSelect variable is used to
     // only compute these values for edges adjacent to rounded corners, so fragCoords near
     // rectangular corners will be treated as if they're inside the rrect.
-    fragBuilder->codeAppend("float4 fragCoord = sk_FragCoord;");
     fragBuilder->codeAppendf("float2 radius = float2(%s.x);", radiusPlusHalfName);
-    fragBuilder->codeAppendf("float2 dxy0 = %s.xy*((%s.LT + radius) - fragCoord.xy);",
-                             edgeSelectName, rectName);
-    fragBuilder->codeAppendf("float2 dxy1 = %s.zw*(fragCoord.xy - (%s.RB - radius));",
-                             edgeSelectName, rectName);
+    fragBuilder->codeAppendf("float4 floatRect = float4(%s);", rectName);
+    fragBuilder->codeAppendf("float2 dxy0 = %s.LT*((floatRect.LT + radius) - fragCoord);",
+                             edgeSelectName);
+    fragBuilder->codeAppendf("float2 dxy1 = %s.RB*(fragCoord - (floatRect.RB - radius));",
+                             edgeSelectName);
     fragBuilder->codeAppend("float2 dxy = max(max(dxy0, dxy1), 0.0);");
     fragBuilder->codeAppendf("half circleCornerAlpha = half(%s);", clampedCircleDistance.c_str());
 
-    // We also compute corner values assuming that rrect is rectangular by computing a separate
+    // We also compute corner values assuming that the rrect is rectangular by computing a separate
     // rect edge alpha for each side, and multiply the computed edge alphas together to
     // get the rectangular corner alpha value. At most only two edge alphas will be < 1, and that
     // will be the corner the fragCoord is closest to. The others will be 1. We use edgeSelect to
     // force any edges next to a rounded corner to have a value of 1 to avoid affecting the
     // circular corner alpha.
-    fragBuilder->codeAppendf("half4 rectEdgeAlphas = saturate(half4(fragCoord.xy - %s.LT,"
-                                                                  "%s.RB - fragCoord.xy));",
-                             rectName, rectName);
-    fragBuilder->codeAppendf("half4 rectCornerAlphas = mix(rectEdgeAlphas, half4(1), %s);",
+    fragBuilder->codeAppend("half4 rectEdgeAlphas = saturate(half4(fragCoord - floatRect.LT,"
+                                                                  "floatRect.RB - fragCoord));");
+    fragBuilder->codeAppendf("rectEdgeAlphas = mix(rectEdgeAlphas, half4(1), %s);",
                              edgeSelectName);
 
     // The final step is to multiply all of these alphas together.
-    fragBuilder->codeAppend("half alpha = circleCornerAlpha * rectCornerAlphas.x *"
-                                         "rectCornerAlphas.y * rectCornerAlphas.z *"
-                                         "rectCornerAlphas.w;");
+    fragBuilder->codeAppend("half alpha = circleCornerAlpha * rectEdgeAlphas.L *"
+                                         "rectEdgeAlphas.T * rectEdgeAlphas.R *"
+                                         "rectEdgeAlphas.B;");
 
     if (GrClipEdgeType::kInverseFillAA == crre.fEdgeType) {
         fragBuilder->codeAppend("alpha = 1.0 - alpha;");
@@ -308,8 +310,7 @@ void CircularRRectEffect::Impl::onSetData(const GrGLSLProgramDataManager& pdman,
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void CircularRRectEffect::onAddToKey(const GrShaderCaps& caps, skgpu::KeyBuilder* b) const {
-    static_assert(kGrClipEdgeTypeCnt <= 8);
-    b->add32((fCircularCornerFlags << 3) | static_cast<int>(fEdgeType));
+    b->add32(static_cast<int>(fEdgeType));
 }
 
 std::unique_ptr<GrFragmentProcessor::ProgramImpl> CircularRRectEffect::onMakeProgramImpl() const {
