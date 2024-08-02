@@ -126,9 +126,9 @@ $pure half4 sk_color_space_transform(half4 halfColor,
 }
 
 $pure half4 sk_circular_rrect_clip(half4 color,
-                                   float4 rect,
-                                   float2 radiusPlusHalf,
-                                   half4 edgeSelect) {
+                                   half4 rect,
+                                   half4 edgeSelect,
+                                   half2 radiusPlusHalf) {
     float2 fragCoord = sk_FragCoord.xy;
 
     float2 radius = float2(radiusPlusHalf.x);
