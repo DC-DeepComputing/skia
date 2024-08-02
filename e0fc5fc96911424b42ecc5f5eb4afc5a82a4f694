@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "739a4593_0c909f14",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-08-02T17:02:26Z",
+      "side": 1,
+      "message": "This must also be guarded in flutter, so I have a PR that adds the flag here: https://github.com/flutter/engine/pull/54314",
+      "revId": "e0fc5fc96911424b42ecc5f5eb4afc5a82a4f694",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "82abcc32_5f45ce2c",
+        "filename": "src/core/SkBlurEngine.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 745,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-08-02T17:02:26Z",
+      "side": 1,
+      "message": "When called using the legacy code path, the sigma can be greater than the max sigma (currently set to that of the GaussPass) because we want the legacy path to use the TentPass still.",
+      "range": {
+        "startLine": 745,
+        "startChar": 0,
+        "endLine": 745,
+        "endChar": 93
+      },
+      "revId": "e0fc5fc96911424b42ecc5f5eb4afc5a82a4f694",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d7285449_ce8e9737",
+        "filename": "src/core/SkBlurEngine.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 914,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-08-02T17:02:26Z",
+      "side": 1,
+      "message": "Chrome android builds were complaining about static mutable symbols.",
+      "range": {
+        "startLine": 914,
+        "startChar": 0,
+        "endLine": 914,
+        "endChar": 44
+      },
+      "revId": "e0fc5fc96911424b42ecc5f5eb4afc5a82a4f694",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df3375dc_4cd71563",
+        "filename": "src/effects/imagefilters/SkBlurImageFilter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-08-02T17:02:26Z",
+      "side": 1,
+      "message": "`SkBlurEngine` operates with src and dst rects relative to the (0,0) of the input SkSpecialImage. When the SIMD code was in this file, I was invoking it with src/dst rectangles relative to the layer space which was then made relative to the input image inside the `blur()` function.  Now we just calculate the image-relative src and dst rects directly.",
+      "range": {
+        "startLine": 212,
+        "startChar": 0,
+        "endLine": 223,
+        "endChar": 75
+      },
+      "revId": "e0fc5fc96911424b42ecc5f5eb4afc5a82a4f694",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
