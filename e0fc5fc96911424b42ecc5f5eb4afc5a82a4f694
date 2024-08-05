@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9d8bc6b_a471877a",
+        "filename": "src/core/SkBlurEngine.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 745,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-08-05T20:15:26Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "82abcc32_5f45ce2c",
+      "range": {
+        "startLine": 745,
+        "startChar": 0,
+        "endLine": 745,
+        "endChar": 93
+      },
+      "revId": "e0fc5fc96911424b42ecc5f5eb4afc5a82a4f694",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d7285449_ce8e9737",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6280a97f_1e969e04",
+        "filename": "src/core/SkBlurEngine.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 914,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-08-05T20:15:26Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "d7285449_ce8e9737",
+      "range": {
+        "startLine": 914,
+        "startChar": 0,
+        "endLine": 914,
+        "endChar": 44
+      },
+      "revId": "e0fc5fc96911424b42ecc5f5eb4afc5a82a4f694",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "df3375dc_4cd71563",
@@ -77,6 +125,30 @@
       "writtenOn": "2024-08-02T17:02:26Z",
       "side": 1,
       "message": "`SkBlurEngine` operates with src and dst rects relative to the (0,0) of the input SkSpecialImage. When the SIMD code was in this file, I was invoking it with src/dst rectangles relative to the layer space which was then made relative to the input image inside the `blur()` function.  Now we just calculate the image-relative src and dst rects directly.",
+      "range": {
+        "startLine": 212,
+        "startChar": 0,
+        "endLine": 223,
+        "endChar": 75
+      },
+      "revId": "e0fc5fc96911424b42ecc5f5eb4afc5a82a4f694",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "87e34b31_909a1cfb",
+        "filename": "src/effects/imagefilters/SkBlurImageFilter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-08-05T20:15:26Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "df3375dc_4cd71563",
       "range": {
         "startLine": 212,
         "startChar": 0,
