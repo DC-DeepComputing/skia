@@ -14,6 +14,8 @@
 
 #include "webgpu/webgpu_cpp.h"  // NO_G3_REWRITE
 
+#include <mutex>
+
 namespace skgpu::graphite {
 class DawnSharedContext;
 class DawnSampler;
@@ -79,9 +81,8 @@ private:
     wgpu::TextureView fRenderTextureView;
 
     using BindGroupCache = SkLRUCache<BindGroupKey, wgpu::BindGroup, typename BindGroupKey::Hash>;
-    // `fSamplerBindGroups` should only be modified on the Context's thread and thus do not need to
-    // be otherwise locked.
     mutable BindGroupCache fSamplerBindGroups;
+    mutable std::mutex fSamplerBindGroupsLock;
 };
 
 }  // namespace skgpu::graphite
