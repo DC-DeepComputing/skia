@@ -253,7 +253,7 @@ int main(int argc, char** argv) {
         options.skp = false;
     }
 #if defined(SK_FONTMGR_FONTCONFIG_AVAILABLE)
-    fontMgr = SkFontMgr_New_FontConfig(nullptr);
+    fontMgr = SkFontMgr_New_FontConfig_FreeType(nullptr);
 #else
     fontMgr = SkFontMgr::RefEmpty();
 #endif

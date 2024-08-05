@@ -18,6 +18,7 @@
 #include "src/core/SkScalerContext.h"
 #include "src/ports/fontations/src/ffi.rs.h"
 
+#include <src/core/SkFontDescriptor.h>
 #include <memory>
 
 class SkStreamAsset;
@@ -212,7 +213,6 @@ private:
                           rust::Box<fontations_ffi::BridgeNormalizedCoords>&& normalizedCoords,
                           rust::Box<fontations_ffi::BridgeOutlineCollection>&& outlines,
                           rust::Vec<uint32_t>&& palette);
-
 public:
     const fontations_ffi::BridgeFontRef& getBridgeFontRef() { return *fBridgeFontRef; }
     const fontations_ffi::BridgeNormalizedCoords& getBridgeNormalizedCoords() {
@@ -227,8 +227,14 @@ public:
 
     static sk_sp<SkTypeface> MakeFromData(sk_sp<SkData> fontData, const SkFontArguments&);
     static sk_sp<SkTypeface> MakeFromStream(std::unique_ptr<SkStreamAsset>, const SkFontArguments&);
+    static sk_sp<SkTypeface> MakeFromFontData(sk_sp<SkData> fontData,
+                                              const SkFontStyle& style,
+                                              bool isFixedPitch);
 
 protected:
+    SkTypeface_Fontations(sk_sp<SkData> fontData,
+                          const SkFontStyle& style,
+                          uint32_t ttcIndex);
     std::unique_ptr<SkStreamAsset> onOpenStream(int* ttcIndex) const override;
     sk_sp<SkTypeface> onMakeClone(const SkFontArguments& args) const override;
     std::unique_ptr<SkScalerContext> onCreateScalerContext(const SkScalerContextEffects& effects,
@@ -268,4 +274,27 @@ private:
     mutable bool fGlyphMasksMayNeedCurrentColor;
 };
 
+/*
+class SkTypeface_FontationsStream : public SkTypeface_Fontations {
+public:
+    SkTypeface_FontationsStream(sk_sp<SkData> fontData,
+                                const SkString familyName,
+                                const SkFontStyle& style, bool isFixedPitch)
+            : SkTypeface_Fontations(fontData, style, isFixedPitch)
+            , fFamilyName(std::move(familyName))
+            , fData(std::move(fontData))
+    { }
+    ~SkTypeface_FontationsStream() override {}
+
+protected:
+    void onGetFamilyName(SkString* familyName) const override;
+    void onGetFontDescriptor(SkFontDescriptor*, bool* serialize) const override;
+    std::unique_ptr<SkStreamAsset> onOpenStream(int* ttcIndex) const override;
+    sk_sp<SkTypeface> onMakeClone(const SkFontArguments&) const override;
+
+private:
+    const SkString fFamilyName;
+    const std::unique_ptr<const SkData> fData;
+};
+*/
 #endif  // SkTypeface_Fontations_DEFINED

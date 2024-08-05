@@ -56,7 +56,7 @@ int main(int argc, char** argv) {
     // If necessary, clients should use a font manager that would load fonts from the system.
     sk_sp<SkFontMgr> fontMgr;
 #if defined(SK_FONTMGR_FONTCONFIG_AVAILABLE)
-    fontMgr = SkFontMgr_New_FontConfig(nullptr);
+    fontMgr = SkFontMgr_New_FontConfig_FreeType(nullptr);
 #elif defined(SK_FONTMGR_CORETEXT_AVAILABLE)
     fontMgr = SkFontMgr_New_CoreText(nullptr);
 #endif

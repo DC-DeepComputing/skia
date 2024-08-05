@@ -110,9 +110,28 @@ SkTypeface_Fontations::SkTypeface_Fontations(
         , fOutlines(std::move(outlines))
         , fPalette(std::move(palette)) {}
 
+// TODO: Make all arguments correctly
+SkTypeface_Fontations::SkTypeface_Fontations(
+        sk_sp<SkData> fontData,
+        const SkFontStyle& style,
+        uint32_t ttcIndex)
+        : SkTypeface(style, true)
+        , fTtcIndex(ttcIndex)
+        , fBridgeFontRef(std::move(make_bridge_font_ref(fontData, ttcIndex)))
+        , fMappingIndex(std::move(fontations_ffi::make_mapping_index(*fBridgeFontRef)))
+        , fBridgeNormalizedCoords(std::move(make_normalized_coords(*fBridgeFontRef, SkFontArguments::VariationPosition())))
+        , fOutlines(std::move(fontations_ffi::get_outline_collection(*fBridgeFontRef)))
+        , fPalette(std::move(resolve_palette(*fBridgeFontRef, 0, rust::Slice<const fontations_ffi::PaletteOverride>()))) {}
+
 sk_sp<SkTypeface> SkTypeface_Fontations::MakeFromStream(std::unique_ptr<SkStreamAsset> stream,
                                                         const SkFontArguments& args) {
     return MakeFromData(streamToData(stream), args);
+}
+
+sk_sp<SkTypeface> SkTypeface_Fontations::MakeFromFontData(sk_sp<SkData> fontData,
+                                                          const SkFontStyle& style,
+                                                          bool isFixedPitch) {
+    return nullptr;
 }
 
 sk_sp<SkTypeface> SkTypeface_Fontations::MakeFromData(sk_sp<SkData> data,

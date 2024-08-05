@@ -5,10 +5,13 @@
  * found in the LICENSE file.
  */
 
+#include "include/ports/SkFontMgr_fontconfig.h"
+#include "src/ports/SkTypeface_fontations_priv.h"
 #include "include/core/SkDataTable.h"
 #include "include/core/SkFontArguments.h"
 #include "include/core/SkFontMgr.h"
 #include "include/core/SkFontStyle.h"
+#include "include/core/SkGraphics.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkScalar.h"
@@ -16,7 +19,6 @@
 #include "include/core/SkString.h"
 #include "include/core/SkTypeface.h"
 #include "include/core/SkTypes.h"
-#include "include/ports/SkFontMgr_fontconfig.h"
 #include "include/private/base/SkDebug.h"
 #include "include/private/base/SkMutex.h"
 #include "include/private/base/SkTArray.h"
@@ -533,6 +535,206 @@ private:
     using INHERITED = SkTypeface_FreeType;
 };
 
+template<class Typeface>
+class FontConfigData : public Typeface {
+public:
+    mutable SkAutoFcPattern fPattern;  // Mutable for passing to FontConfig API.
+    const SkString fSysroot;
+    const SkString fFontFileName;
+    FontConfigData(SkAutoFcPattern pattern, SkString sysroot);
+    /*
+    FontConfigData(sk_sp<SkData> fontData,
+                   const SkFontStyle& style,
+                   uint32_t ttcIndex);
+    */
+protected:
+    sk_sp<SkTypeface> onMakeClone(const SkFontArguments& args) const override;
+
+    void onGetFontDescriptor(SkFontDescriptor*, bool*) const override {}
+    void onGetFamilyName(SkString* familyName) const override {}
+    /*
+    std::unique_ptr<SkStreamAsset> onOpenStream(int* ttcIndex) const override { return SkTypeface::onOpenStream(ttcIndex); }
+    sk_sp<SkTypeface> onMakeClone(const SkFontArguments& args) const override { return nullptr; }
+    std::unique_ptr<SkScalerContext> onCreateScalerContext(const SkScalerContextEffects& effects,
+                                                           const SkDescriptor* desc) const override { return nullptr; }
+    void onFilterRec(SkScalerContextRec*) const override {}
+    std::unique_ptr<SkAdvancedTypefaceMetrics> onGetAdvancedMetrics() const override { return nullptr; }
+
+    void onCharsToGlyphs(const SkUnichar* chars, int count, SkGlyphID glyphs[]) const override { }
+    int onCountGlyphs() const override { return -1; }
+    void getPostScriptGlyphNames(SkString*) const override {} //
+    void getGlyphToUnicodeMap(SkUnichar*) const override {}
+    int onGetUPEM() const override { return -1; }
+
+    bool onGetPostScriptName(SkString*) const override { return false; }
+    SkTypeface::LocalizedStrings* onCreateFamilyNameIterator() const override { return nullptr; }
+    bool onGlyphMaskNeedsCurrentColor() const override { return false; }
+    int onGetVariationDesignPosition(SkFontArguments::VariationPosition::Coordinate coordinates[],
+                                     int coordinateCount) const override { return -1; }
+    int onGetVariationDesignParameters(SkFontParameters::Variation::Axis parameters[],
+                                       int parameterCount) const override { return -1; }
+    int onGetTableTags(SkFontTableTag tags[]) const override;
+    size_t onGetTableData(SkFontTableTag, size_t, size_t, void*) const override { return 0; }
+    */
+private:
+    SkString GetFontFileName(FcPattern* font, const SkString sysRoot) {
+        // FontConfig can return fonts which are unreadable.
+        const char* filename = get_string(font, FC_FILE, nullptr);
+        if (nullptr == filename) {
+            return SkString();
+        }
+
+        // When sysroot was implemented in e96d7760886a3781a46b3271c76af99e15cb0146 (before 2.11.0)
+        // it was broken;  mostly fixed in d17f556153fbaf8fe57fdb4fc1f0efa4313f0ecf (after 2.11.1).
+        // This leaves Debian 8 and 9 with broken support for this feature.
+        // As a result, this feature should not be used until at least 2.11.91.
+        // The broken support is mostly around not making all paths relative to the sysroot.
+        // However, even at 2.13.1 it is possible to get a mix of sysroot and non-sysroot paths,
+        // as any added file path not lexically starting with the sysroot will be unchanged.
+        // To allow users to add local app files outside the sysroot,
+        // prefer the sysroot but also look without the sysroot.
+        if (!fSysroot.isEmpty()) {
+            SkString resolvedFilename;
+            resolvedFilename = fSysroot;
+            resolvedFilename += filename;
+            if (sk_exists(resolvedFilename.c_str(), kRead_SkFILE_Flag)) {
+                return resolvedFilename;
+            }
+        }
+        if(sk_exists(filename, kRead_SkFILE_Flag)) {
+            return SkString(filename);
+        }
+        return SkString();
+    }
+};
+
+template<>
+FontConfigData<SkTypeface_FreeTypeStream>::FontConfigData(SkAutoFcPattern pattern, SkString sysroot)
+        : SkTypeface_FreeTypeStream(skfontstyle_from_fcpattern(pattern),
+                    FC_PROPORTIONAL != get_int(pattern, FC_SPACING, FC_PROPORTIONAL))
+        , fPattern(std::move(pattern))
+        , fSysroot(std::move(sysroot))
+{ }
+
+template<>
+FontConfigData<SkTypeface_Fontations>::FontConfigData(SkAutoFcPattern pattern, SkString sysroot)
+        : SkTypeface_Fontations(SkData::MakeFromFileName(GetFontFileName(pattern, sysroot).c_str()),
+                                skfontstyle_from_fcpattern(pattern),
+                                FC_PROPORTIONAL != get_int(pattern, FC_SPACING, FC_PROPORTIONAL))
+        , fPattern(std::move(pattern))
+        , fSysroot(std::move(sysroot))
+{ }
+
+/*
+template<>
+FontConfigData<SkTypeface_FreeTypeStream>::FontConfigData(sk_sp<SkData> fontData,
+                                                      const SkFontStyle& style,
+                                                      uint32_t ttcIndex)
+        : SkTypeface_FreeTypeStream(fontData, style, true) {}
+
+template<>
+FontConfigData<SkTypeface_Fontations>::FontConfigData(sk_sp<SkData> fontData,
+                                                      const SkFontStyle& style,
+                                                      uint32_t ttcIndex)
+        : SkTypeface_Fontations(fontData, style, true) {}
+*/
+template<>
+sk_sp<SkTypeface> FontConfigData<SkTypeface_FreeTypeStream>::onMakeClone(const SkFontArguments& args) const {
+    SkFontStyle style = this->fontStyle();
+    std::unique_ptr<SkFontData> data = this->cloneFontData(args, &style);
+    if (!data) {
+        return nullptr;
+    }
+
+    SkString familyName;
+    this->getFamilyName(&familyName);
+
+    return sk_make_sp<SkTypeface_FreeTypeStream>(
+            std::move(data), familyName, style, this->isFixedPitch());
+}
+
+template<>
+sk_sp<SkTypeface> FontConfigData<SkTypeface_Fontations>::onMakeClone(const SkFontArguments& args) const {
+    return SkTypeface_Fontations::onMakeClone(args);
+}
+
+template<class Typeface>
+class FontConfigCache {
+public:
+    FontConfigCache() {}
+
+    typedef bool(*FindProc)(sk_sp<FontConfigData<Typeface>>, void* context);
+
+    void add(sk_sp<FontConfigData<Typeface>> fontConfig) {
+        const auto limit = SkGraphics::GetTypefaceCacheCountLimit();
+        if (fFontConfigs.size() >= limit) {
+            this->purge(limit >> 2);
+        }
+        if (limit > 0) {
+            fFontConfigs.emplace_back(std::move(fontConfig));
+        }
+    }
+
+    sk_sp<FontConfigData<Typeface>> findByProcAndRef(FindProc proc, void* ctx) const {
+        for (const sk_sp<FontConfigData<Typeface>>& fontConfig : fFontConfigs) {
+            if (proc(fontConfig, ctx)) {
+                return fontConfig;
+            }
+        }
+        return nullptr;
+    }
+
+    void purgeAll() {
+        this->purge(fFontConfigs.size());
+    }
+
+    static SkTypefaceID NewTypefaceID() {
+        static std::atomic<int32_t> nextID{1};
+        return nextID.fetch_add(1, std::memory_order_relaxed);
+    }
+
+    // These are static wrappers around a global instance of a cache.
+    static FontConfigCache& Get() {
+        static FontConfigCache gCache;
+        return gCache;
+    }
+    static SkMutex& fontconfig_cache_mutex() {
+        static SkMutex& mutex = *(new SkMutex);
+        return mutex;
+    }
+    static void Add(sk_sp<FontConfigData<Typeface>> face) {
+        SkAutoMutexExclusive ama(fontconfig_cache_mutex());
+        Get().add(std::move(face));
+    }
+    static sk_sp<FontConfigData<Typeface>> FindByProcAndRef(FindProc proc, void* ctx) {
+        SkAutoMutexExclusive ama(fontconfig_cache_mutex());
+        return Get().findByProcAndRef(proc, ctx);
+    }
+    static void PurgeAll() {
+        SkAutoMutexExclusive ama(fontconfig_cache_mutex());
+        Get().purgeAll();
+    }
+
+private:
+    void purge(int numToPurge) {
+        int count = fFontConfigs.size();
+        int i = 0;
+        while (i < count) {
+            if (fFontConfigs[i]->unique()) {
+                fFontConfigs.removeShuffle(i);
+                --count;
+                if (--numToPurge == 0) {
+                    return;
+                }
+            } else {
+                ++i;
+            }
+        }
+    }
+    skia_private::TArray<sk_sp<FontConfigData<Typeface>>> fFontConfigs;
+};
+
+template<class Typeface>
 class SkFontMgr_fontconfig : public SkFontMgr {
     mutable SkAutoFcConfig fFC;  // Only mutable to avoid const cast when passed to FontConfig API.
     const SkString fSysroot;
@@ -651,14 +853,13 @@ class SkFontMgr_fontconfig : public SkFontMgr {
                                            sizes.begin(), names.size());
     }
 
-    static bool FindByFcPattern(SkTypeface* cached, void* ctx) {
-        SkTypeface_fontconfig* cshFace = static_cast<SkTypeface_fontconfig*>(cached);
+    static bool FindByFcPattern(sk_sp<FontConfigData<Typeface>> cached, void* ctx) {
         FcPattern* ctxPattern = static_cast<FcPattern*>(ctx);
-        return FcTrue == FcPatternEqual(cshFace->fPattern, ctxPattern);
+        return FcTrue == FcPatternEqual(cached->fPattern, ctxPattern);
     }
 
     mutable SkMutex fTFCacheMutex;
-    mutable SkTypefaceCache fTFCache;
+    mutable FontConfigCache<Typeface> fTFCache;
     /** Creates a typeface using a typeface cache.
      *  @param pattern a complete pattern from FcFontRenderPrepare.
      */
@@ -669,16 +870,16 @@ class SkFontMgr_fontconfig : public SkFontMgr {
         // Cannot hold FCLocker when calling fTFCache.add; an evicted typeface may need to lock.
         // Must hold fTFCacheMutex when interacting with fTFCache.
         SkAutoMutexExclusive ama(fTFCacheMutex);
-        sk_sp<SkTypeface> face = [&]() {
+        sk_sp<FontConfigData<Typeface>> face = [&]() {
             FCLocker lock;
-            sk_sp<SkTypeface> face = fTFCache.findByProcAndRef(FindByFcPattern, pattern);
+            sk_sp<FontConfigData<Typeface>> face = fTFCache.findByProcAndRef(FindByFcPattern, pattern);
             if (face) {
                 pattern.reset();
             }
             return face;
         }();
         if (!face) {
-            face = SkTypeface_fontconfig::Make(std::move(pattern), fSysroot);
+            face = sk_make_sp<FontConfigData<Typeface>>(std::move(pattern), fSysroot);
             if (face) {
                 // Cannot hold FCLocker in fTFCache.add; evicted typefaces may need to lock.
                 fTFCache.add(face);
@@ -968,6 +1169,15 @@ protected:
     }
 };
 
+sk_sp<SkFontMgr> SkFontMgr_New_FontConfig_FreeType(FcConfig* fc) {
+    return sk_make_sp<SkFontMgr_fontconfig<SkTypeface_FreeTypeStream>>(fc);
+}
+
+sk_sp<SkFontMgr> SkFontMgr_New_FontConfig_Fontations(FcConfig* fc) {
+    return sk_make_sp<SkFontMgr_fontconfig<SkTypeface_Fontations>>(fc);
+}
+
+template<class Typeface>
 sk_sp<SkFontMgr> SkFontMgr_New_FontConfig(FcConfig* fc) {
-    return sk_make_sp<SkFontMgr_fontconfig>(fc);
+    return sk_make_sp<SkFontMgr_fontconfig<Typeface>>(fc);
 }

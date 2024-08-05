@@ -429,7 +429,7 @@ int main(int , char * const []) {
 
     sk_sp<SkFontMgr> mgr;
 #if defined(SK_FONTMGR_FONTCONFIG_AVAILABLE)
-    mgr = SkFontMgr_New_FontConfig(nullptr);
+    mgr = SkFontMgr_New_FontConfig_FreeType(nullptr);
 #elif defined(SK_FONTMGR_CORETEXT_AVAILABLE)
     mgr = SkFontMgr_New_CoreText(nullptr);
 #elif defined(SK_FONTMGR_FREETYPE_EMPTY_AVAILABLE)

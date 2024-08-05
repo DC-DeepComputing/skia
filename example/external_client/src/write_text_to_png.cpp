@@ -42,7 +42,7 @@ int main(int argc, char** argv) {
     sk_sp<SkSurface> surface = SkSurfaces::Raster(SkImageInfo::MakeN32(100, 50, kOpaque_SkAlphaType));
     SkCanvas* canvas = surface->getCanvas();
 #if defined(SK_FONTMGR_FONTCONFIG_AVAILABLE)
-    sk_sp<SkFontMgr> mgr = SkFontMgr_New_FontConfig(nullptr);
+    sk_sp<SkFontMgr> mgr = SkFontMgr_New_FontConfig_FreeType(nullptr);
 #endif
 #if defined(SK_FONTMGR_CORETEXT_AVAILABLE)
     sk_sp<SkFontMgr> mgr = SkFontMgr_New_CoreText(nullptr);

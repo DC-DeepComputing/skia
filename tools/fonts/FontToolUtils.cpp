@@ -258,7 +258,7 @@ sk_sp<SkFontMgr> TestFontMgr() {
 #endif
 #if defined(SK_FONTMGR_FONTATIONS_AVAILABLE)
         else if (FLAGS_fontations) {
-            mgr = SkFontMgr_New_Fontations_Empty();
+            mgr = SkFontMgr_New_FontConfig_Fontations(nullptr);
         }
 #endif
         else {
@@ -270,7 +270,7 @@ sk_sp<SkFontMgr> TestFontMgr() {
                                                 defined(SK_BUILD_FOR_MAC))
             mgr = SkFontMgr_New_CoreText(nullptr);
 #elif defined(SK_FONTMGR_FONTCONFIG_AVAILABLE)
-            mgr = SkFontMgr_New_FontConfig(nullptr);
+            mgr = SkFontMgr_New_FontConfig_FreeType(nullptr);
 #elif defined(SK_FONTMGR_FREETYPE_DIRECTORY_AVAILABLE)
             // In particular, this is used on ChromeOS, which is Linux-like but doesn't have
             // FontConfig.

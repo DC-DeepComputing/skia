@@ -17,6 +17,7 @@
 #include "include/private/base/SkNoncopyable.h"
 #include "include/private/base/SkTArray.h"
 #include "src/base/SkSharedMutex.h"
+#include "src/core/SkFontDescriptor.h"
 #include "src/core/SkFontScanner.h"
 #include "src/utils/SkCharToGlyphCache.h"
 
@@ -93,6 +94,11 @@ class SkTypeface_FreeTypeStream : public SkTypeface_FreeType {
 public:
     SkTypeface_FreeTypeStream(std::unique_ptr<SkFontData> fontData, const SkString familyName,
                               const SkFontStyle& style, bool isFixedPitch);
+    SkTypeface_FreeTypeStream(const SkFontStyle& style, bool isFixedPitch)
+            : SkTypeface_FreeType(style, isFixedPitch)
+            , fFamilyName()
+            , fData(nullptr) { }
+
     ~SkTypeface_FreeTypeStream() override;
 
 protected:

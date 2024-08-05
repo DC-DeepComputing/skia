@@ -63,7 +63,7 @@ FcConfig* build_fontconfig_with_fontfile(const char* fontFilename) {
 DEF_TEST(FontMgrFontConfig, reporter) {
     FcConfig* config = build_fontconfig_with_fontfile("/fonts/Distortable.ttf");
 
-    sk_sp<SkFontMgr> fontMgr(SkFontMgr_New_FontConfig(config));
+    sk_sp<SkFontMgr> fontMgr(SkFontMgr_New_FontConfig_FreeType(config));
     sk_sp<SkTypeface> typeface(fontMgr->legacyMakeTypeface("Distortable", SkFontStyle()));
     if (!typeface) {
         ERRORF(reporter, "Could not find typeface. FcVersion: %d", FcGetVersion());

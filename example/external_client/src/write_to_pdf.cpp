@@ -51,7 +51,7 @@ int main(int argc, char** argv) {
     SkCanvas* canvas = pdf->beginPage(100, 50);
 
 #if defined(SK_FONTMGR_FONTCONFIG_AVAILABLE)
-    sk_sp<SkFontMgr> mgr = SkFontMgr_New_FontConfig(nullptr);
+    sk_sp<SkFontMgr> mgr = SkFontMgr_New_FontConfig_FreeType(nullptr);
 #endif
 #if defined(SK_FONTMGR_CORETEXT_AVAILABLE)
     sk_sp<SkFontMgr> mgr = SkFontMgr_New_CoreText(nullptr);
