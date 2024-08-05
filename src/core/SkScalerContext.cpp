@@ -1190,11 +1190,17 @@ void SkScalerContext::MakeRecAndEffects(const SkFont& font, const SkPaint& paint
     rec->setDeviceGamma(surfaceProps.textGamma());
     rec->setContrast(surfaceProps.textContrast());
 
-    if (!SkToBool(scalerContextFlags & SkScalerContextFlags::kFakeGamma)) {
-        rec->ignoreGamma();
-    }
-    if (!SkToBool(scalerContextFlags & SkScalerContextFlags::kBoostContrast)) {
-        rec->setContrast(0);
+    // If Paint is default, we don't have a surface to draw on (?), and thus
+    // can use default contrast and gamma values. This will end up sharing the
+    // default SkMaskGamma lookup table, instead of allocating a linear one that
+    // won't be used for drawing, which saves approximately 2k in memory.
+    if (paint != SkPaint()) {
+        if (!SkToBool(scalerContextFlags & SkScalerContextFlags::kFakeGamma)) {
+            rec->ignoreGamma();
+        }
+        if (!SkToBool(scalerContextFlags & SkScalerContextFlags::kBoostContrast)) {
+            rec->setContrast(0);
+        }
     }
 
     new (effects) SkScalerContextEffects{paint};
