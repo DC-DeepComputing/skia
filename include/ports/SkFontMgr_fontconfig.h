@@ -18,5 +18,6 @@ class SkFontMgr;
  *  Takes ownership of 'fc' and will call FcConfigDestroy on it.
  */
 SK_API sk_sp<SkFontMgr> SkFontMgr_New_FontConfig(FcConfig* fc);
+SK_API sk_sp<SkFontMgr> SkFontMgr_New_FontConfig_For_Fontations(FcConfig* fc);
 
 #endif // #ifndef SkFontMgr_fontconfig_DEFINED

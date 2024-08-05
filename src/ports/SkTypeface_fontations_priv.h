@@ -18,6 +18,7 @@
 #include "src/core/SkScalerContext.h"
 #include "src/ports/fontations/src/ffi.rs.h"
 
+#include "src/core/SkFontDescriptor.h"
 #include <memory>
 
 class SkStreamAsset;
@@ -212,7 +213,6 @@ private:
                           rust::Box<fontations_ffi::BridgeNormalizedCoords>&& normalizedCoords,
                           rust::Box<fontations_ffi::BridgeOutlineCollection>&& outlines,
                           rust::Vec<uint32_t>&& palette);
-
 public:
     const fontations_ffi::BridgeFontRef& getBridgeFontRef() { return *fBridgeFontRef; }
     const fontations_ffi::BridgeNormalizedCoords& getBridgeNormalizedCoords() {
@@ -226,6 +226,7 @@ public:
     static constexpr SkTypeface::FactoryId FactoryId = SkSetFourByteTag('f', 'n', 't', 'a');
 
     static sk_sp<SkTypeface> MakeFromData(sk_sp<SkData> fontData, const SkFontArguments&);
+    static sk_sp<SkTypeface> MakeFromFontData(std::unique_ptr<SkFontData> fontData, const SkFontArguments&);
     static sk_sp<SkTypeface> MakeFromStream(std::unique_ptr<SkStreamAsset>, const SkFontArguments&);
 
 protected:
@@ -251,7 +252,6 @@ protected:
                                        int parameterCount) const override;
     int onGetTableTags(SkFontTableTag tags[]) const override;
     size_t onGetTableData(SkFontTableTag, size_t, size_t, void*) const override;
-
 private:
     sk_sp<SkData> fFontData;
     // Incoming ttc index requested when this typeface was instantiated from data.

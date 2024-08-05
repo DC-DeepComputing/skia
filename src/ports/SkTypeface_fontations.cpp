@@ -187,6 +187,79 @@ sk_sp<SkTypeface> SkTypeface_Fontations::MakeFromData(sk_sp<SkData> data,
                                                        std::move(palette)));
 }
 
+sk_sp<SkTypeface> SkTypeface_Fontations::MakeFromFontData(std::unique_ptr<SkFontData> fontData,
+                                                      const SkFontArguments& args) {
+    uint32_t ttcIndex = args.getCollectionIndex();
+    auto data = streamToData(fontData->detachStream());
+    rust::Box<fontations_ffi::BridgeFontRef> bridgeFontRef = make_bridge_font_ref(data, ttcIndex);
+    if (!fontations_ffi::font_ref_is_valid(*bridgeFontRef)) {
+        return nullptr;
+    }
+
+    rust::Box<fontations_ffi::BridgeMappingIndex> mappingIndex =
+            fontations_ffi::make_mapping_index(*bridgeFontRef);
+
+    SkFontArguments::VariationPosition variationPosition = args.getVariationDesignPosition();
+    std::unique_ptr<SkFontArguments::VariationPosition::Coordinate[]> concatenatedCoords = nullptr;
+    // Handle FreeType behaviour of upper 15 bits of collection index
+    // representing a named instance choice. If so, prepopulate the variation
+    // coordinates with the values from the named instance and append the user
+    // coordinates after that so they can override the named instance's
+    // coordinates.
+    if (args.getCollectionIndex() & 0xFFFF0000) {
+        size_t numNamedInstanceCoords =
+                fontations_ffi::coordinates_for_shifted_named_instance_index(
+                        *bridgeFontRef,
+                        args.getCollectionIndex(),
+                        rust::cxxbridge1::Slice<fontations_ffi::SkiaDesignCoordinate>());
+        concatenatedCoords.reset(
+                new SkFontArguments::VariationPosition::Coordinate
+                        [numNamedInstanceCoords + variationPosition.coordinateCount]);
+
+        rust::cxxbridge1::Slice<fontations_ffi::SkiaDesignCoordinate> targetSlice(
+                reinterpret_cast<fontations_ffi::SkiaDesignCoordinate*>(concatenatedCoords.get()),
+                numNamedInstanceCoords);
+        size_t retrievedNamedInstanceCoords =
+                fontations_ffi::coordinates_for_shifted_named_instance_index(
+                        *bridgeFontRef, args.getCollectionIndex(), targetSlice);
+        if (numNamedInstanceCoords != retrievedNamedInstanceCoords) {
+            return nullptr;
+        }
+        for (int i = 0; i < variationPosition.coordinateCount; ++i) {
+            concatenatedCoords[numNamedInstanceCoords + i] = variationPosition.coordinates[i];
+        }
+        variationPosition.coordinateCount += numNamedInstanceCoords;
+        variationPosition.coordinates = concatenatedCoords.get();
+    }
+
+    rust::Box<fontations_ffi::BridgeNormalizedCoords> normalizedCoords =
+            make_normalized_coords(*bridgeFontRef, variationPosition);
+    SkFontStyle style;
+    fontations_ffi::BridgeFontStyle fontStyle;
+    if (fontations_ffi::get_font_style(*bridgeFontRef, *normalizedCoords, fontStyle)) {
+        style = SkFontStyle(fontStyle.weight,
+                            fontStyle.width,
+                            static_cast<SkFontStyle::Slant>(fontStyle.slant));
+    }
+    rust::Box<fontations_ffi::BridgeOutlineCollection> outlines =
+            fontations_ffi::get_outline_collection(*bridgeFontRef);
+
+    rust::Slice<const fontations_ffi::PaletteOverride> paletteOverrides(
+            reinterpret_cast<const ::fontations_ffi::PaletteOverride*>(args.getPalette().overrides),
+            args.getPalette().overrideCount);
+    rust::Vec<uint32_t> palette =
+            resolve_palette(*bridgeFontRef, args.getPalette().index, paletteOverrides);
+
+    return sk_sp<SkTypeface>(new SkTypeface_Fontations(data,
+                                                       style,
+                                                       ttcIndex,
+                                                       std::move(bridgeFontRef),
+                                                       std::move(mappingIndex),
+                                                       std::move(normalizedCoords),
+                                                       std::move(outlines),
+                                                       std::move(palette)));
+}
+
 namespace sk_fontations {
 
 // Path sanitization ported from SkFTGeometrySink.
