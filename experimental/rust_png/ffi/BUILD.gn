@@ -1,0 +1,23 @@
+# Copyright 2024 Google LLC
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# TODO(https://crbug.com/356927699): If Rust `png` needs to be used from C++
+# clients other than Skia, then we should move the FFI glue to
+# `third_party/rust/png/v0_x/ffi`.
+
+import("//build/rust/rust_static_library.gni")
+
+rust_static_library("ffi") {
+  allow_unsafe = true  # For FFI
+  crate_root = "FFI.rs"
+  sources = [ "FFI.rs" ]
+  cxx_bindings = [ "FFI.rs" ]
+  public_deps = [ ":ffi_cpp" ]
+  deps = [ "//third_party/rust/png/v0_17:lib" ]
+}
+
+source_set("ffi_cpp") {
+  visibility = [ ":*" ]
+  public = [ "FFI.h" ]
+}
