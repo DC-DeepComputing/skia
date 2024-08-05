@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "81b80a6a_b0cb9e21",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-08-05T22:44:17Z",
+      "side": 1,
+      "message": "Note: these ATrace macros are defined in Android\u0027s `system/core/libcutils/include/cutils/trace.h`",
+      "revId": "5a747329c71662e6f1d410fe3878c67dcf606b3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
