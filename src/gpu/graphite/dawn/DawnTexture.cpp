@@ -228,7 +228,10 @@ void DawnTexture::freeGpuData() {
         fTexture.Destroy();
     }
     // Clear out cached resources before the allocator is removed.
-    fSamplerBindGroups.reset();
+    {
+        std::lock_guard<std::mutex> lg(fSamplerBindGroupsLock);
+        fSamplerBindGroups.reset();
+    }
 
     fTexture = nullptr;
     fSampleTextureView = nullptr;
@@ -255,7 +258,7 @@ void DawnTexture::setBackendLabel(char const* label) {
     }
 }
 
-const wgpu::BindGroup& DawnTexture::getSamplerBindGroup_callFromContextThreadOnly(
+const wgpu::BindGroup& DawnTexture::getSamplerBindGroup(
         const DawnSampler* sampler, DawnResourceProvider* resourceProvider) const {
     auto key = make_texture_bind_group_key(sampler);
     auto* existingBindGroup = fSamplerBindGroups.find(key);
@@ -279,6 +282,7 @@ const wgpu::BindGroup& DawnTexture::getSamplerBindGroup_callFromContextThreadOnl
     const auto& device = resourceProvider->dawnSharedContext()->device();
     auto bindGroup = device.CreateBindGroup(&desc);
 
+    std::lock_guard<std::mutex> lg(fSamplerBindGroupsLock);
     return *fSamplerBindGroups.insert(key, bindGroup);
 }
 
