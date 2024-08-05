@@ -54,7 +54,8 @@ private:
     bool beginRenderPass(const RenderPassDesc&,
                          const Texture* colorTexture,
                          const Texture* resolveTexture,
-                         const Texture* depthStencilTexture);
+                         const Texture* depthStencilTexture,
+                         SkIRect bounds);
     bool loadMSAAFromResolveAndBeginRenderPassEncoder(
             const RenderPassDesc& frontendRenderPassDesc,
             const wgpu::RenderPassDescriptor& wgpuRenderPassDesc,
