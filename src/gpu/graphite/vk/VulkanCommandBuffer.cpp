@@ -412,7 +412,11 @@ bool VulkanCommandBuffer::onAddRenderPass(const RenderPassDesc& renderPassDesc,
     this->updateRtAdjustUniform(viewport);
     this->setViewport(viewport);
 
-    if (!this->beginRenderPass(renderPassDesc, colorTexture, resolveTexture, depthStencilTexture)) {
+    if (!this->beginRenderPass(renderPassDesc,
+                               renderPassBounds,
+                               colorTexture,
+                               resolveTexture,
+                               depthStencilTexture)) {
         return false;
     }
 
@@ -658,9 +662,57 @@ void gather_clear_values(
     }
 }
 
+// The RenderArea bounds we pass into BeginRenderPass must have a start x value that is a multiple
+// of the granularity. The width must also be a multiple of the granularity or eaqual to the width
+// the the entire attachment. Similar requirements for the y and height components.
+void adjust_bounds_to_granularity(SkIRect* dstBounds,
+                                  const SkIRect& srcBounds,
+                                  const VkExtent2D& granularity,
+                                  int maxWidth,
+                                  int maxHeight) {
+    // Adjust Width
+    if ((0 != granularity.width && 1 != granularity.width)) {
+        // Start with the right side of rect so we know if we end up going pass the maxWidth.
+        int rightAdj = srcBounds.fRight % granularity.width;
+        if (rightAdj != 0) {
+            rightAdj = granularity.width - rightAdj;
+        }
+        dstBounds->fRight = srcBounds.fRight + rightAdj;
+        if (dstBounds->fRight > maxWidth) {
+            dstBounds->fRight = maxWidth;
+            dstBounds->fLeft = 0;
+        } else {
+            dstBounds->fLeft = srcBounds.fLeft - srcBounds.fLeft % granularity.width;
+        }
+    } else {
+        dstBounds->fLeft = srcBounds.fLeft;
+        dstBounds->fRight = srcBounds.fRight;
+    }
+
+    // Adjust height
+    if ((0 != granularity.height && 1 != granularity.height)) {
+        // Start with the bottom side of rect so we know if we end up going pass the maxHeight.
+        int bottomAdj = srcBounds.fBottom % granularity.height;
+        if (bottomAdj != 0) {
+            bottomAdj = granularity.height - bottomAdj;
+        }
+        dstBounds->fBottom = srcBounds.fBottom + bottomAdj;
+        if (dstBounds->fBottom > maxHeight) {
+            dstBounds->fBottom = maxHeight;
+            dstBounds->fTop = 0;
+        } else {
+            dstBounds->fTop = srcBounds.fTop - srcBounds.fTop % granularity.height;
+        }
+    } else {
+        dstBounds->fTop = srcBounds.fTop;
+        dstBounds->fBottom = srcBounds.fBottom;
+    }
+}
+
 } // anonymous namespace
 
 bool VulkanCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
+                                          SkIRect renderPassBounds,
                                           const Texture* colorTexture,
                                           const Texture* resolveTexture,
                                           const Texture* depthStencilTexture) {
@@ -724,8 +776,6 @@ bool VulkanCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
 
     int frameBufferWidth = 0;
     int frameBufferHeight = 0;
-    // TODO: Get frame buffer render area from RenderPassDesc. Account for granularity if it wasn't
-    // already. For now, simply set the render area to be the entire frame buffer.
     if (colorTexture) {
         frameBufferWidth = colorTexture->dimensions().width();
         frameBufferHeight = colorTexture->dimensions().height();
@@ -743,14 +793,34 @@ bool VulkanCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
         return false;
     }
 
+    VkExtent2D granularity;
+    // Get granularity for this render pass
+    VULKAN_CALL(fSharedContext->interface(),
+                GetRenderAreaGranularity(fSharedContext->device(),
+                                         vulkanRenderPass->renderPass(),
+                                         &granularity));
+    SkIRect adjustedBounds;
+    if ((granularity.width == 0 ||  granularity.width == 1) &&
+        (granularity.height == 0 || granularity.height == 1)) {
+        adjustedBounds = renderPassBounds;
+    } else {
+        adjust_bounds_to_granularity(&adjustedBounds,
+                                     renderPassBounds,
+                                     granularity,
+                                     frameBufferWidth,
+                                     frameBufferHeight);
+    }
+    VkRect2D renderArea;
+    renderArea.offset = { adjustedBounds.fLeft , adjustedBounds.fTop };
+    renderArea.extent = { (uint32_t)adjustedBounds.width(), (uint32_t)adjustedBounds.height() };
+
     VkRenderPassBeginInfo beginInfo;
     memset(&beginInfo, 0, sizeof(VkRenderPassBeginInfo));
     beginInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
     beginInfo.pNext = nullptr;
     beginInfo.renderPass = vulkanRenderPass->renderPass();
     beginInfo.framebuffer = framebuffer->framebuffer();
-    beginInfo.renderArea = {{ 0, 0 },
-                            { (unsigned int) frameBufferWidth, (unsigned int) frameBufferHeight }};
+    beginInfo.renderArea = renderArea;
     beginInfo.clearValueCount = clearValues.size();
     beginInfo.pClearValues = clearValues.begin();
 
