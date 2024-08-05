@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a09c6063_54490fc5",
+        "filename": "example/external_client/BUILD.bazel",
+        "patchSetId": 13
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-08-05T15:44:25Z",
+      "side": 1,
+      "message": "Does this not need \"Metal\" as a framework, like `ganesh_metal_context_helper`?",
+      "range": {
+        "startLine": 203,
+        "startChar": 0,
+        "endLine": 203,
+        "endChar": 19
+      },
+      "revId": "c36c01a1a1c7c18f516530bd734f7c0f37d8e267",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf7cff94_425c6ab8",
+        "filename": "example/external_client/src/graphite_metal_context_helper.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-08-05T15:44:25Z",
+      "side": 1,
+      "message": "I suspect this is part of the magic include hoops we are going through to avoid defines, but why does this have to be a separate module than just being part of `graphite_native_metal.cpp`?",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 53
+      },
+      "revId": "c36c01a1a1c7c18f516530bd734f7c0f37d8e267",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b986533f_86a9788d",
+        "filename": "example/external_client/src/graphite_native_metal.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-08-05T15:44:25Z",
+      "side": 1,
+      "message": "nit: this count would be the number of image planes loaded, not a frame I believe.",
+      "range": {
+        "startLine": 95,
+        "startChar": 44,
+        "endLine": 95,
+        "endChar": 49
+      },
+      "revId": "c36c01a1a1c7c18f516530bd734f7c0f37d8e267",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40d957bb_d7c5af3e",
+        "filename": "example/external_client/src/graphite_native_metal.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-08-05T15:44:25Z",
+      "side": 1,
+      "message": "nit: GPU operations modifying surface have been inserted in the command buffer, scheduling...",
+      "range": {
+        "startLine": 103,
+        "startChar": 12,
+        "endLine": 103,
+        "endChar": 41
+      },
+      "revId": "c36c01a1a1c7c18f516530bd734f7c0f37d8e267",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "372a4a1c_b9da327c",
+        "filename": "example/external_client/src/graphite_native_metal.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-08-05T15:44:25Z",
+      "side": 1,
+      "message": "This shouldn\u0027t really happen since we are syncing to CPU, so this printf could be more like \"Sync with GPU completion failed\"",
+      "range": {
+        "startLine": 113,
+        "startChar": 0,
+        "endLine": 113,
+        "endChar": 42
+      },
+      "revId": "c36c01a1a1c7c18f516530bd734f7c0f37d8e267",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "945f160b_eeded0f6",
+        "filename": "example/external_client/src/graphite_native_metal.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-08-05T15:44:25Z",
+      "side": 1,
+      "message": "I think it\u0027d be cleaner to just say that encoding failed here, and we can print an error message in the `callback` when it has an error result (right now I think that is covered by the count !\u003d 1 test.",
+      "range": {
+        "startLine": 119,
+        "startChar": 16,
+        "endLine": 119,
+        "endChar": 48
+      },
+      "revId": "c36c01a1a1c7c18f516530bd734f7c0f37d8e267",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
