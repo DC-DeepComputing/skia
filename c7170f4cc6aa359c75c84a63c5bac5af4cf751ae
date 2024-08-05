@@ -42,6 +42,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed2555f1_ead6b7a5",
+        "filename": "experimental/rust_png/ffi/FFI.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-08-05T22:06:01Z",
+      "side": 1,
+      "message": "Done (here + in the other C++ files introduced in this CL).\n\nPS. FWIW I was cargo-culting from other Skia/C++ code which still uses \"Inc\" - e.g. `third_party/skia/src/codec/SkTiffUtility.h`, but it seems that there are only around 68 files using \"Inc\" and around 424 files using \"LLC\".",
+      "parentUuid": "85313af2_f2dc4929",
+      "range": {
+        "startLine": 2,
+        "startChar": 25,
+        "endLine": 2,
+        "endChar": 29
+      },
+      "revId": "c7170f4cc6aa359c75c84a63c5bac5af4cf751ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "67f446ea_22560780",
@@ -65,6 +89,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "96386189_462cb91c",
+        "filename": "experimental/rust_png/ffi/FFI.rs",
+        "patchSetId": 12
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-08-05T22:06:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "67f446ea_22560780",
+      "range": {
+        "startLine": 7,
+        "startChar": 48,
+        "endLine": 7,
+        "endChar": 55
+      },
+      "revId": "c7170f4cc6aa359c75c84a63c5bac5af4cf751ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6373feb2_e1063eb2",
@@ -78,6 +126,24 @@
       "writtenOn": "2024-08-02T13:33:49Z",
       "side": 1,
       "message": "I saw the comment earlier about `EXPAND` ensuring that bit depth is at least 8, but does `rust_png` support 16-bit PNGs?",
+      "revId": "c7170f4cc6aa359c75c84a63c5bac5af4cf751ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98273c45_f167b09d",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-08-05T22:06:01Z",
+      "side": 1,
+      "message": "Good question - thanks for explicitly asking about this aspect of the CL.  Let\u0027s discuss further in the GVC code review meeting.\n\nAdditional notes:\n\n* We should decide if we want to use [`png::Transformations::STRIP_16`](https://docs.rs/png/latest/png/struct.Transformations.html#associatedconstant.STRIP_16) (in the short-term?  in the long-term?):\n    - Pros: no need to worry about 16-bit PNGs at all.  (In top 500 websites 16-bit PNGs accounted for ~0.12% of all PNG images [in October 2024](https://docs.google.com/spreadsheets/d/1CEgr4ttd2agOZi-MFOjqJGqfDVFUKDp-zKbrF-8Xwyk/edit?gid\u003d1170535878#gid\u003d1170535878).)\n    - Cons: maybe supporting 16-bits will result in a more complete/robust `SkPngRustCodec` implementation?\n* Some notes that are relevant if don\u0027t want to use `STRIP_16`:\n    - IIUC `srcFormat` parameter of `SkCodec`\u0027s constructor describes the format of input for `applyColorXform`, which is *not* necessarily the format of PNG crate\u0027s output (because of how we use `SkSwizzler` before doing color transforms).\n    - Decoded pixels are first transformed using `SkSwizzler` (supports 16 bits) and `skcms_Transform` (supports 16 bits in RGBA and BGRA pixel format, in LE or BE, but does *not* support G16 or GA1616).  It is unclear to me if lack of G16 or GA16 support is a *new* problem.  If `dstInfo` asks for GA1616 (it can, right?), then maybe we already have a problem before this CL?\n    \n* I also note that hard coding `bits_per_component\u003d8` in `FFI.rs` doesn\u0027t fail any `gfx_unittests`.  I am not sure if we should address this by adding relevant coverage to `ui/gfx/codec/png_codec_unittests.cc` VS by covering `SkPngRustCodec` by Skia\u0027s tests (which hopefully include 16-bit PNGs?).",
+      "parentUuid": "6373feb2_e1063eb2",
       "revId": "c7170f4cc6aa359c75c84a63c5bac5af4cf751ae",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -123,6 +189,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "be266f2a_446b122f",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-08-05T22:06:01Z",
+      "side": 1,
+      "message": "As discussed in chat, let me tweak the comment here to just describe simple facts (implementation contains some Rust and C++ pieces) and avoid value judgements (implementation is or is not rule-of-2 compliant),  This makes the code review feedback not applicable anymore - resolving.",
+      "parentUuid": "fde1204a_a66dae8d",
+      "range": {
+        "startLine": 22,
+        "startChar": 59,
+        "endLine": 22,
+        "endChar": 61
+      },
+      "revId": "c7170f4cc6aa359c75c84a63c5bac5af4cf751ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5408bea8_ac1bda09",
@@ -160,6 +250,30 @@
           ]
         }
       ],
+      "revId": "c7170f4cc6aa359c75c84a63c5bac5af4cf751ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "335c1a64_7e2a6e19",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-08-05T22:06:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5408bea8_ac1bda09",
+      "range": {
+        "startLine": 28,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 30
+      },
       "revId": "c7170f4cc6aa359c75c84a63c5bac5af4cf751ae",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
