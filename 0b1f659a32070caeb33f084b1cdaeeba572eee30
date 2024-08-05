@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5517ec3a_632d6516",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-08-05T15:22:59Z",
+      "side": 1,
+      "message": "Adding Greg, who is working on plumbing the DrawPass bounds around in a few more places and may overlap with this work.",
+      "revId": "0b1f659a32070caeb33f084b1cdaeeba572eee30",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "be43e14c_895f81e7",
@@ -31,6 +48,30 @@
       "writtenOn": "2024-08-05T13:36:28Z",
       "side": 1,
       "message": "@michaelludwig@google.com\nNot exactly sure here. Per my understanding, the `bounds` is computed via `ClipStack`, and more precise than Viz\u0027s `update_rect`. It should be the right damaged rect for the render pass. Correct me if not the case, thanks!",
+      "range": {
+        "startLine": 107,
+        "startChar": 31,
+        "endLine": 107,
+        "endChar": 54
+      },
+      "revId": "0b1f659a32070caeb33f084b1cdaeeba572eee30",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "77900c31_4bc020c6",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-08-05T15:22:59Z",
+      "side": 1,
+      "message": "Yes, the DrawPass bounds is as precise as possible and is the union of all the pixel bounds (including anti-aliasing) that each draw in the pass touches (restricted to their set scissor test).",
+      "parentUuid": "be43e14c_895f81e7",
       "range": {
         "startLine": 107,
         "startChar": 31,
