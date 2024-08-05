@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1531a9c2_2c126e91",
+        "filename": "example/external_client/BUILD.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-08-05T15:49:41Z",
+      "side": 1,
+      "message": "I see this added here and below, but it seems that maybe `core` should be the one depending on `libpthread` on Linux (and maybe macOS)? It seems the only direct use is in `src/base/SkThreadID.cpp`? (And maybe in dng?) Is there a bazel issue with `linkopts` propagation? I see that other binaries here are doing this, and this doesn\u0027t seem like something a use should need to worry about?\n\nThis is fine for now (landing this CL), but it seems we might want to clean this up before it propagates to more places.",
+      "revId": "6fa44eaed7d2eaa5fb485a177fec454bffc050c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
