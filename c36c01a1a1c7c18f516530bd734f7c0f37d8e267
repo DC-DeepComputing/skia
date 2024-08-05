@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7a560d5_09f9602e",
+        "filename": "example/external_client/BUILD.bazel",
+        "patchSetId": 13
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-08-05T16:04:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a09c6063_54490fc5",
+      "range": {
+        "startLine": 203,
+        "startChar": 0,
+        "endLine": 203,
+        "endChar": 19
+      },
+      "revId": "c36c01a1a1c7c18f516530bd734f7c0f37d8e267",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cf7cff94_425c6ab8",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-08-05T15:44:25Z",
       "side": 1,
       "message": "I suspect this is part of the magic include hoops we are going through to avoid defines, but why does this have to be a separate module than just being part of `graphite_native_metal.cpp`?",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 53
+      },
+      "revId": "c36c01a1a1c7c18f516530bd734f7c0f37d8e267",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1fc55da2_d7b5fc15",
+        "filename": "example/external_client/src/graphite_metal_context_helper.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-08-05T16:04:18Z",
+      "side": 1,
+      "message": "Exactly right. C++ code can\u0027t directly include \u003cMetal/Metal.h\u003e so we have to define this as a header for graphite_native_metal.cpp to use. Similarly, cc_binary cannot directly depend on a Mac framework like `Metal` or `MetalKit`.",
+      "parentUuid": "cf7cff94_425c6ab8",
       "range": {
         "startLine": 8,
         "startChar": 0,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b6370b86_8613cb48",
+        "filename": "example/external_client/src/graphite_native_metal.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-08-05T16:04:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b986533f_86a9788d",
+      "range": {
+        "startLine": 95,
+        "startChar": 44,
+        "endLine": 95,
+        "endChar": 49
+      },
+      "revId": "c36c01a1a1c7c18f516530bd734f7c0f37d8e267",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "40d957bb_d7c5af3e",
@@ -83,6 +155,30 @@
       "writtenOn": "2024-08-05T15:44:25Z",
       "side": 1,
       "message": "nit: GPU operations modifying surface have been inserted in the command buffer, scheduling...",
+      "range": {
+        "startLine": 103,
+        "startChar": 12,
+        "endLine": 103,
+        "endChar": 41
+      },
+      "revId": "c36c01a1a1c7c18f516530bd734f7c0f37d8e267",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "59eaa4f5_c418aff5",
+        "filename": "example/external_client/src/graphite_native_metal.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-08-05T16:04:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "40d957bb_d7c5af3e",
       "range": {
         "startLine": 103,
         "startChar": 12,
@@ -116,6 +212,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e0f11a83_036d8a6a",
+        "filename": "example/external_client/src/graphite_native_metal.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-08-05T16:04:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "372a4a1c_b9da327c",
+      "range": {
+        "startLine": 113,
+        "startChar": 0,
+        "endLine": 113,
+        "endChar": 42
+      },
+      "revId": "c36c01a1a1c7c18f516530bd734f7c0f37d8e267",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "945f160b_eeded0f6",
@@ -129,6 +249,30 @@
       "writtenOn": "2024-08-05T15:44:25Z",
       "side": 1,
       "message": "I think it\u0027d be cleaner to just say that encoding failed here, and we can print an error message in the `callback` when it has an error result (right now I think that is covered by the count !\u003d 1 test.",
+      "range": {
+        "startLine": 119,
+        "startChar": 16,
+        "endLine": 119,
+        "endChar": 48
+      },
+      "revId": "c36c01a1a1c7c18f516530bd734f7c0f37d8e267",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9c7bc7fd_ab1ae83f",
+        "filename": "example/external_client/src/graphite_native_metal.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-08-05T16:04:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "945f160b_eeded0f6",
       "range": {
         "startLine": 119,
         "startChar": 16,
