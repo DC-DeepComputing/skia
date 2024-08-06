@@ -60,6 +60,20 @@ mod ffi {
         type Reader;
         fn height(self: &Reader) -> u32;
         fn width(self: &Reader) -> u32;
+        fn is_srgb(self: &Reader) -> bool;
+        fn try_get_chrm(
+            self: &Reader,
+            wx: &mut f32,
+            wy: &mut f32,
+            rx: &mut f32,
+            ry: &mut f32,
+            gx: &mut f32,
+            gy: &mut f32,
+            bx: &mut f32,
+            by: &mut f32,
+        ) -> bool;
+        fn try_get_gama(self: &Reader, gamma: &mut f32) -> bool;
+        unsafe fn try_get_iccp<'a, 'b>(self: &'a Reader, iccp: &'b mut &'a [u8]) -> bool;
         fn output_buffer_size(self: &Reader) -> usize;
         fn output_color_type(self: &Reader) -> ColorType;
         fn output_bits_per_component(self: &Reader) -> u8;
@@ -169,6 +183,76 @@ impl Reader {
 
     fn width(&self) -> u32 {
         self.reader.info().width
+    }
+
+    /// Returns whether the decoded PNG image contained a `sRGB` chunk.
+    fn is_srgb(&self) -> bool {
+        self.reader.info().srgb.is_some()
+    }
+
+    /// If the decoded PNG image contained a `cHRM` chunk then `try_get_chrm`
+    /// returns `true` and populates the out parameters (`wx`, `wy`, `rx`,
+    /// etc.).  Otherwise, returns `false.
+    ///
+    /// SAFETY: The caller has to guarantee that all the outputs / `&mut` values
+    /// have been initialized (unlike in C++, where such guarantees are
+    /// typically not needed for output parameters).
+    fn try_get_chrm(
+        &self,
+        wx: &mut f32,
+        wy: &mut f32,
+        rx: &mut f32,
+        ry: &mut f32,
+        gx: &mut f32,
+        gy: &mut f32,
+        bx: &mut f32,
+        by: &mut f32,
+    ) -> bool {
+        fn copy_channel(channel: &(png::ScaledFloat, png::ScaledFloat), x: &mut f32, y: &mut f32) {
+            *x = channel.0.into_value();
+            *y = channel.1.into_value();
+        }
+
+        match self.reader.info().chrm_chunk.as_ref() {
+            None => false,
+            Some(chrm) => {
+                copy_channel(&chrm.white, wx, wy);
+                copy_channel(&chrm.red, rx, ry);
+                copy_channel(&chrm.green, gx, gy);
+                copy_channel(&chrm.blue, bx, by);
+                true
+            }
+        }
+    }
+
+    /// If the decoded PNG image contained a `gAMA` chunk then `try_get_gama`
+    /// returns `true` and populates the `gamma` out parameter.  Otherwise,
+    /// returns `false.
+    ///
+    /// SAFETY: The caller has to guarantee that all the outputs / `&mut` values
+    /// have been initialized (unlike in C++, where such guarantees are
+    /// typically not needed for output parameters).
+    fn try_get_gama(&self, gamma: &mut f32) -> bool {
+        match self.reader.info().gama_chunk.as_ref() {
+            None => false,
+            Some(scaled_float) => {
+                *gamma = scaled_float.into_value();
+                true
+            }
+        }
+    }
+
+    /// If the decoded PNG image contained an `iCCP` chunk then `try_get_iccp`
+    /// returns `true` and sets `iccp` to the `rust::Slice`.  Otherwise,
+    /// returns `false.
+    fn try_get_iccp<'a, 'b>(&'a self, iccp: &'b mut &'a [u8]) -> bool {
+        match self.reader.info().icc_profile.as_ref().map(|cow| cow.as_ref()) {
+            None => false,
+            Some(value) => {
+                *iccp = value;
+                true
+            }
+        }
     }
 
     fn output_buffer_size(&self) -> usize {
