@@ -8481,3 +8481,34 @@ UNIX_ONLY_TEST(SkParagraph_ICU4X_EmojiRuns, reporter) {
     SkUnicode_Emoji(SkUnicodes::ICU4X::Make(), reporter);
 }
 #endif
+
+UNIX_ONLY_TEST(SkParagraph_Visitor, reporter) {
+    auto paraFonts = sk_make_sp<ResourceFontCollection>();
+    SKIP_IF_FONTS_NOT_FOUND(reporter, paraFonts)
+    paraFonts->disableFontFallback();
+
+    ParagraphStyle paragraph_style;
+    ParagraphBuilderImpl builder(paragraph_style, paraFonts, get_unicode());
+
+    TextStyle textStyle;
+    textStyle.setFontFamilies({SkString("Roboto")});
+
+    std::vector<SkString> locales = {SkString("ko"), SkString("ja"), SkString("zh-Hant"), SkString("zh-Hans")};
+    for (const auto &locale: locales) {
+        textStyle.setLocale(locale);
+        builder.pushStyle(textStyle);
+        std::string payload("A\n");
+        builder.addText(payload.c_str(), payload.size());
+    }
+
+    auto paragraph = builder.Build();
+    paragraph->layout(1600);
+
+    paragraph->visit([&](int lineNumber, const Paragraph::VisitorInfo *info) {
+        // this case will never crash because the code is using the size of the entire text as a buffer so it will never be 0
+    });
+
+    paragraph->extendedVisit([&](int lineNumber, const Paragraph::ExtendedVisitorInfo *info) {
+        // crash in earlier version
+    });
+}
