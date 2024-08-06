@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d200743_f1f9c8c6",
+        "filename": "tools/sk_app/BUILD.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-08-06T15:41:54Z",
+      "side": 1,
+      "message": "So anything that depends on this target will essentially no be able to use `attach` in any useful way, since the only thing available will be `GL`? And won\u0027t be able to build it with support for more backends?\n\nThe point of this design was to support multiple backends at a time and switch between them at runtime. This is application code and not library code, so it should be file to add a bunch of configuration stuff here (and default it to something sane per platform).",
+      "revId": "5a37990b05d47a79e7bca3db4942f292ee13627b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
