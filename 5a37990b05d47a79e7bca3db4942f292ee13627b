@@ -16,6 +16,24 @@
       "message": "So anything that depends on this target will essentially no be able to use `attach` in any useful way, since the only thing available will be `GL`? And won\u0027t be able to build it with support for more backends?\n\nThe point of this design was to support multiple backends at a time and switch between them at runtime. This is application code and not library code, so it should be file to add a bunch of configuration stuff here (and default it to something sane per platform).",
       "revId": "5a37990b05d47a79e7bca3db4942f292ee13627b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58e574d5_5eb7ffda",
+        "filename": "tools/sk_app/BUILD.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-08-06T17:25:19Z",
+      "side": 1,
+      "message": "I think what you are suggestion is that we have something like:\n- on Linux, bundle in Ganesh GL and Vulkan (eventually Graphite) and let viewer or whatever switch\n- on Mac, bundle in Gaensh GL and Metal (eventually Graphite) and ...\netc?\n\nInstead of having one-off per backend? That seems reasonable to me. Do you want that handled here at least to get things started or in a follow-up CL?",
+      "parentUuid": "8d200743_f1f9c8c6",
+      "revId": "5a37990b05d47a79e7bca3db4942f292ee13627b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
