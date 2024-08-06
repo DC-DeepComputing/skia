@@ -13,14 +13,17 @@
 #include "include/core/SkPaint.h"
 #include "include/core/SkPathBuilder.h"
 #include "include/core/SkPathEffect.h"
+#include "include/core/SkPathUtils.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkSize.h"
 #include "include/core/SkString.h"
+#include "include/core/SkStrokeRec.h"
 #include "include/core/SkTypeface.h"
 #include "include/core/SkTypes.h"
 #include "include/effects/SkDashPathEffect.h"
+#include "include/private/base/SkDebug.h"
 #include "tools/ToolUtils.h"
 #include "tools/fonts/FontToolUtils.h"
 
@@ -671,3 +674,36 @@ DEF_GM(return new Dashing3GM;)
 DEF_GM(return new Dashing4GM;)
 DEF_GM(return new Dashing5GM(true);)
 DEF_GM(return new Dashing5GM(false);)
+
+DEF_SIMPLE_GM(wide_dash_bug_40043110, canvas, 500, 500) {
+    canvas->translate(-250, -350);
+
+    // Stroking this segment should produce a thin line. The stroker instead emits a triangle.
+    SkPath path;
+    path.moveTo(540.936157f, 462.399323f);
+    path.cubicTo(541.390869f, 462.537018f, 541.845642f, 462.674683f, 542.300415f, 462.812347f);
+
+    SkPaint paint;
+    paint.setAntiAlias(true);
+    paint.setStyle(SkPaint::kStroke_Style);
+    paint.setStrokeWidth(170);
+    paint.setStrokeMiter(10);
+    paint.setStrokeCap(SkPaint::kButt_Cap);
+    paint.setStrokeJoin(SkPaint::kMiter_Join);
+
+    canvas->drawPath(path, paint);
+
+    SkStrokeRec strokeRec(paint);
+    SkPath strokedPath;
+    strokeRec.applyToPath(&strokedPath, path);
+
+//    SkDebugf("Before:\n");
+//    path.dump();
+//    SkDebugf("After:\n");
+//    strokedPath.dumpArrays();
+
+    SkPaint fillPaint;
+    fillPaint.setAntiAlias(true);
+    canvas->translate(-200, 0);
+    canvas->drawPath(strokedPath, fillPaint);
+}
