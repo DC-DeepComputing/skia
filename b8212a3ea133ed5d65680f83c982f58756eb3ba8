@@ -66,6 +66,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ba00f72_05263440",
+        "filename": "modules/skparagraph/src/ParagraphImpl.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1422,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-08-06T15:33:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a3861ba1_baca4330",
+      "range": {
+        "startLine": 1422,
+        "startChar": 53,
+        "endLine": 1422,
+        "endChar": 65
+      },
+      "revId": "b8212a3ea133ed5d65680f83c982f58756eb3ba8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "adfc044d_a2022ff0",
@@ -115,6 +139,24 @@
       "side": 1,
       "message": "My problem. because I see the indent is 4 above;",
       "parentUuid": "adfc044d_a2022ff0",
+      "revId": "b8212a3ea133ed5d65680f83c982f58756eb3ba8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "131b8fb7_74689909",
+        "filename": "modules/skparagraph/src/ParagraphImpl.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1425,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-08-06T15:33:42Z",
+      "side": 1,
+      "message": "You probably use tabs or your framework adds tabs on saving. It shows as a difference in the Gerrit. Not a big thing but just plain irritating.",
+      "parentUuid": "8dedb456_16a899cd",
       "revId": "b8212a3ea133ed5d65680f83c982f58756eb3ba8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
