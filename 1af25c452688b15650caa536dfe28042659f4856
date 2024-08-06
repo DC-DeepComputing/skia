@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5c05296_4d7a803e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-08-06T15:06:27Z",
+      "side": 1,
+      "message": "thought?",
+      "range": {
+        "startLine": 9,
+        "startChar": 39,
+        "endLine": 9,
+        "endChar": 45
+      },
+      "revId": "1af25c452688b15650caa536dfe28042659f4856",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "de329d83_26886cde",
+        "filename": "tools/sk_app/win/Window_win.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 390,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-08-06T15:06:27Z",
+      "side": 1,
+      "message": "Need a default here now as well?",
+      "revId": "1af25c452688b15650caa536dfe28042659f4856",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f90beb1_b2a75645",
+        "filename": "tools/RuntimeBlendUtils.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-08-06T15:06:27Z",
+      "side": 0,
+      "message": "Seems like that should have been `u8R`? Any reason not to like this?",
+      "range": {
+        "startLine": 14,
+        "startChar": 66,
+        "endLine": 14,
+        "endChar": 67
+      },
+      "revId": "e8fed3f105c5c537d4fb35c82cbd3e2e06ee089f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
