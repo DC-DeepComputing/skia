@@ -18,6 +18,7 @@
 #include "include/private/base/SkTo.h"
 
 #include <cstdint>
+#include <vector>
 
 /**
  * SkColorSpaceLuminance is used to convert luminances to and from linear and
@@ -112,10 +113,16 @@ public:
      * @param device The color space of the target device.
      */
     SkTMaskGamma(SkScalar contrast, SkScalar deviceGamma) : fIsLinear(false) {
+        constexpr size_t kMaxLumBits = 1 << MAX_LUM_BITS;
+        fGammaTables.resize(kMaxLumBits);
+        for (auto& row : fGammaTables) {
+            row.resize(256);
+        }
+
         const SkColorSpaceLuminance& deviceConvert = SkColorSpaceLuminance::Fetch(deviceGamma);
         for (U8CPU i = 0; i < (1 << MAX_LUM_BITS); ++i) {
             U8CPU lum = sk_t_scale255<MAX_LUM_BITS>(i);
-            SkTMaskGamma_build_correcting_lut(fGammaTables[i], lum, contrast,
+            SkTMaskGamma_build_correcting_lut(fGammaTables[i].data(), lum, contrast,
                                               deviceConvert, deviceGamma);
         }
     }
@@ -152,14 +159,14 @@ public:
      * Returns nullptr if fGammaTables hasn't been initialized.
      */
     const uint8_t* getGammaTables() const {
-        return fIsLinear ? nullptr : (const uint8_t*) fGammaTables;
+        return fIsLinear ? nullptr :  reinterpret_cast<const uint8_t*>(fGammaTables.data());
     }
 
 private:
     static const int MAX_LUM_BITS =
           B_LUM_BITS > (R_LUM_BITS > G_LUM_BITS ? R_LUM_BITS : G_LUM_BITS)
         ? B_LUM_BITS : (R_LUM_BITS > G_LUM_BITS ? R_LUM_BITS : G_LUM_BITS);
-    uint8_t fGammaTables[1 << MAX_LUM_BITS][256];
+    std::vector<std::vector<uint8_t>> fGammaTables;
     bool fIsLinear;
 
     using INHERITED = SkRefCnt;
@@ -209,9 +216,9 @@ SkTMaskPreBlend<R_LUM_BITS, G_LUM_BITS, B_LUM_BITS>
 SkTMaskGamma<R_LUM_BITS, G_LUM_BITS, B_LUM_BITS>::preBlend(SkColor color) const {
     return fIsLinear ? SkTMaskPreBlend<R_LUM_BITS, G_LUM_BITS, B_LUM_BITS>()
                      : SkTMaskPreBlend<R_LUM_BITS, G_LUM_BITS, B_LUM_BITS>(sk_ref_sp(this),
-                         fGammaTables[SkColorGetR(color) >> (8 - MAX_LUM_BITS)],
-                         fGammaTables[SkColorGetG(color) >> (8 - MAX_LUM_BITS)],
-                         fGammaTables[SkColorGetB(color) >> (8 - MAX_LUM_BITS)]);
+                         fGammaTables[SkColorGetR(color) >> (8 - MAX_LUM_BITS)].data(),
+                         fGammaTables[SkColorGetG(color) >> (8 - MAX_LUM_BITS)].data(),
+                         fGammaTables[SkColorGetB(color) >> (8 - MAX_LUM_BITS)].data());
 }
 
 ///@{
