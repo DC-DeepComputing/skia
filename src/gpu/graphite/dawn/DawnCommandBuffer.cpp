@@ -90,6 +90,7 @@ bool DawnCommandBuffer::setNewCommandBufferResources() {
 }
 
 bool DawnCommandBuffer::onAddRenderPass(const RenderPassDesc& renderPassDesc,
+                                        SkIRect renderPassBounds,
                                         const Texture* colorTexture,
                                         const Texture* resolveTexture,
                                         const Texture* depthStencilTexture,
@@ -677,7 +678,7 @@ void DawnCommandBuffer::setScissor(unsigned int left,
     SkASSERT(fActiveRenderPassEncoder);
     SkIRect scissor = SkIRect::MakeXYWH(
             left + fReplayTranslation.x(), top + fReplayTranslation.y(), width, height);
-    if (!scissor.intersect(SkIRect::MakeSize(fRenderPassSize))) {
+    if (!scissor.intersect(SkIRect::MakeSize(fColorAttachmentSize))) {
         scissor.setEmpty();
     }
     fActiveRenderPassEncoder.SetScissorRect(
