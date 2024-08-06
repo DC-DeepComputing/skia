@@ -34,6 +34,24 @@
       "parentUuid": "8d200743_f1f9c8c6",
       "revId": "5a37990b05d47a79e7bca3db4942f292ee13627b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9d3113d0_a166a589",
+        "filename": "tools/sk_app/BUILD.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-08-06T17:58:58Z",
+      "side": 1,
+      "message": "Yes. Also, since this is application code and not really library code so adding build time flags if needed would be fine here. Mostly I wanted to avoid setting thing up like they are here were it seems to preclude or make more difficult having all the backends in one application. In particular a `viewer_ganesh_gl` target isn\u0027t what we want, we really do want jut one `viewer` built at a time with everything it can have in it by default, and maybe flags to add even more if we can.\n\nIt would be interesting to have `sk_app` be more library-ish maybe, but I don\u0027t think that\u0027s a real goal. I think that would take quite a bit of slicing a dicing of the existing code.",
+      "parentUuid": "58e574d5_5eb7ffda",
+      "revId": "5a37990b05d47a79e7bca3db4942f292ee13627b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
