@@ -53,7 +53,7 @@ namespace {
 // input image when using a strict roundOut.
 static constexpr float kRoundEpsilon = 1e-3f;
 
-std::pair<bool, bool> are_axes_nearly_integer_aligned(const LayerSpace<SkMatrix>& m,
+std::pair<bool, bool> are_axes_nearly_integer_aligned(const SkMatrix& m,
                                                       LayerSpace<SkIPoint>* out=nullptr) {
     float invW  = sk_ieee_float_divide(1.f, m.rc(2,2));
     float tx = SkScalarRoundToScalar(m.rc(0,2)*invW);
@@ -86,7 +86,7 @@ std::pair<bool, bool> are_axes_nearly_integer_aligned(const LayerSpace<SkMatrix>
 // to be a little more forgiving on matrix types during layer configuration.
 bool is_nearly_integer_translation(const LayerSpace<SkMatrix>& m,
                                    LayerSpace<SkIPoint>* out=nullptr) {
-    auto [axisX, axisY] = are_axes_nearly_integer_aligned(m, out);
+    auto [axisX, axisY] = are_axes_nearly_integer_aligned(static_cast<const SkMatrix&>(m), out);
     return axisX && axisY;
 }
 
@@ -554,7 +554,16 @@ public:
         ctx.markNewSurface();
         fCanvas.emplace(std::move(device));
         fCanvas->translate(-fDstBounds.left(), -fDstBounds.top());
-        fCanvas->clear(SkColors::kTransparent);
+        fCanvas->clear(SkColors::kRed);
+
+        // fCanvas->clipIRect(SkIRect(fDstBounds));
+        // fCanvas->clear(SkColors::kTransparent);
+
+        SkPaint p;
+        p.setColor4f(SkColors::kTransparent);
+        p.setBlendMode(SkBlendMode::kSrc);
+        fCanvas->drawRect(SkRect::Make(SkIRect(fDstBounds)), p);
+
         if (fBoundary == PixelBoundary::kTransparent) {
             // Clip to the original un-padded dst bounds, ensuring that the border pixels remain
             // fully transparent.
@@ -708,8 +717,8 @@ SkEnumBitMask<FilterResult::BoundsAnalysis> FilterResult::analyzeBounds(
 
     // 2. Are the tiling and deferred color filter effects visible in the sampled bounds
     SkRect imageBounds = SkRect::Make(fImage->dimensions());
-    LayerSpace<SkMatrix> netTransform = fTransform;
-    netTransform.postConcat(LayerSpace<SkMatrix>(xtraTransform));
+    SkMatrix netTransform = SkMatrix(fTransform);
+    netTransform.postConcat(xtraTransform);
     SkM44 netM44{SkMatrix(netTransform)};
 
     const auto [xAxisAligned, yAxisAligned] = are_axes_nearly_integer_aligned(netTransform);
@@ -748,9 +757,9 @@ SkEnumBitMask<FilterResult::BoundsAnalysis> FilterResult::analyzeBounds(
             // of the decal interpolation from texel to dst space; if it's not close to 1 it needs
             // to be handled specially to keep rendering methods visually consistent.
             float scaleFactors[2];
-            if (!(SkMatrix(netTransform).getMinMaxScales(scaleFactors) &&
-                    SkScalarNearlyEqual(scaleFactors[0], 1.f, 0.2f) &&
-                    SkScalarNearlyEqual(scaleFactors[1], 1.f, 0.2f))) {
+            if (!(netTransform.getMinMaxScales(scaleFactors) &&
+                  SkScalarNearlyEqual(scaleFactors[0], 1.f, 0.2f) &&
+                  SkScalarNearlyEqual(scaleFactors[1], 1.f, 0.2f))) {
                 analysis |= BoundsAnalysis::kRequiresDecalInLayerSpace;
                 if (fBoundary == PixelBoundary::kTransparent) {
                     // Turn off considering the transparent padding as safe to prevent that
@@ -763,8 +772,7 @@ SkEnumBitMask<FilterResult::BoundsAnalysis> FilterResult::analyzeBounds(
 
     if (scope == BoundsScope::kDeferred) {
         return analysis; // skip sampling analysis
-    } else if ((scope == BoundsScope::kCanDrawDirectly ||
-                scope == BoundsScope::kRescale) &&
+    } else if ((scope == BoundsScope::kCanDrawDirectly) && // || scope == BoundsScope::kRescale) &&
                !(analysis & BoundsAnalysis::kHasLayerFillingEffect)) {
         // When drawing the image directly, the geometry is limited to the image. If the texels
         // are pixel aligned, then it is safe to skip shader-based tiling.
@@ -1297,27 +1305,32 @@ void FilterResult::drawAnalyzedImage(const Context& ctx,
 
     // Check fSamplingOptions for linear filtering, not 'finalSampling' since it may have been
     // reduced to nearest neighbor.
-    if (this->canClampToTransparentBoundary(analysis) && fSamplingOptions == kDefaultSampling) {
-        SkASSERT(!(analysis & BoundsAnalysis::kRequiresShaderTiling));
+    SkCanvas::SrcRectConstraint constraint = SkCanvas::kFast_SrcRectConstraint;
+    if (analysis & BoundsAnalysis::kRequiresShaderTiling) {
+        constraint = SkCanvas::kStrict_SrcRectConstraint;
+        ctx.markShaderBasedTilingRequired(SkTileMode::kClamp);
+    }
+    if ((false) && this->canClampToTransparentBoundary(analysis) && fSamplingOptions == kDefaultSampling) {
+//        SkASSERT(!(analysis & BoundsAnalysis::kRequiresShaderTiling));
         // Draw non-AA with a 1px outset image so that the transparent boundary filtering is
         // not multiplied with the AA (which creates a harsher AA transition).
         if (!blender) {
             // Since this is a non-AA draw, kSrc can be more efficient if we are the default blend
-            // mode and can assume the prior dst pixels were transparent black.
+            // mode know that the prior dst pixels were transparent black (callers that do not know
+            // the dst is transparent black should override the default blender).
 #if !defined(SK_USE_SRCOVER_FOR_FILTERS)
-            paint.setBlendMode(SkBlendMode::kSrc);
+            auto [axisX, axisY] = are_axes_nearly_integer_aligned(netTransform);
+            if (axisX && axisY) {
+                paint.setBlendMode(SkBlendMode::kSrc);
+            }
 #endif
         }
         netTransform.preTranslate(-1.f, -1.f);
         device->drawSpecial(fImage->makePixelOutset().get(), netTransform, finalSampling, paint,
-                            SkCanvas::kFast_SrcRectConstraint);
+                            constraint);
     } else {
         paint.setAntiAlias(true);
-        SkCanvas::SrcRectConstraint constraint = SkCanvas::kFast_SrcRectConstraint;
-        if (analysis & BoundsAnalysis::kRequiresShaderTiling) {
-            constraint = SkCanvas::kStrict_SrcRectConstraint;
-            ctx.markShaderBasedTilingRequired(SkTileMode::kClamp);
-        }
+
         device->drawSpecial(fImage.get(), netTransform, finalSampling, paint, constraint);
     }
 }
@@ -1484,7 +1497,7 @@ int downscale_step_count(float netScaleFactor) {
         // For a multipass rescale, we allow for a lot of tolerance when deciding to collapse the
         // final step. If there's only a single pass, we require the scale factor to be very close
         // to the identity since it causes the step count to go to 0.
-        static constexpr float kMultiPassLimit = 0.9f;
+        static constexpr float kMultiPassLimit = 0.99f;
         static constexpr float kNearIdentityLimit = 1.f - kRoundEpsilon; // 1px error in 1000px img
 
         float finalStepScale = netScaleFactor * (1 << (steps - 1));
@@ -1805,12 +1818,13 @@ FilterResult FilterResult::rescale(const Context& ctx,
                                            SkIRect(sampleBounds),
                                            BoundsScope::kRescale);
 
-            if (tileMode == SkTileMode::kDecal &&
-                !(analysis & BoundsAnalysis::kHasLayerFillingEffect)) {
-                // Draw directly to avoid decal shader-based tiling
-                surface->concat(SkMatrix(scaleXform));
-                image.drawAnalyzedImage(ctx, surface.device(), image.sampling(), analysis);
-            } else {
+            // if (tileMode == SkTileMode::kDecal &&
+            //     !(analysis & BoundsAnalysis::kHasLayerFillingEffect)) {
+            //     // Draw directly to avoid decal shader-based tiling
+            //     surface->concat(SkMatrix(scaleXform));
+            //     image.drawAnalyzedImage(ctx, surface.device(), image.sampling(), analysis);
+            // } else {
+            {
                 // Primary fill that will cover all of 'sampleBounds'
                 SkPaint paint;
                 paint.setShader(image.getAnalyzedShaderView(ctx, image.sampling(), analysis));
@@ -2217,6 +2231,9 @@ FilterResult FilterResult::Builder::blur(const LayerSpace<SkSize>& sigma) {
         lowResImage.tileMode() == SkTileMode::kDecal) {
         // Undo the outset padding that was added to srcRelativeOutput before invoking the blur
         result = result.insetByPixel();
+        if (lowResImage.tileMode() == SkTileMode::kDecal) {
+            result.fBoundary = PixelBoundary::kTransparent;
+        }
     }
 
     result.fTransform.postConcat(lowResImage.fTransform);

@@ -521,6 +521,10 @@ SurfaceDrawContext::QuadOptimization SurfaceDrawContext::attemptQuadOptimization
         return QuadOptimization::kCropped;
     }
 
+    if ((true)) {
+        return QuadOptimization::kCropped;
+    }
+
     if (result.fRRect.isRect()) {
         // No rounded corners, so we might be able to become a native clear or we might be able to
         // modify geometry and edge flags to represent intersected shape of clip and draw.
