@@ -150,6 +150,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "61640d84_effb90e2",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-08-06T13:32:00Z",
+      "side": 1,
+      "message": "I\u0027d definitely push for 16 bit support in the long-term. And I\u0027m hopeful that it\u0027s not too difficult to just add it now, rather than wait.\n\nThere actually aren\u0027t any G16 or GA1616 SkColorTypes, so I don\u0027t think we have an existing issue - clients that want 16-bit output from the codec basically have to ask for RGBA (16 bit or float).\n\nAs for test coverage... Yes. Skia has an image test corpus that appears to include ~every possible PNG variant. Those files are stored in CIPD, but if you\u0027re authenticated with gcloud, you can probably fetch them from a skia repo:\n\n```\nbin/fetch-sk\nbin/sk asset download skimage images\nls images/dm/*.png\n```",
+      "parentUuid": "98273c45_f167b09d",
+      "revId": "c7170f4cc6aa359c75c84a63c5bac5af4cf751ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fde1204a_a66dae8d",
         "filename": "experimental/rust_png/impl/SkPngRustCodec.h",
         "patchSetId": 12
