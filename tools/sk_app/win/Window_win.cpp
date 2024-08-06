@@ -387,6 +387,8 @@ bool Window_win::attach(BackendType attachType) {
             fWindowContext = skwindow::MakeD3D12ForWin(fHWnd, fRequestedDisplayParams);
             break;
 #endif
+        default:
+            SK_ABORT("Unknown backend");
     }
     this->onBackendCreated();
 

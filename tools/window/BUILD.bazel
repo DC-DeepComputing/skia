@@ -1,4 +1,4 @@
-load("//bazel:skia_rules.bzl", "select_multi", "skia_cc_library")
+load("//bazel:skia_rules.bzl", "skia_cc_library", "skia_objc_library")
 
 package(
     default_applicable_licenses = ["//:license"],
@@ -7,77 +7,88 @@ package(
 licenses(["notice"])
 
 skia_cc_library(
-    name = "legacy_window",
+    name = "core",
     testonly = True,
     srcs = [
         "RasterWindowContext.h",
         "WindowContext.cpp",
-    ] + select_multi({
-        "//src/gpu:gl_ganesh": [
-            "GLWindowContext.cpp",
-            "GLWindowContext.h",
-        ],
-        "//src/gpu:vulkan_ganesh": [
-            "VulkanWindowContext.h",
-            "VulkanWindowContext.cpp",
-        ],
-    }) + select({
-        "@platforms//os:android": ["//tools/window/android:srcs"],
-        "//conditions:default": [],
-    }) + select({
-        "@platforms//os:linux": ["//tools/window/unix:srcs"],
-        "//conditions:default": [],
-        # TODO(kjlubick) add Windows/Mac support
-    }),
-    hdrs = [
-        "DisplayParams.h",
-        "WindowContext.h",
     ],
-    visibility = ["//:__subpackages__"],
-    deps = [
-        "//:skia_internal",
-    ] + select({
-        "//src/gpu:vulkan_ganesh": ["//tools/gpu/vk:testutils"],
-        "//conditions:default": [],
-    }) + select({
-        "@platforms//os:android": ["//tools/window/android:deps"],
-        "//conditions:default": [],
-    }),
-)
-
-skia_cc_library(
-    name = "window",
-    testonly = True,
-    srcs = [
-        "RasterWindowContext.h",
-        "WindowContext.cpp",
-        "GLWindowContext.cpp",
-        # TODO(kjlubick): Add Vulkan support.
-        # "VulkanWindowContext.cpp",
-    ] + select({
-        "@platforms//os:android": ["//tools/window/android:srcs"],
-        "//conditions:default": [],
-    }) + select({
-        "@platforms//os:linux": ["//tools/window/unix:srcs"],
-        "//conditions:default": [],
-        # TODO(kjlubick) add Windows/Mac support
-    }),
     hdrs = [
         "DisplayParams.h",
         "WindowContext.h",
-        "GLWindowContext.h",
-        # TODO(kjlubick): Add Vulkan support.
-        # "VulkanWindowContext.h",
     ],
     visibility = ["//:__subpackages__"],
     deps = [
         "//:core",
-        "//:ganesh_gl",
-        "//:ganesh_glx_factory",
-        "//tools/fonts:font_tool_utils",
-    ] + select({
-        # TODO(kjlubick): Add Android support.
-        # "@platforms//os:android": ["//tools/window/android:deps"],
-        "//conditions:default": [],
+        "//src/gpu/ganesh:ganesh_TEST_UTIL",
+    ],
+)
+
+skia_cc_library(
+    name = "window_gl",
+    testonly = True,
+    visibility = ["//tools:__subpackages__"],
+    deps = select({
+        "@platforms//os:linux": [":window_gl_unix"],
+        "@platforms//os:macos": [":window_gl_mac"],
     }),
+)
+
+skia_cc_library(
+    name = "window_gl_unix",
+    testonly = True,
+    srcs = [
+        "GLWindowContext.cpp",
+        "RasterWindowContext.h",
+        "WindowContext.cpp",
+        "unix/GLWindowContext_unix.cpp",
+        "unix/RasterWindowContext_unix.cpp",
+        "unix/WindowContextFactory_unix.h",
+    ],
+    hdrs = [
+        "DisplayParams.h",
+        "GLWindowContext.h",
+        "WindowContext.h",
+    ],
+    linkopts = [
+        "-lX11",
+        "-lxcb",  # dep of X11
+        "-lXau",  # dep of xcb
+        "-lXdmcp",  # dep of xcb
+    ],
+    deps = [
+        "//:core",
+        "//src/gpu/ganesh/gl:ganesh_gl_TEST_UTIL",
+        "//src/gpu/ganesh/gl/glx:glx_factory_TEST_UTIL",
+        "//tools/fonts:font_tool_utils",
+    ],
+)
+
+skia_objc_library(
+    name = "window_gl_mac",
+    testonly = True,
+    srcs = [
+        "GLWindowContext.cpp",
+        "RasterWindowContext.h",
+        "WindowContext.cpp",
+        "mac/GLWindowContext_mac.mm",
+        "mac/RasterWindowContext_mac.mm",
+        "mac/WindowContextFactory_mac.h",
+    ],
+    hdrs = [
+        "DisplayParams.h",
+        "GLWindowContext.h",
+        "WindowContext.h",
+    ],
+    sdk_frameworks = [
+        "QuartzCore",
+        "Cocoa",
+        "Foundation",
+    ],
+    deps = [
+        "//:core",
+        "//src/gpu/ganesh/gl:ganesh_gl_TEST_UTIL",
+        "//src/gpu/ganesh/gl/mac:mac_factory_TEST_UTIL",
+        "//tools/fonts:font_tool_utils",
+    ],
 )

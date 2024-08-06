@@ -163,7 +163,7 @@ bool Window_mac::attach(BackendType attachType) {
             break;
 #endif
         default:
-            SkASSERT_RELEASE(false);
+            SK_ABORT("Unknown backend");
     }
     this->onBackendCreated();
 
