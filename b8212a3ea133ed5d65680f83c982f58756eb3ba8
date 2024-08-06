@@ -1,0 +1,80 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46ea7197_388d6ee5",
+        "filename": "modules/skparagraph/src/ParagraphImpl.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1422,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-08-06T14:30:07Z",
+      "side": 1,
+      "message": "This is correct but I would prefer using the same fClusterIndexes.size() as in the fix above.",
+      "range": {
+        "startLine": 1422,
+        "startChar": 53,
+        "endLine": 1422,
+        "endChar": 65
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "c4c30320_dc9acdd6",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "modules/skparagraph/src/ParagraphImpl.cpp",
+              "range": {
+                "startLine": 1422,
+                "startChar": 0,
+                "endLine": 1423,
+                "endChar": 0
+              },
+              "replacement": "                    if ((run-\u003efClusterStart \u003e 0) \u0026\u0026 (run-\u003efClusterIndexes.size() \u003e 0)) {\n"
+            }
+          ]
+        }
+      ],
+      "revId": "b8212a3ea133ed5d65680f83c982f58756eb3ba8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "adfc044d_a2022ff0",
+        "filename": "modules/skparagraph/src/ParagraphImpl.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1425,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-08-06T14:30:07Z",
+      "side": 1,
+      "message": "What\u0027s with the shift?",
+      "fixSuggestions": [
+        {
+          "fixId": "765fdfa4_e8ab6559",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "modules/skparagraph/src/ParagraphImpl.cpp",
+              "range": {
+                "startLine": 1426,
+                "startChar": 0,
+                "endLine": 1427,
+                "endChar": 0
+              },
+              "replacement": "                                    run-\u003efClusterStart + context.fClusterIndexes[i];\n"
+            }
+          ]
+        }
+      ],
+      "revId": "b8212a3ea133ed5d65680f83c982f58756eb3ba8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
