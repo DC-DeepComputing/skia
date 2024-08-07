@@ -42,6 +42,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e1b18eda_fada364f",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 666,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-08-07T15:50:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6b00a398_b96e378f",
+      "range": {
+        "startLine": 666,
+        "startChar": 79,
+        "endLine": 666,
+        "endChar": 85
+      },
+      "revId": "9e2d19b57337bde0194b09d78bcd047fd5f5ba3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "62e0a56c_e284ce06",
@@ -83,6 +107,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e050e68c_6abf729e",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 667,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-08-07T15:50:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "62e0a56c_e284ce06",
+      "range": {
+        "startLine": 667,
+        "startChar": 50,
+        "endLine": 667,
+        "endChar": 55
+      },
+      "revId": "9e2d19b57337bde0194b09d78bcd047fd5f5ba3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9dd8a24a_c07d2417",
@@ -96,6 +144,30 @@
       "writtenOn": "2024-08-07T15:03:20Z",
       "side": 1,
       "message": "Why not just return an SkIRect?",
+      "range": {
+        "startLine": 668,
+        "startChar": 34,
+        "endLine": 668,
+        "endChar": 52
+      },
+      "revId": "9e2d19b57337bde0194b09d78bcd047fd5f5ba3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1ff342e2_f144fc6f",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 668,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-08-07T15:50:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9dd8a24a_c07d2417",
       "range": {
         "startLine": 668,
         "startChar": 34,
@@ -157,6 +229,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f27a8bd3_02c183da",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 678,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-08-07T15:50:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a46ae995_d15dc529",
+      "range": {
+        "startLine": 678,
+        "startChar": 75,
+        "endLine": 678,
+        "endChar": 79
+      },
+      "revId": "9e2d19b57337bde0194b09d78bcd047fd5f5ba3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "23d81705_f24e681a",
@@ -204,6 +300,30 @@
           ]
         }
       ],
+      "revId": "9e2d19b57337bde0194b09d78bcd047fd5f5ba3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ed2f831_7b541c7b",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 696,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-08-07T15:50:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "23d81705_f24e681a",
+      "range": {
+        "startLine": 696,
+        "startChar": 76,
+        "endLine": 696,
+        "endChar": 80
+      },
       "revId": "9e2d19b57337bde0194b09d78bcd047fd5f5ba3d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
