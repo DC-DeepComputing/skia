@@ -4,19 +4,18 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "tools/window/unix/GaneshVulkanWindowContext_unix.h"
 
 #include "src/gpu/ganesh/vk/GrVkUtil.h"
-
 #include "tools/gpu/vk/VkTestUtils.h"
-
+#include "tools/window/unix/XlibWindowInfo.h"
 #include "tools/window/VulkanWindowContext.h"
-#include "tools/window/unix/WindowContextFactory_unix.h"
 
 #include <X11/Xlib-xcb.h>
 
 namespace skwindow {
 
-std::unique_ptr<WindowContext> MakeVulkanForXlib(const XlibWindowInfo& info,
+std::unique_ptr<WindowContext> MakeGaneshVulkanForXlib(const XlibWindowInfo& info,
                                                  const DisplayParams& displayParams) {
     PFN_vkGetInstanceProcAddr instProc;
     if (!sk_gpu_test::LoadVkLibraryAndGetProcAddrFuncs(&instProc)) {

@@ -1,21 +1,20 @@
-
 /*
  * Copyright 2023 Google Inc.
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "tools/window/unix/GraphiteNativeVulkanWindowContext_unix.h"
 
 #include "tools/gpu/vk/VkTestUtils.h"
-
 #include "tools/window/GraphiteVulkanWindowContext.h"
-#include "tools/window/unix/WindowContextFactory_unix.h"
+#include "tools/window/unix/XlibWindowInfo.h"
 
 #include <X11/Xlib-xcb.h>
 
 namespace skwindow {
 
-std::unique_ptr<WindowContext> MakeGraphiteVulkanForXlib(const XlibWindowInfo& info,
+std::unique_ptr<WindowContext> MakeGraphiteNativeVulkanForXlib(const XlibWindowInfo& info,
                                                          const DisplayParams& displayParams) {
     PFN_vkGetInstanceProcAddr instProc;
     if (!sk_gpu_test::LoadVkLibraryAndGetProcAddrFuncs(&instProc)) {

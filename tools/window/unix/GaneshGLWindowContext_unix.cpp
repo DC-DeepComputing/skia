@@ -5,13 +5,16 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "tools/window/unix/GaneshGLWindowContext_unix.h"
 
 #include "include/gpu/gl/GrGLInterface.h"
 #include "tools/window/GLWindowContext.h"
-#include "tools/window/unix/WindowContextFactory_unix.h"
 #include "include/gpu/ganesh/gl/glx/GrGLMakeGLXInterface.h"
+#include "tools/window/unix/XlibWindowInfo.h"
 
 #include <GL/gl.h>
+#include <GL/glx.h>
+#include <X11/Xlib.h>
 
 using skwindow::XlibWindowInfo;
 using skwindow::DisplayParams;
@@ -181,7 +184,7 @@ void GLWindowContext_xlib::onSwapBuffers() {
 
 namespace skwindow {
 
-std::unique_ptr<WindowContext> MakeGLForXlib(const XlibWindowInfo& winInfo,
+std::unique_ptr<WindowContext> MakeGaneshGLForXlib(const XlibWindowInfo& winInfo,
                                              const DisplayParams& params) {
     std::unique_ptr<WindowContext> ctx(new GLWindowContext_xlib(winInfo, params));
     if (!ctx->isValid()) {
