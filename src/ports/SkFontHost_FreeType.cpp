@@ -1996,6 +1996,10 @@ void SkTypeface_FreeTypeStream::onGetFontDescriptor(SkFontDescriptor* desc, bool
     *serialize = true;
 }
 
+sk_sp<SkTypeface> SkTypeface_FreeType::MakeFromFile(const SkString& fileName, int ttcIndex) {
+    return SkTypeface_FreeType::MakeFromStream(SkStream::MakeFromFile(fileName.c_str()), SkFontArguments().setCollectionIndex(ttcIndex));
+}
+
 sk_sp<SkTypeface> SkTypeface_FreeType::MakeFromStream(std::unique_ptr<SkStreamAsset> stream,
                                                       const SkFontArguments& args) {
     static SkFontScanner_FreeType scanner;

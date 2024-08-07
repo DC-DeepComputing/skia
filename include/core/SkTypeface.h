@@ -414,6 +414,7 @@ private:
     bool glyphMaskNeedsCurrentColor() const;
     friend class SkStrikeServerImpl;  // glyphMaskNeedsCurrentColor
     friend class SkTypefaceProxyPrototype;  // glyphMaskNeedsCurrentColor
+    friend class SkTypeface_proxy;
 
     /** Retrieve detailed typeface metrics.  Used by the PDF backend.  */
     std::unique_ptr<SkAdvancedTypefaceMetrics> getAdvancedMetrics() const;
