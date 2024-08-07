@@ -16,6 +16,24 @@
       "message": "I was reading the rationale for not having deduction guides on std::shared_ptr (being unable to distinguish array vs. non-array pointers obtained via new), and that seems totally irrelevant in the case of SkRefCnt, so yeah - this seems fine.",
       "revId": "be307c5dd8b735f3cf53fe8c94f5cce3aca6a894",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f8bfca11_0de3c308",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-08-07T14:17:08Z",
+      "side": 1,
+      "message": "Yeah, it\u0027s interesting because this (not overloading on arrays) is the one way `sk_sp` isn\u0027t just a `std::unique_ptr` with a copy-constructor (which refs) and a deleter that unrefs.\n\nI\u0027ve seen a number of comments around which are basically, \"why couldn\u0027t the array version of `std::unique_ptr` have been given a different name (like `std::unique_array_ptr`)\" so that one could use deduction guides with it usefully.",
+      "parentUuid": "55165f04_f3ad3074",
+      "revId": "be307c5dd8b735f3cf53fe8c94f5cce3aca6a894",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
