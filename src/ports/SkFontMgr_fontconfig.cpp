@@ -411,30 +411,81 @@ static void fcpattern_from_skfontstyle(SkFontStyle style, FcPattern* pattern) {
     FcPatternAddInteger(pattern, FC_SLANT , slant);
 }
 
-class SkTypeface_fontconfig : public SkTypeface_FreeType {
+class SkTypeface_proxy : public SkTypeface {
 public:
-    static sk_sp<SkTypeface_fontconfig> Make(SkAutoFcPattern pattern, SkString sysroot) {
-        return sk_sp<SkTypeface_fontconfig>(new SkTypeface_fontconfig(std::move(pattern),
-                                                                      std::move(sysroot)));
-    }
-    mutable SkAutoFcPattern fPattern;  // Mutable for passing to FontConfig API.
-    const SkString fSysroot;
-
-    void onGetFamilyName(SkString* familyName) const override {
-        *familyName = get_string(fPattern, FC_FAMILY);
-    }
-
-    void onGetFontDescriptor(SkFontDescriptor* desc, bool* serialize) const override {
-        // TODO: need to serialize FC_MATRIX and FC_EMBOLDEN
+    SkTypeface_proxy(SkAutoFcPattern pattern, SkString sysroot)
+            : INHERITED(skfontstyle_from_fcpattern(pattern),
+                        FC_PROPORTIONAL != get_int(pattern, FC_SPACING, FC_PROPORTIONAL))
+            , fPattern(std::move(pattern))
+            , fSysroot(std::move(sysroot))
+    {
         FCLocker lock;
-        desc->setFamilyName(get_string(fPattern, FC_FAMILY));
-        desc->setFullName(get_string(fPattern, FC_FULLNAME));
-        desc->setPostscriptName(get_string(fPattern, FC_POSTSCRIPT_NAME));
-        desc->setStyle(this->fontStyle());
-        desc->setFactoryId(SkTypeface_FreeType::FactoryId);
-        *serialize = false;
+        //auto ttcIndex = get_int(pattern, FC_INDEX, 0);
+        const char* filename = get_string(fPattern, FC_FILE);
+        // See FontAccessible for note on searching sysroot then non-sysroot path.
+        SkString resolvedFilename;
+        if (!fSysroot.isEmpty()) {
+            resolvedFilename = fSysroot;
+            resolvedFilename += filename;
+            if (sk_exists(resolvedFilename.c_str(), kRead_SkFILE_Flag)) {
+                filename = resolvedFilename.c_str();
+            }
+        }
+        fProxy = SkTypeface_FreeType::MakeFromStream( SkStream::MakeFromFile(filename), SkFontArguments());
+        // TODO: Check fProxy in all the proxy calls instead
+        SkASSERT(fProxy != nullptr);
     }
+    SkTypeface* proxy() const { return fProxy.get(); }
 
+    mutable SkAutoFcPattern fPattern;  // Mutable for passing to FontConfig API
+    const SkString fSysroot;
+protected:
+    std::unique_ptr<SkScalerContext> onCreateScalerContext(const SkScalerContextEffects& ctx,
+                                                           const SkDescriptor* desc) const override {
+        return static_cast<SkTypeface_FreeTypeStream*>(fProxy.get())->onCreateScalerContext(ctx, desc);
+    }
+    void onFilterRec(SkScalerContextRec* rec) const override {
+        // FontConfig provides 10-scale-bitmap-fonts.conf which applies an inverse "pixelsize"
+        // matrix. It is not known if this .conf is active or not, so it is not clear if
+        // "pixelsize" should be applied before this matrix. Since using a matrix with a bitmap
+        // font isn't a great idea, only apply the matrix to outline fonts.
+        const FcMatrix* fcMatrix = get_matrix(fPattern, FC_MATRIX);
+        bool fcOutline = get_bool(fPattern, FC_OUTLINE, true);
+        if (fcOutline && fcMatrix) {
+            // fPost2x2 is column-major, left handed (y down).
+            // FcMatrix is column-major, right handed (y up).
+            SkMatrix fm;
+            fm.setAll(fcMatrix->xx,-fcMatrix->xy, 0,
+                      -fcMatrix->yx, fcMatrix->yy, 0,
+                      0           , 0           , 1);
+
+            SkMatrix sm;
+            rec->getMatrixFrom2x2(&sm);
+
+            sm.preConcat(fm);
+            rec->fPost2x2[0][0] = sm.getScaleX();
+            rec->fPost2x2[0][1] = sm.getSkewX();
+            rec->fPost2x2[1][0] = sm.getSkewY();
+            rec->fPost2x2[1][1] = sm.getScaleY();
+        }
+        if (get_bool(fPattern, FC_EMBOLDEN)) {
+            rec->fFlags |= SkScalerContext::kEmbolden_Flag;
+        }
+        static_cast<SkTypeface_FreeTypeStream*>(fProxy.get())->onFilterRec(rec);
+    }
+    void getGlyphToUnicodeMap(SkUnichar* unichar) const override {
+        static_cast<SkTypeface_FreeTypeStream*>(fProxy.get())->getGlyphToUnicodeMap(unichar);
+    }
+    std::unique_ptr<SkAdvancedTypefaceMetrics> onGetAdvancedMetrics() const override {
+        std::unique_ptr<SkAdvancedTypefaceMetrics> info =
+                static_cast<SkTypeface_FreeTypeStream*>(fProxy.get())->onGetAdvancedMetrics();
+
+        // Simulated fonts shouldn't be considered to be of the type of their data.
+        if (get_matrix(fPattern, FC_MATRIX) || get_bool(fPattern, FC_EMBOLDEN)) {
+            info->fType = SkAdvancedTypefaceMetrics::kOther_Font;
+        }
+        return info;
+    }
     std::unique_ptr<SkStreamAsset> onOpenStream(int* ttcIndex) const override {
         FCLocker lock;
         *ttcIndex = get_int(fPattern, FC_INDEX, 0);
@@ -450,87 +501,66 @@ public:
         }
         return SkStream::MakeFromFile(filename);
     }
-
-    void onFilterRec(SkScalerContextRec* rec) const override {
-        // FontConfig provides 10-scale-bitmap-fonts.conf which applies an inverse "pixelsize"
-        // matrix. It is not known if this .conf is active or not, so it is not clear if
-        // "pixelsize" should be applied before this matrix. Since using a matrix with a bitmap
-        // font isn't a great idea, only apply the matrix to outline fonts.
-        const FcMatrix* fcMatrix = get_matrix(fPattern, FC_MATRIX);
-        bool fcOutline = get_bool(fPattern, FC_OUTLINE, true);
-        if (fcOutline && fcMatrix) {
-            // fPost2x2 is column-major, left handed (y down).
-            // FcMatrix is column-major, right handed (y up).
-            SkMatrix fm;
-            fm.setAll(fcMatrix->xx,-fcMatrix->xy, 0,
-                     -fcMatrix->yx, fcMatrix->yy, 0,
-                      0           , 0           , 1);
-
-            SkMatrix sm;
-            rec->getMatrixFrom2x2(&sm);
-
-            sm.preConcat(fm);
-            rec->fPost2x2[0][0] = sm.getScaleX();
-            rec->fPost2x2[0][1] = sm.getSkewX();
-            rec->fPost2x2[1][0] = sm.getSkewY();
-            rec->fPost2x2[1][1] = sm.getScaleY();
-        }
-        if (get_bool(fPattern, FC_EMBOLDEN)) {
-            rec->fFlags |= SkScalerContext::kEmbolden_Flag;
-        }
-        this->INHERITED::onFilterRec(rec);
-    }
-
-    std::unique_ptr<SkAdvancedTypefaceMetrics> onGetAdvancedMetrics() const override {
-        std::unique_ptr<SkAdvancedTypefaceMetrics> info =
-            this->INHERITED::onGetAdvancedMetrics();
-
-        // Simulated fonts shouldn't be considered to be of the type of their data.
-        if (get_matrix(fPattern, FC_MATRIX) || get_bool(fPattern, FC_EMBOLDEN)) {
-            info->fType = SkAdvancedTypefaceMetrics::kOther_Font;
-        }
-        return info;
-    }
-
     sk_sp<SkTypeface> onMakeClone(const SkFontArguments& args) const override {
-        SkFontStyle style = this->fontStyle();
-        std::unique_ptr<SkFontData> data = this->cloneFontData(args, &style);
-        if (!data) {
-            return nullptr;
-        }
-
-        // TODO: need to clone FC_MATRIX and FC_EMBOLDEN
-        SkString familyName;
-        this->getFamilyName(&familyName);
-        return sk_make_sp<SkTypeface_FreeTypeStream>(
-            std::move(data), familyName, style, this->isFixedPitch());
+        return static_cast<SkTypeface_FreeTypeStream*>(fProxy.get())->onMakeClone(args);
     }
-
-    std::unique_ptr<SkFontData> onMakeFontData() const override {
-        int index;
-        std::unique_ptr<SkStreamAsset> stream(this->onOpenStream(&index));
-        if (!stream) {
-            return nullptr;
-        }
-        // TODO: FC_VARIABLE and FC_FONT_VARIATIONS
-        return std::make_unique<SkFontData>(std::move(stream), index, 0, nullptr, 0, nullptr, 0);
-    }
-
-    ~SkTypeface_fontconfig() override {
-        // Hold the lock while unrefing the pattern.
+    void onGetFontDescriptor(SkFontDescriptor* desc, bool* serialize) const override {
+        // TODO: need to serialize FC_MATRIX and FC_EMBOLDEN
         FCLocker lock;
-        fPattern.reset();
+        desc->setFamilyName(get_string(fPattern, FC_FAMILY));
+        desc->setFullName(get_string(fPattern, FC_FULLNAME));
+        desc->setPostscriptName(get_string(fPattern, FC_POSTSCRIPT_NAME));
+        desc->setStyle(this->fontStyle());
+        desc->setFactoryId(SkTypeface_FreeType::FactoryId);
+        *serialize = false;
+    }
+
+    void onCharsToGlyphs(const SkUnichar* chars, int count, SkGlyphID glyphs[]) const override {
+        static_cast<SkTypeface_FreeTypeStream*>(fProxy.get())->onCharsToGlyphs(chars, count, glyphs);
+    }
+    int onCountGlyphs() const override {
+        return static_cast<SkTypeface_FreeTypeStream*>(fProxy.get())->onCountGlyphs();
+    }
+    int onGetUPEM() const override {
+        return static_cast<SkTypeface_FreeTypeStream*>(fProxy.get())->onGetUPEM();
+    }
+
+    void onGetFamilyName(SkString* familyName) const override {
+        *familyName = get_string(fPattern, FC_FAMILY);
+    }
+
+    bool onGetPostScriptName(SkString* name) const override {
+        return static_cast<SkTypeface_FreeTypeStream*>(fProxy.get())->onGetPostScriptName(name);
+    }
+    SkTypeface::LocalizedStrings* onCreateFamilyNameIterator() const override {
+        return static_cast<SkTypeface_FreeTypeStream*>(fProxy.get())->onCreateFamilyNameIterator();
+    }
+
+    void getPostScriptGlyphNames(SkString* names) const override {
+        return static_cast<SkTypeface_FreeTypeStream*>(fProxy.get())->getPostScriptGlyphNames(names);
+    }
+
+    bool onGlyphMaskNeedsCurrentColor() const override {
+        return static_cast<SkTypeface_FreeTypeStream*>(fProxy.get())->onGlyphMaskNeedsCurrentColor();
+    }
+    int onGetVariationDesignPosition(SkFontArguments::VariationPosition::Coordinate coordinates[],
+                                     int coordinateCount) const override {
+        return static_cast<SkTypeface_FreeTypeStream*>(fProxy.get())->onGetVariationDesignPosition(coordinates, coordinateCount);
+    }
+    int onGetVariationDesignParameters(SkFontParameters::Variation::Axis parameters[],
+                                       int parameterCount) const override {
+        return static_cast<SkTypeface_FreeTypeStream*>(fProxy.get())->onGetVariationDesignParameters(parameters, parameterCount);
+    }
+    int onGetTableTags(SkFontTableTag tags[]) const override {
+        return static_cast<SkTypeface_FreeTypeStream*>(fProxy.get())->onGetTableTags(tags);
+    }
+    size_t onGetTableData(SkFontTableTag tag, size_t offset, size_t length, void* data) const override {
+        return static_cast<SkTypeface_FreeTypeStream*>(fProxy.get())->onGetTableData(tag, offset, length, data);
     }
 
 private:
-    SkTypeface_fontconfig(SkAutoFcPattern pattern, SkString sysroot)
-        : INHERITED(skfontstyle_from_fcpattern(pattern),
-                    FC_PROPORTIONAL != get_int(pattern, FC_SPACING, FC_PROPORTIONAL))
-        , fPattern(std::move(pattern))
-        , fSysroot(std::move(sysroot))
-    { }
-
-    using INHERITED = SkTypeface_FreeType;
+    using INHERITED = SkTypeface;
+    sk_sp<SkTypeface> fProxy;
 };
 
 class SkFontMgr_fontconfig : public SkFontMgr {
@@ -652,7 +682,7 @@ class SkFontMgr_fontconfig : public SkFontMgr {
     }
 
     static bool FindByFcPattern(SkTypeface* cached, void* ctx) {
-        SkTypeface_fontconfig* cshFace = static_cast<SkTypeface_fontconfig*>(cached);
+        SkTypeface_proxy* cshFace = static_cast<SkTypeface_proxy*>(cached);
         FcPattern* ctxPattern = static_cast<FcPattern*>(ctx);
         return FcTrue == FcPatternEqual(cshFace->fPattern, ctxPattern);
     }
@@ -662,6 +692,22 @@ class SkFontMgr_fontconfig : public SkFontMgr {
     /** Creates a typeface using a typeface cache.
      *  @param pattern a complete pattern from FcFontRenderPrepare.
      */
+
+    sk_sp<SkTypeface> createFreeTypeProxy(SkAutoFcPattern pattern, SkString sysroot) const {
+        FCLocker lock;
+        //auto ttcIndex = get_int(pattern, FC_INDEX, 0);
+        const char* filename = get_string(pattern, FC_FILE);
+        // See FontAccessible for note on searching sysroot then non-sysroot path.
+        SkString resolvedFilename;
+        if (!sysroot.isEmpty()) {
+            resolvedFilename = sysroot;
+            resolvedFilename += filename;
+            if (sk_exists(resolvedFilename.c_str(), kRead_SkFILE_Flag)) {
+                filename = resolvedFilename.c_str();
+            }
+        }
+        return SkTypeface_FreeType::MakeFromStream( SkStream::MakeFromFile(filename), SkFontArguments());
+    }
     sk_sp<SkTypeface> createTypefaceFromFcPattern(SkAutoFcPattern pattern) const {
         if (!pattern) {
             return nullptr;
@@ -678,7 +724,7 @@ class SkFontMgr_fontconfig : public SkFontMgr {
             return face;
         }();
         if (!face) {
-            face = SkTypeface_fontconfig::Make(std::move(pattern), fSysroot);
+            face = sk_sp<SkTypeface_proxy>(new SkTypeface_proxy(std::move(pattern), fSysroot));
             if (face) {
                 // Cannot hold FCLocker in fTFCache.add; evicted typefaces may need to lock.
                 fTFCache.add(face);

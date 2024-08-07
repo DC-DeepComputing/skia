@@ -103,6 +103,7 @@ protected:
     sk_sp<SkTypeface> onMakeClone(const SkFontArguments&) const override;
 
 private:
+    friend class SkTypeface_proxy;
     const SkString fFamilyName;
     const std::unique_ptr<const SkFontData> fData;
 };
