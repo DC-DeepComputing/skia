@@ -18,6 +18,7 @@
 #include "include/private/base/SkTo.h"
 
 #include <cstdint>
+#include <vector>
 
 /**
  * SkColorSpaceLuminance is used to convert luminances to and from linear and
@@ -111,11 +112,15 @@ public:
      *                 amount of artificial contrast to add.
      * @param device The color space of the target device.
      */
-    SkTMaskGamma(SkScalar contrast, SkScalar deviceGamma) : fIsLinear(false) {
+    SkTMaskGamma(SkScalar contrast, SkScalar deviceGamma) : fGammaTables(kNumTables), fIsLinear(false) {
+        for (auto& row : fGammaTables) {
+            row.resize(kTableWidth);
+        }
+
         const SkColorSpaceLuminance& deviceConvert = SkColorSpaceLuminance::Fetch(deviceGamma);
-        for (U8CPU i = 0; i < (1 << MAX_LUM_BITS); ++i) {
-            U8CPU lum = sk_t_scale255<MAX_LUM_BITS>(i);
-            SkTMaskGamma_build_correcting_lut(fGammaTables[i], lum, contrast,
+        for (U8CPU i = 0; i < kNumTables; ++i) {
+            U8CPU lum = sk_t_scale255<kMaxLumBits>(i);
+            SkTMaskGamma_build_correcting_lut(fGammaTables[i].data(), lum, contrast,
                                               deviceConvert, deviceGamma);
         }
     }
@@ -139,11 +144,10 @@ public:
     PreBlend preBlend(SkColor color) const;
 
     /**
-     * Get dimensions for the full table set, so it can be allocated as a block.
+     * Returns the size for the full table set in bytes, so it can be allocated as a block.
      */
-    void getGammaTableDimensions(int* tableWidth, int* numTables) const {
-        *tableWidth = 256;
-        *numTables = (1 << MAX_LUM_BITS);
+    constexpr size_t getGammaTableSizeInBytes() const {
+        return kNumTables * kTableWidth * sizeof(uint8_t);
     }
 
     /**
@@ -152,19 +156,20 @@ public:
      * Returns nullptr if fGammaTables hasn't been initialized.
      */
     const uint8_t* getGammaTables() const {
-        return fIsLinear ? nullptr : (const uint8_t*) fGammaTables;
+        return fIsLinear ? nullptr : fGammaTables.data()->data();
     }
 
 private:
-    static const int MAX_LUM_BITS =
+    static constexpr int kMaxLumBits =
           B_LUM_BITS > (R_LUM_BITS > G_LUM_BITS ? R_LUM_BITS : G_LUM_BITS)
         ? B_LUM_BITS : (R_LUM_BITS > G_LUM_BITS ? R_LUM_BITS : G_LUM_BITS);
-    uint8_t fGammaTables[1 << MAX_LUM_BITS][256];
+    static constexpr size_t kNumTables = (1 << kMaxLumBits);
+    static constexpr size_t kTableWidth = 256;
+    std::vector<std::vector<uint8_t>> fGammaTables;
     bool fIsLinear;
 
     using INHERITED = SkRefCnt;
 };
-
 
 /**
  * SkTMaskPreBlend is a tear-off of SkTMaskGamma. It provides the tables to
@@ -209,9 +214,9 @@ SkTMaskPreBlend<R_LUM_BITS, G_LUM_BITS, B_LUM_BITS>
 SkTMaskGamma<R_LUM_BITS, G_LUM_BITS, B_LUM_BITS>::preBlend(SkColor color) const {
     return fIsLinear ? SkTMaskPreBlend<R_LUM_BITS, G_LUM_BITS, B_LUM_BITS>()
                      : SkTMaskPreBlend<R_LUM_BITS, G_LUM_BITS, B_LUM_BITS>(sk_ref_sp(this),
-                         fGammaTables[SkColorGetR(color) >> (8 - MAX_LUM_BITS)],
-                         fGammaTables[SkColorGetG(color) >> (8 - MAX_LUM_BITS)],
-                         fGammaTables[SkColorGetB(color) >> (8 - MAX_LUM_BITS)]);
+                         fGammaTables[SkColorGetR(color) >> (8 - kMaxLumBits)].data(),
+                         fGammaTables[SkColorGetG(color) >> (8 - kMaxLumBits)].data(),
+                         fGammaTables[SkColorGetB(color) >> (8 - kMaxLumBits)].data());
 }
 
 ///@{
