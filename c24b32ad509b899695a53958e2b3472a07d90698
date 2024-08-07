@@ -16,6 +16,24 @@
       "message": "Unfortunately, it appears this is never useful.\n\nIf we do this, we bake the scale into the descriptor, which means we\u0027re just resizing everything just to scale it back down but without any benefit of de-duplication.\n\nReally what we wanted was to de-duplicate all the textSize + pathEffect that can be scaled to be identical. But the textSize changing means the pathEffect will be applied at a different path and so that isn\u0027t a scale, and if the pathEffect changes we don\u0027t know anything about how it works internally, so we don\u0027t know if that scales.\n\nThe stroke is a kind of special path effect that we do know how it works internally and so we can just scale its parameters here. But the parameters for the path effect are already baked in.",
       "revId": "c24b32ad509b899695a53958e2b3472a07d90698",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7894f4d3_caae4cad",
+        "filename": "src/pdf/SkPDFFont.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-08-07T20:01:06Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "665db133_23c79459",
+      "revId": "c24b32ad509b899695a53958e2b3472a07d90698",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
