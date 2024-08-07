@@ -16,6 +16,24 @@
       "message": "This is causing Chromium\u0027s static initializer check to fail.\nhttps://logs.chromium.org/logs/chromium/buildbucket/cr-buildbucket/8747662868974369553/+/u/check_static_initializers__with_patch_/stdout",
       "revId": "a251e7836a5cdf1b7081712c8d84bee443c29946",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d15b1f54_c1491405",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 1145,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-08-07T08:50:19Z",
+      "side": 1,
+      "message": "Fixed in follow-up CL.",
+      "parentUuid": "95525d3d_a92dbea4",
+      "revId": "a251e7836a5cdf1b7081712c8d84bee443c29946",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
