@@ -32,7 +32,6 @@ Skia and the third party dep depend on that.
 
 CORE_COPTS = [
     "-fstrict-aliasing",
-    "-fPIC",
 ] + select({
     # SkRawCodec catches any exceptions thrown by dng_sdk, insulating the rest of Skia.
     "//src/codec:raw_decode_codec": [],
@@ -50,6 +49,8 @@ CORE_COPTS = [
         # In Clang 14, this default was changed. We turn this off to (hopefully) make our
         # GMs more consistent and avoid some floating-point related test failures on M1 macs.
         "-ffp-contract=off",
+        # Windows doesn't support position-independent code.
+        "-fPIC",
     ],
 }) + select({
     # Turning off RTTI reduces code size, but is necessary for connecting C++
