@@ -140,16 +140,39 @@ public:
     PrecompileBlendModeColorFilter() {}
 
 private:
+    int numIntrinsicCombinations() const override {
+        static constexpr int kNumFixedBlends = (int) SkBlendMode::kMultiply -
+                                               (int) SkBlendMode::kLastCoeffMode + 1 /*kPlus*/;
+        static constexpr int kNumConsolidatedBlends = 2; // coefficient and HSLC
+        return kNumConsolidatedBlends + kNumFixedBlends;
+    }
+
     void addToKey(const KeyContext& keyContext,
                   PaintParamsKeyBuilder* builder,
                   PipelineDataGatherer* gatherer,
                   int desiredCombination) const override {
-        SkASSERT(desiredCombination == 0);
+        SkBlendMode representativeBlendMode;
+        if (desiredCombination == 0) {
+            // Coefficient based blend option, so pick kSrcOver arbitrarily
+            representativeBlendMode = SkBlendMode::kSrcOver;
+        } else if (desiredCombination == 1) {
+            // HSLC blend option, so pick kHue arbitrarily
+            representativeBlendMode = SkBlendMode::kHue;
+        } else if (desiredCombination == 2) {
+            // kPlus fixed blend (specially handled because its enum value is less than
+            // kLastCoeffMode but is not actually a coefficient-based blend mode).
+            representativeBlendMode = SkBlendMode::kPlus;
+        } else {
+            // Fixed blends that do not have consolidated implementations.
+            representativeBlendMode = static_cast<SkBlendMode>(
+                    (int)SkBlendMode::kLastCoeffMode + desiredCombination - 2);
+            SkASSERT(representativeBlendMode >= SkBlendMode::kOverlay &&
+                     representativeBlendMode <= SkBlendMode::kMultiply);
+        }
 
-        // Here, kSrcOver and the white color are just a stand-ins for some later blend mode
-        // and color.
+        // Here the color is just a stand-in for a later value.
         AddBlendModeColorFilter(keyContext, builder, gatherer,
-                                SkBlendMode::kSrcOver, SK_PMColor4fWHITE);
+                                representativeBlendMode, SK_PMColor4fWHITE);
     }
 };
 

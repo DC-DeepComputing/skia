@@ -30,7 +30,7 @@ protected:
                   int desiredCombination) const final {
         SkASSERT(desiredCombination == 0); // The blend mode blender only ever has one combination
 
-        AddModeBlend(keyContext, builder, gatherer, fBlendMode);
+        AddBlendMode(keyContext, builder, gatherer, fBlendMode);
     }
 
 private:

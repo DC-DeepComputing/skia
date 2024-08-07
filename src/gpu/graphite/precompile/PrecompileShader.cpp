@@ -99,23 +99,27 @@ sk_sp<PrecompileShader> PrecompileShaders::Color(sk_sp<SkColorSpace>) {
 //--------------------------------------------------------------------------------------------------
 class PrecompileBlendShader final : public PrecompileShader {
 public:
-    PrecompileBlendShader(SkSpan<const sk_sp<PrecompileBlender>> runtimeBlendEffects,
+    PrecompileBlendShader(SkSpan<const sk_sp<PrecompileBlender>> fixedBlendEffects,
                           SkSpan<const sk_sp<PrecompileShader>> dsts,
                           SkSpan<const sk_sp<PrecompileShader>> srcs,
                           bool needsPorterDuffBased,
-                          bool needsSeparableMode)
-            : fRuntimeBlendEffects(runtimeBlendEffects.begin(), runtimeBlendEffects.end())
+                          bool needsHLSCMode)
+            : fFixedBlendEffects(fixedBlendEffects.begin(), fixedBlendEffects.end())
             , fDstOptions(dsts.begin(), dsts.end())
             , fSrcOptions(srcs.begin(), srcs.end()) {
 
         fNumBlenderCombos = 0;
-        for (const auto& rt : fRuntimeBlendEffects) {
+        for (const auto& rt : fFixedBlendEffects) {
             fNumBlenderCombos += rt->priv().numCombinations();
+            // Coefficient and HSLC blenders should have been removed already
+            SkDEBUGCODE(auto bm = rt->priv().asBlendMode();)
+            SkASSERT(!bm || (*bm < SkBlendMode::kHue &&
+                             skgpu::GetPorterDuffBlendConstants(*bm).empty()));
         }
         if (needsPorterDuffBased) {
             ++fNumBlenderCombos;
         }
-        if (needsSeparableMode) {
+        if (needsHLSCMode) {
             ++fNumBlenderCombos;
         }
 
@@ -133,21 +137,21 @@ public:
 
         if (needsPorterDuffBased) {
             fPorterDuffIndex = 0;
-            if (needsSeparableMode) {
-                fSeparableModeIndex = 1;
-                if (!fRuntimeBlendEffects.empty()) {
+            if (needsHLSCMode) {
+                fHSLCIndex = 1;
+                if (!fFixedBlendEffects.empty()) {
                     fBlenderIndex = 2;
                 }
-            } else if (!fRuntimeBlendEffects.empty()) {
+            } else if (!fFixedBlendEffects.empty()) {
                 fBlenderIndex = 1;
             }
-        } else if (needsSeparableMode) {
-            fSeparableModeIndex = 0;
-            if (!fRuntimeBlendEffects.empty()) {
+        } else if (needsHLSCMode) {
+            fHSLCIndex = 0;
+            if (!fFixedBlendEffects.empty()) {
                 fBlenderIndex = 1;
             }
         } else {
-            SkASSERT(!fRuntimeBlendEffects.empty());
+            SkASSERT(!fFixedBlendEffects.empty());
             fBlenderIndex = 0;
         }
     }
@@ -172,18 +176,27 @@ private:
         int desiredBlendCombination = remainingCombinations;
         SkASSERT(desiredBlendCombination < fNumBlenderCombos);
 
-        if (desiredBlendCombination == fPorterDuffIndex ||
-            desiredBlendCombination == fSeparableModeIndex) {
-            BlendShaderBlock::BeginBlock(keyContext, builder, gatherer);
+        sk_sp<PrecompileBlender> fixedBlender = nullptr;
+        if (desiredBlendCombination >= fBlenderIndex) {
+            SkASSERT(desiredBlendCombination != fPorterDuffIndex &&
+                     desiredBlendCombination != fHSLCIndex);
+            desiredBlendCombination -= fBlenderIndex;
+            std::tie(fixedBlender, desiredBlendCombination) =
+                    SelectOption<PrecompileBlender>(fFixedBlendEffects, desiredBlendCombination);
+        }
 
+        if (!fixedBlender || fixedBlender->priv().asBlendMode()) {
+            // Coefficient and HSLC blends, and other fixed SkBlendMode blenders use the
+            // BlendCompose block to organize the children.
+            BlendComposeBlock::BeginBlock(keyContext, builder, gatherer);
         } else {
+            // Runtime blenders are wrapped in the kBlend runtime shader, although functionally
+            // it is identical to the BlendCompose snippet.
             const SkRuntimeEffect* blendEffect =
                     GetKnownRuntimeEffect(SkKnownRuntimeEffects::StableKey::kBlend);
 
             RuntimeEffectBlock::BeginBlock(keyContext, builder, gatherer,
                                            { sk_ref_sp(blendEffect) });
-            SkASSERT(desiredBlendCombination >= fBlenderIndex);
-            desiredBlendCombination -= fBlenderIndex;
         }
 
         AddToKey<PrecompileShader>(keyContext, builder, gatherer, fSrcOptions,
@@ -191,21 +204,29 @@ private:
         AddToKey<PrecompileShader>(keyContext, builder, gatherer, fDstOptions,
                                    desiredDstCombination);
 
-        if (desiredBlendCombination == fPorterDuffIndex) {
+        if (fixedBlender) {
+            auto blendMode = fixedBlender->priv().asBlendMode();
+            if (blendMode) {
+                AddFixedBlendMode(keyContext, builder, gatherer, *blendMode);
+            } else {
+                fixedBlender->priv().addToKey(keyContext, builder, gatherer,
+                                              desiredBlendCombination);
+            }
+        } else  if (desiredBlendCombination == fPorterDuffIndex) {
             CoeffBlenderBlock::AddBlock(keyContext, builder, gatherer,
                                         { 0.0f, 0.0f, 0.0f, 0.0f }); // coeffs aren't used
-        } else if (desiredBlendCombination == fSeparableModeIndex) {
-            BlendModeBlenderBlock::AddBlock(keyContext, builder, gatherer,
-                                            SkBlendMode::kOverlay); // the blendmode is unused
         } else {
-            AddToKey<PrecompileBlender>(keyContext, builder, gatherer, fRuntimeBlendEffects,
-                                        desiredBlendCombination);
+            SkASSERT(desiredBlendCombination == fHSLCIndex);
+            HSLCBlenderBlock::AddBlock(keyContext, builder, gatherer,
+                                       { 0.f, 0.f }); // the coeffs aren't used
         }
 
-        builder->endBlock();  // BlendShaderBlock or RuntimeEffectBlock
+        builder->endBlock();  // BlendComposeBlock or RuntimeEffectBlock
     }
 
-    std::vector<sk_sp<PrecompileBlender>> fRuntimeBlendEffects;
+    // Coefficient (Porter Duff) and HSLC blend modes are removed; but any remaining blend modes
+    // that must be fixed in the PaintParamsKey are converted to PrecompileBlenders.
+    std::vector<sk_sp<PrecompileBlender>> fFixedBlendEffects;
     std::vector<sk_sp<PrecompileShader>> fDstOptions;
     std::vector<sk_sp<PrecompileShader>> fSrcOptions;
 
@@ -214,7 +235,7 @@ private:
     int fNumSrcCombos;
 
     int fPorterDuffIndex = -1;
-    int fSeparableModeIndex = -1;
+    int fHSLCIndex = -1;
     int fBlenderIndex = -1;
 };
 
@@ -226,7 +247,7 @@ sk_sp<PrecompileShader> PrecompileShaders::Blend(
     tmp.reserve(blenders.size());
 
     bool needsPorterDuffBased = false;
-    bool needsBlendModeBased = false;
+    bool needsHLSCMode = false;
 
     for (const auto& b : blenders) {
         if (!b) {
@@ -237,47 +258,49 @@ sk_sp<PrecompileShader> PrecompileShaders::Blend(
             SkSpan<const float> coeffs = skgpu::GetPorterDuffBlendConstants(bm);
             if (!coeffs.empty()) {
                 needsPorterDuffBased = true;
+            } else if (bm >= SkBlendMode::kHue) {
+                needsHLSCMode = true;
             } else {
-                needsBlendModeBased = true;
+                tmp.push_back(b); // No reduced shader snippet for this blend mode
             }
         } else {
             tmp.push_back(b);
         }
     }
 
-    if (!needsPorterDuffBased && !needsBlendModeBased && tmp.empty()) {
+    if (!needsPorterDuffBased && !needsHLSCMode && tmp.empty()) {
         needsPorterDuffBased = true; // fallback to kSrcOver
     }
 
-    return sk_make_sp<PrecompileBlendShader>(SkSpan<const sk_sp<PrecompileBlender>>(tmp),
-                                             dsts, srcs,
-                                             needsPorterDuffBased, needsBlendModeBased);
+    return sk_make_sp<PrecompileBlendShader>(SkSpan(tmp), dsts, srcs,
+                                             needsPorterDuffBased, needsHLSCMode);
 }
 
 sk_sp<PrecompileShader> PrecompileShaders::Blend(
         SkSpan<const SkBlendMode> blendModes,
         SkSpan<const sk_sp<PrecompileShader>> dsts,
         SkSpan<const sk_sp<PrecompileShader>> srcs) {
-
+    std::vector<sk_sp<PrecompileBlender>> fixedBlends;
     bool needsPorterDuffBased = false;
-    bool needsBlendModeBased = false;
+    bool needsHLSCMode = false;
 
     for (SkBlendMode bm : blendModes) {
         SkSpan<const float> porterDuffConstants = skgpu::GetPorterDuffBlendConstants(bm);
         if (!porterDuffConstants.empty()) {
             needsPorterDuffBased = true;
+        } else if (bm >= SkBlendMode::kHue) {
+            needsHLSCMode = true;
         } else {
-            needsBlendModeBased = true;
+            fixedBlends.push_back(PrecompileBlenders::Mode(bm));
         }
     }
 
-    if (!needsPorterDuffBased && !needsBlendModeBased) {
+    if (!needsPorterDuffBased && !needsHLSCMode && fixedBlends.empty()) {
         needsPorterDuffBased = true; // fallback to kSrcOver
     }
 
-    return sk_make_sp<PrecompileBlendShader>(SkSpan<const sk_sp<PrecompileBlender>>(),
-                                             dsts, srcs,
-                                             needsPorterDuffBased, needsBlendModeBased);
+    return sk_make_sp<PrecompileBlendShader>(SkSpan(fixedBlends), dsts, srcs,
+                                             needsPorterDuffBased, needsHLSCMode);
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -392,7 +415,8 @@ private:
 
             Blend(keyContext, builder, gatherer,
                   /* addBlendToKey= */ [&] () -> void {
-                      AddKnownModeBlend(keyContext, builder, gatherer, SkBlendMode::kDstIn);
+
+                      AddFixedBlendMode(keyContext, builder, gatherer, SkBlendMode::kDstIn);
                   },
                   /* addSrcToKey= */ [&] () -> void {
                       Compose(keyContext, builder, gatherer,
