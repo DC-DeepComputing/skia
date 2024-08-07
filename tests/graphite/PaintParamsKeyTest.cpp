@@ -292,14 +292,22 @@ const char* to_str(ImageFilterType c) {
 
 const char* to_str(DrawTypeFlags dt) {
     switch (dt) {
-        case DrawTypeFlags::kNone:           return "DrawTypeFlags::kNone";
-        case DrawTypeFlags::kText:           return "DrawTypeFlags::kText";
-        case DrawTypeFlags::kDrawVertices:   return "DrawTypeFlags::kDrawVertices";
-        case DrawTypeFlags::kSimpleShape:    return "DrawTypeFlags::kSimpleShape";
-        case DrawTypeFlags::kNonSimpleShape: return "DrawTypeFlags::kNonSimpleShape";
-        case DrawTypeFlags::kShape:          return "DrawTypeFlags::kShape";
-        case DrawTypeFlags::kMostCommon:     return "DrawTypeFlags::kMostCommon";
-        case DrawTypeFlags::kAll:            return "DrawTypeFlags::kAll";
+        case DrawTypeFlags::kNone:             return "DrawTypeFlags::kNone";
+        case DrawTypeFlags::kMaskBasedText:    return "DrawTypeFlags::kMaskBasedText";
+        case DrawTypeFlags::kLCDBasedText:     return "DrawTypeFlags::kLCDBasedText";
+        case DrawTypeFlags::kFooBasedText:     return "DrawTypeFlags::kFooBasedText";
+        case DrawTypeFlags::kBitmapBasedText:  return "DrawTypeFlags::kBitmapBasedText";
+        case DrawTypeFlags::kSDFBasedText2:    return "DrawTypeFlags::kSDFBasedText2";
+        case DrawTypeFlags::kSDFBasedText_LCD: return "DrawTypeFlags::kSDFBasedText_LCD";
+        case DrawTypeFlags::kAllSDFBasedText:  return "DrawTypeFlags::kAllSDFBasedText";
+        case DrawTypeFlags::kPathBasedText:    return "DrawTypeFlags::kPathBasedText";
+        case DrawTypeFlags::kAllText:          return "DrawTypeFlags::kAllText";
+        case DrawTypeFlags::kDrawVertices:     return "DrawTypeFlags::kDrawVertices";
+        case DrawTypeFlags::kSimpleShape:      return "DrawTypeFlags::kSimpleShape";
+        case DrawTypeFlags::kNonSimpleShape:   return "DrawTypeFlags::kNonSimpleShape";
+        case DrawTypeFlags::kShape:            return "DrawTypeFlags::kShape";
+        case DrawTypeFlags::kMostCommon:       return "DrawTypeFlags::kMostCommon";
+        case DrawTypeFlags::kAll:              return "DrawTypeFlags::kAll";
     }
 
     SkASSERT(0);
@@ -478,14 +486,19 @@ ImageFilterType random_imagefiltertype(SkRandom* rand) {
 }
 
 [[maybe_unused]] DrawTypeFlags random_drawtype(SkRandom* rand) {
-    uint32_t index = rand->nextULessThan(5);
+    uint32_t index = rand->nextULessThan(10);
 
     switch (index) {
-        case 0: return DrawTypeFlags::kText;
-        case 1: return DrawTypeFlags::kDrawVertices;
-        case 2: return DrawTypeFlags::kSimpleShape;
-        case 3: return DrawTypeFlags::kNonSimpleShape;
-        case 4: return DrawTypeFlags::kShape;
+        case 0: return DrawTypeFlags::kMaskBasedText;
+        case 1: return DrawTypeFlags::kLCDBasedText;
+        case 2: return DrawTypeFlags::kFooBasedText;
+        case 3: return DrawTypeFlags::kSDFBasedText2;
+        case 4: return DrawTypeFlags::kSDFBasedText_LCD;
+        case 5: return DrawTypeFlags::kPathBasedText;
+        case 6: return DrawTypeFlags::kDrawVertices;
+        case 7: return DrawTypeFlags::kSimpleShape;
+        case 8: return DrawTypeFlags::kNonSimpleShape;
+        case 9: return DrawTypeFlags::kShape;
     }
 
     SkASSERT(0);
@@ -1821,7 +1834,22 @@ void check_draw(skiatest::Reporter* reporter,
                 simple_draws(canvas, paint);
                 non_simple_draws(canvas, paint, kDrawData);
                 break;
-            case DrawTypeFlags::kText:
+            case DrawTypeFlags::kMaskBasedText:
+                canvas->drawTextBlob(kDrawData.fBlob, 0, 16, paint);
+                break;
+            case DrawTypeFlags::kLCDBasedText:
+                canvas->drawTextBlob(kDrawData.fBlob, 0, 16, paint);
+                break;
+            case DrawTypeFlags::kFooBasedText:
+                canvas->drawTextBlob(kDrawData.fBlob, 0, 16, paint);
+                break;
+            case DrawTypeFlags::kSDFBasedText2:
+                canvas->drawTextBlob(kDrawData.fBlob, 0, 16, paint);
+                break;
+            case DrawTypeFlags::kSDFBasedText_LCD:
+                canvas->drawTextBlob(kDrawData.fBlob, 0, 16, paint);
+                break;
+            case DrawTypeFlags::kPathBasedText:
                 canvas->drawTextBlob(kDrawData.fBlob, 0, 16, paint);
                 break;
             case DrawTypeFlags::kDrawVertices:
@@ -2267,7 +2295,12 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
     };
 
     static const DrawTypeFlags kDrawTypeFlags[] = {
-            DrawTypeFlags::kText,
+            DrawTypeFlags::kMaskBasedText,
+            DrawTypeFlags::kLCDBasedText,
+            DrawTypeFlags::kFooBasedText,
+            DrawTypeFlags::kSDFBasedText2,
+            DrawTypeFlags::kSDFBasedText_LCD,
+            DrawTypeFlags::kPathBasedText,
             DrawTypeFlags::kDrawVertices,
             DrawTypeFlags::kSimpleShape,
             DrawTypeFlags::kNonSimpleShape,

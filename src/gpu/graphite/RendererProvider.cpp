@@ -73,18 +73,26 @@ RendererProvider::RendererProvider(const Caps* caps, StaticBufferManager* buffer
     fTessellatedStrokes = makeFromStep(
             std::make_unique<TessellateStrokesRenderStep>(infinitySupport), DrawTypeFlags::kShape);
     fCoverageMask = makeFromStep(std::make_unique<CoverageMaskRenderStep>(), DrawTypeFlags::kShape);
-    // We are using 565 here to represent LCD text, regardless of texture format
-    for (skgpu::MaskFormat variant : {skgpu::MaskFormat::kA8,
-                                      skgpu::MaskFormat::kA565,
-                                      skgpu::MaskFormat::kARGB}) {
-        fBitmapText[int(variant)] = makeFromStep(std::make_unique<BitmapTextRenderStep>(variant),
-                                                 DrawTypeFlags::kText);
+
+    struct TextVariant {
+        skgpu::MaskFormat fFormat;
+        DrawTypeFlags     fDrawType;
+    } kVariants [] = {
+        // We are using 565 here to represent LCD text, regardless of texture format
+        { skgpu::MaskFormat::kA8,   DrawTypeFlags::kMaskBasedText },
+        { skgpu::MaskFormat::kA565, DrawTypeFlags::kLCDBasedText  },
+        { skgpu::MaskFormat::kARGB, DrawTypeFlags::kFooBasedText  }
+    };
+
+    for (TextVariant variant : kVariants) {
+        fBitmapText[int(variant.fFormat)] = makeFromStep(std::make_unique<BitmapTextRenderStep>(variant.fFormat),
+                                                         variant.fDrawType);
     }
     for (bool lcd : {false, true}) {
         fSDFText[lcd] = lcd ? makeFromStep(std::make_unique<SDFTextLCDRenderStep>(),
-                                           DrawTypeFlags::kText)
+                                           DrawTypeFlags::kSDFBasedText_LCD)
                             : makeFromStep(std::make_unique<SDFTextRenderStep>(),
-                                           DrawTypeFlags::kText);
+                                           DrawTypeFlags::kSDFBasedText2);
     }
     fAnalyticRRect = makeFromStep(std::make_unique<AnalyticRRectRenderStep>(bufferManager),
                                   DrawTypeFlags::kSimpleShape);
@@ -131,7 +139,7 @@ RendererProvider::RendererProvider(const Caps* caps, StaticBufferManager* buffer
             std::string variant = kTessVariants[index];
 
             constexpr DrawTypeFlags kTextAndShape =
-                    static_cast<DrawTypeFlags>(DrawTypeFlags::kText|DrawTypeFlags::kShape);
+                    static_cast<DrawTypeFlags>(DrawTypeFlags::kPathBasedText|DrawTypeFlags::kShape);
 
             const RenderStep* coverStep = inverse ? coverInverse.get() : coverFill.get();
             fStencilTessellatedCurves[index] = Renderer("StencilTessellatedCurvesAndTris" + variant,

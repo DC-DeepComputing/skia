@@ -107,15 +107,28 @@ enum class Volatile : bool {
  * Graphite's different rendering methods each only apply to certain types of draws. This
  * enum supports decision-making regarding the different renderers and what is being drawn.
  */
-enum DrawTypeFlags : uint8_t {
+enum DrawTypeFlags : uint16_t {
 
-    kNone           = 0b0000,
+    kNone                = 0b000000000,
+
+    // Bitmap-based text
+    kMaskBasedText       = 0b000000001,
+    kLCDBasedText        = 0b000000010,
+    kFooBasedText        = 0b000000100,
+    kBitmapBasedText     = kMaskBasedText | kLCDBasedText | kFooBasedText,
+
+    // SDF-based text
+    kSDFBasedText2       = 0b000001000,
+    kSDFBasedText_LCD    = 0b000010000,
+    kAllSDFBasedText     = kSDFBasedText2 | kSDFBasedText_LCD,
+
+    kPathBasedText       = 0b000100000,
 
     // SkCanvas:: drawSimpleText, drawString, drawGlyphs, drawTextBlob, drawSlug
-    kText           = 0b0001,
+    kAllText             = kBitmapBasedText | kAllSDFBasedText | kPathBasedText,
 
     // SkCanvas::drawVertices
-    kDrawVertices   = 0b0010,
+    kDrawVertices        = 0b001000000,
 
     // SkCanvas::experimental_DrawEdgeAAQuad, experimental_DrawEdgeAAImageSet
     // SkCanvas:: drawRect, drawRRect, drawLine for:
@@ -124,14 +137,14 @@ enum DrawTypeFlags : uint8_t {
     //    stroked and hairline lines,
     //    stroked circular rrects
     // Note: clipping can bump a draw out of the simple shape path
-    kSimpleShape    = 0b0100,
+    kSimpleShape         = 0b010000000,
     // All other shapes (e.g., any strokeAndFill shape, non-circular-stroked RRects, SkPaths, ...)
-    kNonSimpleShape = 0b1000,
+    kNonSimpleShape      = 0b100000000,
 
-    kShape          = kSimpleShape | kNonSimpleShape,
+    kShape               = kSimpleShape | kNonSimpleShape,
 
-    kMostCommon     = kText | kShape,
-    kAll            = kText | kDrawVertices | kShape
+    kMostCommon          = kAllText | kShape,
+    kAll                 = kAllText | kDrawVertices | kShape
 };
 
 } // namespace skgpu::graphite
