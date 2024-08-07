@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "73ad9e77_88472abf",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 330,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-08-07T08:49:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8054196a_58953f82",
+      "revId": "cf7fefd0bbfbf0189b67af6f57963cb36fa890ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "77cdbf15_2eb191da",
@@ -31,6 +49,24 @@
       "writtenOn": "2024-03-28T21:57:48Z",
       "side": 1,
       "message": "If `has_bitmap_glyph` took the size (which would be more correct) then this wouldn\u0027t need to be optional. Also, much like the FreeType side, it doesn\u0027t seem like we should keep re-calculating the `best_strike_size` over and over, the strike index should just be cached on the scaler context and that\u0027s what should be passed in here.",
+      "revId": "cf7fefd0bbfbf0189b67af6f57963cb36fa890ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8ba7d10c_11c1af97",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 24
+      },
+      "lineNbr": 876,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-08-07T08:49:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "77cdbf15_2eb191da",
       "revId": "cf7fefd0bbfbf0189b67af6f57963cb36fa890ec",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -84,6 +120,24 @@
       "side": 1,
       "message": "Nice catch Ben.\n\nI\u0027ve submitted a fix for this at [fontations#863](https://github.com/googlefonts/fontations/pull/863). Specifically, it does what you suggest and computes size based on two entries. After this patch lands, the code on the Skia side can be changed to check if `location.data_size \u003d\u003d Some(0)` to detect empty bitmaps.\n\nFor format 1, it looks like metrics are supposed to be in the CBDT/EBDT table so we won\u0027t have any available for empty glyphs.",
       "parentUuid": "ab40433e_ff9d64d6",
+      "revId": "cf7fefd0bbfbf0189b67af6f57963cb36fa890ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "43d249bf_a40aced4",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 24
+      },
+      "lineNbr": 886,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-08-07T08:49:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5edee285_db97a331",
       "revId": "cf7fefd0bbfbf0189b67af6f57963cb36fa890ec",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
