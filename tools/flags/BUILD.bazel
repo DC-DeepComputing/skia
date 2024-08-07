@@ -33,7 +33,10 @@ skia_filegroup(
         "CommonFlags.h",
         "CommonFlagsImages.cpp",
     ] + select({
-        "//src/gpu:has_ganesh_backend": ["CommonFlagsGpu.cpp"],
+        "//src/gpu:has_ganesh_backend": [
+            "CommonFlagsGanesh.cpp",
+            "CommonFlagsGanesh.h",
+        ],
         "//conditions:default": [],
     }),
     visibility = [
