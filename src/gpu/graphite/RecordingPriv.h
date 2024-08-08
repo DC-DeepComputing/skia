@@ -32,9 +32,11 @@ public:
     // since the only Resource's we are reffing here are Buffers. However, if we ever want to track
     // Textures or GPU only Buffers as well, we should keep a second list for Refs that we want to
     // put CommandBuffer refs on.
-    void addResourceRef(sk_sp<Resource> resource);
-    void addTask(sk_sp<Task> task);
-    void addTasks(TaskList&& tasks);
+    void addResourceRef(sk_sp<Resource> resource) {
+        fRecording->fExtraResourceRefs.push_back(std::move(resource));
+    }
+
+    TaskList* taskList() { return fRecording->fRootTaskList.get(); }
 
     uint32_t recorderID() const { return fRecording->fRecorderID; }
     uint32_t uniqueID() const { return fRecording->fUniqueID; }
