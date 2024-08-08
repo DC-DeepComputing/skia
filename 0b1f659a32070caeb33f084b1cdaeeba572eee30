@@ -35,6 +35,46 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa2dc5db_3dac1abf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-08-08T01:18:06Z",
+      "side": 1,
+      "message": "lgtm once this is rebased on top of the higher level renderpass bounds changes that have landed recently.",
+      "revId": "0b1f659a32070caeb33f084b1cdaeeba572eee30",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3a9c53ce_55a7354a",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-08-08T01:18:06Z",
+      "side": 1,
+      "message": "With Greg\u0027s change here: https://skia-review.googlesource.com/c/skia/+/886037, `onAddRenderPass` is now provided the render pass bounds that you should use for the partial resolve.",
+      "range": {
+        "startLine": 93,
+        "startChar": 39,
+        "endLine": 93,
+        "endChar": 40
+      },
+      "revId": "0b1f659a32070caeb33f084b1cdaeeba572eee30",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "be43e14c_895f81e7",
