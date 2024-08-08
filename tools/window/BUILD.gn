@@ -41,12 +41,10 @@ skia_component("window") {
   } else if (is_linux) {
     sources += [
       "unix/RasterWindowContext_unix.cpp",
-      "unix/WindowContextFactory_unix.h",
+      "unix/RasterWindowContext_unix.h",
+      "unix/XlibWindowInfo.h",
     ]
-    libs += [
-      "GL",  # Used by raster window context, so cannot be behind skia_use_gl.
-      "X11",
-    ]
+    libs += [ "X11" ]
   } else if (is_win) {
     sources += [
       "win/RasterWindowContext_win.cpp",
@@ -75,7 +73,11 @@ skia_component("window") {
     if (is_android) {
       sources += [ "android/GLWindowContext_android.cpp" ]
     } else if (is_linux) {
-      sources += [ "unix/GLWindowContext_unix.cpp" ]
+      sources += [
+        "unix/GaneshGLWindowContext_unix.cpp",
+        "unix/GaneshGLWindowContext_unix.h",
+      ]
+      libs += [ "GL" ]
     } else if (is_win) {
       sources += [ "win/GLWindowContext_win.cpp" ]
       if (skia_use_angle) {
@@ -114,9 +116,15 @@ skia_component("window") {
         sources += [ "android/GraphiteVulkanWindowContext_android.cpp" ]
       }
     } else if (is_linux) {
-      sources += [ "unix/VulkanWindowContext_unix.cpp" ]
+      sources += [
+        "unix/GaneshVulkanWindowContext_unix.cpp",
+        "unix/GaneshVulkanWindowContext_unix.h",
+      ]
       if (skia_enable_graphite) {
-        sources += [ "unix/GraphiteVulkanWindowContext_unix.cpp" ]
+        sources += [
+          "unix/GraphiteNativeVulkanWindowContext_unix.cpp",
+          "unix/GraphiteNativeVulkanWindowContext_unix.h",
+        ]
       }
       libs += [ "X11-xcb" ]
     } else if (is_win) {
@@ -165,6 +173,7 @@ skia_component("window") {
             "GraphiteDawnWindowContext.cpp",
             "GraphiteDawnWindowContext.h",
             "unix/GraphiteDawnVulkanWindowContext_unix.cpp",
+            "unix/GraphiteDawnVulkanWindowContext_unix.h",
           ]
         }
       }
