@@ -1,0 +1,49 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a620514_74a5b2c6",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 722,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-08-08T13:52:43Z",
+      "side": 1,
+      "message": "I think this is wrong in a subtle way now - previously the enum only contained the valid backend types, so advancing the backend type was legal. Now, the enum has all types, but we\u0027re incrementing the value (rather than the index), so we can land on values that aren\u0027t in the supported array.\n\neg: I just ran a linux build of viewer without ANGLE, and hitting `d` crashes viewer, because it picks kANGLE.",
+      "fixSuggestions": [
+        {
+          "fixId": "5f342848_4e3b289b",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tools/viewer/Viewer.cpp",
+              "range": {
+                "startLine": 724,
+                "startChar": 0,
+                "endLine": 725,
+                "endChar": 0
+              },
+              "replacement": "        #if defined(SK_BUILD_FOR_UNIX) \u0026\u0026 defined(SK_VULKAN)\n"
+            },
+            {
+              "path": "tools/viewer/Viewer.cpp",
+              "range": {
+                "startLine": 731,
+                "startChar": 0,
+                "endLine": 732,
+                "endChar": 0
+              },
+              "replacement": "        #endif\n"
+            }
+          ]
+        }
+      ],
+      "revId": "968a00456bc5517221a7b577de07932c475fe067",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
