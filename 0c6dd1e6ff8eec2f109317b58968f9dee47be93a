@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8a09616a_0a1994df",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 1
+      },
+      "lineNbr": 1758,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-08-08T14:10:49Z",
+      "side": 0,
+      "message": "I am very sorry for that!",
+      "range": {
+        "startLine": 1758,
+        "startChar": 33,
+        "endLine": 1758,
+        "endChar": 78
+      },
+      "revId": "0c6dd1e6ff8eec2f109317b58968f9dee47be93a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
