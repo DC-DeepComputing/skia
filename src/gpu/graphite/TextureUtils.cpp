@@ -804,7 +804,7 @@ std::pair<sk_sp<SkImage>, SkSamplingOptions> GetGraphiteBacked(Recorder* recorde
 
     if (imageIn->dimensions().area() <= 1 && mipmapped == Mipmapped::kYes) {
         mipmapped = Mipmapped::kNo;
-        sampling = SkSamplingOptions(SkFilterMode::kLinear, SkMipmapMode::kNone);
+        sampling = SkSamplingOptions(sampling.filter, SkMipmapMode::kNone);
     }
 
     sk_sp<SkImage> result;
@@ -815,7 +815,7 @@ std::pair<sk_sp<SkImage>, SkSamplingOptions> GetGraphiteBacked(Recorder* recorde
         // down the sampling
         if (mipmapped == Mipmapped::kYes && !result->hasMipmaps()) {
             mipmapped = Mipmapped::kNo;
-            sampling = SkSamplingOptions(SkFilterMode::kLinear, SkMipmapMode::kNone);
+            sampling = SkSamplingOptions(sampling.filter, SkMipmapMode::kNone);
         }
     } else {
         auto clientImageProvider = recorder->clientImageProvider();
