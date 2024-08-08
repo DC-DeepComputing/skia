@@ -1,0 +1,39 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6fad918_3a00a5ae",
+        "filename": "src/core/SkMaskGamma.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-08-08T13:20:04Z",
+      "side": 1,
+      "message": "This doesn\u0027t work, right? a vector of vectors isn\u0027t contiguous. (Each table is, but the aggregate table isn\u0027t).",
+      "fixSuggestions": [
+        {
+          "fixId": "b9822bb4_3e190d37",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/core/SkMaskGamma.h",
+              "range": {
+                "startLine": 167,
+                "startChar": 0,
+                "endLine": 168,
+                "endChar": 0
+              },
+              "replacement": "        return fIsLinear ? nullptr : fGammaTables[0].data();\n"
+            }
+          ]
+        }
+      ],
+      "revId": "26448a1cd61e5cdd84c55f0345207e44f902638e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
