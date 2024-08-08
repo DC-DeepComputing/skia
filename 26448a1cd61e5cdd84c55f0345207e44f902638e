@@ -34,6 +34,24 @@
       ],
       "revId": "26448a1cd61e5cdd84c55f0345207e44f902638e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7cdb0cc_4d4865d7",
+        "filename": "src/core/SkMaskGamma.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 20059
+      },
+      "writtenOn": "2024-08-08T15:34:37Z",
+      "side": 1,
+      "message": "Interestingly, it\u0027s working fine on Windows + Clang, but it looks like it you\u0027re right that it isn\u0027t a guarantee that they\u0027re contiguous for vectors of vectors. I\u0027ll take another approach - there are many ways to do this.",
+      "parentUuid": "e6fad918_3a00a5ae",
+      "revId": "26448a1cd61e5cdd84c55f0345207e44f902638e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
