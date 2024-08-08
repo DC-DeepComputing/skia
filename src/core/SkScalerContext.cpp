@@ -174,11 +174,8 @@ size_t SkScalerContext::GetGammaLUTSize(SkScalar contrast, SkScalar deviceGamma,
     const SkMaskGamma& maskGamma = SkScalerContextRec::CachedMaskGamma(
             SkScalerContextRec::InternalContrastFromExternal(contrast),
             SkScalerContextRec::InternalGammaFromExternal(deviceGamma));
-
     maskGamma.getGammaTableDimensions(width, height);
-    size_t size = (*width)*(*height)*sizeof(uint8_t);
-
-    return size;
+    return maskGamma.getGammaTableSizeInBytes();
 }
 
 bool SkScalerContext::GetGammaLUTData(SkScalar contrast, SkScalar deviceGamma, uint8_t* data) {
@@ -191,10 +188,7 @@ bool SkScalerContext::GetGammaLUTData(SkScalar contrast, SkScalar deviceGamma, u
         return false;
     }
 
-    int width, height;
-    maskGamma.getGammaTableDimensions(&width, &height);
-    size_t size = width*height * sizeof(uint8_t);
-    memcpy(data, gammaTables, size);
+    memcpy(data, gammaTables, maskGamma.getGammaTableSizeInBytes());
     return true;
 }
 
