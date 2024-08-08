@@ -22,6 +22,30 @@
       },
       "revId": "0c6dd1e6ff8eec2f109317b58968f9dee47be93a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6fd31123_2f94c3b9",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 1
+      },
+      "lineNbr": 1758,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-08-08T14:17:13Z",
+      "side": 0,
+      "message": "Oh, no worries, it can happen as these tests are unfortunately not run on the bots.",
+      "parentUuid": "8a09616a_0a1994df",
+      "range": {
+        "startLine": 1758,
+        "startChar": 33,
+        "endLine": 1758,
+        "endChar": 78
+      },
+      "revId": "0c6dd1e6ff8eec2f109317b58968f9dee47be93a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
