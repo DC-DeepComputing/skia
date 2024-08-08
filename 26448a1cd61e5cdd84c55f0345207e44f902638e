@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2bf7aaa8_3f8e0eb1",
+        "filename": "src/core/SkMaskGamma.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-08-08T16:50:54Z",
+      "side": 1,
+      "message": "Before tweaking the contrast, you\u0027ll probably want to get something like https://skia-review.googlesource.com/c/skia/+/334202 landed first anyway. That never landed because at the time no one had time to get ti properly staged and rolled out.",
+      "parentUuid": "e0680d2b_d9d6a075",
+      "revId": "26448a1cd61e5cdd84c55f0345207e44f902638e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e6fad918_3a00a5ae",
         "filename": "src/core/SkMaskGamma.h",
         "patchSetId": 7
