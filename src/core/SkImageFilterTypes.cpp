@@ -563,18 +563,7 @@ public:
         ctx.markNewSurface();
         fCanvas.emplace(std::move(device));
         fCanvas->translate(-fDstBounds.left(), -fDstBounds.top());
-        // fCanvas->clear(SkColors::kTransparent);
-
-        fCanvas->clear(SkColors::kRed);
-
-        // fCanvas->clipIRect(SkIRect(fDstBounds));
-        // fCanvas->clear(SkColors::kTransparent);
-
-        SkPaint p;
-        p.setColor4f(SkColors::kTransparent);
-        p.setBlendMode(SkBlendMode::kSrc);
-        fCanvas->drawRect(SkRect::Make(SkIRect(fDstBounds)), p);
-
+        fCanvas->clear(SkColors::kTransparent);
         if (fBoundary == PixelBoundary::kTransparent) {
             // Clip to the original un-padded dst bounds, ensuring that the border pixels remain
             // fully transparent.
