@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2975efbb_31d61b9f",
+        "filename": "src/core/SkMaskGamma.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-08-08T15:43:08Z",
+      "side": 1,
+      "message": "I\u0027m trying to understand the motivation. Is the point of this to try to make this constructor make a \"small\" `SkTMaskGamma`? There is (as far as I can tell) only ever exactly one of these and that is `gLinearMaskGamma`. Is this all really to potentially save that single 2KB heap allocation?",
+      "revId": "26448a1cd61e5cdd84c55f0345207e44f902638e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e6fad918_3a00a5ae",
         "filename": "src/core/SkMaskGamma.h",
         "patchSetId": 7
@@ -50,6 +67,23 @@
       "side": 1,
       "message": "Interestingly, it\u0027s working fine on Windows + Clang, but it looks like it you\u0027re right that it isn\u0027t a guarantee that they\u0027re contiguous for vectors of vectors. I\u0027ll take another approach - there are many ways to do this.",
       "parentUuid": "e6fad918_3a00a5ae",
+      "revId": "26448a1cd61e5cdd84c55f0345207e44f902638e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "398170e1_3581503b",
+        "filename": "src/core/SkMaskGamma.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-08-08T15:43:08Z",
+      "side": 1,
+      "message": "There is really no need for `std::vector` here to do what you want, let alone a `std::vector\u003cstd::vector\u003e\u003e`. If the idea was to push this allocation off to yet another heap allocation (`SkTMaskGamma` already always appears to be heap allocated) then this would be a `std::unique_ptr\u003cuint8_t\u003e` that the non-linear constructor assigns a heap region of the appropriate (constant) size.",
       "revId": "26448a1cd61e5cdd84c55f0345207e44f902638e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
