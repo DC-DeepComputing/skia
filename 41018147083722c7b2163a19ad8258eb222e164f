@@ -57,6 +57,30 @@
       ],
       "revId": "41018147083722c7b2163a19ad8258eb222e164f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a3b5cf9c_fd54f65f",
+        "filename": "src/core/SkMaskGamma.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 20059
+      },
+      "writtenOn": "2024-08-08T22:35:17Z",
+      "side": 1,
+      "message": "Nice!",
+      "parentUuid": "e8ffb8c3_337ad258",
+      "range": {
+        "startLine": 171,
+        "startChar": 0,
+        "endLine": 173,
+        "endChar": 75
+      },
+      "revId": "41018147083722c7b2163a19ad8258eb222e164f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
