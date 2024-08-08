@@ -99,33 +99,46 @@ bool Precompile(Context* context,
     return true;
 }
 
-void Precompile(Context* context, const PaintOptions& options, DrawTypeFlags drawTypes) {
+void Precompile(Context* context, const PaintOptions& options, DrawTypeFlags drawTypes,
+                SkEnumBitMask<DepthStencilFlags> dsFlags,
+                SkColorType dstCT,
+                bool requiresMSAA) {
 
     ShaderCodeDictionary* dict = context->priv().shaderCodeDictionary();
     const Caps* caps = context->priv().caps();
 
     auto rtEffectDict = std::make_unique<RuntimeEffectDictionary>();
 
-    SkColorInfo ci(kRGBA_8888_SkColorType, kPremul_SkAlphaType, nullptr);
+    SkColorInfo ci(dstCT, kPremul_SkAlphaType, nullptr);
     KeyContext keyContext(
             caps, dict, rtEffectDict.get(), ci, /* dstTexture= */ nullptr, /* dstOffset= */ {0, 0});
 
     for (Coverage coverage : { Coverage::kNone, Coverage::kSingleChannel, Coverage::kLCD }) {
+        if (coverage == Coverage::kLCD) {
+            // Only the SDF/LCD and Bitmap/LCD draws/RenderSteps ever emit Coverage::kLCD
+            if (!(drawTypes & (DrawTypeFlags::kLCDBasedText | DrawTypeFlags::kSDFBasedText_LCD))) {
+                continue;
+            }
+        }
         PrecompileCombinations(
                 context, options, keyContext,
                 static_cast<DrawTypeFlags>(drawTypes & ~DrawTypeFlags::kDrawVertices),
                 /* withPrimitiveBlender= */ false,
-                coverage);
+                coverage,
+                dsFlags,
+                requiresMSAA);
     }
 
     if (drawTypes & DrawTypeFlags::kDrawVertices) {
-        for (Coverage coverage: { Coverage::kNone, Coverage::kSingleChannel, Coverage::kLCD }) {
+        for (Coverage coverage: { Coverage::kNone, Coverage::kSingleChannel }) {
             // drawVertices w/ colors use a primitiveBlender while those w/o don't
             for (bool withPrimitiveBlender : { true, false }) {
                 PrecompileCombinations(context, options, keyContext,
                                        DrawTypeFlags::kDrawVertices,
                                        withPrimitiveBlender,
-                                       coverage);
+                                       coverage,
+                                       dsFlags,
+                                       requiresMSAA);
             }
         }
     }
@@ -136,7 +149,9 @@ void PrecompileCombinations(Context* context,
                             const KeyContext& keyContext,
                             DrawTypeFlags drawTypes,
                             bool withPrimitiveBlender,
-                            Coverage coverage) {
+                            Coverage coverage,
+                            SkEnumBitMask<DepthStencilFlags> dsFlags,
+                            bool requiresMSAA) {
     const Caps* caps = keyContext.caps();
     // Since the precompilation path's uniforms aren't used and don't change the key,
     // the exact layout doesn't matter
@@ -151,6 +166,36 @@ void PrecompileCombinations(Context* context,
                                                           Renderable::kYes);
 
     Swizzle writeSwizzle = caps->getWriteSwizzle(destCT, info);
+
+    const RenderPassDesc renderPassDesc =
+            RenderPassDesc::Make(caps,
+                                 info,
+                                 LoadOp::kClear,
+                                 StoreOp::kStore,
+                                 dsFlags,
+                                 /* clearColor= */ { .0f, .0f, .0f, .0f },
+                                 requiresMSAA,
+                                 writeSwizzle);
+
+    bool foo = false, bar = false;
+    const RendererProvider* rendererProvider = context->priv().rendererProvider();
+
+    for (const Renderer* r : rendererProvider->renderers()) {
+        if (!(r->drawTypes() & drawTypes)) {
+            continue;
+        }
+
+        for (const RenderStep* s : r->steps()) {
+            SkDebugf("rs %s msaa: %d\n", s->name(), s->requiresMSAA1());
+            if (s->requiresMSAA1()) {
+                foo = true;
+            } else {
+                bar = true;
+            }
+        }
+    }
+
+#if 0
     // Note: at least on Metal, the LoadOp, StoreOp and clearColor fields don't influence the
     // actual RenderPassDescKey.
     // TODO: if all of the Renderers associated w/ the requested drawTypes require MSAA we
@@ -189,6 +234,7 @@ void PrecompileCombinations(Context* context,
                              /* requiresMSAA= */ false,
                              writeSwizzle),
     };
+#endif
 
     options.priv().buildCombinations(
         keyContext,
@@ -196,7 +242,7 @@ void PrecompileCombinations(Context* context,
         drawTypes,
         withPrimitiveBlender,
         coverage,
-        [context, &keyContext, &renderPassDescs](UniquePaintParamsID uniqueID,
+        [context, &keyContext, &renderPassDesc](UniquePaintParamsID uniqueID,
                                                  DrawTypeFlags drawTypes,
                                                  bool withPrimitiveBlender,
                                                  Coverage coverage) {
@@ -205,7 +251,7 @@ void PrecompileCombinations(Context* context,
                        keyContext,
                        uniqueID,
                        drawTypes,
-                       renderPassDescs,
+                       { renderPassDesc },
                        withPrimitiveBlender,
                        coverage);
         });

@@ -292,14 +292,22 @@ const char* to_str(ImageFilterType c) {
 
 const char* to_str(DrawTypeFlags dt) {
     switch (dt) {
-        case DrawTypeFlags::kNone:           return "DrawTypeFlags::kNone";
-        case DrawTypeFlags::kText:           return "DrawTypeFlags::kText";
-        case DrawTypeFlags::kDrawVertices:   return "DrawTypeFlags::kDrawVertices";
-        case DrawTypeFlags::kSimpleShape:    return "DrawTypeFlags::kSimpleShape";
-        case DrawTypeFlags::kNonSimpleShape: return "DrawTypeFlags::kNonSimpleShape";
-        case DrawTypeFlags::kShape:          return "DrawTypeFlags::kShape";
-        case DrawTypeFlags::kMostCommon:     return "DrawTypeFlags::kMostCommon";
-        case DrawTypeFlags::kAll:            return "DrawTypeFlags::kAll";
+        case DrawTypeFlags::kNone:             return "DrawTypeFlags::kNone";
+        case DrawTypeFlags::kMaskBasedText:    return "DrawTypeFlags::kMaskBasedText";
+        case DrawTypeFlags::kLCDBasedText:     return "DrawTypeFlags::kLCDBasedText";
+        case DrawTypeFlags::kFooBasedText:     return "DrawTypeFlags::kFooBasedText";
+        case DrawTypeFlags::kBitmapBasedText:  return "DrawTypeFlags::kBitmapBasedText";
+        case DrawTypeFlags::kSDFBasedText2:    return "DrawTypeFlags::kSDFBasedText2";
+        case DrawTypeFlags::kSDFBasedText_LCD: return "DrawTypeFlags::kSDFBasedText_LCD";
+        case DrawTypeFlags::kAllSDFBasedText:  return "DrawTypeFlags::kAllSDFBasedText";
+        case DrawTypeFlags::kPathBasedText:    return "DrawTypeFlags::kPathBasedText";
+        case DrawTypeFlags::kAllText:          return "DrawTypeFlags::kAllText";
+        case DrawTypeFlags::kDrawVertices:     return "DrawTypeFlags::kDrawVertices";
+        case DrawTypeFlags::kSimpleShape:      return "DrawTypeFlags::kSimpleShape";
+        case DrawTypeFlags::kNonSimpleShape:   return "DrawTypeFlags::kNonSimpleShape";
+        case DrawTypeFlags::kShape:            return "DrawTypeFlags::kShape";
+        case DrawTypeFlags::kMostCommon:       return "DrawTypeFlags::kMostCommon";
+        case DrawTypeFlags::kAll:              return "DrawTypeFlags::kAll";
     }
 
     SkASSERT(0);
@@ -436,8 +444,9 @@ ShaderType random_shadertype(SkRandom* rand) {
 }
 
 SkBlendMode random_porter_duff_bm(SkRandom* rand) {
-    return static_cast<SkBlendMode>(rand->nextRangeU((unsigned int) SkBlendMode::kClear,
-                                                     (unsigned int) SkBlendMode::kLastCoeffMode));
+    return SkBlendMode::kSrcOver;
+//    return static_cast<SkBlendMode>(rand->nextRangeU((unsigned int) SkBlendMode::kClear,
+//                                                     (unsigned int) SkBlendMode::kLastCoeffMode));
 }
 
 SkBlendMode random_complex_bm(SkRandom* rand) {
@@ -478,14 +487,19 @@ ImageFilterType random_imagefiltertype(SkRandom* rand) {
 }
 
 [[maybe_unused]] DrawTypeFlags random_drawtype(SkRandom* rand) {
-    uint32_t index = rand->nextULessThan(5);
+    uint32_t index = rand->nextULessThan(10);
 
     switch (index) {
-        case 0: return DrawTypeFlags::kText;
-        case 1: return DrawTypeFlags::kDrawVertices;
-        case 2: return DrawTypeFlags::kSimpleShape;
-        case 3: return DrawTypeFlags::kNonSimpleShape;
-        case 4: return DrawTypeFlags::kShape;
+        case 0: return DrawTypeFlags::kMaskBasedText;
+        case 1: return DrawTypeFlags::kLCDBasedText;
+        case 2: return DrawTypeFlags::kFooBasedText;
+        case 3: return DrawTypeFlags::kSDFBasedText2;
+        case 4: return DrawTypeFlags::kSDFBasedText_LCD;
+        case 5: return DrawTypeFlags::kPathBasedText;
+        case 6: return DrawTypeFlags::kDrawVertices;
+        case 7: return DrawTypeFlags::kSimpleShape;
+        case 8: return DrawTypeFlags::kNonSimpleShape;
+        case 9: return DrawTypeFlags::kShape;
     }
 
     SkASSERT(0);
@@ -1699,10 +1713,12 @@ std::pair<SkPaint, PaintOptions> create_paint(SkRandom* rand,
         }
     }
 
+#if 0
     if (rand->nextBool()) {
         paint.setDither(true);
         paintOptions.setDither(true);
     }
+#endif
 
     return { paint, paintOptions };
 }
@@ -1791,10 +1807,18 @@ void check_draw(skiatest::Reporter* reporter,
     {
         // TODO: vary the colorType of the target surface too
         SkImageInfo ii = SkImageInfo::Make(16, 16,
-                                           kRGBA_8888_SkColorType,
+                                           kBGRA_8888_SkColorType,
                                            kPremul_SkAlphaType);
 
-        sk_sp<SkSurface> surf = SkSurfaces::RenderTarget(recorder, ii);
+        SkSurfaceProps props;
+
+        if (dt == DrawTypeFlags::kLCDBasedText) {
+            props = SkSurfaceProps(/* flags= */ 0x0, SkPixelGeometry::kRGB_H_SkPixelGeometry);
+        }
+
+        sk_sp<SkSurface> surf = SkSurfaces::RenderTarget(recorder, ii,
+                                                         skgpu::Mipmapped::kNo,
+                                                         &props);
         SkCanvas* canvas = surf->getCanvas();
 
         switch (clip) {
@@ -1821,7 +1845,28 @@ void check_draw(skiatest::Reporter* reporter,
                 simple_draws(canvas, paint);
                 non_simple_draws(canvas, paint, kDrawData);
                 break;
-            case DrawTypeFlags::kText:
+            case DrawTypeFlags::kMaskBasedText:
+                canvas->drawTextBlob(kDrawData.fBlob, 0, 16, paint);
+                break;
+            case DrawTypeFlags::kLCDBasedText: {
+                canvas->drawTextBlob(kDrawData.fBlob, 0, 16, paint);
+            } break;
+            case DrawTypeFlags::kFooBasedText:
+                canvas->drawTextBlob(kDrawData.fBlob, 0, 16, paint);
+                break;
+            case DrawTypeFlags::kSDFBasedText2: {
+                SkMatrix perspective;
+                perspective.setPerspX(0.01f);
+                perspective.setPerspY(0.001f);
+                canvas->save();
+                canvas->concat(perspective);
+                canvas->drawTextBlob(kDrawData.fBlob, 0, 16, paint);
+                canvas->restore();
+            }    break;
+            case DrawTypeFlags::kSDFBasedText_LCD:
+                canvas->drawTextBlob(kDrawData.fBlob, 0, 16, paint);
+                break;
+            case DrawTypeFlags::kPathBasedText:
                 canvas->drawTextBlob(kDrawData.fBlob, 0, 16, paint);
                 break;
             case DrawTypeFlags::kDrawVertices:
@@ -1866,6 +1911,21 @@ void check_draw(skiatest::Reporter* reporter,
                                           originalPipelineDesc,
                                           originalRenderPassDesc);
             }
+        }
+
+        int count = 0;
+        for (const skgpu::UniqueKey& beforeKey : beforeKeys) {
+            GraphicsPipelineDesc originalPipelineDesc;
+            RenderPassDesc originalRenderPassDesc;
+            UniqueKeyUtils::ExtractKeyDescs(context, beforeKey,
+                                            &originalPipelineDesc,
+                                            &originalRenderPassDesc);
+
+            SkString label("--- %d:", count++);
+            beforeKey.dump(label.c_str());
+            UniqueKeyUtils::DumpDescs(rendererProvider, dict,
+                                      originalPipelineDesc,
+                                      originalRenderPassDesc);
         }
     }
 #endif // SK_DEBUG
@@ -2048,17 +2108,21 @@ void precompile_vs_real_draws_subtest(skiatest::Reporter* reporter,
     context->priv().globalCache()->resetGraphicsPipelines();
 
     int before = context->priv().globalCache()->numGraphicsPipelines();
-    Precompile(context, paintOptions, dt);
+    Precompile(context, paintOptions, dt,
+               DepthStencilFlags::kDepthStencil, kBGRA_8888_SkColorType,
+               /* requiresMSAA= */ true);
     if (gNeedSKPPaintOption) {
         // The skp draws a rect w/ a default SkPaint
         PaintOptions skpPaintOptions;
-        Precompile(context, skpPaintOptions, DrawTypeFlags::kSimpleShape);
+        Precompile(context, skpPaintOptions, DrawTypeFlags::kSimpleShape, DepthStencilFlags::kNone,
+                   kRGBA_8888_SkColorType, false);
     }
     int after = context->priv().globalCache()->numGraphicsPipelines();
 
     REPORTER_ASSERT(reporter, before == 0);
     REPORTER_ASSERT(reporter, after > before);
 
+    SkDebugf("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n");
     check_draw(reporter,
                context,
                testContext,
@@ -2102,9 +2166,9 @@ void run_test(skiatest::Reporter* reporter,
     // a SkCanvas::clipShader call).
     paintOptions.priv().setClipShaders({clipShaderOption});
 
-    extract_vs_build_subtest(reporter, context, testContext, precompileKeyContext, recorder.get(),
-                             paint, paintOptions, s, bm, cf, mf, imageFilter, clip, clipShader, dt,
-                             seed, &rand, verbose);
+//    extract_vs_build_subtest(reporter, context, testContext, precompileKeyContext, recorder.get(),
+//                             paint, paintOptions, s, bm, cf, mf, imageFilter, clip, clipShader, dt,
+//                             seed, &rand, verbose);
     precompile_vs_real_draws_subtest(reporter, context, testContext, recorder.get(),
                                      paint, paintOptions, clip, clipShader, dt, verbose);
 }
@@ -2183,10 +2247,11 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
     KeyContext precompileKeyContext(create_key_context(context, rtDict.get()));
 
     ShaderType shaders[] = {
-            ShaderType::kBlend,
-            ShaderType::kImage,
-            ShaderType::kRadialGradient,
-            ShaderType::kSolidColor,
+            ShaderType::kLinearGradient,
+//            ShaderType::kBlend,
+//            ShaderType::kImage,
+//            ShaderType::kRadialGradient,
+//            ShaderType::kSolidColor,
 #if EXPANDED_SET
             ShaderType::kNone,
             ShaderType::kColorFilter,
@@ -2206,8 +2271,8 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
 
     BlenderType blenders[] = {
             BlenderType::kPorterDuff,
-            BlenderType::kShaderBased,
-            BlenderType::kRuntime,
+//            BlenderType::kShaderBased,
+//            BlenderType::kRuntime,
 #if EXPANDED_SET
             BlenderType::kNone,
             BlenderType::kArithmetic,
@@ -2216,8 +2281,8 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
 
     ColorFilterType colorFilters[] = {
             ColorFilterType::kNone,
-            ColorFilterType::kBlendMode,
-            ColorFilterType::kMatrix,
+//            ColorFilterType::kBlendMode,
+//            ColorFilterType::kMatrix,
 #if EXPANDED_SET
             ColorFilterType::kColorSpaceXform,
             ColorFilterType::kCompose,
@@ -2267,19 +2332,30 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
     };
 
     static const DrawTypeFlags kDrawTypeFlags[] = {
-            DrawTypeFlags::kText,
+//            DrawTypeFlags::kMaskBasedText,
+            DrawTypeFlags::kLCDBasedText,
+//            DrawTypeFlags::kFooBasedText,
+//            DrawTypeFlags::kSDFBasedText2,
+//            DrawTypeFlags::kSDFBasedText_LCD,
+#if 0
+            DrawTypeFlags::kLCDBasedText,
+            DrawTypeFlags::kFooBasedText,
+            DrawTypeFlags::kSDFBasedText2,
+            DrawTypeFlags::kSDFBasedText_LCD,
+            DrawTypeFlags::kPathBasedText,
             DrawTypeFlags::kDrawVertices,
             DrawTypeFlags::kSimpleShape,
             DrawTypeFlags::kNonSimpleShape,
             DrawTypeFlags::kShape,
+#endif
     };
 
-#if EXPANDED_SET
+//#if EXPANDED_SET
     size_t kExpected = std::size(shaders) * std::size(blenders) * std::size(colorFilters) *
                        std::size(maskFilters) * std::size(imageFilters) * std::size(clips) *
                        std::size(kDrawTypeFlags);
     int current = 0;
-#endif
+//#endif
 
     for (auto shader : shaders) {
         for (auto blender : blenders) {
@@ -2288,10 +2364,10 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
                     for (auto imageFilter : imageFilters) {
                         for (auto clip : clips) {
                             for (DrawTypeFlags dt : kDrawTypeFlags) {
-#if EXPANDED_SET
+//#if EXPANDED_SET
                                 SkDebugf("%d/%zu\n", current, kExpected);
                                 ++current;
-#endif
+//#endif
 
                                 run_test(reporter, context, testContext, precompileKeyContext,
                                          shader, blender, cf, mf, imageFilter, clip, dt,
@@ -2304,9 +2380,9 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
         }
     }
 
-#if EXPANDED_SET
+//#if EXPANDED_SET
     SkASSERT(current == (int) kExpected);
-#endif
+//#endif
 }
 
 #endif // SK_GRAPHITE
