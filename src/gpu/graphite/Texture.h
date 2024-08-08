@@ -45,7 +45,8 @@ protected:
             const TextureInfo& info,
             sk_sp<MutableTextureState> mutableState,
             Ownership,
-            skgpu::Budgeted);
+            skgpu::Budgeted,
+            std::optional<size_t> gpuMemorySize = std::nullopt);
 
     MutableTextureState* mutableState() const;
 
