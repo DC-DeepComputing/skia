@@ -76,6 +76,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6fe422c2_80acc033",
+        "filename": "gm/smallcircles.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-08-08T20:59:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "38395aca_9c907eca",
+      "range": {
+        "startLine": 2,
+        "startChar": 25,
+        "endLine": 2,
+        "endChar": 29
+      },
+      "revId": "2ea2bf2b59c4333831f294c1a9a15d9a4ca306fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b10969ee_eceac19c",
@@ -127,6 +151,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d0afe216_13aa4535",
+        "filename": "gm/smallcircles.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-08-08T20:59:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b10969ee_eceac19c",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 33
+      },
+      "revId": "2ea2bf2b59c4333831f294c1a9a15d9a4ca306fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "444200ca_6fb78b6d",
@@ -168,6 +216,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "043698e3_1dcc7fc4",
+        "filename": "gm/smallcircles.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-08-08T20:59:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "444200ca_6fb78b6d",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 26
+      },
+      "revId": "2ea2bf2b59c4333831f294c1a9a15d9a4ca306fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e263af86_adb5d9f0",
@@ -185,6 +257,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f97f65e_973f6a50",
+        "filename": "gm/smallcircles.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-08-08T20:59:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e263af86_adb5d9f0",
+      "revId": "2ea2bf2b59c4333831f294c1a9a15d9a4ca306fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3b16dab1_b2d9a4cc",
@@ -198,6 +288,30 @@
       "writtenOn": "2024-08-08T18:54:28Z",
       "side": 1,
       "message": "nit: These surfaces could be smaller, right?",
+      "range": {
+        "startLine": 24,
+        "startChar": 70,
+        "endLine": 24,
+        "endChar": 78
+      },
+      "revId": "2ea2bf2b59c4333831f294c1a9a15d9a4ca306fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9c527dca_b2b9557c",
+        "filename": "gm/smallcircles.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-08-08T20:59:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3b16dab1_b2d9a4cc",
       "range": {
         "startLine": 24,
         "startChar": 70,
