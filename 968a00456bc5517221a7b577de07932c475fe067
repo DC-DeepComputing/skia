@@ -62,6 +62,29 @@
       "parentUuid": "1a620514_74a5b2c6",
       "revId": "968a00456bc5517221a7b577de07932c475fe067",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e66e2bba_7b1bc3f6",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 731,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-08-08T13:56:00Z",
+      "side": 1,
+      "message": "Luckily, I think this isn\u0027t true any longer, so we can remove this complexity, and then I *think* we just need to ensure we\u0027re treating fBackendType as an index throughout this file (including looking up in the array before we use the value for anything)?",
+      "range": {
+        "startLine": 724,
+        "startChar": 0,
+        "endLine": 731,
+        "endChar": 6
+      },
+      "revId": "968a00456bc5517221a7b577de07932c475fe067",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
