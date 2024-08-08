@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e0680d2b_d9d6a075",
+        "filename": "src/core/SkMaskGamma.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 20059
+      },
+      "writtenOn": "2024-08-08T16:45:06Z",
+      "side": 1,
+      "message": "\u003e  Is this all really to potentially save that single 2KB heap allocation?\n\nYes, exactly. I\u0027m planning on experimenting with 1.0 contrast in Chromium on Windows (see https://chromium-review.googlesource.com/c/chromium/src/+/5754366). Since it\u0027s an experiment, I cannot just update SK_GAMMA_CONTRAST to 1.0 (as that\u0027s a compile time constant). So instead, I\u0027m changing it at runtime.\n\nDue to the way the LUT caching works, this approach will always increase memory by 2K, as all users in the experiment will have both a `gDefaultMaskGamma`  and `gMaskGamma` (per https://skia-review.googlesource.com/c/skia/+/865619).\n\nThis is an attempt to mitigate that extra 2k, as I noticed that linear mask gamma\u0027s do not need the LUT allocation.\n\nI noticed that Chromium always allocates `gLinearMaskGamma`, as it\u0027s used for things like measuring text that doesn\u0027t get drawn. So at least in Chromium, it appears to be a consistent 2k savings.\n\nIf the experiment is successful, and we decide to update the contrast to 1.0, I would do it by updating `SK_GAMMA_CONTRAST`, and thus it wouldn\u0027t increase memory in practice. But this seemed like a good opportunity to save a small amount of memory and if it gets flagged as increasing memory, I can at least point to this mitigation.\n\nThis extra 2K did get flagged in Edge\u0027s perf lab with a similar contrast experiment, so I do believe that it\u0027ll also show up in Chrome\u0027s perf data as well.\n\nIf you don\u0027t want this memory savings due to the extra complexity, I understand too and can abandon this.",
+      "parentUuid": "2975efbb_31d61b9f",
+      "revId": "26448a1cd61e5cdd84c55f0345207e44f902638e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e6fad918_3a00a5ae",
         "filename": "src/core/SkMaskGamma.h",
         "patchSetId": 7
