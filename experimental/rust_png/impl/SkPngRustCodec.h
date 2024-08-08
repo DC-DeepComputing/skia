@@ -9,6 +9,7 @@
 
 #include <memory>
 
+#include "experimental/rust_png/ffi/FFI.rs.h"
 #include "include/codec/SkCodec.h"
 #include "include/codec/SkEncodedImageFormat.h"
 #include "third_party/rust/cxx/v1/cxx.h"
@@ -28,7 +29,7 @@ public:
     SkPngRustCodec(SkEncodedInfo&&,
                    XformFormat,
                    std::unique_ptr<SkStream>,
-                   rust::Vec<uint8_t> decodedData);
+                   rust::Box<rust_png::Reader>);
     ~SkPngRustCodec() override;
 
 private:
@@ -40,7 +41,7 @@ private:
                        const Options&,
                        int* rowsDecoded) override;
 
-    rust::Vec<uint8_t> fDecodedData;
+    rust::Box<rust_png::Reader> fReader;
 };
 
 #endif  // SkPngCodec_DEFINED
