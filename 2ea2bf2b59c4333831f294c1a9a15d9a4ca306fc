@@ -1,0 +1,194 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dbd338f3_c5c0430d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-08-08T18:54:28Z",
+      "side": 1,
+      "message": "This actually looks great. I mostly pointed out coding-style things.",
+      "revId": "2ea2bf2b59c4333831f294c1a9a15d9a4ca306fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "38395aca_9c907eca",
+        "filename": "gm/smallcircles.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-08-08T18:54:28Z",
+      "side": 1,
+      "message": "minor: Google became an LLC in 2017, so new files should say `Google LLC`. There happen to be many older files that still say `Google Inc.`, so it\u0027s easy to copy-paste this wrong.",
+      "range": {
+        "startLine": 2,
+        "startChar": 25,
+        "endLine": 2,
+        "endChar": 29
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "182d84ae_e1737fa9",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "gm/smallcircles.cpp",
+              "range": {
+                "startLine": 2,
+                "startChar": 0,
+                "endLine": 3,
+                "endChar": 0
+              },
+              "replacement": " * Copyright 2024 Google LLC.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "2ea2bf2b59c4333831f294c1a9a15d9a4ca306fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b10969ee_eceac19c",
+        "filename": "gm/smallcircles.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-08-08T18:54:28Z",
+      "side": 1,
+      "message": "I think `SkColor.h` and `SkImageFilters.h` are both unused, so they can be removed from the includes.",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 33
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "18d8a4e1_c795f677",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "gm/smallcircles.cpp",
+              "range": {
+                "startLine": 10,
+                "startChar": 0,
+                "endLine": 11,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "gm/smallcircles.cpp",
+              "range": {
+                "startLine": 14,
+                "startChar": 0,
+                "endLine": 15,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "2ea2bf2b59c4333831f294c1a9a15d9a4ca306fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "444200ca_6fb78b6d",
+        "filename": "gm/smallcircles.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-08-08T18:54:28Z",
+      "side": 1,
+      "message": "Skia coding style would suggest that these constants be prefixed with `k`, and be `constexpr`.\n\nI think we also want useCenter to be false. Interestingly, I\u0027m not sure what happens if you specify useCenter with a full circle (degrees \u003d\u003d 360). for smaller arcs, it causes a pie-wedge. But with a complete circle it probably makes no difference.",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 26
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "38276335_d1a69978",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "gm/smallcircles.cpp",
+              "range": {
+                "startLine": 18,
+                "startChar": 0,
+                "endLine": 21,
+                "endChar": 0
+              },
+              "replacement": "    constexpr bool kUseCenter \u003d false;\n    constexpr float kDegrees \u003d 360;\n    canvas-\u003edrawArc(oval, 0, kDegrees, kUseCenter, p);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "2ea2bf2b59c4333831f294c1a9a15d9a4ca306fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e263af86_adb5d9f0",
+        "filename": "gm/smallcircles.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-08-08T18:54:28Z",
+      "side": 1,
+      "message": "nit: It looks like this function ended up with 8-space indent, rather than 4?",
+      "revId": "2ea2bf2b59c4333831f294c1a9a15d9a4ca306fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b16dab1_b2d9a4cc",
+        "filename": "gm/smallcircles.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-08-08T18:54:28Z",
+      "side": 1,
+      "message": "nit: These surfaces could be smaller, right?",
+      "range": {
+        "startLine": 24,
+        "startChar": 70,
+        "endLine": 24,
+        "endChar": 78
+      },
+      "revId": "2ea2bf2b59c4333831f294c1a9a15d9a4ca306fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
