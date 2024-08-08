@@ -44,6 +44,24 @@
       ],
       "revId": "968a00456bc5517221a7b577de07932c475fe067",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1e7dca6a_92c6392e",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 722,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-08-08T13:54:22Z",
+      "side": 1,
+      "message": "I ran into that this morning too! I have it fixed in a WIP CL, but I can break that out and land it.",
+      "parentUuid": "1a620514_74a5b2c6",
+      "revId": "968a00456bc5517221a7b577de07932c475fe067",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
