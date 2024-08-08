@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "80930ed9_e20cf311",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-08-08T19:00:16Z",
+      "side": 1,
+      "message": "If you add a line like `Bug: 349812536` directly above the `Change-Id` (no blank lines between), it will link this change to the bug. (The bug number becomes clickable, and when the change lands, it automatically adds a comment to the bug that links to this CL).",
+      "revId": "2ea2bf2b59c4333831f294c1a9a15d9a4ca306fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "dbd338f3_c5c0430d",
