@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "333f59c2_4a57b8df",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-08-08T21:27:35Z",
+      "side": 1,
+      "message": "This looks good. I clicked the \u0027CQ + 1\u0027 button, so we can see what the GM looks like on various devices. The CQ (commit queue) runs tests on a small subset of our machines, to give us some level of confidence that the CL is ready to go. It also lets you see the new images (in gold) before the CL is submitted. We can take a look at those before we land this.",
+      "revId": "e3b75fc6545b54a3aaddc58b756e6a0f87b3defa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
