@@ -94,7 +94,7 @@ static constexpr uint32_t kComponentRMask = ((1 << kComponentBits) - 1) << kComp
 static constexpr uint32_t kComponentBMask = ((1 << kComponentBits) - 1) << kComponentBShift;
 static constexpr uint32_t kComponentGMask = ((1 << kComponentBits) - 1) << kComponentGShift;
 static constexpr uint32_t kComponentAMask = ((1 << kComponentBits) - 1) << kComponentAShift;
-} // namespace ycbcrUtils
+} // namespace ycbcUtils
 #endif // !defined(__EMSCRIPTEN__)
 
 } // namespace skgpu::graphite
