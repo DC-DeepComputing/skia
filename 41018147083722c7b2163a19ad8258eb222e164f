@@ -1,0 +1,62 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "591ae06f_b1b5b0fb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-08-08T21:03:37Z",
+      "side": 1,
+      "message": "I\u0027m somewhat ambivalent about the impact of 2k, but this all seems fine regardless.",
+      "revId": "41018147083722c7b2163a19ad8258eb222e164f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8ffb8c3_337ad258",
+        "filename": "src/core/SkMaskGamma.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-08-08T21:03:37Z",
+      "side": 1,
+      "message": "While we\u0027re here, `std::max(initializer_list)` is constexpr, so we can rewrite this to be much simpler.",
+      "range": {
+        "startLine": 171,
+        "startChar": 0,
+        "endLine": 173,
+        "endChar": 75
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "a5159a89_ecac311c",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/core/SkMaskGamma.h",
+              "range": {
+                "startLine": 171,
+                "startChar": 0,
+                "endLine": 174,
+                "endChar": 0
+              },
+              "replacement": "    static constexpr int kMaxLumBits \u003d std::max({B_LUM_BITS, R_LUM_BITS, G_LUM_BITS});\n"
+            }
+          ]
+        }
+      ],
+      "revId": "41018147083722c7b2163a19ad8258eb222e164f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
