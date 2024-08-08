@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3459fc78_a406163e",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 430,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-08-08T16:38:21Z",
+      "side": 1,
+      "message": "`fData` is meant to be able to house different kinds of data. Right now, it is only used for immutable sampler information. There is an outstanding bug (https://skia.googlesource.com/skia.git/+/refs/heads/main/src/gpu/graphite/ContextUtils.h#91 ; b/347072931) to enable us to tie the data to snippet IDs which is what would allow us to know what type of data to expect and validate against.\n\nAdded more comment documentation which hopefully helps clarify this. Thanks for your perspective; having a fresh set of eyes always offers good insight.",
+      "parentUuid": "58142d5f_7e460212",
+      "range": {
+        "startLine": 430,
+        "startChar": 58,
+        "endLine": 430,
+        "endChar": 63
+      },
+      "revId": "7749f83d7bceac906e125cff4910f2181e243b7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "216cb8be_f7cbc13d",
         "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
         "patchSetId": 14
@@ -37,6 +61,30 @@
       "writtenOn": "2024-07-24T20:14:16Z",
       "side": 1,
       "message": "This seems like a lot of magic that isn\u0027t understandable at all. Like is it expected to have dataSpan to be incremented by 2 on each loop here? Why? Also when we do have immutable sampler data this looks like it will increment i keyStride number of times. However, if we failed the check above `dataSpan[i] \u003d\u003d 0` then we are only incrementing i by 1 before trying again. This is not obvious at all why this is.\n\nI think this and surrounding code would benefit a lot from things like more descriptively named member variables, possibly structs instead of raw uint32_ts for connecting values, and just more comments if the above can\u0027t clear things up.",
+      "range": {
+        "startLine": 454,
+        "startChar": 11,
+        "endLine": 457,
+        "endChar": 17
+      },
+      "revId": "7749f83d7bceac906e125cff4910f2181e243b7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd85a59e_33f9cd9d",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 457,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-08-08T16:38:21Z",
+      "side": 1,
+      "message": "Added some comments and other reorganizations that hopefully make things a bit more clear - I certainly invite more suggestions if it still comes across as opaque magic!",
+      "parentUuid": "216cb8be_f7cbc13d",
       "range": {
         "startLine": 454,
         "startChar": 11,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aaff6698_d2c609a9",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 461,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-08-08T16:38:21Z",
+      "side": 1,
+      "message": "Ah, yes - refactored/streamlined now that SamplerDesc has a default ctor that initializes values to 0, where we can then optionally populate only 2 of its 3 uint32 data member attributes (which happens in the case of using a known format).",
+      "parentUuid": "f051426d_6267ac02",
+      "range": {
+        "startLine": 461,
+        "startChar": 16,
+        "endLine": 461,
+        "endChar": 72
+      },
+      "revId": "7749f83d7bceac906e125cff4910f2181e243b7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "75323120_4b9d9f01",
@@ -83,6 +155,30 @@
       "writtenOn": "2024-07-24T20:14:16Z",
       "side": 1,
       "message": "is this safe if `immutableSampler` from above was nullptr? Or can we assert that findOrCreateCompatibleSampler will never fail?",
+      "range": {
+        "startLine": 464,
+        "startChar": 58,
+        "endLine": 464,
+        "endChar": 67
+      },
+      "revId": "7749f83d7bceac906e125cff4910f2181e243b7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3423839d_1d0f6bdc",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 464,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-08-08T16:38:21Z",
+      "side": 1,
+      "message": "There is a nullcheck performed within `sk_ref_sp`, but to be certain I added a nullcheck above where we log an error if we fail to find or create an appropriate immutable sampler.",
+      "parentUuid": "75323120_4b9d9f01",
       "range": {
         "startLine": 464,
         "startChar": 58,
@@ -116,6 +212,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b049a00_ad15e800",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 470,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-08-08T16:38:21Z",
+      "side": 1,
+      "message": "Now `immutableSamplers` has `numSamplers` entries all intialized as `nullptr`.",
+      "parentUuid": "f86fac1e_a34dc809",
+      "range": {
+        "startLine": 470,
+        "startChar": 47,
+        "endLine": 470,
+        "endChar": 71
+      },
+      "revId": "7749f83d7bceac906e125cff4910f2181e243b7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b5cc57f0_fe85aa47",
@@ -129,6 +249,30 @@
       "writtenOn": "2024-07-24T20:14:16Z",
       "side": 1,
       "message": "Can this be empty in the non emscripten case?",
+      "range": {
+        "startLine": 485,
+        "startChar": 25,
+        "endLine": 485,
+        "endChar": 50
+      },
+      "revId": "7749f83d7bceac906e125cff4910f2181e243b7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "efa391cf_4b484718",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 485,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-08-08T16:38:21Z",
+      "side": 1,
+      "message": "Theoretically, no. I changed it to a debug assertion (along with adding an assertion that `fData` is also not empty when we have fragment samplers - we should always see at least one entry of \"0\" to indicate no immutable sampler usage).",
+      "parentUuid": "b5cc57f0_fe85aa47",
       "range": {
         "startLine": 485,
         "startChar": 25,
