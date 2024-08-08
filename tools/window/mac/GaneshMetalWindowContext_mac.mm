@@ -5,8 +5,10 @@
  * found in the LICENSE file.
  */
 
-#include "tools/window/MetalWindowContext.h"
 #include "tools/window/mac/WindowContextFactory_mac.h"
+
+#include "tools/window/MetalWindowContext.h"
+#include "tools/window/mac/MacWindowInfo.h"
 
 #import <Cocoa/Cocoa.h>
 #import <QuartzCore/CAConstraintLayoutManager.h>
@@ -29,22 +31,18 @@ public:
     void resize(int w, int h) override;
 
 private:
-    NSView*              fMainView;
+    NSView* fMainView;
 };
 
 MetalWindowContext_mac::MetalWindowContext_mac(const MacWindowInfo& info,
                                                const DisplayParams& params)
-    : MetalWindowContext(params)
-    , fMainView(info.fMainView) {
-
+        : MetalWindowContext(params), fMainView(info.fMainView) {
     // any config code here (particularly for msaa)?
 
     this->initializeContext();
 }
 
-MetalWindowContext_mac::~MetalWindowContext_mac() {
-    this->destroyContext();
-}
+MetalWindowContext_mac::~MetalWindowContext_mac() { this->destroyContext(); }
 
 bool MetalWindowContext_mac::onInitializeContext() {
     SkASSERT(nil != fMainView);
@@ -90,8 +88,8 @@ void MetalWindowContext_mac::resize(int w, int h) {
 
 namespace skwindow {
 
-std::unique_ptr<WindowContext> MakeMetalForMac(const MacWindowInfo& info,
-                                               const DisplayParams& params) {
+std::unique_ptr<WindowContext> MakeGaneshMetalForMac(const MacWindowInfo& info,
+                                                     const DisplayParams& params) {
     std::unique_ptr<WindowContext> ctx(new MetalWindowContext_mac(info, params));
     if (!ctx->isValid()) {
         return nullptr;
