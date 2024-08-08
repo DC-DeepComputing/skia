@@ -54,6 +54,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1ba0b8e6_7dcd53ca",
+        "filename": "src/core/SkMaskGamma.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 20059
+      },
+      "writtenOn": "2024-08-08T19:03:54Z",
+      "side": 1,
+      "message": "We have run experiments with Edge using that very formula and decided to drop it because it didn\u0027t make a noticeable difference in text rendering.",
+      "parentUuid": "2bf7aaa8_3f8e0eb1",
+      "revId": "26448a1cd61e5cdd84c55f0345207e44f902638e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e6fad918_3a00a5ae",
@@ -107,6 +125,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "870884da_72641c30",
+        "filename": "src/core/SkMaskGamma.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 20059
+      },
+      "writtenOn": "2024-08-08T19:03:54Z",
+      "side": 1,
+      "message": "Fixed via Ben\u0027s suggestion to use a `std::unique_ptr`.",
+      "parentUuid": "f7cdb0cc_4d4865d7",
+      "revId": "26448a1cd61e5cdd84c55f0345207e44f902638e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "398170e1_3581503b",
@@ -120,6 +156,24 @@
       "writtenOn": "2024-08-08T15:43:08Z",
       "side": 1,
       "message": "There is really no need for `std::vector` here to do what you want, let alone a `std::vector\u003cstd::vector\u003e\u003e`. If the idea was to push this allocation off to yet another heap allocation (`SkTMaskGamma` already always appears to be heap allocated) then this would be a `std::unique_ptr\u003cuint8_t\u003e` that the non-linear constructor assigns a heap region of the appropriate (constant) size.",
+      "revId": "26448a1cd61e5cdd84c55f0345207e44f902638e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d982357f_d161dc09",
+        "filename": "src/core/SkMaskGamma.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 20059
+      },
+      "writtenOn": "2024-08-08T19:03:54Z",
+      "side": 1,
+      "message": "Great suggestion, updated to this. It reduced the size of linear versions even more than the vector version!\n\nSince it\u0027s a flattened array, I\u0027m using `std::unique_ptr\u003cuint8_t[]\u003e` and not `std::unique_ptr\u003cuint8_t\u003e` - is that what you meant or am I mistaken here?",
+      "parentUuid": "398170e1_3581503b",
       "revId": "26448a1cd61e5cdd84c55f0345207e44f902638e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
