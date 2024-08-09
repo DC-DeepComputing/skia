@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9fdc0d17_8faab13d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-08-09T12:25:43Z",
+      "side": 1,
+      "message": "I assume that we also want to update our dumping logic here which ignores size 0 resources, https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/gpu/graphite/Resource.cpp;l\u003d110.\n\nI also think if we are confident that metal memoryless things always stay memoryless, then this logic should also be added to our Metal backend. This makes me think having the backends do the logic is probably not the right place since we\u0027ll just end up duplicating it everywhere. Maybe we should have a flag set on the Texture/Resource that says it is a definite memoryless object. Then the Texture base class can use this flag for size calculations and also our dump Resource can check the flag as well.",
+      "revId": "2eee5f248886076be6dda973eccc83b30f90c285",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
