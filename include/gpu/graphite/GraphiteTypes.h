@@ -107,15 +107,43 @@ enum class Volatile : bool {
  * Graphite's different rendering methods each only apply to certain types of draws. This
  * enum supports decision-making regarding the different renderers and what is being drawn.
  */
-enum DrawTypeFlags : uint8_t {
+enum DrawTypeFlags : uint16_t {
 
-    kNone           = 0b0000,
+    kNone                = 0b000000000,
 
-    // SkCanvas:: drawSimpleText, drawString, drawGlyphs, drawTextBlob, drawSlug
-    kText           = 0b0001,
+    // All the following k*Text* flags cover the calls:
+    //     SkCanvas:: drawSimpleText, drawString, drawGlyphs, drawTextBlob, drawSlug
+    // but each is used under specific conditions (detailed below).
+
+    // Bitmap-based text
+    kBitmapText_Mask     = 0b000000001,   // plain vanilla font
+    kBitmapText_LCD      = 0b000000010,   // SkSurface w/ a known pixel geometry, font has both
+                                          // sub-pixel positioning and sub-pixel-AA edging enabled
+    kBitmapText_Color    = 0b000000100,   // font has color glyphs (these are usually emojis)
+    kBitmapText_All      = kBitmapText_Mask | kBitmapText_LCD | kBitmapText_Color,
+
+    // SDF-based text
+    // The criteria for SDF being used is pretty strict (cf SubRunControl::isSDFT):
+    //   The GPU must support shader derivatives
+    //   The glyph being drawn is larger (in device space) than
+    //           ContextOptions::fMinDistanceFieldFontSize if the SkSurface's surfaceProps has
+    //           kUseDeviceIndependentFonts_Flag set
+    //        or 162 if that surfaceProps flag is not set
+    //        or the canvas matrix has perspective (i.e., perspective obviates the minimum limit).
+    //   The glyph being drawn is smaller than ContextOptions::fGlyphsAsPathsFontSize
+    //   The SkPaint has no mask filter
+    //   The SkPaint's style must be kFill or non-hairline stroke
+    kSDFText             = 0b000001000,
+    kSDFText_LCD         = 0b000010000,    // Same additional requirements askBitmapText_LCD
+    kSDFText_All         = kSDFText | kSDFText_LCD,
+
+    // Path-based text
+    kPathBasedText       = 0b000100000,    // The glyph is >= ContextOptions::fGlyphsAsPathsFontSize
+
+    kText                = kBitmapText_All | kSDFText_All | kPathBasedText,
 
     // SkCanvas::drawVertices
-    kDrawVertices   = 0b0010,
+    kDrawVertices        = 0b001000000,
 
     // SkCanvas::experimental_DrawEdgeAAQuad, experimental_DrawEdgeAAImageSet
     // SkCanvas:: drawRect, drawRRect, drawLine for:
@@ -124,14 +152,14 @@ enum DrawTypeFlags : uint8_t {
     //    stroked and hairline lines,
     //    stroked circular rrects
     // Note: clipping can bump a draw out of the simple shape path
-    kSimpleShape    = 0b0100,
+    kSimpleShape         = 0b010000000,
     // All other shapes (e.g., any strokeAndFill shape, non-circular-stroked RRects, SkPaths, ...)
-    kNonSimpleShape = 0b1000,
+    kNonSimpleShape      = 0b100000000,
 
-    kShape          = kSimpleShape | kNonSimpleShape,
+    kShape               = kSimpleShape | kNonSimpleShape,
 
-    kMostCommon     = kText | kShape,
-    kAll            = kText | kDrawVertices | kShape
+    kMostCommon          = kBitmapText_Mask | kSimpleShape,
+    kAll                 = kText | kDrawVertices | kShape
 };
 
 } // namespace skgpu::graphite
