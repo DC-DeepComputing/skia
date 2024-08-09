@@ -166,6 +166,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0d007b1_71cdd0c5",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-08-09T18:37:26Z",
+      "side": 1,
+      "message": "\u003e I\u0027d definitely push for 16 bit support in the long-term. And I\u0027m hopeful that it\u0027s not too difficult to just add it now, rather than wait.\n\u003e \n\u003e There actually aren\u0027t any G16 or GA1616 SkColorTypes, so I don\u0027t think we have an existing issue - clients that want 16-bit output from the codec basically have to ask for RGBA (16 bit or float).\n\u003e \n\u003e As for test coverage... Yes. Skia has an image test corpus that appears to include ~every possible PNG variant. Those files are stored in CIPD, but if you\u0027re authenticated with gcloud, you can probably fetch them from a skia repo:\n\u003e \n\u003e ```\n\u003e bin/fetch-sk\n\u003e bin/sk asset download skimage images\n\u003e ls images/dm/*.png\n\u003e ```\n\nI think it\u0027s fine to resolve this comment:\n\n* AFAIK 16-bit images *are* supported as-is:\n    - Rust `png` can decode them\n    - `SkPngRustCodec.cpp` propagates `bits_per_component` into `SkEncodedInfo`\n    - `SkSwizzler` consumes `SkEncodedInfo` when deciding how to transform the input into the requested destination format\n\n* I think it\u0027s okay that `gfx_unittests` don\u0027t provide test coverage for 16-bit images.  If there are issues, then we\u0027ll learn about them after integrating coverage through Blink tests and/or Skia tests.  It\u0027s okay to do this step-by-step (especially since this code is not load-bearing - it\u0027s not used outside of our project/experiment).\n\n* I\u0027ll have to think about G16 and/or GA16 some more, when trying to understand how `SkSwizzler` and `skcms_Transform` are used in the legacy `SkPngCodec` (and refactoring it into `SkPngCodecBase`.  In particular, I\u0027ll have to figure out what `SkPngCodec` does when decoding G16 images that have a custom `gAMA` into dst\u003dRGBA16 - I think there are multiple choices here, but maybe it\u0027s worth focusing on just the 2 below:\n    * Use `SkSwizzler` to transform to RGBA16 (input format supported by `skcms`) before handling `gAMA` through `skcms`.  I am _guessing_ that this is what `SkPngCodec` does.\n    * Add G16 and GA16 support to `skcms` (not that hard based on the GA8 experience)",
+      "parentUuid": "61640d84_effb90e2",
+      "revId": "c7170f4cc6aa359c75c84a63c5bac5af4cf751ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fde1204a_a66dae8d",

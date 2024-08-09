@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "40dfa072_d7402f18",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-08-09T18:37:26Z",
+      "side": 1,
+      "message": "I decided to yank `ToPixelFormat` for now, because it was (incorrectly IMO) ignoring bits-per-component.",
+      "range": {
+        "startLine": 112,
+        "startChar": 89,
+        "endLine": 112,
+        "endChar": 90
+      },
+      "revId": "a5131fa1e490fe6863306ea4eec43d15c814613f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e0adc4a_1234326a",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-08-09T18:37:26Z",
+      "side": 1,
+      "message": "Changed to using `SkASSERT` here as we discussed in the meeting earlier today.",
+      "range": {
+        "startLine": 170,
+        "startChar": 49,
+        "endLine": 170,
+        "endChar": 50
+      },
+      "revId": "a5131fa1e490fe6863306ea4eec43d15c814613f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
