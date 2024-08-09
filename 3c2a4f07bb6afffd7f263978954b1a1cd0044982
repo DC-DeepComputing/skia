@@ -53,6 +53,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "65e1efcd_deb3704a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-08-09T21:53:44Z",
+      "side": 1,
+      "message": "Yes, this is how I think about this file, and how our users ought to, as well.",
+      "revId": "3c2a4f07bb6afffd7f263978954b1a1cd0044982",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "471ec868_bb8ddb4a",
