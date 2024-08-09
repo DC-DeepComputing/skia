@@ -40,6 +40,30 @@
       ],
       "revId": "0b5ddd9738a88bc7d7f7e7cd702c62ab1cbb799f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9cdafb80_daa083ca",
+        "filename": "gm/smallcircles.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-08-09T18:57:28Z",
+      "side": 1,
+      "message": "Ah when I was checking the viewer for what the canvas size should be I was zoomed in for some reason.",
+      "parentUuid": "e1ff4d82_c7e5d31d",
+      "range": {
+        "startLine": 21,
+        "startChar": 36,
+        "endLine": 21,
+        "endChar": 44
+      },
+      "revId": "0b5ddd9738a88bc7d7f7e7cd702c62ab1cbb799f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
