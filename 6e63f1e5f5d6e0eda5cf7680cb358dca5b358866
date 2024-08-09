@@ -16,6 +16,24 @@
       "message": "With this change we no longer need `fIsLinear` either, since `fGammaTables` being nullptr already implies linear. Making this change makes `SkTMaskGamma` the size of a pointer (well, the size of a `std::unique_ptr\u003cT[]\u003e`, which is usually just a pointer) and also means `SkTMaskGamma()` can be constexpr. This means `gLinearMaskGamma` doesn\u0027t need to be `new`ed at all.",
       "revId": "6e63f1e5f5d6e0eda5cf7680cb358dca5b358866",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "50d5be18_68c25dea",
+        "filename": "src/core/SkMaskGamma.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 20059
+      },
+      "writtenOn": "2024-08-09T18:13:20Z",
+      "side": 1,
+      "message": "Great suggestion!",
+      "parentUuid": "f5601147_96120d9b",
+      "revId": "6e63f1e5f5d6e0eda5cf7680cb358dca5b358866",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
