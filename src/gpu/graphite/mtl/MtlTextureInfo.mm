@@ -37,6 +37,8 @@ private:
         return MtlFormatToCompressionType(fMtlSpec.fFormat);
     }
 
+    bool isMemoryless() const override { return fMtlSpec.fStorageMode == MTLStorageModeMemoryless; }
+
     SkString toString() const override {
         return SkStringPrintf("Metal(%s,", fMtlSpec.toString().c_str());
     }
