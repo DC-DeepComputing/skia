@@ -64,6 +64,30 @@
       },
       "revId": "0b5ddd9738a88bc7d7f7e7cd702c62ab1cbb799f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "139cddb8_d0b020ac",
+        "filename": "gm/smallcircles.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-08-09T19:00:08Z",
+      "side": 1,
+      "message": "If you\u0027re on a mac (with a high-dpi screen, but they all have one), then we apply a weird scale to the window. It makes the UI easier to work with, but it also seems to mess up the actual rendering sometimes, or make coordinates confusing (off by a factor of 2). you can hit `\u003d` to toggle the extra scale factor. Anyways, lgtm!",
+      "parentUuid": "9cdafb80_daa083ca",
+      "range": {
+        "startLine": 21,
+        "startChar": 36,
+        "endLine": 21,
+        "endChar": 44
+      },
+      "revId": "0b5ddd9738a88bc7d7f7e7cd702c62ab1cbb799f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
