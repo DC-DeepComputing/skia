@@ -176,6 +176,24 @@
       "parentUuid": "398170e1_3581503b",
       "revId": "26448a1cd61e5cdd84c55f0345207e44f902638e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8ecf3ca_46108c17",
+        "filename": "src/core/SkMaskGamma.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-08-09T14:38:07Z",
+      "side": 1,
+      "message": "Yes, I just forgot to type the `[]`.",
+      "parentUuid": "d982357f_d161dc09",
+      "revId": "26448a1cd61e5cdd84c55f0345207e44f902638e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
