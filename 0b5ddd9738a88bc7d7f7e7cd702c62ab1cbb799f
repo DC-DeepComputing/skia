@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e1ff4d82_c7e5d31d",
+        "filename": "gm/smallcircles.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-08-09T17:52:51Z",
+      "side": 1,
+      "message": "nit: Looks like you adjusted the image scale at the end, so the GM fits in something like a 425x425 square? Not a big deal, but it\u0027s nice when there isn\u0027t too much empty space (it causes the images to get zoomed a bit more in gold).",
+      "range": {
+        "startLine": 21,
+        "startChar": 36,
+        "endLine": 21,
+        "endChar": 44
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "89eae808_35131e6f",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "gm/smallcircles.cpp",
+              "range": {
+                "startLine": 21,
+                "startChar": 0,
+                "endLine": 22,
+                "endChar": 0
+              },
+              "replacement": "DEF_SIMPLE_GM(smallcircles, canvas, 425, 425) {\n"
+            }
+          ]
+        }
+      ],
+      "revId": "0b5ddd9738a88bc7d7f7e7cd702c62ab1cbb799f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
