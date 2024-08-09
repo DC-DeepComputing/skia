@@ -38,7 +38,13 @@ std::unique_ptr<GraphiteTestContext> DawnTestContext::Make(wgpu::BackendType bac
     static constexpr const char* kToggles[] = {
         "allow_unsafe_apis",  // Needed for dual-source blending.
         "use_user_defined_labels_in_backend",
+<<<<<<< PATCH SET (bf4ba9 [graphite] Add disable_robustness toggle for viewer/dm/nanob)
+        // Robustness impacts performance and is always disabled when running Graphite in Chrome,
+        // so this keeps Skia's tests operating closer to real-use behavior.
+        "disable_robustness",
+=======
         "use_tint_ir",
+>>>>>>> BASE      (f60608 [graphite] Move PipelineDataCache into PipelineData.h)
     };
     wgpu::DawnTogglesDescriptor togglesDesc;
     togglesDesc.enabledToggleCount  = std::size(kToggles) - (useTintIR ? 0 : 1);
