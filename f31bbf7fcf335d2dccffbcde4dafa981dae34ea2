@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9306ff75_219535d4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-08-09T13:05:23Z",
+      "side": 1,
+      "message": "The canary failures are golden images that will need to be triaged in the autoroll CL, and look like we\u0027d been selecting a low resolution mipmap from an icon asset and are now selecting the higher resolution one.\n\nThe gold diffs in Skia all look like sharpening to me. Some of the comparisons with the YUV images show issues with repeat+mipmapping, but looking at the diff history (instead of closest) it shows those errors were always there. I believe this is because the repeat image snippet doesn\u0027t have quite the same extra sampling logic that is done in ganesh to preserve the coordinate gradients.",
+      "revId": "f31bbf7fcf335d2dccffbcde4dafa981dae34ea2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
