@@ -1,6 +1,92 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "efbd8413_80e65b35",
+        "filename": "experimental/rust_png/README.md",
+        "patchSetId": 22
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-08-09T21:28:59Z",
+      "side": 1,
+      "message": "I think this bit is out of date?",
+      "range": {
+        "startLine": 11,
+        "startChar": 29,
+        "endLine": 13,
+        "endChar": 96
+      },
+      "revId": "a5131fa1e490fe6863306ea4eec43d15c814613f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e659c4f8_bfdd2284",
+        "filename": "experimental/rust_png/ffi/FFI.h",
+        "patchSetId": 22
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-08-09T21:28:59Z",
+      "side": 1,
+      "message": "Note/nit?: in practice, when it fails, it just acts as if the stream had no more data. (Though in practice, this depends on the implementation.)",
+      "range": {
+        "startLine": 35,
+        "startChar": 34,
+        "endLine": 35,
+        "endChar": 59
+      },
+      "revId": "a5131fa1e490fe6863306ea4eec43d15c814613f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b1c445b9_3072f36d",
+        "filename": "experimental/rust_png/ffi/FFI.h",
+        "patchSetId": 22
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-08-09T21:28:59Z",
+      "side": 1,
+      "message": "I don\u0027t follow this. `ReadTraitAdapterForSkStream` doesn\u0027t own anything at all.",
+      "range": {
+        "startLine": 43,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 35
+      },
+      "revId": "a5131fa1e490fe6863306ea4eec43d15c814613f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e79dd13f_f720d97b",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-08-09T21:28:59Z",
+      "side": 1,
+      "message": "Maybe a comment explicitly stating that this is unowned?",
+      "revId": "a5131fa1e490fe6863306ea4eec43d15c814613f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "40dfa072_d7402f18",
@@ -43,6 +129,23 @@
         "endLine": 170,
         "endChar": 50
       },
+      "revId": "a5131fa1e490fe6863306ea4eec43d15c814613f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "987e0b16_46519c5f",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.h",
+        "patchSetId": 22
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-08-09T21:28:59Z",
+      "side": 1,
+      "message": "Maybe add a `TODO` here, unless you don\u0027t like the redundancy?",
       "revId": "a5131fa1e490fe6863306ea4eec43d15c814613f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
