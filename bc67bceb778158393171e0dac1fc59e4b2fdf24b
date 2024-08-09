@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "624043db_b21a3a8c",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 343,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-08-09T13:58:09Z",
+      "side": 1,
+      "message": "Why not just have `onFailedBuffer()` handle setting `fMappingFailed`?",
+      "range": {
+        "startLine": 343,
+        "startChar": 47,
+        "endLine": 343,
+        "endChar": 61
+      },
+      "revId": "bc67bceb778158393171e0dac1fc59e4b2fdf24b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07037c1b_1c2a8a0d",
+        "filename": "src/gpu/graphite/TextureUtils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 470,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-08-09T13:58:09Z",
+      "side": 1,
+      "message": "nit: `bitmaps`?",
+      "range": {
+        "startLine": 470,
+        "startChar": 49,
+        "endLine": 470,
+        "endChar": 55
+      },
+      "revId": "bc67bceb778158393171e0dac1fc59e4b2fdf24b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
