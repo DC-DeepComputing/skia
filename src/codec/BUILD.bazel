@@ -134,6 +134,8 @@ DECODE_PNG_FILES = [
     "SkEncodedInfo.cpp",
     "SkIcoCodec.cpp",
     "SkIcoCodec.h",
+    "SkPngCodecBase.cpp",
+    "SkPngCodecBase.h",
     "SkPngCodec.cpp",
     "SkPngCodec.h",
 ]
@@ -456,7 +458,7 @@ skia_cc_library(
         "SkBmpCodec.h",
         "SkIcoCodec.cpp",
         "SkIcoCodec.h",
-        "SkPngCodec.h",
+        "SkPngCodec.h",  # TODO / DO NOT SUBMIT: ???
     ],
     hdrs = [
         "//include/codec:any_codec_hdrs",
@@ -548,6 +550,8 @@ skia_filegroup(
     srcs = [
         "SkPngCodec.cpp",
         "SkPngCodec.h",
+        "SkPngCodecBase.cpp",
+        "SkPngCodecBase.h",
     ],
 )
 
