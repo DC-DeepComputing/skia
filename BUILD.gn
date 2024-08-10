@@ -1232,6 +1232,7 @@ optional("png_decode") {
   sources = [
     "src/codec/SkIcoCodec.cpp",
     "src/codec/SkPngCodec.cpp",
+    "src/codec/SkPngCodecBase.cpp",
   ]
 }
 
