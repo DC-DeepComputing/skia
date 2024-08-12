@@ -153,7 +153,9 @@ std::unique_ptr<SkPngRustCodec> SkPngRustCodec::MakeFromStream(std::unique_ptr<S
 SkPngRustCodec::SkPngRustCodec(SkEncodedInfo&& encodedInfo,
                                std::unique_ptr<SkStream> stream,
                                rust::Box<rust_png::Reader> reader)
-        : SkCodec(std::move(encodedInfo), kInvalidSkcmsPixelFormat, std::move(stream))
+        : SkPngCodecBase(std::move(encodedInfo),
+                         kInvalidSkcmsPixelFormat /* TODO / FIXME / DO NOT SUBMIT */,
+                         std::move(stream))
         , fReader(std::move(reader)) {}
 
 SkPngRustCodec::~SkPngRustCodec() = default;
@@ -182,15 +184,10 @@ SkCodec::Result SkPngRustCodec::onGetPixels(const SkImageInfo& dstInfo,
     SkASSERT(width == getEncodedInfo().width());
     SkASSERT(height == getEncodedInfo().height());
 
-    // Palette expansion currently takes place within the `png` crate, via
-    // `png::Transformations::EXPAND`.
-    //
-    // TODO(https://crbug.com/356882657): Measure if populating `SkPMColor`
-    // table may have some runtime performance benefits.
-    SkPMColor* kColorTable = nullptr;
-
-    std::unique_ptr<SkSwizzler> swizzler =
-            SkSwizzler::Make(this->getEncodedInfo(), kColorTable, dstInfo, options);
+    Result result = this->initializeXforms(dstInfo, options);
+    if (kSuccess != result) {
+        return result;
+    }
 
     // The assertion below is based on `png::Transformations::EXPAND`.  The
     // assertion helps to ensure that dividing by 8 in `srcRowSize` calculations
@@ -202,7 +199,7 @@ SkCodec::Result SkPngRustCodec::onGetPixels(const SkImageInfo& dstInfo,
     //
     // TODO(https://crbug.com/357876243): Avoid an extra buffer when possible.
     std::vector<uint8_t> decodedPixels(fReader->output_buffer_size(), 0x00);
-    Result result = ToSkCodecResult(
+    result = ToSkCodecResult(
             fReader->next_frame(rust::Slice(decodedPixels.data(), decodedPixels.size())));
     if (result != kSuccess) {
         return result;
@@ -212,11 +209,25 @@ SkCodec::Result SkPngRustCodec::onGetPixels(const SkImageInfo& dstInfo,
     SkSpan<const uint8_t> src = decodedPixels;
     void* dstRow = dst;
     for (int y = 0; y < height; ++y) {
-        swizzler->swizzle(dstRow, src.data());
+        this->applyXformRow(dstRow, src.data());
         dstRow = SkTAddOffset<void>(dstRow, rowBytes);
         src = src.subspan(srcRowSize);
     }
     *rowsDecoded = height;
 
     return kSuccess;
+}
+
+std::optional<SkSpan<const SkPngCodecBase::PaletteColorEntry>> SkPngRustCodec::onTryGetPlteChunk() {
+    // TODO(https://crbug.com/356882657): Handle pLTE and tRNS inside
+    // `SkPngRustCodec` rather than via `png::Transformations::EXPAND`.
+    SkASSERT(fReader->output_color_type() != rust_png::ColorType::Indexed);
+    return std::nullopt;
+}
+
+std::optional<SkSpan<const uint8_t>> SkPngRustCodec::onTryGetTrnsChunk() {
+    // TODO(https://crbug.com/356882657): Handle pLTE and tRNS inside
+    // `SkPngRustCodec` rather than via `png::Transformations::EXPAND`.
+    SkASSERT(fReader->output_color_type() != rust_png::ColorType::Indexed);
+    return std::nullopt;
 }
