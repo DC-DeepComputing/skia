@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "97f0b97d_40407a82",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-08-12T14:45:13Z",
+      "side": 1,
+      "message": "Aside from Vulkan needing more deps, lgtm.",
+      "revId": "1b0db7aeb65a66b9edbde363e6dcffe76a91da5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
