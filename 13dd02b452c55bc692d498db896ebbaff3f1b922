@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40acc110_0330a546",
+        "filename": "src/pdf/SkDeflate.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-08-12T20:11:00Z",
+      "side": 1,
+      "message": "In practice, `size` will always fit in `size_t` (since it will be `size_t` or `unsigned`) so this test will almost always be optimized away.",
+      "revId": "13dd02b452c55bc692d498db896ebbaff3f1b922",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
