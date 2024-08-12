@@ -142,6 +142,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5cfc4d0c_02a55300",
+        "filename": "experimental/rust_png/ffi/FFI.h",
+        "patchSetId": 22
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-08-12T16:07:32Z",
+      "side": 1,
+      "message": "Yes, the new comment makes a lot more sense! (And the future work makes sense, too.) Thanks!",
+      "parentUuid": "c1f51ec7_c2621ce1",
+      "range": {
+        "startLine": 43,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 35
+      },
+      "revId": "a5131fa1e490fe6863306ea4eec43d15c814613f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e79dd13f_f720d97b",
