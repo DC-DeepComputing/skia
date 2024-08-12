@@ -1,0 +1,78 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c10a8ae8_5df5588d",
+        "filename": "BUILD.bazel",
+        "patchSetId": 6
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-08-12T18:14:54Z",
+      "side": 1,
+      "message": "Following the example of the above `fontmgr_empty_freetype` this should probably be `fontmgr_empty_fontations`.",
+      "range": {
+        "startLine": 284,
+        "startChar": 12,
+        "endLine": 284,
+        "endChar": 30
+      },
+      "revId": "c2f51c7c9e73224fa8bcee7db240d865b548b0c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1097dd51_ff4dc682",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 6
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-08-12T18:14:54Z",
+      "side": 1,
+      "message": "I\u0027m not entirely sure why, but these jobs do not ensure a hermetic build. So when I attempt to build locally on Linux I get a bunch of errors about headers not being available. (This is actually true right now without this change as well.)",
+      "revId": "c2f51c7c9e73224fa8bcee7db240d865b548b0c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e56e7a0_8c838588",
+        "filename": "src/ports/BUILD.bazel",
+        "patchSetId": 6
+      },
+      "lineNbr": 633,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-08-12T18:14:54Z",
+      "side": 1,
+      "message": "I didn\u0027t realize this was all finally not used by anything in Skia proper (I think this was added to support something in Ganesh? Looks like https://codereview.chromium.org/1346423002). In any event, I suppose it\u0027s a step forward to mark this `testonly`, but I suppose this means we should move it out of here into tools/ or something so no one gets confused and thinks this should be part of Skia-the-library. We can do that later, of course.",
+      "revId": "c2f51c7c9e73224fa8bcee7db240d865b548b0c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f210ce2c_19a9a3aa",
+        "filename": "tools/gpu/vk/BUILD.bazel",
+        "patchSetId": 6
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-08-12T18:14:54Z",
+      "side": 1,
+      "message": "Yeah, in general I think we compile against our own `vulkan-headers` and then the user provides whatever implementation or their own headers for their own stuff.",
+      "revId": "c2f51c7c9e73224fa8bcee7db240d865b548b0c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
