@@ -291,19 +291,23 @@ const char* to_str(ImageFilterType c) {
 }
 
 const char* to_str(DrawTypeFlags dt) {
+    SkASSERT(SkPopCount(static_cast<uint32_t>(dt)) == 1);
+
     switch (dt) {
-        case DrawTypeFlags::kNone:           return "DrawTypeFlags::kNone";
-        case DrawTypeFlags::kText:           return "DrawTypeFlags::kText";
-        case DrawTypeFlags::kDrawVertices:   return "DrawTypeFlags::kDrawVertices";
-        case DrawTypeFlags::kSimpleShape:    return "DrawTypeFlags::kSimpleShape";
-        case DrawTypeFlags::kNonSimpleShape: return "DrawTypeFlags::kNonSimpleShape";
-        case DrawTypeFlags::kShape:          return "DrawTypeFlags::kShape";
-        case DrawTypeFlags::kMostCommon:     return "DrawTypeFlags::kMostCommon";
-        case DrawTypeFlags::kAll:            return "DrawTypeFlags::kAll";
+        case DrawTypeFlags::kBitmapText_Mask:  return "DrawTypeFlags::kBitmapText_Mask";
+        case DrawTypeFlags::kBitmapText_LCD:   return "DrawTypeFlags::kBitmapText_LCD";
+        case DrawTypeFlags::kBitmapText_Color: return "DrawTypeFlags::kBitmapText_Color";
+        case DrawTypeFlags::kSDFText:          return "DrawTypeFlags::kSDFText";
+        case DrawTypeFlags::kSDFText_LCD:      return "DrawTypeFlags::kSDFText_LCD";
+        case DrawTypeFlags::kPathBasedText:    return "DrawTypeFlags::kPathBasedText";
+        case DrawTypeFlags::kDrawVertices:     return "DrawTypeFlags::kDrawVertices";
+        case DrawTypeFlags::kSimpleShape:      return "DrawTypeFlags::kSimpleShape";
+        case DrawTypeFlags::kNonSimpleShape:   return "DrawTypeFlags::kNonSimpleShape";
+        case DrawTypeFlags::kShape:            return "DrawTypeFlags::kShape";
+        default:                               SkASSERT(0); return "DrawTypeFlags::kNone";
     }
 
-    SkASSERT(0);
-    return "DrawTypeFlags::kNone";
+    SkUNREACHABLE;
 }
 
 void log_run(const char* label,
@@ -478,14 +482,19 @@ ImageFilterType random_imagefiltertype(SkRandom* rand) {
 }
 
 [[maybe_unused]] DrawTypeFlags random_drawtype(SkRandom* rand) {
-    uint32_t index = rand->nextULessThan(5);
+    uint32_t index = rand->nextULessThan(10);
 
     switch (index) {
-        case 0: return DrawTypeFlags::kText;
-        case 1: return DrawTypeFlags::kDrawVertices;
-        case 2: return DrawTypeFlags::kSimpleShape;
-        case 3: return DrawTypeFlags::kNonSimpleShape;
-        case 4: return DrawTypeFlags::kShape;
+        case 0: return DrawTypeFlags::kBitmapText_Mask;
+        case 1: return DrawTypeFlags::kBitmapText_LCD;
+        case 2: return DrawTypeFlags::kBitmapText_Color;
+        case 3: return DrawTypeFlags::kSDFText;
+        case 4: return DrawTypeFlags::kSDFText_LCD;
+        case 5: return DrawTypeFlags::kPathBasedText;
+        case 6: return DrawTypeFlags::kDrawVertices;
+        case 7: return DrawTypeFlags::kSimpleShape;
+        case 8: return DrawTypeFlags::kNonSimpleShape;
+        case 9: return DrawTypeFlags::kShape;
     }
 
     SkASSERT(0);
@@ -1724,6 +1733,17 @@ SkPath make_path() {
 struct DrawData {
     DrawData() {
         SkFont font(ToolUtils::DefaultPortableTypeface(), 16);
+
+        SkFont lcdFont(ToolUtils::DefaultPortableTypeface(), 16);
+        lcdFont.setSubpixel(true);
+        lcdFont.setEdging(SkFont::Edging::kSubpixelAntiAlias);
+
+        ToolUtils::EmojiTestSample emojiTestSample =
+                ToolUtils::EmojiSample(ToolUtils::EmojiFontFormat::ColrV0);
+        SkFont emojiFont(emojiTestSample.typeface);
+
+        SkFont pathFont(ToolUtils::DefaultPortableTypeface(), 300);
+
         const char text[] = "hambur1";
 
         constexpr int kNumVerts = 4;
@@ -1733,6 +1753,12 @@ struct DrawData {
 
         fPath = make_path();
         fBlob = SkTextBlob::MakeFromText(text, strlen(text), font);
+        fLCDBlob = SkTextBlob::MakeFromText(text, strlen(text), lcdFont);
+        fEmojiBlob = SkTextBlob::MakeFromText(emojiTestSample.sampleText,
+                                              strlen(emojiTestSample.sampleText),
+                                              emojiFont);
+        fPathBlob = SkTextBlob::MakeFromText(text, strlen(text), pathFont);
+
         fVertsWithColors = SkVertices::MakeCopy(SkVertices::kTriangleFan_VertexMode, kNumVerts,
                                                 kPositions, kPositions, kColors);
         fVertsWithOutColors = SkVertices::MakeCopy(SkVertices::kTriangleFan_VertexMode, kNumVerts,
@@ -1741,6 +1767,9 @@ struct DrawData {
 
     SkPath fPath;
     sk_sp<SkTextBlob> fBlob;
+    sk_sp<SkTextBlob> fLCDBlob;
+    sk_sp<SkTextBlob> fEmojiBlob;
+    sk_sp<SkTextBlob> fPathBlob;
     sk_sp<SkVertices> fVertsWithColors;
     sk_sp<SkVertices> fVertsWithOutColors;
 };
@@ -1794,7 +1823,15 @@ void check_draw(skiatest::Reporter* reporter,
                                            kRGBA_8888_SkColorType,
                                            kPremul_SkAlphaType);
 
-        sk_sp<SkSurface> surf = SkSurfaces::RenderTarget(recorder, ii);
+        SkSurfaceProps props;
+
+        if (dt == DrawTypeFlags::kBitmapText_LCD || dt == DrawTypeFlags::kSDFText_LCD) {
+            props = SkSurfaceProps(/* flags= */ 0x0, SkPixelGeometry::kRGB_H_SkPixelGeometry);
+        }
+
+        sk_sp<SkSurface> surf = SkSurfaces::RenderTarget(recorder, ii,
+                                                         skgpu::Mipmapped::kNo,
+                                                         &props);
         SkCanvas* canvas = surf->getCanvas();
 
         switch (clip) {
@@ -1821,8 +1858,35 @@ void check_draw(skiatest::Reporter* reporter,
                 simple_draws(canvas, paint);
                 non_simple_draws(canvas, paint, kDrawData);
                 break;
-            case DrawTypeFlags::kText:
+            case DrawTypeFlags::kBitmapText_Mask:
                 canvas->drawTextBlob(kDrawData.fBlob, 0, 16, paint);
+                break;
+            case DrawTypeFlags::kBitmapText_LCD:
+                canvas->drawTextBlob(kDrawData.fLCDBlob, 0, 16, paint);
+                break;
+            case DrawTypeFlags::kBitmapText_Color:
+                canvas->drawTextBlob(kDrawData.fEmojiBlob, 0, 16, paint);
+                break;
+            case DrawTypeFlags::kSDFText: {
+                SkMatrix perspective;
+                perspective.setPerspX(0.01f);
+                perspective.setPerspY(0.001f);
+                canvas->save();
+                canvas->concat(perspective);
+                canvas->drawTextBlob(kDrawData.fBlob, 0, 16, paint);
+                canvas->restore();
+            } break;
+            case DrawTypeFlags::kSDFText_LCD: {
+                SkMatrix perspective;
+                perspective.setPerspX(0.01f);
+                perspective.setPerspY(0.001f);
+                canvas->save();
+                canvas->concat(perspective);
+                canvas->drawTextBlob(kDrawData.fLCDBlob, 0, 16, paint);
+                canvas->restore();
+            } break;
+            case DrawTypeFlags::kPathBasedText:
+                canvas->drawTextBlob(kDrawData.fPathBlob, 0, 16, paint);
                 break;
             case DrawTypeFlags::kDrawVertices:
                 canvas->drawVertices(kDrawData.fVertsWithColors, SkBlendMode::kDst, paint);
@@ -1860,12 +1924,29 @@ void check_draw(skiatest::Reporter* reporter,
                                                 &originalPipelineDesc,
                                                 &originalRenderPassDesc);
 
-                SkDebugf("------- New key from draw:\n");
-                afterKey.dump("original key:");
+                SkDebugf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+                afterKey.dump("New key from draw:");
                 UniqueKeyUtils::DumpDescs(rendererProvider, dict,
                                           originalPipelineDesc,
                                           originalRenderPassDesc);
             }
+        }
+
+        SkDebugf("-------------------------- %zu before keys\n", beforeKeys.size());
+        int count = 0;
+        for (const skgpu::UniqueKey& beforeKey : beforeKeys) {
+            GraphicsPipelineDesc originalPipelineDesc;
+            RenderPassDesc originalRenderPassDesc;
+            UniqueKeyUtils::ExtractKeyDescs(context, beforeKey,
+                                            &originalPipelineDesc,
+                                            &originalRenderPassDesc);
+
+            SkString label;
+            label.appendf("--- %d:", count++);
+            beforeKey.dump(label.c_str());
+            UniqueKeyUtils::DumpDescs(rendererProvider, dict,
+                                      originalPipelineDesc,
+                                      originalRenderPassDesc);
         }
     }
 #endif // SK_DEBUG
@@ -2267,19 +2348,24 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
     };
 
     static const DrawTypeFlags kDrawTypeFlags[] = {
-            DrawTypeFlags::kText,
+            DrawTypeFlags::kBitmapText_Mask,
+            DrawTypeFlags::kBitmapText_LCD,
+            DrawTypeFlags::kBitmapText_Color,
+            DrawTypeFlags::kSDFText,
+            DrawTypeFlags::kSDFText_LCD,
+            DrawTypeFlags::kPathBasedText,
             DrawTypeFlags::kDrawVertices,
             DrawTypeFlags::kSimpleShape,
             DrawTypeFlags::kNonSimpleShape,
             DrawTypeFlags::kShape,
     };
 
-#if EXPANDED_SET
+//#if EXPANDED_SET
     size_t kExpected = std::size(shaders) * std::size(blenders) * std::size(colorFilters) *
                        std::size(maskFilters) * std::size(imageFilters) * std::size(clips) *
                        std::size(kDrawTypeFlags);
     int current = 0;
-#endif
+//#endif
 
     for (auto shader : shaders) {
         for (auto blender : blenders) {
@@ -2288,10 +2374,10 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
                     for (auto imageFilter : imageFilters) {
                         for (auto clip : clips) {
                             for (DrawTypeFlags dt : kDrawTypeFlags) {
-#if EXPANDED_SET
+//#if EXPANDED_SET
                                 SkDebugf("%d/%zu\n", current, kExpected);
                                 ++current;
-#endif
+//#endif
 
                                 run_test(reporter, context, testContext, precompileKeyContext,
                                          shader, blender, cf, mf, imageFilter, clip, dt,
@@ -2304,9 +2390,9 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
         }
     }
 
-#if EXPANDED_SET
+//#if EXPANDED_SET
     SkASSERT(current == (int) kExpected);
-#endif
+//#endif
 }
 
 #endif // SK_GRAPHITE
