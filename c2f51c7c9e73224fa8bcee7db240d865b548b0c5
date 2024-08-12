@@ -103,6 +103,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7602edd6_d0fd0a32",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 6
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-08-12T20:24:50Z",
+      "side": 1,
+      "message": "So on a local Linux build I get something like\n\n```\nINFO: Analyzed target //tools/viewer:viewer (227 packages loaded, 12066 targets configured).\nINFO: Found 1 target...\nERROR: src/skia/tools/window/BUILD.bazel:150:16: Middleman _middlemen/_S_Stools_Swindow_Cwindow_Ulinux-cc_library-compile failed: missing input file \u0027//tools/window:unix/RasterWindowContext_unix.h\u0027\nERROR: src/skia/tools/window/BUILD.bazel:150:16: Middleman _middlemen/_S_Stools_Swindow_Cwindow_Ulinux-cc_library-compile failed: missing input file \u0027//tools/window:unix/XlibWindowInfo.h\u0027\nERROR: src/skia/tools/window/BUILD.bazel:150:16: Middleman _middlemen/_S_Stools_Swindow_Cwindow_Ulinux-cc_library-compile failed: missing input file \u0027//tools/window:unix/GaneshGLWindowContext_unix.h\u0027\nERROR: src/skia/tools/window/BUILD.bazel:150:16: Middleman _middlemen/_S_Stools_Swindow_Cwindow_Ulinux-cc_library-compile failed: missing input file \u0027//tools/window:unix/GaneshVulkanWindowContext_unix.h\u0027\nERROR: src/skia/tools/window/BUILD.bazel:150:16: Middleman _middlemen/_S_Stools_Swindow_Cwindow_Ulinux-cc_library-compile failed: 4 input file(s) do not exist\nTarget //tools/viewer:viewer failed to build\nUse --verbose_failures to see the command lines of failed build steps.\nERROR: src/skia/tools/window/BUILD.bazel:150:16 Middleman _middlemen/_S_Stools_Swindow_Cwindow_Ulinux-cc_library-compile failed: 4 input file(s) do not exist\n```\nMaybe some intended file renames aren\u0027t present?",
+      "parentUuid": "73f2e2c0_208d1987",
+      "revId": "c2f51c7c9e73224fa8bcee7db240d865b548b0c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4e56e7a0_8c838588",
         "filename": "src/ports/BUILD.bazel",
         "patchSetId": 6
