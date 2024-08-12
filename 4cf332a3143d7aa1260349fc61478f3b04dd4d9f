@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fdac6cbf_85fec242",
+        "filename": "src/gpu/graphite/Recorder.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-08-12T19:30:19Z",
+      "side": 1,
+      "message": "should this comment be here or before the loop below? Seems more connected to the loop?",
+      "range": {
+        "startLine": 161,
+        "startChar": 4,
+        "endLine": 161,
+        "endChar": 95
+      },
+      "revId": "4cf332a3143d7aa1260349fc61478f3b04dd4d9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
