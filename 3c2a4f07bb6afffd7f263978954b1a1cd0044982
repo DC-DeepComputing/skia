@@ -88,6 +88,41 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3c9d101d_9fe7c31f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-08-12T15:09:09Z",
+      "side": 1,
+      "message": "Weird - review enforcement is unsatisfied. I\u0027ve reported feedback, since it should be satisfied, but in the meantime, @hcm@google.com, if you approve we can land it.",
+      "revId": "3c2a4f07bb6afffd7f263978954b1a1cd0044982",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a77d829d_aa5327ca",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-08-12T15:09:09Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "79eae74d_bdfa83ca",
+      "revId": "3c2a4f07bb6afffd7f263978954b1a1cd0044982",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "471ec868_bb8ddb4a",
@@ -111,6 +146,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ed34a1c_20ea6db4",
+        "filename": "DEPS",
+        "patchSetId": 1
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-08-12T15:09:09Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "471ec868_bb8ddb4a",
+      "range": {
+        "startLine": 1,
+        "startChar": 2,
+        "endLine": 2,
+        "endChar": 30
+      },
+      "revId": "3c2a4f07bb6afffd7f263978954b1a1cd0044982",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "934169be_e9c66376",
@@ -124,6 +183,30 @@
       "writtenOn": "2021-01-26T17:05:37Z",
       "side": 1,
       "message": "This is where I suspect Mike might disagree.",
+      "range": {
+        "startLine": 3,
+        "startChar": 36,
+        "endLine": 4,
+        "endChar": 29
+      },
+      "revId": "3c2a4f07bb6afffd7f263978954b1a1cd0044982",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4e28a6b_21a84c02",
+        "filename": "DEPS",
+        "patchSetId": 1
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-08-12T15:09:09Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "934169be_e9c66376",
       "range": {
         "startLine": 3,
         "startChar": 36,
