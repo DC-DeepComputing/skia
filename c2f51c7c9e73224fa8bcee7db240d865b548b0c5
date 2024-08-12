@@ -83,6 +83,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "73f2e2c0_208d1987",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 6
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-08-12T19:20:13Z",
+      "side": 1,
+      "message": "SPIRV-Tools fix https://github.com/KhronosGroup/SPIRV-Tools/pull/5766",
+      "parentUuid": "e80daf4a_1bdb1cfa",
+      "revId": "c2f51c7c9e73224fa8bcee7db240d865b548b0c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4e56e7a0_8c838588",
