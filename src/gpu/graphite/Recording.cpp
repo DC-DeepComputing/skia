@@ -180,7 +180,7 @@ void RecordingPriv::addTasks(TaskList&& tasks) {
     fRecording->fRootTaskList->add(std::move(tasks));
 }
 
-#if defined(GRAPHITE_TEST_UTILS)
+#if defined(GPU_TEST_UTILS)
 bool RecordingPriv::isTargetProxyInstantiated() const {
     return fRecording->fTargetProxyData->lazyProxy()->isInstantiated();
 }

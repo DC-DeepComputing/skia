@@ -283,7 +283,7 @@ private:
 
     skia_private::TArray<sk_sp<RefCntedCallback>> fFinishedProcs;
 
-#if defined(GRAPHITE_TEST_UTILS)
+#if defined(GPU_TEST_UTILS)
     // For testing use only -- the Context used to create this Recorder
     Context* fContext = nullptr;
 #endif
