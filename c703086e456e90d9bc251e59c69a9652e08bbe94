@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64cece3d_5e503e3e",
+        "filename": "include/gpu/graphite/GraphiteTypes.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-08-12T19:02:43Z",
+      "side": 1,
+      "message": "This should be an internal detail in the options generation.",
+      "range": {
+        "startLine": 127,
+        "startChar": 0,
+        "endLine": 127,
+        "endChar": 48
+      },
+      "revId": "c703086e456e90d9bc251e59c69a9652e08bbe94",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "554886f5_7efff8a1",
+        "filename": "include/gpu/graphite/GraphiteTypes.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-08-12T19:02:43Z",
+      "side": 1,
+      "message": "The amount of logic in this selection process seems like too much to expect a client to be aware of. What do you think about a split like:\n\n - SmallText (bitmap mask and color) and LargeText (SDF and path-based)\n - and then we have a separate control (or detect based on the renderpass options) for whether or not LCD should be included. If so it would then replace or be in addition to the mask option.\n \nI feel like emojis are common enough that we\u0027d want that bitmap text to be available, although since we know it combines with a primitive blender, maybe that means we can avoid activating it for certain combinations of paint options?",
+      "range": {
+        "startLine": 128,
+        "startChar": 0,
+        "endLine": 133,
+        "endChar": 85
+      },
+      "revId": "c703086e456e90d9bc251e59c69a9652e08bbe94",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "077fe724_fa7354d9",
+        "filename": "include/gpu/graphite/GraphiteTypes.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-08-12T19:02:43Z",
+      "side": 1,
+      "message": "These are details that we should be able to infer from the PaintOptions when producing the options, and not push to the client\u0027s responsibility.",
+      "range": {
+        "startLine": 134,
+        "startChar": 9,
+        "endLine": 135,
+        "endChar": 65
+      },
+      "revId": "c703086e456e90d9bc251e59c69a9652e08bbe94",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
