@@ -22,6 +22,30 @@
       },
       "revId": "8a6a8bb36d72c9810f0899f59b4c7ea0d95b41cf",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eb8d0b1c_858b98f3",
+        "filename": "tools/window/BUILD.bazel",
+        "patchSetId": 7
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-08-12T20:59:09Z",
+      "side": 1,
+      "message": "It\u0027s in the previous change which I didn\u0027t have locally.",
+      "parentUuid": "46c58f95_f24bca66",
+      "range": {
+        "startLine": 29,
+        "startChar": 14,
+        "endLine": 29,
+        "endChar": 30
+      },
+      "revId": "8a6a8bb36d72c9810f0899f59b4c7ea0d95b41cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
