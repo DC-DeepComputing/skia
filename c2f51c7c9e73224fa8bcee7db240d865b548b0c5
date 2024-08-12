@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b2dc0323_37b3fcd0",
+        "filename": "BUILD.bazel",
+        "patchSetId": 6
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-08-12T18:50:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c10a8ae8_5df5588d",
+      "range": {
+        "startLine": 284,
+        "startChar": 12,
+        "endLine": 284,
+        "endChar": 30
+      },
+      "revId": "c2f51c7c9e73224fa8bcee7db240d865b548b0c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1097dd51_ff4dc682",
@@ -37,6 +61,24 @@
       "writtenOn": "2024-08-12T18:14:54Z",
       "side": 1,
       "message": "I\u0027m not entirely sure why, but these jobs do not ensure a hermetic build. So when I attempt to build locally on Linux I get a bunch of errors about headers not being available. (This is actually true right now without this change as well.)",
+      "revId": "c2f51c7c9e73224fa8bcee7db240d865b548b0c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e80daf4a_1bdb1cfa",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 6
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-08-12T18:50:17Z",
+      "side": 1,
+      "message": "I can\u0027t reproduce this myself (and noticed SPIRV-Tools doesn\u0027t like being compiled via RBE due to this local flag screwing things up: https://github.com/KhronosGroup/SPIRV-Tools/blame/87fcbaf1bc8346469e178711eff27cfd20aa1960/BUILD.bazel#L113 )\n\nI think I\u0027ve made the right fix, and if not, I\u0027d like to look at it in a follow-up CL. I might need to look at your computer for more details.",
+      "parentUuid": "1097dd51_ff4dc682",
       "revId": "c2f51c7c9e73224fa8bcee7db240d865b548b0c5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -58,6 +100,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "95755bb9_21976c3c",
+        "filename": "src/ports/BUILD.bazel",
+        "patchSetId": 6
+      },
+      "lineNbr": 633,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-08-12T18:50:17Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "4e56e7a0_8c838588",
+      "revId": "c2f51c7c9e73224fa8bcee7db240d865b548b0c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f210ce2c_19a9a3aa",
@@ -71,6 +131,24 @@
       "writtenOn": "2024-08-12T18:14:54Z",
       "side": 1,
       "message": "Yeah, in general I think we compile against our own `vulkan-headers` and then the user provides whatever implementation or their own headers for their own stuff.",
+      "revId": "c2f51c7c9e73224fa8bcee7db240d865b548b0c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f04b8ab_02a64eaa",
+        "filename": "tools/gpu/vk/BUILD.bazel",
+        "patchSetId": 6
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-08-12T18:50:17Z",
+      "side": 1,
+      "message": "Done. I hope.",
+      "parentUuid": "f210ce2c_19a9a3aa",
       "revId": "c2f51c7c9e73224fa8bcee7db240d865b548b0c5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
