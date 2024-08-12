@@ -99,14 +99,17 @@ bool Precompile(Context* context,
     return true;
 }
 
-void Precompile(Context* context, const PaintOptions& options, DrawTypeFlags drawTypes) {
+void Precompile(Context* context, const PaintOptions& options, DrawTypeFlags drawTypes,
+                DepthStencilFlags dsFlags,
+                SkColorType dstCT,
+                bool requiresMSAA) {
 
     ShaderCodeDictionary* dict = context->priv().shaderCodeDictionary();
     const Caps* caps = context->priv().caps();
 
     auto rtEffectDict = std::make_unique<RuntimeEffectDictionary>();
 
-    SkColorInfo ci(kRGBA_8888_SkColorType, kPremul_SkAlphaType, nullptr);
+    SkColorInfo ci(dstCT, kPremul_SkAlphaType, nullptr);
     KeyContext keyContext(
             caps, dict, rtEffectDict.get(), ci, /* dstTexture= */ nullptr, /* dstOffset= */ {0, 0});
 
@@ -118,7 +121,9 @@ void Precompile(Context* context, const PaintOptions& options, DrawTypeFlags dra
                                                          DrawTypeFlags::kSDFText_LCD |
                                                          DrawTypeFlags::kDrawVertices)),
                 /* withPrimitiveBlender= */ false,
-                coverage);
+                coverage,
+                dsFlags,
+                requiresMSAA);
     }
 
     if (drawTypes & DrawTypeFlags::kBitmapText_Color) {
@@ -130,7 +135,35 @@ void Precompile(Context* context, const PaintOptions& options, DrawTypeFlags dra
         PrecompileCombinations(context, tmp, keyContext,
                                DrawTypeFlags::kBitmapText_Color,
                                /* withPrimitiveBlender= */ true,
-                               Coverage::kNone);
+                               Coverage::kNone,
+                               dsFlags,
+                               requiresMSAA);
+    }
+
+    if (drawTypes & (DrawTypeFlags::kBitmapText_LCD | DrawTypeFlags::kSDFText_LCD)) {
+        // LCD-based text always emits LCD coverage but never have primitiveBlenders
+        PrecompileCombinations(
+                context, options, keyContext,
+                static_cast<DrawTypeFlags>(drawTypes & (DrawTypeFlags::kBitmapText_LCD |
+                                                        DrawTypeFlags::kSDFText_LCD)),
+                /* withPrimitiveBlender= */ false,
+                Coverage::kLCD,
+                dsFlags,
+                requiresMSAA);
+    }
+
+    if (drawTypes & DrawTypeFlags::kBitmapText_Color) {
+        // For color emoji text, shaders don't affect the final color
+        PaintOptions tmp = options;
+        tmp.setShaders({});
+
+        // ARGB text doesn't emit coverage and always has a primitive blender
+        PrecompileCombinations(context, tmp, keyContext,
+                               DrawTypeFlags::kBitmapText_Color,
+                               /* withPrimitiveBlender= */ true,
+                               Coverage::kNone,
+                               dsFlags,
+                               requiresMSAA);
     }
 
     if (drawTypes & (DrawTypeFlags::kBitmapText_LCD | DrawTypeFlags::kSDFText_LCD)) {
@@ -140,7 +173,9 @@ void Precompile(Context* context, const PaintOptions& options, DrawTypeFlags dra
                 static_cast<DrawTypeFlags>(drawTypes & (DrawTypeFlags::kBitmapText_LCD |
                                                         DrawTypeFlags::kSDFText_LCD)),
                 /* withPrimitiveBlender= */ false,
-                Coverage::kLCD);
+                Coverage::kLCD,
+                dsFlags,
+                requiresMSAA);
     }
 
     if (drawTypes & DrawTypeFlags::kDrawVertices) {
@@ -150,7 +185,9 @@ void Precompile(Context* context, const PaintOptions& options, DrawTypeFlags dra
             PrecompileCombinations(context, options, keyContext,
                                    DrawTypeFlags::kDrawVertices,
                                    withPrimitiveBlender,
-                                   Coverage::kNone);
+                                   Coverage::kNone,
+                                   dsFlags,
+                                   requiresMSAA);
         }
     }
 }
@@ -160,7 +197,9 @@ void PrecompileCombinations(Context* context,
                             const KeyContext& keyContext,
                             DrawTypeFlags drawTypes,
                             bool withPrimitiveBlender,
-                            Coverage coverage) {
+                            Coverage coverage,
+                            DepthStencilFlags dsFlags,
+                            bool requiresMSAA) {
     if (drawTypes == DrawTypeFlags::kNone) {
         return;
     }
@@ -180,6 +219,37 @@ void PrecompileCombinations(Context* context,
 
     Swizzle writeSwizzle = caps->getWriteSwizzle(destCT, info);
 
+    const RenderPassDesc renderPassDesc =
+            RenderPassDesc::Make(caps,
+                                 info,
+                                 LoadOp::kClear,
+                                 StoreOp::kStore,
+                                 dsFlags,
+                                 /* clearColor= */ { .0f, .0f, .0f, .0f },
+                                 requiresMSAA,
+                                 writeSwizzle);
+
+#if 0
+    bool foo = false, bar = false;
+    const RendererProvider* rendererProvider = context->priv().rendererProvider();
+
+    for (const Renderer* r : rendererProvider->renderers()) {
+        if (!(r->drawTypes() & drawTypes)) {
+            continue;
+        }
+
+        for (const RenderStep* s : r->steps()) {
+            SkDebugf("rs %s msaa: %d\n", s->name(), s->requiresMSAA1());
+            if (s->requiresMSAA1()) {
+                foo = true;
+            } else {
+                bar = true;
+            }
+        }
+    }
+#endif
+
+#if 0
     // Note: at least on Metal, the LoadOp, StoreOp and clearColor fields don't influence the
     // actual RenderPassDescKey.
     // TODO: if all of the Renderers associated w/ the requested drawTypes require MSAA we
@@ -218,6 +288,7 @@ void PrecompileCombinations(Context* context,
                              /* requiresMSAA= */ false,
                              writeSwizzle),
     };
+#endif
 
     options.priv().buildCombinations(
         keyContext,
@@ -225,7 +296,7 @@ void PrecompileCombinations(Context* context,
         drawTypes,
         withPrimitiveBlender,
         coverage,
-        [context, &keyContext, &renderPassDescs](UniquePaintParamsID uniqueID,
+        [context, &keyContext, &renderPassDesc](UniquePaintParamsID uniqueID,
                                                  DrawTypeFlags drawTypes,
                                                  bool withPrimitiveBlender,
                                                  Coverage coverage) {
@@ -234,7 +305,7 @@ void PrecompileCombinations(Context* context,
                        keyContext,
                        uniqueID,
                        drawTypes,
-                       renderPassDescs,
+                       { renderPassDesc },
                        withPrimitiveBlender,
                        coverage);
         });

@@ -61,6 +61,7 @@ using RegenerateAtlasDelegate = std::function<std::tuple<bool, int>(GlyphVector*
                                                                     int padding)>;
 
 struct RendererData {
+    float fFoo;
     bool isSDF = false;
     bool isLCD = false;
     skgpu::MaskFormat maskFormat;
