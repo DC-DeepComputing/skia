@@ -158,10 +158,6 @@ SkPngRustCodec::SkPngRustCodec(SkEncodedInfo&& encodedInfo,
 
 SkPngRustCodec::~SkPngRustCodec() = default;
 
-SkEncodedImageFormat SkPngRustCodec::onGetEncodedFormat() const {
-    return SkEncodedImageFormat::kPNG;
-}
-
 SkCodec::Result SkPngRustCodec::onGetPixels(const SkImageInfo& dstInfo,
                                             void* dst,
                                             size_t rowBytes,
