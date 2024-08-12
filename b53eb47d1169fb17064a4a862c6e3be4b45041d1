@@ -69,6 +69,24 @@
       "message": "Is Viewer still broken for you I know James recently submitted some fixes, and Viewer was working for me last I tried.",
       "revId": "b53eb47d1169fb17064a4a862c6e3be4b45041d1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f61efc81_bbcee6d1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-08-12T12:55:20Z",
+      "side": 1,
+      "message": "Just gave it a try and it builds/works now, thanks!",
+      "parentUuid": "e556303b_abfe6bb5",
+      "revId": "b53eb47d1169fb17064a4a862c6e3be4b45041d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
