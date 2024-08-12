@@ -52,6 +52,24 @@
       "parentUuid": "58e574d5_5eb7ffda",
       "revId": "5a37990b05d47a79e7bca3db4942f292ee13627b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0dcfcd36_56e0a172",
+        "filename": "tools/sk_app/BUILD.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-08-12T13:57:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9d3113d0_a166a589",
+      "revId": "5a37990b05d47a79e7bca3db4942f292ee13627b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

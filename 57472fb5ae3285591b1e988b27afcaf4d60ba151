@@ -16,6 +16,24 @@
       "message": "Locally, I still needed to change this to\n```suggestion\n        \"//src/gpu:has_ganesh_backend\": [\"CommonFlagsGanesh.cpp\",\"CommonFlagsGanesh.h\",],\n```\n\nto get the viewer to build after the previous flag change CL. Does this CL also address fixing this and enabling a regular //tools/viewer build?",
       "revId": "57472fb5ae3285591b1e988b27afcaf4d60ba151",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f360df68_1f1ed0cc",
+        "filename": "tools/flags/BUILD.bazel",
+        "patchSetId": 7
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-08-12T13:57:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6b5f8371_066b1f54",
+      "revId": "57472fb5ae3285591b1e988b27afcaf4d60ba151",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
