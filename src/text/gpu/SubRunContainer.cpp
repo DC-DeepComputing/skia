@@ -729,7 +729,7 @@ public:
               sk_sp<SkRefCnt> subRunStorage,
               const AtlasDrawDelegate& drawAtlas) const override {
         drawAtlas(this, drawOrigin, paint, std::move(subRunStorage),
-                  {/* isSDF = */false, fVertexFiller.isLCD(), fVertexFiller.grMaskType()});
+                  {/*$$*/ 1.0f, /* isSDF = */false, fVertexFiller.isLCD(), fVertexFiller.grMaskType()});
     }
 
     int unflattenSize() const override {
@@ -969,7 +969,7 @@ public:
               sk_sp<SkRefCnt> subRunStorage,
               const AtlasDrawDelegate& drawAtlas) const override {
         drawAtlas(this, drawOrigin, paint, std::move(subRunStorage),
-                  {/* isSDF = */false, fVertexFiller.isLCD(), fVertexFiller.grMaskType()});
+                  {/*$$*/ 1.0f, /* isSDF = */false, fVertexFiller.isLCD(), fVertexFiller.grMaskType()});
     }
 
 #if defined(SK_GANESH) || defined(SK_USE_LEGACY_GANESH_TEXT_APIS)
@@ -1200,7 +1200,7 @@ public:
               sk_sp<SkRefCnt> subRunStorage,
               const AtlasDrawDelegate& drawAtlas) const override {
         drawAtlas(this, drawOrigin, paint, std::move(subRunStorage),
-                  {/* isSDF = */true, /* isLCD = */fUseLCDText, skgpu::MaskFormat::kA8});
+                  {/*$$*/ 1.0f, /* isSDF = */true, /* isLCD = */fUseLCDText, skgpu::MaskFormat::kA8});
     }
 
 #if defined(SK_GANESH) || defined(SK_USE_LEGACY_GANESH_TEXT_APIS)

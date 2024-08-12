@@ -541,7 +541,9 @@ std::unique_ptr<SkCanvas> SkStrikeServer::makeAnalysisCanvas(int width, int heig
                                             props.isUseDeviceIndependentFonts(),
                                             DFTPerspSupport,
                                             kMinDistanceFieldFontSize,
-                                            kGlyphsAsPathsFontSize};
+                                            kGlyphsAsPathsFontSize,
+                                            false,
+                                            true}; /**/
 #else
     auto control = sktext::gpu::SubRunControl{};
 #endif

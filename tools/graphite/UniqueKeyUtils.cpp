@@ -39,6 +39,9 @@ void DumpDescs(const RendererProvider* rendererProvider,
 
     dict->dump(pipelineDesc.paintParamsID());
 
+#if 1
+    SkDebugf("%s\n", rpd.toPipelineLabel().c_str());
+#else
     SkDebugf("RenderPassDesc:\n");
     SkDebugf("   colorAttach: %s\n", rpd.fColorAttachment.toString().c_str());
     SkDebugf("   colorResolveAttach: %s\n", rpd.fColorResolveAttachment.toString().c_str());
@@ -53,7 +56,7 @@ void DumpDescs(const RendererProvider* rendererProvider,
              rpd.fClearStencil,
              rpd.fWriteSwizzle.asString().c_str(),
              rpd.fSampleCount);
-
+#endif
 }
 #endif // SK_DEBUG
 
