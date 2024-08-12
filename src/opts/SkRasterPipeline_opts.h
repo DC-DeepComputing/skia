@@ -2061,18 +2061,23 @@ STAGE(dither, const float* rate) {
           | (Y & 2) << 2 | (X & 2) << 1
           | (Y & 4) >> 1 | (X & 4) >> 2;
 
-    // Scale that dither to [0,1), then (-0.5,+0.5), here using 63/128 = 0.4921875 as 0.5-epsilon.
-    // We want to make sure our dither is less than 0.5 in either direction to keep exact values
-    // like 0 and 1 unchanged after rounding.
-    F dither = mad(cast(M), 2/128.0f, -63/128.0f);
-
-    r = mad(dither, *rate, r);
-    g = mad(dither, *rate, g);
-    b = mad(dither, *rate, b);
-
-    r = max(0.0f, min(r, a));
-    g = max(0.0f, min(g, a));
-    b = max(0.0f, min(b, a));
+    // When we finally scale up to a bitdepth (e.g. 8-bit), we'll do this:
+    // r * 255 + 0.5
+    //
+    // For dithering, we really want:
+    // r * 255 + [0...63/64] == r * 255 + d
+    //
+    // To trick out that last (bitdepth) stage, we adjust our dither amount (d) such that
+    // (r + d') * 255 + 0.5 == r * 255 + d
+    // solving for d' ...
+    // d' = (d - 0.5) / 255
+    //
+    // "rate" is that 1/255 (more precisely: 1/(2^N - 1) for each bitdepth)
+    //
+    F dither = *rate * (cast(M) * (1/64.f) - 0.5f);
+    r = r + dither;
+    g = g + dither;
+    b = b + dither;
 }
 
 // load 4 floats from memory, and splat them into r,g,b,a
