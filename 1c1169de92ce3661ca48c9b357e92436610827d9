@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a45e4ad0_a42583ed",
+        "filename": "include/private/base/SkTArray.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 599,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-08-12T17:32:47Z",
+      "side": 1,
+      "message": "It\u0027s probably safe to also check `!fPoisoned`, given how we call these two functions, but that would break if someone ever tried to re-poison a buffer after a size-change, so I left it alone.",
+      "revId": "1c1169de92ce3661ca48c9b357e92436610827d9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
