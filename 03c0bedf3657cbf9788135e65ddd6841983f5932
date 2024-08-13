@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92503b45_d212f4bf",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-08-13T15:35:21Z",
+      "side": 1,
+      "message": "[pdf] Remove no longer needed SkClipOp checks",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 22
+      },
+      "revId": "03c0bedf3657cbf9788135e65ddd6841983f5932",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b84474d1_897e015b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-08-13T15:35:21Z",
+      "side": 1,
+      "message": "by",
+      "range": {
+        "startLine": 10,
+        "startChar": 27,
+        "endLine": 10,
+        "endChar": 29
+      },
+      "revId": "03c0bedf3657cbf9788135e65ddd6841983f5932",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ccce0c1_5177a6fa",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-08-13T15:35:21Z",
+      "side": 1,
+      "message": "All values of SkClipOp other than kDifference and kIntersect were removed in [0].\n\n[0] https://skia.googlesource.com/skia.git/+/a0438e6604b1277ed3e68dd295a144344e5c99c5",
+      "revId": "03c0bedf3657cbf9788135e65ddd6841983f5932",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
