@@ -314,6 +314,8 @@ skia_cc_library(
         "-Wno-unused-function",
         "-Wno-unused-template",
         "-Wno-unused-const-variable",
+        # TODO(borenet)
+        "-Wno-invalid-constexpr",
     ],
     # This is not intended to be used for tests or anything, just for IWYU
     visibility = ["//visibility:private"],
