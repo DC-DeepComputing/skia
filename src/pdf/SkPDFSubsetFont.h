@@ -3,9 +3,9 @@
 #ifndef SkPDFSubsetFont_DEFINED
 #define SkPDFSubsetFont_DEFINED
 
+#include "include/core/SkData.h"
 #include "include/core/SkRefCnt.h"
 
-class SkData;
 class SkPDFGlyphUse;
 class SkTypeface;
 
