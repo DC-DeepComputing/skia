@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb07394e_7125e939",
+        "filename": "BUILD.gn",
+        "patchSetId": 1
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-08-13T17:36:09Z",
+      "side": 1,
+      "message": "This is a config, which is generally just for defines, not sources. (I\u0027m not sure the sources will even propagate?)",
+      "range": {
+        "startLine": 89,
+        "startChar": 0,
+        "endLine": 89,
+        "endChar": 6
+      },
+      "revId": "f30f5af37a392b395d7bfe89acd4cae249dd6d14",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
