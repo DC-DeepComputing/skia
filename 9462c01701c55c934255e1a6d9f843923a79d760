@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e4f15d71_11f1b168",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-08-13T00:14:07Z",
+      "side": 1,
+      "message": "@brianosman and @scroggo - can you PTAL?\n\nAs pointed out in the bug, the doc here has a few extra FFI notes: https://docs.google.com/document/d/1EPn1Ss-hfOC6Ki_B5CC6GA_UFnY3TmoDLCP2HjP7bms/edit?usp\u003dsharing",
+      "revId": "9462c01701c55c934255e1a6d9f843923a79d760",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6850cc3a_6e4b5694",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-08-13T00:14:07Z",
+      "side": 1,
+      "message": "I\u0027d rather wait with tackling this until after we support incremental, row-by-row decoding (including interlaced images) - this is tracked in https://crbug.com/356923435.  (There is no hard dependency between these bugs.  It just seems that buffer management will keep evolving until we handle incremental decoding.)",
+      "range": {
+        "startLine": 207,
+        "startChar": 77,
+        "endLine": 207,
+        "endChar": 78
+      },
+      "revId": "9462c01701c55c934255e1a6d9f843923a79d760",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6621765f_98a4952b",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-08-13T00:14:07Z",
+      "side": 1,
+      "message": "I assume that using `std::vector` here is okay?  In the bug I noted that I may have seen a different Skia API for doing this, but I can\u0027t remember right now what it was... (and it is quite possible that I am misremembering...).",
+      "range": {
+        "startLine": 208,
+        "startChar": 4,
+        "endLine": 208,
+        "endChar": 15
+      },
+      "revId": "9462c01701c55c934255e1a6d9f843923a79d760",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "57723242_69320153",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-08-13T00:14:07Z",
+      "side": 1,
+      "message": "I assume that it is okay if `MakeFromStream` may fail (returning `kIncompleteInput`) if the input stream doesn\u0027t yet cover `IHDR` chunk.  IIUC the GIF decoder follows the same behavior.\n\nIn practice `MakeStream` needs to build a color profile and therefore it may need to decode everything until the first `IDAT` chunk.  I assume that this is also okay - there doesn\u0027t seem to be a way around this (since `SkCodec` takes `SkEncodedInfo` as a parameter and `SkEncodedInfo` needs to take into account `gAMA`, `iCCP`, etc.).",
+      "range": {
+        "startLine": 27,
+        "startChar": 93,
+        "endLine": 27,
+        "endChar": 94
+      },
+      "revId": "9462c01701c55c934255e1a6d9f843923a79d760",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b264830_3d3f90db",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-08-13T00:14:07Z",
+      "side": 1,
+      "message": "We don\u0027t yet provide explicit support for rewinding the input stream.  I imagine that this may require recreating `fReader`.\n\nI assume that this is fine - we can get there once we enable enough test coverage to get test failures (and I assume that we will get test failures if rewinding is needed for Blink;  it seems that all `//ui/gfx` tests pass without rewinding support).",
+      "range": {
+        "startLine": 43,
+        "startChar": 39,
+        "endLine": 43,
+        "endChar": 40
+      },
+      "revId": "9462c01701c55c934255e1a6d9f843923a79d760",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
