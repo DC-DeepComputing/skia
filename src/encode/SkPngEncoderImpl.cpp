@@ -328,6 +328,8 @@ static transform_scanline_proc choose_proc(const SkImageInfo& info) {
                     SkDEBUGFAIL("unknown alpha type");
                     return nullptr;
             }
+        case kRGB_F16F16F16x_SkColorType:
+            return transform_scanline_RGBX;
         case kRGBA_F32_SkColorType:
             switch (info.alphaType()) {
                 case kOpaque_SkAlphaType:
