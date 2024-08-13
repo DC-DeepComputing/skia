@@ -44,7 +44,7 @@ SkScalar SubRunControl::MinSDFTRange(bool useSDFTForSmallText, SkScalar min) {
 SubRunControl::SubRunControl(
         bool ableToUseSDFT, bool useSDFTForSmallText, bool useSDFTForPerspectiveText,
         SkScalar min, SkScalar max,
-        bool forcePathAA)
+        bool forcePathAA, bool foo)
         : fMinDistanceFieldFontSize{MinSDFTRange(useSDFTForSmallText, min)}
         , fMaxDistanceFieldFontSize{max}
         , fAbleToUseSDFT{ableToUseSDFT}

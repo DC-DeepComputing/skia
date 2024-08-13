@@ -362,8 +362,8 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(const DawnSharedContext* 
 
 #if !defined(__EMSCRIPTEN__)
     const bool loadMsaaFromResolve =
-            renderPassDesc.fColorResolveAttachment.fTextureInfo.isValid() &&
-            renderPassDesc.fColorResolveAttachment.fLoadOp == LoadOp::kLoad;
+            renderPassDesc.fColorResolveAttachment1.fTextureInfo.isValid() &&
+            renderPassDesc.fColorResolveAttachment1.fLoadOp == LoadOp::kLoad;
     // Special case: a render pass loading resolve texture requires additional settings for the
     // pipeline to make it compatible.
     wgpu::ColorTargetStateExpandResolveTextureDawn pipelineMSAALoadResolveTextureDesc;
