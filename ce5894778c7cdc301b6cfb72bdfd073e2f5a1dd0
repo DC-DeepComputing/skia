@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8e1e5c9_5398161c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-08-13T18:26:53Z",
+      "side": 1,
+      "message": "Is this the only instance of this happening? We tend to forward declare `sk_sp\u003c\u003e` held types throughout Skia. In any case, we can probably put in the workaround. IWYU (include-what-you-use) might complain, I kicked off the CQ to check. In that case we\u0027ll just need to add a comment to the include that suppresses the rule.",
+      "revId": "ce5894778c7cdc301b6cfb72bdfd073e2f5a1dd0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
