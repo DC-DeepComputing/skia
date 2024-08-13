@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f076c63_92cd7510",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 978,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-08-13T22:13:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "47d4598e_18cd897f",
+      "range": {
+        "startLine": 963,
+        "startChar": 0,
+        "endLine": 978,
+        "endChar": 14
+      },
+      "revId": "4783eb7bea16066197386b061a2994d083d01e68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ec23bc5d_b8fa6bea",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-08-13T18:38:15Z",
       "side": 1,
       "message": "nit: might be nice to save `rawKeyData[2]` into a local variable like `renderpassDescBits`",
+      "range": {
+        "startLine": 989,
+        "startChar": 34,
+        "endLine": 989,
+        "endChar": 47
+      },
+      "revId": "4783eb7bea16066197386b061a2994d083d01e68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "87449d5a_23ccc9d7",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 989,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-08-13T22:13:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ec23bc5d_b8fa6bea",
       "range": {
         "startLine": 989,
         "startChar": 34,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b943bbdf_b9ad8786",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 999,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-08-13T22:13:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b8176929_aab4cfd6",
+      "range": {
+        "startLine": 999,
+        "startChar": 26,
+        "endLine": 999,
+        "endChar": 37
+      },
+      "revId": "4783eb7bea16066197386b061a2994d083d01e68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "239a9b48_27a44563",
@@ -83,6 +155,30 @@
       "writtenOn": "2024-08-13T18:38:15Z",
       "side": 1,
       "message": "We should be able to assert that the paint ID was invalid only if the renderstep skips shading, so we could move this logic up to where we read from the raw key to avoid parsing into the key data struct.",
+      "range": {
+        "startLine": 1041,
+        "startChar": 0,
+        "endLine": 1042,
+        "endChar": 99
+      },
+      "revId": "4783eb7bea16066197386b061a2994d083d01e68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2abb425e_f40b22c7",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1042,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-08-13T22:13:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "239a9b48_27a44563",
       "range": {
         "startLine": 1041,
         "startChar": 0,
