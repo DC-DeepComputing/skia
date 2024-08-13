@@ -26,9 +26,9 @@
         // a lot slower. But we want all those headers included, so we can use
         // their features (after making runtime checks).
         #include <smmintrin.h>
-        #include <avxintrin.h>
-        #include <avx2intrin.h>
-        #include <avx512fintrin.h>
+        //#include <avxintrin.h>
+        //#include <avx2intrin.h>
+        //#include <avx512fintrin.h>
         #include <avx512dqintrin.h>
     #endif
 #endif
