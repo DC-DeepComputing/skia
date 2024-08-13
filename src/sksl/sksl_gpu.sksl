@@ -98,6 +98,25 @@ $pure half4 blend_xor(half4 src, half4 dst) { return (1 - dst.a)*src + (1 - src.
 // - DstATop: half4(0, 0, -1,  1)
 // - Xor:     half4(0, 0, -1, -1)
 $pure half4 blend_porter_duff(half4 blendOp, half4 src, half4 dst) {
+    // dst-over blendop = (0,1,-1,0)
+    //
+    // coeff = (0,1) + ((-1,0)*((dstA, srcA) + min((-1,0), (0,0))))
+    //       = (0,1) + (-1,0)*((dstA,0) + (-1,0))
+    //       = (0,1) + (1-dstA, 0)
+    //       = (1-dstA, 1)
+    //
+    //
+    // src coeffs = zero, one, dstA, 1-dstA
+    // dst coeffs = zero, one, srcA, 1-srcA, srcC, 1-srcC
+
+
+    // src * (const + scale*dstA) -> const = 0,1, scale=1,0,-1  -> 2 values no minimum right?
+    // dst is the same 2 values, except then how do select srcC instead of srcA for the 3 channels?
+
+    // half2 coeff = blendOp.xy + blendOp.zw * (half2(dst.a, src.a))
+    // blendOp = (1,1,-1,0) -> (1,1) + (-1,0)*(dstA,srcA) -> (1-dstA,1) check for dstOver
+
+
     half2 coeff = blendOp.xy + (blendOp.zw * (half2(dst.a, src.a) + min(blendOp.zw, 0)));
     return src * coeff.x + dst * coeff.y;
 }
