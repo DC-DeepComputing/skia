@@ -13,10 +13,12 @@
 #include "include/gpu/graphite/ContextOptions.h"
 #include "include/gpu/graphite/TextureInfo.h"
 #include "include/gpu/graphite/dawn/DawnBackendContext.h"
+#include "src/gpu/SwizzlePriv.h"
 #include "src/gpu/graphite/ComputePipelineDesc.h"
 #include "src/gpu/graphite/GraphicsPipelineDesc.h"
 #include "src/gpu/graphite/GraphiteResourceKey.h"
 #include "src/gpu/graphite/RenderPassDesc.h"
+#include "src/gpu/graphite/RendererProvider.h"
 #include "src/gpu/graphite/ResourceTypes.h"
 #include "src/gpu/graphite/UniformManager.h"
 #include "src/gpu/graphite/dawn/DawnGraphicsPipeline.h"
@@ -866,16 +868,25 @@ void DawnCaps::setColorType(SkColorType colorType,
     }
 }
 
-uint32_t DawnCaps::getRenderPassDescKeyForPipeline(const RenderPassDesc& renderPassDesc) const {
-    // Make sure the format table indices will fit into the packed bits, with room to spare for
-    // representing an unused attachment.
-    static constexpr int kFormatBits = 11; // x2 attachments
-    static constexpr int kSampleBits = 4;  // x2 attachments
-    static constexpr int kResolveBits = 1;
-    static constexpr int kUnusedAttachmentIndex = (1 << kFormatBits) - 1;
-    static_assert(2*(kFormatBits + kSampleBits) + kResolveBits <= 32);
-    static_assert(std::size(kFormats) <= kUnusedAttachmentIndex);
+// Make sure the format table indices will fit into the packed bits, with room to spare for
+// representing an unused attachment.
+static constexpr int kFormatBits = 11; // x2 attachments (color & depthStencil formats)
+static constexpr int kSampleBits = 4;  // x2 attachments (color & depthStencil numSamples)
+static constexpr int kResolveBits = 1;
+static constexpr int kUnusedAttachmentIndex = (1 << kFormatBits) - 1;
+static_assert(2*(kFormatBits + kSampleBits) + kResolveBits <= 32);
+static_assert(std::size(kFormats) <= kUnusedAttachmentIndex);
 
+static constexpr int kDepthStencilNumSamplesOffset = kResolveBits;
+static constexpr int kDepthStencilFormatOffset = kDepthStencilNumSamplesOffset + kSampleBits;
+static constexpr int kColorNumSamplesOffset = kDepthStencilFormatOffset + kFormatBits;
+static constexpr int kColorFormatOffset = kColorNumSamplesOffset + kSampleBits;
+
+static constexpr uint32_t kFormatMask     = (1 << kFormatBits) - 1;
+static constexpr uint32_t kNumSamplesMask = (1 << kSampleBits) - 1;
+static constexpr uint32_t kResolveMask    = (1 << kResolveBits) - 1;
+
+uint32_t DawnCaps::getRenderPassDescKeyForPipeline(const RenderPassDesc& renderPassDesc) const {
     const TextureInfo& colorInfo = renderPassDesc.fColorAttachment.fTextureInfo;
     const TextureInfo& depthStencilInfo = renderPassDesc.fDepthStencilAttachment.fTextureInfo;
     // The color attachment should be valid; the depth-stencil attachment may not be if it's not
@@ -911,20 +922,25 @@ uint32_t DawnCaps::getRenderPassDescKeyForPipeline(const RenderPassDesc& renderP
     SkASSERT(colorInfo.numSamples() < (1 << kSampleBits));
     SkASSERT(depthStencilFormatIndex < (1 << kFormatBits));
     SkASSERT(depthStencilInfo.numSamples() < (1 << kSampleBits));
-    return (colorFormatIndex              << (kResolveBits+kSampleBits+kFormatBits+kSampleBits)) |
-           (colorInfo.numSamples()        << (kResolveBits+kSampleBits+kFormatBits)) |
-           (depthStencilFormatIndex       << (kResolveBits+kSampleBits)) |
-           (depthStencilInfo.numSamples() << (kResolveBits)) |
+    SkASSERT(loadResolveAttachmentKey < (1 << kResolveBits));
+
+    return (colorFormatIndex              << kColorFormatOffset) |
+           (colorInfo.numSamples()        << kColorNumSamplesOffset) |
+           (depthStencilFormatIndex       << kDepthStencilFormatOffset) |
+           (depthStencilInfo.numSamples() << kDepthStencilNumSamplesOffset) |
            loadResolveAttachmentKey;
 }
+
+static const skgpu::UniqueKey::Domain kDawnGraphicsPipelineDomain = UniqueKey::GenerateDomain();
+static constexpr int kDawnGraphicsPipelineKeyData32Count = 4;
 
 UniqueKey DawnCaps::makeGraphicsPipelineKey(const GraphicsPipelineDesc& pipelineDesc,
                                             const RenderPassDesc& renderPassDesc) const {
     UniqueKey pipelineKey;
     {
-        static const skgpu::UniqueKey::Domain kGraphicsPipelineDomain = UniqueKey::GenerateDomain();
-        // 4 uint32_t's (render step id, paint id, uint64 RenderPassDesc)
-        UniqueKey::Builder builder(&pipelineKey, kGraphicsPipelineDomain, 4, "GraphicsPipeline");
+        // 4 uint32_t's (render step id, paint id, uint32 RenderPassDesc, uint16 write swizzle key)
+        UniqueKey::Builder builder(&pipelineKey, kDawnGraphicsPipelineDomain,
+                                   kDawnGraphicsPipelineKeyData32Count, "DawnGraphicsPipeline");
         // Add GraphicsPipelineDesc key.
         builder[0] = pipelineDesc.renderStepID();
         builder[1] = pipelineDesc.paintParamsID().asUInt();
@@ -938,6 +954,96 @@ UniqueKey DawnCaps::makeGraphicsPipelineKey(const GraphicsPipelineDesc& pipeline
     }
 
     return pipelineKey;
+}
+
+bool DawnCaps::extractGraphicsDescs(const UniqueKey& key,
+                                    GraphicsPipelineDesc* pipelineDesc,
+                                    RenderPassDesc* renderPassDesc,
+                                    const RendererProvider* rendererProvider) const {
+    struct UnpackedKeyData {
+        // From the GraphicsPipelineDesc
+        uint32_t fRenderStepID = 0;
+        UniquePaintParamsID fPaintParamsID;
+
+        // From the RenderPassDesc
+        wgpu::TextureFormat fColorFormat = wgpu::TextureFormat::Undefined;
+        uint32_t fColorSampleCount = 1;
+
+        wgpu::TextureFormat fDSFormat = wgpu::TextureFormat::Undefined;
+        uint32_t fDSSampleCount = 1;
+
+        LoadOp fLoadOp = LoadOp::kClear;
+
+        Swizzle fWriteSwizzle;
+    } keyData;
+
+    SkASSERT(key.domain() == kDawnGraphicsPipelineDomain);
+    SkASSERT(key.dataSize() == 4 * kDawnGraphicsPipelineKeyData32Count);
+
+    const uint32_t* rawKeyData = key.data();
+
+    keyData.fRenderStepID = rawKeyData[0];
+    keyData.fPaintParamsID = rawKeyData[1] ? UniquePaintParamsID(rawKeyData[1])
+                                           : UniquePaintParamsID::InvalidID();
+
+    uint32_t colorFormatIndex  = (rawKeyData[2] >> kColorFormatOffset) & kFormatMask;
+    SkASSERT(colorFormatIndex < std::size(kFormats));
+    keyData.fColorFormat       = kFormats[colorFormatIndex];
+    keyData.fColorSampleCount  = (rawKeyData[2] >> kColorNumSamplesOffset) & kNumSamplesMask;
+
+    uint32_t depthStencilFormatIndex = (rawKeyData[2] >> kDepthStencilFormatOffset) & kFormatMask;
+    if (depthStencilFormatIndex != kUnusedAttachmentIndex) {
+        SkASSERT(depthStencilFormatIndex < std::size(kFormats));
+        keyData.fDSFormat = kFormats[depthStencilFormatIndex];
+    }
+    keyData.fDSSampleCount           =
+            (rawKeyData[2] >> kDepthStencilNumSamplesOffset) & kNumSamplesMask;
+    if (rawKeyData[2] & kResolveMask) {
+        // This bit should only be set if Dawn supports ExpandResolveTexture load op
+        SkASSERT(this->resolveTextureLoadOp().has_value());
+        keyData.fLoadOp = LoadOp::kLoad;
+    }
+
+    keyData.fWriteSwizzle = SwizzleCtorAccessor::Make(rawKeyData[3]);
+
+    SkASSERT(keyData.fColorSampleCount == keyData.fDSSampleCount);
+
+    // Recreate the RenderPassDesc
+    SkEnumBitMask<DepthStencilFlags> dsFlags = DepthStencilFlags::kNone;
+    if (DawnFormatIsDepth(keyData.fDSFormat)) {
+        dsFlags |= DepthStencilFlags::kDepth;
+    }
+    if (DawnFormatIsStencil(keyData.fDSFormat)) {
+        dsFlags |= DepthStencilFlags::kStencil;
+    }
+
+    DawnTextureInfo dawnInfo;
+    dawnInfo.fSampleCount = keyData.fColorSampleCount;
+    dawnInfo.fMipmapped = skgpu::Mipmapped::kNo;
+    dawnInfo.fFormat = keyData.fColorFormat;
+    dawnInfo.fViewFormat = keyData.fColorFormat;
+    dawnInfo.fUsage = wgpu::TextureUsage::TextureBinding | wgpu::TextureUsage::RenderAttachment;
+
+    TextureInfo info = TextureInfos::MakeDawn(dawnInfo);
+
+    *renderPassDesc = RenderPassDesc::Make(this,
+                                           info,
+                                           keyData.fLoadOp,
+                                           StoreOp::kStore,
+                                           dsFlags,
+                                           /* clearColor= */ { .0f, .0f, .0f, .0f },
+                                           /* requiresMSAA= */ keyData.fColorSampleCount > 1,
+                                           keyData.fWriteSwizzle);
+
+    // Recreate the GraphicsPipelineDesc
+    const RenderStep* renderStep = rendererProvider->lookup(keyData.fRenderStepID);
+
+    UniquePaintParamsID paintID = renderStep->performsShading() ? keyData.fPaintParamsID
+                                                                : UniquePaintParamsID::InvalidID();
+
+    *pipelineDesc = GraphicsPipelineDesc(renderStep, paintID);
+
+    return true;
 }
 
 UniqueKey DawnCaps::makeComputePipelineKey(const ComputePipelineDesc& pipelineDesc) const {
