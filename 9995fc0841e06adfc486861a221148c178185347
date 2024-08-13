@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1978958_979cc9e5",
+        "filename": "BUILD.gn",
+        "patchSetId": 2
+      },
+      "lineNbr": 1630,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-08-13T19:25:19Z",
+      "side": 1,
+      "message": "`load_dynamic_library`",
+      "range": {
+        "startLine": 1630,
+        "startChar": 16,
+        "endLine": 1630,
+        "endChar": 24
+      },
+      "revId": "9995fc0841e06adfc486861a221148c178185347",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dfd6ff93_dae37ff6",
+        "filename": "BUILD.gn",
+        "patchSetId": 2
+      },
+      "lineNbr": 1829,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-08-13T19:25:19Z",
+      "side": 1,
+      "message": "I meant that it should be one of these. It\u0027s a bit confusing to have a template and a target with the same name.",
+      "revId": "9995fc0841e06adfc486861a221148c178185347",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0e20659_aff68431",
+        "filename": "BUILD.gn",
+        "patchSetId": 2
+      },
+      "lineNbr": 1920,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-08-13T19:25:19Z",
+      "side": 1,
+      "message": "e.g. Like this.",
+      "revId": "9995fc0841e06adfc486861a221148c178185347",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
