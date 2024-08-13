@@ -497,6 +497,16 @@ def _CheckBannedAPIs(input_api, output_api):
     (r'GRAPHITE_TEST_UTILS', 'GPU_TEST_UTILS'),
   ]
 
+  allowed_test_util_paths = [
+    'include/core/SkTypes.h',
+    'include/gpu/',
+    'include/private/gpu/',
+    'src/gpu/',
+    'tests/',
+    'tools/',
+  ]
+  gpu_test_utils_re = input_api.re.compile('GPU_TEST_UTILS')
+
   # These defines are either there or not, and using them with just an #if is a
   # subtle, frustrating bug.
   existence_defines = ['SK_GANESH', 'SK_GRAPHITE', 'SK_GL', 'SK_VULKAN', 'SK_DAWN', 'SK_METAL',
@@ -535,6 +545,14 @@ def _CheckBannedAPIs(input_api, output_api):
           else:
             errors.append('%s:%s: Instead of %s, please use %s.' % (
                 affected_filepath, line_num, match.group(), replacement))
+        match = gpu_test_utils_re.search(line)
+        if match:
+          for exc in allowed_test_util_paths:
+            if affected_file_path.startswith(exc):
+              break
+          else:
+            errors.append('%s:%s: Only GPU code should use GPU_TEST_UTILS.' % (
+                affected_filepath, line_num))
 
   if errors:
     return [output_api.PresubmitError('\n'.join(errors))]
