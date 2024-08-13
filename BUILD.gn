@@ -104,6 +104,7 @@ config("skia_private") {
   }
   libs = []
   lib_dirs = []
+  sources = []
   if (skia_use_gl && skia_use_angle) {
     defines += [ "SK_ANGLE" ]
   }
@@ -122,6 +123,12 @@ config("skia_private") {
 
   # Temporary staging flag:
   defines += [ "SK_ENABLE_AVX512_OPTS" ]
+
+  if (is_win) {
+    sources += [ "tools/library/LoadDynamicLibrary_win.cpp" ]
+  } else {
+    sources += [ "tools/library/LoadDynamicLibrary_posix.cpp" ]
+  }
 }
 
 # Any code that's linked into Skia-the-library should use this config via += skia_library_configs.
@@ -1520,7 +1527,6 @@ skia_component("skia") {
     sources += skia_ports_windows_sources + [
                  "src/ports/SkDebug_win.cpp",
                  "src/ports/SkImageGeneratorWIC.cpp",
-                 "src/ports/SkOSLibrary_win.cpp",
                ]
     libs += [
       "Ole32.lib",
@@ -1535,10 +1541,7 @@ skia_component("skia") {
       ]
     }
   } else {
-    sources += [
-      "src/ports/SkOSFile_posix.cpp",
-      "src/ports/SkOSLibrary_posix.cpp",
-    ]
+    sources += [ "src/ports/SkOSFile_posix.cpp" ]
     if (is_ios) {
       sources += [ "src/ports/SkOSFile_ios.h" ]
     }
