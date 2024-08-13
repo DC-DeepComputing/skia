@@ -20,6 +20,47 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "660399be_dcf61dac",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-08-13T18:40:50Z",
+      "side": 1,
+      "message": "This is redundant now",
+      "range": {
+        "startLine": 147,
+        "startChar": 0,
+        "endLine": 147,
+        "endChar": 23
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "595ac13a_6b5e4ce4",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+              "range": {
+                "startLine": 147,
+                "startChar": 0,
+                "endLine": 148,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "9462c01701c55c934255e1a6d9f843923a79d760",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6850cc3a_6e4b5694",
         "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
         "patchSetId": 12
@@ -31,6 +72,30 @@
       "writtenOn": "2024-08-13T00:14:07Z",
       "side": 1,
       "message": "I\u0027d rather wait with tackling this until after we support incremental, row-by-row decoding (including interlaced images) - this is tracked in https://crbug.com/356923435.  (There is no hard dependency between these bugs.  It just seems that buffer management will keep evolving until we handle incremental decoding.)",
+      "range": {
+        "startLine": 207,
+        "startChar": 77,
+        "endLine": 207,
+        "endChar": 78
+      },
+      "revId": "9462c01701c55c934255e1a6d9f843923a79d760",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8efec94e_c736e4f5",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-08-13T18:40:50Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "6850cc3a_6e4b5694",
       "range": {
         "startLine": 207,
         "startChar": 77,
@@ -54,6 +119,30 @@
       "writtenOn": "2024-08-13T00:14:07Z",
       "side": 1,
       "message": "I assume that using `std::vector` here is okay?  In the bug I noted that I may have seen a different Skia API for doing this, but I can\u0027t remember right now what it was... (and it is quite possible that I am misremembering...).",
+      "range": {
+        "startLine": 208,
+        "startChar": 4,
+        "endLine": 208,
+        "endChar": 15
+      },
+      "revId": "9462c01701c55c934255e1a6d9f843923a79d760",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7515e03e_5552526f",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-08-13T18:40:50Z",
+      "side": 1,
+      "message": "Skia has `SkAutoMalloc`, but `std::unique_ptr\u003cuint8_t[]\u003e` would be fine, too.",
+      "parentUuid": "6621765f_98a4952b",
       "range": {
         "startLine": 208,
         "startChar": 4,
