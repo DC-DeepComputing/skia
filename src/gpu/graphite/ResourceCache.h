@@ -53,14 +53,8 @@ public:
         return fPurgeableQueue.count() + fNonpurgeableResources.size();
     }
 
-    void insertResource(Resource*);
-
     // Find a resource that matches a key.
     Resource* findAndRefResource(const GraphiteResourceKey& key, skgpu::Budgeted);
-
-    // This is a thread safe call. If it fails the ResourceCache is no longer valid and the
-    // Resource should clean itself up if it is the last ref.
-    bool returnResource(Resource*, LastRemovedRef);
 
     // Purge resources not used since the passed point in time. Resources that have a gpu memory
     // size of zero will not be purged.
@@ -105,6 +99,13 @@ public:
 #endif
 
     ProxyCache* proxyCache() { return fProxyCache.get(); }
+
+    // This is a thread safe call and is a no-op if the cache has been shut down already. This
+    // should only be called by Resource. LastRemovedRef must not be kCache.
+    void returnResource(Resource*, LastRemovedRef);
+
+    // Registers the Resource with the cache; can only be called at the time of creation.
+    void insertResource(Resource*);
 
 private:
     ResourceCache(SingleOwner*, uint32_t recorderID, size_t maxBytes);

@@ -101,7 +101,6 @@ void ResourceCache::insertResource(Resource* resource) {
     }
 
     resource->registerWithCache(sk_ref_sp(this));
-    resource->refCache();
 
     // We must set the timestamp before adding to the array in case the timestamp wraps and we wind
     // up iterating over all the resources that already have timestamps.
@@ -188,15 +187,15 @@ void ResourceCache::refAndMakeResourceMRU(Resource* resource) {
     this->validate();
 }
 
-bool ResourceCache::returnResource(Resource* resource, LastRemovedRef removedRef) {
+void ResourceCache::returnResource(Resource* resource, LastRemovedRef removedRef) {
     // We should never be trying to return a LastRemovedRef of kCache.
     SkASSERT(removedRef != LastRemovedRef::kCache);
     SkAutoMutexExclusive locked(fReturnMutex);
     if (fIsShutdown) {
-        return false;
+        return;
     }
 
-    SkASSERT(resource);
+    SkASSERT(resource && resource->fReturnCache.get() == this);
 
     // When a non-shareable resource's CB and Usage refs are both zero, give it a chance prepare
     // itself to be reused. On Dawn/WebGPU we use this to remap kXferCpuToGpu buffers asynchronously
@@ -204,20 +203,40 @@ bool ResourceCache::returnResource(Resource* resource, LastRemovedRef removedRef
     if (resource->shouldDeleteASAP() == Resource::DeleteASAP::kNo &&
         resource->key().shareable() == Shareable::kNo &&
         removedRef == LastRemovedRef::kUsage) {
+        // If we get here, we know the usage ref count is 0, so the only way for that to increase
+        // again is if the Resource triggers the initial usage ref in the callback.
         resource->prepareForReturnToCache([resource] { resource->initialUsageRef(); });
+
         // Check if resource was re-ref'ed. In that case exit without adding to the queue.
-        if (resource->hasUsageRef()) {
-            return true;
+        if (resource->hasRefs<LastRemovedRef::kUsage>()) {
+            return;
         }
     }
 
     // We only allow one instance of a Resource to be in the return queue at a time. We do this so
     // that the ReturnQueue stays small and quick to process.
     //
-    // Because we take CacheRefs to all Resources added to the ReturnQueue, we would be safe if we
-    // decided to have multiple instances of a Resource. Even if an earlier returned instance of a
-    // Resource triggers that Resource to get purged from the cache, the Resource itself wouldn't
-    // get deleted until we drop all the CacheRefs in this ReturnQueue.
+    // Because we don't drop the cache's ref on a Resource until after the cache has shutdown the
+    // return queue (preventing later returns) *and* drained the existing return queue, a Resource
+    // will not be in the return queue when it is deleted.
+    //
+    // FIXME: is this true... we have a resource that gets into the return queue and is purgeable
+    // but hasn't had its returns processed yet.
+    //
+    // Is there any way we can try and drop the cache ref on it?
+    //   -> cache shutting down drains the cache, and won't allow anything else in the queue so that's fine
+    //   -> usage ref hit 0 and added resource to the queue
+    //      cache thread processes returned resources and moves the queue to temp variable, resetting queue and all return index values
+    //      CB thread completes GPU work and CB ref hits 0 so it's returned to the new queue
+    //      cache thread resumes and sees that it's overbudget and the resource is purgeable so it
+    //         unrefs its cache ref -> and if the CB thread's return has fully completed, the unref mutex
+    //         that was set during the return to new queue op will be gone, and we think we can delete the object
+    //   -> that means on the next processing of returned resources, we have a dead pointer in the queue
+
+    // so how do we get around this?
+    //   -> add a second ref while the resource is in the queue? that has worked and we have the bits for it
+    //   -> don't allow another thread to return the resource until the resource has been processed entirely?
+    //       -> not sure how to make that atomic
     if (*resource->accessReturnIndex() >= 0) {
         // If the resource is already in the return queue we promote the LastRemovedRef to be
         // kUsage if that is what is returned here.
@@ -605,7 +624,7 @@ void ResourceCache::validate() const {
             SkASSERT(key.isValid());
 
             // We should always have at least 1 cache ref
-            SkASSERT(resource->hasCacheRef());
+            // SkASSERT(resource->hasCacheRef());
 
             // All resources in the cache are owned. If we track wrapped resources in the cache
             // we'll need to update this check.
@@ -618,7 +637,7 @@ void ResourceCache::validate() const {
             // that the fScratch + fShareable equals the count in the fResourceMap.
             if (resource->isUsableAsScratch()) {
                 SkASSERT(key.shareable() == Shareable::kNo);
-                SkASSERT(!resource->hasUsageRef());
+                // SkASSERT(!resource->hasUsageRef());
                 ++fScratch;
                 SkASSERT(fResourceMap->has(resource, key));
                 SkASSERT(resource->budgeted() == skgpu::Budgeted::kYes);

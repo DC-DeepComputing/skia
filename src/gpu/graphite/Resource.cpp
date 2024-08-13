@@ -29,9 +29,7 @@ Resource::Resource(const SharedContext* sharedContext,
                    size_t gpuMemorySize,
                    bool commandBufferRefsAsUsageRefs)
         : fSharedContext(sharedContext)
-        , fUsageRefCnt(1)
-        , fCommandBufferRefCnt(0)
-        , fCacheRefCnt(0)
+        , fRefCnts(kUsageRefIncrement) // Start with 1 usage ref and no others
         , fCommandBufferRefsAsUsageRefs(commandBufferRefsAsUsageRefs)
         , fOwnership(ownership)
         , fGpuMemorySize(gpuMemorySize)
@@ -48,31 +46,56 @@ Resource::~Resource() {
 }
 
 void Resource::registerWithCache(sk_sp<ResourceCache> returnCache) {
+    // ResourceCache should be registered before the Resource escapes the ResourceProvider, e.g. it
+    // has a single usage ref and no others.
+    SkASSERT(this->isUniquelyHeld</*IgnoreCacheRef=*/false>());
     SkASSERT(!fReturnCache);
     SkASSERT(returnCache);
 
     fReturnCache = std::move(returnCache);
+    this->addRef<LastRemovedRef::kCache>();
 }
 
-bool Resource::notifyARefIsZero(LastRemovedRef removedRef) const {
+void Resource::notifyARefIsZero(LastRemovedRef removedRef) const {
     // No resource should have been destroyed if there was still any sort of ref on it.
     SkASSERT(!this->wasDestroyed());
 
     Resource* mutableThis = const_cast<Resource*>(this);
 
-    // TODO: We have not switched all resources to use the ResourceCache yet. Once we do we should
-    // be able to assert that we have an fCacheReturn.
-    // SkASSERT(fReturnCache);
-    if (removedRef != LastRemovedRef::kCache &&
-        fReturnCache &&
-        fReturnCache->returnResource(mutableThis, removedRef)) {
-        return false;
-    }
+    // Not all resources are registered with the cache, but notifyARefIsZero() should only be
+    // called when they have been registered.
+    SkASSERT(fReturnCache && removedRef != LastRemovedRef::kCache);
+    (void) fReturnCache->returnResource(mutableThis, removedRef);
+//     if (removedRef != LastRemovedRef::kCache &&
+//         fReturnCache &&
+//         fReturnCache->returnResource(mutableThis, removedRef)) {
+//         return false;
+//     }
 
-    if (!this->hasAnyRefs()) {
-        return true;
-    }
-    return false;
+//     // For unref'ing cache refs, we won't be taking any of the returnResource() paths so the
+//     // ref count wouldn't be changing in this function -> so we can just check the atomic prior value.
+
+//     // but if we are a CB or usage ref that hit 0, which we can determine from the fetch_add return value
+//     // there might be new refs that were added
+//     //   -> Do we really need to be adding cache refs for the return queue?
+//     //   -> a cache ref can be promoted to a new usage ref on another thread
+//     //       but only if it were already returned to the cache to be handed out
+//     //   -> a usage ref can allow a CB ref to be created on another thread even if we were on a thread
+//     //      that was processing the fact that the CB ref count had just dropped to 0.
+
+//     // these adding of refs would then violate the hasAnyRefs test based on the original value.
+//     // but if we were going to delete the resourcer, it means we a) didn't have any cache refs
+//     // and no usage/CB ref to cause other unrefs with.
+//     //
+//     // So we could perhaps check for 0 -> dispose, else -> have returnCache returnREsource...
+
+//     // Does anything ever set the return cache to null? or do resources keep the cache alive until
+//     // they are all unrefed entirely?
+
+//     if (!this->hasAnyRefs()) {
+//         return true;
+//     }
+//     return false;
 }
 
 void Resource::internalDispose() {
@@ -83,13 +106,6 @@ void Resource::internalDispose() {
     // TODO: If we ever support freeing all the backend objects without deleting the object, we'll
     // need to add a hasAnyRefs() check here.
     delete this;
-}
-
-bool Resource::isPurgeable() const {
-    // For being purgeable we don't care if there are cacheRefs on the object since the cacheRef
-    // will always be greater than 1 since we add one on insert and don't remove that ref until
-    // the Resource is removed from the cache.
-    return !(this->hasUsageRef() || this->hasCommandBufferRef());
 }
 
 void Resource::dumpMemoryStatistics(SkTraceMemoryDump* traceMemoryDump) const {
@@ -137,4 +153,3 @@ void Resource::dumpMemoryStatistics(SkTraceMemoryDump* traceMemoryDump) const {
 }
 
 } // namespace skgpu::graphite
-
