@@ -16,6 +16,59 @@
       "message": "Is this the only instance of this happening? We tend to forward declare `sk_sp\u003c\u003e` held types throughout Skia. In any case, we can probably put in the workaround. IWYU (include-what-you-use) might complain, I kicked off the CQ to check. In that case we\u0027ll just need to add a comment to the include that suppresses the rule.",
       "revId": "ce5894778c7cdc301b6cfb72bdfd073e2f5a1dd0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc2b70dd_7e2210b6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-08-13T18:43:15Z",
+      "side": 1,
+      "message": "Yup. Unfortunate that we need this (and IWYU disagrees, which makes sense, as this seems like a compiler bug). Alas, you can apply the edit I suggested to bypass the IWYU check.",
+      "parentUuid": "d8e1e5c9_5398161c",
+      "revId": "ce5894778c7cdc301b6cfb72bdfd073e2f5a1dd0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e786524_ccb81c2a",
+        "filename": "src/pdf/SkPDFSubsetFont.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-08-13T18:43:15Z",
+      "side": 1,
+      "message": "You\u0027re going to need to add `// IWYU pragma: keep` to the SkData.h include.",
+      "fixSuggestions": [
+        {
+          "fixId": "41650269_346756d6",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/pdf/SkPDFSubsetFont.h",
+              "range": {
+                "startLine": 6,
+                "startChar": 0,
+                "endLine": 7,
+                "endChar": 0
+              },
+              "replacement": "#include \"include/core/SkData.h\"  // IWYU pragma: keep\n"
+            }
+          ]
+        }
+      ],
+      "revId": "ce5894778c7cdc301b6cfb72bdfd073e2f5a1dd0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
