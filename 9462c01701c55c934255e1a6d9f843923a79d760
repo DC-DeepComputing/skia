@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9225f098_c675b48b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-08-13T21:47:07Z",
+      "side": 1,
+      "message": "Ooh, I have to head off to dinner, but I\u0027ll definitely take a look at this later. (Sorry if my questions are answered in that doc!)",
+      "parentUuid": "e4f15d71_11f1b168",
+      "revId": "9462c01701c55c934255e1a6d9f843923a79d760",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "660399be_dcf61dac",
@@ -272,6 +290,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "69e49a66_0a000d78",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-08-13T21:47:07Z",
+      "side": 1,
+      "message": "\u003e I assume that it is okay if `MakeFromStream` may fail (returning `kIncompleteInput`) if the input stream doesn\u0027t yet cover `IHDR` chunk.  IIUC the GIF decoder follows the same behavior.\n\n👍\n\n\u003e \n\u003e In practice `MakeStream` needs to build a color profile and therefore it may need to decode everything until the first `IDAT` chunk.  I assume that this is also okay - there doesn\u0027t seem to be a way around this (since `SkCodec` takes `SkEncodedInfo` as a parameter and `SkEncodedInfo` needs to take into account `gAMA`, `iCCP`, etc.).\n\n👍\n\nYes, the idea is that you don\u0027t need an `SkCodec` if we couldn\u0027t find all the header type information.",
+      "parentUuid": "57723242_69320153",
+      "range": {
+        "startLine": 27,
+        "startChar": 93,
+        "endLine": 27,
+        "endChar": 94
+      },
+      "revId": "9462c01701c55c934255e1a6d9f843923a79d760",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3b264830_3d3f90db",
@@ -285,6 +327,30 @@
       "writtenOn": "2024-08-13T00:14:07Z",
       "side": 1,
       "message": "We don\u0027t yet provide explicit support for rewinding the input stream.  I imagine that this may require recreating `fReader`.\n\nI assume that this is fine - we can get there once we enable enough test coverage to get test failures (and I assume that we will get test failures if rewinding is needed for Blink;  it seems that all `//ui/gfx` tests pass without rewinding support).",
+      "range": {
+        "startLine": 43,
+        "startChar": 39,
+        "endLine": 43,
+        "endChar": 40
+      },
+      "revId": "9462c01701c55c934255e1a6d9f843923a79d760",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d0698958_76d9eb20",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-08-13T21:47:07Z",
+      "side": 1,
+      "message": "Yes, this seems fine for now.",
+      "parentUuid": "3b264830_3d3f90db",
       "range": {
         "startLine": 43,
         "startChar": 39,

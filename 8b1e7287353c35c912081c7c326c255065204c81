@@ -1,0 +1,233 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9099afd1_2568594b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 17
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-08-13T21:47:07Z",
+      "side": 1,
+      "message": "nit: Expose (imperative form)",
+      "range": {
+        "startLine": 7,
+        "startChar": 11,
+        "endLine": 7,
+        "endChar": 19
+      },
+      "revId": "8b1e7287353c35c912081c7c326c255065204c81",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9a1fa52_af52f992",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 17
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-08-13T21:47:07Z",
+      "side": 1,
+      "message": "Bummer!",
+      "range": {
+        "startLine": 17,
+        "startChar": 31,
+        "endLine": 17,
+        "endChar": 67
+      },
+      "revId": "8b1e7287353c35c912081c7c326c255065204c81",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "39732f23_a948939f",
+        "filename": "experimental/rust_png/ffi/FFI.rs",
+        "patchSetId": 17
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-08-13T21:47:07Z",
+      "side": 1,
+      "message": "TIL (today I learned): `match` arms can have their own `match`es! I suppose you could alternatively sprinkled `Some` for all these arms, and folded them into the first one.",
+      "revId": "8b1e7287353c35c912081c7c326c255065204c81",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "075e5833_af7d58be",
+        "filename": "experimental/rust_png/ffi/FFI.rs",
+        "patchSetId": 17
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-08-13T21:47:07Z",
+      "side": 1,
+      "message": "Prefer bugs to names. go/todo-style",
+      "range": {
+        "startLine": 94,
+        "startChar": 4,
+        "endLine": 94,
+        "endChar": 18
+      },
+      "revId": "8b1e7287353c35c912081c7c326c255065204c81",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dc9f3f97_e305df9b",
+        "filename": "experimental/rust_png/ffi/FFI.rs",
+        "patchSetId": 17
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-08-13T21:47:07Z",
+      "side": 1,
+      "message": "I\u0027ll just have to trust you on this!",
+      "range": {
+        "startLine": 91,
+        "startChar": 0,
+        "endLine": 96,
+        "endChar": 21
+      },
+      "revId": "8b1e7287353c35c912081c7c326c255065204c81",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e3705bb6_dcd906f9",
+        "filename": "experimental/rust_png/ffi/FFI.rs",
+        "patchSetId": 17
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-08-13T21:47:07Z",
+      "side": 1,
+      "message": "I think this comes from the [`AsRef`](https://doc.rust-lang.org/std/convert/trait.AsRef.html) trait? Does that get implemented automatically?",
+      "range": {
+        "startLine": 112,
+        "startChar": 15,
+        "endLine": 112,
+        "endChar": 23
+      },
+      "revId": "8b1e7287353c35c912081c7c326c255065204c81",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bfaf67e8_bbc66f28",
+        "filename": "experimental/rust_png/ffi/FFI.rs",
+        "patchSetId": 17
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-08-13T21:47:07Z",
+      "side": 1,
+      "message": "I\u0027m new to Rust, and even newer to Rust-C++ interop, but this seems weird! Is this the standard way to handle this? I guess we\u0027re on the C++ side, so we have to follow C++ rules.",
+      "range": {
+        "startLine": 115,
+        "startChar": 0,
+        "endLine": 116,
+        "endChar": 63
+      },
+      "revId": "8b1e7287353c35c912081c7c326c255065204c81",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "00b92d13_a8e49cc9",
+        "filename": "experimental/rust_png/ffi/FFI.rs",
+        "patchSetId": 17
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-08-13T21:47:07Z",
+      "side": 1,
+      "message": "I found this a little confusing, but maybe it\u0027s just me / lack of familiarity with png crate. You\u0027re explaining that you didn\u0027t need to call [`new_with_limits`](https://docs.rs/png/latest/png/struct.Decoder.html#method.new_with_limits).",
+      "revId": "8b1e7287353c35c912081c7c326c255065204c81",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f37513a_5b906851",
+        "filename": "experimental/rust_png/ffi/FFI.rs",
+        "patchSetId": 17
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-08-13T21:47:07Z",
+      "side": 1,
+      "message": "This is probably just my new-ness to Rust. `err()` returns an `Option\u003cDecodingError\u003e`, right? I was kinda surprised that you can call `into` if it\u0027s `None`, but I guess that\u0027s handled by the `impl From\u003cOption\u003c\u0026png::DecodingError\u003e\u003e for ffi::DecodingResult`?",
+      "range": {
+        "startLine": 174,
+        "startChar": 43,
+        "endLine": 174,
+        "endChar": 55
+      },
+      "revId": "8b1e7287353c35c912081c7c326c255065204c81",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ab09c25_e6948eec",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-08-13T21:47:07Z",
+      "side": 1,
+      "message": "This is kind of tricky - the idea of `kIncompleteInput` (and even `kErrorInInput`) is that you got *some* good data. `SkCodec` subclasses are expected to set the remaining pixels to transparent black. If the result is `kIncompleteInput`, we could potentially get more data and finish the decode. (For `kErrorInInput`, there may be some valid data, but retrieving more input doesn\u0027t help.)\n\nDoesn\u0027t need to be fixed here, but maybe a `TODO`?",
+      "revId": "8b1e7287353c35c912081c7c326c255065204c81",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f29c28d0_3cee9d8b",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-08-13T21:47:07Z",
+      "side": 1,
+      "message": "Can this be `private`?",
+      "revId": "8b1e7287353c35c912081c7c326c255065204c81",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
