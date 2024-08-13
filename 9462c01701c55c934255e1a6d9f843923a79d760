@@ -203,6 +203,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7f44fa08_59d225a9",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-08-13T20:32:34Z",
+      "side": 1,
+      "message": "No, SkSpan is definitely preferable for this kind of work. And yes, the other properties of vector are helpful here. SkTArray\u003cuint8_t\u003e would be closer, but still doesn\u0027t have the constructor sugar of vector. I\u0027m happy if you want to switch it back.",
+      "parentUuid": "f7b5ad49_d6a7f5d5",
+      "range": {
+        "startLine": 208,
+        "startChar": 4,
+        "endLine": 208,
+        "endChar": 15
+      },
+      "revId": "9462c01701c55c934255e1a6d9f843923a79d760",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "57723242_69320153",
         "filename": "experimental/rust_png/impl/SkPngRustCodec.h",
         "patchSetId": 12
