@@ -59,6 +59,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b84de237_071d99b3",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-08-13T20:24:41Z",
+      "side": 1,
+      "message": "Ooops.  Done.",
+      "parentUuid": "660399be_dcf61dac",
+      "range": {
+        "startLine": 147,
+        "startChar": 0,
+        "endLine": 147,
+        "endChar": 23
+      },
+      "revId": "9462c01701c55c934255e1a6d9f843923a79d760",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6850cc3a_6e4b5694",
@@ -143,6 +167,30 @@
       "side": 1,
       "message": "Skia has `SkAutoMalloc`, but `std::unique_ptr\u003cuint8_t[]\u003e` would be fine, too.",
       "parentUuid": "6621765f_98a4952b",
+      "range": {
+        "startLine": 208,
+        "startChar": 4,
+        "endLine": 208,
+        "endChar": 15
+      },
+      "revId": "9462c01701c55c934255e1a6d9f843923a79d760",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7b5ad49_d6a7f5d5",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-08-13T20:24:41Z",
+      "side": 1,
+      "message": "\u003e Skia has `SkAutoMalloc`, but `std::unique_ptr\u003cuint8_t[]\u003e` would be fine, too.\n\nThanks for pointing out those APIs.\n\nI find it interesting that Chromium now frowns upon `std::unique_ptr\u003cuint8_t[]\u003e` (a specific instance of a more generic problem where pointers and sizes are kept/passed separately).  See also https://chromium.googlesource.com/chromium/src/+/main/docs/unsafe_buffers.md#Heap_allocated-arrays\n\nI note that `std::vector` had 2 properties that may have been a bit desirable: 1) initializing the memory to `0x00` was done as part of the constructor call and 2) it was convertible to `SkSpan`, and 3) it avoided the need for `reinterpret_cast`.  We could fix 2 and 3 if we added a `uint8_t* data()` and `size()` accessors to `SkAutoMalloc`.  OTOH, I am not sure if working with `SkSpan::subspan` is better or worse than using `srcRow +\u003d srcRowSize`.  In theory `SkSpan::subspan` can perform runtime bounds checks, but maybe using `SkSpan` is non-idiomatic in Skia + maybe there are performance concerns around those checks.\n\nDone?\n\nDo you think I should also add `uint8_t* data` and `size` accessors to `SkAutoMalloc` in this CL?",
+      "parentUuid": "7515e03e_5552526f",
       "range": {
         "startLine": 208,
         "startChar": 4,
