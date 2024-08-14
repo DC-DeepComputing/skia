@@ -213,6 +213,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "b233381b_4d5a4660",
+        "filename": "experimental/rust_png/ffi/FFI.rs",
+        "patchSetId": 17
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-08-14T19:26:59Z",
+      "side": 1,
+      "message": "Sgtm.",
+      "parentUuid": "bfdfc9b8_ade44df2",
+      "range": {
+        "startLine": 94,
+        "startChar": 4,
+        "endLine": 94,
+        "endChar": 18
+      },
+      "revId": "8b1e7287353c35c912081c7c326c255065204c81",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "dc9f3f97_e305df9b",
@@ -297,6 +321,30 @@
       "side": 1,
       "message": "FWIW when learning Rust I\u0027ve found the following diagram useful for discovering available transformations between `Option\u003cT\u003e` and `Result\u003cT, E\u003e`: https://docs.google.com/drawings/d/1EOPs0YTONo_FygWbuJGPfikO9Myt5HwtiFUHRuE1JVM/preview\n\n(I see that this doesn\u0027t cover `as_ref`.  OTOH it does cover `err`, so maybe the diagram is somewhat useful?  If not then feel free to ignore the diagram.)",
       "parentUuid": "6d564422_b017b55e",
+      "range": {
+        "startLine": 112,
+        "startChar": 15,
+        "endLine": 112,
+        "endChar": 23
+      },
+      "revId": "8b1e7287353c35c912081c7c326c255065204c81",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae950ff0_6d8ecee8",
+        "filename": "experimental/rust_png/ffi/FFI.rs",
+        "patchSetId": 17
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-08-14T19:26:59Z",
+      "side": 1,
+      "message": "Thanks for the explanation!",
+      "parentUuid": "a569a40d_e64e165b",
       "range": {
         "startLine": 112,
         "startChar": 15,
