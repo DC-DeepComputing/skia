@@ -336,6 +336,7 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(const DawnSharedContext* 
     wgpu::RenderPipelineDescriptor descriptor;
     // Always set the label for pipelines, dawn may need it for tracing.
     descriptor.label = pipelineLabel.c_str();
+//    SkDebugf("DawnGraphicsPipeline::Make %s\n", pipelineLabel.c_str());
 
     // Fragment state
     skgpu::BlendEquation equation = blendInfo.fEquation;
@@ -362,8 +363,8 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(const DawnSharedContext* 
 
 #if !defined(__EMSCRIPTEN__)
     const bool loadMsaaFromResolve =
-            renderPassDesc.fColorResolveAttachment.fTextureInfo.isValid() &&
-            renderPassDesc.fColorResolveAttachment.fLoadOp == LoadOp::kLoad;
+            renderPassDesc.fColorResolveAttachment1.fTextureInfo.isValid() &&
+            renderPassDesc.fColorResolveAttachment1.fLoadOp == LoadOp::kLoad;
     // Special case: a render pass loading resolve texture requires additional settings for the
     // pipeline to make it compatible.
     wgpu::ColorTargetStateExpandResolveTextureDawn pipelineMSAALoadResolveTextureDesc;

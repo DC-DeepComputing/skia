@@ -14,6 +14,7 @@ namespace skgpu::graphite {
 
 class Context;
 class PaintOptions;
+enum class DepthStencilFlags : int;
 
 /**
  * Precompilation allows clients to create pipelines ahead of time based on what they expect
@@ -24,10 +25,16 @@ class PaintOptions;
  *   @param context        the Context to which the actual draws will be submitted
  *   @param paintOptions   captures a set of SkPaints that will be drawn
  *   @param drawTypes      communicates which primitives those paints will be drawn with
+ *   @param dsFlags
+ *   @param dstCT
+ *   @param requiresMSAA
  */
 void Precompile(Context* context,
                 const PaintOptions& paintOptions,
-                DrawTypeFlags drawTypes = kMostCommon);
+                DrawTypeFlags drawTypes,
+                DepthStencilFlags dsFlags,
+                SkColorType dstCT,
+                bool requiresMSAA);
 
 } // namespace skgpu::graphite
 
