@@ -241,11 +241,13 @@ $pure half3 $blend_set_color_luminance(half3 hueSatColor, half alpha, half3 lumC
     half3 result = lum - $blend_color_luminance(hueSatColor) + hueSatColor;
     half minComp = min(min(result.r, result.g), result.b);
     half maxComp = max(max(result.r, result.g), result.b);
-    if (minComp < 0 && lum != minComp) {
-        result = lum + (result - lum) * $guarded_divide(lum, (lum - minComp));
+    half minCompDelta = lum - minComp;
+    if (minComp < 0 && minCompDelta != 0) {
+        result = lum + (result - lum) * $guarded_divide(lum, minCompDelta);
     }
-    if (maxComp > alpha && maxComp != lum) {
-        result = lum + $guarded_divide((result - lum) * (alpha - lum), (maxComp - lum));
+    half maxCompDelta = maxComp - lum;
+    if (maxComp > alpha && maxCompDelta != 0) {
+        result = lum + $guarded_divide((result - lum) * (alpha - lum), maxCompDelta);
     }
     return result;
 }
