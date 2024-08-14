@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4634cb7b_cdd9c8d1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2024-08-14T11:26:35Z",
+      "side": 1,
+      "message": "ptal -- small change (to be followed-up by using it in Blink)",
+      "revId": "d9aba016351c86a8297ffa11623346adec8508ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
