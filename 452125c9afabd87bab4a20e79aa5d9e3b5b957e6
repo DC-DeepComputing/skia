@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "351e6c9d_9d1476d2",
+        "filename": "toolchain/windows_toolchain_config.bzl",
+        "patchSetId": 8
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-08-14T18:34:24Z",
+      "side": 1,
+      "message": "This entry needs to come before `MSVC_SYMLINK + \"/include\"`\n\nWe could probably push all the clang includes ahead of the MSVC and SDK includes?",
+      "range": {
+        "startLine": 265,
+        "startChar": 0,
+        "endLine": 266,
+        "endChar": 65
+      },
+      "revId": "452125c9afabd87bab4a20e79aa5d9e3b5b957e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
