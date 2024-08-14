@@ -88,6 +88,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5ffdd8c_ee3bfd93",
+        "filename": "experimental/rust_png/ffi/FFI.rs",
+        "patchSetId": 17
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-08-14T13:43:09Z",
+      "side": 1,
+      "message": "My understanding is that we\u0027re matching against different things here. The first is matching against the Some vs. None variants of the Option, while the other one is matching against the DecodingError that\u0027s stored in the Some variant?",
+      "parentUuid": "39732f23_a948939f",
+      "revId": "8b1e7287353c35c912081c7c326c255065204c81",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "075e5833_af7d58be",
