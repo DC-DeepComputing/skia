@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1eb9c0c4_802c5a64",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-08-14T20:40:41Z",
+      "side": 1,
+      "message": "These are mostly low-hanging fruits.  The few remaining slides will require more bazel tweaking - I\u0027ll deal with them separately.",
+      "revId": "9df5ac58ad3532a4c6a54a7b3809108c1e5d988c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2607df4d_3c9934f0",
+        "filename": "src/sksl/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-08-14T20:40:41Z",
+      "side": 1,
+      "message": "`SkSLModuleDataDefault.cpp` includes `SkSLGraphiteModules.h` unconditionally.",
+      "revId": "9df5ac58ad3532a4c6a54a7b3809108c1e5d988c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
