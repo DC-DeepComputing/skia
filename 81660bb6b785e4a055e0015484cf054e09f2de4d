@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a02ec502_b6c2e642",
+        "filename": "tools/gpu/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-08-14T20:16:16Z",
+      "side": 0,
+      "message": "I think this (or something similar) may be still be needed in the future - e.g. some viewer slide I was looking at includes YUVUtils.h.",
+      "revId": "81660bb6b785e4a055e0015484cf054e09f2de4d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
