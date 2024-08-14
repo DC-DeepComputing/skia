@@ -8,6 +8,7 @@
 #define SkPngRustCodec_DEFINED
 
 #include <memory>
+#include <vector>
 
 #include "experimental/rust_png/ffi/FFI.rs.h"
 #include "src/codec/SkPngCodecBase.h"
@@ -15,6 +16,7 @@
 
 struct SkEncodedInfo;
 class SkStream;
+class SkFrame;
 
 // This class provides the Skia image decoding API (`SkCodec`) on top of:
 // * The third-party `png` crate (PNG decompression and decoding implemented in
@@ -52,6 +54,7 @@ private:
                                     size_t rowBytes,
                                     const Options&) override;
     Result onIncrementalDecode(int* rowsDecoded) override;
+    bool onGetFrameInfo(int, FrameInfo*) const override;
 
     // SkPngCodecBase overrides:
     std::optional<SkSpan<const PaletteColorEntry>> onTryGetPlteChunk() override;
@@ -60,6 +63,11 @@ private:
     rust::Box<rust_png::Reader> fReader;
 
     std::optional<DecodingState> fIncrementalDecodingState;
+
+    class PngFrame;
+    std::vector<PngFrame> fFrames;
+
+    size_t fNumOfFullyReceivedFrames = 0;
 };
 
 #endif  // SkPngRustCodec_DEFINED
