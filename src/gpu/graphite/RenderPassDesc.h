@@ -40,7 +40,7 @@ struct RenderPassDesc {
 
     AttachmentDesc fColorAttachment;
     std::array<float, 4> fClearColor;
-    AttachmentDesc fColorResolveAttachment;
+    AttachmentDesc fColorResolveAttachment1;
 
     AttachmentDesc fDepthStencilAttachment;
     float fClearDepth;
