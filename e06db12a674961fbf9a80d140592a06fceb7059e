@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7bf77cd7_88744d2f",
+        "filename": "src/ports/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-08-14T21:36:33Z",
+      "side": 0,
+      "message": "This rule should only be used by skia_public/skia_internal. What necessitated this change?",
+      "range": {
+        "startLine": 223,
+        "startChar": 9,
+        "endLine": 223,
+        "endChar": 20
+      },
+      "revId": "e06db12a674961fbf9a80d140592a06fceb7059e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

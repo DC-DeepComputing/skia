@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "aab57ee3_199bc15e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-08-14T21:36:33Z",
+      "side": 1,
+      "message": "GeneratedFile issue seems to mean you should call `buildifier` on some of the BUILD.bazel files. If you haven\u0027t already, download https://github.com/bazelbuild/buildtools/releases/tag/v7.1.2 and put it on your PATH. Then, our PRESUBMIT.py will call it automatically when you `git cl upl`",
+      "revId": "9df5ac58ad3532a4c6a54a7b3809108c1e5d988c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "2607df4d_3c9934f0",
@@ -31,6 +48,24 @@
       "writtenOn": "2024-08-14T20:40:41Z",
       "side": 1,
       "message": "`SkSLModuleDataDefault.cpp` includes `SkSLGraphiteModules.h` unconditionally.",
+      "revId": "9df5ac58ad3532a4c6a54a7b3809108c1e5d988c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fa19328f_3914e894",
+        "filename": "src/sksl/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-08-14T21:36:33Z",
+      "side": 1,
+      "message": "This shouldn\u0027t be necessary. I thought this target wasn\u0027t used except by skia_public/skia_internal. What error are you seeing without this?",
+      "parentUuid": "2607df4d_3c9934f0",
       "revId": "9df5ac58ad3532a4c6a54a7b3809108c1e5d988c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
