@@ -16,6 +16,24 @@
       "message": "@bungeman@google.com or @brianosman@google.com - the builder that failed last time was \"Test-Android-Clang-GalaxyS24-GPU-Adreno750-arm64-Debug-All-Android\" - can you add that under \"Choose Tryjobs\" and run CQ+1? I but I don\u0027t have TryJob access here.",
       "revId": "67f5a47a39605e2321447c2f5cd10c590d9a165f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "90cdf1dc_e64fabb0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 20059
+      },
+      "writtenOn": "2024-08-14T23:44:03Z",
+      "side": 1,
+      "message": "It was the Vulkan variation, but it wouldn\u0027t hurt to run all 3.",
+      "parentUuid": "cec908bc_1698f1d4",
+      "revId": "67f5a47a39605e2321447c2f5cd10c590d9a165f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
