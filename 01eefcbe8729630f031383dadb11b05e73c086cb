@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "66e2bf20_d5a6a215",
+        "filename": "src/core/SkPixmap.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 363,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-08-14T19:05:25Z",
+      "side": 1,
+      "message": "We should behave as if `p4[3]` is already 1 at this point, so we can just remove this entire unpremul block.",
+      "range": {
+        "startLine": 360,
+        "startChar": 0,
+        "endLine": 363,
+        "endChar": 13
+      },
+      "revId": "01eefcbe8729630f031383dadb11b05e73c086cb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "acbce1de_c577738f",
+        "filename": "src/core/SkPixmap.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 579,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-08-14T19:05:25Z",
+      "side": 1,
+      "message": "Same here",
+      "range": {
+        "startLine": 576,
+        "startChar": 0,
+        "endLine": 579,
+        "endChar": 13
+      },
+      "revId": "01eefcbe8729630f031383dadb11b05e73c086cb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d40e52af_33914e6b",
+        "filename": "src/encode/SkPngEncoderImpl.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 340,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-08-14T19:05:25Z",
+      "side": 1,
+      "message": "We\u0027re going to need a dedicated function here. `transform_scanline_RGBX` assumes the input is 8-bit per channel. For now, you can probably return `transform_scanline_F16` here, and add a comment to remind us that we need to do more work.",
+      "range": {
+        "startLine": 340,
+        "startChar": 19,
+        "endLine": 340,
+        "endChar": 42
+      },
+      "revId": "01eefcbe8729630f031383dadb11b05e73c086cb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
