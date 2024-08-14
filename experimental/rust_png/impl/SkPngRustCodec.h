@@ -29,18 +29,37 @@ public:
     ~SkPngRustCodec() override;
 
 private:
+    struct DecodingState {
+        void* dst;
+        size_t rowBytes;
+    };
+    Result startDecoding(const SkImageInfo& dstInfo,
+                         void* pixels,
+                         size_t rowBytes,
+                         const Options& options,
+                         DecodingState* decodingState);
+    Result incrementalDecode(DecodingState& decodingState, int* rowsDecoded);
+    Result decodeInterlacedImage(DecodingState& decodingState);
+
     // SkCodec overrides:
-    Result onGetPixels(const SkImageInfo& info,
+    Result onGetPixels(const SkImageInfo& dstInfo,
                        void* pixels,
                        size_t rowBytes,
                        const Options&,
                        int* rowsDecoded) override;
+    Result onStartIncrementalDecode(const SkImageInfo& dstInfo,
+                                    void* pixels,
+                                    size_t rowBytes,
+                                    const Options&) override;
+    Result onIncrementalDecode(int* rowsDecoded) override;
 
     // SkPngCodecBase overrides:
     std::optional<SkSpan<const PaletteColorEntry>> onTryGetPlteChunk() override;
     std::optional<SkSpan<const uint8_t>> onTryGetTrnsChunk() override;
 
     rust::Box<rust_png::Reader> fReader;
+
+    std::optional<DecodingState> fIncrementalDecodingState;
 };
 
 #endif  // SkPngRustCodec_DEFINED
