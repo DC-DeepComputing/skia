@@ -16,6 +16,24 @@
       "message": "@brianosman / @scroggo - maybe it would be a good idea to involve somebody else from Chromium/Rust team and ask them to review the `.rs` changes?  That way you wouldn\u0027t have to just trust my judgement of how good Rust code should look like.  WDYT?  (/cc @adetaylor;  FWIW they\u0027ve already reviewed the initial draft of https://docs.google.com/document/d/1EPn1Ss-hfOC6Ki_B5CC6GA_UFnY3TmoDLCP2HjP7bms/edit?usp\u003dsharing)",
       "revId": "f41dcac748414c1a6b43271221f5e2663ebb1d90",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5737169e_56844fe7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 18
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-08-14T19:32:03Z",
+      "side": 1,
+      "message": "Ping - WDYT?",
+      "parentUuid": "2ead9f77_0c874c88",
+      "revId": "f41dcac748414c1a6b43271221f5e2663ebb1d90",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
