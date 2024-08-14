@@ -21,7 +21,7 @@ bool MtlFormatIsDepthOrStencil(MTLPixelFormat format) {
         case MTLPixelFormatDepth16Unorm:
         case MTLPixelFormatDepth32Float:
 #if defined(SK_BUILD_FOR_MAC)
-        case MTLPixelFormatDepth24Unorm_Stencil8:
+        case MTLPixelFormatDepth24Unorm_Stencil8:   [[fallthrough]];
 #endif
         case MTLPixelFormatDepth32Float_Stencil8:
             return true;
@@ -37,7 +37,7 @@ bool MtlFormatIsDepth(MTLPixelFormat format) {
         case MTLPixelFormatDepth16Unorm:            [[fallthrough]];
         case MTLPixelFormatDepth32Float:
 #if defined(SK_BUILD_FOR_MAC)
-        case MTLPixelFormatDepth24Unorm_Stencil8:
+        case MTLPixelFormatDepth24Unorm_Stencil8:   [[fallthrough]];
 #endif
         case MTLPixelFormatDepth32Float_Stencil8:
             return true;
@@ -52,7 +52,7 @@ bool MtlFormatIsStencil(MTLPixelFormat format) {
     switch (format) {
         case MTLPixelFormatStencil8:                [[fallthrough]];
 #if defined(SK_BUILD_FOR_MAC)
-        case MTLPixelFormatDepth24Unorm_Stencil8:
+        case MTLPixelFormatDepth24Unorm_Stencil8:   [[fallthrough]];
 #endif
         case MTLPixelFormatDepth32Float_Stencil8:
             return true;

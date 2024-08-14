@@ -913,8 +913,8 @@ uint32_t DawnCaps::getRenderPassDescKeyForPipeline(const RenderPassDesc& renderP
     const bool shouldIncludeLoadResolveAttachmentBit = this->resolveTextureLoadOp().has_value();
     uint32_t loadResolveAttachmentKey = 0;
     if (shouldIncludeLoadResolveAttachmentBit &&
-        renderPassDesc.fColorResolveAttachment.fTextureInfo.isValid() &&
-        renderPassDesc.fColorResolveAttachment.fLoadOp == LoadOp::kLoad) {
+        renderPassDesc.fColorResolveAttachment1.fTextureInfo.isValid() &&
+        renderPassDesc.fColorResolveAttachment1.fLoadOp == LoadOp::kLoad) {
         loadResolveAttachmentKey = 1;
     }
 
