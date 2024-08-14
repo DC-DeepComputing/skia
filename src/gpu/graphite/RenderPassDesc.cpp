@@ -67,13 +67,13 @@ RenderPassDesc RenderPassDesc::Make(const Caps* caps,
                 }
                 desc.fColorAttachment.fStoreOp = StoreOp::kDiscard;
 
-                desc.fColorResolveAttachment.fTextureInfo = targetInfo;
+                desc.fColorResolveAttachment1.fTextureInfo = targetInfo;
                 if (loadOp != LoadOp::kLoad) {
-                    desc.fColorResolveAttachment.fLoadOp = LoadOp::kDiscard;
+                    desc.fColorResolveAttachment1.fLoadOp = LoadOp::kDiscard;
                 } else {
-                    desc.fColorResolveAttachment.fLoadOp = LoadOp::kLoad;
+                    desc.fColorResolveAttachment1.fLoadOp = LoadOp::kLoad;
                 }
-                desc.fColorResolveAttachment.fStoreOp = storeOp;
+                desc.fColorResolveAttachment1.fStoreOp = storeOp;
 
                 desc.fSampleCount = msaaTextureInfo.numSamples();
             } else {
@@ -101,6 +101,9 @@ RenderPassDesc RenderPassDesc::Make(const Caps* caps,
         desc.fDepthStencilAttachment.fStoreOp = StoreOp::kDiscard;
     }
 
+//    static int foo = 0;
+
+//    SkDebugf("%d: %s\n", foo++, desc.toPipelineLabel().c_str());
     return desc;
 }
 
@@ -108,7 +111,7 @@ SkString RenderPassDesc::toString() const {
     return SkStringPrintf("RP(color: %s, resolve: %s, ds: %s, samples: %u, swizzle: %s, "
                           "clear: c(%f,%f,%f,%f), d(%f), s(0x%02x))",
                           fColorAttachment.toString().c_str(),
-                          fColorResolveAttachment.toString().c_str(),
+                          fColorResolveAttachment1.toString().c_str(),
                           fDepthStencilAttachment.toString().c_str(),
                           fSampleCount,
                           fWriteSwizzle.asString().c_str(),
@@ -123,7 +126,7 @@ SkString RenderPassDesc::toPipelineLabel() const {
     // the load may trigger a different renderpass description.
     const char* colorLoadStr = "";
     if (fColorAttachment.fLoadOp == LoadOp::kLoad &&
-        (fColorResolveAttachment.fTextureInfo.isValid() || fSampleCount > 1)) {
+        (fColorResolveAttachment1.fTextureInfo.isValid() || fSampleCount > 1)) {
         colorLoadStr = " w/ msaa load";
     }
     // TODO: Remove `fSampleCount` in label when the Dawn backend manages its MSAA color attachments
@@ -131,7 +134,7 @@ SkString RenderPassDesc::toPipelineLabel() const {
     return SkStringPrintf("RP(color: %s%s, resolve: %s, ds: %s, samples: %u, swizzle: %s)",
                           fColorAttachment.fTextureInfo.toRPAttachmentString().c_str(),
                           colorLoadStr,
-                          fColorResolveAttachment.fTextureInfo.toRPAttachmentString().c_str(),
+                          fColorResolveAttachment1.fTextureInfo.toRPAttachmentString().c_str(),
                           fDepthStencilAttachment.fTextureInfo.toRPAttachmentString().c_str(),
                           fSampleCount,
                           fWriteSwizzle.asString().c_str());

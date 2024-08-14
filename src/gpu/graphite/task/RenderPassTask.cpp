@@ -99,7 +99,7 @@ Task::Status RenderPassTask::addCommands(Context* context,
     ResourceProvider* resourceProvider = context->priv().resourceProvider();
     sk_sp<Texture> colorAttachment;
     sk_sp<Texture> resolveAttachment;
-    if (fRenderPassDesc.fColorResolveAttachment.fTextureInfo.isValid()) {
+    if (fRenderPassDesc.fColorResolveAttachment1.fTextureInfo.isValid()) {
         SkASSERT(fTarget->numSamples() == 1 &&
                  fRenderPassDesc.fColorAttachment.fTextureInfo.numSamples() > 1);
         colorAttachment = resourceProvider->findOrCreateDiscardableMSAAAttachment(

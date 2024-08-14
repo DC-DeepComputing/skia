@@ -43,7 +43,7 @@ public:
 #if !defined(SK_DISABLE_SDF_TEXT)
     SubRunControl(bool ableToUseSDFT, bool useSDFTForSmallText, bool useSDFTForPerspectiveText,
                   SkScalar min, SkScalar max,
-                  bool forcePathAA=false);
+                  bool forcePathAA);
 
     // Produce a font, a scale factor from the nominal size to the source space size, and matrix
     // range where this font can be reused.
