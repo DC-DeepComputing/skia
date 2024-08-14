@@ -366,7 +366,7 @@ DEF_TEST(KeyEqualityOnPerspective, r) {
     // Build the strike device.
     SkSurfaceProps props;
 #if !defined(SK_DISABLE_SDF_TEXT)
-    sktext::gpu::SubRunControl control(false, false, false, 1, 100);
+    sktext::gpu::SubRunControl control(false, false, false, 1, 100, false);
 #else
     sktext::gpu::SubRunControl control{};
 #endif

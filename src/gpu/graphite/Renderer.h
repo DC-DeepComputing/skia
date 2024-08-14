@@ -109,7 +109,7 @@ public:
     // and variant is a unique term describing instance's specific configuration.
     const char* name() const { return fName.c_str(); }
 
-    bool requiresMSAA()        const { return SkToBool(fFlags & Flags::kRequiresMSAA);        }
+    bool requiresMSAA1()        const { return SkToBool(fFlags & Flags::kRequiresMSAA1);        }
     bool performsShading()     const { return SkToBool(fFlags & Flags::kPerformsShading);     }
     bool hasTextures()         const { return SkToBool(fFlags & Flags::kHasTextures);         }
     bool emitsPrimitiveColor() const { return SkToBool(fFlags & Flags::kEmitsPrimitiveColor); }
@@ -159,7 +159,7 @@ public:
 protected:
     enum class Flags : unsigned {
         kNone                  = 0b00000000,
-        kRequiresMSAA          = 0b00000001,
+        kRequiresMSAA1          = 0b00000001,
         kPerformsShading       = 0b00000010,
         kHasTextures           = 0b00000100,
         kEmitsCoverage         = 0b00001000,
@@ -236,7 +236,7 @@ public:
     int           numRenderSteps() const { return fStepCount;    }
 
     bool requiresMSAA() const {
-        return SkToBool(fStepFlags & StepFlags::kRequiresMSAA);
+        return SkToBool(fStepFlags & StepFlags::kRequiresMSAA1);
     }
     bool emitsPrimitiveColor() const {
         return SkToBool(fStepFlags & StepFlags::kEmitsPrimitiveColor);
