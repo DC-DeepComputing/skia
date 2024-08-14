@@ -124,6 +124,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "83cc7225_b2e49125",
+        "filename": "experimental/rust_png/ffi/FFI.rs",
+        "patchSetId": 17
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-08-14T14:50:47Z",
+      "side": 1,
+      "message": "Err... I should have spelled `Err1` as `MyError::Err1` - on my small laptop screen I missed that Rust playground reported this build error at the bottom.  (But the high-level conclusion doesn\u0027t change - the spelling with 1 or 2 `match` expressions works equally well.)  FWIW the snippet can be found at https://play.rust-lang.org/?version\u003dstable\u0026mode\u003ddebug\u0026edition\u003d2021\u0026gist\u003ded8408625b5e4c1b3f0a37e2fa86ae7f.",
+      "parentUuid": "10722b1f_3c34b22f",
+      "revId": "8b1e7287353c35c912081c7c326c255065204c81",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "075e5833_af7d58be",
