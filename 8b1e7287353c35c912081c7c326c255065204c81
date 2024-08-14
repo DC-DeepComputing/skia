@@ -189,6 +189,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "bfdfc9b8_ade44df2",
+        "filename": "experimental/rust_png/ffi/FFI.rs",
+        "patchSetId": 17
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-08-14T15:28:03Z",
+      "side": 1,
+      "message": "Ack.  Let me leave this unresolved while I try to figure out if I can put together a PR for `cxx` to make this happen.\n\nPS. I lean toward `TODO(link to PR request)` rather than opening a crbug just for an intermediate hop.  In theory we could also carry a local patch, but it is a bit heavyweight and isn\u0027t necessary to unblock anything here.",
+      "parentUuid": "655fdcda_f0ffda95",
+      "range": {
+        "startLine": 94,
+        "startChar": 4,
+        "endLine": 94,
+        "endChar": 18
+      },
+      "revId": "8b1e7287353c35c912081c7c326c255065204c81",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "dc9f3f97_e305df9b",
@@ -383,6 +407,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9df54da6_4a7fa043",
+        "filename": "experimental/rust_png/ffi/FFI.rs",
+        "patchSetId": 17
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-08-14T15:28:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e8b20ed5_f6176e78",
+      "revId": "8b1e7287353c35c912081c7c326c255065204c81",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8f37513a_5b906851",
@@ -514,6 +556,24 @@
       "side": 1,
       "message": "You\u0027re right about `make_unique` (cue my rant about C++ implementing everything in libraries, rather than in the language). I\u0027d say we leave this `public`, given that it\u0027s in a private header. (We have both patterns for this problem elsewhere in the library, but I like `make_unique` over raw `new`).",
       "parentUuid": "305e24b6_a981c7d5",
+      "revId": "8b1e7287353c35c912081c7c326c255065204c81",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8eefc4b6_229aca58",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-08-14T15:28:03Z",
+      "side": 1,
+      "message": "Ack.  Let\u0027s leave things mostly as-is.  OTOH, let me leave a comment explaining why this is `public`.\n\nI also note that Chromium tries to solve this kind of problem with `//base/types/pass_key.h`, but 1) this involves more ceremony/boilerplate and 2) Skia can\u0027t depend on Chromium\u0027s `//base`.",
+      "parentUuid": "bd8ae278_50e7d1ff",
       "revId": "8b1e7287353c35c912081c7c326c255065204c81",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
