@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2b592a8_47b381ed",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-08-14T16:46:56Z",
+      "side": 1,
+      "message": "Suggestion: Add a command line invocation that loads up a Skottie",
+      "revId": "e959fc9cfd72c2bd8090c95d11b31dd9afae753b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80fff250_2989f653",
+        "filename": "modules/audioplayer/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-08-14T16:46:56Z",
+      "side": 1,
+      "message": "Can you make this be more specific? e.g. just\n`//tools/viewer:__pkg__`",
+      "range": {
+        "startLine": 23,
+        "startChar": 22,
+        "endLine": 23,
+        "endChar": 37
+      },
+      "revId": "e959fc9cfd72c2bd8090c95d11b31dd9afae753b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5530dfe1_eb53eae4",
+        "filename": "modules/skottie/utils/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-08-14T16:46:56Z",
+      "side": 1,
+      "message": "nit: `__pkg__` is probably sufficient",
+      "range": {
+        "startLine": 48,
+        "startChar": 24,
+        "endLine": 48,
+        "endChar": 39
+      },
+      "revId": "e959fc9cfd72c2bd8090c95d11b31dd9afae753b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
