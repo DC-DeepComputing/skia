@@ -16,6 +16,24 @@
       "message": "We don\u0027t actually use glMemoryBarrier anymore. It was added as part of some nvidia workarounds with tessellation and indirect draws, but since tessellation doesn\u0027t use indirect draws anymore, we could instead remove this from the GL interface we require?",
       "revId": "c4ed68aa93d401301393783b2e772c13b4d0b658",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a32d439_28a2e1a1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-08-14T13:37:59Z",
+      "side": 1,
+      "message": "I\u0027m fine either way here.",
+      "parentUuid": "b76a793f_caab92d5",
+      "revId": "c4ed68aa93d401301393783b2e772c13b4d0b658",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
