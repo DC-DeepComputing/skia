@@ -16,6 +16,24 @@
       "message": "I think this (or something similar) may be still be needed in the future - e.g. some viewer slide I was looking at includes YUVUtils.h.",
       "revId": "81660bb6b785e4a055e0015484cf054e09f2de4d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b43fbbc7_6b3ceba2",
+        "filename": "tools/gpu/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-08-14T21:27:43Z",
+      "side": 0,
+      "message": "Yes, but those missing files should go in the `ganesh_gl_utils` or something similar. Not something that depends on `//:skia_internal`",
+      "parentUuid": "a02ec502_b6c2e642",
+      "revId": "81660bb6b785e4a055e0015484cf054e09f2de4d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
