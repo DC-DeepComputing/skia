@@ -152,6 +152,7 @@ skia_filegroup(
     name = "srcs",
     srcs = [
         ":sksl_default_module_srcs",
+        ":sksl_graphite_modules_hdrs",
         ":sksl_srcs",
         "//src/sksl/analysis:srcs",
         "//src/sksl/codegen:srcs",
