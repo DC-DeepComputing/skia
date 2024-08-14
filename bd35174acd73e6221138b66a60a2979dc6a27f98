@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e0ca087c_9eda6056",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 934,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-08-14T16:31:34Z",
+      "side": 1,
+      "message": "This might be confounding the chrome roll as a static initializer, which we could just put in a static-linkage function here to get around that.",
+      "range": {
+        "startLine": 934,
+        "startChar": 0,
+        "endLine": 934,
+        "endChar": 96
+      },
+      "revId": "bd35174acd73e6221138b66a60a2979dc6a27f98",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
