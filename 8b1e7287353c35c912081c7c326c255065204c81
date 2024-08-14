@@ -106,6 +106,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "10722b1f_3c34b22f",
+        "filename": "experimental/rust_png/ffi/FFI.rs",
+        "patchSetId": 17
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-08-14T14:42:18Z",
+      "side": 1,
+      "message": "You\u0027re both correct.  We could match this with one or 2 `match` levels.  The choice is somewhat arbitrary (in theory based on readability considerations I guess).\n\nSee: https://play.rust-lang.org/?version\u003dstable\u0026mode\u003ddebug\u0026edition\u003d2021\u0026gist\u003dacc539031a93bd6d6102f50cf2aa70e7\n\n```\n    let _ \u003d match maybe_e {\n        None \u003d\u003e 123,\n        Some(e) \u003d\u003e match e {\n            Err1 \u003d\u003e 456,\n            Err2 \u003d\u003e 789,\n        }\n    };\n    \n    let _ \u003d match maybe_e {\n        None \u003d\u003e 123,\n        Some(Err1) \u003d\u003e 456,\n        Some(Err2) \u003d\u003e 789,\n    };\n```",
+      "parentUuid": "e5ffdd8c_ee3bfd93",
+      "revId": "8b1e7287353c35c912081c7c326c255065204c81",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "075e5833_af7d58be",
