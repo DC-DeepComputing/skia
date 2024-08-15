@@ -33,6 +33,41 @@
       "message": "Delightful, but I don\u0027t have LGTM permissions on the skia gerrit",
       "revId": "13bc478c6314b97bca689bcdfa2ae54e5ab302e6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "da07b103_32952811",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-08-15T14:49:24Z",
+      "side": 1,
+      "message": "@brianosman, can you PTAL?  (Mostly ss one of `skia/CQ_COMMITTERS`, since this CL has been already reviewed by @adetaylor.)",
+      "revId": "13bc478c6314b97bca689bcdfa2ae54e5ab302e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e9d7f19_581927a5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-08-15T14:49:24Z",
+      "side": 1,
+      "message": "Thanks!  This form of LGTM is good enough to me - I\u0027ll go ahead and ask Skia owners for an official stamp to satisfy Gerrit\u0027s requirements.",
+      "parentUuid": "d473ede5_6f3db19d",
+      "revId": "13bc478c6314b97bca689bcdfa2ae54e5ab302e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
