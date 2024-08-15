@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "32dea7e8_c2d0266b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 7712
+      },
+      "writtenOn": "2024-08-15T14:40:23Z",
+      "side": 1,
+      "message": "Brian: PTAL at this reland. I fixed some issues in ANGLE and tested with a manual roll into Chromium here: https://chromium-review.googlesource.com/c/chromium/src/+/5784153",
+      "revId": "6e90638a18ac801ab936a484705c746f8386b69e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
