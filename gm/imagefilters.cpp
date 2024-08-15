@@ -327,3 +327,28 @@ DEF_SIMPLE_GM(multiple_filters, canvas, 415, 210) {
         drawFilteredLayer(filters);
     }
 }
+
+DEF_SIMPLE_GM(luminosity_bug, canvas, 256, 256) {
+    // Test luminosity blend mode, with very low paint alpha against very bright backgrounds
+    constexpr int kRGBs[] = { 243, 247, 251, 255 };
+    canvas->save();
+    for (int r : kRGBs) {
+        for (int g : kRGBs) {
+            for (int b : kRGBs) {
+                SkPaint p;
+                p.setColor(SkColorSetARGB(255, r, g, b));
+                canvas->drawRect({0, 0, 4, 256}, p);
+                canvas->translate(4, 0);
+            }
+        }
+    }
+    canvas->restore();
+
+    for (int a = 1; a <= 16; ++a) {
+        SkPaint p;
+        p.setColor(SkColorSetARGB(a, 255, 255, 255));
+        p.setBlendMode(SkBlendMode::kLuminosity);
+        canvas->drawRect({0, 0, 256, 16}, p);
+        canvas->translate(0, 16);
+    }
+}
