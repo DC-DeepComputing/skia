@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be08368b_5704ec60",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-08-15T23:31:41Z",
+      "side": 1,
+      "message": "To help me plan ahead, can you provide feedback (in chat or on the bug) whether `sBIT`-support should be a hard-blocker for 1) Canary/Dev experiments, 2) shipping?",
+      "range": {
+        "startLine": 28,
+        "startChar": 61,
+        "endLine": 28,
+        "endChar": 62
+      },
+      "revId": "8a36896aa6d0d8f658fe7c99e245769e1192cc11",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
