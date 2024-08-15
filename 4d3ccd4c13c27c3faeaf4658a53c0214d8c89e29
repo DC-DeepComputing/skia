@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7ffa6ff5_04d32ad5",
+        "filename": "src/codec/BUILD.bazel",
+        "patchSetId": 6
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-08-15T20:13:00Z",
+      "side": 1,
+      "message": "We generally try to avoid needing sets of CLs to land \"simultaneously\", because:\n1) It\u0027s hard to guarantee, particularly with the Skia -\u003e chromium roller needing to pass the entire Chromium CQ.\n2) It\u0027s tricky if a CL on either side needs to be reverted.\n\nSo, for code changes, we typically add temporary define guards in chrome (SkUserConfig.h or otherwise), land code in Skia that works both ways, let it roll, then update the chromium defines.\n\nFor build changes, what we\u0027ve done in the past is land an empty placeholder file in the Skia repo, then land the chromium CL that enables building of that file (to no effect). After that, you can migrate functionality without any time constraint.",
+      "parentUuid": "34770857_268ab2c9",
+      "range": {
+        "startLine": 141,
+        "startChar": 0,
+        "endLine": 141,
+        "endChar": 1
+      },
+      "revId": "4d3ccd4c13c27c3faeaf4658a53c0214d8c89e29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "67441b6c_d0df681b",
         "filename": "src/codec/BUILD.bazel",
         "patchSetId": 6
