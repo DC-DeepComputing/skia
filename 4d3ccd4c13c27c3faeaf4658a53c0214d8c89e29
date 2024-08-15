@@ -115,6 +115,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0cda9736_4aca6435",
+        "filename": "src/codec/BUILD.bazel",
+        "patchSetId": 6
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-08-15T20:17:37Z",
+      "side": 1,
+      "message": "The \"good reason\" was Kaylee-of-the-past didn\u0027t get to the PNG files when moving Chromium stuff into gni groups.",
+      "parentUuid": "d824906e_fb09a5c8",
+      "range": {
+        "startLine": 141,
+        "startChar": 0,
+        "endLine": 141,
+        "endChar": 1
+      },
+      "revId": "4d3ccd4c13c27c3faeaf4658a53c0214d8c89e29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "67441b6c_d0df681b",
         "filename": "src/codec/BUILD.bazel",
         "patchSetId": 6
