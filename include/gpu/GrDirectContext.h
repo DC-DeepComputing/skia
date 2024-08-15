@@ -878,10 +878,8 @@ public:
     // Using cached shader blobs on a different device or driver are undefined.
     bool precompileShader(const SkData& key, const SkData& data);
 
-#ifdef SK_ENABLE_DUMP_GPU
     /** Returns a string with detailed information about the context & GPU, in JSON format. */
     SkString dump() const;
-#endif
 
     class DirectContextID {
     public:
