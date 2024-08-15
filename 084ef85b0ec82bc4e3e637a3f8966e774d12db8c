@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "49ae73a0_4ec91c78",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-08-15T23:04:16Z",
+      "side": 1,
+      "message": "Let me remove my CR+1 vote just-in-case (because I think voting on your own CLs may have caused problems in the past...).",
+      "revId": "084ef85b0ec82bc4e3e637a3f8966e774d12db8c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
