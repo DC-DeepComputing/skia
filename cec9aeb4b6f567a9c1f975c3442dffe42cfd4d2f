@@ -33,6 +33,24 @@
       "message": "Can/should we add `unsafe` here?",
       "revId": "cec9aeb4b6f567a9c1f975c3442dffe42cfd4d2f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3b94e65_53a74708",
+        "filename": "experimental/rust_png/ffi/FFI.rs",
+        "patchSetId": 23
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-08-15T16:56:46Z",
+      "side": 1,
+      "message": "@lukasza@google.com, what\u0027s the concern about uninitialized memory? Is this for a frame that depends on an earlier frame?",
+      "parentUuid": "5d0d2351_4cae6d10",
+      "revId": "cec9aeb4b6f567a9c1f975c3442dffe42cfd4d2f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
