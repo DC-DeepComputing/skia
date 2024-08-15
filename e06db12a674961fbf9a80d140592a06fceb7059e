@@ -22,6 +22,30 @@
       },
       "revId": "e06db12a674961fbf9a80d140592a06fceb7059e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c7dc90fe_b98b6008",
+        "filename": "src/ports/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-08-15T14:26:52Z",
+      "side": 0,
+      "message": "This was required in PS#1, which was using `skia_internal` for `camera.h` (I had not realized it\u0027s on the chopping block until I saw your CL).  After adding to `core`, it should no longer be needed.\n\nRemoved.",
+      "parentUuid": "7bf77cd7_88744d2f",
+      "range": {
+        "startLine": 223,
+        "startChar": 9,
+        "endLine": 223,
+        "endChar": 20
+      },
+      "revId": "e06db12a674961fbf9a80d140592a06fceb7059e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
