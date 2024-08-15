@@ -14,7 +14,12 @@ skia_cc_library(
     hdrs = [
         "//modules/skshaper/include:core_hdrs",
     ],
-    defines = ["SK_DISABLE_LEGACY_SKSHAPER_FUNCTIONS"],
+    defines = select({
+        "@platforms//os:windows": [],
+        "//conditions:default": [
+            "SK_DISABLE_LEGACY_SKSHAPER_FUNCTIONS",
+        ],
+    }),
     features = ["layering_check"],
     local_defines = ["SKSHAPER_IMPLEMENTATION=1"],
     visibility = [
