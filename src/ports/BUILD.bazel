@@ -504,11 +504,15 @@ skia_cc_library(
         ":typeface_fontations_hdrs",
         ":typeface_fontations_srcs",
         "//include/ports:typeface_fontations_hdrs",
+        "SkFontScanner_fontations.h",
     ],
     hdrs = [
         "//include/ports:fontmgr_fontations_hdrs",
     ],
-    defines = ["SK_FONTMGR_FONTATIONS_AVAILABLE"],
+    defines = [
+        "SK_FONTMGR_FONTATIONS_AVAILABLE",
+        "SK_TYPEFACE_FACTORY_FONTATIONS",
+    ],
     visibility = [
         "//:__pkg__",
         "//tools/fonts:__pkg__",
