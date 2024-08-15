@@ -87,6 +87,24 @@
       "parentUuid": "ebcc8c1e_be0f436e",
       "revId": "cec9aeb4b6f567a9c1f975c3442dffe42cfd4d2f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d905180e_eaf28496",
+        "filename": "experimental/rust_png/ffi/FFI.rs",
+        "patchSetId": 23
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-08-15T18:28:20Z",
+      "side": 1,
+      "message": "Ack.  Maybe for now I can change \"SAFETY\" to \"C++/FFI safety\"?\n\nDone.",
+      "parentUuid": "1aaf1697_d48c4ed8",
+      "revId": "cec9aeb4b6f567a9c1f975c3442dffe42cfd4d2f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
