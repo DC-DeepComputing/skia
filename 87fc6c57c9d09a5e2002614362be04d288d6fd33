@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "63ccb6fe_36a9df1c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-08-15T22:25:34Z",
+      "side": 1,
+      "message": "Just FYI (I think):\n\n* I\u0027ve rebased this CL (so that I can rebase my CL chain on top of this).\n* I\u0027ve looked at the CQ failures and the Canary roll CL @ https://crrev.com/c/5792042 seems to have failed `check_static_initializers` build step, but the failure seems unrelated to the CL.  So maybe I should just try pressing the DRY-RUN button again...",
+      "revId": "87fc6c57c9d09a5e2002614362be04d288d6fd33",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
