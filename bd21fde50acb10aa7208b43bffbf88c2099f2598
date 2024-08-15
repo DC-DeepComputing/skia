@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f9eac0e_0b78ca85",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-08-15T20:02:34Z",
+      "side": 1,
+      "message": "As best I can tell the AtlasDrawDelegate is only used once so this should be safe.",
+      "revId": "bd21fde50acb10aa7208b43bffbf88c2099f2598",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
