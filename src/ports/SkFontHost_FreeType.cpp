@@ -63,6 +63,9 @@
 #include <freetype/t1tables.h>
 #include <freetype/ftfntfmt.h>
 
+#include "base/check.h"
+#include "base/logging.h"
+
 using namespace skia_private;
 
 namespace {
@@ -154,7 +157,11 @@ public:
         // Subpixel anti-aliasing may be unfiltered until the LCD filter is set.
         // Newer versions may still need this, so this test with side effects must come first.
         // The default has changed over time, so this doesn't mean the same thing to all users.
-        FT_Library_SetLcdFilter(fLibrary, FT_LCD_FILTER_DEFAULT);
+        // FT_Library_SetLcdFilter(fLibrary, FT_LCD_FILTER_DEFAULT);
+
+        FT_Vector sub[3] = {{-11, 16}, {-11, -16}, {22, 0}};
+        auto ret = FT_Library_SetLcdGeometry(fLibrary, sub);
+        CHECK(ret == 0);
     }
     ~FreeTypeLibrary() {
         if (fLibrary) {
