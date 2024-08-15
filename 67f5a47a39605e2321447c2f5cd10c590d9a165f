@@ -34,6 +34,23 @@
       "parentUuid": "cec908bc_1698f1d4",
       "revId": "67f5a47a39605e2321447c2f5cd10c590d9a165f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8ec32abd_611e1a4e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-08-15T14:43:36Z",
+      "side": 1,
+      "message": "We should probably clean up this overly fragile bit of GPU side stuff, but we can do that later.",
+      "revId": "67f5a47a39605e2321447c2f5cd10c590d9a165f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
