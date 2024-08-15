@@ -69,6 +69,24 @@
       "parentUuid": "f3b94e65_53a74708",
       "revId": "cec9aeb4b6f567a9c1f975c3442dffe42cfd4d2f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1aaf1697_d48c4ed8",
+        "filename": "experimental/rust_png/ffi/FFI.rs",
+        "patchSetId": 23
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 21925
+      },
+      "writtenOn": "2024-08-15T17:39:12Z",
+      "side": 1,
+      "message": "I do withdraw my comment about use of the `unsafe` keyword. I agree that the sheer existence of a `\u0026mut [u8]` here _theoretically_ guarantees safety, in that cxx should not allow the creation of a `\u0026mut [u8]` to uninitialized data. If cxx does allow the creation of such a reference, and the referent is uninitialized, that\u0027s a known limitation of cxx.\n\nBut... I still feel uncomfortable about use of the word `SAFETY` here because that sort of comment is normally associated with the preconditions of calling a Rust `unsafe` function. So I think I\u0027m fine with it if you remove that word, as I think it just confused me and will probably confuse others similarly.",
+      "parentUuid": "ebcc8c1e_be0f436e",
+      "revId": "cec9aeb4b6f567a9c1f975c3442dffe42cfd4d2f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
