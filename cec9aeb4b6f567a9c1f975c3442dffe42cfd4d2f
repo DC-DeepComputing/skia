@@ -51,6 +51,24 @@
       "parentUuid": "5d0d2351_4cae6d10",
       "revId": "cec9aeb4b6f567a9c1f975c3442dffe42cfd4d2f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ebcc8c1e_be0f436e",
+        "filename": "experimental/rust_png/ffi/FFI.rs",
+        "patchSetId": 23
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-08-15T17:01:52Z",
+      "side": 1,
+      "message": "\u003e Can/should we add unsafe here?\n\nI don\u0027t think we should, because **safe** Rust cannot construct a `\u0026mut [u8]` that points to a slice of uninitialized memory.  The comment is about C++, because `cxx` has no way of verifying that `rust::Slice\u003cuint8_t\u003e` on C++ side points to fully initialized memory.\n\n\u003e @lukasza@google.com, what\u0027s the concern about uninitialized memory? Is this for a frame that depends on an earlier frame?\n\nIn Rust `unsafe` reviews, `\u0026mut T` that points to uninitialized memory is treated as an instant UB (even without actually reading from it - the mental model is that compiler optimizations can insert reads wherever - e.g. replace zeroing-out with xoring [this example is silly and impractical, but it illustrates how reads could materialize out of thin air]).\n\nSo, C++ callers need to guarantee that `\u0026mut [u8]` points to a slice of fully initialized memory.  AFAIU the current code does provide this guarantee.",
+      "parentUuid": "f3b94e65_53a74708",
+      "revId": "cec9aeb4b6f567a9c1f975c3442dffe42cfd4d2f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
