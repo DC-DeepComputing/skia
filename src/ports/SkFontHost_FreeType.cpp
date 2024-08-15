@@ -2250,6 +2250,15 @@ bool SkFontScanner_FreeType::scanInstance(SkStreamAsset* stream,
     return true;
 }
 
+sk_sp<SkTypeface> SkFontScanner_FreeType::createTypeface(std::unique_ptr<SkStreamAsset> stream,
+                                                         const SkFontArguments& args) {
+    return SkTypeface_FreeType::MakeFromStream(std::move(stream), SkFontArguments());
+}
+
+SkFourByteTag SkFontScanner_FreeType::getFactoryId() const {
+    return SkTypeface_FreeType::FactoryId;
+}
+
 bool SkFontScanner_FreeType::GetAxes(FT_Face face, AxisDefinitions* axes) {
     SkASSERT(face && axes);
     if (face->face_flags & FT_FACE_FLAG_MULTIPLE_MASTERS) {

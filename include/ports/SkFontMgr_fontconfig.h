@@ -10,13 +10,15 @@
 
 #include "include/core/SkRefCnt.h"
 #include <fontconfig/fontconfig.h>
+#include <memory>
 
 class SkFontMgr;
+class SkFontScanner;
 
 /** Create a font manager around a FontConfig instance.
  *  If 'fc' is NULL, will use a new default config.
  *  Takes ownership of 'fc' and will call FcConfigDestroy on it.
  */
+SK_API sk_sp<SkFontMgr> SkFontMgr_New_FontConfig(FcConfig* fc, std::unique_ptr<SkFontScanner> scanner);
 SK_API sk_sp<SkFontMgr> SkFontMgr_New_FontConfig(FcConfig* fc);
-
 #endif // #ifndef SkFontMgr_fontconfig_DEFINED

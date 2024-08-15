@@ -508,7 +508,7 @@ skia_cc_library(
     hdrs = [
         "//include/ports:fontmgr_fontations_hdrs",
     ],
-    defines = ["SK_FONTMGR_FONTATIONS_AVAILABLE"],
+    defines = ["SK_FONTMGR_FONTATIONS_AVAILABLE", "SK_TYPEFACE_FACTORY_FONTATIONS"],
     visibility = [
         "//:__pkg__",
         "//tools/fonts:__pkg__",
