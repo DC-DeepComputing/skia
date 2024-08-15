@@ -69,10 +69,12 @@ RendererProvider::RendererProvider(const Caps* caps, StaticBufferManager* buffer
     fConvexTessellatedWedges =
             makeFromStep(std::make_unique<TessellateWedgesRenderStep>(
                                  "convex", infinitySupport, kDirectDepthGreaterPass, bufferManager),
-                         DrawTypeFlags::kShape);
+                         DrawTypeFlags::kNonSimpleShape);
     fTessellatedStrokes = makeFromStep(
-            std::make_unique<TessellateStrokesRenderStep>(infinitySupport), DrawTypeFlags::kShape);
-    fCoverageMask = makeFromStep(std::make_unique<CoverageMaskRenderStep>(), DrawTypeFlags::kShape);
+            std::make_unique<TessellateStrokesRenderStep>(infinitySupport),
+            DrawTypeFlags::kNonSimpleShape);
+    fCoverageMask = makeFromStep(std::make_unique<CoverageMaskRenderStep>(),
+                                 DrawTypeFlags::kNonSimpleShape);
 
     static constexpr struct {
         skgpu::MaskFormat fFormat;
@@ -140,7 +142,8 @@ RendererProvider::RendererProvider(const Caps* caps, StaticBufferManager* buffer
             std::string variant = kTessVariants[index];
 
             constexpr DrawTypeFlags kTextAndShape =
-                    static_cast<DrawTypeFlags>(DrawTypeFlags::kPathBasedText|DrawTypeFlags::kShape);
+                    static_cast<DrawTypeFlags>(DrawTypeFlags::kPathBasedText|
+                                               DrawTypeFlags::kNonSimpleShape);
 
             const RenderStep* coverStep = inverse ? coverInverse.get() : coverFill.get();
             fStencilTessellatedCurves[index] = Renderer("StencilTessellatedCurvesAndTris" + variant,

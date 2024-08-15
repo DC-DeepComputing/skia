@@ -156,10 +156,10 @@ enum DrawTypeFlags : uint16_t {
     // All other shapes (e.g., any strokeAndFill shape, non-circular-stroked RRects, SkPaths, ...)
     kNonSimpleShape      = 0b100000000,
 
-    kShape               = kSimpleShape | kNonSimpleShape,
+//    kShape               = kSimpleShape | kNonSimpleShape,
 
-    kMostCommon          = kBitmapText_Mask | kSimpleShape,
-    kAll                 = kText | kDrawVertices | kShape
+//    kMostCommon          = kBitmapText_Mask | kSimpleShape,
+//    kAll                 = kText | kDrawVertices | kShape
 };
 
 } // namespace skgpu::graphite
