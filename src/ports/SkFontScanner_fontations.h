@@ -17,7 +17,6 @@
 #include "src/core/SkFontScanner.h"
 #include "src/core/SkGlyph.h"
 #include "src/core/SkScalerContext.h"
-#include "src/utils/SkCharToGlyphCache.h"
 
 struct SkAdvancedTypefaceMetrics;
 class SkFontDescriptor;
@@ -37,6 +36,9 @@ public:
                       SkFontStyle* style,
                       bool* isFixedPitch,
                       AxisDefinitions* axes) const override;
+    sk_sp<SkTypeface> createTypeface(std::unique_ptr<SkStreamAsset> stream,
+                                     const SkFontArguments& args) override;
+    SkFourByteTag getFactoryId() const override;
 private:
 };
 

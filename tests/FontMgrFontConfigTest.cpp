@@ -21,11 +21,13 @@
 #include "include/core/SkTypeface.h"
 #include "include/core/SkTypes.h"
 #include "include/ports/SkFontMgr_fontconfig.h"
+#if defined(SK_TYPEFACE_FACTORY_FONTATIONS)
+#include "src/ports/SkFontScanner_fontations.h"
+#endif
+#include "src/ports/SkTypeface_FreeType.h"
 #include "tests/Test.h"
 #include "tools/Resources.h"
-
 #include <fontconfig/fontconfig.h>
-
 #include <array>
 #include <memory>
 
@@ -60,10 +62,7 @@ FcConfig* build_fontconfig_with_fontfile(const char* fontFilename) {
 
 }  // namespace
 
-DEF_TEST(FontMgrFontConfig, reporter) {
-    FcConfig* config = build_fontconfig_with_fontfile("/fonts/Distortable.ttf");
-
-    sk_sp<SkFontMgr> fontMgr(SkFontMgr_New_FontConfig(config));
+void FontMgrFontConfig(skiatest::Reporter* reporter, sk_sp<SkFontMgr> fontMgr) {
     sk_sp<SkTypeface> typeface(fontMgr->legacyMakeTypeface("Distortable", SkFontStyle()));
     if (!typeface) {
         ERRORF(reporter, "Could not find typeface. FcVersion: %d", FcGetVersion());
@@ -86,7 +85,7 @@ DEF_TEST(FontMgrFontConfig, reporter) {
     constexpr float kTextSize = 20;
 
     std::unique_ptr<SkStreamAsset> distortableStream(
-        GetResourceAsStream("fonts/Distortable.ttf"));
+            GetResourceAsStream("fonts/Distortable.ttf"));
     if (!distortableStream) {
         return;
     }
@@ -96,20 +95,20 @@ DEF_TEST(FontMgrFontConfig, reporter) {
 
     for (int i = 0; i < 10; ++i) {
         SkScalar styleValue =
-            SkDoubleToScalar(0.5 + i * ((2.0 - 0.5) / 10));
+                SkDoubleToScalar(0.5 + i * ((2.0 - 0.5) / 10));
         SkFontArguments::VariationPosition::Coordinate
-            coordinates[] = {{tag, styleValue}};
+                coordinates[] = {{tag, styleValue}};
         SkFontArguments::VariationPosition
-            position = {coordinates, std::size(coordinates)};
+                position = {coordinates, std::size(coordinates)};
 
         SkFont fontStream(
-            fontMgr->makeFromStream(distortableStream->duplicate(),
-                                    SkFontArguments().setVariationDesignPosition(position)),
-            kTextSize);
+                fontMgr->makeFromStream(distortableStream->duplicate(),
+                                        SkFontArguments().setVariationDesignPosition(position)),
+                kTextSize);
         fontStream.setEdging(SkFont::Edging::kSubpixelAntiAlias);
 
         SkFont fontClone(
-            typeface->makeClone(SkFontArguments().setVariationDesignPosition(position)), kTextSize);
+                typeface->makeClone(SkFontArguments().setVariationDesignPosition(position)), kTextSize);
         fontClone.setEdging(SkFont::Edging::kSubpixelAntiAlias);
 
         constexpr char text[] = "abc";
@@ -124,3 +123,17 @@ DEF_TEST(FontMgrFontConfig, reporter) {
         REPORTER_ASSERT(reporter, success);
     }
 }
+
+DEF_TEST(FontMgrFontConfig_FreeType, reporter) {
+    FcConfig* config = build_fontconfig_with_fontfile("/fonts/Distortable.ttf");
+    sk_sp<SkFontMgr> fontMgr(SkFontMgr_New_FontConfig(config, std::make_unique<SkFontScanner_FreeType>()));
+    FontMgrFontConfig(reporter, fontMgr);
+}
+
+#if defined(SK_TYPEFACE_FACTORY_FONTATIONS)
+DEF_TEST(FontMgrFontConfig_Fontations, reporter) {
+    FcConfig* config = build_fontconfig_with_fontfile("/fonts/Distortable.ttf");
+    sk_sp<SkFontMgr> fontMgr(SkFontMgr_New_FontConfig(config, std::make_unique<SkFontScanner_Fontations>()));
+    FontMgrFontConfig(reporter, fontMgr);
+}
+#endif
