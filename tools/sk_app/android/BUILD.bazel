@@ -1,0 +1,20 @@
+load("//bazel:skia_rules.bzl", "skia_cc_deps", "skia_filegroup")
+
+package(
+    default_applicable_licenses = ["//:license"],
+)
+
+licenses(["notice"])
+
+skia_filegroup(
+    name = "srcs",
+    testonly = True,
+    srcs = [
+        "Window_android.cpp",
+        "Window_android.h",
+        "surface_glue_android.cpp",
+        "surface_glue_android.h",
+        "main_android.cpp",
+    ],
+    visibility = ["//tools/sk_app:__pkg__"],
+)

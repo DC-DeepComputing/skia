@@ -43,3 +43,32 @@ skia_cc_library(
         "//bazel/external/glesv2",
     ],
 )
+
+skia_cc_library(
+    name = "egl_factory_TEST_UTIL",
+    testonly = True,
+    srcs = [
+        "GrGLMakeEGLInterface.cpp",
+    ],
+    hdrs = [
+        "//include/gpu/ganesh/gl/egl:public_hdrs",
+    ],
+    defines = [
+        "SK_DISABLE_LEGACY_EGLINTERFACE_FACTORY",
+        "GPU_TEST_UTILS",
+    ],
+    linkopts = select({
+        "@platforms//os:android": [
+            "-lEGL",
+            "-lGLESv2",
+        ],
+        "//conditions:default": [],
+    }),
+    visibility = ["//tools/window:__pkg__"],
+    deps = [
+        "//:core",
+        "//src/gpu/ganesh/gl:ganesh_gl_TEST_UTIL",
+        "//bazel/external/egl",
+        "//bazel/external/glesv2",
+    ],
+)
