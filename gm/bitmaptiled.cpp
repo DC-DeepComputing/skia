@@ -38,6 +38,11 @@ static void draw_tile_bitmap_with_fractional_offset(SkCanvas* canvas, bool verti
         dContext->setResourceCacheLimit(newMaxResourceBytes);
     }
 
+    if (canvas->recorder()) {
+        // In Graphite, it is always the client's responsibility to manually do tiled image draws.
+        manual = true;
+    }
+
     // Construct our bitmap as either very wide or very tall
     SkBitmap bmp;
     bmp.allocN32Pixels(vertical ? kBitmapShortEdge : kBitmapLongEdge,
