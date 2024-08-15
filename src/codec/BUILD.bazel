@@ -453,10 +453,8 @@ skia_cc_library(
 skia_cc_library(
     name = "ico_decode",
     srcs = [
-        "SkBmpCodec.h",
         "SkIcoCodec.cpp",
         "SkIcoCodec.h",
-        "SkPngCodec.h",
     ],
     hdrs = [
         "//include/codec:any_codec_hdrs",
