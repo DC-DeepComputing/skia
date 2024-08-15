@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a1e990f_0bc0d88b",
+        "filename": "src/codec/BUILD.bazel",
+        "patchSetId": 7
+      },
+      "lineNbr": 553,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-08-15T23:31:36Z",
+      "side": 1,
+      "message": "Both places where I am adding `SkPngCodecBase.cpp` are used:\n\n* `buffer_png_srcs` \u003d\u003e used to generate the entry/list in the `.gni` file\n* `DECODE_PNG_FILES` \u003d\u003e used to generate `decode_png_srcs` and `decode_png_hdrs` which are used in the `skia_filegroup(name \u003d \"srcs\", ...`\n\nSo let me sheepishly edit both places (and, at least in this CL, avoid thinking too hard why there are two places rather than one...).  Any comments?  Sounds good?",
+      "range": {
+        "startLine": 553,
+        "startChar": 4,
+        "endLine": 553,
+        "endChar": 6
+      },
+      "revId": "6dbe15b4c51518e4fea90df463a256823a210eed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

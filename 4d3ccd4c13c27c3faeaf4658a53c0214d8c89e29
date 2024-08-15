@@ -137,6 +137,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c343356_ca19e082",
+        "filename": "src/codec/BUILD.bazel",
+        "patchSetId": 6
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-08-15T23:31:36Z",
+      "side": 1,
+      "message": "I think I\u0027ve made all the changes that we\u0027ve discussed.  Thank you for your help.",
+      "parentUuid": "0cda9736_4aca6435",
+      "range": {
+        "startLine": 141,
+        "startChar": 0,
+        "endLine": 141,
+        "endChar": 1
+      },
+      "revId": "4d3ccd4c13c27c3faeaf4658a53c0214d8c89e29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "67441b6c_d0df681b",
@@ -150,6 +174,30 @@
       "writtenOn": "2024-08-15T20:05:32Z",
       "side": 1,
       "message": "There was no `SkPngCodec.cpp` so I think I don\u0027t need to cover `SkPngCodecBase.cpp` here...",
+      "range": {
+        "startLine": 462,
+        "startChar": 26,
+        "endLine": 462,
+        "endChar": 27
+      },
+      "revId": "4d3ccd4c13c27c3faeaf4658a53c0214d8c89e29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9bb8aeef_d77b3b47",
+        "filename": "src/codec/BUILD.bazel",
+        "patchSetId": 6
+      },
+      "lineNbr": 462,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-08-15T23:31:36Z",
+      "side": 1,
+      "message": "Stale comment - resolving...",
+      "parentUuid": "67441b6c_d0df681b",
       "range": {
         "startLine": 462,
         "startChar": 26,
