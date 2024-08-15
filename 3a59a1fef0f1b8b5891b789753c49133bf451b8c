@@ -16,6 +16,29 @@
       "message": "I believe this is good to go. I ran the mac12-tests jobs on the Chrome Canary and it passed the check_static_initializers test.",
       "revId": "3a59a1fef0f1b8b5891b789753c49133bf451b8c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4144240c_7aa2c720",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-08-15T16:52:32Z",
+      "side": 1,
+      "message": "nit: maybe `get_pipeline_domain()`?",
+      "range": {
+        "startLine": 32,
+        "startChar": 25,
+        "endLine": 32,
+        "endChar": 35
+      },
+      "revId": "3a59a1fef0f1b8b5891b789753c49133bf451b8c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
