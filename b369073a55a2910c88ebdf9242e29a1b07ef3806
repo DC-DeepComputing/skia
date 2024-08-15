@@ -16,6 +16,23 @@
       "message": "PTAL. I fixed our GN rules too",
       "revId": "b369073a55a2910c88ebdf9242e29a1b07ef3806",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed3aefab_4623ad92",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-08-15T20:32:21Z",
+      "side": 1,
+      "message": "Thanks!  LGTM (although Gerrit says that \"I don\u0027t have a permission to vote\").  (I can work on tweaking `//skia/BUILD.gn` on Chromium side once Skia rolls - I think I should be able to get to it tomorrow.)",
+      "revId": "b369073a55a2910c88ebdf9242e29a1b07ef3806",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
