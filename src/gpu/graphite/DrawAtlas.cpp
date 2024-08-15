@@ -277,7 +277,7 @@ SkIPoint DrawAtlas::prepForRender(const AtlasLocator& locator, SkAutoPixmapStora
     return plot->prepForRender(locator, pixmap);
 }
 
-void DrawAtlas::compact(AtlasToken startTokenForNextFlush) {
+void DrawAtlas::compact(AtlasToken startTokenForNextFlush, bool forceCompact) {
     if (fNumActivePages < 1) {
         fPrevFlushToken = startTokenForNextFlush;
         return;
@@ -309,23 +309,56 @@ void DrawAtlas::compact(AtlasToken startTokenForNextFlush) {
     // hasn't been used in a long time.
     // This is to handle the case where a lot of text or path rendering has occurred but then just
     // a blinking cursor is drawn.
-    if (atlasUsedThisFlush || fFlushesSinceLastUse > kAtlasRecentlyUsedCount) {
-        TArray<Plot*> availablePlots;
-        uint32_t lastPageIndex = fNumActivePages - 1;
+    if (forceCompact || atlasUsedThisFlush || fFlushesSinceLastUse > kAtlasRecentlyUsedCount) {
+        unsigned int usedPlots = 0;
+        do {
+            TArray<Plot*> availablePlots;
+            uint32_t lastPageIndex = fNumActivePages - 1;
 
-        // For all plots but the last one, update number of flushes since used, and check to see
-        // if there are any in the first pages that the last page can safely upload to.
-        for (uint32_t pageIndex = 0; pageIndex < lastPageIndex; ++pageIndex) {
-            if constexpr (kDumpAtlasData) {
-                SkDebugf("page %u: ", pageIndex);
+            // For all plots but the last one, update number of flushes since used, and check to see
+            // if there are any in the first pages that the last page can safely upload to.
+            for (uint32_t pageIndex = 0; pageIndex < lastPageIndex; ++pageIndex) {
+                if constexpr (kDumpAtlasData) {
+                    SkDebugf("page %u: ", pageIndex);
+                }
+
+                plotIter.init(fPages[pageIndex].fPlotList, PlotList::Iter::kHead_IterStart);
+                while (Plot* plot = plotIter.get()) {
+                    // Update number of flushes since plot was last used
+                    // We only increment the 'sinceLastUsed' count for flushes where the atlas was used
+                    // to avoid deleting everything when we return to text drawing in the blinking
+                    // cursor case
+                    if (!plot->lastUseToken().inInterval(fPrevFlushToken, startTokenForNextFlush)) {
+                        plot->incFlushesSinceLastUsed();
+                    }
+
+                    if constexpr (kDumpAtlasData) {
+                        SkDebugf("%d ", plot->flushesSinceLastUsed());
+                    }
+
+                    // Count plots we can potentially upload to in all pages except the last one
+                    // (the potential compactee).
+                    if (plot->flushesSinceLastUsed() > kPlotRecentlyUsedCount) {
+                        availablePlots.push_back() = plot;
+                    }
+
+                    plotIter.next();
+                }
+
+                if constexpr (kDumpAtlasData) {
+                    SkDebugf("\n");
+                }
             }
 
-            plotIter.init(fPages[pageIndex].fPlotList, PlotList::Iter::kHead_IterStart);
+            // Count recently used plots in the last page and evict any that are no longer in use.
+            // Since we prioritize uploading to the first pages, this will eventually
+            // clear out usage of this page unless we have a large need.
+            plotIter.init(fPages[lastPageIndex].fPlotList, PlotList::Iter::kHead_IterStart);
+            if constexpr (kDumpAtlasData) {
+                SkDebugf("page %u: ", lastPageIndex);
+            }
             while (Plot* plot = plotIter.get()) {
                 // Update number of flushes since plot was last used
-                // We only increment the 'sinceLastUsed' count for flushes where the atlas was used
-                // to avoid deleting everything when we return to text drawing in the blinking
-                // cursor case
                 if (!plot->lastUseToken().inInterval(fPrevFlushToken, startTokenForNextFlush)) {
                     plot->incFlushesSinceLastUsed();
                 }
@@ -334,87 +367,57 @@ void DrawAtlas::compact(AtlasToken startTokenForNextFlush) {
                     SkDebugf("%d ", plot->flushesSinceLastUsed());
                 }
 
-                // Count plots we can potentially upload to in all pages except the last one
-                // (the potential compactee).
-                if (plot->flushesSinceLastUsed() > kPlotRecentlyUsedCount) {
-                    availablePlots.push_back() = plot;
+                // If this plot was used recently
+                if (plot->flushesSinceLastUsed() <= kPlotRecentlyUsedCount) {
+                    usedPlots++;
+                } else if (plot->lastUseToken() != AtlasToken::InvalidToken()) {
+                    // otherwise if aged out just evict it.
+                    this->processEvictionAndResetRects(plot);
                 }
-
                 plotIter.next();
             }
 
             if constexpr (kDumpAtlasData) {
                 SkDebugf("\n");
             }
-        }
 
-        // Count recently used plots in the last page and evict any that are no longer in use.
-        // Since we prioritize uploading to the first pages, this will eventually
-        // clear out usage of this page unless we have a large need.
-        plotIter.init(fPages[lastPageIndex].fPlotList, PlotList::Iter::kHead_IterStart);
-        unsigned int usedPlots = 0;
-        if constexpr (kDumpAtlasData) {
-            SkDebugf("page %u: ", lastPageIndex);
-        }
-        while (Plot* plot = plotIter.get()) {
-            // Update number of flushes since plot was last used
-            if (!plot->lastUseToken().inInterval(fPrevFlushToken, startTokenForNextFlush)) {
-                plot->incFlushesSinceLastUsed();
-            }
-
-            if constexpr (kDumpAtlasData) {
-                SkDebugf("%d ", plot->flushesSinceLastUsed());
-            }
-
-            // If this plot was used recently
-            if (plot->flushesSinceLastUsed() <= kPlotRecentlyUsedCount) {
-                usedPlots++;
-            } else if (plot->lastUseToken() != AtlasToken::InvalidToken()) {
-                // otherwise if aged out just evict it.
-                this->processEvictionAndResetRects(plot);
-            }
-            plotIter.next();
-        }
-
-        if constexpr (kDumpAtlasData) {
-            SkDebugf("\n");
-        }
-
-        // If recently used plots in the last page are using less than a quarter of the page, try
-        // to evict them if there's available space in lower index pages. Since we prioritize
-        // uploading to the first pages, this will eventually clear out usage of this page unless
-        // we have a large need.
-        if (availablePlots.size() && usedPlots && usedPlots <= fNumPlots / 4) {
-            plotIter.init(fPages[lastPageIndex].fPlotList, PlotList::Iter::kHead_IterStart);
-            while (Plot* plot = plotIter.get()) {
-                // If this plot was used recently
-                if (plot->flushesSinceLastUsed() <= kPlotRecentlyUsedCount) {
-                    // See if there's room in an lower index page and if so evict.
-                    // We need to be somewhat harsh here so that a handful of plots that are
-                    // consistently in use don't end up locking the page in memory.
-                    if (availablePlots.size() > 0) {
-                        this->processEvictionAndResetRects(plot);
-                        this->processEvictionAndResetRects(availablePlots.back());
-                        availablePlots.pop_back();
-                        --usedPlots;
+            // If recently used plots in the last page are using less than a quarter of the page, try
+            // to evict them if there's available space in lower index pages. Since we prioritize
+            // uploading to the first pages, this will eventually clear out usage of this page unless
+            // we have a large need.
+            if (availablePlots.size() && usedPlots && usedPlots <= fNumPlots / 4) {
+                plotIter.init(fPages[lastPageIndex].fPlotList, PlotList::Iter::kHead_IterStart);
+                while (Plot* plot = plotIter.get()) {
+                    // If this plot was used recently
+                    if (plot->flushesSinceLastUsed() <= kPlotRecentlyUsedCount) {
+                        // See if there's room in an lower index page and if so evict.
+                        // We need to be somewhat harsh here so that a handful of plots that are
+                        // consistently in use don't end up locking the page in memory.
+                        if (availablePlots.size() > 0) {
+                            this->processEvictionAndResetRects(plot);
+                            this->processEvictionAndResetRects(availablePlots.back());
+                            availablePlots.pop_back();
+                            --usedPlots;
+                        }
+                        if (usedPlots == 0 || !availablePlots.size()) {
+                            break;
+                        }
                     }
-                    if (!usedPlots || !availablePlots.size()) {
-                        break;
-                    }
+                    plotIter.next();
                 }
-                plotIter.next();
-            }
-        }
-
-        // If none of the plots in the last page have been used recently, delete it.
-        if (!usedPlots) {
-            if constexpr (kDumpAtlasData) {
-                SkDebugf("delete %u\n", fNumActivePages-1);
             }
 
-            this->deactivateLastPage();
-            fFlushesSinceLastUse = 0;
-        }
+            // If none of the plots in the last page have been used recently, delete it.
+            if (usedPlots == 0) {
+                if constexpr (kDumpAtlasData) {
+                    SkDebugf("delete %u\n", fNumActivePages-1);
+                }
+
+                this->deactivateLastPage();
+                fFlushesSinceLastUse = 0;
+            }
+        // Repeat until there's nothing to compact
+        } while (usedPlots == 0);
     }
 
     fPrevFlushToken = startTokenForNextFlush;
