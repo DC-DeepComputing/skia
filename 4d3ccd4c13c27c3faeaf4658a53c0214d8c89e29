@@ -91,6 +91,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d824906e_fb09a5c8",
+        "filename": "src/codec/BUILD.bazel",
+        "patchSetId": 6
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-08-15T20:14:28Z",
+      "side": 1,
+      "message": "Ah yes - this is even better. I was wondering if there was a good reason the PNG files were referenced directly -- we try to use GN variables to hold the groups for exactly this reason.",
+      "parentUuid": "06bbb130_db87305a",
+      "range": {
+        "startLine": 141,
+        "startChar": 0,
+        "endLine": 141,
+        "endChar": 1
+      },
+      "revId": "4d3ccd4c13c27c3faeaf4658a53c0214d8c89e29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "67441b6c_d0df681b",
         "filename": "src/codec/BUILD.bazel",
         "patchSetId": 6
