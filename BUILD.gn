@@ -384,7 +384,7 @@ optional("fontmgr_FontConfigInterface") {
 
 optional("fontmgr_fontations_empty") {
   enabled = skia_use_fontations
-  public_defines = [ "SK_FONTMGR_FONTATIONS_AVAILABLE" ]
+  public_defines = [ "SK_FONTMGR_FONTATIONS_AVAILABLE", "SK_TYPEFACE_FACTORY_FONTATIONS" ]
 
   deps = [ ":typeface_fontations" ]
   public = skia_ports_fontmgr_fontations_public
