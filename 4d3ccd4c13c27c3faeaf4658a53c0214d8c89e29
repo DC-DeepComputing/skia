@@ -67,6 +67,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "06bbb130_db87305a",
+        "filename": "src/codec/BUILD.bazel",
+        "patchSetId": 6
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-08-15T20:13:05Z",
+      "side": 1,
+      "message": "A slightly easier plan is to\n1) Skia CL to add .gni group with png files\n2) Chrome CL to use .gni group instead of SkPngCodec.cpp directly\n3) This Cl which adds to the .gni group\n\nIt has the benefit of being 3 independent CLs. I can get 1) done and send it to you for review.",
+      "parentUuid": "34770857_268ab2c9",
+      "range": {
+        "startLine": 141,
+        "startChar": 0,
+        "endLine": 141,
+        "endChar": 1
+      },
+      "revId": "4d3ccd4c13c27c3faeaf4658a53c0214d8c89e29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "67441b6c_d0df681b",
         "filename": "src/codec/BUILD.bazel",
         "patchSetId": 6
