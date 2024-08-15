@@ -49,6 +49,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2b182045_fa51fe08",
+        "filename": "tools/viewer/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-08-15T17:34:48Z",
+      "side": 1,
+      "message": "`SVGFileSlide.cpp` needs `utils/FactoryHelpers.h`, which is not not in `skshaper_core`.",
+      "parentUuid": "9ab26d7f_f4db37e8",
+      "range": {
+        "startLine": 112,
+        "startChar": 8,
+        "endLine": 112,
+        "endChar": 52
+      },
+      "revId": "7ee56bcf39a2045dcc18c4f0475e8c24fcad2e44",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "338c0403_39f8b4e0",
         "filename": "tools/viewer/BUILD.bazel",
         "patchSetId": 1
@@ -60,6 +84,30 @@
       "writtenOn": "2024-08-15T16:34:54Z",
       "side": 1,
       "message": "This could be `//:svg_renderer`",
+      "range": {
+        "startLine": 113,
+        "startChar": 11,
+        "endLine": 113,
+        "endChar": 35
+      },
+      "revId": "7ee56bcf39a2045dcc18c4f0475e8c24fcad2e44",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d7dc1e2_7ba2823f",
+        "filename": "tools/viewer/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-08-15T17:34:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "338c0403_39f8b4e0",
       "range": {
         "startLine": 113,
         "startChar": 11,
