@@ -73,6 +73,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "690c94d8_3ecb0b1f",
+        "filename": "tools/viewer/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-08-15T17:37:22Z",
+      "side": 1,
+      "message": "Yes. `//:skshaper_core` is an alias to `//modules/skshaper:skshaper_core_and_utils`, since it is meant for use by clients.",
+      "parentUuid": "2b182045_fa51fe08",
+      "range": {
+        "startLine": 112,
+        "startChar": 8,
+        "endLine": 112,
+        "endChar": 52
+      },
+      "revId": "7ee56bcf39a2045dcc18c4f0475e8c24fcad2e44",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "338c0403_39f8b4e0",
         "filename": "tools/viewer/BUILD.bazel",
         "patchSetId": 1
