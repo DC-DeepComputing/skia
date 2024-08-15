@@ -228,11 +228,14 @@ SkPngRustCodec::SkPngRustCodec(SkEncodedInfo&& encodedInfo,
 
 SkPngRustCodec::~SkPngRustCodec() = default;
 
-SkCodec::Result SkPngRustCodec::onGetPixels(const SkImageInfo& dstInfo,
-                                            void* dstPtr,
-                                            size_t dstRowSize,
-                                            const Options& options,
-                                            int* rowsDecoded) {
+SkCodec::Result SkPngRustCodec::startDecoding(const SkImageInfo& dstInfo,
+                                              void* pixels,
+                                              size_t rowBytes,
+                                              const Options& options,
+                                              DecodingState* decodingState) {
+    decodingState->dst = SkSpan(static_cast<uint8_t*>(pixels), rowBytes * dstInfo.height());
+    decodingState->dstRowSize = rowBytes;
+
     // TODO(https://crbug.com/356922876): Expose `png` crate's ability to decode
     // multiple frames.
     if (options.fFrameIndex != 0) {
@@ -243,31 +246,67 @@ SkCodec::Result SkPngRustCodec::onGetPixels(const SkImageInfo& dstInfo,
         return kUnimplemented;
     }
 
-    // We can assume that the source and destination have the same dimensions,
-    // because `SkPngRustCodec` inherits the default implementation of
-    // `SkCodec::onDimensionsSupported` which returns false (and
-    // `SkCodec::getPixels` checks `dimensionsSupported` before proceeding).
-    int width = dstInfo.width();
-    int height = dstInfo.height();
-    SkASSERT(width == getEncodedInfo().width());
-    SkASSERT(height == getEncodedInfo().height());
+    return this->initializeXforms(dstInfo, options);
+}
 
-    Result result = this->initializeXforms(dstInfo, options);
-    if (result != kSuccess) {
-        return result;
+SkCodec::Result SkPngRustCodec::incrementalDecode(DecodingState& decodingState,
+                                                  int* rowsDecodedPtr) {
+    if (fReader->interlaced()) {
+        // TODO(https://crbug.com/356923435): Support incremental decoding of
+        // interlaced images.
+        return kUnimplemented;
     }
+
+    int rowsDecoded = 0;
+    while (true) {
+        // TODO(https://crbug.com/357876243): Avoid an unconditional buffer hop
+        // through buffer owned by `fReader` (e.g. when we can decode directly
+        // into `dst`, because the pixel format received from `fReader` is
+        // similar enough to `dstInfo`).
+        rust::Slice<const uint8_t> decodedRow;
+
+        Result result = ToSkCodecResult(fReader->next_row(decodedRow));
+        if (result != kSuccess) {
+            if (result == kIncompleteInput && rowsDecodedPtr) {
+                // TODO(https://crbug.com/356923435): Handle `kIncompleteInput` (right
+                // now the FFI layer will never return `kIncompleteInput` but we will
+                // need to handle it for incremental, row-by-row decoding).
+                SkUNREACHABLE;
+
+                *rowsDecodedPtr = rowsDecoded;
+            }
+            return result;
+        }
+
+        if (decodedRow.empty()) {
+            return kSuccess;
+        }
+
+        this->applyXformRow(decodingState.dst, decodedRow);
+        decodingState.dst = decodingState.dst.subspan(decodingState.dstRowSize);
+        rowsDecoded++;
+    }
+}
+
+SkCodec::Result SkPngRustCodec::decodeInterlacedImage(DecodingState& decodingState) {
+    // The assertion below is based on `png::Transformations::EXPAND`.  The
+    // assertion helps to ensure that dividing by 8 in `srcRowSize` calculations
+    // is okay.
+    SkASSERT(getEncodedInfo().bitsPerComponent() % 8 == 0);
+    size_t bytesPerPixel = static_cast<size_t>(getEncodedInfo().bitsPerPixel()) / 8;
+    size_t srcRowSize = bytesPerPixel * getEncodedInfo().width();
 
     // Decode the whole PNG image into an intermediate buffer.
     //
-    // TODO(https://crbug.com/357876243): Avoid an extra buffer when possible
-    // (e.g. when we can decode directly into `dst`, because the pixel format
-    // received from `fReader` is similar enough to `dstInfo`).
+    // TODO(https://crbug.com/356923435): Handle interlaced images in
+    // `incrementalDecode` and stop using (and remove) `next_frame` below.
     //
     // TODO(https://github.com/dtolnay/cxx/pull/1367): Consider using a new
     // constructor when available: `rust::Slice(decodedPixels)`.
     std::vector<uint8_t> decodedPixels(fReader->output_buffer_size(), 0x00);
-    result = ToSkCodecResult(
+    Result result = ToSkCodecResult(
             fReader->next_frame(rust::Slice(decodedPixels.data(), decodedPixels.size())));
+
     if (result != kSuccess) {
         // TODO(https://crbug.com/356923435): Handle `kIncompleteInput` (right
         // now the FFI layer will never return `kIncompleteInput` but we will
@@ -279,16 +318,64 @@ SkCodec::Result SkPngRustCodec::onGetPixels(const SkImageInfo& dstInfo,
 
     // Convert the `decodedPixels` into the `dstInfo` format.
     SkSpan<const uint8_t> src = decodedPixels;
-    SkSpan<uint8_t> dst(static_cast<uint8_t*>(dstPtr), dstRowSize * height);
-    size_t srcRowSize = getEncodedInfoRowSize();
-    for (int y = 0; y < height; ++y) {
-        this->applyXformRow(dst, src);
-        dst = dst.subspan(dstRowSize);
+    for (int y = 0; y < getEncodedInfo().height(); ++y) {
+        this->applyXformRow(decodingState.dst, src);
+        decodingState.dst = decodingState.dst.subspan(decodingState.dstRowSize);
         src = src.subspan(srcRowSize);
     }
-    *rowsDecoded = height;
 
     return kSuccess;
+}
+
+SkCodec::Result SkPngRustCodec::onGetPixels(const SkImageInfo& dstInfo,
+                                            void* pixels,
+                                            size_t rowBytes,
+                                            const Options& options,
+                                            int* rowsDecoded) {
+    DecodingState decodingState;
+    Result result = this->startDecoding(dstInfo, pixels, rowBytes, options, &decodingState);
+    if (result != kSuccess) {
+        return result;
+    }
+
+    // TODO(https://crbug.com/356923435): Handle interlaced images in
+    // `incrementalDecode` and then: remove the `if` statement below
+    // (and remove `decodeInterlacedImage`).
+    if (fReader->interlaced()) {
+        result = this->decodeInterlacedImage(decodingState);
+
+        // TODO(https://crbug.com/356923435): Handle `kIncompleteInput` (right
+        // now the FFI layer will never return `kIncompleteInput` but we will
+        // need to handle it for incremental, row-by-row decoding).
+        SkASSERT_RELEASE(result != kIncompleteInput);
+
+        if (result == kSuccess) {
+            *rowsDecoded = dstInfo.height();
+        }
+        return result;
+    }
+
+    return this->incrementalDecode(decodingState, rowsDecoded);
+}
+
+SkCodec::Result SkPngRustCodec::onStartIncrementalDecode(const SkImageInfo& dstInfo,
+                                                         void* pixels,
+                                                         size_t rowBytes,
+                                                         const Options& options) {
+    DecodingState decodingState;
+    Result result = this->startDecoding(dstInfo, pixels, rowBytes, options, &decodingState);
+    if (result != kSuccess) {
+        return result;
+    }
+
+    SkASSERT(!fIncrementalDecodingState.has_value());
+    fIncrementalDecodingState = decodingState;
+    return kSuccess;
+}
+
+SkCodec::Result SkPngRustCodec::onIncrementalDecode(int* rowsDecoded) {
+    SkASSERT(fIncrementalDecodingState.has_value());
+    return this->incrementalDecode(*fIncrementalDecodingState, rowsDecoded);
 }
 
 std::optional<SkSpan<const SkPngCodecBase::PaletteColorEntry>> SkPngRustCodec::onTryGetPlteChunk() {
