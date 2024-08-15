@@ -34,10 +34,6 @@ CORE_COPTS = [
     "-fstrict-aliasing",
     "-fPIC",
 ] + select({
-    # SkRawCodec catches any exceptions thrown by dng_sdk, insulating the rest of Skia.
-    "//src/codec:raw_decode_codec": [],
-    "//conditions:default": ["-fno-exceptions"],
-}) + select({
     "@platforms//os:android": [],
     "//conditions:default": [
         # On Android, this option causes the linker to fail
