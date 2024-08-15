@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a37354c_8391bb26",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-08-15T19:48:30Z",
+      "side": 1,
+      "message": "I need to think about how to make this remove more than one texture at a time.",
+      "revId": "5d11c2ca849f7905d0454fd96e6679197a99e28c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
