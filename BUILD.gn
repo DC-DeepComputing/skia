@@ -1226,10 +1226,7 @@ optional("png_decode") {
   ]
 
   deps = [ "//third_party/libpng" ]
-  sources = [
-    "src/codec/SkIcoCodec.cpp",
-    "src/codec/SkPngCodec.cpp",
-  ]
+  sources = [ "src/codec/SkIcoCodec.cpp" ] + skia_codec_png
 }
 
 optional("png_encode") {
@@ -1490,8 +1487,6 @@ skia_component("skia") {
     "src/android/SkAnimatedImage.cpp",
     "src/codec/SkAndroidCodec.cpp",
     "src/codec/SkAndroidCodecAdapter.cpp",
-    "src/codec/SkEncodedInfo.cpp",
-    "src/codec/SkParseEncodedOrigin.cpp",
     "src/codec/SkSampledCodec.cpp",
     "src/ports/SkDiscardableMemory_none.cpp",
     "src/ports/SkMemory_malloc.cpp",
