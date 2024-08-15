@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e95a41af_5e2ed7ee",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-08-15T14:50:43Z",
+      "side": 1,
+      "message": "Just removed dependency to FreeType from SkTypeface_config",
+      "revId": "977c4bfa09fd2686d471247508df87259766b9ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
