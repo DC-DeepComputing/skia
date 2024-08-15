@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cea1c36c_04db3fa8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-08-15T20:05:32Z",
+      "side": 1,
+      "message": "@brianosman@google.com, can you PTAL?\n\nThis is a fairly small, mostly mechanical CL (it just extracting the 1-line-long `onGetEncodedFormat` into a new base class + tweaks build rules to cover the source files of the new base class).  Therefore:\n\n* I don\u0027t think that this necessarily requires a review by *both* you and @scroggo (adding them to CC).  Please let me know if for such smaller CLs (or maybe in general) I should ask you VS @scroggo to be the primary reviewer (I can always CC the other and I am always open to feedback - this is mostly to figure out the logistics of who is on the hook for the review :-)).\n\n* Maybe I should also get this CL reviewed by @kjlubick?",
+      "revId": "4d3ccd4c13c27c3faeaf4658a53c0214d8c89e29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "34770857_268ab2c9",
+        "filename": "src/codec/BUILD.bazel",
+        "patchSetId": 6
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-08-15T20:05:32Z",
+      "side": 1,
+      "message": "AFAICT `SkPngCodec.cpp` is *not* covered by any `skia/an/*.gni` files.  Therefore *before* this CL lands I\u0027ll have to ensure that Chromium-side GN rules are updated by landing https://crrev.com/c/5747366 first.\n\nI hope that this plan LGTY.  \"This plan\" \u003d coordinating landing of the 3 CLs:\n\n* http://review.skia.org/c/skia/+/888477 - this CL\n* http://review.skia.org/886677 (fixes `PNGCodecTest.DecodeGamma`)\n* https://crrev.com/c/5747366 (adds `SkPngCodecBase.cpp` for Chromium CQ + enables building and running `RustEnabled/PngCodecTest*` on Rust bots)\n\nAnd \"coordinating\" means:\n\n* Get LGTM for all 3 CLs\n* Check that all 3 CLs pass CQ dry run (+ that the dry run is \"fresh\")\n* Land all 3 CLs as \"the same time\" (as much as possible)\n\nPS. I still need to rebase and dust-off https://crrev.com/c/5747366 before sending it out for review.\n\nPPS. If there are relatively independent Bazel-ification/gni-ification work items, then maybe I can help with those (to avoid similar trouble in the future)?  OTOH I am not sure how much time (including ramp-up time) I can dedicate to such a side-quest project (so there is a low but non-zero chance that I\u0027ll look and run away :-P).",
+      "range": {
+        "startLine": 141,
+        "startChar": 0,
+        "endLine": 141,
+        "endChar": 1
+      },
+      "revId": "4d3ccd4c13c27c3faeaf4658a53c0214d8c89e29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67441b6c_d0df681b",
+        "filename": "src/codec/BUILD.bazel",
+        "patchSetId": 6
+      },
+      "lineNbr": 462,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-08-15T20:05:32Z",
+      "side": 1,
+      "message": "There was no `SkPngCodec.cpp` so I think I don\u0027t need to cover `SkPngCodecBase.cpp` here...",
+      "range": {
+        "startLine": 462,
+        "startChar": 26,
+        "endLine": 462,
+        "endChar": 27
+      },
+      "revId": "4d3ccd4c13c27c3faeaf4658a53c0214d8c89e29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
