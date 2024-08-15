@@ -39,6 +39,7 @@ skia_cc_library(
     local_defines = ["SKSHAPER_IMPLEMENTATION=1"],
     visibility = [
         "//:__pkg__",
+        "//tools/viewer:__pkg__",
     ],
     deps = [
         ":skshaper_core",

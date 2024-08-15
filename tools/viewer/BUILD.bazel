@@ -109,6 +109,8 @@ skia_cc_binary(
         "//modules/skottie/utils:skottie_utils",
         "//modules/skottie/utils:text_editor",
         "//modules/sksg",
+        "//modules/skshaper:skshaper_core_and_utils",
+        "//modules/svg:svg_renderer",
         "//src/sksl/tracing:player",
         "//tools:codec_utils",
         "//tools:mskp_player",
