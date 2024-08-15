@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "db7f438b_b77480fa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-08-15T16:50:17Z",
+      "side": 1,
+      "message": "I believe this is good to go. I ran the mac12-tests jobs on the Chrome Canary and it passed the check_static_initializers test.",
+      "revId": "3a59a1fef0f1b8b5891b789753c49133bf451b8c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
