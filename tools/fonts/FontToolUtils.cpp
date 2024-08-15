@@ -6,6 +6,7 @@
  */
 
 #include "tools/fonts/FontToolUtils.h"
+#include "src/ports/SkFontScanner_fontations.h"
 
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -258,7 +259,8 @@ sk_sp<SkFontMgr> TestFontMgr() {
 #endif
 #if defined(SK_FONTMGR_FONTATIONS_AVAILABLE)
         else if (FLAGS_fontations) {
-            mgr = SkFontMgr_New_Fontations_Empty();
+            //mgr = SkFontMgr_New_Fontations_Empty();
+            mgr = SkFontMgr_New_FontConfig(nullptr, std::make_unique<SkFontScanner_Fontations>());
         }
 #endif
         else {

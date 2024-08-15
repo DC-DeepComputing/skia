@@ -37,6 +37,9 @@ public:
                       SkFontStyle* style,
                       bool* isFixedPitch,
                       AxisDefinitions* axes) const override;
+    sk_sp<SkTypeface> createTypeface(std::unique_ptr<SkStreamAsset> stream,
+                                     const SkFontArguments& args) override;
+    SkFourByteTag getFactoryId() const override;
 private:
 };
 
