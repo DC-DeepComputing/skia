@@ -235,7 +235,7 @@ $pure half4 blend_multiply(half4 src, half4 dst) {
 }
 
 $pure half $blend_color_luminance(half3 color) { return dot(half3(0.3, 0.59, 0.11), color); }
-
+const half $kMinNormalHalf = 1.0 / (1 << 14);
 $pure half3 $blend_set_color_luminance(half3 hueSatColor, half alpha, half3 lumColor) {
     half lum = $blend_color_luminance(lumColor);
     half3 result = lum - $blend_color_luminance(hueSatColor) + hueSatColor;
@@ -245,7 +245,7 @@ $pure half3 $blend_set_color_luminance(half3 hueSatColor, half alpha, half3 lumC
         result = lum + (result - lum) * $guarded_divide(lum, (lum - minComp));
     }
     if (maxComp > alpha && maxComp != lum) {
-        result = lum + $guarded_divide((result - lum) * (alpha - lum), (maxComp - lum));
+        result = lum + $guarded_divide((result - lum) * (alpha - lum), (maxComp - lum) + $kMinNormalHalf);
     }
     return result;
 }
