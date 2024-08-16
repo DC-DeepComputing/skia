@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "48b579b5_a77ab490",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-08-16T03:15:30Z",
+      "side": 1,
+      "message": "My apologies for last minute edits, after already sending this CL out for code review.  I made the edits, because I realized that this CL can be split into 3 smaller CLs:\n\n* Changes to handle `cHRM`, `gAMA`, `iCCP`, and `sRGB` chunks: http://review.skia.org/886677 (the latest patchset in this CL, trimmed down compared to the earlier patchsets)\n* Change to how `XformFormat srcFormat` parameter of `SkCodec`\u0027s constructor is calculated: Extracted from this CL into http://review.skia.org/889150\n* Actually using `applyXformRow` from `SkPngRustCodec`: Extracted from this CL into http://review.skia.org/889151\n\nI hope splitting into smaller CLs helps with the reviews.",
+      "revId": "39b48493c0d2f62d05789879dcae84e34ff197ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

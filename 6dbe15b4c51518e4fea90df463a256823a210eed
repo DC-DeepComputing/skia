@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d50465f_4fb3d053",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-08-16T03:15:30Z",
+      "side": 0,
+      "message": "This comment is not applicable to this CL anymore...  FWIW this constant is now being removed in http://review.skia.org/889150",
+      "parentUuid": "5f22a625_a1d3b452",
+      "range": {
+        "startLine": 129,
+        "startChar": 89,
+        "endLine": 129,
+        "endChar": 90
+      },
+      "revId": "6dbe15b4c51518e4fea90df463a256823a210eed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "47b02a2f_da190886",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "83e08e5d_7b0fcb7f",
+        "filename": "src/codec/SkPngCodec.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 1190,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-08-16T03:15:30Z",
+      "side": 0,
+      "message": "This comment is no longer applicable to this CL - I\u0027ve moved the comment to http://review.skia.org/c/skia/+/889151/2/src/codec/SkPngCodec.cpp",
+      "parentUuid": "47b02a2f_da190886",
+      "range": {
+        "startLine": 1189,
+        "startChar": 0,
+        "endLine": 1190,
+        "endChar": 34
+      },
+      "revId": "6dbe15b4c51518e4fea90df463a256823a210eed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4132f20c_b69cc3f1",
@@ -60,6 +108,30 @@
       "writtenOn": "2024-08-15T23:31:41Z",
       "side": 0,
       "message": "As above, this call now happens inside `initializeXforms`.  The slightly different timing is okay - this method just sets a field of `SkPngCodecBase` and nothing else sets this field (so doing it earlier, in `onStartIncrementalDecode`, should be ok).",
+      "range": {
+        "startLine": 1217,
+        "startChar": 0,
+        "endLine": 1217,
+        "endChar": 34
+      },
+      "revId": "6dbe15b4c51518e4fea90df463a256823a210eed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "26b50f78_68423ff3",
+        "filename": "src/codec/SkPngCodec.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 1217,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-08-16T03:15:30Z",
+      "side": 0,
+      "message": "This comment is no longer applicable to this CL - I\u0027ve moved the comment to http://review.skia.org/c/skia/+/889151/2/src/codec/SkPngCodec.cpp",
+      "parentUuid": "4132f20c_b69cc3f1",
       "range": {
         "startLine": 1217,
         "startChar": 0,
