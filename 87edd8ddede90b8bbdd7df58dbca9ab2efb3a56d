@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "82bc363e_485a5815",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-08-16T17:38:31Z",
+      "side": 1,
+      "message": "The failing tests in Chromium are\n\nexternal/wpt/webdriver/tests/bidi/browsing_context/print/page_ranges.py\nexternal/wpt/webdriver/tests/bidi/browsing_context/print/shrink_to_fit.py\nexternal/wpt/webdriver/tests/classic/print/printcmd.py\n\nwhich use pdf.js to extract text from the PDF.",
+      "revId": "87edd8ddede90b8bbdd7df58dbca9ab2efb3a56d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
