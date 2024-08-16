@@ -13,7 +13,9 @@ use skrifa::{
     color::{Brush, ColorGlyphFormat, ColorPainter, Transform},
     instance::{Location, Size},
     metrics::{GlyphMetrics, Metrics},
-    outline::{DrawSettings, HintingInstance, LcdLayout, OutlinePen},
+    outline::{
+        DrawSettings, Engine, HintingInstance, HintingOptions, OutlinePen, SmoothMode, Target,
+    },
     setting::VariationSetting,
     string::{LocalizedStrings, StringId},
     MetadataProvider, OutlineGlyphCollection, Tag,
@@ -47,19 +49,28 @@ unsafe fn make_hinting_instance<'a>(
 ) -> Box<BridgeHintingInstance> {
     let hinting_instance = match &outlines.0 {
         Some(outlines) => {
-            let lcd_subpixel = match (do_lcd_antialiasing, lcd_orientation_vertical) {
-                (true, false) => Some(LcdLayout::Horizontal),
-                (true, true) => Some(LcdLayout::Vertical),
-                _ => None,
+            let smooth_mode = match (do_lcd_antialiasing, lcd_orientation_vertical) {
+                (true, false) => SmoothMode::Lcd,
+                (true, true) => SmoothMode::VerticalLcd,
+                _ => SmoothMode::Normal,
             };
+            let hinting_target = Target::Smooth {
+                mode: smooth_mode,
+                symmetric_rendering: true,
+                preserve_linear_metrics: preserve_linear_metrics,
+            };
+            let hinting_options = HintingOptions {
+                // TODO(drott): Here the option exists to disable autohinting,
+                // Pass through the autohinting setting from Skia's ScalerContext if needed.
+                engine: Engine::AutoFallback,
+                target: hinting_target,
+            };
+
             HintingInstance::new(
                 outlines,
                 Size::new(size),
                 &coords.normalized_coords,
-                skrifa::outline::HintingMode::Smooth {
-                    lcd_subpixel,
-                    preserve_linear_metrics,
-                },
+                hinting_options,
             )
             .ok()
         }
