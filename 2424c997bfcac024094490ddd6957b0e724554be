@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2159dabe_28125934",
+        "filename": "include/private/gpu/ganesh/GrTypesPriv.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 644,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-08-16T13:35:57Z",
+      "side": 1,
+      "message": "I\u0027m a little surprised you didn\u0027t need to add this entry, even just to `GrColorType::kUnknown` in your CPU CL. I think it is probably actually worth going back and doing that because if the CPU CL lands and this one gets delayed for any reason we don\u0027t want to leave it in a bad state.",
+      "range": {
+        "startLine": 644,
+        "startChar": 13,
+        "endLine": 644,
+        "endChar": 40
+      },
+      "revId": "2424c997bfcac024094490ddd6957b0e724554be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9ac4527f_c547ce44",
+        "filename": "src/gpu/ganesh/GrDataUtils.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-08-16T13:35:57Z",
+      "side": 1,
+      "message": "do we need an `rgb1` swizzle here?",
+      "range": {
+        "startLine": 290,
+        "startChar": 44,
+        "endLine": 290,
+        "endChar": 67
+      },
+      "revId": "2424c997bfcac024094490ddd6957b0e724554be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47016cdb_f9aff2f4",
+        "filename": "src/gpu/ganesh/gl/GrGLCaps.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 2386,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-08-16T13:35:57Z",
+      "side": 1,
+      "message": "should this be `halfFloatType`?",
+      "range": {
+        "startLine": 2386,
+        "startChar": 45,
+        "endLine": 2386,
+        "endChar": 64
+      },
+      "revId": "2424c997bfcac024094490ddd6957b0e724554be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b74653dd_b129fe1c",
+        "filename": "src/gpu/ganesh/gl/GrGLCaps.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 2389,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-08-16T13:35:57Z",
+      "side": 1,
+      "message": "I think we also need\n```\n// Not guaranteed by ES/WebGL.\n                    ioFormat.fRequiresImplementationReadQuery \u003d !GR_IS_GR_GL(standard);\n```",
+      "range": {
+        "startLine": 2389,
+        "startChar": 16,
+        "endLine": 2389,
+        "endChar": 17
+      },
+      "revId": "2424c997bfcac024094490ddd6957b0e724554be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18dcd5c8_d3914ecd",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 559,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-08-16T13:35:57Z",
+      "side": 1,
+      "message": "line is over 100chars, but you should be able to delete this first `SkColorType::`. I\u0027m not sure why that is even there since the SkColorType enum is not a enum class. Also delete the extra one above as well",
+      "range": {
+        "startLine": 559,
+        "startChar": 63,
+        "endLine": 559,
+        "endChar": 77
+      },
+      "revId": "2424c997bfcac024094490ddd6957b0e724554be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
