@@ -22,6 +22,30 @@
       },
       "revId": "13647a4bd41a3572be8ac77d85913468daca36b2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6095535a_b070499c",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-08-16T12:57:49Z",
+      "side": 1,
+      "message": "Ack, I missed that. We should just make this a function-static variable, to avoid the problem.",
+      "parentUuid": "a829d9fe_e2f38aab",
+      "range": {
+        "startLine": 120,
+        "startChar": 0,
+        "endLine": 120,
+        "endChar": 52
+      },
+      "revId": "13647a4bd41a3572be8ac77d85913468daca36b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
