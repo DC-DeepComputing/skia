@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "49436377_ed510d0c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-08-16T20:25:24Z",
+      "side": 1,
+      "message": "This is just another example of how Bazel isn\u0027t quite ready yet as a build language.",
+      "revId": "f727160140f80dec278b7f19ed0a861f91be6f21",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
