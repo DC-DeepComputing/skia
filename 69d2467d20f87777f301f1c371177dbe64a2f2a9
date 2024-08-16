@@ -16,6 +16,23 @@
       "message": "LGTM! No +1 permissions",
       "revId": "69d2467d20f87777f301f1c371177dbe64a2f2a9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44770779_b91348c5",
+        "filename": "experimental/rust_png/ffi/FFI.rs",
+        "patchSetId": 21
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-08-16T21:06:25Z",
+      "side": 1,
+      "message": "Is this a convention that the `extern \"Rust\"` block doesn\u0027t have comments describing the functions, but the descriptions are here?",
+      "revId": "69d2467d20f87777f301f1c371177dbe64a2f2a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

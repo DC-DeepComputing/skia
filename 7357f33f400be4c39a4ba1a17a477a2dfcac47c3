@@ -1,0 +1,130 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "471c23cd_4755e998",
+        "filename": "experimental/rust_png/ffi/FFI.rs",
+        "patchSetId": 22
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-08-16T21:06:25Z",
+      "side": 1,
+      "message": "My understanding of the `unsafe` keyword is that we should have a comment explaining\n- why it\u0027s technically unsafe\n- why it\u0027s actually safe in practice\n\nBut I don\u0027t see this. Am I missing something?",
+      "range": {
+        "startLine": 69,
+        "startChar": 8,
+        "endLine": 69,
+        "endChar": 14
+      },
+      "revId": "7357f33f400be4c39a4ba1a17a477a2dfcac47c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "12534b75_a4c149a4",
+        "filename": "experimental/rust_png/ffi/FFI.rs",
+        "patchSetId": 22
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-08-16T21:06:25Z",
+      "side": 1,
+      "message": "I think without this, the `match` statement would consume the `Cow` that is stored in the reference to an `Option` returned by the first call to `as_ref`?",
+      "range": {
+        "startLine": 238,
+        "startChar": 53,
+        "endLine": 238,
+        "endChar": 71
+      },
+      "revId": "7357f33f400be4c39a4ba1a17a477a2dfcac47c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d646c4e0_8198a2ad",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-08-16T21:06:25Z",
+      "side": 1,
+      "message": "nit: from*",
+      "range": {
+        "startLine": 28,
+        "startChar": 41,
+        "endLine": 28,
+        "endChar": 45
+      },
+      "revId": "7357f33f400be4c39a4ba1a17a477a2dfcac47c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "16e507ad_a644deb8",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-08-16T21:06:25Z",
+      "side": 1,
+      "message": "Revisiting this w.r.t. \"C++/FFI safety\" - I assume this is initialized, since it\u0027s a Rust thing?",
+      "revId": "7357f33f400be4c39a4ba1a17a477a2dfcac47c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "848d6fd0_5c4e582d",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-08-16T21:06:25Z",
+      "side": 1,
+      "message": "I think this is an important concern - we need to make sure this behavior difference is okay in order to make the switch. (I\u0027m not sure the best way to track this, though. Maybe a crbug?)",
+      "range": {
+        "startLine": 100,
+        "startChar": 0,
+        "endLine": 101,
+        "endChar": 28
+      },
+      "revId": "7357f33f400be4c39a4ba1a17a477a2dfcac47c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8fd0f7e1_812f4f12",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-08-16T21:06:25Z",
+      "side": 1,
+      "message": "Per the \"C++/FFI safety\" warning, this needs to be initialized.",
+      "revId": "7357f33f400be4c39a4ba1a17a477a2dfcac47c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

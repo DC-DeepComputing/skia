@@ -46,6 +46,30 @@
       },
       "revId": "8a36896aa6d0d8f658fe7c99e245769e1192cc11",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8030c3c_24cd9ce5",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-08-16T21:06:25Z",
+      "side": 1,
+      "message": "That matches my memory. I\u0027m pretty sure Chromium doesn\u0027t care about the `sBIT`. So this shouldn\u0027t block experiments or shipping. It *might* block launching on Android, but I\u0027m not even sure it would make a difference there either.",
+      "parentUuid": "2f63ec7f_694c62fb",
+      "range": {
+        "startLine": 28,
+        "startChar": 61,
+        "endLine": 28,
+        "endChar": 62
+      },
+      "revId": "8a36896aa6d0d8f658fe7c99e245769e1192cc11",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
