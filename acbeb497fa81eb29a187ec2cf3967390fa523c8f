@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e4d53428_528ef160",
+        "filename": "src/sksl/sksl_gpu.sksl",
+        "patchSetId": 5
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-08-16T18:19:11Z",
+      "side": 1,
+      "message": "Cool. I re-checked my CL with exactly this value added to the denominator (I\u0027m using it that way, rather than as a near-zero guard), and it works on all the devices that were having problems. So I\u0027ll wait for this to land, then rebase.",
+      "parentUuid": "5bebdc1b_976d4726",
+      "range": {
+        "startLine": 150,
+        "startChar": 6,
+        "endLine": 150,
+        "endChar": 26
+      },
+      "revId": "acbeb497fa81eb29a187ec2cf3967390fa523c8f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4eca4d22_8177acd0",
