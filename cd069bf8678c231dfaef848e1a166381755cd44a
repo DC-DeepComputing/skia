@@ -63,6 +63,30 @@
       },
       "revId": "cd069bf8678c231dfaef848e1a166381755cd44a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "891e1793_cab6355f",
+        "filename": "src/codec/BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 456,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-08-16T14:29:24Z",
+      "side": 1,
+      "message": "Ack, thanks for reviewing.",
+      "parentUuid": "43881fd5_f4c50c61",
+      "range": {
+        "startLine": 456,
+        "startChar": 9,
+        "endLine": 456,
+        "endChar": 21
+      },
+      "revId": "cd069bf8678c231dfaef848e1a166381755cd44a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

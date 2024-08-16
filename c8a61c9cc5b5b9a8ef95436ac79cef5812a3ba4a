@@ -34,6 +34,24 @@
       "parentUuid": "7d98bf8a_02923619",
       "revId": "c8a61c9cc5b5b9a8ef95436ac79cef5812a3ba4a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d46ef53_71926257",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-08-16T14:29:24Z",
+      "side": 1,
+      "message": "\u003e The failure in PS1 appears related to your change https://logs.chromium.org/logs/skia/6b7144b2ecfa7611/+/steps/dm/0/stdout\n\u003e but it seems like you reverted the BMP changes that caused it.\n\nAck.\n\nFWIW initially I\u0027ve found myself staring at the (shown by default) \"Raw Output\" of https://chromium-swarm.appspot.com/task?id\u003d6b714a325b958b10 and not being able to understand the logs.  And only later I discovered that I can click \"Rich output\" to take me to https://ci.chromium.org/raw/build/logs.chromium.org/skia/6b714a325b958b11/+/annotations (which looks much more familiar to me / more similar to what I get from Chromium trybots).",
+      "parentUuid": "ab137139_54ab7bc5",
+      "revId": "c8a61c9cc5b5b9a8ef95436ac79cef5812a3ba4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
