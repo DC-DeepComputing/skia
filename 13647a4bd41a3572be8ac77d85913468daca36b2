@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a829d9fe_e2f38aab",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-08-16T00:54:57Z",
+      "side": 1,
+      "message": "This is adding a global static initializer that the chrome build is complaining about. Reverting this to unblock the autoroller.",
+      "range": {
+        "startLine": 120,
+        "startChar": 0,
+        "endLine": 120,
+        "endChar": 52
+      },
+      "revId": "13647a4bd41a3572be8ac77d85913468daca36b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
