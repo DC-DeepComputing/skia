@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8476d861_cef76b57",
+        "filename": "src/codec/SkPngCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1162,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-08-16T03:45:09Z",
+      "side": 0,
+      "message": "These 2 calls now happen inside `initializeXforms`.",
+      "range": {
+        "startLine": 1161,
+        "startChar": 0,
+        "endLine": 1162,
+        "endChar": 34
+      },
+      "revId": "1d7f473de9d4e372a69e37064b27c30830065018",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33d50b97_785a5ad5",
+        "filename": "src/codec/SkPngCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1189,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-08-16T03:45:09Z",
+      "side": 0,
+      "message": "As above, this call now happens inside `initializeXforms`. The slightly different timing is okay - this method just sets a field of `SkPngCodecBase` and nothing else sets this field (so doing it earlier, in `onStartIncrementalDecode`, should be ok).",
+      "range": {
+        "startLine": 1189,
+        "startChar": 4,
+        "endLine": 1189,
+        "endChar": 34
+      },
+      "revId": "1d7f473de9d4e372a69e37064b27c30830065018",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
