@@ -93,16 +93,29 @@ genrule(
 genrule(
     name = "copy_skloadicu_h",
     srcs = [
-        "@icu_utils//:SkLoadICU.cpp",
         "@icu_utils//:SkLoadICU.h",
     ],
     outs = [
-        "SkLoadICU.cpp",
         "SkLoadICU.h",
     ],
-    # SRCS is a space seperated list of files.
-    # RULEDIR is the directory containing this BUILD.bazel file (the root of the ICU directory)
-    cmd = "cp $(SRCS) $(RULEDIR)",
+    # $< is the one and only input file.
+    # $@ is the one and only output location.
+    cmd = "cp $< $@",
+    cmd_bat = "copy $< $@",
+)
+
+genrule(
+    name = "copy_skloadicu_cpp",
+    srcs = [
+        "@icu_utils//:SkLoadICU.cpp",
+    ],
+    outs = [
+        "SkLoadICU.cpp",
+    ],
+    # $< is the one and only input file.
+    # $@ is the one and only output location.
+    cmd = "cp $< $@",
+    cmd_bat = "copy $< $@",
 )
 
 ICU_HDRS = [
