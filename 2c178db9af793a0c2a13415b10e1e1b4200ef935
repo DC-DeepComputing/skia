@@ -16,6 +16,24 @@
       "message": "https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/copy claims that copy moves one or more files. Does that not work?",
       "revId": "2c178db9af793a0c2a13415b10e1e1b4200ef935",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "43217dd0_06b577c7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-08-16T17:54:55Z",
+      "side": 1,
+      "message": "Simply replacing \"cp\" with \"copy\" didn\u0027t work, presumably because of this bit: https://screenshot.googleplex.com/96PBwFXWh58Sjc4",
+      "parentUuid": "af215965_12c59b88",
+      "revId": "2c178db9af793a0c2a13415b10e1e1b4200ef935",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
