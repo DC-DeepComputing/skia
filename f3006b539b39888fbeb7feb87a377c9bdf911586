@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0179b5dd_c1a9ea97",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-08-16T20:44:17Z",
+      "side": 1,
+      "message": "Just a quick status update: this CL is ready to land, but needs to wait until https://crrev.com/c/5792163 lands and sticks on Chromium side.  (And the Chromium-side CL is blocked on first rolling Skia into Chromium [to get http://review.skia.org/890319]).\n\nSo let me make myself the only person in the attention set to indicate this.",
+      "revId": "f3006b539b39888fbeb7feb87a377c9bdf911586",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
