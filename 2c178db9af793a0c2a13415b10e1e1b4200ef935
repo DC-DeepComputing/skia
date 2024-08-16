@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af215965_12c59b88",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-08-16T17:50:19Z",
+      "side": 1,
+      "message": "https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/copy claims that copy moves one or more files. Does that not work?",
+      "revId": "2c178db9af793a0c2a13415b10e1e1b4200ef935",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
