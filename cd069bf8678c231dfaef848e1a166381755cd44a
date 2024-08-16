@@ -16,6 +16,29 @@
       "message": "My apologies for making last-minute changes to this CL after already sending it out for code review.  (There was a bug in the initial patchset, but it should be fixed now.)",
       "revId": "cd069bf8678c231dfaef848e1a166381755cd44a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe34a4f5_d594f9c4",
+        "filename": "src/codec/BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 456,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-08-16T03:24:14Z",
+      "side": 1,
+      "message": "In theory this could be replaced with the public `SkBmpDecoder::Decode`, but that public header has no equivalent of `SkBmpCodec::MakeFromIco` from the private header.  And since I wasn\u0027t sure if exposing `MakeFromIco` through the public API is desirable, I just reverted the BMP-related parts of the initial snapshot.  If this is still desirable, then we can do this in a follow-up CL?",
+      "range": {
+        "startLine": 456,
+        "startChar": 9,
+        "endLine": 456,
+        "endChar": 21
+      },
+      "revId": "cd069bf8678c231dfaef848e1a166381755cd44a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
