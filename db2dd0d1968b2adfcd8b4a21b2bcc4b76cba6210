@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec906836_c1c06ce6",
+        "filename": "bazel/external/freetype/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-08-16T18:42:15Z",
+      "side": 1,
+      "message": "This define can now be `SK_FREETYPE_MINIMUM_RUNTIME_VERSION_IS_BUILD_VERSION`. Everyone else was running into the fun of escaping this, so we made the common case a little easier.",
+      "revId": "db2dd0d1968b2adfcd8b4a21b2bcc4b76cba6210",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
