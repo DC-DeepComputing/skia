@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "00e123bb_39572302",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-08-16T14:37:58Z",
+      "side": 1,
+      "message": "PS1 is a pure reland of the previous commit.  Diff between PS1 and PS3 to see the changes.",
+      "revId": "155442eb6439edafa94939c5f6e0c3a2812280ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "21fa7d99_4d32892f",
+        "filename": "bazel/deps.bzl",
+        "patchSetId": 3
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-08-16T14:37:58Z",
+      "side": 1,
+      "message": "This is the revision which made the change to these paths and was reverted.  It\u0027s a little unfortunate that it\u0027s impossible to make changes like this in a single CL.",
+      "range": {
+        "startLine": 257,
+        "startChar": 21,
+        "endLine": 257,
+        "endChar": 61
+      },
+      "revId": "155442eb6439edafa94939c5f6e0c3a2812280ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
