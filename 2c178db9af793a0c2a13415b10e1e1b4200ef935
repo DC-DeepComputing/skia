@@ -22,6 +22,30 @@
       },
       "revId": "2c178db9af793a0c2a13415b10e1e1b4200ef935",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f82b89de_e9d6a378",
+        "filename": "modules/skshaper/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-08-16T18:03:48Z",
+      "side": 0,
+      "message": "The #include is explicitly left out in favor of a simple forward declaration when SK_DISABLE_LEGACY_SKSHAPER_FUNCTIONS is set, so that didn\u0027t seem like the right thing to do either: https://skia.googlesource.com/skia/+/main/modules/skshaper/include/SkShaper.h#26",
+      "parentUuid": "51b59604_6f89fa33",
+      "range": {
+        "startLine": 17,
+        "startChar": 16,
+        "endLine": 17,
+        "endChar": 52
+      },
+      "revId": "2c178db9af793a0c2a13415b10e1e1b4200ef935",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
