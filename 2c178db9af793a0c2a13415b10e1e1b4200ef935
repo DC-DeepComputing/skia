@@ -34,6 +34,24 @@
       "parentUuid": "af215965_12c59b88",
       "revId": "2c178db9af793a0c2a13415b10e1e1b4200ef935",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3be1654c_f7e32ae6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-08-16T17:58:56Z",
+      "side": 1,
+      "message": "Oh, right. I remember being bit by that...\n\nMaybe a for loop?\nhttps://learn.microsoft.com/en-us/windows-server/administration/windows-commands/for\n\nSomething like:\n```\nfor %f in ($(SRCS)) do copy %f $(RULEDIR)\\\\output\\\\path\\\\\n```",
+      "parentUuid": "43217dd0_06b577c7",
+      "revId": "2c178db9af793a0c2a13415b10e1e1b4200ef935",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
