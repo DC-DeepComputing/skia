@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2aed2ba4_28e07443",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-08-16T21:18:20Z",
+      "side": 1,
+      "message": "It feels a little weird to me to share this code between the two implementations. Really, the source format is an implementation detail - `SkPngRustCodec` *could* choose to ask Rust\u0027s `png` crate to generate a different format, which it would then feed to `skcms`. (And it\u0027s not feeding *anything* to `skcms` right now.)\n\nBut given that we intend for it to mirror `SkPngCodec`, I guess it\u0027s fine?\n\n(I also find it awkward that we store it in `SkCodec`. I\u0027m sure it made sense at the time, but it\u0027s passed in the constructor, even though it\u0027s not `const` and we have a setter and getter for it. It probably *was* `const` initially.)",
+      "revId": "68194386775704e9afd2cde4f4226b04ff80ee7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
