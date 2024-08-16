@@ -22,6 +22,30 @@
       },
       "revId": "8a36896aa6d0d8f658fe7c99e245769e1192cc11",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f63ec7f_694c62fb",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-08-16T14:10:25Z",
+      "side": 1,
+      "message": "I will defer to Leon on this one. My read is that sBIT is rarely used in the wild, but Skia does use it ensure we can round-trip 565 data during encoding/decoding?",
+      "parentUuid": "be08368b_5704ec60",
+      "range": {
+        "startLine": 28,
+        "startChar": 61,
+        "endLine": 28,
+        "endChar": 62
+      },
+      "revId": "8a36896aa6d0d8f658fe7c99e245769e1192cc11",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

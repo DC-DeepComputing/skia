@@ -58,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bffef379_15d6c174",
+        "filename": "experimental/rust_png/ffi/FFI.rs",
+        "patchSetId": 11
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-08-16T14:10:25Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "19436392_207ef034",
+      "range": {
+        "startLine": 163,
+        "startChar": 8,
+        "endLine": 163,
+        "endChar": 9
+      },
+      "revId": "5c67a5a92179b84d655fdc9c211c3c1c7e3b097a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "03aad54f_e56b2e59",
@@ -71,6 +95,30 @@
       "writtenOn": "2024-08-15T23:31:41Z",
       "side": 1,
       "message": "FYI\n\nThe `FIXME` is also present in the C++ code - hopefully just copying the FIXME is ok.  See: https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/codec/SkPngCodec.cpp;l\u003d387-398;drc\u003dc9943f14039faa721b02c64b5fad42dfb87af013",
+      "range": {
+        "startLine": 80,
+        "startChar": 22,
+        "endLine": 80,
+        "endChar": 23
+      },
+      "revId": "5c67a5a92179b84d655fdc9c211c3c1c7e3b097a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4b47843d_9a5bd3ec",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-08-16T14:10:25Z",
+      "side": 1,
+      "message": "I\u0027m not sure we\u0027ll ever handle those rendering intents, but yes - copying that comment is fine.",
+      "parentUuid": "03aad54f_e56b2e59",
       "range": {
         "startLine": 80,
         "startChar": 22,
