@@ -46,6 +46,30 @@
       },
       "revId": "6dbe15b4c51518e4fea90df463a256823a210eed",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "91f84dbb_5b29580d",
+        "filename": "src/codec/BUILD.bazel",
+        "patchSetId": 7
+      },
+      "lineNbr": 553,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-08-16T15:46:49Z",
+      "side": 1,
+      "message": "If I don\u0027t change `DECODE_PNG_FILES`, then anything depending on it will be broken.  So, I think you are telling me that I should just delete `DECODE_PNG_FILES` and things that depend on it - it seems that this passes CQ in http://review.skia.org/890716",
+      "parentUuid": "560f2c94_f287edd8",
+      "range": {
+        "startLine": 553,
+        "startChar": 4,
+        "endLine": 553,
+        "endChar": 6
+      },
+      "revId": "6dbe15b4c51518e4fea90df463a256823a210eed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
