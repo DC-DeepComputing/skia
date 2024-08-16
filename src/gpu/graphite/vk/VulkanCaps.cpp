@@ -556,6 +556,38 @@ void VulkanCaps::initFormatTable(const skgpu::VulkanInterface* interface,
                 ctInfo.fTransferColorType = ct;
                 ctInfo.fFlags = ColorTypeInfo::kUploadData_Flag | ColorTypeInfo::kRenderable_Flag;
             }
+            // Format: VK_FORMAT_R16G16B16A16_SFLOAT, Surface: SkColorType::kRGB_F16F16F16x_SkColorType
+            {
+                constexpr SkColorType ct = SkColorType::kRGB_F16F16F16x_SkColorType;
+                auto& ctInfo = info.fColorTypeInfos[ctIdx++];
+                ctInfo.fColorType = ct;
+                ctInfo.fTransferColorType = ct;
+                ctInfo.fFlags = ColorTypeInfo::kUploadData_Flag;
+                ctInfo.fReadSwizzle = skgpu::Swizzle::RGB1();
+            }
+        }
+    }
+    {
+    // Format: VK_FORMAT_R16G16B16_SFLOAT
+        constexpr VkFormat format = VK_FORMAT_R16G16B16_SFLOAT;
+        auto& info = this->getFormatInfo(format);
+        info.init(interface, physDev, properties, format);
+         if (info.isTexturable(VK_IMAGE_TILING_OPTIMAL)) {
+            info.fColorTypeInfoCount = 1;
+            info.fColorTypeInfos = std::make_unique<ColorTypeInfo[]>(info.fColorTypeInfoCount);
+            int ctIdx = 0;
+            // Format: VK_FORMAT_R16G16B16_SFLOAT, Surface: SkColorType::kRGB_F16F16F16x_SkColorType
+            {
+                constexpr SkColorType ct = SkColorType::kRGB_F16F16F16x_SkColorType;
+                auto& ctInfo = info.fColorTypeInfos[ctIdx++];
+                ctInfo.fColorType = ct;
+                // This SkColorType is a lie, but we don't have a kRGB_F16_SkColorType. The Vulkan
+                // format is 3 bpp so we must manualy convert to/from this and kRGB_F16F16F16x when doing
+                // transfers. We signal this need for manual conversions in the
+                // supportedRead/WriteColorType calls.
+                ctInfo.fTransferColorType = SkColorType::kRGB_F16F16F16x_SkColorType;
+                ctInfo.fFlags = ColorTypeInfo::kUploadData_Flag | ColorTypeInfo::kRenderable_Flag;
+            }
         }
     }
     // Format: VK_FORMAT_R16_SFLOAT
@@ -922,6 +954,8 @@ void VulkanCaps::initFormatTable(const skgpu::VulkanInterface* interface,
     this->setColorType(ct::kGray_8_SkColorType,             { VK_FORMAT_R8_UNORM });
     this->setColorType(ct::kA16_float_SkColorType,          { VK_FORMAT_R16_SFLOAT });
     this->setColorType(ct::kRGBA_F16_SkColorType,           { VK_FORMAT_R16G16B16A16_SFLOAT });
+    this->setColorType(ct::kRGB_F16F16F16x_SkColorType,     { VK_FORMAT_R16G16B16_SFLOAT,
+                                                              VK_FORMAT_R16G16B16A16_SFLOAT });
     this->setColorType(ct::kA16_unorm_SkColorType,          { VK_FORMAT_R16_UNORM });
     this->setColorType(ct::kR16G16_unorm_SkColorType,       { VK_FORMAT_R16G16_UNORM });
     this->setColorType(ct::kR16G16B16A16_unorm_SkColorType, { VK_FORMAT_R16G16B16A16_UNORM });
