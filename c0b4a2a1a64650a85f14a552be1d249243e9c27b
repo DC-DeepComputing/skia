@@ -34,6 +34,24 @@
       "parentUuid": "81f62b4d_9b47a529",
       "revId": "c0b4a2a1a64650a85f14a552be1d249243e9c27b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e6c88d9e_3dd338c2",
+        "filename": "experimental/rust_png/ffi/FFI.rs",
+        "patchSetId": 20
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 21925
+      },
+      "writtenOn": "2024-08-16T16:10:09Z",
+      "side": 1,
+      "message": "Actually that wasn\u0027t quite what I meant, but my comment was incorrect anyway and caused by misreading the code so disregard :) I\u0027m glad it ended up simplifying it.",
+      "parentUuid": "725cbb62_55f38d2f",
+      "revId": "c0b4a2a1a64650a85f14a552be1d249243e9c27b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
