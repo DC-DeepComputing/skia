@@ -935,21 +935,8 @@ void AutoCleanPng::infoCallback(size_t idatLength) {
     if (fOutCodec) {
         SkASSERT(nullptr == *fOutCodec);
         auto profile = read_color_profile(fPng_ptr, fInfo_ptr);
-        if (profile) {
-            switch (profile->profile()->data_color_space) {
-                case skcms_Signature_CMYK:
-                    profile = nullptr;
-                    break;
-                case skcms_Signature_Gray:
-                    if (SkEncodedInfo::kGray_Color != color &&
-                        SkEncodedInfo::kGrayAlpha_Color != color)
-                    {
-                        profile = nullptr;
-                    }
-                    break;
-                default:
-                    break;
-            }
+        if (SkPngCodecBase::isCompatibleColorProfileAndType(profile.get(), color)) {
+            profile = nullptr;
         }
 
         switch (encodedColorType) {
