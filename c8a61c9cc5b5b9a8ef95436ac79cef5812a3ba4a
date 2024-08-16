@@ -16,6 +16,24 @@
       "message": "@kjlubick, can you PTAL?\n\nThis mini CL means that there is one less place where I would have to think whether or not to add `SkPngCodecBase.h` (in the follow-up CL - in http://review.skia.org/888477)\n\nI don\u0027t really understand why \"Test-Win2019-Clang-GCE-CPU-AVX2-x86_64-Release-All\" failed in an earlier CQ dry run - I wasn\u0027t able to decipher the test/task logs.  I assume that this failure is unrelated to the CL (which shouldn\u0027t really affect any behavior).",
       "revId": "c8a61c9cc5b5b9a8ef95436ac79cef5812a3ba4a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab137139_54ab7bc5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-08-16T13:02:02Z",
+      "side": 1,
+      "message": "The failure in PS1 appears related to your change https://logs.chromium.org/logs/skia/6b7144b2ecfa7611/+/steps/dm/0/stdout\nbut it seems like you reverted the BMP changes that caused it.",
+      "parentUuid": "7d98bf8a_02923619",
+      "revId": "c8a61c9cc5b5b9a8ef95436ac79cef5812a3ba4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
