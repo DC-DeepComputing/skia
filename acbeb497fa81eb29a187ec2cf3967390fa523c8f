@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5bebdc1b_976d4726",
+        "filename": "src/sksl/sksl_gpu.sksl",
+        "patchSetId": 5
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-08-16T18:14:38Z",
+      "side": 1,
+      "message": "I added some more comments to explain that even just that check isn\u0027t safe.\n\nI believe that for just the division itself, you need `d \u003e\u003d x/65504`, so for this particular value you\u0027re safe up to ~4 as you figured. But for values \u003c 4, since it\u0027s the fixed guard of $kMinNormalHalf and not `x/65504`, you\u0027ll have more low numerators that could have been divided by a smaller denominator hit the \"denominator\u003d0 fallback\" code. So the values that go through the non-fallback code end up being not as close to the f16 max, which probably avoids any further opportunities to overflow with subsequent operations.",
+      "parentUuid": "1a622b08_2226d273",
+      "range": {
+        "startLine": 150,
+        "startChar": 6,
+        "endLine": 150,
+        "endChar": 26
+      },
+      "revId": "acbeb497fa81eb29a187ec2cf3967390fa523c8f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4eca4d22_8177acd0",
         "filename": "src/sksl/sksl_gpu.sksl",
         "patchSetId": 5
@@ -37,6 +61,30 @@
       "writtenOn": "2024-08-16T13:25:43Z",
       "side": 1,
       "message": "This value may end up being what you want to use for the luminosity bug. But I could also see folding the denominator check into $guarded_divide so that it actually did the guarding, like\n\ninline half $guarded_divide(half n, half d, half zeroDFallback) {\n    return mix(zeroDFallback, n / (d + epsilon), abs(d) \u003c $kMinNormalHalf);\n}",
+      "range": {
+        "startLine": 151,
+        "startChar": 0,
+        "endLine": 151,
+        "endChar": 45
+      },
+      "revId": "acbeb497fa81eb29a187ec2cf3967390fa523c8f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "22c183ab_a5c0b9e8",
+        "filename": "src/sksl/sksl_gpu.sksl",
+        "patchSetId": 5
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-08-16T18:14:38Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "4eca4d22_8177acd0",
       "range": {
         "startLine": 151,
         "startChar": 0,
@@ -60,6 +108,30 @@
       "writtenOn": "2024-08-16T13:54:55Z",
       "side": 1,
       "message": "The AMD codegen looked better with `d.x \u003d\u003d 0 ? 0 : 1`, right?",
+      "range": {
+        "startLine": 166,
+        "startChar": 19,
+        "endLine": 166,
+        "endChar": 27
+      },
+      "revId": "acbeb497fa81eb29a187ec2cf3967390fa523c8f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d02f072_cc5513a9",
+        "filename": "src/sksl/sksl_gpu.sksl",
+        "patchSetId": 5
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-08-16T18:14:38Z",
+      "side": 1,
+      "message": "You\u0027re right, I forgot to update it.",
+      "parentUuid": "20e165f2_3b5b2073",
       "range": {
         "startLine": 166,
         "startChar": 19,
