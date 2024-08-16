@@ -16,6 +16,24 @@
       "message": "This define can now be `SK_FREETYPE_MINIMUM_RUNTIME_VERSION_IS_BUILD_VERSION`. Everyone else was running into the fun of escaping this, so we made the common case a little easier.",
       "revId": "db2dd0d1968b2adfcd8b4a21b2bcc4b76cba6210",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27e594cd_dfb6ecfa",
+        "filename": "bazel/external/freetype/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-08-16T19:09:23Z",
+      "side": 1,
+      "message": "Across the board?",
+      "parentUuid": "ec906836_c1c06ce6",
+      "revId": "db2dd0d1968b2adfcd8b4a21b2bcc4b76cba6210",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
