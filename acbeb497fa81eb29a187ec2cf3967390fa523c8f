@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4eca4d22_8177acd0",
+        "filename": "src/sksl/sksl_gpu.sksl",
+        "patchSetId": 5
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-08-16T13:25:43Z",
+      "side": 1,
+      "message": "This value may end up being what you want to use for the luminosity bug. But I could also see folding the denominator check into $guarded_divide so that it actually did the guarding, like\n\ninline half $guarded_divide(half n, half d, half zeroDFallback) {\n    return mix(zeroDFallback, n / (d + epsilon), abs(d) \u003c $kMinNormalHalf);\n}",
+      "range": {
+        "startLine": 151,
+        "startChar": 0,
+        "endLine": 151,
+        "endChar": 45
+      },
+      "revId": "acbeb497fa81eb29a187ec2cf3967390fa523c8f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
