@@ -424,20 +424,22 @@ void DrawAtlas::purge(AtlasToken startTokenForNextFlush) {
     // Go through each page from last to first. If not used this frame,
     // we can remove its texture.
     PlotList::Iter plotIter;
+    bool pageUsedThisFlush = false;
     for (int pageIndex = (int)(fNumActivePages)-1; pageIndex >= 0; --pageIndex) {
-        bool pageUsedThisFlush = false;
         plotIter.init(fPages[pageIndex].fPlotList, PlotList::Iter::kHead_IterStart);
         while (Plot* plot = plotIter.get()) {
             if (plot->lastUseToken().inInterval(fPrevFlushToken, startTokenForNextFlush)) {
                 pageUsedThisFlush = true;
                 break;
+            } else {
+                // clear out unneeded memory for Plot
+                plot->purge();
             }
             plotIter.next();
         }
-        // Can only remove pages in back-to-front order at the moment
-        if (pageUsedThisFlush) {
-            break;
-        } else {
+        // If we haven't seen a Page in use yet we can delete this one.
+        // Can only remove pages in last-to-first order at the moment.
+        if (!pageUsedThisFlush) {
             this->deactivateLastPage();
         }
     }

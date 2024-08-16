@@ -487,6 +487,11 @@ public:
     bool needsUpload() { return !fDirtyRect.isEmpty(); }
     std::pair<const void*, SkIRect> prepareForUpload();
     void resetRects();
+    void purge() {
+        this->resetRects();
+        this->resetFlushesSinceLastUsed();
+        delete fData;
+    }
 
     void markFullIfUsed() { fIsFull = !fDirtyRect.isEmpty(); }
 
