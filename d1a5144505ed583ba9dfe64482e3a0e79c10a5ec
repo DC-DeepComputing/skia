@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8aef0b51_c138e7db",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3302461
+      },
+      "writtenOn": "2024-08-16T21:59:44Z",
+      "side": 1,
+      "message": "IWYU should not complain now with the added pragma; PTAL :)",
+      "revId": "d1a5144505ed583ba9dfe64482e3a0e79c10a5ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
