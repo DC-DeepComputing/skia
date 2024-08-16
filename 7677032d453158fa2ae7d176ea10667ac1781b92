@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "50464052_d2826478",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-08-16T12:54:11Z",
+      "side": 1,
+      "message": "I think this is the best we can do for the GPU memory for the moment. We might be able to delete the texture for any Page that\u0027s not in use but I think I\u0027ll have to rewrite how we handle that, because the assumption is that if a Page is active, it has a texture (or at least a proxy).",
+      "revId": "7677032d453158fa2ae7d176ea10667ac1781b92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
