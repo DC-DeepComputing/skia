@@ -22,6 +22,30 @@
       },
       "revId": "f02226d5a0b2d204c7f51b25f0f11365618f7adb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4905ace_e916b9c3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-08-16T17:00:57Z",
+      "side": 1,
+      "message": "Ooops - done.  I\u0027ll try to remember this in the next CLs.",
+      "parentUuid": "66787e1d_27ef2e66",
+      "range": {
+        "startLine": 7,
+        "startChar": 11,
+        "endLine": 7,
+        "endChar": 21
+      },
+      "revId": "f02226d5a0b2d204c7f51b25f0f11365618f7adb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
