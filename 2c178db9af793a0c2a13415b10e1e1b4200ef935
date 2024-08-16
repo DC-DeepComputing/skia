@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51b59604_6f89fa33",
+        "filename": "modules/skshaper/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-08-16T18:00:30Z",
+      "side": 0,
+      "message": "This is not the right fix. The reason those legacy functions are disabled is they don\u0027t work right with modular Bazel builds.\n\nTry adding a `#include include/core/SkFontMgr.h`",
+      "range": {
+        "startLine": 17,
+        "startChar": 16,
+        "endLine": 17,
+        "endChar": 52
+      },
+      "revId": "2c178db9af793a0c2a13415b10e1e1b4200ef935",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
