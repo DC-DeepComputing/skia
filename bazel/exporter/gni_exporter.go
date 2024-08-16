@@ -63,6 +63,14 @@ type GNIExporter struct {
 	exportGNIDescs []GNIExportDesc       // The rules to export.
 }
 
+const codecGNIFooter = `
+# TODO(kjlubick): delete after updating Chromium and Flutter to use skia_codec_shared
+skia_codec_core = []
+skia_codec_core += skia_codec_shared
+skia_codec_core -= ["$_src/codec/SkEncodedInfo.cpp"]
+skia_codec_core -= ["$_src/codec/SkParseEncodedOrigin.cpp"]
+`
+
 // The footer written to gn/core.gni.
 const coreGNIFooter = `skia_core_sources += skia_pathops_sources
 
@@ -118,6 +126,7 @@ skia_fontations_bridge_root = "$_src/ports/fontations/src/ffi.rs"
 
 // Map of GNI file names to footer text to be appended to the end of the file.
 var footerMap = map[string]string{
+	"gn/codec.gni":                  codecGNIFooter,
 	"gn/core.gni":                   coreGNIFooter,
 	"gn/ports.gni":                  portsFooter,
 	"gn/sksl_tests.gni":             skslTestsFooter,

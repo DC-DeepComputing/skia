@@ -146,6 +146,7 @@ skia_filegroup(
         "SkJSONWriter.cpp",
         "SkMatrix22.cpp",
         "SkNWayCanvas.cpp",
+        "SkNullCanvas.cpp",
         "SkOSPath.cpp",
         "SkOrderedFontMgr.cpp",
         "SkPaintFilterCanvas.cpp",

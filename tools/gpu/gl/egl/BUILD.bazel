@@ -10,7 +10,7 @@ skia_filegroup(
     name = "srcs",
     srcs = [
         "CreatePlatformGLTestContext_egl.cpp",
-        "//include/gpu/gl/egl:public_hdrs",
+        "//include/gpu/ganesh/gl/egl:public_hdrs",
         "//src/gpu/ganesh/gl/egl:srcs",
     ],
     visibility = ["//tools/gpu/gl:__pkg__"],
