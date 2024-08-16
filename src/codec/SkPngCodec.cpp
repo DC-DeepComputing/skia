@@ -860,7 +860,7 @@ void AutoCleanPng::infoCallback(size_t idatLength) {
     png_get_IHDR(fPng_ptr, fInfo_ptr, &origWidth, &origHeight, &bitDepth,
                  &encodedColorType, nullptr, nullptr, nullptr);
 
-    // TODO: Should we support 16-bits of precision for gray images?
+    // TODO(https://crbug.com/359245096): Should we support 16-bits of precision
     if (bitDepth == 16 && (PNG_COLOR_TYPE_GRAY == encodedColorType ||
                            PNG_COLOR_TYPE_GRAY_ALPHA == encodedColorType)) {
         bitDepth = 8;
@@ -935,21 +935,8 @@ void AutoCleanPng::infoCallback(size_t idatLength) {
     if (fOutCodec) {
         SkASSERT(nullptr == *fOutCodec);
         auto profile = read_color_profile(fPng_ptr, fInfo_ptr);
-        if (profile) {
-            switch (profile->profile()->data_color_space) {
-                case skcms_Signature_CMYK:
-                    profile = nullptr;
-                    break;
-                case skcms_Signature_Gray:
-                    if (SkEncodedInfo::kGray_Color != color &&
-                        SkEncodedInfo::kGrayAlpha_Color != color)
-                    {
-                        profile = nullptr;
-                    }
-                    break;
-                default:
-                    break;
-            }
+        if (SkPngCodecBase::isCompatibleColorProfileAndType(profile.get(), color)) {
+            profile = nullptr;
         }
 
         switch (encodedColorType) {
