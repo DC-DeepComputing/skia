@@ -37,36 +37,59 @@ FREETYPE_LOCAL_DEFINES = ["FT2_BUILD_LIBRARY"]
 # the original Freetype checkout, we have to put them in a separate workspace (we cannot
 # refer to them from the Skia workspace or that would be a circular dependency).
 genrule(
-    name = "copy_android_freetype_config",
+    name = "copy_android_freetype_config_ftmodule",
     srcs = [
         "@freetype_config//:freetype-android/freetype/config/ftmodule.h",
-        "@freetype_config//:freetype-android/freetype/config/ftoption.h",
     ],
     outs = [
         "builds/skia/android/freetype/config/ftmodule.h",
-        "builds/skia/android/freetype/config/ftoption.h",
     ],
-    # SRCS is a space seperated list of files.
-    # RULEDIR is the directory containing this BUILD.bazel file (the root of the freetype directory)
-    # but only in the "genfiles tree", which does not persist after compilation.
-    cmd = "cp $(SRCS) $(RULEDIR)/builds/skia/android/freetype/config/",
+    # $< is the one and only input file.
+    # $@ is the one and only output location.
+    cmd = "cp $< $@",
+    cmd_bat = "copy $< $@",
 )
 
-# It is easiest to have multiple copy rules, one per output directory.
 genrule(
-    name = "copy_no_type1_freetype_config",
+    name = "copy_android_freetype_config_ftoption",
+    srcs = [
+        "@freetype_config//:freetype-android/freetype/config/ftoption.h",
+    ],
+    outs = [
+        "builds/skia/android/freetype/config/ftoption.h",
+    ],
+    # $< is the one and only input file.
+    # $@ is the one and only output location.
+    cmd = "cp $< $@",
+    cmd_bat = "copy $< $@",
+)
+
+genrule(
+    name = "copy_no_type1_freetype_config_ftmodule",
     srcs = [
         "@freetype_config//:freetype-no-type1/freetype/config/ftmodule.h",
-        "@freetype_config//:freetype-no-type1/freetype/config/ftoption.h",
     ],
     outs = [
         "builds/skia/no-type1/freetype/config/ftmodule.h",
+    ],
+    # $< is the one and only input file.
+    # $@ is the one and only output location.
+    cmd = "cp $< $@",
+    cmd_bat = "copy $< $@",
+)
+
+genrule(
+    name = "copy_no_type1_freetype_config_ftoption",
+    srcs = [
+        "@freetype_config//:freetype-no-type1/freetype/config/ftoption.h",
+    ],
+    outs = [
         "builds/skia/no-type1/freetype/config/ftoption.h",
     ],
-    # SRCS is a space seperated list of files.
-    # RULEDIR is the directory containing this BUILD.bazel file (the root of the freetype directory)
-    # but only in the "genfiles tree", which does not persist after compilation.
-    cmd = "cp $(SRCS) $(RULEDIR)/builds/skia/no-type1/freetype/config/",
+    # $< is the one and only input file.
+    # $@ is the one and only output location.
+    cmd = "cp $< $@",
+    cmd_bat = "copy $< $@",
 )
 
 cc_library(
