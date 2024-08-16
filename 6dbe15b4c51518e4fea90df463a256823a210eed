@@ -70,6 +70,30 @@
       },
       "revId": "6dbe15b4c51518e4fea90df463a256823a210eed",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "69a2ebb7_284c8154",
+        "filename": "src/codec/BUILD.bazel",
+        "patchSetId": 7
+      },
+      "lineNbr": 553,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-08-16T18:06:51Z",
+      "side": 1,
+      "message": "Yes, that other CL is sufficient because nothing (of note) actually depends on DECODE_PNG_FILES anymore.",
+      "parentUuid": "91f84dbb_5b29580d",
+      "range": {
+        "startLine": 553,
+        "startChar": 4,
+        "endLine": 553,
+        "endChar": 6
+      },
+      "revId": "6dbe15b4c51518e4fea90df463a256823a210eed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
