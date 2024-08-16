@@ -46,6 +46,30 @@
       },
       "revId": "2c178db9af793a0c2a13415b10e1e1b4200ef935",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e07aa91_3334f5b6",
+        "filename": "modules/skshaper/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-08-16T18:34:57Z",
+      "side": 0,
+      "message": "Changed to add a #include.",
+      "parentUuid": "f82b89de_e9d6a378",
+      "range": {
+        "startLine": 17,
+        "startChar": 16,
+        "endLine": 17,
+        "endChar": 52
+      },
+      "revId": "2c178db9af793a0c2a13415b10e1e1b4200ef935",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
