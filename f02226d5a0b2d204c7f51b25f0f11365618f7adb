@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "66787e1d_27ef2e66",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-08-16T16:45:45Z",
+      "side": 1,
+      "message": "nit: \"Extract\" - imperative form. Just so you don\u0027t think I pulled this out of thin air last time, this advice (with details) is included in go/cl-descriptions#first-line",
+      "range": {
+        "startLine": 7,
+        "startChar": 11,
+        "endLine": 7,
+        "endChar": 21
+      },
+      "revId": "f02226d5a0b2d204c7f51b25f0f11365618f7adb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

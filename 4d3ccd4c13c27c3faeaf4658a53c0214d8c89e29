@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b176988_38c2e2d5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-08-16T16:45:45Z",
+      "side": 1,
+      "message": "I don\u0027t know that we have any solid rules/conventions around this. It\u0027s straightforward, and Brian hadn\u0027t already looked at it, so I\u0027ve gone ahead and approved. (I don\u0027t always pay enough attention to reviewer vs CC...) Seems like you have open questions about build files, so probably good to have Kaylee review, though that will probably be resolved by Kaylee\u0027s review of I08e78e1e602db96f59a6471f8779efaa5710558b.",
+      "parentUuid": "cea1c36c_04db3fa8",
+      "revId": "4d3ccd4c13c27c3faeaf4658a53c0214d8c89e29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "34770857_268ab2c9",
