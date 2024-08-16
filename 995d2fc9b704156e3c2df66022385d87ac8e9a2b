@@ -16,6 +16,24 @@
       "message": "FWIW, before landing this CL we need to ensure that https://crrev.com/c/5792163 has already landed on Chromium side.  One way would be to just \"be careful\", but maybe there are some `Cq-Include-Trybots: ...` directives that I should add to the CL description?  (I am not sure how to spell \"Canary-Chromium\" in such a hypothetical directive.)",
       "revId": "995d2fc9b704156e3c2df66022385d87ac8e9a2b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84cbbe74_a5ff1825",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-08-16T12:40:27Z",
+      "side": 1,
+      "message": "I don\u0027t think we have an automatic mechanism to do that, so \"be careful\" is probably the best approach.",
+      "parentUuid": "6505df9f_007e7744",
+      "revId": "995d2fc9b704156e3c2df66022385d87ac8e9a2b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

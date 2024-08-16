@@ -22,6 +22,30 @@
       },
       "revId": "6dbe15b4c51518e4fea90df463a256823a210eed",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "560f2c94_f287edd8",
+        "filename": "src/codec/BUILD.bazel",
+        "patchSetId": 7
+      },
+      "lineNbr": 553,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-08-16T12:40:27Z",
+      "side": 1,
+      "message": "You don\u0027t need the changes in `DECODE_PNG_FILES`. That is used to create filegroups that will be deleted soon because they were supporting an earlier version of our Bazel rules that used flags to control things (like GN did) only that ended up to be a Bad Idea (tm) because it limited what we could do in G3.",
+      "parentUuid": "8a1e990f_0bc0d88b",
+      "range": {
+        "startLine": 553,
+        "startChar": 4,
+        "endLine": 553,
+        "endChar": 6
+      },
+      "revId": "6dbe15b4c51518e4fea90df463a256823a210eed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
