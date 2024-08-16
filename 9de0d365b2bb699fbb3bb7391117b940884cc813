@@ -46,6 +46,30 @@
       },
       "revId": "9de0d365b2bb699fbb3bb7391117b940884cc813",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aeec3c84_45632ef5",
+        "filename": "src/codec/SkPngCodec.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1002,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-08-16T15:49:16Z",
+      "side": 0,
+      "message": "As you figured out - `std::move` doesn\u0027t actually do anything, it\u0027s just a cast that enables subsequent operations to happen (move constructor, move assignment, etc...). Strangely, you need the `std::move` here, because `encodedInfo` is actually an lvalue again... https://stackoverflow.com/a/58761212\n\nSee: https://godbolt.org/z/fzs84c8Wq",
+      "parentUuid": "bbefff0e_ff127101",
+      "range": {
+        "startLine": 1002,
+        "startChar": 42,
+        "endLine": 1002,
+        "endChar": 78
+      },
+      "revId": "9de0d365b2bb699fbb3bb7391117b940884cc813",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
