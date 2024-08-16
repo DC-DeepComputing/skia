@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "398cbb8b_56c199d1",
+        "filename": "src/codec/SkPngCodec.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1002,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-08-16T03:20:29Z",
+      "side": 0,
+      "message": "I am not 100% sure why it is okay to \"simultaneously\"\n\n1) Move out of the local `std::move(encodedInfo)` variable/parameter (moving into the argument of the base class constructor)\n2) Use `encodedInfo` to pass it to const-ref-taking `png_select_xform_format`\n\nI am guessing that this is fine, because `encodedInfo` isn\u0027t passed to the base class constructor by value (`SkEncodedInfo`), but it is instead passed as an rvalue reference (`SkEncodedInfo\u0026\u0026`).\n\nI thought that I\u0027d mention this, since I am replicating the same code pattern after moving this code into the base class...  If it works, it works?",
+      "range": {
+        "startLine": 1002,
+        "startChar": 42,
+        "endLine": 1002,
+        "endChar": 78
+      },
+      "revId": "9de0d365b2bb699fbb3bb7391117b940884cc813",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
