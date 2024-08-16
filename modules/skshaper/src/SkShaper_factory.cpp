@@ -4,7 +4,11 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+
 #include "modules/skshaper/include/SkShaper_factory.h"
+
+// IWYU pragma: keep
+#include "include/core/SkFontMgr.h"
 
 namespace {
 class PrimitiveFactory final : public SkShapers::Factory {
