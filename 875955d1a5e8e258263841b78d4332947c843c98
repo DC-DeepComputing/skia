@@ -22,6 +22,53 @@
       },
       "revId": "875955d1a5e8e258263841b78d4332947c843c98",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79d0252c_63e470ea",
+        "filename": "modules/skcms/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-08-16T18:10:08Z",
+      "side": 1,
+      "message": "I think that\u0027s still okay - this entire translation unit should be omitted if we\u0027re building for anything but x64 (regardless of platform).",
+      "parentUuid": "b3735d95_61c6de00",
+      "range": {
+        "startLine": 103,
+        "startChar": 9,
+        "endLine": 103,
+        "endChar": 31
+      },
+      "revId": "875955d1a5e8e258263841b78d4332947c843c98",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "922ae343_00f817c5",
+        "filename": "modules/skcms/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-08-16T18:10:08Z",
+      "side": 1,
+      "message": "I\u0027m surprised we need these - we\u0027re also passing the `-march-skylake-avx512`, right? That should set all of these (same thing above with `haswell`). The `fp-contract` might be necessary (although I thought the clang default for that was consistent across platforms, too?",
+      "range": {
+        "startLine": 129,
+        "startChar": 0,
+        "endLine": 133,
+        "endChar": 25
+      },
+      "revId": "875955d1a5e8e258263841b78d4332947c843c98",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
