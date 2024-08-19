@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9100e072_ed239a36",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-08-19T16:12:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a85eeb01_4ba672f5",
+      "revId": "8fa9c3cc7c315a26ca3dfac1fb44a47937d71ba4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "231b578e_6a20484b",
@@ -31,6 +49,30 @@
       "writtenOn": "2024-08-16T18:48:03Z",
       "side": 1,
       "message": "nit: put this one \"the main header\" first, then a blank line, then other headers.\n\nFurther nit: keep a blank line between the copyright header and the first #include",
+      "range": {
+        "startLine": 8,
+        "startChar": 35,
+        "endLine": 8,
+        "endChar": 51
+      },
+      "revId": "8fa9c3cc7c315a26ca3dfac1fb44a47937d71ba4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "60524ea2_edee6dd5",
+        "filename": "modules/skshaper/src/SkShaper_factory.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-08-19T16:12:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "231b578e_6a20484b",
       "range": {
         "startLine": 8,
         "startChar": 35,
