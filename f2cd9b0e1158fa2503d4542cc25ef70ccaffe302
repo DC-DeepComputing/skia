@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "695fc7f5_067607d3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-08-19T13:27:32Z",
+      "side": 1,
+      "message": "Was this actually wrong? I thought that line was ensuring that we don\u0027t end up with more 65k vertices when using indexed draws, because we only support 16-bit indices.",
+      "revId": "f2cd9b0e1158fa2503d4542cc25ef70ccaffe302",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
