@@ -577,7 +577,7 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
 
         passBounds.join(draw.fDrawParams.clip().drawBounds());
         drawPass->fDepthStencilFlags |= draw.fRenderer->depthStencilFlags();
-        drawPass->fRequiresMSAA |= draw.fRenderer->requiresMSAA();
+        drawPass->fRequiresMSAA2 |= draw.fRenderer->requiresMSAA();
     }
 
     if (!geometryUniformTracker.writeUniforms(bufferMgr) ||

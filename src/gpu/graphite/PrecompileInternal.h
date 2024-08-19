@@ -16,6 +16,9 @@ enum class Coverage;
 class Context;
 class KeyContext;
 class PaintOptions;
+struct RenderPassSettings;
+
+//enum class DepthStencilFlags : int;
 
 // Create the Pipelines specified by 'options' by combining the shading portion w/ the specified
 // 'drawTypes' and a stock set of RenderPass descriptors (e.g., kDepth+msaa, kDepthStencil+msaa)
@@ -24,7 +27,10 @@ void PrecompileCombinations(Context* context,
                             const KeyContext& keyContext,
                             DrawTypeFlags drawTypes,
                             bool withPrimitiveBlender,
-                            Coverage coverage);
+                            Coverage coverage,
+                            const RenderPassSettings&);
+//                            DepthStencilFlags dsFlags,
+//                            bool requiresMSAA);
 
 } // namespace skgpu::graphite
 
