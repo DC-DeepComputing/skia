@@ -163,10 +163,10 @@ sktext::gpu::SubRunControl Caps::getSubRunControl(bool useSDFTForSmallText) cons
     return sktext::gpu::SubRunControl{
             this->shaderCaps()->supportsDistanceFieldText(),
             useSDFTForSmallText,
-            true, /*ableToUsePerspectiveSDFT*/
+            /* useSDFTForPerspectiveText= */ true,
             this->minDistanceFieldFontSize(),
             this->glyphsAsPathsFontSize(),
-            true /*forcePathAA*/};
+            /* forcePathAA= */ true};
 #else
     return sktext::gpu::SubRunControl{/*forcePathAA=*/true};
 #endif

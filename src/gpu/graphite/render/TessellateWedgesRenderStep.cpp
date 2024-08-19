@@ -69,7 +69,7 @@ TessellateWedgesRenderStep::TessellateWedgesRenderStep(std::string_view variantN
                                                        StaticBufferManager* bufferManager)
         : RenderStep("TessellateWedgesRenderStep",
                      variantName,
-                     Flags::kRequiresMSAA |
+                     Flags::kRequiresMSAA1 |
                      (depthStencilSettings.fDepthWriteEnabled ? Flags::kPerformsShading
                                                               : Flags::kNone),
                      /*uniforms=*/{{"localToDevice", SkSLType::kFloat4x4}},
