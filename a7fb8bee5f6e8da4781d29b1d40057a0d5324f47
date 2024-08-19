@@ -16,6 +16,24 @@
       "message": "Do you find the added comments a value add that I should keep?",
       "revId": "a7fb8bee5f6e8da4781d29b1d40057a0d5324f47",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9322aad4_067f5fdd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-08-19T14:18:18Z",
+      "side": 1,
+      "message": "Yeah, I had worked it all out on the previous CL, but documenting how it maps back to the more natural version is helpful.",
+      "parentUuid": "60f7c8a2_46c69042",
+      "revId": "a7fb8bee5f6e8da4781d29b1d40057a0d5324f47",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
