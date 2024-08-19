@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ded5259_98c5cb34",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-08-19T18:14:15Z",
+      "side": 1,
+      "message": "Let\u0027s make this function `static`, too.",
+      "revId": "20b122c50458a96e6382dcfc04ec17d7af2ec117",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
