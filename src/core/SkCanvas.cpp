@@ -229,7 +229,7 @@ void SkCanvas::MCRec::reset(SkDevice* device) {
     SkASSERT(device);
     SkASSERT(fDeferredSaveCount == 0);
     fDevice = device;
-    fMatrix.setIdentity();
+    fMatrix.setTranslate(10, 20);
 }
 
 class SkCanvas::AutoUpdateQRBounds {
