@@ -46,6 +46,30 @@
       },
       "revId": "6a02863967b40050fafec0878440193c75ccf4d1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d0432cc_5b94f2b9",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 20059
+      },
+      "writtenOn": "2024-08-19T18:01:18Z",
+      "side": 0,
+      "message": "Unfortunately, we can\u0027t do `static const constexpr` here due to `SkRefCnt` inheritance. \n\n```\n../../third_party/skia/src/core/SkScalerContext.cpp(120,36): error: constexpr variable cannot have non-literal type \u0027const SkMaskGamma\u0027 (aka \u0027const SkTMaskGamma\u003c3, 3, 3\u003e\u0027)\n  120 | static const constexpr SkMaskGamma gLinearMaskGamma \u003d SkMaskGamma();\n      |                                    ^\n../../third_party/skia\\src/core/SkMaskGamma.h(102,80): note: \u0027SkTMaskGamma\u003c3, 3, 3\u003e\u0027 is not literal because it has base class \u0027SkRefCnt\u0027 of non-literal type\n  102 | template \u003cint R_LUM_BITS, int G_LUM_BITS, int B_LUM_BITS\u003e class SkTMaskGamma : public SkRefCnt \n```",
+      "parentUuid": "f7172c83_1407db7f",
+      "range": {
+        "startLine": 120,
+        "startChar": 0,
+        "endLine": 120,
+        "endChar": 19
+      },
+      "revId": "6a02863967b40050fafec0878440193c75ccf4d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
