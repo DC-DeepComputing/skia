@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0cb2846f_c59e035c",
+        "filename": "src/gpu/ganesh/ops/DrawMeshOp.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1243,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-08-19T14:07:07Z",
+      "side": 1,
+      "message": "This needs to be an `||` (with appropriate `()`).",
+      "range": {
+        "startLine": 1243,
+        "startChar": 52,
+        "endLine": 1243,
+        "endChar": 54
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "cc7baf4f_c8b78b38",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/ganesh/ops/DrawMeshOp.cpp",
+              "range": {
+                "startLine": 1243,
+                "startChar": 0,
+                "endLine": 1244,
+                "endChar": 0
+              },
+              "replacement": "        (fIndexCount \u003e INT32_MAX - that-\u003efIndexCount ||\n"
+            },
+            {
+              "path": "src/gpu/ganesh/ops/DrawMeshOp.cpp",
+              "range": {
+                "startLine": 1245,
+                "startChar": 0,
+                "endLine": 1246,
+                "endChar": 0
+              },
+              "replacement": "        fVertexCount \u003e SkToInt(UINT16_MAX) - that-\u003efVertexCount)) {\n"
+            }
+          ]
+        }
+      ],
+      "revId": "6789735989086fae3d4051d227a17f2a9e0cdc3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
