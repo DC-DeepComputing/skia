@@ -16,6 +16,23 @@
       "message": "Won\u0027t land until I\u0027m sure the canary is good",
       "revId": "8998f178423d732f04261e63efb567c024d5edff",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "86aea641_2726a954",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-08-19T23:23:57Z",
+      "side": 1,
+      "message": "Canary passed",
+      "revId": "8998f178423d732f04261e63efb567c024d5edff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
