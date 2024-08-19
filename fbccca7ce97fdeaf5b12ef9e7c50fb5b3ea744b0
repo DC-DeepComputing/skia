@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f6c46d15_073cb160",
+        "filename": "src/gpu/graphite/BuiltInCodeSnippetID.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-08-19T14:42:21Z",
+      "side": 1,
+      "message": "Do we (should we) have static asserts somewhere for this ?",
+      "range": {
+        "startLine": 101,
+        "startChar": 11,
+        "endLine": 101,
+        "endChar": 50
+      },
+      "revId": "fbccca7ce97fdeaf5b12ef9e7c50fb5b3ea744b0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f37f0f52_d553d290",
+        "filename": "src/gpu/graphite/precompile/PrecompileBlender.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-08-19T14:42:21Z",
+      "side": 1,
+      "message": "Got to here",
+      "revId": "fbccca7ce97fdeaf5b12ef9e7c50fb5b3ea744b0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
