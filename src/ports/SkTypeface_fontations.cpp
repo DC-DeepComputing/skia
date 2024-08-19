@@ -371,7 +371,12 @@ public:
         fRec.computeMatrices(
                 SkScalerContextRec::PreMatrixScale::kVertical, &scale, &remainingMatrix);
 
+        printf("ScalerContext created for scale: %f\n", scale.fY);
+
         fDoLinearMetrics = this->isLinearMetrics();
+        // In modes other than slight, do we need to force autohinting?
+        bool forceAutohinting = SkToBool(fRec.fFlags & kForceAutohinting_Flag);
+        
         if (SkMask::kBW_Format == fRec.fMaskFormat) {
             if (fRec.getHinting() == SkFontHinting::kNone) {
                 fHintingInstance = fontations_ffi::no_hinting_instance();
@@ -395,7 +400,8 @@ public:
                             fBridgeNormalizedCoords,
                             false /* do_lcd_antialiasing */,
                             false /* lcd_orientation_vertical */,
-                            true /* preserve_linear_metrics */);
+                            true /* preserve_linear_metrics */,
+                            true /* force_autohinting */);
                     fDoLinearMetrics = true;
                     break;
                 case SkFontHinting::kNormal:
@@ -406,7 +412,8 @@ public:
                             fBridgeNormalizedCoords,
                             false /* do_lcd_antialiasing */,
                             false /* lcd_orientation_vertical */,
-                            fDoLinearMetrics /* preserve_linear_metrics */);
+                            fDoLinearMetrics /* preserve_linear_metrics */,
+                            forceAutohinting /* force_autohinting */);
                     break;
                 case SkFontHinting::kFull:
                     // Attempt to make use of hinting to subpixel coordinates.
@@ -418,7 +425,8 @@ public:
                             SkToBool(fRec.fFlags &
                                      SkScalerContext::
                                              kLCD_Vertical_Flag) /* lcd_orientation_vertical */,
-                            fDoLinearMetrics /* preserve_linear_metrics */);
+                            fDoLinearMetrics /* preserve_linear_metrics */,
+                            forceAutohinting /* force_autohinting */);
             }
         }
     }

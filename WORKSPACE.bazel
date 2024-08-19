@@ -717,3 +717,22 @@ container_pull(
     registry = "gcr.io",
     repository = "skia-public/skottie-base",
 )
+
+
+new_local_repository(
+    name = "skrifa-local",
+    path = "/usr/local/google/home/drott/dev/fontations/skrifa",
+    build_file = "BUILD.skrifa-local",
+)
+
+new_local_repository(
+    name = "readfonts-local",
+    path = "/usr/local/google/home/drott/dev/fontations/read-fonts",
+    build_file = "BUILD.readfonts-local",
+)
+
+new_local_repository(
+    name = "fonttypes-local",
+    path = "/usr/local/google/home/drott/dev/fontations/font-types",
+    build_file = "BUILD.fonttypes-local",
+)

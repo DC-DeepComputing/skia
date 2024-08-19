@@ -23,9 +23,10 @@ rust_static_library(
     srcs = ["src/ffi.rs"],
     deps = [
         "@cxx",
-        "@fontations//:font-types",
-        "@fontations//:read-fonts",
-        "@fontations//:skrifa",
+        "@fonttypes-local//:font-types",
+        "@readfonts-local//:read-fonts",
+        # "@fontations//:skrifa",
+        "@skrifa-local//:skrifa",
     ],
 )
 

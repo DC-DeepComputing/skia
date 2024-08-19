@@ -115,7 +115,8 @@ protected:
                 font.setSize(kFontSize);
                 font.setEdging(SkFont::Edging::kSubpixelAntiAlias);
                 font.setSubpixel(true);
-                font.setHinting(SkFontHinting::kNone);
+                // font.setHinting(SkFontHinting::kNone);
+                font.setHinting(SkFontHinting::kSlight);
             };
 
             SkFont font(testTypeface);
