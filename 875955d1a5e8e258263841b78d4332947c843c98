@@ -69,6 +69,30 @@
       },
       "revId": "875955d1a5e8e258263841b78d4332947c843c98",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "87a15c2e_6a4fb6de",
+        "filename": "modules/skcms/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-08-19T15:49:02Z",
+      "side": 1,
+      "message": "I\u0027m not sure whether I actually hit an error with this one or if I just copied from https://skia.googlesource.com/skia/+/main/modules/skcms/BUILD.gn#61.  I can try removing the flags once I have fewer CLs in flight (it\u0027s a bit chaotic at the moment).",
+      "parentUuid": "922ae343_00f817c5",
+      "range": {
+        "startLine": 129,
+        "startChar": 0,
+        "endLine": 133,
+        "endChar": 25
+      },
+      "revId": "875955d1a5e8e258263841b78d4332947c843c98",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
