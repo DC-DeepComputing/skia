@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "61acc7e4_38249c54",
+        "filename": "include/gpu/graphite/GraphiteTypes.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-08-19T17:22:32Z",
+      "side": 1,
+      "message": "OBE",
+      "parentUuid": "64cece3d_5e503e3e",
+      "range": {
+        "startLine": 127,
+        "startChar": 0,
+        "endLine": 127,
+        "endChar": 48
+      },
+      "revId": "c703086e456e90d9bc251e59c69a9652e08bbe94",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "554886f5_7efff8a1",
@@ -49,6 +73,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "26298c7e_6fe1e61f",
+        "filename": "include/gpu/graphite/GraphiteTypes.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-08-19T17:22:32Z",
+      "side": 1,
+      "message": "This new arrangement should be clearer.",
+      "parentUuid": "554886f5_7efff8a1",
+      "range": {
+        "startLine": 128,
+        "startChar": 0,
+        "endLine": 133,
+        "endChar": 85
+      },
+      "revId": "c703086e456e90d9bc251e59c69a9652e08bbe94",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "077fe724_fa7354d9",
         "filename": "include/gpu/graphite/GraphiteTypes.h",
         "patchSetId": 11
@@ -60,6 +108,30 @@
       "writtenOn": "2024-08-12T19:02:43Z",
       "side": 1,
       "message": "These are details that we should be able to infer from the PaintOptions when producing the options, and not push to the client\u0027s responsibility.",
+      "range": {
+        "startLine": 134,
+        "startChar": 9,
+        "endLine": 135,
+        "endChar": 65
+      },
+      "revId": "c703086e456e90d9bc251e59c69a9652e08bbe94",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f40390ac_a52c8451",
+        "filename": "include/gpu/graphite/GraphiteTypes.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-08-19T17:22:32Z",
+      "side": 1,
+      "message": "OBE",
+      "parentUuid": "077fe724_fa7354d9",
       "range": {
         "startLine": 134,
         "startChar": 9,
