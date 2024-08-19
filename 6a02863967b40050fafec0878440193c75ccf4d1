@@ -70,6 +70,30 @@
       },
       "revId": "6a02863967b40050fafec0878440193c75ccf4d1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f79cb44_56764148",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-08-19T20:35:13Z",
+      "side": 0,
+      "message": "Ah, you\u0027re right. Better then to just go with Brian\u0027s suggestion to make these all \"magic\" statics in `CachedMaskGamma`.",
+      "parentUuid": "4d0432cc_5b94f2b9",
+      "range": {
+        "startLine": 120,
+        "startChar": 0,
+        "endLine": 120,
+        "endChar": 19
+      },
+      "revId": "6a02863967b40050fafec0878440193c75ccf4d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
