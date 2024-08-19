@@ -95,6 +95,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1164a23a_5f53db1b",
+        "filename": "include/gpu/graphite/GraphiteTypes.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-08-19T18:16:14Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "26298c7e_6fe1e61f",
+      "range": {
+        "startLine": 128,
+        "startChar": 0,
+        "endLine": 133,
+        "endChar": 85
+      },
+      "revId": "c703086e456e90d9bc251e59c69a9652e08bbe94",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "077fe724_fa7354d9",
