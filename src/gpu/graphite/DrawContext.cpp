@@ -283,7 +283,7 @@ void DrawContext::flush(Recorder* recorder) {
         RenderPassDesc desc = RenderPassDesc::Make(caps, fTarget->textureInfo(), loadOp, storeOp,
                                                    pass->depthStencilFlags(),
                                                    pass->clearColor(),
-                                                   pass->requiresMSAA(),
+                                                   pass->requiresMSAA2(),
                                                    writeSwizzle);
 
         RenderPassTask::DrawPassList passes;

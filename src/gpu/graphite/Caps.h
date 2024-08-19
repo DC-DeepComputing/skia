@@ -29,6 +29,7 @@
 enum class SkBlendMode;
 enum class SkTextureCompressionType;
 class SkCapabilities;
+enum class DepthStencilFlags : int;
 
 namespace SkSL { struct ShaderCaps; }
 

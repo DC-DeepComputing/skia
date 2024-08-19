@@ -20,7 +20,7 @@ namespace skgpu::graphite {
 MiddleOutFanRenderStep::MiddleOutFanRenderStep(bool evenOdd)
         : RenderStep("MiddleOutFanRenderStep",
                      evenOdd ? "even-odd" : "winding",
-                     Flags::kRequiresMSAA,
+                     Flags::kRequiresMSAA1,
                      /*uniforms=*/{{"localToDevice", SkSLType::kFloat4x4}},
                      PrimitiveType::kTriangles,
                      evenOdd ? kEvenOddStencilPass : kWindingStencilPass,

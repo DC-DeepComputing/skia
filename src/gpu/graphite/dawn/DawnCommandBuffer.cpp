@@ -181,7 +181,7 @@ bool DawnCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
 
         // Set up resolve attachment
         if (resolveTexture) {
-            SkASSERT(renderPassDesc.fColorResolveAttachment.fStoreOp == StoreOp::kStore);
+            SkASSERT(renderPassDesc.fColorResolveAttachment1.fStoreOp == StoreOp::kStore);
             // TODO: check Texture matches RenderPassDesc
             const auto* dawnResolveTexture = static_cast<const DawnTexture*>(resolveTexture);
             SkASSERT(dawnResolveTexture->renderTextureView());
@@ -192,7 +192,7 @@ bool DawnCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
             SkASSERT(wgpuColorAttachment.storeOp == wgpu::StoreOp::Discard);
 
             // But it also means we have to load the resolve texture into the MSAA color attachment
-            if (renderPassDesc.fColorResolveAttachment.fLoadOp == LoadOp::kLoad) {
+            if (renderPassDesc.fColorResolveAttachment1.fLoadOp == LoadOp::kLoad) {
                 std::optional<wgpu::LoadOp> resolveLoadOp =
                         fSharedContext->dawnCaps()->resolveTextureLoadOp();
                 if (resolveLoadOp.has_value()) {
@@ -309,7 +309,7 @@ bool DawnCommandBuffer::loadMSAAFromResolveAndBeginRenderPassEncoder(
     intermediateRenderPassDesc.fColorAttachment.fLoadOp = LoadOp::kDiscard;
     intermediateRenderPassDesc.fColorAttachment.fStoreOp = StoreOp::kStore;
     intermediateRenderPassDesc.fColorAttachment.fTextureInfo =
-            frontendRenderPassDesc.fColorResolveAttachment.fTextureInfo;
+            frontendRenderPassDesc.fColorResolveAttachment1.fTextureInfo;
 
     wgpu::RenderPassColorAttachment wgpuIntermediateColorAttachment;
      // Dawn doesn't support actual DontCare so use LoadOp::Clear.

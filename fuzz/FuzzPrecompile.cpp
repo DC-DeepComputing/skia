@@ -405,7 +405,10 @@ void fuzz_graphite(Fuzz* fuzz, Context* context, int depth = 9) {
         context->priv().globalCache()->resetGraphicsPipelines();
 
         int before = context->priv().globalCache()->numGraphicsPipelines();
-        Precompile(context, paintOptions, kDrawType);
+        Precompile(context, paintOptions, kDrawType,
+                   DepthStencilFlags::kNone,
+                   kRGBA_8888_SkColorType,
+                   /* requiresMSAA= */ false);
         int after = context->priv().globalCache()->numGraphicsPipelines();
 
         SkASSERT_RELEASE(before == 0);
