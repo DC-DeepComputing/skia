@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "34589c6c_536639b2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-08-19T16:27:55Z",
+      "side": 1,
+      "message": "FreeType\u0027s embolden leaves the origin (usually lower left here) alone while Skia\u0027s of course just outsets. This leads to the interesting fact that the FreeType fake bold doesn\u0027t \"line up\" with the non-fake bold. That seems fine and has always happened anyway.",
+      "revId": "227854acdd9c7598b8419b6c48e964db3ba2c92e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

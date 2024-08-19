@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d023cfe_d4e13552",
+        "filename": "src/ports/SkFontHost_FreeType.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1701,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-08-19T16:27:55Z",
+      "side": 0,
+      "message": "Testing is good and found this unneeded crash in the old code in debug.",
+      "revId": "0cbdc42fb3a3bdb32b26df1e2bb06c569500d45f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
