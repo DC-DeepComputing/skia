@@ -1,4 +1,4 @@
-load("//bazel:skia_rules.bzl", "skia_cc_library", "skia_filegroup")
+load("//bazel:skia_rules.bzl", "skia_cc_library")
 
 package(
     default_applicable_licenses = ["//:license"],
@@ -54,25 +54,4 @@ skia_cc_library(
         "//src/gpu/ganesh/vk:__pkg__",  # TODO(kjlubick) remove when this is not built in
     ],
     deps = [":vulkanmemoryallocator"],
-)
-
-skia_filegroup(
-    name = "vma_hdrs",
-    srcs = [
-        "VulkanAMDMemoryAllocator.h",
-        "VulkanMemoryAllocatorPriv.h",
-    ],
-    visibility = [
-        "//src/gpu/vk:__pkg__",
-    ],
-)
-
-skia_filegroup(
-    name = "vma_srcs",
-    srcs = [
-        "VulkanAMDMemoryAllocator.cpp",
-    ],
-    visibility = [
-        "//src/gpu/vk:__pkg__",
-    ],
 )
