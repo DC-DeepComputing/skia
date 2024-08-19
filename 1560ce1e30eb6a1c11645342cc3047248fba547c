@@ -16,6 +16,29 @@
       "message": "PTAL",
       "revId": "1560ce1e30eb6a1c11645342cc3047248fba547c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75f8af19_ac9296a9",
+        "filename": "tests/graphite/PaintParamsKeyTest.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 1741,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-08-19T18:16:03Z",
+      "side": 1,
+      "message": "nit: can we have static constexprs in this ctor that hold the `16` and `300` values with names like `kMaskTextFontSize` and `kPathTextFontSize`?",
+      "range": {
+        "startLine": 1741,
+        "startChar": 62,
+        "endLine": 1741,
+        "endChar": 65
+      },
+      "revId": "1560ce1e30eb6a1c11645342cc3047248fba547c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
