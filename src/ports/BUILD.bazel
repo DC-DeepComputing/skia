@@ -2,7 +2,6 @@ load("//bazel:flags.bzl", "selects")
 load(
     "//bazel:skia_rules.bzl",
     "select_multi",
-    "skia_cc_deps",
     "skia_cc_library",
     "skia_filegroup",
     "skia_objc_library",
@@ -277,34 +276,6 @@ selects.config_setting_group(
     match_any = [
         "//bazel/common_config_settings:use_fontations_true",
     ],
-)
-
-skia_cc_deps(
-    name = "deps",
-    linkopts = select({
-        "@platforms//os:linux": ["-ldl"],
-        "@platforms//os:android": [
-            "-llog",  # Provides __android_log_vprint, needed by //src/ports/SkDebug_android.cpp.
-        ],
-        "//conditions:default": [],
-    }),
-    visibility = ["//src:__pkg__"],
-    deps = select({
-        ":uses_freetype": ["@freetype"],
-        "//conditions:default": [],
-    }) + select({
-        ":uses_fontconfig": ["//bazel/external/fontconfig"],
-        "//conditions:default": [],
-    }) + select({
-        "//bazel/common_config_settings:android_fontmgr": ["@expat"],
-        "//conditions:default": [],
-    }) + select({
-        "//bazel/common_config_settings:use_fontations_true": [
-            ":fontmgr_fontations_empty",
-            "//src/ports/fontations:deps",
-        ],
-        "//conditions:default": [],
-    }),
 )
 
 skia_filegroup(

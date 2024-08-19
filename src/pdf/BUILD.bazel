@@ -1,5 +1,5 @@
 load("//bazel:flags.bzl", "bool_flag", "selects")
-load("//bazel:skia_rules.bzl", "generate_cpp_files_for_headers", "skia_cc_deps", "skia_cc_library", "skia_filegroup", "split_srcs_and_hdrs")
+load("//bazel:skia_rules.bzl", "generate_cpp_files_for_headers", "skia_cc_library", "skia_filegroup", "split_srcs_and_hdrs")
 
 package(
     default_applicable_licenses = ["//:license"],
@@ -106,25 +106,6 @@ selects.config_setting_group(
         "//bazel/common_config_settings:use_harfbuzz_true",
         ":enable_pdf_subset_harfbuzz_true",
     ],
-)
-
-# TODO(kjlubick) delete after pdf backend is modularized
-skia_cc_library(
-    name = "legacy_harfbuzz",
-    deps = ["@harfbuzz"],
-)
-
-skia_cc_deps(
-    name = "deps",
-    visibility = ["//src:__pkg__"],
-    deps = [
-        "@zlib_skia//:zlib",
-        #"//src/codec:jpeg_decode",
-        #"//src/encode:jpeg_encode",
-    ] + select({
-        ":uses_harfbuzz": [":legacy_harfbuzz"],
-        "//conditions:default": [],
-    }),
 )
 
 generate_cpp_files_for_headers(

@@ -92,32 +92,6 @@ skia_filegroup(
 )
 
 skia_filegroup(
-    name = "srcs",
-    srcs = [
-        ":json_srcs",
-        ":utils_skslc_srcs",
-        ":utils_srcs",
-    ] + select({
-        "//src/gpu:has_ganesh_backend": [":gpu_srcs"],
-        "//conditions:default": [],
-    }),
-    visibility = ["//src:__pkg__"],
-)
-
-skia_filegroup(
-    name = "private_hdrs",
-    srcs = [
-        ":json_hdrs",
-        ":utils_hdrs",
-        ":utils_skslc_hdrs",
-    ] + select({
-        "//src/gpu:has_ganesh_backend": [":gpu_hdrs"],
-        "//conditions:default": [],
-    }),
-    visibility = ["//src:__pkg__"],
-)
-
-skia_filegroup(
     name = "core_priv_hdrs",
     srcs = [
         "SkBitSet.h",
@@ -146,6 +120,7 @@ skia_filegroup(
         "SkJSONWriter.cpp",
         "SkMatrix22.cpp",
         "SkNWayCanvas.cpp",
+        "SkNullCanvas.cpp",
         "SkOSPath.cpp",
         "SkOrderedFontMgr.cpp",
         "SkPaintFilterCanvas.cpp",
