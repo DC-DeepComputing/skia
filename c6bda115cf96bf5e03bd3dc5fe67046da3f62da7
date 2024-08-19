@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d3ea2a6_c95a80ea",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-08-19T16:01:50Z",
+      "side": 1,
+      "message": "FYI: This CL appears to have been the origin of a recent fuzzer bug (nullptr dereference). I\u0027ve handed that bug to Daniel, so he can get used to reproducing and debugging fuzzer stuff. https://crbug.com/oss-fuzz/71291",
+      "revId": "c6bda115cf96bf5e03bd3dc5fe67046da3f62da7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
