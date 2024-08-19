@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cf115a46_6b2c8d90",
+        "filename": "src/gpu/graphite/BuiltInCodeSnippetID.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-08-19T16:00:31Z",
+      "side": 1,
+      "message": "nvm - found it in ShaderCodeDictionary.cpp",
+      "parentUuid": "f6c46d15_073cb160",
+      "range": {
+        "startLine": 101,
+        "startChar": 11,
+        "endLine": 101,
+        "endChar": 50
+      },
+      "revId": "fbccca7ce97fdeaf5b12ef9e7c50fb5b3ea744b0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f37f0f52_d553d290",
@@ -37,6 +61,70 @@
       "writtenOn": "2024-08-19T14:42:21Z",
       "side": 1,
       "message": "Got to here",
+      "revId": "fbccca7ce97fdeaf5b12ef9e7c50fb5b3ea744b0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "78793a48_fc4e6a18",
+        "filename": "src/gpu/graphite/precompile/PrecompileBlender.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-08-19T16:00:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f37f0f52_d553d290",
+      "revId": "fbccca7ce97fdeaf5b12ef9e7c50fb5b3ea744b0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "630176e3_9b9fc443",
+        "filename": "src/gpu/graphite/precompile/PrecompileBlenderPriv.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-08-19T16:00:31Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 73,
+        "startChar": 44,
+        "endLine": 73,
+        "endChar": 51
+      },
+      "revId": "fbccca7ce97fdeaf5b12ef9e7c50fb5b3ea744b0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76eb4473_53f73681",
+        "filename": "tests/graphite/CombinationBuilderTest.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-08-19T16:00:31Z",
+      "side": 1,
+      "message": "Just add this to the end of the following REPORTER_ASSERT ?",
+      "range": {
+        "startLine": 84,
+        "startChar": 0,
+        "endLine": 86,
+        "endChar": 5
+      },
       "revId": "fbccca7ce97fdeaf5b12ef9e7c50fb5b3ea744b0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
