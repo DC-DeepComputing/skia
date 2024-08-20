@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4464730_2aba0878",
+        "filename": "tools/ToolUtils.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-08-20T17:59:19Z",
+      "side": 0,
+      "message": "Without this, Bazel complains about this header not being declared.  The build succeeds for me without the #include.",
+      "range": {
+        "startLine": 47,
+        "startChar": 0,
+        "endLine": 50,
+        "endChar": 0
+      },
+      "revId": "b6224c9e661152a814e8f5918de1d5a8147c543a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
