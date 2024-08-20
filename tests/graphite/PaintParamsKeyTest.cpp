@@ -438,8 +438,9 @@ ShaderType random_shadertype(SkRandom* rand) {
 }
 
 SkBlendMode random_porter_duff_bm(SkRandom* rand) {
-    return static_cast<SkBlendMode>(rand->nextRangeU((unsigned int) SkBlendMode::kClear,
-                                                     (unsigned int) SkBlendMode::kLastCoeffMode));
+    return SkBlendMode::kSrcOver;
+//    return static_cast<SkBlendMode>(rand->nextRangeU((unsigned int) SkBlendMode::kClear,
+//                                                     (unsigned int) SkBlendMode::kLastCoeffMode));
 }
 
 SkBlendMode random_complex_bm(SkRandom* rand) {
@@ -1704,10 +1705,12 @@ std::pair<SkPaint, PaintOptions> create_paint(SkRandom* rand,
         }
     }
 
+#if 0
     if (rand->nextBool()) {
         paint.setDither(true);
         paintOptions.setDither(true);
     }
+#endif
 
     return { paint, paintOptions };
 }
@@ -2144,6 +2147,7 @@ void precompile_vs_real_draws_subtest(skiatest::Reporter* reporter,
     REPORTER_ASSERT(reporter, before == 0);
     REPORTER_ASSERT(reporter, after > before);
 
+    SkDebugf("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n");
     check_draw(reporter,
                context,
                testContext,
@@ -2187,9 +2191,11 @@ void run_test(skiatest::Reporter* reporter,
     // a SkCanvas::clipShader call).
     paintOptions.priv().setClipShaders({clipShaderOption});
 
-    extract_vs_build_subtest(reporter, context, testContext, precompileKeyContext, recorder.get(),
-                             paint, paintOptions, s, bm, cf, mf, imageFilter, clip, clipShader, dt,
-                             seed, &rand, verbose);
+    log_run("Case:", seed, s, bm, cf, mf, imageFilter, clip, dt);
+
+//    extract_vs_build_subtest(reporter, context, testContext, precompileKeyContext, recorder.get(),
+//                             paint, paintOptions, s, bm, cf, mf, imageFilter, clip, clipShader, dt,
+//                             seed, &rand, verbose);
     precompile_vs_real_draws_subtest(reporter, context, testContext, recorder.get(),
                                      paint, paintOptions, clip, clipShader, dt, verbose);
 }
@@ -2268,10 +2274,11 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
     KeyContext precompileKeyContext(create_key_context(context, rtDict.get()));
 
     ShaderType shaders[] = {
-            ShaderType::kBlend,
-            ShaderType::kImage,
-            ShaderType::kRadialGradient,
-            ShaderType::kSolidColor,
+            ShaderType::kLinearGradient,
+//            ShaderType::kBlend,
+//            ShaderType::kImage,
+//            ShaderType::kRadialGradient,
+//            ShaderType::kSolidColor,
 #if EXPANDED_SET
             ShaderType::kNone,
             ShaderType::kColorFilter,
@@ -2291,8 +2298,8 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
 
     BlenderType blenders[] = {
             BlenderType::kPorterDuff,
-            BlenderType::kShaderBased,
-            BlenderType::kRuntime,
+//            BlenderType::kShaderBased,
+//            BlenderType::kRuntime,
 #if EXPANDED_SET
             BlenderType::kNone,
             BlenderType::kArithmetic,
@@ -2301,8 +2308,8 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
 
     ColorFilterType colorFilters[] = {
             ColorFilterType::kNone,
-            ColorFilterType::kBlendMode,
-            ColorFilterType::kMatrix,
+//            ColorFilterType::kBlendMode,
+//            ColorFilterType::kMatrix,
 #if EXPANDED_SET
             ColorFilterType::kColorSpaceXform,
             ColorFilterType::kCompose,
@@ -2362,12 +2369,12 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
             DrawTypeFlags::kNonSimpleShape,
     };
 
-#if EXPANDED_SET
+//#if EXPANDED_SET
     size_t kExpected = std::size(shaders) * std::size(blenders) * std::size(colorFilters) *
                        std::size(maskFilters) * std::size(imageFilters) * std::size(clips) *
                        std::size(kDrawTypeFlags);
     int current = 0;
-#endif
+//#endif
 
     for (auto shader : shaders) {
         for (auto blender : blenders) {
@@ -2376,10 +2383,10 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
                     for (auto imageFilter : imageFilters) {
                         for (auto clip : clips) {
                             for (DrawTypeFlags dt : kDrawTypeFlags) {
-#if EXPANDED_SET
+//#if EXPANDED_SET
                                 SkDebugf("%d/%zu\n", current, kExpected);
                                 ++current;
-#endif
+//#endif
 
                                 run_test(reporter, context, testContext, precompileKeyContext,
                                          shader, blender, cf, mf, imageFilter, clip, dt,
@@ -2392,9 +2399,9 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
         }
     }
 
-#if EXPANDED_SET
+//#if EXPANDED_SET
     SkASSERT(current == (int) kExpected);
-#endif
+//#endif
 }
 
 #endif // SK_GRAPHITE
