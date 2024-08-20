@@ -37,6 +37,7 @@ namespace skgpu { class ShaderErrorHandler; }
 namespace skgpu::graphite {
 
 enum class BufferType : int;
+enum class DepthStencilFlags : int;
 struct ContextOptions;
 class ComputePipelineDesc;
 class GraphicsPipelineDesc;
