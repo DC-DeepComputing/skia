@@ -145,9 +145,14 @@ private:
         }
 
         int numRegions = fRegions.size();
-        int numRects = 0;
+        int64_t numRects = 0;
         for (int i = 0; i < numRegions; i++) {
             numRects += fRegions[i].fRegion.computeRegionComplexity();
+            if (numRects > std::numeric_limits<int32_t>::max()) {
+                // This is a nonsensical draw, so we can just drop it.
+                SkASSERT(false);
+                return;
+            }
         }
 
         if (!numRects) {
