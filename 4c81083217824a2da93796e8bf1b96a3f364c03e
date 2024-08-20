@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e72cbe90_5478e703",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-08-20T18:55:02Z",
+      "side": 1,
+      "message": "SkSL can now support sk_SecondaryFragColor on top of SPIR-V when hardware supports this. I can successfully see the dual src blend shaders produced within GMs without negatively impacting the visual output.\n\nAccording to gpuinfo.org, about 50% of Android devices have support for the dualSrcBlend feature (Pixel 7 with more modern graphics drivers and above). See https://vulkan.gpuinfo.org/listdevicescoverage.php?feature\u003ddualSrcBlend\u0026platform\u003dandroid ; https://vulkan.gpuinfo.org/listdevicescoverage.php?feature\u003ddualSrcBlend\u0026platform\u003dandroid\u0026option\u003dnot.\n\nFor Windows and Linux, dual src is supported in \u003e90% of devices.\n\nDifferent handling can be added for hardware that does not support it (see the workaround in https://skia.googlesource.com/skia.git/+/refs/heads/main/src/gpu/ganesh/effects/GrPorterDuffXferProcessor.cpp#371) which can be a different CL.",
+      "revId": "4c81083217824a2da93796e8bf1b96a3f364c03e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

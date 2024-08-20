@@ -22,6 +22,30 @@
       },
       "revId": "34deea68040e14a54e2b6c82aaefb49dbb2f997b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "76fe4765_8985a418",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 4400,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-08-20T18:55:02Z",
+      "side": 1,
+      "message": "I tried this and it seems to correctly use `sk_SecondaryFragColor` without encountering errors or warnings on the skia nor Vulkan side! Testing with `GM_xfermodes`, the output appears to be the same as grvk on the main branch.",
+      "parentUuid": "c41343b0_5618b47d",
+      "range": {
+        "startLine": 4398,
+        "startChar": 0,
+        "endLine": 4400,
+        "endChar": 0
+      },
+      "revId": "34deea68040e14a54e2b6c82aaefb49dbb2f997b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
