@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3548f4b8_112f5085",
+        "filename": "defines.bzl",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-08-20T18:33:15Z",
+      "side": 1,
+      "message": "Something about deleting this file sure seems to have made something unhappy.",
+      "revId": "9cb35ad3754085dda3bcd8e881b4526dea665406",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
