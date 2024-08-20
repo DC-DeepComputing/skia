@@ -63,6 +63,7 @@ struct SkPDFTagNode {
     // order. This helper function takes one of our node IDs and
     // builds an ID string that zero-pads the digits so that lexicographic
     // order matches numeric order.
+    // Callers that emit this string will need to set fEmitID to true and fCanDiscard to kNo.
     static SkString nodeIdToString(int nodeId) {
         SkString idString;
         idString.printf("node%08d", nodeId);
@@ -76,8 +77,9 @@ struct SkPDFTagNode {
         int fMarkId;
     };
     TArray<MarkedContentInfo> fMarkedContent;
-    int fNodeId;
-    bool fWantTitle;
+    int fNodeId = 0;
+    bool fWantTitle = false;
+    bool fEmitID = false;
     SkString fTypeString;
     SkString fTitle;
     SkString fAlt;
@@ -89,6 +91,7 @@ struct SkPDFTagNode {
         kNo,
     } fCanDiscard = kUnknown;
     std::unique_ptr<SkPDFArray> fAttributes;
+    std::vector<int> fAttributeNodeIds;
     struct AnnotationInfo {
         unsigned fPageIndex;
         SkPDFIndirectReference fAnnotationRef;
@@ -153,6 +156,8 @@ void SkPDF::AttributeList::appendNodeIdArray(
     std::unique_ptr<SkPDFDict> attrDict = SkPDFMakeDict();
     attrDict->insertName("O", owner);
     std::unique_ptr<SkPDFArray> pdfArray = SkPDFMakeArray();
+    // Keep the node ids around so we can mark them as used (and needing IDs) later.
+    fNodeIds.insert(fNodeIds.end(), nodeIds.begin(), nodeIds.end());
     for (int nodeId : nodeIds) {
         SkString idString = SkPDFTagNode::nodeIdToString(nodeId);
         pdfArray->appendByteString(idString);
@@ -197,6 +202,30 @@ void SkPDFTagTree::Copy(SkPDF::StructureElementNode& node,
     }
 
     dst->fAttributes = std::move(node.fAttributes.fAttrs);
+    dst->fAttributeNodeIds = std::move(node.fAttributes.fNodeIds);
+}
+
+void SkPDFTagTree::GatherIds(SkPDFTagNode* node) {
+    SkPDFTagNode* children = node->fChildren;
+    size_t childCount = node->fChildCount;
+    for (size_t i = 0; i < childCount; ++i) {
+        SkPDFTagNode* child = &children[i];
+        GatherIds(child);
+    }
+
+    for (int nodeId : node->fAttributeNodeIds) {
+        SkPDFTagNode** tagPtr = fNodeMap.find(nodeId);
+        if (!tagPtr) {
+            continue;
+        }
+        SkPDFTagNode* tag = *tagPtr;
+        SkASSERT(tag);
+
+        // There is a reference to this StructElem ID, so don't discard it.
+        tag->fCanDiscard = SkPDFTagNode::kNo;
+        // This StructElem ID is used so be sure to emit the StructElem ID (and its IDTree entry).
+        tag->fEmitID = true;
+    }
 }
 
 void SkPDFTagTree::init(SkPDF::StructureElementNode* node, SkPDF::Metadata::Outline outline) {
@@ -204,6 +233,7 @@ void SkPDFTagTree::init(SkPDF::StructureElementNode* node, SkPDF::Metadata::Outl
         fRoot = fArena.make<SkPDFTagNode>();
         fOutline = outline;
         Copy(*node, fRoot, &fArena, &fNodeMap, false);
+        GatherIds(fRoot);
     }
 }
 
@@ -315,13 +345,13 @@ SkPDFIndirectReference SkPDFTagTree::PrepareTagTreeToEmit(SkPDFIndirectReference
         dict.insertObject("A", std::move(node->fAttributes));
     }
 
-    // Each node has a unique ID that also needs to be referenced
-    // in a separate IDTree node, along with the lowest and highest
-    // unique ID string.
-    SkString idString = SkPDFTagNode::nodeIdToString(node->fNodeId);
-    dict.insertByteString("ID", idString.c_str());
-    IDTreeEntry idTreeEntry = {node->fNodeId, ref};
-    fIdTreeEntries.push_back(idTreeEntry);
+    // If this StructElem ID was referenced, emit it and add it to the IDTree.
+    if (node->fEmitID) {
+        SkString idString = SkPDFTagNode::nodeIdToString(node->fNodeId);
+        dict.insertByteString("ID", idString);
+        IDTreeEntry idTreeEntry = {node->fNodeId, ref};
+        fIdTreeEntries.push_back(idTreeEntry);
+    }
 
     return doc->emit(dict, ref);
 }

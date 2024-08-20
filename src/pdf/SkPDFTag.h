@@ -72,6 +72,7 @@ private:
               SkArenaAlloc* arena,
               skia_private::THashMap<int, SkPDFTagNode*>* nodeMap,
               bool wantTitle);
+    void GatherIds(SkPDFTagNode* node);
     SkPDFIndirectReference PrepareTagTreeToEmit(SkPDFIndirectReference parent,
                                                 SkPDFTagNode* node,
                                                 SkPDFDocument* doc);
