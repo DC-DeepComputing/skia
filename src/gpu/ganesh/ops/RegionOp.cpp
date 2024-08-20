@@ -8,7 +8,17 @@
 #include "src/gpu/ganesh/ops/RegionOp.h"
 
 #include "include/core/SkRegion.h"
+<<<<<<< HEAD   (be621e [Ganesh] Fix readPixels for planar textures on Vulkan.)
 #include "src/core/SkMatrixPriv.h"
+=======
+#include "include/core/SkString.h"
+#include "include/gpu/GrRecordingContext.h"
+#include "include/private/SkColorData.h"
+#include "include/private/base/SkDebug.h"
+#include "include/private/base/SkTArray.h"
+#include "include/private/gpu/ganesh/GrTypesPriv.h"
+#include "src/base/SkSafeMath.h"
+>>>>>>> CHANGE (efd38e [ganesh] Avoid int overflow when combining RegionOps)
 #include "src/gpu/BufferWriter.h"
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrDefaultGeoProcFactory.h"
@@ -116,8 +126,14 @@ private:
 
         int numRegions = fRegions.size();
         int numRects = 0;
+
+        SkSafeMath safeMath;
         for (int i = 0; i < numRegions; i++) {
-            numRects += fRegions[i].fRegion.computeRegionComplexity();
+            numRects = safeMath.addInt(numRects, fRegions[i].fRegion.computeRegionComplexity());
+        }
+        if (!safeMath) {
+            // This is a nonsensical draw, so we can just drop it.
+            return;
         }
 
         if (!numRects) {
