@@ -80,7 +80,7 @@ bool DawnCommandBuffer::onAddRenderPass(const RenderPassDesc& renderPassDesc,
                                         const Texture* colorTexture,
                                         const Texture* resolveTexture,
                                         const Texture* depthStencilTexture,
-                                        SkRect viewport,
+                                        SkIRect viewport,
                                         const DrawPassList& drawPasses) {
     // Update viewport's constant buffer before starting a render pass.
     this->preprocessViewport(viewport);

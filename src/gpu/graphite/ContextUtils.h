@@ -11,6 +11,7 @@
 #include "src/gpu/Blend.h"
 #include "src/gpu/graphite/PaintParamsKey.h"
 #include "src/gpu/graphite/PipelineDataCache.h"
+#include "src/gpu/graphite/UniformManager.h"
 
 #include <optional>
 #include <tuple>
@@ -80,6 +81,12 @@ std::tuple<const UniformDataBlock*, const TextureDataBlock*> ExtractRenderStepDa
         const Layout layout,
         const RenderStep* step,
         const DrawParams& params);
+
+//
+void CollectIntrinsicUniforms(
+        const Caps* caps,
+        SkIRect viewport,
+        UniformManager*);
 
 DstReadRequirement GetDstReadRequirement(const Caps*, std::optional<SkBlendMode>, Coverage);
 

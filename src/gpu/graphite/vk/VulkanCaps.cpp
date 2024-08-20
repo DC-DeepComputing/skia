@@ -80,6 +80,8 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
     fRequiredStorageBufferAlignment =  physDevProperties.limits.minStorageBufferOffsetAlignment;
     fRequiredTransferBufferAlignment = 4;
 
+    fViewportControl = ViewportControl::kNDCYPointsDown;
+
     fResourceBindingReqs.fUniformBufferLayout = Layout::kStd140;
     // We can enable std430 and ensure no array stride mismatch in functions because all bound
     // buffers will either be a UBO or SSBO, depending on if storage buffers are enabled or not.

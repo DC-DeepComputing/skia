@@ -226,6 +226,8 @@ public:
      */
     SkColorType getRenderableColorType(SkColorType) const;
 
+    SkEnumBitMask<ViewportControl> viewportControl() const { return fViewportControl; }
+
     bool clampToBorderSupport() const { return fClampToBorderSupport; }
 
     bool protectedSupport() const { return fProtectedSupport; }
@@ -371,6 +373,8 @@ protected:
     size_t fTextureDataRowBytesAlignment = 1;
 
     std::unique_ptr<SkSL::ShaderCaps> fShaderCaps;
+
+    SkEnumBitMask<ViewportControl> fViewportControl = ViewportControl::kDefault;
 
     bool fClampToBorderSupport = true;
     bool fProtectedSupport = false;
