@@ -91,6 +91,7 @@ RendererProvider::RendererProvider(const Caps* caps, StaticBufferManager* buffer
                 makeFromStep(std::make_unique<BitmapTextRenderStep>(textVariant.fFormat),
                              textVariant.fDrawType);
     }
+
     for (bool lcd : {false, true}) {
         fSDFText[lcd] = lcd ? makeFromStep(std::make_unique<SDFTextLCDRenderStep>(),
                                            DrawTypeFlags::kSDFText_LCD)
