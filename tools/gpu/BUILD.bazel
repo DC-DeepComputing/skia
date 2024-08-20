@@ -53,7 +53,6 @@ skia_cc_library(
         "//src/base",
         "//src/core:core_priv",
         "//src/gpu/ganesh/gl:ganesh_gl_TEST_UTIL",
-        "//tools/gpu/gl:deps",
     ] + select({
         "@platforms//os:macos": [
             "//src/gpu/ganesh/gl/mac:mac_factory_TEST_UTIL",
