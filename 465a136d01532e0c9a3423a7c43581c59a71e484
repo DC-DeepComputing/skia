@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e3a24c1e_b726ee65",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-08-20T18:44:10Z",
+      "side": 1,
+      "message": "Fixes have landed in chrome, so this should be good to go.",
+      "revId": "465a136d01532e0c9a3423a7c43581c59a71e484",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
