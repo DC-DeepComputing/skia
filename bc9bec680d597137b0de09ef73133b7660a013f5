@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c4579de_e397fdd9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-08-20T20:25:53Z",
+      "side": 1,
+      "message": "Thanks Nolan!",
+      "revId": "bc9bec680d597137b0de09ef73133b7660a013f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c560b7dd_7f936d59",
+        "filename": "src/gpu/graphite/ResourceProvider.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-08-20T20:25:53Z",
+      "side": 1,
+      "message": "nit: the alignment is a little off now, but because the `TRACE_STR_COPY` arg is so long, I think the best course of action is to chop the first 3 args on to the next line with 2 tabs, and then `TRACE_STR_COPY` will be on a 3rd line aligned with them.\n```suggestion\n        TRACE_EVENT1_ALWAYS(\n                \"skia.shaders\", \"createGraphicsPipeline\", \"desc\",\n                TRACE_STR_COPY(to_str(fSharedContext, pipelineDesc, renderPassDesc).c_str()));\n```",
+      "range": {
+        "startLine": 70,
+        "startChar": 0,
+        "endLine": 71,
+        "endChar": 99
+      },
+      "revId": "bc9bec680d597137b0de09ef73133b7660a013f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
