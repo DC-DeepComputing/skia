@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a99f117_b6032b52",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 7
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-08-20T18:56:03Z",
+      "side": 1,
+      "message": "The precision issues are a good point -- reverting this.",
+      "parentUuid": "5d37eac9_11b75f30",
+      "range": {
+        "startLine": 129,
+        "startChar": 35,
+        "endLine": 131,
+        "endChar": 55
+      },
+      "revId": "da7919b4b13c9adf3785957bbf1f77480e5c4352",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9543cc7d_c2d5be55",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3398da5f_67e6a9df",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 7
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-08-20T18:56:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9543cc7d_c2d5be55",
+      "range": {
+        "startLine": 134,
+        "startChar": 27,
+        "endLine": 134,
+        "endChar": 30
+      },
+      "revId": "da7919b4b13c9adf3785957bbf1f77480e5c4352",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e4939f0b_8d6ac3d6",
@@ -77,6 +125,30 @@
       "writtenOn": "2024-08-20T15:54:47Z",
       "side": 1,
       "message": "I don\u0027t know if it\u0027s faster, but we could avoid a branch by doing\n    \n    alpha \u003d radiusPlusHalf.x \u003c 0 ? (1-alpha) : alpha;\n    \nat least when Brian and I were testing these ternary tests vs. 0 on AMD codegen, they produced very few instructions.",
+      "range": {
+        "startLine": 147,
+        "startChar": 0,
+        "endLine": 149,
+        "endChar": 5
+      },
+      "revId": "da7919b4b13c9adf3785957bbf1f77480e5c4352",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1158f9e0_6c4da66f",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 7
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-08-20T18:56:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e4939f0b_8d6ac3d6",
       "range": {
         "startLine": 147,
         "startChar": 0,
