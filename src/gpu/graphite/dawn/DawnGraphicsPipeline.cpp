@@ -336,6 +336,7 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(const DawnSharedContext* 
     wgpu::RenderPipelineDescriptor descriptor;
     // Always set the label for pipelines, dawn may need it for tracing.
     descriptor.label = pipelineLabel.c_str();
+//    SkDebugf("DawnGraphicsPipeline::Make %s\n", pipelineLabel.c_str());
 
     // Fragment state
     skgpu::BlendEquation equation = blendInfo.fEquation;

@@ -101,6 +101,9 @@ RenderPassDesc RenderPassDesc::Make(const Caps* caps,
         desc.fDepthStencilAttachment.fStoreOp = StoreOp::kDiscard;
     }
 
+//    static int foo = 0;
+
+//    SkDebugf("%d: %s\n", foo++, desc.toPipelineLabel().c_str());
     return desc;
 }
 

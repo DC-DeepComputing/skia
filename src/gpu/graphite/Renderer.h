@@ -11,6 +11,7 @@
 #include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
+#include "include/gpu/graphite/GraphiteTypes.h"
 #include "src/base/SkEnumBitMask.h"
 #include "src/base/SkVx.h"
 #include "src/gpu/graphite/Attribute.h"
@@ -30,6 +31,8 @@ namespace skgpu { enum class MaskFormat; }
 
 namespace skgpu::graphite {
 
+SK_MAKE_BITMASK_OPS(DepthStencilFlags)
+
 class DrawWriter;
 class DrawParams;
 class PipelineDataGatherer;
@@ -37,6 +40,7 @@ class Rect;
 class ResourceProvider;
 class TextureDataBlock;
 class Transform;
+enum class DepthStencilFlags : int;
 
 struct ResourceBindingRequirements;
 
@@ -109,7 +113,7 @@ public:
     // and variant is a unique term describing instance's specific configuration.
     const char* name() const { return fName.c_str(); }
 
-    bool requiresMSAA()        const { return SkToBool(fFlags & Flags::kRequiresMSAA);        }
+    bool requiresMSAA1()        const { return SkToBool(fFlags & Flags::kRequiresMSAA1);        }
     bool performsShading()     const { return SkToBool(fFlags & Flags::kPerformsShading);     }
     bool hasTextures()         const { return SkToBool(fFlags & Flags::kHasTextures);         }
     bool emitsPrimitiveColor() const { return SkToBool(fFlags & Flags::kEmitsPrimitiveColor); }
@@ -159,7 +163,7 @@ public:
 protected:
     enum class Flags : unsigned {
         kNone                  = 0b00000000,
-        kRequiresMSAA          = 0b00000001,
+        kRequiresMSAA1          = 0b00000001,
         kPerformsShading       = 0b00000010,
         kHasTextures           = 0b00000100,
         kEmitsCoverage         = 0b00001000,
@@ -236,7 +240,7 @@ public:
     int           numRenderSteps() const { return fStepCount;    }
 
     bool requiresMSAA() const {
-        return SkToBool(fStepFlags & StepFlags::kRequiresMSAA);
+        return SkToBool(fStepFlags & StepFlags::kRequiresMSAA1);
     }
     bool emitsPrimitiveColor() const {
         return SkToBool(fStepFlags & StepFlags::kEmitsPrimitiveColor);
