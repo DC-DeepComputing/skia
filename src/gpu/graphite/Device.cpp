@@ -1173,6 +1173,9 @@ void Device::drawGeometry(const Transform& localToDevice,
         return;
     }
 
+    // TODO: whereever we modify things for the clipshader we also need to do so for the
+    // analytic clip.
+
     // Heavy weight paint options like path effects, mask filters, and stroke-and-fill style are
     // applied on the CPU by generating a new shape and recursing on drawGeometry with updated flags
     if (!(flags & DrawFlags::kIgnorePathEffect) && paint.getPathEffect()) {
@@ -1282,6 +1285,12 @@ void Device::drawGeometry(const Transform& localToDevice,
     } else if (!SkToBool(primitiveBlender)) {
         primitiveBlender = SkBlender::Mode(SkBlendMode::kSrcOver);
     }
+
+    // Figure out whether to do analytic clip here and insert into PaintParams
+
+    // Where do we choose to do scissor instead of depth-based MSAA clip? Looks like the
+    // scissor decision is in ClipStack::visitClipStackForDraw? See line 1200. Clip returned
+    // has setScissorRect on it, which is used by the Draw.
 
     PaintParams shading{paint,
                         std::move(primitiveBlender),

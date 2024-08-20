@@ -1233,6 +1233,8 @@ Clip ClipStack::visitClipStackForDraw(const Transform& localToDevice,
                           /*op=*/SkClipOp::kIntersect,
                           /*containsChecksOnlyBounds=*/true};
 
+    // Look at "clipElements", see if element shape is rect or circular rrect. For first one,
+    // don't add to outEffectiveElements, add to Clip somehow?
     SkASSERT(outEffectiveElements);
     SkASSERT(outEffectiveElements->empty());
     int i = fElements.count();

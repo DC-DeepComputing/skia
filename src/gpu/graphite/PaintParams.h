@@ -11,6 +11,7 @@
 #include "include/core/SkColor.h"
 #include "include/core/SkPaint.h"
 #include "src/gpu/graphite/Caps.h"
+#include "src/gpu/graphite/geom/Shape.h"
 #include <functional>  // std::function
 
 class SkColorInfo;
@@ -43,6 +44,11 @@ public:
     ~PaintParams();
 
     PaintParams& operator=(const PaintParams&);
+
+    struct AnalyticClip {
+        Shape fShape;      // Should be Rect, RRect, or Empty
+        bool fInverseFill;
+    };
 
     SkColor4f color() const { return fColor; }
 
@@ -89,6 +95,7 @@ private:
     // the dest is the paint's color (or the paint's shader's computed color).
     sk_sp<SkBlender>     fPrimitiveBlender;
     sk_sp<SkShader>      fClipShader;
+    AnalyticClip         fAnalyticClip;
     DstReadRequirement   fDstReadReq;
     bool                 fSkipColorXform;
     bool                 fDither;
