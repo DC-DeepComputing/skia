@@ -107,7 +107,7 @@ bool SurfaceContext::readPixels(GrDirectContext* dContext, GrPixmap dst, SkIPoin
     if (dst.colorType() == GrColorType::kUnknown) {
         return false;
     }
-
+    SkDebugf("%zu\n", dst.info().bpp());
     if (dst.rowBytes() % dst.info().bpp()) {
         return false;
     }
