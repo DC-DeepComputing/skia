@@ -319,6 +319,13 @@ void PaintParams::toKey(const KeyContext& keyContext,
         finalBlendMode = SkBlendMode::kSrc;
     }
 
+    // Add analytic clip here -- where do we set it up?
+    // Use AnalyticClip information from PaintParams.
+    // ClipShader uses coverage. Should analytic clip?
+
+    // Use blend shader to combine clip shader and analytic clip
+    // And use CircularRRectShaderBlock::AddBlock()
+
     if (fClipShader) {
         ClipShaderBlock::BeginBlock(keyContext, builder, gatherer);
 

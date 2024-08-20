@@ -44,6 +44,10 @@ public:
 
     PaintParams& operator=(const PaintParams&);
 
+    struct AnalyticClip {
+        SkRect fRect;
+    };
+
     SkColor4f color() const { return fColor; }
 
     std::optional<SkBlendMode> asFinalBlendMode() const;
@@ -89,6 +93,7 @@ private:
     // the dest is the paint's color (or the paint's shader's computed color).
     sk_sp<SkBlender>     fPrimitiveBlender;
     sk_sp<SkShader>      fClipShader;
+    AnalyticClip         fAnalyticClip;  // contains device rect/rrect, inverse or not, active?
     DstReadRequirement   fDstReadReq;
     bool                 fSkipColorXform;
     bool                 fDither;
