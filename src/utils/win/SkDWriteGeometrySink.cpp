@@ -9,8 +9,8 @@
 #if defined(SK_BUILD_FOR_WIN)
 
 #include "include/core/SkPath.h"
-#include "src/utils/SkFloatUtils.h"
 #include "src/utils/win/SkDWriteGeometrySink.h"
+#include "src/utils/win/SkFloatUtils.h"
 #include "src/utils/win/SkObjBase.h"
 
 #include <dwrite.h>
