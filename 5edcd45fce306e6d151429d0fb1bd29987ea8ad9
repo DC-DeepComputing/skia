@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "046e54d0_59352edd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-08-20T18:14:10Z",
+      "side": 1,
+      "message": "It seems this change is trying to take two generic things and over specialize their names.\n\nThe TestCanvas is currently often used for Slug testing (though sometimes not) but just because it is used that way doesn\u0027t mean it should be given that name. I\u0027m not sure exactly where to put it so it fits in the mold that bazel imposes, but the name change seems odd.\n\nThe reality is that `utils/` is all one package, if it makes it easier to think about it would be better to dump everything into the `utils/` directory and remove the per-platform subdirectories. I wouldn\u0027t recommend that at the moment, but it probably would make sense to treat it like that with one BUILD in `utils/` (and not the platform subdirectories). The platform subdirectories are just an accident of when we were figuring out how to organize things along with Chromium back in the days of moving to gyp.",
+      "revId": "5edcd45fce306e6d151429d0fb1bd29987ea8ad9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e12476dd_a219cf61",
+        "filename": "bench/GlyphQuadFillBench.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-08-20T18:14:10Z",
+      "side": 1,
+      "message": "`Slug` doesn\u0027t really make sense here?",
+      "range": {
+        "startLine": 32,
+        "startChar": 18,
+        "endLine": 32,
+        "endChar": 32
+      },
+      "revId": "5edcd45fce306e6d151429d0fb1bd29987ea8ad9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e19a088_872f02be",
+        "filename": "src/utils/win/SkDWriteGeometrySink.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-08-20T18:14:10Z",
+      "side": 1,
+      "message": "This isn\u0027t Windows specific at all, so it looks a little silly.",
+      "revId": "5edcd45fce306e6d151429d0fb1bd29987ea8ad9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
