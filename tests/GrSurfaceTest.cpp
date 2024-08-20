@@ -308,6 +308,9 @@ DEF_GANESH_TEST(InitialTextureClear, reporter, baseOptions, CtsEnforcement::kApi
             SkASSERT(combo.fColorType != GrColorType::kUnknown);
             SkASSERT(combo.fFormat.isValid());
 
+            SkDebugf("%s : ", GrColorTypeToStr(combo.fColorType));
+            SkDebugf("%d\n", combo.fFormat.isValid());
+
             if (!caps->isFormatTexturable(combo.fFormat, GrTextureType::k2D)) {
                 continue;
             }

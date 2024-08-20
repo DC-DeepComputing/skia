@@ -142,7 +142,7 @@ static DEFINE_bool(simpleCodec, false,
                    "Runs of a subset of the codec tests, "
                    "with no scaling or subsetting, always using the canvas color type.");
 
-static DEFINE_string2(match, m, nullptr,
+static DEFINE_string2(match, m, "InitialTextureClear",
                "[~][^]substring[$] [...] of name to run.\n"
                "Multiple matches may be separated by spaces.\n"
                "~ causes a matching name to always be skipped\n"
@@ -1540,7 +1540,7 @@ int main(int argc, char** argv) {
 #if defined(SK_BUILD_FOR_ANDROID_FRAMEWORK) && defined(SK_HAS_HEIF_LIBRARY)
     android::ProcessState::self()->startThreadPool();
 #endif
-    CommandLineFlags::Parse(argc, argv);
+    // CommandLineFlags::Parse(argc, argv);
 
     initializeEventTracingForTools();
 
