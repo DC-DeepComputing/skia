@@ -1283,6 +1283,11 @@ void Device::drawGeometry(const Transform& localToDevice,
         primitiveBlender = SkBlender::Mode(SkBlendMode::kSrcOver);
     }
 
+    // Figure out whether to do analytic clip here and insert into PaintParams
+    // Where do we choose to do scissor instead of depth-based MSAA clip? Looks like the
+    // scissor decision is in ClipStack::visitClipStackForDraw?
+    // Look at "clipElements", see if element shape is rect or circular rrect.
+
     PaintParams shading{paint,
                         std::move(primitiveBlender),
                         sk_ref_sp(clip.shader()),
