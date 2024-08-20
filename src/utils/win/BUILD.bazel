@@ -18,6 +18,7 @@ WIN_FILES = [
     "SkDWriteGeometrySink.cpp",
     "SkDWriteGeometrySink.h",
     "SkDWriteNTDDI_VERSION.h",
+    "SkFloatUtils.h",
     "SkHRESULT.cpp",
     "SkHRESULT.h",
     "SkIStream.cpp",
