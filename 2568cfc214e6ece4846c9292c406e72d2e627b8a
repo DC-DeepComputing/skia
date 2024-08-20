@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "63ced8e1_f3a7bea8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-08-20T18:11:04Z",
+      "side": 1,
+      "message": "This is just one straightforward way of avoiding overflow here; ideally we could avoid having this happen in RegionOpIml::onCombineIfPossible, as suggested in the bug, and keep the valid draws.",
+      "revId": "2568cfc214e6ece4846c9292c406e72d2e627b8a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
