@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c186af65_deb3aaaa",
+        "filename": "include/core/SkCanvas.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-08-21T15:39:47Z",
+      "side": 1,
+      "message": "It does seem like this is necessary in order to `friend` (since the friend is in another namespace), but our version of iwyu doesn\u0027t seem to mark the `friend` as a use of this forward declaration? There was an old issue around something like this https://github.com/include-what-you-use/include-what-you-use/issues/254 and https://github.com/include-what-you-use/include-what-you-use/issues/331 but I\u0027m not sure about this.",
+      "revId": "c4ad5d20b8865192d0840c6d91d2170b0555941f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
