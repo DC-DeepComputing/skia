@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f296073_60b07fea",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-08-21T13:54:06Z",
+      "side": 1,
+      "message": "Using https://www.w3.org/WAI/tutorials/tables/irregular/ (which has properly marked up headers) and printing from Chrome this does emit an IDTree with just the needed (referenced) IDs. When there are no referenced IDs then no IDTree or IDs are emitted.\n\nThat being said, at PS1 this still doesn\u0027t seem quite right. Really we want the node ids to be marked as used when the annotation is emitted (the references are actually emitted) as it is possible for the user to describe these things but then end up never emitting them (like when creating the structure tree for a whole site, but only printing some pages into the pdf).",
+      "revId": "015f556e82bbe43321604f48b32d66467a3d37f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
