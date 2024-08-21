@@ -371,7 +371,7 @@ GrCaps::SupportedRead GrCaps::supportedReadPixelsColorType(GrColorType srcColorT
 
     // There are known problems with 24 vs 32 bit BPP with this color type. Just fail for now if
     // using a transfer buffer.
-    if (GrColorType::kRGB_888x == read.fColorType) {
+    if (GrColorType::kRGB_888x == read.fColorType || GrColorType::kRGB_F16F16F16x == read.fColorType) {
         read.fOffsetAlignmentForTransferBuffer = 0;
     }
     // It's very convenient to access 1 byte-per-channel 32 bit color types as uint32_t on the CPU.
@@ -490,6 +490,7 @@ static inline GrColorType color_type_fallback(GrColorType ct) {
         case GrColorType::kAlpha_F16:
             return GrColorType::kRGBA_F16;
         case GrColorType::kGray_8:
+        case GrColorType::kRGB_F16F16F16x:
             return GrColorType::kRGB_888x;
         default:
             return GrColorType::kUnknown;

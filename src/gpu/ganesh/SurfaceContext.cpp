@@ -55,6 +55,8 @@
 #include "src/gpu/ganesh/effects/GrTextureEffect.h"
 #include "src/gpu/ganesh/geometry/GrRect.h"
 
+#include "src/gpu/ganesh/GrUtil.h"
+
 #include <algorithm>
 #include <cstdint>
 #include <memory>
@@ -107,7 +109,7 @@ bool SurfaceContext::readPixels(GrDirectContext* dContext, GrPixmap dst, SkIPoin
     if (dst.colorType() == GrColorType::kUnknown) {
         return false;
     }
-
+    // SkDebugf("here2.1.1\n");
     if (dst.rowBytes() % dst.info().bpp()) {
         return false;
     }
@@ -123,7 +125,7 @@ bool SurfaceContext::readPixels(GrDirectContext* dContext, GrPixmap dst, SkIPoin
     // weird to reason about what should be expected.
 
     sk_sp<GrSurfaceProxy> srcProxy = this->asSurfaceProxyRef();
-
+    // SkDebugf("here2.1.2\n");
     if (srcProxy->framebufferOnly()) {
         return false;
     }
@@ -150,6 +152,7 @@ bool SurfaceContext::readPixels(GrDirectContext* dContext, GrPixmap dst, SkIPoin
     // fContext->vaildaPMUPMConversionExists()).
     GrBackendFormat defaultRGBAFormat = caps->getDefaultBackendFormat(GrColorType::kRGBA_8888,
                                                                       GrRenderable::kYes);
+// SkDebugf("here2.1.3\n");
     GrColorType srcColorType = this->colorInfo().colorType();
     bool canvas2DFastPath = unpremul && !needColorConversion &&
                             (GrColorType::kRGBA_8888 == dst.colorType() ||
@@ -164,15 +167,17 @@ bool SurfaceContext::readPixels(GrDirectContext* dContext, GrPixmap dst, SkIPoin
     // tests, it is possible that during that call we have abandoned the context. Thus, we do
     // another abandoned check here to make sure we are still valid.
     RETURN_FALSE_IF_ABANDONED
-
+    // SkDebugf("here2.1.4\n");
     auto readFlag = caps->surfaceSupportsReadPixels(srcSurface);
     if (readFlag == GrCaps::SurfaceReadPixelsSupport::kUnsupported) {
         return false;
     }
 
     if (readFlag == GrCaps::SurfaceReadPixelsSupport::kCopyToTexture2D || canvas2DFastPath) {
+          // SkDebugf("here2.1.4.1\n");
         std::unique_ptr<SurfaceContext> tempCtx;
         if (this->asTextureProxy()) {
+                    // SkDebugf("here2.1.4.1.1\n");
             GrColorType colorType = this->colorInfo().colorType();
             if (canvas2DFastPath || srcIsCompressed) {
                 colorType = GrColorType::kRGBA_8888;
@@ -218,6 +223,7 @@ bool SurfaceContext::readPixels(GrDirectContext* dContext, GrPixmap dst, SkIPoin
             pt = {0, 0};
             tempCtx = std::move(sfc);
         } else {
+          // SkDebugf("here2.1.4.1.2\n");
             auto restrictions = this->caps()->getDstCopyRestrictions(this->asRenderTargetProxy(),
                                                                      this->colorInfo().colorType());
             sk_sp<GrSurfaceProxy> copy;
@@ -252,8 +258,10 @@ bool SurfaceContext::readPixels(GrDirectContext* dContext, GrPixmap dst, SkIPoin
             tempCtx = dContext->priv().makeSC(std::move(view), this->colorInfo());
             SkASSERT(tempCtx);
         }
+        // SkDebugf("here2.1.4.2\n");
         return tempCtx->readPixels(dContext, dst, pt);
     }
+    // SkDebugf("here2.1.5\n");
 
     bool flip = this->origin() == kBottomLeft_GrSurfaceOrigin;
 
@@ -265,11 +273,12 @@ bool SurfaceContext::readPixels(GrDirectContext* dContext, GrPixmap dst, SkIPoin
 
     bool convert = unpremul || premul || needColorConversion || flip || makeTight ||
                    (dst.colorType() != supportedRead.fColorType);
-
+  //  SkDebugf("here2.1.6\n");
     std::unique_ptr<char[]> tmpPixels;
     GrPixmap tmp;
     void* readDst = dst.addr();
     size_t readRB = dst.rowBytes();
+      //  SkDebugf("here2.1.7\n");
     if (convert) {
         GrImageInfo tmpInfo(supportedRead.fColorType,
                             this->colorInfo().alphaType(),
@@ -285,18 +294,22 @@ bool SurfaceContext::readPixels(GrDirectContext* dContext, GrPixmap dst, SkIPoin
         readRB = tmpRB;
         pt.fY = flip ? srcSurface->height() - pt.fY - dst.height() : pt.fY;
     }
-
+  //  SkDebugf("here2.1.8\n");
     dContext->priv().flushSurface(srcProxy.get());
+    // SkDebugf("here2.1.8.1\n");
     dContext->submit();
+    SkDebugf("here2.1.8.2\n");
+    SkDebugf("%s\n", GrColorTypeToStr(supportedRead.fColorType));
     if (!dContext->priv().getGpu()->readPixels(srcSurface,
                                                SkIRect::MakePtSize(pt, dst.dimensions()),
                                                this->colorInfo().colorType(),
                                                supportedRead.fColorType,
                                                readDst,
                                                readRB)) {
+                                                SkDebugf("here2.1.8.3\n");
         return false;
     }
-
+   SkDebugf("here2.1.9\n");
     if (tmp.hasPixels()) {
         return GrConvertPixels(dst, tmp, flip);
     }
