@@ -52,6 +52,7 @@ bool should_dither(const PaintParams& p, SkColorType dstCT) {
 
 PaintParams::PaintParams(const SkPaint& paint,
                          sk_sp<SkBlender> primitiveBlender,
+                         const Shape& analyticClip,
                          sk_sp<SkShader> clipShader,
                          DstReadRequirement dstReadReq,
                          bool skipColorXform)
@@ -60,6 +61,7 @@ PaintParams::PaintParams(const SkPaint& paint,
         , fShader(paint.refShader())
         , fColorFilter(paint.refColorFilter())
         , fPrimitiveBlender(std::move(primitiveBlender))
+        , fAnalyticClip(analyticClip)
         , fClipShader(std::move(clipShader))
         , fDstReadReq(dstReadReq)
         , fSkipColorXform(skipColorXform)
@@ -319,7 +321,27 @@ void PaintParams::toKey(const KeyContext& keyContext,
         finalBlendMode = SkBlendMode::kSrc;
     }
 
-    if (fClipShader) {
+    // Add analytic clip here -- where do we set it up?
+    // Use AnalyticClip information from PaintParams.
+    // ClipShader uses coverage. Should analytic clip?
+
+    // Use compose shader to combine clip shader and analytic clip
+    // And use CircularRRectClipBlock::AddBlock()
+
+    // Put all of this in a helper function?
+
+    if (!fAnalyticClip.isEmpty() && fClipShader) {
+        // Compose together with CircularRRectClipBlock
+        ClipShaderBlock::BeginBlock(keyContext, builder, gatherer);
+
+        AddToKey(keyContext, builder, gatherer, fClipShader.get());
+
+        builder->endBlock();
+    } else if (!fAnalyticClip.isEmpty()) {
+
+//        CircularRRectClipData data(
+//        CircularRRectClipBlock::AddBlock(
+    } else if (fClipShader) {
         ClipShaderBlock::BeginBlock(keyContext, builder, gatherer);
 
             AddToKey(keyContext, builder, gatherer, fClipShader.get());
