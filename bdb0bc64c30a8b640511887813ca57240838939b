@@ -57,6 +57,30 @@
       },
       "revId": "bdb0bc64c30a8b640511887813ca57240838939b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "99637fb7_2452483b",
+        "filename": "AUTHORS",
+        "patchSetId": 2
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2024-08-21T14:40:48Z",
+      "side": 1,
+      "message": "The signing part is done online:\nhttps://cla.developers.google.com/about/google-individual\n\nUchit filled that out.",
+      "parentUuid": "138d6b74_95be5ec8",
+      "range": {
+        "startLine": 105,
+        "startChar": 0,
+        "endLine": 105,
+        "endChar": 33
+      },
+      "revId": "bdb0bc64c30a8b640511887813ca57240838939b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
