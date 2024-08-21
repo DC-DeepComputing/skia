@@ -616,6 +616,15 @@ cipd_install(
     tag = "version:47",
 )
 
+cipd_install(
+    name = "win_toolchain",
+    build_file = "//bazel/external/win_toolchain:BUILD.bazel",
+    cipd_package = "skia/bots/win_toolchain",
+    # From https://chrome-infra-packages.appspot.com/p/skia/bots/win_toolchain/+/89-wQAUmYRJEcNlZ-vg1Cu9MLamzlq0ZGiySLXoBxD8C
+    sha256 = "f3dfb040052661124470d959faf8350aef4c2da9b396ad191a2c922d7a01c43f",
+    tag = "version:15",
+)
+
 http_file(
     name = "buildifier_linux_x64",
     downloaded_file_path = "buildifier",

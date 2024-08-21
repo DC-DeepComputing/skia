@@ -39,7 +39,7 @@ def cipd_install(
     cipd_url = "https://chrome-infra-packages.appspot.com/dl/"
     cipd_url += cipd_package
     cipd_url += "/+/"
-    cipd_url += tag
+    cipd_url += tag.replace(":", "%3A")
 
     mirror_url = "https://storage.googleapis.com/skia-world-readable/bazel/"
     mirror_url += sha256

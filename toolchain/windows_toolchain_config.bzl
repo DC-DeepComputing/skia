@@ -24,11 +24,12 @@ load(
 )
 
 # The location of the created clang toolchain.
-EXTERNAL_TOOLCHAIN = "external/clang_windows"
+CLANG_TOOLCHAIN = "external/clang_windows"
 
-# These symlinks are created in download_windows_toolchain.bzl
-MSVC_SYMLINK = EXTERNAL_TOOLCHAIN + "/symlinks/msvc"
-WIN_SDK_SYMLINK = EXTERNAL_TOOLCHAIN + "/symlinks/win-sdk"
+# Paths inside the win_toolchain CIPD package.
+MSVC_PATH = "external/win_toolchain/VC/Tools/MSVC/14.39.33519"
+WIN_SDK_INCLUDE = "external/win_toolchain/win_sdk/Include/10.0.22621.0"
+WIN_SDK_LIB = "external/win_toolchain/win_sdk/Lib/10.0.22621.0"
 
 def _windows_amd64_toolchain_info(ctx):
     action_configs = _make_action_configs()
@@ -49,25 +50,6 @@ def _windows_amd64_toolchain_info(ctx):
         ctx = ctx,
         features = features,
         action_configs = action_configs,
-        # This is important because the linker will complain if the libc shared libraries are not
-        # under this directory.
-        builtin_sysroot = EXTERNAL_TOOLCHAIN,
-        cxx_builtin_include_directories = [
-            "%sysroot%/symlinks/msvc/include",
-            "%sysroot%/symlinks/win-sdk/include/ucrt",
-            "%sysroot%/symlinks/win-sdk/include/um",
-            "%sysroot%/symlinks/win-sdk/include/shared",
-            "%sysroot%/symlinks/win-sdk/include/winrt",
-            "%sysroot%/symlinks/win-sdk/include/cppwinrt",
-            "%sysroot%/include/clang",
-            "%sysroot%/include/clang-c",
-            "%sysroot%/include/clang-tidy",
-            "%sysroot%/include/lld",
-            "%sysroot%/include/lldb",
-            "%sysroot%/include/llvm",
-            "%sysroot%/include/llvm-c",
-            "%sysroot%/lib/clang/18/include",
-        ],
         # These are required, but do nothing
         compiler = "",
         target_cpu = "",
@@ -233,33 +215,33 @@ def _make_default_flags():
                     # error (or, without -no-canonical-prefixes, a mysterious case where files
                     # are included with an absolute path and fail the build).
                     "-isystem",
-                    EXTERNAL_TOOLCHAIN + "/include/clang",
+                    CLANG_TOOLCHAIN + "/include/clang",
                     "-isystem",
-                    EXTERNAL_TOOLCHAIN + "/include/clang-c",
+                    CLANG_TOOLCHAIN + "/include/clang-c",
                     "-isystem",
-                    EXTERNAL_TOOLCHAIN + "/include/clang-tidy",
+                    CLANG_TOOLCHAIN + "/include/clang-tidy",
                     "-isystem",
-                    EXTERNAL_TOOLCHAIN + "/include/lld",
+                    CLANG_TOOLCHAIN + "/include/lld",
                     "-isystem",
-                    EXTERNAL_TOOLCHAIN + "/include/lldb",
+                    CLANG_TOOLCHAIN + "/include/lldb",
                     "-isystem",
-                    EXTERNAL_TOOLCHAIN + "/include/llvm",
+                    CLANG_TOOLCHAIN + "/include/llvm",
                     "-isystem",
-                    EXTERNAL_TOOLCHAIN + "/include/llvm-c",
+                    CLANG_TOOLCHAIN + "/include/llvm-c",
                     "-isystem",
-                    EXTERNAL_TOOLCHAIN + "/lib/clang/18/include",
+                    CLANG_TOOLCHAIN + "/lib/clang/18/include",
                     "-isystem",
-                    WIN_SDK_SYMLINK + "/include/shared",
+                    WIN_SDK_INCLUDE + "/shared",
                     "-isystem",
-                    WIN_SDK_SYMLINK + "/include/ucrt",
+                    WIN_SDK_INCLUDE + "/ucrt",
                     "-isystem",
-                    WIN_SDK_SYMLINK + "/include/um",
+                    WIN_SDK_INCLUDE + "/um",
                     "-isystem",
-                    WIN_SDK_SYMLINK + "/include/winrt",
+                    WIN_SDK_INCLUDE + "/winrt",
                     "-isystem",
-                    WIN_SDK_SYMLINK + "/include/cppwinrt",
+                    WIN_SDK_INCLUDE + "/cppwinrt",
                     "-isystem",
-                    MSVC_SYMLINK + "/include",
+                    MSVC_PATH + "/include",
                     # We do not want clang to search in absolute paths for files. This makes
                     # Bazel think we are using an outside resource and fail the compile.
                     "-no-canonical-prefixes",
@@ -295,8 +277,8 @@ def _make_default_flags():
                     # included in the clang binary
                     "--rtlib=compiler-rt",
                     "-std=c++17",
-                    "-L" + MSVC_SYMLINK + "/lib/x64",
-                    "-L" + WIN_SDK_SYMLINK + "/lib/ucrt/x64",
+                    "-L" + MSVC_PATH + "/lib/x64",
+                    "-L" + WIN_SDK_LIB + "/ucrt/x64",
                 ],
             ),
         ],
