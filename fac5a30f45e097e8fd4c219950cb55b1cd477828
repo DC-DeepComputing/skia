@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f43a9db8_4c034bee",
+        "filename": "bazel/cipd_install.bzl",
+        "patchSetId": 1
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-08-21T16:42:03Z",
+      "side": 1,
+      "message": "When we download the CIPD package, we create a \"\u003ctag\u003e.zip\" file locally. Colon is an invalid character for file paths on windows, so this causes problems. Simply url-escaping the colon fixes the problem.",
+      "range": {
+        "startLine": 42,
+        "startChar": 0,
+        "endLine": 42,
+        "endChar": 39
+      },
+      "revId": "fac5a30f45e097e8fd4c219950cb55b1cd477828",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "38fa2b12_1d549191",
+        "filename": "toolchain/windows_toolchain_config.bzl",
+        "patchSetId": 1
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-08-21T16:42:03Z",
+      "side": 1,
+      "message": "Note: the toolchain paths include version numbers which may change when new versions of the win_toolchain package are created.  We\u0027re referencing the version numbers here and in bazel/external/win_toolchain/BUILD.bazel.  We could eliminate the references here by creating symlinks in download_windows_toolchain.bzl (or maybe that needs to be done in bazel/external/win_toolchain/BUILD.bazel somehow) and by changing the globs in bazel/external/win_toolchain/BUILD.bazel to just include the whole parent directory (which shouldn\u0027t result in many extra files) or maybe by also using symlinks?\n\nInterestingly, I don\u0027t see any references to these versions in the GN build, so maybe it\u0027s possible to avoid them altogether?",
+      "range": {
+        "startLine": 30,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 63
+      },
+      "revId": "fac5a30f45e097e8fd4c219950cb55b1cd477828",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
