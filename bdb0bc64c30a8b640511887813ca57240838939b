@@ -53,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9212577_c9b20b62",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2024-08-21T15:58:22Z",
+      "side": 1,
+      "message": "I\u0027ll let Uchit give the full answer, but I think the idea is to have a single FontCollection that is used by Paragraphs on multiple built on multiple threads. The client can layer thread safety over the setters (if necessary) but SkParagraph internally mutates the typefaces hash map.",
+      "parentUuid": "101cf871_f7637c31",
+      "revId": "bdb0bc64c30a8b640511887813ca57240838939b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "138d6b74_95be5ec8",
