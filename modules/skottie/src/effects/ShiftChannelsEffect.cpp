@@ -121,6 +121,12 @@ private:
         };
 
         fColorFilter->setColorFilter(SkColorFilters::Matrix(cm));
+
+        // When applied to the alpha channel, kFullOn has the effect of expanding coverage
+        // to the full content bounding rect.  Thus the effect cannot be applied as a regular
+        // color filter (which is limited to the actual content coverage), and instead requires
+        // an intermediate layer (isolation).
+        fColorFilter->setForceIsolation(fA == static_cast<float>(Source::kFullOn));
     }
 
     const sk_sp<sksg::ExternalColorFilter> fColorFilter;
