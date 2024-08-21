@@ -22,6 +22,30 @@
       },
       "revId": "c31e2ca59bd9e6981e848726ed1fade559a4f379",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "91d389d2_8d35a36b",
+        "filename": "src/sksl/analysis/SkSLCheckProgramStructure.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-08-21T15:41:31Z",
+      "side": 0,
+      "message": "Right, I think any limitation from that is orthogonal (and just impacts whether or not things get inlined).",
+      "parentUuid": "4d99806b_9a58576a",
+      "range": {
+        "startLine": 38,
+        "startChar": 67,
+        "endLine": 38,
+        "endChar": 98
+      },
+      "revId": "c31e2ca59bd9e6981e848726ed1fade559a4f379",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
