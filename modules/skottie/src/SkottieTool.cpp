@@ -598,6 +598,8 @@ int main(int argc, char** argv) {
             const auto start = std::chrono::steady_clock::now();
             thread_local static auto* anim =
                     skottie::Animation::Builder()
+                        .setFontManager(fontMgr)
+                        .setTextShapingFactory(SkShapers::BestAvailable())
                         .setResourceProvider(rp)
                         .setPrecompInterceptor(precomp_interceptor)
                         .make(static_cast<const char*>(data->data()), data->size())
