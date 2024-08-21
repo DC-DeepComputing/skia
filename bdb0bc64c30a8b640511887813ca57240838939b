@@ -125,6 +125,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "05cf8bf7_fa1f6d87",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-08-21T18:19:19Z",
+      "side": 1,
+      "message": "And then someone else mutates it? At the moment the use of `FontCollection` makes SkParagraph not thread safe already because anyone could mutate the `FontCollection` whenever.",
+      "parentUuid": "e87e7aa2_3d37b8b4",
+      "revId": "bdb0bc64c30a8b640511887813ca57240838939b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "138d6b74_95be5ec8",
