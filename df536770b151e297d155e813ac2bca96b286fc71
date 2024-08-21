@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "474b0d3b_40710460",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 472,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-08-21T16:58:24Z",
+      "side": 1,
+      "message": "I think realistically we won\u0027t steal low 4 bits of a pointer, that seems like asking for trouble, and requires arithmetic every time we try to dereference it.\n\nAt this point, the remaining optimizations to consider would be:\n - Moving away from SkTBlockList to avoid the copy (assuming that outweighed in unknown change in recording allocation overhead, worth exploring)\n - Reducing the key fields to be tight to a reduced max draw count\n \nSo I think it is worth updating the whole comment block to reflect that.",
+      "parentUuid": "6279dd0f_663245d9",
+      "revId": "df536770b151e297d155e813ac2bca96b286fc71",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ceb6da00_6ff2f6e8",
         "filename": "src/gpu/graphite/DrawPass.cpp",
         "patchSetId": 1
@@ -31,6 +49,24 @@
       "writtenOn": "2024-08-21T16:02:55Z",
       "side": 1,
       "message": "I wonder if this is so unexpected/unlikely that we should assert here?",
+      "revId": "df536770b151e297d155e813ac2bca96b286fc71",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5fccb510_bc168cca",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 585,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-08-21T16:58:24Z",
+      "side": 1,
+      "message": "Yeah I think we should assert. The DrawList\u0027s render step count should be exact or conservative.\n\nI think that constructor for `std::vector` might do initialize every element to nullptr (assuming it zero-initializes them vs. default initialize).  In this case, I think we can have more explicit control by using `SkTDArray\u003cDraw*\u003e` since we want as little overhead as possible and it\u0027s a trivial type.",
+      "parentUuid": "ceb6da00_6ff2f6e8",
       "revId": "df536770b151e297d155e813ac2bca96b286fc71",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
