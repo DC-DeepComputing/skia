@@ -36,6 +36,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "101cf871_f7637c31",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-08-21T15:22:27Z",
+      "side": 1,
+      "message": "This class is generally mutable, and this only touches part of that mutability. I\u0027m not sure this class should be made thread safe. What is the motivation for this change?",
+      "revId": "bdb0bc64c30a8b640511887813ca57240838939b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "138d6b74_95be5ec8",
