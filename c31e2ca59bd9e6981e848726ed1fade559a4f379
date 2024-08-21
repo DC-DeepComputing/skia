@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d99806b_9a58576a",
+        "filename": "src/sksl/analysis/SkSLCheckProgramStructure.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-08-21T15:34:27Z",
+      "side": 0,
+      "message": "Presumably since the inliner itself has limits on how large it lets the program get, this isn\u0027t a concern, right?",
+      "range": {
+        "startLine": 38,
+        "startChar": 67,
+        "endLine": 38,
+        "endChar": 98
+      },
+      "revId": "c31e2ca59bd9e6981e848726ed1fade559a4f379",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
