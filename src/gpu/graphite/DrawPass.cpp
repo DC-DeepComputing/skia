@@ -369,22 +369,27 @@ private:
  */
 class DrawPass::SortKey {
 public:
-    SortKey(const DrawList::Draw* draw,
+    SortKey(const DrawList::Draw& draw,
+            int drawIndex,
             int renderStep,
             GraphicsPipelineCache::Index pipelineIndex,
             UniformCache::Index geomUniformIndex,
             UniformCache::Index shadingUniformIndex,
             TextureBindingCache::Index textureBindingIndex)
-        : fPipelineKey(ColorDepthOrderField::set(draw->fDrawParams.order().paintOrder().bits()) |
-                       StencilIndexField::set(draw->fDrawParams.order().stencilIndex().bits())  |
-                       RenderStepField::set(static_cast<uint32_t>(renderStep))                  |
+        : fPipelineKey(ColorDepthOrderField::set(draw.fDrawParams.order().paintOrder().bits()) |
+                       StencilIndexField::set(draw.fDrawParams.order().stencilIndex().bits())  |
+                       RenderStepField::set(static_cast<uint32_t>(renderStep))                 |
                        PipelineField::set(pipelineIndex))
-        , fUniformKey(GeometryUniformField::set(geomUniformIndex)   |
-                      ShadingUniformField::set(shadingUniformIndex) |
-                      TextureBindingsField::set(textureBindingIndex))
-        , fDraw(draw) {
+        , fUniformKey(GeometryUniformField::set(geomUniformIndex)    |
+                      ShadingUniformField::set(shadingUniformIndex)  |
+                      TextureBindingsField::set(textureBindingIndex) |
+                      DrawIndexField::set(static_cast<uint32_t>(drawIndex))) {
         SkASSERT(pipelineIndex < GraphicsPipelineCache::kInvalidIndex);
-        SkASSERT(renderStep <= draw->fRenderer->numRenderSteps());
+        SkASSERT(renderStep <= draw.fRenderer->numRenderSteps());
+        SkASSERT(drawIndex < DrawList::kMaxRenderSteps);
+        SkASSERT(geomUniformIndex <= DrawList::kMaxRenderSteps);
+        SkASSERT(shadingUniformIndex <= DrawList::kMaxRenderSteps);
+        SkASSERT(textureBindingIndex <= DrawList::kMaxRenderSteps);
     }
 
     bool operator<(const SortKey& k) const {
@@ -392,12 +397,12 @@ public:
                (fPipelineKey == k.fPipelineKey && fUniformKey < k.fUniformKey);
     }
 
-    const RenderStep& renderStep() const {
-        return fDraw->fRenderer->step(RenderStepField::get(fPipelineKey));
+    int drawIndex() const {
+        return DrawIndexField::get(fUniformKey);
     }
-
-    const DrawList::Draw& draw() const { return *fDraw; }
-
+    int renderStepIndex() const {
+        return RenderStepField::get(fPipelineKey);
+    }
     GraphicsPipelineCache::Index pipelineIndex() const {
         return PipelineField::get(fPipelineKey);
     }
@@ -424,21 +429,20 @@ private:
     // The uniform/texture index fields need 1 extra bit to encode "no-data". Values that are
     // greater than or equal to 2^(bits-1) represent "no-data", while values between
     // [0, 2^(bits-1)-1] can access data arrays without extra logic.
-    using GeometryUniformField = Bitfield<17, 47>; // bits >= 1+log2(max total steps)
-    using ShadingUniformField  = Bitfield<17, 30>; // bits >= 1+log2(max total steps)
-    using TextureBindingsField = Bitfield<30, 0>;  // bits >= 1+log2(max total steps)
+    using GeometryUniformField = Bitfield<16, 48>; // bits >= 1+log2(max total steps)
+    using ShadingUniformField  = Bitfield<16, 32>; // bits >= 1+log2(max total steps)
+    using TextureBindingsField = Bitfield<16, 16>; // bits >= 1+log2(max total steps)
+    using DrawIndexField       = Bitfield<16, 0>;  // bits >= log2(max total steps)
     uint64_t fUniformKey;
 
-    // Backpointer to the draw that produced the sort key
-    const DrawList::Draw* fDraw;
-
-    static_assert(ColorDepthOrderField::kBits >= sizeof(CompressedPaintersOrder));
-    static_assert(StencilIndexField::kBits    >= sizeof(DisjointStencilIndex));
+    static_assert(ColorDepthOrderField::kBits >= sizeof(CompressedPaintersOrder) * 8);
+    static_assert(StencilIndexField::kBits    >= sizeof(DisjointStencilIndex) * 8);
     static_assert(RenderStepField::kBits      >= SkNextLog2_portable(Renderer::kMaxRenderSteps));
     static_assert(PipelineField::kBits        >= SkNextLog2_portable(DrawList::kMaxRenderSteps));
     static_assert(GeometryUniformField::kBits >= 1+SkNextLog2_portable(DrawList::kMaxRenderSteps));
     static_assert(ShadingUniformField::kBits  >= 1+SkNextLog2_portable(DrawList::kMaxRenderSteps));
     static_assert(TextureBindingsField::kBits >= 1+SkNextLog2_portable(DrawList::kMaxRenderSteps));
+    static_assert(DrawIndexField::kBits       >= SkNextLog2_portable(DrawList::kMaxRenderSteps));
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -465,18 +469,17 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
     // its size should be done with care and good reason. The performance of sorting the keys is
     // heavily tied to the total size.
     //
-    // At 24 bytes (current), sorting is about 30% slower than if SortKey could be packed into just
-    // 16 bytes. There are several ways this could be done if necessary:
+    // We currently achieve 16 bytes by creating a new contiguous array of Draws and indexing into
+    // it from the sort key. We could avoid creating this new array if the Draws came in as a
+    // mutable array rather than a const SkTBlockList. Or, there are other ways to keep the key to
+    // 16 bytes without a separate array:
     //  - Restricting the max draw count to 16k (14-bits) and only using a single index to refer to
     //    the uniform data => 8 bytes of key, 8 bytes of pointer.
     //  - Restrict the max draw count to 32k (15-bits), use a single uniform index, and steal the
     //    4 low bits from the Draw* pointer since it's 16 byte aligned.
-    //  - Compact the Draw* to an index into the original collection, although that has extra
-    //    indirection and does not work as well with SkTBlockList.
     // In pseudo tests, manipulating the pointer or having to mask out indices was about 15% slower
     // than an 8 byte key and unmodified pointer.
-    static_assert(sizeof(DrawPass::SortKey) ==
-                  SkAlignTo(16 + sizeof(void*), alignof(DrawPass::SortKey)));
+    static_assert(sizeof(DrawPass::SortKey) == SkAlignTo(16, alignof(DrawPass::SortKey)));
 
     TRACE_EVENT1("skia.gpu", TRACE_FUNC, "draw count", draws->fDraws.count());
 
@@ -525,6 +528,13 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
     std::vector<SortKey> keys;
     keys.reserve(draws->renderStepCount());
 
+    // Maintain a flat array of Draws, and index into it with our SortKeys.
+    // We add to this flat draw array back-to-front, so that opaque draws are likely to be processed
+    // last-to-first and occlude each other. Transparent draws are already ordered correctly by
+    // the painter's order field of the sort keys.
+    std::vector<const DrawList::Draw*> drawArray(draws->renderStepCount());
+    int drawArrayIndex = draws->renderStepCount() - 1;
+
     for (const DrawList::Draw& draw : draws->fDraws.items()) {
         // If we have two different descriptors, such that the uniforms from the PaintParams can be
         // bound independently of those used by the rest of the RenderStep, then we can upload now
@@ -571,8 +581,16 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
             TextureBindingCache::Index textureIndex = textureBindingTracker.trackTextures(
                     performsShading ? paintTextures : nullptr, stepTextures);
 
-            keys.push_back({&draw, stepIndex, pipelineIndex,
-                            geomUniformIndex, shadingUniformIndex, textureIndex});
+            if (drawArrayIndex < 0) SK_UNLIKELY {
+                // This means we didn't allocate a large enough drawArray; just append from now on.
+                keys.push_back({draw, static_cast<int>(drawArray.size()), stepIndex, pipelineIndex,
+                                geomUniformIndex, shadingUniformIndex, textureIndex});
+                drawArray.push_back(&draw);
+            } else {
+                keys.push_back({draw, drawArrayIndex, stepIndex, pipelineIndex,
+                                geomUniformIndex, shadingUniformIndex, textureIndex});
+                drawArray[drawArrayIndex--] = &draw;
+            }
         }
 
         passBounds.join(draw.fDrawParams.clip().drawBounds());
@@ -611,8 +629,8 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
     gradientBufferTracker.bindIfNeeded(&drawPass->fCommandList);
 
     for (const SortKey& key : keys) {
-        const DrawList::Draw& draw = key.draw();
-        const RenderStep& renderStep = key.renderStep();
+        const DrawList::Draw& draw = *drawArray[key.drawIndex()];
+        const RenderStep& renderStep = draw.fRenderer->step(key.renderStepIndex());
 
         const bool pipelineChange = key.pipelineIndex() != lastPipeline;
 
