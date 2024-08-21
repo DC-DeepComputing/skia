@@ -20,13 +20,7 @@ namespace skgpu::graphite {
 
 class Buffer;
 
-enum class DepthStencilFlags : int {
-    kNone = 0b000,
-    kDepth = 0b001,
-    kStencil = 0b010,
-    kDepthStencil = kDepth | kStencil,
-};
-SK_MAKE_BITMASK_OPS(DepthStencilFlags)
+
 
 /**
  * This enum is used to specify the load operation to be used when a RenderPass begins execution
