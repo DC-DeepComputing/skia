@@ -2501,7 +2501,7 @@ private:
     friend class SkRasterHandleAllocator;
     friend class SkRecords::Draw;
     template <typename Key>
-    friend class SkTestCanvas;
+    friend class TestCanvas;
 
 protected:
     // For use by SkNoDrawCanvas (via SkCanvasVirtualEnforcer, which can't be a friend)
