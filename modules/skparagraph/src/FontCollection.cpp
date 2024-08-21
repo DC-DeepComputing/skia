@@ -91,6 +91,7 @@ std::vector<sk_sp<SkTypeface>> FontCollection::findTypefaces(const std::vector<S
 
 std::vector<sk_sp<SkTypeface>> FontCollection::findTypefaces(const std::vector<SkString>& familyNames, SkFontStyle fontStyle, const std::optional<FontArguments>& fontArgs) {
     // Look inside the font collections cache first
+    SkAutoMutexExclusive lock(fTypeFacesMutex);
     FamilyKey familyKey(familyNames, fontStyle, fontArgs);
     auto found = fTypefaces.find(familyKey);
     if (found) {
@@ -219,6 +220,7 @@ void FontCollection::disableFontFallback() { fEnableFontFallback = false; }
 void FontCollection::enableFontFallback() { fEnableFontFallback = true; }
 
 void FontCollection::clearCaches() {
+    SkAutoMutexExclusive lock(fTypeFacesMutex);
     fParagraphCache.reset();
     fTypefaces.reset();
     SkShapers::HB::PurgeCaches();

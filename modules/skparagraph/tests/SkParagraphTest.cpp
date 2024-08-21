@@ -5448,6 +5448,37 @@ DEF_TEST_DISABLED(SkParagraph_JSON2, reporter) {
     REPORTER_ASSERT(reporter, cluster <= 2);
 }
 
+// This is testing paragraph layouting with static font collection. Success is defined if it does not crash.
+DEF_TEST(SkParagraph_MultiThreadLayoutingWithSingletonFontCollection, reporter) {
+
+    static sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>();
+    SKIP_IF_FONTS_NOT_FOUND(reporter, fontCollection)
+
+    auto test = [&](const char* text) {
+        TextStyle text_style;
+        ParagraphStyle paragraph_style;
+        ParagraphBuilderImpl builder(paragraph_style, fontCollection, get_unicode());
+        builder.pushStyle(text_style);
+        builder.addText(text, strlen(text));
+        builder.pop();
+        auto paragraph = builder.Build();
+        paragraph->layout(200);
+    };
+
+    constexpr int num_threads = 10;
+    std::thread threads[num_threads];
+    for (int i = 0; i < num_threads; i++)  {
+        std::string text = "text" + std::to_string(i);
+       threads[i] = std::thread([=] {
+            test(text.c_str());
+        });
+    }
+
+    for (auto& thread : threads) {
+        thread.join();
+    }
+}
+
 UNIX_ONLY_TEST(SkParagraph_CacheText, reporter) {
     ParagraphCache cache;
     cache.turnOn(true);
