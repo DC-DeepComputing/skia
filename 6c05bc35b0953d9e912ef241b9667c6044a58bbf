@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "091b9a6b_7b0b1183",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-08-21T15:25:49Z",
+      "side": 1,
+      "message": "Curious what you think about this. The bug reporter is able to just patch the size limit, so this isn\u0027t strictly necessary. Also, we could add an option (via SkRuntimneEffect::Options, that routes to ProgramSettings). But I wondered why we were still enforcing the limit at all -- we no longer have SkVM, and the RP SkSL backend doesn\u0027t unroll loops, so the size limit is fairly arbitrary. Perhaps something terrible happens if we stop enforcing it? I can\u0027t see what, though.",
+      "revId": "6c05bc35b0953d9e912ef241b9667c6044a58bbf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
