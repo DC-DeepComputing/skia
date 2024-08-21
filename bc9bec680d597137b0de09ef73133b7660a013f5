@@ -39,6 +39,30 @@
       },
       "revId": "bc9bec680d597137b0de09ef73133b7660a013f5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "84deea90_ab8d3864",
+        "filename": "src/gpu/graphite/ResourceProvider.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-08-21T14:46:21Z",
+      "side": 1,
+      "message": "Oop, thanks for catching! Fixed",
+      "parentUuid": "c560b7dd_7f936d59",
+      "range": {
+        "startLine": 70,
+        "startChar": 0,
+        "endLine": 71,
+        "endChar": 99
+      },
+      "revId": "bc9bec680d597137b0de09ef73133b7660a013f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
