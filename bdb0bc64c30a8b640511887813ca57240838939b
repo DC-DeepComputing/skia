@@ -107,6 +107,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "e87e7aa2_3d37b8b4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2024-08-21T18:03:58Z",
+      "side": 1,
+      "message": "From the point of view of SkParagraph, FontCollections are effectively const. SkParagraph itself doesn\u0027t call the setters. That\u0027s not really try with SkPath in that Skia internally builds SkPaths for various reasons. I\u0027m wondering if it would be sufficient to make the FontCollection pointers in SkParagraph be const, so that SkParagraph is known to not mutate the collection (other than the mutex-guarded mutable table).",
+      "parentUuid": "ac7d3314_423903d2",
+      "revId": "bdb0bc64c30a8b640511887813ca57240838939b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "138d6b74_95be5ec8",
