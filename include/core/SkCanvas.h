@@ -80,6 +80,7 @@ class SkEnumBitMask;
 namespace skgpu::graphite { class Recorder; }
 namespace sktext::gpu { class Slug; }
 namespace SkRecords { class Draw; }
+namespace skiatest { template <typename Key> class TestCanvas; }
 
 /** \class SkCanvas
     SkCanvas provides an interface for drawing, and how the drawing is clipped and transformed.
@@ -2501,7 +2502,7 @@ private:
     friend class SkRasterHandleAllocator;
     friend class SkRecords::Draw;
     template <typename Key>
-    friend class SkTestCanvas;
+    friend class skiatest::TestCanvas;
 
 protected:
     // For use by SkNoDrawCanvas (via SkCanvasVirtualEnforcer, which can't be a friend)
