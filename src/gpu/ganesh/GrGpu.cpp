@@ -435,26 +435,32 @@ bool GrGpu::readPixels(GrSurface* surface,
     SkASSERT(this->caps()->areColorTypeAndFormatCompatible(surfaceColorType,
                                                            surface->backendFormat()));
 
+    SkDebugf("a\n");
+
     if (!SkIRect::MakeSize(surface->dimensions()).contains(rect)) {
         return false;
     }
-
+    SkDebugf("b\n");
     size_t minRowBytes = SkToSizeT(GrColorTypeBytesPerPixel(dstColorType) * rect.width());
+    SkDebugf("c\n");
     if (!this->caps()->readPixelsRowBytesSupport()) {
+      SkDebugf("d\n");
         if (rowBytes != minRowBytes) {
             return false;
         }
     } else {
+      SkDebugf("e\n");
         if (rowBytes < minRowBytes) {
             return false;
         }
+        SkDebugf("f\n");
         if (rowBytes % GrColorTypeBytesPerPixel(dstColorType)) {
             return false;
         }
     }
-
+SkDebugf("g\n");
     this->handleDirtyContext();
-
+SkDebugf("h\n");
     return this->onReadPixels(surface, rect, surfaceColorType, dstColorType, buffer, rowBytes);
 }
 
