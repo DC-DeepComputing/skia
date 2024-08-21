@@ -46,6 +46,30 @@
       },
       "revId": "b6224c9e661152a814e8f5918de1d5a8147c543a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e8286918_d57603fa",
+        "filename": "tools/ToolUtils.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-08-21T12:49:58Z",
+      "side": 0,
+      "message": "My first instinct was to do something along those lines, and I was able to make it work, but I didn\u0027t feel confident that I\u0027d done it in a \"correct\" way.",
+      "parentUuid": "75325edd_80ab2c85",
+      "range": {
+        "startLine": 47,
+        "startChar": 0,
+        "endLine": 50,
+        "endChar": 0
+      },
+      "revId": "b6224c9e661152a814e8f5918de1d5a8147c543a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
