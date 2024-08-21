@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f62fdde_e0d583c0",
+        "filename": "tools/fonts/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-08-21T20:07:38Z",
+      "side": 1,
+      "message": "This appears to be necessary at the moment because we don\u0027t have a Rust toolchain that targets Android at the moment? Just wanted to document the reason so that those from the future don\u0027t think we didn\u0027t want to build it for Android.",
+      "revId": "a71a3d9ca3882c1544f6979e8217b21599596aec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
