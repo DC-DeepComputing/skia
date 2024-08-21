@@ -1,0 +1,274 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "023aad39_18d8ca5d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-08-21T18:48:43Z",
+      "side": 1,
+      "message": "On the whole, this seems fine. What about this is not fully hermetic? The msvc symlink etc? If we have to punt on any of those, let\u0027s make sure to mention it in the commit message.",
+      "revId": "a95536e5596c362839f47fc5394edc55632c4045",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c157a72_6b39b5a5",
+        "filename": "toolchain/download_toolchains.bzl",
+        "patchSetId": 8
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-08-21T18:48:43Z",
+      "side": 1,
+      "message": "This should be more specific, e.g. `clang_windows_amd64` (we have `clang_mac` because it handles both amd64 and arm64)",
+      "range": {
+        "startLine": 24,
+        "startChar": 5,
+        "endLine": 24,
+        "endChar": 18
+      },
+      "revId": "a95536e5596c362839f47fc5394edc55632c4045",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ec93fbf_9cd63870",
+        "filename": "toolchain/download_windows_toolchain.bzl",
+        "patchSetId": 8
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-08-21T18:48:43Z",
+      "side": 1,
+      "message": "This is not the right tag",
+      "range": {
+        "startLine": 17,
+        "startChar": 56,
+        "endLine": 17,
+        "endChar": 71
+      },
+      "revId": "a95536e5596c362839f47fc5394edc55632c4045",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4aa329f5_12994998",
+        "filename": "toolchain/download_windows_toolchain.bzl",
+        "patchSetId": 8
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-08-21T18:48:43Z",
+      "side": 1,
+      "message": "This is a different clang version than our other toolchains at present. Can you include justification for and explicitly call out this version in the commit message?",
+      "range": {
+        "startLine": 20,
+        "startChar": 27,
+        "endLine": 20,
+        "endChar": 33
+      },
+      "revId": "a95536e5596c362839f47fc5394edc55632c4045",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5499db7_6b7cf428",
+        "filename": "toolchain/download_windows_toolchain.bzl",
+        "patchSetId": 8
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-08-21T18:48:43Z",
+      "side": 1,
+      "message": "Can you add a docstring for this function? What do the return values mean? What files are in them that are useful?",
+      "range": {
+        "startLine": 25,
+        "startChar": 4,
+        "endLine": 25,
+        "endChar": 21
+      },
+      "revId": "a95536e5596c362839f47fc5394edc55632c4045",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "718de7ff_15073e61",
+        "filename": "toolchain/download_windows_toolchain.bzl",
+        "patchSetId": 8
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-08-21T18:48:43Z",
+      "side": 1,
+      "message": "If you happen to have online references to these environment variables, those would be helpful references to include in the comments.",
+      "range": {
+        "startLine": 39,
+        "startChar": 37,
+        "endLine": 39,
+        "endChar": 54
+      },
+      "revId": "a95536e5596c362839f47fc5394edc55632c4045",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d0538f7_7ebc305d",
+        "filename": "toolchain/download_windows_toolchain.bzl",
+        "patchSetId": 8
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-08-21T18:48:43Z",
+      "side": 1,
+      "message": "Does this use a hermetic python or one that\u0027s expected to be on the system? We\u0027d prefer the former, if possible.",
+      "range": {
+        "startLine": 105,
+        "startChar": 24,
+        "endLine": 105,
+        "endChar": 30
+      },
+      "revId": "a95536e5596c362839f47fc5394edc55632c4045",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "589efdd5_6a34aeca",
+        "filename": "toolchain/download_windows_toolchain.bzl",
+        "patchSetId": 8
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-08-21T18:48:43Z",
+      "side": 1,
+      "message": "Aren\u0027t there windows libraries we have to link against? I\u0027d expect those to need to be listed here.",
+      "range": {
+        "startLine": 207,
+        "startChar": 12,
+        "endLine": 207,
+        "endChar": 22
+      },
+      "revId": "a95536e5596c362839f47fc5394edc55632c4045",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7cd9593e_7db85dca",
+        "filename": "toolchain/windows_toolchain_config.bzl",
+        "patchSetId": 8
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-08-21T18:48:43Z",
+      "side": 1,
+      "message": "Probably not necessary to say anymore, given it\u0027s now the same as the linux and mac toolchain.\n\nAlso, might be worth removing this and seeing if Bazel does the right thing now with `ar`",
+      "range": {
+        "startLine": 140,
+        "startChar": 6,
+        "endLine": 141,
+        "endChar": 138
+      },
+      "revId": "a95536e5596c362839f47fc5394edc55632c4045",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "30e159ad_c9ea2cff",
+        "filename": "toolchain/windows_toolchain_config.bzl",
+        "patchSetId": 8
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-08-21T18:48:43Z",
+      "side": 1,
+      "message": "Is this still the case for Windows?",
+      "range": {
+        "startLine": 231,
+        "startChar": 22,
+        "endLine": 231,
+        "endChar": 49
+      },
+      "revId": "a95536e5596c362839f47fc5394edc55632c4045",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8ac0673_21854242",
+        "filename": "toolchain/windows_toolchain_config.bzl",
+        "patchSetId": 8
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-08-21T18:48:43Z",
+      "side": 1,
+      "message": "Did you test these features? Do they still work on the windows version of clang? If not, we can delete this part.",
+      "range": {
+        "startLine": 314,
+        "startChar": 4,
+        "endLine": 314,
+        "endChar": 26
+      },
+      "revId": "a95536e5596c362839f47fc5394edc55632c4045",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e0aa3fc_5edd5452",
+        "filename": "toolchain/windows_toolchain_config.bzl",
+        "patchSetId": 8
+      },
+      "lineNbr": 382,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-08-21T18:48:43Z",
+      "side": 1,
+      "message": "This does not work on Windows (unless we plan to compile IWYU for it), so just remove this.",
+      "range": {
+        "startLine": 382,
+        "startChar": 4,
+        "endLine": 382,
+        "endChar": 20
+      },
+      "revId": "a95536e5596c362839f47fc5394edc55632c4045",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
