@@ -22,6 +22,30 @@
       },
       "revId": "b6224c9e661152a814e8f5918de1d5a8147c543a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "75325edd_80ab2c85",
+        "filename": "tools/ToolUtils.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-08-21T12:38:58Z",
+      "side": 0,
+      "message": "At some point we\u0027ll need to incorproate this filegroup https://github.com/google/skia/blob/39e5118034f48c48d4a436053671c70f1f86acb5/src/ports/BUILD.bazel#L610-L619 in to the build (e.g. we make the DirectWrite Bazel target) but I think you are right that it\u0027s not needed here.",
+      "parentUuid": "e4464730_2aba0878",
+      "range": {
+        "startLine": 47,
+        "startChar": 0,
+        "endLine": 50,
+        "endChar": 0
+      },
+      "revId": "b6224c9e661152a814e8f5918de1d5a8147c543a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

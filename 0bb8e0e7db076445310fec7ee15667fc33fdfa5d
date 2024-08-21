@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "90d8df54_1fa428cf",
+        "filename": "tools/testrunners/common/surface_manager/SurfaceManager.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-08-21T12:38:58Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "c3f93a8a_d1b4a684",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 21
+      },
+      "revId": "0bb8e0e7db076445310fec7ee15667fc33fdfa5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d9673b86_85e70fe9",
