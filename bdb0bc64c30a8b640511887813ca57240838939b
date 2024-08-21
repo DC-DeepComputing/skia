@@ -143,6 +143,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "33cb09b8_53e645bf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2024-08-21T18:25:13Z",
+      "side": 1,
+      "message": "Yeah, it would be the client\u0027s responsibility to not mutate it on another thread after creating a referencing paragraph/builder.",
+      "parentUuid": "05cf8bf7_fa1f6d87",
+      "revId": "bdb0bc64c30a8b640511887813ca57240838939b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "138d6b74_95be5ec8",
