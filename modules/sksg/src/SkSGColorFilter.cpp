@@ -7,6 +7,7 @@
 
 #include "modules/sksg/include/SkSGColorFilter.h"
 
+#include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkColorFilter.h"
 #include "include/core/SkMatrix.h"
@@ -46,8 +47,8 @@ SkRect ColorFilter::onRevalidate(InvalidationController* ic, const SkMatrix& ctm
     fColorFilter = this->onRevalidateFilter();
 
     return this->INHERITED::onRevalidate(ic, ctm);
-}
 
+}
 sk_sp<ExternalColorFilter> ExternalColorFilter::Make(sk_sp<RenderNode> child) {
     return child ? sk_sp<ExternalColorFilter>(new ExternalColorFilter(std::move(child)))
                  : nullptr;
@@ -58,7 +59,13 @@ ExternalColorFilter::ExternalColorFilter(sk_sp<RenderNode> child) : INHERITED(st
 ExternalColorFilter::~ExternalColorFilter() = default;
 
 void ExternalColorFilter::onRender(SkCanvas* canvas, const RenderContext* ctx) const {
-    const auto local_ctx = ScopedRenderContext(canvas, ctx).modulateColorFilter(fColorFilter);
+    auto local_ctx = ScopedRenderContext(canvas, ctx).modulateColorFilter(fColorFilter);
+
+    if (fForceIsolation) {
+        canvas->save();
+        canvas->clipRect(this->bounds(), true);
+        local_ctx.setIsolation(this->bounds(), canvas->getTotalMatrix(), /*do_isolate =*/ true);
+    }
 
     this->INHERITED::onRender(canvas, local_ctx);
 }

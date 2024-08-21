@@ -58,7 +58,8 @@ public:
 
     ~ExternalColorFilter() override;
 
-    SG_ATTRIBUTE(ColorFilter, sk_sp<SkColorFilter>, fColorFilter)
+    SG_ATTRIBUTE(ColorFilter   , sk_sp<SkColorFilter>, fColorFilter   )
+    SG_ATTRIBUTE(ForceIsolation, bool                , fForceIsolation)
 
 protected:
     void onRender(SkCanvas*, const RenderContext*) const override;
@@ -67,6 +68,7 @@ private:
     explicit ExternalColorFilter(sk_sp<RenderNode>);
 
     sk_sp<SkColorFilter> fColorFilter;
+    bool                 fForceIsolation = false;
 
     using INHERITED = EffectNode;
 };
