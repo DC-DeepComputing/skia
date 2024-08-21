@@ -16,6 +16,24 @@
       "message": "Curious what you think about this. The bug reporter is able to just patch the size limit, so this isn\u0027t strictly necessary. Also, we could add an option (via SkRuntimneEffect::Options, that routes to ProgramSettings). But I wondered why we were still enforcing the limit at all -- we no longer have SkVM, and the RP SkSL backend doesn\u0027t unroll loops, so the size limit is fairly arbitrary. Perhaps something terrible happens if we stop enforcing it? I can\u0027t see what, though.",
       "revId": "6c05bc35b0953d9e912ef241b9667c6044a58bbf",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f64c2e73_dbb8285e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-08-21T15:38:25Z",
+      "side": 1,
+      "message": "Assuming that this limitation was truly because of SkVM and unrolling, I prefer the simplicity of this validation being based on stack depth and function call cycles. I believe the inliner already has program size guards in place that are applied universally.\n\nIf something newly terrible happens, I would characterize it as a latent bug within the sksl compiler or rp backend that is worth fixing regardless of whether or not this program size shield is kept.\n\nI definitely like the end user behavior of not having arbitrary limits that are hard to predict. Even with the program limits, you could create exceedingly slow CPU sksl programs so I think that just reflects the sharpness of the tool.",
+      "parentUuid": "091b9a6b_7b0b1183",
+      "revId": "6c05bc35b0953d9e912ef241b9667c6044a58bbf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
