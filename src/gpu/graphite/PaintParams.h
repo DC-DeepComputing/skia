@@ -11,6 +11,7 @@
 #include "include/core/SkColor.h"
 #include "include/core/SkPaint.h"
 #include "src/gpu/graphite/Caps.h"
+#include "src/gpu/graphite/geom/Shape.h"
 #include <functional>  // std::function
 
 class SkColorInfo;
@@ -35,6 +36,7 @@ class PaintParams {
 public:
     explicit PaintParams(const SkPaint&,
                          sk_sp<SkBlender> primitiveBlender,
+                         const Shape& analyticClip,
                          sk_sp<SkShader> clipShader,
                          DstReadRequirement dstReadReq,
                          bool skipColorXform);
@@ -88,6 +90,7 @@ private:
     // In the case where there is primitive blending, the primitive color is the source color and
     // the dest is the paint's color (or the paint's shader's computed color).
     sk_sp<SkBlender>     fPrimitiveBlender;
+    Shape                fAnalyticClip;
     sk_sp<SkShader>      fClipShader;
     DstReadRequirement   fDstReadReq;
     bool                 fSkipColorXform;

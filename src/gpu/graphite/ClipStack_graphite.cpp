@@ -383,7 +383,7 @@ void ClipStack::RawElement::drawClip(Device* device) {
                  (fOp == SkClipOp::kIntersect && fShape.inverted()));
         device->drawClipShape(fLocalToDevice,
                               fShape,
-                              Clip{drawBounds, drawBounds, scissor.asSkIRect(), nullptr},
+                              Clip{drawBounds, drawBounds, scissor.asSkIRect(), {}, nullptr},
                               order);
     }
 
@@ -1102,7 +1102,7 @@ Clip ClipStack::visitClipStackForDraw(const Transform& localToDevice,
                                       bool outsetBoundsForAA,
                                       ClipStack::ElementList* outEffectiveElements) const {
     static const Clip kClippedOut = {
-            Rect::InfiniteInverted(), Rect::InfiniteInverted(), SkIRect::MakeEmpty(), nullptr};
+            Rect::InfiniteInverted(), Rect::InfiniteInverted(), SkIRect::MakeEmpty(), {}, nullptr};
 
     const SaveRecord& cs = this->currentSaveRecord();
     if (cs.state() == ClipState::kEmpty) {
@@ -1201,7 +1201,7 @@ Clip ClipStack::visitClipStackForDraw(const Transform& localToDevice,
         // Either the draw is off screen, so it's clipped out regardless of the state of the
         // SaveRecord, or there are no elements to apply to the draw. In both cases, 'drawBounds'
         // has the correct value, the scissor is the device bounds (ignored if clipped-out).
-        return Clip(drawBounds, transformedShapeBounds, deviceBounds.asSkIRect(), cs.shader());
+        return Clip(drawBounds, transformedShapeBounds, deviceBounds.asSkIRect(), {}, cs.shader());
     }
 
     // We don't evaluate Simplify() on the SaveRecord and the draw because a reduced version of
@@ -1218,7 +1218,7 @@ Clip ClipStack::visitClipStackForDraw(const Transform& localToDevice,
     transformedShapeBounds.intersect(scissor);
     if (drawBounds.isEmptyNegativeOrNaN() || cs.innerBounds().contains(drawBounds)) {
         // Like above, in both cases drawBounds holds the right value.
-        return Clip(drawBounds, transformedShapeBounds, scissor.asSkIRect(), cs.shader());
+        return Clip(drawBounds, transformedShapeBounds, scissor.asSkIRect(), {}, cs.shader());
     }
 
     // If we made it here, the clip stack affects the draw in a complex way so iterate each element.
@@ -1233,9 +1233,12 @@ Clip ClipStack::visitClipStackForDraw(const Transform& localToDevice,
                           /*op=*/SkClipOp::kIntersect,
                           /*containsChecksOnlyBounds=*/true};
 
+    // Look at "clipElements", see if element shape is rect or circular rrect. For first one,
+    // don't add to outEffectiveElements, add to Clip somehow?
     SkASSERT(outEffectiveElements);
     SkASSERT(outEffectiveElements->empty());
     int i = fElements.count();
+    Shape analyticClipShape;
     for (const RawElement& e : fElements.ritems()) {
         --i;
         if (i < cs.oldestElementIndex()) {
@@ -1250,11 +1253,27 @@ Clip ClipStack::visitClipStackForDraw(const Transform& localToDevice,
             return kClippedOut;
         }
         if (influence == RawElement::DrawInfluence::kIntersect) {
+            if (analyticClipShape.isEmpty() &&
+                localToDevice.type() <= Transform::Type::kRectStaysRect) {
+                const Shape& shape = e.shape();
+                bool needsAnalyticClip = shape.isRect();
+                // **** This isn't quite right -- we can support different corner types
+                if (!needsAnalyticClip && shape.isRRect() && shape.rrect().isSimple()) {
+                    SkVector radii = shape.rrect().radii(SkRRect::kUpperLeft_Corner);
+                    needsAnalyticClip = (radii.fX == radii.fY);
+                }
+                if (needsAnalyticClip) {
+                    // **** need to transform shape somehow
+                    // **** check clipOp for inverted?
+                    analyticClipShape = shape;
+                    continue;
+                }
+            }
             outEffectiveElements->push_back(&e);
         }
     }
 
-    return Clip(drawBounds, transformedShapeBounds, scissor.asSkIRect(), cs.shader());
+    return Clip(drawBounds, transformedShapeBounds, scissor.asSkIRect(), {}, cs.shader());
 }
 
 CompressedPaintersOrder ClipStack::updateClipStateForDraw(const Clip& clip,
