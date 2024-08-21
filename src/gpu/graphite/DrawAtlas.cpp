@@ -435,6 +435,8 @@ void DrawAtlas::purge(AtlasToken startTokenForNextFlush) {
                 atlasUsedThisFlush = true;
             } else {
                 this->processEvictionAndResetRects(plot);
+                // clear out unneeded memory for Plot
+                plot->purge();
                 // Don't need to worry about incrementing flushesSinceLastUsed
                 // because we're evicting.
             }
