@@ -431,7 +431,9 @@ void DrawAtlas::purge(AtlasToken startTokenForNextFlush) {
         plotIter.init(fPages[pageIndex].fPlotList, PlotList::Iter::kHead_IterStart);
         while (Plot* plot = plotIter.get()) {
             if (plot->lastUseToken().inInterval(fPrevFlushToken, startTokenForNextFlush)) {
-                plot->resetFlushesSinceLastUsed();
+                // Set flushesSinceLastUsed to a large value to make it more likely
+                // this plot will get evicted the next time we call compact().
+                plot->setFlushesSinceLastUsed(kPlotRecentlyUsedCount+1);
                 atlasUsedThisFlush = true;
             } else {
                 this->processEvictionAndResetRects(plot);
@@ -446,11 +448,9 @@ void DrawAtlas::purge(AtlasToken startTokenForNextFlush) {
         }
     }
 
-    // Set the params used by compact()
-    // We can set flushesSinceLastUse to 0 whether the atlas has been used or not.
-    // If it has been used, we set to 0 as normal. If it hasn't been used, we've
-    // deactivated all the Pages so we might as well set it to 0.
-    fFlushesSinceLastUse = 0;
+    // Set the params used by compact().
+    // We set flushesSinceLastUse to a large value that will trigger compact()'s garbage collection.
+    fFlushesSinceLastUse = kAtlasRecentlyUsedCount+1;
     fPrevFlushToken = startTokenForNextFlush;
 }
 

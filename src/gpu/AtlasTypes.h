@@ -483,6 +483,7 @@ public:
     int flushesSinceLastUsed() { return fFlushesSinceLastUse; }
     void resetFlushesSinceLastUsed() { fFlushesSinceLastUse = 0; }
     void incFlushesSinceLastUsed() { fFlushesSinceLastUse++; }
+    void setFlushesSinceLastUsed(int flushes) { fFlushesSinceLastUse = flushes; }
 
     bool needsUpload() { return !fDirtyRect.isEmpty(); }
     std::pair<const void*, SkIRect> prepareForUpload();
