@@ -238,6 +238,11 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 
 		if b.extraConfig("NativeFonts") {
 			configs = append(configs, glPrefix)
+
+			if (b.extraConfig("ASAN")) {
+				skip(ALL, "test", ALL, "Codec_raw")
+				skip(ALL, "test", ALL, "Codec_Empty")
+			}
 		} else {
 			configs = append(configs, glPrefix, glPrefix+"dft")
 			if sampleCount > 0 {

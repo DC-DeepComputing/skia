@@ -105,6 +105,7 @@ TEST_BUILDERS = [
   'Test-Debian10-Clang-NUC7i5BNK-GPU-IntelIris640-x86_64-Debug-All-ASAN_Vulkan',
   'Test-Debian11-Clang-NUC11TZi5-GPU-IntelIrisXe-x86_64-Debug-All',
   'Test-Win10-Clang-NUC5i7RYH-CPU-AVX2-x86_64-Debug-All-NativeFonts_DWriteCore',
+  'Test-Mac12-Clang-MacMini9.1-CPU-AppleM1-arm64-Debug-All-NativeFonts_ASAN',
 ]
 
 # Default properties used for TEST_BUILDERS.
