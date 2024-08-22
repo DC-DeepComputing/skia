@@ -3,6 +3,23 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "4638acc6_61a38001",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-08-22T14:33:27Z",
+      "side": 1,
+      "message": "Comments are addressed in PS11 of https://skia-review.googlesource.com/c/skia/+/890839",
+      "revId": "fac5a30f45e097e8fd4c219950cb55b1cd477828",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "f43a9db8_4c034bee",
         "filename": "bazel/cipd_install.bzl",
         "patchSetId": 1
@@ -48,6 +65,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ebadd2c_9b443579",
+        "filename": "bazel/cipd_install.bzl",
+        "patchSetId": 1
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-08-22T14:33:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9bbaf798_9c2aba72",
+      "range": {
+        "startLine": 42,
+        "startChar": 0,
+        "endLine": 42,
+        "endChar": 39
+      },
+      "revId": "fac5a30f45e097e8fd4c219950cb55b1cd477828",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d1ab2f51_d9126d3f",
@@ -61,6 +102,30 @@
       "writtenOn": "2024-08-22T13:31:30Z",
       "side": 1,
       "message": "nit: wrap to 100 cols",
+      "range": {
+        "startLine": 1,
+        "startChar": 84,
+        "endLine": 1,
+        "endChar": 89
+      },
+      "revId": "fac5a30f45e097e8fd4c219950cb55b1cd477828",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f52abfd_67123cc0",
+        "filename": "bazel/external/win_toolchain/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-08-22T14:33:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d1ab2f51_d9126d3f",
       "range": {
         "startLine": 1,
         "startChar": 84,
@@ -108,6 +173,30 @@
       "side": 1,
       "message": "Creating the symlinks in `download_windows_toolchain.bzl` seems like a reasonable thing to try.\n\nIt is curious if GN doesn\u0027t need to specify these paths... I wonder how that works?",
       "parentUuid": "38fa2b12_1d549191",
+      "range": {
+        "startLine": 30,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 63
+      },
+      "revId": "fac5a30f45e097e8fd4c219950cb55b1cd477828",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fc9c7a8d_e36205ba",
+        "filename": "toolchain/windows_toolchain_config.bzl",
+        "patchSetId": 1
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-08-22T14:33:27Z",
+      "side": 1,
+      "message": "I found where we\u0027re doing this for GN:\nhttps://skia.googlesource.com/skia/+/main/gn/BUILDCONFIG.gn#140\nwhich calls\nhttps://skia.googlesource.com/skia/+/main/gn/highest_version_dir.py\nThat\u0027s essentially doing the same thing as my inline Python script from the other CL, so it seems reasonable to bring back that functionality in some way.",
+      "parentUuid": "acb4d951_45a692f3",
       "range": {
         "startLine": 30,
         "startChar": 0,

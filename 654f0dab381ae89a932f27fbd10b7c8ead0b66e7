@@ -22,6 +22,30 @@
       },
       "revId": "654f0dab381ae89a932f27fbd10b7c8ead0b66e7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "21a3005f_77a42d68",
+        "filename": "toolchain/windows_toolchain_config.bzl",
+        "patchSetId": 1
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-08-22T14:33:27Z",
+      "side": 0,
+      "message": "I think it\u0027s because they\u0027re included via `compile_files` in bazel/external/win_toolchain/BUILD.bazel, and without symlinks involved the files are included as normal. If I bring back the symlinks to avoid hard-coding the version numbers I suspect I\u0027ll have to bring this back too.",
+      "parentUuid": "1c11fbcb_cc1103c7",
+      "range": {
+        "startLine": 55,
+        "startChar": 8,
+        "endLine": 55,
+        "endChar": 39
+      },
+      "revId": "654f0dab381ae89a932f27fbd10b7c8ead0b66e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
