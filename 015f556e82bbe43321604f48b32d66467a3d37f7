@@ -34,6 +34,24 @@
       "parentUuid": "2f296073_60b07fea",
       "revId": "015f556e82bbe43321604f48b32d66467a3d37f7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eb973485_d9747946",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-08-22T17:20:18Z",
+      "side": 1,
+      "message": "If an attribute references a StructElem ID which has no marks, that\u0027s not really enough reason to remove that StructElem (and its ID) as even if nothing is drawn for row or column headers it still makes sense to keep the structure. So what we want is to ensure that for any attribute that is emitted, any IDs it uses mark the target (and its parents) as no-discard and marks the target to emit the ID. Of course, this could cause attributes which were discardable to no longer be discardable, so this process would need to continue until nothing new is found.",
+      "parentUuid": "579f2f67_68c8c776",
+      "revId": "015f556e82bbe43321604f48b32d66467a3d37f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
