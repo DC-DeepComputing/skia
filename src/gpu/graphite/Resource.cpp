@@ -29,9 +29,8 @@ Resource::Resource(const SharedContext* sharedContext,
                    size_t gpuMemorySize,
                    bool commandBufferRefsAsUsageRefs)
         : fSharedContext(sharedContext)
-        , fUsageRefCnt(1)
-        , fCommandBufferRefCnt(0)
-        , fCacheRefCnt(0)
+        , fRefCnts(RefIncrement<RefType::kUsage>()) // Start with 1 usage ref and no others
+        // FIXME: set return ref mask based on this boolean
         , fCommandBufferRefsAsUsageRefs(commandBufferRefsAsUsageRefs)
         , fOwnership(ownership)
         , fGpuMemorySize(gpuMemorySize)
@@ -47,32 +46,35 @@ Resource::~Resource() {
     SkASSERT(this->wasDestroyed());
 }
 
-void Resource::registerWithCache(sk_sp<ResourceCache> returnCache) {
+void Resource::registerWithCache(sk_sp<ResourceCache> returnCache,
+                                 const GraphiteResourceKey& key) {
+    // ResourceCache should be registered before the Resource escapes the ResourceProvider, e.g. it
+    // has a single usage ref and no others.
+    SkASSERT(this->isUniquelyHeld());
     SkASSERT(!fReturnCache);
     SkASSERT(returnCache);
 
+    // The key must be valid if a Resource is going to be in the cache.
+    SkASSERT(key.isValid());
+    SkASSERT(key.shareable() == Shareable::kNo || this->budgeted() == skgpu::Budgeted::kYes);
+
+    fKey = key;
     fReturnCache = std::move(returnCache);
+    this->addRef<RefType::kCache>();
 }
 
-bool Resource::notifyARefIsZero(LastRemovedRef removedRef) const {
+bool Resource::returnToCache() const {
     // No resource should have been destroyed if there was still any sort of ref on it.
     SkASSERT(!this->wasDestroyed());
 
-    Resource* mutableThis = const_cast<Resource*>(this);
-
-    // TODO: We have not switched all resources to use the ResourceCache yet. Once we do we should
-    // be able to assert that we have an fCacheReturn.
-    // SkASSERT(fReturnCache);
-    if (removedRef != LastRemovedRef::kCache &&
-        fReturnCache &&
-        fReturnCache->returnResource(mutableThis, removedRef)) {
-        return false;
-    }
-
-    if (!this->hasAnyRefs()) {
-        return true;
-    }
-    return false;
+    // Not all resources are registered with the cache, but notifyARefIsZero() should only be
+    // called when they have been registered.
+    SkASSERT(fReturnCache);
+    // In order to be returned, the Resource's "return queue" ref bit must be set. Its cache ref
+    // may not be set if the cache has been shut down (but `fReturnCache` remains valid and just
+    // returns false to reject the resource return).
+    SkASSERT(this->hasRefs<RefType::kReturnQueue>());
+    return fReturnCache->returnResource(const_cast<Resource*>(this));
 }
 
 void Resource::internalDispose() {
@@ -83,13 +85,6 @@ void Resource::internalDispose() {
     // TODO: If we ever support freeing all the backend objects without deleting the object, we'll
     // need to add a hasAnyRefs() check here.
     delete this;
-}
-
-bool Resource::isPurgeable() const {
-    // For being purgeable we don't care if there are cacheRefs on the object since the cacheRef
-    // will always be greater than 1 since we add one on insert and don't remove that ref until
-    // the Resource is removed from the cache.
-    return !(this->hasUsageRef() || this->hasCommandBufferRef());
 }
 
 void Resource::dumpMemoryStatistics(SkTraceMemoryDump* traceMemoryDump) const {
@@ -137,4 +132,3 @@ void Resource::dumpMemoryStatistics(SkTraceMemoryDump* traceMemoryDump) const {
 }
 
 } // namespace skgpu::graphite
-

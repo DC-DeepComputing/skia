@@ -142,16 +142,6 @@ enum class Shareable : bool {
     kYes = true,
 };
 
-/**
- * This enum is used to notify the ResourceCache which type of ref just dropped to zero on a
- * Resource.
- */
-enum class LastRemovedRef {
-    kUsage,
-    kCommandBuffer,
-    kCache,
-};
-
 /*
  * Struct that can be passed into bind buffer calls on the CommandBuffer. The ownership of the
  * buffer and its usage in command submission must be tracked by the caller (e.g. as with
