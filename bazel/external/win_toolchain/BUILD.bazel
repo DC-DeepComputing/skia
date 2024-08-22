@@ -1,0 +1,35 @@
+# This file will be copied into the root of the @win_toolchain external repository, which is
+# populated with the contents of the "win_toolchain" CIPD package. All paths are relative to the
+# root directory of said package.
+
+filegroup(
+    name = "compile_files",
+    srcs = glob(
+        [
+            "VC/Tools/MSVC/14.39.33519/include/**",
+        ],
+        allow_empty = False,
+    ) + glob(
+        [
+            "win_sdk/Include/10.0.22621.0/**",
+        ],
+        allow_empty = False,
+    ),
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "link_files",
+    srcs = glob(
+        [
+            "VC/Tools/MSVC/14.39.33519/lib/**",
+        ],
+        allow_empty = False,
+    ) + glob(
+        [
+            "win_sdk/Lib/10.0.22621.0/**",
+        ],
+        allow_empty = False,
+    ),
+    visibility = ["//visibility:public"],
+)
