@@ -674,6 +674,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d81492b_8e6c32f4",
+        "filename": "toolchain/windows_toolchain_config.bzl",
+        "patchSetId": 8
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-08-22T17:34:24Z",
+      "side": 1,
+      "message": "I guess I meant that I didn\u0027t see a giant dump of search directories with those options, but maybe it\u0027s smaller and I just missed it.  `diagnostic` definitely gave me some extra spew.",
+      "parentUuid": "9a152cb5_85d1bc0f",
+      "range": {
+        "startLine": 314,
+        "startChar": 4,
+        "endLine": 314,
+        "endChar": 26
+      },
+      "revId": "a95536e5596c362839f47fc5394edc55632c4045",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9e0aa3fc_5edd5452",
