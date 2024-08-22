@@ -85,6 +85,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f6bd3e90_65d4eee5",
+        "filename": "toolchain/download_toolchains.bzl",
+        "patchSetId": 8
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-08-22T15:46:50Z",
+      "side": 1,
+      "message": "Yeah, that works for me. At some point I think I started using `x64` because it was more visually distinct from `arm64`",
+      "parentUuid": "aac0c818_542df6a8",
+      "range": {
+        "startLine": 24,
+        "startChar": 5,
+        "endLine": 24,
+        "endChar": 18
+      },
+      "revId": "a95536e5596c362839f47fc5394edc55632c4045",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0ec93fbf_9cd63870",
         "filename": "toolchain/download_windows_toolchain.bzl",
         "patchSetId": 8
@@ -425,6 +449,30 @@
       "side": 1,
       "message": "I don\u0027t know about `#include_next` but there were problems resulting from use of the wrong include file due to this ordering. I can change the comment if you\u0027d prefer.",
       "parentUuid": "30e159ad_c9ea2cff",
+      "range": {
+        "startLine": 231,
+        "startChar": 22,
+        "endLine": 231,
+        "endChar": 49
+      },
+      "revId": "a95536e5596c362839f47fc5394edc55632c4045",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "23b0f145_bb968d9f",
+        "filename": "toolchain/windows_toolchain_config.bzl",
+        "patchSetId": 8
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-08-22T15:46:50Z",
+      "side": 1,
+      "message": "You can leave it as is. The comment is probably still accurate then.",
+      "parentUuid": "6443164a_04e0c0ca",
       "range": {
         "startLine": 231,
         "startChar": 22,
