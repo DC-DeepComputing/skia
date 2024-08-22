@@ -225,6 +225,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe9a7d3f_01db59cf",
+        "filename": "toolchain/download_windows_toolchain.bzl",
+        "patchSetId": 8
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-08-22T17:21:15Z",
+      "side": 1,
+      "message": "I agree.",
+      "parentUuid": "73d49699_6428f163",
+      "range": {
+        "startLine": 20,
+        "startChar": 27,
+        "endLine": 20,
+        "endChar": 33
+      },
+      "revId": "a95536e5596c362839f47fc5394edc55632c4045",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e5499db7_6b7cf428",
@@ -366,6 +390,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0aa71c9d_19a11b4c",
+        "filename": "toolchain/download_windows_toolchain.bzl",
+        "patchSetId": 8
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-08-22T17:21:15Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "47b712d8_559bcaa0",
+      "range": {
+        "startLine": 105,
+        "startChar": 24,
+        "endLine": 105,
+        "endChar": 30
+      },
+      "revId": "a95536e5596c362839f47fc5394edc55632c4045",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "589efdd5_6a34aeca",
@@ -450,6 +498,30 @@
       "side": 1,
       "message": "At least some of this block is required - without it, Bazel tries to use `skia\\toolchain\\DUMMY_AR_TOOL`, and adding the `archive_param_file` was necessary to work around command length limits.",
       "parentUuid": "7cd9593e_7db85dca",
+      "range": {
+        "startLine": 140,
+        "startChar": 6,
+        "endLine": 141,
+        "endChar": 138
+      },
+      "revId": "a95536e5596c362839f47fc5394edc55632c4045",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d85bdb09_e34b6426",
+        "filename": "toolchain/windows_toolchain_config.bzl",
+        "patchSetId": 8
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-08-22T17:21:15Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "1d932770_60b986e0",
       "range": {
         "startLine": 140,
         "startChar": 6,
@@ -568,6 +640,30 @@
       "side": 1,
       "message": "They do seem to work, although `diagnostic_link` and `print_search_dirs` don\u0027t look particularly interesting to me.",
       "parentUuid": "c8ac0673_21854242",
+      "range": {
+        "startLine": 314,
+        "startChar": 4,
+        "endLine": 314,
+        "endChar": 26
+      },
+      "revId": "a95536e5596c362839f47fc5394edc55632c4045",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a152cb5_85d1bc0f",
+        "filename": "toolchain/windows_toolchain_config.bzl",
+        "patchSetId": 8
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-08-22T17:21:15Z",
+      "side": 1,
+      "message": "They are quite handy when linking doesn\u0027t work and you don\u0027t know where it\u0027s looking 😊",
+      "parentUuid": "5407f39c_63ce43d0",
       "range": {
         "startLine": 314,
         "startChar": 4,
