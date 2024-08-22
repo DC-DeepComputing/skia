@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "509702ea_4774090e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-08-22T14:35:17Z",
+      "side": 1,
+      "message": "Yeah, I was referring to the requirement of the local install of MSVC and the Windows SDK, and the resulting need to find and symlink it.  That\u0027s solved in the latest patch set.",
+      "parentUuid": "023aad39_18d8ca5d",
+      "revId": "a95536e5596c362839f47fc5394edc55632c4045",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2c157a72_6b39b5a5",
@@ -31,6 +49,30 @@
       "writtenOn": "2024-08-21T18:48:43Z",
       "side": 1,
       "message": "This should be more specific, e.g. `clang_windows_amd64` (we have `clang_mac` because it handles both amd64 and arm64)",
+      "range": {
+        "startLine": 24,
+        "startChar": 5,
+        "endLine": 24,
+        "endChar": 18
+      },
+      "revId": "a95536e5596c362839f47fc5394edc55632c4045",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aac0c818_542df6a8",
+        "filename": "toolchain/download_toolchains.bzl",
+        "patchSetId": 8
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-08-22T14:35:17Z",
+      "side": 1,
+      "message": "Done, but I notice in .bazelrc and toolchain/BUILD.bazel we\u0027re using \"x64\" instead of \"amd64\".  Should we update one or the other to be consistent?",
+      "parentUuid": "2c157a72_6b39b5a5",
       "range": {
         "startLine": 24,
         "startChar": 5,
@@ -64,6 +106,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c13394c_4b40b203",
+        "filename": "toolchain/download_windows_toolchain.bzl",
+        "patchSetId": 8
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-08-22T14:35:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0ec93fbf_9cd63870",
+      "range": {
+        "startLine": 17,
+        "startChar": 56,
+        "endLine": 17,
+        "endChar": 71
+      },
+      "revId": "a95536e5596c362839f47fc5394edc55632c4045",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4aa329f5_12994998",
@@ -77,6 +143,30 @@
       "writtenOn": "2024-08-21T18:48:43Z",
       "side": 1,
       "message": "This is a different clang version than our other toolchains at present. Can you include justification for and explicitly call out this version in the commit message?",
+      "range": {
+        "startLine": 20,
+        "startChar": 27,
+        "endLine": 20,
+        "endChar": 33
+      },
+      "revId": "a95536e5596c362839f47fc5394edc55632c4045",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "73d49699_6428f163",
+        "filename": "toolchain/download_windows_toolchain.bzl",
+        "patchSetId": 8
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-08-22T14:35:17Z",
+      "side": 1,
+      "message": "Done. Note that we also have a `clang_win` CIPD package which is currently used by CI. I\u0027m not sure whether it\u0027s preferable to use that or have as much as possible done natively via Bazel. I\u0027m leaning toward the latter.",
+      "parentUuid": "4aa329f5_12994998",
       "range": {
         "startLine": 20,
         "startChar": 27,
@@ -110,6 +200,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bae3dc0e_43c96677",
+        "filename": "toolchain/download_windows_toolchain.bzl",
+        "patchSetId": 8
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-08-22T14:35:17Z",
+      "side": 1,
+      "message": "This is removed by merging the next CL into this one. If I bring it back the symlink functionality I\u0027ll do so.",
+      "parentUuid": "e5499db7_6b7cf428",
+      "range": {
+        "startLine": 25,
+        "startChar": 4,
+        "endLine": 25,
+        "endChar": 21
+      },
+      "revId": "a95536e5596c362839f47fc5394edc55632c4045",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "718de7ff_15073e61",
@@ -123,6 +237,30 @@
       "writtenOn": "2024-08-21T18:48:43Z",
       "side": 1,
       "message": "If you happen to have online references to these environment variables, those would be helpful references to include in the comments.",
+      "range": {
+        "startLine": 39,
+        "startChar": 37,
+        "endLine": 39,
+        "endChar": 54
+      },
+      "revId": "a95536e5596c362839f47fc5394edc55632c4045",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d7fce2c_9213e202",
+        "filename": "toolchain/download_windows_toolchain.bzl",
+        "patchSetId": 8
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-08-22T14:35:17Z",
+      "side": 1,
+      "message": "This is removed by merging the next CL into this one. If I bring it back the symlink functionality I\u0027ll do so (though I don\u0027t think I\u0027ll need these variables).",
+      "parentUuid": "718de7ff_15073e61",
       "range": {
         "startLine": 39,
         "startChar": 37,
@@ -158,6 +296,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "47b712d8_559bcaa0",
+        "filename": "toolchain/download_windows_toolchain.bzl",
+        "patchSetId": 8
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-08-22T14:35:17Z",
+      "side": 1,
+      "message": "Currently we expect it to be in PATH. I\u0027ll look into a hermetic solution.",
+      "parentUuid": "5d0538f7_7ebc305d",
+      "range": {
+        "startLine": 105,
+        "startChar": 24,
+        "endLine": 105,
+        "endChar": 30
+      },
+      "revId": "a95536e5596c362839f47fc5394edc55632c4045",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "589efdd5_6a34aeca",
         "filename": "toolchain/download_windows_toolchain.bzl",
         "patchSetId": 8
@@ -169,6 +331,30 @@
       "writtenOn": "2024-08-21T18:48:43Z",
       "side": 1,
       "message": "Aren\u0027t there windows libraries we have to link against? I\u0027d expect those to need to be listed here.",
+      "range": {
+        "startLine": 207,
+        "startChar": 12,
+        "endLine": 207,
+        "endChar": 22
+      },
+      "revId": "a95536e5596c362839f47fc5394edc55632c4045",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "40a626a6_7580949b",
+        "filename": "toolchain/download_windows_toolchain.bzl",
+        "patchSetId": 8
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-08-22T14:35:17Z",
+      "side": 1,
+      "message": "I don\u0027t think we link against any libraries that come from LLVM/Clang, I think it all comes from MSVC and the Windows SDK.",
+      "parentUuid": "589efdd5_6a34aeca",
       "range": {
         "startLine": 207,
         "startChar": 12,
@@ -227,6 +413,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6443164a_04e0c0ca",
+        "filename": "toolchain/windows_toolchain_config.bzl",
+        "patchSetId": 8
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-08-22T14:35:17Z",
+      "side": 1,
+      "message": "I don\u0027t know about `#include_next` but there were problems resulting from use of the wrong include file due to this ordering. I can change the comment if you\u0027d prefer.",
+      "parentUuid": "30e159ad_c9ea2cff",
+      "range": {
+        "startLine": 231,
+        "startChar": 22,
+        "endLine": 231,
+        "endChar": 49
+      },
+      "revId": "a95536e5596c362839f47fc5394edc55632c4045",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c8ac0673_21854242",
         "filename": "toolchain/windows_toolchain_config.bzl",
         "patchSetId": 8
@@ -238,6 +448,30 @@
       "writtenOn": "2024-08-21T18:48:43Z",
       "side": 1,
       "message": "Did you test these features? Do they still work on the windows version of clang? If not, we can delete this part.",
+      "range": {
+        "startLine": 314,
+        "startChar": 4,
+        "endLine": 314,
+        "endChar": 26
+      },
+      "revId": "a95536e5596c362839f47fc5394edc55632c4045",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5407f39c_63ce43d0",
+        "filename": "toolchain/windows_toolchain_config.bzl",
+        "patchSetId": 8
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-08-22T14:35:17Z",
+      "side": 1,
+      "message": "They do seem to work, although `diagnostic_link` and `print_search_dirs` don\u0027t look particularly interesting to me.",
+      "parentUuid": "c8ac0673_21854242",
       "range": {
         "startLine": 314,
         "startChar": 4,
@@ -261,6 +495,30 @@
       "writtenOn": "2024-08-21T18:48:43Z",
       "side": 1,
       "message": "This does not work on Windows (unless we plan to compile IWYU for it), so just remove this.",
+      "range": {
+        "startLine": 382,
+        "startChar": 4,
+        "endLine": 382,
+        "endChar": 20
+      },
+      "revId": "a95536e5596c362839f47fc5394edc55632c4045",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "615fc4c2_6430099d",
+        "filename": "toolchain/windows_toolchain_config.bzl",
+        "patchSetId": 8
+      },
+      "lineNbr": 382,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-08-22T14:35:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9e0aa3fc_5edd5452",
       "range": {
         "startLine": 382,
         "startChar": 4,
