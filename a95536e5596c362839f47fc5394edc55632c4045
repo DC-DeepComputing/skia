@@ -107,6 +107,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e33fceb_ce2f4abb",
+        "filename": "toolchain/download_toolchains.bzl",
+        "patchSetId": 8
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-08-22T17:17:21Z",
+      "side": 1,
+      "message": "Hmm, actually I\u0027m not sure where these toolchains are referenced.  I\u0027m going to put off renaming.",
+      "parentUuid": "f6bd3e90_65d4eee5",
+      "range": {
+        "startLine": 24,
+        "startChar": 5,
+        "endLine": 24,
+        "endChar": 18
+      },
+      "revId": "a95536e5596c362839f47fc5394edc55632c4045",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0ec93fbf_9cd63870",
@@ -402,6 +426,30 @@
       "writtenOn": "2024-08-21T18:48:43Z",
       "side": 1,
       "message": "Probably not necessary to say anymore, given it\u0027s now the same as the linux and mac toolchain.\n\nAlso, might be worth removing this and seeing if Bazel does the right thing now with `ar`",
+      "range": {
+        "startLine": 140,
+        "startChar": 6,
+        "endLine": 141,
+        "endChar": 138
+      },
+      "revId": "a95536e5596c362839f47fc5394edc55632c4045",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d932770_60b986e0",
+        "filename": "toolchain/windows_toolchain_config.bzl",
+        "patchSetId": 8
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-08-22T17:17:21Z",
+      "side": 1,
+      "message": "At least some of this block is required - without it, Bazel tries to use `skia\\toolchain\\DUMMY_AR_TOOL`, and adding the `archive_param_file` was necessary to work around command length limits.",
+      "parentUuid": "7cd9593e_7db85dca",
       "range": {
         "startLine": 140,
         "startChar": 6,

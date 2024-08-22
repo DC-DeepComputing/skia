@@ -16,6 +16,23 @@
       "message": "You\u0027re welcome to take another look, but I\u0027m going to look into a hermetic Python and removing the hard-coded version numbers, so no rush.",
       "revId": "55da95319f5de4b1b63edefa63d960a78330435f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e64321ff_54a27732",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-08-22T17:17:21Z",
+      "side": 1,
+      "message": "Ok, PS12 removes hard-coding of the version numbers. We\u0027re no longer shelling out to Python, so there\u0027s no concern about using it hermetically.",
+      "revId": "55da95319f5de4b1b63edefa63d960a78330435f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
