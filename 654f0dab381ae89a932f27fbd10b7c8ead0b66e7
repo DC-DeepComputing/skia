@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c11fbcb_cc1103c7",
+        "filename": "toolchain/windows_toolchain_config.bzl",
+        "patchSetId": 1
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-08-22T13:31:30Z",
+      "side": 0,
+      "message": "Curious that these are not needed anymore. I had thought we needed to list things here so Bazel knows that if they are used it\u0027s ok",
+      "range": {
+        "startLine": 55,
+        "startChar": 8,
+        "endLine": 55,
+        "endChar": 39
+      },
+      "revId": "654f0dab381ae89a932f27fbd10b7c8ead0b66e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
