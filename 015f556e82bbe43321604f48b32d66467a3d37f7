@@ -16,6 +16,24 @@
       "message": "Using https://www.w3.org/WAI/tutorials/tables/irregular/ (which has properly marked up headers) and printing from Chrome this does emit an IDTree with just the needed (referenced) IDs. When there are no referenced IDs then no IDTree or IDs are emitted.\n\nThat being said, at PS1 this still doesn\u0027t seem quite right. Really we want the node ids to be marked as used when the annotation is emitted (the references are actually emitted) as it is possible for the user to describe these things but then end up never emitting them (like when creating the structure tree for a whole site, but only printing some pages into the pdf).",
       "revId": "015f556e82bbe43321604f48b32d66467a3d37f7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "579f2f67_68c8c776",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-08-22T00:03:02Z",
+      "side": 1,
+      "message": "So at patch set 1 this is somewhat using the wrong approach. The approach in patch set 1 is to add back in any StructElem if its ID is referenced from any emitted attribute\u0027s ID list.\n\nInstead, this should, right before emitting the structure element tree, run through all the attributes which are to be emitted and look at the IDs in their lists. If the ID references a StructElem which is to be emitted (has a mark or is otherwise non-discardable) then we leave that ID in the attribute list and mark the StructElem node as needing to emit its ID. Otherwise (when the node relating to the ID in the attribute\u0027s ID list can be discarded) then that ID should be removed from the list (as it references something with no marks anywhere).",
+      "parentUuid": "2f296073_60b07fea",
+      "revId": "015f556e82bbe43321604f48b32d66467a3d37f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
