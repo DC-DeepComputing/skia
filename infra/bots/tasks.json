@@ -10,6 +10,11 @@
         "BazelBuild-all_tests-release-linux_x64"
       ]
     },
+    "BazelBuild-all_tests-release-windows_x64": {
+      "tasks": [
+        "BazelBuild-all_tests-release-windows_x64"
+      ]
+    },
     "BazelBuild-android_math_test-for_android_arm64_release-linux_x64": {
       "tasks": [
         "BazelBuild-android_math_test-for_android_arm64_release-linux_x64"
@@ -18,6 +23,11 @@
     "BazelBuild-core-release-linux_x64": {
       "tasks": [
         "BazelBuild-core-release-linux_x64"
+      ]
+    },
+    "BazelBuild-core-release-windows_x64": {
+      "tasks": [
+        "BazelBuild-core-release-windows_x64"
       ]
     },
     "BazelBuild-cpu_8888_benchmark_android_test-for_android_arm64_release-linux_x64": {
@@ -3720,6 +3730,46 @@
       "max_attempts": 1,
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
+    "BazelBuild-all_tests-release-windows_x64": {
+      "casSpec": "bazel",
+      "cipd_packages": [
+        {
+          "name": "skia/bots/bazel_build_task_driver",
+          "path": "bazel_build_task_driver",
+          "version": "version:2"
+        },
+        {
+          "name": "skia/bots/bazelisk_win_amd64",
+          "path": "bazelisk_win_amd64",
+          "version": "version:1"
+        }
+      ],
+      "command": [
+        "bazel_build_task_driver/bazel_build",
+        "--project_id=skia-swarming-bots",
+        "--task_id=<(TASK_ID)",
+        "--task_name=BazelBuild-all_tests-release-windows_x64",
+        "--bazel_label=//tests:linux_rbe_tests",
+        "--bazel_config=release",
+        "--bazel_cache_dir=/mnt/pd0/bazel_cache",
+        "--workdir=."
+      ],
+      "dimensions": [
+        "cpu:x86-64-Haswell_GCE",
+        "gpu:none",
+        "machine_type:n1-highcpu-64",
+        "os:Windows-Server-17763",
+        "pool:Skia"
+      ],
+      "env_prefixes": {
+        "PATH": [
+          "bazelisk_win_amd64"
+        ]
+      },
+      "idempotent": true,
+      "max_attempts": 1,
+      "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
+    },
     "BazelBuild-android_math_test-for_android_arm64_release-linux_x64": {
       "casSpec": "bazel",
       "cipd_packages": [
@@ -3806,6 +3856,46 @@
       "env_prefixes": {
         "PATH": [
           "bazelisk_linux_amd64"
+        ]
+      },
+      "idempotent": true,
+      "max_attempts": 1,
+      "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
+    },
+    "BazelBuild-core-release-windows_x64": {
+      "casSpec": "bazel",
+      "cipd_packages": [
+        {
+          "name": "skia/bots/bazel_build_task_driver",
+          "path": "bazel_build_task_driver",
+          "version": "version:2"
+        },
+        {
+          "name": "skia/bots/bazelisk_win_amd64",
+          "path": "bazelisk_win_amd64",
+          "version": "version:1"
+        }
+      ],
+      "command": [
+        "bazel_build_task_driver/bazel_build",
+        "--project_id=skia-swarming-bots",
+        "--task_id=<(TASK_ID)",
+        "--task_name=BazelBuild-core-release-windows_x64",
+        "--bazel_label=//:core",
+        "--bazel_config=release",
+        "--bazel_cache_dir=/mnt/pd0/bazel_cache",
+        "--workdir=."
+      ],
+      "dimensions": [
+        "cpu:x86-64-Haswell_GCE",
+        "gpu:none",
+        "machine_type:n1-highcpu-64",
+        "os:Windows-Server-17763",
+        "pool:Skia"
+      ],
+      "env_prefixes": {
+        "PATH": [
+          "bazelisk_win_amd64"
         ]
       },
       "idempotent": true,

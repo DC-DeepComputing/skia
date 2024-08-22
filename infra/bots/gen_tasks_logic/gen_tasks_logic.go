@@ -2283,6 +2283,16 @@ func (b *jobBuilder) bazelBuild() {
 				cmd = append(cmd, "--bazel_arg=--jobs=100")
 				cmd = append(cmd, "--bazel_arg=--remote_download_minimal")
 			}
+		} else if host == "windows_x64" {
+			b.dimension(
+				"cpu:x86-64-Haswell_GCE",
+				"gpu:none",
+				fmt.Sprintf("machine_type:%s", MACHINE_TYPE_LARGE),
+				fmt.Sprintf("os:%s", DEFAULT_OS_WIN),
+				"pool:Skia",
+			)
+			b.usesBazel("windows_x64")
+			b.cipd(b.MustGetCipdPackageFromAsset("bazel_build_task_driver"))
 		} else {
 			panic("unsupported Bazel host " + host)
 		}
