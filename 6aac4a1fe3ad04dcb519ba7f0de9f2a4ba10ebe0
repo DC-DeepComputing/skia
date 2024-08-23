@@ -51,6 +51,24 @@
       "parentUuid": "57d74bfb_5d5c1eeb",
       "revId": "6aac4a1fe3ad04dcb519ba7f0de9f2a4ba10ebe0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "56565b4a_854f8955",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-08-23T17:29:27Z",
+      "side": 1,
+      "message": "Added fWriteSwizzle \u003d RGB1 to the color type info in the format table for GL. This made the BackendAllocationTest pass when alpha is \u003c 1 because when making a surface texture from a color, the writeSwizzle function is used. Before, it used the default swizzle for format RGBA16 so it used rgba swizzle, not rgb1. Now the context correctly sets alpha to 1 for the backend texture color.",
+      "parentUuid": "afbbe7b3_fa29a42b",
+      "revId": "6aac4a1fe3ad04dcb519ba7f0de9f2a4ba10ebe0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
