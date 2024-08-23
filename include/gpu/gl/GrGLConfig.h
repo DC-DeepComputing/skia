@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2011 Google Inc.
  *
@@ -6,12 +5,10 @@
  * found in the LICENSE file.
  */
 
-
-
 #ifndef GrGLConfig_DEFINED
 #define GrGLConfig_DEFINED
 
-#include "include/gpu/GrTypes.h"
+#include "include/private/base/SkLoadUserConfig.h"
 
 /**
  * Optional GL config file.
@@ -61,7 +58,7 @@
 #endif
 
 #if !defined(GR_GL_LOG_CALLS_START)
-    #define GR_GL_LOG_CALLS_START                       0
+    #define GR_GL_LOG_CALLS_START 0
 #endif
 
 #if !defined(GR_GL_CHECK_ERROR)
@@ -73,7 +70,7 @@
 #endif
 
 #if !defined(GR_GL_CHECK_ERROR_START)
-    #define GR_GL_CHECK_ERROR_START                     1
+    #define GR_GL_CHECK_ERROR_START 1
 #endif
 
 #endif
