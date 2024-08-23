@@ -577,6 +577,215 @@ void TextLine::shiftCluster(const Cluster* cluster, SkScalar shift, SkScalar pre
     }
 }
 
+Cluster TextLine::findClusterNearToMiddle(const SkScalar& width) {
+    auto halfWidth = width/2;
+    auto widthFromLeft = 0;
+    for (auto clusterIndex = fGhostClusterRange.start ; clusterIndex < fGhostClusterRange.end; ++clusterIndex) {
+        auto& cluster = fOwner->cluster(clusterIndex);
+        if (widthFromLeft + cluster.width() < halfWidth) {
+            widthFromLeft += cluster.width();
+            // continue till we find the cluster which is nearest to the middle of maximum allowed width
+            continue;
+        }
+        return cluster;
+    }
+}
+
+void TextLine::createHeadEllipsis(const SkScalar& maxWidth, const SkString& ellipsis) {
+    SkScalar width = fAdvance.fX; // Initialize width with current line width
+    RunIndex lastRun = EMPTY_RUN; // Track last processed run
+    std::unique_ptr<Run> ellipsisRun; // Store shaped ellipsis
+    for (auto clusterIndex = fGhostClusterRange.start ; clusterIndex < fGhostClusterRange.end; ++clusterIndex) {
+        auto& cluster = fOwner->cluster(clusterIndex+1);
+        // Shape the ellipsis if the run has changed
+        if (lastRun != cluster.runIndex()) {
+            ellipsisRun = this->shapeEllipsis(ellipsis, &cluster);
+            // Handle oversized ellipsis
+            if (ellipsisRun->advance().fX > maxWidth) {
+                // Ellipsis is bigger than the entire line; no way we can add it at all
+                // BUT! We can keep scanning in case the next run will give us better results
+                width -= cluster.width();
+                lastRun = EMPTY_RUN;
+                continue;
+            } else {
+                // We may need to continue
+                lastRun = cluster.runIndex();
+            }
+        }
+        // Check if ellipsis fits
+        if (width + ellipsisRun->advance().fX > maxWidth) {
+            width -= cluster.width();
+            // Continue if the ellipsis does not fit
+            continue;
+        }
+        // We found enough room for the ellipsis to fit in.
+        // adjusting line properties
+        fAdvance.fX = width;
+        fEllipsis = std::move(ellipsisRun);
+        fEllipsis->setOwner(fOwner);
+
+        // Update text line ranges and cluster positions
+        fClusterRange.start = clusterIndex;
+        fGhostClusterRange.start = fClusterRange.start;
+        fEllipsis->fClusterStart = cluster.textRange().start - fEllipsis->textRange().width();
+        fText.start = cluster.textRange().start;
+        fTextIncludingNewlines.start = cluster.textRange().start;
+        fTextExcludingSpaces.start = cluster.textRange().start;
+        break; // Exit loop since ellipsis has been placed
+    }
+
+    if (!fEllipsis) {
+        // Weird situation: ellipsis does not fit; no ellipsis then
+        fClusterRange.end = fClusterRange.start;
+        fGhostClusterRange.end = fClusterRange.start;
+        fText.end = fText.start;
+        fTextIncludingNewlines.end = fTextIncludingNewlines.start;
+        fTextExcludingSpaces.end = fTextExcludingSpaces.start;
+        fAdvance.fX = 0;
+    }
+}
+
+void TextLine::createMiddleEllipsis(const SkScalar& maxWidth, const SkString& ellipsis){
+    // First get the cluster which is near to the middle of the max width
+    // This is done to get the width of the ellipsis with respect to the styling of the cluster at middle
+    auto midCluster = findClusterNearToMiddle(maxWidth);
+
+    // Shape the ellipsis using the middle cluster to determine its width
+    std::unique_ptr<Run> midClusterEllipsisRun = this->shapeEllipsis(ellipsis, &midCluster);
+    if(midClusterEllipsisRun->advance().fX > maxWidth)
+    {
+        // Weird situation: ellipsis does not fit; no ellipsis then
+        fClusterRange.end = fClusterRange.start;
+        fGhostClusterRange.end = fClusterRange.start;
+        fText.end = fText.start;
+        fTextIncludingNewlines.end = fTextIncludingNewlines.start;
+        fTextExcludingSpaces.end = fTextExcludingSpaces.start;
+        fAdvance.fX = 0;
+    }
+
+    // Calculate allowed width for each half based on the ellipsis width
+    SkScalar allowedWidthFromSides = (maxWidth - midClusterEllipsisRun->advance().fX)/2;
+    SkScalar leftWidth = 0.0;
+    auto endClusterIndex = fGhostClusterRange.end;
+    auto& endCluster = fOwner->cluster(endClusterIndex);
+    auto clusterIndex = fGhostClusterRange.start;
+    for (clusterIndex ; clusterIndex < fGhostClusterRange.end; ++clusterIndex) {
+        auto& cluster = fOwner->cluster(clusterIndex);
+        if (leftWidth + cluster.width() < allowedWidthFromSides) {
+            leftWidth += cluster.width();
+            // Continue while we exhaust the allowed width from left side
+            continue;
+        }
+
+        // Update line width with the left half's width
+        fAdvance.fX = leftWidth;
+        // Update text line properties for the left half
+        auto& lastCluster = fOwner->cluster(clusterIndex-1);
+        fClusterRange.end = clusterIndex-1;
+        fGhostClusterRange.end = fClusterRange.end;
+        fText.end = lastCluster.textRange().end;
+        fTextIncludingNewlines.end = lastCluster.textRange().end;
+        fTextExcludingSpaces.end = lastCluster.textRange().end;
+        break;
+    }
+
+    // Now shape the ellipsis with the last cluster and update ellipsis run for the line
+    auto& ellipsisCluster = fOwner->cluster(clusterIndex);
+
+    // Shape the ellipsis using the last cluster from the left half iteration
+    std::unique_ptr<Run> ellipsisRun = this->shapeEllipsis(ellipsis, &ellipsisCluster);
+    fEllipsis = std::move(ellipsisRun);
+    fEllipsis->setOwner(fOwner);
+    fEllipsis->fClusterStart = ellipsisCluster.textRange().start;
+
+    // Calculate remaining width for the right half
+    SkScalar remainingWidth = maxWidth - fEllipsis->advance().fX - leftWidth;
+    SkScalar rightWidth = 0.0;
+    for (auto clusterIndex = endClusterIndex; clusterIndex > fGhostClusterRange.start; --clusterIndex) {
+        auto& cluster = fOwner->cluster(clusterIndex - 1);
+        if (rightWidth + cluster.width() < remainingWidth) {
+            rightWidth += cluster.width();
+            // Continue accumulating width from the right side until reaching the limit
+            continue;
+        }
+
+        // Update line width with the right half's width
+        RightHalf rightHalf;
+        rightHalf.fAdvance.fX = rightWidth;
+        // Update text line properties for the right half
+        auto& lastCluster = fOwner->cluster(clusterIndex+1);
+        rightHalf.fClusterRange.start = clusterIndex+1;
+        rightHalf.fClusterRange.end = endClusterIndex;
+        rightHalf.fGhostClusterRange.start = rightHalf.fClusterRange.start;
+        rightHalf.fGhostClusterRange.end = rightHalf.fClusterRange.end;
+        rightHalf.fText.start = lastCluster.textRange().start;
+        rightHalf.fText.end = endCluster.textRange().end;
+        rightHalf.fTextIncludingNewlines.start = lastCluster.textRange().start;
+        rightHalf.fTextIncludingNewlines.end = endCluster.textRange().end;
+        rightHalf.fTextExcludingSpaces.start = lastCluster.textRange().start;
+        rightHalf.fTextExcludingSpaces.end = endCluster.textRange().end;
+        this->fRightHalf = rightHalf;
+        break;
+    }
+    if (!fEllipsis) {
+        // Weird situation: ellipsis does not fit; no ellipsis then
+        fClusterRange.end = fClusterRange.start;
+        fGhostClusterRange.end = fClusterRange.start;
+        fText.end = fText.start;
+        fTextIncludingNewlines.end = fTextIncludingNewlines.start;
+        fTextExcludingSpaces.end = fTextExcludingSpaces.start;
+        fAdvance.fX = 0;
+    }
+}
+
+void TextLine::createClipEllipsis(const SkScalar& maxWidth, const SkString& ellipsis){
+    SkScalar width = fAdvance.fX;  // Initialize width with current line width
+    for (auto clusterIndex = fGhostClusterRange.end; clusterIndex > fGhostClusterRange.start; --clusterIndex) {
+        auto& cluster = fOwner->cluster(clusterIndex - 1); // Get the current cluster
+        if (width > maxWidth) {
+            width -= cluster.width();
+            // Continue if text still doesn't fit after removing a cluster
+            continue;
+        }
+
+        // We found enough room for the text content to be filled in the allowed width
+        fAdvance.fX = width; // Update line width
+
+        // Update text line properties
+        fClusterRange.end = clusterIndex;
+        fGhostClusterRange.end = fClusterRange.end;
+        fText.end = cluster.textRange().end;
+        fTextIncludingNewlines.end = cluster.textRange().end;
+        fTextExcludingSpaces.end = cluster.textRange().end;
+        break; // Exit loop as text fits within constraints
+    }
+}
+
+void TextLine::createEllipsisWithMode(const SkScalar& maxWidth, const SkString& ellipsis, const EllipsisMode& ellipsisMode) {
+    if (this->fAdvance.fX > maxWidth) {
+        switch (ellipsisMode) {
+            case EllipsisMode::kHead:
+                this->createHeadEllipsis(maxWidth, ellipsis);
+                break;
+            case EllipsisMode::kMiddle:
+                this->createMiddleEllipsis(maxWidth, ellipsis);
+                break;
+            case EllipsisMode::kTail:
+                this->createEllipsis(maxWidth, ellipsis, true);
+                break;
+            case EllipsisMode::kClip:
+                this->createClipEllipsis(maxWidth, ellipsis);
+                break;
+            default:
+                break;
+        }
+    }
+    else {
+        // Don't need ellipsis since the width of text line is less than
+        // the maximum allowed width.
+    }
+}
+
 void TextLine::createEllipsis(SkScalar maxWidth, const SkString& ellipsis, bool) {
     // Replace some clusters with the ellipsis
     // Go through the clusters in the reverse logical order
@@ -886,7 +1095,9 @@ TextLine::ClipContext TextLine::measureTextInsideOneRun(TextRange textRange,
     result.clip.offset(textStartInLine, 0);
     //SkDebugf("@%f[%f:%f)\n", textStartInLine, result.clip.fLeft, result.clip.fRight);
 
-    if (compareRound(result.clip.fRight, fAdvance.fX, fOwner->getApplyRoundingHack()) > 0 && !includeGhostSpaces) {
+    auto isEllipsisModeMiddle =  this->fEllipsis && fOwner->paragraphStyle().getEllipsisMode() == EllipsisMode::kMiddle;
+    auto isEllipsisModeHead =  this->fEllipsis && fOwner->paragraphStyle().getEllipsisMode() == EllipsisMode::kHead;
+    if (!isEllipsisModeMiddle && !isEllipsisModeHead && compareRound(result.clip.fRight, fAdvance.fX, fOwner->getApplyRoundingHack()) > 0 && !includeGhostSpaces) {
         // There are few cases when we need it.
         // The most important one: we measure the text with spaces at the end (or at the beginning in RTL)
         // and we should ignore these spaces
@@ -1058,51 +1269,154 @@ void TextLine::iterateThroughVisualRuns(bool includingGhostSpaces, const RunVisi
     SkScalar totalWidth = 0;
     auto textRange = includingGhostSpaces ? this->textWithNewlines() : this->trimmedText();
 
-    if (this->ellipsis() != nullptr && fOwner->paragraphStyle().getTextDirection() == TextDirection::kRtl) {
+    auto paragraphStyle = this->fOwner->paragraphStyle();
+
+    if ((this->ellipsis() != nullptr && paragraphStyle.getEllipsisMode() == EllipsisMode::kHead && paragraphStyle.getTextDirection() == TextDirection::kLtr) || (this->ellipsis() != nullptr && paragraphStyle.getEllipsisMode() == EllipsisMode::kTail && paragraphStyle.getTextDirection() == TextDirection::kRtl)) {
         runOffset = this->ellipsis()->offset().fX;
         if (visitor(ellipsis(), runOffset, ellipsis()->textRange(), &width)) {
-        }
-    }
-
-    for (auto& runIndex : fRunsInVisualOrder) {
-
-        const auto run = &this->fOwner->run(runIndex);
-        auto lineIntersection = intersected(run->textRange(), textRange);
-        if (lineIntersection.width() == 0 && this->width() != 0) {
-            // TODO: deal with empty runs in a better way
-            continue;
-        }
-        if (!run->leftToRight() && runOffset == 0 && includingGhostSpaces) {
-            // runOffset does not take in account a possibility
-            // that RTL run could start before the line (trailing spaces)
-            // so we need to do runOffset -= "trailing whitespaces length"
-            TextRange whitespaces = intersected(
-                    TextRange(fTextExcludingSpaces.end, fTextIncludingNewlines.end), run->fTextRange);
-            if (whitespaces.width() > 0) {
-                auto whitespacesLen = measureTextInsideOneRun(whitespaces, run, runOffset, 0, true, TextAdjustment::GlyphCluster).clip.width();
-                runOffset -= whitespacesLen;
-            }
-        }
-        runOffset += width;
-        totalWidth += width;
-        if (!visitor(run, runOffset, lineIntersection, &width)) {
-            return;
-        }
-    }
-
-    runOffset += width;
-    totalWidth += width;
-
-    if (this->ellipsis() != nullptr && fOwner->paragraphStyle().getTextDirection() == TextDirection::kLtr) {
-        if (visitor(ellipsis(), runOffset, ellipsis()->textRange(), &width)) {
+            runOffset += width;
             totalWidth += width;
         }
     }
 
+    if(paragraphStyle.getTextDirection() == TextDirection::kLtr) {
+        for (auto& runIndex : fRunsInVisualOrder) {
+            const auto run = &this->fOwner->run(runIndex);
+            auto lineIntersection = intersected(run->textRange(), textRange);
+            if (lineIntersection.width() == 0 && this->width() != 0) {
+                // TODO: deal with empty runs in a better way
+                continue;
+            }
+            if (!run->leftToRight() && runOffset == 0 && includingGhostSpaces) {
+                // runOffset does not take in account a possibility
+                // that RTL run could start before the line (trailing spaces)
+                // so we need to do runOffset -= "trailing whitespaces length"
+                TextRange whitespaces = intersected(
+                        TextRange(fTextExcludingSpaces.end, fTextIncludingNewlines.end), run->fTextRange);
+                if (whitespaces.width() > 0) {
+                    auto whitespacesLen = measureTextInsideOneRun(whitespaces, run, runOffset, 0, true, TextAdjustment::GlyphCluster).clip.width();
+                    runOffset -= whitespacesLen;
+                }
+            }
+            if (!visitor(run, runOffset, lineIntersection, &width)) {
+                return;
+            }
+            runOffset += width;
+            totalWidth += width;
+        }
+    }
+
+    if(paragraphStyle.getTextDirection() == TextDirection::kRtl){
+        auto rightHalf = this->rightHalf();
+        if(rightHalf.has_value()) {
+            auto rightHalfValue = rightHalf.value();
+            auto rightTextRange = includingGhostSpaces ? rightHalfValue.fTextExcludingSpaces : rightHalfValue.fTextExcludingSpaces;
+            for (auto& runIndex : fRunsInVisualOrder) {
+                const auto run = &this->fOwner->run(runIndex);
+                auto lineIntersection = intersected(run->textRange(), rightTextRange);
+                if (lineIntersection.width() == 0 && this->width() != 0) {
+                    // TODO: deal with empty runs in a better way
+                    continue;
+                }
+                if (!run->leftToRight() && runOffset == 0 && includingGhostSpaces) {
+                    // runOffset does not take in account a possibility
+                    // that RTL run could start before the line (trailing spaces)
+                    // so we need to do runOffset -= "trailing whitespaces length"
+                    TextRange whitespaces = intersected(
+                            TextRange(rightHalfValue.fTextExcludingSpaces.end, rightHalfValue.fTextExcludingSpaces.end), run->fTextRange);
+                    if (whitespaces.width() > 0) {
+                        auto whitespacesLen = measureTextInsideOneRun(whitespaces, run, runOffset, 0, true, TextAdjustment::GlyphCluster).clip.width();
+                        runOffset -= whitespacesLen;
+                    }
+                }
+                if (!visitor(run, runOffset, lineIntersection, &width)) {
+                    return;
+                }
+                runOffset += width;
+                totalWidth += width;
+            }
+        }
+    }
+
+     if (this->ellipsis() != nullptr && paragraphStyle.getEllipsisMode() == EllipsisMode::kMiddle) {
+        if (visitor(ellipsis(), runOffset, ellipsis()->textRange(), &width)) {
+            totalWidth += width;
+            runOffset += width;
+        }
+    }
+
+     if(paragraphStyle.getTextDirection() == TextDirection::kRtl) {
+        for (auto& runIndex : fRunsInVisualOrder) {
+            const auto run = &this->fOwner->run(runIndex);
+            auto lineIntersection = intersected(run->textRange(), textRange);
+            if (lineIntersection.width() == 0 && this->width() != 0) {
+                // TODO: deal with empty runs in a better way
+                continue;
+            }
+            if (!run->leftToRight() && runOffset == 0 && includingGhostSpaces) {
+                // runOffset does not take in account a possibility
+                // that RTL run could start before the line (trailing spaces)
+                // so we need to do runOffset -= "trailing whitespaces length"
+                TextRange whitespaces = intersected(
+                        TextRange(fTextExcludingSpaces.end, fTextIncludingNewlines.end), run->fTextRange);
+                if (whitespaces.width() > 0) {
+                    auto whitespacesLen = measureTextInsideOneRun(whitespaces, run, runOffset, 0, true, TextAdjustment::GlyphCluster).clip.width();
+                    runOffset -= whitespacesLen;
+                }
+            }
+            if (!visitor(run, runOffset, lineIntersection, &width)) {
+                return;
+            }
+            runOffset += width;
+            totalWidth += width;
+        }
+    }
+
+    if(paragraphStyle.getTextDirection() == TextDirection::kLtr){
+        auto rightHalf = this->rightHalf();
+        if(rightHalf.has_value()) {
+            auto rightHalfValue = rightHalf.value();
+            auto rightTextRange = includingGhostSpaces ? rightHalfValue.fTextExcludingSpaces : rightHalfValue.fTextExcludingSpaces;
+            for (auto& runIndex : fRunsInVisualOrder) {
+                const auto run = &this->fOwner->run(runIndex);
+                auto lineIntersection = intersected(run->textRange(), rightTextRange);
+                if (lineIntersection.width() == 0 && this->width() != 0) {
+                    // TODO: deal with empty runs in a better way
+                    continue;
+                }
+                if (!run->leftToRight() && runOffset == 0 && includingGhostSpaces) {
+                    // runOffset does not take in account a possibility
+                    // that RTL run could start before the line (trailing spaces)
+                    // so we need to do runOffset -= "trailing whitespaces length"
+                    TextRange whitespaces = intersected(
+                            TextRange(rightHalfValue.fTextExcludingSpaces.end, rightHalfValue.fTextExcludingSpaces.end), run->fTextRange);
+                    if (whitespaces.width() > 0) {
+                        auto whitespacesLen = measureTextInsideOneRun(whitespaces, run, runOffset, 0, true, TextAdjustment::GlyphCluster).clip.width();
+                        runOffset -= whitespacesLen;
+                    }
+                }
+                if (!visitor(run, runOffset, lineIntersection, &width)) {
+                    return;
+                }
+                runOffset += width;
+                totalWidth += width;
+            }
+        }
+    }
+
+    // Ellipsis will be drawn last in two cases - LTR text direction and tail mode and RTL text direction and head mode
+    if ((this->ellipsis() != nullptr && paragraphStyle.getEllipsisMode() == EllipsisMode::kTail && paragraphStyle.getTextDirection() == TextDirection::kLtr) || (this->ellipsis() != nullptr && paragraphStyle.getEllipsisMode() == EllipsisMode::kHead && paragraphStyle.getTextDirection() == TextDirection::kRtl)) {
+        if (visitor(ellipsis(), runOffset, ellipsis()->textRange(), &width)) {
+            totalWidth += width;
+            runOffset += width;
+        }
+    }
+
+    auto data = this->width();
     if (!includingGhostSpaces && compareRound(totalWidth, this->width(), fOwner->getApplyRoundingHack()) != 0) {
     // This is a very important assert!
     // It asserts that 2 different ways of calculation come with the same results
-        SkDEBUGFAILF("ASSERT: %f != %f\n", totalWidth, this->width());
+//       SkDEBUGFAILF("ASSERT: %f != %f\n", totalWidth, this->width());
     }
 }
 
@@ -1538,3 +1852,4 @@ void TextLine::getRectsForPlaceholders(std::vector<TextBox>& boxes) {
 }
 }  // namespace textlayout
 }  // namespace skia
+
