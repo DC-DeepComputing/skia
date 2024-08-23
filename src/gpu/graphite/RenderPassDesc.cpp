@@ -50,6 +50,7 @@ RenderPassDesc RenderPassDesc::Make(const Caps* caps,
     SkASSERT(storeOp == StoreOp::kStore);
     if (requiresMSAA) {
         if (caps->msaaRenderToSingleSampledSupport()) {
+            SkDebugf("case1\n");
             desc.fColorAttachment.fTextureInfo = targetInfo;
             desc.fColorAttachment.fLoadOp = loadOp;
             desc.fColorAttachment.fStoreOp = storeOp;
@@ -59,6 +60,7 @@ RenderPassDesc RenderPassDesc::Make(const Caps* caps,
             // be persistently associated with the framebuffer, in which case it's not discardable.
             auto msaaTextureInfo = caps->getDefaultMSAATextureInfo(targetInfo, Discardable::kYes);
             if (msaaTextureInfo.isValid()) {
+                SkDebugf("case2 - %d\n", msaaTextureInfo.numSamples());
                 desc.fColorAttachment.fTextureInfo = msaaTextureInfo;
                 if (loadOp != LoadOp::kClear) {
                     desc.fColorAttachment.fLoadOp = LoadOp::kDiscard;
@@ -77,6 +79,8 @@ RenderPassDesc RenderPassDesc::Make(const Caps* caps,
 
                 desc.fSampleCount = msaaTextureInfo.numSamples();
             } else {
+                SkDebugf("case3\n");
+
                 // fall back to single sampled
                 desc.fColorAttachment.fTextureInfo = targetInfo;
                 desc.fColorAttachment.fLoadOp = loadOp;
@@ -84,6 +88,8 @@ RenderPassDesc RenderPassDesc::Make(const Caps* caps,
             }
         }
     } else {
+        SkDebugf("case4\n");
+
         desc.fColorAttachment.fTextureInfo = targetInfo;
         desc.fColorAttachment.fLoadOp = loadOp;
         desc.fColorAttachment.fStoreOp = storeOp;
@@ -91,6 +97,7 @@ RenderPassDesc RenderPassDesc::Make(const Caps* caps,
     desc.fClearColor = clearColor;
 
     if (depthStencilFlags != DepthStencilFlags::kNone) {
+        SkDebugf("case5\n");
         desc.fDepthStencilAttachment.fTextureInfo = caps->getDefaultDepthStencilTextureInfo(
                 depthStencilFlags, desc.fSampleCount, targetInfo.isProtected());
         // Always clear the depth and stencil to 0 at the start of a DrawPass, but discard at the
