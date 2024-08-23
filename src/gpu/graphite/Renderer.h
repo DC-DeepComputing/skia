@@ -11,6 +11,7 @@
 #include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
+#include "include/gpu/graphite/GraphiteTypes.h"
 #include "src/base/SkEnumBitMask.h"
 #include "src/base/SkVx.h"
 #include "src/gpu/graphite/Attribute.h"
@@ -29,6 +30,8 @@ enum class SkPathFillType;
 namespace skgpu { enum class MaskFormat; }
 
 namespace skgpu::graphite {
+
+SK_MAKE_BITMASK_OPS(DepthStencilFlags)
 
 class DrawWriter;
 class DrawParams;

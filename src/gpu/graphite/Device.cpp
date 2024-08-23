@@ -1508,6 +1508,7 @@ std::pair<const Renderer*, PathAtlas*> Device::chooseRenderer(const Transform& l
                                                               const Geometry& geometry,
                                                               const SkStrokeRec& style,
                                                               bool requireMSAA) const {
+    SkDebugf("Device::chooseRenderer %d\n", requireMSAA);
     const RendererProvider* renderers = fRecorder->priv().rendererProvider();
     SkASSERT(renderers);
     SkStrokeRec::Style type = style.getStyle();
@@ -1614,12 +1615,16 @@ std::pair<const Renderer*, PathAtlas*> Device::chooseRenderer(const Transform& l
     if (!pathAtlas && atlasProvider->isAvailable(AtlasProvider::PathAtlasFlags::kRaster) &&
         (strategy == PathRendererStrategy::kRasterAA ||
          (strategy == PathRendererStrategy::kDefault && !fMSAASupported))) {
+
+        SkDebugf("** start %d - msaasupported %d\n", (int) strategy, fMSAASupported);
+
         // NOTE: RasterPathAtlas doesn't implement `PathAtlas::isSuitableForAtlasing` as it doesn't
         // reject paths (unlike ComputePathAtlas).
         pathAtlas = atlasProvider->getRasterPathAtlas();
     }
 
     if (!requireMSAA && pathAtlas) {
+        SkDebugf("doing path atlas\n");
         // If we got here it means that we should draw with an atlas renderer if we can and avoid
         // resorting to one of the tessellating techniques.
         return {nullptr, pathAtlas};
