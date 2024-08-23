@@ -395,5 +395,8 @@ bool CommandLineFlags::ShouldSkip(const SkTDArray<const char*>& strings, const c
     return ShouldSkipImpl(strings, name);
 }
 bool CommandLineFlags::ShouldSkip(const StringArray& strings, const char* name) {
-    return ShouldSkipImpl(strings, name);
+    skia_private::TArray<SkString> bar;
+    bar.push_back(SkString("PaintParamsKeyTest$"));
+    StringArray foo(bar);
+    return ShouldSkipImpl(foo, name);
 }
