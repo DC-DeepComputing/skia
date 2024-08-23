@@ -12,11 +12,13 @@
     "cq_config": {}
   },
   {"name": "BazelBuild-core-release-linux_x64"},
+  {"name": "BazelBuild-core-release-windows_x64"},
   {"name": "BazelBuild-ganesh_gl-release-linux_x64"},
   {"name": "BazelBuild-all_tests-debug-linux_x64"},
   {"name": "BazelBuild-all_tests-release-linux_x64",
     "cq_config": {}
   },
+  {"name": "BazelBuild-all_tests-release-windows_x64"},
   {"name": "BazelBuild-cpu_8888_benchmark_android_test-for_android_arm64_release-linux_x64"},
   {"name": "BazelBuild-hello_bazel_world_android_test-for_android_arm64_release-linux_x64"},
   {"name": "BazelBuild-android_math_test-for_android_arm64_release-linux_x64"},
