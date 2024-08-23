@@ -49,7 +49,7 @@ struct LineBreakerWithLittleRounding {
 
 // Since we allow cluster clipping when they don't fit
 // we have to work with stretches - parts of clusters
-void TextWrapper::lookAhead(SkScalar maxWidth, Cluster* endOfClusters, bool applyRoundingHack) {
+void TextWrapper::lookAhead(SkScalar maxWidth, Cluster* endOfClusters, bool applyRoundingHack, bool isLastLine, bool needEllipsis) {
 
     reset();
     fEndLine.metrics().clean();
@@ -62,9 +62,8 @@ void TextWrapper::lookAhead(SkScalar maxWidth, Cluster* endOfClusters, bool appl
     for (auto cluster = fEndLine.endCluster(); cluster < endOfClusters; ++cluster) {
         if (cluster->isHardBreak()) {
         } else if (
-                // TODO: Trying to deal with flutter rounding problem. Must be removed...
-                SkScalar width = fWords.width() + fClusters.width() + cluster->width();
-                breaker.breakLine(width)) {
+               !needEllipsis && breaker.breakLine(fWords.width() + fClusters.width() + cluster->width())
+               ) {
             if (cluster->isWhitespaceBreak()) {
                 // It's the end of the word
                 fClusters.extend(cluster);
@@ -115,7 +114,7 @@ void TextWrapper::lookAhead(SkScalar maxWidth, Cluster* endOfClusters, bool appl
                     nextWordLength += further->width();
                 }
             }
-            if (nextWordLength > maxWidth) {
+            if (nextWordLength > maxWidth || isLastLine){
                 if (nextNonBreakingSpace != nullptr) {
                     // We only get here if the non-breaking space improves our situation
                     // (allows us to break the text to fit the word)
@@ -172,8 +171,9 @@ void TextWrapper::lookAhead(SkScalar maxWidth, Cluster* endOfClusters, bool appl
         }
 
         if ((fHardLineBreak = cluster->isHardBreak())) {
-            // Stop at the hard line break
-            break;
+            // Stop at the hard line break if ellipsis is not needed
+            if(!needEllipsis)
+                break;
         }
     }
 }
@@ -303,13 +303,12 @@ void TextWrapper::breakTextIntoLines(ParagraphImpl* parent,
     bool needEllipsis = false;
     while (fEndLine.endCluster() != end) {
 
-        this->lookAhead(maxWidth, end, parent->getApplyRoundingHack());
-
         auto lastLine = (hasEllipsis && unlimitedLines) || fLineNumber >= maxLines;
         needEllipsis = hasEllipsis && !endlessLine && lastLine;
-
+        this->lookAhead(maxWidth, end,  parent->getApplyRoundingHack(), lastLine, needEllipsis);
         this->moveForward(needEllipsis);
-        needEllipsis &= fEndLine.endCluster() < end - 1; // Only if we have some text to ellipsize
+        //Commenting this as we are appending all the content in the last line for ellipsis.
+        // needEllipsis &= fEndLine.endCluster() < end - 1; // Only if we have some text to ellipsize
 
         // Do not trim end spaces on the naturally last line of the left aligned text
         this->trimEndSpaces(align);

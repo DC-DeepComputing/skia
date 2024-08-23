@@ -213,7 +213,7 @@ private:
         fHardLineBreak = false;
     }
 
-    void lookAhead(SkScalar maxWidth, Cluster* endOfClusters, bool applyRoundingHack);
+    void lookAhead(SkScalar maxWidth, Cluster* endOfClusters, bool applyRoundingHack,bool isLastLine, bool needEllipsis);
     void moveForward(bool hasEllipsis);
     void trimEndSpaces(TextAlign align);
     std::tuple<Cluster*, size_t, SkScalar> trimStartSpaces(Cluster* endOfClusters);

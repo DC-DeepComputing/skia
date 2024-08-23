@@ -653,7 +653,7 @@ void ParagraphImpl::breakShapedTextIntoLines(SkScalar maxWidth) {
                 // TODO: Take in account clipped edges
                 auto& line = this->addLine(offset, advance, textExcludingSpaces, text, textWithNewlines, clusters, clustersWithGhosts, widthWithSpaces, metrics);
                 if (addEllipsis) {
-                    line.createEllipsis(maxWidth, this->getEllipsis(), true);
+                    line.createEllipsisWithMode(maxWidth, this->getEllipsis(), fParagraphStyle.getEllipsisMode());
                 }
                 fLongestLine = std::max(fLongestLine, nearlyZero(advance.fX) ? widthWithSpaces : advance.fX);
             });
