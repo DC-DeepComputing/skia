@@ -856,6 +856,11 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 	if b.extraConfig("NativeFonts") { // images won't exercise native font integration :)
 		removeFromArgs("image")
 		removeFromArgs("colorImage")
+
+		if (b.extraConfig("ASAN")) {
+			skip(ALL, "test", ALL, "Codec_raw")
+			skip(ALL, "test", ALL, "Codec_Empty")
+		}
 	}
 
 	if b.matchExtraConfig("Graphite") {
