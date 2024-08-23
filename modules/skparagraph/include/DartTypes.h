@@ -58,6 +58,49 @@ enum class TextAlign {
     kEnd,
 };
 
+/**
+ * @enum EllipsisMode
+ * @brief Defines how to handle text that overflows a container's width.
+ *
+ * This enum specifies different options for handling text that exceeds the available
+ * horizontal space in a container. It determines how to indicate truncated text
+ * using ellipsis glyphs (`...`).
+ */
+enum class EllipsisMode {
+/**
+* This mode displays only the end portion of the text that fits within the container.
+* The missing text at the beginning is indicated by an ellipsis (`...`).
+*
+* Example: "...wxyz" (if the full text is "abcdefghijklmnopqrstuvwxyz")
+*/
+kHead,
+
+/**
+* This mode displays the beginning and end portions of the text that fit within the container.
+* The missing text in the middle is indicated by ellipsis glyphs (`...`).
+*
+* Example: "ab...yz" (if the full text is "abcdefghijklmnopqrstuvwxyz")
+*/
+kMiddle,
+
+/**
+* This mode displays only the beginning portion of the text that fits within the container.
+* The missing text at the end is indicated by an ellipsis (`...`).
+*
+* Example: "abcd..." (if the full text is "abcdefghijklmnopqrstuvwxyz")
+*/
+kTail,
+
+/**
+* This mode simply cuts off any text that extends beyond the container's width.
+* No ellipsis glyphs are used to indicate truncation.
+*
+* Example: "abcd" (if the full text is "abcdefghijklmnopqrstuvwxyz")
+*/
+kClip
+};
+
+
 enum class TextDirection {
     kRtl,
     kLtr,
