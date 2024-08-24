@@ -744,13 +744,13 @@ bool DrawPass::prepareResources(ResourceProvider* resourceProvider,
 
 void DrawPass::addResourceRefs(CommandBuffer* commandBuffer) const {
     for (int i = 0; i < fFullPipelines.size(); ++i) {
-        commandBuffer->trackResource(fFullPipelines[i]);
+        commandBuffer->trackCommandBufferResource(fFullPipelines[i]);
     }
     for (int i = 0; i < fSampledTextures.size(); ++i) {
         commandBuffer->trackCommandBufferResource(fSampledTextures[i]->refTexture());
     }
     for (int i = 0; i < fSamplers.size(); ++i) {
-        commandBuffer->trackResource(fSamplers[i]);
+        commandBuffer->trackCommandBufferResource(fSamplers[i]);
     }
 }
 

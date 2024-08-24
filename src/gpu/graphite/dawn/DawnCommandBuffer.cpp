@@ -726,7 +726,7 @@ void DawnCommandBuffer::preprocessViewport(const SkRect& viewport) {
 
         fIntrinsicConstantBufferSlotsUsed = 0;
         SkASSERT(fIntrinsicConstantBuffer);
-        this->trackResource(fIntrinsicConstantBuffer);
+        this->trackCommandBufferResource(fIntrinsicConstantBuffer);
     }
     uint64_t offset = fIntrinsicConstantBufferSlotsUsed * kIntrinsicConstantAlignedSize;
     fSharedContext->queue().WriteBuffer(

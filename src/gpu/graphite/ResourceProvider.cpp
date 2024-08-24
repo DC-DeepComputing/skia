@@ -173,9 +173,8 @@ sk_sp<Texture> ResourceProvider::findOrCreateTextureWithKey(SkISize dimensions,
         return nullptr;
     }
 
-    tex->setKey(key);
     tex->setLabel(std::move(label));
-    fResourceCache->insertResource(tex.get());
+    fResourceCache->insertResource(tex.get(), key);
 
     return tex;
 }
@@ -201,8 +200,7 @@ sk_sp<Sampler> ResourceProvider::findOrCreateCompatibleSampler(const SamplerDesc
         return nullptr;
     }
 
-    sampler->setKey(key);
-    fResourceCache->insertResource(sampler.get());
+    fResourceCache->insertResource(sampler.get(), key);
     return sampler;
 }
 
@@ -248,9 +246,8 @@ sk_sp<Buffer> ResourceProvider::findOrCreateBuffer(size_t size,
         return nullptr;
     }
 
-    buffer->setKey(key);
     buffer->setLabel(std::move(label));
-    fResourceCache->insertResource(buffer.get());
+    fResourceCache->insertResource(buffer.get(), key);
     return buffer;
 }
 

@@ -30,7 +30,7 @@ CommandBuffer::~CommandBuffer() {
 void CommandBuffer::releaseResources() {
     TRACE_EVENT0("skia.gpu", TRACE_FUNC);
 
-    fTrackedUsageResources.clear();
+    // fTrackedUsageResources.clear();
     fCommandBufferResources.clear();
 }
 
@@ -42,9 +42,9 @@ void CommandBuffer::resetCommandBuffer() {
     fBuffersToAsyncMap.clear();
 }
 
-void CommandBuffer::trackResource(sk_sp<Resource> resource) {
-    fTrackedUsageResources.push_back(std::move(resource));
-}
+// void CommandBuffer::trackResource(sk_sp<Resource> resource) {
+//     fTrackedUsageResources.push_back(std::move(resource));
+// }
 
 void CommandBuffer::trackCommandBufferResource(sk_sp<Resource> resource) {
     fCommandBufferResources.push_back(std::move(resource));
@@ -150,7 +150,8 @@ bool CommandBuffer::copyBufferToBuffer(const Buffer* srcBuffer,
         return false;
     }
 
-    this->trackResource(std::move(dstBuffer));
+    // FIXME: where was srcBuffer?
+    this->trackCommandBufferResource(std::move(dstBuffer));
 
     SkDEBUGCODE(fHasWork = true;)
 
@@ -171,7 +172,8 @@ bool CommandBuffer::copyTextureToBuffer(sk_sp<Texture> texture,
     }
 
     this->trackCommandBufferResource(std::move(texture));
-    this->trackResource(std::move(buffer));
+    this->trackCommandBufferResource(std::move(buffer));
+    // this->trackResource(std::move(buffer));
 
     SkDEBUGCODE(fHasWork = true;)
 
@@ -190,6 +192,7 @@ bool CommandBuffer::copyBufferToTexture(const Buffer* buffer,
         return false;
     }
 
+    // FIXME: track buffer?
     this->trackCommandBufferResource(std::move(texture));
 
     SkDEBUGCODE(fHasWork = true;)
@@ -231,7 +234,8 @@ bool CommandBuffer::synchronizeBufferToCpu(sk_sp<Buffer> buffer) {
     }
 
     if (didResultInWork) {
-        this->trackResource(std::move(buffer));
+        // FIXME or is this actually a usage ref that should be held for the duration of the async readback?
+        this->trackCommandBufferResource(std::move(buffer));
         SkDEBUGCODE(fHasWork = true;)
     }
 

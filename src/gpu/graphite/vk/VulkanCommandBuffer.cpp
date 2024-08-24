@@ -383,7 +383,7 @@ void VulkanCommandBuffer::updateRtAdjustUniform(const SkRect& viewport) {
     // Ensure the buffer update is completed and made visible before reading
     intrinsicVulkanBuffer->setBufferAccess(this, VK_ACCESS_UNIFORM_READ_BIT,
                                            VK_PIPELINE_STAGE_VERTEX_SHADER_BIT);
-    this->trackResource(std::move(intrinsicUniformBuffer));
+    this->trackCommandBufferResource(std::move(intrinsicUniformBuffer));
 }
 
 bool VulkanCommandBuffer::onAddRenderPass(const RenderPassDesc& renderPassDesc,
@@ -505,7 +505,7 @@ bool VulkanCommandBuffer::updateAndBindLoadMSAAInputAttachment(const VulkanTextu
                                       /*dynamicOffsetCount=*/0,
                                       /*dynamicOffsets=*/nullptr));
 
-    this->trackResource(std::move(set));
+    this->trackCommandBufferResource(std::move(set));
     return true;
 }
 
@@ -607,13 +607,13 @@ void track_attachments(VulkanCommandBuffer* cmdBuf,
                        VulkanTexture* resolveTexture,
                        VulkanTexture* depthStencilTexture) {
     if (colorTexture) {
-        cmdBuf->trackResource(sk_ref_sp(colorTexture));
+        cmdBuf->trackCommandBufferResource(sk_ref_sp(colorTexture));
     }
     if (resolveTexture){
-        cmdBuf->trackResource(sk_ref_sp(resolveTexture));
+        cmdBuf->trackCommandBufferResource(sk_ref_sp(resolveTexture));
     }
     if (depthStencilTexture) {
-        cmdBuf->trackResource(sk_ref_sp(depthStencilTexture));
+        cmdBuf->trackCommandBufferResource(sk_ref_sp(depthStencilTexture));
     }
 }
 
@@ -779,7 +779,7 @@ bool VulkanCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
         return false;
     }
     this->submitPipelineBarriers();
-    this->trackResource(vulkanRenderPass);
+    this->trackCommandBufferResource(vulkanRenderPass);
 
     int frameBufferWidth = 0;
     int frameBufferHeight = 0;
@@ -856,7 +856,7 @@ bool VulkanCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
     }
 
     // Once we have an active render pass, the command buffer should hold on to a frame buffer ref.
-    this->trackResource(std::move(framebuffer));
+    this->trackCommandBufferResource(std::move(framebuffer));
     return true;
 }
 
@@ -1062,7 +1062,7 @@ void VulkanCommandBuffer::bindUniformBuffers() {
                                       descSet->descriptorSet(),
                                       descriptors.size(),
                                       dynamicOffsets.get()));
-    this->trackResource(std::move(descSet));
+    this->trackCommandBufferResource(std::move(descSet));
 }
 
 void VulkanCommandBuffer::bindDrawBuffers(const BindBufferInfo& vertices,
@@ -1102,7 +1102,6 @@ void VulkanCommandBuffer::bindInputBuffer(const Buffer* buffer, VkDeviceSize off
                                              &offset));
             fBoundInputBuffers[binding] = vkBuffer;
             fBoundInputBufferOffsets[binding] = offset;
-            this->trackResource(sk_ref_sp(buffer));
         }
     }
 }
@@ -1118,7 +1117,6 @@ void VulkanCommandBuffer::bindIndexBuffer(const Buffer* indexBuffer, size_t offs
                                                                         VK_INDEX_TYPE_UINT16));
             fBoundIndexBuffer = vkBuffer;
             fBoundIndexBufferOffset = offset;
-            this->trackResource(sk_ref_sp(indexBuffer));
         }
     } else {
         fBoundIndexBuffer = VK_NULL_HANDLE;
@@ -1131,7 +1129,6 @@ void VulkanCommandBuffer::bindIndirectBuffer(const Buffer* indirectBuffer, size_
     if (indirectBuffer) {
         fBoundIndirectBuffer = static_cast<const VulkanBuffer*>(indirectBuffer)->vkBuffer();
         fBoundIndirectBufferOffset = offset;
-        this->trackResource(sk_ref_sp(indirectBuffer));
     } else {
         fBoundIndirectBuffer = VK_NULL_HANDLE;
         fBoundIndirectBufferOffset = 0;
@@ -1222,7 +1219,7 @@ void VulkanCommandBuffer::recordTextureAndSamplerDescSet(
     fTextureSamplerDescSetToBind = *set->descriptorSet();
     fBindTextureSamplers = true;
     fNumTextureSamplers = command.fNumTexSamplers;
-    this->trackResource(std::move(set));
+    this->trackCommandBufferResource(std::move(set));
 }
 
 void VulkanCommandBuffer::bindTextureSamplers() {
@@ -1535,18 +1532,18 @@ bool VulkanCommandBuffer::onClearBuffer(const Buffer*, size_t offset, size_t siz
     return false;
 }
 
-void VulkanCommandBuffer::addBufferMemoryBarrier(const Resource* resource,
-                                                 VkPipelineStageFlags srcStageMask,
-                                                 VkPipelineStageFlags dstStageMask,
-                                                 VkBufferMemoryBarrier* barrier) {
-    SkASSERT(resource);
-    this->pipelineBarrier(resource,
-                          srcStageMask,
-                          dstStageMask,
-                          /*byRegion=*/false,
-                          kBufferMemory_BarrierType,
-                          barrier);
-}
+// void VulkanCommandBuffer::addBufferMemoryBarrier(const Resource* resource,
+//                                                  VkPipelineStageFlags srcStageMask,
+//                                                  VkPipelineStageFlags dstStageMask,
+//                                                  VkBufferMemoryBarrier* barrier) {
+//     SkASSERT(resource);
+//     this->pipelineBarrier(resource,
+//                           srcStageMask,
+//                           dstStageMask,
+//                           /*byRegion=*/false,
+//                           kBufferMemory_BarrierType,
+//                           barrier);
+// }
 
 void VulkanCommandBuffer::addBufferMemoryBarrier(VkPipelineStageFlags srcStageMask,
                                                  VkPipelineStageFlags dstStageMask,
@@ -1638,9 +1635,9 @@ void VulkanCommandBuffer::pipelineBarrier(const Resource* resource,
     fSrcStageMask = fSrcStageMask | srcStageMask;
     fDstStageMask = fDstStageMask | dstStageMask;
 
-    if (resource) {
-        this->trackResource(sk_ref_sp(resource));
-    }
+    // if (resource) {
+    //     this->trackCommandBufferResource(sk_ref_sp(resource));
+    // }
     if (fActiveRenderPass) {
         this->submitPipelineBarriers(true);
     }

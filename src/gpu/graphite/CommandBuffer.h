@@ -48,11 +48,11 @@ public:
 
     // Takes a Usage ref on the Resource that will be released when the command buffer has finished
     // execution.
-    void trackResource(sk_sp<Resource> resource);
+    // void trackResource(sk_sp<Resource> resource);
     // Takes a CommandBuffer ref on the Resource that will be released when the command buffer has
     // finished execution. This allows a Resource to be returned to ResourceCache for reuse while
-    // the CommandBuffer is still executing on the GPU. This is most commonly used for Textures or
-    // Buffers which are only accessed via commands on a command buffer.
+    // the CommandBuffer is still executing on the GPU. Whether or not they become reusable while
+    // there is outstanding GPU work is determined by the Resource implementation.
     void trackCommandBufferResource(sk_sp<Resource> resource);
     // Release all tracked Resources
     void resetCommandBuffer();
@@ -162,7 +162,7 @@ private:
     inline static constexpr int kInitialTrackedResourcesCount = 32;
     template <typename T>
     using TrackedResourceArray = skia_private::STArray<kInitialTrackedResourcesCount, T>;
-    TrackedResourceArray<sk_sp<Resource>> fTrackedUsageResources;
+    // TrackedResourceArray<sk_sp<Resource>> fTrackedUsageResources;
     TrackedResourceArray<gr_cb<Resource>> fCommandBufferResources;
     skia_private::TArray<sk_sp<RefCntedCallback>> fFinishedProcs;
     skia_private::TArray<sk_sp<Buffer>> fBuffersToAsyncMap;

@@ -48,7 +48,10 @@ sk_sp<Buffer> MtlBuffer::Make(const MtlSharedContext* sharedContext,
 MtlBuffer::MtlBuffer(const MtlSharedContext* sharedContext,
                      size_t size,
                      sk_cfp<id<MTLBuffer>> buffer)
-        : Buffer(sharedContext, size), fBuffer(std::move(buffer)) {}
+        : Buffer(sharedContext,
+                 size,
+                 /*reusableRequiresPurgeable=*/(*buffer).storageMode != MTLStorageModePrivate)
+        , fBuffer(std::move(buffer)) {}
 
 void MtlBuffer::onMap() {
     SkASSERT(fBuffer);

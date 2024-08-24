@@ -65,7 +65,7 @@ bool DispatchGroup::prepareResources(ResourceProvider* resourceProvider) {
 
 void DispatchGroup::addResourceRefs(CommandBuffer* commandBuffer) const {
     for (int i = 0; i < fPipelines.size(); ++i) {
-        commandBuffer->trackResource(fPipelines[i]);
+        commandBuffer->trackCommandBufferResource(fPipelines[i]);
     }
     for (int i = 0; i < fTextures.size(); ++i) {
         commandBuffer->trackCommandBufferResource(fTextures[i]->refTexture());
