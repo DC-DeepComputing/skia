@@ -127,7 +127,12 @@ skia_cc_binary(
         "//tools/timer",
         "@imgui",
     ] + select({
-        "@platforms//os:linux": ["@spirv_tools"],
+        "@platforms//os:android": ["@skia//:fontmgr_android_freetype"],
+        "@platforms//os:linux": [
+            "@skia//:fontmgr_fontconfig_freetype",
+            "@spirv_tools",
+        ],
+        "@platforms//os:macos": ["@skia//:fontmgr_coretext"],
         "//conditions:default": [],
     }),
 )
