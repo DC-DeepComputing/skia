@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "47a07d42_b35021df",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-08-26T13:50:54Z",
+      "side": 1,
+      "message": "Because we can\u0027t always be sure we can get the number of channels from the profile, I wanted to give the profile the \"benefit of the doubt\" in the sense that the user specified it and it should be fine for them to shoot themselves in the foot if they went out of the way to do so. It should also be fine to use some crazy ICC profile that is \"fine\" (like a CMYK with a single channel TRC). So I don\u0027t want to know if there is a match, I want to know if there is a known mismatch and protect against that.",
+      "parentUuid": "e35dbdc4_bbcd4fc8",
+      "revId": "4b0cddd175dbe4abd18aa0ba774fadd49354989f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1b134a65_57375a56",
         "filename": "src/pdf/SkPDFBitmap.cpp",
         "patchSetId": 2
@@ -55,6 +73,53 @@
           ]
         }
       ],
+      "revId": "4b0cddd175dbe4abd18aa0ba774fadd49354989f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cb631a37_d929ec9f",
+        "filename": "src/pdf/SkPDFBitmap.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-08-26T13:50:54Z",
+      "side": 1,
+      "message": "At the moment, not all of them are being checked first.",
+      "parentUuid": "1b134a65_57375a56",
+      "range": {
+        "startLine": 210,
+        "startChar": 0,
+        "endLine": 216,
+        "endChar": 1
+      },
+      "revId": "4b0cddd175dbe4abd18aa0ba774fadd49354989f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7016687_9654d5f0",
+        "filename": "src/pdf/SkPDFBitmap.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 334,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-08-26T13:50:54Z",
+      "side": 1,
+      "message": "This one isn\u0027t separately checked. If we have profile data then we should also have a profile, but that isn\u0027t super obvious right here. We could check it first, but that would (I think) just be checking if skcms could make a profile out of the data, which may or may not mean that the data is \"bad\"? If the profile comes back nullptr here, would that indicate a completely invalid profile?",
+      "range": {
+        "startLine": 334,
+        "startChar": 55,
+        "endLine": 334,
+        "endChar": 76
+      },
       "revId": "4b0cddd175dbe4abd18aa0ba774fadd49354989f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
