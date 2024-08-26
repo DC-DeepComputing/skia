@@ -53,7 +53,6 @@ void DumpDescs(const RendererProvider* rendererProvider,
              rpd.fClearStencil,
              rpd.fWriteSwizzle.asString().c_str(),
              rpd.fSampleCount);
-
 }
 #endif // SK_DEBUG
 
