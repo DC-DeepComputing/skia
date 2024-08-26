@@ -142,11 +142,12 @@ public:
 
     const DepthStencilSettings& depthStencilSettings() const { return fDepthStencilSettings; }
 
-    SkEnumBitMask<DepthStencilFlags> depthStencilFlags() const {
-        return (fDepthStencilSettings.fStencilTestEnabled
-                        ? DepthStencilFlags::kStencil : DepthStencilFlags::kNone) |
-               (fDepthStencilSettings.fDepthTestEnabled || fDepthStencilSettings.fDepthWriteEnabled
-                        ? DepthStencilFlags::kDepth : DepthStencilFlags::kNone);
+    DepthStencilFlags depthStencilFlags() const {
+        return (fDepthStencilSettings.fDepthTestEnabled || fDepthStencilSettings.fDepthWriteEnabled)
+               ? (fDepthStencilSettings.fStencilTestEnabled ? DepthStencilFlags::kDepthStencil
+                                                            : DepthStencilFlags::kDepth)
+               : (fDepthStencilSettings.fStencilTestEnabled ? DepthStencilFlags::kStencil
+                                                            : DepthStencilFlags::kNone);
     }
 
     // TODO: Actual API to do things
@@ -248,7 +249,7 @@ public:
         return SkToBool(fStepFlags & StepFlags::kUseNonAAInnerFill);
     }
 
-    SkEnumBitMask<DepthStencilFlags> depthStencilFlags() const { return fDepthStencilFlags; }
+    DepthStencilFlags depthStencilFlags() const { return fDepthStencilFlags; }
 
     Coverage coverage() const { return RenderStep::GetCoverage(fStepFlags); }
 
@@ -302,7 +303,7 @@ private:
     int fStepCount;
 
     SkEnumBitMask<StepFlags> fStepFlags = StepFlags::kNone;
-    SkEnumBitMask<DepthStencilFlags> fDepthStencilFlags = DepthStencilFlags::kNone;
+    DepthStencilFlags fDepthStencilFlags = DepthStencilFlags::kNone;
 };
 
 } // namespace skgpu::graphite

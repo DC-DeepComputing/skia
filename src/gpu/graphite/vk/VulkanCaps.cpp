@@ -375,7 +375,7 @@ TextureInfo VulkanCaps::getDefaultMSAATextureInfo(const TextureInfo& singleSampl
     return TextureInfos::MakeVulkan(info);
 }
 
-TextureInfo VulkanCaps::getDefaultDepthStencilTextureInfo(SkEnumBitMask<DepthStencilFlags> flags,
+TextureInfo VulkanCaps::getDefaultDepthStencilTextureInfo(DepthStencilFlags flags,
                                                           uint32_t sampleCount,
                                                           Protected isProtected) const {
     VkFormat format = this->getFormatFromDepthStencilFlags(flags);
@@ -946,7 +946,7 @@ void VulkanCaps::initDepthStencilFormatTable(const skgpu::VulkanInterface* inter
     static_assert(std::size(kDepthStencilVkFormats) == VulkanCaps::kNumDepthStencilVkFormats,
                   "Size of DepthStencilVkFormats array must match static value in header");
 
-    using DSFlags = SkEnumBitMask<DepthStencilFlags>;
+    using DSFlags = DepthStencilFlags;
     constexpr DSFlags stencilFlags = DepthStencilFlags::kStencil;
     constexpr DSFlags depthFlags = DepthStencilFlags::kDepth;
     constexpr DSFlags dsFlags = DepthStencilFlags::kDepthStencil;
@@ -1239,9 +1239,8 @@ bool VulkanCaps::DepthStencilFormatInfo::isDepthStencilSupported(VkFormatFeature
     return SkToBool(VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT & flags);
 }
 
-VkFormat VulkanCaps::getFormatFromDepthStencilFlags(const SkEnumBitMask<DepthStencilFlags>& flags)
-        const {
-    return fDepthStencilFlagsToFormatTable[flags.value()];
+VkFormat VulkanCaps::getFormatFromDepthStencilFlags(DepthStencilFlags flags) const {
+    return fDepthStencilFlagsToFormatTable[static_cast<int>(flags)];
 }
 
 VulkanCaps::DepthStencilFormatInfo& VulkanCaps::getDepthStencilFormatInfo(VkFormat format) {
