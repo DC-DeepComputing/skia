@@ -107,6 +107,9 @@ struct ParagraphStyle {
     void setEllipsis(const std::u16string& ellipsis) {  fEllipsisUtf16 = ellipsis; }
     void setEllipsis(const SkString& ellipsis) { fEllipsis = ellipsis; }
 
+    void setEllipsisMode(const EllipsisMode& ellipsisMode) {  fEllipsisMode = ellipsisMode; }
+    EllipsisMode getEllipsisMode() const { return fEllipsisMode; }
+
     SkScalar getHeight() const { return fHeight; }
     void setHeight(SkScalar height) { fHeight = height; }
 
@@ -135,6 +138,7 @@ private:
     size_t fLinesLimit;
     std::u16string fEllipsisUtf16;
     SkString fEllipsis;
+    EllipsisMode fEllipsisMode;
     SkScalar fHeight;
     TextHeightBehavior fTextHeightBehavior;
     bool fHintingIsOn;

@@ -249,8 +249,221 @@ protected:
 private:
     using INHERITED = skiagm::GM;
 };
+class EllipsisModeGM : public skiagm::GM {
+    std::unique_ptr<skia::textlayout::Paragraph> fPara;
+
+public:
+    EllipsisModeGM() {}
+
+protected:
+
+    skia::textlayout::ParagraphStyle getParagraphStyle(skia::textlayout::EllipsisMode mode){
+        skia::textlayout::TextStyle style;
+        style.setForegroundColor(SkPaint());
+        style.setFontFamilies({SkString("sans-serif")});
+        style.setFontSize(25);
+
+        skia::textlayout::ParagraphStyle paraStyle;
+        paraStyle.setTextStyle(style);
+        SkString ellipsis("...");
+        paraStyle.setEllipsis(ellipsis);
+        paraStyle.setMaxLines(3);
+        paraStyle.setEllipsisMode(mode);
+        return paraStyle;
+    }
+
+
+    void buildTailEllipsis(){
+
+        sk_sp<SkFontMgr> fontmgr = ToolUtils::TestFontMgr();
+        if (fontmgr->countFamilies() == 0) {
+           fPara = nullptr;
+            return;
+        }
+        auto collection = sk_make_sp<skia::textlayout::FontCollection>();
+        collection->setDefaultFontManager(std::move(fontmgr));
+
+        auto unicode = get_unicode();
+        if (!unicode) {
+           fPara = nullptr;
+            return;
+        }
+
+        auto builder = skia::textlayout::ParagraphBuilderImpl::make(getParagraphStyle(skia::textlayout::EllipsisMode::kTail), collection, unicode);
+        if (nullptr == builder) {
+           fPara = nullptr;
+            return;
+        }
+
+        const char* text = "This is the basic test ellipsis mode. It contains bunch of text with maximum lines set to 3. It will show multiple ellipsis modes";
+
+        builder->addText(text);
+
+
+        fPara1 = builder->Build();
+    }
+
+
+    void buildMiddleEllipsis(){
+
+        sk_sp<SkFontMgr> fontmgr = ToolUtils::TestFontMgr();
+        if (fontmgr->countFamilies() == 0) {
+           fPara = nullptr;
+            return ;
+        }
+        auto collection = sk_make_sp<skia::textlayout::FontCollection>();
+        collection->setDefaultFontManager(std::move(fontmgr));
+
+        auto unicode = get_unicode();
+        if (!unicode) {
+           fPara = nullptr;
+            return;
+        }
+        auto builder = skia::textlayout::ParagraphBuilderImpl::make(getParagraphStyle(skia::textlayout::EllipsisMode::kMiddle), collection, unicode);
+        if (nullptr == builder) {
+           fPara = nullptr;
+            return;
+        }
+
+        const char* text = "This is the basic test ellipsis mode. It contains bunch of text with maximum lines set to 3. It will show multiple ellipsis modes";
+
+        builder->addText(text);
+
+
+        fPara2 = builder->Build();
+    }
+
+    void buildHeadEllipsis(){
+
+        sk_sp<SkFontMgr> fontmgr = ToolUtils::TestFontMgr();
+        if (fontmgr->countFamilies() == 0) {
+           fPara = nullptr;
+            return;
+        }
+        auto collection = sk_make_sp<skia::textlayout::FontCollection>();
+        collection->setDefaultFontManager(std::move(fontmgr));
+
+        auto unicode = get_unicode();
+        if (!unicode) {
+           fPara = nullptr;
+            return;
+        }
+        auto builder = skia::textlayout::ParagraphBuilderImpl::make(getParagraphStyle(skia::textlayout::EllipsisMode::kHead), collection, unicode);
+        if (nullptr == builder) {
+           fPara = nullptr;
+           return;
+        }
+
+        const char* text = "This is the basic test ellipsis mode. It contains bunch of text with maximum lines set to 3. It will show multiple ellipsis modes";
+
+        builder->addText(text);
+
+
+        fPara3 = builder->Build();
+    }
+
+    void buildClipEllipsis(){
+
+        sk_sp<SkFontMgr> fontmgr = ToolUtils::TestFontMgr();
+        if (fontmgr->countFamilies() == 0) {
+           fPara = nullptr;
+            return;
+        }
+        auto collection = sk_make_sp<skia::textlayout::FontCollection>();
+        collection->setDefaultFontManager(std::move(fontmgr));
+
+        auto unicode = get_unicode();
+        if (!unicode) {
+           fPara = nullptr;
+           return;
+        }
+        auto builder = skia::textlayout::ParagraphBuilderImpl::make(getParagraphStyle(skia::textlayout::EllipsisMode::kClip), collection, unicode);
+        if (nullptr == builder) {
+           fPara = nullptr;
+           return;
+        }
+
+        const char* text = "This is the basic test ellipsis mode. It contains bunch of text with maximum lines set to 3. It will show multiple ellipsis modes";
+
+        builder->addText(text);
+
+
+        fPara4 = builder->Build();
+    }
+
+    void onOnceBeforeDraw() override {
+        buildTailEllipsis();
+        buildMiddleEllipsis();
+        buildHeadEllipsis();
+        buildClipEllipsis();
+    }
+
+    SkString getName() const override {
+        SkString name;
+        name.printf("paragraph_ellipsisModes");
+        return name;
+    }
+
+    SkISize getISize() override {
+        return SkISize::Make(412, 420);
+    }
+
+    DrawResult onDraw(SkCanvas* canvas, SkString* errorMsg) override {
+
+        if (nullptr == fPara1 || nullptr == fPara2 || nullptr == fPara3 || nullptr == fPara4) {
+            *errorMsg = "Font manager had no fonts or could not build paragraph.";
+            return DrawResult::kSkip;
+        }
+
+        canvas->clear(SK_ColorWHITE);
+        SkPaint paint;
+        paint.setColor(SK_ColorRED); // Set color to red (255, 0, 0)
+        paint.setStyle(SkPaint::kFill_Style); // Set the style to fill
+
+        fPara1->layout(400);
+        fPara2->layout(400);
+        fPara3->layout(400);
+        fPara4->layout(400);
+
+        // Define the rectangles
+        SkRect rect1 = SkRect::MakeXYWH(10, 10, 400, fPara1->getHeight());
+        SkRect rect2 = SkRect::MakeXYWH(10, 210, 400, fPara2->getHeight());
+        SkRect rect3 = SkRect::MakeXYWH(10, 410, 400, fPara3->getHeight());
+        SkRect rect4 = SkRect::MakeXYWH(10, 610, 400, fPara4->getHeight());
+
+        canvas->drawRect(rect1, paint);
+        fPara1->paint(canvas, 10, 10);
+
+        canvas->drawRect(rect2, paint);
+        fPara2->paint(canvas, 10, 210);
+
+        canvas->drawRect(rect3, paint);
+        fPara3->paint(canvas, 10, 410);
+
+        canvas->drawRect(rect4, paint);
+        fPara4->paint(canvas, 10, 610);
+
+        return DrawResult::kOk;
+    }
+
+    bool runAsBench() const override { return true; }
+
+    bool onAnimate(double /*nanos*/) override {
+        return false;
+    }
+
+private:
+    using INHERITED = skiagm::GM;
+    std::unique_ptr<skia::textlayout::Paragraph> fPara1;
+    std::unique_ptr<skia::textlayout::Paragraph> fPara2;
+    std::unique_ptr<skia::textlayout::Paragraph> fPara3;
+    std::unique_ptr<skia::textlayout::Paragraph> fPara4;
+};
+
 DEF_GM(return new ParagraphGM(0);)
 DEF_GM(return new ParagraphGM(kTimeLayout);)
 DEF_GM(return new ParagraphGM(kUseUnderline);)
 DEF_GM(return new ParagraphGM(kShowVisitor);)
 DEF_GM(return new ParagraphGM(kShowVisitor | kUseUnderline);)
+DEF_GM(return new EllipsisModeGM();)
+
