@@ -16,6 +16,24 @@
       "message": "It feels a little weird to me to share this code between the two implementations. Really, the source format is an implementation detail - `SkPngRustCodec` *could* choose to ask Rust\u0027s `png` crate to generate a different format, which it would then feed to `skcms`. (And it\u0027s not feeding *anything* to `skcms` right now.)\n\nBut given that we intend for it to mirror `SkPngCodec`, I guess it\u0027s fine?\n\n(I also find it awkward that we store it in `SkCodec`. I\u0027m sure it made sense at the time, but it\u0027s passed in the constructor, even though it\u0027s not `const` and we have a setter and getter for it. It probably *was* `const` initially.)",
       "revId": "68194386775704e9afd2cde4f4226b04ff80ee7a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ceb36850_b3c216aa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-08-26T22:47:11Z",
+      "side": 1,
+      "message": "\u003e It feels a little weird to me to share this code between the two implementations. Really, the source format is an implementation detail - `SkPngRustCodec` *could* choose to ask Rust\u0027s `png` crate to generate a different format, which it would then feed to `skcms`. \n\nI hope/plan to minimize risk by replicating the current behavior of `SkPngCodec`\u0027s `SkSwizzler` and `skcms` usage.  I plan to replicate both:\n\n* The format which is coming out of the decoder.  (One currently existing difference is for indexed/paletted images which decode into either RGB or RGBA, but A) RGB and RGBA already need to be handled well, and B) this difference should go away in the future via https://crbug.com/356882657.\n\n* Further transformations of the pixels via `SkSwizzler` and `skcms`.\n\nI am not 100% sure if I can replicate everything (I vaguely recall that `libpng` always decodes into `libpng`-owned buffer which means that https://crbug.com/357876243 may require tweaking/forking how to behave when there is no `SkSwizzler` or when there could be no `SkSwizzler`).  But for now it seems that I can replicate everything, so this is what I am doing in this CL.  I think it should be okay to \"pivot\" to another approach in the future, if we find it necessary.\n\n\u003e (And it\u0027s not feeding *anything* to `skcms` right now.)\n\n`SkPngRustCodec` will start using `skcms` in http://review.skia.org/889151 (this is where we move related `SkPngCodec`\u0027s code into `SkPngCodecBase` and reusing it).\n\n\u003e But given that we intend for it to mirror `SkPngCodec`, I guess it\u0027s fine?\n\nAck.\n\n\u003e (I also find it awkward that we store it in `SkCodec`. I\u0027m sure it made sense at the time, but it\u0027s passed in the constructor, even though it\u0027s not `const` and we have a setter and getter for it. It probably *was* `const` initially.)\n\nAck.  +1.  In general it feels that `SkCodec::applyColorXform` could be extracted into a separate, `SkCodec`-agnostic, self-contained class.  But it works as-is, so...  If you strongly feel about it, then maybe I can open a bug where we can track and prioritize the desire to change this?",
+      "parentUuid": "2aed2ba4_28e07443",
+      "revId": "68194386775704e9afd2cde4f4226b04ff80ee7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
