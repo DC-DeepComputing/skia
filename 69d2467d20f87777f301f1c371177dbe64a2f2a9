@@ -33,6 +33,24 @@
       "message": "Is this a convention that the `extern \"Rust\"` block doesn\u0027t have comments describing the functions, but the descriptions are here?",
       "revId": "69d2467d20f87777f301f1c371177dbe64a2f2a9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e29f6def_0d6f02c3",
+        "filename": "experimental/rust_png/ffi/FFI.rs",
+        "patchSetId": 21
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-08-26T20:23:31Z",
+      "side": 1,
+      "message": "There is no convention / I am trying to figure out what the right thing to do is.\n\n* The shared types (e.g. `ColorType` and `DecodingResult`) are not repeated anywhere else, so I am including their doc comments right next to them.  OTOH, the types, functions, and methods from the `extern \"Rust\"` section describe/redeclare Rust types, functions, and methods that are defined outside of the `#[cxx::bridge]` and for those we have a choice whether to provide a doc comment inside the `#[cxx::bridge]` or outside.\n* I think that it is more important to attach a doc comment to real Rust functions, than to `#[cxx::bridge]` declarations.  Rationale:\n    - Doc comments of real Rust functions will be exposed in IDEs (via rust-analyzer)\n    - In theory the doc comments of real Rust functions can be consumed by `cargo doc` to 1) generate HTML docs for the crate and 2) make sure that embedded examples compile and don\u0027t panic.\n\n\nMaybe I should add a short blurb/comment to `#[cxx::bridge]` to say that real comments can be found elsewhere.\n\nDone?  (by adding a short blurb/comment to `#[cxx::bridge]`)",
+      "parentUuid": "44770779_b91348c5",
+      "revId": "69d2467d20f87777f301f1c371177dbe64a2f2a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

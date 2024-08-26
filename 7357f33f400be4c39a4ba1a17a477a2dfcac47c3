@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "5e6d8dc1_0033d34e",
+        "filename": "experimental/rust_png/ffi/FFI.rs",
+        "patchSetId": 22
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-08-26T20:23:31Z",
+      "side": 1,
+      "message": "The `unsafe` keyword has different meaning depending on the context.  Typically `unsafe` can appear in 2 contexts:\n\n* `unsafe fn` and/or `unsafe trait` should have a doc comment with safety requirements section.  For example - see https://rust-lang.github.io/rust-clippy/master/index.html#/missing_safety_doc\n* `unsafe { some-expr-here }` should have a comment explaining why the safety requirements are met (and why safe alternatives can\u0027t be used instead).  For example - see https://rust-lang.github.io/rust-clippy/master/index.html#/undocumented_unsafe_blocks\n\nHere (on new line 69 above), `unsafe` is used in yet another (more rare) context - this `unsafe` is consumed by the `cxx::bridge` proc macro:\n\n* This means that there is no `unsafe fn` available to the rest of Rust code here (and so the `missing_safety_doc` lint mentioned above doesn\u0027t apply here).  (There may be some private `unsafe fn` and `unsafe { expr }` within `cxx` implementation and/or generated code.)\n* Motivation for this `unsafe`:\n    * FFI is inherently unsafe.  `cxx` takes care of most of the unsafety (e.g. enforces at compile time that types/functions exist with the right signature on both sides of the FFI boundary), but some unsafety remains (e.g. when calling `fn is_srgb(self: \u0026Reader)` above, the C++ caller has to pinky-promise that they don\u0027t pass a dangling pointer).  Here the `unsafe` keyword is supposed to be an extra warning that the C++ caller has to be really, really careful (because the lifetimes are more complicated than in the `is_srgb` example - in `try_get_iccp` the lifetime of `iccp` has to be shorter than the lifetime of `self`)\n    \nI hope this helps?  Let me resolve this code review thread, but feel free to reactivate if needed.",
+      "parentUuid": "471c23cd_4755e998",
+      "range": {
+        "startLine": 69,
+        "startChar": 8,
+        "endLine": 69,
+        "endChar": 14
+      },
+      "revId": "7357f33f400be4c39a4ba1a17a477a2dfcac47c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "12534b75_a4c149a4",
         "filename": "experimental/rust_png/ffi/FFI.rs",
         "patchSetId": 22
@@ -70,6 +94,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2be811d0_74131e4d",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-08-26T20:23:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d646c4e0_8198a2ad",
+      "range": {
+        "startLine": 28,
+        "startChar": 41,
+        "endLine": 28,
+        "endChar": 45
+      },
+      "revId": "7357f33f400be4c39a4ba1a17a477a2dfcac47c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "16e507ad_a644deb8",
@@ -83,6 +131,24 @@
       "writtenOn": "2024-08-16T21:06:25Z",
       "side": 1,
       "message": "Revisiting this w.r.t. \"C++/FFI safety\" - I assume this is initialized, since it\u0027s a Rust thing?",
+      "revId": "7357f33f400be4c39a4ba1a17a477a2dfcac47c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "81eae14d_d70fcb6f",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-08-26T20:23:31Z",
+      "side": 1,
+      "message": "Yes - `rust::Slice` has a default constructor - see: https://source.chromium.org/chromium/chromium/src/+/main:third_party/rust/chromium_crates_io/vendor/cxx-1.0.126/include/cxx.h;l\u003d523-526;drc\u003df642d4b48c9fb0e0e12b8ce3f34283b38bf5b97c",
+      "parentUuid": "16e507ad_a644deb8",
       "revId": "7357f33f400be4c39a4ba1a17a477a2dfcac47c3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -110,6 +176,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "526bf6a8_6725e83a",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-08-26T20:23:31Z",
+      "side": 1,
+      "message": "Ack - let me open https://crbug.com/362306048 and leave a TODO here.",
+      "parentUuid": "848d6fd0_5c4e582d",
+      "range": {
+        "startLine": 100,
+        "startChar": 0,
+        "endLine": 101,
+        "endChar": 28
+      },
+      "revId": "7357f33f400be4c39a4ba1a17a477a2dfcac47c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8fd0f7e1_812f4f12",
@@ -123,6 +213,24 @@
       "writtenOn": "2024-08-16T21:06:25Z",
       "side": 1,
       "message": "Per the \"C++/FFI safety\" warning, this needs to be initialized.",
+      "revId": "7357f33f400be4c39a4ba1a17a477a2dfcac47c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "abb423fa_f206fb67",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-08-26T20:23:31Z",
+      "side": 1,
+      "message": "Ooops.  Done.",
+      "parentUuid": "8fd0f7e1_812f4f12",
       "revId": "7357f33f400be4c39a4ba1a17a477a2dfcac47c3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }

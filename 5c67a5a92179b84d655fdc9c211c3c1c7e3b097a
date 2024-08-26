@@ -151,6 +151,30 @@
       },
       "revId": "5c67a5a92179b84d655fdc9c211c3c1c7e3b097a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e3e9cdc_3ee825ca",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-08-26T20:23:31Z",
+      "side": 1,
+      "message": "For now let me just open https://crbug.com/362304558 for now + link the TODO to the new bug.  OTOH, maybe this bug is indeed resolvable as WontFix because the PNG spec says that if the `sRGB` chunk is present then (regardless of `sRGB` intent field) \"An application that writes the sRGB chunk should also write a gAMA chunk (and perhaps a cHRM chunk) for compatibility with applications that do not use the sRGB chunk. In this situation, only the following values may be used: [hard coded values that ignore the \u0027intent\u0027 field]\"",
+      "parentUuid": "087f8d30_64d835f9",
+      "range": {
+        "startLine": 80,
+        "startChar": 22,
+        "endLine": 80,
+        "endChar": 23
+      },
+      "revId": "5c67a5a92179b84d655fdc9c211c3c1c7e3b097a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
