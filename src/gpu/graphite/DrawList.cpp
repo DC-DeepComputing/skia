@@ -31,7 +31,8 @@ void DrawList::recordDraw(const Renderer* renderer,
                           const StrokeStyle* stroke) {
     SkASSERT(localToDevice.valid());
     SkASSERT(!geometry.isEmpty() && !clip.drawBounds().isEmptyNegativeOrNaN());
-    SkASSERT(!(renderer->depthStencilFlags() & DepthStencilFlags::kStencil) ||
+    SkASSERT(!(renderer->depthStencilFlags() == DepthStencilFlags::kStencil ||
+               renderer->depthStencilFlags() == DepthStencilFlags::kDepthStencil) ||
              ordering.stencilIndex() != DrawOrder::kUnassigned);
 
     // TODO: Add validation that the renderer's expected shape type and stroke params match provided

@@ -81,7 +81,7 @@ bool DawnFormatIsStencil(wgpu::TextureFormat format) {
     SkUNREACHABLE;
 }
 
-wgpu::TextureFormat DawnDepthStencilFlagsToFormat(SkEnumBitMask<DepthStencilFlags> mask) {
+wgpu::TextureFormat DawnDepthStencilFlagsToFormat(DepthStencilFlags mask) {
     // TODO: Decide if we want to change this to always return a combined depth and stencil format
     // to allow more sharing of depth stencil allocations.
     if (mask == DepthStencilFlags::kDepth) {

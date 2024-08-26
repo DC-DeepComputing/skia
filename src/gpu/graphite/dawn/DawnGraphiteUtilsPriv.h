@@ -32,7 +32,7 @@ bool DawnFormatIsDepthOrStencil(wgpu::TextureFormat);
 bool DawnFormatIsDepth(wgpu::TextureFormat);
 bool DawnFormatIsStencil(wgpu::TextureFormat);
 
-wgpu::TextureFormat DawnDepthStencilFlagsToFormat(SkEnumBitMask<DepthStencilFlags>);
+wgpu::TextureFormat DawnDepthStencilFlagsToFormat(DepthStencilFlags);
 
 bool DawnCompileWGSLShaderModule(const DawnSharedContext* sharedContext,
                                  const char* label,

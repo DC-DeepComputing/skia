@@ -37,7 +37,7 @@ public:
     TextureInfo getDefaultMSAATextureInfo(const TextureInfo& singleSampledInfo,
                                           Discardable discardable) const override;
 
-    TextureInfo getDefaultDepthStencilTextureInfo(SkEnumBitMask<DepthStencilFlags>,
+    TextureInfo getDefaultDepthStencilTextureInfo(DepthStencilFlags,
                                                   uint32_t sampleCount,
                                                   Protected) const override;
 
@@ -87,7 +87,7 @@ private:
         int idx = static_cast<int>(colorType);
         return fColorTypeToFormatTable[idx];
     }
-    MTLPixelFormat getFormatFromDepthStencilFlags(SkEnumBitMask<DepthStencilFlags>) const;
+    MTLPixelFormat getFormatFromDepthStencilFlags(DepthStencilFlags) const;
 
     const ColorTypeInfo* getColorTypeInfo(SkColorType, const TextureInfo&) const override;
 

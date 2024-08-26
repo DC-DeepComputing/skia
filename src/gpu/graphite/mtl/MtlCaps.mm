@@ -820,8 +820,7 @@ TextureInfo MtlCaps::getDefaultMSAATextureInfo(const TextureInfo& singleSampledI
     return TextureInfos::MakeMetal(info);
 }
 
-MTLPixelFormat MtlCaps::getFormatFromDepthStencilFlags(
-        SkEnumBitMask<DepthStencilFlags> mask) const {
+MTLPixelFormat MtlCaps::getFormatFromDepthStencilFlags(DepthStencilFlags mask) const {
     // TODO: Decide if we want to change this to always return a combined depth and stencil format
     // to allow more sharing of depth stencil allocations.
     if (mask == DepthStencilFlags::kDepth) {
@@ -843,7 +842,7 @@ MTLPixelFormat MtlCaps::getFormatFromDepthStencilFlags(
 }
 
 TextureInfo MtlCaps::getDefaultDepthStencilTextureInfo(
-            SkEnumBitMask<DepthStencilFlags> depthStencilType,
+            DepthStencilFlags depthStencilType,
             uint32_t sampleCount,
             Protected) const {
     MtlTextureInfo info;
@@ -964,13 +963,11 @@ bool MtlCaps::extractGraphicsDescs(const UniqueKey& key,
     SkASSERT(keyData.fColorSampleCount == keyData.fDSSampleCount);
 
     MTLPixelFormat dsFormat = keyData.fDSFormat;
-    SkEnumBitMask<DepthStencilFlags> dsFlags = DepthStencilFlags::kNone;
-    if (MtlFormatIsDepth(dsFormat)) {
-        dsFlags |= DepthStencilFlags::kDepth;
-    }
-    if (MtlFormatIsStencil(dsFormat)) {
-        dsFlags |= DepthStencilFlags::kStencil;
-    }
+    DepthStencilFlags dsFlags = MtlFormatIsDepth(dsFormat)
+            ? (MtlFormatIsStencil(dsFormat) ? DepthStencilFlags::kDepthStencil
+                                            : DepthStencilFlags::kStencil)
+            : (MtlFormatIsStencil(dsFormat) ? DepthStencilFlags::kStencil
+                                            : DepthStencilFlags::kNone);
 
     MtlTextureInfo mtlInfo(keyData.fColorSampleCount,
                            skgpu::Mipmapped::kNo,
