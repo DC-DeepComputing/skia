@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "84cc8789_84674afc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-08-26T21:43:54Z",
+      "side": 1,
+      "message": "The WPT issue appears to be that at some point does a `GET /webdriver/tests/support/inline.py?doc\u003d...` where the `...` contains a 200KB PDF base64 encoded and then wrapped in html. It is this top level `async function getText()` that provides the `getText()` which is expected to be found later. I assume that this change is changing the size of the PDF somehow, but it isn\u0027t exactly clear how that is affecting these tests.",
+      "revId": "f53fb303ed610495fdaeee373865ee8a1a61802f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
