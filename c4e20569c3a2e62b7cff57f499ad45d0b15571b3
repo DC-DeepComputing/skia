@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d2a6ef9a_554bd2c5",
+        "filename": "src/gpu/graphite/PublicPrecompile.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-08-26T15:27:47Z",
+      "side": 1,
+      "message": "I do believe the load-msaa-from-resolve extension in dawn depends on the load op used.",
+      "range": {
+        "startLine": 118,
+        "startChar": 40,
+        "endLine": 118,
+        "endChar": 46
+      },
+      "revId": "c4e20569c3a2e62b7cff57f499ad45d0b15571b3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d53d4a8_8052dbbf",
+        "filename": "src/gpu/graphite/Renderer.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-08-26T15:27:47Z",
+      "side": 1,
+      "message": "This seems like a weird place. I wish we could move SkEnumBitMask.h into include/private (maybe we can?). Otherwise maybe this goes in ResourceTypes with a comment that the enum itself is in the public header?\n\nAlternatively, since we really only have the 3 values, maybe it\u0027s fine to make it a regular enum and not have bitmask support?",
+      "range": {
+        "startLine": 34,
+        "startChar": 0,
+        "endLine": 34,
+        "endChar": 38
+      },
+      "revId": "c4e20569c3a2e62b7cff57f499ad45d0b15571b3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
