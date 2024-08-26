@@ -294,7 +294,7 @@ TextureInfo DawnCaps::getDefaultMSAATextureInfo(const TextureInfo& singleSampled
 }
 
 TextureInfo DawnCaps::getDefaultDepthStencilTextureInfo(
-    SkEnumBitMask<DepthStencilFlags> depthStencilType,
+    DepthStencilFlags depthStencilType,
     uint32_t sampleCount,
     Protected) const {
     DawnTextureInfo info;
@@ -985,19 +985,18 @@ bool DawnCaps::extractGraphicsDescs(const UniqueKey& key,
     dawnInfo.fMipmapped = skgpu::Mipmapped::kNo;
     dawnInfo.fUsage = wgpu::TextureUsage::TextureBinding | wgpu::TextureUsage::RenderAttachment;
 
-    SkEnumBitMask<DepthStencilFlags> dsFlags = DepthStencilFlags::kNone;
+    DepthStencilFlags dsFlags = DepthStencilFlags::kNone;
 
     uint32_t depthStencilFormatIndex =
             (renderpassDescBits >> kDepthStencilFormatOffset) & kFormatMask;
     if (depthStencilFormatIndex != kUnusedAttachmentIndex) {
         SkASSERT(depthStencilFormatIndex < std::size(kFormats));
         wgpu::TextureFormat dsFormat = kFormats[depthStencilFormatIndex];
-        if (DawnFormatIsDepth(dsFormat)) {
-            dsFlags |= DepthStencilFlags::kDepth;
-        }
-        if (DawnFormatIsStencil(dsFormat)) {
-            dsFlags |= DepthStencilFlags::kStencil;
-        }
+        dsFlags = DawnFormatIsDepth(dsFormat)
+                  ? (DawnFormatIsStencil(dsFormat) ? DepthStencilFlags::kDepthStencil
+                                                   : DepthStencilFlags::kDepth)
+                  : (DawnFormatIsStencil(dsFormat) ? DepthStencilFlags::kStencil
+                                                   : DepthStencilFlags::kNone);
     }
     SkDEBUGCODE(uint32_t dsSampleCount =
                     (renderpassDescBits >> kDepthStencilNumSamplesOffset) & kNumSamplesMask;)

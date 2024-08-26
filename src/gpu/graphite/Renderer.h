@@ -142,11 +142,12 @@ public:
 
     const DepthStencilSettings& depthStencilSettings() const { return fDepthStencilSettings; }
 
-    SkEnumBitMask<DepthStencilFlags> depthStencilFlags() const {
-        return (fDepthStencilSettings.fStencilTestEnabled
-                        ? DepthStencilFlags::kStencil : DepthStencilFlags::kNone) |
-               (fDepthStencilSettings.fDepthTestEnabled || fDepthStencilSettings.fDepthWriteEnabled
-                        ? DepthStencilFlags::kDepth : DepthStencilFlags::kNone);
+    DepthStencilFlags depthStencilFlags() const {
+        return (fDepthStencilSettings.fDepthTestEnabled || fDepthStencilSettings.fDepthWriteEnabled)
+               ? (fDepthStencilSettings.fStencilTestEnabled ? DepthStencilFlags::kDepthStencil
+                                                            : DepthStencilFlags::kDepth)
+               : (fDepthStencilSettings.fStencilTestEnabled ? DepthStencilFlags::kStencil
+                                                            : DepthStencilFlags::kNone);
     }
 
     // TODO: Actual API to do things
@@ -248,7 +249,7 @@ public:
         return SkToBool(fStepFlags & StepFlags::kUseNonAAInnerFill);
     }
 
-    SkEnumBitMask<DepthStencilFlags> depthStencilFlags() const { return fDepthStencilFlags; }
+    DepthStencilFlags depthStencilFlags() const { return fDepthStencilFlags; }
 
     Coverage coverage() const { return RenderStep::GetCoverage(fStepFlags); }
 
@@ -277,11 +278,14 @@ private:
             , fDrawTypes(drawTypes)
             , fStepCount(SkTo<int>(N)) {
         static_assert(N <= kMaxRenderSteps);
+        int accumDSFlags = 0;
         for (int i = 0 ; i < fStepCount; ++i) {
             fSteps[i] = steps[i];
             fStepFlags |= fSteps[i]->fFlags;
-            fDepthStencilFlags |= fSteps[i]->depthStencilFlags();
+            accumDSFlags |= static_cast<int>(fSteps[i]->depthStencilFlags());
         }
+        fDepthStencilFlags = static_cast<DepthStencilFlags>(accumDSFlags);
+
         // At least one step needs to actually shade.
         SkASSERT(fStepFlags & RenderStep::Flags::kPerformsShading);
         // A render step using non-AA inner fills with a second draw should not also be part of a
@@ -302,7 +306,7 @@ private:
     int fStepCount;
 
     SkEnumBitMask<StepFlags> fStepFlags = StepFlags::kNone;
-    SkEnumBitMask<DepthStencilFlags> fDepthStencilFlags = DepthStencilFlags::kNone;
+    DepthStencilFlags fDepthStencilFlags = DepthStencilFlags::kNone;
 };
 
 } // namespace skgpu::graphite

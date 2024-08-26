@@ -38,7 +38,7 @@ RenderPassDesc RenderPassDesc::Make(const Caps* caps,
                                     const TextureInfo& targetInfo,
                                     LoadOp loadOp,
                                     StoreOp storeOp,
-                                    SkEnumBitMask<DepthStencilFlags> depthStencilFlags,
+                                    DepthStencilFlags depthStencilFlags,
                                     const std::array<float, 4>& clearColor,
                                     bool requiresMSAA,
                                     Swizzle writeSwizzle) {

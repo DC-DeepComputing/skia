@@ -43,7 +43,7 @@ public:
     TextureInfo getDefaultMSAATextureInfo(const TextureInfo& singleSampledInfo,
                                           Discardable discardable) const override;
 
-    TextureInfo getDefaultDepthStencilTextureInfo(SkEnumBitMask<DepthStencilFlags>,
+    TextureInfo getDefaultDepthStencilTextureInfo(DepthStencilFlags,
                                                   uint32_t sampleCount,
                                                   Protected) const override;
 
@@ -222,7 +222,7 @@ private:
     // Map DepthStencilFlags to VkFormat.
     static const size_t kNumDepthStencilFlags = 4;
     VkFormat fDepthStencilFlagsToFormatTable[kNumDepthStencilFlags];
-    VkFormat getFormatFromDepthStencilFlags(const SkEnumBitMask<DepthStencilFlags>& flags) const;
+    VkFormat getFormatFromDepthStencilFlags(DepthStencilFlags) const;
 
     // Map depth/stencil VkFormats to DepthStencilFormatInfo.
     static const size_t kNumDepthStencilVkFormats = 5;
