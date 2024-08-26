@@ -1,0 +1,62 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e35dbdc4_bbcd4fc8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-08-26T13:16:14Z",
+      "side": 1,
+      "message": "This is fine, although with each caller having to negate the result ... maybe we invert the sense of the function?",
+      "revId": "4b0cddd175dbe4abd18aa0ba774fadd49354989f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b134a65_57375a56",
+        "filename": "src/pdf/SkPDFBitmap.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-08-26T13:16:14Z",
+      "side": 1,
+      "message": "Given that all callers are checking the profile pointer first, how about we just add an assert in here?",
+      "range": {
+        "startLine": 210,
+        "startChar": 0,
+        "endLine": 216,
+        "endChar": 1
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "97b5bf8e_b8a9fd33",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/pdf/SkPDFBitmap.cpp",
+              "range": {
+                "startLine": 211,
+                "startChar": 0,
+                "endLine": 215,
+                "endChar": 0
+              },
+              "replacement": "    SkASSERT(iccProfile);\n    int iccChannels \u003d skcms_GetInputChannelCount(iccProfile);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "4b0cddd175dbe4abd18aa0ba774fadd49354989f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
