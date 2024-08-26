@@ -26,6 +26,7 @@ import (
 	"go.skia.org/infra/go/cipd"
 	"go.skia.org/infra/task_scheduler/go/specs"
 	"go.skia.org/skia/bazel/device_specific_configs"
+	"go.skia.org/skia/infra/bots/deps"
 )
 
 const (
@@ -2235,7 +2236,7 @@ func (b *jobBuilder) bazelBuild() {
 
 	b.addTask(b.Name, func(b *taskBuilder) {
 		cmd := []string{
-			"bazel_build_task_driver/bazel_build",
+			"./bazel_build",
 			"--project_id=skia-swarming-bots",
 			"--task_id=" + specs.PLACEHOLDER_TASK_ID,
 			"--task_name=" + b.Name,
@@ -2253,19 +2254,23 @@ func (b *jobBuilder) bazelBuild() {
 			)
 		}
 
+		// Use a built task_driver from CIPD instead of building it from scratch. The
+		// task_driver should not need to change often, so using a CIPD version should reduce
+		// build latency.
+		taskDriverDep, err := deps.Get("skia/tools/bazel_build")
+		if err != nil {
+			panic(err)
+		}
+		taskDriverPkg := &cipd.Package{
+			Name:    taskDriverDep.Id + "/${platform}",
+			Path:    ".",
+			Version: taskDriverDep.Version,
+		}
+		b.cipd(taskDriverPkg)
+
 		if host == "linux_x64" {
 			b.linuxGceDimensions(MACHINE_TYPE_MEDIUM)
 			b.usesBazel("linux_x64")
-			// Use a built task_driver from CIPD instead of building it from scratch. The
-			// task_driver should not need to change often, so using a CIPD version should reduce
-			// build latency.
-			// TODO(kjlubick) For now, this only has the linux version. We could build the task
-			//   driver for all hosts that we support running Bazel from in this CIPD package
-			//   if/when needed.
-			// TODO(kjlubick,lovisolo) Could we get our task drivers built automatically
-			// into CIPD instead of this being a manual process?
-			b.cipd(b.MustGetCipdPackageFromAsset("bazel_build_task_driver"))
-
 			if labelAndSavedOutputDir.savedOutputDir != "" {
 				// We assume that builds which require storing a subset of //bazel-bin to CAS are Android
 				// builds. We want such builds to use RBE, and we want to download the built top-level
@@ -2281,6 +2286,15 @@ func (b *jobBuilder) bazelBuild() {
 				cmd = append(cmd, "--bazel_arg=--jobs=100")
 				cmd = append(cmd, "--bazel_arg=--remote_download_minimal")
 			}
+		} else if host == "windows_x64" {
+			b.dimension(
+				"cpu:x86-64-Haswell_GCE",
+				"gpu:none",
+				fmt.Sprintf("machine_type:%s", MACHINE_TYPE_LARGE),
+				fmt.Sprintf("os:%s", DEFAULT_OS_WIN),
+				"pool:Skia",
+			)
+			b.usesBazel("windows_x64")
 		} else {
 			panic("unsupported Bazel host " + host)
 		}
