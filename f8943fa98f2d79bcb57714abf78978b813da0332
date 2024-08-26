@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff204fad_18a07a6e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-08-26T14:55:22Z",
+      "side": 1,
+      "message": "HarfBuzz recently introduced `hb_face_set_get_table_tags_func` and `hb_get_table_tags_func_t` to allow this to work generally. See https://github.com/harfbuzz/harfbuzz/pull/4825 .",
+      "revId": "f8943fa98f2d79bcb57714abf78978b813da0332",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
