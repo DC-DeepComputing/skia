@@ -308,6 +308,8 @@ DEF_GANESH_TEST(InitialTextureClear, reporter, baseOptions, CtsEnforcement::kApi
             SkASSERT(combo.fColorType != GrColorType::kUnknown);
             SkASSERT(combo.fFormat.isValid());
 
+            SkDebugf("%s\n", GrColorTypeToStr(combo.fColorType));
+
             if (!caps->isFormatTexturable(combo.fFormat, GrTextureType::k2D)) {
                 continue;
             }
@@ -357,6 +359,7 @@ DEF_GANESH_TEST(InitialTextureClear, reporter, baseOptions, CtsEnforcement::kApi
                                 fit,
                                 skgpu::Budgeted::kYes,
                                 GrProtected::kNo);
+                        // SkDebugf("here1\n");
                         if (proxy) {
                             skgpu::Swizzle swizzle = caps->getReadSwizzle(combo.fFormat,
                                                                           combo.fColorType);
@@ -364,21 +367,28 @@ DEF_GANESH_TEST(InitialTextureClear, reporter, baseOptions, CtsEnforcement::kApi
                                                     swizzle);
                             GrColorInfo info(combo.fColorType, kPremul_SkAlphaType, nullptr);
                             auto texCtx = dContext->priv().makeSC(std::move(view), info);
-
+                            // SkDebugf("%d\n", (texCtx == nullptr));
+// SkDebugf("here2\n");
                             readback.erase(kClearColor);
+                            SkDebugf("here2.1\n");
                             if (texCtx->readPixels(dContext, readback, {0, 0})) {
+                            SkDebugf("here2.2\n");
                                 for (int i = 0; i < kSize * kSize; ++i) {
+
                                     if (!checkColor(combo, readback.addr32()[i])) {
+
                                         break;
                                     }
+
                                 }
                             }
                         }
+                        // SkDebugf("here3\n");
 
                         dContext->priv().getResourceCache()->purgeUnlockedResources(
                                 GrPurgeResourceOptions::kAllResources);
                     }
-
+// SkDebugf("here4\n");
                     // Try creating the texture as a deferred proxy.
                     {
                         GrImageInfo info(combo.fColorType,
@@ -387,6 +397,7 @@ DEF_GANESH_TEST(InitialTextureClear, reporter, baseOptions, CtsEnforcement::kApi
                                                                             : kOpaque_SkAlphaType,
                                          nullptr,
                                          {desc.fHeight, desc.fHeight});
+                                        //  SkDebugf("here5\n");
 
                         auto sc = dContext->priv().makeSC(info,
                                                           combo.fFormat,
@@ -394,10 +405,11 @@ DEF_GANESH_TEST(InitialTextureClear, reporter, baseOptions, CtsEnforcement::kApi
                                                           fit,
                                                           kTopLeft_GrSurfaceOrigin,
                                                           renderable);
+                                                          // SkDebugf("here6\n");
                         if (!sc) {
                             continue;
                         }
-
+// SkDebugf("here7\n");
                         readback.erase(kClearColor);
                         if (sc->readPixels(dContext, readback, {0, 0})) {
                             for (int i = 0; i < kSize * kSize; ++i) {
@@ -406,6 +418,7 @@ DEF_GANESH_TEST(InitialTextureClear, reporter, baseOptions, CtsEnforcement::kApi
                                 }
                             }
                         }
+                        // SkDebugf("here8\n");
                         dContext->priv().getResourceCache()->purgeUnlockedResources(
                                 GrPurgeResourceOptions::kAllResources);
                     }
@@ -413,6 +426,7 @@ DEF_GANESH_TEST(InitialTextureClear, reporter, baseOptions, CtsEnforcement::kApi
             }
         }
     }
+    // SkDebugf("here9\n");
 }
 
 DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ReadOnlyTexture,
