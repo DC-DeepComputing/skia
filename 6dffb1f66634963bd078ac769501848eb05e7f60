@@ -87,6 +87,24 @@
       "parentUuid": "5c3adfd6_31a75dbf",
       "revId": "6dffb1f66634963bd078ac769501848eb05e7f60",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "45535b13_aecb5ac4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-08-27T22:02:14Z",
+      "side": 1,
+      "message": "Actually we can double-overflow and get into trouble there, so best to leave it in.",
+      "parentUuid": "2477f677_c3546d97",
+      "revId": "6dffb1f66634963bd078ac769501848eb05e7f60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
