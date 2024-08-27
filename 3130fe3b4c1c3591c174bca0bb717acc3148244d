@@ -16,6 +16,23 @@
       "message": "Adding gardener to review or route this",
       "revId": "3130fe3b4c1c3591c174bca0bb717acc3148244d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "97b294bd_5d77a1a6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-08-27T15:15:19Z",
+      "side": 1,
+      "message": "This appears to work for me, though AFAICT the latest Xcode doesn\u0027t support older simulators any more.",
+      "revId": "3130fe3b4c1c3591c174bca0bb717acc3148244d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
