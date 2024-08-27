@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a968747_638c82f1",
+        "filename": "infra/bots/tasks.json",
+        "patchSetId": 7
+      },
+      "lineNbr": 57273,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-08-27T17:30:58Z",
+      "side": 1,
+      "message": "Is there anything awkward with both Metal and FakeWGPU here? Like the change you made above works only because grdawn_fakeWGPU only gets set after the metal config (which it overwrites). I think in general fakeWGPU was meant to be a modifier of Dawn and not part of the backend API lists.",
+      "range": {
+        "startLine": 57273,
+        "startChar": 75,
+        "endLine": 57273,
+        "endChar": 89
+      },
+      "revId": "95203b227c745ce515c36f2da8e4888310872c3b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65b21f27_7814cf26",
+        "filename": "infra/bots/tasks.json",
+        "patchSetId": 7
+      },
+      "lineNbr": 57329,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-08-27T17:30:58Z",
+      "side": 1,
+      "message": "is this value expected here?",
+      "range": {
+        "startLine": 57329,
+        "startChar": 643,
+        "endLine": 57329,
+        "endChar": 651
+      },
+      "revId": "95203b227c745ce515c36f2da8e4888310872c3b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
