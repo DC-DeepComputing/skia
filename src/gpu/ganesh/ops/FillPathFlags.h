@@ -8,7 +8,7 @@
 #ifndef FillPathFlags_DEFINED
 #define FillPathFlags_DEFINED
 
-#include "include/gpu/GrTypes.h"
+#include "include/gpu/ganesh/GrTypes.h"
 
 namespace skgpu::ganesh {
 
