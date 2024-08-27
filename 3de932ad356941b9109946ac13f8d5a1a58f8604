@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32460bb0_35434579",
+        "filename": "src/gpu/graphite/dawn/DawnTextureInfo.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-08-27T19:52:18Z",
+      "side": 1,
+      "message": "I know we are like a month late here, but I just came across this CL while reviewing another. This is a really unfortunate thing here as these TextureSpecs aren\u0027t necessarily meant to be small things that are copied around. Would it be better to have this function from a `const DawnTextureSpec*` instead?",
+      "range": {
+        "startLine": 96,
+        "startChar": 0,
+        "endLine": 97,
+        "endChar": 44
+      },
+      "revId": "3de932ad356941b9109946ac13f8d5a1a58f8604",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
