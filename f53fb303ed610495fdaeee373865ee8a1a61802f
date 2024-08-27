@@ -34,6 +34,24 @@
       "parentUuid": "84cc8789_84674afc",
       "revId": "f53fb303ed610495fdaeee373865ee8a1a61802f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a83c700_2532ae7d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-08-27T15:49:31Z",
+      "side": 1,
+      "message": "Doing some printf debugging with just Chrome, it turns out the issue is that non-CFF fonts aren\u0027t being subset and `subset_harfbuzz` is now returning `nullptr` for them. The issue is that `hb_face_reference_table` always \"succeeds\", potentially by returning an empty blob. As a result, we need to see if `to_data` succeeds in creating useful data out of the blob.",
+      "parentUuid": "5270e315_1e4ad7b6",
+      "revId": "f53fb303ed610495fdaeee373865ee8a1a61802f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
