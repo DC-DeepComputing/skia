@@ -16,6 +16,23 @@
       "message": "Per the linked bug this is based on an existing check:\nhttps://crsrc.org/c/third_party/skia/src/gpu/ganesh/ops/AAHairLinePathRenderer.cpp;l\u003d1235;drc\u003d297b50d8\nalthough of course this new check requires a runtime divide, so it may be more impactful performance-wise. Some brief benchmarking did not show any regressions.",
       "revId": "6dffb1f66634963bd078ac769501848eb05e7f60",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "097912fd_9d2cc24d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-08-27T15:52:47Z",
+      "side": 1,
+      "message": "Michael pointed out that the check against `indicesPerRepetition` is unnecessary since we already cap repeatCount before multiplying them:\nhttps://crsrc.org/c/third_party/skia/src/gpu/ganesh/GrOpsRenderPass.cpp;l\u003d334;drc\u003d7e207af2",
+      "revId": "6dffb1f66634963bd078ac769501848eb05e7f60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
