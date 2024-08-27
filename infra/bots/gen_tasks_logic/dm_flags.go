@@ -174,9 +174,7 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 
 	sampleCount := 0
 	glPrefix := ""
-	if b.extraConfig("FakeWGPU") {
-		configs = append(configs, "grdawn_fakeWGPU")
-	} else if b.extraConfig("SwiftShader") {
+	if b.extraConfig("SwiftShader") {
 		configs = append(configs, "vk", "vkdmsaa")
 		// skbug.com/12826
 		skip(ALL, "test", ALL, "GrThreadSafeCache16Verts")
@@ -425,6 +423,10 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 				if b.extraConfig("GLES") {
 					configs = []string{"grdawn_gles"}
 				}
+				if b.extraConfig("FakeWGPU") {
+					configs = []string{"grdawn_fakeWGPU"}
+				}
+
 				// Shader doesn't compile
 				// https://skbug.com/14105
 				skip(ALL, "gm", ALL, "runtime_intrinsics_matrix")
