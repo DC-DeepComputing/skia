@@ -33,6 +33,75 @@
       "message": "Is there a reason that you\u0027re building all things in Skia and not just the main Skia target? Usually its only devs working on Skia itself that would be building all the targets and thus there is no need to guard these app builds.",
       "revId": "ddf79f037192317eab451714827015f8a3b76576",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "525a93e9_436f0597",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2024-08-27T15:51:23Z",
+      "side": 1,
+      "message": "IIUC, right now if you enable the is_ios, metal, and ganesh guards, we automatically build the apps when trying to build just the main skia target, which seems incorrect.",
+      "parentUuid": "0bd0891f_840d3887",
+      "revId": "ddf79f037192317eab451714827015f8a3b76576",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd33cbd9_ce4b70e1",
+        "filename": "BUILD.gn",
+        "patchSetId": 1
+      },
+      "lineNbr": 3402,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2024-08-27T15:51:23Z",
+      "side": 1,
+      "message": "There is already a conditional guard for skia_enable_tools further up ~line 1718.\n\nTo keep this consistent with other tooling targets we should probably just place this in that group instead of adding the `skia_enable_tools`.\n\nThis target `minimal_ios_mtl_skia_app` can go somewhere near our other app target declarations.",
+      "revId": "ddf79f037192317eab451714827015f8a3b76576",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "87e2f466_5980a846",
+        "filename": "BUILD.gn",
+        "patchSetId": 1
+      },
+      "lineNbr": 3408,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2024-08-27T15:51:23Z",
+      "side": 1,
+      "message": "Instead of adding skia_enable_tools, see if it works if you move this block under the target for `skottie_android` ~line 2780",
+      "revId": "ddf79f037192317eab451714827015f8a3b76576",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4270d82b_cdba78e6",
+        "filename": "experimental/minimal_ios_mtl_skia_app/BUILD.gn",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2024-08-27T15:51:23Z",
+      "side": 1,
+      "message": "Do we still need to add the guard here if we are guarding in our main BUILD file?",
+      "revId": "ddf79f037192317eab451714827015f8a3b76576",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
