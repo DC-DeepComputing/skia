@@ -16,6 +16,24 @@
       "message": "Ready for review, locally tested that this fixes the issues with WPT.",
       "revId": "b181c6d7b8fce4e6ebeeb4d693a0a8b44fd3be51",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a34b113_246b2129",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-08-27T18:38:53Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "305fa3ac_7ee49d03",
+      "revId": "b181c6d7b8fce4e6ebeeb4d693a0a8b44fd3be51",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
