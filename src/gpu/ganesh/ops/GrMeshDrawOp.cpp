@@ -90,6 +90,13 @@ void GrMeshDrawOp::PatternHelper::init(GrMeshDrawTarget* target, GrPrimitiveType
     if (!indexBuffer) {
         return;
     }
+
+    // Bail out when we get overflow from really large draws.
+    if (repeatCount < 0 || repeatCount > SK_MaxS32 / verticesPerRepetition ||
+        repeatCount > SK_MaxS32 / indicesPerRepetition) {
+        return;
+    }
+
     sk_sp<const GrBuffer> vertexBuffer;
     int firstVertex;
     int vertexCount = verticesPerRepetition * repeatCount;
