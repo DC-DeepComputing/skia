@@ -105,6 +105,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6ea2a0bd_7e55fdbd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-08-27T16:58:45Z",
+      "side": 1,
+      "message": "And if we think about cutting the middle of the line that contains mixed directional texts... There are quite a few assumptions that each line contains a simple range of codepoints, and the range of shaped runs, and the range of clusters... Which will go all wrong and not even as two ranges - I could imagine a situation when we cut out several mixed directional runs and have a list of randomly placed runs as a results.",
+      "revId": "983687c95573858330016365ab1998e0c30fc3a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "79267173_9778aa33",
         "filename": "modules/skparagraph/include/DartTypes.h",
         "patchSetId": 3
