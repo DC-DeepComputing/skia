@@ -33,6 +33,24 @@
       "message": "Michael pointed out that the check against `indicesPerRepetition` is unnecessary since we already cap repeatCount before multiplying them:\nhttps://crsrc.org/c/third_party/skia/src/gpu/ganesh/GrOpsRenderPass.cpp;l\u003d334;drc\u003d7e207af2",
       "revId": "6dffb1f66634963bd078ac769501848eb05e7f60",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d9a4017_5f11a83f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-08-27T17:03:10Z",
+      "side": 1,
+      "message": "It also occurred to me that http://review.skia.org/891636 is unnecessary with this change.",
+      "parentUuid": "097912fd_9d2cc24d",
+      "revId": "6dffb1f66634963bd078ac769501848eb05e7f60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
