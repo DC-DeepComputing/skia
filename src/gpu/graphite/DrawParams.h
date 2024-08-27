@@ -67,10 +67,12 @@ public:
     Clip(const Rect& drawBounds,
          const Rect& shapeBounds,
          const SkIRect& scissor,
+         const Shape& analyticClip,
          const SkShader* shader)
             : fDrawBounds(drawBounds)
             , fTransformedShapeBounds(shapeBounds)
             , fScissor(scissor)
+            , fAnalyticClip(analyticClip)
             , fShader(shader) {}
 
     // Tight bounds of the draw, including any padding/outset for stroking and expansion due to
@@ -87,6 +89,9 @@ public:
     // to drawBounds(). For an inverse fill, this is a subset of drawBounds().
     const Rect& transformedShapeBounds() const { return fTransformedShapeBounds; }
 
+    // If set, the shape's bounds are further used to clip the draw.
+    const Shape& analyticClip() const { return fAnalyticClip; }
+
     // If set, the clip shader's output alpha is further used to clip the draw.
     const SkShader* shader() const { return fShader; }
 
@@ -98,10 +103,8 @@ private:
     Rect            fDrawBounds;
     Rect            fTransformedShapeBounds;
     SkIRect         fScissor;
+    Shape           fAnalyticClip;
     const SkShader* fShader;
-
-    // TODO: If we add more complex analytic shapes for clipping, e.g. coverage rrect, it should
-    // go here.
 };
 
 // Encapsulates all geometric state for a single high-level draw call. RenderSteps are responsible
