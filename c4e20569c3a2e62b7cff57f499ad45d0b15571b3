@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "db42aaaf_9ca4bd6b",
+        "filename": "src/gpu/graphite/PublicPrecompile.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-08-27T12:52:43Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "80aaabcb_32b28c29",
+      "range": {
+        "startLine": 118,
+        "startChar": 40,
+        "endLine": 118,
+        "endChar": 46
+      },
+      "revId": "c4e20569c3a2e62b7cff57f499ad45d0b15571b3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7d53d4a8_8052dbbf",
@@ -85,6 +109,30 @@
       "side": 1,
       "message": "Unfortunately, we get a fair amount of value by using it as a bitmask internally. I\u0027ve moved the OPS definition back to ResourceTypes.h and added a comment.",
       "parentUuid": "7d53d4a8_8052dbbf",
+      "range": {
+        "startLine": 34,
+        "startChar": 0,
+        "endLine": 34,
+        "endChar": 38
+      },
+      "revId": "c4e20569c3a2e62b7cff57f499ad45d0b15571b3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bace1780_76eea097",
+        "filename": "src/gpu/graphite/Renderer.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-08-27T12:52:43Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "fe386dd9_de2c665d",
       "range": {
         "startLine": 34,
         "startChar": 0,
