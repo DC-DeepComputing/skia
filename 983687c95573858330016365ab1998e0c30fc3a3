@@ -122,6 +122,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9e9c06f7_c5a56969",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-08-27T17:29:11Z",
+      "side": 1,
+      "message": "Here is the main issue with the ellipsis in the middle: currently we add the ellipsis BEFORE we reshuffle text runs by text direction (we can afford that because it\u0027s still will be 1 range of text and 1 range of glyphs).\nHowever, we cannot do that for the ellipsis in the middle because we need to know what is the visual middle. That turns the entire logic upside down and requires rewriting half of the code. Call it a design oversight or not - but we need to weight the gain against the consequences.",
+      "revId": "983687c95573858330016365ab1998e0c30fc3a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "79267173_9778aa33",
         "filename": "modules/skparagraph/include/DartTypes.h",
         "patchSetId": 3
