@@ -16,6 +16,23 @@
       "message": "Adding gardener to review or route this",
       "revId": "ddf79f037192317eab451714827015f8a3b76576",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0bd0891f_840d3887",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-08-27T13:56:31Z",
+      "side": 1,
+      "message": "Is there a reason that you\u0027re building all things in Skia and not just the main Skia target? Usually its only devs working on Skia itself that would be building all the targets and thus there is no need to guard these app builds.",
+      "revId": "ddf79f037192317eab451714827015f8a3b76576",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
