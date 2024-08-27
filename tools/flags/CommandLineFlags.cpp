@@ -392,8 +392,12 @@ template <typename Strings> bool ShouldSkipImpl(const Strings& strings, const ch
 }  // namespace
 
 bool CommandLineFlags::ShouldSkip(const SkTDArray<const char*>& strings, const char* name) {
-    return ShouldSkipImpl(strings, name);
+    SkTDArray<const char*> foo;
+    foo.push_back("CopyOnWrite");
+    return ShouldSkipImpl(foo, name);
 }
 bool CommandLineFlags::ShouldSkip(const StringArray& strings, const char* name) {
-    return ShouldSkipImpl(strings, name);
+    SkString bar("CopyOnWrite");
+    StringArray foo({ bar });
+    return ShouldSkipImpl(foo, name);
 }
