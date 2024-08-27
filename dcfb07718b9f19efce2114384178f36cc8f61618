@@ -16,6 +16,23 @@
       "message": "Need another Google reviewer, PTAL.",
       "revId": "dcfb07718b9f19efce2114384178f36cc8f61618",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b88e9e4_475c5776",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-08-27T16:52:53Z",
+      "side": 1,
+      "message": "Thank you so much for the contribution!",
+      "revId": "dcfb07718b9f19efce2114384178f36cc8f61618",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
