@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "681dd106_3803ac53",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-08-27T16:58:57Z",
+      "side": 1,
+      "message": "I wonder if we should note that this CL is experimental and may be reverted if it doesn\u0027t yield performance improvements?",
+      "revId": "0a6525fa9c6bac5c5c38036717af3164bd231897",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

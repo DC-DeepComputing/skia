@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b37358a2_a1307fb2",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 472,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-08-27T16:58:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "474b0d3b_40710460",
+      "revId": "df536770b151e297d155e813ac2bca96b286fc71",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ceb6da00_6ff2f6e8",
@@ -67,6 +85,24 @@
       "side": 1,
       "message": "Yeah I think we should assert. The DrawList\u0027s render step count should be exact or conservative.\n\nI think that constructor for `std::vector` might do initialize every element to nullptr (assuming it zero-initializes them vs. default initialize).  In this case, I think we can have more explicit control by using `SkTDArray\u003cDraw*\u003e` since we want as little overhead as possible and it\u0027s a trivial type.",
       "parentUuid": "ceb6da00_6ff2f6e8",
+      "revId": "df536770b151e297d155e813ac2bca96b286fc71",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1968cee1_941099ba",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 585,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-08-27T16:58:57Z",
+      "side": 1,
+      "message": "No longer filling in the draw array back-to-front, and no longer using draw index in sorting.",
+      "parentUuid": "5fccb510_bc168cca",
       "revId": "df536770b151e297d155e813ac2bca96b286fc71",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
