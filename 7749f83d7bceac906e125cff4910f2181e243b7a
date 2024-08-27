@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fef6b2bb_ae0847a6",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 430,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-08-27T18:57:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3459fc78_a406163e",
+      "range": {
+        "startLine": 430,
+        "startChar": 58,
+        "endLine": 430,
+        "endChar": 63
+      },
+      "revId": "7749f83d7bceac906e125cff4910f2181e243b7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "216cb8be_f7cbc13d",
@@ -85,6 +109,30 @@
       "side": 1,
       "message": "Added some comments and other reorganizations that hopefully make things a bit more clear - I certainly invite more suggestions if it still comes across as opaque magic!",
       "parentUuid": "216cb8be_f7cbc13d",
+      "range": {
+        "startLine": 454,
+        "startChar": 11,
+        "endLine": 457,
+        "endChar": 17
+      },
+      "revId": "7749f83d7bceac906e125cff4910f2181e243b7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c96a3ec4_88336f2c",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 457,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-08-27T18:57:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fd85a59e_33f9cd9d",
       "range": {
         "startLine": 454,
         "startChar": 11,

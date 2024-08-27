@@ -60,6 +60,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3bd519c5_60dd90b9",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 588,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-08-27T18:57:48Z",
+      "side": 1,
+      "message": "You may be referring to a now-deleted call to obtain the `DawnTextureSpec` off of `TextureInfo`, but that got refactored within https://skia-review.googlesource.com/c/skia/+/882809 in an effort to reduce/eliminate `#ifdef SK_DAWN` from classes used by multiple backends.\n\nAFAICT, the only way to access the needed `YcbcrVkDescriptor` is from a texture\u0027s `DawnTextureInfo`, which is now seemingly expected to be obtained by `TextureInfos::Get[backend]TextureInfo(...)` methods which take in a `TextureInfo` and `[Backend]TextureInfo`(populating the latter).\n\nPlease do LMK if I am missing something more direct. I did consolidate some calls here which cuts down on some definitions, but that\u0027s all.",
+      "parentUuid": "fb2f7338_ff829b5f",
+      "range": {
+        "startLine": 587,
+        "startChar": 8,
+        "endLine": 588,
+        "endChar": 81
+      },
+      "revId": "4827cf5d15f380e78c7dba10f373e23bed09638f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1b6afd68_4969d58d",
         "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
         "patchSetId": 21
@@ -71,6 +95,30 @@
       "writtenOn": "2024-08-09T16:19:52Z",
       "side": 1,
       "message": "Does this trigger us to fail the draw at some point?",
+      "range": {
+        "startLine": 297,
+        "startChar": 12,
+        "endLine": 298,
+        "endChar": 52
+      },
+      "revId": "4827cf5d15f380e78c7dba10f373e23bed09638f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d6c50d53_7ba6130c",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 298,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-08-27T18:57:48Z",
+      "side": 1,
+      "message": "Good point - better to fail here than to continue making a pipeline that simply would not be compatible with the command buffer later on. \n\nRefactored `gather_immutable_samplers` to return a bool to indicate success or failure. If it fails, `DawnGraphicsPipeline::Make` will now return an invalid pipeline which is what graphite looks for to trigger the dropping of a drawpass.",
+      "parentUuid": "1b6afd68_4969d58d",
       "range": {
         "startLine": 297,
         "startChar": 12,
@@ -104,6 +152,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "abc524f3_a07508d1",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 336,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-08-27T18:57:48Z",
+      "side": 1,
+      "message": "That is my understanding, yes - Dawn has it set up such that immutable samplers get assigned within a `BindGroupLayoutEntry` of the pipeline, and dynamic samplers get assigned to a `BindGroupEntry` when binding textures and samplers in the command buffer.",
+      "parentUuid": "c1f6dbb3_391399b3",
+      "range": {
+        "startLine": 336,
+        "startChar": 8,
+        "endLine": 336,
+        "endChar": 26
+      },
+      "revId": "4827cf5d15f380e78c7dba10f373e23bed09638f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "84460100_63271423",
@@ -117,6 +189,30 @@
       "writtenOn": "2024-08-09T16:19:52Z",
       "side": 1,
       "message": "not sure if this is the crash, but I think you can just use `push_back_n(numSamplers)`. That should just use the default initialization of T which in this case is an `sk_sp` which should default to nullptr. I\u0027m not really sure which version of push_back_n gets called by passing in nullptr (I feel like it could match multiple).",
+      "range": {
+        "startLine": 503,
+        "startChar": 45,
+        "endLine": 503,
+        "endChar": 54
+      },
+      "revId": "4827cf5d15f380e78c7dba10f373e23bed09638f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3894559f_6019803a",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 503,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-08-27T18:57:48Z",
+      "side": 1,
+      "message": "Yeah, I see what you\u0027re saying. The default init should be sufficient. Done!",
+      "parentUuid": "84460100_63271423",
       "range": {
         "startLine": 503,
         "startChar": 45,
@@ -150,6 +246,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1fbcc74e_dd256584",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 514,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-08-27T18:57:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a4902541_25391714",
+      "range": {
+        "startLine": 514,
+        "startChar": 16,
+        "endLine": 514,
+        "endChar": 32
+      },
+      "revId": "4827cf5d15f380e78c7dba10f373e23bed09638f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b7372736_d962e8c9",
@@ -163,6 +283,30 @@
       "writtenOn": "2024-08-09T16:19:52Z",
       "side": 1,
       "message": "this object doesn\u0027t exist when using emscripten",
+      "range": {
+        "startLine": 537,
+        "startChar": 67,
+        "endLine": 537,
+        "endChar": 87
+      },
+      "revId": "4827cf5d15f380e78c7dba10f373e23bed09638f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "90c02940_9894e419",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 537,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-08-27T18:57:48Z",
+      "side": 1,
+      "message": "You are so right, whoops - removed the helper but made the logic a bit more concise so it can just live in this for loop (by the time we pass in everything we need to add the sampler layout entry to the entry list, it doesn\u0027t buy us much).\n\nI think a separate CL could/should define more helpers to break up this massive method in general.",
+      "parentUuid": "b7372736_d962e8c9",
       "range": {
         "startLine": 537,
         "startChar": 67,
