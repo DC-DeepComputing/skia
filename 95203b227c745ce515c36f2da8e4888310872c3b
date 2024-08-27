@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "39a6cab4_3845d7fd",
+        "filename": "infra/bots/tasks.json",
+        "patchSetId": 7
+      },
+      "lineNbr": 57273,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-08-27T18:35:41Z",
+      "side": 1,
+      "message": "You bet it\u0027s awkward. PTAL though - I\u0027ve revised it to make it work as an add-on vs. its old implementation as an override.",
+      "parentUuid": "7a968747_638c82f1",
+      "range": {
+        "startLine": 57273,
+        "startChar": 75,
+        "endLine": 57273,
+        "endChar": 89
+      },
+      "revId": "95203b227c745ce515c36f2da8e4888310872c3b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "65b21f27_7814cf26",
         "filename": "infra/bots/tasks.json",
         "patchSetId": 7
@@ -37,6 +61,30 @@
       "writtenOn": "2024-08-27T17:30:58Z",
       "side": 1,
       "message": "is this value expected here?",
+      "range": {
+        "startLine": 57329,
+        "startChar": 643,
+        "endLine": 57329,
+        "endChar": 651
+      },
+      "revId": "95203b227c745ce515c36f2da8e4888310872c3b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d6b4122_6d41a785",
+        "filename": "infra/bots/tasks.json",
+        "patchSetId": 7
+      },
+      "lineNbr": 57329,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-08-27T18:35:41Z",
+      "side": 1,
+      "message": "Yeah - the --nogpu flag removes the Ganesh Sinks from a DM run. It should really be `noganesh`",
+      "parentUuid": "65b21f27_7814cf26",
       "range": {
         "startLine": 57329,
         "startChar": 643,
