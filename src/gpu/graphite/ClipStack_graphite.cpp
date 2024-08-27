@@ -383,7 +383,7 @@ void ClipStack::RawElement::drawClip(Device* device) {
                  (fOp == SkClipOp::kIntersect && fShape.inverted()));
         device->drawClipShape(fLocalToDevice,
                               fShape,
-                              Clip{drawBounds, drawBounds, scissor.asSkIRect(), nullptr},
+                              Clip{drawBounds, drawBounds, scissor.asSkIRect(), {}, nullptr},
                               order);
     }
 
@@ -1096,13 +1096,114 @@ void ClipStack::clipShape(const Transform& localToDevice,
     }
 }
 
+// Look at GrRRectEffect::Make() for clip setup
+// Decision points on whether this applies are in there
+// Store corner flags here? Maybe don't store shape -- store data for
+// CircularRRectClipBlock?
+static bool can_apply_analytic_clip(const Shape& shape, const Transform& localToDevice) {
+    // The effects defined here only handle rrect radii >= kRadiusMin.
+    static const SkScalar kRadiusMin = SK_ScalarHalf;
+
+    //*** Need to figure out when to apply transform
+    if (localToDevice.type() > Transform::Type::kRectStaysRect) {
+        return false;
+    }
+
+    // Can handle Rect
+    if (shape.isRect()) {
+        return true;
+    }
+
+    if (!shape.isRRect()) {
+        return false;
+    }
+
+    const SkRRect& rrect = shape.rrect();
+    if (rrect.isOval()) {
+        return false;
+    }
+    if (rrect.isSimple()) {
+        if (SkRRectPriv::GetSimpleRadii(rrect).fX < kRadiusMin ||
+            SkRRectPriv::GetSimpleRadii(rrect).fY < kRadiusMin) {
+            // In this case the corners are extremely close to rectangular and we collapse the
+            // clip to a rectangular clip.
+            return true;
+        }
+        if (SkRRectPriv::IsSimpleCircular(rrect)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    if (rrect.isComplex() || rrect.isNinePatch()) {
+        // Check for the "tab" cases - two adjacent circular corners and two square corners.
+        SkScalar circularRadius = 0;
+        uint32_t edgeFlags = 0;
+        enum EdgeFlags {
+            kLeft_EdgeFlag = 0x1,
+            kTop_EdgeFlag = 0x2,
+            kRight_EdgeFlag = 0x4,
+            kBottom_EdgeFlag = 0x8
+        };
+        uint32_t cornerFlags[4] = {
+            kTop_EdgeFlag | kLeft_EdgeFlag,
+            kTop_EdgeFlag | kRight_EdgeFlag,
+            kBottom_EdgeFlag | kRight_EdgeFlag,
+            kBottom_EdgeFlag | kLeft_EdgeFlag,
+        };
+
+        SkVector radii[4];
+        bool squashedRadii = false;
+        for (int c = 0; c < 4; ++c) {
+            radii[c] = rrect.radii((SkRRect::Corner)c);
+            // Can only handle circular radii.
+            // Also applies to corners with both zero and non-zero radii.
+            if (radii[c].fX != radii[c].fY) {
+                return false;
+            }
+            if (0 == radii[c].fX) {
+                // The corner is square, so no need to squash or flag as circular.
+                continue;
+            }
+            if (radii[c].fX < kRadiusMin || radii[c].fY < kRadiusMin) {
+                radii[c].set(0, 0);
+                squashedRadii = true;
+                continue;
+            }
+            // First circular corner seen
+            if (!edgeFlags) {
+                circularRadius = radii[c].fX;
+            // Radius doesn't match previously seen circular radius
+            } else if (radii[c].fX != circularRadius) {
+                return false;
+            }
+            edgeFlags |= cornerFlags[c];
+        }
+
+        // At least one corner is rounded
+        if (edgeFlags) {
+            SkTCopyOnFirstWrite<SkRRect> rr(rrect);
+            if (squashedRadii) {
+                rr.writable()->setRectRadii(rrect.getBounds(), radii);
+            }
+            return true;
+        }
+
+        // It's a rect
+        return true;
+    }
+
+    return false;
+}
+
 Clip ClipStack::visitClipStackForDraw(const Transform& localToDevice,
                                       const Geometry& geometry,
                                       const SkStrokeRec& style,
                                       bool outsetBoundsForAA,
                                       ClipStack::ElementList* outEffectiveElements) const {
     static const Clip kClippedOut = {
-            Rect::InfiniteInverted(), Rect::InfiniteInverted(), SkIRect::MakeEmpty(), nullptr};
+            Rect::InfiniteInverted(), Rect::InfiniteInverted(), SkIRect::MakeEmpty(), {}, nullptr};
 
     const SaveRecord& cs = this->currentSaveRecord();
     if (cs.state() == ClipState::kEmpty) {
@@ -1201,7 +1302,7 @@ Clip ClipStack::visitClipStackForDraw(const Transform& localToDevice,
         // Either the draw is off screen, so it's clipped out regardless of the state of the
         // SaveRecord, or there are no elements to apply to the draw. In both cases, 'drawBounds'
         // has the correct value, the scissor is the device bounds (ignored if clipped-out).
-        return Clip(drawBounds, transformedShapeBounds, deviceBounds.asSkIRect(), cs.shader());
+        return Clip(drawBounds, transformedShapeBounds, deviceBounds.asSkIRect(), {}, cs.shader());
     }
 
     // We don't evaluate Simplify() on the SaveRecord and the draw because a reduced version of
@@ -1218,7 +1319,7 @@ Clip ClipStack::visitClipStackForDraw(const Transform& localToDevice,
     transformedShapeBounds.intersect(scissor);
     if (drawBounds.isEmptyNegativeOrNaN() || cs.innerBounds().contains(drawBounds)) {
         // Like above, in both cases drawBounds holds the right value.
-        return Clip(drawBounds, transformedShapeBounds, scissor.asSkIRect(), cs.shader());
+        return Clip(drawBounds, transformedShapeBounds, scissor.asSkIRect(), {}, cs.shader());
     }
 
     // If we made it here, the clip stack affects the draw in a complex way so iterate each element.
@@ -1233,9 +1334,12 @@ Clip ClipStack::visitClipStackForDraw(const Transform& localToDevice,
                           /*op=*/SkClipOp::kIntersect,
                           /*containsChecksOnlyBounds=*/true};
 
+    // Look at "clipElements", see if element shape is rect or circular rrect. For first one,
+    // don't add to outEffectiveElements, add to Clip somehow?
     SkASSERT(outEffectiveElements);
     SkASSERT(outEffectiveElements->empty());
     int i = fElements.count();
+    Shape analyticClipShape;
     for (const RawElement& e : fElements.ritems()) {
         --i;
         if (i < cs.oldestElementIndex()) {
@@ -1250,11 +1354,15 @@ Clip ClipStack::visitClipStackForDraw(const Transform& localToDevice,
             return kClippedOut;
         }
         if (influence == RawElement::DrawInfluence::kIntersect) {
+            if (analyticClipShape.isEmpty() && can_apply_analytic_clip(e.shape(), localToDevice)) {
+                analyticClipShape = e.shape();
+                continue;
+            }
             outEffectiveElements->push_back(&e);
         }
     }
 
-    return Clip(drawBounds, transformedShapeBounds, scissor.asSkIRect(), cs.shader());
+    return Clip(drawBounds, transformedShapeBounds, scissor.asSkIRect(), analyticClipShape, cs.shader());
 }
 
 CompressedPaintersOrder ClipStack::updateClipStateForDraw(const Clip& clip,
