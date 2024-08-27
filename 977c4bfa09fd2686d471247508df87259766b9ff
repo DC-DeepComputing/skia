@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c50b7c9_dae531ba",
+        "filename": "src/ports/SkFontMgr_fontconfig.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 438,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-08-27T17:18:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "39f0d85f_e1148ed7",
+      "revId": "977c4bfa09fd2686d471247508df87259766b9ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5aa441f0_6ee8e122",
@@ -48,6 +66,24 @@
       "writtenOn": "2024-08-27T14:49:54Z",
       "side": 1,
       "message": "We can now fix the TODO about `FC_MATRIX` and `FC_EMBOLDEN` fairly simply here, where we can return a new SkTypeface_fontconfig wrapping this clone and pass a reference to the pattern and sysroot through. That doesn\u0027t need to be done in the change, but we should keep the TODO here.",
+      "revId": "977c4bfa09fd2686d471247508df87259766b9ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa1f02e5_6fa45af9",
+        "filename": "src/ports/SkFontMgr_fontconfig.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 492,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-08-27T17:18:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5aa441f0_6ee8e122",
       "revId": "977c4bfa09fd2686d471247508df87259766b9ff",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -69,6 +105,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7fd817f_ba5d25be",
+        "filename": "src/ports/SkFontMgr_fontconfig.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 494,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-08-27T17:18:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bbe9cee7_77cf6453",
+      "revId": "977c4bfa09fd2686d471247508df87259766b9ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c3ed3fce_93117c2f",
@@ -82,6 +136,24 @@
       "writtenOn": "2024-08-27T14:49:54Z",
       "side": 1,
       "message": "This creation is a bit awkward given that we want it to work the same with fontations later. Can this just be a call to `SkTypeface_FreeType::MakeFromStream`?",
+      "revId": "977c4bfa09fd2686d471247508df87259766b9ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "31d36537_645ad5f2",
+        "filename": "src/ports/SkFontMgr_fontconfig.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 564,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-08-27T17:18:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c3ed3fce_93117c2f",
       "revId": "977c4bfa09fd2686d471247508df87259766b9ff",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
