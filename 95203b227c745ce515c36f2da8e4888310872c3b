@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fc650874_3d4f7ee5",
+        "filename": "infra/bots/tasks.json",
+        "patchSetId": 7
+      },
+      "lineNbr": 57273,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-08-27T19:38:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "39a6cab4_3845d7fd",
+      "range": {
+        "startLine": 57273,
+        "startChar": 75,
+        "endLine": 57273,
+        "endChar": 89
+      },
+      "revId": "95203b227c745ce515c36f2da8e4888310872c3b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "65b21f27_7814cf26",
