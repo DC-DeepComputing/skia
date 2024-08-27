@@ -105,6 +105,13 @@ const (
 	// of /home/chrome-bot/cache/.bazel to make it obvious to someone examining a Skolo machine that
 	// we are overriding the default location.
 	bazelCacheDirOnSkoloLinux = "/home/chrome-bot/bazel_cache"
+
+	// bazelCacheDirOnWindows is like bazelCacheDirOnSkoloLinux. Unlike GCE Linux machines, we only
+	// have a single partition. While using the default cache path would work, our Bazel task
+	// drivers demand an explicit path. We store the Bazel cache at /home/chrome-bot/bazel_cache
+	// rather than on the default location of %APPDATA% to make it obvious to someone examining a
+	// Skolo machine that we are overriding the default location.
+	bazelCacheDirOnWindows = "C:\\Users\\chrome-bot\\bazel_cache"
 )
 
 var (
@@ -2222,6 +2229,17 @@ var shorthandToLabel = map[string]labelAndSavedOutputDir{
 	"cpu_8888_benchmark_android_test": {"//bench:cpu_8888_android_test", "bench"},
 }
 
+type GoPlatform struct {
+	os   string
+	arch string
+}
+
+var bazelHostToGoPlatform = map[string]GoPlatform{
+	"darwin_x64":  {"darwin", "amd64"},
+	"linux_x64":   {"linux", "amd64"},
+	"windows_x64": {"windows", "amd64"},
+}
+
 // bazelBuild adds a task which builds the specified single-target label (//foo:bar) or
 // multi-target label (//foo/...) using Bazel. Depending on the host we run this on, we may
 // specify additional Bazel args to build faster. Optionally, a subset of the //bazel-bin directory
@@ -2234,14 +2252,40 @@ func (b *jobBuilder) bazelBuild() {
 	}
 
 	b.addTask(b.Name, func(b *taskBuilder) {
+		// Use a built task_driver from CIPD instead of building it from scratch. The
+		// task_driver should not need to change often, so using a CIPD version should reduce
+		// build latency.
+		usePrebuiltTaskDrivers := (host != "windows_x64")
+		var bazelBuildPath string
+		if usePrebuiltTaskDrivers {
+			b.cipdFromDEPS("skia/tools/bazel_build/${platform}")
+			bazelBuildPath = "./task_drivers/bazel_build"
+		} else {
+			goPlatform, ok := bazelHostToGoPlatform[host]
+			if !ok {
+				panic("no Go platform associated with Bazel host " + host)
+			}
+			b.dep(b.buildTaskDrivers(goPlatform.os, goPlatform.arch))
+			bazelBuildPath = "./bazel_build"
+		}
+
+		bazelCacheDir, ok := map[string]string{
+			// We only run builds in GCE.
+			"linux_x64":   bazelCacheDirOnGCELinux,
+			"windows_x64": bazelCacheDirOnWindows,
+		}[host]
+		if !ok {
+			panic("unknown Bazel cache dir for Bazel host " + host)
+		}
+
 		cmd := []string{
-			"bazel_build_task_driver/bazel_build",
+			bazelBuildPath,
 			"--project_id=skia-swarming-bots",
 			"--task_id=" + specs.PLACEHOLDER_TASK_ID,
 			"--task_name=" + b.Name,
 			"--bazel_label=" + labelAndSavedOutputDir.label,
 			"--bazel_config=" + config,
-			"--bazel_cache_dir=" + bazelCacheDirOnGCELinux,
+			"--bazel_cache_dir=" + bazelCacheDir,
 			"--workdir=.",
 		}
 
@@ -2256,16 +2300,6 @@ func (b *jobBuilder) bazelBuild() {
 		if host == "linux_x64" {
 			b.linuxGceDimensions(MACHINE_TYPE_MEDIUM)
 			b.usesBazel("linux_x64")
-			// Use a built task_driver from CIPD instead of building it from scratch. The
-			// task_driver should not need to change often, so using a CIPD version should reduce
-			// build latency.
-			// TODO(kjlubick) For now, this only has the linux version. We could build the task
-			//   driver for all hosts that we support running Bazel from in this CIPD package
-			//   if/when needed.
-			// TODO(kjlubick,lovisolo) Could we get our task drivers built automatically
-			// into CIPD instead of this being a manual process?
-			b.cipd(b.MustGetCipdPackageFromAsset("bazel_build_task_driver"))
-
 			if labelAndSavedOutputDir.savedOutputDir != "" {
 				// We assume that builds which require storing a subset of //bazel-bin to CAS are Android
 				// builds. We want such builds to use RBE, and we want to download the built top-level
@@ -2281,6 +2315,17 @@ func (b *jobBuilder) bazelBuild() {
 				cmd = append(cmd, "--bazel_arg=--jobs=100")
 				cmd = append(cmd, "--bazel_arg=--remote_download_minimal")
 			}
+		} else if host == "windows_x64" {
+			b.dimension(
+				"cpu:x86-64-Haswell_GCE",
+				"gpu:none",
+				fmt.Sprintf("machine_type:%s", MACHINE_TYPE_LARGE),
+				fmt.Sprintf("os:%s", DEFAULT_OS_WIN),
+				"pool:Skia",
+			)
+			b.usesBazel("windows_x64")
+			cmd = append(cmd, "--bazel_arg=--subcommands")
+			cmd = append(cmd, "--bazel_arg=--verbose_failures")
 		} else {
 			panic("unsupported Bazel host " + host)
 		}
