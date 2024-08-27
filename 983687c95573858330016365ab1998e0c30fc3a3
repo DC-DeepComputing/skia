@@ -50,6 +50,163 @@
       "message": "I will have to run the entire Google3 tests set for this one because it may (and probably will) affect all Flutter tests. We need to see how big is the difference and settle it with all the participating parties.",
       "revId": "983687c95573858330016365ab1998e0c30fc3a3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2524b832_2f780cd6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-08-27T15:02:25Z",
+      "side": 1,
+      "message": "The suggested approach requires some additional (and big) changes. For instance, getRectsForRange method on TextLine will change and so are all the other method that assume a single rectangle around all the text on the line. \nI would say with the amount of required changes we need to think more if there is a simple approach.\nAs much as I like the ellipsis to be in the middle of the line it does not justify turning the entire SkParagraph code base upside down (with the main customer - Flutter - never asking for it).",
+      "revId": "983687c95573858330016365ab1998e0c30fc3a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79267173_9778aa33",
+        "filename": "modules/skparagraph/include/DartTypes.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-08-27T15:02:25Z",
+      "side": 1,
+      "message": "I would set kClip \u003d 0 to be default behavior (as it is right now)",
+      "fixSuggestions": [
+        {
+          "fixId": "67db875c_33ad7b6d",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "modules/skparagraph/include/DartTypes.h",
+              "range": {
+                "startLine": 76,
+                "startChar": 0,
+                "endLine": 77,
+                "endChar": 0
+              },
+              "replacement": "kHead \u003d 0,\n"
+            },
+            {
+              "path": "modules/skparagraph/include/DartTypes.h",
+              "range": {
+                "startLine": 92,
+                "startChar": 0,
+                "endLine": 93,
+                "endChar": 0
+              },
+              "replacement": "kTail \u003d 1,\n"
+            },
+            {
+              "path": "modules/skparagraph/include/DartTypes.h",
+              "range": {
+                "startLine": 100,
+                "startChar": 0,
+                "endLine": 101,
+                "endChar": 0
+              },
+              "replacement": "kClip \u003d 2\n"
+            }
+          ]
+        }
+      ],
+      "revId": "983687c95573858330016365ab1998e0c30fc3a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c744afad_669a785c",
+        "filename": "modules/skparagraph/src/TextLine.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-08-27T15:02:25Z",
+      "side": 1,
+      "message": "It\u0027s not necessarily the right half. Should be the left in case of RTL, I think? I would call it \"OtherHalf\"...",
+      "fixSuggestions": [
+        {
+          "fixId": "32abdf06_784d0d11",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "modules/skparagraph/src/TextLine.h",
+              "range": {
+                "startLine": 43,
+                "startChar": 0,
+                "endLine": 44,
+                "endChar": 0
+              },
+              "replacement": "     * @struct OtherHalf\n"
+            },
+            {
+              "path": "modules/skparagraph/src/TextLine.h",
+              "range": {
+                "startLine": 54,
+                "startChar": 0,
+                "endLine": 55,
+                "endChar": 0
+              },
+              "replacement": "    struct OtherHalf {\n"
+            },
+            {
+              "path": "modules/skparagraph/src/TextLine.h",
+              "range": {
+                "startLine": 101,
+                "startChar": 0,
+                "endLine": 102,
+                "endChar": 0
+              },
+              "replacement": "        return fAdvance.fX + (fEllipsis !\u003d nullptr ? fEllipsis-\u003efAdvance.fX : 0) + (this-\u003eotherHalf().has_value() ? this-\u003eotherHalf().value().fAdvance.fX: 0) ;\n"
+            },
+            {
+              "path": "modules/skparagraph/src/TextLine.h",
+              "range": {
+                "startLine": 140,
+                "startChar": 0,
+                "endLine": 142,
+                "endChar": 0
+              },
+              "replacement": "    std::optional\u003cOtherHalf\u003e otherHalf() const{\n        return fOtherHalf;\n"
+            },
+            {
+              "path": "modules/skparagraph/src/TextLine.h",
+              "range": {
+                "startLine": 228,
+                "startChar": 0,
+                "endLine": 230,
+                "endChar": 0
+              },
+              "replacement": "    // Adding this optional OtherHalf for middle ellipsis mode. Since in case of middle ellipsis,\n    // text line is split into two halves. So when we have middle ellipsis mode,\n"
+            },
+            {
+              "path": "modules/skparagraph/src/TextLine.h",
+              "range": {
+                "startLine": 231,
+                "startChar": 0,
+                "endLine": 232,
+                "endChar": 0
+              },
+              "replacement": "    std::optional\u003cOtherHalf\u003e fOtherHalf;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "983687c95573858330016365ab1998e0c30fc3a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
