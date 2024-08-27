@@ -17,7 +17,6 @@ import (
 	"path/filepath"
 
 	infra_common "go.skia.org/infra/go/common"
-	sk_exec "go.skia.org/infra/go/exec"
 	"go.skia.org/infra/go/skerr"
 	"go.skia.org/infra/task_driver/go/lib/bazel"
 	"go.skia.org/infra/task_driver/go/lib/os_steps"
@@ -67,11 +66,11 @@ func main() {
 		// directory (and default Bazel cache) lives, is only 15 GB on our GCE VMs.
 		CachePath: *bazelFlags.CacheDir,
 	}
-	if err := bazel.EnsureBazelRCFile(ctx, opts); err != nil {
+	bzl, err := bazel.New(ctx, skiaDir, "", opts)
+	if err != nil {
 		td.Fatal(ctx, err)
 	}
-
-	if err := bazelBuild(ctx, skiaDir, *bazelFlags.Label, *bazelFlags.Config, *bazelFlags.AdditionalArgs...); err != nil {
+	if err := bazelBuild(ctx, bzl, *bazelFlags.Label, *bazelFlags.Config, *bazelFlags.AdditionalArgs...); err != nil {
 		td.Fatal(ctx, err)
 	}
 
@@ -92,25 +91,12 @@ func main() {
 // config and any additional args to the build command. Instead of calling Bazel directly, we use
 // Bazelisk to make sure we use the right version of Bazel, as defined in the .bazelversion file
 // at the Skia root.
-func bazelBuild(ctx context.Context, checkoutDir, label, config string, args ...string) error {
+func bazelBuild(ctx context.Context, bzl *bazel.Bazel, label, config string, args ...string) error {
 	step := fmt.Sprintf("Build %s with config %s and %d extra flags", label, config, len(args))
 	return td.Do(ctx, td.Props(step), func(ctx context.Context) error {
-		runCmd := &sk_exec.Command{
-			Name: "bazelisk",
-			Args: append([]string{"build",
-				label,
-				"--config=" + config, // Should be defined in //bazel/buildrc
-			}, args...),
-			InheritEnv: true, // Makes sure bazelisk is on PATH
-			Dir:        checkoutDir,
-			LogStdout:  true,
-			LogStderr:  true,
-		}
-		_, err := sk_exec.RunCommand(ctx, runCmd)
-		if err != nil {
-			return err
-		}
-		return nil
+		args := append([]string{label, fmt.Sprintf("--config=%s", config)}, args...)
+		_, err := bzl.Do(ctx, "build", args...)
+		return skerr.Wrap(err)
 	})
 }
 
