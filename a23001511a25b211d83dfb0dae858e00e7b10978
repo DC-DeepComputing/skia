@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14d774f6_e6831c22",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-08-27T23:18:43Z",
+      "side": 0,
+      "message": "Before this CL I\u0027ve forgot to add `this-\u003e` prefix here...",
+      "range": {
+        "startLine": 245,
+        "startChar": 23,
+        "endLine": 245,
+        "endChar": 39
+      },
+      "revId": "a23001511a25b211d83dfb0dae858e00e7b10978",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

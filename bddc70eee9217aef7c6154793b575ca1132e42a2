@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a215eeff_98c3555d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-08-27T23:18:43Z",
+      "side": 1,
+      "message": "@brianosman, can you PTAL?\n/cc @scroggo FYI",
+      "revId": "bddc70eee9217aef7c6154793b575ca1132e42a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
