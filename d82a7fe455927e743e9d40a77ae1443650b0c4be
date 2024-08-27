@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b341c1c7_0b122efb",
+        "filename": "src/ports/SkFontMgr_fontconfig.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 423,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-08-27T18:58:46Z",
+      "side": 1,
+      "message": "If we\u0027re going to add access modifiers here, this should just be `private:` and the `fProxy` should also be in the `private` section.",
+      "range": {
+        "startLine": 423,
+        "startChar": 0,
+        "endLine": 423,
+        "endChar": 10
+      },
+      "revId": "d82a7fe455927e743e9d40a77ae1443650b0c4be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3544efb_190a5253",
+        "filename": "src/ports/SkFontMgr_fontconfig.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 479,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-08-27T18:58:46Z",
+      "side": 1,
+      "message": "`// TODO: need to clone FC_MATRIX and FC_EMBOLDEN by wrapping this`",
+      "revId": "d82a7fe455927e743e9d40a77ae1443650b0c4be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4345408b_f5373a23",
+        "filename": "src/ports/SkFontMgr_fontconfig.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 543,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-08-27T18:58:46Z",
+      "side": 1,
+      "message": "`// TODO: FC_VARIABLE and FC_FONT_VARIATIONS in arguments`",
+      "revId": "d82a7fe455927e743e9d40a77ae1443650b0c4be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
