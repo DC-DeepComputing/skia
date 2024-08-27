@@ -509,6 +509,7 @@
 #define GR_GL_RGB8                           0x8051
 #define GR_GL_SRGB8                          0x8C41
 #define GR_GL_RGBX8                          0x96BA
+#define GR_GL_RGB16F                         0x881B
 
 /* RGB integer sized formats */
 #define GR_GL_RGB8I                          0x8D8F
