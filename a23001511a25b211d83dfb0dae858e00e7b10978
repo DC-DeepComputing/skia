@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "49d61def_db389909",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-08-27T23:17:36Z",
+      "side": 1,
+      "message": "@brianosman, can you PTAL?\n/cc @scroggo FYI",
+      "revId": "a23001511a25b211d83dfb0dae858e00e7b10978",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d83a074_604124e9",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-08-27T23:17:36Z",
+      "side": 1,
+      "message": "Potential problem: `dstPtr` here in the definition is different than `dst` in the declaration (in the `.h` file).\n\nMaybe this is okay - this doesn\u0027t seem like a big deal.\n\nI can change the parameter name in the `SkPngRustCodec.h` file, but then it wouldn\u0027t match the parameter name in `SkCodec.h`, so maybe let\u0027s just leave things as-is?",
+      "range": {
+        "startLine": 224,
+        "startChar": 50,
+        "endLine": 224,
+        "endChar": 56
+      },
+      "revId": "a23001511a25b211d83dfb0dae858e00e7b10978",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d4d1e9e_a9205d34",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-08-27T23:17:36Z",
+      "side": 1,
+      "message": "Switching to `SkSpan` may seem like an unnecessary busywork, but it will help in a follow-up CL, where I want to pass `SkSpan` to `applyXformRow` - see: https://skia-review.googlesource.com/c/skia/+/889151/9/experimental/rust_png/impl/SkPngRustCodec.cpp#278\n\nAnd switching to `SkSpan` in a separate CL seems desirable to avoid extra complexity in the http://review.skia.org/c/skia/+/889151 (which is quite big anyhow).",
+      "range": {
+        "startLine": 288,
+        "startChar": 36,
+        "endLine": 288,
+        "endChar": 38
+      },
+      "revId": "a23001511a25b211d83dfb0dae858e00e7b10978",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
