@@ -69,6 +69,24 @@
       "parentUuid": "8d9a4017_5f11a83f",
       "revId": "6dffb1f66634963bd078ac769501848eb05e7f60",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2477f677_c3546d97",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-08-27T17:23:18Z",
+      "side": 1,
+      "message": "I\u0027m fine with leaving it in. But my thinking was that if `numRects` overflows in RegionOp::onPrepareDraw, it gets passed in as `repeatCount` to PatternHelper::init (via QuadHelper) and will fail the `\u003c 0` check here.",
+      "parentUuid": "5c3adfd6_31a75dbf",
+      "revId": "6dffb1f66634963bd078ac769501848eb05e7f60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
