@@ -16,6 +16,75 @@
       "message": "Addressed the latest feedback for your review - LMKWYT! Fixed some small issues encountered during testing (thanks to Kyle \u0026 Colin for aiding in testing setup and execution while I work with cloudtop support to iron out authorization issues).",
       "revId": "aaa5b54f07532f9b90e691a4781546ab130c1c66",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6955e86f_7d04a098",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 478,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-08-27T20:18:43Z",
+      "side": 1,
+      "message": "Since we\u0027re always pushing back numSamplers objects here, we can just use AutoTArray instead which will just make an array of size numSamplers default constructed objects.",
+      "range": {
+        "startLine": 477,
+        "startChar": 4,
+        "endLine": 478,
+        "endChar": 47
+      },
+      "revId": "aaa5b54f07532f9b90e691a4781546ab130c1c66",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0746c957_a2e98f41",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 488,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-08-27T20:18:43Z",
+      "side": 1,
+      "message": "Add this?",
+      "range": {
+        "startLine": 488,
+        "startChar": 8,
+        "endLine": 488,
+        "endChar": 64
+      },
+      "revId": "aaa5b54f07532f9b90e691a4781546ab130c1c66",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d818340_a96b2df5",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 524,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-08-27T20:18:43Z",
+      "side": 1,
+      "message": "I\u0027m not sure we need to create a `BindGroupLayout` that excludes the static samplers. \n\nWe want to create a single `BindGroupLayout` that does contain the static samples. Then when we eventually call `CreateBindGroup` with a `wgpu::BindGroupDescriptor`, that descriptor will use the full layout. However, that descriptor will only have entries for the non static samplers. In other words this line, https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/gpu/graphite/dawn/DawnResourceProvider.cpp;l\u003d501, will be left blank when use static samplers.",
+      "range": {
+        "startLine": 524,
+        "startChar": 41,
+        "endLine": 524,
+        "endChar": 71
+      },
+      "revId": "aaa5b54f07532f9b90e691a4781546ab130c1c66",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
