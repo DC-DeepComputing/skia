@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "637e3206_73c2e54e",
+        "filename": "src/codec/SkPngCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 966,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-08-27T23:23:44Z",
+      "side": 0,
+      "message": "Before this CL the same `bitDepth` would be passed to `SkEncodedInfo::Make` (on old line 960) and into `SkPngCodec::fBitDepth`",
+      "range": {
+        "startLine": 966,
+        "startChar": 91,
+        "endLine": 966,
+        "endChar": 99
+      },
+      "revId": "bddc70eee9217aef7c6154793b575ca1132e42a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
