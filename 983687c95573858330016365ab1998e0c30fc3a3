@@ -71,6 +71,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7e50b1f5_481d44c2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-08-27T15:10:47Z",
+      "side": 1,
+      "message": "I believe that the right approach would be to modify the TextLine after adding the ellipsis to modify the runs that belong to the line (cut off the tail of the left one and the head of the right one). That would stand against any query for the visual order (done by runs) and we will have to deal only with text being split in the middle (and I don\u0027t remember any query iterating by the text).",
+      "revId": "983687c95573858330016365ab1998e0c30fc3a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "79267173_9778aa33",
         "filename": "modules/skparagraph/include/DartTypes.h",
         "patchSetId": 3
