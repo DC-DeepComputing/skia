@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9edbc8fb_6c53d787",
+        "filename": "src/gpu/graphite/dawn/DawnGraphiteTypesPriv.cpp",
+        "patchSetId": 43
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-08-27T15:35:15Z",
+      "side": 1,
+      "message": "why this change? I would have actually expected some compilers to complain about putting an unsigned int into a signed value here.",
+      "range": {
+        "startLine": 32,
+        "startChar": 34,
+        "endLine": 32,
+        "endChar": 36
+      },
+      "revId": "7c650646db742790f5ed5aa1a0bb8a96eac821c9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
