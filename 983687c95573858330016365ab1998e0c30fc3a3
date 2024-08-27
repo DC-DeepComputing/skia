@@ -88,6 +88,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bc0aac5e_0301535d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-08-27T15:22:14Z",
+      "side": 1,
+      "message": "On top of everything cutting out the middle of the line will require recalculating all the line metrics (for instance, if we remove a run with extremely tall letters - the entire line will be shorter).\nThe more the scarier...",
+      "revId": "983687c95573858330016365ab1998e0c30fc3a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "79267173_9778aa33",
         "filename": "modules/skparagraph/include/DartTypes.h",
         "patchSetId": 3
