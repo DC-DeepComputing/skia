@@ -16,6 +16,74 @@
       "message": "Just removed dependency to FreeType from SkTypeface_config",
       "revId": "977c4bfa09fd2686d471247508df87259766b9ff",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39f0d85f_e1148ed7",
+        "filename": "src/ports/SkFontMgr_fontconfig.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 438,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-08-27T14:49:54Z",
+      "side": 1,
+      "message": "Yes, it\u0027s probably better to use the proxy here. It can call SkStream::duplicate which is probably a lot faster and uses less resources. That being said, this code will still need to exist to create that initial stream to pass to `SkTypeface_FreeType::MakeFromStream`.",
+      "revId": "977c4bfa09fd2686d471247508df87259766b9ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5aa441f0_6ee8e122",
+        "filename": "src/ports/SkFontMgr_fontconfig.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 492,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-08-27T14:49:54Z",
+      "side": 1,
+      "message": "We can now fix the TODO about `FC_MATRIX` and `FC_EMBOLDEN` fairly simply here, where we can return a new SkTypeface_fontconfig wrapping this clone and pass a reference to the pattern and sysroot through. That doesn\u0027t need to be done in the change, but we should keep the TODO here.",
+      "revId": "977c4bfa09fd2686d471247508df87259766b9ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bbe9cee7_77cf6453",
+        "filename": "src/ports/SkFontMgr_fontconfig.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 494,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-08-27T14:49:54Z",
+      "side": 1,
+      "message": "If we use `SkTypeface_FreeType::MakeFromStream` instead can this be removed?",
+      "revId": "977c4bfa09fd2686d471247508df87259766b9ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3ed3fce_93117c2f",
+        "filename": "src/ports/SkFontMgr_fontconfig.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 564,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-08-27T14:49:54Z",
+      "side": 1,
+      "message": "This creation is a bit awkward given that we want it to work the same with fontations later. Can this just be a call to `SkTypeface_FreeType::MakeFromStream`?",
+      "revId": "977c4bfa09fd2686d471247508df87259766b9ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
