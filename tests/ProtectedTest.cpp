@@ -10,7 +10,9 @@
 #if defined(SK_GANESH)
 
 #include "include/core/SkBitmap.h"
+#include "include/core/SkCanvas.h"
 #include "include/core/SkColorSpace.h"
+#include "include/core/SkPaint.h"
 #include "include/core/SkSurface.h"
 #include "include/gpu/GrBackendSurface.h"
 #include "include/gpu/GrDirectContext.h"
@@ -129,6 +131,43 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(Protected_readPixelsFromSurfaces, reporter, ctx
     readback.allocPixels(surface->imageInfo());
     REPORTER_ASSERT(reporter, !surface->readPixels(readback, 0, 0));
 }
+
+DEF_GANESH_TEST_FOR_ALL_CONTEXTS(Protected_CopyOnWrite, reporter, ctxInfo, CtsEnforcement::kNever) {
+    auto dContext = ctxInfo.directContext();
+
+    if (!dContext->supportsProtectedContent()) {
+        // Protected content not supported
+        return;
+    }
+
+    sk_sp<SkSurface> surface = ProtectedUtils::CreateProtectedSkSurface(dContext,
+                                                                        { kSize, kSize },
+                                                                        /* textureable= */ true,
+                                                                        /* isProtected= */ true);
+    if (!surface) {
+        return;
+    }
+
+    SkCanvas* canvas = surface->getCanvas();
+    REPORTER_ASSERT(reporter, canvas);
+
+    sk_sp<SkImage> image = surface->makeImageSnapshot();
+    REPORTER_ASSERT(reporter, image);
+    REPORTER_ASSERT(reporter, image->isProtected());
+
+    SkPaint paint;
+    paint.setColor(SK_ColorBLACK);
+    canvas->drawRect(SkRect::MakeWH(4, 4), paint);
+
+    sk_sp<SkImage> image2 = surface->makeImageSnapshot();
+    REPORTER_ASSERT(reporter, image2);
+    REPORTER_ASSERT(reporter, image2->isProtected());
+
+    SkBitmap readback;
+    readback.allocPixels(image2->imageInfo());
+    REPORTER_ASSERT(reporter, !image2->readPixels(dContext, readback.pixmap(), 0, 0));
+}
+
 
 namespace {
 
