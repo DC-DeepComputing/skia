@@ -108,13 +108,13 @@ public:
     void discard();
     void resolveMSAA();
 
-    bool replaceBackingProxy(SkSurface::ContentChangeMode,
+    bool replaceBackingProxy2(SkSurface::ContentChangeMode,
                              sk_sp<GrRenderTargetProxy>,
                              GrColorType,
                              sk_sp<SkColorSpace>,
                              GrSurfaceOrigin,
                              const SkSurfaceProps&);
-    bool replaceBackingProxy(SkSurface::ContentChangeMode);
+    bool replaceBackingProxy1(SkSurface::ContentChangeMode);
 
     using RescaleGamma       = SkImage::RescaleGamma;
     using RescaleMode        = SkImage::RescaleMode;

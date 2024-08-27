@@ -234,7 +234,7 @@ bool SkSurface_Ganesh::onCopyOnWrite(ContentChangeMode mode) {
 
     if (static_cast<SkImage_Ganesh*>(image.get())
                 ->surfaceMustCopyOnWrite(readSurfaceView.proxy())) {
-        if (!fDevice->replaceBackingProxy(mode)) {
+        if (!fDevice->replaceBackingProxy1(mode)) {
             return false;
         }
     } else if (kDiscard_ContentChangeMode == mode) {
@@ -504,7 +504,8 @@ bool SkSurface_Ganesh::replaceBackendTexture(const GrBackendTexture& backendText
     int sampleCnt = oldTexture->asRenderTarget()->numSamples();
     GrColorType grColorType = SkColorTypeToGrColorType(this->getCanvas()->imageInfo().colorType());
     if (!validate_backend_texture(
-                rContext->priv().caps(), backendTexture, sampleCnt, grColorType, true)) {
+                rContext->priv().caps(), backendTexture, sampleCnt, grColorType,
+                /* texturable= */ true)) {
         return false;
     }
 
@@ -521,7 +522,7 @@ bool SkSurface_Ganesh::replaceBackendTexture(const GrBackendTexture& backendText
         return false;
     }
 
-    return fDevice->replaceBackingProxy(mode,
+    return fDevice->replaceBackingProxy2(mode,
                                         sk_ref_sp(proxy->asRenderTargetProxy()),
                                         grColorType,
                                         std::move(colorSpace),

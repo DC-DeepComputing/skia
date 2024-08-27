@@ -241,6 +241,37 @@ DEF_GANESH_TEST(VkProtectedContext_ReadFromProtectedSurface,
     REPORTER_ASSERT(reporter, !surface->readPixels(SkImageInfo(), nullptr, 8, 0, 0));
 }
 
+// Graphite does not perform Copy-on-Write which is why there is no DEF_GRAPHITE_TEST correlate
+DEF_GANESH_TEST(VkProtectedContext_CopyOnWrite,
+                reporter,
+                options,
+                CtsEnforcement::kNever) {
+    std::unique_ptr<VkTestHelper> helper = VkTestHelper::Make(skiatest::TestType::kGanesh,
+                                                              /* isProtected= */ true);
+    if (!helper) {
+        return;
+    }
+
+    REPORTER_ASSERT(reporter, helper->isValid());
+
+    sk_sp<SkSurface> surface = helper->createSurface({ kSize, kSize },
+                                                     /* textureable= */ true,
+                                                     /* isProtected= */ true);
+    REPORTER_ASSERT(reporter, surface);
+    SkCanvas* canvas = surface->getCanvas();
+    REPORTER_ASSERT(reporter, canvas);
+
+    sk_sp<SkImage> image = surface->makeImageSnapshot();
+    REPORTER_ASSERT(reporter, image);
+    REPORTER_ASSERT(reporter, image->isProtected());
+
+    SkPaint paint;
+    paint.setColor(SK_ColorBLACK);
+    canvas->drawRect(SkRect::MakeWH(4, 4), paint);
+
+    REPORTER_ASSERT(reporter, !surface->readPixels(SkImageInfo(), nullptr, 8, 0, 0));
+}
+
 namespace {
 
 struct AsyncContext {

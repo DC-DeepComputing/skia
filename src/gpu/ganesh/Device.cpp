@@ -1305,7 +1305,7 @@ void Device::resolveMSAA() {
     fSurfaceDrawContext->resolveMSAA();
 }
 
-bool Device::replaceBackingProxy(SkSurface::ContentChangeMode mode,
+bool Device::replaceBackingProxy2(SkSurface::ContentChangeMode mode,
                                  sk_sp<GrRenderTargetProxy> newRTP,
                                  GrColorType grColorType,
                                  sk_sp<SkColorSpace> colorSpace,
@@ -1335,7 +1335,7 @@ bool Device::replaceBackingProxy(SkSurface::ContentChangeMode mode,
     return true;
 }
 
-bool Device::replaceBackingProxy(SkSurface::ContentChangeMode mode) {
+bool Device::replaceBackingProxy1(SkSurface::ContentChangeMode mode) {
     ASSERT_SINGLE_OWNER
 
     const SkImageInfo& ii = this->imageInfo();
@@ -1347,6 +1347,8 @@ bool Device::replaceBackingProxy(SkSurface::ContentChangeMode mode) {
     if (!format.isValid()) {
         return false;
     }
+
+    SkDebugf("replaceBackingProxy1\n");
 
     GrProxyProvider* proxyProvider = fContext->priv().proxyProvider();
     // This entry point is used by SkSurface_Ganesh::onCopyOnWrite so it must create a
@@ -1365,7 +1367,7 @@ bool Device::replaceBackingProxy(SkSurface::ContentChangeMode mode) {
         return false;
     }
 
-    return this->replaceBackingProxy(mode, sk_ref_sp(proxy->asRenderTargetProxy()),
+    return this->replaceBackingProxy2(mode, sk_ref_sp(proxy->asRenderTargetProxy()),
                                      grColorType, ii.refColorSpace(), oldView.origin(),
                                      this->surfaceProps());
 }
