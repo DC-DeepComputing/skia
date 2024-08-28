@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "73d3e478_9eb2344d",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-08-28T13:42:06Z",
+      "side": 1,
+      "message": "clang-tidy might complain if they don\u0027t match, but if the bots pass, I\u0027m fine either way.",
+      "parentUuid": "5d83a074_604124e9",
+      "range": {
+        "startLine": 224,
+        "startChar": 50,
+        "endLine": 224,
+        "endChar": 56
+      },
+      "revId": "a23001511a25b211d83dfb0dae858e00e7b10978",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6d4d1e9e_a9205d34",
         "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
         "patchSetId": 1
@@ -54,6 +78,30 @@
       "writtenOn": "2024-08-27T23:17:36Z",
       "side": 1,
       "message": "Switching to `SkSpan` may seem like an unnecessary busywork, but it will help in a follow-up CL, where I want to pass `SkSpan` to `applyXformRow` - see: https://skia-review.googlesource.com/c/skia/+/889151/9/experimental/rust_png/impl/SkPngRustCodec.cpp#278\n\nAnd switching to `SkSpan` in a separate CL seems desirable to avoid extra complexity in the http://review.skia.org/c/skia/+/889151 (which is quite big anyhow).",
+      "range": {
+        "startLine": 288,
+        "startChar": 36,
+        "endLine": 288,
+        "endChar": 38
+      },
+      "revId": "a23001511a25b211d83dfb0dae858e00e7b10978",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c423d609_fee4bd5f",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-08-28T13:42:06Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "6d4d1e9e_a9205d34",
       "range": {
         "startLine": 288,
         "startChar": 36,
