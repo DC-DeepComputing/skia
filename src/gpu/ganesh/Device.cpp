@@ -1305,7 +1305,7 @@ void Device::resolveMSAA() {
     fSurfaceDrawContext->resolveMSAA();
 }
 
-bool Device::replaceBackingProxy(SkSurface::ContentChangeMode mode,
+bool Device::replaceBackingProxy2(SkSurface::ContentChangeMode mode,
                                  sk_sp<GrRenderTargetProxy> newRTP,
                                  GrColorType grColorType,
                                  sk_sp<SkColorSpace> colorSpace,
@@ -1335,7 +1335,7 @@ bool Device::replaceBackingProxy(SkSurface::ContentChangeMode mode,
     return true;
 }
 
-bool Device::replaceBackingProxy(SkSurface::ContentChangeMode mode) {
+bool Device::replaceBackingProxy1(SkSurface::ContentChangeMode mode) {
     ASSERT_SINGLE_OWNER
 
     const SkImageInfo& ii = this->imageInfo();
@@ -1365,7 +1365,9 @@ bool Device::replaceBackingProxy(SkSurface::ContentChangeMode mode) {
         return false;
     }
 
-    return this->replaceBackingProxy(mode, sk_ref_sp(proxy->asRenderTargetProxy()),
+    SkDebugf("replaceBackingProxy1: %d\n", proxy->isProtected() == skgpu::Protected::kYes);
+
+    return this->replaceBackingProxy2(mode, sk_ref_sp(proxy->asRenderTargetProxy()),
                                      grColorType, ii.refColorSpace(), oldView.origin(),
                                      this->surfaceProps());
 }

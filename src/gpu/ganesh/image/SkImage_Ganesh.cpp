@@ -139,6 +139,7 @@ inline skgpu::Protected SkImage_Ganesh::ProxyChooser::isProtected() const {
     if (fVolatileProxy) {
         SkASSERT(fVolatileProxy->asTextureProxy()->isProtected() == isProtected);
     }
+    SkDebugf("ProxyChooser::isProtected: %d\n", isProtected == skgpu::Protected::kYes);
     return isProtected;
 }
 
