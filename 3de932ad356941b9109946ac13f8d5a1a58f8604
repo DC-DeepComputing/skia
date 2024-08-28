@@ -22,6 +22,30 @@
       },
       "revId": "3de932ad356941b9109946ac13f8d5a1a58f8604",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3afe3057_4d2ddc4d",
+        "filename": "src/gpu/graphite/dawn/DawnTextureInfo.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-08-28T12:25:55Z",
+      "side": 1,
+      "message": "If you can figure out how to make the compiler happy in that situation, I\u0027d be happy to learn how.",
+      "parentUuid": "32460bb0_35434579",
+      "range": {
+        "startLine": 96,
+        "startChar": 0,
+        "endLine": 97,
+        "endChar": 44
+      },
+      "revId": "3de932ad356941b9109946ac13f8d5a1a58f8604",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
