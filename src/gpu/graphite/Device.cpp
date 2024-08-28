@@ -1173,6 +1173,9 @@ void Device::drawGeometry(const Transform& localToDevice,
         return;
     }
 
+    // TODO: whereever we modify things for the clipshader we also need to do so for the
+    // analytic clip.
+
     // Heavy weight paint options like path effects, mask filters, and stroke-and-fill style are
     // applied on the CPU by generating a new shape and recursing on drawGeometry with updated flags
     if (!(flags & DrawFlags::kIgnorePathEffect) && paint.getPathEffect()) {
@@ -1285,6 +1288,7 @@ void Device::drawGeometry(const Transform& localToDevice,
 
     PaintParams shading{paint,
                         std::move(primitiveBlender),
+                        clip.analyticClip(),
                         sk_ref_sp(clip.shader()),
                         dstReadReq,
                         skipColorXform};

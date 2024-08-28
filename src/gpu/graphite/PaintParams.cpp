@@ -52,6 +52,7 @@ bool should_dither(const PaintParams& p, SkColorType dstCT) {
 
 PaintParams::PaintParams(const SkPaint& paint,
                          sk_sp<SkBlender> primitiveBlender,
+                         const CircularRRectClip& analyticClip,
                          sk_sp<SkShader> clipShader,
                          DstReadRequirement dstReadReq,
                          bool skipColorXform)
@@ -60,6 +61,7 @@ PaintParams::PaintParams(const SkPaint& paint,
         , fShader(paint.refShader())
         , fColorFilter(paint.refColorFilter())
         , fPrimitiveBlender(std::move(primitiveBlender))
+        , fAnalyticClip(analyticClip)
         , fClipShader(std::move(clipShader))
         , fDstReadReq(dstReadReq)
         , fSkipColorXform(skipColorXform)
@@ -326,7 +328,21 @@ void PaintParams::toKey(const KeyContext& keyContext,
         finalBlendMode = SkBlendMode::kSrc;
     }
 
-    if (fClipShader) {
+    // Put all of this in a helper function?
+    if (!fAnalyticClip.isEmpty() && fClipShader) {
+        // **** Compose together with CircularRRectClipBlock
+        ClipShaderBlock::BeginBlock(keyContext, builder, gatherer);
+
+        AddToKey(keyContext, builder, gatherer, fClipShader.get());
+
+        builder->endBlock();
+    } else if (!fAnalyticClip.isEmpty()) {
+        CircularRRectClipBlock::CircularRRectClipData data(
+                fAnalyticClip.fBounds.makeOutset(0.5f).asSkRect(),
+                {fAnalyticClip.fRadius+0.5f, 1.0f/(fAnalyticClip.fRadius+0.5f)},
+                fAnalyticClip.edgeSelectRect());
+        CircularRRectClipBlock::AddBlock(keyContext, builder, gatherer, data);
+    } else if (fClipShader) {
         ClipShaderBlock::BeginBlock(keyContext, builder, gatherer);
 
             AddToKey(keyContext, builder, gatherer, fClipShader.get());
