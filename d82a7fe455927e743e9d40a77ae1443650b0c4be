@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "073210d2_cc6594d5",
+        "filename": "src/ports/SkFontMgr_fontconfig.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 423,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-08-28T17:09:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b341c1c7_0b122efb",
+      "range": {
+        "startLine": 423,
+        "startChar": 0,
+        "endLine": 423,
+        "endChar": 10
+      },
+      "revId": "d82a7fe455927e743e9d40a77ae1443650b0c4be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b3544efb_190a5253",
@@ -41,6 +65,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "76c238db_a9ad27c9",
+        "filename": "src/ports/SkFontMgr_fontconfig.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 479,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-08-28T17:09:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b3544efb_190a5253",
+      "revId": "d82a7fe455927e743e9d40a77ae1443650b0c4be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4345408b_f5373a23",
@@ -54,6 +96,24 @@
       "writtenOn": "2024-08-27T18:58:46Z",
       "side": 1,
       "message": "`// TODO: FC_VARIABLE and FC_FONT_VARIATIONS in arguments`",
+      "revId": "d82a7fe455927e743e9d40a77ae1443650b0c4be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "34f169a5_b5c065e9",
+        "filename": "src/ports/SkFontMgr_fontconfig.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 543,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-08-28T17:09:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4345408b_f5373a23",
       "revId": "d82a7fe455927e743e9d40a77ae1443650b0c4be",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
