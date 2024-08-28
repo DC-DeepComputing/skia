@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "50173b94_a0ec1f19",
+        "filename": "src/pdf/SkPDFSubsetFont.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 9300
+      },
+      "writtenOn": "2024-08-28T13:34:05Z",
+      "side": 1,
+      "message": "With this new call to `std::move(subset)`...",
+      "revId": "31a170226c22244cbd00497b67f6ae181f0f3e76",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aaa2800a_c7ec00d0",
+        "filename": "src/pdf/SkPDFSubsetFont.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 9300
+      },
+      "writtenOn": "2024-08-28T13:34:05Z",
+      "side": 1,
+      "message": "...it seems like this pre-existing access of `subset` is now invalid.",
+      "revId": "31a170226c22244cbd00497b67f6ae181f0f3e76",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
