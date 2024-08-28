@@ -343,8 +343,8 @@ static void check_base_readbacks(GrDirectContext* dContext,
         auto test = backendTex.getBackendFormat();
         auto swizzle = dContext->priv().caps()->getReadSwizzle(test,
                                                                colorType);
-        SkDebugf("%s\n", GrColorTypeToStr(colorType));
-        SkDebugf("readback swizzle %s\n", swizzle.asString().c_str());
+        SkDebugf("colortpye in readback: %s\n", GrColorTypeToStr(colorType));
+        SkDebugf("readback swizzle: %s\n", swizzle.asString().c_str());
 
         GrSurfaceProxyView readView(proxy, kTopLeft_GrSurfaceOrigin, swizzle);
         GrColorInfo info(colorType, kUnpremul_SkAlphaType, nullptr);
