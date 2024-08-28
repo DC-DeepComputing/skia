@@ -2373,7 +2373,7 @@ void GrGLCaps::initFormatTable(const GrGLContextInfo& ctxInfo, const GrGLInterfa
                 ctInfo.fColorType = GrColorType::kRGB_F16F16F16x;
                 ctInfo.fFlags = ColorTypeInfo::kUploadData_Flag;
                 ctInfo.fReadSwizzle = skgpu::Swizzle::RGB1();
-                ctInfo.fWriteSwizzle = skgpu::Swizzle::RGB1();
+                // ctInfo.fWriteSwizzle = skgpu::Swizzle::RGB1();
                 this->setColorTypeFormat(GrColorType::kRGB_F16F16F16x, GrGLFormat::kRGBA16F);
 
                 // External IO ColorTypes:
