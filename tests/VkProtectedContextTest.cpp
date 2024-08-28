@@ -12,6 +12,7 @@
 #if defined(SK_VULKAN)
 
 #include "include/core/SkAlphaType.h"
+#include "include/core/SkBitmap.h"
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkBlurTypes.h"
 #include "include/core/SkCanvas.h"
@@ -239,6 +240,47 @@ DEF_GANESH_TEST(VkProtectedContext_ReadFromProtectedSurface,
                                                      /* isProtected= */ true);
     REPORTER_ASSERT(reporter, surface);
     REPORTER_ASSERT(reporter, !surface->readPixels(SkImageInfo(), nullptr, 8, 0, 0));
+}
+
+// Graphite does not perform Copy-on-Write which is why there is no DEF_GRAPHITE_TEST correlate
+DEF_GANESH_TEST(VkProtectedContext_CopyOnWrite,
+                reporter,
+                options,
+                CtsEnforcement::kNever) {
+    std::unique_ptr<VkTestHelper> helper = VkTestHelper::Make(skiatest::TestType::kGanesh,
+                                                              /* isProtected= */ true);
+    if (!helper) {
+        return;
+    }
+
+    REPORTER_ASSERT(reporter, helper->isValid());
+
+    GrDirectContext* dContext = helper->directContext();
+
+    sk_sp<SkSurface> surface = helper->createSurface({ kSize, kSize },
+                                                     /* textureable= */ true,
+                                                     /* isProtected= */ true);
+    REPORTER_ASSERT(reporter, surface);
+    SkCanvas* canvas = surface->getCanvas();
+    REPORTER_ASSERT(reporter, canvas);
+
+    sk_sp<SkImage> imageBefore = surface->makeImageSnapshot();
+    REPORTER_ASSERT(reporter, imageBefore);
+    REPORTER_ASSERT(reporter, imageBefore->isProtected());
+
+    SkPaint paint;
+    paint.setColor(SK_ColorBLACK);
+    canvas->drawRect(SkRect::MakeWH(4, 4), paint);
+
+    sk_sp<SkImage> imageAfter = surface->makeImageSnapshot();
+    REPORTER_ASSERT(reporter, imageAfter);
+    REPORTER_ASSERT(reporter, imageAfter->isProtected());
+
+    REPORTER_ASSERT(reporter, imageBefore != imageAfter);
+
+    SkBitmap readback;
+    readback.allocPixels(imageAfter->imageInfo());
+    REPORTER_ASSERT(reporter, !imageAfter->readPixels(dContext, readback.pixmap(), 0, 0));
 }
 
 namespace {
