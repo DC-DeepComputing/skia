@@ -9,6 +9,26 @@
 
 #include "include/core/SkBitmap.h"
 #include "include/core/SkRect.h"
+<<<<<<< HEAD   (8bd493 [ganesh] Avoid int overflow when combining RegionOps)
+=======
+#include "include/core/SkSamplingOptions.h"
+#include "include/core/SkScalar.h"
+#include "include/core/SkSize.h"
+#include "include/core/SkString.h"
+#include "include/gpu/GpuTypes.h"
+#include "include/gpu/ganesh/GrBackendSurface.h"
+#include "include/gpu/ganesh/GrRecordingContext.h"
+#include "include/gpu/ganesh/GrTypes.h"
+#include "include/private/SkColorData.h"
+#include "include/private/base/SkAssert.h"
+#include "include/private/base/SkDebug.h"
+#include "include/private/base/SkPoint_impl.h"
+#include "include/private/base/SkTArray.h"
+#include "include/private/gpu/ganesh/GrTypesPriv.h"
+#include "src/base/SkArenaAlloc.h"
+#include "src/base/SkSafeMath.h"
+#include "src/base/SkVx.h"
+>>>>>>> CHANGE (07fcb9 [ganesh] Avoid int overflow in PatternHelper)
 #include "src/core/SkLatticeIter.h"
 #include "src/core/SkMatrixPriv.h"
 #include "src/gpu/BufferWriter.h"
@@ -240,11 +260,13 @@ private:
 
         int patchCnt = fPatches.size();
         int numRects = 0;
+
+        SkSafeMath safeMath;
         for (int i = 0; i < patchCnt; i++) {
-            numRects += fPatches[i].fIter->numRectsToDraw();
+            numRects = safeMath.addInt(numRects, fPatches[i].fIter->numRectsToDraw());
         }
 
-        if (!numRects) {
+        if (!numRects || !safeMath) {
             return;
         }
 

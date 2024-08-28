@@ -7,7 +7,26 @@
 
 #include "src/gpu/ganesh/ops/DashOp.h"
 
+<<<<<<< HEAD   (8bd493 [ganesh] Avoid int overflow when combining RegionOps)
 #include "include/gpu/GrRecordingContext.h"
+=======
+#include "include/core/SkMatrix.h"
+#include "include/core/SkPaint.h"
+#include "include/core/SkPathEffect.h"
+#include "include/core/SkRect.h"
+#include "include/core/SkScalar.h"
+#include "include/core/SkString.h"
+#include "include/core/SkStrokeRec.h"
+#include "include/gpu/ganesh/GrRecordingContext.h"
+#include "include/private/SkColorData.h"
+#include "include/private/base/SkAssert.h"
+#include "include/private/base/SkDebug.h"
+#include "include/private/base/SkPoint_impl.h"
+#include "include/private/base/SkTArray.h"
+#include "include/private/gpu/ganesh/GrTypesPriv.h"
+#include "src/base/SkArenaAlloc.h"
+#include "src/base/SkSafeMath.h"
+>>>>>>> CHANGE (07fcb9 [ganesh] Avoid int overflow in PatternHelper)
 #include "src/core/SkMatrixPriv.h"
 #include "src/core/SkPointPriv.h"
 #include "src/gpu/BufferWriter.h"
@@ -362,6 +381,7 @@ private:
         STArray<kNumStackDashes, SkRect, true> rects;
         STArray<kNumStackDashes, DashDraw, true> draws;
 
+        SkSafeMath safeMath;
         int totalRectCount = 0;
         int rectOffset = 0;
         rects.push_back_n(3 * instanceCount);
@@ -528,9 +548,9 @@ private:
                 devIntervals[0] = lineLength;
             }
 
-            totalRectCount += !lineDone ? 1 : 0;
-            totalRectCount += hasStartRect ? 1 : 0;
-            totalRectCount += hasEndRect ? 1 : 0;
+            totalRectCount = safeMath.addInt(totalRectCount, !lineDone ? 1 : 0);
+            totalRectCount = safeMath.addInt(totalRectCount, hasStartRect ? 1 : 0);
+            totalRectCount = safeMath.addInt(totalRectCount, hasEndRect ? 1 : 0);
 
             if (SkPaint::kRound_Cap == cap && 0 != args.fSrcStrokeWidth) {
                 // need to adjust this for round caps to correctly set the dashPos attrib on
@@ -570,7 +590,7 @@ private:
             draw.fHasEndRect = hasEndRect;
         }
 
-        if (!totalRectCount) {
+        if (!totalRectCount || !safeMath) {
             return;
         }
 
