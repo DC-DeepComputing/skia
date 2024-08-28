@@ -97,28 +97,28 @@ http_archive(
     ),
 )
 
-load("@rules_jvm_external//:repositories.bzl", "rules_jvm_external_deps")
-
-rules_jvm_external_deps()
-
-load("@rules_jvm_external//:setup.bzl", "rules_jvm_external_setup")
-
-rules_jvm_external_setup()
-
-load("@rules_jvm_external//:defs.bzl", "maven_install")
-
-maven_install(
-    artifacts = [
-        # The version released after this one (1.6.0-rc1) did not resolve unknown symbol errors when
-        # building.
-        # https://b.corp.google.com/issues/269331711
-        "androidx.annotation:annotation:1.5.0",
-    ],
-    repositories = [
-        "https://maven.google.com",
-        "https://repo1.maven.org/maven2",
-    ],
-)
+#load("@rules_jvm_external//:repositories.bzl", "rules_jvm_external_deps")
+#
+#rules_jvm_external_deps()
+#
+#load("@rules_jvm_external//:setup.bzl", "rules_jvm_external_setup")
+#
+#rules_jvm_external_setup()
+#
+#load("@rules_jvm_external//:defs.bzl", "maven_install")
+#
+#maven_install(
+#    artifacts = [
+#        # The version released after this one (1.6.0-rc1) did not resolve unknown symbol errors when
+#        # building.
+#        # https://b.corp.google.com/issues/269331711
+#        "androidx.annotation:annotation:1.5.0",
+#    ],
+#    repositories = [
+#        "https://maven.google.com",
+#        "https://repo1.maven.org/maven2",
+#    ],
+#)
 
 #######################################################################################
 # Gazelle
@@ -309,14 +309,37 @@ browser_repositories(
 # Rust rules and dependencies.                    #
 ###################################################
 
-http_archive(
+# http_archive(
+#     name = "rules_rust",
+#     integrity = "sha256-GuRaQT0LlDOYcyDfKtQQ22oV+vtsiM8P0b87qsvoJts=",
+#     urls = gcs_mirror_url(
+#         sha256 = "1ae45a413d0b9433987320df2ad410db6a15fafb6c88cf0fd1bf3baacbe826db",
+#         url = "https://github.com/bazelbuild/rules_rust/releases/download/0.39.0/rules_rust-v0.39.0.tar.gz",
+#     ),
+# )
+
+load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
+
+git_repository(
     name = "rules_rust",
-    integrity = "sha256-GuRaQT0LlDOYcyDfKtQQ22oV+vtsiM8P0b87qsvoJts=",
-    urls = gcs_mirror_url(
-        sha256 = "1ae45a413d0b9433987320df2ad410db6a15fafb6c88cf0fd1bf3baacbe826db",
-        url = "https://github.com/bazelbuild/rules_rust/releases/download/0.39.0/rules_rust-v0.39.0.tar.gz",
-    ),
+    commit = "b326d9eb22e7658a3bd782f0b846286faa22e18a",
+    remote = "https://github.com/erock2112/rules_rust",
 )
+
+# local_repository(
+#     name = "rules_rust",
+#     path = "../../rules_rust",
+# )
+
+CRATE_GENERATOR_SHA256S = {
+    "x86_64-unknown-linux-gnu": "fd8214ed8ac0bafd87bcd07e11fca7b21cbb920f5e3dcc746bc5365b084fa09f",
+    "x86_64-pc-windows-msvc": "d5a4227f12d148003fe89934db769a259cc7d065b481a54484c6d7264a607b33",
+}
+
+CRATE_GENERATOR_URLS = {
+    "x86_64-unknown-linux-gnu": "https://github.com/bazelbuild/rules_rust/releases/download/0.49.3/cargo-bazel-x86_64-unknown-linux-gnu",
+    "x86_64-pc-windows-msvc": "https://github.com/bazelbuild/rules_rust/releases/download/0.49.3/cargo-bazel-x86_64-pc-windows-msvc.exe",
+}
 
 load("@rules_rust//rust:repositories.bzl", "rules_rust_dependencies", "rust_register_toolchains")
 
@@ -360,7 +383,10 @@ load("@rules_rust//crate_universe:defs.bzl", "crates_repository")
 # This finds all the dependencies needed to build cxxbridge_cmd...
 crates_repository(
     name = "cxxbridge_cmd_deps",
+    timeout = 2400,
     cargo_lockfile = "//bazel/external/cxxbridge_cmd:Cargo.lock",
+    generator_sha256s = CRATE_GENERATOR_SHA256S,
+    generator_urls = CRATE_GENERATOR_URLS,
     manifests = ["@cxxbridge_cmd//:Cargo.toml"],
 )
 
@@ -388,7 +414,10 @@ http_archive(
 # This finds all the dependencies needed to build cxx...
 crates_repository(
     name = "cxx_deps",
+    timeout = 2400,
     cargo_lockfile = "//bazel/external/cxx:Cargo.lock",
+    generator_sha256s = CRATE_GENERATOR_SHA256S,
+    generator_urls = CRATE_GENERATOR_URLS,
     manifests = ["@cxx//:Cargo.toml"],
 )
 
@@ -404,7 +433,10 @@ cxx_deps()
 # This allows them to be used as deps in other bazel targets.
 crates_repository(
     name = "fontations",
+    timeout = 2400,
     cargo_lockfile = "//bazel/external/fontations:Cargo.lock",
+    generator_sha256s = CRATE_GENERATOR_SHA256S,
+    generator_urls = CRATE_GENERATOR_URLS,
     manifests = ["//bazel/external/fontations:Cargo.toml"],
 )
 
@@ -419,7 +451,10 @@ fontations_crates()
 # This allows them to be used as deps in other bazel targets.
 crates_repository(
     name = "icu4x_deps",
+    timeout = 2400,
     cargo_lockfile = "//bazel/external/icu4x:Cargo.lock",
+    generator_sha256s = CRATE_GENERATOR_SHA256S,
+    generator_urls = CRATE_GENERATOR_URLS,
     manifests = ["//bazel/external/icu4x:Cargo.toml"],
 )
 
@@ -440,7 +475,10 @@ icu4x_deps()
 # See comments in bazel/external/vello/BUILD.bazel for more information.
 crates_repository(
     name = "vello_deps",
+    timeout = 2400,
     cargo_lockfile = "//bazel/external/vello:Cargo.lock",
+    generator_sha256s = CRATE_GENERATOR_SHA256S,
+    generator_urls = CRATE_GENERATOR_URLS,
     manifests = ["//bazel/external/vello:Cargo.toml"],
 )
 
