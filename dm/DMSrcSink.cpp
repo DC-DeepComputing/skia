@@ -2139,10 +2139,13 @@ Result RasterSink::draw(const Src& src, SkBitmap* dst, SkWStream*, SkString*) co
 
 #if defined(SK_GRAPHITE)
 
-GraphiteSink::GraphiteSink(const SkCommandLineConfigGraphite* config)
-        : fOptions(config->getOptions())
+GraphiteSink::GraphiteSink(const SkCommandLineConfigGraphite* config,
+                           const skiatest::graphite::TestOptions& options)
+        : fOptions1(options)
         , fContextType(config->getContextType())
-        , fSurfaceType(config->getSurfaceType())
+        , fSurfaceType(options.fUseWGPUTextureView
+                                    ? SkCommandLineConfigGraphite::SurfaceType::kWrapTextureView
+                                    : SkCommandLineConfigGraphite::SurfaceType::kDefault)
         , fColorType(config->getColorType())
         , fAlphaType(config->getAlphaType()) {}
 
@@ -2150,7 +2153,7 @@ Result GraphiteSink::draw(const Src& src,
                           SkBitmap* dst,
                           SkWStream* dstStream,
                           SkString* log) const {
-    skiatest::graphite::TestOptions options = fOptions;
+    skiatest::graphite::TestOptions options = fOptions1;
     // If we've copied context options from an external source we can't trust that the
     // priv pointer is still in scope, so assume it should be NULL and set our own up.
     SkASSERT(!options.fContextOptions.fOptionsPriv);
@@ -2228,7 +2231,8 @@ sk_sp<SkSurface> GraphiteSink::makeSurface(skgpu::graphite::Recorder* recorder,
 #if defined(SK_ENABLE_PRECOMPILE)
 
 GraphitePrecompileTestingSink::GraphitePrecompileTestingSink(
-        const SkCommandLineConfigGraphite* config) : GraphiteSink(config) {}
+        const SkCommandLineConfigGraphite* config,
+        const skiatest::graphite::TestOptions& options) : GraphiteSink(config, options) {}
 
 GraphitePrecompileTestingSink::~GraphitePrecompileTestingSink() {}
 
@@ -2365,7 +2369,7 @@ Result GraphitePrecompileTestingSink::draw(const Src& src,
                                            SkBitmap* dst,
                                            SkWStream* dstStream,
                                            SkString* log) const {
-    skiatest::graphite::TestOptions options = fOptions;
+    skiatest::graphite::TestOptions options = fOptions1;
     // If we've copied context options from an external source we can't trust that the
     // priv pointer is still in scope, so assume it should be NULL and set our own up.
     SkASSERT(!options.fContextOptions.fOptionsPriv);

@@ -24,7 +24,7 @@ public:
 protected:
     bool isGpuContext() override { return true; }
     void initializeContext(int width, int height);
-    wgpu::Device createDevice(wgpu::BackendType type);
+    wgpu::Device createDevice1(wgpu::BackendType type, bool useTintIR);
     void configureSurface();
     void destroyContext();
 

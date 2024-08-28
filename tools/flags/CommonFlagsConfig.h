@@ -125,32 +125,32 @@ public:
     SkCommandLineConfigGraphite(const SkString& tag,
                                 const skia_private::TArray<SkString>& viaParts,
                                 ContextType contextType,
-                                SurfaceType surfaceType,
-                                const skiatest::graphite::TestOptions& options,
+//                                SurfaceType surfaceType,
+//                                const skiatest::graphite::TestOptions& options,
                                 SkColorType colorType,
                                 SkAlphaType alphaType,
                                 bool testPrecompile)
             : SkCommandLineConfig(tag, SkString("graphite"), viaParts)
-            , fOptions(options)
+//            , fOptions2(options)
             , fContextType(contextType)
-            , fSurfaceType(surfaceType)
+//            , fSurfaceType1(surfaceType)
             , fColorType(colorType)
             , fAlphaType(alphaType)
             , fTestPrecompile(testPrecompile) {
     }
     const SkCommandLineConfigGraphite* asConfigGraphite() const override { return this; }
 
-    const skiatest::graphite::TestOptions& getOptions() const { return fOptions; }
+//    const skiatest::graphite::TestOptions& getOptions() const { return fOptions2; }
     ContextType getContextType() const { return fContextType; }
-    SurfaceType getSurfaceType() const { return fSurfaceType; }
+//    SurfaceType getSurfaceType1() const { return fSurfaceType1; }
     SkColorType getColorType() const { return fColorType; }
     SkAlphaType getAlphaType() const { return fAlphaType; }
     bool        getTestPrecompile() const { return fTestPrecompile; }
 
 private:
-    skiatest::graphite::TestOptions fOptions;
+//    skiatest::graphite::TestOptions fOptions2;
     ContextType                     fContextType;
-    SurfaceType                     fSurfaceType;
+//    SurfaceType                     fSurfaceType1;
     SkColorType                     fColorType;
     SkAlphaType                     fAlphaType;
     bool                            fTestPrecompile;
