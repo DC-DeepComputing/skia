@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c67c44f_fdc1f7ca",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-08-28T14:05:50Z",
+      "side": 1,
+      "message": "Nice cleanup",
+      "revId": "3266c379ed60f12790d09d99f642986fdfce1f7b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c13f766c_7321d2b5",
@@ -41,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "12ae9bdc_11313301",
+        "filename": "src/codec/SkPngCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1028,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-08-28T14:05:50Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "c13f766c_7321d2b5",
+      "range": {
+        "startLine": 1028,
+        "startChar": 16,
+        "endLine": 1028,
+        "endChar": 57
+      },
+      "revId": "3266c379ed60f12790d09d99f642986fdfce1f7b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2c44d5d1_4233032b",
@@ -54,6 +95,30 @@
       "writtenOn": "2024-08-27T23:23:44Z",
       "side": 1,
       "message": "Even before this CL `fBitDepth` wasn\u0027t used here...",
+      "range": {
+        "startLine": 1100,
+        "startChar": 25,
+        "endLine": 1100,
+        "endChar": 66
+      },
+      "revId": "3266c379ed60f12790d09d99f642986fdfce1f7b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0248c34d_c487625c",
+        "filename": "src/codec/SkPngCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1100,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-08-28T14:05:50Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "2c44d5d1_4233032b",
       "range": {
         "startLine": 1100,
         "startChar": 25,
