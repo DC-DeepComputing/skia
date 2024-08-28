@@ -378,6 +378,9 @@ SkTypeface_FreeType::FaceRec::Make(const SkTypeface_FreeType* typeface) {
     }
 
     std::unique_ptr<FaceRec> rec(new FaceRec(data->detachStream()));
+    // A pentile geometry
+    FT_Vector sub[3] =  {{-11, 16}, {-11, -16}, {22, 0}};
+    FT_Library_SetLcdGeometry(gFTLibrary->library(), sub);
 
     FT_Open_Args args;
     memset(&args, 0, sizeof(args));
