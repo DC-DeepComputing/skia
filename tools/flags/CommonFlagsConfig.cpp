@@ -137,7 +137,6 @@ static const struct {
     { "grd3d",                 "graphite", "api=direct3d" },
 #endif
 #ifdef SK_DAWN
-    { "grdawn_mtl_fakeWGPU",   "graphite", "api=dawn_mtl,fakeWGPU=true" },
     { "grdawn_d3d11",          "graphite", "api=dawn_d3d11" },
     { "grdawn_d3d12",          "graphite", "api=dawn_d3d12" },
     { "grdawn_mtl",            "graphite", "api=dawn_mtl" },
@@ -695,7 +694,7 @@ SkCommandLineConfigGraphite* parse_command_line_config_graphite(const SkString& 
     SkAlphaType alphaType      = kPremul_SkAlphaType;
     bool        testPrecompile = false;
 
-    skiatest::graphite::TestOptions testOptions;
+//    skiatest::graphite::TestOptions testOptions;
 
     bool parseSucceeded = false;
     ExtendedOptions extendedOptions(options, &parseSucceeded);
@@ -703,26 +702,29 @@ SkCommandLineConfigGraphite* parse_command_line_config_graphite(const SkString& 
         return nullptr;
     }
 
-    bool fakeWGPU = false;
+//    bool fakeWGPU = false;
     bool validOptions = extendedOptions.get_option_graphite_api("api", &contextType) &&
                         extendedOptions.get_option_gpu_color("color", &colorType, &alphaType) &&
-                        extendedOptions.get_option_bool("fakeWGPU", &fakeWGPU) &&
+//                        extendedOptions.get_option_bool("fakeWGPU", &fakeWGPU) &&
+//                        extendedOptions.get_option_bool("useTintIR", &useTintIR) &&
                         extendedOptions.get_option_bool("precompile", &testPrecompile);
     if (!validOptions) {
         return nullptr;
     }
 
-    auto surfaceType = SkCommandLineConfigGraphite::SurfaceType::kDefault;
-    if (fakeWGPU) {
-        testOptions.fNeverYieldToWebGPU = true;
-        surfaceType = SkCommandLineConfigGraphite::SurfaceType::kWrapTextureView;
-    }
+//    auto surfaceType = SkCommandLineConfigGraphite::SurfaceType::kDefault1;
+//    if (fakeWGPU) {
+        //!!!!!!!testOptions.fNeverYieldToWebGPU = true;
+        //!!!!!!!surfaceType = SkCommandLineConfigGraphite::SurfaceType::kWrapTextureView1;
+//    }
+
+//    testOptions.fUseTintIR = useTintIR;
 
     return new SkCommandLineConfigGraphite(tag,
                                            vias,
                                            contextType,
-                                           surfaceType,
-                                           testOptions,
+//                                           surfaceType,
+//                                           testOptions,
                                            colorType,
                                            alphaType,
                                            testPrecompile);

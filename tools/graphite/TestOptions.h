@@ -20,7 +20,9 @@ struct TestOptions {
     TestOptions& operator=(TestOptions&&) = default;
 
     skgpu::graphite::ContextOptions fContextOptions = {};
-    bool fNeverYieldToWebGPU = false;
+    bool fNeverYieldToWebGPU1 = false;
+    bool fBar = false;
+    bool fUseTintIR = false;
 };
 
 }  // namespace skiatest::graphite
