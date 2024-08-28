@@ -12,6 +12,7 @@ import (
 
 	"go.skia.org/infra/go/cipd"
 	"go.skia.org/infra/task_scheduler/go/specs"
+	"go.skia.org/skia/infra/bots/deps"
 )
 
 // taskBuilder is a helper for creating a task.
@@ -166,6 +167,24 @@ func (b *taskBuilder) cipd(pkgs ...*specs.CipdPackage) {
 	}
 }
 
+// cipdFromDEPS adds a CIPD package, which is pinned in DEPS, to the task.
+func (b *taskBuilder) cipdFromDEPS(pkgName string) {
+	dep, err := deps.Get(pkgName)
+	if err != nil {
+		panic(err)
+	}
+	taskDriverPkg := &cipd.Package{
+		// Note: the DEPS parser normalizes dependency IDs, which includes
+		// stripping suffixes like "/${platform}" or ".git". When specifying a
+		// package to a Swarming task, those suffixes are necessary, so we use
+		// the passed-in package name, which we assume is correct and complete.
+		Name:    pkgName,
+		Path:    dep.Path,
+		Version: dep.Version,
+	}
+	b.cipd(taskDriverPkg)
+}
+
 // useIsolatedAssets returns true if this task should use assets which are
 // isolated rather than downloading directly from CIPD.
 func (b *taskBuilder) useIsolatedAssets() bool {
@@ -213,8 +232,9 @@ func (b *taskBuilder) asset(assets ...string) {
 // usesCCache adds attributes to tasks which need bazel (via bazelisk).
 func (b *taskBuilder) usesBazel(hostOSArch string) {
 	archToPkg := map[string]string{
-		"linux_x64": "bazelisk_linux_amd64",
-		"mac_x64":   "bazelisk_mac_amd64",
+		"linux_x64":   "bazelisk_linux_amd64",
+		"mac_x64":     "bazelisk_mac_amd64",
+		"windows_x64": "bazelisk_win_amd64",
 	}
 	pkg, ok := archToPkg[hostOSArch]
 	if !ok {

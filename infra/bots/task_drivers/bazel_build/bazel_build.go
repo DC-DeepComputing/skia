@@ -14,11 +14,12 @@ import (
 	"flag"
 	"fmt"
 	"io/fs"
+	"os/exec"
 	"path/filepath"
 
 	infra_common "go.skia.org/infra/go/common"
-	sk_exec "go.skia.org/infra/go/exec"
 	"go.skia.org/infra/go/skerr"
+	"go.skia.org/infra/go/sklog"
 	"go.skia.org/infra/task_driver/go/lib/bazel"
 	"go.skia.org/infra/task_driver/go/lib/os_steps"
 	"go.skia.org/infra/task_driver/go/td"
@@ -62,16 +63,28 @@ func main() {
 	}
 	skiaDir := filepath.Join(wd, "skia")
 
+	// For debugging, attempt to find "bazelisk" in PATH.
+	bazeliskPath, err := exec.LookPath("bazelisk")
+	if err != nil {
+		td.Fatalf(ctx, "failed to find bazelisk: %s", err)
+	}
+	sklog.Infof("bazelisk is %s", bazeliskPath)
+
 	opts := bazel.BazelOptions{
 		// We want the cache to be on a bigger disk than default. The root disk, where the home
 		// directory (and default Bazel cache) lives, is only 15 GB on our GCE VMs.
 		CachePath: *bazelFlags.CacheDir,
 	}
-	if err := bazel.EnsureBazelRCFile(ctx, opts); err != nil {
+	bzl, err := bazel.New(ctx, skiaDir, "", opts)
+	if err != nil {
 		td.Fatal(ctx, err)
 	}
-
-	if err := bazelBuild(ctx, skiaDir, *bazelFlags.Label, *bazelFlags.Config, *bazelFlags.AdditionalArgs...); err != nil {
+	version, err := bzl.Do(ctx, "version")
+	if err != nil {
+		td.Fatal(ctx, err)
+	}
+	sklog.Infof("Using bazel version %s", version)
+	if err := bazelBuild(ctx, bzl, *bazelFlags.Label, *bazelFlags.Config, *bazelFlags.AdditionalArgs...); err != nil {
 		td.Fatal(ctx, err)
 	}
 
@@ -92,25 +105,12 @@ func main() {
 // config and any additional args to the build command. Instead of calling Bazel directly, we use
 // Bazelisk to make sure we use the right version of Bazel, as defined in the .bazelversion file
 // at the Skia root.
-func bazelBuild(ctx context.Context, checkoutDir, label, config string, args ...string) error {
+func bazelBuild(ctx context.Context, bzl *bazel.Bazel, label, config string, args ...string) error {
 	step := fmt.Sprintf("Build %s with config %s and %d extra flags", label, config, len(args))
 	return td.Do(ctx, td.Props(step), func(ctx context.Context) error {
-		runCmd := &sk_exec.Command{
-			Name: "bazelisk",
-			Args: append([]string{"build",
-				label,
-				"--config=" + config, // Should be defined in //bazel/buildrc
-			}, args...),
-			InheritEnv: true, // Makes sure bazelisk is on PATH
-			Dir:        checkoutDir,
-			LogStdout:  true,
-			LogStderr:  true,
-		}
-		_, err := sk_exec.RunCommand(ctx, runCmd)
-		if err != nil {
-			return err
-		}
-		return nil
+		args := append([]string{label, fmt.Sprintf("--config=%s", config)}, args...)
+		_, err := bzl.Do(ctx, "build", args...)
+		return skerr.Wrap(err)
 	})
 }
 
