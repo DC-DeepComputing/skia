@@ -1,3 +1,4 @@
+load("@build_bazel_rules_apple//apple:ios.bzl", "ios_application")
 load(
     "//bazel:skia_rules.bzl",
     "skia_cc_library",
@@ -85,4 +86,31 @@ skia_cc_library(
         "@platforms//os:macos": ["@skia//:fontmgr_coretext"],
         "//conditions:default": ["//src/ports:fontmgr_fontations_empty"],
     }),
+)
+
+objc_library(
+    name = "create_test_font_color",
+    srcs = [
+        "TestEmptyTypeface.h",
+        "TestSVGTypeface.h",
+        "create_test_font_color.cpp",
+    ],
+    hdrs = [
+        "//include:public_hdrs",
+    ],
+    deps = [
+        "//:core",
+        "//tools/flags:cmd_flags",
+    ],
+    alwayslink = 1,
+)
+
+ios_application(
+    name = "create_test_font_color_app",
+    bundle_id = "skia.org",
+    families = ["iphone"],
+    infoplists = ["Test_Info.plist"],
+    minimum_os_version = "17.0",
+    visibility = ["//visibility:public"],
+    deps = [":create_test_font_color"],
 )
