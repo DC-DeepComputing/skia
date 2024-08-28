@@ -63,7 +63,7 @@ skia_cc_library(
 
 skia_cc_library(
     name = "cmd_flags",
-    testonly = True,
+    #   testonly = True,
     srcs = [
         "CommandLineFlags.cpp",
     ],
