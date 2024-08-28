@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "16b88bc7_26a892d8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-08-28T15:17:37Z",
+      "side": 1,
+      "message": "Following up on https://crbug.com/361461526#comment5",
+      "revId": "7cb7227969096d0165b76065f1b5e707bae000ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
