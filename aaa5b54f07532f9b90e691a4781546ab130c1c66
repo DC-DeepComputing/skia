@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1790e650_eced06c0",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 478,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-08-28T16:51:06Z",
+      "side": 1,
+      "message": "Yeah, that works! Refactored to use `AutoTArray` and the immutable sampler gathering helper accordingly",
+      "parentUuid": "6955e86f_7d04a098",
+      "range": {
+        "startLine": 477,
+        "startChar": 4,
+        "endLine": 478,
+        "endChar": 47
+      },
+      "revId": "aaa5b54f07532f9b90e691a4781546ab130c1c66",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0746c957_a2e98f41",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e469b8b7_d4289539",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 488,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-08-28T16:51:06Z",
+      "side": 1,
+      "message": "No longer relevant",
+      "parentUuid": "0746c957_a2e98f41",
+      "range": {
+        "startLine": 488,
+        "startChar": 8,
+        "endLine": 488,
+        "endChar": 64
+      },
+      "revId": "aaa5b54f07532f9b90e691a4781546ab130c1c66",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4d818340_a96b2df5",
@@ -77,6 +125,30 @@
       "writtenOn": "2024-08-27T20:18:43Z",
       "side": 1,
       "message": "I\u0027m not sure we need to create a `BindGroupLayout` that excludes the static samplers. \n\nWe want to create a single `BindGroupLayout` that does contain the static samples. Then when we eventually call `CreateBindGroup` with a `wgpu::BindGroupDescriptor`, that descriptor will use the full layout. However, that descriptor will only have entries for the non static samplers. In other words this line, https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/gpu/graphite/dawn/DawnResourceProvider.cpp;l\u003d501, will be left blank when use static samplers.",
+      "range": {
+        "startLine": 524,
+        "startChar": 41,
+        "endLine": 524,
+        "endChar": 71
+      },
+      "revId": "aaa5b54f07532f9b90e691a4781546ab130c1c66",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1ff96d37_e9d2ecf7",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 524,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-08-28T16:51:06Z",
+      "side": 1,
+      "message": "Yes, you are correct - the BGL containing the immutable sampler was not the problem. I had erroneously interpreted an error message that made me believe this was necessary. Removed!",
+      "parentUuid": "4d818340_a96b2df5",
       "range": {
         "startLine": 524,
         "startChar": 41,
