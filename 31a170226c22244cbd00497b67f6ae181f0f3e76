@@ -33,6 +33,24 @@
       "message": "...it seems like this pre-existing access of `subset` is now invalid.",
       "revId": "31a170226c22244cbd00497b67f6ae181f0f3e76",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75a38abc_eace1dc5",
+        "filename": "src/pdf/SkPDFSubsetFont.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-08-28T13:58:54Z",
+      "side": 1,
+      "message": "I suspect it actually works, because `extract_cff_data` takes a `const HBFace\u0026`, so nothing is ever actually moved out of `subset`. But given that, we should probably remove the `std::move`.",
+      "parentUuid": "aaa2800a_c7ec00d0",
+      "revId": "31a170226c22244cbd00497b67f6ae181f0f3e76",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
