@@ -117,10 +117,14 @@ private:
         int numRegions = fRegions.size();
         int numRects = 0;
         for (int i = 0; i < numRegions; i++) {
+<<<<<<< HEAD   (009c79 Remove CQ for unsupported branch chrome/m120)
             numRects += fRegions[i].fRegion.computeRegionComplexity();
+=======
+            numRects = safeMath.addInt(numRects, fRegions[i].fRegion.computeRegionComplexity());
+>>>>>>> CHANGE (07fcb9 [ganesh] Avoid int overflow in PatternHelper)
         }
 
-        if (!numRects) {
+        if (!numRects || !safeMath) {
             return;
         }
 
