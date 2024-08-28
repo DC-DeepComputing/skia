@@ -113,16 +113,18 @@ void GraphiteDawnWindowContext::setDisplayParams(const DisplayParams& params) {
     this->initializeContext(fWidth, fHeight);
 }
 
-wgpu::Device GraphiteDawnWindowContext::createDevice(wgpu::BackendType type) {
+wgpu::Device GraphiteDawnWindowContext::createDevice1(wgpu::BackendType type,
+                                                      bool useTintIR) {
     DawnProcTable backendProcs = dawn::native::GetProcs();
     dawnProcSetProcs(&backendProcs);
 
     static constexpr const char* kToggles[] = {
         "allow_unsafe_apis",  // Needed for dual-source blending, BufferMapExtendedUsages.
         "use_user_defined_labels_in_backend",
+        "use_tint_ir",
     };
     wgpu::DawnTogglesDescriptor togglesDesc;
-    togglesDesc.enabledToggleCount  = std::size(kToggles);
+    togglesDesc.enabledToggleCount  = std::size(kToggles) - (useTintIR ? 0 : 1);
     togglesDesc.enabledToggles      = kToggles;
 
     wgpu::RequestAdapterOptions adapterOptions;

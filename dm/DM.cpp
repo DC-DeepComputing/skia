@@ -130,6 +130,7 @@ static DEFINE_bool(cpu, true, "Run CPU-bound work?");
 static DEFINE_bool(gpu, true, "Run GPU-bound work?");
 static DEFINE_bool(graphite, true, "Run Graphite work?");
 static DEFINE_bool(neverYieldToWebGPU, false, "Run Graphite with never-yield context option.");
+static DEFINE_bool(useTintIR, false, "Run Graphite with Dawn's use_tint_ir feature");
 
 static DEFINE_bool(dryRun, false,
                    "just print the tests that would be run, without actually running them.");
@@ -1566,9 +1567,8 @@ int main(int argc, char** argv) {
     }
 
     skiatest::graphite::TestOptions graphiteOptions;
-    if (FLAGS_neverYieldToWebGPU) {
-        graphiteOptions.fNeverYieldToWebGPU = true;
-    }
+    graphiteOptions.fNeverYieldToWebGPU = FLAGS_neverYieldToWebGPU;
+    graphiteOptions.fUseTintIR = FLAGS_useTintIR;
 
     GrContextOptions grCtxOptions;
     CommonFlags::SetCtxOptions(&grCtxOptions);

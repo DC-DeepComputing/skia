@@ -704,9 +704,11 @@ SkCommandLineConfigGraphite* parse_command_line_config_graphite(const SkString& 
     }
 
     bool fakeWGPU = false;
+    bool useTintIR = false;
     bool validOptions = extendedOptions.get_option_graphite_api("api", &contextType) &&
                         extendedOptions.get_option_gpu_color("color", &colorType, &alphaType) &&
                         extendedOptions.get_option_bool("fakeWGPU", &fakeWGPU) &&
+                        extendedOptions.get_option_bool("useTintIR", &useTintIR) &&
                         extendedOptions.get_option_bool("precompile", &testPrecompile);
     if (!validOptions) {
         return nullptr;
@@ -717,6 +719,8 @@ SkCommandLineConfigGraphite* parse_command_line_config_graphite(const SkString& 
         testOptions.fNeverYieldToWebGPU = true;
         surfaceType = SkCommandLineConfigGraphite::SurfaceType::kWrapTextureView;
     }
+
+    testOptions.fUseTintIR = useTintIR;
 
     return new SkCommandLineConfigGraphite(tag,
                                            vias,

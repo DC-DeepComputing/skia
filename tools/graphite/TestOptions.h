@@ -21,6 +21,7 @@ struct TestOptions {
 
     skgpu::graphite::ContextOptions fContextOptions = {};
     bool fNeverYieldToWebGPU = false;
+    bool fUseTintIR = false;
 };
 
 }  // namespace skiatest::graphite
