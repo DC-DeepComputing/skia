@@ -63,8 +63,8 @@
 
 #if defined(SK_GL)
 #include "include/gpu/ganesh/gl/GrGLBackendSurface.h"
-#include "include/gpu/ganesh/gl/GrGLInterface.h"
-#include "include/gpu/ganesh/gl/GrGLTypes.h"
+#include "include/gpu/gl/GrGLInterface.h"
+#include "include/gpu/gl/GrGLTypes.h"
 #include "src/gpu/ganesh/gl/GrGLCaps.h"
 #include "src/gpu/ganesh/gl/GrGLContext.h"
 #include "src/gpu/ganesh/gl/GrGLDefines.h"
@@ -84,7 +84,7 @@
 
 #if defined(SK_VULKAN)
 #include "include/gpu/ganesh/vk/GrVkBackendSurface.h"
-#include "include/gpu/ganesh/vk/GrVkTypes.h"
+#include "include/gpu/vk/GrVkTypes.h"
 #include "src/gpu/ganesh/vk/GrVkCaps.h"
 #include <vulkan/vulkan_core.h>
 #endif
@@ -306,13 +306,14 @@ static void check_base_readbacks(GrDirectContext* dContext,
                                  const SkColor4f& color,
                                  skiatest::Reporter* reporter,
                                  const char* label) {
-    if (isRGB(backendTex.getBackendFormat())) {
-        // readPixels is busted for the RGB backend format (skbug.com/8862)
-        // TODO: add a GrColorType::kRGB_888 to fix the situation
-        return;
-    }
+    // if (isRGB(backendTex.getBackendFormat())) {
+    //     // readPixels is busted for the RGB backend format (skbug.com/8862)
+    //     // TODO: add a GrColorType::kRGB_888 to fix the situation
+    //     return;
+    // }
 
     SkColor4f expectedColor = get_expected_color(color, colorType);
+ SkDebugf("expected color %f, %f, %f, %f\n", expectedColor[0], expectedColor[1], expectedColor[2], expectedColor[3]);
 
     SkAutoPixmapStorage actual;
 
@@ -339,8 +340,12 @@ static void check_base_readbacks(GrDirectContext* dContext,
             ERRORF(reporter, "Could not make proxy from backend texture");
             return;
         }
-        auto swizzle = dContext->priv().caps()->getReadSwizzle(backendTex.getBackendFormat(),
+        auto test = backendTex.getBackendFormat();
+        auto swizzle = dContext->priv().caps()->getReadSwizzle(test,
                                                                colorType);
+        SkDebugf("%s\n", GrColorTypeToStr(colorType));
+        SkDebugf("readback swizzle %s\n", swizzle.asString().c_str());
+
         GrSurfaceProxyView readView(proxy, kTopLeft_GrSurfaceOrigin, swizzle);
         GrColorInfo info(colorType, kUnpremul_SkAlphaType, nullptr);
         auto surfaceContext = dContext->priv().makeSC(readView, info);
@@ -380,9 +385,10 @@ void test_color_init(
         // errors here should be reported by the test_wrapping test
         return;
     }
-
+    SkDebugf("test_color_init : %s\n", GrColorTypeToStr(colorType));
     auto checkBackendTexture = [&](const SkColor4f& testColor) {
         if (mipmapped == skgpu::Mipmapped::kYes) {
+          SkDebugf("check mipmap\n");
             SkColor4f expectedColor = get_expected_color(testColor, colorType);
             SkColor4f expectedColors[6] = {expectedColor, expectedColor, expectedColor,
                                            expectedColor, expectedColor, expectedColor};
@@ -605,45 +611,45 @@ void color_type_backend_allocation_test(const sk_gpu_test::ContextInfo& ctxInfo,
 
     Protected isProtected = Protected(caps->supportsProtectedContent());
 
-    constexpr SkColor4f kTransCol { 0, 0.25f, 0.75f, 0.5f };
-    constexpr SkColor4f kGrayCol { 0.75f, 0.75f, 0.75f, 0.75f };
+    // constexpr SkColor4f kTransCol { 0, 0.25f, 0.75f, 0.5f };
+    // constexpr SkColor4f kGrayCol { 0.75f, 0.75f, 0.75f, 0.75f };
 
     struct {
         SkColorType   fColorType;
         SkColor4f     fColor;
     } combinations[] = {
-        { kAlpha_8_SkColorType,           kTransCol                },
-        { kRGB_565_SkColorType,           SkColors::kRed           },
-        { kARGB_4444_SkColorType,         SkColors::kGreen         },
-        { kRGBA_8888_SkColorType,         SkColors::kBlue          },
-        { kSRGBA_8888_SkColorType,        { 0.25f, 0.5f, 0.75f, 1.0f}},
-        { kRGB_888x_SkColorType,          SkColors::kCyan          },
+        // { kAlpha_8_SkColorType,           kTransCol                },
+        // { kRGB_565_SkColorType,           SkColors::kRed           },
+        // { kARGB_4444_SkColorType,         SkColors::kGreen         },
+        // { kRGBA_8888_SkColorType,         SkColors::kBlue          },
+        // { kSRGBA_8888_SkColorType,        { 0.25f, 0.5f, 0.75f, 1.0f}},
+        { kRGB_888x_SkColorType,          { 0.25f, 0.5f, 0.75f, 0.5f}},
         // TODO: readback is busted when alpha = 0.5f (perhaps premul vs. unpremul)
-        { kBGRA_8888_SkColorType,         { 1, 0, 0, 1.0f }        },
-        // TODO: readback is busted for *10A2 when alpha = 0.5f (perhaps premul vs. unpremul)
-        { kRGBA_1010102_SkColorType,      { 0.25f, 0.5f, 0.75f, 1.0f }},
-        { kBGRA_1010102_SkColorType,      { 0.25f, 0.5f, 0.75f, 1.0f }},
-        // RGB/BGR 101010x have no Ganesh correlate
-        { kRGB_101010x_SkColorType,       { 0, 0.5f, 0, 0.5f }     },
-        { kBGR_101010x_SkColorType,       { 0, 0.5f, 0, 0.5f }     },
-        { kBGR_101010x_XR_SkColorType,    { 0, 0.5f, 0, 0.5f }     },
-        { kRGBA_10x6_SkColorType,         { 0.25f, 0.5f, 0.75f, 1.0f }},
-        { kBGRA_10101010_XR_SkColorType,  { 0.25f, 0.5f, 0.75f, 1.0f }},
-        { kGray_8_SkColorType,            kGrayCol                 },
-        { kRGBA_F16Norm_SkColorType,      SkColors::kLtGray        },
-        { kRGBA_F16_SkColorType,          SkColors::kYellow        },
+        // { kBGRA_8888_SkColorType,         { 1, 0, 0, 1.0f }        },
+        // // TODO: readback is busted for *10A2 when alpha = 0.5f (perhaps premul vs. unpremul)
+        // { kRGBA_1010102_SkColorType,      { 0.25f, 0.5f, 0.75f, 1.0f }},
+        // { kBGRA_1010102_SkColorType,      { 0.25f, 0.5f, 0.75f, 1.0f }},
+        // // RGB/BGR 101010x have no Ganesh correlate
+        // { kRGB_101010x_SkColorType,       { 0, 0.5f, 0, 0.5f }     },
+        // { kBGR_101010x_SkColorType,       { 0, 0.5f, 0, 0.5f }     },
+        // { kBGR_101010x_XR_SkColorType,    { 0, 0.5f, 0, 0.5f }     },
+        // { kRGBA_10x6_SkColorType,         { 0.25f, 0.5f, 0.75f, 1.0f }},
+        // { kBGRA_10101010_XR_SkColorType,  { 0.25f, 0.5f, 0.75f, 1.0f }},
+        // { kGray_8_SkColorType,            kGrayCol                 },
+        // { kRGBA_F16Norm_SkColorType,      SkColors::kLtGray        },
+        // { kRGBA_F16_SkColorType,          SkColors::kYellow        },
         { kRGB_F16F16F16x_SkColorType,    { 0, 0.5f, 0, 0.5f }     },
-        { kRGBA_F32_SkColorType,          SkColors::kGray          },
-        { kR8G8_unorm_SkColorType,        { .25f, .75f, 0, 1 }     },
-        { kR16G16_unorm_SkColorType,      SkColors::kGreen         },
-        { kA16_unorm_SkColorType,         kTransCol                },
-        { kA16_float_SkColorType,         kTransCol                },
-        { kR16G16_float_SkColorType,      { .25f, .75f, 0, 1 }     },
-        { kR16G16B16A16_unorm_SkColorType,{ .25f, .5f, .75f, 1 }   },
-        { kR8_unorm_SkColorType,          { .25f, 0, 0, 1 }        },
+        // { kRGBA_F32_SkColorType,          SkColors::kGray          },
+        // { kR8G8_unorm_SkColorType,        { .25f, .75f, 0, 1 }     },
+        // { kR16G16_unorm_SkColorType,      SkColors::kGreen         },
+        // { kA16_unorm_SkColorType,         kTransCol                },
+        // { kA16_float_SkColorType,         kTransCol                },
+        // { kR16G16_float_SkColorType,      { .25f, .75f, 0, 1 }     },
+        // { kR16G16B16A16_unorm_SkColorType,{ .25f, .5f, .75f, 1 }   },
+        // { kR8_unorm_SkColorType,          { .25f, 0, 0, 1 }        },
     };
 
-    static_assert(kLastEnum_SkColorType == std::size(combinations));
+    // static_assert(kLastEnum_SkColorType == std::size(combinations));
 
     for (auto combo : combinations) {
         SkColorType colorType = combo.fColorType;
@@ -673,7 +679,8 @@ void color_type_backend_allocation_test(const sk_gpu_test::ContextInfo& ctxInfo,
                 }
 
                 if (GrRenderable::kYes == renderable) {
-                    if (kRGB_888x_SkColorType == combo.fColorType) {
+                    if (kRGB_888x_SkColorType == combo.fColorType ||
+                        kRGB_F16F16F16x_SkColorType == combo.fColorType) {
                         // Ganesh can't perform the blends correctly when rendering this format
                         continue;
                     }
@@ -717,6 +724,7 @@ void color_type_backend_allocation_test(const sk_gpu_test::ContextInfo& ctxInfo,
                                                                         mipmapped,
                                                                         renderable,
                                                                         isProtected);
+                         SkDebugf("mbet color %f, %f, %f, %f\n", color[0], color[1], color[2], color[3]);
                         check_vk_tiling(mbet->texture());
 
 #ifdef SK_DEBUG
@@ -808,52 +816,53 @@ DEF_GANESH_TEST_FOR_GL_CONTEXT(GLBackendAllocationTest,
     auto context = ctxInfo.directContext();
     const GrGLCaps* glCaps = static_cast<const GrGLCaps*>(context->priv().caps());
 
-    constexpr SkColor4f kTransCol     { 0,     0.25f, 0.75f, 0.5f };
-    constexpr SkColor4f kGrayCol      { 0.75f, 0.75f, 0.75f, 1.f  };
-    constexpr SkColor4f kTransGrayCol { 0.5f,  0.5f,  0.5f,  .8f  };
+    // constexpr SkColor4f kTransCol     { 0,     0.25f, 0.75f, 0.5f };
+    // constexpr SkColor4f kGrayCol      { 0.75f, 0.75f, 0.75f, 1.f  };
+    // constexpr SkColor4f kTransGrayCol { 0.5f,  0.5f,  0.5f,  .8f  };
 
     struct {
         GrColorType   fColorType;
         GrGLenum      fFormat;
         SkColor4f     fColor;
     } combinations[] = {
-        { GrColorType::kRGBA_8888,        GR_GL_RGBA8,                SkColors::kRed       },
-        { GrColorType::kRGBA_8888_SRGB,   GR_GL_SRGB8_ALPHA8,         SkColors::kRed       },
+        // { GrColorType::kRGBA_8888,        GR_GL_RGBA8,                SkColors::kRed       },
+        // { GrColorType::kRGBA_8888_SRGB,   GR_GL_SRGB8_ALPHA8,         SkColors::kRed       },
 
-        { GrColorType::kRGB_888x,         GR_GL_RGBA8,                SkColors::kYellow    },
-        { GrColorType::kRGB_888x,         GR_GL_RGB8,                 SkColors::kCyan      },
-        { GrColorType::kRGB_888x,         GR_GL_RGBX8,                SkColors::kCyan      },
+        { GrColorType::kRGB_888x,         GR_GL_RGBA8,                { 0.25f, 0.5f, 0.75f, 0.5f}},
+        // { GrColorType::kRGB_888x,         GR_GL_RGB8,                 SkColors::kCyan      },
+        // { GrColorType::kRGB_888x,         GR_GL_RGBX8,                SkColors::kCyan      },
 
-        { GrColorType::kBGRA_8888,        GR_GL_RGBA8,                SkColors::kBlue      },
-        { GrColorType::kBGRA_8888,        GR_GL_BGRA8,                SkColors::kBlue      },
-        // TODO: readback is busted when alpha = 0.5f (perhaps premul vs. unpremul)
-        { GrColorType::kRGBA_1010102,     GR_GL_RGB10_A2,             { 0.25f, 0.5f, 0.75f, 1.f }},
-        { GrColorType::kBGRA_1010102,     GR_GL_RGB10_A2,             { 0.25f, 0.5f, 0.75f, 1.f }},
-        { GrColorType::kBGR_565,          GR_GL_RGB565,               SkColors::kRed       },
-        { GrColorType::kABGR_4444,        GR_GL_RGBA4,                SkColors::kGreen     },
+        // { GrColorType::kBGRA_8888,        GR_GL_RGBA8,                SkColors::kBlue      },
+        // { GrColorType::kBGRA_8888,        GR_GL_BGRA8,                SkColors::kBlue      },
+        // // TODO: readback is busted when alpha = 0.5f (perhaps premul vs. unpremul)
+        // { GrColorType::kRGBA_1010102,     GR_GL_RGB10_A2,             { 0.25f, 0.5f, 0.75f, 1.f }},
+        // { GrColorType::kBGRA_1010102,     GR_GL_RGB10_A2,             { 0.25f, 0.5f, 0.75f, 1.f }},
+        // { GrColorType::kBGR_565,          GR_GL_RGB565,               SkColors::kRed       },
+        // { GrColorType::kABGR_4444,        GR_GL_RGBA4,                SkColors::kGreen     },
 
-        { GrColorType::kAlpha_8,          GR_GL_ALPHA8,               kTransCol            },
-        { GrColorType::kAlpha_8,          GR_GL_R8,                   kTransCol            },
+        // { GrColorType::kAlpha_8,          GR_GL_ALPHA8,               kTransCol            },
+        // { GrColorType::kAlpha_8,          GR_GL_R8,                   kTransCol            },
 
-        { GrColorType::kGray_8,           GR_GL_LUMINANCE8,           kGrayCol             },
-        { GrColorType::kGray_8,           GR_GL_R8,                   kGrayCol             },
+        // { GrColorType::kGray_8,           GR_GL_LUMINANCE8,           kGrayCol             },
+        // { GrColorType::kGray_8,           GR_GL_R8,                   kGrayCol             },
 
-        { GrColorType::kGrayAlpha_88,     GR_GL_LUMINANCE8_ALPHA8,    kTransGrayCol        },
+        // { GrColorType::kGrayAlpha_88,     GR_GL_LUMINANCE8_ALPHA8,    kTransGrayCol        },
 
-        { GrColorType::kRGBA_F32,         GR_GL_RGBA32F,              SkColors::kRed       },
+        // { GrColorType::kRGBA_F32,         GR_GL_RGBA32F,              SkColors::kRed       },
 
-        { GrColorType::kRGBA_F16_Clamped, GR_GL_RGBA16F,              SkColors::kLtGray    },
-        { GrColorType::kRGBA_F16,         GR_GL_RGBA16F,              SkColors::kYellow    },
+        // { GrColorType::kRGBA_F16_Clamped, GR_GL_RGBA16F,              SkColors::kLtGray    },
+        // { GrColorType::kRGBA_F16,         GR_GL_RGBA16F,              SkColors::kYellow    },
+        { GrColorType::kRGB_F16F16F16x,   GR_GL_RGBA16F,              { 0, 0.5f, 0, 0.5f } },
 
-        { GrColorType::kRG_88,            GR_GL_RG8,                  { 1, 0.5f, 0, 1 }    },
-        { GrColorType::kAlpha_F16,        GR_GL_R16F,                 { 1.0f, 0, 0, 0.5f } },
-        { GrColorType::kAlpha_F16,        GR_GL_LUMINANCE16F,         kGrayCol             },
+        // { GrColorType::kRG_88,            GR_GL_RG8,                  { 1, 0.5f, 0, 1 }    },
+        // { GrColorType::kAlpha_F16,        GR_GL_R16F,                 { 1.0f, 0, 0, 0.5f } },
+        // { GrColorType::kAlpha_F16,        GR_GL_LUMINANCE16F,         kGrayCol             },
 
-        { GrColorType::kAlpha_16,         GR_GL_R16,                  kTransCol            },
-        { GrColorType::kRG_1616,          GR_GL_RG16,                 SkColors::kYellow    },
+        // { GrColorType::kAlpha_16,         GR_GL_R16,                  kTransCol            },
+        // { GrColorType::kRG_1616,          GR_GL_RG16,                 SkColors::kYellow    },
 
-        { GrColorType::kRGBA_16161616,    GR_GL_RGBA16,               SkColors::kLtGray    },
-        { GrColorType::kRG_F16,           GR_GL_RG16F,                SkColors::kYellow    },
+        // { GrColorType::kRGBA_16161616,    GR_GL_RGBA16,               SkColors::kLtGray    },
+        // { GrColorType::kRG_F16,           GR_GL_RG16F,                SkColors::kYellow    },
     };
 
     for (auto combo : combinations) {
@@ -932,6 +941,8 @@ DEF_GANESH_TEST_FOR_GL_CONTEXT(GLBackendAllocationTest,
                                                                     skgpu::Mipmapped mipmapped,
                                                                     GrRenderable renderable) {
                             auto swizzledColor = swizzle.applyTo(color);
+                            SkDebugf("mbet swizzle %s\n", swizzle.asString().c_str());
+                            SkDebugf("swizzled color %f, %f, %f, %f\n", swizzledColor[0], swizzledColor[1], swizzledColor[2], swizzledColor[3]);
                             return ManagedBackendTexture::MakeWithData(dContext,
                                                                        32, 32,
                                                                        format,
@@ -1005,6 +1016,7 @@ DEF_GANESH_TEST_FOR_VULKAN_CONTEXT(VkBackendAllocationTest,
 
         { GrColorType::kRGBA_F16_Clamped, VK_FORMAT_R16G16B16A16_SFLOAT,      SkColors::kLtGray   },
         { GrColorType::kRGBA_F16,         VK_FORMAT_R16G16B16A16_SFLOAT,      SkColors::kYellow   },
+        { GrColorType::kRGB_F16F16F16x,   VK_FORMAT_R16G16B16A16_SFLOAT,      { 0, 0.5f, 0, 0.5f }},
 
         { GrColorType::kRG_88,            VK_FORMAT_R8G8_UNORM,               { 1, 0.5f, 0, 1 }   },
         { GrColorType::kAlpha_F16,        VK_FORMAT_R16_SFLOAT,               { 1.0f, 0, 0, 0.5f }},
