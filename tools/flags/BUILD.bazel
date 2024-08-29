@@ -58,6 +58,7 @@ skia_cc_library(
         ":cmd_flags",
         "//:core",
         "//src/gpu/ganesh:ganesh_TEST_UTIL",
+        "//src/gpu/graphite:graphite_TEST_UTIL",
     ],
 )
 
@@ -101,5 +102,25 @@ skia_cc_library(
         ":cmd_flags",
         "//:core",
         "//src/gpu/ganesh:ganesh_TEST_UTIL",
+    ],
+)
+
+skia_cc_library(
+    name = "graphite_flags",
+    testonly = True,
+    srcs = [
+        "CommonFlagsGraphite.cpp",
+    ],
+    hdrs = [
+        "CommonFlagsGraphite.h",
+    ],
+    visibility = [
+        "//bench:__pkg__",
+        "//dm:__pkg__",
+    ],
+    deps = [
+        ":cmd_flags",
+        "//:core",
+        "//src/gpu/graphite:graphite_TEST_UTIL",
     ],
 )
