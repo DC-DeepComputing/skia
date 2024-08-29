@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a8cdfef_0a4da24d",
+        "filename": "gm/blurtextsmallradii.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-08-29T23:33:13Z",
+      "side": 1,
+      "message": "The color change is motivated by black being the default color and this test wants to ensure the blur is shaded.",
+      "revId": "422d7f957d2b374d6b65015043a0857e69bbe6d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "518de009_4b273d45",
+        "filename": "gm/blurtextsmallradii.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-08-29T23:33:13Z",
+      "side": 1,
+      "message": "And a lower case `g` to get a full descender to ensure things work below the baseline.",
+      "revId": "422d7f957d2b374d6b65015043a0857e69bbe6d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4a86590_f04c632c",
+        "filename": "gm/blurtextsmallradii.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-08-29T23:33:13Z",
+      "side": 1,
+      "message": "And if the blur doesn\u0027t happen, we would like to be able to see this text.",
+      "revId": "422d7f957d2b374d6b65015043a0857e69bbe6d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
