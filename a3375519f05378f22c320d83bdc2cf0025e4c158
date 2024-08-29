@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9e876fb_0137ef23",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-08-29T22:49:42Z",
+      "side": 1,
+      "message": "@brianosman, can you PTAL?\n/cc @scroggo FYI\n\nThis is the 2nd incremental-decoding CL.",
+      "revId": "a3375519f05378f22c320d83bdc2cf0025e4c158",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
