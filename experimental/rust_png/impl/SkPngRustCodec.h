@@ -15,6 +15,7 @@
 
 struct SkEncodedInfo;
 class SkStream;
+template <typename T> class SkSpan;
 
 // This class provides the Skia image decoding API (`SkCodec`) on top of:
 // * The third-party `png` crate (PNG decompression and decoding implemented in
@@ -31,18 +32,37 @@ public:
     ~SkPngRustCodec() override;
 
 private:
+    struct DecodingState {
+        SkSpan<uint8_t> dst;
+        size_t dstRowSize;  // in bytes.
+    };
+    Result startDecoding(const SkImageInfo& dstInfo,
+                         void* pixels,
+                         size_t rowBytes,
+                         const Options& options,
+                         DecodingState* decodingState);
+    Result incrementalDecode(DecodingState& decodingState, int* rowsDecoded);
+    Result decodeInterlacedImage(DecodingState& decodingState);
+
     // SkCodec overrides:
-    Result onGetPixels(const SkImageInfo& info,
+    Result onGetPixels(const SkImageInfo& dstInfo,
                        void* pixels,
                        size_t rowBytes,
                        const Options&,
                        int* rowsDecoded) override;
+    Result onStartIncrementalDecode(const SkImageInfo& dstInfo,
+                                    void* pixels,
+                                    size_t rowBytes,
+                                    const Options&) override;
+    Result onIncrementalDecode(int* rowsDecoded) override;
 
     // SkPngCodecBase overrides:
     std::optional<SkSpan<const PaletteColorEntry>> onTryGetPlteChunk() override;
     std::optional<SkSpan<const uint8_t>> onTryGetTrnsChunk() override;
 
     rust::Box<rust_png::Reader> fReader;
+
+    std::optional<DecodingState> fIncrementalDecodingState;
 };
 
 #endif  // SkPngRustCodec_DEFINED
