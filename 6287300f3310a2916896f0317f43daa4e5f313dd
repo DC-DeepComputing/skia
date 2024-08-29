@@ -22,6 +22,30 @@
       },
       "revId": "6287300f3310a2916896f0317f43daa4e5f313dd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f9b2b90_db77afb1",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 6
+      },
+      "lineNbr": 1222,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-08-29T18:36:20Z",
+      "side": 0,
+      "message": "Yep, we deleted all those when moving skottie.skia.org et al onto Louhi flows.",
+      "parentUuid": "fd625984_74438075",
+      "range": {
+        "startLine": 1222,
+        "startChar": 0,
+        "endLine": 1222,
+        "endChar": 96
+      },
+      "revId": "6287300f3310a2916896f0317f43daa4e5f313dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
