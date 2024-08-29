@@ -76,8 +76,17 @@ mod ffi {
         fn output_buffer_size(self: &Reader) -> usize;
         fn output_color_type(self: &Reader) -> ColorType;
         fn output_bits_per_component(self: &Reader) -> u8;
-        fn next_frame(self: &mut Reader, output: &mut [u8]) -> DecodingResult;
-        unsafe fn next_row<'a>(self: &'a mut Reader, row: &mut &'a [u8]) -> DecodingResult;
+        unsafe fn next_interlaced_row<'a>(
+            self: &'a mut Reader,
+            row: &mut &'a [u8],
+        ) -> DecodingResult;
+        fn expand_last_interlaced_row(
+            self: &Reader,
+            img: &mut [u8],
+            img_row_stride: usize,
+            row: &[u8],
+            bits_per_pixel: u8,
+        );
     }
 }
 
@@ -138,7 +147,10 @@ impl ResultOfReader {
 /// FFI-friendly wrapper around `png::Reader<R>` (`cxx` can't handle arbitrary
 /// generics, so we manually monomorphize here, but still expose a minimal,
 /// somewhat tweaked API of the original type).
-struct Reader(png::Reader<cxx::UniquePtr<ffi::ReadTrait>>);
+struct Reader {
+    reader: png::Reader<cxx::UniquePtr<ffi::ReadTrait>>,
+    last_interlace_info: Option<png::InterlaceInfo>,
+}
 
 impl Reader {
     fn new(input: cxx::UniquePtr<ffi::ReadTrait>) -> Result<Self, png::DecodingError> {
@@ -170,25 +182,25 @@ impl Reader {
         }
 
         decoder.set_transformations(transformations);
-        Ok(Self(decoder.read_info()?))
+        Ok(Self { reader: decoder.read_info()?, last_interlace_info: None })
     }
 
     fn height(&self) -> u32 {
-        self.0.info().height
+        self.reader.info().height
     }
 
     fn width(&self) -> u32 {
-        self.0.info().width
+        self.reader.info().width
     }
 
     /// Returns whether the PNG image is interlaced.
     fn interlaced(&self) -> bool {
-        self.0.info().interlaced
+        self.reader.info().interlaced
     }
 
     /// Returns whether the decoded PNG image contained a `sRGB` chunk.
     fn is_srgb(&self) -> bool {
-        self.0.info().srgb.is_some()
+        self.reader.info().srgb.is_some()
     }
 
     /// If the decoded PNG image contained a `cHRM` chunk then `try_get_chrm`
@@ -214,7 +226,7 @@ impl Reader {
             *y = channel.1.into_value();
         }
 
-        match self.0.info().chrm_chunk.as_ref() {
+        match self.reader.info().chrm_chunk.as_ref() {
             None => false,
             Some(chrm) => {
                 copy_channel(&chrm.white, wx, wy);
@@ -234,7 +246,7 @@ impl Reader {
     /// `&mut` values have been initialized (unlike in C++, where such
     /// guarantees are typically not needed for output parameters).
     fn try_get_gama(&self, gamma: &mut f32) -> bool {
-        match self.0.info().gama_chunk.as_ref() {
+        match self.reader.info().gama_chunk.as_ref() {
             None => false,
             Some(scaled_float) => {
                 *gamma = scaled_float.into_value();
@@ -247,7 +259,7 @@ impl Reader {
     /// returns `true` and sets `iccp` to the `rust::Slice`.  Otherwise,
     /// returns `false`.
     fn try_get_iccp<'a>(&'a self, iccp: &mut &'a [u8]) -> bool {
-        match self.0.info().icc_profile.as_ref().map(|cow| cow.as_ref()) {
+        match self.reader.info().icc_profile.as_ref().map(|cow| cow.as_ref()) {
             None => false,
             Some(value) => {
                 *iccp = value;
@@ -257,38 +269,51 @@ impl Reader {
     }
 
     fn output_buffer_size(&self) -> usize {
-        self.0.output_buffer_size()
+        self.reader.output_buffer_size()
     }
 
     fn output_color_type(&self) -> ffi::ColorType {
-        self.0.output_color_type().0.into()
+        self.reader.output_color_type().0.into()
     }
 
     fn output_bits_per_component(&self) -> u8 {
-        self.0.output_color_type().1 as u8
-    }
-
-    /// Decodes the next frame - see
-    /// https://docs.rs/png/latest/png/struct.Reader.html#method.next_frame
-    ///
-    /// C++/FFI safety: The caller has to guarantee that `output` doesn't
-    /// contain uninitialized memory (this is a bit different from C++,
-    /// where a write-only access may not need such guarantees).
-    fn next_frame(&mut self, output: &mut [u8]) -> ffi::DecodingResult {
-        self.0.next_frame(output).as_ref().err().into()
+        self.reader.output_color_type().1 as u8
     }
 
     /// Decodes the next row - see
-    /// https://docs.rs/png/latest/png/struct.Reader.html#method.next_row
+    /// https://docs.rs/png/latest/png/struct.Reader.html#method.next_interlaced_row
     ///
     /// TODO(https://crbug.com/357876243): Consider using `read_row` to avoid an extra copy.
     /// See also https://github.com/image-rs/image-png/pull/493
-    fn next_row<'a>(&'a mut self, row: &mut &'a [u8]) -> ffi::DecodingResult {
-        let result = self.0.next_row();
+    fn next_interlaced_row<'a>(&'a mut self, row: &mut &'a [u8]) -> ffi::DecodingResult {
+        let result = self.reader.next_interlaced_row();
         if let Ok(maybe_row) = result.as_ref() {
+            self.last_interlace_info = maybe_row.as_ref().map(|r| r.interlace());
             *row = maybe_row.map(|r| r.data()).unwrap_or(&[]);
         }
         result.as_ref().err().into()
+    }
+
+    /// Expands the last decoded interlaced row - see
+    /// https://docs.rs/png/latest/png/fn.expand_interlaced_row
+    ///
+    /// C++/FFI safety: The caller has to guarantee that `img` doesn't
+    /// contain uninitialized memory (this is a bit different from C++,
+    /// where a write-only access may not need such guarantees).
+    fn expand_last_interlaced_row(
+        &self,
+        img: &mut [u8],
+        img_row_stride: usize,
+        row: &[u8],
+        bits_per_pixel: u8,
+    ) {
+        png::expand_interlaced_row(
+            img,
+            img_row_stride,
+            row,
+            self.last_interlace_info.as_ref().unwrap(),
+            bits_per_pixel,
+        );
     }
 }
 
