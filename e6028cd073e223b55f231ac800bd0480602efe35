@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e91f564_b78efd52",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-08-29T22:49:03Z",
+      "side": 1,
+      "message": "@brianosman, can you PTAL?\n/cc @scroggo FYI\n\nI still need to finish Chromium/Blink-side integration (mostly need to figure out offset handling for `SkStream` / Blink boundary that Blink\u0027s bmp/ico decoders depend on).  But the incremental-decoding CLs seem ready to land, so let me try to get them out of the way.",
+      "revId": "e6028cd073e223b55f231ac800bd0480602efe35",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
