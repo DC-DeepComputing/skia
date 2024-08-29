@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ecc51721_ccb27fba",
+        "filename": "src/pdf/SkPDFFont.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 810,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-08-29T14:43:58Z",
+      "side": 1,
+      "message": "When this is `d0` that means \"specifies its own colors\". We want `d1` \"specifies shape but not colors\". Reader and Preview seem to be letting the current color leak through anyway. Pdfium does not, but changing just this doesn\u0027t appear to be enough to get the color through. If we remove the graphics state with the SMask then the rectangle does draw red. The specification does call out in the documentation for `d1` that images shouldn\u0027t be used, but image masks are acceptable but it doesn\u0027t directly address SMasks.",
+      "range": {
+        "startLine": 810,
+        "startChar": 38,
+        "endLine": 810,
+        "endChar": 40
+      },
+      "revId": "2df5fc6cf56ea62e6dd4e1c3f8a6024dd2ec9f9d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
