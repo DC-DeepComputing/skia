@@ -129,7 +129,11 @@ static DEFINE_bool2(veryVerbose, V, false, "tell individual tests to be verbose.
 static DEFINE_bool(cpu, true, "Run CPU-bound work?");
 static DEFINE_bool(gpu, true, "Run GPU-bound work?");
 static DEFINE_bool(graphite, true, "Run Graphite work?");
+
 static DEFINE_bool(neverYieldToWebGPU, false, "Run Graphite with never-yield context option.");
+static DEFINE_bool(useWGPUTextureView, false, "Run Graphite w/ a wrapped WGPU texture view as "
+                                              "the destination");
+static DEFINE_bool(useTintIR, false, "Run Graphite with Dawn's use_tint_ir feature");
 
 static DEFINE_bool(dryRun, false,
                    "just print the tests that would be run, without actually running them.");
@@ -961,7 +965,9 @@ static void push_sink(const SkCommandLineConfig& config, Sink* s) {
     ts.tag = config.getTag();
 }
 
-static Sink* create_sink(const GrContextOptions& grCtxOptions, const SkCommandLineConfig* config) {
+static Sink* create_sink(const GrContextOptions& grCtxOptions,
+                         const skiatest::graphite::TestOptions& graphiteOptions,
+                         const SkCommandLineConfig* config) {
     if (FLAGS_gpu) {
         if (const SkCommandLineConfigGpu* gpuConfig = config->asConfigGpu()) {
             GrContextFactory testFactory(grCtxOptions);
@@ -992,11 +998,11 @@ static Sink* create_sink(const GrContextOptions& grCtxOptions, const SkCommandLi
         if (const SkCommandLineConfigGraphite *graphiteConfig = config->asConfigGraphite()) {
 #if defined(SK_ENABLE_PRECOMPILE)
             if (graphiteConfig->getTestPrecompile()) {
-                return new GraphitePrecompileTestingSink(graphiteConfig);
+                return new GraphitePrecompileTestingSink(graphiteConfig, graphiteOptions);
             } else
 #endif // SK_ENABLE_PRECOMPILE
             {
-                return new GraphiteSink(graphiteConfig);
+                return new GraphiteSink(graphiteConfig, graphiteOptions);
             }
         }
     }
@@ -1064,7 +1070,9 @@ static Sink* create_via(const SkString& tag, Sink* wrapped) {
     return nullptr;
 }
 
-static bool gather_sinks(const GrContextOptions& grCtxOptions, bool defaultConfigs) {
+static bool gather_sinks(const GrContextOptions& grCtxOptions,
+                         const skiatest::graphite::TestOptions& graphiteOptions,
+                         bool defaultConfigs) {
     if (FLAGS_src.size() == 1 && FLAGS_src.contains("tests")) {
         // If we're just running tests skip trying to accumulate sinks. The 'justOneRect' test
         // can fail for protected contexts.
@@ -1076,7 +1084,7 @@ static bool gather_sinks(const GrContextOptions& grCtxOptions, bool defaultConfi
     AutoreleasePool pool;
     for (int i = 0; i < configs.size(); i++) {
         const SkCommandLineConfig& config = *configs[i];
-        Sink* sink = create_sink(grCtxOptions, &config);
+        Sink* sink = create_sink(grCtxOptions, graphiteOptions, &config);
         if (sink == nullptr) {
             info("Skipping config %s: Don't understand '%s'.\n", config.getTag().c_str(),
                  config.getTag().c_str());
@@ -1515,10 +1523,12 @@ static void run_ganesh_test(skiatest::Test test, const GrContextOptions& grCtxOp
     done("unit", "test", "", test.fName);
 }
 
-static void run_graphite_test(skiatest::Test test, skiatest::graphite::TestOptions& options) {
+static void run_graphite_test(skiatest::Test test,
+                              const skiatest::graphite::TestOptions& optionsIn) {
     DMReporter reporter;
     if (!FLAGS_dryRun && !should_skip("_", "tests", "_", test.fName)) {
         AutoreleasePool pool;
+        skiatest::graphite::TestOptions options = optionsIn;
         test.modifyGraphiteContextOptions(&options.fContextOptions);
 
         skiatest::ReporterContext ctx(&reporter, SkString(test.fName));
@@ -1566,9 +1576,9 @@ int main(int argc, char** argv) {
     }
 
     skiatest::graphite::TestOptions graphiteOptions;
-    if (FLAGS_neverYieldToWebGPU) {
-        graphiteOptions.fNeverYieldToWebGPU = true;
-    }
+    graphiteOptions.fNeverYieldToWebGPU = FLAGS_neverYieldToWebGPU;
+    graphiteOptions.fUseWGPUTextureView = FLAGS_useWGPUTextureView;
+    graphiteOptions.fUseTintIR = FLAGS_useTintIR;
 
     GrContextOptions grCtxOptions;
     CommonFlags::SetCtxOptions(&grCtxOptions);
@@ -1598,7 +1608,7 @@ int main(int argc, char** argv) {
             break;
         }
     }
-    if (!gather_sinks(grCtxOptions, defaultConfigs)) {
+    if (!gather_sinks(grCtxOptions, graphiteOptions, defaultConfigs)) {
         return 1;
     }
     gather_tests();
