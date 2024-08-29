@@ -76,6 +76,7 @@ TEST_BUILDERS = [
   'Build-Mac-Clang-arm64-Debug-Android_Vulkan',
   'Build-Mac-Clang-arm64-Debug-iOS',
   'Build-Mac-Clang-arm64-Debug-Graphite_Dawn_Metal',
+  'Build-Mac-Clang-arm64-Debug-Graphite_Dawn_Metal_TintIR',
   'Build-Mac-Clang-arm64-Debug-Graphite_Dawn_Metal_NoGpu',
   'Build-Mac-Clang-arm64-Debug-Graphite_Dawn_Metal_NoPrecompile',
   'Build-Mac-Clang-arm64-Debug-Graphite_Native_Metal',
