@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aca8caa3_d2d06cb0",
+        "filename": "WORKSPACE.bazel",
+        "patchSetId": 35
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-08-29T18:51:11Z",
+      "side": 1,
+      "message": "Just removed it.  @jmbetancourt@google.com: FYI, this doesn\u0027t work on windows because it expects \"bash\" to be present.  I can\u0027t find where it\u0027s being used, so I\u0027m removing it until we can find a workaround.",
+      "parentUuid": "f723ab2a_1bfa8b8e",
+      "revId": "766f6e688609ed13040b349e1ee0acd94e09ab84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cfd38d84_7376bebb",
@@ -31,6 +49,30 @@
       "writtenOn": "2024-08-29T18:39:12Z",
       "side": 1,
       "message": "https://xkcd.com/1638/\n\nCan we put this in backticks and make it slightly less escaped?",
+      "range": {
+        "startLine": 116,
+        "startChar": 31,
+        "endLine": 116,
+        "endChar": 32
+      },
+      "revId": "766f6e688609ed13040b349e1ee0acd94e09ab84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b10c7e6d_8493fc01",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 35
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-08-29T18:51:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cfd38d84_7376bebb",
       "range": {
         "startLine": 116,
         "startChar": 31,
