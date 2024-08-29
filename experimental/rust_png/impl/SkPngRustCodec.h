@@ -35,6 +35,7 @@ private:
     struct DecodingState {
         SkSpan<uint8_t> dst;
         size_t dstRowSize;  // in bytes.
+        size_t bytesPerPixel;
     };
     Result startDecoding(const SkImageInfo& dstInfo,
                          void* pixels,
@@ -42,7 +43,6 @@ private:
                          const Options& options,
                          DecodingState* decodingState);
     Result incrementalDecode(DecodingState& decodingState, int* rowsDecoded);
-    Result decodeInterlacedImage(DecodingState& decodingState);
 
     // SkCodec overrides:
     Result onGetPixels(const SkImageInfo& dstInfo,
