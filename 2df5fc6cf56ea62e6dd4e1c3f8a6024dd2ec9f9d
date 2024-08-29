@@ -22,6 +22,30 @@
       },
       "revId": "2df5fc6cf56ea62e6dd4e1c3f8a6024dd2ec9f9d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da279244_59e9a45a",
+        "filename": "src/pdf/SkPDFFont.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 810,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-08-29T20:34:00Z",
+      "side": 1,
+      "message": "Opened https://crbug.com/362796158 for Pdfium. However, Preview is also quite poor at handling SMasks in Type3 fonts (it\u0027s also not all that great at handling SMasks anywhere else). If it were only Reader this change to push the mask filters into the Type3 glyphs would be a great size improvement (though sometimes the blur gets a bit pixelated when scaled up a lot, really want to force bi-linear on that to smooth it out). However, we may just need to punt on mask filters for now until the viewers can be fixed.",
+      "parentUuid": "ecc51721_ccb27fba",
+      "range": {
+        "startLine": 810,
+        "startChar": 38,
+        "endLine": 810,
+        "endChar": 40
+      },
+      "revId": "2df5fc6cf56ea62e6dd4e1c3f8a6024dd2ec9f9d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
