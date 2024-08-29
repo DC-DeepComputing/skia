@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "41ecaae5_0c15f4f4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-08-29T18:23:17Z",
+      "side": 1,
+      "message": "Note that this adds or re-orders path prefixes; I wish I could\u0027ve done this with no tasks.json diff, but I confirmed that there\u0027s nothing here that should break things.",
+      "revId": "7bed5962ecf2de6cb68291b741777a88e2cf23c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

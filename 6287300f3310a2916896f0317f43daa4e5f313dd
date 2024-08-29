@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd625984_74438075",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 6
+      },
+      "lineNbr": 1222,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-08-29T18:23:17Z",
+      "side": 0,
+      "message": "This is unused (and doesn\u0027t even specify a path for the beginning of the command)",
+      "range": {
+        "startLine": 1222,
+        "startChar": 0,
+        "endLine": 1222,
+        "endChar": 96
+      },
+      "revId": "6287300f3310a2916896f0317f43daa4e5f313dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
