@@ -119,6 +119,7 @@ skia_cc_binary(
         "//tools:mskp_player",
         "//tools:registry",
         "//tools:runtime_blend_utils",
+        "//tools:tool_utils",
         "//tools/flags:common_flags",
         "//tools/flags:ganesh_flags",
         "//tools/gpu:ganesh_gl_utils",
