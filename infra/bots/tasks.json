@@ -30,6 +30,11 @@
         "BazelBuild-full_library-enforce_iwyu-linux_x64"
       ]
     },
+    "BazelBuild-full_library-for_windows_x64_release-windows_x64": {
+      "tasks": [
+        "BazelBuild-full_library-for_windows_x64_release-windows_x64"
+      ]
+    },
     "BazelBuild-full_library-release-linux_x64": {
       "tasks": [
         "BazelBuild-full_library-release-linux_x64"
@@ -3635,8 +3640,33 @@
   },
   "tasks": {
     "BazelBuild-all_tests-debug-linux_x64": {
+      "caches": [
+        {
+          "name": "git",
+          "path": "cache/git"
+        },
+        {
+          "name": "git_cache",
+          "path": "cache/git_cache"
+        }
+      ],
       "casSpec": "bazel",
       "cipd_packages": [
+        {
+          "name": "infra/3pp/tools/git/linux-amd64",
+          "path": "cipd_bin_packages",
+          "version": "version:3@2.46.0.chromium.11"
+        },
+        {
+          "name": "infra/tools/git/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:e02b085286a3baf3ab1194941cdb6c196c4c0802"
+        },
+        {
+          "name": "infra/tools/luci/git-credential-luci/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:e02b085286a3baf3ab1194941cdb6c196c4c0802"
+        },
         {
           "name": "skia/bots/bazelisk_linux_amd64",
           "path": "bazelisk_linux_amd64",
@@ -3656,7 +3686,7 @@
         "--bazel_label=//tests:linux_rbe_tests",
         "--bazel_config=debug",
         "--bazel_cache_dir=/mnt/pd0/bazel_cache",
-        "--workdir=.",
+        "--workdir=./skia",
         "--bazel_arg=--config=for_linux_x64_with_rbe",
         "--bazel_arg=--jobs=100",
         "--bazel_arg=--remote_download_minimal"
@@ -3670,6 +3700,8 @@
       ],
       "env_prefixes": {
         "PATH": [
+          "cipd_bin_packages",
+          "cipd_bin_packages/bin",
           "bazelisk_linux_amd64"
         ]
       },
@@ -3678,8 +3710,33 @@
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "BazelBuild-all_tests-release-linux_x64": {
+      "caches": [
+        {
+          "name": "git",
+          "path": "cache/git"
+        },
+        {
+          "name": "git_cache",
+          "path": "cache/git_cache"
+        }
+      ],
       "casSpec": "bazel",
       "cipd_packages": [
+        {
+          "name": "infra/3pp/tools/git/linux-amd64",
+          "path": "cipd_bin_packages",
+          "version": "version:3@2.46.0.chromium.11"
+        },
+        {
+          "name": "infra/tools/git/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:e02b085286a3baf3ab1194941cdb6c196c4c0802"
+        },
+        {
+          "name": "infra/tools/luci/git-credential-luci/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:e02b085286a3baf3ab1194941cdb6c196c4c0802"
+        },
         {
           "name": "skia/bots/bazelisk_linux_amd64",
           "path": "bazelisk_linux_amd64",
@@ -3699,7 +3756,7 @@
         "--bazel_label=//tests:linux_rbe_tests",
         "--bazel_config=release",
         "--bazel_cache_dir=/mnt/pd0/bazel_cache",
-        "--workdir=.",
+        "--workdir=./skia",
         "--bazel_arg=--config=for_linux_x64_with_rbe",
         "--bazel_arg=--jobs=100",
         "--bazel_arg=--remote_download_minimal"
@@ -3713,6 +3770,8 @@
       ],
       "env_prefixes": {
         "PATH": [
+          "cipd_bin_packages",
+          "cipd_bin_packages/bin",
           "bazelisk_linux_amd64"
         ]
       },
@@ -3721,8 +3780,33 @@
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "BazelBuild-android_math_test-for_android_arm64_release-linux_x64": {
+      "caches": [
+        {
+          "name": "git",
+          "path": "cache/git"
+        },
+        {
+          "name": "git_cache",
+          "path": "cache/git_cache"
+        }
+      ],
       "casSpec": "bazel",
       "cipd_packages": [
+        {
+          "name": "infra/3pp/tools/git/linux-amd64",
+          "path": "cipd_bin_packages",
+          "version": "version:3@2.46.0.chromium.11"
+        },
+        {
+          "name": "infra/tools/git/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:e02b085286a3baf3ab1194941cdb6c196c4c0802"
+        },
+        {
+          "name": "infra/tools/luci/git-credential-luci/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:e02b085286a3baf3ab1194941cdb6c196c4c0802"
+        },
         {
           "name": "skia/bots/bazelisk_linux_amd64",
           "path": "bazelisk_linux_amd64",
@@ -3742,7 +3826,7 @@
         "--bazel_label=//tests:android_math_test",
         "--bazel_config=for_android_arm64_release",
         "--bazel_cache_dir=/mnt/pd0/bazel_cache",
-        "--workdir=.",
+        "--workdir=./skia",
         "--out_path=bazel_output",
         "--saved_output_dir=tests",
         "--bazel_arg=--config=linux_rbe",
@@ -3759,6 +3843,8 @@
       ],
       "env_prefixes": {
         "PATH": [
+          "cipd_bin_packages",
+          "cipd_bin_packages/bin",
           "bazelisk_linux_amd64"
         ]
       },
@@ -3770,8 +3856,33 @@
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "BazelBuild-core-release-linux_x64": {
+      "caches": [
+        {
+          "name": "git",
+          "path": "cache/git"
+        },
+        {
+          "name": "git_cache",
+          "path": "cache/git_cache"
+        }
+      ],
       "casSpec": "bazel",
       "cipd_packages": [
+        {
+          "name": "infra/3pp/tools/git/linux-amd64",
+          "path": "cipd_bin_packages",
+          "version": "version:3@2.46.0.chromium.11"
+        },
+        {
+          "name": "infra/tools/git/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:e02b085286a3baf3ab1194941cdb6c196c4c0802"
+        },
+        {
+          "name": "infra/tools/luci/git-credential-luci/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:e02b085286a3baf3ab1194941cdb6c196c4c0802"
+        },
         {
           "name": "skia/bots/bazelisk_linux_amd64",
           "path": "bazelisk_linux_amd64",
@@ -3791,7 +3902,7 @@
         "--bazel_label=//:core",
         "--bazel_config=release",
         "--bazel_cache_dir=/mnt/pd0/bazel_cache",
-        "--workdir=.",
+        "--workdir=./skia",
         "--bazel_arg=--config=for_linux_x64_with_rbe",
         "--bazel_arg=--jobs=100",
         "--bazel_arg=--remote_download_minimal"
@@ -3805,6 +3916,8 @@
       ],
       "env_prefixes": {
         "PATH": [
+          "cipd_bin_packages",
+          "cipd_bin_packages/bin",
           "bazelisk_linux_amd64"
         ]
       },
@@ -3813,8 +3926,33 @@
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "BazelBuild-cpu_8888_benchmark_android_test-for_android_arm64_release-linux_x64": {
+      "caches": [
+        {
+          "name": "git",
+          "path": "cache/git"
+        },
+        {
+          "name": "git_cache",
+          "path": "cache/git_cache"
+        }
+      ],
       "casSpec": "bazel",
       "cipd_packages": [
+        {
+          "name": "infra/3pp/tools/git/linux-amd64",
+          "path": "cipd_bin_packages",
+          "version": "version:3@2.46.0.chromium.11"
+        },
+        {
+          "name": "infra/tools/git/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:e02b085286a3baf3ab1194941cdb6c196c4c0802"
+        },
+        {
+          "name": "infra/tools/luci/git-credential-luci/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:e02b085286a3baf3ab1194941cdb6c196c4c0802"
+        },
         {
           "name": "skia/bots/bazelisk_linux_amd64",
           "path": "bazelisk_linux_amd64",
@@ -3834,7 +3972,7 @@
         "--bazel_label=//bench:cpu_8888_android_test",
         "--bazel_config=for_android_arm64_release",
         "--bazel_cache_dir=/mnt/pd0/bazel_cache",
-        "--workdir=.",
+        "--workdir=./skia",
         "--out_path=bazel_output",
         "--saved_output_dir=bench",
         "--bazel_arg=--config=linux_rbe",
@@ -3851,6 +3989,8 @@
       ],
       "env_prefixes": {
         "PATH": [
+          "cipd_bin_packages",
+          "cipd_bin_packages/bin",
           "bazelisk_linux_amd64"
         ]
       },
@@ -3862,8 +4002,33 @@
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "BazelBuild-full_library-enforce_iwyu-linux_x64": {
+      "caches": [
+        {
+          "name": "git",
+          "path": "cache/git"
+        },
+        {
+          "name": "git_cache",
+          "path": "cache/git_cache"
+        }
+      ],
       "casSpec": "bazel",
       "cipd_packages": [
+        {
+          "name": "infra/3pp/tools/git/linux-amd64",
+          "path": "cipd_bin_packages",
+          "version": "version:3@2.46.0.chromium.11"
+        },
+        {
+          "name": "infra/tools/git/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:e02b085286a3baf3ab1194941cdb6c196c4c0802"
+        },
+        {
+          "name": "infra/tools/luci/git-credential-luci/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:e02b085286a3baf3ab1194941cdb6c196c4c0802"
+        },
         {
           "name": "skia/bots/bazelisk_linux_amd64",
           "path": "bazelisk_linux_amd64",
@@ -3883,7 +4048,7 @@
         "--bazel_label=//tools:full_build",
         "--bazel_config=enforce_iwyu",
         "--bazel_cache_dir=/mnt/pd0/bazel_cache",
-        "--workdir=.",
+        "--workdir=./skia",
         "--bazel_arg=--config=for_linux_x64_with_rbe",
         "--bazel_arg=--jobs=100",
         "--bazel_arg=--remote_download_minimal"
@@ -3897,6 +4062,8 @@
       ],
       "env_prefixes": {
         "PATH": [
+          "cipd_bin_packages",
+          "cipd_bin_packages/bin",
           "bazelisk_linux_amd64"
         ]
       },
@@ -3904,9 +4071,101 @@
       "max_attempts": 1,
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
-    "BazelBuild-full_library-release-linux_x64": {
+    "BazelBuild-full_library-for_windows_x64_release-windows_x64": {
+      "caches": [
+        {
+          "name": "git",
+          "path": "cache/git"
+        },
+        {
+          "name": "git_cache",
+          "path": "cache/git_cache"
+        }
+      ],
       "casSpec": "bazel",
       "cipd_packages": [
+        {
+          "name": "infra/3pp/tools/git/windows-amd64",
+          "path": "cipd_bin_packages",
+          "version": "version:3@2.46.0.chromium.11"
+        },
+        {
+          "name": "infra/tools/git/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:e02b085286a3baf3ab1194941cdb6c196c4c0802"
+        },
+        {
+          "name": "infra/tools/luci/git-credential-luci/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:e02b085286a3baf3ab1194941cdb6c196c4c0802"
+        },
+        {
+          "name": "skia/bots/bazelisk_win_amd64",
+          "path": "bazelisk_win_amd64",
+          "version": "version:1"
+        }
+      ],
+      "command": [
+        "./bazel_build",
+        "--project_id=skia-swarming-bots",
+        "--task_id=<(TASK_ID)",
+        "--task_name=BazelBuild-full_library-for_windows_x64_release-windows_x64",
+        "--bazel_label=//tools:full_build",
+        "--bazel_config=for_windows_x64_release",
+        "--bazel_cache_dir=C:\\\\Users\\\\chrome-bot\\\\bazel_cache",
+        "--workdir=./skia",
+        "--bazel_arg=--experimental_scale_timeouts=2.0"
+      ],
+      "dependencies": [
+        "Housekeeper-PerCommit-BuildTaskDrivers_windows_amd64"
+      ],
+      "dimensions": [
+        "cpu:x86-64-Haswell_GCE",
+        "gpu:none",
+        "machine_type:n1-highcpu-64",
+        "os:Windows-Server-17763",
+        "pool:Skia",
+        "id:skia-e-gce-610"
+      ],
+      "env_prefixes": {
+        "PATH": [
+          "cipd_bin_packages",
+          "cipd_bin_packages/bin",
+          "bazelisk_win_amd64"
+        ]
+      },
+      "idempotent": true,
+      "max_attempts": 1,
+      "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
+    },
+    "BazelBuild-full_library-release-linux_x64": {
+      "caches": [
+        {
+          "name": "git",
+          "path": "cache/git"
+        },
+        {
+          "name": "git_cache",
+          "path": "cache/git_cache"
+        }
+      ],
+      "casSpec": "bazel",
+      "cipd_packages": [
+        {
+          "name": "infra/3pp/tools/git/linux-amd64",
+          "path": "cipd_bin_packages",
+          "version": "version:3@2.46.0.chromium.11"
+        },
+        {
+          "name": "infra/tools/git/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:e02b085286a3baf3ab1194941cdb6c196c4c0802"
+        },
+        {
+          "name": "infra/tools/luci/git-credential-luci/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:e02b085286a3baf3ab1194941cdb6c196c4c0802"
+        },
         {
           "name": "skia/bots/bazelisk_linux_amd64",
           "path": "bazelisk_linux_amd64",
@@ -3926,7 +4185,7 @@
         "--bazel_label=//tools:full_build",
         "--bazel_config=release",
         "--bazel_cache_dir=/mnt/pd0/bazel_cache",
-        "--workdir=.",
+        "--workdir=./skia",
         "--bazel_arg=--config=for_linux_x64_with_rbe",
         "--bazel_arg=--jobs=100",
         "--bazel_arg=--remote_download_minimal"
@@ -3940,6 +4199,8 @@
       ],
       "env_prefixes": {
         "PATH": [
+          "cipd_bin_packages",
+          "cipd_bin_packages/bin",
           "bazelisk_linux_amd64"
         ]
       },
@@ -3948,8 +4209,33 @@
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "BazelBuild-ganesh_gl-release-linux_x64": {
+      "caches": [
+        {
+          "name": "git",
+          "path": "cache/git"
+        },
+        {
+          "name": "git_cache",
+          "path": "cache/git_cache"
+        }
+      ],
       "casSpec": "bazel",
       "cipd_packages": [
+        {
+          "name": "infra/3pp/tools/git/linux-amd64",
+          "path": "cipd_bin_packages",
+          "version": "version:3@2.46.0.chromium.11"
+        },
+        {
+          "name": "infra/tools/git/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:e02b085286a3baf3ab1194941cdb6c196c4c0802"
+        },
+        {
+          "name": "infra/tools/luci/git-credential-luci/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:e02b085286a3baf3ab1194941cdb6c196c4c0802"
+        },
         {
           "name": "skia/bots/bazelisk_linux_amd64",
           "path": "bazelisk_linux_amd64",
@@ -3969,7 +4255,7 @@
         "--bazel_label=//:ganesh_gl",
         "--bazel_config=release",
         "--bazel_cache_dir=/mnt/pd0/bazel_cache",
-        "--workdir=.",
+        "--workdir=./skia",
         "--bazel_arg=--config=for_linux_x64_with_rbe",
         "--bazel_arg=--jobs=100",
         "--bazel_arg=--remote_download_minimal"
@@ -3983,6 +4269,8 @@
       ],
       "env_prefixes": {
         "PATH": [
+          "cipd_bin_packages",
+          "cipd_bin_packages/bin",
           "bazelisk_linux_amd64"
         ]
       },
@@ -3991,8 +4279,33 @@
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "BazelBuild-hello_bazel_world_android_test-for_android_arm64_release-linux_x64": {
+      "caches": [
+        {
+          "name": "git",
+          "path": "cache/git"
+        },
+        {
+          "name": "git_cache",
+          "path": "cache/git_cache"
+        }
+      ],
       "casSpec": "bazel",
       "cipd_packages": [
+        {
+          "name": "infra/3pp/tools/git/linux-amd64",
+          "path": "cipd_bin_packages",
+          "version": "version:3@2.46.0.chromium.11"
+        },
+        {
+          "name": "infra/tools/git/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:e02b085286a3baf3ab1194941cdb6c196c4c0802"
+        },
+        {
+          "name": "infra/tools/luci/git-credential-luci/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:e02b085286a3baf3ab1194941cdb6c196c4c0802"
+        },
         {
           "name": "skia/bots/bazelisk_linux_amd64",
           "path": "bazelisk_linux_amd64",
@@ -4012,7 +4325,7 @@
         "--bazel_label=//gm:hello_bazel_world_android_test",
         "--bazel_config=for_android_arm64_release",
         "--bazel_cache_dir=/mnt/pd0/bazel_cache",
-        "--workdir=.",
+        "--workdir=./skia",
         "--out_path=bazel_output",
         "--saved_output_dir=gm",
         "--bazel_arg=--config=linux_rbe",
@@ -4029,6 +4342,8 @@
       ],
       "env_prefixes": {
         "PATH": [
+          "cipd_bin_packages",
+          "cipd_bin_packages/bin",
           "bazelisk_linux_amd64"
         ]
       },
@@ -4040,8 +4355,33 @@
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "BazelBuild-modules_canvaskit-ck_full_webgl2_debug-linux_x64": {
+      "caches": [
+        {
+          "name": "git",
+          "path": "cache/git"
+        },
+        {
+          "name": "git_cache",
+          "path": "cache/git_cache"
+        }
+      ],
       "casSpec": "bazel",
       "cipd_packages": [
+        {
+          "name": "infra/3pp/tools/git/linux-amd64",
+          "path": "cipd_bin_packages",
+          "version": "version:3@2.46.0.chromium.11"
+        },
+        {
+          "name": "infra/tools/git/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:e02b085286a3baf3ab1194941cdb6c196c4c0802"
+        },
+        {
+          "name": "infra/tools/luci/git-credential-luci/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:e02b085286a3baf3ab1194941cdb6c196c4c0802"
+        },
         {
           "name": "skia/bots/bazelisk_linux_amd64",
           "path": "bazelisk_linux_amd64",
@@ -4061,7 +4401,7 @@
         "--bazel_label=//modules/canvaskit:canvaskit",
         "--bazel_config=ck_full_webgl2_debug",
         "--bazel_cache_dir=/mnt/pd0/bazel_cache",
-        "--workdir=.",
+        "--workdir=./skia",
         "--bazel_arg=--config=for_linux_x64_with_rbe",
         "--bazel_arg=--jobs=100",
         "--bazel_arg=--remote_download_minimal"
@@ -4075,6 +4415,8 @@
       ],
       "env_prefixes": {
         "PATH": [
+          "cipd_bin_packages",
+          "cipd_bin_packages/bin",
           "bazelisk_linux_amd64"
         ]
       },
@@ -4083,8 +4425,33 @@
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "BazelBuild-skottie_tool_gpu-enforce_iwyu-linux_x64": {
+      "caches": [
+        {
+          "name": "git",
+          "path": "cache/git"
+        },
+        {
+          "name": "git_cache",
+          "path": "cache/git_cache"
+        }
+      ],
       "casSpec": "bazel",
       "cipd_packages": [
+        {
+          "name": "infra/3pp/tools/git/linux-amd64",
+          "path": "cipd_bin_packages",
+          "version": "version:3@2.46.0.chromium.11"
+        },
+        {
+          "name": "infra/tools/git/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:e02b085286a3baf3ab1194941cdb6c196c4c0802"
+        },
+        {
+          "name": "infra/tools/luci/git-credential-luci/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:e02b085286a3baf3ab1194941cdb6c196c4c0802"
+        },
         {
           "name": "skia/bots/bazelisk_linux_amd64",
           "path": "bazelisk_linux_amd64",
@@ -4104,7 +4471,7 @@
         "--bazel_label=//modules/skottie:skottie_tool_gpu",
         "--bazel_config=enforce_iwyu",
         "--bazel_cache_dir=/mnt/pd0/bazel_cache",
-        "--workdir=.",
+        "--workdir=./skia",
         "--bazel_arg=--config=for_linux_x64_with_rbe",
         "--bazel_arg=--jobs=100",
         "--bazel_arg=--remote_download_minimal"
@@ -4118,6 +4485,8 @@
       ],
       "env_prefixes": {
         "PATH": [
+          "cipd_bin_packages",
+          "cipd_bin_packages/bin",
           "bazelisk_linux_amd64"
         ]
       },
@@ -4126,8 +4495,33 @@
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "BazelBuild-viewer-debug-linux_x64": {
+      "caches": [
+        {
+          "name": "git",
+          "path": "cache/git"
+        },
+        {
+          "name": "git_cache",
+          "path": "cache/git_cache"
+        }
+      ],
       "casSpec": "bazel",
       "cipd_packages": [
+        {
+          "name": "infra/3pp/tools/git/linux-amd64",
+          "path": "cipd_bin_packages",
+          "version": "version:3@2.46.0.chromium.11"
+        },
+        {
+          "name": "infra/tools/git/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:e02b085286a3baf3ab1194941cdb6c196c4c0802"
+        },
+        {
+          "name": "infra/tools/luci/git-credential-luci/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:e02b085286a3baf3ab1194941cdb6c196c4c0802"
+        },
         {
           "name": "skia/bots/bazelisk_linux_amd64",
           "path": "bazelisk_linux_amd64",
@@ -4147,7 +4541,7 @@
         "--bazel_label=//tools/viewer:viewer",
         "--bazel_config=debug",
         "--bazel_cache_dir=/mnt/pd0/bazel_cache",
-        "--workdir=.",
+        "--workdir=./skia",
         "--bazel_arg=--config=for_linux_x64_with_rbe",
         "--bazel_arg=--jobs=100",
         "--bazel_arg=--remote_download_minimal"
@@ -4161,6 +4555,8 @@
       ],
       "env_prefixes": {
         "PATH": [
+          "cipd_bin_packages",
+          "cipd_bin_packages/bin",
           "bazelisk_linux_amd64"
         ]
       },
@@ -4169,8 +4565,33 @@
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "BazelBuild-viewer-release-linux_x64": {
+      "caches": [
+        {
+          "name": "git",
+          "path": "cache/git"
+        },
+        {
+          "name": "git_cache",
+          "path": "cache/git_cache"
+        }
+      ],
       "casSpec": "bazel",
       "cipd_packages": [
+        {
+          "name": "infra/3pp/tools/git/linux-amd64",
+          "path": "cipd_bin_packages",
+          "version": "version:3@2.46.0.chromium.11"
+        },
+        {
+          "name": "infra/tools/git/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:e02b085286a3baf3ab1194941cdb6c196c4c0802"
+        },
+        {
+          "name": "infra/tools/luci/git-credential-luci/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:e02b085286a3baf3ab1194941cdb6c196c4c0802"
+        },
         {
           "name": "skia/bots/bazelisk_linux_amd64",
           "path": "bazelisk_linux_amd64",
@@ -4190,7 +4611,7 @@
         "--bazel_label=//tools/viewer:viewer",
         "--bazel_config=release",
         "--bazel_cache_dir=/mnt/pd0/bazel_cache",
-        "--workdir=.",
+        "--workdir=./skia",
         "--bazel_arg=--config=for_linux_x64_with_rbe",
         "--bazel_arg=--jobs=100",
         "--bazel_arg=--remote_download_minimal"
@@ -4204,6 +4625,8 @@
       ],
       "env_prefixes": {
         "PATH": [
+          "cipd_bin_packages",
+          "cipd_bin_packages/bin",
           "bazelisk_linux_amd64"
         ]
       },
