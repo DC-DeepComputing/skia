@@ -16,6 +16,29 @@
       "message": "@brianosman, can you PTAL?\n/cc @scroggo FYI",
       "revId": "d1293718da5a528fb368635c4398dadab5f679d9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f64f6aeb_4e2e6dcf",
+        "filename": "src/codec/SkPngCodecBase.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-08-29T14:26:45Z",
+      "side": 1,
+      "message": "This could use `minRowBytes` (note that it returns `0` on overflow)",
+      "range": {
+        "startLine": 86,
+        "startChar": 0,
+        "endLine": 89,
+        "endChar": 6
+      },
+      "revId": "d1293718da5a528fb368635c4398dadab5f679d9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
