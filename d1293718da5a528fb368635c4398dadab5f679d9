@@ -39,6 +39,30 @@
       },
       "revId": "d1293718da5a528fb368635c4398dadab5f679d9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ffc04fd_09981686",
+        "filename": "src/codec/SkPngCodecBase.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-08-29T15:16:37Z",
+      "side": 1,
+      "message": "Good catch - thanks for the suggestion!  Done.\n\nPS. This is just for debug-mode assertions, so I think using `0` on overflow is ok.  I\u0027ve thought about using `minRowBytes64` and relying on implicit upcasts in `SkASSERT(size \u003e\u003d minRowBytes64)`, but I wasn\u0027t confident that it would really be an improvement.",
+      "parentUuid": "f64f6aeb_4e2e6dcf",
+      "range": {
+        "startLine": 86,
+        "startChar": 0,
+        "endLine": 89,
+        "endChar": 6
+      },
+      "revId": "d1293718da5a528fb368635c4398dadab5f679d9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
