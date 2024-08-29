@@ -41,6 +41,7 @@
 #include "tools/flags/CommonFlags.h"
 #include "tools/flags/CommonFlagsConfig.h"
 #include "tools/flags/CommonFlagsGanesh.h"
+#include "tools/flags/CommonFlagsGraphite.h"
 #include "tools/fonts/FontToolUtils.h"
 #include "tools/ios_utils.h"
 #include "tools/trace/ChromeTracingTracer.h"
@@ -129,7 +130,6 @@ static DEFINE_bool2(veryVerbose, V, false, "tell individual tests to be verbose.
 static DEFINE_bool(cpu, true, "Run CPU-bound work?");
 static DEFINE_bool(gpu, true, "Run GPU-bound work?");
 static DEFINE_bool(graphite, true, "Run Graphite work?");
-static DEFINE_bool(neverYieldToWebGPU, false, "Run Graphite with never-yield context option.");
 
 static DEFINE_bool(dryRun, false,
                    "just print the tests that would be run, without actually running them.");
@@ -1515,10 +1515,12 @@ static void run_ganesh_test(skiatest::Test test, const GrContextOptions& grCtxOp
     done("unit", "test", "", test.fName);
 }
 
-static void run_graphite_test(skiatest::Test test, skiatest::graphite::TestOptions& options) {
+static void run_graphite_test(skiatest::Test test,
+                              const skiatest::graphite::TestOptions& optionsIn) {
     DMReporter reporter;
     if (!FLAGS_dryRun && !should_skip("_", "tests", "_", test.fName)) {
         AutoreleasePool pool;
+        skiatest::graphite::TestOptions options = optionsIn;
         test.modifyGraphiteContextOptions(&options.fContextOptions);
 
         skiatest::ReporterContext ctx(&reporter, SkString(test.fName));
@@ -1566,9 +1568,7 @@ int main(int argc, char** argv) {
     }
 
     skiatest::graphite::TestOptions graphiteOptions;
-    if (FLAGS_neverYieldToWebGPU) {
-        graphiteOptions.fNeverYieldToWebGPU = true;
-    }
+    CommonFlags::SetTestOptions(&graphiteOptions);
 
     GrContextOptions grCtxOptions;
     CommonFlags::SetCtxOptions(&grCtxOptions);
