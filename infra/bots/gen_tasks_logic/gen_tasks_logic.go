@@ -2235,14 +2235,14 @@ func (b *jobBuilder) bazelBuild() {
 
 	b.addTask(b.Name, func(b *taskBuilder) {
 		cmd := []string{
-			"bazel_build_task_driver/bazel_build",
+			"task_drivers/bazel_build",
 			"--project_id=skia-swarming-bots",
 			"--task_id=" + specs.PLACEHOLDER_TASK_ID,
 			"--task_name=" + b.Name,
 			"--bazel_label=" + labelAndSavedOutputDir.label,
 			"--bazel_config=" + config,
 			"--bazel_cache_dir=" + bazelCacheDirOnGCELinux,
-			"--workdir=.",
+			"--workdir=./skia",
 		}
 
 		if labelAndSavedOutputDir.savedOutputDir != "" {
