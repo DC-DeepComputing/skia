@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e2fb64fc_503ee64d",
+        "filename": "infra/bots/task_drivers/bazel_build/bazel_build.go",
+        "patchSetId": 2
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-08-29T15:51:24Z",
+      "side": 1,
+      "message": "Note: now this must be \"./skia\" instead of simply \".\"",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 104
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "f5d3d011_fe33d0af",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "infra/bots/task_drivers/bazel_build/bazel_build.go",
+              "range": {
+                "startLine": 32,
+                "startChar": 0,
+                "endLine": 33,
+                "endChar": 0
+              },
+              "replacement": "\tworkdir        \u003d flag.String(\"workdir\", \"./skia\", \"Working directory in which the build will be performed.\")\n"
+            }
+          ]
+        }
+      ],
+      "revId": "fb11a5dd3d32b1c5371ea3347897d85a0c2c6da4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
