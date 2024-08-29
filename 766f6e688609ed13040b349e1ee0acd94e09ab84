@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f723ab2a_1bfa8b8e",
+        "filename": "WORKSPACE.bazel",
+        "patchSetId": 35
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-08-29T18:39:12Z",
+      "side": 1,
+      "message": "Let\u0027s add a TODO with your bug number about why this is commented out or just delete it and rely on version control if we need to bring it back.",
+      "revId": "766f6e688609ed13040b349e1ee0acd94e09ab84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cfd38d84_7376bebb",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 35
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-08-29T18:39:12Z",
+      "side": 1,
+      "message": "https://xkcd.com/1638/\n\nCan we put this in backticks and make it slightly less escaped?",
+      "range": {
+        "startLine": 116,
+        "startChar": 31,
+        "endLine": 116,
+        "endChar": 32
+      },
+      "revId": "766f6e688609ed13040b349e1ee0acd94e09ab84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
