@@ -16,6 +16,23 @@
       "message": "Will need a new +1 with added file",
       "revId": "3d64b6fd4477b37edc657fe4705aad7dd829a4a8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ede14cf_e0675d03",
+        "filename": "tests/graphite/UpdateBackendTextureTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-08-29T15:51:36Z",
+      "side": 1,
+      "message": "Should we assert that `finished` is false before this ?",
+      "revId": "3d64b6fd4477b37edc657fe4705aad7dd829a4a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
