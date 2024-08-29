@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "4b3b0fdb_35a8721c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 3607294
+      },
+      "writtenOn": "2024-08-29T18:28:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "16ce6ca6_cac090bc",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 5
+      },
+      "revId": "b75c007fc9ed8a238c2c698b1096fc2c1bcca9a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "022f41b9_9b1e92d2",
         "filename": "whitespace.txt",
         "patchSetId": 2
