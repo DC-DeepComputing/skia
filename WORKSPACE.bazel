@@ -97,28 +97,28 @@ http_archive(
     ),
 )
 
-load("@rules_jvm_external//:repositories.bzl", "rules_jvm_external_deps")
-
-rules_jvm_external_deps()
-
-load("@rules_jvm_external//:setup.bzl", "rules_jvm_external_setup")
-
-rules_jvm_external_setup()
-
-load("@rules_jvm_external//:defs.bzl", "maven_install")
-
-maven_install(
-    artifacts = [
-        # The version released after this one (1.6.0-rc1) did not resolve unknown symbol errors when
-        # building.
-        # https://b.corp.google.com/issues/269331711
-        "androidx.annotation:annotation:1.5.0",
-    ],
-    repositories = [
-        "https://maven.google.com",
-        "https://repo1.maven.org/maven2",
-    ],
-)
+#load("@rules_jvm_external//:repositories.bzl", "rules_jvm_external_deps")
+#
+#rules_jvm_external_deps()
+#
+#load("@rules_jvm_external//:setup.bzl", "rules_jvm_external_setup")
+#
+#rules_jvm_external_setup()
+#
+#load("@rules_jvm_external//:defs.bzl", "maven_install")
+#
+#maven_install(
+#    artifacts = [
+#        # The version released after this one (1.6.0-rc1) did not resolve unknown symbol errors when
+#        # building.
+#        # https://b.corp.google.com/issues/269331711
+#        "androidx.annotation:annotation:1.5.0",
+#    ],
+#    repositories = [
+#        "https://maven.google.com",
+#        "https://repo1.maven.org/maven2",
+#    ],
+#)
 
 #######################################################################################
 # Gazelle

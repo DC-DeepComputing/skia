@@ -65,7 +65,7 @@ const (
 	COMPILE_TASK_NAME_OS_LINUX     = "Debian10"
 	COMPILE_TASK_NAME_OS_LINUX_OLD = "Debian9"
 	DEFAULT_OS_MAC                 = "Mac-14.5"
-	DEFAULT_OS_WIN                 = "Windows-Server-17763"
+	DEFAULT_OS_WIN_GCE             = "Windows-Server-17763"
 
 	// Small is a 2-core machine.
 	// TODO(dogben): Would n1-standard-1 or n1-standard-2 be sufficient?
@@ -105,6 +105,15 @@ const (
 	// of /home/chrome-bot/cache/.bazel to make it obvious to someone examining a Skolo machine that
 	// we are overriding the default location.
 	bazelCacheDirOnSkoloLinux = "/home/chrome-bot/bazel_cache"
+
+	// bazelCacheDirOnWindows is like bazelCacheDirOnSkoloLinux. Unlike GCE Linux machines, we only
+	// have a single partition. While using the default cache path would work, our Bazel task
+	// drivers demand an explicit path. We store the Bazel cache at /home/chrome-bot/bazel_cache
+	// rather than on the default location of %APPDATA% to make it obvious to someone examining a
+	// Skolo machine that we are overriding the default location. Note that double-escaping the
+	// path separator is necessary because this string is passed to Bazel via multiple levels of
+	// subprocesses.
+	bazelCacheDirOnWindows = "C:\\\\Users\\\\chrome-bot\\\\bazel_cache"
 )
 
 var (
@@ -860,9 +869,9 @@ func (b *taskBuilder) defaultSwarmDimensions() {
 			"Mokey":      "Android",
 			"MokeyGo32":  "Android",
 			"Ubuntu18":   "Ubuntu-18.04",
-			"Win":        DEFAULT_OS_WIN,
+			"Win":        DEFAULT_OS_WIN_GCE,
 			"Win10":      "Windows-10-19045",
-			"Win2019":    DEFAULT_OS_WIN,
+			"Win2019":    DEFAULT_OS_WIN_GCE,
 			"iOS":        "iOS-13.3.1",
 		}[os]
 		if !ok {
@@ -1089,7 +1098,7 @@ func (b *taskBuilder) defaultSwarmDimensions() {
 			// Use many-core machines for Build tasks.
 			b.linuxGceDimensions(MACHINE_TYPE_LARGE)
 			return
-		} else if d["os"] == DEFAULT_OS_WIN {
+		} else if d["os"] == DEFAULT_OS_WIN_GCE {
 			// Windows CPU bots.
 			d["cpu"] = "x86-64-Haswell_GCE"
 			// Use many-core machines for Build tasks.
@@ -1528,7 +1537,7 @@ func (b *jobBuilder) infra() {
 				"cpu:x86-64-Haswell_GCE",
 				"gpu:none",
 				fmt.Sprintf("machine_type:%s", MACHINE_TYPE_MEDIUM), // We don't have any small Windows instances.
-				fmt.Sprintf("os:%s", DEFAULT_OS_WIN),
+				fmt.Sprintf("os:%s", DEFAULT_OS_WIN_GCE),
 				fmt.Sprintf("pool:%s", b.cfg.Pool),
 			)
 		} else {
@@ -2234,15 +2243,28 @@ func (b *jobBuilder) bazelBuild() {
 	}
 
 	b.addTask(b.Name, func(b *taskBuilder) {
+		bazelCacheDir, ok := map[string]string{
+			// We only run builds in GCE.
+			"linux_x64":   bazelCacheDirOnGCELinux,
+			"windows_x64": bazelCacheDirOnWindows,
+		}[host]
+		if !ok {
+			panic("unknown Bazel cache dir for Bazel host " + host)
+		}
+
+		// Bazel git_repository rules shell out to git. Use the version from
+		// CIPD to ensure that we're not using an old locally-installed version.
+		b.usesGit()
+
 		cmd := []string{
-			"bazel_build_task_driver/bazel_build",
+			b.taskDriver("bazel_build", host != "windows_x64"),
 			"--project_id=skia-swarming-bots",
 			"--task_id=" + specs.PLACEHOLDER_TASK_ID,
 			"--task_name=" + b.Name,
 			"--bazel_label=" + labelAndSavedOutputDir.label,
 			"--bazel_config=" + config,
-			"--bazel_cache_dir=" + bazelCacheDirOnGCELinux,
-			"--workdir=.",
+			"--bazel_cache_dir=" + bazelCacheDir,
+			"--workdir=./skia",
 		}
 
 		if labelAndSavedOutputDir.savedOutputDir != "" {
@@ -2256,16 +2278,6 @@ func (b *jobBuilder) bazelBuild() {
 		if host == "linux_x64" {
 			b.linuxGceDimensions(MACHINE_TYPE_MEDIUM)
 			b.usesBazel("linux_x64")
-			// Use a built task_driver from CIPD instead of building it from scratch. The
-			// task_driver should not need to change often, so using a CIPD version should reduce
-			// build latency.
-			// TODO(kjlubick) For now, this only has the linux version. We could build the task
-			//   driver for all hosts that we support running Bazel from in this CIPD package
-			//   if/when needed.
-			// TODO(kjlubick,lovisolo) Could we get our task drivers built automatically
-			// into CIPD instead of this being a manual process?
-			b.cipd(b.MustGetCipdPackageFromAsset("bazel_build_task_driver"))
-
 			if labelAndSavedOutputDir.savedOutputDir != "" {
 				// We assume that builds which require storing a subset of //bazel-bin to CAS are Android
 				// builds. We want such builds to use RBE, and we want to download the built top-level
@@ -2281,6 +2293,17 @@ func (b *jobBuilder) bazelBuild() {
 				cmd = append(cmd, "--bazel_arg=--jobs=100")
 				cmd = append(cmd, "--bazel_arg=--remote_download_minimal")
 			}
+		} else if host == "windows_x64" {
+			b.dimension(
+				"cpu:x86-64-Haswell_GCE",
+				"gpu:none",
+				fmt.Sprintf("machine_type:%s", MACHINE_TYPE_LARGE),
+				fmt.Sprintf("os:%s", DEFAULT_OS_WIN_GCE),
+				"pool:Skia",
+				"id:skia-e-gce-610",
+			)
+			b.usesBazel("windows_x64")
+			cmd = append(cmd, "--bazel_arg=--experimental_scale_timeouts=2.0")
 		} else {
 			panic("unsupported Bazel host " + host)
 		}
