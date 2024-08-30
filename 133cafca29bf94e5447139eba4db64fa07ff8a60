@@ -33,6 +33,47 @@
       "message": "I am quite unhappy with needing to add this to appease the iwyu bot. `SkUnichar` is currently defined in both `SkTypes.h` and `SkUTF.h` and it really needs to be removed from `SkUTF.h` but unfortunately it is in `base` for some reason so can\u0027t use the one in `SkTypes.h`. Unfortunately, iwyu doesn\u0027t know how to resolve multiple definitions very well, so really wants this to be included, even though `SkTypes.h` is already directly included and directly defines `SkUnichar`.",
       "revId": "133cafca29bf94e5447139eba4db64fa07ff8a60",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4bed3d43_b0996721",
+        "filename": "src/pdf/SkPDFDocumentPriv.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-08-30T20:46:02Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "042cbd6d_bf6e3c87",
+      "revId": "133cafca29bf94e5447139eba4db64fa07ff8a60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0952c619_773ca330",
+        "filename": "src/pdf/SkPDFFont.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 611,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-08-30T20:46:02Z",
+      "side": 1,
+      "message": "Why the color type change here (and below)? Also, do we want unknown alpha type, or can we just call these opaque? (Mostly wondering if any other code is ever going to assert or complain about having unknown).",
+      "range": {
+        "startLine": 611,
+        "startChar": 51,
+        "endLine": 611,
+        "endChar": 70
+      },
+      "revId": "133cafca29bf94e5447139eba4db64fa07ff8a60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

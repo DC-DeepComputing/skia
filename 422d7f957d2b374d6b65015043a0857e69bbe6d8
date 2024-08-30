@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "27f9ff63_b10c78e0",
+        "filename": "gm/blurtextsmallradii.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-08-30T20:46:02Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "9a8cdfef_0a4da24d",
+      "revId": "422d7f957d2b374d6b65015043a0857e69bbe6d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "518de009_4b273d45",
@@ -52,6 +70,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b9fe4fa_a58bc015",
+        "filename": "gm/blurtextsmallradii.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-08-30T20:46:02Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "518de009_4b273d45",
+      "revId": "422d7f957d2b374d6b65015043a0857e69bbe6d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b4a86590_f04c632c",
@@ -65,6 +101,24 @@
       "writtenOn": "2024-08-29T23:33:13Z",
       "side": 1,
       "message": "And if the blur doesn\u0027t happen, we would like to be able to see this text.",
+      "revId": "422d7f957d2b374d6b65015043a0857e69bbe6d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ae71568_f3383a36",
+        "filename": "gm/blurtextsmallradii.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-08-30T20:46:02Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "b4a86590_f04c632c",
       "revId": "422d7f957d2b374d6b65015043a0857e69bbe6d8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
