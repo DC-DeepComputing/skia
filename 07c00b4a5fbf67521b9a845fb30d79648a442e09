@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e51219c_eace463a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 29
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 10537
+      },
+      "writtenOn": "2024-08-30T13:40:47Z",
+      "side": 1,
+      "message": "Jim: Diff from PS that Greg previously LGTM\u0027d is https://skia-review.googlesource.com/c/skia/+/871238/28..29 (just formatting + trivial build fixes)",
+      "revId": "07c00b4a5fbf67521b9a845fb30d79648a442e09",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
