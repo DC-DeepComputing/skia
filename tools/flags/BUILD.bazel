@@ -43,10 +43,13 @@ skia_cc_library(
     name = "common_flags",
     testonly = True,
     srcs = [
+        "CommonFlagsConfig.cpp",
+        "CommonFlagsConfig.h",
         "CommonFlagsImages.cpp",
     ],
     hdrs = [
         "CommonFlags.h",
+        "CommonFlagsConfig.h",
     ],
     visibility = [
         "//bench:__pkg__",
@@ -58,6 +61,7 @@ skia_cc_library(
         ":cmd_flags",
         "//:core",
         "//src/gpu/ganesh:ganesh_TEST_UTIL",
+        "//tools/gpu:ganesh_gl_utils",
     ],
 )
 
