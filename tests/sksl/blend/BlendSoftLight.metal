@@ -4,7 +4,7 @@
 #pragma clang diagnostic ignored "-Wall"
 #endif
 using namespace metal;
-constant const half sk_PrivkGuardedDivideEpsilon = half(false ? 1e-08 : 0.0);
+constant const half sk_PrivkMinNormalHalf = 6.10351562e-05h;
 struct Uniforms {
     half4 src;
     half4 dst;
@@ -17,13 +17,13 @@ struct Outputs {
 half soft_light_component_Qhh2h2(half2 s, half2 d);
 half soft_light_component_Qhh2h2(half2 s, half2 d) {
     if (2.0h * s.x <= s.y) {
-        return (((d.x * d.x) * (s.y - 2.0h * s.x)) / (d.y + sk_PrivkGuardedDivideEpsilon) + (1.0h - d.y) * s.x) + d.x * ((-s.y + 2.0h * s.x) + 1.0h);
+        return (((d.x * d.x) * (s.y - 2.0h * s.x)) / (d.y + sk_PrivkMinNormalHalf) + (1.0h - d.y) * s.x) + d.x * ((-s.y + 2.0h * s.x) + 1.0h);
     } else if (4.0h * d.x <= d.y) {
         half DSqd = d.x * d.x;
         half DCub = DSqd * d.x;
         half DaSqd = d.y * d.y;
         half DaCub = DaSqd * d.y;
-        return (((DaSqd * (s.x - d.x * ((3.0h * s.y - 6.0h * s.x) - 1.0h)) + ((12.0h * d.y) * DSqd) * (s.y - 2.0h * s.x)) - (16.0h * DCub) * (s.y - 2.0h * s.x)) - DaCub * s.x) / (DaSqd + sk_PrivkGuardedDivideEpsilon);
+        return (((DaSqd * (s.x - d.x * ((3.0h * s.y - 6.0h * s.x) - 1.0h)) + ((12.0h * d.y) * DSqd) * (s.y - 2.0h * s.x)) - (16.0h * DCub) * (s.y - 2.0h * s.x)) - DaCub * s.x) / (DaSqd + sk_PrivkMinNormalHalf);
     } else {
         return ((d.x * ((s.y - 2.0h * s.x) + 1.0h) + s.x) - sqrt(d.y * d.x) * (s.y - 2.0h * s.x)) - d.y * s.x;
     }

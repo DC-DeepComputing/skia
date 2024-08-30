@@ -1,5 +1,4 @@
 
-const float sk_PrivkGuardedDivideEpsilon = true ? 1e-08 : 0.0;
 const float sk_PrivkMinNormalHalf = 6.10351562e-05;
 out vec4 sk_FragColor;
 in vec4 src;
@@ -9,7 +8,7 @@ float color_burn_component_Qhh2h2(vec2 s, vec2 d);
 float color_dodge_component_Qhh2h2(vec2 s, vec2 d);
 float soft_light_component_Qhh2h2(vec2 s, vec2 d);
 float guarded_divide_Qhhh(float n, float d) {
-    return n / (d + sk_PrivkGuardedDivideEpsilon);
+    return n / (d + sk_PrivkMinNormalHalf);
 }
 float color_burn_component_Qhh2h2(vec2 s, vec2 d) {
     float dyTerm = d.y == d.x ? d.y : 0.0;
@@ -23,13 +22,13 @@ float color_dodge_component_Qhh2h2(vec2 s, vec2 d) {
 }
 float soft_light_component_Qhh2h2(vec2 s, vec2 d) {
     if (2.0 * s.x <= s.y) {
-        return (((d.x * d.x) * (s.y - 2.0 * s.x)) / (d.y + sk_PrivkGuardedDivideEpsilon) + (1.0 - d.y) * s.x) + d.x * ((-s.y + 2.0 * s.x) + 1.0);
+        return (((d.x * d.x) * (s.y - 2.0 * s.x)) / (d.y + sk_PrivkMinNormalHalf) + (1.0 - d.y) * s.x) + d.x * ((-s.y + 2.0 * s.x) + 1.0);
     } else if (4.0 * d.x <= d.y) {
         float DSqd = d.x * d.x;
         float DCub = DSqd * d.x;
         float DaSqd = d.y * d.y;
         float DaCub = DaSqd * d.y;
-        return (((DaSqd * (s.x - d.x * ((3.0 * s.y - 6.0 * s.x) - 1.0)) + ((12.0 * d.y) * DSqd) * (s.y - 2.0 * s.x)) - (16.0 * DCub) * (s.y - 2.0 * s.x)) - DaCub * s.x) / (DaSqd + sk_PrivkGuardedDivideEpsilon);
+        return (((DaSqd * (s.x - d.x * ((3.0 * s.y - 6.0 * s.x) - 1.0)) + ((12.0 * d.y) * DSqd) * (s.y - 2.0 * s.x)) - (16.0 * DCub) * (s.y - 2.0 * s.x)) - DaCub * s.x) / (DaSqd + sk_PrivkMinNormalHalf);
     } else {
         return ((d.x * ((s.y - 2.0 * s.x) + 1.0) + s.x) - sqrt(d.y * d.x) * (s.y - 2.0 * s.x)) - d.y * s.x;
     }

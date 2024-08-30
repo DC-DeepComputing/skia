@@ -4,7 +4,6 @@
 #pragma clang diagnostic ignored "-Wall"
 #endif
 using namespace metal;
-constant const half sk_PrivkGuardedDivideEpsilon = half(false ? 1e-08 : 0.0);
 constant const half sk_PrivkMinNormalHalf = 6.10351562e-05h;
 struct Uniforms {
     half4 src;
@@ -18,7 +17,7 @@ struct Outputs {
 half guarded_divide_Qhhh(half n, half d);
 half color_burn_component_Qhh2h2(half2 s, half2 d);
 half guarded_divide_Qhhh(half n, half d) {
-    return n / (d + sk_PrivkGuardedDivideEpsilon);
+    return n / (d + sk_PrivkMinNormalHalf);
 }
 half color_burn_component_Qhh2h2(half2 s, half2 d) {
     half dyTerm = d.y == d.x ? d.y : 0.0h;

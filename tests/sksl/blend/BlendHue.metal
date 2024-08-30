@@ -4,7 +4,6 @@
 #pragma clang diagnostic ignored "-Wall"
 #endif
 using namespace metal;
-constant const half sk_PrivkGuardedDivideEpsilon = half(false ? 1e-08 : 0.0);
 constant const half sk_PrivkMinNormalHalf = 6.10351562e-05h;
 struct Uniforms {
     half4 src;
@@ -37,10 +36,10 @@ half4 blend_hslc_h4h2h4h4(half2 flipSat, half4 src, half4 dst) {
     half _6_minComp = min(min(_5_result.x, _5_result.y), _5_result.z);
     half _7_maxComp = max(max(_5_result.x, _5_result.y), _5_result.z);
     if (_6_minComp < 0.0h && _4_lum != _6_minComp) {
-        _5_result = _4_lum + (_5_result - _4_lum) * (_4_lum / ((_4_lum - _6_minComp) + sk_PrivkGuardedDivideEpsilon));
+        _5_result = _4_lum + (_5_result - _4_lum) * (_4_lum / ((_4_lum - _6_minComp) + sk_PrivkMinNormalHalf));
     }
     if (_7_maxComp > alpha && _7_maxComp != _4_lum) {
-        _5_result = _4_lum + ((_5_result - _4_lum) * (alpha - _4_lum)) / (((_7_maxComp - _4_lum) + sk_PrivkMinNormalHalf) + sk_PrivkGuardedDivideEpsilon);
+        _5_result = _4_lum + ((_5_result - _4_lum) * (alpha - _4_lum)) / ((_7_maxComp - _4_lum) + sk_PrivkMinNormalHalf);
     }
     return half4((((_5_result + dst.xyz) - dsa) + src.xyz) - sda, (src.w + dst.w) - alpha);
 }

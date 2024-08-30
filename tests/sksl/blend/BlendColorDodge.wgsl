@@ -8,11 +8,10 @@ struct _GlobalUniforms {
   dst: vec4<f32>,
 };
 @binding(0) @group(0) var<uniform> _globalUniforms: _GlobalUniforms;
-const sk_PrivkGuardedDivideEpsilon: f32 = f32(select(0.0, 1e-08, false));
 const sk_PrivkMinNormalHalf: f32 = 6.10351562e-05;
 fn guarded_divide_Qhhh(n: f32, d: f32) -> f32 {
   {
-    return n / (d + sk_PrivkGuardedDivideEpsilon);
+    return n / (d + sk_PrivkMinNormalHalf);
   }
 }
 fn color_dodge_component_Qhh2h2(s: vec2<f32>, d: vec2<f32>) -> f32 {

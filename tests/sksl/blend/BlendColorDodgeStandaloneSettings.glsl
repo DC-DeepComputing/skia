@@ -1,5 +1,4 @@
 
-const float sk_PrivkGuardedDivideEpsilon = false ? 1e-08 : 0.0;
 const float sk_PrivkMinNormalHalf = 6.10351562e-05;
 out vec4 sk_FragColor;
 uniform vec4 src;
@@ -7,7 +6,7 @@ uniform vec4 dst;
 float guarded_divide_Qhhh(float n, float d);
 float color_dodge_component_Qhh2h2(vec2 s, vec2 d);
 float guarded_divide_Qhhh(float n, float d) {
-    return n / (d + sk_PrivkGuardedDivideEpsilon);
+    return n / (d + sk_PrivkMinNormalHalf);
 }
 float color_dodge_component_Qhh2h2(vec2 s, vec2 d) {
     float dxScale = float(d.x == 0.0 ? 0 : 1);
