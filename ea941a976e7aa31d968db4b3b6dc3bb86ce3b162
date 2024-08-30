@@ -33,6 +33,47 @@
       "message": "Cannot link both `//src/gpu/ganesh` and `//src/gpu/ganesh/gl:ganesh_gl_TEST_UTIL` (duplicate symbols).  We can work around by making `debugger` testonly for now, but I suspect we\u0027ll be forced to do something about this issue in the future.",
       "revId": "ea941a976e7aa31d968db4b3b6dc3bb86ce3b162",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "edc31132_4b97f091",
+        "filename": "tools/debugger/BUILD.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-08-30T20:10:04Z",
+      "side": 1,
+      "message": "What about //src/gpu/ganesh:ganesh_TEST_UTIL?",
+      "parentUuid": "e3d7b8e5_f8abae1d",
+      "revId": "ea941a976e7aa31d968db4b3b6dc3bb86ce3b162",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65853c9d_52b7ce91",
+        "filename": "tools/flags/BUILD.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-08-30T20:10:04Z",
+      "side": 1,
+      "message": "This being GL specific is a bit worrysome. Where is the GL part from?",
+      "range": {
+        "startLine": 64,
+        "startChar": 21,
+        "endLine": 64,
+        "endChar": 36
+      },
+      "revId": "ea941a976e7aa31d968db4b3b6dc3bb86ce3b162",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
