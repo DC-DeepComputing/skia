@@ -16,6 +16,24 @@
       "message": "This is going to need another change to fix emscripten. Given that I would say upload the fix (and these previous build fixes) to Nicolette\u0027s original CL. I believe that will still keep her as the Owner of the CL and just updated the latest author. It also will make it easier to keep to see previous discussions on that CL if someone gets to it via blame/history of codesearch.",
       "revId": "da67a0212d3e87f92b4eebdd4cb3100274614a99",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d417ee66_9e606c0b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 10537
+      },
+      "writtenOn": "2024-08-30T09:10:18Z",
+      "side": 1,
+      "message": "Change made, thanks! Gerrit doesn\u0027t allow me to push changes to Nicolette\u0027s CL, unfortunately.",
+      "parentUuid": "3a589128_2ed3b94b",
+      "revId": "da67a0212d3e87f92b4eebdd4cb3100274614a99",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
