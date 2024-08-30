@@ -67,6 +67,23 @@
       "message": "And if the blur doesn\u0027t happen, we would like to be able to see this text.",
       "revId": "422d7f957d2b374d6b65015043a0857e69bbe6d8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "52c035b9_c4815f10",
+        "filename": "src/pdf/SkPDFFont.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-08-30T18:22:30Z",
+      "side": 1,
+      "message": "This cannot be owning, as the SkPDFStrike now owns the SkPDFFonts. If they circularly own each other they will leak.",
+      "revId": "422d7f957d2b374d6b65015043a0857e69bbe6d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
