@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "042cbd6d_bf6e3c87",
+        "filename": "src/pdf/SkPDFDocumentPriv.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-08-30T18:46:36Z",
+      "side": 1,
+      "message": "I am quite unhappy with needing to add this to appease the iwyu bot. `SkUnichar` is currently defined in both `SkTypes.h` and `SkUTF.h` and it really needs to be removed from `SkUTF.h` but unfortunately it is in `base` for some reason so can\u0027t use the one in `SkTypes.h`. Unfortunately, iwyu doesn\u0027t know how to resolve multiple definitions very well, so really wants this to be included, even though `SkTypes.h` is already directly included and directly defines `SkUnichar`.",
+      "revId": "133cafca29bf94e5447139eba4db64fa07ff8a60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
