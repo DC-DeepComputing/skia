@@ -533,7 +533,7 @@ std::string ShaderInfo::toSkSL(const Caps* caps,
     // Emit shader main body code, invoking each root node's expression, forwarding the previous
     // node's output to the next.
     for (const ShaderNode* node : fRootNodes) {
-        if (node->codeSnippetId() == (int) BuiltInCodeSnippetID::kClipShader) {
+        if (node->codeSnippetId() == (int) BuiltInCodeSnippetID::kClip) {
             SkASSERT(!clipShaderNode);
             clipShaderNode = node;
             continue;
@@ -746,8 +746,9 @@ std::string GenerateDstReadFetchPreamble(const ShaderInfo& shaderInfo, const Sha
 
 //--------------------------------------------------------------------------------------------------
 
-std::string GenerateClipShaderPreamble(const ShaderInfo& shaderInfo, const ShaderNode* node) {
-    // No preamble is used for clip shaders. The child shader is called directly with sk_FragCoord.
+std::string GenerateClipPreamble(const ShaderInfo& shaderInfo, const ShaderNode* node) {
+    // No preamble is used for clip shaders or analytic clips. The child shader is called
+    // directly with sk_FragCoord.
     return "";
 }
 
@@ -1579,20 +1580,20 @@ ShaderCodeDictionary::ShaderCodeDictionary(Layout layout)
             GenerateDstReadFetchPreamble,
     };
 
-    fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kClipShader] = {
-            /*name=*/"ClipShader",
+    fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kClip] = {
+            /*name=*/"Clip",
             /*staticFn=*/nullptr,
             SnippetRequirementFlags::kNone,
             /*uniforms=*/{},
             /*textures=*/{},
-            GenerateClipShaderPreamble,
+            GenerateClipPreamble,
             /*numChildren=*/1
     };
 
     fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kCircularRRectClip] = {
             /*name=*/"CircularRRectClip",
             /*staticFn=*/"sk_circular_rrect_clip",
-            SnippetRequirementFlags::kPriorStageOutput,
+            SnippetRequirementFlags::kNone,
             /*uniforms=*/{ { "rect",           SkSLType::kFloat4 },
                            { "radiusPlusHalf", SkSLType::kFloat2 },
                            { "edgeSelect",     SkSLType::kHalf4 } }

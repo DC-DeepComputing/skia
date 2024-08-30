@@ -69,9 +69,9 @@ enum class BuiltInCodeSnippetID : int32_t {
     kDstReadSample,
     kDstReadFetch,
 
-    // Clip shader snippet
+    // Clip shader and analytic clip wrapper
     // TODO(b/238763003): Avoid incorporating clip shaders into the actual shader code.
-    kClipShader,
+    kClip,
 
     // Analytic clip for circular roundrect and AA rect shapes
     kCircularRRectClip,
