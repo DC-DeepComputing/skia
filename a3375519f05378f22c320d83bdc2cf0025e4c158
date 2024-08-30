@@ -67,6 +67,41 @@
       "message": "lgtm (obviously pending the upstream / chromium changes)",
       "revId": "a3375519f05378f22c320d83bdc2cf0025e4c158",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d555e320_68398aee",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-08-30T14:30:18Z",
+      "side": 1,
+      "message": "Thanks for the reviews!",
+      "revId": "a3375519f05378f22c320d83bdc2cf0025e4c158",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "74f7bb3e_cd831b60",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-08-30T14:30:18Z",
+      "side": 1,
+      "message": "\u003e lgtm (obviously pending the upstream / chromium changes)\n\nAck.",
+      "parentUuid": "88cfd633_df4d6057",
+      "revId": "a3375519f05378f22c320d83bdc2cf0025e4c158",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
