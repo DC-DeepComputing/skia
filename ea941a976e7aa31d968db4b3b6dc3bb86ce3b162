@@ -55,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6a89fb66_bfd5c043",
+        "filename": "tools/debugger/BUILD.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-08-30T23:35:01Z",
+      "side": 1,
+      "message": "That\u0027s an indirect dependency from other `tools` components:\n\n```\nbazelisk query \"allpaths(//dm, //src/gpu/ganesh:ganesh_TEST_UTIL)\" --notool_deps --output graph                                            INT ✘  mc \ndigraph mygraph {\n  node [shape\u003dbox];\n  \"//dm:dm\"\n  \"//dm:dm\" -\u003e \"//tools/gpu:ganesh_gl_utils\"\n  \"//dm:dm\" -\u003e \"//tools/flags:common_flags\"\n  \"//dm:dm\" -\u003e \"//tools:ddl_utils\\n//tools/flags:ganesh_flags\"\n  \"//dm:dm\" -\u003e \"//tools/debugger:debugger\"\n  \"//tools/debugger:debugger\"\n  \"//tools/debugger:debugger\" -\u003e \"//src/gpu/ganesh/gl:ganesh_gl_TEST_UTIL\"\n  \"//tools:ddl_utils\\n//tools/flags:ganesh_flags\"\n  \"//tools:ddl_utils\\n//tools/flags:ganesh_flags\" -\u003e \"//src/gpu/ganesh:ganesh_TEST_UTIL\"\n  \"//tools/flags:common_flags\"\n  \"//tools/flags:common_flags\" -\u003e \"//tools/gpu:ganesh_gl_utils\"\n  \"//tools/flags:common_flags\" -\u003e \"//src/gpu/ganesh:ganesh_TEST_UTIL\"\n  \"//tools/gpu:ganesh_gl_utils\"\n  \"//tools/gpu:ganesh_gl_utils\" -\u003e \"//src/gpu/ganesh/gl/glx:glx_factory_TEST_UTIL\\n//src/gpu/ganesh/gl/mac:mac_factory_TEST_UTIL\"\n  [label\u003d\"//bazel/common_config_settings:linux_x64@platforms//os:macos\"];\n  \"//tools/gpu:ganesh_gl_utils\" -\u003e \"//src/gpu/ganesh/gl:ganesh_gl_TEST_UTIL\"\n  \"//src/gpu/ganesh/gl/glx:glx_factory_TEST_UTIL\\n//src/gpu/ganesh/gl/mac:mac_factory_TEST_UTIL\"\n  \"//src/gpu/ganesh/gl/glx:glx_factory_TEST_UTIL\\n//src/gpu/ganesh/gl/mac:mac_factory_TEST_UTIL\" -\u003e \"//src/gpu/ganesh/gl:ganesh_gl_TEST_UTIL\"\n  \"//src/gpu/ganesh/gl:ganesh_gl_TEST_UTIL\"\n  \"//src/gpu/ganesh/gl:ganesh_gl_TEST_UTIL\" -\u003e \"//src/gpu/ganesh:ganesh_TEST_UTIL\"\n  \"//src/gpu/ganesh:ganesh_TEST_UTIL\"\n}\n```\n\nI looked into refactoring TEST_UTIL to depend on ganesh, but I think the interesting thing about it is that it uses different compile flags (`GPU_TEST_UTILS`) to turn on various debug/test bits throughout the ganesh code base.  So that\u0027s a no go.",
+      "parentUuid": "edc31132_4b97f091",
+      "revId": "ea941a976e7aa31d968db4b3b6dc3bb86ce3b162",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "65853c9d_52b7ce91",
         "filename": "tools/flags/BUILD.bazel",
         "patchSetId": 5
@@ -66,6 +84,30 @@
       "writtenOn": "2024-08-30T20:10:04Z",
       "side": 1,
       "message": "This being GL specific is a bit worrysome. Where is the GL part from?",
+      "range": {
+        "startLine": 64,
+        "startChar": 21,
+        "endLine": 64,
+        "endChar": 36
+      },
+      "revId": "ea941a976e7aa31d968db4b3b6dc3bb86ce3b162",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cc747393_3790bb09",
+        "filename": "tools/flags/BUILD.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-08-30T23:35:01Z",
+      "side": 1,
+      "message": "`CommonFlagsConfig.h` uses `tools/gpu/GrContextFactory.h` to parse ganesh (gl?) specific stuff.\n\nShould we split that off into a separate lib (`CommonFlagsConfigGpuGL`?)?",
+      "parentUuid": "65853c9d_52b7ce91",
       "range": {
         "startLine": 64,
         "startChar": 21,
