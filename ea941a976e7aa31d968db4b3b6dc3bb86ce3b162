@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "82a083e2_8a9e5da5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-08-30T18:38:13Z",
+      "side": 1,
+      "message": "Leaving the tests out for now, I assume we want to handle those differently with bazel.",
+      "revId": "ea941a976e7aa31d968db4b3b6dc3bb86ce3b162",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
