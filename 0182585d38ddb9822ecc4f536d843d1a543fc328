@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f198bcd4_6c6680fc",
+        "filename": "src/base/SkUTF.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-08-30T18:16:54Z",
+      "side": 0,
+      "message": "For some reason `SkUTF` is in `base` so cannot actually include `core`. Also, touching this makes this build sit up and notice that `SkTypes.h` is still iwyu exporting a bunch of stuff.",
+      "revId": "0182585d38ddb9822ecc4f536d843d1a543fc328",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
