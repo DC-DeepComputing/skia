@@ -320,6 +320,7 @@ skia_cc_library(
     local_defines = ["SK_USE_LEGACY_GANESH_TEXT_APIS"],
     visibility = [
         "//src/gpu/ganesh:__subpackages__",
+        "//tools:__pkg__",
         "//tools/debugger:__pkg__",
         "//tools/flags:__pkg__",
     ],
