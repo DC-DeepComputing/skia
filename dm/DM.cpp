@@ -28,6 +28,7 @@
 #include "src/core/SkStringUtils.h"
 #include "src/core/SkTHash.h"
 #include "src/core/SkTaskGroup.h"
+#include "src/partition_alloc/test_support.h"
 #include "src/utils/SkOSPath.h"
 #include "tests/Test.h"
 #include "tests/TestHarness.h"
@@ -1537,6 +1538,11 @@ TestHarness CurrentTestHarness() {
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 int main(int argc, char** argv) {
+    // Memory allocations are handled by PartitionAlloc, if available. It brings performance
+    // benefits, but also memory safety features to detect additional types of memory corruption
+    // bugs that could be missed otherwise.
+    InitializePartitionAllocForTesting();
+
 #if defined(SK_BUILD_FOR_ANDROID_FRAMEWORK) && defined(SK_HAS_HEIF_LIBRARY)
     android::ProcessState::self()->startThreadPool();
 #endif
