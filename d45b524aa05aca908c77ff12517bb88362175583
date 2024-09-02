@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8f6b5c9_2fef7672",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2024-09-02T11:39:50Z",
+      "side": 1,
+      "message": "ptal -- this is needed for AVIF and HEIF gainmap support on Android",
+      "revId": "d45b524aa05aca908c77ff12517bb88362175583",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
