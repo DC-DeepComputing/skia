@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0b36e516_04608542",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-09-03T20:54:34Z",
+      "side": 1,
+      "message": "@kjlubick, can you PTAL?\n\nI don\u0027t understand why `Housekeeper-PerCommit-CheckGeneratedFiles` fails saying [1]: \"ERROR: no targets found beneath \u0027experimental/rust_png\u0027\".  FWIW I can\u0027t repro this error with `make -C bazel generate_gni`.\n\n[1] https://task-driver.skia.org/td/ZNKMLgawmtdkmQ4OVxae?ifNotFound\u003dhttps%3A%2F%2Fchromium-swarm.appspot.com%2Ftask%3Fid%3D6bd23d3f9ce0e710",
+      "revId": "555880623c45fabcfefef6ee6d595b80c799f228",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
