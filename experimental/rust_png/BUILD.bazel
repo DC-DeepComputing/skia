@@ -1,0 +1,15 @@
+filegroup(
+    name = "hdrs",
+    srcs = [
+        "SkPngRustDecoder.h",
+    ],
+)
+
+filegroup(
+    name = "srcs",
+    srcs = [
+        "SkPngRustDecoder.cpp",
+        "impl/SkPngRustCodec.cpp",
+        "impl/SkPngRustCodec.h",
+    ],
+)
