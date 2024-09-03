@@ -592,6 +592,7 @@ Viewer::Viewer(int argc, char** argv, void* platformData)
             get_path_renderer_strategy_type(FLAGS_pathstrategy[0]);
 #if defined(SK_DAWN)
     displayParams.fDisableTintSymbolRenaming = FLAGS_disable_tint_symbol_renaming;
+    displayParams.fUseTintIR = FLAGS_useTintIR;
 #endif
 #endif
     fWindow->setRequestedDisplayParams(displayParams);
