@@ -5,11 +5,6 @@
         "BazelBuild-all_tests-debug-linux_x64"
       ]
     },
-    "BazelBuild-all_tests-release-linux_x64": {
-      "tasks": [
-        "BazelBuild-all_tests-release-linux_x64"
-      ]
-    },
     "BazelBuild-android_math_test-for_android_arm64_release-linux_x64": {
       "tasks": [
         "BazelBuild-android_math_test-for_android_arm64_release-linux_x64"
@@ -40,11 +35,6 @@
         "BazelBuild-fontations-release-linux_x64"
       ]
     },
-    "BazelBuild-full_library-enforce_iwyu-linux_x64": {
-      "tasks": [
-        "BazelBuild-full_library-enforce_iwyu-linux_x64"
-      ]
-    },
     "BazelBuild-full_library-for_windows_x64_release-windows_x64": {
       "tasks": [
         "BazelBuild-full_library-for_windows_x64_release-windows_x64"
@@ -68,11 +58,6 @@
     "BazelBuild-modules_canvaskit-ck_full_webgl2_debug-linux_x64": {
       "tasks": [
         "BazelBuild-modules_canvaskit-ck_full_webgl2_debug-linux_x64"
-      ]
-    },
-    "BazelBuild-skottie_tool_gpu-enforce_iwyu-linux_x64": {
-      "tasks": [
-        "BazelBuild-skottie_tool_gpu-enforce_iwyu-linux_x64"
       ]
     },
     "BazelBuild-use_ganesh_gl-for_windows_x64_release-windows_x64": {
@@ -3764,86 +3749,6 @@
       "max_attempts": 1,
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
-    "BazelBuild-all_tests-release-linux_x64": {
-      "caches": [
-        {
-          "name": "git",
-          "path": "cache/git"
-        },
-        {
-          "name": "git_cache",
-          "path": "cache/git_cache"
-        }
-      ],
-      "casSpec": "bazel",
-      "cipd_packages": [
-        {
-          "name": "infra/3pp/tools/git/linux-amd64",
-          "path": "cipd_bin_packages",
-          "version": "version:3@2.50.1.chromium.11"
-        },
-        {
-          "name": "infra/tools/git/${platform}",
-          "path": "cipd_bin_packages",
-          "version": "git_revision:930c0594fb5440c8f25f31b64d138b90636deb09"
-        },
-        {
-          "name": "infra/tools/luci-auth/${platform}",
-          "path": "cipd_bin_packages",
-          "version": "git_revision:930c0594fb5440c8f25f31b64d138b90636deb09"
-        },
-        {
-          "name": "infra/tools/luci/git-credential-luci/${platform}",
-          "path": "cipd_bin_packages",
-          "version": "git_revision:930c0594fb5440c8f25f31b64d138b90636deb09"
-        },
-        {
-          "name": "skia/bots/bazelisk_linux_amd64",
-          "path": "bazelisk_linux_amd64",
-          "version": "version:0"
-        },
-        {
-          "name": "skia/tools/bazel_build/${platform}",
-          "path": "task_drivers",
-          "version": "git_revision:b5d31abb7bc772a69f800de45783768768437675"
-        }
-      ],
-      "command": [
-        "luci-auth",
-        "context",
-        "task_drivers/bazel_build",
-        "--project_id=skia-swarming-bots",
-        "--task_id=<(TASK_ID)",
-        "--task_name=BazelBuild-all_tests-release-linux_x64",
-        "--bazel_label=//tests:linux_rbe_tests",
-        "--bazel_config=release",
-        "--bazel_cache_dir=/home/chrome-bot/bazel_cache",
-        "--workdir=./skia",
-        "--bazel_arg=--config=for_linux_x64_with_rbe",
-        "--bazel_arg=--jobs=100",
-        "--bazel_arg=--remote_download_minimal"
-      ],
-      "dimensions": [
-        "cpu:x86-64-Haswell_GCE",
-        "gpu:none",
-        "machine_type:n1-standard-16",
-        "os:Ubuntu-24.04",
-        "pool:Skia"
-      ],
-      "environment": {
-        "USE_BAZEL_FALLBACK_VERSION": "error"
-      },
-      "env_prefixes": {
-        "PATH": [
-          "cipd_bin_packages",
-          "cipd_bin_packages/bin",
-          "bazelisk_linux_amd64"
-        ]
-      },
-      "idempotent": true,
-      "max_attempts": 1,
-      "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
-    },
     "BazelBuild-android_math_test-for_android_arm64_release-linux_x64": {
       "caches": [
         {
@@ -4336,86 +4241,6 @@
       "max_attempts": 1,
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
-    "BazelBuild-full_library-enforce_iwyu-linux_x64": {
-      "caches": [
-        {
-          "name": "git",
-          "path": "cache/git"
-        },
-        {
-          "name": "git_cache",
-          "path": "cache/git_cache"
-        }
-      ],
-      "casSpec": "bazel",
-      "cipd_packages": [
-        {
-          "name": "infra/3pp/tools/git/linux-amd64",
-          "path": "cipd_bin_packages",
-          "version": "version:3@2.50.1.chromium.11"
-        },
-        {
-          "name": "infra/tools/git/${platform}",
-          "path": "cipd_bin_packages",
-          "version": "git_revision:930c0594fb5440c8f25f31b64d138b90636deb09"
-        },
-        {
-          "name": "infra/tools/luci-auth/${platform}",
-          "path": "cipd_bin_packages",
-          "version": "git_revision:930c0594fb5440c8f25f31b64d138b90636deb09"
-        },
-        {
-          "name": "infra/tools/luci/git-credential-luci/${platform}",
-          "path": "cipd_bin_packages",
-          "version": "git_revision:930c0594fb5440c8f25f31b64d138b90636deb09"
-        },
-        {
-          "name": "skia/bots/bazelisk_linux_amd64",
-          "path": "bazelisk_linux_amd64",
-          "version": "version:0"
-        },
-        {
-          "name": "skia/tools/bazel_build/${platform}",
-          "path": "task_drivers",
-          "version": "git_revision:b5d31abb7bc772a69f800de45783768768437675"
-        }
-      ],
-      "command": [
-        "luci-auth",
-        "context",
-        "task_drivers/bazel_build",
-        "--project_id=skia-swarming-bots",
-        "--task_id=<(TASK_ID)",
-        "--task_name=BazelBuild-full_library-enforce_iwyu-linux_x64",
-        "--bazel_label=//tools:full_build",
-        "--bazel_config=enforce_iwyu",
-        "--bazel_cache_dir=/home/chrome-bot/bazel_cache",
-        "--workdir=./skia",
-        "--bazel_arg=--config=for_linux_x64_with_rbe",
-        "--bazel_arg=--jobs=100",
-        "--bazel_arg=--remote_download_minimal"
-      ],
-      "dimensions": [
-        "cpu:x86-64-Haswell_GCE",
-        "gpu:none",
-        "machine_type:n1-standard-16",
-        "os:Ubuntu-24.04",
-        "pool:Skia"
-      ],
-      "environment": {
-        "USE_BAZEL_FALLBACK_VERSION": "error"
-      },
-      "env_prefixes": {
-        "PATH": [
-          "cipd_bin_packages",
-          "cipd_bin_packages/bin",
-          "bazelisk_linux_amd64"
-        ]
-      },
-      "idempotent": true,
-      "max_attempts": 1,
-      "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
-    },
     "BazelBuild-full_library-for_windows_x64_release-windows_x64": {
       "caches": [
         {
@@ -4791,86 +4616,6 @@
         "--task_name=BazelBuild-modules_canvaskit-ck_full_webgl2_debug-linux_x64",
         "--bazel_label=//modules/canvaskit:canvaskit",
         "--bazel_config=ck_full_webgl2_debug",
-        "--bazel_cache_dir=/home/chrome-bot/bazel_cache",
-        "--workdir=./skia",
-        "--bazel_arg=--config=for_linux_x64_with_rbe",
-        "--bazel_arg=--jobs=100",
-        "--bazel_arg=--remote_download_minimal"
-      ],
-      "dimensions": [
-        "cpu:x86-64-Haswell_GCE",
-        "gpu:none",
-        "machine_type:n1-standard-16",
-        "os:Ubuntu-24.04",
-        "pool:Skia"
-      ],
-      "environment": {
-        "USE_BAZEL_FALLBACK_VERSION": "error"
-      },
-      "env_prefixes": {
-        "PATH": [
-          "cipd_bin_packages",
-          "cipd_bin_packages/bin",
-          "bazelisk_linux_amd64"
-        ]
-      },
-      "idempotent": true,
-      "max_attempts": 1,
-      "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
-    },
-    "BazelBuild-skottie_tool_gpu-enforce_iwyu-linux_x64": {
-      "caches": [
-        {
-          "name": "git",
-          "path": "cache/git"
-        },
-        {
-          "name": "git_cache",
-          "path": "cache/git_cache"
-        }
-      ],
-      "casSpec": "bazel",
-      "cipd_packages": [
-        {
-          "name": "infra/3pp/tools/git/linux-amd64",
-          "path": "cipd_bin_packages",
-          "version": "version:3@2.50.1.chromium.11"
-        },
-        {
-          "name": "infra/tools/git/${platform}",
-          "path": "cipd_bin_packages",
-          "version": "git_revision:930c0594fb5440c8f25f31b64d138b90636deb09"
-        },
-        {
-          "name": "infra/tools/luci-auth/${platform}",
-          "path": "cipd_bin_packages",
-          "version": "git_revision:930c0594fb5440c8f25f31b64d138b90636deb09"
-        },
-        {
-          "name": "infra/tools/luci/git-credential-luci/${platform}",
-          "path": "cipd_bin_packages",
-          "version": "git_revision:930c0594fb5440c8f25f31b64d138b90636deb09"
-        },
-        {
-          "name": "skia/bots/bazelisk_linux_amd64",
-          "path": "bazelisk_linux_amd64",
-          "version": "version:0"
-        },
-        {
-          "name": "skia/tools/bazel_build/${platform}",
-          "path": "task_drivers",
-          "version": "git_revision:b5d31abb7bc772a69f800de45783768768437675"
-        }
-      ],
-      "command": [
-        "luci-auth",
-        "context",
-        "task_drivers/bazel_build",
-        "--project_id=skia-swarming-bots",
-        "--task_id=<(TASK_ID)",
-        "--task_name=BazelBuild-skottie_tool_gpu-enforce_iwyu-linux_x64",
-        "--bazel_label=//modules/skottie:skottie_tool_gpu",
-        "--bazel_config=enforce_iwyu",
         "--bazel_cache_dir=/home/chrome-bot/bazel_cache",
         "--workdir=./skia",
         "--bazel_arg=--config=for_linux_x64_with_rbe",
@@ -12564,7 +12309,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         }
       ],
       "command": [
@@ -12665,7 +12410,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         }
       ],
       "command": [
@@ -12766,7 +12511,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         }
       ],
       "command": [
@@ -12867,7 +12612,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         }
       ],
       "command": [
@@ -12968,7 +12713,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         }
       ],
       "command": [
@@ -13069,7 +12814,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         }
       ],
       "command": [
@@ -13170,7 +12915,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         }
       ],
       "command": [
@@ -13271,7 +13016,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         }
       ],
       "command": [
@@ -13372,7 +13117,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         }
       ],
       "command": [
@@ -13470,7 +13215,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         }
       ],
       "command": [
@@ -13562,7 +13307,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         }
       ],
       "command": [
@@ -13654,7 +13399,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         }
       ],
       "command": [
@@ -13746,7 +13491,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         }
       ],
       "command": [
@@ -13833,7 +13578,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         }
       ],
       "command": [
@@ -13924,7 +13669,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         }
       ],
       "command": [
@@ -14011,7 +13756,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         }
       ],
       "command": [
@@ -14102,7 +13847,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         }
       ],
       "command": [
@@ -16327,7 +16072,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         }
       ],
       "command": [
@@ -17054,7 +16799,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         }
       ],
       "command": [
@@ -17147,7 +16892,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         }
       ],
       "command": [
@@ -17263,7 +17008,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         }
       ],
       "command": [
@@ -17356,7 +17101,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         }
       ],
       "command": [
@@ -17449,7 +17194,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         }
       ],
       "command": [
@@ -17542,7 +17287,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         }
       ],
       "command": [
@@ -17667,7 +17412,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         }
       ],
       "command": [
@@ -17761,7 +17506,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         }
       ],
       "command": [
@@ -17877,7 +17622,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         }
       ],
       "command": [
@@ -18002,7 +17747,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         }
       ],
       "command": [
@@ -18096,7 +17841,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         }
       ],
       "command": [
@@ -18221,7 +17966,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         }
       ],
       "command": [
@@ -18315,7 +18060,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         }
       ],
       "command": [
@@ -18408,7 +18153,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         }
       ],
       "command": [
@@ -18501,7 +18246,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         }
       ],
       "command": [
@@ -18594,7 +18339,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         },
         {
           "name": "skia/bots/cmake_linux",
@@ -18692,7 +18437,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         },
         {
           "name": "skia/bots/cmake_linux",
@@ -18888,7 +18633,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         }
       ],
       "command": [
@@ -18981,7 +18726,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         }
       ],
       "command": [
@@ -19074,7 +18819,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         }
       ],
       "command": [
@@ -19167,7 +18912,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         }
       ],
       "command": [
@@ -19260,7 +19005,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         }
       ],
       "command": [
@@ -19380,7 +19125,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         }
       ],
       "command": [
@@ -19472,7 +19217,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         }
       ],
       "command": [
@@ -19565,7 +19310,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         }
       ],
       "command": [
@@ -19658,7 +19403,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         }
       ],
       "command": [
@@ -19774,7 +19519,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         }
       ],
       "command": [
@@ -19867,7 +19612,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         }
       ],
       "command": [
@@ -19960,7 +19705,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         }
       ],
       "command": [
@@ -20053,7 +19798,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         }
       ],
       "command": [
@@ -20177,7 +19922,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         }
       ],
       "command": [
@@ -20272,7 +20017,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         }
       ],
       "command": [
@@ -20388,7 +20133,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         }
       ],
       "command": [
@@ -20513,7 +20258,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         }
       ],
       "command": [
@@ -20607,7 +20352,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         }
       ],
       "command": [
@@ -20816,7 +20561,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         }
       ],
       "command": [
@@ -20908,7 +20653,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         }
       ],
       "command": [
@@ -21001,7 +20746,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         }
       ],
       "command": [
@@ -21094,7 +20839,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         }
       ],
       "command": [
@@ -21187,7 +20932,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         }
       ],
       "command": [
@@ -21280,7 +21025,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         }
       ],
       "command": [
@@ -21373,7 +21118,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         },
         {
           "name": "skia/bots/cmake_linux",
@@ -21471,7 +21216,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         },
         {
           "name": "skia/bots/cmake_linux",
@@ -21569,7 +21314,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         }
       ],
       "command": [
@@ -21685,7 +21430,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         }
       ],
       "command": [
@@ -21778,7 +21523,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         }
       ],
       "command": [
@@ -21871,7 +21616,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         }
       ],
       "command": [
@@ -21964,7 +21709,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         }
       ],
       "command": [
@@ -22057,7 +21802,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         }
       ],
       "command": [
@@ -38171,7 +37916,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         },
         {
           "name": "skia/bots/linux_vulkan_sdk",
@@ -55703,7 +55448,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         },
         {
           "name": "skia/bots/skimage",
@@ -57096,7 +56841,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         },
         {
           "name": "skia/bots/skimage",
@@ -57394,7 +57139,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         },
         {
           "name": "skia/bots/skimage",
@@ -57492,7 +57237,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         },
         {
           "name": "skia/bots/skimage",
@@ -57805,7 +57550,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         },
         {
           "name": "skia/bots/gsutil",
@@ -60205,7 +59950,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         },
         {
           "name": "skia/bots/linux_vulkan_sdk",
@@ -60312,7 +60057,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         },
         {
           "name": "skia/bots/linux_vulkan_sdk",
@@ -60528,7 +60273,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         },
         {
           "name": "skia/bots/linux_vulkan_sdk",
@@ -60635,7 +60380,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         },
         {
           "name": "skia/bots/linux_vulkan_sdk",
@@ -60742,7 +60487,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         },
         {
           "name": "skia/bots/linux_vulkan_sdk",
@@ -60849,7 +60594,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         },
         {
           "name": "skia/bots/linux_vulkan_sdk",
@@ -61060,7 +60805,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         },
         {
           "name": "skia/bots/mesa_intel_driver_linux",
@@ -61796,7 +61541,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         },
         {
           "name": "skia/bots/linux_vulkan_sdk",
@@ -61903,7 +61648,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         },
         {
           "name": "skia/bots/linux_vulkan_sdk",
@@ -62119,7 +61864,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         },
         {
           "name": "skia/bots/linux_vulkan_sdk",
@@ -62226,7 +61971,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         },
         {
           "name": "skia/bots/linux_vulkan_sdk",
@@ -62333,7 +62078,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         },
         {
           "name": "skia/bots/linux_vulkan_sdk",
@@ -62440,7 +62185,7 @@
         {
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
-          "version": "version:30"
+          "version": "version:32"
         },
         {
           "name": "skia/bots/linux_vulkan_sdk",
@@ -88448,12 +88193,9 @@
     }
   },
   "commit_queue": {
-    "BazelBuild-all_tests-release-linux_x64": {},
     "BazelBuild-dm-debug-linux_x64": {},
-    "BazelBuild-full_library-enforce_iwyu-linux_x64": {},
     "BazelBuild-full_library-release-linux_x64": {},
     "BazelBuild-modules_canvaskit-ck_full_webgl2_debug-linux_x64": {},
-    "BazelBuild-skottie_tool_gpu-enforce_iwyu-linux_x64": {},
     "BazelBuild-viewer-debug-linux_x64": {},
     "BazelTest-cpu_tests-all_tests-cpu_only_debug_rbe-linux_x64": {
       "experimental": true
