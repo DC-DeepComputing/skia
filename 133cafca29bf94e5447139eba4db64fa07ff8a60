@@ -98,6 +98,30 @@
       },
       "revId": "133cafca29bf94e5447139eba4db64fa07ff8a60",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b160f9c5_27bd3f73",
+        "filename": "src/pdf/SkPDFFont.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 611,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-09-03T14:09:43Z",
+      "side": 1,
+      "message": "Ah, cool.",
+      "parentUuid": "c456a8bb_8f9c2112",
+      "range": {
+        "startLine": 611,
+        "startChar": 51,
+        "endLine": 611,
+        "endChar": 70
+      },
+      "revId": "133cafca29bf94e5447139eba4db64fa07ff8a60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
