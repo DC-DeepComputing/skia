@@ -33,16 +33,18 @@
 namespace {
 
 bool bitmap_compare(const SkBitmap& ref, const SkBitmap& test) {
+    auto count = 0;
     for (int y = 0; y < test.height(); ++y) {
         for (int x = 0; x < test.width(); ++x) {
             SkColor testColor = test.getColor(x, y);
             SkColor refColor = ref.getColor(x, y);
             if (refColor != testColor) {
-                return false;
+                ++count;
+                SkDebugf("%d: (%d,%d) ", count, x, y);
             }
         }
     }
-    return true;
+    return (count == 0);
 }
 
 FcConfig* build_fontconfig_with_fontfile(const char* fontFilename) {
