@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f748f54b_b4dfa1e2",
+        "filename": "example/external_client/src/ganesh_gl.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-09-03T23:09:56Z",
+      "side": 1,
+      "message": "Ganesh doesn\u0027t have great error handling, AFAICT. I think Graphite has better ways to figure out what went wrong.\n\nA debugger does end up being the right tool for the job in a lot of cases.",
+      "parentUuid": "f1c1fb65_2a8f20db",
+      "range": {
+        "startLine": 110,
+        "startChar": 5,
+        "endLine": 110,
+        "endChar": 22
+      },
+      "revId": "94b9a7b113f9c14d27010e21c109c5f137d1cda7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "903d5a6f_6c02591a",
@@ -47,6 +71,53 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "590e018f_30a000e6",
+        "filename": "example/external_client/src/ganesh_gl.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-09-03T23:09:56Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "903d5a6f_6c02591a",
+      "range": {
+        "startLine": 201,
+        "startChar": 31,
+        "endLine": 201,
+        "endChar": 36
+      },
+      "revId": "94b9a7b113f9c14d27010e21c109c5f137d1cda7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06321a0b_a86614b6",
+        "filename": "src/gpu/ganesh/gl/win/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-09-03T23:09:56Z",
+      "side": 1,
+      "message": "For this to do anything, you\u0027d need to wrap `GrGLMakeNativeInterface` in a #ifdef",
+      "range": {
+        "startLine": 17,
+        "startChar": 16,
+        "endLine": 17,
+        "endChar": 58
+      },
+      "revId": "94b9a7b113f9c14d27010e21c109c5f137d1cda7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b3dd678c_428fbcf2",
@@ -60,6 +131,30 @@
       "writtenOn": "2024-09-03T20:03:30Z",
       "side": 1,
       "message": "I get the feeling that this is wrong, but I don\u0027t know enough to know the right way to do it.",
+      "range": {
+        "startLine": 71,
+        "startChar": 11,
+        "endLine": 71,
+        "endChar": 34
+      },
+      "revId": "94b9a7b113f9c14d27010e21c109c5f137d1cda7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2dc7160_b21388fe",
+        "filename": "src/gpu/ganesh/gl/win/GrGLMakeNativeInterface_win.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-09-03T23:09:56Z",
+      "side": 1,
+      "message": "Probably better to make the legacy `GrGLMakeNativeInterface` return `GrGLInterfaces::MakeWin()`. To align with other impls, we should probably create a new file like `src/gpu/ganesh/gl/glx/GrGLMakeGLXInterface.cpp` and copy the above code in there. Then keep this file around with the legacy call referring to the preferred way.",
+      "parentUuid": "b3dd678c_428fbcf2",
       "range": {
         "startLine": 71,
         "startChar": 11,
