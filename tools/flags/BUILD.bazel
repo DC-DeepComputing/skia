@@ -58,6 +58,7 @@ skia_cc_library(
         ":cmd_flags",
         "//:core",
         "//src/gpu/ganesh:ganesh_TEST_UTIL",
+        "//src/gpu/graphite:graphite_TEST_UTIL",
     ],
 )
 
