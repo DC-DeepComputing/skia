@@ -961,7 +961,9 @@ static void push_sink(const SkCommandLineConfig& config, Sink* s) {
     ts.tag = config.getTag();
 }
 
-static Sink* create_sink(const GrContextOptions& grCtxOptions, const SkCommandLineConfig* config) {
+static Sink* create_sink(const GrContextOptions& grCtxOptions,
+                         const skiatest::graphite::TestOptions& graphiteOptions,
+                         const SkCommandLineConfig* config) {
     if (FLAGS_gpu) {
         if (const SkCommandLineConfigGpu* gpuConfig = config->asConfigGpu()) {
             GrContextFactory testFactory(grCtxOptions);
@@ -992,11 +994,11 @@ static Sink* create_sink(const GrContextOptions& grCtxOptions, const SkCommandLi
         if (const SkCommandLineConfigGraphite *graphiteConfig = config->asConfigGraphite()) {
 #if defined(SK_ENABLE_PRECOMPILE)
             if (graphiteConfig->getTestPrecompile()) {
-                return new GraphitePrecompileTestingSink(graphiteConfig);
+                return new GraphitePrecompileTestingSink(graphiteConfig, graphiteOptions);
             } else
 #endif // SK_ENABLE_PRECOMPILE
             {
-                return new GraphiteSink(graphiteConfig);
+                return new GraphiteSink(graphiteConfig, graphiteOptions);
             }
         }
     }
@@ -1064,7 +1066,9 @@ static Sink* create_via(const SkString& tag, Sink* wrapped) {
     return nullptr;
 }
 
-static bool gather_sinks(const GrContextOptions& grCtxOptions, bool defaultConfigs) {
+static bool gather_sinks(const GrContextOptions& grCtxOptions,
+                         const skiatest::graphite::TestOptions& graphiteOptions,
+                         bool defaultConfigs) {
     if (FLAGS_src.size() == 1 && FLAGS_src.contains("tests")) {
         // If we're just running tests skip trying to accumulate sinks. The 'justOneRect' test
         // can fail for protected contexts.
@@ -1076,7 +1080,7 @@ static bool gather_sinks(const GrContextOptions& grCtxOptions, bool defaultConfi
     AutoreleasePool pool;
     for (int i = 0; i < configs.size(); i++) {
         const SkCommandLineConfig& config = *configs[i];
-        Sink* sink = create_sink(grCtxOptions, &config);
+        Sink* sink = create_sink(grCtxOptions, graphiteOptions, &config);
         if (sink == nullptr) {
             info("Skipping config %s: Don't understand '%s'.\n", config.getTag().c_str(),
                  config.getTag().c_str());
@@ -1604,7 +1608,7 @@ int main(int argc, char** argv) {
             break;
         }
     }
-    if (!gather_sinks(grCtxOptions, defaultConfigs)) {
+    if (!gather_sinks(grCtxOptions, graphiteOptions, defaultConfigs)) {
         return 1;
     }
     gather_tests();
