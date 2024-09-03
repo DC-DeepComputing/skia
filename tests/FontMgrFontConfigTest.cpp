@@ -1,8 +1,8 @@
 /*
- * Copyright 2014 Google Inc.
- *
- * Use of this source code is governed by a BSD-style license that can be
- * found in the LICENSE file.
+* Copyright 2014 Google Inc.
+*
+* Use of this source code is governed by a BSD-style license that can be
+* found in the LICENSE file.
  */
 
 #include "include/core/SkBitmap.h"
@@ -33,16 +33,18 @@
 namespace {
 
 bool bitmap_compare(const SkBitmap& ref, const SkBitmap& test) {
+    auto count = 0;
     for (int y = 0; y < test.height(); ++y) {
         for (int x = 0; x < test.width(); ++x) {
             SkColor testColor = test.getColor(x, y);
             SkColor refColor = ref.getColor(x, y);
             if (refColor != testColor) {
-                return false;
+                ++count;
+                SkDebugf("%d: (%d,%d) ", count, x, y);
             }
         }
     }
-    return true;
+    return (count == 0);
 }
 
 FcConfig* build_fontconfig_with_fontfile(const char* fontFilename) {
@@ -64,15 +66,14 @@ FcConfig* build_fontconfig_from_resources() {
     SkString path = GetResourcePath("");
     SkString content;
     content.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>"
-                   "<!DOCTYPE fontconfig SYSTEM \"fonts.dtd\">"
-                   "<fontconfig>\n");
-    //content.appendf("  <cachedir>/fonts</cachedir\n>");
+            "<!DOCTYPE fontconfig SYSTEM \"fonts.dtd\">"
+            "<fontconfig>\n");
     content.appendf("  <dir>/fonts</dir>\n");
     content.appendf("    <match target=\"font\">\n"
-                          "        <edit name=\"embolden\" mode=\"assign\">\n"
-                          "          <bool>true</bool>\n"
-                          "        </edit>\n"
-                          "    </match>");
+            "        <edit name=\"embolden\" mode=\"assign\">\n"
+            "          <bool>true</bool>\n"
+            "        </edit>\n"
+            "    </match>");
     content.append("</fontconfig>\n");
     FcConfig* fc_config = FcConfigCreate();
     FcConfigSetSysRoot(fc_config, reinterpret_cast<const FcChar8*>(path.c_str()));
@@ -122,7 +123,7 @@ DEF_TEST(FontMgrFontConfig, reporter) {
     constexpr float kTextSize = 20;
 
     std::unique_ptr<SkStreamAsset> distortableStream(
-        GetResourceAsStream("fonts/Distortable.ttf"));
+            GetResourceAsStream("fonts/Distortable.ttf"));
     if (!distortableStream) {
         return;
     }
@@ -132,20 +133,20 @@ DEF_TEST(FontMgrFontConfig, reporter) {
 
     for (int i = 0; i < 10; ++i) {
         SkScalar styleValue =
-            SkDoubleToScalar(0.5 + i * ((2.0 - 0.5) / 10));
+                SkDoubleToScalar(0.5 + i * ((2.0 - 0.5) / 10));
         SkFontArguments::VariationPosition::Coordinate
-            coordinates[] = {{tag, styleValue}};
+                coordinates[] = {{tag, styleValue}};
         SkFontArguments::VariationPosition
-            position = {coordinates, std::size(coordinates)};
+                position = {coordinates, std::size(coordinates)};
 
         SkFont fontStream(
-            fontMgr->makeFromStream(distortableStream->duplicate(),
-                                    SkFontArguments().setVariationDesignPosition(position)),
-            kTextSize);
+                fontMgr->makeFromStream(distortableStream->duplicate(),
+                                        SkFontArguments().setVariationDesignPosition(position)),
+                kTextSize);
         fontStream.setEdging(SkFont::Edging::kSubpixelAntiAlias);
 
         SkFont fontClone(
-            typeface->makeClone(SkFontArguments().setVariationDesignPosition(position)), kTextSize);
+                typeface->makeClone(SkFontArguments().setVariationDesignPosition(position)), kTextSize);
         fontClone.setEdging(SkFont::Edging::kSubpixelAntiAlias);
 
         constexpr char text[] = "abc";
@@ -169,7 +170,7 @@ UNIX_ONLY_TEST(FontMgrFontConfig_AllBold, reporter) {
     constexpr float kTextSize = 20;
     constexpr char text[] = "abc";
 
-    SkString filePath = GetResourcePath("/fonts/Roboto-Regular.ttf");
+    SkString filePath = GetResourcePath("fonts/Roboto-Regular.ttf");
     sk_sp<SkTypeface> dataTypeface(fontMgr->makeFromFile(filePath.c_str(), 0));
     if (!dataTypeface) {
         ERRORF(reporter, "Could not find data typeface. FcVersion: %d", FcGetVersion());
@@ -199,7 +200,7 @@ UNIX_ONLY_TEST(FontMgrFontConfig_AllBold, reporter) {
 
     canvasData.drawColor(SK_ColorGRAY);
     canvasData.drawString(text, 20.0f, 20.0f, dataFont, paint);
-    if ((false)) {
+    if ((true)) {
         // In case we wonder what's been painted
         SkString dataPath = GetResourcePath("/fonts/data.png");
         write_bitmap(&bitmapData, dataPath.c_str());
@@ -207,7 +208,7 @@ UNIX_ONLY_TEST(FontMgrFontConfig_AllBold, reporter) {
 
     canvasMatch.drawColor(SK_ColorGRAY);
     canvasMatch.drawString(text, 20.0f, 20.0f, matchFont, paint);
-    if ((false)) {
+    if ((true)) {
         SkString matchPath = GetResourcePath("/fonts/match.png");
         write_bitmap(&bitmapMatch, matchPath.c_str());
     }
