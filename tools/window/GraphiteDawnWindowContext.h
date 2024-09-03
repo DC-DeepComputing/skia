@@ -39,6 +39,8 @@ protected:
     wgpu::Device                            fDevice;
     wgpu::Queue                             fQueue;
     wgpu::Surface                           fSurface;
+
+    bool fUseTintIR;
 };
 
 }   // namespace skwindow::internal

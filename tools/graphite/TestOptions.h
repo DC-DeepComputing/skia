@@ -19,11 +19,14 @@ struct TestOptions {
     TestOptions& operator=(const TestOptions&) = default;
     TestOptions& operator=(TestOptions&&) = default;
 
-    bool hasDawnOptions() const { return fNeverYieldToWebGPU || fUseWGPUTextureView; }
+    bool hasDawnOptions() const {
+        return fNeverYieldToWebGPU || fUseWGPUTextureView || fUseTintIR;
+    }
 
     skgpu::graphite::ContextOptions fContextOptions = {};
     bool fNeverYieldToWebGPU = false;
     bool fUseWGPUTextureView = false;
+    bool fUseTintIR = false;
 };
 
 }  // namespace skiatest::graphite
