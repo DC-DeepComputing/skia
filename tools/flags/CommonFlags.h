@@ -10,6 +10,12 @@
 #include "include/private/base/SkTArray.h"
 #include "tools/flags/CommandLineFlags.h"
 
+#if defined(SK_GRAPHITE)
+namespace skiatest::graphite {
+    class TestOptions;
+}
+#endif
+
 namespace CommonFlags {
 /**
  *  Helper to assist in collecting image paths from |dir| specified through a command line
@@ -25,5 +31,10 @@ namespace CommonFlags {
  */
 bool CollectImages(const CommandLineFlags::StringArray& dir,
                    skia_private::TArray<SkString>* output);
+
+
+#if defined(SK_GRAPHITE)
+    void SetCtxOptions(skiatest::graphite::TestOptions*);
+#endif
 
 }  // namespace CommonFlags
