@@ -54,7 +54,7 @@ GraphiteDawnMetalWindowContext_mac::~GraphiteDawnMetalWindowContext_mac() {
 bool GraphiteDawnMetalWindowContext_mac::onInitializeContext() {
     SkASSERT(nil != fMainView);
 
-    auto device = createDevice(wgpu::BackendType::Metal);
+    auto device = this->createDevice(wgpu::BackendType::Metal);
     if (!device) {
         SkASSERT(device);
         return false;
