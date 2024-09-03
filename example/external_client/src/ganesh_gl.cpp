@@ -30,6 +30,10 @@
 #include "gl_context_helper.h"
 #endif
 
+#if defined(_MSC_VER)
+#include "include/gpu/ganesh/gl/win/GrGLMakeWinInterface.h"
+#endif
+
 #include <cstdio>
 
 #if defined(__linux__)
@@ -98,6 +102,12 @@ bool initialize_gl_linux() {
 }
 #endif  // defined(__linux__)
 
+#if defined(_MSC_VER)
+bool initialize_gl_win() {
+    return true;
+}
+#endif  // defined(_MSC_VER)
+
 int main(int argc, char** argv) {
     if (argc != 2) {
         printf("Usage: %s <name.webp>\n", argv[0]);
@@ -122,6 +132,11 @@ int main(int argc, char** argv) {
         return 1;
     }
     sk_sp<const GrGLInterface> interface = GrGLInterfaces::MakeMac();
+#elif defined(_MSC_VER)
+    if (!initialize_gl_win()) {
+        return 1;
+    }
+    sk_sp<const GrGLInterface> interface = GrGLInterfaces::MakeWin();
 #endif
     if (!interface) {
         printf("Could not make GL interface\n");
