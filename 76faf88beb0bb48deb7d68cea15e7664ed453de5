@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7538f529_41e2854d",
+        "filename": "infra/fiddler-backend/create_docker_image.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-09-03T12:47:18Z",
+      "side": 1,
+      "message": "This seems a little messy, since we\u0027re not cleaning it up afterward.  Can we either add a cleanup step or try to find a way to use a dockerfile that isn\u0027t in the root of the repo?  I seem to remember `docker build` having a way to specify a docker file in some sub-path.",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 50
+      },
+      "revId": "76faf88beb0bb48deb7d68cea15e7664ed453de5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "de4c3a92_f956bb93",
+        "filename": "tools/git-sync-deps",
+        "patchSetId": 2
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-09-03T12:47:18Z",
+      "side": 1,
+      "message": "It seems unsafe to ignore the error.  Can we instead check the output and only ignore the error if it matches a regex?",
+      "range": {
+        "startLine": 138,
+        "startChar": 0,
+        "endLine": 138,
+        "endChar": 20
+      },
+      "revId": "76faf88beb0bb48deb7d68cea15e7664ed453de5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
