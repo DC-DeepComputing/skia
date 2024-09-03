@@ -20,6 +20,7 @@
 #include "include/core/SkString.h"
 #include "include/core/SkTypeface.h"
 #include "include/core/SkTypes.h"
+#include "include/encode/SkPngEncoder.h"
 #include "include/ports/SkFontMgr_fontconfig.h"
 #include "tests/Test.h"
 #include "tools/Resources.h"
@@ -56,6 +57,68 @@ FcConfig* build_fontconfig_with_fontfile(const char* fontFilename) {
 
     FcConfigBuildFonts(config);
     return config;
+}
+
+FcConfig* build_fontconfig_from_path(const char* path) {
+
+    SkString content;
+    content.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>"
+                   "<!DOCTYPE fontconfig SYSTEM \"fonts.dtd\">"
+                   "<fontconfig>\n");
+    content.appendf("  <cachedir>%s</cachedir\n>", path);
+    content.appendf("  <dir>%s</dir>\n", path);
+    content.appendf("    <match target=\"font\">\n"
+                          "        <edit name=\"embolden\" mode=\"assign\">\n"
+                          "          <bool>true</bool>\n"
+                          "        </edit>\n"
+                          "    </match>");
+    content.append("</fontconfig>\n");
+
+    FcConfig* fc_config = FcConfigCreate();
+
+    if (FcConfigParseAndLoadFromMemory(
+                fc_config, reinterpret_cast<const FcChar8*>(content.c_str()),
+                FcTrue) != FcTrue) {
+        SkDebugf("FcConfigParseAndLoadFromMemory\n");
+    }
+
+    if (FcConfigBuildFonts(fc_config) != FcTrue) {
+        SkDebugf("!FcConfigBuildFonts\n");
+    }
+
+    return fc_config;
+}
+
+FcConfig* build_fontconfig_from_path1(const char* fontFilename, SkString* fontPath) {
+    FcConfig* config = FcConfigCreate();
+
+    // FontConfig may modify the passed path (make absolute or other).
+    *fontPath = GetResourcePath("fonts/all_bold");
+    if (!FcConfigParseAndLoad( //  "resources/fonts/all_bold/fonts.conf"
+            config, reinterpret_cast<const FcChar8*>("/usr/local/google/home/jlavrova/Sources/skia/resources/fonts/all_bold/fonts.conf"), FcTrue)) {
+        SkDebugf("FcConfigParseAndLoad\n");
+    }
+    FcConfigSetSysRoot(config, reinterpret_cast<const FcChar8*>(fontPath->c_str()));
+    // FontConfig will lexically compare paths against its version of the sysroot.
+    fontPath->set(reinterpret_cast<const char*>(FcConfigGetSysRoot(config)));
+    fontPath->append("/");
+    fontPath->append(fontFilename);
+    FcConfigAppFontAddFile(config, reinterpret_cast<const FcChar8*>(fontPath->c_str()));
+    if (!FcConfigBuildFonts(config)) {
+        SkDebugf("FcConfigBuildFonts\n");
+        return nullptr;
+    }
+
+    if (!FcConfigSetCurrent(config)) {
+        SkDebugf("FcConfigSetCurrent\n");
+        return nullptr;
+    }
+}
+
+static void write_bitmap(const SkBitmap* bm, const char fileName[]) {
+    SkFILEWStream file(fileName);
+    SkAssertResult(file.isValid());
+    SkAssertResult(SkPngEncoder::Encode(&file, bm->pixmap(), {}));
 }
 
 }  // namespace
@@ -123,4 +186,56 @@ DEF_TEST(FontMgrFontConfig, reporter) {
         bool success = bitmap_compare(bitmapStream, bitmapClone);
         REPORTER_ASSERT(reporter, success);
     }
+}
+
+DEF_TEST(FontMgrFontConfig_AllBold, reporter) {
+    SkString fontPath;
+    FcConfig* config = build_fontconfig_from_path("/usr/local/google/home/jlavrova/Sources/skia/resources/fonts/all_bold/");
+            //build_fontconfig_from_path("Roboto-Regular.ttf", &fontPath);
+
+    sk_sp<SkFontMgr> fontMgr(SkFontMgr_New_FontConfig(config));
+
+    constexpr float kTextSize = 20;
+    constexpr char text[] = "abc";
+
+    SkString filePath("/usr/local/google/home/jlavrova/Sources/skia/resources/fonts/all_bold/Roboto-Regular.ttf");
+    sk_sp<SkTypeface> dataTypeface(fontMgr->makeFromFile(filePath.c_str(), 0));
+    if (!dataTypeface) {
+        ERRORF(reporter, "Could not find data typeface. FcVersion: %d", FcGetVersion());
+        return;
+    }
+
+    SkFont dataFont(dataTypeface, kTextSize);
+    dataFont.setEmbolden(true);
+
+    sk_sp<SkTypeface> matchTypeface(fontMgr->matchFamilyStyle("Roboto", SkFontStyle()));
+    if (!matchTypeface) {
+        ERRORF(reporter, "Could not find match typeface. FcVersion: %d", FcGetVersion());
+        return;
+    }
+    SkFont matchFont(matchTypeface, kTextSize);
+
+    SkBitmap bitmapData;
+    bitmapData.allocN32Pixels(64, 64);
+    SkCanvas canvasData(bitmapData);
+    SkString dataPath("/usr/local/google/home/jlavrova/Sources/skia/resources/fonts/all_bold/data.png");
+
+    SkBitmap bitmapMatch;
+    bitmapMatch.allocN32Pixels(64, 64);
+    SkCanvas canvasMatch(bitmapMatch);
+    SkString matchPath("/usr/local/google/home/jlavrova/Sources/skia/resources/fonts/all_bold/match.png");
+
+    SkPaint paint;
+    paint.setColor(SK_ColorBLACK);
+
+    canvasData.drawColor(SK_ColorGRAY);
+    canvasData.drawString(text, 20.0f, 20.0f, dataFont, paint);
+    write_bitmap(&bitmapData, dataPath.c_str());
+
+    canvasMatch.drawColor(SK_ColorGRAY);
+    canvasMatch.drawString(text, 20.0f, 20.0f, matchFont, paint);
+    write_bitmap(&bitmapMatch, matchPath.c_str());
+
+    bool success = bitmap_compare(bitmapData, bitmapMatch);
+    REPORTER_ASSERT(reporter, success);
 }
