@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "276d4412_bc99586e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2024-09-03T15:59:24Z",
+      "side": 1,
+      "message": "Turns out that following the spec was for losers...",
+      "revId": "938ee7f0f9ecb82108f178a59c5266ca9790f71e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
