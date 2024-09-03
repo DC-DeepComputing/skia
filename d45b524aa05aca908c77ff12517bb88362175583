@@ -74,6 +74,30 @@
       ],
       "revId": "d45b524aa05aca908c77ff12517bb88362175583",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cf6f0790_de299853",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 910,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2024-09-03T15:02:05Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "86423c71_64325945",
+      "range": {
+        "startLine": 910,
+        "startChar": 9,
+        "endLine": 910,
+        "endChar": 25
+      },
+      "revId": "d45b524aa05aca908c77ff12517bb88362175583",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
