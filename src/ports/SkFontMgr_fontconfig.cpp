@@ -666,6 +666,7 @@ class SkFontMgr_fontconfig : public SkFontMgr {
         if (!pattern) {
             return nullptr;
         }
+        auto embolden = get_bool(pattern, FC_EMBOLDEN);
         // Cannot hold FCLocker when calling fTFCache.add; an evicted typeface may need to lock.
         // Must hold fTFCacheMutex when interacting with fTFCache.
         SkAutoMutexExclusive ama(fTFCacheMutex);
