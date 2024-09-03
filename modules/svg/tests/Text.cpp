@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "include/utils/SkNoDrawCanvas.h"
+#include "modules/skresources/include/SkResources.h"
 #include "modules/skshaper/utils/FactoryHelpers.h"
 #include "modules/svg/src/SkSVGTextPriv.h"
 #include "tests/Test.h"
