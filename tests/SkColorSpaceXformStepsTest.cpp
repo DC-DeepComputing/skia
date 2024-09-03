@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <functional>
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
