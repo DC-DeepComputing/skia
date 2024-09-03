@@ -117,6 +117,30 @@
       },
       "revId": "76faf88beb0bb48deb7d68cea15e7664ed453de5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b17c2618_6489678f",
+        "filename": "tools/git-sync-deps",
+        "patchSetId": 2
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-09-03T14:59:48Z",
+      "side": 1,
+      "message": "Update: I don\u0027t see anything in the logs that I tried to capture with Python anyway. :shrug:",
+      "parentUuid": "3e4acf07_b90e7123",
+      "range": {
+        "startLine": 138,
+        "startChar": 0,
+        "endLine": 138,
+        "endChar": 20
+      },
+      "revId": "76faf88beb0bb48deb7d68cea15e7664ed453de5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
