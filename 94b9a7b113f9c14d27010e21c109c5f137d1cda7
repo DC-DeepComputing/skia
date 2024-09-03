@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1c1fb65_2a8f20db",
+        "filename": "example/external_client/src/ganesh_gl.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-09-03T20:03:30Z",
+      "side": 1,
+      "message": "Note: I\u0027m unable to verify this because the OpenGL version (1.1) on my CloudTop is too old. This part succeeds but GrGLInterfaces::MakeWin() returns null.\n\nAside: I\u0027m not sure whether there\u0027s a better convention, but it took way too much time for me to figure out exactly why GrGLInterfaces::MakeWin() returned null.  I had to add printf in a whole bunch of places.  Presumably I could\u0027ve done the same thing with a debugger, but the point is that there was absolutely no error message or clue of any kind as to what went wrong.",
+      "range": {
+        "startLine": 110,
+        "startChar": 5,
+        "endLine": 110,
+        "endChar": 22
+      },
+      "revId": "94b9a7b113f9c14d27010e21c109c5f137d1cda7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "903d5a6f_6c02591a",
+        "filename": "example/external_client/src/ganesh_gl.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-09-03T20:03:30Z",
+      "side": 1,
+      "message": "Without renaming this, I get:\n```\nexample/external_client/src/ganesh_gl.cpp:211:32: error: declaration of anonymous struct must be a definition\n  211 |     sk_sp\u003cconst GrGLInterface\u003e interface \u003d GrGLInterfaces::MakeWin();\n      |                                ^\nexternal/win_toolchain/win_sdk/Include/10.0.22621.0/um\\combaseapi.h:168:19: note: expanded from macro \u0027interface\u0027\n  168 | #define interface __STRUCT__\n```",
+      "range": {
+        "startLine": 201,
+        "startChar": 31,
+        "endLine": 201,
+        "endChar": 36
+      },
+      "revId": "94b9a7b113f9c14d27010e21c109c5f137d1cda7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3dd678c_428fbcf2",
+        "filename": "src/gpu/ganesh/gl/win/GrGLMakeNativeInterface_win.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-09-03T20:03:30Z",
+      "side": 1,
+      "message": "I get the feeling that this is wrong, but I don\u0027t know enough to know the right way to do it.",
+      "range": {
+        "startLine": 71,
+        "startChar": 11,
+        "endLine": 71,
+        "endChar": 34
+      },
+      "revId": "94b9a7b113f9c14d27010e21c109c5f137d1cda7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
