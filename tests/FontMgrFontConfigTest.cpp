@@ -33,16 +33,18 @@
 namespace {
 
 bool bitmap_compare(const SkBitmap& ref, const SkBitmap& test) {
+    auto count = 0;
     for (int y = 0; y < test.height(); ++y) {
         for (int x = 0; x < test.width(); ++x) {
             SkColor testColor = test.getColor(x, y);
             SkColor refColor = ref.getColor(x, y);
             if (refColor != testColor) {
-                return false;
+                ++count;
+                SkDebugf("%d: (%d,%d) ", count, x, y);
             }
         }
     }
-    return true;
+    return (count == 0);
 }
 
 FcConfig* build_fontconfig_with_fontfile(const char* fontFilename) {
@@ -167,9 +169,9 @@ UNIX_ONLY_TEST(FontMgrFontConfig_AllBold, reporter) {
     sk_sp<SkFontMgr> fontMgr(SkFontMgr_New_FontConfig(config));
 
     constexpr float kTextSize = 20;
-    constexpr char text[] = "abc";
+    constexpr char text[] = "Skia";
 
-    SkString filePath = GetResourcePath("/fonts/Roboto-Regular.ttf");
+    SkString filePath = GetResourcePath("/fonts/HangingS.ttf");
     sk_sp<SkTypeface> dataTypeface(fontMgr->makeFromFile(filePath.c_str(), 0));
     if (!dataTypeface) {
         ERRORF(reporter, "Could not find data typeface. FcVersion: %d", FcGetVersion());
@@ -179,7 +181,7 @@ UNIX_ONLY_TEST(FontMgrFontConfig_AllBold, reporter) {
     SkFont dataFont(dataTypeface, kTextSize);
     dataFont.setEmbolden(true);
 
-    sk_sp<SkTypeface> matchTypeface(fontMgr->matchFamilyStyle("Roboto", SkFontStyle()));
+    sk_sp<SkTypeface> matchTypeface(fontMgr->matchFamilyStyle("HangingS", SkFontStyle()));
     if (!matchTypeface) {
         ERRORF(reporter, "Could not find match typeface. FcVersion: %d", FcGetVersion());
         return;
