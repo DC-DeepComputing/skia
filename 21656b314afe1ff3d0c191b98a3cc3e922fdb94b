@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c4aa4bf_8a4a9e2b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-03T14:40:17Z",
+      "side": 1,
+      "message": "Landed \"RemoteStrike should use typeface Id from StrikeSpec\" \n\nhttps://skia.googlesource.com/skia.git/+/46d8175e88150ad4e870914c135a3baa72801b48",
+      "range": {
+        "startLine": 11,
+        "startChar": 19,
+        "endLine": 11,
+        "endChar": 42
+      },
+      "revId": "21656b314afe1ff3d0c191b98a3cc3e922fdb94b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
