@@ -441,7 +441,8 @@ class SkScalerContext_FreeType : public SkScalerContext {
 public:
     SkScalerContext_FreeType(sk_sp<SkTypeface_FreeType>,
                              const SkScalerContextEffects&,
-                             const SkDescriptor* desc);
+                             const SkDescriptor* desc,
+                             sk_sp<SkTypeface>);
     ~SkScalerContext_FreeType() override;
 
     bool success() const {
@@ -690,10 +691,19 @@ static bool isAxisAligned(const SkScalerContextRec& rec) {
 }
 
 std::unique_ptr<SkScalerContext> SkTypeface_FreeType::onCreateScalerContext(
-    const SkScalerContextEffects& effects, const SkDescriptor* desc) const
-{
+    const SkScalerContextEffects& effects, const SkDescriptor* desc) const {
+    return onCreateScalerContextWithProxyTypeface(effects, desc, nullptr);
+}
+
+std::unique_ptr<SkScalerContext> SkTypeface_FreeType::onCreateScalerContextWithProxyTypeface(
+        const SkScalerContextEffects& effects,
+        const SkDescriptor* desc,
+        sk_sp<SkTypeface> proxy) const {
     auto c = std::make_unique<SkScalerContext_FreeType>(
-            sk_ref_sp(const_cast<SkTypeface_FreeType*>(this)), effects, desc);
+            sk_ref_sp(const_cast<SkTypeface_FreeType*>(this)),
+            effects,
+            desc,
+            proxy ? proxy : sk_ref_sp(const_cast<SkTypeface_FreeType*>(this)));
     if (c->success()) {
         return c;
     }
@@ -894,14 +904,15 @@ static FT_Int chooseBitmapStrike(FT_Face face, FT_F26Dot6 scaleY) {
 
 SkScalerContext_FreeType::SkScalerContext_FreeType(sk_sp<SkTypeface_FreeType> typeface,
                                                    const SkScalerContextEffects& effects,
-                                                   const SkDescriptor* desc)
-    : SkScalerContext(std::move(typeface), effects, desc)
+                                                   const SkDescriptor* desc,
+                                                   sk_sp<SkTypeface> proxy)
+    : SkScalerContext(proxy, effects, desc)
     , fFace(nullptr)
     , fFTSize(nullptr)
     , fStrikeIndex(-1)
 {
     SkAutoMutexExclusive  ac(f_t_mutex());
-    fFaceRec = static_cast<SkTypeface_FreeType*>(this->getTypeface())->getFaceRec();
+    fFaceRec = typeface->getFaceRec();
 
     // load the font file
     if (nullptr == fFaceRec) {

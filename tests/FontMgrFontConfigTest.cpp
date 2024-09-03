@@ -33,16 +33,18 @@
 namespace {
 
 bool bitmap_compare(const SkBitmap& ref, const SkBitmap& test) {
+    auto count = 0;
     for (int y = 0; y < test.height(); ++y) {
         for (int x = 0; x < test.width(); ++x) {
             SkColor testColor = test.getColor(x, y);
             SkColor refColor = ref.getColor(x, y);
             if (refColor != testColor) {
-                return false;
+                ++count;
+                SkDebugf("%d: (%d,%d) ", count, x, y);
             }
         }
     }
-    return true;
+    return (count == 0);
 }
 
 FcConfig* build_fontconfig_with_fontfile(const char* fontFilename) {
@@ -85,6 +87,21 @@ FcConfig* build_fontconfig_from_resources() {
         SkDebugf("!FcConfigBuildFonts\n");
     }
     return fc_config;
+}
+
+FcConfig* build_somehow(const char* fonts_dir) {
+    FcConfig* const config = FcConfigCreate();
+
+    if (!FcConfigAppFontAddDir(config, reinterpret_cast<const FcChar8*>(fonts_dir))) {
+        SkDebugf("FcConfigAppFontAddDir: %s\n", fonts_dir);
+        return nullptr;
+    }
+
+    if (!FcConfigBuildFonts(config)) {
+        SkDebugf("FcConfigBuildFonts\n");
+        return nullptr;
+    }
+    return config;
 }
 
 [[maybe_unused]]
@@ -167,9 +184,9 @@ UNIX_ONLY_TEST(FontMgrFontConfig_AllBold, reporter) {
     sk_sp<SkFontMgr> fontMgr(SkFontMgr_New_FontConfig(config));
 
     constexpr float kTextSize = 20;
-    constexpr char text[] = "abc";
+    constexpr char text[] = "Skia";
 
-    SkString filePath = GetResourcePath("/fonts/Roboto-Regular.ttf");
+    SkString filePath = GetResourcePath("/fonts/HangingS.ttf");
     sk_sp<SkTypeface> dataTypeface(fontMgr->makeFromFile(filePath.c_str(), 0));
     if (!dataTypeface) {
         ERRORF(reporter, "Could not find data typeface. FcVersion: %d", FcGetVersion());
@@ -179,7 +196,7 @@ UNIX_ONLY_TEST(FontMgrFontConfig_AllBold, reporter) {
     SkFont dataFont(dataTypeface, kTextSize);
     dataFont.setEmbolden(true);
 
-    sk_sp<SkTypeface> matchTypeface(fontMgr->matchFamilyStyle("Roboto", SkFontStyle()));
+    sk_sp<SkTypeface> matchTypeface(fontMgr->matchFamilyStyle("HangingS", SkFontStyle()));
     if (!matchTypeface) {
         ERRORF(reporter, "Could not find match typeface. FcVersion: %d", FcGetVersion());
         return;
@@ -214,4 +231,42 @@ UNIX_ONLY_TEST(FontMgrFontConfig_AllBold, reporter) {
 
     bool success = bitmap_compare(bitmapData, bitmapMatch);
     REPORTER_ASSERT(reporter, success);
+}
+
+UNIX_ONLY_TEST(FontMgrFontConfig_Google3Bug, reporter) {
+
+    FcConfig* config = build_somehow("");
+
+    sk_sp<SkFontMgr> fontMgr = SkFontMgr_New_FontConfig(FcConfigReference(config));
+    if (fontMgr->countFamilies() == 0) {
+        ERRORF(reporter, "No fonts found");
+    }
+
+    constexpr float kTextSize = 20;
+    constexpr char text[] = "זה מדהים";
+
+    const char* fonts[] = {
+            "Noto Sans JP", "Noto Sans SC", "Noto Sans TC", "Noto Naskh Arabic", "Noto Nastaliq Urdu", "Noto Serif Tibetan", "Noto Sans Thaana", "Noto Sans Myanmar"
+    };
+
+    sk_sp<SkTypeface> matchTypeface(fontMgr->matchFamilyStyle(nullptr, SkFontStyle()));
+    if (!matchTypeface) {
+        ERRORF(reporter, "Could not find match typeface. FcVersion: %d", FcGetVersion());
+        return;
+    }
+    SkFont matchFont(matchTypeface, kTextSize);
+
+    SkBitmap bitmapMatch;
+    bitmapMatch.allocN32Pixels(64, 64);
+    SkCanvas canvasMatch(bitmapMatch);
+
+    SkPaint paint;
+    paint.setColor(SK_ColorBLACK);
+
+    canvasMatch.drawColor(SK_ColorGRAY);
+    canvasMatch.drawString(text, 20.0f, 20.0f, matchFont, paint);
+    if ((true)) {
+        SkString matchPath = GetResourcePath("/fonts/match.png");
+        write_bitmap(&bitmapMatch, matchPath.c_str());
+    }
 }
