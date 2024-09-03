@@ -93,6 +93,30 @@
       },
       "revId": "76faf88beb0bb48deb7d68cea15e7664ed453de5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb6dd05b_4da25c99",
+        "filename": "tools/git-sync-deps",
+        "patchSetId": 2
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-09-03T14:54:59Z",
+      "side": 1,
+      "message": "IMO, the contract is that the script ensures that the repo structure gets into the desired state or exits with a non-zero code and a helpful error message. Ignoring a failure to clone breaks that contract unless we\u0027ve ensured that we did end up in the right state.\n\nGenerally I strongly prefer to catch errors at the time that they happened so that we can fail with something informative, eg. \"failed to sync X with error Y\" instead of something less informative down the line, eg. \"failed to build X: file Y not found\".\n\nA possible alternative is to capture the error, run a series of tests to see whether the repo was actually synced successfully (is `.git/` present, does `git rev-parse HEAD` return the expected commit hash, are there any modified or unversioned files) and if not re-raise the error.",
+      "parentUuid": "3e4acf07_b90e7123",
+      "range": {
+        "startLine": 138,
+        "startChar": 0,
+        "endLine": 138,
+        "endChar": 20
+      },
+      "revId": "76faf88beb0bb48deb7d68cea15e7664ed453de5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
