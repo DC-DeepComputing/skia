@@ -19,10 +19,13 @@ struct TestOptions {
     TestOptions& operator=(const TestOptions&) = default;
     TestOptions& operator=(TestOptions&&) = default;
 
-    bool hasDawnOptions() const { return fNeverYieldToWebGPU || fUseWGPUTextureView; }
+    bool hasDawnOptions() const {
+        return fNeverYieldToWebGPU || fUseTintIR || fUseWGPUTextureView;
+    }
 
     skgpu::graphite::ContextOptions fContextOptions = {};
     bool fNeverYieldToWebGPU = false;
+    bool fUseTintIR = false;
     bool fUseWGPUTextureView = false;
 };
 
