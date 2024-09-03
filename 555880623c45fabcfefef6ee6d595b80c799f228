@@ -16,6 +16,47 @@
       "message": "@kjlubick, can you PTAL?\n\nI don\u0027t understand why `Housekeeper-PerCommit-CheckGeneratedFiles` fails saying [1]: \"ERROR: no targets found beneath \u0027experimental/rust_png\u0027\".  FWIW I can\u0027t repro this error with `make -C bazel generate_gni`.\n\n[1] https://task-driver.skia.org/td/ZNKMLgawmtdkmQ4OVxae?ifNotFound\u003dhttps%3A%2F%2Fchromium-swarm.appspot.com%2Ftask%3Fid%3D6bd23d3f9ce0e710",
       "revId": "555880623c45fabcfefef6ee6d595b80c799f228",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed733335_3faaba60",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-09-03T23:14:41Z",
+      "side": 1,
+      "message": "You need to add skia/experimental/rust_png to https://github.com/google/skia/blob/04d973ac4f262012a8ec9b12c3a60c86a8090ce2/infra/bots/gen_tasks_logic/gen_tasks_logic.go#L440\nThat\u0027s the list of files to sync into the job and so those experimental files are missing on the CQ job.",
+      "parentUuid": "0b36e516_04608542",
+      "revId": "555880623c45fabcfefef6ee6d595b80c799f228",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22bb0475_05c99cdc",
+        "filename": "experimental/rust_png/BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-09-03T23:14:41Z",
+      "side": 1,
+      "message": "nit: use skia_filegroup (makes this more future proof with G3). Same in the other file.",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 8,
+        "endChar": 9
+      },
+      "revId": "555880623c45fabcfefef6ee6d595b80c799f228",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
