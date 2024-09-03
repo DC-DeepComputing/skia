@@ -74,6 +74,30 @@
       },
       "revId": "133cafca29bf94e5447139eba4db64fa07ff8a60",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c456a8bb_8f9c2112",
+        "filename": "src/pdf/SkPDFFont.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 611,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-03T14:06:58Z",
+      "side": 1,
+      "message": "Because it makes the final PDF smaller.\n\nIt is possible to make this A8 and then use SkPDFGraphicState::kAlpha_SMaskMode, but in PDF this means emitting a black image and an SMask with the alpha in it. Instead here we just emit a single channel image and use SkPDFGraphicState::kLuminosity_SMaskMode which means we can emit a single channel image without a separate SMask image.\n\nThe existing code was actually incorrect in that it always produced black text (it was never shaded with the current color) but it was also almost never used (it would only be used on bi-level bitmap only fonts). The approach here (kGray and kLuminosity) is what SkPDFDevice::internalDrawPathWithFilter does, which is how this was (kind of) handled previously.",
+      "parentUuid": "0952c619_773ca330",
+      "range": {
+        "startLine": 611,
+        "startChar": 51,
+        "endLine": 611,
+        "endChar": 70
+      },
+      "revId": "133cafca29bf94e5447139eba4db64fa07ff8a60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
