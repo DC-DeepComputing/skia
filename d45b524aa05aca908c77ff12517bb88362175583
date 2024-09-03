@@ -33,6 +33,47 @@
       "message": "-\u003ebrianosman",
       "revId": "d45b524aa05aca908c77ff12517bb88362175583",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "86423c71_64325945",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 910,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-09-03T14:54:26Z",
+      "side": 1,
+      "message": "nit: `this-\u003eonGetGainmapInfo`",
+      "range": {
+        "startLine": 910,
+        "startChar": 9,
+        "endLine": 910,
+        "endChar": 25
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "eaf1586c_519712e0",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/codec/SkJpegCodec.cpp",
+              "range": {
+                "startLine": 910,
+                "startChar": 0,
+                "endLine": 911,
+                "endChar": 0
+              },
+              "replacement": "    if (!this-\u003eonGetGainmapInfo(info, \u0026stream)) {\n"
+            }
+          ]
+        }
+      ],
+      "revId": "d45b524aa05aca908c77ff12517bb88362175583",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
