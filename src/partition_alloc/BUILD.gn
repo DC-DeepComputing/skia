@@ -1,0 +1,39 @@
+# This file provides Skia, the MiraclePtr "raw_ptr" definition.
+#
+# Depending on the configuration, this is either:
+# - Delegated to the `partition_alloc` library.
+# - Provided by Skia itself as "no-op" implementation.
+
+is_clang_or_gcc = is_clang || !is_win
+skia_enable_partition_alloc =
+    is_clang_or_gcc && defined(skia_partition_alloc_dir)
+
+# This define the same targets as in partition_alloc. See Chromium file:
+# - base/allocator/partition_allocator/BUILD.gn
+# - base/allocator/partition_allocator/src/partition_alloc/BUILD.gn
+if (skia_enable_partition_alloc) {
+  group("partition_alloc") {
+    public_deps = [ "${skia_partition_alloc_dir}:partition_alloc" ]
+  }
+} else {
+  # TODO(351867706): Provide the equivalent of partition_alloc:raw_ptr when
+  # partition_alloc is missing.
+}
+
+# Question for reviewers: Contrary to Bazel, I see most of the //BUILD.gn. Why?
+# I suspect I need to add a deps to some target defining the include_dir config.
+# Should I move this file to the root of the Skia repository?
+config("skia_root_includes") {
+  include_dirs = [ "../../" ]
+}
+
+source_set("test_support") {
+  public = [ "test_support.h" ]
+  sources = [ "test_support.cpp" ]
+  configs += [ ":skia_root_includes" ]
+
+  if (skia_enable_partition_alloc) {
+    deps = [ ":partition_alloc" ]
+    defines = [ "SKIA_SUPPORT_PARTITION_ALLOC" ]
+  }
+}
