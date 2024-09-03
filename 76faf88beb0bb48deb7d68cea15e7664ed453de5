@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b175804_a669a3a4",
+        "filename": "infra/fiddler-backend/create_docker_image.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-09-03T14:41:59Z",
+      "side": 1,
+      "message": "TIL about --file. Thanks!",
+      "parentUuid": "7538f529_41e2854d",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 50
+      },
+      "revId": "76faf88beb0bb48deb7d68cea15e7664ed453de5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "de4c3a92_f956bb93",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-09-03T12:47:18Z",
       "side": 1,
       "message": "It seems unsafe to ignore the error.  Can we instead check the output and only ignore the error if it matches a regex?",
+      "range": {
+        "startLine": 138,
+        "startChar": 0,
+        "endLine": 138,
+        "endChar": 20
+      },
+      "revId": "76faf88beb0bb48deb7d68cea15e7664ed453de5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e4acf07_b90e7123",
+        "filename": "tools/git-sync-deps",
+        "patchSetId": 2
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-09-03T14:41:59Z",
+      "side": 1,
+      "message": "What precisely do you mean by unsafe?\n\nIf this fails in an actually bad way, one of the following commands will catch it, or at the very least, the Skia compilation step will fail and the image will not be built. I worry that using a regex on the output will be fragile.",
+      "parentUuid": "de4c3a92_f956bb93",
       "range": {
         "startLine": 138,
         "startChar": 0,
