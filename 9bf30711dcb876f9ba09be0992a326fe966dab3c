@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4fc3f036_db0ab106",
+        "filename": "src/gpu/graphite/ClipStack_graphite.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 483,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-09-03T20:01:57Z",
+      "side": 1,
+      "message": "Ah, I understand the comment now. Done.",
+      "parentUuid": "9aed94c8_68755b02",
+      "range": {
+        "startLine": 483,
+        "startChar": 0,
+        "endLine": 483,
+        "endChar": 84
+      },
+      "revId": "9bf30711dcb876f9ba09be0992a326fe966dab3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a49a8ae0_4a78c3ce",
@@ -54,6 +78,24 @@
       "writtenOn": "2024-09-03T19:23:57Z",
       "side": 1,
       "message": "can we extend this comment with something like \" because we need to touch every pixel *not* in the clip\"?",
+      "revId": "9bf30711dcb876f9ba09be0992a326fe966dab3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "917c814e_78ea901e",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1466,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-09-03T20:01:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a49a8ae0_4a78c3ce",
       "revId": "9bf30711dcb876f9ba09be0992a326fe966dab3c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
