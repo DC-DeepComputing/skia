@@ -62,7 +62,8 @@ struct DisplayParams {
 #if defined(SK_GRAPHITE)
     GraphiteContextOptions fGraphiteContextOptions;
 #if defined(SK_DAWN)
-    bool fDisableTintSymbolRenaming = false;
+    bool                   fDisableTintSymbolRenaming = false;
+    bool                   fUseTintIR1 = false;
 #endif
 #endif
     SkSurfaceProps         fSurfaceProps;
