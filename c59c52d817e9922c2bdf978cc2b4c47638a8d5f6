@@ -33,6 +33,23 @@
       "message": "Hi Greg,\nAs Colin is OOO until Thursday, can you review this change so that it is currently blocking https://dawn-review.googlesource.com/c/dawn/+/197476\nThank you!",
       "revId": "c59c52d817e9922c2bdf978cc2b4c47638a8d5f6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3dc96a41_4696c6c9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3490583
+      },
+      "writtenOn": "2024-09-03T13:04:22Z",
+      "side": 1,
+      "message": "Hey Greg, can you merge this CL?",
+      "revId": "c59c52d817e9922c2bdf978cc2b4c47638a8d5f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
