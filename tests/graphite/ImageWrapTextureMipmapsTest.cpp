@@ -16,8 +16,8 @@
 #include "src/core/SkAutoPixmapStorage.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/ContextPriv.h"
-#include "tools/gpu/ManagedBackendTexture.h"
 #include "tools/graphite/GraphiteTestContext.h"
+#include "tools/graphite/ManagedBackendTexture_Graphite.h"
 
 using namespace skgpu;
 using namespace skgpu::graphite;
