@@ -119,7 +119,6 @@ private:
      * @param decoderMgr holds decompress struct, src manager, and error manager
      *                   takes ownership
      * @param origin indicates the image orientation as specified in Exif metadata.
-     * @param xmpMetadata holds the XMP metadata included in the image, if any.
      */
     SkJpegCodec(SkEncodedInfo&& info,
                 std::unique_ptr<SkStream> stream,
