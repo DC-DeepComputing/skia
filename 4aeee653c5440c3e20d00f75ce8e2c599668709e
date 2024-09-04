@@ -49,6 +49,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "05133685_b7b7372c",
+        "filename": "tests/graphite/DrawAtlasTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-09-04T20:00:46Z",
+      "side": 1,
+      "message": "If we updated the first loop to be `for (int p \u003d 1; p \u003c\u003d 4; ++p)`, wouldn\u0027t that be equivalent to these two? Nevermind, it looks like the plain `atlasLocator` is used as a dump argument. Maybe we rename that to something like `untrackedAtlasLocator`?\n\nGoing back to consolidating the loop, we could have them all fill in the `atlasLocators[i]`, right? And just keep the checks vs. texture 2?",
+      "range": {
+        "startLine": 127,
+        "startChar": 0,
+        "endLine": 140,
+        "endChar": 42
+      },
+      "revId": "4aeee653c5440c3e20d00f75ce8e2c599668709e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e27b26ce_f8a0a6e4",
         "filename": "tests/graphite/DrawAtlasTest.cpp",
         "patchSetId": 5
