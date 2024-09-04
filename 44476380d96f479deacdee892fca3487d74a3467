@@ -1,0 +1,78 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1e142b4a_883d5144",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-04T15:13:26Z",
+      "side": 1,
+      "message": "I think I got all the things. Let me know if there is anything else that should be done here.",
+      "revId": "44476380d96f479deacdee892fca3487d74a3467",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4bf27491_b22f2716",
+        "filename": "infra/bots/assets/clang_linux/Dockerfile",
+        "patchSetId": 4
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-04T15:13:26Z",
+      "side": 1,
+      "message": "\"CMake 3.20.0 or higher is required.  You are running version 3.13.4\"",
+      "revId": "44476380d96f479deacdee892fca3487d74a3467",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0031200_ae6b346a",
+        "filename": "infra/bots/assets/clang_linux/Dockerfile",
+        "patchSetId": 4
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-04T15:13:26Z",
+      "side": 1,
+      "message": "\"AttributeError: module \u0027functools\u0027 has no attribute \u0027cache\u0027 (Added in python version 3.9. Using python 3.7.)\"",
+      "revId": "44476380d96f479deacdee892fca3487d74a3467",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e0973637_debe0070",
+        "filename": "infra/bots/assets/clang_linux/create.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-04T15:13:26Z",
+      "side": 1,
+      "message": "Adding this allows running this without \"sudoless docker\" which is rather frowned upon (since it\u0027s using sudo anyway, just without you knowing).",
+      "range": {
+        "startLine": 20,
+        "startChar": 10,
+        "endLine": 20,
+        "endChar": 16
+      },
+      "revId": "44476380d96f479deacdee892fca3487d74a3467",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

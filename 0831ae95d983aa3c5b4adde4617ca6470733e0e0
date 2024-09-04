@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7727bf86_ba058b0e",
+        "filename": "toolchain/download_linux_amd64_toolchain.bzl",
+        "patchSetId": 3
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-04T15:13:26Z",
+      "side": 1,
+      "message": "It looks like I do not have permissions to\n\n`go run ./bazel/gcs_mirror/gcs_mirror.go --sha256 8c31a2780d4dd802facac8f72308339b900f14c74dec84c2a5d89fb7bb607f16 --file clang_linux_amd64_v32.zip`\n\nas described in `infra/bots/assets/clang_linux/README.md` and will need someone else to do that?",
+      "revId": "0831ae95d983aa3c5b4adde4617ca6470733e0e0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
