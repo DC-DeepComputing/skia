@@ -33,6 +33,24 @@
       "message": "Any plans to guard the protected divides in other blend modes?",
       "revId": "5dae120760c048ccd8c44e23c7f25f08ed8a23c7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a6ba768_246b53c0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-09-04T16:02:38Z",
+      "side": 1,
+      "message": "I tried that (Patchset 2), and the gold results were not good. A bunch of xfermodes2 results got worse. I\u0027m not sure if some of those modes have math that relies on the numerator and denominator being negative? (In which case, adding the epsilon to the denominator would work against us). Assuming this makes the known Android issues go away, I\u0027ll probably leave it all as-is.",
+      "parentUuid": "3fb1c616_14326f97",
+      "revId": "5dae120760c048ccd8c44e23c7f25f08ed8a23c7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
