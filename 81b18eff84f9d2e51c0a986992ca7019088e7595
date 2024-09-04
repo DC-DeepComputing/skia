@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "609ee64e_8ed601da",
+        "filename": "example/external_client/BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-09-04T13:37:11Z",
+      "side": 1,
+      "message": "FYI: A better solution long term is to add a dep to src/gpu/ganesh/gl/win/BUILD.bazel that provides these linkopts (which flow up the stack). We don\u0027t do that for other targets yet and there might be some G3 complications so we shouldn\u0027t try to do it for this CL. Just letting you know there\u0027s a better way in mind that takes a little bit of setup work.",
+      "range": {
+        "startLine": 110,
+        "startChar": 18,
+        "endLine": 110,
+        "endChar": 24
+      },
+      "revId": "81b18eff84f9d2e51c0a986992ca7019088e7595",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

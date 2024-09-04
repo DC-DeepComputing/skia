@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9fbad624_6234a3ae",
+        "filename": "src/gpu/ganesh/gl/win/GrGLMakeNativeInterface_win.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-09-04T13:37:11Z",
+      "side": 0,
+      "message": "SkTypes.h needs to go before SK_BUILD_FOR_WIN (or any #ifdef) because it include SkFeatures.h which sets this define. It also loads SkUserConfig.h which is another way for these to be set by the user.\n\nOn second thought, I think we can drop the SK_BUILD_FOR_WIN check because GN and Bazel should only include this .cpp file in the build if we are building for windows anyway.",
+      "range": {
+        "startLine": 7,
+        "startChar": 23,
+        "endLine": 7,
+        "endChar": 30
+      },
+      "revId": "7cf7a6548394ed67eda8aa5c1d2115fb8c1d82c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
