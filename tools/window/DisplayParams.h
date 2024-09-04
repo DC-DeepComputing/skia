@@ -60,9 +60,10 @@ struct DisplayParams {
     int                    fMSAASampleCount;
     GrContextOptions       fGrContextOptions;
 #if defined(SK_GRAPHITE)
-    GraphiteContextOptions fGraphiteContextOptions;
+    GraphiteContextOptions fGraphiteContextOptions1;
 #if defined(SK_DAWN)
-    bool fDisableTintSymbolRenaming = false;
+    bool                   fDisableTintSymbolRenaming = false;
+    bool                   fUseTintIR1 = false;
 #endif
 #endif
     SkSurfaceProps         fSurfaceProps;
