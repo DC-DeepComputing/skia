@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a561152_1c52bf99",
+        "filename": "toolchain/windows_toolchain_config.bzl",
+        "patchSetId": 4
+      },
+      "lineNbr": 282,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-09-04T18:24:43Z",
+      "side": 1,
+      "message": "I guess my local Windows SDK must have leaked into the build to allow this to work locally?",
+      "range": {
+        "startLine": 282,
+        "startChar": 0,
+        "endLine": 282,
+        "endChar": 56
+      },
+      "revId": "aa47c257a4b8b32a68c6c02f7b59ecace3f89c5f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
