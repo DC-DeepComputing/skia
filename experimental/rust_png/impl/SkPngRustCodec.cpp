@@ -153,6 +153,8 @@ SkCodec::Result ToSkCodecResult(rust_png::DecodingResult rustResult) {
             return SkCodec::kInvalidParameters;
         case rust_png::DecodingResult::LimitsExceededError:
             return SkCodec::kInternalError;
+        case rust_png::DecodingResult::IncompleteInput:
+            return SkCodec::kIncompleteInput;
     }
     SK_ABORT("Unexpected `rust_png::DecodingResult`: %d", static_cast<int>(rustResult));
 }
@@ -286,11 +288,6 @@ SkCodec::Result SkPngRustCodec::incrementalDecode(DecodingState& decodingState,
         Result result = ToSkCodecResult(fReader->next_row(decodedRow));
         if (result != kSuccess) {
             if (result == kIncompleteInput && rowsDecodedPtr) {
-                // TODO(https://crbug.com/356923435): Handle `kIncompleteInput` (right
-                // now the FFI layer will never return `kIncompleteInput` but we will
-                // need to handle it for incremental, row-by-row decoding).
-                SkUNREACHABLE;
-
                 *rowsDecodedPtr = rowsDecoded;
             }
             return result;
@@ -317,11 +314,6 @@ SkCodec::Result SkPngRustCodec::decodeInterlacedImage(DecodingState& decodingSta
     Result result = ToSkCodecResult(fReader->next_frame(rust::Slice<uint8_t>(decodedPixels)));
 
     if (result != kSuccess) {
-        // TODO(https://crbug.com/356923435): Handle `kIncompleteInput` (right
-        // now the FFI layer will never return `kIncompleteInput` but we will
-        // need to handle it for incremental, row-by-row decoding).
-        SkASSERT_RELEASE(result != kIncompleteInput);
-
         return result;
     }
 
@@ -354,7 +346,11 @@ SkCodec::Result SkPngRustCodec::onGetPixels(const SkImageInfo& dstInfo,
     // (and remove `SkPngRustCodec::decodeInterlacedImage` as well as
     // `ffi::Reader::next_frame`).
     if (fReader->interlaced()) {
-        return this->decodeInterlacedImage(decodingState);
+        Result result = this->decodeInterlacedImage(decodingState);
+        if (result == kIncompleteInput && rowsDecoded) {
+            *rowsDecoded = 0;
+        }
+        return result;
     }
     return this->incrementalDecode(decodingState, rowsDecoded);
 }
