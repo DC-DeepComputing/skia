@@ -17,15 +17,6 @@ class SkSurface;
 class SkSurfaceProps;
 struct SkISize;
 
-#ifdef SK_GRAPHITE
-namespace skgpu {
-    enum class Protected : bool;
-}
-namespace skgpu::graphite {
-    class Recorder;
-}
-#endif
-
 namespace ProtectedUtils {
 
 /*
@@ -46,17 +37,6 @@ sk_sp<SkImage> CreateProtectedSkImage(GrDirectContext*,
                                       SkISize size,
                                       SkColor4f color,
                                       bool isProtected);
-
-#ifdef SK_GRAPHITE
-sk_sp<SkSurface> CreateProtectedSkSurface(skgpu::graphite::Recorder*,
-                                          SkISize size,
-                                          skgpu::Protected);
-
-sk_sp<SkImage> CreateProtectedSkImage(skgpu::graphite::Recorder*,
-                                      SkISize size,
-                                      SkColor4f color,
-                                      skgpu::Protected);
-#endif
 
 }  // namespace ProtectedUtils
 
