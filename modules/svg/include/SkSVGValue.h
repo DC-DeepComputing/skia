@@ -57,6 +57,7 @@ public:
 
     operator const T&() const { return fWrappedValue; }
     const T* operator->() const { return &fWrappedValue; }
+    const T& get() const { return fWrappedValue; }
 
 private:
     // Stack-only

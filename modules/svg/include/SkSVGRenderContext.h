@@ -22,12 +22,12 @@
 #include "modules/svg/include/SkSVGIDMapper.h"
 #include "modules/svg/include/SkSVGNode.h"
 #include "modules/svg/include/SkSVGTypes.h"
-#include "src/base/SkTLazy.h"
 #include "src/core/SkTHash.h"
 
 #include <cstddef>
 #include <cstdint>
 #include <memory>
+#include <optional>
 #include <utility>
 
 class SkCanvas;
@@ -91,10 +91,19 @@ public:
     SkSVGRenderContext(const SkSVGRenderContext&, const SkSVGNode*);
     ~SkSVGRenderContext();
 
-    const SkSVGLengthContext& lengthContext() const { return *fLengthContext; }
-    SkSVGLengthContext* writableLengthContext() { return fLengthContext.writable(); }
+    const SkSVGLengthContext& lengthContext() const {
+        SkASSERT(fLengthContext.has_value());
+        return *fLengthContext;
+    }
+    SkSVGLengthContext* writableLengthContext() {
+        SkASSERT(fLengthContext.has_value());
+        return &fLengthContext.value();
+    }
 
-    const SkSVGPresentationContext& presentationContext() const { return *fPresentationContext; }
+    const SkSVGPresentationContext& presentationContext() const {
+        SkASSERT(fPresentationContext.has_value());
+        return *fPresentationContext;
+    }
 
     SkCanvas* canvas() const { return fCanvas; }
     void saveOnce();
@@ -140,13 +149,13 @@ public:
     // (effectively breaks reference cycles, assuming appropriate return value scoping).
     BorrowedNode findNodeById(const SkSVGIRI&) const;
 
-    SkTLazy<SkPaint> fillPaint() const;
-    SkTLazy<SkPaint> strokePaint() const;
+    std::optional<SkPaint> fillPaint() const;
+    std::optional<SkPaint> strokePaint() const;
 
     SkSVGColorType resolveSvgColor(const SkSVGColor&) const;
 
     // The local computed clip path (not inherited).
-    const SkPath* clipPath() const { return fClipPath.getMaybeNull(); }
+    const SkPath* clipPath() const { return fClipPath.has_value() ? &fClipPath.value() : nullptr; }
 
     const sk_sp<skresources::ResourceProvider>& resourceProvider() const {
         return fResourceProvider;
@@ -200,21 +209,21 @@ private:
     void applyClip(const SkSVGFuncIRI&);
     void applyMask(const SkSVGFuncIRI&);
 
-    SkTLazy<SkPaint> commonPaint(const SkSVGPaint&, float opacity) const;
+    std::optional<SkPaint> commonPaint(const SkSVGPaint&, float opacity) const;
 
     const sk_sp<SkFontMgr>&                       fFontMgr;
     const sk_sp<SkShapers::Factory>&              fTextShapingFactory;
     const sk_sp<skresources::ResourceProvider>&   fResourceProvider;
     const SkSVGIDMapper&                          fIDMapper;
-    SkTCopyOnFirstWrite<SkSVGLengthContext>       fLengthContext;
-    SkTCopyOnFirstWrite<SkSVGPresentationContext> fPresentationContext;
+    std::optional<SkSVGLengthContext> fLengthContext;
+    std::optional<SkSVGPresentationContext> fPresentationContext;
     SkCanvas*                                     fCanvas;
     // The save count on 'fCanvas' at construction time.
     // A restoreToCount() will be issued on destruction.
     int                                           fCanvasSaveCount;
 
     // clipPath, if present for the current context (not inherited).
-    SkTLazy<SkPath>                               fClipPath;
+    std::optional<SkPath> fClipPath;
 
     // Deferred opacity optimization for leaf nodes.
     float                                         fDeferredPaintOpacity = 1;

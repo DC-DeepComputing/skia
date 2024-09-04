@@ -41,11 +41,11 @@ sk_sp<SkShader> SkSVGRadialGradient::onMakeShader(const SkSVGRenderContext& ctx,
     const auto center = SkPoint::Make(
             lctx.resolve(fCx, SkSVGLengthContext::LengthType::kHorizontal),
             lctx.resolve(fCy, SkSVGLengthContext::LengthType::kVertical));
-    const auto  focal = SkPoint::Make(
-        fFx.isValid() ? lctx.resolve(*fFx, SkSVGLengthContext::LengthType::kHorizontal)
-                      : center.x(),
-        fFy.isValid() ? lctx.resolve(*fFy, SkSVGLengthContext::LengthType::kVertical)
-                      : center.y());
+    const auto focal = SkPoint::Make(
+            fFx.has_value() ? lctx.resolve(*fFx, SkSVGLengthContext::LengthType::kHorizontal)
+                            : center.x(),
+            fFy.has_value() ? lctx.resolve(*fFy, SkSVGLengthContext::LengthType::kVertical)
+                            : center.y());
 
     if (r == 0) {
         const auto last_color = count > 0 ? colors[count - 1] : SkColors::kBlack;
