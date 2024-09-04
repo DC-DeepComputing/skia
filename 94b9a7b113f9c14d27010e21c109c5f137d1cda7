@@ -118,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dae3c734_4a7036c6",
+        "filename": "src/gpu/ganesh/gl/win/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-09-04T13:27:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "06321a0b_a86614b6",
+      "range": {
+        "startLine": 17,
+        "startChar": 16,
+        "endLine": 17,
+        "endChar": 58
+      },
+      "revId": "94b9a7b113f9c14d27010e21c109c5f137d1cda7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b3dd678c_428fbcf2",
@@ -202,6 +226,30 @@
       "writtenOn": "2024-09-04T12:40:19Z",
       "side": 1,
       "message": "Exactly.",
+      "parentUuid": "2db6abde_d898943a",
+      "range": {
+        "startLine": 71,
+        "startChar": 11,
+        "endLine": 71,
+        "endChar": 34
+      },
+      "revId": "94b9a7b113f9c14d27010e21c109c5f137d1cda7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "787c2dc4_c8094462",
+        "filename": "src/gpu/ganesh/gl/win/GrGLMakeNativeInterface_win.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-09-04T13:27:14Z",
+      "side": 1,
+      "message": "Ok, I think I\u0027ve done this the correct way.",
       "parentUuid": "2db6abde_d898943a",
       "range": {
         "startLine": 71,
