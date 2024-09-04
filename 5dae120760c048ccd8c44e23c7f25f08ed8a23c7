@@ -16,6 +16,23 @@
       "message": "I\u0027ve got the two affected web tests suppressed for now. I tried a variant where I added the divide guard to EVERY blend mode, and that made a bunch of things *worse*. So I just added the guard to the remaining divide in the luminance helper. According to the bug report, that fixes the remaining issue they were seeing.",
       "revId": "5dae120760c048ccd8c44e23c7f25f08ed8a23c7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3fb1c616_14326f97",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-09-04T15:55:24Z",
+      "side": 1,
+      "message": "Any plans to guard the protected divides in other blend modes?",
+      "revId": "5dae120760c048ccd8c44e23c7f25f08ed8a23c7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
