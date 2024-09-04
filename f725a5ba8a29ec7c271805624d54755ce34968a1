@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6bf5a331_701c08e8",
+        "filename": "src/gpu/graphite/DrawAtlas.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 433,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-09-04T17:57:37Z",
+      "side": 0,
+      "message": "After creating the test I realized that this is the wrong check -- we should evict any plots that aren\u0027t in use this flush rather than since the last time compact() was run. That also made me think I shouldn\u0027t be updating the compact()-related variables, so I removed that as well.",
+      "range": {
+        "startLine": 433,
+        "startChar": 16,
+        "endLine": 433,
+        "endChar": 88
+      },
+      "revId": "f725a5ba8a29ec7c271805624d54755ce34968a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
