@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cff1d78f_c49a8a66",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-09-04T01:47:03Z",
+      "side": 1,
+      "message": "Thanks for helping pinpoint the root cause of this error.  Done.",
+      "parentUuid": "ed733335_3faaba60",
+      "revId": "555880623c45fabcfefef6ee6d595b80c799f228",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "22bb0475_05c99cdc",
@@ -49,6 +67,30 @@
       "writtenOn": "2024-09-03T23:14:41Z",
       "side": 1,
       "message": "nit: use skia_filegroup (makes this more future proof with G3). Same in the other file.",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 8,
+        "endChar": 9
+      },
+      "revId": "555880623c45fabcfefef6ee6d595b80c799f228",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d53ee0a_2aa475de",
+        "filename": "experimental/rust_png/BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-09-04T01:47:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "22bb0475_05c99cdc",
       "range": {
         "startLine": 8,
         "startChar": 0,
