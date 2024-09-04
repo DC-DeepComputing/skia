@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88748ae7_548e4585",
+        "filename": "src/base/SkArenaAlloc.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-09-04T17:13:59Z",
+      "side": 1,
+      "message": "For some reason, IWYU became convinced that we weren\u0027t using any type traits after `makeArrayCopy` was defined.",
+      "range": {
+        "startLine": 24,
+        "startChar": 22,
+        "endLine": 24,
+        "endChar": 44
+      },
+      "revId": "b4b9d9ead1931bb5ac90490295b2de7045875935",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
