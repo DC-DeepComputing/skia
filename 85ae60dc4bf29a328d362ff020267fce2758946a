@@ -34,6 +34,24 @@
       "parentUuid": "175bf018_a0036177",
       "revId": "85ae60dc4bf29a328d362ff020267fce2758946a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "23605ac6_e92a3e2e",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 465,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-09-04T20:01:42Z",
+      "side": 1,
+      "message": "Looks like everything was happy",
+      "parentUuid": "d2996253_852aabf6",
+      "revId": "85ae60dc4bf29a328d362ff020267fce2758946a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
