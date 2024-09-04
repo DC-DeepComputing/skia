@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cddb228e_949b2c33",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-09-04T15:29:18Z",
+      "side": 1,
+      "message": "LGTM with one documentation fix.",
+      "revId": "44476380d96f479deacdee892fca3487d74a3467",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4bf27491_b22f2716",
@@ -35,6 +52,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6bf52d6c_7dd7dce0",
+        "filename": "infra/bots/assets/clang_linux/Dockerfile",
+        "patchSetId": 4
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-09-04T15:29:18Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "4bf27491_b22f2716",
+      "revId": "44476380d96f479deacdee892fca3487d74a3467",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a0031200_ae6b346a",
@@ -48,6 +83,24 @@
       "writtenOn": "2024-09-04T15:13:26Z",
       "side": 1,
       "message": "\"AttributeError: module \u0027functools\u0027 has no attribute \u0027cache\u0027 (Added in python version 3.9. Using python 3.7.)\"",
+      "revId": "44476380d96f479deacdee892fca3487d74a3467",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7b950cd_2c387549",
+        "filename": "infra/bots/assets/clang_linux/Dockerfile",
+        "patchSetId": 4
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-09-04T15:29:18Z",
+      "side": 1,
+      "message": "Ack. Python 3.7 is the newest we can get on Debian 10 (https://packages.debian.org/buster/python3)",
+      "parentUuid": "a0031200_ae6b346a",
       "revId": "44476380d96f479deacdee892fca3487d74a3467",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -70,6 +123,53 @@
         "startChar": 10,
         "endLine": 20,
         "endChar": 16
+      },
+      "revId": "44476380d96f479deacdee892fca3487d74a3467",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cecac111_34a7dd11",
+        "filename": "infra/bots/assets/clang_linux/create.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-09-04T15:29:18Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "e0973637_debe0070",
+      "range": {
+        "startLine": 20,
+        "startChar": 10,
+        "endLine": 20,
+        "endChar": 16
+      },
+      "revId": "44476380d96f479deacdee892fca3487d74a3467",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "afb1443f_f6b2e7f3",
+        "filename": "toolchain/download_linux_amd64_toolchain.bzl",
+        "patchSetId": 4
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-09-04T15:29:18Z",
+      "side": 1,
+      "message": "https://chrome-infra-packages.appspot.com/p/skia/bots/clang_linux/+/version:32 is the one that matches the below hash (the one in the comment is version 31)",
+      "range": {
+        "startLine": 21,
+        "startChar": 70,
+        "endLine": 21,
+        "endChar": 93
       },
       "revId": "44476380d96f479deacdee892fca3487d74a3467",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"

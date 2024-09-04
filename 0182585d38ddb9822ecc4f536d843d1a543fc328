@@ -22,6 +22,30 @@
       },
       "revId": "0182585d38ddb9822ecc4f536d843d1a543fc328",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cc2f7de6_0dea1580",
+        "filename": "infra/bots/assets/clang_linux/Dockerfile",
+        "patchSetId": 3
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-09-04T15:29:18Z",
+      "side": 0,
+      "message": "Acknowledged",
+      "parentUuid": "1346c42e_ca8bb184",
+      "range": {
+        "startLine": 59,
+        "startChar": 27,
+        "endLine": 59,
+        "endChar": 32
+      },
+      "revId": "0182585d38ddb9822ecc4f536d843d1a543fc328",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
