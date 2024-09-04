@@ -46,6 +46,30 @@
       },
       "revId": "f92c91e19066da216b0b624be391342be577867c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "01970a8a_730416d7",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 4
+      },
+      "lineNbr": 2156,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-09-04T18:32:51Z",
+      "side": 0,
+      "message": "Yeah, the idea was to make all of the labels in shorthandToLabel be relative to the Skia workspace.  If we want to make them relative to something else, then the caller handles that.",
+      "parentUuid": "4e2d5525_55c37a75",
+      "range": {
+        "startLine": 2156,
+        "startChar": 0,
+        "endLine": 2156,
+        "endChar": 80
+      },
+      "revId": "f92c91e19066da216b0b624be391342be577867c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
