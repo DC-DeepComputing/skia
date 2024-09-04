@@ -31,7 +31,6 @@
 #include "modules/svg/include/SkSVGAttributeParser.h"
 #include "modules/svg/include/SkSVGRenderContext.h"
 #include "modules/svg/src/SkSVGTextPriv.h"
-#include "src/base/SkTLazy.h"
 #include "src/base/SkUTF.h"
 #include "src/core/SkTextBlobPriv.h"
 
@@ -41,6 +40,7 @@
 #include <functional>
 #include <limits>
 #include <memory>
+#include <optional>
 #include <tuple>
 #include <utility>
 
@@ -507,14 +507,14 @@ SkShaper::RunHandler::Buffer SkSVGTextContext::runBuffer(const RunInfo& ri) {
     SkASSERT(ri.glyphCount);
 
     fRuns.push_back({
-        ri.fFont,
-        fCurrentFill.isValid()   ? std::make_unique<SkPaint>(*fCurrentFill)   : nullptr,
-        fCurrentStroke.isValid() ? std::make_unique<SkPaint>(*fCurrentStroke) : nullptr,
-        std::make_unique<SkGlyphID[]         >(ri.glyphCount),
-        std::make_unique<SkPoint[]           >(ri.glyphCount),
-        std::make_unique<PositionAdjustment[]>(ri.glyphCount),
-        ri.glyphCount,
-        ri.fAdvance,
+            ri.fFont,
+            fCurrentFill.has_value() ? std::make_unique<SkPaint>(*fCurrentFill) : nullptr,
+            fCurrentStroke.has_value() ? std::make_unique<SkPaint>(*fCurrentStroke) : nullptr,
+            std::make_unique<SkGlyphID[]>(ri.glyphCount),
+            std::make_unique<SkPoint[]>(ri.glyphCount),
+            std::make_unique<PositionAdjustment[]>(ri.glyphCount),
+            ri.glyphCount,
+            ri.fAdvance,
     });
 
     // Ensure sufficient space to temporarily fetch cluster information.

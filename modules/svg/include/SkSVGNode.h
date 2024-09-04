@@ -11,6 +11,7 @@
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
 #include "include/private/base/SkAPI.h"
+#include "include/private/base/SkAssert.h"
 #include "modules/svg/include/SkSVGAttribute.h"
 #include "modules/svg/include/SkSVGAttributeParser.h"
 #include "modules/svg/include/SkSVGTypes.h"
@@ -72,35 +73,37 @@ enum class SkSVGTag {
     kUse
 };
 
-#define SVG_PRES_ATTR(attr_name, attr_type, attr_inherited)                  \
-private:                                                                     \
-    bool set##attr_name(SkSVGAttributeParser::ParseResult<                   \
-                            SkSVGProperty<attr_type, attr_inherited>>&& pr) {\
-        if (pr.isValid()) { this->set##attr_name(std::move(*pr)); }          \
-        return pr.isValid();                                                 \
-    }                                                                        \
-                                                                             \
-public:                                                                      \
-    const SkSVGProperty<attr_type, attr_inherited>& get##attr_name() const { \
-        return fPresentationAttributes.f##attr_name;                         \
-    }                                                                        \
-    void set##attr_name(const SkSVGProperty<attr_type, attr_inherited>& v) { \
-        auto* dest = &fPresentationAttributes.f##attr_name;                  \
-        if (!dest->isInheritable() || v.isValue()) {                         \
-            /* TODO: If dest is not inheritable, handle v == "inherit" */    \
-            *dest = v;                                                       \
-        } else {                                                             \
-            dest->set(SkSVGPropertyState::kInherit);                         \
-        }                                                                    \
-    }                                                                        \
-    void set##attr_name(SkSVGProperty<attr_type, attr_inherited>&& v) {      \
-        auto* dest = &fPresentationAttributes.f##attr_name;                  \
-        if (!dest->isInheritable() || v.isValue()) {                         \
-            /* TODO: If dest is not inheritable, handle v == "inherit" */    \
-            *dest = std::move(v);                                            \
-        } else {                                                             \
-            dest->set(SkSVGPropertyState::kInherit);                         \
-        }                                                                    \
+#define SVG_PRES_ATTR(attr_name, attr_type, attr_inherited)                                     \
+private:                                                                                        \
+    bool set##attr_name(                                                                        \
+            SkSVGAttributeParser::ParseResult<SkSVGProperty<attr_type, attr_inherited>>&& pr) { \
+        if (pr.has_value()) {                                                                   \
+            this->set##attr_name(std::move(*pr));                                               \
+        }                                                                                       \
+        return pr.has_value();                                                                  \
+    }                                                                                           \
+                                                                                                \
+public:                                                                                         \
+    const SkSVGProperty<attr_type, attr_inherited>& get##attr_name() const {                    \
+        return fPresentationAttributes.f##attr_name;                                            \
+    }                                                                                           \
+    void set##attr_name(const SkSVGProperty<attr_type, attr_inherited>& v) {                    \
+        auto* dest = &fPresentationAttributes.f##attr_name;                                     \
+        if (!dest->isInheritable() || v.isValue()) {                                            \
+            /* TODO: If dest is not inheritable, handle v == "inherit" */                       \
+            *dest = v;                                                                          \
+        } else {                                                                                \
+            dest->set(SkSVGPropertyState::kInherit);                                            \
+        }                                                                                       \
+    }                                                                                           \
+    void set##attr_name(SkSVGProperty<attr_type, attr_inherited>&& v) {                         \
+        auto* dest = &fPresentationAttributes.f##attr_name;                                     \
+        if (!dest->isInheritable() || v.isValue()) {                                            \
+            /* TODO: If dest is not inheritable, handle v == "inherit" */                       \
+            *dest = std::move(v);                                                               \
+        } else {                                                                                \
+            dest->set(SkSVGPropertyState::kInherit);                                            \
+        }                                                                                       \
     }
 
 class SK_API SkSVGNode : public SkRefCnt {
@@ -195,40 +198,42 @@ private:
 
 #undef SVG_PRES_ATTR // presentation attributes are only defined for the base class
 
-#define _SVG_ATTR_SETTERS(attr_name, attr_type, attr_default, set_cp, set_mv) \
-    private:                                                                  \
-        bool set##attr_name(                                                  \
-                const SkSVGAttributeParser::ParseResult<attr_type>& pr) {     \
-            if (pr.isValid()) { this->set##attr_name(*pr); }                  \
-            return pr.isValid();                                              \
-        }                                                                     \
-        bool set##attr_name(                                                  \
-                SkSVGAttributeParser::ParseResult<attr_type>&& pr) {          \
-            if (pr.isValid()) { this->set##attr_name(std::move(*pr)); }       \
-            return pr.isValid();                                              \
-        }                                                                     \
-    public:                                                                   \
-        void set##attr_name(const attr_type& a) { set_cp(a); }                \
-        void set##attr_name(attr_type&& a) { set_mv(std::move(a)); }
+#define _SVG_ATTR_SETTERS(attr_name, attr_type, attr_default)                     \
+private:                                                                          \
+    bool set##attr_name(const SkSVGAttributeParser::ParseResult<attr_type>& pr) { \
+        if (pr.has_value()) {                                                     \
+            this->set##attr_name(*pr);                                            \
+        }                                                                         \
+        return pr.has_value();                                                    \
+    }                                                                             \
+    bool set##attr_name(SkSVGAttributeParser::ParseResult<attr_type>&& pr) {      \
+        if (pr.has_value()) {                                                     \
+            this->set##attr_name(std::move(*pr));                                 \
+        }                                                                         \
+        return pr.has_value();                                                    \
+    }                                                                             \
+                                                                                  \
+public:                                                                           \
+    void set##attr_name(const attr_type& a) { this->f##attr_name = a; }           \
+    void set##attr_name(attr_type&& a) { this->f##attr_name = std::move(a); }
 
-#define SVG_ATTR(attr_name, attr_type, attr_default)                        \
-    private:                                                                \
-        attr_type f##attr_name = attr_default;                              \
-    public:                                                                 \
-        const attr_type& get##attr_name() const { return f##attr_name; }    \
-    _SVG_ATTR_SETTERS(                                                      \
-            attr_name, attr_type, attr_default,                             \
-            [this](const attr_type& a) { this->f##attr_name = a; },         \
-            [this](attr_type&& a) { this->f##attr_name = std::move(a); })
+#define SVG_ATTR(attr_name, attr_type, attr_default)                 \
+private:                                                             \
+    attr_type f##attr_name = attr_default;                           \
+                                                                     \
+public:                                                              \
+    const attr_type& get##attr_name() const { return f##attr_name; } \
+    _SVG_ATTR_SETTERS(attr_name, attr_type, attr_default)
 
-#define SVG_OPTIONAL_ATTR(attr_name, attr_type)                                   \
-    private:                                                                      \
-        SkTLazy<attr_type> f##attr_name;                                          \
-    public:                                                                       \
-        const SkTLazy<attr_type>& get##attr_name() const { return f##attr_name; } \
-    _SVG_ATTR_SETTERS(                                                            \
-            attr_name, attr_type, attr_default,                                   \
-            [this](const attr_type& a) { this->f##attr_name.set(a); },            \
-            [this](attr_type&& a) { this->f##attr_name.set(std::move(a)); })
+#define SVG_OPTIONAL_ATTR(attr_name, attr_type)       \
+private:                                              \
+    std::optional<attr_type> f##attr_name;            \
+                                                      \
+public:                                               \
+    std::optional<attr_type> get##attr_name() const { \
+        SkASSERT(f##attr_name.has_value());           \
+        return f##attr_name;                          \
+    }                                                 \
+    _SVG_ATTR_SETTERS(attr_name, attr_type, attr_default)
 
 #endif // SkSVGNode_DEFINED

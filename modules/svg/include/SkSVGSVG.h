@@ -15,7 +15,8 @@
 #include "modules/svg/include/SkSVGNode.h"
 #include "modules/svg/include/SkSVGTypes.h"
 #include "modules/svg/include/SkSVGValue.h"
-#include "src/base/SkTLazy.h"
+
+#include <optional>
 
 class SkSVGLengthContext;
 class SkSVGRenderContext;

@@ -15,8 +15,8 @@
 #include "modules/svg/include/SkSVGFe.h"
 #include "modules/svg/include/SkSVGNode.h"
 #include "modules/svg/include/SkSVGTypes.h"
-#include "src/base/SkTLazy.h"
 
+#include <optional>
 #include <vector>
 
 class SkImageFilter;

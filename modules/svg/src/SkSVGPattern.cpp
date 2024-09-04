@@ -19,6 +19,8 @@
 
 class SkMatrix;
 
+#include <optional>
+
 SkSVGPattern::SkSVGPattern() : INHERITED(SkSVGTag::kPattern) {}
 
 bool SkSVGPattern::parseAndSetAttribute(const char* name, const char* value) {
@@ -45,9 +47,8 @@ const SkSVGPattern* SkSVGPattern::hrefTarget(const SkSVGRenderContext& ctx) cons
     return static_cast<const SkSVGPattern*>(href.get());
 }
 
-template <typename T>
-int inherit_if_needed(const SkTLazy<T>& src, SkTLazy<T>& dst) {
-    if (!dst.isValid()) {
+template <typename T> int inherit_if_needed(const std::optional<T>& src, std::optional<T>& dst) {
+    if (!dst.has_value()) {
         dst = src;
         return 1;
     }
@@ -99,17 +100,17 @@ bool SkSVGPattern::onAsPaint(const SkSVGRenderContext& ctx, SkPaint* paint) cons
     const auto* contentNode = this->resolveHref(ctx, &attrs);
 
     const auto tile = ctx.lengthContext().resolveRect(
-            attrs.fX.isValid()      ? *attrs.fX      : SkSVGLength(0),
-            attrs.fY.isValid()      ? *attrs.fY      : SkSVGLength(0),
-            attrs.fWidth.isValid()  ? *attrs.fWidth  : SkSVGLength(0),
-            attrs.fHeight.isValid() ? *attrs.fHeight : SkSVGLength(0));
+            attrs.fX.has_value()      ? *attrs.fX      : SkSVGLength(0),
+            attrs.fY.has_value()      ? *attrs.fY      : SkSVGLength(0),
+            attrs.fWidth.has_value()  ? *attrs.fWidth  : SkSVGLength(0),
+            attrs.fHeight.has_value() ? *attrs.fHeight : SkSVGLength(0));
 
     if (tile.isEmpty()) {
         return false;
     }
 
-    const SkMatrix* patternTransform = attrs.fPatternTransform.isValid()
-            ? attrs.fPatternTransform.get()
+    const SkMatrix* patternTransform = attrs.fPatternTransform.has_value()
+            ? &attrs.fPatternTransform.value()
             : nullptr;
 
     SkPictureRecorder recorder;
