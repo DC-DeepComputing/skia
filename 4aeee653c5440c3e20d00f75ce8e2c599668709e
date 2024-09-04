@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "55ceeab9_04f05093",
+        "filename": "tests/graphite/DrawAtlasTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-09-04T19:53:46Z",
+      "side": 1,
+      "message": "NextRelease ?",
+      "range": {
+        "startLine": 66,
+        "startChar": 57,
+        "endLine": 66,
+        "endChar": 68
+      },
+      "revId": "4aeee653c5440c3e20d00f75ce8e2c599668709e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d69c91f6_dc5df773",
+        "filename": "tests/graphite/DrawAtlasTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-09-04T19:53:46Z",
+      "side": 1,
+      "message": "afaict this should just be some const like kExpectedMaxPages\nI guess maybe in the Ganesh equivalent too",
+      "range": {
+        "startLine": 82,
+        "startChar": 36,
+        "endLine": 82,
+        "endChar": 37
+      },
+      "revId": "4aeee653c5440c3e20d00f75ce8e2c599668709e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e27b26ce_f8a0a6e4",
+        "filename": "tests/graphite/DrawAtlasTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-09-04T19:53:46Z",
+      "side": 1,
+      "message": "next release ?",
+      "range": {
+        "startLine": 182,
+        "startChar": 67,
+        "endLine": 182,
+        "endChar": 78
+      },
+      "revId": "4aeee653c5440c3e20d00f75ce8e2c599668709e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
