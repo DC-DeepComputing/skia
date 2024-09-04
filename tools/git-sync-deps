@@ -132,7 +132,10 @@ def git_checkout_to_directory(git, repo, commithash, directory, shallow, verbose
   Raises an exception if any calls to git fail.
   """
   if not os.path.isdir(directory):
-    subprocess.check_call(
+    # This sometimes returns a non-zero error code (e.g. for the jpeg-xl repo as of
+    # time of writing) https://stackoverflow.com/a/15631690
+    # This might be recoverable/fine so we will continue regardless of error.
+    subprocess.call(
       [git, 'clone', '--quiet', *(['--depth=1'] if shallow else []),
        '--no-checkout', repo, directory])
 
@@ -241,6 +244,7 @@ def multithread(function, list_of_arg_lists):
   anything_failed = False
   threads = []
   def hook(args):
+    print(args)
     nonlocal anything_failed
     anything_failed = True
   threading.excepthook = hook
