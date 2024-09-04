@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c76102c3_6f3890b3",
+        "filename": "src/gpu/graphite/PipelineData.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-09-04T20:21:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6e5dea15_4bd7ef8a",
+      "revId": "2d384240338371a53124e6e0a7c4f0c0b9b86e3b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f9ab1424_dac81852",
@@ -35,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "35aa58d8_2e8075b7",
+        "filename": "src/gpu/graphite/PipelineData.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-09-04T20:21:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f9ab1424_dac81852",
+      "revId": "2d384240338371a53124e6e0a7c4f0c0b9b86e3b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8ffecae2_76844c09",
@@ -48,6 +84,24 @@
       "writtenOn": "2024-09-04T17:32:55Z",
       "side": 1,
       "message": "Can we make this ctor private ? Having it public seems like a possible footgun.",
+      "revId": "2d384240338371a53124e6e0a7c4f0c0b9b86e3b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eed8fef6_9590a392",
+        "filename": "src/gpu/graphite/PipelineData.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-09-04T20:21:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8ffecae2_76844c09",
       "revId": "2d384240338371a53124e6e0a7c4f0c0b9b86e3b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
