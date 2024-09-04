@@ -10,6 +10,7 @@
 
 #include "include/gpu/graphite/GraphiteTypes.h"
 
+#include "src/base/SkEnumBitMask.h"
 #include "src/gpu/graphite/ResourceTypes.h"
 
 #include <array>
@@ -142,6 +143,22 @@ enum class UniformSlot {
     // Meant for gradient storage buffer.
     kGradient
 };
+
+enum class ViewportControl : unsigned int {
+    // The default viewport behavior of most GPU backends is that the (-1,-1) NDC coordinate is
+    // at the bottom left with positive Y going up (opposite of the top-left Y-down viewport itself)
+    // and the viewport is not restricted to the attachment.
+    kDefault = 0b00,
+    // The (-1,-1) NDC coordinate maps to the top-left of the viewport and positive Y goes down
+    // (matching the viewport coordinates).
+    kNDCYPointsDown = 0b01,
+    // The viewport is required to be contained within the attachment.
+    // TODO(https://github.com/gpuweb/gpuweb/issues/373): WebGPU requires this as a validation layer
+    // but all underlying backends support a viewport being not contained in the attachment.
+    // Hopefully the validation layer can be relaxed and then this control can go away.
+    kContainedInAttachment = 0b10
+};
+SK_MAKE_BITMASK_OPS(ViewportControl)
 
 /*
  * Depth and stencil settings

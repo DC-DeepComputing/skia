@@ -8,6 +8,7 @@
 #ifndef skgpu_graphite_DawnCommandBuffer_DEFINED
 #define skgpu_graphite_DawnCommandBuffer_DEFINED
 
+#include "DawnIntrinsicUniformManager.h"
 #include "src/gpu/graphite/CommandBuffer.h"
 #include "src/gpu/graphite/DrawPass.h"
 #include "src/gpu/graphite/GpuWorkSubmission.h"
@@ -49,7 +50,7 @@ private:
                          const Texture* colorTexture,
                          const Texture* resolveTexture,
                          const Texture* depthStencilTexture,
-                         SkRect viewport,
+                         SkIRect viewport,
                          const DrawPassList&) override;
     bool onAddComputePass(DispatchGroupSpan) override;
 
@@ -85,7 +86,7 @@ private:
                                 const DrawPassCommands::BindTexturesAndSamplers& command);
 
     void setScissor(unsigned int left, unsigned int top, unsigned int width, unsigned int height);
-    void preprocessViewport(const SkRect& viewport);
+    void updateIntrinsicUniforms(SkIRect viewport);
     void setViewport(const SkRect& viewport);
 
     void draw(PrimitiveType type, unsigned int baseVertex, unsigned int vertexCount);
@@ -141,6 +142,8 @@ private:
     // Commiting uniform buffers' changes if any before drawing
     void syncUniformBuffers();
 
+    class IntrinsicConstantsManager;
+
     bool fBoundUniformBuffersDirty = false;
 
     std::array<const DawnBuffer*, DawnGraphicsPipeline::kNumUniformBuffers> fBoundUniformBuffers;
@@ -154,22 +157,11 @@ private:
     wgpu::Buffer fCurrentIndirectBuffer;
     size_t fCurrentIndirectBufferOffset = 0;
 
-    using IntrinsicConstant = std::array<float, 4>;
-
-    static constexpr int kBufferBindingOffsetAlignment = 256;
-    static constexpr int kIntrinsicConstantAlignedSize =
-            SkAlignTo(sizeof(IntrinsicConstant), kBufferBindingOffsetAlignment);
-    static constexpr int kNumSlotsForIntrinsicConstantBuffer = 8;
-
-    std::optional<IntrinsicConstant> fCurrentRTAdjust;
-
-    sk_sp<DawnBuffer> fIntrinsicConstantBuffer;
-    int fIntrinsicConstantBufferSlotsUsed = 0;
-
     const DawnGraphicsPipeline* fActiveGraphicsPipeline = nullptr;
     const DawnComputePipeline* fActiveComputePipeline = nullptr;
     const DawnSharedContext* fSharedContext;
     DawnResourceProvider* fResourceProvider;
+    std::unique_ptr<IntrinsicConstantsManager> fIntrinsicConstants;
 };
 
 }  // namespace skgpu::graphite

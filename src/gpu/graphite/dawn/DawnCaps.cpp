@@ -441,6 +441,8 @@ void DawnCaps::initCaps(const DawnBackendContext& backendContext, const ContextO
     // Dawn requires 256 bytes per row alignment for buffer texture copies.
     fTextureDataRowBytesAlignment = 256;
 
+    fViewportControl = ViewportControl::kContainedInAttachment;
+
     fResourceBindingReqs.fUniformBufferLayout = Layout::kStd140;
     // The WGSL generator assumes tightly packed std430 layout for SSBOs which is also the default
     // for all types outside the uniform address space in WGSL.
