@@ -141,6 +141,30 @@
       },
       "revId": "76faf88beb0bb48deb7d68cea15e7664ed453de5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3c4b814f_51805872",
+        "filename": "tools/git-sync-deps",
+        "patchSetId": 2
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-09-04T14:56:16Z",
+      "side": 1,
+      "message": "Done. Thanks for the help getting `gclient sync` to work!",
+      "parentUuid": "b17c2618_6489678f",
+      "range": {
+        "startLine": 138,
+        "startChar": 0,
+        "endLine": 138,
+        "endChar": 20
+      },
+      "revId": "76faf88beb0bb48deb7d68cea15e7664ed453de5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
