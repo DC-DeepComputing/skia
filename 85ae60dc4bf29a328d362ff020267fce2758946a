@@ -16,6 +16,24 @@
       "message": "We aren\u0027t launching Dawn/Vulkan anywhere other than Android yet but I guess this will impact some mac/win chrome unit tests that exercise graphite running swiftshader/vulkan. Not sure if it\u0027s worth making this Android specific?",
       "revId": "85ae60dc4bf29a328d362ff020267fce2758946a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d2996253_852aabf6",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 465,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-09-04T17:36:31Z",
+      "side": 1,
+      "message": "I added a Canary-Chromium job that will create a patched chrome CL that should check this, but I expect we will be okay.",
+      "parentUuid": "175bf018_a0036177",
+      "revId": "85ae60dc4bf29a328d362ff020267fce2758946a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
