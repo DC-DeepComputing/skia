@@ -15,6 +15,10 @@
 #include <memory>
 #include <vector>
 
+#ifdef SK_CODEC_DECODES_JPEG_GAINMAPS
+#include "include/private/SkXmp.h"
+#endif  // SK_CODEC_DECODES_JPEG_GAINMAPS
+
 struct SkGainmapInfo;
 
 /**
@@ -86,6 +90,10 @@ public:
     virtual bool findGainmapImage(sk_sp<SkData> baseImageData,
                                   sk_sp<SkData>& outGainmapImagedata,
                                   SkGainmapInfo& outGainmapInfo) = 0;
+
+    #ifdef SK_CODEC_DECODES_JPEG_GAINMAPS
+      virtual std::unique_ptr<SkXmp> getXmpMetadata() const = 0;
+    #endif  // SK_CODEC_DECODES_JPEG_GAINMAPS
 };
 
 #endif
