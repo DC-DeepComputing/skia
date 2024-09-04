@@ -14,18 +14,19 @@
 #include "include/gpu/vk/VulkanBackendContext.h"
 #include "include/gpu/vk/VulkanMemoryAllocator.h"
 #include "tests/TestType.h"
-#include "tools/gpu/ProtectedUtils.h"
 #include "tools/gpu/vk/VkTestUtils.h"
 
 #if defined(SK_GANESH)
 #include "include/gpu/ganesh/GrDirectContext.h"
 #include "include/gpu/ganesh/vk/GrVkDirectContext.h"
+#include "tools/gpu/ProtectedUtils.h"
 #endif
 
 #if defined(SK_GRAPHITE)
 #include "include/gpu/graphite/Context.h"
 #include "include/gpu/graphite/vk/VulkanGraphiteUtils.h"
 #include "src/gpu/graphite/ContextOptionsPriv.h"
+#include "tools/graphite/ProtectedUtils_Graphite.h"
 #endif
 
 #define ACQUIRE_INST_VK_PROC(name)                                                               \

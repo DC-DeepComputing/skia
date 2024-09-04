@@ -19,7 +19,7 @@
 #include "src/gpu/graphite/Surface_Graphite.h"
 #include "src/shaders/SkImageShader.h"
 #include "tools/ToolUtils.h"
-#include "tools/gpu/ManagedBackendTexture.h"
+#include "tools/graphite/ManagedBackendTexture_Graphite.h"
 
 namespace skgpu::graphite {
 

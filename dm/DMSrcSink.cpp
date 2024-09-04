@@ -103,6 +103,7 @@
 #include "src/gpu/graphite/ContextOptionsPriv.h"
 // TODO: Remove this src include once we figure out public readPixels call for Graphite.
 #include "src/gpu/graphite/Surface_Graphite.h"
+#include "tools/graphite/BackendSurfaceFactory_Graphite.h"
 #include "tools/graphite/ContextFactory.h"
 #include "tools/graphite/GraphiteTestContext.h"
 

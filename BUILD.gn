@@ -2041,11 +2041,16 @@ if (skia_enable_tools) {
       ]
     }
     if (skia_enable_graphite) {
+      sources += [ "tools/graphite/BackendSurfaceFactory_Graphite.cpp" ]
+      sources += [ "tools/graphite/BackendSurfaceFactory_Graphite.h" ]
       sources += [ "tools/graphite/ContextFactory.h" ]
       sources += [ "tools/graphite/ContextFactory.cpp" ]
       sources += [ "tools/graphite/GraphiteTestContext.h" ]
       sources += [ "tools/graphite/GraphiteTestContext.cpp" ]
+      sources += [ "tools/graphite/ManagedBackendTexture_Graphite.cpp" ]
+      sources += [ "tools/graphite/ManagedBackendTexture_Graphite.h" ]
       sources += [ "tools/graphite/ProtectedUtils_Graphite.cpp" ]
+      sources += [ "tools/graphite/ProtectedUtils_Graphite.h" ]
       sources += [ "tools/graphite/UniqueKeyUtils.cpp" ]
       sources += [ "tools/graphite/UniqueKeyUtils.h" ]
       if (skia_use_dawn) {

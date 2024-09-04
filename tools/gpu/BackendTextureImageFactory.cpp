@@ -11,12 +11,12 @@
 #include "include/core/SkImage.h"
 #include "include/core/SkPixmap.h"
 #include "src/core/SkAutoPixmapStorage.h"
-#include "tools/gpu/ManagedBackendTexture.h"
 
 #ifdef SK_GANESH
 #include "include/gpu/ganesh/GrBackendSurface.h"
 #include "include/gpu/ganesh/GrDirectContext.h"
 #include "include/gpu/ganesh/SkImageGanesh.h"
+#include "tools/gpu/ManagedBackendTexture.h"
 #endif
 
 #ifdef SK_GRAPHITE
@@ -24,6 +24,7 @@
 #include "include/gpu/graphite/Image.h"
 #include "include/gpu/graphite/Recorder.h"
 #include "src/gpu/graphite/RecorderPriv.h"
+#include "tools/graphite/ManagedBackendTexture_Graphite.h"
 #endif
 
 namespace sk_gpu_test {
