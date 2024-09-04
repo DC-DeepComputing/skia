@@ -52,9 +52,11 @@ struct GrContextOptions;
 using namespace skgpu::ganesh;
 using MaskFormat = skgpu::MaskFormat;
 
-static const int kNumPlots = 2;
-static const int kPlotSize = 32;
-static const int kAtlasSize = kNumPlots * kPlotSize;
+
+namespace {
+const int kNumPlots = 2;
+const int kPlotSize = 32;
+const int kAtlasSize = kNumPlots * kPlotSize;
 
 class AssertOnEvict : public skgpu::PlotEvictionCallback {
 public:
@@ -63,13 +65,32 @@ public:
     }
 };
 
-static void check(skiatest::Reporter* r, GrDrawOpAtlas* atlas,
-                  uint32_t expectedActive, uint32_t expectedMax, int expectedAlloced) {
+void check(skiatest::Reporter* r, GrDrawOpAtlas* atlas,
+           uint32_t expectedActive, uint32_t expectedMax, int expectedAlloced) {
     REPORTER_ASSERT(r, expectedActive == atlas->numActivePages());
     REPORTER_ASSERT(r, expectedMax == atlas->maxPages());
     REPORTER_ASSERT(r, expectedAlloced == GrDrawOpAtlasTools::NumAllocated(atlas));
 }
 
+bool fill_plot(GrDrawOpAtlas* atlas,
+               GrResourceProvider* resourceProvider,
+               GrDeferredUploadTarget* target,
+               skgpu::AtlasLocator* atlasLocator,
+               int alpha) {
+    SkImageInfo ii = SkImageInfo::MakeA8(kPlotSize, kPlotSize);
+
+    SkBitmap data;
+    data.allocPixels(ii);
+    data.eraseARGB(alpha, 0, 0, 0);
+
+    GrDrawOpAtlas::ErrorCode code;
+    code = atlas->addToAtlas(resourceProvider, target, kPlotSize, kPlotSize,
+                             data.getAddr(0, 0), atlasLocator);
+    return GrDrawOpAtlas::ErrorCode::kSucceeded == code;
+}
+}  // anonymous namespace
+
+// Can't be in anonymous namespace because it needs friend access to TokenTracker
 class TestingUploadTarget : public GrDeferredUploadTarget {
 public:
     TestingUploadTarget() { }
@@ -94,24 +115,6 @@ private:
 
     using INHERITED = GrDeferredUploadTarget;
 };
-
-static bool fill_plot(GrDrawOpAtlas* atlas,
-                      GrResourceProvider* resourceProvider,
-                      GrDeferredUploadTarget* target,
-                      skgpu::AtlasLocator* atlasLocator,
-                      int alpha) {
-    SkImageInfo ii = SkImageInfo::MakeA8(kPlotSize, kPlotSize);
-
-    SkBitmap data;
-    data.allocPixels(ii);
-    data.eraseARGB(alpha, 0, 0, 0);
-
-    GrDrawOpAtlas::ErrorCode code;
-    code = atlas->addToAtlas(resourceProvider, target, kPlotSize, kPlotSize,
-                             data.getAddr(0, 0), atlasLocator);
-    return GrDrawOpAtlas::ErrorCode::kSucceeded == code;
-}
-
 
 // This is a basic DrawOpAtlas test. It simply verifies that multitexture atlases correctly
 // add and remove pages. Note that this is simulating flush-time behavior.
@@ -238,6 +241,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrAtlasTextOpPreparation,
     flushState.setOpArgs(nullptr);
 }
 
+namespace {
 void test_atlas_config(skiatest::Reporter* reporter, int maxTextureSize, size_t maxBytes,
                        MaskFormat maskFormat, SkISize expectedDimensions,
                        SkISize expectedPlotDimensions) {
@@ -245,6 +249,7 @@ void test_atlas_config(skiatest::Reporter* reporter, int maxTextureSize, size_t 
     REPORTER_ASSERT(reporter, config.atlasDimensions(maskFormat) == expectedDimensions);
     REPORTER_ASSERT(reporter, config.plotDimensions(maskFormat) == expectedPlotDimensions);
 }
+}  // anonymous namespace
 
 DEF_GANESH_TEST(GrDrawOpAtlasConfig_Basic, reporter, options, CtsEnforcement::kApiLevel_T) {
     // 1/4 MB
