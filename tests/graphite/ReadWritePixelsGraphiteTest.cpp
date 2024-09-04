@@ -30,8 +30,8 @@
 #include "tests/Test.h"
 #include "tests/TestUtils.h"
 #include "tools/ToolUtils.h"
-#include "tools/gpu/BackendTextureImageFactory.h"
 #include "tools/gpu/ManagedBackendTexture.h"
+#include "tools/graphite/BackendTextureImageFactory_Graphite.h"
 #include "tools/graphite/GraphiteTestContext.h"
 
 using Mipmapped = skgpu::Mipmapped;
