@@ -55,6 +55,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0314e870_4d5357d6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-04T15:52:25Z",
+      "side": 1,
+      "message": "Looks like `toolchain/linux_trampolines/IWYU_mapping.imp` is going to need some updating.",
+      "revId": "44476380d96f479deacdee892fca3487d74a3467",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4bf27491_b22f2716",
         "filename": "infra/bots/assets/clang_linux/Dockerfile",
         "patchSetId": 4
@@ -183,6 +200,30 @@
       "writtenOn": "2024-09-04T15:29:18Z",
       "side": 1,
       "message": "https://chrome-infra-packages.appspot.com/p/skia/bots/clang_linux/+/version:32 is the one that matches the below hash (the one in the comment is version 31)",
+      "range": {
+        "startLine": 21,
+        "startChar": 70,
+        "endLine": 21,
+        "endChar": 93
+      },
+      "revId": "44476380d96f479deacdee892fca3487d74a3467",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba5177bb_72db0915",
+        "filename": "toolchain/download_linux_amd64_toolchain.bzl",
+        "patchSetId": 4
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-04T15:52:25Z",
+      "side": 1,
+      "message": "Yep, forgot about the one in the comments. This is the first one I uploaded which was missing all the compiler runtimes because they\u0027ve been split out and now one needs to ask for them explicitly.",
+      "parentUuid": "afb1443f_f6b2e7f3",
       "range": {
         "startLine": 21,
         "startChar": 70,
