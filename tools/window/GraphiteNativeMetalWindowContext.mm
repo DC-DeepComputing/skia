@@ -56,11 +56,11 @@ void GraphiteMetalWindowContext::initializeContext() {
     backendContext.fDevice.retain((CFTypeRef)fDevice.get());
     backendContext.fQueue.retain((CFTypeRef)fQueue.get());
 
-    fDisplayParams.fGraphiteContextOptions.fOptions.fDisableCachedGlyphUploads = true;
+    fDisplayParams.fGraphiteContextOptions1.fOptions.fDisableCachedGlyphUploads = true;
     // Needed to make synchronous readPixels work:
-    fDisplayParams.fGraphiteContextOptions.fPriv.fStoreContextRefInRecorder = true;
+    fDisplayParams.fGraphiteContextOptions1.fPriv.fStoreContextRefInRecorder = true;
     fGraphiteContext = skgpu::graphite::ContextFactory::MakeMetal(
-            backendContext, fDisplayParams.fGraphiteContextOptions.fOptions);
+            backendContext, fDisplayParams.fGraphiteContextOptions1.fOptions);
     fGraphiteRecorder = fGraphiteContext->makeRecorder(ToolUtils::CreateTestingRecorderOptions());
     // TODO
     //    if (!fGraphiteContext && fDisplayParams.fMSAASampleCount > 1) {
