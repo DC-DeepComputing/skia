@@ -163,6 +163,30 @@
       },
       "revId": "94b9a7b113f9c14d27010e21c109c5f137d1cda7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2db6abde_d898943a",
+        "filename": "src/gpu/ganesh/gl/win/GrGLMakeNativeInterface_win.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-09-04T12:37:49Z",
+      "side": 1,
+      "message": "So to be clear, the implementation of `GrGLMakeNativeInterface` above is acceptable, it\u0027s just the structure we want to change?",
+      "parentUuid": "f2dc7160_b21388fe",
+      "range": {
+        "startLine": 71,
+        "startChar": 11,
+        "endLine": 71,
+        "endChar": 34
+      },
+      "revId": "94b9a7b113f9c14d27010e21c109c5f137d1cda7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
