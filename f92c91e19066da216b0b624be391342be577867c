@@ -22,6 +22,30 @@
       },
       "revId": "f92c91e19066da216b0b624be391342be577867c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e2d5525_55c37a75",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 4
+      },
+      "lineNbr": 2156,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-09-04T18:31:02Z",
+      "side": 0,
+      "message": "So, only for the external_client task driver, we rewrite the path? I think that can work.",
+      "parentUuid": "29daed81_5544a57e",
+      "range": {
+        "startLine": 2156,
+        "startChar": 0,
+        "endLine": 2156,
+        "endChar": 80
+      },
+      "revId": "f92c91e19066da216b0b624be391342be577867c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
