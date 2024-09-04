@@ -15,7 +15,8 @@
 #include "modules/svg/include/SkSVGGradient.h"
 #include "modules/svg/include/SkSVGNode.h"
 #include "modules/svg/include/SkSVGTypes.h"
-#include "src/base/SkTLazy.h"
+
+#include <optional>
 
 class SkMatrix;
 class SkSVGRenderContext;

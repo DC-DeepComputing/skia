@@ -19,8 +19,8 @@
 #include "include/private/base/SkDebug.h"
 #include "modules/svg/include/SkSVGRenderContext.h"
 #include "modules/svg/include/SkSVGTypes.h"
-#include "src/base/SkTLazy.h"
 
+#include <optional>
 #include <utility>
 
 namespace {
@@ -106,7 +106,7 @@ std::tuple<sk_sp<SkImageFilter>, SkSVGColorspace> SkSVGFilterContext::getInput(
             break;
         case SkSVGFeInputType::Type::kFillPaint: {
             const auto& fillPaint = ctx.fillPaint();
-            if (fillPaint.isValid()) {
+            if (fillPaint.has_value()) {
                 auto dither = fillPaint->isDither() ? SkImageFilters::Dither::kYes
                                                     : SkImageFilters::Dither::kNo;
                 result = SkImageFilters::Shader(paint_as_shader(*fillPaint), dither);
@@ -117,7 +117,7 @@ std::tuple<sk_sp<SkImageFilter>, SkSVGColorspace> SkSVGFilterContext::getInput(
             // The paint filter doesn't apply fill/stroke styling, but use the paint settings
             // defined for strokes.
             const auto& strokePaint = ctx.strokePaint();
-            if (strokePaint.isValid()) {
+            if (strokePaint.has_value()) {
                 auto dither = strokePaint->isDither() ? SkImageFilters::Dither::kYes
                                                       : SkImageFilters::Dither::kNo;
                 result = SkImageFilters::Shader(paint_as_shader(*strokePaint), dither);

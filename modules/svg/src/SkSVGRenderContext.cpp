@@ -226,7 +226,7 @@ void SkSVGRenderContext::applyPresentationAttributes(const SkSVGPresentationAttr
         const auto& attr = attrs.f ## ATTR;                                             \
         if (attr.isValue() && *attr != *fPresentationContext->fInherited.f ## ATTR) {   \
             /* Update the local attribute value */                                      \
-            fPresentationContext.writable()->fInherited.f ## ATTR.set(*attr);           \
+            fPresentationContext->fInherited.f ## ATTR.set(*attr);           \
         }                                                                               \
     } while (false)
 
@@ -361,7 +361,7 @@ void SkSVGRenderContext::applyClip(const SkSVGFuncIRI& clip) {
     this->saveOnce();
 
     fCanvas->clipPath(clipPath, true);
-    fClipPath.set(clipPath);
+    fClipPath = clipPath;
 }
 
 void SkSVGRenderContext::applyMask(const SkSVGFuncIRI& mask) {
@@ -396,14 +396,13 @@ void SkSVGRenderContext::applyMask(const SkSVGFuncIRI& mask) {
     // Restoring triggers srcIn-compositing the content against the mask.
 }
 
-SkTLazy<SkPaint> SkSVGRenderContext::commonPaint(const SkSVGPaint& paint_selector,
+std::optional<SkPaint> SkSVGRenderContext::commonPaint(const SkSVGPaint& paint_selector,
                                                  float paint_opacity) const {
     if (paint_selector.type() == SkSVGPaint::Type::kNone) {
-        return SkTLazy<SkPaint>();
+        return std::optional<SkPaint>();
     }
 
-    SkTLazy<SkPaint> p;
-    p.init();
+    std::optional<SkPaint> p = SkPaint();
 
     switch (paint_selector.type()) {
     case SkSVGPaint::Type::kColor:
@@ -430,7 +429,7 @@ SkTLazy<SkPaint> SkSVGRenderContext::commonPaint(const SkSVGPaint& paint_selecto
                                      fTextShapingFactory);
 
         const auto node = this->findNodeById(paint_selector.iri());
-        if (!node || !node->asPaint(local_ctx, p.get())) {
+        if (!node || !node->asPaint(local_ctx, &*p)) {
             // Use the fallback color.
             p->setColor(this->resolveSvgColor(paint_selector.color()));
         }
@@ -450,22 +449,22 @@ SkTLazy<SkPaint> SkSVGRenderContext::commonPaint(const SkSVGPaint& paint_selecto
     return p;
 }
 
-SkTLazy<SkPaint> SkSVGRenderContext::fillPaint() const {
+std::optional<SkPaint> SkSVGRenderContext::fillPaint() const {
     const auto& props = fPresentationContext->fInherited;
     auto p = this->commonPaint(*props.fFill, *props.fFillOpacity);
 
-    if (p.isValid()) {
+    if (p.has_value()) {
         p->setStyle(SkPaint::kFill_Style);
     }
 
     return p;
 }
 
-SkTLazy<SkPaint> SkSVGRenderContext::strokePaint() const {
+std::optional<SkPaint> SkSVGRenderContext::strokePaint() const {
     const auto& props = fPresentationContext->fInherited;
     auto p = this->commonPaint(*props.fStroke, *props.fStrokeOpacity);
 
-    if (p.isValid()) {
+    if (p.has_value()) {
         p->setStyle(SkPaint::kStroke_Style);
         p->setStrokeWidth(fLengthContext->resolve(*props.fStrokeWidth,
                                                   SkSVGLengthContext::LengthType::kOther));
@@ -513,13 +512,13 @@ SkSVGRenderContext::transformForCurrentOBB(SkSVGObjectBoundingBoxUnits u) const 
 SkRect SkSVGRenderContext::resolveOBBRect(const SkSVGLength& x, const SkSVGLength& y,
                                           const SkSVGLength& w, const SkSVGLength& h,
                                           SkSVGObjectBoundingBoxUnits obbu) const {
-    SkTCopyOnFirstWrite<SkSVGLengthContext> lctx(fLengthContext);
+    SkSVGLengthContext lctx(*fLengthContext);
 
     if (obbu.type() == SkSVGObjectBoundingBoxUnits::Type::kObjectBoundingBox) {
-        *lctx.writable() = SkSVGLengthContext({1,1});
+        lctx = SkSVGLengthContext({1,1});
     }
 
-    auto r = lctx->resolveRect(x, y, w, h);
+    auto r = lctx.resolveRect(x, y, w, h);
     const auto obbt = this->transformForCurrentOBB(obbu);
 
     return SkRect::MakeXYWH(obbt.scale.x * r.x() + obbt.offset.x,

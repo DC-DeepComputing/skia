@@ -15,7 +15,8 @@
 #include "modules/svg/include/SkSVGHiddenContainer.h"
 #include "modules/svg/include/SkSVGNode.h"
 #include "modules/svg/include/SkSVGTypes.h"
-#include "src/base/SkTLazy.h"
+
+#include <optional>
 
 class SK_API SkSVGFeLightSource : public SkSVGHiddenContainer {
 public:
