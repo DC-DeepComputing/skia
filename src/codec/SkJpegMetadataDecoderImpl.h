@@ -33,10 +33,6 @@ public:
                           sk_sp<SkData>& outGainmapImageData,
                           SkGainmapInfo& outGainmapInfo) const;
 
-#ifdef SK_CODEC_DECODES_JPEG_GAINMAPS
-    std::unique_ptr<SkXmp> getXmpMetadata() const;
-#endif  // SK_CODEC_DECODES_JPEG_GAINMAPS
-
     // SkJpegMetadataDecoder implementation:
     sk_sp<SkData> getExifMetadata(bool copyData) const override;
     sk_sp<SkData> getICCProfileData(bool copyData) const override;
@@ -45,6 +41,10 @@ public:
     bool findGainmapImage(sk_sp<SkData> baseImageData,
                           sk_sp<SkData>& outGainmapImageData,
                           SkGainmapInfo& outGainmapInfo) override;
+
+    #ifdef SK_CODEC_DECODES_JPEG_GAINMAPS
+      std::unique_ptr<SkXmp> getXmpMetadata() const override;
+    #endif  // SK_CODEC_DECODES_JPEG_GAINMAPS
 
 private:
     SkJpegMarkerList fMarkerList;
