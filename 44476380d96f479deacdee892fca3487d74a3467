@@ -72,6 +72,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c9652577_851b3542",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-04T15:53:56Z",
+      "side": 1,
+      "message": "And maybe suppress `-Wswitch-default`",
+      "revId": "44476380d96f479deacdee892fca3487d74a3467",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4bf27491_b22f2716",
         "filename": "infra/bots/assets/clang_linux/Dockerfile",
         "patchSetId": 4
