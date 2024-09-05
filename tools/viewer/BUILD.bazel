@@ -122,6 +122,8 @@ skia_cc_binary(
         "//tools/flags:common_flags",
         "//tools/flags:ganesh_flags",
         "//tools/gpu:ganesh_gl_utils",
+        "//tools/flags:graphite_flags",
+        "//tools/graphite:graphite_utils",
         "//tools/sk_app",
         "//tools/skui",
         "//tools/timer",
