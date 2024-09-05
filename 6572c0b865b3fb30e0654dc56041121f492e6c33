@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad96fa26_07513ce3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-05T18:58:24Z",
+      "side": 1,
+      "message": "I\u0027m guessing `bazel/external/vulkan_headers/BUILD.bazel` needs to add a bunch of the platform specific vulkan headers as textual headers so they\u0027re present at build time? It looks like some of this may have been working before because the `@vulkan` was picking this one up from the `include/third_party/vulkan`?",
+      "revId": "6572c0b865b3fb30e0654dc56041121f492e6c33",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
