@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c1eefd4c_f39da478",
+        "filename": "src/gpu/graphite/PipelineData.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-09-05T16:34:39Z",
+      "side": 1,
+      "message": "Should this just be \u0027UniformDataBlock\u0027 ?",
+      "range": {
+        "startLine": 38,
+        "startChar": 30,
+        "endLine": 38,
+        "endChar": 54
+      },
+      "revId": "d7e28a0f44f7ad192cb581a2ae9249123d80f036",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
