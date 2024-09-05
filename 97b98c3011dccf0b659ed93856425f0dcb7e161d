@@ -93,6 +93,30 @@
       },
       "revId": "97b98c3011dccf0b659ed93856425f0dcb7e161d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b944fd2_41f49e63",
+        "filename": "infra/fiddler-backend/release_tag.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-09-05T15:29:46Z",
+      "side": 1,
+      "message": "I was actually speculating whether we could just do all of the tagging in Louhi and not have any script in the client repo, but this is fine for now.",
+      "parentUuid": "ac2a4414_828f58c8",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 52
+      },
+      "revId": "97b98c3011dccf0b659ed93856425f0dcb7e161d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
