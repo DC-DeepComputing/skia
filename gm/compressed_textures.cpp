@@ -42,7 +42,7 @@
 #include "src/gpu/GpuTypesPriv.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/RecorderPriv.h"
-#include "tools/gpu/ManagedBackendTexture.h"
+#include "tools/graphite/ManagedBackendTexture_Graphite.h"
 #endif
 
 static SkPoint gen_pt(float angle, const SkVector& scale) {

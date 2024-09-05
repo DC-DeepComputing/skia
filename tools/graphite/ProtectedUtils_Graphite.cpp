@@ -5,13 +5,13 @@
  * found in the LICENSE file.
  */
 
-#include "tools/gpu/ProtectedUtils.h"
+#include "tools/graphite/ProtectedUtils_Graphite.h"
 
 #include "include/core/SkCanvas.h"
 #include "include/core/SkSurface.h"
 #include "include/core/SkSurfaceProps.h"
-#include "tools/gpu/BackendSurfaceFactory.h"
-#include "tools/gpu/BackendTextureImageFactory.h"
+#include "tools/graphite/BackendSurfaceFactory_Graphite.h"
+#include "tools/graphite/BackendTextureImageFactory_Graphite.h"
 
 using namespace skgpu;
 using namespace skgpu::graphite;
