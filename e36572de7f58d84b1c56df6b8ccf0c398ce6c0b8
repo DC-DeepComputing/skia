@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2417ed14_32af6bd0",
+        "filename": "src/gpu/graphite/task/RenderPassTask.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-09-05T18:22:18Z",
+      "side": 1,
+      "message": "This is small potatoes but aren\u0027t we supposed to just pass SkIRect\u0027s by value nowadays ?",
+      "range": {
+        "startLine": 38,
+        "startChar": 38,
+        "endLine": 38,
+        "endChar": 66
+      },
+      "revId": "e36572de7f58d84b1c56df6b8ccf0c398ce6c0b8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
