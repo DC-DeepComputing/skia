@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea352c05_e0e8f7da",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-09-05T13:02:52Z",
+      "side": 1,
+      "message": "WDYT?  I just had this idea and wanted to see what it would look like.  My hope is to someday get to a point where we can just use a Bazel target explicitly and derive everything from that in Bazel files, shrinking gen_tasks significantly.",
+      "revId": "4e99dc142710dc32bb2b39dbe9b772c2bb7877a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "686b598f_16c82369",
+        "filename": "infra/bots/gen_tasks_logic/bazel/generate.go",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-09-05T13:02:52Z",
+      "side": 1,
+      "message": "Note: this could also be done just-in-time in gen_tasks_logic, but I hesitated to do that because it would require `bazelisk` to be present in order to run `make -C infra/bots train`.  But maybe that\u0027s less arduous than having to run `go generate` every time our Bazel target list changes.",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 28
+      },
+      "revId": "4e99dc142710dc32bb2b39dbe9b772c2bb7877a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
