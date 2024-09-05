@@ -22,6 +22,30 @@
       },
       "revId": "639e981f0a4c4a3bfa32c8903446824e19a64214",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "133cb29d_938e46bd",
+        "filename": "tools/window/GraphiteDawnWindowContext.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-09-05T14:28:28Z",
+      "side": 1,
+      "message": "I filed b/364868234 to track that cleanup",
+      "parentUuid": "079a9fde_4278a939",
+      "range": {
+        "startLine": 125,
+        "startChar": 9,
+        "endLine": 125,
+        "endChar": 27
+      },
+      "revId": "639e981f0a4c4a3bfa32c8903446824e19a64214",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
