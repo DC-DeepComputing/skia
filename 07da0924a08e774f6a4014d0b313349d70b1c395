@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "623c481f_eeeac70c",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-09-05T20:05:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c261cbbb_b7fb6a8b",
+      "range": {
+        "startLine": 48,
+        "startChar": 22,
+        "endLine": 48,
+        "endChar": 29
+      },
+      "revId": "07da0924a08e774f6a4014d0b313349d70b1c395",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f2178a74_bdcb0f2a",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d5e6b0af_b8776a16",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 815,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-09-05T20:05:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f2178a74_bdcb0f2a",
+      "range": {
+        "startLine": 815,
+        "startChar": 23,
+        "endLine": 815,
+        "endChar": 34
+      },
+      "revId": "07da0924a08e774f6a4014d0b313349d70b1c395",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4121b79a_4d1edbeb",
@@ -77,6 +125,30 @@
       "writtenOn": "2024-09-05T18:43:54Z",
       "side": 1,
       "message": "Just \u0027dawnBuffer\u0027 ?",
+      "range": {
+        "startLine": 827,
+        "startChar": 40,
+        "endLine": 827,
+        "endChar": 87
+      },
+      "revId": "07da0924a08e774f6a4014d0b313349d70b1c395",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "19a67670_3d0f446b",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 827,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-09-05T20:05:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4121b79a_4d1edbeb",
       "range": {
         "startLine": 827,
         "startChar": 40,
