@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "079a9fde_4278a939",
+        "filename": "tools/window/GraphiteDawnWindowContext.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-09-05T13:59:10Z",
+      "side": 1,
+      "message": "Nothing to do for this CL but we need to merge our testing and viewer dawn device creation code. They are both basically copies.",
+      "range": {
+        "startLine": 125,
+        "startChar": 9,
+        "endLine": 125,
+        "endChar": 27
+      },
+      "revId": "639e981f0a4c4a3bfa32c8903446824e19a64214",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
