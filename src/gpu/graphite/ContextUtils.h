@@ -11,6 +11,7 @@
 #include "src/gpu/Blend.h"
 #include "src/gpu/graphite/PaintParamsKey.h"
 #include "src/gpu/graphite/PipelineData.h"
+#include "src/gpu/graphite/UniformManager.h"
 
 #include <optional>
 #include <tuple>
@@ -83,6 +84,15 @@ std::tuple<UniformDataBlock, TextureDataBlock> ExtractRenderStepData(
         const Layout layout,
         const RenderStep* step,
         const DrawParams& params);
+
+// `viewport` should hold the actual viewport set as backend state (defining the NDC -> pixel
+// transform).),
+// `replayTranslation` should hold the replay translation provided on insertRecording().
+void CollectIntrinsicUniforms(
+        const Caps* caps,
+        SkIRect viewport,
+        SkIPoint replayTranslation,
+        UniformManager*);
 
 DstReadRequirement GetDstReadRequirement(const Caps*, std::optional<SkBlendMode>, Coverage);
 
