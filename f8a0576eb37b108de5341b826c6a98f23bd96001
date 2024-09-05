@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3eaf1891_453e564b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-09-05T23:46:31Z",
+      "side": 1,
+      "message": "@brianosman, can you PTAL?",
+      "revId": "f8a0576eb37b108de5341b826c6a98f23bd96001",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5a91338_55c31526",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 416,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-09-05T23:46:31Z",
+      "side": 1,
+      "message": "If I don\u0027t subtract 1, then `RustEnabled/AnimatedPNGTests.repetitionCountTest/0` fails - yay for tests! :-)",
+      "range": {
+        "startLine": 416,
+        "startChar": 11,
+        "endLine": 416,
+        "endChar": 25
+      },
+      "revId": "f8a0576eb37b108de5341b826c6a98f23bd96001",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
