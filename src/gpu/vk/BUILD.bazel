@@ -51,9 +51,9 @@ skia_cc_library(
     ],
     deps = [
         "//:core",
-        "//include/third_party/vulkan",
         "//src/base",
         "//src/gpu",
         "//src/sksl/codegen:spirv",
+        "@vulkan_headers",
     ],
 )
