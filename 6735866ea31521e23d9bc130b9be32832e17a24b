@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac3958ef_4d01cc28",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-05T17:07:20Z",
+      "side": 1,
+      "message": "To summarize the vulkan header issue with the layering check...\n\n`//src/gpu/ganesh/vk:ganesh_vulkan` depends on `@vulkan_headers//:vulkan_headers` and expects to get vulkan headers from there. However, `//src/gpu/ganesh/vk:ganesh_vulkan` also depends on `//src/gpu/vk:vk` which depends on `//include/third_party/vulkan:vulkan`. So both sets of vulkan headers end up in the include path and in this failing case the preprocessor finds the one in the indirect dependency instead of the direct dependency and the modules system complains.",
+      "revId": "6735866ea31521e23d9bc130b9be32832e17a24b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
