@@ -8,9 +8,11 @@
 #include "src/gpu/graphite/dawn/DawnCommandBuffer.h"
 
 #include "include/gpu/graphite/TextureInfo.h"
+#include "src/gpu/graphite/ContextUtils.h"
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/RenderPassDesc.h"
 #include "src/gpu/graphite/TextureProxy.h"
+#include "src/gpu/graphite/UniformManager.h"
 #include "src/gpu/graphite/compute/DispatchGroup.h"
 #include "src/gpu/graphite/dawn/DawnBuffer.h"
 #include "src/gpu/graphite/dawn/DawnCaps.h"
@@ -26,6 +28,81 @@
 
 namespace skgpu::graphite {
 
+// DawnCommandBuffer::IntrinsicConstantsManager
+// ----------------------------------------------------------------------------
+
+/**
+ * Since Dawn does not currently provide push constants, this helper class manages rotating through
+ * buffers and writing each new occurrence of a set of intrinsic uniforms into the current buffer.
+ */
+class DawnCommandBuffer::IntrinsicConstantsManager {
+public:
+
+    BindBufferInfo add(DawnCommandBuffer* cb, UniformDataBlock intrinsicValues) {
+        static constexpr int kNumSlots = 8;
+
+        BindBufferInfo* existing = fCachedIntrinsicValues.find(intrinsicValues);
+        if (existing) {
+            return *existing;
+        }
+
+        // TODO: https://b.corp.google.com/issues/259267703
+        // Make updating intrinsic constants faster. Metal has setVertexBytes method
+        // to quickly sending intrinsic constants to vertex shader without any buffer. But Dawn
+        // doesn't have similar capability. So we have to use WriteBuffer(), and this method is not
+        // allowed to be called when there is an active render pass.
+        SkASSERT(!cb->fActiveRenderPassEncoder);
+        SkASSERT(!cb->fActiveComputePassEncoder);
+
+        const Caps* caps = cb->fSharedContext->caps();
+        const uint32_t stride = SkAlignTo(intrinsicValues.size(),
+                                          caps->requiredUniformBufferAlignment());
+        if (!fCurrentBuffer || fSlotsUsed == kNumSlots) {
+            // We can just replace the current buffer; any prior buffer was already tracked on the
+            // CommandBuffer and the intrinsic constants were written directly to the Dawn queue.
+            DawnResourceProvider* resourceProvider = cb->fResourceProvider;
+            fCurrentBuffer = resourceProvider->findOrCreateDawnBuffer(stride * kNumSlots,
+                                                                      BufferType::kUniform,
+                                                                      AccessPattern::kGpuOnly,
+                                                                      "IntrinsicConstantBuffer");
+            fSlotsUsed = 0;
+
+            if (!fCurrentBuffer) {
+                // If we failed to create a GPU buffer to hold the intrinsic uniforms, we will fail
+                // the Recording being inserted, so return an empty bind info.
+                return {};
+            }
+            cb->trackResource(fCurrentBuffer);
+        }
+
+        SkASSERT(fCurrentBuffer && fSlotsUsed < kNumSlots);
+        uint32_t offset = (fSlotsUsed++) * stride;
+        cb->fSharedContext->queue().WriteBuffer(fCurrentBuffer->dawnBuffer(),
+                                                offset,
+                                                intrinsicValues.data(),
+                                                intrinsicValues.size());
+
+        BindBufferInfo binding{fCurrentBuffer.get(), offset, SkTo<uint32_t>(intrinsicValues.size())};
+        fCachedIntrinsicValues.set(UniformDataBlock::Make(intrinsicValues, &fUniformData), binding);
+        return binding;
+    }
+
+private:
+    // The current buffer being filled up, as well as the how much of it has been written to.
+    sk_sp<DawnBuffer> fCurrentBuffer;
+    int fSlotsUsed = 0; // in multiples of the intrinsic uniform size and UBO binding requirement
+
+    // All uploaded intrinsic uniform sets and where they are on the GPU. All uniform sets are
+    // cached for the duration of a CommandBuffer since the maximum number of elements in this
+    // collection will equal the number of render passes and the intrinsic constants aren't that
+    // large. This maximizes the chance for reuse between passes.
+    skia_private::THashMap<UniformDataBlock, BindBufferInfo, UniformDataBlock::Hash>
+            fCachedIntrinsicValues;
+    SkArenaAlloc fUniformData{0};
+};
+
+// DawnCommandBuffer
+// ----------------------------------------------------------------------------
 std::unique_ptr<DawnCommandBuffer> DawnCommandBuffer::Make(const DawnSharedContext* sharedContext,
                                                            DawnResourceProvider* resourceProvider) {
     std::unique_ptr<DawnCommandBuffer> cmdBuffer(
@@ -53,10 +130,7 @@ wgpu::CommandBuffer DawnCommandBuffer::finishEncoding() {
 }
 
 void DawnCommandBuffer::onResetCommandBuffer() {
-    fCurrentRTAdjust = std::nullopt;
-
-    fIntrinsicConstantBuffer = nullptr;
-    fIntrinsicConstantBufferSlotsUsed = 0;
+    fIntrinsicConstants = nullptr;
 
     fActiveGraphicsPipeline = nullptr;
     fActiveRenderPassEncoder = nullptr;
@@ -73,6 +147,8 @@ bool DawnCommandBuffer::setNewCommandBufferResources() {
     SkASSERT(!fCommandEncoder);
     fCommandEncoder = fSharedContext->device().CreateCommandEncoder();
     SkASSERT(fCommandEncoder);
+
+    fIntrinsicConstants = std::make_unique<IntrinsicConstantsManager>();
     return true;
 }
 
@@ -81,16 +157,32 @@ bool DawnCommandBuffer::onAddRenderPass(const RenderPassDesc& renderPassDesc,
                                         const Texture* colorTexture,
                                         const Texture* resolveTexture,
                                         const Texture* depthStencilTexture,
-                                        SkRect viewport,
+                                        SkIRect viewport,
                                         const DrawPassList& drawPasses) {
-    // Update viewport's constant buffer before starting a render pass.
-    this->preprocessViewport(viewport);
+    // `viewport` has already been translated by the replay translation by the base CommandBuffer.
+    // All GPU backends support viewports that are defined to extend beyond the render target
+    // (allowing for a stable linear transformation from NDC to viewport coordinates as the replay
+    // translation pushes the viewport off the final deferred target's edges).
+    // However, WebGPU validation layers currently require that the viewport is contained within
+    // the attachment so we intersect the viewport before setting the intrinsic constants or
+    // viewport state.
+    // TODO(https://github.com/gpuweb/gpuweb/issues/373): Hopefully the validation layers can be
+    // relaxed and then this extra intersection can be removed.
+    if (!viewport.intersect(SkIRect::MakeSize(fColorAttachmentSize))) SK_UNLIKELY {
+        // The entire pass is offscreen
+        return true;
+    }
+
+    // Update the intrinsic constant buffer before starting a render pass.
+    if (!this->updateIntrinsicUniforms(viewport)) SK_UNLIKELY {
+        return false;
+    }
 
     if (!this->beginRenderPass(renderPassDesc,
                                renderPassBounds,
                                colorTexture,
                                resolveTexture,
-                               depthStencilTexture)) {
+                               depthStencilTexture)) SK_UNLIKELY {
         return false;
     }
 
@@ -501,6 +593,7 @@ bool DawnCommandBuffer::bindGraphicsPipeline(const GraphicsPipeline* graphicsPip
     return true;
 }
 
+
 void DawnCommandBuffer::bindUniformBuffer(const BindBufferInfo& info, UniformSlot slot) {
     SkASSERT(fActiveRenderPassEncoder);
 
@@ -644,11 +737,14 @@ void DawnCommandBuffer::syncUniformBuffers() {
 
         std::array<uint32_t, 4> dynamicOffsets;
         std::array<std::pair<const DawnBuffer*, uint32_t>, 4> boundBuffersAndSizes;
-        boundBuffersAndSizes[0].first = fIntrinsicConstantBuffer.get();
-        boundBuffersAndSizes[0].second = sizeof(IntrinsicConstant);
 
-        int activeIntrinsicBufferSlot = fIntrinsicConstantBufferSlotsUsed - 1;
-        dynamicOffsets[0] = activeIntrinsicBufferSlot * kIntrinsicConstantAlignedSize;
+        // Every pipeline uses the intrinsic uniforms
+        boundBuffersAndSizes[0].first =
+                fBoundUniformBuffers[DawnGraphicsPipeline::kIntrinsicUniformBufferIndex];
+        boundBuffersAndSizes[0].second =
+                fBoundUniformBufferSizes[DawnGraphicsPipeline::kIntrinsicUniformBufferIndex];
+        dynamicOffsets[0] =
+                fBoundUniformBufferOffsets[DawnGraphicsPipeline::kIntrinsicUniformBufferIndex];
 
         if (fActiveGraphicsPipeline->hasStepUniforms() &&
             fBoundUniformBuffers[DawnGraphicsPipeline::kRenderStepUniformBufferIndex]) {
@@ -716,58 +812,27 @@ void DawnCommandBuffer::setScissor(unsigned int left,
             scissor.x(), scissor.y(), scissor.width(), scissor.height());
 }
 
-void DawnCommandBuffer::preprocessViewport(const SkRect& viewport) {
-    // Dawn's framebuffer space has (0, 0) at the top left. This agrees with Skia's device coords.
-    // However, in NDC (-1, -1) is the bottom left. So we flip the origin here (assuming all
-    // surfaces we have are TopLeft origin).
-    const float x = viewport.x() - fReplayTranslation.x();
-    const float y = viewport.y() - fReplayTranslation.y();
-    const float invTwoW = 2.f / viewport.width();
-    const float invTwoH = 2.f / viewport.height();
-    const IntrinsicConstant rtAdjust = {invTwoW, -invTwoH, -1.f - x * invTwoW, 1.f + y * invTwoH};
+bool DawnCommandBuffer::updateIntrinsicUniforms(SkIRect viewport) {
+    UniformManager intrinsicValues{Layout::kStd140};
+    CollectIntrinsicUniforms(fSharedContext->caps(), viewport, fReplayTranslation,
+                             &intrinsicValues);
 
-    if (fCurrentRTAdjust && *fCurrentRTAdjust == rtAdjust) {
-        return;
+    BindBufferInfo binding =
+            fIntrinsicConstants->add(this, UniformDataBlock::Wrap(&intrinsicValues));
+    if (!binding) {
+        return false;
     }
 
-    fCurrentRTAdjust = rtAdjust;
+    const unsigned int bufferIndex = DawnGraphicsPipeline::kIntrinsicUniformBufferIndex;
+    fBoundUniformBuffers[bufferIndex] = static_cast<const DawnBuffer*>(binding.fBuffer);
+    fBoundUniformBufferOffsets[bufferIndex] = binding.fOffset;
+    fBoundUniformBufferSizes[bufferIndex] = binding.fSize;
 
-    // TODO: https://b.corp.google.com/issues/259267703
-    // Make updating intrinsic constants faster. Metal has setVertexBytes method
-    // to quickly sending intrinsic constants to vertex shader without any buffer. But Dawn doesn't
-    // have similar capability. So we have to use WriteBuffer(), and this method is not allowed to
-    // be called when there is an active render pass.
-    SkASSERT(!fActiveRenderPassEncoder);
-    SkASSERT(!fActiveComputePassEncoder);
-
-    // We allocate a fixed size buffer to hold the intrinsics constants. If we overflow we allocate
-    // another buffer. We prefer this to using wgpu::CommandEncoder::WriteBuffer since it avoids
-    // alternating render and blit passes which causes suboptimal memory allocations with Metal and
-    // is generally not a good idea. And when running against WebGPU in WASM we don't have the
-    // wgpu::CommandEncoder::WriteBuffer method.
-    if (!fIntrinsicConstantBuffer ||
-        fIntrinsicConstantBufferSlotsUsed == kNumSlotsForIntrinsicConstantBuffer) {
-        size_t bufferSize = kIntrinsicConstantAlignedSize * kNumSlotsForIntrinsicConstantBuffer;
-        fIntrinsicConstantBuffer =
-                fResourceProvider->findOrCreateDawnBuffer(bufferSize,
-                                                          BufferType::kUniform,
-                                                          AccessPattern::kGpuOnly,
-                                                          "IntrinsicConstantBuffer");
-
-        fIntrinsicConstantBufferSlotsUsed = 0;
-        SkASSERT(fIntrinsicConstantBuffer);
-        this->trackResource(fIntrinsicConstantBuffer);
-    }
-    uint64_t offset = fIntrinsicConstantBufferSlotsUsed * kIntrinsicConstantAlignedSize;
-    fSharedContext->queue().WriteBuffer(
-            fIntrinsicConstantBuffer->dawnBuffer(), offset, &rtAdjust, sizeof(rtAdjust));
-    fIntrinsicConstantBufferSlotsUsed++;
-
-    // The intrinsic constant buffer binding or dynamic offset (active slot) is dirty.
     fBoundUniformBuffersDirty = true;
+    return true;
 }
 
-void DawnCommandBuffer::setViewport(const SkRect& viewport) {
+void DawnCommandBuffer::setViewport(SkIRect viewport) {
     SkASSERT(fActiveRenderPassEncoder);
     fActiveRenderPassEncoder.SetViewport(
             viewport.x(), viewport.y(), viewport.width(), viewport.height(), 0, 1);
