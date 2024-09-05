@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef168b3c_6a3de353",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-09-05T13:56:11Z",
+      "side": 1,
+      "message": "With Kyle\u0027s CL disabling SSBOs on dawn-vulkan, there is nothing blocking adding this toggle and then we will be matching Chrome\u0027s behavior when we start trying to work through re-enabling SSBOs.",
+      "revId": "7671bc5a44fab0e4e0c3243db5334e3baf7f00cb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
