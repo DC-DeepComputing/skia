@@ -30,6 +30,7 @@
 #include "include/gpu/graphite/YUVABackendTextures.h"
 #include "include/private/base/SkTArray.h"
 #include "src/core/SkAutoPixmapStorage.h"
+#include "tools/graphite/ManagedBackendTexture_Graphite.h"
 #endif
 
 namespace {

@@ -27,16 +27,21 @@
 #include "include/core/SkTypeface.h"
 #include "include/core/SkTypes.h"
 #include "include/effects/SkGradientShader.h"
-#include "include/gpu/ganesh/GrDirectContext.h"
-#include "include/gpu/ganesh/GrRecordingContext.h"
-#include "include/gpu/ganesh/SkSurfaceGanesh.h"
-#if defined(SK_GRAPHITE)
-#include "include/gpu/graphite/Surface.h"
-#endif
 #include "include/utils/SkTextUtils.h"
 #include "tools/ToolUtils.h"
 #include "tools/fonts/FontToolUtils.h"
+
+#if defined(SK_GANESH)
+#include "include/gpu/ganesh/GrDirectContext.h"
+#include "include/gpu/ganesh/GrRecordingContext.h"
+#include "include/gpu/ganesh/SkSurfaceGanesh.h"
 #include "tools/gpu/BackendSurfaceFactory.h"
+#endif
+
+#if defined(SK_GRAPHITE)
+#include "include/gpu/graphite/Surface.h"
+#include "tools/graphite/BackendSurfaceFactory_Graphite.h"
+#endif
 
 #define W 800
 #define H 100
