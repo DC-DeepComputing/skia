@@ -7,6 +7,7 @@
 
 #include "experimental/rust_png/impl/SkPngRustCodec.h"
 
+#include <limits>
 #include <memory>
 #include <utility>
 
@@ -388,6 +389,31 @@ bool SkPngRustCodec::onGetFrameInfo(int index, FrameInfo* info) const {
     }
 
     return false;
+}
+
+int SkPngRustCodec::onGetRepetitionCount() {
+    uint32_t num_frames = fReader->get_actl_num_frames();
+    if (num_frames <= 1) {
+        // Without an `aCTL` chunk (`num_frames == 0`) there is only a single
+        // frame (in the `IDAT` chunk).  If `num_frames == 1`, then there is
+        // also only a single frame (in the `fDAT` or `IDAT` chunk).  In both
+        // cases, we report that there is no animation / no repetition.
+        return 0;
+    }
+
+    // APNG spec says that "`num_plays` indicates the number of times that this
+    // animation should play; if it is 0, the animation should play
+    // indefinitely."
+    uint32_t num_plays = fReader->get_actl_num_plays();
+    if (num_plays == 0 || num_plays >= std::numeric_limits<int>::max()) {
+        return kRepetitionCountInfinite;
+    }
+
+    // Subtracting 1, because `SkCodec::onGetRepetitionCount` doc comment says
+    // that "This number does not include the first play through of each frame.
+    // For example, a repetition count of 4 means that each frame is played 5
+    // times and then the animation stops."
+    return num_plays - 1;
 }
 
 std::optional<SkSpan<const SkPngCodecBase::PaletteColorEntry>> SkPngRustCodec::onTryGetPlteChunk() {
