@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d30411c5_b085744c",
+        "filename": "infra/fiddler-backend/release_tag.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-09-05T15:22:15Z",
+      "side": 1,
+      "message": "Does this exist?",
+      "range": {
+        "startLine": 17,
+        "startChar": 17,
+        "endLine": 17,
+        "endChar": 25
+      },
+      "revId": "97b98c3011dccf0b659ed93856425f0dcb7e161d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b26d690_78f177f8",
+        "filename": "infra/fiddler-backend/release_tag.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-09-05T15:22:15Z",
+      "side": 1,
+      "message": "I wonder if we can just do away with this for things built using Louhi.  All we really need is the commit hash.",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 52
+      },
+      "revId": "97b98c3011dccf0b659ed93856425f0dcb7e161d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
