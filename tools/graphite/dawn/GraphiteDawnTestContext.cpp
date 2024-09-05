@@ -184,20 +184,21 @@ skgpu::ContextType DawnTestContext::contextType() {
 }
 
 std::unique_ptr<skgpu::graphite::Context> DawnTestContext::makeContext(const TestOptions& options) {
-    skgpu::graphite::ContextOptions revisedContextOptions(options.fContextOptions);
+    skiatest::graphite::TestOptions revisedContextOptions(options);
     skgpu::graphite::ContextOptionsPriv contextOptionsPriv;
     if (!options.fContextOptions.fOptionsPriv) {
-        revisedContextOptions.fOptionsPriv = &contextOptionsPriv;
+        revisedContextOptions.fContextOptions.fOptionsPriv = &contextOptionsPriv;
     }
     // Needed to make synchronous readPixels work
-    revisedContextOptions.fOptionsPriv->fStoreContextRefInRecorder = true;
+    revisedContextOptions.fContextOptions.fOptionsPriv->fStoreContextRefInRecorder = true;
 
     auto backendContext = fBackendContext;
     if (options.fNeverYieldToWebGPU) {
         backendContext.fTick = nullptr;
     }
 
-    return skgpu::graphite::ContextFactory::MakeDawn(backendContext, revisedContextOptions);
+    return skgpu::graphite::ContextFactory::MakeDawn(backendContext,
+                                                     revisedContextOptions.fContextOptions);
 }
 
 void DawnTestContext::tick() { fBackendContext.fTick(fBackendContext.fInstance); }
