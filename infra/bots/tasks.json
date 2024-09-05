@@ -1,18 +1,18 @@
 {
   "jobs": {
-    "BazelBuild-all_tests-debug-linux_x64": {
-      "tasks": [
-        "BazelBuild-all_tests-debug-linux_x64"
-      ]
-    },
-    "BazelBuild-all_tests-release-linux_x64": {
-      "tasks": [
-        "BazelBuild-all_tests-release-linux_x64"
-      ]
-    },
     "BazelBuild-android_math_test-for_android_arm64_release-linux_x64": {
       "tasks": [
         "BazelBuild-android_math_test-for_android_arm64_release-linux_x64"
+      ]
+    },
+    "BazelBuild-bench__cpu_8888_android_test-for_android_arm64_release-linux_x64": {
+      "tasks": [
+        "BazelBuild-bench__cpu_8888_android_test-for_android_arm64_release-linux_x64"
+      ]
+    },
+    "BazelBuild-canvaskit-ck_full_webgl2_debug-linux_x64": {
+      "tasks": [
+        "BazelBuild-canvaskit-ck_full_webgl2_debug-linux_x64"
       ]
     },
     "BazelBuild-core-release-linux_x64": {
@@ -20,24 +20,19 @@
         "BazelBuild-core-release-linux_x64"
       ]
     },
-    "BazelBuild-cpu_8888_benchmark_android_test-for_android_arm64_release-linux_x64": {
+    "BazelBuild-full_build-enforce_iwyu-linux_x64": {
       "tasks": [
-        "BazelBuild-cpu_8888_benchmark_android_test-for_android_arm64_release-linux_x64"
+        "BazelBuild-full_build-enforce_iwyu-linux_x64"
       ]
     },
-    "BazelBuild-full_library-enforce_iwyu-linux_x64": {
+    "BazelBuild-full_build-for_windows_x64_release-windows_x64": {
       "tasks": [
-        "BazelBuild-full_library-enforce_iwyu-linux_x64"
+        "BazelBuild-full_build-for_windows_x64_release-windows_x64"
       ]
     },
-    "BazelBuild-full_library-for_windows_x64_release-windows_x64": {
+    "BazelBuild-full_build-release-linux_x64": {
       "tasks": [
-        "BazelBuild-full_library-for_windows_x64_release-windows_x64"
-      ]
-    },
-    "BazelBuild-full_library-release-linux_x64": {
-      "tasks": [
-        "BazelBuild-full_library-release-linux_x64"
+        "BazelBuild-full_build-release-linux_x64"
       ]
     },
     "BazelBuild-ganesh_gl-release-linux_x64": {
@@ -50,9 +45,14 @@
         "BazelBuild-hello_bazel_world_android_test-for_android_arm64_release-linux_x64"
       ]
     },
-    "BazelBuild-modules_canvaskit-ck_full_webgl2_debug-linux_x64": {
+    "BazelBuild-linux_rbe_tests-debug-linux_x64": {
       "tasks": [
-        "BazelBuild-modules_canvaskit-ck_full_webgl2_debug-linux_x64"
+        "BazelBuild-linux_rbe_tests-debug-linux_x64"
+      ]
+    },
+    "BazelBuild-linux_rbe_tests-release-linux_x64": {
+      "tasks": [
+        "BazelBuild-linux_rbe_tests-release-linux_x64"
       ]
     },
     "BazelBuild-skottie_tool_gpu-enforce_iwyu-linux_x64": {
@@ -75,19 +75,19 @@
         "BazelBuild-viewer-release-linux_x64"
       ]
     },
-    "BazelTest-benchmark-cpu_8888_benchmark_test-linux_rbe-linux_x64-NUC9i7QN_Debian11": {
+    "BazelTest-benchmark-bench__cpu_8888_test-linux_rbe-linux_x64-NUC9i7QN_Debian11": {
       "tasks": [
-        "BazelTest-benchmark-cpu_8888_benchmark_test-linux_rbe-linux_x64-NUC9i7QN_Debian11"
+        "BazelTest-benchmark-bench__cpu_8888_test-linux_rbe-linux_x64-NUC9i7QN_Debian11"
       ]
     },
-    "BazelTest-canvaskit_gold-modules_canvaskit_js_tests-ck_full_cpu_release_chrome-linux_x64": {
+    "BazelTest-canvaskit_gold-canvaskit_js_tests-ck_full_cpu_release_chrome-linux_x64": {
       "tasks": [
-        "BazelTest-canvaskit_gold-modules_canvaskit_js_tests-ck_full_cpu_release_chrome-linux_x64"
+        "BazelTest-canvaskit_gold-canvaskit_js_tests-ck_full_cpu_release_chrome-linux_x64"
       ]
     },
-    "BazelTest-canvaskit_gold-modules_canvaskit_js_tests-ck_full_webgl2_release_chrome-linux_x64": {
+    "BazelTest-canvaskit_gold-canvaskit_js_tests-ck_full_webgl2_release_chrome-linux_x64": {
       "tasks": [
-        "BazelTest-canvaskit_gold-modules_canvaskit_js_tests-ck_full_webgl2_release_chrome-linux_x64"
+        "BazelTest-canvaskit_gold-canvaskit_js_tests-ck_full_webgl2_release_chrome-linux_x64"
       ]
     },
     "BazelTest-cpu_tests-all_go_tests-linux_rbe-linux_x64": {
@@ -95,9 +95,9 @@
         "BazelTest-cpu_tests-all_go_tests-linux_rbe-linux_x64"
       ]
     },
-    "BazelTest-cpu_tests-all_tests-cpu_only_debug_rbe-linux_x64": {
+    "BazelTest-cpu_tests-linux_rbe_tests-cpu_only_debug_rbe-linux_x64": {
       "tasks": [
-        "BazelTest-cpu_tests-all_tests-cpu_only_debug_rbe-linux_x64"
+        "BazelTest-cpu_tests-linux_rbe_tests-cpu_only_debug_rbe-linux_x64"
       ]
     },
     "BazelTest-external_client-decode_everything-default-linux_x64": {
@@ -160,14 +160,14 @@
         "BazelTest-external_client-write_to_pdf-default-linux_x64"
       ]
     },
-    "BazelTest-gm-cpu_gms-cpu_only_debug_rbe-linux_x64-NUC9i7QN_Debian11": {
+    "BazelTest-gm-cpu_gm_tests-cpu_only_debug_rbe-linux_x64-NUC9i7QN_Debian11": {
       "tasks": [
-        "BazelTest-gm-cpu_gms-cpu_only_debug_rbe-linux_x64-NUC9i7QN_Debian11"
+        "BazelTest-gm-cpu_gm_tests-cpu_only_debug_rbe-linux_x64-NUC9i7QN_Debian11"
       ]
     },
-    "BazelTest-precompiled_benchmark-cpu_8888_benchmark_android_test-for_android_arm64_release-on_rpi-Pixel5_Android12": {
+    "BazelTest-precompiled_benchmark-bench__cpu_8888_android_test-for_android_arm64_release-on_rpi-Pixel5_Android12": {
       "tasks": [
-        "BazelTest-precompiled_benchmark-cpu_8888_benchmark_android_test-for_android_arm64_release-on_rpi-Pixel5_Android12"
+        "BazelTest-precompiled_benchmark-bench__cpu_8888_android_test-for_android_arm64_release-on_rpi-Pixel5_Android12"
       ]
     },
     "BazelTest-precompiled_gm-hello_bazel_world_android_test-for_android_arm64_release-on_rpi-Pixel5_Android12": {
@@ -3689,146 +3689,6 @@
     }
   },
   "tasks": {
-    "BazelBuild-all_tests-debug-linux_x64": {
-      "caches": [
-        {
-          "name": "git",
-          "path": "cache/git"
-        },
-        {
-          "name": "git_cache",
-          "path": "cache/git_cache"
-        }
-      ],
-      "casSpec": "bazel",
-      "cipd_packages": [
-        {
-          "name": "infra/3pp/tools/git/linux-amd64",
-          "path": "cipd_bin_packages",
-          "version": "version:3@2.46.0.chromium.11"
-        },
-        {
-          "name": "infra/tools/git/${platform}",
-          "path": "cipd_bin_packages",
-          "version": "git_revision:e02b085286a3baf3ab1194941cdb6c196c4c0802"
-        },
-        {
-          "name": "infra/tools/luci/git-credential-luci/${platform}",
-          "path": "cipd_bin_packages",
-          "version": "git_revision:e02b085286a3baf3ab1194941cdb6c196c4c0802"
-        },
-        {
-          "name": "skia/bots/bazelisk_linux_amd64",
-          "path": "bazelisk_linux_amd64",
-          "version": "version:0"
-        },
-        {
-          "name": "skia/tools/bazel_build/${platform}",
-          "path": "task_drivers",
-          "version": "git_revision:b5d31abb7bc772a69f800de45783768768437675"
-        }
-      ],
-      "command": [
-        "task_drivers/bazel_build",
-        "--project_id=skia-swarming-bots",
-        "--task_id=<(TASK_ID)",
-        "--task_name=BazelBuild-all_tests-debug-linux_x64",
-        "--bazel_label=//tests:linux_rbe_tests",
-        "--bazel_config=debug",
-        "--bazel_cache_dir=/mnt/pd0/bazel_cache",
-        "--workdir=./skia",
-        "--bazel_arg=--config=for_linux_x64_with_rbe",
-        "--bazel_arg=--jobs=100",
-        "--bazel_arg=--remote_download_minimal"
-      ],
-      "dimensions": [
-        "cpu:x86-64-Haswell_GCE",
-        "gpu:none",
-        "machine_type:n1-standard-16",
-        "os:Debian-10.3",
-        "pool:Skia"
-      ],
-      "env_prefixes": {
-        "PATH": [
-          "cipd_bin_packages",
-          "cipd_bin_packages/bin",
-          "bazelisk_linux_amd64"
-        ]
-      },
-      "idempotent": true,
-      "max_attempts": 1,
-      "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
-    },
-    "BazelBuild-all_tests-release-linux_x64": {
-      "caches": [
-        {
-          "name": "git",
-          "path": "cache/git"
-        },
-        {
-          "name": "git_cache",
-          "path": "cache/git_cache"
-        }
-      ],
-      "casSpec": "bazel",
-      "cipd_packages": [
-        {
-          "name": "infra/3pp/tools/git/linux-amd64",
-          "path": "cipd_bin_packages",
-          "version": "version:3@2.46.0.chromium.11"
-        },
-        {
-          "name": "infra/tools/git/${platform}",
-          "path": "cipd_bin_packages",
-          "version": "git_revision:e02b085286a3baf3ab1194941cdb6c196c4c0802"
-        },
-        {
-          "name": "infra/tools/luci/git-credential-luci/${platform}",
-          "path": "cipd_bin_packages",
-          "version": "git_revision:e02b085286a3baf3ab1194941cdb6c196c4c0802"
-        },
-        {
-          "name": "skia/bots/bazelisk_linux_amd64",
-          "path": "bazelisk_linux_amd64",
-          "version": "version:0"
-        },
-        {
-          "name": "skia/tools/bazel_build/${platform}",
-          "path": "task_drivers",
-          "version": "git_revision:b5d31abb7bc772a69f800de45783768768437675"
-        }
-      ],
-      "command": [
-        "task_drivers/bazel_build",
-        "--project_id=skia-swarming-bots",
-        "--task_id=<(TASK_ID)",
-        "--task_name=BazelBuild-all_tests-release-linux_x64",
-        "--bazel_label=//tests:linux_rbe_tests",
-        "--bazel_config=release",
-        "--bazel_cache_dir=/mnt/pd0/bazel_cache",
-        "--workdir=./skia",
-        "--bazel_arg=--config=for_linux_x64_with_rbe",
-        "--bazel_arg=--jobs=100",
-        "--bazel_arg=--remote_download_minimal"
-      ],
-      "dimensions": [
-        "cpu:x86-64-Haswell_GCE",
-        "gpu:none",
-        "machine_type:n1-standard-16",
-        "os:Debian-10.3",
-        "pool:Skia"
-      ],
-      "env_prefixes": {
-        "PATH": [
-          "cipd_bin_packages",
-          "cipd_bin_packages/bin",
-          "bazelisk_linux_amd64"
-        ]
-      },
-      "idempotent": true,
-      "max_attempts": 1,
-      "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
-    },
     "BazelBuild-android_math_test-for_android_arm64_release-linux_x64": {
       "caches": [
         {
@@ -3879,6 +3739,158 @@
         "--workdir=./skia",
         "--out_path=bazel_output",
         "--saved_output_dir=tests",
+        "--bazel_arg=--config=linux_rbe",
+        "--bazel_arg=--jobs=100",
+        "--bazel_arg=--remote_download_toplevel",
+        "--bazel_arg=--adb_platform=linux_arm64"
+      ],
+      "dimensions": [
+        "cpu:x86-64-Haswell_GCE",
+        "gpu:none",
+        "machine_type:n1-standard-16",
+        "os:Debian-10.3",
+        "pool:Skia"
+      ],
+      "env_prefixes": {
+        "PATH": [
+          "cipd_bin_packages",
+          "cipd_bin_packages/bin",
+          "bazelisk_linux_amd64"
+        ]
+      },
+      "idempotent": true,
+      "max_attempts": 1,
+      "outputs": [
+        "bazel_output"
+      ],
+      "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
+    },
+    "BazelBuild-bench__cpu_8888_android_test-for_android_arm64_release-linux_x64": {
+      "caches": [
+        {
+          "name": "git",
+          "path": "cache/git"
+        },
+        {
+          "name": "git_cache",
+          "path": "cache/git_cache"
+        }
+      ],
+      "casSpec": "bazel",
+      "cipd_packages": [
+        {
+          "name": "infra/3pp/tools/git/linux-amd64",
+          "path": "cipd_bin_packages",
+          "version": "version:3@2.46.0.chromium.11"
+        },
+        {
+          "name": "infra/tools/git/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:e02b085286a3baf3ab1194941cdb6c196c4c0802"
+        },
+        {
+          "name": "infra/tools/luci/git-credential-luci/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:e02b085286a3baf3ab1194941cdb6c196c4c0802"
+        },
+        {
+          "name": "skia/bots/bazelisk_linux_amd64",
+          "path": "bazelisk_linux_amd64",
+          "version": "version:0"
+        },
+        {
+          "name": "skia/tools/bazel_build/${platform}",
+          "path": "task_drivers",
+          "version": "git_revision:b5d31abb7bc772a69f800de45783768768437675"
+        }
+      ],
+      "command": [
+        "task_drivers/bazel_build",
+        "--project_id=skia-swarming-bots",
+        "--task_id=<(TASK_ID)",
+        "--task_name=BazelBuild-bench__cpu_8888_android_test-for_android_arm64_release-linux_x64",
+        "--bazel_label=//bench:cpu_8888_android_test",
+        "--bazel_config=for_android_arm64_release",
+        "--bazel_cache_dir=/mnt/pd0/bazel_cache",
+        "--workdir=./skia",
+        "--out_path=bazel_output",
+        "--saved_output_dir=bench",
+        "--bazel_arg=--config=linux_rbe",
+        "--bazel_arg=--jobs=100",
+        "--bazel_arg=--remote_download_toplevel",
+        "--bazel_arg=--adb_platform=linux_arm64"
+      ],
+      "dimensions": [
+        "cpu:x86-64-Haswell_GCE",
+        "gpu:none",
+        "machine_type:n1-standard-16",
+        "os:Debian-10.3",
+        "pool:Skia"
+      ],
+      "env_prefixes": {
+        "PATH": [
+          "cipd_bin_packages",
+          "cipd_bin_packages/bin",
+          "bazelisk_linux_amd64"
+        ]
+      },
+      "idempotent": true,
+      "max_attempts": 1,
+      "outputs": [
+        "bazel_output"
+      ],
+      "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
+    },
+    "BazelBuild-canvaskit-ck_full_webgl2_debug-linux_x64": {
+      "caches": [
+        {
+          "name": "git",
+          "path": "cache/git"
+        },
+        {
+          "name": "git_cache",
+          "path": "cache/git_cache"
+        }
+      ],
+      "casSpec": "bazel",
+      "cipd_packages": [
+        {
+          "name": "infra/3pp/tools/git/linux-amd64",
+          "path": "cipd_bin_packages",
+          "version": "version:3@2.46.0.chromium.11"
+        },
+        {
+          "name": "infra/tools/git/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:e02b085286a3baf3ab1194941cdb6c196c4c0802"
+        },
+        {
+          "name": "infra/tools/luci/git-credential-luci/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:e02b085286a3baf3ab1194941cdb6c196c4c0802"
+        },
+        {
+          "name": "skia/bots/bazelisk_linux_amd64",
+          "path": "bazelisk_linux_amd64",
+          "version": "version:0"
+        },
+        {
+          "name": "skia/tools/bazel_build/${platform}",
+          "path": "task_drivers",
+          "version": "git_revision:b5d31abb7bc772a69f800de45783768768437675"
+        }
+      ],
+      "command": [
+        "task_drivers/bazel_build",
+        "--project_id=skia-swarming-bots",
+        "--task_id=<(TASK_ID)",
+        "--task_name=BazelBuild-canvaskit-ck_full_webgl2_debug-linux_x64",
+        "--bazel_label=//modules/canvaskit:canvaskit",
+        "--bazel_config=ck_full_webgl2_debug",
+        "--bazel_cache_dir=/mnt/pd0/bazel_cache",
+        "--workdir=./skia",
+        "--out_path=bazel_output",
+        "--saved_output_dir=modules/canvaskit",
         "--bazel_arg=--config=linux_rbe",
         "--bazel_arg=--jobs=100",
         "--bazel_arg=--remote_download_toplevel",
@@ -3975,7 +3987,7 @@
       "max_attempts": 1,
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
-    "BazelBuild-cpu_8888_benchmark_android_test-for_android_arm64_release-linux_x64": {
+    "BazelBuild-full_build-enforce_iwyu-linux_x64": {
       "caches": [
         {
           "name": "git",
@@ -4018,13 +4030,13 @@
         "task_drivers/bazel_build",
         "--project_id=skia-swarming-bots",
         "--task_id=<(TASK_ID)",
-        "--task_name=BazelBuild-cpu_8888_benchmark_android_test-for_android_arm64_release-linux_x64",
-        "--bazel_label=//bench:cpu_8888_android_test",
-        "--bazel_config=for_android_arm64_release",
+        "--task_name=BazelBuild-full_build-enforce_iwyu-linux_x64",
+        "--bazel_label=//tools:full_build",
+        "--bazel_config=enforce_iwyu",
         "--bazel_cache_dir=/mnt/pd0/bazel_cache",
         "--workdir=./skia",
         "--out_path=bazel_output",
-        "--saved_output_dir=bench",
+        "--saved_output_dir=tools",
         "--bazel_arg=--config=linux_rbe",
         "--bazel_arg=--jobs=100",
         "--bazel_arg=--remote_download_toplevel",
@@ -4051,77 +4063,7 @@
       ],
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
-    "BazelBuild-full_library-enforce_iwyu-linux_x64": {
-      "caches": [
-        {
-          "name": "git",
-          "path": "cache/git"
-        },
-        {
-          "name": "git_cache",
-          "path": "cache/git_cache"
-        }
-      ],
-      "casSpec": "bazel",
-      "cipd_packages": [
-        {
-          "name": "infra/3pp/tools/git/linux-amd64",
-          "path": "cipd_bin_packages",
-          "version": "version:3@2.46.0.chromium.11"
-        },
-        {
-          "name": "infra/tools/git/${platform}",
-          "path": "cipd_bin_packages",
-          "version": "git_revision:e02b085286a3baf3ab1194941cdb6c196c4c0802"
-        },
-        {
-          "name": "infra/tools/luci/git-credential-luci/${platform}",
-          "path": "cipd_bin_packages",
-          "version": "git_revision:e02b085286a3baf3ab1194941cdb6c196c4c0802"
-        },
-        {
-          "name": "skia/bots/bazelisk_linux_amd64",
-          "path": "bazelisk_linux_amd64",
-          "version": "version:0"
-        },
-        {
-          "name": "skia/tools/bazel_build/${platform}",
-          "path": "task_drivers",
-          "version": "git_revision:b5d31abb7bc772a69f800de45783768768437675"
-        }
-      ],
-      "command": [
-        "task_drivers/bazel_build",
-        "--project_id=skia-swarming-bots",
-        "--task_id=<(TASK_ID)",
-        "--task_name=BazelBuild-full_library-enforce_iwyu-linux_x64",
-        "--bazel_label=//tools:full_build",
-        "--bazel_config=enforce_iwyu",
-        "--bazel_cache_dir=/mnt/pd0/bazel_cache",
-        "--workdir=./skia",
-        "--bazel_arg=--config=for_linux_x64_with_rbe",
-        "--bazel_arg=--jobs=100",
-        "--bazel_arg=--remote_download_minimal"
-      ],
-      "dimensions": [
-        "cpu:x86-64-Haswell_GCE",
-        "gpu:none",
-        "machine_type:n1-standard-16",
-        "os:Debian-10.3",
-        "pool:Skia"
-      ],
-      "env_prefixes": {
-        "PATH": [
-          "cipd_bin_packages",
-          "cipd_bin_packages/bin",
-          "bazelisk_linux_amd64"
-        ]
-      },
-      "idempotent": true,
-      "max_attempts": 1,
-      "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
-    },
-    "BazelBuild-full_library-for_windows_x64_release-windows_x64": {
+    "BazelBuild-full_build-for_windows_x64_release-windows_x64": {
       "caches": [
         {
           "name": "git",
@@ -4159,11 +4101,13 @@
         "./bazel_build",
         "--project_id=skia-swarming-bots",
         "--task_id=<(TASK_ID)",
-        "--task_name=BazelBuild-full_library-for_windows_x64_release-windows_x64",
+        "--task_name=BazelBuild-full_build-for_windows_x64_release-windows_x64",
         "--bazel_label=//tools:full_build",
         "--bazel_config=for_windows_x64_release",
         "--bazel_cache_dir=C:\\\\Users\\\\chrome-bot\\\\bazel_cache",
         "--workdir=./skia",
+        "--out_path=bazel_output",
+        "--saved_output_dir=tools",
         "--bazel_arg=--experimental_scale_timeouts=2.0"
       ],
       "dependencies": [
@@ -4185,9 +4129,12 @@
       },
       "idempotent": true,
       "max_attempts": 1,
+      "outputs": [
+        "bazel_output"
+      ],
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
-    "BazelBuild-full_library-release-linux_x64": {
+    "BazelBuild-full_build-release-linux_x64": {
       "caches": [
         {
           "name": "git",
@@ -4230,14 +4177,17 @@
         "task_drivers/bazel_build",
         "--project_id=skia-swarming-bots",
         "--task_id=<(TASK_ID)",
-        "--task_name=BazelBuild-full_library-release-linux_x64",
+        "--task_name=BazelBuild-full_build-release-linux_x64",
         "--bazel_label=//tools:full_build",
         "--bazel_config=release",
         "--bazel_cache_dir=/mnt/pd0/bazel_cache",
         "--workdir=./skia",
-        "--bazel_arg=--config=for_linux_x64_with_rbe",
+        "--out_path=bazel_output",
+        "--saved_output_dir=tools",
+        "--bazel_arg=--config=linux_rbe",
         "--bazel_arg=--jobs=100",
-        "--bazel_arg=--remote_download_minimal"
+        "--bazel_arg=--remote_download_toplevel",
+        "--bazel_arg=--adb_platform=linux_arm64"
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
@@ -4255,6 +4205,9 @@
       },
       "idempotent": true,
       "max_attempts": 1,
+      "outputs": [
+        "bazel_output"
+      ],
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "BazelBuild-ganesh_gl-release-linux_x64": {
@@ -4403,7 +4356,7 @@
       ],
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
-    "BazelBuild-modules_canvaskit-ck_full_webgl2_debug-linux_x64": {
+    "BazelBuild-linux_rbe_tests-debug-linux_x64": {
       "caches": [
         {
           "name": "git",
@@ -4446,14 +4399,17 @@
         "task_drivers/bazel_build",
         "--project_id=skia-swarming-bots",
         "--task_id=<(TASK_ID)",
-        "--task_name=BazelBuild-modules_canvaskit-ck_full_webgl2_debug-linux_x64",
-        "--bazel_label=//modules/canvaskit:canvaskit",
-        "--bazel_config=ck_full_webgl2_debug",
+        "--task_name=BazelBuild-linux_rbe_tests-debug-linux_x64",
+        "--bazel_label=//tests:linux_rbe_tests",
+        "--bazel_config=debug",
         "--bazel_cache_dir=/mnt/pd0/bazel_cache",
         "--workdir=./skia",
-        "--bazel_arg=--config=for_linux_x64_with_rbe",
+        "--out_path=bazel_output",
+        "--saved_output_dir=tests",
+        "--bazel_arg=--config=linux_rbe",
         "--bazel_arg=--jobs=100",
-        "--bazel_arg=--remote_download_minimal"
+        "--bazel_arg=--remote_download_toplevel",
+        "--bazel_arg=--adb_platform=linux_arm64"
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
@@ -4471,6 +4427,85 @@
       },
       "idempotent": true,
       "max_attempts": 1,
+      "outputs": [
+        "bazel_output"
+      ],
+      "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
+    },
+    "BazelBuild-linux_rbe_tests-release-linux_x64": {
+      "caches": [
+        {
+          "name": "git",
+          "path": "cache/git"
+        },
+        {
+          "name": "git_cache",
+          "path": "cache/git_cache"
+        }
+      ],
+      "casSpec": "bazel",
+      "cipd_packages": [
+        {
+          "name": "infra/3pp/tools/git/linux-amd64",
+          "path": "cipd_bin_packages",
+          "version": "version:3@2.46.0.chromium.11"
+        },
+        {
+          "name": "infra/tools/git/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:e02b085286a3baf3ab1194941cdb6c196c4c0802"
+        },
+        {
+          "name": "infra/tools/luci/git-credential-luci/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:e02b085286a3baf3ab1194941cdb6c196c4c0802"
+        },
+        {
+          "name": "skia/bots/bazelisk_linux_amd64",
+          "path": "bazelisk_linux_amd64",
+          "version": "version:0"
+        },
+        {
+          "name": "skia/tools/bazel_build/${platform}",
+          "path": "task_drivers",
+          "version": "git_revision:b5d31abb7bc772a69f800de45783768768437675"
+        }
+      ],
+      "command": [
+        "task_drivers/bazel_build",
+        "--project_id=skia-swarming-bots",
+        "--task_id=<(TASK_ID)",
+        "--task_name=BazelBuild-linux_rbe_tests-release-linux_x64",
+        "--bazel_label=//tests:linux_rbe_tests",
+        "--bazel_config=release",
+        "--bazel_cache_dir=/mnt/pd0/bazel_cache",
+        "--workdir=./skia",
+        "--out_path=bazel_output",
+        "--saved_output_dir=tests",
+        "--bazel_arg=--config=linux_rbe",
+        "--bazel_arg=--jobs=100",
+        "--bazel_arg=--remote_download_toplevel",
+        "--bazel_arg=--adb_platform=linux_arm64"
+      ],
+      "dimensions": [
+        "cpu:x86-64-Haswell_GCE",
+        "gpu:none",
+        "machine_type:n1-standard-16",
+        "os:Debian-10.3",
+        "pool:Skia"
+      ],
+      "env_prefixes": {
+        "PATH": [
+          "cipd_bin_packages",
+          "cipd_bin_packages/bin",
+          "bazelisk_linux_amd64"
+        ]
+      },
+      "idempotent": true,
+      "max_attempts": 1,
+      "outputs": [
+        "bazel_output"
+      ],
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "BazelBuild-skottie_tool_gpu-enforce_iwyu-linux_x64": {
@@ -4521,9 +4556,12 @@
         "--bazel_config=enforce_iwyu",
         "--bazel_cache_dir=/mnt/pd0/bazel_cache",
         "--workdir=./skia",
-        "--bazel_arg=--config=for_linux_x64_with_rbe",
+        "--out_path=bazel_output",
+        "--saved_output_dir=modules/skottie",
+        "--bazel_arg=--config=linux_rbe",
         "--bazel_arg=--jobs=100",
-        "--bazel_arg=--remote_download_minimal"
+        "--bazel_arg=--remote_download_toplevel",
+        "--bazel_arg=--adb_platform=linux_arm64"
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
@@ -4541,6 +4579,9 @@
       },
       "idempotent": true,
       "max_attempts": 1,
+      "outputs": [
+        "bazel_output"
+      ],
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "BazelBuild-use_ganesh_gl-for_windows_x64_release-windows_x64": {
@@ -4586,6 +4627,8 @@
         "--bazel_config=for_windows_x64_release",
         "--bazel_cache_dir=C:\\\\Users\\\\chrome-bot\\\\bazel_cache",
         "--workdir=./skia",
+        "--out_path=bazel_output",
+        "--saved_output_dir=example/external_client",
         "--bazel_arg=--experimental_scale_timeouts=2.0"
       ],
       "dependencies": [
@@ -4607,6 +4650,9 @@
       },
       "idempotent": true,
       "max_attempts": 1,
+      "outputs": [
+        "bazel_output"
+      ],
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "BazelBuild-viewer-debug-linux_x64": {
@@ -4657,9 +4703,12 @@
         "--bazel_config=debug",
         "--bazel_cache_dir=/mnt/pd0/bazel_cache",
         "--workdir=./skia",
-        "--bazel_arg=--config=for_linux_x64_with_rbe",
+        "--out_path=bazel_output",
+        "--saved_output_dir=tools/viewer",
+        "--bazel_arg=--config=linux_rbe",
         "--bazel_arg=--jobs=100",
-        "--bazel_arg=--remote_download_minimal"
+        "--bazel_arg=--remote_download_toplevel",
+        "--bazel_arg=--adb_platform=linux_arm64"
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
@@ -4677,6 +4726,9 @@
       },
       "idempotent": true,
       "max_attempts": 1,
+      "outputs": [
+        "bazel_output"
+      ],
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "BazelBuild-viewer-release-linux_x64": {
@@ -4727,9 +4779,12 @@
         "--bazel_config=release",
         "--bazel_cache_dir=/mnt/pd0/bazel_cache",
         "--workdir=./skia",
-        "--bazel_arg=--config=for_linux_x64_with_rbe",
+        "--out_path=bazel_output",
+        "--saved_output_dir=tools/viewer",
+        "--bazel_arg=--config=linux_rbe",
         "--bazel_arg=--jobs=100",
-        "--bazel_arg=--remote_download_minimal"
+        "--bazel_arg=--remote_download_toplevel",
+        "--bazel_arg=--adb_platform=linux_arm64"
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
@@ -4747,9 +4802,12 @@
       },
       "idempotent": true,
       "max_attempts": 1,
+      "outputs": [
+        "bazel_output"
+      ],
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
-    "BazelTest-benchmark-cpu_8888_benchmark_test-linux_rbe-linux_x64-NUC9i7QN_Debian11": {
+    "BazelTest-benchmark-bench__cpu_8888_test-linux_rbe-linux_x64-NUC9i7QN_Debian11": {
       "casSpec": "bazel",
       "cipd_packages": [
         {
@@ -4762,7 +4820,7 @@
         "./bazel_test_benchmark",
         "--project_id=skia-swarming-bots",
         "--task_id=<(TASK_ID)",
-        "--task_name=BazelTest-benchmark-cpu_8888_benchmark_test-linux_rbe-linux_x64-NUC9i7QN_Debian11",
+        "--task_name=BazelTest-benchmark-bench__cpu_8888_test-linux_rbe-linux_x64-NUC9i7QN_Debian11",
         "--workdir=.",
         "--bazel_label=//bench:cpu_8888_test",
         "--bazel_config=linux_rbe",
@@ -4789,7 +4847,7 @@
       "max_attempts": 1,
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
-    "BazelTest-canvaskit_gold-modules_canvaskit_js_tests-ck_full_cpu_release_chrome-linux_x64": {
+    "BazelTest-canvaskit_gold-canvaskit_js_tests-ck_full_cpu_release_chrome-linux_x64": {
       "casSpec": "bazel",
       "cipd_packages": [
         {
@@ -4807,7 +4865,7 @@
         "./canvaskit_gold",
         "--project_id=skia-swarming-bots",
         "--task_id=<(TASK_ID)",
-        "--task_name=BazelTest-canvaskit_gold-modules_canvaskit_js_tests-ck_full_cpu_release_chrome-linux_x64",
+        "--task_name=BazelTest-canvaskit_gold-canvaskit_js_tests-ck_full_cpu_release_chrome-linux_x64",
         "--workdir=.",
         "--bazel_label=//modules/canvaskit:canvaskit_js_tests",
         "--bazel_config=ck_full_cpu_release_chrome",
@@ -4841,7 +4899,7 @@
       "max_attempts": 1,
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
-    "BazelTest-canvaskit_gold-modules_canvaskit_js_tests-ck_full_webgl2_release_chrome-linux_x64": {
+    "BazelTest-canvaskit_gold-canvaskit_js_tests-ck_full_webgl2_release_chrome-linux_x64": {
       "casSpec": "bazel",
       "cipd_packages": [
         {
@@ -4859,7 +4917,7 @@
         "./canvaskit_gold",
         "--project_id=skia-swarming-bots",
         "--task_id=<(TASK_ID)",
-        "--task_name=BazelTest-canvaskit_gold-modules_canvaskit_js_tests-ck_full_webgl2_release_chrome-linux_x64",
+        "--task_name=BazelTest-canvaskit_gold-canvaskit_js_tests-ck_full_webgl2_release_chrome-linux_x64",
         "--workdir=.",
         "--bazel_label=//modules/canvaskit:canvaskit_js_tests",
         "--bazel_config=ck_full_webgl2_release_chrome",
@@ -4931,7 +4989,7 @@
       "max_attempts": 1,
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
-    "BazelTest-cpu_tests-all_tests-cpu_only_debug_rbe-linux_x64": {
+    "BazelTest-cpu_tests-linux_rbe_tests-cpu_only_debug_rbe-linux_x64": {
       "casSpec": "bazel",
       "cipd_packages": [
         {
@@ -4944,7 +5002,7 @@
         "./cpu_tests",
         "--project_id=skia-swarming-bots",
         "--task_id=<(TASK_ID)",
-        "--task_name=BazelTest-cpu_tests-all_tests-cpu_only_debug_rbe-linux_x64",
+        "--task_name=BazelTest-cpu_tests-linux_rbe_tests-cpu_only_debug_rbe-linux_x64",
         "--workdir=.",
         "--bazel_label=//tests:linux_rbe_tests",
         "--bazel_config=cpu_only_debug_rbe",
@@ -5761,7 +5819,7 @@
       "max_attempts": 1,
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
-    "BazelTest-gm-cpu_gms-cpu_only_debug_rbe-linux_x64-NUC9i7QN_Debian11": {
+    "BazelTest-gm-cpu_gm_tests-cpu_only_debug_rbe-linux_x64-NUC9i7QN_Debian11": {
       "casSpec": "bazel",
       "cipd_packages": [
         {
@@ -5779,7 +5837,7 @@
         "./bazel_test_gm",
         "--project_id=skia-swarming-bots",
         "--task_id=<(TASK_ID)",
-        "--task_name=BazelTest-gm-cpu_gms-cpu_only_debug_rbe-linux_x64-NUC9i7QN_Debian11",
+        "--task_name=BazelTest-gm-cpu_gm_tests-cpu_only_debug_rbe-linux_x64-NUC9i7QN_Debian11",
         "--workdir=.",
         "--bazel_label=//gm:cpu_gm_tests",
         "--bazel_config=cpu_only_debug_rbe",
@@ -5808,13 +5866,13 @@
       "max_attempts": 1,
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
-    "BazelTest-precompiled_benchmark-cpu_8888_benchmark_android_test-for_android_arm64_release-on_rpi-Pixel5_Android12": {
+    "BazelTest-precompiled_benchmark-bench__cpu_8888_android_test-for_android_arm64_release-on_rpi-Pixel5_Android12": {
       "casSpec": "bazel",
       "command": [
         "./bazel_test_precompiled",
         "--project_id=skia-swarming-bots",
         "--task_id=<(TASK_ID)",
-        "--task_name=BazelTest-precompiled_benchmark-cpu_8888_benchmark_android_test-for_android_arm64_release-on_rpi-Pixel5_Android12",
+        "--task_name=BazelTest-precompiled_benchmark-bench__cpu_8888_android_test-for_android_arm64_release-on_rpi-Pixel5_Android12",
         "--workdir=.",
         "--command=bazel_output/bench/cpu_8888_android_test",
         "--command_workdir=bazel_output/bench/cpu_8888_android_test.runfiles/skia",
@@ -5825,7 +5883,7 @@
         "--device_specific_bazel_config=Pixel5_Android12"
       ],
       "dependencies": [
-        "BazelBuild-cpu_8888_benchmark_android_test-for_android_arm64_release-linux_x64",
+        "BazelBuild-bench__cpu_8888_android_test-for_android_arm64_release-linux_x64",
         "Housekeeper-PerCommit-BuildTaskDrivers_linux_arm64"
       ],
       "dimensions": [
@@ -89533,31 +89591,31 @@
     }
   },
   "commit_queue": {
-    "BazelBuild-all_tests-release-linux_x64": {},
-    "BazelBuild-full_library-enforce_iwyu-linux_x64": {},
-    "BazelBuild-full_library-release-linux_x64": {},
-    "BazelBuild-modules_canvaskit-ck_full_webgl2_debug-linux_x64": {},
+    "BazelBuild-canvaskit-ck_full_webgl2_debug-linux_x64": {},
+    "BazelBuild-full_build-enforce_iwyu-linux_x64": {},
+    "BazelBuild-full_build-release-linux_x64": {},
+    "BazelBuild-linux_rbe_tests-release-linux_x64": {},
     "BazelBuild-skottie_tool_gpu-enforce_iwyu-linux_x64": {},
     "BazelBuild-viewer-debug-linux_x64": {},
-    "BazelTest-benchmark-cpu_8888_benchmark_test-linux_rbe-linux_x64-NUC9i7QN_Debian11": {
+    "BazelTest-benchmark-bench__cpu_8888_test-linux_rbe-linux_x64-NUC9i7QN_Debian11": {
       "experimental": true
     },
-    "BazelTest-canvaskit_gold-modules_canvaskit_js_tests-ck_full_cpu_release_chrome-linux_x64": {
+    "BazelTest-canvaskit_gold-canvaskit_js_tests-ck_full_cpu_release_chrome-linux_x64": {
       "location_regexes": [
         "modules/canvaskit/.*"
       ]
     },
-    "BazelTest-canvaskit_gold-modules_canvaskit_js_tests-ck_full_webgl2_release_chrome-linux_x64": {
+    "BazelTest-canvaskit_gold-canvaskit_js_tests-ck_full_webgl2_release_chrome-linux_x64": {
       "location_regexes": [
         "modules/canvaskit/.*"
       ]
     },
-    "BazelTest-cpu_tests-all_tests-cpu_only_debug_rbe-linux_x64": {
+    "BazelTest-cpu_tests-linux_rbe_tests-cpu_only_debug_rbe-linux_x64": {
       "experimental": true
     },
     "BazelTest-external_client-use_graphite_native_vulkan-default-linux_x64": {},
-    "BazelTest-gm-cpu_gms-cpu_only_debug_rbe-linux_x64-NUC9i7QN_Debian11": {},
-    "BazelTest-precompiled_benchmark-cpu_8888_benchmark_android_test-for_android_arm64_release-on_rpi-Pixel5_Android12": {
+    "BazelTest-gm-cpu_gm_tests-cpu_only_debug_rbe-linux_x64-NUC9i7QN_Debian11": {},
+    "BazelTest-precompiled_benchmark-bench__cpu_8888_android_test-for_android_arm64_release-on_rpi-Pixel5_Android12": {
       "experimental": true
     },
     "BazelTest-precompiled_gm-hello_bazel_world_android_test-for_android_arm64_release-on_rpi-Pixel5_Android12": {

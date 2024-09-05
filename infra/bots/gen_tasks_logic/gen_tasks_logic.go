@@ -26,6 +26,7 @@ import (
 	"go.skia.org/infra/go/cipd"
 	"go.skia.org/infra/task_scheduler/go/specs"
 	"go.skia.org/skia/bazel/device_specific_configs"
+	"go.skia.org/skia/infra/bots/gen_tasks_logic/bazel"
 )
 
 const (
@@ -2130,69 +2131,12 @@ func (b *jobBuilder) runWasmGMTests() {
 	})
 }
 
-// labelAndSavedOutputDir contains a Bazel label (e.g. //tests:some_test) and a //bazel-bin
-// subdirectory that should be stored into CAS.
-type labelAndSavedOutputDir struct {
-	label          string
-	savedOutputDir string
-}
-
-// Maps a shorthand version of a label (which can be an arbitrary string) to an absolute Bazel
-// label or "target pattern" https://bazel.build/docs/build#specifying-build-targets
-// The reason we need this mapping is because Buildbucket build names cannot have / or : in them.
-// TODO(borenet/kjlubick): Is there a way to generate a mapping using `bazel query`?
-var shorthandToLabel = map[string]labelAndSavedOutputDir{
-	"all_tests":                  {"//tests:linux_rbe_tests", ""},
-	"core":                       {"//:core", ""},
-	"cpu_8888_benchmark_test":    {"//bench:cpu_8888_test", ""},
-	"cpu_gms":                    {"//gm:cpu_gm_tests", ""},
-	"full_library":               {"//tools:full_build", ""},
-	"ganesh_gl":                  {"//:ganesh_gl", ""},
-	"hello_bazel_world_test":     {"//gm:hello_bazel_world_test", ""},
-	"modules_canvaskit":          {"//modules/canvaskit:canvaskit", ""},
-	"modules_canvaskit_js_tests": {"//modules/canvaskit:canvaskit_js_tests", ""},
-	"skottie_tool_gpu":           {"//modules/skottie:skottie_tool_gpu", ""},
-	"viewer":                     {"//tools/viewer:viewer", ""},
-	"decode_everything":          {"//example/external_client:decode_everything", ""},
-	"path_combiner":              {"//example/external_client:path_combiner", ""},
-	"png_decoder":                {"//example/external_client:png_decoder", ""},
-	"shape_text":                 {"//example/external_client:shape_text", ""},
-	"svg_with_harfbuzz":          {"//example/external_client:svg_with_harfbuzz", ""},
-	"svg_with_primitive":         {"//example/external_client:svg_with_primitive", ""},
-	"use_ganesh_gl":              {"//example/external_client:use_ganesh_gl", ""},
-	"use_ganesh_vulkan":          {"//example/external_client:use_ganesh_vulkan", ""},
-	"use_graphite_native_vulkan": {"//example/external_client:use_graphite_native_vulkan", ""},
-	"use_skresources":            {"//example/external_client:use_skresources", ""},
-	"write_text_to_png":          {"//example/external_client:write_text_to_png", ""},
-	"write_to_pdf":               {"//example/external_client:write_to_pdf", ""},
-
-	// Currently there is no way to tell Bazel "only test go_test targets", so we must group them
-	// under a test_suite.
-	//
-	// Alternatives:
-	//
-	// - Use --test_lang_filters, which currently does not work for non-native rules. See
-	//   https://github.com/bazelbuild/bazel/issues/12618.
-	//
-	// - As suggested in the same GitHub issue, "bazel query 'kind(go_test, //...)'" would normally
-	//   return the list of labels. However, this fails due to BUILD.bazel files in
-	//   //third_party/externals and //bazel/external/vello. We could try either fixing those files
-	//   when possible, or adding them to //.bazelignore (either permanently or temporarily inside a
-	//   specialized task driver just for Go tests).
-	//
-	// - Have Gazelle add a tag to all Go tests: go_test(name = "foo_test", tag = "go", ... ). Then,
-	//   we can use a wildcard label such as //... and tell Bazel to only test those targets with
-	//   said tag, e.g. "bazel test //... --test_tag_filters=go"
-	//   (https://bazel.build/reference/command-line-reference#flag--test_tag_filters). Today this
-	//   does not work due to the third party and external BUILD.bazel files mentioned in the
-	//   previous bullet point.
-	"all_go_tests": {"//:all_go_tests", ""},
-
-	// Android tests that run on a device. We store the //bazel-bin/tests directory into CAS for use
-	// by subsequent CI tasks.
-	"android_math_test":               {"//tests:android_math_test", "tests"},
-	"hello_bazel_world_android_test":  {"//gm:hello_bazel_world_android_test", "gm"},
-	"cpu_8888_benchmark_android_test": {"//bench:cpu_8888_android_test", "bench"},
+// shorthandToSavedOutputDir returns the output directory in which the target
+// will be built, so that it can be passed to subsequent tasks via CAS.
+func shorthandToSavedOutputDir(shorthand string) string {
+	// Note: this is just the directory portion of the label.
+	fullLabel := bazel.MustGetLabel(shorthand)
+	return strings.TrimPrefix(strings.Split(fullLabel, ":")[0], "//")
 }
 
 // bazelBuild adds a task which builds the specified single-target label (//foo:bar) or
@@ -2201,10 +2145,8 @@ var shorthandToLabel = map[string]labelAndSavedOutputDir{
 // will be stored into CAS for use by subsequent tasks.
 func (b *jobBuilder) bazelBuild() {
 	shorthand, config, host := b.parts.bazelBuildParts()
-	labelAndSavedOutputDir, ok := shorthandToLabel[shorthand]
-	if !ok {
-		panic("unsupported Bazel label shorthand " + shorthand)
-	}
+	label := bazel.MustGetLabel(shorthand)
+	savedOutputDir := shorthandToSavedOutputDir(shorthand)
 
 	b.addTask(b.Name, func(b *taskBuilder) {
 		bazelCacheDir, ok := map[string]string{
@@ -2226,24 +2168,24 @@ func (b *jobBuilder) bazelBuild() {
 			"--project_id=skia-swarming-bots",
 			"--task_id=" + specs.PLACEHOLDER_TASK_ID,
 			"--task_name=" + b.Name,
-			"--bazel_label=" + labelAndSavedOutputDir.label,
+			"--bazel_label=" + label,
 			"--bazel_config=" + config,
 			"--bazel_cache_dir=" + bazelCacheDir,
 			"--workdir=./skia",
 		}
 
-		if labelAndSavedOutputDir.savedOutputDir != "" {
+		if savedOutputDir != "" {
 			cmd = append(cmd,
 				"--out_path="+OUTPUT_BAZEL,
 				// Which //bazel-bin subdirectory to copy into the output dir (flag --out_path).
-				"--saved_output_dir="+labelAndSavedOutputDir.savedOutputDir,
+				"--saved_output_dir="+savedOutputDir,
 			)
 		}
 
 		if host == "linux_x64" {
 			b.linuxGceDimensions(MACHINE_TYPE_MEDIUM)
 			b.usesBazel("linux_x64")
-			if labelAndSavedOutputDir.savedOutputDir != "" {
+			if savedOutputDir != "" {
 				// We assume that builds which require storing a subset of //bazel-bin to CAS are Android
 				// builds. We want such builds to use RBE, and we want to download the built top-level
 				// artifacts. Also, we need the adb_test runner to be cross-compiled to run on a Raspberry
@@ -2277,7 +2219,7 @@ func (b *jobBuilder) bazelBuild() {
 		b.cas(CAS_BAZEL)
 		b.attempts(1)
 		b.serviceAccount(b.cfg.ServiceAccountCompile)
-		if labelAndSavedOutputDir.savedOutputDir != "" {
+		if savedOutputDir != "" {
 			b.output(OUTPUT_BAZEL)
 		}
 	})
@@ -2294,10 +2236,7 @@ const (
 
 func (b *jobBuilder) bazelTest() {
 	taskdriverName, shorthand, buildConfig, host, testConfig := b.parts.bazelTestParts()
-	labelAndSavedOutputDir, ok := shorthandToLabel[shorthand]
-	if !ok {
-		panic("unsupported Bazel label shorthand " + shorthand)
-	}
+	label := bazel.MustGetLabel(shorthand)
 
 	// Expand task driver name to keep task names short.
 	precompiledKind := precompiledBazelTestNone
@@ -2346,7 +2285,7 @@ func (b *jobBuilder) bazelTest() {
 		switch taskdriverName {
 		case "canvaskit_gold":
 			cmd = append(cmd,
-				"--bazel_label="+labelAndSavedOutputDir.label,
+				"--bazel_label="+label,
 				"--bazel_config="+buildConfig,
 				"--bazel_cache_dir="+bazelCacheDir,
 				"--goldctl_path=./cipd_bin_packages/goldctl",
@@ -2368,20 +2307,20 @@ func (b *jobBuilder) bazelTest() {
 
 		case "cpu_tests":
 			cmd = append(cmd,
-				"--bazel_label="+labelAndSavedOutputDir.label,
+				"--bazel_label="+label,
 				"--bazel_config="+buildConfig,
 				"--bazel_cache_dir="+bazelCacheDir)
 
 		case "toolchain_layering_check":
 			cmd = append(cmd,
-				"--bazel_label="+labelAndSavedOutputDir.label,
+				"--bazel_label="+label,
 				"--bazel_config="+buildConfig,
 				"--bazel_cache_dir="+bazelCacheDir)
 
 		case "bazel_test_precompiled":
 			// Compute the file name of the test based on its Bazel label. The file name will be relative to
 			// the bazel-bin directory, which we receive a subset of as a CAS input.
-			command := strings.ReplaceAll(labelAndSavedOutputDir.label, "//", "")
+			command := strings.ReplaceAll(label, "//", "")
 			command = strings.ReplaceAll(command, ":", "/")
 			command = path.Join(OUTPUT_BAZEL, command)
 
@@ -2404,7 +2343,7 @@ func (b *jobBuilder) bazelTest() {
 			case precompiledGMTest:
 				cmd = append(cmd,
 					"--kind=gm",
-					"--bazel_label="+labelAndSavedOutputDir.label,
+					"--bazel_label="+label,
 					"--goldctl_path=./cipd_bin_packages/goldctl",
 					"--git_commit="+specs.PLACEHOLDER_REVISION,
 					"--changelist_id="+specs.PLACEHOLDER_ISSUE,
@@ -2421,7 +2360,7 @@ func (b *jobBuilder) bazelTest() {
 
 		case "bazel_test_gm":
 			cmd = append(cmd,
-				"--bazel_label="+labelAndSavedOutputDir.label,
+				"--bazel_label="+label,
 				"--bazel_config="+buildConfig,
 				"--bazel_cache_dir="+bazelCacheDir,
 				"--goldctl_path=./cipd_bin_packages/goldctl",
@@ -2434,7 +2373,7 @@ func (b *jobBuilder) bazelTest() {
 		case "bazel_test_benchmark":
 			// Note that these tasks run on Skolo machines.
 			cmd = append(cmd,
-				"--bazel_label="+labelAndSavedOutputDir.label,
+				"--bazel_label="+label,
 				"--bazel_config="+buildConfig,
 				"--bazel_cache_dir="+bazelCacheDirOnSkoloLinux,
 				"--git_commit="+specs.PLACEHOLDER_REVISION,
@@ -2446,7 +2385,7 @@ func (b *jobBuilder) bazelTest() {
 			// build using Skia. Therefore, we change to the workspace in that
 			// directory and use labels relative to it.
 			pathInSkia := "example/external_client"
-			label := strings.Replace(labelAndSavedOutputDir.label, pathInSkia, "", -1)
+			label := strings.Replace(label, pathInSkia, "", -1)
 			cmd = append(cmd,
 				"--bazel_label="+label,
 				"--path_in_skia="+pathInSkia,
