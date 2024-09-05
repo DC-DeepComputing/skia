@@ -22,6 +22,30 @@
       },
       "revId": "e36572de7f58d84b1c56df6b8ccf0c398ce6c0b8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9275b67d_a831bf15",
+        "filename": "src/gpu/graphite/task/RenderPassTask.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-09-05T18:25:57Z",
+      "side": 1,
+      "message": "Yes, I think that is the recommendation. Done",
+      "parentUuid": "2417ed14_32af6bd0",
+      "range": {
+        "startLine": 38,
+        "startChar": 38,
+        "endLine": 38,
+        "endChar": 66
+      },
+      "revId": "e36572de7f58d84b1c56df6b8ccf0c398ce6c0b8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
