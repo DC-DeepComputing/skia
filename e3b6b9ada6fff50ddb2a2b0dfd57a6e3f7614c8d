@@ -1,5 +1,52 @@
 {
-  "comments": [],
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1ee2a96_13c195c1",
+        "filename": "tools/skia-client-search.html",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-09-05T14:03:07Z",
+      "side": 1,
+      "message": "`http://cs/` works, I think",
+      "range": {
+        "startLine": 35,
+        "startChar": 17,
+        "endLine": 35,
+        "endChar": 51
+      },
+      "revId": "e3b6b9ada6fff50ddb2a2b0dfd57a6e3f7614c8d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb349d61_f56a6dab",
+        "filename": "tools/skia-client-search.html",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-09-05T14:03:07Z",
+      "side": 1,
+      "message": "I don\u0027t think this is needed anymore",
+      "range": {
+        "startLine": 37,
+        "startChar": 16,
+        "endLine": 37,
+        "endChar": 71
+      },
+      "revId": "e3b6b9ada6fff50ddb2a2b0dfd57a6e3f7614c8d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ],
   "submitRequirementResults": [
     {
       "submitRequirement": {
