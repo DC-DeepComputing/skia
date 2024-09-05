@@ -22,6 +22,30 @@
       },
       "revId": "d7e28a0f44f7ad192cb581a2ae9249123d80f036",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "19725494_3c501449",
+        "filename": "src/gpu/graphite/PipelineData.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-09-05T18:13:51Z",
+      "side": 1,
+      "message": "We need a default copy constructor in order for `UniformDataBlock` and `TextureDataBlock` to be considered trivial and pass `std::has_unique_object_representations` (required to be used as values in the `TextureBinding` tracking).\n\nFrom what I can tell, the copy ctors need to take a reference and not a value. In the end I don\u0027t think this callsite matters too much since we should be getting copy elision.",
+      "parentUuid": "c1eefd4c_f39da478",
+      "range": {
+        "startLine": 38,
+        "startChar": 30,
+        "endLine": 38,
+        "endChar": 54
+      },
+      "revId": "d7e28a0f44f7ad192cb581a2ae9249123d80f036",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
