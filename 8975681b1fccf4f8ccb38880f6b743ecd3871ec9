@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c56c6ee_a0a9f8d7",
+        "filename": "experimental/rust_png/ffi/FFI.rs",
+        "patchSetId": 2
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-09-06T13:18:10Z",
+      "side": 1,
+      "message": "I see how you\u0027re using these below, so everything is safe. Still: Having such different behavior for a missing chunk basically forces callers to know about the different behaviors. \"The interface is no longer just these two functions -- it\u0027s these two functions, plus meta-knowledge about the order you must call them and check the results\". I\u0027d probably just have them both return reasonable defaults (or add a separate `has_actl`, and make them both panic.",
+      "range": {
+        "startLine": 263,
+        "startChar": 0,
+        "endLine": 271,
+        "endChar": 5
+      },
+      "revId": "8975681b1fccf4f8ccb38880f6b743ecd3871ec9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
