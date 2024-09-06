@@ -162,6 +162,7 @@ std::unique_ptr<SurfaceDrawContext> SurfaceDrawContext::Make(GrRecordingContext*
         return nullptr;
     }
 
+    SkDebugf("here 2\n");
     const GrBackendFormat& format = proxy->backendFormat();
     skgpu::Swizzle readSwizzle = rContext->priv().caps()->getReadSwizzle(format, colorType);
     skgpu::Swizzle writeSwizzle = rContext->priv().caps()->getWriteSwizzle(format, colorType);
@@ -257,6 +258,7 @@ std::unique_ptr<SurfaceDrawContext> SurfaceDrawContext::Make(GrRecordingContext*
             isProtected,
             label);
     if (!proxy) {
+        SkDebugf("here1\n");
         return nullptr;
     }
 
