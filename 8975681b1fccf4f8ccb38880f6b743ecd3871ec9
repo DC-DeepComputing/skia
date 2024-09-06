@@ -22,6 +22,30 @@
       },
       "revId": "8975681b1fccf4f8ccb38880f6b743ecd3871ec9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e55389a2_d6f4bb54",
+        "filename": "experimental/rust_png/ffi/FFI.rs",
+        "patchSetId": 2
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-09-06T18:18:25Z",
+      "side": 1,
+      "message": "Fair feedback - thanks!  I would add the making `0` a special/magic value was also sub-optimal.  And you\u0027re right - we can do better, even though this is \"just\" FFI/glue code.\n\nDone.",
+      "parentUuid": "5c56c6ee_a0a9f8d7",
+      "range": {
+        "startLine": 263,
+        "startChar": 0,
+        "endLine": 271,
+        "endChar": 5
+      },
+      "revId": "8975681b1fccf4f8ccb38880f6b743ecd3871ec9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
