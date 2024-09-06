@@ -33,6 +33,69 @@
       "message": "Oh, sorry. Had draft comments and forgot to send them.",
       "revId": "ca1aab34ea509f57c03729e9dd8b09b8c541e8dc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "25a8ae20_eeb36738",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-09-06T12:32:53Z",
+      "side": 1,
+      "message": "LGTM with a couple of nits, but Kaylee should be the primary reviewer on this.",
+      "revId": "ca1aab34ea509f57c03729e9dd8b09b8c541e8dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "861455c9_cf5f7659",
+        "filename": "toolchain/BUILD.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 374,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-09-06T12:32:53Z",
+      "side": 1,
+      "message": "IIUC, the other platforms use a convention like `ios_target_arm64`.  Not sure if the distinction matters, although `download_ios_toolchain` does overlap with what\u0027s defined in download_ios_toolchain.bzl.",
+      "range": {
+        "startLine": 374,
+        "startChar": 12,
+        "endLine": 374,
+        "endChar": 34
+      },
+      "revId": "ca1aab34ea509f57c03729e9dd8b09b8c541e8dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a89fb6e_2495b759",
+        "filename": "tools/sk_app/BUILD.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-09-06T12:32:53Z",
+      "side": 1,
+      "message": "This feels like the dependency is going in the wrong direction, but I don\u0027t know enough about Skia to know for sure.",
+      "range": {
+        "startLine": 62,
+        "startChar": 0,
+        "endLine": 68,
+        "endChar": 1
+      },
+      "revId": "ca1aab34ea509f57c03729e9dd8b09b8c541e8dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
