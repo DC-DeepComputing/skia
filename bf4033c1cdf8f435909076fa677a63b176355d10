@@ -68,6 +68,23 @@
       "message": "Not sure how I missed this -- is it still needed?",
       "revId": "bf4033c1cdf8f435909076fa677a63b176355d10",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7e794e5_09acbf21",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3490583
+      },
+      "writtenOn": "2024-09-06T14:02:26Z",
+      "side": 1,
+      "message": "I believe it\u0027s not needed anymore as we\u0027ve rolled it out. See https://issues.chromium.org/issues/42241167",
+      "revId": "bf4033c1cdf8f435909076fa677a63b176355d10",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
