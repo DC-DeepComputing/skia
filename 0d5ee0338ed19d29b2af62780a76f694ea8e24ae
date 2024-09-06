@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa54059f_04179c63",
+        "filename": "bazel/buildrc",
+        "patchSetId": 7
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-09-06T12:29:28Z",
+      "side": 1,
+      "message": "Just a note for myself, if we want to target an ios simulator (non-arm64) then we\u0027ll probably add `for_ios_simulator` and thus we don\u0027t need to specify this as `for_ios_arm64`)",
+      "range": {
+        "startLine": 139,
+        "startChar": 6,
+        "endLine": 139,
+        "endChar": 13
+      },
+      "revId": "0d5ee0338ed19d29b2af62780a76f694ea8e24ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "52da5b64_3d4767d5",
+        "filename": "bazel/platform/BUILD.bazel",
+        "patchSetId": 7
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-09-06T12:29:28Z",
+      "side": 1,
+      "message": "Can you add a comment that all ios hardware devices are currently arm64 and if we want to target a simulator (sometimes x64), then we\u0027ll add an explicit `ios_simulator` target?",
+      "range": {
+        "startLine": 87,
+        "startChar": 12,
+        "endLine": 87,
+        "endChar": 15
+      },
+      "revId": "0d5ee0338ed19d29b2af62780a76f694ea8e24ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
