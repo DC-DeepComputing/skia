@@ -637,22 +637,22 @@ DAWN_VULKAN_DEFINES = [
     "DAWN_ENABLE_BACKEND_VULKAN",
 ]
 
+# dawn_enable_d3d11=false
+#dawn_enable_d3d12=false
+#dawn_enable_desktop_gl=false
+#dawn_enable_metal=false
+#dawn_enable_opengles=false
+#dawn_enable_vulkan=true
 cc_library(
-    name = "dawn_native",
+    name = "dawn_vulkan",
     srcs = DAWN_SRCS + DAWN_VULKAN_SRCS + DAWN_VULKAN_LINUX_SRCS,
     hdrs = DAWN_HDRS,
-    copts = [
-        # List this as a copt, so as not to propagate it to dependents
-        # Skia has its own vulkan headers and we do not want these to
-        # interfere/override those.
-        "-Iexternal/vulkan_headers/include",
-    ],
     defines = DAWN_VULKAN_DEFINES,
     includes = [
         "include",
         "src",
     ],
-    visibility = ["//visibility:private"],  # only used by :dawn
+    visibility = ["//visibility:public"],  # only used by :dawn
     deps = [
         # Dawn specifically depends on dawn/src/tint:libtint
         ":tint",
