@@ -112,7 +112,11 @@ inline sk_sp<GrSurfaceProxy> SkImage_Ganesh::ProxyChooser::makeVolatileProxyStab
 inline bool SkImage_Ganesh::ProxyChooser::surfaceMustCopyOnWrite(
         GrSurfaceProxy* surfaceProxy) const {
     SkAutoSpinlock hold(fLock);
-    return surfaceProxy->underlyingUniqueID() == fStableProxy->underlyingUniqueID();
+    bool foo = surfaceProxy->underlyingUniqueID() == fStableProxy->underlyingUniqueID();
+    SkDebugf("ProxyChooser::surfaceMustCopyOnWrite %d %d =?= %d\n", foo,
+             surfaceProxy->underlyingUniqueID().asUInt(),
+             fStableProxy->underlyingUniqueID().asUInt());
+    return foo;
 }
 
 inline size_t SkImage_Ganesh::ProxyChooser::gpuMemorySize() const {
@@ -139,6 +143,9 @@ inline skgpu::Protected SkImage_Ganesh::ProxyChooser::isProtected() const {
     if (fVolatileProxy) {
         SkASSERT(fVolatileProxy->asTextureProxy()->isProtected() == isProtected);
     }
+    SkDebugf("ProxyChooser::isProtected: %p %d\n",
+             fStableProxy.get(),
+             isProtected == skgpu::Protected::kYes);
     return isProtected;
 }
 
