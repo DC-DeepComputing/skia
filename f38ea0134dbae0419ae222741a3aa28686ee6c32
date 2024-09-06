@@ -16,6 +16,24 @@
       "message": "Could a downstream client currently be (incorrectly) assuming they\u0027ll get these includes for free when including `include/core/SkImageGenerator.h`? IDK, just wondering if we should wait for canaries or not.",
       "revId": "f38ea0134dbae0419ae222741a3aa28686ee6c32",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d2f659b_c21d19a5",
+        "filename": "include/core/SkImageGenerator.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-09-06T19:34:29Z",
+      "side": 0,
+      "message": "It\u0027s happened before. Chromium is the most likely (since they are using Graphite). The canaries are a good call.",
+      "parentUuid": "57670df4_1e8fbaed",
+      "revId": "f38ea0134dbae0419ae222741a3aa28686ee6c32",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
