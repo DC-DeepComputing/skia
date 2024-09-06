@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c9361b56_dfc41b8b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 28
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-09-06T15:56:12Z",
+      "side": 1,
+      "message": "I don\u0027t see how I can simplify this further without making unclear how each part would be used. The main sections are deciding whether to apply the clip (in ClipStack_graphite), the block of clip data itself (in AnalyticClip.h) and\napplying the snippet in PaintParams. The rest is just passing around data.",
+      "revId": "ed673c0272e94b227a85b0beb5432f1ef10e1f26",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
