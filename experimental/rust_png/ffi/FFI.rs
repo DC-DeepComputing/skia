@@ -73,6 +73,8 @@ mod ffi {
         ) -> bool;
         fn try_get_gama(self: &Reader, gamma: &mut f32) -> bool;
         unsafe fn try_get_iccp<'a>(self: &'a Reader, iccp: &mut &'a [u8]) -> bool;
+        fn get_actl_num_frames(self: &Reader) -> u32;
+        fn get_actl_num_plays(self: &Reader) -> u32;
         fn output_buffer_size(self: &Reader) -> usize;
         fn output_color_type(self: &Reader) -> ColorType;
         fn output_bits_per_component(self: &Reader) -> u8;
@@ -254,6 +256,18 @@ impl Reader {
                 true
             }
         }
+    }
+
+    /// Returns `num_frames` from the `aCTL` chunk if present.  Otherwise,
+    /// returns 0. See https://wiki.mozilla.org/APNG_Specification#.60acTL.60:_The_Animation_Control_Chunk
+    fn get_actl_num_frames(&self) -> u32 {
+        self.0.info().animation_control.as_ref().map(|actl| actl.num_frames).unwrap_or(0)
+    }
+
+    /// Returns `num_plays` from the `aCTL` chunk.  Panics if there is no `aCTL`
+    /// chunk. See https://wiki.mozilla.org/APNG_Specification#.60acTL.60:_The_Animation_Control_Chunk
+    fn get_actl_num_plays(&self) -> u32 {
+        self.0.info().animation_control.as_ref().map(|actl| actl.num_plays).unwrap()
     }
 
     fn output_buffer_size(&self) -> usize {
