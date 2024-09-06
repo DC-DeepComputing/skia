@@ -8,6 +8,7 @@
 #ifndef SkDWriteFontFileStream_DEFINED
 #define SkDWriteFontFileStream_DEFINED
 
+#include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
 
 #include "include/core/SkStream.h"
@@ -24,6 +25,7 @@
 class SkDWriteFontFileStream : public SkStreamMemory {
 public:
     explicit SkDWriteFontFileStream(IDWriteFontFileStream* fontFileStream);
+    explicit SkDWriteFontFileStream(IDWriteFontFileStream* fontFileStream, SkString fontPath);
     ~SkDWriteFontFileStream() override;
 
     size_t read(void* buffer, size_t size) override;
@@ -34,6 +36,7 @@ public:
     bool move(long offset) override;
     size_t getLength() const override;
     const void* getMemoryBase() override;
+    bool getFilepath(SkString* path) const override;
 
     std::unique_ptr<SkDWriteFontFileStream> duplicate() const {
         return std::unique_ptr<SkDWriteFontFileStream>(this->onDuplicate());
@@ -50,6 +53,7 @@ private:
     size_t fPos;
     const void* fLockedMemory;
     void* fFragmentLock;
+    SkString fFontPath;
 };
 
 /**

@@ -19,6 +19,7 @@
 
 #include "include/core/SkData.h"
 #include "include/core/SkFontTypes.h"
+#include "include/core/SkString.h"
 #include "include/private/base/SkTo.h"
 #include "src/core/SkFontDescriptor.h"
 #include "src/core/SkFontStream.h"
@@ -33,6 +34,8 @@
 #include "src/sfnt/SkOTUtils.h"
 #include "src/utils/win/SkDWrite.h"
 #include "src/utils/win/SkDWriteFontFileStream.h"
+
+#include "base/logging.h"
 
 using namespace skia_private;
 
@@ -595,8 +598,63 @@ std::unique_ptr<SkStreamAsset> DWriteFontTypeface::onOpenStream(int* ttcIndex) c
     HRNM(fontFileLoader->CreateStreamFromKey(fontFileKey, fontFileKeySize,
                                              &fontFileStream),
          "Could not create font file stream.");
+    std::wstring retrieve_file_path;
 
-    return std::unique_ptr<SkStreamAsset>(new SkDWriteFontFileStream(fontFileStream.get()));
+     //SkTScopedComPtr<IDWriteLocalFontFileLoader> local_loader;
+     //HRNM(fontFileLoader->QueryInterface(&local_loader), "Could not QI local loader");
+     //UINT32 path_length = 0;
+     //HRNM(local_loader->GetFilePathLengthFromKey(fontFileKey, fontFileKeySize, &path_length),
+     //   "Could not get filepath length.");
+     //retrieve_file_path.resize(++path_length);  // Reserve space for the null terminator.
+     //HRNM(local_loader->GetFilePathFromKey(
+     //           fontFileKey, fontFileKeySize, &retrieve_file_path[0], path_length),
+     //   "Could not get file path from key");
+     //retrieve_file_path.resize(--path_length);
+
+    SkTScopedComPtr<IDWriteLocalFontFileLoader> local_loader;
+    HRESULT hr = fontFileLoader->QueryInterface(&local_loader);
+    if (SUCCEEDED(hr)) {
+        LOG(ERROR) << "Succeeded in QI";
+        // Get file path
+        UINT32 path_length = 0;
+        HRNM(local_loader->GetFilePathLengthFromKey(fontFileKey, fontFileKeySize, &path_length),
+             "Could not get filepath length.");
+        retrieve_file_path.resize(++path_length);  // Reserve space for the null terminator.
+        HRNM(local_loader->GetFilePathFromKey(
+                     fontFileKey, fontFileKeySize, &retrieve_file_path[0], path_length),
+             "Could not get file path from key");
+        retrieve_file_path.resize(--path_length);
+    }
+    if (FAILED(hr)) {
+        LOG(ERROR) << "Failed to QI";
+        SkTScopedComPtr<IDWriteLocalizedStrings> cshFamilyNames;
+        hr = fDWriteFontFamily->GetFamilyNames(&cshFamilyNames);
+        if (SUCCEEDED(hr)) {
+            UINT32 length = 0;
+            int index = fDWriteFontFace->GetIndex();
+            cshFamilyNames->GetStringLength(index, &length);
+
+            // Allocate a string big enough to hold the name.
+            wchar_t* name = new wchar_t[length + 1];
+            if (name == NULL) {
+                hr = E_OUTOFMEMORY;
+            }
+
+            // Get the family name.
+            if (SUCCEEDED(hr)) {
+                hr = cshFamilyNames->GetString(index, name, length + 1);
+            }
+
+            if (SUCCEEDED(hr)) {
+                LOG(ERROR) << "Name is: " << name;
+            }
+
+            delete[] name;
+        }
+    }
+
+     return std::unique_ptr<SkStreamAsset>(new SkDWriteFontFileStream(fontFileStream.get(),
+        SkString(std::string(retrieve_file_path.begin(), retrieve_file_path.end()))));
 }
 
 std::unique_ptr<SkScalerContext> DWriteFontTypeface::onCreateScalerContext(
