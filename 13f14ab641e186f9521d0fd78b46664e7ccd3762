@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "75e49969_ae9eac67",
+        "filename": "src/gpu/graphite/ContextUtils.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-09-06T17:07:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5d708479_4116dc68",
+      "range": {
+        "startLine": 89,
+        "startChar": 12,
+        "endLine": 89,
+        "endChar": 16
+      },
+      "revId": "13f14ab641e186f9521d0fd78b46664e7ccd3762",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "906f102a_24083eaf",
@@ -37,6 +61,24 @@
       "writtenOn": "2024-09-06T15:45:44Z",
       "side": 1,
       "message": "overlength",
+      "revId": "13f14ab641e186f9521d0fd78b46664e7ccd3762",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "543b067b_a3b66602",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-09-06T17:07:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "906f102a_24083eaf",
       "revId": "13f14ab641e186f9521d0fd78b46664e7ccd3762",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
