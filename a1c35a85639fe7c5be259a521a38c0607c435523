@@ -18,6 +18,47 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3db444d1_4d4908b1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 29
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-09-06T18:24:43Z",
+      "side": 1,
+      "message": "The red rrect should have rounded corners on the top-left and bottom-right, but the other corners should be radii 0 since they are from the intersection of the straight edges of the larger clip elements.\n\nBut with those 2 corners, we end up turning on all edge masks still so I think it confuses the shader math.",
+      "parentUuid": "0e34c528_5a0cc228",
+      "revId": "a1c35a85639fe7c5be259a521a38c0607c435523",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af24a1fd_c8d99a6c",
+        "filename": "fuzz/FuzzPrecompile.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 365,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-09-06T18:24:43Z",
+      "side": 1,
+      "message": "nit: space",
+      "range": {
+        "startLine": 365,
+        "startChar": 80,
+        "endLine": 365,
+        "endChar": 81
+      },
+      "revId": "a1c35a85639fe7c5be259a521a38c0607c435523",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e61d3cc0_db4c6316",
@@ -152,6 +193,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ebe35159_c7cfdc9d",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 334,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-09-06T18:24:43Z",
+      "side": 1,
+      "message": "I think this should be a `BlendCompose` block with a fixed blend mode block to multiply both alpha channels together.",
+      "range": {
+        "startLine": 334,
+        "startChar": 12,
+        "endLine": 334,
+        "endChar": 19
+      },
+      "revId": "a1c35a85639fe7c5be259a521a38c0607c435523",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75fbfc85_e47ce367",
+        "filename": "src/gpu/graphite/geom/AnalyticClip.h",
+        "patchSetId": 29
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-09-06T18:24:43Z",
+      "side": 1,
+      "message": "Can we generalize `EdgeAAQuad::Flags` to be used here too?",
+      "range": {
+        "startLine": 19,
+        "startChar": 4,
+        "endLine": 28,
+        "endChar": 59
+      },
+      "revId": "a1c35a85639fe7c5be259a521a38c0607c435523",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d8a45ff8_826949eb",
         "filename": "src/gpu/graphite/geom/AnalyticClip.h",
         "patchSetId": 29
@@ -163,6 +250,30 @@
       "writtenOn": "2024-09-06T17:00:34Z",
       "side": 1,
       "message": "I would line these up but - totally optional",
+      "range": {
+        "startLine": 37,
+        "startChar": 45,
+        "endLine": 37,
+        "endChar": 57
+      },
+      "revId": "a1c35a85639fe7c5be259a521a38c0607c435523",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "491e0971_25c779f9",
+        "filename": "src/gpu/graphite/geom/AnalyticClip.h",
+        "patchSetId": 29
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-09-06T18:24:43Z",
+      "side": 1,
+      "message": "+1",
+      "parentUuid": "d8a45ff8_826949eb",
       "range": {
         "startLine": 37,
         "startChar": 45,
