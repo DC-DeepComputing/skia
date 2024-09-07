@@ -34,6 +34,24 @@
       "parentUuid": "47304ecd_ea4a90d0",
       "revId": "236c88060a4ddaf41d1961b01347de2dd806ef07",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65a61fef_6a3b9e20",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-07T14:46:09Z",
+      "side": 1,
+      "message": "Finally got past the timeout locally by doing `bazelisk sync --loading_phase_threads 2 --experimental_scale_timeouts 20`. Not sure which part of that actually worked.",
+      "parentUuid": "bbcf0a6b_006c8c8c",
+      "revId": "236c88060a4ddaf41d1961b01347de2dd806ef07",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
