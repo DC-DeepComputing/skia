@@ -52,6 +52,24 @@
       "parentUuid": "bbcf0a6b_006c8c8c",
       "revId": "236c88060a4ddaf41d1961b01347de2dd806ef07",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11d8e055_f18a3aa5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-07T15:05:41Z",
+      "side": 1,
+      "message": "Though it\u0027s probably the timeout, because I watched it once and it took ~750 seconds. Also, I was using `CARGO_BAZEL_DEBUG\u003d1` so I could see something about what was going on and it appears that when building just for macOS on macOS that a Windows toolchain is pulled down?",
+      "parentUuid": "65a61fef_6a3b9e20",
+      "revId": "236c88060a4ddaf41d1961b01347de2dd806ef07",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
