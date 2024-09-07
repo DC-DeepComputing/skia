@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9de8763e_3a2b6643",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-07T15:13:05Z",
+      "side": 1,
+      "message": "And... this found a real issue with `tools/fonts/TestSVGTypeface.h` managing to get PathOps by accident through FreeType. `TestSVGTypeface.h` itself doesn\u0027t even depend on FreeType, it just happens to be in a `filegroup` that just happens to always be used in a target which does. It\u0027s really annoying that Bazel doesn\u0027t have a `source_set` equivalent.",
+      "revId": "efde2c8a08540751297d47307cb7c0ab0d0987f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
