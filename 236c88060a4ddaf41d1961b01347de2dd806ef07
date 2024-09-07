@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47304ecd_ea4a90d0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-07T03:48:52Z",
+      "side": 1,
+      "message": "This is intended to fix `Build-Mac-Clang-x86_64-Debug-Fontations` and it does get the Bazel build past the initial failure. Unfortunately, it appears that splicing the icu4x cargo workspace is taking too long on macOS and timing out.",
+      "revId": "236c88060a4ddaf41d1961b01347de2dd806ef07",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
