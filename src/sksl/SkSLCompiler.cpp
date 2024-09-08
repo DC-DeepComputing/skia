@@ -424,7 +424,8 @@ bool Compiler::finalize(Program& program) {
         }
     }
     if (this->errorCount() == 0) {
-        Analysis::CheckProgramStructure(program);
+        bool enforceSizeLimit = ProgramConfig::IsRuntimeEffect(program.fConfig->fKind);
+        Analysis::CheckProgramStructure(program, enforceSizeLimit);
 
         // Make sure that variables are declared in the symbol tables that immediately enclose them.
         SkDEBUGCODE(Analysis::CheckSymbolTableCorrectness(program));
