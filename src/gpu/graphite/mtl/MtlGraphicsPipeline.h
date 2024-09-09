@@ -57,6 +57,7 @@ public:
 
 private:
     MtlGraphicsPipeline(const skgpu::graphite::SharedContext* sharedContext,
+                        const Metadata&,
                         PipelineInfo* pipelineInfo,
                         sk_cfp<id<MTLRenderPipelineState>> pso,
                         sk_cfp<id<MTLDepthStencilState>> dss,
@@ -65,6 +66,7 @@ private:
     using MSLFunction = std::pair<id<MTLLibrary>, std::string>;
     static sk_sp<MtlGraphicsPipeline> Make(const MtlSharedContext*,
                                            const std::string& label,
+                                           const Metadata&,
                                            MSLFunction vertexMain,
                                            SkSpan<const Attribute> vertexAttrs,
                                            SkSpan<const Attribute> instanceAttrs,

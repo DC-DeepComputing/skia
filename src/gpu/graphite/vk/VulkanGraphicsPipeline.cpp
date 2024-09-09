@@ -867,13 +867,10 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
 
     return sk_sp<VulkanGraphicsPipeline>(
             new VulkanGraphicsPipeline(sharedContext,
+                                       Metadata(fsSkSLInfo, step),
                                        pipelineInfoPtr,
                                        pipelineLayout,
                                        vkPipeline,
-                                       fsSkSLInfo.fHasPaintUniforms,
-                                       !step->uniforms().empty(),
-                                       fsSkSLInfo.fHasGradientBuffer,
-                                       fsSkSLInfo.fNumTexturesAndSamplers,
                                        /*ownsPipelineLayout=*/true,
                                        std::move(immutableSamplers)));
 }
@@ -1062,35 +1059,25 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::MakeLoadMSAAPipeline(
     // PipelineDesc as an argument for this method. For now, just pass in nullptr.
     return sk_sp<VulkanGraphicsPipeline>(
             new VulkanGraphicsPipeline(sharedContext,
+                                       Metadata{},
                                        /*pipelineInfo=*/nullptr,
                                        pipelineLayout,
                                        vkPipeline,
-                                       /*hasFragmentUniforms=*/false,
-                                       /*hasStepUniforms=*/false,
-                                       /*hasGradientBuffer=*/false,
-                                       /*numTextureSamplers*/0,
                                        /*ownsPipelineLayout=*/false,
                                        /*immutableSamplers=*/{}));
 }
 
 VulkanGraphicsPipeline::VulkanGraphicsPipeline(
-        const skgpu::graphite::SharedContext* sharedContext,
+        const VulkanSharedContext* sharedContext,
+        const Metadata& metadata,
         PipelineInfo* pipelineInfo,
         VkPipelineLayout pipelineLayout,
         VkPipeline pipeline,
-        bool hasFragmentUniforms,
-        bool hasStepUniforms,
-        bool hasGradientBuffer,
-        int numTextureSamplers,
         bool ownsPipelineLayout,
         skia_private::TArray<sk_sp<VulkanSampler>> immutableSamplers)
-        : GraphicsPipeline(sharedContext, pipelineInfo)
+        : GraphicsPipeline(sharedContext, metadata, pipelineInfo)
         , fPipelineLayout(pipelineLayout)
         , fPipeline(pipeline)
-        , fHasFragmentUniforms(hasFragmentUniforms)
-        , fHasStepUniforms(hasStepUniforms)
-        , fHasGradientBuffer(hasGradientBuffer)
-        , fNumTextureSamplers(numTextureSamplers)
         , fOwnsPipelineLayout(ownsPipelineLayout)
         , fImmutableSamplers(std::move(immutableSamplers)) {}
 

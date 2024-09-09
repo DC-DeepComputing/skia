@@ -6,15 +6,21 @@
  */
 
 #include "src/gpu/graphite/GraphicsPipeline.h"
+
+#include "src/gpu/graphite/ContextUtils.h"
+#include "src/gpu/graphite/Renderer.h"
 #include "src/utils/SkShaderUtils.h"
 
 namespace skgpu::graphite {
 
-GraphicsPipeline::GraphicsPipeline(const SharedContext* sharedContext, PipelineInfo* pipelineInfo)
+GraphicsPipeline::GraphicsPipeline(const SharedContext* sharedContext,
+                                   const Metadata& metadata,
+                                   PipelineInfo* pipelineInfo)
         : Resource(sharedContext,
                    Ownership::kOwned,
                    skgpu::Budgeted::kYes,
-                   /*gpuMemorySize=*/0) {
+                   /*gpuMemorySize=*/0)
+        , fMetadata(metadata) {
 #if defined(GPU_TEST_UTILS)
     if (pipelineInfo) {
         fPipelineInfo.fRenderStepID = pipelineInfo->fRenderStepID;
@@ -30,5 +36,12 @@ GraphicsPipeline::GraphicsPipeline(const SharedContext* sharedContext, PipelineI
 }
 
 GraphicsPipeline::~GraphicsPipeline() = default;
+
+GraphicsPipeline::Metadata::Metadata(const FragSkSLInfo& skslInfo, const RenderStep* step)
+        : fDstReadReq(skslInfo.fDstReadReq)
+        , fNumFragTexturesAndSamplers(skslInfo.fNumTexturesAndSamplers)
+        , fHasPaintUniforms(skslInfo.fHasPaintUniforms)
+        , fHasStepUniforms(!step->uniforms().empty())
+        , fHasGradientBuffer(skslInfo.fHasGradientBuffer) {}
 
 }  // namespace skgpu::graphite

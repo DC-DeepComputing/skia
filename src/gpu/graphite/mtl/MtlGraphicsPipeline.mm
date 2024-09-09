@@ -337,6 +337,7 @@ sk_sp<MtlGraphicsPipeline> MtlGraphicsPipeline::Make(const MtlSharedContext* sha
             GetPipelineLabel(sharedContext->shaderCodeDictionary(), renderPassDesc, step, paintID);
     return Make(sharedContext,
                 pipelineLabel,
+                Metadata{fsSkSLInfo, step},
                 {vsLibrary.get(), "vertexMain"},
                 step->vertexAttributes(),
                 step->instanceAttributes(),
@@ -386,8 +387,11 @@ sk_sp<MtlGraphicsPipeline> MtlGraphicsPipeline::MakeLoadMSAAPipeline(
 
     std::string pipelineLabel = "LoadMSAAFromResolve + ";
     pipelineLabel += renderPassDesc.toString().c_str();
+    Metadata metadata;
+    metadata.fNumFragTexturesAndSamplers = 1;
     return Make(sharedContext,
                 pipelineLabel,
+                metadata,
                 {mtlLibrary.get(), "vertexMain"},
                 /*vertexAttrs=*/{},
                 /*instanceAttrs=*/{},
@@ -401,6 +405,7 @@ sk_sp<MtlGraphicsPipeline> MtlGraphicsPipeline::MakeLoadMSAAPipeline(
 
 sk_sp<MtlGraphicsPipeline> MtlGraphicsPipeline::Make(const MtlSharedContext* sharedContext,
                                                      const std::string& label,
+                                                     const Metadata& metadata,
                                                      MSLFunction vertexMain,
                                                      SkSpan<const Attribute> vertexAttrs,
                                                      SkSpan<const Attribute> instanceAttrs,
@@ -460,6 +465,7 @@ sk_sp<MtlGraphicsPipeline> MtlGraphicsPipeline::Make(const MtlSharedContext* sha
     }
 
     return sk_sp<MtlGraphicsPipeline>(new MtlGraphicsPipeline(sharedContext,
+                                                              metadata,
                                                               pipelineInfo,
                                                               std::move(pso),
                                                               std::move(dss),
@@ -467,11 +473,12 @@ sk_sp<MtlGraphicsPipeline> MtlGraphicsPipeline::Make(const MtlSharedContext* sha
 }
 
 MtlGraphicsPipeline::MtlGraphicsPipeline(const skgpu::graphite::SharedContext* sharedContext,
+                                         const Metadata& metadata,
                                          PipelineInfo* pipelineInfo,
                                          sk_cfp<id<MTLRenderPipelineState>> pso,
                                          sk_cfp<id<MTLDepthStencilState>> dss,
                                          uint32_t refValue)
-        : GraphicsPipeline(sharedContext, pipelineInfo)
+        : GraphicsPipeline(sharedContext, metadata, pipelineInfo)
         , fPipelineState(std::move(pso))
         , fDepthStencilState(std::move(dss))
         , fStencilReferenceValue(refValue) {}

@@ -697,39 +697,29 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(const DawnSharedContext* 
 
     return sk_sp<DawnGraphicsPipeline>(
             new DawnGraphicsPipeline(sharedContext,
+                                     Metadata{fsSkSLInfo, step},
                                      pipelineInfoPtr,
                                      std::move(asyncCreation),
                                      std::move(groupLayouts),
                                      step->primitiveType(),
                                      depthStencilSettings.fStencilReferenceValue,
-                                     /*hasStepUniforms=*/!step->uniforms().empty(),
-                                     /*hasPaintUniforms=*/fsSkSLInfo.fHasPaintUniforms,
-                                     /*hasGradientbuffer=*/fsSkSLInfo.fHasGradientBuffer,
-                                     numTexturesAndSamplers,
                                      std::move(immutableSamplers)));
 }
 
 DawnGraphicsPipeline::DawnGraphicsPipeline(
         const skgpu::graphite::SharedContext* sharedContext,
+        const Metadata& metadata,
         PipelineInfo* pipelineInfo,
         std::unique_ptr<AsyncPipelineCreation> asyncCreationInfo,
         BindGroupLayouts groupLayouts,
         PrimitiveType primitiveType,
         uint32_t refValue,
-        bool hasStepUniforms,
-        bool hasPaintUniforms,
-        bool hasGradientBuffer,
-        int numFragmentTexturesAndSamplers,
         skia_private::AutoTArray<sk_sp<DawnSampler>> immutableSamplers)
-        : GraphicsPipeline(sharedContext, pipelineInfo)
+        : GraphicsPipeline(sharedContext, metadata, pipelineInfo)
         , fAsyncPipelineCreation(std::move(asyncCreationInfo))
         , fGroupLayouts(std::move(groupLayouts))
         , fPrimitiveType(primitiveType)
         , fStencilReferenceValue(refValue)
-        , fHasStepUniforms(hasStepUniforms)
-        , fHasPaintUniforms(hasPaintUniforms)
-        , fHasGradientBuffer(hasGradientBuffer)
-        , fNumFragmentTexturesAndSamplers(numFragmentTexturesAndSamplers)
         , fImmutableSamplers(std::move(immutableSamplers)) {}
 
 DawnGraphicsPipeline::~DawnGraphicsPipeline() {
