@@ -1267,9 +1267,9 @@ void Device::drawGeometry(const Transform& localToDevice,
                                                          : SkBlendMode::kSrcOver;
     Coverage rendererCoverage = renderer ? renderer->coverage()
                                          : Coverage::kSingleChannel;
-    if (clip.shader() && rendererCoverage == Coverage::kNone) {
-        // Must upgrade to single channel coverage if there is a clip shader; but preserve LCD
-        // coverage if the Renderer uses that.
+    if ((clip.shader() || !clip.analyticClip().isEmpty()) && rendererCoverage == Coverage::kNone) {
+        // Must upgrade to single channel coverage if there is a clip shader or analytic clip;
+        // but preserve LCD coverage if the Renderer uses that.
         rendererCoverage = Coverage::kSingleChannel;
     }
     dstReadReq = GetDstReadRequirement(fRecorder->priv().caps(), blendMode, rendererCoverage);
@@ -1285,6 +1285,7 @@ void Device::drawGeometry(const Transform& localToDevice,
 
     PaintParams shading{paint,
                         std::move(primitiveBlender),
+                        clip.analyticClip(),
                         sk_ref_sp(clip.shader()),
                         dstReadReq,
                         skipColorXform};
@@ -1462,11 +1463,7 @@ void Device::drawClipShape(const Transform& localToDevice,
                            DrawOrder order) {
     // A clip draw's state is almost fully defined by the ClipStack. The only thing we need
     // to account for is selecting a Renderer and tracking the stencil buffer usage.
-    Shape drawShape(shape);
-    // For the depth-only clip we need to invert the shape before drawing because
-    // we need to touch every pixel not in the clip.
-    drawShape.setInverted(!shape.inverted());
-    Geometry geometry{drawShape};
+    Geometry geometry{shape};
     auto [renderer, pathAtlas] = this->chooseRenderer(localToDevice,
                                                       geometry,
                                                       DefaultFillStyle(),
