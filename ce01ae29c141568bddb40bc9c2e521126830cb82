@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a066b8e_99b0ea02",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 18
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2024-09-09T16:13:07Z",
+      "side": 1,
+      "message": "Hi Brian (and John),\nCould you please take a look?\n\n@jbudorick@chromium.org: Can I assume you are still working on Skia?",
+      "revId": "ce01ae29c141568bddb40bc9c2e521126830cb82",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf519fda_6cce4201",
+        "filename": "build_overrides/partition_alloc.gni",
+        "patchSetId": 18
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2024-09-09T16:13:07Z",
+      "side": 1,
+      "message": "Note: I know @brianosman@google.com dislike the facts chromium/dawn/pdfium/etc... developers are relying on `./build_overrides` files. Some of those variables could be moved into `.gn` or `gn/BUILDCONFIG`, in particular the `is_xxx` common variables, if you really want.\nI decided not to to avoid parts of Skia to start depending on those variables to exist.\n\nAt some point, I would like to stop depending on them to be defined.",
+      "range": {
+        "startLine": 6,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 33
+      },
+      "revId": "ce01ae29c141568bddb40bc9c2e521126830cb82",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
