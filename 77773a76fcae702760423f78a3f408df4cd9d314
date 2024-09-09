@@ -162,6 +162,30 @@
       },
       "revId": "77773a76fcae702760423f78a3f408df4cd9d314",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "78f0764b_4fcf4ac2",
+        "filename": "src/gpu/graphite/ClipStack_graphite.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 1176,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-09-09T20:17:52Z",
+      "side": 1,
+      "message": "I\u0027m not sure it\u0027s easily fixable. The CircularRRectEffect doesn\u0027t support them either.",
+      "parentUuid": "f3f3daf2_51444bb5",
+      "range": {
+        "startLine": 1175,
+        "startChar": 0,
+        "endLine": 1176,
+        "endChar": 26
+      },
+      "revId": "77773a76fcae702760423f78a3f408df4cd9d314",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
