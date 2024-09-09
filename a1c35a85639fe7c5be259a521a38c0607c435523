@@ -59,6 +59,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b88842f_edbb92fc",
+        "filename": "fuzz/FuzzPrecompile.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 365,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-09-09T15:25:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "af24a1fd_c8d99a6c",
+      "range": {
+        "startLine": 365,
+        "startChar": 80,
+        "endLine": 365,
+        "endChar": 81
+      },
+      "revId": "a1c35a85639fe7c5be259a521a38c0607c435523",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e61d3cc0_db4c6316",
@@ -72,6 +96,30 @@
       "writtenOn": "2024-09-06T17:00:34Z",
       "side": 1,
       "message": "Some /* foo\u003d */ helpers here ?",
+      "range": {
+        "startLine": 385,
+        "startChar": 80,
+        "endLine": 385,
+        "endChar": 91
+      },
+      "revId": "a1c35a85639fe7c5be259a521a38c0607c435523",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2333cdcb_55fca3a7",
+        "filename": "src/gpu/graphite/ClipStack_graphite.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 385,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-09-09T15:25:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e61d3cc0_db4c6316",
       "range": {
         "startLine": 385,
         "startChar": 80,
@@ -105,6 +153,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "39d3a623_72d777d1",
+        "filename": "src/gpu/graphite/ClipStack_graphite.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 1113,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-09-09T15:25:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "02150212_88e413df",
+      "range": {
+        "startLine": 1113,
+        "startChar": 42,
+        "endLine": 1113,
+        "endChar": 60
+      },
+      "revId": "a1c35a85639fe7c5be259a521a38c0607c435523",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cc343525_bfaa390b",
@@ -118,6 +190,30 @@
       "writtenOn": "2024-09-06T17:00:34Z",
       "side": 1,
       "message": "Won\u0027t this catch more cases than just \"tab\" cases ?",
+      "range": {
+        "startLine": 1137,
+        "startChar": 39,
+        "endLine": 1137,
+        "endChar": 92
+      },
+      "revId": "a1c35a85639fe7c5be259a521a38c0607c435523",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b8111f20_915cc5e7",
+        "filename": "src/gpu/graphite/ClipStack_graphite.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 1137,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-09-09T15:25:01Z",
+      "side": 1,
+      "message": "Fixed.",
+      "parentUuid": "cc343525_bfaa390b",
       "range": {
         "startLine": 1137,
         "startChar": 39,
@@ -151,6 +247,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c41b9aa2_189b799f",
+        "filename": "src/gpu/graphite/ClipStack_graphite.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 1146,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-09-09T15:25:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9c6dbca7_674c4f92",
+      "range": {
+        "startLine": 1146,
+        "startChar": 17,
+        "endLine": 1146,
+        "endChar": 18
+      },
+      "revId": "a1c35a85639fe7c5be259a521a38c0607c435523",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8fdbe519_502ae89d",
@@ -168,6 +288,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ada4c84d_c70b57a5",
+        "filename": "src/gpu/graphite/ClipStack_graphite.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 1160,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-09-09T15:25:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8fdbe519_502ae89d",
+      "revId": "a1c35a85639fe7c5be259a521a38c0607c435523",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9a059961_54deba09",
@@ -181,6 +319,30 @@
       "writtenOn": "2024-09-06T17:00:34Z",
       "side": 1,
       "message": "Same here ?",
+      "range": {
+        "startLine": 1186,
+        "startChar": 86,
+        "endLine": 1186,
+        "endChar": 97
+      },
+      "revId": "a1c35a85639fe7c5be259a521a38c0607c435523",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d493e30a_27ce6578",
+        "filename": "src/gpu/graphite/ClipStack_graphite.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 1186,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-09-09T15:25:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9a059961_54deba09",
       "range": {
         "startLine": 1186,
         "startChar": 86,
@@ -216,6 +378,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "48759eb9_33942711",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 334,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-09-09T15:25:01Z",
+      "side": 1,
+      "message": "Doesn\u0027t Compose effectively do that? The two outputs will be multiplied together including their alphas, which is all we end up using.",
+      "parentUuid": "ebe35159_c7cfdc9d",
+      "range": {
+        "startLine": 334,
+        "startChar": 12,
+        "endLine": 334,
+        "endChar": 19
+      },
+      "revId": "a1c35a85639fe7c5be259a521a38c0607c435523",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "75fbfc85_e47ce367",
         "filename": "src/gpu/graphite/geom/AnalyticClip.h",
         "patchSetId": 29
@@ -227,6 +413,30 @@
       "writtenOn": "2024-09-06T18:24:43Z",
       "side": 1,
       "message": "Can we generalize `EdgeAAQuad::Flags` to be used here too?",
+      "range": {
+        "startLine": 19,
+        "startChar": 4,
+        "endLine": 28,
+        "endChar": 59
+      },
+      "revId": "a1c35a85639fe7c5be259a521a38c0607c435523",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cfb5cbba_be1400e5",
+        "filename": "src/gpu/graphite/geom/AnalyticClip.h",
+        "patchSetId": 29
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-09-09T15:25:01Z",
+      "side": 1,
+      "message": "I don\u0027t see why -- this is a different concept and a different class. Also the reason I didn\u0027t use `enum class` is to avoid the verbosity of casting.",
+      "parentUuid": "75fbfc85_e47ce367",
       "range": {
         "startLine": 19,
         "startChar": 4,
@@ -274,6 +484,30 @@
       "side": 1,
       "message": "+1",
       "parentUuid": "d8a45ff8_826949eb",
+      "range": {
+        "startLine": 37,
+        "startChar": 45,
+        "endLine": 37,
+        "endChar": 57
+      },
+      "revId": "a1c35a85639fe7c5be259a521a38c0607c435523",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eeb6b024_1095b79f",
+        "filename": "src/gpu/graphite/geom/AnalyticClip.h",
+        "patchSetId": 29
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-09-09T15:25:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "491e0971_25c779f9",
       "range": {
         "startLine": 37,
         "startChar": 45,
