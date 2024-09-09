@@ -57,6 +57,30 @@
       },
       "revId": "ce01ae29c141568bddb40bc9c2e521126830cb82",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d227500e_82fbcc35",
+        "filename": "build_overrides/partition_alloc.gni",
+        "patchSetId": 18
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-09-09T16:54:27Z",
+      "side": 1,
+      "message": "I think this is fine. More importantly: This Friday (September 13) will be my last working day, so someone else on the Skia team will have to assist with the MiraclePtr work. hcm@ and egdaniel@ can hopefully find someone else to assist.\n\nAlso: +kjlubick for build visibility. Bazel work has accelerated, and that might mean adding bazel support for PA before too long?",
+      "parentUuid": "cf519fda_6cce4201",
+      "range": {
+        "startLine": 6,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 33
+      },
+      "revId": "ce01ae29c141568bddb40bc9c2e521126830cb82",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
