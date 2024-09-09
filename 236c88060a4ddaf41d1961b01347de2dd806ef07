@@ -70,6 +70,23 @@
       "parentUuid": "65a61fef_6a3b9e20",
       "revId": "236c88060a4ddaf41d1961b01347de2dd806ef07",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0fb58a36_bf8e4af4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-09-09T12:44:17Z",
+      "side": 1,
+      "message": "Hold off given this revert https://skia-review.googlesource.com/c/skia/+/897636\n\nI might just incorporate this into the reland",
+      "revId": "236c88060a4ddaf41d1961b01347de2dd806ef07",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
