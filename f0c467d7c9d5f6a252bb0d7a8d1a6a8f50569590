@@ -16,6 +16,24 @@
       "message": "Now missing this?",
       "revId": "f0c467d7c9d5f6a252bb0d7a8d1a6a8f50569590",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2f794c9_2c71a1a3",
+        "filename": "tools/sksl-minify/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-09T18:45:13Z",
+      "side": 1,
+      "message": "Wait, isn\u0027t it just `minify_tests` above that depends on `test_input_list.txt`? This step doesn\u0027t appear to depend on it, it\u0027s just mentioned textually. Of course anything that runs the output of this target (like `minify_tests`) does need to depend on it, but it doesn\u0027t appear Bazel allows `genrule`s to have `deps`.",
+      "parentUuid": "ddc4e8f4_7c1bf651",
+      "revId": "f0c467d7c9d5f6a252bb0d7a8d1a6a8f50569590",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
