@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e1b5b667_c575a803",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-09-09T19:17:35Z",
+      "side": 1,
+      "message": "FYI - I\u0027ve tweaked/rebased this CL based on what got actually merged in the upstream PR.  I\u0027ll land this CL once the Chromium-side CL (at https://crrev.com/c/5825297) lands and sticks.  If you want to take a quick peek at the delta from the LGTM-ed patchset, then please look here: https://skia-review.googlesource.com/c/skia/+/894576/4..6/experimental/rust_png/ffi/FFI.rs",
+      "revId": "ea299f632e31566160ddb1ffdd333ef2752c2ac2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
