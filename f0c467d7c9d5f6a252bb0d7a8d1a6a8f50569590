@@ -52,6 +52,24 @@
       "parentUuid": "b2f794c9_2c71a1a3",
       "revId": "f0c467d7c9d5f6a252bb0d7a8d1a6a8f50569590",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f124fd07_2bde22b2",
+        "filename": "tools/sksl-minify/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-09-09T19:16:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ef81e6f5_71acff7e",
+      "revId": "f0c467d7c9d5f6a252bb0d7a8d1a6a8f50569590",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
