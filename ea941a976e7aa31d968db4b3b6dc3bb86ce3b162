@@ -73,6 +73,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6225aeac_4fb6fa08",
+        "filename": "tools/debugger/BUILD.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-09-09T19:26:50Z",
+      "side": 1,
+      "message": "In theory all paths from dm to src/gpu/ganesh should end up using `//src/gpu/ganesh:ganesh_TEST_UTIL` (which already exists) to avoid multiple symbols with the same name but different compilation flags.",
+      "parentUuid": "6a89fb66_bfd5c043",
+      "revId": "ea941a976e7aa31d968db4b3b6dc3bb86ce3b162",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "65853c9d_52b7ce91",
         "filename": "tools/flags/BUILD.bazel",
         "patchSetId": 5
@@ -108,6 +126,30 @@
       "side": 1,
       "message": "`CommonFlagsConfig.h` uses `tools/gpu/GrContextFactory.h` to parse ganesh (gl?) specific stuff.\n\nShould we split that off into a separate lib (`CommonFlagsConfigGpuGL`?)?",
       "parentUuid": "65853c9d_52b7ce91",
+      "range": {
+        "startLine": 64,
+        "startChar": 21,
+        "endLine": 64,
+        "endChar": 36
+      },
+      "revId": "ea941a976e7aa31d968db4b3b6dc3bb86ce3b162",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b86ede4_9150c428",
+        "filename": "tools/flags/BUILD.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-09-09T19:26:50Z",
+      "side": 1,
+      "message": "Yes, I think we should",
+      "parentUuid": "cc747393_3790bb09",
       "range": {
         "startLine": 64,
         "startChar": 21,
