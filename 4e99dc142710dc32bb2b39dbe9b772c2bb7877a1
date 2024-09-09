@@ -37,6 +37,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5151eda8_45d0cd66",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-09-09T19:28:07Z",
+      "side": 1,
+      "message": "We discussed this elsewhere and landed at something like\n```\nwe have a //infra/bots/ci/BUILD.bazel or some file that explicitly exists just to define targets used by CI\n```",
+      "revId": "4e99dc142710dc32bb2b39dbe9b772c2bb7877a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "686b598f_16c82369",
         "filename": "infra/bots/gen_tasks_logic/bazel/generate.go",
         "patchSetId": 3
