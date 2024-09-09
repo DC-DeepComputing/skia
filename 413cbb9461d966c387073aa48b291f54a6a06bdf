@@ -39,6 +39,30 @@
       },
       "revId": "413cbb9461d966c387073aa48b291f54a6a06bdf",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0a1507c_157e6e6d",
+        "filename": "src/gpu/graphite/GraphicsPipeline.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-09-09T17:58:05Z",
+      "side": 1,
+      "message": "Oops, no, they were only used to reconstruct a label in viewer and taking the label off of the FragSkSLInfo simplifies the constructor arguments that have to be provided.",
+      "parentUuid": "f0bedc18_5e02b8fb",
+      "range": {
+        "startLine": 60,
+        "startChar": 0,
+        "endLine": 61,
+        "endChar": 40
+      },
+      "revId": "413cbb9461d966c387073aa48b291f54a6a06bdf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
