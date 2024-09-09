@@ -87,6 +87,24 @@
       "message": "Hold off given this revert https://skia-review.googlesource.com/c/skia/+/897636\n\nI might just incorporate this into the reland",
       "revId": "236c88060a4ddaf41d1961b01347de2dd806ef07",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aee409d9_ebde7e70",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-09-09T12:45:06Z",
+      "side": 1,
+      "message": "Yeah, borenet@ was also puzzled about this. THe icu4x_deps thing is a known issue but not sure why it takes so long.",
+      "parentUuid": "11d8e055_f18a3aa5",
+      "revId": "236c88060a4ddaf41d1961b01347de2dd806ef07",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
