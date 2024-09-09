@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "04148234_925f61a8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 18
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2024-09-09T17:16:37Z",
+      "side": 1,
+      "message": "I am very sorry. I meant another John: @johnstile@chromium.org\nI believe he doesn\u0027t work on Skia anymore.",
+      "parentUuid": "044b4fc2_c02d8c61",
+      "revId": "ce01ae29c141568bddb40bc9c2e521126830cb82",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cf519fda_6cce4201",
@@ -73,6 +91,30 @@
       "side": 1,
       "message": "I think this is fine. More importantly: This Friday (September 13) will be my last working day, so someone else on the Skia team will have to assist with the MiraclePtr work. hcm@ and egdaniel@ can hopefully find someone else to assist.\n\nAlso: +kjlubick for build visibility. Bazel work has accelerated, and that might mean adding bazel support for PA before too long?",
       "parentUuid": "cf519fda_6cce4201",
+      "range": {
+        "startLine": 6,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 33
+      },
+      "revId": "ce01ae29c141568bddb40bc9c2e521126830cb82",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "25457a6e_5956cd30",
+        "filename": "build_overrides/partition_alloc.gni",
+        "patchSetId": 18
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2024-09-09T17:16:37Z",
+      "side": 1,
+      "message": "\u003e Friday (September 13) will be my last working day\n\nOh, too bad for me ;-)\n\nI wish you all the best for the future. Thanks for your help so far!\n\n---\n\n@kjlubick@chromium.org:\n\nCurrently, the absence of Bazel bots with partition_alloc isn\u0027t critical as Skia pointers remain unchanged.  I\u0027ll ensure a clear path forward before proceeding.\n\nI experimented with supporting Bazel in partition_alloc. It was relatively straightforward, with feature flags being the main challenge. I considered hosting BUILD.bazel files from the partition_alloc repository, but hosting everything from Skia (potentially removing feature flag management) might be preferable. I will ask what are Skia developers preference.\n\nIf you\u0027re interested, I\u0027m available for a 1:1 discussion sometime this month to delve deeper.",
+      "parentUuid": "d227500e_82fbcc35",
       "range": {
         "startLine": 6,
         "startChar": 0,
