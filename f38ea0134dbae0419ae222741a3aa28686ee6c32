@@ -34,6 +34,24 @@
       "parentUuid": "57670df4_1e8fbaed",
       "revId": "f38ea0134dbae0419ae222741a3aa28686ee6c32",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e0c5782_b803fd27",
+        "filename": "include/core/SkImageGenerator.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-09-09T19:35:12Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "3d2f659b_c21d19a5",
+      "revId": "f38ea0134dbae0419ae222741a3aa28686ee6c32",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
