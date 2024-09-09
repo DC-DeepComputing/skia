@@ -1,0 +1,62 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b7216b83_76e60af6",
+        "filename": "include/effects/SkRuntimeEffect.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 352,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-09-09T17:10:11Z",
+      "side": 1,
+      "message": "Effect",
+      "range": {
+        "startLine": 352,
+        "startChar": 22,
+        "endLine": 352,
+        "endChar": 28
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "0722e53c_712bdb98",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/effects/SkRuntimeEffect.h",
+              "range": {
+                "startLine": 352,
+                "startChar": 0,
+                "endLine": 353,
+                "endChar": 0
+              },
+              "replacement": " * Note that SkRuntimeEffectBuilder is built entirely on the public API of SkRuntimeEffect,\n"
+            }
+          ]
+        }
+      ],
+      "revId": "be6cce311759f67a8f638233eefe146b64437dba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "114f19b0_f2293b21",
+        "filename": "include/effects/SkRuntimeEffect.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 489,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-09-09T17:10:11Z",
+      "side": 1,
+      "message": "Can we make these be actual aliases?\n\n```\nusing SkRuntimeShaderBuilder \u003d SkRuntimeEffectBuilder;\n```",
+      "revId": "be6cce311759f67a8f638233eefe146b64437dba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
