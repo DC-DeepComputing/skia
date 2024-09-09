@@ -402,6 +402,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e03c7219_ea238945",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 334,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-09-09T19:27:47Z",
+      "side": 1,
+      "message": "The shader generation for a `Compose` block invokes the inner child and then passes that output as the 1st arg to the outer child\u0027s function. Since the outer child is a shader, its first argument is expected to be the float2 coords and we\u0027d get a type mismatch from the half4 output of the circular rrect block.\n\nIf what is actually being generated is not that, which presumably it isn\u0027t, since things aren\u0027t failing, can you share the emitted sksl? I\u0027m curious how the type signatures are lining up.",
+      "parentUuid": "48759eb9_33942711",
+      "range": {
+        "startLine": 334,
+        "startChar": 12,
+        "endLine": 334,
+        "endChar": 19
+      },
+      "revId": "a1c35a85639fe7c5be259a521a38c0607c435523",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "75fbfc85_e47ce367",
         "filename": "src/gpu/graphite/geom/AnalyticClip.h",
         "patchSetId": 29
@@ -437,6 +461,30 @@
       "side": 1,
       "message": "I don\u0027t see why -- this is a different concept and a different class. Also the reason I didn\u0027t use `enum class` is to avoid the verbosity of casting.",
       "parentUuid": "75fbfc85_e47ce367",
+      "range": {
+        "startLine": 19,
+        "startChar": 4,
+        "endLine": 28,
+        "endChar": 59
+      },
+      "revId": "a1c35a85639fe7c5be259a521a38c0607c435523",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1848359b_58e55a05",
+        "filename": "src/gpu/graphite/geom/AnalyticClip.h",
+        "patchSetId": 29
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-09-09T19:27:47Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "cfb5cbba_be1400e5",
       "range": {
         "startLine": 19,
         "startChar": 4,

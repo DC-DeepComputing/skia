@@ -104,6 +104,46 @@
       "parentUuid": "b31b66f1_4fe0f574",
       "revId": "77773a76fcae702760423f78a3f408df4cd9d314",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "43d8e55c_27d09e49",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 31
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-09-09T19:27:47Z",
+      "side": 1,
+      "message": "lgtm once we resolve the Compose/BlendCompose issue",
+      "revId": "77773a76fcae702760423f78a3f408df4cd9d314",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3f3daf2_51444bb5",
+        "filename": "src/gpu/graphite/ClipStack_graphite.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 1176,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-09-09T19:27:47Z",
+      "side": 1,
+      "message": "This is the fix for the diagonal corner shading bug, right? Do you think it\u0027s worth filing a low priority bug to revisit supporting those types of corners in the shader snippet?",
+      "range": {
+        "startLine": 1175,
+        "startChar": 0,
+        "endLine": 1176,
+        "endChar": 26
+      },
+      "revId": "77773a76fcae702760423f78a3f408df4cd9d314",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
