@@ -73,12 +73,12 @@ print(subprocess.check_output([
 
 genrule(
     name = "create_sksl_minify_srcs_script",
+    srcs = [":sksl_minify"],
     outs = ["sksl_minify_srcs.py"],
     cmd = "echo '%s' > $@" % _SKSL_MINIFY_SRCS,
     # note: tools are not transitive, so anything that depends on sksl_minify_srcs.sh
     # should also specify these so they are properly built/available.
     tools = [
-        ":sksl_minify",
         "//gn:minify_sksl",
     ],
 )
