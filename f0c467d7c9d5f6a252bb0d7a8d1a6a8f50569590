@@ -34,6 +34,24 @@
       "parentUuid": "ddc4e8f4_7c1bf651",
       "revId": "f0c467d7c9d5f6a252bb0d7a8d1a6a8f50569590",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef81e6f5_71acff7e",
+        "filename": "tools/sksl-minify/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-09T18:50:39Z",
+      "side": 1,
+      "message": "Ah, I see, this depends on `:test_input_list` so its location can be interpolated into the string that is the python script. But it seems `minify_tests` still needs to depend on it so that it will exist in the sandbox when it runs?",
+      "parentUuid": "b2f794c9_2c71a1a3",
+      "revId": "f0c467d7c9d5f6a252bb0d7a8d1a6a8f50569590",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
