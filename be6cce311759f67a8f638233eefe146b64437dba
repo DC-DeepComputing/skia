@@ -42,6 +42,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aea5accf_2ef4bdfe",
+        "filename": "include/effects/SkRuntimeEffect.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 352,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2024-09-09T18:49:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b7216b83_76e60af6",
+      "range": {
+        "startLine": 352,
+        "startChar": 22,
+        "endLine": 352,
+        "endChar": 28
+      },
+      "revId": "be6cce311759f67a8f638233eefe146b64437dba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "114f19b0_f2293b21",
@@ -55,6 +79,24 @@
       "writtenOn": "2024-09-09T17:10:11Z",
       "side": 1,
       "message": "Can we make these be actual aliases?\n\n```\nusing SkRuntimeShaderBuilder \u003d SkRuntimeEffectBuilder;\n```",
+      "revId": "be6cce311759f67a8f638233eefe146b64437dba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c1240715_c323a176",
+        "filename": "include/effects/SkRuntimeEffect.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 489,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2024-09-09T18:49:43Z",
+      "side": 1,
+      "message": "Done. This did cause problems for classes that forward declared `SkRuntimeShaderBuilder` but it was easy enough to fix.\n\nWe\u0027d probably run into a similar problem in Android here:\nhttps://cs.android.com/android/platform/superproject/main/+/main:frameworks/base/libs/hwui/hwui/Canvas.h;l\u003d35?q\u003dCanvas.h\u0026ss\u003dandroid%2Fplatform%2Fsuperproject%2Fmain",
+      "parentUuid": "114f19b0_f2293b21",
       "revId": "be6cce311759f67a8f638233eefe146b64437dba",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
