@@ -117,6 +117,24 @@
       "parentUuid": "c1240715_c323a176",
       "revId": "be6cce311759f67a8f638233eefe146b64437dba",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "90e30823_22ef6dcc",
+        "filename": "include/effects/SkRuntimeEffect.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 489,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2024-09-09T21:39:28Z",
+      "side": 1,
+      "message": "Actually, it looks like there is only 1 forward declaration and it is unused. I made a CL in Android to remove it.\nhttps://googleplex-android-review.git.corp.google.com/c/platform/frameworks/base/+/29290309?tab\u003dchecks\n\nOnce this gets in this should be safe to land as is.",
+      "parentUuid": "41a0f6d8_4c836bbc",
+      "revId": "be6cce311759f67a8f638233eefe146b64437dba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
