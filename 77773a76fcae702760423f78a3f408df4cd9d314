@@ -50,6 +50,24 @@
       "message": "Oddly, on the rrect_clip_aa GM, some the AA looks worse on some of the rrects I wouldn\u0027t think this would be triggered on.",
       "revId": "77773a76fcae702760423f78a3f408df4cd9d314",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c9efab15_ac254f3a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 31
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-09-09T19:14:31Z",
+      "side": 1,
+      "message": "Specifically the UL hand corner of the RRect in the 5th column, second row from the bottom.\nThe AA on the very last test case (the diagonal edge) also looks wonky.",
+      "parentUuid": "5986c5e6_dfcb4524",
+      "revId": "77773a76fcae702760423f78a3f408df4cd9d314",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
