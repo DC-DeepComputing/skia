@@ -22,6 +22,30 @@
       },
       "revId": "5f08eafdf6b0e24077d62f2513d81e01a846c286",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "144131d4_3854b586",
+        "filename": "toolchain/windows_toolchain_config.bzl",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-09-10T18:51:25Z",
+      "side": 1,
+      "message": "Yeah, this is probably fine. I think we do something similar in Linux where we hardcode the version number.",
+      "parentUuid": "bdabbb8c_bef7cfc8",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 31,
+        "endChar": 30
+      },
+      "revId": "5f08eafdf6b0e24077d62f2513d81e01a846c286",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
