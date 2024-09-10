@@ -95,6 +95,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9747ea6_ba2c04b6",
+        "filename": "tests/FontMgrFontConfigTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-09-10T16:45:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "043ee35b_46e3e663",
+      "range": {
+        "startLine": 167,
+        "startChar": 112,
+        "endLine": 167,
+        "endChar": 121
+      },
+      "revId": "4fac8c5bfa25ce4754edd86b784ac6a8d2ab56a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c376a87d_85b6f8e6",
+        "filename": "tests/FontMgrFontConfigTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-09-10T16:45:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d770c924_2802b60c",
+      "range": {
+        "startLine": 167,
+        "startChar": 51,
+        "endLine": 167,
+        "endChar": 96
+      },
+      "revId": "4fac8c5bfa25ce4754edd86b784ac6a8d2ab56a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1064b473_c23fb57c",
@@ -108,6 +156,30 @@
       "writtenOn": "2024-09-10T14:43:43Z",
       "side": 1,
       "message": "Do we really need to check in another font file for this? Can we use one of the existing test fonts?",
+      "range": {
+        "startLine": 185,
+        "startChar": 63,
+        "endLine": 185,
+        "endChar": 69
+      },
+      "revId": "4fac8c5bfa25ce4754edd86b784ac6a8d2ab56a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf65f161_8148e6f3",
+        "filename": "tests/FontMgrFontConfigTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-09-10T16:45:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1064b473_c23fb57c",
       "range": {
         "startLine": 185,
         "startChar": 63,
