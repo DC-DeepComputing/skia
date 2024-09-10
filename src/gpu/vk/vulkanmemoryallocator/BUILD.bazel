@@ -44,9 +44,12 @@ skia_cc_library(
         "//tools:__subpackages__",
         "//src/gpu/vk:__pkg__",
     ],
+    local_defines = ["SK_USE_INTERNAL_VULKAN_HEADERS"],
+    implementation_deps = [
+        "//include/third_party/vulkan",
+    ],
     deps = [
         "//:core",
-        "//include/third_party/vulkan",
         "//src/base",
         "//src/gpu/vk",
         "@vulkanmemoryallocator//:hdrs",

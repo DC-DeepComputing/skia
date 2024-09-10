@@ -1707,6 +1707,7 @@ group("modules") {
 
 config("our_vulkan_headers") {
   include_dirs = [ "include/third_party/vulkan" ]
+  defines = ["SK_USE_INTERNAL_VULKAN_HEADERS"]
 }
 
 config("vulkan_memory_allocator") {

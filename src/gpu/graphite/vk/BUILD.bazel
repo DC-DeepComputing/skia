@@ -62,8 +62,12 @@ skia_cc_library(
         "//include/gpu/graphite:public_hdrs",
         "//include/gpu/graphite/vk:public_hdrs",
     ],
+    local_defines = ["SK_USE_INTERNAL_VULKAN_HEADERS"],
     defines = ["SK_VULKAN"],
     visibility = ["//:__pkg__"],
+    implementation_deps = [
+        "//include/third_party/vulkan",
+    ],
     deps = [
         "//:core",
         "//src/base",
@@ -86,11 +90,15 @@ skia_cc_library(
         "//include/gpu/graphite:public_hdrs",
         "//include/gpu/graphite/vk:public_hdrs",
     ],
+    local_defines = ["SK_USE_INTERNAL_VULKAN_HEADERS"],
     defines = [
         "SK_VULKAN",
         "GPU_TEST_UTILS",
     ],
     visibility = ["//tools:__pkg__"],
+    implementation_deps = [
+        "//include/third_party/vulkan",
+    ],
     deps = [
         "//:core",
         "//src/base",

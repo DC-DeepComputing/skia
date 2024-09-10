@@ -40,18 +40,18 @@ skia_cc_library(
         ":_vk_hdrs",
         "//include/gpu/vk:shared_public_hdrs",
     ],
-    defines = [
-        "SK_USE_EXTERNAL_VULKAN_HEADERS",
-    ],
     features = ["layering_check"],
     visibility = [
         "//src/gpu/ganesh/vk:__pkg__",
         "//src/gpu/graphite/vk:__pkg__",
         "//src/gpu/vk/vulkanmemoryallocator:__pkg__",
     ],
+    local_defines = ["SK_USE_INTERNAL_VULKAN_HEADERS"],
+    implementation_deps = [
+        "//include/third_party/vulkan",
+    ],
     deps = [
         "//:core",
-        "//include/third_party/vulkan",
         "//src/base",
         "//src/gpu",
         "//src/sksl/codegen:spirv",
