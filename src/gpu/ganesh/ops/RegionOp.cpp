@@ -116,11 +116,13 @@ private:
 
         int numRegions = fRegions.size();
         int numRects = 0;
+
+        SkSafeMath safeMath;
         for (int i = 0; i < numRegions; i++) {
-            numRects += fRegions[i].fRegion.computeRegionComplexity();
+            numRects = safeMath.addInt(numRects, fRegions[i].fRegion.computeRegionComplexity());
         }
 
-        if (!numRects) {
+        if (!numRects || !safeMath) {
             return;
         }
 
