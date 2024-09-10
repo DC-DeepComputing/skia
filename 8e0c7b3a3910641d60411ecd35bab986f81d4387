@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5abcceee_6fd9a67f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-10T21:18:31Z",
+      "side": 1,
+      "message": "I have no idea if this is quite the right logical place to do this or quite the right thing to do, but it does appear to unblock https://skia-review.googlesource.com/c/skia/+/896098 .",
+      "revId": "8e0c7b3a3910641d60411ecd35bab986f81d4387",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
