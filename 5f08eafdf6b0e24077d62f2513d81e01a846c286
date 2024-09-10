@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bdabbb8c_bef7cfc8",
+        "filename": "toolchain/windows_toolchain_config.bzl",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-09-10T17:05:10Z",
+      "side": 1,
+      "message": "I\u0027m really torn on this.  I hate having to hard-code anything, especially something that\u0027ll cause confusion whenever we update the CIPD package (which isn\u0027t super common but it does happen occasionally).  When we\u0027re not actively working on these Bazel files these should get cached most of the time, but it takes several minutes on fresh builds and is completely unnecessary on Mac and Linux.\n\nI don\u0027t know if there\u0027s a way to use some kind of placeholder and have these filled in at execution time.",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 31,
+        "endChar": 30
+      },
+      "revId": "5f08eafdf6b0e24077d62f2513d81e01a846c286",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
