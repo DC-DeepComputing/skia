@@ -51,6 +51,11 @@ public:
 
     ImmutableSamplerInfo getImmutableSamplerInfo(const TextureProxy* proxy) const override;
 
+    bool extractGraphicsDescs(const UniqueKey&,
+                              GraphicsPipelineDesc*,
+                              RenderPassDesc*,
+                              const RendererProvider*) const override;
+
     UniqueKey makeGraphicsPipelineKey(const GraphicsPipelineDesc&,
                                       const RenderPassDesc&) const override;
     UniqueKey makeComputePipelineKey(const ComputePipelineDesc&) const override { return {}; }
@@ -64,6 +69,8 @@ public:
     bool isRenderable(const TextureInfo&) const override;
     bool isRenderable(const VulkanTextureInfo&) const;
     bool isStorage(const TextureInfo&) const override;
+
+    bool foo() const override;
 
     void buildKeyForTexture(SkISize dimensions,
                             const TextureInfo&,

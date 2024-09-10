@@ -121,15 +121,22 @@ void Precompile(Context* context, const PaintOptions& options, DrawTypeFlags dra
         // TODO(robertphillips): address the Dawn/load-msaa-from-resolve issue.
         // TODO(robertphillips): address mismatches between the MSAA requirements of the Renderers
         // associated w/ the requested drawTypes and the specified MSAA setting
+
+        LoadOp loadOp = LoadOp::kClear;
+        if (caps->foo()) {
+            loadOp = LoadOp::kLoad;
+        }
+
         const RenderPassDesc renderPassDesc =
                 RenderPassDesc::Make(caps,
                                      info,
-                                     LoadOp::kClear,
+                                     loadOp,
                                      StoreOp::kStore,
                                      rpp.fDSFlags,
                                      /* clearColor= */ { .0f, .0f, .0f, .0f },
                                      rpp.fRequiresMSAA,
-                                     writeSwizzle);
+                                     writeSwizzle,
+                                     true /*$$*/);
 
         SkColorInfo ci(rpp.fDstCT, kPremul_SkAlphaType, nullptr);
         KeyContext keyContext(caps, dict, rtEffectDict.get(), ci,

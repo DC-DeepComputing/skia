@@ -449,10 +449,11 @@ private:
 
 DrawPass::DrawPass(sk_sp<TextureProxy> target,
                    std::pair<LoadOp, StoreOp> ops,
-                   std::array<float, 4> clearColor)
+                   std::array<float, 4> clearColor,
+                   bool foo)
         : fTarget(std::move(target))
         , fBounds(SkIRect::MakeEmpty())
-        , fOps(ops)
+        , fOps1(ops)
         , fClearColor(clearColor) {}
 
 DrawPass::~DrawPass() = default;
@@ -464,7 +465,8 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
                                          std::pair<LoadOp, StoreOp> ops,
                                          std::array<float, 4> clearColor,
                                          sk_sp<TextureProxy> dstCopy,
-                                         SkIPoint dstCopyOffset) {
+                                         SkIPoint dstCopyOffset,
+                                         bool foo) {
     // NOTE: This assert is here to ensure SortKey is as tightly packed as possible. Any change to
     // its size should be done with care and good reason. The performance of sorting the keys is
     // heavily tied to the total size.
@@ -486,7 +488,7 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
 
     // The DrawList is converted directly into the DrawPass' data structures, but once the DrawPass
     // is returned from Make(), it is considered immutable.
-    std::unique_ptr<DrawPass> drawPass(new DrawPass(target, ops, clearColor));
+    std::unique_ptr<DrawPass> drawPass(new DrawPass(target, ops, clearColor, true));
 
     Rect passBounds = Rect::InfiniteInverted();
 

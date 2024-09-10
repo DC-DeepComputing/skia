@@ -1041,7 +1041,8 @@ bool DawnCaps::extractGraphicsDescs(const UniqueKey& key,
                                            dsFlags,
                                            /* clearColor= */ { .0f, .0f, .0f, .0f },
                                            requiresMSAA,
-                                           writeSwizzle);
+                                           writeSwizzle,
+                                           true /*$$*/);
 
     return true;
 }

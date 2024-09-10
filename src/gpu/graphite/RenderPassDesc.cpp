@@ -41,8 +41,10 @@ RenderPassDesc RenderPassDesc::Make(const Caps* caps,
                                     SkEnumBitMask<DepthStencilFlags> depthStencilFlags,
                                     const std::array<float, 4>& clearColor,
                                     bool requiresMSAA,
-                                    Swizzle writeSwizzle) {
+                                    Swizzle writeSwizzle,
+                                    bool foo) {
     RenderPassDesc desc;
+    desc.fFoo = foo;
     desc.fWriteSwizzle = writeSwizzle;
     desc.fSampleCount = 1;
     // It doesn't make sense to have a storeOp for our main target not be store. Why are we doing

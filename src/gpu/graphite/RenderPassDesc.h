@@ -36,8 +36,10 @@ struct RenderPassDesc {
                                SkEnumBitMask<DepthStencilFlags> depthStencilFlags,
                                const std::array<float, 4>& clearColor,
                                bool requiresMSAA,
-                               Swizzle writeSwizzle);
+                               Swizzle writeSwizzle,
+                               bool foo);
 
+    bool fFoo;
     AttachmentDesc fColorAttachment;
     std::array<float, 4> fClearColor;
     AttachmentDesc fColorResolveAttachment;

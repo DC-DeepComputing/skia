@@ -113,7 +113,7 @@ DrawContext::~DrawContext() = default;
 void DrawContext::clear(const SkColor4f& clearColor) {
     this->discard();
 
-    fPendingLoadOp = LoadOp::kClear;
+    fPendingLoadOp1 = LoadOp::kClear;
     SkPMColor4f pmColor = clearColor.premul();
     fPendingClearColor = pmColor.array();
 }
@@ -141,9 +141,9 @@ void DrawContext::discard() {
         // overwritten by later draws, but if a previous call to clear() had injected bad data,
         // the discard should not inherit it.
         fPendingClearColor = {0.f, 0.f, 0.f, 0.f};
-        fPendingLoadOp = LoadOp::kClear;
+        fPendingLoadOp1 = LoadOp::kClear;
     } else {
-        fPendingLoadOp = LoadOp::kDiscard;
+        fPendingLoadOp1 = LoadOp::kDiscard;
     }
 }
 
@@ -218,7 +218,7 @@ void DrawContext::flush(Recorder* recorder) {
         fComputePathAtlas->reset();
     } // else platform doesn't support compute or atlas was never initialized.
 
-    if (fPendingDraws->renderStepCount() == 0 && fPendingLoadOp != LoadOp::kClear) {
+    if (fPendingDraws->renderStepCount() == 0 && fPendingLoadOp1 != LoadOp::kClear) {
         // Nothing will be rasterized to the target that warrants a RenderPassTask, but we preserve
         // any added uploads or compute tasks since those could also affect the target w/o
         // rasterizing anything directly.
@@ -259,15 +259,16 @@ void DrawContext::flush(Recorder* recorder) {
                                                     std::move(fPendingDraws),
                                                     fTarget,
                                                     this->imageInfo(),
-                                                    std::make_pair(fPendingLoadOp, fPendingStoreOp),
+                                                    std::make_pair(fPendingLoadOp1, fPendingStoreOp1),
                                                     fPendingClearColor,
                                                     dstCopy,
-                                                    dstCopyPixelBounds.topLeft());
+                                                    dstCopyPixelBounds.topLeft(),
+                                                    true /*$$*/);
     fPendingDraws = std::make_unique<DrawList>();
     // Now that there is content drawn to the target, that content must be loaded on any subsequent
     // render pass.
-    fPendingLoadOp = LoadOp::kLoad;
-    fPendingStoreOp = StoreOp::kStore;
+    fPendingLoadOp1 = LoadOp::kLoad;
+    fPendingStoreOp1 = StoreOp::kStore;
 
     if (pass) {
         SkASSERT(fTarget.get() == pass->target());
@@ -287,7 +288,8 @@ void DrawContext::flush(Recorder* recorder) {
                                                    pass->depthStencilFlags(),
                                                    pass->clearColor(),
                                                    pass->requiresMSAA(),
-                                                   writeSwizzle);
+                                                   writeSwizzle,
+                                                   true/*$$*/);
 
         RenderPassTask::DrawPassList passes;
         passes.emplace_back(std::move(pass));
