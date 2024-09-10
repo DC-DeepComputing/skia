@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8fe52ba_27d1a078",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-09-10T19:59:13Z",
+      "side": 1,
+      "message": "This is a very WIP CL that, per b/361604548, takes the shading uniform cache off of Recorders and makes it local to DrawPass creation, as we do with the render step uniform cache. It\u0027s then able to remove a de-duplication step by using a new cache class that holds the de-duplicated data and returns indices into this data which is then written directly to uniform buffers, rather than having the old UniformTracker\u0027s extra layer of mapping from index to de-duplicated data pointers.\n\nSome particularly WIP stuff includes:\n- We want to merge functionality between UniformDataCache and DenseBiMap instead of adding a new cache class\n- BufferInfo.fStartAlignment is no longer used for storage buffers, instead the requested stride is used to align new writers\n- The BufferManager is essentially overloading BindBufferInfo.fOffset with a storage buffer index, and assuming it will be used as such rather than as a binding offset. This seems like something that could cause confusion down the road\n- ContextUtil\u0027s Extract*Data functions are inlined, for convenience of testing this approach out\n- This also doesn\u0027t *actually* remove the UniformDataCache field from Recorder yet, because that causes a lot of files to recompile when I switch between branches locally\n\nSo far these changes seem to yield better performance in motionmark benchmarks when the storage buffer block size is tweaked (upwards).",
+      "revId": "20edc455e7f26ad9a435a529ab48645ba9e17fad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
