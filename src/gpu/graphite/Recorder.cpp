@@ -101,7 +101,6 @@ Recorder::Recorder(sk_sp<SharedContext> sharedContext,
         , fRuntimeEffectDict(std::make_unique<RuntimeEffectDictionary>())
         , fRootTaskList(new TaskList)
         , fRootUploads(new UploadList)
-        , fUniformDataCache(new UniformDataCache)
         , fTextureDataCache(new TextureDataCache)
         , fProxyReadCounts(new ProxyReadCountMap)
         , fUniqueID(next_id())
@@ -225,7 +224,6 @@ std::unique_ptr<Recording> Recorder::snap() {
     fRuntimeEffectDict->reset();
     fProxyReadCounts = std::make_unique<ProxyReadCountMap>();
     fTextureDataCache = std::make_unique<TextureDataCache>();
-    fUniformDataCache = std::make_unique<UniformDataCache>();
     if (!this->priv().caps()->requireOrderedRecordings()) {
         fAtlasProvider->textAtlasManager()->evictAtlases();
     }

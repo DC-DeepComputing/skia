@@ -31,6 +31,7 @@ namespace skgpu::graphite {
 
 std::tuple<UniquePaintParamsID, const UniformDataBlock*, const TextureDataBlock*> ExtractPaintData(
         Recorder* recorder,
+        UniformDataCache* uniformDataCache,
         PipelineDataGatherer* gatherer,
         PaintParamsKeyBuilder* builder,
         const Layout layout,
@@ -60,7 +61,6 @@ std::tuple<UniquePaintParamsID, const UniformDataBlock*, const TextureDataBlock*
     const TextureDataBlock* textures = nullptr;
     if (paintID.isValid()) {
         if (gatherer->hasUniforms()) {
-            UniformDataCache* uniformDataCache = recorder->priv().uniformDataCache();
             uniforms = uniformDataCache->insert(gatherer->finishUniformDataBlock());
         }
         if (gatherer->hasTextures()) {
