@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bff897e0_343518ae",
+        "filename": "tests/FontMgrFontConfigTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-10T14:43:43Z",
+      "side": 1,
+      "message": "Need `all_bold`?",
+      "range": {
+        "startLine": 167,
+        "startChar": 112,
+        "endLine": 167,
+        "endChar": 121
+      },
+      "revId": "4fac8c5bfa25ce4754edd86b784ac6a8d2ab56a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d770c924_2802b60c",
+        "filename": "tests/FontMgrFontConfigTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-10T14:43:43Z",
+      "side": 1,
+      "message": "Need to use Resources to get the resource path.",
+      "range": {
+        "startLine": 167,
+        "startChar": 51,
+        "endLine": 167,
+        "endChar": 96
+      },
+      "revId": "4fac8c5bfa25ce4754edd86b784ac6a8d2ab56a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1064b473_c23fb57c",
+        "filename": "tests/FontMgrFontConfigTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-10T14:43:43Z",
+      "side": 1,
+      "message": "Do we really need to check in another font file for this? Can we use one of the existing test fonts?",
+      "range": {
+        "startLine": 185,
+        "startChar": 63,
+        "endLine": 185,
+        "endChar": 69
+      },
+      "revId": "4fac8c5bfa25ce4754edd86b784ac6a8d2ab56a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
