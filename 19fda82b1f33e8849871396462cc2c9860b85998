@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14834590_0543af98",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-10T03:08:41Z",
+      "side": 1,
+      "message": "Unfortunately, https://skia-review.googlesource.com/c/skia/+/897737 removed a newline and so `Housekeeper-PerCommit-CheckGeneratedFiles` is currently failing.",
+      "revId": "19fda82b1f33e8849871396462cc2c9860b85998",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
