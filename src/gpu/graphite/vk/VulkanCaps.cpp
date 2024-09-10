@@ -13,6 +13,7 @@
 #include "include/gpu/graphite/vk/VulkanGraphiteTypes.h"
 #include "include/gpu/vk/VulkanExtensions.h"
 #include "include/gpu/vk/VulkanTypes.h"
+#include "src/gpu/SwizzlePriv.h"
 #include "src/gpu/graphite/ContextUtils.h"
 #include "src/gpu/graphite/GraphicsPipelineDesc.h"
 #include "src/gpu/graphite/GraphiteResourceKey.h"
@@ -30,6 +31,17 @@
 #ifdef SK_BUILD_FOR_ANDROID
 #include <sys/system_properties.h>
 #endif
+
+namespace {
+
+skgpu::UniqueKey::Domain get_pipeline_domain() {
+    static const skgpu::UniqueKey::Domain kVulkanGraphicsPipelineDomain =
+            skgpu::UniqueKey::GenerateDomain();
+
+    return kVulkanGraphicsPipelineDomain;
+}
+
+} // anonymous namespace
 
 namespace skgpu::graphite {
 
@@ -1472,21 +1484,19 @@ std::pair<SkColorType, bool /*isRGBFormat*/> VulkanCaps::supportedReadPixelsColo
     return {kUnknown_SkColorType, false};
 }
 
+// Reserve 3 uint32s for the render step id, paint id, and write swizzle.
+static constexpr int kUint32sNeededForPipelineInfo = 3;
+
 UniqueKey VulkanCaps::makeGraphicsPipelineKey(const GraphicsPipelineDesc& pipelineDesc,
                                               const RenderPassDesc& renderPassDesc) const {
     UniqueKey pipelineKey;
     {
-        static const skgpu::UniqueKey::Domain kGraphicsPipelineDomain =
-            UniqueKey::GenerateDomain();
-
         VulkanRenderPass::VulkanRenderPassMetaData rpMetaData {renderPassDesc};
 
-        // Reserve 3 uint32s for the render step id, paint id, and write swizzle.
-        static constexpr int kUint32sNeededForPipelineInfo = 3;
         // The uint32s needed for a RenderPass is variable number, so consult rpMetaData to
         // determine how many to reserve.
         UniqueKey::Builder builder(&pipelineKey,
-                                   kGraphicsPipelineDomain,
+                                   get_pipeline_domain(),
                                    kUint32sNeededForPipelineInfo + rpMetaData.fUint32DataCnt,
                                    "GraphicsPipeline");
 
@@ -1614,6 +1624,102 @@ ImmutableSamplerInfo VulkanCaps::getImmutableSamplerInfo(const TextureProxy* pro
     // If the proxy is null or the YCbCr conversion for that proxy is invalid, then return a
     // default ImmutableSamplerInfo struct.
     return {};
+}
+
+bool VulkanCaps::extractGraphicsDescs(const UniqueKey& key,
+                                      GraphicsPipelineDesc* pipelineDesc,
+                                      RenderPassDesc* renderPassDesc,
+                                      const RendererProvider* rendererProvider) const {
+    struct UnpackedKeyData {
+        // From the GraphicsPipelineDesc
+        uint32_t fRenderStepID = 0;
+        UniquePaintParamsID fPaintParamsID;
+
+        Swizzle fWriteSwizzle;
+
+#if 0
+        // From the RenderPassDesc
+        MTLPixelFormat fColorFormat = MTLPixelFormatInvalid;
+        uint32_t fColorSampleCount = 1;
+
+        MTLPixelFormat fDSFormat = MTLPixelFormatInvalid;
+        uint32_t fDSSampleCount = 1;
+#endif
+    } keyData;
+
+    SkASSERT(key.domain() == get_pipeline_domain());
+    SkASSERT(key.dataSize() >= 4 * kUint32sNeededForPipelineInfo);
+
+    const uint32_t* rawKeyData = key.data();
+
+    keyData.fRenderStepID = rawKeyData[0];
+    keyData.fPaintParamsID = rawKeyData[1] ? UniquePaintParamsID(rawKeyData[1])
+                                           : UniquePaintParamsID::InvalidID();
+
+    keyData.fWriteSwizzle = SwizzleCtorAccessor::Make(rawKeyData[2]);
+
+    int numAttachments = rawKeyData[3] & 0xFF;
+    [[maybe_unused]] int subPassCount = (rawKeyData[3] >> 8) & 0xFF;
+    [[maybe_unused]] int subPassDependencyCount = (rawKeyData[3] >> 16) & 0xFFFF;
+
+    int idx = 4;
+    for (int i = 0; i < numAttachments; ++i) {
+        [[maybe_unused]] int format = rawKeyData[idx++];
+        [[maybe_unused]] int sampleCount = rawKeyData[idx++];
+        [[maybe_unused]] int storeOp = rawKeyData[idx] & 0xFF;
+        [[maybe_unused]] int loadOp = (rawKeyData[idx++] >> 8) & 0xFF;
+    }
+
+    return false;
+
+#if 0
+    keyData.fDSFormat = static_cast<MTLPixelFormat>((rawKeyData[2] >> 16) & 0xFFFF);
+    keyData.fDSSampleCount = rawKeyData[2] & 0xFFFF;
+
+    keyData.fColorFormat = static_cast<MTLPixelFormat>((rawKeyData[3] >> 16) & 0xFFFF);
+    keyData.fColorSampleCount = rawKeyData[3] & 0xFFFF;
+
+
+
+    // Recreate the RenderPassDesc
+    SkASSERT(keyData.fColorSampleCount == keyData.fDSSampleCount);
+
+    MTLPixelFormat dsFormat = keyData.fDSFormat;
+    SkEnumBitMask<DepthStencilFlags> dsFlags = DepthStencilFlags::kNone;
+    if (MtlFormatIsDepth(dsFormat)) {
+        dsFlags |= DepthStencilFlags::kDepth;
+    }
+    if (MtlFormatIsStencil(dsFormat)) {
+        dsFlags |= DepthStencilFlags::kStencil;
+    }
+
+    MtlTextureInfo mtlInfo(keyData.fColorSampleCount,
+                           skgpu::Mipmapped::kNo,
+                           keyData.fColorFormat,
+                           MTLTextureUsageShaderRead | MTLTextureUsageRenderTarget,
+                           MTLStorageModePrivate,
+                           /* framebufferOnly= */ false);
+    TextureInfo info = TextureInfos::MakeMetal(mtlInfo);
+
+    *renderPassDesc = RenderPassDesc::Make(this,
+                                           info,
+                                           LoadOp::kClear,
+                                           StoreOp::kStore,
+                                           dsFlags,
+                                           /* clearColor= */ { .0f, .0f, .0f, .0f },
+                                           /* requiresMSAA= */ keyData.fColorSampleCount > 1,
+                                           keyData.fWriteSwizzle);
+
+    // Recreate the GraphicsPipelineDesc
+    const RenderStep* renderStep = rendererProvider->lookup(keyData.fRenderStepID);
+
+    UniquePaintParamsID paintID = renderStep->performsShading() ? keyData.fPaintParamsID
+                                                                : UniquePaintParamsID::InvalidID();
+
+    *pipelineDesc = GraphicsPipelineDesc(renderStep, paintID);
+
+    return true;
+#endif
 }
 
 } // namespace skgpu::graphite
