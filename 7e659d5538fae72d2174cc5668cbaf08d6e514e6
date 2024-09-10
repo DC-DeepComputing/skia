@@ -16,6 +16,24 @@
       "message": "This (apparently) load bearing newline that was removed is causing `Housekeeper-PerCommit-CheckGeneratedFiles` to fail.",
       "revId": "7e659d5538fae72d2174cc5668cbaf08d6e514e6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "93c2186a_5695e7b6",
+        "filename": "toolchain/download_toolchains.bzl",
+        "patchSetId": 2
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-09-10T13:00:14Z",
+      "side": 1,
+      "message": "Sigh. Fixed in https://skia-review.googlesource.com/c/skia/+/898057",
+      "parentUuid": "34289837_45837f6a",
+      "revId": "7e659d5538fae72d2174cc5668cbaf08d6e514e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
