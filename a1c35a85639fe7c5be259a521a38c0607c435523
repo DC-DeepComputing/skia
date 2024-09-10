@@ -424,6 +424,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e8c28e11_9458fda9",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 334,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-09-10T15:52:50Z",
+      "side": 1,
+      "message": "Clearly I misunderstood how Compose works. Also, we didn\u0027t have a test that combines analytic clips with a clip shader so I added one.",
+      "parentUuid": "e03c7219_ea238945",
+      "range": {
+        "startLine": 334,
+        "startChar": 12,
+        "endLine": 334,
+        "endChar": 19
+      },
+      "revId": "a1c35a85639fe7c5be259a521a38c0607c435523",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "75fbfc85_e47ce367",
