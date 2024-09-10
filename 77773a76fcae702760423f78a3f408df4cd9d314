@@ -186,6 +186,30 @@
       },
       "revId": "77773a76fcae702760423f78a3f408df4cd9d314",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a1b99ae_bf3f89d5",
+        "filename": "src/gpu/graphite/ClipStack_graphite.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 1176,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-09-10T01:13:55Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "78f0764b_4fcf4ac2",
+      "range": {
+        "startLine": 1175,
+        "startChar": 0,
+        "endLine": 1176,
+        "endChar": 26
+      },
+      "revId": "77773a76fcae702760423f78a3f408df4cd9d314",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
