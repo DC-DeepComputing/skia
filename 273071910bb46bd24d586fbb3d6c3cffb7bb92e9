@@ -16,6 +16,24 @@
       "message": "Seems this change is needed in `bazel/deps_parser/deps_parser.go` as well?",
       "revId": "273071910bb46bd24d586fbb3d6c3cffb7bb92e9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "faebe2a8_a6622caf",
+        "filename": "bazel/deps.bzl",
+        "patchSetId": 3
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-10T19:38:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b24215dc_e0efd12a",
+      "revId": "273071910bb46bd24d586fbb3d6c3cffb7bb92e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
