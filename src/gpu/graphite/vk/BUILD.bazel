@@ -64,6 +64,9 @@ skia_cc_library(
     ],
     defines = ["SK_VULKAN"],
     visibility = ["//:__pkg__"],
+    implementation_deps = [
+        "//include/third_party/vulkan",
+    ],
     deps = [
         "//:core",
         "//src/base",
@@ -88,7 +91,10 @@ skia_cc_library(
     ],
     defines = [
         "SK_VULKAN",
+    ],
+    local_defines = [
         "GPU_TEST_UTILS",
+        "SK_USE_EXTERNAL_VULKAN_HEADERS",
     ],
     visibility = ["//tools:__pkg__"],
     deps = [
@@ -98,5 +104,6 @@ skia_cc_library(
         "//src/gpu",
         "//src/gpu/graphite:graphite_TEST_UTIL",
         "//src/gpu/vk",
+	"@vulkan_headers",
     ],
 )
