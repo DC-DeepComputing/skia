@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "feb8e2fd_a38b4f45",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2024-09-10T14:32:04Z",
+      "side": 1,
+      "message": "Hi @robertphillips@google.com\n\nCould you please provide more information about the error you encountered? \n\n* **Specific error message:** The exact text of the error will help identify the issue.\n* **Platform:** Which operating system are you using (Windows, macOS, Linux)?\n* **Steps taken:** Did you run `./tools/git-sync-deps` before executing `gn gen`? \n\nOnce I have this information, I\u0027ll be able to reland this patch.\n\nThanks,",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 45
+      },
+      "revId": "5dc067350ab53508b4be33775e3c56d80332d219",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
