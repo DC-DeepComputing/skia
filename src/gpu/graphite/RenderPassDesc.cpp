@@ -57,7 +57,8 @@ RenderPassDesc RenderPassDesc::Make(const Caps* caps,
         } else {
             // TODO: If the resolve texture isn't readable, the MSAA color attachment will need to
             // be persistently associated with the framebuffer, in which case it's not discardable.
-            auto msaaTextureInfo = caps->getDefaultMSAATextureInfo(targetInfo, Discardable::kYes);
+            TextureInfo msaaTextureInfo = caps->getDefaultMSAATextureInfo(targetInfo,
+                                                                          Discardable::kYes);
             if (msaaTextureInfo.isValid()) {
                 desc.fColorAttachment.fTextureInfo = msaaTextureInfo;
                 if (loadOp != LoadOp::kClear) {
