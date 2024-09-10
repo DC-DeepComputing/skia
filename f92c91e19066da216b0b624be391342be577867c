@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4b5df219_e253dafc",
+        "filename": "DEPS",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-10T15:28:14Z",
+      "side": 0,
+      "message": "`bin/fetch-sk` still seems to refer to `sk_tool_revision`? `Housekeeper-Nightly-RecreateSKPs_DryRun` seems to be running into this.",
+      "revId": "f92c91e19066da216b0b624be391342be577867c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
