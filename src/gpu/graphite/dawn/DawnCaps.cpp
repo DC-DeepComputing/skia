@@ -939,9 +939,12 @@ uint32_t DawnCaps::getRenderPassDescKeyForPipeline(const RenderPassDesc& renderP
     const bool shouldIncludeLoadResolveAttachmentBit = this->resolveTextureLoadOp().has_value();
     uint32_t loadResolveAttachmentKey = 0;
     if (shouldIncludeLoadResolveAttachmentBit &&
-        renderPassDesc.fColorResolveAttachment.fTextureInfo.isValid() &&
-        renderPassDesc.fColorResolveAttachment.fLoadOp == LoadOp::kLoad) {
+        renderPassDesc.fColorResolveAttachment7.fTextureInfo.isValid() &&
+        renderPassDesc.fColorResolveAttachment7.fLoadOp == LoadOp::kLoad) {
         loadResolveAttachmentKey = 1;
+//        SkDebugf("Should've been load!\n");
+    } else {
+//        SkDebugf("Should've _not_ load\n");
     }
 
     SkASSERT(colorFormatIndex < (1 << kFormatBits));
@@ -1041,7 +1044,8 @@ bool DawnCaps::extractGraphicsDescs(const UniqueKey& key,
                                            dsFlags,
                                            /* clearColor= */ { .0f, .0f, .0f, .0f },
                                            requiresMSAA,
-                                           writeSwizzle);
+                                           writeSwizzle,
+                                           true /*$$*/);
 
     return true;
 }

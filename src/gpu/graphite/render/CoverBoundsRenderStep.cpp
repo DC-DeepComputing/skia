@@ -17,7 +17,7 @@ namespace skgpu::graphite {
 CoverBoundsRenderStep::CoverBoundsRenderStep(const char* tag, DepthStencilSettings dsSettings)
         : RenderStep("CoverBoundsRenderStep",
                      tag,
-                     Flags::kPerformsShading,
+                     Flags::kPerformsShading|Flags::kFoo,
                      /*uniforms=*/{},
                      PrimitiveType::kTriangleStrip,
                      dsSettings,

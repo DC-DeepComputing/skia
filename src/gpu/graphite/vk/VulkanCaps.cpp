@@ -31,6 +31,18 @@
 #include <sys/system_properties.h>
 #endif
 
+namespace {
+
+
+skgpu::UniqueKey::Domain get_pipeline_domain() {
+    static const skgpu::UniqueKey::Domain kVulkanGraphicsPipelineDomain =
+            skgpu::UniqueKey::GenerateDomain();
+
+    return kVulkanGraphicsPipelineDomain;
+}
+
+} // anonymous namespace
+
 namespace skgpu::graphite {
 
 VulkanCaps::VulkanCaps(const ContextOptions& contextOptions,
@@ -1472,21 +1484,19 @@ std::pair<SkColorType, bool /*isRGBFormat*/> VulkanCaps::supportedReadPixelsColo
     return {kUnknown_SkColorType, false};
 }
 
+// Reserve 3 uint32s for the render step id, paint id, and write swizzle.
+static constexpr int kUint32sNeededForPipelineInfo = 3;
+
 UniqueKey VulkanCaps::makeGraphicsPipelineKey(const GraphicsPipelineDesc& pipelineDesc,
                                               const RenderPassDesc& renderPassDesc) const {
     UniqueKey pipelineKey;
     {
-        static const skgpu::UniqueKey::Domain kGraphicsPipelineDomain =
-            UniqueKey::GenerateDomain();
-
         VulkanRenderPass::VulkanRenderPassMetaData rpMetaData {renderPassDesc};
 
-        // Reserve 3 uint32s for the render step id, paint id, and write swizzle.
-        static constexpr int kUint32sNeededForPipelineInfo = 3;
         // The uint32s needed for a RenderPass is variable number, so consult rpMetaData to
         // determine how many to reserve.
         UniqueKey::Builder builder(&pipelineKey,
-                                   kGraphicsPipelineDomain,
+                                   get_pipeline_domain(),
                                    kUint32sNeededForPipelineInfo + rpMetaData.fUint32DataCnt,
                                    "GraphicsPipeline");
 
@@ -1614,6 +1624,18 @@ ImmutableSamplerInfo VulkanCaps::getImmutableSamplerInfo(const TextureProxy* pro
     // If the proxy is null or the YCbCr conversion for that proxy is invalid, then return a
     // default ImmutableSamplerInfo struct.
     return {};
+}
+
+bool VulkanCaps::extractGraphicsDescs(const UniqueKey& key,
+                                      GraphicsPipelineDesc* pipelineDesc,
+                                      RenderPassDesc* renderPassDesc,
+                                      const RendererProvider* rendererProvider) const override {
+    SkASSERT(key.domain() == get_pipeline_domain());
+    SkASSERT(key.dataSize() >= 4 * kUint32sNeededForPipelineInfo);
+
+    const uint32_t* rawKeyData = key.data();
+
+    return false;
 }
 
 } // namespace skgpu::graphite

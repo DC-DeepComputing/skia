@@ -106,7 +106,6 @@ void Precompile(Context* context, const PaintOptions& options, DrawTypeFlags dra
     auto rtEffectDict = std::make_unique<RuntimeEffectDictionary>();
 
     for (const RenderPassProperties& rpp : renderPassProperties) {
-
         // TODO: Allow the client to pass in mipmapping and protection too?
         TextureInfo info = caps->getDefaultSampledTextureInfo(rpp.fDstCT,
                                                               Mipmapped::kNo,
@@ -121,66 +120,82 @@ void Precompile(Context* context, const PaintOptions& options, DrawTypeFlags dra
         // TODO(robertphillips): address the Dawn/load-msaa-from-resolve issue.
         // TODO(robertphillips): address mismatches between the MSAA requirements of the Renderers
         // associated w/ the requested drawTypes and the specified MSAA setting
-        const RenderPassDesc renderPassDesc =
-                RenderPassDesc::Make(caps,
-                                     info,
-                                     LoadOp::kClear,
-                                     StoreOp::kStore,
-                                     rpp.fDSFlags,
-                                     /* clearColor= */ { .0f, .0f, .0f, .0f },
-                                     rpp.fRequiresMSAA,
-                                     writeSwizzle);
 
-        SkColorInfo ci(rpp.fDstCT, kPremul_SkAlphaType, nullptr);
-        KeyContext keyContext(caps, dict, rtEffectDict.get(), ci,
-                              /* dstTexture= */ nullptr,
-                              /* dstOffset= */ {0, 0});
+        // For Dawn, the LoadOp will sometimes matter. Add an extra loop to add combinations
+        // only when relevant.
+        const LoadOp kLoadOps[2] = { LoadOp::kClear, LoadOp::kLoad };
 
-        for (Coverage coverage : { Coverage::kNone, Coverage::kSingleChannel }) {
-            PrecompileCombinations(
-                    context, options, keyContext,
-                    static_cast<DrawTypeFlags>(drawTypes & ~(DrawTypeFlags::kBitmapText_Color |
-                                                             DrawTypeFlags::kBitmapText_LCD |
-                                                             DrawTypeFlags::kSDFText_LCD |
-                                                             DrawTypeFlags::kDrawVertices)),
-                    /* withPrimitiveBlender= */ false,
-                    coverage,
-                    renderPassDesc);
+        int numLoadOps = 1;
+        if (rpp.fRequiresMSAA && !caps->msaaRenderToSingleSampledSupport()) {
+            if (caps->foo()) {
+                numLoadOps = 2;
+                //                SkDebugf("Could set to kLoad - setting to kClear instead\n");
+            }
         }
 
-        if (drawTypes & DrawTypeFlags::kBitmapText_Color) {
-            // For color emoji text, shaders don't affect the final color
-            PaintOptions tmp = options;
-            tmp.setShaders({});
+        for (int loadOpIndex = 0; loadOpIndex < numLoadOps; ++loadOpIndex) {
+            const RenderPassDesc renderPassDesc =
+                    RenderPassDesc::Make(caps,
+                                         info,
+                                         kLoadOps[loadOpIndex],
+                                         StoreOp::kStore,
+                                         rpp.fDSFlags,
+                                         /* clearColor= */ { .0f, .0f, .0f, .0f },
+                                         rpp.fRequiresMSAA,
+                                         writeSwizzle,
+                                         true /*$$*/);
 
-            // ARGB text doesn't emit coverage and always has a primitive blender
-            PrecompileCombinations(context, tmp, keyContext,
-                                   DrawTypeFlags::kBitmapText_Color,
-                                   /* withPrimitiveBlender= */ true,
-                                   Coverage::kNone,
-                                   renderPassDesc);
-        }
+            SkColorInfo ci(rpp.fDstCT, kPremul_SkAlphaType, nullptr);
+            KeyContext keyContext(caps, dict, rtEffectDict.get(), ci,
+                                  /* dstTexture= */ nullptr,
+                                  /* dstOffset= */ {0, 0});
 
-        if (drawTypes & (DrawTypeFlags::kBitmapText_LCD | DrawTypeFlags::kSDFText_LCD)) {
-            // LCD-based text always emits LCD coverage but never has primitiveBlenders
-            PrecompileCombinations(
-                    context, options, keyContext,
-                    static_cast<DrawTypeFlags>(drawTypes & (DrawTypeFlags::kBitmapText_LCD |
-                                                            DrawTypeFlags::kSDFText_LCD)),
-                    /* withPrimitiveBlender= */ false,
-                    Coverage::kLCD,
-                    renderPassDesc);
-        }
+            for (Coverage coverage : { Coverage::kNone, Coverage::kSingleChannel }) {
+                PrecompileCombinations(
+                        context, options, keyContext,
+                        static_cast<DrawTypeFlags>(drawTypes & ~(DrawTypeFlags::kBitmapText_Color |
+                                                                 DrawTypeFlags::kBitmapText_LCD |
+                                                                 DrawTypeFlags::kSDFText_LCD |
+                                                                 DrawTypeFlags::kDrawVertices)),
+                        /* withPrimitiveBlender= */ false,
+                        coverage,
+                        renderPassDesc);
+            }
 
-        if (drawTypes & DrawTypeFlags::kDrawVertices) {
-            // drawVertices w/ colors use a primitiveBlender while those w/o don't. It never emits
-            // coverage.
-            for (bool withPrimitiveBlender : { true, false }) {
-                PrecompileCombinations(context, options, keyContext,
-                                       DrawTypeFlags::kDrawVertices,
-                                       withPrimitiveBlender,
+            if (drawTypes & DrawTypeFlags::kBitmapText_Color) {
+                // For color emoji text, shaders don't affect the final color
+                PaintOptions tmp = options;
+                tmp.setShaders({});
+
+                // ARGB text doesn't emit coverage and always has a primitive blender
+                PrecompileCombinations(context, tmp, keyContext,
+                                       DrawTypeFlags::kBitmapText_Color,
+                                       /* withPrimitiveBlender= */ true,
                                        Coverage::kNone,
                                        renderPassDesc);
+            }
+
+            if (drawTypes & (DrawTypeFlags::kBitmapText_LCD | DrawTypeFlags::kSDFText_LCD)) {
+                // LCD-based text always emits LCD coverage but never has primitiveBlenders
+                PrecompileCombinations(
+                        context, options, keyContext,
+                        static_cast<DrawTypeFlags>(drawTypes & (DrawTypeFlags::kBitmapText_LCD |
+                                                                DrawTypeFlags::kSDFText_LCD)),
+                        /* withPrimitiveBlender= */ false,
+                        Coverage::kLCD,
+                        renderPassDesc);
+            }
+
+            if (drawTypes & DrawTypeFlags::kDrawVertices) {
+                // drawVertices w/ colors use a primitiveBlender while those w/o don't. It never emits
+                // coverage.
+                for (bool withPrimitiveBlender : { true, false }) {
+                    PrecompileCombinations(context, options, keyContext,
+                                           DrawTypeFlags::kDrawVertices,
+                                           withPrimitiveBlender,
+                                           Coverage::kNone,
+                                           renderPassDesc);
+                }
             }
         }
     }

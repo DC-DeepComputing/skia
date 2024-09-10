@@ -41,7 +41,7 @@ void DumpDescs(const RendererProvider* rendererProvider,
 
     SkDebugf("RenderPassDesc:\n");
     SkDebugf("   colorAttach: %s\n", rpd.fColorAttachment.toString().c_str());
-    SkDebugf("   colorResolveAttach: %s\n", rpd.fColorResolveAttachment.toString().c_str());
+    SkDebugf("   colorResolveAttach: %s\n", rpd.fColorResolveAttachment7.toString().c_str());
     SkDebugf("   depthStencilAttach: %s\n", rpd.fDepthStencilAttachment.toString().c_str());
     SkDebugf("   clearColor: %.2f %.2f %.2f %.2f\n"
              "   clearDepth: %.2f\n"

@@ -65,13 +65,14 @@ public:
                                           std::pair<LoadOp, StoreOp>,
                                           std::array<float, 4> clearColor,
                                           sk_sp<TextureProxy> dstCopy,
-                                          SkIPoint dstCopyOffset);
+                                          SkIPoint dstCopyOffset,
+                                          bool);
 
     // Defined relative to the top-left corner of the surface the DrawPass renders to, and is
     // contained within its dimensions.
     const SkIRect&      bounds() const { return fBounds;       }
     TextureProxy* target() const { return fTarget.get(); }
-    std::pair<LoadOp, StoreOp> ops() const { return fOps; }
+    std::pair<LoadOp, StoreOp> ops() const { return fOps1; }
     std::array<float, 4> clearColor() const { return fClearColor; }
 
     bool requiresDstTexture() const { return false;            }
@@ -108,14 +109,15 @@ private:
 
     DrawPass(sk_sp<TextureProxy> target,
              std::pair<LoadOp, StoreOp> ops,
-             std::array<float, 4> clearColor);
+             std::array<float, 4> clearColor,
+             bool);
 
     DrawPassCommands::List fCommandList;
 
     sk_sp<TextureProxy> fTarget;
     SkIRect fBounds;
 
-    std::pair<LoadOp, StoreOp> fOps;
+    std::pair<LoadOp, StoreOp> fOps1;
     std::array<float, 4> fClearColor;
 
     SkEnumBitMask<DepthStencilFlags> fDepthStencilFlags = DepthStencilFlags::kNone;
