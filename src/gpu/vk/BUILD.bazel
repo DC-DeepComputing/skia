@@ -49,9 +49,11 @@ skia_cc_library(
         "//src/gpu/graphite/vk:__pkg__",
         "//src/gpu/vk/vulkanmemoryallocator:__pkg__",
     ],
+    implementation_deps = [
+        "//include/third_party/vulkan",
+    ],
     deps = [
         "//:core",
-        "//include/third_party/vulkan",
         "//src/base",
         "//src/gpu",
         "//src/sksl/codegen:spirv",
