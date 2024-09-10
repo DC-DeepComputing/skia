@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "02e65249_76ba6043",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-09-10T20:54:16Z",
+      "side": 1,
+      "message": "In a WIP CL I was finding it annoying having to separately declare a `SkTileMode[2]` on the stack or as a constant in order to pass in constants to the `SamplerDesc` constructor so this just switches it to use a `std::pair` to be a bit more ergonomic.",
+      "revId": "a42a43fb0e147670f96869801eed0c1a6161f694",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
