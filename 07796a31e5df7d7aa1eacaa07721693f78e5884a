@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "53f8eda2_501b3239",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-09-10T12:26:38Z",
+      "side": 1,
+      "message": "G3 Canary failure appears to be unrelated",
+      "revId": "07796a31e5df7d7aa1eacaa07721693f78e5884a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
