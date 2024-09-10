@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "44666813_6b4dc39a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-10T20:29:16Z",
+      "side": 1,
+      "message": "This required https://skia-review.googlesource.com/c/skia/+/897739 to land afterword to update the external Bazel pinned dependency to pick up the config file change.",
+      "revId": "d211141c45c9171437fa8e6e07989edb5bffa17a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
