@@ -5,7 +5,9 @@
  * found in the LICENSE file.
  */
 
+#include "include/codec/SkCodec.h"
 #include "include/core/SkAlphaType.h"
+#include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkColorSpace.h"
@@ -18,11 +20,18 @@
 #include "include/core/SkPicture.h"
 #include "include/core/SkPictureRecorder.h"
 #include "include/core/SkRefCnt.h"
+#include "include/core/SkStream.h"
+#include "include/core/SkSurface.h"
 #include "include/core/SkYUVAInfo.h"
 #include "include/core/SkYUVAPixmaps.h"
 #include "src/base/SkAutoMalloc.h"
 #include "src/image/SkImageGeneratorPriv.h"
 #include "tests/Test.h"
+#include "tools/DecodeUtils.h"
+#include "tools/EncodeUtils.h"
+#include "tools/Resources.h"
+#include "tools/ToolUtils.h"
+#include "tools/fonts/FontToolUtils.h"
 
 #include <memory>
 
@@ -31,6 +40,9 @@
 #elif defined(SK_BUILD_FOR_WIN)
     #include "include/ports/SkImageGeneratorWIC.h"
 #endif
+
+static constexpr int kImgW = 100;
+static constexpr int kImgH =  80;
 
 static bool gMyFactoryWasCalled;
 
@@ -133,3 +145,63 @@ DEF_TEST(PictureImageGenerator, reporter) {
     }
 }
 
+DEF_TEST(TestingOrientation, reporter) {
+  sk_sp<SkImage> image;
+
+ // Get the image as data
+  sk_sp<SkData> data(GetResourceAsData("images/exif-orientation-2-ur.jpg"));
+  REPORTER_ASSERT(reporter, nullptr != data);
+
+  #if defined(SK_BUILD_FOR_MAC) || defined(SK_BUILD_FOR_IOS)
+      image = SkImages::DeferredFromGenerator(SkImageGeneratorCG::MakeFromEncodedCG(data));
+  #elif defined(SK_BUILD_FOR_WIN)
+      image = SkImages::DeferredFromGenerator(SkImageGeneratorWIC::MakeFromEncodedWIC(data));
+  #endif
+  REPORTER_ASSERT(reporter, nullptr != image);
+
+  SkBitmap fromGenerator;
+  SkImageInfo imageInfo = image->imageInfo();
+    if (!fromGenerator.tryAllocPixels(imageInfo, 0)) {
+        ERRORF(reporter, "Failed to allocate pixels for fromGenerator bitmap");
+        return;
+  }
+
+//   SkPixmap pm;
+//   SkISize size{imageInfo.width(), imageInfo.height()};
+//   auto surf = SkSurfaces::Raster(
+//                 SkImageInfo::Make(size, kRGBA_8888_SkColorType, kPremul_SkAlphaType));
+
+//   auto* canv = surf->getCanvas();
+//   canv->drawImage(image, 0, 0);
+//   surf->makeImageSnapshot()->peekPixels(&pm);
+//   ToolUtils::EncodeImageToPngFile("generator.png", pm);
+
+  // Get image from SkCodec
+  std::unique_ptr<SkStream> stream(GetResourceAsStream("images/exif-orientation-2-ur.jpg"));
+  REPORTER_ASSERT(reporter, nullptr != stream);
+  if (!stream) {
+      return;
+  }
+  std::unique_ptr<SkCodec> codec(SkCodec::MakeFromStream(std::move(stream)));
+  REPORTER_ASSERT(reporter, nullptr != codec);
+
+  auto info = codec->getInfo();
+  SkBitmap fromCodec;
+  if (!fromCodec.tryAllocPixels(info, 0)) {
+    ERRORF(reporter, "Failed to allocate pixels for fromGenerator bitmap");
+    return;
+  }
+
+   for (int i = 0; i < info.width();  ++i) {
+        for (int j = 0; j < info.height(); ++j) {
+            SkColor c1 = *fromGenerator   .getAddr32(i, j);
+            SkColor c2 = *fromCodec.getAddr32(i, j);
+            if (c1 != c2) {
+                ERRORF(reporter, "Bitmaps do not match starting at position %i, %i\n"
+                          "\tfromGenerator: %x\tfromCodec: %x", i, j,
+                          c1, c2);
+                return;
+            }
+        }
+    }
+}
