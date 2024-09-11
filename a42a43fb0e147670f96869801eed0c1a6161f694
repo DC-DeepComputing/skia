@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dc60be07_03b510e2",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1839,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-09-11T13:51:05Z",
+      "side": 1,
+      "message": "I ended up moving the constructor of `sampledMask` to be below the first paragraph, and then the second paragraph is more directly attached to the TextureDataCache insert call.",
+      "parentUuid": "277b4f16_1b622c45",
+      "range": {
+        "startLine": 1839,
+        "startChar": 3,
+        "endLine": 1839,
+        "endChar": 6
+      },
+      "revId": "a42a43fb0e147670f96869801eed0c1a6161f694",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6366dedb_73915929",
@@ -54,6 +78,30 @@
       "writtenOn": "2024-09-11T01:48:49Z",
       "side": 1,
       "message": "nit: Align this line one space farther over so the arguments (`{` and `g`) line up",
+      "range": {
+        "startLine": 460,
+        "startChar": 25,
+        "endLine": 460,
+        "endChar": 69
+      },
+      "revId": "a42a43fb0e147670f96869801eed0c1a6161f694",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "66b8db71_510c121b",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 460,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-09-11T13:51:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6366dedb_73915929",
       "range": {
         "startLine": 460,
         "startChar": 25,
