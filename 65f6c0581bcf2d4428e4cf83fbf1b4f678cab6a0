@@ -16,6 +16,75 @@
       "message": "Interestingly, at patch set 3 `BazelTest-external_client-use_ganesh_vulkan-default-linux_x64` works fine, but that is because `//src/gpu/ganesh/vk:ganesh_vulkan` publicly depends on `@vulkan_headers` and not the internal vulkan headers.",
       "revId": "65f6c0581bcf2d4428e4cf83fbf1b4f678cab6a0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "82f0fa37_d31649cc",
+        "filename": "src/gpu/graphite/vk/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-09-11T13:19:34Z",
+      "side": 1,
+      "message": "I think we want this to still be a normal define.",
+      "range": {
+        "startLine": 96,
+        "startChar": 9,
+        "endLine": 96,
+        "endChar": 23
+      },
+      "revId": "65f6c0581bcf2d4428e4cf83fbf1b4f678cab6a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "beff1886_169b77c7",
+        "filename": "src/gpu/graphite/vk/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-09-11T13:19:34Z",
+      "side": 1,
+      "message": "graphite_native_vulkan and graphite_native_vulkan_TEST_UTIL should be the same except for the latter sets GPU_TEST_UTILS as a define.",
+      "range": {
+        "startLine": 107,
+        "startChar": 10,
+        "endLine": 107,
+        "endChar": 24
+      },
+      "revId": "65f6c0581bcf2d4428e4cf83fbf1b4f678cab6a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1043c757_37dc0a32",
+        "filename": "src/gpu/vk/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-09-11T13:19:34Z",
+      "side": 1,
+      "message": "Can we get rid of this define then? I recall this was an attempt to get the right headers included.",
+      "range": {
+        "startLine": 44,
+        "startChar": 9,
+        "endLine": 44,
+        "endChar": 39
+      },
+      "revId": "65f6c0581bcf2d4428e4cf83fbf1b4f678cab6a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
