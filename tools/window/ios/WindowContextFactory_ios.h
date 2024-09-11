@@ -9,13 +9,15 @@
 #ifndef WindowContextFactory_ios_DEFINED
 #define WindowContextFactory_ios_DEFINED
 
-#include "tools/sk_app/ios/Window_ios.h"
+#include "tools/window/WindowContext.h"
 
 #import <UIKit/UIKit.h>
 
-#include "tools/window/WindowContext.h"
-
 #include <memory>
+
+namespace sk_app {
+class Window_ios;
+}
 
 namespace skwindow {
 
