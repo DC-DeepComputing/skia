@@ -149,6 +149,10 @@ public:
         fData.push_back_n(data.size(), data.begin());
     }
 
+    int currentTextureSamplerCount() {
+        return fTextureSamplerCount;
+    }
+
 private:
     friend class AutoLockBuilderAsKey; // for lockAsKey() and unlock()
 
@@ -175,6 +179,12 @@ private:
     // The data array uses clear() on unlock so that it's underlying storage and repeated use of the
     // builder will hit a high-water mark and avoid lots of allocations when recording draws.
     skia_private::TArray<uint32_t> fData;
+
+    // Keep a counter of the cumulative number of textures and samplers snippets utilize as the key
+    // gets assembled. This enables us to determine and record the binding index of samplers when
+    // creating ShaderNodes which is necessary in order to correlate any stored immutable sampler
+    // data to the proper sampler at the time of graphics pipeline creation.
+    int fTextureSamplerCount = 0;
 
 #ifdef SK_DEBUG
     void pushStack(int32_t codeSnippetID);

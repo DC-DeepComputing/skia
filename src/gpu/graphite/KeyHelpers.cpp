@@ -669,6 +669,8 @@ bool can_do_tiling_in_hw(const Caps* caps, const ImageShaderBlock::ImageData& im
 
 void add_sampler_data_to_key(PaintParamsKeyBuilder* builder, const SamplerDesc& samplerDesc) {
     if (samplerDesc.isImmutable()) {
+        // At this point, prepend a sampler's binding index
+        // builder->currentTextureSamplerCount()
         builder->addData({samplerDesc.asSpan()});
     } else {
         // Means we have a regular dynamic sampler for which no data needs to be appended. Call
