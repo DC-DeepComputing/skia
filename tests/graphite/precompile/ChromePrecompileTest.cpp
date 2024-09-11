@@ -377,6 +377,10 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(ChromePrecompileTest, is_dawn_metal_context_type,
                 continue;
         }
 
+        if (context->backend() == skgpu::BackendApi::kDawn) {
+            allowedOvergeneration *= 2; // due to ExpandResolveTextureLoadOp
+        }
+
         run_test(context, reporter,
                  kCases[i], i,
                  paintOptions, drawTypeFlags, renderPassSettings, allowedOvergeneration);
