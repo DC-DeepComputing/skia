@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae8b064b_62ce7902",
+        "filename": "src/gpu/graphite/vk/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-11T17:59:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "82f0fa37_d31649cc",
+      "range": {
+        "startLine": 96,
+        "startChar": 9,
+        "endLine": 96,
+        "endChar": 23
+      },
+      "revId": "65f6c0581bcf2d4428e4cf83fbf1b4f678cab6a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "beff1886_169b77c7",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "06ba447d_802cf534",
+        "filename": "src/gpu/graphite/vk/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-11T17:59:05Z",
+      "side": 1,
+      "message": "Interesting point. That would help decide which vulkan headers to use where. So these should be the same except for `visibility`, `testonly`, `defines` +\u003d `GPU_TEST_UTILS`, and `deps` -\u003d `graphite` +\u003d `graphite_TEST_UTIL`. (\"I\u0027ll come in again.\")",
+      "parentUuid": "beff1886_169b77c7",
+      "range": {
+        "startLine": 107,
+        "startChar": 10,
+        "endLine": 107,
+        "endChar": 24
+      },
+      "revId": "65f6c0581bcf2d4428e4cf83fbf1b4f678cab6a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1043c757_37dc0a32",
@@ -77,6 +125,30 @@
       "writtenOn": "2024-09-11T13:19:34Z",
       "side": 1,
       "message": "Can we get rid of this define then? I recall this was an attempt to get the right headers included.",
+      "range": {
+        "startLine": 44,
+        "startChar": 9,
+        "endLine": 44,
+        "endChar": 39
+      },
+      "revId": "65f6c0581bcf2d4428e4cf83fbf1b4f678cab6a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "036cbddb_fc11bf1e",
+        "filename": "src/gpu/vk/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-11T17:59:05Z",
+      "side": 1,
+      "message": "Maybe? I see that this was added so that if this is defined then one tries to use the system ones, but that\u0027s a bit interesting for this target itself as it was depending on the internal ones and not the external. So I wasn\u0027t entirely sure which ones this target wanted, and it looks like this target exists to try to deal with that. I\u0027ll try just removing it?\n\nOne problem with removing this is that `//src/gpu/ganesh/vk` wants to always use the \"external\" vulkan headers, but `src/gpu/graphite/vk` wants to always use the \"internal\" vulkan headers. So in the same build we may want both, so the target needs to state which so `SkiaVulkan.h` knows which to include.\n\nThis might have been a bit easier if it were `SK_USE_INTERNAL_VULKAN_HEADERS` since only a few Skia internal things want the internal ones and everything else should be using the external ones. Anyhow, trying that out since it doesn\u0027t appear to be too bad?",
+      "parentUuid": "1043c757_37dc0a32",
       "range": {
         "startLine": 44,
         "startChar": 9,
