@@ -75,6 +75,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d5b1a77c_f7265b4d",
+        "filename": "toolchain/BUILD.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 374,
+      "author": {
+        "id": 19800
+      },
+      "writtenOn": "2024-09-11T19:36:46Z",
+      "side": 1,
+      "message": "Should be good to implement it. The reference from `download_ios_toolchain` is used in `download_toolchains.bzl`",
+      "parentUuid": "861455c9_cf5f7659",
+      "range": {
+        "startLine": 374,
+        "startChar": 12,
+        "endLine": 374,
+        "endChar": 34
+      },
+      "revId": "ca1aab34ea509f57c03729e9dd8b09b8c541e8dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9a89fb6e_2495b759",
@@ -112,6 +136,30 @@
       "side": 1,
       "message": "That\u0027s a good catch. sk_app should depend on window, not the other way around.",
       "parentUuid": "9a89fb6e_2495b759",
+      "range": {
+        "startLine": 62,
+        "startChar": 0,
+        "endLine": 68,
+        "endChar": 1
+      },
+      "revId": "ca1aab34ea509f57c03729e9dd8b09b8c541e8dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eaae40e8_aed844be",
+        "filename": "tools/sk_app/BUILD.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 19800
+      },
+      "writtenOn": "2024-09-11T19:36:46Z",
+      "side": 1,
+      "message": "It felt awkward initially too. However the reason is there is a header file in tools/window/ios that includes header from sk_app (https://skia.googlesource.com/skia/+/refs/heads/main/tools/window/ios/WindowContextFactory_ios.h#12) which forces this dependency 😞",
+      "parentUuid": "bdfae56d_32f9a3f6",
       "range": {
         "startLine": 62,
         "startChar": 0,
