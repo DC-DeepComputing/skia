@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "69044938_5e98852a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-09-11T20:20:37Z",
+      "side": 1,
+      "message": "We could explicitly check for `spriteCount \u003c 0` here as well, though we do that already in Canvas::drawAtlas: https://crsrc.org/c/third_party/skia/src/core/SkCanvas.cpp;l\u003d1837;drc\u003dbb082357",
+      "revId": "f2d968689d8b799ff1d16696a6cf349313d743f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
