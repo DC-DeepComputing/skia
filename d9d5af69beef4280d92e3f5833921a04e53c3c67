@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1880f87b_04baa5c8",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1426,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-09-11T17:05:17Z",
+      "side": 1,
+      "message": "Done in follow-up",
+      "parentUuid": "37fdbdec_a87ba75e",
+      "range": {
+        "startLine": 1424,
+        "startChar": 27,
+        "endLine": 1426,
+        "endChar": 41
+      },
+      "revId": "d9d5af69beef4280d92e3f5833921a04e53c3c67",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0a834733_9d51f45b",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-09-11T17:01:26Z",
       "side": 1,
       "message": "here",
+      "range": {
+        "startLine": 1444,
+        "startChar": 37,
+        "endLine": 1447,
+        "endChar": 42
+      },
+      "revId": "d9d5af69beef4280d92e3f5833921a04e53c3c67",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aeb84e07_5698b924",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1447,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-09-11T17:05:17Z",
+      "side": 1,
+      "message": "Done in follow-up",
+      "parentUuid": "0a834733_9d51f45b",
       "range": {
         "startLine": 1444,
         "startChar": 37,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ac25eb6c_f5e4fc0b",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1464,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-09-11T17:05:17Z",
+      "side": 1,
+      "message": "Done in follow-up",
+      "parentUuid": "30e72740_1cb50cc0",
+      "range": {
+        "startLine": 1461,
+        "startChar": 37,
+        "endLine": 1464,
+        "endChar": 42
+      },
+      "revId": "d9d5af69beef4280d92e3f5833921a04e53c3c67",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b2c54186_dcc3d213",
@@ -93,6 +165,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8b6a269_c10da906",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1478,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-09-11T17:05:17Z",
+      "side": 1,
+      "message": "Done in follow-up",
+      "parentUuid": "b2c54186_dcc3d213",
+      "range": {
+        "startLine": 1475,
+        "startChar": 37,
+        "endLine": 1478,
+        "endChar": 42
+      },
+      "revId": "d9d5af69beef4280d92e3f5833921a04e53c3c67",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "794565cc_c114d035",
@@ -106,6 +202,30 @@
       "writtenOn": "2024-09-11T17:01:26Z",
       "side": 1,
       "message": "here",
+      "range": {
+        "startLine": 1509,
+        "startChar": 36,
+        "endLine": 1510,
+        "endChar": 47
+      },
+      "revId": "d9d5af69beef4280d92e3f5833921a04e53c3c67",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7852c16e_f2027f07",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1510,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-09-11T17:05:17Z",
+      "side": 1,
+      "message": "Done in follow-up",
+      "parentUuid": "794565cc_c114d035",
       "range": {
         "startLine": 1509,
         "startChar": 36,
