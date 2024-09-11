@@ -34,6 +34,40 @@
       "parentUuid": "afd553ca_8f6a8eaa",
       "revId": "0c62ed4abd1283b28bf1aac964bbe23ab1464cc1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c0e63c1_44d3fcc9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-11T22:18:28Z",
+      "side": 1,
+      "message": "It looks like Flutter\u0027s `shell/platform/embedder/embedder.cc` has an unguarded `#include \"third_party/skia/include/gpu/ganesh/vk/GrVkTypes.h\"` which should be in a `#ifdef SHELL_ENABLE_VULKAN` block. Interestingly, other Skia Vulkan includes are already in such blocks.",
+      "revId": "0c62ed4abd1283b28bf1aac964bbe23ab1464cc1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bcd57e00_6388e2e0",
+        "filename": "include/private/gpu/vk/SkiaVulkan.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-11T22:18:28Z",
+      "side": 1,
+      "message": "I suppose we will need to add a `\u0026\u0026 !defined(SK_BUILD_FOR_GOOGLE3)` here and below as a \"simple\" way to work around G3. Will need to check out rewrite rules and such to fully understand.",
+      "revId": "0c62ed4abd1283b28bf1aac964bbe23ab1464cc1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
