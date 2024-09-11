@@ -40,6 +40,30 @@
       ],
       "revId": "567a9012f1286b3216afe207d949f56dff63bf51",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd710571_6e391fae",
+        "filename": "src/gpu/graphite/CommandBuffer.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-09-11T17:07:07Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "d000f458_617ec793",
+      "range": {
+        "startLine": 140,
+        "startChar": 48,
+        "endLine": 140,
+        "endChar": 55
+      },
+      "revId": "567a9012f1286b3216afe207d949f56dff63bf51",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
