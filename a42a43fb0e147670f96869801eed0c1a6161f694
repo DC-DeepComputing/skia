@@ -16,6 +16,52 @@
       "message": "In a WIP CL I was finding it annoying having to separately declare a `SkTileMode[2]` on the stack or as a constant in order to pass in constants to the `SamplerDesc` constructor so this just switches it to use a `std::pair` to be a bit more ergonomic.",
       "revId": "a42a43fb0e147670f96869801eed0c1a6161f694",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "277b4f16_1b622c45",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1839,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-09-11T01:48:49Z",
+      "side": 1,
+      "message": "nit: delete `//` and just have a spacer line?",
+      "range": {
+        "startLine": 1839,
+        "startChar": 3,
+        "endLine": 1839,
+        "endChar": 6
+      },
+      "revId": "a42a43fb0e147670f96869801eed0c1a6161f694",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6366dedb_73915929",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 460,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-09-11T01:48:49Z",
+      "side": 1,
+      "message": "nit: Align this line one space farther over so the arguments (`{` and `g`) line up",
+      "range": {
+        "startLine": 460,
+        "startChar": 25,
+        "endLine": 460,
+        "endChar": 69
+      },
+      "revId": "a42a43fb0e147670f96869801eed0c1a6161f694",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
