@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "afd553ca_8f6a8eaa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-11T21:50:29Z",
+      "side": 1,
+      "message": "I looks like Chromium\u0027s `gpu/command_buffer/service/skia_utils.cc` is doing an ungaurded `#include \"third_party/skia/include/gpu/ganesh/vk/GrVkBackendSurface.h\"` (which looks like it should be inside the `#if BUILDFLAG(ENABLE_VULKAN)` block). This was previously \"working\" because Skia was inadvertently providing it\u0027s internal vulkan headers. When Chromium is built with vulkan enabled it might depend on the include order at the moment?",
+      "revId": "0c62ed4abd1283b28bf1aac964bbe23ab1464cc1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
