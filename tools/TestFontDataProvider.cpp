@@ -34,7 +34,7 @@ void SetFontTestDataDirectory() {
 
 #if defined(SK_DEBUG)
 // Change size when rolling / changing googlefonts_testdata CIPD, see bin/fetch-fonts-testdata.
-constexpr size_t kExpectNumFonts = 51;
+constexpr size_t kExpectNumFonts = 54;
 #endif
 
 namespace {
