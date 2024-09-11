@@ -168,6 +168,30 @@
       },
       "revId": "ca1aab34ea509f57c03729e9dd8b09b8c541e8dc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6cb9884_891738bd",
+        "filename": "tools/sk_app/BUILD.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-09-11T20:24:28Z",
+      "side": 1,
+      "message": "We might be able to change that to be a forward declare. https://skia-review.googlesource.com/c/skia/+/898599",
+      "parentUuid": "eaae40e8_aed844be",
+      "range": {
+        "startLine": 62,
+        "startChar": 0,
+        "endLine": 68,
+        "endChar": 1
+      },
+      "revId": "ca1aab34ea509f57c03729e9dd8b09b8c541e8dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
