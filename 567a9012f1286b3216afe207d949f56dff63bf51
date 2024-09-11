@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d000f458_617ec793",
+        "filename": "src/gpu/graphite/CommandBuffer.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-09-11T16:14:51Z",
+      "side": 1,
+      "message": "Nit: spacing",
+      "range": {
+        "startLine": 140,
+        "startChar": 48,
+        "endLine": 140,
+        "endChar": 55
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "01b29cec_122ed508",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/CommandBuffer.h",
+              "range": {
+                "startLine": 140,
+                "startChar": 0,
+                "endLine": 141,
+                "endChar": 0
+              },
+              "replacement": "    virtual ResourceProvider* resourceProvider() const \u003d 0;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "567a9012f1286b3216afe207d949f56dff63bf51",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
