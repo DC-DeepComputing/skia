@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "895b8778_58b0a542",
+        "filename": "src/gpu/ganesh/ops/RegionOp.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-09-12T14:14:25Z",
+      "side": 1,
+      "message": "Nit: can we actually keep the changes to RegionOp.cpp from http://review.skia.org/893916? The logic is exactly the same, but perhaps keeping the merged changes as intact as possible will lead to less possible complications later.",
+      "range": {
+        "startLine": 125,
+        "startChar": 0,
+        "endLine": 130,
+        "endChar": 24
+      },
+      "revId": "59815b7befe8cab5b043afb6bfc0c2842706fe02",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
