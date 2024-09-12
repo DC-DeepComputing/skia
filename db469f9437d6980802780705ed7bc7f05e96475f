@@ -16,6 +16,24 @@
       "message": "suggestion: I usually include the client CLs that need to land in the commit message so they are easier to find (instead of hunting through Gerrit comments).",
       "revId": "db469f9437d6980802780705ed7bc7f05e96475f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ce5d6fe3_322cce22",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-12T14:31:40Z",
+      "side": 1,
+      "message": "Good idea. I\u0027ll do that after I set up the next change needed in Flutter (to fix their build rules).",
+      "parentUuid": "61d42f62_3e348829",
+      "revId": "db469f9437d6980802780705ed7bc7f05e96475f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
