@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf41cd92_afeac077",
+        "filename": "BUILD.gn",
+        "patchSetId": 9
+      },
+      "lineNbr": 905,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-09-12T17:25:38Z",
+      "side": 1,
+      "message": "nit: What about `skia_vulkan_hdrs`?",
+      "range": {
+        "startLine": 905,
+        "startChar": 19,
+        "endLine": 905,
+        "endChar": 37
+      },
+      "revId": "e856040b6990c821a69571e3cdd0820611ee2033",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
