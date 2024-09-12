@@ -22,6 +22,30 @@
       },
       "revId": "59815b7befe8cab5b043afb6bfc0c2842706fe02",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc54424f_42cff1b8",
+        "filename": "src/gpu/ganesh/ops/RegionOp.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 3621349
+      },
+      "writtenOn": "2024-09-12T14:19:20Z",
+      "side": 1,
+      "message": "I thought that we needed to keep the change of https://skia-review.googlesource.com/c/skia/+/894936. I applied the changes from  http://review.skia.org/893916.",
+      "parentUuid": "895b8778_58b0a542",
+      "range": {
+        "startLine": 125,
+        "startChar": 0,
+        "endLine": 130,
+        "endChar": 24
+      },
+      "revId": "59815b7befe8cab5b043afb6bfc0c2842706fe02",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
