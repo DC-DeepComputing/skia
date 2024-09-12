@@ -28,6 +28,14 @@ SkDWriteFontFileStream::SkDWriteFontFileStream(IDWriteFontFileStream* fontFileSt
     , fFragmentLock(nullptr) {
 }
 
+SkDWriteFontFileStream::SkDWriteFontFileStream(IDWriteFontFileStream* fontFileStream, SkString fontPath)
+    : fFontFileStream(SkRefComPtr(fontFileStream))
+    , fPos(0)
+    , fLockedMemory(nullptr)
+    , fFragmentLock(nullptr)
+    , fFontPath(fontPath) {
+}
+
 SkDWriteFontFileStream::~SkDWriteFontFileStream() {
     if (fFragmentLock) {
         fFontFileStream->ReleaseFileFragment(fFragmentLock);
@@ -94,6 +102,14 @@ SkDWriteFontFileStream* SkDWriteFontFileStream::onDuplicate() const {
 
 size_t SkDWriteFontFileStream::getPosition() const {
     return fPos;
+}
+
+bool SkDWriteFontFileStream::getFilepath(SkString* path) const {
+  if (!fFontPath.isEmpty()) {
+    *path = fFontPath;
+    return true;
+  }
+  return false;
 }
 
 bool SkDWriteFontFileStream::seek(size_t position) {
