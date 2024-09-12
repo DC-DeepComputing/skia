@@ -16,6 +16,24 @@
       "message": "James, I can\u0027t submit the change either by CQ+2 or hitting the submit option (lack of permissions), could you please submit it?",
       "revId": "6a69a80cb746da628d28b232f2b6e4c08ec5f730",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c20f86ae_32cb2484",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-09-12T13:25:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "934a559d_24da5165",
+      "revId": "6a69a80cb746da628d28b232f2b6e4c08ec5f730",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
