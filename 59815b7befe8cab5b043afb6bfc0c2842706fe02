@@ -70,6 +70,30 @@
       },
       "revId": "59815b7befe8cab5b043afb6bfc0c2842706fe02",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "035a7009_557f7251",
+        "filename": "src/gpu/ganesh/ops/RegionOp.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 3621349
+      },
+      "writtenOn": "2024-09-12T14:42:35Z",
+      "side": 1,
+      "message": "Thanks too. BTW, I cannot submit the patchset either by CQ+2 or hitting the submit option (lack of permissions), could you please submit it?",
+      "parentUuid": "ff998931_6e17366c",
+      "range": {
+        "startLine": 125,
+        "startChar": 0,
+        "endLine": 130,
+        "endChar": 24
+      },
+      "revId": "59815b7befe8cab5b043afb6bfc0c2842706fe02",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
