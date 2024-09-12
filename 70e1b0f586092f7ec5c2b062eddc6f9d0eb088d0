@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7593a78_47471081",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-12T13:43:27Z",
+      "side": 1,
+      "message": "This appears to have gotten `Housekeeper-Nightly-RecreateSKPs_DryRun` past the `fetch-sk` issues, not sure why it seems to have stopped in the middle of capturing some time later.",
+      "revId": "70e1b0f586092f7ec5c2b062eddc6f9d0eb088d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
