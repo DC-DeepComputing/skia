@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "97e44a56_576d5592",
+        "filename": "include/private/gpu/vk/SkiaVulkan.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-09-12T13:49:11Z",
+      "side": 0,
+      "message": "This means we could get rid of SKIA_IMPLEMENTATION which simplifies some local_defines stuff 😄",
+      "range": {
+        "startLine": 15,
+        "startChar": 5,
+        "endLine": 15,
+        "endChar": 24
+      },
+      "revId": "c050337724c8980e665366130f1e48279ec7f21f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
