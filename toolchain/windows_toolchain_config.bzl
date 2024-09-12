@@ -93,44 +93,47 @@ def _make_action_configs():
     """
 
     # https://cs.opensource.google/bazel/bazel/+/master:tools/cpp/cc_toolchain_config_lib.bzl;l=435;drc=3b9e6f201a9a3465720aad8712ab7bcdeaf2e5da
-    clang_tool = tool(path = "windows_trampolines/clang_trampoline_windows.bat")
-    ar_tool = tool(path = "windows_trampolines/ar_trampoline_windows.bat")
+    #clang_tool = tool(path = "../" + CLANG_TOOLCHAIN + "/bin/clang.exe")
+    #ar_tool = tool(path = "../" + CLANG_TOOLCHAIN + "/bin/llvm-ar.exe")
+    trampolines_path = "windows_trampolines/"
+    clang_tool = tool(path = "windows_trampolines/clang_trampoline_windows.cmd")
+    ar_tool = tool(path = "windows_trampolines/ar_trampoline_windows.cmd")
 
     # https://cs.opensource.google/bazel/bazel/+/master:tools/cpp/cc_toolchain_config_lib.bzl;l=488;drc=3b9e6f201a9a3465720aad8712ab7bcdeaf2e5da
     assemble_action = action_config(
         action_name = ACTION_NAMES.assemble,
-        tools = [clang_tool],
+        tools = [tool(path = trampolines_path + "assemble.cmd")],
     )
     c_compile_action = action_config(
         action_name = ACTION_NAMES.c_compile,
-        tools = [clang_tool],
+        tools = [tool(path = trampolines_path + "c_compile.cmd")],
     )
     cpp_compile_action = action_config(
         action_name = ACTION_NAMES.cpp_compile,
-        tools = [clang_tool],
+        tools = [tool(path = trampolines_path + "cpp_compile.cmd")],
     )
     linkstamp_compile_action = action_config(
         action_name = ACTION_NAMES.linkstamp_compile,
-        tools = [clang_tool],
+        tools = [tool(path = trampolines_path + "linkstamp_compile.cmd")],
     )
     preprocess_assemble_action = action_config(
         action_name = ACTION_NAMES.preprocess_assemble,
-        tools = [clang_tool],
+        tools = [tool(path = trampolines_path + "preprocess_assemble.cmd")],
     )
 
     cpp_link_dynamic_library_action = action_config(
         action_name = ACTION_NAMES.cpp_link_dynamic_library,
-        tools = [clang_tool],
+        tools = [tool(path = trampolines_path + "link_dynamic_library.cmd")],
     )
     cpp_link_executable_action = action_config(
         action_name = ACTION_NAMES.cpp_link_executable,
         # Bazel assumes it is talking to clang when building an executable. There are
         # "-Wl" flags on the command: https://releases.llvm.org/6.0.1/tools/clang/docs/ClangCommandLineReference.html#cmdoption-clang-Wl
-        tools = [clang_tool],
+        tools = [tool(path = trampolines_path + "link_executable.cmd")],
     )
     cpp_link_nodeps_dynamic_library_action = action_config(
         action_name = ACTION_NAMES.cpp_link_nodeps_dynamic_library,
-        tools = [clang_tool],
+        tools = [tool(path = trampolines_path + "link_dynamic_library.cmd")],
     )
 
     # By default, there are no flags or libraries passed to the llvm-ar tool, so
@@ -182,13 +185,13 @@ def _make_action_configs():
             flag_set(
                 flag_groups = [
                     flag_group(
-                        flags = ["@%{archive_param_file}"],
+                        flags = ["%{archive_param_file}"],
                         expand_if_available = "archive_param_file",
                     ),
                 ],
             ),
         ],
-        tools = [ar_tool],
+        tools = [tool(path = trampolines_path + "link_static_library.cmd")],
     )
 
     action_configs = [

@@ -3,5 +3,6 @@
 :: Use of this source code is governed by a BSD-style license that can be
 :: found in the LICENSE file.
 
-external\clang_windows_amd64\bin\llvm-ar.exe %*
+@echo off
+toolchain\windows_trampolines\windows_trampoline.exe assemble %*
 if %errorlevel% neq 0 exit /b %errorlevel%
