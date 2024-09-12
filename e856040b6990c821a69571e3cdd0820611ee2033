@@ -22,6 +22,30 @@
       },
       "revId": "e856040b6990c821a69571e3cdd0820611ee2033",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07f7cb04_ebdd91ed",
+        "filename": "BUILD.gn",
+        "patchSetId": 9
+      },
+      "lineNbr": 905,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-12T17:28:42Z",
+      "side": 1,
+      "message": "That is a good suggestion, especially because of the way this can be used. At the moment this is an existing name so I\u0027m going to leave it alone in this change and I\u0027ll update it in the next change.",
+      "parentUuid": "cf41cd92_afeac077",
+      "range": {
+        "startLine": 905,
+        "startChar": 19,
+        "endLine": 905,
+        "endChar": 37
+      },
+      "revId": "e856040b6990c821a69571e3cdd0820611ee2033",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
