@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2fa2948e_cebe6435",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-09-12T11:52:23Z",
+      "side": 1,
+      "message": "Differences in mode `SkFontHinting::kNormal` still require analysis in upstream, compare: https://github.com/googlefonts/fontations/issues/1151\n\nComparisons for `SkFontHinting::kNone` and `KSlight` now seem to match 👍.",
+      "revId": "514d32d0bae60a4b35b86a8c99cda5ad99e39c13",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
