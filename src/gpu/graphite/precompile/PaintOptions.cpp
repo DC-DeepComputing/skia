@@ -241,7 +241,7 @@ void create_image_drawing_pipelines(const KeyContext& keyContext,
 
     imagePaintOptions.priv().buildCombinations(keyContext,
                                                gatherer,
-                                               DrawTypeFlags::kSimpleShape,
+                                               DrawTypeFlags::kRect,
                                                /* withPrimitiveBlender= */ false,
                                                Coverage::kSingleChannel,
                                                processCombination);

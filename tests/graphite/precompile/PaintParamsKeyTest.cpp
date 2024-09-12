@@ -300,8 +300,10 @@ const char* to_str(DrawTypeFlags dt) {
         case DrawTypeFlags::kSDFText:          return "DrawTypeFlags::kSDFText";
         case DrawTypeFlags::kSDFText_LCD:      return "DrawTypeFlags::kSDFText_LCD";
         case DrawTypeFlags::kDrawVertices:     return "DrawTypeFlags::kDrawVertices";
-        case DrawTypeFlags::kSimpleShape:      return "DrawTypeFlags::kSimpleShape";
+        case DrawTypeFlags::kRect:             return "DrawTypeFlags::kRect";
+        case DrawTypeFlags::kSimpleShape1:     return "DrawTypeFlags::kSimpleShape1";
         case DrawTypeFlags::kNonSimpleShape:   return "DrawTypeFlags::kNonSimpleShape";
+        case DrawTypeFlags::kAnalyticBlur:     return "DrawTypeFlags::kAnalyticBlur";
         default:                               SkASSERT(0); return "DrawTypeFlags::kNone";
     }
 
@@ -483,7 +485,7 @@ ImageFilterType random_imagefiltertype(SkRandom* rand) {
 }
 
 [[maybe_unused]] DrawTypeFlags random_drawtype(SkRandom* rand) {
-    uint32_t index = rand->nextULessThan(8);
+    uint32_t index = rand->nextULessThan(kDrawTypeFlagsCount);
 
     switch (index) {
         case 0: return DrawTypeFlags::kBitmapText_Mask;
@@ -492,8 +494,10 @@ ImageFilterType random_imagefiltertype(SkRandom* rand) {
         case 3: return DrawTypeFlags::kSDFText;
         case 4: return DrawTypeFlags::kSDFText_LCD;
         case 5: return DrawTypeFlags::kDrawVertices;
-        case 6: return DrawTypeFlags::kSimpleShape;
-        case 7: return DrawTypeFlags::kNonSimpleShape;
+        case 6: return DrawTypeFlags::kRect;
+        case 7: return DrawTypeFlags::kSimpleShape1;
+        case 8: return DrawTypeFlags::kNonSimpleShape;
+        case 9: return DrawTypeFlags::kAnalyticBlur;
     }
 
     SkASSERT(0);
