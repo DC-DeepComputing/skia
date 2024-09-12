@@ -65,7 +65,7 @@ public:
 
     // Adds a command buffer ref to the resource
     void refCommandBuffer() const {
-        if (fCommandBufferRefsAsUsageRefs) {
+        if (fReusableRequiresPurgeable) {
             return this->ref();
         }
         // No barrier required.
@@ -74,7 +74,7 @@ public:
 
     // Removes a command buffer ref from the resource
     void unrefCommandBuffer() const {
-        if (fCommandBufferRefsAsUsageRefs) {
+        if (fReusableRequiresPurgeable) {
             return this->unref();
         }
         bool shouldFree = false;
@@ -180,7 +180,7 @@ protected:
              Ownership,
              skgpu::Budgeted,
              size_t gpuMemorySize,
-             bool commandBufferRefsAsUsageRefs = false);
+             bool reusableRequiresPurgeable = false);
     virtual ~Resource();
 
     const SharedContext* sharedContext() const { return fSharedContext; }
@@ -298,7 +298,7 @@ private:
     }
 
     bool hasCommandBufferRef() const {
-        // Note that we don't check here for fCommandBufferRefsAsUsageRefs. This should always
+        // Note that we don't check here for fReusableRequiresPurgeable. This should always
         // report zero if that value is true.
         if (0 == fCommandBufferRefCnt.load(std::memory_order_acquire)) {
             // The acquire barrier is only really needed if we return true.  It
@@ -306,7 +306,7 @@ private:
             // until previous owners are all totally done calling unrefCommandBuffer().
             return false;
         }
-        SkASSERT(!fCommandBufferRefsAsUsageRefs);
+        SkASSERT(!fReusableRequiresPurgeable);
         return true;
     }
 
@@ -343,8 +343,8 @@ private:
     mutable std::atomic<int32_t> fUsageRefCnt;
     mutable std::atomic<int32_t> fCommandBufferRefCnt;
     mutable std::atomic<int32_t> fCacheRefCnt;
-    // Indicates that CommandBufferRefs should be rerouted to UsageRefs.
-    const bool fCommandBufferRefsAsUsageRefs = false;
+    // Allow resources to define whether they must be purgeable in order to be reused.
+    const bool fReusableRequiresPurgeable = false;
 
     GraphiteResourceKey fKey;
 

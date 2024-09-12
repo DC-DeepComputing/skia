@@ -27,12 +27,12 @@ Resource::Resource(const SharedContext* sharedContext,
                    Ownership ownership,
                    skgpu::Budgeted budgeted,
                    size_t gpuMemorySize,
-                   bool commandBufferRefsAsUsageRefs)
+                   bool reusableRequiresPurgeable)
         : fSharedContext(sharedContext)
         , fUsageRefCnt(1)
         , fCommandBufferRefCnt(0)
         , fCacheRefCnt(0)
-        , fCommandBufferRefsAsUsageRefs(commandBufferRefsAsUsageRefs)
+        , fReusableRequiresPurgeable(reusableRequiresPurgeable)
         , fOwnership(ownership)
         , fGpuMemorySize(gpuMemorySize)
         , fBudgeted(budgeted)

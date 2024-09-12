@@ -37,12 +37,12 @@ public:
 protected:
     Buffer(const SharedContext* sharedContext,
            size_t size,
-           bool commandBufferRefsAsUsageRefs = false)
+           bool reusableRequiresPurgeable = false)
             : Resource(sharedContext,
                        Ownership::kOwned,
                        skgpu::Budgeted::kYes,
                        size,
-                       /*commandBufferRefsAsUsageRefs=*/commandBufferRefsAsUsageRefs)
+                       reusableRequiresPurgeable)
             , fSize(size) {}
 
     void* fMapPtr = nullptr;
