@@ -16,6 +16,24 @@
       "message": "To summarize the vulkan header issue with the layering check...\n\n`//src/gpu/ganesh/vk:ganesh_vulkan` depends on `@vulkan_headers//:vulkan_headers` and expects to get vulkan headers from there. However, `//src/gpu/ganesh/vk:ganesh_vulkan` also depends on `//src/gpu/vk:vk` which depends on `//include/third_party/vulkan:vulkan`. So both sets of vulkan headers end up in the include path and in this failing case the preprocessor finds the one in the indirect dependency instead of the direct dependency and the modules system complains.",
       "revId": "6735866ea31521e23d9bc130b9be32832e17a24b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cac535ad_ce1ca4a0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-12T18:37:39Z",
+      "side": 1,
+      "message": "What we really want (yet again) is `implementation_deps`. The flag `--experimental_cc_implementation_deps` defaults to true starting with Bazel 7.0. See https://github.com/bazelbuild/bazel/issues/20098 for discussion. With this we can have the internal targets depend on the internal vulkan headers but not re-export the include path.\n\nInterestingly, the way G3 gets around this is by banning `include` attributes outside of `third_party` (and so all includes are absolute and you can\u0027t even express \"sometimes this include comes from here and sometimes from over there\" which triggers this issue). Since G3 \"doesn\u0027t have this problem\" `implementation_deps` hasn\u0027t gotten a lot of internal support which seems to be why it is taking so long to be able to use. Even though anything that isn\u0027t a monorepo really needs it.\n\nIn any event, we can now use `implementation_deps` and are now using them after https://skia-review.googlesource.com/c/skia/+/898139 .",
+      "parentUuid": "ac3958ef_4d01cc28",
+      "revId": "6735866ea31521e23d9bc130b9be32832e17a24b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
