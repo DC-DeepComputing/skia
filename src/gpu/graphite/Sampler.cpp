@@ -13,7 +13,8 @@ Sampler::Sampler(const SharedContext* sharedContext)
         : Resource(sharedContext,
                    Ownership::kOwned,
                    skgpu::Budgeted::kYes,
-                   /*gpuMemorySize=*/0) {}
+                   /*gpuMemorySize=*/0,
+                   /*reusableRequiresPurgeable=*/false) {}
 
 Sampler::~Sampler() = default;
 
