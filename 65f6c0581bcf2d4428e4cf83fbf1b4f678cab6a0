@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7afcb237_a4e32fac",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-12T14:36:22Z",
+      "side": 1,
+      "message": "For the time being I\u0027m just keeping the `ganesh_vulkan` public dependency on `@vulkan_headers`. If anyone wants to consider if that\u0027s a good idea in the future (or if the targets that privately use internal headers should publicly depend on external headers somehow) that would be an interesting thing to work on.",
+      "parentUuid": "5acb0254_f5634ec3",
+      "revId": "65f6c0581bcf2d4428e4cf83fbf1b4f678cab6a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "82f0fa37_d31649cc",
@@ -173,6 +191,30 @@
       "side": 1,
       "message": "`SK_USE_INTERNAL_VULKAN_HEADERS` seems like better phrasing indeed",
       "parentUuid": "036cbddb_fc11bf1e",
+      "range": {
+        "startLine": 44,
+        "startChar": 9,
+        "endLine": 44,
+        "endChar": 39
+      },
+      "revId": "65f6c0581bcf2d4428e4cf83fbf1b4f678cab6a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6bb81255_42ff923c",
+        "filename": "src/gpu/vk/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-12T14:36:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1da045b5_7da7aae0",
       "range": {
         "startLine": 44,
         "startChar": 9,

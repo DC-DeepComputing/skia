@@ -104,6 +104,24 @@
       "message": "I suppose we will need to add a `\u0026\u0026 !defined(SK_BUILD_FOR_GOOGLE3)` here and below as a \"simple\" way to work around G3. Will need to check out rewrite rules and such to fully understand.",
       "revId": "0c62ed4abd1283b28bf1aac964bbe23ab1464cc1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b37c773_de233922",
+        "filename": "include/private/gpu/vk/SkiaVulkan.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-12T14:36:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bcd57e00_6388e2e0",
+      "revId": "0c62ed4abd1283b28bf1aac964bbe23ab1464cc1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

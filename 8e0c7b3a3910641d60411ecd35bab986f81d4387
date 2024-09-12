@@ -16,6 +16,24 @@
       "message": "I have no idea if this is quite the right logical place to do this or quite the right thing to do, but it does appear to unblock https://skia-review.googlesource.com/c/skia/+/896098 .",
       "revId": "8e0c7b3a3910641d60411ecd35bab986f81d4387",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e35d1cb_6f8ca935",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-12T14:36:22Z",
+      "side": 1,
+      "message": "It kinda means fixing up known users, but seems worth it so far. Probably the right thing to do since this is cleaning up accidental use of the Skia internal Vulkan headers all over the place.",
+      "parentUuid": "5abcceee_6fd9a67f",
+      "revId": "8e0c7b3a3910641d60411ecd35bab986f81d4387",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
