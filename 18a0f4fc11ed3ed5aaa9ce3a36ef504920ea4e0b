@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d50c1edf_6aafe681",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 604,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-09-12T16:07:02Z",
+      "side": 1,
+      "message": "We should have a bug for this as a future change",
+      "range": {
+        "startLine": 601,
+        "startChar": 0,
+        "endLine": 604,
+        "endChar": 48
+      },
+      "revId": "18a0f4fc11ed3ed5aaa9ce3a36ef504920ea4e0b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
