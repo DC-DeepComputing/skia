@@ -300,8 +300,10 @@ const char* to_str(DrawTypeFlags dt) {
         case DrawTypeFlags::kSDFText:          return "DrawTypeFlags::kSDFText";
         case DrawTypeFlags::kSDFText_LCD:      return "DrawTypeFlags::kSDFText_LCD";
         case DrawTypeFlags::kDrawVertices:     return "DrawTypeFlags::kDrawVertices";
-        case DrawTypeFlags::kSimpleShape:      return "DrawTypeFlags::kSimpleShape";
+        case DrawTypeFlags::kRect:             return "DrawTypeFlags::kRect";
+        case DrawTypeFlags::kSimpleShape1:     return "DrawTypeFlags::kSimpleShape1";
         case DrawTypeFlags::kNonSimpleShape:   return "DrawTypeFlags::kNonSimpleShape";
+        case DrawTypeFlags::kAnalyticBlur:     return "DrawTypeFlags::kAnalyticBlur";
         default:                               SkASSERT(0); return "DrawTypeFlags::kNone";
     }
 
@@ -483,21 +485,9 @@ ImageFilterType random_imagefiltertype(SkRandom* rand) {
 }
 
 [[maybe_unused]] DrawTypeFlags random_drawtype(SkRandom* rand) {
-    uint32_t index = rand->nextULessThan(8);
+    uint32_t index = rand->nextULessThan(kDrawTypeFlagsCount);
 
-    switch (index) {
-        case 0: return DrawTypeFlags::kBitmapText_Mask;
-        case 1: return DrawTypeFlags::kBitmapText_LCD;
-        case 2: return DrawTypeFlags::kBitmapText_Color;
-        case 3: return DrawTypeFlags::kSDFText;
-        case 4: return DrawTypeFlags::kSDFText_LCD;
-        case 5: return DrawTypeFlags::kDrawVertices;
-        case 6: return DrawTypeFlags::kSimpleShape;
-        case 7: return DrawTypeFlags::kNonSimpleShape;
-    }
-
-    SkASSERT(0);
-    return DrawTypeFlags::kNone;
+    return static_cast<DrawTypeFlags>(index);
 }
 
 enum LocalMatrixConstraint {
@@ -1779,11 +1769,9 @@ struct DrawData {
     sk_sp<SkVertices> fVertsWithOutColors;
 };
 
-void simple_draws(SkCanvas* canvas, const SkPaint& paint) {
-    // TODO: add some drawLine calls
-    canvas->drawRect(SkRect::MakeWH(16, 16), paint);
-    canvas->drawRRect(SkRRect::MakeOval({0, 0, 16, 16}), paint);
-    canvas->drawRRect(SkRRect::MakeRectXY({0, 0, 16, 16}, 4, 4), paint);
+void rect_draws(SkCanvas* canvas, const SkPaint& paint) {
+    canvas->drawRect(SkRect::MakeWH(16, 16), paint);         // pixel aligned
+    canvas->drawRect({ 1.5f, 1.5f, 10.5f, 10.5f }, paint);   // non-pixel aligned
 
     if (!paint.getShader() &&
         !paint.getColorFilter() &&
@@ -1799,10 +1787,26 @@ void simple_draws(SkCanvas* canvas, const SkPaint& paint) {
     }
 }
 
+void simple_draws1(SkCanvas* canvas, const SkPaint& paint) {
+    // TODO: add some drawLine calls
+    canvas->drawRRect(SkRRect::MakeOval({0, 0, 16, 16}), paint);
+    canvas->drawRRect(SkRRect::MakeRectXY({0, 0, 16, 16}, 4, 4), paint);
+}
+
 void non_simple_draws(SkCanvas* canvas, const SkPaint& paint, const DrawData& drawData) {
     // TODO: add strokeAndFill draws here as well as a stroked non-circular rrect draw
     canvas->drawPath(drawData.fPath, paint);
     canvas->drawTextBlob(drawData.fPathBlob, 0, 16, paint);
+}
+
+void blur_draws(SkCanvas* canvas, const SkPaint& paint) {
+    // rects
+    canvas->drawRRect(SkRRect::MakeOval({0, 0, 16, 16}), paint);
+    canvas->drawRRect(SkRRect::MakeRectXY({0, 0, 16, 16}, 4, 4), paint);
+    // circle
+    canvas->drawRRect(SkRRect::MakeOval({0, 0, 16, 16}), paint);
+    // rrect
+    canvas->drawRRect(SkRRect::MakeRectXY({0, 0, 16, 16}, 4, 4), paint);
 }
 
 void check_draw(skiatest::Reporter* reporter,
@@ -1885,11 +1889,17 @@ void check_draw(skiatest::Reporter* reporter,
                 canvas->drawVertices(kDrawData.fVertsWithColors, SkBlendMode::kDst, paint);
                 canvas->drawVertices(kDrawData.fVertsWithOutColors, SkBlendMode::kDst, paint);
                 break;
-            case DrawTypeFlags::kSimpleShape:
-                simple_draws(canvas, paint);
+            case DrawTypeFlags::kRect:
+                rect_draws(canvas, paint);
+                break;
+            case DrawTypeFlags::kSimpleShape1:
+                simple_draws1(canvas, paint);
                 break;
             case DrawTypeFlags::kNonSimpleShape:
                 non_simple_draws(canvas, paint, kDrawData);
+                break;
+            case DrawTypeFlags::kAnalyticBlur:
+                blur_draws(canvas, paint);
                 break;
             default:
                 SkASSERT(false);
@@ -2163,7 +2173,7 @@ void precompile_vs_real_draws_subtest(skiatest::Reporter* reporter,
     if (gNeedSKPPaintOption) {
         // The skp draws a rect w/ a default SkPaint
         PaintOptions skpPaintOptions;
-        Precompile(context, skpPaintOptions, DrawTypeFlags::kSimpleShape, { kDepth_1 });
+        Precompile(context, skpPaintOptions, DrawTypeFlags::kRect, { kDepth_1 });
     }
     int after = context->priv().globalCache()->numGraphicsPipelines();
 
@@ -2384,8 +2394,10 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
             DrawTypeFlags::kSDFText,
             DrawTypeFlags::kSDFText_LCD,
             DrawTypeFlags::kDrawVertices,
-            DrawTypeFlags::kSimpleShape,
+            DrawTypeFlags::kRect,
+            DrawTypeFlags::kSimpleShape1,
             DrawTypeFlags::kNonSimpleShape,
+            DrawTypeFlags::kAnalyticBlur,
     };
 
 #if EXPANDED_SET
