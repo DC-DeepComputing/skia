@@ -11,6 +11,7 @@
 #include "include/core/SkData.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkScalar.h"
+#include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
 #include "include/private/base/SkCPUTypes.h"
 #include "include/private/base/SkTo.h"
@@ -140,6 +141,7 @@ public:
     /** Returns the starting address for the data. If this cannot be done, returns NULL. */
     virtual const void* getMemoryBase() { return nullptr; }
     virtual sk_sp<SkData> getData() const { return nullptr; }
+    virtual bool getFilepath(SkString* path) const { return false; }
 
 private:
     virtual SkStream* onDuplicate() const { return nullptr; }
