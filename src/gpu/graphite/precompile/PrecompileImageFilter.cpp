@@ -82,7 +82,7 @@ void CreateBlurImageFilterPipelines(
 
     blurPaintOptions.priv().buildCombinations(keyContext,
                                               gatherer,
-                                              DrawTypeFlags::kSimpleShape,
+                                              DrawTypeFlags::kRect,
                                               /* withPrimitiveBlender= */ false,
                                               Coverage::kSingleChannel,
                                               processCombination);
@@ -120,7 +120,7 @@ private:
 
         paintOptions.priv().buildCombinations(keyContext,
                                               gatherer,
-                                              DrawTypeFlags::kSimpleShape,
+                                              DrawTypeFlags::kRect,
                                               /* withPrimitiveBlender= */ false,
                                               Coverage::kSingleChannel,
                                               processCombination);
@@ -219,7 +219,7 @@ private:
 
         paintOptions.priv().buildCombinations(keyContext,
                                               gatherer,
-                                              DrawTypeFlags::kSimpleShape,
+                                              DrawTypeFlags::kRect,
                                               /* withPrimitiveBlender= */ false,
                                               Coverage::kSingleChannel,
                                               processCombination);
@@ -272,7 +272,7 @@ private:
 
         displacement.priv().buildCombinations(keyContext,
                                               gatherer,
-                                              DrawTypeFlags::kSimpleShape,
+                                              DrawTypeFlags::kRect,
                                               /* withPrimitiveBlender= */ false,
                                               Coverage::kSingleChannel,
                                               processCombination);
@@ -306,7 +306,7 @@ private:
 
         lighting.priv().buildCombinations(keyContext,
                                           gatherer,
-                                          DrawTypeFlags::kSimpleShape,
+                                          DrawTypeFlags::kRect,
                                           /* withPrimitiveBlender= */ false,
                                           Coverage::kSingleChannel,
                                           processCombination);
@@ -343,7 +343,7 @@ private:
 
         matrixConv.priv().buildCombinations(keyContext,
                                             gatherer,
-                                            DrawTypeFlags::kSimpleShape,
+                                            DrawTypeFlags::kRect,
                                             /* withPrimitiveBlender= */ false,
                                             Coverage::kSingleChannel,
                                             processCombination);
@@ -382,7 +382,7 @@ private:
 
             sparse.priv().buildCombinations(keyContext,
                                             gatherer,
-                                            DrawTypeFlags::kSimpleShape,
+                                            DrawTypeFlags::kRect,
                                             /* withPrimitiveBlender= */ false,
                                             Coverage::kSingleChannel,
                                             processCombination);
@@ -397,7 +397,7 @@ private:
 
             linear.priv().buildCombinations(keyContext,
                                             gatherer,
-                                            DrawTypeFlags::kSimpleShape,
+                                            DrawTypeFlags::kRect,
                                             /* withPrimitiveBlender= */ false,
                                             Coverage::kSingleChannel,
                                             processCombination);
