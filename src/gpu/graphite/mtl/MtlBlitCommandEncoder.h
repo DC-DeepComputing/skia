@@ -124,7 +124,8 @@ private:
             : Resource(sharedContext,
                        Ownership::kOwned,
                        skgpu::Budgeted::kYes,
-                       /*gpuMemorySize=*/0)
+                       /*gpuMemorySize=*/0,
+                       /*reusableRequiresPurgeable=*/false)
             , fCommandEncoder(std::move(encoder)) {}
 
     void freeGpuData() override {

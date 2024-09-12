@@ -180,7 +180,7 @@ protected:
              Ownership,
              skgpu::Budgeted,
              size_t gpuMemorySize,
-             bool reusableRequiresPurgeable = false);
+             bool reusableRequiresPurgeable);
     virtual ~Resource();
 
     const SharedContext* sharedContext() const { return fSharedContext; }

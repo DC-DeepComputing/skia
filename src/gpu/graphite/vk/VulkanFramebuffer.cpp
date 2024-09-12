@@ -29,7 +29,8 @@ VulkanFramebuffer::VulkanFramebuffer(const VulkanSharedContext* context, VkFrame
         : Resource(context,
                    Ownership::kOwned,
                    skgpu::Budgeted::kYes,
-                   /*gpuMemorySize=*/0)
+                   /*gpuMemorySize=*/0,
+                   /*reusableRequiresPurgeable=*/false)
         , fSharedContext(context)
         , fFramebuffer(framebuffer) {}
 

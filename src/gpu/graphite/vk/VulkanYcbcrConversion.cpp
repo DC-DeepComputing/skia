@@ -176,7 +176,8 @@ VulkanYcbcrConversion::VulkanYcbcrConversion(const VulkanSharedContext* context,
         : Resource(context,
                    Ownership::kOwned,
                    skgpu::Budgeted::kYes, // Shareable, so must be budgeted
-                   /*gpuMemorySize=*/0)
+                   /*gpuMemorySize=*/0,
+                   /*reusableRequiresPurgeable=*/false)
         , fYcbcrConversion (ycbcrConversion) {}
 
 void VulkanYcbcrConversion::freeGpuData() {

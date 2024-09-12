@@ -22,7 +22,11 @@ Texture::Texture(const SharedContext* sharedContext,
                  sk_sp<MutableTextureState> mutableState,
                  Ownership ownership,
                  skgpu::Budgeted budgeted)
-        : Resource(sharedContext, ownership, budgeted, ComputeSize(dimensions, info))
+        : Resource(sharedContext,
+                   ownership,
+                   budgeted,
+                   ComputeSize(dimensions, info),
+                   /*reusableRequiresPurgeable=*/false)
         , fDimensions(dimensions)
         , fInfo(info)
         , fMutableState(std::move(mutableState)) {}
