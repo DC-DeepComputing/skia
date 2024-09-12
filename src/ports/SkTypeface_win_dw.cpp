@@ -19,6 +19,7 @@
 
 #include "include/core/SkData.h"
 #include "include/core/SkFontTypes.h"
+#include "include/core/SkString.h"
 #include "include/private/base/SkTo.h"
 #include "src/core/SkFontDescriptor.h"
 #include "src/core/SkFontStream.h"
@@ -595,8 +596,21 @@ std::unique_ptr<SkStreamAsset> DWriteFontTypeface::onOpenStream(int* ttcIndex) c
     HRNM(fontFileLoader->CreateStreamFromKey(fontFileKey, fontFileKeySize,
                                              &fontFileStream),
          "Could not create font file stream.");
-
-    return std::unique_ptr<SkStreamAsset>(new SkDWriteFontFileStream(fontFileStream.get()));
+    std::wstring retrieve_file_path;
+    SkTScopedComPtr<IDWriteLocalFontFileLoader> local_loader;
+    HRESULT hr = fontFileLoader->QueryInterface(&local_loader);
+    if (SUCCEEDED(hr)) {
+        UINT32 path_length = 0;
+        HRNM(local_loader->GetFilePathLengthFromKey(fontFileKey, fontFileKeySize, &path_length),
+             "Could not get filepath length.");
+        retrieve_file_path.resize(++path_length);  // Reserve space for the null terminator.
+        HRNM(local_loader->GetFilePathFromKey(
+                     fontFileKey, fontFileKeySize, &retrieve_file_path[0], path_length),
+             "Could not get file path from key");
+        retrieve_file_path.resize(--path_length);
+    }
+     return std::unique_ptr<SkStreamAsset>(new SkDWriteFontFileStream(fontFileStream.get(),
+        SkString(std::string(retrieve_file_path.begin(), retrieve_file_path.end()))));
 }
 
 std::unique_ptr<SkScalerContext> DWriteFontTypeface::onCreateScalerContext(
