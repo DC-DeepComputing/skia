@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "61d42f62_3e348829",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-09-12T13:47:17Z",
+      "side": 1,
+      "message": "suggestion: I usually include the client CLs that need to land in the commit message so they are easier to find (instead of hunting through Gerrit comments).",
+      "revId": "db469f9437d6980802780705ed7bc7f05e96475f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
