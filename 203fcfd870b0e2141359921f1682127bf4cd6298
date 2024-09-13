@@ -71,6 +71,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "34d53703_82339b6d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-13T19:56:41Z",
+      "side": 1,
+      "message": "After playing around with this a bit and creating a minimal reproduction like \n\n`item.h`: `class Item { public: void process(); };`\n`process.h`:\n```\n#include \"item.h\"\n#include \u003ctuple\u003e\n\nvoid process(std::tuple\u003cItem*\u003e foo) {\n    auto [item] \u003d foo;\n    item-\u003eprocess();\n}\n```\n\nand building with llvm19-rc4 and current tip of tree iwyu like `~/src/clang_output/bin/clang -MD -stdlib\u003dlibc++ -c process.cpp -o process.o -Xiwyu --comment_style\u003dlong -Xiwyu --quoted_includes_first -Xiwyu --verbose\u003d3` reproduces the issue (iwyu sees no use of `Item` and wants it forward declared) when using libc++ (`process.d` shows use of `src/clang_output/bin/../include/c++/v1/`) but dropping the `-stdlib\u003dlibc++` makes it work (`process.d` shows use of `include/c++/13/`). So it looks like either libc++ is doing something iwyu isn\u0027t seeing, or libstdc++ is just making it more obvious what\u0027s being used?",
+      "parentUuid": "deda434a_34533c88",
+      "revId": "203fcfd870b0e2141359921f1682127bf4cd6298",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "e71baba0_7ba76b4c",
