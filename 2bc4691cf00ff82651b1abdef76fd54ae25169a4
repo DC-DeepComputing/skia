@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c0d71b4e_111948c2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-13T02:56:59Z",
+      "side": 1,
+      "message": "For background, it would be interesting to know if after Slug (around https://skia-review.googlesource.com/c/skia/+/507836) we still need https://skia-review.googlesource.com/c/skia/+/189582 and if we can undo that, which would filter with the proper typeface (as well as potentially restore some cache hits).",
+      "revId": "2bc4691cf00ff82651b1abdef76fd54ae25169a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
