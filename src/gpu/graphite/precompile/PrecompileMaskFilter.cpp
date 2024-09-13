@@ -38,6 +38,7 @@ private:
             const KeyContext& keyContext,
             PipelineDataGatherer* gatherer,
             const PaintOptionsPriv::ProcessCombination& processCombination) const override {
+
         PrecompileImageFiltersPriv::CreateBlurImageFilterPipelines(keyContext, gatherer,
                                                                    processCombination);
     }

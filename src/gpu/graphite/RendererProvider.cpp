@@ -105,7 +105,7 @@ RendererProvider::RendererProvider(const Caps* caps, StaticBufferManager* buffer
                                             "non-aa-fill", kDirectDepthGreaterPass),
                                     DrawTypeFlags::kSimpleShape);
     fAnalyticBlur = makeFromStep(std::make_unique<AnalyticBlurRenderStep>(),
-                                 DrawTypeFlags::kSimpleShape);
+                                 DrawTypeFlags::kAnalyticBlur1);
 
     // vertices
     for (PrimitiveType primType : {PrimitiveType::kTriangles, PrimitiveType::kTriangleStrip}) {
