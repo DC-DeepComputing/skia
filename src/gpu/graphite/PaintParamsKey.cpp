@@ -96,7 +96,11 @@ const ShaderNode* PaintParamsKey::createNode(const ShaderCodeDictionary* dict,
         const int dataLength = fData[storedDataLengthIdx];
         SkASSERT(storedDataLengthIdx + dataLength < SkTo<int>(fData.size()));
 
-        if (dataLength) {
+        // Append either the data contents (length can now be inferred by pipelines via sampler
+        // desc information) OR "0" to explicitly indicate that no special case immutable samplers.
+        if (dataLength == 0) {
+            dataSpan = fData.subspan(storedDataLengthIdx, 1);
+        } else {
             dataSpan = fData.subspan(storedDataLengthIdx + 1, dataLength);
             // Iterate past the length of data
             *currentIndex += dataLength;
