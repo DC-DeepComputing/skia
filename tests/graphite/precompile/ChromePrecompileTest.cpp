@@ -273,7 +273,7 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(ChromePrecompileTest, is_dawn_metal_context_type,
 
     for (size_t i = 0; i < std::size(kCases); ++i) {
         PaintOptions paintOptions;
-        DrawTypeFlags drawTypeFlags = DrawTypeFlags::kSimpleShape;
+        DrawTypeFlags drawTypeFlags = DrawTypeFlags::kNone;
         RenderPassProperties renderPassSettings;
         unsigned int allowedOvergeneration = 0;
 
@@ -285,7 +285,7 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(ChromePrecompileTest, is_dawn_metal_context_type,
                 renderPassSettings = bgra_4_depth_stencil();
                 allowedOvergeneration = 11;
                 break;
-            case 2:
+            case 2:  // This seems to be a piece of some other draw that is missing from the list
                 paintOptions = solid_srcover();
                 drawTypeFlags = DrawTypeFlags::kSimpleShape;
                 renderPassSettings = bgra_4_depth_stencil();
