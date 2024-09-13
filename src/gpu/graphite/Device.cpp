@@ -1544,7 +1544,7 @@ std::pair<const Renderer*, PathAtlas*> Device::chooseRenderer(const Transform& l
             return {renderers->perEdgeAAQuad(), nullptr};
         }
     } else if (geometry.isAnalyticBlur()) {
-        return {renderers->analyticBlur(), nullptr};
+        return {renderers->analyticBlur1(), nullptr};
     } else if (!geometry.isShape()) {
         // We must account for new Geometry types with specific Renderers
         return {nullptr, nullptr};
@@ -1934,6 +1934,7 @@ void Device::drawSlug(SkCanvas* canvas, const sktext::gpu::Slug* slug, const SkP
     slugImpl->subRuns()->draw(canvas, slugImpl->origin(), paint, slugImpl, this->atlasDelegate());
 }
 
+/**/
 bool Device::drawBlurredRRect(const SkRRect& rrect, const SkPaint& paint, float deviceSigma) {
     SkStrokeRec style(paint);
     if (skgpu::BlurIsEffectivelyIdentity(deviceSigma)) {
@@ -1950,7 +1951,7 @@ bool Device::drawBlurredRRect(const SkRRect& rrect, const SkPaint& paint, float 
         return false;
     }
 
-    this->drawGeometry(this->localToDeviceTransform(), Geometry(*analyticBlur), paint, style);
+    this->drawGeometry(this->localToDeviceTransform(), Geometry(*analyticBlur, true), paint, style);
     return true;
 }
 

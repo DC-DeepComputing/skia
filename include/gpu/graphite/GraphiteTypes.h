@@ -116,31 +116,30 @@ enum class DepthStencilFlags : int {
  */
 enum DrawTypeFlags : uint16_t {
 
-    kNone             = 0b000000000,
+    kNone             = 0x0,
 
     // kBitmapText_Mask should be used for the BitmapTextRenderStep[mask] RenderStep
-    kBitmapText_Mask  = 0b00000001,
+    kBitmapText_Mask  = 0x1 << 0,
     // kBitmapText_LCD should be used for the BitmapTextRenderStep[LCD] RenderStep
-    kBitmapText_LCD   = 0b00000010,
+    kBitmapText_LCD   = 0x1 << 1,
     // kBitmapText_Color should be used for the BitmapTextRenderStep[color] RenderStep
-    kBitmapText_Color = 0b00000100,
+    kBitmapText_Color = 0x1 << 2,
     // kSDFText should be used for the SDFTextRenderStep RenderStep
-    kSDFText          = 0b00001000,
+    kSDFText          = 0x1 << 3,
     // kSDFText_LCD should be used for the SDFTextLCDRenderStep RenderStep
-    kSDFText_LCD      = 0b00010000,
+    kSDFText_LCD      = 0x1 << 4,
 
     // kDrawVertices should be used to generate Pipelines that use the following RenderSteps:
     //    VerticesRenderStep[*] for:
     //        [tris], [tris-texCoords], [tris-color], [tris-color-texCoords],
     //        [tristrips], [tristrips-texCoords], [tristrips-color], [tristrips-color-texCoords]
-    kDrawVertices     = 0b00100000,
+    kDrawVertices     = 0x1 << 5,
 
     // kSimpleShape should be used to generate Pipelines that use the following RenderSteps:
-    //    AnalyticBlurRenderStep
     //    AnalyticRRectRenderStep
     //    PerEdgeAAQuadRenderStep
     //    CoverBoundsRenderStep[non-aa-fill]
-    kSimpleShape      = 0b01000000,
+    kSimpleShape1      = 0x1 << 6,
 
     // kNonSimpleShape should be used to generate Pipelines that use the following RenderSteps:
     //    CoverageMaskRenderStep
@@ -149,8 +148,16 @@ enum DrawTypeFlags : uint16_t {
     //    TessellateWedgesRenderStep[*] for [convex], [evenodd], [winding]
     //    TessellateCurvesRenderStep[*] for [even-odd], [winding]
     //    MiddleOutFanRenderStep[*] for [even-odd], [winding]
-    kNonSimpleShape   = 0b10000000,
+    kNonSimpleShape   = 0x1 << 7,
+
+    // kAnalyticBlur should be used to generate Pipelines that use the following RenderSteps:
+    //    AnalyticBlurRenderStep
+    kAnalyticBlur1         = 0x1 << 8,
+
+    kLast = kAnalyticBlur1,
 };
+
+static const int kDrawTypeFlagsCount = static_cast<int>(DrawTypeFlags::kLast) + 1;
 
 } // namespace skgpu::graphite
 

@@ -40,7 +40,11 @@ void compile(const RendererProvider* rendererProvider,
              bool withPrimitiveBlender,
              Coverage coverage) {
     for (const Renderer* r : rendererProvider->renderers()) {
-        if (!(r->drawTypes() & drawTypes)) {
+        if (false) {
+
+        }
+
+        if (!(r->drawTypes1() & drawTypes)) {
             continue;
         }
 
@@ -149,6 +153,7 @@ void Precompile(Context* context, const PaintOptions& options, DrawTypeFlags dra
             for (Coverage coverage : { Coverage::kNone, Coverage::kSingleChannel }) {
                 PrecompileCombinations(
                         context, options, keyContext,
+                        /*$$*/
                         static_cast<DrawTypeFlags>(drawTypes & ~(DrawTypeFlags::kBitmapText_Color |
                                                                  DrawTypeFlags::kBitmapText_LCD |
                                                                  DrawTypeFlags::kSDFText_LCD |

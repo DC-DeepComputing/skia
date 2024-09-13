@@ -82,7 +82,7 @@ public:
     // Non-AA bounds filling (can handle inverse "fills" but will touch every pixel within the clip)
     const Renderer* nonAABounds() const { return &fNonAABoundsFill; }
 
-    const Renderer* analyticBlur() const { return &fAnalyticBlur; }
+    const Renderer* analyticBlur1() const { return &fAnalyticBlur1; }
 
     // TODO: May need to add support for inverse filled strokes (need to check SVG spec if this is a
     // real thing).
@@ -132,7 +132,7 @@ private:
     Renderer fPerEdgeAAQuad;
     Renderer fNonAABoundsFill;
 
-    Renderer fAnalyticBlur;
+    Renderer fAnalyticBlur1;
 
     Renderer fVertices[kVerticesCount];
 

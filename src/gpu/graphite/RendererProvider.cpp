@@ -98,14 +98,14 @@ RendererProvider::RendererProvider(const Caps* caps, StaticBufferManager* buffer
                                            DrawTypeFlags::kSDFText);
     }
     fAnalyticRRect = makeFromStep(std::make_unique<AnalyticRRectRenderStep>(bufferManager),
-                                  DrawTypeFlags::kSimpleShape);
+                                  DrawTypeFlags::kSimpleShape1);
     fPerEdgeAAQuad = makeFromStep(std::make_unique<PerEdgeAAQuadRenderStep>(bufferManager),
-                                  DrawTypeFlags::kSimpleShape);
+                                  DrawTypeFlags::kSimpleShape1);
     fNonAABoundsFill = makeFromStep(std::make_unique<CoverBoundsRenderStep>(
                                             "non-aa-fill", kDirectDepthGreaterPass),
-                                    DrawTypeFlags::kSimpleShape);
-    fAnalyticBlur = makeFromStep(std::make_unique<AnalyticBlurRenderStep>(),
-                                 DrawTypeFlags::kSimpleShape);
+                                    DrawTypeFlags::kSimpleShape1);
+    fAnalyticBlur1 = makeFromStep(std::make_unique<AnalyticBlurRenderStep>(),
+                                 DrawTypeFlags::kAnalyticBlur1);
 
     // vertices
     for (PrimitiveType primType : {PrimitiveType::kTriangles, PrimitiveType::kTriangleStrip}) {

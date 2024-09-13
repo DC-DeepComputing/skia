@@ -273,7 +273,7 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(ChromePrecompileTest, is_dawn_metal_context_type,
 
     for (size_t i = 0; i < std::size(kCases); ++i) {
         PaintOptions paintOptions;
-        DrawTypeFlags drawTypeFlags = DrawTypeFlags::kSimpleShape;
+        DrawTypeFlags drawTypeFlags = DrawTypeFlags::kNone;
         RenderPassProperties renderPassSettings;
         unsigned int allowedOvergeneration = 0;
 
@@ -285,15 +285,15 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(ChromePrecompileTest, is_dawn_metal_context_type,
                 renderPassSettings = bgra_4_depth_stencil();
                 allowedOvergeneration = 11;
                 break;
-            case 2:
+            case 2:  // This seems to be a piece of some other draw that is missing from the list
                 paintOptions = solid_srcover();
-                drawTypeFlags = DrawTypeFlags::kSimpleShape;
+                drawTypeFlags = DrawTypeFlags::kSimpleShape1;
                 renderPassSettings = bgra_4_depth_stencil();
                 allowedOvergeneration = 4;
                 break;
             case 3: // only differs from 18 by MSAA and depth vs depth-stencil
                 paintOptions = solid_src();
-                drawTypeFlags = DrawTypeFlags::kSimpleShape;
+                drawTypeFlags = DrawTypeFlags::kSimpleShape1;
                 renderPassSettings = bgra_4_depth_stencil();
                 allowedOvergeneration = 4; // a lot for a rectangle clear - all RenderSteps
                 break;
@@ -301,14 +301,14 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(ChromePrecompileTest, is_dawn_metal_context_type,
             case 5: // 5 & 6 together make up an AA image rect draw w/ a filled center
             case 6:
                 paintOptions = image_srcover();
-                drawTypeFlags = DrawTypeFlags::kSimpleShape;
+                drawTypeFlags = DrawTypeFlags::kSimpleShape1;
                 renderPassSettings = bgra_4_depth_stencil();
                 allowedOvergeneration = 24;
                 break;
             case 7: // 7 & 8 are combined pair
             case 8:
                 paintOptions = lineargrad_srcover_dithered();
-                drawTypeFlags = DrawTypeFlags::kSimpleShape;
+                drawTypeFlags = DrawTypeFlags::kSimpleShape1;
                 renderPassSettings = bgra_4_depth_stencil();
                 allowedOvergeneration = 12; // 3x from gradient, 11x from RenderSteps
                 break;
@@ -327,13 +327,13 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(ChromePrecompileTest, is_dawn_metal_context_type,
             case 11: // 11 & 12 are a pair - an RRect draw w/ a non-aa-fill center
             case 12:
                 paintOptions = solid_srcover();
-                drawTypeFlags = DrawTypeFlags::kSimpleShape;
+                drawTypeFlags = DrawTypeFlags::kSimpleShape1;
                 renderPassSettings = bgra_1_depth();
                 allowedOvergeneration = 4;  // all from RenderSteps
                 break;
             case 13:
                 paintOptions = image_src();
-                drawTypeFlags = DrawTypeFlags::kSimpleShape;
+                drawTypeFlags = DrawTypeFlags::kSimpleShape1;
                 renderPassSettings = bgra_1_depth();
                 // This is a lot for a kSrc image draw:
                 allowedOvergeneration = 24; // 3x of this are the paint combos,
@@ -341,7 +341,7 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(ChromePrecompileTest, is_dawn_metal_context_type,
                 break;
             case 14:
                 paintOptions = image_srcover();
-                drawTypeFlags = DrawTypeFlags::kSimpleShape;
+                drawTypeFlags = DrawTypeFlags::kSimpleShape1;
                 renderPassSettings = bgra_1_depth();
                 allowedOvergeneration = 24; // !!!! - a lot for just a non-aa image rect draw
                 break;
@@ -363,13 +363,13 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(ChromePrecompileTest, is_dawn_metal_context_type,
                 continue;
             case 18: // only differs from 3 by MSAA and depth vs depth-stencil
                 paintOptions = solid_src();
-                drawTypeFlags = DrawTypeFlags::kSimpleShape;
+                drawTypeFlags = DrawTypeFlags::kSimpleShape1;
                 renderPassSettings = bgra_1_depth();
                 allowedOvergeneration = 4; // a lot for a rectangle clear - all RenderSteps
                 break;
             case 19:
                 paintOptions = lineargrad_srcover_dithered();
-                drawTypeFlags = DrawTypeFlags::kSimpleShape;
+                drawTypeFlags = DrawTypeFlags::kSimpleShape1;
                 renderPassSettings = bgra_1_depth();
                 allowedOvergeneration = 12; // 3x from gradient, rest from RenderSteps
                 break;

@@ -44,7 +44,7 @@ public:
     explicit Geometry(sk_sp<SkVertices> vertices) { this->setVertices(std::move(vertices)); }
     explicit Geometry(const EdgeAAQuad& edgeAAQuad) { this->setEdgeAAQuad(edgeAAQuad); }
     explicit Geometry(const CoverageMaskShape& mask) { this->setCoverageMaskShape(mask); }
-    explicit Geometry(const AnalyticBlurMask& blur) { this->setAnalyticBlur(blur); }
+    explicit Geometry(const AnalyticBlurMask& blur, bool) { this->setAnalyticBlur1(blur); }
 
     ~Geometry() { this->setType(Type::kEmpty); }
 
@@ -75,7 +75,7 @@ public:
                     geom.setType(Type::kEmpty);
                     break;
                 case Type::kAnalyticBlur:
-                    this->setAnalyticBlur(geom.analyticBlurMask());
+                    this->setAnalyticBlur1(geom.analyticBlurMask());
                     geom.setType(Type::kEmpty);
                     break;
             }
@@ -91,7 +91,7 @@ public:
             case Type::kEdgeAAQuad: this->setEdgeAAQuad(geom.edgeAAQuad()); break;
             case Type::kCoverageMaskShape:
                     this->setCoverageMaskShape(geom.coverageMaskShape()); break;
-            case Type::kAnalyticBlur: this->setAnalyticBlur(geom.analyticBlurMask()); break;
+            case Type::kAnalyticBlur: this->setAnalyticBlur1(geom.analyticBlurMask()); break;
             default: break;
         }
         return *this;
@@ -169,7 +169,7 @@ public:
         }
     }
 
-    void setAnalyticBlur(const AnalyticBlurMask& blur) {
+    void setAnalyticBlur1(const AnalyticBlurMask& blur) {
         if (fType == Type::kAnalyticBlur) {
             fAnalyticBlurMask = blur;
         } else {
