@@ -13,6 +13,7 @@ skia_cc_library(
     deps = select({
         "@platforms//os:linux": [":sk_app_linux"],
         "@platforms//os:macos": [":sk_app_mac"],
+        "@platforms//os:windows": [":sk_app_win"],
     }),
 )
 
@@ -44,6 +45,27 @@ skia_objc_library(
         "CommandSet.cpp",
         "Window.cpp",
         "//tools/sk_app/mac:srcs",
+    ],
+    hdrs = [
+        "Application.h",
+        "CommandSet.h",
+        "Window.h",
+    ],
+    deps = [
+        "//tools/fonts:font_tool_utils",
+        "//tools/skui",
+        "//tools/timer",
+        "//tools/window",
+    ],
+)
+
+skia_cc_library(
+    name = "sk_app_win",
+    testonly = True,
+    srcs = [
+        "CommandSet.cpp",
+        "Window.cpp",
+        "//tools/sk_app/win:srcs",
     ],
     hdrs = [
         "Application.h",

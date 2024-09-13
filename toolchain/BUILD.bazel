@@ -1,3 +1,4 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
 load("@rules_cc//cc:defs.bzl", "cc_toolchain")
 load(":linux_amd64_toolchain_config.bzl", "provide_linux_amd64_toolchain_config")
 load(":mac_toolchain_config.bzl", "provide_mac_toolchain_config")
@@ -209,7 +210,8 @@ filegroup(
 filegroup(
     name = "archive_windows_files",
     srcs = [
-        "windows_trampolines/ar_trampoline_windows.bat",
+        "windows_trampolines/link_static_library.cmd",
+        ":windows_trampoline",
         "@clang_windows_amd64//:archive_files",
     ],
 )
@@ -217,7 +219,12 @@ filegroup(
 filegroup(
     name = "compile_windows_files",
     srcs = [
-        "windows_trampolines/clang_trampoline_windows.bat",
+        "windows_trampolines/assemble.cmd",
+        "windows_trampolines/c_compile.cmd",
+        "windows_trampolines/cpp_compile.cmd",
+        "windows_trampolines/linkstamp_compile.cmd",
+        "windows_trampolines/preprocess_assemble.cmd",
+        ":windows_trampoline",
         "@clang_windows_amd64//:compile_files",
     ],
 )
@@ -226,7 +233,9 @@ filegroup(
     name = "link_windows_files",
     srcs = [
         # Bazel usually assumes it is talking to Clang when linking.
-        "windows_trampolines/clang_trampoline_windows.bat",
+        "windows_trampolines/link_dynamic_library.cmd",
+        "windows_trampolines/link_executable.cmd",
+        ":windows_trampoline",
         "@clang_windows_amd64//:link_files",
     ],
 )
@@ -385,4 +394,20 @@ cc_toolchain(
     strip_files = ":not_implemented",
     supports_param_files = False,
     toolchain_config = ":ndk_armeabi_v7a_toolchain_config",
+)
+
+go_library(
+    name = "windows_trampoline_lib",
+    srcs = ["windows_trampolines/main.go"],
+    importpath = "go.skia.org/skia/toolchain/windows_trampolines",
+    visibility = ["//visibility:private"],
+    deps = [
+        "@org_golang_x_text//encoding/unicode",
+    ],
+)
+
+go_binary(
+    name = "windows_trampoline",
+    embed = [":windows_trampoline_lib"],
+    visibility = ["//visibility:public"],
 )

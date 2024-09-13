@@ -287,13 +287,31 @@ rules_rust_dependencies()
 
 rust_register_toolchains(
     edition = "2021",
-    extra_target_triples = ["aarch64-apple-darwin"],
+    extra_rustc_flags = {
+        "x86_64-pc-windows-gnullvm": [
+            "-C",
+            "link-arg=-fuse-ld=lld",
+        ],
+    },
+    extra_target_triples = [
+        "aarch64-apple-darwin",
+        "x86_64-pc-windows-gnullvm",
+    ],
     versions = [
         # supported versions from https://github.com/bazelbuild/rules_rust/blob/5c715ec50602e2ba6ca2ebfdd870662a6e6d1eda/util/fetch_shas_VERSIONS.txt
         # The rust rules validate a toolchain by sha256 hash, as listed in https://github.com/bazelbuild/rules_rust/blob/5c715ec50602e2ba6ca2ebfdd870662a6e6d1eda/rust/known_shas.bzl
         "1.76.0",
     ],
 )
+
+# rust_repository_set(
+#     name = "rust_windows_x64_64",  # Is this correct for the llvm variant?
+#     edition = "2021",
+#     exec_triple = "x86_64-pc-windows-gnullvm",
+#     versions = [
+#         "1.76.0",
+#     ],
+# )
 
 # https://bazelbuild.github.io/rules_rust/crate_universe.html
 load("@rules_rust//crate_universe:repositories.bzl", "crate_universe_dependencies")
@@ -379,15 +397,15 @@ fontations_crates()
 # Add this entry to have a root repository from which the individual
 # icu4x crates can be fetched.
 # This allows them to be used as deps in other bazel targets.
-crates_repository(
-    name = "icu4x_deps",
-    cargo_lockfile = "//bazel/external/icu4x:Cargo.lock",
-    manifests = ["//bazel/external/icu4x:Cargo.toml"],
-)
+# crates_repository(
+#     name = "icu4x_deps",
+#     cargo_lockfile = "//bazel/external/icu4x:Cargo.lock",
+#     manifests = ["//bazel/external/icu4x:Cargo.toml"],
+# )
 
-load("@icu4x_deps//:defs.bzl", icu4x_deps = "crate_repositories")
+# load("@icu4x_deps//:defs.bzl", icu4x_deps = "crate_repositories")
 
-icu4x_deps()
+# icu4x_deps()
 
 # Skia uses crates from the vello repository that are under development and have not been published
 # to crates.io. Normally we could fetch them directly from the git mirror in the Cargo.lock file as
