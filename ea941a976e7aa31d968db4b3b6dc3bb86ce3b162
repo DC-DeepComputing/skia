@@ -158,6 +158,30 @@
       },
       "revId": "ea941a976e7aa31d968db4b3b6dc3bb86ce3b162",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "226cd43e_85059cb1",
+        "filename": "tools/flags/BUILD.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-09-13T14:30:37Z",
+      "side": 1,
+      "message": "Per chat, we should use a file group.  Added a todo, will do that in a follow up.",
+      "parentUuid": "6b86ede4_9150c428",
+      "range": {
+        "startLine": 64,
+        "startChar": 21,
+        "endLine": 64,
+        "endChar": 36
+      },
+      "revId": "ea941a976e7aa31d968db4b3b6dc3bb86ce3b162",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
