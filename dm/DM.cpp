@@ -29,8 +29,6 @@
 #include "src/core/SkTHash.h"
 #include "src/core/SkTaskGroup.h"
 #include "src/utils/SkOSPath.h"
-#include "tests/Test.h"
-#include "tests/TestHarness.h"
 #include "tools/AutoreleasePool.h"
 #include "tools/CodecUtils.h"
 #include "tools/HashAndEncode.h"
@@ -41,9 +39,7 @@
 #include "tools/flags/CommonFlags.h"
 #include "tools/flags/CommonFlagsConfig.h"
 #include "tools/flags/CommonFlagsGanesh.h"
-#include "tools/flags/CommonFlagsGraphite.h"
 #include "tools/fonts/FontToolUtils.h"
-#include "tools/ios_utils.h"
 #include "tools/trace/ChromeTracingTracer.h"
 #include "tools/trace/EventTracingPriv.h"
 #include "tools/trace/SkDebugfTracer.h"
@@ -52,6 +48,15 @@
 #include <vector>
 
 #include <stdlib.h>
+
+#if !defined(SK_DISABLE_LEGACY_TESTS)
+    #include "tests/Test.h"
+    #include "tests/TestHarness.h"
+#endif
+
+#if defined(SK_BUILD_FOR_IOS)
+    #include "tools/ios_utils.h"
+#endif
 
 #ifndef SK_BUILD_FOR_WIN
     #include <unistd.h>
@@ -130,6 +135,7 @@ static DEFINE_bool2(veryVerbose, V, false, "tell individual tests to be verbose.
 static DEFINE_bool(cpu, true, "Run CPU-bound work?");
 static DEFINE_bool(gpu, true, "Run GPU-bound work?");
 static DEFINE_bool(graphite, true, "Run Graphite work?");
+static DEFINE_bool(neverYieldToWebGPU, false, "Run Graphite with never-yield context option.");
 
 static DEFINE_bool(dryRun, false,
                    "just print the tests that would be run, without actually running them.");
@@ -171,9 +177,12 @@ static DEFINE_string(properties, "",
 static DEFINE_bool(rasterize_pdf, false, "Rasterize PDFs when possible.");
 
 using namespace DM;
+
+#if !defined(SK_DISABLE_LEGACY_TESTS)
+using skiatest::TestType;
+#endif
 using sk_gpu_test::GrContextFactory;
 using sk_gpu_test::ContextInfo;
-using skiatest::TestType;
 #ifdef SK_GL
 using sk_gpu_test::GLTestContext;
 #endif
@@ -961,11 +970,7 @@ static void push_sink(const SkCommandLineConfig& config, Sink* s) {
     ts.tag = config.getTag();
 }
 
-static Sink* create_sink(const GrContextOptions& grCtxOptions,
-#if defined(SK_GRAPHITE)
-                         const skiatest::graphite::TestOptions& graphiteOptions,
-#endif
-                         const SkCommandLineConfig* config) {
+static Sink* create_sink(const GrContextOptions& grCtxOptions, const SkCommandLineConfig* config) {
     if (FLAGS_gpu) {
         if (const SkCommandLineConfigGpu* gpuConfig = config->asConfigGpu()) {
             GrContextFactory testFactory(grCtxOptions);
@@ -996,11 +1001,11 @@ static Sink* create_sink(const GrContextOptions& grCtxOptions,
         if (const SkCommandLineConfigGraphite *graphiteConfig = config->asConfigGraphite()) {
 #if defined(SK_ENABLE_PRECOMPILE)
             if (graphiteConfig->getTestPrecompile()) {
-                return new GraphitePrecompileTestingSink(graphiteConfig, graphiteOptions);
+                return new GraphitePrecompileTestingSink(graphiteConfig);
             } else
 #endif // SK_ENABLE_PRECOMPILE
             {
-                return new GraphiteSink(graphiteConfig, graphiteOptions);
+                return new GraphiteSink(graphiteConfig);
             }
         }
     }
@@ -1068,11 +1073,7 @@ static Sink* create_via(const SkString& tag, Sink* wrapped) {
     return nullptr;
 }
 
-static bool gather_sinks(const GrContextOptions& grCtxOptions,
-#if defined(SK_GRAPHITE)
-                         const skiatest::graphite::TestOptions& graphiteOptions,
-#endif
-                         bool defaultConfigs) {
+static bool gather_sinks(const GrContextOptions& grCtxOptions, bool defaultConfigs) {
     if (FLAGS_src.size() == 1 && FLAGS_src.contains("tests")) {
         // If we're just running tests skip trying to accumulate sinks. The 'justOneRect' test
         // can fail for protected contexts.
@@ -1084,11 +1085,7 @@ static bool gather_sinks(const GrContextOptions& grCtxOptions,
     AutoreleasePool pool;
     for (int i = 0; i < configs.size(); i++) {
         const SkCommandLineConfig& config = *configs[i];
-        Sink* sink = create_sink(grCtxOptions,
-#if defined(SK_GRAPHITE)
-                                 graphiteOptions,
-#endif
-                                 &config);
+        Sink* sink = create_sink(grCtxOptions, &config);
         if (sink == nullptr) {
             info("Skipping config %s: Don't understand '%s'.\n", config.getTag().c_str(),
                  config.getTag().c_str());
@@ -1462,7 +1459,9 @@ struct Task {
 };
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-
+#if defined(SK_DISABLE_LEGACY_TESTS)
+static int gather_tests() { return 0; }
+#else
 // Unit tests don't fit so well into the Src/Sink model, so we give them special treatment.
 
 static SkTDArray<skiatest::Test>* gCPUTests = new SkTDArray<skiatest::Test>;
@@ -1470,9 +1469,9 @@ static SkTDArray<skiatest::Test>* gCPUSerialTests = new SkTDArray<skiatest::Test
 static SkTDArray<skiatest::Test>* gGaneshTests = new SkTDArray<skiatest::Test>;
 static SkTDArray<skiatest::Test>* gGraphiteTests = new SkTDArray<skiatest::Test>;
 
-static void gather_tests() {
+static int gather_tests() {
     if (!FLAGS_src.contains("tests")) {
-        return;
+        return 0;
     }
     for (const skiatest::Test& test : skiatest::TestRegistry::Range()) {
         if (!in_shard()) {
@@ -1483,16 +1482,16 @@ static void gather_tests() {
         }
         if (test.fTestType == TestType::kGanesh && FLAGS_gpu) {
             gGaneshTests->push_back(test);
-#if defined(SK_GRAPHITE)
         } else if (test.fTestType == TestType::kGraphite && FLAGS_graphite) {
             gGraphiteTests->push_back(test);
-#endif
         } else if (test.fTestType == TestType::kCPU && FLAGS_cpu) {
             gCPUTests->push_back(test);
         } else if (test.fTestType == TestType::kCPUSerial && FLAGS_cpu) {
             gCPUSerialTests->push_back(test);
         }
     }
+    return gCPUTests->size() + gCPUSerialTests->size() +
+           gGaneshTests->size() + gGraphiteTests->size();
 }
 
 struct DMReporter : public skiatest::Reporter {
@@ -1529,13 +1528,10 @@ static void run_ganesh_test(skiatest::Test test, const GrContextOptions& grCtxOp
     done("unit", "test", "", test.fName);
 }
 
-#if defined(SK_GRAPHITE)
-static void run_graphite_test(skiatest::Test test,
-                              const skiatest::graphite::TestOptions& optionsIn) {
+static void run_graphite_test(skiatest::Test test, skiatest::graphite::TestOptions& options) {
     DMReporter reporter;
     if (!FLAGS_dryRun && !should_skip("_", "tests", "_", test.fName)) {
         AutoreleasePool pool;
-        skiatest::graphite::TestOptions options = optionsIn;
         test.modifyGraphiteContextOptions(&options.fContextOptions);
 
         skiatest::ReporterContext ctx(&reporter, SkString(test.fName));
@@ -1544,7 +1540,6 @@ static void run_graphite_test(skiatest::Test test,
     }
     done("unit", "test", "", test.fName);
 }
-#endif
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
@@ -1553,6 +1548,8 @@ TestHarness CurrentTestHarness() {
 }
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+#endif // !SK_DISABLE_LEGACY_TESTS
 
 int main(int argc, char** argv) {
 #if defined(SK_BUILD_FOR_ANDROID_FRAMEWORK) && defined(SK_HAS_HEIF_LIBRARY)
@@ -1583,11 +1580,6 @@ int main(int argc, char** argv) {
         gVLog = stderr;
     }
 
-#if defined(SK_GRAPHITE)
-    skiatest::graphite::TestOptions graphiteOptions;
-    CommonFlags::SetTestOptions(&graphiteOptions);
-#endif
-
     GrContextOptions grCtxOptions;
     CommonFlags::SetCtxOptions(&grCtxOptions);
 
@@ -1616,16 +1608,11 @@ int main(int argc, char** argv) {
             break;
         }
     }
-    if (!gather_sinks(grCtxOptions,
-#if defined(SK_GRAPHITE)
-                      graphiteOptions,
-#endif
-                      defaultConfigs)) {
+    if (!gather_sinks(grCtxOptions, defaultConfigs)) {
         return 1;
     }
-    gather_tests();
-    int testCount = gCPUTests->size() + gCPUSerialTests->size() +
-                    gGaneshTests->size() + gGraphiteTests->size();
+
+    const int testCount = gather_tests();
     gPending = gSrcs->size() * gSinks->size() + testCount;
     gTotalCounts = gPending;
     gLastUpdate = SkTime::GetNSecs();
@@ -1633,9 +1620,11 @@ int main(int argc, char** argv) {
          gSrcs->size(), gSinks->size(), testCount,
          gPending);
 
+#if !defined(SK_DISABLE_LEGACY_TESTS)
     // Kick off as much parallel work as we can, making note of any serial work we'll need to do.
     // However, execute all CPU-serial tests first so that they don't have races with parallel tests
     for (skiatest::Test& test : *gCPUSerialTests) { run_cpu_test(test); }
+#endif
 
     SkTaskGroup parallel;
     TArray<Task> serial;
@@ -1658,16 +1647,23 @@ int main(int argc, char** argv) {
             }
         }
     }
+
+#if !defined(SK_DISABLE_LEGACY_TESTS)
     for (skiatest::Test& test : *gCPUTests) {
         parallel.add([test] { run_cpu_test(test); });
     }
+#endif // !SK_DISABLE_LEGACY_TESTS
 
     // With the parallel work running, run serial tasks and tests here on main thread.
     for (Task& task : serial) { Task::Run(task); }
+
+#if !defined(SK_DISABLE_LEGACY_TESTS)
     for (skiatest::Test& test : *gGaneshTests) { run_ganesh_test(test, grCtxOptions); }
-#if defined(SK_GRAPHITE)
+
+    skiatest::graphite::TestOptions graphiteOptions;
+    graphiteOptions.fNeverYieldToWebGPU = FLAGS_neverYieldToWebGPU;
     for (skiatest::Test& test : *gGraphiteTests) { run_graphite_test(test, graphiteOptions); }
-#endif
+#endif // !SK_DISABLE_LEGACY_TESTS
 
     // Wait for any remaining parallel work to complete (including any spun off of serial tasks).
     parallel.wait();
