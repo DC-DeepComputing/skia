@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba2098c3_0231efac",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-13T16:18:13Z",
+      "side": 1,
+      "message": "So unfortunately this IWYU version has regressions.\n\nIn particular it doesn\u0027t appear to see the types used though a pointer deduced from a structured binding as a \"use\". This leads it to think SkGlyph only needs to be forward declared when it really needs to be defined in a number of locations.\n\nThere is also something going on with use of types that result from templates, which may be related since structured bindings use a similar deduction.\n\nThen there is a potential \"progression\" which to us is a regression. IWYU is now suggesting that a number of includes instead be forward declarations in the cpp files generated from header files. The reason for this is that the types declared in the cpp file should not \"escape\" and the header file itself doesn\u0027t use the types it declares. So IWYU is correct in the sense that the header file compiled in its own TU doesn\u0027t need the full definitions. However, any use of that header as a header will require full definitions (as the declarations in headers are in some sense \"public\" which the declarations in cpp files are in some sense \"private\").",
+      "revId": "203fcfd870b0e2141359921f1682127bf4cd6298",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "e71baba0_7ba76b4c",
