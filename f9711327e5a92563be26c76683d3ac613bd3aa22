@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "381c33c1_0c8a4458",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-09-13T18:22:02Z",
+      "side": 1,
+      "message": "LGTM w/ small nit",
+      "revId": "f9711327e5a92563be26c76683d3ac613bd3aa22",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a522745c_97455e4a",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1189,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-09-13T18:22:02Z",
+      "side": 1,
+      "message": "nit: Fix alignment",
+      "range": {
+        "startLine": 1185,
+        "startChar": 16,
+        "endLine": 1189,
+        "endChar": 51
+      },
+      "revId": "f9711327e5a92563be26c76683d3ac613bd3aa22",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
