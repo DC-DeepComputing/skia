@@ -308,9 +308,19 @@ void PaintOptions::buildCombinations(
         for (const sk_sp<PrecompileImageFilter>& o : fImageFilterOptions) {
             o->createPipelines(keyContext, gatherer, processCombination);
         }
+
+        // For the blur maskFilter this will generate the image filtering pipelines
         for (const sk_sp<PrecompileMaskFilter>& o : fMaskFilterOptions) {
             o->createPipelines(keyContext, gatherer, processCombination);
         }
+
+        // For the blur maskFilter this will generate the analytic mask filtering pipelines but
+        // only when plausible (i.e., rect and rrect draws are specified).
+        if (drawTypes & DrawTypeFlags::kSimpleShape && !fMaskFilterOptions.empty()) {
+            tmp.buildCombinations(keyContext, gatherer, DrawTypeFlags::kAnalyticBlur1,
+                                  withPrimitiveBlender, coverage, processCombination);
+        }
+
     } else {
         int numCombinations = this->numCombinations();
         for (int i = 0; i < numCombinations; ++i) {

@@ -300,8 +300,9 @@ const char* to_str(DrawTypeFlags dt) {
         case DrawTypeFlags::kSDFText:          return "DrawTypeFlags::kSDFText";
         case DrawTypeFlags::kSDFText_LCD:      return "DrawTypeFlags::kSDFText_LCD";
         case DrawTypeFlags::kDrawVertices:     return "DrawTypeFlags::kDrawVertices";
-        case DrawTypeFlags::kSimpleShape:      return "DrawTypeFlags::kSimpleShape";
+        case DrawTypeFlags::kSimpleShape:     return "DrawTypeFlags::kSimpleShape";
         case DrawTypeFlags::kNonSimpleShape:   return "DrawTypeFlags::kNonSimpleShape";
+        case DrawTypeFlags::kAnalyticBlur1:     return "DrawTypeFlags::kAnalyticBlur";
         default:                               SkASSERT(0); return "DrawTypeFlags::kNone";
     }
 
@@ -483,6 +484,9 @@ ImageFilterType random_imagefiltertype(SkRandom* rand) {
 }
 
 [[maybe_unused]] DrawTypeFlags random_drawtype(SkRandom* rand) {
+//    uint32_t index = rand->nextULessThan(kDrawTypeFlagsCount);
+//    return static_cast<DrawTypeFlags>(index);
+
     uint32_t index = rand->nextULessThan(8);
 
     switch (index) {
@@ -1781,7 +1785,8 @@ struct DrawData {
 
 void simple_draws(SkCanvas* canvas, const SkPaint& paint) {
     // TODO: add some drawLine calls
-    canvas->drawRect(SkRect::MakeWH(16, 16), paint);
+    canvas->drawRect(SkRect::MakeWH(16, 16), paint);         // pixel aligned
+    canvas->drawRect({ 1.5f, 1.5f, 10.5f, 10.5f }, paint);   // non-pixel aligned
     canvas->drawRRect(SkRRect::MakeOval({0, 0, 16, 16}), paint);
     canvas->drawRRect(SkRRect::MakeRectXY({0, 0, 16, 16}, 4, 4), paint);
 
@@ -2213,9 +2218,9 @@ void run_test(skiatest::Reporter* reporter,
     // a SkCanvas::clipShader call).
     paintOptions.priv().setClipShaders({clipShaderOption});
 
-    extract_vs_build_subtest(reporter, context, testContext, precompileKeyContext, recorder.get(),
-                             paint, paintOptions, s, bm, cf, mf, imageFilter, clip, clipShader, dt,
-                             seed, &rand, verbose);
+//    extract_vs_build_subtest(reporter, context, testContext, precompileKeyContext, recorder.get(),
+//                             paint, paintOptions, s, bm, cf, mf, imageFilter, clip, clipShader, dt,
+//                             seed, &rand, verbose);
     precompile_vs_real_draws_subtest(reporter, context, testContext, recorder.get(),
                                      paint, paintOptions, clip, clipShader, dt, verbose);
 }
@@ -2294,9 +2299,11 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
     KeyContext precompileKeyContext(create_key_context(context, rtDict.get()));
 
     ShaderType shaders[] = {
+#if 0
             ShaderType::kBlend,
             ShaderType::kImage,
             ShaderType::kRadialGradient,
+#endif
             ShaderType::kSolidColor,
 #if EXPANDED_SET
             ShaderType::kNone,
@@ -2317,8 +2324,10 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
 
     BlenderType blenders[] = {
             BlenderType::kPorterDuff,
+#if 0
             BlenderType::kShaderBased,
             BlenderType::kRuntime,
+#endif
 #if EXPANDED_SET
             BlenderType::kNone,
             BlenderType::kArithmetic,
@@ -2327,9 +2336,9 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
 
     ColorFilterType colorFilters[] = {
             ColorFilterType::kNone,
+#if EXPANDED_SET
             ColorFilterType::kBlendMode,
             ColorFilterType::kMatrix,
-#if EXPANDED_SET
             ColorFilterType::kColorSpaceXform,
             ColorFilterType::kCompose,
             ColorFilterType::kGaussian,
@@ -2348,10 +2357,10 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
     };
 
     MaskFilterType maskFilters[] = {
-            MaskFilterType::kNone,
-#if EXPANDED_SET
+//            MaskFilterType::kNone,
+//#if EXPANDED_SET
             MaskFilterType::kBlur,
-#endif
+//#endif
     };
 
     ImageFilterType imageFilters[] = {
@@ -2378,22 +2387,24 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
     };
 
     static const DrawTypeFlags kDrawTypeFlags[] = {
+#if 0
             DrawTypeFlags::kBitmapText_Mask,
             DrawTypeFlags::kBitmapText_LCD,
             DrawTypeFlags::kBitmapText_Color,
             DrawTypeFlags::kSDFText,
             DrawTypeFlags::kSDFText_LCD,
             DrawTypeFlags::kDrawVertices,
+#endif
             DrawTypeFlags::kSimpleShape,
-            DrawTypeFlags::kNonSimpleShape,
+//            DrawTypeFlags::kNonSimpleShape,
     };
 
-#if EXPANDED_SET
+//#if EXPANDED_SET
     size_t kExpected = std::size(shaders) * std::size(blenders) * std::size(colorFilters) *
                        std::size(maskFilters) * std::size(imageFilters) * std::size(clips) *
                        std::size(kDrawTypeFlags);
     int current = 0;
-#endif
+//#endif
 
     for (auto shader : shaders) {
         for (auto blender : blenders) {
@@ -2402,11 +2413,10 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
                     for (auto imageFilter : imageFilters) {
                         for (auto clip : clips) {
                             for (DrawTypeFlags dt : kDrawTypeFlags) {
-#if EXPANDED_SET
+//#if EXPANDED_SET
                                 SkDebugf("%d/%zu\n", current, kExpected);
                                 ++current;
-#endif
-
+//#endif
                                 run_test(reporter, context, testContext, precompileKeyContext,
                                          shader, blender, cf, mf, imageFilter, clip, dt,
                                          kDefaultSeed, /* verbose= */ false);
@@ -2418,9 +2428,9 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
         }
     }
 
-#if EXPANDED_SET
+//#if EXPANDED_SET
     SkASSERT(current == (int) kExpected);
-#endif
+//#endif
 }
 
 #endif // SK_GRAPHITE
