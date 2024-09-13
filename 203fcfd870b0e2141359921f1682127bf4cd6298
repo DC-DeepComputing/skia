@@ -53,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "deda434a_34533c88",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-13T18:34:00Z",
+      "side": 1,
+      "message": "I went and built tip of tree iwyu with llvm19-rc4 and... it\u0027s even worse now with SkGlyph in that it doesn\u0027t even suggest the forward declaration, it just suggests removing the include. Will need to patch that up.\n\nI\u0027m not sure if just creating a cpp which includes the h file will be enough. Will need to check that.",
+      "parentUuid": "91443167_d7d982ed",
+      "revId": "203fcfd870b0e2141359921f1682127bf4cd6298",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "e71baba0_7ba76b4c",
