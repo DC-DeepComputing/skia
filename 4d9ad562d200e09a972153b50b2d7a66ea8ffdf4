@@ -1,0 +1,68 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "705d12e7_43a01f64",
+        "filename": "gm/orientation.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-09-13T13:01:42Z",
+      "side": 1,
+      "message": "Does this mean that on mac/ios/win/ndk we draw the image set twice?  Then I think the GM height should be doubled to capture the extra rows (4*kImgH?).",
+      "range": {
+        "startLine": 203,
+        "startChar": 0,
+        "endLine": 219,
+        "endChar": 5
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "62ae2128_caf35ab4",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "gm/orientation.cpp",
+              "range": {
+                "startLine": 168,
+                "startChar": 0,
+                "endLine": 169,
+                "endChar": 0
+              },
+              "replacement": "DEF_SIMPLE_GM(respect_orientation_jpeg, canvas, 4*kImgW, 4*kImgH) {\n"
+            }
+          ]
+        }
+      ],
+      "revId": "4d9ad562d200e09a972153b50b2d7a66ea8ffdf4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "073c1e2d_c874a5c1",
+        "filename": "src/ports/SkImageGeneratorWIC.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-09-13T13:01:42Z",
+      "side": 1,
+      "message": "nit: static_cast\n```suggestion\n        origin \u003d static_cast\u003cSkEncodedOrigin\u003e(propValue.uiVal);\n```",
+      "range": {
+        "startLine": 98,
+        "startChar": 17,
+        "endLine": 98,
+        "endChar": 50
+      },
+      "revId": "4d9ad562d200e09a972153b50b2d7a66ea8ffdf4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
