@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a97cbe10_2f4361c5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19969
+      },
+      "writtenOn": "2024-09-13T14:27:21Z",
+      "side": 1,
+      "message": "The autohinting integration LGTM, thanks!",
+      "revId": "1b70bc637b095baabfe6f83f2609f96faa53ccf1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
