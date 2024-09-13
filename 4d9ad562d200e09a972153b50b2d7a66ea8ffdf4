@@ -42,6 +42,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aa27e276_1c193f3b",
+        "filename": "gm/orientation.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-09-13T14:19:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "705d12e7_43a01f64",
+      "range": {
+        "startLine": 203,
+        "startChar": 0,
+        "endLine": 219,
+        "endChar": 5
+      },
+      "revId": "4d9ad562d200e09a972153b50b2d7a66ea8ffdf4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "073c1e2d_c874a5c1",
@@ -55,6 +79,30 @@
       "writtenOn": "2024-09-13T13:01:42Z",
       "side": 1,
       "message": "nit: static_cast\n```suggestion\n        origin \u003d static_cast\u003cSkEncodedOrigin\u003e(propValue.uiVal);\n```",
+      "range": {
+        "startLine": 98,
+        "startChar": 17,
+        "endLine": 98,
+        "endChar": 50
+      },
+      "revId": "4d9ad562d200e09a972153b50b2d7a66ea8ffdf4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ddc87d2d_1a8f6009",
+        "filename": "src/ports/SkImageGeneratorWIC.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-09-13T14:19:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "073c1e2d_c874a5c1",
       "range": {
         "startLine": 98,
         "startChar": 17,
