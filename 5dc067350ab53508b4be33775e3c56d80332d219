@@ -46,6 +46,30 @@
       },
       "revId": "5dc067350ab53508b4be33775e3c56d80332d219",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "25b3c5db_585e2840",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2024-09-16T12:45:31Z",
+      "side": 1,
+      "message": "Thanks for the detailed response, Robert!",
+      "parentUuid": "c5dfb1b4_100152a3",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 45
+      },
+      "revId": "5dc067350ab53508b4be33775e3c56d80332d219",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
