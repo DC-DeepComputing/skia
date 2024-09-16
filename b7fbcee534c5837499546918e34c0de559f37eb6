@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "78fbf24e_d76631f7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-09-16T13:21:50Z",
+      "side": 1,
+      "message": "Ben, could you help take a look at the Gold results? I can\u0027t explain what\u0027s going on in `typefacerendering`, but the diff might be due to two different platforms getting compared. Other changes with slight pixel shifts LGTM - that\u0027s expected with the rounding change.",
+      "revId": "b7fbcee534c5837499546918e34c0de559f37eb6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
