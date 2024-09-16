@@ -82,7 +82,6 @@ skia_objc_library(
         "//src/gpu/ganesh/surface:mtl_objc_srcs",
     ],
     hdrs = [
-        "//include/gpu:ganesh_hdrs",
         "//include/gpu/ganesh:ganesh_hdrs",
         "//include/gpu/ganesh/mtl:public_hdrs",
         "//include/gpu/mtl:public_hdrs",
@@ -117,7 +116,6 @@ skia_objc_library(
         "//src/gpu/ganesh/surface:mtl_objc_srcs",
     ],
     hdrs = [
-        "//include/gpu:ganesh_hdrs",
         "//include/gpu/ganesh:ganesh_hdrs",
         "//include/gpu/ganesh/mtl:public_hdrs",
         "//include/gpu/mtl:public_hdrs",
