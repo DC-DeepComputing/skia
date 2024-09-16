@@ -16,6 +16,23 @@
       "message": "Is this configuration covering the test(s) you need?",
       "revId": "c0ca6b1784917684181f074fba84936c68f6679d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7495654f_5b6f032c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-09-16T15:00:29Z",
+      "side": 1,
+      "message": "As long as it does not skip our cpu tests (I think it should not). Feels safe knowing that we run them on Debian 11.",
+      "revId": "c0ca6b1784917684181f074fba84936c68f6679d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
