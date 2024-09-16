@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "45852e30_666145a2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18129
+      },
+      "writtenOn": "2024-09-16T17:33:57Z",
+      "side": 1,
+      "message": "Hi Michael, thanks for reviewing it, could you also submit it? CQ is not working for this branch of skia, so you will need to hit the option to submit it from the three dots in the top, I don\u0027t have the permission to do so. It didn\u0027t run the dry-run tests, but I ran the skia_unittests on the chromium side and they are all passing",
+      "revId": "59e10069bbd96983a1023c356ac33166bab35954",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
