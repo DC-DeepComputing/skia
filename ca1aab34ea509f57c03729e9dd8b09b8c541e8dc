@@ -192,6 +192,30 @@
       },
       "revId": "ca1aab34ea509f57c03729e9dd8b09b8c541e8dc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ada99801_486637b2",
+        "filename": "tools/sk_app/BUILD.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-09-16T12:46:56Z",
+      "side": 1,
+      "message": "I gave it a try. It\u0027s non-trivial given the current attempt to split the abstraction between Window and sk_app because the MainView for iOS has multiple implementations and needs to touch both parts.\n\nLet\u0027s leave it for now.",
+      "parentUuid": "b6cb9884_891738bd",
+      "range": {
+        "startLine": 62,
+        "startChar": 0,
+        "endLine": 68,
+        "endChar": 1
+      },
+      "revId": "ca1aab34ea509f57c03729e9dd8b09b8c541e8dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
