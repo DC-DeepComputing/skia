@@ -277,7 +277,7 @@ SkIPoint DrawAtlas::prepForRender(const AtlasLocator& locator, SkAutoPixmapStora
     return plot->prepForRender(locator, pixmap);
 }
 
-void DrawAtlas::compact(AtlasToken startTokenForNextFlush, bool forceCompact) {
+void DrawAtlas::compact(AtlasToken startTokenForNextFlush) {
     if (fNumActivePages < 1) {
         fPrevFlushToken = startTokenForNextFlush;
         return;
@@ -309,7 +309,7 @@ void DrawAtlas::compact(AtlasToken startTokenForNextFlush, bool forceCompact) {
     // hasn't been used in a long time.
     // This is to handle the case where a lot of text or path rendering has occurred but then just
     // a blinking cursor is drawn.
-    if (forceCompact || atlasUsedThisFlush || fFlushesSinceLastUse > kAtlasRecentlyUsedCount) {
+    if (atlasUsedThisFlush || fFlushesSinceLastUse > kAtlasRecentlyUsedCount) {
         TArray<Plot*> availablePlots;
         uint32_t lastPageIndex = fNumActivePages - 1;
 
@@ -415,6 +415,65 @@ void DrawAtlas::compact(AtlasToken startTokenForNextFlush, bool forceCompact) {
             this->deactivateLastPage();
             fFlushesSinceLastUse = 0;
         }
+    }
+
+    fPrevFlushToken = startTokenForNextFlush;
+}
+
+void DrawAtlas::purge(AtlasToken startTokenForNextFlush) {
+    if (fNumActivePages < 1) {
+        fPrevFlushToken = startTokenForNextFlush;
+        return;
+    }
+
+    // For all plots, reset number of flushes since used if used this frame.
+    PlotList::Iter plotIter;
+    bool atlasUsedThisFlush = false;
+    for (uint32_t pageIndex = 0; pageIndex < fNumActivePages; ++pageIndex) {
+        plotIter.init(fPages[pageIndex].fPlotList, PlotList::Iter::kHead_IterStart);
+        while (Plot* plot = plotIter.get()) {
+            // If used since last visit, reset number of flushes since used
+            if (plot->lastUseToken().inInterval(fPrevFlushToken, startTokenForNextFlush)) {
+                plot->resetFlushesSinceLastUsed();
+                atlasUsedThisFlush = true;
+                // Otherwise increment
+            } else {
+                // This is different behavior from compact().
+                // Here we want to clear things out if the atlas hasn't been used in a while.
+                plot->incFlushesSinceLastUsed();
+            }
+
+            plotIter.next();
+        }
+    }
+    if (atlasUsedThisFlush) {
+        fFlushesSinceLastUse = 0;
+    } else {
+        ++fFlushesSinceLastUse;
+    }
+
+    // Go through each page from last to first. We evict any plots that have not been used
+    // recently. If a page has no plots used recently, we can deactivate it and remove its
+    // texture. However, once we hit a page that's been recently used, we can't deactivate
+    // any further due to the first-to-last nature of the DrawAtlas page management.
+    bool pageStillInUse = false;
+    for (int pageIndex = (int)(fNumActivePages)-1; pageIndex >= 0; --pageIndex) {
+        plotIter.init(fPages[pageIndex].fPlotList, PlotList::Iter::kHead_IterStart);
+        while (Plot* plot = plotIter.get()) {
+            if (plot->flushesSinceLastUsed() <= kPlotRecentlyUsedCountForPurge) {
+                pageStillInUse = true;
+            } else if (plot->lastUseToken() != AtlasToken::InvalidToken()) {
+                // Not in use, we can evict this plot
+                this->processEvictionAndResetRects(plot);
+            }
+            plotIter.next();
+        }
+        // Can only remove Pages in last-to-first order at the moment
+        if (pageStillInUse) {
+            break;
+        }
+
+        this->deactivateLastPage();
     }
 
     fPrevFlushToken = startTokenForNextFlush;
