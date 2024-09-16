@@ -107,6 +107,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "d72ed822_de2bcdac",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-16T13:48:03Z",
+      "side": 1,
+      "message": "It looks like iwyu needs to pick up support for `__type_pack_element`. In the future this will be needed for both clang and gcc, as gcc added support recently as well.",
+      "parentUuid": "29a44e8b_f8653667",
+      "revId": "203fcfd870b0e2141359921f1682127bf4cd6298",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "e71baba0_7ba76b4c",
