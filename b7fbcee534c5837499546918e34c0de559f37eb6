@@ -16,6 +16,24 @@
       "message": "Ben, could you help take a look at the Gold results? I can\u0027t explain what\u0027s going on in `typefacerendering`, but the diff might be due to two different platforms getting compared. Other changes with slight pixel shifts LGTM - that\u0027s expected with the rounding change.",
       "revId": "b7fbcee534c5837499546918e34c0de559f37eb6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "84e6d91d_47e2c537",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-16T14:19:17Z",
+      "side": 1,
+      "message": "Yes, this is saying that with this change Gold now finds this new Fontations image closer to the existing FreeType image than the previous Fontations image. Which is mostly due to the advances being more or less the same now, so the glyphs are being drawn in the same locations. The remaining differences look like drop out control and handling the `gasp` table.",
+      "parentUuid": "78fbf24e_d76631f7",
+      "revId": "b7fbcee534c5837499546918e34c0de559f37eb6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
