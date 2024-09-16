@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "82fd3101_66b416c4",
+        "filename": "build_overrides/partition_alloc.gni",
+        "patchSetId": 2
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2024-09-16T13:57:13Z",
+      "side": 1,
+      "message": "The diff: Adding `dcheck_always_on`. Skia doesn\u0027t define it, but it is used in release mode.\n\nI think I was able to land the initial patch, because there are no CQ bots in release mode with Graphite+Dawn.",
+      "range": {
+        "startLine": 64,
+        "startChar": 0,
+        "endLine": 64,
+        "endChar": 24
+      },
+      "revId": "7d92646acc2c525f5e2ce372d1efc30d59c391bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
