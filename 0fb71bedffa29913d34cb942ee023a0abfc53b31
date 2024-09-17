@@ -16,6 +16,24 @@
       "message": "I don\u0027t understand, glyph.top() is almost never 0 (that would imply that the entire glyph bitmap was hanging from the baseline).",
       "revId": "0fb71bedffa29913d34cb942ee023a0abfc53b31",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8e05ab7_285d5512",
+        "filename": "src/ports/SkScalerContext_win_dw.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 2380,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-09-17T06:51:01Z",
+      "side": 0,
+      "message": "True, I was on the wrong track there. I looked at:\n\n```\n*bounds \u003d SkRect::MakeLTRB(SkIntToScalar(info.bounds().fLeft),\n                               SkIntToScalar(info.bounds().fTop),\n                               SkIntToScalar(info.bounds().fRight),\n                               SkIntToScalar(info.bounds().fBottom));\n``` \n\nIn line 1745 of `ScalerContext_win_dw.cpp` and there top and left are going to be set to zero, but there is a mapRect() further down, which does take the per-glyph  bitmap metrics into account and shifts these.",
+      "parentUuid": "d233c31a_8b5d7cb3",
+      "revId": "0fb71bedffa29913d34cb942ee023a0abfc53b31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
