@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df0b6c8f_52219382",
+        "filename": "src/gpu/graphite/DrawAtlas.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 273,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-09-17T18:23:46Z",
+      "side": 1,
+      "message": "These values (i.e., ForCompact, ForPurge) are ?",
+      "range": {
+        "startLine": 273,
+        "startChar": 3,
+        "endLine": 273,
+        "endChar": 16
+      },
+      "revId": "d15ce1755c5cee2c473579547f56ae176f320bb9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
