@@ -79,6 +79,15 @@ is_chromeos = false
 # This is to make the ANGLE build files happy. Skia always uses is_mac and/or is_ios.
 is_apple = is_mac || is_ios
 
+# This variable will be set differently by the final embedders. Usually:
+# - chromium : //base/allocator/partition_allocator
+# - dawn     : //third_party/partition_alloc
+# - pdfium   : //third_party/partition_alloc
+# - skia     : //third_party/externals/partition_alloc  (here)
+#
+# Not every embedders will use it, so it is allowed not to define it.
+skia_partition_alloc_dir = "//third_party/externals/partition_alloc"
+
 if (target_cpu == "") {
   target_cpu = host_cpu
   if (is_android || is_ios) {
