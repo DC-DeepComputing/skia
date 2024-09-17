@@ -1150,8 +1150,8 @@ void DawnCaps::buildKeyForTexture(SkISize dimensions,
     // If we are using ycbcr texture/sampling, more key information is needed.
     if ((hasYcbcrInfo = ycbcrUtils::DawnDescriptorIsValid(dawnSpec.fYcbcrVkDescriptor))) {
         num32DataCnt += ycbcrUtils::DawnDescriptorUsesExternalFormat(dawnSpec.fYcbcrVkDescriptor)
-                ? ycbcrUtils::kIntsNeededExternalFormat
-                : ycbcrUtils::kIntsNeededKnownFormat;
+                ? SamplerDesc::kIntsNeededExternalFormat
+                : SamplerDesc::kIntsNeededKnownFormat;
     }
 #endif
     GraphiteResourceKey::Builder builder(key, type, num32DataCnt, shareable);
