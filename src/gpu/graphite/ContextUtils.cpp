@@ -7,9 +7,9 @@
 
 #include "src/gpu/graphite/ContextUtils.h"
 
-#include <string>
 #include "src/core/SkBlenderBase.h"
 #include "src/gpu/BlendFormula.h"
+#include "src/gpu/graphite/BuiltInCodeSnippetID.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/GraphicsPipelineDesc.h"
 #include "src/gpu/graphite/KeyContext.h"
@@ -26,6 +26,8 @@
 #include "src/gpu/graphite/geom/Geometry.h"
 #include "src/sksl/SkSLString.h"
 #include "src/sksl/SkSLUtil.h"
+
+#include <string>
 
 namespace skgpu::graphite {
 
@@ -254,15 +256,66 @@ std::string get_node_ssbo_fields(const ShaderNode* node, bool* wrotePaintColor) 
     return result;
 }
 
+int determineSamplerDataLength(uint32_t immutableSamplerInfo) {
+    // This relies upon the external format being the first bit of data within ImmutableSamplerInfo
+    bool usesExternalFormat = immutableSamplerInfo & 0b1;
+    return usesExternalFormat ? SamplerDesc::kIntsNeededExternalFormat
+                              : SamplerDesc::kIntsNeededKnownFormat;
+}
+
 std::string get_node_texture_samplers(const ResourceBindingRequirements& bindingReqs,
                                       const ShaderNode* node,
-                                      int* binding) {
+                                      int* binding,
+                                      std::vector<SamplerDesc>* outImmutableSamplers) {
     std::string result;
     SkSpan<const TextureAndSampler> samplers = node->entry()->fTexturesAndSamplers;
 
     if (!samplers.empty()) {
         SkSL::String::appendf(&result, "// %d - %s samplers\n",
                               node->keyIndex(), node->entry()->fName);
+
+        // Determine whether we need to analyze & interpret a ShaderNode's data as immutable
+        // SamplerDescs based upon whether:
+        // 1) A backend passes in a non-nullptr outImmutableSamplers param (may be nullptr in
+        //    backends or circumstances where we know immutable sampler data is never stored)
+        // 2) Any data is stored on the ShaderNode
+        // 3) Whether the ShaderNode snippet's ID matches that of any snippet ID that could store
+        //    immutable sampler data.
+        int32_t snippetId = node->codeSnippetId();
+        bool interpretNodeDataAsImmutableSamplerDescs =
+                ((outImmutableSamplers && !node->data().empty()) &&
+                 (snippetId == static_cast<int32_t>(BuiltInCodeSnippetID::kImageShader) ||
+                  snippetId == static_cast<int32_t>(BuiltInCodeSnippetID::kCubicImageShader) ||
+                  snippetId == static_cast<int32_t>(BuiltInCodeSnippetID::kHWImageShader)));
+        if (interpretNodeDataAsImmutableSamplerDescs) {
+            const SkSpan<const uint32_t>& samplerData = node->data();
+            // If we encounter a dynamic sampler, append an uninitialized/invalid SamplerDesc.
+            static constexpr SamplerDesc kUninitializedSamplerDesc {};
+            // The quantity of int32s needed to represent immutable sampler data varies, so handle
+            // incrementing i within the loop.
+            for (size_t i = 0; i < samplerData.size();) {
+                if (samplerData[i] == 0) {
+                    outImmutableSamplers->push_back(kUninitializedSamplerDesc);
+                    i++; continue;
+                }
+                // If the data is non-zero, that means we are using an immutable sampler. Check
+                // whether it uses a known or external format to determine how many uint32s
+                // (samplerDataLength) we must consult in order to obtain all the data necessary to
+                // form a SamplerDesc which can later be used by the resource provider to get an
+                // actual immutable sampler.
+                uint32_t immutableSamplerInfo =
+                        samplerData[i] >> SamplerDesc::kImmutableSamplerInfoShift;
+                SkASSERT(immutableSamplerInfo != 0);
+                const int samplerDataLength = determineSamplerDataLength(immutableSamplerInfo);
+
+                // Gather samplerDataLength int32s from the data span. Use that to populate a
+                // SamplerDesc which enables us to query the resource provider for a real sampler.
+                SamplerDesc samplerDesc;
+                memcpy(&samplerDesc, samplerData.begin() + i, samplerDataLength * sizeof(uint32_t));
+                outImmutableSamplers->push_back(samplerDesc);
+                i += samplerDataLength;
+            }
+        }
 
         for (const TextureAndSampler& t : samplers) {
             result += EmitSamplerLayout(bindingReqs, binding);
@@ -272,7 +325,8 @@ std::string get_node_texture_samplers(const ResourceBindingRequirements& binding
     }
 
     for (const ShaderNode* child : node->children()) {
-        result += get_node_texture_samplers(bindingReqs, child, binding);
+        result += get_node_texture_samplers(
+                bindingReqs, child, binding, outImmutableSamplers);
     }
     return result;
 }
@@ -432,10 +486,14 @@ std::string EmitStorageBufferAccess(const char* bufferNamePrefix,
 
 std::string EmitTexturesAndSamplers(const ResourceBindingRequirements& bindingReqs,
                                     SkSpan<const ShaderNode*> nodes,
-                                    int* binding) {
+                                    int* binding,
+                                    std::vector<SamplerDesc>* outImmutableSamplers) {
     std::string result;
     for (const ShaderNode* n : nodes) {
-        result += get_node_texture_samplers(bindingReqs, n, binding);
+        result += get_node_texture_samplers(bindingReqs,
+                                            n,
+                                            binding,
+                                            outImmutableSamplers);
     }
     return result;
 }
@@ -609,7 +667,8 @@ FragSkSLInfo BuildFragmentSkSL(const Caps* caps,
                                const RenderStep* step,
                                UniquePaintParamsID paintID,
                                bool useStorageBuffers,
-                               skgpu::Swizzle writeSwizzle) {
+                               skgpu::Swizzle writeSwizzle,
+                               std::vector<SamplerDesc>* outImmutableSamplers) {
     FragSkSLInfo result;
     if (!paintID.isValid()) {
         // Depth-only draw so no fragment shader to compile
@@ -626,7 +685,8 @@ FragSkSLInfo BuildFragmentSkSL(const Caps* caps,
                                      &result.fNumTexturesAndSamplers,
                                      &result.fHasPaintUniforms,
                                      &result.fHasGradientBuffer,
-                                     writeSwizzle);
+                                     writeSwizzle,
+                                     outImmutableSamplers);
 
     // Extract blend info after integrating the RenderStep into the final fragment shader in case
     // that changes the HW blending choice to handle analytic coverage.

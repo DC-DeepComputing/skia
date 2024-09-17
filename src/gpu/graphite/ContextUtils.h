@@ -12,6 +12,8 @@
 #include "src/gpu/graphite/PaintParamsKey.h"
 #include "src/gpu/graphite/PipelineData.h"
 
+#include <functional>
+#include <map>
 #include <optional>
 #include <tuple>
 
@@ -115,7 +117,8 @@ FragSkSLInfo BuildFragmentSkSL(const Caps* caps,
                                const RenderStep* renderStep,
                                UniquePaintParamsID paintID,
                                bool useStorageBuffers,
-                               skgpu::Swizzle writeSwizzle);
+                               skgpu::Swizzle writeSwizzle,
+                               std::vector<SamplerDesc>* outImmutableSamplers);
 
 std::string GetPipelineLabel(const ShaderCodeDictionary*,
                              const RenderPassDesc& renderPassDesc,
@@ -144,9 +147,13 @@ std::string EmitUniformsFromStorageBuffer(const char* bufferNamePrefix,
 std::string EmitStorageBufferAccess(const char* bufferNamePrefix,
                                     const char* ssboIndex,
                                     const char* uniformName);
-std::string EmitTexturesAndSamplers(const ResourceBindingRequirements&,
-                                    SkSpan<const ShaderNode*> nodes,
-                                    int* binding);
+// TODO(nicolettep): Add explanation here. nullptr meaning; lambda meaning. Make ptr to func so
+// nullptr is an option?
+std::string EmitTexturesAndSamplers(
+        const ResourceBindingRequirements&,
+        SkSpan<const ShaderNode*> nodes,
+        int* binding,
+        std::vector<SamplerDesc>* outImmutableSamplers);
 std::string EmitSamplerLayout(const ResourceBindingRequirements&, int* binding);
 std::string EmitVaryings(const RenderStep* step,
                          const char* direction,

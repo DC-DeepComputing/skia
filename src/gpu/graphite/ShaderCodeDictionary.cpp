@@ -427,7 +427,8 @@ std::string ShaderInfo::toSkSL(const Caps* caps,
                                int* numTexturesAndSamplersUsed,
                                bool* hasPaintUniforms,
                                bool* hasGradientBuffer,
-                               Swizzle writeSwizzle) {
+                               Swizzle writeSwizzle,
+                               std::vector<SamplerDesc>* outImmutableSamplers) {
     // If we're doing analytic coverage, we must also be doing shading.
     SkASSERT(step->coverage() == Coverage::kNone || step->performsShading());
     const bool hasStepUniforms = step->numUniforms() > 0 && step->coverage() != Coverage::kNone;
@@ -483,7 +484,10 @@ std::string ShaderInfo::toSkSL(const Caps* caps,
 
     {
         int binding = 0;
-        preamble += EmitTexturesAndSamplers(bindingReqs, fRootNodes, &binding);
+        preamble += EmitTexturesAndSamplers(bindingReqs,
+                                            fRootNodes,
+                                            &binding,
+                                            outImmutableSamplers);
         if (step->hasTextures()) {
             preamble += step->texturesAndSamplersSkSL(bindingReqs, &binding);
         }
