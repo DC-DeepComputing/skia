@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9d2dd03_7ab403ff",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 477,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-09-17T14:56:57Z",
+      "side": 1,
+      "message": "SkAlignTo (and therefore can_fit) does some clever stuff that only works aligning to a power of two. Added a comment.",
+      "parentUuid": "5f15df00_82ac2010",
+      "range": {
+        "startLine": 471,
+        "startChar": 0,
+        "endLine": 477,
+        "endChar": 30
+      },
+      "revId": "35b47140be87610663b004b40ab539aeec16f541",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b32e74a2_21e2ce8d",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-09-10T20:52:18Z",
       "side": 1,
       "message": "My guess with why we were seeing increased performance with a larger SSBO block size is that it avoids thrashing re-binding the SSBOs. \n\nWith the original tracker, we\u0027d always ask for an SSBO that held all of the data for a given pipeline (N*`uniformDataSize`) so if that was bigger than the default block size, we\u0027d still get a single SSBO.  Now, we would spread out the data into several buffers and then depending on the sorting arrangement end up with more rebinds.\n\nWe could experiment with adding the extra check for `|| (usesStorageBuffers \u0026\u0026 uniformData.fGpuData.fBuffer !\u003d fLastBinding.fBuffer)` to the if. This would have the behavior of duplicating the data into the current buffer to avoid introducing a rebind.\n\nI\u0027m not sure whether or not that buys us anything, or if the increased SSBO size default isn\u0027t that significant, and would then be entirely mitigated by the adaptive buffer sizing across frames. The adaptive buffer sizing would still work with the redundant upload approach although we would be causing the BufferManager to think it needed more space than it really did (which should then trend towards 0 overestimate with subsequent frames using bigger starting buffers).",
+      "range": {
+        "startLine": 192,
+        "startChar": 12,
+        "endLine": 192,
+        "endChar": 41
+      },
+      "revId": "35b47140be87610663b004b40ab539aeec16f541",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "558564d0_040688d7",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-09-17T14:56:57Z",
+      "side": 1,
+      "message": "Yea I definitely agree that we\u0027re seeing better performance with bigger SSBO blocks because of reduced re-binding. So I am optimistic that adaptive buffer sizing will help a lot. I quickly tried adding the extra check to this if, but it seemed to slow things down in the current CL.",
+      "parentUuid": "b32e74a2_21e2ce8d",
       "range": {
         "startLine": 192,
         "startChar": 12,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c60b4e9_bb0968cd",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-09-17T14:56:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e9498ebf_6d1d36c0",
+      "range": {
+        "startLine": 213,
+        "startChar": 0,
+        "endLine": 217,
+        "endChar": 9
+      },
+      "revId": "35b47140be87610663b004b40ab539aeec16f541",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "579c59db_ad244c31",
@@ -83,6 +155,30 @@
       "writtenOn": "2024-09-10T20:52:18Z",
       "side": 1,
       "message": "We can (if it gives us any performance boost), use a single `UniformDataCache2` here now since the paint uniforms now have the same cache lifetime as the step uniforms.\n\nThe requirement is that now `UniformDataCache2::Index` has to be able to hold `2*DrawList::kMaxRenderSteps+1` (and with an adjusted `kInvalidIndex` value), to be able to handle the case where each renderstep draw has both a unique paint uniform and a unique step uniform value.\n\nRight now with the restricted `kMaxRenderStep` count the SortKey already satisfies this, and hopefully we can get down to storing a single binding index in follow up work and then the bit count requirement goes back to just `kMaxRenderSteps` because the indices would be assigned to the tuple of uniform values in aggregate.",
+      "range": {
+        "startLine": 588,
+        "startChar": 0,
+        "endLine": 589,
+        "endChar": 46
+      },
+      "revId": "35b47140be87610663b004b40ab539aeec16f541",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a3871f3_3fc638b2",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 589,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-09-17T14:56:57Z",
+      "side": 1,
+      "message": "This didn\u0027t noticeably affect performance when I tried it out, but I\u0027m not opposed to it if it\u0027s more appealing to have just one UniformDataCache.",
+      "parentUuid": "579c59db_ad244c31",
       "range": {
         "startLine": 588,
         "startChar": 0,
