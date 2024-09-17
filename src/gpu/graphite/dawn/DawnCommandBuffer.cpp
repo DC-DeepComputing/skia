@@ -823,7 +823,7 @@ void DawnCommandBuffer::setScissor(unsigned int left,
 
 bool DawnCommandBuffer::updateIntrinsicUniforms(SkIRect viewport) {
     UniformManager intrinsicValues{Layout::kStd140};
-    CollectIntrinsicUniforms(fSharedContext->caps(), viewport, fReplayTranslation, fDstCopyOffset,
+    CollectIntrinsicUniforms(fSharedContext->caps(), viewport, fReplayTranslation, fDstCopyBounds,
                              &intrinsicValues);
 
     BindBufferInfo binding =

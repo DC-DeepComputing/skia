@@ -97,7 +97,7 @@ void CollectIntrinsicUniforms(
         const Caps* caps,
         SkIRect viewport,
         SkIPoint replayTranslation,
-        SkIPoint dstCopyOffset,
+        SkIRect dstCopyBounds,
         UniformManager*);
 
 DstReadRequirement GetDstReadRequirement(const Caps*, std::optional<SkBlendMode>, Coverage);
@@ -123,6 +123,8 @@ std::string GetPipelineLabel(const ShaderCodeDictionary*,
                              UniquePaintParamsID paintID);
 
 std::string BuildComputeSkSL(const Caps*, const ComputeStep*);
+
+std::string EmitIntrinsicUniforms(int bufferID, Layout layout);
 
 std::string EmitPaintParamsUniforms(int bufferID,
                                     const Layout layout,

@@ -128,7 +128,7 @@ protected:
     // will have tracked the resource on the CommandBuffer already.
     std::pair<const Texture*, const Sampler*> fDstCopy;
     // Already includes replay translation and respects final color attachment bounds.
-    SkIVector fDstCopyOffset;
+    SkIRect fDstCopyBounds;
 
 private:
     // Release all tracked Resources

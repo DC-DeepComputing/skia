@@ -277,11 +277,49 @@ std::string get_node_texture_samplers(const ResourceBindingRequirements& binding
     return result;
 }
 
-static constexpr Uniform kIntrinsicUniforms[] = { {"rtAdjust",          SkSLType::kFloat4},
+static constexpr Uniform kIntrinsicUniforms[] = { {"inv2ViewWH",        SkSLType::kFloat2},
                                                   {"replayTranslation", SkSLType::kFloat2},
-                                                  {"dstCopyOffset",     SkSLType::kFloat2} };
+                                                  {"dstCopyOffset",     SkSLType::kFloat2},
+                                                  {"dstCopyInvWH",      SkSLType::kFloat2} };
 
-std::string emit_intrinsic_uniforms(int bufferID, Layout layout) {
+}  // anonymous namespace
+
+// FIXME: Could just pass in the adjusted viewport and say that the replay translation is
+// entire control over the viewport origin for NDC
+void CollectIntrinsicUniforms(const Caps* caps,
+                              SkIRect viewport,
+                              SkIPoint replayTranslation,
+                              SkIRect dstCopyBounds,
+                              UniformManager* uniforms) {
+    SkDEBUGCODE(uniforms->setExpectedUniforms(kIntrinsicUniforms, /*isSubstruct=*/false);)
+
+    // inv2ViewWH
+    {
+        // Depending on how the backend defines its NDC space, we may have to flip the Y axis.
+        // We encode this in the inv2ViewWH.y component (negative when Y points up). See comment
+        // in BuildVertexSkSL how these values are used.
+        const float invTwoW = 2.f / viewport.width();
+        const float invTwoH = (caps->ndcYAxisPointsDown() ? 2.f : -2.f) / viewport.height();
+        uniforms->write(SkV2{invTwoW, invTwoH});
+    }
+
+    // replayTranslation
+    uniforms->write(SkV2{(float) replayTranslation.fX, (float) replayTranslation.fY});
+
+    // dstCopyOffset
+    uniforms->write(SkV2{(float) dstCopyBounds.left(), (float) dstCopyBounds.top()});
+
+    // dstCopyInvWH
+    {
+        int width = dstCopyBounds.width();
+        int height = dstCopyBounds.height();
+        uniforms->write(SkV2{width ? 1.f / width : 0.f, height ? 1.f / height : 0.f});
+    }
+
+    SkDEBUGCODE(uniforms->doneWithExpectedUniforms());
+}
+
+std::string EmitIntrinsicUniforms(int bufferID, Layout layout) {
     auto offsetter = UniformOffsetCalculator::ForTopLevel(layout);
 
     std::string result = get_uniform_header(bufferID, "Intrinsic");
@@ -292,39 +330,6 @@ std::string emit_intrinsic_uniforms(int bufferID, Layout layout) {
               "Arrays are not supported in intrinsic uniforms");
 
     return result;
-}
-
-}  // anonymous namespace
-
-void CollectIntrinsicUniforms(const Caps* caps,
-                              SkIRect viewport,
-                              SkIPoint replayTranslation,
-                              SkIPoint dstCopyOffset,
-                              UniformManager* uniforms) {
-    SkDEBUGCODE(uniforms->setExpectedUniforms(kIntrinsicUniforms, /*isSubstruct=*/false);)
-
-    // rtAdjust
-    {
-        // The rtAdjust defines the linear transform from logical pixel space (before any replay
-        // translation) to the NDC space. So we have to subtract off the replay offset.
-        const float x = viewport.left() - replayTranslation.x();
-        const float y = viewport.top()  - replayTranslation.y();
-        const float invTwoW = 2.f / viewport.width();
-        const float invTwoH = 2.f / viewport.height();
-        // Depending on how the backend defines its NDC space, we may have to flip the Y axis
-        // even though all logical rendering and actual pixel storage is assumed to be top-left.
-        const float yFlip = caps->ndcYAxisPointsDown() ? 1.f : -1.f;
-        SkV4 rtAdjust = {invTwoW, yFlip*invTwoH, -1.f - x*invTwoW, yFlip*(-1.f - y*invTwoH)};
-        uniforms->write(rtAdjust);
-    }
-
-    // replayTranslation
-    uniforms->write(SkV2{(float) replayTranslation.fX, (float) replayTranslation.fY});
-
-    // dstCopyOffset
-    uniforms->write(SkV2{(float) dstCopyOffset.fX, (float) dstCopyOffset.fY});
-
-    SkDEBUGCODE(uniforms->doneWithExpectedUniforms());
 }
 
 std::string EmitPaintParamsUniforms(int bufferID,
@@ -539,8 +544,8 @@ VertSkSLInfo BuildVertexSkSL(const ResourceBindingRequirements& bindingReqs,
     const bool useShadingStorageBuffer = useStorageBuffers && step->performsShading();
 
     // Fixed program header (intrinsics are always declared as an uniform interface block)
-    std::string sksl = emit_intrinsic_uniforms(bindingReqs.fIntrinsicBufferBinding,
-                                               bindingReqs.fUniformBufferLayout);
+    std::string sksl = EmitIntrinsicUniforms(bindingReqs.fIntrinsicBufferBinding,
+                                             bindingReqs.fUniformBufferLayout);
 
     if (step->numVertexAttributes() > 0 || step->numInstanceAttributes() > 0) {
         sksl += emit_attributes(step->vertexAttributes(), step->instanceAttributes());
@@ -576,7 +581,14 @@ VertSkSLInfo BuildVertexSkSL(const ResourceBindingRequirements& bindingReqs,
     }
 
     sksl += step->vertexSkSL();
-    sksl += "sk_Position = float4(devPosition.xy * rtAdjust.xy + devPosition.ww * rtAdjust.zw,"
+
+    // When the NDC Y axis points down, we want to construct an rtAdjust value equal to
+    //  {1/(2W), 1/(2H), -1 - replayTranslation.x/(2W), -1 - replayTranslation.y/(2H)}
+    // When the NDC Y axis points up, we want to negate the 2nd and 4th components. If we assume
+    // that the `inv2ViewWH` uniform holds a negative value when the NDC Y axis points up,
+    // this equation is sufficient:
+    sksl += "float2 ndcTranslate = -sign(inv2ViewWH) - replayTranslation * inv2ViewWH;";
+    sksl += "sk_Position = float4(devPosition.xy * inv2ViewWH.xy + devPosition.ww * ndcTranslate,"
             "devPosition.zw);";
 
     if (useShadingStorageBuffer) {
@@ -628,9 +640,8 @@ FragSkSLInfo BuildFragmentSkSL(const Caps* caps,
                                      &result.fHasGradientBuffer,
                                      writeSwizzle);
 
-    // Extract blend info after integrating the RenderStep into the final fragment shader in case
-    // that changes the HW blending choice to handle analytic coverage.
     result.fBlendInfo = shaderInfo.blendInfo();
+    result.fDstReadReq = shaderInfo.dstReadRequirement();
     result.fRequiresLocalCoords = shaderInfo.needsLocalCoords();
     result.fData = {shaderInfo.data()};
     result.fLabel = writeSwizzle.asString().c_str();

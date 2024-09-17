@@ -112,7 +112,8 @@ bool CommandBuffer::addRenderPass(const RenderPassDesc& renderPassDesc,
     }
     // Save the dstCopy texture so that it can be embedded into texture bind commands later on.
     fDstCopy.first = dstCopy;
-    fDstCopyOffset = dstCopyBounds.topLeft();
+    fDstCopyBounds = dstCopy ? SkIRect::MakePtSize(dstCopyBounds.topLeft(), dstCopy->dimensions())
+                             : SkIRect::MakeEmpty();
     if (dstCopy && !fDstCopy.second) {
         // Only lookup the sampler the first time we require a dstCopy. The texture can change
         // on subsequent passes but it will always use the same nearest neighbor sampling.

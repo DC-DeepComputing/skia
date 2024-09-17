@@ -152,26 +152,6 @@ void AddBlendMode(const KeyContext& keyContext,
     }
 }
 
-void AddDstReadBlock(const KeyContext& keyContext,
-                     PaintParamsKeyBuilder* builder,
-                     PipelineDataGatherer* gatherer,
-                     DstReadRequirement dstReadReq) {
-    switch(dstReadReq) {
-        case DstReadRequirement::kNone:
-            SkASSERT(false);            // This should never be reached
-            return;
-        case DstReadRequirement::kTextureCopy:
-            [[fallthrough]];
-        case DstReadRequirement::kTextureSample:
-            DstReadSampleBlock::AddBlock(keyContext, builder, gatherer, keyContext.dstTexture(),
-                                         keyContext.dstOffset());
-            break;
-        case DstReadRequirement::kFramebufferFetch:
-            builder->addBlock(BuiltInCodeSnippetID::kDstReadFetch);
-            break;
-    }
-}
-
 void AddDitherBlock(const KeyContext& keyContext,
                     PaintParamsKeyBuilder* builder,
                     PipelineDataGatherer* gatherer,
@@ -292,51 +272,30 @@ void PaintParams::handleDithering(const KeyContext& keyContext,
     }
 }
 
-void PaintParams::handleDstRead(const KeyContext& keyContext,
-                                PaintParamsKeyBuilder* builder,
-                                PipelineDataGatherer* gatherer) const {
-    if (fDstReadReq != DstReadRequirement::kNone) {
-        Blend(keyContext, builder, gatherer,
-              /* addBlendToKey= */ [&] () -> void {
-                  if (fFinalBlender) {
-                      AddToKey(keyContext, builder, gatherer, fFinalBlender.get());
-                  } else {
-                      AddFixedBlendMode(keyContext, builder, gatherer, SkBlendMode::kSrcOver);
-                  }
-              },
-              /* addSrcToKey= */ [&]() -> void {
-                  this->handleDithering(keyContext, builder, gatherer);
-              },
-              /* addDstToKey= */ [&]() -> void {
-                  AddDstReadBlock(keyContext, builder, gatherer, fDstReadReq);
-              });
-    } else {
-        this->handleDithering(keyContext, builder, gatherer);
-    }
-}
-
 void PaintParams::toKey(const KeyContext& keyContext,
                         PaintParamsKeyBuilder* builder,
                         PipelineDataGatherer* gatherer) const {
-    this->handleDstRead(keyContext, builder, gatherer);
+    // Root Node 0 is the source color, which is the output of all effects post dithering
+    this->handleDithering(keyContext, builder, gatherer);
 
+    // Root Node 1 is the final blender
     std::optional<SkBlendMode> finalBlendMode = this->asFinalBlendMode();
-    if (fDstReadReq != DstReadRequirement::kNone) {
-        // In this case the blend will have been handled by shader-based blending with the dstRead.
-        finalBlendMode = SkBlendMode::kSrc;
+    if (finalBlendMode) {
+        // With no shader blending, be as explicit as possible about the final blend
+        if (fDstReadReq == DstReadRequirement::kNone) {
+            AddFixedBlendMode(keyContext, builder, gatherer, *finalBlendMode);
+        } else {
+            // FIXME how much does this actually come up?
+            AddBlendMode(keyContext, builder, gatherer, *finalBlendMode);
+        }
+    } else {
+        AddToKey(keyContext, builder, gatherer, fFinalBlender.get());
     }
 
+    // Optional Root Node 2 is the clip
     if (fClipShader) {
-        ClipBlock::BeginBlock(keyContext, builder, gatherer);
-
-            AddToKey(keyContext, builder, gatherer, fClipShader.get());
-
-        builder->endBlock();
+        AddToKey(keyContext, builder, gatherer, fClipShader.get());
     }
-
-    // Set the hardware blend mode.
-    SkASSERT(finalBlendMode);
-    AddFixedBlendMode(keyContext, builder, gatherer, *finalBlendMode);
 }
 
 // TODO(b/330864257): Can be deleted once keys are determined by the Device draw.
