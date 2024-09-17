@@ -30,6 +30,7 @@
 #include <array>
 #include <cstddef>
 #include <cstdint>
+#include <map>
 #include <memory>
 #include <string>
 #include <string_view>
@@ -231,14 +232,15 @@ public:
 
     const skia_private::TArray<uint32_t>& data() const { return fData; }
 
+    // TODO(nicolettep): Make all params that are outputs to have "out" prepended to var name
     std::string toSkSL(const Caps* caps,
                        const RenderStep* step,
                        bool useStorageBuffers,
                        int* numTexturesAndSamplersUsed,
                        bool* hasPaintUniforms,
                        bool* hasGradientBuffer,
-                       Swizzle writeSwizzle);
-
+                       Swizzle writeSwizzle,
+                       std::vector<SamplerDesc>* outImmutableSamplers);
 private:
     // Recursive method which traverses ShaderNodes in a depth-first manner to aggregate all
     // ShaderNode data (not owned by ShaderNode) into ShaderInfo's owned fData.
