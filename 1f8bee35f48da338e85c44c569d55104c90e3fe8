@@ -106,6 +106,24 @@
       "parentUuid": "59566f2e_28cbc877",
       "revId": "1f8bee35f48da338e85c44c569d55104c90e3fe8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d2d43283_7461571c",
+        "filename": "src/ports/SkTypeface_fontations.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-09-17T07:16:51Z",
+      "side": 1,
+      "message": "Ack, thanks for the fix.",
+      "parentUuid": "e553dfa4_e1839479",
+      "revId": "1f8bee35f48da338e85c44c569d55104c90e3fe8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
