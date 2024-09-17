@@ -418,6 +418,12 @@ public:
         return sk_sp<SkTypeface_fontconfig>(new SkTypeface_fontconfig(std::move(pattern),
                                                                       std::move(sysroot)));
     }
+    SkTypeface_fontconfig(sk_sp<SkTypeface> proxy, SkAutoFcPattern pattern, SkString sysroot)
+            : SkTypeface(skfontstyle_from_fcpattern(pattern),
+                         FC_PROPORTIONAL != get_int(pattern, FC_SPACING, FC_PROPORTIONAL))
+            , fPattern(std::move(pattern))
+            , fSysroot(std::move(sysroot))
+            , fProxy(std::move(proxy)) { }
     mutable SkAutoFcPattern fPattern;  // Mutable for passing to FontConfig API.
     const SkString fSysroot;
 
@@ -477,7 +483,12 @@ public:
     }
     sk_sp<SkTypeface> onMakeClone(const SkFontArguments& args) const override {
         // TODO: need to clone FC_MATRIX and FC_EMBOLDEN by wrapping this
-        return fProxy->onMakeClone(args);
+        sk_sp<SkTypeface> proxy = fProxy->makeClone(args);
+        if (!proxy) {
+            return nullptr;
+        }
+        SkAutoFcPattern duplicatedPattern(FcPatternDuplicate(fPattern));
+        return sk_make_sp<SkTypeface_fontconfig>(proxy, std::move(duplicatedPattern), fSysroot);
     }
 
     std::unique_ptr<SkScalerContext> onCreateScalerContext(const SkScalerContextEffects& effects, const SkDescriptor* descr) const override;
@@ -538,10 +549,24 @@ private:
             resolvedFilename += filename;
             if (sk_exists(resolvedFilename.c_str(), kRead_SkFILE_Flag)) {
                 filename = resolvedFilename.c_str();
+                SkDebugf("%s: exists\n", filename);
+            } else {
+                SkDebugf("%s: does not exists\n", resolvedFilename.c_str());
             }
+        } else {
+            SkDebugf("%s: sysroot is empty\n", resolvedFilename.c_str());
         }
         // TODO: FC_VARIABLE and FC_FONT_VARIATIONS in arguments
         fProxy = SkTypeface_FreeType::MakeFromStream(SkStream::MakeFromFile(filename), SkFontArguments());
+        if (fProxy->isBold()) {
+            SkDebugf("Bold\n");
+        }
+        if (get_bool(fPattern, FC_EMBOLDEN)) {
+            SkDebugf("Embolden\n");
+        }
+
+        auto style = skfontstyle_from_fcpattern(fPattern);
+        SkDebugf("style.Weight=%d\n", style.weight());
     }
     sk_sp<SkTypeface> fProxy;
 };
@@ -725,6 +750,7 @@ class SkFontMgr_fontconfig : public SkFontMgr {
         if (!pattern) {
             return nullptr;
         }
+        auto res = get_bool(pattern, FC_EMBOLDEN);
         // Cannot hold FCLocker when calling fTFCache.add; an evicted typeface may need to lock.
         // Must hold fTFCacheMutex when interacting with fTFCache.
         SkAutoMutexExclusive ama(fTFCacheMutex);
