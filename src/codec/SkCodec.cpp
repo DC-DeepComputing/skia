@@ -79,6 +79,10 @@
 #endif
 #endif // !defined(SK_DISABLE_LEGACY_INIT_DECODERS)
 
+#if defined(SK_BUILD_FOR_ANDROID_FRAMEWORK)
+#include "cutils/properties.h"
+#endif // defined(SK_BUILD_FOR_ANDROID_FRAMEWORK)
+
 namespace SkCodecs {
 // A static variable inside a function avoids a static initializer.
 // https://chromium.googlesource.com/chromium/src/+/HEAD/docs/static_initializers.md#removing-static-initializers
@@ -150,6 +154,14 @@ bool HasDecoder(std::string_view id) {
         }
     }
     return false;
+}
+
+bool AvifEnabled() {
+#if defined(SK_BUILD_FOR_ANDROID_FRAMEWORK)
+  return property_get_int32("media.avif.crabbyavif", 0) != 0;
+#else
+  return true;
+#endif // defined(SK_BUILD_FOR_ANDROID_FRAMEWORK)
 }
 
 }  // namespace SkCodecs
