@@ -35,6 +35,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e2955bd0_0fdad448",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2024-09-17T16:53:31Z",
+      "side": 1,
+      "message": "Thanks for this very nice and quick review!\n\nI will address the comments tomorrow.",
+      "revId": "c60d000ea96c6d6b49eeec763de6d8335ac22083",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0c5c183f_e3ceb197",
@@ -164,6 +181,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "18c08d6d_86a4dc64",
+        "filename": "src/partition_alloc/test_support.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2024-09-17T16:53:31Z",
+      "side": 1,
+      "message": "At the end, this directory will be similar to Dawn [[here]](https://source.chromium.org/chromium/chromium/src/+/main:third_party/dawn/src/dawn/partition_alloc/BUILD.gn)\n\nIn a follow-up, the \"raw_ptr\u003cT\u003e\" definition will be added to this directory. It will either be:\n1. \"Delegated to by partition_alloc\"\n2. \"Provided by skia\"\n\nThe \"Skia\" implementation will be a regular pointer, used in production for non-chromium project.\n\nIt will be imported as part of the Skia target named \"partition_alloc\". \n\nI can split \"partition_alloc\" and \"test_support\" into two directories if needed. However I would still have to find a location for where the \"src/partition_alloc\" \n at the end, and the logic for `skia_enable_partition_alloc` would have to be duplicated.\n\nIn this case, do you agree keeping `src/partition_alloc` WDYT?",
+      "parentUuid": "21f6b0c1_cd6bb679",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 1
+      },
+      "revId": "c60d000ea96c6d6b49eeec763de6d8335ac22083",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "cfb9854d_866aa203",
         "filename": "src/partition_alloc/test_support.h",
         "patchSetId": 14
@@ -175,6 +216,30 @@
       "writtenOn": "2024-09-17T16:05:27Z",
       "side": 1,
       "message": "Google is an LLC",
+      "range": {
+        "startLine": 2,
+        "startChar": 25,
+        "endLine": 2,
+        "endChar": 28
+      },
+      "revId": "c60d000ea96c6d6b49eeec763de6d8335ac22083",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e238cf8b_2895d6d9",
+        "filename": "src/partition_alloc/test_support.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2024-09-17T16:53:31Z",
+      "side": 1,
+      "message": "Okay, I will update it.\n\nNote that this was copy-pasted from Skia, and \"LLC\" does still represent the majority of the files:\n```\narthursonzogni@arthursonzogni:~/skia/src$ git grep -hoP \" Google .*\" | sort | uniq -c\n      1  Google Fonts Fontations Rust libraries. */\n   1240  Google Inc.\n      1  Google Inc.\\n\"\n    806  Google LLC\n     69  Google LLC.\n```",
+      "parentUuid": "cfb9854d_866aa203",
       "range": {
         "startLine": 2,
         "startChar": 25,
