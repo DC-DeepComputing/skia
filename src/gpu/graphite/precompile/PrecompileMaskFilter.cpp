@@ -9,10 +9,13 @@
 
 #include "include/gpu/graphite/precompile/PaintOptions.h"
 #include "include/gpu/graphite/precompile/PrecompileColorFilter.h"
+#include "include/gpu/graphite/precompile/PrecompileShader.h"
 #include "src/gpu/graphite/Caps.h"
+#include "src/gpu/graphite/InternalDrawTypeFlags.h"
 #include "src/gpu/graphite/KeyContext.h"
 #include "src/gpu/graphite/PrecompileInternal.h"
 #include "src/gpu/graphite/RenderPassDesc.h"
+#include "src/gpu/graphite/Renderer.h"
 #include "src/gpu/graphite/precompile/PrecompileImageFiltersPriv.h"
 
 namespace skgpu::graphite {
@@ -62,6 +65,37 @@ private:
         PrecompileImageFiltersPriv::CreateBlurImageFilterPipelines(keyContext, gatherer,
                                                                    coverageRenderPassDesc,
                                                                    processCombination);
+
+        // c.f. AutoLayerForImageFilter::addMaskFilterLayer.
+        {
+            // The restore draw takes over all the shading effects
+            PaintOptions restoreOptions = paintOptions;
+            restoreOptions.setMaskFilters({});
+            restoreOptions.priv().buildCombinations(
+                    keyContext,
+                    gatherer,
+                    static_cast<DrawTypeFlags>(InternalDrawTypeFlags::kCoverageMask),
+                    /* withPrimitiveBlender= */ false,
+                    Coverage::kSingleChannel,
+                    renderPassDescIn,
+                    processCombination);
+        }
+
+        {
+            // The initial draw into the coverage layer is just a solid white kSrcOver SkPaint
+            PaintOptions coverageOptions;
+            coverageOptions.setShaders({ PrecompileShaders::Color() });
+            coverageOptions.setBlendModes({ SkBlendMode::kSrcOver });
+
+            coverageOptions.priv().buildCombinations(
+                    keyContext,
+                    gatherer,
+                    static_cast<DrawTypeFlags>(InternalDrawTypeFlags::kAnalyticRRect),
+                    /* withPrimitiveBlender= */ false,
+                    Coverage::kSingleChannel,
+                    coverageRenderPassDesc,
+                    processCombination);
+        }
     }
 };
 
