@@ -1815,13 +1815,11 @@ void check_draw(skiatest::Reporter* reporter,
                 sk_sp<SkShader> clipShader) {
     static const DrawData kDrawData;
 
-    int before = context->priv().globalCache()->numGraphicsPipelines();
+    std::vector<skgpu::UniqueKey> precompileKeys, drawKeys;
 
-#ifdef SK_DEBUG
-    std::vector<skgpu::UniqueKey> beforeKeys;
+    UniqueKeyUtils::FetchUniqueKeys(context->priv().globalCache(), &precompileKeys);
 
-    UniqueKeyUtils::FetchUniqueKeys(context->priv().globalCache(), &beforeKeys);
-#endif
+    context->priv().globalCache()->resetGraphicsPipelines();
 
     {
         // TODO: vary the colorType of the target surface too
@@ -1901,48 +1899,65 @@ void check_draw(skiatest::Reporter* reporter,
         testContext->syncedSubmit(context);
     }
 
-    int after = context->priv().globalCache()->numGraphicsPipelines();
+    UniqueKeyUtils::FetchUniqueKeys(context->priv().globalCache(), &drawKeys);
 
-    // Actually using the SkPaint with the specified type of draw shouldn't have caused
-    // any additional compilation
-    REPORTER_ASSERT(reporter, before == after, "before: %d after: %d", before, after);
+    // Actually using the SkPaint with the specified type of draw shouldn't have added
+    // any additional pipelines
+    int missingPipelines = 0;
+    for (const skgpu::UniqueKey& drawKey : drawKeys) {
+        bool found = std::find(precompileKeys.begin(), precompileKeys.end(), drawKey) !=
+                     precompileKeys.end();
+        if (!found) {
+            ++missingPipelines;
+        }
+    }
+
+    REPORTER_ASSERT(reporter, missingPipelines == 0,
+                    "precompile pipelines: %zu draw pipelines: %zu - %d missing from precompile",
+                    precompileKeys.size(), drawKeys.size(), missingPipelines);
 #ifdef SK_DEBUG
-    if (before != after) {
+    if (missingPipelines) {
         const RendererProvider* rendererProvider = context->priv().rendererProvider();
         const ShaderCodeDictionary* dict = context->priv().shaderCodeDictionary();
 
-        std::vector<skgpu::UniqueKey> afterKeys;
-
-        UniqueKeyUtils::FetchUniqueKeys(context->priv().globalCache(), &afterKeys);
-
-        for (const skgpu::UniqueKey& afterKey : afterKeys) {
-            if (std::find(beforeKeys.begin(), beforeKeys.end(), afterKey) == beforeKeys.end()) {
-                GraphicsPipelineDesc originalPipelineDesc;
-                RenderPassDesc originalRenderPassDesc;
-                UniqueKeyUtils::ExtractKeyDescs(context, afterKey,
-                                                &originalPipelineDesc,
-                                                &originalRenderPassDesc);
-
-                SkDebugf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
-                afterKey.dump("New key from draw:");
-                UniqueKeyUtils::DumpDescs(rendererProvider, dict,
-                                          originalPipelineDesc,
-                                          originalRenderPassDesc);
-            }
-        }
-
-        SkDebugf("-------------------------- %zu before keys\n", beforeKeys.size());
+        SkDebugf("-------------------------- %zu pipelines from draw(s)\n", drawKeys.size());
         int count = 0;
-        for (const skgpu::UniqueKey& beforeKey : beforeKeys) {
+        for (const skgpu::UniqueKey& drawKey : drawKeys) {
+            bool found = std::find(precompileKeys.begin(), precompileKeys.end(), drawKey) !=
+                         precompileKeys.end();
+
             GraphicsPipelineDesc originalPipelineDesc;
             RenderPassDesc originalRenderPassDesc;
-            UniqueKeyUtils::ExtractKeyDescs(context, beforeKey,
+            UniqueKeyUtils::ExtractKeyDescs(context, drawKey,
                                             &originalPipelineDesc,
                                             &originalRenderPassDesc);
 
             SkString label;
-            label.appendf("--- %d:", count++);
-            beforeKey.dump(label.c_str());
+            label.appendf("--- Draw key %d (%s in precompile):\n",
+                          count++, found ? "found": "not-found");
+            drawKey.dump(label.c_str());
+            UniqueKeyUtils::DumpDescs(rendererProvider, dict,
+                                      originalPipelineDesc,
+                                      originalRenderPassDesc);
+        }
+
+        SkDebugf("-------------------------- %zu pipelines from precompile\n",
+                 precompileKeys.size());
+        count = 0;
+        for (const skgpu::UniqueKey& precompileKey : precompileKeys) {
+            bool used = std::find(drawKeys.begin(), drawKeys.end(), precompileKey)
+                        != drawKeys.end();
+
+            GraphicsPipelineDesc originalPipelineDesc;
+            RenderPassDesc originalRenderPassDesc;
+            UniqueKeyUtils::ExtractKeyDescs(context, precompileKey,
+                                            &originalPipelineDesc,
+                                            &originalRenderPassDesc);
+
+            SkString label;
+            label.appendf("--- Precompile key %d (%s in draws):\n",
+                          count++, used ? "used" : "unused");
+            precompileKey.dump(label.c_str());
             UniqueKeyUtils::DumpDescs(rendererProvider, dict,
                                       originalPipelineDesc,
                                       originalRenderPassDesc);
@@ -2308,6 +2323,7 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
             ShaderType::kColorFilter,
             ShaderType::kCoordClamp,
             ShaderType::kConicalGradient,
+            ShaderType::kEmpty,
             ShaderType::kLinearGradient,
             ShaderType::kLocalMatrix,
             ShaderType::kPerlinNoise,
