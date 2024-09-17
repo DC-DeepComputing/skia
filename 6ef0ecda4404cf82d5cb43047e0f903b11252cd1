@@ -1,0 +1,39 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "034a7f80_5bf0bfa3",
+        "filename": "include/codec/SkCodec.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1087,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2024-09-17T20:37:51Z",
+      "side": 1,
+      "message": "i had to add this comment because without this one of the clang-tidy bots were failing with the following error:\n\n```\n/mnt/pd0/s/w/ir/cache/work/skia/out/Build-Debian10-Clang-x86_64-Debug-Tidy/Debug/../../../../../../skia/include/codec/SkCodec.h:1087:1: error: namespace \u0027SkCodecs\u0027 not terminated with a closing comment [llvm-namespace-comment,-warnings-as-errors]\n}\n^\n   // namespace SkCodecs\n```",
+      "fixSuggestions": [
+        {
+          "fixId": "98a54964_80552453",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/codec/SkCodec.h",
+              "range": {
+                "startLine": 1087,
+                "startChar": 0,
+                "endLine": 1088,
+                "endChar": 0
+              },
+              "replacement": "}  // namespace SkCodecs\n"
+            }
+          ]
+        }
+      ],
+      "revId": "6ef0ecda4404cf82d5cb43047e0f903b11252cd1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
