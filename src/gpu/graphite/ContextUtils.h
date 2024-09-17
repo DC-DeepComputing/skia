@@ -71,6 +71,7 @@ struct FragSkSLInfo {
 
 std::tuple<UniquePaintParamsID, UniformDataBlock, TextureDataBlock> ExtractPaintData(
         Recorder*,
+        UniformDataCache* uniformDataCache,
         PipelineDataGatherer* gatherer,
         PaintParamsKeyBuilder* builder,
         const Layout layout,

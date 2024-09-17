@@ -2009,6 +2009,7 @@ void extract_vs_build_subtest(skiatest::Reporter* reporter,
     PaintParamsKeyBuilder builder(dict);
     PipelineDataGatherer paramsGatherer(Layout::kMetal);
     PipelineDataGatherer precompileGatherer(Layout::kMetal);
+    UniformDataCache uniformDataCache;
 
     for (bool withPrimitiveBlender: {false, true}) {
 
@@ -2052,6 +2053,7 @@ void extract_vs_build_subtest(skiatest::Reporter* reporter,
 
         auto [paintID, uData, tData] =
                 ExtractPaintData(recorder,
+                                 &uniformDataCache,
                                  &paramsGatherer,
                                  &builder,
                                  Layout::kMetal,
