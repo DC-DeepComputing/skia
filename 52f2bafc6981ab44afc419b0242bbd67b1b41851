@@ -34,6 +34,24 @@
       "parentUuid": "eb175483_15215772",
       "revId": "52f2bafc6981ab44afc419b0242bbd67b1b41851",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "393db20d_20721312",
+        "filename": "tests/FontMgrFontConfigTest.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-09-17T06:53:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e0247f4b_f0ea13e6",
+      "revId": "52f2bafc6981ab44afc419b0242bbd67b1b41851",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
