@@ -11,7 +11,6 @@
 #include "include/core/SkColorPriv.h"
 #include "include/core/SkData.h"
 #include "include/core/SkFont.h"
-#include "include/core/SkFontTypes.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkString.h"
@@ -74,36 +73,15 @@ class FontationsFtCompareGM : public GM {
 public:
     FontationsFtCompareGM(std::string testName,
                           std::string fontNameFilterRegexp,
-                          std::string langFilterRegexp,
-                          SkFontHinting hintingMode = SkFontHinting::kNone)
+                          std::string langFilterRegexp)
             : fTestDataIterator(fontNameFilterRegexp, langFilterRegexp)
-            , fTestName(testName.c_str())
-            , fHintingMode(hintingMode) {
+            , fTestName(testName.c_str()) {
         this->setBGColor(SK_ColorWHITE);
     }
 
 protected:
     SkString getName() const override {
-        SkString testName = SkStringPrintf("fontations_compare_ft_%s", fTestName.c_str());
-        switch (fHintingMode) {
-            case SkFontHinting::kNormal: {
-                testName.append("_hint_normal");
-                break;
-            }
-            case SkFontHinting::kSlight: {
-                testName.append("_hint_slight");
-                break;
-            }
-            case SkFontHinting::kFull: {
-                testName.append("_hint_full");
-                break;
-            }
-            case SkFontHinting::kNone: {
-                testName.append("_hint_none");
-                break;
-            }
-        }
-        return testName;
+        return SkStringPrintf("fontations_compare_ft_%s", fTestName.c_str());
     }
 
     SkISize getISize() override {
@@ -133,11 +111,11 @@ protected:
                 return DrawResult::kSkip;
             }
 
-            auto configureFont = [this](SkFont& font) {
+            auto configureFont = [](SkFont& font) {
                 font.setSize(kFontSize);
                 font.setEdging(SkFont::Edging::kSubpixelAntiAlias);
                 font.setSubpixel(true);
-                font.setHinting(fHintingMode);
+                font.setHinting(SkFontHinting::kNone);
             };
 
             SkFont font(testTypeface);
@@ -247,14 +225,13 @@ protected:
 
                             SkPixmap fontationsPixmap, freetypePixmap;
                             if (!canvasPixmap.extractSubset(&fontationsPixmap, fontationsIBox) ||
-                                !canvasPixmap.extractSubset(&freetypePixmap, freetypeIBox)) {
+                                !canvasPixmap.extractSubset(&freetypePixmap, freetypeIBox))
+                            {
                                 break;
                             }
 
-                            comparePixels(fontationsPixmap,
-                                          freetypePixmap,
-                                          &diffBitmap,
-                                          &highlightDiffBitmap);
+                            comparePixels(fontationsPixmap, freetypePixmap,
+                                          &diffBitmap, &highlightDiffBitmap);
 
                             /* Place comparison results as two extra columns, shift up to account
                                for placement of rectangles vs. SkTextBlobs (baseline shift). */
@@ -288,7 +265,6 @@ private:
 
     TestFontDataProvider fTestDataIterator;
     SkString fTestName;
-    SkFontHinting fHintingMode;
     sk_sp<SkTypeface> fReportTypeface;
     std::unique_ptr<SkFontArguments::VariationPosition::Coordinate[]> fCoordinates;
 };
@@ -303,51 +279,13 @@ DEF_GM(return new FontationsFtCompareGM(
         "et_Latn|az_Latn|az_Cyrl|la_Latn|tg_Latn|tg_Cyrl|sw_Latn|mn_Cyrl|kk_"
         "Latn|kk_Cyrl|sq_Latn|af_Latn|ha_Latn|ky_Cyrl"));
 
-DEF_GM(return new FontationsFtCompareGM(
-        "NotoSans",
-        "Noto Sans",
-        "en_Latn|es_Latn|pt_Latn|id_Latn|ru_Cyrl|fr_Latn|tr_Latn|vi_Latn|de_"
-        "Latn|it_Latn|pl_Latn|nl_Latn|uk_Cyrl|gl_Latn|ro_Latn|cs_Latn|hu_Latn|"
-        "el_Grek|se_Latn|da_Latn|bg_Latn|sk_Latn|fi_Latn|bs_Latn|ca_Latn|no_"
-        "Latn|sr_Latn|sr_Cyrl|lt_Latn|hr_Latn|sl_Latn|uz_Latn|uz_Cyrl|lv_Latn|"
-        "et_Latn|az_Latn|az_Cyrl|la_Latn|tg_Latn|tg_Cyrl|sw_Latn|mn_Cyrl|kk_"
-        "Latn|kk_Cyrl|sq_Latn|af_Latn|ha_Latn|ky_Cyrl",
-        SkFontHinting::kSlight));
-
-DEF_GM(return new FontationsFtCompareGM(
-        "NotoSans",
-        "Noto Sans",
-        "en_Latn|es_Latn|pt_Latn|id_Latn|ru_Cyrl|fr_Latn|tr_Latn|vi_Latn|de_"
-        "Latn|it_Latn|pl_Latn|nl_Latn|uk_Cyrl|gl_Latn|ro_Latn|cs_Latn|hu_Latn|"
-        "el_Grek|se_Latn|da_Latn|bg_Latn|sk_Latn|fi_Latn|bs_Latn|ca_Latn|no_"
-        "Latn|sr_Latn|sr_Cyrl|lt_Latn|hr_Latn|sl_Latn|uz_Latn|uz_Cyrl|lv_Latn|"
-        "et_Latn|az_Latn|az_Cyrl|la_Latn|tg_Latn|tg_Cyrl|sw_Latn|mn_Cyrl|kk_"
-        "Latn|kk_Cyrl|sq_Latn|af_Latn|ha_Latn|ky_Cyrl",
-        SkFontHinting::kNormal));
-
 DEF_GM(return new FontationsFtCompareGM("NotoSans_Deva",
                                         "Noto Sans Devanagari",
                                         "hi_Deva|mr_Deva"));
 
-DEF_GM(return new FontationsFtCompareGM(
-        "NotoSans_Deva", "Noto Sans Devanagari", "hi_Deva|mr_Deva", SkFontHinting::kSlight));
-
-DEF_GM(return new FontationsFtCompareGM(
-        "NotoSans_Deva", "Noto Sans Devanagari", "hi_Deva|mr_Deva", SkFontHinting::kNormal));
-
 DEF_GM(return new FontationsFtCompareGM("NotoSans_ar_Arab",
                                         "Noto Sans Arabic",
                                         "ar_Arab|uz_Arab|kk_Arab|ky_Arab"));
-
-DEF_GM(return new FontationsFtCompareGM("NotoSans_ar_Arab",
-                                        "Noto Sans Arabic",
-                                        "ar_Arab|uz_Arab|kk_Arab|ky_Arab",
-                                        SkFontHinting::kSlight));
-
-DEF_GM(return new FontationsFtCompareGM("NotoSans_ar_Arab",
-                                        "Noto Sans Arabic",
-                                        "ar_Arab|uz_Arab|kk_Arab|ky_Arab",
-                                        SkFontHinting::kNormal));
 
 DEF_GM(return new FontationsFtCompareGM("NotoSans_Beng", "Noto Sans Bengali", "bn_Beng"));
 
