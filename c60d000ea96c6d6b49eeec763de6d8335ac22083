@@ -18,6 +18,69 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5138b68a_274870c7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-09-17T16:05:27Z",
+      "side": 1,
+      "message": "Be advised, I\u0027m not actually a Skia tech lead, I only played one on TV, but I\u0027ve been around enough to hopefully guide you in the right direction as far as structure and style go.",
+      "revId": "c60d000ea96c6d6b49eeec763de6d8335ac22083",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c5c183f_e3ceb197",
+        "filename": "dm/DM.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 1579,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-09-17T16:05:27Z",
+      "side": 1,
+      "message": "I realize there\u0027s a `using` statement in this file, but that was added to avoid large churn on earlier change. We strive to use the namespace always (unless the code is being written inside of the given namespace).",
+      "range": {
+        "startLine": 1579,
+        "startChar": 4,
+        "endLine": 1579,
+        "endChar": 38
+      },
+      "revId": "c60d000ea96c6d6b49eeec763de6d8335ac22083",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "10d4624a_fe72212f",
+        "filename": "src/partition_alloc/BUILD.gn",
+        "patchSetId": 14
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-09-17T16:05:27Z",
+      "side": 1,
+      "message": "The GN config grew somewhat organically and there\u0027s probably more going on in BUILD.gn than we would like. When migrating to Bazel, we\u0027ve decided to move the Bazel code closer to the files they affect.\n\nFor this partition_alloc, I agree with your choice to keep these GN targets close to the files and treat partion_alloc as it\u0027s own library.",
+      "range": {
+        "startLine": 8,
+        "startChar": 15,
+        "endLine": 8,
+        "endChar": 24
+      },
+      "revId": "c60d000ea96c6d6b49eeec763de6d8335ac22083",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0e998b22_333ae879",
@@ -31,6 +94,116 @@
       "writtenOn": "2024-09-17T15:06:04Z",
       "side": 1,
       "message": "**Question here.**\n\nI would like to make this directory similar to the one in [Dawn](https://source.chromium.org/chromium/chromium/src/+/main:third_party/dawn/src/dawn/partition_alloc/;l\u003d1?q\u003ddawn%2Fpartition\u0026ss\u003dchromium)\n\nPlease let me know if `src/partition_alloc` is not suitable, and the appropriate location of GN build configs in Skia.",
+      "revId": "c60d000ea96c6d6b49eeec763de6d8335ac22083",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04326031_8bc1ce48",
+        "filename": "src/partition_alloc/BUILD.gn",
+        "patchSetId": 14
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-09-17T16:05:27Z",
+      "side": 1,
+      "message": "As per other feedback, `//tools/partition_alloc` is probably a better home.",
+      "parentUuid": "0e998b22_333ae879",
+      "revId": "c60d000ea96c6d6b49eeec763de6d8335ac22083",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e2b6040_492ead90",
+        "filename": "src/partition_alloc/test_support.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-09-17T16:05:27Z",
+      "side": 1,
+      "message": "Can these be angle bracket includes instead of quotes? I tend to like the \u003c\u003e signal to mean \"external dependency\" and quotes to mean \"something from Skia\".",
+      "range": {
+        "startLine": 10,
+        "startChar": 9,
+        "endLine": 10,
+        "endChar": 10
+      },
+      "revId": "c60d000ea96c6d6b49eeec763de6d8335ac22083",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21f6b0c1_cd6bb679",
+        "filename": "src/partition_alloc/test_support.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-09-17T16:05:27Z",
+      "side": 1,
+      "message": "If this code should only be used by Skia\u0027s tests (and shouldn\u0027t be shipped to clients), can you move this to `//tools/partion_alloc`\nSkia also tends to use CamelCase for file names, so\n`//tools/partional_alloc/TestSupport.h`",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 1
+      },
+      "revId": "c60d000ea96c6d6b49eeec763de6d8335ac22083",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cfb9854d_866aa203",
+        "filename": "src/partition_alloc/test_support.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-09-17T16:05:27Z",
+      "side": 1,
+      "message": "Google is an LLC",
+      "range": {
+        "startLine": 2,
+        "startChar": 25,
+        "endLine": 2,
+        "endChar": 28
+      },
+      "revId": "c60d000ea96c6d6b49eeec763de6d8335ac22083",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "698432ba_26224f24",
+        "filename": "src/partition_alloc/test_support.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-09-17T16:05:27Z",
+      "side": 1,
+      "message": "If this is moved to `//tools/...`, use the `skiatest` namespace",
+      "range": {
+        "startLine": 10,
+        "startChar": 10,
+        "endLine": 10,
+        "endChar": 22
+      },
       "revId": "c60d000ea96c6d6b49eeec763de6d8335ac22083",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
