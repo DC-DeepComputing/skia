@@ -33,6 +33,7 @@ using namespace skgpu::graphite;
 
 void compile(const RendererProvider* rendererProvider,
              ResourceProvider* resourceProvider,
+             ShaderCodeDictionary* scd,
              const KeyContext& keyContext,
              UniquePaintParamsID uniqueID,
              DrawTypeFlags drawTypes,
@@ -203,7 +204,7 @@ void PrecompileCombinations(Context* context,
                             DrawTypeFlags drawTypes,
                             bool withPrimitiveBlender,
                             Coverage coverage,
-                            const RenderPassDesc& renderPassDesc) {
+                            const RenderPassDesc& renderPassDescIn) {
     if (drawTypes == DrawTypeFlags::kNone) {
         return;
     }
@@ -218,12 +219,15 @@ void PrecompileCombinations(Context* context,
         drawTypes,
         withPrimitiveBlender,
         coverage,
-        [context, &keyContext, &renderPassDesc](UniquePaintParamsID uniqueID,
-                                                 DrawTypeFlags drawTypes,
-                                                 bool withPrimitiveBlender,
-                                                 Coverage coverage) {
+        renderPassDescIn,
+        [context, &keyContext](UniquePaintParamsID uniqueID,
+                               DrawTypeFlags drawTypes,
+                               bool withPrimitiveBlender,
+                               Coverage coverage,
+                               const RenderPassDesc& renderPassDesc) {
                compile(context->priv().rendererProvider(),
                        context->priv().resourceProvider(),
+                       context->priv().shaderCodeDictionary(),
                        keyContext,
                        uniqueID,
                        drawTypes,

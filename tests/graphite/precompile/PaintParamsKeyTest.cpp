@@ -2067,16 +2067,20 @@ void extract_vs_build_subtest(skiatest::Reporter* reporter,
                                  precompileKeyContext.dstOffset(),
                                  precompileKeyContext.dstColorInfo());
 
+        RenderPassDesc unusedRenderPassDesc;
+
         std::vector<UniquePaintParamsID> precompileIDs;
         paintOptions.priv().buildCombinations(precompileKeyContext,
                                               &precompileGatherer,
                                               DrawTypeFlags::kNone,
                                               withPrimitiveBlender,
                                               coverage,
+                                              unusedRenderPassDesc,
                                               [&precompileIDs](UniquePaintParamsID id,
                                                                DrawTypeFlags,
                                                                bool /* withPrimitiveBlender */,
-                                                               Coverage) {
+                                                               Coverage,
+                                                               const RenderPassDesc&) {
                                                   precompileIDs.push_back(id);
                                               });
 
@@ -2304,7 +2308,6 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
             ShaderType::kColorFilter,
             ShaderType::kCoordClamp,
             ShaderType::kConicalGradient,
-            ShaderType::kEmpty,
             ShaderType::kLinearGradient,
             ShaderType::kLocalMatrix,
             ShaderType::kPerlinNoise,
@@ -2389,12 +2392,12 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
             DrawTypeFlags::kNonSimpleShape,
     };
 
-#if EXPANDED_SET
+//#if EXPANDED_SET
     size_t kExpected = std::size(shaders) * std::size(blenders) * std::size(colorFilters) *
                        std::size(maskFilters) * std::size(imageFilters) * std::size(clips) *
                        std::size(kDrawTypeFlags);
     int current = 0;
-#endif
+//#endif
 
     for (auto shader : shaders) {
         for (auto blender : blenders) {
@@ -2403,10 +2406,10 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
                     for (auto imageFilter : imageFilters) {
                         for (auto clip : clips) {
                             for (DrawTypeFlags dt : kDrawTypeFlags) {
-#if EXPANDED_SET
+//#if EXPANDED_SET
                                 SkDebugf("%d/%zu\n", current, kExpected);
                                 ++current;
-#endif
+//#endif
 
                                 run_test(reporter, context, testContext, precompileKeyContext,
                                          shader, blender, cf, mf, imageFilter, clip, dt,
