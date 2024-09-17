@@ -225,6 +225,7 @@ namespace {
 
 void create_image_drawing_pipelines(const KeyContext& keyContext,
                                     PipelineDataGatherer* gatherer,
+                                    const RenderPassDesc& renderPassDesc,
                                     const PaintOptionsPriv::ProcessCombination& processCombination,
                                     const PaintOptions& orig) {
     PaintOptions imagePaintOptions;
@@ -244,6 +245,7 @@ void create_image_drawing_pipelines(const KeyContext& keyContext,
                                                DrawTypeFlags::kSimpleShape,
                                                /* withPrimitiveBlender= */ false,
                                                Coverage::kSingleChannel,
+                                               renderPassDesc,
                                                processCombination);
 }
 
@@ -255,6 +257,7 @@ void PaintOptions::buildCombinations(
         DrawTypeFlags drawTypes,
         bool withPrimitiveBlender,
         Coverage coverage,
+        const RenderPassDesc& renderPassDesc,
         const ProcessCombination& processCombination) const {
 
     PaintParamsKeyBuilder builder(keyContext.dict());
@@ -301,15 +304,16 @@ void PaintOptions::buildCombinations(
         }
 
         tmp.buildCombinations(keyContext, gatherer, drawTypes, withPrimitiveBlender, coverage,
-                              processCombination);
+                              renderPassDesc, processCombination);
 
-        create_image_drawing_pipelines(keyContext, gatherer, processCombination, *this);
+        create_image_drawing_pipelines(keyContext, gatherer, renderPassDesc, processCombination,
+                                       *this);
 
         for (const sk_sp<PrecompileImageFilter>& o : fImageFilterOptions) {
-            o->createPipelines(keyContext, gatherer, processCombination);
+            o->createPipelines(keyContext, gatherer, renderPassDesc, processCombination);
         }
         for (const sk_sp<PrecompileMaskFilter>& o : fMaskFilterOptions) {
-            o->createPipelines(keyContext, gatherer, processCombination);
+            o->createPipelines(keyContext, gatherer, *this, renderPassDesc, processCombination);
         }
     } else {
         int numCombinations = this->numCombinations();
@@ -324,7 +328,7 @@ void PaintOptions::buildCombinations(
             // PaintParamsKey. This serves to reset the builder.
             UniquePaintParamsID paintID = keyContext.dict()->findOrCreate(&builder);
 
-            processCombination(paintID, drawTypes, withPrimitiveBlender, coverage);
+            processCombination(paintID, drawTypes, withPrimitiveBlender, coverage, renderPassDesc);
         }
     }
 }
