@@ -874,6 +874,10 @@ sk_sp<SkTypeface> SkFontStyleSet_DirectWrite::matchStyle(const SkFontStyle& patt
 ////////////////////////////////////////////////////////////////////////////////
 #include "include/ports/SkTypeface_win.h"
 
+IDWriteFontFace* SkTypeface_GetIDWriteFontFace(const SkTypeface* typeface) {
+    return static_cast<IDWriteFontFace*>(typeface->onGetDWriteFontFace());
+}
+
 sk_sp<SkFontMgr> SkFontMgr_New_DirectWrite(IDWriteFactory* factory,
                                            IDWriteFontCollection* collection) {
     return SkFontMgr_New_DirectWrite(factory, collection, nullptr);

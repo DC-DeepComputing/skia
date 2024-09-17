@@ -177,6 +177,8 @@ protected:
         SK_ABORT("Should never be called.");
     }
 
+    void* onGetDWriteFontFace() const override { SK_ABORT("Should never be called."); }
+
 private:
     const SkTypefaceID                              fTypefaceID;
     const int                                       fGlyphCount;
