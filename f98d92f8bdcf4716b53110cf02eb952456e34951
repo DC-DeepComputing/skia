@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "331558c2_8c18a6cd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-09-17T17:23:50Z",
+      "side": 1,
+      "message": "I\u0027ll need to verify this on my test setup at home, but I believe this will get most of the behavior of the old purge() without triggering the memory regression.",
+      "revId": "f98d92f8bdcf4716b53110cf02eb952456e34951",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
