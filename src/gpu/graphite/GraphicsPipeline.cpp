@@ -18,7 +18,8 @@ GraphicsPipeline::GraphicsPipeline(const SharedContext* sharedContext,
         : Resource(sharedContext,
                    Ownership::kOwned,
                    skgpu::Budgeted::kYes,
-                   /*gpuMemorySize=*/0)
+                   /*gpuMemorySize=*/0,
+                   /*reusableRequiresPurgeable=*/false)
         , fPipelineInfo(pipelineInfo) {}
 
 GraphicsPipeline::~GraphicsPipeline() = default;

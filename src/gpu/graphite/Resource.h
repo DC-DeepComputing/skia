@@ -180,7 +180,7 @@ protected:
              Ownership,
              skgpu::Budgeted,
              size_t gpuMemorySize,
-             bool reusableRequiresPurgeable = false);
+             bool reusableRequiresPurgeable);
     virtual ~Resource();
 
     const SharedContext* sharedContext() const { return fSharedContext; }
@@ -197,6 +197,10 @@ protected:
 
     // Needed to be protected for DawnBuffer emscripten prepareForReturnToCache
     void setDeleteASAP() { fDeleteASAP = DeleteASAP::kYes; }
+
+    // Allow resources to define whether they must be purgeable (have no usage or command refs) in
+    // order to be reused.
+    bool fReusableRequiresPurgeable = false;
 
 private:
     friend class ProxyCache; // for setDeleteASAP and updateAccessTime
@@ -343,8 +347,6 @@ private:
     mutable std::atomic<int32_t> fUsageRefCnt;
     mutable std::atomic<int32_t> fCommandBufferRefCnt;
     mutable std::atomic<int32_t> fCacheRefCnt;
-    // Allow resources to define whether they must be purgeable in order to be reused.
-    const bool fReusableRequiresPurgeable = false;
 
     GraphiteResourceKey fKey;
 

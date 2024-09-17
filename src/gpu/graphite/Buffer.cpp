@@ -16,18 +16,23 @@ void* Buffer::map() {
     if (!this->isMapped()) {
         this->onMap();
     }
+    // Mapped buffers cannot be reused until they are purgeable (GPU work is done).
+    fReusableRequiresPurgeable = true;
     return fMapPtr;
 }
 
 void Buffer::asyncMap(GpuFinishedProc proc, GpuFinishedContext ctx) {
     SkASSERT(this->sharedContext()->caps()->bufferMapsAreAsync());
     this->onAsyncMap(proc, ctx);
+    // Mapped buffers cannot be reused until they are purgeable (GPU work is done).
+    fReusableRequiresPurgeable = true;
 }
 
 void Buffer::unmap() {
     SkASSERT(this->isUnmappable());
     this->onUnmap();
     fMapPtr = nullptr;
+    fReusableRequiresPurgeable = false;
 }
 
 bool Buffer::isUnmappable() const { return isMapped(); }
