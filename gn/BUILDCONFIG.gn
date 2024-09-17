@@ -79,6 +79,19 @@ is_chromeos = false
 # This is to make the ANGLE build files happy. Skia always uses is_mac and/or is_ios.
 is_apple = is_mac || is_ios
 
+# Optional variable, used by Skia to enable the use of PartitionAlloc in its
+# tests. This is also enabled in Chromium. PartitionAlloc is a memory allocator
+# optimized for space efficiency, allocation latency, and security.
+#
+# Embedders have different locations for PartitionAlloc.
+# - skia     : //third_party/externals/partition_alloc  (here)
+# - dawn     : //third_party/partition_alloc
+# - pdfium   : //third_party/partition_alloc
+# - chromium : //base/allocator/partition_allocator
+#
+# Note: Most embedders do not use PartitionAlloc.
+skia_partition_alloc_dir = "//third_party/externals/partition_alloc"
+
 if (target_cpu == "") {
   target_cpu = host_cpu
   if (is_android || is_ios) {
