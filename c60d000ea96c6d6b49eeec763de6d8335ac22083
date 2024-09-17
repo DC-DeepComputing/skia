@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "64450f89_3f369a83",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2024-09-17T15:06:04Z",
+      "side": 1,
+      "message": "Hi Kaylee,\nCould you please take a look?",
+      "revId": "c60d000ea96c6d6b49eeec763de6d8335ac22083",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e998b22_333ae879",
+        "filename": "src/partition_alloc/BUILD.gn",
+        "patchSetId": 14
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2024-09-17T15:06:04Z",
+      "side": 1,
+      "message": "**Question here.**\n\nI would like to make this directory similar to the one in [Dawn](https://source.chromium.org/chromium/chromium/src/+/main:third_party/dawn/src/dawn/partition_alloc/;l\u003d1?q\u003ddawn%2Fpartition\u0026ss\u003dchromium)\n\nPlease let me know if `src/partition_alloc` is not suitable, and the appropriate location of GN build configs in Skia.",
+      "revId": "c60d000ea96c6d6b49eeec763de6d8335ac22083",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
