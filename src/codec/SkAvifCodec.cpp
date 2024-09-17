@@ -20,9 +20,17 @@
 
 #include <cstdint>
 #include <cstring>
+#include <set>
 #include <utility>
 
 #include "avif/avif.h"
+
+#if SK_AVIF_USE_CRABBYAVIF
+// CrabbyAvif exposes the same C API as libavif when including libavif_compat.h,
+// but everything is wrapped in a "crabbyavif" namespace.
+#include "avif/libavif_compat.h"
+using namespace crabbyavif;
+#endif  // SK_AVIF_USE_CRABBYAVIF
 
 void AvifDecoderDeleter::operator()(avifDecoder* decoder) const {
     if (decoder != nullptr) {
@@ -31,6 +39,9 @@ void AvifDecoderDeleter::operator()(avifDecoder* decoder) const {
 }
 
 bool SkAvifCodec::IsAvif(const void* buffer, size_t bytesRead) {
+    if (!SkCodecs::AvifEnabled()) {
+        return false;
+    }
     avifROData avifData = {static_cast<const uint8_t*>(buffer), bytesRead};
     bool isAvif = avifPeekCompatibleFileType(&avifData) == AVIF_TRUE;
     if (isAvif) return true;
@@ -89,7 +100,12 @@ std::unique_ptr<SkCodec> SkAvifCodec::MakeFromStream(std::unique_ptr<SkStream> s
     std::unique_ptr<SkEncodedInfo::ICCProfile> profile = nullptr;
     // TODO(vigneshv): Get ICC Profile from the avif decoder.
 
+#if SK_AVIF_USE_CRABBYAVIF
+    // CrabbyAvif uses MediaCodec, which always sets bitsPerComponent to 8.
+    const int bitsPerComponent = 8;
+#else
     const int bitsPerComponent = avifDecoder->image->depth > 8 ? 16 : 8;
+#endif
     SkEncodedInfo::Color color;
     SkEncodedInfo::Alpha alpha;
     if (avifDecoder->alphaPresent) {
@@ -188,6 +204,19 @@ bool SkAvifCodec::onGetFrameInfo(int i, FrameInfo* frameInfo) const {
 
 int SkAvifCodec::onGetRepetitionCount() { return kRepetitionCountInfinite; }
 
+bool SkAvifCodec::conversionSupported(const SkImageInfo& dstInfo,
+                                      bool srcIsOpaque,
+                                      bool needsColorXform) {
+    switch (dstInfo.colorType()) {
+        case kRGBA_1010102_SkColorType:
+            this->setSrcXformFormat(skcms_PixelFormat_RGBA_1010102);
+            break;
+        default:
+            break;
+    }
+    return true;
+}
+
 SkCodec::Result SkAvifCodec::onGetPixels(const SkImageInfo& dstInfo,
                                          void* dst,
                                          size_t dstRowBytes,
@@ -198,7 +227,15 @@ SkCodec::Result SkAvifCodec::onGetPixels(const SkImageInfo& dstInfo,
     }
 
     const SkColorType dstColorType = dstInfo.colorType();
-    if (dstColorType != kRGBA_8888_SkColorType && dstColorType != kRGBA_F16_SkColorType) {
+    const std::set<SkColorType> kSupportedColorTypes = {
+            kRGBA_8888_SkColorType,
+            kRGBA_F16_SkColorType,
+#if SK_AVIF_USE_CRABBYAVIF
+            // CrabbyAvif supports RGBA_1010102 in addition to the above two.
+            kRGBA_1010102_SkColorType,
+#endif
+    };
+    if (kSupportedColorTypes.find(dstColorType) == kSupportedColorTypes.end()) {
         // TODO(vigneshv): Check if more color types need to be supported.
         // Currently android supports at least RGB565 and BGRA8888 which is not
         // supported here.
@@ -223,6 +260,11 @@ SkCodec::Result SkAvifCodec::onGetPixels(const SkImageInfo& dstInfo,
 
     if (dstColorType == kRGBA_8888_SkColorType) {
         rgbImage.depth = 8;
+#if SK_AVIF_USE_CRABBYAVIF
+    } else if (dstColorType == kRGBA_1010102_SkColorType) {
+        rgbImage.depth = 10;
+        rgbImage.format = AVIF_RGB_FORMAT_RGBA1010102;
+#endif  // SK_AVIF_USE_CRABBYAVIF
     } else if (dstColorType == kRGBA_F16_SkColorType) {
         rgbImage.depth = 16;
         rgbImage.isFloat = AVIF_TRUE;

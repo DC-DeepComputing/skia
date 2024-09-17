@@ -216,9 +216,9 @@ std::unique_ptr<SkAndroidCodec> SkAndroidCodec::MakeFromCodec(std::unique_ptr<Sk
 
     const SkEncodedImageFormat format = codec->getEncodedFormat();
     if (format == SkEncodedImageFormat::kAVIF) {
-        if (SkCodecs::HasDecoder("avif")) {
-            // If a dedicated AVIF decoder has been registered, SkAvifCodec can
-            // handle scaling internally.
+        if (SkCodecs::HasDecoder("avif") && SkCodecs::AvifEnabled()) {
+            // If a dedicated AVIF decoder has been registered and enabled,
+            // SkAvifCodec can handle scaling internally.
             return std::make_unique<SkAndroidCodecAdapter>(codec.release());
         }
         // This will fallback to SkHeifCodec, which needs sampling.

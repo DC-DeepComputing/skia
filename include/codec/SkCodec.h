@@ -1043,6 +1043,11 @@ private:
 
 namespace SkCodecs {
 
+// Returns true if AVIF decoding via SkAvifCodec is enabled. On the Android
+// framework, this is decided based on the "media.avif.crabbyavif" system
+// property. On all other platforms, this function always returns true.
+bool AvifEnabled();
+
 using DecodeContext = void*;
 using IsFormatCallback = bool (*)(const void* data, size_t len);
 using MakeFromStreamCallback = std::unique_ptr<SkCodec> (*)(std::unique_ptr<SkStream>,
@@ -1079,6 +1084,6 @@ void SK_API Register(Decoder d);
  */
 SK_API sk_sp<SkImage> DeferredImage(std::unique_ptr<SkCodec> codec,
                                     std::optional<SkAlphaType> alphaType = std::nullopt);
-}
+} // namespace SkCodecs
 
 #endif // SkCodec_DEFINED
