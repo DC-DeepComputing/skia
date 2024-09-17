@@ -31,15 +31,24 @@ namespace {
 
 using namespace skgpu::graphite;
 
-void compile(const RendererProvider* rendererProvider,
+void compile1(const RendererProvider* rendererProvider,
              ResourceProvider* resourceProvider,
+             ShaderCodeDictionary* scd,
              const KeyContext& keyContext,
              UniquePaintParamsID uniqueID,
              DrawTypeFlags drawTypes,
              const RenderPassDesc& renderPassDesc,
              bool withPrimitiveBlender,
              Coverage coverage) {
+
+    PaintParamsKey key = scd->lookup(uniqueID);
+
     for (const Renderer* r : rendererProvider->renderers()) {
+        if (r == rendererProvider->nonAABounds1() && key.size() == 7) {
+            key.dump(scd, uniqueID);
+            SkDebugf("here\n");
+        }
+
         if (!(r->drawTypes() & drawTypes)) {
             continue;
         }
@@ -203,7 +212,7 @@ void PrecompileCombinations(Context* context,
                             DrawTypeFlags drawTypes,
                             bool withPrimitiveBlender,
                             Coverage coverage,
-                            const RenderPassDesc& renderPassDesc) {
+                            const RenderPassDesc& renderPassDescIn) {
     if (drawTypes == DrawTypeFlags::kNone) {
         return;
     }
@@ -218,12 +227,15 @@ void PrecompileCombinations(Context* context,
         drawTypes,
         withPrimitiveBlender,
         coverage,
-        [context, &keyContext, &renderPassDesc](UniquePaintParamsID uniqueID,
-                                                 DrawTypeFlags drawTypes,
-                                                 bool withPrimitiveBlender,
-                                                 Coverage coverage) {
-               compile(context->priv().rendererProvider(),
+        renderPassDescIn,
+        [context, &keyContext](UniquePaintParamsID uniqueID,
+                               DrawTypeFlags drawTypes,
+                               bool withPrimitiveBlender,
+                               Coverage coverage,
+                               const RenderPassDesc& renderPassDesc) {
+               compile1(context->priv().rendererProvider(),
                        context->priv().resourceProvider(),
+                       context->priv().shaderCodeDictionary(),
                        keyContext,
                        uniqueID,
                        drawTypes,

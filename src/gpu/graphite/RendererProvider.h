@@ -53,7 +53,7 @@ public:
     const Renderer* tessellatedStrokes() const { return &fTessellatedStrokes; }
 
     // Coverage mask rendering
-    const Renderer* coverageMask() const { return &fCoverageMask; }
+    const Renderer* coverageMask1() const { return &fCoverageMask1; }
 
     // Atlased text rendering
     const Renderer* bitmapText(bool useLCDText, skgpu::MaskFormat format) const {
@@ -74,13 +74,13 @@ public:
     }
 
     // Filled and stroked [r]rects
-    const Renderer* analyticRRect() const { return &fAnalyticRRect; }
+    const Renderer* analyticRRect1() const { return &fAnalyticRRect1; }
 
     // Per-edge AA quadrilaterals
     const Renderer* perEdgeAAQuad() const { return &fPerEdgeAAQuad; }
 
     // Non-AA bounds filling (can handle inverse "fills" but will touch every pixel within the clip)
-    const Renderer* nonAABounds() const { return &fNonAABoundsFill; }
+    const Renderer* nonAABounds1() const { return &fNonAABoundsFill1; }
 
     const Renderer* analyticBlur() const { return &fAnalyticBlur; }
 
@@ -123,14 +123,14 @@ private:
     Renderer fConvexTessellatedWedges;
     Renderer fTessellatedStrokes;
 
-    Renderer fCoverageMask;
+    Renderer fCoverageMask1;
 
     Renderer fBitmapText[3];  // int variant
     Renderer fSDFText[2]; // bool isLCD
 
-    Renderer fAnalyticRRect;
+    Renderer fAnalyticRRect1;
     Renderer fPerEdgeAAQuad;
-    Renderer fNonAABoundsFill;
+    Renderer fNonAABoundsFill1;
 
     Renderer fAnalyticBlur;
 

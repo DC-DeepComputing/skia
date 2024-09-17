@@ -1304,7 +1304,7 @@ void Device::drawGeometry(const Transform& localToDevice,
             // `renderer` opts into drawing a non-AA inner fill
             innerFillBounds = get_inner_bounds(geometry, localToDevice);
             if (!innerFillBounds.isEmptyNegativeOrNaN()) {
-                secondaryRenderer = fRecorder->priv().rendererProvider()->nonAABounds();
+                secondaryRenderer = fRecorder->priv().rendererProvider()->nonAABounds1();
             }
         }
     }
@@ -1436,7 +1436,7 @@ void Device::drawGeometry(const Transform& localToDevice,
                 SkASSERT(!dependsOnDst && renderer->useNonAAInnerFill());
                 DrawOrder orderWithoutCoverage{order.depth()};
                 orderWithoutCoverage.dependsOnPaintersOrder(clipOrder);
-                fDC->recordDraw(fRecorder->priv().rendererProvider()->nonAABounds(),
+                fDC->recordDraw(fRecorder->priv().rendererProvider()->nonAABounds1(),
                                 localToDevice, Geometry(Shape(innerFillBounds)),
                                 clip, orderWithoutCoverage, &shading, nullptr);
                 // Force the coverage draw to come after the non-AA draw in order to benefit from
@@ -1531,7 +1531,7 @@ std::pair<const Renderer*, PathAtlas*> Device::chooseRenderer(const Transform& l
         // drawCoverageMask() passes in CoverageMaskShapes that reference a provided texture.
         // The CoverageMask renderer can also be chosen later on if the shape is assigned to
         // to be rendered into the PathAtlas, in which case the 2nd return value is non-null.
-        return {renderers->coverageMask(), nullptr};
+        return {renderers->coverageMask1(), nullptr};
     } else if (geometry.isEdgeAAQuad()) {
         SkASSERT(!requireMSAA && style.isFillStyle());
         // handled by specialized system, simplified from rects and round rects
@@ -1540,7 +1540,7 @@ std::pair<const Renderer*, PathAtlas*> Device::chooseRenderer(const Transform& l
             // For non-AA rectangular quads, it can always use a coverage-less renderer; there's no
             // need to check for pixel alignment to avoid popping if MSAA is turned on because quad
             // tile edges will seam with each in either mode.
-            return {renderers->nonAABounds(), nullptr};
+            return {renderers->nonAABounds1(), nullptr};
         } else {
             return {renderers->perEdgeAAQuad(), nullptr};
         }
@@ -1565,9 +1565,9 @@ std::pair<const Renderer*, PathAtlas*> Device::chooseRenderer(const Transform& l
 
         if (shape.isEmpty() || pixelAlignedRect) {
             SkASSERT(!shape.isEmpty() || shape.inverted());
-            return {renderers->nonAABounds(), nullptr};
+            return {renderers->nonAABounds1(), nullptr};
         } else {
-            return {renderers->analyticRRect(), nullptr};
+            return {renderers->analyticRRect1(), nullptr};
         }
     }
 

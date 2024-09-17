@@ -150,6 +150,9 @@ enum DrawTypeFlags : uint16_t {
     //    TessellateCurvesRenderStep[*] for [even-odd], [winding]
     //    MiddleOutFanRenderStep[*] for [even-odd], [winding]
     kNonSimpleShape   = 0b10000000,
+
+    kCoverageMask = 0x1 << 8,
+    kAnalyticRRect = 0x1 << 9,
 };
 
 } // namespace skgpu::graphite

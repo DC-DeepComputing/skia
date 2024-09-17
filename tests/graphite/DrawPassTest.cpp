@@ -32,7 +32,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(DrawPassTestFailedDstCopy,
     // dst copy will fail.
     const SkIRect drawSize = SkIRect::MakeWH(caps->maxTextureSize() + 1, 1);
     std::unique_ptr<DrawList> drawList = std::make_unique<DrawList>();
-    drawList->recordDraw(recorder->priv().rendererProvider()->analyticRRect(),
+    drawList->recordDraw(recorder->priv().rendererProvider()->analyticRRect1(),
                          Transform::Identity(),
                          Geometry(Shape(SkRect::Make(drawSize))),
                          Clip(Rect::Infinite(), Rect::Infinite(), drawSize, {}, nullptr),

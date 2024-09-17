@@ -67,6 +67,8 @@ public:
     // purposes.
     SkString toString(const ShaderCodeDictionary* dict, bool includeData) const;
 
+    size_t size() const { return fData.size(); }
+
 #ifdef SK_DEBUG
     void dump(const ShaderCodeDictionary*, UniquePaintParamsID) const;
 #endif
