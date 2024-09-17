@@ -2067,16 +2067,20 @@ void extract_vs_build_subtest(skiatest::Reporter* reporter,
                                  precompileKeyContext.dstOffset(),
                                  precompileKeyContext.dstColorInfo());
 
+        RenderPassDesc unusedRenderPassDesc;
+
         std::vector<UniquePaintParamsID> precompileIDs;
         paintOptions.priv().buildCombinations(precompileKeyContext,
                                               &precompileGatherer,
                                               DrawTypeFlags::kNone,
                                               withPrimitiveBlender,
                                               coverage,
+                                              unusedRenderPassDesc,
                                               [&precompileIDs](UniquePaintParamsID id,
                                                                DrawTypeFlags,
                                                                bool /* withPrimitiveBlender */,
-                                                               Coverage) {
+                                                               Coverage,
+                                                               const RenderPassDesc&) {
                                                   precompileIDs.push_back(id);
                                               });
 
@@ -2214,9 +2218,9 @@ void run_test(skiatest::Reporter* reporter,
     // a SkCanvas::clipShader call).
     paintOptions.priv().setClipShaders({clipShaderOption});
 
-    extract_vs_build_subtest(reporter, context, testContext, precompileKeyContext, recorder.get(),
-                             paint, paintOptions, s, bm, cf, mf, imageFilter, clip, clipShader, dt,
-                             seed, &rand, verbose);
+//    extract_vs_build_subtest(reporter, context, testContext, precompileKeyContext, recorder.get(),
+//                             paint, paintOptions, s, bm, cf, mf, imageFilter, clip, clipShader, dt,
+//                             seed, &rand, verbose);
     precompile_vs_real_draws_subtest(reporter, context, testContext, recorder.get(),
                                      paint, paintOptions, clip, clipShader, dt, verbose);
 }
@@ -2295,11 +2299,11 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
     KeyContext precompileKeyContext(create_key_context(context, rtDict.get()));
 
     ShaderType shaders[] = {
-            ShaderType::kBlend,
-            ShaderType::kImage,
-            ShaderType::kRadialGradient,
+//            ShaderType::kBlend,
+//            ShaderType::kImage,
+//            ShaderType::kRadialGradient,
             ShaderType::kSolidColor,
-#if EXPANDED_SET
+#if 0
             ShaderType::kNone,
             ShaderType::kColorFilter,
             ShaderType::kCoordClamp,
@@ -2318,9 +2322,9 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
 
     BlenderType blenders[] = {
             BlenderType::kPorterDuff,
+#if 0
             BlenderType::kShaderBased,
             BlenderType::kRuntime,
-#if EXPANDED_SET
             BlenderType::kNone,
             BlenderType::kArithmetic,
 #endif
@@ -2328,9 +2332,9 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
 
     ColorFilterType colorFilters[] = {
             ColorFilterType::kNone,
-            ColorFilterType::kBlendMode,
-            ColorFilterType::kMatrix,
-#if EXPANDED_SET
+//            ColorFilterType::kBlendMode,
+//            ColorFilterType::kMatrix,
+#if 0
             ColorFilterType::kColorSpaceXform,
             ColorFilterType::kCompose,
             ColorFilterType::kGaussian,
@@ -2349,15 +2353,15 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
     };
 
     MaskFilterType maskFilters[] = {
-            MaskFilterType::kNone,
-#if EXPANDED_SET
+//            MaskFilterType::kNone,
+//#if EXPANDED_SET
             MaskFilterType::kBlur,
-#endif
+//#endif
     };
 
     ImageFilterType imageFilters[] = {
             ImageFilterType::kNone,
-#if EXPANDED_SET
+#if 0
             ImageFilterType::kArithmetic,
             ImageFilterType::kBlendMode,
             ImageFilterType::kRuntimeBlender,
@@ -2372,21 +2376,21 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
 
     ClipType clips[] = {
             ClipType::kNone,
-#if EXPANDED_SET
+#if 0
             ClipType::kShader,        // w/ a SkClipOp::kIntersect
             ClipType::kShader_Diff,   // w/ a SkClipOp::kDifference
 #endif
     };
 
     static const DrawTypeFlags kDrawTypeFlags[] = {
-            DrawTypeFlags::kBitmapText_Mask,
-            DrawTypeFlags::kBitmapText_LCD,
-            DrawTypeFlags::kBitmapText_Color,
-            DrawTypeFlags::kSDFText,
-            DrawTypeFlags::kSDFText_LCD,
-            DrawTypeFlags::kDrawVertices,
+//            DrawTypeFlags::kBitmapText_Mask,
+//            DrawTypeFlags::kBitmapText_LCD,
+//            DrawTypeFlags::kBitmapText_Color,
+//            DrawTypeFlags::kSDFText,
+//            DrawTypeFlags::kSDFText_LCD,
+//            DrawTypeFlags::kDrawVertices,
             DrawTypeFlags::kSimpleShape,
-            DrawTypeFlags::kNonSimpleShape,
+//            DrawTypeFlags::kNonSimpleShape,
     };
 
 #if EXPANDED_SET

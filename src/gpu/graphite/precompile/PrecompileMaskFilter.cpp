@@ -9,7 +9,12 @@
 
 #include "include/gpu/graphite/precompile/PaintOptions.h"
 #include "include/gpu/graphite/precompile/PrecompileColorFilter.h"
+#include "include/gpu/graphite/precompile/PrecompileShader.h"
+#include "src/gpu/graphite/Caps.h"
+#include "src/gpu/graphite/KeyContext.h"
 #include "src/gpu/graphite/PrecompileInternal.h"
+#include "src/gpu/graphite/RenderPassDesc.h"
+#include "src/gpu/graphite/Renderer.h"
 #include "src/gpu/graphite/precompile/PrecompileImageFiltersPriv.h"
 
 namespace skgpu::graphite {
@@ -37,8 +42,26 @@ private:
     void createPipelines(
             const KeyContext& keyContext,
             PipelineDataGatherer* gatherer,
+            const PaintOptions& paintOptions,
+            const RenderPassDesc& renderPassDescIn,
             const PaintOptionsPriv::ProcessCombination& processCombination) const override {
+        const Caps* caps = keyContext.caps();
+        TextureInfo info = caps->getDefaultSampledTextureInfo(kAlpha_8_SkColorType,
+                                                              Mipmapped::kNo,
+                                                              Protected::kNo,
+                                                              Renderable::kYes);
+
+        RenderPassDesc coverageRenderPassDesc = RenderPassDesc::Make(caps,
+                                                                     info,
+                                                                     LoadOp::kClear,
+                                                                     StoreOp::kStore,
+                                                                     DepthStencilFlags::kDepth,
+                                                                     { 0.0f, 0.0f, 0.0f, 0.0f },
+                                                                     /* requiresMSAA= */ false,
+                                                                     skgpu::Swizzle("a000"));
+
         PrecompileImageFiltersPriv::CreateBlurImageFilterPipelines(keyContext, gatherer,
+                                                                   coverageRenderPassDesc,
                                                                    processCombination);
     }
 };
