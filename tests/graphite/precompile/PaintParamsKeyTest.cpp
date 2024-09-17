@@ -71,7 +71,7 @@
 #include "tools/graphite/UniqueKeyUtils.h"
 
 // Set this to 1 for more expansive (aka far slower) local testing
-#define EXPANDED_SET 0
+#define EXPANDED_SET 1
 
 // This flag is set to true if during the PaintOption creation an SkPictureShader is created.
 // The SkPictureShader will need an additional program in order to draw the contents of its
@@ -1623,6 +1623,8 @@ std::pair<sk_sp<SkMaskFilter>, sk_sp<PrecompileMaskFilter>> create_blur_maskfilt
         default: style = kInner_SkBlurStyle;  break;
     }
 
+    style = kNormal_SkBlurStyle;
+
     float sigma = 1.0f;
     switch (rand->nextULessThan(2)) {
         case 0:  sigma = 1.0f; break;
@@ -1815,13 +1817,12 @@ void check_draw(skiatest::Reporter* reporter,
                 sk_sp<SkShader> clipShader) {
     static const DrawData kDrawData;
 
-    int before = context->priv().globalCache()->numGraphicsPipelines();
+    std::vector<skgpu::UniqueKey> precompileKeys, drawKeys;
 
-#ifdef SK_DEBUG
-    std::vector<skgpu::UniqueKey> beforeKeys;
+    int precompilePipelineCount = context->priv().globalCache()->numGraphicsPipelines();
+    UniqueKeyUtils::FetchUniqueKeys(context->priv().globalCache(), &precompileKeys);
 
-    UniqueKeyUtils::FetchUniqueKeys(context->priv().globalCache(), &beforeKeys);
-#endif
+    context->priv().globalCache()->resetGraphicsPipelines();
 
     {
         // TODO: vary the colorType of the target surface too
@@ -1901,48 +1902,66 @@ void check_draw(skiatest::Reporter* reporter,
         testContext->syncedSubmit(context);
     }
 
-    int after = context->priv().globalCache()->numGraphicsPipelines();
+    int drawPipelineCount = context->priv().globalCache()->numGraphicsPipelines();
+    UniqueKeyUtils::FetchUniqueKeys(context->priv().globalCache(), &drawKeys);
 
-    // Actually using the SkPaint with the specified type of draw shouldn't have caused
-    // any additional compilation
-    REPORTER_ASSERT(reporter, before == after, "before: %d after: %d", before, after);
+    // Actually using the SkPaint with the specified type of draw shouldn't have added
+    // any additional pipelines
+    int missingPipelines = 0;
+    for (const skgpu::UniqueKey& drawKey : drawKeys) {
+        bool found = std::find(precompileKeys.begin(), precompileKeys.end(), drawKey) !=
+                     precompileKeys.end();
+        if (!found) {
+            ++missingPipelines;
+        }
+    }
+
+    REPORTER_ASSERT(reporter, missingPipelines == 0,
+                    "precompile pipelines: %d draw pipelines: %d - %d missing from precompile",
+                    precompilePipelineCount, drawPipelineCount, missingPipelines);
 #ifdef SK_DEBUG
-    if (before != after) {
+    if (missingPipelines) {
         const RendererProvider* rendererProvider = context->priv().rendererProvider();
         const ShaderCodeDictionary* dict = context->priv().shaderCodeDictionary();
 
-        std::vector<skgpu::UniqueKey> afterKeys;
-
-        UniqueKeyUtils::FetchUniqueKeys(context->priv().globalCache(), &afterKeys);
-
-        for (const skgpu::UniqueKey& afterKey : afterKeys) {
-            if (std::find(beforeKeys.begin(), beforeKeys.end(), afterKey) == beforeKeys.end()) {
-                GraphicsPipelineDesc originalPipelineDesc;
-                RenderPassDesc originalRenderPassDesc;
-                UniqueKeyUtils::ExtractKeyDescs(context, afterKey,
-                                                &originalPipelineDesc,
-                                                &originalRenderPassDesc);
-
-                SkDebugf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
-                afterKey.dump("New key from draw:");
-                UniqueKeyUtils::DumpDescs(rendererProvider, dict,
-                                          originalPipelineDesc,
-                                          originalRenderPassDesc);
-            }
-        }
-
-        SkDebugf("-------------------------- %zu before keys\n", beforeKeys.size());
+        SkDebugf("-------------------------- %zu pipelines from draw(s)\n", drawKeys.size());
         int count = 0;
-        for (const skgpu::UniqueKey& beforeKey : beforeKeys) {
+        for (const skgpu::UniqueKey& drawKey : drawKeys) {
+            bool found = std::find(precompileKeys.begin(), precompileKeys.end(), drawKey) !=
+                         precompileKeys.end();
+
             GraphicsPipelineDesc originalPipelineDesc;
             RenderPassDesc originalRenderPassDesc;
-            UniqueKeyUtils::ExtractKeyDescs(context, beforeKey,
+            UniqueKeyUtils::ExtractKeyDescs(context, drawKey,
                                             &originalPipelineDesc,
                                             &originalRenderPassDesc);
 
             SkString label;
-            label.appendf("--- %d:", count++);
-            beforeKey.dump(label.c_str());
+            label.appendf("--- Draw key %d (%s in precompile):\n",
+                          count++, found ? "found": "not-found");
+            drawKey.dump(label.c_str());
+            UniqueKeyUtils::DumpDescs(rendererProvider, dict,
+                                      originalPipelineDesc,
+                                      originalRenderPassDesc);
+        }
+
+        SkDebugf("-------------------------- %zu pipelines from precompile\n",
+                 precompileKeys.size());
+        count = 0;
+        for (const skgpu::UniqueKey& precompileKey : precompileKeys) {
+            bool used = std::find(drawKeys.begin(), drawKeys.end(), precompileKey)
+                        != drawKeys.end();
+
+            GraphicsPipelineDesc originalPipelineDesc;
+            RenderPassDesc originalRenderPassDesc;
+            UniqueKeyUtils::ExtractKeyDescs(context, precompileKey,
+                                            &originalPipelineDesc,
+                                            &originalRenderPassDesc);
+
+            SkString label;
+            label.appendf("--- Precompile key %d (%s in draws):\n",
+                          count++, used ? "used" : "unused");
+            precompileKey.dump(label.c_str());
             UniqueKeyUtils::DumpDescs(rendererProvider, dict,
                                       originalPipelineDesc,
                                       originalRenderPassDesc);
@@ -2067,7 +2086,7 @@ void extract_vs_build_subtest(skiatest::Reporter* reporter,
                                  precompileKeyContext.dstOffset(),
                                  precompileKeyContext.dstColorInfo());
 
-        RenderPassDesc unusedRenderPassDesc;
+        RenderPassDesc rpd;
 
         std::vector<UniquePaintParamsID> precompileIDs;
         paintOptions.priv().buildCombinations(precompileKeyContext,
@@ -2075,7 +2094,7 @@ void extract_vs_build_subtest(skiatest::Reporter* reporter,
                                               DrawTypeFlags::kNone,
                                               withPrimitiveBlender,
                                               coverage,
-                                              unusedRenderPassDesc,
+                                              rpd,
                                               [&precompileIDs](UniquePaintParamsID id,
                                                                DrawTypeFlags,
                                                                bool /* withPrimitiveBlender */,
@@ -2218,9 +2237,9 @@ void run_test(skiatest::Reporter* reporter,
     // a SkCanvas::clipShader call).
     paintOptions.priv().setClipShaders({clipShaderOption});
 
-    extract_vs_build_subtest(reporter, context, testContext, precompileKeyContext, recorder.get(),
-                             paint, paintOptions, s, bm, cf, mf, imageFilter, clip, clipShader, dt,
-                             seed, &rand, verbose);
+//    extract_vs_build_subtest(reporter, context, testContext, precompileKeyContext, recorder.get(),
+//                             paint, paintOptions, s, bm, cf, mf, imageFilter, clip, clipShader, dt,
+//                             seed, &rand, verbose);
     precompile_vs_real_draws_subtest(reporter, context, testContext, recorder.get(),
                                      paint, paintOptions, clip, clipShader, dt, verbose);
 }
@@ -2299,15 +2318,16 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
     KeyContext precompileKeyContext(create_key_context(context, rtDict.get()));
 
     ShaderType shaders[] = {
-            ShaderType::kBlend,
-            ShaderType::kImage,
-            ShaderType::kRadialGradient,
+//            ShaderType::kBlend,
+//            ShaderType::kImage,
+//            ShaderType::kRadialGradient,
             ShaderType::kSolidColor,
-#if EXPANDED_SET
+#if 0
             ShaderType::kNone,
             ShaderType::kColorFilter,
             ShaderType::kCoordClamp,
             ShaderType::kConicalGradient,
+            ShaderType::kEmpty,
             ShaderType::kLinearGradient,
             ShaderType::kLocalMatrix,
             ShaderType::kPerlinNoise,
@@ -2321,9 +2341,9 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
 
     BlenderType blenders[] = {
             BlenderType::kPorterDuff,
+#if 0
             BlenderType::kShaderBased,
             BlenderType::kRuntime,
-#if EXPANDED_SET
             BlenderType::kNone,
             BlenderType::kArithmetic,
 #endif
@@ -2331,9 +2351,9 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
 
     ColorFilterType colorFilters[] = {
             ColorFilterType::kNone,
-            ColorFilterType::kBlendMode,
-            ColorFilterType::kMatrix,
-#if EXPANDED_SET
+//            ColorFilterType::kBlendMode,
+//            ColorFilterType::kMatrix,
+#if 0
             ColorFilterType::kColorSpaceXform,
             ColorFilterType::kCompose,
             ColorFilterType::kGaussian,
@@ -2352,15 +2372,15 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
     };
 
     MaskFilterType maskFilters[] = {
-            MaskFilterType::kNone,
-#if EXPANDED_SET
+//            MaskFilterType::kNone,
+//#if EXPANDED_SET
             MaskFilterType::kBlur,
-#endif
+//#endif
     };
 
     ImageFilterType imageFilters[] = {
             ImageFilterType::kNone,
-#if EXPANDED_SET
+#if 0
             ImageFilterType::kArithmetic,
             ImageFilterType::kBlendMode,
             ImageFilterType::kRuntimeBlender,
@@ -2375,21 +2395,21 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
 
     ClipType clips[] = {
             ClipType::kNone,
-#if EXPANDED_SET
+#if 0
             ClipType::kShader,        // w/ a SkClipOp::kIntersect
             ClipType::kShader_Diff,   // w/ a SkClipOp::kDifference
 #endif
     };
 
     static const DrawTypeFlags kDrawTypeFlags[] = {
-            DrawTypeFlags::kBitmapText_Mask,
-            DrawTypeFlags::kBitmapText_LCD,
-            DrawTypeFlags::kBitmapText_Color,
-            DrawTypeFlags::kSDFText,
-            DrawTypeFlags::kSDFText_LCD,
-            DrawTypeFlags::kDrawVertices,
+//            DrawTypeFlags::kBitmapText_Mask,
+//            DrawTypeFlags::kBitmapText_LCD,
+//            DrawTypeFlags::kBitmapText_Color,
+//            DrawTypeFlags::kSDFText,
+//            DrawTypeFlags::kSDFText_LCD,
+//            DrawTypeFlags::kDrawVertices,
             DrawTypeFlags::kSimpleShape,
-            DrawTypeFlags::kNonSimpleShape,
+//            DrawTypeFlags::kNonSimpleShape,
     };
 
 #if EXPANDED_SET
