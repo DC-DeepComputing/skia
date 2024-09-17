@@ -205,6 +205,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "096edc6c_3912472a",
+        "filename": "src/partition_alloc/test_support.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-09-17T17:03:26Z",
+      "side": 1,
+      "message": "src/partition_alloc probably makes sense then, provided that we won\u0027t need to use `raw_ptr\u003cT\u003e` in the include/ folder. We have a strict rule against having things in include/ depend on things in src/. If necessary, putting this in `include/private/base/partition_alloc` would probably be the other place to consider for putting the declaration with `src/base/partition_alloc` being where the implementation would go. \n\nFor test-only things, let\u0027s try to keep those in their own files and in the `skiatest` namespace. `skia_private` is a fine choice for a namespace for the parts of partition_alloc that are exposed to the core parts of Skia.",
+      "parentUuid": "18c08d6d_86a4dc64",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 1
+      },
+      "revId": "c60d000ea96c6d6b49eeec763de6d8335ac22083",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "cfb9854d_866aa203",
         "filename": "src/partition_alloc/test_support.h",
         "patchSetId": 14
@@ -240,6 +264,30 @@
       "side": 1,
       "message": "Okay, I will update it.\n\nNote that this was copy-pasted from Skia, and \"LLC\" does still represent the majority of the files:\n```\narthursonzogni@arthursonzogni:~/skia/src$ git grep -hoP \" Google .*\" | sort | uniq -c\n      1  Google Fonts Fontations Rust libraries. */\n   1240  Google Inc.\n      1  Google Inc.\\n\"\n    806  Google LLC\n     69  Google LLC.\n```",
       "parentUuid": "cfb9854d_866aa203",
+      "range": {
+        "startLine": 2,
+        "startChar": 25,
+        "endLine": 2,
+        "endChar": 28
+      },
+      "revId": "c60d000ea96c6d6b49eeec763de6d8335ac22083",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "75963f93_df3a629c",
+        "filename": "src/partition_alloc/test_support.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-09-17T17:03:26Z",
+      "side": 1,
+      "message": "Skia has a lot of old files from when Google was an Inc.\n\nAnd a bunch of copypasta too :upsidedownsmile:",
+      "parentUuid": "e238cf8b_2895d6d9",
       "range": {
         "startLine": 2,
         "startChar": 25,
