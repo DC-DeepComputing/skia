@@ -13,7 +13,7 @@
 #include "include/core/SkTypes.h"
 
 #ifdef SK_BUILD_FOR_WIN
-
+#include <dwrite.h>
 #ifdef UNICODE
 typedef struct tagLOGFONTW LOGFONTW;
 typedef LOGFONTW LOGFONT;
@@ -52,6 +52,10 @@ struct IDWriteFactory;
 struct IDWriteFontCollection;
 struct IDWriteFontFallback;
 
+/**
+ *  Returns an IDWriteFontFace based on an SKTypeface
+ */
+SK_API IDWriteFontFace* SkTypeface_GetIDWriteFontFace(const SkTypeface* typeface);
 SK_API sk_sp<SkFontMgr> SkFontMgr_New_GDI();
 SK_API sk_sp<SkFontMgr> SkFontMgr_New_DirectWrite(IDWriteFactory* factory = nullptr,
                                                   IDWriteFontCollection* collection = nullptr);

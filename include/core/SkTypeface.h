@@ -332,6 +332,10 @@ public:
         return this->onGetCTFontRef();
     }
 
+    void* internal_private_getIDWriteFontFace() const { return this->onGetDWriteFontFace(); }
+
+    virtual void* onGetDWriteFontFace() const { return nullptr; }
+
     /* Skia reserves all tags that begin with a lower case letter and 0 */
     using FactoryId = SkFourByteTag;
     static void Register(
@@ -406,7 +410,6 @@ protected:
     virtual bool onComputeBounds(SkRect*) const;
 
     virtual void* onGetCTFontRef() const { return nullptr; }
-
 private:
     /** Returns true if the typeface's glyph masks may refer to the foreground
      *  paint foreground color. This is needed to determine caching requirements. Usually true for
