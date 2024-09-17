@@ -19,12 +19,14 @@
 #include "include/pathops/SkPathOps.h"
 #include "src/core/SkFontDescriptor.h"
 #include "src/core/SkFontPriv.h"
+#include "src/core/SkLRUCache.h"
 #include "src/ports/SkTypeface_fontations_priv.h"
 #include "src/ports/fontations/src/skpath_bridge.h"
 
 namespace {
 
 [[maybe_unused]] static inline const constexpr bool kSkShowTextBlitCoverage = false;
+static inline constexpr int kColrLruCacheSize = 5;
 
 sk_sp<SkData> streamToData(const std::unique_ptr<SkStreamAsset>& font_data) {
     // TODO(drott): From a stream this causes a full read/copy. Make sure
@@ -353,6 +355,8 @@ SkTypeface::LocalizedStrings* SkTypeface_Fontations::onCreateFamilyNameIterator(
     return new SkrifaLocalizedStrings(fontations_ffi::get_localized_strings(*fBridgeFontRef));
 }
 
+class PathCacheKey;
+
 class SkFontationsScalerContext : public SkScalerContext {
 public:
     SkFontationsScalerContext(sk_sp<SkTypeface_Fontations> face,
@@ -365,7 +369,8 @@ public:
                                               ->getBridgeNormalizedCoords())
             , fOutlines(static_cast<SkTypeface_Fontations*>(this->getTypeface())->getOutlines())
             , fPalette(static_cast<SkTypeface_Fontations*>(this->getTypeface())->getPalette())
-            , fHintingInstance(fontations_ffi::no_hinting_instance()) {
+            , fHintingInstance(fontations_ffi::no_hinting_instance())
+            , fColrPathCache( kColrLruCacheSize) {
         fRec.getSingleMatrix(&fMatrix);
 
         SkVector scale;
@@ -442,6 +447,13 @@ public:
         sk_fontations::PathGeometrySink pathWrapper;
         fontations_ffi::BridgeScalerMetrics scalerMetrics;
 
+        if (fontations_ffi::is_no_hinting_instance(hintingInstance)) {
+            if (SkPath* pathResult = fColrPathCache.find(PathCacheKey{glyphId, yScale})) {
+                *path = *pathResult;
+                return true;
+            }
+        }
+
         if (!fontations_ffi::get_path(fOutlines,
                                       glyphId,
                                       yScale,
@@ -452,6 +464,10 @@ public:
             return false;
         }
         *path = std::move(pathWrapper).into_inner();
+
+        if (fontations_ffi::is_no_hinting_instance(hintingInstance)) {
+            fColrPathCache.insert_or_update(PathCacheKey{glyphId, yScale}, *path);
+        }
 
         // See https://issues.skia.org/345178242 for details:
         // The FreeType backend performs a path simplification here based on the
@@ -813,7 +829,13 @@ protected:
         };
         ScalerContextBits::value_type format = glyph.extraBits();
         if (format == ScalerContextBits::COLRv1 || format == ScalerContextBits::COLRv0) {
-            return sk_sp<SkDrawable>(new ColrGlyphDrawable(this, glyph));
+            sk_sp<SkDrawable> colrDrawable(new ColrGlyphDrawable(this, glyph));
+            sk_sp<SkPicture> picture(colrDrawable->makePictureSnapshot());
+            sk_sp<SkData> data(picture->serialize());
+            SkString filename = SkStringPrintf("colrv1-%d.skp", glyph.getGlyphID());
+            SkFILEWStream fileOut(filename.c_str());
+            fileOut.write(data->bytes(), data->size());
+            return colrDrawable;
         }
         return nullptr;
     }
@@ -874,8 +896,27 @@ private:
     rust::Box<fontations_ffi::BridgeHintingInstance> fHintingInstance;
     bool fDoLinearMetrics = false;
 
+    struct KeyHash {
+        uint32_t operator()(const PathCacheKey& key) const;
+    };
+
+    struct PathCacheKey{
+        uint16_t gid;
+        float size;
+    };
+    SkLRUCache<PathCacheKey, SkPath, KeyHash> fColrPathCache;
+
     friend class sk_fontations::ColorPainter;
 };
+
+uint32_t SkScalerContextFontations::KeyHash::operator(const PathCacheKey& key) const {
+    uint32_t hash = SkGoodHash()(key.gid);
+    uint32_t sizeHash - SkGoodHash()(key.size);
+    hash += sizeHash;
+    hash += sizeHash << 10;
+    hash ^= sizeHash >> 6;
+    return hash;
+}
 
 std::unique_ptr<SkStreamAsset> SkTypeface_Fontations::onOpenStream(int* ttcIndex) const {
     *ttcIndex = fTtcIndex;
@@ -1252,7 +1293,8 @@ void ColorPainter::configure_solid_paint(uint16_t palette_index, float alpha, Sk
     } else {
         color = SkColor4f::FromColor(fPalette[palette_index]);
     }
-    color.fA *= alpha;
+    // color.fA *= alpha;
+    color.fA = 1.0;
     paint.setShader(nullptr);
     paint.setColor(color);
 }

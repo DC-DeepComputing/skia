@@ -39,6 +39,11 @@ unsafe fn no_hinting_instance<'a>() -> Box<BridgeHintingInstance> {
     Box::new(BridgeHintingInstance(None))
 }
 
+unsafe fn is_no_hinting_instance(hinting_instance : &BridgeHintingInstance) -> bool {
+    hinting_instance.0.is_none()
+}
+
+
 unsafe fn make_hinting_instance<'a>(
     outlines: &BridgeOutlineCollection,
     size: f32,
@@ -706,7 +711,18 @@ fn get_colrv1_clip_box(
                     };
                     Some(true)
                 }
-                _ => None,
+                _ => // None,
+                {
+                    println!("Fake clipbox!");
+                    *clip_box = ClipBox {
+                        x_min: -size.ppem().unwrap()/2.0,
+                        y_min: -size.ppem().unwrap()/2.0,
+                        x_max: size.ppem().unwrap()*1.5,
+                        y_max: size.ppem().unwrap()*1.5,
+                    };
+                    Some(true)
+                }
+
             }
         })
         .unwrap_or_default()
@@ -1529,7 +1545,7 @@ mod ffi {
             coords: &BridgeNormalizedCoords,
         ) -> Box<BridgeHintingInstance>;
         unsafe fn no_hinting_instance<'a>() -> Box<BridgeHintingInstance>;
-
+        unsafe fn is_no_hinting_instance(hinting_instance : &BridgeHintingInstance) -> bool;
         fn lookup_glyph_or_zero(
             font_ref: &BridgeFontRef,
             map: &BridgeMappingIndex,
