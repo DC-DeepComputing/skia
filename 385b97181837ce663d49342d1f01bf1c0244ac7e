@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dd09fe57_8e529b66",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-09-18T20:06:46Z",
+      "side": 1,
+      "message": "There is no CQ for m120 so I\u0027ll manually submit this once you\u0027ve approved it and then monitor the tree.",
+      "revId": "385b97181837ce663d49342d1f01bf1c0244ac7e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
