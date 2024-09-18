@@ -120,17 +120,23 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(Protected_readPixelsFromSurfaces, reporter, ctx
         return;
     }
 
-    sk_sp<SkSurface> surface = ProtectedUtils::CreateProtectedSkSurface(dContext,
-                                                                        { kSize, kSize },
-                                                                        /* textureable= */ true,
-                                                                        /* isProtected= */ true);
-    if (!surface) {
-        return;
-    }
+    for (bool isProtected : { true, false }) {
+        if (!isProtected && GrBackendApi::kVulkan == dContext->backend()) {
+            continue;
+        }
 
-    SkBitmap readback;
-    readback.allocPixels(surface->imageInfo());
-    REPORTER_ASSERT(reporter, !surface->readPixels(readback, 0, 0));
+        sk_sp<SkSurface> surface = ProtectedUtils::CreateProtectedSkSurface(dContext,
+                                                                            { kSize, kSize },
+                                                                            /* textureable= */ true,
+                                                                            isProtected);
+        if (!surface) {
+            continue;
+        }
+
+        SkBitmap readback;
+        readback.allocPixels(surface->imageInfo());
+        REPORTER_ASSERT(reporter, isProtected != surface->readPixels(readback, 0, 0));
+    }
 }
 
 // Graphite does not perform Copy-on-Write which is why there is no DEF_GRAPHITE_TEST correlate
@@ -208,26 +214,32 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(Protected_asyncRescaleAndReadPixelsFromSurfaces
         return;
     }
 
-    sk_sp<SkSurface> surface = ProtectedUtils::CreateProtectedSkSurface(dContext,
-                                                                        { kSize, kSize },
-                                                                        /* textureable= */ true,
-                                                                        /* isProtected= */ true);
-    if (!surface) {
-        return;
-    }
+    for (bool isProtected : { true, false }) {
+        if (!isProtected && GrBackendApi::kVulkan == dContext->backend()) {
+            continue;
+        }
 
-    AsyncContext cbContext;
+        sk_sp<SkSurface> surface = ProtectedUtils::CreateProtectedSkSurface(dContext,
+                                                                            { kSize, kSize },
+                                                                            /* textureable= */ true,
+                                                                            isProtected);
+        if (!surface) {
+            continue;
+        }
 
-    surface->asyncRescaleAndReadPixels(surface->imageInfo(),
-                                       SkIRect::MakeWH(surface->width(), surface->height()),
-                                       SkSurface::RescaleGamma::kSrc,
-                                       SkSurface::RescaleMode::kNearest,
-                                       async_callback, &cbContext);
-    dContext->submit();
-    while (!cbContext.fCalled) {
-        dContext->checkAsyncWorkCompletion();
+        AsyncContext cbContext;
+
+        surface->asyncRescaleAndReadPixels(surface->imageInfo(),
+                                           SkIRect::MakeWH(surface->width(), surface->height()),
+                                           SkSurface::RescaleGamma::kSrc,
+                                           SkSurface::RescaleMode::kNearest,
+                                           async_callback, &cbContext);
+        dContext->submit();
+        while (!cbContext.fCalled) {
+            dContext->checkAsyncWorkCompletion();
+        }
+        REPORTER_ASSERT(reporter, isProtected != SkToBool(cbContext.fResult));
     }
-    REPORTER_ASSERT(reporter, !cbContext.fResult);
 }
 
 #endif  // defined(SK_GANESH)
