@@ -150,11 +150,11 @@ ZLIB_DEFINES = ["ZLIB_IMPLEMENTATION"] + select({
 })
 
 ZLIB_COPTS = [
-    "-Wno-unused-function",
-    "-Wno-deprecated-non-prototype",
+    #"-Wno-unused-function",
+    #"-Wno-deprecated-non-prototype",
     # no-deprecated-non-prototype was added in Clang 14+, used in emscripten for CanvasKit, but
     # it is not in Clang 13, currently used for Skia.
-    "-Wno-unknown-warning-option",
+    #"-Wno-unknown-warning-option",
 ] + select({
     ":linux_x64": [
         "-mssse3",

@@ -3,7 +3,8 @@ load(":ios_toolchain_config.bzl", "provide_ios_toolchain_config")
 load(":linux_amd64_toolchain_config.bzl", "provide_linux_amd64_toolchain_config")
 load(":mac_toolchain_config.bzl", "provide_mac_toolchain_config")
 load(":ndk_linux_arm64_toolchain_config.bzl", "ndk_cc_toolchain_config")
-load(":windows_toolchain_config.bzl", "provide_windows_amd64_toolchain_config")
+load(":windows_clang_toolchain_config.bzl", "provide_windows_clang_amd64_toolchain_config")
+load(":windows_msvc_toolchain_config.bzl", "provide_windows_msvc_amd64_toolchain_config")
 
 package(
     default_applicable_licenses = ["//:license"],
@@ -31,6 +32,7 @@ toolchain(
         # that we can use to differentiate the "stock" C++ toolchain from our hermetic one and
         # force that use by specifying the target platform.
         "//bazel/platform:use_hermetic_toolchain",
+        "//bazel/platform:clang",
     ],
     toolchain = ":linux_amd64_host",
     # https://github.com/bazelbuild/rules_cc/blob/8bb0eb5c5ccd96b91753bb112096bb6993d16d13/cc/BUILD#L32-L36
@@ -49,6 +51,7 @@ toolchain(
         "@platforms//os:macos",
         "@platforms//cpu:x86_64",
         "//bazel/platform:use_hermetic_toolchain",
+        "//bazel/platform:clang",
     ],
     toolchain = ":mac_host",
     # https://github.com/bazelbuild/rules_cc/blob/8bb0eb5c5ccd96b91753bb112096bb6993d16d13/cc/BUILD#L32-L36
@@ -65,6 +68,7 @@ toolchain(
         "@platforms//os:macos",
         "@platforms//cpu:arm64",
         "//bazel/platform:use_hermetic_toolchain",
+        "//bazel/platform:clang",
     ],
     toolchain = ":mac_host",
     # https://github.com/bazelbuild/rules_cc/blob/8bb0eb5c5ccd96b91753bb112096bb6993d16d13/cc/BUILD#L32-L36
@@ -82,13 +86,14 @@ toolchain(
         "@platforms//os:macos",
         "@platforms//cpu:arm64",
         "//bazel/platform:use_hermetic_toolchain",
+        "//bazel/platform:clang",
     ],
     toolchain = ":mac_target_arm64",
     # https://github.com/bazelbuild/rules_cc/blob/8bb0eb5c5ccd96b91753bb112096bb6993d16d13/cc/BUILD#L32-L36
     toolchain_type = "@rules_cc//cc:toolchain_type",
 )
 
-# Windows x64 toolchain.
+# Windows x64 toolchains.
 toolchain(
     name = "clang_windows_x64_toolchain",
     exec_compatible_with = [
@@ -99,8 +104,26 @@ toolchain(
         "@platforms//os:windows",
         "@platforms//cpu:x86_64",
         "//bazel/platform:use_hermetic_toolchain",
+        "//bazel/platform:clang",
     ],
-    toolchain = ":windows_host",
+    toolchain = ":windows_clang_host",
+    # https://github.com/bazelbuild/rules_cc/blob/8bb0eb5c5ccd96b91753bb112096bb6993d16d13/cc/BUILD#L32-L36
+    toolchain_type = "@rules_cc//cc:toolchain_type",
+)
+
+toolchain(
+    name = "msvc_windows_x64_toolchain",
+    exec_compatible_with = [
+        "@platforms//os:windows",
+        "@platforms//cpu:x86_64",
+    ],
+    target_compatible_with = [
+        "@platforms//os:windows",
+        "@platforms//cpu:x86_64",
+        "//bazel/platform:use_hermetic_toolchain",
+        "//bazel/platform:msvc",
+    ],
+    toolchain = ":windows_msvc_host",
     # https://github.com/bazelbuild/rules_cc/blob/8bb0eb5c5ccd96b91753bb112096bb6993d16d13/cc/BUILD#L32-L36
     toolchain_type = "@rules_cc//cc:toolchain_type",
 )
@@ -114,6 +137,7 @@ toolchain(
     target_compatible_with = [
         "@platforms//os:ios",
         "@platforms//cpu:arm64",
+        "//bazel/platform:clang",
     ],
     toolchain = ":ios_target_arm64",
     # https://github.com/bazelbuild/rules_cc/blob/8bb0eb5c5ccd96b91753bb112096bb6993d16d13/cc/BUILD#L32-L36
@@ -131,6 +155,7 @@ toolchain(
     target_compatible_with = [
         "@platforms//os:android",
         "@platforms//cpu:arm64",
+        "//bazel/platform:clang",
     ],
     toolchain = ":linux_amd64_ndk_arm64",
     toolchain_type = "@rules_cc//cc:toolchain_type",
@@ -147,6 +172,7 @@ toolchain(
     target_compatible_with = [
         "@platforms//os:android",
         "@platforms//cpu:armv7",
+        "//bazel/platform:clang",
     ],
     toolchain = ":linux_amd64_ndk_arm32",
     toolchain_type = "@rules_cc//cc:toolchain_type",
@@ -223,36 +249,69 @@ filegroup(
 )
 
 filegroup(
-    name = "archive_windows_files",
+    name = "archive_windows_clang_files",
     srcs = [
-        "windows_trampolines/ar_trampoline_windows.bat",
+        "windows_trampolines/clang/ar_trampoline_windows.bat",
         "@clang_windows_amd64//:archive_files",
     ],
 )
 
 filegroup(
-    name = "compile_windows_files",
+    name = "compile_windows_clang_files",
     srcs = [
-        "windows_trampolines/clang_trampoline_windows.bat",
+        "windows_trampolines/clang/clang_trampoline_windows.bat",
         "@clang_windows_amd64//:compile_files",
     ],
 )
 
 filegroup(
-    name = "link_windows_files",
+    name = "link_windows_clang_files",
     srcs = [
         # Bazel usually assumes it is talking to Clang when linking.
-        "windows_trampolines/clang_trampoline_windows.bat",
+        "windows_trampolines/clang/clang_trampoline_windows.bat",
         "@clang_windows_amd64//:link_files",
     ],
 )
 
 filegroup(
-    name = "all_windows_files",
+    name = "all_windows_clang_files",
     srcs = [
-        ":archive_windows_files",
-        ":compile_windows_files",
-        ":link_windows_files",
+        ":archive_windows_clang_files",
+        ":compile_windows_clang_files",
+        ":link_windows_clang_files",
+    ],
+)
+
+filegroup(
+    name = "archive_windows_msvc_files",
+    srcs = [
+        "windows_trampolines/msvc/lib_trampoline_windows.cmd",
+        "@msvc_windows_amd64//:archive_files",
+    ],
+)
+
+filegroup(
+    name = "compile_windows_msvc_files",
+    srcs = [
+        "windows_trampolines/msvc/cl_trampoline_windows.cmd",
+        "@msvc_windows_amd64//:compile_files",
+    ],
+)
+
+filegroup(
+    name = "link_windows_msvc_files",
+    srcs = [
+        "windows_trampolines/msvc/link_trampoline_windows.cmd",
+        "@msvc_windows_amd64//:link_files",
+    ],
+)
+
+filegroup(
+    name = "all_windows_msvc_files",
+    srcs = [
+        ":archive_windows_msvc_files",
+        ":compile_windows_msvc_files",
+        ":link_windows_msvc_files",
     ],
 )
 
@@ -301,8 +360,12 @@ provide_mac_toolchain_config(
     cpu = "arm64",
 )
 
-provide_windows_amd64_toolchain_config(
-    name = "windows_amd64_toolchain_config",
+provide_windows_clang_amd64_toolchain_config(
+    name = "windows_clang_amd64_toolchain_config",
+)
+
+provide_windows_msvc_amd64_toolchain_config(
+    name = "windows_msvc_amd64_toolchain_config",
 )
 
 provide_ios_toolchain_config(
@@ -356,16 +419,29 @@ cc_toolchain(
 )
 
 cc_toolchain(
-    name = "windows_host",
-    all_files = ":all_windows_files",
-    ar_files = ":archive_windows_files",
-    compiler_files = ":compile_windows_files",
+    name = "windows_clang_host",
+    all_files = ":all_windows_clang_files",
+    ar_files = ":archive_windows_clang_files",
+    compiler_files = ":compile_windows_clang_files",
     dwp_files = ":not_implemented",
-    linker_files = ":link_windows_files",
+    linker_files = ":link_windows_clang_files",
     objcopy_files = ":not_implemented",
     strip_files = ":not_implemented",
     supports_param_files = True,
-    toolchain_config = ":windows_amd64_toolchain_config",
+    toolchain_config = ":windows_clang_amd64_toolchain_config",
+)
+
+cc_toolchain(
+    name = "windows_msvc_host",
+    all_files = ":all_windows_msvc_files",
+    ar_files = ":archive_windows_msvc_files",
+    compiler_files = ":compile_windows_msvc_files",
+    dwp_files = ":not_implemented",
+    linker_files = ":link_windows_msvc_files",
+    objcopy_files = ":not_implemented",
+    strip_files = ":not_implemented",
+    supports_param_files = True,
+    toolchain_config = ":windows_msvc_amd64_toolchain_config",
 )
 
 cc_toolchain(

@@ -46,7 +46,7 @@ FULL_MSVC_LIB = CLANG_TOOLCHAIN + "/" + MSVC_LIB
 FULL_WIN_SDK_INCLUDE = CLANG_TOOLCHAIN + "/" + WIN_SDK_INCLUDE
 FULL_WIN_SDK_LIB = CLANG_TOOLCHAIN + "/" + WIN_SDK_LIB
 
-def _windows_amd64_toolchain_info(ctx):
+def _windows_clang_amd64_toolchain_info(ctx):
     action_configs = _make_action_configs()
     features = [
         feature(
@@ -72,10 +72,10 @@ def _windows_amd64_toolchain_info(ctx):
         toolchain_identifier = "",
     )
 
-provide_windows_amd64_toolchain_config = rule(
+provide_windows_clang_amd64_toolchain_config = rule(
     attrs = {},
     provides = [CcToolchainConfigInfo],
-    implementation = _windows_amd64_toolchain_info,
+    implementation = _windows_clang_amd64_toolchain_info,
 )
 
 def _make_action_configs():
@@ -93,8 +93,8 @@ def _make_action_configs():
     """
 
     # https://cs.opensource.google/bazel/bazel/+/master:tools/cpp/cc_toolchain_config_lib.bzl;l=435;drc=3b9e6f201a9a3465720aad8712ab7bcdeaf2e5da
-    clang_tool = tool(path = "windows_trampolines/clang_trampoline_windows.bat")
-    ar_tool = tool(path = "windows_trampolines/ar_trampoline_windows.bat")
+    clang_tool = tool(path = "windows_trampolines/clang/clang_trampoline_windows.bat")
+    ar_tool = tool(path = "windows_trampolines/clang/ar_trampoline_windows.bat")
 
     # https://cs.opensource.google/bazel/bazel/+/master:tools/cpp/cc_toolchain_config_lib.bzl;l=488;drc=3b9e6f201a9a3465720aad8712ab7bcdeaf2e5da
     assemble_action = action_config(

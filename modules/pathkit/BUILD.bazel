@@ -27,16 +27,28 @@ BASE_LINKOPTS = [
     "-sEXPORTED_FUNCTIONS=['_malloc','_free']",
 ]
 
-BASE_OPTS = [
-    "-DEMSCRIPTEN_HAS_UNBOUND_TYPE_NAMES=0",
-    "-DSK_TRIVIAL_ABI=[[clang::trivial_abi]]",
-]
+BASE_OPTS = select({
+    "//bazel/platform:msvc": [
+        "/DEMSCRIPTEN_HAS_UNBOUND_TYPE_NAMES=0",
+        "/DSK_TRIVIAL_ABI=[[clang::trivial_abi]]",
+    ],
+    "@conditions:default": [
+        "-DEMSCRIPTEN_HAS_UNBOUND_TYPE_NAMES=0",
+        "-DSK_TRIVIAL_ABI=[[clang::trivial_abi]]",
+    ],
+})
 
 RELEASE_OPTS = BASE_OPTS + [
     "-Oz",
     "--closure 1",
-    "-DSK_RELEASE",
-]
+] + select({
+    "//bazel/platform:msvc": [
+        "/DSK_RELEASE",
+    ],
+    "@conditions:default": [
+        "-DSK_RELEASE",
+    ],
+})
 
 DEBUG_OPTS = BASE_OPTS + [
     "-O0",

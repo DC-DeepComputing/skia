@@ -345,10 +345,10 @@ skia_cc_library(
         # were properly declared static could be mis-interpreted to be unused. We don't
         # want to fail on that. Therefore, we do not want warnings about those unused
         # things to be flagged.
-        "-Wno-unused-function",
-        "-Wno-unused-template",
-        "-Wno-unused-const-variable",
-        "-Wno-invalid-constexpr",
+        #"-Wno-unused-function",
+        #"-Wno-unused-template",
+        #"-Wno-unused-const-variable",
+        #"-Wno-invalid-constexpr",
     ] + select({
         "@platforms//os:windows": [
             "-D_CRT_USE_BUILTIN_OFFSETOF",

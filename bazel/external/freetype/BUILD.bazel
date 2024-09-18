@@ -341,7 +341,7 @@ cc_library(
         "builds/skia/no-type1/freetype/config/ftoption.h",
     ],
     copts = [
-        "-Wno-unused-function",
+        #"-Wno-unused-function",
     ],
     defines = FREETYPE_PUBLIC_DEFINES,
     includes = [

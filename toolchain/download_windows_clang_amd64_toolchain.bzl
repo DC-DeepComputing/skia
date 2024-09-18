@@ -27,7 +27,7 @@ win_toolchain_pkg = "skia/bots/win_toolchain"
 win_toolchain_tag = "version:15"
 win_toolchain_sha256 = "f3dfb040052661124470d959faf8350aef4c2da9b396ad191a2c922d7a01c43f"
 
-def _download_windows_amd64_toolchain_impl(ctx):
+def _download_windows_clang_amd64_toolchain_impl(ctx):
     # Download the clang toolchain (the extraction can take a while)
     # https://bazel.build/rules/lib/repository_ctx#download_and_extract
     ctx.download_and_extract(
@@ -123,12 +123,8 @@ WIN_SDK_LIB = "win_sdk/Lib/" + WIN_SDK_VERSION
     )
 
 # https://bazel.build/rules/repository_rules
-download_windows_amd64_toolchain = repository_rule(
-    implementation = _download_windows_amd64_toolchain_impl,
+download_windows_clang_amd64_toolchain = repository_rule(
+    implementation = _download_windows_clang_amd64_toolchain_impl,
     attrs = {},
-    doc = "Downloads clang to build Skia with." +
-          " Assumes you have msvc located on your device and have" +
-          " VCToolsInstallDir, WindowsSdkDir, and WindowsSDKVersion in your" +
-          " environment, or have MSVC and Windows SDK installed in a" +
-          " predictable location.",
+    doc = "Downloads Clang and MSVC to build Skia with.",
 )

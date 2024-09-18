@@ -1062,9 +1062,10 @@ cc_library(
     srcs = ICU_SRCS,
     hdrs = ICU_HDRS,
     copts = [
-        "-Wno-deprecated-declarations",
-        "-Wno-unused-but-set-variable",
-        "-Wno-unused-function",
+        # TODO(borenet): These don't work with MSVC.
+        #"-Wno-deprecated-declarations",
+        #"-Wno-unused-but-set-variable",
+        #"-Wno-unused-function",
     ],
     defines = [
         "SK_USING_THIRD_PARTY_ICU",

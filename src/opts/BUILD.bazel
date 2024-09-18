@@ -58,7 +58,10 @@ skia_cc_library(
         "//src/shaders:opts_srcs",
         "//src/sksl/tracing:opts_srcs",
     ],
-    copts = DEFAULT_COPTS + ["-march=skylake-avx512"],
+    copts = DEFAULT_COPTS + select({
+        "//bazel/platform:msvc": ["/arch:AVX512"],
+        "//conditions:default": ["-march=skylake-avx512"],
+    }),
     textual_hdrs = [
         "SkRasterPipeline_opts.h",
         ":textual_hdrs",

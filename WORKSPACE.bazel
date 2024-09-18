@@ -6,7 +6,7 @@ bazel_deps()
 
 load("//toolchain:download_toolchains.bzl", "download_toolchains_for_skia")
 
-download_toolchains_for_skia("clang_linux_amd64", "clang_mac", "clang_windows_amd64", "ndk_linux_amd64", "clang_ios")
+download_toolchains_for_skia("clang_linux_amd64", "clang_mac", "clang_windows_amd64", "msvc_windows_amd64", "ndk_linux_amd64", "clang_ios")
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive", "http_file")
 load("//bazel:gcs_mirror.bzl", "gcs_mirror_url")
