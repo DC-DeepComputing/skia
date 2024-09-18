@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a1ad349_a46fa687",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-09-18T17:24:32Z",
+      "side": 1,
+      "message": "Is this still useful on other platforms?  Sounds like we could also just ifdef out in Win builds.",
+      "revId": "9069b86aba9539d4b83a6e81a2544bd7a0651d8d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
