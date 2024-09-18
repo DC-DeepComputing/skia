@@ -1129,6 +1129,11 @@ optional("jpeg_encode") {
     deps += [ ":jpeg_mpf" ]
     sources += [ "src/encode/SkJpegGainmapEncoder.cpp" ]
   }
+
+  if (skia_use_libexif) {
+    public_defines = [ "SK_HAS_EXIF_LIBRARY" ]
+    deps += [ "//third_party/libexif" ]
+  }
 }
 
 optional("jpegxl_decode") {

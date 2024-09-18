@@ -1,0 +1,25 @@
+# Copyright 2024 Google Inc.
+#
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("../third_party.gni")
+
+third_party("libexif") {
+  public_include_dirs = [ "../externals/libexif" ]
+
+  sources = [
+    "../externals/libexif/libexif/exif-byte-order.c",
+    "../externals/libexif/libexif/exif-content.c",
+    "../externals/libexif/libexif/exif-data.c",
+    "../externals/libexif/libexif/exif-entry.c",
+    "../externals/libexif/libexif/exif-format.c",
+    "../externals/libexif/libexif/exif-ifd.c",
+    "../externals/libexif/libexif/exif-loader.c",
+    "../externals/libexif/libexif/exif-log.c",
+    "../externals/libexif/libexif/exif-mem.c",
+    "../externals/libexif/libexif/exif-mnote-data.c",
+    "../externals/libexif/libexif/exif-tag.c",
+    "../externals/libexif/libexif/exif-utils.c",
+  ]
+}
