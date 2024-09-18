@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5d2ddaae_d05a63e9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2024-09-18T14:21:14Z",
+      "side": 1,
+      "message": "yes, i looked into the bazel build examples and it seems like that does not support all the rules needed by CrabbyAvif (for example, it does not support bindgen which is necessary to generate rust bindings for the underlying native libraries).\n\nalso, this integration is intended to be used only in the Android Framework build and never outside of it (similar to SkHeifCodec.cpp which is not built in skia standalone builds). as it can be seen, all the new code is essentially hidden behind `#if defined(SK_BUILD_FOR_ANDROID_FRAMEWORK)`.\n\nso do you think it is okay to not test the CrabbyAvif path in the skia standalone path? some of the newly added code (like RGBA_1010102 path for example) is only test\u0027able under the Android framework since none of the other decoders produce that color format.",
+      "parentUuid": "a043895f_71049708",
+      "range": {
+        "startLine": 9,
+        "startChar": 42,
+        "endLine": 11,
+        "endChar": 19
+      },
+      "revId": "6ef0ecda4404cf82d5cb43047e0f903b11252cd1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f31f8d56_d24dd78a",
         "filename": "/COMMIT_MSG",
         "patchSetId": 2
