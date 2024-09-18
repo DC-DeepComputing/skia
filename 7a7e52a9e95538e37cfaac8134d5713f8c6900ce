@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "92e144e4_39f85501",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-18T21:20:58Z",
+      "side": 1,
+      "message": "Maybe? Have to think about it.",
+      "revId": "7a7e52a9e95538e37cfaac8134d5713f8c6900ce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "128beb69_30130538",
+        "filename": "include/ports/SkTypeface_win.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-18T21:20:58Z",
+      "side": 1,
+      "message": "Just forward declare like the others so we don\u0027t need the `\u003cdwrite.h\u003e`.",
+      "range": {
+        "startLine": 58,
+        "startChar": 7,
+        "endLine": 58,
+        "endChar": 22
+      },
+      "revId": "7a7e52a9e95538e37cfaac8134d5713f8c6900ce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7cd138b9_9ad61513",
+        "filename": "relnotes/dwritefontface.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-18T21:20:58Z",
+      "side": 1,
+      "message": "Not sure we actually want this in the release notes.",
+      "revId": "7a7e52a9e95538e37cfaac8134d5713f8c6900ce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
