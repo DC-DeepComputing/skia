@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8b60aa74_6ac9e61a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2024-09-18T14:24:47Z",
+      "side": 1,
+      "message": "Ideally, https://g-issues.skia.org/issues/312495780 is what we want to build CrabbyAvif under skia\u0027s standalone build.",
+      "parentUuid": "5d2ddaae_d05a63e9",
+      "range": {
+        "startLine": 9,
+        "startChar": 42,
+        "endLine": 11,
+        "endChar": 19
+      },
+      "revId": "6ef0ecda4404cf82d5cb43047e0f903b11252cd1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f31f8d56_d24dd78a",
         "filename": "/COMMIT_MSG",
         "patchSetId": 2
