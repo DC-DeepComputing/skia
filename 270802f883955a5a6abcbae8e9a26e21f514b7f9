@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e0a9a930_93b6901b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-18T16:54:47Z",
+      "side": 1,
+      "message": "Why exactly is getting the paths so insanely slow? In other words, what is being swept under the rug by this extra complexity? I\u0027m guessing it is the overhead of all the callbacks through `PathWrapper`? I\u0027m assuming the cxx bridge is resetting the the exception state and various other bits on every call of this rather chatty API (calls across the boundary are very not free).",
+      "revId": "270802f883955a5a6abcbae8e9a26e21f514b7f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
