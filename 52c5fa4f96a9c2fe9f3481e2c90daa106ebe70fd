@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec87d76f_76d26db5",
+        "filename": "src/gpu/graphite/ContextUtils.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-09-18T18:33:41Z",
+      "side": 1,
+      "message": "nit: TArray",
+      "range": {
+        "startLine": 159,
+        "startChar": 36,
+        "endLine": 159,
+        "endChar": 47
+      },
+      "revId": "52c5fa4f96a9c2fe9f3481e2c90daa106ebe70fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dcab57b5_2d8857bb",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 492,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-09-18T18:33:41Z",
+      "side": 1,
+      "message": "do you think it\u0027d be good to append default sampler descs for all the RenderStep textures that get added here (calculated from change to the `binding`)?  That way the array matches the entire set of textures, and not just the paint textures?",
+      "range": {
+        "startLine": 492,
+        "startChar": 0,
+        "endLine": 492,
+        "endChar": 77
+      },
+      "revId": "52c5fa4f96a9c2fe9f3481e2c90daa106ebe70fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
