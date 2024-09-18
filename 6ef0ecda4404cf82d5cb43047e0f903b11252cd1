@@ -91,6 +91,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "d895adcf_4a750ac0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2024-09-18T17:02:21Z",
+      "side": 1,
+      "message": "oops, done.",
+      "parentUuid": "f31f8d56_d24dd78a",
+      "revId": "6ef0ecda4404cf82d5cb43047e0f903b11252cd1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "35862e12_c426f19c",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 2
@@ -119,6 +137,24 @@
       "writtenOn": "2024-09-18T14:42:35Z",
       "side": 1,
       "message": "Is there any way to avoid putting this in public API? Is there some reason Android proper needs to call this? It seems a bit awkward to put a subclass specific implementation detail into the generic SkCodecs space.",
+      "revId": "6ef0ecda4404cf82d5cb43047e0f903b11252cd1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "78d0109f_7a41f929",
+        "filename": "include/codec/SkCodec.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1049,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2024-09-18T17:02:21Z",
+      "side": 1,
+      "message": "I have moved this to be a static function inside SkAndroidCodec class. It seems to make more sense there.\n\nUntil we switch to SkAvifCodec unconditionally for both HEIF and AVIF, we will need the ability to select between the SkAvifCodec and SkHeifCodec in skia since they both handle scaling in different ways. So this function has to be in skia somewhere. I agree that it is better to put this in an Android specific class rather than in the public API.",
+      "parentUuid": "e141eba0_2252bf94",
       "revId": "6ef0ecda4404cf82d5cb43047e0f903b11252cd1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -175,6 +211,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "60a77469_6e232984",
+        "filename": "src/codec/SkAvifCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2024-09-18T17:02:21Z",
+      "side": 1,
+      "message": "this is a bit weird. even though `bitsPerComponent` is set to 8, in Android for 10-bit images, we would still use RGBA_1010102 which clearly has more than 8 bits per component (see `SkAndroidCodec::computeOutputColorType()` which chooses the color format for Android when using MediaCodec).\n\ni am changing this code to simply mimic what the platform code does as of today. we might be able to do better, i will look into it once the current pipeline is working the same as what it is today in the platform.",
+      "parentUuid": "443cb524_b07e4680",
+      "revId": "6ef0ecda4404cf82d5cb43047e0f903b11252cd1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d87cd923_2a632f6a",
@@ -192,6 +246,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "89edb976_d200f71c",
+        "filename": "src/codec/SkAvifCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2024-09-18T17:02:21Z",
+      "side": 1,
+      "message": "Good point. I have reworked the code to move the validation into a switch statement in the lines below where we actually do the color conversion. This is more of a safety check and it is okay to fail below rather than pro-actively check for the color format here.",
+      "parentUuid": "d87cd923_2a632f6a",
+      "revId": "6ef0ecda4404cf82d5cb43047e0f903b11252cd1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "237f45b2_b3a02d79",
@@ -205,6 +277,24 @@
       "writtenOn": "2024-09-18T06:47:26Z",
       "side": 1,
       "message": "I\u0027m not a Skia build expert, but have a hunch that it might be better to either (a) have `SK_AVIF_USE_CRABBYAVIF` set up in the build system or (b) just use `SK_BUILD_FOR_ANDROID_FRAMEWORK` directly.",
+      "revId": "6ef0ecda4404cf82d5cb43047e0f903b11252cd1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b61757a_abe12aa2",
+        "filename": "src/codec/SkAvifCodec.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2024-09-18T17:02:21Z",
+      "side": 1,
+      "message": "i didn\u0027t want to add another define in the build system when one already existed. so i thought it was a bit simpler use the local define `SK_AVIF_USE_CRABBYAVIF` just for this file and the cpp file.\n\ni have updated both the files to directly use `SK_BUILD_FOR_ANDROID_FRAMEWORK`.",
+      "parentUuid": "237f45b2_b3a02d79",
       "revId": "6ef0ecda4404cf82d5cb43047e0f903b11252cd1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
