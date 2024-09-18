@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e7aef68_cdf2da52",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-09-18T17:38:49Z",
+      "side": 1,
+      "message": "PTAL - larger fix in follow-up CL",
+      "revId": "259394dbfe6be98f45a134d73a9bde1578601a2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
