@@ -451,9 +451,7 @@ private:
     friend class PathTextBench;  // For debug purposes
     friend class RandomScalerContext;  // For debug purposes
 
-    static SkScalerContextRec PreprocessRec(const SkTypeface&,
-                                            const SkScalerContextEffects&,
-                                            const SkDescriptor&);
+    static SkScalerContextRec PreprocessRec(const SkDescriptor& desc);
 
     // never null
     sk_sp<SkTypeface> fTypeface;

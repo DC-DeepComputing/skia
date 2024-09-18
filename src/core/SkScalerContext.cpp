@@ -54,22 +54,9 @@ static inline const constexpr bool kSkShowTextBlitCoverage = false;
 static inline const constexpr bool kSkScalerContextDumpRec = false;
 }
 
-SkScalerContextRec SkScalerContext::PreprocessRec(const SkTypeface& typeface,
-                                                  const SkScalerContextEffects& effects,
-                                                  const SkDescriptor& desc) {
+SkScalerContextRec SkScalerContext::PreprocessRec(const SkDescriptor& desc) {
     SkScalerContextRec rec =
             *static_cast<const SkScalerContextRec*>(desc.findEntry(kRec_SkDescriptorTag, nullptr));
-
-    // Allow the typeface to adjust the rec.
-    typeface.onFilterRec(&rec);
-
-    if (effects.fMaskFilter) {
-        // Pre-blend is not currently applied to filtered text.
-        // The primary filter is blur, for which contrast makes no sense,
-        // and for which the destination guess error is more visible.
-        // Also, all existing users of blur have calibrated for linear.
-        rec.ignorePreBlend();
-    }
 
     SkColor lumColor = rec.getLuminanceColor();
 
@@ -88,7 +75,7 @@ SkScalerContextRec SkScalerContext::PreprocessRec(const SkTypeface& typeface,
 
 SkScalerContext::SkScalerContext(sk_sp<SkTypeface> typeface, const SkScalerContextEffects& effects,
                                  const SkDescriptor* desc)
-    : fRec(PreprocessRec(*typeface, effects, *desc))
+    : fRec(PreprocessRec(*desc))
     , fTypeface(std::move(typeface))
     , fPathEffect(sk_ref_sp(effects.fPathEffect))
     , fMaskFilter(sk_ref_sp(effects.fMaskFilter))
@@ -1199,6 +1186,14 @@ void SkScalerContext::MakeRecAndEffects(const SkFont& font, const SkPaint& paint
     rec->setDeviceGamma(surfaceProps.textGamma());
     rec->setContrast(surfaceProps.textContrast());
 
+    // Allow the fonthost to modify our rec before we use it as a key into the
+    // cache. This way if we're asking for something that they will ignore,
+    // they can modify our rec up front, so we don't create duplicate cache
+    // entries.
+    if (enableTypefaceFiltering) {
+        typeface->onFilterRec(rec);
+    }
+
     if (!SkToBool(scalerContextFlags & SkScalerContextFlags::kFakeGamma)) {
         rec->ignoreGamma();
     }
@@ -1207,6 +1202,13 @@ void SkScalerContext::MakeRecAndEffects(const SkFont& font, const SkPaint& paint
     }
 
     new (effects) SkScalerContextEffects{paint};
+    if (effects->fMaskFilter) {
+        // Pre-blend is not currently applied to filtered text.
+        // The primary filter is blur, for which contrast makes no sense,
+        // and for which the destination guess error is more visible.
+        // Also, all existing users of blur have calibrated for linear.
+        rec->ignorePreBlend();
+    }
 }
 
 SkDescriptor* SkScalerContext::CreateDescriptorAndEffectsUsingPaint(
