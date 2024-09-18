@@ -24,6 +24,10 @@
 #include <functional>
 #include <utility>
 
+#if defined(SK_BUILD_FOR_ANDROID_FRAMEWORK)
+#include "cutils/properties.h"
+#endif // defined(SK_BUILD_FOR_ANDROID_FRAMEWORK)
+
 class SkPngChunkReader;
 
 static bool is_valid_sample_size(int sampleSize) {
@@ -216,9 +220,9 @@ std::unique_ptr<SkAndroidCodec> SkAndroidCodec::MakeFromCodec(std::unique_ptr<Sk
 
     const SkEncodedImageFormat format = codec->getEncodedFormat();
     if (format == SkEncodedImageFormat::kAVIF) {
-        if (SkCodecs::HasDecoder("avif")) {
-            // If a dedicated AVIF decoder has been registered, SkAvifCodec can
-            // handle scaling internally.
+        if (SkCodecs::HasDecoder("avif") && SkAndroidCodec::AvifEnabled()) {
+            // If a dedicated AVIF decoder has been registered and enabled,
+            // SkAvifCodec can handle scaling internally.
             return std::make_unique<SkAndroidCodecAdapter>(codec.release());
         }
         // This will fallback to SkHeifCodec, which needs sampling.
@@ -557,4 +561,13 @@ bool SkAndroidCodec::getGainmapAndroidCodec(SkGainmapInfo* info,
 bool SkAndroidCodec::getAndroidGainmap(SkGainmapInfo* info,
                                        std::unique_ptr<SkStream>* outGainmapImageStream) {
     return fCodec->onGetGainmapInfo(info, outGainmapImageStream);
+}
+
+// static
+bool SkAndroidCodec::AvifEnabled() {
+#if defined(SK_BUILD_FOR_ANDROID_FRAMEWORK)
+    return property_get_int32("media.avif.crabbyavif", 0) != 0;
+#else
+    return true;
+#endif  // defined(SK_BUILD_FOR_ANDROID_FRAMEWORK)
 }
