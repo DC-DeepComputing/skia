@@ -115,7 +115,8 @@ FragSkSLInfo BuildFragmentSkSL(const Caps* caps,
                                const RenderStep* renderStep,
                                UniquePaintParamsID paintID,
                                bool useStorageBuffers,
-                               skgpu::Swizzle writeSwizzle);
+                               skgpu::Swizzle writeSwizzle,
+                               std::vector<SamplerDesc>* outImmutableSamplers);
 
 std::string GetPipelineLabel(const ShaderCodeDictionary*,
                              const RenderPassDesc& renderPassDesc,
@@ -144,9 +145,18 @@ std::string EmitUniformsFromStorageBuffer(const char* bufferNamePrefix,
 std::string EmitStorageBufferAccess(const char* bufferNamePrefix,
                                     const char* ssboIndex,
                                     const char* uniformName);
+// Accepts a real or invalid/nullptr pointer to a container of SamplerDescs (outImmutableSamplers).
+// A backend implementation which may utilize static / immutable samplers should pass in a real
+// pointer, in which case, this function will populate outImmutableSamplers with either:
+// 1) a default-constructed SamplerDesc, indicating the use of a "regular" dynamic sampler or
+// 2) a SamplerDesc describing an immutable sampler. Backend pipelines can then use the desc to
+//    obtain a real immutable sampler pointer (which typically must be included in pipeline layouts)
+// This is done for each and every sampler the nodes utilize (dynamic or otherwise). This way, a
+// SamplerDesc's index within outImmutableSamplers can inform its binding order.
 std::string EmitTexturesAndSamplers(const ResourceBindingRequirements&,
                                     SkSpan<const ShaderNode*> nodes,
-                                    int* binding);
+                                    int* binding,
+                                    std::vector<SamplerDesc>* outImmutableSamplers);
 std::string EmitSamplerLayout(const ResourceBindingRequirements&, int* binding);
 std::string EmitVaryings(const RenderStep* step,
                          const char* direction,
