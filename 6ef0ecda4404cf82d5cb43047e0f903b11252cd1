@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a043895f_71049708",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-18T13:19:25Z",
+      "side": 1,
+      "message": "Skia builds Fontations, icu4x and a few other things in Rust. In the GN build this shells out to the Bazel build, but it works. If we want this is Skia\u0027s codebase, we do need to be testing it in Skia.",
+      "range": {
+        "startLine": 9,
+        "startChar": 42,
+        "endLine": 11,
+        "endChar": 19
+      },
+      "revId": "6ef0ecda4404cf82d5cb43047e0f903b11252cd1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f31f8d56_d24dd78a",
         "filename": "/COMMIT_MSG",
         "patchSetId": 2
