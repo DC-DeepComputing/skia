@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64eb1b91_9fd6d81b",
+        "filename": "tests/graphite/DrawAtlasTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-09-18T02:45:51Z",
+      "side": 1,
+      "message": "Can this be `sim_draw_from_plot(atlas, recorder, testAtlasLocator);`?",
+      "range": {
+        "startLine": 118,
+        "startChar": 0,
+        "endLine": 120,
+        "endChar": 43
+      },
+      "revId": "4792295e40b45ebe1e1960aa16912d265c72ca3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "de866054_5282b80a",
+        "filename": "tests/graphite/DrawAtlasTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-09-18T02:45:51Z",
+      "side": 1,
+      "message": "and then `sim_non_atlas_draw(atlas, recorder);`?",
+      "range": {
+        "startLine": 126,
+        "startChar": 8,
+        "endLine": 127,
+        "endChar": 43
+      },
+      "revId": "4792295e40b45ebe1e1960aa16912d265c72ca3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
