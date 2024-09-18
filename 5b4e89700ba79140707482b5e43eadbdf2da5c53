@@ -16,6 +16,29 @@
       "message": "PTAL",
       "revId": "5b4e89700ba79140707482b5e43eadbdf2da5c53",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f4c3235_d03bbff4",
+        "filename": "tests/graphite/precompile/PaintParamsKeyTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1949,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-09-18T15:47:14Z",
+      "side": 1,
+      "message": "Nit: on line 1926 you put the operator at the end of the line.",
+      "range": {
+        "startLine": 1949,
+        "startChar": 24,
+        "endLine": 1949,
+        "endChar": 27
+      },
+      "revId": "5b4e89700ba79140707482b5e43eadbdf2da5c53",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
