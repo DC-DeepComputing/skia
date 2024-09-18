@@ -103,6 +103,74 @@ static void cleanup_resources(AHardwareBuffer* buffer) {
     }
 }
 
+static AHardwareBuffer* make_AHB(const SkBitmap* srcBitmap, bool isOutput, bool isProtected) {
+    ///////////////////////////////////////////////////////////////////////////
+    // Setup AHardwareBuffer
+    ///////////////////////////////////////////////////////////////////////////
+
+    AHardwareBuffer* buffer = nullptr;
+
+    AHardwareBuffer_Desc hwbDesc;
+    hwbDesc.width = DEV_W;
+    hwbDesc.height = DEV_H;
+    hwbDesc.layers = 1;
+    hwbDesc.usage = AHARDWAREBUFFER_USAGE_CPU_READ_NEVER |
+                    AHARDWAREBUFFER_USAGE_GPU_SAMPLED_IMAGE;
+    if (srcBitmap) {
+        hwbDesc.usage |= AHARDWAREBUFFER_USAGE_CPU_WRITE_OFTEN;
+    } else {
+        hwbDesc.usage |= AHARDWAREBUFFER_USAGE_CPU_WRITE_NEVER;
+    }
+    if (isOutput) {
+        hwbDesc.usage |= AHARDWAREBUFFER_USAGE_GPU_COLOR_OUTPUT;
+    }
+    if (isProtected) {
+        hwbDesc.usage |= AHARDWAREBUFFER_USAGE_PROTECTED_CONTENT;
+    }
+
+    hwbDesc.format = AHARDWAREBUFFER_FORMAT_R8G8B8A8_UNORM;
+    // The following three are not used in the allocate
+    hwbDesc.stride = 0;
+    hwbDesc.rfu0= 0;
+    hwbDesc.rfu1= 0;
+
+    if (int error = AHardwareBuffer_allocate(&hwbDesc, &buffer)) {
+        ERRORF(reporter, "Failed to allocated hardware buffer, error: %d", error);
+        cleanup_resources(buffer);
+        return nullptr;
+    }
+
+    // Get actual desc for allocated buffer so we know the stride for uploading cpu data.
+    AHardwareBuffer_describe(buffer, &hwbDesc);
+
+    if (srcBitmap) {
+        uint32_t* bufferAddr;
+        if (AHardwareBuffer_lock(buffer, AHARDWAREBUFFER_USAGE_CPU_WRITE_OFTEN, -1, nullptr,
+                                 reinterpret_cast<void**>(&bufferAddr))) {
+            ERRORF(reporter, "Failed to lock hardware buffer");
+            cleanup_resources(buffer);
+            return nullptr;
+        }
+
+        int bbp = srcBitmap->bytesPerPixel();
+        uint32_t* src = (uint32_t*)srcBitmap->getPixels();
+        int nextLineStep = DEV_W;
+        if (surfaceOrigin == kBottomLeft_GrSurfaceOrigin) {
+            nextLineStep = -nextLineStep;
+            src += (DEV_H-1)*DEV_W;
+        }
+        uint32_t* dst = bufferAddr;
+        for (int y = 0; y < DEV_H; ++y) {
+            memcpy(dst, src, DEV_W * bbp);
+            src += nextLineStep;
+            dst += hwbDesc.stride;
+        }
+        AHardwareBuffer_unlock(buffer, nullptr);
+    }
+
+    return buffer;
+}
+
 static void basic_draw_test_helper(skiatest::Reporter* reporter,
                                    const sk_gpu_test::ContextInfo& info,
                                    GrSurfaceOrigin surfaceOrigin) {
@@ -118,56 +186,10 @@ static void basic_draw_test_helper(skiatest::Reporter* reporter,
 
     const SkBitmap srcBitmap = make_src_bitmap();
 
-    ///////////////////////////////////////////////////////////////////////////
-    // Setup AHardwareBuffer
-    ///////////////////////////////////////////////////////////////////////////
-
-    AHardwareBuffer* buffer = nullptr;
-
-    AHardwareBuffer_Desc hwbDesc;
-    hwbDesc.width = DEV_W;
-    hwbDesc.height = DEV_H;
-    hwbDesc.layers = 1;
-    hwbDesc.usage = AHARDWAREBUFFER_USAGE_CPU_READ_NEVER |
-                    AHARDWAREBUFFER_USAGE_CPU_WRITE_OFTEN |
-                    AHARDWAREBUFFER_USAGE_GPU_SAMPLED_IMAGE;
-    hwbDesc.format = AHARDWAREBUFFER_FORMAT_R8G8B8A8_UNORM;
-    // The following three are not used in the allocate
-    hwbDesc.stride = 0;
-    hwbDesc.rfu0= 0;
-    hwbDesc.rfu1= 0;
-
-    if (int error = AHardwareBuffer_allocate(&hwbDesc, &buffer)) {
-        ERRORF(reporter, "Failed to allocated hardware buffer, error: %d", error);
-        cleanup_resources(buffer);
+    AHardwareBuffer* buffer = make_AHB(&srcBitmap, /* isOutput= */ false, /* isProtected= */ false);
+    if (!buffer) {
         return;
     }
-
-    // Get actual desc for allocated buffer so we know the stride for uploading cpu data.
-    AHardwareBuffer_describe(buffer, &hwbDesc);
-
-    uint32_t* bufferAddr;
-    if (AHardwareBuffer_lock(buffer, AHARDWAREBUFFER_USAGE_CPU_WRITE_OFTEN, -1, nullptr,
-                             reinterpret_cast<void**>(&bufferAddr))) {
-        ERRORF(reporter, "Failed to lock hardware buffer");
-        cleanup_resources(buffer);
-        return;
-    }
-
-    int bbp = srcBitmap.bytesPerPixel();
-    uint32_t* src = (uint32_t*)srcBitmap.getPixels();
-    int nextLineStep = DEV_W;
-    if (surfaceOrigin == kBottomLeft_GrSurfaceOrigin) {
-        nextLineStep = -nextLineStep;
-        src += (DEV_H-1)*DEV_W;
-    }
-    uint32_t* dst = bufferAddr;
-    for (int y = 0; y < DEV_H; ++y) {
-        memcpy(dst, src, DEV_W * bbp);
-        src += nextLineStep;
-        dst += hwbDesc.stride;
-    }
-    AHardwareBuffer_unlock(buffer, nullptr);
 
     ///////////////////////////////////////////////////////////////////////////
     // Wrap AHardwareBuffer in SkImage
@@ -236,31 +258,8 @@ static void surface_draw_test_helper(skiatest::Reporter* reporter,
 
     const SkBitmap srcBitmap = make_src_bitmap();
 
-    ///////////////////////////////////////////////////////////////////////////
-    // Setup AHardwareBuffer
-    ///////////////////////////////////////////////////////////////////////////
-
-    AHardwareBuffer* buffer = nullptr;
-
-    AHardwareBuffer_Desc hwbDesc;
-    hwbDesc.width = DEV_W;
-    hwbDesc.height = DEV_H;
-    hwbDesc.layers = 1;
-    hwbDesc.usage = AHARDWAREBUFFER_USAGE_CPU_READ_NEVER |
-                    AHARDWAREBUFFER_USAGE_CPU_WRITE_NEVER |
-                    AHARDWAREBUFFER_USAGE_GPU_SAMPLED_IMAGE |
-                    AHARDWAREBUFFER_USAGE_GPU_COLOR_OUTPUT |
-                    (isProtected ? AHARDWAREBUFFER_USAGE_PROTECTED_CONTENT : 0);
-
-    hwbDesc.format = AHARDWAREBUFFER_FORMAT_R8G8B8A8_UNORM;
-    // The following three are not used in the allocate
-    hwbDesc.stride = 0;
-    hwbDesc.rfu0= 0;
-    hwbDesc.rfu1= 0;
-
-    if (int error = AHardwareBuffer_allocate(&hwbDesc, &buffer)) {
-        ERRORF(reporter, "Failed to allocated hardware buffer, error: %d", error);
-        cleanup_resources(buffer);
+    AHardwareBuffer* buffer = make_AHB(nullptr, /* isOutput= */ false, /* isProtected= */ false);
+    if (!buffer) {
         return;
     }
 
@@ -294,6 +293,23 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrAHardwareBuffer_ImportAsSurface,
                                        CtsEnforcement::kApiLevel_T) {
     surface_draw_test_helper(reporter, context_info, kTopLeft_GrSurfaceOrigin);
     surface_draw_test_helper(reporter, context_info, kBottomLeft_GrSurfaceOrigin);
+}
+
+static foo(skiatest::Reporter* reporter, const sk_gpu_test::ContextInfo& info) {
+    auto context = info.directContext();
+    if (!context->priv().caps()->supportsAHardwareBufferImages()) {
+        return;
+    }
+
+
+}
+
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrAHardwareBuffer_WrapBackend,
+                                       reporter,
+                                       context_info,
+                                       CtsEnforcement::kNever) {
+    foo(reporter, context_info);
+    foo(reporter, context_info);
 }
 
 #endif
