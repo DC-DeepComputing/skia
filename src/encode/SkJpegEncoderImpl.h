@@ -52,6 +52,9 @@ void AppendICC(SegmentList& segmentList,
 // Include a standard (as opposed to extended) XMP metadata segment.
 void AppendXMPStandard(SegmentList& segmentList, const SkData* xmpMetadata);
 
+// Include an origin for the image.
+void AppendOrigin(SegmentList& segmentList, const SkEncodedOrigin fOrigin);
+
 }  // namespace SkJpegMetadataEncoder
 
 class SkJpegEncoderImpl : public SkEncoder {

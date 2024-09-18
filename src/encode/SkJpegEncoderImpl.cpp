@@ -30,6 +30,12 @@
 #include "src/encode/SkJPEGWriteUtility.h"
 #include "src/image/SkImage_Base.h"
 
+#ifdef SK_HAS_EXIF_LIBRARY
+#include "libexif/exif-byte-order.h"
+#include "libexif/exif-data.h"
+#include "libexif/exif-format.h"
+#endif
+
 #include <csetjmp>
 #include <cstdint>
 #include <cstring>
@@ -417,6 +423,7 @@ std::unique_ptr<SkEncoder> Make(SkWStream* dst, const SkPixmap& src, const Optio
     SkJpegMetadataEncoder::SegmentList metadataSegments;
     SkJpegMetadataEncoder::AppendXMPStandard(metadataSegments, options.xmpMetadata);
     SkJpegMetadataEncoder::AppendICC(metadataSegments, options, src.colorSpace());
+    SkJpegMetadataEncoder::AppendOrigin(metadataSegments, options.fOrigin);
     return SkJpegEncoderImpl::MakeRGB(dst, src, options, metadataSegments);
 }
 
@@ -427,6 +434,7 @@ std::unique_ptr<SkEncoder> Make(SkWStream* dst,
     SkJpegMetadataEncoder::SegmentList metadataSegments;
     SkJpegMetadataEncoder::AppendXMPStandard(metadataSegments, options.xmpMetadata);
     SkJpegMetadataEncoder::AppendICC(metadataSegments, options, srcColorSpace);
+    SkJpegMetadataEncoder::AppendOrigin(metadataSegments, options.fOrigin);
     return SkJpegEncoderImpl::MakeYUV(dst, src, srcColorSpace, options, metadataSegments);
 }
 
@@ -463,6 +471,38 @@ void AppendXMPStandard(SegmentList& segmentList, const SkData* xmpMetadata) {
     s.write(kXMPStandardSig, sizeof(kXMPStandardSig));
     s.write(xmpMetadata->data(), xmpMetadata->size());
     segmentList.emplace_back(kXMPMarker, s.detachAsData());
+}
+
+void AppendOrigin(SegmentList& segmentList, const SkEncodedOrigin fOrigin) {
+    // Create ExifData.
+    const auto kByteOrder = EXIF_BYTE_ORDER_INTEL;
+    SkAutoTCallVProc<ExifData, exif_data_unref> exif(exif_data_new());
+    exif_data_set_option(exif.get(), EXIF_DATA_OPTION_FOLLOW_SPECIFICATION);
+    exif_data_set_data_type(exif.get(), EXIF_DATA_TYPE_COMPRESSED);
+    exif_data_set_byte_order(exif.get(), kByteOrder);
+    exif_data_fix(exif.get());
+
+    // Create entry for rotation.
+    SkAutoTCallVProc<ExifMem, exif_mem_unref> mem(exif_mem_new_default());
+    SkAutoTCallVProc<ExifEntry, exif_entry_unref> entry(exif_entry_new_mem(mem));
+    size_t size = exif_format_get_size(EXIF_FORMAT_SHORT);
+    entry->data = reinterpret_cast<unsigned char*>(exif_mem_alloc(mem, size));
+    entry->size = size;
+    entry->tag = EXIF_TAG_ORIENTATION;
+    entry->components = 1;
+    entry->format = EXIF_FORMAT_SHORT;
+    exif_content_add_entry(exif->ifd[EXIF_IFD_0], entry);
+    exif_set_short(entry->data, kByteOrder, (ExifShort) fOrigin);
+
+    // Serialize the data.
+    unsigned char* exif_data;
+    unsigned int exif_data_len;
+    exif_data_save_data(exif.get(), &exif_data, &exif_data_len);
+
+    SkDynamicMemoryWStream s;
+    s.write(exif_data, exif_data_len);
+    segmentList.emplace_back(kExifMarker, s.detachAsData());
+    sk_free(exif_data);
 }
 
 }  // namespace SkJpegMetadataEncoder
