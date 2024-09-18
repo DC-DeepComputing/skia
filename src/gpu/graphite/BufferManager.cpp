@@ -30,7 +30,8 @@ namespace {
 static constexpr uint32_t kVertexBufferSize = 16 << 10; // 16 KB
 static constexpr uint32_t kIndexBufferSize   = 2 << 10; //  2 KB
 static constexpr uint32_t kUniformBufferSize = 2 << 10; //  2 KB
-static constexpr uint32_t kStorageBufferSize = 2 << 10; //  2 KB
+static constexpr uint32_t kStorageBufferMinSize = 2 << 10; // 2 KB
+static constexpr uint32_t kStorageBufferMaxSize = 1 << 20; // 1 MB
 
 // The limit for all data created by the StaticBufferManager. This data remains alive for
 // the entire SharedContext so we want to keep it small and give a concrete upper bound to
@@ -145,24 +146,33 @@ DrawBufferManager::DrawBufferManager(ResourceProvider* resourceProvider,
         , fCaps(caps)
         , fUploadManager(uploadManager)
         , fCurrentBuffers{{
-                { BufferType::kVertex,        kVertexBufferSize,  caps },
-                { BufferType::kIndex,         kIndexBufferSize,   caps },
-                { BufferType::kUniform,       kUniformBufferSize, caps },
-                { BufferType::kStorage,       kStorageBufferSize, caps },  // mapped storage
-                { BufferType::kStorage,       kStorageBufferSize, caps },  // GPU-only storage
-                { BufferType::kVertexStorage, kVertexBufferSize,  caps },
-                { BufferType::kIndexStorage,  kIndexBufferSize,   caps },
-                { BufferType::kIndirect,      kStorageBufferSize, caps } }} {}
+                { BufferType::kVertex,        kVertexBufferSize,     kVertexBufferSize,     caps },
+                { BufferType::kIndex,         kIndexBufferSize,      kIndexBufferSize,      caps },
+                { BufferType::kUniform,       kUniformBufferSize,    kUniformBufferSize,    caps },
+
+                // mapped storage
+                { BufferType::kStorage,       kStorageBufferMinSize, kStorageBufferMaxSize, caps },
+                // GPU-only storage
+                { BufferType::kStorage,       kStorageBufferMinSize, kStorageBufferMinSize, caps },
+
+                { BufferType::kVertexStorage, kVertexBufferSize,     kVertexBufferSize,     caps },
+                { BufferType::kIndexStorage,  kIndexBufferSize,      kIndexBufferSize,      caps },
+                { BufferType::kIndirect,      kStorageBufferMinSize, kStorageBufferMinSize, caps } }} {}
 
 DrawBufferManager::~DrawBufferManager() {}
 
 // For simplicity, if transfer buffers are being used, we align the data to the max alignment of
 // either the final buffer type or cpu->gpu transfer alignment so that the buffers are laid out
 // the same in memory.
-DrawBufferManager::BufferInfo::BufferInfo(BufferType type, uint32_t blockSize, const Caps* caps)
+DrawBufferManager::BufferInfo::BufferInfo(BufferType type,
+                                          uint32_t minBlockSize,
+                                          uint32_t maxBlockSize,
+                                          const Caps* caps)
         : fType(type)
         , fStartAlignment(starting_alignment(type, !caps->drawBufferCanBeMapped(), caps))
-        , fBlockSize(SkAlignTo(blockSize, fStartAlignment)) {}
+        , fMinBlockSize(minBlockSize)
+        , fMaxBlockSize(maxBlockSize)
+        , fCurBlockSize(SkAlignTo(minBlockSize, fStartAlignment)) {}
 
 std::pair<VertexWriter, BindBufferInfo> DrawBufferManager::getVertexWriter(size_t count,
                                                                            size_t stride) {
@@ -300,7 +310,7 @@ ScratchBuffer DrawBufferManager::getScratchStorage(size_t requiredBytes) {
 
     // TODO: Generalize the pool to other buffer types.
     auto& info = fCurrentBuffers[kStorageBufferIndex];
-    uint32_t bufferSize = sufficient_block_size(requiredBytes32, info.fBlockSize);
+    uint32_t bufferSize = sufficient_block_size(requiredBytes32, info.fCurBlockSize);
     sk_sp<Buffer> buffer = this->findReusableSbo(bufferSize);
     if (!buffer) {
         buffer = fResourceProvider->findOrCreateBuffer(
@@ -412,6 +422,19 @@ bool DrawBufferManager::transferToRecording(Recording* recording) {
     return true;
 }
 
+void DrawBufferManager::updateStorageBufferBlockSize() {
+    BufferInfo& info = fCurrentBuffers[kStorageBufferIndex];
+    if (info.fUsedSize == 0) {
+        return;
+    }
+
+    // Divide previous total usage by four, instead of just using the previous usage. That way if we
+    // use just a little more than this amount in the next snap we won't double the allocated space.
+    const uint32_t reqSize = SkAlignTo(info.fUsedSize / 4, info.fStartAlignment);
+    info.fCurBlockSize = std::clamp(reqSize, info.fMinBlockSize, info.fMaxBlockSize);
+    info.fUsedSize = 0;
+}
+
 std::pair<void*, BindBufferInfo> DrawBufferManager::prepareMappedBindBuffer(
         BufferInfo* info,
         uint32_t requiredBytes,
@@ -456,6 +479,9 @@ BindBufferInfo DrawBufferManager::prepareBindBuffer(BufferInfo* info,
 
     if (info->fBuffer && !can_fit(requiredBytes, SkTo<uint32_t>(info->fBuffer->size()),
                                   info->fOffset, info->fStartAlignment)) {
+        if (info->fType == BufferType::kStorage) {
+            info->fUsedSize += info->fBuffer->size();
+        }
         fUsedBuffers.emplace_back(std::move(info->fBuffer), info->fTransferBuffer);
         info->fTransferBuffer = {};
     }
@@ -467,7 +493,7 @@ BindBufferInfo DrawBufferManager::prepareBindBuffer(BufferInfo* info,
         AccessPattern accessPattern = (useTransferBuffer || !supportCpuUpload)
                                               ? AccessPattern::kGpuOnly
                                               : AccessPattern::kHostVisible;
-        size_t bufferSize = sufficient_block_size(requiredBytes, info->fBlockSize);
+        size_t bufferSize = sufficient_block_size(requiredBytes, info->fCurBlockSize);
         info->fBuffer = fResourceProvider->findOrCreateBuffer(bufferSize,
                                                               info->fType,
                                                               accessPattern,

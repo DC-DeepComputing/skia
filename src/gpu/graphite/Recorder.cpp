@@ -199,6 +199,10 @@ std::unique_ptr<Recording> Recorder::snap() {
     // before moving the root task list to the Recording.
     bool valid = fDrawBufferManager->transferToRecording(recording.get());
 
+    // Update the buffer manager's storage buffer block size with the total used storage for this
+    // snap.
+    fDrawBufferManager->updateStorageBufferBlockSize();
+
     // We create the Recording's full task list even if the DrawBufferManager failed because it is
     // a convenient way to ensure everything else is unmapped and reset for the next Recording.
     fUploadBufferManager->transferToRecording(recording.get());
