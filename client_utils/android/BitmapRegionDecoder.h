@@ -19,6 +19,7 @@ namespace skia {
 class BitmapRegionDecoder final {
 public:
     static std::unique_ptr<BitmapRegionDecoder> Make(sk_sp<SkData> data);
+    static std::unique_ptr<BitmapRegionDecoder> Make(std::unique_ptr<SkAndroidCodec> codec) { return std::unique_ptr<BitmapRegionDecoder>(new BitmapRegionDecoder(std::move(codec))); }
 
     bool decodeRegion(SkBitmap* bitmap,
                       BRDAllocator* allocator,
@@ -45,6 +46,11 @@ public:
     bool getAndroidGainmap(SkGainmapInfo* outInfo,
                            std::unique_ptr<SkStream>* outGainmapImageStream) {
         return fCodec->getAndroidGainmap(outInfo, outGainmapImageStream);
+    }
+
+    bool getGainmapAndroidCodec(SkGainmapInfo* outInfo,
+                           std::unique_ptr<SkAndroidCodec>* outGainmapImageStream) {
+        return fCodec->getGainmapAndroidCodec(outInfo, outGainmapImageStream);
     }
 
 private:
