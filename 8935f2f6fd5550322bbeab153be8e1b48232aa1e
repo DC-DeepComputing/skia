@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cdaceb9f_14602f87",
+        "filename": "src/ports/SkFontMgr_fontconfig.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 544,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-18T15:52:02Z",
+      "side": 1,
+      "message": "Need to pass at least the ttc index along (which seems to be the only thing passed along in the old `onOpenStream`).",
+      "range": {
+        "startLine": 544,
+        "startChar": 87,
+        "endLine": 544,
+        "endChar": 104
+      },
+      "revId": "8935f2f6fd5550322bbeab153be8e1b48232aa1e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
