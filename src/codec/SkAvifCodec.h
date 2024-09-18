@@ -20,10 +20,18 @@
 #include <memory>
 #include <vector>
 
+#if defined(SK_BUILD_FOR_ANDROID_FRAMEWORK)
+namespace crabbyavif {
+struct avifDecoder;
+}  // namespace crabbyavif
+using crabbyavif::avifDecoder;
+#else
+struct avifDecoder;
+#endif  // defined(SK_BUILD_FOR_ANDROID_FRAMEWORK)
+
 class SkCodec;
 class SkStream;
 struct SkImageInfo;
-struct avifDecoder;
 struct AvifDecoderDeleter {
     void operator()(avifDecoder* decoder) const;
 };
@@ -54,6 +62,7 @@ protected:
     bool onGetFrameInfo(int, FrameInfo*) const override;
     int onGetRepetitionCount() override;
     const SkFrameHolder* getFrameHolder() const override { return &fFrameHolder; }
+    bool conversionSupported(const SkImageInfo&, bool, bool) override;
 
 private:
     SkAvifCodec(SkEncodedInfo&&,

@@ -7,6 +7,7 @@
 
 #include "src/codec/SkAvifCodec.h"
 
+#include "include/codec/SkAndroidCodec.h"
 #include "include/codec/SkAvifDecoder.h"
 #include "include/codec/SkCodec.h"
 #include "include/codec/SkCodecAnimation.h"
@@ -24,6 +25,13 @@
 
 #include "avif/avif.h"
 
+#if defined(SK_BUILD_FOR_ANDROID_FRAMEWORK)
+// Android framework uses CrabbyAvif which exposes the same C API as libavif when including
+// libavif_compat.h, but everything is wrapped in a "crabbyavif" namespace.
+#include "avif/libavif_compat.h"
+using namespace crabbyavif;
+#endif  // defined(SK_BUILD_FOR_ANDROID_FRAMEWORK)
+
 void AvifDecoderDeleter::operator()(avifDecoder* decoder) const {
     if (decoder != nullptr) {
         avifDecoderDestroy(decoder);
@@ -31,6 +39,9 @@ void AvifDecoderDeleter::operator()(avifDecoder* decoder) const {
 }
 
 bool SkAvifCodec::IsAvif(const void* buffer, size_t bytesRead) {
+    if (!SkAndroidCodec::AvifEnabled()) {
+        return false;
+    }
     avifROData avifData = {static_cast<const uint8_t*>(buffer), bytesRead};
     bool isAvif = avifPeekCompatibleFileType(&avifData) == AVIF_TRUE;
     if (isAvif) return true;
@@ -89,7 +100,12 @@ std::unique_ptr<SkCodec> SkAvifCodec::MakeFromStream(std::unique_ptr<SkStream> s
     std::unique_ptr<SkEncodedInfo::ICCProfile> profile = nullptr;
     // TODO(vigneshv): Get ICC Profile from the avif decoder.
 
+#if defined(SK_BUILD_FOR_ANDROID_FRAMEWORK)
+    // CrabbyAvif uses MediaCodec, which always sets bitsPerComponent to 8.
+    const int bitsPerComponent = 8;
+#else
     const int bitsPerComponent = avifDecoder->image->depth > 8 ? 16 : 8;
+#endif  // defined(SK_BUILD_FOR_ANDROID_FRAMEWORK)
     SkEncodedInfo::Color color;
     SkEncodedInfo::Alpha alpha;
     if (avifDecoder->alphaPresent) {
@@ -188,20 +204,25 @@ bool SkAvifCodec::onGetFrameInfo(int i, FrameInfo* frameInfo) const {
 
 int SkAvifCodec::onGetRepetitionCount() { return kRepetitionCountInfinite; }
 
+bool SkAvifCodec::conversionSupported(const SkImageInfo& dstInfo,
+                                      bool srcIsOpaque,
+                                      bool needsColorXform) {
+    switch (dstInfo.colorType()) {
+        case kRGBA_1010102_SkColorType:
+            this->setSrcXformFormat(skcms_PixelFormat_RGBA_1010102);
+            break;
+        default:
+            break;
+    }
+    return true;
+}
+
 SkCodec::Result SkAvifCodec::onGetPixels(const SkImageInfo& dstInfo,
                                          void* dst,
                                          size_t dstRowBytes,
                                          const Options& options,
                                          int* rowsDecoded) {
     if (options.fSubset) {
-        return kUnimplemented;
-    }
-
-    const SkColorType dstColorType = dstInfo.colorType();
-    if (dstColorType != kRGBA_8888_SkColorType && dstColorType != kRGBA_F16_SkColorType) {
-        // TODO(vigneshv): Check if more color types need to be supported.
-        // Currently android supports at least RGB565 and BGRA8888 which is not
-        // supported here.
         return kUnimplemented;
     }
 
@@ -221,11 +242,26 @@ SkCodec::Result SkAvifCodec::onGetPixels(const SkImageInfo& dstInfo,
     avifRGBImage rgbImage;
     avifRGBImageSetDefaults(&rgbImage, fAvifDecoder->image);
 
-    if (dstColorType == kRGBA_8888_SkColorType) {
-        rgbImage.depth = 8;
-    } else if (dstColorType == kRGBA_F16_SkColorType) {
-        rgbImage.depth = 16;
-        rgbImage.isFloat = AVIF_TRUE;
+    switch (dstInfo.colorType()) {
+        case kRGBA_8888_SkColorType:
+            rgbImage.depth = 8;
+            break;
+        case kRGBA_F16_SkColorType:
+            rgbImage.depth = 16;
+            rgbImage.isFloat = AVIF_TRUE;
+            break;
+#if defined(SK_BUILD_FOR_ANDROID_FRAMEWORK)
+        // CrabbyAvif also supports RGBA_1010102.
+        case kRGBA_1010102_SkColorType:
+            rgbImage.depth = 10;
+            rgbImage.format = AVIF_RGB_FORMAT_RGBA1010102;
+            break;
+#endif  // defined(SK_BUILD_FOR_ANDROID_FRAMEWORK)
+        default:
+            // TODO(vigneshv): Check if more color types need to be supported.
+            // Currently android supports at least RGB565 and BGRA8888 which is
+            // not supported here.
+            return kUnimplemented;
     }
 
     rgbImage.pixels = static_cast<uint8_t*>(dst);
