@@ -175,12 +175,15 @@ private:
         void* fTransferMapPtr = nullptr;
         uint32_t fOffset = 0;
     };
-    std::pair<void* /*mappedPtr*/, BindBufferInfo> prepareMappedBindBuffer(BufferInfo* info,
-                                                                           uint32_t requiredBytes,
-                                                                           std::string_view label);
+    std::pair<void* /*mappedPtr*/, BindBufferInfo> prepareMappedBindBuffer(
+            BufferInfo* info,
+            std::string_view label,
+            uint32_t requiredBytes,
+            uint32_t requiredAlignment = 0);
     BindBufferInfo prepareBindBuffer(BufferInfo* info,
-                                     uint32_t requiredBytes,
                                      std::string_view label,
+                                     uint32_t requiredBytes,
+                                     uint32_t requiredAlignment = 0,
                                      bool supportCpuUpload = false,
                                      ClearBuffer cleared = ClearBuffer::kNo);
 
