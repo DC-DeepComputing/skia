@@ -284,6 +284,11 @@ public:
     bool getAndroidGainmap(SkGainmapInfo* outInfo,
                            std::unique_ptr<SkStream>* outGainmapImageStream);
 
+    // Returns true if AVIF decoding via SkAvifCodec is enabled. On the Android framework, this is
+    // decided based on the "media.avif.crabbyavif" system property. On all other platforms, this
+    // function always returns true.
+    static bool AvifEnabled();
+
 protected:
     SkAndroidCodec(SkCodec*);
 
