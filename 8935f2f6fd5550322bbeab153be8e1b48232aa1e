@@ -22,6 +22,30 @@
       },
       "revId": "8935f2f6fd5550322bbeab153be8e1b48232aa1e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e37aa745_23930964",
+        "filename": "src/ports/SkFontMgr_fontconfig.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 544,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-09-18T16:44:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cdaceb9f_14602f87",
+      "range": {
+        "startLine": 544,
+        "startChar": 87,
+        "endLine": 544,
+        "endChar": 104
+      },
+      "revId": "8935f2f6fd5550322bbeab153be8e1b48232aa1e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
