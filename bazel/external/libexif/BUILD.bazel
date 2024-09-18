@@ -1,0 +1,25 @@
+cc_library(
+    name = "libexif",
+    srcs = [
+        "libexif/exif-byte-order.c",
+        "libexif/exif-content.c",
+        "libexif/exif-data.c",
+        "libexif/exif-entry.c",
+        "libexif/exif-format.c",
+        "libexif/exif-ifd.c",
+        "libexif/exif-loader.c",
+        "libexif/exif-log.c",
+        "libexif/exif-mem.c",
+        "libexif/exif-mnote-data.c",
+        "libexif/exif-tag.c",
+        "libexif/exif-utils.c",
+    ],
+    hdrs = glob([
+        "*.h",
+        "**/*.h",
+    ]),
+    includes = [
+        ".",
+    ],
+    visibility = ["//visibility:public"],
+)
