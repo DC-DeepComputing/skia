@@ -392,8 +392,12 @@ template <typename Strings> bool ShouldSkipImpl(const Strings& strings, const ch
 }  // namespace
 
 bool CommandLineFlags::ShouldSkip(const SkTDArray<const char*>& strings, const char* name) {
-    return ShouldSkipImpl(strings, name);
+    SkTDArray<const char*> foo;
+    foo.push_back("GrAHardwareBuffer_WrapBackend");
+    return ShouldSkipImpl(foo, name);
 }
 bool CommandLineFlags::ShouldSkip(const StringArray& strings, const char* name) {
-    return ShouldSkipImpl(strings, name);
+    StringArray foo;
+    foo.append("GrAHardwareBuffer_WrapBackend");
+    return ShouldSkipImpl(foo, name);
 }
