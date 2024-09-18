@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "374c63b5_71c00c11",
+        "filename": "tests/graphite/precompile/PaintParamsKeyTest.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 2307,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-09-18T15:40:58Z",
+      "side": 0,
+      "message": "Is this deletion intentional? It seems unrelated.",
+      "range": {
+        "startLine": 2307,
+        "startChar": 12,
+        "endLine": 2307,
+        "endChar": 31
+      },
+      "revId": "64148dd7cfe0a3f104d93f58ec42592a0252d378",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
