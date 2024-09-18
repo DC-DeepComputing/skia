@@ -16,6 +16,24 @@
       "message": "How easy/hard would it be to add a unit test that would have caught this overflow?",
       "revId": "6524543b223ed90a384c08892c9f6e6b428cbc2a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d78cb47e_95d74dca",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-09-18T19:55:41Z",
+      "side": 1,
+      "message": "Thanks for pushing on this, caught a new bug!",
+      "parentUuid": "7ea63f72_41c4930a",
+      "revId": "6524543b223ed90a384c08892c9f6e6b428cbc2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

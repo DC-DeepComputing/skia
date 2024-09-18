@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d893aeab_f198d88c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-09-18T19:55:41Z",
+      "side": 1,
+      "message": "PTAL added unit tests for the period overflow and for when the output surface is near INT_MIN and MAX that was being tripped up. Here I had to switch to \u003c\u003d or \u003e\u003d instead of \u003d\u003d for the saturation guard because the saturation actually clamps to +/- INT_MAX and -INT_MAX is not INT_MIN so was sneaking through the original checks.\n\nAlso after offline discussion with Rob, updated the period math to just be entirely in double instead of a mix of double and int.",
+      "revId": "f15af4a593cd9654283d6907615f41e11f1fd7f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
