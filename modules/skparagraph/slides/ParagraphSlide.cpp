@@ -5,11 +5,13 @@
 #include "include/core/SkFontMgr.h"
 #include "include/core/SkGraphics.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathEffect.h"
 #include "include/core/SkRegion.h"
 #include "include/core/SkShader.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkTextBlob.h"
 #include "include/core/SkTypeface.h"
+#include "include/effects/SkCornerPathEffect.h"
 #include "include/effects/SkGradientShader.h"
 #include "modules/skparagraph/include/Paragraph.h"
 #include "modules/skparagraph/include/TypefaceFontProvider.h"
@@ -4362,6 +4364,47 @@ public:
     }
 };
 
+class ParagraphSlideWideLineWithStroke : public ParagraphSlide_Base {
+public:
+    ParagraphSlideWideLineWithStroke() { fName = "ParagraphSlideWideLineWithStroke"; }
+    void draw(SkCanvas* canvas) override {
+        canvas->drawColor(SK_ColorWHITE);
+        auto fontCollection = getFontCollection();
+        fontCollection->setDefaultFontManager(ToolUtils::TestFontMgr());
+        fontCollection->enableFontFallback();
+        TextStyle text_style;
+        text_style.setFontFamilies({SkString("Roboto")});
+        text_style.setFontSize(300);
+        text_style.setColor(SK_ColorRED);
+        SkPaint p;
+        p.setStroke(true);
+        p.setStrokeWidth(12);
+        p.setColor(SK_ColorRED);
+        //p.setPathEffect(SkCornerPathEffect::Make(3));
+        p.setStrokeJoin(SkPaint::kRound_Join);
+        text_style.setForegroundPaint(p);
+        ParagraphStyle paragraph_style;
+        paragraph_style.setTextStyle(text_style);
+        paragraph_style.setTextAlign(TextAlign::kCenter);
+        auto draw = [&](const std::u16string& text) {
+            paragraph_style.setMaxLines(1);
+            ParagraphBuilderImpl builder(paragraph_style, fontCollection, get_unicode());
+            builder.pushStyle(text_style);
+            builder.addText(text);
+            auto paragraph = builder.Build();
+            paragraph->layout(1e8); // More than ~2^23
+            paragraph->paint(canvas, -paragraph->getMaxWidth() / 2, 0);
+            canvas->translate(0, paragraph->getHeight() + 10);
+        };
+
+        draw(u"Skia");
+
+        text_style.setColor(SK_ColorBLACK);
+        text_style.setForegroundPaint(SkPaint());
+        draw(u"Skia");
+    }
+};
+
 class ParagraphSlideLast : public ParagraphSlide_Base {
 public:
     ParagraphSlideLast() { fName = "ParagraphSlideLast"; }
@@ -4479,4 +4522,5 @@ DEF_SLIDE(return new ParagraphSlideGlyphs();)
 DEF_SLIDE(return new ParagraphSlideEllipsisInRTL();)
 DEF_SLIDE(return new ParagraphSlideEmojiSequence();)
 DEF_SLIDE(return new ParagraphSlideWordSpacing();)
+DEF_SLIDE(return new ParagraphSlideWideLineWithStroke();)
 DEF_SLIDE(return new ParagraphSlideLast();)
