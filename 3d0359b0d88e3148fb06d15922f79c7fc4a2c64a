@@ -50,6 +50,24 @@
       "message": "Will also need an API reviewer.",
       "revId": "3d0359b0d88e3148fb06d15922f79c7fc4a2c64a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fc5801a4_b4e890d3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2024-09-18T19:55:55Z",
+      "side": 1,
+      "message": "sure. but just curious, this CL isn\u0027t changing the public API anymore right? or is SkAndroidCodec considered part of the API?\n\nmy understanding it quite limited, but i thought it was only used as an entry point for use by the Android framework and not used elsewhere.",
+      "parentUuid": "1e551137_97640d31",
+      "revId": "3d0359b0d88e3148fb06d15922f79c7fc4a2c64a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
