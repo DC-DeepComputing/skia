@@ -138,11 +138,11 @@ $pure half4 sk_circular_rrect_clip(float4 rect,
     // Use more complex length calculation to manage precision issues
     half circleCornerAlpha = half(saturate(radius.x*(1.0 - length(dxy*radiusPlusHalf.y))));
 
-    half4 rectEdgeAlphas = saturate(half4(fragCoord - rect.LT, rect.RB - fragCoord));
-    rectEdgeAlphas = mix(rectEdgeAlphas, half4(1), edgeSelect);
+    half4 rectEdgeDists = saturate(half4(fragCoord - rect.LT, rect.RB - fragCoord));
+    rectEdgeDists = mix(rectEdgeDists, half4(1), edgeSelect);
+    half2 rectEdgeAlphas = rectEdgeDists.xy + rectEdgeDists.zw - 1;
 
-    half alpha = circleCornerAlpha * rectEdgeAlphas.x * rectEdgeAlphas.y *
-                 rectEdgeAlphas.z * rectEdgeAlphas.w;
+    half alpha = circleCornerAlpha * rectEdgeAlphas.x * rectEdgeAlphas.y;
     // Check for inverse fill
     alpha = radiusPlusHalf.x < 0 ? (1-alpha) : alpha;
 
