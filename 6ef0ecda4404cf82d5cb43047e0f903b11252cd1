@@ -106,6 +106,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "e141eba0_2252bf94",
+        "filename": "include/codec/SkCodec.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1049,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-18T14:42:35Z",
+      "side": 1,
+      "message": "Is there any way to avoid putting this in public API? Is there some reason Android proper needs to call this? It seems a bit awkward to put a subclass specific implementation detail into the generic SkCodecs space.",
+      "revId": "6ef0ecda4404cf82d5cb43047e0f903b11252cd1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "034a7f80_5bf0bfa3",
@@ -154,6 +171,23 @@
       "writtenOn": "2024-09-18T06:47:26Z",
       "side": 1,
       "message": "(eep!)",
+      "revId": "6ef0ecda4404cf82d5cb43047e0f903b11252cd1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d87cd923_2a632f6a",
+        "filename": "src/codec/SkAvifCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-18T14:42:35Z",
+      "side": 1,
+      "message": "Is this really all you\u0027re using `std::set` for? `std::set` is a red black tree which is forced to allocate all nodes. This would be both easier to understand and much, much faster if this were just a `std::array` or even just a regular array, or even just an `if`.",
       "revId": "6ef0ecda4404cf82d5cb43047e0f903b11252cd1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
