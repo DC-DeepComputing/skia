@@ -95,6 +95,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1bf2bb51_f277dc5e",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-09-19T18:59:51Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "15ef8a71_f2a6a7e4",
+      "range": {
+        "startLine": 34,
+        "startChar": 62,
+        "endLine": 34,
+        "endChar": 66
+      },
+      "revId": "935923560f4726d887b6ec356dd2403d859e778d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e796dc6d_b6747263",
@@ -203,6 +227,30 @@
       "side": 1,
       "message": "Moved. Not sure what a better name for the method would be. Something involving \"`flush`\"?",
       "parentUuid": "3e35f83e_1d19f463",
+      "range": {
+        "startLine": 164,
+        "startChar": 9,
+        "endLine": 164,
+        "endChar": 37
+      },
+      "revId": "935923560f4726d887b6ec356dd2403d859e778d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e68dbf0_605a3893",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-09-19T18:59:51Z",
+      "side": 1,
+      "message": "I\u0027m struggling as well",
+      "parentUuid": "af204277_b5aa76a9",
       "range": {
         "startLine": 164,
         "startChar": 9,

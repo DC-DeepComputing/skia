@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1eae202_4d3cb6eb",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-09-19T18:59:51Z",
+      "side": 1,
+      "message": "nit: line is overlength. I might just move the indentation for this whole block left one to get around it.",
+      "range": {
+        "startLine": 168,
+        "startChar": 0,
+        "endLine": 168,
+        "endChar": 104
+      },
+      "revId": "f8df4409b86ed78998f47f5f7933b89527a0147d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
