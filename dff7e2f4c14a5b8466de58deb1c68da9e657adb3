@@ -22,6 +22,30 @@
       },
       "revId": "dff7e2f4c14a5b8466de58deb1c68da9e657adb3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e18f76b3_a6cf4f38",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 432,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-09-19T16:27:39Z",
+      "side": 1,
+      "message": "Done. I also removed the check for buffer type when we increment UsedSize, so we will do these calculations for every buffer type regardless of whether they have any effect. Doesn\u0027t seem like that will be a big deal.",
+      "parentUuid": "9b4c5414_c7ce58aa",
+      "range": {
+        "startLine": 424,
+        "startChar": 0,
+        "endLine": 432,
+        "endChar": 5
+      },
+      "revId": "dff7e2f4c14a5b8466de58deb1c68da9e657adb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
