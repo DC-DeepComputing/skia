@@ -142,6 +142,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8736a5e_65251a09",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 433,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-09-19T18:47:15Z",
+      "side": 1,
+      "message": "As discussed offline, aligning to MinBlockSize.",
+      "parentUuid": "f00a50ae_7de32407",
+      "range": {
+        "startLine": 433,
+        "startChar": 59,
+        "endLine": 433,
+        "endChar": 79
+      },
+      "revId": "935923560f4726d887b6ec356dd2403d859e778d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3e35f83e_1d19f463",

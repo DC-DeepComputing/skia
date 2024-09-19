@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7564ebb_99a2e707",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-09-19T18:47:15Z",
+      "side": 1,
+      "message": "Latest patchset now:\n- Accounts for current buffer in size tracking\n- Uses current offset into buffer instead of entire buffer size when updating total usage\n- Aligns block sizes to MinBlockSize\n- Uses the full CurBlockSize for the initial buffer each frame, then size / 4 for subsequent buffers (if that\u0027s greater than MinBlockSize)",
+      "revId": "c9e8236964b59d931394c15de25d241edc8cf9da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
