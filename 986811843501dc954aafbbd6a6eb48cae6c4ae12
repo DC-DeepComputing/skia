@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "18f0120c_38ec64c2",
+        "filename": "include/core/SkTypeface.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 355,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-09-19T13:18:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6918943e_fe54d880",
+      "range": {
+        "startLine": 355,
+        "startChar": 66,
+        "endLine": 355,
+        "endChar": 70
+      },
+      "revId": "986811843501dc954aafbbd6a6eb48cae6c4ae12",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "15a6f9e7_158f2542",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-09-19T01:53:01Z",
       "side": 1,
       "message": "Do we not get a warning about unused variable name here? Since we\u0027re not using this in the default implementation we should remove the name `typeface`. Also, the body of this should probably just be `SK_ABORT();` for now since we don\u0027t want anyone to call this and not get a proxy.",
+      "range": {
+        "startLine": 360,
+        "startChar": 27,
+        "endLine": 360,
+        "endChar": 35
+      },
+      "revId": "986811843501dc954aafbbd6a6eb48cae6c4ae12",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "19fabed6_09ec64d4",
+        "filename": "src/core/SkTypeface.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 360,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-09-19T13:18:21Z",
+      "side": 1,
+      "message": "I didn\u0027t see the warnings, CLion also is quiet about it.",
+      "parentUuid": "15a6f9e7_158f2542",
       "range": {
         "startLine": 360,
         "startChar": 27,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7279b19f_a48ee7a7",
+        "filename": "src/ports/SkFontHost_FreeType.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 701,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-09-19T13:18:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2709928c_b7540e38",
+      "range": {
+        "startLine": 701,
+        "startChar": 26,
+        "endLine": 701,
+        "endChar": 31
+      },
+      "revId": "986811843501dc954aafbbd6a6eb48cae6c4ae12",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bbfabd84_dd686673",
@@ -93,6 +165,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c98c7e51_84250fe9",
+        "filename": "src/ports/SkFontHost_FreeType.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 706,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-09-19T13:18:21Z",
+      "side": 1,
+      "message": "\"Const_cast from \u0027const SkTypeface_FreeType *\u0027 to \u0027SkTypeface *\u0027 is not allowed\"",
+      "parentUuid": "bbfabd84_dd686673",
+      "range": {
+        "startLine": 706,
+        "startChar": 59,
+        "endLine": 706,
+        "endChar": 68
+      },
+      "revId": "986811843501dc954aafbbd6a6eb48cae6c4ae12",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e7d1a2b2_728b4b5a",
@@ -106,6 +202,30 @@
       "writtenOn": "2024-09-19T01:53:01Z",
       "side": 1,
       "message": "Calling this `proxy` here is rather misleading. Here `typeface` is the proxy typeface and this is actually the real top-level typeface. It would be bette to call this `realTypeface`.",
+      "range": {
+        "startLine": 908,
+        "startChar": 69,
+        "endLine": 908,
+        "endChar": 74
+      },
+      "revId": "986811843501dc954aafbbd6a6eb48cae6c4ae12",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7b8642d_f3e8c768",
+        "filename": "src/ports/SkFontHost_FreeType.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 908,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-09-19T13:18:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e7d1a2b2_728b4b5a",
       "range": {
         "startLine": 908,
         "startChar": 69,
