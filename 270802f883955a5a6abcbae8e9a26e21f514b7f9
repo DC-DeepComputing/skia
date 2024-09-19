@@ -52,6 +52,24 @@
       "parentUuid": "b9ed949f_cf99d4e6",
       "revId": "270802f883955a5a6abcbae8e9a26e21f514b7f9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e67d352_0d991610",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-19T14:20:32Z",
+      "side": 1,
+      "message": "`SkIDChangeListener::List::changed` seems weird. Yes, it is going to be called for each path edit (yet another need for separating the path from the path builder) and it also takes a mutex, but the mutex should not be contended as it is very local to the path being built. Also, there shouldn\u0027t be any listeners so the list will always be empty, and the reset of the list should always be a no-op (unless in ASAN, in which case it is really expensive).",
+      "parentUuid": "73083011_ce8deea5",
+      "revId": "270802f883955a5a6abcbae8e9a26e21f514b7f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
