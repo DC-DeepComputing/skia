@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b0b0d8f_ca3346c5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-09-19T18:33:20Z",
+      "side": 1,
+      "message": "How does this work?",
+      "range": {
+        "startLine": 15,
+        "startChar": 38,
+        "endLine": 15,
+        "endChar": 65
+      },
+      "revId": "3d0359b0d88e3148fb06d15922f79c7fc4a2c64a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "925854de_4060ede5",
@@ -102,6 +125,131 @@
       "side": 1,
       "message": "ack, sounds good. thank you!",
       "parentUuid": "cf13ad75_6259cec0",
+      "revId": "3d0359b0d88e3148fb06d15922f79c7fc4a2c64a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "39cca782_5b603780",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-09-19T18:33:20Z",
+      "side": 1,
+      "message": "Adding @kjlubick@google.com for thoughts on registering the AVIF codec.",
+      "revId": "3d0359b0d88e3148fb06d15922f79c7fc4a2c64a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a58edb40_852e3dd5",
+        "filename": "include/codec/SkAndroidCodec.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-09-19T18:33:20Z",
+      "side": 1,
+      "message": "Does this need to be public?",
+      "revId": "3d0359b0d88e3148fb06d15922f79c7fc4a2c64a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22b0375d_e114e127",
+        "filename": "src/codec/SkAndroidCodec.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-09-19T18:33:20Z",
+      "side": 1,
+      "message": "I don\u0027t understand why these are two separate conditions.",
+      "revId": "3d0359b0d88e3148fb06d15922f79c7fc4a2c64a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "16f7c918_b5b5799f",
+        "filename": "src/codec/SkAndroidCodec.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 573,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-09-19T18:33:20Z",
+      "side": 1,
+      "message": "I think this is the wrong direction. What if we have Android tell Skia whether it has the AVIF decoder? Maybe when it explicitly registers it?",
+      "range": {
+        "startLine": 567,
+        "startChar": 0,
+        "endLine": 573,
+        "endChar": 1
+      },
+      "revId": "3d0359b0d88e3148fb06d15922f79c7fc4a2c64a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84b3ff42_3898440c",
+        "filename": "src/codec/SkAvifCodec.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-09-19T18:33:20Z",
+      "side": 1,
+      "message": "I don\u0027t understand how we would reach here if AVIF was not enabled.",
+      "revId": "3d0359b0d88e3148fb06d15922f79c7fc4a2c64a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cb4b319b_e00ba4b9",
+        "filename": "src/codec/SkAvifCodec.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-09-19T18:33:20Z",
+      "side": 1,
+      "message": "I presume in other cases we set it somewhere else? I think we should set this here for other cases. Otherwise you prevent being able to reuse an SkCodec with different settings.",
+      "revId": "3d0359b0d88e3148fb06d15922f79c7fc4a2c64a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5567a5a8_fc82a732",
+        "filename": "src/codec/SkAvifCodec.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-09-19T18:33:20Z",
+      "side": 1,
+      "message": "This is the wrong compile flag to use. Sure, in the near term we\u0027re interested in using this on Android, but there\u0027s nothing Android-specific here, is there?\n\nSince we\u0027ve moved to a world where Skia\u0027s clients register the decoders they want to use, it seems to me the client ought to specify which one they want to use when the register it.",
       "revId": "3d0359b0d88e3148fb06d15922f79c7fc4a2c64a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
