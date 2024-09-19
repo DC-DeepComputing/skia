@@ -39,6 +39,30 @@
       },
       "revId": "5b4e89700ba79140707482b5e43eadbdf2da5c53",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e3408193_afc54573",
+        "filename": "tests/graphite/precompile/PaintParamsKeyTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1949,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-09-19T16:42:42Z",
+      "side": 1,
+      "message": "Fixed - I added a helper function and shortened the line length.",
+      "parentUuid": "9f4c3235_d03bbff4",
+      "range": {
+        "startLine": 1949,
+        "startChar": 24,
+        "endLine": 1949,
+        "endChar": 27
+      },
+      "revId": "5b4e89700ba79140707482b5e43eadbdf2da5c53",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
