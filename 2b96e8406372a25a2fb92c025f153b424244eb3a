@@ -1,0 +1,159 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d13d1717_c023d21b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-09-19T02:08:54Z",
+      "side": 1,
+      "message": "Awesome!",
+      "revId": "2b96e8406372a25a2fb92c025f153b424244eb3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "56e0a64a_88579983",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-09-19T02:08:54Z",
+      "side": 1,
+      "message": "nit: line up the `\u003d`",
+      "range": {
+        "startLine": 32,
+        "startChar": 45,
+        "endLine": 32,
+        "endChar": 47
+      },
+      "revId": "2b96e8406372a25a2fb92c025f153b424244eb3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a4e3c97_0bbf9fc2",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-09-19T02:08:54Z",
+      "side": 1,
+      "message": "Can we add a comment here that the uniform writer will be aligned for binding, and the ssbo writer will be aligned for stride indexing?",
+      "range": {
+        "startLine": 112,
+        "startChar": 0,
+        "endLine": 113,
+        "endChar": 88
+      },
+      "revId": "2b96e8406372a25a2fb92c025f153b424244eb3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "966f8a1b_cc32761c",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-09-19T02:08:54Z",
+      "side": 1,
+      "message": "I think we get rid of this function now too",
+      "range": {
+        "startLine": 151,
+        "startChar": 11,
+        "endLine": 151,
+        "endChar": 32
+      },
+      "revId": "2b96e8406372a25a2fb92c025f153b424244eb3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "abcd900a_5e8c5be5",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-09-19T02:08:54Z",
+      "side": 1,
+      "message": "We should also add a comment here about the reinterpretation of the offset when using SSBOs.",
+      "range": {
+        "startLine": 125,
+        "startChar": 0,
+        "endLine": 125,
+        "endChar": 35
+      },
+      "revId": "2b96e8406372a25a2fb92c025f153b424244eb3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d838ebc_df1a3bf7",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-09-19T02:08:54Z",
+      "side": 1,
+      "message": "This assert should only be true when using ssbos; the uniform writer is still just aligning to its binding requirement",
+      "range": {
+        "startLine": 157,
+        "startChar": 0,
+        "endLine": 157,
+        "endChar": 74
+      },
+      "revId": "2b96e8406372a25a2fb92c025f153b424244eb3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9bb6895b_461d3f81",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 614,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-09-19T02:08:54Z",
+      "side": 1,
+      "message": "wdyt about keeping the `bindUniformBuffer` function on `UniformTracker`, which would then do:\n\n    BindBufferInfo binding \u003d fLastBinding;\n    if (useStorageBuffers) {\n        binding.fOffset \u003d 0;\n    }\n    commandList.bindUniformbuffer(binding, slot);\n    \nThe `writeUniforms` function then gets to have just a `bool` return type. Maybe this doesn\u0027t matter since `BindBufferInfo` is pretty small so copying around by value is probably still in registers or elided.\n\nThe alternative would be that since we are returning the BindBufferInfo to this code, we get rid of the `ssboIndex()` function and just pass in the offset value.",
+      "range": {
+        "startLine": 611,
+        "startChar": 12,
+        "endLine": 614,
+        "endChar": 13
+      },
+      "revId": "2b96e8406372a25a2fb92c025f153b424244eb3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
