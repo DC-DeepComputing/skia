@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd20c67a_976631b3",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-09-19T01:37:41Z",
+      "side": 1,
+      "message": "WDYT about moving this to 2 or 4MB since we saw that on `suits` we were still collecting slightly more than 1MB in a pass?",
+      "range": {
+        "startLine": 34,
+        "startChar": 62,
+        "endLine": 34,
+        "endChar": 66
+      },
+      "revId": "935923560f4726d887b6ec356dd2403d859e778d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8957101a_235505f4",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-09-19T01:37:41Z",
+      "side": 1,
+      "message": "I think it would be good to extend this size logic to vertex buffers and uniform buffers, but it makes sense to do it one at a time to track performance effects more easily.\n\nOnce we get there, it might not be so necessary to have separate minimum sizes per type, which would clean up some of these constants and the amount of configuration for each `BufferInfo`.",
+      "range": {
+        "startLine": 30,
+        "startChar": 0,
+        "endLine": 34,
+        "endChar": 66
+      },
+      "revId": "935923560f4726d887b6ec356dd2403d859e778d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e796dc6d_b6747263",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 433,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-09-19T01:37:41Z",
+      "side": 1,
+      "message": "I think we want a bit more granularity than just the starting alignment (256 is probably okay for SSBO/UBO but if we can extend it to vertex buffers, they only have a 4 byte alignment I believe).\n\nI\u0027d vote to just have another constant that controls allocation granularity within the `sufficient_size()` function, e.g. take `max(requiredSize, curBlockSize)` and then round to nearest 1kb. That will keep the rounding logic more consistent as the block size itself is changing.",
+      "range": {
+        "startLine": 433,
+        "startChar": 59,
+        "endLine": 433,
+        "endChar": 79
+      },
+      "revId": "935923560f4726d887b6ec356dd2403d859e778d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e35f83e_1d19f463",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-09-19T01:37:41Z",
+      "side": 1,
+      "message": "WDYT about having this just be part of the `transferToRecording()` function? That has been kind of the one-and-done function to call on the buffer manager during snap(), but we could rename it to reflect that it\u0027s doing more than just transferring buffers at this point.",
+      "range": {
+        "startLine": 164,
+        "startChar": 9,
+        "endLine": 164,
+        "endChar": 37
+      },
+      "revId": "935923560f4726d887b6ec356dd2403d859e778d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
