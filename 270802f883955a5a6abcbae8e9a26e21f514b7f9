@@ -34,6 +34,24 @@
       "parentUuid": "e0a9a930_93b6901b",
       "revId": "270802f883955a5a6abcbae8e9a26e21f514b7f9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73083011_ce8deea5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-09-19T13:05:17Z",
+      "side": 1,
+      "message": "I don\u0027t see a lot of C++/CXX/Rust overhead, but it seems like, as this is a variable font, the application of deltas takes longer in comparison to FreeType before we get to the part where we can retrieve the path.\nAnd quit some time is spent in `SkIDChangeListener::List::changed()` which I think comes from `SkPathRef` even though nobody should be interested yet in the `SkPath` we\u0027re building.",
+      "parentUuid": "b9ed949f_cf99d4e6",
+      "revId": "270802f883955a5a6abcbae8e9a26e21f514b7f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
