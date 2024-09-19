@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b4c5414_c7ce58aa",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 432,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-09-19T15:22:54Z",
+      "side": 1,
+      "message": "I know right now we only added this for storage buffers, but it would be nice if we wrote this function to be generic for all buffers. Like it would be nice if we could be in a situation where we just update the fCurrentBuffer table in the ctor to have different min/max and then it just works for that type.\n\nSo make this function a generic thing that takes a BufferInfo and move it into the loop above?",
+      "range": {
+        "startLine": 424,
+        "startChar": 0,
+        "endLine": 432,
+        "endChar": 5
+      },
+      "revId": "dff7e2f4c14a5b8466de58deb1c68da9e657adb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
