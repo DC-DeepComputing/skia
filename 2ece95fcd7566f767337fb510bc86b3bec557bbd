@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "43f6fb61_c0a5d0df",
+        "filename": "src/core/SkTypeface.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 361,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-19T15:17:52Z",
+      "side": 1,
+      "message": "`Not implemented.` We use that string elsewhere as well, so its nice to re-use and get constant folding.",
+      "range": {
+        "startLine": 361,
+        "startChar": 14,
+        "endLine": 361,
+        "endChar": 41
+      },
+      "revId": "2ece95fcd7566f767337fb510bc86b3bec557bbd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "10071429_71201735",
+        "filename": "tests/FontMgrFontConfigTest.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-19T15:17:52Z",
+      "side": 1,
+      "message": "Probably don\u0027t want this whitespace change.",
+      "revId": "2ece95fcd7566f767337fb510bc86b3bec557bbd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c135f8f_51d2a345",
+        "filename": "tests/FontMgrFontConfigTest.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-19T15:17:52Z",
+      "side": 1,
+      "message": "This indentation makes no sense (and why I generally frown on auto format). The point of the formatting was to line up all the content so it is easy for humans to read the intent of this XML.",
+      "range": {
+        "startLine": 69,
+        "startChar": 5,
+        "endLine": 69,
+        "endChar": 12
+      },
+      "revId": "2ece95fcd7566f767337fb510bc86b3bec557bbd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd456dad_f47e5c51",
+        "filename": "tests/FontMgrFontConfigTest.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-19T15:17:52Z",
+      "side": 1,
+      "message": "The old was also oddly incorrect, but this should be fixed up so all the quotes line up.",
+      "range": {
+        "startLine": 76,
+        "startChar": 0,
+        "endLine": 76,
+        "endChar": 12
+      },
+      "revId": "2ece95fcd7566f767337fb510bc86b3bec557bbd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4a725f7_c047d8aa",
+        "filename": "tests/FontMgrFontConfigTest.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-19T15:17:52Z",
+      "side": 1,
+      "message": "And since I\u0027m on about whitespace, there is no good reason to touch these lines (it will just confuse blame) and also makes the line too long. Should just put these lines back the way they were.",
+      "range": {
+        "startLine": 149,
+        "startChar": 12,
+        "endLine": 149,
+        "endChar": 16
+      },
+      "revId": "2ece95fcd7566f767337fb510bc86b3bec557bbd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
