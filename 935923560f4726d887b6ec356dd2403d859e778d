@@ -47,6 +47,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "13fdd45f_a05de18a",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-09-19T14:44:16Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "8957101a_235505f4",
+      "range": {
+        "startLine": 30,
+        "startChar": 0,
+        "endLine": 34,
+        "endChar": 66
+      },
+      "revId": "935923560f4726d887b6ec356dd2403d859e778d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "15ef8a71_f2a6a7e4",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-09-19T14:44:16Z",
+      "side": 1,
+      "message": "I\u0027m not really seeing a local performance improvement from doing that, and I do worry about over-optimizing for motionmark generally, but I don\u0027t have very strong feelings about this.",
+      "parentUuid": "bd20c67a_976631b3",
+      "range": {
+        "startLine": 34,
+        "startChar": 62,
+        "endLine": 34,
+        "endChar": 66
+      },
+      "revId": "935923560f4726d887b6ec356dd2403d859e778d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e796dc6d_b6747263",
@@ -72,6 +120,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f00a50ae_7de32407",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 433,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-09-19T14:44:16Z",
+      "side": 1,
+      "message": "Another constant seems fine to me, but what if we just align to that constant here? Or maybe we can even align to MinBlockSize? I\u0027m hesitant to complicate `sufficient_block_size()` if we can avoid it.",
+      "parentUuid": "e796dc6d_b6747263",
+      "range": {
+        "startLine": 433,
+        "startChar": 59,
+        "endLine": 433,
+        "endChar": 79
+      },
+      "revId": "935923560f4726d887b6ec356dd2403d859e778d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3e35f83e_1d19f463",
         "filename": "src/gpu/graphite/BufferManager.h",
         "patchSetId": 1
@@ -83,6 +155,30 @@
       "writtenOn": "2024-09-19T01:37:41Z",
       "side": 1,
       "message": "WDYT about having this just be part of the `transferToRecording()` function? That has been kind of the one-and-done function to call on the buffer manager during snap(), but we could rename it to reflect that it\u0027s doing more than just transferring buffers at this point.",
+      "range": {
+        "startLine": 164,
+        "startChar": 9,
+        "endLine": 164,
+        "endChar": 37
+      },
+      "revId": "935923560f4726d887b6ec356dd2403d859e778d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af204277_b5aa76a9",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-09-19T14:44:16Z",
+      "side": 1,
+      "message": "Moved. Not sure what a better name for the method would be. Something involving \"`flush`\"?",
+      "parentUuid": "3e35f83e_1d19f463",
       "range": {
         "startLine": 164,
         "startChar": 9,
