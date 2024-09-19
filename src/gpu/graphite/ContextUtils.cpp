@@ -277,9 +277,8 @@ std::string get_node_texture_samplers(const ResourceBindingRequirements& binding
     return result;
 }
 
-static constexpr Uniform kIntrinsicUniforms[] = { {"rtAdjust",          SkSLType::kFloat4},
-                                                  {"replayTranslation", SkSLType::kFloat2},
-                                                  {"dstCopyOffset",     SkSLType::kFloat2} };
+static constexpr Uniform kIntrinsicUniforms[] = { {"viewport",      SkSLType::kFloat4},
+                                                  {"dstCopyBounds", SkSLType::kFloat4} };
 
 std::string emit_intrinsic_uniforms(int bufferID, Layout layout) {
     auto offsetter = UniformOffsetCalculator::ForTopLevel(layout);
@@ -298,10 +297,34 @@ std::string emit_intrinsic_uniforms(int bufferID, Layout layout) {
 
 void CollectIntrinsicUniforms(const Caps* caps,
                               SkIRect viewport,
-                              SkIPoint replayTranslation,
-                              SkIPoint dstCopyOffset,
+                              SkIRect dstCopyBounds,
                               UniformManager* uniforms) {
     SkDEBUGCODE(uniforms->setExpectedUniforms(kIntrinsicUniforms, /*isSubstruct=*/false);)
+
+    // viewport
+    {
+        SkASSERT(!viewport.isEmpty());
+        float invWidth = 1.f / viewport.width();
+        float invHeight = 1.f / viewport.height();
+
+        // If the NDC Y axis points up (opposite normal skia convention and the underlying view
+        // convention), upload the inverse height as a negative value. See BuildVertexSkSL
+        // for how this is used.
+        if (!caps->ndcYAxisPointsDown()) {
+            invHeight *= -1.f;
+        }
+        uniforms->write(SkV4{viewport.left(), viewport.top(), invWidth, invHeight});
+    }
+
+    // dstCopyBounds
+    {
+        // Unlike viewport, dstCopyBounds can be empty so check for 0 dimensions and set the
+        // reciprocal to 0.
+        int width = dstCopyBounds.width();
+        int height = dstCopyBounds.height();
+        uniforms->write(SkV4{dstCopyBounds.left(), dstCopyBounds.top(),
+                             width ? 1.f / width : 0.f, height ? 1.f / height : 0.f});
+    }
 
     // rtAdjust
     {
@@ -317,12 +340,6 @@ void CollectIntrinsicUniforms(const Caps* caps,
         SkV4 rtAdjust = {invTwoW, yFlip*invTwoH, -1.f - x*invTwoW, yFlip*(-1.f - y*invTwoH)};
         uniforms->write(rtAdjust);
     }
-
-    // replayTranslation
-    uniforms->write(SkV2{(float) replayTranslation.fX, (float) replayTranslation.fY});
-
-    // dstCopyOffset
-    uniforms->write(SkV2{(float) dstCopyOffset.fX, (float) dstCopyOffset.fY});
 
     SkDEBUGCODE(uniforms->doneWithExpectedUniforms());
 }
@@ -576,8 +593,15 @@ VertSkSLInfo BuildVertexSkSL(const ResourceBindingRequirements& bindingReqs,
     }
 
     sksl += step->vertexSkSL();
-    sksl += "sk_Position = float4(devPosition.xy * rtAdjust.xy + devPosition.ww * rtAdjust.zw,"
-            "devPosition.zw);";
+
+    // We want to map the rectangle of logical device pixels from (0,0) to (viewWidth, viewHeight)
+    // to normalized device coordinates: (-1,-1) to (1,1) (or really -w to w before homogenous
+    // division). On some backends the NDC Y axis is flipped relative to the device and viewport
+    // coords (i.e. it points up instead of down). Assuming that the (1/viewportHeight) component is
+    // uploaded as a negative value in these cases then equation handles both cases automatically.
+    sksl += "sk_Position = float4(2 * devPosition.xy * viewport.zw - sign(viewport.zw)*devPosition.ww, devPosition.zw);"
+    // sksl += "sk_Position = float4(devPosition.xy * rtAdjust.xy + devPosition.ww * rtAdjust.zw,"
+    //         "devPosition.zw);";
 
     if (useShadingStorageBuffer) {
         // Assign SSBO index values to the SSBO index varying.
