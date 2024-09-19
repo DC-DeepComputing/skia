@@ -63,6 +63,7 @@ static bool renderbuffer_storage_msaa(GrGLGpu* gpu,
 sk_sp<GrGLAttachment> GrGLAttachment::MakeStencil(GrGLGpu* gpu,
                                                   SkISize dimensions,
                                                   int sampleCnt,
+                                                  GrProtected isProtected,
                                                   GrGLFormat format) {
     GrGLuint rbID = 0;
 
@@ -94,6 +95,7 @@ sk_sp<GrGLAttachment> GrGLAttachment::MakeStencil(GrGLGpu* gpu,
                                                     dimensions,
                                                     GrAttachment::UsageFlags::kStencilAttachment,
                                                     sampleCnt,
+                                                    isProtected,
                                                     format,
                                                     /*label=*/"GLAttachmentMakeStencil"));
 }
@@ -101,6 +103,7 @@ sk_sp<GrGLAttachment> GrGLAttachment::MakeStencil(GrGLGpu* gpu,
 sk_sp<GrGLAttachment> GrGLAttachment::MakeMSAA(GrGLGpu* gpu,
                                                SkISize dimensions,
                                                int sampleCnt,
+                                               GrProtected isProtected,
                                                GrGLFormat format) {
     GrGLuint rbID = 0;
 
@@ -121,6 +124,7 @@ sk_sp<GrGLAttachment> GrGLAttachment::MakeMSAA(GrGLGpu* gpu,
                                                     dimensions,
                                                     GrAttachment::UsageFlags::kColorAttachment,
                                                     sampleCnt,
+                                                    isProtected,
                                                     format,
                                                     /*label=*/"GLAttachmentMakeMSAA"));
 }

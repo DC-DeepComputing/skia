@@ -1969,14 +1969,17 @@ GrGLuint GrGLGpu::createTexture(SkISize dimensions,
 }
 
 sk_sp<GrAttachment> GrGLGpu::makeStencilAttachment(const GrBackendFormat& colorFormat,
-                                                   SkISize dimensions, int numStencilSamples) {
+                                                   SkISize dimensions,
+                                                   int numStencilSamples,
+                                                   GrProtected isProtected) {
     int sIdx = this->getCompatibleStencilIndex(GrBackendFormats::AsGLFormat(colorFormat));
     if (sIdx < 0) {
         return nullptr;
     }
     GrGLFormat sFmt = this->glCaps().stencilFormats()[sIdx];
 
-    auto stencil = GrGLAttachment::MakeStencil(this, dimensions, numStencilSamples, sFmt);
+    auto stencil = GrGLAttachment::MakeStencil(this, dimensions, numStencilSamples,
+                                                                   isProtected, sFmt);
     if (stencil) {
         fStats.incStencilAttachmentCreates();
     }
@@ -1988,7 +1991,7 @@ sk_sp<GrAttachment> GrGLGpu::makeMSAAAttachment(SkISize dimensions, const GrBack
                                                 GrMemoryless isMemoryless) {
     SkASSERT(isMemoryless == GrMemoryless::kNo);
     return GrGLAttachment::MakeMSAA(
-            this, dimensions, numSamples, GrBackendFormats::AsGLFormat(format));
+            this, dimensions, numSamples, isProtected, GrBackendFormats::AsGLFormat(format));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
