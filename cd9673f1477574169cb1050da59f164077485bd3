@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "659cd9c6_090b0704",
+        "filename": "src/ports/SkFontMgr_android.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 535,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-19T20:59:43Z",
+      "side": 1,
+      "message": "Because this is a unique_ptr we can\u0027t share it between the two font managers.",
+      "range": {
+        "startLine": 535,
+        "startChar": 100,
+        "endLine": 535,
+        "endChar": 107
+      },
+      "revId": "cd9673f1477574169cb1050da59f164077485bd3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d91ae31a_3a681069",
+        "filename": "tools/fonts/FontToolUtils.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-19T20:59:43Z",
+      "side": 1,
+      "message": "Temporary hack to test.",
+      "revId": "cd9673f1477574169cb1050da59f164077485bd3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
