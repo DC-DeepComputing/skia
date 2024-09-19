@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "192737bd_124754a6",
+        "filename": "src/core/SkTypeface.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 361,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-09-19T15:36:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "43f6fb61_c0a5d0df",
+      "range": {
+        "startLine": 361,
+        "startChar": 14,
+        "endLine": 361,
+        "endChar": 41
+      },
+      "revId": "2ece95fcd7566f767337fb510bc86b3bec557bbd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "10071429_71201735",
@@ -41,6 +65,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "58a05958_62a73e47",
+        "filename": "tests/FontMgrFontConfigTest.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-09-19T15:36:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "10071429_71201735",
+      "revId": "2ece95fcd7566f767337fb510bc86b3bec557bbd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3c135f8f_51d2a345",
@@ -54,6 +96,30 @@
       "writtenOn": "2024-09-19T15:17:52Z",
       "side": 1,
       "message": "This indentation makes no sense (and why I generally frown on auto format). The point of the formatting was to line up all the content so it is easy for humans to read the intent of this XML.",
+      "range": {
+        "startLine": 69,
+        "startChar": 5,
+        "endLine": 69,
+        "endChar": 12
+      },
+      "revId": "2ece95fcd7566f767337fb510bc86b3bec557bbd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "60105958_ce043abb",
+        "filename": "tests/FontMgrFontConfigTest.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-09-19T15:36:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3c135f8f_51d2a345",
       "range": {
         "startLine": 69,
         "startChar": 5,
@@ -87,6 +153,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce457599_d1f24799",
+        "filename": "tests/FontMgrFontConfigTest.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-09-19T15:36:41Z",
+      "side": 1,
+      "message": "Done. (CLion does not help with this problem at all).",
+      "parentUuid": "fd456dad_f47e5c51",
+      "range": {
+        "startLine": 76,
+        "startChar": 0,
+        "endLine": 76,
+        "endChar": 12
+      },
+      "revId": "2ece95fcd7566f767337fb510bc86b3bec557bbd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e4a725f7_c047d8aa",
@@ -100,6 +190,30 @@
       "writtenOn": "2024-09-19T15:17:52Z",
       "side": 1,
       "message": "And since I\u0027m on about whitespace, there is no good reason to touch these lines (it will just confuse blame) and also makes the line too long. Should just put these lines back the way they were.",
+      "range": {
+        "startLine": 149,
+        "startChar": 12,
+        "endLine": 149,
+        "endChar": 16
+      },
+      "revId": "2ece95fcd7566f767337fb510bc86b3bec557bbd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "818d2fcb_c25c5171",
+        "filename": "tests/FontMgrFontConfigTest.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-09-19T15:36:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e4a725f7_c047d8aa",
       "range": {
         "startLine": 149,
         "startChar": 12,
