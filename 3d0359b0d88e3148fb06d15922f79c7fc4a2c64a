@@ -172,6 +172,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6f6163f2_8a7bcfe6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-09-20T14:55:00Z",
+      "side": 1,
+      "message": "Using a #define to control what implementation of a given codec is compiled in is no longer an approved way to do things in Skia.\n\nWhat I think we should do to structure this better is:\n1) extract the bits of SkAvifCodec.cpp/.h that are agnostic to the avif-codec impl into something like SkAvifCommonCodec.cpp/.h\n2) Move the parts of the current avif impl to SkAvifCodec_libavif.cpp (or whatever the current impl is called).\n3) Add the CrabbyAvif impl parts to SkAvifCodec_crabby.cpp (or something similarly named).\n4) Duplicate include/codec/SkAvifDecoder.h to include two new, nested namespaces `SkAvifDecoder::LibAvif` and `SkAvifDecoder::Crabby`. Keep the existing namespace `SkAvifDecoder` returning the libavif version\n5) Android Framework should compile/link/register the Crabby version when it\u0027s supported.",
+      "parentUuid": "39cca782_5b603780",
+      "revId": "3d0359b0d88e3148fb06d15922f79c7fc4a2c64a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a58edb40_852e3dd5",
         "filename": "include/codec/SkAndroidCodec.h",
         "patchSetId": 4
@@ -282,6 +300,24 @@
       "side": 1,
       "message": "please see my comment about the current design, hopefully that will clarify why this is needed.",
       "parentUuid": "84b3ff42_3898440c",
+      "revId": "3d0359b0d88e3148fb06d15922f79c7fc4a2c64a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bccbc759_5f4f82eb",
+        "filename": "src/codec/SkAvifCodec.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-09-20T14:55:00Z",
+      "side": 1,
+      "message": "I am still puzzled as to why we say a given buffer is *not* an avif if SkAndroidCodec::AvifEnabled() returns false. It feels a bit messy to have this implementation depend on SkAndroidCodec.h",
+      "parentUuid": "16f98d31_c3af4436",
       "revId": "3d0359b0d88e3148fb06d15922f79c7fc4a2c64a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
