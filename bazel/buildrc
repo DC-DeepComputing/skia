@@ -144,6 +144,7 @@ build:for_ios --platforms=//bazel/platform:ios --compilation_mode=dbg --cc_outpu
 # These are examples of the syntax to create build configurations. As of May 2022, our
 # Bazel configurations are still being made.
 build:release --compilation_mode=opt
+build:perfo --compilation_mode=opt --strip=never --copt=-g --cxxopt=-g
 build:debug --compilation_mode=dbg
 
 # See also https://github.com/emscripten-core/emsdk/issues/984 for disabling cc_toolchain_resolution

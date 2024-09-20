@@ -51,8 +51,10 @@ OPT_LEVEL = select({
     "//bazel/common_config_settings:release_build": [
         "--optimize=3",
         # Strip dead code (in conjunction with linkopts)
-        "-fdata-sections",
-        "-ffunction-sections",
+        #        "-fdata-sections",
+        #        "-ffunction-sections",
+        "-g",
+        "-fno-omit-frame-pointer",
     ],
     "//bazel/common_config_settings:fast_build": [
         "--optimize=0",

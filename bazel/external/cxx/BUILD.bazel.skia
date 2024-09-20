@@ -12,6 +12,7 @@ rust_library(
     proc_macro_deps = [
         "@cxx_deps//:cxxbridge-macro",
     ],
+    rustc_flags = [ "-Cdebuginfo=2" ],
     visibility = ["//visibility:public"],
     deps = [":core-lib"],
 )
@@ -26,6 +27,7 @@ config_setting(
 
 cc_library(
     name = "core-lib",
+    copts = ["-g", "-fno-omit-frame-pointer", ],
     srcs = [
         "src/cxx.cc",
     ] + select(

@@ -33,9 +33,11 @@
 namespace skiagm {
 
 namespace {
-const SkScalar kTextSizes[] = {12, 18, 30, 120};
-const char kTestFontName[] = "fonts/test_glyphs-glyf_colr_1.ttf";
-const char kTestFontNameVariable[] = "fonts/test_glyphs-glyf_colr_1_variable.ttf";
+const SkScalar kTextSizes[] = {12, 24, 48, 128, 256};
+// const char kTestFontName[] = "fonts/test_glyphs-glyf_colr_1.ttf";
+// const char kTestFontNameVariable[] = "fonts/test_glyphs-glyf_colr_1_variable.ttf";
+const char kTestFontName[] = "fonts/Shader16VF_W_PXSZ_static.ttf";
+const char kTestFontNameVariable[] = "fonts/Shader16VF_W_PXSZ_static.ttf";
 const SkScalar xWidth = 1200;
 const SkScalar xTranslate = 200;
 }  // namespace
@@ -90,6 +92,8 @@ protected:
 
         return gm_name;
     }
+
+    bool runAsBench() const override { return true; }
 
     bool onGetControls(SkMetaData* controls) override {
         return fVariationSliders.writeControls(controls);
@@ -189,6 +193,9 @@ private:
 // $ python3 config/test_glyphs-glyf_colr_1.py -vvv  --generate-descriptions fonts/
 // Regenerate descriptions and paste the generated arrays here when updating the test font.
 namespace ColrV1TestDefinitions {
+// const uint32_t shader[] = {'O', 'h', ' ', 'n', 'o', '!', ' ', 'T', 'h', 'e', ' ', 'p', 'r', 'o', 'f', 'e', 's', 's', 'o', 'r', ' ', 'w', 'i', 'l', 'l', ' ', 'h', 'i', 't', ' ', 'm', 'e'};
+ const uint32_t shader[] = {'O', 'h', ' ', 'n', 'o', '!', ' ', 'T', 'h', 'e', ' ', 'p', 'r', 'o', 'f', 'e', 's', 's', 'o', 'r', };
+ //   const uint32_t shader[] = {'O', 'h',};
 const uint32_t gradient_stops_repeat[] = {0xf0100, 0xf0101, 0xf0102, 0xf0103};
 const uint32_t sweep_varsweep[] = {
         0xf0200, 0xf0201, 0xf0202, 0xf0203, 0xf0204, 0xf0205, 0xf0206, 0xf0207, 0xf0208,
@@ -319,6 +326,7 @@ DEF_GM(return F(C(variable_alpha),         0.0f,  0.0f, {{"APH2"_t, -0.7f}, {"AP
 DEF_GM(return F(C(paintcolrglyph_cycle),   0.0f,  0.0f, {}))
 DEF_GM(return F(C(sweep_coincident),       0.0f,  0.0f, {}))
 DEF_GM(return F(C(paint_glyph_nested),     0.0f,  0.0f, {}))
+DEF_GM(return F(C(shader),     0.0f,  0.0f, {}))
 // clang-format on
 
 }  // namespace skiagm

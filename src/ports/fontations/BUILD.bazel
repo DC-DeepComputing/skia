@@ -20,6 +20,7 @@ rust_cxx_bridge(
 rust_static_library(
     name = "bridge_rust_side",
     srcs = ["src/ffi.rs"],
+    rustc_flags = ["-Cdebuginfo=2"],
     deps = [
         "@cxx",
         "@fontations//:font-types",
@@ -33,10 +34,18 @@ skia_cc_library(
     hdrs = [
         "src/skpath_bridge.h",
     ],
+    copts = [
+        "-g",
+        "-fno-omit-frame-pointer",
+    ],
 )
 
 skia_cc_library(
     name = "deps",
+    copts = [
+        "-g",
+        "-fno-omit-frame-pointer",
+    ],
     visibility = ["//src/ports:__pkg__"],
     deps = [
         ":bridge_rust_side",

@@ -10,7 +10,6 @@ cxxbridge executable. This is based off of the example provided in [2].
 
 load("@rules_cc//cc:defs.bzl", "cc_library")
 load("//bazel:run_cxxbridge_cmd.bzl", "run_cxxbridge_cmd")
-load("//bazel:skia_rules.bzl", "skia_filegroup")
 
 def rust_cxx_bridge(name, src, deps = [], visibility = [], crate_features = []):
     """Creates rules for CXX C++/Rust bridging.
@@ -41,22 +40,24 @@ def rust_cxx_bridge(name, src, deps = [], visibility = [], crate_features = []):
         crate_features = crate_features,
     )
 
-    skia_filegroup(
-        name = "%s/filegroup" % name,
-        srcs = [out_cc],
-        visibility = visibility,
-    )
+    #    skia_filegroup(
+    #        name = "%s/filegroup" % name,
+    #        srcs = [out_cc],
+    #        visibility = visibility,
+    #    )
 
     cc_library(
         name = name,
         srcs = [out_cc],
         hdrs = [out_h],
         deps = deps + ["%s/include" % name],
+        copts = ["-g", "-fno-omit-frame-pointer"],
         visibility = visibility,
     )
 
     cc_library(
         name = "%s/include" % name,
+        copts = ["-g", "-fno-omit-frame-pointer"],
         hdrs = [out_h],
         visibility = visibility,
     )
