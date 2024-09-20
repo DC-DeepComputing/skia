@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "736a7204_03ed8d7a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 22
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-20T14:39:58Z",
+      "side": 1,
+      "message": "Seeing about adding a `Test-Android-Clang-GalaxyS24-CPU-Adreno750-arm64-Release-All-Android_NativeFonts` since we seem to have capacity there and these are Android U (14).",
+      "parentUuid": "31944b98_cc7b61ea",
+      "revId": "cd9673f1477574169cb1050da59f164077485bd3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "659cd9c6_090b0704",
         "filename": "src/ports/SkFontMgr_android.cpp",
         "patchSetId": 22
