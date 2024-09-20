@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bcd27415_83a545ea",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 596,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-09-20T18:14:11Z",
+      "side": 1,
+      "message": "For Y pointing down:\n\n* the old `rtAdjust` would be `{2/w, 2/h, -1 - 2vx/w, -1 - 2vy/h}`\n* `(vx,vy) \u003d {viewport.topLeft() - replayTranslation}`, where viewport was the original viewport translated by replayTranslation, so (vx,vy) were only ever (0,0) for currently created render passes.\n* the old `sk_Position` would equal `{devPos.xy*(2/wh) + devPos.w*(-1,-1)}`.\n\nFor Y pointing up:\n\n* the old `rtAdjust` holds `{2/w, -2/h, -1 - 2vx/w, 1 + 2vy/h}`\n* the old `sk_Position` is then `{devPos.xy*(2,-2)/wh + devPos.w*(-1,1)\n\nWith the new equation assuming that the `viewport.w` holds either 2/h or -2/h as appropriate, and `viewport.z` being always positive, then subtracting `sign(viewport.zw)*devPos.w` will either be `(-w,-w)` when Y points down and `(-w,+w)` for Y pointing up as expected.\n\nAn alternative would be to pass in `caps` here and just adjust the generated SkSL t have different operators.",
+      "range": {
+        "startLine": 596,
+        "startChar": 0,
+        "endLine": 596,
+        "endChar": 97
+      },
+      "revId": "1ce5b892380b99ac76370659c2b8678e0efd9edf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
