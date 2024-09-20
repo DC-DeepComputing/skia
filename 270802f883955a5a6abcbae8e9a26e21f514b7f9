@@ -70,6 +70,24 @@
       "parentUuid": "73083011_ce8deea5",
       "revId": "270802f883955a5a6abcbae8e9a26e21f514b7f9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "916ece89_c771aafc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-09-20T16:22:06Z",
+      "side": 1,
+      "message": "Current investigation status is that FreeType\u0027s bounds computation for a glyph without clipbox somehow finishes with a lot less traversal operations and visiting a much shorter part of the glyph - it might be that the bounds computation in the FreeType backend has a bug - needs more investigation. https://screenshot.googleplex.com/66ZiuUV8Wcw6xs8",
+      "parentUuid": "0e67d352_0d991610",
+      "revId": "270802f883955a5a6abcbae8e9a26e21f514b7f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
