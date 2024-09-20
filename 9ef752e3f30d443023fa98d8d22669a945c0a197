@@ -70,6 +70,30 @@
       },
       "revId": "9ef752e3f30d443023fa98d8d22669a945c0a197",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef0c37da_1d01867c",
+        "filename": "include/private/SkPathRef.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 572,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-20T15:29:55Z",
+      "side": 1,
+      "message": "Yes, that has been attempted and it is more or less impossible. Feel free to attempt it.",
+      "parentUuid": "1857bd28_ca23044c",
+      "range": {
+        "startLine": 567,
+        "startChar": 0,
+        "endLine": 572,
+        "endChar": 31
+      },
+      "revId": "9ef752e3f30d443023fa98d8d22669a945c0a197",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
