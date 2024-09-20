@@ -46,6 +46,30 @@
       },
       "revId": "9ef752e3f30d443023fa98d8d22669a945c0a197",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1857bd28_ca23044c",
+        "filename": "include/private/SkPathRef.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 572,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-09-20T15:05:55Z",
+      "side": 1,
+      "message": "Any reason to prefer that approach over committing to `SkPathBuilder` and making `SkPath` const?\n\nIn its current form, `SkPath` is mutable AND a poor path builder (non-trivial editor dance, non-reusable buffer allocations, complex state tracking using atomics, etc).  OTOH I can\u0027t think of anything wrong with `SkPathBuilder` that would justify throwing it away and converting `SkPath` into essentially the same thing.\n\nAlso, converting clients to the new const-path api will require a transition period where we support both a builder and mutable paths.  Using `SkPathBuilder` for the migration seems like a good way to move things forward, even if in the end we replace its implementation with something else.",
+      "parentUuid": "515beb90_dc56f244",
+      "range": {
+        "startLine": 567,
+        "startChar": 0,
+        "endLine": 572,
+        "endChar": 31
+      },
+      "revId": "9ef752e3f30d443023fa98d8d22669a945c0a197",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
