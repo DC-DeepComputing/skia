@@ -22,6 +22,30 @@
       },
       "revId": "9ef752e3f30d443023fa98d8d22669a945c0a197",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "515beb90_dc56f244",
+        "filename": "include/private/SkPathRef.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 572,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-20T14:34:55Z",
+      "side": 1,
+      "message": "Unfortunately, `SkPathBuilder` is a failed experiment we\u0027re trying to remove. At the moment `SkPath` is the path builder and we want to re-name it to be the path builder and create a new constant `SkPath`.",
+      "parentUuid": "267e9b84_844c335b",
+      "range": {
+        "startLine": 567,
+        "startChar": 0,
+        "endLine": 572,
+        "endChar": 31
+      },
+      "revId": "9ef752e3f30d443023fa98d8d22669a945c0a197",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
