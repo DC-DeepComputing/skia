@@ -19,12 +19,14 @@
 #include "include/core/SkYUVAPixmaps.h"
 #include "include/encode/SkEncoder.h"
 #include "include/encode/SkJpegEncoder.h"
+#include "include/private/SkExif.h"
 #include "include/private/base/SkAssert.h"
 #include "include/private/base/SkNoncopyable.h"
 #include "include/private/base/SkTemplates.h"
 #include "src/base/SkMSAN.h"
 #include "src/codec/SkJpegConstants.h"
 #include "src/codec/SkJpegPriv.h"
+#include "src/codec/SkParseEncodedOrigin.h"
 #include "src/encode/SkImageEncoderFns.h"
 #include "src/encode/SkImageEncoderPriv.h"
 #include "src/encode/SkJPEGWriteUtility.h"
@@ -35,6 +37,7 @@
 #include <cstring>
 #include <memory>
 #include <utility>
+#include <iomanip>
 
 class GrDirectContext;
 class SkColorSpace;
@@ -417,6 +420,7 @@ std::unique_ptr<SkEncoder> Make(SkWStream* dst, const SkPixmap& src, const Optio
     SkJpegMetadataEncoder::SegmentList metadataSegments;
     SkJpegMetadataEncoder::AppendXMPStandard(metadataSegments, options.xmpMetadata);
     SkJpegMetadataEncoder::AppendICC(metadataSegments, options, src.colorSpace());
+    SkJpegMetadataEncoder::AppendExif(metadataSegments, options.fOrigin);
     return SkJpegEncoderImpl::MakeRGB(dst, src, options, metadataSegments);
 }
 
@@ -427,6 +431,7 @@ std::unique_ptr<SkEncoder> Make(SkWStream* dst,
     SkJpegMetadataEncoder::SegmentList metadataSegments;
     SkJpegMetadataEncoder::AppendXMPStandard(metadataSegments, options.xmpMetadata);
     SkJpegMetadataEncoder::AppendICC(metadataSegments, options, srcColorSpace);
+    SkJpegMetadataEncoder::AppendExif(metadataSegments, options.fOrigin);
     return SkJpegEncoderImpl::MakeYUV(dst, src, srcColorSpace, options, metadataSegments);
 }
 
@@ -463,6 +468,82 @@ void AppendXMPStandard(SegmentList& segmentList, const SkData* xmpMetadata) {
     s.write(kXMPStandardSig, sizeof(kXMPStandardSig));
     s.write(xmpMetadata->data(), xmpMetadata->size());
     segmentList.emplace_back(kXMPMarker, s.detachAsData());
+}
+
+ SkEncodedOrigin get_exif_orientation(sk_sp<SkData> exifData) {
+    SkEncodedOrigin origin = kDefault_SkEncodedOrigin;
+    if (!exifData) {
+      SkDebugf("No data\n");
+      return origin;
+    }
+    // if (!SkParseEncodedOrigin(exifData->bytes(), exifData->size(), &origin)) {
+    //   SkDebugf("parsing failed\n");
+    //   return origin;
+    // }
+    if (exifData && SkParseEncodedOrigin(exifData->bytes(), exifData->size(), &origin)) {
+      SkDebugf("data parsed\n");
+      SkDebugf("origin: %i\n", origin);
+        return origin;
+    }
+    return kDefault_SkEncodedOrigin;
+}
+
+void hexDump(const unsigned char* data, unsigned int len) {
+    // Number of bytes per line.
+    const int kBytesPerLine = 16;
+
+    for (unsigned int i = 0; i < len; i += kBytesPerLine) {
+        // Print the offset in hexadecimal.
+        SkDebugf("%08x  ", i);
+
+        // Print the hexadecimal values of the bytes.
+        for (int j = 0; j < kBytesPerLine; ++j) {
+            if (i + j < len) {
+                SkDebugf("%02x ", static_cast<unsigned int>(data[i + j]));
+            } else {
+                SkDebugf("   "); // Fill with spaces if no more bytes
+            }
+        }
+
+        SkDebugf(" |"); // Separator
+
+        // Print the ASCII representation of printable characters.
+        for (int j = 0; j < kBytesPerLine; ++j) {
+            if (i + j < len) {
+                char c = data[i + j];
+                SkDebugf("%c", isprint(c) ? c : '.');
+            } else {
+                break;
+            }
+        }
+
+        SkDebugf("|\n"); // End of line
+    }
+}
+
+void AppendExif(SegmentList& segmentList, const SkEncodedOrigin origin) {
+
+    sk_sp<SkData> data = SkExif::WriteHeaderAndOrigin(true, 8, origin);
+    if (!data) {
+      SkDebugf("no exif data\n");
+      return;
+    }
+
+
+    const unsigned char* bytes = static_cast<const unsigned char*>(data->data());
+    size_t len = data->size();
+    hexDump(bytes, len);
+
+
+    SkEncodedOrigin o = get_exif_orientation(data);
+    SkDebugf("origin from data: %i\n", o);
+
+    // data is good but appending it to the encoded seems to be wrong
+    SkDynamicMemoryWStream s;
+    s.write(kExifSig, sizeof(kExifSig));
+    s.write8(0);
+    s.write(data->data(), data->size());
+    segmentList.emplace_back(kExifMarker, s.detachAsData());
 }
 
 }  // namespace SkJpegMetadataEncoder

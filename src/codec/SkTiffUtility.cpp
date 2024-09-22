@@ -71,6 +71,7 @@ static bool validate_ifd(const SkData* data,
                          uint32_t* outNextIfdOffset) {
     const uint8_t* dataCurrent = data->bytes();
     size_t dataSize = data->size();
+    SkDebugf("datasize0: %zu\n", dataSize);
 
     // Seek to the IFD offset.
     if (dataSize < ifdOffset) {
@@ -88,6 +89,8 @@ static bool validate_ifd(const SkData* data,
     uint16_t numEntries = get_endian_short(dataCurrent, littleEndian);
     dataCurrent += kSizeShort;
     dataSize -= kSizeShort;
+    SkDebugf("numEntries1: %i\n", numEntries);
+    SkDebugf("datasize: %zu\n", dataSize);
 
     // Check that there is enough space for all entries.
     if (dataSize < kSizeEntry * numEntries) {
@@ -98,6 +101,7 @@ static bool validate_ifd(const SkData* data,
             // Set the number of entries to the number of entries that can be fully read, and set
             // the next IFD offset to 0 (indicating that there is no next IFD).
             *outNumEntries = dataSize / kSizeEntry;
+            SkDebugf("numEntries1.5: %zu\n",  dataSize / kSizeEntry);
             *outNextIfdOffset = 0;
             return true;
         }
@@ -105,6 +109,7 @@ static bool validate_ifd(const SkData* data,
     }
 
     // Save the number of entries.
+    SkDebugf("numEntries2: %i\n", numEntries);
     *outNumEntries = numEntries;
 
     // Seek past the entries.
@@ -147,6 +152,23 @@ bool ImageFileDirectory::ParseHeader(const SkData* data,
     return true;
 }
 
+bool ImageFileDirectory::WriteHeader(sk_sp<SkData> data,
+                                     bool littleEndian,
+                                     uint32_t ifdOffset) {
+    // Determine the endian marker.
+    const char* endianMarker = littleEndian ? "II" : "MM";
+
+    // Write the endianness (4 bytes) and IFD offset (4 bytes).
+    if (data->size() < 8) {
+        SkCodecPrintf("Tiff header must be at least 8 bytes.\n");
+        return false;
+
+    }
+    memcpy(data->writable_data(), endianMarker, 4);
+    set_endian_int(reinterpret_cast<uint8_t*>(data->writable_data()) + 4, ifdOffset, littleEndian);
+    return true;
+}
+
 std::unique_ptr<ImageFileDirectory> ImageFileDirectory::MakeFromOffset(sk_sp<SkData> data,
                                                                        bool littleEndian,
                                                                        uint32_t ifdOffset,
@@ -156,6 +178,7 @@ std::unique_ptr<ImageFileDirectory> ImageFileDirectory::MakeFromOffset(sk_sp<SkD
     if (!validate_ifd(
                 data.get(), littleEndian, ifdOffset, allowTruncated, &numEntries, &nextOffset)) {
         SkCodecPrintf("Failed to validate IFD.\n");
+        SkDebugf("failed to validate ifd\n");
         return nullptr;
     }
     return std::unique_ptr<ImageFileDirectory>(new ImageFileDirectory(
@@ -197,16 +220,26 @@ bool ImageFileDirectory::getEntryRawData(uint16_t entryIndex,
         return false;
     }
 
+    SkDebugf("type: %i\n", type);
+
     // Read the count.
     const uint32_t count = get_endian_int(entry, fLittleEndian);
     entry += kSizeLong;
 
+    SkDebugf("getting the origin data...\n");
+
     // If the entry fits in the remaining 4 bytes, use that.
+    SkDebugf("bytesForType: %zu\n", BytesForType(type));
+    SkDebugf("count: %i\n", count);
     const size_t entryDataBytes = BytesForType(type) * count;
     const uint8_t* entryData = nullptr;
+
+    SkDebugf("entryDatabytes: %zu\n", entryDataBytes);
     if (entryDataBytes <= kSizeLong) {
+        SkDebugf("getting oriign 2\n");
         entryData = entry;
     } else {
+        SkDebugf("trying to find offset when shouldnt be\n");
         // Otherwise, the next 4 bytes specify an offset where the data can be found.
         const uint32_t entryDataOffset = get_endian_int(entry, fLittleEndian);
         if (fData->size() < entryDataOffset || fData->size() - entryDataOffset < entryDataBytes) {

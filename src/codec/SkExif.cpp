@@ -9,6 +9,7 @@
 
 #include "include/core/SkData.h"
 #include "include/core/SkRefCnt.h"
+#include "src/codec/SkCodecPriv.h"
 #include "src/codec/SkTiffUtility.h"
 
 #include <algorithm>
@@ -90,12 +91,16 @@ static void parse_ifd(Metadata& exif,
                       bool littleEndian,
                       bool isRoot) {
     if (!ifd) {
+      SkDebugf("no ifd\n");
         return;
     }
+    SkDebugf("parsing ifd\n");
+    SkDebugf("numentries: %i\n", ifd->getNumEntries());
     for (uint32_t i = 0; i < ifd->getNumEntries(); ++i) {
         switch (ifd->getEntryTag(i)) {
             case kOriginTag: {
                 uint16_t value = 0;
+                SkDebugf("in here\n");
                 if (!exif.fOrigin.has_value() && ifd->getEntryUnsignedShort(i, 1, &value)) {
                     if (0 < value && value <= kLast_SkEncodedOrigin) {
                         exif.fOrigin = static_cast<SkEncodedOrigin>(value);
@@ -183,11 +188,66 @@ void Parse(Metadata& metadata, const SkData* data) {
     bool littleEndian = false;
     uint32_t ifdOffset = 0;
     if (data && SkTiff::ImageFileDirectory::ParseHeader(data, &littleEndian, &ifdOffset)) {
+        SkDebugf("header parsed\n");
         auto dataRef = SkData::MakeWithoutCopy(data->data(), data->size());
         auto ifd = SkTiff::ImageFileDirectory::MakeFromOffset(
                 dataRef, littleEndian, ifdOffset, /*allowTruncated=*/true);
         parse_ifd(metadata, std::move(dataRef), std::move(ifd), littleEndian, /*isRoot=*/true);
     }
+}
+
+
+
+sk_sp<SkData> WriteHeaderAndOrigin(bool littleEndian, uint32_t ifdOffset, uint16_t origin) {
+
+   sk_sp<SkData> data = SkData::MakeUninitialized(24);
+    // Check if the data has enough space for the header and origin value.
+    if (data->size() < 24) {
+        SkDebugf("Data must be at least 24 bytes to store header and origin.\n");
+        return data;
+    }
+
+    // Write the IFD header.
+        // Determine the endian marker.
+        const char* endianMarker = littleEndian ? "II" : "MM";
+
+        // Write the endianness (4 bytes) and IFD offset (4 bytes).
+        if (data->size() < 8) {
+            SkCodecPrintf("Tiff header must be at least 8 bytes.\n");
+            return data;
+
+        }
+        //TODO: change this to set endian short or int?
+          memcpy(data->writable_data(), endianMarker, 2);
+
+        // Set 42
+        set_endian_short(reinterpret_cast<uint8_t*>(data->writable_data()) + 2, 42, littleEndian);
+
+        set_endian_int(reinterpret_cast<uint8_t*>(data->writable_data()) + 4, ifdOffset, littleEndian);
+
+    uint8_t* entryData = reinterpret_cast<uint8_t*>(data->writable_data()) + 8;  // Start after the header.
+
+    // set_endian_int(entryData + 0, 16, littleEndian); // length of the directory
+    set_endian_short(entryData  + 0, 1 , littleEndian); // number of entries/tags
+
+    // Write the IFD entry for the origin.
+    set_endian_short(entryData + 2, kOriginTag, littleEndian);         // Tag
+    set_endian_short(entryData + 4, 3, littleEndian);                 // Type (short)
+    set_endian_int(entryData + 6, 1, littleEndian);                 // Count (1)
+
+
+    // Write the origin value after the header.
+    set_endian_short(entryData + 10, origin, littleEndian);           //data
+    // set_endian_short(entryData + 12, 0, littleEndian);
+    return data;
+}
+
+
+// TODO
+bool Write(sk_sp<SkData> data) {
+  // Write the header and origin.
+  // return WriteHeaderAndOrigin(data, true, 8, 5);
+  return false;
 }
 
 }  // namespace SkExif

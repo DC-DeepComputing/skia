@@ -199,12 +199,41 @@ static inline uint16_t get_endian_short(const uint8_t* data, bool littleEndian) 
     return (data[0] << 8) | (data[1]);
 }
 
+// TODO: Double check this
+static inline void set_endian_short(uint8_t* data, uint16_t value, bool littleEndian) {
+  if (littleEndian) {
+    data[0] = static_cast<uint8_t>(value);
+    data[1] = static_cast<uint8_t>(value >> 8);
+  } else {
+    data[1] = static_cast<uint8_t>(value >> 16);
+    data[0] = static_cast<uint8_t>(value >> 24);
+  }
+
+}
+
 static inline uint32_t get_endian_int(const uint8_t* data, bool littleEndian) {
     if (littleEndian) {
         return (data[3] << 24) | (data[2] << 16) | (data[1] << 8) | (data[0]);
     }
 
     return (data[0] << 24) | (data[1] << 16) | (data[2] << 8) | (data[3]);
+}
+
+
+// TODO: Double check this
+static inline void set_endian_int(uint8_t* data, uint32_t value, bool littleEndian) {
+  if (littleEndian) {
+    data[0] = static_cast<uint8_t>(value);
+    data[1] = static_cast<uint8_t>(value >> 8);
+    data[2] = static_cast<uint8_t>(value >> 16);
+    data[3] = static_cast<uint8_t>(value >> 24);
+  } else {
+    data[3] = static_cast<uint8_t>(value);
+    data[2] = static_cast<uint8_t>(value >> 8);
+    data[1] = static_cast<uint8_t>(value >> 16);
+    data[0] = static_cast<uint8_t>(value >> 24);
+  }
+
 }
 
 static inline SkPMColor premultiply_argb_as_rgba(U8CPU a, U8CPU r, U8CPU g, U8CPU b) {

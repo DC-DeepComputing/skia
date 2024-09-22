@@ -49,6 +49,10 @@ public:
      */
     static bool ParseHeader(const SkData* data, bool* outLittleEndian, uint32_t* outIfdOffset);
 
+    static bool WriteHeader(sk_sp<SkData> data,
+                                     bool littleEndian,
+                                     uint32_t ifdOffset);
+
     /*
      * Create an object for parsing an IFD at offset |ifdOffset| inside |data| which has endianness
      * indicated by |littleEndian|. If |allowTruncated| is true, then parse as much of |data| as is
