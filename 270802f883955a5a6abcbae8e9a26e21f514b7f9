@@ -88,6 +88,23 @@
       "parentUuid": "0e67d352_0d991610",
       "revId": "270802f883955a5a6abcbae8e9a26e21f514b7f9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f621423_bbda6601",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-09-23T14:02:03Z",
+      "side": 1,
+      "message": "\u003e Why exactly is getting the paths so insanely slow? In other words, what is being swept under the rug by this extra complexity?\n\nIt was something else. See issue 369092769 and https://skia-review.googlesource.com/c/skia/+/902296 - Fontations did not have an optimization that the FreeType backend had. \n\nBenchmarks in https://issues.chromium.org/u/1/issues/364904769#comment6 show that we still benefit from the path cache - not so much in bounds computation, but in the actual drawing of this font that simulates pixels. In the end, we reach a \u003e 3x speedup over FreeType. \n\nPlease take another look.",
+      "revId": "270802f883955a5a6abcbae8e9a26e21f514b7f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
