@@ -48,10 +48,12 @@
 
 #if defined(SK_FONTMGR_FONTATIONS_AVAILABLE)
 #include "include/ports/SkFontMgr_Fontations.h"
+#include "src/ports/SkFontScanner_fontations.h"
 #endif
 
-#if defined(SK_FONTMGR_FONTCONFIG_AVAILABLE)
+#if defined(SK_BUILD_FOR_UNIX) && defined(SK_FONTMGR_FONTCONFIG_AVAILABLE)
 #include "include/ports/SkFontMgr_fontconfig.h"
+#include "src/ports/SkTypeface_FreeType.h"
 #endif
 
 #if defined(SK_FONTMGR_FREETYPE_DIRECTORY_AVAILABLE)
@@ -283,7 +285,7 @@ sk_sp<SkFontMgr> TestFontMgr() {
                                                 defined(SK_BUILD_FOR_MAC))
             mgr = SkFontMgr_New_CoreText(nullptr);
 #elif defined(SK_FONTMGR_FONTCONFIG_AVAILABLE)
-            mgr = SkFontMgr_New_FontConfig(nullptr);
+            mgr = SkFontMgr_New_FontConfig(nullptr, std::make_unique<SkFontScanner_FreeType>());
 #elif defined(SK_FONTMGR_FREETYPE_DIRECTORY_AVAILABLE)
             // In particular, this is used on ChromeOS, which is Linux-like but doesn't have
             // FontConfig.
