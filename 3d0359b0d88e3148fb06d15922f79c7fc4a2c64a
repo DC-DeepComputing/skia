@@ -250,6 +250,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a5c3c4b9_f452db64",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-09-23T17:39:37Z",
+      "side": 1,
+      "message": "\u003e Thanks for the detailed suggestions.\n\u003e \n\u003e Regarding 1-4 - the only reason we added AVIF support to `SkAvifCodec` via `libavif` was to use it in Android. It is not used anywhere else (the original plan was to use `libavif` on Android but it was veto\u0027ed by security so we pivoted to `CrabbyAvif`). So there is no real need to continue to retain the `libavif` based `SkAvifCodec` implementation. So would it be okay if i simply replace `SkAvifCodec` to use `CrabbyAvif` (so that we would not have any of the `#define` trickery? The downside to that is that we cannot test it in standalone skia builds until https://g-issues.skia.org/issues/312495780 is resolved.\n\nYes, that sounds good.\n\n\u003e \n\u003e Regarding 5 - i will look into registering codecs on the Android side. From Leon\u0027s other comment, it seems like this is currently not being done on Android and it uses whatever the old/default behavior is. My knowledge of how skia is used from the Android framework is quite limited and i don\u0027t know how large of a change this is. I will take a look at it next week and update this thread.\n\nUnderstood, and happy to help! Hopefully [this comment](https://skia-review.googlesource.com/c/skia/+/900597/comment/16f7c918_b5b5799f/) provides some useful info.",
+      "parentUuid": "d981b64c_fa22ee47",
+      "revId": "3d0359b0d88e3148fb06d15922f79c7fc4a2c64a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a58edb40_852e3dd5",
         "filename": "include/codec/SkAndroidCodec.h",
         "patchSetId": 4
@@ -420,6 +438,24 @@
       "side": 1,
       "message": "Here is my understanding of why i made this change:\n\nIt seems like Android does not explicitly register codecs and uses the default behavior where all the codecs are registered and the first codec that returns `true` for a format will be used. So if we return `true` here from `SkAvifCodec` then that image will be decoded using `SkAvifCodec`. And per the current design, we don\u0027t want that behavior, which is why it is dependent on `SkAndroidCodec`.\n\nThis may not be the right way to do it, But i am just explaining what i was trying to do here. :)",
       "parentUuid": "bccbc759_5f4f82eb",
+      "revId": "3d0359b0d88e3148fb06d15922f79c7fc4a2c64a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60ee5f03_b0da9ce7",
+        "filename": "src/codec/SkAvifCodec.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-09-23T17:39:37Z",
+      "side": 1,
+      "message": "Once we have registration set up properly, we should only call `IsAvif` if the right code is enabled, so we won\u0027t need this extra check.",
+      "parentUuid": "9790cedf_77911007",
       "revId": "3d0359b0d88e3148fb06d15922f79c7fc4a2c64a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
