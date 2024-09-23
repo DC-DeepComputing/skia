@@ -206,6 +206,14 @@ skia_filegroup(
     visibility = ["//src/encode:__pkg__"],
 )
 
+skia_filegroup(
+    name = "exif_srcs",
+    srcs = [
+        "SkExif.cpp",
+    ],
+    visibility = ["//src/encode:__pkg__"],
+)
+
 skia_cc_library(
     name = "jpeg_decode",
     srcs = [

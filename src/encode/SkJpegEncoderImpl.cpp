@@ -417,6 +417,7 @@ std::unique_ptr<SkEncoder> Make(SkWStream* dst, const SkPixmap& src, const Optio
     SkJpegMetadataEncoder::SegmentList metadataSegments;
     SkJpegMetadataEncoder::AppendXMPStandard(metadataSegments, options.xmpMetadata);
     SkJpegMetadataEncoder::AppendICC(metadataSegments, options, src.colorSpace());
+    SkJpegMetadataEncoder::AppendOrigin(metadataSegments, options.fOrigin);
     return SkJpegEncoderImpl::MakeRGB(dst, src, options, metadataSegments);
 }
 
@@ -427,6 +428,7 @@ std::unique_ptr<SkEncoder> Make(SkWStream* dst,
     SkJpegMetadataEncoder::SegmentList metadataSegments;
     SkJpegMetadataEncoder::AppendXMPStandard(metadataSegments, options.xmpMetadata);
     SkJpegMetadataEncoder::AppendICC(metadataSegments, options, srcColorSpace);
+    SkJpegMetadataEncoder::AppendOrigin(metadataSegments, options.fOrigin);
     return SkJpegEncoderImpl::MakeYUV(dst, src, srcColorSpace, options, metadataSegments);
 }
 
@@ -463,6 +465,18 @@ void AppendXMPStandard(SegmentList& segmentList, const SkData* xmpMetadata) {
     s.write(kXMPStandardSig, sizeof(kXMPStandardSig));
     s.write(xmpMetadata->data(), xmpMetadata->size());
     segmentList.emplace_back(kXMPMarker, s.detachAsData());
+}
+
+void AppendOrigin(SegmentList& segmentList, const SkEncodedOrigin origin) {
+    sk_sp<SkData> exif = exif_from_origin(origin);
+    if (!exif) {
+      return;
+    }
+    SkDynamicMemoryWStream s;
+    s.write(kExifSig, sizeof(kExifSig));
+    s.write8(0);
+    s.write(exif->data(), exif->size());
+    segmentList.emplace_back(kExifMarker, s.detachAsData());
 }
 
 }  // namespace SkJpegMetadataEncoder
