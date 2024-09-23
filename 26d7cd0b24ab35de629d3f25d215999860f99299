@@ -16,6 +16,24 @@
       "message": "Sorry for the double post, but I had to look at the Android CL to understand the motivation. Looking at this, can you instead create and return a gainmap BRD directly from the BRD?",
       "revId": "26d7cd0b24ab35de629d3f25d215999860f99299",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef10f34e_d07a9aa4",
+        "filename": "client_utils/android/BitmapRegionDecoder.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 12520
+      },
+      "writtenOn": "2024-09-23T17:04:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3ec7700c_ff3fbadf",
+      "revId": "26d7cd0b24ab35de629d3f25d215999860f99299",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
