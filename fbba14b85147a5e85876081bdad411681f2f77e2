@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e28012e_431cc266",
+        "filename": "src/ports/SkFontMgr_android_ndk.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 649,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-23T18:33:15Z",
+      "side": 1,
+      "message": "Actually, we only want to emit this when we actually get a hit (about to return true).",
+      "revId": "fbba14b85147a5e85876081bdad411681f2f77e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
