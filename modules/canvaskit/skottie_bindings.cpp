@@ -25,7 +25,7 @@
 #include "modules/skshaper/utils/FactoryHelpers.h"
 #include "modules/skunicode/include/SkUnicode.h"
 #include "src/base/SkUTF.h"
-#include "src/ports/SkTypeface_FreeType.h"
+#include "src/ports/SkTypeface_FreeTypeStream.h"
 #include "tools/skui/InputState.h"
 #include "tools/skui/ModifierKey.h"
 
