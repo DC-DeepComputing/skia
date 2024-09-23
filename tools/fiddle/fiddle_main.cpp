@@ -36,8 +36,9 @@ static DEFINE_double(frame, 1.0,
 #include "tools/gpu/ManagedBackendTexture.h"
 #include "tools/gpu/gl/GLTestContext.h"
 
-#if defined(SK_FONTMGR_FONTCONFIG_AVAILABLE)
+#if defined(SK_TYPEFACE_FACTORY_FREETYPE)
 #include "include/ports/SkFontMgr_fontconfig.h"
+#include "include/ports/SkFontScanner_FreeType.h"
 #endif
 
 using namespace skia_private;
@@ -252,8 +253,8 @@ int main(int argc, char** argv) {
         options.pdf = false;
         options.skp = false;
     }
-#if defined(SK_FONTMGR_FONTCONFIG_AVAILABLE)
-    fontMgr = SkFontMgr_New_FontConfig(nullptr);
+#if defined(SK_TYPEFACE_FACTORY_FREETYPE)
+    fontMgr = SkFontMgr_New_FontConfig(nullptr, std::make_unique<SkFontScanner_FreeType>());
 #else
     fontMgr = SkFontMgr::RefEmpty();
 #endif
