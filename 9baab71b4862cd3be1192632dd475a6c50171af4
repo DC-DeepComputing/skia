@@ -24,6 +24,47 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "60d0b8ee_08ee77b1",
+        "filename": "include/ports/SkFontMgr_android_ndk.h",
+        "patchSetId": 29
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-23T17:58:08Z",
+      "side": 1,
+      "message": "Heh, this change is only 4 years old, this was out of date then. Done.",
+      "parentUuid": "f25b03b5_5258294c",
+      "range": {
+        "startLine": 2,
+        "startChar": 3,
+        "endLine": 2,
+        "endChar": 29
+      },
+      "revId": "9baab71b4862cd3be1192632dd475a6c50171af4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "96e2b01b_19665dfb",
+        "filename": "include/ports/SkFontMgr_android_ndk.h",
+        "patchSetId": 29
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-23T17:58:08Z",
+      "side": 1,
+      "message": "This also now needs to pull in `\u003cmemory\u003e`.",
+      "revId": "9baab71b4862cd3be1192632dd475a6c50171af4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3a5715f4_4c5646b0",
@@ -37,6 +78,30 @@
       "writtenOn": "2024-09-23T16:26:57Z",
       "side": 1,
       "message": "Same here ?",
+      "range": {
+        "startLine": 2,
+        "startChar": 2,
+        "endLine": 2,
+        "endChar": 29
+      },
+      "revId": "9baab71b4862cd3be1192632dd475a6c50171af4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3df291b_38c481f2",
+        "filename": "src/ports/SkFontMgr_android_ndk.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-23T17:58:08Z",
+      "side": 1,
+      "message": "Done. Though this file actually does date from then, there have been a few recent changes.",
+      "parentUuid": "3a5715f4_4c5646b0",
       "range": {
         "startLine": 2,
         "startChar": 2,
@@ -70,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f06605a_5a659c51",
+        "filename": "src/ports/SkFontMgr_android_ndk.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-23T17:58:08Z",
+      "side": 1,
+      "message": "Done. Also reviewed this and fixed up a few other 11 mismatches.",
+      "parentUuid": "97a63b0e_386726fa",
+      "range": {
+        "startLine": 45,
+        "startChar": 83,
+        "endLine": 45,
+        "endChar": 85
+      },
+      "revId": "9baab71b4862cd3be1192632dd475a6c50171af4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "203f5a25_47282a67",
@@ -83,6 +172,24 @@
       "writtenOn": "2024-09-23T16:26:57Z",
       "side": 1,
       "message": "It seems like this \"#else\" bit will never get compiled bc of lines 47 \u0026 83",
+      "revId": "9baab71b4862cd3be1192632dd475a6c50171af4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6916a59_e715ed83",
+        "filename": "src/ports/SkFontMgr_android_ndk.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-23T17:58:08Z",
+      "side": 1,
+      "message": "It depends on the setup. This `#else` block is in fact the only block that is currently built on our builders, as `__ANDROID_API__` is the targeted minimum API level and our builders are setting this to 16, 19, or 26 (Skia claims to support back to 4.3, API 19). This `#else` block kicks in when the minimum target is before R. If the minimum target is R or later then we use the first block and just use the NDK directly instead of looking for the symbols at runtime. Note that Chrome still supports back to Oreo (Android 8 / API 26) so will also get this `#else` block for now (if they use it).",
+      "parentUuid": "203f5a25_47282a67",
       "revId": "9baab71b4862cd3be1192632dd475a6c50171af4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -122,6 +229,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "44324681_eb821f00",
+        "filename": "src/ports/SkFontMgr_android_ndk.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 336,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-23T17:58:08Z",
+      "side": 1,
+      "message": "Done. Yes, it can for now. There was a time where this was questionable due to how to implement aliases, but this should be const now.",
+      "parentUuid": "8571e2e1_a2299724",
+      "revId": "9baab71b4862cd3be1192632dd475a6c50171af4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "92487bdf_697980cf",
@@ -135,6 +260,30 @@
       "writtenOn": "2024-09-23T16:56:57Z",
       "side": 1,
       "message": "nit: this looks the same as above, can you add a helper to avoid repetition?",
+      "range": {
+        "startLine": 696,
+        "startChar": 0,
+        "endLine": 705,
+        "endChar": 17
+      },
+      "revId": "9baab71b4862cd3be1192632dd475a6c50171af4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b1cb196d_aaedd78f",
+        "filename": "src/ports/SkFontMgr_android_ndk.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 705,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-23T17:58:08Z",
+      "side": 1,
+      "message": "Done. This is all debug only code and `has_locale_and_character` already is that helper, so we could just move it there. Also, we should note at which scope the match was found.",
+      "parentUuid": "92487bdf_697980cf",
       "range": {
         "startLine": 696,
         "startChar": 0,
@@ -168,6 +317,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "17cefd36_30279151",
+        "filename": "src/ports/SkFontMgr_android_ndk.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 799,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-23T17:58:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a1b3d34e_3002120c",
+      "range": {
+        "startLine": 799,
+        "startChar": 27,
+        "endLine": 799,
+        "endChar": 39
+      },
+      "revId": "9baab71b4862cd3be1192632dd475a6c50171af4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e71197bb_fe742eff",
@@ -181,6 +354,24 @@
       "writtenOn": "2024-09-23T16:56:57Z",
       "side": 1,
       "message": "Should this be singleton/static?",
+      "revId": "9baab71b4862cd3be1192632dd475a6c50171af4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dddd11bc_fe475db0",
+        "filename": "src/ports/SkFontMgr_android_ndk.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 818,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-23T17:58:08Z",
+      "side": 1,
+      "message": "The actual thing it points to is. This is just a local pointer to it so we can check if it is nullptr and, if not, pass it on. I mean, I suppose this could also be `static`, but that would actually be more overhead as it would be yet another magic static with an extra thread local lookup (to check if initialized) each time this is called, when that\u0027s already being done in `GetAndroidFontAPI`.",
+      "parentUuid": "e71197bb_fe742eff",
       "revId": "9baab71b4862cd3be1192632dd475a6c50171af4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
