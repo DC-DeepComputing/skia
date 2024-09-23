@@ -162,3 +162,11 @@ bool SkFontScanner_Fontations::scanInstance(SkStreamAsset* stream,
     return true;
 }
 
+sk_sp<SkTypeface> SkFontScanner_Fontations::MakeFromStream(std::unique_ptr<SkStreamAsset> stream,
+                                 const SkFontArguments& args) const {
+    return SkTypeface_Fontations::MakeFromStream(std::move(stream), args);
+}
+
+SkTypeface::FactoryId SkFontScanner_Fontations::getFactoryId() const {
+    return SkTypeface_Fontations::FactoryId;
+}
