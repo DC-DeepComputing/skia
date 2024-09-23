@@ -30,7 +30,7 @@ struct ProgramSettings {
     // if true, all halfs are forced to be floats
     bool fForceHighPrecision = false;
     // if true, add -0.5 bias to LOD of all texture lookups
-    bool fSharpenTextures = false;
+    bool fSharpenTextures = true;
     // If true, sk_FragCoord, the dFdy gradient, and sk_Clockwise won't be modified by the
     // rtFlip. Additionally, the program interface's 'fRTFlipUniform' value will be left as None,
     // so no rtFlip uniform will be emitted.
