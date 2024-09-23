@@ -270,6 +270,7 @@ var gniExportDescs = []exporter.GNIExportDesc{
 			}},
 		{Var: "skia_ports_typeface_fontations_sources",
 			Rules: []string{
+                "//include/ports:typeface_fontations_hdrs",
 				"//src/ports:typeface_fontations_hdrs",
 				"//src/ports:typeface_fontations_srcs",
 			}},
