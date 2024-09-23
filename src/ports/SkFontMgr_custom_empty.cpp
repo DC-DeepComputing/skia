@@ -7,7 +7,7 @@
 
 #include "include/core/SkRefCnt.h"
 #include "include/ports/SkFontMgr_empty.h"
-#include "src/core/SkFontScanner.h"
+#include "include/core/SkFontScanner.h"
 #include "src/ports/SkFontMgr_custom.h"
 
 class EmptyFontLoader : public SkFontMgr_Custom::SystemFontLoader {
