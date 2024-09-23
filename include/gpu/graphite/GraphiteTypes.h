@@ -26,8 +26,21 @@ class BackendSemaphore;
 class Recording;
 class Task;
 
+enum class GpuStatsFlags : uint32_t {
+    kNone = 0b00,
+    kElapsedTime = 0b01,
+};
+
+struct GpuStats {
+    uint64_t elapsedTime = 0;
+};
+
 using GpuFinishedContext = void*;
 using GpuFinishedProc = void (*)(GpuFinishedContext finishedContext, CallbackResult);
+
+using GpuFinishedWithStatsProc = void (*)(GpuFinishedContext finishedContext,
+                                          CallbackResult,
+                                          const GpuStats&);
 
 /**
  * The fFinishedProc is called when the Recording has been submitted and finished on the GPU, or
@@ -35,7 +48,13 @@ using GpuFinishedProc = void (*)(GpuFinishedContext finishedContext, CallbackRes
  * and the caller can use the callback to know it is safe to free any resources associated with
  * the Recording that they may be holding onto. If the Recording is successfully submitted to the
  * GPU the callback will be called with CallbackResult::kSuccess once the GPU has finished. All
- * other cases where some failure occured it will be called with CallbackResult::kFailed.
+ * other cases where some failure occurred it will be called with CallbackResult::kFailed.
+ *
+ * Alternatively, the client can provide fFinishedProcWithStats. This provides additional
+ * information about execution of the recording on the GPU. Only the stats requested using
+ * fStatsFlags will be valid and only if CallbackResult is kSuccess. If both fFinishedProc
+ * and fFinishedProcWithStats are provided the latter is preferred and the former won't be
+ * called.
  *
  * The fTargetSurface, if provided, is used as a target for any draws recorded onto a deferred
  * canvas returned from Recorder::makeDeferredCanvas. This target surface must be provided iff
@@ -69,8 +88,10 @@ struct InsertRecordingInfo {
     size_t fNumSignalSemaphores = 0;
     BackendSemaphore* fSignalSemaphores = nullptr;
 
+    GpuStatsFlags fGpuStatsFlags = GpuStatsFlags::kNone;
     GpuFinishedContext fFinishedContext = nullptr;
     GpuFinishedProc fFinishedProc = nullptr;
+    GpuFinishedWithStatsProc fFinishedWithStats = nullptr;
 };
 
 /**
@@ -82,8 +103,15 @@ struct InsertRecordingInfo {
  * other cases where some failure occured it will be called with CallbackResult::kFailed.
  */
 struct InsertFinishInfo {
+    InsertFinishInfo() = default;
+    InsertFinishInfo(GpuFinishedContext context, GpuFinishedProc proc)
+            : fFinishedContext{context}, fFinishedProc{proc} {}
+    InsertFinishInfo(GpuFinishedContext context, GpuFinishedWithStatsProc proc)
+            : fFinishedContext{context}, fFinishedWithStatsProc{proc} {}
     GpuFinishedContext fFinishedContext = nullptr;
     GpuFinishedProc fFinishedProc = nullptr;
+    GpuFinishedWithStatsProc fFinishedWithStatsProc = nullptr;
+    GpuStatsFlags fGpuStatsFlags = GpuStatsFlags::kNone;
 };
 
 /**

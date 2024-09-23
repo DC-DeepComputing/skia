@@ -103,6 +103,15 @@ enum GrGLBackendState {
     kALL_GrGLBackendState              = 0xffff
 };
 
+enum class GrGpuStatsFlags : uint32_t {
+    kNone = 0b00,
+    kElapsedTime = 0b01,
+};
+
+struct GrGpuStats {
+    uint64_t elapsedTime = 0;
+};
+
 /**
  * This value translates to reseting all the context state for any backend.
  */
@@ -110,6 +119,7 @@ static const uint32_t kAll_GrBackendState = 0xffffffff;
 
 typedef void* GrGpuFinishedContext;
 typedef void (*GrGpuFinishedProc)(GrGpuFinishedContext finishedContext);
+typedef void (*GrGpuFinishedWithStatsProc)(GrGpuFinishedContext finishedContext, const GrGpuStats&);
 
 typedef void* GrGpuSubmittedContext;
 typedef void (*GrGpuSubmittedProc)(GrGpuSubmittedContext submittedContext, bool success);
@@ -148,8 +158,10 @@ typedef void (*GrDirectContextDestroyedProc)(GrDirectContextDestroyedContext des
  */
 struct GrFlushInfo {
     size_t fNumSemaphores = 0;
+    GrGpuStatsFlags fStatsFlags = GrGpuStatsFlags::kNone;
     GrBackendSemaphore* fSignalSemaphores = nullptr;
     GrGpuFinishedProc fFinishedProc = nullptr;
+    GrGpuFinishedWithStatsProc fFinishedWithStatsProc = nullptr;
     GrGpuFinishedContext fFinishedContext = nullptr;
     GrGpuSubmittedProc fSubmittedProc = nullptr;
     GrGpuSubmittedContext fSubmittedContext = nullptr;
