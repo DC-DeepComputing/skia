@@ -4,12 +4,10 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
-#include "src/core/SkFontScanner.h"
-#include "src/sfnt/SkOTUtils.h"
-
-#include "src/ports/SkFontScanner_fontations.h"
+#include "include/ports/SkFontScanner_fontations.h"
 #include "src/ports/SkTypeface_fontations_priv.h"
 #include "src/ports/fontations/src/skpath_bridge.h"
+#include "src/sfnt/SkOTUtils.h"
 
 using namespace skia_private;
 
@@ -162,3 +160,11 @@ bool SkFontScanner_Fontations::scanInstance(SkStreamAsset* stream,
     return true;
 }
 
+sk_sp<SkTypeface> SkFontScanner_Fontations::MakeFromStream(std::unique_ptr<SkStreamAsset> stream,
+                                 const SkFontArguments& args) const {
+    return SkTypeface_Fontations::MakeFromStream(std::move(stream), args);
+}
+
+SkTypeface::FactoryId SkFontScanner_Fontations::getFactoryId() const {
+    return SkTypeface_Fontations::FactoryId;
+}
