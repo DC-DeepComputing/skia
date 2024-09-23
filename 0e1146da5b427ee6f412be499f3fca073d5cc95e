@@ -33,6 +33,52 @@
       "message": "PTAL",
       "revId": "0e1146da5b427ee6f412be499f3fca073d5cc95e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6248fe54_f5954cf9",
+        "filename": "src/gpu/graphite/InternalDrawTypeFlags.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-09-23T18:38:37Z",
+      "side": 1,
+      "message": "Maybe a static assert that this is small enough to fit in a uint16?",
+      "range": {
+        "startLine": 21,
+        "startChar": 4,
+        "endLine": 21,
+        "endChar": 46
+      },
+      "revId": "0e1146da5b427ee6f412be499f3fca073d5cc95e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8abe56db_0d8660c3",
+        "filename": "src/gpu/graphite/precompile/PrecompileMaskFilter.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-09-23T18:38:37Z",
+      "side": 1,
+      "message": "How does this get used in buildCombinations?",
+      "range": {
+        "startLine": 80,
+        "startChar": 20,
+        "endLine": 80,
+        "endChar": 84
+      },
+      "revId": "0e1146da5b427ee6f412be499f3fca073d5cc95e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
