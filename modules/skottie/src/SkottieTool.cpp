@@ -35,6 +35,7 @@
 #include "modules/skshaper/utils/FactoryHelpers.h"
 #include "src/core/SkOSFile.h"
 #include "src/core/SkTaskGroup.h"
+#include "src/ports/SkTypeface_FreeType.h"
 #include "src/utils/SkOSPath.h"
 #include "tools/flags/CommandLineFlags.h"
 
@@ -509,7 +510,8 @@ int main(int argc, char** argv) {
 #elif defined(SK_BUILD_FOR_ANDROID) && defined(SK_FONTMGR_ANDROID_AVAILABLE)
     sk_sp<SkFontMgr> fontMgr = SkFontMgr_New_Android(nullptr, std::make_unique<SkFontScanner_FreeType>());
 #elif defined(SK_BUILD_FOR_UNIX) && defined(SK_FONTMGR_FONTCONFIG_AVAILABLE)
-    sk_sp<SkFontMgr> fontMgr = SkFontMgr_New_FontConfig(nullptr);
+    sk_sp<SkFontMgr> fontMgr = SkFontMgr_New_FontConfig(nullptr, std::make_unique<SkFontScanner_FreeType>());
+
 #else
     sk_sp<SkFontMgr> fontMgr = SkFontMgr_New_Custom_Empty();
 #endif
