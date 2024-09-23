@@ -159,6 +159,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b2132a17_187713d4",
+        "filename": "src/ports/SkFontMgr_android_ndk.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-23T18:45:01Z",
+      "side": 1,
+      "message": "Don\u0027t check this in as `true`.",
+      "revId": "9baab71b4862cd3be1192632dd475a6c50171af4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "203f5a25_47282a67",
