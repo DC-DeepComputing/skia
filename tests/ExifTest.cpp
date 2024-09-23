@@ -8,10 +8,16 @@
 #include "include/codec/SkCodec.h"
 #include "include/codec/SkEncodedOrigin.h"
 #include "include/codec/SkWebpDecoder.h"
+#include "include/core/SkBitmap.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkSize.h"
 #include "include/core/SkStream.h"
+#include "include/encode/SkJpegEncoder.h"
 #include "include/private/SkExif.h"
+#include "src/codec/SkJpegConstants.h"
+#include "src/codec/SkJpegSegmentScan.h"
+#include "src/codec/SkJpegSourceMgr.h"
+#include "src/codec/SkTiffUtility.h"
 #include "tests/Test.h"
 #include "tools/Resources.h"
 
@@ -213,5 +219,79 @@ DEF_TEST(ExifTruncate, r) {
         SkExif::Parse(exif, SkData::MakeWithCopy(data->bytes(), 558).get());
         REPORTER_ASSERT(r, exif.fPixelXDimension.has_value());
         REPORTER_ASSERT(r, exif.fPixelYDimension.has_value());
+    }
+}
+
+static std::unique_ptr<SkTiff::ImageFileDirectory> get_ifd(
+        sk_sp<SkData> imageData, uint8_t marker, const void* sig, size_t sigSize, size_t pad) {
+    SkMemoryStream stream(imageData);
+    auto sourceMgr = SkJpegSourceMgr::Make(&stream);
+    for (const auto& segment : sourceMgr->getAllSegments()) {
+        if (segment.marker != marker) {
+            continue;
+        }
+        auto parameterData = sourceMgr->getSegmentParameters(segment);
+        if (!parameterData) {
+            continue;
+        }
+        if (parameterData->size() < sigSize || memcmp(sig, parameterData->data(), sigSize) != 0) {
+            continue;
+        }
+        auto ifdData = SkData::MakeSubset(
+                parameterData.get(), sigSize + pad, parameterData->size() - (sigSize + pad));
+
+        bool littleEndian = false;
+        uint32_t ifdOffset = 0;
+        if (!SkTiff::ImageFileDirectory::ParseHeader(ifdData.get(), &littleEndian, &ifdOffset)) {
+            return nullptr;
+        }
+        return SkTiff::ImageFileDirectory::MakeFromOffset(ifdData, littleEndian, ifdOffset);
+    }
+    return nullptr;
+}
+
+DEF_TEST(ExifWriteOrientation, r) {
+    SkBitmap bm;
+    bm.allocPixels(SkImageInfo::MakeN32Premul(100, 100));
+    bm.eraseColor(SK_ColorBLUE);
+    SkPixmap pm;
+    if (!bm.peekPixels(&pm)) {
+        ERRORF(r, "failed to peek pixels");
+        return;
+    }
+    for (auto o : { kTopLeft_SkEncodedOrigin,
+                    kTopRight_SkEncodedOrigin,
+                    kBottomRight_SkEncodedOrigin,
+                    kBottomLeft_SkEncodedOrigin,
+                    kLeftTop_SkEncodedOrigin,
+                    kRightTop_SkEncodedOrigin,
+                    kRightBottom_SkEncodedOrigin,
+                    kLeftBottom_SkEncodedOrigin }) {
+        SkDynamicMemoryWStream stream;
+        SkJpegEncoder::Options options;
+        options.fOrigin = o;
+        if (!SkJpegEncoder::Encode(&stream, pm, options)) {
+            ERRORF(r, "Failed to encode with orientation %i", o);
+            return;
+        }
+
+        auto data = stream.detachAsData();
+
+        // Exif should be present and valid.
+        auto ifd = get_ifd(data, kExifMarker, kExifSig, sizeof(kExifSig), 1);
+        if (!ifd) {
+            ERRORF(r, "Failed to get ifd");
+            return;
+        }
+        REPORTER_ASSERT(r, ifd->getNumEntries() == 1);
+        REPORTER_ASSERT(r, ifd->getEntryTag(0) == SkExif::kOriginTag);
+
+
+        auto codec = SkCodec::MakeFromData(std::move(data));
+        if (!codec) {
+            ERRORF(r, "Failed to create a codec with orientation %i", o);
+            return;
+        }
+        REPORTER_ASSERT(r, codec->getOrigin() == o);
     }
 }
