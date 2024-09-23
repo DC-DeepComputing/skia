@@ -8,10 +8,10 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkStream.h"
 #include "include/ports/SkFontMgr_directory.h"
-#include "src/core/SkFontScanner.h"
+#include "include/ports/SkFontScanner.h"
 #include "src/core/SkOSFile.h"
 #include "src/ports/SkFontMgr_custom.h"
-#include "src/ports/SkTypeface_FreeType.h"
+#include "src/ports/SkTypeface_FreeTypeStream.h"
 #include "src/utils/SkOSPath.h"
 
 class DirectorySystemFontLoader : public SkFontMgr_Custom::SystemFontLoader {

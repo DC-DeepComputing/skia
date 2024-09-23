@@ -32,6 +32,9 @@
 
 #if defined(SK_FONTMGR_FONTCONFIG_AVAILABLE)
 #include "include/ports/SkFontMgr_fontconfig.h"
+#if defined(SK_TYPEFACE_FACTORY_FREETYPE)
+#include "include/ports/SkFontScanner_FreeType.h"
+#endif
 #endif
 
 #if defined(SK_FONTMGR_FREETYPE_EMPTY_AVAILABLE)
@@ -428,8 +431,8 @@ int main(int , char * const []) {
     static constexpr SkSpan<const FontFamilyDesc> kFamilies(kFamiliesData);
 
     sk_sp<SkFontMgr> mgr;
-#if defined(SK_FONTMGR_FONTCONFIG_AVAILABLE)
-    mgr = SkFontMgr_New_FontConfig(nullptr);
+#if defined(SK_TYPEFACE_FACTORY_FREETYPE)
+    mgr = SkFontMgr_New_FontConfig(nullptr, std::make_unique<SkFontScanner_FreeType>());
 #elif defined(SK_FONTMGR_CORETEXT_AVAILABLE)
     mgr = SkFontMgr_New_CoreText(nullptr);
 #elif defined(SK_FONTMGR_FREETYPE_EMPTY_AVAILABLE)
