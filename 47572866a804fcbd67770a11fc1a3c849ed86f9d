@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eb1be0fd_1d84ef5f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2024-09-23T18:43:14Z",
+      "side": 1,
+      "message": "No implementation, just a conversation starter.",
+      "revId": "47572866a804fcbd67770a11fc1a3c849ed86f9d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c42feb58_a1c8a2ff",
+        "filename": "include/gpu/ganesh/GrTypes.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2024-09-23T18:43:14Z",
+      "side": 1,
+      "message": "I guess there is no way to indicate failure in Ganesh? I guess if it fails then GrGpuStats returned would have default values. (In Graphite there is a result parameter so I just document that the stats are only valid in case of success).",
+      "revId": "47572866a804fcbd67770a11fc1a3c849ed86f9d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6537cdfd_c30c5884",
+        "filename": "include/gpu/graphite/GraphiteTypes.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2024-09-23T18:43:14Z",
+      "side": 1,
+      "message": "Need to say also that the Context has to support the stats type. I didn\u0027t update all the comments below here but would.",
+      "revId": "47572866a804fcbd67770a11fc1a3c849ed86f9d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
