@@ -204,6 +204,12 @@ alias(
 )
 
 alias(
+    name = "freetype_support",
+    actual = "//src/ports:freetype_support",
+    visibility = ["//visibility:public"],
+)
+
+alias(
     name = "fontmgr_android_freetype",
     actual = "//src/ports:fontmgr_android_freetype",
     visibility = ["//visibility:public"],

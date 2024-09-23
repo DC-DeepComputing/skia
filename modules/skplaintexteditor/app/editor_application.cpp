@@ -17,6 +17,7 @@
 
 #if defined(SK_FONTMGR_FONTCONFIG_AVAILABLE)
 #include "include/ports/SkFontMgr_fontconfig.h"
+#include "src/ports/SkTypeface_FreeType.h"
 #endif
 
 #if defined(SK_FONTMGR_CORETEXT_AVAILABLE)
@@ -104,7 +105,7 @@ sk_sp<SkFontMgr> fontMgr() {
     static sk_sp<SkFontMgr> fontMgr = nullptr;
     if (!init) {
 #if defined(SK_FONTMGR_FONTCONFIG_AVAILABLE)
-        fontMgr = SkFontMgr_New_FontConfig(nullptr);
+        fontMgr = SkFontMgr_New_FontConfig(nullptr, std::make_unique<SkFontScanner_FreeType>());
 #elif defined(SK_FONTMGR_CORETEXT_AVAILABLE)
         fontMgr = SkFontMgr_New_CoreText(nullptr);
 #elif defined(SK_FONTMGR_DIRECTWRITE_AVAILABLE)
