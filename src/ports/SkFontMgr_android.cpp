@@ -15,17 +15,16 @@
 #include "include/core/SkStream.h"
 #include "include/core/SkString.h"
 #include "include/ports/SkFontMgr_android.h"
+#include "include/ports/SkFontScanner_FreeType.h"
 #include "include/private/base/SkFixed.h"
 #include "include/private/base/SkTArray.h"
 #include "include/private/base/SkTDArray.h"
 #include "include/private/base/SkTemplates.h"
 #include "src/base/SkTSearch.h"
 #include "src/core/SkFontDescriptor.h"
-#include "src/core/SkFontScanner.h"
 #include "src/core/SkOSFile.h"
 #include "src/core/SkTypefaceCache.h"
 #include "src/ports/SkFontMgr_android_parser.h"
-#include "src/ports/SkTypeface_FreeType.h"
 
 #include <algorithm>
 #include <limits>
