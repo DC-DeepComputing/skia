@@ -33,9 +33,11 @@
 #include "tools/flags/CommandLineFlags.h"
 
 #ifdef SK_TYPEFACE_FACTORY_FONTATIONS
-#include "src/ports/SkFontScanner_fontations.h"
+#include "include/ports/SkFontScanner_fontations.h"
 #endif
-#include "src/ports/SkTypeface_FreeType.h"
+#ifdef SK_TYPEFACE_FACTORY_FREETYPE
+#include "include/ports/SkFontScanner_FreeType.h"
+#endif
 
 #include <algorithm>
 #include <climits>
