@@ -13,7 +13,7 @@
 #include "include/core/SkStream.h"
 #include "include/ports/SkFontConfigInterface.h"
 #include "src/core/SkFontDescriptor.h"
-#include "src/ports/SkTypeface_FreeType.h"
+#include "src/ports/SkTypeface_FreeTypeStream.h"
 
 class SkFontDescriptor;
 
