@@ -16,6 +16,23 @@
       "message": "Noticed this as a drive-by.",
       "revId": "eb523bb6339b76b683c893d2ddbfa43f0a514255",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b10fc4a_fe7581ae",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-09-23T07:06:52Z",
+      "side": 1,
+      "message": "Friendly ping.",
+      "revId": "eb523bb6339b76b683c893d2ddbfa43f0a514255",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
