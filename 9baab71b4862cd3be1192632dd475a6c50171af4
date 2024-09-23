@@ -89,6 +89,64 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8571e2e1_a2299724",
+        "filename": "src/ports/SkFontMgr_android_ndk.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 336,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-09-23T16:56:57Z",
+      "side": 1,
+      "message": "nit: can this be const too?",
+      "fixSuggestions": [
+        {
+          "fixId": "16156bdf_ad1032b9",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/ports/SkFontMgr_android_ndk.cpp",
+              "range": {
+                "startLine": 336,
+                "startChar": 0,
+                "endLine": 337,
+                "endChar": 0
+              },
+              "replacement": "    const SkString fFamilyName;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "9baab71b4862cd3be1192632dd475a6c50171af4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92487bdf_697980cf",
+        "filename": "src/ports/SkFontMgr_android_ndk.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 705,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-09-23T16:56:57Z",
+      "side": 1,
+      "message": "nit: this looks the same as above, can you add a helper to avoid repetition?",
+      "range": {
+        "startLine": 696,
+        "startChar": 0,
+        "endLine": 705,
+        "endChar": 17
+      },
+      "revId": "9baab71b4862cd3be1192632dd475a6c50171af4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a1b3d34e_3002120c",
         "filename": "src/ports/SkFontMgr_android_ndk.cpp",
         "patchSetId": 29
@@ -106,6 +164,23 @@
         "endLine": 799,
         "endChar": 39
       },
+      "revId": "9baab71b4862cd3be1192632dd475a6c50171af4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e71197bb_fe742eff",
+        "filename": "src/ports/SkFontMgr_android_ndk.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 818,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-09-23T16:56:57Z",
+      "side": 1,
+      "message": "Should this be singleton/static?",
       "revId": "9baab71b4862cd3be1192632dd475a6c50171af4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
