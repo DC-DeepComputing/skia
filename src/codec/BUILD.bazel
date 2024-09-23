@@ -200,8 +200,13 @@ skia_cc_library(
 skia_filegroup(
     name = "common_jpeg_srcs",
     srcs = [
+        "SkEncodedInfo.cpp",
+        "SkExif.cpp",
         "SkJpegConstants.h",
         "SkJpegPriv.h",
+    ],
+    hdrs = [
+        "//include/private:decode_srcs",
     ],
     visibility = ["//src/encode:__pkg__"],
 )
