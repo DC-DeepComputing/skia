@@ -6,9 +6,10 @@
  * found in the LICENSE file.
  */
 
-#ifndef SkTypeface_Freetype_DEFINED
-#define SkTypeface_Freetype_DEFINED
+#ifndef SkTypeface_Freetype_priv_DEFINED
+#define SkTypeface_Freetype_priv_DEFINED
 
+#include "include/core/SkFontScanner.h"
 #include "include/core/SkSpan.h"
 #include "include/core/SkTypeface.h"
 #include "include/core/SkTypes.h"
@@ -16,9 +17,6 @@
 #include "include/private/base/SkMutex.h"
 #include "include/private/base/SkNoncopyable.h"
 #include "include/private/base/SkTArray.h"
-#include "src/base/SkSharedMutex.h"
-#include "src/core/SkFontScanner.h"
-#include "src/utils/SkCharToGlyphCache.h"
 
 class SkFontData;
 
@@ -28,6 +26,9 @@ typedef struct FT_FaceRec_* FT_Face;
 typedef struct FT_StreamRec_* FT_Stream;
 typedef signed long FT_Pos;
 typedef struct FT_BBox_ FT_BBox;
+
+class SkSharedMutex;
+class SkCharToGlyphCache;
 
 class SkTypeface_FreeType : public SkTypeface {
 public:
@@ -84,8 +85,8 @@ private:
     mutable SkOnce fFTFaceOnce;
     mutable std::unique_ptr<FaceRec> fFaceRec;
 
-    mutable SkSharedMutex fC2GCacheMutex;
-    mutable SkCharToGlyphCache fC2GCache;
+    mutable std::unique_ptr<SkSharedMutex> fC2GCacheMutex;
+    mutable std::unique_ptr<SkCharToGlyphCache> fC2GCache;
 
     mutable SkOnce fGlyphMasksMayNeedCurrentColorOnce;
     mutable bool fGlyphMasksMayNeedCurrentColor;
@@ -111,32 +112,4 @@ private:
     const std::unique_ptr<const SkFontData> fData;
 };
 
-class SkFontScanner_FreeType : public SkFontScanner {
-public:
-    SkFontScanner_FreeType();
-    ~SkFontScanner_FreeType() override;
-
-    bool scanFile(SkStreamAsset* stream, int* numFaces) const override;
-    bool scanFace(SkStreamAsset* stream, int faceIndex, int* numInstances) const override;
-    bool scanInstance(SkStreamAsset* stream,
-                      int faceIndex,
-                      int instanceIndex,
-                      SkString* name,
-                      SkFontStyle* style,
-                      bool* isFixedPitch,
-                      AxisDefinitions* axes) const override;
-    static void computeAxisValues(
-            AxisDefinitions axisDefinitions,
-            const SkFontArguments::VariationPosition position,
-            SkFixed* axisValues,
-            const SkString& name,
-            SkFontStyle* style,
-            const SkFontArguments::VariationPosition::Coordinate* currentPosition = nullptr);
-    static bool GetAxes(FT_Face face, AxisDefinitions* axes);
-private:
-    FT_Face openFace(SkStreamAsset* stream, int ttcIndex, FT_Stream ftStream) const;
-    FT_Library fLibrary;
-    mutable SkMutex fLibraryMutex;
-};
-
-#endif // SkTypeface_Freetype_DEFINED
+#endif // SkTypeface_Freetype_priv_DEFINED
