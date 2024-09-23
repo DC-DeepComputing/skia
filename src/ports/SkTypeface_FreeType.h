@@ -125,6 +125,9 @@ public:
                       SkFontStyle* style,
                       bool* isFixedPitch,
                       AxisDefinitions* axes) const override;
+    sk_sp<SkTypeface> MakeFromStream(std::unique_ptr<SkStreamAsset> stream,
+                                     const SkFontArguments& args) const override;
+    SkTypeface::FactoryId getFactoryId() const override;
     static void computeAxisValues(
             AxisDefinitions axisDefinitions,
             const SkFontArguments::VariationPosition position,
