@@ -268,6 +268,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4ade520f_1c97b97e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2024-09-23T19:24:52Z",
+      "side": 1,
+      "message": "\u003e \u003e Thanks for the detailed suggestions.\n\u003e \u003e \n\u003e \u003e Regarding 1-4 - the only reason we added AVIF support to `SkAvifCodec` via `libavif` was to use it in Android. It is not used anywhere else (the original plan was to use `libavif` on Android but it was veto\u0027ed by security so we pivoted to `CrabbyAvif`). So there is no real need to continue to retain the `libavif` based `SkAvifCodec` implementation. So would it be okay if i simply replace `SkAvifCodec` to use `CrabbyAvif` (so that we would not have any of the `#define` trickery? The downside to that is that we cannot test it in standalone skia builds until https://g-issues.skia.org/issues/312495780 is resolved.\n\u003e \n\u003e Yes, that sounds good.\n\u003e \n\u003e \u003e \n\u003e \u003e Regarding 5 - i will look into registering codecs on the Android side. From Leon\u0027s other comment, it seems like this is currently not being done on Android and it uses whatever the old/default behavior is. My knowledge of how skia is used from the Android framework is quite limited and i don\u0027t know how large of a change this is. I will take a look at it next week and update this thread.\n\u003e \n\u003e Understood, and happy to help! Hopefully [this comment](https://skia-review.googlesource.com/c/skia/+/900597/comment/16f7c918_b5b5799f/) provides some useful info.\n\nOk awesome. I will change the status of this CL as WIP as i work through the codec registration on Android first.",
+      "parentUuid": "a5c3c4b9_f452db64",
+      "revId": "3d0359b0d88e3148fb06d15922f79c7fc4a2c64a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a58edb40_852e3dd5",
         "filename": "include/codec/SkAndroidCodec.h",
         "patchSetId": 4
