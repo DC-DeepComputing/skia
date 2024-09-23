@@ -14,7 +14,7 @@
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
 #include "include/private/base/SkTArray.h"
-#include "src/ports/SkTypeface_FreeType.h"
+#include "src/ports/SkTypeface_FreeTypeStream.h"
 
 class SkData;
 class SkFontDescriptor;
