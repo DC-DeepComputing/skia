@@ -4,9 +4,8 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
-
+#include "include/ports/SkFontScanner.h"
 #include "src/base/SkAutoMalloc.h"
-#include "src/core/SkFontScanner.h"
 #include "src/core/SkTHash.h"
 #include "src/core/SkWriteBuffer.h"
 #include "tests/Test.h"
@@ -14,10 +13,10 @@
 #include "tools/fonts/FontToolUtils.h"
 
 #ifdef SK_TYPEFACE_FACTORY_FREETYPE
-#include "src/ports/SkTypeface_FreeType.h"
+#include "include/ports/SkFontScanner_FreeType.h"
 #endif
 #ifdef SK_TYPEFACE_FACTORY_FONTATIONS
-#include "src/ports/SkFontScanner_fontations.h"
+#include "include/ports/SkFontScanner_fontations.h"
 #endif
 
 [[maybe_unused]]
