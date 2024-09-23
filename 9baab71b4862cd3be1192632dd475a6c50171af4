@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f25b03b5_5258294c",
+        "filename": "include/ports/SkFontMgr_android_ndk.h",
+        "patchSetId": 29
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-09-23T16:26:57Z",
+      "side": 1,
+      "message": "Update to 2024 \u0026 LLC ?",
+      "range": {
+        "startLine": 2,
+        "startChar": 3,
+        "endLine": 2,
+        "endChar": 29
+      },
+      "revId": "9baab71b4862cd3be1192632dd475a6c50171af4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3a5715f4_4c5646b0",
+        "filename": "src/ports/SkFontMgr_android_ndk.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-09-23T16:26:57Z",
+      "side": 1,
+      "message": "Same here ?",
+      "range": {
+        "startLine": 2,
+        "startChar": 2,
+        "endLine": 2,
+        "endChar": 29
+      },
+      "revId": "9baab71b4862cd3be1192632dd475a6c50171af4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "97a63b0e_386726fa",
+        "filename": "src/ports/SkFontMgr_android_ndk.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-09-23T16:26:57Z",
+      "side": 1,
+      "message": "10 ?",
+      "range": {
+        "startLine": 45,
+        "startChar": 83,
+        "endLine": 45,
+        "endChar": 85
+      },
+      "revId": "9baab71b4862cd3be1192632dd475a6c50171af4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "203f5a25_47282a67",
+        "filename": "src/ports/SkFontMgr_android_ndk.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-09-23T16:26:57Z",
+      "side": 1,
+      "message": "It seems like this \"#else\" bit will never get compiled bc of lines 47 \u0026 83",
+      "revId": "9baab71b4862cd3be1192632dd475a6c50171af4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1b3d34e_3002120c",
+        "filename": "src/ports/SkFontMgr_android_ndk.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 799,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-09-23T16:26:57Z",
+      "side": 1,
+      "message": "kDefaultNames ?",
+      "range": {
+        "startLine": 799,
+        "startChar": 27,
+        "endLine": 799,
+        "endChar": 39
+      },
+      "revId": "9baab71b4862cd3be1192632dd475a6c50171af4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
