@@ -487,8 +487,9 @@ void Device::drawImageQuadDirect(const SkImage* image,
     }
 
     SkSamplingOptions sampling = origSampling;
+    bool sharpenMM = fContext->priv().options().fSharpenMipmappedTextures;
     if (sampling.mipmap != SkMipmapMode::kNone &&
-        TiledTextureUtils::CanDisableMipmap(ctm, srcToDst)) {
+        TiledTextureUtils::CanDisableMipmap(ctm, srcToDst, sharpenMM)) {
         sampling = SkSamplingOptions(sampling.filter);
     }
 
