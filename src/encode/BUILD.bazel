@@ -80,6 +80,7 @@ skia_cc_library(
     hdrs = [
         "SkImageEncoderFns.h",
         "SkImageEncoderPriv.h",
+        "include/private/SkExif.h",
     ],
     features = ["layering_check"],
     deps = [
@@ -173,5 +174,6 @@ generate_cpp_files_for_headers(
         "SkICCPriv.h",
         "SkImageEncoderFns.h",
         "SkImageEncoderPriv.h",
+        "include/private/SkExif.h",
     ],
 )
