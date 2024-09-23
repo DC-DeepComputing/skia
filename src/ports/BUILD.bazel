@@ -122,6 +122,10 @@ skia_cc_library(
         "//:pathops",
         "@freetype",
     ],
+    visibility = [
+        "//tests:__pkg__",
+        "//tools/fonts:__pkg__",
+    ],
     deps = ["//:core"],
 )
 
@@ -255,7 +259,10 @@ skia_cc_library(
 
 skia_filegroup(
     name = "typeface_fontations_hdrs",
-    srcs = ["SkTypeface_fontations_priv.h"],
+    srcs = [
+        "SkTypeface_fontations_priv.h",
+        "SkFontScanner_fontations.h"
+    ],
 )
 
 skia_filegroup(
@@ -265,7 +272,10 @@ skia_filegroup(
 
 skia_filegroup(
     name = "fontmgr_fontations_empty_srcs",
-    srcs = ["SkFontMgr_fontations_empty.cpp"],
+    srcs = [
+        "SkFontMgr_fontations_empty.cpp",
+        "SkFontScanner_fontations.cpp"
+    ],
 )
 
 skia_cc_library(
@@ -275,11 +285,12 @@ skia_cc_library(
         ":typeface_fontations_hdrs",
         ":typeface_fontations_srcs",
         "//include/ports:typeface_fontations_hdrs",
+        "//src/utils:char_to_glyphcache",
     ],
     hdrs = [
         "//include/ports:fontmgr_fontations_hdrs",
     ],
-    defines = ["SK_FONTMGR_FONTATIONS_AVAILABLE"],
+    defines = ["SK_FONTMGR_FONTATIONS_AVAILABLE", "SK_TYPEFACE_FACTORY_FONTATIONS"],
     visibility = [
         "//:__pkg__",
         "//tools/fonts:__pkg__",
@@ -300,7 +311,10 @@ skia_cc_library(
         "//include/ports:fontconfig_fontmgr_hdrs",
     ],
     defines = ["SK_FONTMGR_FONTCONFIG_AVAILABLE"],
-    visibility = ["//:__pkg__"],
+    visibility = [
+        "//:__pkg__",
+        "//tools/fonts:__pkg__",
+    ],
     deps = [
         ":freetype_support",
         "//:core",

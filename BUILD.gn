@@ -373,6 +373,9 @@ optional("fontmgr_custom_empty") {
 optional("fontmgr_fontconfig") {
   enabled = skia_enable_fontmgr_fontconfig
   public_defines = [ "SK_FONTMGR_FONTCONFIG_AVAILABLE" ]
+  if (skia_use_fontations) {
+    public_defines += [ "SK_FONTMGR_FONTATIONS_AVAILABLE" ]
+  }
 
   # The public header includes fontconfig.h and uses FcConfig*
   public_deps = [ "//third_party:fontconfig" ]

@@ -68,6 +68,7 @@ skia_cc_library(
         "//:pathops",
         "//src/base",
         "//src/core:core_priv",
+        "//src/ports:freetype_support",
     ] + select({
         "@platforms//os:android": ["//:fontmgr_android_freetype"],
         "@platforms//os:linux": ["//:fontmgr_fontconfig_freetype"],
