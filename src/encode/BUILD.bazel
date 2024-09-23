@@ -131,10 +131,12 @@ skia_cc_library(
         ":jpeg_encode_hdrs",
         ":jpeg_encode_srcs",
         "//src/codec:common_jpeg_srcs",
+        "//src/codec:exif_srcs",
     ],
     hdrs = [
         "//include/encode:encode_hdrs",
         "//include/encode:jpeg_hdrs",
+        "//include/private:exif_hdrs",
     ],
     features = ["layering_check"],
     visibility = ["//:__pkg__"],

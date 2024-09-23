@@ -14,6 +14,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkTypes.h"
 #include "include/encode/SkICC.h"
+#include "include/private/SkExif.h"
 #include "modules/skcms/skcms.h"
 
 #include <cstring>
@@ -232,6 +233,13 @@ static inline sk_sp<SkData> icc_from_color_space(const SkImageInfo& info,
                                                  const skcms_ICCProfile* profile,
                                                  const char* profile_description) {
     return icc_from_color_space(info.colorSpace(), profile, profile_description);
+}
+
+static inline sk_sp<SkData> exif_from_origin(const SkEncodedOrigin origin) {
+    if (origin < kDefault_SkEncodedOrigin || origin > kLast_SkEncodedOrigin) {
+      return nullptr;
+    }
+    return SkExif::WriteExifWithOrigin(origin);
 }
 
 #endif  // SkImageEncoderFns_DEFINED

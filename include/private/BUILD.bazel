@@ -48,6 +48,14 @@ skia_filegroup(
 )
 
 skia_filegroup(
+    name = "exif_hdrs",
+    srcs = [
+        "SkExif.h",
+    ],
+    visibility = ["//src/encode:__pkg__"],
+)
+
+skia_filegroup(
     name = "jpeg_decode_srcs",
     srcs = [
         "SkJpegMetadataDecoder.h",
