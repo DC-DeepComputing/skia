@@ -681,8 +681,8 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
         bool usesExternalFormat = static_cast<bool>(
                 ((immutableSamplerInfo & ycbcrPackaging::kUseExternalFormatMask) >>
                         ycbcrPackaging::kUsesExternalFormatShift));
-        const int keyStride = usesExternalFormat ? ycbcrPackaging::kInt32sNeededExternalFormat
-                                                 : ycbcrPackaging::kInt32sNeededKnownFormat;
+        const int keyStride = usesExternalFormat ? SamplerDesc::kIntsNeededExternalFormat
+                                                 : SamplerDesc::kIntsNeededKnownFormat;
 
         // Request a suitable immutable sampler from the resource provider
         SamplerDesc samplerDesc;
