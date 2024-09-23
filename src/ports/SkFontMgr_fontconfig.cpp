@@ -30,7 +30,9 @@
 #include "src/core/SkScalerContext.h"
 #include "src/core/SkTypefaceCache.h"
 #include "src/ports/SkTypeface_FreeType.h"
-
+#ifdef SK_TYPEFACE_FACTORY_FONTATIONS
+#include "src/ports/SkTypeface_fontations_priv.h"
+#endif
 #include <fontconfig/fontconfig.h>
 
 #include <string.h>
@@ -414,12 +416,13 @@ static void fcpattern_from_skfontstyle(SkFontStyle style, FcPattern* pattern) {
 class SkScalerContext_fontconfig;
 class SkTypeface_fontconfig : public SkTypeface {
 public:
-    static sk_sp<SkTypeface_fontconfig> Make(SkAutoFcPattern pattern, SkString sysroot) {
-        return sk_sp<SkTypeface_fontconfig>(new SkTypeface_fontconfig(std::move(pattern),
-                                                                      std::move(sysroot)));
+    static sk_sp<SkTypeface_fontconfig> Make(SkAutoFcPattern pattern, SkString sysroot, SkFontScanner* scanner) {
+        return sk_sp<SkTypeface_fontconfig>(
+                new SkTypeface_fontconfig(std::move(pattern), std::move(sysroot), scanner));
     }
     mutable SkAutoFcPattern fPattern;  // Mutable for passing to FontConfig API.
     const SkString fSysroot;
+    SkTypeface::FactoryId fFactoryId;
 
     void onGetFamilyName(SkString* familyName) const override {
         *familyName = get_string(fPattern, FC_FAMILY);
@@ -431,7 +434,7 @@ public:
         desc->setFullName(get_string(fPattern, FC_FULLNAME));
         desc->setPostscriptName(get_string(fPattern, FC_POSTSCRIPT_NAME));
         desc->setStyle(this->fontStyle());
-        desc->setFactoryId(SkTypeface_FreeType::FactoryId); // TODO: Fix the Id
+        desc->setFactoryId(fFactoryId);
         *serialize = false;
     }
     std::unique_ptr<SkStreamAsset> onOpenStream(int* ttcIndex) const override {
@@ -527,11 +530,12 @@ public:
     }
 
 private:
-    SkTypeface_fontconfig(SkAutoFcPattern pattern, SkString sysroot)
+    SkTypeface_fontconfig(SkAutoFcPattern pattern, SkString sysroot, SkFontScanner* fontScanner)
         : SkTypeface(skfontstyle_from_fcpattern(pattern),
                     FC_PROPORTIONAL != get_int(pattern, FC_SPACING, FC_PROPORTIONAL))
         , fPattern(std::move(pattern))
-        , fSysroot(std::move(sysroot)) {
+        , fSysroot(std::move(sysroot))
+        , fFactoryId(fontScanner->getFactoryId()) {
         // TODO: for now only FreeTypeStream
         SkString resolvedFilename;
         FCLocker lock;
@@ -546,8 +550,8 @@ private:
         }
         // TODO: FC_VARIABLE and FC_FONT_VARIATIONS in arguments
         auto ttcIndex = get_int(fPattern, FC_INDEX, 0);
-        fProxy = SkTypeface_FreeType::MakeFromStream(
-                SkStream::MakeFromFile(filename), SkFontArguments().setCollectionIndex(ttcIndex));
+        fProxy = fontScanner->MakeFromStream(SkStream::MakeFromFile(filename),
+                                             SkFontArguments().setCollectionIndex(ttcIndex));
     }
     sk_sp<SkTypeface> fProxy;
 };
@@ -602,6 +606,7 @@ class SkFontMgr_fontconfig : public SkFontMgr {
     mutable SkAutoFcConfig fFC;  // Only mutable to avoid const cast when passed to FontConfig API.
     const SkString fSysroot;
     const sk_sp<SkDataTable> fFamilyNames;
+    std::unique_ptr<SkFontScanner> fScanner;
 
     class StyleSet : public SkFontStyleSet {
     public:
@@ -743,7 +748,7 @@ class SkFontMgr_fontconfig : public SkFontMgr {
             return face;
         }();
         if (!face) {
-            face = SkTypeface_fontconfig::Make(std::move(pattern), fSysroot);
+            face = SkTypeface_fontconfig::Make(std::move(pattern), fSysroot, fScanner.get());
             if (face) {
                 // Cannot hold FCLocker in fTFCache.add; evicted typefaces may need to lock.
                 fTFCache.add(face);
@@ -754,10 +759,11 @@ class SkFontMgr_fontconfig : public SkFontMgr {
 
 public:
     /** Takes control of the reference to 'config'. */
-    explicit SkFontMgr_fontconfig(FcConfig* config)
+    SkFontMgr_fontconfig(FcConfig* config, std::unique_ptr<SkFontScanner> scanner)
         : fFC(config ? config : FcInitLoadConfigAndFonts())
         , fSysroot(reinterpret_cast<const char*>(FcConfigGetSysRoot(fFC)))
-        , fFamilyNames(GetFamilyNames(fFC)) { }
+        , fFamilyNames(GetFamilyNames(fFC))
+        , fScanner(std::move(scanner)) { }
 
     ~SkFontMgr_fontconfig() override {
         // Hold the lock while unrefing the config.
@@ -997,7 +1003,7 @@ protected:
             }
             return font;
         }());
-        return createTypefaceFromFcPattern(std::move(font));
+        return this->createTypefaceFromFcPattern(std::move(font));
     }
 
     sk_sp<SkTypeface> onMakeFromStreamIndex(std::unique_ptr<SkStreamAsset> stream,
@@ -1012,7 +1018,8 @@ protected:
         if (length <= 0 || (1u << 30) < length) {
             return nullptr;
         }
-        return SkTypeface_FreeType::MakeFromStream(std::move(stream), args);
+
+        return fScanner->MakeFromStream(std::move(stream), args);
     }
 
     sk_sp<SkTypeface> onMakeFromData(sk_sp<SkData> data, int ttcIndex) const override {
@@ -1033,6 +1040,6 @@ protected:
     }
 };
 
-sk_sp<SkFontMgr> SkFontMgr_New_FontConfig(FcConfig* fc) {
-    return sk_make_sp<SkFontMgr_fontconfig>(fc);
+sk_sp<SkFontMgr> SkFontMgr_New_FontConfig(FcConfig* fc, std::unique_ptr<SkFontScanner> scanner) {
+    return sk_make_sp<SkFontMgr_fontconfig>(fc, std::move(scanner));
 }
