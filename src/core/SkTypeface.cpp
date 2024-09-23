@@ -31,7 +31,7 @@
 #include "src/sfnt/SkOTTable_OS_2.h"
 
 #ifdef SK_TYPEFACE_FACTORY_FREETYPE
-#include "src/ports/SkTypeface_FreeType.h"
+#include "src/ports/SkTypeface_FreeTypeStream.h"
 #endif
 
 #ifdef SK_TYPEFACE_FACTORY_CORETEXT
