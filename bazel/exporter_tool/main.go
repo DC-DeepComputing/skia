@@ -187,6 +187,7 @@ var gniExportDescs = []exporter.GNIExportDesc{
 			}},
 		{Var: "skia_ports_freetype_sources",
 			Rules: []string{
+                "//include/ports:typeface_freetype_hdrs",
 				"//src/ports:freetype_support",
 			}},
 		{Var: "skia_ports_fontmgr_android_public",
@@ -270,6 +271,7 @@ var gniExportDescs = []exporter.GNIExportDesc{
 			}},
 		{Var: "skia_ports_typeface_fontations_sources",
 			Rules: []string{
+                "//include/ports:typeface_fontations_hdrs",
 				"//src/ports:typeface_fontations_hdrs",
 				"//src/ports:typeface_fontations_srcs",
 			}},

@@ -12,12 +12,12 @@
 #include "include/core/SkSpan.h"
 #include "include/core/SkTypeface.h"
 #include "include/core/SkTypes.h"
+#include "include/ports/SkFontScanner.h"
 #include "include/private/base/SkFixed.h"
 #include "include/private/base/SkMutex.h"
 #include "include/private/base/SkNoncopyable.h"
 #include "include/private/base/SkTArray.h"
 #include "src/base/SkSharedMutex.h"
-#include "src/core/SkFontScanner.h"
 #include "src/utils/SkCharToGlyphCache.h"
 
 class SkFontData;
@@ -91,52 +91,6 @@ private:
     mutable bool fGlyphMasksMayNeedCurrentColor;
 
     using INHERITED = SkTypeface;
-};
-
-class SkTypeface_FreeTypeStream : public SkTypeface_FreeType {
-public:
-    SkTypeface_FreeTypeStream(std::unique_ptr<SkFontData> fontData, const SkString familyName,
-                              const SkFontStyle& style, bool isFixedPitch);
-    ~SkTypeface_FreeTypeStream() override;
-
-protected:
-    void onGetFamilyName(SkString* familyName) const override;
-    void onGetFontDescriptor(SkFontDescriptor*, bool* serialize) const override;
-    std::unique_ptr<SkStreamAsset> onOpenStream(int* ttcIndex) const override;
-    std::unique_ptr<SkFontData> onMakeFontData() const override;
-    sk_sp<SkTypeface> onMakeClone(const SkFontArguments&) const override;
-
-private:
-    const SkString fFamilyName;
-    const std::unique_ptr<const SkFontData> fData;
-};
-
-class SkFontScanner_FreeType : public SkFontScanner {
-public:
-    SkFontScanner_FreeType();
-    ~SkFontScanner_FreeType() override;
-
-    bool scanFile(SkStreamAsset* stream, int* numFaces) const override;
-    bool scanFace(SkStreamAsset* stream, int faceIndex, int* numInstances) const override;
-    bool scanInstance(SkStreamAsset* stream,
-                      int faceIndex,
-                      int instanceIndex,
-                      SkString* name,
-                      SkFontStyle* style,
-                      bool* isFixedPitch,
-                      AxisDefinitions* axes) const override;
-    static void computeAxisValues(
-            AxisDefinitions axisDefinitions,
-            const SkFontArguments::VariationPosition position,
-            SkFixed* axisValues,
-            const SkString& name,
-            SkFontStyle* style,
-            const SkFontArguments::VariationPosition::Coordinate* currentPosition = nullptr);
-    static bool GetAxes(FT_Face face, AxisDefinitions* axes);
-private:
-    FT_Face openFace(SkStreamAsset* stream, int ttcIndex, FT_Stream ftStream) const;
-    FT_Library fLibrary;
-    mutable SkMutex fLibraryMutex;
 };
 
 #endif // SkTypeface_Freetype_DEFINED

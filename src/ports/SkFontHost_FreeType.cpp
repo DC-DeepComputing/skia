@@ -17,6 +17,8 @@
 #include "include/core/SkScalar.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkString.h"
+#include "include/ports/SkFontScanner_FreeType.h"
+#include "include/ports/SkTypeface_FreeType.h"
 #include "include/private/SkColorData.h"
 #include "include/private/base/SkMalloc.h"
 #include "include/private/base/SkMutex.h"
@@ -28,13 +30,12 @@
 #include "src/core/SkDescriptor.h"
 #include "src/core/SkFDot6.h"
 #include "src/core/SkFontDescriptor.h"
-#include "src/core/SkFontScanner.h"
 #include "src/core/SkGlyph.h"
 #include "src/core/SkMask.h"
 #include "src/core/SkMaskGamma.h"
 #include "src/core/SkScalerContext.h"
 #include "src/ports/SkFontHost_FreeType_common.h"
-#include "src/ports/SkTypeface_FreeType.h"
+#include "src/ports/SkTypeface_FreeTypeStream.h"
 #include "src/sfnt/SkOTUtils.h"
 #include "src/sfnt/SkSFNTHeader.h"
 #include "src/sfnt/SkTTCFHeader.h"
@@ -2163,14 +2164,14 @@ bool SkFontScanner_FreeType::scanInstance(SkStreamAsset* stream,
                     // Rough validity check, sufficient spread and ranges within 0-1000.
                     SkScalar wghtRange = axisDefinitions[i].fMaximum - axisDefinitions[i].fMinimum;
                     if (wghtRange > 5 && wghtRange <= 1000 && axisDefinitions[i].fMaximum <= 1000) {
-                        wghtIndex = i;
+                    wghtIndex = i;
                     }
                 }
                 if (axisDefinitions[i].fTag == wdthTag) {
                     // Rough validity check, sufficient spread and are ranges within 0-500.
                     SkScalar wdthRange = axisDefinitions[i].fMaximum - axisDefinitions[i].fMinimum;
                     if (wdthRange > 0 && wdthRange <= 500 && axisDefinitions[i].fMaximum <= 500) {
-                        wdthIndex = i;
+                    wdthIndex = i;
                     }
                 }
                 if (axisDefinitions[i].fTag == slntTag) {
@@ -2196,7 +2197,7 @@ bool SkFontScanner_FreeType::scanInstance(SkStreamAsset* stream,
                     // in counter-clockwise degrees, of oblique slant from whatever
                     // the designer considers to be upright for that font design."
                     if (SkFixedToScalar(coords[*slntIndex]) < 0) {
-                        slant = SkFontStyle::kOblique_Slant;
+                    slant = SkFontStyle::kOblique_Slant;
                     }
                 }
             }
@@ -2258,6 +2259,15 @@ bool SkFontScanner_FreeType::scanInstance(SkStreamAsset* stream,
         return false;
     }
     return true;
+}
+
+sk_sp<SkTypeface> SkFontScanner_FreeType::MakeFromStream(std::unique_ptr<SkStreamAsset> stream,
+                                                         const SkFontArguments& args) const {
+    return SkTypeface_FreeType::MakeFromStream(std::move(stream), args);
+}
+
+SkTypeface::FactoryId SkFontScanner_FreeType::getFactoryId() const {
+    return SkTypeface_FreeType::FactoryId;
 }
 
 bool SkFontScanner_FreeType::GetAxes(FT_Face face, AxisDefinitions* axes) {
@@ -2383,24 +2393,24 @@ bool SkFontScanner_FreeType::GetAxes(FT_Face face, AxisDefinitions* axes) {
     }
 
     SkDEBUGCODE(
-        // Check for axis specified, but not matched in font.
-        for (int i = 0; i < position.coordinateCount; ++i) {
-            SkFourByteTag skTag = position.coordinates[i].axis;
-            bool found = false;
-            for (int j = 0; j < axisDefinitions.size(); ++j) {
-                if (skTag == axisDefinitions[j].fTag) {
-                    found = true;
-                    break;
+            // Check for axis specified, but not matched in font.
+            for (int i = 0; i < position.coordinateCount; ++i) {
+                SkFourByteTag skTag = position.coordinates[i].axis;
+                bool found = false;
+                for (int j = 0; j < axisDefinitions.size(); ++j) {
+                    if (skTag == axisDefinitions[j].fTag) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    LOG_INFO("Requested font axis not found: %s '%c%c%c%c'\n",
+                             name.c_str(),
+                             (skTag >> 24) & 0xFF,
+                             (skTag >> 16) & 0xFF,
+                             (skTag >>  8) & 0xFF,
+                             (skTag)       & 0xFF);
                 }
             }
-            if (!found) {
-                LOG_INFO("Requested font axis not found: %s '%c%c%c%c'\n",
-                            name.c_str(),
-                            (skTag >> 24) & 0xFF,
-                            (skTag >> 16) & 0xFF,
-                            (skTag >>  8) & 0xFF,
-                            (skTag)       & 0xFF);
-            }
-        }
     )
 }
