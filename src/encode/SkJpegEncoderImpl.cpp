@@ -19,12 +19,15 @@
 #include "include/core/SkYUVAPixmaps.h"
 #include "include/encode/SkEncoder.h"
 #include "include/encode/SkJpegEncoder.h"
+#include "include/private/SkExif.h"
 #include "include/private/base/SkAssert.h"
 #include "include/private/base/SkNoncopyable.h"
 #include "include/private/base/SkTemplates.h"
 #include "src/base/SkMSAN.h"
 #include "src/codec/SkJpegConstants.h"
 #include "src/codec/SkJpegPriv.h"
+#include "src/codec/SkTiffUtility.h"
+#include "src/core/SkStreamPriv.h"
 #include "src/encode/SkImageEncoderFns.h"
 #include "src/encode/SkImageEncoderPriv.h"
 #include "src/encode/SkJPEGWriteUtility.h"
@@ -417,6 +420,7 @@ std::unique_ptr<SkEncoder> Make(SkWStream* dst, const SkPixmap& src, const Optio
     SkJpegMetadataEncoder::SegmentList metadataSegments;
     SkJpegMetadataEncoder::AppendXMPStandard(metadataSegments, options.xmpMetadata);
     SkJpegMetadataEncoder::AppendICC(metadataSegments, options, src.colorSpace());
+    SkJpegMetadataEncoder::AppendOrigin(metadataSegments, options.fOrigin);
     return SkJpegEncoderImpl::MakeRGB(dst, src, options, metadataSegments);
 }
 
@@ -427,6 +431,7 @@ std::unique_ptr<SkEncoder> Make(SkWStream* dst,
     SkJpegMetadataEncoder::SegmentList metadataSegments;
     SkJpegMetadataEncoder::AppendXMPStandard(metadataSegments, options.xmpMetadata);
     SkJpegMetadataEncoder::AppendICC(metadataSegments, options, srcColorSpace);
+    SkJpegMetadataEncoder::AppendOrigin(metadataSegments, options.fOrigin);
     return SkJpegEncoderImpl::MakeYUV(dst, src, srcColorSpace, options, metadataSegments);
 }
 
@@ -463,6 +468,33 @@ void AppendXMPStandard(SegmentList& segmentList, const SkData* xmpMetadata) {
     s.write(kXMPStandardSig, sizeof(kXMPStandardSig));
     s.write(xmpMetadata->data(), xmpMetadata->size());
     segmentList.emplace_back(kXMPMarker, s.detachAsData());
+}
+
+void AppendOrigin(SegmentList& segmentList, const SkEncodedOrigin origin) {
+    SkDynamicMemoryWStream s;
+    s.write(kExifSig, sizeof(kExifSig));
+    s.write8(0);
+    // Write the IFD header.
+    {
+      s.write(SkTiff::kEndianBig, sizeof(SkTiff::kEndianBig));
+      SkWStreamWriteU32BE(&s, 8);  // Offset of index IFD
+    }
+    // Write the IFD entry for the origin.
+    {
+      constexpr uint16_t kIndexIfdNumberOfTags = 1;
+      constexpr uint32_t kSubIfdCount = 1;
+      SkWStreamWriteU16BE(&s, kIndexIfdNumberOfTags);
+      SkWStreamWriteU16BE(&s, SkExif::kOriginTag);
+      SkWStreamWriteU16BE(&s, SkTiff::kTypeUnsignedShort);
+      SkWStreamWriteU32BE(&s, kSubIfdCount);
+      SkWStreamWriteU16BE(&s, origin);
+      SkWStreamWriteU16BE(&s, 0); // Complete the IFD
+
+      constexpr uint32_t kSubIfdNextIfdOffset = 0;
+      SkWStreamWriteU32BE(&s, kSubIfdNextIfdOffset);
+    }
+
+    segmentList.emplace_back(kExifMarker, s.detachAsData());
 }
 
 }  // namespace SkJpegMetadataEncoder
