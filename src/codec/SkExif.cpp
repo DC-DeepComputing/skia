@@ -10,6 +10,7 @@
 #include "include/core/SkData.h"
 #include "include/core/SkRefCnt.h"
 #include "src/codec/SkTiffUtility.h"
+#include "src/core/SkStreamPriv.h"
 
 #include <algorithm>
 #include <cmath>
@@ -188,6 +189,30 @@ void Parse(Metadata& metadata, const SkData* data) {
                 dataRef, littleEndian, ifdOffset, /*allowTruncated=*/true);
         parse_ifd(metadata, std::move(dataRef), std::move(ifd), littleEndian, /*isRoot=*/true);
     }
+}
+
+sk_sp<SkData> WriteExifWithOrigin(const SkEncodedOrigin origin) {
+    SkDynamicMemoryWStream s;
+    // Write the IFD header.
+    {
+      s.write(SkTiff::kEndianBig, sizeof(SkTiff::kEndianBig));
+      SkWStreamWriteU32BE(&s, 8);  // Offset of index IFD
+    }
+    // Write the IFD entry for the origin.
+    {
+      constexpr uint16_t kIndexIfdNumberOfTags = 1;
+      constexpr uint32_t kSubIfdCount = 1;
+      SkWStreamWriteU16BE(&s, kIndexIfdNumberOfTags);
+      SkWStreamWriteU16BE(&s, kOriginTag);
+      SkWStreamWriteU16BE(&s, SkTiff::kTypeUnsignedShort);
+      SkWStreamWriteU32BE(&s, kSubIfdCount);
+      SkWStreamWriteU16BE(&s, origin);
+      SkWStreamWriteU16BE(&s, 0); // Complete the IFD
+
+      constexpr uint32_t kSubIfdNextIfdOffset = 0;
+      SkWStreamWriteU32BE(&s, kSubIfdNextIfdOffset);
+    }
+    return s.detachAsData();
 }
 
 }  // namespace SkExif
