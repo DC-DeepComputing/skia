@@ -17,6 +17,8 @@ class SkFontMgr;
  *  If 'fc' is NULL, will use a new default config.
  *  Takes ownership of 'fc' and will call FcConfigDestroy on it.
  */
-SK_API sk_sp<SkFontMgr> SkFontMgr_New_FontConfig(FcConfig* fc);
-
+#ifdef SK_FONTMGR_FONTATIONS_AVAILABLE
+SK_API sk_sp<SkFontMgr> SkFontMgr_Fontations_FontConfig(FcConfig* fc);
+#endif
+SK_API sk_sp<SkFontMgr> SkFontMgr_FreeType_FontConfig(FcConfig* fc);
 #endif // #ifndef SkFontMgr_fontconfig_DEFINED
