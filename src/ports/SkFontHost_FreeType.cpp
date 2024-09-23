@@ -17,28 +17,31 @@
 #include "include/core/SkScalar.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkString.h"
+#include "include/ports/SkFontScanner_FreeType.h"
+#include "include/ports/SkTypeface_FreeType.h"
 #include "include/private/SkColorData.h"
 #include "include/private/base/SkMalloc.h"
 #include "include/private/base/SkMutex.h"
 #include "include/private/base/SkTPin.h"
 #include "include/private/base/SkTemplates.h"
 #include "include/private/base/SkTo.h"
+#include "src/base/SkSharedMutex.h"
 #include "src/base/SkTSearch.h"
 #include "src/core/SkAdvancedTypefaceMetrics.h"
 #include "src/core/SkDescriptor.h"
 #include "src/core/SkFDot6.h"
 #include "src/core/SkFontDescriptor.h"
-#include "src/core/SkFontScanner.h"
 #include "src/core/SkGlyph.h"
 #include "src/core/SkMask.h"
 #include "src/core/SkMaskGamma.h"
 #include "src/core/SkScalerContext.h"
 #include "src/ports/SkFontHost_FreeType_common.h"
-#include "src/ports/SkTypeface_FreeType.h"
+#include "src/ports/SkTypeface_FreeTypeStream.h"
 #include "src/sfnt/SkOTUtils.h"
 #include "src/sfnt/SkSFNTHeader.h"
 #include "src/sfnt/SkTTCFHeader.h"
 #include "src/utils/SkCallableTraits.h"
+#include "src/utils/SkCharToGlyphCache.h"
 #include "src/utils/SkMatrix22.h"
 
 #include <memory>
@@ -1715,6 +1718,8 @@ bool SkScalerContext_FreeType::emboldenIfNeeded(FT_Face face, FT_GlyphSlot glyph
 
 SkTypeface_FreeType::SkTypeface_FreeType(const SkFontStyle& style, bool isFixedPitch)
     : INHERITED(style, isFixedPitch)
+    , fC2GCacheMutex(std::make_unique<SkSharedMutex>())
+    , fC2GCache(std::make_unique<SkCharToGlyphCache>())
 {}
 
 SkTypeface_FreeType::~SkTypeface_FreeType() {
@@ -1736,9 +1741,9 @@ void SkTypeface_FreeType::onCharsToGlyphs(const SkUnichar uni[], int count,
     int i;
     {
         // Optimistically use a shared lock.
-        SkAutoSharedMutexShared ama(fC2GCacheMutex);
+        SkAutoSharedMutexShared ama(*fC2GCacheMutex);
         for (i = 0; i < count; ++i) {
-            int index = fC2GCache.findGlyphIndex(uni[i]);
+            int index = fC2GCache->findGlyphIndex(uni[i]);
             if (index < 0) {
                 break;
             }
@@ -1751,7 +1756,7 @@ void SkTypeface_FreeType::onCharsToGlyphs(const SkUnichar uni[], int count,
     }
 
     // Need to add more so grab an exclusive lock.
-    SkAutoSharedMutexExclusive ama(fC2GCacheMutex);
+    SkAutoSharedMutexExclusive ama(*fC2GCacheMutex);
     AutoFTAccess fta(this);
     FT_Face face = fta.face();
     if (!face) {
@@ -1761,17 +1766,17 @@ void SkTypeface_FreeType::onCharsToGlyphs(const SkUnichar uni[], int count,
 
     for (; i < count; ++i) {
         SkUnichar c = uni[i];
-        int index = fC2GCache.findGlyphIndex(c);
+        int index = fC2GCache->findGlyphIndex(c);
         if (index >= 0) {
             glyphs[i] = SkToU16(index);
         } else {
             glyphs[i] = SkToU16(FT_Get_Char_Index(face, c));
-            fC2GCache.insertCharAndGlyph(~index, c, glyphs[i]);
+            fC2GCache->insertCharAndGlyph(~index, c, glyphs[i]);
         }
     }
 
-    if (fC2GCache.count() > kMaxC2GCacheCount) {
-        fC2GCache.reset();
+    if (fC2GCache->count() > kMaxC2GCacheCount) {
+        fC2GCache->reset();
     }
 }
 
@@ -2163,14 +2168,14 @@ bool SkFontScanner_FreeType::scanInstance(SkStreamAsset* stream,
                     // Rough validity check, sufficient spread and ranges within 0-1000.
                     SkScalar wghtRange = axisDefinitions[i].fMaximum - axisDefinitions[i].fMinimum;
                     if (wghtRange > 5 && wghtRange <= 1000 && axisDefinitions[i].fMaximum <= 1000) {
-                        wghtIndex = i;
+                    wghtIndex = i;
                     }
                 }
                 if (axisDefinitions[i].fTag == wdthTag) {
                     // Rough validity check, sufficient spread and are ranges within 0-500.
                     SkScalar wdthRange = axisDefinitions[i].fMaximum - axisDefinitions[i].fMinimum;
                     if (wdthRange > 0 && wdthRange <= 500 && axisDefinitions[i].fMaximum <= 500) {
-                        wdthIndex = i;
+                    wdthIndex = i;
                     }
                 }
                 if (axisDefinitions[i].fTag == slntTag) {
@@ -2196,7 +2201,7 @@ bool SkFontScanner_FreeType::scanInstance(SkStreamAsset* stream,
                     // in counter-clockwise degrees, of oblique slant from whatever
                     // the designer considers to be upright for that font design."
                     if (SkFixedToScalar(coords[*slntIndex]) < 0) {
-                        slant = SkFontStyle::kOblique_Slant;
+                    slant = SkFontStyle::kOblique_Slant;
                     }
                 }
             }
@@ -2258,6 +2263,15 @@ bool SkFontScanner_FreeType::scanInstance(SkStreamAsset* stream,
         return false;
     }
     return true;
+}
+
+sk_sp<SkTypeface> SkFontScanner_FreeType::MakeFromStream(std::unique_ptr<SkStreamAsset> stream,
+                                                         const SkFontArguments& args) const {
+    return SkTypeface_FreeType::MakeFromStream(std::move(stream), args);
+}
+
+SkTypeface::FactoryId SkFontScanner_FreeType::getFactoryId() const {
+    return SkTypeface_FreeType::FactoryId;
 }
 
 bool SkFontScanner_FreeType::GetAxes(FT_Face face, AxisDefinitions* axes) {
@@ -2383,24 +2397,24 @@ bool SkFontScanner_FreeType::GetAxes(FT_Face face, AxisDefinitions* axes) {
     }
 
     SkDEBUGCODE(
-        // Check for axis specified, but not matched in font.
-        for (int i = 0; i < position.coordinateCount; ++i) {
-            SkFourByteTag skTag = position.coordinates[i].axis;
-            bool found = false;
-            for (int j = 0; j < axisDefinitions.size(); ++j) {
-                if (skTag == axisDefinitions[j].fTag) {
-                    found = true;
-                    break;
+            // Check for axis specified, but not matched in font.
+            for (int i = 0; i < position.coordinateCount; ++i) {
+                SkFourByteTag skTag = position.coordinates[i].axis;
+                bool found = false;
+                for (int j = 0; j < axisDefinitions.size(); ++j) {
+                    if (skTag == axisDefinitions[j].fTag) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    LOG_INFO("Requested font axis not found: %s '%c%c%c%c'\n",
+                             name.c_str(),
+                             (skTag >> 24) & 0xFF,
+                             (skTag >> 16) & 0xFF,
+                             (skTag >>  8) & 0xFF,
+                             (skTag)       & 0xFF);
                 }
             }
-            if (!found) {
-                LOG_INFO("Requested font axis not found: %s '%c%c%c%c'\n",
-                            name.c_str(),
-                            (skTag >> 24) & 0xFF,
-                            (skTag >> 16) & 0xFF,
-                            (skTag >>  8) & 0xFF,
-                            (skTag)       & 0xFF);
-            }
-        }
     )
 }
