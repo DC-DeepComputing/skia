@@ -24,6 +24,7 @@
 #include "src/ports/SkTypeface_FreeType.h"
 #elif defined(SK_BUILD_FOR_UNIX) && defined(SK_FONTMGR_FONTCONFIG_AVAILABLE)
 #include "include/ports/SkFontMgr_fontconfig.h"
+#include "src/ports/SkTypeface_FreeType.h"
 #else
 #include "include/ports/SkFontMgr_empty.h"
 #endif
@@ -57,7 +58,7 @@ static DEFINE_string2(output, o, nullptr, "Output .json file.");
 #elif defined(SK_BUILD_FOR_ANDROID) && defined(SK_FONTMGR_ANDROID_AVAILABLE)
     sk_sp<SkFontMgr> fontMgr = SkFontMgr_New_Android(nullptr, std::make_unique<SkFontScanner_FreeType>());
 #elif defined(SK_BUILD_FOR_UNIX) && defined(SK_FONTMGR_FONTCONFIG_AVAILABLE)
-    sk_sp<SkFontMgr> fontMgr = SkFontMgr_New_FontConfig(nullptr);
+    sk_sp<SkFontMgr> fontMgr = SkFontMgr_New_FontConfig(nullptr, std::make_unique<SkFontScanner_FreeType>());
 #else
     sk_sp<SkFontMgr> fontMgr = SkFontMgr_New_Custom_Empty();
 #endif

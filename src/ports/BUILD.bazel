@@ -122,6 +122,9 @@ skia_cc_library(
         "//:pathops",
         "@freetype",
     ],
+    visibility = [
+        "//tests:__pkg__",
+    ],
     deps = ["//:core"],
 )
 
@@ -300,7 +303,10 @@ skia_cc_library(
         "//include/ports:fontconfig_fontmgr_hdrs",
     ],
     defines = ["SK_FONTMGR_FONTCONFIG_AVAILABLE"],
-    visibility = ["//:__pkg__"],
+    visibility = [
+        "//:__pkg__",
+        "//tools/fonts:__pkg__",
+    ],
     deps = [
         ":freetype_support",
         "//:core",
