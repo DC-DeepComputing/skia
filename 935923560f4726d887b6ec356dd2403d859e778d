@@ -259,6 +259,30 @@
       },
       "revId": "935923560f4726d887b6ec356dd2403d859e778d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "979e9820_a974ec76",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-09-24T14:52:53Z",
+      "side": 1,
+      "message": "I decided `transferToRecording` is fine; that\u0027s basically what we\u0027re doing in that method and I think it\u0027s fine to assume we\u0027re doing some cleanup / there are side effects there.",
+      "parentUuid": "8e68dbf0_605a3893",
+      "range": {
+        "startLine": 164,
+        "startChar": 9,
+        "endLine": 164,
+        "endChar": 37
+      },
+      "revId": "935923560f4726d887b6ec356dd2403d859e778d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
