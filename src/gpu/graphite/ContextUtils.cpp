@@ -272,8 +272,8 @@ void append_sampler_descs(const SkSpan<const uint32_t> samplerData,
         uint32_t immutableSamplerInfo = samplerData[i] >> SamplerDesc::kImmutableSamplerInfoShift;
         SkASSERT(immutableSamplerInfo != 0);
         bool usesExternalFormat = immutableSamplerInfo & 0b1;
-        const int samplerDataLength = usesExternalFormat ? SamplerDesc::kIntsNeededExternalFormat
-                                                         : SamplerDesc::kIntsNeededKnownFormat;
+        const int samplerDataLength = usesExternalFormat ? SamplerDesc::kInt32sNeededExternalFormat
+                                                         : SamplerDesc::kInt32sNeededKnownFormat;
 
         // Gather samplerDataLength uint32s from the data span. Use that to populate a SamplerDesc
         // which enables us to query the resource provider for a real sampler.
