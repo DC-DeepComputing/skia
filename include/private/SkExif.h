@@ -9,6 +9,7 @@
 #define SkExif_DEFINED
 
 #include "include/codec/SkEncodedOrigin.h"
+#include "include/core/SkRefCnt.h"
 #include "include/private/base/SkAPI.h"
 
 #include <cstdint>
@@ -49,6 +50,11 @@ struct Metadata {
  * unrecoverable error (allow truncated input).
  */
 void SK_API Parse(Metadata& metadata, const SkData* data);
+
+/*
+ * Writes exif data that includes only an IFD header and an IFD entry for the origin.
+ */
+sk_sp<SkData> WriteExifWithOrigin(const SkEncodedOrigin origin);
 
 }  // namespace SkExif
 
