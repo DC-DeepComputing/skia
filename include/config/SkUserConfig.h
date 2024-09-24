@@ -50,7 +50,8 @@
 /* To specify a different default font strike cache memory limit, define this. If this is
    undefined, skia will use a built-in value.
 */
-//#define SK_DEFAULT_FONT_CACHE_LIMIT   (1024 * 1024)
+// #define SK_DEFAULT_FONT_CACHE_LIMIT   (1024 * 1024)
+#define SK_DEFAULT_FONT_CACHE_LIMIT   (0)
 
 /* To specify a different default font strike cache count limit, define this. If this is
    undefined, skia will use a built-in value.

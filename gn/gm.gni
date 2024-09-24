@@ -424,6 +424,8 @@ gl_gm_sources = [ "$_gm/rectangletexture.cpp" ]
 fontations_gm_sources = [
   "$_gm/fontations.cpp",
   "$_gm/fontations_ft_compare.cpp",
+  "$_gm/fontations_render_large.cpp",
+  "$_gm/long_render_text.h",
 ]
 
 ganesh_gm_sources = [
