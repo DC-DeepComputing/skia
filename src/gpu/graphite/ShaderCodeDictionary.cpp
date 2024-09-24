@@ -485,8 +485,17 @@ std::string ShaderInfo::toSkSL(const Caps* caps,
     {
         int binding = 0;
         preamble += EmitTexturesAndSamplers(bindingReqs, fRootNodes, &binding, outDescs);
+        int paintTextureCount = binding;
         if (step->hasTextures()) {
             preamble += step->texturesAndSamplersSkSL(bindingReqs, &binding);
+            if (outDescs) {
+                // Add default SamplerDescs for all the dynamic samplers used by the render step.
+                // This way, the size of outDescs will be equivalent to the cumulative number of
+                // samplers.
+                static constexpr SamplerDesc kUninitializedSamplerDesc {};
+                int renderStepTextureCount = binding - paintTextureCount;
+                outDescs->push_back_n(renderStepTextureCount, kUninitializedSamplerDesc);
+            }
         }
 
         // Report back to the caller how many textures and samplers are used.
