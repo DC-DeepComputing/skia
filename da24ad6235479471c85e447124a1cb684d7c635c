@@ -1,0 +1,175 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ae252f80_27147d41",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 16
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-09-24T21:11:12Z",
+      "side": 1,
+      "message": "I know this was requested by the external reporter, but I\u0027m not convinced this is what we want.\n\nIf it\u0027s in the default orientation, encoding it in EXIF stores extra unnecessary information - how many bytes does this use?\n\nOptionally storing it seems reasonable, though? Maybe they\u0027re using a higher level API that doesn\u0027t get to modify `SkJpegEncoder::Options`?",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 6
+      },
+      "revId": "da24ad6235479471c85e447124a1cb684d7c635c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "359a4505_ca3d52d5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 16
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-09-24T21:11:12Z",
+      "side": 1,
+      "message": "nit: line too long\n\nI really like the advice in https://cbea.ms/git-commit, which addresses this (https://cbea.ms/git-commit/#wrap-72). I thought it was referenced somewhere internally, but I haven\u0027t found it...\n\n**EDIT**: Ooh, there\u0027s a conversation about this in Chromium: https://groups.google.com/a/google.com/g/chromium-dev-internal/c/H66UoVWucHI/m/xq1MEOiNBQAJ?utm_medium\u003demail\u0026utm_source\u003dfooter",
+      "revId": "da24ad6235479471c85e447124a1cb684d7c635c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f1be526_98cd119d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 16
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-09-24T21:11:12Z",
+      "side": 1,
+      "message": "Thanks for the reference!",
+      "revId": "da24ad6235479471c85e447124a1cb684d7c635c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9b7ec46_77e7a5af",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-09-24T21:11:12Z",
+      "side": 1,
+      "message": "+ @ccameron@chromium.org (I wasn\u0027t sure which handle to use - looks like you use both google and chromium here?)",
+      "revId": "da24ad6235479471c85e447124a1cb684d7c635c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84c8b86c_b7a27052",
+        "filename": "include/private/SkExif.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-09-24T21:11:12Z",
+      "side": 1,
+      "message": "I\u0027m not the expert on EXIF. If we wanted other info in EXIF, would it be part of the same EXIF? It looks like it *could* be? Is there other data we might want to write to EXIF? If so, this method seems like it should be more general - at the very least, it should be renamed to `WriteExif`.",
+      "revId": "da24ad6235479471c85e447124a1cb684d7c635c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "713218d4_bc0ab243",
+        "filename": "src/encode/SkJpegEncoderImpl.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 475,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-09-24T21:11:12Z",
+      "side": 1,
+      "message": "Maybe it\u0027s no big deal, but it does seem a little annoying that we created a dynamic memory write stream in `exif_from_origin`, converted it to an `SkData`, and then created another one.",
+      "revId": "da24ad6235479471c85e447124a1cb684d7c635c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c6a05b85_e10fb9f4",
+        "filename": "src/encode/SkJpegEncoderImpl.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-09-24T21:11:12Z",
+      "side": 1,
+      "message": "We don\u0027t typically mark a parameter passed by value as `const` - it doesn\u0027t matter to the caller whether we modify it or not.",
+      "range": {
+        "startLine": 57,
+        "startChar": 44,
+        "endLine": 57,
+        "endChar": 49
+      },
+      "revId": "da24ad6235479471c85e447124a1cb684d7c635c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d317db9_04037f0f",
+        "filename": "tests/ExifTest.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 285,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-09-24T21:11:12Z",
+      "side": 1,
+      "message": "I may just be out of the loop, but what does this have to do with gainmaps?",
+      "revId": "da24ad6235479471c85e447124a1cb684d7c635c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7cdfa67c_9890b5fa",
+        "filename": "tests/ExifTest.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 293,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-09-24T21:11:12Z",
+      "side": 1,
+      "message": "This seems limiting, if we ever decide to add more items to EXIF.",
+      "range": {
+        "startLine": 292,
+        "startChar": 0,
+        "endLine": 293,
+        "endChar": 72
+      },
+      "revId": "da24ad6235479471c85e447124a1cb684d7c635c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
