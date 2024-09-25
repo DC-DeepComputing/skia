@@ -16,6 +16,75 @@
       "message": "Greg - throwing you on to these while Michael is OOO. For this CL and its children, it is still showing changes from the cherry-picked CL (https://skia-review.googlesource.com/c/skia/+/902439) as diffs. That should be landing soon at which point I can rebase and those will not be highlighted.",
       "revId": "a20ff7afeac38833e0bea33358316f07d2d9b078",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f481076_9187af40",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-09-25T13:41:49Z",
+      "side": 1,
+      "message": "Do we really need this clarification that it may be a combination? A lot of this comment seems to suggest being 0 could be optional. Instead could this all be rewritten to say that \"If the samplerData is 0 then it is a dynamic sampler and we push back a default SamplerDesc. Dynamic samplers only take up 1 unit32_t in the samplerData.\"",
+      "range": {
+        "startLine": 262,
+        "startChar": 11,
+        "endLine": 262,
+        "endChar": 85
+      },
+      "revId": "a20ff7afeac38833e0bea33358316f07d2d9b078",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "81e8439e_69048d61",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 308,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-09-25T13:41:49Z",
+      "side": 1,
+      "message": "Add todo/comment that we want to remove these explicit snippitID checks and instead have a flag on the snippit if it might use immuatable samplers",
+      "range": {
+        "startLine": 308,
+        "startChar": 16,
+        "endLine": 308,
+        "endChar": 86
+      },
+      "revId": "a20ff7afeac38833e0bea33358316f07d2d9b078",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cccddc30_d0007ddd",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 493,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-09-25T13:41:49Z",
+      "side": 1,
+      "message": "Maybe just add a comment here that we never expect render step samplers to be immutable",
+      "range": {
+        "startLine": 493,
+        "startChar": 90,
+        "endLine": 493,
+        "endChar": 91
+      },
+      "revId": "a20ff7afeac38833e0bea33358316f07d2d9b078",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
