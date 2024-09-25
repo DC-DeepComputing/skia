@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "302e6b64_0d073520",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 432,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-09-25T19:26:24Z",
+      "side": 1,
+      "message": "I just copied the jobs we currently run on Pixel6 and Pixel7.  Do we need all of these?  This doesn\u0027t include any CPU jobs; not sure whether that\u0027s important.",
+      "range": {
+        "startLine": 429,
+        "startChar": 0,
+        "endLine": 432,
+        "endChar": 102
+      },
+      "revId": "131086f8dd6cb934dbb20b1932d78a52e868f05a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
