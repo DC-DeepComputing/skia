@@ -8,7 +8,10 @@
 package org.skia.viewer;
 
 import android.app.Application;
+import android.content.Intent;
 import android.content.res.AssetManager;
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 
 public class ViewerApplication extends Application {
     private long mNativeHandle = 0;
@@ -19,14 +22,8 @@ public class ViewerApplication extends Application {
         System.loadLibrary("viewer");
     }
 
-    private native long createNativeApp(AssetManager assetManager);
+    private native long createNativeApp(AssetManager assetManager, ByteBuffer[] args);
     private native void destroyNativeApp(long handle);
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        mNativeHandle = createNativeApp(this.getResources().getAssets());
-    }
 
     @Override
     public void onTerminate() {
@@ -51,6 +48,24 @@ public class ViewerApplication extends Application {
             }
             if (mTitle != null) {
                 mViewerActivity.setTitle(mTitle);
+            }
+            if (mNativeHandle == 0) {
+                Intent intent = viewerActivity.getIntent();
+                String args = intent.getStringExtra("args");
+                //TODO: split args better?
+                String[] splitArgs = args.split("\\s+");
+                ByteBuffer[] byteBufferArgs = new ByteBuffer[splitArgs.length];
+                for (int i = 0; i < splitArgs.length; ++i) {
+                    ByteBuffer byteBufferArg = StandardCharsets.UTF_8.encode(splitArgs[i]);
+                    ByteBuffer directByteBufferArg = ByteBuffer.allocateDirect(byteBufferArg.limit() + 1);
+                    for (int j = 0; j < byteBufferArg.limit(); ++j) {
+                        directByteBufferArg.put(j, byteBufferArg.get(j));
+                    }
+                    // UTF-8 doens't allow a zero terminator, but args require it.
+                    directByteBufferArg.put(byteBufferArg.limit(), (byte)0);
+                    byteBufferArgs[i] = directByteBufferArg;
+                }
+                mNativeHandle = createNativeApp(this.getResources().getAssets(), byteBufferArgs);
             }
         }
     }
