@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f1c8becb_de9a6001",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 16
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-09-25T13:06:06Z",
+      "side": 1,
+      "message": "Currently there is no default orientation in the encoded image and `SkJpegEncoder::Options` doesn\u0027t have an `origin` field, the user wants the data to exist so that they can modify it while encoded. The current implementation is that the orientation is read as default when the data doesn\u0027t exist at decode.",
+      "parentUuid": "ae252f80_27147d41",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 6
+      },
+      "revId": "da24ad6235479471c85e447124a1cb684d7c635c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "359a4505_ca3d52d5",
         "filename": "/COMMIT_MSG",
         "patchSetId": 16
@@ -94,6 +118,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c10475cc_6d0332e1",
+        "filename": "include/private/SkExif.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-09-25T13:06:06Z",
+      "side": 1,
+      "message": "Yes other exif data would be in the same exif. Currently there is the struct `Metadata` that we can read into from exif data, I can add functionality to write an exif from a `Metadata` object. Here for reference: https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/include/private/SkExif.h;drc\u003d7e4811be2230ce84e1173a830e39df4b53dd974b;l\u003d29.",
+      "parentUuid": "84c8b86c_b7a27052",
+      "revId": "da24ad6235479471c85e447124a1cb684d7c635c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "713218d4_bc0ab243",
         "filename": "src/encode/SkJpegEncoderImpl.cpp",
         "patchSetId": 16
@@ -105,6 +147,24 @@
       "writtenOn": "2024-09-24T21:11:12Z",
       "side": 1,
       "message": "Maybe it\u0027s no big deal, but it does seem a little annoying that we created a dynamic memory write stream in `exif_from_origin`, converted it to an `SkData`, and then created another one.",
+      "revId": "da24ad6235479471c85e447124a1cb684d7c635c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "87182d14_3b97f972",
+        "filename": "src/encode/SkJpegEncoderImpl.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 475,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-09-25T13:06:06Z",
+      "side": 1,
+      "message": "I agree, let me know if there is a better way for this. This is similar functionality to how ICC is implemented: https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/encode/SkJpegEncoderImpl.cpp;drc\u003d481596642e0d9903c24a729811bc708e29d7539c;l\u003d437",
+      "parentUuid": "713218d4_bc0ab243",
       "revId": "da24ad6235479471c85e447124a1cb684d7c635c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -145,6 +205,24 @@
       "writtenOn": "2024-09-24T21:11:12Z",
       "side": 1,
       "message": "I may just be out of the loop, but what does this have to do with gainmaps?",
+      "revId": "da24ad6235479471c85e447124a1cb684d7c635c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d0a77f8_65e98489",
+        "filename": "tests/ExifTest.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 285,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-09-25T13:06:06Z",
+      "side": 1,
+      "message": "It doesn\u0027t, I just wanted to use some of the functions for testing that were conditionally compiled with the gainmaps. However, since I agree with your other comment about it being limiting I will just remove this part of the test.",
+      "parentUuid": "5d317db9_04037f0f",
       "revId": "da24ad6235479471c85e447124a1cb684d7c635c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
