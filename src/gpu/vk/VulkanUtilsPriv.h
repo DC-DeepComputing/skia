@@ -298,7 +298,8 @@ bool AllocateAndBindImageMemory(skgpu::VulkanAlloc* outVulkanAlloc,
                                 const VkAndroidHardwareBufferPropertiesANDROID&,
                                 AHardwareBuffer*,
                                 const skgpu::VulkanInterface*,
-                                VkDevice);
+                                VkDevice,
+                                bool protectedMemoryRequired);
 
 #endif // SK_BUILD_FOR_ANDROID
 

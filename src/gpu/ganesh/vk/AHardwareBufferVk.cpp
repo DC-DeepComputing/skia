@@ -288,7 +288,7 @@ static GrBackendTexture make_vk_backend_texture(
 
     skgpu::VulkanAlloc alloc;
     if (!skgpu::AllocateAndBindImageMemory(&alloc, image, phyDevMemProps, hwbProps, hardwareBuffer,
-                                           gpu->vkInterface(), device)) {
+                                           gpu->vkInterface(), device, isProtectedContent)) {
         VK_CALL(DestroyImage(device, image, nullptr));
         return GrBackendTexture();
     }
