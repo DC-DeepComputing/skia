@@ -141,21 +141,23 @@ bool GetAHardwareBufferProperties(
 
 bool AllocateAndBindImageMemory(skgpu::VulkanAlloc* outVulkanAlloc,
                                 VkImage image,
-                                const VkPhysicalDeviceMemoryProperties2& phyDevMemProps,
+                                const VkPhysicalDeviceMemoryProperties2& phyDevMemProps2,
                                 const VkAndroidHardwareBufferPropertiesANDROID& hwbProps,
                                 AHardwareBuffer* hardwareBuffer,
                                 const skgpu::VulkanInterface* interface,
-                                VkDevice device) {
+                                VkDevice device,
+                                bool protectedMemoryRequired) {
     VkResult result;
     uint32_t typeIndex = 0;
     bool foundHeap = false;
-    uint32_t memTypeCnt = phyDevMemProps.memoryProperties.memoryTypeCount;
-    for (uint32_t i = 0; i < memTypeCnt && !foundHeap; ++i) {
+    const VkPhysicalDeviceMemoryProperties& phyDevMemProps = phyDevMemProps2.memoryProperties;
+    for (uint32_t i = 0; i < phyDevMemProps.memoryTypeCount && !foundHeap; ++i) {
         if (hwbProps.memoryTypeBits & (1 << i)) {
-            const VkPhysicalDeviceMemoryProperties& pdmp = phyDevMemProps.memoryProperties;
-            uint32_t supportedFlags = pdmp.memoryTypes[i].propertyFlags &
-                    VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT;
-            if (supportedFlags == VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT) {
+            VkMemoryPropertyFlagBits memoryTypePropertyFlags =
+                    phyDevMemProps.memoryTypes[i].propertyFlags;
+            if (memoryTypePropertyFlags & VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT &&
+                (!protectedMemoryRequired ||
+                 memoryTypePropertyFlags & VK_MEMORY_PROPERTY_PROTECTED_BIT)) {
                 typeIndex = i;
                 foundHeap = true;
             }
