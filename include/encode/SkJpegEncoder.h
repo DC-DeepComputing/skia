@@ -8,6 +8,7 @@
 #ifndef SkJpegEncoder_DEFINED
 #define SkJpegEncoder_DEFINED
 
+#include "include/codec/SkEncodedOrigin.h"
 #include "include/core/SkRefCnt.h"
 #include "include/private/base/SkAPI.h"
 
@@ -86,6 +87,8 @@ struct Options {
      */
     const skcms_ICCProfile* fICCProfile = nullptr;
     const char* fICCProfileDescription = nullptr;
+
+    SkEncodedOrigin fOrigin = kDefault_SkEncodedOrigin;
 };
 
 /**
