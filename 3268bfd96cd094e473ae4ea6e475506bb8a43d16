@@ -22,6 +22,30 @@
       },
       "revId": "3268bfd96cd094e473ae4ea6e475506bb8a43d16",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf66f048_2772c3e2",
+        "filename": "src/gpu/ganesh/gl/GrGLGpu.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 805,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-09-25T17:22:22Z",
+      "side": 1,
+      "message": "As to the first question, both fIsProtected and fProtected are both skgpu::Protected so it is a straight assignment (both here and in all the following cases).\n\nAs to the second question, boosting out of skgpu::Protected to boolean logic is a pattern so I don\u0027t think it is too surprising in the \"else\" case. Boosting out into boolean logic just to cast back (in the \"if\" case) would be a bit surprising to me though.",
+      "parentUuid": "2191839e_7b245a41",
+      "range": {
+        "startLine": 805,
+        "startChar": 29,
+        "endLine": 805,
+        "endChar": 44
+      },
+      "revId": "3268bfd96cd094e473ae4ea6e475506bb8a43d16",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
