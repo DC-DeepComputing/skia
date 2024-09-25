@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3adbbc6e_75c54b22",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 1
+      },
+      "lineNbr": 907,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-25T17:09:04Z",
+      "side": 1,
+      "message": "Checking for table values seems like something skrifa might get away with, but this seems the wrong level. Could we have the `colr` one be more like\n\n```\nfn has_any_colr_glyph(font_ref: \u0026BridgeFontRef, format: ColorGlyphFormat, glyph_id: u16) -\u003e bool {\n    font_ref\n        .with_font(|f| {\n            let colrv1_paintable \u003d f\n                .color_glyphs()\n                ...?; // ????\n        })\n        .unwrap_or_default()\n}\n```\n\nWith the ???? being there because `skrifa::color::ColorGlyphCollection` doesn\u0027t appear to have any way to state if it is empty? For the bitmaps it looks like `font_ref.xxxx().ok()?;` should work, since that\u0027s how we actually access them. In other words, the check should be as close as possible to when this will actually do to retrieve the values.",
+      "revId": "f0520ed9889fda3e1d5f5358f3f7bdbc115e9820",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
