@@ -67,6 +67,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "09d34bb5_a029214d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 16
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-09-25T21:14:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "359a4505_ca3d52d5",
+      "revId": "da24ad6235479471c85e447124a1cb684d7c635c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "2f1be526_98cd119d",
         "filename": "/COMMIT_MSG",
         "patchSetId": 16
@@ -134,6 +152,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d529f618_91308839",
+        "filename": "include/private/SkExif.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-09-25T21:14:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c10475cc_6d0332e1",
+      "revId": "da24ad6235479471c85e447124a1cb684d7c635c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "713218d4_bc0ab243",
@@ -192,6 +228,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "44ddfa3d_4b10e79f",
+        "filename": "src/encode/SkJpegEncoderImpl.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-09-25T21:14:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c6a05b85_e10fb9f4",
+      "range": {
+        "startLine": 57,
+        "startChar": 44,
+        "endLine": 57,
+        "endChar": 49
+      },
+      "revId": "da24ad6235479471c85e447124a1cb684d7c635c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5d317db9_04037f0f",
@@ -227,6 +287,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed66f52c_53f6cb79",
+        "filename": "tests/ExifTest.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 285,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-09-25T21:14:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2d0a77f8_65e98489",
+      "revId": "da24ad6235479471c85e447124a1cb684d7c635c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7cdfa67c_9890b5fa",
@@ -240,6 +318,30 @@
       "writtenOn": "2024-09-24T21:11:12Z",
       "side": 1,
       "message": "This seems limiting, if we ever decide to add more items to EXIF.",
+      "range": {
+        "startLine": 292,
+        "startChar": 0,
+        "endLine": 293,
+        "endChar": 72
+      },
+      "revId": "da24ad6235479471c85e447124a1cb684d7c635c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "28da3601_bfd36035",
+        "filename": "tests/ExifTest.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 293,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-09-25T21:14:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7cdfa67c_9890b5fa",
       "range": {
         "startLine": 292,
         "startChar": 0,
