@@ -16,6 +16,23 @@
       "message": "PTAL!",
       "revId": "0b8a2294627880354f22cdd44c8d792e35d3e532",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5687319a_4964fdba",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 10575
+      },
+      "writtenOn": "2024-09-25T07:12:50Z",
+      "side": 1,
+      "message": "LTS merge is waiting for approval",
+      "revId": "0b8a2294627880354f22cdd44c8d792e35d3e532",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
