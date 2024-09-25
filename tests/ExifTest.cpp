@@ -8,9 +8,11 @@
 #include "include/codec/SkCodec.h"
 #include "include/codec/SkEncodedOrigin.h"
 #include "include/codec/SkWebpDecoder.h"
+#include "include/core/SkBitmap.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkSize.h"
 #include "include/core/SkStream.h"
+#include "include/encode/SkJpegEncoder.h"
 #include "include/private/SkExif.h"
 #include "tests/Test.h"
 #include "tools/Resources.h"
@@ -215,3 +217,80 @@ DEF_TEST(ExifTruncate, r) {
         REPORTER_ASSERT(r, exif.fPixelYDimension.has_value());
     }
 }
+
+DEF_TEST(ExifWriteOrientation, r) {
+    SkBitmap bm;
+    bm.allocPixels(SkImageInfo::MakeN32Premul(100, 100));
+    bm.eraseColor(SK_ColorBLUE);
+    SkPixmap pm;
+    if (!bm.peekPixels(&pm)) {
+        ERRORF(r, "failed to peek pixels");
+        return;
+    }
+    for (auto o : { kTopLeft_SkEncodedOrigin,
+                    kTopRight_SkEncodedOrigin,
+                    kBottomRight_SkEncodedOrigin,
+                    kBottomLeft_SkEncodedOrigin,
+                    kLeftTop_SkEncodedOrigin,
+                    kRightTop_SkEncodedOrigin,
+                    kRightBottom_SkEncodedOrigin,
+                    kLeftBottom_SkEncodedOrigin }) {
+        SkDynamicMemoryWStream stream;
+        SkJpegEncoder::Options options;
+        options.fOrigin = o;
+        if (!SkJpegEncoder::Encode(&stream, pm, options)) {
+            ERRORF(r, "Failed to encode with orientation %i", o);
+            return;
+        }
+
+        auto data = stream.detachAsData();
+        auto codec = SkCodec::MakeFromData(std::move(data));
+        if (!codec) {
+            ERRORF(r, "Failed to create a codec with orientation %i", o);
+            return;
+        }
+        REPORTER_ASSERT(r, codec->getOrigin() == o);
+    }
+}
+
+DEF_TEST(ExifWrite, r) {
+  {
+    // Parse exif data
+    sk_sp<SkData> data = GetResourceAsData("images/test2-nonuniform.exif");
+    REPORTER_ASSERT(r, nullptr != data);
+    SkExif::Metadata exif;
+    SkExif::Parse(exif, data.get());
+
+    // Write parsed data back to exif
+    sk_sp<SkData> writeData = SkExif::WriteExif(exif);
+
+    // Parse the new exif data that was written
+    SkExif::Metadata writeExif;
+    SkExif::Parse(writeExif, writeData.get());
+
+    REPORTER_ASSERT(r, !exif.fHdrHeadroom.has_value());
+
+    REPORTER_ASSERT(r, exif.fResolutionUnit.value());
+    REPORTER_ASSERT(r, 2 == exif.fResolutionUnit.value());
+    REPORTER_ASSERT(r, exif.fXResolution.has_value());
+    REPORTER_ASSERT(r, 144.f == exif.fXResolution.value());
+    REPORTER_ASSERT(r, exif.fYResolution.has_value());
+    REPORTER_ASSERT(r, 36.f == exif.fYResolution.value());
+
+    REPORTER_ASSERT(r, exif.fPixelXDimension.has_value());
+    REPORTER_ASSERT(r, 50 == exif.fPixelXDimension.value());
+    REPORTER_ASSERT(r, exif.fPixelYDimension.has_value());
+    REPORTER_ASSERT(r, 100 == exif.fPixelYDimension.value());
+  }
+  {
+    sk_sp<SkData> data = GetResourceAsData("images/test0-hdr.exif");
+    REPORTER_ASSERT(r, nullptr != data);
+    SkExif::Metadata exif;
+    SkExif::Parse(exif, data.get());
+
+    // Write parsed data back to exif
+    sk_sp<SkData> writeData = SkExif::WriteExif(exif);
+    REPORTER_ASSERT(r, nullptr == writeData);
+  }
+}
+
