@@ -64,6 +64,7 @@ GrGLCaps::GrGLCaps(const GrContextOptions& contextOptions,
     fVertexArrayObjectSupport = false;
     fDebugSupport = false;
     fES2CompatibilitySupport = false;
+    fStrictProtectedness = contextOptions.fStrictGLProtectedness;
     fDrawRangeElementsSupport = false;
     fBaseVertexBaseInstanceSupport = false;
     fIsCoreProfile = false;
@@ -1294,6 +1295,7 @@ void GrGLCaps::onDumpJSON(SkJSONWriter* writer) const {
     writer->appendBool("Vertex array object support", fVertexArrayObjectSupport);
     writer->appendBool("Debug support", fDebugSupport);
     writer->appendBool("ES2 compatibility support", fES2CompatibilitySupport);
+    writer->appendBool("Strict Protectedness", fStrictProtectedness);
     writer->appendBool("drawRangeElements support", fDrawRangeElementsSupport);
     writer->appendBool("Base (vertex base) instance support", fBaseVertexBaseInstanceSupport);
     writer->appendBool("Bind uniform location support", fBindUniformLocationSupport);
