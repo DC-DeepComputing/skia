@@ -141,24 +141,30 @@ bool GetAHardwareBufferProperties(
 
 bool AllocateAndBindImageMemory(skgpu::VulkanAlloc* outVulkanAlloc,
                                 VkImage image,
-                                const VkPhysicalDeviceMemoryProperties2& phyDevMemProps,
+                                const VkPhysicalDeviceMemoryProperties2& phyDevMemProps2,
                                 const VkAndroidHardwareBufferPropertiesANDROID& hwbProps,
                                 AHardwareBuffer* hardwareBuffer,
                                 const skgpu::VulkanInterface* interface,
-                                VkDevice device) {
-    VkResult result;
+                                VkDevice device,
+                                bool isProtected) {
+    // Determine what memory properties a memory type should have in order to be used for importing
+    // the AHardwareBuffer.
+    VkMemoryPropertyFlags desiredMemoryProps = VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT;
+    if (isProtected) {
+        desiredMemoryProps |= VK_MEMORY_PROPERTY_PROTECTED_BIT;
+    }
+
     uint32_t typeIndex = 0;
     bool foundHeap = false;
-    uint32_t memTypeCnt = phyDevMemProps.memoryProperties.memoryTypeCount;
-    for (uint32_t i = 0; i < memTypeCnt && !foundHeap; ++i) {
-        if (hwbProps.memoryTypeBits & (1 << i)) {
-            const VkPhysicalDeviceMemoryProperties& pdmp = phyDevMemProps.memoryProperties;
-            uint32_t supportedFlags = pdmp.memoryTypes[i].propertyFlags &
-                    VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT;
-            if (supportedFlags == VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT) {
-                typeIndex = i;
-                foundHeap = true;
-            }
+    const VkPhysicalDeviceMemoryProperties& phyDevMemProps = phyDevMemProps2.memoryProperties;
+    // Iterate through physical device memory types and check whether the hwbProps's memoryTypeBits
+    // indicate that the AHardwareBuffer *can* be imported as that memory type. If so, ensure its
+    // properties satisfy all the desired ones.
+    for (uint32_t i = 0; i < phyDevMemProps.memoryTypeCount && !foundHeap; ++i) {
+        if (hwbProps.memoryTypeBits & (1 << i) && ((phyDevMemProps.memoryTypes[i].propertyFlags &&
+                                                    desiredMemoryProps) == desiredMemoryProps)) {
+            typeIndex = i;
+            foundHeap = true;
         }
     }
 
@@ -173,6 +179,9 @@ bool AllocateAndBindImageMemory(skgpu::VulkanAlloc* outVulkanAlloc,
     if (!foundHeap && hwbProps.memoryTypeBits) {
         typeIndex = ffs(hwbProps.memoryTypeBits) - 1;
         foundHeap = true;
+        // Debug assertion to check that the memory type chosen respects protectedness
+        SkASSERT(!isProtected || ((phyDevMemProps.memoryTypes[typeIndex].propertyFlags
+                                   & VK_MEMORY_PROPERTY_PROTECTED_BIT) != 0));
     }
     if (!foundHeap) {
         return false;
@@ -196,6 +205,7 @@ bool AllocateAndBindImageMemory(skgpu::VulkanAlloc* outVulkanAlloc,
         typeIndex,                                   // memoryTypeIndex
     };
 
+    VkResult result;
     VkDeviceMemory memory;
     result = SHARED_GR_VULKAN_CALL(interface,
                                    AllocateMemory(device, &allocInfo, nullptr, &memory));
