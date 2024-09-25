@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2191839e_7b245a41",
+        "filename": "src/gpu/ganesh/gl/GrGLGpu.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 805,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-09-25T16:57:35Z",
+      "side": 1,
+      "message": "does this need to be info.fProtected \u003d\u003d GrProtected::kYes or will it cast correctly? Even if this is fine I wonder if changing it to match the check in the else would add to readability.",
+      "range": {
+        "startLine": 805,
+        "startChar": 29,
+        "endLine": 805,
+        "endChar": 44
+      },
+      "revId": "3268bfd96cd094e473ae4ea6e475506bb8a43d16",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
