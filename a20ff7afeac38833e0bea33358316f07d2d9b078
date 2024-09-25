@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8aaa7bce_aab8c4f9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-09-25T13:08:25Z",
+      "side": 1,
+      "message": "Greg - throwing you on to these while Michael is OOO. For this CL and its children, it is still showing changes from the cherry-picked CL (https://skia-review.googlesource.com/c/skia/+/902439) as diffs. That should be landing soon at which point I can rebase and those will not be highlighted.",
+      "revId": "a20ff7afeac38833e0bea33358316f07d2d9b078",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
