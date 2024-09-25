@@ -86,6 +86,15 @@ struct SK_API GrContextOptions {
      */
     Enable fSkipGLErrorChecks = Enable::kDefault;
 
+    /**
+     * When Ganesh is backed by ANGLE mapping to Vulkan, the OpenGL Protectedness handling has
+     * to be more like Vulkan's (i.e., all internally allocated objects that will be written to
+     * in a Protected Context must be Protected). This option allows the Protectedness handling
+     * to be toggled between these two modes (OpenGL native -> fRelaxedGLProtectedness == true;
+     * ANGLE onto Vulkan -> fRelaxedGLProtectedness == false).
+     */
+    bool fRelaxedGLProtectedness = false;
+
     /** Overrides: These options override feature detection using backend API queries. These
         overrides can only reduce the feature set or limits, never increase them beyond the
         detected values. */

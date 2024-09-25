@@ -361,6 +361,9 @@ public:
     /// Is there support for ES2 compatability?
     bool ES2CompatibilitySupport() const { return fES2CompatibilitySupport; }
 
+    // If false, match Vulkan's more stringent Protectedness handling
+    bool relaxedProtectedness() const { return fRelaxedProtectedness; }
+
     /// Is there support for glDrawRangeElements?
     bool drawRangeElementsSupport() const { return fDrawRangeElementsSupport; }
 
@@ -610,6 +613,7 @@ private:
     bool fVertexArrayObjectSupport : 1;
     bool fDebugSupport : 1;
     bool fES2CompatibilitySupport : 1;
+    bool fRelaxedProtectedness     : 1;
     bool fDrawRangeElementsSupport : 1;
     bool fBaseVertexBaseInstanceSupport : 1;
     bool fIsCoreProfile : 1;
