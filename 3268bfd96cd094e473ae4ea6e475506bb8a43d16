@@ -46,6 +46,30 @@
       },
       "revId": "3268bfd96cd094e473ae4ea6e475506bb8a43d16",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "50235c10_eff6d77f",
+        "filename": "src/gpu/ganesh/gl/GrGLGpu.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 805,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-09-25T20:32:02Z",
+      "side": 1,
+      "message": "woops I completely missed that we moved it back to skgpu::Protected after the bool operations.",
+      "parentUuid": "cf66f048_2772c3e2",
+      "range": {
+        "startLine": 805,
+        "startChar": 29,
+        "endLine": 805,
+        "endChar": 44
+      },
+      "revId": "3268bfd96cd094e473ae4ea6e475506bb8a43d16",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
