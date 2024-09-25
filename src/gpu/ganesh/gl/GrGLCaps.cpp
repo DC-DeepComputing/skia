@@ -224,6 +224,10 @@ void GrGLCaps::init(const GrContextOptions& contextOptions,
         fPreferFullscreenClears = true;
     }
 
+    if (ctxInfo.vendor() == GrGLVendor::kARM) {
+        fLooseyGooseyProtectedness = true;
+    }
+
     if (GR_IS_GR_GL(standard)) {
         fVertexArrayObjectSupport = version >= GR_GL_VER(3, 0) ||
                                     ctxInfo.hasExtension("GL_ARB_vertex_array_object") ||
