@@ -726,7 +726,7 @@ BackendTexture VulkanResourceProvider::onCreateBackendTexture(AHardwareBuffer* h
             vkContext->vulkanCaps().physicalDeviceMemoryProperties2();
     VulkanAlloc alloc;
     if (!AllocateAndBindImageMemory(&alloc, image, phyDevMemProps, hwbProps, hardwareBuffer,
-                                    vkContext->interface(), device)) {
+                                    vkContext->interface(), device, isProtectedContent)) {
         VULKAN_CALL(vkContext->interface(), DestroyImage(device, image, nullptr));
         return {};
     }

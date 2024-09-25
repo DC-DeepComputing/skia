@@ -145,7 +145,8 @@ bool AllocateAndBindImageMemory(skgpu::VulkanAlloc* outVulkanAlloc,
                                 const VkAndroidHardwareBufferPropertiesANDROID& hwbProps,
                                 AHardwareBuffer* hardwareBuffer,
                                 const skgpu::VulkanInterface* interface,
-                                VkDevice device) {
+                                VkDevice device,
+                                bool protectedMemoryRequired) {
     VkResult result;
     uint32_t typeIndex = 0;
     bool foundHeap = false;
@@ -155,7 +156,8 @@ bool AllocateAndBindImageMemory(skgpu::VulkanAlloc* outVulkanAlloc,
             const VkPhysicalDeviceMemoryProperties& pdmp = phyDevMemProps.memoryProperties;
             uint32_t supportedFlags = pdmp.memoryTypes[i].propertyFlags &
                     VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT;
-            if (supportedFlags == VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT) {
+            if (supportedFlags & VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT &&
+                (!protectedMemoryRequired || supportedFlags & VK_MEMORY_PROPERTY_PROTECTED_BIT)) {
                 typeIndex = i;
                 foundHeap = true;
             }
