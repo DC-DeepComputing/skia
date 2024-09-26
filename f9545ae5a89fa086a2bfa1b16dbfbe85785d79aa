@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f5e4f1f6_239059d3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-09-26T19:54:12Z",
+      "side": 1,
+      "message": "PTAL, I added a skip rule for a test that segfaults.",
+      "revId": "f9545ae5a89fa086a2bfa1b16dbfbe85785d79aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
