@@ -351,6 +351,10 @@ config("default") {
         # TODO(skia:13344): work out UBSAN link errors
         sanitizers = "address"
       }
+      if (is_mac) {
+          # https://github.com/llvm/llvm-project/issues/109074
+          cflags += [ "-fno-sanitize=function" ]
+      }
     } else if (sanitize == "HWASAN") {
       sanitizers = "hwaddress"
     } else if (sanitize == "TSAN") {
