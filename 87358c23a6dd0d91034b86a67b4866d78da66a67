@@ -16,6 +16,24 @@
       "message": "Can you link the C++20 bug?",
       "revId": "87358c23a6dd0d91034b86a67b4866d78da66a67",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "61245acb_b670fac4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-26T14:21:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b99d595c_c665ef44",
+      "revId": "87358c23a6dd0d91034b86a67b4866d78da66a67",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
