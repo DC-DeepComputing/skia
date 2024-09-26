@@ -184,6 +184,11 @@ struct GrGLTextureInfo {
     skgpu::Protected fProtected = skgpu::Protected::kNo;
 
     bool operator==(const GrGLTextureInfo& that) const {
+        SkDebugf("%d %d %d %d -- %d %d %d %d\n",
+                 fTarget, that.fTarget,
+                 fID, that.fID,
+                 fFormat, that.fFormat,
+                 (int) fProtected, (int) that.fProtected);
         return fTarget == that.fTarget &&
                fID == that.fID &&
                fFormat == that.fFormat &&
