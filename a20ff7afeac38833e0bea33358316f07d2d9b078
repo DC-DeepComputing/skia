@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d8a23b02_41750051",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-09-26T17:23:03Z",
+      "side": 1,
+      "message": "Good callout - so, if a shader *only* uses dynamic samplers, that can be indicated with an empty shader node data span. \n\nHowever, if a shader uses, say, both a dynamic and immutable sampler (I don\u0027t think this is possible to encounter right now, and I don\u0027t foresee it being all that likely, but theoretically)... then we would have to add a \"0\" to indicate \"at this binding index, there\u0027s a regular sampler\", followed by the immutable sampler description. If we only had the latter with no \"0\" for the dynamic sampler, then we would not know which binding index that sampler should be at.\n\nLMK if that makes sense or if you think encountering this scenario is impossible and we needn\u0027t worry about it, if the comment can be more clear, etc.",
+      "parentUuid": "8f481076_9187af40",
+      "range": {
+        "startLine": 262,
+        "startChar": 11,
+        "endLine": 262,
+        "endChar": 85
+      },
+      "revId": "a20ff7afeac38833e0bea33358316f07d2d9b078",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "81e8439e_69048d61",
         "filename": "src/gpu/graphite/ContextUtils.cpp",
         "patchSetId": 8
@@ -54,6 +78,30 @@
       "writtenOn": "2024-09-25T13:41:49Z",
       "side": 1,
       "message": "Add todo/comment that we want to remove these explicit snippitID checks and instead have a flag on the snippit if it might use immuatable samplers",
+      "range": {
+        "startLine": 308,
+        "startChar": 16,
+        "endLine": 308,
+        "endChar": 86
+      },
+      "revId": "a20ff7afeac38833e0bea33358316f07d2d9b078",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a03617e3_a983f11f",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 308,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-09-26T17:23:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "81e8439e_69048d61",
       "range": {
         "startLine": 308,
         "startChar": 16,
@@ -77,6 +125,30 @@
       "writtenOn": "2024-09-25T13:41:49Z",
       "side": 1,
       "message": "Maybe just add a comment here that we never expect render step samplers to be immutable",
+      "range": {
+        "startLine": 493,
+        "startChar": 90,
+        "endLine": 493,
+        "endChar": 91
+      },
+      "revId": "a20ff7afeac38833e0bea33358316f07d2d9b078",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "23867d97_d124d1d4",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 493,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-09-26T17:23:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cccddc30_d0007ddd",
       "range": {
         "startLine": 493,
         "startChar": 90,
