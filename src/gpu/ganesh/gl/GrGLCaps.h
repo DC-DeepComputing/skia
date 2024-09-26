@@ -361,6 +361,15 @@ public:
     /// Is there support for ES2 compatability?
     bool ES2CompatibilitySupport() const { return fES2CompatibilitySupport; }
 
+    /**
+     * When Ganesh is backed by ANGLE mapping to Vulkan, the Protectedness handling has to be
+     * more like the Vulkan case (i.e., all internally allocated objects that will be written to
+     * in a Protected Context must be Protected). Thus, for native OpenGL, 'strictProtectedness'
+     * should return false while, for ANGLE onto Vulkan, 'strictProtectedness' should return
+     * true.
+     */
+    bool strictProtectedness() const { return fStrictProtectedness; }
+
     /// Is there support for glDrawRangeElements?
     bool drawRangeElementsSupport() const { return fDrawRangeElementsSupport; }
 
@@ -610,6 +619,7 @@ private:
     bool fVertexArrayObjectSupport : 1;
     bool fDebugSupport : 1;
     bool fES2CompatibilitySupport : 1;
+    bool fStrictProtectedness     : 1;
     bool fDrawRangeElementsSupport : 1;
     bool fBaseVertexBaseInstanceSupport : 1;
     bool fIsCoreProfile : 1;
