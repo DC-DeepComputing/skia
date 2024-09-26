@@ -1,5 +1,23 @@
 {
-  "comments": [],
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "314a38ae_db68918d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-26T14:21:00Z",
+      "side": 1,
+      "message": "This will either fix the\n```\nfailed to install infra_internal/ios/xcode/mac: creating packages directory: mkdir /Volumes/Work/s/w/ir/cache/Xcode.app/.cipd: operation not permitted\n```\nerrors or make them much worse. Also, we will see if we have bandwidth to update all of these.",
+      "revId": "1e3134b0ae4168f4801b3d68872527a854bb6cbe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ],
   "submitRequirementResults": [
     {
       "submitRequirement": {
