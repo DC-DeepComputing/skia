@@ -52,6 +52,24 @@
       "parentUuid": "70b7c442_7ddbe0b0",
       "revId": "f8a76030fb1fde096ae51b2310f5a86096ae36ba",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8ed3837e_e23b59d1",
+        "filename": "infra/bots/recipe_modules/build/default.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 405,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-26T17:42:11Z",
+      "side": 1,
+      "message": "I\u0027m trying to use `os.path.realpath` to resolve the links, like\n```\nreal_xcode_clang_ver_dirs \u003d {os.path.realpath(d) for d in xcode_clang_ver_dirs}\n```\nbut this doesn\u0027t seem to work because `d` is a `Path`?",
+      "parentUuid": "c3312205_b71ca1c3",
+      "revId": "f8a76030fb1fde096ae51b2310f5a86096ae36ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
