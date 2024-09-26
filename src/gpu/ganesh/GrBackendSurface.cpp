@@ -8,8 +8,8 @@
 #include "include/gpu/ganesh/GrBackendSurface.h"
 
 #include "include/core/SkTextureCompressionType.h"
-#include "include/gpu/ganesh/GrTypes.h"
 #include "include/gpu/MutableTextureState.h"  // IWYU pragma: keep
+#include "include/gpu/ganesh/GrTypes.h"
 #include "include/private/base/SkAssert.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/gpu/GpuTypesPriv.h"
@@ -462,6 +462,7 @@ GrBackendFormat GrBackendTexture::getBackendFormat() const {
 #if defined(GPU_TEST_UTILS)
 bool GrBackendTexture::TestingOnly_Equals(const GrBackendTexture& t0, const GrBackendTexture& t1) {
     if (!t0.isValid() || !t1.isValid()) {
+        SkDebugf("1\n");
         return false; // two invalid backend textures are not considered equal
     }
 
@@ -469,6 +470,11 @@ bool GrBackendTexture::TestingOnly_Equals(const GrBackendTexture& t0, const GrBa
         t0.fHeight != t1.fHeight ||
         t0.fMipmapped != t1.fMipmapped ||
         t0.fBackend != t1.fBackend) {
+        SkDebugf("2 %d %d, %d %d, %d %d, %d, %d\n",
+                 t0.fWidth, t1.fWidth,
+                 t0.fHeight, t1.fHeight,
+                 (int) t0.fMipmapped, (int) t1.fMipmapped,
+                 (int) t0.fBackend, (int) t1.fBackend);
         return false;
     }
 
