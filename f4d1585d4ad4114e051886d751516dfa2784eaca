@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d2df33a1_81d70249",
+        "filename": "src/gpu/ganesh/gl/GrGLCaps.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 405,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-09-26T19:41:23Z",
+      "side": 1,
+      "message": "Is this part of the check needed? It looks like a lot of places that call this additionally have checks for caps.supportsProtectedContent() themselves.",
+      "range": {
+        "startLine": 405,
+        "startChar": 27,
+        "endLine": 405,
+        "endChar": 55
+      },
+      "revId": "f4d1585d4ad4114e051886d751516dfa2784eaca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d187cdcb_40a81a02",
+        "filename": "src/gpu/ganesh/gl/GrGLCaps.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 366,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-09-26T19:41:23Z",
+      "side": 1,
+      "message": "We usually put the reasoning in the cpp code when someone sets the workaround as something different than the default. This usually just describes what the return value means.\n\nWe need to explain why Angle needs it (i.e. causes non-protected draws to happen on protected queue).",
+      "range": {
+        "startLine": 365,
+        "startChar": 7,
+        "endLine": 366,
+        "endChar": 32
+      },
+      "revId": "f4d1585d4ad4114e051886d751516dfa2784eaca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
