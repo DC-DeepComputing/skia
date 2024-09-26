@@ -9,7 +9,10 @@
 
 #include "include/core/SkData.h"
 #include "include/core/SkRefCnt.h"
+#include "include/core/SkStream.h"
+#include "src/codec/SkCodecPriv.h"
 #include "src/codec/SkTiffUtility.h"
+#include "src/core/SkStreamPriv.h"
 
 #include <algorithm>
 #include <cmath>
@@ -188,6 +191,121 @@ void Parse(Metadata& metadata, const SkData* data) {
                 dataRef, littleEndian, ifdOffset, /*allowTruncated=*/true);
         parse_ifd(metadata, std::move(dataRef), std::move(ifd), littleEndian, /*isRoot=*/true);
     }
+}
+
+// Helper function to write a single IFD entry.
+bool write_entry(uint16_t tag, uint16_t type, uint32_t count, uint32_t value,
+                uint32_t* endOfData, SkWStream* stream, SkWStream* buffer) {
+    bool write_succeed = true;
+    write_succeed &= SkWStreamWriteU16BE(stream, tag);
+    write_succeed &= SkWStreamWriteU16BE(stream, type);
+    write_succeed &= SkWStreamWriteU32BE(stream, count);
+    switch (tag) {
+      case kOriginTag:
+      case kResolutionUnitTag:
+        write_succeed &= SkWStreamWriteU16BE(stream, value);
+        write_succeed &= SkWStreamWriteU16BE(stream, 0); // Complete the IFD entry.
+        return write_succeed;
+      case kPixelXDimensionTag:
+      case kPixelYDimensionTag:
+        write_succeed &= SkWStreamWriteU32BE(stream, value);
+        return write_succeed;
+      case kXResolutionTag:
+      case kYResolutionTag:
+        // If the number of bytes for the type of the entry is greater than 4, we have
+        // to append the value to the end and replace the value section with an offset
+        // to where the data can be found.
+        write_succeed &= SkWStreamWriteU32BE(stream, *endOfData);
+        *endOfData += 8;
+        write_succeed &= SkWStreamWriteU32BE(buffer, value); // Numerator
+        write_succeed &= SkWStreamWriteU32BE(buffer, 1); // Denominator
+        return write_succeed;
+      default:
+        return false;
+    }
+}
+
+sk_sp<SkData> WriteExif(Metadata& metadata) {
+    // Cannot write an IFD entry for MakerNote from the HDR Headroom. Information
+    // about maker48 and maker33 is lost in encode.
+    // See documentation at:
+    // https://developer.apple.com/documentation/appkit/images_and_pdf/applying_apple_hdr_effect_to_your_photos
+    if (metadata.fHdrHeadroom.has_value()) {
+        SkCodecPrintf("Cannot encode maker noter from the headroom value.\n");
+        return nullptr;
+    }
+
+    SkDynamicMemoryWStream stream;
+    // This buffer will hold the values that are more than 4 bytes and will be
+    // appended to the end of the data in the end.
+    SkDynamicMemoryWStream buffer;
+
+    // Write the IFD header.
+    stream.write(SkTiff::kEndianBig, sizeof(SkTiff::kEndianBig));
+    // Offset of index IFD.
+    if (!SkWStreamWriteU32BE(&stream, 8)) {
+        return nullptr;
+    }
+    // Count the number of valid metadata entries.
+    uint16_t numTags = 0;
+    if (metadata.fOrigin.has_value()) numTags++;
+    if (metadata.fResolutionUnit.has_value()) numTags++;
+    if (metadata.fXResolution.has_value()) numTags++;
+    if (metadata.fYResolution.has_value()) numTags++;
+    if (metadata.fPixelXDimension.has_value()) numTags++;
+    if (metadata.fPixelYDimension.has_value()) numTags++;
+
+    // Write the number of tags in the IFD.
+    SkWStreamWriteU16BE(&stream, numTags);
+    uint32_t endOfData = (SkTiff::kSizeEntry * numTags) + SkTiff::kSizeLong;
+
+    // Write the IFD entries.
+    if (metadata.fOrigin.has_value()) {
+        if (!write_entry(kOriginTag, SkTiff::kTypeUnsignedShort, 1, metadata.fOrigin.value(),
+            &endOfData, &stream, &buffer)) {
+          return nullptr;
+        }
+    }
+    if (metadata.fResolutionUnit.has_value()) {
+        if (!write_entry(kResolutionUnitTag, SkTiff::kTypeUnsignedShort, 1, metadata.fResolutionUnit.value(),
+            &endOfData, &stream, &buffer)) {
+          return nullptr;
+        }
+    }
+    if (metadata.fXResolution.has_value()) {
+        if (!write_entry(kXResolutionTag, SkTiff::kTypeUnsignedRational, 1, metadata.fXResolution.value(),
+            &endOfData, &stream, &buffer)) {
+          return nullptr;
+        }
+    }
+    if (metadata.fYResolution.has_value()) {
+        if (!write_entry(kYResolutionTag, SkTiff::kTypeUnsignedRational, 1, metadata.fYResolution.value(),
+            &endOfData, &stream, &buffer)) {
+          return nullptr;
+        }
+    }
+    if (metadata.fPixelXDimension.has_value()) {
+        if (!write_entry(kPixelXDimensionTag, SkTiff::kTypeUnsignedLong, 1, metadata.fPixelXDimension.value(),
+            &endOfData, &stream, &buffer)) {
+          return nullptr;
+        }
+    }
+    if (metadata.fPixelYDimension.has_value()) {
+        if (!write_entry(kPixelYDimensionTag, SkTiff::kTypeUnsignedLong, 1, metadata.fPixelYDimension.value(),
+            &endOfData, &stream, &buffer)) {
+          return nullptr;
+        }
+    }
+    // Next IFD offset (0 for no next IFD).
+    if (!SkWStreamWriteU32BE(&stream, 0)) {
+        return nullptr;
+    }
+    // Add the data buffer to the end of the stream.
+    sk_sp<SkData> bufferData = buffer.detachAsData();
+    if (!stream.write(bufferData->data(), bufferData->size())) {
+      return nullptr;
+    }
+    return stream.detachAsData();
 }
 
 }  // namespace SkExif
