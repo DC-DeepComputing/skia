@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "40da91f1_becafe14",
+        "filename": "src/gpu/ganesh/gl/GrGLCaps.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 405,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-09-26T23:14:11Z",
+      "side": 1,
+      "message": "PTAL. I changed all the call sites to, hopefully, make the behavior clearer. Now, an object is Protected if it was requested to be Protected or if we\u0027re in the problematic case (ANGLE backed onto Protected Vulkan).",
+      "parentUuid": "d2df33a1_81d70249",
+      "range": {
+        "startLine": 405,
+        "startChar": 27,
+        "endLine": 405,
+        "endChar": 55
+      },
+      "revId": "f4d1585d4ad4114e051886d751516dfa2784eaca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d187cdcb_40a81a02",
         "filename": "src/gpu/ganesh/gl/GrGLCaps.h",
         "patchSetId": 12
@@ -37,6 +61,30 @@
       "writtenOn": "2024-09-26T19:41:23Z",
       "side": 1,
       "message": "We usually put the reasoning in the cpp code when someone sets the workaround as something different than the default. This usually just describes what the return value means.\n\nWe need to explain why Angle needs it (i.e. causes non-protected draws to happen on protected queue).",
+      "range": {
+        "startLine": 365,
+        "startChar": 7,
+        "endLine": 366,
+        "endChar": 32
+      },
+      "revId": "f4d1585d4ad4114e051886d751516dfa2784eaca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "871059c9_2dccfea3",
+        "filename": "src/gpu/ganesh/gl/GrGLCaps.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 366,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-09-26T23:14:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d187cdcb_40a81a02",
       "range": {
         "startLine": 365,
         "startChar": 7,
