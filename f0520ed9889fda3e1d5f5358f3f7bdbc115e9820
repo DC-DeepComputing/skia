@@ -34,6 +34,24 @@
       "parentUuid": "3adbbc6e_75c54b22",
       "revId": "f0520ed9889fda3e1d5f5358f3f7bdbc115e9820",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2a1a5b2_0a91fe2b",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 1
+      },
+      "lineNbr": 907,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-26T14:32:29Z",
+      "side": 1,
+      "message": "Yeah, this is fine. I just wanted the checks here to be as close as possible to what we actually know at this level in the stack to reduce the chances of anything unexpected happening (reduce future maintenance).",
+      "parentUuid": "8e7e5794_531f9cf0",
+      "revId": "f0520ed9889fda3e1d5f5358f3f7bdbc115e9820",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
