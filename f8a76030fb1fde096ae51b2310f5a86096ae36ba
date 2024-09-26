@@ -16,6 +16,24 @@
       "message": "Is there a way in all this recipe python code to know if one is a symlink to the other (the resolved paths are the same, and there is only one resolved path)?",
       "revId": "f8a76030fb1fde096ae51b2310f5a86096ae36ba",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70b7c442_7ddbe0b0",
+        "filename": "infra/bots/recipe_modules/build/default.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 405,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-26T17:04:49Z",
+      "side": 1,
+      "message": "Hmmmm... not seeing any useful helpers in `recipes-py/recipe_modules/file/api.py`.",
+      "parentUuid": "09c5ee35_c579818d",
+      "revId": "f8a76030fb1fde096ae51b2310f5a86096ae36ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
