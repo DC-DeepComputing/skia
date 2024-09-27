@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "00eee989_92a7c72c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 16
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-09-27T17:05:25Z",
+      "side": 1,
+      "message": "Understood. I\u0027m just saying some clients may prefer a smaller file to an orientation that is simply the default. I recommended in https://issues.skia.org/issues/310510975#comment4 that we use `std::optional` to allow that behavior.",
+      "parentUuid": "f1c8becb_de9a6001",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 6
+      },
+      "revId": "da24ad6235479471c85e447124a1cb684d7c635c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "359a4505_ca3d52d5",
         "filename": "/COMMIT_MSG",
         "patchSetId": 16
@@ -201,6 +225,24 @@
       "side": 1,
       "message": "I agree, let me know if there is a better way for this. This is similar functionality to how ICC is implemented: https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/encode/SkJpegEncoderImpl.cpp;drc\u003d481596642e0d9903c24a729811bc708e29d7539c;l\u003d437",
       "parentUuid": "713218d4_bc0ab243",
+      "revId": "da24ad6235479471c85e447124a1cb684d7c635c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e2069ceb_9499f35e",
+        "filename": "src/encode/SkJpegEncoderImpl.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 475,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-09-27T17:05:25Z",
+      "side": 1,
+      "message": "I think one *different* way would be to pass an `SkWStream` to `exif_from_origin`, instead of having it return an `SkData`. I don\u0027t know that it\u0027s \"better\", though. I\u0027m fine with being consistent with other uses.",
+      "parentUuid": "87182d14_3b97f972",
       "revId": "da24ad6235479471c85e447124a1cb684d7c635c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },

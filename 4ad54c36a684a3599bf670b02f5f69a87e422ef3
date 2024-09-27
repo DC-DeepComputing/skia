@@ -1,0 +1,245 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4cb26c4_0c9e0180",
+        "filename": "src/codec/SkExif.cpp",
+        "patchSetId": 25
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-09-27T17:05:25Z",
+      "side": 1,
+      "message": "Let\u0027s come up with a more descriptive name for this. I\u0027m not super familiar with EXIF, so I may not be the right person to come up with it, but maybe something like `bufferForLargeValues`?",
+      "range": {
+        "startLine": 241,
+        "startChar": 27,
+        "endLine": 241,
+        "endChar": 33
+      },
+      "revId": "4ad54c36a684a3599bf670b02f5f69a87e422ef3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e92e798_eb3d90c1",
+        "filename": "src/codec/SkExif.cpp",
+        "patchSetId": 25
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-09-27T17:05:25Z",
+      "side": 1,
+      "message": "nit: Maybe combine this into one condition with `\u0026\u0026`? Same for the other `if` conditions below.",
+      "range": {
+        "startLine": 263,
+        "startChar": 4,
+        "endLine": 265,
+        "endChar": 72
+      },
+      "revId": "4ad54c36a684a3599bf670b02f5f69a87e422ef3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0bc57dc6_f7da3f84",
+        "filename": "src/codec/SkExif.cpp",
+        "patchSetId": 25
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-09-27T17:05:25Z",
+      "side": 1,
+      "message": "nit: This should go on the prior line at the end. (Same for the other `if` blocks below.)",
+      "range": {
+        "startLine": 266,
+        "startChar": 8,
+        "endLine": 266,
+        "endChar": 9
+      },
+      "revId": "4ad54c36a684a3599bf670b02f5f69a87e422ef3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d28b88a6_d6090305",
+        "filename": "src/codec/SkExif.cpp",
+        "patchSetId": 25
+      },
+      "lineNbr": 313,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-09-27T17:05:25Z",
+      "side": 1,
+      "message": "Alternatively, I think it might be more efficient to write\n\n```\nif (!buffer.writeToStream(stream)) {\n    return nullptr;\n}\n```",
+      "range": {
+        "startLine": 309,
+        "startChar": 0,
+        "endLine": 313,
+        "endChar": 5
+      },
+      "revId": "4ad54c36a684a3599bf670b02f5f69a87e422ef3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bca03646_03348207",
+        "filename": "src/encode/BUILD.bazel",
+        "patchSetId": 25
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-09-27T17:05:25Z",
+      "side": 1,
+      "message": "I\u0027m not familiar enough to know why this is necessary, but it does seem a little funny to me that `encoder_common` depends on `any_decoder`.",
+      "revId": "4ad54c36a684a3599bf670b02f5f69a87e422ef3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c5ff7429_bd74466c",
+        "filename": "src/encode/SkImageEncoderFns.h",
+        "patchSetId": 25
+      },
+      "lineNbr": 243,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-09-27T17:05:25Z",
+      "side": 1,
+      "message": "b/310510975 suggests that we encode an origin even if the origin is the default. I prefer to make it optional, but this is kind of a non-intuitive side way to do that - just set this to an invalid value and we\u0027ll skip it.\n\nI think we should make it `optional` and report an error if they use an invalid value.",
+      "range": {
+        "startLine": 241,
+        "startChar": 0,
+        "endLine": 243,
+        "endChar": 5
+      },
+      "revId": "4ad54c36a684a3599bf670b02f5f69a87e422ef3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e8971f2_e6206a9a",
+        "filename": "src/encode/SkJpegEncoderImpl.h",
+        "patchSetId": 25
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-09-27T17:05:25Z",
+      "side": 1,
+      "message": "From the [earlier comment](https://skia-review.googlesource.com/c/skia/+/901166/comment/c6a05b85_e10fb9f4/):\n\n\u003e We don\u0027t typically mark a parameter passed by value as `const` - it doesn\u0027t matter to the caller whether we modify it or not.\n\nOh! You fixed the `cpp` file, but not the method declaration, here.",
+      "range": {
+        "startLine": 57,
+        "startChar": 44,
+        "endLine": 57,
+        "endChar": 49
+      },
+      "revId": "4ad54c36a684a3599bf670b02f5f69a87e422ef3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f1ffb18_599ad7a7",
+        "filename": "tests/ExifTest.cpp",
+        "patchSetId": 25
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-09-27T17:05:25Z",
+      "side": 1,
+      "message": "I\u0027m not familiar with these files - do they cover all of the fields we can now write?",
+      "range": {
+        "startLine": 259,
+        "startChar": 43,
+        "endLine": 259,
+        "endChar": 73
+      },
+      "revId": "4ad54c36a684a3599bf670b02f5f69a87e422ef3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65841b56_ffa157e8",
+        "filename": "tests/ExifTest.cpp",
+        "patchSetId": 25
+      },
+      "lineNbr": 273,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-09-27T17:05:25Z",
+      "side": 1,
+      "message": "I think you meant `writeExif`? You haven\u0027t done anything with it after writing to it.\n\nBut I think what you *really* want to do is verify that `writeExif` matches `exif`, right? I don\u0027t see an `operator\u003d\u003d` defined for it, so you\u0027ll need to manually do it, or write your own for this file. (You could also write one for more general use, but if we don\u0027t have one already, maybe we don\u0027t want it?)\n\nFor either the test or your `operator\u003d\u003d`, you can just compare the fields; `std::optional` does the right thing. If you put it in the test, it should look something like\n\n```\nREPORTER_ASSERT(r, exif.fResolutionUnit \u003d\u003d writeExif.fResolutionUnit);\nREPORTER_ASSERT(r, exif.fXResolution \u003d\u003d writeExif.fXResolution);\n```\netc.",
+      "range": {
+        "startLine": 273,
+        "startChar": 24,
+        "endLine": 273,
+        "endChar": 28
+      },
+      "revId": "4ad54c36a684a3599bf670b02f5f69a87e422ef3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0370e7da_6061d23c",
+        "filename": "tests/ExifTest.cpp",
+        "patchSetId": 25
+      },
+      "lineNbr": 295,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-09-27T17:05:25Z",
+      "side": 1,
+      "message": "Why are we asserting that `WriteExif` failed?",
+      "revId": "4ad54c36a684a3599bf670b02f5f69a87e422ef3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7387e948_da986fd5",
+        "filename": "tests/ExifTest.cpp",
+        "patchSetId": 25
+      },
+      "lineNbr": 296,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-09-27T17:05:25Z",
+      "side": 1,
+      "message": "This can just be a separate test.",
+      "range": {
+        "startLine": 287,
+        "startChar": 0,
+        "endLine": 296,
+        "endChar": 3
+      },
+      "revId": "4ad54c36a684a3599bf670b02f5f69a87e422ef3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
