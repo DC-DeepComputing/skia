@@ -90,6 +90,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5e75f9a9_3cfb15e2",
+        "filename": "src/gpu/ganesh/gl/GrGLGpu.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 1774,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-09-27T13:41:46Z",
+      "side": 1,
+      "message": "Since this is going to be cherry-picked to a Android Release I would lean towards making the CL as minimal as possible.",
+      "parentUuid": "e6ad9331_b9fdfcf1",
+      "range": {
+        "startLine": 1774,
+        "startChar": 8,
+        "endLine": 1774,
+        "endChar": 89
+      },
+      "revId": "0d23ea1a54400f5bf82f444bc5072e91b05d8a69",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2df4737a_5e133472",
         "filename": "src/gpu/ganesh/gl/GrGLGpu.cpp",
         "patchSetId": 18
