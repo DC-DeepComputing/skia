@@ -36,8 +36,10 @@ public:
 private:
     struct DecodingState {
         SkSpan<uint8_t> dst;
-        size_t dstRowSize;  // in bytes.
-        size_t bytesPerPixel;
+        size_t dstRowSize = 0;     // Destination row size in bytes.
+        size_t bytesPerPixel = 0;  // Stashed `dstInfo.bytesPerPixel()`
+        size_t xOffset = 0;        // `fcTL.x_offset` * `bytesPerPixel`
+        size_t yOffset = 0;        // `fcTL.y_offset` * `bytesPerPixel`
     };
 
     // Helper for validating parameters of `onGetPixels` and/or

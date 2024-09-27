@@ -251,15 +251,12 @@ SkCodec::Result SkPngRustCodec::startDecoding(const SkImageInfo& dstInfo,
                                               size_t rowBytes,
                                               const Options& options,
                                               DecodingState* decodingState) {
-    decodingState->dst = SkSpan(static_cast<uint8_t*>(pixels), rowBytes * dstInfo.height());
-    decodingState->dstRowSize = rowBytes;
-    decodingState->bytesPerPixel = dstInfo.bytesPerPixel();
-
     // TODO(https://crbug.com/356922876): Expose `png` crate's ability to decode
     // multiple frames.
     if (options.fFrameIndex != 0) {
         return kUnimplemented;
     }
+    const SkFrame* frame = &fFrames[0];
 
     // TODO(https://crbug.com/362830091): Consider handling `fSubset` (if not
     // for `onGetPixels` then at least for `onStartIncrementalDecode`).
@@ -267,7 +264,17 @@ SkCodec::Result SkPngRustCodec::startDecoding(const SkImageInfo& dstInfo,
         return kUnimplemented;
     }
 
-    return this->initializeXforms(dstInfo, options);
+    Result result = this->initializeXforms(dstInfo, options, dstInfo.width());
+    if (result != kSuccess) {
+        return result;
+    }
+
+    decodingState->dst = SkSpan(static_cast<uint8_t*>(pixels), rowBytes * dstInfo.height());
+    decodingState->dstRowSize = rowBytes;
+    decodingState->bytesPerPixel = dstInfo.bytesPerPixel();
+    decodingState->xOffset = decodingState->bytesPerPixel * frame->xOffset();
+    decodingState->yOffset = decodingState->dstRowSize * frame->yOffset();
+    return kSuccess;
 }
 
 SkCodec::Result SkPngRustCodec::incrementalDecode(DecodingState& decodingState,
@@ -301,22 +308,23 @@ SkCodec::Result SkPngRustCodec::incrementalDecode(DecodingState& decodingState,
 
         if (interlaced) {
             // Copy (potentially shorter for initial Adam7 passes) `decodedRow`
-            // into a full-width `decodedInterlacedFullWidthRow`.  This is
-            // needed becxause `applyXformRow` requires full-width rows as
-            // input (can't change `SkSwizzler::fSrcWidth` after
-            // `initializeXforms`).
+            // into a full-frame-width `decodedInterlacedFullWidthRow`.  This is
+            // needed becxause `applyXformRow` requires full-width rows as input
+            // (can't change `SkSwizzler::fSrcWidth` after `initializeXforms`).
             //
             // TODO(https://crbug.com/357876243): Having `Reader.read_row` API (see
             // https://github.com/image-rs/image-png/pull/493) would help avoid
             // an extra copy here.
-            decodedInterlacedFullWidthRow.resize(this->getEncodedInfoRowSize(), 0x00);
+            decodedInterlacedFullWidthRow.resize(this->getEncodedRowBytes(), 0x00);
             SkASSERT(decodedInterlacedFullWidthRow.size() >= decodedRow.size());
             memcpy(decodedInterlacedFullWidthRow.data(), decodedRow.data(), decodedRow.size());
 
             xformedInterlacedRow.resize(decodingState.dstRowSize, 0x00);
             this->applyXformRow(xformedInterlacedRow, decodedInterlacedFullWidthRow);
 
-            fReader->expand_last_interlaced_row(rust::Slice<uint8_t>(decodingState.dst),
+            SkSpan<uint8_t> dst =
+                    decodingState.dst.subspan(decodingState.xOffset + decodingState.yOffset);
+            fReader->expand_last_interlaced_row(rust::Slice<uint8_t>(dst),
                                                 decodingState.dstRowSize,
                                                 rust::Slice<const uint8_t>(xformedInterlacedRow),
                                                 decodingState.bytesPerPixel * 8);
@@ -324,7 +332,9 @@ SkCodec::Result SkPngRustCodec::incrementalDecode(DecodingState& decodingState,
             // are not decoded until pass 6 (or 7 depending on how you look) of
             // Adam7 interlacing scheme.
         } else {
-            this->applyXformRow(decodingState.dst, decodedRow);
+            SkSpan<uint8_t> dst = decodingState.dst.subspan(decodingState.xOffset);
+            this->applyXformRow(dst, decodedRow);
+
             decodingState.dst = decodingState.dst.subspan(decodingState.dstRowSize);
             rowsDecoded++;
         }
