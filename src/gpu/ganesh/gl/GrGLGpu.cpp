@@ -725,8 +725,8 @@ static bool check_backend_texture(const GrBackendTexture& backendTex,
     desc->fTarget = info.fTarget;
     desc->fID = info.fID;
     desc->fFormat = GrGLFormatFromGLEnum(info.fFormat);
-    desc->fIsProtected = GrProtected(info.fProtected == GrProtected::kYes ||
-                                     caps.supportsProtectedContent());
+    desc->fIsProtected = skgpu::Protected(info.fProtected == skgpu::Protected::kYes ||
+                                          caps.strictProtectedness());
 
     if (desc->fFormat == GrGLFormat::kUnknown) {
         return false;
@@ -801,8 +801,8 @@ static bool check_compressed_backend_texture(const GrBackendTexture& backendTex,
     desc->fTarget = info.fTarget;
     desc->fID = info.fID;
     desc->fFormat = GrGLFormatFromGLEnum(info.fFormat);
-    desc->fIsProtected = GrProtected(info.fProtected == GrProtected::kYes ||
-                                     caps.supportsProtectedContent());
+    desc->fIsProtected = skgpu::Protected(info.fProtected == skgpu::Protected::kYes ||
+                                          caps.strictProtectedness());
 
     if (desc->fFormat == GrGLFormat::kUnknown) {
         return false;
@@ -1547,8 +1547,8 @@ sk_sp<GrTexture> GrGLGpu::onCreateTexture(SkISize dimensions,
     texDesc.fOwnership = GrBackendObjectOwnership::kOwned;
     SkASSERT(texDesc.fFormat != GrGLFormat::kUnknown);
     SkASSERT(!GrGLFormatIsCompressed(texDesc.fFormat));
-    texDesc.fIsProtected = GrProtected(isProtected == GrProtected::kYes ||
-                                       this->glCaps().supportsProtectedContent());
+    texDesc.fIsProtected = skgpu::Protected(isProtected == skgpu::Protected::kYes ||
+                                            this->glCaps().strictProtectedness());
 
     texDesc.fID = this->createTexture(dimensions, texDesc.fFormat, texDesc.fTarget, renderable,
                                       &initialState, mipLevelCount, texDesc.fIsProtected, label);
@@ -1639,8 +1639,8 @@ sk_sp<GrTexture> GrGLGpu::onCreateCompressedTexture(SkISize dimensions,
     desc.fTarget = GR_GL_TEXTURE_2D;
     desc.fOwnership = GrBackendObjectOwnership::kOwned;
     desc.fFormat = GrBackendFormats::AsGLFormat(format);
-    desc.fIsProtected = GrProtected(isProtected == GrProtected::kYes ||
-                                    this->glCaps().supportsProtectedContent());
+    desc.fIsProtected = skgpu::Protected(isProtected == skgpu::Protected::kYes ||
+                                         this->glCaps().strictProtectedness());
     desc.fID = this->createCompressedTexture2D(desc.fSize, compression, desc.fFormat,
                                                mipmapped, desc.fIsProtected, &initialState);
     if (!desc.fID) {
@@ -1692,8 +1692,8 @@ GrBackendTexture GrGLGpu::onCreateCompressedBackendTexture(SkISize dimensions,
 
     info.fTarget = GR_GL_TEXTURE_2D;
     info.fFormat = GrGLFormatToEnum(glFormat);
-    info.fProtected = GrProtected(isProtected == GrProtected::kYes ||
-                                  this->glCaps().supportsProtectedContent());
+    info.fProtected = skgpu::Protected(isProtected == skgpu::Protected::kYes ||
+                                       this->glCaps().strictProtectedness());
     info.fID = this->createCompressedTexture2D(dimensions, compression, glFormat,
                                                mipmapped, info.fProtected, &initialState);
     if (!info.fID) {
@@ -1771,7 +1771,7 @@ int GrGLGpu::getCompatibleStencilIndex(GrGLFormat format) {
         // Default to unsupported, set this if we find a stencil format that works.
         int firstWorkingStencilFormatIndex = -1;
 
-        GrProtected isProtected = GrProtected(this->glCaps().supportsProtectedContent());
+        GrProtected isProtected = skgpu::Protected(this->glCaps().strictProtectedness());
 
         GrGLuint colorID = this->createTexture({kSize, kSize}, format, GR_GL_TEXTURE_2D,
                                                GrRenderable::kYes,
@@ -1876,7 +1876,9 @@ GrGLuint GrGLGpu::createCompressedTexture2D(
                                                this->glCaps(),
                                                GR_GL_TEXTURE_2D);
 
-    SkASSERT((GrProtected::kYes == isProtected) == this->glCaps().supportsProtectedContent());
+    if (this->glCaps().strictProtectedness()) {
+        SkASSERT(isProtected == skgpu::Protected::kYes);
+    }
     if (GrProtected::kYes == isProtected) {
         if (this->glCaps().supportsProtectedContent()) {
             GL_CALL(TexParameteri(GR_GL_TEXTURE_2D, GR_GL_TEXTURE_PROTECTED_EXT, GR_GL_TRUE));
@@ -1922,7 +1924,9 @@ GrGLuint GrGLGpu::createTexture(SkISize dimensions,
         set_initial_texture_params(this->glInterface(), this->glCaps(), target);
     }
 
-    SkASSERT((GrProtected::kYes == isProtected) == this->glCaps().supportsProtectedContent());
+    if (this->glCaps().strictProtectedness()) {
+        SkASSERT(isProtected == skgpu::Protected::kYes);
+    }
     if (GrProtected::kYes == isProtected) {
         if (this->glCaps().supportsProtectedContent()) {
             GL_CALL(TexParameteri(target, GR_GL_TEXTURE_PROTECTED_EXT, GR_GL_TRUE));
@@ -3949,8 +3953,8 @@ GrBackendTexture GrGLGpu::onCreateBackendTexture(SkISize dimensions,
             info.fTarget = GR_GL_TEXTURE_RECTANGLE;
             break;
     }
-    info.fProtected = GrProtected(isProtected == GrProtected::kYes ||
-                                  this->glCaps().supportsProtectedContent());
+    info.fProtected = skgpu::Protected(isProtected == skgpu::Protected::kYes ||
+                                       this->glCaps().strictProtectedness());
     info.fFormat = GrGLFormatToEnum(glFormat);
     info.fID = this->createTexture(dimensions, glFormat, info.fTarget, renderable, &initialState,
                                    numMipLevels, info.fProtected, label);
@@ -4096,8 +4100,8 @@ GrBackendRenderTarget GrGLGpu::createTestingOnlyBackendRenderTarget(SkISize dime
     GrGLFramebufferInfo info;
     info.fFBOID = 0;
     info.fFormat = GrGLFormatToEnum(format);
-    info.fProtected = GrProtected(isProtected == GrProtected::kYes ||
-                                  this->glCaps().supportsProtectedContent());
+    info.fProtected = skgpu::Protected(isProtected == skgpu::Protected::kYes ||
+                                       this->glCaps().strictProtectedness());
 
     auto deleteIDs = [&](bool saveFBO = false) {
         if (colorID) {
