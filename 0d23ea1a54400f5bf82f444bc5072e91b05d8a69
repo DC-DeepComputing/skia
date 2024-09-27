@@ -63,6 +63,75 @@
       },
       "revId": "0d23ea1a54400f5bf82f444bc5072e91b05d8a69",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6ad9331_b9fdfcf1",
+        "filename": "src/gpu/ganesh/gl/GrGLGpu.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 1774,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-09-27T13:16:06Z",
+      "side": 1,
+      "message": "I think this case really needs a Protected parameter passed it so we know what the stencil will be (obviously this is related to current stencil bug). Then the texture we create here would just also match that flag/have the strict test. Would it be silly to update the function signature now to take in a Protected flag but default it to kNo with comment to fix it with future stencil fix? And then we can make this check look like all the others in the CL?",
+      "range": {
+        "startLine": 1774,
+        "startChar": 8,
+        "endLine": 1774,
+        "endChar": 89
+      },
+      "revId": "0d23ea1a54400f5bf82f444bc5072e91b05d8a69",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2df4737a_5e133472",
+        "filename": "src/gpu/ganesh/gl/GrGLGpu.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 1881,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-09-27T13:16:06Z",
+      "side": 1,
+      "message": "We are losing out on the part of the assert that checks\n\n```\nif (isProtected \u003d\u003d skgpu::Protected::kYes) {\n    SkASSERT(this-\u003eglCaps().supportsProtectedContent());\n}\n```\n\nSo maybe we have:\n```\nSkASSERT(isProtected \u003d\u003d skgpu::Protected::kNo || this-\u003eglCaps(). supportsProtectedContent());\nSkASSERT(!this-\u003eglCaps().strictProtectedness() || isProtected \u003d\u003d skgpu::Protected::kYes);\n```",
+      "range": {
+        "startLine": 1879,
+        "startChar": 4,
+        "endLine": 1881,
+        "endChar": 5
+      },
+      "revId": "0d23ea1a54400f5bf82f444bc5072e91b05d8a69",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ef353bd_870cce68",
+        "filename": "src/gpu/ganesh/gl/GrGLGpu.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 1927,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-09-27T13:16:06Z",
+      "side": 1,
+      "message": "same",
+      "range": {
+        "startLine": 1927,
+        "startChar": 4,
+        "endLine": 1927,
+        "endChar": 15
+      },
+      "revId": "0d23ea1a54400f5bf82f444bc5072e91b05d8a69",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
