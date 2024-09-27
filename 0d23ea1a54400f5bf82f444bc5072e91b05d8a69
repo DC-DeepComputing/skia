@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5aee936c_83fca0f0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 18
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3399406
+      },
+      "writtenOn": "2024-09-27T07:20:27Z",
+      "side": 1,
+      "message": "I can confirm that the patch passes testing on my local setup with Comet.",
+      "revId": "0d23ea1a54400f5bf82f444bc5072e91b05d8a69",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "20d8da79_757e7808",
+        "filename": "src/gpu/ganesh/gl/GrGLCaps.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 410,
+      "author": {
+        "id": 3399406
+      },
+      "writtenOn": "2024-09-27T07:20:27Z",
+      "side": 1,
+      "message": "\"would submitted\" -\u003e \"would be submitted\"?\nI\u0027ll mark it as resolved anyway to not block the commit.",
+      "range": {
+        "startLine": 410,
+        "startChar": 65,
+        "endLine": 410,
+        "endChar": 80
+      },
+      "revId": "0d23ea1a54400f5bf82f444bc5072e91b05d8a69",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
