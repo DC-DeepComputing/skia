@@ -16,6 +16,24 @@
       "message": "I guess, to match the other sites, this could also be:\n\n        // In the following, we\u0027re not actually creating the StencilBuffer that will be used but,\n        // rather, are just determining the correct format to use. We assume that the\n        // acceptable format will not change between Protected and unProtected stencil buffers so\n        // just use Protected::kNo here.\n        const GrProtected kNotProtected \u003d skgpu::Protected::kNo;\n        GrProtected isProtected \u003d skgpu::Protected(kNotProtected \u003d\u003d skgpu::Protected::kYes ||\n                                                   this-\u003eglCaps().strictProtectedness());",
       "revId": "44a07dcc6897235d896f303ff84dde8c1d0b6c04",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0b5c055b_bdffb279",
+        "filename": "src/gpu/ganesh/gl/GrGLGpu.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 1779,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-09-27T14:58:20Z",
+      "side": 1,
+      "message": "We\u0027re going to pass on this for now",
+      "parentUuid": "e57871ff_3e37be1e",
+      "revId": "44a07dcc6897235d896f303ff84dde8c1d0b6c04",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
