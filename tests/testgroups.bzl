@@ -56,7 +56,6 @@ CORE_TESTS = [
     "HighContrastFilterTest.cpp",
     "ImageBitmapTest.cpp",
     "ImageFrom565Bitmap.cpp",
-    "ImageGeneratorTest.cpp",
     "IncrTopoSortTest.cpp",
     "InfRectTest.cpp",
     "InsetConvexPolyTest.cpp",
