@@ -284,6 +284,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb94de64_d016d386",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2024-09-27T18:02:09Z",
+      "side": 1,
+      "message": "I have added a new set of files SkCrabbyAvifCodec.{cpp,h}. They will be enabled in Android. There isn\u0027t much common code between SkAvifCodec and SkCrabbyAvifCodec. We can leave SkAvifCodec alone for now and remove it later if no longer necessary. SkCrabbyAvifCodec will only be built on the Android framework and not on skia standlone builds until rust support is enabled.\n\nI have also added a nested namespace in `include/codec/SkAvifDecoder.h` as suggested.",
+      "parentUuid": "4ade520f_1c97b97e",
+      "revId": "3d0359b0d88e3148fb06d15922f79c7fc4a2c64a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a58edb40_852e3dd5",
@@ -301,6 +319,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff6c9cc9_40425151",
+        "filename": "include/codec/SkAndroidCodec.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2024-09-27T18:02:09Z",
+      "side": 1,
+      "message": "n/a",
+      "parentUuid": "a58edb40_852e3dd5",
+      "revId": "3d0359b0d88e3148fb06d15922f79c7fc4a2c64a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "22b0375d_e114e127",
@@ -314,6 +350,24 @@
       "writtenOn": "2024-09-19T18:33:20Z",
       "side": 1,
       "message": "I don\u0027t understand why these are two separate conditions.",
+      "revId": "3d0359b0d88e3148fb06d15922f79c7fc4a2c64a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c90a81f7_9aeaa157",
+        "filename": "src/codec/SkAndroidCodec.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2024-09-27T18:02:09Z",
+      "side": 1,
+      "message": "restored.",
+      "parentUuid": "22b0375d_e114e127",
       "revId": "3d0359b0d88e3148fb06d15922f79c7fc4a2c64a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -461,6 +515,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5247e45_cc1fd24d",
+        "filename": "src/codec/SkAndroidCodec.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 573,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2024-09-27T18:02:09Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "6bdfd4fb_f5bf2658",
+      "range": {
+        "startLine": 567,
+        "startChar": 0,
+        "endLine": 573,
+        "endChar": 1
+      },
+      "revId": "3d0359b0d88e3148fb06d15922f79c7fc4a2c64a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "84b3ff42_3898440c",
@@ -550,6 +628,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dbe3c346_16c6e092",
+        "filename": "src/codec/SkAvifCodec.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2024-09-27T18:02:09Z",
+      "side": 1,
+      "message": "Removed.",
+      "parentUuid": "60ee5f03_b0da9ce7",
+      "revId": "3d0359b0d88e3148fb06d15922f79c7fc4a2c64a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cb4b319b_e00ba4b9",
@@ -563,6 +659,24 @@
       "writtenOn": "2024-09-19T18:33:20Z",
       "side": 1,
       "message": "I presume in other cases we set it somewhere else? I think we should set this here for other cases. Otherwise you prevent being able to reuse an SkCodec with different settings.",
+      "revId": "3d0359b0d88e3148fb06d15922f79c7fc4a2c64a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f36dac0_3298f4f1",
+        "filename": "src/codec/SkAvifCodec.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2024-09-27T18:02:09Z",
+      "side": 1,
+      "message": "actually, color transforms are not needed. i have updated this function in `SkCrabbyAvifCodec.cpp` to simply check the color format and return true only for supported formats.",
+      "parentUuid": "cb4b319b_e00ba4b9",
       "revId": "3d0359b0d88e3148fb06d15922f79c7fc4a2c64a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -616,6 +730,24 @@
       "side": 1,
       "message": "Does https://skia-review.googlesource.com/c/skia/+/900597/comments/39cca782_5b603780 have your answer?",
       "parentUuid": "4364be1f_3d1eb1d3",
+      "revId": "3d0359b0d88e3148fb06d15922f79c7fc4a2c64a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "940c244b_c1dff512",
+        "filename": "src/codec/SkAvifCodec.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2024-09-27T18:02:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "176704d6_a1cd6fa0",
       "revId": "3d0359b0d88e3148fb06d15922f79c7fc4a2c64a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
