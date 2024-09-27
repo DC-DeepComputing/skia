@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3c8e0960_c3664b40",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-27T18:43:58Z",
+      "side": 1,
+      "message": "Fine, I\u0027ll let you drag me into this.",
+      "revId": "a3d62ff318da85e8cb1b793d7743b5a920b1e7a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
