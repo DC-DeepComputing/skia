@@ -16,6 +16,23 @@
       "message": "Friendly ping.",
       "revId": "bec9e43702c85eee9fca5804ee5ce00192ee94e0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2184e84e_45810aee",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-09-27T15:17:34Z",
+      "side": 1,
+      "message": "As mentioned in f2f, happy to change the size to 3, and also add more comments/caveats to the code that we would ideally be able to call back in to the strike cache for these paths, but it really helps a lot with speed, see https://issues.chromium.org/issues/364904769#comment6",
+      "revId": "bec9e43702c85eee9fca5804ee5ce00192ee94e0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
