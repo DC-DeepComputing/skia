@@ -23,6 +23,7 @@
 #include "include/private/base/SkNoncopyable.h"
 #include "include/private/base/SkTemplates.h"
 #include "src/base/SkMSAN.h"
+#include "src/codec/SkCodecPriv.h"
 #include "src/codec/SkJpegConstants.h"
 #include "src/codec/SkJpegPriv.h"
 #include "src/encode/SkImageEncoderFns.h"
@@ -417,6 +418,9 @@ std::unique_ptr<SkEncoder> Make(SkWStream* dst, const SkPixmap& src, const Optio
     SkJpegMetadataEncoder::SegmentList metadataSegments;
     SkJpegMetadataEncoder::AppendXMPStandard(metadataSegments, options.xmpMetadata);
     SkJpegMetadataEncoder::AppendICC(metadataSegments, options, src.colorSpace());
+    if (options.fOrigin.has_value()) {
+      SkJpegMetadataEncoder::AppendOrigin(metadataSegments, options.fOrigin.value());
+    }
     return SkJpegEncoderImpl::MakeRGB(dst, src, options, metadataSegments);
 }
 
@@ -427,6 +431,9 @@ std::unique_ptr<SkEncoder> Make(SkWStream* dst,
     SkJpegMetadataEncoder::SegmentList metadataSegments;
     SkJpegMetadataEncoder::AppendXMPStandard(metadataSegments, options.xmpMetadata);
     SkJpegMetadataEncoder::AppendICC(metadataSegments, options, srcColorSpace);
+    if (options.fOrigin.has_value()) {
+      SkJpegMetadataEncoder::AppendOrigin(metadataSegments, options.fOrigin.value());
+    }
     return SkJpegEncoderImpl::MakeYUV(dst, src, srcColorSpace, options, metadataSegments);
 }
 
@@ -463,6 +470,22 @@ void AppendXMPStandard(SegmentList& segmentList, const SkData* xmpMetadata) {
     s.write(kXMPStandardSig, sizeof(kXMPStandardSig));
     s.write(xmpMetadata->data(), xmpMetadata->size());
     segmentList.emplace_back(kXMPMarker, s.detachAsData());
+}
+
+void AppendOrigin(SegmentList& segmentList, SkEncodedOrigin origin) {
+    if (origin < kDefault_SkEncodedOrigin || origin > kLast_SkEncodedOrigin) {
+      SkCodecPrintf("Origin is not a valid value.");
+      return;
+    }
+    sk_sp<SkData> exif = exif_from_origin(origin);
+    if (!exif) {
+      return;
+    }
+    SkDynamicMemoryWStream s;
+    s.write(kExifSig, sizeof(kExifSig));
+    s.write8(0);
+    s.write(exif->data(), exif->size());
+    segmentList.emplace_back(kExifMarker, s.detachAsData());
 }
 
 }  // namespace SkJpegMetadataEncoder
