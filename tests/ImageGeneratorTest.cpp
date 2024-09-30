@@ -132,4 +132,3 @@ DEF_TEST(PictureImageGenerator, reporter) {
         REPORTER_ASSERT(reporter, gen->getPixels(info, storage.get(), info.minRowBytes()));
     }
 }
-
