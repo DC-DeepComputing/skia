@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8bec6ceb_a7f34b1d",
+        "filename": "include/gpu/ganesh/GrTypes.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2024-09-30T18:26:56Z",
+      "side": 1,
+      "message": "Yeah, GL_EXT_disjoint_timer_query for GL/Ganesh and TimeStamp queries for Graphite/Dawn is what I had planned to implement for Dawn/Graphite.",
+      "parentUuid": "22664130_2f7a4d57",
+      "range": {
+        "startLine": 112,
+        "startChar": 0,
+        "endLine": 112,
+        "endChar": 29
+      },
+      "revId": "47572866a804fcbd67770a11fc1a3c849ed86f9d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c42feb58_a1c8a2ff",
         "filename": "include/gpu/ganesh/GrTypes.h",
         "patchSetId": 1
@@ -83,6 +107,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8095ef15_88b59f42",
+        "filename": "include/gpu/graphite/GraphiteTypes.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2024-09-30T18:26:56Z",
+      "side": 1,
+      "message": "Makes sense to me.",
+      "parentUuid": "3de87a15_c9515e43",
+      "range": {
+        "startLine": 29,
+        "startChar": 0,
+        "endLine": 36,
+        "endChar": 2
+      },
+      "revId": "47572866a804fcbd67770a11fc1a3c849ed86f9d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6537cdfd_c30c5884",
         "filename": "include/gpu/graphite/GraphiteTypes.h",
         "patchSetId": 1
@@ -111,6 +159,30 @@
       "writtenOn": "2024-09-30T17:13:48Z",
       "side": 1,
       "message": "Would you guess that there\u0027s a benefit for allowing them to choose a subset of the stats that they care about? Vs. just saying if they\u0027ve provided `fFinishedWithStats` we provide all supported stats?",
+      "range": {
+        "startLine": 91,
+        "startChar": 0,
+        "endLine": 91,
+        "endChar": 56
+      },
+      "revId": "47572866a804fcbd67770a11fc1a3c849ed86f9d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3048433_063990fd",
+        "filename": "include/gpu/graphite/GraphiteTypes.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2024-09-30T18:26:56Z",
+      "side": 1,
+      "message": "It just seemed more conservative to me to only give what is asked for. Otherwise, if this expands we may have to generate a bunch of query objects when the client only cares about one. There are lots of possible things that can queried in different APIs/extensions:\n\nhttps://docs.vulkan.org/spec/latest/chapters/queries.html\n\nhttps://www.khronos.org/opengl/wiki/Query_Object",
+      "parentUuid": "a23d3565_7b87bd18",
       "range": {
         "startLine": 91,
         "startChar": 0,
