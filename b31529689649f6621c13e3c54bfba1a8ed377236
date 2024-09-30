@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d0fb9c4_61700c27",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-09-30T23:20:22Z",
+      "side": 1,
+      "message": "@adetaylor and @danakj, can you PTAL?\n\n/cc @scroggo and @danieldilan for now just as an FYI (I\u0027ll ask for a Skia-side LGTM once the local Rust experts are happy with this CL).",
+      "revId": "b31529689649f6621c13e3c54bfba1a8ed377236",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
