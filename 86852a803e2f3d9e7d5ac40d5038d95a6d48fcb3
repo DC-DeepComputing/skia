@@ -22,6 +22,30 @@
       },
       "revId": "86852a803e2f3d9e7d5ac40d5038d95a6d48fcb3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b56269d8_dac25ec1",
+        "filename": "src/codec/SkCrabbyAvifCodec.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2024-09-30T18:39:27Z",
+      "side": 1,
+      "message": "oops, done.",
+      "parentUuid": "5d16f8e8_dd0165db",
+      "range": {
+        "startLine": 37,
+        "startChar": 88,
+        "endLine": 37,
+        "endChar": 90
+      },
+      "revId": "86852a803e2f3d9e7d5ac40d5038d95a6d48fcb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
