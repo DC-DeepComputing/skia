@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4399a02b_b846b44c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 27
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-09-30T18:08:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e042a9d4_c80ba618",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 6
+      },
+      "revId": "e7fade0e90494cac18bfc7a598246997948fda0f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dfa8c35d_d98230c6",
@@ -37,6 +61,24 @@
       "writtenOn": "2024-09-30T17:35:41Z",
       "side": 1,
       "message": "If you\u0027re not going to change this, it should be `constexpr kOffset`.",
+      "revId": "e7fade0e90494cac18bfc7a598246997948fda0f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c177d3e_495232bf",
+        "filename": "src/codec/SkExif.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-09-30T18:08:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dfa8c35d_d98230c6",
       "revId": "e7fade0e90494cac18bfc7a598246997948fda0f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -64,6 +106,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e34a1d85_162258f4",
+        "filename": "src/codec/SkExif.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 264,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-09-30T18:08:17Z",
+      "side": 1,
+      "message": "The test/implementation was incorrect before. I wasn\u0027t accounting for these bytes when determining the size of the data stream.",
+      "parentUuid": "8b4d9fae_45d3e646",
+      "range": {
+        "startLine": 263,
+        "startChar": 25,
+        "endLine": 264,
+        "endChar": 44
+      },
+      "revId": "e7fade0e90494cac18bfc7a598246997948fda0f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "feb73c4d_e34aeff5",
@@ -77,6 +143,24 @@
       "writtenOn": "2024-09-30T17:35:41Z",
       "side": 1,
       "message": "Hmm, I don\u0027t think we should crash. Maybe `SkDebugf` or `SkCodecPrintf`? Or we could report failure up to the caller. Printing an error is simpler, but could also get missed by callers.",
+      "revId": "e7fade0e90494cac18bfc7a598246997948fda0f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7d6ae53_c91563ab",
+        "filename": "src/encode/SkJpegEncoderImpl.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 476,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-09-30T18:08:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "feb73c4d_e34aeff5",
       "revId": "e7fade0e90494cac18bfc7a598246997948fda0f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }

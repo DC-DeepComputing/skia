@@ -483,6 +483,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "31b83950_14a10ace",
+        "filename": "tests/ExifTest.cpp",
+        "patchSetId": 25
+      },
+      "lineNbr": 295,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-09-30T18:08:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ec19f277_f0b74841",
+      "revId": "4ad54c36a684a3599bf670b02f5f69a87e422ef3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7387e948_da986fd5",
