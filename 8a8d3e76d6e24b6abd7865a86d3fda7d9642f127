@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0eceed91_75312d7a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-09-30T23:11:02Z",
+      "side": 1,
+      "message": "@danieldilan, can you PTAL at the overall CL?\n@adetaylor, can you PTAL at the `FFI.rs` changes?\n\n/cc @fmalita and @scroggo as FYI",
+      "revId": "8a8d3e76d6e24b6abd7865a86d3fda7d9642f127",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cbf4c500_aca37f6a",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-09-30T23:11:02Z",
+      "side": 1,
+      "message": "The mapping is 1:1, but IMO the names don\u0027t convey that well what is happening, so I had to focus hard when trying to map the values.\n\nRust docs can be found here: https://docs.rs/png/latest/png/enum.DisposeOp.html\nSkia definitions/comments can be found here: https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/include/codec/SkCodecAnimation.h\n\n* Mapping `DisposeOp::None`\n    * `DisposeOp:None`: Leave the buffer unchanged.\n    * `SkCodecAnimation::DisposalMethod::kKeep`: The next frame should be drawn on top of this one.\n* Mapping `DisposeOp::Background`\n    * `DisposeOp::Background`: Clear buffer with the background color.\n    * `SkCodecAnimation::DisposalMethod::kRestoreBGColor`: Similar to Keep, except the area inside this frame\u0027s rectangle should be cleared to the BackGround color (transparent) before drawing the next frame.\n* Mapping `DisposeOp::Previous`:\n    * `DisposeOp::Previous`: Reset the buffer to the state before the current frame.\n    * `SkCodecAnimation::DisposalMethod::kRestorePrevious`: The next frame should be drawn on top of the previous frame - i.e. disregarding this one.",
+      "range": {
+        "startLine": 73,
+        "startChar": 0,
+        "endLine": 73,
+        "endChar": 1
+      },
+      "revId": "8a8d3e76d6e24b6abd7865a86d3fda7d9642f127",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eee998a9_fcad30b9",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-09-30T23:11:02Z",
+      "side": 1,
+      "message": "Rust docs can be found here: https://docs.rs/png/latest/png/enum.BlendOp.html\nSkia definitions/comments can be found here: https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/include/codec/SkCodecAnimation.h\n\n* Mapping `BlendOp::Source`:\n    * `BlendOp::Source`: Pixels overwrite the value at their position.\n    * `SkCodecAnimation::Blend::kSrc`: Blend with the prior frame as if using SkBlendMode::kSrc.  This frame\u0027s pixels replace the destination pixels.\n* Mapping `BlendOp::Over`:\n    * `BlendOp::Over`: The new pixels are blended into the current state based on alpha.\n    * `SkCodecAnimation::Blend::kSrcOver`: Blend with the prior frame as if using SkBlendMode::kSrcOver.",
+      "range": {
+        "startLine": 83,
+        "startChar": 0,
+        "endLine": 83,
+        "endChar": 1
+      },
+      "revId": "8a8d3e76d6e24b6abd7865a86d3fda7d9642f127",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
