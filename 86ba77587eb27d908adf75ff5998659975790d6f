@@ -34,6 +34,24 @@
       "parentUuid": "64b0660a_c0cd4240",
       "revId": "86ba77587eb27d908adf75ff5998659975790d6f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "42c13e18_4b90a9b8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-09-30T18:58:37Z",
+      "side": 1,
+      "message": "I would hold off on adding a Protected job for now. It would probably require some experimentation to see what sort of support that GPU actually has for the feature.",
+      "parentUuid": "63260eca_733e92ff",
+      "revId": "86ba77587eb27d908adf75ff5998659975790d6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
