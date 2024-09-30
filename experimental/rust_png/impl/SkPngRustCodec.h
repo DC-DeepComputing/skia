@@ -104,6 +104,12 @@ private:
 
         void appendNewFrame(const rust_png::Reader& reader, const SkEncodedInfo& info);
 
+        // Helper for using contents of an `fcTL` chunk to populate a `PngFrame`
+        // info.  Internally used from `appendNewFrame`, but exposed publically to
+        // support re-populating the frame info after skipping the default, non-animated image
+        // (in some PNGs the initial `fcTL` may not appear until later).
+        void populateLastFrameInfo(const rust_png::Reader& reader, const SkEncodedInfo& info);
+
     private:
         const SkFrame* onGetFrame(int i) const override;
 

@@ -60,6 +60,28 @@ SkEncodedInfo::Alpha ToAlpha(rust_png::ColorType colorType) {
     SK_ABORT("Unexpected `rust_png::ColorType`: %d", static_cast<int>(colorType));
 }
 
+SkCodecAnimation::DisposalMethod ToDisposalMethod(rust_png::DisposeOp op) {
+    switch (op) {
+        case rust_png::DisposeOp::None:
+            return SkCodecAnimation::DisposalMethod::kKeep;
+        case rust_png::DisposeOp::Background:
+            return SkCodecAnimation::DisposalMethod::kRestoreBGColor;
+        case rust_png::DisposeOp::Previous:
+            return SkCodecAnimation::DisposalMethod::kRestorePrevious;
+    }
+    SK_ABORT("Unexpected `rust_png::DisposeOp`: %d", static_cast<int>(op));
+}
+
+SkCodecAnimation::Blend ToBlend(rust_png::BlendOp op) {
+    switch (op) {
+        case rust_png::BlendOp::Source:
+            return SkCodecAnimation::Blend::kSrc;
+        case rust_png::BlendOp::Over:
+            return SkCodecAnimation::Blend::kSrcOver;
+    }
+    SK_ABORT("Unexpected `rust_png::BlendOp`: %d", static_cast<int>(op));
+}
+
 std::unique_ptr<SkEncodedInfo::ICCProfile> CreateColorProfile(const rust_png::Reader& reader) {
     // NOTE: This method is based on `read_color_profile` in
     // `src/codec/SkPngCodec.cpp` but has been refactored to use Rust inputs
@@ -238,12 +260,12 @@ SkCodec::Result SkPngRustCodec::startDecoding(const SkImageInfo& dstInfo,
         return kInvalidParameters;
     }
     if (options.fFrameIndex != (fFrameHolder.size() - 1)) {
-        // Currently `fFrameHolder.size()` is always `1`, so this is unreachable.
+        // Only the most recent frame can be decoded.
         //
         // TODO(https://crbug.com/356922876): Support rewinding and/or seeking
         // to earlier frames.  See also
         // https://github.com/image-rs/image-png/issues/510
-        SkUNREACHABLE;
+        return kUnimplemented;
     }
     const SkFrame* frame = fFrameHolder.getFrame(options.fFrameIndex);
 
@@ -253,7 +275,24 @@ SkCodec::Result SkPngRustCodec::startDecoding(const SkImageInfo& dstInfo,
         return kUnimplemented;
     }
 
-    Result result = this->initializeXforms(dstInfo, options, frame->width());
+    Result result = ToSkCodecResult(fReader->skip_default_non_animated_image_if_needed());
+    if (result != kSuccess) {
+        return result;
+    }
+
+    // Was full initialization of the first frame postponed?
+    if (!fFrameHolder.getFrame(0)->reachedStartOfData()) {
+        // When first frame's initialization is postponed, it is still the only
+        // know frame at this point.
+        SkASSERT(fFrameHolder.size() == 1);
+        // Ppostponed initialization implies `has_actl_chunk`.
+        SkASSERT(fReader->has_actl_chunk());
+        // `skip_default_non_animated_image_if_needed` implies `has_fctl_chunk`.
+        SkASSERT(fReader->has_fctl_chunk());
+        fFrameHolder.populateLastFrameInfo(*fReader, this->getEncodedInfo());
+    }
+
+    result = this->initializeXforms(dstInfo, options, frame->width());
     if (result != kSuccess) {
         return result;
     }
@@ -363,8 +402,18 @@ SkCodec::Result SkPngRustCodec::onIncrementalDecode(int* rowsDecoded) {
 }
 
 int SkPngRustCodec::onGetFrameCount() {
-    // TODO(https://crbug.com/356922876): If done decoding previous frames, then
-    // parse the next `fcTL` chunk and add the new frame info to `fFrameHolder`.
+    bool are_previous_frames_fully_decoded = fNumOfFullyReceivedFrames == fFrameHolder.size() &&
+                                             !fIncrementalDecodingState.has_value();
+    if (are_previous_frames_fully_decoded) {
+        bool are_there_more_frames =
+                fReader->has_actl_chunk() && fReader->get_actl_num_frames() > fFrameHolder.size();
+        if (are_there_more_frames) {
+            if (ToSkCodecResult(fReader->read_until_image_data()) == kSuccess) {
+                fFrameHolder.appendNewFrame(*fReader, this->getEncodedInfo());
+            }
+        }
+    }
+
     return fFrameHolder.size();
 }
 
@@ -458,17 +507,57 @@ size_t SkPngRustCodec::FrameHolder::size() const { return fFrames.size(); }
 
 void SkPngRustCodec::FrameHolder::appendNewFrame(const rust_png::Reader& reader,
                                                  const SkEncodedInfo& info) {
-    // TODO(https://crbug.com/356922876): Populate additional frame info from
-    // `fcTL` chunks (e.g. frame duration, disposal method, etc.).
     int id = fFrames.size();
     fFrames.emplace_back(id, info.alpha());
     SkFrame& frame = fFrames.back();
 
-    // Basic frame info can be populated without an `fcTL` chunk.
+    if (reader.has_fctl_chunk()) {
+        this->populateLastFrameInfo(reader, info);
+        return;
+    }
+
+    // We may initially have no `fcTL` for the first frame - either:
     //
-    // TODO(https://crbug.com/356922876): Don't call `setAlphaAndRequiredFrame`
-    // if we still need to skip `IDAT` to get to the `fcTL` for the first
-    // animation frame.
+    // * This is a non-animated image (no `acTL` chunk), or
+    // * The `fcTL` chunk will come later, after we skip the `IDAT` chunk using
+    //   `skip_default_non_animated_image_if_needed`
+    SkASSERT(id == 0);
+
+    // Basic frame info can be populated without an `fcTL` chunk.
     frame.setXYWH(0, 0, info.width(), info.height());
+
+    if (reader.has_actl_chunk()) {
+        // Postponing `setAlphaAndRequiredFrame` until `populateLastFrameInfo`
+        // gets called later, after reading the `fcTL` chunk.
+        SkASSERT(!frame.reachedStartOfData());
+        return;
+    } else {
+        // For non-animated images the `IHDR` chunk has already provided all the
+        // info, so we can finalize the frame info by calling `setAlphaAndR...`.
+        this->setAlphaAndRequiredFrame(&frame);
+        SkASSERT(frame.reachedStartOfData());
+    }
+}
+
+void SkPngRustCodec::FrameHolder::populateLastFrameInfo(const rust_png::Reader& reader,
+                                                        const SkEncodedInfo& info) {
+    SkASSERT(reader.has_fctl_chunk());
+    SkASSERT(!fFrames.empty());
+    SkFrame& frame = fFrames.back();
+
+    uint32_t width = 0;
+    uint32_t height = 0;
+    uint32_t x_offset = 0;
+    uint32_t y_offset = 0;
+    auto dispose_op = rust_png::DisposeOp::None;
+    auto blend_op = rust_png::BlendOp::Source;
+    uint32_t duration_ms = 0;
+    reader.get_fctl_info(width, height, x_offset, y_offset, dispose_op, blend_op, duration_ms);
+    frame.setXYWH(x_offset, y_offset, width, height);
+    frame.setDisposalMethod(ToDisposalMethod(dispose_op));
+    frame.setBlend(ToBlend(blend_op));
+    frame.setDuration(duration_ms);
+
     this->setAlphaAndRequiredFrame(&frame);
+    SkASSERT(frame.reachedStartOfData());
 }
