@@ -164,9 +164,8 @@ SkCodec::Result ToSkCodecResult(rust_png::DecodingResult rustResult) {
 // (i.e. the `ReadTrait` API).
 class ReadTraitAdapterForSkStream final : public rust_png::ReadTrait {
 public:
-    // SAFETY: The caller needs to guarantee that `stream` will be alive for
-    // as long as `ReadTraitAdapterForSkStream`.
-    explicit ReadTraitAdapterForSkStream(SkStream* stream) : fStream(stream) {}
+    explicit ReadTraitAdapterForSkStream(std::unique_ptr<SkStream> stream)
+            : fStream(std::move(stream)) {}
 
     ~ReadTraitAdapterForSkStream() override = default;
 
@@ -193,7 +192,7 @@ public:
     }
 
 private:
-    SkStream* fStream = nullptr;  // Non-owning pointer.
+    std::unique_ptr<SkStream> fStream;
 };
 
 }  // namespace
@@ -204,7 +203,7 @@ std::unique_ptr<SkPngRustCodec> SkPngRustCodec::MakeFromStream(std::unique_ptr<S
     SkASSERT(stream);
     SkASSERT(result);
 
-    auto readTraitAdapter = std::make_unique<ReadTraitAdapterForSkStream>(stream.get());
+    auto readTraitAdapter = std::make_unique<ReadTraitAdapterForSkStream>(std::move(stream));
     rust::Box<rust_png::ResultOfReader> resultOfReader =
             rust_png::new_reader(std::move(readTraitAdapter));
     *result = ToSkCodecResult(resultOfReader->err());
@@ -213,14 +212,16 @@ std::unique_ptr<SkPngRustCodec> SkPngRustCodec::MakeFromStream(std::unique_ptr<S
     }
     rust::Box<rust_png::Reader> reader = resultOfReader->unwrap();
 
-    return std::make_unique<SkPngRustCodec>(
-            CreateEncodedInfo(*reader), std::move(stream), std::move(reader));
+    return std::make_unique<SkPngRustCodec>(CreateEncodedInfo(*reader), std::move(reader));
 }
 
 SkPngRustCodec::SkPngRustCodec(SkEncodedInfo&& encodedInfo,
-                               std::unique_ptr<SkStream> stream,
                                rust::Box<rust_png::Reader> reader)
-        : SkPngCodecBase(std::move(encodedInfo), std::move(stream))
+        : SkPngCodecBase(std::move(encodedInfo),
+                         // TODO(https://crbug.com/370522089): If/when `SkCodec` can
+                         // avoid unnecessary rewinding, then stop "hiding" our stream
+                         // from it.
+                         /* stream = */ nullptr)
         , fReader(std::move(reader))
         , fFrameHolder(encodedInfo.width(), encodedInfo.height()) {
     fFrameHolder.appendNewFrame(*fReader, this->getEncodedInfo());
