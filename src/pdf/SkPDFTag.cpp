@@ -288,11 +288,34 @@ SkPDFIndirectReference SkPDFTagTree::PrepareTagTreeToEmit(SkPDFIndirectReference
             kids->appendRef(PrepareTagTreeToEmit(ref, child, doc));
         }
     }
+    // Use the mode page as the /Pg on the StructElem and use integer markId for marks on that page.
+    // SkPDFTagNode::fMarkedContent is already sorted by page, since it is append only in
+    // createMarkIdForNodeId where pageIndex is always the monotonically increasing current page.
+    size_t longestRun = 0;
+    unsigned longestPage = 0;
+    size_t currentRun = 0;
+    unsigned currentPage = 0;
     for (const SkPDFTagNode::MarkedContentInfo& info : node->fMarkedContent) {
-        std::unique_ptr<SkPDFDict> mcr = SkPDFMakeDict("MCR");
-        mcr->insertRef("Pg", doc->getPage(info.fLocation.fPageIndex));
-        mcr->insertInt("MCID", info.fMarkId);
-        kids->appendObject(std::move(mcr));
+        unsigned thisPage = info.fLocation.fPageIndex;
+        if (currentPage != thisPage) {
+            currentPage  = thisPage;
+            currentRun = 0;
+        }
+        ++currentRun;
+        if (longestRun < currentRun) {
+            longestRun = currentRun;
+            longestPage = currentPage;
+        }
+    }
+    for (const SkPDFTagNode::MarkedContentInfo& info : node->fMarkedContent) {
+        if (info.fLocation.fPageIndex == longestPage) {
+            kids->appendInt(info.fMarkId);
+        } else {
+            std::unique_ptr<SkPDFDict> mcr = SkPDFMakeDict("MCR");
+            mcr->insertRef("Pg", doc->getPage(info.fLocation.fPageIndex));
+            mcr->insertInt("MCID", info.fMarkId);
+            kids->appendObject(std::move(mcr));
+        }
     }
     for (const SkPDFTagNode::AnnotationInfo& annotationInfo : node->fAnnotations) {
         std::unique_ptr<SkPDFDict> annotationDict = SkPDFMakeDict("OBJR");
@@ -310,6 +333,9 @@ SkPDFIndirectReference SkPDFTagTree::PrepareTagTreeToEmit(SkPDFIndirectReference
         dict.insertTextString("Lang", node->fLang);
     }
     dict.insertRef("P", parent);
+    if (!node->fMarkedContent.empty()) {
+        dict.insertRef("Pg", doc->getPage(longestPage));
+    }
     dict.insertObject("K", std::move(kids));
     if (node->fAttributes) {
         dict.insertObject("A", std::move(node->fAttributes));
