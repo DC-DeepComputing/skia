@@ -20,6 +20,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "22664130_2f7a4d57",
+        "filename": "include/gpu/ganesh/GrTypes.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-09-30T17:13:48Z",
+      "side": 1,
+      "message": "Do you mind providing example backend APIs that would provide this elapsed time? I\u0027m assuming it\u0027s from the actual driver to represent GPU time, vs. Graphite/Ganesh just tracking the system timer on submit and the timer when the finish proc is completed.",
+      "range": {
+        "startLine": 112,
+        "startChar": 0,
+        "endLine": 112,
+        "endChar": 29
+      },
+      "revId": "47572866a804fcbd67770a11fc1a3c849ed86f9d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c42feb58_a1c8a2ff",
         "filename": "include/gpu/ganesh/GrTypes.h",
         "patchSetId": 1
@@ -37,6 +60,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3de87a15_c9515e43",
+        "filename": "include/gpu/graphite/GraphiteTypes.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-09-30T17:13:48Z",
+      "side": 1,
+      "message": "There is now a `include/gpu/GpuTypes.h` that we could put these in and share the definitions between Ganesh and Graphite.",
+      "range": {
+        "startLine": 29,
+        "startChar": 0,
+        "endLine": 36,
+        "endChar": 2
+      },
+      "revId": "47572866a804fcbd67770a11fc1a3c849ed86f9d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6537cdfd_c30c5884",
         "filename": "include/gpu/graphite/GraphiteTypes.h",
         "patchSetId": 1
@@ -48,6 +94,29 @@
       "writtenOn": "2024-09-23T18:43:14Z",
       "side": 1,
       "message": "Need to say also that the Context has to support the stats type. I didn\u0027t update all the comments below here but would.",
+      "revId": "47572866a804fcbd67770a11fc1a3c849ed86f9d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a23d3565_7b87bd18",
+        "filename": "include/gpu/graphite/GraphiteTypes.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-09-30T17:13:48Z",
+      "side": 1,
+      "message": "Would you guess that there\u0027s a benefit for allowing them to choose a subset of the stats that they care about? Vs. just saying if they\u0027ve provided `fFinishedWithStats` we provide all supported stats?",
+      "range": {
+        "startLine": 91,
+        "startChar": 0,
+        "endLine": 91,
+        "endChar": 56
+      },
       "revId": "47572866a804fcbd67770a11fc1a3c849ed86f9d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
