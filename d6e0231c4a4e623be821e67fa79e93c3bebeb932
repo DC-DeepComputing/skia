@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6caef6c_ef695eee",
+        "filename": "include/codec/SkAvifDecoder.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2024-09-30T19:27:28Z",
+      "side": 1,
+      "message": "yeah it is not used anywhere afaik. i was going to remove it but then i decided to keep it for now and remove it in a follow-up (so as to keep this CL focused on adding CrabbyAvif).",
+      "parentUuid": "b6488406_9850e2ce",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 44,
+        "endChar": 23
+      },
+      "revId": "d6e0231c4a4e623be821e67fa79e93c3bebeb932",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0c0162aa_2b24a2c8",
@@ -54,6 +78,30 @@
       "writtenOn": "2024-09-30T19:06:51Z",
       "side": 1,
       "message": "nit: \"an\" before \"AVIF\", here and elsewhere.",
+      "range": {
+        "startLine": 48,
+        "startChar": 43,
+        "endLine": 48,
+        "endChar": 44
+      },
+      "revId": "d6e0231c4a4e623be821e67fa79e93c3bebeb932",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e088f642_22ccb526",
+        "filename": "include/codec/SkAvifDecoder.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2024-09-30T19:27:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0c0162aa_2b24a2c8",
       "range": {
         "startLine": 48,
         "startChar": 43,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "92c13eff_771c23aa",
+        "filename": "include/codec/SkAvifDecoder.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2024-09-30T19:27:28Z",
+      "side": 1,
+      "message": "there is a second one inside `LibAvif` namespace as well.\n\nthe one in the root namespace is to keep backwards compatibility (although i am not sure it\u0027s really necessary - i just kept it to be safe).",
+      "parentUuid": "04f1eb97_a891edac",
+      "range": {
+        "startLine": 65,
+        "startChar": 0,
+        "endLine": 75,
+        "endChar": 29
+      },
+      "revId": "d6e0231c4a4e623be821e67fa79e93c3bebeb932",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "080ca735_b44671fe",
@@ -100,6 +172,30 @@
       "writtenOn": "2024-09-30T19:06:51Z",
       "side": 1,
       "message": "I think this should have a `TODO` with a bug to have the Android framework initialize Skia\u0027s decoders. When it\u0027s fixed, we\u0027ll read the property from Android, rather than here.",
+      "range": {
+        "startLine": 117,
+        "startChar": 0,
+        "endLine": 124,
+        "endChar": 5
+      },
+      "revId": "d6e0231c4a4e623be821e67fa79e93c3bebeb932",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "50b83d20_bb4dddfd",
+        "filename": "src/codec/SkCodec.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2024-09-30T19:27:28Z",
+      "side": 1,
+      "message": "Added a TODO.",
+      "parentUuid": "080ca735_b44671fe",
       "range": {
         "startLine": 117,
         "startChar": 0,
@@ -133,6 +229,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5a090979_4ed3b8b3",
+        "filename": "src/codec/SkCrabbyAvifCodec.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2024-09-30T19:27:28Z",
+      "side": 1,
+      "message": "Done, added comments and removed some unnecessary default initializations.",
+      "parentUuid": "a33833b4_963044be",
+      "range": {
+        "startLine": 59,
+        "startChar": 0,
+        "endLine": 62,
+        "endChar": 59
+      },
+      "revId": "d6e0231c4a4e623be821e67fa79e93c3bebeb932",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "025fe2e9_0303d2f4",
@@ -146,6 +266,24 @@
       "writtenOn": "2024-09-30T19:06:51Z",
       "side": 1,
       "message": "Why do we need a fallback case for when not on the Android Framework?",
+      "revId": "d6e0231c4a4e623be821e67fa79e93c3bebeb932",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "abbf041c_fa56cb51",
+        "filename": "src/codec/SkCrabbyAvifCodec.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2024-09-30T19:27:28Z",
+      "side": 1,
+      "message": "you are right this is not needed as it is only used from Android now.\n\nremoved the #if and the TODO. i will track the TODO in crabbyavif instead.",
+      "parentUuid": "025fe2e9_0303d2f4",
       "revId": "d6e0231c4a4e623be821e67fa79e93c3bebeb932",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
