@@ -12,6 +12,7 @@
 #ifdef SK_VULKAN
 
 #include "tools/gpu/vk/VkTestUtils.h"
+#include "tools/window/GraphiteWindowContext.h"
 #include "tools/window/WindowContext.h"
 
 class GrRenderTarget;
@@ -22,7 +23,7 @@ struct VulkanInterface;
 
 namespace skwindow::internal {
 
-class GraphiteVulkanWindowContext : public WindowContext {
+class GraphiteVulkanWindowContext : public GraphiteWindowContext {
 public:
     ~GraphiteVulkanWindowContext() override;
 

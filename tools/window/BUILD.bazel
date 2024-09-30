@@ -181,10 +181,10 @@ skia_cc_library(
     ],
     deps = [
         "//:core",
-        "//src/gpu/ganesh:ganesh_TEST_UTIL",
-        "//src/gpu/ganesh/gl:ganesh_gl_TEST_UTIL",
         "//src/gpu/ganesh/gl/glx:glx_factory_TEST_UTIL",
+        "//src/gpu/ganesh/gl:ganesh_gl_TEST_UTIL",
         "//src/gpu/ganesh/vk:ganesh_vulkan_TEST_UTIL",
+        "//src/gpu/ganesh:ganesh_TEST_UTIL",
         "//tools/gpu/vk:testutils",
     ],
 )

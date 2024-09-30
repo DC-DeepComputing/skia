@@ -160,33 +160,23 @@ GrDirectContext* Window::directContext() const {
 }
 
 skgpu::graphite::Context* Window::graphiteContext() const {
-#if defined(SK_GRAPHITE)
     if (!fWindowContext) {
         return nullptr;
     }
     return fWindowContext->graphiteContext();
-#else
-    return nullptr;
-#endif
 }
 
 skgpu::graphite::Recorder* Window::graphiteRecorder() const {
-#if defined(SK_GRAPHITE)
     if (!fWindowContext) {
         return nullptr;
     }
     return fWindowContext->graphiteRecorder();
-#else
-    return nullptr;
-#endif
 }
 
 void Window::snapRecordingAndSubmit() {
-#if defined(SK_GRAPHITE)
     if (fWindowContext) {
         fWindowContext->snapRecordingAndSubmit();
     }
-#endif
 }
 
 void Window::inval() {

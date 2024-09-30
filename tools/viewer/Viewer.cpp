@@ -584,7 +584,7 @@ Viewer::Viewer(int argc, char** argv, void* platformData)
     }
     displayParams.fCreateProtectedNativeBackend = FLAGS_createProtected;
 #if defined(SK_GRAPHITE)
-    CommonFlags::SetTestOptions(&displayParams.fGraphiteTestOptions.fTestOptions);
+    CommonFlags::SetTestOptions(displayParams.fGraphiteTestOptions.fTestOptions);
     displayParams.fGraphiteTestOptions.fPriv.fPathRendererStrategy =
             get_path_renderer_strategy_type(FLAGS_pathstrategy[0]);
 #endif

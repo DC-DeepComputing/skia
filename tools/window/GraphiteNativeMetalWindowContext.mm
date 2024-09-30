@@ -27,7 +27,7 @@ using skwindow::internal::GraphiteMetalWindowContext;
 namespace skwindow::internal {
 
 GraphiteMetalWindowContext::GraphiteMetalWindowContext(const DisplayParams& params)
-        : WindowContext(params), fValid(false), fDrawableHandle(nil) {
+        : GraphiteWindowContext(params), fValid(false), fDrawableHandle(nil) {
     fDisplayParams.fMSAASampleCount = GrNextPow2(fDisplayParams.fMSAASampleCount);
 }
 

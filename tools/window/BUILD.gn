@@ -32,6 +32,13 @@ skia_component("window") {
   libs = []
   frameworks = []
 
+  if (skia_enable_graphite) {
+    sources += [
+      "GraphiteWindowContext.h",
+      "GraphiteWindowContext.cpp",
+    ]
+  }
+
   if (is_android) {
     sources += [
       "android/RasterWindowContext_android.cpp",

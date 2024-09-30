@@ -44,7 +44,7 @@ GraphiteVulkanWindowContext::GraphiteVulkanWindowContext(const DisplayParams& pa
                                                          CreateVkSurfaceFn createVkSurface,
                                                          CanPresentFn canPresent,
                                                          PFN_vkGetInstanceProcAddr instProc)
-        : WindowContext(params)
+        : GraphiteWindowContext(params)
         , fCreateVkSurfaceFn(std::move(createVkSurface))
         , fCanPresentFn(std::move(canPresent))
         , fSurface(VK_NULL_HANDLE)

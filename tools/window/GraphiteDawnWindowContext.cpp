@@ -28,8 +28,7 @@ namespace skwindow::internal {
 
 GraphiteDawnWindowContext::GraphiteDawnWindowContext(const DisplayParams& params,
                                                      wgpu::TextureFormat surfaceFormat)
-    : WindowContext(params)
-    , fSurfaceFormat(surfaceFormat) {
+        : GraphiteWindowContext(params), fSurfaceFormat(surfaceFormat) {
     WGPUInstanceDescriptor desc{};
     // need for WaitAny with timeout > 0
     desc.features.timedWaitAnyEnable = true;
@@ -53,9 +52,9 @@ void GraphiteDawnWindowContext::initializeContext(int width, int height) {
     backendContext.fDevice = fDevice;
     backendContext.fQueue = fDevice.GetQueue();
     // Needed to make synchronous readPixels work:
-    fDisplayParams.fGraphiteTestOptions.fPriv.fStoreContextRefInRecorder = true;
+    fDisplayParams.fGraphiteTestOptions->fPriv.fStoreContextRefInRecorder = true;
     fGraphiteContext = skgpu::graphite::ContextFactory::MakeDawn(
-            backendContext, fDisplayParams.fGraphiteTestOptions.fTestOptions.fContextOptions);
+            backendContext, fDisplayParams.fGraphiteTestOptions->fTestOptions.fContextOptions);
     if (!fGraphiteContext) {
         SkASSERT(false);
         return;
@@ -127,8 +126,9 @@ wgpu::Device GraphiteDawnWindowContext::createDevice(wgpu::BackendType type) {
         "use_tint_ir",
     };
     wgpu::DawnTogglesDescriptor togglesDesc;
-    togglesDesc.enabledToggleCount  = std::size(kToggles) -
-        (fDisplayParams.fGraphiteTestOptions.fTestOptions.fUseTintIR ? 0 : 1);
+    togglesDesc.enabledToggleCount =
+            std::size(kToggles) -
+            (fDisplayParams.fGraphiteTestOptions->fTestOptions.fUseTintIR ? 0 : 1);
     togglesDesc.enabledToggles      = kToggles;
 
     wgpu::RequestAdapterOptions adapterOptions;
@@ -200,7 +200,7 @@ wgpu::Device GraphiteDawnWindowContext::createDevice(wgpu::BackendType type) {
 
     wgpu::DawnTogglesDescriptor deviceTogglesDesc;
 
-    if (fDisplayParams.fGraphiteTestOptions.fTestOptions.fDisableTintSymbolRenaming) {
+    if (fDisplayParams.fGraphiteTestOptions->fTestOptions.fDisableTintSymbolRenaming) {
         static constexpr const char* kOptionalDeviceToggles[] = {
             "disable_symbol_renaming",
         };
