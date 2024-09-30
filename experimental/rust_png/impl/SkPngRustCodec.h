@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "experimental/rust_png/ffi/FFI.rs.h"
+#include "src/codec/SkFrameHolder.h"
 #include "src/codec/SkPngCodecBase.h"
 #include "third_party/rust/cxx/v1/cxx.h"
 
@@ -76,8 +77,10 @@ private:
                                     size_t rowBytes,
                                     const Options&) override;
     Result onIncrementalDecode(int* rowsDecoded) override;
+    int onGetFrameCount() override;
     bool onGetFrameInfo(int, FrameInfo*) const override;
     int onGetRepetitionCount() override;
+    const SkFrameHolder* getFrameHolder() const override;
 
     // SkPngCodecBase overrides:
     std::optional<SkSpan<const PaletteColorEntry>> onTryGetPlteChunk() override;
@@ -87,8 +90,33 @@ private:
 
     std::optional<DecodingState> fIncrementalDecodingState;
 
-    class PngFrame;
-    std::vector<PngFrame> fFrames;
+    class FrameHolder final : public SkFrameHolder {
+    public:
+        FrameHolder(int width, int height);
+        ~FrameHolder() override;
+
+        FrameHolder(const FrameHolder&) = delete;
+        FrameHolder(FrameHolder&&) = delete;
+        FrameHolder& operator=(const FrameHolder&) = delete;
+        FrameHolder& operator=(FrameHolder&&) = delete;
+
+        size_t size() const;
+
+        void appendNewFrame(const rust_png::Reader& reader, const SkEncodedInfo& info);
+
+        // Helper for using contents of an `fcTL` chunk to populate a `PngFrame`
+        // info.  Internally used from `appendNewFrame`, but exposed publically to
+        // support re-populating the frame info after skipping the default, non-animated image
+        // (in some PNGs the initial `fcTL` may not appear until later).
+        void populateLastFrameInfo(const rust_png::Reader& reader, const SkEncodedInfo& info);
+
+    private:
+        const SkFrame* onGetFrame(int i) const override;
+
+        class PngFrame;
+        std::vector<PngFrame> fFrames;
+    };
+    FrameHolder fFrameHolder;
 
     size_t fNumOfFullyReceivedFrames = 0;
 };
