@@ -1,0 +1,20 @@
+# Copyright 2024 Google LLC.
+#
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# Provide the MiraclePtr "raw_ptr" definitions. Depending on the configuration,
+# this is either:
+# 1. Delegated to the `partition_alloc` library.
+# 2. Provided by Skia a simple "no-op" pointer wrapper (in construction).
+
+import("./partition_alloc.gni")
+
+group("partition_alloc") {
+  if (skia_enable_partition_alloc) {
+    public_deps = [ "${skia_partition_alloc_dir}:partition_alloc" ]
+  } else {
+    # TODO(351867706): Provide the equivalent of partition_alloc:raw_ptr, but
+    # provided by Skia directly when partition_alloc is missing.
+  }
+}
