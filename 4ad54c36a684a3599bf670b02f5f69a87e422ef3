@@ -200,6 +200,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a4ea7a2_23e32bbb",
+        "filename": "src/encode/BUILD.bazel",
+        "patchSetId": 25
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-09-30T17:35:41Z",
+      "side": 1,
+      "message": "That sounds reasonable, but I don\u0027t know that it has to happen in this CL.",
+      "parentUuid": "8c3c81d8_53f601fd",
+      "revId": "4ad54c36a684a3599bf670b02f5f69a87e422ef3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c5ff7429_bd74466c",
@@ -341,6 +359,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c8ae4ad_67efd9f8",
+        "filename": "tests/ExifTest.cpp",
+        "patchSetId": 25
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-09-30T17:35:41Z",
+      "side": 1,
+      "message": "But if it is a superset of the fields we\u0027re checking here, then I think this test is sufficient.",
+      "parentUuid": "f0cba7ba_f340bc4c",
+      "range": {
+        "startLine": 259,
+        "startChar": 43,
+        "endLine": 259,
+        "endChar": 73
+      },
+      "revId": "4ad54c36a684a3599bf670b02f5f69a87e422ef3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "65841b56_ffa157e8",
@@ -419,6 +461,24 @@
       "side": 1,
       "message": "We are not able to write `HDRheadroom` data so the current functionality is that the `WriteExif` fails when it is present in the `metadata`.",
       "parentUuid": "0370e7da_6061d23c",
+      "revId": "4ad54c36a684a3599bf670b02f5f69a87e422ef3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec19f277_f0b74841",
+        "filename": "tests/ExifTest.cpp",
+        "patchSetId": 25
+      },
+      "lineNbr": 295,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-09-30T17:35:41Z",
+      "side": 1,
+      "message": "Oh, then this should have a comment explaining this. Should also rename the test to reference HDRheadroom.",
+      "parentUuid": "ae6b3103_2a745ec7",
       "revId": "4ad54c36a684a3599bf670b02f5f69a87e422ef3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
