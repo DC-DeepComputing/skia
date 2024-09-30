@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c7425281_345b4ddb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-09-30T16:00:47Z",
+      "side": 1,
+      "message": "PTAL, I wanted to rearrange the skip rules added in http://review.skia.org/903518 to keep all the Dawn-compat related issues together, plus this test should run fine on Pixel 9s on Vulkan.\n\nA new error message is added to the failing test which should be easier to debug than a generic segfault.",
+      "revId": "38841ee923cbcd75d0cdefbc1c1f97c7974c3a6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
