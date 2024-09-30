@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "64b0660a_c0cd4240",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-09-30T17:54:59Z",
+      "side": 1,
+      "message": "I made some educated guesses as to what y\u0027all would want to test on these devices. LMK if some of these are unnecessary or if I\u0027ve overlooked something.\n\nFor example, I\u0027m not sure if these need to be \"Protected\" like the GalaxyS20",
+      "revId": "86ba77587eb27d908adf75ff5998659975790d6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
