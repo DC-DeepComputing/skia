@@ -30,6 +30,7 @@
     #include "include/ports/SkImageGeneratorCG.h"
 #elif defined(SK_BUILD_FOR_WIN)
     #include "include/ports/SkImageGeneratorWIC.h"
+    #include "src/utils/win/SkAutoCoInitialize.h"
 #endif
 
 static bool gMyFactoryWasCalled;
@@ -132,4 +133,3 @@ DEF_TEST(PictureImageGenerator, reporter) {
         REPORTER_ASSERT(reporter, gen->getPixels(info, storage.get(), info.minRowBytes()));
     }
 }
-
