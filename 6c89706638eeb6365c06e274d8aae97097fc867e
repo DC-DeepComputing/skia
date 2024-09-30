@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2cdd4b3a_c9fcac22",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-09-30T20:06:56Z",
+      "side": 1,
+      "message": "Heads-up: this CL seems to cause build problems when rolled into Chromium:\n\n```\n../../third_party/skia/src/gpu/graphite/RendererProvider.cpp:78:91: error: bitwise operation between different enumeration types (\u0027skgpu::graphite::DrawTypeFlags\u0027 and \u0027skgpu::graphite::InternalDrawTypeFlags\u0027) is deprecated [-Werror,-Wdeprecated-enum-enum-conversion]\n   78 |                                  static_cast\u003cDrawTypeFlags\u003e(DrawTypeFlags::kNonSimpleShape|\n      |                                                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^\n   79 |                                                             InternalDrawTypeFlags::kCoverageMask));\n      |                                                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n../../third_party/skia/src/gpu/graphite/RendererProvider.cpp:104:81: error: bitwise operation between different enumeration types (\u0027skgpu::graphite::DrawTypeFlags\u0027 and \u0027skgpu::graphite::InternalDrawTypeFlags\u0027) is deprecated [-Werror,-Wdeprecated-enum-enum-conversion]\n  104 |                          static_cast\u003cDrawTypeFlags\u003e(DrawTypeFlags::kSimpleShape |\n      |                                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~ ^\n  105 |                                                     InternalDrawTypeFlags::kAnalyticRRect));\n      |                                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n```",
+      "revId": "6c89706638eeb6365c06e274d8aae97097fc867e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
