@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1f93540a_6774f9df",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 30
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-09-30T19:11:03Z",
+      "side": 1,
+      "message": "public header lgtm",
+      "revId": "a9377cd080636efd3959b730c861aa7e70f50f59",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ec0f37f_64e622a3",
+        "filename": "include/encode/SkJpegEncoder.h",
+        "patchSetId": 30
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-09-30T19:11:03Z",
+      "side": 1,
+      "message": "nit: indent",
+      "range": {
+        "startLine": 16,
+        "startChar": 8,
+        "endLine": 16,
+        "endChar": 18
+      },
+      "revId": "a9377cd080636efd3959b730c861aa7e70f50f59",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
