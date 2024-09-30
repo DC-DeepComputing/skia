@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8710ba73_b6b132f9",
+        "filename": "src/codec/SkCodec.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2024-09-30T18:09:28Z",
+      "side": 1,
+      "message": "No, libavif is not present in Android. Android will fallback to `SkHeifDecoder` for AVIF if this is not enabled. I have added a comment.",
+      "parentUuid": "255b39bb_3546af8b",
+      "range": {
+        "startLine": 118,
+        "startChar": 15,
+        "endLine": 118,
+        "endChar": 67
+      },
+      "revId": "ac90d16915ef36a120237123268bda8d1bd25a40",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "61089a5e_5c73d75e",
@@ -54,6 +78,30 @@
       "writtenOn": "2024-09-30T12:58:46Z",
       "side": 1,
       "message": "nit: `SkAvifDecoder::LibAvif::Decoder()` (we should prefer the explicit implementation)",
+      "range": {
+        "startLine": 122,
+        "startChar": 32,
+        "endLine": 122,
+        "endChar": 45
+      },
+      "revId": "ac90d16915ef36a120237123268bda8d1bd25a40",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "96b88881_efdc8485",
+        "filename": "src/codec/SkCodec.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2024-09-30T18:09:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "61089a5e_5c73d75e",
       "range": {
         "startLine": 122,
         "startChar": 32,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a49442a_211664f0",
+        "filename": "src/codec/SkCrabbyAvifCodec.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2024-09-30T18:09:28Z",
+      "side": 1,
+      "message": "Good point. This was intended to be a hack to re-use libavif API with minimal diffs. But now that this is a separate wrapper, this is no longer necessary. Updated to explicitly use the namespace where needed.",
+      "parentUuid": "01431c46_6b5ad047",
+      "range": {
+        "startLine": 29,
+        "startChar": 16,
+        "endLine": 29,
+        "endChar": 26
+      },
+      "revId": "ac90d16915ef36a120237123268bda8d1bd25a40",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "da921810_6ee33da6",
@@ -110,6 +182,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb292a19_d1749208",
+        "filename": "src/codec/SkCrabbyAvifCodec.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2024-09-30T18:09:28Z",
+      "side": 1,
+      "message": "Done. Have removed the `isAvif` variable altogether and made it a return statement.",
+      "parentUuid": "da921810_6ee33da6",
+      "range": {
+        "startLine": 39,
+        "startChar": 18,
+        "endLine": 39,
+        "endChar": 68
+      },
+      "revId": "ac90d16915ef36a120237123268bda8d1bd25a40",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8fb25959_58d13e3e",
@@ -123,6 +219,30 @@
       "writtenOn": "2024-09-30T12:58:46Z",
       "side": 1,
       "message": "This is no longer preferred Skia style. Please remove INHERITED and call out SkScalingCodec:: explicitly when necessary.",
+      "range": {
+        "startLine": 111,
+        "startChar": 10,
+        "endLine": 111,
+        "endChar": 19
+      },
+      "revId": "ac90d16915ef36a120237123268bda8d1bd25a40",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "246e3ff1_ce3e8868",
+        "filename": "src/codec/SkCrabbyAvifCodec.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2024-09-30T18:09:28Z",
+      "side": 1,
+      "message": "Done. Updated another instance of the INHERTIED with direct class name as well.",
+      "parentUuid": "8fb25959_58d13e3e",
       "range": {
         "startLine": 111,
         "startChar": 10,
