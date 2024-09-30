@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "870078d6_3b78b0bb",
+        "filename": "src/pdf/SkPDFTag.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 329,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-09-30T19:04:03Z",
+      "side": 1,
+      "message": "Well there was a bug just waiting to happen. We actually want to pass the string in, not just the pointer, since this pointer is about to go out of scope. I managed to fix this in PS1, but it managed to creep back in.",
+      "range": {
+        "startLine": 329,
+        "startChar": 44,
+        "endLine": 329,
+        "endChar": 52
+      },
+      "revId": "9b31344e1cfe663aa70d324ac69937c639dd079b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
