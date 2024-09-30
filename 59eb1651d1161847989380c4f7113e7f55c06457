@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0fc422b7_34b31ad5",
+        "filename": "src/pdf/SkPDFTag.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-09-30T21:10:30Z",
+      "side": 1,
+      "message": "It seems odd for something named `Copy` to mutate the source, but I see it\u0027s not new to this CL.  Maybe add a comment on why this is ok.",
+      "range": {
+        "startLine": 224,
+        "startChar": 29,
+        "endLine": 224,
+        "endChar": 38
+      },
+      "revId": "59eb1651d1161847989380c4f7113e7f55c06457",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
