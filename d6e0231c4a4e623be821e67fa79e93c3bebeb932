@@ -16,6 +16,138 @@
       "message": "thanks for the review Kaylee!\n\nBen/Florin, can you please take a look at the changes in `include/codec/SkAvifCodec.h` as i need an owner\u0027s approval for that. Thanks!",
       "revId": "d6e0231c4a4e623be821e67fa79e93c3bebeb932",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6488406_9850e2ce",
+        "filename": "include/codec/SkAvifDecoder.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-09-30T19:06:51Z",
+      "side": 1,
+      "message": "What\u0027s the story with the old `LibAvif` decoder? Do we still need it?\n\n@vigneshv@google.com, I believe you added it, and I\u0027m not aware of any clients using it.",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 44,
+        "endChar": 23
+      },
+      "revId": "d6e0231c4a4e623be821e67fa79e93c3bebeb932",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c0162aa_2b24a2c8",
+        "filename": "include/codec/SkAvifDecoder.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-09-30T19:06:51Z",
+      "side": 1,
+      "message": "nit: \"an\" before \"AVIF\", here and elsewhere.",
+      "range": {
+        "startLine": 48,
+        "startChar": 43,
+        "endLine": 48,
+        "endChar": 44
+      },
+      "revId": "d6e0231c4a4e623be821e67fa79e93c3bebeb932",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04f1eb97_a891edac",
+        "filename": "include/codec/SkAvifDecoder.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-09-30T19:06:51Z",
+      "side": 1,
+      "message": "Why is the first `Decoder()` inside the `CrabbyAvif` namespace, but the second one is inside the `SkAvifDecoder` namespace (but not `LibAvif`)?",
+      "range": {
+        "startLine": 65,
+        "startChar": 0,
+        "endLine": 75,
+        "endChar": 29
+      },
+      "revId": "d6e0231c4a4e623be821e67fa79e93c3bebeb932",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "080ca735_b44671fe",
+        "filename": "src/codec/SkCodec.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-09-30T19:06:51Z",
+      "side": 1,
+      "message": "I think this should have a `TODO` with a bug to have the Android framework initialize Skia\u0027s decoders. When it\u0027s fixed, we\u0027ll read the property from Android, rather than here.",
+      "range": {
+        "startLine": 117,
+        "startChar": 0,
+        "endLine": 124,
+        "endChar": 5
+      },
+      "revId": "d6e0231c4a4e623be821e67fa79e93c3bebeb932",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a33833b4_963044be",
+        "filename": "src/codec/SkCrabbyAvifCodec.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-09-30T19:06:51Z",
+      "side": 1,
+      "message": "I assume these are temporary, and may need tracking bugs and TODOs? e.g. we want to support some of these? Or no?\n\nI think generally, these deserve comments, explaining why we are ignoring/disabling things. Same for `strictFlags`, whatever that means.",
+      "range": {
+        "startLine": 59,
+        "startChar": 0,
+        "endLine": 62,
+        "endChar": 59
+      },
+      "revId": "d6e0231c4a4e623be821e67fa79e93c3bebeb932",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "025fe2e9_0303d2f4",
+        "filename": "src/codec/SkCrabbyAvifCodec.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-09-30T19:06:51Z",
+      "side": 1,
+      "message": "Why do we need a fallback case for when not on the Android Framework?",
+      "revId": "d6e0231c4a4e623be821e67fa79e93c3bebeb932",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
