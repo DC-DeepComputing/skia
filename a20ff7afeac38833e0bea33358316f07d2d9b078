@@ -91,6 +91,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ff6b1dfa_8e490329",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-09-30T16:59:04Z",
+      "side": 1,
+      "message": "I think a useful callout to make in this comment is that this is specifically referring to a shader *snippet* that has multiple textures, which could then be a mix of immutable samplers and dynamic samplers, e.g. the YUV snippets.\n\nRight now if they have any immutable sampler, they push back the sampler description for every texture into a node\u0027s data vs. somehow encoding a plane index + sampler description. I definitely had forgotten that this case needed to be handled here and started to write up just having it simplified to push back one `SamplerDesc`.\n\nWe could remove the check against `0` and take it into account when calculating `samplerDataLength \u003d 1`, but we\u0027d also need to make sure that when we filled out the nodes sampler descriptions that they were using a default dynamic sampler and not their actual dynamic sampler to avoid creating a new paint key. Since that requirement still exists where we have to make sure we put in a `0`, it seems like things would be simpler if we just appended `{}` for dynamic samplers since `SamplerDesc::asSpan()` already knows how to write just a single int.",
+      "parentUuid": "99f23a83_fbdd54bd",
+      "range": {
+        "startLine": 262,
+        "startChar": 11,
+        "endLine": 262,
+        "endChar": 85
+      },
+      "revId": "a20ff7afeac38833e0bea33358316f07d2d9b078",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "81e8439e_69048d61",
         "filename": "src/gpu/graphite/ContextUtils.cpp",
         "patchSetId": 8

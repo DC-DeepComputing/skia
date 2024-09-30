@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9069c29c_b00da743",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 317,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-09-30T16:59:04Z",
+      "side": 1,
+      "message": "nit: can just use `{}` directly I think",
+      "range": {
+        "startLine": 317,
+        "startChar": 55,
+        "endLine": 317,
+        "endChar": 80
+      },
+      "revId": "74390bfed25828c17649ce432b34ca28da4ce92d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98504bed_e6d83aa7",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 500,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-09-30T16:59:04Z",
+      "side": 1,
+      "message": "I think we can just pass `{}` into the push_back_n call here, since it\u0027s very clear from the comment and what `{}` is used for that it\u0027s just the default placeholder.",
+      "range": {
+        "startLine": 500,
+        "startChar": 45,
+        "endLine": 500,
+        "endChar": 70
+      },
+      "revId": "74390bfed25828c17649ce432b34ca28da4ce92d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
