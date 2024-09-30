@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d9d7192_e4970d1d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-09-30T16:31:16Z",
+      "side": 1,
+      "message": "@danieldilan, can you PTAL?",
+      "revId": "178483cf50ce7331ed0131ba24b2d2576a6af373",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ddb4509f_99419830",
+        "filename": "src/codec/SkPngCodecBase.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-09-30T16:31:16Z",
+      "side": 1,
+      "message": "FYI: This corresponds to the following `SkASSERT` in `SkSwizzler::Make`: https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/codec/SkSwizzler.cpp;l\u003d1169-1171;drc\u003d1948fd53e2807dbfd07f7fc11d85a8d0e5c23589",
+      "range": {
+        "startLine": 88,
+        "startChar": 0,
+        "endLine": 90,
+        "endChar": 5
+      },
+      "revId": "178483cf50ce7331ed0131ba24b2d2576a6af373",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "138eda8e_aa6c9f04",
+        "filename": "src/codec/SkPngCodecBase.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-09-30T16:31:16Z",
+      "side": 1,
+      "message": "I am not 100% happy with how integer overflow is handled here.  OTOH this code has been moved here from `SkPngCodec` and I think it would be best to tackle this aspect separately - I\u0027ve opened https://crbug.com/370510725 to remember this.",
+      "range": {
+        "startLine": 100,
+        "startChar": 43,
+        "endLine": 100,
+        "endChar": 44
+      },
+      "revId": "178483cf50ce7331ed0131ba24b2d2576a6af373",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7154c4a0_6446a6b8",
+        "filename": "src/codec/SkPngCodecBase.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-09-30T16:31:16Z",
+      "side": 1,
+      "message": "This corresponds to:\n\n1. This `SkASSERT` in `SkSwizzler::Make`: https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/codec/SkSwizzler.cpp;l\u003d1169-1171;drc\u003d1948fd53e2807dbfd07f7fc11d85a8d0e5c23589\n2. The checks added at the top of `SkPngCodecBase::initializeXforms` (see new lines 88-90 above).",
+      "range": {
+        "startLine": 209,
+        "startChar": 0,
+        "endLine": 213,
+        "endChar": 5
+      },
+      "revId": "178483cf50ce7331ed0131ba24b2d2576a6af373",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

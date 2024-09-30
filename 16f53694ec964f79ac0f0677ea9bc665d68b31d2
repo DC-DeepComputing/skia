@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d7c6d95f_95c24962",
+        "filename": "src/codec/SkPngCodecBase.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-09-30T16:31:16Z",
+      "side": 0,
+      "message": "We now unconditionally set `fXformWidth` in `SkPngCodecBase::initializeXforms` so this branch is not needed.",
+      "revId": "16f53694ec964f79ac0f0677ea9bc665d68b31d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
