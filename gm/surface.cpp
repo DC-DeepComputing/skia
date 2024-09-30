@@ -418,6 +418,9 @@ DEF_SURFACE_TESTS(copy_on_write_savelayer, canvas, 256, 256) {
 DEF_SURFACE_TESTS(surface_underdraw, canvas, 256, 256) {
     SkImageInfo info = SkImageInfo::MakeN32Premul(256, 256, nullptr);
     auto surf = make(info);
+    if (!surf) {
+        return;
+    }
 
     const SkIRect subset = SkIRect::MakeLTRB(180, 0, 256, 256);
 

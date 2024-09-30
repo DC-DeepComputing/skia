@@ -121,6 +121,7 @@ sk_sp<GrGLRenderTarget> GrGLRenderTarget::MakeWrapped(GrGLGpu* gpu,
                                                      dimensions,
                                                      GrAttachment::UsageFlags::kStencilAttachment,
                                                      sampleCount,
+                                                     isProtected,
                                                      sFmt);
     }
     return sk_sp<GrGLRenderTarget>(new GrGLRenderTarget(
@@ -205,8 +206,18 @@ bool GrGLRenderTarget::ensureDynamicMSAAAttachment() {
         return false;
     }
 
-    GL_CALL(FramebufferRenderbuffer(GR_GL_FRAMEBUFFER, GR_GL_COLOR_ATTACHMENT0, GR_GL_RENDERBUFFER,
-                                    fDynamicMSAAAttachment->renderbufferID()));
+    if (fDynamicMSAAAttachment->isRenderBuffer()) {
+        GL_CALL(FramebufferRenderbuffer(GR_GL_FRAMEBUFFER,
+                                        GR_GL_COLOR_ATTACHMENT0,
+                                        GR_GL_RENDERBUFFER,
+                                        fDynamicMSAAAttachment->renderbufferID1()));
+    } else {
+        GL_CALL(FramebufferTexture2D(GR_GL_FRAMEBUFFER,
+                                     GR_GL_COLOR_ATTACHMENT0,
+                                     GR_GL_TEXTURE_2D_MULTISAMPLE,
+                                     fDynamicMSAAAttachment->textureID(),
+                                     /* level= */ 0));
+    }
     return true;
 }
 
@@ -251,22 +262,44 @@ void GrGLRenderTarget::bindInternal(GrGLenum fboTarget, bool useMultisampleFBO) 
     if (fNeedsStencilAttachmentBind[useMultisampleFBO]) {
         if (auto stencil = this->getStencilAttachment(useMultisampleFBO)) {
             const GrGLAttachment* glStencil = static_cast<const GrGLAttachment*>(stencil);
-            GL_CALL(FramebufferRenderbuffer(fboTarget,
-                                            GR_GL_STENCIL_ATTACHMENT,
-                                            GR_GL_RENDERBUFFER,
-                                            glStencil->renderbufferID()));
-            if (GrGLFormatIsPackedDepthStencil(glStencil->format())) {
+            if (glStencil->isRenderBuffer()) {
                 GL_CALL(FramebufferRenderbuffer(fboTarget,
-                                                GR_GL_DEPTH_ATTACHMENT,
+                                                GR_GL_STENCIL_ATTACHMENT,
                                                 GR_GL_RENDERBUFFER,
-                                                glStencil->renderbufferID()));
+                                                glStencil->renderbufferID1()));
+                if (GrGLFormatIsPackedDepthStencil(glStencil->format())) {
+                    GL_CALL(FramebufferRenderbuffer(fboTarget,
+                                                    GR_GL_DEPTH_ATTACHMENT,
+                                                    GR_GL_RENDERBUFFER,
+                                                    glStencil->renderbufferID1()));
+                } else {
+                    GL_CALL(FramebufferRenderbuffer(fboTarget,
+                                                    GR_GL_DEPTH_ATTACHMENT,
+                                                    GR_GL_RENDERBUFFER,
+                                                    0));
+                }
             } else {
-                GL_CALL(FramebufferRenderbuffer(fboTarget,
-                                                GR_GL_DEPTH_ATTACHMENT,
-                                                GR_GL_RENDERBUFFER,
-                                                0));
+                GL_CALL(FramebufferTexture2D(fboTarget,
+                                             GR_GL_STENCIL_ATTACHMENT,
+                                             GR_GL_TEXTURE_2D,
+                                             glStencil->textureID(),
+                                             /* level= */ 0));
+                if (GrGLFormatIsPackedDepthStencil(glStencil->format())) {
+                    GL_CALL(FramebufferTexture2D(fboTarget,
+                                                 GR_GL_DEPTH_ATTACHMENT,
+                                                 GR_GL_TEXTURE_2D,
+                                                 glStencil->textureID(),
+                                                 /* level= */ 0));
+                } else {
+                    GL_CALL(FramebufferTexture2D(fboTarget,
+                                                 GR_GL_DEPTH_ATTACHMENT,
+                                                 GR_GL_TEXTURE_2D,
+                                                 /* textureID= */ 0,
+                                                 /* level= */ 0));
+                }
             }
         } else {
+            // TODO: optionally make these FramebufferTexture2D's
             GL_CALL(FramebufferRenderbuffer(fboTarget,
                                             GR_GL_STENCIL_ATTACHMENT,
                                             GR_GL_RENDERBUFFER,

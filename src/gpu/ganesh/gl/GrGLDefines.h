@@ -402,6 +402,7 @@
 /* multisample */
 #define GR_GL_MULTISAMPLE                    0x809D
 #define GR_GL_SAMPLE_POSITION                0x8E50
+#define GR_GL_TEXTURE_2D_MULTISAMPLE         0x9100
 
 /* Points */
 #define GR_GL_POINT_SMOOTH                   0x0B10
