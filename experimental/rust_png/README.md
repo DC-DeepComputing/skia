@@ -19,3 +19,11 @@ To use and test the code from this directory from Chromium:
 
 TODO(https://crbug.com/356875275): Code in this directory is not yet covered by
 Skia standalone builds.
+
+## Differences between `SkPngCodec` and `SkRustPngCodec`
+
+* `SkPngCodec`:
+    - No APNG support.
+* `SkPngRustCodec`:
+    - No support to rewind the input stream.
+    - `sBIT` chunk is ignored

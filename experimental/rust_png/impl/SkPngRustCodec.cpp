@@ -60,6 +60,28 @@ SkEncodedInfo::Alpha ToAlpha(rust_png::ColorType colorType) {
     SK_ABORT("Unexpected `rust_png::ColorType`: %d", static_cast<int>(colorType));
 }
 
+SkCodecAnimation::DisposalMethod ToDisposalMethod(rust_png::DisposeOp op) {
+    switch (op) {
+        case rust_png::DisposeOp::None:
+            return SkCodecAnimation::DisposalMethod::kKeep;
+        case rust_png::DisposeOp::Background:
+            return SkCodecAnimation::DisposalMethod::kRestoreBGColor;
+        case rust_png::DisposeOp::Previous:
+            return SkCodecAnimation::DisposalMethod::kRestorePrevious;
+    }
+    SK_ABORT("Unexpected `rust_png::DisposeOp`: %d", static_cast<int>(op));
+}
+
+SkCodecAnimation::Blend ToBlend(rust_png::BlendOp op) {
+    switch (op) {
+        case rust_png::BlendOp::Source:
+            return SkCodecAnimation::Blend::kSrc;
+        case rust_png::BlendOp::Over:
+            return SkCodecAnimation::Blend::kSrcOver;
+    }
+    SK_ABORT("Unexpected `rust_png::BlendOp`: %d", static_cast<int>(op));
+}
+
 std::unique_ptr<SkEncodedInfo::ICCProfile> CreateColorProfile(const rust_png::Reader& reader) {
     // NOTE: This method is based on `read_color_profile` in
     // `src/codec/SkPngCodec.cpp` but has been refactored to use Rust inputs
@@ -164,9 +186,8 @@ SkCodec::Result ToSkCodecResult(rust_png::DecodingResult rustResult) {
 // (i.e. the `ReadTrait` API).
 class ReadTraitAdapterForSkStream final : public rust_png::ReadTrait {
 public:
-    // SAFETY: The caller needs to guarantee that `stream` will be alive for
-    // as long as `ReadTraitAdapterForSkStream`.
-    explicit ReadTraitAdapterForSkStream(SkStream* stream) : fStream(stream) {}
+    explicit ReadTraitAdapterForSkStream(std::unique_ptr<SkStream> stream)
+            : fStream(std::move(stream)) {}
 
     ~ReadTraitAdapterForSkStream() override = default;
 
@@ -193,20 +214,10 @@ public:
     }
 
 private:
-    SkStream* fStream = nullptr;  // Non-owning pointer.
+    std::unique_ptr<SkStream> fStream;
 };
 
 }  // namespace
-
-class SkPngRustCodec::PngFrame final : public SkFrame {
-public:
-    PngFrame(int id, SkEncodedInfo::Alpha alpha) : SkFrame(id), fReportedAlpha(alpha) {}
-
-private:
-    SkEncodedInfo::Alpha onReportedAlpha() const override { return fReportedAlpha; };
-
-    const SkEncodedInfo::Alpha fReportedAlpha;
-};
 
 // static
 std::unique_ptr<SkPngRustCodec> SkPngRustCodec::MakeFromStream(std::unique_ptr<SkStream> stream,
@@ -214,7 +225,7 @@ std::unique_ptr<SkPngRustCodec> SkPngRustCodec::MakeFromStream(std::unique_ptr<S
     SkASSERT(stream);
     SkASSERT(result);
 
-    auto readTraitAdapter = std::make_unique<ReadTraitAdapterForSkStream>(stream.get());
+    auto readTraitAdapter = std::make_unique<ReadTraitAdapterForSkStream>(std::move(stream));
     rust::Box<rust_png::ResultOfReader> resultOfReader =
             rust_png::new_reader(std::move(readTraitAdapter));
     *result = ToSkCodecResult(resultOfReader->err());
@@ -223,25 +234,15 @@ std::unique_ptr<SkPngRustCodec> SkPngRustCodec::MakeFromStream(std::unique_ptr<S
     }
     rust::Box<rust_png::Reader> reader = resultOfReader->unwrap();
 
-    return std::make_unique<SkPngRustCodec>(
-            CreateEncodedInfo(*reader), std::move(stream), std::move(reader));
+    return std::make_unique<SkPngRustCodec>(CreateEncodedInfo(*reader), std::move(reader));
 }
 
-SkPngRustCodec::SkPngRustCodec(SkEncodedInfo&& encodedInfo,
-                               std::unique_ptr<SkStream> stream,
-                               rust::Box<rust_png::Reader> reader)
-        : SkPngCodecBase(std::move(encodedInfo), std::move(stream)), fReader(std::move(reader)) {
-    // Initialize propoerties of the first (maybe the only) animation frame.
-    constexpr int kIdOfFirstFrame = 0;
-    fFrames.push_back(PngFrame(kIdOfFirstFrame, this->getEncodedInfo().alpha()));
-    SkFrame& first_frame = fFrames.back();
-    first_frame.setXYWH(0, 0, this->getEncodedInfo().width(), this->getEncodedInfo().height());
-    first_frame.setHasAlpha(this->getEncodedInfo().alpha() == SkEncodedInfo::kUnpremul_Alpha);
-    first_frame.setRequiredFrame(kNoFrame);
-    // No need to call `setDuration` or `setBlend` - the default values are ok.
-    //
-    // TODO(https://crbug.com/356922876): Call setDisposalMethod`, based on
-    // `png::FrameControl`.
+SkPngRustCodec::SkPngRustCodec(SkEncodedInfo&& encodedInfo, rust::Box<rust_png::Reader> reader)
+        : SkPngCodecBase(std::move(encodedInfo),
+                         nullptr)  // This codec doesn't support rewinding => passing null stream.
+        , fReader(std::move(reader))
+        , fFrameHolder(encodedInfo.width(), encodedInfo.height()) {
+    fFrameHolder.appendNewFrame(*fReader, this->getEncodedInfo());
 }
 
 SkPngRustCodec::~SkPngRustCodec() = default;
@@ -251,12 +252,14 @@ SkCodec::Result SkPngRustCodec::startDecoding(const SkImageInfo& dstInfo,
                                               size_t rowBytes,
                                               const Options& options,
                                               DecodingState* decodingState) {
-    // TODO(https://crbug.com/356922876): Expose `png` crate's ability to decode
-    // multiple frames.
-    if (options.fFrameIndex != 0) {
+    if (options.fFrameIndex < 0 || options.fFrameIndex >= fFrameHolder.size()) {
+        return kInvalidParameters;
+    }
+    if (options.fFrameIndex != (fFrameHolder.size() - 1)) {
+        // Only the most recent frame can be decoded.
         return kUnimplemented;
     }
-    const SkFrame* frame = &fFrames[0];
+    const SkFrame* frame = fFrameHolder.getFrame(options.fFrameIndex);
 
     // TODO(https://crbug.com/362830091): Consider handling `fSubset` (if not
     // for `onGetPixels` then at least for `onStartIncrementalDecode`).
@@ -264,7 +267,24 @@ SkCodec::Result SkPngRustCodec::startDecoding(const SkImageInfo& dstInfo,
         return kUnimplemented;
     }
 
-    Result result = this->initializeXforms(dstInfo, options, frame->width());
+    Result result = ToSkCodecResult(fReader->skip_default_non_animated_image_if_needed());
+    if (result != kSuccess) {
+        return result;
+    }
+
+    // Was full initialization of the first frame postponed?
+    if (!fFrameHolder.getFrame(0)->reachedStartOfData()) {
+        // When first frame's initialization is postponed, it is still the only
+        // know frame at this point.
+        SkASSERT(fFrameHolder.size() == 1);
+        // Ppostponed initialization implies `has_actl_chunk`.
+        SkASSERT(fReader->has_actl_chunk());
+        // `skip_default_non_animated_image_if_needed` implies `has_fctl_chunk`.
+        SkASSERT(fReader->has_fctl_chunk());
+        fFrameHolder.populateLastFrameInfo(*fReader, this->getEncodedInfo());
+    }
+
+    result = this->initializeXforms(dstInfo, options, frame->width());
     if (result != kSuccess) {
         return result;
     }
@@ -373,15 +393,28 @@ SkCodec::Result SkPngRustCodec::onIncrementalDecode(int* rowsDecoded) {
     return this->incrementalDecode(*fIncrementalDecodingState, rowsDecoded);
 }
 
-bool SkPngRustCodec::onGetFrameInfo(int index, FrameInfo* info) const {
-    if ((0 <= index) && (index < fFrames.size())) {
-        if (info) {
-            fFrames[index].fillIn(info, fNumOfFullyReceivedFrames > index);
+int SkPngRustCodec::onGetFrameCount() {
+    bool are_previous_frames_fully_decoded = fNumOfFullyReceivedFrames == fFrameHolder.size() &&
+                                             !fIncrementalDecodingState.has_value();
+    if (are_previous_frames_fully_decoded) {
+        bool are_there_more_frames =
+                fReader->has_actl_chunk() && fReader->get_actl_num_frames() > fFrameHolder.size();
+        if (are_there_more_frames) {
+            if (ToSkCodecResult(fReader->read_until_image_data()) == kSuccess) {
+                fFrameHolder.appendNewFrame(*fReader, this->getEncodedInfo());
+            }
         }
-        return true;
     }
 
-    return false;
+    return fFrameHolder.size();
+}
+
+bool SkPngRustCodec::onGetFrameInfo(int index, FrameInfo* info) const {
+    const SkFrame* frame = fFrameHolder.getFrame(index);
+    if (frame && info) {
+        frame->fillIn(info, fNumOfFullyReceivedFrames > index);
+    }
+    return !!frame;
 }
 
 int SkPngRustCodec::onGetRepetitionCount() {
@@ -434,4 +467,89 @@ std::optional<SkSpan<const uint8_t>> SkPngRustCodec::onTryGetTrnsChunk() {
     // TODO(https://crbug.com/356882657): Handle pLTE and tRNS inside
     // `SkPngRustCodec` rather than via `png::Transformations::EXPAND`.
     SkUNREACHABLE;
+}
+
+class SkPngRustCodec::FrameHolder::PngFrame final : public SkFrame {
+public:
+    PngFrame(int id, SkEncodedInfo::Alpha alpha) : SkFrame(id), fReportedAlpha(alpha) {}
+
+private:
+    SkEncodedInfo::Alpha onReportedAlpha() const override { return fReportedAlpha; };
+
+    const SkEncodedInfo::Alpha fReportedAlpha;
+};
+
+SkPngRustCodec::FrameHolder::FrameHolder(int width, int height) : SkFrameHolder() {
+    fScreenWidth = width;
+    fScreenHeight = height;
+}
+
+const SkFrameHolder* SkPngRustCodec::getFrameHolder() const { return &fFrameHolder; }
+
+SkPngRustCodec::FrameHolder::~FrameHolder() = default;
+
+const SkFrame* SkPngRustCodec::FrameHolder::onGetFrame(int i) const {
+    if ((0 <= i) && (static_cast<unsigned int>(i) < fFrames.size())) {
+        return &fFrames[i];
+    }
+    return nullptr;
+}
+
+size_t SkPngRustCodec::FrameHolder::size() const { return fFrames.size(); }
+
+void SkPngRustCodec::FrameHolder::appendNewFrame(const rust_png::Reader& reader,
+                                                 const SkEncodedInfo& info) {
+    int id = fFrames.size();
+    fFrames.emplace_back(id, info.alpha());
+    SkFrame& frame = fFrames.back();
+
+    if (reader.has_fctl_chunk()) {
+        this->populateLastFrameInfo(reader, info);
+        return;
+    }
+
+    // We may initially have no `fcTL` for the first frame - either:
+    //
+    // * This is a non-animated image (no `acTL` chunk), or
+    // * The `fcTL` chunk will come later, after we skip the `IDAT` chunk using
+    //   `skip_default_non_animated_image_if_needed`
+    SkASSERT(id == 0);
+
+    // Basic frame info can be populated without an `fcTL` chunk.
+    frame.setXYWH(0, 0, info.width(), info.height());
+
+    if (reader.has_actl_chunk()) {
+        // Postponing `setAlphaAndRequiredFrame` until `populateLastFrameInfo`
+        // gets called later, after reading the `fcTL` chunk.
+        SkASSERT(!frame.reachedStartOfData());
+        return;
+    } else {
+        // For non-animated images the `IHDR` chunk has already provided all the
+        // info, so we can finalize the frame info by calling `setAlphaAndR...`.
+        this->setAlphaAndRequiredFrame(&frame);
+        SkASSERT(frame.reachedStartOfData());
+    }
+}
+
+void SkPngRustCodec::FrameHolder::populateLastFrameInfo(const rust_png::Reader& reader,
+                                                        const SkEncodedInfo& info) {
+    SkASSERT(reader.has_fctl_chunk());
+    SkASSERT(!fFrames.empty());
+    SkFrame& frame = fFrames.back();
+
+    uint32_t width = 0;
+    uint32_t height = 0;
+    uint32_t x_offset = 0;
+    uint32_t y_offset = 0;
+    auto dispose_op = rust_png::DisposeOp::None;
+    auto blend_op = rust_png::BlendOp::Source;
+    uint32_t duration_ms = 0;
+    reader.get_fctl_info(width, height, x_offset, y_offset, dispose_op, blend_op, duration_ms);
+    frame.setXYWH(x_offset, y_offset, width, height);
+    frame.setDisposalMethod(ToDisposalMethod(dispose_op));
+    frame.setBlend(ToBlend(blend_op));
+    frame.setDuration(duration_ms);
+
+    this->setAlphaAndRequiredFrame(&frame);
+    SkASSERT(frame.reachedStartOfData());
 }

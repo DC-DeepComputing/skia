@@ -377,8 +377,20 @@ SkCodec::Result SkCodec::handleFrameIndex(const SkImageInfo& info, void* pixels,
         return kSuccess;
     }
 
-    if (!this->rewindIfNeeded()) {
-        return kCouldNotRewind;
+    if (options.fFrameIndex != 0) {
+        FrameInfo frameInfo;
+        if (!this->getFrameInfo(options.fFrameIndex, &frameInfo)) {
+            // `options.fFrameIndex != 0` means that the caller expects to get
+            // an animation frame.  But, false from `getFrameInfo` means that
+            // this codec doesn't support animated images.
+            return kInvalidParameters;
+        }
+
+        if (frameInfo.fRequiredFrame != options.fPriorFrame) {
+            if (!this->rewindIfNeeded()) {
+                return kCouldNotRewind;
+            }
+        }
     }
 
     const int index = options.fFrameIndex;
