@@ -121,6 +121,7 @@ sk_sp<GrGLRenderTarget> GrGLRenderTarget::MakeWrapped(GrGLGpu* gpu,
                                                      dimensions,
                                                      GrAttachment::UsageFlags::kStencilAttachment,
                                                      sampleCount,
+                                                     isProtected,
                                                      sFmt);
     }
     return sk_sp<GrGLRenderTarget>(new GrGLRenderTarget(

@@ -699,7 +699,7 @@ bool GrResourceProvider::attachStencilAttachment(GrRenderTarget* rt, bool useMSA
         if (!keyedStencil) {
             // Need to try and create a new stencil
             keyedStencil = this->gpu()->makeStencilAttachment(rt->backendFormat(), rt->dimensions(),
-                                                              numStencilSamples);
+                                                              numStencilSamples, isProtected);
             if (!keyedStencil) {
                 return false;
             }

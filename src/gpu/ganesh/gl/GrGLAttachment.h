@@ -26,24 +26,27 @@ class SkTraceMemoryDump;
 
 class GrGLAttachment : public GrAttachment {
 public:
-    static sk_sp<GrGLAttachment> MakeStencil(GrGLGpu* gpu,
+    static sk_sp<GrGLAttachment> MakeStencil(GrGLGpu*,
                                              SkISize dimensions,
                                              int sampleCnt,
-                                             GrGLFormat format);
+                                             GrProtected,
+                                             GrGLFormat);
 
-    static sk_sp<GrGLAttachment> MakeMSAA(GrGLGpu* gpu,
+    static sk_sp<GrGLAttachment> MakeMSAA(GrGLGpu*,
                                           SkISize dimensions,
                                           int sampleCnt,
-                                          GrGLFormat format);
+                                          GrProtected,
+                                          GrGLFormat);
 
     static sk_sp<GrGLAttachment> MakeWrappedRenderBuffer(GrGpu* gpu,
                                                          GrGLuint renderbufferID,
                                                          SkISize dimensions,
                                                          UsageFlags supportedUsages,
                                                          int sampleCnt,
+                                                         GrProtected isProtected,
                                                          GrGLFormat format) {
         return sk_sp<GrGLAttachment>(new GrGLAttachment(
-                gpu, renderbufferID, dimensions, supportedUsages, sampleCnt, format,
+                gpu, renderbufferID, dimensions, supportedUsages, sampleCnt, isProtected, format,
                 /*label=*/"MakeWrappedRenderBuffer"));
     }
 
@@ -66,6 +69,7 @@ private:
                    SkISize dimensions,
                    UsageFlags supportedUsages,
                    int sampleCnt,
+                   GrProtected isProtected,
                    GrGLFormat format,
                    std::string_view label)
             : GrAttachment(gpu,
@@ -73,7 +77,7 @@ private:
                            supportedUsages,
                            sampleCnt,
                            skgpu::Mipmapped::kNo,
-                           GrProtected::kNo,
+                           isProtected,
                            label)
             , fFormat(format)
             , fRenderbufferID(renderbufferID) {

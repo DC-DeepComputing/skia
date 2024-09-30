@@ -60,12 +60,46 @@ static bool renderbuffer_storage_msaa(GrGLGpu* gpu,
     return error == GR_GL_NO_ERROR;
 }
 
+static bool tex_storage_2d_msaa(GrGLGpu* gpu,
+                                int sampleCount,
+                                GrGLenum internalFormat,
+                                int width,
+                                int height) {
+    SkASSERT(GrGLCaps::kNone_MSFBOType != gpu->glCaps().msFBOType());
+    GrGLenum error;
+    switch (gpu->glCaps().msFBOType()) {
+        case GrGLCaps::kStandard_MSFBOType:
+            error = GL_ALLOC_CALL(TexStorage2DMultisample(
+                    GR_GL_TEXTURE_2D_MULTISAMPLE, sampleCount, internalFormat, width, height,
+                    GR_GL_TRUE));
+            break;
+#if 0
+        case GrGLCaps::kES_Apple_MSFBOType:
+            error = GL_ALLOC_CALL(TexStorage2DMultisampleES2APPLE(
+                    GR_GL_TEXTURE_2D_MULTISAMPLE, sampleCount, internalFormat, width, height,
+                    GR_GL_TRUE));
+            break;
+        case GrGLCaps::kES_EXT_MsToTexture_MSFBOType:
+        case GrGLCaps::kES_IMG_MsToTexture_MSFBOType:
+            error = GL_ALLOC_CALL(TexStorage2DMultisampleES2EXT(
+                    GR_GL_TEXTURE_2D_MULTISAMPLE, sampleCount, internalFormat, width, height,
+                    GR_GL_TRUE));
+            break;
+#endif
+        case GrGLCaps::kNone_MSFBOType:
+            SkUNREACHABLE;
+    }
+    return error == GR_GL_NO_ERROR;
+}
+
 sk_sp<GrGLAttachment> GrGLAttachment::MakeStencil(GrGLGpu* gpu,
                                                   SkISize dimensions,
                                                   int sampleCnt,
+                                                  GrProtected isProtected,
                                                   GrGLFormat format) {
     GrGLuint rbID = 0;
 
+#if 0    /*$$*/
     GL_CALL(GenRenderbuffers(1, &rbID));
     if (!rbID) {
         return nullptr;
@@ -88,12 +122,16 @@ sk_sp<GrGLAttachment> GrGLAttachment::MakeStencil(GrGLGpu* gpu,
             return nullptr;
         }
     }
+#else
+
+#endif
 
     return sk_sp<GrGLAttachment>(new GrGLAttachment(gpu,
                                                     rbID,
                                                     dimensions,
                                                     GrAttachment::UsageFlags::kStencilAttachment,
                                                     sampleCnt,
+                                                    isProtected,
                                                     format,
                                                     /*label=*/"GLAttachmentMakeStencil"));
 }
@@ -101,9 +139,11 @@ sk_sp<GrGLAttachment> GrGLAttachment::MakeStencil(GrGLGpu* gpu,
 sk_sp<GrGLAttachment> GrGLAttachment::MakeMSAA(GrGLGpu* gpu,
                                                SkISize dimensions,
                                                int sampleCnt,
+                                               GrProtected isProtected,
                                                GrGLFormat format) {
     GrGLuint rbID = 0;
 
+#if 0    /*$$*/
     GL_CALL(GenRenderbuffers(1, &rbID));
     if (!rbID) {
         return nullptr;
@@ -115,12 +155,26 @@ sk_sp<GrGLAttachment> GrGLAttachment::MakeMSAA(GrGLGpu* gpu,
         GL_CALL(DeleteRenderbuffers(1, &rbID));
         return nullptr;
     }
+#else
+    GL_CALL(GenTextures(1, &rbID));
+    if (!rbID) {
+        return nullptr;
+    }
+    GL_CALL(BindTexture(GR_GL_TEXTURE_2D, rbID));
+    GrGLenum internalFormat = gpu->glCaps().getTexImageOrStorageInternalFormat(format);
+    if (!tex_storage_2d_msaa(gpu, sampleCnt, internalFormat,
+                             dimensions.width(), dimensions.height())) {
+        GL_CALL(DeleteTextures(1, &rbID));
+        return nullptr;
+    }
+#endif
 
     return sk_sp<GrGLAttachment>(new GrGLAttachment(gpu,
                                                     rbID,
                                                     dimensions,
                                                     GrAttachment::UsageFlags::kColorAttachment,
                                                     sampleCnt,
+                                                    isProtected,
                                                     format,
                                                     /*label=*/"GLAttachmentMakeMSAA"));
 }

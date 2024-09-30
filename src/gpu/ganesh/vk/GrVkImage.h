@@ -44,6 +44,7 @@ public:
     static sk_sp<GrVkImage> MakeStencil(GrVkGpu* gpu,
                                         SkISize dimensions,
                                         int sampleCnt,
+                                        GrProtected isProtected,
                                         VkFormat format);
 
     static sk_sp<GrVkImage> MakeMSAA(GrVkGpu* gpu,
