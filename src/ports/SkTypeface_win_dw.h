@@ -107,6 +107,8 @@ public:
         sk_sp<Loaders> loaders,
         const SkFontArguments::Palette& palette);
 
+    void* onGetDWriteFontFace() const override { return fDWriteFontFace.get(); }
+
 protected:
     void weak_dispose() const override {
         fLoaders.reset();
