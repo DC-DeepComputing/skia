@@ -184,6 +184,9 @@ bool GrGLInterface::validate() const {
         RETURN_FALSE_INTERFACE;
     }
 
+//    SkDebugf("v %d %d\n", (glVer >> 16), glVer & 0xFFFF);
+//    fExtensions.dump();
+
     if (GR_IS_GR_GL(fStandard)) {
         if (!fFunctions.fDrawBuffer ||
             !fFunctions.fPolygonMode) {
@@ -409,6 +412,19 @@ bool GrGLInterface::validate() const {
        (GR_IS_GR_WEBGL(fStandard) && (
           (glVer >= GR_GL_VER(2,0))))) {
         if (!fFunctions.fTexStorage2D) {
+            RETURN_FALSE_INTERFACE;
+        }
+    }
+
+    if ((GR_IS_GR_GL(fStandard) && (
+          (glVer >= GR_GL_VER(4,3)) ||
+          fExtensions.has("GL_ARB_texture_storage_multisample"))) ||
+       (GR_IS_GR_GL_ES(fStandard) && (
+          (glVer >= GR_GL_VER(3,1)) ||
+          fExtensions.has("GL_ARB_texture_storage_multisample"))) ||
+       (GR_IS_GR_WEBGL(fStandard) && (
+          (glVer >= GR_GL_VER(2,0) && fExtensions.has("GL_ARB_texture_storage_multisample"))))) {
+        if (!fFunctions.fTexStorage2DMultisample) {
             RETURN_FALSE_INTERFACE;
         }
     }

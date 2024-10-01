@@ -3563,11 +3563,12 @@ void GrGLCaps::setupSampleCounts(const GrGLContextInfo& ctxInfo, const GrGLInter
                 int count;
                 GrGLFormat grGLFormat = static_cast<GrGLFormat>(i);
                 GrGLenum glFormat = this->getRenderbufferInternalFormat(grGLFormat);
-                GR_GL_GetInternalformativ(gli, GR_GL_RENDERBUFFER, glFormat,
+                /* what what */
+                GR_GL_GetInternalformativ(gli, GR_GL_RENDERBUFFER1, glFormat,
                                           GR_GL_NUM_SAMPLE_COUNTS, 1, &count);
                 if (count) {
                     std::unique_ptr<int[]> temp(new int[count]);
-                    GR_GL_GetInternalformativ(gli, GR_GL_RENDERBUFFER, glFormat, GR_GL_SAMPLES,
+                    GR_GL_GetInternalformativ(gli, GR_GL_RENDERBUFFER1, glFormat, GR_GL_SAMPLES,
                                               count, temp.get());
                     // GL has a concept of MSAA rasterization with a single sample but we do not.
                     if (count && temp[count - 1] == 1) {

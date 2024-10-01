@@ -207,7 +207,8 @@ public:
     }
 
     sk_sp<GrAttachment> makeStencilAttachment(const GrBackendFormat& colorFormat,
-                                              SkISize dimensions, int numStencilSamples) override;
+                                              SkISize dimensions, int numStencilSamples,
+                                              GrProtected isProtected) override;
 
     sk_sp<GrAttachment> makeMSAAAttachment(SkISize dimensions,
                                            const GrBackendFormat& format,

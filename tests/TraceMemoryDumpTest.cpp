@@ -166,7 +166,8 @@ DEF_GANESH_TEST_FOR_GL_CONTEXT(SkTraceMemoryDump_ownedGLRenderTarget,
     rtIDs.fMultisampleFBOID = 0;
     rtIDs.fRTFBOOwnership = GrBackendObjectOwnership::kOwned;
     rtIDs.fSingleSampleFBOID = 20;
-    rtIDs.fMSColorRenderbufferID = 0;
+    rtIDs.fMSColorRenderbufferID2 = 0;
+    rtIDs.fMSColorTextureID = 0;
     rtIDs.fTotalMemorySamplesPerPixel = 1;
 
     sk_sp<GrGLRenderTarget> rt = GrGLRenderTarget::MakeWrapped(gpu,
@@ -194,7 +195,8 @@ DEF_GANESH_TEST_FOR_GL_CONTEXT(SkTraceMemoryDump_unownedGLRenderTarget,
     rtIDs.fMultisampleFBOID = 12;
     rtIDs.fRTFBOOwnership = GrBackendObjectOwnership::kBorrowed;
     rtIDs.fSingleSampleFBOID = 0;
-    rtIDs.fMSColorRenderbufferID = 0;
+    rtIDs.fMSColorRenderbufferID2 = 0;
+    rtIDs.fMSColorTextureID = 0;
     rtIDs.fTotalMemorySamplesPerPixel = 4;
 
     sk_sp<GrGLRenderTarget> rt = GrGLRenderTarget::MakeWrapped(gpu,
@@ -230,7 +232,8 @@ DEF_GANESH_TEST_FOR_GL_CONTEXT(SkTraceMemoryDump_ownedGLTextureRenderTarget,
     rtIDs.fMultisampleFBOID = 12;
     rtIDs.fRTFBOOwnership = GrBackendObjectOwnership::kOwned;
     rtIDs.fSingleSampleFBOID = 20;
-    rtIDs.fMSColorRenderbufferID = 22;
+    rtIDs.fMSColorRenderbufferID2 = 22;
+    rtIDs.fMSColorTextureID = 23;
     rtIDs.fTotalMemorySamplesPerPixel = 9;
 
     auto texRT = sk_make_sp<GrGLTextureRenderTarget>(

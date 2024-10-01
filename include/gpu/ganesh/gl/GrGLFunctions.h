@@ -165,6 +165,7 @@ using GrGLTexParameterfvFn = GrGLvoid GR_GL_FUNCTION_TYPE(GrGLenum target, GrGLe
 using GrGLTexParameteriFn = GrGLvoid GR_GL_FUNCTION_TYPE(GrGLenum target, GrGLenum pname, GrGLint param);
 using GrGLTexParameterivFn = GrGLvoid GR_GL_FUNCTION_TYPE(GrGLenum target, GrGLenum pname, const GrGLint* params);
 using GrGLTexStorage2DFn = GrGLvoid GR_GL_FUNCTION_TYPE(GrGLenum target, GrGLsizei levels, GrGLenum internalformat, GrGLsizei width, GrGLsizei height);
+using GrGLTexStorage2DMultisampleFn = GrGLvoid GR_GL_FUNCTION_TYPE(GrGLenum target, GrGLsizei samples, GrGLenum internalformat, GrGLsizei width, GrGLsizei height, GrGLboolean fixedSampleLocations);
 using GrGLDiscardFramebufferFn = GrGLvoid GR_GL_FUNCTION_TYPE(GrGLenum target, GrGLsizei numAttachments, const GrGLenum* attachments);
 using GrGLTestFenceFn = GrGLboolean GR_GL_FUNCTION_TYPE(GrGLuint fence);
 using GrGLTexSubImage2DFn = GrGLvoid GR_GL_FUNCTION_TYPE(GrGLenum target, GrGLint level, GrGLint xoffset, GrGLint yoffset, GrGLsizei width, GrGLsizei height, GrGLenum format, GrGLenum type, const GrGLvoid* pixels);
