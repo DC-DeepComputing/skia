@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "882a0eb0_3ffae1eb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-10-01T16:45:59Z",
+      "side": 1,
+      "message": "This seems pretty reasonable to me, looping in Greg to weigh in on it.",
+      "revId": "47572866a804fcbd67770a11fc1a3c849ed86f9d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "22664130_2f7a4d57",
@@ -183,6 +200,30 @@
       "side": 1,
       "message": "It just seemed more conservative to me to only give what is asked for. Otherwise, if this expands we may have to generate a bunch of query objects when the client only cares about one. There are lots of possible things that can queried in different APIs/extensions:\n\nhttps://docs.vulkan.org/spec/latest/chapters/queries.html\n\nhttps://www.khronos.org/opengl/wiki/Query_Object",
       "parentUuid": "a23d3565_7b87bd18",
+      "range": {
+        "startLine": 91,
+        "startChar": 0,
+        "endLine": 91,
+        "endChar": 56
+      },
+      "revId": "47572866a804fcbd67770a11fc1a3c849ed86f9d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5a87832_f8b408cf",
+        "filename": "include/gpu/graphite/GraphiteTypes.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-10-01T16:45:59Z",
+      "side": 1,
+      "message": "Ah gotcha, that makes sense then.",
+      "parentUuid": "c3048433_063990fd",
       "range": {
         "startLine": 91,
         "startChar": 0,
