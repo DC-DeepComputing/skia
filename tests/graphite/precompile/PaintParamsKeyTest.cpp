@@ -2054,7 +2054,7 @@ void extract_vs_build_subtest(skiatest::Reporter* reporter,
                     SkColorFilters::Blend(0xFFFFFFFF, SkBlendMode::kSrcOut));
         }
 
-        auto [paintID, uData, tData] =
+        UniquePaintParamsID paintID =
                 ExtractPaintData(recorder,
                                  &paramsGatherer,
                                  &builder,

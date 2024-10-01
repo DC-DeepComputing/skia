@@ -111,6 +111,7 @@ public:
     std::pair<IndexWriter, BindBufferInfo> getIndexWriter(size_t count, size_t stride);
     std::pair<UniformWriter, BindBufferInfo> getUniformWriter(size_t count, size_t stride);
     std::pair<UniformWriter, BindBufferInfo> getSsboWriter(size_t count, size_t stride);
+    std::pair<UniformWriter, BindBufferInfo> getSsboWriter(size_t requiredBytes);
 
     // The remaining writers and buffer allocator functions assume that byte counts are safely
     // calculated by the caller (e.g. Vello or ).
@@ -147,10 +148,6 @@ public:
     // Returns the last 'unusedBytes' from the last call to getVertexWriter(). Assumes that
     // 'unusedBytes' is less than the 'count*stride' to the original allocation.
     void returnVertexBytes(size_t unusedBytes);
-
-    size_t alignUniformBlockSize(size_t dataSize) {
-        return SkAlignTo(dataSize, fCurrentBuffers[kUniformBufferIndex].fStartAlignment);
-    }
 
     // Finalizes all buffers and transfers ownership of them to a Recording. Returns true on success
     // and false if a mapping had previously failed.
