@@ -94,6 +94,15 @@ action("create_notomono_cpp") {
   ]
 }
 
+component("brotli_wasm") {
+  defines = [ "BROTLI_EXTERNAL_DICTIONARY_DATA" ]
+  deps = [ "//third_party/brotli" ]
+  include_dirs = [ "../.." ]
+  sources = [
+    "../../src/utils/SkBrotli.cpp",
+  ]
+}
+
 skia_wasm_lib("canvaskit") {
   deps = [ "../..:skia" ]
   if (skia_canvaskit_enable_paragraph) {
@@ -114,6 +123,9 @@ skia_wasm_lib("canvaskit") {
   }
   if (skia_canvaskit_enable_embedded_font) {
     deps += [ ":create_notomono_cpp" ]
+  }
+  if (skia_canvaskit_enable_external_brotli_dictionary) {
+    deps += [ ":brotli_wasm" ]
   }
 
   sources = [
