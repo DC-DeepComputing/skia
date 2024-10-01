@@ -713,6 +713,10 @@ void SkPicturePlayback::handleOp(SkReadBuffer* reader,
                 }
                 rec.fFilters = filters;
             }
+            if (!reader->isVersionLT(SkPicturePriv::Version::kSaveLayerBackdropTileMode) &&
+                (flatFlags & SAVELAYERREC_HAS_BACKDROP_TILEMODE)) {
+                rec.fBackdropTileMode = reader->read32LE(SkTileMode::kLastTileMode);
+            }
             BREAK_ON_READ_ERROR(reader);
 
             canvas->saveLayer(rec);
