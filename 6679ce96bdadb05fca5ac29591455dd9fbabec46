@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "188556e2_2007479b",
+        "filename": "src/pdf/SkPDFTag.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-01T14:25:37Z",
+      "side": 1,
+      "message": "Since it isn\u0027t obvious and we\u0027ll be (somewhat) relying on it, should assert here that the pageIndex in monotonically increasing, `tag-\u003efMarkedContent.empty() || tag-\u003efMarkedContent.back().fLocation.fPageIndex \u003c\u003d pageIndex`.",
+      "revId": "6679ce96bdadb05fca5ac29591455dd9fbabec46",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d7c3cc7_55eed0a2",
+        "filename": "src/pdf/SkPDFTag.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 338,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-01T14:25:37Z",
+      "side": 1,
+      "message": "This block should be closer to and more obviously related to the marked context stuff above. This might mean defining `dict` a bit earlier.",
+      "revId": "6679ce96bdadb05fca5ac29591455dd9fbabec46",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
