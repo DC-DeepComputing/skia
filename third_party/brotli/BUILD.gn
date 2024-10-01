@@ -3,10 +3,18 @@
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
+import("../../gn/skia.gni")
 import("../third_party.gni")
 
 third_party("brotli") {
-  public_include_dirs = [ "../externals/brotli/c/include" ]
+  public_include_dirs = [
+    "../externals/brotli/c/include",
+    "../externals/brotli/c/common/dictionary.h",
+    ]
+
+  if (skia_use_external_brotli_dictionary) {
+      defines = [ "BROTLI_EXTERNAL_DICTIONARY_DATA" ]
+  }
 
   # Brotli is used by freetype and libjxl; they only need to decode brotli.
   sources = [
