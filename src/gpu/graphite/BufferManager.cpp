@@ -27,11 +27,11 @@ namespace skgpu::graphite {
 namespace {
 
 // TODO: Tune these values on real world data
-static constexpr uint32_t kVertexBufferSize = 16 << 10; // 16 KB
-static constexpr uint32_t kIndexBufferSize   = 2 << 10; //  2 KB
-static constexpr uint32_t kUniformBufferSize = 2 << 10; //  2 KB
-static constexpr uint32_t kStorageBufferMinSize = 2 << 10; // 2 KB
-static constexpr uint32_t kStorageBufferMaxSize = 1 << 20; // 1 MB
+static constexpr uint32_t kVertexBufferSize  = 16 << 10; // 16 KB
+static constexpr uint32_t kIndexBufferSize   =  2 << 10; //  2 KB
+static constexpr uint32_t kUniformBufferSize = 16 << 10; // 16 KB
+static constexpr uint32_t kStorageBufferMinSize = 16 << 10; // 16 KB
+static constexpr uint32_t kStorageBufferMaxSize =  1 << 20; //  1 MB
 
 // Make sure the buffer size constants are all powers of two, so we can align to them efficiently
 // when dynamically sizing buffers.
@@ -234,10 +234,18 @@ std::pair<UniformWriter, BindBufferInfo> DrawBufferManager::getSsboWriter(size_t
     if (!requiredBytes) {
         return {};
     }
+    return this->getSsboWriter(requiredBytes);
+}
+
+std::pair<UniformWriter, BindBufferInfo> DrawBufferManager::getSsboWriter(size_t requiredBytes) {
+    uint32_t requiredBytes32 = validate_size(requiredBytes);
+    if (!requiredBytes32) {
+        return {};
+    }
 
     auto& info = fCurrentBuffers[kStorageBufferIndex];
-    auto [ptr, bindInfo] = this->prepareMappedBindBuffer(&info, requiredBytes, "StorageBuffer");
-    return {UniformWriter(ptr, requiredBytes), bindInfo};
+    auto [ptr, bindInfo] = this->prepareMappedBindBuffer(&info, requiredBytes32, "StorageBuffer");
+    return {UniformWriter(ptr, requiredBytes32), bindInfo};
 }
 
 std::pair<void* /*mappedPtr*/, BindBufferInfo> DrawBufferManager::getUniformPointer(
