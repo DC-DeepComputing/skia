@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dc19b035_48f2abd0",
+        "filename": "src/gpu/tessellate/PatchWriter.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 255,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-10-01T16:33:33Z",
+      "side": 0,
+      "message": "Interestingly this wasn\u0027t updated from when we went from using one to two storage buffer indices; but since it\u0027s just part of calculating a size it didn\u0027t matter. Maybe we could add more checks that this is more semantically correct, but I\u0027m ok with leaving things as-is since the material point is that the sizes match up and we will catch mismatches there with existing checks. (This also applies to a similar calculation in Tessellation.h.)",
+      "revId": "9ab06e4fe89fe2e196a5bf8f38ada8c691c17c46",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
