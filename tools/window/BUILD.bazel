@@ -144,6 +144,48 @@ skia_filegroup(
     ],
 )
 
+skia_filegroup(
+    name = "common_graphite_hdrs",
+    srcs = [
+        "GraphiteWindowContext.h",
+    ],
+)
+
+skia_filegroup(
+    name = "common_graphite_srcs",
+    srcs = [
+        "GraphiteWindowContext.cpp",
+    ],
+)
+
+skia_filegroup(
+    name = "graphite_native_vulkan_hdrs",
+    srcs = [
+        "GraphiteNativeVulkanWindowContext.h",
+    ],
+)
+
+skia_filegroup(
+    name = "graphite_native_vulkan_srcs",
+    srcs = [
+        "GraphiteNativeVulkanWindowContext.cpp",
+    ],
+)
+
+skia_filegroup(
+    name = "linux_graphite_native_vulkan_hdrs",
+    srcs = [
+        "unix/GraphiteNativeVulkanWindowContext_unix.h",
+    ],
+)
+
+skia_filegroup(
+    name = "linux_graphite_native_vulkan_srcs",
+    srcs = [
+        "unix/GraphiteNativeVulkanWindowContext_unix.cpp",
+    ],
+)
+
 skia_cc_library(
     name = "window",
     testonly = True,
@@ -160,17 +202,23 @@ skia_cc_library(
     testonly = True,
     srcs = [
         ":common_ganesh_gl_srcs",
+        ":common_graphite_srcs",
         ":common_linux_srcs",
         ":common_srcs",
         ":common_vulkan_srcs",
+        ":graphite_native_vulkan_srcs",
         ":linux_ganesh_gl_srcs",
         ":linux_ganesh_vulkan_srcs",
+        ":linux_graphite_native_vulkan_srcs",
     ],
     hdrs = [
+        ":common_graphite_hdrs",
         ":common_hdrs",
         ":common_linux_hdrs",
+        ":graphite_native_vulkan_hdrs",
         ":linux_ganesh_gl_hdrs",
         ":linux_ganesh_vulkan_hdrs",
+        ":linux_graphite_native_vulkan_hdrs",
     ],
     linkopts = [
         "-lX11",
@@ -185,7 +233,9 @@ skia_cc_library(
         "//src/gpu/ganesh/gl:ganesh_gl_TEST_UTIL",
         "//src/gpu/ganesh/gl/glx:glx_factory_TEST_UTIL",
         "//src/gpu/ganesh/vk:ganesh_vulkan_TEST_UTIL",
+        "//src/gpu/graphite/vk:graphite_native_vulkan_TEST_UTIL",
         "//tools/gpu/vk:testutils",
+        "//tools/graphite:graphite_utils",
     ],
 )
 

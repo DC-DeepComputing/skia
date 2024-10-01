@@ -7,13 +7,15 @@
 #ifndef GraphiteDawnWindowContext_DEFINED
 #define GraphiteDawnWindowContext_DEFINED
 
-#include "tools/window/WindowContext.h"
-#include "webgpu/webgpu_cpp.h"  // NO_G3_REWRITE
 #include "dawn/native/DawnNative.h"
+#include "tools/window/GraphiteWindowContext.h"
+#include "tools/window/WindowContext.h"
+
+#include "webgpu/webgpu_cpp.h"  // NO_G3_REWRITE
 
 namespace skwindow::internal {
 
-class GraphiteDawnWindowContext : public WindowContext {
+class GraphiteDawnWindowContext : public GraphiteWindowContext {
 public:
     GraphiteDawnWindowContext(const DisplayParams&, wgpu::TextureFormat surfaceFormat);
     ~GraphiteDawnWindowContext() override;
