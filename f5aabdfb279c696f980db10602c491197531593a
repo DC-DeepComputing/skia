@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40155be3_201b3b17",
+        "filename": "tools/window/DisplayParams.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-10-01T18:18:50Z",
+      "side": 1,
+      "message": "We should be able to use `std::unique_ptr\u003cGraphiteTestOptions\u003e` here, provided both the constructor and destructor are un-inlined.\n\nAlternatively, we could virtualize DisplayParams.",
+      "range": {
+        "startLine": 34,
+        "startChar": 4,
+        "endLine": 34,
+        "endChar": 24
+      },
+      "revId": "f5aabdfb279c696f980db10602c491197531593a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
