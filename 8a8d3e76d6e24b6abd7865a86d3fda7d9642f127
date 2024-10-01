@@ -58,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5151778_092f498e",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-10-01T14:33:39Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "cbf4c500_aca37f6a",
+      "range": {
+        "startLine": 73,
+        "startChar": 0,
+        "endLine": 73,
+        "endChar": 1
+      },
+      "revId": "8a8d3e76d6e24b6abd7865a86d3fda7d9642f127",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "eee998a9_fcad30b9",
@@ -76,6 +100,104 @@
         "startChar": 0,
         "endLine": 83,
         "endChar": 1
+      },
+      "revId": "8a8d3e76d6e24b6abd7865a86d3fda7d9642f127",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f00a7507_3ba19cc9",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-10-01T14:33:39Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "eee998a9_fcad30b9",
+      "range": {
+        "startLine": 83,
+        "startChar": 0,
+        "endLine": 83,
+        "endChar": 1
+      },
+      "revId": "8a8d3e76d6e24b6abd7865a86d3fda7d9642f127",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83b9d216_30751485",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 503,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-10-01T14:33:39Z",
+      "side": 1,
+      "message": "I don\u0027t see this parameter used in the function.",
+      "range": {
+        "startLine": 503,
+        "startChar": 39,
+        "endLine": 503,
+        "endChar": 65
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "eb1c6b5e_06764dcf",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+              "range": {
+                "startLine": 489,
+                "startChar": 0,
+                "endLine": 490,
+                "endChar": 0
+              },
+              "replacement": "        this-\u003esetLastFrameInfoFromCurrentFctlChunk(reader);\n"
+            },
+            {
+              "path": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+              "range": {
+                "startLine": 503,
+                "startChar": 0,
+                "endLine": 504,
+                "endChar": 0
+              },
+              "replacement": "        const rust_png::Reader\u0026 reader) {\n"
+            }
+          ]
+        }
+      ],
+      "revId": "8a8d3e76d6e24b6abd7865a86d3fda7d9642f127",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f86d0d7b_8760cac9",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 515,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-10-01T14:33:39Z",
+      "side": 1,
+      "message": "Do we need to verify this was successful somehow - or is `has_fctl_chunk()` enough?",
+      "range": {
+        "startLine": 515,
+        "startChar": 1,
+        "endLine": 515,
+        "endChar": 95
       },
       "revId": "8a8d3e76d6e24b6abd7865a86d3fda7d9642f127",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
