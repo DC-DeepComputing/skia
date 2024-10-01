@@ -158,6 +158,12 @@ void GrGLExtensions::add(const char ext[]) {
     }
 }
 
+void GrGLExtensions::dump() const {
+    for (int i = 0; i < fStrings.size(); ++i) {
+        SkDebugf("%d: %s\n", i, fStrings[i].c_str());
+    }
+}
+
 #ifdef SK_ENABLE_DUMP_GPU
 #include "src/utils/SkJSONWriter.h"
 

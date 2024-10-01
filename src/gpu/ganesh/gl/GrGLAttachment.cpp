@@ -33,6 +33,7 @@
         }                                                     \
     }()
 
+#if 0
 static bool renderbuffer_storage_msaa(GrGLGpu* gpu,
                                       int sampleCount,
                                       GrGLenum format,
@@ -59,15 +60,55 @@ static bool renderbuffer_storage_msaa(GrGLGpu* gpu,
     }
     return error == GR_GL_NO_ERROR;
 }
+#endif
+
+#if 0
+static bool tex_storage_2d_msaa(GrGLGpu* gpu,
+                                int sampleCount,
+                                GrGLenum internalFormat,
+                                int width,
+                                int height) {
+    SkASSERT(GrGLCaps::kNone_MSFBOType != gpu->glCaps().msFBOType());
+    GrGLenum error;
+//    switch (gpu->glCaps().msFBOType()) {
+//        case GrGLCaps::kStandard_MSFBOType:
+            error = GL_ALLOC_CALL(TexStorage2DMultisample(
+                    GR_GL_TEXTURE_2D_MULTISAMPLE, sampleCount, internalFormat, width, height,
+                    GR_GL_TRUE));
+//            break;
+#if 0
+        case GrGLCaps::kES_Apple_MSFBOType:
+            error = GL_ALLOC_CALL(TexStorage2DMultisampleES2APPLE(
+                    GR_GL_TEXTURE_2D_MULTISAMPLE, sampleCount, internalFormat, width, height,
+                    GR_GL_TRUE));
+            break;
+        case GrGLCaps::kES_EXT_MsToTexture_MSFBOType:
+        case GrGLCaps::kES_IMG_MsToTexture_MSFBOType:
+            error = GL_ALLOC_CALL(TexStorage2DMultisampleES2EXT(
+                    GR_GL_TEXTURE_2D_MULTISAMPLE, sampleCount, internalFormat, width, height,
+                    GR_GL_TRUE));
+            break;
+#endif
+//        case GrGLCaps::kNone_MSFBOType:
+//            SkUNREACHABLE;
+//    }
+    SkDebugf("error 0x%x\n", error);
+    return error == GR_GL_NO_ERROR;
+}
+#endif
 
 sk_sp<GrGLAttachment> GrGLAttachment::MakeStencil(GrGLGpu* gpu,
                                                   SkISize dimensions,
                                                   int sampleCnt,
+                                                  GrProtected isProtected,
                                                   GrGLFormat format) {
-    GrGLuint rbID = 0;
+    GrGLuint ID = 0;
+    bool isRenderBuffer;
 
-    GL_CALL(GenRenderbuffers(1, &rbID));
-    if (!rbID) {
+#if 0    /*$$*/
+    isRenderBuffer = true;
+    GL_CALL(GenRenderbuffers(1, &ID));
+    if (!ID) {
         return nullptr;
     }
     GL_CALL(BindRenderbuffer(GR_GL_RENDERBUFFER, rbID));
@@ -88,12 +129,47 @@ sk_sp<GrGLAttachment> GrGLAttachment::MakeStencil(GrGLGpu* gpu,
             return nullptr;
         }
     }
+#else
+    isRenderBuffer = false;
+    GL_CALL(GenTextures(1, &ID));
+    if (!ID) {
+        return nullptr;
+    }
+    GrGLenum internalFormat = GrGLFormatToEnum(format);
+    // we do this "if" so that we don't call the multisample
+    // version on a GL that doesn't have an MSAA extension.
+    if (sampleCnt > 1) {
+        GL_CALL(BindTexture(GR_GL_TEXTURE_2D_MULTISAMPLE, ID));
+        GrGLenum error = GL_ALLOC_CALL(TexStorage2DMultisample(
+                GR_GL_TEXTURE_2D_MULTISAMPLE, sampleCnt, internalFormat,
+                dimensions.width(), dimensions.height(),
+                /* fixedSampleLocations= */ GR_GL_TRUE));
+//        if (!tex_storage_2d_msaa(gpu, sampleCnt, glFmt, dimensions.width(), dimensions.height())) {
+        if (error != GR_GL_NO_ERROR) {
+            SkDebugf("SB error 0x%x\n", error);
+            GL_CALL(DeleteTextures(1, &ID));
+            return nullptr;
+        }
+    } else {
+        GL_CALL(BindTexture(GR_GL_TEXTURE_2D, ID));
+        GrGLenum error = GL_ALLOC_CALL(TexStorage2D(
+                GR_GL_TEXTURE_2D, /* levels= */ 1, internalFormat,
+                dimensions.width(), dimensions.height()));
+        if (error != GR_GL_NO_ERROR) {
+            GL_CALL(DeleteTextures(1, &ID));
+            return nullptr;
+        }
+    }
+#endif
 
     return sk_sp<GrGLAttachment>(new GrGLAttachment(gpu,
-                                                    rbID,
+                                                    isRenderBuffer,
+                                                    sampleCnt > 1,
+                                                    ID,
                                                     dimensions,
                                                     GrAttachment::UsageFlags::kStencilAttachment,
                                                     sampleCnt,
+                                                    isProtected,
                                                     format,
                                                     /*label=*/"GLAttachmentMakeStencil"));
 }
@@ -101,9 +177,15 @@ sk_sp<GrGLAttachment> GrGLAttachment::MakeStencil(GrGLGpu* gpu,
 sk_sp<GrGLAttachment> GrGLAttachment::MakeMSAA(GrGLGpu* gpu,
                                                SkISize dimensions,
                                                int sampleCnt,
+                                               GrProtected isProtected,
                                                GrGLFormat format) {
-    GrGLuint rbID = 0;
+    SkASSERT(sampleCnt > 1);
 
+    GrGLuint ID = 0;
+    bool isRenderBuffer;
+
+#if 0    /*$$*/
+    isRenderBuffer = true;
     GL_CALL(GenRenderbuffers(1, &rbID));
     if (!rbID) {
         return nullptr;
@@ -115,30 +197,58 @@ sk_sp<GrGLAttachment> GrGLAttachment::MakeMSAA(GrGLGpu* gpu,
         GL_CALL(DeleteRenderbuffers(1, &rbID));
         return nullptr;
     }
+#else
+    isRenderBuffer = false;
+    GL_CALL(GenTextures(1, &ID));
+    if (!ID) {
+        return nullptr;
+    }
+    GrGLenum internalFormat = gpu->glCaps().getTexImageOrStorageInternalFormat(format);
+
+    GL_CALL(BindTexture(GR_GL_TEXTURE_2D_MULTISAMPLE, ID));
+    GrGLenum error = GL_ALLOC_CALL(TexStorage2DMultisample(
+            GR_GL_TEXTURE_2D_MULTISAMPLE, sampleCnt, internalFormat,
+            dimensions.width(), dimensions.height(),
+            /* fixedSampleLocations= */ GR_GL_TRUE));
+    if (error != GR_GL_NO_ERROR) {
+        SkDebugf("MSAA error 0x%x\n", error);
+//    if (!tex_storage_2d_msaa(gpu, sampleCnt, internalFormat,
+//                             dimensions.width(), dimensions.height())) {
+        GL_CALL(DeleteTextures(1, &ID));
+        return nullptr;
+    }
+#endif
 
     return sk_sp<GrGLAttachment>(new GrGLAttachment(gpu,
-                                                    rbID,
+                                                    isRenderBuffer,
+                                                    /* isFoo= */ true,
+                                                    ID,
                                                     dimensions,
                                                     GrAttachment::UsageFlags::kColorAttachment,
                                                     sampleCnt,
+                                                    isProtected,
                                                     format,
                                                     /*label=*/"GLAttachmentMakeMSAA"));
 }
 
 
 void GrGLAttachment::onRelease() {
-    if (0 != fRenderbufferID) {
+    if (0 != fID) {
         GrGLGpu* gpuGL = (GrGLGpu*)this->getGpu();
         const GrGLInterface* gl = gpuGL->glInterface();
-        GR_GL_CALL(gl, DeleteRenderbuffers(1, &fRenderbufferID));
-        fRenderbufferID = 0;
+        if (isRenderBuffer()) {
+            GR_GL_CALL(gl, DeleteRenderbuffers(1, &fID));
+        } else {
+            GR_GL_CALL(gl, DeleteTextures(1, &fID));
+        }
+        fID = 0;
     }
 
     INHERITED::onRelease();
 }
 
 void GrGLAttachment::onAbandon() {
-    fRenderbufferID = 0;
+    fID = 0;
 
     INHERITED::onAbandon();
 }
@@ -149,19 +259,22 @@ GrBackendFormat GrGLAttachment::backendFormat() const {
 
 void GrGLAttachment::setMemoryBacking(SkTraceMemoryDump* traceMemoryDump,
                                       const SkString& dumpName) const {
-    SkString renderbuffer_id;
-    renderbuffer_id.appendU32(this->renderbufferID());
-    traceMemoryDump->setMemoryBacking(dumpName.c_str(), "gl_renderbuffer", renderbuffer_id.c_str());
+    SkString id;
+    id.appendU32(fID);
+    traceMemoryDump->setMemoryBacking(dumpName.c_str(),
+                                      fIsRenderBuffer ? "gl_renderbuffer" : "gl_texture",
+                                      id.c_str());
 }
 
 void GrGLAttachment::onSetLabel() {
-    SkASSERT(fRenderbufferID);
+    SkASSERT(fID);
     if (!this->getLabel().empty()) {
         const std::string label = "_Skia_" + this->getLabel();
         GrGLGpu* glGpu = static_cast<GrGLGpu*>(this->getGpu());
         if (glGpu->glCaps().debugSupport()) {
             GR_GL_CALL(glGpu->glInterface(),
-                       ObjectLabel(GR_GL_TEXTURE, fRenderbufferID, -1, label.c_str()));
+                       ObjectLabel(fIsRenderBuffer ? GR_GL_RENDERBUFFER : GR_GL_TEXTURE,
+                                   fID, -1, label.c_str()));
         }
     }
 }

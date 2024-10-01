@@ -26,30 +26,38 @@ class SkTraceMemoryDump;
 
 class GrGLAttachment : public GrAttachment {
 public:
-    static sk_sp<GrGLAttachment> MakeStencil(GrGLGpu* gpu,
+    static sk_sp<GrGLAttachment> MakeStencil(GrGLGpu*,
                                              SkISize dimensions,
                                              int sampleCnt,
-                                             GrGLFormat format);
+                                             GrProtected,
+                                             GrGLFormat);
 
-    static sk_sp<GrGLAttachment> MakeMSAA(GrGLGpu* gpu,
+    static sk_sp<GrGLAttachment> MakeMSAA(GrGLGpu*,
                                           SkISize dimensions,
                                           int sampleCnt,
-                                          GrGLFormat format);
+                                          GrProtected,
+                                          GrGLFormat);
 
     static sk_sp<GrGLAttachment> MakeWrappedRenderBuffer(GrGpu* gpu,
                                                          GrGLuint renderbufferID,
                                                          SkISize dimensions,
                                                          UsageFlags supportedUsages,
                                                          int sampleCnt,
+                                                         GrProtected isProtected,
                                                          GrGLFormat format) {
         return sk_sp<GrGLAttachment>(new GrGLAttachment(
-                gpu, renderbufferID, dimensions, supportedUsages, sampleCnt, format,
+                gpu, /* isRenderBuffer=*/ true, /* isFoo= */ false,
+                renderbufferID, dimensions, supportedUsages, sampleCnt, isProtected, format,
                 /*label=*/"MakeWrappedRenderBuffer"));
     }
 
     GrBackendFormat backendFormat() const override;
 
-    GrGLuint renderbufferID() const { return fRenderbufferID; }
+    bool isRenderBuffer() const { return fIsRenderBuffer; }
+    bool isMSAA() const { return fIsMSAA; }
+
+    GrGLuint renderbufferID1() const { SkASSERT(fIsRenderBuffer); return fID; }
+    GrGLuint textureID1() const { SkASSERT(!fIsRenderBuffer); return fID; }
 
     GrGLFormat format() const { return fFormat; }
 
@@ -62,10 +70,13 @@ protected:
 
 private:
     GrGLAttachment(GrGpu* gpu,
-                   GrGLuint renderbufferID,
+                   bool isRenderBuffer,
+                   bool isFoo,
+                   GrGLuint ID,
                    SkISize dimensions,
                    UsageFlags supportedUsages,
                    int sampleCnt,
+                   GrProtected isProtected,
                    GrGLFormat format,
                    std::string_view label)
             : GrAttachment(gpu,
@@ -73,10 +84,12 @@ private:
                            supportedUsages,
                            sampleCnt,
                            skgpu::Mipmapped::kNo,
-                           GrProtected::kNo,
+                           isProtected,
                            label)
             , fFormat(format)
-            , fRenderbufferID(renderbufferID) {
+            , fIsRenderBuffer(isRenderBuffer)
+            , fIsMSAA(sampleCnt > 1)
+            , fID(ID) {
         SkASSERT(supportedUsages == UsageFlags::kStencilAttachment ||
                  supportedUsages == UsageFlags::kColorAttachment);
         this->registerWithCache(skgpu::Budgeted::kYes);
@@ -86,10 +99,13 @@ private:
 
     GrGLFormat fFormat;
 
+    bool fIsRenderBuffer;
+    bool fIsMSAA;
+
     // may be zero for external SBs associated with external RTs
     // (we don't require the client to give us the id, just tell
     // us how many bits of stencil there are).
-    GrGLuint fRenderbufferID;
+    GrGLuint fID;
 
     using INHERITED = GrAttachment;
 };

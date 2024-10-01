@@ -1800,6 +1800,8 @@ int GrGLGpu::getCompatibleStencilIndex(GrGLFormat format) {
                                      GR_GL_TEXTURE_2D,
                                      colorID,
                                      0));
+
+#if 0 /*$$*/
         GrGLuint sbRBID = 0;
         GL_CALL(GenRenderbuffers(1, &sbRBID));
 
@@ -1842,6 +1844,56 @@ int GrGLGpu::getCompatibleStencilIndex(GrGLFormat format) {
             }
             GL_CALL(DeleteRenderbuffers(1, &sbRBID));
         }
+#else
+        GrGLuint sbTexID = 0;
+        GL_CALL(GenTextures(1, &sbTexID));
+
+        // look over formats till I find a compatible one
+        int stencilFmtCnt = this->glCaps().stencilFormats().size();
+        if (sbTexID) {
+            GL_CALL(BindTexture(GR_GL_TEXTURE_2D, sbTexID));
+            for (int i = 0; i < stencilFmtCnt && sbTexID; ++i) {
+                GrGLFormat sFmt = this->glCaps().stencilFormats()[i];
+                GrGLenum error = GL_ALLOC_CALL(TexStorage2D(
+                        GR_GL_TEXTURE_2D, /* levels= */ 1, GrGLFormatToEnum(sFmt), kSize, kSize));
+                if (error == GR_GL_NO_ERROR) {
+                    GL_CALL(FramebufferTexture2D(GR_GL_FRAMEBUFFER,
+                                                 GR_GL_STENCIL_ATTACHMENT,
+                                                 GR_GL_TEXTURE_2D,
+                                                 sbTexID, /* level= */ 0));
+                    if (GrGLFormatIsPackedDepthStencil(sFmt)) {
+                        GL_CALL(FramebufferTexture2D(GR_GL_FRAMEBUFFER,
+                                                     GR_GL_DEPTH_ATTACHMENT,
+                                                     GR_GL_TEXTURE_2D,
+                                                     sbTexID, /* level= */ 0));
+                    } else {
+                        GL_CALL(FramebufferTexture2D(GR_GL_FRAMEBUFFER,
+                                                     GR_GL_DEPTH_ATTACHMENT,
+                                                     GR_GL_TEXTURE_2D,
+                                                     /* textureID= */ 0, /* level= */ 0));
+                    }
+                    GrGLenum status;
+                    GL_CALL_RET(status, CheckFramebufferStatus(GR_GL_FRAMEBUFFER));
+                    if (status == GR_GL_FRAMEBUFFER_COMPLETE) {
+                        firstWorkingStencilFormatIndex = i;
+                        break;
+                    }
+                    GL_CALL(FramebufferTexture2D(GR_GL_FRAMEBUFFER,
+                                                 GR_GL_STENCIL_ATTACHMENT,
+                                                 GR_GL_TEXTURE_2D,
+                                                 /* textureID= */ 0, /* level= */ 0));
+                    if (GrGLFormatIsPackedDepthStencil(sFmt)) {
+                        GL_CALL(FramebufferTexture2D(GR_GL_FRAMEBUFFER,
+                                                     GR_GL_DEPTH_ATTACHMENT,
+                                                     GR_GL_TEXTURE_2D,
+                                                     /* textureID= */ 0, /* level= */ 0));
+                    }
+                }
+            }
+            GL_CALL(DeleteTextures(1, &sbTexID));
+        }
+#endif
+
         GL_CALL(DeleteTextures(1, &colorID));
         this->bindFramebuffer(GR_GL_FRAMEBUFFER, 0);
         this->deleteFramebuffer(fb);
@@ -1978,14 +2030,17 @@ GrGLuint GrGLGpu::createTexture(SkISize dimensions,
 }
 
 sk_sp<GrAttachment> GrGLGpu::makeStencilAttachment(const GrBackendFormat& colorFormat,
-                                                   SkISize dimensions, int numStencilSamples) {
+                                                   SkISize dimensions,
+                                                   int numStencilSamples,
+                                                   GrProtected isProtected) {
     int sIdx = this->getCompatibleStencilIndex(GrBackendFormats::AsGLFormat(colorFormat));
     if (sIdx < 0) {
         return nullptr;
     }
     GrGLFormat sFmt = this->glCaps().stencilFormats()[sIdx];
 
-    auto stencil = GrGLAttachment::MakeStencil(this, dimensions, numStencilSamples, sFmt);
+    auto stencil = GrGLAttachment::MakeStencil(this, dimensions, numStencilSamples,
+                                                                   isProtected, sFmt);
     if (stencil) {
         fStats.incStencilAttachmentCreates();
     }
@@ -1997,7 +2052,7 @@ sk_sp<GrAttachment> GrGLGpu::makeMSAAAttachment(SkISize dimensions, const GrBack
                                                 GrMemoryless isMemoryless) {
     SkASSERT(isMemoryless == GrMemoryless::kNo);
     return GrGLAttachment::MakeMSAA(
-            this, dimensions, numSamples, GrBackendFormats::AsGLFormat(format));
+            this, dimensions, numSamples, isProtected, GrBackendFormats::AsGLFormat(format));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
