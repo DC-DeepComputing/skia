@@ -514,8 +514,10 @@ void GrGLCaps::init(const GrContextOptions& contextOptions,
         }
     } // No client side arrays in WebGL https://www.khronos.org/registry/webgl/specs/1.0/#6.2
 
-    if (!contextOptions.fAvoidStencilBuffers) {
+    if (!contextOptions.fAvoidStencilBuffers && !fStrictProtectedness) {
         // To reduce surface area, if we avoid stencil buffers, we also disable MSAA.
+        // We also avoid both under strict Protectedness due to their use of RenderBuffers (which
+        // cannot be correctly created as Protected in the ANGLE->Vulkan code path).
         this->initFSAASupport(contextOptions, ctxInfo, gli);
         this->initStencilSupport(ctxInfo);
     }
