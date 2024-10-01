@@ -165,6 +165,8 @@ enum PathVerb {
 
 impl<'a> VerbsPointsPen<'a> {
     fn new(verbs: &'a mut Vec<u8>, points: &'a mut Vec<FfiPoint>) -> Self {
+        verbs.clear();
+        points.clear();
         verbs.reserve(PATH_EXTRACTION_RESERVE);
         points.reserve(PATH_EXTRACTION_RESERVE);
         Self {
@@ -577,6 +579,15 @@ fn get_path_verbs_points(
         })
         .is_some()
 }
+
+fn shrink_verbs_points_if_needed(
+    verbs: &mut Vec<u8>,
+    points: &mut Vec<FfiPoint>,
+) {
+    verbs.shrink_to(PATH_EXTRACTION_RESERVE);
+    points.shrink_to(PATH_EXTRACTION_RESERVE);
+}
+
 
 fn unhinted_advance_width_or_zero(
     font_ref: &BridgeFontRef,
@@ -1694,6 +1705,11 @@ mod ffi {
             points: &mut Vec<FfiPoint>,
             scaler_metrics: &mut BridgeScalerMetrics,
         ) -> bool;
+
+        fn shrink_verbs_points_if_needed(
+            verbs: &mut Vec<u8>,
+            points: &mut Vec<FfiPoint>,
+        );
 
         fn unhinted_advance_width_or_zero(
             font_ref: &BridgeFontRef,
