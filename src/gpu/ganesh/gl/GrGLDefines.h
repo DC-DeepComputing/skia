@@ -402,6 +402,7 @@
 /* multisample */
 #define GR_GL_MULTISAMPLE                    0x809D
 #define GR_GL_SAMPLE_POSITION                0x8E50
+#define GR_GL_TEXTURE_2D_MULTISAMPLE         0x9100
 
 /* Points */
 #define GR_GL_POINT_SMOOTH                   0x0B10
@@ -900,7 +901,7 @@
 #define GR_GL_READ_FRAMEBUFFER               0x8CA8
 #define GR_GL_DRAW_FRAMEBUFFER               0x8CA9
 
-#define GR_GL_RENDERBUFFER                   0x8D41
+#define GR_GL_RENDERBUFFER1                   0x8D41
 
 #define GR_GL_MAX_SAMPLES                    0x8D57
 // GL_IMG_multisampled_render_to_texture uses a different value for GL_MAX_SAMPLES

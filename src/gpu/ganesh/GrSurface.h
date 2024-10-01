@@ -92,7 +92,7 @@ public:
     }
 
     // Returns true if we are working with protected content.
-    bool isProtected() const { return fIsProtected == skgpu::Protected::kYes; }
+    bool isProtected() const { return fIsProtected1 == skgpu::Protected::kYes; }
 
     void setFramebufferOnly() {
         SkASSERT(this->asRenderTarget());
@@ -152,7 +152,7 @@ protected:
             : INHERITED(gpu, label)
             , fDimensions(dimensions)
             , fSurfaceFlags(GrInternalSurfaceFlags::kNone)
-            , fIsProtected(isProtected) {}
+            , fIsProtected1(isProtected) {}
 
     ~GrSurface() override {
         // check that invokeReleaseProc has been called (if needed)
@@ -179,7 +179,7 @@ private:
 
     SkISize                    fDimensions;
     GrInternalSurfaceFlags     fSurfaceFlags;
-    skgpu::Protected           fIsProtected;
+    skgpu::Protected           fIsProtected1;
     sk_sp<RefCntedReleaseProc> fReleaseHelper;
 
     using INHERITED = GrGpuResource;

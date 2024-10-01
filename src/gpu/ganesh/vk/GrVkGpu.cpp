@@ -16,9 +16,9 @@
 #include "include/core/SkTextureCompressionType.h"
 #include "include/core/SkTypes.h"
 #include "include/gpu/GpuTypes.h"
+#include "include/gpu/MutableTextureState.h"
 #include "include/gpu/ganesh/GrBackendSurface.h"
 #include "include/gpu/ganesh/GrDirectContext.h"
-#include "include/gpu/MutableTextureState.h"
 #include "include/gpu/ganesh/vk/GrVkBackendSemaphore.h"
 #include "include/gpu/ganesh/vk/GrVkBackendSurface.h"
 #include "include/gpu/ganesh/vk/GrVkTypes.h"
@@ -1583,11 +1583,12 @@ bool GrVkGpu::onRegenerateMipMapLevels(GrTexture* tex) {
 ////////////////////////////////////////////////////////////////////////////////
 
 sk_sp<GrAttachment> GrVkGpu::makeStencilAttachment(const GrBackendFormat& /*colorFormat*/,
-                                                   SkISize dimensions, int numStencilSamples) {
+                                                   SkISize dimensions, int numStencilSamples,
+                                                   GrProtected isProtected) {
     VkFormat sFmt = this->vkCaps().preferredStencilFormat();
 
     fStats.incStencilAttachmentCreates();
-    return GrVkImage::MakeStencil(this, dimensions, numStencilSamples, sFmt);
+    return GrVkImage::MakeStencil(this, dimensions, numStencilSamples, isProtected, sFmt);
 }
 
 sk_sp<GrAttachment> GrVkGpu::makeMSAAAttachment(SkISize dimensions,
