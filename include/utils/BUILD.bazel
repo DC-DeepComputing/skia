@@ -9,6 +9,7 @@ licenses(["notice"])
 skia_filegroup(
     name = "core_hdrs",
     srcs = [
+        "SkBrotli.h",
         "SkCamera.h",
         "SkCanvasStateUtils.h",
         "SkCustomTypeface.h",

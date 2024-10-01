@@ -18,6 +18,7 @@ _include = get_path_info("../include", "abspath")
 #  //include/utils:core_hdrs
 #  //include/utils/mac:public_hdrs
 skia_utils_public = [
+  "$_include/utils/SkBrotli.h",
   "$_include/utils/SkCamera.h",
   "$_include/utils/SkCanvasStateUtils.h",
   "$_include/utils/SkCustomTypeface.h",
