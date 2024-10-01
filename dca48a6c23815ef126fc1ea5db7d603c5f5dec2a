@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "29919779_333662c2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 10154
+      },
+      "writtenOn": "2024-10-01T16:44:39Z",
+      "side": 1,
+      "message": "Thanks!",
+      "revId": "dca48a6c23815ef126fc1ea5db7d603c5f5dec2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "08760b24_2858b14b",
@@ -61,6 +78,30 @@
       "writtenOn": "2024-09-30T12:37:59Z",
       "side": 1,
       "message": "nit: prefer `const` if they never change. Here and below.",
+      "range": {
+        "startLine": 767,
+        "startChar": 6,
+        "endLine": 767,
+        "endChar": 9
+      },
+      "revId": "dca48a6c23815ef126fc1ea5db7d603c5f5dec2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5759899f_7be076b2",
+        "filename": "modules/canvaskit/tests/canvas_test.js",
+        "patchSetId": 5
+      },
+      "lineNbr": 767,
+      "author": {
+        "id": 10154
+      },
+      "writtenOn": "2024-10-01T16:44:39Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "9dd34880_8cd60dc7",
       "range": {
         "startLine": 767,
         "startChar": 6,
