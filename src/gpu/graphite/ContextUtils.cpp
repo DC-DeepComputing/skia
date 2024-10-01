@@ -254,6 +254,37 @@ std::string get_node_ssbo_fields(const ShaderNode* node, bool* wrotePaintColor) 
     return result;
 }
 
+void append_sampler_descs(const SkSpan<const uint32_t> samplerData,
+                          skia_private::TArray<SamplerDesc>& outDescs) {
+    // The quantity of int32s needed to represent immutable sampler data varies, so handle
+    // incrementing i within the loop.
+    for (size_t i = 0; i < samplerData.size();) {
+        // Shader snippets that have multiple textures (like YUV snippets) could utilize a mix of
+        // immutable and dynamic samplers. In such a case, the data contains a value of "0" as the
+        // first value of a SamplerDesc to convey the usage of a dynamic sampler while preserving
+        // sampler binding order information.
+        if (samplerData[i] == 0) {
+            outDescs.push_back({}); // For dynamic samplers, add a default-initialized SamplerDesc
+            i++; continue;
+        }
+        // If the data is non-zero, that means we are using an immutable sampler. Isolate the
+        // ImmutableSamplerInfo portion of the SamplerDesc and consult the first bit, which
+        // represents whether the sampler uses a known or external format.
+        uint32_t immutableSamplerInfo = samplerData[i] >> SamplerDesc::kImmutableSamplerInfoShift;
+        SkASSERT(immutableSamplerInfo != 0);
+        bool usesExternalFormat = immutableSamplerInfo & 0b1;
+        const int samplerDataLength = usesExternalFormat ? SamplerDesc::kInt32sNeededExternalFormat
+                                                         : SamplerDesc::kInt32sNeededKnownFormat;
+
+        // Gather samplerDataLength uint32s from the data span. Use that to populate a SamplerDesc
+        // which enables us to query the resource provider for a real sampler.
+        SamplerDesc samplerDesc;
+        memcpy(&samplerDesc, samplerData.begin() + i, samplerDataLength * sizeof(uint32_t));
+        outDescs.push_back(samplerDesc);
+        i += samplerDataLength;
+    }
+}
+
 std::string get_node_texture_samplers(const ResourceBindingRequirements& bindingReqs,
                                       const ShaderNode* node,
                                       int* binding,
@@ -265,7 +296,27 @@ std::string get_node_texture_samplers(const ResourceBindingRequirements& binding
         SkSL::String::appendf(&result, "// %d - %s samplers\n",
                               node->keyIndex(), node->entry()->fName);
 
-        // TODO(b/898301): If outDescs is a valid ptr, populate it appropriately.
+        // Determine whether we need to analyze & interpret a ShaderNode's data as immutable
+        // SamplerDescs based upon whether:
+        // 1) A backend passes in a non-nullptr outImmutableSamplers param (may be nullptr in
+        //    backends or circumstances where we know immutable sampler data is never stored)
+        // 2) Any data is stored on the ShaderNode
+        // 3) Whether the ShaderNode snippet's ID matches that of any snippet ID that could store
+        //    immutable sampler data.
+        int32_t snippetId = node->codeSnippetId();
+        if (outDescs) {
+            // TODO(b/369846881): Refactor checking snippet ID to instead having a named
+            // snippet requirement flag that we can check here to decrease fragility.
+            if (!node->data().empty() &&
+                (snippetId == static_cast<int32_t>(BuiltInCodeSnippetID::kImageShader) ||
+                 snippetId == static_cast<int32_t>(BuiltInCodeSnippetID::kCubicImageShader) ||
+                 snippetId == static_cast<int32_t>(BuiltInCodeSnippetID::kHWImageShader))) {
+                append_sampler_descs(node->data(), *outDescs);
+            } else {
+                // Add default SamplerDescs for any dynamic samplers to outDescs.
+                outDescs->push_back_n(samplers.size(), {});
+            }
+        }
 
         for (const TextureAndSampler& t : samplers) {
             result += EmitSamplerLayout(bindingReqs, binding);
