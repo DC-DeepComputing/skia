@@ -115,6 +115,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3535e96c_55e32b3e",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-10-01T14:31:59Z",
+      "side": 1,
+      "message": "These are good questions and points to bring up. Basically, iff this method is provided with a real/non-null ptr to a container of `SamplerDesc`s, then we actually populate that container with A) a real immutable sampler desc or B) a default-initialized sampler desc (indicating the usage of a dynamic sampler) for each and every sampler encountered.\n\nSo in an example where we are using 3 dynamic samplers and no immutable samplers (AND `outDescs` is not null when passed in), then this method will populate `outDescs` with 3 `SamplerDesc {}`.\n\nA real container ptr is passed in only within backends and circumstances where immutable samplers are *possibly* used. For example, Metal will never pass in a real ptr here. Vulkan always passes a real ptr, since we always need to check for immutable sampler usage. Dawn passes in a real ptr when `__EMSCRIPTEN__` is not defined as opposed to `nullptr` when it is, since static samplers are only ever used in the former case. So, in cases where we are given `nullptr`, we know no immutable samplers can be used and we can skip this processing entirely.\n\n--\u003e Would anything break today if we filled out a desc array of all dynamic samplers?\n*Real* dynamic sampler descriptions - yes, since the current design dictates that descriptions in this container should be just empty/default-initialized for dynamic samplers to maintain binding indexing information. This is because we don\u0027t need dynamic sampler descriptions at the time of pipeline creation. We only need the immutable sampler ones in order to query the resource provider for a real immutable sampler that matches that description for inclusion in pipeline layouts.\nIn the backend pipelines, when processing a returned container of sampler descriptions, we compare the descriptions against the default to determine whether we perform any special immutable sampler handling.\nHowever, an out array of just default-initialized sampler descriptions is an expected possible outcome and is handled appropriately (in subsequent CLs for Dawn and Vulkan)\n\nTook a stab at updating this documentation area w/ Michael\u0027s suggestion. Thanks folks! ^-^",
+      "parentUuid": "99f23a83_fbdd54bd",
+      "range": {
+        "startLine": 262,
+        "startChar": 11,
+        "endLine": 262,
+        "endChar": 85
+      },
+      "revId": "a20ff7afeac38833e0bea33358316f07d2d9b078",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "81e8439e_69048d61",
         "filename": "src/gpu/graphite/ContextUtils.cpp",
         "patchSetId": 8
