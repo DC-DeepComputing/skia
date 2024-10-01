@@ -17,6 +17,7 @@
 #include "include/core/SkString.h"
 #include "include/private/base/SkTArray.h"
 #include "include/private/base/SkTDArray.h"
+#include "include/private/base/SkTo.h"
 #include "src/base/SkRandom.h"
 
 #include "src/core/SkDraw.h"
@@ -1286,3 +1287,50 @@ DEF_BENCH( return new CommonConvexBench(200, 16, false, false); )
 DEF_BENCH( return new CommonConvexBench(200, 16, true,  false); )
 DEF_BENCH( return new CommonConvexBench(200, 16, false, true); )
 DEF_BENCH( return new CommonConvexBench(200, 16, true,  true); )
+
+class ClosedArcBench : public Benchmark {
+public:
+    ClosedArcBench(const SkSize& size, bool use_path)
+        : fOval(SkRect::MakeSize(size))
+        , fUsePath(use_path) {
+        fName.printf("arc_closed_%d_%d_%s", SkToInt(size.fWidth), SkToInt(size.fHeight),
+                     use_path ? "path" : "arc");
+    }
+
+protected:
+    const char* onGetName() override {
+        return fName.c_str();
+    }
+
+    void onDraw(int loops, SkCanvas* canvas) override {
+        SkPaint paint;
+        paint.setAntiAlias(true);
+
+        for (int i = 0; i < loops; ++i) {
+            for (int inner = 0; inner < 100; ++inner) {
+                if (fUsePath) {
+                  SkPath path;
+                  path.incReserve(10, 5, 4);
+                  path.arcTo(fOval, 0, 180, false);
+                  path.arcTo(fOval, 180, 180, false);
+                  path.close();
+
+                  canvas->drawPath(path, paint);
+                } else {
+                  canvas->drawOval(fOval, paint);
+                }
+            }
+        }
+    }
+
+private:
+    SkString     fName;
+    const SkRect fOval;
+    const bool   fUsePath;
+
+    static constexpr SkSize kSize = { 100, 100 };
+
+    using INHERITED = Benchmark;
+};
+DEF_BENCH( return new ClosedArcBench({100, 100}, false); )
+DEF_BENCH( return new ClosedArcBench({100, 100}, true ); )
