@@ -22,6 +22,30 @@
       },
       "revId": "f5aabdfb279c696f980db10602c491197531593a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f301220_e92b1896",
+        "filename": "tools/window/DisplayParams.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-10-01T18:46:02Z",
+      "side": 1,
+      "message": "I wasn\u0027t sure about virtualizing DisplayParams, but I like that approach better (the std::unique_ptr only kicks the #ifdef problem into the .cpp file)",
+      "parentUuid": "40155be3_201b3b17",
+      "range": {
+        "startLine": 34,
+        "startChar": 4,
+        "endLine": 34,
+        "endChar": 24
+      },
+      "revId": "f5aabdfb279c696f980db10602c491197531593a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
