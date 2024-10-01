@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "48c4dc10_b3c4d1aa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-10-01T19:25:49Z",
+      "side": 1,
+      "message": "(FYI: Daniel is taking over my SkCodec responsibilities, as I\u0027m leaving Google.)\n\nAlso, it looks like we still need API approval. @fmalita@google.com?",
+      "revId": "58a9fd365797d8d0ac71c2fd948a7643340dbe00",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
