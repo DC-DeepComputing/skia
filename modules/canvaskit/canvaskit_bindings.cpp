@@ -60,6 +60,7 @@
 #include "include/encode/SkPngEncoder.h"
 #include "include/encode/SkWebpEncoder.h"
 #include "include/private/base/SkOnce.h"
+#include "include/utils/SkBrotli.h"
 #include "include/utils/SkParsePath.h"
 #include "include/utils/SkShadowUtils.h"
 #include "src/base/SkFloatBits.h"
@@ -1117,6 +1118,38 @@ EMSCRIPTEN_BINDINGS(Skia) {
         return SkShadowUtils::GetLocalBounds(ctm, path, *zPlaneParams, *lightPos, lightRadius,
                               flags, outputBounds);
     }));
+
+#ifdef BROTLI_EXTERNAL_DICTIONARY_DATA
+    function("_BrotliSetDictionaryData", optional_override([](WASMPointerU8 dPtr,
+                                                  size_t bytes)->bool {
+        uint8_t* d = reinterpret_cast<uint8_t*>(dPtr);
+        static uint8_t* wasmDictionary = nullptr;
+        static SkOnce once;
+        once([d] {
+          wasmDictionary = d;
+          SkBrotli::SetDictionaryData(wasmDictionary);
+        });
+        return true;
+    }), allow_raw_pointers());
+
+    function("_BrotliHasDictionaryData", optional_override([]()->bool {
+        static bool wasmHasDictionaryData = false;
+        static SkOnce once;
+        once([] {
+          wasmHasDictionaryData = SkBrotli::HasDictionaryData();
+        });
+        return wasmHasDictionaryData;
+    }), allow_raw_pointers());
+
+    function("_BrotliGetDictionarySize", optional_override([]()->size_t {
+        static size_t wasmDictionaryDataSize = 0;
+        static SkOnce once;
+        once([] {
+          wasmDictionaryDataSize = SkBrotli::GetDictionarySize();
+        });
+        return wasmDictionaryDataSize;
+    }), allow_raw_pointers());
+#endif
 
 #ifdef CK_SERIALIZE_SKP
     function("_MakePicture", optional_override([](WASMPointerU8 dPtr,

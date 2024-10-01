@@ -24,6 +24,7 @@
 
 var CanvasKit = {
   // public API (i.e. things we declare in the pre-js file or in the cpp bindings)
+  BrotliSetDictionaryData: function() {},
   Color: function() {},
   Color4f: function() {},
   ColorAsInt: function() {},

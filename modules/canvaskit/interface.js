@@ -1241,6 +1241,29 @@ CanvasKit.RRectXY = function(rect, rx, ry) {
   );
 };
 
+CanvasKit.BrotliSetDictionaryData = function(dictionary) {
+  if (dictionary === null) {
+    return false;
+  }
+  dictionary = new Uint8Array(dictionary);
+  var dataSize = CanvasKit._BrotliGetDictionaryDataSize();
+  if (dataSize != dictionary.byteLength) {
+    // TODO: Show an appropriate error message
+    return false;
+  }
+  var dataBeenSet = CanvasKit._BrotliHasDictionaryData();
+  if (dataBeenSet) {
+    // Do not allocate data if it has already been set
+    return true;
+  }
+  var memory = CanvasKit.Malloc(Uint8Array, dictionary.byteLength);
+  var data = memory.toTypedArray();
+  for (var i = 0; i < dictionary.byteLength; i += 1) {
+    data[i] = dictionary[i];
+  }
+  return CanvasKit._BrotliSetDictionaryData(data);
+}
+
 // data is a TypedArray or ArrayBuffer e.g. from fetch().then(resp.arrayBuffer())
 CanvasKit.MakeAnimatedImageFromEncoded = function(data) {
   data = new Uint8Array(data);
