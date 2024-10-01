@@ -9,7 +9,7 @@
 
 #include "include/core/SkRefCnt.h"
 #include "include/ports/SkCFObject.h"
-
+#include "tools/window/GraphiteWindowContext.h"
 #include "tools/window/WindowContext.h"
 
 #import <Metal/Metal.h>
@@ -19,7 +19,7 @@ class SkSurface;
 
 namespace skwindow::internal {
 
-class GraphiteMetalWindowContext : public WindowContext {
+class GraphiteMetalWindowContext : public GraphiteWindowContext {
 public:
     sk_sp<SkSurface> getBackbufferSurface() override;
 
