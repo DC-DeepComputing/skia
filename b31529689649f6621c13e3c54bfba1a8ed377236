@@ -16,6 +16,23 @@
       "message": "@adetaylor and @danakj, can you PTAL?\n\n/cc @scroggo and @danieldilan for now just as an FYI (I\u0027ll ask for a Skia-side LGTM once the local Rust experts are happy with this CL).",
       "revId": "b31529689649f6621c13e3c54bfba1a8ed377236",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "16baab4a_7628c4c6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 21925
+      },
+      "writtenOn": "2024-10-01T06:39:18Z",
+      "side": 1,
+      "message": "LGTM from a brief skim of some of the links",
+      "revId": "b31529689649f6621c13e3c54bfba1a8ed377236",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
