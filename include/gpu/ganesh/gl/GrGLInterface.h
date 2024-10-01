@@ -268,6 +268,7 @@ public:
         GrGLFunction<GrGLTexParameterivFn> fTexParameteriv;
         GrGLFunction<GrGLTexSubImage2DFn> fTexSubImage2D;
         GrGLFunction<GrGLTexStorage2DFn> fTexStorage2D;
+        GrGLFunction<GrGLTexStorage2DMultisampleFn> fTexStorage2DMultisample;
         GrGLFunction<GrGLTextureBarrierFn> fTextureBarrier;
         GrGLFunction<GrGLDiscardFramebufferFn> fDiscardFramebuffer;
         GrGLFunction<GrGLUniform1fFn> fUniform1f;

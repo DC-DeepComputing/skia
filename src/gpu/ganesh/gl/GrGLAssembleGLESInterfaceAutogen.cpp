@@ -267,6 +267,12 @@ sk_sp<const GrGLInterface> GrGLMakeAssembledGLESInterface(void *ctx, GrGLGetProc
         GET_PROC_SUFFIX(TexStorage2D, EXT);
     }
 
+    if (glVer >= GR_GL_VER(3,1)) {
+        GET_PROC(TexStorage2DMultisample);
+    } else if (extensions.has("GL_ARB_texture_storage_multisample")) {
+        GET_PROC(TexStorage2DMultisample);
+    }
+
     if (extensions.has("GL_NV_texture_barrier")) {
         GET_PROC_SUFFIX(TextureBarrier, NV);
     }

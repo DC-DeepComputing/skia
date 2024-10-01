@@ -663,15 +663,16 @@ public:
     // the GrAttachment.
     virtual sk_sp<GrAttachment> makeStencilAttachment(const GrBackendFormat& colorFormat,
                                                       SkISize dimensions,
-                                                      int numStencilSamples) = 0;
+                                                      int numStencilSamples,
+                                                      GrProtected) = 0;
 
     virtual GrBackendFormat getPreferredStencilFormat(const GrBackendFormat&) = 0;
 
     // Creates an MSAA surface to be used as an MSAA attachment on a framebuffer.
     virtual sk_sp<GrAttachment> makeMSAAAttachment(SkISize dimensions,
-                                                   const GrBackendFormat& format,
+                                                   const GrBackendFormat&,
                                                    int numSamples,
-                                                   GrProtected isProtected,
+                                                   GrProtected,
                                                    GrMemoryless isMemoryless) = 0;
 
     void handleDirtyContext() {
