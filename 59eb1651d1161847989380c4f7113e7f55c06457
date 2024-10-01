@@ -22,6 +22,30 @@
       },
       "revId": "59eb1651d1161847989380c4f7113e7f55c06457",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54eae11b_39cb6870",
+        "filename": "src/pdf/SkPDFTag.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-01T14:17:53Z",
+      "side": 1,
+      "message": "Yes, just about everything about setting up this class is a bit suspicious. I don\u0027t think we need `init` (which calls this) and this is more like \"MoveStructureElementNodeIntoNewTagNode` (essentially, convert the public API type into an internal implementation type). Not that you\u0027ve pointed that out, I might go and fix that next.",
+      "parentUuid": "0fc422b7_34b31ad5",
+      "range": {
+        "startLine": 224,
+        "startChar": 29,
+        "endLine": 224,
+        "endChar": 38
+      },
+      "revId": "59eb1651d1161847989380c4f7113e7f55c06457",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
