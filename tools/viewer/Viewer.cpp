@@ -112,6 +112,7 @@
 #include "src/gpu/graphite/ContextPriv.h"
 #include "src/gpu/graphite/GlobalCache.h"
 #include "src/gpu/graphite/GraphicsPipeline.h"
+#include "tools/window/GraphiteWindowContext.h"
 #endif
 
 #include "imgui.h"
@@ -584,8 +585,10 @@ Viewer::Viewer(int argc, char** argv, void* platformData)
     }
     displayParams.fCreateProtectedNativeBackend = FLAGS_createProtected;
 #if defined(SK_GRAPHITE)
-    CommonFlags::SetTestOptions(&displayParams.fGraphiteTestOptions.fTestOptions);
-    displayParams.fGraphiteTestOptions.fPriv.fPathRendererStrategy =
+    static skwindow::GraphiteTestOptions graphiteOpts = {};
+    displayParams.fGraphiteTestOptions = &graphiteOpts;
+    CommonFlags::SetTestOptions(&displayParams.fGraphiteTestOptions->fTestOptions);
+    displayParams.fGraphiteTestOptions->fPriv.fPathRendererStrategy =
             get_path_renderer_strategy_type(FLAGS_pathstrategy[0]);
 #endif
     fWindow->setRequestedDisplayParams(displayParams);
@@ -1299,7 +1302,7 @@ void Viewer::updateTitle() {
 #if defined(SK_GRAPHITE)
         skgpu::graphite::PathRendererStrategy strategy =
                 fWindow->getRequestedDisplayParams()
-                        .fGraphiteTestOptions.fPriv.fPathRendererStrategy;
+                        .fGraphiteTestOptions->fPriv.fPathRendererStrategy;
         if (skgpu::graphite::PathRendererStrategy::kDefault != strategy) {
             title.appendf(" [Path renderer strategy: %s]",
                           get_path_renderer_strategy_string(strategy));
@@ -2265,7 +2268,7 @@ void Viewer::drawImGui() {
 #if defined(SK_GRAPHITE)
                         using skgpu::graphite::PathRendererStrategy;
                         skgpu::graphite::ContextOptionsPriv* opts =
-                                &params.fGraphiteTestOptions.fPriv;
+                                &params.fGraphiteTestOptions->fPriv;
                         auto prevPrs = opts->fPathRendererStrategy;
                         auto prsButton = [&](skgpu::graphite::PathRendererStrategy s) {
                             if (ImGui::RadioButton(get_path_renderer_strategy_string(s),
