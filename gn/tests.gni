@@ -340,6 +340,8 @@ gl_tests_sources = [
   "$_tests/TextureBindingsResetTest.cpp",
 ]
 
+brotli_tests_sources = [ "$_tests/BrotliTest.cpp" ]
+
 metal_tests_sources = [
   "$_tests/MtlBackendAllocationTest.mm",
   "$_tests/MtlCopySurfaceTest.mm",

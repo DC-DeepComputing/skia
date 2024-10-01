@@ -1118,6 +1118,18 @@ EMSCRIPTEN_BINDINGS(Skia) {
                               flags, outputBounds);
     }));
 
+    function("_BrotliSetDictionaryData", optional_override([](WASMPointerU8 dPtr,
+                                                  size_t bytes)->bool {
+        uint8_t* d = reinterpret_cast<uint8_t*>(dPtr);
+        static uint8_t* wasmDictionary = nullptr;
+        static SkOnce once;
+        once([d] {
+          wasmDictionary = d;
+          BrotliSetDictionaryData(wasmDictionary);
+        });
+        return true;
+    }), allow_raw_pointers());
+
 #ifdef CK_SERIALIZE_SKP
     function("_MakePicture", optional_override([](WASMPointerU8 dPtr,
                                                   size_t bytes)->sk_sp<SkPicture> {

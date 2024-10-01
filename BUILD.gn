@@ -1151,6 +1151,15 @@ optional("jpegxl_decode") {
   sources = [ "src/codec/SkJpegxlCodec.cpp" ]
 }
 
+optional("brotli") {
+  enabled = skia_use_external_brotli_dictionary
+  public_defines = [ "BROTLI_EXTERNAL_DICTIONARY_DATA" ]
+  deps = [ "//third_party/brotli" ]
+  sources = [
+    "src/utils/SkBrotli.cpp",
+  ]
+}
+
 optional("ndk_images") {
   enabled = skia_use_ndk_images
   public_defines = [ "SK_ENABLE_NDK_IMAGES" ]
@@ -2329,7 +2338,11 @@ if (skia_enable_tools) {
     if (skia_enable_precompile) {
       sources += precompile_tests_sources
     }
+    if (skia_use_external_brotli_dictionary) {
+      sources += brotli_tests_sources
+    }
     deps = [
+      ":brotli",
       ":flags",
       ":fontmgr_android_tests",
       ":fontmgr_fontconfig_tests",
