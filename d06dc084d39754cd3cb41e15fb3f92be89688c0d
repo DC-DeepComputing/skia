@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f68c12c9_c7867f77",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-10-01T08:22:50Z",
+      "side": 1,
+      "message": "How do I build with Fontations with bazel after this?",
+      "revId": "d06dc084d39754cd3cb41e15fb3f92be89688c0d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
