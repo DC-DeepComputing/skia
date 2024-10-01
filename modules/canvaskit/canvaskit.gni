@@ -21,6 +21,7 @@ declare_args() {
   skia_canvaskit_legacy_draw_vertices_blend_mode = false
   skia_canvaskit_enable_webgpu = false
   skia_canvaskit_enable_webgl = false
+  skia_canvaskit_enable_external_brotli_dictionary = true
 }
 
 # Assert that skia_canvaskit_profile_build implies release mode.
