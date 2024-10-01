@@ -183,6 +183,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "97237017_2736f42d",
+        "filename": "include/codec/SkAvifDecoder.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2024-10-01T17:10:11Z",
+      "side": 1,
+      "message": "Done. Also added a comment.",
+      "parentUuid": "d68c21b3_e7106188",
+      "range": {
+        "startLine": 65,
+        "startChar": 0,
+        "endLine": 75,
+        "endChar": 29
+      },
+      "revId": "d6e0231c4a4e623be821e67fa79e93c3bebeb932",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "080ca735_b44671fe",
