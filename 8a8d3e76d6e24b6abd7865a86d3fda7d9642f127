@@ -180,6 +180,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0bead63e_30fae745",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 503,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-01T16:21:54Z",
+      "side": 1,
+      "message": "Ooops - good catch!  I think that I introduced this parameter to set the alpha before I learned about `setAlphaAndRequiredFrame` (and then I forgot to remove the no longer used parameter).\n\nDone.",
+      "parentUuid": "83b9d216_30751485",
+      "range": {
+        "startLine": 503,
+        "startChar": 39,
+        "endLine": 503,
+        "endChar": 65
+      },
+      "revId": "8a8d3e76d6e24b6abd7865a86d3fda7d9642f127",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f86d0d7b_8760cac9",
@@ -193,6 +217,30 @@
       "writtenOn": "2024-10-01T14:33:39Z",
       "side": 1,
       "message": "Do we need to verify this was successful somehow - or is `has_fctl_chunk()` enough?",
+      "range": {
+        "startLine": 515,
+        "startChar": 1,
+        "endLine": 515,
+        "endChar": 95
+      },
+      "revId": "8a8d3e76d6e24b6abd7865a86d3fda7d9642f127",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "16f10ab3_078613d5",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 515,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-01T16:21:54Z",
+      "side": 1,
+      "message": "Yes - `has_fctl_chunk` should be enough to guarantee success.  `unwrap` inside `get_fctl_info` [here](https://skia-review.googlesource.com/c/skia/+/904575/1/experimental/rust_png/ffi/FFI.rs#377) will panic/crash if there is no `fcTL` chunk, but we don\u0027t need to worry about this because we rely on the caller to check `has_fctl_chunk` (and we `SkASSERT` that this has happened;  hmmm - maybe I can add a comment to this assert).",
+      "parentUuid": "f86d0d7b_8760cac9",
       "range": {
         "startLine": 515,
         "startChar": 1,
