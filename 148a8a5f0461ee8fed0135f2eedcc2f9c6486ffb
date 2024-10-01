@@ -16,6 +16,23 @@
       "message": "@danieldilan, can you PTAL?",
       "revId": "148a8a5f0461ee8fed0135f2eedcc2f9c6486ffb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d5b0892_c2454e76",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 7060
+      },
+      "writtenOn": "2024-10-01T18:34:56Z",
+      "side": 1,
+      "message": "LGTM",
+      "revId": "148a8a5f0461ee8fed0135f2eedcc2f9c6486ffb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
