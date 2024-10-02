@@ -1097,6 +1097,7 @@ void ClipStack::clipShape(const Transform& localToDevice,
     }
 }
 
+//#define SK_USE_LEGACY_CLIP_GRAPHITE
 #if !defined(SK_USE_LEGACY_CLIP_GRAPHITE)
 // Decide whether we can use this shape to do analytic clipping. Only rects and certain
 // rrects are supported. We assume these have been pre-transformed by the RawElement

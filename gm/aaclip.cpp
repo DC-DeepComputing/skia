@@ -14,6 +14,7 @@
 #include "include/core/SkPaint.h"
 #include "include/core/SkPathBuilder.h"
 #include "include/core/SkRect.h"
+#include "include/core/SkRRect.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkSize.h"
 #include "include/core/SkString.h"
@@ -74,7 +75,8 @@ static void draw_rect_tests(SkCanvas* canvas) {
    Each region should show as a blue center surrounded by a 2px green
    border, with no red.
 */
-DEF_SIMPLE_GM(aaclip, canvas, 240, 120) {
+DEF_SIMPLE_GM(aaclip, canvas, 256, 256) {
+    /*
         // Initial pixel-boundary-aligned draw
         draw_rect_tests(canvas);
 
@@ -93,7 +95,47 @@ DEF_SIMPLE_GM(aaclip, canvas, 240, 120) {
 
         canvas->translate(SK_Scalar1 / 5, SK_Scalar1 / 5);
         canvas->translate(SkIntToScalar(50), 0);
-        draw_rect_tests(canvas);
+        draw_rect_tests(canvas); */
+
+    SkRect rect = { 0, 0, 200, 200 };
+    SkRRect rrect = SkRRect::MakeRectXY(rect, 25, 25);
+
+    SkPaint foregroundPaint;
+    foregroundPaint.setColor(SK_ColorYELLOW);
+    foregroundPaint.setAntiAlias(true);
+
+    canvas->save();
+    canvas->translate(10, 10);
+    canvas->drawRRect(rrect, foregroundPaint);
+
+    canvas->save();
+    foregroundPaint.setColor(SK_ColorBLUE);
+    canvas->clipRRect(rrect, true);
+    canvas->translate(30, 30);
+    canvas->drawRect(rect, foregroundPaint);
+
+    canvas->save();
+    foregroundPaint.setColor(SK_ColorGRAY);
+    canvas->translate(10, 10);
+    canvas->save();
+    canvas->clipRect({0, 0, 120, 120});
+    canvas->drawPaint(foregroundPaint);
+    canvas->restore();
+//    canvas->drawRect({0, 0, 120, 120}, foregroundPaint);
+
+    canvas->save();
+    foregroundPaint.setColor(SK_ColorGREEN);
+    canvas->translate(10, 10);
+    canvas->clipRect({0, 0, 200, 200});
+    canvas->drawPaint(foregroundPaint);
+//    canvas->drawRect({0, 0, 200, 200}, foregroundPaint);
+    canvas->restore();
+
+    canvas->restore();
+
+    canvas->restore();
+
+    canvas->restore();
 }
 
 /////////////////////////////////////////////////////////////////////////
