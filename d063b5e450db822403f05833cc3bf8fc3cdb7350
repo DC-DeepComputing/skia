@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a892956c_ba76091c",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1559,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-02T14:42:19Z",
+      "side": 0,
+      "message": "This was a good warning, as the attempt to not have a ctm stack here is a bit suspicious. I don\u0027t fully understand why we haven\u0027t already been bitten by the  numerical instability of this setup (accumulating the error of trying to undo transforms with their inverses over and over) other than that most glyphs use nice (or very few) matrices.\n\nAlso what happens if there are multiple transforms pushed? Is just the last one undone? If the bounds painter somehow ensuring that there is only one push at a time? If so, why not just keep the original values around instead of an inverse that can \"restore\" (but with error).",
+      "revId": "d063b5e450db822403f05833cc3bf8fc3cdb7350",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

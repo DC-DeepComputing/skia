@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c6590a89_b45f8b79",
+        "filename": "src/ports/SkFontScanner_fontations.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-02T14:42:19Z",
+      "side": 1,
+      "message": "It seems the only way this can fail is if there is disagreement on the number of axes (the AxisWrapper was created with the wrong size). So it seems fine this is just a debug assert.",
+      "revId": "4c72e5959ca1bff0f09e2251a79f8a4d2cca91fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
