@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9b6b94d_513ee189",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-10-02T20:08:03Z",
+      "side": 1,
+      "message": "I did some measurements on my M1, 16kb and 1mb are fixed buffer sizes, \"dynamic\" is this CL:\n\n`grmtl`\n               16kb   1mb    dynamic  %-age\n    Arcs       5.2ms  4.9ms  4.8ms    7.7%\n    SuitsClip  6.2ms  5.7ms  5.7ms    8.1%\n    Suits      7.1ms  6.6ms  6.4ms    9.9%\n    Leaves     .77ms  .72ms  .76ms    1.3%\n    Paths      3.1ms  2.9ms  2.9ms    6.5%\n    \n`grdawn_mtl` improvements were comparable, although in all experiments Suits and SuitsClip were slower than `grmtl` (7-8ms vs. 5-6ms), whereas the others were much closer in absolute magnitudes. \n\nSo to me it looks like we\u0027re getting a solid 5+% improvement on the scenes that have large amounts of content and the dynamic strategy is getting very similar levels of performance compared to just being very pessimistic with buffer sizes.",
+      "parentUuid": "12973ac1_c4c6f9dc",
+      "revId": "38ba0538632d01eef8e6c5698b7606f4e2788200",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b80b1c33_96819f58",
@@ -31,6 +49,24 @@
       "writtenOn": "2024-10-02T15:32:39Z",
       "side": 1,
       "message": "I don\u0027t know how important this is; VertexStorage and IndexStorage buffer types were added in http://review.skia.org/639059 but don\u0027t seem to be used anywhere.",
+      "revId": "38ba0538632d01eef8e6c5698b7606f4e2788200",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e23bd9a7_36ee21e3",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-10-02T20:08:03Z",
+      "side": 1,
+      "message": "I suspect that we would start using them for Vello\u0027s sparse strip approach, or if integrate compute-based tessellation where we need to write the instance data from compute but consume it as a vertex buffer.\n\nThat said, anything related to compute will require up-front memory calculations so we probably won\u0027t be doing any dynamic size adjustments. I\u0027m fine with keeping the constants consistent with regular vertex buffers though.",
+      "parentUuid": "b80b1c33_96819f58",
       "revId": "38ba0538632d01eef8e6c5698b7606f4e2788200",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
