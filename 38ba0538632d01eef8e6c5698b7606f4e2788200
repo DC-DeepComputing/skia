@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "12973ac1_c4c6f9dc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-10-02T15:32:39Z",
+      "side": 1,
+      "message": "I observed locally that this does lead to fewer, larger buffer allocations in motionmark benchmarks, however I\u0027m only seeing about 1~2% speedup. Not sure if we expect better than that, or if the improvement might be better on other machines.",
+      "revId": "38ba0538632d01eef8e6c5698b7606f4e2788200",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b80b1c33_96819f58",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-10-02T15:32:39Z",
+      "side": 1,
+      "message": "I don\u0027t know how important this is; VertexStorage and IndexStorage buffer types were added in http://review.skia.org/639059 but don\u0027t seem to be used anywhere.",
+      "revId": "38ba0538632d01eef8e6c5698b7606f4e2788200",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
