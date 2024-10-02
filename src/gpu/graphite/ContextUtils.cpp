@@ -301,14 +301,11 @@ std::string get_node_texture_samplers(const ResourceBindingRequirements& binding
         // 2) Any data is stored on the ShaderNode
         // 3) Whether the ShaderNode snippet's ID matches that of any snippet ID that could store
         //    immutable sampler data.
-        int32_t snippetId = node->codeSnippetId();
         if (outDescs) {
             // TODO(b/369846881): Refactor checking snippet ID to instead having a named
             // snippet requirement flag that we can check here to decrease fragility.
-            if (!node->data().empty() &&
-                (snippetId == static_cast<int32_t>(BuiltInCodeSnippetID::kImageShader) ||
-                 snippetId == static_cast<int32_t>(BuiltInCodeSnippetID::kCubicImageShader) ||
-                 snippetId == static_cast<int32_t>(BuiltInCodeSnippetID::kHWImageShader))) {
+            if (SkToBool(node->requiredFlags() & SnippetRequirementFlags::kStoresSamplerDescData) &&
+                !node->data().empty()) {
                 append_sampler_descs(node->data(), *outDescs);
             } else {
                 // Add default SamplerDescs for any dynamic samplers to outDescs.

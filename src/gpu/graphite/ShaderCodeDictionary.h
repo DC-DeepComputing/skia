@@ -58,16 +58,16 @@ private:
 };
 
 enum class SnippetRequirementFlags : uint32_t {
-    kNone             = 0x0,
+    kNone                  = 0x0,
     // Signature of the ShaderNode
-    kLocalCoords      = 0x1,
-    kPriorStageOutput = 0x2,  // AKA the "input" color, or the "src" argument for a blender
-    kBlenderDstColor  = 0x4,  // The "dst" argument for a blender
+    kLocalCoords           = 0x1,
+    kPriorStageOutput      = 0x2,  // AKA the "input" color, or the "src" argument for a blender
+    kBlenderDstColor       = 0x4,  // The "dst" argument for a blender
     // Special values and/or behaviors required for the snippet
-    kSurfaceColor     = 0x8,
-    kPrimitiveColor   = 0x10,
-    kGradientBuffer   = 0x20,
-    kStoresData       = 0x40, // Indicates that the node stores numerical data
+    kSurfaceColor          = 0x8,
+    kPrimitiveColor        = 0x10,
+    kGradientBuffer        = 0x20,
+    kStoresSamplerDescData = 0x40, // Indicates that the node stores numerical sampler data
 };
 SK_MAKE_BITMASK_OPS(SnippetRequirementFlags)
 
@@ -117,8 +117,8 @@ struct ShaderSnippet {
     bool needsBlenderDstColor() const {
         return SkToBool(fSnippetRequirementFlags & SnippetRequirementFlags::kBlenderDstColor);
     }
-    bool storesData() const {
-        return SkToBool(fSnippetRequirementFlags & SnippetRequirementFlags::kStoresData);
+    bool storesSamplerDescData() const {
+        return SkToBool(fSnippetRequirementFlags & SnippetRequirementFlags::kStoresSamplerDescData);
     }
 
     const char* fName = nullptr;
@@ -178,7 +178,7 @@ public:
 
             fRequiredFlags |= (child->requiredFlags() & ~mask);
         }
-        // Data should only be provided if the snippet has the kStoresData flag.
+        // Data should only be provided if the snippet has the kStoresSamplerDescData flag.
         SkASSERT(fData.empty() || snippet->storesData());
     }
 
