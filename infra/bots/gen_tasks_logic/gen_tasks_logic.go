@@ -59,6 +59,7 @@ const (
 	ISOLATE_WIN_TOOLCHAIN_NAME = "Housekeeper-PerCommit-IsolateWinToolchain"
 
 	DEBIAN_11_OS                   = "Debian-11.5"
+	DEBIAN_12_OS                   = "Debian-12"
 	DEFAULT_OS_DEBIAN              = "Debian-10.10"
 	DEFAULT_OS_LINUX_GCE           = "Debian-10.3"
 	OLD_OS_LINUX_GCE               = "Debian-9.8"
@@ -766,6 +767,8 @@ func (b *jobBuilder) deriveCompileTaskName() string {
 		} else if b.matchOs("Debian11") {
 			// We compile using the Debian11 machines in the skolo.
 			task_os = "Debian11"
+		} else if b.matchOs("Debian12") {
+			task_os = "Debian12"
 		} else if b.matchOs("Ubuntu", "Debian") {
 			task_os = COMPILE_TASK_NAME_OS_LINUX
 		} else if b.matchOs("Mac") {
@@ -862,6 +865,7 @@ func (b *taskBuilder) defaultSwarmDimensions() {
 			"Debian9":    DEFAULT_OS_LINUX_GCE, // Runs in Deb9 Docker.
 			"Debian10":   DEFAULT_OS_LINUX_GCE,
 			"Debian11":   DEBIAN_11_OS,
+			"Debian12":   DEBIAN_12_OS,
 			"Mac":        DEFAULT_OS_MAC,
 			"Mac10.15.1": "Mac-10.15.1",
 			"Mac10.15.7": "Mac-10.15.7",
@@ -979,9 +983,6 @@ func (b *taskBuilder) defaultSwarmDimensions() {
 				log.Fatalf("Entry %q not found in %q model mapping.", b.parts["model"], b.parts["cpu_or_gpu_value"])
 			}
 			d["cpu"] = cpu
-			if b.model("GCE") && b.matchOs("Debian") {
-				d["os"] = DEFAULT_OS_LINUX_GCE
-			}
 			if b.model("GCE") && d["cpu"] == "x86-64-Haswell_GCE" {
 				d["machine_type"] = MACHINE_TYPE_MEDIUM
 			}
@@ -1025,6 +1026,8 @@ func (b *taskBuilder) defaultSwarmDimensions() {
 
 				if b.matchOs("Debian11") {
 					d["os"] = DEBIAN_11_OS
+				} else if b.matchOs("Debian12") {
+					d["os"] = DEBIAN_12_OS
 				} else if b.matchOs("Debian") {
 					// The Debian10 machines in the skolo are 10.10, not 10.3.
 					d["os"] = DEFAULT_OS_DEBIAN
