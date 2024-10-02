@@ -75,6 +75,7 @@ void GrGLRenderTarget::init(GrGLFormat format, const IDs& idDesc) {
     fMultisampleFBOID = idDesc.fMultisampleFBOID;
     fSingleSampleFBOID = idDesc.fSingleSampleFBOID;
     fMSColorRenderbufferID = idDesc.fMSColorRenderbufferID;
+    fMSColorTextureID = idDesc.fMSColorTextureID;
     fRTFBOOwnership = idDesc.fRTFBOOwnership;
     fRTFormat = format;
     fTotalMemorySamplesPerPixel = idDesc.fTotalMemorySamplesPerPixel;
@@ -121,6 +122,7 @@ sk_sp<GrGLRenderTarget> GrGLRenderTarget::MakeWrapped(GrGLGpu* gpu,
                                                      dimensions,
                                                      GrAttachment::UsageFlags::kStencilAttachment,
                                                      sampleCount,
+                                                     isProtected,
                                                      sFmt);
     }
     return sk_sp<GrGLRenderTarget>(new GrGLRenderTarget(
@@ -156,7 +158,7 @@ size_t GrGLRenderTarget::onGpuMemorySize() const {
 }
 
 void GrGLRenderTarget::onSetLabel() {
-    SkASSERT(fMSColorRenderbufferID);
+    SkASSERT(fMSColorRenderbufferID || fMSColorTextureID);
     SkASSERT(fRTFBOOwnership == GrBackendObjectOwnership::kOwned);
 }
 
@@ -205,8 +207,19 @@ bool GrGLRenderTarget::ensureDynamicMSAAAttachment() {
         return false;
     }
 
-    GL_CALL(FramebufferRenderbuffer(GR_GL_FRAMEBUFFER, GR_GL_COLOR_ATTACHMENT0, GR_GL_RENDERBUFFER,
-                                    fDynamicMSAAAttachment->renderbufferID()));
+    if (fDynamicMSAAAttachment->isRenderBuffer()) {
+        GL_CALL(FramebufferRenderbuffer(GR_GL_FRAMEBUFFER,
+                                        GR_GL_COLOR_ATTACHMENT0,
+                                        GR_GL_RENDERBUFFER,
+                                        fDynamicMSAAAttachment->renderbufferID()));
+    } else {
+        SkASSERT(fDynamicMSAAAttachment->isMSAA());
+        GL_CALL(FramebufferTexture2D(GR_GL_FRAMEBUFFER,
+                                     GR_GL_COLOR_ATTACHMENT0,
+                                     GR_GL_TEXTURE_2D_MULTISAMPLE,
+                                     fDynamicMSAAAttachment->textureID(),
+                                     /* level= */ 0));
+    }
     return true;
 }
 
@@ -251,22 +264,46 @@ void GrGLRenderTarget::bindInternal(GrGLenum fboTarget, bool useMultisampleFBO) 
     if (fNeedsStencilAttachmentBind[useMultisampleFBO]) {
         if (auto stencil = this->getStencilAttachment(useMultisampleFBO)) {
             const GrGLAttachment* glStencil = static_cast<const GrGLAttachment*>(stencil);
-            GL_CALL(FramebufferRenderbuffer(fboTarget,
-                                            GR_GL_STENCIL_ATTACHMENT,
-                                            GR_GL_RENDERBUFFER,
-                                            glStencil->renderbufferID()));
-            if (GrGLFormatIsPackedDepthStencil(glStencil->format())) {
+            if (glStencil->isRenderBuffer()) {
                 GL_CALL(FramebufferRenderbuffer(fboTarget,
-                                                GR_GL_DEPTH_ATTACHMENT,
+                                                GR_GL_STENCIL_ATTACHMENT,
                                                 GR_GL_RENDERBUFFER,
                                                 glStencil->renderbufferID()));
+                if (GrGLFormatIsPackedDepthStencil(glStencil->format())) {
+                    GL_CALL(FramebufferRenderbuffer(fboTarget,
+                                                    GR_GL_DEPTH_ATTACHMENT,
+                                                    GR_GL_RENDERBUFFER,
+                                                    glStencil->renderbufferID()));
+                } else {
+                    GL_CALL(FramebufferRenderbuffer(fboTarget,
+                                                    GR_GL_DEPTH_ATTACHMENT,
+                                                    GR_GL_RENDERBUFFER,
+                                                    0));
+                }
             } else {
-                GL_CALL(FramebufferRenderbuffer(fboTarget,
-                                                GR_GL_DEPTH_ATTACHMENT,
-                                                GR_GL_RENDERBUFFER,
-                                                0));
+                GL_CALL(FramebufferTexture2D(fboTarget,
+                                             GR_GL_STENCIL_ATTACHMENT,
+                                             glStencil->isMSAA() ? GR_GL_TEXTURE_2D_MULTISAMPLE
+                                                                 : GR_GL_TEXTURE_2D,
+                                             glStencil->textureID(),
+                                             /* level= */ 0));
+                if (GrGLFormatIsPackedDepthStencil(glStencil->format())) {
+                    GL_CALL(FramebufferTexture2D(fboTarget,
+                                                 GR_GL_DEPTH_ATTACHMENT,
+                                                 glStencil->isMSAA() ? GR_GL_TEXTURE_2D_MULTISAMPLE
+                                                                     : GR_GL_TEXTURE_2D,
+                                                 glStencil->textureID(),
+                                                 /* level= */ 0));
+                } else {
+                    GL_CALL(FramebufferTexture2D(fboTarget,
+                                                 GR_GL_DEPTH_ATTACHMENT,
+                                                 GR_GL_TEXTURE_2D,
+                                                 /* textureID= */ 0,
+                                                 /* level= */ 0));
+                }
             }
         } else {
+            // TODO: optionally make these FramebufferTexture2D's
             GL_CALL(FramebufferRenderbuffer(fboTarget,
                                             GR_GL_STENCIL_ATTACHMENT,
                                             GR_GL_RENDERBUFFER,
@@ -323,10 +360,14 @@ void GrGLRenderTarget::onRelease() {
         if (fMSColorRenderbufferID) {
             GL_CALL(DeleteRenderbuffers(1, &fMSColorRenderbufferID));
         }
+        if (fMSColorTextureID) {
+            GL_CALL(DeleteTextures(1, &fMSColorTextureID));
+        }
     }
     fMultisampleFBOID       = kUnresolvableFBOID;
     fSingleSampleFBOID      = kUnresolvableFBOID;
     fMSColorRenderbufferID  = 0;
+    fMSColorTextureID       = 0;
     INHERITED::onRelease();
 }
 
@@ -334,6 +375,7 @@ void GrGLRenderTarget::onAbandon() {
     fMultisampleFBOID       = kUnresolvableFBOID;
     fSingleSampleFBOID      = kUnresolvableFBOID;
     fMSColorRenderbufferID  = 0;
+    fMSColorTextureID       = 0;
     INHERITED::onAbandon();
 }
 
@@ -384,5 +426,10 @@ void GrGLRenderTarget::dumpMemoryStatistics(SkTraceMemoryDump* traceMemoryDump) 
         renderbuffer_id.appendU32(fMSColorRenderbufferID);
         traceMemoryDump->setMemoryBacking(resourceName.c_str(), "gl_renderbuffer",
                                           renderbuffer_id.c_str());
+
+        SkString texture_id;
+        texture_id.appendU32(fMSColorTextureID);
+        traceMemoryDump->setMemoryBacking(resourceName.c_str(), "gl_texture",
+                                          texture_id.c_str());
     }
 }

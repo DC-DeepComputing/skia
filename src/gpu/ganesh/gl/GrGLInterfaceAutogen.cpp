@@ -414,6 +414,19 @@ bool GrGLInterface::validate() const {
     }
 
     if ((GR_IS_GR_GL(fStandard) && (
+          (glVer >= GR_GL_VER(4,3)) ||
+          fExtensions.has("GL_ARB_texture_storage_multisample"))) ||
+       (GR_IS_GR_GL_ES(fStandard) && (
+          (glVer >= GR_GL_VER(3,1)) ||
+          fExtensions.has("GL_ARB_texture_storage_multisample"))) ||
+       (GR_IS_GR_WEBGL(fStandard) && (
+          (glVer >= GR_GL_VER(2,0) && fExtensions.has("GL_ARB_texture_storage_multisample"))))) {
+        if (!fFunctions.fTexStorage2DMultisample) {
+            RETURN_FALSE_INTERFACE;
+        }
+    }
+
+    if ((GR_IS_GR_GL(fStandard) && (
           (glVer >= GR_GL_VER(4,5)) ||
           fExtensions.has("GL_ARB_texture_barrier") ||
           fExtensions.has("GL_NV_texture_barrier"))) ||

@@ -1,5 +1,5 @@
 // This file specifies which functions should be attached to GrGLInterface
-// for a given standard (OpenGL, OpenGL ES, etc). It allows specifing
+// for a given standard (OpenGL, OpenGL ES, etc). It allows specifying
 // how and when to attach them (e.g. only if an extension is present).
 // It is used for both the assemble and validate step.
 //
@@ -277,8 +277,8 @@
     ]
   },
 
-    // GL_EXT_texture_storage is part of desktop 4.2
-    // There is a desktop ARB extension and an ES+desktop EXT extension
+  // GL_EXT_texture_storage is part of desktop 4.2
+  // There is a desktop ARB extension and an ES+desktop EXT extension
   {
     "GL":    [{"min_version": [4, 2], "ext": "<core>"},
               {/*    else if      */  "ext": "GL_ARB_texture_storage"},
@@ -289,6 +289,19 @@
 
     "functions": [
       "TexStorage2D",
+    ]
+  },
+
+  // glTexStorage2DMultisample is built into desktop 4.3 and ES 3.1. There is also an ARB extension.
+  {
+    "GL":    [{"min_version": [4, 3], "ext": "<core>"},
+      {/*    else if      */  "ext": "GL_ARB_texture_storage_multisample"}],
+    "GLES":  [{"min_version": [3, 1], "ext": "<core>"},
+      {/*    else if      */  "ext": "GL_ARB_texture_storage_multisample"}],
+    "WebGL": [{"min_version": [2, 0], "ext": "GL_ARB_texture_storage_multisample"}],
+
+    "functions": [
+      "TexStorage2DMultisample",
     ]
   },
 

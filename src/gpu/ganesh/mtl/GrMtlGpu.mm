@@ -526,7 +526,12 @@ bool GrMtlGpu::clearTexture(GrMtlTexture* tex, size_t bpp, uint32_t levelMask) {
 }
 
 sk_sp<GrAttachment> GrMtlGpu::makeStencilAttachment(const GrBackendFormat& /*colorFormat*/,
-                                                    SkISize dimensions, int numStencilSamples) {
+                                                    SkISize dimensions,
+                                                    int numStencilSamples,
+                                                    GrProtected isProtected) {
+    // Metal doesn't support protected textures
+    SkASSERT(isProtected == GrProtected::kNo);
+
     MTLPixelFormat sFmt = this->mtlCaps().preferredStencilFormat();
 
     fStats.incStencilAttachmentCreates();

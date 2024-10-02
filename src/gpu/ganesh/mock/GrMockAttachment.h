@@ -25,14 +25,15 @@ public:
                      SkISize dimensions,
                      UsageFlags supportedUsages,
                      int sampleCnt,
+                     GrProtected isProtected,
                      std::string_view label)
-            : INHERITED(gpu,
-                        dimensions,
-                        supportedUsages,
-                        sampleCnt,
-                        skgpu::Mipmapped::kNo,
-                        skgpu::Protected::kNo,
-                        label) {
+            : GrAttachment(gpu,
+                           dimensions,
+                           supportedUsages,
+                           sampleCnt,
+                           skgpu::Mipmapped::kNo,
+                           isProtected,
+                           label) {
         SkASSERT(supportedUsages == UsageFlags::kStencilAttachment);
         this->registerWithCache(skgpu::Budgeted::kYes);
     }
@@ -43,7 +44,6 @@ public:
     }
 
 private:
-    using INHERITED = GrAttachment;
 };
 
 #endif
