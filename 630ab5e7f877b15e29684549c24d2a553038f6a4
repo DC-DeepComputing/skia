@@ -69,6 +69,24 @@
       "parentUuid": "68c505ea_f4f9eae9",
       "revId": "630ab5e7f877b15e29684549c24d2a553038f6a4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "02bda448_fd53f6fc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-10-02T21:27:21Z",
+      "side": 1,
+      "message": "Yeah, I\u0027d like to understand why you think the current direction is doomed.  The canvas2d path thing is probably one of the more complex cases (long lived builder), and it was pretty straightforward to migrate.\n\n\u003e To be clear, to migrate to SkPathBuilder would be to simply make it the current SkPath.\n\nThat would be a leaky migration though: there is no mechanism to restrict the APIs to what we want the final SkPathBuilder to be, so it\u0027d be trivial for clients to slip and use the wrong thing or regress in time.\n\nI guess one option would be to use a thin wrapper class which only exposes the APIs we want, but how is that any better than just using the current SkPathBuilder?\n\nUltimately, the actual implementation of SkPathBuilder doesn\u0027t matter - whether we start fresh (current SkPathBuilder), or we start with SkPath as a builder - the end result should be the same as far as clients are concerned: a builder class + an immutable drawable path class.\n\nBut for migration purposes, the main advantages of SkPathBuilder over what I think you\u0027re proposing are a) it\u0027s available now, we can start migrating clients right away, b) enforces the restricted builder API, and c) lightweight builder implementation is already in place, so clients should see improvements right away.",
+      "parentUuid": "4383f08a_f99abbae",
+      "revId": "630ab5e7f877b15e29684549c24d2a553038f6a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
