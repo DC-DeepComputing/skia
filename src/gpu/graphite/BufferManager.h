@@ -109,7 +109,9 @@ public:
     // valid writer is returned, the byte count will fit in a uint32_t.
     std::pair<VertexWriter, BindBufferInfo> getVertexWriter(size_t count, size_t stride);
     std::pair<IndexWriter, BindBufferInfo> getIndexWriter(size_t count, size_t stride);
+    // Uniform writers are aligned for binding, per the alignment requirements in fCurrentBuffers.
     std::pair<UniformWriter, BindBufferInfo> getUniformWriter(size_t count, size_t stride);
+    // SSBO writers are aligned for indexing from the shader, per the element stride provided here.
     std::pair<UniformWriter, BindBufferInfo> getSsboWriter(size_t count, size_t stride);
 
     // The remaining writers and buffer allocator functions assume that byte counts are safely
@@ -148,10 +150,6 @@ public:
     // 'unusedBytes' is less than the 'count*stride' to the original allocation.
     void returnVertexBytes(size_t unusedBytes);
 
-    size_t alignUniformBlockSize(size_t dataSize) {
-        return SkAlignTo(dataSize, fCurrentBuffers[kUniformBufferIndex].fStartAlignment);
-    }
-
     // Finalizes all buffers and transfers ownership of them to a Recording. Returns true on success
     // and false if a mapping had previously failed.
     //
@@ -181,12 +179,15 @@ private:
         // How many bytes have been used for for this buffer type since the last Recording snap.
         uint32_t fUsedSize = 0;
     };
-    std::pair<void* /*mappedPtr*/, BindBufferInfo> prepareMappedBindBuffer(BufferInfo* info,
-                                                                           uint32_t requiredBytes,
-                                                                           std::string_view label);
+    std::pair<void* /*mappedPtr*/, BindBufferInfo> prepareMappedBindBuffer(
+            BufferInfo* info,
+            std::string_view label,
+            uint32_t requiredBytes,
+            uint32_t requiredAlignment = 0);
     BindBufferInfo prepareBindBuffer(BufferInfo* info,
-                                     uint32_t requiredBytes,
                                      std::string_view label,
+                                     uint32_t requiredBytes,
+                                     uint32_t requiredAlignment = 0,
                                      bool supportCpuUpload = false,
                                      ClearBuffer cleared = ClearBuffer::kNo);
 
