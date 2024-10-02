@@ -41,10 +41,9 @@ static constexpr int kV = static_cast<int>(SkYUVAInfo::kV);
 static constexpr int kA = static_cast<int>(SkYUVAInfo::kA);
 
 static SkAlphaType yuva_alpha_type(const SkYUVAInfo& yuvaInfo) {
-    // If an alpha channel is present we always use kPremul. This is because, although the planar
-    // data is always un-premul, the final interleaved RGBA sample produced in the shader is premul
-    // (and similar if flattened).
-    return yuvaInfo.hasAlpha() ? kPremul_SkAlphaType : kOpaque_SkAlphaType;
+    // If an alpha channel is present we always use kUnpremul. This is because the final
+    // interleaved RGBA sample produced in the shader is unpremul (and similar if flattened).
+    return yuvaInfo.hasAlpha() ? kUnpremul_SkAlphaType : kOpaque_SkAlphaType;
 }
 
 } // anonymous
