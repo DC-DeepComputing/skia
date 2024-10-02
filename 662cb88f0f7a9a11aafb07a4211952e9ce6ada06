@@ -16,6 +16,29 @@
       "message": "Some cleanup requested on previous changes.",
       "revId": "662cb88f0f7a9a11aafb07a4211952e9ce6ada06",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9fa070de_e931ca48",
+        "filename": "src/pdf/SkPDFDocument.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-10-02T20:00:05Z",
+      "side": 1,
+      "message": "Can these be declared const now?  We can also drop some of the in-class field initializers I think.",
+      "range": {
+        "startLine": 235,
+        "startChar": 0,
+        "endLine": 239,
+        "endChar": 71
+      },
+      "revId": "662cb88f0f7a9a11aafb07a4211952e9ce6ada06",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

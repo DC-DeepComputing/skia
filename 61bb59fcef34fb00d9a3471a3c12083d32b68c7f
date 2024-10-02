@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "23c03581_e2c39f56",
+        "filename": "src/pdf/SkPDFDocument.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-10-02T20:00:05Z",
+      "side": 0,
+      "message": "Storing the inverse at all is kinda suspicious - are we trying to save a couple of divs or is there more to it?",
+      "range": {
+        "startLine": 239,
+        "startChar": 8,
+        "endLine": 239,
+        "endChar": 27
+      },
+      "revId": "61bb59fcef34fb00d9a3471a3c12083d32b68c7f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
