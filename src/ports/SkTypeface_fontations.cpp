@@ -17,15 +17,18 @@
 #include "include/core/SkStream.h"
 #include "include/effects/SkGradientShader.h"
 #include "include/pathops/SkPathOps.h"
+#include "src/base/SkFloatBits.h"
 #include "src/base/SkScopeExit.h"
 #include "src/core/SkFontDescriptor.h"
 #include "src/core/SkFontPriv.h"
+#include "src/core/SkLRUCache.h"
 #include "src/ports/SkTypeface_fontations_priv.h"
 #include "src/ports/fontations/src/skpath_bridge.h"
 
 namespace {
 
 [[maybe_unused]] static inline const constexpr bool kSkShowTextBlitCoverage = false;
+static inline constexpr int kColrLruCacheSize = 5;
 
 sk_sp<SkData> streamToData(const std::unique_ptr<SkStreamAsset>& font_data) {
     // TODO(drott): From a stream this causes a full read/copy. Make sure
@@ -317,7 +320,8 @@ public:
                                               ->getBridgeNormalizedCoords())
             , fOutlines(static_cast<SkTypeface_Fontations*>(this->getTypeface())->getOutlines())
             , fPalette(static_cast<SkTypeface_Fontations*>(this->getTypeface())->getPalette())
-            , fHintingInstance(fontations_ffi::no_hinting_instance()) {
+            , fHintingInstance(fontations_ffi::no_hinting_instance())
+            , fColrPathCache(kColrLruCacheSize) {
         fRec.getSingleMatrix(&fMatrix);
 
         SkVector scale;
@@ -397,6 +401,13 @@ public:
         // and afer leaving this function, we shrink to the same amount.
         SK_AT_SCOPE_EXIT(fontations_ffi::shrink_verbs_points_if_needed(fPathVerbs, fPathPoints));
 
+        if (fontations_ffi::is_no_hinting_instance(hintingInstance)) {
+            if (SkPath* pathResult = fColrPathCache.find(PathCacheKey{glyphId, yScale})) {
+                *path = *pathResult;
+                return true;
+            }
+        }
+
         if (!fontations_ffi::get_path_verbs_points(fOutlines,
                                                    glyphId,
                                                    yScale,
@@ -407,6 +418,7 @@ public:
                                                    scalerMetrics)) {
             return false;
         }
+
         *path = SkPath::Make(reinterpret_cast<const SkPoint*>(fPathPoints.data()),
                              fPathPoints.size(),
                              fPathVerbs.data(),
@@ -414,6 +426,10 @@ public:
                              nullptr,
                              0,
                              SkPathFillType::kWinding);
+
+        if (fontations_ffi::is_no_hinting_instance(hintingInstance)) {
+            fColrPathCache.insert_or_update(PathCacheKey{glyphId, yScale}, *path);
+        }
 
         // See https://issues.skia.org/345178242 for details:
         // The FreeType backend performs a path simplification here based on the
@@ -837,6 +853,18 @@ private:
     const SkSpan<const SkColor> fPalette;
     rust::Box<fontations_ffi::BridgeHintingInstance> fHintingInstance;
     bool fDoLinearMetrics = false;
+
+    struct PathCacheKey {
+        uint16_t gid;
+        float size;
+        bool operator==(const PathCacheKey& other) const {
+            return gid == other.gid && size == other.size;
+        }
+    };
+    struct KeyHash {
+        uint32_t operator()(const SkFontationsScalerContext::PathCacheKey& key) const;
+    };
+    SkLRUCache<PathCacheKey, SkPath, KeyHash> fColrPathCache;
     // Keeping the path extraction target buffers around significantly avoids
     // allocation churn.
     rust::Vec<uint8_t> fPathVerbs;
@@ -844,6 +872,16 @@ private:
 
     friend class sk_fontations::ColorPainter;
 };
+
+uint32_t SkFontationsScalerContext::KeyHash::operator()(
+        const SkFontationsScalerContext::PathCacheKey& key) const {
+    uint32_t hash = SkGoodHash()(key.gid);
+    uint32_t sizeHash = SkGoodHash()(SkFloat2Bits(key.size));
+    hash += sizeHash;
+    hash += sizeHash << 10;
+    hash ^= sizeHash >> 6;
+    return hash;
+}
 
 std::unique_ptr<SkStreamAsset> SkTypeface_Fontations::onOpenStream(int* ttcIndex) const {
     *ttcIndex = fTtcIndex;

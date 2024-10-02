@@ -42,6 +42,10 @@ unsafe fn no_hinting_instance<'a>() -> Box<BridgeHintingInstance> {
     Box::new(BridgeHintingInstance(None))
 }
 
+unsafe fn is_no_hinting_instance(hinting_instance: &BridgeHintingInstance) -> bool {
+    hinting_instance.0.is_none()
+}
+
 unsafe fn make_hinting_instance<'a>(
     outlines: &BridgeOutlineCollection,
     size: f32,
@@ -1671,7 +1675,7 @@ mod ffi {
             coords: &BridgeNormalizedCoords,
         ) -> Box<BridgeHintingInstance>;
         unsafe fn no_hinting_instance<'a>() -> Box<BridgeHintingInstance>;
-
+        unsafe fn is_no_hinting_instance(hinting_instance: &BridgeHintingInstance) -> bool;
         fn lookup_glyph_or_zero(
             font_ref: &BridgeFontRef,
             map: &BridgeMappingIndex,
