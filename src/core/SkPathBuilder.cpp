@@ -22,6 +22,7 @@
 #include <cstdint>
 #include <cstring>
 #include <iterator>
+#include <optional>
 #include <utility>
 
 SkPathBuilder::SkPathBuilder() {
@@ -797,8 +798,16 @@ SkPathBuilder& SkPathBuilder::offset(SkScalar dx, SkScalar dy) {
     return *this;
 }
 
-SkPathBuilder& SkPathBuilder::addPath(const SkPath& src) {
-    SkPath::RawIter iter(src);
+SkPathBuilder& SkPathBuilder::addPath(const SkPath& src_path, const SkMatrix* m) {
+    const SkPath* src = &src_path;
+
+    std::optional<SkPath> transformed_src;
+    if (m) {
+        transformed_src = src_path.makeTransform(*m);
+        src = &transformed_src.value();
+    }
+
+    SkPath::RawIter iter(*src);
     SkPoint pts[4];
     SkPath::Verb verb;
 

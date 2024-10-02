@@ -14,10 +14,12 @@
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkScalar.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkPathRef.h"
 #include "include/private/base/SkTo.h"
 
+#include <cstdint>
 #include <initializer_list>
 
 class SkRRect;
@@ -211,7 +213,7 @@ public:
         return this->addPolygon(list.begin(), SkToInt(list.size()), isClosed);
     }
 
-    SkPathBuilder& addPath(const SkPath&);
+    SkPathBuilder& addPath(const SkPath&, const SkMatrix* path_matrix = nullptr);
 
     // Performance hint, to reserve extra storage for subsequent calls to lineTo, quadTo, etc.
 
@@ -226,6 +228,11 @@ public:
         fFillType = (SkPathFillType)((unsigned)fFillType ^ 2);
         return *this;
     }
+
+    bool isEmpty() const { return fVerbs.empty(); }
+
+    SkSpan<const SkPoint> getPoints() const { return fPts; }
+    SkSpan<const uint8_t> getVerbs() const { return fVerbs; }
 
 private:
     SkPathRef::PointsArray fPts;
