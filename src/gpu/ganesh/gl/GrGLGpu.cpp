@@ -1776,13 +1776,13 @@ int GrGLGpu::getCompatibleStencilIndex(GrGLFormat format) {
         // acceptable format will not change between Protected and unProtected stencil buffers and
         // that using Protected::kNo here will not cause any issues with strictProtectedness mode
         // (since no work is actually submitted to a queue).
-        const GrProtected kNotProtected = skgpu::Protected::kNo;
+        GrProtected isProtected = GrProtected(this->glCaps().supportsProtectedContent());
 
         GrGLuint colorID = this->createTexture({kSize, kSize}, format, GR_GL_TEXTURE_2D,
                                                GrRenderable::kYes,
                                                nullptr,
                                                1,
-                                               kNotProtected,
+                                               isProtected,
                                                /*label=*/"Skia");
         if (!colorID) {
             return -1;
