@@ -1,0 +1,157 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4db53b41_4b112141",
+        "filename": "example/external_client/src/svg_renderer.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-02T17:01:26Z",
+      "side": 1,
+      "message": "It appears these should be `\u0026\u0026` together?\n\n`defined(SK_FONTMGR_FONTCONFIG_AVAILABLE) \u0026\u0026 defined(SK_TYPEFACE_FACTORY_FREETYPE)`",
+      "revId": "398d22615eefe22d11d192190bbced797c0e80a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9614ec8f_352ffbbe",
+        "filename": "example/external_client/src/svg_renderer.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-02T17:01:26Z",
+      "side": 1,
+      "message": "Same here.",
+      "revId": "398d22615eefe22d11d192190bbced797c0e80a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb0fac9f_90c5a041",
+        "filename": "include/ports/SkFontScanner_FreeType.h",
+        "patchSetId": 31
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-02T17:01:26Z",
+      "side": 1,
+      "message": "This should not be here.",
+      "revId": "398d22615eefe22d11d192190bbced797c0e80a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f554c6c9_63eb3459",
+        "filename": "include/ports/SkFontScanner_FreeType.h",
+        "patchSetId": 31
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-02T17:01:26Z",
+      "side": 1,
+      "message": "None of this can be here. We cannot have any FreeType types in public includes.",
+      "revId": "398d22615eefe22d11d192190bbced797c0e80a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3cf4f000_258b8eea",
+        "filename": "include/ports/SkTypeface_FreeType.h",
+        "patchSetId": 31
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-02T17:01:26Z",
+      "side": 1,
+      "message": "This file should not be in public includes.",
+      "revId": "398d22615eefe22d11d192190bbced797c0e80a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a2f65a0d_289ac8ad",
+        "filename": "include/ports/SkTypeface_FreeType.h",
+        "patchSetId": 31
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-02T17:01:26Z",
+      "side": 1,
+      "message": "Since this cannot be in public anyway, there is no need for this change.",
+      "revId": "398d22615eefe22d11d192190bbced797c0e80a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b549f8d9_6de7cbd9",
+        "filename": "src/ports/SkFontMgr_FontConfigInterface.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-02T17:01:26Z",
+      "side": 1,
+      "message": "This should go at the end in another block",
+      "revId": "398d22615eefe22d11d192190bbced797c0e80a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41900c9b_ef2b133c",
+        "filename": "src/ports/SkFontMgr_fuchsia.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-02T17:01:26Z",
+      "side": 1,
+      "message": "Why this whitespace?",
+      "revId": "398d22615eefe22d11d192190bbced797c0e80a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8b5ca85_4cbedc44",
+        "filename": "src/ports/SkFontScanner_fontations.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-02T17:01:26Z",
+      "side": 1,
+      "message": "Why this block of includes?",
+      "revId": "398d22615eefe22d11d192190bbced797c0e80a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
