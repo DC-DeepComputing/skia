@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "456564c8_8dab99d4",
+        "filename": "src/gpu/graphite/Image_YUVA_Graphite.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-10-02T19:02:47Z",
+      "side": 1,
+      "message": "By the original comment it was using premul because that\u0027s what the YUVA-\u003eRGBA shader produced and it no longer does that. I\u0027ve changed it back because of the client argument but I think it might end up being confusing.",
+      "parentUuid": "5b078b6b_45b4d080",
+      "range": {
+        "startLine": 44,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 93
+      },
+      "revId": "4603f30cfca2ed9c8a22ceb16ef6b64e57fbcd7f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c18a5705_be3f3d1f",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4cebd27_b2d58221",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1859,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-10-02T19:02:47Z",
+      "side": 1,
+      "message": "It could be opaque. But it\u0027s not needed with the srcAT change.",
+      "parentUuid": "c18a5705_be3f3d1f",
+      "range": {
+        "startLine": 1859,
+        "startChar": 12,
+        "endLine": 1859,
+        "endChar": 61
+      },
+      "revId": "4603f30cfca2ed9c8a22ceb16ef6b64e57fbcd7f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d1486508_0a01ddca",
@@ -60,6 +108,30 @@
       "writtenOn": "2024-10-02T18:26:56Z",
       "side": 1,
       "message": "It looks like for regular SkImage raw shaders, we don\u0027t do any canonicalization of the alpha type, you get whatever was in the texture, premul or unpremul.\n\nBefore this change, we were forcing the premul step to match the reported alpha type of the YUV SkImage. Now we are changing the raw shader behavior based on the dst alpha type, which doesn\u0027t seem right.\n\nIf you like the `srcAT` idea, I think this could always just be a conversion from `srcAT` to `imageToDraw-\u003ealphaType()`.",
+      "range": {
+        "startLine": 1863,
+        "startChar": 0,
+        "endLine": 1866,
+        "endChar": 64
+      },
+      "revId": "4603f30cfca2ed9c8a22ceb16ef6b64e57fbcd7f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec8d43fe_2010c6a7",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1866,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-10-02T19:02:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d1486508_0a01ddca",
       "range": {
         "startLine": 1863,
         "startChar": 0,
