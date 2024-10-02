@@ -51,6 +51,24 @@
       "parentUuid": "edf3eccb_26885299",
       "revId": "630ab5e7f877b15e29684549c24d2a553038f6a4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4383f08a_f99abbae",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-02T18:22:36Z",
+      "side": 1,
+      "message": "I should add more details of why to b/335431546, but what this boils down to is SkPath is already a mutable path builder, we don\u0027t need another mutable path builder. What we need is an immutable path object.\n\nThe current name of SkPath is actually just a misnomer, it is actually a mutable path builder that we then attempt to use like an immutable path. This is a holdover from when Skia was thread antagonistic and didn\u0027t really handle threading at all.",
+      "parentUuid": "68c505ea_f4f9eae9",
+      "revId": "630ab5e7f877b15e29684549c24d2a553038f6a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
