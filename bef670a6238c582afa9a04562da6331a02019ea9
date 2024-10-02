@@ -16,6 +16,64 @@
       "message": "The Canary-G3 says it failed, but it actually passed.",
       "revId": "bef670a6238c582afa9a04562da6331a02019ea9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47bfe393_09f227a3",
+        "filename": "src/pdf/SkPDFTag.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-10-02T20:16:51Z",
+      "side": 1,
+      "message": "nit: i would inline this, not a lot of value in having a single-use named var",
+      "range": {
+        "startLine": 305,
+        "startChar": 15,
+        "endLine": 305,
+        "endChar": 25
+      },
+      "revId": "bef670a6238c582afa9a04562da6331a02019ea9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1d8a589_01fbdd5c",
+        "filename": "src/pdf/SkPDFTag.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 322,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-10-02T20:16:51Z",
+      "side": 1,
+      "message": "nit: `SkASSERT(thisPage \u003e\u003d currentPage)`?",
+      "fixSuggestions": [
+        {
+          "fixId": "f6f0dbdb_c5cf2fe7",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/pdf/SkPDFTag.cpp",
+              "range": {
+                "startLine": 322,
+                "startChar": 0,
+                "endLine": 322,
+                "endChar": 0
+              },
+              "replacement": "                SkASSERT(thisPage \u003e\u003d currentPage);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "bef670a6238c582afa9a04562da6331a02019ea9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
