@@ -242,8 +242,13 @@ std::unique_ptr<SkPngRustCodec> SkPngRustCodec::MakeFromStream(std::unique_ptr<S
 SkPngRustCodec::SkPngRustCodec(SkEncodedInfo&& encodedInfo,
                                std::unique_ptr<SkStream> stream,
                                rust::Box<rust_png::Reader> reader)
-        : SkPngCodecBase(std::move(encodedInfo), std::move(stream))
+        : SkPngCodecBase(std::move(encodedInfo),
+                         // TODO(https://crbug.com/370522089): If/when `SkCodec` can
+                         // avoid unnecessary rewinding, then stop "hiding" our stream
+                         // from it.
+                         /* stream = */ nullptr)
         , fReader(std::move(reader))
+        , fPrivStream(std::move(stream))
         , fFrameHolder(encodedInfo.width(), encodedInfo.height()) {
     fFrameHolder.appendNewFrame(*fReader, this->getEncodedInfo());
 }
@@ -466,6 +471,10 @@ SkPngRustCodec::FrameHolder::FrameHolder(int width, int height) : SkFrameHolder(
 }
 
 const SkFrameHolder* SkPngRustCodec::getFrameHolder() const { return &fFrameHolder; }
+
+std::unique_ptr<SkStream> SkPngRustCodec::getEncodedData() const {
+    return fPrivStream->duplicate();
+}
 
 SkPngRustCodec::FrameHolder::~FrameHolder() = default;
 
