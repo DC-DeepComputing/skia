@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5eac0042_238c4bc1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-02T23:34:06Z",
+      "side": 1,
+      "message": "@danieldilan, can you PTAL?\n\n/cc @fmalita and @scroggo as FYI",
+      "revId": "2b1fcfb00e083abd419891b8ea7cf6521b9300f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6af52866_bf721d4d",
+        "filename": "src/codec/SkWuffsCodec.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 417,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-02T23:34:06Z",
+      "side": 1,
+      "message": "This edit has been done by `git cl format`...",
+      "range": {
+        "startLine": 417,
+        "startChar": 28,
+        "endLine": 417,
+        "endChar": 29
+      },
+      "revId": "2b1fcfb00e083abd419891b8ea7cf6521b9300f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
