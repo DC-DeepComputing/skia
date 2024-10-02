@@ -176,9 +176,10 @@ static int key_to_string(SkString* str,
         const int dataLength = keyData[currentIndex++];
         SkASSERT(currentIndex + dataLength < SkTo<int>(keyData.size()));
 
-        if (dataLength == 0) {
-            // No data is the common case, so include a minimal representation to keep the length
-            // as short as possible
+        // Define a compact representation for the common case of shader snippets using just one
+        // dynamic sampler. Immutable samplers require a data length > 1 to be represented while a
+        // dynamic sampler is represented with just one, so we can simply consult the data length.
+        if (dataLength == 1) {
             str->append("(0)");
         } else {
             str->append("(");
