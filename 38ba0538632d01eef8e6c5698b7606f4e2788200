@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "74197fa9_8a9b33aa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-10-02T20:11:53Z",
+      "side": 1,
+      "message": "It also looks like we might get slightly more performance by allowing the max value to go up to 2MB (Arcs time dropped to 4.7ms) but we definitely starting seeing a backswing if I increased the max value to 4MB. I think 1MB seems like a reasonable starting value.",
+      "parentUuid": "d9b6b94d_513ee189",
+      "revId": "38ba0538632d01eef8e6c5698b7606f4e2788200",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b80b1c33_96819f58",
