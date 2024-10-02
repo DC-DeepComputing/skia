@@ -16,6 +16,52 @@
       "message": "Hi Michael - made the fix we talked about offline and rebased. Also verified this fix still works given upstream changes (passes the previously failing chrome integration test)",
       "revId": "99838193eba5809ac6757979cd3b52e90485fda1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "10601c9e_1ee36cdc",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 439,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-10-02T19:01:33Z",
+      "side": 1,
+      "message": "nit: it\u0027s technically a less strict check, but shouldn\u0027t matter and might be clearer if we replace this with `!samplerDescArray.at(0).isImmutable()`?",
+      "range": {
+        "startLine": 439,
+        "startChar": 39,
+        "endLine": 439,
+        "endChar": 76
+      },
+      "revId": "99838193eba5809ac6757979cd3b52e90485fda1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c34897ae_77c7a1ab",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 467,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-10-02T19:01:33Z",
+      "side": 1,
+      "message": "nit: similar to before, `samplerDesc.isImmutable()` might be clearer",
+      "range": {
+        "startLine": 467,
+        "startChar": 24,
+        "endLine": 467,
+        "endChar": 52
+      },
+      "revId": "99838193eba5809ac6757979cd3b52e90485fda1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
