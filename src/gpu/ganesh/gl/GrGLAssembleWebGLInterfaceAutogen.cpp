@@ -185,6 +185,10 @@ sk_sp<const GrGLInterface> GrGLMakeAssembledWebGLInterface(void *ctx, GrGLGetPro
         GET_PROC(TexStorage2D);
     }
 
+    if (glVer >= GR_GL_VER(2,0) && extensions.has("GL_ARB_texture_storage_multisample")) {
+        GET_PROC(TexStorage2DMultisample);
+    }
+
     if (glVer >= GR_GL_VER(2,0)) {
         GET_PROC(VertexAttribDivisor);
     }

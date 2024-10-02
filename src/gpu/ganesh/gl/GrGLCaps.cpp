@@ -3563,6 +3563,7 @@ void GrGLCaps::setupSampleCounts(const GrGLContextInfo& ctxInfo, const GrGLInter
                 int count;
                 GrGLFormat grGLFormat = static_cast<GrGLFormat>(i);
                 GrGLenum glFormat = this->getRenderbufferInternalFormat(grGLFormat);
+                /* TODO: this needs to stop using GL_RENDERBUFFER */
                 GR_GL_GetInternalformativ(gli, GR_GL_RENDERBUFFER, glFormat,
                                           GR_GL_NUM_SAMPLE_COUNTS, 1, &count);
                 if (count) {

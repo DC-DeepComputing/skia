@@ -29,6 +29,7 @@
 sk_sp<GrVkImage> GrVkImage::MakeStencil(GrVkGpu* gpu,
                                         SkISize dimensions,
                                         int sampleCnt,
+                                        GrProtected isProtected,
                                         VkFormat format) {
     VkImageUsageFlags vkUsageFlags =
             VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT | VK_IMAGE_USAGE_TRANSFER_DST_BIT;
@@ -39,7 +40,7 @@ sk_sp<GrVkImage> GrVkImage::MakeStencil(GrVkGpu* gpu,
                            format,
                            /*mipLevels=*/1,
                            vkUsageFlags,
-                           GrProtected::kNo,
+                           isProtected,
                            GrMemoryless::kNo,
                            skgpu::Budgeted::kYes);
 }

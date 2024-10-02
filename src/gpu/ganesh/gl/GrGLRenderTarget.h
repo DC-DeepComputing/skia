@@ -45,6 +45,7 @@ public:
         GrBackendObjectOwnership   fRTFBOOwnership;
         GrGLuint                   fSingleSampleFBOID;
         GrGLuint                   fMSColorRenderbufferID;
+        GrGLuint                   fMSColorTextureID;
         int                        fTotalMemorySamplesPerPixel;
     };
 
@@ -151,7 +152,8 @@ private:
 
     GrGLuint    fMultisampleFBOID;
     GrGLuint    fSingleSampleFBOID;
-    GrGLuint    fMSColorRenderbufferID;
+    GrGLuint    fMSColorRenderbufferID1;
+    GrGLuint    fMSColorTextureID;
     GrGLFormat  fRTFormat;
     bool        fNeedsStencilAttachmentBind[2] = {false, false};
     bool        fDMSAARenderToTextureFBOIsMultisample = false;

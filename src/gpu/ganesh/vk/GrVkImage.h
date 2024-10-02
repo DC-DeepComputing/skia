@@ -11,9 +11,9 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkTypes.h"
 #include "include/gpu/GpuTypes.h"
+#include "include/gpu/MutableTextureState.h"
 #include "include/gpu/ganesh/GrBackendSurface.h"
 #include "include/gpu/ganesh/GrTypes.h"
-#include "include/gpu/MutableTextureState.h"
 #include "include/gpu/ganesh/vk/GrVkBackendSurface.h"
 #include "include/gpu/ganesh/vk/GrVkTypes.h"
 #include "include/gpu/vk/VulkanMutableTextureState.h"
@@ -44,6 +44,7 @@ public:
     static sk_sp<GrVkImage> MakeStencil(GrVkGpu* gpu,
                                         SkISize dimensions,
                                         int sampleCnt,
+                                        GrProtected isProtected,
                                         VkFormat format);
 
     static sk_sp<GrVkImage> MakeMSAA(GrVkGpu* gpu,

@@ -916,6 +916,7 @@ sk_sp<GrRenderTarget> GrGLGpu::onWrapBackendRenderTarget(const GrBackendRenderTa
         rtIDs.fMultisampleFBOID = info.fFBOID;
     }
     rtIDs.fMSColorRenderbufferID = 0;
+    rtIDs.fMSColorTextureID = 0;
     rtIDs.fRTFBOOwnership = GrBackendObjectOwnership::kBorrowed;
     rtIDs.fTotalMemorySamplesPerPixel = sampleCount;
 
@@ -1351,6 +1352,7 @@ bool GrGLGpu::createRenderTargetObjects(const GrGLTexture::Desc& desc,
                                         int sampleCount,
                                         GrGLRenderTarget::IDs* rtIDs) {
     rtIDs->fMSColorRenderbufferID = 0;
+    rtIDs->fMSColorTextureID = 0;
     rtIDs->fMultisampleFBOID = 0;
     rtIDs->fRTFBOOwnership = GrBackendObjectOwnership::kOwned;
     rtIDs->fSingleSampleFBOID = 0;
@@ -1360,6 +1362,9 @@ bool GrGLGpu::createRenderTargetObjects(const GrGLTexture::Desc& desc,
         if (rtIDs->fMSColorRenderbufferID) {
             GL_CALL(DeleteRenderbuffers(1, &rtIDs->fMSColorRenderbufferID));
         }
+        if (rtIDs->fMSColorTextureID) {
+            GL_CALL(DeleteTextures(1, &rtIDs->fMSColorTextureID));
+        }
         if (rtIDs->fMultisampleFBOID != rtIDs->fSingleSampleFBOID) {
             this->deleteFramebuffer(rtIDs->fMultisampleFBOID);
         }
@@ -1368,7 +1373,8 @@ bool GrGLGpu::createRenderTargetObjects(const GrGLTexture::Desc& desc,
         }
     });
 
-    GrGLenum colorRenderbufferFormat = 0; // suppress warning
+//    GrGLenum colorRenderbufferFormat = 0; // suppress warning
+    GrGLenum colorTextureFormat = 0; // suppress warning
 
     if (desc.fFormat == GrGLFormat::kUnknown) {
         return false;
@@ -1384,6 +1390,7 @@ bool GrGLGpu::createRenderTargetObjects(const GrGLTexture::Desc& desc,
         return false;
     }
 
+#if 0
     // If we are using multisampling we will create two FBOS. We render to one and then resolve to
     // the texture bound to the other. The exception is the IMG multisample extension. With this
     // extension the texture is multisampled when rendered to and then auto-resolves it when it is
@@ -1404,6 +1411,22 @@ bool GrGLGpu::createRenderTargetObjects(const GrGLTexture::Desc& desc,
         }
         colorRenderbufferFormat = this->glCaps().getRenderbufferInternalFormat(desc.fFormat);
     }
+#else
+    if (sampleCount <= 1) {
+        rtIDs->fMultisampleFBOID = GrGLRenderTarget::kUnresolvableFBOID;
+    } else {
+        GL_CALL(GenFramebuffers(1, &rtIDs->fMultisampleFBOID));
+        if (!rtIDs->fMultisampleFBOID) {
+            return false;
+        }
+        GL_CALL(GenTextures(1, &rtIDs->fMSColorTextureID));
+        if (!rtIDs->fMSColorTextureID) {
+            return false;
+        }
+        // TODO: is this the right caps call?!
+        colorTextureFormat = this->glCaps().getTexImageOrStorageInternalFormat(desc.fFormat);
+    }
+#endif
 
 #if defined(__has_feature)
 #define IS_TSAN __has_feature(thread_sanitizer)
@@ -1413,6 +1436,7 @@ bool GrGLGpu::createRenderTargetObjects(const GrGLTexture::Desc& desc,
 
     // below here we may bind the FBO
     fHWBoundRenderTargetUniqueID.makeInvalid();
+#if 0
     if (rtIDs->fMSColorRenderbufferID) {
         SkASSERT(sampleCount > 1);
         GL_CALL(BindRenderbuffer(GR_GL_RENDERBUFFER, rtIDs->fMSColorRenderbufferID));
@@ -1442,6 +1466,56 @@ bool GrGLGpu::createRenderTargetObjects(const GrGLTexture::Desc& desc,
                                                 GR_GL_COLOR_ATTACHMENT0,
                                                 GR_GL_RENDERBUFFER,
                                                 rtIDs->fMSColorRenderbufferID));
+            }
+        }
+#endif
+        rtIDs->fTotalMemorySamplesPerPixel += sampleCount;
+    }
+#endif
+    if (rtIDs->fMSColorTextureID) {
+        SkASSERT(sampleCount > 1);
+        GL_CALL(BindTexture(GR_GL_TEXTURE_2D_MULTISAMPLE, rtIDs->fMSColorTextureID));
+
+        if (GrProtected::kYes == desc.fIsProtected) {
+            if (this->glCaps().supportsProtectedContent()) {
+                GL_CALL(TexParameteri(GR_GL_TEXTURE_2D_MULTISAMPLE, GR_GL_TEXTURE_PROTECTED_EXT, GR_GL_TRUE));
+            } else {
+                return false;
+            }
+        }
+
+        GrGLenum error = GL_ALLOC_CALL(TexStorage2DMultisample(
+                GR_GL_TEXTURE_2D_MULTISAMPLE, sampleCount, colorTextureFormat,
+                desc.fSize.width(), desc.fSize.height(),
+                /* fixedSampleLocations= */ GR_GL_TRUE));
+        if (error != GR_GL_NO_ERROR) {
+            SkDebugf("MSAA error 0x%x\n", error);
+            return false;
+        }
+        this->bindFramebuffer(GR_GL_FRAMEBUFFER, rtIDs->fMultisampleFBOID);
+        GL_CALL(FramebufferTexture2D(GR_GL_FRAMEBUFFER,
+                                     GR_GL_COLOR_ATTACHMENT0,
+                                     GR_GL_TEXTURE_2D_MULTISAMPLE,
+                                     rtIDs->fMSColorTextureID,
+                                     /* level= */ 0));
+        // See skbug.com/12644
+#if !IS_TSAN
+        if (!this->glCaps().skipErrorChecks()) {
+            GrGLenum status;
+            GL_CALL_RET(status, CheckFramebufferStatus(GR_GL_FRAMEBUFFER));
+            if (status != GR_GL_FRAMEBUFFER_COMPLETE) {
+                SkDebugf("error 0x%x\n", status);
+                return false;
+            }
+            if (this->glCaps().rebindColorAttachmentAfterCheckFramebufferStatus()) {
+                GL_CALL(FramebufferRenderbuffer(GR_GL_FRAMEBUFFER,
+                                                GR_GL_COLOR_ATTACHMENT0,
+                                                GR_GL_TEXTURE_2D_MULTISAMPLE,
+                                                0));
+                GL_CALL(FramebufferRenderbuffer(GR_GL_FRAMEBUFFER,
+                                                GR_GL_COLOR_ATTACHMENT0,
+                                                GR_GL_TEXTURE_2D_MULTISAMPLE,
+                                                rtIDs->fMSColorTextureID));
             }
         }
 #endif
@@ -1800,6 +1874,8 @@ int GrGLGpu::getCompatibleStencilIndex(GrGLFormat format) {
                                      GR_GL_TEXTURE_2D,
                                      colorID,
                                      0));
+
+#if 0 /*$$*/
         GrGLuint sbRBID = 0;
         GL_CALL(GenRenderbuffers(1, &sbRBID));
 
@@ -1842,6 +1918,56 @@ int GrGLGpu::getCompatibleStencilIndex(GrGLFormat format) {
             }
             GL_CALL(DeleteRenderbuffers(1, &sbRBID));
         }
+#else
+        GrGLuint sbTexID = 0;
+        GL_CALL(GenTextures(1, &sbTexID));
+
+        // look over formats till I find a compatible one
+        int stencilFmtCnt = this->glCaps().stencilFormats().size();
+        if (sbTexID) {
+            GL_CALL(BindTexture(GR_GL_TEXTURE_2D, sbTexID));
+            for (int i = 0; i < stencilFmtCnt && sbTexID; ++i) {
+                GrGLFormat sFmt = this->glCaps().stencilFormats()[i];
+                GrGLenum error = GL_ALLOC_CALL(TexStorage2D(
+                        GR_GL_TEXTURE_2D, /* levels= */ 1, GrGLFormatToEnum(sFmt), kSize, kSize));
+                if (error == GR_GL_NO_ERROR) {
+                    GL_CALL(FramebufferTexture2D(GR_GL_FRAMEBUFFER,
+                                                 GR_GL_STENCIL_ATTACHMENT,
+                                                 GR_GL_TEXTURE_2D,
+                                                 sbTexID, /* level= */ 0));
+                    if (GrGLFormatIsPackedDepthStencil(sFmt)) {
+                        GL_CALL(FramebufferTexture2D(GR_GL_FRAMEBUFFER,
+                                                     GR_GL_DEPTH_ATTACHMENT,
+                                                     GR_GL_TEXTURE_2D,
+                                                     sbTexID, /* level= */ 0));
+                    } else {
+                        GL_CALL(FramebufferTexture2D(GR_GL_FRAMEBUFFER,
+                                                     GR_GL_DEPTH_ATTACHMENT,
+                                                     GR_GL_TEXTURE_2D,
+                                                     /* textureID= */ 0, /* level= */ 0));
+                    }
+                    GrGLenum status;
+                    GL_CALL_RET(status, CheckFramebufferStatus(GR_GL_FRAMEBUFFER));
+                    if (status == GR_GL_FRAMEBUFFER_COMPLETE) {
+                        firstWorkingStencilFormatIndex = i;
+                        break;
+                    }
+                    GL_CALL(FramebufferTexture2D(GR_GL_FRAMEBUFFER,
+                                                 GR_GL_STENCIL_ATTACHMENT,
+                                                 GR_GL_TEXTURE_2D,
+                                                 /* textureID= */ 0, /* level= */ 0));
+                    if (GrGLFormatIsPackedDepthStencil(sFmt)) {
+                        GL_CALL(FramebufferTexture2D(GR_GL_FRAMEBUFFER,
+                                                     GR_GL_DEPTH_ATTACHMENT,
+                                                     GR_GL_TEXTURE_2D,
+                                                     /* textureID= */ 0, /* level= */ 0));
+                    }
+                }
+            }
+            GL_CALL(DeleteTextures(1, &sbTexID));
+        }
+#endif
+
         GL_CALL(DeleteTextures(1, &colorID));
         this->bindFramebuffer(GR_GL_FRAMEBUFFER, 0);
         this->deleteFramebuffer(fb);
@@ -1963,8 +2089,8 @@ GrGLuint GrGLGpu::createTexture(SkISize dimensions,
                     const int currentWidth = std::max(1, dimensions.width() / twoToTheMipLevel);
                     const int currentHeight = std::max(1, dimensions.height() / twoToTheMipLevel);
                     error = GL_ALLOC_CALL(TexImage2D(target, level, internalFormat, currentWidth,
-                                                     currentHeight, 0, externalFormat, externalType,
-                                                     nullptr));
+                                                     currentHeight, /* border= */ 0, externalFormat,
+                                                     externalType, /* data= */ nullptr));
                 }
                 success = (error == GR_GL_NO_ERROR);
             }
@@ -1978,14 +2104,17 @@ GrGLuint GrGLGpu::createTexture(SkISize dimensions,
 }
 
 sk_sp<GrAttachment> GrGLGpu::makeStencilAttachment(const GrBackendFormat& colorFormat,
-                                                   SkISize dimensions, int numStencilSamples) {
+                                                   SkISize dimensions,
+                                                   int numStencilSamples,
+                                                   GrProtected isProtected) {
     int sIdx = this->getCompatibleStencilIndex(GrBackendFormats::AsGLFormat(colorFormat));
     if (sIdx < 0) {
         return nullptr;
     }
     GrGLFormat sFmt = this->glCaps().stencilFormats()[sIdx];
 
-    auto stencil = GrGLAttachment::MakeStencil(this, dimensions, numStencilSamples, sFmt);
+    auto stencil = GrGLAttachment::MakeStencil(this, dimensions, numStencilSamples,
+                                                                   isProtected, sFmt);
     if (stencil) {
         fStats.incStencilAttachmentCreates();
     }
@@ -1997,7 +2126,7 @@ sk_sp<GrAttachment> GrGLGpu::makeMSAAAttachment(SkISize dimensions, const GrBack
                                                 GrMemoryless isMemoryless) {
     SkASSERT(isMemoryless == GrMemoryless::kNo);
     return GrGLAttachment::MakeMSAA(
-            this, dimensions, numSamples, GrBackendFormats::AsGLFormat(format));
+            this, dimensions, numSamples, isProtected, GrBackendFormats::AsGLFormat(format));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
