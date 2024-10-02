@@ -16,6 +16,23 @@
       "message": "(FYI: Daniel is taking over my SkCodec responsibilities, as I\u0027m leaving Google.)\n\nAlso, it looks like we still need API approval. @fmalita@google.com?",
       "revId": "58a9fd365797d8d0ac71c2fd948a7643340dbe00",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "255ec32f_a0a022b0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-10-02T16:07:57Z",
+      "side": 1,
+      "message": "public include lgtm",
+      "revId": "58a9fd365797d8d0ac71c2fd948a7643340dbe00",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
