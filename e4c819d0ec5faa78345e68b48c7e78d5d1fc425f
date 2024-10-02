@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c662057_4eb288fe",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-02T20:11:54Z",
+      "side": 1,
+      "message": "@danieldilan, can you PTAL?  When adding a new field to `DecodingState` I\u0027ve realized that I didn\u0027t follow Skia\u0027s convention for field names, so let me try to fix this in this small (and maybe a bit silly? :-)) CL.",
+      "revId": "e4c819d0ec5faa78345e68b48c7e78d5d1fc425f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
