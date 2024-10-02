@@ -25,9 +25,8 @@ struct SkPoint;
 
 class SkPDFTagTree {
 public:
-    SkPDFTagTree();
+    SkPDFTagTree(SkPDF::StructureElementNode*, SkPDF::Metadata::Outline);
     ~SkPDFTagTree();
-    void init(SkPDF::StructureElementNode*, SkPDF::Metadata::Outline);
 
     class Mark {
         SkPDFTagNode *const fNode;
@@ -67,7 +66,7 @@ private:
         SkPDFIndirectReference ref;
     };
 
-    void Copy(SkPDF::StructureElementNode& node,
+    void Move(SkPDF::StructureElementNode& node,
               SkPDFTagNode* dst,
               SkArenaAlloc* arena,
               skia_private::THashMap<int, SkPDFTagNode*>* nodeMap,
