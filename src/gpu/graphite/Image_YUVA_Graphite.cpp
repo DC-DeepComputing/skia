@@ -44,7 +44,7 @@ static SkAlphaType yuva_alpha_type(const SkYUVAInfo& yuvaInfo) {
     // If an alpha channel is present we always use kPremul. This is because, although the planar
     // data is always un-premul, the final interleaved RGBA sample produced in the shader is premul
     // (and similar if flattened).
-    return yuvaInfo.hasAlpha() ? kPremul_SkAlphaType : kOpaque_SkAlphaType;
+    return yuvaInfo.hasAlpha() ? kUnpremul_SkAlphaType : kOpaque_SkAlphaType;
 }
 
 } // anonymous
