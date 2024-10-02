@@ -87,6 +87,24 @@
       "parentUuid": "4383f08a_f99abbae",
       "revId": "630ab5e7f877b15e29684549c24d2a553038f6a4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cc38e64e_3f5f51b9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-10-02T21:38:58Z",
+      "side": 1,
+      "message": "That last point is part of the motivation for this CL: I\u0027m trying to test https://chromium-review.googlesource.com/c/chromium/src/+/5906078 to see if the builder pattern has any impact on the benchmarks of the day.  It\u0027s nice to be able to measure things right away.\n\nSo maybe we can land this as an experiment, so I can run the perf bots to gather some data, while holding off on the chromium cl?",
+      "parentUuid": "02bda448_fd53f6fc",
+      "revId": "630ab5e7f877b15e29684549c24d2a553038f6a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
