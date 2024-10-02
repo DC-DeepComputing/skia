@@ -33,6 +33,24 @@
       "message": "I think this is a bad idea. Nothing should migrate to SkPathBuilder as it means we will be stuck with yet another thing that cannot be migrated to.",
       "revId": "630ab5e7f877b15e29684549c24d2a553038f6a4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "68c505ea_f4f9eae9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-02T18:05:41Z",
+      "side": 1,
+      "message": "To be clear, to migrate to SkPathBuilder would be to simply make it the current SkPath.",
+      "parentUuid": "edf3eccb_26885299",
+      "revId": "630ab5e7f877b15e29684549c24d2a553038f6a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
