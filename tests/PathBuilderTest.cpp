@@ -16,6 +16,8 @@
 #include "src/core/SkPathPriv.h"
 #include "tests/Test.h"
 
+#include <algorithm>
+#include <array>
 #include <cstddef>
 #include <cstdint>
 #include <initializer_list>
@@ -415,4 +417,37 @@ DEF_TEST(SkPathBuilder_arcToPtPtRad_invalidInputsResultInALine, reporter) {
     test("two points equal", {5, 7}, {5, 7}, 1, {5, 7});
     test("radius is zero", {-3, 5}, {-7, 11}, 0, {-3, 5});
     test("second point equals previous point", {5, 4}, {0, 0}, 1, {5, 4});
+}
+
+DEF_TEST(pathbuilder_getVerbs_getPoints, reporter) {
+    SkPathBuilder pb;
+
+    REPORTER_ASSERT(reporter, pb.isEmpty());
+
+    pb.moveTo({1, 2});
+    pb.lineTo({3, 4});
+    pb.quadTo({5, 6}, {7, 8});
+    pb.close();
+
+    REPORTER_ASSERT(reporter, !pb.isEmpty());
+
+    const auto verbs = pb.getVerbs();
+    static constexpr std::array<uint8_t, 4> expected_verbs = {
+        SkPath::kMove_Verb,
+        SkPath::kLine_Verb,
+        SkPath::kQuad_Verb,
+        SkPath::kClose_Verb,
+    };
+    REPORTER_ASSERT(reporter, std::equal(verbs.begin(), verbs.end(),
+                                         expected_verbs.begin(), expected_verbs.end()));
+
+    const auto pts = pb.getPoints();
+    static constexpr std::array<SkPoint, 4> expected_pts = {
+        SkPoint{1, 2},
+        SkPoint{3, 4},
+        SkPoint{5, 6},
+        SkPoint{7, 8},
+    };
+    REPORTER_ASSERT(reporter, std::equal(pts.begin(), pts.end(),
+                                         expected_pts.begin(), expected_pts.end()));
 }
