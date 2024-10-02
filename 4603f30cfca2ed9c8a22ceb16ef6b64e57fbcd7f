@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b078b6b_45b4d080",
+        "filename": "src/gpu/graphite/Image_YUVA_Graphite.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-10-02T18:26:56Z",
+      "side": 1,
+      "message": "I am hesitant to make this change since it affects the SkImage\u0027s logical alpha type, and there are maybe clients that have been assuming it was `kPremul`. Ideally they wouldn\u0027t have any hard-coded expectations for this, and wouldn\u0027t matter for any regular image shading since the SkColorXformSteps handles everything.\n\nBut if there was a YUV image used as a raw shader, the provided rgba values to a wrapping shader would be changing from premul to unpremul. We also then deviate from how a Ganesh YUV image behaves. It seems pretty rare to be used that way, but I don\u0027t think the bug fix around the opaque dstAT requires us to change the SkImage\u0027s reported alpha type.\n\nWe\u0027d just have to add a `srcAT` variable that starts out as `imageToDraw-\u003ealphaType()` and switches from `kPremul` to `kUnpremul` but keeps `kOpaque` unmodified.",
+      "range": {
+        "startLine": 44,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 93
+      },
+      "revId": "4603f30cfca2ed9c8a22ceb16ef6b64e57fbcd7f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c18a5705_be3f3d1f",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1859,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-10-02T18:26:56Z",
+      "side": 1,
+      "message": "WDYT about just asserting that `imageToDraw-\u003ealphaType() \u003d\u003d kUnpremul_SkAlphaType` to simplify this case and the logic in the `else` branch?\n\nWe know it\u0027s an `Image_YUVA_Graphite` to get to this code path, so if something has changed its fixed alpha type we\u0027d maybe be needing to revisit this logic anyways?",
+      "range": {
+        "startLine": 1859,
+        "startChar": 12,
+        "endLine": 1859,
+        "endChar": 61
+      },
+      "revId": "4603f30cfca2ed9c8a22ceb16ef6b64e57fbcd7f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1486508_0a01ddca",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1866,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-10-02T18:26:56Z",
+      "side": 1,
+      "message": "It looks like for regular SkImage raw shaders, we don\u0027t do any canonicalization of the alpha type, you get whatever was in the texture, premul or unpremul.\n\nBefore this change, we were forcing the premul step to match the reported alpha type of the YUV SkImage. Now we are changing the raw shader behavior based on the dst alpha type, which doesn\u0027t seem right.\n\nIf you like the `srcAT` idea, I think this could always just be a conversion from `srcAT` to `imageToDraw-\u003ealphaType()`.",
+      "range": {
+        "startLine": 1863,
+        "startChar": 0,
+        "endLine": 1866,
+        "endChar": 64
+      },
+      "revId": "4603f30cfca2ed9c8a22ceb16ef6b64e57fbcd7f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
