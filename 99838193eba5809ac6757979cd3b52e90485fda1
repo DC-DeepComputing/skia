@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "73a8dc96_498f6c89",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-10-02T18:53:08Z",
+      "side": 1,
+      "message": "Hi Michael - made the fix we talked about offline and rebased. Also verified this fix still works given upstream changes (passes the previously failing chrome integration test)",
+      "revId": "99838193eba5809ac6757979cd3b52e90485fda1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
