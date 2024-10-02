@@ -412,6 +412,10 @@ void GrGLCaps::init(const GrContextOptions& contextOptions,
      */
     fStrictProtectedness = fSupportsProtectedContent &&
                            ctxInfo.angleBackend() != GrGLANGLEBackend::kUnknown;
+    SkDebugf("strictProtectedness %d, supportsProtectedContent %d angle %d\n",
+        fStrictProtectedness,
+        fSupportsProtectedContent,
+        ctxInfo.angleBackend());
 
     /**************************************************************************
     * GrShaderCaps fields
