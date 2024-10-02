@@ -1556,7 +1556,7 @@ void BoundsPainter::push_transform(const fontations_ffi::Transform& transform_ar
                                            0.f,
                                            1.0f);
     fCurrentTransform.preConcat(transform);
-    bool invertResult = transform.invert(&fStackTopTransformInverse);
+    [[maybe_unused]] bool invertResult = transform.invert(&fStackTopTransformInverse);
     SkASSERT(invertResult);
 }
 void BoundsPainter::pop_transform() {
