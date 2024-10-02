@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "40834659_8c2594f9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-10-02T16:04:06Z",
+      "side": 1,
+      "message": "PTAL, rebased over dynamic buffer changes.",
+      "revId": "83b8431800bf6b4238eec5c4db7daa6873fc2ff0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
