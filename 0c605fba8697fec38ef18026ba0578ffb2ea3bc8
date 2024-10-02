@@ -33,6 +33,23 @@
       "message": "There are image changes but this patch is a functional noop. Trying to CQ again.",
       "revId": "0c605fba8697fec38ef18026ba0578ffb2ea3bc8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c7ce5bb_93673ba7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8036
+      },
+      "writtenOn": "2024-10-02T17:05:17Z",
+      "side": 1,
+      "message": "Nicolette, the Gold image changes seem totally unrelated. How can we try to regenerate them?",
+      "revId": "0c605fba8697fec38ef18026ba0578ffb2ea3bc8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
