@@ -54,6 +54,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d2928b88_6258bf1a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-10-02T20:50:48Z",
+      "side": 1,
+      "message": "Well that\u0027s promising; I certainly wasn\u0027t seeing any regressions so let\u0027s submit and see what happens!",
+      "parentUuid": "d9b6b94d_513ee189",
+      "revId": "38ba0538632d01eef8e6c5698b7606f4e2788200",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b80b1c33_96819f58",
@@ -85,6 +103,24 @@
       "side": 1,
       "message": "I suspect that we would start using them for Vello\u0027s sparse strip approach, or if integrate compute-based tessellation where we need to write the instance data from compute but consume it as a vertex buffer.\n\nThat said, anything related to compute will require up-front memory calculations so we probably won\u0027t be doing any dynamic size adjustments. I\u0027m fine with keeping the constants consistent with regular vertex buffers though.",
       "parentUuid": "b80b1c33_96819f58",
+      "revId": "38ba0538632d01eef8e6c5698b7606f4e2788200",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a4da1ef4_34d7dd5d",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-10-02T20:50:48Z",
+      "side": 1,
+      "message": "Hm, in that case I think it would be less confusing going forward to set the VertexStorage bounds both to MinSize. I just realized that\u0027s what we\u0027re doing for Indirect type buffers anyways.",
+      "parentUuid": "e23bd9a7_36ee21e3",
       "revId": "38ba0538632d01eef8e6c5698b7606f4e2788200",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
