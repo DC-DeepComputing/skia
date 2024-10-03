@@ -22,6 +22,29 @@
       },
       "revId": "34c87bf8e1d61b2c0c6fadf11f73b5ff3063efc4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2b557202_e199c249",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 439,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-10-03T15:40:54Z",
+      "side": 1,
+      "message": "This is equivalent to `!(samplerDescArrPtr \u0026\u0026 samplerDescArrPtr-\u003eat(0).isImmutable())`, which would be my vote for the check vs. two negations inside the expression.",
+      "range": {
+        "startLine": 438,
+        "startChar": 47,
+        "endLine": 439,
+        "endChar": 89
+      },
+      "revId": "34c87bf8e1d61b2c0c6fadf11f73b5ff3063efc4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "135c8d2b_00477d03",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-10-03T15:40:54Z",
+      "side": 1,
+      "message": "Nevermind, it appears cs.chromium.org is pretty out of date.",
+      "parentUuid": "bd57338f_c1e8e8bf",
+      "revId": "99838193eba5809ac6757979cd3b52e90485fda1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "10601c9e_1ee36cdc",
@@ -72,6 +90,30 @@
       "side": 1,
       "message": "`samplerDescArr` itself is only declared when `#if !defined(__EMSCRIPTEN__)\n`, so we have to reference the pointer here which is declared in all cases OR have the conditional be within more `#ifdef`s. I personally think the former is a bit cleaner, but LMKWYT!",
       "parentUuid": "10601c9e_1ee36cdc",
+      "range": {
+        "startLine": 439,
+        "startChar": 39,
+        "endLine": 439,
+        "endChar": 76
+      },
+      "revId": "99838193eba5809ac6757979cd3b52e90485fda1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "31646bae_3e8e7e8b",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 439,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-10-03T15:40:54Z",
+      "side": 1,
+      "message": "Yeah I think we just check for it being non-null to avoid the EMSCRIPTEN if defs.",
+      "parentUuid": "870cfb11_89efbdf6",
       "range": {
         "startLine": 439,
         "startChar": 39,
