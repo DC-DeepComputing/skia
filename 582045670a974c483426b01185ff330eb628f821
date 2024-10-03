@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d6aa487_dacdad3c",
+        "filename": "src/base/SkZip.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-03T20:09:27Z",
+      "side": 0,
+      "message": "The meat of this change is removing this initializer_list.",
+      "range": {
+        "startLine": 195,
+        "startChar": 24,
+        "endLine": 195,
+        "endChar": 65
+      },
+      "revId": "582045670a974c483426b01185ff330eb628f821",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "95db6ebd_2148c95b",
+        "filename": "src/base/SkZip.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-03T20:09:27Z",
+      "side": 0,
+      "message": "This wasn\u0027t an initializer_list, but for a minute there I thought it might be, so I made it look like the constructor call it is. So I went and did that everywhere in this file, since there was already a mix. (For historians, early on Herb was really into uniform initialization but then got bit by it not being entirely uniform, so started making constructor calls look like calls.)",
+      "range": {
+        "startLine": 204,
+        "startChar": 38,
+        "endLine": 204,
+        "endChar": 39
+      },
+      "revId": "582045670a974c483426b01185ff330eb628f821",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

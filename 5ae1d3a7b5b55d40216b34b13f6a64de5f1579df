@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad28486c_3b764807",
+        "filename": "src/base/SkZip.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-03T20:09:27Z",
+      "side": 1,
+      "message": "And replacing it with this array. It all turns into the same debug only code.",
+      "revId": "5ae1d3a7b5b55d40216b34b13f6a64de5f1579df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
