@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ad20d95_b00d6afa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-10-03T16:53:57Z",
+      "side": 1,
+      "message": "mac_rel has passed on the Chrome Canary so this should be good to go",
+      "revId": "b5cac8afe2f64067bda3a1d7f31850b4b942de60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
