@@ -195,6 +195,24 @@
       "parentUuid": "41c1300c_d73c7877",
       "revId": "630ab5e7f877b15e29684549c24d2a553038f6a4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "25f0a13c_d37bc12c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-10-03T17:34:29Z",
+      "side": 1,
+      "message": "Whatever you think makes the current approach difficult (I have asked repeatedly for concrete examples, asking one more time) *is* the migration.  You can kick it down the road by continuing to use SkPath as a builder, but when we\u0027re done renaming and it\u0027s time to actually scrub the API we\u0027ll have to go back and fix the exact same things that we would be fixing incrementally as part of the SkPathBuilder conversion.\n\n\n\u003e I would need overwhelming evidence\n\nSure, I am willing to work on providing that evidence by actually migrating clients using the current pattern.  There little to no risk: if things don\u0027t work out, we can delete the current builder impl and alias SkPath.  We\u0027d still be in better shape with some clients already converted.\n\n\n\u003e allow them a migration path this isn\u0027t an immediate all-or-nothing\n\nI must be missing something, because SkPathBuilder absolutely offers an incremental migration path.",
+      "parentUuid": "be43e904_887e970c",
+      "revId": "630ab5e7f877b15e29684549c24d2a553038f6a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
