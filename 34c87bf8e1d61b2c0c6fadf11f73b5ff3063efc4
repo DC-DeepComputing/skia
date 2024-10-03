@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a18eb8bb_930feaff",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 315,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-10-03T15:37:29Z",
+      "side": 1,
+      "message": "Note: This change and the similar one in `ShaderCodeDictionary` were necessary to disambiguate the call into `push_back_n` for compilers used on our MacMinis.",
+      "range": {
+        "startLine": 315,
+        "startChar": 0,
+        "endLine": 315,
+        "endChar": 55
+      },
+      "revId": "34c87bf8e1d61b2c0c6fadf11f73b5ff3063efc4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
