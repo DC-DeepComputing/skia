@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d7b942ec_1a86e155",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-03T20:47:36Z",
+      "side": 1,
+      "message": "Alas, need another +1 since I need to update all the places where initializer_list isn\u0027t needed and iwyu wanted it before.",
+      "revId": "483ac3f6167642c77be1c5c10c510a2d192722b6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
