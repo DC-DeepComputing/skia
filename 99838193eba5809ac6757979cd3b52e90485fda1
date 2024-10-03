@@ -60,6 +60,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "870cfb11_89efbdf6",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 439,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-10-03T15:35:28Z",
+      "side": 1,
+      "message": "`samplerDescArr` itself is only declared when `#if !defined(__EMSCRIPTEN__)\n`, so we have to reference the pointer here which is declared in all cases OR have the conditional be within more `#ifdef`s. I personally think the former is a bit cleaner, but LMKWYT!",
+      "parentUuid": "10601c9e_1ee36cdc",
+      "range": {
+        "startLine": 439,
+        "startChar": 39,
+        "endLine": 439,
+        "endChar": 76
+      },
+      "revId": "99838193eba5809ac6757979cd3b52e90485fda1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c34897ae_77c7a1ab",
         "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
         "patchSetId": 8
@@ -71,6 +95,30 @@
       "writtenOn": "2024-10-02T19:01:33Z",
       "side": 1,
       "message": "nit: similar to before, `samplerDesc.isImmutable()` might be clearer",
+      "range": {
+        "startLine": 467,
+        "startChar": 24,
+        "endLine": 467,
+        "endChar": 52
+      },
+      "revId": "99838193eba5809ac6757979cd3b52e90485fda1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b66316e6_34f54dd5",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 467,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-10-03T15:35:28Z",
+      "side": 1,
+      "message": "Good suggestion! Changed. I kept the reference definition for when we call `findOrCreateCompatibleSampler`",
+      "parentUuid": "c34897ae_77c7a1ab",
       "range": {
         "startLine": 467,
         "startChar": 24,
