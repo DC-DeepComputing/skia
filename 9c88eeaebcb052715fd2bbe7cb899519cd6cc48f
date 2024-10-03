@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "62585d84_b28ccfaf",
+        "filename": "tests/ImageGeneratorOrientationTest.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-10-03T17:48:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fd873cdc_b717cf23",
+      "revId": "9c88eeaebcb052715fd2bbe7cb899519cd6cc48f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5d6e059e_e6113661",
@@ -66,6 +84,24 @@
           ]
         }
       ],
+      "revId": "9c88eeaebcb052715fd2bbe7cb899519cd6cc48f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "793f25b4_fdfb4dfb",
+        "filename": "tests/ImageGeneratorOrientationTest.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-10-03T17:48:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5d6e059e_e6113661",
       "revId": "9c88eeaebcb052715fd2bbe7cb899519cd6cc48f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
