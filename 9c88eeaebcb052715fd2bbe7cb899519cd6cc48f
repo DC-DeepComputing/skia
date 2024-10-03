@@ -16,6 +16,58 @@
       "message": "@fmalita@google.com This change is ready for review.",
       "revId": "9c88eeaebcb052715fd2bbe7cb899519cd6cc48f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd873cdc_b717cf23",
+        "filename": "tests/ImageGeneratorOrientationTest.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-10-03T15:02:24Z",
+      "side": 1,
+      "message": "nit: this may be more readable using SkV3:\n\n`float d \u003d SkV3{a.fR - b.fR, a.fG - b.fG, a.fB - b.fB}.length();`",
+      "revId": "9c88eeaebcb052715fd2bbe7cb899519cd6cc48f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d6e059e_e6113661",
+        "filename": "tests/ImageGeneratorOrientationTest.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-10-03T15:02:24Z",
+      "side": 1,
+      "message": "nit: we normally use a \u0027k\u0027 prefix for constants\n`static constexpr float kTol \u003d ...`",
+      "fixSuggestions": [
+        {
+          "fixId": "76d077f5_e0ac0935",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tests/ImageGeneratorOrientationTest.cpp",
+              "range": {
+                "startLine": 33,
+                "startChar": 0,
+                "endLine": 35,
+                "endChar": 0
+              },
+              "replacement": "    static constexpr float kTol \u003d 0.02f;\n    return d \u003c\u003d kTol;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "9c88eeaebcb052715fd2bbe7cb899519cd6cc48f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
