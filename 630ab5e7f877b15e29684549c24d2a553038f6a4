@@ -159,6 +159,24 @@
       "parentUuid": "9e2afd6c_6b7beaab",
       "revId": "630ab5e7f877b15e29684549c24d2a553038f6a4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "41c1300c_d73c7877",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-10-03T15:09:54Z",
+      "side": 1,
+      "message": "Can you share some of the issues you ran into?  I might have been lucky, but converting canvas to SkPathBuilder was manageable (passing tests): https://chromium-review.googlesource.com/c/chromium/src/+/5906078\n\nWe can expand SkPathBuilder as needed, as long as the additions are *builder* related.\n\nThe problem I have with aliasing SkPath is that it\u0027s not a real migration: I can change the first spot I find in chromium, and call it a day - things will build and work fine.  Without the compiler enforcing the distinction, there is nothing to guide the refactoring or verify that we are indeed done.  Then you run into the exact same issues, just at a later time.",
+      "parentUuid": "4291c5ca_4ab2fd29",
+      "revId": "630ab5e7f877b15e29684549c24d2a553038f6a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
