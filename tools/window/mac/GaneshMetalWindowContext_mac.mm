@@ -22,7 +22,7 @@ namespace {
 
 class MetalWindowContext_mac : public MetalWindowContext {
 public:
-    MetalWindowContext_mac(const MacWindowInfo&, const DisplayParams&);
+    MetalWindowContext_mac(const MacWindowInfo&, sk_sp<DisplayParams>);
 
     ~MetalWindowContext_mac() override;
 
@@ -36,7 +36,7 @@ private:
 };
 
 MetalWindowContext_mac::MetalWindowContext_mac(const MacWindowInfo& info,
-                                               const DisplayParams& params)
+                                               sk_sp<DisplayParams> params)
         : MetalWindowContext(params), fMainView(info.fMainView) {
     // any config code here (particularly for msaa)?
 
@@ -90,7 +90,7 @@ void MetalWindowContext_mac::resize(int w, int h) {
 namespace skwindow {
 
 std::unique_ptr<WindowContext> MakeGaneshMetalForMac(const MacWindowInfo& info,
-                                                     const DisplayParams& params) {
+                                                     sk_sp<DisplayParams> params) {
     std::unique_ptr<WindowContext> ctx(new MetalWindowContext_mac(info, params));
     if (!ctx->isValid()) {
         return nullptr;

@@ -12,40 +12,10 @@
 #include "include/core/SkSurfaceProps.h"
 #include "include/gpu/ganesh/GrContextOptions.h"
 
-#if defined(SK_GRAPHITE)
-#include "include/gpu/graphite/ContextOptions.h"
-#include "src/gpu/graphite/ContextOptionsPriv.h"
-#include "tools/graphite/TestOptions.h"
-#endif
-
 namespace skwindow {
+struct GraphiteTestOptions;
 
-#if defined(SK_GRAPHITE)
-struct GraphiteTestOptions {
-    GraphiteTestOptions() {
-        fTestOptions.fContextOptions.fOptionsPriv = &fPriv;
-    }
-
-    GraphiteTestOptions(const GraphiteTestOptions& other)
-            : fTestOptions(other.fTestOptions)
-            , fPriv(other.fPriv) {
-        fTestOptions.fContextOptions.fOptionsPriv = &fPriv;
-    }
-
-    GraphiteTestOptions& operator=(const GraphiteTestOptions& other) {
-        fTestOptions = other.fTestOptions;
-        fPriv = other.fPriv;
-        fTestOptions.fContextOptions.fOptionsPriv = &fPriv;
-        return *this;
-    }
-
-    skiatest::graphite::TestOptions     fTestOptions;
-    skgpu::graphite::ContextOptionsPriv fPriv;
-};
-
-#endif
-
-struct DisplayParams {
+struct DisplayParams : public SkRefCnt {
     DisplayParams()
         : fColorType(kN32_SkColorType)
         , fColorSpace(nullptr)
@@ -60,9 +30,7 @@ struct DisplayParams {
     sk_sp<SkColorSpace>    fColorSpace;
     int                    fMSAASampleCount;
     GrContextOptions       fGrContextOptions;
-#if defined(SK_GRAPHITE)
-    GraphiteTestOptions    fGraphiteTestOptions;
-#endif
+
     SkSurfaceProps         fSurfaceProps;
     bool                   fDisableVsync;
     bool                   fDelayDrawableAcquisition;

@@ -27,10 +27,8 @@ using skwindow::internal::MetalWindowContext;
 
 namespace skwindow::internal {
 
-MetalWindowContext::MetalWindowContext(const DisplayParams& params)
-        : WindowContext(params)
-        , fValid(false)
-        , fDrawableHandle(nil) {
+MetalWindowContext::MetalWindowContext(sk_sp<DisplayParams> params)
+        : WindowContext(params), fValid(false), fDrawableHandle(nil) {
     fDisplayParams.fMSAASampleCount = GrNextPow2(fDisplayParams.fMSAASampleCount);
 }
 
@@ -132,7 +130,7 @@ void MetalWindowContext::onSwapBuffers() {
     fDrawableHandle = nil;
 }
 
-void MetalWindowContext::setDisplayParams(const DisplayParams& params) {
+void MetalWindowContext::setDisplayParams(sk_sp<DisplayParams> params) {
     this->destroyContext();
     fDisplayParams = params;
     this->initializeContext();

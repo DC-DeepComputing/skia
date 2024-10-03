@@ -15,7 +15,7 @@ class WindowContext;
 struct DisplayParams;
 struct MacWindowInfo;
 
-std::unique_ptr<WindowContext> MakeRasterForMac(const MacWindowInfo&, const DisplayParams&);
+std::unique_ptr<WindowContext> MakeRasterForMac(const MacWindowInfo&, sk_sp<DisplayParams>);
 }  // namespace skwindow
 
 #endif

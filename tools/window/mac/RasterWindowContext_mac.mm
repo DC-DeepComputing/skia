@@ -31,7 +31,7 @@ namespace {
 
 class RasterWindowContext_mac : public GLWindowContext {
 public:
-    RasterWindowContext_mac(const MacWindowInfo&, const DisplayParams&);
+    RasterWindowContext_mac(const MacWindowInfo&, sk_sp<DisplayParams>);
 
     ~RasterWindowContext_mac() override;
 
@@ -52,11 +52,8 @@ private:
 };
 
 RasterWindowContext_mac::RasterWindowContext_mac(const MacWindowInfo& info,
-                                                 const DisplayParams& params)
-        : GLWindowContext(params)
-        , fMainView(info.fMainView)
-        , fGLContext(nil) {
-
+                                                 sk_sp<DisplayParams> params)
+        : GLWindowContext(params), fMainView(info.fMainView), fGLContext(nil) {
     // any config code here (particularly for msaa)?
 
     this->initializeContext();
@@ -179,7 +176,7 @@ void RasterWindowContext_mac::resize(int w, int h) {
 namespace skwindow {
 
 std::unique_ptr<WindowContext> MakeRasterForMac(const MacWindowInfo& info,
-                                                const DisplayParams& params) {
+                                                sk_sp<DisplayParams> params) {
     std::unique_ptr<WindowContext> ctx(new RasterWindowContext_mac(info, params));
     if (!ctx->isValid()) {
         return nullptr;

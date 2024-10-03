@@ -11,11 +11,12 @@
 #include "include/core/SkSurface.h"
 #include "include/gpu/ganesh/GrDirectContext.h"
 #include "include/gpu/ganesh/GrRecordingContext.h"
+#include "tools/window/DisplayParams.h"
 #include "tools/window/WindowContext.h"
 
 namespace sk_app {
 
-Window::Window() {}
+Window::Window() : fRequestedDisplayParams(sk_make_sp<DisplayParams>()) {}
 
 Window::~Window() {}
 
@@ -131,7 +132,8 @@ int Window::height() const {
     return fWindowContext->height();
 }
 
-void Window::setRequestedDisplayParams(const DisplayParams& params, bool /* allowReattach */) {
+void Window::setRequestedDisplayParams(sk_sp<DisplayParams> params, bool /* allowReattach */) {
+    SkASSERT(params);
     fRequestedDisplayParams = params;
     if (fWindowContext) {
         fWindowContext->setDisplayParams(fRequestedDisplayParams);
@@ -160,33 +162,23 @@ GrDirectContext* Window::directContext() const {
 }
 
 skgpu::graphite::Context* Window::graphiteContext() const {
-#if defined(SK_GRAPHITE)
     if (!fWindowContext) {
         return nullptr;
     }
     return fWindowContext->graphiteContext();
-#else
-    return nullptr;
-#endif
 }
 
 skgpu::graphite::Recorder* Window::graphiteRecorder() const {
-#if defined(SK_GRAPHITE)
     if (!fWindowContext) {
         return nullptr;
     }
     return fWindowContext->graphiteRecorder();
-#else
-    return nullptr;
-#endif
 }
 
 void Window::snapRecordingAndSubmit() {
-#if defined(SK_GRAPHITE)
     if (fWindowContext) {
         fWindowContext->snapRecordingAndSubmit();
     }
-#endif
 }
 
 void Window::inval() {

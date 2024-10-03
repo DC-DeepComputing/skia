@@ -16,7 +16,7 @@ struct DisplayParams;
 struct MacWindowInfo;
 
 std::unique_ptr<WindowContext> MakeGraphiteNativeMetalForMac(const MacWindowInfo&,
-                                                             const DisplayParams&);
+                                                             sk_sp<DisplayParams>);
 }  // namespace skwindow
 
 #endif

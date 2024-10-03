@@ -16,7 +16,7 @@
 namespace skwindow {
 
 std::unique_ptr<WindowContext> MakeGaneshVulkanForXlib(const XlibWindowInfo& info,
-                                                       const DisplayParams& displayParams) {
+                                                       sk_sp<DisplayParams> displayParams) {
     PFN_vkGetInstanceProcAddr instProc;
     if (!sk_gpu_test::LoadVkLibraryAndGetProcAddrFuncs(&instProc)) {
         SkDebugf("Could not load vulkan library\n");

@@ -37,19 +37,19 @@
 
 namespace skwindow::internal {
 
-VulkanWindowContext::VulkanWindowContext(const DisplayParams& params,
+VulkanWindowContext::VulkanWindowContext(sk_sp<DisplayParams> params,
                                          CreateVkSurfaceFn createVkSurface,
                                          CanPresentFn canPresent,
                                          PFN_vkGetInstanceProcAddr instProc)
-    : WindowContext(params)
-    , fCreateVkSurfaceFn(std::move(createVkSurface))
-    , fCanPresentFn(std::move(canPresent))
-    , fSurface(VK_NULL_HANDLE)
-    , fSwapchain(VK_NULL_HANDLE)
-    , fImages(nullptr)
-    , fImageLayouts(nullptr)
-    , fSurfaces(nullptr)
-    , fBackbuffers(nullptr) {
+        : WindowContext(params)
+        , fCreateVkSurfaceFn(std::move(createVkSurface))
+        , fCanPresentFn(std::move(canPresent))
+        , fSurface(VK_NULL_HANDLE)
+        , fSwapchain(VK_NULL_HANDLE)
+        , fImages(nullptr)
+        , fImageLayouts(nullptr)
+        , fSurfaces(nullptr)
+        , fBackbuffers(nullptr) {
     fGetInstanceProcAddr = instProc;
     this->initializeContext();
 }
@@ -62,10 +62,14 @@ void VulkanWindowContext::initializeContext() {
     skgpu::VulkanBackendContext backendContext;
     skgpu::VulkanExtensions extensions;
     VkPhysicalDeviceFeatures2 features;
-    if (!sk_gpu_test::CreateVkBackendContext(getInstanceProc, &backendContext, &extensions,
-                                             &features, &fDebugCallback, &fPresentQueueIndex,
+    if (!sk_gpu_test::CreateVkBackendContext(getInstanceProc,
+                                             &backendContext,
+                                             &extensions,
+                                             &features,
+                                             &fDebugCallback,
+                                             &fPresentQueueIndex,
                                              fCanPresentFn,
-                                             fDisplayParams.fCreateProtectedNativeBackend)) {
+                                             fDisplayParams->fCreateProtectedNativeBackend)) {
         sk_gpu_test::FreeVulkanFeaturesStructs(&features);
         return;
     }
@@ -131,7 +135,7 @@ void VulkanWindowContext::initializeContext() {
                                                   skgpu::ThreadSafe::kNo,
                                                   /*blockSize=*/std::nullopt);
 
-    fContext = GrDirectContexts::MakeVulkan(backendContext, fDisplayParams.fGrContextOptions);
+    fContext = GrDirectContexts::MakeVulkan(backendContext, fDisplayParams->fGrContextOptions);
 
     fSurface = fCreateVkSurfaceFn(fInstance);
     if (VK_NULL_HANDLE == fSurface) {
@@ -160,8 +164,7 @@ void VulkanWindowContext::initializeContext() {
     sk_gpu_test::FreeVulkanFeaturesStructs(&features);
 }
 
-bool VulkanWindowContext::createSwapchain(int width, int height,
-                                          const DisplayParams& params) {
+bool VulkanWindowContext::createSwapchain(int width, int height, sk_sp<DisplayParams> params) {
     // check for capabilities
     VkSurfaceCapabilitiesKHR caps;
     VkResult res = fGetPhysicalDeviceSurfaceCapabilitiesKHR(fPhysicalDevice, fSurface, &caps);
@@ -258,7 +261,7 @@ bool VulkanWindowContext::createSwapchain(int width, int height,
         }
     }
     fDisplayParams = params;
-    fSampleCount = std::max(1, params.fMSAASampleCount);
+    fSampleCount = std::max(1, params->fMSAASampleCount);
     fStencilBits = 8;
 
     if (VK_FORMAT_UNDEFINED == surfaceFormat) {
@@ -291,16 +294,16 @@ bool VulkanWindowContext::createSwapchain(int width, int height,
             hasImmediate = true;
         }
     }
-    if (params.fDisableVsync && hasImmediate) {
+    if (params->fDisableVsync && hasImmediate) {
         mode = VK_PRESENT_MODE_IMMEDIATE_KHR;
     }
 
     VkSwapchainCreateInfoKHR swapchainCreateInfo;
     memset(&swapchainCreateInfo, 0, sizeof(VkSwapchainCreateInfoKHR));
     swapchainCreateInfo.sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
-    swapchainCreateInfo.flags = fDisplayParams.fCreateProtectedNativeBackend
-            ? VK_SWAPCHAIN_CREATE_PROTECTED_BIT_KHR
-            : 0;
+    swapchainCreateInfo.flags = fDisplayParams->fCreateProtectedNativeBackend
+                                        ? VK_SWAPCHAIN_CREATE_PROTECTED_BIT_KHR
+                                        : 0;
     swapchainCreateInfo.surface = fSurface;
     swapchainCreateInfo.minImageCount = imageCount;
     swapchainCreateInfo.imageFormat = surfaceFormat;
@@ -376,7 +379,7 @@ bool VulkanWindowContext::createBuffers(VkFormat format,
         info.fImageUsageFlags = usageFlags;
         info.fLevelCount = 1;
         info.fCurrentQueueFamily = fPresentQueueIndex;
-        info.fProtected = skgpu::Protected(fDisplayParams.fCreateProtectedNativeBackend);
+        info.fProtected = skgpu::Protected(fDisplayParams->fCreateProtectedNativeBackend);
         info.fSharingMode = sharingMode;
 
         if (usageFlags & VK_IMAGE_USAGE_SAMPLED_BIT) {
@@ -384,12 +387,12 @@ bool VulkanWindowContext::createBuffers(VkFormat format,
             fSurfaces[i] = SkSurfaces::WrapBackendTexture(fContext.get(),
                                                           backendTexture,
                                                           kTopLeft_GrSurfaceOrigin,
-                                                          fDisplayParams.fMSAASampleCount,
+                                                          fDisplayParams->fMSAASampleCount,
                                                           colorType,
-                                                          fDisplayParams.fColorSpace,
-                                                          &fDisplayParams.fSurfaceProps);
+                                                          fDisplayParams->fColorSpace,
+                                                          &fDisplayParams->fSurfaceProps);
         } else {
-            if (fDisplayParams.fMSAASampleCount > 1) {
+            if (fDisplayParams->fMSAASampleCount > 1) {
                 return false;
             }
             info.fSampleCount = fSampleCount;
@@ -398,8 +401,8 @@ bool VulkanWindowContext::createBuffers(VkFormat format,
                                                                backendRT,
                                                                kTopLeft_GrSurfaceOrigin,
                                                                colorType,
-                                                               fDisplayParams.fColorSpace,
-                                                               &fDisplayParams.fSurfaceProps);
+                                                               fDisplayParams->fColorSpace,
+                                                               &fDisplayParams->fSurfaceProps);
         }
         if (!fSurfaces[i]) {
             return false;

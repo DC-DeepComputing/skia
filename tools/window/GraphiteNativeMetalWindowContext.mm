@@ -19,15 +19,15 @@
 #include "include/gpu/graphite/mtl/MtlGraphiteUtils.h"
 #include "src/base/SkMathPriv.h"
 #include "src/gpu/graphite/ContextOptionsPriv.h"
-#include "tools/GpuToolUtils.h"
+#include "tools/graphite/GraphiteToolUtils.h"
 
 using skwindow::DisplayParams;
 using skwindow::internal::GraphiteMetalWindowContext;
 
 namespace skwindow::internal {
 
-GraphiteMetalWindowContext::GraphiteMetalWindowContext(const DisplayParams& params)
-        : WindowContext(params), fValid(false), fDrawableHandle(nil) {
+GraphiteMetalWindowContext::GraphiteMetalWindowContext(sk_sp<DisplayParams> params)
+        : GraphiteWindowContext(params), fValid(false), fDrawableHandle(nil) {
     fDisplayParams.fMSAASampleCount = GrNextPow2(fDisplayParams.fMSAASampleCount);
 }
 
@@ -56,12 +56,12 @@ void GraphiteMetalWindowContext::initializeContext() {
     backendContext.fDevice.retain((CFTypeRef)fDevice.get());
     backendContext.fQueue.retain((CFTypeRef)fQueue.get());
 
-    fDisplayParams.fGraphiteTestOptions.fTestOptions.fContextOptions.fDisableCachedGlyphUploads =
+    fDisplayParams.fGraphiteTestOptions->fTestOptions.fContextOptions.fDisableCachedGlyphUploads =
             true;
     // Needed to make synchronous readPixels work:
-    fDisplayParams.fGraphiteTestOptions.fPriv.fStoreContextRefInRecorder = true;
+    fDisplayParams.fGraphiteTestOptions->fPriv.fStoreContextRefInRecorder = true;
     fGraphiteContext = skgpu::graphite::ContextFactory::MakeMetal(
-            backendContext, fDisplayParams.fGraphiteTestOptions.fTestOptions.fContextOptions);
+            backendContext, fDisplayParams.fGraphiteTestOptions->fTestOptions.fContextOptions);
     fGraphiteRecorder = fGraphiteContext->makeRecorder(ToolUtils::CreateTestingRecorderOptions());
     // TODO
     //    if (!fGraphiteContext && fDisplayParams.fMSAASampleCount > 1) {
@@ -121,7 +121,7 @@ void GraphiteMetalWindowContext::onSwapBuffers() {
     fDrawableHandle = nil;
 }
 
-void GraphiteMetalWindowContext::setDisplayParams(const DisplayParams& params) {
+void GraphiteMetalWindowContext::setDisplayParams(sk_sp<DisplayParams> params) {
     this->destroyContext();
     fDisplayParams = params;
     this->initializeContext();

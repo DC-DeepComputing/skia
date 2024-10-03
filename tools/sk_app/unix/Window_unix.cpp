@@ -58,7 +58,7 @@ const long kEventMask = ExposureMask | StructureNotifyMask |
                         PointerMotionMask | ButtonPressMask | ButtonReleaseMask;
 
 bool Window_unix::initWindow(Display* display) {
-    if (fRequestedDisplayParams.fMSAASampleCount != fMSAASampleCount) {
+    if (fRequestedDisplayParams->fMSAASampleCount != fMSAASampleCount) {
         this->closeWindow();
     }
     // we already have a window
@@ -89,7 +89,7 @@ bool Window_unix::initWindow(Display* display) {
         None
     };
     SkASSERT(nullptr == fVisualInfo);
-    if (fRequestedDisplayParams.fMSAASampleCount > 1) {
+    if (fRequestedDisplayParams->fMSAASampleCount > 1) {
         static const GLint kChooseFBConifgAttCnt = std::size(kChooseFBConfigAtt);
         GLint msaaChooseFBConfigAtt[kChooseFBConifgAttCnt + 4];
         memcpy(msaaChooseFBConfigAtt, kChooseFBConfigAtt, sizeof(kChooseFBConfigAtt));
@@ -97,7 +97,8 @@ bool Window_unix::initWindow(Display* display) {
         msaaChooseFBConfigAtt[kChooseFBConifgAttCnt - 1] = GLX_SAMPLE_BUFFERS_ARB;
         msaaChooseFBConfigAtt[kChooseFBConifgAttCnt + 0] = 1;
         msaaChooseFBConfigAtt[kChooseFBConifgAttCnt + 1] = GLX_SAMPLES_ARB;
-        msaaChooseFBConfigAtt[kChooseFBConifgAttCnt + 2] = fRequestedDisplayParams.fMSAASampleCount;
+        msaaChooseFBConfigAtt[kChooseFBConifgAttCnt + 2] =
+                fRequestedDisplayParams->fMSAASampleCount;
         msaaChooseFBConfigAtt[kChooseFBConifgAttCnt + 3] = None;
         int n;
         fFBConfig = glXChooseFBConfig(fDisplay, DefaultScreen(fDisplay), msaaChooseFBConfigAtt, &n);
@@ -112,7 +113,7 @@ bool Window_unix::initWindow(Display* display) {
             msaaChooseFBConfigAtt[kChooseVisualAttCnt + 0] = 1;
             msaaChooseFBConfigAtt[kChooseVisualAttCnt + 1] = GLX_SAMPLES_ARB;
             msaaChooseFBConfigAtt[kChooseVisualAttCnt + 2] =
-                    fRequestedDisplayParams.fMSAASampleCount;
+                    fRequestedDisplayParams->fMSAASampleCount;
             msaaChooseFBConfigAtt[kChooseVisualAttCnt + 3] = None;
             fVisualInfo = glXChooseVisual(display, DefaultScreen(display), msaaChooseVisualAtt);
             fFBConfig = nullptr;
@@ -165,7 +166,7 @@ bool Window_unix::initWindow(Display* display) {
         return false;
     }
 
-    fMSAASampleCount = fRequestedDisplayParams.fMSAASampleCount;
+    fMSAASampleCount = fRequestedDisplayParams->fMSAASampleCount;
 
     // set up to catch window delete message
     fWmDeleteMessage = XInternAtom(display, "WM_DELETE_WINDOW", False);
@@ -459,7 +460,7 @@ void Window_unix::onInval() {
     XSendEvent(fDisplay, fWindow, False, 0, &event);
 }
 
-void Window_unix::setRequestedDisplayParams(const DisplayParams& params, bool allowReattach) {
+void Window_unix::setRequestedDisplayParams(sk_sp<DisplayParams> params, bool allowReattach) {
 #if defined(SK_VULKAN)
     // Vulkan on unix crashes if we try to reinitialize the vulkan context without remaking the
     // window.

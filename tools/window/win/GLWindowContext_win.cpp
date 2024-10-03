@@ -21,7 +21,7 @@ using skwindow::internal::GLWindowContext;
 
 namespace skwindow {
 
-std::unique_ptr<WindowContext> MakeGLForWin(HWND, const DisplayParams&) { return nullptr; }
+std::unique_ptr<WindowContext> MakeGLForWin(HWND, sk_sp<DisplayParams>) { return nullptr; }
 
 }  // namespace skwindow
 
@@ -31,7 +31,7 @@ namespace {
 
 class GLWindowContext_win : public GLWindowContext {
 public:
-    GLWindowContext_win(HWND, const DisplayParams&);
+    GLWindowContext_win(HWND, sk_sp<DisplayParams>);
     ~GLWindowContext_win() override;
 
 protected:
@@ -45,11 +45,8 @@ private:
     HGLRC             fHGLRC;
 };
 
-GLWindowContext_win::GLWindowContext_win(HWND wnd, const DisplayParams& params)
-        : GLWindowContext(params)
-        , fHWND(wnd)
-        , fHGLRC(nullptr) {
-
+GLWindowContext_win::GLWindowContext_win(HWND wnd, sk_sp<DisplayParams> params)
+        : GLWindowContext(params), fHWND(wnd), fHGLRC(nullptr) {
     // any config code here (particularly for msaa)?
 
     this->initializeContext();
@@ -141,7 +138,7 @@ void GLWindowContext_win::onSwapBuffers() {
 
 namespace skwindow {
 
-std::unique_ptr<WindowContext> MakeGLForWin(HWND wnd, const DisplayParams& params) {
+std::unique_ptr<WindowContext> MakeGLForWin(HWND wnd, sk_sp<DisplayParams> params) {
     std::unique_ptr<WindowContext> ctx(new GLWindowContext_win(wnd, params));
     if (!ctx->isValid()) {
         return nullptr;

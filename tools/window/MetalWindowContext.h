@@ -25,10 +25,10 @@ public:
 
     bool isValid() override { return fValid; }
 
-    void setDisplayParams(const DisplayParams& params) override;
+    void setDisplayParams(sk_sp<DisplayParams> params) override;
 
 protected:
-    MetalWindowContext(const DisplayParams&);
+    MetalWindowContext(sk_sp<DisplayParams>);
     // This should be called by subclass constructor. It is also called when window/display
     // parameters change. This will in turn call onInitializeContext().
     void initializeContext();
