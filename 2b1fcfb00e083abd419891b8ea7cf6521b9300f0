@@ -20,6 +20,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d4a7726d_9489d9c6",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 480,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-10-03T14:14:01Z",
+      "side": 1,
+      "message": "SkASSERT the stream like in the `SkWuffsCodec` implementation?",
+      "range": {
+        "startLine": 480,
+        "startChar": 65,
+        "endLine": 480,
+        "endChar": 66
+      },
+      "revId": "2b1fcfb00e083abd419891b8ea7cf6521b9300f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6af52866_bf721d4d",
         "filename": "src/codec/SkWuffsCodec.cpp",
         "patchSetId": 7
@@ -31,6 +54,30 @@
       "writtenOn": "2024-10-02T23:34:06Z",
       "side": 1,
       "message": "This edit has been done by `git cl format`...",
+      "range": {
+        "startLine": 417,
+        "startChar": 28,
+        "endLine": 417,
+        "endChar": 29
+      },
+      "revId": "2b1fcfb00e083abd419891b8ea7cf6521b9300f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "af2696dc_407e4c72",
+        "filename": "src/codec/SkWuffsCodec.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 417,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-10-03T14:14:01Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "6af52866_bf721d4d",
       "range": {
         "startLine": 417,
         "startChar": 28,
