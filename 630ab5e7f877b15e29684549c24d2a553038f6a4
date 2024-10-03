@@ -105,6 +105,24 @@
       "parentUuid": "02bda448_fd53f6fc",
       "revId": "630ab5e7f877b15e29684549c24d2a553038f6a4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "12e58cd5_8cc3743d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-03T14:21:36Z",
+      "side": 1,
+      "message": "No, this is just more tech debt and more future work. Everything about SkPathBuilder is a dead end because we cannot migrate to it (without it being SkPath).",
+      "parentUuid": "cc38e64e_3f5f51b9",
+      "revId": "630ab5e7f877b15e29684549c24d2a553038f6a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
