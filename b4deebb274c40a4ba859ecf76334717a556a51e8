@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c115bcc_166f739f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-03T21:19:16Z",
+      "side": 1,
+      "message": "IWYU isn\u0027t wrong about `SkOpts.h`, and that\u0027s not too difficult of a fix. However, the issue with `SkCanvasPriv.h` is a little stickier and has to do with `using FilterSpan \u003d SkSpan\u003csk_sp\u003cSkImageFilter\u003e\u003e;` in `SkCanvas.h` and now IWYU seems to think that this declaration only needs `SkSpan` but not what\u0027s in it, so thinks the users need to provide the `sk_sp` part, which is a bit silly.",
+      "revId": "b4deebb274c40a4ba859ecf76334717a556a51e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
