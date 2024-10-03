@@ -284,7 +284,6 @@ SkPDFIndirectReference SkPDFTagTree::PrepareTagTreeToEmit(SkPDFIndirectReference
                                                           SkPDFTagNode* node,
                                                           SkPDFDocument* doc) {
     node->fRef = doc->reserveRef();
-
     SkPDFDict dict("StructElem");
     dict.insertName("S", node->fTypeString.isEmpty() ? "NonStruct" : node->fTypeString.c_str());
     if (!node->fAlt.isEmpty()) {
