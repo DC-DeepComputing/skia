@@ -395,9 +395,9 @@ void Window_win::onInval() {
     InvalidateRect(fHWnd, nullptr, false);
 }
 
-void Window_win::setRequestedDisplayParams(const DisplayParams& params, bool allowReattach) {
+void Window_win::setRequestedDisplayParams(sk_sp<DisplayParams> params, bool allowReattach) {
     // GL on Windows doesn't let us change MSAA after the window is created
-    if (params.fMSAASampleCount != this->getRequestedDisplayParams().fMSAASampleCount
+    if (params->fMSAASampleCount != this->getRequestedDisplayParams()->fMSAASampleCount
             && allowReattach) {
         // Need to change these early, so attach() creates the window context correctly
         fRequestedDisplayParams = params;

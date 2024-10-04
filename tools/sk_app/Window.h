@@ -127,8 +127,8 @@ public:
     int height() const;
     virtual float scaleFactor() const { return 1.0f; }
 
-    virtual const DisplayParams& getRequestedDisplayParams() { return fRequestedDisplayParams; }
-    virtual void setRequestedDisplayParams(const DisplayParams&, bool allowReattach = true);
+    virtual sk_sp<DisplayParams> getRequestedDisplayParams() { return fRequestedDisplayParams; }
+    virtual void setRequestedDisplayParams(sk_sp<DisplayParams>, bool allowReattach = true);
 
     // Actual parameters in effect, obtained from the native window.
     int sampleCount() const;
@@ -145,9 +145,9 @@ public:
 protected:
     Window();
 
-    SkTDArray<Layer*>      fLayers;
-    DisplayParams          fRequestedDisplayParams;
-    bool                   fIsActive = true;
+    SkTDArray<Layer*>          fLayers;
+    sk_sp<DisplayParams>       fRequestedDisplayParams;
+    bool                       fIsActive = true;
 
     std::unique_ptr<skwindow::WindowContext> fWindowContext;
 

@@ -12,6 +12,7 @@
 #ifdef SK_VULKAN
 
 #include "tools/gpu/vk/VkTestUtils.h"
+#include "tools/window/GraphiteWindowContext.h"
 #include "tools/window/WindowContext.h"
 
 class GrRenderTarget;
@@ -22,7 +23,7 @@ struct VulkanInterface;
 
 namespace skwindow::internal {
 
-class GraphiteVulkanWindowContext : public WindowContext {
+class GraphiteVulkanWindowContext : public GraphiteWindowContext {
 public:
     ~GraphiteVulkanWindowContext() override;
 
@@ -32,7 +33,7 @@ public:
 
     void resize(int w, int h) override { this->createSwapchain(w, h, fDisplayParams); }
 
-    void setDisplayParams(const DisplayParams& params) override {
+    void setDisplayParams(sk_sp<DisplayParams> params) override {
         this->destroyContext();
         fDisplayParams = params;
         this->initializeContext();
@@ -43,7 +44,7 @@ public:
     /** Platform specific function that determines whether presentation will succeed. */
     using CanPresentFn = sk_gpu_test::CanPresentFn;
 
-    GraphiteVulkanWindowContext(const DisplayParams&,
+    GraphiteVulkanWindowContext(sk_sp<DisplayParams>,
                                 CreateVkSurfaceFn,
                                 CanPresentFn,
                                 PFN_vkGetInstanceProcAddr);
@@ -58,7 +59,7 @@ private:
     };
 
     BackbufferInfo* getAvailableBackbuffer();
-    bool createSwapchain(int width, int height, const DisplayParams& params);
+    bool createSwapchain(int width, int height, sk_sp<DisplayParams> params);
     bool createBuffers(VkFormat format, VkImageUsageFlags, SkColorType colorType, VkSharingMode);
     void destroyBuffers();
     void onSwapBuffers() override;

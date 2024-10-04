@@ -168,7 +168,7 @@ static jlong Surface_CreateVK(JNIEnv* env, jobject, jobject jsurface) {
     }
 
     // TODO: match window params?
-    skwindow::DisplayParams params;
+    auto params = sk_make_sp<skwindow::DisplayParams>();
     auto winctx = skwindow::MakeVulkanForAndroid(win, params);
     if (!winctx) {
         return 0;
@@ -188,7 +188,7 @@ static jlong Surface_CreateGL(JNIEnv* env, jobject, jobject jsurface) {
     }
 
     // TODO: match window params?
-    skwindow::DisplayParams params;
+    auto params = sk_make_sp<skwindow::DisplayParams>();
     auto winctx = skwindow::MakeGLForAndroid(win, params);
     if (!winctx) {
         return 0;

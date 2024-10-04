@@ -8,6 +8,8 @@
 #ifndef WindowContextFactory_android_DEFINED
 #define WindowContextFactory_android_DEFINED
 
+#include "include/core/SkRefCnt.h"
+
 #include <android/native_window_jni.h>
 
 #include <memory>
@@ -17,13 +19,13 @@ namespace skwindow {
 class WindowContext;
 struct DisplayParams;
 
-std::unique_ptr<WindowContext> MakeVulkanForAndroid(ANativeWindow*, const DisplayParams&);
+std::unique_ptr<WindowContext> MakeVulkanForAndroid(ANativeWindow*, sk_sp<DisplayParams>);
 
-std::unique_ptr<WindowContext> MakeGraphiteVulkanForAndroid(ANativeWindow*, const DisplayParams&);
+std::unique_ptr<WindowContext> MakeGraphiteVulkanForAndroid(ANativeWindow*, sk_sp<DisplayParams>);
 
-std::unique_ptr<WindowContext> MakeGLForAndroid(ANativeWindow*, const DisplayParams&);
+std::unique_ptr<WindowContext> MakeGLForAndroid(ANativeWindow*, sk_sp<DisplayParams>);
 
-std::unique_ptr<WindowContext> MakeRasterForAndroid(ANativeWindow*, const DisplayParams&);
+std::unique_ptr<WindowContext> MakeRasterForAndroid(ANativeWindow*, sk_sp<DisplayParams>);
 
 }  // namespace skwindow
 

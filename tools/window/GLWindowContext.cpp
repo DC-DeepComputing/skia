@@ -22,11 +22,9 @@
 
 namespace skwindow::internal {
 
-GLWindowContext::GLWindowContext(const DisplayParams& params)
-        : WindowContext(params)
-        , fBackendContext(nullptr)
-        , fSurface(nullptr) {
-    fDisplayParams.fMSAASampleCount = GrNextPow2(fDisplayParams.fMSAASampleCount);
+GLWindowContext::GLWindowContext(sk_sp<DisplayParams> params)
+        : WindowContext(params), fBackendContext(nullptr), fSurface(nullptr) {
+    fDisplayParams->fMSAASampleCount = GrNextPow2(fDisplayParams->fMSAASampleCount);
 }
 
 void GLWindowContext::initializeContext() {
@@ -34,9 +32,9 @@ void GLWindowContext::initializeContext() {
 
     fBackendContext = this->onInitializeContext();
 
-    fContext = GrDirectContexts::MakeGL(fBackendContext, fDisplayParams.fGrContextOptions);
-    if (!fContext && fDisplayParams.fMSAASampleCount > 1) {
-        fDisplayParams.fMSAASampleCount /= 2;
+    fContext = GrDirectContexts::MakeGL(fBackendContext, fDisplayParams->fGrContextOptions);
+    if (!fContext && fDisplayParams->fMSAASampleCount > 1) {
+        fDisplayParams->fMSAASampleCount /= 2;
         this->initializeContext();
         return;
     }
@@ -65,7 +63,7 @@ sk_sp<SkSurface> GLWindowContext::getBackbufferSurface() {
             GrGLFramebufferInfo fbInfo;
             fbInfo.fFBOID = buffer;
             fbInfo.fFormat = GR_GL_RGBA8;
-            fbInfo.fProtected = skgpu::Protected(fDisplayParams.fCreateProtectedNativeBackend);
+            fbInfo.fProtected = skgpu::Protected(fDisplayParams->fCreateProtectedNativeBackend);
 
             auto backendRT = GrBackendRenderTargets::MakeGL(fWidth,
                                                             fHeight,
@@ -77,8 +75,8 @@ sk_sp<SkSurface> GLWindowContext::getBackbufferSurface() {
                                                            backendRT,
                                                            kBottomLeft_GrSurfaceOrigin,
                                                            kRGBA_8888_SkColorType,
-                                                           fDisplayParams.fColorSpace,
-                                                           &fDisplayParams.fSurfaceProps);
+                                                           fDisplayParams->fColorSpace,
+                                                           &fDisplayParams->fSurfaceProps);
         }
     }
 
@@ -90,7 +88,7 @@ void GLWindowContext::resize(int w, int h) {
     this->initializeContext();
 }
 
-void GLWindowContext::setDisplayParams(const DisplayParams& params) {
+void GLWindowContext::setDisplayParams(sk_sp<DisplayParams> params) {
     fDisplayParams = params;
     this->destroyContext();
     this->initializeContext();
