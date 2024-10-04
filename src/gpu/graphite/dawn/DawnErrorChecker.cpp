@@ -41,46 +41,39 @@ SkEnumBitMask<DawnErrorType> DawnErrorChecker::popErrorScopes() {
         return DawnErrorType::kNoError;
     }
 
-    struct ErrorState {
-        SkEnumBitMask<DawnErrorType> fError;
-        int fScopeIdx;
-        DawnAsyncWait fWait;
+    SkEnumBitMask<DawnErrorType> error = DawnErrorType::kNoError;
+    int scopeIdx = kScopeCount - 1;
+    DawnAsyncWait wait(fSharedContext);
 
-        ErrorState(const DawnSharedContext* sharedContext)
-                : fError(DawnErrorType::kNoError)
-                , fScopeIdx(kScopeCount - 1)
-                , fWait(sharedContext) {}
-    } errorState(fSharedContext);
-
-    wgpu::ErrorCallback errorCallback = [](WGPUErrorType status, const char* msg, void* userData) {
-        ErrorState* errorState = static_cast<ErrorState*>(userData);
-        if (status != WGPUErrorType_NoError) {
-            SkASSERT(errorState->fScopeIdx >= 0);
-            const char* errorScopeName = kErrorScopeNames[errorState->fScopeIdx];
-            SKGPU_LOG_E("Failed in error scope (%s): %s", errorScopeName, msg);
-            errorState->fError |= kErrorScopeTypes[errorState->fScopeIdx];
-        }
-        errorState->fScopeIdx--;
-        errorState->fWait.signal();
-    };
+    auto errorCallback =
+            [&](wgpu::PopErrorScopeStatus status, wgpu::ErrorType errorType, const char* msg) {
+                if (errorType != wgpu::ErrorType::NoError) {
+                    SkASSERT(scopeIdx >= 0);
+                    const char* errorScopeName = kErrorScopeNames[scopeIdx];
+                    SKGPU_LOG_E("Failed in error scope (%s): %s", errorScopeName, msg);
+                    error |= kErrorScopeTypes[scopeIdx];
+                }
+                scopeIdx--;
+                wait.signal();
+            };
 
     // Pop all three error scopes:
     // Internal
-    fSharedContext->device().PopErrorScope(errorCallback, &errorState);
-    errorState.fWait.busyWait();
-    errorState.fWait.reset();
+    fSharedContext->device().PopErrorScope(wgpu::CallbackMode::AllowSpontaneous, errorCallback);
+    wait.busyWait();
+    wait.reset();
 
     // OutOfMemory
-    fSharedContext->device().PopErrorScope(errorCallback, &errorState);
-    errorState.fWait.busyWait();
-    errorState.fWait.reset();
+    fSharedContext->device().PopErrorScope(wgpu::CallbackMode::AllowSpontaneous, errorCallback);
+    wait.busyWait();
+    wait.reset();
 
     // Validation
-    fSharedContext->device().PopErrorScope(errorCallback, &errorState);
-    errorState.fWait.busyWait();
+    fSharedContext->device().PopErrorScope(wgpu::CallbackMode::AllowSpontaneous, errorCallback);
+    wait.busyWait();
 
     fArmed = false;
-    return errorState.fError;
+    return error;
 }
 
 }  // namespace skgpu::graphite
