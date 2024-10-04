@@ -46,6 +46,30 @@
       },
       "revId": "f5aabdfb279c696f980db10602c491197531593a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f5b8aff_34eb00d7",
+        "filename": "tools/window/DisplayParams.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-10-04T18:34:11Z",
+      "side": 1,
+      "message": "Done. This involved changing a lot of locations of DisplayParams as a stack value to an `sk_sp\u003cDisplayParams\u003e`",
+      "parentUuid": "4f301220_e92b1896",
+      "range": {
+        "startLine": 34,
+        "startChar": 4,
+        "endLine": 34,
+        "endChar": 24
+      },
+      "revId": "f5aabdfb279c696f980db10602c491197531593a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
