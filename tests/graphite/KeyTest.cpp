@@ -100,7 +100,9 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ShaderInfoDetectsFixedFunctionBlend, reporter
 
     for (int bm = 0; bm <= (int) SkBlendMode::kLastCoeffMode; ++bm) {
         PaintParamsKeyBuilder builder(dict);
-        add_block(&builder, bm + kFixedBlendIDOffset);
+        // Use a solid color as the 1st root node; the 2nd root node represents the final blend.
+        add_block(&builder, (int) BuiltInCodeSnippetID::kSolidColorShader);
+	add_block(&builder, bm + kFixedBlendIDOffset);
         UniquePaintParamsID paintID = dict->findOrCreate(&builder);
 
         ShaderInfo shaderInfo{paintID, dict, /*rteDict=*/nullptr, /*ssboIndex=*/""};
