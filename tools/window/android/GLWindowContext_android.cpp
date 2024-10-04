@@ -163,7 +163,7 @@ void GLWindowContext_android::onSwapBuffers() {
 namespace skwindow {
 
 std::unique_ptr<WindowContext> MakeGLForAndroid(ANativeWindow* window,
-                                                const DisplayParams& params) {
+                                                sk_sp<DisplayParams> params) {
     std::unique_ptr<WindowContext> ctx(new GLWindowContext_android(window, params));
     if (!ctx->isValid()) {
         return nullptr;
