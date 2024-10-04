@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "344403ac_f339620e",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-10-04T22:37:57Z",
+      "side": 1,
+      "message": "I introduced this temporary const reference variable since I didn\u0027t like how the line wrapping looked without it. I\u0027m happy to just wrap the line if preferred though. 😄",
+      "range": {
+        "startLine": 118,
+        "startChar": 8,
+        "endLine": 118,
+        "endChar": 38
+      },
+      "revId": "6157136bb62ea3ebd936e7bae25e11512c8a3623",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
