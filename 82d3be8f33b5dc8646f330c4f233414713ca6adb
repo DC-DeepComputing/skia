@@ -16,6 +16,23 @@
       "message": "Nicolette, PTAL!",
       "revId": "82d3be8f33b5dc8646f330c4f233414713ca6adb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a8e2bd2_7a6a5723",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8036
+      },
+      "writtenOn": "2024-10-04T13:38:48Z",
+      "side": 1,
+      "message": "Jim PTAL as well!",
+      "revId": "82d3be8f33b5dc8646f330c4f233414713ca6adb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
