@@ -24,7 +24,7 @@ namespace {
 
 class GLWindowContext_mac : public GLWindowContext {
 public:
-    GLWindowContext_mac(const MacWindowInfo&, const DisplayParams&);
+    GLWindowContext_mac(const MacWindowInfo&, sk_sp<DisplayParams>);
 
     ~GLWindowContext_mac() override;
 
@@ -42,7 +42,7 @@ private:
     NSOpenGLPixelFormat* fPixelFormat;
 };
 
-GLWindowContext_mac::GLWindowContext_mac(const MacWindowInfo& info, const DisplayParams& params)
+GLWindowContext_mac::GLWindowContext_mac(const MacWindowInfo& info, sk_sp<DisplayParams> params)
         : GLWindowContext(params), fMainView(info.fMainView), fGLContext(nil) {
     // any config code here (particularly for msaa)?
 
@@ -63,7 +63,7 @@ sk_sp<const GrGLInterface> GLWindowContext_mac::onInitializeContext() {
     SkASSERT(nil != fMainView);
 
     if (!fGLContext) {
-        fPixelFormat = skwindow::GetGLPixelFormat(fDisplayParams.fMSAASampleCount);
+        fPixelFormat = skwindow::GetGLPixelFormat(fDisplayParams->fMSAASampleCount);
         if (nil == fPixelFormat) {
             return nullptr;
         }
@@ -80,7 +80,7 @@ sk_sp<const GrGLInterface> GLWindowContext_mac::onInitializeContext() {
         [fGLContext setView:fMainView];
     }
 
-    GLint swapInterval = fDisplayParams.fDisableVsync ? 0 : 1;
+    GLint swapInterval = fDisplayParams->fDisableVsync ? 0 : 1;
     [fGLContext setValues:&swapInterval forParameter:NSOpenGLCPSwapInterval];
 
     // make context current
@@ -109,7 +109,7 @@ sk_sp<const GrGLInterface> GLWindowContext_mac::onInitializeContext() {
 
 void GLWindowContext_mac::onDestroyContext() {
     // We only need to tear down the GLContext if we've changed the sample count.
-    if (fGLContext && fSampleCount != fDisplayParams.fMSAASampleCount) {
+    if (fGLContext && fSampleCount != fDisplayParams->fMSAASampleCount) {
         teardownContext();
     }
 }
@@ -128,7 +128,7 @@ void GLWindowContext_mac::resize(int w, int h) {
 namespace skwindow {
 
 std::unique_ptr<WindowContext> MakeGaneshGLForMac(const MacWindowInfo& info,
-                                                  const DisplayParams& params) {
+                                                  sk_sp<DisplayParams> params) {
     std::unique_ptr<WindowContext> ctx(new GLWindowContext_mac(info, params));
     if (!ctx->isValid()) {
         return nullptr;

@@ -8,6 +8,8 @@
 #ifndef GaneshGLWindowContext_mac_DEFINED
 #define GaneshGLWindowContext_mac_DEFINED
 
+#include "include/core/SkRefCnt.h"
+
 #include <memory>
 
 namespace skwindow {
@@ -15,7 +17,7 @@ class WindowContext;
 struct DisplayParams;
 struct MacWindowInfo;
 
-std::unique_ptr<WindowContext> MakeGaneshGLForMac(const MacWindowInfo&, const DisplayParams&);
+std::unique_ptr<WindowContext> MakeGaneshGLForMac(const MacWindowInfo&, sk_sp<DisplayParams>);
 }  // namespace skwindow
 
 #endif

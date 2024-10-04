@@ -8,6 +8,8 @@
 #ifndef GraphiteDawnVulkanWindowContext_unix_DEFINED
 #define GraphiteDawnVulkanWindowContext_unix_DEFINED
 
+#include "include/core/SkRefCnt.h"
+
 #include <memory>
 
 namespace skwindow {
@@ -16,7 +18,7 @@ struct DisplayParams;
 struct XlibWindowInfo;
 
 std::unique_ptr<WindowContext> MakeGraphiteDawnVulkanForXlib(const XlibWindowInfo&,
-                                                             const DisplayParams&);
+                                                             sk_sp<DisplayParams>);
 }  // namespace skwindow
 
 #endif
