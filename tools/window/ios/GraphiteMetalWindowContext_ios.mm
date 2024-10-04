@@ -28,7 +28,7 @@ namespace {
 
 class GraphiteMetalWindowContext_ios : public GraphiteMetalWindowContext {
 public:
-    GraphiteMetalWindowContext_ios(const IOSWindowInfo&, const DisplayParams&);
+    GraphiteMetalWindowContext_ios(const IOSWindowInfo&, sk_sp<DisplayParams>);
 
     ~GraphiteMetalWindowContext_ios() override;
 
@@ -44,11 +44,10 @@ private:
 };
 
 GraphiteMetalWindowContext_ios::GraphiteMetalWindowContext_ios(const IOSWindowInfo& info,
-                                                               const DisplayParams& params)
-    : GraphiteMetalWindowContext(params)
-    , fWindow(info.fWindow)
-    , fViewController(info.fViewController) {
-
+                                                               sk_sp<DisplayParams> params)
+        : GraphiteMetalWindowContext(params)
+        , fWindow(info.fWindow)
+        , fViewController(info.fViewController) {
     // iOS test apps currently ignore MSAA settings.
 
     this->initializeContext();
@@ -97,7 +96,7 @@ void GraphiteMetalWindowContext_ios::resize(int w, int h) {
 namespace skwindow {
 
 std::unique_ptr<WindowContext> MakeGraphiteMetalForIOS(const IOSWindowInfo& info,
-                                                       const DisplayParams& params) {
+                                                       sk_sp<DisplayParams> params) {
     std::unique_ptr<WindowContext> ctx(new GraphiteMetalWindowContext_ios(info, params));
     if (!ctx->isValid()) {
         return nullptr;
