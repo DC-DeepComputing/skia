@@ -1097,7 +1097,7 @@ void ClipStack::clipShape(const Transform& localToDevice,
     }
 }
 
-#if !defined(SK_USE_LEGACY_CLIP_GRAPHITE)
+//#if !defined(SK_USE_LEGACY_CLIP_GRAPHITE)
 // Decide whether we can use this shape to do analytic clipping. Only rects and certain
 // rrects are supported. We assume these have been pre-transformed by the RawElement
 // constructor, so only identity transforms are allowed.
@@ -1185,7 +1185,7 @@ CircularRRectClip can_apply_analytic_clip(const Shape& shape,
     return {};
 }
 }  // anonymous namespace
-#endif
+//#endif
 
 Clip ClipStack::visitClipStackForDraw(const Transform& localToDevice,
                                       const Geometry& geometry,
@@ -1343,14 +1343,14 @@ Clip ClipStack::visitClipStackForDraw(const Transform& localToDevice,
             return kClippedOut;
         }
         if (influence == RawElement::DrawInfluence::kIntersect) {
-#if !defined(SK_USE_LEGACY_CLIP_GRAPHITE)
+//#if !defined(SK_USE_LEGACY_CLIP_GRAPHITE)
             if (analyticClip.isEmpty()) {
                 analyticClip = can_apply_analytic_clip(e.shape(), e.localToDevice());
                 if (!analyticClip.isEmpty()) {
                     continue;
                 }
             }
-#endif
+//#endif
             outEffectiveElements->push_back(&e);
         }
     }
