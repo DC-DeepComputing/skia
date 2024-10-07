@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1ba30306_4e5ca814",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-10-07T19:56:16Z",
+      "side": 1,
+      "message": "i guess we just never tested even normal ganesh on devices that don\u0027t have stencil or msaa support? Because I would have thought we wouldn\u0027t need to add all the checks you\u0027ve needed to add in the CL (i.e. just updating caps would be fine)",
+      "revId": "09fff320d35c4c41add37ccf34e85383d4d95721",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
