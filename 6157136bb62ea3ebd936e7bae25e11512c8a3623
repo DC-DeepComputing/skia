@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8a4b2751_5e8c2033",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-10-07T19:05:35Z",
+      "side": 1,
+      "message": "Looks like the test failure is from an unrelated infra failure, and the 2 alleged Gold diffs are on `Graphite_Dawn_D3D12`",
+      "revId": "6157136bb62ea3ebd936e7bae25e11512c8a3623",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "344403ac_f339620e",
