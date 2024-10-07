@@ -703,13 +703,13 @@ DEF_TEST(divmod_s64, r) {
 }
 
 static void test_nextsizepow2(skiatest::Reporter* r, size_t test, size_t expectedAns) {
-    size_t ans = GrNextSizePow2(test);
+    size_t ans = SkNextSizePow2(test);
 
     REPORTER_ASSERT(r, ans == expectedAns);
     //SkDebugf("0x%zx -> 0x%zx (0x%zx)\n", test, ans, expectedAns);
 }
 
-DEF_TEST(GrNextSizePow2, reporter) {
+DEF_TEST(SkNextSizePow2, reporter) {
     constexpr int kNumSizeTBits = 8 * sizeof(size_t);
 
     size_t test = 0, expectedAns = 1;
@@ -793,7 +793,7 @@ DEF_TEST(SkNextPow2, reporter) {
         int fInput;
         int fExpected;
     } cases[] = {
-        // { 0, 1 }, currently undefined
+        // 0 is undefined for the current implementation.
         { 1, 1 },
         { 2, 2 },
         { 3, 4 },
@@ -866,7 +866,6 @@ DEF_TEST(SkNextPow2, reporter) {
         REPORTER_ASSERT(reporter, c.fExpected == actual,
             "SkNextPow2(%d) == %d not %d", c.fInput, actual, c.fExpected);
         REPORTER_ASSERT(reporter, actual == SkNextPow2_portable(c.fInput));
-        REPORTER_ASSERT(reporter, ((uint32_t)actual) == GrNextPow2(c.fInput));
     }
 }
 
