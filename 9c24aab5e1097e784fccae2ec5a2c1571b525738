@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aaa7151a_d52091a1",
+        "filename": "src/codec/SkExif.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 332,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-10-07T20:12:16Z",
+      "side": 1,
+      "message": "nit: check the result and return nullptr on failure here too.",
+      "revId": "9c24aab5e1097e784fccae2ec5a2c1571b525738",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
