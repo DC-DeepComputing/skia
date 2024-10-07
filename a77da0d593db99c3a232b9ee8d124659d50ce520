@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c82c8746_fc0dca5c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-07T17:01:46Z",
+      "side": 1,
+      "message": "Well, that took six minutes to download everything needed for building.",
+      "revId": "a77da0d593db99c3a232b9ee8d124659d50ce520",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
