@@ -17,7 +17,7 @@ bool RectanizerPow2::addRect(int width, int height, SkIPoint16* loc) {
 
     int32_t area = width * height; // computed here since height will be modified
 
-    height = GrNextPow2(height);
+    height = SkNextPow2(height);
     if (height < kMIN_HEIGHT_POW2) {
         height = kMIN_HEIGHT_POW2;
     }
