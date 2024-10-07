@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "842cb4c5_83813cc9",
+        "filename": "tests/SkImageTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-10-07T15:19:17Z",
+      "side": 1,
+      "message": "I would DEF_TEST this, even if we only care about compile time validation.",
+      "range": {
+        "startLine": 62,
+        "startChar": 0,
+        "endLine": 62,
+        "endChar": 17
+      },
+      "revId": "4814bba6e2ed824eb974bf39cbf82e16404c3a12",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
