@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf09caf5_e5334334",
+        "filename": "src/codec/SkExif.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 356,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-10-07T18:44:50Z",
+      "side": 1,
+      "message": "IIUC we\u0027re writing to an intermediate memory stream and them immediately appending that to the main stream.\n\nWould it also work to write subIFD entries directly to `stream`?",
+      "range": {
+        "startLine": 356,
+        "startChar": 25,
+        "endLine": 356,
+        "endChar": 45
+      },
+      "revId": "5305716664a5430f1e178fb36c6aaaece2be3b7d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
