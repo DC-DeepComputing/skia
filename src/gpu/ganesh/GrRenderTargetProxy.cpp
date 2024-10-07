@@ -105,7 +105,9 @@ bool GrRenderTargetProxy::instantiate(GrResourceProvider* resourceProvider) {
 }
 
 bool GrRenderTargetProxy::canUseStencil(const GrCaps& caps) const {
-    if (caps.avoidStencilBuffers() || this->wrapsVkSecondaryCB()) {
+    if (caps.avoidStencilBuffers() ||
+        caps.supportsProtectedContent() ||
+        this->wrapsVkSecondaryCB()) {
         return false;
     }
     if (!this->isInstantiated()) {
