@@ -663,7 +663,7 @@ static int num_stencil_samples(const GrRenderTarget* rt, bool useMSAASurface, co
 
 bool GrResourceProvider::attachStencilAttachment(GrRenderTarget* rt, bool useMSAASurface) {
     SkASSERT(rt);
-    SkASSERT(!this->caps()->avoidStencilBuffers());
+    SkASSERT(!this->caps()->avoidStencilBuffers() && !this->caps()->supportsProtectedContent());
 
     GrAttachment* stencil = rt->getStencilAttachment(useMSAASurface);
     if (stencil) {

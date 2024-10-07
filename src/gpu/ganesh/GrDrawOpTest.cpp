@@ -18,7 +18,8 @@
 #if defined(GPU_TEST_UTILS)
 
 const GrUserStencilSettings* GrGetRandomStencil(SkRandom* random, GrContext_Base* context) {
-    if (context->priv().caps()->avoidStencilBuffers()) {
+    if (context->priv().caps()->avoidStencilBuffers() ||
+        context->priv().caps()->supportsProtectedContent()) {
         return &GrUserStencilSettings::kUnused;
     }
     static constexpr GrUserStencilSettings kReads(

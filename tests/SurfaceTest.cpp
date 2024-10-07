@@ -223,6 +223,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrContext_colorTypeSupportedAsSurface,
                 // on this undocumented behavior.
                 continue;
             }
+
             REPORTER_ASSERT(reporter, can == SkToBool(surf), "ct: %d, sc: %d, can: %d, surf: %d",
                             colorType, sampleCnt, can, SkToBool(surf));
             if (surf) {
@@ -1093,7 +1094,7 @@ DEF_GANESH_TEST_FOR_GL_CONTEXT(SurfaceAttachStencil_Gpu,
     auto context = ctxInfo.directContext();
     const GrCaps* caps = context->priv().caps();
 
-    if (caps->avoidStencilBuffers()) {
+    if (caps->avoidStencilBuffers() || caps->supportsProtectedContent()) {
         return;
     }
 
