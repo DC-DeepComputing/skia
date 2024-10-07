@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b772ac18_bf17e5b0",
+        "filename": "example/external_client/src/svg_renderer.cpp",
+        "patchSetId": 38
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-10-07T17:30:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "17a95df0_f4f574bc",
+      "revId": "17091e5c2e8a3a63828448abf75ba11eb204188e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9f0a807a_5485a404",
@@ -31,6 +49,24 @@
       "writtenOn": "2024-10-07T15:00:03Z",
       "side": 1,
       "message": "`SkFontScanner.h` is not a part of fontations.",
+      "revId": "17091e5c2e8a3a63828448abf75ba11eb204188e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "660e33eb_317a159d",
+        "filename": "include/ports/BUILD.bazel",
+        "patchSetId": 38
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-10-07T17:30:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9f0a807a_5485a404",
       "revId": "17091e5c2e8a3a63828448abf75ba11eb204188e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -52,6 +88,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3083a832_7c32c825",
+        "filename": "include/ports/BUILD.bazel",
+        "patchSetId": 38
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-10-07T17:30:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e65027f6_cfa8bd88",
+      "revId": "17091e5c2e8a3a63828448abf75ba11eb204188e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7f1ea940_e5d326f9",
@@ -65,6 +119,30 @@
       "writtenOn": "2024-10-07T15:00:03Z",
       "side": 1,
       "message": "`SkFontScanner_Make_Fontations`",
+      "range": {
+        "startLine": 13,
+        "startChar": 38,
+        "endLine": 13,
+        "endChar": 65
+      },
+      "revId": "17091e5c2e8a3a63828448abf75ba11eb204188e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e46445e_4020f563",
+        "filename": "include/ports/SkFontScanner_Fontations.h",
+        "patchSetId": 38
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-10-07T17:30:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7f1ea940_e5d326f9",
       "range": {
         "startLine": 13,
         "startChar": 38,
@@ -98,6 +176,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2183d23c_396f476f",
+        "filename": "include/ports/SkFontScanner_FreeType.h",
+        "patchSetId": 38
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-10-07T17:30:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "61227cea_423a2d9e",
+      "range": {
+        "startLine": 13,
+        "startChar": 38,
+        "endLine": 13,
+        "endChar": 63
+      },
+      "revId": "17091e5c2e8a3a63828448abf75ba11eb204188e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d274b72c_c6565237",
@@ -111,6 +213,24 @@
       "writtenOn": "2024-10-07T15:00:03Z",
       "side": 1,
       "message": "Why is this added in this CL? It doesn\u0027t appear to be needed. In fact, it seems awkward to add it since `SkFontScanner` is in some sense the replacement for this.",
+      "revId": "17091e5c2e8a3a63828448abf75ba11eb204188e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "78ec70f4_275a52db",
+        "filename": "include/ports/SkTypeface_FreeType.h",
+        "patchSetId": 38
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-10-07T17:30:52Z",
+      "side": 1,
+      "message": "Yes, we don\u0027t need it. I added it for a symmetry with fontations (it has SkTypeface_Make_Fontations).\nFontations is using it a lot (bu maybe it also should go away).",
+      "parentUuid": "d274b72c_c6565237",
       "revId": "17091e5c2e8a3a63828448abf75ba11eb204188e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }

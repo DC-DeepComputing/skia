@@ -16,6 +16,24 @@
       "message": "Shouldn\u0027t this be added to `skia_core_public` above?",
       "revId": "0dfa080b5d71778a375ba6bf97158ef323cea4d0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b2210080_45658846",
+        "filename": "gn/core.gni",
+        "patchSetId": 38
+      },
+      "lineNbr": 374,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-10-07T17:30:52Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "6cdaa1c7_14ea65e8",
+      "revId": "0dfa080b5d71778a375ba6bf97158ef323cea4d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
