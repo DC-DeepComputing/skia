@@ -39,7 +39,7 @@ namespace {
 
 class RasterWindowContext_ios : public GLWindowContext {
 public:
-    RasterWindowContext_ios(const IOSWindowInfo&, const DisplayParams&);
+    RasterWindowContext_ios(const IOSWindowInfo&, sk_sp<DisplayParams>);
 
     ~RasterWindowContext_ios() override;
 
@@ -63,12 +63,11 @@ private:
 };
 
 RasterWindowContext_ios::RasterWindowContext_ios(const IOSWindowInfo& info,
-                                                 const DisplayParams& params)
+                                                 sk_sp<DisplayParams> params)
         : GLWindowContext(params)
         , fWindow(info.fWindow)
         , fViewController(info.fViewController)
         , fGLContext(nil) {
-
     // any config code here (particularly for msaa)?
 
     this->initializeContext();
@@ -141,8 +140,8 @@ sk_sp<const GrGLInterface> RasterWindowContext_ios::onInitializeContext() {
     glViewport(0, 0, fWidth, fHeight);
 
     // make the offscreen image
-    SkImageInfo info = SkImageInfo::Make(fWidth, fHeight, fDisplayParams.fColorType,
-                                         kPremul_SkAlphaType, fDisplayParams.fColorSpace);
+    SkImageInfo info = SkImageInfo::Make(fWidth, fHeight, fDisplayParams->fColorType,
+                                         kPremul_SkAlphaType, fDisplayParams->fColorSpace);
     fBackbufferSurface = SkSurfaces::Raster(info);
     return GrGLInterfaces::MakeIOS();
 }
@@ -186,7 +185,7 @@ void RasterWindowContext_ios::resize(int w, int h) {
 namespace skwindow {
 
 std::unique_ptr<WindowContext> MakeRasterForIOS(const IOSWindowInfo& info,
-                                                const DisplayParams& params) {
+                                                sk_sp<DisplayParams> params) {
     std::unique_ptr<WindowContext> ctx(new RasterWindowContext_ios(info, params));
     if (!ctx->isValid()) {
         return nullptr;

@@ -8,6 +8,8 @@
 #ifndef GraphiteDawnMetalWindowContext_mac_DEFINED
 #define GraphiteDawnMetalWindowContext_mac_DEFINED
 
+#include "include/core/SkRefCnt.h"
+
 #include <memory>
 
 namespace skwindow {
@@ -16,7 +18,7 @@ struct DisplayParams;
 struct MacWindowInfo;
 
 std::unique_ptr<WindowContext> MakeGraphiteDawnMetalForMac(const MacWindowInfo&,
-                                                           const DisplayParams&);
+                                                           sk_sp<DisplayParams>);
 }  // namespace skwindow
 
 #endif

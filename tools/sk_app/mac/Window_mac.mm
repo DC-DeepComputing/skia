@@ -140,6 +140,7 @@ void Window_mac::show() {
 
 bool Window_mac::attach(BackendType attachType) {
     this->initWindow();
+    SkASSERT(fRequestedDisplayParams);
 
     skwindow::MacWindowInfo info;
     info.fMainView = [fWindow contentView];
@@ -151,6 +152,7 @@ bool Window_mac::attach(BackendType attachType) {
 #endif
 #if defined(SK_GRAPHITE) && defined(SK_DAWN)
         case kGraphiteDawn_BackendType:
+            SkASSERT(fRequestedDisplayParams->fType == skwindow::DisplayParams::Type::kGraphite);
             fWindowContext = MakeGraphiteDawnMetalForMac(info, fRequestedDisplayParams);
             break;
 #endif
@@ -161,6 +163,7 @@ bool Window_mac::attach(BackendType attachType) {
 #endif
 #if defined(SK_GRAPHITE) && defined(SK_METAL)
         case kGraphiteMetal_BackendType:
+            SkASSERT(fRequestedDisplayParams->fType == skwindow::DisplayParams::Type::kGraphite);
             fWindowContext = MakeGraphiteNativeMetalForMac(info, fRequestedDisplayParams);
             break;
 #endif
