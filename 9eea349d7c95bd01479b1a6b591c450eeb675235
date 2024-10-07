@@ -1,0 +1,258 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "204431f1_f491ee07",
+        "filename": "modules/jetski/src/Surface.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-10-07T14:27:03Z",
+      "side": 1,
+      "message": "nit (here and the other instances): `std:move(params)`, or just inline",
+      "range": {
+        "startLine": 172,
+        "startChar": 54,
+        "endLine": 172,
+        "endChar": 60
+      },
+      "revId": "9eea349d7c95bd01479b1a6b591c450eeb675235",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80adb9fb_40c4e88f",
+        "filename": "tools/graphite/GraphiteToolUtils.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-10-07T14:27:03Z",
+      "side": 1,
+      "message": "nit: put this in anonymous namespace",
+      "revId": "9eea349d7c95bd01479b1a6b591c450eeb675235",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94472ac9_9494e336",
+        "filename": "tools/sk_app/Window.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-10-07T14:27:03Z",
+      "side": 1,
+      "message": "nit: `std::move`",
+      "range": {
+        "startLine": 137,
+        "startChar": 30,
+        "endLine": 137,
+        "endChar": 36
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "e23ca370_4f722b4d",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tools/sk_app/Window.cpp",
+              "range": {
+                "startLine": 137,
+                "startChar": 0,
+                "endLine": 138,
+                "endChar": 0
+              },
+              "replacement": "    fRequestedDisplayParams \u003d std::move(params);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "9eea349d7c95bd01479b1a6b591c450eeb675235",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b5346af3_4c2f056b",
+        "filename": "tools/sk_app/Window.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-10-07T14:27:03Z",
+      "side": 1,
+      "message": "nit: I don\u0027t think real ownership transfer is needed, can we just return `DisplayParams*`?",
+      "range": {
+        "startLine": 130,
+        "startChar": 12,
+        "endLine": 130,
+        "endChar": 32
+      },
+      "revId": "9eea349d7c95bd01479b1a6b591c450eeb675235",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a76fa90_5eecdf2a",
+        "filename": "tools/sk_app/Window.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-10-07T14:27:03Z",
+      "side": 1,
+      "message": "The usage I\u0027m seeing is\n\n```\n  auto params \u003d fWindow-\u003egetRequestedDisplayParams();\n  ... // (update params)\n  fWindow-\u003esetRequestedDisplayParams();\n```\n\nThat last part is needed when passing DisplayParams by value, but now that we\u0027re returning a pointer to the actual params we no longer need to do that.  Can we get rid of the setter altogether, or maybe just most of the call sites?",
+      "revId": "9eea349d7c95bd01479b1a6b591c450eeb675235",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b80263c_5ccb7de6",
+        "filename": "tools/viewer/Viewer.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-10-07T14:27:03Z",
+      "side": 1,
+      "message": "I guess this is why `DisplayParams` must be ref-counted?  Maybe there\u0027s some opportunity to refactor, but this CL is already intrusive enough, I can look at it separately.",
+      "revId": "9eea349d7c95bd01479b1a6b591c450eeb675235",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "30853232_89af771e",
+        "filename": "tools/window/DisplayParams.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-10-07T14:27:03Z",
+      "side": 1,
+      "message": "So we used to store copies of the params, but now that it\u0027s ref-counted we\u0027re mostly sharing the same value.  This is hopefully OK, and then I suspect we can remove most setters.  Or maybe things are about to blow up because these params are being accessed from different threads :)\n\nMaybe someone more familiar with their use should take a look.  +Robert?",
+      "range": {
+        "startLine": 18,
+        "startChar": 30,
+        "endLine": 18,
+        "endChar": 38
+      },
+      "revId": "9eea349d7c95bd01479b1a6b591c450eeb675235",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2b78f38d_c229bac9",
+        "filename": "tools/window/GLWindowContext.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-10-07T14:27:03Z",
+      "side": 1,
+      "message": "nit: `explicit`",
+      "fixSuggestions": [
+        {
+          "fixId": "acdc9f1b_7b9dadaa",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tools/window/GLWindowContext.h",
+              "range": {
+                "startLine": 31,
+                "startChar": 0,
+                "endLine": 32,
+                "endChar": 0
+              },
+              "replacement": "    explicit GLWindowContext(sk_sp\u003cDisplayParams\u003e);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "9eea349d7c95bd01479b1a6b591c450eeb675235",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76ebde55_c96a72d7",
+        "filename": "tools/window/WindowContext.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-10-07T14:27:03Z",
+      "side": 1,
+      "message": "nit: `explicit`",
+      "fixSuggestions": [
+        {
+          "fixId": "261a100c_631c7b54",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tools/window/WindowContext.h",
+              "range": {
+                "startLine": 26,
+                "startChar": 0,
+                "endLine": 27,
+                "endChar": 0
+              },
+              "replacement": "    explicit WindowContext(sk_sp\u003cDisplayParams\u003e);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "9eea349d7c95bd01479b1a6b591c450eeb675235",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d58f488_12e73d70",
+        "filename": "tools/window/android/GLWindowContext_android.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-10-07T14:27:03Z",
+      "side": 1,
+      "message": "nit (here and everywhere): `std::move`",
+      "range": {
+        "startLine": 40,
+        "startChar": 42,
+        "endLine": 40,
+        "endChar": 48
+      },
+      "revId": "9eea349d7c95bd01479b1a6b591c450eeb675235",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
