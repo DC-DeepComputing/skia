@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cfcd1186_12aa245f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-10-07T17:31:05Z",
+      "side": 1,
+      "message": "Idea: can we do an exhaustive test for the first 64K values?\n\nI think the predicate is something like\n\n`std::pow(2.f, std::ceil(std::logf(i)/std::logf(2))) \u003d\u003d SkNextPow2(i)`\n\nThen we could keep just the special cases \u003e 64K.",
+      "revId": "845fa6b7c739e8c54a674090be2959db404356a7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
