@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83a3ecab_b3c8d2ad",
+        "filename": "src/core/SkCanvasPriv.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-07T14:21:03Z",
+      "side": 1,
+      "message": "This is ridiculous, but hopefully a future update of iwyu will fix this.",
+      "revId": "e5b7dde329c3bb5dd1868d628e5e4e00db9bb52e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
