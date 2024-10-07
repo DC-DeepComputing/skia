@@ -50,6 +50,10 @@ class GlyphRun;
 class GlyphRunList;
 }
 
+namespace {
+class ScopedOutputMarkedContentTags;
+}
+
 /**
  *  \class SkPDFDevice
  *
@@ -171,10 +175,10 @@ private:
     void finishContentEntry(const SkClipStack*, SkBlendMode, SkPDFIndirectReference, SkPath*);
     bool isContentEmpty();
 
-    void internalDrawGlyphRun(
-            const sktext::GlyphRun& glyphRun, SkPoint offset, const SkPaint& runPaint);
-    void drawGlyphRunAsPath(
-            const sktext::GlyphRun& glyphRun, SkPoint offset, const SkPaint& runPaint);
+    void internalDrawGlyphRun(const sktext::GlyphRun& glyphRun, SkPoint offset,
+                              const SkPaint& runPaint, ScopedOutputMarkedContentTags& mark);
+    void drawGlyphRunAsPath(const sktext::GlyphRun& glyphRun, SkPoint offset,
+                            const SkPaint& runPaint, ScopedOutputMarkedContentTags& mark);
 
     void internalDrawImageRect(SkKeyedImage,
                                const SkRect* src,
