@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "edfb7068_72a5bad0",
+        "filename": "src/pdf/SkPDFTag.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-07T14:30:11Z",
+      "side": 1,
+      "message": "https://skia-review.googlesource.com/c/skia/+/906178",
+      "parentUuid": "1380fe33_a1c9acfe",
+      "revId": "0f94a6d7558e9e7f9d3554698744e72a5ead68e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "db5ca01a_7e7307b5",
@@ -49,6 +67,24 @@
       "side": 1,
       "message": "Can confirm that this is coming from the one use of an tantalizer list in `SkZip.h` in `MakeZip`. Changing that to a `std::array` instead appears to fix that, though maybe updating iwyu would also fix that (though that is blocked on other regressions in iwyu).",
       "parentUuid": "db5ca01a_7e7307b5",
+      "revId": "0f94a6d7558e9e7f9d3554698744e72a5ead68e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f59596b1_d4677786",
+        "filename": "src/pdf/SkPDFTag.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-07T14:30:11Z",
+      "side": 1,
+      "message": "https://skia-review.googlesource.com/c/skia/+/906177",
+      "parentUuid": "ca48a8cf_d4bda52f",
       "revId": "0f94a6d7558e9e7f9d3554698744e72a5ead68e2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
