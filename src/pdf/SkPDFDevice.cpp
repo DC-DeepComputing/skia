@@ -798,8 +798,9 @@ static bool contains(const SkRect& r, SkPoint p) {
           r.top()  <= p.y() && p.y() <= r.bottom();
 }
 
-void SkPDFDevice::drawGlyphRunAsPath(
-        const sktext::GlyphRun& glyphRun, SkPoint offset, const SkPaint& runPaint) {
+void SkPDFDevice::drawGlyphRunAsPath(const sktext::GlyphRun& glyphRun, SkPoint offset,
+                                     const SkPaint& runPaint, ScopedOutputMarkedContentTags& mark)
+{
     const SkFont& font = glyphRun.font();
     SkPath path;
 
@@ -831,9 +832,9 @@ void SkPDFDevice::drawGlyphRunAsPath(
 
     if (this->localToDevice().hasPerspective()) {
         SkAutoDeviceTransformRestore adr(this, SkMatrix::I());
-        this->internalDrawGlyphRun(tmpGlyphRun, offset, transparent);
+        this->internalDrawGlyphRun(tmpGlyphRun, offset, transparent, mark);
     } else {
-        this->internalDrawGlyphRun(tmpGlyphRun, offset, transparent);
+        this->internalDrawGlyphRun(tmpGlyphRun, offset, transparent, mark);
     }
 }
 
@@ -854,9 +855,9 @@ static bool needs_new_font(SkPDFFont* font, const SkGlyph* glyph,
     return convertedToType3 == hasUnmodifiedPath;
 }
 
-void SkPDFDevice::internalDrawGlyphRun(
-        const sktext::GlyphRun& glyphRun, SkPoint offset, const SkPaint& runPaint) {
-
+void SkPDFDevice::internalDrawGlyphRun(const sktext::GlyphRun& glyphRun, SkPoint offset,
+                                       const SkPaint& runPaint, ScopedOutputMarkedContentTags& mark)
+{
     const SkGlyphID* glyphIDs = glyphRun.glyphsIDs().data();
     uint32_t glyphCount = SkToU32(glyphRun.glyphsIDs().size());
     const SkFont& glyphRunFont = glyphRun.font();
@@ -868,7 +869,7 @@ void SkPDFDevice::internalDrawGlyphRun(
     // TODO: SkPDFFont has code to handle paints with mask filters, but the viewers do not.
     // See https://crbug.com/362796158 for Pdfium and b/325266484 for Preview
     if (this->localToDevice().hasPerspective() || runPaint.getMaskFilter()) {
-        this->drawGlyphRunAsPath(glyphRun, offset, runPaint);
+        this->drawGlyphRunAsPath(glyphRun, offset, runPaint, mark);
         return;
     }
 
@@ -922,7 +923,6 @@ void SkPDFDevice::internalDrawGlyphRun(
     SkMatrix pageXform = this->deviceToGlobal().asM33();
     pageXform.postConcat(fDocument->currentPageTransform());
 
-    ScopedOutputMarkedContentTags mark(fNodeId, {SK_ScalarNaN, SK_ScalarNaN}, fDocument, out);
     if (!glyphRun.text().empty()) {
         fDocument->addNodeTitle(fNodeId, glyphRun.text());
     }
@@ -1021,8 +1021,10 @@ void SkPDFDevice::onDrawGlyphRunList(SkCanvas*,
                                      const sktext::GlyphRunList& glyphRunList,
                                      const SkPaint& paint) {
     SkASSERT(!glyphRunList.hasRSXForm());
+    ScopedOutputMarkedContentTags mark(fNodeId, {SK_ScalarNaN, SK_ScalarNaN}, fDocument,
+                                       fActiveStackState.fContentStream);
     for (const sktext::GlyphRun& glyphRun : glyphRunList) {
-        this->internalDrawGlyphRun(glyphRun, glyphRunList.origin(), paint);
+        this->internalDrawGlyphRun(glyphRun, glyphRunList.origin(), paint, mark);
     }
 }
 
