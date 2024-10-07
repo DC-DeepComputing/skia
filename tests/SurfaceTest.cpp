@@ -1093,7 +1093,7 @@ DEF_GANESH_TEST_FOR_GL_CONTEXT(SurfaceAttachStencil_Gpu,
     auto context = ctxInfo.directContext();
     const GrCaps* caps = context->priv().caps();
 
-    if (caps->avoidStencilBuffers()) {
+    if (caps->avoidStencilBuffers() || caps->supportsProtectedContent()) {
         return;
     }
 

@@ -135,6 +135,7 @@ bool ChopPathIfNecessary(const SkMatrix& viewMatrix,
 
 bool TessellationPathRenderer::IsSupported(const GrCaps& caps) {
     return !caps.avoidStencilBuffers() &&
+           !caps.supportsProtectedContent() &&
            caps.drawInstancedSupport() &&
            !caps.disableTessellationPathRenderer();
 }
