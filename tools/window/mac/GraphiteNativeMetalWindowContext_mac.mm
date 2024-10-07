@@ -7,6 +7,7 @@
 #include "tools/window/mac/GraphiteNativeMetalWindowContext_mac.h"
 
 #include "tools/window/GraphiteNativeMetalWindowContext.h"
+#include "tools/window/GraphiteWindowContext.h"
 #include "tools/window/mac/MacWindowInfo.h"
 
 #import <Cocoa/Cocoa.h>
@@ -20,7 +21,7 @@ namespace {
 
 class GraphiteMetalWindowContext_mac : public GraphiteMetalWindowContext {
 public:
-    GraphiteMetalWindowContext_mac(const MacWindowInfo&, const DisplayParams&);
+    GraphiteMetalWindowContext_mac(const MacWindowInfo&, sk_sp<DisplayParams>);
 
     ~GraphiteMetalWindowContext_mac() override;
 
@@ -34,7 +35,7 @@ private:
 };
 
 GraphiteMetalWindowContext_mac::GraphiteMetalWindowContext_mac(const MacWindowInfo& info,
-                                                               const DisplayParams& params)
+                                                               sk_sp<DisplayParams> params)
         : GraphiteMetalWindowContext(params), fMainView(info.fMainView) {
     // any config code here (particularly for msaa)?
 
@@ -53,7 +54,7 @@ bool GraphiteMetalWindowContext_mac::onInitializeContext() {
     // resize ignores the passed values and uses the fMainView directly.
     this->resize(0, 0);
 
-    BOOL useVsync = fDisplayParams.fDisableVsync ? NO : YES;
+    BOOL useVsync = fDisplayParams->fDisableVsync ? NO : YES;
     fMetalLayer.displaySyncEnabled = useVsync;
     fMetalLayer.layoutManager = [CAConstraintLayoutManager layoutManager];
     fMetalLayer.autoresizingMask = kCALayerHeightSizable | kCALayerWidthSizable;
@@ -89,7 +90,7 @@ void GraphiteMetalWindowContext_mac::resize(int w, int h) {
 namespace skwindow {
 
 std::unique_ptr<WindowContext> MakeGraphiteNativeMetalForMac(const MacWindowInfo& info,
-                                                             const DisplayParams& params) {
+                                                             sk_sp<DisplayParams> params) {
     std::unique_ptr<WindowContext> ctx(new GraphiteMetalWindowContext_mac(info, params));
     if (!ctx->isValid()) {
         return nullptr;

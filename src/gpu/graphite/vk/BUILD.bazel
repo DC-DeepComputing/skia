@@ -98,7 +98,7 @@ skia_cc_library(
         "//include/third_party/vulkan",
     ],
     local_defines = ["SK_USE_INTERNAL_VULKAN_HEADERS"],
-    visibility = ["//tools:__pkg__"],
+    visibility = ["//tools:__subpackages__"],
     deps = [
         "//:core",
         "//src/base",
