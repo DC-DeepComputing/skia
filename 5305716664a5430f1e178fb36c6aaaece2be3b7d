@@ -22,6 +22,30 @@
       },
       "revId": "5305716664a5430f1e178fb36c6aaaece2be3b7d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8bedc9e2_a60632a9",
+        "filename": "src/codec/SkExif.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 356,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-10-07T19:42:21Z",
+      "side": 1,
+      "message": "Ah yes, originally I had this in a different function but reorganized it. Appending it directly to the main stream makes more sense.",
+      "parentUuid": "cf09caf5_e5334334",
+      "range": {
+        "startLine": 356,
+        "startChar": 25,
+        "endLine": 356,
+        "endChar": 45
+      },
+      "revId": "5305716664a5430f1e178fb36c6aaaece2be3b7d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
