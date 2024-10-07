@@ -1,0 +1,118 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17a95df0_f4f574bc",
+        "filename": "example/external_client/src/svg_renderer.cpp",
+        "patchSetId": 38
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-07T15:00:03Z",
+      "side": 1,
+      "message": "\"include/ports/SkFontScanner_FreeType.h\"?",
+      "revId": "17091e5c2e8a3a63828448abf75ba11eb204188e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f0a807a_5485a404",
+        "filename": "include/ports/BUILD.bazel",
+        "patchSetId": 38
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-07T15:00:03Z",
+      "side": 1,
+      "message": "`SkFontScanner.h` is not a part of fontations.",
+      "revId": "17091e5c2e8a3a63828448abf75ba11eb204188e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e65027f6_cfa8bd88",
+        "filename": "include/ports/BUILD.bazel",
+        "patchSetId": 38
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-07T15:00:03Z",
+      "side": 1,
+      "message": "`SkFontScanner.h` is not a part of FreeType.",
+      "revId": "17091e5c2e8a3a63828448abf75ba11eb204188e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f1ea940_e5d326f9",
+        "filename": "include/ports/SkFontScanner_Fontations.h",
+        "patchSetId": 38
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-07T15:00:03Z",
+      "side": 1,
+      "message": "`SkFontScanner_Make_Fontations`",
+      "range": {
+        "startLine": 13,
+        "startChar": 38,
+        "endLine": 13,
+        "endChar": 65
+      },
+      "revId": "17091e5c2e8a3a63828448abf75ba11eb204188e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "61227cea_423a2d9e",
+        "filename": "include/ports/SkFontScanner_FreeType.h",
+        "patchSetId": 38
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-07T15:00:03Z",
+      "side": 1,
+      "message": "`SkFontScanner_Make_FreeType`",
+      "range": {
+        "startLine": 13,
+        "startChar": 38,
+        "endLine": 13,
+        "endChar": 63
+      },
+      "revId": "17091e5c2e8a3a63828448abf75ba11eb204188e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d274b72c_c6565237",
+        "filename": "include/ports/SkTypeface_FreeType.h",
+        "patchSetId": 38
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-07T15:00:03Z",
+      "side": 1,
+      "message": "Why is this added in this CL? It doesn\u0027t appear to be needed. In fact, it seems awkward to add it since `SkFontScanner` is in some sense the replacement for this.",
+      "revId": "17091e5c2e8a3a63828448abf75ba11eb204188e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
