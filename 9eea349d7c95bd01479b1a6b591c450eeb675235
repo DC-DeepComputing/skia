@@ -164,6 +164,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "537f6c7b_d93ffd14",
+        "filename": "tools/window/DisplayParams.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-10-07T15:51:22Z",
+      "side": 1,
+      "message": "Yeah - if we want to point to it we should probably make the members private and ensure we aren\u0027t fiddling with them.",
+      "parentUuid": "30853232_89af771e",
+      "range": {
+        "startLine": 18,
+        "startChar": 30,
+        "endLine": 18,
+        "endChar": 38
+      },
+      "revId": "9eea349d7c95bd01479b1a6b591c450eeb675235",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2b78f38d_c229bac9",
         "filename": "tools/window/GLWindowContext.h",
         "patchSetId": 13
