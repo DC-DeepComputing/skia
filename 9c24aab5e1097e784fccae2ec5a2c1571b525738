@@ -16,6 +16,24 @@
       "message": "nit: check the result and return nullptr on failure here too.",
       "revId": "9c24aab5e1097e784fccae2ec5a2c1571b525738",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f76bdb5_947a2485",
+        "filename": "src/codec/SkExif.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 332,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-10-07T20:51:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aaa7151a_d52091a1",
+      "revId": "9c24aab5e1097e784fccae2ec5a2c1571b525738",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
