@@ -1764,6 +1764,11 @@ bool GrGLGpu::onUpdateCompressedBackendTexture(const GrBackendTexture& backendTe
 }
 
 int GrGLGpu::getCompatibleStencilIndex(GrGLFormat format) {
+    if (this->glCaps().avoidStencilBuffers() ||
+        this->glCaps().supportsProtectedContent()) {
+        return -1;
+    }
+
     static const int kSize = 16;
     SkASSERT(this->glCaps().canFormatBeFBOColorAttachment(format));
 
