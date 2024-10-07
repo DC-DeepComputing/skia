@@ -275,10 +275,8 @@ cc_defaults {
     target: {
       android: {
         shared_libs: [
-            "libheif",
-        ],
-        static_libs: [
             "libcrabbyavif_ffi",
+            "libheif",
         ],
       },
       darwin: {
