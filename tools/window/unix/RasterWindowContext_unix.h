@@ -8,6 +8,8 @@
 #ifndef RasterWindowContext_unix_DEFINED
 #define RasterWindowContext_unix_DEFINED
 
+#include "include/core/SkRefCnt.h"
+
 #include <memory>
 
 namespace skwindow {
@@ -15,7 +17,7 @@ class WindowContext;
 struct DisplayParams;
 struct XlibWindowInfo;
 
-std::unique_ptr<WindowContext> MakeRasterForXlib(const XlibWindowInfo&, const DisplayParams&);
+std::unique_ptr<WindowContext> MakeRasterForXlib(const XlibWindowInfo&, sk_sp<DisplayParams>);
 }  // namespace skwindow
 
 #endif

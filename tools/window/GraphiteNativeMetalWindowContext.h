@@ -9,7 +9,7 @@
 
 #include "include/core/SkRefCnt.h"
 #include "include/ports/SkCFObject.h"
-
+#include "tools/window/GraphiteWindowContext.h"
 #include "tools/window/WindowContext.h"
 
 #import <Metal/Metal.h>
@@ -19,18 +19,18 @@ class SkSurface;
 
 namespace skwindow::internal {
 
-class GraphiteMetalWindowContext : public WindowContext {
+class GraphiteMetalWindowContext : public GraphiteWindowContext {
 public:
     sk_sp<SkSurface> getBackbufferSurface() override;
 
     bool isValid() override { return fValid; }
 
-    void setDisplayParams(const DisplayParams& params) override;
+    void setDisplayParams(sk_sp<DisplayParams> params) override;
 
     void activate(bool isActive) override;
 
 protected:
-    GraphiteMetalWindowContext(const DisplayParams&);
+    GraphiteMetalWindowContext(sk_sp<DisplayParams>);
     // This should be called by subclass constructor. It is also called when window/display
     // parameters change. This will in turn call onInitializeContext().
     void initializeContext();
