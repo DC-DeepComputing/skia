@@ -163,7 +163,7 @@ DEF_GANESH_TEST_FOR_CONTEXTS(ResourceCacheStencilBuffers,
     auto context = ctxInfo.directContext();
     const GrCaps* caps = context->priv().caps();
 
-    if (caps->avoidStencilBuffers()) {
+    if (caps->avoidStencilBuffers() || caps->supportsProtectedContent()) {
         return;
     }
 
