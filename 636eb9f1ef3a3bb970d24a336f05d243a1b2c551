@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "327b01a6_a510cc66",
+        "filename": "src/gpu/graphite/precompile/PaintOption.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-10-08T14:08:44Z",
+      "side": 1,
+      "message": "nit: Is there a bug number we could add here?",
+      "range": {
+        "startLine": 48,
+        "startChar": 7,
+        "endLine": 48,
+        "endChar": 11
+      },
+      "revId": "636eb9f1ef3a3bb970d24a336f05d243a1b2c551",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
