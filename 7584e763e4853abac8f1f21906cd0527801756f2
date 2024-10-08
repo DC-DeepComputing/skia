@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "183ae962_7c689f0b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3649608
+      },
+      "writtenOn": "2024-10-08T16:46:59Z",
+      "side": 1,
+      "message": "This is my first contribution to Skia; feel free to reassign if I\u0027ve tagged the wrong reviewers!",
+      "revId": "7584e763e4853abac8f1f21906cd0527801756f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
