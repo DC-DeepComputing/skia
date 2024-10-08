@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "897c2640_f61934eb",
+        "filename": "src/ports/BUILD.bazel",
+        "patchSetId": 45
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-08T18:00:09Z",
+      "side": 1,
+      "message": "This is now listed as a source in both `fontations_support` and `freetype_support`. It probably should have been it\u0027s own thing previously, but it looks like it needs to be its own thing now. We don\u0027t want to be building this in potentially two different ways and getting ODR issues.\n\nIt looks like `char_to_glyphcache` is currently a `skia_filegroup` but should be a `skia_cc_library`? (Most of what\u0027s in `utils` should probably be a `skia_cc_library` if it isn\u0027t already.) Then `implementation_deps` on it.",
+      "revId": "d918e023ff10916a64df5ddf197530a082109e18",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a20a10b_cec894bc",
+        "filename": "src/ports/SkFontMgr_fontconfig.cpp",
+        "patchSetId": 45
+      },
+      "lineNbr": 425,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-08T18:00:09Z",
+      "side": 1,
+      "message": "Not needed anymore.",
+      "revId": "d918e023ff10916a64df5ddf197530a082109e18",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
