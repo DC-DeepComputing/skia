@@ -165,7 +165,9 @@ void GrCaps::applyOptionsOverrides(const GrContextOptions& options) {
         fMaxWindowRectangles = GrWindowRectangles::kMaxWindows;
     }
 
-    fInternalMultisampleCount = options.fInternalMultisampleCount;
+
+    // Override internal MSAA
+    //fInternalMultisampleCount = options.fInternalMultisampleCount;
 
     fAvoidStencilBuffers = options.fAvoidStencilBuffers;
 
@@ -174,6 +176,9 @@ void GrCaps::applyOptionsOverrides(const GrContextOptions& options) {
     if (options.fDisableTessellationPathRenderer) {
         fDisableTessellationPathRenderer = true;
     }
+
+    // Override internal MSAA
+    fInternalMultisampleCount = 0;
 }
 
 
