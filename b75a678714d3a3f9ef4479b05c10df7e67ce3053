@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f698f50_3d31b6e6",
+        "filename": "example/external_client/src/svg_renderer.cpp",
+        "patchSetId": 41
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-10-08T14:32:30Z",
+      "side": 1,
+      "message": "I would like to think that one of our bots would catch it on compile time",
+      "parentUuid": "d9f66480_00c7a74d",
+      "range": {
+        "startLine": 60,
+        "startChar": 48,
+        "endLine": 60,
+        "endChar": 73
+      },
+      "revId": "b75a678714d3a3f9ef4479b05c10df7e67ce3053",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8ecd3793_2b3f3a44",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-10-08T14:16:57Z",
       "side": 1,
       "message": "Undo all this indent change?",
+      "range": {
+        "startLine": 2400,
+        "startChar": 8,
+        "endLine": 2400,
+        "endChar": 12
+      },
+      "revId": "b75a678714d3a3f9ef4479b05c10df7e67ce3053",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a66c6b8_974aa530",
+        "filename": "src/ports/SkFontHost_FreeType.cpp",
+        "patchSetId": 41
+      },
+      "lineNbr": 2400,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-10-08T14:32:30Z",
+      "side": 1,
+      "message": "Scanned the entire file, seems like nothing else is misaligned.",
+      "parentUuid": "8ecd3793_2b3f3a44",
       "range": {
         "startLine": 2400,
         "startChar": 8,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9ca37a6_ba1f22e0",
+        "filename": "src/ports/SkFontMgr_fontconfig.cpp",
+        "patchSetId": 41
+      },
+      "lineNbr": 418,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-10-08T14:32:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3ea10b71_22fd9747",
+      "range": {
+        "startLine": 418,
+        "startChar": 88,
+        "endLine": 418,
+        "endChar": 110
+      },
+      "revId": "b75a678714d3a3f9ef4479b05c10df7e67ce3053",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f77666d4_dba31826",
@@ -83,6 +155,30 @@
       "writtenOn": "2024-10-08T14:16:57Z",
       "side": 1,
       "message": "This should be set by the proxy so we don\u0027t need to store a `fFactoryId`. Call `fProxy-\u003eonGetFontDescriptor` first and then this can override / set what it needs to.\n\nOf course, eventually (to fix the matrix and fake bolding things) we will need to then read out the factory id set by the proxy, write that out to this serialization stream, and then write out a new factory id. That can (and should) all be done later though.",
+      "range": {
+        "startLine": 436,
+        "startChar": 8,
+        "endLine": 436,
+        "endChar": 39
+      },
+      "revId": "b75a678714d3a3f9ef4479b05c10df7e67ce3053",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e0fc176_8a630221",
+        "filename": "src/ports/SkFontMgr_fontconfig.cpp",
+        "patchSetId": 41
+      },
+      "lineNbr": 436,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-10-08T14:32:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f77666d4_dba31826",
       "range": {
         "startLine": 436,
         "startChar": 8,

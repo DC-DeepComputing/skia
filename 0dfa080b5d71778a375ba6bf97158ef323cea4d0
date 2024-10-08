@@ -59,6 +59,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4165bc2f_745852a1",
+        "filename": "src/ports/SkFontHost_FreeType.cpp",
+        "patchSetId": 41
+      },
+      "lineNbr": 2166,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-10-08T14:32:30Z",
+      "side": 0,
+      "message": "Cannot imagine how it happened.",
+      "parentUuid": "9c1c62db_5e4b06a7",
+      "range": {
+        "startLine": 2166,
+        "startChar": 20,
+        "endLine": 2166,
+        "endChar": 24
+      },
+      "revId": "0dfa080b5d71778a375ba6bf97158ef323cea4d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "94429390_06516781",
@@ -82,6 +106,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9552cc9b_265d23c9",
+        "filename": "src/ports/SkFontHost_FreeType.cpp",
+        "patchSetId": 41
+      },
+      "lineNbr": 2173,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-10-08T14:32:30Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "94429390_06516781",
+      "range": {
+        "startLine": 2173,
+        "startChar": 20,
+        "endLine": 2173,
+        "endChar": 24
+      },
+      "revId": "0dfa080b5d71778a375ba6bf97158ef323cea4d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cf12f609_890ca001",
@@ -95,6 +143,30 @@
       "writtenOn": "2024-10-08T14:16:57Z",
       "side": 0,
       "message": "And this one.",
+      "range": {
+        "startLine": 2199,
+        "startChar": 20,
+        "endLine": 2199,
+        "endChar": 24
+      },
+      "revId": "0dfa080b5d71778a375ba6bf97158ef323cea4d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a11c99b4_7cd43c34",
+        "filename": "src/ports/SkFontHost_FreeType.cpp",
+        "patchSetId": 41
+      },
+      "lineNbr": 2199,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-10-08T14:32:30Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "cf12f609_890ca001",
       "range": {
         "startLine": 2199,
         "startChar": 20,
