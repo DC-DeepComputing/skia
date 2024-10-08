@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d94e6c39_0d4af7b7",
+        "filename": "src/ports/SkTypeface_FreeTypeStream.h",
+        "patchSetId": 42
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-10-08T16:00:21Z",
+      "side": 1,
+      "message": "To be honest I would do some splitting and renaming. But you are absolutely right - it should be discussed and if decided done in a different CL.",
+      "parentUuid": "61735345_c984b13c",
+      "revId": "130b78d066fac18e9fd6668dc0a0f1ffff0a15cb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3ef11448_198ad14c",
@@ -31,6 +49,24 @@
       "writtenOn": "2024-10-08T15:46:00Z",
       "side": 1,
       "message": "Since this change is no longer adding a `include/ports/SkTypeface_FreeType.h` it looks like this rename is no longer needed?",
+      "revId": "130b78d066fac18e9fd6668dc0a0f1ffff0a15cb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b73ce707_c693b3ea",
+        "filename": "src/ports/SkTypeface_FreeType_priv.h",
+        "patchSetId": 42
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-10-08T16:00:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3ef11448_198ad14c",
       "revId": "130b78d066fac18e9fd6668dc0a0f1ffff0a15cb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
