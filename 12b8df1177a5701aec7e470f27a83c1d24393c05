@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f5908578_dc4af7a1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-10-08T16:58:10Z",
+      "side": 1,
+      "message": "PTAL - this is a new approach.\n\nThe problem with the old approach was that the skipping of SBs and MSAA was only needed for GL so explicitly checking it every where was tracking GL cruft throughout the rest of Ganesh.\n\nThe new approach just piggy-backs on top of the Caps\u0027 avoidStencilBuffers field (except for in GrContextThreadSafeProxy.cpp where we need to explicitly handle MSAA). The downside of the new approach is that we need to toggle fAvoidStencilBuffers at the end of GrGLCaps::init - which is a bit naughty.",
+      "revId": "12b8df1177a5701aec7e470f27a83c1d24393c05",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
