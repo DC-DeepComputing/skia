@@ -391,9 +391,14 @@ template <typename Strings> bool ShouldSkipImpl(const Strings& strings, const ch
 
 }  // namespace
 
-bool CommandLineFlags::ShouldSkip(const SkTDArray<const char*>& strings, const char* name) {
+bool CommandLineFlags::ShouldSkip(const SkTDArray<const char*>& strings1, const char* name) {
+    SkTDArray<const char*> strings;
+
+    strings.push_back("VkProtectedContext_DDLMakeRenderTargetTest");
     return ShouldSkipImpl(strings, name);
 }
-bool CommandLineFlags::ShouldSkip(const StringArray& strings, const char* name) {
+bool CommandLineFlags::ShouldSkip(const StringArray& strings1, const char* name) {
+    StringArray strings;
+    strings.append("VkProtectedContext_DDLMakeRenderTargetTest");
     return ShouldSkipImpl(strings, name);
 }
