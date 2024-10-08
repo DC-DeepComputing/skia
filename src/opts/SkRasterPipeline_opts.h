@@ -5561,11 +5561,17 @@ SI I16 scaled_mult(I16 a, I16 b) {
 #elif defined(SKRP_CPU_NEON)
     return vqrdmulhq_s16(a, b);
 #elif defined(SKRP_CPU_LASX)
-    __m256i res = __lasx_xvmuh_h((__m256i)a, (__m256i)b);
-    return (I16)__lasx_xvslli_h(res, 1);
+    Vec<8, int32_t> even = (Vec<8, int32_t>)__lasx_xvmulwev_w_h((__m256i)a, (__m256i)b);
+    Vec<8, int32_t> odd = (Vec<8, int32_t>)__lasx_xvmulwod_w_h((__m256i)a, (__m256i)b);
+    even = (Vec<8, int32_t>)__lasx_xvsrari_w((__m256i)even, 15);
+    odd = (Vec<8, int32_t>)__lasx_xvsrari_w((__m256i)odd, 15);
+    return (I16)__lasx_xvpackev_h((__m256i)odd, (__m256i)even);
 #elif defined(SKRP_CPU_LSX)
-    __m128i res = __lsx_vmuh_h((__m128i)a, (__m128i)b);
-    return (I16)__lsx_vslli_h(res, 1);
+    Vec<4, int32_t> even = (Vec<4, int32_t>)__lsx_vmulwev_w_h((__m128i)a, (__m128i)b);
+    Vec<4, int32_t> odd = (Vec<4, int32_t>)__lsx_vmulwod_w_h((__m128i)a, (__m128i)b);
+    even = (Vec<4, int32_t>)__lsx_vsrari_w((__m128i)even, 15);
+    odd = (Vec<4, int32_t>)__lsx_vsrari_w((__m128i)odd, 15);
+    return (I16)__lsx_vpackev_h((__m128i)odd, (__m128i)even);
 #else
     const I32 roundingTerm = I32_(1 << 14);
     return cast<I16>((cast<I32>(a) * cast<I32>(b) + roundingTerm) >> 15);
