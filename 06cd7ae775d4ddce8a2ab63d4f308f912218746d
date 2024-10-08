@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8af4ff12_77adf09a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-10-08T20:10:09Z",
+      "side": 1,
+      "message": "Not critical since we only use it for tools, but clusterfuzz loves to yell about stack overflows in this code.",
+      "revId": "06cd7ae775d4ddce8a2ab63d4f308f912218746d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
