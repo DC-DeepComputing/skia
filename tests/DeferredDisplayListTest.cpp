@@ -68,15 +68,18 @@ struct GrContextOptions;
 
 static bool is_compatible(const GrSurfaceCharacterization& gsc, const GrBackendTexture& backendTex) {
     if (!gsc.isValid() || !backendTex.isValid()) {
+        SkDebugf("1\n");
         return false;
     }
 
     if (gsc.backendFormat() != backendTex.getBackendFormat()) {
+        SkDebugf("2\n");
         return false;
     }
 
     if (gsc.usesGLFBO0()) {
         // It is a backend texture so can't be wrapping FBO0
+        SkDebugf("3\n");
         return false;
     }
 
@@ -86,14 +89,17 @@ static bool is_compatible(const GrSurfaceCharacterization& gsc, const GrBackendT
 
     if (gsc.vkRTSupportsInputAttachment()) {
         if (backendTex.backend() != GrBackendApi::kVulkan) {
+            SkDebugf("4\n");
             return false;
         }
 #ifdef SK_VULKAN
         GrVkImageInfo vkInfo;
         if (!GrBackendTextures::GetVkImageInfo(backendTex, &vkInfo)) {
+            SkDebugf("5\n");
             return false;
         }
         if (!SkToBool(vkInfo.fImageUsageFlags & VK_IMAGE_USAGE_INPUT_ATTACHMENT_BIT)) {
+            SkDebugf("6\n");
             return false;
         }
 #endif  // SK_VULKAN
@@ -102,14 +108,17 @@ static bool is_compatible(const GrSurfaceCharacterization& gsc, const GrBackendT
     if (gsc.isMipMapped() && !backendTex.hasMipmaps()) {
         // backend texture is allowed to have mipmaps even if the characterization doesn't require
         // them.
+        SkDebugf("7\n");
         return false;
     }
 
     if (gsc.width() != backendTex.width() || gsc.height() != backendTex.height()) {
+        SkDebugf("8\n");
         return false;
     }
 
     if (gsc.isProtected() != skgpu::Protected(backendTex.isProtected())) {
+        SkDebugf("9\n");
         return false;
     }
 
@@ -339,6 +348,8 @@ public:
                                                                   fIsProtected,
                                                                   &fSurfaceProps);
         }
+
+        SkDebugf("textureable %d samplCnt %d\n", fIsTextureable, fSampleCount);
 
         if (!surface) {
             SkASSERT(!c.isValid());

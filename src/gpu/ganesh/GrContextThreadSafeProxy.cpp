@@ -65,6 +65,10 @@ GrSurfaceCharacterization GrContextThreadSafeProxy::createCharacterization(
 
     SkASSERT(isTextureable || isMipmapped == skgpu::Mipmapped::kNo);
 
+    if ((fCaps->avoidStencilBuffers() || fCaps->supportsProtectedContent()) && sampleCnt > 1) {
+        return {};
+    }
+
     if (GrBackendApi::kOpenGL != backendFormat.backend() && willUseGLFBO0) {
         // The willUseGLFBO0 flags can only be used for a GL backend.
         return {};
