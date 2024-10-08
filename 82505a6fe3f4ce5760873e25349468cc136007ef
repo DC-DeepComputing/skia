@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b22e9e22_d2abf689",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-10-08T14:54:52Z",
+      "side": 1,
+      "message": "This is the subtle bug fix for blurs that we talked about a couple of weeks ago and is the last I want to land before enabling the new blur system in chrome.",
+      "revId": "82505a6fe3f4ce5760873e25349468cc136007ef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
