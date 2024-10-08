@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "61735345_c984b13c",
+        "filename": "src/ports/SkTypeface_FreeTypeStream.h",
+        "patchSetId": 42
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-08T15:46:00Z",
+      "side": 1,
+      "message": "Is splitting out this file still needed here? Even if this is a good idea, can it be done in a separate CL? I\u0027m guessing the split doesn\u0027t need to be made anymore since these are both listed in the `hdrs` of the `freetype_support` target.",
+      "revId": "130b78d066fac18e9fd6668dc0a0f1ffff0a15cb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ef11448_198ad14c",
+        "filename": "src/ports/SkTypeface_FreeType_priv.h",
+        "patchSetId": 42
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-08T15:46:00Z",
+      "side": 1,
+      "message": "Since this change is no longer adding a `include/ports/SkTypeface_FreeType.h` it looks like this rename is no longer needed?",
+      "revId": "130b78d066fac18e9fd6668dc0a0f1ffff0a15cb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
