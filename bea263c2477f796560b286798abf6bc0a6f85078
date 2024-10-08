@@ -16,6 +16,24 @@
       "message": "Let\u0027s include this change as a reland of http://review.skia.org/906896 (reverted in \nhttp://review.skia.org/907483) \n\nPlease also add `Canary-Android` as a tryjob so we can see if the roll will pass",
       "revId": "bea263c2477f796560b286798abf6bc0a6f85078",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ae5c8761_2089395c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2024-10-08T16:52:39Z",
+      "side": 1,
+      "message": "thank you, there still seems to be one more android failure caused by this CL. i will fix that and then mark this ready for review. thanks for reverting in the meantime to unblock the autoroller.",
+      "parentUuid": "894fadf6_7fe59720",
+      "revId": "bea263c2477f796560b286798abf6bc0a6f85078",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
