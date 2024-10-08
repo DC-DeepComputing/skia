@@ -231,7 +231,7 @@ private:
     GrRenderTask* appendTask(sk_sp<GrRenderTask>);
     GrRenderTask* insertTaskBeforeLast(sk_sp<GrRenderTask>);
 
-    bool submitToGpu(GrSyncCpu sync);
+    bool submitToGpu();
 
     SkDEBUGCODE(void validate() const;)
 
