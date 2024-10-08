@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "37869ebe_b5d6c02b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3424955
+      },
+      "writtenOn": "2024-10-08T20:28:10Z",
+      "side": 1,
+      "message": "Hey folks, who would be the right person to look at this CL? This is part of an experiment to improve font loading in the renderer for Windows. The change will expose an IDwriteFontFace on Windows - similar to CFFontRef thats available on Mac.",
+      "revId": "57b60cbda18e91406d8eac5900153d4909ad20a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
