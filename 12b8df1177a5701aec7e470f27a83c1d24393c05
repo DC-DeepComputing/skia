@@ -65,6 +65,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e9fc82d5_4af1c47b",
+        "filename": "src/gpu/ganesh/GrContextThreadSafeProxy.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-10-08T19:31:10Z",
+      "side": 1,
+      "message": "On looking more closely at setupSampleCounts I think it will do the correct thing so I just added an assert",
+      "parentUuid": "cb373982_e90b1782",
+      "range": {
+        "startLine": 68,
+        "startChar": 0,
+        "endLine": 75,
+        "endChar": 5
+      },
+      "revId": "12b8df1177a5701aec7e470f27a83c1d24393c05",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b7ddb31f_c4112120",
