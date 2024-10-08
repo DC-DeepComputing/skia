@@ -65,6 +65,15 @@ GrSurfaceCharacterization GrContextThreadSafeProxy::createCharacterization(
 
     SkASSERT(isTextureable || isMipmapped == skgpu::Mipmapped::kNo);
 
+    // In GL we disable both MSAA and stencil buffers when avoiding either stencil buffers or
+    // when Protected
+    bool avoidRenderBuffersOnGL = GrBackendApi::kOpenGL == backendFormat.backend() &&
+                                  (fCaps->avoidStencilBuffers() ||
+                                  fCaps->supportsProtectedContent());
+    if (avoidRenderBuffersOnGL && sampleCnt > 1) {
+        return {};
+    }
+
     if (GrBackendApi::kOpenGL != backendFormat.backend() && willUseGLFBO0) {
         // The willUseGLFBO0 flags can only be used for a GL backend.
         return {};

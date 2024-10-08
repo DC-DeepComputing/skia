@@ -514,8 +514,10 @@ void GrGLCaps::init(const GrContextOptions& contextOptions,
         }
     } // No client side arrays in WebGL https://www.khronos.org/registry/webgl/specs/1.0/#6.2
 
-    if (!contextOptions.fAvoidStencilBuffers) {
+    if (!contextOptions.fAvoidStencilBuffers && !fSupportsProtectedContent) {
         // To reduce surface area, if we avoid stencil buffers, we also disable MSAA.
+        // We also avoid both for Protected Contexts due to their use of RenderBuffers (which
+        // cannot be correctly created as Protected).
         this->initFSAASupport(contextOptions, ctxInfo, gli);
         this->initStencilSupport(ctxInfo);
     }
@@ -870,6 +872,10 @@ void GrGLCaps::init(const GrContextOptions& contextOptions,
     this->initFormatTable(ctxInfo, gli, formatWorkarounds);
 
     this->finishInitialization(contextOptions);
+
+    // For GL, besides the user-specifiable override, we also want to avoid stencil buffers
+    // in Protected mode (to avoid using RenderBuffers)
+    this->fAvoidStencilBuffers = contextOptions.fAvoidStencilBuffers || fSupportsProtectedContent;
 
     // For now these two are equivalent but we could have dst read in shader via some other method.
     shaderCaps->fDstReadInShaderSupport = shaderCaps->fFBFetchSupport;
