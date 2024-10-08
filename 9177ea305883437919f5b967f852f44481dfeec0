@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3862f025_d9443d1e",
+        "filename": "src/ports/SkFontScanner_fontations_priv.h",
+        "patchSetId": 43
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-10-08T17:30:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "35a56d15_b7b14180",
+      "revId": "9177ea305883437919f5b967f852f44481dfeec0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c1277213_1d9f687b",
@@ -41,6 +59,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2caf523d_263c138d",
+        "filename": "src/ports/SkTypeface_FreeType.h",
+        "patchSetId": 43
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-10-08T17:30:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c1277213_1d9f687b",
+      "range": {
+        "startLine": 9,
+        "startChar": 27,
+        "endLine": 9,
+        "endChar": 33
+      },
+      "revId": "9177ea305883437919f5b967f852f44481dfeec0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "011e3f09_321e0ed7",
@@ -54,6 +96,24 @@
       "writtenOn": "2024-10-08T17:10:43Z",
       "side": 1,
       "message": "Since this isn\u0027t being moved to public, we don\u0027t need the overhead of these being `unique_ptr` just to hide them in a strangle not-quite PIMPL idiom.",
+      "revId": "9177ea305883437919f5b967f852f44481dfeec0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "edf0cef1_c20b04e6",
+        "filename": "src/ports/SkTypeface_FreeType.h",
+        "patchSetId": 43
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-10-08T17:30:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "011e3f09_321e0ed7",
       "revId": "9177ea305883437919f5b967f852f44481dfeec0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
