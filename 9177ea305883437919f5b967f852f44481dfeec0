@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "35a56d15_b7b14180",
+        "filename": "src/ports/SkFontScanner_fontations_priv.h",
+        "patchSetId": 43
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-08T17:10:43Z",
+      "side": 1,
+      "message": "Are these `include/private/base/*` needed here? It looks like these weren\u0027t needed previously, but if they aren\u0027t needed now they should be removed.",
+      "revId": "9177ea305883437919f5b967f852f44481dfeec0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c1277213_1d9f687b",
+        "filename": "src/ports/SkTypeface_FreeType.h",
+        "patchSetId": 43
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-08T17:10:43Z",
+      "side": 1,
+      "message": "Remove",
+      "range": {
+        "startLine": 9,
+        "startChar": 27,
+        "endLine": 9,
+        "endChar": 33
+      },
+      "revId": "9177ea305883437919f5b967f852f44481dfeec0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "011e3f09_321e0ed7",
+        "filename": "src/ports/SkTypeface_FreeType.h",
+        "patchSetId": 43
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-08T17:10:43Z",
+      "side": 1,
+      "message": "Since this isn\u0027t being moved to public, we don\u0027t need the overhead of these being `unique_ptr` just to hide them in a strangle not-quite PIMPL idiom.",
+      "revId": "9177ea305883437919f5b967f852f44481dfeec0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
