@@ -108,6 +108,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3c4557cf_51ec2886",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2024-10-09T18:42:04Z",
+      "side": 1,
+      "message": "Yep, that\u0027s my thought for Graphite (compute the diff). In GL/Ganesh there is an actual elapsed version of the query, so no need to diff.\n\nI was only planning to do the impl for Dawn/Graphite and GL/Ganesh. So no real notion of command buffers in the Ganesh implementation. But, yeah, I think you\u0027re right if this were extended to other Ganesh backends.",
+      "parentUuid": "e98bb513_dc260997",
+      "revId": "47572866a804fcbd67770a11fc1a3c849ed86f9d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "22664130_2f7a4d57",
         "filename": "include/gpu/ganesh/GrTypes.h",
         "patchSetId": 1
