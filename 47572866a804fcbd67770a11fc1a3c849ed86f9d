@@ -90,6 +90,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e98bb513_dc260997",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-10-09T18:38:17Z",
+      "side": 1,
+      "message": "Okay yeah actually looking at the timer queries in Vulkan they are recorded in a command buffer. So doing them at Recorder insertion makes sense.\n\nSo to make sure we\u0027re all on the same page, we would add a query at the start of a command buffer and a query at the end. Then we\u0027ll calculate the difference and return that value as `elapsedTime` right?\n\nAt least for Graphite we would never be using multiple command buffers for a given Recording so I don\u0027t think we ever have to worry about summing things up. Ganesh on the other had may break a flush into multiple command buffers. However, since everything is still going to the same Queue, I believe it is still find to just have one start query in the first command buffer and one end query in the last command buffer. So no summing needed, but we would need logic to know that we\u0027re waiting on two different command buffers to have all our query data.",
+      "parentUuid": "e10d9263_26016931",
+      "revId": "47572866a804fcbd67770a11fc1a3c849ed86f9d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "22664130_2f7a4d57",
         "filename": "include/gpu/ganesh/GrTypes.h",
         "patchSetId": 1
