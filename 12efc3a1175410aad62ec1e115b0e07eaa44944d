@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cfe898e6_bd15aa6a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-09T19:19:40Z",
+      "side": 1,
+      "message": "@adetaylor, can you PTAL at the `FFI.rs` changes and rubber-stamp this CL from Rust side?",
+      "revId": "12efc3a1175410aad62ec1e115b0e07eaa44944d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
