@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "357dbb6f_e6e060f6",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 596,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-10-09T15:27:11Z",
+      "side": 1,
+      "message": "Ah, that makes sense. So theoretically we should never encounter this case when using an immutable sampler, meaning this CL would not fix the bug we are seeing unless something else is going awry? \n\nIf that is the case I can change this to an assert. Leaving as-is for now for experimentation.",
+      "parentUuid": "a135e627_eac61cf8",
+      "range": {
+        "startLine": 595,
+        "startChar": 67,
+        "endLine": 596,
+        "endChar": 57
+      },
+      "revId": "775f4c6d8fdd04441a3934a291d24ad2e069a127",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fb0b9ab3_aa3bfb91",
         "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
         "patchSetId": 2
@@ -54,6 +78,30 @@
       "writtenOn": "2024-10-09T15:24:04Z",
       "side": 1,
       "message": "The `BindGroup` is keyed on the identity of both the texture and the sampler, so shouldn\u0027t it be valid to use this with an immutable sampler? \n\n*edit* nevermind, I see that for immutable samplers we have a null sampler binding and then the texture binding. In theory I suppose we could have this function handle that logic for immutable samplers too.",
+      "range": {
+        "startLine": 492,
+        "startChar": 0,
+        "endLine": 492,
+        "endChar": 38
+      },
+      "revId": "775f4c6d8fdd04441a3934a291d24ad2e069a127",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a18d0e4_637de55c",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 492,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-10-09T15:27:11Z",
+      "side": 1,
+      "message": "Yeah, we theoretically could. If this ends up fixing the issue then I can clean up this CL more to do that.",
+      "parentUuid": "fb0b9ab3_aa3bfb91",
       "range": {
         "startLine": 492,
         "startChar": 0,
