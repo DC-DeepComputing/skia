@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da640a30_e6147a8b",
+        "filename": "dm/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-09T23:54:07Z",
+      "side": 1,
+      "message": "This change is a side-effect of running `bazelisk run //:buildifier`.  (There a few similar, formatting-only changes elsewhere in this CL.)",
+      "range": {
+        "startLine": 18,
+        "startChar": 43,
+        "endLine": 18,
+        "endChar": 44
+      },
+      "revId": "90fc491949c03cb0f0a734126b68648af5b5eed8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

@@ -1,0 +1,205 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e904903_dd42f295",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-09T23:54:07Z",
+      "side": 1,
+      "message": "What should depend on the `rust_png` target?  (To cover it by Skia CI)",
+      "range": {
+        "startLine": 13,
+        "startChar": 58,
+        "endLine": 14,
+        "endChar": 13
+      },
+      "revId": "4647bc3d2ca812c91255943aa71b1e49e801b47e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb94afa3_5aa1b3aa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-09T23:54:07Z",
+      "side": 1,
+      "message": "@kjlubick, can you PTAL?\n\nWe can\u0027t land this CL yet, because of the `cxx.h` include path problem (see below... I\u0027ll loop @danakj in a moment).  But I think this CL may already be in a state where an early code review could be reasonable and useful.",
+      "revId": "4647bc3d2ca812c91255943aa71b1e49e801b47e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d909018a_3017f358",
+        "filename": "WORKSPACE.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 297,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-09T23:54:07Z",
+      "side": 1,
+      "message": "This is probably not necessary.  (I did this in an attempt to fix `cxx` build issues before I understood the `edition`-related problem.)  But updating the compiler seems desirable.",
+      "range": {
+        "startLine": 297,
+        "startChar": 8,
+        "endLine": 297,
+        "endChar": 17
+      },
+      "revId": "4647bc3d2ca812c91255943aa71b1e49e801b47e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "36f1a3ea_04f83927",
+        "filename": "WORKSPACE.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 320,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-09T23:54:07Z",
+      "side": 1,
+      "message": "@kjlubick - do we need to manually upload to GCS?  See also https://chat.google.com/room/AAAAQJ4NTu0/K_l-nSrpSFY",
+      "range": {
+        "startLine": 320,
+        "startChar": 0,
+        "endLine": 320,
+        "endChar": 6
+      },
+      "revId": "4647bc3d2ca812c91255943aa71b1e49e801b47e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0cd4f685_2909defb",
+        "filename": "experimental/rust_png/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-09T23:54:07Z",
+      "side": 1,
+      "message": "I am leaving the targets above unchanged so that when I run `make -C bazel generate_gni` nothing changes (i.e. we generate the same contents for the `gni` files).",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 1
+      },
+      "revId": "4647bc3d2ca812c91255943aa71b1e49e801b47e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "724a1f18_e61b1499",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 276,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-09T23:54:07Z",
+      "side": 1,
+      "message": "Bazel build warns that `index` is `unsigned` and therefore comparison with `0` always returns false... Ooops...",
+      "range": {
+        "startLine": 276,
+        "startChar": 8,
+        "endLine": 276,
+        "endChar": 17
+      },
+      "revId": "4647bc3d2ca812c91255943aa71b1e49e801b47e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9c8a157_729c7363",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-09T23:54:07Z",
+      "side": 1,
+      "message": "@danakj, can you PTAL?\n\nThe high-level problem is that we need a `cxx.h` include path that can be used **both** in Chromium and in Skia.  I think the path used in Chromium (`third_party/rust/cxx/v1/cxx.h`) won\u0027t necessarily work for Skia and Skia\u0027s customers.  And I think that we may also want to change the path used in Chromium to provide a different version-agnostic mechanism (currently we have a forwarding header at [`third_party/rust/cxx/v1/cxx.h`](https://source.chromium.org/chromium/chromium/src/+/main:third_party/rust/cxx/v1/cxx.h;drc\u003d93b1a3d042cdca0b19fa993266e12f4aec924414)).\n\nThe short include path is provided by Skia-authored [`BUILD.bazel.skia`](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/bazel/external/cxx/BUILD.bazel.skia;l\u003d27-38;drc\u003d1c4f4684ff50b3f8ef8ea0735b04cfef58ff46bd). \n Maybe we can use Bazel\u0027s [`include_prefix`](https://bazel.build/reference/be/c-cpp#cc_library.include_prefix) option to inject something here?\n \nWDYT?",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 24
+      },
+      "revId": "4647bc3d2ca812c91255943aa71b1e49e801b47e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4fa0ee37_0e710c6a",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-09T23:54:07Z",
+      "side": 1,
+      "message": "Bazel build complains about signed-vs-unsigned comparison...",
+      "range": {
+        "startLine": 73,
+        "startChar": 30,
+        "endLine": 73,
+        "endChar": 33
+      },
+      "revId": "4647bc3d2ca812c91255943aa71b1e49e801b47e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7613385e_89820105",
+        "filename": "src/codec/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 293,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-09T23:54:07Z",
+      "side": 1,
+      "message": "It also appears in `buffet_png_srcs`... But hopefully this is ok?  If it works, it works?",
+      "range": {
+        "startLine": 293,
+        "startChar": 9,
+        "endLine": 293,
+        "endChar": 27
+      },
+      "revId": "4647bc3d2ca812c91255943aa71b1e49e801b47e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

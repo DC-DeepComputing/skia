@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "daec3f7d_64fa730d",
+        "filename": "bazel/external/cxx/BUILD.bazel.skia",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-09T23:54:07Z",
+      "side": 0,
+      "message": "`Cargo.toml` says `edition \u003d \"2021\"` - see here:\nhttps://github.com/dtolnay/cxx/blob/59086586e0c2c674c3192b6903fb4384ab3653a1/Cargo.toml#L8\n\nSo, let\u0027s stop overriding the `edition` here (mostly for consistency with the changes in `.../cxxbridge_cmd/BUILD.bazel.skia`)",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 21
+      },
+      "revId": "12efc3a1175410aad62ec1e115b0e07eaa44944d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc7eecdd_d19d6eb2",
+        "filename": "bazel/external/cxxbridge_cmd/BUILD.bazel.skia",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-09T23:54:07Z",
+      "side": 0,
+      "message": "`Cargo.toml` says `edition \u003d 2021` - see: https://github.com/dtolnay/cxx/blob/59086586e0c2c674c3192b6903fb4384ab3653a1/gen/cmd/Cargo.toml#L7\n\nWe need to stop overriding `Cargo.toml` here, otherwise we get Rust compilation errors saying something like:\n\n```\nerror[E0405]: cannot find trait `FromIterator` in this scope\n   --\u003e external/cxxbridge_cmd/src/syntax/namespace.rs:107:10\n    |\n107 | impl\u003c\u0027a\u003e FromIterator\u003c\u0026\u0027a Ident\u003e for Namespace {\n    |          ^^^^^^^^^^^^\n   --\u003e /rustc/eeb90cda1969383f56a2637cbd3037bdf598841c/library/core/src/iter/traits/collect.rs:318:1\n    |\n    \u003d note: similarly named trait `IntoIterator` defined here\n    |\n    \u003d note: \u0027std::iter::FromIterator\u0027 is included in the prelude starting in Edition 2021\nhelp: a trait with a similar name exists\n    |\n107 | impl\u003c\u0027a\u003e IntoIterator\u003c\u0026\u0027a Ident\u003e for Namespace {\n    |          ~~~~~~~~~~~~\nhelp: consider importing this trait\n    |\n1   + use std::iter::FromIterator;\n    |\n\nerror: aborting due to 1 previous error\n\nFor more information about this error, try `rustc --explain E0405`.\n```",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 21
+      },
+      "revId": "12efc3a1175410aad62ec1e115b0e07eaa44944d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
