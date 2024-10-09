@@ -568,21 +568,22 @@ Viewer::Viewer(int argc, char** argv, void* platformData)
     fBackendType = get_backend_type(FLAGS_backend[0]);
     fWindow = Windows::CreateNativeWindow(platformData);
 
-    DisplayParams displayParams;
-    displayParams.fMSAASampleCount = FLAGS_msaa;
-    CommonFlags::SetCtxOptions(&displayParams.fGrContextOptions);
-    displayParams.fGrContextOptions.fPersistentCache = &fPersistentCache;
-    displayParams.fGrContextOptions.fShaderCacheStrategy =
-            GrContextOptions::ShaderCacheStrategy::kSkSL;
-    displayParams.fGrContextOptions.fShaderErrorHandler = &gShaderErrorHandler;
-    displayParams.fGrContextOptions.fSuppressPrints = true;
-    displayParams.fGrContextOptions.fSupportBilerpFromGlyphAtlas = true;
+    auto paramsBuilder = DisplayParamsBuilder::Make();
+    paramsBuilder->msaaSampleCount(FLAGS_msaa);
+    GrContextOptions grctxOpts;
+    CommonFlags::SetCtxOptions(&grctxOpts);
+    grctxOpts.fPersistentCache = &fPersistentCache;
+    grctxOpts.fShaderCacheStrategy = GrContextOptions::ShaderCacheStrategy::kSkSL;
+    grctxOpts.fShaderErrorHandler = &gShaderErrorHandler;
+    grctxOpts.fSuppressPrints = true;
+    grctxOpts.fSupportBilerpFromGlyphAtlas = true;
+    paramsBuilder->grContextOptions(grctxOpts);
     if (FLAGS_dmsaa) {
-        displayParams.fSurfaceProps = SkSurfaceProps(
+        displayParams->surfaceProps(SkSurfaceProps(
                 displayParams.fSurfaceProps.flags() | SkSurfaceProps::kDynamicMSAA_Flag,
-                displayParams.fSurfaceProps.pixelGeometry());
+                displayParams.fSurfaceProps.pixelGeometry()));
     }
-    displayParams.fCreateProtectedNativeBackend = FLAGS_createProtected;
+    displayParams->createProtectedNativeBackend(FLAGS_createProtected);
 #if defined(SK_GRAPHITE)
     CommonFlags::SetTestOptions(&displayParams.fGraphiteTestOptions.fTestOptions);
     displayParams.fGraphiteTestOptions.fPriv.fPathRendererStrategy =

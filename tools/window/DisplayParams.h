@@ -45,7 +45,9 @@ struct GraphiteTestOptions {
 
 #endif
 
-struct DisplayParams {
+// DisplayParams should be treated as a immutable object once created.
+class DisplayParams {
+public:
     DisplayParams()
         : fColorType(kN32_SkColorType)
         , fColorSpace(nullptr)
@@ -55,6 +57,71 @@ struct DisplayParams {
         , fDelayDrawableAcquisition(false)
         , fCreateProtectedNativeBackend(false)
     {}
+
+    class Builder {
+    public:
+        DisplayParamsBuilder() {}
+
+        DisplayParamsBuilder(const DisplayParamsBuilder& other)
+                : fDisplayParams(other) {}
+
+        DisplayParamsBuilder& operator=(const DisplayParamsBuilder& other) = delete;
+
+        DisplayParamsBuilder& colorType(SkColorType colorType) {
+            fDisplayParams->fColorType = colorType;
+            return *this;
+        }
+
+        DisplayParamsBuilder& colorSpace(const sk_sp<SkColorSpace>& colorSpace) {
+            fDisplayParams->fColorSpace = colorSpace;
+            return *this;
+        }
+
+        DisplayParamsBuilder& MSAASampleCount(int MSAASampleCount) {
+            fDisplayParams->fMSAASampleCount = MSAASampleCount;
+            return *this;
+        }
+
+        DisplayParamsBuilder& grContextOptions(const GrContextOptions& grContextOptions) {
+            fDisplayParams->fGrContextOptions = grContextOptions;
+            return *this;
+        }
+
+#if defined(SK_GRAPHITE)
+        DisplayParamsBuilder& graphiteTestOptions(const GraphiteTestOptions& graphiteTestOptions) {
+            fDisplayParams->fGraphiteTestOptions = graphiteTestOptions;
+            return *this;
+        }
+#endif
+
+        DisplayParamsBuilder& surfaceProps(const SkSurfaceProps& surfaceProps) {
+            fDisplayParams->fSurfaceProps = surfaceProps;
+            return *this;
+        }
+
+        DisplayParamsBuilder& disableVsync(bool disableVsync) {
+            fDisplayParams->fDisableVsync = disableVsync;
+            return *this;
+        }
+
+        DisplayParamsBuilder& delayDrawableAcquisition(bool delayDrawableAcquisition) {
+            fDisplayParams->fDelayDrawableAcquisition = delayDrawableAcquisition;
+            return *this;
+        }
+
+        DisplayParamsBuilder& createProtectedNativeBackend(bool createProtectedNativeBackend) {
+            fDisplayParams->fCreateProtectedNativeBackend = createProtectedNativeBackend;
+            return *this;
+        }
+
+        sk_sp<DisplayParams> build() { return fDisplayParams; }
+
+    private:
+        DisplayParams fDisplayParams;
+    };
+
+private:
+    friend class DisplayParams::Builder;
 
     SkColorType            fColorType;
     sk_sp<SkColorSpace>    fColorSpace;
