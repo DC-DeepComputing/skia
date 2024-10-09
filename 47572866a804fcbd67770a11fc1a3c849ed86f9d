@@ -54,6 +54,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3f5c4366_88080a54",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-10-09T15:10:20Z",
+      "side": 1,
+      "message": "I guess in general this seems fine. I certainly would want more details on exactly what the value returned by elapsedTime means.\n\nThe one general question I have, is this something that we think fits better on flush or submit? Are there different stats we might want on one vs the other? FWIW if we wanted something with submit I am adding a struct to submit calls here (currently in Ganesh) so it should be easier to add things, https://skia-review.googlesource.com/c/skia/+/907485",
+      "parentUuid": "0ba52c81_602a3803",
+      "revId": "47572866a804fcbd67770a11fc1a3c849ed86f9d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "22664130_2f7a4d57",
         "filename": "include/gpu/ganesh/GrTypes.h",
         "patchSetId": 1
