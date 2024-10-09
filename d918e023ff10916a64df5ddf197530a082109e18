@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c50e6b67_5f84aed4",
+        "filename": "src/ports/BUILD.bazel",
+        "patchSetId": 45
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-10-09T15:16:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "897c2640_f61934eb",
+      "revId": "d918e023ff10916a64df5ddf197530a082109e18",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1a20a10b_cec894bc",
@@ -31,6 +49,24 @@
       "writtenOn": "2024-10-08T18:00:09Z",
       "side": 1,
       "message": "Not needed anymore.",
+      "revId": "d918e023ff10916a64df5ddf197530a082109e18",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ebf9723d_2753879d",
+        "filename": "src/ports/SkFontMgr_fontconfig.cpp",
+        "patchSetId": 45
+      },
+      "lineNbr": 425,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-10-09T15:16:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a20a10b_cec894bc",
       "revId": "d918e023ff10916a64df5ddf197530a082109e18",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
