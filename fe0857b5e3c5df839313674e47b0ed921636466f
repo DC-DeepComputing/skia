@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f048ecfc_78d1b9ba",
+        "filename": "src/gpu/ganesh/vk/GrVkGpu.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 388,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-10-09T15:01:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f79522a8_49dedd4d",
+      "range": {
+        "startLine": 388,
+        "startChar": 65,
+        "endLine": 388,
+        "endChar": 81
+      },
+      "revId": "fe0857b5e3c5df839313674e47b0ed921636466f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c3df9685_58dd5f32",
@@ -54,6 +78,30 @@
       "writtenOn": "2024-10-09T14:38:40Z",
       "side": 1,
       "message": "nit: I assume you moved `VK_EXT_DEVICE_FAULT_EXTENSION_NAME` such that it fixes an alphabetization error? If so, I would go ahead and fix the rest of the list as well unless it is meant to use some other ordering scheme (more common ones at the beginning for example).",
+      "range": {
+        "startLine": 172,
+        "startChar": 0,
+        "endLine": 173,
+        "endChar": 49
+      },
+      "revId": "fe0857b5e3c5df839313674e47b0ed921636466f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fc32ccf1_8d304cec",
+        "filename": "tools/gpu/vk/VkTestUtils.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-10-09T15:01:06Z",
+      "side": 1,
+      "message": "Yes alphabetical. I think its all sorted correctly now....",
+      "parentUuid": "c3df9685_58dd5f32",
       "range": {
         "startLine": 172,
         "startChar": 0,
