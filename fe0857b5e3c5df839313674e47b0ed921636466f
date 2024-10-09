@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7bfefa54_17815d3b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-10-09T14:38:40Z",
+      "side": 1,
+      "message": "Small comments but LGTM once those are addressed + the build tasks succeed.",
+      "revId": "fe0857b5e3c5df839313674e47b0ed921636466f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f79522a8_49dedd4d",
+        "filename": "src/gpu/ganesh/vk/GrVkGpu.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 388,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-10-09T14:38:40Z",
+      "side": 1,
+      "message": "It looks like `GrSyncCpu::kYes` is directly replacing `kForce_SyncQueue` here and it seems as though the latter is no longer used. Can we remove the `SyncQueue` enum in the Vulkan backend entirely?",
+      "range": {
+        "startLine": 388,
+        "startChar": 65,
+        "endLine": 388,
+        "endChar": 81
+      },
+      "revId": "fe0857b5e3c5df839313674e47b0ed921636466f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3df9685_58dd5f32",
+        "filename": "tools/gpu/vk/VkTestUtils.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-10-09T14:38:40Z",
+      "side": 1,
+      "message": "nit: I assume you moved `VK_EXT_DEVICE_FAULT_EXTENSION_NAME` such that it fixes an alphabetization error? If so, I would go ahead and fix the rest of the list as well unless it is meant to use some other ordering scheme (more common ones at the beginning for example).",
+      "range": {
+        "startLine": 172,
+        "startChar": 0,
+        "endLine": 173,
+        "endChar": 49
+      },
+      "revId": "fe0857b5e3c5df839313674e47b0ed921636466f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
