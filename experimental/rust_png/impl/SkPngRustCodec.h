@@ -11,9 +11,9 @@
 #include <vector>
 
 #include "experimental/rust_png/ffi/FFI.rs.h"
+#include "include/cxx.h"
 #include "src/codec/SkFrameHolder.h"
 #include "src/codec/SkPngCodecBase.h"
-#include "third_party/rust/cxx/v1/cxx.h"
 
 struct SkEncodedInfo;
 class SkFrame;
@@ -70,7 +70,7 @@ private:
     Result incrementalDecode(DecodingState& decodingState, int* rowsDecoded);
 
     // Helper for seeking to the start of image data for the given frame.
-    Result seekToStartOfFrame(size_t index);
+    Result seekToStartOfFrame(int index);
 
     // Helper for reading until the start of the next `fdAT` sequence.
     Result readToStartOfNextFrame();
