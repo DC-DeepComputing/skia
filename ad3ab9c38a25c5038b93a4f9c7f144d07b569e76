@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "49446a63_8f67826d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2024-10-09T18:20:13Z",
+      "side": 1,
+      "message": "I have added Canary-Android trybot to this CL. So it will be submitted once that passes.",
+      "revId": "ad3ab9c38a25c5038b93a4f9c7f144d07b569e76",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
