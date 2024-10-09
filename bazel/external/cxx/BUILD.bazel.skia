@@ -8,7 +8,6 @@ rust_library(
         "alloc",
         "std",
     ],
-    edition = "2018",
     proc_macro_deps = [
         "@cxx_deps//:cxxbridge-macro",
     ],
@@ -35,4 +34,5 @@ cc_library(
         },
     ),
     hdrs = ["include/cxx.h"],
+    visibility = ["//visibility:public"],
 )
