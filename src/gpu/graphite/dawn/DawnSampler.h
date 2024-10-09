@@ -26,13 +26,16 @@ public:
     ~DawnSampler() override {}
 
     const wgpu::Sampler& dawnSampler() const { return fSampler; }
+    bool isImmutable() const { return fIsImmutable; }
+
 
 private:
-    DawnSampler(const DawnSharedContext* sharedContext, wgpu::Sampler sampler);
+    DawnSampler(const DawnSharedContext* sharedContext, wgpu::Sampler sampler, bool isImmutable);
 
     void freeGpuData() override;
 
     wgpu::Sampler fSampler;
+    bool fIsImmutable = false;
 };
 
 } // namepsace skgpu::graphite

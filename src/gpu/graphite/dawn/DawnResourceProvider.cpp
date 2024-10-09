@@ -489,6 +489,7 @@ const wgpu::BindGroup& DawnResourceProvider::findOrCreateUniformBuffersBindGroup
 
 const wgpu::BindGroup& DawnResourceProvider::findOrCreateSingleTextureSamplerBindGroup(
         const DawnSampler* sampler, const DawnTexture* texture) {
+    SkASSERT(!sampler->isImmutable());
     auto key = make_texture_bind_group_key(sampler, texture);
     auto* existingBindGroup = fSingleTextureSamplerBindGroups.find(key);
     if (existingBindGroup) {
