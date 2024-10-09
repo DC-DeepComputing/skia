@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eb233084_433b6b9c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-10-09T14:41:09Z",
+      "side": 1,
+      "message": "LGTM once task failures are remedied",
+      "revId": "8a9ecee7acd94a75edc2cba8c6c93332c1e5e40c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4691a208_a18e9b59",
+        "filename": "include/gpu/ganesh/GrTypes.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-10-09T14:41:09Z",
+      "side": 1,
+      "message": "Normally I\u0027d say add a bug number here, but the follow-up CL just does this so I think you\u0027re off the hook this time 😄",
+      "range": {
+        "startLine": 177,
+        "startChar": 3,
+        "endLine": 177,
+        "endChar": 8
+      },
+      "revId": "8a9ecee7acd94a75edc2cba8c6c93332c1e5e40c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
