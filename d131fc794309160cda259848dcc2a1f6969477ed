@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fcc6fd52_4a89e469",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2024-10-09T17:34:24Z",
+      "side": 1,
+      "message": "This CL is now ready for review.\n\nPatchset 1 was the reverted CL. Patchset 2 contains the diff. I have also uploaded the changes to Android gerrit manually and made sure that the Android presubmits are passing (ag/29739201). So this shouldn\u0027t break the Android autoroller anymore (hopefully!).",
+      "revId": "d131fc794309160cda259848dcc2a1f6969477ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
