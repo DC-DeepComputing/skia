@@ -66,16 +66,16 @@ sk_sp<const GrGLInterface> GLWindowContext_android::onInitializeContext() {
 
     const char* extensions = eglQueryString(fDisplay, EGL_EXTENSIONS);
 
-    if (fDisplayParams.fCreateProtectedNativeBackend &&
+    if (fDisplayParams->createProtectedNativeBackend() &&
         !strstr(extensions, "EGL_EXT_protected_content")) {
         SkDebugf("Protected Context requested but no protected support\n");
-        fDisplayParams.fCreateProtectedNativeBackend = false;
+        fDisplayParams->createProtectedNativeBackend() = false;
     }
 
     SkAssertResult(eglBindAPI(EGL_OPENGL_ES_API));
 
     EGLint numConfigs = 0;
-    EGLint eglSampleCnt = fDisplayParams.fMSAASampleCount > 1 ? fDisplayParams.fMSAASampleCount > 1
+    EGLint eglSampleCnt = fDisplayParams->msaaSampleCount() > 1 ? fDisplayParams->msaaSampleCount() > 1
                                                               : 0;
     const EGLint configAttribs[] = {
         EGL_SURFACE_TYPE, EGL_PBUFFER_BIT,
@@ -98,7 +98,7 @@ sk_sp<const GrGLInterface> GLWindowContext_android::onInitializeContext() {
             EGL_CONTEXT_CLIENT_VERSION, 2,
     };
 
-    if (fDisplayParams.fCreateProtectedNativeBackend) {
+    if (fDisplayParams->createProtectedNativeBackend()) {
         kEGLContextAttribsForOpenGLES.push_back(EGL_PROTECTED_CONTENT_EXT);
         kEGLContextAttribsForOpenGLES.push_back(EGL_TRUE);
     }
@@ -114,8 +114,8 @@ sk_sp<const GrGLInterface> GLWindowContext_android::onInitializeContext() {
 //    SkDebugf("Extensions: %s", eglQueryString(fDisplay, EGL_EXTENSIONS));
 
     const EGLint surfaceAttribs[] = {
-        fDisplayParams.fCreateProtectedNativeBackend ? EGL_PROTECTED_CONTENT_EXT :EGL_NONE,
-        fDisplayParams.fCreateProtectedNativeBackend ? EGL_TRUE : EGL_NONE,
+        fDisplayParams->createProtectedNativeBackend() ? EGL_PROTECTED_CONTENT_EXT :EGL_NONE,
+        fDisplayParams->createProtectedNativeBackend() ? EGL_TRUE : EGL_NONE,
         EGL_NONE
     };
 
@@ -136,7 +136,7 @@ sk_sp<const GrGLInterface> GLWindowContext_android::onInitializeContext() {
     eglGetConfigAttrib(fDisplay, surfaceConfig, EGL_SAMPLES, &fSampleCount);
     fSampleCount = std::max(fSampleCount, 1);
 
-    eglSwapInterval(fDisplay, fDisplayParams.fDisableVsync ? 0 : 1);
+    eglSwapInterval(fDisplay, fDisplayParams->disableVsync() ? 0 : 1);
 
     return GrGLMakeNativeInterface();
 }
@@ -163,7 +163,7 @@ void GLWindowContext_android::onSwapBuffers() {
 namespace skwindow {
 
 std::unique_ptr<WindowContext> MakeGLForAndroid(ANativeWindow* window,
-                                                const DisplayParams& params) {
+                                                std::unique_ptr<const DisplayParams> params) {
     std::unique_ptr<WindowContext> ctx(new GLWindowContext_android(window, params));
     if (!ctx->isValid()) {
         return nullptr;

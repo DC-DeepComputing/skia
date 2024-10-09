@@ -78,6 +78,7 @@
 #include "tools/viewer/SkSLSlide.h"
 #include "tools/viewer/Slide.h"
 #include "tools/viewer/SlideDir.h"
+#include "tools/window/DisplayParams.h"
 
 #include <algorithm>
 #include <cfloat>
@@ -509,6 +510,10 @@ static const Window::BackendType kSupportedBackends[] = {
 
 constexpr size_t kSupportedBackendTypeCount = std::size(kSupportedBackends);
 
+static std::unique_ptr<skwindow::DisplayParamsBuilder> make_display_params_builder(const DisplayParams* other = nullptr) {
+    return skwindow::DisplayParamsBuilder::Make(other);
+}
+
 Viewer::Viewer(int argc, char** argv, void* platformData)
     : fCurrentSlide(-1)
     , fRefresh(false)
@@ -568,28 +573,32 @@ Viewer::Viewer(int argc, char** argv, void* platformData)
     fBackendType = get_backend_type(FLAGS_backend[0]);
     fWindow = Windows::CreateNativeWindow(platformData);
 
-    DisplayParams displayParams;
-    displayParams.fMSAASampleCount = FLAGS_msaa;
-    CommonFlags::SetCtxOptions(&displayParams.fGrContextOptions);
-    displayParams.fGrContextOptions.fPersistentCache = &fPersistentCache;
-    displayParams.fGrContextOptions.fShaderCacheStrategy =
-            GrContextOptions::ShaderCacheStrategy::kSkSL;
-    displayParams.fGrContextOptions.fShaderErrorHandler = &gShaderErrorHandler;
-    displayParams.fGrContextOptions.fSuppressPrints = true;
-    displayParams.fGrContextOptions.fSupportBilerpFromGlyphAtlas = true;
+    auto paramsBuilder = make_display_params_builder();
+    paramsBuilder->msaaSampleCount(FLAGS_msaa);
+    GrContextOptions grctxOpts;
+    CommonFlags::SetCtxOptions(&grctxOpts);
+    grctxOpts.fPersistentCache = &fPersistentCache;
+    grctxOpts.fShaderCacheStrategy = GrContextOptions::ShaderCacheStrategy::kSkSL;
+    grctxOpts.fShaderErrorHandler = &gShaderErrorHandler;
+    grctxOpts.fSuppressPrints = true;
+    grctxOpts.fSupportBilerpFromGlyphAtlas = true;
+    paramsBuilder->grContextOptions(grctxOpts);
     if (FLAGS_dmsaa) {
-        displayParams.fSurfaceProps = SkSurfaceProps(
-                displayParams.fSurfaceProps.flags() | SkSurfaceProps::kDynamicMSAA_Flag,
-                displayParams.fSurfaceProps.pixelGeometry());
+        paramsBuilder->surfaceProps(SkSurfaceProps(
+                SkSurfaceProps::kDefault_Flag | SkSurfaceProps::kDynamicMSAA_Flag,
+                kRGB_H_SkPixelGeometry,
+                SK_GAMMA_CONTRAST,
+                SK_GAMMA_EXPONENT));
     }
-    displayParams.fCreateProtectedNativeBackend = FLAGS_createProtected;
+    paramsBuilder->createProtectedNativeBackend(FLAGS_createProtected);
 #if defined(SK_GRAPHITE)
-    CommonFlags::SetTestOptions(&displayParams.fGraphiteTestOptions.fTestOptions);
-    displayParams.fGraphiteTestOptions.fPriv.fPathRendererStrategy =
-            get_path_renderer_strategy_type(FLAGS_pathstrategy[0]);
+    skwindow::GraphiteTestOptions gto;
+    CommonFlags::SetTestOptions(&gto.fTestOptions);
+    gto.fPriv.fPathRendererStrategy = get_path_renderer_strategy_type(FLAGS_pathstrategy[0]);
+    paramsBuilder->graphiteTestOptions(gto);
 #endif
-    fWindow->setRequestedDisplayParams(displayParams);
-    fDisplay = fWindow->getRequestedDisplayParams();
+    fWindow->setRequestedDisplayParams(paramsBuilder->build());
+    fDisplay = paramsBuilder->build();
     fRefresh = FLAGS_redraw;
 
     fImGuiLayer.setScaleFactor(fWindow->scaleFactor());
@@ -637,16 +646,18 @@ Viewer::Viewer(int argc, char** argv, void* platformData)
         fWindow->inval();
     });
     fCommands.addCommand('v', "Swapchain", "Toggle vsync on/off", [this]() {
-        DisplayParams params = fWindow->getRequestedDisplayParams();
-        params.fDisableVsync = !params.fDisableVsync;
-        fWindow->setRequestedDisplayParams(params);
+        auto params = fWindow->getRequestedDisplayParams();
+        auto paramsBuilder = make_display_params_builder(params);
+        paramsBuilder->disableVsync(!params->disableVsync());
+        fWindow->setRequestedDisplayParams(paramsBuilder->build());
         this->updateTitle();
         fWindow->inval();
     });
     fCommands.addCommand('V', "Swapchain", "Toggle delayed acquire on/off (Metal only)", [this]() {
-        DisplayParams params = fWindow->getRequestedDisplayParams();
-        params.fDelayDrawableAcquisition = !params.fDelayDrawableAcquisition;
-        fWindow->setRequestedDisplayParams(params);
+        auto params = fWindow->getRequestedDisplayParams();
+        auto paramsBuilder = make_display_params_builder(params);
+        paramsBuilder->delayDrawableAcquisition(!params->delayDrawableAcquisition());
+        fWindow->setRequestedDisplayParams(paramsBuilder->build());
         this->updateTitle();
         fWindow->inval();
     });
@@ -684,17 +695,22 @@ Viewer::Viewer(int argc, char** argv, void* platformData)
         }
     });
     fCommands.addCommand('w', "Modes", "Toggle wireframe", [this]() {
-        DisplayParams params = fWindow->getRequestedDisplayParams();
-        params.fGrContextOptions.fWireframeMode = !params.fGrContextOptions.fWireframeMode;
-        fWindow->setRequestedDisplayParams(params);
+        auto params = fWindow->getRequestedDisplayParams();
+        auto paramsBuilder = make_display_params_builder(params);
+        GrContextOptions gropts = params->grContextOptions();
+        gropts.fWireframeMode = !gropts.fWireframeMode;
+        paramsBuilder->grContextOptions(gropts);
+        fWindow->setRequestedDisplayParams(paramsBuilder->build());
         fWindow->inval();
     });
     fCommands.addCommand('w', "Modes", "Toggle reduced shaders", [this]() {
-      DisplayParams params = fWindow->getRequestedDisplayParams();
-      params.fGrContextOptions.fReducedShaderVariations =
-              !params.fGrContextOptions.fReducedShaderVariations;
-      fWindow->setRequestedDisplayParams(params);
-      fWindow->inval();
+        auto params = fWindow->getRequestedDisplayParams();
+        auto paramsBuilder = make_display_params_builder(params);
+        GrContextOptions gropts = params->grContextOptions();
+        gropts.fReducedShaderVariations = !gropts.fReducedShaderVariations;
+        paramsBuilder->grContextOptions(gropts);
+        fWindow->setRequestedDisplayParams(paramsBuilder->build());
+        fWindow->inval();
     });
     fCommands.addCommand(skui::Key::kRight, "Right", "Navigation", "Next slide", [this]() {
         this->setCurrentSlide(fCurrentSlide < fSlides.size() - 1 ? fCurrentSlide + 1 : 0);
@@ -732,33 +748,37 @@ Viewer::Viewer(int argc, char** argv, void* platformData)
         fWindow->inval();
     });
     fCommands.addCommand('G', "Modes", "Geometry", [this]() {
-        DisplayParams params = fWindow->getRequestedDisplayParams();
-        uint32_t flags = params.fSurfaceProps.flags();
-        SkPixelGeometry defaultPixelGeometry = fDisplay.fSurfaceProps.pixelGeometry();
+        auto params = fWindow->getRequestedDisplayParams();
+        auto paramsBuilder = make_display_params_builder(params);
+        SkSurfaceProps newProps;
+
+        uint32_t flags = params->surfaceProps().flags();
+        SkPixelGeometry defaultPixelGeometry = fDisplay->surfaceProps().pixelGeometry();
         if (!fDisplayOverrides.fSurfaceProps.fPixelGeometry) {
             fDisplayOverrides.fSurfaceProps.fPixelGeometry = true;
-            params.fSurfaceProps = SkSurfaceProps(flags, kUnknown_SkPixelGeometry);
+            newProps = SkSurfaceProps(flags, kUnknown_SkPixelGeometry);
         } else {
-            switch (params.fSurfaceProps.pixelGeometry()) {
+            switch (params->surfaceProps().pixelGeometry()) {
                 case kUnknown_SkPixelGeometry:
-                    params.fSurfaceProps = SkSurfaceProps(flags, kRGB_H_SkPixelGeometry);
+                    newProps = SkSurfaceProps(flags, kRGB_H_SkPixelGeometry);
                     break;
                 case kRGB_H_SkPixelGeometry:
-                    params.fSurfaceProps = SkSurfaceProps(flags, kBGR_H_SkPixelGeometry);
+                    newProps = SkSurfaceProps(flags, kBGR_H_SkPixelGeometry);
                     break;
                 case kBGR_H_SkPixelGeometry:
-                    params.fSurfaceProps = SkSurfaceProps(flags, kRGB_V_SkPixelGeometry);
+                    newProps = SkSurfaceProps(flags, kRGB_V_SkPixelGeometry);
                     break;
                 case kRGB_V_SkPixelGeometry:
-                    params.fSurfaceProps = SkSurfaceProps(flags, kBGR_V_SkPixelGeometry);
+                    newProps = SkSurfaceProps(flags, kBGR_V_SkPixelGeometry);
                     break;
                 case kBGR_V_SkPixelGeometry:
-                    params.fSurfaceProps = SkSurfaceProps(flags, defaultPixelGeometry);
+                    newProps = SkSurfaceProps(flags, defaultPixelGeometry);
                     fDisplayOverrides.fSurfaceProps.fPixelGeometry = false;
                     break;
             }
         }
-        fWindow->setRequestedDisplayParams(params);
+        paramsBuilder->surfaceProps(newProps);
+        fWindow->setRequestedDisplayParams(paramsBuilder->build());
         this->updateTitle();
         fWindow->inval();
     });
@@ -787,11 +807,14 @@ Viewer::Viewer(int argc, char** argv, void* platformData)
         fWindow->inval();
     });
     fCommands.addCommand('D', "Modes", "DFT", [this]() {
-        DisplayParams params = fWindow->getRequestedDisplayParams();
-        uint32_t flags = params.fSurfaceProps.flags();
+        auto params = fWindow->getRequestedDisplayParams();
+        auto paramsBuilder = make_display_params_builder(params);
+        uint32_t flags = params->surfaceProps().flags();
         flags ^= SkSurfaceProps::kUseDeviceIndependentFonts_Flag;
-        params.fSurfaceProps = SkSurfaceProps(flags, params.fSurfaceProps.pixelGeometry());
-        fWindow->setRequestedDisplayParams(params);
+        SkSurfaceProps newProps = SkSurfaceProps(flags, params->surfaceProps().pixelGeometry());
+
+        paramsBuilder->surfaceProps(newProps);
+        fWindow->setRequestedDisplayParams(paramsBuilder->build());
         this->updateTitle();
         fWindow->inval();
     });
@@ -1262,9 +1285,9 @@ void Viewer::updateTitle() {
                       fColorSpaceTransferFn.g);
     }
 
-    const DisplayParams& params = fWindow->getRequestedDisplayParams();
+    auto params = fWindow->getRequestedDisplayParams();
     if (fDisplayOverrides.fSurfaceProps.fPixelGeometry) {
-        switch (params.fSurfaceProps.pixelGeometry()) {
+        switch (params->surfaceProps().pixelGeometry()) {
             case kUnknown_SkPixelGeometry:
                 title.append( " Flat");
                 break;
@@ -1283,7 +1306,7 @@ void Viewer::updateTitle() {
         }
     }
 
-    if (params.fSurfaceProps.isUseDeviceIndependentFonts()) {
+    if (params->surfaceProps().isUseDeviceIndependentFonts()) {
         title.append(" DFT");
     }
 
@@ -1307,7 +1330,7 @@ void Viewer::updateTitle() {
 #endif
     } else {
         GpuPathRenderers pr =
-                fWindow->getRequestedDisplayParams().fGrContextOptions.fGpuPathRenderers;
+                fWindow->getRequestedDisplayParams()->grContextOptions().fGpuPathRenderers;
         if (GpuPathRenderers::kDefault != pr) {
             title.appendf(" [Path renderer: %s]", gGaneshPathRendererNames[pr].c_str());
         }
@@ -1762,8 +1785,10 @@ void Viewer::drawSlide(SkSurface* surface) {
         Window::kRaster_BackendType == fBackendType ||
         colorSpace != nullptr ||
         FLAGS_offscreen) {
-        SkSurfaceProps props(fWindow->getRequestedDisplayParams().fSurfaceProps);
-        slideCanvas->getProps(&props);
+        SkSurfaceProps props;
+        if (!slideCanvas->getProps(&props)) {
+            props = fWindow->getRequestedDisplayParams()->surfaceProps();
+        }
 
         SkImageInfo info = SkImageInfo::Make(
                 fWindow->width(), fWindow->height(), colorType, kPremul_SkAlphaType, colorSpace);

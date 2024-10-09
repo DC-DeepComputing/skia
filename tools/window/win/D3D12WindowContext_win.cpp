@@ -38,7 +38,7 @@ namespace {
 
 class D3D12WindowContext : public WindowContext {
 public:
-    D3D12WindowContext(HWND hwnd, const DisplayParams& params);
+    D3D12WindowContext(HWND hwnd, std::unique_ptr<const DisplayParams> params);
     ~D3D12WindowContext() override;
     void initializeContext();
     void destroyContext();
@@ -51,7 +51,7 @@ public:
     sk_sp<SkSurface> getBackbufferSurface() override;
 
     void resize(int width, int height) override;
-    void setDisplayParams(const DisplayParams& params) override;
+    void setDisplayParams(std::unique_ptr<const DisplayParams> params) override;
 private:
     inline static constexpr int kNumFrames = 2;
 
@@ -71,8 +71,8 @@ private:
     uint64_t fFenceValues[kNumFrames];
 };
 
-D3D12WindowContext::D3D12WindowContext(HWND hwnd, const DisplayParams& params)
-    : WindowContext(params)
+D3D12WindowContext::D3D12WindowContext(HWND hwnd, std::unique_ptr<const DisplayParams> params)
+    : WindowContext(std::move(params))
     , fWindow(hwnd) {
 
     this->initializeContext();
@@ -88,7 +88,7 @@ void D3D12WindowContext::initializeContext() {
     fDevice = backendContext.fDevice;
     fQueue = backendContext.fQueue;
 
-    fContext = GrDirectContext::MakeDirect3D(backendContext, fDisplayParams.fGrContextOptions);
+    fContext = GrDirectContext::MakeDirect3D(backendContext, fDisplayParams->grContextOptions());
     SkASSERT(fContext);
 
     // Make the swapchain
@@ -123,7 +123,7 @@ void D3D12WindowContext::initializeContext() {
 
     fBufferIndex = fSwapChain->GetCurrentBackBufferIndex();
 
-    fSampleCount = fDisplayParams.fMSAASampleCount;
+    fSampleCount = fDisplayParams->msaaSampleCount();
 
     this->setupSurfaces(width, height);
 
@@ -163,16 +163,16 @@ void D3D12WindowContext::setupSurfaces(int width, int height) {
                                                           kTopLeft_GrSurfaceOrigin,
                                                           fSampleCount,
                                                           kRGBA_8888_SkColorType,
-                                                          fDisplayParams.fColorSpace,
-                                                          &fDisplayParams.fSurfaceProps);
+                                                          fDisplayParams->colorSpace(),
+                                                          &fDisplayParams->surfaceProps());
         } else {
             GrBackendRenderTarget backendRT(width, height, info);
             fSurfaces[i] = SkSurfaces::WrapBackendRenderTarget(fContext.get(),
                                                                backendRT,
                                                                kTopLeft_GrSurfaceOrigin,
                                                                kRGBA_8888_SkColorType,
-                                                               fDisplayParams.fColorSpace,
-                                                               &fDisplayParams.fSurfaceProps);
+                                                               fDisplayParams->colorSpace(),
+                                                               &fDisplayParams->surfaceProps());
         }
     }
 }
@@ -246,7 +246,7 @@ void D3D12WindowContext::resize(int width, int height) {
     fHeight = height;
 }
 
-void D3D12WindowContext::setDisplayParams(const DisplayParams& params) {
+void D3D12WindowContext::setDisplayParams(std::unique_ptr<const DisplayParams> params) {
     this->destroyContext();
     fDisplayParams = params;
     this->initializeContext();
@@ -256,7 +256,7 @@ void D3D12WindowContext::setDisplayParams(const DisplayParams& params) {
 
 namespace skwindow {
 
-std::unique_ptr<WindowContext> MakeD3D12ForWin(HWND hwnd, const DisplayParams& params) {
+std::unique_ptr<WindowContext> MakeD3D12ForWin(HWND hwnd, std::unique_ptr<const DisplayParams> params) {
     std::unique_ptr<WindowContext> ctx(new D3D12WindowContext(hwnd, params));
     if (!ctx->isValid()) {
         return nullptr;
