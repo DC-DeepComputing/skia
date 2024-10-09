@@ -592,7 +592,8 @@ bool DawnCommandBuffer::bindGraphicsPipeline(const GraphicsPipeline* graphicsPip
     fBoundUniformBuffersDirty = true;
 
     if (fActiveGraphicsPipeline->dstReadRequirement() == DstReadRequirement::kTextureCopy &&
-        fActiveGraphicsPipeline->numFragTexturesAndSamplers() == 2) {
+        fActiveGraphicsPipeline->numFragTexturesAndSamplers() == 2 &&
+        !fActiveGraphicsPipeline->usesImmutableSamplers()) {
         // The pipeline has a single paired texture+sampler and uses texture copies for dst reads.
         // This situation comes about when the program requires complex blending but otherwise
         // is not referencing any images. Since there are no other images in play, the DrawPass
