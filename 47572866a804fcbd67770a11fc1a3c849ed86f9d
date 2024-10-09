@@ -72,6 +72,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e10d9263_26016931",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2024-10-09T18:21:27Z",
+      "side": 1,
+      "message": "It\u0027d be the result given by the underlying API\u0027s timer query mechanism: time elapsed in nanoseconds. We might have to sum this across multiple command buffers if multiple command buffers are used.\n\nI *think* it makes sense on the flush/recording level since that is when the command buffers are prepare AFAIK.",
+      "parentUuid": "3f5c4366_88080a54",
+      "revId": "47572866a804fcbd67770a11fc1a3c849ed86f9d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "22664130_2f7a4d57",
         "filename": "include/gpu/ganesh/GrTypes.h",
         "patchSetId": 1
