@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "19c6cf27_6309a068",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-10-10T13:50:12Z",
+      "side": 1,
+      "message": "I\u0027m getting notifications about this CL. Still holding, correct?",
+      "revId": "0818c476edfd46dd75dfd9ac9603051bbd81dd02",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
