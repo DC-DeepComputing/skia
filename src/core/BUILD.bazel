@@ -484,6 +484,7 @@ skia_cc_library(
     ],
     visibility = [
         "//:__pkg__",
+        "//experimental:__subpackages__",
         "//src:__subpackages__",
     ],
     deps = [
