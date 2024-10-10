@@ -302,6 +302,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "30cf9e1d_0486dd39",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 7060
+      },
+      "writtenOn": "2024-10-10T14:07:49Z",
+      "side": 1,
+      "message": "If you\u0027d like we can add a public_configs to cxx which adds `-I//third_party/rust/chromium_crates_io/vendor/cxx-${cxx_version}/include` or something to `cflags`. Ideally it would be under a \"cxx/\" dir still, but that would put it as just \"cxx.h\". This is how we e.g. also deal with skia\u0027s own headers being in third_party/skia in chromium but not in skia.",
+      "parentUuid": "df7d79a6_e818021f",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 24
+      },
+      "revId": "4647bc3d2ca812c91255943aa71b1e49e801b47e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4fa0ee37_0e710c6a",
         "filename": "experimental/rust_png/impl/SkPngRustCodec.h",
         "patchSetId": 2
