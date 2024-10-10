@@ -20,6 +20,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1b71cfe8_7196d755",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-10T14:17:44Z",
+      "side": 1,
+      "message": "TODO: Ooops - I\u0027ve just realized that I didn\u0027t upload the `patches` directory... I plan to fix this later today, but let me add an unresolved comment here to help me remember.",
+      "revId": "7ed60063f3056af824e8edf468fe561e834f2fe6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "158c7e4c_41bc7a4e",
         "filename": "WORKSPACE.bazel",
         "patchSetId": 6
@@ -31,6 +48,30 @@
       "writtenOn": "2024-10-10T13:24:01Z",
       "side": 1,
       "message": "Are we hoping to land these patches upstream? I\u0027d prefer to not have to schlep all the patches around long term.",
+      "range": {
+        "startLine": 402,
+        "startChar": 14,
+        "endLine": 402,
+        "endChar": 21
+      },
+      "revId": "7ed60063f3056af824e8edf468fe561e834f2fe6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a1b19eae_9c6ded40",
+        "filename": "WORKSPACE.bazel",
+        "patchSetId": 6
+      },
+      "lineNbr": 402,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-10T14:17:44Z",
+      "side": 1,
+      "message": "We already did - all the PRs mentioned in https://crrev.com/c/5922033 have already been merged (but I don\u0027t know when they\u0027ll get released as a new crates.io version - it took a while for the last version to get out).",
+      "parentUuid": "158c7e4c_41bc7a4e",
       "range": {
         "startLine": 402,
         "startChar": 14,
