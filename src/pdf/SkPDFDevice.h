@@ -19,6 +19,7 @@
 #include "src/core/SkTHash.h"
 #include "src/pdf/SkKeyedImage.h"
 #include "src/pdf/SkPDFGraphicStackState.h"
+#include "src/pdf/SkPDFTag.h"
 #include "src/pdf/SkPDFTypes.h"
 
 #include <cstddef>
@@ -138,7 +139,23 @@ private:
     skia_private::THashSet<SkPDFIndirectReference> fXObjectResources;
     skia_private::THashSet<SkPDFIndirectReference> fShaderResources;
     skia_private::THashSet<SkPDFIndirectReference> fFontResources;
-    int fElemId;
+
+    class MarkedContentManager {
+    public:
+        MarkedContentManager(SkPDFDocument* document, SkDynamicMemoryWStream* out);
+        ~MarkedContentManager();
+
+        void setNextMarksElemId(int nextMarksElemId);
+        bool hasActiveMark() const;
+        void startMark();
+        void accumulate(const SkPoint& p);
+        int elemId() const;
+    private:
+        SkPDFDocument* fDoc;
+        SkDynamicMemoryWStream* fOut;
+        SkPDFStructTree::Mark fCurrentlyActiveMark;
+        int fNextMarksElemId;
+    } fMarkManager;
 
     SkDynamicMemoryWStream fContent;
     SkDynamicMemoryWStream fContentBuffer;
