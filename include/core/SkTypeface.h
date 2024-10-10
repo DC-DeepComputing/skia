@@ -332,6 +332,8 @@ public:
         return this->onGetCTFontRef();
     }
 
+    virtual void* onGetDWriteFontFace() const { return nullptr; }
+
     /* Skia reserves all tags that begin with a lower case letter and 0 */
     using FactoryId = SkFourByteTag;
     static void Register(
