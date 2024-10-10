@@ -39,6 +39,30 @@
       },
       "revId": "57b60cbda18e91406d8eac5900153d4909ad20a8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ffb6d95a_555cfb25",
+        "filename": "include/core/SkTypeface.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 335,
+      "author": {
+        "id": 3424955
+      },
+      "writtenOn": "2024-10-10T20:09:05Z",
+      "side": 1,
+      "message": "Going to remove. This is actually not needed - I added it as a reference for CTFontRef.",
+      "parentUuid": "227b7ed0_9d46e489",
+      "range": {
+        "startLine": 335,
+        "startChar": 10,
+        "endLine": 335,
+        "endChar": 45
+      },
+      "revId": "57b60cbda18e91406d8eac5900153d4909ad20a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
