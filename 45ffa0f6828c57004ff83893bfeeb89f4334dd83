@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b89fa639_ae533c62",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 514,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-10-10T21:54:57Z",
+      "side": 0,
+      "message": "Acknowledged",
+      "parentUuid": "5549b286_fe501771",
+      "range": {
+        "startLine": 514,
+        "startChar": 65,
+        "endLine": 514,
+        "endChar": 66
+      },
+      "revId": "45ffa0f6828c57004ff83893bfeeb89f4334dd83",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "420e5016_8c2e010e",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-10-09T19:18:49Z",
       "side": 0,
       "message": "The TODO is not applicable anymore - I initially planned to populate the first frame based on the `IHDR` chunk and later augment it based on the `fcTL` chunk (if an `fcTL` chunk appears before `IDAT`).  But I ended up simply starting at 0 frames and only populating the first `FrameInfo` once *all* of the frame metadata is known.\n\nAnd the first sentence in this comment doesn\u0027t seem very useful - let me just delete it and replace it with some assertions that better document when we can get here.",
+      "range": {
+        "startLine": 528,
+        "startChar": 22,
+        "endLine": 528,
+        "endChar": 23
+      },
+      "revId": "45ffa0f6828c57004ff83893bfeeb89f4334dd83",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "89a28e40_1358e5b0",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 528,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-10-10T21:54:57Z",
+      "side": 0,
+      "message": "Acknowledged",
+      "parentUuid": "420e5016_8c2e010e",
       "range": {
         "startLine": 528,
         "startChar": 22,

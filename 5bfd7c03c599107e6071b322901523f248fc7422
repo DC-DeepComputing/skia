@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6de69c20_7864bcfa",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 299,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-10-10T21:54:57Z",
+      "side": 1,
+      "message": "This seems okay to me.",
+      "parentUuid": "2f0de881_e42ee31f",
+      "range": {
+        "startLine": 298,
+        "startChar": 0,
+        "endLine": 299,
+        "endChar": 74
+      },
+      "revId": "5bfd7c03c599107e6071b322901523f248fc7422",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "193fcd0e_4efaa796",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d49a13d9_7781963f",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 306,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-10-10T21:54:57Z",
+      "side": 1,
+      "message": "Acknowledged, I\u0027ll try to get others opinions on the priority of the filed bug.",
+      "parentUuid": "193fcd0e_4efaa796",
+      "range": {
+        "startLine": 306,
+        "startChar": 4,
+        "endLine": 306,
+        "endChar": 5
+      },
+      "revId": "5bfd7c03c599107e6071b322901523f248fc7422",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "04fb0002_f0a3098d",
@@ -60,6 +108,30 @@
       "writtenOn": "2024-10-09T19:18:49Z",
       "side": 1,
       "message": "This is the behavior [implemented by `SkWuffsCodec`](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/codec/SkWuffsCodec.cpp;l\u003d788-815;drc\u003d6d7b5973c0754bf6bc002b2a364cd70523c2978d) which is [used by `blink::GIFImageDecoder`](https://source.chromium.org/chromium/chromium/src/+/main:third_party/blink/renderer/platform/image-decoders/gif/gif_image_decoder.cc;l\u003d50;drc\u003db74f39b352a0fa4e36354239c22653b063356218) (`SkGifDecoder::Decode` [uses `SkWuffsCodec`](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/codec/SkWuffsCodec.cpp;l\u003d1088-1100;drc\u003d0afdaad03fc3fc271a751cb77dea8c8efb84b49f)).\n\nThis kind of behavior is allowed at the Blink level - see [the comment for `blink::ImageDecoder::DecodeFrameCount`](https://source.chromium.org/chromium/chromium/src/+/main:third_party/blink/renderer/platform/image-decoders/image_decoder.h;l\u003d499-502;drc\u003d39736f289b63165a3427e7b09c83c65e4ed7f323)",
+      "range": {
+        "startLine": 645,
+        "startChar": 58,
+        "endLine": 645,
+        "endChar": 59
+      },
+      "revId": "5bfd7c03c599107e6071b322901523f248fc7422",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "15c64a01_37fb496a",
+        "filename": "include/codec/SkCodec.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 645,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-10-10T21:54:57Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "04fb0002_f0a3098d",
       "range": {
         "startLine": 645,
         "startChar": 58,
