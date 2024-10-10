@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e6a83ad8_429bfa17",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-10-10T17:22:02Z",
+      "side": 1,
+      "message": "lgtm, we should check the chrome canary in cas",
+      "revId": "4a1d19a8b33b75127d10df47d83d86ee0df0158d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
