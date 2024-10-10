@@ -3327,21 +3327,21 @@ void SkPathPriv::CreateDrawArcPath(SkPath* path, const SkArc& arc, bool isFillNo
     bool convex = DrawArcIsConvex(sweepAngle, arc.fType, isFillNoPathEffect);
     // Arc to mods at 360 and drawArc is not supposed to.
     bool forceMoveTo = !arc.isWedge();
-    while (sweepAngle <= -360.f) {
+    if (sweepAngle <= -360.f) {
         path->arcTo(oval, startAngle, -180.f, forceMoveTo);
         startAngle -= 180.f;
         path->arcTo(oval, startAngle, -180.f, false);
         startAngle -= 180.f;
         forceMoveTo = false;
-        sweepAngle += 360.f;
+        sweepAngle = std::fmod(sweepAngle, 360.0f);
     }
-    while (sweepAngle >= 360.f) {
+    if (sweepAngle >= 360.f) {
         path->arcTo(oval, startAngle, 180.f, forceMoveTo);
         startAngle += 180.f;
         path->arcTo(oval, startAngle, 180.f, false);
         startAngle += 180.f;
         forceMoveTo = false;
-        sweepAngle -= 360.f;
+        sweepAngle = std::fmod(sweepAngle, 360.0f);
     }
     path->arcTo(oval, startAngle, sweepAngle, forceMoveTo);
     if (arc.isWedge()) {
