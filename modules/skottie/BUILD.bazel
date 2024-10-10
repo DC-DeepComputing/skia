@@ -79,7 +79,10 @@ skia_cc_binary(
         "//src/core:core_priv",
         "//tools/flags:cmd_flags",
     ] + select({
-        "@platforms//os:linux": ["//:fontmgr_fontconfig_freetype"],
+        "@platforms//os:linux": [
+            "//src/ports:freetype_support",
+            "@skia//:fontmgr_fontconfig_freetype",
+        ],
         "@platforms//os:macos": ["//:fontmgr_coretext"],
         "//conditions:default": ["//:fontmgr_empty_freetype"],
     }),
