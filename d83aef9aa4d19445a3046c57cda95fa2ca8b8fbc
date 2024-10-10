@@ -16,6 +16,23 @@
       "message": "jvanverth: ptal",
       "revId": "d83aef9aa4d19445a3046c57cda95fa2ca8b8fbc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e3a889eb_1db805db",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-10-10T13:48:36Z",
+      "side": 1,
+      "message": "Adding second @google reviewer.",
+      "revId": "d83aef9aa4d19445a3046c57cda95fa2ca8b8fbc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
