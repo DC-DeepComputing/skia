@@ -226,15 +226,20 @@ void SkPDFTagTree::Move(SkPDF::StructureElementNode& srcNode,
     dstNode->fAttributeNodeIds = std::move(srcNode.fAttributes.fNodeIds);
 }
 
+int SkPDFTagTree::Mark::nodeId() {
+    return fNode ? fNode->fNodeId : -1;
+}
+
 int SkPDFTagTree::Mark::id() {
     return fNode ? fNode->fMarkedContent[fMarkIndex].fMarkId : -1;
 }
 
-SkPoint& SkPDFTagTree::Mark::point() {
-    return fNode->fMarkedContent[fMarkIndex].fLocation.fPoint;
+void SkPDFTagTree::Mark::accumulate(SkPoint point) {
+    Location& location = fNode->fMarkedContent[fMarkIndex].fLocation;
+    return location.accumulate({{point}, location.fPageIndex});
 }
 
-auto SkPDFTagTree::createMarkIdForNodeId(int nodeId, unsigned pageIndex, SkPoint point) -> Mark {
+auto SkPDFTagTree::createMarkForNodeId(int nodeId, unsigned pageIndex) -> Mark {
     if (!fRoot) {
         return Mark();
     }
@@ -254,7 +259,7 @@ auto SkPDFTagTree::createMarkIdForNodeId(int nodeId, unsigned pageIndex, SkPoint
     int markId = pageMarks.size();
     SkASSERT(tag->fMarkedContent.empty() ||
              tag->fMarkedContent.back().fLocation.fPageIndex <= pageIndex);
-    tag->fMarkedContent.push_back({{point, pageIndex}, markId});
+    tag->fMarkedContent.push_back({{{SK_ScalarNaN, SK_ScalarNaN}, pageIndex}, markId});
     pageMarks.push_back(tag);
     return Mark(tag, tag->fMarkedContent.size() - 1);
 }

@@ -29,24 +29,25 @@ public:
     ~SkPDFTagTree();
 
     class Mark {
-        SkPDFTagNode *const fNode;
-        size_t const fMarkIndex;
+        SkPDFTagNode* fNode;
+        size_t fMarkIndex;
     public:
         Mark(SkPDFTagNode* node, size_t index) : fNode(node), fMarkIndex(index) {}
         Mark() : Mark(nullptr, 0) {}
-        Mark(const Mark&) = delete;
-        Mark& operator=(const Mark&) = delete;
+        Mark(const Mark&) = default;
+        Mark& operator=(const Mark&) = default;
         Mark(Mark&&) = default;
-        Mark& operator=(Mark&&) = delete;
+        Mark& operator=(Mark&&) = default;
 
         explicit operator bool() const { return fNode; }
         int id();
-        SkPoint& point();
+        int nodeId();
+        void accumulate(SkPoint);
     };
     // Used to allow marked content to refer to its corresponding structure
     // tree node, via a page entry in the parent tree. Returns a false mark if
     // nodeId is 0.
-    Mark createMarkIdForNodeId(int nodeId, unsigned pageIndex, SkPoint);
+    Mark createMarkForNodeId(int nodeId, unsigned pageIndex);
     // Used to allow annotations to refer to their corresponding structure
     // tree node, via the struct parent tree. Returns -1 if no struct parent
     // key.
@@ -79,6 +80,7 @@ private:
     skia_private::THashMap<int, SkPDFTagNode*> fNodeMap;
     SkPDFTagNode* fRoot = nullptr;
     SkPDF::Metadata::Outline fOutline = SkPDF::Metadata::Outline::None;
+    // fMarksPerPage[pg][markId] == the node that owns that mcid
     skia_private::TArray<skia_private::TArray<SkPDFTagNode*>> fMarksPerPage;
     std::vector<IDTreeEntry> fIdTreeEntries;
     std::vector<int> fParentTreeAnnotationNodeIds;

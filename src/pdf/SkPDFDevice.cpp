@@ -90,6 +90,53 @@ class SkVertices;
 
 using namespace skia_private;
 
+SkPDFDevice::MarkedContentManager::MarkedContentManager(SkPDFDocument* document,
+                                                        SkDynamicMemoryWStream* out)
+    : fDoc(document)
+    , fOut(out)
+    , fCurrentlyActiveMark()
+    , fNextMarksNodeId(0)
+{}
+
+SkPDFDevice::MarkedContentManager::~MarkedContentManager() {
+    // This does not close an open mark, that is done in SkPDFDevice::content.
+    SkASSERT(fNextMarksNodeId == 0);
+};
+
+void SkPDFDevice::MarkedContentManager::setNextMarksNodeId(int nextMarksNodeId) {
+    fNextMarksNodeId = nextMarksNodeId;
+}
+int SkPDFDevice::MarkedContentManager::nodeId() const { return fNextMarksNodeId; }
+
+bool SkPDFDevice::MarkedContentManager::hasActiveMark() const { return bool(fCurrentlyActiveMark); }
+
+void SkPDFDevice::MarkedContentManager::startMark() {
+    // TODO: treat all "unknown" nodeIds as the same.
+    if (fNextMarksNodeId == fCurrentlyActiveMark.nodeId()) {
+        SkDebugf("Skia PDF: skipping %zu:%d for %d", fDoc->currentPageIndex(), fCurrentlyActiveMark.id(), fNextMarksNodeId);
+        return;
+    }
+    if (fCurrentlyActiveMark) {
+        // End this mark
+        fOut->writeText("EMC\n");
+        fCurrentlyActiveMark = SkPDFTagTree::Mark();
+    }
+    if (fNextMarksNodeId) {
+        fCurrentlyActiveMark = fDoc->createMarkForNodeId(fNextMarksNodeId);
+        if (fCurrentlyActiveMark) {
+            // Begin this mark
+            fOut->writeText("/P <</MCID ");
+            fOut->writeDecAsText(fCurrentlyActiveMark.id());
+            fOut->writeText(" >>BDC\n");
+        }
+    }
+}
+
+void SkPDFDevice::MarkedContentManager::accumulate(const SkPoint& p) {
+    SkASSERT(fCurrentlyActiveMark);
+    fCurrentlyActiveMark.accumulate(p);
+}
+
 #ifndef SK_PDF_MASK_QUALITY
     // If MASK_QUALITY is in [0,100], will be used for JpegEncoder.
     // Otherwise, just encode masks losslessly.
@@ -100,44 +147,6 @@ using namespace skia_private;
     // If SkJpegEncoder::Encode fails, we will fall back to the lossless
     // encoding.
 #endif
-
-namespace {
-
-// If nodeId is not zero, outputs the tags to begin a marked-content sequence
-// for the given node ID, and then closes those tags when this object goes
-// out of scope.
-class ScopedOutputMarkedContentTags {
-public:
-    ScopedOutputMarkedContentTags(int nodeId, SkPoint point, SkPDFDocument* document,
-                                  SkDynamicMemoryWStream* out)
-        : fOut(out)
-        , fMark(nodeId ? document->createMarkIdForNodeId(nodeId, point) : SkPDFTagTree::Mark())
-    {
-        if (fMark) {
-            fOut->writeText("/P <</MCID ");
-            fOut->writeDecAsText(fMark.id());
-            fOut->writeText(" >>BDC\n");
-        }
-    }
-
-    explicit operator bool() const { return bool(fMark); }
-
-    SkPoint& point() { return SkASSERT(fMark), fMark.point(); }
-
-    ~ScopedOutputMarkedContentTags() {
-        if (fMark) {
-            fOut->writeText("EMC\n");
-        }
-    }
-
-private:
-    SkDynamicMemoryWStream* fOut;
-    SkPDFTagTree::Mark fMark;
-};
-
-}  // namespace
-
-// Utility functions
 
 // This function destroys the mask and either frees or takes the pixels.
 sk_sp<SkImage> mask_to_greyscale_image(SkMaskBuilder* mask) {
@@ -356,7 +365,7 @@ SkPDFDevice::SkPDFDevice(SkISize pageSize, SkPDFDocument* doc, const SkMatrix& t
         : SkClipStackDevice(SkImageInfo::MakeUnknown(pageSize.width(), pageSize.height()),
                             SkSurfaceProps())
         , fInitialTransform(transform)
-        , fNodeId(0)
+        , fMarkManager(doc, &fContent) // TODO: is this the write stream? maybe?
         , fDocument(doc) {
     SkASSERT(!pageSize.isEmpty());
 }
@@ -385,7 +394,7 @@ void SkPDFDevice::drawAnnotation(const SkRect& rect, const char key[], SkData* v
             int nodeID;
             if (value->size() != sizeof(nodeID)) { return; }
             memcpy(&nodeID, value->data(), sizeof(nodeID));
-            fNodeId = nodeID;
+            fMarkManager.setNextMarksNodeId(nodeID);
             return;
         }
         if (!strcmp(SkAnnotationKeys::Define_Named_Dest_Key(), key)) {
@@ -416,7 +425,7 @@ void SkPDFDevice::drawAnnotation(const SkRect& rect, const char key[], SkData* v
 
     if (linkType != SkPDFLink::Type::kNone) {
         std::unique_ptr<SkPDFLink> link = std::make_unique<SkPDFLink>(
-            linkType, value, transformedRect, fNodeId);
+            linkType, value, transformedRect, fMarkManager.nodeId());
         fDocument->fCurrentPageLinks.push_back(std::move(link));
     }
 }
@@ -658,6 +667,18 @@ void SkPDFDevice::internalDrawPath(const SkClipStack& clipStack,
     ScopedContentEntry content(this, &clipStack, matrix, *paint);
     if (!content) {
         return;
+    }
+    fMarkManager.startMark();
+    if (fMarkManager.hasActiveMark()) {
+        // Destinations are in absolute coordinates.
+        SkMatrix pageXform = this->deviceToGlobal().asM33();
+        pageXform.postConcat(fDocument->currentPageTransform());
+        // The path does not already have localToDevice / ctm / matrix applied.
+        pageXform.preConcat(matrix);
+
+        SkRect pathBounds = pathPtr->computeTightBounds();
+        pageXform.mapRect(&pathBounds);
+        fMarkManager.accumulate({pathBounds.fLeft, pathBounds.fBottom}); // PDF y-up
     }
     constexpr SkScalar kToleranceScale = 0.0625f;  // smaller = better conics (circles).
     SkScalar matrixScale = matrix.mapRadius(1.0f);
@@ -914,18 +935,18 @@ void SkPDFDevice::internalDrawGlyphRun(
     }
     SkDynamicMemoryWStream* out = content.stream();
 
-    out->writeText("BT\n");
-    SK_AT_SCOPE_EXIT(out->writeText("ET\n"));
-
     // Destinations are in absolute coordinates.
     // The glyphs bounds go through the localToDevice separately for clipping.
     SkMatrix pageXform = this->deviceToGlobal().asM33();
     pageXform.postConcat(fDocument->currentPageTransform());
 
-    ScopedOutputMarkedContentTags mark(fNodeId, {SK_ScalarNaN, SK_ScalarNaN}, fDocument, out);
+    fMarkManager.startMark();
     if (!glyphRun.text().empty()) {
-        fDocument->addNodeTitle(fNodeId, glyphRun.text());
+        fDocument->addNodeTitle(fMarkManager.nodeId(), glyphRun.text());
     }
+
+    out->writeText("BT\n");
+    SK_AT_SCOPE_EXIT(out->writeText("ET\n"));
 
     const int numGlyphs = typeface.countGlyphs();
 
@@ -1002,15 +1023,9 @@ void SkPDFDevice::internalDrawGlyphRun(
             font->noteGlyphUsage(gid);
             SkGlyphID encodedGlyph = font->glyphToPDFFontEncoding(gid);
             SkScalar advance = advanceScale * glyphs[index]->advanceX();
-            if (mark) {
-                SkRect absoluteGlyphBounds = pageXform.mapRect(glyphBounds);
-                SkPoint& markPoint = mark.point();
-                if (markPoint.isFinite()) {
-                    markPoint.fX = std::min(absoluteGlyphBounds.fLeft  , markPoint.fX);
-                    markPoint.fY = std::max(absoluteGlyphBounds.fBottom, markPoint.fY); // PDF top
-                } else {
-                    markPoint = SkPoint{absoluteGlyphBounds.fLeft, absoluteGlyphBounds.fBottom};
-                }
+            if (fMarkManager.hasActiveMark()) {
+                SkRect pageGlyphBounds = pageXform.mapRect(glyphBounds);
+                fMarkManager.accumulate({pageGlyphBounds.fLeft, pageGlyphBounds.fBottom}); // PDF y-up
             }
             glyphPositioner.writeGlyph(encodedGlyph, advance, xy);
         }
@@ -1042,18 +1057,17 @@ void SkPDFDevice::drawMesh(const SkMesh&, sk_sp<SkBlender>, const SkPaint&) {
 
 void SkPDFDevice::drawFormXObject(SkPDFIndirectReference xObject, SkDynamicMemoryWStream* content,
                                   SkPath* shape) {
-    SkPoint point{SK_ScalarNaN, SK_ScalarNaN};
-    if (shape) {
+    fMarkManager.startMark();
+    if (fMarkManager.hasActiveMark() && shape) {
         // Destinations are in absolute coordinates.
         SkMatrix pageXform = this->deviceToGlobal().asM33();
         pageXform.postConcat(fDocument->currentPageTransform());
         // The shape already has localToDevice applied.
 
-        SkRect shapeBounds = shape->getBounds();
+        SkRect shapeBounds = shape->computeTightBounds();
         pageXform.mapRect(&shapeBounds);
-        point = SkPoint{shapeBounds.fLeft, shapeBounds.fBottom};
+        fMarkManager.accumulate({shapeBounds.fLeft, shapeBounds.fBottom});
     }
-    ScopedOutputMarkedContentTags mark(fNodeId, point, fDocument, content);
 
     SkASSERT(xObject);
     SkPDFWriteResourceName(content, SkPDFResourceType::kXObject,
@@ -1091,6 +1105,12 @@ std::unique_ptr<SkStreamAsset> SkPDFDevice::content() {
     if (fContent.bytesWritten() == 0) {
         return std::make_unique<SkMemoryStream>();
     }
+
+    // TODO: more obvious way to state "we're done, please close"
+    // Need to do this before fContent is written to buffer.
+    fMarkManager.setNextMarksNodeId(0);
+    fMarkManager.startMark();
+
     SkDynamicMemoryWStream buffer;
     if (fInitialTransform.getType() != SkMatrix::kIdentity_Mask) {
         SkPDFUtils::AppendTransform(fInitialTransform, &buffer);
@@ -1103,6 +1123,7 @@ std::unique_ptr<SkStreamAsset> SkPDFDevice::content() {
         buffer.writeText("Q\n");
     }
     fNeedsExtraSave = false;
+
     return std::unique_ptr<SkStreamAsset>(buffer.detachAsStream());
 }
 
@@ -1776,20 +1797,28 @@ void SkPDFDevice::drawDevice(SkDevice* device, const SkSamplingOptions& sampling
         return;
     }
 
-    SkMatrix matrix = device->getRelativeTransform(*this);
-    ScopedContentEntry content(this, &this->cs(), matrix, paint);
-    if (!content) {
-        return;
+    int oldId = fMarkManager.nodeId();
+    {
+        SkMatrix matrix = device->getRelativeTransform(*this);
+        ScopedContentEntry content(this, &this->cs(), matrix, paint);
+        if (!content) {
+            return;
+        }
+        SkPath shape = SkPath::Rect(SkRect::Make(device->imageInfo().dimensions()));
+        shape.transform(matrix);
+        if (content.needShape()) {
+            content.setShape(shape);
+        }
+        if (!content.needSource()) {
+            return;
+        }
+        // This XObject may contain its own marks, which are hidden if emitted inside an outer mark.
+        // TODO: May want to put somthing on SkPDFDevice to state if it has any marks in it.
+        // If it does have its own marks we need to pause the current mark and then re-set it after.
+        fMarkManager.setNextMarksNodeId(0);
+        this->drawFormXObject(pdfDevice->makeFormXObjectFromDevice(), content.stream(), &shape);
     }
-    SkPath shape = SkPath::Rect(SkRect::Make(device->imageInfo().dimensions()));
-    shape.transform(matrix);
-    if (content.needShape()) {
-        content.setShape(shape);
-    }
-    if (!content.needSource()) {
-        return;
-    }
-    this->drawFormXObject(pdfDevice->makeFormXObjectFromDevice(), content.stream(), &shape);
+    fMarkManager.setNextMarksNodeId(oldId);
 }
 
 void SkPDFDevice::drawSpecial(SkSpecialImage* srcImg, const SkMatrix& localToDevice,

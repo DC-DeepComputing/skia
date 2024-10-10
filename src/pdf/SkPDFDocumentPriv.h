@@ -136,7 +136,7 @@ public:
     // Used to allow marked content to refer to its corresponding structure
     // tree node, via a page entry in the parent tree. Returns -1 if no
     // mark ID.
-    SkPDFTagTree::Mark createMarkIdForNodeId(int nodeId, SkPoint);
+    SkPDFTagTree::Mark createMarkForNodeId(int nodeId);
     // Used to allow annotations to refer to their corresponding structure
     // tree node, via the struct parent tree. Returns -1 if no struct parent
     // key.
