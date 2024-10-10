@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eab78b68_6086f0af",
+        "filename": "gm/aaclip.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-10-10T18:28:27Z",
+      "side": 1,
+      "message": "The bug is triggered by dest copy, so we\u0027d need to do something beyond a canvas save() to duplicate it.",
+      "range": {
+        "startLine": 117,
+        "startChar": 4,
+        "endLine": 117,
+        "endChar": 19
+      },
+      "revId": "6004ac5fb72ab4813dee39f7fb3b82113c3c661e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
