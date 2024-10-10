@@ -379,7 +379,28 @@ optional("fontmgr_fontconfig") {
   public = skia_ports_fontmgr_fontconfig_public
   deps = [ ":typeface_freetype" ]
   sources = skia_ports_fontmgr_fontconfig_sources
-  sources_for_tests = [ "tests/FontMgrFontConfigTest.cpp" ]
+  sources_for_tests = [
+    "tests/FontMgrFontConfigTest.cpp",
+    "tests/FontScanner_FreeTypeTest.cpp",
+  ]
+}
+
+optional("fontscanner") {
+  enabled = skia_use_freetype || skia_use_fontations
+
+  deps = []
+
+  sources = [
+    "tests/FontScanner.cpp",
+    "tests/FontScanner.h",
+  ]
+  sources_for_tests = []
+  if (skia_use_freetype) {
+    sources_for_tests += [ "tests/FontScanner_FreeTypeTest.cpp" ]
+  }
+  if (skia_use_fontations) {
+    sources_for_tests += [ "tests/FontScanner_FontationsTest.cpp" ]
+  }
 }
 
 optional("fontmgr_FontConfigInterface") {
@@ -1375,11 +1396,7 @@ optional("typeface_fontations") {
     "$root_out_dir/libfontations_ffi.a",
     "$root_out_dir/libbridge_rust_side.a",
   ]
-  sources = skia_ports_typeface_fontations_sources + [
-              "src/ports/SkFontScanner_fontations.cpp",
-              "src/ports/SkFontScanner_fontations.h",
-            ]
-
+  sources = skia_ports_typeface_fontations_sources
   sources_for_tests = [
     "tests/FontationsTest.cpp",
     "tests/FontationsFtCompTest.cpp",
@@ -2347,6 +2364,7 @@ if (skia_enable_tools) {
       ":fontmgr_android_tests",
       ":fontmgr_fontconfig_tests",
       ":fontmgr_mac_ct_tests",
+      ":fontscanner",
       ":skia",
       ":test",
       ":tool_utils",
