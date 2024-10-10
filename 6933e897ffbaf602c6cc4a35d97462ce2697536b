@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9673a892_58f98560",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8036
+      },
+      "writtenOn": "2024-10-10T16:11:35Z",
+      "side": 1,
+      "message": "PTAL another fix for an issue that was found when trying to roll the Dawn change in Skia (as it doesn\u0027t show in Chromium somehow?)",
+      "revId": "6933e897ffbaf602c6cc4a35d97462ce2697536b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
