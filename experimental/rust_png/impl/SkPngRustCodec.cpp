@@ -13,6 +13,7 @@
 
 #include "experimental/rust_png/ffi/FFI.rs.h"
 #include "include/core/SkStream.h"
+#include "include/cxx.h"
 #include "include/private/SkEncodedInfo.h"
 #include "include/private/base/SkAssert.h"
 #include "include/private/base/SkTemplates.h"
@@ -20,7 +21,6 @@
 #include "src/base/SkAutoMalloc.h"
 #include "src/codec/SkFrameHolder.h"
 #include "src/codec/SkSwizzler.h"
-#include "third_party/rust/cxx/v1/cxx.h"
 
 namespace {
 
@@ -265,15 +265,15 @@ SkCodec::Result SkPngRustCodec::readToStartOfNextFrame() {
     Result result = ToSkCodecResult(fReader->next_frame_info());
     if (result == kSuccess) {
         fFrameAtCurrentStreamPosition++;
-        if (fFrameAtCurrentStreamPosition == fFrameHolder.size()) {
+        if (static_cast<size_t>(fFrameAtCurrentStreamPosition) == fFrameHolder.size()) {
             fFrameHolder.appendNewFrame(*fReader, this->getEncodedInfo());
         }
     }
     return result;
 }
 
-SkCodec::Result SkPngRustCodec::seekToStartOfFrame(size_t index) {
-    if (index < 0 || index >= fFrameHolder.size()) {
+SkCodec::Result SkPngRustCodec::seekToStartOfFrame(int index) {
+    if (index < 0 || static_cast<size_t>(index) >= fFrameHolder.size()) {
         return kInvalidParameters;
     }
 
@@ -520,7 +520,7 @@ public:
     void markAsFullyReceived() { fFullyReceived = true; }
 
 private:
-    SkEncodedInfo::Alpha onReportedAlpha() const override { return fReportedAlpha; };
+    SkEncodedInfo::Alpha onReportedAlpha() const override { return fReportedAlpha; }
 
     const SkEncodedInfo::Alpha fReportedAlpha;
     bool fFullyReceived = false;
