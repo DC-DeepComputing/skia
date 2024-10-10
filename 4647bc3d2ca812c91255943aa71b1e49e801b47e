@@ -64,6 +64,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d1af7057_81cb63e3",
+        "filename": "WORKSPACE.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 297,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-10-10T13:24:01Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "d909018a_3017f358",
+      "range": {
+        "startLine": 297,
+        "startChar": 8,
+        "endLine": 297,
+        "endChar": 17
+      },
+      "revId": "4647bc3d2ca812c91255943aa71b1e49e801b47e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "36f1a3ea_04f83927",
@@ -77,6 +101,30 @@
       "writtenOn": "2024-10-09T23:54:07Z",
       "side": 1,
       "message": "@kjlubick - do we need to manually upload to GCS?  See also https://chat.google.com/room/AAAAQJ4NTu0/K_l-nSrpSFY",
+      "range": {
+        "startLine": 320,
+        "startChar": 0,
+        "endLine": 320,
+        "endChar": 6
+      },
+      "revId": "4647bc3d2ca812c91255943aa71b1e49e801b47e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "13a077c6_af52f85b",
+        "filename": "WORKSPACE.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 320,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-10-10T13:24:01Z",
+      "side": 1,
+      "message": "Done. I uploaded these after getting additional GCS write permissions.",
+      "parentUuid": "36f1a3ea_04f83927",
       "range": {
         "startLine": 320,
         "startChar": 0,
@@ -110,6 +158,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "13502b66_f8fb189d",
+        "filename": "experimental/rust_png/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-10-10T13:24:01Z",
+      "side": 1,
+      "message": "I think that\u0027s what we want anyway because we want the separate .gni file groups for the public and not-public files.",
+      "parentUuid": "0cd4f685_2909defb",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 1
+      },
+      "revId": "4647bc3d2ca812c91255943aa71b1e49e801b47e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "724a1f18_e61b1499",
@@ -123,6 +195,30 @@
       "writtenOn": "2024-10-09T23:54:07Z",
       "side": 1,
       "message": "Bazel build warns that `index` is `unsigned` and therefore comparison with `0` always returns false... Ooops...",
+      "range": {
+        "startLine": 276,
+        "startChar": 8,
+        "endLine": 276,
+        "endChar": 17
+      },
+      "revId": "4647bc3d2ca812c91255943aa71b1e49e801b47e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "78e0b3b7_aa14b358",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 276,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-10-10T13:24:01Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "724a1f18_e61b1499",
       "range": {
         "startLine": 276,
         "startChar": 8,
@@ -182,6 +278,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "df7d79a6_e818021f",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-10-10T13:24:01Z",
+      "side": 1,
+      "message": "Yes, `include_prefix` seems like the right tool for the job here.",
+      "parentUuid": "03b99b26_fa19220f",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 24
+      },
+      "revId": "4647bc3d2ca812c91255943aa71b1e49e801b47e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4fa0ee37_0e710c6a",
         "filename": "experimental/rust_png/impl/SkPngRustCodec.h",
         "patchSetId": 2
@@ -193,6 +313,30 @@
       "writtenOn": "2024-10-09T23:54:07Z",
       "side": 1,
       "message": "Bazel build complains about signed-vs-unsigned comparison...",
+      "range": {
+        "startLine": 73,
+        "startChar": 30,
+        "endLine": 73,
+        "endChar": 33
+      },
+      "revId": "4647bc3d2ca812c91255943aa71b1e49e801b47e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8a7c3081_9a4aec8f",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-10-10T13:24:01Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "4fa0ee37_0e710c6a",
       "range": {
         "startLine": 73,
         "startChar": 30,
@@ -216,6 +360,30 @@
       "writtenOn": "2024-10-09T23:54:07Z",
       "side": 1,
       "message": "It also appears in `buffet_png_srcs`... But hopefully this is ok?  If it works, it works?",
+      "range": {
+        "startLine": 293,
+        "startChar": 9,
+        "endLine": 293,
+        "endChar": 27
+      },
+      "revId": "4647bc3d2ca812c91255943aa71b1e49e801b47e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b648124f_ba65a66b",
+        "filename": "src/codec/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 293,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-10-10T13:24:01Z",
+      "side": 1,
+      "message": "Headers being listed in multiple `hdrs` (or even `srcs`) is fine (we do this intentionally to \"forward\" public headers, e.g. our general gpu headers being exposed in our specific gpu targets). It\u0027s when .cpp files get listed twice that we run into problems.\n\nAs you probably noticed, we need to keep it in buffet_png_srcs to export to our .gni file groups and it seems a bit overkill to add another filegroup to avoid the duplication.",
+      "parentUuid": "7613385e_89820105",
       "range": {
         "startLine": 293,
         "startChar": 9,
