@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "43d8f211_92d1929a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 21814
+      },
+      "writtenOn": "2024-10-10T10:23:12Z",
+      "side": 1,
+      "message": "Hello, we found some type conversion bugs when compiling Skia as a third-party library with gcc. This patch can solve these bugs. BTW, when Skia is used as a third-party library, it is built with CMakeLists.txt. I want to submit some patches for CMakeLists.txt, but this file is not included in Skia now. What should I do? Thanks for your help.",
+      "revId": "f097950730ec86d37b5599e9fbfc75b46a991420",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
