@@ -29,15 +29,15 @@ public:
     ~SkPDFTagTree();
 
     class Mark {
-        SkPDFTagNode *const fNode;
-        size_t const fMarkIndex;
+        SkPDFTagNode* fNode;
+        size_t fMarkIndex;
     public:
         Mark(SkPDFTagNode* node, size_t index) : fNode(node), fMarkIndex(index) {}
         Mark() : Mark(nullptr, 0) {}
-        Mark(const Mark&) = delete;
-        Mark& operator=(const Mark&) = delete;
+        Mark(const Mark&) = default;
+        Mark& operator=(const Mark&) = default;
         Mark(Mark&&) = default;
-        Mark& operator=(Mark&&) = delete;
+        Mark& operator=(Mark&&) = default;
 
         explicit operator bool() const { return fNode; }
         int id();
