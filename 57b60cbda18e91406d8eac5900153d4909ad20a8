@@ -16,6 +16,29 @@
       "message": "Hey folks, who would be the right person to look at this CL? This is part of an experiment to improve font loading in the renderer for Windows. The change will expose an IDwriteFontFace on Windows - similar to CFFontRef thats available on Mac.",
       "revId": "57b60cbda18e91406d8eac5900153d4909ad20a8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "227b7ed0_9d46e489",
+        "filename": "include/core/SkTypeface.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 335,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-10-10T17:49:32Z",
+      "side": 1,
+      "message": "I know we have some experimental/private APIs like this already, but let\u0027s not add more to SkTypeface.h. In other places where we have backend-specific code, we create a namespace like `SkTypefaces` (or maybe a nested namespace) and then put the backend-specific functions in that namespace and define them somewhere like `include/ports/SkTypeface_win.h`.\n\nWhat do you think about trying something like\n```\nnamespace SkTypefaces::DirectWrite {\nIDWriteFontFace* GetIDWriteFontFace(const SkTypeface*); \n}\n```\n?",
+      "range": {
+        "startLine": 335,
+        "startChar": 10,
+        "endLine": 335,
+        "endChar": 45
+      },
+      "revId": "57b60cbda18e91406d8eac5900153d4909ad20a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
