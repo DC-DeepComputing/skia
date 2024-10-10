@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b975c969_dff30401",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-10T22:44:28Z",
+      "side": 1,
+      "message": "@fmalita, can you PTAL and stamp the comment-only changes in `include/codec/SkCodec.h`?  See the earlier comments [here](https://skia-review.googlesource.com/c/skia/+/902941/comment/04fb0002_f0a3098d/) for additional context.",
+      "revId": "16a783a3077bc1cea9f2c7b5b811928f71339026",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
