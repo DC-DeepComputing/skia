@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "023f4ae8_675534a7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-10T18:11:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "66537191_ca4c912c",
+      "revId": "7ed60063f3056af824e8edf468fe561e834f2fe6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1b71cfe8_7196d755",
@@ -31,6 +49,24 @@
       "writtenOn": "2024-10-10T14:17:44Z",
       "side": 1,
       "message": "TODO: Ooops - I\u0027ve just realized that I didn\u0027t upload the `patches` directory... I plan to fix this later today, but let me add an unresolved comment here to help me remember.",
+      "revId": "7ed60063f3056af824e8edf468fe561e834f2fe6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e1311ea_5691f6f6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-10T18:11:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1b71cfe8_7196d755",
       "revId": "7ed60063f3056af824e8edf468fe561e834f2fe6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -107,6 +143,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f64bc163_1aab795a",
+        "filename": "experimental/rust_png/BUILD.bazel",
+        "patchSetId": 6
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-10T18:11:47Z",
+      "side": 1,
+      "message": "Yes, I should have removed the no-longer-needed visibility-related changes.  I\u0027ve removed the deps on `core_priv`, `core`, and `base`, because everything still builds after removing those deps.  So, let me for now remove the visibility-related changes and we can discuss if those dependencies may be needed after all.\n\nIIUC these dependencies are not needed, because IIUC Bazel\u0027s sandbox means that if they were needed then the build would fail.  For example, if I remove the `png_decode` dependency, then I get `./experimental/rust_png/impl/SkPngRustCodec.h:15:10: fatal error: \u0027src/codec/SkPngCodecBase.h\u0027 file not found` and if Iremove the `any_decoder` dependency then I get `./experimental/rust_png/impl/SkPngRustCodec.h:14:10: fatal error: \u0027src/codec/SkFrameHolder.h\u0027 file not found`.\n\nOTOH, maybe those dependencies are still needed, because I see that `SkPngRustCodec.cpp` includes things like `src/base/SkAutoMalloc.h` ([part of `base.hdrs`](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/base/BUILD.bazel;l\u003d106;drc\u003dd06dc084d39754cd3cb41e15fb3f92be89688c0d)) even though the `any_decoder` \u003d\u003e `base` is [declared in `deps`](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/codec/BUILD.bazel;l\u003d60;drc\u003d5fb36dd08a257623ee0738747286de09662e4591), rather than in `public_deps`.\n\nI dunno.  WDYT?",
+      "parentUuid": "d325ff41_4a335e8b",
+      "range": {
+        "startLine": 31,
+        "startChar": 15,
+        "endLine": 31,
+        "endChar": 20
+      },
+      "revId": "7ed60063f3056af824e8edf468fe561e834f2fe6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "765d6cd2_24199c2e",
         "filename": "src/core/BUILD.bazel",
         "patchSetId": 6
@@ -118,6 +178,30 @@
       "writtenOn": "2024-10-10T13:24:01Z",
       "side": 1,
       "message": "I generally don\u0027t like depending on //src/core but instead //:core because it\u0027s (1) shorter and (2) our public version so we don\u0027t have to keep adding to visibility lists.",
+      "range": {
+        "startLine": 487,
+        "startChar": 11,
+        "endLine": 487,
+        "endChar": 23
+      },
+      "revId": "7ed60063f3056af824e8edf468fe561e834f2fe6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "08a40d73_96f6f4b1",
+        "filename": "src/core/BUILD.bazel",
+        "patchSetId": 6
+      },
+      "lineNbr": 487,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-10T18:11:47Z",
+      "side": 1,
+      "message": "Thanks for catching this.  Done.\n\nI actually forgot to revert the changes here.  After uploading the initial patchset, I\u0027ve tried pruning/removing the `deps` from the new targets and it seems that everything works fine without directly depending on `core`.  And AFAIU (thanks to Bazel sandboxing) this means that there actually is no such dependency.",
+      "parentUuid": "765d6cd2_24199c2e",
       "range": {
         "startLine": 487,
         "startChar": 11,
