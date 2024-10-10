@@ -401,6 +401,7 @@ public:
                                                    fPathVerbs,
                                                    fPathPoints,
                                                    scalerMetrics)) {
+            SkASSERTF_RELEASE(false, "Path extraction failed for gid: %d", glyphId);
             return false;
         }
         *path = SkPath::Make(reinterpret_cast<const SkPoint*>(fPathPoints.data()),

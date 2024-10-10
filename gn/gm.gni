@@ -402,7 +402,8 @@ gm_sources = [
   "$_gm/transparency.cpp",
   "$_gm/trickycubicstrokes.cpp",
   "$_gm/typeface.cpp",
-  "$_gm/unpremul.cpp",
+  "$_gm/ahembounds.cpp",
+    "$_gm/unpremul.cpp",
   "$_gm/userfont.cpp",
   "$_gm/variedtext.cpp",
   "$_gm/vertices.cpp",
@@ -423,6 +424,7 @@ gl_gm_sources = [ "$_gm/rectangletexture.cpp" ]
 
 fontations_gm_sources = [
   "$_gm/fontations.cpp",
+
   "$_gm/fontations_ft_compare.cpp",
 ]
 
