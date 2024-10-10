@@ -1,4 +1,4 @@
-load("//bazel:skia_rules.bzl", "skia_filegroup", "split_srcs_and_hdrs")
+load("//bazel:skia_rules.bzl", "skia_cc_library", "skia_filegroup", "split_srcs_and_hdrs")
 
 package(
     default_applicable_licenses = ["//:license"],
@@ -52,10 +52,23 @@ skia_filegroup(
     visibility = ["//modules/skottie:__pkg__"],
 )
 
-skia_filegroup(
+skia_cc_library(
     name = "skottie_tool",
     srcs = [
         "SkottieTool.cpp",
     ],
     visibility = ["//modules/skottie:__pkg__"],
+    deps = [
+        "//:jpeg_decode_codec",
+        "//:png_decode_codec",
+        "//:webp_decode_codec",
+        "//src/codec:codec_support_priv",
+    ] + select({
+        "@platforms//os:linux": [
+            "@skia//:fontmgr_fontconfig_freetype",
+            "@skia//:freetype_support",
+        ],
+        "@platforms//os:macos": ["//:fontmgr_coretext"],
+        "//conditions:default": ["//:fontmgr_empty_freetype"],
+    }),
 )
