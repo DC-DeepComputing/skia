@@ -171,6 +171,7 @@ config("default") {
     cflags += [
       "-mlsx",
       "-Wno-switch-default",
+      "-Wno-undefined-reinterpret-cast",
     ]
   }
 
