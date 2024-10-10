@@ -118,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e758ceb_109acdb9",
+        "filename": "WORKSPACE.bazel",
+        "patchSetId": 6
+      },
+      "lineNbr": 402,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-10-10T18:43:48Z",
+      "side": 1,
+      "message": "Can you add a TODO to remove these patches after the new cargo version is released?",
+      "parentUuid": "a1b19eae_9c6ded40",
+      "range": {
+        "startLine": 402,
+        "startChar": 14,
+        "endLine": 402,
+        "endChar": 21
+      },
+      "revId": "7ed60063f3056af824e8edf468fe561e834f2fe6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d325ff41_4a335e8b",
@@ -155,6 +179,30 @@
       "side": 1,
       "message": "Yes, I should have removed the no-longer-needed visibility-related changes.  I\u0027ve removed the deps on `core_priv`, `core`, and `base`, because everything still builds after removing those deps.  So, let me for now remove the visibility-related changes and we can discuss if those dependencies may be needed after all.\n\nIIUC these dependencies are not needed, because IIUC Bazel\u0027s sandbox means that if they were needed then the build would fail.  For example, if I remove the `png_decode` dependency, then I get `./experimental/rust_png/impl/SkPngRustCodec.h:15:10: fatal error: \u0027src/codec/SkPngCodecBase.h\u0027 file not found` and if Iremove the `any_decoder` dependency then I get `./experimental/rust_png/impl/SkPngRustCodec.h:14:10: fatal error: \u0027src/codec/SkFrameHolder.h\u0027 file not found`.\n\nOTOH, maybe those dependencies are still needed, because I see that `SkPngRustCodec.cpp` includes things like `src/base/SkAutoMalloc.h` ([part of `base.hdrs`](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/base/BUILD.bazel;l\u003d106;drc\u003dd06dc084d39754cd3cb41e15fb3f92be89688c0d)) even though the `any_decoder` \u003d\u003e `base` is [declared in `deps`](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/codec/BUILD.bazel;l\u003d60;drc\u003d5fb36dd08a257623ee0738747286de09662e4591), rather than in `public_deps`.\n\nI dunno.  WDYT?",
       "parentUuid": "d325ff41_4a335e8b",
+      "range": {
+        "startLine": 31,
+        "startChar": 15,
+        "endLine": 31,
+        "endChar": 20
+      },
+      "revId": "7ed60063f3056af824e8edf468fe561e834f2fe6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4aeb7bf0_0c930671",
+        "filename": "experimental/rust_png/BUILD.bazel",
+        "patchSetId": 6
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-10-10T18:43:48Z",
+      "side": 1,
+      "message": "Bazel does handle transitive dependencies like that, however the best practice is to depend directly on the target that has the headers you need in `hdrs`. We have support built into our toolchain to check this, but it is opt-in. This is the `layering_check` feature you might have seen in some of the other `skia_cc_library` rules. I would expect if you added that to this target and tried to build, you would see errors about not depending on those targets directly.",
+      "parentUuid": "f64bc163_1aab795a",
       "range": {
         "startLine": 31,
         "startChar": 15,

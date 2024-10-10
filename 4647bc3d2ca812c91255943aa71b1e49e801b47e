@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ce589fe_f2324771",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-10-10T18:43:48Z",
+      "side": 1,
+      "message": "Try adding it to https://github.com/google/skia/blob/7c2b4068c0962a08e27b44a86822a397ecb00341/tools/BUILD.bazel#L308-L390",
+      "parentUuid": "82e48f45_0a3c7863",
+      "range": {
+        "startLine": 13,
+        "startChar": 58,
+        "endLine": 14,
+        "endChar": 13
+      },
+      "revId": "4647bc3d2ca812c91255943aa71b1e49e801b47e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "bb94afa3_5aa1b3aa",
