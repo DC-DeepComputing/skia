@@ -74,6 +74,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "2e25acb1_762cffa2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-10T21:28:22Z",
+      "side": 1,
+      "message": "Ack - thanks!",
+      "parentUuid": "0ce589fe_f2324771",
+      "range": {
+        "startLine": 13,
+        "startChar": 58,
+        "endLine": 14,
+        "endChar": 13
+      },
+      "revId": "4647bc3d2ca812c91255943aa71b1e49e801b47e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "bb94afa3_5aa1b3aa",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 2

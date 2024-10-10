@@ -213,6 +213,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "560998d4_0921df04",
+        "filename": "experimental/rust_png/BUILD.bazel",
+        "patchSetId": 6
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-10T21:28:22Z",
+      "side": 1,
+      "message": "\u003e Bazel does handle transitive dependencies like that, however the best practice is to depend directly on the target that has the headers you need in `hdrs`. We have support built into our toolchain to check this, but it is opt-in. This is the `layering_check` feature you might have seen in some of the other `skia_cc_library` rules. I would expect if you added that to this target and tried to build, you would see errors about not depending on those targets directly.\n\nNice!  Yes, I think I do want `layering_check`.  It does complain about missing dependencies as-is.  Let me fix this in the latest patchset.",
+      "parentUuid": "4aeb7bf0_0c930671",
+      "range": {
+        "startLine": 31,
+        "startChar": 15,
+        "endLine": 31,
+        "endChar": 20
+      },
+      "revId": "7ed60063f3056af824e8edf468fe561e834f2fe6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "765d6cd2_24199c2e",
