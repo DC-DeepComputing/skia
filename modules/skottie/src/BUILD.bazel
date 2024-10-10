@@ -1,4 +1,4 @@
-load("//bazel:skia_rules.bzl", "skia_filegroup", "split_srcs_and_hdrs")
+load("//bazel:skia_rules.bzl", "skia_cc_library", "skia_filegroup", "split_srcs_and_hdrs")
 
 package(
     default_applicable_licenses = ["//:license"],
