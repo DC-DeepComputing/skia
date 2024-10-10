@@ -226,6 +226,10 @@ void SkPDFTagTree::Move(SkPDF::StructureElementNode& srcNode,
     dstNode->fAttributeNodeIds = std::move(srcNode.fAttributes.fNodeIds);
 }
 
+int SkPDFTagTree::Mark::nodeId() {
+    return fNode ? fNode->fNodeId : -1;
+}
+
 int SkPDFTagTree::Mark::id() {
     return fNode ? fNode->fMarkedContent[fMarkIndex].fMarkId : -1;
 }
