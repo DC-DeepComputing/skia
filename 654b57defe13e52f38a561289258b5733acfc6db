@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0e3f60b_b3c936dc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-10-11T13:16:45Z",
+      "side": 1,
+      "message": "LGTM but needs OWNERS approval from bungeman@",
+      "revId": "654b57defe13e52f38a561289258b5733acfc6db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
