@@ -110,6 +110,14 @@ public:
      */
     int getFrameCount() const { return fFrameCount; }
 
+    /**
+     *  Change the filter mode.
+     *
+     *  By default, the image will apply bilinear filtering when drawing in the
+     *  OnDraw method.
+     */
+    void setFilterMode(SkFilterMode filterMode);
+
 protected:
     SkRect onGetBounds() override;
     void onDraw(SkCanvas*) override;
@@ -152,6 +160,7 @@ private:
     Frame                           fRestoreFrame;
     int                             fRepetitionCount;
     int                             fRepetitionsCompleted;
+    SkFilterMode                    fFilterMode = SkFilterMode::kLinear;
 
     SkAnimatedImage(std::unique_ptr<SkAndroidCodec>, const SkImageInfo& requestedInfo,
             SkIRect cropRect, sk_sp<SkPicture> postProcess);
