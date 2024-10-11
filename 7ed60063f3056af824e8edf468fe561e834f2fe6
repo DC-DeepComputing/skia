@@ -166,6 +166,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "560d656b_32e7a228",
+        "filename": "WORKSPACE.bazel",
+        "patchSetId": 6
+      },
+      "lineNbr": 402,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-11T16:40:44Z",
+      "side": 1,
+      "message": "Done.  FWIW, I\u0027ve just written `TODO(lukasza, kjlubick): ...` because there is no bug specific for this, and my initial thought was that opening a bug seems like an overkill for this.  Please shout if you\u0027d like me to open a new bug, or associate an existing bug with this TODO.",
+      "parentUuid": "e4538719_bb243dae",
+      "range": {
+        "startLine": 402,
+        "startChar": 14,
+        "endLine": 402,
+        "endChar": 21
+      },
+      "revId": "7ed60063f3056af824e8edf468fe561e834f2fe6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d325ff41_4a335e8b",

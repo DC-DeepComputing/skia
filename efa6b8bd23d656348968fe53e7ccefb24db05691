@@ -22,6 +22,30 @@
       },
       "revId": "efa6b8bd23d656348968fe53e7ccefb24db05691",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9f48a10e_12156322",
+        "filename": "experimental/rust_png/BUILD.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-11T16:40:44Z",
+      "side": 1,
+      "message": "Ack.  Sounds good.  Let me just yank think line for now, and I can reintroduce it when actually adding this target as a dep of the full build in a follow-up CL.",
+      "parentUuid": "aecfdd23_ce06b43f",
+      "range": {
+        "startLine": 28,
+        "startChar": 4,
+        "endLine": 28,
+        "endChar": 14
+      },
+      "revId": "efa6b8bd23d656348968fe53e7ccefb24db05691",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
