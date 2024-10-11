@@ -190,6 +190,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd9c1d1e_14fc848b",
+        "filename": "WORKSPACE.bazel",
+        "patchSetId": 6
+      },
+      "lineNbr": 402,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-10-11T16:43:05Z",
+      "side": 1,
+      "message": "Yep, that\u0027s fine by me.",
+      "parentUuid": "560d656b_32e7a228",
+      "range": {
+        "startLine": 402,
+        "startChar": 14,
+        "endLine": 402,
+        "endChar": 21
+      },
+      "revId": "7ed60063f3056af824e8edf468fe561e834f2fe6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d325ff41_4a335e8b",
