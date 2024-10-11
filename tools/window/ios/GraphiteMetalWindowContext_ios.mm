@@ -28,7 +28,7 @@ namespace {
 
 class GraphiteMetalWindowContext_ios : public GraphiteMetalWindowContext {
 public:
-    GraphiteMetalWindowContext_ios(const IOSWindowInfo&, const DisplayParams&);
+    GraphiteMetalWindowContext_ios(const IOSWindowInfo&, std::unique_ptr<const DisplayParams>);
 
     ~GraphiteMetalWindowContext_ios() override;
 
@@ -44,8 +44,8 @@ private:
 };
 
 GraphiteMetalWindowContext_ios::GraphiteMetalWindowContext_ios(const IOSWindowInfo& info,
-                                                               const DisplayParams& params)
-    : GraphiteMetalWindowContext(params)
+                                                               std::unique_ptr<const DisplayParams> params)
+    : GraphiteMetalWindowContext(std::move(params))
     , fWindow(info.fWindow)
     , fViewController(info.fViewController) {
 
@@ -97,7 +97,7 @@ void GraphiteMetalWindowContext_ios::resize(int w, int h) {
 namespace skwindow {
 
 std::unique_ptr<WindowContext> MakeGraphiteMetalForIOS(const IOSWindowInfo& info,
-                                                       const DisplayParams& params) {
+                                                       std::unique_ptr<const DisplayParams> params) {
     std::unique_ptr<WindowContext> ctx(new GraphiteMetalWindowContext_ios(info, params));
     if (!ctx->isValid()) {
         return nullptr;
