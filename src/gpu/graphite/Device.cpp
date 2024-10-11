@@ -10,6 +10,7 @@
 #include "include/gpu/graphite/Recorder.h"
 #include "include/gpu/graphite/Recording.h"
 #include "include/gpu/graphite/Surface.h"
+#include "src/core/SkPathPriv.h"
 #include "src/gpu/AtlasTypes.h"
 #include "src/gpu/BlurUtils.h"
 #include "src/gpu/SkBackingFit.h"
@@ -887,6 +888,16 @@ void Device::drawOval(const SkRect& oval, const SkPaint& paint) {
         // TODO: This has wasted effort from the SkCanvas level since it instead converts rrects
         // that happen to be ovals into this, only for us to go right back to rrect.
         this->drawRRect(SkRRect::MakeOval(oval), paint);
+    }
+}
+
+void Device::drawArc(const SkArc& arc, const SkPaint& paint) {
+    if (paint.getStyle() == SkPaint::kFill_Style && !paint.getPathEffect() &&
+        SkScalarAbs(arc.sweepAngle()) >= 360.f) {
+        this->drawRRect(SkRRect::MakeOval(arc.oval()), paint);
+    } else {
+        this->drawGeometry(this->localToDeviceTransform(), Geometry(Shape(arc)),
+                           paint, SkStrokeRec(paint));
     }
 }
 
