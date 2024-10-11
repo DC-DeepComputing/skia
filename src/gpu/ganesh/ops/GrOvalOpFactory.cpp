@@ -115,12 +115,10 @@ static inline VertexWriter::TriStrip<float> origin_centered_tri_strip(float x, f
 
 class CircleGeometryProcessor : public GrGeometryProcessor {
 public:
-    static GrGeometryProcessor* Make(SkArenaAlloc* arena, bool stroke, bool clipPlane,
-                                     bool isectPlane, bool unionPlane, bool roundCaps,
-                                     bool wideColor, const SkMatrix& localMatrix) {
+    static GrGeometryProcessor* Make(SkArenaAlloc* arena, bool stroke, bool arc,
+                                     bool roundCaps, bool wideColor, const SkMatrix& localMatrix) {
         return arena->make([&](void* ptr) {
-            return new (ptr) CircleGeometryProcessor(stroke, clipPlane, isectPlane, unionPlane,
-                                                     roundCaps, wideColor, localMatrix);
+            return new (ptr) CircleGeometryProcessor(stroke, arc, roundCaps, wideColor, localMatrix);
         });
     }
 
@@ -128,9 +126,7 @@ public:
 
     void addToKey(const GrShaderCaps& caps, skgpu::KeyBuilder* b) const override {
         b->addBool(fStroke,                             "stroked"        );
-        b->addBool(fInClipPlane.isInitialized(),        "clipPlane"      );
-        b->addBool(fInIsectPlane.isInitialized(),       "isectPlane"     );
-        b->addBool(fInUnionPlane.isInitialized(),       "unionPlane"     );
+        b->addBool(fInClipPlane.isInitialized(),        "arc"            );
         b->addBool(fInRoundCapCenters.isInitialized(),  "roundCapCenters");
         b->addBits(ProgramImpl::kMatrixKeyBits,
                    ProgramImpl::ComputeMatrixKey(caps, fLocalMatrix),
@@ -142,8 +138,8 @@ public:
     }
 
 private:
-    CircleGeometryProcessor(bool stroke, bool clipPlane, bool isectPlane, bool unionPlane,
-                            bool roundCaps, bool wideColor, const SkMatrix& localMatrix)
+    CircleGeometryProcessor(bool stroke, bool arc, bool roundCaps, bool wideColor,
+                            const SkMatrix& localMatrix)
             : INHERITED(kCircleGeometryProcessor_ClassID)
             , fLocalMatrix(localMatrix)
             , fStroke(stroke) {
@@ -151,18 +147,14 @@ private:
         fInColor = MakeColorAttribute("inColor", wideColor);
         fInCircleEdge = {"inCircleEdge", kFloat4_GrVertexAttribType, SkSLType::kFloat4};
 
-        if (clipPlane) {
+        if (arc) {
             fInClipPlane = {"inClipPlane", kFloat3_GrVertexAttribType, SkSLType::kHalf3};
-        }
-        if (isectPlane) {
             fInIsectPlane = {"inIsectPlane", kFloat3_GrVertexAttribType, SkSLType::kHalf3};
-        }
-        if (unionPlane) {
             fInUnionPlane = {"inUnionPlane", kFloat3_GrVertexAttribType, SkSLType::kHalf3};
         }
         if (roundCaps) {
             SkASSERT(stroke);
-            SkASSERT(clipPlane);
+            SkASSERT(arc);
             fInRoundCapCenters =
                     {"inRoundCapCenters", kFloat4_GrVertexAttribType, SkSLType::kFloat4};
         }
@@ -247,19 +239,17 @@ private:
             }
 
             if (cgp.fInClipPlane.isInitialized()) {
+                SkASSERT(cgp.fInIsectPlane.isInitialized());
+                SkASSERT(cgp.fInUnionPlane.isInitialized());
                 fragBuilder->codeAppend(
                         "half clip = half(saturate(circleEdge.z * dot(circleEdge.xy, "
-                        "clipPlane.xy) + clipPlane.z));");
-                if (cgp.fInIsectPlane.isInitialized()) {
-                    fragBuilder->codeAppend(
-                            "clip *= half(saturate(circleEdge.z * dot(circleEdge.xy, "
-                            "isectPlane.xy) + isectPlane.z));");
-                }
-                if (cgp.fInUnionPlane.isInitialized()) {
-                    fragBuilder->codeAppend(
-                            "clip = saturate(clip + half(saturate(circleEdge.z * dot(circleEdge.xy,"
-                            " unionPlane.xy) + unionPlane.z)));");
-                }
+                                                                     "clipPlane.xy) + clipPlane.z));");
+                fragBuilder->codeAppend(
+                        "clip *= half(saturate(circleEdge.z * dot(circleEdge.xy, "
+                                                                 "isectPlane.xy) + isectPlane.z));");
+                fragBuilder->codeAppend(
+                        "clip = saturate(clip + half(saturate(circleEdge.z * dot(circleEdge.xy,"
+                                                                               " unionPlane.xy) + unionPlane.z)));");
                 fragBuilder->codeAppend("edgeAlpha *= clip;");
                 if (cgp.fInRoundCapCenters.isInitialized()) {
                     // We compute coverage of the round caps as circles at the butt caps produced
@@ -306,12 +296,9 @@ GrGeometryProcessor* CircleGeometryProcessor::TestCreate(GrProcessorTestData* d)
     bool stroke = d->fRandom->nextBool();
     bool roundCaps = stroke ? d->fRandom->nextBool() : false;
     bool wideColor = d->fRandom->nextBool();
-    bool clipPlane = d->fRandom->nextBool();
-    bool isectPlane = d->fRandom->nextBool();
-    bool unionPlane = d->fRandom->nextBool();
+    bool arc = d->fRandom->nextBool();
     const SkMatrix& matrix = GrTest::TestMatrix(d->fRandom);
-    return CircleGeometryProcessor::Make(d->allocator(), stroke, clipPlane, isectPlane,
-                                         unionPlane, roundCaps, wideColor, matrix);
+    return CircleGeometryProcessor::Make(d->allocator(), stroke, arc, roundCaps, wideColor, matrix);
 }
 #endif
 
@@ -1186,7 +1173,7 @@ public:
                     std::swap(norm0, norm1);
                 }
                 norm0.negate();
-                fClipPlane = true;
+                fArc = true;
                 if (absSweep > SK_ScalarPI) {
                     fCircles.emplace_back(Circle{
                             color,
@@ -1198,8 +1185,6 @@ public:
                             {roundCaps[0], roundCaps[1]},
                             devBounds,
                             stroked});
-                    fClipPlaneIsect = false;
-                    fClipPlaneUnion = true;
                 } else {
                     fCircles.emplace_back(Circle{
                             color,
@@ -1211,8 +1196,6 @@ public:
                             {roundCaps[0], roundCaps[1]},
                             devBounds,
                             stroked});
-                    fClipPlaneIsect = true;
-                    fClipPlaneUnion = false;
                 }
             } else {
                 // We clip to a secant of the original circle.
@@ -1235,9 +1218,7 @@ public:
                                {roundCaps[0], roundCaps[1]},
                                devBounds,
                                stroked});
-                fClipPlane = true;
-                fClipPlaneIsect = false;
-                fClipPlaneUnion = false;
+                fArc = true;
             }
         } else {
             fCircles.emplace_back(
@@ -1250,9 +1231,7 @@ public:
                            {kUnusedRoundCaps[0], kUnusedRoundCaps[1]},
                            devBounds,
                            stroked});
-            fClipPlane = false;
-            fClipPlaneIsect = false;
-            fClipPlaneUnion = false;
+            fArc = false;
         }
         // Use the original radius and stroke radius for the bounds so that it does not include the
         // AA bloat.
@@ -1303,8 +1282,7 @@ private:
             return;
         }
 
-        GrGeometryProcessor* gp = CircleGeometryProcessor::Make(arena, !fAllFill, fClipPlane,
-                                                                fClipPlaneIsect, fClipPlaneUnion,
+        GrGeometryProcessor* gp = CircleGeometryProcessor::Make(arena, !fAllFill, fArc,
                                                                 fRoundCaps, fWideColor,
                                                                 localMatrix);
 
@@ -1361,7 +1339,7 @@ private:
 
             SkVector geoClipPlane = { 0, 0 };
             SkScalar offsetClipDist = SK_Scalar1;
-            if (!circle.fStroked && fClipPlane && fClipPlaneIsect &&
+            if (!circle.fStroked && fArc &&
                     (circle.fClipPlane[0] * circle.fIsectPlane[0] +
                      circle.fClipPlane[1] * circle.fIsectPlane[1]) < 0.0f) {
                 // Acute arc. Clip the vertices to the perpendicular half-plane. We've constructed
@@ -1383,13 +1361,9 @@ private:
                          << color
                          << offset
                          << radii;
-                if (fClipPlane) {
+                if (fArc) {
                     vertices << circle.fClipPlane;
-                }
-                if (fClipPlaneIsect) {
                     vertices << circle.fIsectPlane;
-                }
-                if (fClipPlaneUnion) {
                     vertices << circle.fUnionPlane;
                 }
                 if (fRoundCaps) {
@@ -1405,13 +1379,9 @@ private:
                              << color
                              << kOctagonInner[i] * innerRadius
                              << radii;
-                    if (fClipPlane) {
+                    if (fArc) {
                         vertices << circle.fClipPlane;
-                    }
-                    if (fClipPlaneIsect) {
                         vertices << circle.fIsectPlane;
-                    }
-                    if (fClipPlaneUnion) {
                         vertices << circle.fUnionPlane;
                     }
                     if (fRoundCaps) {
@@ -1421,13 +1391,9 @@ private:
             } else {
                 // filled
                 vertices << center << color << SkPoint::Make(0, 0) << radii;
-                if (fClipPlane) {
+                if (fArc) {
                     vertices << circle.fClipPlane;
-                }
-                if (fClipPlaneIsect) {
                     vertices << circle.fIsectPlane;
-                }
-                if (fClipPlaneUnion) {
                     vertices << circle.fUnionPlane;
                 }
                 if (fRoundCaps) {
@@ -1479,9 +1445,7 @@ private:
 
         // Because we've set up the ops that don't use the planes with noop values
         // we can just accumulate used planes by later ops.
-        fClipPlane |= that->fClipPlane;
-        fClipPlaneIsect |= that->fClipPlaneIsect;
-        fClipPlaneUnion |= that->fClipPlaneUnion;
+        fArc |= that->fArc;
         fRoundCaps |= that->fRoundCaps;
         fWideColor |= that->fWideColor;
 
@@ -1527,9 +1491,7 @@ private:
     int fVertCount;
     int fIndexCount;
     bool fAllFill;
-    bool fClipPlane;
-    bool fClipPlaneIsect;
-    bool fClipPlaneUnion;
+    bool fArc;
     bool fRoundCaps;
     bool fWideColor;
 
@@ -2713,7 +2675,7 @@ private:
         }
 
         GrGeometryProcessor* gp = CircleGeometryProcessor::Make(arena, !fAllFill,
-                                                                false, false, false, false,
+                                                                false, false,
                                                                 fWideColor, localMatrix);
 
         fProgramInfo = fHelper.createProgramInfo(caps, arena, writeView, usesMSAASurface,
