@@ -144,6 +144,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e4538719_bb243dae",
+        "filename": "WORKSPACE.bazel",
+        "patchSetId": 6
+      },
+      "lineNbr": 402,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-10-11T13:09:03Z",
+      "side": 1,
+      "message": "Meant to mark this as unresolved.",
+      "parentUuid": "2e758ceb_109acdb9",
+      "range": {
+        "startLine": 402,
+        "startChar": 14,
+        "endLine": 402,
+        "endChar": 21
+      },
+      "revId": "7ed60063f3056af824e8edf468fe561e834f2fe6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d325ff41_4a335e8b",
         "filename": "experimental/rust_png/BUILD.bazel",
         "patchSetId": 6

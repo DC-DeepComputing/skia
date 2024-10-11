@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aecfdd23_ce06b43f",
+        "filename": "experimental/rust_png/BUILD.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-10-11T13:09:03Z",
+      "side": 1,
+      "message": "I\u0027d prefer not to make any rule be publicly visible except those in //:BUILD.bazel (and the generated BUILD.bazel files we use for our third_party deps)",
+      "range": {
+        "startLine": 28,
+        "startChar": 4,
+        "endLine": 28,
+        "endChar": 14
+      },
+      "revId": "efa6b8bd23d656348968fe53e7ccefb24db05691",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
