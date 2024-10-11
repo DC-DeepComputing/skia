@@ -1,0 +1,56 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85c0935f_12fdd458",
+        "filename": "include/android/SkAnimatedImage.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-10-11T20:24:24Z",
+      "side": 1,
+      "message": "Would it make sense to allow setting `SkSamplingOptions` instead, for even more control over resampling?\n\nAlso, do we need to support changing this on the fly, or would a constructor/factory param be sufficient?",
+      "revId": "d66c0933f2b462eb263a4cde06e327134c6c8a80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a22a8a5_26409424",
+        "filename": "src/android/SkAnimatedImage.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 392,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-10-11T20:24:24Z",
+      "side": 1,
+      "message": "nit: 4 space indent",
+      "fixSuggestions": [
+        {
+          "fixId": "7a730780_75993e0d",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/android/SkAnimatedImage.cpp",
+              "range": {
+                "startLine": 392,
+                "startChar": 0,
+                "endLine": 393,
+                "endChar": 0
+              },
+              "replacement": "    fFilterMode \u003d filterMode;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "d66c0933f2b462eb263a4cde06e327134c6c8a80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
