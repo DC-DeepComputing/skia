@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f463764_02cff4a1",
+        "filename": "include/android/SkAnimatedImage.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-10-14T18:15:03Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "ff2963ce_7b14c1e7",
+      "revId": "d66c0933f2b462eb263a4cde06e327134c6c8a80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2a22a8a5_26409424",
