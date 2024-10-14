@@ -263,7 +263,7 @@ sk_sp<DawnTexture> DawnResourceProvider::findOrCreateDiscardableMSAALoadTexture(
     return sk_sp<DawnTexture>(static_cast<DawnTexture*>(texture.release()));
 }
 
-sk_sp<GraphicsPipeline> DawnResourceProvider::createGraphicsPipeline(
+sk_sp<GraphicsPipeline> DawnResourceProvider::onCreateGraphicsPipeline(
         const RuntimeEffectDictionary* runtimeDict,
         const GraphicsPipelineDesc& pipelineDesc,
         const RenderPassDesc& renderPassDesc) {
