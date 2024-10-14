@@ -90754,6 +90754,7 @@
         "skia/include/config",
         "skia/requirements.txt",
         "skia/toolchain",
+        "skia/experimental/rust_png",
         "skia/infra/bots/BUILD.bazel",
         "skia/infra/bots/build_task_drivers.sh",
         "skia/infra/bots/task_drivers"
