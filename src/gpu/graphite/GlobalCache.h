@@ -56,6 +56,15 @@ public:
     void forEachGraphicsPipeline(
             const std::function<void(const UniqueKey&, const GraphicsPipeline*)>& fn)
             SK_EXCLUDES(fSpinLock);
+
+    struct Stats {
+        int fCacheHits = 0;
+        int fCacheMisses = 0;
+        int fCacheAdditions = 0;
+        int fRaces = 0;
+    };
+
+    Stats getStats() const SK_EXCLUDES(fSpinLock);
 #endif
 
     // Find and add operations for ComputePipelines, with the same pattern as GraphicsPipelines.
@@ -87,6 +96,10 @@ private:
     ComputePipelineCache  fComputePipelineCache  SK_GUARDED_BY(fSpinLock);
 
     skia_private::TArray<sk_sp<Resource>> fStaticResource SK_GUARDED_BY(fSpinLock);
+
+#if defined(GPU_TEST_UTILS)
+    Stats fStats SK_GUARDED_BY(fSpinLock);
+#endif
 };
 
 }  // namespace skgpu::graphite
