@@ -11,6 +11,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/private/base/SkMutex.h"
 #include "include/private/base/SkTArray.h"
+#include "src/base/SkSpinlock.h"
 #include "src/base/SkTDPQueue.h"
 #include "src/core/SkTHash.h"
 #include "src/core/SkTMultiMap.h"
@@ -53,10 +54,10 @@ public:
         return fPurgeableQueue.count() + fNonpurgeableResources.size();
     }
 
-    void insertResource(Resource*);
+    void insertResource1(Resource*) SK_EXCLUDES(fSpinLock);
 
     // Find a resource that matches a key.
-    Resource* findAndRefResource(const GraphiteResourceKey& key, skgpu::Budgeted);
+    Resource* findAndRefResource1(const GraphiteResourceKey&, skgpu::Budgeted) SK_EXCLUDES(fSpinLock);
 
     // This is a thread safe call. If it fails the ResourceCache is no longer valid and the
     // Resource should clean itself up if it is the last ref.
@@ -109,6 +110,8 @@ public:
     ProxyCache* proxyCache() { return fProxyCache.get(); }
 
 private:
+    mutable SkSpinlock fSpinLock;
+
     ResourceCache(SingleOwner*, uint32_t recorderID, size_t maxBytes);
 
     // All these private functions are not meant to be thread safe. We don't check for is single
@@ -169,7 +172,7 @@ private:
 
     SkDEBUGCODE(int fCount = 0;)
 
-    ResourceMap fResourceMap;
+    ResourceMap fResourceMap1 SK_GUARDED_BY(fSpinLock);
 
     // Our budget
     size_t fMaxBytes;

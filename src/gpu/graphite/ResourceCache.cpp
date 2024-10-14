@@ -79,8 +79,9 @@ void ResourceCache::shutdown() {
     TRACE_EVENT_INSTANT0("skia.gpu.cache", TRACE_FUNC, TRACE_EVENT_SCOPE_THREAD);
 }
 
-void ResourceCache::insertResource(Resource* resource) {
-    ASSERT_SINGLE_OWNER
+void ResourceCache::insertResource1(Resource* resource) {
+    SkAutoSpinlock lock{fSpinLock};
+
     SkASSERT(resource);
     SkASSERT(!this->isInCache(resource));
     SkASSERT(!resource->wasDestroyed());
@@ -113,7 +114,7 @@ void ResourceCache::insertResource(Resource* resource) {
     SkDEBUGCODE(fCount++;)
 
     if (resource->key().shareable() == Shareable::kYes) {
-        fResourceMap.insert(resource->key(), resource);
+        fResourceMap1.insert(resource->key(), resource);
     }
 
     if (resource->budgeted() == skgpu::Budgeted::kYes) {
@@ -123,19 +124,19 @@ void ResourceCache::insertResource(Resource* resource) {
     this->purgeAsNeeded();
 }
 
-Resource* ResourceCache::findAndRefResource(const GraphiteResourceKey& key,
+Resource* ResourceCache::findAndRefResource1(const GraphiteResourceKey& key,
                                             skgpu::Budgeted budgeted) {
-    ASSERT_SINGLE_OWNER
+    SkAutoSpinlock lock{fSpinLock};
 
     SkASSERT(key.isValid());
 
-    Resource* resource = fResourceMap.find(key);
+    Resource* resource = fResourceMap1.find(key);
     if (!resource) {
         // The main reason to call processReturnedResources in this call is to see if there are any
         // resources that we could match with the key. However, there is overhead into calling it.
         // So we only call it if we first failed to find a matching resource.
         if (this->processReturnedResources()) {
-            resource = fResourceMap.find(key);
+            resource = fResourceMap1.find(key);
         }
     }
     if (resource) {
@@ -144,7 +145,7 @@ Resource* ResourceCache::findAndRefResource(const GraphiteResourceKey& key,
         if (key.shareable() == Shareable::kNo) {
             // If a resource is not shareable (i.e. scratch resource) then we remove it from the map
             // so that it isn't found again.
-            fResourceMap.remove(key, resource);
+            fResourceMap1.remove(key, resource);
             if (budgeted == skgpu::Budgeted::kNo) {
                 resource->makeUnbudgeted();
                 fBudgetedBytes -= resource->gpuMemorySize();
