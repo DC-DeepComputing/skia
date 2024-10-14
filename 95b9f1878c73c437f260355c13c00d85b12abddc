@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4517255d_4d2a2093",
+        "filename": "modules/skcms/src/skcms_internals.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-10-14T12:52:38Z",
+      "side": 1,
+      "message": "SkCMS is in a standalone repo: https://skia.googlesource.com/skcms.git/\n\nYou\u0027ll have to land this portion of your change there, and it should get rolled into Skia automatically.",
+      "revId": "95b9f1878c73c437f260355c13c00d85b12abddc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
