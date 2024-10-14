@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c43ce8f_60fc959c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-14T20:30:38Z",
+      "side": 1,
+      "message": "@kjlubick, the latest patchset passes CQ - do you want to take one last look?",
+      "revId": "2f224f6a098d73e2b4ec0a0c39208fbd541c839b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
