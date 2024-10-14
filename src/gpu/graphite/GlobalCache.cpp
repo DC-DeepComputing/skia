@@ -38,6 +38,9 @@ sk_sp<GraphicsPipeline> GlobalCache::findGraphicsPipeline(const UniqueKey& key) 
     SkAutoSpinlock lock{fSpinLock};
 
     sk_sp<GraphicsPipeline>* entry = fGraphicsPipelineCache.find(key);
+#if defined(GPU_TEST_UTILS)
+    if (entry) { ++fStats.fCacheHits; } else { ++fStats.fCacheMisses; }
+#endif
     return entry ? *entry : nullptr;
 }
 
@@ -50,8 +53,17 @@ sk_sp<GraphicsPipeline> GlobalCache::addGraphicsPipeline(const UniqueKey& key,
         // No equivalent pipeline was stored in the cache between a previous call to
         // findGraphicsPipeline() that returned null (triggering the pipeline creation) and this
         // later adding to the cache.
+#if defined(GPU_TEST_UTILS)
+        ++fStats.fCacheAdditions;
+#endif
         entry = fGraphicsPipelineCache.insert(key, std::move(pipeline));
-    } // else there was a race creating the same pipeline and this thread lost, so return the winner
+    }
+#if defined(GPU_TEST_UTILS)
+    else {
+        // else there was a race creating the same pipeline and this thread lost, so return the winner
+        ++fStats.fRaces;
+    }
+#endif
     return *entry;
 }
 
@@ -75,6 +87,12 @@ void GlobalCache::forEachGraphicsPipeline(
     fGraphicsPipelineCache.foreach([&](const UniqueKey* k, const sk_sp<GraphicsPipeline>* v) {
         fn(*k, v->get());
     });
+}
+
+GlobalCache::Stats GlobalCache::getStats() const {
+    SkAutoSpinlock lock{fSpinLock};
+
+    return fStats;
 }
 #endif // defined(GPU_TEST_UTILS)
 
