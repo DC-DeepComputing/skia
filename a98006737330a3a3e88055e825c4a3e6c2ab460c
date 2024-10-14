@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "99de64de_cf458924",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-14T15:57:53Z",
+      "side": 1,
+      "message": "For inspecting something like this for debugging, there is `TypefaceSlide.cpp` aka `Typeface Viewer` in `viewer` which does this kind of thing. You really want to put the glyph on top of a fill and not a hairline stroke of the bounds as hairlines can be interesting.",
+      "revId": "a98006737330a3a3e88055e825c4a3e6c2ab460c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4b6eec9_916d9f26",
+        "filename": "gm/fontations.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-14T15:57:53Z",
+      "side": 1,
+      "message": "This ODR violation is so distracting to me that it\u0027s difficult to look at this patchset. Also, not sure why these are in the `skiagm` namespace allowing the ODR issue to happen at all? (Only the `DEF_GM` should probably be in the `skiagm` namespace, I think.)",
+      "range": {
+        "startLine": 82,
+        "startChar": 6,
+        "endLine": 82,
+        "endChar": 28
+      },
+      "revId": "a98006737330a3a3e88055e825c4a3e6c2ab460c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
