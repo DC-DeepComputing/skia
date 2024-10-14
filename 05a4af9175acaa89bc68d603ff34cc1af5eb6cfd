@@ -16,6 +16,23 @@
       "message": "PTAL, thanks!",
       "revId": "05a4af9175acaa89bc68d603ff34cc1af5eb6cfd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "051acc56_24d12a43",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-10-14T15:34:30Z",
+      "side": 1,
+      "message": "Thanks! Adding Jim to get a second +1 for non-Googler CL.",
+      "revId": "05a4af9175acaa89bc68d603ff34cc1af5eb6cfd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
