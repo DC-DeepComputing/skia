@@ -16,6 +16,24 @@
       "message": "@kjlubick, can you PTAL at issues that came up when running this CL through CQ?  In particular, can you please help me with the following questions?:\n\n* It seems that some bots invoke `bazelisk ... //infra/bots:all_task_drivers ... --config\u003dlinux_rbe` which fails (you can see a failed task [here](https://chromium-swarm.appspot.com/task?id\u003d6c95604b2aa22710)) with: `Unable to load package for //experimental/rust_png/ffi:Cargo.lock: BUILD file not found in any of the following directories. Add a BUILD file to a directory to mark it as a package`.\n    - Should I add a `BUILD` file next to the already existing `BUILD.bazel` file?  Or maybe introducing `bazel/external/png` would somehow help here (not sure exactly how, but I don\u0027t see `BUILD` under `bazel/external/cxx` nor under `bazel/external/fontations`).\n    - Should I be able to repro this problem locally?  When I try using `--config\u003dlinux_rbe` then I get `Permission \"remotebuildexecution.blobs.get\" denied on resource \"projects/skia-rbe/...`\n* In general: do we expect that `experimental/rust_png` will be covered by CQ even though this CL doesn\u0027t yet make it a dependency of any other target?  FWIW I get `Empty results` from `bazelisk query \"somepath(//infra/bots:all_task_drivers, //experimental/rust_png)\"`",
       "revId": "732f1533492790d3ec970ba326d758b8ba1c8ed2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1abcd6f3_89ab540a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-10-14T20:34:17Z",
+      "side": 1,
+      "message": "One final thought about your query - I don\u0027t believe our task drivers directly depend on much of anything in Skia because they just invoke `bazelisk build` commands as part of our testing.",
+      "parentUuid": "1a14535a_3bca31de",
+      "revId": "732f1533492790d3ec970ba326d758b8ba1c8ed2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
