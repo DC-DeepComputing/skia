@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ff2963ce_7b14c1e7",
+        "filename": "include/android/SkAnimatedImage.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-10-14T13:26:19Z",
+      "side": 1,
+      "message": "The public Android API only allows you to set the filter mode (https://developer.android.com/reference/android/graphics/drawable/Drawable#setFilterBitmap(boolean)) so I think it makes sense to only allow for that. \nAdditionally, this also applies to changing it on the fly as the Android API supports that.",
+      "parentUuid": "85c0935f_12fdd458",
+      "revId": "d66c0933f2b462eb263a4cde06e327134c6c8a80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2a22a8a5_26409424",
         "filename": "src/android/SkAnimatedImage.cpp",
         "patchSetId": 9
@@ -49,6 +67,24 @@
           ]
         }
       ],
+      "revId": "d66c0933f2b462eb263a4cde06e327134c6c8a80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ba60d75_516986ba",
+        "filename": "src/android/SkAnimatedImage.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 392,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-10-14T13:26:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2a22a8a5_26409424",
       "revId": "d66c0933f2b462eb263a4cde06e327134c6c8a80",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
