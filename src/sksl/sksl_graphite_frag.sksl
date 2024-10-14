@@ -1544,6 +1544,14 @@ $pure half4 per_edge_aa_quad_coverage_fn(float4 coords,
     return half4(saturate(c));
 }
 
+$pure half4 circular_arc_coverage_fn(float4 circleEdge,
+                                     float3 clipPlane,
+                                     float3 isectPlane,
+                                     float3 unionPlane) {
+    // TODO
+    return half4(1);
+}
+
 $pure half4 $rect_blur_coverage_fn(float2 coords,
                                    float4 rect,
                                    half isFast,
