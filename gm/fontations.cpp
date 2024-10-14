@@ -79,13 +79,13 @@ void dumpFamilyAndPostscriptName(SkCanvas* canvas,
 
 }  // namespace
 
-class FontationsTypefaceGM : public GM {
+class AhemBoundsFontationsGM : public GM {
 public:
     enum class TypefaceConstruction {
         kMakeWithFontArguments,
         kCloneWithFontArguments,
     };
-    FontationsTypefaceGM(const char* testName,
+    AhemBoundsFontationsGM(const char* testName,
                          const char* testFontFilename,
                          std::initializer_list<SkFontArguments::VariationPosition::Coordinate>
                                  specifiedVariations,
@@ -182,15 +182,15 @@ SkFourByteTag constexpr operator"" _t(const char* tagName, size_t size) {
     return SkSetFourByteTag(tagName[0], tagName[1], tagName[2], tagName[3]);
 }
 }  // namespace
-DEF_GM(return new FontationsTypefaceGM("roboto", "fonts/Roboto-Regular.ttf", {});)
-DEF_GM(return new FontationsTypefaceGM(
+DEF_GM(return new AhemBoundsFontationsGM("roboto", "fonts/Roboto-Regular.ttf", {});)
+DEF_GM(return new AhemBoundsFontationsGM(
                       "distortable_light",
                       "fonts/Distortable.ttf",
                       {{"wght"_t, 0.5f}}))
-DEF_GM(return new FontationsTypefaceGM(
+DEF_GM(return new AhemBoundsFontationsGM(
         "distortable_bold",
         "fonts/Distortable.ttf",
         {{"wght"_t, 2.0f}},
-        FontationsTypefaceGM::TypefaceConstruction::kCloneWithFontArguments);)
+        AhemBoundsFontationsGM::TypefaceConstruction::kCloneWithFontArguments);)
 
 }  // namespace skiagm
