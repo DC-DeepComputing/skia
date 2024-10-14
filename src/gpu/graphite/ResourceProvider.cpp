@@ -51,6 +51,27 @@ ResourceProvider::~ResourceProvider() {
     fResourceCache->shutdown();
 }
 
+#if defined(GPU_TEST_UTILS)
+ResourceProvider::Stats ResourceProvider::getStats() const {
+    SkAutoSpinlock lock{fSpinLock};
+
+    return fStats;
+}
+#endif
+
+sk_sp<GraphicsPipeline> ResourceProvider::createGraphicsPipeline(
+        const RuntimeEffectDictionary* runtimeDict,
+        const GraphicsPipelineDesc& pipelineDesc,
+        const RenderPassDesc& renderPassDesc) {
+#if defined(GPU_TEST_UTILS)
+    {
+        SkAutoSpinlock lock{fSpinLock};
+        ++fStats.fGraphicsPipelineCreations;
+    }
+#endif
+    return this->onCreateGraphicsPipeline(runtimeDict, pipelineDesc, renderPassDesc);
+}
+
 sk_sp<GraphicsPipeline> ResourceProvider::findOrCreateGraphicsPipeline(
         const RuntimeEffectDictionary* runtimeDict,
         const GraphicsPipelineDesc& pipelineDesc,
