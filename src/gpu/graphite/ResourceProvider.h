@@ -16,6 +16,10 @@
 #include "src/gpu/graphite/ResourceCache.h"
 #include "src/gpu/graphite/ResourceTypes.h"
 
+#if defined(GPU_TEST_UTILS)
+#include "src/base/SkSpinlock.h"
+#endif
+
 struct AHardwareBuffer;
 struct SkSamplingOptions;
 class SkTraceMemoryDump;
@@ -102,6 +106,12 @@ public:
 #if defined(GPU_TEST_UTILS)
     ResourceCache* resourceCache() { return fResourceCache.get(); }
     const SharedContext* sharedContext() { return fSharedContext; }
+
+    struct Stats {
+        int fGraphicsPipelineCreations = 0;
+    };
+
+    Stats getStats() const SK_EXCLUDES(fSpinLock);
 #endif
 
 #ifdef SK_BUILD_FOR_ANDROID
@@ -124,9 +134,12 @@ protected:
     sk_sp<ResourceCache> fResourceCache;
 
 private:
-    virtual sk_sp<GraphicsPipeline> createGraphicsPipeline(const RuntimeEffectDictionary*,
-                                                           const GraphicsPipelineDesc&,
-                                                           const RenderPassDesc&) = 0;
+    sk_sp<GraphicsPipeline> createGraphicsPipeline(const RuntimeEffectDictionary*,
+                                                   const GraphicsPipelineDesc&,
+                                                   const RenderPassDesc&);
+    virtual sk_sp<GraphicsPipeline> onCreateGraphicsPipeline(const RuntimeEffectDictionary*,
+                                                             const GraphicsPipelineDesc&,
+                                                             const RenderPassDesc&) = 0;
     virtual sk_sp<ComputePipeline> createComputePipeline(const ComputePipelineDesc&) = 0;
     virtual sk_sp<Texture> createTexture(SkISize,
                                          const TextureInfo&,
@@ -151,6 +164,11 @@ private:
                                                   bool fromAndroidWindow) const;
 #endif
     virtual void onDeleteBackendTexture(const BackendTexture&) = 0;
+
+#if defined(GPU_TEST_UTILS)
+    mutable SkSpinlock fSpinLock;
+    Stats fStats SK_GUARDED_BY(fSpinLock);
+#endif
 };
 
 } // namespace skgpu::graphite
