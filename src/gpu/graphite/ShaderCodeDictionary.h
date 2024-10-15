@@ -211,13 +211,32 @@ private:
 // logic required for all rendering in Graphite).
 class ShaderInfo {
 public:
-    ShaderInfo(UniquePaintParamsID id,
-               const ShaderCodeDictionary* dict,
-               const RuntimeEffectDictionary* rteDict,
-               const char* ssboIndex);
+    // Accepts a real or, by default, an invalid/nullptr pointer to a container of SamplerDescs.
+    // Backend implementations which may utilize static / immutable samplers should pass in a real
+    // pointer to indicate that shader node data must be analyzed to determine whether
+    // immutable samplers are used, and if so, ascertain SamplerDescs for them.
+    // TODO(b/366220690): Actually perform this analysis.
+
+    // If provided a valid container ptr, this function will delegate the addition of SamplerDescs
+    // for each sampler the nodes utilize (dynamic and immutable). This way, a SamplerDesc's index
+    // within the container can inform its binding order. Each SamplerDesc will be either:
+    // 1) a default-constructed SamplerDesc, indicating the use of a "regular" dynamic sampler which
+    //    requires no special handling OR
+    // 2) a real SamplerDesc describing an immutable sampler. Backend pipelines can then use the
+    //    desc to obtain a real immutable sampler pointer (which typically must be included in
+    //    pipeline layouts)
+    static std::unique_ptr<ShaderInfo> Make(const Caps*,
+                                            const ShaderCodeDictionary*,
+                                            const RuntimeEffectDictionary*,
+                                            const RenderStep*,
+                                            UniquePaintParamsID,
+                                            bool useStorageBuffers,
+                                            skgpu::Swizzle writeSwizzle,
+                                            skia_private::TArray<SamplerDesc>* outDescs = nullptr);
 
     bool needsLocalCoords() const {
-        return SkToBool(fRootNodes[0]->requiredFlags() & SnippetRequirementFlags::kLocalCoords);
+        return !fRootNodes.empty() &&
+               SkToBool(fRootNodes[0]->requiredFlags() & SnippetRequirementFlags::kLocalCoords);
     }
     const RuntimeEffectDictionary* runtimeEffectDictionary() const {
         return fRuntimeEffectDictionary;
@@ -229,18 +248,33 @@ public:
 
     const skia_private::TArray<uint32_t>& data() const { return fData; }
 
-    // Determines numTexturesAndSamplersUsed, hasPaintUniforms, hasGradientBuffer, and if a valid
-    // SamplerDesc ptr is passed in, any immutable sampler SamplerDescs.
-    std::string toSkSL(const Caps* caps,
-                       const RenderStep* step,
-                       bool useStorageBuffers,
-                       Swizzle writeSwizzle,
-                       int* outNumTexturesAndSamplersUsed,
-                       bool* outHasPaintUniforms,
-                       bool* outHasGradientBuffer,
-                       skia_private::TArray<SamplerDesc>* outDescs = nullptr);
+    const std::string& vertexSkSL() const { return fVertexSkSL; }
+    const std::string& fragmentSkSL() const { return fFragmentSkSL; }
+    const std::string& vsLabel() const { return fVSLabel; }
+    const std::string& fsLabel() const { return fFSLabel; }
+
+    int numFragmentTexturesAndSamplers() const { return fNumFragmentTexturesAndSamplers; }
+    bool hasStepUniforms() const { return fHasStepUniforms; }
+    bool hasPaintUniforms() const { return fHasPaintUniforms; }
+    bool hasGradientBuffer() const { return fHasGradientBuffer; }
 
 private:
+    ShaderInfo(const RuntimeEffectDictionary*, const char* ssboIndex);
+
+    void generateVertexSkSL(const Caps*,
+                            const RenderStep*,
+                            bool useStorageBuffers);
+
+    // Determines fNumFragmentTexturesAndSamplers, fHasPaintUniforms, fHasGradientBuffer, and if a
+    // valid SamplerDesc ptr is passed in, any immutable sampler SamplerDescs.
+    void generateFragmentSkSL(const Caps*,
+                              const ShaderCodeDictionary*,
+                              const RenderStep*,
+                              UniquePaintParamsID,
+                              bool useStorageBuffers,
+                              Swizzle writeSwizzle,
+                              skia_private::TArray<SamplerDesc>* outDescs);
+
     // Recursive method which traverses ShaderNodes in a depth-first manner to aggregate all
     // ShaderNode data (not owned by ShaderNode) into ShaderInfo's owned fData.
     // TODO(b/347072931): Ideally, this method could go away and each snippet's data could remain
@@ -262,7 +296,20 @@ private:
     skgpu::BlendInfo fBlendInfo;
     DstReadRequirement fDstReadRequirement;
 
+    // Note that fData is currently only used to store SamplerDesc information for shaders that have
+    // the option of using immutable samplers. However, other snippets could leverage this field to
+    // convey other information once data can be tied to snippetIDs (b/347072931).
     skia_private::TArray<uint32_t> fData;
+
+    std::string fVertexSkSL;
+    std::string fFragmentSkSL;
+    std::string fVSLabel;
+    std::string fFSLabel;
+
+    int fNumFragmentTexturesAndSamplers = 0;
+    bool fHasStepUniforms = false;
+    bool fHasPaintUniforms = false;
+    bool fHasGradientBuffer = false;
 };
 
 // ShaderCodeDictionary is a thread-safe dictionary of ShaderSnippets to code IDs for use with

@@ -322,13 +322,63 @@ static constexpr skgpu::BlendInfo gBlendTable[kNumCoeffModes] = {
 //--------------------------------------------------------------------------------------------------
 // ShaderInfo
 
-ShaderInfo::ShaderInfo(UniquePaintParamsID id,
-                       const ShaderCodeDictionary* dict,
-                       const RuntimeEffectDictionary* rteDict,
-                       const char* ssboIndex)
-        : fRuntimeEffectDictionary(rteDict)
-        , fSsboIndex(ssboIndex) {
-    PaintParamsKey key = dict->lookup(id);
+std::unique_ptr<ShaderInfo> ShaderInfo::Make(const Caps* caps,
+                                             const ShaderCodeDictionary* dict,
+                                             const RuntimeEffectDictionary* rteDict,
+                                             const RenderStep* step,
+                                             UniquePaintParamsID paintID,
+                                             bool useStorageBuffers,
+                                             skgpu::Swizzle writeSwizzle,
+                                             skia_private::TArray<SamplerDesc>* outDescs) {
+    const char* shadingSsboIndex =
+            useStorageBuffers && step->performsShading() ? "shadingSsboIndex" : nullptr;
+    std::unique_ptr<ShaderInfo> result =
+            std::unique_ptr<ShaderInfo>(new ShaderInfo(rteDict, shadingSsboIndex));
+
+    // The fragment shader must be generated before the vertex shader, because we determine
+    // properties of the entire program while generating the fragment shader.
+
+    // If paintID is not valid this is a depth-only draw and there's no fragment shader to compile.
+    if (paintID.isValid()) {
+        result->generateFragmentSkSL(caps,
+                                     dict,
+                                     step,
+                                     paintID,
+                                     useStorageBuffers,
+                                     writeSwizzle,
+                                     outDescs);
+    }
+
+    result->generateVertexSkSL(caps,
+                               step,
+                               useStorageBuffers);
+
+    return result;
+}
+
+ShaderInfo::ShaderInfo(const RuntimeEffectDictionary* rteDict, const char* ssboIndex)
+        : fRuntimeEffectDictionary(rteDict), fSsboIndex(ssboIndex) {}
+
+// The current, incomplete, model for shader construction is:
+//   - Static code snippets (which can have an arbitrary signature) live in the Graphite
+//     pre-compiled modules, which are located at `src/sksl/sksl_graphite_frag.sksl` and
+//     `src/sksl/sksl_graphite_frag_es2.sksl`.
+//   - Glue code is generated in a `main` method which calls these static code snippets.
+//     The glue code is responsible for:
+//            1) gathering the correct (mangled) uniforms
+//            2) passing the uniforms and any other parameters to the helper method
+//   - The result of the final code snippet is then copied into "sk_FragColor".
+//   Note: each entry's 'fStaticFunctionName' field is expected to match the name of a function
+//   in the Graphite pre-compiled module, or be null if the preamble and expression generators are
+//   overridden to not use a static function.
+void ShaderInfo::generateFragmentSkSL(const Caps* caps,
+                                      const ShaderCodeDictionary* dict,
+                                      const RenderStep* step,
+                                      UniquePaintParamsID paintID,
+                                      bool useStorageBuffers,
+                                      Swizzle writeSwizzle,
+                                      skia_private::TArray<SamplerDesc>* outDescs) {
+    PaintParamsKey key = dict->lookup(paintID);
     SkASSERT(key.isValid()); // invalid keys should have been caught by invalid paint ID earlier
 
     fRootNodes = key.getRootNodes(dict, &fShaderNodeAlloc);
@@ -360,76 +410,6 @@ ShaderInfo::ShaderInfo(UniquePaintParamsID id,
              (!clipSnippet->needsPriorStageOutput() && !clipSnippet->needsBlenderDstColor()));
 #endif
 
-    // TODO(b/366191138): Everything of interest happens in toSkSL(). We should just have a
-    // ShaderInfo factory that does everything when it creates a std::unique_ptr<ShaderInfo>.
-}
-
-void ShaderInfo::aggregateSnippetData(const ShaderNode* node) {
-    if (!node) {
-        return;
-    }
-
-    // Accumulate data of children first.
-    for (const ShaderNode* child : node->children()) {
-        this->aggregateSnippetData(child);
-    }
-
-    if (node->requiredFlags() & SnippetRequirementFlags::kStoresData && !node->data().empty()) {
-        fData.push_back_n(node->data().size(), node->data().data());
-    }
-}
-
-void append_color_output(std::string* mainBody,
-                         BlendFormula::OutputType outputType,
-                         const char* outColor,
-                         const char* inColor) {
-    switch (outputType) {
-        case BlendFormula::kNone_OutputType:
-            SkSL::String::appendf(mainBody, "%s = half4(0.0);", outColor);
-            break;
-        case BlendFormula::kCoverage_OutputType:
-            SkSL::String::appendf(mainBody, "%s = outputCoverage;", outColor);
-            break;
-        case BlendFormula::kModulate_OutputType:
-            SkSL::String::appendf(mainBody, "%s = %s * outputCoverage;", outColor, inColor);
-            break;
-        case BlendFormula::kSAModulate_OutputType:
-            SkSL::String::appendf(mainBody, "%s = %s.a * outputCoverage;", outColor, inColor);
-            break;
-        case BlendFormula::kISAModulate_OutputType:
-            SkSL::String::appendf(
-                    mainBody, "%s = (1.0 - %s.a) * outputCoverage;", outColor, inColor);
-            break;
-        case BlendFormula::kISCModulate_OutputType:
-            SkSL::String::appendf(
-                    mainBody, "%s = (half4(1.0) - %s) * outputCoverage;", outColor, inColor);
-            break;
-        default:
-            SkUNREACHABLE;
-            break;
-    }
-}
-
-// The current, incomplete, model for shader construction is:
-//   - Static code snippets (which can have an arbitrary signature) live in the Graphite
-//     pre-compiled modules, which are located at `src/sksl/sksl_graphite_frag.sksl` and
-//     `src/sksl/sksl_graphite_frag_es2.sksl`.
-//   - Glue code is generated in a `main` method which calls these static code snippets.
-//     The glue code is responsible for:
-//            1) gathering the correct (mangled) uniforms
-//            2) passing the uniforms and any other parameters to the helper method
-//   - The result of the final code snippet is then copied into "sk_FragColor".
-//   Note: each entry's 'fStaticFunctionName' field is expected to match the name of a function
-//   in the Graphite pre-compiled module, or be null if the preamble and expression generators are
-//   overridden to not use a static function.
-std::string ShaderInfo::toSkSL(const Caps* caps,
-                               const RenderStep* step,
-                               bool useStorageBuffers,
-                               Swizzle writeSwizzle,
-                               int* outNumTexturesAndSamplersUsed,
-                               bool* outHasPaintUniforms,
-                               bool* outHasGradientBuffer,
-                               skia_private::TArray<SamplerDesc>* outDescs) {
     // The RenderStep should be performing shading since otherwise there's no need to generate a
     // fragment shader program at all.
     SkASSERT(step->performsShading());
@@ -496,14 +476,14 @@ std::string ShaderInfo::toSkSL(const Caps* caps,
     if (useShadingStorageBuffer) {
         preamble += EmitPaintParamsStorageBuffer(bindingReqs.fPaintParamsBufferBinding,
                                                  fRootNodes,
-                                                 outHasPaintUniforms,
+                                                 &fHasPaintUniforms,
                                                  &wrotePaintColor);
         SkSL::String::appendf(&preamble, "uint %s;\n", this->ssboIndex());
     } else {
         preamble += EmitPaintParamsUniforms(bindingReqs.fPaintParamsBufferBinding,
                                             bindingReqs.fUniformBufferLayout,
                                             fRootNodes,
-                                            outHasPaintUniforms,
+                                            &fHasPaintUniforms,
                                             &wrotePaintColor);
     }
 
@@ -514,7 +494,7 @@ std::string ShaderInfo::toSkSL(const Caps* caps,
                               "};\n",
                               bindingReqs.fGradientBufferBinding,
                               kGradientBufferName);
-        *outHasGradientBuffer = true;
+        fHasGradientBuffer = true;
     }
 
     {
@@ -539,16 +519,14 @@ std::string ShaderInfo::toSkSL(const Caps* caps,
             preamble += EmitSamplerLayout(bindingReqs, &binding);
             preamble += " sampler2D dstSampler;";
             // Add default SamplerDesc for the intrinsic dstSampler to stay consistent with
-            // `outNumTexturesAndSamplersUsed`.
+            // `fNumFragmentTexturesAndSamplers`.
             if (outDescs) {
                 outDescs->push_back({});
             }
         }
 
-        // Report back to the caller how many textures and samplers are used.
-        if (outNumTexturesAndSamplersUsed) {
-            *outNumTexturesAndSamplersUsed = binding;
-        }
+        // Record how many textures and samplers are used.
+        fNumFragmentTexturesAndSamplers = binding;
     }
 
     // Emit preamble declarations and helper functions required for snippets. In the default case
@@ -708,7 +686,156 @@ std::string ShaderInfo::toSkSL(const Caps* caps,
     }
     mainBody += "}\n";
 
-    return preamble + "\n" + mainBody;
+    fFragmentSkSL = preamble + "\n" + mainBody;
+
+    fFSLabel = writeSwizzle.asString().c_str();
+    fFSLabel += " + ";
+    fFSLabel = step->name();
+    fFSLabel += " + ";
+    fFSLabel += dict->idToString(paintID).c_str();
+}
+
+void ShaderInfo::generateVertexSkSL(const Caps* caps,
+                                    const RenderStep* step,
+                                    bool useStorageBuffers) {
+    const bool hasStepUniforms = step->numUniforms() > 0;
+    const bool useStepStorageBuffer = useStorageBuffers && hasStepUniforms;
+    const bool useShadingStorageBuffer = useStorageBuffers && step->performsShading();
+    const bool defineLocalCoordsVarying = this->needsLocalCoords();
+
+    // Fixed program header (intrinsics are always declared as an uniform interface block)
+    const ResourceBindingRequirements& bindingReqs = caps->resourceBindingRequirements();
+    std::string sksl = EmitIntrinsicUniforms(bindingReqs.fIntrinsicBufferBinding,
+                                             bindingReqs.fUniformBufferLayout);
+
+    if (step->numVertexAttributes() > 0 || step->numInstanceAttributes() > 0) {
+        int attr = 0;
+        auto add_attrs = [&sksl, &attr](SkSpan<const Attribute> attrs) {
+            for (auto a : attrs) {
+                SkSL::String::appendf(&sksl, "    layout(location=%d) in ", attr++);
+                sksl.append(SkSLTypeString(a.gpuType()));
+                SkSL::String::appendf(&sksl, " %s;\n", a.name());
+            }
+        };
+        if (step->numVertexAttributes() > 0) {
+            sksl.append("// vertex attrs\n");
+            add_attrs(step->vertexAttributes());
+        }
+        if (step->numInstanceAttributes() > 0) {
+            sksl.append("// instance attrs\n");
+            add_attrs(step->instanceAttributes());
+        }
+    }
+
+    // Uniforms needed by RenderStep
+    // The uniforms are mangled by having their index in 'fEntries' as a suffix (i.e., "_%d")
+    if (hasStepUniforms) {
+        if (useStepStorageBuffer) {
+            sksl += EmitRenderStepStorageBuffer(bindingReqs.fRenderStepBufferBinding,
+                                                step->uniforms());
+        } else {
+            sksl += EmitRenderStepUniforms(bindingReqs.fRenderStepBufferBinding,
+                                           bindingReqs.fUniformBufferLayout,
+                                           step->uniforms());
+        }
+    }
+
+    // Varyings needed by RenderStep
+    sksl += EmitVaryings(step, "out", useShadingStorageBuffer, defineLocalCoordsVarying);
+
+    // Vertex shader function declaration
+    sksl += "void main() {";
+    // Create stepLocalCoords which render steps can write to.
+    sksl += "float2 stepLocalCoords = float2(0);";
+    // Vertex shader body
+    if (useStepStorageBuffer) {
+        // Extract out render step uniforms from SSBO, declaring local variables with the expected
+        // uniform names so that RenderStep SkSL is independent of storage choice.
+        SkSL::String::appendf(
+                &sksl, "uint stepSsboIndex = %s.x;\n", RenderStep::ssboIndicesAttribute());
+        sksl += EmitUniformsFromStorageBuffer("step", "stepSsboIndex", step->uniforms());
+    }
+
+    sksl += step->vertexSkSL();
+
+    // We want to map the rectangle of logical device pixels from (0,0) to (viewWidth, viewHeight)
+    // to normalized device coordinates: (-1,-1) to (1,1) (actually -w to w since it's before
+    // homogenous division).
+    //
+    // For efficiency, this assumes viewport.zw holds the reciprocol of twice the viewport width and
+    // height. On some backends the NDC Y axis is flipped relative to the device and
+    // viewport coords (i.e. it points up instead of down). In those cases, it's also assumed that
+    // viewport.w holds a negative value. In that case the sign(viewport.zw) changes from
+    // subtracting w to adding w.
+    sksl += "sk_Position = float4(viewport.zw*devPosition.xy - sign(viewport.zw)*devPosition.ww,"
+            "devPosition.zw);";
+
+    if (useShadingStorageBuffer) {
+        // Assign SSBO index values to the SSBO index varying.
+        SkSL::String::appendf(&sksl,
+                              "%s = %s;",
+                              RenderStep::ssboIndicesVarying(),
+                              RenderStep::ssboIndicesAttribute());
+    }
+
+    if (defineLocalCoordsVarying) {
+        // Assign Render Step's stepLocalCoords to the localCoordsVar varying.
+        sksl += "localCoordsVar = stepLocalCoords;";
+    }
+    sksl += "}";
+
+    fVertexSkSL = std::move(sksl);
+    fVSLabel = step->name();
+    if (defineLocalCoordsVarying) {
+        fVSLabel += " (w/ local coords)";
+    }
+    fHasStepUniforms = hasStepUniforms;
+}
+
+void ShaderInfo::aggregateSnippetData(const ShaderNode* node) {
+    if (!node) {
+        return;
+    }
+
+    // Accumulate data of children first.
+    for (const ShaderNode* child : node->children()) {
+        this->aggregateSnippetData(child);
+    }
+
+    if (node->requiredFlags() & SnippetRequirementFlags::kStoresData && !node->data().empty()) {
+        fData.push_back_n(node->data().size(), node->data().data());
+    }
+}
+
+void append_color_output(std::string* mainBody,
+                         BlendFormula::OutputType outputType,
+                         const char* outColor,
+                         const char* inColor) {
+    switch (outputType) {
+        case BlendFormula::kNone_OutputType:
+            SkSL::String::appendf(mainBody, "%s = half4(0.0);", outColor);
+            break;
+        case BlendFormula::kCoverage_OutputType:
+            SkSL::String::appendf(mainBody, "%s = outputCoverage;", outColor);
+            break;
+        case BlendFormula::kModulate_OutputType:
+            SkSL::String::appendf(mainBody, "%s = %s * outputCoverage;", outColor, inColor);
+            break;
+        case BlendFormula::kSAModulate_OutputType:
+            SkSL::String::appendf(mainBody, "%s = %s.a * outputCoverage;", outColor, inColor);
+            break;
+        case BlendFormula::kISAModulate_OutputType:
+            SkSL::String::appendf(
+                    mainBody, "%s = (1.0 - %s.a) * outputCoverage;", outColor, inColor);
+            break;
+        case BlendFormula::kISCModulate_OutputType:
+            SkSL::String::appendf(
+                    mainBody, "%s = (half4(1.0) - %s) * outputCoverage;", outColor, inColor);
+            break;
+        default:
+            SkUNREACHABLE;
+            break;
+    }
 }
 
 //--------------------------------------------------------------------------------------------------

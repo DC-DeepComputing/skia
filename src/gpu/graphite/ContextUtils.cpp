@@ -312,7 +312,7 @@ void CollectIntrinsicUniforms(const Caps* caps,
         float invTwoH = 2.f / viewport.height();
 
         // If the NDC Y axis points up (opposite normal skia convention and the underlying view
-        // convention), upload the inverse height as a negative value. See BuildVertexSkSL
+        // convention), upload the inverse height as a negative value. See ShaderInfo::Make
         // for how this is used.
         if (!caps->ndcYAxisPointsDown()) {
             invTwoH *= -1.f;
@@ -485,33 +485,6 @@ std::string EmitSamplerLayout(const ResourceBindingRequirements& bindingReqs, in
     return result;
 }
 
-namespace {
-std::string emit_attributes(SkSpan<const Attribute> vertexAttrs,
-                            SkSpan<const Attribute> instanceAttrs) {
-    std::string result;
-
-    int attr = 0;
-    auto add_attrs = [&](SkSpan<const Attribute> attrs) {
-        for (auto a : attrs) {
-            SkSL::String::appendf(&result, "    layout(location=%d) in ", attr++);
-            result.append(SkSLTypeString(a.gpuType()));
-            SkSL::String::appendf(&result, " %s;\n", a.name());
-        }
-    };
-
-    if (!vertexAttrs.empty()) {
-        result.append("// vertex attrs\n");
-        add_attrs(vertexAttrs);
-    }
-    if (!instanceAttrs.empty()) {
-        result.append("// instance attrs\n");
-        add_attrs(instanceAttrs);
-    }
-
-    return result;
-}
-}  // anonymous namespace
-
 std::string EmitVaryings(const RenderStep* step,
                          const char* direction,
                          bool emitSsboIndicesVarying,
@@ -545,131 +518,6 @@ std::string EmitVaryings(const RenderStep* step,
     for (auto v : step->varyings()) {
         appendVarying(v);
     }
-
-    return result;
-}
-
-VertSkSLInfo BuildVertexSkSL(const ResourceBindingRequirements& bindingReqs,
-                            const RenderStep* step,
-                            bool useStorageBuffers,
-                            bool defineLocalCoordsVarying) {
-    VertSkSLInfo result;
-
-    const bool hasStepUniforms = step->numUniforms() > 0;
-    const bool useStepStorageBuffer = useStorageBuffers && hasStepUniforms;
-    const bool useShadingStorageBuffer = useStorageBuffers && step->performsShading();
-
-    // Fixed program header (intrinsics are always declared as an uniform interface block)
-    std::string sksl = EmitIntrinsicUniforms(bindingReqs.fIntrinsicBufferBinding,
-                                             bindingReqs.fUniformBufferLayout);
-
-    if (step->numVertexAttributes() > 0 || step->numInstanceAttributes() > 0) {
-        sksl += emit_attributes(step->vertexAttributes(), step->instanceAttributes());
-    }
-
-    // Uniforms needed by RenderStep
-    // The uniforms are mangled by having their index in 'fEntries' as a suffix (i.e., "_%d")
-    if (hasStepUniforms) {
-        if (useStepStorageBuffer) {
-            sksl += EmitRenderStepStorageBuffer(bindingReqs.fRenderStepBufferBinding,
-                                                step->uniforms());
-        } else {
-            sksl += EmitRenderStepUniforms(bindingReqs.fRenderStepBufferBinding,
-                                           bindingReqs.fUniformBufferLayout,
-                                           step->uniforms());
-        }
-    }
-
-    // Varyings needed by RenderStep
-    sksl += EmitVaryings(step, "out", useShadingStorageBuffer, defineLocalCoordsVarying);
-
-    // Vertex shader function declaration
-    sksl += "void main() {";
-    // Create stepLocalCoords which render steps can write to.
-    sksl += "float2 stepLocalCoords = float2(0);";
-    // Vertex shader body
-    if (useStepStorageBuffer) {
-        // Extract out render step uniforms from SSBO, declaring local variables with the expected
-        // uniform names so that RenderStep SkSL is independent of storage choice.
-        SkSL::String::appendf(
-                &sksl, "uint stepSsboIndex = %s.x;\n", RenderStep::ssboIndicesAttribute());
-        sksl += EmitUniformsFromStorageBuffer("step", "stepSsboIndex", step->uniforms());
-    }
-
-    sksl += step->vertexSkSL();
-
-    // We want to map the rectangle of logical device pixels from (0,0) to (viewWidth, viewHeight)
-    // to normalized device coordinates: (-1,-1) to (1,1) (actually -w to w since it's before
-    // homogenous division).
-    //
-    // For efficiency, this assumes viewport.zw holds the reciprocol of twice the viewport width and
-    // height. On some backends the NDC Y axis is flipped relative to the device and
-    // viewport coords (i.e. it points up instead of down). In those cases, it's also assumed that
-    // viewport.w holds a negative value. In that case the sign(viewport.zw) changes from
-    // subtracting w to adding w.
-    sksl += "sk_Position = float4(viewport.zw*devPosition.xy - sign(viewport.zw)*devPosition.ww,"
-            "devPosition.zw);";
-
-    if (useShadingStorageBuffer) {
-        // Assign SSBO index values to the SSBO index varying.
-        SkSL::String::appendf(&sksl,
-                              "%s = %s;",
-                              RenderStep::ssboIndicesVarying(),
-                              RenderStep::ssboIndicesAttribute());
-    }
-
-    if (defineLocalCoordsVarying) {
-        // Assign Render Step's stepLocalCoords to the localCoordsVar varying.
-        sksl += "localCoordsVar = stepLocalCoords;";
-    }
-    sksl += "}";
-
-    result.fSkSL = std::move(sksl);
-    result.fLabel = step->name();
-    if (defineLocalCoordsVarying) {
-        result.fLabel += " (w/ local coords)";
-    }
-    result.fHasStepUniforms = hasStepUniforms;
-
-    return result;
-}
-
-FragSkSLInfo BuildFragmentSkSL(const Caps* caps,
-                               const ShaderCodeDictionary* dict,
-                               const RuntimeEffectDictionary* rteDict,
-                               const RenderStep* step,
-                               UniquePaintParamsID paintID,
-                               bool useStorageBuffers,
-                               skgpu::Swizzle writeSwizzle,
-                               skia_private::TArray<SamplerDesc>* outDescs) {
-    FragSkSLInfo result;
-    if (!paintID.isValid()) {
-        // Depth-only draw so no fragment shader to compile
-        return {};
-    }
-
-    const char* shadingSsboIndex =
-            useStorageBuffers && step->performsShading() ? "shadingSsboIndex" : nullptr;
-    ShaderInfo shaderInfo(paintID, dict, rteDict, shadingSsboIndex);
-
-    result.fSkSL = shaderInfo.toSkSL(caps,
-                                     step,
-                                     useStorageBuffers,
-                                     writeSwizzle,
-                                     &result.fNumTexturesAndSamplers,
-                                     &result.fHasPaintUniforms,
-                                     &result.fHasGradientBuffer,
-                                     outDescs);
-
-    result.fBlendInfo = shaderInfo.blendInfo();
-    result.fDstReadReq = shaderInfo.dstReadRequirement();
-    result.fRequiresLocalCoords = shaderInfo.needsLocalCoords();
-    result.fData = {shaderInfo.data()};
-    result.fLabel = writeSwizzle.asString().c_str();
-    result.fLabel += " + ";
-    result.fLabel = step->name();
-    result.fLabel += " + ";
-    result.fLabel += dict->idToString(paintID).c_str();
 
     return result;
 }
