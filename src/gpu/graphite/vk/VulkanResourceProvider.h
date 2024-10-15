@@ -58,9 +58,9 @@ public:
 private:
     const VulkanSharedContext* vulkanSharedContext() const;
 
-    sk_sp<GraphicsPipeline> createGraphicsPipeline(const RuntimeEffectDictionary*,
-                                                   const GraphicsPipelineDesc&,
-                                                   const RenderPassDesc&) override;
+    sk_sp<GraphicsPipeline> onCreateGraphicsPipeline(const RuntimeEffectDictionary*,
+                                                     const GraphicsPipelineDesc&,
+                                                     const RenderPassDesc&) override;
     sk_sp<ComputePipeline> createComputePipeline(const ComputePipelineDesc&) override;
 
     sk_sp<Texture> createTexture(SkISize,
