@@ -7,6 +7,7 @@
 
 #include "src/base/SkAutoMalloc.h"
 #include "src/core/SkFontScanner.h"
+#include "src/core/SkOSFile.h"
 #include "src/core/SkTHash.h"
 #include "src/core/SkWriteBuffer.h"
 #include "tests/Test.h"
@@ -215,6 +216,11 @@ static void FontScanner_NamedInstances2(skiatest::Reporter* reporter, SkFontScan
 [[maybe_unused]]
 static void FontScanner_FontCollection(skiatest::Reporter* reporter, SkFontScanner* scanner) {
     SkString name = GetResourcePath("fonts/test.ttc");
+
+    FILE* file = sk_fopen(name.c_str(), kRead_SkFILE_Flag);
+    if (nullptr == file) {
+        REPORTER_ASSERT(reporter, false, "Cannot open the file %s\n", name.c_str());
+    }
 
     std::unique_ptr<SkStreamAsset> stream = SkStream::MakeFromFile(name.c_str());
     if (!stream) {
