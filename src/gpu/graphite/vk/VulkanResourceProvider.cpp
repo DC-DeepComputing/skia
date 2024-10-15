@@ -111,7 +111,7 @@ const Buffer* VulkanResourceProvider::loadMSAAVertexBuffer() const {
     return fLoadMSAAVertexBuffer.get();
 }
 
-sk_sp<GraphicsPipeline> VulkanResourceProvider::createGraphicsPipeline(
+sk_sp<GraphicsPipeline> VulkanResourceProvider::onCreateGraphicsPipeline(
         const RuntimeEffectDictionary* runtimeDict,
         const GraphicsPipelineDesc& pipelineDesc,
         const RenderPassDesc& renderPassDesc) {
