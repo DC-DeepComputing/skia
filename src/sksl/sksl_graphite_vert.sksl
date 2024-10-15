@@ -968,6 +968,43 @@ float4 per_edge_aa_quad_vertex_fn(// Vertex Attributes
     return float4(devPos.xy, devPos.z*depth, devPos.z);
 }
 
+float4 circular_arc_vertex_fn(float2 offset,
+                              // Instance Attributes
+                              float3 centerScale,
+                              float2 radii,
+                              float3 inClipPlane,
+                              float3 inIsectPlane,
+                              float3 inUnionPlane,
+                              float depth,
+                              float3x3 localToDevice,
+                              // Varyings
+                              out float4 circleEdge,
+                              out float3 clipPlane,
+                              out float3 isectPlane,
+                              out float3 unionPlane,
+                              // Render Step
+                              out float2 stepLocalCoords) {
+    // TODO: clip offset against clip planes
+    float2 localCenter = centerScale.xy;
+    float2 localPos = offset * centerScale.z + localCenter;
+
+    float3 devPos = localToDevice * localPos.xy1;
+    float3 devCenter = localToDevice * localCenter.xy1;
+    // offset for AA
+    if (offset != float2(0)) {
+        devPos += 0.5*normalize(devPos - devCenter);
+    }
+
+    circleEdge = float4(offset.xy, radii.xy);
+    clipPlane = inClipPlane;
+    isectPlane = inIsectPlane;
+    unionPlane = inUnionPlane;
+    stepLocalCoords = localPos;
+
+    // We assume no perspective
+    return float4(devPos.xy, depth, 1);
+}
+
 float4 text_vertex_fn(float2 baseCoords,
                       // Uniforms
                       float4x4 subRunDeviceMatrix,

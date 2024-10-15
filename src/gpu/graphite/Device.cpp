@@ -1585,6 +1585,12 @@ std::pair<const Renderer*, PathAtlas*> Device::chooseRenderer(const Transform& l
         }
     }
 
+    if (!requireMSAA && shape.isArc() &&
+        shape.arc().oval().width() == shape.arc().oval().height() &&
+        localToDevice.type() <= Transform::Type::kRectStaysRect) {
+        return {renderers->circularArc(), nullptr};
+    }
+
     // Path rendering options. For now the strategy is very simple and not optimal:
     // I. Use tessellation if MSAA is required for an effect.
     // II: otherwise:
