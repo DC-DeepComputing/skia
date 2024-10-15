@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "05778e43_63756309",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-10-15T21:26:51Z",
+      "side": 1,
+      "message": "The first patchset here is a first pass at this moving code into ShaderCodeDictionary.cpp, and then the second patchset creates new ShaderInfo files and moves way more code into there from both ShaderCodeDictionary and ContextUtils. It also adds a couple of methods to ShaderNode which were once private to ShaderCodeDictionary, and are now called in ShaderInfo.cpp.",
+      "revId": "8746ec584551eeb42ef17f7b10f69a6a95b22a26",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33c9bdac_05133c16",
+        "filename": "src/gpu/graphite/ShaderInfo.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-10-15T21:26:51Z",
+      "side": 1,
+      "message": "I think this is an odd place for this. Open to other suggestions.",
+      "revId": "8746ec584551eeb42ef17f7b10f69a6a95b22a26",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
