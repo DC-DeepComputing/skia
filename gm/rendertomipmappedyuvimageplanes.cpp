@@ -94,6 +94,9 @@ protected:
             for (int i = 0; i < numPlanes; ++i) {
                 auto info = SkImageInfo::Make(dimensions[i], colorTypes[i], kPremul_SkAlphaType);
                 auto surf = SkSurfaces::RenderTarget(recorder, info, skgpu::Mipmapped::kYes);
+                if (!surf) {
+                    continue;
+                }
 
                 float matrix[20] {
                     1, 0, 0, 0, 0,
