@@ -213,6 +213,7 @@ public:
         if (!paintTextures && !stepTextures) {
             return TextureBindingCache::kInvalidIndex;
         }
+        printf("step textures: %d, paint textures: %d\n", stepTextures.numTextures(), paintTextures.numTextures());
         return fBindingCache.insert({paintTextures, stepTextures});
     }
 

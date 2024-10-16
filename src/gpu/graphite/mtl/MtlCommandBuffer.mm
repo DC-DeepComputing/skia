@@ -389,6 +389,7 @@ void MtlCommandBuffer::addDrawPass(const DrawPass* drawPass) {
             }
             case DrawPassCommands::Type::kBindTexturesAndSamplers: {
                 auto bts = static_cast<DrawPassCommands::BindTexturesAndSamplers*>(cmdPtr);
+                printf("binding textures: %d\n", bts->fNumTexSamplers);
                 for (int j = 0; j < bts->fNumTexSamplers; ++j) {
                     this->bindTextureAndSampler(drawPass->getTexture(bts->fTextureIndices[j]),
                                                 drawPass->getSampler(bts->fSamplerIndices[j]),
@@ -489,6 +490,7 @@ void MtlCommandBuffer::bindGraphicsPipeline(const GraphicsPipeline* graphicsPipe
         // subsequent BindTexturesAndSamplers commands in a DrawPass will set the other N-1.
         SkASSERT(fDstCopy.first && fDstCopy.second);
         const int textureIndex = graphicsPipeline->numFragTexturesAndSamplers() - 1;
+        printf("binding dst copy texture: %d\n", textureIndex);
         this->bindTextureAndSampler(fDstCopy.first, fDstCopy.second, textureIndex);
     }
 }
