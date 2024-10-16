@@ -86,11 +86,23 @@ private:
     // `onIncrementalDecode`.
     Result incrementalDecode(DecodingState& decodingState, int* rowsDecoded);
 
+    // Helper for reading until the start of the next `fdAT` sequence.
+    Result readToStartOfNextFrame();
+
     // Helper for seeking to the start of image data for the given frame.
     Result seekToStartOfFrame(int index);
 
-    // Helper for reading until the start of the next `fdAT` sequence.
-    Result readToStartOfNextFrame();
+    // The number of frames calculated based on 1) the presence, and 2) the
+    // contents of an `acTL` chunk.  "raw" in the sense that it reports all the
+    // frames, while `SkCodec::getFrameCount` and
+    // `SkPngRustCodec::onGetFrameCount` only report frames for which we have
+    // successfully populated `fFrameHolder` with frame info parsed from `IHDR`
+    // and/or `fcTL` chunks.
+    int getRawFrameCount() const;
+
+    // Attempts to read through the input stream to pass the additional `fcTL`
+    // chunks.
+    Result parseAdditionalFrameInfos();
 
     // SkCodec overrides:
     Result onGetPixels(const SkImageInfo& dstInfo,
@@ -135,7 +147,6 @@ private:
 
         Result appendNewFrame(const rust_png::Reader& reader, const SkEncodedInfo& info);
         void markFrameAsFullyReceived(size_t index);
-        bool isLastFrameFullyReceived() const;
         bool getFrameInfo(int index, FrameInfo* info) const;
 
     private:
@@ -146,6 +157,14 @@ private:
         std::vector<PngFrame> fFrames;
     };
     FrameHolder fFrameHolder;
+
+    // Whether there may still be additional `fcTL` chunks to discover and parse.
+    //
+    // `true` if the stream hasn't been fully received (i.e. only
+    // `kIncompleteInput` errors so far, no hard errors) and `fFrameHolder`
+    // doesn't yet contain frame info for all `num_frames` declared in an `acTL`
+    // chunk.
+    bool fCanParseAdditionalFrameInfos = true;
 };
 
 #endif  // SkPngRustCodec_DEFINED
