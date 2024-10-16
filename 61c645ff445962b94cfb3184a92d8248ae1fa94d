@@ -1,0 +1,136 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c0916b7d_f5f8ad67",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-10-16T18:25:49Z",
+      "side": 1,
+      "message": "General question: what is our testing story for this codec? I recall that we don\u0027t have the capability to build and test this code externally, so what sample images or similar are we testing internally?",
+      "revId": "61c645ff445962b94cfb3184a92d8248ae1fa94d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc822f30_c27101f5",
+        "filename": "src/codec/SkCrabbyAvifCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-10-16T18:25:49Z",
+      "side": 1,
+      "message": "nit: nullptr",
+      "range": {
+        "startLine": 122,
+        "startChar": 67,
+        "endLine": 122,
+        "endChar": 71
+      },
+      "revId": "61c645ff445962b94cfb3184a92d8248ae1fa94d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c54cfd41_7b3ddbe0",
+        "filename": "src/codec/SkCrabbyAvifCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-10-16T18:25:49Z",
+      "side": 1,
+      "message": "suggestion: introduce a type alias so this is a bit cleaner.\n\nupdate: don\u0027t we already have it? `AvifDecoderDeleter` or `AvifDecoder`?",
+      "range": {
+        "startLine": 248,
+        "startChar": 43,
+        "endLine": 248,
+        "endChar": 88
+      },
+      "revId": "61c645ff445962b94cfb3184a92d8248ae1fa94d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7bdfe4ab_b93b835b",
+        "filename": "src/codec/SkCrabbyAvifCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-10-16T18:25:49Z",
+      "side": 1,
+      "message": "nit: can you replace this with the actual type? It\u0027s not super clear what the type is (I initially thought it was the SkImage type for a bit)",
+      "range": {
+        "startLine": 250,
+        "startChar": 4,
+        "endLine": 250,
+        "endChar": 8
+      },
+      "revId": "61c645ff445962b94cfb3184a92d8248ae1fa94d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c6e697bc_7bfd0a71",
+        "filename": "src/codec/SkCrabbyAvifCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-10-16T18:25:49Z",
+      "side": 1,
+      "message": "nit: nullptr",
+      "range": {
+        "startLine": 254,
+        "startChar": 88,
+        "endLine": 254,
+        "endChar": 92
+      },
+      "revId": "61c645ff445962b94cfb3184a92d8248ae1fa94d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54806947_a1f407ad",
+        "filename": "src/codec/SkCrabbyAvifCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-10-16T18:25:49Z",
+      "side": 1,
+      "message": "Shouldn\u0027t this be `.release()`? Otherwise I worry the underlying data will be freed when `cropped_image` goes out of scope.",
+      "range": {
+        "startLine": 260,
+        "startChar": 34,
+        "endLine": 260,
+        "endChar": 37
+      },
+      "revId": "61c645ff445962b94cfb3184a92d8248ae1fa94d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
