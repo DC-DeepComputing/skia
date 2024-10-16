@@ -503,6 +503,10 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 					skip(ALL, "gm", ALL, "wacky_yuv_formats_domain")
 				}
 
+				if b.extraConfig("Metal") {
+					// b/373845830 - Precompile isn't thread-safe on Dawn Metal
+					skip(ALL, "test", ALL, "ThreadedPrecompileTest")
+				}
 			} else if b.extraConfig("Native") {
 				if b.extraConfig("Metal") {
 					configs = []string{"grmtl"}
