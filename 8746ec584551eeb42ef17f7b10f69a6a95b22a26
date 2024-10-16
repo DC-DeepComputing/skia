@@ -33,6 +33,24 @@
       "message": "I think this is an odd place for this. Open to other suggestions.",
       "revId": "8746ec584551eeb42ef17f7b10f69a6a95b22a26",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df24af66_374c6c21",
+        "filename": "src/gpu/graphite/ShaderInfo.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-10-16T14:36:39Z",
+      "side": 1,
+      "message": "I think if we have the preamble functions defined as public static functions on ShaderInfo, we can move more logic out of ShaderCodeDictionary and then this won\u0027t need to be exposed.\n\nI don\u0027t think we need to do that all in one CL and can do that further migration in a follow-up if you like that idea.",
+      "parentUuid": "33c9bdac_05133c16",
+      "revId": "8746ec584551eeb42ef17f7b10f69a6a95b22a26",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e3b01d92_0ea6e92d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-10-16T14:36:39Z",
+      "side": 1,
+      "message": "lgtm once jobs are happy with includes/style. I think my comments are all things that make sense to be follow-up CLs.",
+      "revId": "8bc1aff54288c60d6e748a8eeb82d3de23de33a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd9baddb_7c16072b",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-10-16T14:36:39Z",
+      "side": 1,
+      "message": "If these functions (default preamble, runtime preamble, and `InvokeAndAssign`) move to `ShaderInfo` then we can also move all the other static helper functions for SkSL generation that is currently in `ShaderCodeDictionary` and into `ShaderInfo.cpp`.\n\nThat would also mean we could hide `kDefaultArgs` and `kGradientBufferName`.",
+      "range": {
+        "startLine": 219,
+        "startChar": 0,
+        "endLine": 219,
+        "endChar": 85
+      },
+      "revId": "8bc1aff54288c60d6e748a8eeb82d3de23de33a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d0f12d48_91e84408",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-10-16T14:36:39Z",
+      "side": 1,
+      "message": "style nit: if these aren\u0027t static, they should be lower case.\n\nBut we could just as easily have them be public static functions declared on `ShaderInfo` and add another for `GenerateRuntimePreamble` that ShaderCodeDictionary can use when it defines its `ShaderSnippets`.",
+      "range": {
+        "startLine": 172,
+        "startChar": 16,
+        "endLine": 172,
+        "endChar": 39
+      },
+      "revId": "8bc1aff54288c60d6e748a8eeb82d3de23de33a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a11de7b_8f328aa7",
+        "filename": "src/gpu/graphite/ShaderInfo.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-10-16T14:36:39Z",
+      "side": 1,
+      "message": "I believe that the necessary requirements have been met to remove this function and the `fData` field, but I also think we can do that in a separate CL just to make that change be on its own and keep this as mostly a code move CL.",
+      "range": {
+        "startLine": 102,
+        "startChar": 9,
+        "endLine": 102,
+        "endChar": 29
+      },
+      "revId": "8bc1aff54288c60d6e748a8eeb82d3de23de33a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
