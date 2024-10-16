@@ -737,6 +737,13 @@ bool SkPngRustCodec::FrameHolder::getFrameInfo(int index, FrameInfo* info) const
 
 SkCodec::Result SkPngRustCodec::FrameHolder::appendNewFrame(const rust_png::Reader& reader,
                                                             const SkEncodedInfo& info) {
+    if (!fFrames.empty()) {
+        // Having `fcTL` for a new frame means that the previous frame has been
+        // fully received (since all of the previous frame's `fdAT` / `IDAT`
+        // chunks must have come before the new frame's `fcTL` chunk).
+        fFrames.back().markAsFullyReceived();
+    }
+
     // Ensure that `this->size()` fits into an `int` (`+ 1` to account for `emplace_back` below).
     if (!SkTFitsIn<int>(fFrames.size() + 1)) {
         return kErrorInInput;
