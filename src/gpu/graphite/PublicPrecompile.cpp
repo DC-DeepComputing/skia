@@ -97,6 +97,15 @@ bool Precompile(Context* context,
     return true;
 }
 
+static uint32_t next_id() {
+    static std::atomic<uint32_t> nextID{1};
+    uint32_t id;
+    do {
+        id = nextID.fetch_add(1, std::memory_order_relaxed);
+    } while (id == SK_InvalidGenID);
+    return id;
+}
+
 void Precompile(Context* context, const PaintOptions& options, DrawTypeFlags drawTypes,
                 SkSpan<const RenderPassProperties> renderPassProperties) {
 
@@ -212,6 +221,9 @@ void Precompile(Context* context, const PaintOptions& options, DrawTypeFlags dra
             }
         }
     }
+
+//    ResourceProvider::Stats rpStats = rp->getStats();
+//    SkDebugf("rpStats %d\n", rpStats.fGraphicsPipelineCreations);
 }
 
 void PrecompileCombinations(const RendererProvider* rendererProvider,
