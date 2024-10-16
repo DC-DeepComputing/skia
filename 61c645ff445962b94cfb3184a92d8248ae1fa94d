@@ -171,6 +171,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a35f4a34_46b0af13",
+        "filename": "src/codec/SkCrabbyAvifCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2024-10-16T22:40:35Z",
+      "side": 1,
+      "message": "Done, changed it into a function-local `using` declaration.",
+      "parentUuid": "e55d32e3_ec76e22b",
+      "range": {
+        "startLine": 248,
+        "startChar": 43,
+        "endLine": 248,
+        "endChar": 88
+      },
+      "revId": "61c645ff445962b94cfb3184a92d8248ae1fa94d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7bdfe4ab_b93b835b",
