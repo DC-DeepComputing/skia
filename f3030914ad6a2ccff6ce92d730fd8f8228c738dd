@@ -16,6 +16,24 @@
       "message": "Florin, could you TAL why Mac11-Clang-MacMini9.1... can\u0027t start? It is the last thing blocking the roll.",
       "revId": "f3030914ad6a2ccff6ce92d730fd8f8228c738dd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6bd91476_08ad553a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-10-16T16:33:00Z",
+      "side": 1,
+      "message": "Thanks, Corentin!  That\u0027s an issue on our end, I landed a manual roll while we sort it out.",
+      "parentUuid": "64783bdd_6d747917",
+      "revId": "f3030914ad6a2ccff6ce92d730fd8f8228c738dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
