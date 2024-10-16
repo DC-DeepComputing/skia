@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc57eee7_a984612d",
+        "filename": "src/gpu/graphite/PublicPrecompile.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-10-16T17:01:54Z",
+      "side": 1,
+      "message": "I feel like we could make this 0 right? All the objects we care about creating should have a size of 0 (I think)",
+      "range": {
+        "startLine": 115,
+        "startChar": 52,
+        "endLine": 115,
+        "endChar": 67
+      },
+      "revId": "050c1581cdeb2db7fd07b1ff062086d8f1dc61fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
