@@ -18,6 +18,41 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "76eca447_a009b338",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2024-10-16T19:11:16Z",
+      "side": 1,
+      "message": "thanks for the review. :) ptal!",
+      "revId": "61c645ff445962b94cfb3184a92d8248ae1fa94d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e6552931_8670da61",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2024-10-16T19:11:16Z",
+      "side": 1,
+      "message": "this codec is a work in progress. the only place where this builds as of now is the Android platform (where it intends to replace SkHeifCodec for AVIF).\n\nright now all the testing is done within the Android CTS (the avif tests in [1]). the coverage is quite limited. there are plans to expand it, but in general HEIF/AVIF on Android is not very well tested.\n\ni am relying on manual testing of AVIF images from the repository here: https://github.com/AOMediaCodec/av1-avif/tree/master/testFiles\n\n[1] googleplex-android/platform/superproject/main/main/cts/tests/tests/media/misc/src/android/media/misc/cts/MediaMetadataRetrieverTest.java",
+      "parentUuid": "c0916b7d_f5f8ad67",
+      "revId": "61c645ff445962b94cfb3184a92d8248ae1fa94d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dc822f30_c27101f5",
@@ -31,6 +66,30 @@
       "writtenOn": "2024-10-16T18:25:49Z",
       "side": 1,
       "message": "nit: nullptr",
+      "range": {
+        "startLine": 122,
+        "startChar": 67,
+        "endLine": 122,
+        "endChar": 71
+      },
+      "revId": "61c645ff445962b94cfb3184a92d8248ae1fa94d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "301b441d_5a127ef5",
+        "filename": "src/codec/SkCrabbyAvifCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2024-10-16T19:11:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dc822f30_c27101f5",
       "range": {
         "startLine": 122,
         "startChar": 67,
@@ -64,6 +123,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "908e8dd1_5e51ebc2",
+        "filename": "src/codec/SkCrabbyAvifCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2024-10-16T19:11:16Z",
+      "side": 1,
+      "message": "that wraps `avifDecoder`. here we would need a similar one for `avifImage`. since it is only used here, i thought it was better to just inline this.\n\nplease re-open this comment if you still prefer the type alias.",
+      "parentUuid": "c54cfd41_7b3ddbe0",
+      "range": {
+        "startLine": 248,
+        "startChar": 43,
+        "endLine": 248,
+        "endChar": 88
+      },
+      "revId": "61c645ff445962b94cfb3184a92d8248ae1fa94d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7bdfe4ab_b93b835b",
@@ -77,6 +160,30 @@
       "writtenOn": "2024-10-16T18:25:49Z",
       "side": 1,
       "message": "nit: can you replace this with the actual type? It\u0027s not super clear what the type is (I initially thought it was the SkImage type for a bit)",
+      "range": {
+        "startLine": 250,
+        "startChar": 4,
+        "endLine": 250,
+        "endChar": 8
+      },
+      "revId": "61c645ff445962b94cfb3184a92d8248ae1fa94d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "508ad38a_586b8dc8",
+        "filename": "src/codec/SkCrabbyAvifCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2024-10-16T19:11:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7bdfe4ab_b93b835b",
       "range": {
         "startLine": 250,
         "startChar": 4,
@@ -110,6 +217,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "33fda45c_34814abe",
+        "filename": "src/codec/SkCrabbyAvifCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2024-10-16T19:11:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c6e697bc_7bfd0a71",
+      "range": {
+        "startLine": 254,
+        "startChar": 88,
+        "endLine": 254,
+        "endChar": 92
+      },
+      "revId": "61c645ff445962b94cfb3184a92d8248ae1fa94d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "54806947_a1f407ad",
@@ -123,6 +254,30 @@
       "writtenOn": "2024-10-16T18:25:49Z",
       "side": 1,
       "message": "Shouldn\u0027t this be `.release()`? Otherwise I worry the underlying data will be freed when `cropped_image` goes out of scope.",
+      "range": {
+        "startLine": 260,
+        "startChar": 34,
+        "endLine": 260,
+        "endChar": 37
+      },
+      "revId": "61c645ff445962b94cfb3184a92d8248ae1fa94d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "25ed139b_e3d02a1b",
+        "filename": "src/codec/SkCrabbyAvifCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2024-10-16T19:11:16Z",
+      "side": 1,
+      "message": "no, `cropped_image` is a temporary view into the actual image that we use for the lifetime of this function. once we convert the pixels into RGB in line 290, we no longer need to hold on to `cropped_image`.\n\nthe reason it cannot be in the stack is that we need to use `crabby_avifImageCreateEmpty` to create this struct and hence it is being wrapped in a `unique_ptr` so that we won\u0027t have to explictly free it.\n\ni have added a comment.",
+      "parentUuid": "54806947_a1f407ad",
       "range": {
         "startLine": 260,
         "startChar": 34,
