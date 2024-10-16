@@ -503,6 +503,10 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 					skip(ALL, "gm", ALL, "wacky_yuv_formats_domain")
 				}
 
+				if b.extraConfig("Metal") {
+					// b/XXXX - Precompile isn't thread-safe on Dawn Metal
+					//skip(ALL, "test", ALL, "ThreadedPrecompileTest")
+				}
 			} else if b.extraConfig("Native") {
 				if b.extraConfig("Metal") {
 					configs = []string{"grmtl"}
@@ -521,6 +525,8 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 					// Test failures
 					skip(ALL, "test", ALL, "MultisampleRetainTest")
 					skip(ALL, "test", ALL, "PaintParamsKeyTest")
+					// b/373595340 - Precompile isn't thread-safe on Native Vulkan
+					//skip(ALL, "test", ALL, "ThreadedPrecompileTest")
 					if b.matchOs("Android") {
 						// Currently broken on Android Vulkan (skbug.com/310180104)
 						skip(ALL, "test", ALL, "ImageAsyncReadPixelsGraphite")
