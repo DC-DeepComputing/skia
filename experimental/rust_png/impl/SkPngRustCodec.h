@@ -50,7 +50,7 @@ private:
         size_t fDstRowSize = 0;
 
         // Stashed `dstInfo.bytesPerPixel()`
-        size_t fBytesPerPixel = 0;
+        uint8_t fBytesPerPixel = 0;
 
         // Index (in `fFrameHolder`) of the frame being currently decoded.
         size_t fFrameIndex = 0;
@@ -116,14 +116,14 @@ private:
 
         size_t size() const;
 
-        void appendNewFrame(const rust_png::Reader& reader, const SkEncodedInfo& info);
+        Result appendNewFrame(const rust_png::Reader& reader, const SkEncodedInfo& info);
         void markFrameAsFullyReceived(size_t index);
         bool isLastFrameFullyReceived() const;
         bool getFrameInfo(int index, FrameInfo* info) const;
 
     private:
         const SkFrame* onGetFrame(int i) const override;
-        void setLastFrameInfoFromCurrentFctlChunk(const rust_png::Reader& reader);
+        Result setLastFrameInfoFromCurrentFctlChunk(const rust_png::Reader& reader);
 
         class PngFrame;
         std::vector<PngFrame> fFrames;
