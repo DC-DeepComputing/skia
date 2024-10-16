@@ -149,6 +149,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e55d32e3_ec76e22b",
+        "filename": "src/codec/SkCrabbyAvifCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-10-16T21:05:38Z",
+      "side": 1,
+      "message": "Let\u0027s go with the type alias, but scoped to just this function (I think you can do that in C++ anyway)",
+      "parentUuid": "908e8dd1_5e51ebc2",
+      "range": {
+        "startLine": 248,
+        "startChar": 43,
+        "endLine": 248,
+        "endChar": 88
+      },
+      "revId": "61c645ff445962b94cfb3184a92d8248ae1fa94d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7bdfe4ab_b93b835b",
         "filename": "src/codec/SkCrabbyAvifCodec.cpp",
         "patchSetId": 1
