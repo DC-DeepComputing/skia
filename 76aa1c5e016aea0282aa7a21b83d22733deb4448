@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa8e57ad_6764f675",
+        "filename": "src/gpu/graphite/PublicPrecompile.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-10-16T16:47:08Z",
+      "side": 1,
+      "message": "These IDs are used only in the ProxyCache of the ResourceProvider\u0027s ResourceCache for message passing. I\u0027d worry that we would end up having these IDs get conflated with real Recorder IDs.\n\nIt is also valid to create a ResourceCache with an invalid recorder ID and not have a proxy cache, so I think that\u0027s what we should be doing here.",
+      "range": {
+        "startLine": 78,
+        "startChar": 0,
+        "endLine": 85,
+        "endChar": 1
+      },
+      "revId": "76aa1c5e016aea0282aa7a21b83d22733deb4448",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
