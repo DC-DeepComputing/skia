@@ -100,6 +100,10 @@ private:
     // and/or `fcTL` chunks.
     int getRawFrameCount() const;
 
+    // Attempts to read through the input stream to pass the additional `fcTL`
+    // chunks.
+    Result parseAdditionalFrameInfos();
+
     // SkCodec overrides:
     Result onGetPixels(const SkImageInfo& dstInfo,
                        void* pixels,
@@ -145,7 +149,6 @@ private:
 
         Result appendNewFrame(const rust_png::Reader& reader, const SkEncodedInfo& info);
         void markFrameAsFullyReceived(size_t index);
-        bool isLastFrameFullyReceived() const;
         bool getFrameInfo(int index, FrameInfo* info) const;
 
     private:
@@ -156,6 +159,14 @@ private:
         std::vector<PngFrame> fFrames;
     };
     FrameHolder fFrameHolder;
+
+    // Whether there may still be additional `fcTL` chunks to discover and parse.
+    //
+    // `true` if the stream hasn't been fully received (i.e. only
+    // `kIncompleteInput` errors so far, no hard errors) and `fFrameHolder`
+    // doesn't yet contain frame info for all `num_frames` declared in an `acTL`
+    // chunk.
+    bool fCanParseAdditionalFrameInfos = true;
 };
 
 #endif  // SkPngRustCodec_DEFINED
