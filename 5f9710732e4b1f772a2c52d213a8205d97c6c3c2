@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d83134c3_ce0567fd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-16T23:45:44Z",
+      "side": 1,
+      "message": "@danieldilan, can you PTAL?",
+      "revId": "5f9710732e4b1f772a2c52d213a8205d97c6c3c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1fb84bc_6e613036",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 337,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-16T23:45:44Z",
+      "side": 1,
+      "message": "This will get additional callers in a follow-up CL.",
+      "range": {
+        "startLine": 337,
+        "startChar": 0,
+        "endLine": 337,
+        "endChar": 1
+      },
+      "revId": "5f9710732e4b1f772a2c52d213a8205d97c6c3c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bad0ee42_aa75702a",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-16T23:45:44Z",
+      "side": 1,
+      "message": "Just reordering declarations to match the order of definitions in the `.cpp` file.  (Well somewhat...)",
+      "range": {
+        "startLine": 73,
+        "startChar": 35,
+        "endLine": 73,
+        "endChar": 36
+      },
+      "revId": "5f9710732e4b1f772a2c52d213a8205d97c6c3c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "09ac27ba_bcb29e5d",
+        "filename": "src/base/SkSafeMath.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-16T23:45:44Z",
+      "side": 1,
+      "message": "`SkTFitsIn` already supports **two** template parameters.  Replicating that here helps to ensure that we don\u0027t have to worry about casting an argument (e.g. an `int`) into `size_t value` (which may trigger an implicit sign change warning)",
+      "range": {
+        "startLine": 60,
+        "startChar": 43,
+        "endLine": 60,
+        "endChar": 44
+      },
+      "revId": "5f9710732e4b1f772a2c52d213a8205d97c6c3c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
