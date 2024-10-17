@@ -141,6 +141,7 @@ public:
     }
 
     void setFragmentTexture(id<MTLTexture> texture, NSUInteger index) {
+        printf("index: %lu\n", index);
         SkASSERT(index < kMaxExpectedTextures);
         if (fCurrentTexture[index] != texture) {
             [(*fCommandEncoder) setFragmentTexture:texture
