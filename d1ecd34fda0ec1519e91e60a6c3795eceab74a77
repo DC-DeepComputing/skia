@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c06fb90_27d19213",
+        "filename": "BUILD.gn",
+        "patchSetId": 19
+      },
+      "lineNbr": 384,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-17T15:02:32Z",
+      "side": 1,
+      "message": "This is more than a little awkward. There are both FreeType and Fontations font scanner tests in this file, but this test doesn\u0027t even use FontConfig (it has its own test fontmgr), It would probably make sense to break up `FontScanner.cpp` into\n\n1) A `tests/FontScanner.h` which declares `FontScanner_*`.\n2) A `tests/FontScanner.cpp` which implements `FontScanner_*`.\n3) A `tests/FontScanner_FreeType.cpp` which does the `DEF_TEST` with the FreeType font scanner.\n4) A `tests/FontScanner_Fontations.cpp` which does the `DEF_TEST` with the Fontations font scanner.\n5) Put `FontScanner.h` and `FontScanner.cpp` in a target.\n6) Put `FontScanner_*.cpp` into the test builds. Here in GN land that would look like adding `sources_for_tests` to the targets declaring the scanners (they would need to `dep` on the common target, at the moment that just means making the test targets always depend on it like it was part of the overall test harness).",
+      "revId": "d1ecd34fda0ec1519e91e60a6c3795eceab74a77",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "66bd8f34_8dd15fc0",
+        "filename": "src/ports/BUILD.bazel",
+        "patchSetId": 19
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-17T15:02:32Z",
+      "side": 1,
+      "message": "Why are these being re-exported? Why aren\u0027t the `deps` enough?",
+      "revId": "d1ecd34fda0ec1519e91e60a6c3795eceab74a77",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "16f67621_5e2726ef",
+        "filename": "src/ports/BUILD.bazel",
+        "patchSetId": 19
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-17T15:02:32Z",
+      "side": 1,
+      "message": "Same here.",
+      "revId": "d1ecd34fda0ec1519e91e60a6c3795eceab74a77",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
