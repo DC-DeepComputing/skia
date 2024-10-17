@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "507642e2_53b78fb5",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-17T19:12:09Z",
+      "side": 1,
+      "message": "Ack.  I can do whatever works for you.  One reason why I decided to use pragmas is to opt into those warnings everywhere (e.g. not just in Skia Bazel builds, or Skia GN builds).  One reason is that for most features my development of `SkPngRustCodec` is driven by Chromium/Blink tests (and so I build `SkPngRustCodec.cpp` and its transitive deps using Chromium\u0027s GN/ninja).",
+      "parentUuid": "38de8083_e073c8cc",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 0
+      },
+      "revId": "dd4ce4b098cedc97e0cb9f07395e1cfc5574beb0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6ee05db4_a445afb0",
         "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
         "patchSetId": 3
@@ -37,6 +61,30 @@
       "writtenOn": "2024-10-17T17:24:21Z",
       "side": 1,
       "message": "Should this fail harder (i.e. SKASSERT when the index is out of bounce)?",
+      "range": {
+        "startLine": 604,
+        "startChar": 4,
+        "endLine": 604,
+        "endChar": 19
+      },
+      "revId": "dd4ce4b098cedc97e0cb9f07395e1cfc5574beb0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a4578617_96aa6229",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 604,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-17T19:12:09Z",
+      "side": 1,
+      "message": "I don\u0027t know.\n\n* I see that `SkWuffsCodec::frame` (which is called by another override of `SkFrameHolder::onGetFrame`) only returns `nullptr`.\n* OTOH, I see that `SkWebpCodec::FrameHolder::frame` only `SkASSERT`s that the index is valid.\n* FWIW transitive callers of `SkFrameHolder::onGetFrame` either `SkASSERT` that they got non-null, or just start dereferencing it...\n* Here `SkPngRustCodec` works a bit [similarily to `SkWuffsCodec::onGetFrameInfo`](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/codec/SkWuffsCodec.cpp;l\u003d861-864;drc\u003d04989307509c78d67b34f2282ca549397719d046) in that the our `getFrameInfo` implementation also assumes that out-of-bounds index will return `nullptr`.  I note that `onGetFrameInfo` is an internal API, but it may be [called](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/include/codec/SkCodec.h;l\u003d744;drc\u003d04989307509c78d67b34f2282ca549397719d046) from the public `getFrameInfo` API without fully validated index.\n\nI think we can just continue returning null (mostly because of the last point).",
+      "parentUuid": "6ee05db4_a445afb0",
       "range": {
         "startLine": 604,
         "startChar": 4,
@@ -60,6 +108,30 @@
       "writtenOn": "2024-10-17T17:08:04Z",
       "side": 1,
       "message": "nit: should the parameter name be the same here as in the cpp file?",
+      "range": {
+        "startLine": 135,
+        "startChar": 34,
+        "endLine": 135,
+        "endChar": 39
+      },
+      "revId": "dd4ce4b098cedc97e0cb9f07395e1cfc5574beb0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f759f88_ad865b9b",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-17T19:12:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cab8a5ae_3c0322b9",
       "range": {
         "startLine": 135,
         "startChar": 34,
