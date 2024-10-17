@@ -16,6 +16,23 @@
       "message": "LGTM but needs OWNERS approval from bungeman@",
       "revId": "654b57defe13e52f38a561289258b5733acfc6db",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1ad1a5d7_2a17c093",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3424955
+      },
+      "writtenOn": "2024-10-17T21:08:45Z",
+      "side": 1,
+      "message": "Friendly ping for owners approval",
+      "revId": "654b57defe13e52f38a561289258b5733acfc6db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
