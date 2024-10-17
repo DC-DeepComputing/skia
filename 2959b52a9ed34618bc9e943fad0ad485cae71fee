@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "665d503a_3eb86045",
+        "filename": "src/gpu/graphite/GlobalCache.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-10-17T15:33:42Z",
+      "side": 1,
+      "message": "nit: make this more specific like `CompileStats` or `PipelineStats`, or make the fields more specific if we think there are going to be more non-pipeline things going into the `Stats` struct later.",
+      "range": {
+        "startLine": 60,
+        "startChar": 11,
+        "endLine": 60,
+        "endChar": 16
+      },
+      "revId": "2959b52a9ed34618bc9e943fad0ad485cae71fee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "10d051ec_63e7a367",
+        "filename": "tests/graphite/precompile/ThreadedPrecompileTest.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-10-17T15:33:42Z",
+      "side": 1,
+      "message": "In theory this could be false if the first thread completed all of their compiles before the redundant threads ran. If that were to happen, we\u0027d see `fCacheHits \u003d\u003d (kNumThreads-1)*12` right?\n\nWe should also be able to assert that `fCacheMisses \u003d fCacheAdditions + fCacheRaces`?",
+      "range": {
+        "startLine": 93,
+        "startChar": 30,
+        "endLine": 93,
+        "endChar": 46
+      },
+      "revId": "2959b52a9ed34618bc9e943fad0ad485cae71fee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
