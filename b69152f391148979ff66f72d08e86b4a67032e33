@@ -58,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a3300c13_7e2d6e9f",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-17T23:50:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "29b7b3f4_07bfb38d",
+      "range": {
+        "startLine": 287,
+        "startChar": 8,
+        "endLine": 289,
+        "endChar": 9
+      },
+      "revId": "b69152f391148979ff66f72d08e86b4a67032e33",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cffb144a_88201ad3",
@@ -81,6 +105,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1155cb3d_65b7c6bd",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 337,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-17T23:50:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cffb144a_88201ad3",
+      "range": {
+        "startLine": 337,
+        "startChar": 11,
+        "endLine": 337,
+        "endChar": 26
+      },
+      "revId": "b69152f391148979ff66f72d08e86b4a67032e33",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4f1b5ebd_cbe94f60",
@@ -94,6 +142,30 @@
       "writtenOn": "2024-10-17T22:15:29Z",
       "side": 1,
       "message": "nit: do this after the check for safe.ok(). The subspan has some asserts if garbage has reached there, but we can avoid triggering those by moving them after (which may make fuzzing easier in the future)",
+      "range": {
+        "startLine": 384,
+        "startChar": 8,
+        "endLine": 384,
+        "endChar": 21
+      },
+      "revId": "b69152f391148979ff66f72d08e86b4a67032e33",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "071e358a_26b3da6b",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 384,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-17T23:50:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4f1b5ebd_cbe94f60",
       "range": {
         "startLine": 384,
         "startChar": 8,
@@ -129,6 +201,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "e0329d7b_a6902e6e",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 526,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-17T23:50:38Z",
+      "side": 1,
+      "message": "I like the readability of the current version:\n\n* It\u0027s shorter (less noise \u003d more signal from other lines of code)\n* It explicitly/directly asks to \"cast\" (rather than requiring the reader to understand that `SkTFitsIn` and `static_cast` are related\n\nAnd if we save a stack variable slot, then we have to call `fReader-\u003eget_actl_num_plays()` twice.  And if we don\u0027t call it twice, then we have to stash the result in a stack variable (e.g. `uint32_t ffiNumPlays \u003d ...`).\n\nAnd I haven\u0027t looked at the assembly, but I assume the compiler can potentially optimize away the \"ok\" bit.\u0027\n\nSo, let\u0027s just leave it as-is?",
+      "parentUuid": "57d6bc90_7b600822",
+      "range": {
+        "startLine": 526,
+        "startChar": 15,
+        "endLine": 526,
+        "endChar": 19
+      },
+      "revId": "b69152f391148979ff66f72d08e86b4a67032e33",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "d0a6daa8_83fcd23a",
         "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
         "patchSetId": 4
@@ -140,6 +236,30 @@
       "writtenOn": "2024-10-17T22:15:29Z",
       "side": 1,
       "message": "Just thinking out loud here, if size() is INT_MAX *and* the int type, then +1 could silently overflow, making this be true but possibly causing errors below, right? But std::vector returns an unsigned type (e.g. size_t) so that can\u0027t happen, so my concern is moot. Great, carry on.",
+      "range": {
+        "startLine": 637,
+        "startChar": 24,
+        "endLine": 637,
+        "endChar": 38
+      },
+      "revId": "b69152f391148979ff66f72d08e86b4a67032e33",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "62f47287_ae841dda",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 637,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-17T23:50:38Z",
+      "side": 1,
+      "message": "Yes.  Maybe I can make that clearer by saying `... + 1u`.",
+      "parentUuid": "d0a6daa8_83fcd23a",
       "range": {
         "startLine": 637,
         "startChar": 24,
@@ -173,6 +293,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0278a7f_12789544",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 679,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-17T23:50:38Z",
+      "side": 1,
+      "message": "Good catch - thanks!  Yeah, we should yank that frame.  Or (probably cleaner\u003dbetter) we should only `push_back` a new frame if we\u0027ve succeeded getting the info.",
+      "parentUuid": "ceec387d_1be58723",
+      "range": {
+        "startLine": 679,
+        "startChar": 19,
+        "endLine": 679,
+        "endChar": 32
+      },
+      "revId": "b69152f391148979ff66f72d08e86b4a67032e33",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f85d5f54_a726dbbf",
@@ -186,6 +330,30 @@
       "writtenOn": "2024-10-17T22:15:29Z",
       "side": 1,
       "message": "nit: This might be a smidge of future proofing for something that won\u0027t occur or really matter, but by putting this 8 bits here and not at the end of the struct, we might have inefficient use of padding if we add other fields that are fewer than a machine word long https://godbolt.org/z/We3rYvPsM\n\nCan you re-arrange the struct fields to put the fBytesPerPixel at the end?  (sidebar: do you know of a tool that can detect places where we are unintentionally doing this?)",
+      "range": {
+        "startLine": 53,
+        "startChar": 8,
+        "endLine": 53,
+        "endChar": 15
+      },
+      "revId": "b69152f391148979ff66f72d08e86b4a67032e33",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b6cb20f4_7dea0435",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-17T23:50:38Z",
+      "side": 1,
+      "message": "\u003e nit: This might be a smidge of future proofing for something that won\u0027t occur or really matter, but by putting this 8 bits here and not at the end of the struct, we might have inefficient use of padding if we add other fields that are fewer than a machine word long https://godbolt.org/z/We3rYvPsM\n\u003e \n\u003e Can you re-arrange the struct fields to put the fBytesPerPixel at the end?  \n\nDone.\n\n\u003e (sidebar: do you know of a tool that can detect places where we are unintentionally doing this?)\n\nNo :-/",
+      "parentUuid": "f85d5f54_a726dbbf",
       "range": {
         "startLine": 53,
         "startChar": 8,

@@ -72,6 +72,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab0f3544_d4420615",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-17T23:50:38Z",
+      "side": 1,
+      "message": "\u003e Yes it is possible to set these in BUILD.gn [1] and Bazel [2] builds however we currently have conversion disabled for all our files because there were too many places to fix if we turned them on (and IIRC, there were a few places we did this for a good reason).\n\u003e \n\u003e I\u0027d be curious to try just the `-Wconversion` since the other two should be on in Skia itself, but I suppose they might not be on in Chromium?\n\nSure, I mostly cared about opting into `-Wconversion` here.  It\u0027s probably fine to get `-Wall` and `-Wextra` coverage through Skia CI.\n\n\u003e In any case, this is a fine spot to add such a check to incrementally add support for the warning. Idea (which I will sketch out in a new CL): condense this into a macro so we can roll out this and other warnings to other .cpp files similarly.\n\u003e\nAck.\n \n\u003e [1] https://github.com/google/skia/blob/2d31a2a0ede9b4cbf38c9a1d8598427f2921f293/gn/skia/BUILD.gn#L531\n\u003e [2] https://github.com/google/skia/blob/2d31a2a0ede9b4cbf38c9a1d8598427f2921f293/include/config/copts.bzl#L96",
+      "parentUuid": "d8695289_fdd75400",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 0
+      },
+      "revId": "dd4ce4b098cedc97e0cb9f07395e1cfc5574beb0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "28955ea9_66194407",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-17T23:50:38Z",
+      "side": 1,
+      "message": "\u003e Yes it is possible to set these in BUILD.gn [1] and Bazel [2] builds however we currently have conversion disabled for all our files because there were too many places to fix if we turned them on (and IIRC, there were a few places we did this for a good reason).\n\u003e \n\u003e I\u0027d be curious to try just the `-Wconversion` since the other two should be on in Skia itself, but I suppose they might not be on in Chromium?\n\nSure, I mostly care about `-Wconversion`.  It\u0027s probably fine to get the other ones through Skia CI.\n\n\u003e In any case, this is a fine spot to add such a check to incrementally add support for the warning. Idea (which I will sketch out in a new CL): condense this into a macro so we can roll out this and other warnings to other .cpp files similarly.\n\nAck.\n\n\u003e [1] https://github.com/google/skia/blob/2d31a2a0ede9b4cbf38c9a1d8598427f2921f293/gn/skia/BUILD.gn#L531\n\u003e [2] https://github.com/google/skia/blob/2d31a2a0ede9b4cbf38c9a1d8598427f2921f293/include/config/copts.bzl#L96",
+      "parentUuid": "d8695289_fdd75400",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 0
+      },
+      "revId": "dd4ce4b098cedc97e0cb9f07395e1cfc5574beb0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6ee05db4_a445afb0",
