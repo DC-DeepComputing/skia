@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "680b98e0_844d6d8c",
+        "filename": "BUILD.gn",
+        "patchSetId": 19
+      },
+      "lineNbr": 384,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-10-17T19:30:36Z",
+      "side": 1,
+      "message": "I thought about something like this but decided it\u0027s too much trouble :). It does make sense, however.\nNot sure if I didn\u0027t forget something...",
+      "parentUuid": "7c06fb90_27d19213",
+      "revId": "d1ecd34fda0ec1519e91e60a6c3795eceab74a77",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "66bd8f34_8dd15fc0",
@@ -35,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ae3303a_dd282490",
+        "filename": "src/ports/BUILD.bazel",
+        "patchSetId": 19
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-10-17T19:30:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "66bd8f34_8dd15fc0",
+      "revId": "d1ecd34fda0ec1519e91e60a6c3795eceab74a77",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "16f67621_5e2726ef",
@@ -48,6 +84,24 @@
       "writtenOn": "2024-10-17T15:02:32Z",
       "side": 1,
       "message": "Same here.",
+      "revId": "d1ecd34fda0ec1519e91e60a6c3795eceab74a77",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bfdb4d34_e2644468",
+        "filename": "src/ports/BUILD.bazel",
+        "patchSetId": 19
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-10-17T19:30:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "16f67621_5e2726ef",
       "revId": "d1ecd34fda0ec1519e91e60a6c3795eceab74a77",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
