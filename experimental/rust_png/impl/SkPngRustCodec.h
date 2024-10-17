@@ -50,7 +50,7 @@ private:
         size_t fDstRowSize = 0;
 
         // Stashed `dstInfo.bytesPerPixel()`
-        size_t fBytesPerPixel = 0;
+        uint8_t fBytesPerPixel = 0;
 
         // Index (in `fFrameHolder`) of the frame being currently decoded.
         size_t fFrameIndex = 0;
@@ -69,11 +69,19 @@ private:
     // `onIncrementalDecode`.
     Result incrementalDecode(DecodingState& decodingState, int* rowsDecoded);
 
+    // Helper for reading until the start of the next `fdAT` sequence.
+    Result readToStartOfNextFrame();
+
     // Helper for seeking to the start of image data for the given frame.
     Result seekToStartOfFrame(int index);
 
-    // Helper for reading until the start of the next `fdAT` sequence.
-    Result readToStartOfNextFrame();
+    // The number of frames calculated based on 1) the presence, and 2) the
+    // contents of an `acTL` chunk.  "raw" in the sense that it reports all the
+    // frames, while `SkCodec::getFrameCount` and
+    // `SkPngRustCodec::onGetFrameCount` only report frames for which we have
+    // successfully populated `fFrameHolder` with frame info parsed from `IHDR`
+    // and/or `fcTL` chunks.
+    int getRawFrameCount() const;
 
     // SkCodec overrides:
     Result onGetPixels(const SkImageInfo& dstInfo,
@@ -114,16 +122,18 @@ private:
         FrameHolder& operator=(const FrameHolder&) = delete;
         FrameHolder& operator=(FrameHolder&&) = delete;
 
-        size_t size() const;
+        // Returning an `int` (rather than `size_t`) for easier interop with
+        // other parts of the SkCodec API.
+        int size() const;
 
-        void appendNewFrame(const rust_png::Reader& reader, const SkEncodedInfo& info);
+        Result appendNewFrame(const rust_png::Reader& reader, const SkEncodedInfo& info);
         void markFrameAsFullyReceived(size_t index);
         bool isLastFrameFullyReceived() const;
         bool getFrameInfo(int index, FrameInfo* info) const;
 
     private:
-        const SkFrame* onGetFrame(int i) const override;
-        void setLastFrameInfoFromCurrentFctlChunk(const rust_png::Reader& reader);
+        const SkFrame* onGetFrame(int unverifiedIndex) const override;
+        Result setLastFrameInfoFromCurrentFctlChunk(const rust_png::Reader& reader);
 
         class PngFrame;
         std::vector<PngFrame> fFrames;
