@@ -703,6 +703,11 @@ bool DrawPass::prepareResources(ResourceProvider* resourceProvider,
     // once we've created Samplers, so we drop the storage for them here.
     fSamplerDescs.clear();
 
+    for (int i = 0; i < fFullPipelines.size(); ++i) {
+        const GraphicsPipeline* p = fFullPipelines[i].get();
+        printf("created pipeline, dst read req: %d, textures: %d\n", p->dstReadRequirement(), p->numFragTexturesAndSamplers());
+    }
+
     return true;
 }
 

@@ -368,6 +368,8 @@ void MtlCommandBuffer::addDrawPass(const DrawPass* drawPass) {
         switch (type) {
             case DrawPassCommands::Type::kBindGraphicsPipeline: {
                 auto bgp = static_cast<DrawPassCommands::BindGraphicsPipeline*>(cmdPtr);
+                const GraphicsPipeline* p = drawPass->getPipeline(bgp->fPipelineIndex);
+                printf("binding graphics pipeline, dst read req: %d, num textures: %d\n", p->dstReadRequirement(), p->numFragTexturesAndSamplers());
                 this->bindGraphicsPipeline(drawPass->getPipeline(bgp->fPipelineIndex));
                 break;
             }
