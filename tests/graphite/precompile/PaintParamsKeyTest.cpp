@@ -2157,6 +2157,7 @@ void precompile_vs_real_draws_subtest(skiatest::Reporter* reporter,
     REPORTER_ASSERT(reporter, before == 0);
     REPORTER_ASSERT(reporter, after > before);
 
+    printf("checking draw\n");
     check_draw(reporter,
                context,
                testContext,
@@ -2392,6 +2393,11 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
                                 SkDebugf("%d/%zu\n", current, kExpected);
                                 ++current;
 #endif
+
+                                SkString logMsg("Running ");
+                                logMsg += BackendApiToStr(context->backend());
+                                log_run(logMsg.c_str(), kDefaultSeed, shader, blender, cf, mf,
+                                        imageFilter, clip, dt);
 
                                 run_test(reporter, context, testContext, precompileKeyContext,
                                          shader, blender, cf, mf, imageFilter, clip, dt,
