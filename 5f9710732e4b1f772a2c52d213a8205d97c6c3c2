@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7cce6847_65e39c94",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 337,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-10-17T17:08:04Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "d1fb84bc_6e613036",
+      "range": {
+        "startLine": 337,
+        "startChar": 0,
+        "endLine": 337,
+        "endChar": 1
+      },
+      "revId": "5f9710732e4b1f772a2c52d213a8205d97c6c3c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bad0ee42_aa75702a",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "774a78bf_e6100088",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-10-17T17:08:04Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "bad0ee42_aa75702a",
+      "range": {
+        "startLine": 73,
+        "startChar": 35,
+        "endLine": 73,
+        "endChar": 36
+      },
+      "revId": "5f9710732e4b1f772a2c52d213a8205d97c6c3c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "09ac27ba_bcb29e5d",
@@ -77,6 +125,30 @@
       "writtenOn": "2024-10-16T23:45:44Z",
       "side": 1,
       "message": "`SkTFitsIn` already supports **two** template parameters.  Replicating that here helps to ensure that we don\u0027t have to worry about casting an argument (e.g. an `int`) into `size_t value` (which may trigger an implicit sign change warning)",
+      "range": {
+        "startLine": 60,
+        "startChar": 43,
+        "endLine": 60,
+        "endChar": 44
+      },
+      "revId": "5f9710732e4b1f772a2c52d213a8205d97c6c3c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "30b3de6e_04104620",
+        "filename": "src/base/SkSafeMath.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-10-17T17:08:04Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "09ac27ba_bcb29e5d",
       "range": {
         "startLine": 60,
         "startChar": 43,

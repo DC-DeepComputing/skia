@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "38de8083_e073c8cc",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-10-17T17:08:04Z",
+      "side": 1,
+      "message": "I\u0027m not sure if this is necessary. @kjlubick@google.com would know more but is it possible to just have these in build args?",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 0
+      },
+      "revId": "dd4ce4b098cedc97e0cb9f07395e1cfc5574beb0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cab8a5ae_3c0322b9",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-10-17T17:08:04Z",
+      "side": 1,
+      "message": "nit: should the parameter name be the same here as in the cpp file?",
+      "range": {
+        "startLine": 135,
+        "startChar": 34,
+        "endLine": 135,
+        "endChar": 39
+      },
+      "revId": "dd4ce4b098cedc97e0cb9f07395e1cfc5574beb0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
