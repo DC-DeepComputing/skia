@@ -1513,6 +1513,13 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 		match = append(match, "sweep_tiling")
 	}
 
+	// DONOTCOMMIT
+	if b.extraConfig("Metal") && b.extraConfig("Graphite") && b.gpu("RadeonHD8870M") {
+		skipped = []string{}
+		match = []string{}
+		match = append(match, "PaintParamsKeyTestReduced")
+	}
+
 	if len(skipped) > 0 {
 		args = append(args, "--skip")
 		args = append(args, skipped...)

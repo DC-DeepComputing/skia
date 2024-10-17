@@ -2157,6 +2157,7 @@ void precompile_vs_real_draws_subtest(skiatest::Reporter* reporter,
     REPORTER_ASSERT(reporter, before == 0);
     REPORTER_ASSERT(reporter, after > before);
 
+    printf("checking draw\n");
     check_draw(reporter,
                context,
                testContext,
@@ -2217,7 +2218,7 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTestReduced,
                                                CtsEnforcement::kNever) {
     std::unique_ptr<RuntimeEffectDictionary> rtDict = std::make_unique<RuntimeEffectDictionary>();
 
-#if 1
+#if 0
     //----------------------
     uint32_t seed = std::time(nullptr) % std::numeric_limits<uint32_t>::max();
     SkRandom rand(seed);
@@ -2231,14 +2232,14 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTestReduced,
     //----------------------
 #else
     //------------------------
-    uint32_t seed = 1721227069;
-    ShaderType shaderType = ShaderType::kLocalMatrix;
-    BlenderType blenderType = BlenderType::kArithmetic;
-    ColorFilterType colorFilterType = ColorFilterType::kRuntime;
+    uint32_t seed = 0;
+    ShaderType shaderType = ShaderType::kImage;
+    BlenderType blenderType = BlenderType::kShaderBased;
+    ColorFilterType colorFilterType = ColorFilterType::kNone;
     MaskFilterType maskFilterType = MaskFilterType::kNone;
-    ImageFilterType imageFilterType = ImageFilterType::kDisplacement;
+    ImageFilterType imageFilterType = ImageFilterType::kNone;
     ClipType clipType = ClipType::kNone;
-    DrawTypeFlags drawTypeFlags = DrawTypeFlags::kText;
+    DrawTypeFlags drawTypeFlags = DrawTypeFlags::kNonSimpleShape;
     //-----------------------
 #endif
 
