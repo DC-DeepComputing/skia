@@ -26,6 +26,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6ee05db4_a445afb0",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 604,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-10-17T17:24:21Z",
+      "side": 1,
+      "message": "Should this fail harder (i.e. SKASSERT when the index is out of bounce)?",
+      "range": {
+        "startLine": 604,
+        "startChar": 4,
+        "endLine": 604,
+        "endChar": 19
+      },
+      "revId": "dd4ce4b098cedc97e0cb9f07395e1cfc5574beb0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "cab8a5ae_3c0322b9",
         "filename": "experimental/rust_png/impl/SkPngRustCodec.h",
         "patchSetId": 3
