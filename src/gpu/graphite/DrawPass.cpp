@@ -672,6 +672,7 @@ bool DrawPass::prepareResources(ResourceProvider* resourceProvider,
             SKGPU_LOG_W("Failed to create GraphicsPipeline for draw in RenderPass. Dropping pass!");
             return false;
         }
+        printf("pipeline num textures: %d\n", pipeline->numFragTexturesAndSamplers());
         fFullPipelines.push_back(std::move(pipeline));
     }
     // The DrawPass may be long lived on a Recording and we no longer need the GraphicPipelineDescs
