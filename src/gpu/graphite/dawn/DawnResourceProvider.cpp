@@ -14,6 +14,7 @@
 #include "src/gpu/graphite/ComputePipeline.h"
 #include "src/gpu/graphite/RenderPassDesc.h"
 #include "src/gpu/graphite/dawn/DawnBuffer.h"
+#include "src/gpu/graphite/dawn/DawnCommandBuffer.h"
 #include "src/gpu/graphite/dawn/DawnComputePipeline.h"
 #include "src/gpu/graphite/dawn/DawnErrorChecker.h"
 #include "src/gpu/graphite/dawn/DawnGraphicsPipeline.h"
@@ -153,13 +154,356 @@ BindGroupKey<1> make_texture_bind_group_key(const DawnSampler* sampler,
 }
 }  // namespace
 
+// This represents a single block of instrinsic constants. It has a 'hash' as its unique cache ID.
+// It contains a 'BindBufferInfo' for render passes to use. It also tracks its containing
+// 'IntrinsicBuffer', and counts the number of active command buffer usages, so that when any
+// entry is still in use, its containing buffer mustn't be purged.
+class DawnResourceProvider::IntrinsicEntry final : public SkRefCnt {
+public:
+    static sk_sp<IntrinsicEntry> Make(uint32_t hash,
+                                      IntrinsicBuffer* buffer,
+                                      BindBufferInfo&& binding,
+                                      IntrinsicConstantsManager* manager) {
+        return sk_sp<IntrinsicEntry>(new IntrinsicEntry(hash, buffer, std::move(binding), manager));
+    }
+
+    ~IntrinsicEntry() {
+        SkASSERT(!hasUsageRef());
+    }
+
+    uint32_t hash() const { return fHash; }
+    const BindBufferInfo& binding() const { return fBinding; }
+    IntrinsicBuffer* buffer() const { return fBuffer; }
+
+    void updateAccessTime() {
+        fLastAccess = skgpu::StdSteadyClock::now();
+    }
+    skgpu::StdSteadyClock::time_point lastAccessTime() const {
+        return fLastAccess;
+    }
+
+    void refUsage() {
+        fUsageRefCnt++;
+    }
+    void unrefUsage() {
+        fUsageRefCnt--;
+    }
+    bool hasUsageRef() const {
+        return fUsageRefCnt > 0;
+    }
+
+    // Purge the entry's cache in its manager.
+    void purge();
+
+    void trackCommandBuffer(DawnCommandBuffer* cb);
+
+private:
+    IntrinsicEntry(uint32_t hash,
+                   IntrinsicBuffer* buffer,
+                   BindBufferInfo&& binding,
+                   IntrinsicConstantsManager* manager)
+            : fHash(hash),
+              fBuffer(buffer),
+              fBinding(std::move(binding)),
+              fManager(manager),
+              fUsageRefCnt(0) {
+        fLastAccess = skgpu::StdSteadyClock::now();
+    }
+
+    uint32_t fHash;
+    // The buffer containing this entry.
+    IntrinsicBuffer* const fBuffer;
+    BindBufferInfo fBinding;
+    IntrinsicConstantsManager* const fManager;
+
+    uint32_t fUsageRefCnt = 0;
+    // The last time when any of the entry's command buffers finishes executing.
+    skgpu::StdSteadyClock::time_point fLastAccess;
+};
+
+
+// Wraps a Dawn buffer, and contains a list of 'IntrinsicEntry's that are using this buffer.
+class DawnResourceProvider::IntrinsicBuffer final {
+public:
+    static constexpr int kNumSlots = 8;
+
+    static IntrinsicBuffer* Make(sk_sp<DawnBuffer>&& dawnBuffer,
+                                 IntrinsicConstantsManager* manager) {
+        return new IntrinsicBuffer(std::move(dawnBuffer), manager);
+    }
+
+    ~IntrinsicBuffer() = default;
+
+    sk_sp<DawnBuffer> buffer() const { return fDawnBuffer; }
+
+    // Appends an entry using this buffer.
+    void addEntry(const sk_sp<IntrinsicEntry>& entry) {
+        fEntries.push_back(entry);
+    }
+
+    // Returns true if any of its entries is in use.
+    bool hasEntryInUse();
+
+    // Returns the last access time of the buffer.
+    skgpu::StdSteadyClock::time_point lastAccessTime() const;
+
+    // Purge the buffer's cache in its manager.
+    void purge();
+
+private:
+    IntrinsicBuffer(sk_sp<DawnBuffer>&& dawnBuffer, IntrinsicConstantsManager* manager)
+            : fDawnBuffer(std::move(dawnBuffer)), fManager(manager) {
+    }
+
+    using EntryArray = skia_private::STArray<kNumSlots, sk_sp<IntrinsicEntry>>;
+    EntryArray fEntries;
+
+    sk_sp<DawnBuffer> fDawnBuffer;
+    IntrinsicConstantsManager* const fManager;
+
+    SK_DECLARE_INTERNAL_LLIST_INTERFACE(IntrinsicBuffer);
+};
+
+// DawnResourceProvider::IntrinsicConstantsManager
+// ----------------------------------------------------------------------------
+
+/**
+ * Since Dawn does not currently provide push constants, this helper class manages rotating through
+ * buffers and writing each new occurrence of a set of intrinsic uniforms into the current buffer.
+ */
+class DawnResourceProvider::IntrinsicConstantsManager {
+public:
+    explicit IntrinsicConstantsManager(DawnResourceProvider* resourceProvider)
+            : fResourceProvider(resourceProvider) {}
+
+    ~IntrinsicConstantsManager() {
+        auto alwaysTrue = [](IntrinsicBuffer* buffer) {
+            SkASSERT(!buffer->hasEntryInUse());
+            return true;
+        };
+        purgeBuffersIf(alwaysTrue);
+
+        SkASSERT(fIntrinsicBuffersLRU.isEmpty());
+        SkASSERT(fIntrinsicEntries.empty());
+    }
+
+    // Find or create a bind buffer info for the given intrinsic values used in the given command
+    // buffer.
+    BindBufferInfo add(DawnCommandBuffer* cb, const UniformDataBlock& intrinsicValues) {
+        auto hasher = UniformDataBlock::Hash();
+        uint32_t hash = hasher(intrinsicValues);
+        sk_sp<IntrinsicEntry>* existing = fIntrinsicEntries.find(hash);
+        if (existing) {
+            auto entry = *existing;
+            markEntryAsUsed(cb, entry);
+            return entry->binding();
+        }
+
+        // TODO: https://b.corp.google.com/issues/259267703
+        // Make updating intrinsic constants faster. Metal has setVertexBytes method
+        // to quickly send intrinsic constants to vertex shader without any buffer. But Dawn
+        // doesn't have similar capability. So we have to use WriteBuffer(), and this method is not
+        // allowed to be called when there is an active render pass.
+        SkASSERT(!cb->hasActivePassEncoder());
+
+        const Caps* caps = fResourceProvider->dawnSharedContext()->caps();
+        const uint32_t stride = SkAlignTo(intrinsicValues.size(),
+                                          caps->requiredUniformBufferAlignment());
+        // In any one of the following cases, we need to create a buffer:
+        //     (1) There is no current buffer.
+        //     (2) The current buffer is full.
+        //     (3) The current command buffer has changed. In this case, we'd better start a new
+        //         buffer, otherwise we could update a buffer which is still in use by the previous
+        //         command buffer
+        if (!fCurrentBuffer
+            || fSlotsUsed == IntrinsicBuffer::kNumSlots
+            || cb != fCurrentCommandBuffer) {
+            // We can just replace the current buffer; any prior buffer was already tracked on the
+            // CommandBuffer and the intrinsic constants were written directly to the Dawn queue.
+            DawnResourceProvider* resourceProvider = fResourceProvider;
+            auto dawnBuffer = resourceProvider->findOrCreateDawnBuffer(
+                    stride * IntrinsicBuffer::kNumSlots,
+                    BufferType::kUniform,
+                    AccessPattern::kGpuOnly,
+                    "IntrinsicConstantBuffer");
+            fSlotsUsed = 0;
+
+            if (!dawnBuffer) {
+                // If we failed to create a GPU buffer to hold the intrinsic uniforms, we will fail
+                // the Recording being inserted, so return an empty bind info.
+                return {};
+            }
+
+            fCurrentBuffer = IntrinsicBuffer::Make(std::move(dawnBuffer), this);
+        }
+
+        SkASSERT(fCurrentBuffer && fSlotsUsed < IntrinsicBuffer::kNumSlots);
+        uint32_t offset = (fSlotsUsed++) * stride;
+        fResourceProvider->dawnSharedContext()->queue().WriteBuffer(
+                fCurrentBuffer->buffer()->dawnBuffer(),
+                offset,
+                intrinsicValues.data(),
+                intrinsicValues.size());
+
+        BindBufferInfo binding{fCurrentBuffer->buffer().get(),
+                               offset,
+                               SkTo<uint32_t>(intrinsicValues.size())};
+        sk_sp<IntrinsicEntry> entry = IntrinsicEntry::Make(hash,
+                                                           fCurrentBuffer,
+                                                           std::move(binding),
+                                                           this);
+        fCurrentBuffer->addEntry(entry);
+        fIntrinsicEntries.set(hash, entry);
+
+        markEntryAsUsed(cb, entry);
+
+        return binding;
+    }
+
+    void freeGpuResources() {
+        purgeResourcesNotUsedSince(skgpu::StdSteadyClock::now());
+    }
+
+    void purgeResourcesNotUsedSince(StdSteadyClock::time_point purgeTime) {
+        // We keep the buffers that are currently in use. We also keep the current buffer as it is
+        // likely to be used again soon.
+        auto bufferNotUsedSince = [purgeTime, this](IntrinsicBuffer* buffer) {
+            return !buffer->hasEntryInUse()
+                   && buffer != fCurrentBuffer
+                   && buffer->lastAccessTime() < purgeTime;
+        };
+        purgeBuffersIf(bufferNotUsedSince);
+    }
+
+private:
+   friend class IntrinsicEntry;
+   friend class IntrinsicBuffer;
+
+   // Traverse the intrinsic buffers in LRU order and purge the ones that match the 'pred'.
+   template<typename T> void purgeBuffersIf(T pred) {
+        using Iter = SkTInternalLList<IntrinsicBuffer>::Iter;
+        Iter iter;
+        auto* curr = iter.init(fIntrinsicBuffersLRU, Iter::kTail_IterStart);
+        while (curr != nullptr) {
+            auto* prev = iter.prev();
+            if (pred(curr)) {
+                purgeBuffer(curr);
+            }
+            curr = prev;
+        }
+    }
+
+    // Removes the buffer and returns its dawn buffer.
+    void purgeBuffer(IntrinsicBuffer* buffer) {
+        if (buffer == fCurrentBuffer) {
+            fCurrentBuffer = nullptr;
+            fSlotsUsed = 0;
+        }
+
+        buffer->purge();
+
+        delete buffer;
+    }
+
+    // Marks the 'entry' as in use by the 'cb'.
+    void markEntryAsUsed(DawnCommandBuffer* cb, sk_sp<IntrinsicEntry> entry) {
+        fCurrentCommandBuffer = cb;
+        entry->trackCommandBuffer(cb);
+
+        // Move the containing buffer to the head of the LRU list.
+        auto* buffer = entry->buffer();
+        if (buffer != fIntrinsicBuffersLRU.head()) {
+            if (fIntrinsicBuffersLRU.isInList(buffer)) {
+                fIntrinsicBuffersLRU.remove(buffer);
+            }
+            fIntrinsicBuffersLRU.addToHead(buffer);
+        }
+    }
+
+    void invalidateEntry(uint32_t hash) {
+        fIntrinsicEntries.remove(hash);
+    }
+
+    void invalidateBuffer(IntrinsicBuffer* buffer) {
+        fIntrinsicBuffersLRU.remove(buffer);
+    }
+
+    DawnResourceProvider* const fResourceProvider;
+    // The current buffer being filled up, as well as the how much of it has been written to.
+    IntrinsicBuffer* fCurrentBuffer = nullptr;
+    int fSlotsUsed = 0; // in multiples of the intrinsic uniform size and UBO binding requirement
+    DawnCommandBuffer* fCurrentCommandBuffer = nullptr;
+
+    // All cached intrinsic entries, indexed by their hash.
+    skia_private::THashMap<uint32_t, sk_sp<IntrinsicEntry>> fIntrinsicEntries;
+    // All cached intrinsic buffers, in LRU order.
+    SkTInternalLList<IntrinsicBuffer> fIntrinsicBuffersLRU;
+
+};
+
+// DawnResourceProvider::IntrinsicConstantsManager
+// ----------------------------------------------------------------------------
+
+
+// callback for when a command buffer finishes its execution.
+void DawnResourceProviderIntrinsiceEntryFinishedCommandBufferUse(void* context) {
+    auto* entry = static_cast<DawnResourceProvider::IntrinsicEntry*>(context);
+    entry->unrefUsage();
+    // Update the entry's last access time.
+    entry->updateAccessTime();
+}
+
+// Tracks the atctive usage of the entry by the command buffer. We mustn't purge an entry while it
+// is still in use by any command buffer.
+void DawnResourceProvider::IntrinsicEntry::trackCommandBuffer(DawnCommandBuffer* cb) {
+    refUsage();
+    sk_sp<RefCntedCallback> callback = RefCntedCallback::Make(
+        DawnResourceProviderIntrinsiceEntryFinishedCommandBufferUse, this);
+    cb->addFinishedProc(std::move(callback));
+}
+
+void DawnResourceProvider::IntrinsicEntry::purge() {
+    fManager->invalidateEntry(fHash);
+}
+
+
+
+bool DawnResourceProvider::IntrinsicBuffer::hasEntryInUse() {
+    for (auto& entry : fEntries) {
+        if (entry->hasUsageRef()) {
+            return true;
+        }
+    }
+    return false;
+}
+
+skgpu::StdSteadyClock::time_point DawnResourceProvider::IntrinsicBuffer::lastAccessTime() const {
+    auto lastAccessTime = fEntries.back()->lastAccessTime();
+    // The last access time of all its entries.
+    for (auto& entry : fEntries) {
+        lastAccessTime = std::max(lastAccessTime, entry->lastAccessTime());
+    }
+    return lastAccessTime;
+}
+
+void DawnResourceProvider::IntrinsicBuffer::purge() {
+    for (auto& entry : fEntries) {
+        entry->purge();
+    }
+
+    fManager->invalidateBuffer(this);
+}
+
+
 DawnResourceProvider::DawnResourceProvider(SharedContext* sharedContext,
                                            SingleOwner* singleOwner,
                                            uint32_t recorderID,
                                            size_t resourceBudget)
         : ResourceProvider(sharedContext, singleOwner, recorderID, resourceBudget)
         , fUniformBufferBindGroupCache(kMaxNumberOfCachedBufferBindGroups)
-        , fSingleTextureSamplerBindGroups(kMaxNumberOfCachedTextureBindGroups) {}
+        , fSingleTextureSamplerBindGroups(kMaxNumberOfCachedTextureBindGroups) {
+    fIntrinsicConstantsManager = std::make_unique<IntrinsicConstantsManager>(this);
+}
 
 DawnResourceProvider::~DawnResourceProvider() = default;
 
@@ -512,6 +856,21 @@ const wgpu::BindGroup& DawnResourceProvider::findOrCreateSingleTextureSamplerBin
     auto bindGroup = device.CreateBindGroup(&desc);
 
     return *fSingleTextureSamplerBindGroups.insert(key, bindGroup);
+}
+
+void DawnResourceProvider::freeGpuResources() {
+    fIntrinsicConstantsManager->freeGpuResources();
+    ResourceProvider::freeGpuResources();
+}
+
+void DawnResourceProvider::purgeResourcesNotUsedSince(StdSteadyClock::time_point purgeTime) {
+    fIntrinsicConstantsManager->purgeResourcesNotUsedSince(purgeTime);
+    ResourceProvider::purgeResourcesNotUsedSince(purgeTime);
+}
+
+BindBufferInfo DawnResourceProvider::findOrCreateIntrinsicBindBufferInfo(
+        DawnCommandBuffer* cb, const UniformDataBlock& intrinsicValues) {
+    return fIntrinsicConstantsManager->add(cb, intrinsicValues);
 }
 
 } // namespace skgpu::graphite
