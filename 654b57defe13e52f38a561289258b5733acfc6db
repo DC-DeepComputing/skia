@@ -33,6 +33,40 @@
       "message": "Friendly ping for owners approval",
       "revId": "654b57defe13e52f38a561289258b5733acfc6db",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fc4f0155_97a0dcfe",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-10-18T18:54:47Z",
+      "side": 1,
+      "message": "I can weigh in, but Ben should take a look.",
+      "revId": "654b57defe13e52f38a561289258b5733acfc6db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fab6e5be_42ef2c46",
+        "filename": "include/core/SkTypeface.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 335,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-10-18T18:54:47Z",
+      "side": 1,
+      "message": "Can we hide this from public APIs? One thought: make it protected, and add a helper to `SkFontPriv` (which is already friended) - then the only way to reach it from external clients is via `SkTypeface_GetIDWriteFontFace`.",
+      "revId": "654b57defe13e52f38a561289258b5733acfc6db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
