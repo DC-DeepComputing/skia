@@ -50,6 +50,24 @@
       "message": "I\u0027ll take a better look into this when I\u0027m sitting in front of a machine with GCC. However, it does look like there has been much work in this area in GCC recently (like this past July) so I am interested to discover if these issues have been resolved already,",
       "revId": "bf7885f8468420cdef0038a42689fa7a7cb8bf0f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "024efea0_c9abaac5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-18T20:22:12Z",
+      "side": 1,
+      "message": "Also, I am assuming that the existing loongarch code here was previously working with clang (asking since Skia doesn\u0027t have a builder for that either)? I assume this change still works with clang. The intent here is to make the existing code also compile with some version of gcc?",
+      "parentUuid": "4de496ae_7dc462fe",
+      "revId": "bf7885f8468420cdef0038a42689fa7a7cb8bf0f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
