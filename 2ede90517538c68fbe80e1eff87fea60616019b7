@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "40c65529_0daac844",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-10-18T15:50:22Z",
+      "side": 1,
+      "message": "I think its fine to delay landing this until next week when others who are OOO have a chance to look at it. Also we still require the other half of the issue involving the intrinsic uniforms to fully fix this anyways. But sending it out now to at least make others aware how I would fix the static buffers.",
+      "revId": "2ede90517538c68fbe80e1eff87fea60616019b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
