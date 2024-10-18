@@ -39,6 +39,30 @@
       },
       "revId": "ae114b49e87956337924a73d71cc35c2fa4348a2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb31d934_d4331ad6",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 332,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-18T14:38:43Z",
+      "side": 1,
+      "message": "When the assert fails and you see this message, then (as you say) we have a situation where it is *not* ok to use Sk64_pin_to_s32.  But when you read the code, and want to know why this assert is here, then the assert checks that it *is* ok to use Sk64_pin_to_s32.\n\nSo, maybe let me rephrase this as a question to avoid the ambiguity.",
+      "parentUuid": "a3e7a944_8aa02abf",
+      "range": {
+        "startLine": 332,
+        "startChar": 51,
+        "endLine": 332,
+        "endChar": 53
+      },
+      "revId": "ae114b49e87956337924a73d71cc35c2fa4348a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
