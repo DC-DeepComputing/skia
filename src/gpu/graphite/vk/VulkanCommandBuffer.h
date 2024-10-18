@@ -222,6 +222,8 @@ private:
     size_t fBoundIndexBufferOffset = 0;
     size_t fBoundIndirectBufferOffset = 0;
 
+    SkIRect fCurrentViewport;
+
     float fCachedBlendConstant[4];
 };
 

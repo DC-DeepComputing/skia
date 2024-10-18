@@ -84,11 +84,22 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
     // Y-down coordinate space of the viewport.
     fNDCYAxisPointsDown = true;
 
+    // fUsePushConstants different layout?
     fResourceBindingReqs.fUniformBufferLayout = Layout::kStd140;
+
     // We can enable std430 and ensure no array stride mismatch in functions because all bound
     // buffers will either be a UBO or SSBO, depending on if storage buffers are enabled or not.
     // Although intrinsic uniforms always use uniform buffers, they do not contain any arrays.
     fResourceBindingReqs.fStorageBufferLayout = Layout::kStd430;
+
+    fMaxPushConstantSize = std::min(physDevProperties.limits.maxPushConstantsSize,
+                                    (uint32_t)INT_MAX);
+    // Adreno devices don't support push constants well
+    if (physDevProperties.vendorID != kQualcomm_VkVendor) {
+        fUsePushConstants = fMaxPushConstantSize >= VulkanCaps::kPushConstantSize;
+    }
+
+    fResourceBindingReqs.fUniformBufferLayout = Layout::kStd140;// fUsePushConstants ? Layout::kStd140 : ;
     fResourceBindingReqs.fSeparateTextureAndSamplerBinding = false;
     fResourceBindingReqs.fDistinctIndexRanges = false;
 

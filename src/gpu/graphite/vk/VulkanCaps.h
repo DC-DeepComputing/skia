@@ -88,15 +88,12 @@ public:
         return fShouldPersistentlyMapCpuToGpuBuffers;
     }
 
-    bool supportsYcbcrConversion() const { return fSupportsYcbcrConversion; }
+    bool supportsYcbcrConversion()   const { return fSupportsYcbcrConversion; }
+    bool supportsDeviceFaultInfo()   const { return fSupportsDeviceFaultInfo; }
 
-    bool supportsDeviceFaultInfo() const { return fSupportsDeviceFaultInfo; }
-
-    uint32_t maxVertexAttributes() const {
-        return fMaxVertexAttributes;
-    }
+    uint32_t maxVertexAttributes()   const { return fMaxVertexAttributes;   }
     uint64_t maxUniformBufferRange() const { return fMaxUniformBufferRange; }
-
+    uint32_t maxPushConstantSize()   const { return fMaxPushConstantSize;   }
     uint64_t maxStorageBufferRange() const { return fMaxStorageBufferRange; }
 
     const VkPhysicalDeviceMemoryProperties2& physicalDeviceMemoryProperties2() const {
@@ -105,6 +102,8 @@ public:
 
     bool isTransferSrc(const VulkanTextureInfo&) const;
     bool isTransferDst(const VulkanTextureInfo&) const;
+
+    static constexpr unsigned int kPushConstantSize = sizeof(float) * 4;
 
 private:
     enum VkVendor {
@@ -234,6 +233,7 @@ private:
     uint32_t fMaxVertexAttributes;
     uint64_t fMaxUniformBufferRange;
     uint64_t fMaxStorageBufferRange;
+    uint64_t fMaxPushConstantSize;
     VkPhysicalDeviceMemoryProperties2 fPhysicalDeviceMemoryProperties2;
 
     // ColorTypeInfo struct for use w/ external formats.
@@ -250,6 +250,7 @@ private:
     bool fGpuOnlyBuffersMorePerformant = false;
     bool fShouldPersistentlyMapCpuToGpuBuffers = true;
     bool fSupportsDeviceFaultInfo = false;
+    bool fUsePushConstants  = false;
 };
 
 } // namespace skgpu::graphite
