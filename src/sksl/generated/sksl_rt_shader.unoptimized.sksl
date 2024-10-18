@@ -67,6 +67,6 @@ static constexpr char SKSL_MINIFIED_sksl_rt_shader[] =
 "<=kMaxLinearRadius;++i){if(i>radius)break;aggregate=max(aggregate,max(flip*"
 "child.eval(coord+float2(delta)),flip*child.eval(coord-float2(delta))));delta"
 "+=offset;}return flip*aggregate;}half4 sk_overdraw(half alpha,half4 color0,"
-"half4 color1,half4 color2,half4 color3,half4 color4,half4 color5){return alpha"
+"half4 color1,half4 color2,half4 color3,half4 color4,half4 color5,half4 color6,half4 color7){return alpha"
 "<.00196078443?color0:(alpha<.005882353?color1:(alpha<.009803922?color2:(alpha"
-"<.01372549?color3:(alpha<.01764706?color4:color5))));}";
+"<.01372549?color3:(alpha<.01764706?color4:(alpha<.0215686275?color5:(alpha<.02543036?color6:color7))))));}";

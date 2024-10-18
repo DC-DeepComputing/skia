@@ -24,7 +24,7 @@ class SkColorFilter;
  */
 class SK_API SkOverdrawColorFilter {
 public:
-    static constexpr int kNumColors = 6;
+    static constexpr int kNumColors = 8;
 
     static sk_sp<SkColorFilter> MakeWithSkColors(const SkColor[kNumColors]);
 };

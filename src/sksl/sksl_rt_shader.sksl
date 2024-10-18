@@ -218,11 +218,14 @@ half4 sk_linear_morphology(shader child, float2 coord, half2 offset, half flip, 
 //--- Overdraw ---------------------------------------------------------------------
 
 half4 sk_overdraw(half  alpha,  half4 color0, half4 color1, half4 color2,
-                  half4 color3, half4 color4, half4 color5) {
+                  half4 color3, half4 color4, half4 color5, half4 color6,
+                  half4 color7) {
    return alpha < (0.5 / 255.) ? color0
         : alpha < (1.5 / 255.) ? color1
         : alpha < (2.5 / 255.) ? color2
         : alpha < (3.5 / 255.) ? color3
         : alpha < (4.5 / 255.) ? color4
-                               : color5;
+        : alpha < (5.5 / 255.) ? color5
+        : alpha < (6.5 / 255.) ? color6
+                               : color7;
 }
