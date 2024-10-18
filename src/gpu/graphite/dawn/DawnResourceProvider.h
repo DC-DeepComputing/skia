@@ -11,6 +11,7 @@
 #include "include/gpu/graphite/dawn/DawnTypes.h"
 #include "src/core/SkLRUCache.h"
 #include "src/core/SkTHash.h"
+#include "src/gpu/graphite/PipelineData.h"
 #include "src/gpu/graphite/ResourceProvider.h"
 
 namespace skgpu::graphite {
@@ -20,6 +21,7 @@ class DawnSampler;
 class DawnSharedContext;
 class DawnTexture;
 class DawnBuffer;
+class DawnCommandBuffer;
 
 class DawnResourceProvider final : public ResourceProvider {
 public:
@@ -60,6 +62,16 @@ public:
     const wgpu::BindGroup& findOrCreateSingleTextureSamplerBindGroup(const DawnSampler* sampler,
                                                                      const DawnTexture* texture);
 
+    void freeGpuResources() override;
+    void purgeResourcesNotUsedSince(StdSteadyClock::time_point purgeTime) override;
+
+    // Find the cached bind buffer info, or create a new one for the given intrinsic values.
+    BindBufferInfo findOrCreateIntrinsicBindBufferInfo(DawnCommandBuffer* cb,
+                                                       const UniformDataBlock& intrinsicValues);
+    class IntrinsicEntry;
+    class IntrinsicBuffer;
+    class IntrinsicConstantsManager;
+
 private:
     sk_sp<GraphicsPipeline> createGraphicsPipeline(const RuntimeEffectDictionary*,
                                                    const GraphicsPipelineDesc&,
@@ -94,6 +106,8 @@ private:
 
     BindGroupCache<kNumUniformEntries> fUniformBufferBindGroupCache;
     BindGroupCache<1> fSingleTextureSamplerBindGroups;
+
+    std::unique_ptr<IntrinsicConstantsManager> fIntrinsicConstantsManager;
 };
 
 }  // namespace skgpu::graphite
