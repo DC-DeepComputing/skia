@@ -21,6 +21,7 @@
 #include "src/gpu/graphite/TextureProxy.h"
 #include "src/gpu/graphite/UniformManager.h"
 #include "src/gpu/graphite/vk/VulkanBuffer.h"
+#include "src/gpu/graphite/vk/VulkanCaps.h"
 #include "src/gpu/graphite/vk/VulkanDescriptorSet.h"
 #include "src/gpu/graphite/vk/VulkanFramebuffer.h"
 #include "src/gpu/graphite/vk/VulkanGraphiteUtilsPriv.h"
@@ -95,6 +96,12 @@ VulkanCommandBuffer::VulkanCommandBuffer(VkCommandPool pool,
         , fResourceProvider(resourceProvider) {
     // When making a new command buffer, we automatically begin the command buffer
     this->begin();
+
+    // Force push constants?
+    // // Each command buffer will have an intrinsic uniform buffer, so create & store that buffer
+    // fIntrinsicUniformBuffer = resourceProvider->createBuffer(4 * sizeof(float),
+    //                                                          BufferType::kUniform,
+    //                                                          AccessPattern::kHostVisible);
 }
 
 VulkanCommandBuffer::~VulkanCommandBuffer() {
@@ -380,11 +387,8 @@ void VulkanCommandBuffer::updateIntrinsicUniforms(SkIRect viewport) {
             static_cast<VulkanBuffer*>(intrinsicUniformBuffer.get());
     SkASSERT(intrinsicVulkanBuffer && intrinsicVulkanBuffer->size() >= bytes.size_bytes());
 
-    fUniformBuffersToBind[VulkanGraphicsPipeline::kIntrinsicUniformBufferIndex] = {
-            intrinsicUniformBuffer.get(),
-            /*offset=*/0,
-            SkTo<uint32_t>(bytes.size_bytes())
-        };
+    fUniformBuffersToBind[VulkanGraphicsPipeline::kIntrinsicUniformBufferIndex] =
+            {intrinsicUniformBuffer.get(),  /*offset=*/0, SkTo<uint32_t>(bytes.size_bytes())};
 
     this->updateBuffer(intrinsicVulkanBuffer, bytes.data(), bytes.size_bytes());
 
@@ -1020,14 +1024,41 @@ void VulkanCommandBuffer::syncDescriptorSets() {
 void VulkanCommandBuffer::bindUniformBuffers() {
     fBindUniformBuffers = false;
 
-    // We always bind at least one uniform buffer descriptor for intrinsic uniforms, but can bind
-    // up to three (one for render step uniforms, one for paint uniforms).
+    // Unless we are using push constants, we always bind at least one uniform buffer descriptor for
+    // intrinsic uniforms. However, we can bind up to three (one for render step uniforms, one for
+    // paint uniforms).
     STArray<VulkanGraphicsPipeline::kNumUniformBuffers, DescriptorData> descriptors;
-    descriptors.push_back(VulkanGraphicsPipeline::kIntrinsicUniformBufferDescriptor);
-
     DescriptorType uniformBufferType = fSharedContext->caps()->storageBufferSupport()
                                             ? DescriptorType::kStorageBuffer
                                             : DescriptorType::kUniformBuffer;
+
+    const VulkanCaps& vulkanCaps =
+            static_cast<const VulkanSharedContext*>(fSharedContext)->vulkanCaps();
+
+    SkASSERT(fActive);
+    if (!fActiveGraphicsPipeline) {
+        SKGPU_LOG_E("Attempted to bind uniforms with no active graphics pipeline");
+        return;
+    }
+    if (fActiveGraphicsPipeline->usePushConstants()) {
+        const float x = fCurrentViewport.fLeft - fReplayTranslation.x();
+        const float y = fCurrentViewport.fTop  - fReplayTranslation.y();
+        float invTwoW = 2.f / fCurrentViewport.width();
+        float invTwoH = 2.f / fCurrentViewport.height();
+        float rtAdjust[4] = {invTwoW, invTwoH, -1.f - x * invTwoW, -1.f - y * invTwoH};
+
+        // TODO: Confirm offset, shader stage values. Assert offset, size are multiples of 4.
+        // SkToBool([val] & 0x3);
+        SkASSERT(sizeof(rtAdjust) == VulkanCaps::kPushConstantSize);
+        VULKAN_CALL(fSharedContext->interface(),
+                    CmdPushConstants(fPrimaryCommandBuffer,
+                                     fActiveGraphicsPipeline->layout(),
+                                     VK_SHADER_STAGE_VERTEX_BIT,
+                                     /*offset=*/0,
+                                     VulkanCaps::kPushConstantSize,
+                                     &rtAdjust));
+    }
+
     if (fActiveGraphicsPipeline->hasStepUniforms() &&
         fUniformBuffersToBind[VulkanGraphicsPipeline::kRenderStepUniformBufferIndex].fBuffer) {
         descriptors.push_back({
@@ -1055,18 +1086,23 @@ void VulkanCommandBuffer::bindUniformBuffers() {
             PipelineStageFlags::kFragmentShader});
     }
 
+    sk_sp<VulkanDescriptorSet> set = fResourceProvider->findOrCreateDescriptorSet(
+            SkSpan<DescriptorData>{&descriptors.front(), descriptors.size()});
+
     sk_sp<VulkanDescriptorSet> descSet = fResourceProvider->findOrCreateUniformBuffersDescriptorSet(
             descriptors, fUniformBuffersToBind);
     if (!descSet) {
         SKGPU_LOG_E("Unable to find or create uniform descriptor set");
         return;
     }
+
     skia_private::AutoSTMalloc<VulkanGraphicsPipeline::kNumUniformBuffers, uint32_t>
             dynamicOffsets(descriptors.size());
     for (int i = 0; i < descriptors.size(); i++) {
         int descriptorBindingIndex = descriptors[i].fBindingIndex;
         SkASSERT(static_cast<unsigned long>(descriptorBindingIndex) < fUniformBuffersToBind.size());
         const auto& bindInfo = fUniformBuffersToBind[descriptorBindingIndex];
+
         dynamicOffsets[i] = bindInfo.fOffset;
     }
 
@@ -1769,6 +1805,10 @@ void VulkanCommandBuffer::nextSubpass() {
 }
 
 void VulkanCommandBuffer::setViewport(SkIRect viewport) {
+    if (viewport == fCurrentViewport) {
+        return;
+    }
+
     VkViewport vkViewport = {
         (float) viewport.fLeft,
         (float) viewport.fTop,
@@ -1782,6 +1822,7 @@ void VulkanCommandBuffer::setViewport(SkIRect viewport) {
                                /*firstViewport=*/0,
                                /*viewportCount=*/1,
                                &vkViewport));
+    fCurrentViewport = viewport;
 }
 
 } // namespace skgpu::graphite
