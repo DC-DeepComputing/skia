@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c1cf453_a809d6ae",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-18T20:16:59Z",
+      "side": 1,
+      "message": "Maybe `Work around GCC bugs in type conversion on Loongarch` or something to that effect. I\u0027m assuming this is some issue in GCC. Which version of GCC? Do you have a GCC issue (or change) to link here?",
+      "revId": "bf7885f8468420cdef0038a42689fa7a7cb8bf0f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "89351620_d53cc13b",
@@ -14,6 +31,23 @@
       "writtenOn": "2024-10-18T15:57:10Z",
       "side": 1,
       "message": "+bungeman for 2nd reviewr",
+      "revId": "bf7885f8468420cdef0038a42689fa7a7cb8bf0f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4de496ae_7dc462fe",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-18T20:16:59Z",
+      "side": 1,
+      "message": "I\u0027ll take a better look into this when I\u0027m sitting in front of a machine with GCC. However, it does look like there has been much work in this area in GCC recently (like this past July) so I am interested to discover if these issues have been resolved already,",
       "revId": "bf7885f8468420cdef0038a42689fa7a7cb8bf0f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
