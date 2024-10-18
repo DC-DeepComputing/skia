@@ -37,7 +37,7 @@ public:
     [[nodiscard]] bool addRecording(const InsertRecordingInfo&, Context*);
 
     // Adds the commands from the passed in Task to the current CommandBuffer
-    [[nodiscard]] bool addTask(Task*, Context*);
+    [[nodiscard]] bool addTask(Task*, Context*, Protected);
 
     // Adds a proc that will be called when the current CommandBuffer is submitted and finishes
     [[nodiscard]] bool addFinishInfo(const InsertFinishInfo&,
@@ -68,14 +68,17 @@ protected:
     std::unique_ptr<CommandBuffer> fCurrentCommandBuffer;
 
 private:
-    virtual std::unique_ptr<CommandBuffer> getNewCommandBuffer(ResourceProvider*) = 0;
+    virtual std::unique_ptr<CommandBuffer> getNewCommandBuffer(ResourceProvider*, Protected) = 0;
     virtual OutstandingSubmission onSubmitToGpu() = 0;
 
-    bool setupCommandBuffer(ResourceProvider*);
+    bool setupCommandBuffer(ResourceProvider*, Protected);
+
+    std::vector<std::unique_ptr<CommandBuffer>>* getAvailableCommandBufferList(Protected);
 
     SkDeque fOutstandingSubmissions;
 
     std::vector<std::unique_ptr<CommandBuffer>> fAvailableCommandBuffers;
+    std::vector<std::unique_ptr<CommandBuffer>> fAvailableProtectedCommandBuffers;
 
     skia_private::THashMap<uint32_t, uint32_t> fLastAddedRecordingIDs;
 };

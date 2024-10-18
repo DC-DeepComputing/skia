@@ -692,7 +692,7 @@ bool StaticBufferManager::BufferInfo::createAndUpdateBindings(
                 data.fSource.fBuffer, data.fSource.fOffset,
                 sk_ref_sp(data.fTarget->fBuffer), data.fTarget->fOffset,
                 size);
-        if (!queueManager->addTask(copyTask.get(), context)) {
+        if (!queueManager->addTask(copyTask.get(), context, Protected::kNo)) {
             SKGPU_LOG_E("Failed to copy data to static buffer.\n");
             return false;
         }
