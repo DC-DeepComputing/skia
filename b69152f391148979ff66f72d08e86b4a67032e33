@@ -225,6 +225,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "c406381a_726432f2",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 526,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-10-18T00:26:35Z",
+      "side": 1,
+      "message": "Works for me",
+      "parentUuid": "e0329d7b_a6902e6e",
+      "range": {
+        "startLine": 526,
+        "startChar": 15,
+        "endLine": 526,
+        "endChar": 19
+      },
+      "revId": "b69152f391148979ff66f72d08e86b4a67032e33",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "d0a6daa8_83fcd23a",
         "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
         "patchSetId": 4
@@ -354,6 +378,30 @@
       "side": 1,
       "message": "\u003e nit: This might be a smidge of future proofing for something that won\u0027t occur or really matter, but by putting this 8 bits here and not at the end of the struct, we might have inefficient use of padding if we add other fields that are fewer than a machine word long https://godbolt.org/z/We3rYvPsM\n\u003e \n\u003e Can you re-arrange the struct fields to put the fBytesPerPixel at the end?  \n\nDone.\n\n\u003e (sidebar: do you know of a tool that can detect places where we are unintentionally doing this?)\n\nNo :-/",
       "parentUuid": "f85d5f54_a726dbbf",
+      "range": {
+        "startLine": 53,
+        "startChar": 8,
+        "endLine": 53,
+        "endChar": 15
+      },
+      "revId": "b69152f391148979ff66f72d08e86b4a67032e33",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d68e7e1d_b229ccf1",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-10-18T00:26:35Z",
+      "side": 1,
+      "message": "TIL: Clang\u0027s static analyzer can do this. I made a note the next time I want to build Clang from scratch https://clang.llvm.org/docs/analyzer/checkers.html#optin-performance-padding-c-c-objc",
+      "parentUuid": "b6cb20f4_7dea0435",
       "range": {
         "startLine": 53,
         "startChar": 8,
