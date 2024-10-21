@@ -69,6 +69,24 @@
       "parentUuid": "a2ee9029_37b97ae6",
       "revId": "f097950730ec86d37b5599e9fbfc75b46a991420",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "00d1f7da_ad54a286",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-21T14:31:21Z",
+      "side": 1,
+      "message": "Ah, I see, this is WebKit\u0027s build of Skia in its `Source/ThirdParty/skia/CMakeLists.txt`. If you want to make changes to that build file, that would need to be done in the WebKit project.",
+      "parentUuid": "b886916a_e7adc9e0",
+      "revId": "f097950730ec86d37b5599e9fbfc75b46a991420",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
