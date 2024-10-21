@@ -401,6 +401,11 @@ bool VulkanCommandBuffer::onAddRenderPass(const RenderPassDesc& renderPassDesc,
                                           const Texture* depthStencilTexture,
                                           SkIRect viewport,
                                           const DrawPassList& drawPasses) {
+    SkDebugf("+++++++++++++++++++++++++++++ %d %d %d\n",
+             colorTexture ? colorTexture->textureInfo().isProtected() == Protected::kYes : -1,
+             resolveTexture ? resolveTexture->textureInfo().isProtected() == Protected::kYes : -1,
+             depthStencilTexture ? depthStencilTexture->textureInfo().isProtected() == Protected::kYes : -1);
+
     for (const auto& drawPass : drawPasses) {
         // Our current implementation of setting texture image layouts does not allow layout changes
         // once we have already begun a render pass, so prior to any other commands, set the layout
@@ -411,6 +416,11 @@ bool VulkanCommandBuffer::onAddRenderPass(const RenderPassDesc& renderPassDesc,
             VulkanTexture* vulkanTexture = const_cast<VulkanTexture*>(
                                            static_cast<const VulkanTexture*>(
                                            textureProxy->texture()));
+
+            SkDebugf("+++++++++++ onAddRenderPass proxy %d vkTexture %d\n",
+                     textureProxy->isProtected(),
+                     vulkanTexture->textureInfo().isProtected() == Protected::kYes);
+
             vulkanTexture->setImageLayout(this,
                                           VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL,
                                           VK_ACCESS_SHADER_READ_BIT,

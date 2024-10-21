@@ -42,6 +42,10 @@ RenderPassDesc RenderPassDesc::Make(const Caps* caps,
                                     const std::array<float, 4>& clearColor,
                                     bool requiresMSAA,
                                     Swizzle writeSwizzle) {
+    SkDebugf("$$$$$$$$$$$$ RenderPassDesc::Make targetProtected %d capsProtected %d\n",
+             targetInfo.isProtected() == Protected::kYes,
+             caps->protectedSupport());
+
     RenderPassDesc desc;
     desc.fWriteSwizzle = writeSwizzle;
     desc.fSampleCount = 1;
@@ -82,6 +86,10 @@ RenderPassDesc RenderPassDesc::Make(const Caps* caps,
                 desc.fColorAttachment.fLoadOp = loadOp;
                 desc.fColorAttachment.fStoreOp = storeOp;
             }
+
+            SkDebugf("$$$$$$$$$$$$ msaaProtected %d capsProtected %d\n",
+                     msaaTextureInfo.isProtected() == Protected::kYes,
+                     caps->protectedSupport());
         }
     } else {
         desc.fColorAttachment.fTextureInfo = targetInfo;
@@ -99,6 +107,10 @@ RenderPassDesc RenderPassDesc::Make(const Caps* caps,
         desc.fClearDepth = 0.f;
         desc.fClearStencil = 0;
         desc.fDepthStencilAttachment.fStoreOp = StoreOp::kDiscard;
+
+        SkDebugf("$$$$$$$$$$$$ depthProtected %d capsProtected %d\n",
+                 desc.fDepthStencilAttachment.fTextureInfo.isProtected() == Protected::kYes,
+                 caps->protectedSupport());
     }
 
     return desc;

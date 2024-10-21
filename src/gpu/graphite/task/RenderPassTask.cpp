@@ -144,6 +144,7 @@ Task::Status RenderPassTask::addCommands(Context* context,
     // TODO(b/313629288) we always pass in the render target's dimensions as the viewport here.
     // Using the dimensions of the logical device that we're drawing to could reduce flakiness in
     // rendering.
+    SkDebugf("pre-addRenderPass %d\n", context->priv().caps()->protectedSupport());
     if (commandBuffer->addRenderPass(fRenderPassDesc,
                                      std::move(colorAttachment),
                                      std::move(resolveAttachment),
