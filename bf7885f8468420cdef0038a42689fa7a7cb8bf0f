@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "8e89e57c_b1b346c4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 21814
+      },
+      "writtenOn": "2024-10-21T06:44:45Z",
+      "side": 1,
+      "message": "This is not an issue with GCC. When I modified the code to add explicit vector conversions and supplemented the source files in CMakeLists.txt, Skia can be successfully built as a third-party library with GCC 14.2.0.",
+      "parentUuid": "7c1cf453_a809d6ae",
+      "revId": "bf7885f8468420cdef0038a42689fa7a7cb8bf0f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "89351620_d53cc13b",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 2
@@ -66,6 +84,24 @@
       "side": 1,
       "message": "Also, I am assuming that the existing loongarch code here was previously working with clang (asking since Skia doesn\u0027t have a builder for that either)? I assume this change still works with clang. The intent here is to make the existing code also compile with some version of gcc?",
       "parentUuid": "4de496ae_7dc462fe",
+      "revId": "bf7885f8468420cdef0038a42689fa7a7cb8bf0f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d15537ba_b888bec7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 21814
+      },
+      "writtenOn": "2024-10-21T06:44:45Z",
+      "side": 1,
+      "message": "Yes, you are right, The previous code here was working with Clang, And after the change, it can work with both Clang and GCC.",
+      "parentUuid": "024efea0_c9abaac5",
       "revId": "bf7885f8468420cdef0038a42689fa7a7cb8bf0f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
