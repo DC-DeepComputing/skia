@@ -104,6 +104,7 @@ sk_sp<Texture> VulkanResourceProvider::onCreateWrappedTexture(const BackendTextu
 }
 
 sk_sp<Buffer> VulkanResourceProvider::refIntrinsicConstantBuffer() const {
+    SkASSERT(fIntrinsicUniformBuffer);
     return fIntrinsicUniformBuffer;
 }
 
