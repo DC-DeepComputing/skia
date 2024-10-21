@@ -411,6 +411,8 @@ protected:
 
     virtual void* onGetCTFontRef() const { return nullptr; }
 
+    virtual void* onGetDWriteFontFace() const { return nullptr; }
+
 private:
     /** Returns true if the typeface's glyph masks may refer to the foreground
      *  paint foreground color. This is needed to determine caching requirements. Usually true for

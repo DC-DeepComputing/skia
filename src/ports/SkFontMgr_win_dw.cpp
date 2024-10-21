@@ -18,6 +18,7 @@
 #include "src/base/SkEndian.h"
 #include "src/base/SkUTF.h"
 #include "src/core/SkFontDescriptor.h"
+#include "src/core/SkFontPriv.h"
 #include "src/core/SkTypefaceCache.h"
 #include "src/ports/SkTypeface_win_dw.h"
 #include "src/utils/win/SkDWrite.h"
@@ -873,6 +874,10 @@ sk_sp<SkTypeface> SkFontStyleSet_DirectWrite::matchStyle(const SkFontStyle& patt
 
 ////////////////////////////////////////////////////////////////////////////////
 #include "include/ports/SkTypeface_win.h"
+
+IDWriteFontFace* SkTypeface_GetIDWriteFontFace(const SkTypeface* typeface) {
+    return static_cast<IDWriteFontFace*>(SkFontPriv::SkTypeface_GetIDWriteFontFace(typeface));
+}
 
 sk_sp<SkFontMgr> SkFontMgr_New_DirectWrite(IDWriteFactory* factory,
                                            IDWriteFontCollection* collection) {

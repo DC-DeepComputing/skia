@@ -88,6 +88,10 @@ public:
     static bool Unflatten(SkFont*, SkReadBuffer& buffer);
 
     static inline uint8_t Flags(const SkFont& font) { return font.fFlags; }
+
+    static void* SkTypeface_GetIDWriteFontFace(const SkTypeface* typeface) {
+        return typeface->onGetDWriteFontFace();
+    }
 };
 
 class SkAutoToGlyphs {
