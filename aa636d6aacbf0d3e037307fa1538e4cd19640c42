@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc967f37_c623a3cb",
+        "filename": "tests/SkPngRustDecoderTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-10-21T18:31:21Z",
+      "side": 1,
+      "message": "`x,y`",
+      "range": {
+        "startLine": 71,
+        "startChar": 36,
+        "endLine": 71,
+        "endChar": 40
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "74cd392d_1aa7e63c",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tests/SkPngRustDecoderTest.cpp",
+              "range": {
+                "startLine": 71,
+                "startChar": 0,
+                "endLine": 72,
+                "endChar": 0
+              },
+              "replacement": "    SkColor color \u003d pixmap.getColor(x, y);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "aa636d6aacbf0d3e037307fa1538e4cd19640c42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
