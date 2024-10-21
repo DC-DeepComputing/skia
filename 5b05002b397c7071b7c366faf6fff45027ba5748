@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2010256_8471505b",
+        "filename": "BUILD.gn",
+        "patchSetId": 22
+      },
+      "lineNbr": 388,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-21T15:07:10Z",
+      "side": 1,
+      "message": "This is more like `fontscanner_tests`? The name makes it seem like this this target provides the base font scanner, but this is actually a test target. This should also be labeled with `testonly \u003d true`.",
+      "range": {
+        "startLine": 388,
+        "startChar": 10,
+        "endLine": 388,
+        "endChar": 21
+      },
+      "revId": "5b05002b397c7071b7c366faf6fff45027ba5748",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a4cb8168_28006f1b",
+        "filename": "BUILD.gn",
+        "patchSetId": 22
+      },
+      "lineNbr": 389,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-21T15:07:10Z",
+      "side": 1,
+      "message": "Since the base sources don\u0027t need freetype or fontations, we don\u0027t need this check, so this doesn\u0027t need to be \"optional\". We aren\u0027t super concerned about the size of the test binary like this.",
+      "revId": "5b05002b397c7071b7c366faf6fff45027ba5748",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f6d2f9ac_876ebf68",
+        "filename": "BUILD.gn",
+        "patchSetId": 22
+      },
+      "lineNbr": 399,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-21T15:07:10Z",
+      "side": 1,
+      "message": "Why the conditional here instead of putting this `sources_for_tests` into `typeface_freetype`? We may need to add a `deps_for_tests` to the `optional` but that\u0027s fine.",
+      "revId": "5b05002b397c7071b7c366faf6fff45027ba5748",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
