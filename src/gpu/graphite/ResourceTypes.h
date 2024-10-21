@@ -76,6 +76,7 @@ enum class Layout {
     kStd140,
     kStd430,
     kMetal,
+    kVulkan,
 };
 
 static constexpr const char* LayoutString(Layout layout) {
@@ -83,6 +84,7 @@ static constexpr const char* LayoutString(Layout layout) {
         case Layout::kStd140:  return "std140";
         case Layout::kStd430:  return "std430";
         case Layout::kMetal:   return "metal";
+        case Layout::kVulkan:  return "vulkan";
         case Layout::kInvalid: return "invalid";
     }
     SkUNREACHABLE;

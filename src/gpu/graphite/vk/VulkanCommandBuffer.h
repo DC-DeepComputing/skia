@@ -166,6 +166,8 @@ private:
     // Update the intrinsic constant uniform buffer and binding to reflect the updated viewport.
     // The resource provider is responsible for finding a suitable buffer and managing its lifetime.
     void updateIntrinsicUniforms(SkIRect viewport);
+    /// TODO add comment
+    void updatePushConstants(SkIRect viewport);
 
     bool updateLoadMSAAVertexBuffer();
     bool loadMSAAFromResolve(const RenderPassDesc&,
@@ -221,6 +223,8 @@ private:
     VkBuffer fBoundIndirectBuffer = VK_NULL_HANDLE;
     size_t fBoundIndexBufferOffset = 0;
     size_t fBoundIndirectBufferOffset = 0;
+
+    SkIRect fCurrentViewport;
 
     float fCachedBlendConstant[4];
 };

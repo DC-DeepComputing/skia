@@ -41,8 +41,8 @@ public:
     inline static constexpr unsigned int kGradientBufferIndex = 3;
     inline static constexpr unsigned int kNumUniformBuffers = 4;
 
-    // For now, rigidly assign all uniform buffer descriptors to be in set 0 and all
-    // texture/samplers to be in set 1.
+    // For now, rigidly assign all uniform buffer descriptors to be in one descriptor set in binding
+    // 0 and all texture/samplers to be in binding 1.
     // TODO(b/274762935): Make the bindings and descriptor set organization more flexible.
     inline static constexpr unsigned int kUniformBufferDescSetIndex = 0;
     inline static constexpr unsigned int kTextureBindDescSetIndex = 1;
@@ -54,7 +54,7 @@ public:
     inline static constexpr unsigned int kInstanceBufferIndex = 1;
     inline static constexpr unsigned int kNumInputBuffers = 2;
 
-    inline static const DescriptorData kIntrinsicUniformBufferDescriptor = {
+    inline static const DescriptorData kIntrinsicUniformDescriptor = {
             DescriptorType::kUniformBuffer, /*count=*/1,
             kIntrinsicUniformBufferIndex,
             PipelineStageFlags::kVertexShader | PipelineStageFlags::kFragmentShader};
@@ -101,13 +101,19 @@ public:
         return fPipeline;
     }
 
+    bool hasFragment()       const { return fHasFragment;        }
+    //bool hasStepUniforms()   const { return fHasStepUniforms;    }
+    int numTextureSamplers() const { return fNumTextureSamplers; }
+    bool usePushConstants()  const { return fUsePushConstants;   }
+
 private:
     VulkanGraphicsPipeline(const VulkanSharedContext* sharedContext,
                            const PipelineInfo& pipelineInfo,
                            VkPipelineLayout,
                            VkPipeline,
                            bool ownsPipelineLayout,
-                           skia_private::TArray<sk_sp<VulkanSampler>> immutableSamplers);
+                           skia_private::TArray<sk_sp<VulkanSampler>> immutableSamplers,
+                           bool usePushConstants);
 
     void freeGpuData() override;
 
@@ -117,6 +123,10 @@ private:
 
     // Hold a ref to immutable samplers used such that their lifetime is properly managed.
     const skia_private::TArray<sk_sp<VulkanSampler>> fImmutableSamplers;
+    bool fHasFragment = false;
+    //bool fHasStepUniforms = false;
+    int fNumTextureSamplers = 0;
+    bool fUsePushConstants = false;
 };
 
 } // namespace skgpu::graphite

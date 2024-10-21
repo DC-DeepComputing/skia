@@ -334,6 +334,36 @@ void CollectIntrinsicUniforms(const Caps* caps,
     SkDEBUGCODE(uniforms->doneWithExpectedUniforms());
 }
 
+// TODO(nicolettep) account for dst copy viewport being in intrinsics now
+// TODO combine w/ method below and branch out to use diff preamble if all the body is otherwise the
+// same?
+std::string EmitPushConstants(Layout layout) { // add Layout as input
+    std::string result;
+    auto offsetter = UniformOffsetCalculator::ForTopLevel(layout);
+
+    // write SkSL for push constant usage.
+    // uniformsString.appendf("layout(offset=%u) ", offsetter->advance);
+    // localUniform.fVariable.appendDecl(fProgramBuilder->shaderCaps(), &uniformsString);
+    // uniformsString.append(";\n");
+    // SkSL::String::appendf(&result, "layout (binding=%d) uniform %sUniforms {\n", bufferID, name);
+
+    // TODO: rm "vulkan" hard coding
+    // TODO: Change name from "Intrinsic" to something else? See GrShaderVar::appendDecl
+    SkSL::String::appendf(
+            &result, "layout (vulkan, push_constant) uniform %sUniforms {\n", "Intrinsic");
+    result += get_uniforms(&offsetter, kIntrinsicUniforms, -1, /* wrotePaintColor= */ nullptr);
+    result.append("};\n\n");
+    // result.append("uniform uniformBuffer\n{\n");
+    // result.append("%s\n};\n", uniformsString.c_str());
+
+    // result.append("layout(offset=%u) ", );
+    // result.append("};\n\n");
+
+    // offsetter->layout()
+    // Call offsetter->advanceOffset(u.type(), u.count()), or advanceStruct, etc
+    return result;
+}
+
 std::string EmitIntrinsicUniforms(int bufferID, Layout layout) {
     auto offsetter = UniformOffsetCalculator::ForTopLevel(layout);
 
@@ -559,9 +589,15 @@ VertSkSLInfo BuildVertexSkSL(const ResourceBindingRequirements& bindingReqs,
     const bool useStepStorageBuffer = useStorageBuffers && hasStepUniforms;
     const bool useShadingStorageBuffer = useStorageBuffers && step->performsShading();
 
-    // Fixed program header (intrinsics are always declared as an uniform interface block)
-    std::string sksl = EmitIntrinsicUniforms(bindingReqs.fIntrinsicBufferBinding,
-                                             bindingReqs.fUniformBufferLayout);
+    // Fixed program headers used for intrinsics are either declared as an uniform interface block
+    // OR as push constants.
+    std::string sksl;
+    if (bindingReqs.fUsePushConstants) {
+        sksl = EmitPushConstants(bindingReqs.fUniformBufferLayout);
+    } else {
+        sksl = EmitIntrinsicUniforms(bindingReqs.fIntrinsicBufferBinding,
+                                     bindingReqs.fUniformBufferLayout);
+    }
 
     if (step->numVertexAttributes() > 0 || step->numInstanceAttributes() > 0) {
         sksl += emit_attributes(step->vertexAttributes(), step->instanceAttributes());
