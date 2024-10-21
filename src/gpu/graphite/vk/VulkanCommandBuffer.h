@@ -163,9 +163,12 @@ private:
                          void* barrier);
     void submitPipelineBarriers(bool forSelfDependency = false);
 
-    // Update the intrinsic constant uniform buffer and binding to reflect the updated viewport.
-    // The resource provider is responsible for finding a suitable buffer and managing its lifetime.
-    void updateIntrinsicUniforms(SkIRect viewport);
+    // Update the intrinsic constants either using push constants or a uniform buffer to reflect the
+    // updated viewport. In the latter case, the resource provider is responsible for finding a
+    // suitable intrinsic uniform buffer and managing its lifetime.
+    void updateIntrinsicConstants(SkIRect viewport);
+    /// TODO add comment
+    void updatePushConstants(SkIRect viewport);
 
     bool updateLoadMSAAVertexBuffer();
     bool loadMSAAFromResolve(const RenderPassDesc&,
@@ -221,6 +224,11 @@ private:
     VkBuffer fBoundIndirectBuffer = VK_NULL_HANDLE;
     size_t fBoundIndexBufferOffset = 0;
     size_t fBoundIndirectBufferOffset = 0;
+
+    // Keep track of the current viewport such that we can avoid setting a new one if it is
+    // equivalent to what is already assigned. This also aids in updating push constants after
+    // binding a new pipeline.
+    SkIRect fCurrentViewport;
 
     float fCachedBlendConstant[4];
 };
