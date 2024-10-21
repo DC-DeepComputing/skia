@@ -67,6 +67,24 @@
       "message": "Can we hide this from public APIs? One thought: make it protected, and add a helper to `SkFontPriv` (which is already friended) - then the only way to reach it from external clients is via `SkTypeface_GetIDWriteFontFace`.",
       "revId": "654b57defe13e52f38a561289258b5733acfc6db",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eaed5c8a_b3e2c485",
+        "filename": "include/core/SkTypeface.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 335,
+      "author": {
+        "id": 3424955
+      },
+      "writtenOn": "2024-10-21T17:11:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fab6e5be_42ef2c46",
+      "revId": "654b57defe13e52f38a561289258b5733acfc6db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
