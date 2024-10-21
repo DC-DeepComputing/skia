@@ -39,6 +39,8 @@ public:
 
     using UniformBindGroupKey = FixedSizeKey<2 * VulkanGraphicsPipeline::kNumUniformBuffers>;
 
+    // TODO(b/294037225): Remove intrinsicConstantUniformBuffer argument if we are using push
+    // constants.
     VulkanResourceProvider(SharedContext* sharedContext,
                            SingleOwner*,
                            uint32_t recorderID,

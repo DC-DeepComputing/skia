@@ -88,11 +88,10 @@ UniquePaintParamsID ExtractPaintData(Recorder*,
 // It is assumed that `dstCopyBounds` is in the same coordinate space as the `viewport` (e.g.
 // final backing target's pixel coords) and that its width and height match the dimensions of the
 // texture to be sampled for dst reads.
-void CollectIntrinsicUniforms(
-        const Caps* caps,
-        SkIRect viewport,
-        SkIRect dstCopyBounds,
-        UniformManager*);
+void CollectIntrinsicUniforms(const Caps* caps,
+                              SkIRect viewport,
+                              SkIRect dstCopyBounds,
+                              UniformManager*);
 
 DstReadRequirement GetDstReadRequirement(const Caps*, std::optional<SkBlendMode>, Coverage);
 
@@ -132,8 +131,7 @@ std::string GetPipelineLabel(const ShaderCodeDictionary*,
 
 std::string BuildComputeSkSL(const Caps*, const ComputeStep*);
 
-std::string EmitIntrinsicUniforms(int bufferID, Layout layout);
-
+std::string EmitIntrinsicConstants(const ResourceBindingRequirements& bindingReqs);
 std::string EmitPaintParamsUniforms(int bufferID,
                                     const Layout layout,
                                     SkSpan<const ShaderNode*> nodes,
