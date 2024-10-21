@@ -165,7 +165,7 @@ private:
 
     // Update the intrinsic constant uniform buffer and binding to reflect the updated viewport.
     // The resource provider is responsible for finding a suitable buffer and managing its lifetime.
-    void updateIntrinsicUniforms(SkIRect viewport);
+    bool updateIntrinsicUniforms(SkIRect viewport);
 
     bool updateLoadMSAAVertexBuffer();
     bool loadMSAAFromResolve(const RenderPassDesc&,
@@ -223,6 +223,9 @@ private:
     size_t fBoundIndirectBufferOffset = 0;
 
     float fCachedBlendConstant[4];
+
+    class IntrinsicConstantsManager;
+    std::unique_ptr<IntrinsicConstantsManager> fIntrinsicConstants;
 };
 
 } // namespace skgpu::graphite

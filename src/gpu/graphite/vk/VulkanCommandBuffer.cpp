@@ -21,6 +21,7 @@
 #include "src/gpu/graphite/TextureProxy.h"
 #include "src/gpu/graphite/UniformManager.h"
 #include "src/gpu/graphite/vk/VulkanBuffer.h"
+#include "src/gpu/graphite/vk/VulkanCaps.h"
 #include "src/gpu/graphite/vk/VulkanDescriptorSet.h"
 #include "src/gpu/graphite/vk/VulkanFramebuffer.h"
 #include "src/gpu/graphite/vk/VulkanGraphiteUtilsPriv.h"
@@ -35,6 +36,84 @@ using namespace skia_private;
 namespace skgpu::graphite {
 
 class VulkanDescriptorSet;
+
+/**
+ * Since Dawn does not currently provide push constants, this helper class manages rotating through
+ * buffers and writing each new occurrence of a set of intrinsic uniforms into the current buffer.
+ */
+class VulkanCommandBuffer::IntrinsicConstantsManager {
+public:
+    BindBufferInfo add(VulkanCommandBuffer* cb, UniformDataBlock intrinsicValues) {
+        static constexpr int kNumSlots = 8;
+
+        BindBufferInfo* existing = fCachedIntrinsicValues.find(intrinsicValues);
+        if (existing) {
+            return *existing;
+        }
+
+        // TODO: https://b.corp.google.com/issues/259267703
+        // Make updating intrinsic constants faster. Metal has setVertexBytes method
+        // to quickly send intrinsic constants to vertex shader without any buffer. But Dawn
+        // doesn't have similar capability. So we have to use WriteBuffer(), and this method is not
+        // allowed to be called when there is an active render pass.
+        SkASSERT(!cb->fActiveRenderPass);
+
+        const Caps* caps = cb->fSharedContext->caps();
+        const uint32_t stride =
+                SkAlignTo(intrinsicValues.size(), caps->requiredUniformBufferAlignment());
+        if (!fCurrentBuffer || fSlotsUsed == kNumSlots) {
+            // We can just replace the current buffer; any prior buffer was already tracked on the
+            // CommandBuffer and the intrinsic constants were written directly to the Dawn queue.
+            VulkanResourceProvider* resourceProvider = cb->fResourceProvider;
+            sk_sp<Buffer> buffer = resourceProvider->findOrCreateBuffer(stride * kNumSlots,
+                                                                        BufferType::kUniform,
+                                                                        AccessPattern::kHostVisible,
+                                                                        "IntrinsicConstantBuffer");
+            if (!buffer) {
+                return {};
+            }
+            VulkanBuffer* ptr = static_cast<VulkanBuffer*>(buffer.release());
+            fCurrentBuffer = sk_sp<VulkanBuffer>(ptr);
+
+            fSlotsUsed = 0;
+
+            if (!fCurrentBuffer) {
+                // If we failed to create a GPU buffer to hold the intrinsic uniforms, we will fail
+                // the Recording being inserted, so return an empty bind info.
+                return {};
+            }
+            cb->trackResource(fCurrentBuffer);
+        }
+
+        SkASSERT(fCurrentBuffer && fSlotsUsed < kNumSlots);
+        void* mapPtr = fCurrentBuffer->map();
+        if (!mapPtr) {
+            return {};
+        }
+        uint32_t offset = (fSlotsUsed++) * stride;
+        mapPtr = SkTAddOffset<void>(mapPtr, static_cast<ptrdiff_t>(offset));
+        memcpy(mapPtr, intrinsicValues.data(), intrinsicValues.size());
+
+        BindBufferInfo binding{
+                fCurrentBuffer.get(), offset, SkTo<uint32_t>(intrinsicValues.size())};
+        fCachedIntrinsicValues.set(UniformDataBlock::Make(intrinsicValues, &fUniformData), binding);
+        return binding;
+    }
+
+private:
+    // The current buffer being filled up, as well as the how much of it has been written to.
+    sk_sp<VulkanBuffer> fCurrentBuffer;
+    int fSlotsUsed = 0;  // in multiples of the intrinsic uniform size and UBO binding requirement
+
+    // All uploaded intrinsic uniform sets and where they are on the GPU. All uniform sets are
+    // cached for the duration of a CommandBuffer since the maximum number of elements in this
+    // collection will equal the number of render passes and the intrinsic constants aren't that
+    // large. This maximizes the chance for reuse between passes.
+    skia_private::THashMap<UniformDataBlock, BindBufferInfo, UniformDataBlock::Hash>
+            fCachedIntrinsicValues;
+    SkArenaAlloc fUniformData{0};
+};
+
 
 std::unique_ptr<VulkanCommandBuffer> VulkanCommandBuffer::Make(
         const VulkanSharedContext* sharedContext,
@@ -117,6 +196,7 @@ void VulkanCommandBuffer::onResetCommandBuffer() {
     SkASSERT(!fActive);
     VULKAN_CALL_ERRCHECK(fSharedContext, ResetCommandPool(fSharedContext->device(), fPool, 0));
     fActiveGraphicsPipeline = nullptr;
+    fIntrinsicConstants = nullptr;
     fBindUniformBuffers = true;
     fBoundIndexBuffer = VK_NULL_HANDLE;
     fBoundIndexBufferOffset = 0;
@@ -152,6 +232,7 @@ void VulkanCommandBuffer::begin() {
 
     VULKAN_CALL_ERRCHECK(fSharedContext,
                          BeginCommandBuffer(fPrimaryCommandBuffer, &cmdBufferBeginInfo));
+    fIntrinsicConstants = std::make_unique<IntrinsicConstantsManager>();
     fActive = true;
 }
 
@@ -365,13 +446,26 @@ void VulkanCommandBuffer::waitUntilFinished() {
                                        /*timeout=*/UINT64_MAX));
 }
 
-void VulkanCommandBuffer::updateIntrinsicUniforms(SkIRect viewport) {
+bool VulkanCommandBuffer::updateIntrinsicUniforms(SkIRect viewport) {
     SkASSERT(fActive && !fActiveRenderPass);
 
     // The SkSL has declared these as a top-level interface block, which will use std140 in Vulkan.
     // If we switch to supporting push constants here, it would be std430 instead.
     UniformManager intrinsicValues{Layout::kStd140};
     CollectIntrinsicUniforms(fSharedContext->caps(), viewport, fDstCopyBounds, &intrinsicValues);
+    BindBufferInfo binding =
+            fIntrinsicConstants->add(this, UniformDataBlock::Wrap(&intrinsicValues));
+    if (!binding) {
+        return false;
+    } else if (binding ==
+               fUniformBuffersToBind[VulkanGraphicsPipeline::kIntrinsicUniformBufferIndex]) {
+        return true;  // no binding change needed
+    }
+
+    fUniformBuffersToBind[VulkanGraphicsPipeline::kIntrinsicUniformBufferIndex] = binding;
+    this->trackResource(sk_ref_sp<Buffer>(binding.fBuffer));
+    return true;
+#if 0
     SkSpan<const char> bytes = intrinsicValues.finish();
     SkASSERT(bytes.size_bytes() == VulkanResourceProvider::kIntrinsicConstantSize);
 
@@ -392,6 +486,7 @@ void VulkanCommandBuffer::updateIntrinsicUniforms(SkIRect viewport) {
     intrinsicVulkanBuffer->setBufferAccess(this, VK_ACCESS_UNIFORM_READ_BIT,
                                            VK_PIPELINE_STAGE_VERTEX_SHADER_BIT);
     this->trackResource(std::move(intrinsicUniformBuffer));
+#endif
 }
 
 bool VulkanCommandBuffer::onAddRenderPass(const RenderPassDesc& renderPassDesc,
