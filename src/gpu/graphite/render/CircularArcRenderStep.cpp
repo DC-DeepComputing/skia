@@ -1,0 +1,324 @@
+/*
+ * Copyright 2022 Google LLC
+ *
+ * Use of this source code is governed by a BSD-style license that can be
+ * found in the LICENSE file.
+ */
+
+#include "src/gpu/graphite/render/CircularArcRenderStep.h"
+
+#include "include/core/SkArc.h"
+#include "include/core/SkM44.h"
+#include "include/core/SkMatrix.h"
+#include "include/core/SkPoint3.h"
+#include "include/core/SkRect.h"
+#include "include/core/SkScalar.h"
+#include "include/private/base/SkAssert.h"
+#include "include/private/base/SkPoint_impl.h"
+#include "src/base/SkEnumBitMask.h"
+#include "src/core/SkSLTypeShared.h"
+#include "src/gpu/BufferWriter.h"
+#include "src/gpu/graphite/Attribute.h"
+#include "src/gpu/graphite/BufferManager.h"
+#include "src/gpu/graphite/DrawOrder.h"
+#include "src/gpu/graphite/DrawParams.h"
+#include "src/gpu/graphite/DrawTypes.h"
+#include "src/gpu/graphite/DrawWriter.h"
+#include "src/gpu/graphite/geom/Geometry.h"
+#include "src/gpu/graphite/geom/Shape.h"
+#include "src/gpu/graphite/geom/Transform_graphite.h"
+#include "src/gpu/graphite/render/CommonDepthStencilSettings.h"
+
+#include <algorithm>
+#include <string_view>
+
+// This RenderStep is used to render filled circular arcs and stroked circular arcs that
+// don't include the center. Currently it only supports butt caps but could be extended
+// to include round caps.
+//
+// Each arc is represented by a single instance. The instance attributes are enough to
+// describe the given arc types without relying on uniforms to define its operation.
+// The attributes encode shape as follows:
+
+// float4 centerScales - used to transform the vertex data into local space.
+//    The vertex data represents interleaved octagons that are respectively circumscribed
+//    and inscribed on a unit circle, and have to be transformed into local space.
+//    So the .xy values here are the center of the arc in local space, and .zw its outer and inner
+//    radii, respectively. If the vertex is an outer vertex its local position will be computed as
+//         centerScales.xy + position.xy * centerScales.z
+//    Otherwise it will be computed as
+//         centerScales.xy + position.xy * centerScales.w
+//    We can tell whether a vertex is an outer or inner vertex by looking at the sign
+//    of its z component. This z value is also used to compute half-pixel anti-aliasing offsets
+//    once the vertex data is transformed into device space.
+// float2 radii - in the fragment shader we will pass an offset in unit circle space to determine
+//    the circle edge and for use for clipping. The .x value here is outerRadius+0.5 and will be
+//    compared against the unit circle radius (i.e., 1.0) to compute the outer edge. The .y value
+//    is innerRadius-0.5/outerRadius+0.5 and will be used as the comparison point for the inner
+//    edge.
+
+// In addition, these 2D clip planes will be passed to the fragment shader:
+//
+// float3 inClipPlane - the arc will always be clipped against this half plane
+// float3 inIsectPlane - for convex/acute arcs, we clip against this and multiply its
+//    value by the inClipPlane clip result.
+// float3 inUnionPlane - for concave/obtuse arcs, we clip against this and add its
+//    value to the inClipPlane clip result.
+
+namespace skgpu::graphite {
+
+// Represents the per-vertex attributes used in each instance.
+struct Vertex {
+    // Unit circle space position and AA offset
+    SkV3 fPosition;
+};
+
+static constexpr int kVertexCount = 18;
+
+static void write_vertex_buffer(VertexWriter writer) {
+    // Normalized geometry for octagons that circumscribe/inscribe a unit circle.
+    // Outer ring offset
+    static constexpr float kOctOffset = 0.41421356237f;  // sqrt(2) - 1
+    // Inner ring points
+    static constexpr SkScalar kCosPi8 = 0.923579533f;
+    static constexpr SkScalar kSinPi8 = 0.382683432f;
+
+    // Directional offset for anti-aliasing.
+    // Also used as marker for whether this is an outer or inner vertex.
+    static constexpr float kOuterAAOffset = 0.5f;
+    static constexpr float kInnerAAOffset = -0.5f;
+
+    static constexpr SkPoint3 kOctagonVertices[kVertexCount] = {
+        {-kOctOffset, -1,          kOuterAAOffset},
+        {-kSinPi8,    -kCosPi8,    kInnerAAOffset},
+        { kOctOffset, -1,          kOuterAAOffset},
+        {kSinPi8,     -kCosPi8,    kInnerAAOffset},
+        { 1,          -kOctOffset, kOuterAAOffset},
+        {kCosPi8,     -kSinPi8,    kInnerAAOffset},
+        { 1,           kOctOffset, kOuterAAOffset},
+        {kCosPi8,      kSinPi8,    kInnerAAOffset},
+        { kOctOffset,  1,          kOuterAAOffset},
+        {kSinPi8,      kCosPi8,    kInnerAAOffset},
+        {-kOctOffset,  1,          kOuterAAOffset},
+        {-kSinPi8,     kCosPi8,    kInnerAAOffset},
+        {-1,           kOctOffset, kOuterAAOffset},
+        {-kCosPi8,     kSinPi8,    kInnerAAOffset},
+        {-1,          -kOctOffset, kOuterAAOffset},
+        {-kCosPi8,    -kSinPi8,    kInnerAAOffset},
+        {-kOctOffset, -1,          kOuterAAOffset},
+        {-kSinPi8,    -kCosPi8,    kInnerAAOffset},
+    };
+
+    if (writer) {
+        writer << kOctagonVertices;
+    } // otherwise static buffer creation failed, so do nothing; Context initialization will fail.
+}
+
+CircularArcRenderStep::CircularArcRenderStep(StaticBufferManager* bufferManager)
+        : RenderStep("CircularArcRenderStep",
+                     "",
+                     Flags::kPerformsShading | Flags::kEmitsCoverage | Flags::kOutsetBoundsForAA,
+                     /*uniforms=*/{},
+                     PrimitiveType::kTriangleStrip,
+                     kDirectDepthGreaterPass,
+                     /*vertexAttrs=*/{
+                             {"position", VertexAttribType::kFloat3, SkSLType::kFloat3},
+                     },
+                     /*instanceAttrs=*/{
+                             // Center plus radii, used to transform to local position
+                             {"centerScales", VertexAttribType::kFloat4, SkSLType::kFloat4},
+                             // Outer (device space) and inner (normalized) radii
+                             {"radii", VertexAttribType::kFloat2, SkSLType::kFloat2},
+                             // Half-planes used to clip to arc shape.
+                             {"inClipPlane", VertexAttribType::kFloat3, SkSLType::kFloat3},
+                             {"inIsectPlane", VertexAttribType::kFloat3, SkSLType::kFloat3},
+                             {"inUnionPlane", VertexAttribType::kFloat3, SkSLType::kFloat3},
+                             {"depth", VertexAttribType::kFloat, SkSLType::kFloat},
+                             {"ssboIndices", VertexAttribType::kUInt2, SkSLType::kUInt2},
+
+                             {"mat0", VertexAttribType::kFloat3, SkSLType::kFloat3},
+                             {"mat1", VertexAttribType::kFloat3, SkSLType::kFloat3},
+                             {"mat2", VertexAttribType::kFloat3, SkSLType::kFloat3},
+                     },
+                     /*varyings=*/{
+                             // Normalized offset vector plus radii
+                             {"circleEdge", SkSLType::kFloat4},
+                             // Half-planes used to clip to arc shape.
+                             {"clipPlane", SkSLType::kFloat3},
+                             {"isectPlane", SkSLType::kFloat3},
+                             {"unionPlane", SkSLType::kFloat3},
+                     }) {
+    // Initialize the static buffer we'll use when recording draw calls.
+    // NOTE: Each instance of this RenderStep gets its own copy of the data. Since there should only
+    // ever be one CircularArcRenderStep at a time, this shouldn't be an issue.
+    write_vertex_buffer(bufferManager->getVertexWriter(sizeof(Vertex) * kVertexCount,
+                                                       &fVertexBuffer));
+}
+
+CircularArcRenderStep::~CircularArcRenderStep() {}
+
+std::string CircularArcRenderStep::vertexSkSL() const {
+    // Returns the body of a vertex function, which must define a float4 devPosition variable and
+    // must write to an already-defined float2 stepLocalCoords variable.
+    return "float4 devPosition = circular_arc_vertex_fn("
+                   // Vertex Attributes
+                   "position, "
+                   // Instance Attributes
+                   "centerScales, radii, inClipPlane, inIsectPlane, inUnionPlane, depth, "
+                   "float3x3(mat0, mat1, mat2), "
+                   // Varyings
+                   "circleEdge, clipPlane, isectPlane, unionPlane, "
+                   // Render Step
+                   "stepLocalCoords);\n";
+}
+
+const char* CircularArcRenderStep::fragmentCoverageSkSL() const {
+    // The returned SkSL must write its coverage into a 'half4 outputCoverage' variable (defined in
+    // the calling code) with the actual coverage splatted out into all four channels.
+    return "outputCoverage = circular_arc_coverage_fn(circleEdge, "
+                                                     "clipPlane, "
+                                                     "isectPlane, "
+                                                     "unionPlane);";
+}
+
+void CircularArcRenderStep::writeVertices(DrawWriter* writer,
+                                          const DrawParams& params,
+                                          skvx::uint2 ssboIndices) const {
+    SkASSERT(params.geometry().isShape() && params.geometry().shape().isArc());
+
+    DrawWriter::Instances instance{*writer, fVertexBuffer, {}, kVertexCount};
+    auto vw = instance.append(1);
+
+    const Shape& shape = params.geometry().shape();
+    const SkArc& arc = shape.arc();
+
+    SkPoint localCenter = arc.oval().center();
+    float localOuterRadius = arc.oval().width() / 2;
+    float localInnerRadius = 0.0f;
+
+    SkMatrix m = params.transform().matrix().asM33();
+    SkPoint center;
+    m.mapPoints(&center, &localCenter, 1);
+    float radius = m.mapRadius(localOuterRadius);
+    bool isStroke = params.isStroke();
+
+    float innerRadius = -SK_ScalarHalf;
+    float outerRadius = radius;
+    float halfWidth = 0;
+    if (isStroke) {
+        float localHalfWidth = params.strokeStyle().halfWidth();
+
+        halfWidth = m.mapRadius(localHalfWidth);
+        if (SkScalarNearlyZero(halfWidth)) {
+            halfWidth = SK_ScalarHalf;
+            // Need to map this back to local space
+            SkMatrix inverse;
+            if (m.invert(&inverse)) {
+                localHalfWidth = inverse.mapRadius(halfWidth);
+            } else {
+                // Best we can do
+                localHalfWidth = SK_ScalarHalf;
+            }
+        }
+
+        outerRadius += halfWidth;
+        innerRadius = radius - halfWidth;
+        localInnerRadius = localOuterRadius - localHalfWidth;
+        localOuterRadius += localHalfWidth;
+    }
+
+    // The radii are outset for two reasons. First, it allows the shader to simply perform
+    // simpler computation because the computed alpha is zero, rather than 50%, at the radius.
+    // Second, the outer radius is used to compute the verts of the bounding box that is
+    // rendered and the outset ensures the box will cover all partially covered by the circle.
+    outerRadius += SK_ScalarHalf;
+    innerRadius -= SK_ScalarHalf;
+    // The inner radius in the vertex data must be specified in normalized space.
+    innerRadius = innerRadius / outerRadius;
+
+    // The shader operates in a space where the circle is translated to be centered at the
+    // origin. Here we compute points on the unit circle at the starting and ending angles.
+    SkPoint startPoint, stopPoint;
+    float startAngleRadians = SkDegreesToRadians(arc.startAngle());
+    float sweepAngleRadians = SkDegreesToRadians(arc.sweepAngle());
+    startPoint.fY = SkScalarSin(startAngleRadians);
+    startPoint.fX = SkScalarCos(startAngleRadians);
+    SkScalar endAngle = startAngleRadians + sweepAngleRadians;
+    stopPoint.fY = SkScalarSin(endAngle);
+    stopPoint.fX = SkScalarCos(endAngle);
+
+    // Adjust the start and end points based on the view matrix (to handle rotated arcs)
+    startPoint = m.mapVector(startPoint.fX, startPoint.fY);
+    stopPoint = m.mapVector(stopPoint.fX, stopPoint.fY);
+    startPoint.normalize();
+    stopPoint.normalize();
+
+    // We know the matrix is a similarity here. Detect mirroring which will affect how we
+    // should orient the clip planes for arcs.
+    SkASSERT(m.isSimilarity());
+    auto upperLeftDet = m.getScaleX()*m.getScaleY() -
+                        m.getSkewX() *m.getSkewY();
+    if (upperLeftDet < 0) {
+        std::swap(startPoint, stopPoint);
+    }
+
+    // Like a fill without useCenter, butt-cap stroke can be implemented by clipping against
+    // radial lines. We treat round caps the same way, but track coverage of circles at the
+    // center of the butts.
+    // However, in both cases we have to be careful about the half-circle.
+    // case. In that case the two radial lines are equal and so that edge gets clipped
+    // twice. Since the shared edge goes through the center we fall back on the !useCenter
+    // case.
+    auto absSweep = SkScalarAbs(sweepAngleRadians);
+    bool useCenter = (arc.isWedge() || isStroke) &&
+                     !SkScalarNearlyEqual(absSweep, SK_ScalarPI);
+
+    // This makes every point fully inside the plane.
+    SkPoint3 clipPlane = {0.f, 0.f, 1.f};
+    SkPoint3 isectPlane = {0.f, 0.f, 1.f};
+    // This makes every point fully outside the plane.
+    SkPoint3 unionPlane = {0.f, 0.f, 0.f};
+    if (useCenter) {
+        SkVector norm0 = {startPoint.fY, -startPoint.fX};
+        SkVector norm1 = {stopPoint.fY, -stopPoint.fX};
+        // This ensures that norm0 is always the clockwise plane, and norm1 is CCW.
+        if (sweepAngleRadians < 0) {
+            std::swap(norm0, norm1);
+        }
+        norm0.negate();
+        if (absSweep > SK_ScalarPI) {
+            clipPlane = {norm0.fX, norm0.fY, 0.5f};
+            unionPlane = {norm1.fX, norm1.fY, 0.5f};
+        } else {
+            clipPlane = {norm0.fX, norm0.fY, 0.5f};
+            isectPlane = {norm1.fX, norm1.fY, 0.5f};
+        }
+    } else {
+        // We clip to a secant of the original circle.
+        startPoint.scale(radius);
+        stopPoint.scale(radius);
+        SkVector norm = {startPoint.fY - stopPoint.fY, stopPoint.fX - startPoint.fX};
+        norm.normalize();
+        if (sweepAngleRadians > 0) {
+            norm.negate();
+        }
+        float d = -norm.dot(startPoint) + 0.5f;
+        clipPlane = {norm.fX, norm.fY, d};
+    }
+
+    vw << localCenter << localOuterRadius << localInnerRadius
+       << outerRadius << innerRadius  // placeholder, not correct
+       << clipPlane << isectPlane << unionPlane
+       << params.order().depthAsFloat()
+       << ssboIndices
+       << m.rc(0,0) << m.rc(1,0) << m.rc(2,0)  // mat0
+       << m.rc(0,1) << m.rc(1,1) << m.rc(2,1)  // mat1
+       << m.rc(0,2) << m.rc(1,2) << m.rc(2,2); // mat2
+}
+
+void CircularArcRenderStep::writeUniformsAndTextures(const DrawParams&,
+                                                     PipelineDataGatherer*) const {
+    // All data is uploaded as instance attributes, so no uniforms are needed.
+}
+
+}  // namespace skgpu::graphite
