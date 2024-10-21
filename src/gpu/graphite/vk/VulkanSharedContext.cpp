@@ -123,19 +123,26 @@ std::unique_ptr<ResourceProvider> VulkanSharedContext::makeResourceProvider(
         SingleOwner* singleOwner,
         uint32_t recorderID,
         size_t resourceBudget) {
-    // Establish a uniform buffer that can be updated across multiple render passes and cmd buffers
-    size_t alignedIntrinsicConstantSize =
-            std::max(VulkanResourceProvider::kIntrinsicConstantSize,
-                     this->vulkanCaps().requiredUniformBufferAlignment());
-    sk_sp<Buffer> intrinsicConstantBuffer = VulkanBuffer::Make(
-            this, alignedIntrinsicConstantSize, BufferType::kUniform, AccessPattern::kGpuOnly);
-    if (!intrinsicConstantBuffer) {
-        SKGPU_LOG_E("Failed to create intrinsic constant uniform buffer");
-        return nullptr;
+
+    sk_sp<Buffer> intrinsicConstantBuffer = nullptr;
+    if (!this->vulkanCaps().usePushConstants()) {
+        // If we are not using push constants, establish a uniform buffer that can be updated across
+        // multiple render passes and cmd buffers.
+        size_t alignedIntrinsicConstantSize =
+                std::max(VulkanResourceProvider::kIntrinsicConstantSize,
+                        this->vulkanCaps().requiredUniformBufferAlignment());
+        intrinsicConstantBuffer = VulkanBuffer::Make(this,
+                                                     alignedIntrinsicConstantSize,
+                                                     BufferType::kUniform,
+                                                     AccessPattern::kGpuOnly);
+        if (!intrinsicConstantBuffer) {
+            SKGPU_LOG_E("Failed to create intrinsic constant uniform buffer");
+            return nullptr;
+        }
+        SkASSERT(static_cast<VulkanBuffer*>(intrinsicConstantBuffer.get())->bufferUsageFlags()
+                & VK_BUFFER_USAGE_TRANSFER_DST_BIT);
+        intrinsicConstantBuffer->setLabel("IntrinsicConstantBuffer");
     }
-    SkASSERT(static_cast<VulkanBuffer*>(intrinsicConstantBuffer.get())->bufferUsageFlags()
-             & VK_BUFFER_USAGE_TRANSFER_DST_BIT);
-    intrinsicConstantBuffer->setLabel("IntrinsicConstantBuffer");
 
     // Establish a vertex buffer that can be updated across multiple render passes and cmd buffers
     // for loading MSAA from resolve
