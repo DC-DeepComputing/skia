@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f503c8cc_2b5d64a4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-10-21T22:20:14Z",
+      "side": 1,
+      "message": "See https://fiddle.skia.org/c/1356250abe655d025e0f2bf034f0e1e8 and https://fiddle.skia.org/c/eecbae49418fd7d8be572a1dbbb067bb for the pre-release versions of the named fiddles",
+      "revId": "1c97c096231cf22d0d36b41b7a162ab0a278580d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
