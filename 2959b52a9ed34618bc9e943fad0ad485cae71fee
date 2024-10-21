@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "41145846_1dfdcbd8",
+        "filename": "src/gpu/graphite/GlobalCache.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-10-21T15:55:22Z",
+      "side": 1,
+      "message": "Done - I went with PipelineStats and added a \u0027Graphics\u0027 prefix to all the ints.",
+      "parentUuid": "665d503a_3eb86045",
+      "range": {
+        "startLine": 60,
+        "startChar": 11,
+        "endLine": 60,
+        "endChar": 16
+      },
+      "revId": "2959b52a9ed34618bc9e943fad0ad485cae71fee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "10d051ec_63e7a367",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-10-17T15:33:42Z",
       "side": 1,
       "message": "In theory this could be false if the first thread completed all of their compiles before the redundant threads ran. If that were to happen, we\u0027d see `fCacheHits \u003d\u003d (kNumThreads-1)*12` right?\n\nWe should also be able to assert that `fCacheMisses \u003d fCacheAdditions + fCacheRaces`?",
+      "range": {
+        "startLine": 93,
+        "startChar": 30,
+        "endLine": 93,
+        "endChar": 46
+      },
+      "revId": "2959b52a9ed34618bc9e943fad0ad485cae71fee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "efc3d7ad_ab3f6a34",
+        "filename": "tests/graphite/precompile/ThreadedPrecompileTest.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-10-21T15:55:22Z",
+      "side": 1,
+      "message": "Wrt the first question, in practice, we\u0027re actually not seeing any cache hits bc the compilation is so slow. But, yes, if one thread were able to that equation would be correct. I have the \u0027fRaces \u003e 0\u0027 assert there mainly to warn us if the test ever stops working correctly (i.e., it stops testing pipeline creation races).\n\nWrt the second question, I\u0027ve added the new assert.",
+      "parentUuid": "10d051ec_63e7a367",
       "range": {
         "startLine": 93,
         "startChar": 30,
