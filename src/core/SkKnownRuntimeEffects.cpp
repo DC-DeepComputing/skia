@@ -491,10 +491,10 @@ const SkRuntimeEffect* GetKnownRuntimeEffect(StableKey stableKey) {
 
         case StableKey::kOverdraw: {
             static constexpr char kOverdrawFilterCode[] =
-                "uniform half4 color0, color1, color2, color3, color4, color5;"
+                "uniform half4 color0, color1, color2, color3, color4, color5, color6, color7;"
 
                 "half4 main(half4 color) {"
-                    "return sk_overdraw(color.a, color0, color1, color2, color3, color4, color5);"
+                    "return sk_overdraw(color.a, color0, color1, color2, color3, color4, color5, color6, color7);"
                 "}";
 
             static const SkRuntimeEffect* sOverdrawEffect =

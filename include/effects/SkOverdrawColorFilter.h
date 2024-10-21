@@ -19,12 +19,12 @@ class SkColorFilter;
  *  0             -> colors[0]
  *  1             -> colors[1]
  *  ...
- *  5 (or larger) -> colors[5]
+ *  8 (or larger) -> colors[8]
  *
  */
 class SK_API SkOverdrawColorFilter {
 public:
-    static constexpr int kNumColors = 6;
+    static constexpr int kNumColors = 8;
 
     static sk_sp<SkColorFilter> MakeWithSkColors(const SkColor[kNumColors]);
 };
