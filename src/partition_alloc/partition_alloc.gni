@@ -1,0 +1,17 @@
+# Copyright 2024 Google LLC.
+#
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+import("//build_overrides/partition_alloc.gni")
+
+_is_clang_or_gcc = is_clang || !is_win
+
+skia_enable_partition_alloc =
+    # PartitionAlloc doesn't support MSVC. Only Clang and GCC are supported.
+    _is_clang_or_gcc &&
+    # PartitionAlloc is enabled only when running Skia Standalone tests, or when
+    # embedded within Chromium.
+    defined(skia_partition_alloc_dir) &&
+    # When using ./gn/gn_to_bp.py, the current_cpu is 'none'. This is not
+    # supported by PartitionAlloc.
+    current_cpu != "none" && enable_dangling_raw_ptr_checks_default
