@@ -724,11 +724,25 @@ void DawnCommandBuffer::bindTextureAndSamplers(
             TextureInfos::GetDawnTextureInfo(texture->textureInfo(), &dawnTextureInfo);
             const wgpu::YCbCrVkDescriptor& ycbcrDesc = dawnTextureInfo.fYcbcrVkDescriptor;
 
+            // When using AHardwareBuffers and promise textures, it is possible that the YCbCr
+            // information of a sampler can differ from definition to fulfillment. We should
+            // verify that the BindGroup and BindGroupLayout align before proceeding. If they
+            // do not, simply abort.
+            // TODO(b/346282342): See whether the following check is hit to verify the root cause of
+            // this bug. If so, it would be more correct to compare whether the YCbCr information
+            // is perfectly equivalent as opposed to just checking for static equivalence.
+            bool samplerIsStatic = ycbcrUtils::DawnDescriptorIsValid(ycbcrDesc);
+            if (samplerIsStatic != fActiveGraphicsPipeline->samplerAtEntryIdxIsStatic(i)) {
+                SK_ABORT("Fulfillment texture's static YCbCr sampler information differs"
+                         "(b/346282342)");
+            }
+
             // Only add a sampler as a bind group entry if it's a regular dynamic sampler. A valid
             // YCbCrVkDescriptor indicates the usage of a static sampler, which should not be
             // included here. They should already be fully specified in the bind group layout.
             if (!ycbcrUtils::DawnDescriptorIsValid(ycbcrDesc)) {
 #endif
+
                 wgpu::BindGroupEntry samplerEntry;
                 samplerEntry.binding = 2 * i;
                 samplerEntry.sampler = wgpuSampler;
