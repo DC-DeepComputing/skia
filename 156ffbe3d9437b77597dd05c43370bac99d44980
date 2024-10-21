@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fba995e4_0c0bba75",
+        "filename": "src/pdf/SkPDFDocument.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 356,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-21T03:36:36Z",
+      "side": 0,
+      "message": "This change does makes it very obvious that this hasn\u0027t been doing anything and always returning -1 since [[pdf] Properly handle drawing not on a page](https://skia.googlesource.com/skia/+/909cf06ad73879d1d247bd58572c60c1bfabe7ba). The issue being that `createStructParentKeyForElemId` is checking to see if we are currently on a page (if there is an `fPageDevice`) but the caller of this method `SkPDFDocument::onEndPage` did `fPageDevice \u003d nullptr` right before making the call. So link annotations did not point back at their structure elements.\n\nTo be correct the annotations need to be added when there really is an active page, since the annotations are tied to the active page.",
+      "range": {
+        "startLine": 356,
+        "startChar": 34,
+        "endLine": 356,
+        "endChar": 64
+      },
+      "revId": "156ffbe3d9437b77597dd05c43370bac99d44980",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "99c37f00_b7cc2f2a",
+        "filename": "src/pdf/SkPDFDocument.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 365,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-21T03:36:36Z",
+      "side": 0,
+      "message": "But this continued to work because there is no check here to see if there is a current page. So structure elements still pointed at link annotations. At the moment no content items with a StructParent are added based on drawing commands so in practice the check hasn\u0027t been needed, but that\u0027s just an accident at the moment.",
+      "revId": "156ffbe3d9437b77597dd05c43370bac99d44980",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
