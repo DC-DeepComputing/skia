@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6fc5becf_167ea51a",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 695,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-10-21T15:26:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c315734d_22638625",
+      "revId": "762a9666c4629602365ce39096287952c205a1de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2ae485bb_37edaec6",
@@ -31,6 +49,24 @@
       "writtenOn": "2024-10-21T14:44:55Z",
       "side": 1,
       "message": "Maybe a comment here about why we have a Protected and un-Protected lists and how we toggle between them?",
+      "revId": "762a9666c4629602365ce39096287952c205a1de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b1de58df_35dac44d",
+        "filename": "src/gpu/graphite/QueueManager.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-10-21T15:26:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2ae485bb_37edaec6",
       "revId": "762a9666c4629602365ce39096287952c205a1de",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -52,6 +88,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b55bf66_f7b52f8a",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-10-21T15:26:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a19627c_ef3e625e",
+      "revId": "762a9666c4629602365ce39096287952c205a1de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fcd1182b_22863aab",
@@ -65,6 +119,24 @@
       "writtenOn": "2024-10-21T14:44:55Z",
       "side": 1,
       "message": "// Metal doesn\u0027t support Protected content ?",
+      "revId": "762a9666c4629602365ce39096287952c205a1de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3993eadc_c5a1d33e",
+        "filename": "src/gpu/graphite/mtl/MtlBuffer.mm",
+        "patchSetId": 3
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-10-21T15:26:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fcd1182b_22863aab",
       "revId": "762a9666c4629602365ce39096287952c205a1de",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -86,6 +158,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b84354d5_2a7e1c26",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 3
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-10-21T15:26:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "80d6695b_f6b63361",
+      "revId": "762a9666c4629602365ce39096287952c205a1de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2a387e61_8159be31",
@@ -99,6 +189,24 @@
       "writtenOn": "2024-10-21T14:57:45Z",
       "side": 1,
       "message": "I guess, can we file a bug/make a Taskflow task for this ?",
+      "revId": "762a9666c4629602365ce39096287952c205a1de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "38938090_15146c3b",
+        "filename": "src/gpu/graphite/vk/VulkanBuffer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-10-21T15:26:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2a387e61_8159be31",
       "revId": "762a9666c4629602365ce39096287952c205a1de",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
