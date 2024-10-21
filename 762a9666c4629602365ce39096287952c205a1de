@@ -84,6 +84,23 @@
       "message": "// Metal doesn\u0027t support Protected content ?",
       "revId": "762a9666c4629602365ce39096287952c205a1de",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a387e61_8159be31",
+        "filename": "src/gpu/graphite/vk/VulkanBuffer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-10-21T14:57:45Z",
+      "side": 1,
+      "message": "I guess, can we file a bug/make a Taskflow task for this ?",
+      "revId": "762a9666c4629602365ce39096287952c205a1de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
