@@ -63,6 +63,30 @@
       },
       "revId": "ae114b49e87956337924a73d71cc35c2fa4348a2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "38e2d6af_aa038139",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 332,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-10-21T12:18:35Z",
+      "side": 1,
+      "message": "LGTM",
+      "parentUuid": "fb31d934_d4331ad6",
+      "range": {
+        "startLine": 332,
+        "startChar": 51,
+        "endLine": 332,
+        "endChar": 53
+      },
+      "revId": "ae114b49e87956337924a73d71cc35c2fa4348a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
