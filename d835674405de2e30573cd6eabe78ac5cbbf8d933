@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c56fd219_ad0c0688",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-21T18:13:53Z",
+      "side": 1,
+      "message": "@kjlubick, can you PTAL?  Can you please help with setting up Skia CI to cover the new test suite?\n\n/cc @danieldilan and @fmalita as FYI",
+      "revId": "d835674405de2e30573cd6eabe78ac5cbbf8d933",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d5a4ab5_1bf990e7",
+        "filename": "BUILD.gn",
+        "patchSetId": 2
+      },
+      "lineNbr": 1343,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-21T18:13:53Z",
+      "side": 1,
+      "message": "I am not sure where this new line came from - I don\u0027t have this locally... :-/",
+      "revId": "d835674405de2e30573cd6eabe78ac5cbbf8d933",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf45e41c_0da7771b",
+        "filename": "BUILD.gn",
+        "patchSetId": 2
+      },
+      "lineNbr": 1442,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-21T18:13:53Z",
+      "side": 1,
+      "message": "This is slightly different from how Fontations use `public_include_dirs` here: https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/BUILD.gn;l\u003d1366;drc\u003d8c95b719bf0509e7c4e0164d9be1a17a53bd9301\n\nMaybe I should also refactor Fontations to follow this?  OTOH, the switch to Bazel will make this obsolete, so maybe this is not worth it?",
+      "range": {
+        "startLine": 1442,
+        "startChar": 2,
+        "endLine": 1442,
+        "endChar": 3
+      },
+      "revId": "d835674405de2e30573cd6eabe78ac5cbbf8d933",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "652b6e09_4b1e6011",
+        "filename": "infra/bots/recipe_modules/build/default.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 267,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-21T18:13:53Z",
+      "side": 1,
+      "message": "I tried cargo culting... but this failed `git cl presubmit`: \n\n```\n$ DISPLAY\u003d:20 ./infra/bots/recipes.py test train\n...\nName                                         Stmts   Miss  Cover   Missing\n--------------------------------------------------------------------------\ninfra/bots/recipe_modules/build/default.py     212      1    99%   267\n--------------------------------------------------------------------------\nTOTAL                                         2514      1    99%\n\n69 files skipped due to complete coverage.\n\nFATAL: Insufficient total coverage (99.96%)\n```",
+      "range": {
+        "startLine": 267,
+        "startChar": 37,
+        "endLine": 267,
+        "endChar": 38
+      },
+      "revId": "d835674405de2e30573cd6eabe78ac5cbbf8d933",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
