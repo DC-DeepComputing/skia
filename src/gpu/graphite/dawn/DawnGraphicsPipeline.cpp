@@ -17,6 +17,7 @@
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/RenderPassDesc.h"
 #include "src/gpu/graphite/RendererProvider.h"
+#include "src/gpu/graphite/ShaderInfo.h"
 #include "src/gpu/graphite/UniformManager.h"
 #include "src/gpu/graphite/dawn/DawnCaps.h"
 #include "src/gpu/graphite/dawn/DawnErrorChecker.h"
@@ -292,20 +293,21 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(const DawnSharedContext* 
     skia_private::TArray<SamplerDesc> samplerDescArr {};
     samplerDescArrPtr = &samplerDescArr;
 #endif
-    FragSkSLInfo fsSkSLInfo = BuildFragmentSkSL(&caps,
-                                                sharedContext->shaderCodeDictionary(),
-                                                runtimeDict,
-                                                step,
-                                                paintID,
-                                                useStorageBuffers,
-                                                renderPassDesc.fWriteSwizzle,
-                                                samplerDescArrPtr);
-    std::string& fsSkSL = fsSkSLInfo.fSkSL;
-    const BlendInfo& blendInfo = fsSkSLInfo.fBlendInfo;
-    const bool localCoordsNeeded = fsSkSLInfo.fRequiresLocalCoords;
-    const int numTexturesAndSamplers = fsSkSLInfo.fNumTexturesAndSamplers;
 
-    bool hasFragmentSkSL = !fsSkSL.empty();
+    std::unique_ptr<ShaderInfo> shaderInfo = ShaderInfo::Make(&caps,
+                                                              sharedContext->shaderCodeDictionary(),
+                                                              runtimeDict,
+                                                              step,
+                                                              paintID,
+                                                              useStorageBuffers,
+                                                              renderPassDesc.fWriteSwizzle,
+                                                              samplerDescArrPtr);
+
+    const std::string& fsSkSL = shaderInfo->fragmentSkSL();
+    const BlendInfo& blendInfo = shaderInfo->blendInfo();
+    const int numTexturesAndSamplers = shaderInfo->numFragmentTexturesAndSamplers();
+
+    const bool hasFragmentSkSL = !fsSkSL.empty();
     if (hasFragmentSkSL) {
         if (!skgpu::SkSLToWGSL(caps.shaderCaps(),
                                fsSkSL,
@@ -316,17 +318,13 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(const DawnSharedContext* 
                                errorHandler)) {
             return {};
         }
-        if (!DawnCompileWGSLShaderModule(sharedContext, fsSkSLInfo.fLabel.c_str(), fsCode,
+        if (!DawnCompileWGSLShaderModule(sharedContext, shaderInfo->fsLabel().c_str(), fsCode,
                                          &fsModule, errorHandler)) {
             return {};
         }
     }
 
-    VertSkSLInfo vsSkSLInfo = BuildVertexSkSL(caps.resourceBindingRequirements(),
-                                              step,
-                                              useStorageBuffers,
-                                              localCoordsNeeded);
-    const std::string& vsSkSL = vsSkSLInfo.fSkSL;
+    const std::string& vsSkSL = shaderInfo->vertexSkSL();
     if (!skgpu::SkSLToWGSL(caps.shaderCaps(),
                            vsSkSL,
                            SkSL::ProgramKind::kGraphiteVertex,
@@ -336,7 +334,7 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(const DawnSharedContext* 
                            errorHandler)) {
         return {};
     }
-    if (!DawnCompileWGSLShaderModule(sharedContext, vsSkSLInfo.fLabel.c_str(), vsCode,
+    if (!DawnCompileWGSLShaderModule(sharedContext, shaderInfo->vsLabel().c_str(), vsCode,
                                      &vsModule, errorHandler)) {
         return {};
     }
@@ -501,7 +499,7 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(const DawnSharedContext* 
 
                 wgpu::BindGroupLayoutDescriptor groupLayoutDesc;
                 if (sharedContext->caps()->setBackendLabels()) {
-                    groupLayoutDesc.label = vsSkSLInfo.fLabel.c_str();
+                    groupLayoutDesc.label = shaderInfo->vsLabel().c_str();
                 }
                 groupLayoutDesc.entryCount = entries.size();
                 groupLayoutDesc.entries = entries.data();
@@ -514,7 +512,7 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(const DawnSharedContext* 
 
         wgpu::PipelineLayoutDescriptor layoutDesc;
         if (sharedContext->caps()->setBackendLabels()) {
-            layoutDesc.label = fsSkSLInfo.fLabel.c_str();
+            layoutDesc.label = shaderInfo->fsLabel().c_str();
         }
         layoutDesc.bindGroupLayoutCount =
             hasFragmentSamplers ? groupLayouts.size() : groupLayouts.size() - 1;
@@ -637,7 +635,7 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(const DawnSharedContext* 
         }
     }
 
-    PipelineInfo pipelineInfo{vsSkSLInfo, fsSkSLInfo};
+    PipelineInfo pipelineInfo{*shaderInfo};
 #if defined(GPU_TEST_UTILS)
     pipelineInfo.fNativeVertexShader = std::move(vsCode);
     pipelineInfo.fNativeFragmentShader = std::move(fsCode);
