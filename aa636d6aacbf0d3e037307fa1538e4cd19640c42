@@ -40,6 +40,30 @@
       ],
       "revId": "aa636d6aacbf0d3e037307fa1538e4cd19640c42",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "85883674_57ac709a",
+        "filename": "tests/SkPngRustDecoderTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-21T18:35:48Z",
+      "side": 1,
+      "message": "Ooops... Done.",
+      "parentUuid": "dc967f37_c623a3cb",
+      "range": {
+        "startLine": 71,
+        "startChar": 36,
+        "endLine": 71,
+        "endChar": 40
+      },
+      "revId": "aa636d6aacbf0d3e037307fa1538e4cd19640c42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
