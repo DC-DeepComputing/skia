@@ -334,6 +334,23 @@ void CollectIntrinsicUniforms(const Caps* caps,
     SkDEBUGCODE(uniforms->doneWithExpectedUniforms());
 }
 
+// TODO combine w/ method below and branch out to use diff preamble if all the body is otherwise the
+// same?
+std::string EmitPushConstants(Layout layout) {
+    std::string result;
+    auto offsetter = UniformOffsetCalculator::ForTopLevel(layout);
+
+    // write SkSL for push constant usage.
+    // TODO: rm "vulkan" hard coding
+    // TODO: Change name from "Intrinsic" to something else? See GrShaderVar::appendDecl
+    SkSL::String::appendf(
+            &result, "layout (vulkan, push_constant) uniform %sUniforms {\n", "Intrinsic");
+    result += get_uniforms(&offsetter, kIntrinsicUniforms, -1, /* wrotePaintColor= */ nullptr);
+    result.append("};\n\n");
+
+    return result;
+}
+
 std::string EmitIntrinsicUniforms(int bufferID, Layout layout) {
     auto offsetter = UniformOffsetCalculator::ForTopLevel(layout);
 
@@ -559,9 +576,15 @@ VertSkSLInfo BuildVertexSkSL(const ResourceBindingRequirements& bindingReqs,
     const bool useStepStorageBuffer = useStorageBuffers && hasStepUniforms;
     const bool useShadingStorageBuffer = useStorageBuffers && step->performsShading();
 
-    // Fixed program header (intrinsics are always declared as an uniform interface block)
-    std::string sksl = EmitIntrinsicUniforms(bindingReqs.fIntrinsicBufferBinding,
-                                             bindingReqs.fUniformBufferLayout);
+    // Fixed program headers used for intrinsics are either declared as an uniform interface block
+    // OR as push constants.
+    std::string sksl;
+    if (bindingReqs.fUsePushConstants) {
+        sksl = EmitPushConstants(bindingReqs.fUniformBufferLayout);
+    } else {
+        sksl = EmitIntrinsicUniforms(bindingReqs.fIntrinsicBufferBinding,
+                                     bindingReqs.fUniformBufferLayout);
+    }
 
     if (step->numVertexAttributes() > 0 || step->numInstanceAttributes() > 0) {
         sksl += emit_attributes(step->vertexAttributes(), step->instanceAttributes());

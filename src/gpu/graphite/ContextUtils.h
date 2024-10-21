@@ -132,6 +132,8 @@ std::string GetPipelineLabel(const ShaderCodeDictionary*,
 
 std::string BuildComputeSkSL(const Caps*, const ComputeStep*);
 
+std::string EmitPushConstants(Layout layout);
+
 std::string EmitIntrinsicUniforms(int bufferID, Layout layout);
 
 std::string EmitPaintParamsUniforms(int bufferID,

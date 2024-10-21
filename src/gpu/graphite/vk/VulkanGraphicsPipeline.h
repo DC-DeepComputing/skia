@@ -42,7 +42,7 @@ public:
     inline static constexpr unsigned int kNumUniformBuffers = 4;
 
     // For now, rigidly assign all uniform buffer descriptors to be in set 0 and all
-    // texture/samplers to be in set 1.
+    // texture/sampler descriptorts to be in set 1.
     // TODO(b/274762935): Make the bindings and descriptor set organization more flexible.
     inline static constexpr unsigned int kUniformBufferDescSetIndex = 0;
     inline static constexpr unsigned int kTextureBindDescSetIndex = 1;
@@ -54,7 +54,7 @@ public:
     inline static constexpr unsigned int kInstanceBufferIndex = 1;
     inline static constexpr unsigned int kNumInputBuffers = 2;
 
-    inline static const DescriptorData kIntrinsicUniformBufferDescriptor = {
+    inline static const DescriptorData kIntrinsicUniformDescriptor = {
             DescriptorType::kUniformBuffer, /*count=*/1,
             kIntrinsicUniformBufferIndex,
             PipelineStageFlags::kVertexShader | PipelineStageFlags::kFragmentShader};
@@ -101,6 +101,8 @@ public:
         return fPipeline;
     }
 
+    int numTextureSamplers() const { return fNumTextureSamplers; }
+
 private:
     VulkanGraphicsPipeline(const VulkanSharedContext* sharedContext,
                            const PipelineInfo& pipelineInfo,
@@ -114,6 +116,7 @@ private:
     VkPipelineLayout fPipelineLayout = VK_NULL_HANDLE;
     VkPipeline fPipeline = VK_NULL_HANDLE;
     bool fOwnsPipelineLayout = true;
+    int fNumTextureSamplers = 0;
 
     // Hold a ref to immutable samplers used such that their lifetime is properly managed.
     const skia_private::TArray<sk_sp<VulkanSampler>> fImmutableSamplers;
