@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c315734d_22638625",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 695,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-10-21T14:44:55Z",
+      "side": 1,
+      "message": "Maybe a comment here about why thes is kNo ?",
+      "revId": "762a9666c4629602365ce39096287952c205a1de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ae485bb_37edaec6",
+        "filename": "src/gpu/graphite/QueueManager.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-10-21T14:44:55Z",
+      "side": 1,
+      "message": "Maybe a comment here about why we have a Protected and un-Protected lists and how we toggle between them?",
+      "revId": "762a9666c4629602365ce39096287952c205a1de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a19627c_ef3e625e",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-10-21T14:44:55Z",
+      "side": 1,
+      "message": "Comment here and in DawnCommandBuffer too ?",
+      "revId": "762a9666c4629602365ce39096287952c205a1de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fcd1182b_22863aab",
+        "filename": "src/gpu/graphite/mtl/MtlBuffer.mm",
+        "patchSetId": 3
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-10-21T14:44:55Z",
+      "side": 1,
+      "message": "// Metal doesn\u0027t support Protected content ?",
+      "revId": "762a9666c4629602365ce39096287952c205a1de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80d6695b_f6b63361",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 3
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-10-21T14:44:55Z",
+      "side": 1,
+      "message": "// Metal doesn\u0027t support Protected content ?",
+      "revId": "762a9666c4629602365ce39096287952c205a1de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
