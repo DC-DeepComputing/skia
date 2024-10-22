@@ -104,6 +104,30 @@
       },
       "revId": "b797fa6c3777dc6281a00076c0799150d6caf47a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "09f9733e_3b387df1",
+        "filename": "tests/SkPngRustDecoderTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-22T15:45:58Z",
+      "side": 1,
+      "message": "Ack.  I\u0027ve initially wanted component-by-component checks, because the legacy `blink::PNGImageDecoder` would set the green channel to 0xFE rather than 0xFF (and consequently I wanted to assert `green \u003e\u003d 0xFE` rather than `green \u003d\u003d 0xFF`).  But outside of Blink I don\u0027t need to bifurcate test expectations like this, so I can just assert equality of the whole 4 bytes of color.  And this means that I don\u0027t need component-by-component assertions.\n\nSo, maybe it\u0027s fine to just leave this as-is (keep `AssertGreenPixel` as in the original, but don\u0027t go back to the `REPORTER_ASSERT_PIXEL_COMPONENT` macro which I\u0027ve realized is not needed)?\n\nI guess you also want to avoid direct calls to `reportFailedWithContext` so let me also remove the `file` and `line` parameters - they are probably not that important here.",
+      "parentUuid": "1375ade6_9c1bcab4",
+      "range": {
+        "startLine": 52,
+        "startChar": 8,
+        "endLine": 52,
+        "endChar": 39
+      },
+      "revId": "b797fa6c3777dc6281a00076c0799150d6caf47a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

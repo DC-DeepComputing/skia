@@ -87,6 +87,30 @@
       },
       "revId": "ac999f0f9fcc20607d707d9191091e515cea2638",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "59e0d78e_7060884d",
+        "filename": "tests/SkPngRustDecoderTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-22T15:45:58Z",
+      "side": 1,
+      "message": "Done.\n\nI\u0027ve tested that this works as expected (reporting line 95 rather than line ~20 when I tweak the main testcase body to artificially set `result` to an error):\n\n```\nFAILURE: ../tests/SkPngRustDecoderTest.cpp:95   actualResult\u003d\"incomplete input\" !\u003d kSuccess [Codec_apng_basic_ignoring_default_image]: result \u003d\u003d SkCodec::kSuccess\n```",
+      "parentUuid": "1cc58bbb_ed9db86e",
+      "range": {
+        "startLine": 21,
+        "startChar": 5,
+        "endLine": 21,
+        "endChar": 22
+      },
+      "revId": "ac999f0f9fcc20607d707d9191091e515cea2638",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
