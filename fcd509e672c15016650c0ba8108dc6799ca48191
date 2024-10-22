@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "94436912_29a66d87",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3649608
+      },
+      "writtenOn": "2024-10-22T12:21:33Z",
+      "side": 1,
+      "message": "I have rebased the patchset onto latest mainline. With CL 912556 and CL 912557 also applied, I am able to get a clean GCC build on amd64 and loong64, with identical dm test output bits as a Clang build.",
+      "revId": "fcd509e672c15016650c0ba8108dc6799ca48191",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
