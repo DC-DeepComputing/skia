@@ -68,6 +68,10 @@ public:
 
     const wgpu::RenderPipeline& dawnRenderPipeline() const;
 
+    bool samplerAtEntryIdxIsStatic(int entryBindingIdx) const {
+        return (fEntryStaticSamplerMask[entryBindingIdx]);
+    }
+
     using BindGroupLayouts = std::array<wgpu::BindGroupLayout, kBindGroupCount>;
     const BindGroupLayouts& dawnGroupLayouts() const { return fGroupLayouts; }
 
@@ -80,7 +84,8 @@ private:
                          BindGroupLayouts groupLayouts,
                          PrimitiveType primitiveType,
                          uint32_t refValue,
-                         skia_private::TArray<sk_sp<DawnSampler>> immutableSamplers);
+                         skia_private::TArray<sk_sp<DawnSampler>> immutableSamplers,
+                         skia_private::AutoTArray<bool> entryStaticSamplerMask);
 
     void freeGpuData() override;
 
@@ -91,6 +96,14 @@ private:
 
     // Hold a ref to immutable samplers used such that their lifetime is properly managed.
     const skia_private::TArray<sk_sp<DawnSampler>> fImmutableSamplers;
+    // Store an array of bools indicating which texture/sampler entries are immutable samplers.
+    // 'false' indicates a texture or dynamic sampler at that entry index; `true` a static sampler.
+    // This provides a simple means to report out whether a given bind group entry index contains an
+    // immutable sampler or not.
+    // TODO(b/346282342): Refactor this to include actual YCbCr information in order to perform
+    // equality checks between static sampler information in this pipeline's BindGroupLayout and
+    // that of samplers bound in the command buffer.
+    const skia_private::AutoTArray<bool> fEntryStaticSamplerMask;
 };
 
 } // namespace skgpu::graphite
