@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "305f8834_e74f7b39",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-10-22T15:02:54Z",
+      "side": 1,
+      "message": "CL that adds a simple array of bools (one per texture and sampler entry) that can act as a mask indicating whether or not that entry index contains an immutable sampler. There are a bunch of potential ways to do this, but I think this easily leaves the door open to expand this functionality to compare ycbcr information details.",
+      "revId": "3f367952a2cf3911a84967805deff774ba6b2515",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

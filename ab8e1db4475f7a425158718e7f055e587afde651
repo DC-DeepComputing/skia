@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a93741ae_24bd8da8",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-10-22T15:02:54Z",
+      "side": 1,
+      "message": "Note/discussion: Despite storing the sampler pointers here in `fImmutableSamplers`, there\u0027s not a great way to get its entry index information from that at this point in time. \n\nOne option would be to change this to be a map or map-like structure where the key is the bind group entry index and the value is either an immutable sampler ptr. This way, to determine if a sampler at a given entry is static, we would simply see if the map contains a key value for an entry index. This could also be adapted to have its size be equivalent to all texture/sampler entries or all sampler entries, and use nullptrs to represent non-static samplers.\n\nIf we go any of those routes, then when we want to expand this to include ycbcr detail comparison, we would then want to store YCbCr conversion information on `DawnSampler` so that could be easily fetched.",
+      "range": {
+        "startLine": 98,
+        "startChar": 51,
+        "endLine": 98,
+        "endChar": 69
+      },
+      "revId": "ab8e1db4475f7a425158718e7f055e587afde651",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
