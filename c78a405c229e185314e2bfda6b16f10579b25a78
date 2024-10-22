@@ -16,6 +16,23 @@
       "message": "PTAL. Gives a minor speed-up in MotionMark Arcs w/ MSAA, and a major one w/o MSAA.",
       "revId": "c78a405c229e185314e2bfda6b16f10579b25a78",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "28ff63d4_c4a7e9cb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-10-22T17:54:41Z",
+      "side": 1,
+      "message": "I\u0027m not sure why crbug_888453 is being triggered by this. I checked locally and it\u0027s drawing ovals via AnalyticRRectRenderStep as expected.",
+      "revId": "c78a405c229e185314e2bfda6b16f10579b25a78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
