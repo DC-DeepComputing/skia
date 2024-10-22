@@ -33,6 +33,236 @@
       "message": "I\u0027m not sure why crbug_888453 is being triggered by this. I checked locally and it\u0027s drawing ovals via AnalyticRRectRenderStep as expected.",
       "revId": "c78a405c229e185314e2bfda6b16f10579b25a78",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44210608_a212a24b",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 897,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-10-22T17:55:38Z",
+      "side": 1,
+      "message": "Update this to include other cases ?",
+      "range": {
+        "startLine": 897,
+        "startChar": 7,
+        "endLine": 897,
+        "endChar": 47
+      },
+      "revId": "c78a405c229e185314e2bfda6b16f10579b25a78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59fff98f_765c3438",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 903,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-10-22T17:55:38Z",
+      "side": 1,
+      "message": "Add a comment somewhere about why this disqualifies a RRect draw ?",
+      "range": {
+        "startLine": 903,
+        "startChar": 34,
+        "endLine": 903,
+        "endChar": 54
+      },
+      "revId": "c78a405c229e185314e2bfda6b16f10579b25a78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef319a8b_24c32c97",
+        "filename": "src/gpu/graphite/render/CircularArcRenderStep.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-10-22T17:55:38Z",
+      "side": 1,
+      "message": "2024 ?",
+      "range": {
+        "startLine": 2,
+        "startChar": 13,
+        "endLine": 2,
+        "endChar": 17
+      },
+      "revId": "c78a405c229e185314e2bfda6b16f10579b25a78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "009a44d4_9f738581",
+        "filename": "src/gpu/graphite/render/CircularArcRenderStep.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-10-22T17:55:38Z",
+      "side": 1,
+      "message": "Do we want to file an issue for that, possible future, work ?",
+      "range": {
+        "startLine": 35,
+        "startChar": 66,
+        "endLine": 36,
+        "endChar": 24
+      },
+      "revId": "c78a405c229e185314e2bfda6b16f10579b25a78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c443cfd8_383308e1",
+        "filename": "src/gpu/graphite/render/CircularArcRenderStep.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-10-22T17:55:38Z",
+      "side": 1,
+      "message": "(x,y) ?",
+      "range": {
+        "startLine": 71,
+        "startChar": 33,
+        "endLine": 71,
+        "endChar": 34
+      },
+      "revId": "c78a405c229e185314e2bfda6b16f10579b25a78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c85df7b0_4110ebc7",
+        "filename": "src/gpu/graphite/render/CircularArcRenderStep.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-10-22T17:55:38Z",
+      "side": 1,
+      "message": "(z) ?",
+      "range": {
+        "startLine": 71,
+        "startChar": 46,
+        "endLine": 71,
+        "endChar": 47
+      },
+      "revId": "c78a405c229e185314e2bfda6b16f10579b25a78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6ec91a5_5fbbb146",
+        "filename": "src/gpu/graphite/render/CircularArcRenderStep.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-10-22T17:55:38Z",
+      "side": 1,
+      "message": "2024 ?",
+      "range": {
+        "startLine": 2,
+        "startChar": 13,
+        "endLine": 2,
+        "endChar": 17
+      },
+      "revId": "c78a405c229e185314e2bfda6b16f10579b25a78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e0a51f5_ac0700c6",
+        "filename": "tests/graphite/precompile/PaintParamsKeyTest.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 1787,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-10-22T17:55:38Z",
+      "side": 1,
+      "message": "/* useCenter\u003d */ ?",
+      "range": {
+        "startLine": 1787,
+        "startChar": 43,
+        "endLine": 1787,
+        "endChar": 48
+      },
+      "revId": "c78a405c229e185314e2bfda6b16f10579b25a78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68bf6449_360f90fa",
+        "filename": "tests/graphite/precompile/PaintParamsKeyTest.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 1789,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-10-22T17:55:38Z",
+      "side": 1,
+      "message": "/* useCenter\u003d */ ?",
+      "range": {
+        "startLine": 1789,
+        "startChar": 47,
+        "endLine": 1789,
+        "endChar": 51
+      },
+      "revId": "c78a405c229e185314e2bfda6b16f10579b25a78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e0b6e3e1_409765a6",
+        "filename": "tests/graphite/precompile/PaintParamsKeyTest.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 1812,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-10-22T17:55:38Z",
+      "side": 1,
+      "message": "same ?",
+      "range": {
+        "startLine": 1812,
+        "startChar": 47,
+        "endLine": 1812,
+        "endChar": 51
+      },
+      "revId": "c78a405c229e185314e2bfda6b16f10579b25a78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
