@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d2ba6035_5240981b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-22T00:53:17Z",
+      "side": 1,
+      "message": "\u003e I can add a CL after this lands to add the tests to the CI\n\nYes, please!  I think having that as a separate CL will be nice (in case there is any trouble from the new Rust PNG tests).",
+      "parentUuid": "8770b023_1c70a513",
+      "revId": "b797fa6c3777dc6281a00076c0799150d6caf47a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c8e15c10_8ad2d912",
@@ -31,6 +49,30 @@
       "writtenOn": "2024-10-21T19:08:28Z",
       "side": 1,
       "message": "nit: I\u0027d prefer this be a static function instead of a macro. There\u0027s a bit less boilerplate.\n\nREPORTER_ASSERT_PIXEL_COMPONENT is probably fine as a macro since it\u0027s just a wrapper around another macro",
+      "range": {
+        "startLine": 20,
+        "startChar": 8,
+        "endLine": 20,
+        "endChar": 47
+      },
+      "revId": "b797fa6c3777dc6281a00076c0799150d6caf47a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "842600e5_8df3d612",
+        "filename": "tests/SkPngRustDecoderTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-22T00:53:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c8e15c10_8ad2d912",
       "range": {
         "startLine": 20,
         "startChar": 8,

@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c905c956_7c266501",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-22T00:53:17Z",
+      "side": 1,
+      "message": "Resolving...",
+      "parentUuid": "c56fd219_ad0c0688",
+      "revId": "d835674405de2e30573cd6eabe78ac5cbbf8d933",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2d5a4ab5_1bf990e7",
@@ -100,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f927628c_7d0592cf",
+        "filename": "BUILD.gn",
+        "patchSetId": 2
+      },
+      "lineNbr": 1442,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-22T00:53:17Z",
+      "side": 1,
+      "message": "Done.\n\nI think this is slightly better because:\n\n* This avoids having to special-case `public_include_dirs` in `template(\"optional\")`\n* This ensures that only the GN/ninja C++ compiler and C++ stdlib are used.  In some scenarios Bazel may end up using a different, incompatible version of the C++ compiler and/or C++ stdlib.  It didn\u0027t matter so far for Fontations, but for Rust PNG it gave:\n\n```\n nm -C out/librust_png_cxx_bridge.a 2\u003e\u00261 | grep new_reader\n                 U rust_png$cxxbridge1$new_reader\n00000000000000b0 T rust_png::new_reader(std::__1::unique_ptr\u003crust_png::ReadTrait, std::__1::default_delete\u003crust_png::ReadTrait\u003e \u003e)\n$ autoninja -C out dm\n...\nFAILED: dm\nclang++ -rdynamic -Wl,-rpath,\\$ORIGIN -Wl,--start-group @./dm.rsp   -Wl,--end-group -lpthread -lfontconfig -lGLU -lGL -lX11 -ldl -lfreetype libfontations_ffi.a libbridge_rust_side.a librust_png_cxx_bridge.a librust_png_cxx_core_lib.a librust_png_ffi_rs.a -o ./dm\n/usr/bin/ld: obj/experimental/rust_png/impl/rust_png.SkPngRustCodec.o: in function `SkPngRustCodec::MakeFromStream(std::unique_ptr\u003cSkStream, std::default_delete\u003cSkStream\u003e \u003e, SkCodec::Result*)\u0027:\n/usr/local/google/home/lukasza/src/chromium3/src/third_party/skia/out/../experimental/rust_png/impl/SkPngRustCodec.cpp:238:(.text+0x9b): undefined reference to `rust_png::new_reader(std::unique_ptr\u003crust_png::ReadTrait, std::default_delete\u003crust_png::ReadTrait\u003e \u003e)\u0027\n...\n```",
+      "parentUuid": "f556e88a_084b2848",
+      "range": {
+        "startLine": 1442,
+        "startChar": 2,
+        "endLine": 1442,
+        "endChar": 3
+      },
+      "revId": "d835674405de2e30573cd6eabe78ac5cbbf8d933",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "652b6e09_4b1e6011",
@@ -113,6 +155,30 @@
       "writtenOn": "2024-10-21T18:13:53Z",
       "side": 1,
       "message": "I tried cargo culting... but this failed `git cl presubmit`: \n\n```\n$ DISPLAY\u003d:20 ./infra/bots/recipes.py test train\n...\nName                                         Stmts   Miss  Cover   Missing\n--------------------------------------------------------------------------\ninfra/bots/recipe_modules/build/default.py     212      1    99%   267\n--------------------------------------------------------------------------\nTOTAL                                         2514      1    99%\n\n69 files skipped due to complete coverage.\n\nFATAL: Insufficient total coverage (99.96%)\n```",
+      "range": {
+        "startLine": 267,
+        "startChar": 37,
+        "endLine": 267,
+        "endChar": 38
+      },
+      "revId": "d835674405de2e30573cd6eabe78ac5cbbf8d933",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a310e23d_29978275",
+        "filename": "infra/bots/recipe_modules/build/default.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 267,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-22T00:53:17Z",
+      "side": 1,
+      "message": "Resolving...",
+      "parentUuid": "652b6e09_4b1e6011",
       "range": {
         "startLine": 267,
         "startChar": 37,
