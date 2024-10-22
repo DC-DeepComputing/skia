@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84042159_d7575aa2",
+        "filename": "src/pdf/SkPDFDevice.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1832,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-22T23:11:07Z",
+      "side": 1,
+      "message": "In the old code, each draw call always gets its own `MCID` so there is no need to track when to close. If a layer is being drawn into an xobject each mcid is well contained.\n\nWhen moving to a model with a deferred close, the close actually needs to happen not here where the layer xobject is drawn, but before one starts drawing to the layer xobject, since the mcids are tied to the page, not the device.",
+      "revId": "6e64ce9a6ea36f94a70da01aa0abcafcb08109ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
