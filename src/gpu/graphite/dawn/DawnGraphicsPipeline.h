@@ -68,6 +68,10 @@ public:
 
     const wgpu::RenderPipeline& dawnRenderPipeline() const;
 
+    bool samplerAtEntryIdxIsStatic(int entryBindingIdx) const {
+        return (fEntryStaticSamplerMask[entryBindingIdx]);
+    }
+
     using BindGroupLayouts = std::array<wgpu::BindGroupLayout, kBindGroupCount>;
     const BindGroupLayouts& dawnGroupLayouts() const { return fGroupLayouts; }
 
@@ -80,7 +84,8 @@ private:
                          BindGroupLayouts groupLayouts,
                          PrimitiveType primitiveType,
                          uint32_t refValue,
-                         skia_private::TArray<sk_sp<DawnSampler>> immutableSamplers);
+                         skia_private::TArray<sk_sp<DawnSampler>> immutableSamplers,
+                         skia_private::AutoTArray<bool> entryStaticSamplerMask);
 
     void freeGpuData() override;
 
@@ -91,6 +96,7 @@ private:
 
     // Hold a ref to immutable samplers used such that their lifetime is properly managed.
     const skia_private::TArray<sk_sp<DawnSampler>> fImmutableSamplers;
+    const skia_private::AutoTArray<bool> fEntryStaticSamplerMask;
 };
 
 } // namespace skgpu::graphite
