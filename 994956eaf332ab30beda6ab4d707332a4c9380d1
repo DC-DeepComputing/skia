@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "5793f112_5e3c1ece",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-22T19:00:15Z",
+      "side": 1,
+      "message": "Undesirable impact \u003d no animation, because Blink wouldn\u0027t know that there are additional frames available. \n Note that even after this CL the animation still wouldn\u0027t work, because `ImageAnimationController::AnimationState::ShouldAnimate` would return false because of `!frames_[NextFrameIndex(pending_index)].complete` - I\u0027ll fix that in a separate CL.",
+      "range": {
+        "startLine": 14,
+        "startChar": 16,
+        "endLine": 14,
+        "endChar": 65
+      },
+      "revId": "994956eaf332ab30beda6ab4d707332a4c9380d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "95b53fb0_55e47ee6",
