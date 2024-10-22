@@ -39,6 +39,30 @@
       },
       "revId": "ac999f0f9fcc20607d707d9191091e515cea2638",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d21a5b8_e5e8ca92",
+        "filename": "tests/SkPngRustDecoderTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-22T14:55:21Z",
+      "side": 1,
+      "message": "\u003e Sorry, what I meant was something like:\n\u003e ```\n\u003e void AssertResultIsSuccess(skiatest::Reporter* r, SkCodec::Result actualResult) {\n\u003e REPORTER_ASSERT(r, result \u003d\u003d SkCodec::kSuccess,\n\u003e                 \"actual result is %s\", SkCodec::ResultToString(result));\n\u003e }\n\u003e ```\n\u003e \n\u003e (unless that doesn\u0027t work like you want it to?)\n\nYes, this doesn\u0027t work like I want it to.  In particular, a failure report wouldn\u0027t say what failed (e.g. which line, which `condition`).  To get this aspect of behavior, I can either 1) leave things as-is (as a function that propagates file, line, condition) or 2) go back to a macro.  WDYT?\n \n\u003e Or, taking another look at things, what about\n\u003e \n\u003e ```\n\u003e #define REPORTER_ASSERT_SUCCESSFUL_CODEC_RESULT(r, result) \\\n\u003e     REPORTER_ASSERT(r, result \u003d\u003d SkCodec::kSuccess, \\\n\u003e                     \"actual result is %s\", SkCodec::ResultToString(result));\n\u003e \n\u003e ```\n\u003e \n\u003e I just didn\u0027t like the macro to wrap the do while loop because `REPORTER_ASSERT` already does that.\n\u003e \n\u003e In general, our tests don\u0027t call reportFailedWithContext directly except in very rare circumstances.",
+      "parentUuid": "9279bf76_74f65729",
+      "range": {
+        "startLine": 21,
+        "startChar": 5,
+        "endLine": 21,
+        "endChar": 22
+      },
+      "revId": "ac999f0f9fcc20607d707d9191091e515cea2638",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
