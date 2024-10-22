@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a4a36edf_74ab7ffd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-10-22T18:00:43Z",
+      "side": 1,
+      "message": "It looks like we\u0027re seeing:\n\nerror: undefined symbol: _ZN16SkPngRustDecoder6DecodeENSt3__210unique_ptrI8SkStreamNS0_14default_deleteIS2_EEEEPN7SkCodec6ResultE (referenced by top-level compiled C/C++ code)\nwarning: Link with `-sLLD_REPORT_UNDEFINED` to get more information on undefined symbols\nwarning: To disable errors for undefined symbols use `-sERROR_ON_UNDEFINED_SYMBOLS\u003d0`\nwarning: __ZN16SkPngRustDecoder6DecodeENSt3__210unique_ptrI8SkStreamNS0_14default_deleteIS2_EEEEPN7SkCodec6ResultE may need to be added to EXPORTED_FUNCTIONS if it arrives from a system library\nError: Aborting compilation due to previous errors\n\non:\n\nBuild-Debian10-EMCC-wasm-Release-WasmGMTests",
+      "revId": "f77e7440d931ad6efd569f0fdb4164bb328943e5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
