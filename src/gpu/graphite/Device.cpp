@@ -896,8 +896,12 @@ void Device::drawArc(const SkArc& arc, const SkPaint& paint) {
 #else
     // Simple fills with large sweeps are ovals. Culling these here simplifies the
     // path processing in Shape.
-    if (paint.getStyle() == SkPaint::kFill_Style && !paint.getPathEffect() &&
-        SkScalarAbs(arc.sweepAngle()) >= 360.f) {
+    if (!paint.getPathEffect() &&
+        SkScalarAbs(arc.sweepAngle()) >= 360.f &&
+        (paint.getStyle() == SkPaint::kFill_Style ||
+         (paint.getStyle() == SkPaint::kStroke_Style &&
+          paint.getStrokeCap() != SkPaint::kSquare_Cap &&
+          !arc.isWedge()))) {
         this->drawRRect(SkRRect::MakeOval(arc.oval()), paint);
     } else {
         this->drawGeometry(this->localToDeviceTransform(), Geometry(Shape(arc)),
@@ -1586,6 +1590,32 @@ std::pair<const Renderer*, PathAtlas*> Device::chooseRenderer(const Transform& l
             return {renderers->nonAABounds(), nullptr};
         } else {
             return {renderers->analyticRRect(), nullptr};
+        }
+    }
+
+    if (!requireMSAA && shape.isArc() &&
+        SkScalarNearlyEqual(shape.arc().oval().width(), shape.arc().oval().height()) &&
+        SkScalarAbs(shape.arc().sweepAngle()) < 360.f) {
+        SkMatrix m = localToDevice.matrix().asM33();
+        if (m.isSimilarity()) {
+            // Arc support depends on the style.
+            SkStrokeRec::Style recStyle = style.getStyle();
+            switch (recStyle) {
+                case SkStrokeRec::kStrokeAndFill_Style:
+                    // This produces a strange result that this op doesn't implement.
+                    break;
+                case SkStrokeRec::kFill_Style:
+                    return {renderers->circularArc(), nullptr};
+                case SkStrokeRec::kStroke_Style:
+                case SkStrokeRec::kHairline_Style:
+                    // Strokes that don't use the center point are supported with butt caps.
+                    bool isWedge = shape.arc().isWedge();
+                    bool isButtCap = style.getCap() == SkPaint::kButt_Cap;
+                    if (!isWedge && isButtCap) {
+                        return {renderers->circularArc(), nullptr};
+                    }
+                    break;
+            }
         }
     }
 
