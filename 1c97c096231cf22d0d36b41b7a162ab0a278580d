@@ -16,6 +16,29 @@
       "message": "See https://fiddle.skia.org/c/1356250abe655d025e0f2bf034f0e1e8 and https://fiddle.skia.org/c/eecbae49418fd7d8be572a1dbbb067bb for the pre-release versions of the named fiddles",
       "revId": "1c97c096231cf22d0d36b41b7a162ab0a278580d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c060b91_ada2d7b0",
+        "filename": "docs/examples/OverdrawColorFilter_grid.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-10-22T15:14:47Z",
+      "side": 1,
+      "message": "This can be achieved by using `SkBitmap::eraseColor` or `eraseARGB`: https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/include/core/SkBitmap.h;drc\u003df72bd467feb15edd9323e46eab1b74ab6025bc5b;l\u003d817",
+      "range": {
+        "startLine": 29,
+        "startChar": 0,
+        "endLine": 34,
+        "endChar": 3
+      },
+      "revId": "1c97c096231cf22d0d36b41b7a162ab0a278580d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
