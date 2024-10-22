@@ -34,6 +34,24 @@
       "parentUuid": "a4a36edf_74ab7ffd",
       "revId": "f77e7440d931ad6efd569f0fdb4164bb328943e5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7f16a298_c935b707",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-22T18:07:36Z",
+      "side": 1,
+      "message": "@robertphillips, could you please share a link to a failing build?  Are there some additional bots I could have included in the CQ to prevent this?\n\n@kjlubick, any advice on how to address this?  IIUC the missing symbol should come from `optional(\"rust_png\")` (from `experimental/rust_png/SkPngRustDecoder.cpp` included via `skia_codec_rust_png`).\n\nShould I go ahead and revert this CL?",
+      "parentUuid": "a4a36edf_74ab7ffd",
+      "revId": "f77e7440d931ad6efd569f0fdb4164bb328943e5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
