@@ -71,9 +71,10 @@ config("default") {
     cflags += [ "-Wno-attributes" ]
   }
 
-  if (is_clang && !is_win) {
+  if (!is_win) {
     # In Clang 14, this default was changed. We turn this off to (hopefully) make our
     # GMs more consistent in the transition.
+    # GCC needs this as well for various tests to pass.
     cflags += [ "-ffp-contract=off" ]
   }
 
