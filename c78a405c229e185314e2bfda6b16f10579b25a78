@@ -58,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f5221df_6bd17704",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 897,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-10-23T19:59:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "44210608_a212a24b",
+      "range": {
+        "startLine": 897,
+        "startChar": 7,
+        "endLine": 897,
+        "endChar": 47
+      },
+      "revId": "c78a405c229e185314e2bfda6b16f10579b25a78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "59fff98f_765c3438",
@@ -71,6 +95,30 @@
       "writtenOn": "2024-10-22T17:55:38Z",
       "side": 1,
       "message": "Add a comment somewhere about why this disqualifies a RRect draw ?",
+      "range": {
+        "startLine": 903,
+        "startChar": 34,
+        "endLine": 903,
+        "endChar": 54
+      },
+      "revId": "c78a405c229e185314e2bfda6b16f10579b25a78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "383ec73c_a8b679e8",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 903,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-10-23T19:59:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "59fff98f_765c3438",
       "range": {
         "startLine": 903,
         "startChar": 34,
@@ -104,6 +152,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3c3f3556_7359b4c6",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 1600,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-10-23T19:59:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9e79e66a_72bfc0ee",
+      "range": {
+        "startLine": 1600,
+        "startChar": 11,
+        "endLine": 1600,
+        "endChar": 28
+      },
+      "revId": "c78a405c229e185314e2bfda6b16f10579b25a78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ef319a8b_24c32c97",
@@ -127,6 +199,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "391e424b_01c03f4f",
+        "filename": "src/gpu/graphite/render/CircularArcRenderStep.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-10-23T19:59:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ef319a8b_24c32c97",
+      "range": {
+        "startLine": 2,
+        "startChar": 13,
+        "endLine": 2,
+        "endChar": 17
+      },
+      "revId": "c78a405c229e185314e2bfda6b16f10579b25a78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "009a44d4_9f738581",
@@ -140,6 +236,30 @@
       "writtenOn": "2024-10-22T17:55:38Z",
       "side": 1,
       "message": "Do we want to file an issue for that, possible future, work ?",
+      "range": {
+        "startLine": 35,
+        "startChar": 66,
+        "endLine": 36,
+        "endChar": 24
+      },
+      "revId": "c78a405c229e185314e2bfda6b16f10579b25a78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "26a89273_9c28428e",
+        "filename": "src/gpu/graphite/render/CircularArcRenderStep.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-10-23T19:59:44Z",
+      "side": 1,
+      "message": "It falls under the same task, I just haven\u0027t gotten to it.",
+      "parentUuid": "009a44d4_9f738581",
       "range": {
         "startLine": 35,
         "startChar": 66,
@@ -196,6 +316,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "05c53a43_c2125600",
+        "filename": "src/gpu/graphite/render/CircularArcRenderStep.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-10-23T19:59:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c85df7b0_4110ebc7",
+      "range": {
+        "startLine": 71,
+        "startChar": 46,
+        "endLine": 71,
+        "endChar": 47
+      },
+      "revId": "c78a405c229e185314e2bfda6b16f10579b25a78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a58f7ba0_31157028",
+        "filename": "src/gpu/graphite/render/CircularArcRenderStep.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-10-23T19:59:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c443cfd8_383308e1",
+      "range": {
+        "startLine": 71,
+        "startChar": 33,
+        "endLine": 71,
+        "endChar": 34
+      },
+      "revId": "c78a405c229e185314e2bfda6b16f10579b25a78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4cb5a52f_d39d43cf",
@@ -209,6 +377,30 @@
       "writtenOn": "2024-10-23T13:41:47Z",
       "side": 1,
       "message": "`center` doesn\u0027t seem used anywhere anymore?",
+      "range": {
+        "startLine": 199,
+        "startChar": 0,
+        "endLine": 200,
+        "endChar": 42
+      },
+      "revId": "c78a405c229e185314e2bfda6b16f10579b25a78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d50c1de9_04f2beac",
+        "filename": "src/gpu/graphite/render/CircularArcRenderStep.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-10-23T19:59:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4cb5a52f_d39d43cf",
       "range": {
         "startLine": 199,
         "startChar": 0,
@@ -242,6 +434,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "db98753a_b283a9f9",
+        "filename": "src/gpu/graphite/render/CircularArcRenderStep.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-10-23T19:59:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9ee3e853_25951fd6",
+      "range": {
+        "startLine": 201,
+        "startChar": 3,
+        "endLine": 201,
+        "endChar": 49
+      },
+      "revId": "c78a405c229e185314e2bfda6b16f10579b25a78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "659e8ec4_38fbda57",
@@ -255,6 +471,30 @@
       "writtenOn": "2024-10-23T13:41:47Z",
       "side": 1,
       "message": "and this would be `halfWidth / params.transform().maxScaleFactor()`",
+      "range": {
+        "startLine": 216,
+        "startChar": 0,
+        "endLine": 216,
+        "endChar": 62
+      },
+      "revId": "c78a405c229e185314e2bfda6b16f10579b25a78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b914d6d2_d6734d21",
+        "filename": "src/gpu/graphite/render/CircularArcRenderStep.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-10-23T19:59:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "659e8ec4_38fbda57",
       "range": {
         "startLine": 216,
         "startChar": 0,
@@ -288,6 +528,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "63f9ca91_08dd816e",
+        "filename": "src/gpu/graphite/render/CircularArcRenderStep.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-10-23T19:59:44Z",
+      "side": 1,
+      "message": "The method I\u0027m using depends on the 0.5 offset to get the right falloff, so I don\u0027t think there\u0027s anything to change here.",
+      "parentUuid": "3d7521c5_5598c812",
+      "range": {
+        "startLine": 233,
+        "startChar": 19,
+        "endLine": 233,
+        "endChar": 32
+      },
+      "revId": "c78a405c229e185314e2bfda6b16f10579b25a78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "61f62268_61dd5344",
@@ -301,6 +565,30 @@
       "writtenOn": "2024-10-23T13:41:47Z",
       "side": 1,
       "message": "Do we need to pin this in case we have really small arcs where the inside collapses?",
+      "range": {
+        "startLine": 234,
+        "startChar": 0,
+        "endLine": 234,
+        "endChar": 33
+      },
+      "revId": "c78a405c229e185314e2bfda6b16f10579b25a78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c9803746_788716b0",
+        "filename": "src/gpu/graphite/render/CircularArcRenderStep.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-10-23T19:59:44Z",
+      "side": 1,
+      "message": "This appears to work as-is -- as the stroke width approaches the diameter we have a tiny hole in the center that collapses to nothing once we hit the diameter.",
+      "parentUuid": "61f62268_61dd5344",
       "range": {
         "startLine": 234,
         "startChar": 0,
@@ -336,6 +624,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c4dd0b6d_94875dbc",
+        "filename": "src/gpu/graphite/render/CircularArcRenderStep.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-10-23T19:59:44Z",
+      "side": 1,
+      "message": "I don\u0027t think so... we\u0027d have to compute two sines and cosines for each vertex instead of just the two pairs here.",
+      "parentUuid": "a182b05c_dcd522a7",
+      "range": {
+        "startLine": 241,
+        "startChar": 0,
+        "endLine": 242,
+        "endChar": 67
+      },
+      "revId": "c78a405c229e185314e2bfda6b16f10579b25a78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e6ec91a5_5fbbb146",
         "filename": "src/gpu/graphite/render/CircularArcRenderStep.h",
         "patchSetId": 12
@@ -347,6 +659,30 @@
       "writtenOn": "2024-10-22T17:55:38Z",
       "side": 1,
       "message": "2024 ?",
+      "range": {
+        "startLine": 2,
+        "startChar": 13,
+        "endLine": 2,
+        "endChar": 17
+      },
+      "revId": "c78a405c229e185314e2bfda6b16f10579b25a78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "02aaf222_7572c51f",
+        "filename": "src/gpu/graphite/render/CircularArcRenderStep.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-10-23T19:59:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e6ec91a5_5fbbb146",
       "range": {
         "startLine": 2,
         "startChar": 13,
@@ -380,6 +716,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4c8f9611_fe62969c",
+        "filename": "tests/graphite/precompile/PaintParamsKeyTest.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 1787,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-10-23T19:59:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6e0a51f5_ac0700c6",
+      "range": {
+        "startLine": 1787,
+        "startChar": 43,
+        "endLine": 1787,
+        "endChar": 48
+      },
+      "revId": "c78a405c229e185314e2bfda6b16f10579b25a78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "68bf6449_360f90fa",
@@ -403,6 +763,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4118b045_7755ab00",
+        "filename": "tests/graphite/precompile/PaintParamsKeyTest.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 1789,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-10-23T19:59:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "68bf6449_360f90fa",
+      "range": {
+        "startLine": 1789,
+        "startChar": 47,
+        "endLine": 1789,
+        "endChar": 51
+      },
+      "revId": "c78a405c229e185314e2bfda6b16f10579b25a78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e0b6e3e1_409765a6",
@@ -416,6 +800,30 @@
       "writtenOn": "2024-10-22T17:55:38Z",
       "side": 1,
       "message": "same ?",
+      "range": {
+        "startLine": 1812,
+        "startChar": 47,
+        "endLine": 1812,
+        "endChar": 51
+      },
+      "revId": "c78a405c229e185314e2bfda6b16f10579b25a78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "036af972_3b9d2175",
+        "filename": "tests/graphite/precompile/PaintParamsKeyTest.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 1812,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-10-23T19:59:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e0b6e3e1_409765a6",
       "range": {
         "startLine": 1812,
         "startChar": 47,
