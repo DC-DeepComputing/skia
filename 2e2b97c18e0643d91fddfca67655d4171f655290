@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ba81671_ef1f2bfa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-23T23:23:59Z",
+      "side": 1,
+      "message": "@danieldilan, can you PTAL?\n\n/cc @fmalita as FYI",
+      "revId": "2e2b97c18e0643d91fddfca67655d4171f655290",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
