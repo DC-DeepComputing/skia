@@ -16,6 +16,24 @@
       "message": "In the old code, each draw call always gets its own `MCID` so there is no need to track when to close. If a layer is being drawn into an xobject each mcid is well contained.\n\nWhen moving to a model with a deferred close, the close actually needs to happen not here where the layer xobject is drawn, but before one starts drawing to the layer xobject, since the mcids are tied to the page, not the device.",
       "revId": "6e64ce9a6ea36f94a70da01aa0abcafcb08109ae",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "466bccba_663bc088",
+        "filename": "src/pdf/SkPDFDevice.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1832,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-23T14:11:02Z",
+      "side": 1,
+      "message": "Actually, this is fine. The sub-device will have its own mark manager which will create marks as it goes. There is no need to \"close\" marks in order globally, since closing a mark is something that happens in the content stream so they only need to be closed in order per device..",
+      "parentUuid": "84042159_d7575aa2",
+      "revId": "6e64ce9a6ea36f94a70da01aa0abcafcb08109ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
