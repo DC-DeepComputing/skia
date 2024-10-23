@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ffef301_f341b82f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-23T20:11:39Z",
+      "side": 1,
+      "message": "@danieldilan, can you PTAL?\n\n/cc @fmalita as FYI",
+      "revId": "f523531e90a0f40740763e76314917ab53a84ed5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3713126_457bda8c",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 263,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-23T20:11:39Z",
+      "side": 1,
+      "message": "This function has been somewhat cargo-culted from `SkWebpCodec` - see: https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/codec/SkWebpCodec.cpp;l\u003d337-366;drc\u003dc9943f14039faa721b02c64b5fad42dfb87af013\n\nThe main difference is that in `SkPngRustCodec` we can guarantee that source and destination use the same `SkColorType` and `SkAlphaType` - we don\u0027t need to account for this like `SkWebpCodec` does.",
+      "range": {
+        "startLine": 263,
+        "startChar": 0,
+        "endLine": 263,
+        "endChar": 1
+      },
+      "revId": "f523531e90a0f40740763e76314917ab53a84ed5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74f7b104_05657908",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 504,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-23T20:11:39Z",
+      "side": 1,
+      "message": "This has been just moved from `incrementalDecode` in an attempt to improve readability (by removing interlacing details from `incrementalDecode`).  In theory this has a negative performance impact (the 2 vectors need to be reinitialized), but interlaced images are rare (1-2% of all images in top 500 websites AFAICT), so I think readability should win here.",
+      "range": {
+        "startLine": 504,
+        "startChar": 0,
+        "endLine": 504,
+        "endChar": 1
+      },
+      "revId": "f523531e90a0f40740763e76314917ab53a84ed5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b400b80a_95746570",
+        "filename": "tests/SkPngRustDecoderTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-23T20:11:39Z",
+      "side": 1,
+      "message": "I\u0027ve added coverage for the other 2 images mostly to double-check that `SkCodecAnimation::Blend::kSrc` is used despite of how the `IDAT` / `fdAT` / `fcTL` frames are organized.",
+      "range": {
+        "startLine": 151,
+        "startChar": 0,
+        "endLine": 151,
+        "endChar": 1
+      },
+      "revId": "f523531e90a0f40740763e76314917ab53a84ed5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "997ea306_a66b4926",
+        "filename": "tests/SkPngRustDecoderTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-23T20:11:39Z",
+      "side": 1,
+      "message": "This assert is the main difference/impact of implementing blending support.",
+      "range": {
+        "startLine": 225,
+        "startChar": 65,
+        "endLine": 225,
+        "endChar": 66
+      },
+      "revId": "f523531e90a0f40740763e76314917ab53a84ed5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
