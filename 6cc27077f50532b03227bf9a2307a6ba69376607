@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4af41d4_4ccf5cc6",
+        "filename": "src/pdf/SkPDFDevice.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-23T22:32:09Z",
+      "side": 1,
+      "message": "On the one hand we could do something fancy here and try to see when -1 or 1000001 are used, notice they don\u0027t map to any structure element, and do something clever about that. On the other hand we can just be like \"don\u0027t do that, only use 0 and the known element identifiers\". The only downside to using a bunch of different bad ids is that your PDF might get a little bigger, but that\u0027s the user\u0027s issue really.",
+      "revId": "6cc27077f50532b03227bf9a2307a6ba69376607",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
