@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e798f339_4e92d0d0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-10-23T17:48:27Z",
+      "side": 1,
+      "message": "More infra problems to resolve. Need to get `bazelisk` on the machine.",
+      "revId": "1a11d5471bcb30e28fb4e8c163864c73f52df091",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
