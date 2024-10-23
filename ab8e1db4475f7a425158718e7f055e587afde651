@@ -3,6 +3,58 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "ea5f994e_1571bade",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 10537
+      },
+      "writtenOn": "2024-10-23T16:51:25Z",
+      "side": 1,
+      "message": "Thanks, Nicolette!",
+      "revId": "ab8e1db4475f7a425158718e7f055e587afde651",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "632f3f99_e12a7d8a",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 734,
+      "author": {
+        "id": 10537
+      },
+      "writtenOn": "2024-10-23T16:51:25Z",
+      "side": 1,
+      "message": "You have the BGL down below (line 774); you could grab it before executing this code and then just check that `samplerIsStatic` agrees with whether there is a sampler at that entry in the BGL?",
+      "fixSuggestions": [
+        {
+          "fixId": "cfb34e3e_e2251153",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+              "range": {
+                "startLine": 734,
+                "startChar": 0,
+                "endLine": 736,
+                "endChar": 0
+              },
+              "replacement": "            bool samplerIsStatic \u003d\n                    fActiveGraphicsPipeline-\u003esamplerAtEntryIdxIsStatic(i);\n            if (samplerIsStatic !\u003d ycbcrUtils::DawnDescriptorIsValid(ycbcrDesc)) {\n"
+            }
+          ]
+        }
+      ],
+      "revId": "ab8e1db4475f7a425158718e7f055e587afde651",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "a93741ae_24bd8da8",
         "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.h",
         "patchSetId": 9
