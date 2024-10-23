@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "58bb7c98_b0c78113",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-23T14:52:12Z",
+      "side": 1,
+      "message": "Thanks for putting this together!  FWIW I\u0027ve looked at the failure in Build-Debian10-Clang-x86_64-Debug-RustPNG at https://task-scheduler.skia.org/job/aL7MALxd07UKaRCW5hJ6 and it fails the \"ninja\" step at https://ci.chromium.org/raw/build/logs.chromium.org/skia/6cd27ea62efb5311/+/annotations saying \"../../../../../../skia/experimental/rust_png/ffi/BUILD.bazel\u0027, needed by \u0027librust_png_ffi_rs.a\u0027, missing and no known rule to make it\".  I checked that this file seems to be part of the Skia repo, so I don\u0027t know what is going on... :-/",
+      "revId": "bf64cd383885997d438c77ee3d6cf4a2b272d729",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
