@@ -1683,26 +1683,6 @@
         "Upload-Perf-Debian11-Clang-NUC9i7QN-CPU-AVX2-x86_64-Release-All-SkottieTracing"
       ]
     },
-    "Perf-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-OptimizeForSize-All": {
-      "tasks": [
-        "Upload-Perf-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-OptimizeForSize-All"
-      ]
-    },
-    "Perf-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-OptimizeForSize-All-SkottieTracing": {
-      "tasks": [
-        "Upload-Perf-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-OptimizeForSize-All-SkottieTracing"
-      ]
-    },
-    "Perf-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-Release-All": {
-      "tasks": [
-        "Upload-Perf-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-Release-All"
-      ]
-    },
-    "Perf-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-Release-All-ASAN": {
-      "tasks": [
-        "Perf-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-Release-All-ASAN"
-      ]
-    },
     "Perf-Debian11-Clang-RUBYR5-GPU-RadeonVega6-x86_64-Release-All-Vulkan": {
       "tasks": [
         "Upload-Perf-Debian11-Clang-RUBYR5-GPU-RadeonVega6-x86_64-Release-All-Vulkan"
@@ -2647,56 +2627,6 @@
     "Test-Debian11-Clang-NUC11TZi5-GPU-IntelIrisXe-x86_64-Release-All-TSAN_Vulkan": {
       "tasks": [
         "Test-Debian11-Clang-NUC11TZi5-GPU-IntelIrisXe-x86_64-Release-All-TSAN_Vulkan"
-      ]
-    },
-    "Test-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-Debug-All": {
-      "tasks": [
-        "Test-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-Debug-All"
-      ]
-    },
-    "Test-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-Debug-All-ASAN": {
-      "tasks": [
-        "Test-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-Debug-All-ASAN"
-      ]
-    },
-    "Test-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-Debug-All-DDL1": {
-      "tasks": [
-        "Test-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-Debug-All-DDL1"
-      ]
-    },
-    "Test-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-Debug-All-DDL1_Vulkan": {
-      "tasks": [
-        "Test-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-Debug-All-DDL1_Vulkan"
-      ]
-    },
-    "Test-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-Debug-All-DDL3_ASAN": {
-      "tasks": [
-        "Test-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-Debug-All-DDL3_ASAN"
-      ]
-    },
-    "Test-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-Debug-All-DDL3_TSAN": {
-      "tasks": [
-        "Test-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-Debug-All-DDL3_TSAN"
-      ]
-    },
-    "Test-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-Debug-All-FailFlushTimeCallbacks_ASAN": {
-      "tasks": [
-        "Test-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-Debug-All-FailFlushTimeCallbacks_ASAN"
-      ]
-    },
-    "Test-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-OptimizeForSize-All": {
-      "tasks": [
-        "Test-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-OptimizeForSize-All"
-      ]
-    },
-    "Test-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-Release-All": {
-      "tasks": [
-        "Test-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-Release-All"
-      ]
-    },
-    "Test-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-Release-All-TSAN": {
-      "tasks": [
-        "Test-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-Release-All-TSAN"
       ]
     },
     "Test-Debian11-Clang-RUBYR5-GPU-RadeonVega6-x86_64-Debug-All-Vulkan": {
@@ -33117,6 +33047,7 @@
         "perf"
       ]
     },
+<<<<<<< HEAD   (cd9839 [ganesh] Avoid int overflow in DrawAtlasOpImpl)
     "Perf-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-OptimizeForSize-All": {
       "caches": [
         {
@@ -33495,6 +33426,8 @@
         "perf"
       ]
     },
+=======
+>>>>>>> CHANGE (721bbd [infra] Remove Debian11 RTX3060 jobs, fix dimension for Win )
     "Perf-Debian11-Clang-RUBYR5-GPU-RadeonVega6-x86_64-Release-All-Vulkan": {
       "caches": [
         {
@@ -37727,7 +37660,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "gpu:10de:2489-31.0.15.3699",
+        "gpu:10de:2489-32.0.15.6094",
         "os:Windows-10-19045",
         "pool:Skia"
       ],
@@ -37819,7 +37752,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "gpu:10de:2489-31.0.15.3699",
+        "gpu:10de:2489-32.0.15.6094",
         "os:Windows-10-19045",
         "pool:Skia"
       ],
@@ -50820,6 +50753,7 @@
         "test"
       ]
     },
+<<<<<<< HEAD   (cd9839 [ganesh] Avoid int overflow in DrawAtlasOpImpl)
     "Test-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-Debug-All": {
       "caches": [
         {
@@ -51805,6 +51739,8 @@
         "test"
       ]
     },
+=======
+>>>>>>> CHANGE (721bbd [infra] Remove Debian11 RTX3060 jobs, fix dimension for Win )
     "Test-Debian11-Clang-RUBYR5-GPU-RadeonVega6-x86_64-Debug-All-Vulkan": {
       "caches": [
         {
@@ -63008,7 +62944,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "gpu:10de:2489-31.0.15.3699",
+        "gpu:10de:2489-32.0.15.6094",
         "os:Windows-10-19045",
         "pool:Skia"
       ],
@@ -63100,7 +63036,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "gpu:10de:2489-31.0.15.3699",
+        "gpu:10de:2489-32.0.15.6094",
         "os:Windows-10-19045",
         "pool:Skia"
       ],
@@ -63192,7 +63128,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "gpu:10de:2489-31.0.15.3699",
+        "gpu:10de:2489-32.0.15.6094",
         "os:Windows-10-19045",
         "pool:Skia"
       ],
@@ -63284,7 +63220,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "gpu:10de:2489-31.0.15.3699",
+        "gpu:10de:2489-32.0.15.6094",
         "os:Windows-10-19045",
         "pool:Skia"
       ],
@@ -73346,6 +73282,7 @@
       "max_attempts": 2,
       "service_account": "skia-external-nano-uploader@skia-swarming-bots.iam.gserviceaccount.com"
     },
+<<<<<<< HEAD   (cd9839 [ganesh] Avoid int overflow in DrawAtlasOpImpl)
     "Upload-Perf-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-OptimizeForSize-All": {
       "caches": [
         {
@@ -73592,6 +73529,8 @@
       "max_attempts": 2,
       "service_account": "skia-external-nano-uploader@skia-swarming-bots.iam.gserviceaccount.com"
     },
+=======
+>>>>>>> CHANGE (721bbd [infra] Remove Debian11 RTX3060 jobs, fix dimension for Win )
     "Upload-Perf-Debian11-Clang-RUBYR5-GPU-RadeonVega6-x86_64-Release-All-Vulkan": {
       "caches": [
         {
