@@ -334,16 +334,21 @@ void CollectIntrinsicUniforms(const Caps* caps,
     SkDEBUGCODE(uniforms->doneWithExpectedUniforms());
 }
 
-std::string EmitIntrinsicUniforms(int bufferID, Layout layout) {
-    auto offsetter = UniformOffsetCalculator::ForTopLevel(layout);
+std::string EmitIntrinsicConstants(const ResourceBindingRequirements& bindingReqs) {
+    std::string result;
+    // bindingReqs.fUniformBufferLayout already takes into account whether or not we are using
+    // push constants.
+    auto offsetter = UniformOffsetCalculator::ForTopLevel(bindingReqs.fUniformBufferLayout);
 
-    std::string result = get_uniform_header(bufferID, "Intrinsic");
+    if (bindingReqs.fUseVulkanPushConstants) {
+        result = "layout (vulkan, push_constant) uniform IntrinsicUniforms {\n";
+    } else {
+        result = get_uniform_header(bindingReqs.fIntrinsicBufferBinding, "Intrinsic");
+    }
     result += get_uniforms(&offsetter, kIntrinsicUniforms, -1, /* wrotePaintColor= */ nullptr);
     result.append("};\n\n");
-
-    SkASSERTF(result.find('[') == std::string::npos,
+    SkASSERTF(bindingReqs.fUseVulkanPushConstants || result.find('[') == std::string::npos,
               "Arrays are not supported in intrinsic uniforms");
-
     return result;
 }
 
@@ -559,10 +564,9 @@ VertSkSLInfo BuildVertexSkSL(const ResourceBindingRequirements& bindingReqs,
     const bool useStepStorageBuffer = useStorageBuffers && hasStepUniforms;
     const bool useShadingStorageBuffer = useStorageBuffers && step->performsShading();
 
-    // Fixed program header (intrinsics are always declared as an uniform interface block)
-    std::string sksl = EmitIntrinsicUniforms(bindingReqs.fIntrinsicBufferBinding,
-                                             bindingReqs.fUniformBufferLayout);
-
+    // Fixed program headers used for intrinsics are either declared as an uniform interface block
+    // OR as push constants.
+    std::string sksl = EmitIntrinsicConstants(bindingReqs);
     if (step->numVertexAttributes() > 0 || step->numInstanceAttributes() > 0) {
         sksl += emit_attributes(step->vertexAttributes(), step->instanceAttributes());
     }
