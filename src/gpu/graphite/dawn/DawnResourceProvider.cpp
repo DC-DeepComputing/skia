@@ -266,12 +266,14 @@ sk_sp<DawnTexture> DawnResourceProvider::findOrCreateDiscardableMSAALoadTexture(
 sk_sp<GraphicsPipeline> DawnResourceProvider::createGraphicsPipeline(
         const RuntimeEffectDictionary* runtimeDict,
         const GraphicsPipelineDesc& pipelineDesc,
-        const RenderPassDesc& renderPassDesc) {
+        const RenderPassDesc& renderPassDesc,
+        bool useSynchronous) {
     return DawnGraphicsPipeline::Make(this->dawnSharedContext(),
                                       this,
                                       runtimeDict,
                                       pipelineDesc,
-                                      renderPassDesc);
+                                      renderPassDesc,
+                                      useSynchronous);
 }
 
 sk_sp<ComputePipeline> DawnResourceProvider::createComputePipeline(
