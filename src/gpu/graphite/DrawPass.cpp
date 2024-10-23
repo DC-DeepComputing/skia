@@ -667,7 +667,8 @@ bool DrawPass::prepareResources(ResourceProvider* resourceProvider,
     for (const GraphicsPipelineDesc& pipelineDesc : fPipelineDescs) {
         auto pipeline = resourceProvider->findOrCreateGraphicsPipeline(runtimeDict,
                                                                        pipelineDesc,
-                                                                       renderPassDesc);
+                                                                       renderPassDesc,
+                                                                       /* useSynchronous= */ false);
         if (!pipeline) {
             SKGPU_LOG_W("Failed to create GraphicsPipeline for draw in RenderPass. Dropping pass!");
             return false;

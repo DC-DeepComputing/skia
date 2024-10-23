@@ -55,7 +55,8 @@ public:
     // paint key and the current SkRuntimeEffect that provides the SkSL for that id.
     sk_sp<GraphicsPipeline> findOrCreateGraphicsPipeline(const RuntimeEffectDictionary*,
                                                          const GraphicsPipelineDesc&,
-                                                         const RenderPassDesc&);
+                                                         const RenderPassDesc&,
+                                                         bool useSynchronous);
 
     sk_sp<ComputePipeline> findOrCreateComputePipeline(const ComputePipelineDesc&);
 
@@ -126,7 +127,8 @@ protected:
 private:
     virtual sk_sp<GraphicsPipeline> createGraphicsPipeline(const RuntimeEffectDictionary*,
                                                            const GraphicsPipelineDesc&,
-                                                           const RenderPassDesc&) = 0;
+                                                           const RenderPassDesc&,
+                                                           bool useSynchronous) = 0;
     virtual sk_sp<ComputePipeline> createComputePipeline(const ComputePipelineDesc&) = 0;
     virtual sk_sp<Texture> createTexture(SkISize,
                                          const TextureInfo&,
