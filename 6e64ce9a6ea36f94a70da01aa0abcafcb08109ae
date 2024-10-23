@@ -34,6 +34,23 @@
       "parentUuid": "84042159_d7575aa2",
       "revId": "6e64ce9a6ea36f94a70da01aa0abcafcb08109ae",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d4fa5bc_7b4c6436",
+        "filename": "src/pdf/SkPDFDevice.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1834,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-23T18:54:09Z",
+      "side": 1,
+      "message": "This was placed here so as to not set up the mark manager until after the `ScopedContentEntry` was emitted. However, this call by itself doesn\u0027t actually emit anything, so that isn\u0027t needed.",
+      "revId": "6e64ce9a6ea36f94a70da01aa0abcafcb08109ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
