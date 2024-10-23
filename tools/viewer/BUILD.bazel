@@ -52,6 +52,7 @@ skia_cc_binary(
         "PathClipSlide.cpp",
         "PathEffectsSlide.cpp",
         "PathOverstrokeSlide.cpp",
+        "PathLerpSlide.cpp",
         "PathSlide.cpp",
         "PathTessellatorsSlide.cpp",
         "PathTextSlide.cpp",
