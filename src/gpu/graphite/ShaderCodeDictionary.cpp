@@ -498,8 +498,7 @@ std::string ShaderInfo::toSkSL(const Caps* caps,
 
     // The uniforms are mangled by having their index in 'fEntries' as a suffix (i.e., "_%d")
     const ResourceBindingRequirements& bindingReqs = caps->resourceBindingRequirements();
-    preamble += EmitIntrinsicUniforms(bindingReqs.fIntrinsicBufferBinding,
-                                      bindingReqs.fUniformBufferLayout);
+    preamble += EmitIntrinsicConstants(bindingReqs);
     if (hasStepUniforms) {
         if (useStepStorageBuffer) {
             preamble += EmitRenderStepStorageBuffer(bindingReqs.fRenderStepBufferBinding,

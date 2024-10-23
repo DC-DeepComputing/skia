@@ -104,6 +104,7 @@ sk_sp<Texture> VulkanResourceProvider::onCreateWrappedTexture(const BackendTextu
 }
 
 sk_sp<Buffer> VulkanResourceProvider::refIntrinsicConstantBuffer() const {
+    SkASSERT(fIntrinsicUniformBuffer);
     return fIntrinsicUniformBuffer;
 }
 
@@ -251,9 +252,10 @@ sk_sp<VulkanDescriptorSet> add_new_desc_set_to_cache(const VulkanSharedContext* 
 
 sk_sp<VulkanDescriptorSet> VulkanResourceProvider::findOrCreateDescriptorSet(
         SkSpan<DescriptorData> requestedDescriptors) {
-    if (requestedDescriptors.empty()) {
-        return nullptr;
-    }
+    // requestedDescriptors can be an empty span to indicate the creation of a dummy descriptor
+    // set which can be necessary to maintain descriptor set binding slot expectations as defined
+    // by VulkanGraphicsPipeline.
+
     // Search for available descriptor sets by assembling a key based upon the set's structure.
     GraphiteResourceKey key = build_desc_set_key(requestedDescriptors);
     if (auto descSet = fResourceCache->findAndRefResource(key, skgpu::Budgeted::kYes)) {
