@@ -63,6 +63,23 @@
       "message": "@danieldilan, can you PTAL?\n\n/cc @fmalita as FYI (I\u0027ll later need to ask for a review of `SkCodec.h` comments - I didn\u0027t get them 100% correctly in the earlier CL)\n\n/cc @kjlubick - not sure if I can proceed with this CL at this point VS if I should wait until we figure out the trouble with building the tests - see here: https://skia-review.googlesource.com/c/skia/+/912096/8#message-30adf9a2cc359b375c93292061e2cf57f743c497",
       "revId": "994956eaf332ab30beda6ab4d707332a4c9380d1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "87e27668_2750ed7e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-23T20:00:43Z",
+      "side": 1,
+      "message": "@fmalita, can you PTAL at the additional comment tweaks in `include/codec/SkCodec.h`?",
+      "revId": "994956eaf332ab30beda6ab4d707332a4c9380d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
