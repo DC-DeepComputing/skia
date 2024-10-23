@@ -83,6 +83,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9e79e66a_72bfc0ee",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 1600,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-10-23T13:41:47Z",
+      "side": 1,
+      "message": "I think that we get the same outcome if we say `localToDevice.type() \u003c\u003d Type::kAffine` and check that the cached min/max scale factors are the same, right? That would avoid having the math inside `isSimilarity()` or copying into a temporary SkMatrix.",
+      "range": {
+        "startLine": 1600,
+        "startChar": 11,
+        "endLine": 1600,
+        "endChar": 28
+      },
+      "revId": "c78a405c229e185314e2bfda6b16f10579b25a78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ef319a8b_24c32c97",
         "filename": "src/gpu/graphite/render/CircularArcRenderStep.cpp",
         "patchSetId": 12
@@ -168,6 +191,144 @@
         "startChar": 46,
         "endLine": 71,
         "endChar": 47
+      },
+      "revId": "c78a405c229e185314e2bfda6b16f10579b25a78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4cb5a52f_d39d43cf",
+        "filename": "src/gpu/graphite/render/CircularArcRenderStep.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-10-23T13:41:47Z",
+      "side": 1,
+      "message": "`center` doesn\u0027t seem used anywhere anymore?",
+      "range": {
+        "startLine": 199,
+        "startChar": 0,
+        "endLine": 200,
+        "endChar": 42
+      },
+      "revId": "c78a405c229e185314e2bfda6b16f10579b25a78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9ee3e853_25951fd6",
+        "filename": "src/gpu/graphite/render/CircularArcRenderStep.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-10-23T13:41:47Z",
+      "side": 1,
+      "message": "With the similarity matrix constraint, it should be fine to just use `params.transform().maxScaleFactor() * localOuterRadius` I think.",
+      "range": {
+        "startLine": 201,
+        "startChar": 3,
+        "endLine": 201,
+        "endChar": 49
+      },
+      "revId": "c78a405c229e185314e2bfda6b16f10579b25a78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "659e8ec4_38fbda57",
+        "filename": "src/gpu/graphite/render/CircularArcRenderStep.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-10-23T13:41:47Z",
+      "side": 1,
+      "message": "and this would be `halfWidth / params.transform().maxScaleFactor()`",
+      "range": {
+        "startLine": 216,
+        "startChar": 0,
+        "endLine": 216,
+        "endChar": 62
+      },
+      "revId": "c78a405c229e185314e2bfda6b16f10579b25a78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d7521c5_5598c812",
+        "filename": "src/gpu/graphite/render/CircularArcRenderStep.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-10-23T13:41:47Z",
+      "side": 1,
+      "message": "In the AARect renderstep, I used an outset of 1px for the vertex placement, and then could adjust what the interpolated target value was depending on the stroke width (-1/2 if we weren\u0027t subpixel and really did only want a 1/2px outset, or 0 if we were subpixel/hairline and wanted a 2px wide strip of geometry to better hit pixels).\n\nI don\u0027t think it\u0027s worth changing anything now necessarily, particularly if we adjust to having arcs handled in the aarect renderstep, which we then get this handling for free. But I wanted to raise it if it had any impacts on the vertex structure of this technique or of your future ideas.",
+      "range": {
+        "startLine": 233,
+        "startChar": 19,
+        "endLine": 233,
+        "endChar": 32
+      },
+      "revId": "c78a405c229e185314e2bfda6b16f10579b25a78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "61f62268_61dd5344",
+        "filename": "src/gpu/graphite/render/CircularArcRenderStep.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-10-23T13:41:47Z",
+      "side": 1,
+      "message": "Do we need to pin this in case we have really small arcs where the inside collapses?",
+      "range": {
+        "startLine": 234,
+        "startChar": 0,
+        "endLine": 234,
+        "endChar": 33
+      },
+      "revId": "c78a405c229e185314e2bfda6b16f10579b25a78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a182b05c_dcd522a7",
+        "filename": "src/gpu/graphite/render/CircularArcRenderStep.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-10-23T13:41:47Z",
+      "side": 1,
+      "message": "Do we gain anything by moving this logic into the vertex shader? If it\u0027s non-trivial to try, then I\u0027d say we hold off on that until we are targeting our final arc story.",
+      "range": {
+        "startLine": 241,
+        "startChar": 0,
+        "endLine": 242,
+        "endChar": 67
       },
       "revId": "c78a405c229e185314e2bfda6b16f10579b25a78",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
