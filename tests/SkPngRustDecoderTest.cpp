@@ -172,9 +172,22 @@ DEF_TEST(Codec_apng_dispose_op_none_basic, r) {
     REPORTER_ASSERT(r, image->height() == 64, "height %d != 64", image->height());
     AssertRedPixel(r, *image, 0, 0, "Frame #0 should be red");
 
-    // TODO(https://crbug.com/356922876): Assert that frame1 and frame2 have
-    // green pixels.  (Need to first implement blending support in
-    // `SkPngRustCodec`.)
+    // Validate contents of the second frame.
+    SkPixmap pixmap;
+    REPORTER_ASSERT(r, image->peekPixels(&pixmap));
+    SkCodec::Options options;
+    options.fZeroInitialized = SkCodec::kNo_ZeroInitialized;
+    options.fSubset = nullptr;
+    options.fFrameIndex = 1;  // We want to decode the second frame.
+    options.fPriorFrame = 0;  // `pixmap` contains the first frame before `getPixels` call.
+    REPORTER_ASSERT_SUCCESSFUL_CODEC_RESULT(r, codec->getPixels(pixmap, &options));
+    AssertGreenPixel(r, *image, 0, 0, "Frame #1 should be green");
+
+    // Validate contents of the third frame.
+    options.fFrameIndex = 2;  // We want to decode the second frame.
+    options.fPriorFrame = 1;  // `pixmap` contains the second frame before `getPixels` call.
+    REPORTER_ASSERT_SUCCESSFUL_CODEC_RESULT(r, codec->getPixels(pixmap, &options));
+    AssertGreenPixel(r, *image, 0, 0, "Frame #2 should be green");
 }
 
 // Test based on
