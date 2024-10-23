@@ -16,6 +16,24 @@
       "message": "Do you think there would be (in a follow up CL) some way to meaningfully test out more general key creation failures? I would think to do it right we would need a fuzzer.",
       "revId": "a3842431208dca6aed26cdfedd415cb40062f428",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba5bc723_702e2059",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-10-23T13:43:57Z",
+      "side": 1,
+      "message": "Agreed, this is the exact circumstance a fuzzer would have caught. I\u0027d say I can add a unit test with the `PaintParams` that triggered it, but that won\u0027t be a meaningful test case after I also fix up the higher level Skia APIs that created the bad SkShaders in the first place.",
+      "parentUuid": "51ab7d46_c99f9812",
+      "revId": "a3842431208dca6aed26cdfedd415cb40062f428",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
