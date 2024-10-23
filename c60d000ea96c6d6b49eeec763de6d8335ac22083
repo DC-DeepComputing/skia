@@ -52,6 +52,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a69a3b02_908d8b88",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2024-10-23T11:13:58Z",
+      "side": 1,
+      "message": "So far, I\u0027ve seen nothing but good advice.",
+      "parentUuid": "5138b68a_274870c7",
+      "revId": "c60d000ea96c6d6b49eeec763de6d8335ac22083",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0c5c183f_e3ceb197",
@@ -75,6 +93,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1fc21b0e_57a64bf6",
+        "filename": "dm/DM.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 1579,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2024-10-23T11:13:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0c5c183f_e3ceb197",
+      "range": {
+        "startLine": 1579,
+        "startChar": 4,
+        "endLine": 1579,
+        "endChar": 38
+      },
+      "revId": "c60d000ea96c6d6b49eeec763de6d8335ac22083",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "10d4624a_fe72212f",
@@ -88,6 +130,30 @@
       "writtenOn": "2024-09-17T16:05:27Z",
       "side": 1,
       "message": "The GN config grew somewhat organically and there\u0027s probably more going on in BUILD.gn than we would like. When migrating to Bazel, we\u0027ve decided to move the Bazel code closer to the files they affect.\n\nFor this partition_alloc, I agree with your choice to keep these GN targets close to the files and treat partion_alloc as it\u0027s own library.",
+      "range": {
+        "startLine": 8,
+        "startChar": 15,
+        "endLine": 8,
+        "endChar": 24
+      },
+      "revId": "c60d000ea96c6d6b49eeec763de6d8335ac22083",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "238a4bfe_f0a42ee4",
+        "filename": "src/partition_alloc/BUILD.gn",
+        "patchSetId": 14
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2024-10-23T11:13:58Z",
+      "side": 1,
+      "message": "Thanks!",
+      "parentUuid": "10d4624a_fe72212f",
       "range": {
         "startLine": 8,
         "startChar": 15,
@@ -133,6 +199,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "626f72ca_b5a4b8fc",
+        "filename": "src/partition_alloc/BUILD.gn",
+        "patchSetId": 14
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2024-10-23T11:13:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "04326031_8bc1ce48",
+      "revId": "c60d000ea96c6d6b49eeec763de6d8335ac22083",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9e2b6040_492ead90",
@@ -146,6 +230,30 @@
       "writtenOn": "2024-09-17T16:05:27Z",
       "side": 1,
       "message": "Can these be angle bracket includes instead of quotes? I tend to like the \u003c\u003e signal to mean \"external dependency\" and quotes to mean \"something from Skia\".",
+      "range": {
+        "startLine": 10,
+        "startChar": 9,
+        "endLine": 10,
+        "endChar": 10
+      },
+      "revId": "c60d000ea96c6d6b49eeec763de6d8335ac22083",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "68323ef9_6589b0f4",
+        "filename": "src/partition_alloc/test_support.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2024-10-23T11:13:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9e2b6040_492ead90",
       "range": {
         "startLine": 10,
         "startChar": 9,
@@ -217,6 +325,30 @@
       "side": 1,
       "message": "src/partition_alloc probably makes sense then, provided that we won\u0027t need to use `raw_ptr\u003cT\u003e` in the include/ folder. We have a strict rule against having things in include/ depend on things in src/. If necessary, putting this in `include/private/base/partition_alloc` would probably be the other place to consider for putting the declaration with `src/base/partition_alloc` being where the implementation would go. \n\nFor test-only things, let\u0027s try to keep those in their own files and in the `skiatest` namespace. `skia_private` is a fine choice for a namespace for the parts of partition_alloc that are exposed to the core parts of Skia.",
       "parentUuid": "18c08d6d_86a4dc64",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 1
+      },
+      "revId": "c60d000ea96c6d6b49eeec763de6d8335ac22083",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a89da47_56c3ed81",
+        "filename": "src/partition_alloc/test_support.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2024-10-23T11:13:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "096edc6c_3912472a",
       "range": {
         "startLine": 1,
         "startChar": 0,
@@ -311,6 +443,30 @@
       "writtenOn": "2024-09-17T16:05:27Z",
       "side": 1,
       "message": "If this is moved to `//tools/...`, use the `skiatest` namespace",
+      "range": {
+        "startLine": 10,
+        "startChar": 10,
+        "endLine": 10,
+        "endChar": 22
+      },
+      "revId": "c60d000ea96c6d6b49eeec763de6d8335ac22083",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e44a030d_dd6e291f",
+        "filename": "src/partition_alloc/test_support.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2024-10-23T11:13:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "698432ba_26224f24",
       "range": {
         "startLine": 10,
         "startChar": 10,
