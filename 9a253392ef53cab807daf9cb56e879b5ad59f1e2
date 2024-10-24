@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "29d31708_40db90a2",
+        "filename": "src/shaders/SkShader.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-10-24T12:51:26Z",
+      "side": 1,
+      "message": "How are we getting away w/o the const casts here and in the next method ?",
+      "range": {
+        "startLine": 45,
+        "startChar": 47,
+        "endLine": 45,
+        "endChar": 51
+      },
+      "revId": "9a253392ef53cab807daf9cb56e879b5ad59f1e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ada9dd5b_9e4aecca",
+        "filename": "src/shaders/SkWorkingColorSpaceShader.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-10-24T12:51:26Z",
+      "side": 1,
+      "message": "Do you also want to \"SkASSERT(fShader)\" ?",
+      "revId": "9a253392ef53cab807daf9cb56e879b5ad59f1e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
