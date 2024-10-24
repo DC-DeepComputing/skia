@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3466fcb4_8001b319",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 21925
+      },
+      "writtenOn": "2024-10-24T06:45:23Z",
+      "side": 1,
+      "message": "LGTM from an FFI perspective",
+      "revId": "691f60207e5c478f0294506caf9168b968c7389a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6136c10e_8193b755",
+        "filename": "experimental/rust_png/ffi/FFI.rs",
+        "patchSetId": 9
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 21925
+      },
+      "writtenOn": "2024-10-24T06:45:23Z",
+      "side": 1,
+      "message": "Nit: I find the flow of control here a bit weird. Could you do `let mut result \u003d match { }`?",
+      "revId": "691f60207e5c478f0294506caf9168b968c7389a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
