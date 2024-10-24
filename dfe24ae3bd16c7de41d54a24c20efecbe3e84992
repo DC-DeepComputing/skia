@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e211ac8_f9df32e6",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-10-24T20:55:33Z",
+      "side": 0,
+      "message": "Would we be able to just move this class to a separate header and have it be owned by the DawnQueueManager? Then have every command buffer share the same constants manager. The command buffers should not be used on multiple threads and the existing ResourceCache ref counting should make the rest of the Buffer tracking work out.\n\nI think that tracking multiple ref-counted IntrinsicEntries per buffer is more complex than necessary. While there is a CommandBuffer active it will be tracking the `Buffer`s (`cb-\u003etrackResource(buffer)` adds a ref) it\u0027s using so they should not be being recycled by the ResourceCache or ResourceProvider until the GPU work is finished.\n\nAs long as the collection holding all of the cached buffers contains a given `Buffer`, that would also keep it alive and prevent it from being recycled. Currently, `fCachedIntrinsicValues` does not do that because it just holds a `BindBufferInfo`, but we could adjust it.\n\nUtilizing an `SkLRUCache` instead of a `THashMap` would help avoid the requirement to track the last access time or actively participating in the `ResourceProvider`. The `fUniformData` arena could still grow unbounded if it\u0027s not being reset for each CommandBuffer. This has also added a lot of complexity to your approach because you are removing entries and cleaning up hashes in order to keep the tracking small.\n\nHowever, the Windows launch for Graphite is not imminent and there is work on a WebGPU extension for push constants which would be the preferred way to handle these types of values anyways. Given that I\u0027m inclined to say we leave things as-is even if it\u0027s not optimal. As timelines get more concrete we can revisit if cannot always rely on push constants for the Graphite launch platforms.",
+      "range": {
+        "startLine": 37,
+        "startChar": 25,
+        "endLine": 37,
+        "endChar": 50
+      },
+      "revId": "dfe24ae3bd16c7de41d54a24c20efecbe3e84992",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
