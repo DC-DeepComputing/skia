@@ -168,8 +168,8 @@ class SkPathStroker {
 public:
     SkPathStroker(const SkPath& src,
                   SkScalar radius, SkScalar miterLimit, SkPaint::Cap,
-                  SkPaint::Join, SkScalar resScale,
-                  bool canIgnoreCenter);
+                  SkPaint::Join, sk_sp<SkStrokeEffect> strokeEffect,
+                  SkScalar resScale, bool canIgnoreCenter);
 
     bool hasOnlyMoveTo() const { return 0 == fSegmentCount; }
     SkPoint moveToPt() const { return fFirstPt; }
@@ -194,6 +194,7 @@ public:
     }
 
 private:
+    sk_sp<SkStrokeEffect> fStrokeEffect;
     SkScalar    fRadius;
     SkScalar    fInvMiterLimit;
     SkScalar    fResScale;
@@ -205,6 +206,7 @@ private:
     SkPoint     fFirstOuterPt;
     int         fFirstOuterPtIndexInContour;
     int         fSegmentCount;
+    size_t      fPointCount = 0;
     bool        fPrevIsLine;
     bool        fCanIgnoreCenter;
 
@@ -288,6 +290,13 @@ private:
                        const SkVector& unitNormal);
 
     void    line_to(const SkPoint& currPt, const SkVector& normal);
+
+    SkScalar adjustedRadius() const {
+        if (!fStrokeEffect) {
+            return fRadius;
+        }
+        return fStrokeEffect->strokeMultiplierAt(fPointCount) * fRadius;
+    }
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -296,14 +305,14 @@ bool SkPathStroker::preJoinTo(const SkPoint& currPt, SkVector* normal,
                               SkVector* unitNormal, bool currIsLine) {
     SkASSERT(fSegmentCount >= 0);
 
-    if (!set_normal_unitnormal(fPrevPt, currPt, fResScale, fRadius, normal, unitNormal)) {
+    if (!set_normal_unitnormal(fPrevPt, currPt, fResScale, adjustedRadius(), normal, unitNormal)) {
         if (SkStrokerPriv::CapFactory(SkPaint::kButt_Cap) == fCapper) {
             return false;
         }
         /* Square caps and round caps draw even if the segment length is zero.
            Since the zero length segment has no direction, set the orientation
            to upright as the default orientation */
-        normal->set(fRadius, 0);
+        normal->set(adjustedRadius(), 0);
         unitNormal->set(1, 0);
     }
 
@@ -316,7 +325,7 @@ bool SkPathStroker::preJoinTo(const SkPoint& currPt, SkVector* normal,
         fInner.moveTo(fPrevPt - *normal);
     } else {    // we have a previous segment
         fJoiner(&fOuter, &fInner, fPrevUnitNormal, fPrevPt, *unitNormal,
-                fRadius, fInvMiterLimit, fPrevIsLine, currIsLine);
+                adjustedRadius(), fInvMiterLimit, fPrevIsLine, currIsLine);
     }
     fPrevIsLine = currIsLine;
     return true;
@@ -337,7 +346,7 @@ void SkPathStroker::finishContour(bool close, bool currIsLine) {
 
         if (close) {
             fJoiner(&fOuter, &fInner, fPrevUnitNormal, fPrevPt,
-                    fFirstUnitNormal, fRadius, fInvMiterLimit,
+                    fFirstUnitNormal, adjustedRadius(), fInvMiterLimit,
                     fPrevIsLine, currIsLine);
             fOuter.close();
 
@@ -381,14 +390,16 @@ void SkPathStroker::finishContour(bool close, bool currIsLine) {
 
 SkPathStroker::SkPathStroker(const SkPath& src,
                              SkScalar radius, SkScalar miterLimit,
-                             SkPaint::Cap cap, SkPaint::Join join, SkScalar resScale,
+                             SkPaint::Cap cap, SkPaint::Join join,
+                             sk_sp<SkStrokeEffect> strokeEffect, SkScalar resScale,
                              bool canIgnoreCenter)
-        : fRadius(radius)
+        : fStrokeEffect(strokeEffect)
+        , fRadius(radius)
         , fResScale(resScale)
         , fCanIgnoreCenter(canIgnoreCenter) {
 
     /*  This is only used when join is miter_join, but we initialize it here
-        so that it is always defined, to fis valgrind warnings.
+        so that it is always defined, to fix valgrind warnings.
     */
     fInvMiterLimit = 0;
 
@@ -476,13 +487,14 @@ void SkPathStroker::lineTo(const SkPoint& currPt, const SkPath::Iter* iter) {
     if (teenyLine && (fJoinCompleted || (iter && has_valid_tangent(iter)))) {
         return;
     }
-    SkVector    normal, unitNormal;
+    SkVector normal, unitNormal;
 
     if (!this->preJoinTo(currPt, &normal, &unitNormal, true)) {
         return;
     }
     this->line_to(currPt, normal);
     this->postJoinTo(currPt, normal, unitNormal);
+    fPointCount += 1;
 }
 
 void SkPathStroker::setQuadEndNormal(const SkPoint quad[3], const SkVector& normalAB,
@@ -1472,10 +1484,10 @@ void SkStroke::strokePath(const SkPath& src, SkPath* dst) const {
     bool ignoreCenter = fDoFill && (src.getSegmentMasks() == SkPath::kLine_SegmentMask) &&
                         src.isLastContourClosed() && src.isConvex();
 
-    SkPathStroker   stroker(src, radius, fMiterLimit, this->getCap(), this->getJoin(),
-                            fResScale, ignoreCenter);
-    SkPath::Iter    iter(src, false);
-    SkPath::Verb    lastSegment = SkPath::kMove_Verb;
+    SkPathStroker stroker(src, radius, fMiterLimit, this->getCap(), this->getJoin(),
+                          fStrokeEffect, fResScale, ignoreCenter);
+    SkPath::Iter  iter(src, false);
+    SkPath::Verb  lastSegment = SkPath::kMove_Verb;
 
     for (;;) {
         SkPoint  pts[4];

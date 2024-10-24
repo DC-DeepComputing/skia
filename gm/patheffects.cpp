@@ -16,6 +16,7 @@
 #include "include/core/SkScalar.h"
 #include "include/core/SkSize.h"
 #include "include/core/SkString.h"
+#include "include/core/SkStrokeEffect.h"
 #include "include/core/SkTypes.h"
 #include "include/effects/Sk1DPathEffect.h"
 #include "include/effects/Sk2DPathEffect.h"
@@ -293,3 +294,80 @@ private:
     using INHERITED = GM;
 };
 DEF_GM(return new CTMPathEffectGM;)
+
+
+
+//////////////////////////////////////////////////////////////////////////////
+
+namespace {
+class VarWidthPE : public SkPathEffectBase {
+public:
+    VarWidthPE() {}
+
+    bool onNeedsCTM() const final { return false; }
+
+    bool onFilterPath(SkPath* dst,
+                      const SkPath& src,
+                      SkStrokeRec* rec,
+                      const SkRect* cullR,
+                      const SkMatrix& ctm) const final {
+        return false;
+    }
+
+protected:
+    void flatten(SkWriteBuffer&) const final {}
+
+private:
+    SK_FLATTENABLE_HOOKS(VarWidthPE)
+
+    bool computeFastBounds(SkRect* bounds) const final { return false; }
+};
+
+sk_sp<SkFlattenable> VarWidthPE::CreateProc(SkReadBuffer&) { return nullptr; }
+
+class VarStrokeEffect : public SkStrokeEffect {
+public:
+    float strokeMultiplierAt(size_t t) override {
+        return std::sin(t / 2) * 0.5 + 0.7;
+    };
+};
+
+}  // namespace
+
+class VarWidthPathEffectGM : public skiagm::GM {
+protected:
+    SkString getName() const override { return SkString("varwidthpatheffect"); }
+
+    SkISize getISize() override { return SkISize::Make(800, 600); }
+
+    void onDraw(SkCanvas* canvas) override {
+        const float strokeWidth = 16;
+        sk_sp<SkPathEffect> pathEffect(new VarWidthPE());
+        sk_sp<SkStrokeEffect> strokeEffect(new VarStrokeEffect());
+
+        SkPathBuilder builder;
+
+        for (int i = 0; i < 10; i++) {
+            builder.lineTo(i * 10, i * 20);
+        }
+        SkPath path = builder.detach();
+
+        SkPaint paint;
+        paint.setAntiAlias(true);
+        paint.setColor(SkColorSetA(SK_ColorBLUE, 0xff));
+        paint.setStyle(SkPaint::kStroke_Style);
+        paint.setStrokeWidth(strokeWidth);
+        paint.setStrokeCap(SkPaint::kRound_Cap);
+        paint.setStrokeJoin(SkPaint::kMiter_Join);
+        canvas->drawPath(path, paint);
+
+        canvas->translate(100, 0);
+        paint.setPathEffect(pathEffect);
+        paint.setStrokeEffect(strokeEffect);
+        canvas->drawPath(path, paint);
+    }
+
+private:
+    using INHERITED = GM;
+};
+DEF_GM(return new VarWidthPathEffectGM;)

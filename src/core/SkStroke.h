@@ -11,6 +11,7 @@
 #include "include/core/SkPaint.h"
 #include "include/core/SkPathTypes.h"
 #include "include/core/SkScalar.h"
+#include "include/core/SkStrokeEffect.h"
 #include "include/private/base/SkAssert.h"
 #include "include/private/base/SkDebug.h"
 #include "include/private/base/SkTo.h"
@@ -51,6 +52,8 @@ public:
     bool    getDoFill() const { return SkToBool(fDoFill); }
     void    setDoFill(bool doFill) { fDoFill = SkToU8(doFill); }
 
+    void setStrokeEffect(sk_sp<SkStrokeEffect> effect) { fStrokeEffect = effect; }
+
     /**
      *  ResScale is the "intended" resolution for the output.
      *      Default is 1.0.
@@ -75,10 +78,11 @@ public:
     ////////////////////////////////////////////////////////////////
 
 private:
-    SkScalar    fWidth, fMiterLimit;
-    SkScalar    fResScale;
-    uint8_t     fCap, fJoin;
-    bool        fDoFill;
+    sk_sp<SkStrokeEffect> fStrokeEffect;
+    SkScalar              fWidth, fMiterLimit;
+    SkScalar              fResScale;
+    uint8_t               fCap, fJoin;
+    bool                  fDoFill;
 
     friend class SkPaint;
 };

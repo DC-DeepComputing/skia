@@ -43,6 +43,7 @@ void SkStrokeRec::init(const SkPaint& paint, SkPaint::Style style, SkScalar resS
         case SkPaint::kStroke_Style:
             fWidth = paint.getStrokeWidth();
             fStrokeAndFill = false;
+            fStrokeEffect = paint.refStrokeEffect();
             break;
         case SkPaint::kStrokeAndFill_Style:
             if (0 == paint.getStrokeWidth()) {
@@ -52,6 +53,7 @@ void SkStrokeRec::init(const SkPaint& paint, SkPaint::Style style, SkScalar resS
             } else {
                 fWidth = paint.getStrokeWidth();
                 fStrokeAndFill = true;
+                fStrokeEffect = paint.refStrokeEffect();
             }
             break;
         default:
@@ -115,6 +117,7 @@ bool SkStrokeRec::applyToPath(SkPath* dst, const SkPath& src) const {
     stroker.setMiterLimit(fMiterLimit);
     stroker.setWidth(fWidth);
     stroker.setDoFill(fStrokeAndFill);
+    stroker.setStrokeEffect(fStrokeEffect);
 #ifdef SK_DEBUG
     stroker.setResScale(gDebugStrokerErrorSet ? gDebugStrokerError : fResScale);
 #else
