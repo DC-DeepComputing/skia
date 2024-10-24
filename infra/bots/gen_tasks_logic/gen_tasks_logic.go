@@ -1322,7 +1322,7 @@ func (b *jobBuilder) compile() string {
 				}
 				b.asset("ccache_linux")
 				b.usesCCache()
-				if b.extraConfig("Vello") || b.extraConfig("Fontations") {
+				if b.extraConfig("Vello") || b.extraConfig("Fontations") || b.extraConfig("RustPNG") {
 					b.usesBazel("linux_x64")
 					b.attempts(1)
 				}
@@ -1345,7 +1345,7 @@ func (b *jobBuilder) compile() string {
 				if b.extraConfig("iOS") {
 					b.asset("provisioning_profile_ios")
 				}
-				if b.extraConfig("Vello") || b.extraConfig("Fontations") {
+				if b.extraConfig("Vello") || b.extraConfig("Fontations") || b.extraConfig("RustPNG") {
 					// All of our current Mac compile machines are x64 Mac only.
 					b.usesBazel("mac_x64")
 					b.attempts(1)
