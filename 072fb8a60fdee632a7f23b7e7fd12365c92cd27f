@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83df85eb_52e62f00",
+        "filename": "src/pdf/SkPDFDevice.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-24T15:18:04Z",
+      "side": 1,
+      "message": "This should be `fCurrentlyActiveMark.fStructElem-\u003efTypeString` (which might want to be named `fStructType` since it is called \"structure type\" in the specification).",
+      "range": {
+        "startLine": 125,
+        "startChar": 30,
+        "endLine": 125,
+        "endChar": 31
+      },
+      "revId": "072fb8a60fdee632a7f23b7e7fd12365c92cd27f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
