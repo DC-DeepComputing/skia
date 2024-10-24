@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6bf9881_1240a9ae",
+        "filename": "experimental/rust_png/ffi/FFI.rs",
+        "patchSetId": 6
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-24T03:15:42Z",
+      "side": 1,
+      "message": "Splitting `try_get_iccp` into two separate functions helps to avoid having to explicitly declare the `\u0027a` lifetime (and therefore helps to avoid the `unsafe` keyword here).",
+      "range": {
+        "startLine": 93,
+        "startChar": 49,
+        "endLine": 93,
+        "endChar": 50
+      },
+      "revId": "f7c77c54514453fcdad327123e94001c052a330f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3bc4eb75_303e3ea9",
+        "filename": "experimental/rust_png/ffi/FFI.rs",
+        "patchSetId": 6
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-24T03:15:42Z",
+      "side": 1,
+      "message": "I was a bit surprised that in that case `SkPngCodecBase::initializeSwizzler` hits an `SkASSERT` instead of reporting `SkCodec::kUnimplemented`.  Let me leave this comment unresolved to help me remember to address this in a follow-up CL.",
+      "range": {
+        "startLine": 215,
+        "startChar": 21,
+        "endLine": 215,
+        "endChar": 22
+      },
+      "revId": "f7c77c54514453fcdad327123e94001c052a330f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "610d378e_12fe5c58",
+        "filename": "experimental/rust_png/ffi/FFI.rs",
+        "patchSetId": 6
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-24T03:15:42Z",
+      "side": 1,
+      "message": "Initially I used no transformation here, but fortunately this resulted in failures in `//ui/gfx/codec/png_codec_unittest.cc`.  For now I assume/hope that on Skia side: 1) I can adopt existing `SkPngCodec`\u0027s tests to also provide coverage for `SkPngRustCodec1 and 2) that the existing `SkPngCodec`\u0027s tests cover images with RGB+tRNS or something like that.",
+      "range": {
+        "startLine": 231,
+        "startChar": 8,
+        "endLine": 231,
+        "endChar": 9
+      },
+      "revId": "f7c77c54514453fcdad327123e94001c052a330f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
