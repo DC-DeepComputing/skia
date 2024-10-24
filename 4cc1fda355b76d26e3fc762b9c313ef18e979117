@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "519bc40e_a36c404c",
+        "filename": "src/partition_alloc/partition_alloc.gni",
+        "patchSetId": 20
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-10-24T13:06:53Z",
+      "side": 1,
+      "message": "Rather than having this complex logic to turn it on by default, maybe we just explicitly enable this in Chrome\u0027s GN file for Skia, our CI tests, and the gn_to_bp file?",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 27
+      },
+      "revId": "4cc1fda355b76d26e3fc762b9c313ef18e979117",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
