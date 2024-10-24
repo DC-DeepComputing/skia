@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ac5344b_59e6404d",
+        "filename": "experimental/rust_png/ffi/FFI.rs",
+        "patchSetId": 6
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-10-24T21:03:36Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "b6bf9881_1240a9ae",
+      "range": {
+        "startLine": 93,
+        "startChar": 49,
+        "endLine": 93,
+        "endChar": 50
+      },
+      "revId": "f7c77c54514453fcdad327123e94001c052a330f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3bc4eb75_303e3ea9",
@@ -60,6 +84,30 @@
       "writtenOn": "2024-10-24T03:15:42Z",
       "side": 1,
       "message": "Initially I used no transformation here, but fortunately this resulted in failures in `//ui/gfx/codec/png_codec_unittest.cc`.  For now I assume/hope that on Skia side: 1) I can adopt existing `SkPngCodec`\u0027s tests to also provide coverage for `SkPngRustCodec1 and 2) that the existing `SkPngCodec`\u0027s tests cover images with RGB+tRNS or something like that.",
+      "range": {
+        "startLine": 231,
+        "startChar": 8,
+        "endLine": 231,
+        "endChar": 9
+      },
+      "revId": "f7c77c54514453fcdad327123e94001c052a330f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "08af68d2_efac7ded",
+        "filename": "experimental/rust_png/ffi/FFI.rs",
+        "patchSetId": 6
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-10-24T21:03:36Z",
+      "side": 1,
+      "message": "Ack. I believe they do for your second point.",
+      "parentUuid": "610d378e_12fe5c58",
       "range": {
         "startLine": 231,
         "startChar": 8,
