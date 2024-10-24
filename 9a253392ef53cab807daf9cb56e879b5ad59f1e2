@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "51825892_3fa9f149",
+        "filename": "src/shaders/SkShader.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-10-24T17:23:10Z",
+      "side": 1,
+      "message": "`sk_ref_sp` has overloads that take const pointers so these casts were never necessary.",
+      "parentUuid": "29d31708_40db90a2",
+      "range": {
+        "startLine": 45,
+        "startChar": 47,
+        "endLine": 45,
+        "endChar": 51
+      },
+      "revId": "9a253392ef53cab807daf9cb56e879b5ad59f1e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ada9dd5b_9e4aecca",
@@ -37,6 +61,24 @@
       "writtenOn": "2024-10-24T12:51:26Z",
       "side": 1,
       "message": "Do you also want to \"SkASSERT(fShader)\" ?",
+      "revId": "9a253392ef53cab807daf9cb56e879b5ad59f1e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2977e60a_a7609587",
+        "filename": "src/shaders/SkWorkingColorSpaceShader.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-10-24T17:23:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ada9dd5b_9e4aecca",
       "revId": "9a253392ef53cab807daf9cb56e879b5ad59f1e2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
