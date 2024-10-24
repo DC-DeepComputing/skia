@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a35e664_f2d17f21",
+        "filename": "BUILD.gn",
+        "patchSetId": 22
+      },
+      "lineNbr": 388,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-10-24T17:27:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f2010256_8471505b",
+      "range": {
+        "startLine": 388,
+        "startChar": 10,
+        "endLine": 388,
+        "endChar": 21
+      },
+      "revId": "5b05002b397c7071b7c366faf6fff45027ba5748",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a4cb8168_28006f1b",
@@ -41,6 +65,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "397db114_21f9bfaf",
+        "filename": "BUILD.gn",
+        "patchSetId": 22
+      },
+      "lineNbr": 389,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-10-24T17:27:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a4cb8168_28006f1b",
+      "revId": "5b05002b397c7071b7c366faf6fff45027ba5748",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f6d2f9ac_876ebf68",
@@ -54,6 +96,24 @@
       "writtenOn": "2024-10-21T15:07:10Z",
       "side": 1,
       "message": "Why the conditional here instead of putting this `sources_for_tests` into `typeface_freetype`? We may need to add a `deps_for_tests` to the `optional` but that\u0027s fine.",
+      "revId": "5b05002b397c7071b7c366faf6fff45027ba5748",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9379b210_c551f1c0",
+        "filename": "BUILD.gn",
+        "patchSetId": 22
+      },
+      "lineNbr": 399,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-10-24T17:27:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f6d2f9ac_876ebf68",
       "revId": "5b05002b397c7071b7c366faf6fff45027ba5748",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
