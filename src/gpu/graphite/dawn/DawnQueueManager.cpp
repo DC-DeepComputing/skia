@@ -40,6 +40,8 @@ DawnWorkSubmissionWithAsyncWait::DawnWorkSubmissionWithAsyncWait(
             // This is parameter is being removed:
             // https://github.com/webgpu-native/webgpu-headers/issues/130
             /*signalValue=*/0,
+#else
+            wgpu::CallbackMode::AllowSpontaneous,
 #endif
             [](WGPUQueueWorkDoneStatus, void* userData) {
                 auto asyncWaitPtr = static_cast<DawnAsyncWait*>(userData);
