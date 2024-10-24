@@ -646,6 +646,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0390bea1_9b86868f",
+        "filename": "src/gpu/graphite/render/CircularArcRenderStep.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-10-24T17:37:29Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "c4dd0b6d_94875dbc",
+      "range": {
+        "startLine": 241,
+        "startChar": 0,
+        "endLine": 242,
+        "endChar": 67
+      },
+      "revId": "c78a405c229e185314e2bfda6b16f10579b25a78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e6ec91a5_5fbbb146",
