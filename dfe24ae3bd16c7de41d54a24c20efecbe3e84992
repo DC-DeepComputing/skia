@@ -46,6 +46,30 @@
       },
       "revId": "dfe24ae3bd16c7de41d54a24c20efecbe3e84992",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "149fc546_19b848e7",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-10-25T15:31:50Z",
+      "side": 0,
+      "message": "Thanks for clarifying that D3D11 does not have push constants, I hadn\u0027t yet looked up the possible availability of that extension.\n\nIt is still surprising to me that such small writes to a buffer can cause such an impact on the GPU utilization. Are you aware of anything sub-optimal the Dawn D3D11 backend might be doing to implement these buffer write calls?\n\nIf it\u0027s not that level and the only recourse is to avoid writing when possible, then I think it\u0027s worth seeing if we can extend the lifetime of the intrinsic constants while avoiding the tracking complexity of this approach. Here is a rough idea that I would be open to:\n\n1. The `IntrinsicConstantsManager` moves to `DawnQueueManager` so that each `DawnCommandBuffer` created can share any prior cached intrinsic constants.\n2. Add an `IntrinsicBuffer` class that holds `{sk_sp\u003cDawnBuffer\u003e, char[N*constant-size], UniformDataBlock[N], last-used-time}`.\n3. Instead of having the `IntrinsicConstantsManager` hold a hash map from `UniformDataBlock` to the `BindBufferInfo`, it would have a list of up to M `IntrinsicBuffers`.\n4. When adding intrinsic constants, it would just do a linear search through all the `IntrinsicBuffers` and their `UniformDataBlocks` to see if there was a cache. Intrinsic constants are set once per render pass so if M and N are reasonably small this will hopefully not be too costly compared to a hash map.\n5. If there\u0027s no cache hit, but there\u0027s an `IntrinsicBuffer` with space left, we write to its buffer similar to the existing system.\n6. If there\u0027s no room left in the existing cached buffers but the manager hasn\u0027t reached `M` active buffers, we append a new buffer.\n7. Otherwise, we remove the oldest full buffer and replace with a new buffer. Eventually the removed buffer will get recycled via the ResourceCache once all active CommandBuffers that reference it are completed.\n8. Update `QueueManager` to have virtual cleanup functions that `Context` calls as well; this avoids having to have every ResourceProvider theoretically capable of managing intrinsic constants when we only really want the Context thread to hold those resources (in this case directly by the QueueManager\u0027s constant manager).",
+      "parentUuid": "9fd85dbc_4038830d",
+      "range": {
+        "startLine": 37,
+        "startChar": 25,
+        "endLine": 37,
+        "endChar": 50
+      },
+      "revId": "dfe24ae3bd16c7de41d54a24c20efecbe3e84992",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
