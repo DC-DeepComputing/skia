@@ -843,6 +843,8 @@ float4 per_edge_aa_quad_vertex_fn(// Vertex Attributes
                                   float4 ys,
                                   float depth,
                                   float3x3 localToDevice,
+                                  float4 inEdgeDistances[16],
+                                  float4 inDevPos[16],
                                   // Varyings
                                   out float4 edgeDistances,
                                   // Render Step
@@ -852,120 +854,19 @@ float4 per_edge_aa_quad_vertex_fn(// Vertex Attributes
 
     const float kEpsilon = 0.00024; // SK_ScalarNearlyZero
 
-    // Calculate the local edge vectors, ordered L, T, R, B starting from the bottom left point.
-    // For quadrilaterals these are not necessarily axis-aligned, but in all cases they orient
-    // the +X/+Y normalized vertex template for each corner.
-    float4 dx = xs - xs.wxyz;
-    float4 dy = ys - ys.wxyz;
-    float4 edgeSquaredLen = dx*dx + dy*dy;
-
-    float4 edgeMask = sign(edgeSquaredLen); // 0 for zero-length edge, 1 for non-zero edge.
-    if (any(equal(edgeMask, float4(0.0)))) {
-        // Must clean up (dx,dy) depending on the empty edge configuration
-        if (all(equal(edgeMask, float4(0.0)))) {
-            // A point so use the canonical basis
-            dx = float4( 0.0, 1.0, 0.0, -1.0);
-            dy = float4(-1.0, 0.0, 1.0,  0.0);
-            edgeSquaredLen = float4(1.0);
-        } else {
-            // Triangles (3 non-zero edges) copy the adjacent edge. Otherwise it's a line so
-            // replace empty edges with the left-hand normal vector of the adjacent edge.
-            bool triangle = (edgeMask[0] + edgeMask[1] + edgeMask[2] + edgeMask[3]) > 2.5;
-            float4 edgeX = triangle ? dx.yzwx :  dy.yzwx;
-            float4 edgeY = triangle ? dy.yzwx : -dx.yzwx;
-
-            dx = mix(edgeX, dx, edgeMask);
-            dy = mix(edgeY, dy, edgeMask);
-            edgeSquaredLen = mix(edgeSquaredLen.yzwx, edgeSquaredLen, edgeMask);
-            edgeAA = mix(edgeAA.yzwx, edgeAA, edgeMask);
-        }
-    }
-
-    float4 inverseEdgeLen = inversesqrt(edgeSquaredLen);
-    dx *= inverseEdgeLen;
-    dy *= inverseEdgeLen;
 
     // Calculate local coordinate for the vertex (relative to xAxis and yAxis at first).
     uint cornerID = uint(sk_VertexID) / kCornerVertexCount;
-    float2 xAxis = -float2(dx.yzwx[cornerID], dy.yzwx[cornerID]);
-    float2 yAxis =  float2(dx.xyzw[cornerID], dy.xyzw[cornerID]);
 
     // Vertex is outset from the base shape (and possibly with an additional AA outset later
     // in device space).
     float2 localPos = float2(xs[cornerID], ys[cornerID]);
 
-    // Calculate edge distances and device space coordinate for the vertex
-    edgeDistances = dy*(xs - localPos.x) - dx*(ys - localPos.y);
-
-    // NOTE: This 3x3 inverse is different than just taking the 1st two columns of the 4x4
-    // inverse of the original SkM44 local-to-device matrix. We could calculate the 3x3 inverse
-    // and upload it, but it does not seem to be a bottleneck and saves on bandwidth to
-    // calculate it here instead.
-    float3x3 deviceToLocal = inverse(localToDevice);
-    float3 devPos = localToDevice * localPos.xy1;
-
-    // Apply the Jacobian in the vertex shader so any quadrilateral normals do not have to
-    // be passed to the fragment shader. However, it's important to use the Jacobian at a
-    // vertex on the edge, not the current vertex's Jacobian.
-    float4 gx = -dy*(deviceToLocal[0].x - deviceToLocal[0].z*xs) +
-                 dx*(deviceToLocal[0].y - deviceToLocal[0].z*ys);
-    float4 gy = -dy*(deviceToLocal[1].x - deviceToLocal[1].z*xs) +
-                 dx*(deviceToLocal[1].y - deviceToLocal[1].z*ys);
-    // NOTE: The gradient is missing a W term so edgeDistances must still be multiplied by
-    // 1/w in the fragment shader. The same goes for the encoded coverage scale.
-    edgeDistances *= inversesqrt(gx*gx + gy*gy);
-
-    // Bias non-AA edge distances by device W so its coverage contribution is >= 1.0
-    // Add additional 1/2 bias here so we don't have to do so in the fragment shader.
-    edgeDistances += (1.5 - edgeAA)*abs(devPos.z);
-
-    // Only outset for a vertex that is in front of the w=0 plane to avoid dealing with outset
-    // triangles rasterizing differently from the main triangles as w crosses 0.
-    if (any(notEqual(normal, float2(0.0))) && devPos.z > 0.0) {
-        // Note that when there's no perspective, the jacobian is equivalent to the normal
-        // matrix (inverse transpose), but produces correct results when there's perspective
-        // because it accounts for the position's influence on a line's projected direction.
-        float2x2 J = float2x2(deviceToLocal[0].xy - deviceToLocal[0].z*localPos,
-                              deviceToLocal[1].xy - deviceToLocal[1].z*localPos);
-
-        float2 edgeAANormal = float2(edgeAA[cornerID], edgeAA.yzwx[cornerID]) * normal;
-        float2 nx = edgeAANormal.x * perp(-yAxis) * J;
-        float2 ny = edgeAANormal.y * perp( xAxis) * J;
-
-        bool isMidVertex = all(notEqual(edgeAANormal, float2(0)));
-        if (isMidVertex) {
-            // Produce a bisecting vector in device space.
-            nx = normalize(nx);
-            ny = normalize(ny);
-            if (dot(nx, ny) < -0.8) {
-                // Normals are in nearly opposite directions, so adjust to avoid float error.
-                float s = sign(cross_length_2d(nx, ny));
-                nx =  s*perp(nx);
-                ny = -s*perp(ny);
-            }
-        }
-        // Adding the normal components together directly results in what we'd have
-        // calculated if we'd just transformed 'normal' in one go, assuming they weren't
-        // normalized in the if-block above. If they were normalized, the sum equals the
-        // bisector between the original nx and ny.
-        //
-        // We multiply by W so that after perspective division the new point is offset by the
-        // now-unit normal.
-        // NOTE: (nx + ny) can become the zero vector if the device outset is for an edge
-        // marked as non-AA. In this case normalize() could produce the zero vector or NaN.
-        // Until a counter-example is found, GPUs seem to discard triangles with NaN vertices,
-        // which has the same effect as outsetting by the zero vector with this mesh, so we
-        // don't bother guarding the normalize() (yet).
-        devPos.xy += devPos.z * normalize(nx + ny);
-
-        // By construction these points are 1px away from the outer edge in device space.
-        // Apply directly to edgeDistances to save work per pixel later on.
-        edgeDistances -= devPos.z;
-    }
+    edgeDistances = inEdgeDistances[sk_VertexID];
 
     // Write out final results
     stepLocalCoords = localPos;
-    return float4(devPos.xy, devPos.z*depth, devPos.z);
+    return inDevPos[sk_VertexID];
 }
 
 float4 text_vertex_fn(float2 baseCoords,
