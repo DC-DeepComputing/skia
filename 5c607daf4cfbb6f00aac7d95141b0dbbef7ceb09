@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3813f64b_6faec83e",
+        "filename": "include/gpu/ganesh/gl/GrGLInterface.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-10-25T14:12:51Z",
+      "side": 0,
+      "message": "The Skia-\u003eChrome roll is failing because it tries to bind `GetQueryObjectiv` here: https://source.chromium.org/chromium/chromium/src/+/main:ui/gl/init/create_gr_gl_interface.cc;drc\u003df302828345c1f70932ecdf88248e8155331ebba6;l\u003d434",
+      "range": {
+        "startLine": 177,
+        "startChar": 0,
+        "endLine": 177,
+        "endChar": 63
+      },
+      "revId": "5c607daf4cfbb6f00aac7d95141b0dbbef7ceb09",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
