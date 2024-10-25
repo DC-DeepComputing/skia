@@ -34,6 +34,24 @@
       "parentUuid": "adb24623_0212824c",
       "revId": "d269c2d8c05dced83a4670d4b9bf7258c977ca5b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3079d721_2e365a08",
+        "filename": "src/gpu/ganesh/gl/GrGLGpu.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2024-10-25T17:58:15Z",
+      "side": 1,
+      "message": "The old function took a timeout and so could wait. However, the passed value was always 0. So in practice it was used as a test. Now passing 0 to GL for the wait time is hard coded so I think test is the right name.",
+      "parentUuid": "9dc9830f_5a1590fb",
+      "revId": "d269c2d8c05dced83a4670d4b9bf7258c977ca5b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
