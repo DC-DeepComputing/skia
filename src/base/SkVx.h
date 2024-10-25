@@ -166,6 +166,9 @@ struct alignas(4*sizeof(T)) Vec<4,T> {
     // Exchange-based swizzles. These should take 1 cycle on NEON and 3 (pipelined) cycles on SSE.
     SKVX_ALWAYS_INLINE Vec<4,T> yxwz() const { return shuffle<1,0,3,2>(*this); }
     SKVX_ALWAYS_INLINE Vec<4,T> zwxy() const { return shuffle<2,3,0,1>(*this); }
+    SKVX_ALWAYS_INLINE Vec<4,T> wxyz() const { return shuffle<3,0,1,2>(*this); }
+    SKVX_ALWAYS_INLINE Vec<4,T> yzwx() const { return shuffle<1,2,3,0>(*this); }
+    SKVX_ALWAYS_INLINE Vec<4,T> xyzw() const { return shuffle<0,1,2,3>(*this); }
 
     Vec<2,T> lo, hi;
 };
