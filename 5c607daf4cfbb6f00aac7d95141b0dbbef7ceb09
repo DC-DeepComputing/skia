@@ -22,6 +22,30 @@
       },
       "revId": "5c607daf4cfbb6f00aac7d95141b0dbbef7ceb09",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f4684580_5078aa50",
+        "filename": "include/gpu/ganesh/gl/GrGLInterface.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-10-25T18:00:14Z",
+      "side": 0,
+      "message": "Gardener: Reverting for now",
+      "parentUuid": "3813f64b_6faec83e",
+      "range": {
+        "startLine": 177,
+        "startChar": 0,
+        "endLine": 177,
+        "endChar": 63
+      },
+      "revId": "5c607daf4cfbb6f00aac7d95141b0dbbef7ceb09",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
