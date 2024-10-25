@@ -106,13 +106,13 @@ void GrRingBuffer::startSubmit(GrGpu* gpu) {
         submitData->fOwner = this;
         submitData->fLastHead = fHead;
         submitData->fGenID = fGenID;
-        gpu->addFinishedProc(FinishSubmit, submitData);
+        gpu->addFinishedCallback(skgpu::AutoCallback(FinishSubmit, submitData));
         fNewAllocation = false;
     }
 }
 
 // used when current command buffer/command list is completed
-void GrRingBuffer::FinishSubmit(void* finishedContext) {
+void GrRingBuffer::FinishSubmit(void* finishedContext, const skgpu::GpuStats&) {
     GrRingBuffer::SubmitData* submitData = (GrRingBuffer::SubmitData*)finishedContext;
     if (submitData && submitData->fOwner && submitData->fGenID == submitData->fOwner->fGenID) {
         submitData->fOwner->fTail = submitData->fLastHead;

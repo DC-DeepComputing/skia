@@ -9,16 +9,12 @@
 #define GrTypes_DEFINED
 
 #include "include/core/SkTypes.h"
+#include "include/gpu/GpuTypes.h"
 #include "include/private/base/SkTo.h" // IWYU pragma: keep
 
 #include <cstddef>
 #include <cstdint>
 class GrBackendSemaphore;
-
-namespace skgpu {
-enum class Protected : bool;
-enum class Renderable : bool;
-}
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -110,6 +106,8 @@ static const uint32_t kAll_GrBackendState = 0xffffffff;
 
 typedef void* GrGpuFinishedContext;
 typedef void (*GrGpuFinishedProc)(GrGpuFinishedContext finishedContext);
+typedef void (*GrGpuFinishedWithStatsProc)(GrGpuFinishedContext finishedContext,
+                                           const skgpu::GpuStats&);
 
 typedef void* GrGpuSubmittedContext;
 typedef void (*GrGpuSubmittedProc)(GrGpuSubmittedContext submittedContext, bool success);
@@ -148,8 +146,10 @@ typedef void (*GrDirectContextDestroyedProc)(GrDirectContextDestroyedContext des
  */
 struct GrFlushInfo {
     size_t fNumSemaphores = 0;
+    skgpu::GpuStatsFlags fGpuStatsFlags = skgpu::GpuStatsFlags::kNone;
     GrBackendSemaphore* fSignalSemaphores = nullptr;
     GrGpuFinishedProc fFinishedProc = nullptr;
+    GrGpuFinishedWithStatsProc fFinishedWithStatsProc = nullptr;
     GrGpuFinishedContext fFinishedContext = nullptr;
     GrGpuSubmittedProc fSubmittedProc = nullptr;
     GrGpuSubmittedContext fSubmittedContext = nullptr;

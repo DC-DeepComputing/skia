@@ -18,6 +18,8 @@
 #include "src/gpu/graphite/DrawWriter.h"
 #include "src/gpu/graphite/Resource.h"
 
+#include <optional>
+
 namespace skgpu {
 class RefCntedCallback;
 class MutableTextureState;

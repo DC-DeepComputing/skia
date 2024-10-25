@@ -498,6 +498,8 @@ public:
 
     virtual uint64_t computeFormatKey(const GrBackendFormat&) const = 0;
 
+    skgpu::GpuStatsFlags supportedGpuStats() const { return fSupportedGpuStats; }
+
     const GrDriverBugWorkarounds& workarounds() const { return fDriverBugWorkarounds; }
 
     /**
@@ -665,6 +667,8 @@ protected:
     size_t fTransferBufferRowBytesAlignment = 1;
     size_t fTransferFromBufferToBufferAlignment = 1;
     size_t fBufferUpdateDataPreserveAlignment = 1;
+
+    skgpu::GpuStatsFlags fSupportedGpuStats = skgpu::GpuStatsFlags::kNone;
 
     GrDriverBugWorkarounds fDriverBugWorkarounds;
 

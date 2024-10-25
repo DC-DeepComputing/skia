@@ -19,6 +19,9 @@
 
 class GrGpu;
 enum class GrGpuBufferType;
+namespace skgpu {
+struct GpuStats;
+}
 
 /**
  * A wrapper for a GPU buffer that allocates slices in a continuous ring.
@@ -60,7 +63,7 @@ private:
         size_t fLastHead;
         size_t fGenID;
     };
-    static void FinishSubmit(void*);
+    static void FinishSubmit(void*, const skgpu::GpuStats&);
 
     GrGpu* fGpu;
     sk_sp<GrGpuBuffer> fCurrentBuffer;
