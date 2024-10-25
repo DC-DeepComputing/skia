@@ -46,6 +46,30 @@
       },
       "revId": "5c607daf4cfbb6f00aac7d95141b0dbbef7ceb09",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6adeaba1_dbdeb600",
+        "filename": "include/gpu/ganesh/gl/GrGLInterface.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2024-10-25T18:54:35Z",
+      "side": 0,
+      "message": "Is it still blocking the roll? Michael landed something in Chrome that *should* have fixed it.\n\nHere is a really simple change in Skia that could also fix it:\n\nhttps://skia-review.googlesource.com/c/skia/+/913316",
+      "parentUuid": "f4684580_5078aa50",
+      "range": {
+        "startLine": 177,
+        "startChar": 0,
+        "endLine": 177,
+        "endChar": 63
+      },
+      "revId": "5c607daf4cfbb6f00aac7d95141b0dbbef7ceb09",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
