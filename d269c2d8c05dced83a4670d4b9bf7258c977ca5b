@@ -16,6 +16,24 @@
       "message": "I renamed these from fence to sync because sync seems like the more standard GL name (with the really old NV extension being the only exception) but I don\u0027t think it\u0027s important.",
       "revId": "d269c2d8c05dced83a4670d4b9bf7258c977ca5b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9dc9830f_5a1590fb",
+        "filename": "src/gpu/ganesh/gl/GrGLGpu.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-10-25T17:38:45Z",
+      "side": 1,
+      "message": "I don\u0027t mind the naming change from fence to sync, but wondering what the motivation for wait -\u003e test was?  The main GL functions use Wait while the NV extension uses Test. If it\u0027s assumed this will block, I prefer \"wait\" but if it could return immediately then \"test\" makes sense.",
+      "parentUuid": "adb24623_0212824c",
+      "revId": "d269c2d8c05dced83a4670d4b9bf7258c977ca5b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
