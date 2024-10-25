@@ -379,7 +379,6 @@
    },
   {"name": "Housekeeper-PerCommit-IsolateMSKP"},
   {"name": "Housekeeper-PerCommit-IsolateSKP"},
-  {"name": "Housekeeper-PerCommit-IsolateSVG"},
   {"name": "Housekeeper-PerCommit-IsolateSkImage"},
   {"name": "Housekeeper-PerCommit-RunGnToBp",
    "cq_config": {}
