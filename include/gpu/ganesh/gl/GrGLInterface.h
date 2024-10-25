@@ -176,6 +176,7 @@ public:
         GrGLFunction<GrGLGetQueryObjecti64vFn> fGetQueryObjecti64v;
         GrGLFunction<GrGLGetQueryObjectui64vFn> fGetQueryObjectui64v;
         GrGLFunction<GrGLGetQueryObjectuivFn> fGetQueryObjectuiv;
+        GrGLFunction<GrGLGetQueryObjectivFn> fGetQueryObjectiv;
         GrGLFunction<GrGLGetQueryivFn> fGetQueryiv;
         GrGLFunction<GrGLGetRenderbufferParameterivFn> fGetRenderbufferParameteriv;
         GrGLFunction<GrGLGetShaderInfoLogFn> fGetShaderInfoLog;
