@@ -16,6 +16,23 @@
       "message": "Can confirm Android is acting up and builds tests are currently unreliable.\nIf it looks good to others it lgtm.",
       "revId": "21035cd95b6864bf86bc6814b45b193e7c3760c4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4bcbbc2a_4d94e264",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-10-28T20:29:34Z",
+      "side": 1,
+      "message": "Thanks for the confirmation!",
+      "revId": "21035cd95b6864bf86bc6814b45b193e7c3760c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
