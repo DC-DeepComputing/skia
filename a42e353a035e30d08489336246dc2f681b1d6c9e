@@ -106,6 +106,23 @@
       "parentUuid": "119391bd_926f7ab2",
       "revId": "a42e353a035e30d08489336246dc2f681b1d6c9e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c1e607a_7dd81fb5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-10-28T15:21:03Z",
+      "side": 1,
+      "message": "Chrome passed so LGTM",
+      "revId": "a42e353a035e30d08489336246dc2f681b1d6c9e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
