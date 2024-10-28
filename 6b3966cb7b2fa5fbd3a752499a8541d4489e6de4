@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ad7ecd91_58140402",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 484,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-10-28T20:05:24Z",
+      "side": 1,
+      "message": "nit: `srcRow`",
+      "range": {
+        "startLine": 484,
+        "startChar": 60,
+        "endLine": 484,
+        "endChar": 70
+      },
+      "revId": "6b3966cb7b2fa5fbd3a752499a8541d4489e6de4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
