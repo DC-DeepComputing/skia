@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e0fed3f2_ae0fb562",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 12954
+      },
+      "writtenOn": "2024-10-28T18:18:05Z",
+      "side": 1,
+      "message": "I don\u0027t really know why this is necessary because the script is running from gn which should already have the toolchain in scope. Maybe the environment variables are not set at that step because it\u0027s not a compile step.",
+      "range": {
+        "startLine": 24,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 59
+      },
+      "revId": "41d0815fc0af4573066a04c70b1d4513b4f9d9e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
