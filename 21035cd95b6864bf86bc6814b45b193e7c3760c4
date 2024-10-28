@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "80711728_edf4f9de",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2024-10-28T18:07:06Z",
+      "side": 1,
+      "message": "Can confirm Android is acting up and builds tests are currently unreliable.\nIf it looks good to others it lgtm.",
+      "revId": "21035cd95b6864bf86bc6814b45b193e7c3760c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
