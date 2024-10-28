@@ -118,6 +118,30 @@
       },
       "revId": "dfe24ae3bd16c7de41d54a24c20efecbe3e84992",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e2a6b6a_5ad8e527",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-10-28T13:54:47Z",
+      "side": 0,
+      "message": "In `draw_image.html`, I believe we are seeing interleaved writes because of how chrome currently inserts and immediately submits Recordings to Dawn so the queue buffer writes in one command buffer can\u0027t be re-ordered to merge with writes in the next one. This is something they are looking into AFAIK.\n\nI believe the D3D11 backend does not currently expose a framebuffer fetch extension and Graphite doesn\u0027t currently use PLS (since it does not interact gracefully with MSAA rendering), so anything with complex blends likely triggers a texture copy. If Dawn-D3D11 is not exposing the dual-source blending extension then that further increases how often we have to use texture copies.\n\n--\n\nRegarding keeping `UniformDataBlock[N]` alive, while we have written it to the GPU buffers we still need it on the CPU side to determine if there\u0027s a cache hit. It\u0027s not safe to rely solely only the hash equality as true equality.",
+      "parentUuid": "e9600413_e9d54479",
+      "range": {
+        "startLine": 37,
+        "startChar": 25,
+        "endLine": 37,
+        "endChar": 50
+      },
+      "revId": "dfe24ae3bd16c7de41d54a24c20efecbe3e84992",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
