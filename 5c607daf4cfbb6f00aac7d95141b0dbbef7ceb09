@@ -70,6 +70,30 @@
       },
       "revId": "5c607daf4cfbb6f00aac7d95141b0dbbef7ceb09",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b82a2c6_f594b44e",
+        "filename": "include/gpu/ganesh/gl/GrGLInterface.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-10-28T13:40:44Z",
+      "side": 0,
+      "message": "So that problem did get fixed, but now there\u0027s a new problem in the chrome roll. Somehow the GrGLInterface is failing validation when checking for the QueryCounter function: `[10045:259:1028/055857.116400:ERROR:GrGLInterfaceAutogen.cpp(736)] ../../third_party/skia/src/gpu/ganesh/gl/GrGLInterfaceAutogen.cpp:736 GrGLInterface::validate() failed.`\n\nBut looking at https://source.chromium.org/chromium/chromium/src/+/main:ui/gl/init/create_gr_gl_interface.cc;drc\u003ddbb4b2f7e4fec41b92b627c81416c265677787ce;l\u003d437\nand in their base interface: https://source.chromium.org/chromium/chromium/src/+/main:ui/gl/gl_bindings_autogen_gl.cc;drc\u003ddbb4b2f7e4fec41b92b627c81416c265677787ce;l\u003d2140 it looks like we should be good under the GLES + EXT_disjoint_timer_query extension.\n\nThe case I\u0027m worried is happening is that this extension is being advertised but the function isn\u0027t actually defined.\n\nSince I don\u0027t know what\u0027s going on there I\u0027m going to revert this for now.",
+      "parentUuid": "6adeaba1_dbdeb600",
+      "range": {
+        "startLine": 177,
+        "startChar": 0,
+        "endLine": 177,
+        "endChar": 63
+      },
+      "revId": "5c607daf4cfbb6f00aac7d95141b0dbbef7ceb09",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
