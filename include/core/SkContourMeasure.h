@@ -8,9 +8,11 @@
 #ifndef SkContourMeasure_DEFINED
 #define SkContourMeasure_DEFINED
 
+#include "include/core/SkPathTypes.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkScalar.h"
+#include "include/core/SkSpan.h"
 #include "include/private/base/SkAPI.h"
 #include "include/private/base/SkTDArray.h"
 
@@ -56,6 +58,47 @@ public:
     /** Return true if the contour is closed()
      */
     bool isClosed() const { return fIsClosed; }
+
+    /** Measurement data for individual verbs.
+     */
+    struct VerbMeasure {
+        SkScalar              fDistance; // Cumulative distance along the current contour.
+        SkPathVerb            fVerb;     // Verb type.
+        SkSpan<const SkPoint> fPts;      // Verb points.
+    };
+
+private:
+    struct Segment;
+
+public:
+    /** Utility for iterating over the current contour verbs:
+     *
+     *   for (const auto verb_measure : contour_measure) {
+     *     ...
+     *   }
+     */
+    class VerbIterator final {
+    public:
+        VerbIterator(const Segment* seg, SkSpan<const SkPoint> pts) : fSegment(seg), fPts(pts) {}
+
+        VerbMeasure operator*() const;
+
+        VerbIterator& operator++() { fSegment = Segment::Next(fSegment); return *this; }
+
+        bool operator==(const VerbIterator& other) { return fSegment == other.fSegment; }
+        bool operator!=(const VerbIterator& other) { return fSegment != other.fSegment; }
+
+    private:
+        const SkContourMeasure::Segment* fSegment;
+        const SkSpan<const SkPoint>      fPts;
+    };
+
+    VerbIterator begin() const {
+        return VerbIterator(fSegments.begin(), SkSpan(fPts.data(), fPts.size()));
+    }
+    VerbIterator end() const {
+        return VerbIterator(fSegments.end(), SkSpan(fPts.data(), fPts.size()));
+    }
 
 private:
     struct Segment {

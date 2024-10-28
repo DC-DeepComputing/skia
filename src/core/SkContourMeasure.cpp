@@ -698,3 +698,31 @@ bool SkContourMeasure::getSegment(SkScalar startD, SkScalar stopD, SkPath* dst,
 
     return true;
 }
+
+SkContourMeasure::VerbMeasure SkContourMeasure::VerbIterator::operator*() const {
+    static constexpr size_t seg_pt_count[] = {
+        2, // kLine
+        3, // kQuad
+        4, // kCubic
+        4, // kConic
+    };
+    static constexpr SkPathVerb seg_verb[] = {
+        SkPathVerb::kLine,
+        SkPathVerb::kQuad,
+        SkPathVerb::kCubic,
+        SkPathVerb::kConic,
+    };
+    static_assert(std::size(seg_pt_count) == std::size(seg_verb));
+    static_assert(static_cast<size_t>(kLine_SegType)  < std::size(seg_pt_count));
+    static_assert(static_cast<size_t>(kQuad_SegType)  < std::size(seg_pt_count));
+    static_assert(static_cast<size_t>(kCubic_SegType) < std::size(seg_pt_count));
+    static_assert(static_cast<size_t>(kConic_SegType) < std::size(seg_pt_count));
+
+    SkASSERT(SkToSizeT(fSegment->fType) < std::size(seg_pt_count));
+
+    return {
+        fSegment->fDistance,
+        seg_verb[fSegment->fType],
+        SkSpan(fPts.data() + fSegment->fPtIndex, seg_pt_count[fSegment->fType]),
+    };
+}
