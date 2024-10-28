@@ -16,6 +16,23 @@
       "message": "@danieldilan, can you PTAL?\n\n/cc @fmalita as FYI",
       "revId": "6253e2a2ffcae27dc4b24b2373f3ccdf132abd36",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ea28718_b4fbfc5a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-28T20:07:36Z",
+      "side": 1,
+      "message": "@fmalita, can you PTAL to balance the code review load?",
+      "revId": "6253e2a2ffcae27dc4b24b2373f3ccdf132abd36",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
