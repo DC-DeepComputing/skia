@@ -59,6 +59,12 @@ class MutableTextureState;
 class RefCntedCallback;
 }  // namespace skgpu
 
+// This is sufficient for the GL implementation (which is all we have now). It can become a
+// "Backend" SkAnySubclass type to cover other backends in the future.
+struct GrTimerQuery {
+    uint32_t query;
+};
+
 class GrGpu {
 public:
     GrGpu(GrDirectContext* direct);
@@ -407,6 +413,7 @@ public:
     void executeFlushInfo(SkSpan<GrSurfaceProxy*>,
                           SkSurfaces::BackendSurfaceAccess access,
                           const GrFlushInfo&,
+                          std::optional<GrTimerQuery> timerQuery,
                           const skgpu::MutableTextureState* newState);
 
     // Called before render tasks are executed during a flush.
@@ -426,9 +433,10 @@ public:
     virtual void insertSemaphore(GrSemaphore* semaphore) = 0;
     virtual void waitSemaphore(GrSemaphore* semaphore) = 0;
 
-    virtual void addFinishedProc(GrGpuFinishedProc finishedProc,
-                                 GrGpuFinishedContext finishedContext) = 0;
-    virtual void checkFinishProcs() = 0;
+    virtual std::optional<GrTimerQuery> startTimerQuery() { return {}; }
+
+    virtual void addFinishedCallback(skgpu::AutoCallback, std::optional<GrTimerQuery> = {}) = 0;
+    virtual void checkFinishedCallbacks() = 0;
     virtual void finishOutstandingGpuWork() = 0;
 
     // NOLINTNEXTLINE(performance-unnecessary-value-param)
@@ -709,6 +717,8 @@ protected:
     void initCaps(sk_sp<const GrCaps> caps);
 
 private:
+    virtual void endTimerQuery(const GrTimerQuery&) { SK_ABORT("timer query not supported."); }
+
     virtual GrBackendTexture onCreateBackendTexture(SkISize dimensions,
                                                     const GrBackendFormat&,
                                                     GrRenderable,

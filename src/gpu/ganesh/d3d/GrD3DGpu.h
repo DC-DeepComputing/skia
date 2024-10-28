@@ -114,7 +114,7 @@ public:
     void endRenderPass(GrRenderTarget* target, GrSurfaceOrigin origin,
                        const SkIRect& bounds);
 
-    void checkFinishProcs() override { this->checkForFinishedCommandLists(); }
+    void checkFinishedCallbacks() override { this->checkForFinishedCommandLists(); }
     void finishOutstandingGpuWork() override;
 
 private:
@@ -209,8 +209,12 @@ private:
 
     void onResolveRenderTarget(GrRenderTarget* target, const SkIRect&) override;
 
-    void addFinishedProc(GrGpuFinishedProc finishedProc,
-                         GrGpuFinishedContext finishedContext) override;
+    void addFinishedCallback(skgpu::AutoCallback callback,
+                             std::optional<GrTimerQuery> timerQuery) override {
+        SkASSERT(!timerQuery);
+        this->addFinishedCallback(skgpu::RefCntedCallback::Make(std::move(callback)));
+    }
+
     void addFinishedCallback(sk_sp<skgpu::RefCntedCallback> finishedCallback);
 
     GrOpsRenderPass* onGetOpsRenderPass(
