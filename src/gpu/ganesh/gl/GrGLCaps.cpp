@@ -797,6 +797,32 @@ void GrGLCaps::init(const GrContextOptions& contextOptions,
     }
     fFinishedProcAsyncCallbackSupport = fFenceSyncSupport;
 
+    if (GR_IS_GR_WEBGL(standard)) {
+        if (version >= GR_GL_VER(2, 0)) {
+            if (ctxInfo.hasExtension("EXT_disjoint_timer_query_webgl2") ||
+                ctxInfo.hasExtension("GL_EXT_disjoint_timer_query_webgl2")) {
+                fTimerQueryType = TimerQueryType::kDisjoint;
+            }
+        } else {
+            if (ctxInfo.hasExtension("EXT_disjoint_timer_query") ||
+                ctxInfo.hasExtension("GL_EXT_disjoint_timer_query")) {
+                fTimerQueryType = TimerQueryType::kDisjoint;
+            }
+        }
+    } else if (GR_IS_GR_GL_ES(standard)) {
+        if (ctxInfo.hasExtension("GL_EXT_disjoint_timer_query")) {
+            fTimerQueryType = TimerQueryType::kDisjoint;
+        }
+    } else if (GR_IS_GR_GL(standard)) {
+        if (version >= GR_GL_VER(3, 3) || ctxInfo.hasExtension("GL_EXT_timer_query") ||
+            ctxInfo.hasExtension("GL_ARB_timer_query")) {
+            fTimerQueryType = TimerQueryType::kRegular;
+        }
+    }
+    if (fTimerQueryType != TimerQueryType::kNone) {
+        fSupportedGpuStats |= skgpu::GpuStatsFlags::kElapsedTime;
+    }
+
     // Safely moving textures between contexts requires semaphores.
     fCrossContextTextureSupport = fSemaphoreSupport;
 
