@@ -77,7 +77,7 @@ public:
 
     void submit(GrOpsRenderPass* renderPass) override;
 
-    void checkFinishProcs() override {}
+    void checkFinishedCallbacks() override {}
     void finishOutstandingGpuWork() override {}
 
 private:
@@ -178,10 +178,8 @@ private:
 
     void onResolveRenderTarget(GrRenderTarget* target, const SkIRect&) override {}
 
-    void addFinishedProc(GrGpuFinishedProc finishedProc,
-                         GrGpuFinishedContext finishedContext) override {
-        SkASSERT(finishedProc);
-        finishedProc(finishedContext);
+    void addFinishedCallback(skgpu::AutoCallback callback, std::optional<GrTimerQuery>) override {
+        SkASSERT(callback);
     }
 
     GrOpsRenderPass* onGetOpsRenderPass(

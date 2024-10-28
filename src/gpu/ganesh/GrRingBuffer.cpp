@@ -106,7 +106,7 @@ void GrRingBuffer::startSubmit(GrGpu* gpu) {
         submitData->fOwner = this;
         submitData->fLastHead = fHead;
         submitData->fGenID = fGenID;
-        gpu->addFinishedProc(FinishSubmit, submitData);
+        gpu->addFinishedCallback(skgpu::AutoCallback(FinishSubmit, submitData));
         fNewAllocation = false;
     }
 }
