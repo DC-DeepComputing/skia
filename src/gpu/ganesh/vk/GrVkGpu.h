@@ -211,7 +211,7 @@ public:
     // command buffer to the gpu.
     void addDrawable(std::unique_ptr<SkDrawable::GpuDrawHandler> drawable);
 
-    void checkFinishProcs() override { fResourceProvider.checkCommandBuffers(); }
+    void checkFinishedCallbacks() override { fResourceProvider.checkCommandBuffers(); }
     void finishOutstandingGpuWork() override;
 
     std::unique_ptr<GrSemaphore> prepareTextureForCrossContextUsage(GrTexture*) override;
@@ -355,8 +355,11 @@ private:
                        GrSurface* src, const SkIRect& srcRect,
                        GrSamplerState::Filter) override;
 
-    void addFinishedProc(GrGpuFinishedProc finishedProc,
-                         GrGpuFinishedContext finishedContext) override;
+    void addFinishedCallback(skgpu::AutoCallback callback,
+                             std::optional<GrTimerQuery> timerQuery) override {
+        SkASSERT(!timerQuery);
+        this->addFinishedCallback(skgpu::RefCntedCallback::Make(std::move(callback)));
+    }
 
     void addFinishedCallback(sk_sp<skgpu::RefCntedCallback> finishedCallback);
 

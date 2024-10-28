@@ -252,7 +252,10 @@ public:
     void insertSemaphore(GrSemaphore* semaphore) override;
     void waitSemaphore(GrSemaphore* semaphore) override;
 
-    void checkFinishProcs() override;
+    std::optional<GrTimerQuery> startTimerQuery() override;
+    uint64_t getTimerQueryResult(GrGLuint);
+
+    void checkFinishedCallbacks() override;
     void finishOutstandingGpuWork() override;
 
     // Calls glGetError() until no errors are reported. Also looks for OOMs.
@@ -278,6 +281,8 @@ private:
     GrGLGpu(std::unique_ptr<GrGLContext>, GrDirectContext*);
 
     // GrGpu overrides
+    void endTimerQuery(const GrTimerQuery&) override;
+
     GrBackendTexture onCreateBackendTexture(SkISize dimensions,
                                             const GrBackendFormat&,
                                             GrRenderable,
@@ -435,8 +440,7 @@ private:
 
     void flushBlendAndColorWrite(const skgpu::BlendInfo&, const skgpu::Swizzle&);
 
-    void addFinishedProc(GrGpuFinishedProc finishedProc,
-                         GrGpuFinishedContext finishedContext) override;
+    void addFinishedCallback(skgpu::AutoCallback callback, std::optional<GrTimerQuery>) override;
 
     GrOpsRenderPass* onGetOpsRenderPass(
             GrRenderTarget*,
