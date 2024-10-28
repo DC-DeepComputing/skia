@@ -32,21 +32,25 @@ if (is_debug) {
 # MSVC's cl.exe compiler is not supported.
 _supported_compiler = is_clang || !is_win
 
-# Windows: debug CRT is not yet compatible with the allocator shim.
-# https://learn.microsoft.com/en-us/cpp/c-runtime-library/reference/free-dbg
-_supported_build_type = !is_win || (!is_component_build && !is_debug)
+_supported_build_type =
+    # Sanitizers replace the allocator, don't replace it ourselves with
+    # partition_alloc.
+    sanitize == "" &&
+    # Windows: debug CRT is not yet compatible with the allocator shim.
+    # https://learn.microsoft.com/en-us/cpp/c-runtime-library/reference/free-dbg
+    (!is_win || (!is_component_build && !is_debug))
 
 # TODO(351867706): Resolve compile assertions issues on Mac, and add `is_mac`
 # here.
 _supported_platform =
     is_android || is_chromeos || is_fuchsia || is_linux || is_win
 
-# Sanitizers replace the allocator, don't replace it ourselves with
-# partition_alloc.
-_is_using_sanitizers = sanitize != ""
+# When using ./gn/gn_to_bp.py, the current_cpu is 'none'. This is not
+# supported by PartitionAlloc.
+_supported_build_system = current_cpu != "none"
 
 _supported = _supported_compiler && _supported_build_type &&
-             _supported_platform && !_is_using_sanitizers
+             _supported_platform && _supported_build_system
 
 use_partition_alloc_as_malloc_default = _supported
 use_allocator_shim_default = _supported
