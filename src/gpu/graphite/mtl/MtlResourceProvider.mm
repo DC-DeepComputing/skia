@@ -56,7 +56,7 @@ sk_sp<MtlGraphicsPipeline> MtlResourceProvider::findOrCreateLoadMSAAPipeline(
     return pipeline;
 }
 
-sk_sp<GraphicsPipeline> MtlResourceProvider::createGraphicsPipeline(
+sk_sp<GraphicsPipeline> MtlResourceProvider::createGraphicsPipeline1(
         const RuntimeEffectDictionary* runtimeDict,
         const GraphicsPipelineDesc& pipelineDesc,
         const RenderPassDesc& renderPassDesc,

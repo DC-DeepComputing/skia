@@ -261,7 +261,7 @@ struct DawnGraphicsPipeline::AsyncPipelineCreation : public AsyncPipelineCreatio
 #endif
 
 // static
-sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
+sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make1(
         const DawnSharedContext* sharedContext,
         DawnResourceProvider* resourceProvider,
         const RuntimeEffectDictionary* runtimeDict,

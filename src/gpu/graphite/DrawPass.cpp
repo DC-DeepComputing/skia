@@ -665,7 +665,7 @@ bool DrawPass::prepareResources(ResourceProvider* resourceProvider,
 
     fFullPipelines.reserve(fFullPipelines.size() + fPipelineDescs.size());
     for (const GraphicsPipelineDesc& pipelineDesc : fPipelineDescs) {
-        auto pipeline = resourceProvider->findOrCreateGraphicsPipeline(runtimeDict,
+        auto pipeline = resourceProvider->findOrCreateGraphicsPipeline1(runtimeDict,
                                                                        pipelineDesc,
                                                                        renderPassDesc);
         if (!pipeline) {
