@@ -16,6 +16,23 @@
       "message": "friendly ping for owners approval. I\u0027ve reached out to Ben but haven\u0027t gotten a response yet. Are there other owners?",
       "revId": "03af8f50af39563d6fd93a2a799954136d72ee97",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b72ef5b4_5d0ead36",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3424955
+      },
+      "writtenOn": "2024-10-28T17:06:19Z",
+      "side": 1,
+      "message": "Adding a few more folks.\nThis is blocking an experiment to improve font loading times on the Chrome Desktop Browser. Do we need to isolate or restrict this change even more?",
+      "revId": "03af8f50af39563d6fd93a2a799954136d72ee97",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
