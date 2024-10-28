@@ -94,6 +94,30 @@
       },
       "revId": "dfe24ae3bd16c7de41d54a24c20efecbe3e84992",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e9600413_e9d54479",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 9218
+      },
+      "writtenOn": "2024-10-28T13:49:59Z",
+      "side": 0,
+      "message": "Thanks, Michael.\nFor the perf improvements of \"draw_image.html\", more specifically are:\n1) Iris Xe(laptop): 19% -\u003e 11%.\n2) UHD770(desktop): 20% -\u003e 14%.\n\nHowever, for the \"mix_blend_mode_animation_difference.html\" case, it doesn\u0027t help, although the caching actually works for the both cases. I am not sure what\u0027s the real cause underneath. As far as I can see, for \"draw_image.html\", the writes of instrinsics and the draws are interleaved. Whereas for \"mix_blend_mode_animation_difference.html\", all writes occur together before the draws. This may be a clue to further investigate.\n\nOne thing in #2, which I don\u0027t quite understand, is why we still need to keep a copy of `UniformDataBlock[N]`. It has been written into GPU buffers, and seemingly is no longer needed from CPU side.",
+      "parentUuid": "bede11e6_101fce95",
+      "range": {
+        "startLine": 37,
+        "startChar": 25,
+        "endLine": 37,
+        "endChar": 50
+      },
+      "revId": "dfe24ae3bd16c7de41d54a24c20efecbe3e84992",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
