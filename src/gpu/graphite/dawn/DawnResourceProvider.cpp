@@ -14,6 +14,7 @@
 #include "src/gpu/graphite/ComputePipeline.h"
 #include "src/gpu/graphite/RenderPassDesc.h"
 #include "src/gpu/graphite/dawn/DawnBuffer.h"
+#include "src/gpu/graphite/dawn/DawnCommandBuffer.h"
 #include "src/gpu/graphite/dawn/DawnComputePipeline.h"
 #include "src/gpu/graphite/dawn/DawnErrorChecker.h"
 #include "src/gpu/graphite/dawn/DawnGraphicsPipeline.h"
@@ -153,13 +154,193 @@ BindGroupKey<1> make_texture_bind_group_key(const DawnSampler* sampler,
 }
 }  // namespace
 
+
+// Wraps a Dawn buffer, and tracks the intrinsic blocks reside in this buffer.
+class DawnResourceProvider::IntrinsicBuffer final {
+public:
+    static constexpr int kNumSlots = 8;
+
+    static IntrinsicBuffer* Make(sk_sp<DawnBuffer>&& dawnBuffer) {
+        return new IntrinsicBuffer(std::move(dawnBuffer));
+    }
+
+    ~IntrinsicBuffer() = default;
+
+    sk_sp<DawnBuffer> buffer() const { return fDawnBuffer; }
+
+    // Track that the buffer contains the intrinsic block identified by 'hash' at the 'offset'.
+    void trackIntrinsic(uint32_t hash, uint32_t offset) {
+        fOffsets[hash] = offset;
+    }
+
+    // Find the offset of the intrinsic block identified by 'hash' in the buffer. If not found,
+    // return nullptr.
+    uint32_t* findIntrinsic(uint32_t hash) const {
+        return fOffsets.find(hash);
+    }
+
+private:
+    IntrinsicBuffer(sk_sp<DawnBuffer>&& dawnBuffer) : fDawnBuffer(std::move(dawnBuffer)) {}
+
+    skia_private::THashMap<uint32_t, uint32_t> fOffsets;
+    sk_sp<DawnBuffer> fDawnBuffer;
+
+    SK_DECLARE_INTERNAL_LLIST_INTERFACE(IntrinsicBuffer);
+};
+
+// DawnResourceProvider::IntrinsicConstantsManager
+// ----------------------------------------------------------------------------
+
+/**
+ * Since Dawn does not currently provide push constants, this helper class manages rotating through
+ * buffers and writing each new occurrence of a set of intrinsic uniforms into the current buffer.
+ */
+class DawnResourceProvider::IntrinsicConstantsManager {
+public:
+    explicit IntrinsicConstantsManager(DawnResourceProvider* resourceProvider)
+            : fResourceProvider(resourceProvider) {}
+
+    ~IntrinsicConstantsManager();
+
+    // Find or create a bind buffer info for the given intrinsic values used in the given command
+    // buffer.
+    BindBufferInfo add(DawnCommandBuffer* cb, const UniformDataBlock& intrinsicValues);
+
+private:
+   // The max number of intrinsic buffers to keep around in the cache.
+   static constexpr uint32_t kMaxNumBuffers = 128;
+
+    DawnResourceProvider* const fResourceProvider;
+    // The current buffer being filled up, as well as the how much of it has been written to.
+    IntrinsicBuffer* fCurrentBuffer = nullptr;
+    int fSlotsUsed = 0; // in multiples of the intrinsic uniform size and UBO binding requirement
+    DawnCommandBuffer* fCurrentCommandBuffer = nullptr;
+
+    // All cached intrinsic buffers, in LRU order.
+    SkTInternalLList<IntrinsicBuffer> fIntrinsicBuffersLRU;
+    // The number of intrinsic buffers currently in the cache.
+    uint32_t fNumBuffers = 0;
+
+};
+
+DawnResourceProvider::IntrinsicConstantsManager::~IntrinsicConstantsManager() {
+    using Iter = SkTInternalLList<IntrinsicBuffer>::Iter;
+    Iter iter;
+    auto* curr = iter.init(fIntrinsicBuffersLRU, Iter::kTail_IterStart);
+    // Delete all intrinsic buffers.
+    while (curr != nullptr) {
+        auto* next = iter.next();
+        fIntrinsicBuffersLRU.remove(curr);
+        delete curr;
+        curr = next;
+    }
+}
+
+// Find or create a bind buffer info for the given intrinsic values used in the given command
+// buffer.
+BindBufferInfo DawnResourceProvider::IntrinsicConstantsManager::add(
+        DawnCommandBuffer* cb, const UniformDataBlock& intrinsicValues) {
+    // Calculate the hash of the intrinsic values.
+    auto hasher = UniformDataBlock::Hash();
+    uint32_t hash = hasher(intrinsicValues);
+
+    using Iter = SkTInternalLList<IntrinsicBuffer>::Iter;
+    Iter iter;
+    auto* curr = iter.init(fIntrinsicBuffersLRU, Iter::kTail_IterStart);
+    uint32_t* offset = nullptr;
+    // Find the buffer that contains the given intrinsic values.
+    while (curr != nullptr) {
+        offset = curr->findIntrinsic(hash);
+        if (offset != nullptr) {
+            break;
+        }
+        curr = iter.next();
+    }
+    // If we found the buffer, we can return the bind buffer info directly.
+    if (curr != nullptr && offset != nullptr) {
+        // Move the buffer to the head of the LRU list.
+        fIntrinsicBuffersLRU.remove(curr);
+        fIntrinsicBuffersLRU.addToHead(curr);
+        // Track the dawn buffer's usage by the command buffer.
+        cb->trackResource(curr->buffer());
+        return {curr->buffer().get(), *offset, SkTo<uint32_t>(intrinsicValues.size())};
+    }
+
+    // TODO: https://b.corp.google.com/issues/259267703
+    // Make updating intrinsic constants faster. Metal has setVertexBytes method to quickly send
+    // intrinsic constants to vertex shader without any buffer. But Dawn doesn't have similar
+    // capability. So we have to use WriteBuffer(), and this method is not allowed to be called when
+    // there is an active render pass.
+    SkASSERT(!cb->hasActivePassEncoder());
+
+    const Caps* caps = fResourceProvider->dawnSharedContext()->caps();
+    const uint32_t stride =
+            SkAlignTo(intrinsicValues.size(), caps->requiredUniformBufferAlignment());
+    // In any one of the following cases, we need to create a new buffer:
+    //     (1) There is no current buffer.
+    //     (2) The current buffer is full.
+    //     (3) The current command buffer has changed. In this case, we'd better start a new buffer,
+    //         otherwise we could update a buffer which is still in use by the previous command
+    //         buffer.
+    if (!fCurrentBuffer || fSlotsUsed == IntrinsicBuffer::kNumSlots ||
+        cb != fCurrentCommandBuffer) {
+        // We can just replace the current buffer; any prior buffer was already tracked in the LRU
+        // list and the intrinsic constants were written directly to the Dawn queue.
+        DawnResourceProvider* resourceProvider = fResourceProvider;
+        auto dawnBuffer =
+                resourceProvider->findOrCreateDawnBuffer(stride * IntrinsicBuffer::kNumSlots,
+                                                         BufferType::kUniform,
+                                                         AccessPattern::kGpuOnly,
+                                                         "IntrinsicConstantBuffer");
+        fSlotsUsed = 0;
+
+        if (!dawnBuffer) {
+            // If we failed to create a GPU buffer to hold the intrinsic uniforms, we will fail the
+            // Recording being inserted, so return an empty bind info.
+            return {};
+        }
+
+        fCurrentBuffer = IntrinsicBuffer::Make(std::move(dawnBuffer));
+        fIntrinsicBuffersLRU.addToHead(fCurrentBuffer);
+        fNumBuffers++;
+        // If we have too many buffers, remove the least used one.
+        if (fNumBuffers > kMaxNumBuffers) {
+            auto* tail = fIntrinsicBuffersLRU.tail();
+            fIntrinsicBuffersLRU.remove(tail);
+            delete tail;
+            fNumBuffers--;
+        }
+    }
+
+    SkASSERT(fCurrentBuffer && fSlotsUsed < IntrinsicBuffer::kNumSlots);
+    uint32_t newOffset = (fSlotsUsed++) * stride;
+    fResourceProvider->dawnSharedContext()->queue().WriteBuffer(
+            fCurrentBuffer->buffer()->dawnBuffer(),
+            newOffset,
+            intrinsicValues.data(),
+            intrinsicValues.size());
+
+    // Track the intrinsic values in the buffer.
+    fCurrentBuffer->trackIntrinsic(hash, newOffset);
+
+    cb->trackResource(fCurrentBuffer->buffer());
+
+    return {fCurrentBuffer->buffer().get(), newOffset, SkTo<uint32_t>(intrinsicValues.size())};
+}
+
+// DawnResourceProvider::IntrinsicConstantsManager
+// ----------------------------------------------------------------------------
+
+
 DawnResourceProvider::DawnResourceProvider(SharedContext* sharedContext,
                                            SingleOwner* singleOwner,
                                            uint32_t recorderID,
                                            size_t resourceBudget)
         : ResourceProvider(sharedContext, singleOwner, recorderID, resourceBudget)
         , fUniformBufferBindGroupCache(kMaxNumberOfCachedBufferBindGroups)
-        , fSingleTextureSamplerBindGroups(kMaxNumberOfCachedTextureBindGroups) {}
+        , fSingleTextureSamplerBindGroups(kMaxNumberOfCachedTextureBindGroups) {
+    fIntrinsicConstantsManager = std::make_unique<IntrinsicConstantsManager>(this);
+}
 
 DawnResourceProvider::~DawnResourceProvider() = default;
 
@@ -512,6 +693,11 @@ const wgpu::BindGroup& DawnResourceProvider::findOrCreateSingleTextureSamplerBin
     auto bindGroup = device.CreateBindGroup(&desc);
 
     return *fSingleTextureSamplerBindGroups.insert(key, bindGroup);
+}
+
+BindBufferInfo DawnResourceProvider::findOrCreateIntrinsicBindBufferInfo(
+        DawnCommandBuffer* cb, const UniformDataBlock& intrinsicValues) {
+    return fIntrinsicConstantsManager->add(cb, intrinsicValues);
 }
 
 } // namespace skgpu::graphite
