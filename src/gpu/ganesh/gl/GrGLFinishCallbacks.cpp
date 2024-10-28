@@ -7,6 +7,7 @@
 
 #include "src/gpu/ganesh/gl/GrGLFinishCallbacks.h"
 
+#include "include/gpu/GpuTypes.h"
 #include "include/private/base/SkAssert.h"
 #include "src/gpu/ganesh/gl/GrGLGpu.h"
 
@@ -16,14 +17,13 @@ GrGLFinishCallbacks::~GrGLFinishCallbacks() {
     this->callAll(true);
 }
 
-void GrGLFinishCallbacks::add(GrGpuFinishedProc finishedProc,
-                              GrGpuFinishedContext finishedContext) {
-    SkASSERT(finishedProc);
-    FinishCallback callback;
-    callback.fCallback = finishedProc;
-    callback.fContext = finishedContext;
-    callback.fSync = fGpu->insertSync();
-    fCallbacks.push_back(callback);
+void GrGLFinishCallbacks::add(skgpu::AutoCallback callback, GrGLint timerQuery) {
+    SkASSERT(callback);
+    FinishCallback finishCallback;
+    finishCallback.fCallback   = std::move(callback);
+    finishCallback.fSync       = fGpu->insertSync();
+    finishCallback.fTimerQuery = timerQuery;
+    fCallbacks.push_back(std::move(finishCallback));
 }
 
 void GrGLFinishCallbacks::check() {
@@ -33,10 +33,16 @@ void GrGLFinishCallbacks::check() {
         // before calling it. This is because the client could trigger a call (e.g. calling
         // flushAndSubmit(/*sync=*/true)) that has us process the finished callbacks. We also must
         // process deleting the sync before a client may abandon the context.
-        auto finishCallback = fCallbacks.front();
+        auto& finishCallback = fCallbacks.front();
         fGpu->deleteSync(finishCallback.fSync);
+        skgpu::GpuStats stats;
+        if (auto timerQuery = finishCallback.fTimerQuery) {
+            stats.elapsedTime = fGpu->getTimerQueryResult(timerQuery);
+            if (finishCallback.fCallback.receivesGpuStats()) {
+                finishCallback.fCallback.setStats(stats);
+            }
+        }
         fCallbacks.pop_front();
-        finishCallback.fCallback(finishCallback.fContext);
     }
 }
 
@@ -46,11 +52,14 @@ void GrGLFinishCallbacks::callAll(bool doDelete) {
         // before calling it. This is because the client could trigger a call (e.g. calling
         // flushAndSubmit(/*sync=*/true)) that has us process the finished callbacks. We also must
         // process deleting the sync before a client may abandon the context.
-        auto finishCallback = fCallbacks.front();
+        auto& finishCallback = fCallbacks.front();
+        skgpu::GpuStats stats;
         if (doDelete) {
             fGpu->deleteSync(finishCallback.fSync);
+            if (finishCallback.fTimerQuery) {
+                stats.elapsedTime = fGpu->getTimerQueryResult(finishCallback.fTimerQuery);
+            }
         }
         fCallbacks.pop_front();
-        finishCallback.fCallback(finishCallback.fContext);
     }
 }
