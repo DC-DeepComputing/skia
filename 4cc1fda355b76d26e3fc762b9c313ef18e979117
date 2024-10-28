@@ -22,6 +22,30 @@
       },
       "revId": "4cc1fda355b76d26e3fc762b9c313ef18e979117",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "71f185e9_9ee4bcea",
+        "filename": "src/partition_alloc/partition_alloc.gni",
+        "patchSetId": 20
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2024-10-28T14:48:52Z",
+      "side": 1,
+      "message": "Thanks for the suggestion! I explored that option initially, but I ended up with a better thing: I **removed this file**.\n\nI would like to keep BRP/DPD enabled by default, so that skia developer won\u0027t \"discover\" problem on Skia CQ, as opposed to locally. I would like to maintain Skia developers velocity.",
+      "parentUuid": "519bc40e_a36c404c",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 27
+      },
+      "revId": "4cc1fda355b76d26e3fc762b9c313ef18e979117",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
