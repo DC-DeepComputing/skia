@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7f0f8b14_a09c309d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-10-29T21:07:09Z",
+      "side": 1,
+      "message": "mini sick project for the day",
+      "revId": "ccdff6d57f822ab95a4b9a12c3b92c8122a927f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22e45277_cb5f5c63",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 583,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-10-29T21:07:09Z",
+      "side": 1,
+      "message": "Need to fix these up to be less hardcoded especially when we may use pushConstants for intrinsics or normal uniforms in the future. Let me know if you have any thoughts on what would work best with your designs",
+      "range": {
+        "startLine": 581,
+        "startChar": 8,
+        "endLine": 583,
+        "endChar": 66
+      },
+      "revId": "ccdff6d57f822ab95a4b9a12c3b92c8122a927f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
