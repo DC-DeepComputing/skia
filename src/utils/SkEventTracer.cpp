@@ -18,11 +18,12 @@ class SkDefaultEventTracer : public SkEventTracer {
                       const uint8_t* categoryEnabledFlag,
                       const char* name,
                       uint64_t id,
+                      uint64_t bind_id,
                       int numArgs,
                       const char** argNames,
                       const uint8_t* argTypes,
                       const uint64_t* argValues,
-                      uint8_t flags) override { return 0; }
+                      uint32_t flags) override { return 0; }
 
     void
         updateTraceEventDuration(const uint8_t* categoryEnabledFlag,

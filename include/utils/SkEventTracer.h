@@ -67,11 +67,12 @@ public:
                       const uint8_t* categoryEnabledFlag,
                       const char* name,
                       uint64_t id,
+                      uint64_t bind_id,
                       int32_t numArgs,
                       const char** argNames,
                       const uint8_t* argTypes,
                       const uint64_t* argValues,
-                      uint8_t flags) = 0;
+                      uint32_t flags) = 0;
 
     virtual void
         updateTraceEventDuration(const uint8_t* categoryEnabledFlag,

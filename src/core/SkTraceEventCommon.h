@@ -672,6 +672,19 @@ namespace skia_private {
       TRACE_EVENT_PHASE_DELETE_OBJECT, category_group, name, id,     \
       TRACE_EVENT_FLAG_NONE)
 
+// We don't use INTERNAL_TRACE_EVENT_ADD_WITH_BIND_ID because Perfetto's
+// handling of legacy events ignores bind_id and uses id instead.
+#define TRACE_EVENT_INSTANT0_WITH_FLOW_IN(category_group, name, bind_id, \
+                                          scope)                         \
+  INTERNAL_TRACE_EVENT_ADD_WITH_ID(                                      \
+      TRACE_EVENT_PHASE_INSTANT, category_group, name, bind_id,          \
+      TRACE_EVENT_FLAG_FLOW_IN | scope)
+#define TRACE_EVENT_INSTANT0_WITH_FLOW_OUT(category_group, name, bind_id, \
+                                           scope)                         \
+  INTERNAL_TRACE_EVENT_ADD_WITH_ID(                                       \
+      TRACE_EVENT_PHASE_INSTANT, category_group, name, bind_id,           \
+      TRACE_EVENT_FLAG_FLOW_OUT | scope)
+
 // Macro to efficiently determine if a given category group is enabled.
 #define TRACE_EVENT_CATEGORY_GROUP_ENABLED(category_group, ret)             \
   do {                                                                      \
@@ -689,15 +702,16 @@ namespace skia_private {
 #define TRACE_EVENT_FLAG_NONE (static_cast<unsigned int>(0))
 #define TRACE_EVENT_FLAG_COPY (static_cast<unsigned int>(1 << 0))
 #define TRACE_EVENT_FLAG_HAS_ID (static_cast<unsigned int>(1 << 1))
-#define TRACE_EVENT_FLAG_MANGLE_ID (static_cast<unsigned int>(1 << 2))
-#define TRACE_EVENT_FLAG_SCOPE_OFFSET (static_cast<unsigned int>(1 << 3))
-#define TRACE_EVENT_FLAG_SCOPE_EXTRA (static_cast<unsigned int>(1 << 4))
-#define TRACE_EVENT_FLAG_EXPLICIT_TIMESTAMP (static_cast<unsigned int>(1 << 5))
-#define TRACE_EVENT_FLAG_ASYNC_TTS (static_cast<unsigned int>(1 << 6))
-#define TRACE_EVENT_FLAG_BIND_TO_ENCLOSING (static_cast<unsigned int>(1 << 7))
-#define TRACE_EVENT_FLAG_FLOW_IN (static_cast<unsigned int>(1 << 8))
-#define TRACE_EVENT_FLAG_FLOW_OUT (static_cast<unsigned int>(1 << 9))
-#define TRACE_EVENT_FLAG_HAS_CONTEXT_ID (static_cast<unsigned int>(1 << 10))
+// TRACE_EVENT_FLAG_MANGLE_ID doesn't exist in Perfetto!
+#define TRACE_EVENT_FLAG_MANGLE_ID (static_cast<unsigned int>(1 << 1))
+#define TRACE_EVENT_FLAG_SCOPE_OFFSET (static_cast<unsigned int>(1 << 2))
+#define TRACE_EVENT_FLAG_SCOPE_EXTRA (static_cast<unsigned int>(1 << 3))
+#define TRACE_EVENT_FLAG_EXPLICIT_TIMESTAMP (static_cast<unsigned int>(1 << 4))
+#define TRACE_EVENT_FLAG_ASYNC_TTS (static_cast<unsigned int>(1 << 5))
+#define TRACE_EVENT_FLAG_BIND_TO_ENCLOSING (static_cast<unsigned int>(1 << 6))
+#define TRACE_EVENT_FLAG_FLOW_IN (static_cast<unsigned int>(1 << 7))
+#define TRACE_EVENT_FLAG_FLOW_OUT (static_cast<unsigned int>(1 << 8))
+#define TRACE_EVENT_FLAG_HAS_CONTEXT_ID (static_cast<unsigned int>(1 << 9))
 
 #define TRACE_EVENT_FLAG_SCOPE_MASK                          \
   (static_cast<unsigned int>(TRACE_EVENT_FLAG_SCOPE_OFFSET | \

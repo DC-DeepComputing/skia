@@ -95,6 +95,7 @@
 //                    const uint8_t* category_group_enabled,
 //                    const char* name,
 //                    uint64_t id,
+//                    uint64_t bind_id,
 //                    int num_args,
 //                    const char** arg_names,
 //                    const uint8_t* arg_types,
@@ -169,7 +170,8 @@
       if (INTERNAL_TRACE_EVENT_CATEGORY_GROUP_ENABLED_FOR_RECORDING_MODE()) { \
         skia_private::AddTraceEvent( \
             phase, INTERNAL_TRACE_EVENT_UID(category_group_enabled), name, \
-            skia_private::kNoEventId, flags, ##__VA_ARGS__); \
+            skia_private::kNoEventId, skia_private::kNoEventId, flags, \
+            ##__VA_ARGS__); \
       } \
     } while (0)
 
@@ -180,13 +182,28 @@
     do { \
       INTERNAL_TRACE_EVENT_GET_CATEGORY_INFO(category_group); \
       if (INTERNAL_TRACE_EVENT_CATEGORY_GROUP_ENABLED_FOR_RECORDING_MODE()) { \
-        unsigned char trace_event_flags = flags | TRACE_EVENT_FLAG_HAS_ID; \
+        uint32_t trace_event_flags = flags | TRACE_EVENT_FLAG_HAS_ID; \
         skia_private::TraceID trace_event_trace_id( \
             id, &trace_event_flags); \
         skia_private::AddTraceEvent( \
             phase, INTERNAL_TRACE_EVENT_UID(category_group_enabled), \
-            name, trace_event_trace_id.data(), trace_event_flags, \
-            ##__VA_ARGS__); \
+            name, trace_event_trace_id.data(), skia_private::kNoEventId, \
+            trace_event_flags, ##__VA_ARGS__); \
+      } \
+    } while (0)
+
+#define INTERNAL_TRACE_EVENT_ADD_WITH_BIND_ID(phase, category_group, name, \
+                                              bind_id, flags, ...) \
+    do { \
+      INTERNAL_TRACE_EVENT_GET_CATEGORY_INFO(category_group); \
+      if (INTERNAL_TRACE_EVENT_CATEGORY_GROUP_ENABLED_FOR_RECORDING_MODE()) { \
+        uint32_t trace_event_flags = flags; \
+        skia_private::TraceID trace_event_bind_id( \
+            bind_id, &trace_event_flags); \
+        skia_private::AddTraceEvent( \
+            phase, INTERNAL_TRACE_EVENT_UID(category_group_enabled), \
+            name, skia_private::kNoEventId, trace_event_bind_id.data(), \
+            trace_event_flags, ##__VA_ARGS__); \
       } \
     } while (0)
 
@@ -200,7 +217,7 @@
           SkEventTracer::Handle h = skia_private::AddTraceEvent( \
               TRACE_EVENT_PHASE_COMPLETE, \
               INTERNAL_TRACE_EVENT_UID(category_group_enabled), \
-              name, skia_private::kNoEventId, \
+              name, skia_private::kNoEventId, skia_private::kNoEventId, \
               TRACE_EVENT_FLAG_NONE, ##__VA_ARGS__); \
           INTERNAL_TRACE_EVENT_UID(tracer).Initialize( \
               INTERNAL_TRACE_EVENT_UID(category_group_enabled), name, h); \
@@ -219,27 +236,27 @@ const uint64_t kNoEventId = 0;
 // different processes.
 class TraceID {
 public:
-    TraceID(const void* id, unsigned char* flags)
+    TraceID(const void* id, uint32_t* flags)
             : data_(static_cast<uint64_t>(reinterpret_cast<uintptr_t>(id))) {
         *flags |= TRACE_EVENT_FLAG_MANGLE_ID;
     }
-    TraceID(uint64_t id, unsigned char* flags)
+    TraceID(uint64_t id, uint32_t* flags)
         : data_(id) { (void)flags; }
-    TraceID(unsigned int id, unsigned char* flags)
+    TraceID(unsigned int id, uint32_t* flags)
         : data_(id) { (void)flags; }
-    TraceID(unsigned short id, unsigned char* flags)
+    TraceID(unsigned short id, uint32_t* flags)
         : data_(id) { (void)flags; }
-    TraceID(unsigned char id, unsigned char* flags)
+    TraceID(unsigned char id, uint32_t* flags)
         : data_(id) { (void)flags; }
-    TraceID(long long id, unsigned char* flags)
+    TraceID(long long id, uint32_t* flags)
         : data_(static_cast<uint64_t>(id)) { (void)flags; }
-    TraceID(long id, unsigned char* flags)
+    TraceID(long id, uint32_t* flags)
         : data_(static_cast<uint64_t>(id)) { (void)flags; }
-    TraceID(int id, unsigned char* flags)
+    TraceID(int id, uint32_t* flags)
         : data_(static_cast<uint64_t>(id)) { (void)flags; }
-    TraceID(short id, unsigned char* flags)
+    TraceID(short id, uint32_t* flags)
         : data_(static_cast<uint64_t>(id)) { (void)flags; }
-    TraceID(signed char id, unsigned char* flags)
+    TraceID(signed char id, uint32_t* flags)
         : data_(static_cast<uint64_t>(id)) { (void)flags; }
 
     uint64_t data() const { return data_; }
@@ -312,9 +329,10 @@ AddTraceEvent(
     const uint8_t* category_group_enabled,
     const char* name,
     uint64_t id,
-    unsigned char flags) {
+    uint64_t bind_id,
+    unsigned int flags) {
   return TRACE_EVENT_API_ADD_TRACE_EVENT(
-      phase, category_group_enabled, name, id,
+      phase, category_group_enabled, name, id, bind_id,
       kZeroNumArgs, nullptr, nullptr, nullptr, flags);
 }
 
@@ -325,7 +343,8 @@ AddTraceEvent(
     const uint8_t* category_group_enabled,
     const char* name,
     uint64_t id,
-    unsigned char flags,
+    uint64_t bind_id,
+    unsigned int flags,
     const char* arg1_name,
     const ARG1_TYPE& arg1_val) {
   const int num_args = 1;
@@ -333,7 +352,7 @@ AddTraceEvent(
   uint64_t arg_values[1];
   SetTraceValue(arg1_val, &arg_types[0], &arg_values[0]);
   return TRACE_EVENT_API_ADD_TRACE_EVENT(
-      phase, category_group_enabled, name, id,
+      phase, category_group_enabled, name, id, bind_id,
       num_args, &arg1_name, arg_types, arg_values, flags);
 }
 
@@ -344,7 +363,8 @@ AddTraceEvent(
     const uint8_t* category_group_enabled,
     const char* name,
     uint64_t id,
-    unsigned char flags,
+    uint64_t bind_id,
+    unsigned int flags,
     const char* arg1_name,
     const ARG1_TYPE& arg1_val,
     const char* arg2_name,
@@ -356,7 +376,7 @@ AddTraceEvent(
   SetTraceValue(arg1_val, &arg_types[0], &arg_values[0]);
   SetTraceValue(arg2_val, &arg_types[1], &arg_values[1]);
   return TRACE_EVENT_API_ADD_TRACE_EVENT(
-      phase, category_group_enabled, name, id,
+      phase, category_group_enabled, name, id, bind_id,
       num_args, arg_names, arg_types, arg_values, flags);
 }
 

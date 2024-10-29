@@ -9,6 +9,7 @@
 
 #include "include/gpu/graphite/TextureInfo.h"
 #include "include/private/base/SkTemplates.h"
+#include "src/core/SkTraceEventCommon.h"
 #include "src/gpu/SkSLToBackend.h"
 #include "src/gpu/Swizzle.h"
 #include "src/gpu/graphite/Attribute.h"
@@ -607,6 +608,9 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
         // We shouldn't use CreateRenderPipelineAsync in wasm.
         SKGPU_LOG_F("CreateRenderPipelineAsync shouldn't be used in WASM");
 #else
+        TRACE_EVENT_INSTANT0_WITH_FLOW_OUT(
+            "skia.gpu", "Create pipeline future", asyncCreation.get(),
+            TRACE_EVENT_SCOPE_PROCESS);
         asyncCreation->fFuture = device.CreateRenderPipelineAsync(
                 &descriptor,
                 wgpu::CallbackMode::WaitAnyOnly,
@@ -681,11 +685,15 @@ void DawnGraphicsPipeline::freeGpuData() {
 }
 
 const wgpu::RenderPipeline& DawnGraphicsPipeline::dawnRenderPipeline() const {
+    TRACE_EVENT0("skia.gpu", "DawnGraphicsPipeline::dawnRenderPipeline");
     if (!fAsyncPipelineCreation) {
         static const wgpu::RenderPipeline kNullPipeline = nullptr;
         return kNullPipeline;
     }
     if (fAsyncPipelineCreation->fFinished) {
+        TRACE_EVENT_INSTANT0_WITH_FLOW_IN(
+            "skia.gpu", "Consume already completed pipeline future",
+            fAsyncPipelineCreation.get(), TRACE_EVENT_SCOPE_PROCESS);
         return fAsyncPipelineCreation->fRenderPipeline;
     }
 #if defined(__EMSCRIPTEN__)
@@ -701,6 +709,9 @@ const wgpu::RenderPipeline& DawnGraphicsPipeline::dawnRenderPipeline() const {
 
     [[maybe_unused]] auto status =
             instance.WaitAny(1, &waitInfo, /*timeoutNS=*/std::numeric_limits<uint64_t>::max());
+    TRACE_EVENT_INSTANT0_WITH_FLOW_IN(
+        "skia.gpu", "Finished waiting for pipeline future",
+        fAsyncPipelineCreation.get(), TRACE_EVENT_SCOPE_PROCESS);
     SkASSERT(status == wgpu::WaitStatus::Success);
     SkASSERT(waitInfo.completed);
 #endif

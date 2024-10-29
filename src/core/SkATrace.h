@@ -28,11 +28,12 @@ public:
                                         const uint8_t* categoryEnabledFlag,
                                         const char* name,
                                         uint64_t id,
+                                        uint64_t bind_id,
                                         int numArgs,
                                         const char** argNames,
                                         const uint8_t* argTypes,
                                         const uint64_t* argValues,
-                                        uint8_t flags) override;
+                                        uint32_t flags) override;
 
 
     void updateTraceEventDuration(const uint8_t* categoryEnabledFlag,
