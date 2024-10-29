@@ -17,6 +17,7 @@
 #include "include/core/SkRect.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkShader.h"
+#include "include/core/SkStrokeEffect.h"
 #include "include/core/SkStrokeRec.h"
 #include "include/private/base/SkTPin.h"
 #include "include/private/base/SkTo.h"
@@ -67,6 +68,7 @@ bool operator==(const SkPaint& a, const SkPaint& b) {
 #define EQUAL(field) (a.field == b.field)
     return EQUAL(fPathEffect)
         && EQUAL(fShader)
+        && EQUAL(fStrokeEffect)
         && EQUAL(fMaskFilter)
         && EQUAL(fColorFilter)
         && EQUAL(fBlender)
@@ -86,6 +88,7 @@ DEFINE_FIELD_REF(Blender)
 DEFINE_FIELD_REF(ImageFilter)
 DEFINE_FIELD_REF(MaskFilter)
 DEFINE_FIELD_REF(PathEffect)
+DEFINE_FIELD_REF(StrokeEffect)
 DEFINE_FIELD_REF(Shader)
 #undef DEFINE_FIELD_REF
 
@@ -95,6 +98,7 @@ DEFINE_FIELD_SET(ColorFilter)
 DEFINE_FIELD_SET(ImageFilter)
 DEFINE_FIELD_SET(MaskFilter)
 DEFINE_FIELD_SET(PathEffect)
+DEFINE_FIELD_SET(StrokeEffect)
 DEFINE_FIELD_SET(Shader)
 #undef DEFINE_FIELD_SET
 
