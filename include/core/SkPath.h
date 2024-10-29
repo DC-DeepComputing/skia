@@ -1450,6 +1450,8 @@ public:
     */
     uint32_t getSegmentMasks() const;
 
+    void parameterize(int num_of_t, SkPath* dst) const;
+
     /** \enum SkPath::Verb
         Verb instructs SkPath how to interpret one or more SkPoint and optional conic weight;
         manage contour, and terminate SkPath.
