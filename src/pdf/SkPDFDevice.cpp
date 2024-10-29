@@ -122,7 +122,8 @@ void SkPDFDevice::MarkedContentManager::beginMark() {
         fCurrentlyActiveMark = fDoc->createMarkForElemId(fNextMarksElemId);
         if (fCurrentlyActiveMark) {
             // Begin this mark
-            fOut->writeText("/P <</MCID ");
+            SkPDFUnion::Name(fCurrentlyActiveMark.structType()).emitObject(fOut);
+            fOut->writeText(" <</MCID ");
             fOut->writeDecAsText(fCurrentlyActiveMark.mcid());
             fOut->writeText(" >>BDC\n");
             fMadeMarks = true;
