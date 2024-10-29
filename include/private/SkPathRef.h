@@ -59,6 +59,7 @@ public:
     using PointsArray = skia_private::STArray<4, SkPoint>;
     using VerbsArray = skia_private::STArray<4, uint8_t>;
     using ConicWeightsArray = skia_private::STArray<2, SkScalar>;
+    using PathDistancesArray = skia_private::STArray<2, SkScalar>;
 
     enum class PathType : uint8_t {
         kGeneral,
@@ -552,6 +553,7 @@ private:
     PointsArray fPoints;
     VerbsArray fVerbs;
     ConicWeightsArray fConicWeights;
+    PathDistancesArray fDistances;
 
     SkDEBUGCODE(std::atomic<int> fEditorsAttached;) // assert only one editor in use at any time.
 

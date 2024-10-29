@@ -9,6 +9,7 @@
 
 #include "include/core/SkArc.h"
 #include "include/core/SkPathBuilder.h"
+#include "include/core/SkPathMeasure.h"
 #include "include/core/SkRRect.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkString.h"
@@ -38,6 +39,8 @@
 #include <iterator>
 #include <limits.h>
 #include <utility>
+ #include <queue>
+ #include <deque>
 
 struct SkPath_Storage_Equivalent {
     void*    fPtr;
@@ -247,18 +250,191 @@ bool SkPath::isInterpolatable(const SkPath& compare) const {
            fPathRef->fConicWeights == compare.fPathRef->fConicWeights;
 }
 
+std::vector<SkScalar> getTValuesForSegment(std::deque<float>* tValuesToAdd, float t, float tNext) {
+    std::vector<SkScalar> tVector;
+    while (!tValuesToAdd->empty() && tValuesToAdd->front() > t && tValuesToAdd->front() < tNext) {
+        SkScalar total_t = tValuesToAdd->front();
+        tValuesToAdd->pop_front();
+        SkScalar relative_t = (total_t - t) / (tNext - t);
+        tVector.push_back(relative_t);
+    }
+    return tVector;
+}
+
+void addSegmentsFromTValues(const SkPoint cubic_pts[4], std::vector<SkScalar> t_values, SkPath* out) {
+    size_t arr_size = t_values.size();
+    int dst_size = (3*arr_size) + 4;
+    SkPoint split_pts[dst_size];
+    SkScalar tArray[arr_size];
+    copy(t_values.begin(), t_values.end(), tArray);
+    SkChopCubicAt(cubic_pts, split_pts, tArray, arr_size);
+
+    for (size_t i = 0; i < arr_size + 1; i++) {
+      out->cubicTo(split_pts[(i*3)+1], split_pts[(i*3)+2], split_pts[(i*3)+3]);
+    }
+}
+
+bool createPathFromTValues(const SkPath& in, std::deque<float> tValuesToAdd, std::vector<float> tValues, SkPath* out) {
+    SkPath::Iter iter(in, false);
+    bool fBreak = false;
+    // Only increment if we draw on the path
+    size_t t_value_idx = 0;
+    for (;;) {
+      if (fBreak) break;
+      bool needToSplit = false;
+      SkPoint pts[4];
+      SkPath::Verb verb = iter.next(pts);
+
+      // Last tValue is always the end of the path (t=1).
+      if (t_value_idx >= tValues.size() - 1) {
+        break;
+      }
+      // t and tNext are the start and end of the current segment.
+      float t = tValues[t_value_idx];
+      float tNext = tValues[t_value_idx+1];
+
+      if (!tValuesToAdd.empty() && tValuesToAdd.front() > t && tValuesToAdd.front() < tNext) {
+        needToSplit = true;
+      }
+
+      switch (verb) {
+        case SkPath::kMove_Verb:
+        //only support one contour right now
+          out->moveTo(pts[0]);
+          break;
+        case SkPath::kLine_Verb: {
+            t_value_idx++;
+            if (!needToSplit) {
+              out->cubicTo(pts[1], pts[1], pts[1]);
+            } else {
+              std::vector<SkScalar> tVector = getTValuesForSegment(&tValuesToAdd, t, tNext);
+              const SkPoint cubic_pts[4] = {pts[0], pts[1], pts[1], pts[1]};
+              addSegmentsFromTValues(cubic_pts, tVector, out);
+            }
+            break;
+        }
+        case SkPath::kQuad_Verb: {
+            t_value_idx++;
+            SkPoint pt1, pt2;
+            pt1 = pts[0] + (pts[1]-pts[0])*(2.0f / 3.0f);
+            pt2 = pts[2] + (pts[1]-pts[2])*(2.0f / 3.0f);
+            if (!needToSplit) {
+              out->cubicTo(pt1, pt2, pts[2]);
+            } else {
+              std::vector<SkScalar> tVector = getTValuesForSegment(&tValuesToAdd, t, tNext);
+              const SkPoint cubic_pts[4] = {pts[0], pt1, pt2, pts[2]};
+              addSegmentsFromTValues(cubic_pts, tVector, out);
+            }
+            break;
+        }
+        case SkPath::kConic_Verb:
+          // Conic not yet supported
+          return false;
+        case SkPath::kCubic_Verb:
+          t_value_idx++;
+          if (!needToSplit) {
+            out->cubicTo(pts[1], pts[2], pts[3]);
+          } else {
+              std::vector<SkScalar> tVector = getTValuesForSegment(&tValuesToAdd, t, tNext);
+              addSegmentsFromTValues(pts, tVector, out);
+          }
+          break;
+        case SkPath::kClose_Verb:
+          // Close not yet supported
+          out->close();
+          break;
+        case SkPath::kDone_Verb:
+          fBreak = true;
+      }
+    }
+    return true;
+}
+
+// Currently limited to only 1 contour
 bool SkPath::interpolate(const SkPath& ending, SkScalar weight, SkPath* out) const {
     int pointCount = fPathRef->countPoints();
-    if (pointCount != ending.fPathRef->countPoints()) {
-        return false;
-    }
-    if (!pointCount) {
+    if (!pointCount || ending.fPathRef->countPoints() == 0) {
         return true;
     }
+    if (this->isInterpolatable(ending)) {
+      out->reset();
+      out->addPath(*this);
+      SkPathRef::Editor editor(&(out->fPathRef));
+      fPathRef->interpolate(*ending.fPathRef, weight, out->fPathRef.get());
+      return true;
+    }
+
+    // Convert all segments to cubics with the same amount of points along the path
+
+    // New paths to store the transformed paths
+    SkPath thisCubic;
+    SkPath endingCubic;
+    thisCubic.reset();
+    endingCubic.reset();
+
+    // Calculate the path lengths
+    // Only does one contour so far, have to modify or make new pathmeasure code
+    // to do multiple contours
+    SkPathMeasure measure1(*this, false);
+    SkPathMeasure measure2(ending, false);
+
+    SkScalar length1 = measure1.getLength();
+    SkScalar length2 = measure2.getLength();
+    const SkContourMeasure* contour1 = measure1.currentMeasure();
+    const SkContourMeasure* contour2 = measure2.currentMeasure();
+    std::vector<SkScalar> distances1 = contour1->getSegmentDistances();
+    std::vector<SkScalar> distances2 = contour2->getSegmentDistances();
+    distances1.insert(distances1.begin(), 0.0f);
+    distances2.insert(distances2.begin(), 0.0f);
+    std::deque<float> tValuesToAdd1;
+    std::deque<float> tValuesToAdd2;
+
+    // Convert distances to t values
+    std::vector<float> tValues1(distances1.size());
+    std::vector<float> tValues2(distances2.size());
+    for (size_t i = 0; i < distances1.size(); ++i) {
+        tValues1[i] = distances1[i] / length1;
+    }
+    for (size_t i = 0; i < distances2.size(); ++i) {
+        tValues2[i] = distances2[i] / length2;
+    }
+
+    // Find missing t values from each
+    size_t i = 0, j = 0;
+    while (i < tValues1.size() && j < tValues2.size()) {
+        if (tValues1[i] < tValues2[j]) {
+            tValuesToAdd2.push_back(tValues1[i]);
+            i++;
+        } else if (tValues1[i] > tValues2[j]) {
+            tValuesToAdd1.push_back(tValues2[j]);
+            j++;
+        } else { // tValues1[i] == tValues2[j]
+            i++;
+            j++;
+        }
+    }
+    // Add remaining t values
+    while (i < tValues1.size()) {
+        tValuesToAdd2.push_back(tValues1[i]);
+        i++;
+    }
+    while (j < tValues2.size()) {
+        tValuesToAdd1.push_back(tValues2[j]);
+        j++;
+    }
+
+    createPathFromTValues(*this, tValuesToAdd1, tValues1, &thisCubic);
+    createPathFromTValues(ending, tValuesToAdd2, tValues2, &endingCubic);
+
+    // Check for another contour
+    if (measure1.nextContour() || measure2.nextContour()) {
+      return false;
+    }
+
     out->reset();
-    out->addPath(*this);
+    out->addPath(thisCubic);
     SkPathRef::Editor editor(&(out->fPathRef));
-    fPathRef->interpolate(*ending.fPathRef, weight, out->fPathRef.get());
+    fPathRef->interpolate(*endingCubic.fPathRef, weight, out->fPathRef.get());
     return true;
 }
 
