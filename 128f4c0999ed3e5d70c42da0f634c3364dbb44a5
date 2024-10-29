@@ -1,0 +1,39 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec815ccc_a37cb10e",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 634,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-10-29T19:06:35Z",
+      "side": 1,
+      "message": "nit: would it make sense to assert that the steam size is monotonic (`currentLength \u003e\u003d oldLength`)?",
+      "fixSuggestions": [
+        {
+          "fixId": "45e4dc5e_6fcc8b6b",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+              "range": {
+                "startLine": 635,
+                "startChar": 0,
+                "endLine": 635,
+                "endChar": 0
+              },
+              "replacement": "                SkASSERT(currentLength \u003e\u003d oldLength);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "128f4c0999ed3e5d70c42da0f634c3364dbb44a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
