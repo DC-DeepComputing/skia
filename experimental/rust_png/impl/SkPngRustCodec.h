@@ -131,6 +131,7 @@ private:
     int fFrameAtCurrentStreamPosition = -1;
     bool fStreamIsPositionedAtStartOfFrameData = false;
     const std::unique_ptr<SkStream> fPrivStream;
+    std::optional<size_t> fStreamLengthDuringLastCallToParseAdditionalFrameInfos;
 
     std::optional<DecodingState> fIncrementalDecodingState;
 
