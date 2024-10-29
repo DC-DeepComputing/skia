@@ -69,15 +69,6 @@ struct FragSkSLInfo {
     skia_private::TArray<uint32_t> fData = {};
 };
 
-UniquePaintParamsID ExtractPaintData(Recorder*,
-                                     PipelineDataGatherer* gatherer,
-                                     PaintParamsKeyBuilder* builder,
-                                     const Layout layout,
-                                     const SkM44& local2Dev,
-                                     const PaintParams&,
-                                     const Geometry& geometry,
-                                     const SkColorInfo& targetColorInfo);
-
 // `viewport` should hold the actual viewport set as backend state (defining the NDC -> pixel
 // transform). The viewport's dimensions are used to define the SkDevice->NDC transform applied in
 // the vertex shader, but this assumes that the (0,0) device coordinate maps to the corner of the

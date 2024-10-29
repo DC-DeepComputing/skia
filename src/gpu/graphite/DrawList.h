@@ -9,10 +9,12 @@
 #define skgpu_graphite_DrawList_DEFINED
 
 #include "include/core/SkPaint.h"
+#include "include/private/base/SkTArray.h"
 #include "src/base/SkTBlockList.h"
-
+#include "src/core/SkTHash.h"
 #include "src/gpu/graphite/DrawOrder.h"
 #include "src/gpu/graphite/DrawParams.h"
+#include "src/gpu/graphite/GraphicsPipelineDesc.h"
 #include "src/gpu/graphite/PaintParams.h"
 #include "src/gpu/graphite/geom/Geometry.h"
 #include "src/gpu/graphite/geom/Rect.h"
@@ -23,6 +25,7 @@
 
 namespace skgpu::graphite {
 
+class DrawPass;
 class Renderer;
 
 /**
@@ -68,6 +71,8 @@ public:
     static constexpr int kMaxRenderSteps = 4096;
     static_assert(kMaxRenderSteps <= std::numeric_limits<uint16_t>::max());
 
+    DrawList(Recorder* recorder);
+
     // DrawList requires that all Transforms be valid and asserts as much; invalid transforms should
     // be detected at the Device level or similar. The provided Renderer must be compatible with the
     // 'shape' and 'stroke' parameters. If the renderer uses coverage AA, 'ordering' must have a
@@ -81,27 +86,236 @@ public:
                     const PaintParams* paint,
                     const StrokeStyle* stroke);
 
-    int renderStepCount() const { return fRenderStepCount; }
+    int renderStepCount() const { return fSortKeys.size(); }
 
     // Bounds for a dst copy required by this DrawList.
     const Rect& dstCopyBounds() const { return fDstCopyBounds; }
 
     SkDEBUGCODE(bool hasCoverageMaskDraws() const { return fCoverageMaskShapeDrawCount > 0; })
 
+    // Converts the DrawList into a CommandList and writes all necessary data to the GPU. Leaves the
+    // DrawList in a reset state for subsequent recording of new draws.
+    std::unique_ptr<DrawPass> snapDrawPass();
+
 private:
-    friend class DrawPass;
+    using Draw = std::pair<DrawParams, const Renderer*>;
 
-    struct Draw {
-        const Renderer* fRenderer; // Owned by SharedContext of Recorder that recorded the draw
-        DrawParams fDrawParams; // The DrawParam's transform is owned by fTransforms of the DrawList
-        std::optional<PaintParams> fPaintParams; // Not present implies depth-only draw
+    // Helper class to map objects to a dense index which can then be used to look them up later
+    // template <typename T, typename V = T, typename C = V>
+    // class DenseBiMap {
+    // public:
+    //     using Index = uint32_t;
 
-        Draw(const Renderer* renderer, const Transform& transform, const Geometry& geometry,
-             const Clip& clip, DrawOrder order, const PaintParams* paint,
-             const StrokeStyle* stroke)
-                : fRenderer(renderer)
-                , fDrawParams(transform, geometry, clip, order, stroke)
-                , fPaintParams(paint ? std::optional<PaintParams>(*paint) : std::nullopt) {}
+    //     // See note below in GeometryUniformField. This value can be round-tripped within the
+    //     // SortKey packing for all fields but will not be produced when recording actual draw data.
+    //     static constexpr Index kInvalidIndex{1 << SkNextLog2_portable(DrawList::kMaxRenderSteps)};
+
+    //     bool empty() const { return fIndexToData.empty(); }
+    //     size_t size() const { return fIndexToData.size(); }
+
+    //     Index insert(const T& data) {
+    //         Index* index = fDataToIndex.find(data);
+    //         if (!index) {
+    //             SkASSERT(SkToU32(fIndexToData.size()) < kInvalidIndex);
+    //             index = fDataToIndex.set(data, (Index) fIndexToData.size());
+    //             fIndexToData.push_back(C{data});
+    //         }
+    //         return *index;
+    //     }
+
+    //     const V& lookup(Index index) {
+    //         SkASSERT(index < kInvalidIndex);
+    //         return fIndexToData[index];
+    //     }
+
+    //     SkSpan<V> data() { return {fIndexToData.data(), fIndexToData.size()}; }
+
+    //     skia_private::TArray<V>&& detach() { return std::move(fIndexToData); }
+
+    // private:
+    //     skia_private::THashMap<T, Index> fDataToIndex;
+    //     skia_private::TArray<V> fIndexToData;
+    // };
+
+    // using GraphicsPipelineCache = DenseBiMap<GraphicsPipelineDesc>;
+
+    // Automatically merges and manages texture bindings and uniform bindings sourced from either
+    // the paint or the RenderStep. Tracks the bound state based on last-provided unique index to
+    // write Bind commands to a CommandList when necessary.
+    class TextureBindingCache {
+        using Binding = std::pair<TextureDataBlock, TextureDataBlock>;
+        using BindingCache = DenseBiMap<Binding>;
+    public:
+        using Index = BindingCache::Index;
+
+        Index trackTextures(TextureDataBlock paintTextures,
+                            TextureDataBlock stepTextures) {
+            if (!paintTextures && !stepTextures) {
+                return BindingCache::kInvalidIndex;
+            }
+            return fBindingCache.insert({paintTextures, stepTextures});
+        }
+
+        bool setCurrentTextureBindings(TextureBindingCache::Index bindingIndex) {
+            if (bindingIndex < BindingCache::kInvalidIndex && fLastIndex != bindingIndex) {
+                fLastIndex = bindingIndex;
+                return true;
+            }
+            // No binding change
+            return false;
+        }
+
+        void bindTextures(DrawPassCommands::List* commandList) {
+            SkASSERT(fLastIndex < TextureBindingCache::kInvalidIndex);
+            const Binding& binding = fBindingCache.lookup(fLastIndex);
+
+            auto [texIndices, samplerIndices] =
+                    commandList->bindDeferredTexturesAndSamplers(binding.numTextures());
+
+            if (binding.fPaintTextures) {
+                for (int i = 0; i < binding.fPaintTextures.numTextures(); ++i) {
+                    auto [tex, sampler] = binding.fPaintTextures.texture(i);
+                    *texIndices++     = fProxyCache.insert(tex.get());
+                    *samplerIndices++ = fSamplerCache.insert(sampler);
+                }
+            }
+            if (binding.fStepTextures) {
+                for (int i = 0; i < binding.fStepTextures.numTextures(); ++i) {
+                    auto [tex, sampler] = binding.fStepTextures.texture(i);
+                    *texIndices++     = fProxyCache.insert(tex.get());
+                    *samplerIndices++ = fSamplerCache.insert(sampler);
+                }
+            }
+        }
+
+        TArray<sk_sp<TextureProxy>>&& detachTextures() { return fProxyCache.detach(); }
+        TArray<SamplerDesc>&& detachSamplers() { return fSamplerCache.detach(); }
+
+    private:
+        struct ProxyRef {
+            const TextureProxy* fProxy;
+            operator sk_sp<TextureProxy>() const { return sk_ref_sp(fProxy); }
+        };
+
+        using TextureProxyCache = DenseBiMap<const TextureProxy*, sk_sp<TextureProxy>, ProxyRef>;
+        using SamplerDescCache = DenseBiMap<SamplerDesc>;
+
+        BindingCache fBindingCache;
+
+        TextureProxyCache fProxyCache;
+        SamplerDescCache fSamplerCache;
+
+        BindingCache::Index fLastIndex = BindingCache::kInvalidIndex;
+    };
+
+    // Helper to manage packed fields within a uint64_t
+    template <uint64_t Bits, uint64_t Offset>
+    struct Bitfield {
+        static constexpr uint64_t kMask = ((uint64_t) 1 << Bits) - 1;
+        static constexpr uint64_t kOffset = Offset;
+        static constexpr uint64_t kBits = Bits;
+
+        static uint32_t get(uint64_t v) { return static_cast<uint32_t>((v >> kOffset) & kMask); }
+        static uint64_t set(uint32_t v) { return (v & kMask) << kOffset; }
+    };
+
+    /**
+     * Each Draw in a DrawList might be processed by multiple RenderSteps (determined by the Draw's
+     * Renderer), which can be sorted independently. Each (step, draw) pair produces its own
+     * SortKey.
+     *
+     * The goal of sorting draws for the DrawPass is to minimize pipeline transitions and dynamic
+     * binds within a pipeline, while still respecting the overall painter's order. This decreases
+     * the number of low-level draw commands in a command buffer and increases the size of those,
+     * allowing the GPU to operate more efficiently and have fewer bubbles within its own
+     * instruction stream.
+     *
+     * The Draw's CompresssedPaintersOrder and DisjointStencilINdex represent the most significant
+     * bits of the key, and are shared by all SortKeys produced by the same draw. Next, the pipeline
+     * description is encoded in two steps:
+     *  1. The index of the RenderStep packed in the high bits to ensure each step for a draw is
+     *     ordered correctly.
+     *  2. An index into a cache of pipeline descriptions is used to encode the identity of the
+     *     pipeline (SortKeys that differ in the bits from #1 necessarily would have different
+     *     descriptions, but then the specific ordering of the RenderSteps isn't enforced). Last,
+     *     the SortKey encodes an index into the set of uniform bindings accumulated for a DrawPass.
+     *     This allows the SortKey to cluster draw steps that have both a compatible pipeline and do
+     *     not require rebinding uniform data or other state (e.g. scissor). Since the uniform data
+     *     index and the pipeline description index are packed into indices and not actual pointers,
+     *     a given SortKey is only valid for the a specific DrawList->DrawPass conversion.
+     */
+    class SortKey {
+    public:
+        SortKey(const Draw* draw,
+                int renderStep,
+                GraphicsPipelineCache::Index pipelineIndex,
+                UniformDataCache::Index geomUniformIndex,
+                UniformDataCache::Index shadingUniformIndex,
+                TextureBindingCache::Index textureBindingIndex)
+            : fPipelineKey(ColorDepthOrderField::set(draw->first.order().paintOrder().bits()) |
+                           StencilIndexField::set(draw->first.order().stencilIndex().bits())  |
+                           RenderStepField::set(static_cast<uint32_t>(renderStep))            |
+                           PipelineField::set(pipelineIndex))
+            , fUniformKey(GeometryUniformField::set(geomUniformIndex)   |
+                          ShadingUniformField::set(shadingUniformIndex) |
+                          TextureBindingsField::set(textureBindingIndex))
+            , fDraw(draw) {
+            SkASSERT(pipelineIndex < GraphicsPipelineCache::kInvalidIndex);
+            SkASSERT(renderStep <= draw->fRenderer->numRenderSteps());
+        }
+
+        bool operator<(const SortKey& k) const {
+            return fPipelineKey < k.fPipelineKey ||
+                (fPipelineKey == k.fPipelineKey && fUniformKey < k.fUniformKey);
+        }
+
+        const RenderStep& renderStep() const {
+            return fDraw->second->step(RenderStepField::get(fPipelineKey));
+        }
+
+        const DrawList::Draw& draw() const { return *fDraw; }
+
+        GraphicsPipelineCache::Index pipelineIndex() const {
+            return PipelineField::get(fPipelineKey);
+        }
+        UniformDataCache::Index geometryUniformIndex() const {
+            return GeometryUniformField::get(fUniformKey);
+        }
+        UniformDataCache::Index shadingUniformIndex() const {
+            return ShadingUniformField::get(fUniformKey);
+        }
+        TextureBindingCache::Index textureBindingIndex() const {
+            return TextureBindingsField::get(fUniformKey);
+        }
+
+    private:
+        // Fields are ordered from most-significant to least when sorting by 128-bit value.
+        // NOTE: We don't use C++ bit fields because field ordering is implementation defined and we
+        // need to sort consistently.
+        using ColorDepthOrderField = Bitfield<16, 48>; // sizeof(CompressedPaintersOrder)
+        using StencilIndexField    = Bitfield<16, 32>; // sizeof(DisjointStencilIndex)
+        using RenderStepField      = Bitfield<2,  30>; // bits >= log2(Renderer::kMaxRenderSteps)
+        using PipelineField        = Bitfield<30, 0>;  // bits >= log2(max total steps in draw list)
+        uint64_t fPipelineKey;
+
+        // The uniform/texture index fields need 1 extra bit to encode "no-data". Values that are
+        // greater than or equal to 2^(bits-1) represent "no-data", while values between
+        // [0, 2^(bits-1)-1] can access data arrays without extra logic.
+        using GeometryUniformField = Bitfield<17, 47>; // bits >= 1+log2(max total steps)
+        using ShadingUniformField  = Bitfield<17, 30>; // bits >= 1+log2(max total steps)
+        using TextureBindingsField = Bitfield<30, 0>;  // bits >= 1+log2(max total steps)
+        uint64_t fUniformKey;
+
+        // Backpointer to the draw that produced the sort key
+        const Draw* fDraw;
+
+        static_assert(ColorDepthOrderField::kBits >= sizeof(CompressedPaintersOrder));
+        static_assert(StencilIndexField::kBits    >= sizeof(DisjointStencilIndex));
+        static_assert(RenderStepField::kBits      >= SkNextLog2_portable(Renderer::kMaxRenderSteps));
+        static_assert(PipelineField::kBits        >= SkNextLog2_portable(DrawList::kMaxRenderSteps));
+        static_assert(GeometryUniformField::kBits >= 1+SkNextLog2_portable(DrawList::kMaxRenderSteps));
+        static_assert(ShadingUniformField::kBits  >= 1+SkNextLog2_portable(DrawList::kMaxRenderSteps));
+        static_assert(TextureBindingsField::kBits >= 1+SkNextLog2_portable(DrawList::kMaxRenderSteps));
     };
 
     // The returned Transform reference remains valid for the lifetime of the DrawList.
@@ -110,15 +324,35 @@ private:
     SkTBlockList<Transform, 16> fTransforms{SkBlockAllocator::GrowthPolicy::kFibonacci};
     SkTBlockList<Draw, 16>      fDraws{SkBlockAllocator::GrowthPolicy::kFibonacci};
 
-    // Running total of RenderSteps for all draws, assuming nothing is culled
-    int fRenderStepCount = 0;
+    // The SortKey array must be a contiguous vector so that it can be sorted; but they are also
+    // small and POD so gain less benefits from a SkTBlockList's allocation strategy.
+    skia_private::TArray<SortKey> fSortKeys;
+
+    // Reused for each draw to avoid re-allocating byte arrays (reaches high-water mark), and
+    // accumulates all gradient data for the random SSBO access.
+    PipelineDataGatherer  fDataGatherer;
+    PaintParamsKeyBuilder fKeyBuilder; // also reused
+
+    // Keeps uniform and texture data blocks alive that are referenced by recorded draws, as well
+    // as de-duplicating draws with the same block values.
+    UniformDataCache    fPaintUniformCache;
+    UniformDataCache    fRenderStepUniformCache;
+    TextureBindingCache fTextureBindingCache;
+
+    // Collects all pipelines, samplers, and textures referenced by recorded draws for indexed
+    // command recording and resource instantiation in the final DrawPass.
+    GraphicsPipelineCache fPipelineCache;
+
+    // Aggregated properties of all collected draws.
+    Rect fDrawBounds    = Rect::InfiniteInverted();
+    Rect fDstCopyBounds = Rect::InfiniteInverted();
+    SkEnumBitMask<DepthStencilFlags> fDepthStencilFlags = DepthStencilFlags::kNone;
+    bool fRequiresMSAA = false;
 
 #if defined(SK_DEBUG)
     // The number of CoverageMask draws that have been recorded. Used in debugging.
     int fCoverageMaskShapeDrawCount = 0;
 #endif
-
-    Rect fDstCopyBounds = Rect::InfiniteInverted();
 };
 
 } // namespace skgpu::graphite
