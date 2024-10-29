@@ -446,11 +446,10 @@ static void setup_shader_stage_info(VkShaderStageFlagBits stage,
     shaderStageInfo->pSpecializationInfo = nullptr;
 }
 
-
 static VkDescriptorSetLayout descriptor_data_to_layout(const VulkanSharedContext* sharedContext,
         const SkSpan<DescriptorData>& descriptorData) {
-    if (descriptorData.empty()) { return VK_NULL_HANDLE; }
-
+    // descriptorData can be an empty span. This results in the creation of a "dummy layout" which
+    // can be necessary to maintain decriptor set slot binding indices.
     VkDescriptorSetLayout setLayout;
     DescriptorDataToVkDescSetLayout(sharedContext, descriptorData, &setLayout);
     if (setLayout == VK_NULL_HANDLE) {
@@ -472,8 +471,13 @@ static void destroy_desc_set_layouts(const VulkanSharedContext* sharedContext,
     }
 }
 
+enum UniformStructure {
+    kUsesIntrinsicConstantUbo,
+    kUsesPushConstants,
+    kUsesNone
+};
 static VkPipelineLayout setup_pipeline_layout(const VulkanSharedContext* sharedContext,
-                                              bool usesIntrinsicConstantUbo,
+                                              UniformStructure uniformStructure,
                                               bool hasStepUniforms,
                                               bool hasPaintUniforms,
                                               bool hasGradientBuffer,
@@ -486,8 +490,8 @@ static VkPipelineLayout setup_pipeline_layout(const VulkanSharedContext* sharedC
     // Determine uniform descriptor set layout
     skia_private::STArray<VulkanGraphicsPipeline::kNumUniformBuffers, DescriptorData>
             uniformDescriptors;
-    if (usesIntrinsicConstantUbo) {
-        uniformDescriptors.push_back(VulkanGraphicsPipeline::kIntrinsicUniformBufferDescriptor);
+    if (uniformStructure == UniformStructure::kUsesIntrinsicConstantUbo) {
+        uniformDescriptors.push_back(VulkanGraphicsPipeline::kIntrinsicUniformDescriptor);
     }
 
     DescriptorType uniformBufferType = sharedContext->caps()->storageBufferSupport()
@@ -515,10 +519,16 @@ static VkPipelineLayout setup_pipeline_layout(const VulkanSharedContext* sharedC
             PipelineStageFlags::kFragmentShader});
     }
 
-    if (!uniformDescriptors.empty()) {
+    // We should only use a uniform descriptor set layout if we either A) have actual uniform
+    // descriptors or B) we are not using input attachments. Iff we have no uniforms nor any input
+    // attachments, then we should insert a "dummy" descriptor set layout to maintain the descriptor
+    // set binding slots.
+    if (!uniformDescriptors.empty() || numInputAttachments == 0) {
         VkDescriptorSetLayout uniformSetLayout =
                 descriptor_data_to_layout(sharedContext, {uniformDescriptors});
-        if (uniformSetLayout == VK_NULL_HANDLE) { return VK_NULL_HANDLE; }
+        if (uniformSetLayout == VK_NULL_HANDLE) {
+            return VK_NULL_HANDLE;
+        }
         setLayouts.push_back(uniformSetLayout);
     }
 
@@ -573,6 +583,13 @@ static VkPipelineLayout setup_pipeline_layout(const VulkanSharedContext* sharedC
     }
 
     // Generate a pipeline layout using the now-populated descriptor set layout array
+    VkPushConstantRange pushConstantRange;
+    bool usePushConstants = uniformStructure == UniformStructure::kUsesPushConstants;
+    if (usePushConstants) {
+        pushConstantRange.offset = 0;
+        pushConstantRange.size = VulkanResourceProvider::kIntrinsicConstantSize;
+        pushConstantRange.stageFlags = VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT;
+    }
     VkPipelineLayoutCreateInfo layoutCreateInfo;
     memset(&layoutCreateInfo, 0, sizeof(VkPipelineLayoutCreateFlags));
     layoutCreateInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
@@ -580,9 +597,8 @@ static VkPipelineLayout setup_pipeline_layout(const VulkanSharedContext* sharedC
     layoutCreateInfo.flags = 0;
     layoutCreateInfo.setLayoutCount = setLayouts.size();
     layoutCreateInfo.pSetLayouts = setLayouts.begin();
-    // TODO: Add support for push constants.
-    layoutCreateInfo.pushConstantRangeCount = 0;
-    layoutCreateInfo.pPushConstantRanges = nullptr;
+    layoutCreateInfo.pushConstantRangeCount = usePushConstants ? 1 : 0;
+    layoutCreateInfo.pPushConstantRanges = usePushConstants ? &pushConstantRange : nullptr;
 
     VkResult result;
     VkPipelineLayout layout;
@@ -630,14 +646,15 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
         const RuntimeEffectDictionary* runtimeDict,
         const GraphicsPipelineDesc& pipelineDesc,
         const RenderPassDesc& renderPassDesc) {
-    SkASSERT(rsrcProvider);
-    SkSL::Program::Interface vsInterface, fsInterface;
+
+    const VulkanSharedContext* sharedContext = rsrcProvider->vulkanSharedContext();
+    bool usePushConstants = sharedContext->vulkanCaps().usePushConstants();
 
     SkSL::ProgramSettings settings;
     settings.fSharpenTextures = true;
-    settings.fForceNoRTFlip = true; // TODO: Confirm
+    settings.fForceNoRTFlip = true;
+    settings.fUseVulkanPushConstants = usePushConstants;
 
-    const VulkanSharedContext* sharedContext = rsrcProvider->vulkanSharedContext();
     ShaderErrorHandler* errorHandler = sharedContext->caps()->shaderErrorHandler();
 
     const RenderStep* step = sharedContext->rendererProvider()->lookup(pipelineDesc.renderStepID());
@@ -689,7 +706,7 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
     bool hasFragmentSkSL = !fsSkSL.empty();
     std::string vsSPIRV, fsSPIRV;
     VkShaderModule fsModule = VK_NULL_HANDLE, vsModule = VK_NULL_HANDLE;
-
+    SkSL::Program::Interface vsInterface, fsInterface;
     if (hasFragmentSkSL) {
         if (!skgpu::SkSLToSPIRV(sharedContext->caps()->shaderCaps(),
                                 fsSkSL,
@@ -774,14 +791,14 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
     // loading MSAA from resolve so we can simply pass in 0 when not doing that.
     VkPipelineLayout pipelineLayout =
             setup_pipeline_layout(sharedContext,
-                                  /*usesIntrinsicConstantUbo=*/true,
+                                  usePushConstants ? UniformStructure::kUsesPushConstants
+                                                   : UniformStructure::kUsesIntrinsicConstantUbo,
                                   !step->uniforms().empty(),
                                   fsSkSLInfo.fHasPaintUniforms,
                                   fsSkSLInfo.fHasGradientBuffer,
                                   fsSkSLInfo.fNumTexturesAndSamplers,
                                   /*numInputAttachments=*/0,
                                   SkSpan<sk_sp<VulkanSampler>>(immutableSamplers));
-
     if (pipelineLayout == VK_NULL_HANDLE) {
         destroy_shader_modules(sharedContext, vsModule, fsModule);
         return nullptr;
@@ -932,7 +949,7 @@ bool VulkanGraphicsPipeline::InitializeMSAALoadPipelineStructs(
     inputAttachmentDescriptors.push_back(VulkanGraphicsPipeline::kInputAttachmentDescriptor);
     // TODO: Do we need to consider the potential usage of immutable YCbCr samplers here?
     *outPipelineLayout = setup_pipeline_layout(sharedContext,
-                                               /*usesIntrinsicConstantUbo=*/false,
+                                               UniformStructure::kUsesNone,
                                                /*hasStepUniforms=*/false,
                                                /*hasPaintUniforms=*/false,
                                                /*hasGradientBuffer=*/false,

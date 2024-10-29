@@ -75,6 +75,8 @@ public:
         return fShouldAlwaysUseDedicatedImageMemory;
     }
 
+    bool usePushConstants() const { return fUsePushConstants; }
+
     // Returns whether a pure GPU accessible buffer is more performant to read than a buffer that is
     // also host visible. If so then in some cases we may prefer the cost of doing a copy to the
     // buffer. This typically would only be the case for buffers that are written once and read
@@ -88,15 +90,11 @@ public:
         return fShouldPersistentlyMapCpuToGpuBuffers;
     }
 
-    bool supportsYcbcrConversion() const { return fSupportsYcbcrConversion; }
+    bool supportsYcbcrConversion()   const { return fSupportsYcbcrConversion; }
+    bool supportsDeviceFaultInfo()   const { return fSupportsDeviceFaultInfo; }
 
-    bool supportsDeviceFaultInfo() const { return fSupportsDeviceFaultInfo; }
-
-    uint32_t maxVertexAttributes() const {
-        return fMaxVertexAttributes;
-    }
+    uint32_t maxVertexAttributes()   const { return fMaxVertexAttributes;   }
     uint64_t maxUniformBufferRange() const { return fMaxUniformBufferRange; }
-
     uint64_t maxStorageBufferRange() const { return fMaxStorageBufferRange; }
 
     const VkPhysicalDeviceMemoryProperties2& physicalDeviceMemoryProperties2() const {
@@ -250,6 +248,7 @@ private:
     bool fGpuOnlyBuffersMorePerformant = false;
     bool fShouldPersistentlyMapCpuToGpuBuffers = true;
     bool fSupportsDeviceFaultInfo = false;
+    bool fUsePushConstants  = false;
 };
 
 } // namespace skgpu::graphite
