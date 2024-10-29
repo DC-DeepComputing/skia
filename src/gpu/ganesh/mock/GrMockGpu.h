@@ -19,6 +19,7 @@
 #include "include/private/base/SkTArray.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/core/SkTHash.h"
+#include "src/gpu/RefCntedCallback.h"
 #include "src/gpu/ganesh/GrAttachment.h"
 #include "src/gpu/ganesh/GrGpu.h"
 #include "src/gpu/ganesh/GrOpsRenderPass.h"
@@ -45,7 +46,6 @@ class GrThreadSafePipelineBuilder;
 struct GrContextOptions;
 
 namespace skgpu {
-class RefCntedCallback;
 enum class Budgeted : bool;
 enum class Mipmapped : bool;
 }
@@ -77,7 +77,7 @@ public:
 
     void submit(GrOpsRenderPass* renderPass) override;
 
-    void checkFinishProcs() override {}
+    void checkFinishedCallbacks() override {}
     void finishOutstandingGpuWork() override {}
 
 private:
@@ -178,10 +178,8 @@ private:
 
     void onResolveRenderTarget(GrRenderTarget* target, const SkIRect&) override {}
 
-    void addFinishedProc(GrGpuFinishedProc finishedProc,
-                         GrGpuFinishedContext finishedContext) override {
-        SkASSERT(finishedProc);
-        finishedProc(finishedContext);
+    void addFinishedCallback(skgpu::AutoCallback callback, std::optional<GrTimerQuery>) override {
+        SkASSERT(callback);
     }
 
     GrOpsRenderPass* onGetOpsRenderPass(
