@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "240f9c7e_c0ac27ff",
+        "filename": "BUILD.gn",
+        "patchSetId": 27
+      },
+      "lineNbr": 385,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-29T14:38:51Z",
+      "side": 1,
+      "message": "Is this really wanted here? This is already being built from `typeface_freetype` and building it in twice is probably an ODR issue?",
+      "revId": "f9360bd4256972f0613efce60f59ba631e5b8e30",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "492ee9f4_9fbee88e",
+        "filename": "BUILD.gn",
+        "patchSetId": 27
+      },
+      "lineNbr": 402,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-29T14:38:51Z",
+      "side": 1,
+      "message": "These two conditional `deps` are not needed and not having them is the reason we\u0027re splitting this out. We don\u0027t want the interface test (implementation agnostic) to depend on the implementations.",
+      "revId": "f9360bd4256972f0613efce60f59ba631e5b8e30",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
