@@ -31,6 +31,10 @@
 
 #include <vector>
 
+void foo(const char* name, int sample, int min, int max, int bucketCount) {
+
+}
+
 namespace skgpu::graphite {
 
 namespace {
@@ -247,7 +251,27 @@ static wgpu::BlendOperation blend_equation_to_dawn_blend_op(skgpu::BlendEquation
 struct AsyncPipelineCreationBase {
     wgpu::RenderPipeline fRenderPipeline;
     bool fFinished = false;
+#if SK_HISTOGRAMS_ENABLED
+    double fStartTime = 0;
+#endif
 };
+
+#if SK_HISTOGRAMS_ENABLED
+// A null fRenderPipeline means Pipeline creation failed
+void log_it(const AsyncPipelineCreationBase* apcb)
+    static constexpr int kBucketCount = 100;
+
+    SkASSERT(apcb->fFinished);
+    double timeDelta = SkTime::GetMSecs() - asyncCreation->fStartTime;
+
+    UMA_HISTOGRAM_CUSTOM_MICROSECONDS_TIMES(
+        "Graphite.Dawn.PipelineCreation",
+        timeDelta,
+        base::Microseconds(1),
+        base::Milliseconds(400),
+        kBucketCount);
+}
+#endif
 
 } // anonymous namespace
 
@@ -261,7 +285,7 @@ struct DawnGraphicsPipeline::AsyncPipelineCreation : public AsyncPipelineCreatio
 #endif
 
 // static
-sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
+sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make1(
         const DawnSharedContext* sharedContext,
         DawnResourceProvider* resourceProvider,
         const RuntimeEffectDictionary* runtimeDict,
@@ -607,6 +631,10 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
         // We shouldn't use CreateRenderPipelineAsync in wasm.
         SKGPU_LOG_F("CreateRenderPipelineAsync shouldn't be used in WASM");
 #else
+#if SK_HISTOGRAMS_ENABLED
+        asyncCreation->fStartTime = SkTime::GetMSecs();
+#endif
+
         asyncCreation->fFuture = device.CreateRenderPipelineAsync(
                 &descriptor,
                 wgpu::CallbackMode::WaitAnyOnly,
@@ -625,6 +653,10 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
                     }
 
                     asyncCreationPtr->fFinished = true;
+
+#if SK_HISTOGRAMS_ENABLED
+                    log_it(asyncCreationPtr);
+#endif
                 });
 #endif
     } else {
@@ -632,13 +664,23 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
         if (sharedContext->dawnCaps()->allowScopedErrorChecks()) {
             errorChecker.emplace(sharedContext);
         }
+
+#if SK_HISTOGRAMS_ENABLED
+        asyncCreation->fStartTime = SkTime::GetMSecs();
+#endif
+
         asyncCreation->fRenderPipeline = device.CreateRenderPipeline(&descriptor);
         asyncCreation->fFinished = true;
 
         if (errorChecker.has_value() && errorChecker->popErrorScopes() != DawnErrorType::kNoError) {
             asyncCreation->fRenderPipeline = nullptr;
         }
+
+#if SK_HISTOGRAMS_ENABLED
+        log_it(asyncCreation.get());
+#endif
     }
+
 
     PipelineInfo pipelineInfo{vsSkSLInfo, fsSkSLInfo};
 #if defined(GPU_TEST_UTILS)

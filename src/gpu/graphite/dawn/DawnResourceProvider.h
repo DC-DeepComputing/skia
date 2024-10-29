@@ -61,7 +61,7 @@ public:
                                                                      const DawnTexture* texture);
 
 private:
-    sk_sp<GraphicsPipeline> createGraphicsPipeline(const RuntimeEffectDictionary*,
+    sk_sp<GraphicsPipeline> createGraphicsPipeline1(const RuntimeEffectDictionary*,
                                                    const GraphicsPipelineDesc&,
                                                    const RenderPassDesc&,
                                                    SkEnumBitMask<PipelineCreationFlags>) override;

@@ -51,7 +51,7 @@ ResourceProvider::~ResourceProvider() {
     fResourceCache->shutdown();
 }
 
-sk_sp<GraphicsPipeline> ResourceProvider::findOrCreateGraphicsPipeline(
+sk_sp<GraphicsPipeline> ResourceProvider::findOrCreateGraphicsPipeline1(
         const RuntimeEffectDictionary* runtimeDict,
         const GraphicsPipelineDesc& pipelineDesc,
         const RenderPassDesc& renderPassDesc,
@@ -71,7 +71,7 @@ sk_sp<GraphicsPipeline> ResourceProvider::findOrCreateGraphicsPipeline(
         TRACE_EVENT1_ALWAYS(
                 "skia.shaders", "createGraphicsPipeline", "desc",
                 TRACE_STR_COPY(to_str(fSharedContext, pipelineDesc, renderPassDesc).c_str()));
-        pipeline = this->createGraphicsPipeline(runtimeDict, pipelineDesc, renderPassDesc,
+        pipeline = this->createGraphicsPipeline1(runtimeDict, pipelineDesc, renderPassDesc,
                                                 pipelineCreationFlags);
         if (pipeline) {
             // TODO: Should we store a null pipeline if we failed to create one so that subsequent

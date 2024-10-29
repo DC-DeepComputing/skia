@@ -94,6 +94,11 @@
 //#define SK_HISTOGRAM_EXACT_LINEAR(name, sample, value_max)
 //#define SK_HISTOGRAM_MEMORY_KB(name, sample)
 
+void foo(const char* name, int sample, int min, int max, int bucketCount);
+
+#define SK_HISTOGRAM_CUSTOM_MICROSECONDS_TIMES(name, sample, min, max, bucketCount) \
+    foo(name, sample, min, max, bucketCount);
+
 // To use smaller but slower mipmap builder
 //#define SK_USE_DRAWING_MIPMAP_DOWNSAMPLER
 
