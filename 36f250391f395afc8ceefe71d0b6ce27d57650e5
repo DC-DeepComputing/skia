@@ -33,6 +33,24 @@
       "message": "LGTM\n\nI\u0027ve opened https://crbug.com/376235346 to track this failure.  Reverting is not a big deal, because this CL just contains/contained new tests.",
       "revId": "36f250391f395afc8ceefe71d0b6ce27d57650e5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dac67c06_1ef4d94f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-10-29T14:17:06Z",
+      "side": 1,
+      "message": "OK, thanks!",
+      "parentUuid": "870a94db_b3e590de",
+      "revId": "36f250391f395afc8ceefe71d0b6ce27d57650e5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
