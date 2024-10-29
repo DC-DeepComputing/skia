@@ -1,0 +1,100 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7743e8f_ba1acee0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-10-29T17:46:33Z",
+      "side": 1,
+      "message": "Sweet! Some initial thoughts.",
+      "revId": "8a945d98c970c22e173809387a95d1580f9c9128",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06f7c2b4_c01ed407",
+        "filename": "include/core/SkContourMeasure.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-10-29T17:46:33Z",
+      "side": 1,
+      "message": "A couple of thoughts here:\n\n1) Instead of allocating a vector for all distances, maybe we should just offer a `std::optional\u003cSkScalar\u003e getSegmentDistance(size_t index)`.  It\u0027s a simple indexing op, so no overhead in iterating in the client - and then clients can decide how to use the data, potentially avoiding the vector allocation.\n\n2) Segment granularity seems more than we need, as we can have multiple segments per verb.  I think the same approach should work with verbs, and would yield fewer intermediate `t` points on paths.  It\u0027s a little more work to expose verb distance info (https://skia-review.googlesource.com/c/skia/+/913916), I guess we can start with segments and then we can update for verbs.",
+      "revId": "8a945d98c970c22e173809387a95d1580f9c9128",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "13b70024_a6da9f91",
+        "filename": "include/private/SkPathRef.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 556,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-10-29T17:46:33Z",
+      "side": 1,
+      "message": "Hopefully not needed.",
+      "fixSuggestions": [
+        {
+          "fixId": "f629cb2a_44007655",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/private/SkPathRef.h",
+              "range": {
+                "startLine": 62,
+                "startChar": 0,
+                "endLine": 63,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "include/private/SkPathRef.h",
+              "range": {
+                "startLine": 556,
+                "startChar": 0,
+                "endLine": 557,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "8a945d98c970c22e173809387a95d1580f9c9128",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b76a78d_87add3f9",
+        "filename": "src/core/SkPath.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 354,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-10-29T17:46:33Z",
+      "side": 1,
+      "message": "Can we keep this as a separate utility for now?  It could even live in `PathLerpSlide.cpp` initially, while we hack on it.  Then we can \"launch\" to `SkPathUtils`.  Updating the existing `SkPath::interpolate` behavior would be the last stage, as it can potentially disrupt existing clients.",
+      "revId": "8a945d98c970c22e173809387a95d1580f9c9128",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
