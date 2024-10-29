@@ -9,6 +9,7 @@
 
 #include "include/core/SkArc.h"
 #include "include/core/SkPathBuilder.h"
+#include "include/core/SkPathMeasure.h"
 #include "include/core/SkRRect.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkString.h"
@@ -1759,6 +1760,28 @@ void SkPath::transform(const SkMatrix& matrix, SkPath* dst, SkApplyPerspectiveCl
 
         SkDEBUGCODE(dst->validate();)
     }
+}
+
+void SkPath::parameterize(int num_of_t, SkPath* dst) const {
+    // TODO: make num_of_t unsigned int
+    SkASSERT(num_of_t >= 0);
+    SkPathMeasure meas(*this, false);
+    dst->reset();
+
+    do {
+        SkScalar length = meas.getLength();
+        double distance  = 0;
+        double dlen = length / num_of_t;
+
+        while (distance < length) {
+            meas.getSegment(SkDoubleToScalar(distance),
+                            SkDoubleToScalar(distance + dlen),
+                            dst, true);
+
+            distance += dlen;
+        }
+
+    } while (meas.nextContour());
 }
 
 ///////////////////////////////////////////////////////////////////////////////
