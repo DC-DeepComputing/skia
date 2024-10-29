@@ -124,10 +124,27 @@ std::unique_ptr<ResourceProvider> VulkanSharedContext::makeResourceProvider(
         uint32_t recorderID,
         size_t resourceBudget,
         bool avoidBufferAlloc) {
-
     sk_sp<Buffer> intrinsicConstantBuffer;
-    sk_sp<Buffer> loadMSAAVertexBuffer;
+    if (!this->vulkanCaps().usePushConstants()) {
+        // If we are not using push constants, establish a uniform buffer that can be updated across
+        // multiple render passes and cmd buffers.
+        size_t alignedIntrinsicConstantSize =
+                std::max(VulkanResourceProvider::kIntrinsicConstantSize,
+                        this->vulkanCaps().requiredUniformBufferAlignment());
+        intrinsicConstantBuffer = VulkanBuffer::Make(this,
+                                                     alignedIntrinsicConstantSize,
+                                                     BufferType::kUniform,
+                                                     AccessPattern::kGpuOnly);
+        if (!intrinsicConstantBuffer) {
+            SKGPU_LOG_E("Failed to create intrinsic constant uniform buffer");
+            return nullptr;
+        }
+        SkASSERT(static_cast<VulkanBuffer*>(intrinsicConstantBuffer.get())->bufferUsageFlags()
+                & VK_BUFFER_USAGE_TRANSFER_DST_BIT);
+        intrinsicConstantBuffer->setLabel("IntrinsicConstantBuffer");
+    }
 
+    sk_sp<Buffer> loadMSAAVertexBuffer;
     if (!avoidBufferAlloc) {
         // Establish a uniform buffer that can be updated across multiple render passes and
         // cmd buffers
