@@ -63,7 +63,7 @@ void compile(const RendererProvider* rendererProvider,
                                                                : UniquePaintParamsID::InvalidID();
             GraphicsPipelineDesc pipelineDesc(s, paintID);
 
-            sk_sp<GraphicsPipeline> pipeline = resourceProvider->findOrCreateGraphicsPipeline(
+            sk_sp<GraphicsPipeline> pipeline = resourceProvider->findOrCreateGraphicsPipeline1(
                     keyContext.rtEffectDict(),
                     pipelineDesc,
                     renderPassDesc,
@@ -86,7 +86,7 @@ bool Precompile(Context* context,
                 const RenderPassDesc& renderPassDesc) {
     ResourceProvider* resourceProvider = context->priv().resourceProvider();
 
-    sk_sp<GraphicsPipeline> pipeline = resourceProvider->findOrCreateGraphicsPipeline(
+    sk_sp<GraphicsPipeline> pipeline = resourceProvider->findOrCreateGraphicsPipeline1(
             rteDict,
             pipelineDesc,
             renderPassDesc,

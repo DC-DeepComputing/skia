@@ -53,7 +53,7 @@ public:
 
     // The runtime effect dictionary provides a link between SkCodeSnippetIds referenced in the
     // paint key and the current SkRuntimeEffect that provides the SkSL for that id.
-    sk_sp<GraphicsPipeline> findOrCreateGraphicsPipeline(
+    sk_sp<GraphicsPipeline> findOrCreateGraphicsPipeline1(
             const RuntimeEffectDictionary*,
             const GraphicsPipelineDesc&,
             const RenderPassDesc&,
@@ -126,7 +126,7 @@ protected:
     sk_sp<ResourceCache> fResourceCache;
 
 private:
-    virtual sk_sp<GraphicsPipeline> createGraphicsPipeline(
+    virtual sk_sp<GraphicsPipeline> createGraphicsPipeline1(
             const RuntimeEffectDictionary*,
             const GraphicsPipelineDesc&,
             const RenderPassDesc&,
