@@ -9,6 +9,7 @@
 #include "include/core/SkCanvas.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkPaint.h"
+#include "include/core/SkPath.h"
 #include "include/core/SkSurface.h"
 
 static void draw_small_circle(SkCanvas* canvas, const SkPaint& p, const float radius) {
@@ -45,4 +46,27 @@ DEF_SIMPLE_GM(smallcircles, canvas, 425, 425) {
     canvas->scale(7, 7);
     auto img = surface->makeImageSnapshot();
     canvas->drawImage(img, 0, 0);
+}
+
+DEF_SIMPLE_GM(path_interpolate, canvas, 200, 200) {
+  SkPath path;
+  path.moveTo(0, 50);
+  path.quadTo(0, 0, 50, 0);
+  path.quadTo(100, 0, 100, 50);
+
+  SkPath path2;
+  path2.moveTo(0, 50);
+  path2.quadTo(0, 100, 50, 100);
+  path2.quadTo(100, 100, 100, 50);
+  path2.lineTo(200, 50);
+
+
+  SkPaint p;
+  p.setColor(0xff424242);
+  p.setStyle(SkPaint::kStroke_Style);
+  p.setAntiAlias(true);
+  SkPath interp;
+  path.interpolate(path2, 0.5, &interp);
+  canvas->drawPath(interp, p);
+
 }
