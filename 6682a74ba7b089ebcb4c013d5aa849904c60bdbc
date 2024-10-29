@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "89f0de8c_b245a8e6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-29T18:16:10Z",
+      "side": 1,
+      "message": "@danieldilan, can you PTAL?\n\n/cc @fmalita as FYI\n\nThis is a reland of http://review.skia.org/912263that got 1) trimmed down (removed `resources/images/apng-test-suite--blend-ops--source-on-transparent.png` and the corresponding test) and 2) rebased and tweaked to account for test API changes from the earlier CL at http://review.skia.org/c/skia/+/913917/3/tests/SkPngRustDecoderTest.cpp.",
+      "revId": "6682a74ba7b089ebcb4c013d5aa849904c60bdbc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
