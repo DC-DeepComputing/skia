@@ -34,6 +34,24 @@
       ],
       "revId": "128f4c0999ed3e5d70c42da0f634c3364dbb44a5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4377bb81_df16ac2b",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 634,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-10-29T19:25:32Z",
+      "side": 1,
+      "message": "Interesting idea - let\u0027s try this.\n\nOn one hand, this assertion goes beyond what the code needs/expects today.  OTOH, monotonically increasing stream size seems like a reasonable assumption and we would want to learn if this assumption may get violated.\n\nDone.",
+      "parentUuid": "ec815ccc_a37cb10e",
+      "revId": "128f4c0999ed3e5d70c42da0f634c3364dbb44a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
