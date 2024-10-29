@@ -81,7 +81,7 @@ struct SkPDFStructElem {
     bool fWantTitle = false;
     bool fUsed = false;
     bool fUsedInIDTree = false;
-    SkString fTypeString;
+    SkString fStructType;
     SkString fTitle;
     SkString fAlt;
     SkString fLang;
@@ -213,7 +213,7 @@ void SkPDFStructTree::move(SkPDF::StructureElementNode& node,
                  type.size() == 2 && type[0] == 'H' && '1' <= type[1] && type[1] <= '6';
     structElem->fWantTitle = wantTitle;
 
-    structElem->fTypeString = std::move(node.fTypeString);
+    structElem->fStructType = std::move(node.fTypeString);
     structElem->fAlt = std::move(node.fAlt);
     structElem->fLang = std::move(node.fLang);
 
@@ -230,6 +230,10 @@ void SkPDFStructTree::move(SkPDF::StructureElementNode& node,
 
 int SkPDFStructTree::Mark::elemId() const {
     return fStructElem ? fStructElem->fElemId : 0;
+}
+
+SkString SkPDFStructTree::Mark::structType() const {
+    return fStructElem ? fStructElem->fStructType : SkString();
 }
 
 int SkPDFStructTree::Mark::mcid() const {
@@ -297,10 +301,10 @@ SkPDFIndirectReference SkPDFStructElem::emitStructElem(
     fRef = doc->reserveRef();
 
     SkPDFDict dict("StructElem");
-    if (fTypeString.isEmpty()) {
+    if (fStructType.isEmpty()) {
         dict.insertName("S", "NonStruct");
     } else {
-        dict.insertName("S", fTypeString);
+        dict.insertName("S", fStructType);
     }
 
     if (!fAlt.isEmpty()) {
@@ -556,7 +560,7 @@ OutlineEntry::Content create_outline_entry_content(SkPDFStructElem* const struct
 }
 void create_outline_from_headers(SkPDFDocument* const doc, SkPDFStructElem* const structElem,
                                  STArray<7, OutlineEntry*>& stack) {
-    const SkString& type = structElem->fTypeString;
+    const SkString& type = structElem->fStructType;
     if (type.size() == 2 && type[0] == 'H' && '1' <= type[1] && type[1] <= '6') {
         int level = type[1] - '0';
         while (level <= stack.back()->fHeaderLevel) {
