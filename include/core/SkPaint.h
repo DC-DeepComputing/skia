@@ -27,6 +27,7 @@ class SkColorSpace;
 class SkImageFilter;
 class SkMaskFilter;
 class SkPathEffect;
+class SkStrokeEffect;
 class SkShader;
 enum class SkBlendMode;
 struct SkRect;
@@ -526,6 +527,11 @@ public:
     */
     void setPathEffect(sk_sp<SkPathEffect> pathEffect);
 
+
+    void setStrokeEffect(sk_sp<SkStrokeEffect>);
+    SkStrokeEffect* getStrokeEffect() const { return fStrokeEffect.get(); }
+    sk_sp<SkStrokeEffect> refStrokeEffect() const;
+
     /** Returns SkMaskFilter if set, or nullptr.
         Does not alter SkMaskFilter SkRefCnt.
 
@@ -659,6 +665,7 @@ public:
 
 private:
     sk_sp<SkPathEffect>   fPathEffect;
+    sk_sp<SkStrokeEffect> fStrokeEffect;
     sk_sp<SkShader>       fShader;
     sk_sp<SkMaskFilter>   fMaskFilter;
     sk_sp<SkColorFilter>  fColorFilter;

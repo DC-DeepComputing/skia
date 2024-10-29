@@ -168,8 +168,8 @@ class SkPathStroker {
 public:
     SkPathStroker(const SkPath& src,
                   SkScalar radius, SkScalar miterLimit, SkPaint::Cap,
-                  SkPaint::Join, SkScalar resScale,
-                  bool canIgnoreCenter);
+                  SkPaint::Join, sk_sp<SkStrokeEffect> strokeEffect,
+                  SkScalar resScale, bool canIgnoreCenter);
 
     bool hasOnlyMoveTo() const { return 0 == fSegmentCount; }
     SkPoint moveToPt() const { return fFirstPt; }
@@ -194,6 +194,7 @@ public:
     }
 
 private:
+    sk_sp<SkStrokeEffect> fStrokeEffect;
     SkScalar    fRadius;
     SkScalar    fInvMiterLimit;
     SkScalar    fResScale;
@@ -205,6 +206,7 @@ private:
     SkPoint     fFirstOuterPt;
     int         fFirstOuterPtIndexInContour;
     int         fSegmentCount;
+    size_t      fPointCount = 0;
     bool        fPrevIsLine;
     bool        fCanIgnoreCenter;
 
@@ -288,6 +290,17 @@ private:
                        const SkVector& unitNormal);
 
     void    line_to(const SkPoint& currPt, const SkVector& normal);
+
+    SkScalar adjustedRadius() const {
+        if (!fStrokeEffect) {
+            return fRadius;
+        }
+        SkScalar t = float(fPointCount)/float(fStrokeEffect->t_vals);
+        // SkDebugf("point count: %d, tvals: %d, t: %f\n", fPointCount, fStrokeEffect->t_vals, t);
+        SkScalar res = fStrokeEffect->strokeMultiplierAt(t) * fRadius;
+        // SkDebugf("adjusted radius: %f\n", res);
+        return res;
+    }
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -296,14 +309,14 @@ bool SkPathStroker::preJoinTo(const SkPoint& currPt, SkVector* normal,
                               SkVector* unitNormal, bool currIsLine) {
     SkASSERT(fSegmentCount >= 0);
 
-    if (!set_normal_unitnormal(fPrevPt, currPt, fResScale, fRadius, normal, unitNormal)) {
+    if (!set_normal_unitnormal(fPrevPt, currPt, fResScale, adjustedRadius(), normal, unitNormal)) {
         if (SkStrokerPriv::CapFactory(SkPaint::kButt_Cap) == fCapper) {
             return false;
         }
         /* Square caps and round caps draw even if the segment length is zero.
            Since the zero length segment has no direction, set the orientation
            to upright as the default orientation */
-        normal->set(fRadius, 0);
+        normal->set(adjustedRadius(), 0);
         unitNormal->set(1, 0);
     }
 
@@ -316,7 +329,7 @@ bool SkPathStroker::preJoinTo(const SkPoint& currPt, SkVector* normal,
         fInner.moveTo(fPrevPt - *normal);
     } else {    // we have a previous segment
         fJoiner(&fOuter, &fInner, fPrevUnitNormal, fPrevPt, *unitNormal,
-                fRadius, fInvMiterLimit, fPrevIsLine, currIsLine);
+                adjustedRadius(), fInvMiterLimit, fPrevIsLine, currIsLine);
     }
     fPrevIsLine = currIsLine;
     return true;
@@ -337,7 +350,7 @@ void SkPathStroker::finishContour(bool close, bool currIsLine) {
 
         if (close) {
             fJoiner(&fOuter, &fInner, fPrevUnitNormal, fPrevPt,
-                    fFirstUnitNormal, fRadius, fInvMiterLimit,
+                    fFirstUnitNormal, adjustedRadius(), fInvMiterLimit,
                     fPrevIsLine, currIsLine);
             fOuter.close();
 
@@ -381,14 +394,16 @@ void SkPathStroker::finishContour(bool close, bool currIsLine) {
 
 SkPathStroker::SkPathStroker(const SkPath& src,
                              SkScalar radius, SkScalar miterLimit,
-                             SkPaint::Cap cap, SkPaint::Join join, SkScalar resScale,
+                             SkPaint::Cap cap, SkPaint::Join join,
+                             sk_sp<SkStrokeEffect> strokeEffect, SkScalar resScale,
                              bool canIgnoreCenter)
-        : fRadius(radius)
+        : fStrokeEffect(strokeEffect)
+        , fRadius(radius)
         , fResScale(resScale)
         , fCanIgnoreCenter(canIgnoreCenter) {
 
     /*  This is only used when join is miter_join, but we initialize it here
-        so that it is always defined, to fis valgrind warnings.
+        so that it is always defined, to fix valgrind warnings.
     */
     fInvMiterLimit = 0;
 
@@ -476,13 +491,14 @@ void SkPathStroker::lineTo(const SkPoint& currPt, const SkPath::Iter* iter) {
     if (teenyLine && (fJoinCompleted || (iter && has_valid_tangent(iter)))) {
         return;
     }
-    SkVector    normal, unitNormal;
+    SkVector normal, unitNormal;
 
     if (!this->preJoinTo(currPt, &normal, &unitNormal, true)) {
         return;
     }
     this->line_to(currPt, normal);
     this->postJoinTo(currPt, normal, unitNormal);
+    fPointCount += 1;
 }
 
 void SkPathStroker::setQuadEndNormal(const SkPoint quad[3], const SkVector& normalAB,
@@ -1467,15 +1483,22 @@ void SkStroke::strokePath(const SkPath& src, SkPath* dst) const {
         }
     }
 
+    SkPath parametricPath;
+    if (!fStrokeEffect) {
+      parametricPath = src;
+    } else {
+      src.parameterize(fStrokeEffect->t_vals, &parametricPath);
+    }
+
     // We can always ignore centers for stroke and fill convex line-only paths
     // TODO: remove the line-only restriction
-    bool ignoreCenter = fDoFill && (src.getSegmentMasks() == SkPath::kLine_SegmentMask) &&
-                        src.isLastContourClosed() && src.isConvex();
+    bool ignoreCenter = fDoFill && (parametricPath.getSegmentMasks() == SkPath::kLine_SegmentMask) &&
+                        parametricPath.isLastContourClosed() && parametricPath.isConvex();
 
-    SkPathStroker   stroker(src, radius, fMiterLimit, this->getCap(), this->getJoin(),
-                            fResScale, ignoreCenter);
-    SkPath::Iter    iter(src, false);
-    SkPath::Verb    lastSegment = SkPath::kMove_Verb;
+    SkPathStroker stroker(parametricPath, radius, fMiterLimit, this->getCap(), this->getJoin(),
+                          fStrokeEffect, fResScale, ignoreCenter);
+    SkPath::Iter  iter(parametricPath, false);
+    SkPath::Verb  lastSegment = SkPath::kMove_Verb;
 
     for (;;) {
         SkPoint  pts[4];
@@ -1527,13 +1550,13 @@ DONE:
     stroker.done(dst, lastSegment == SkPath::kLine_Verb);
 
     if (fDoFill && !ignoreCenter) {
-        if (SkPathPriv::ComputeFirstDirection(src) == SkPathFirstDirection::kCCW) {
-            dst->reverseAddPath(src);
+        if (SkPathPriv::ComputeFirstDirection(parametricPath) == SkPathFirstDirection::kCCW) {
+            dst->reverseAddPath(parametricPath);
         } else {
-            dst->addPath(src);
+            dst->addPath(parametricPath);
         }
     } else {
-        //  Seems like we can assume that a 2-point src would always result in
+        //  Seems like we can assume that a 2-point parametricPath would always result in
         //  a convex stroke, but testing has proved otherwise.
         //  TODO: fix the stroker to make this assumption true (without making
         //  it slower that the work that will be done in computeConvexity())
@@ -1548,14 +1571,14 @@ DONE:
         }
 #endif
 #if 0
-        if (2 == src.countPoints()) {
+        if (2 == parametricPath.countPoints()) {
             dst->setIsConvex(true);
         }
 #endif
     }
 
-    // our answer should preserve the inverseness of the src
-    if (src.isInverseFillType()) {
+    // our answer should preserve the inverseness of the parametricPath
+    if (parametricPath.isInverseFillType()) {
         SkASSERT(!dst->isInverseFillType());
         dst->toggleInverseFillType();
     }

@@ -10,6 +10,7 @@
 
 #include "include/core/SkPaint.h"
 #include "include/core/SkScalar.h"
+#include "include/core/SkStrokeEffect.h"
 #include "include/core/SkTypes.h"
 #include "include/private/base/SkMacros.h"
 
@@ -141,9 +142,10 @@ public:
 private:
     void init(const SkPaint&, SkPaint::Style, SkScalar resScale);
 
-    SkScalar        fResScale;
-    SkScalar        fWidth;
-    SkScalar        fMiterLimit;
+    sk_sp<SkStrokeEffect> fStrokeEffect;
+    SkScalar              fResScale;
+    SkScalar              fWidth;
+    SkScalar              fMiterLimit;
     // The following three members are packed together into a single u32.
     // This is to avoid unnecessary padding and ensure binary equality for
     // hashing (because the padded areas might contain garbage values).
