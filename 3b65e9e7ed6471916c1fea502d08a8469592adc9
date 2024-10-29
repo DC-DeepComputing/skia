@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "78727e18_011d7d4b",
+        "filename": "src/pdf/SkPDFDevice.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-29T18:14:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c6f4f644_4cbbe75e",
+      "revId": "3b65e9e7ed6471916c1fea502d08a8469592adc9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "064b7c98_3a254a88",
@@ -31,6 +49,24 @@
       "writtenOn": "2024-10-29T17:50:28Z",
       "side": 1,
       "message": "Want `SkPDFStructTree::Mark::structType` and this to match logically.",
+      "revId": "3b65e9e7ed6471916c1fea502d08a8469592adc9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e966bc7_9725ba73",
+        "filename": "src/pdf/SkPDFTag.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 308,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-29T18:14:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "064b7c98_3a254a88",
       "revId": "3b65e9e7ed6471916c1fea502d08a8469592adc9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
