@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c6f4f644_4cbbe75e",
+        "filename": "src/pdf/SkPDFDevice.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-29T17:50:28Z",
+      "side": 1,
+      "message": "Should be careful about emitting this user provided \"name\". Probably want to use SkPDFUnion and emit using that.",
+      "revId": "3b65e9e7ed6471916c1fea502d08a8469592adc9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "064b7c98_3a254a88",
+        "filename": "src/pdf/SkPDFTag.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 308,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-29T17:50:28Z",
+      "side": 1,
+      "message": "Want `SkPDFStructTree::Mark::structType` and this to match logically.",
+      "revId": "3b65e9e7ed6471916c1fea502d08a8469592adc9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
