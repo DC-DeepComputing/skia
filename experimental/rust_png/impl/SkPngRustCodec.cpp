@@ -623,7 +623,22 @@ SkCodec::Result SkPngRustCodec::onIncrementalDecode(int* rowsDecoded) {
 }
 
 int SkPngRustCodec::onGetFrameCount() {
-    if (fCanParseAdditionalFrameInfos && !fIncrementalDecodingState.has_value()) {
+    do {
+        if (!fCanParseAdditionalFrameInfos || fIncrementalDecodingState.has_value()) {
+            break;
+        }
+
+        if (fPrivStream->hasLength()) {
+            size_t currentLength = fPrivStream->getLength();
+            if (fStreamLengthDuringLastCallToParseAdditionalFrameInfos.has_value()) {
+                size_t oldLength = *fStreamLengthDuringLastCallToParseAdditionalFrameInfos;
+                if (oldLength == currentLength) {
+                    break;
+                }
+            }
+            fStreamLengthDuringLastCallToParseAdditionalFrameInfos = currentLength;
+        }
+
         switch (this->parseAdditionalFrameInfos()) {
             case kIncompleteInput:
                 fCanParseAdditionalFrameInfos = true;
@@ -636,7 +651,7 @@ int SkPngRustCodec::onGetFrameCount() {
                 fCanParseAdditionalFrameInfos = false;
                 break;
         }
-    }
+    } while (false);
 
     return fFrameHolder.size();
 }
