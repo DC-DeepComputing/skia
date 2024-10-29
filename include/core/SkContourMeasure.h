@@ -57,6 +57,8 @@ public:
      */
     bool isClosed() const { return fIsClosed; }
 
+    std::vector<SkScalar> getSegmentDistances() const;
+
 private:
     struct Segment {
         SkScalar    fDistance;  // total distance up to this point

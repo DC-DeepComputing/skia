@@ -53,6 +53,8 @@ bool SkPathMeasure::isClosed() {
     return fContour && fContour->isClosed();
 }
 
+
+
 bool SkPathMeasure::nextContour() {
     fContour = fIter.next();
     return !!fContour;
