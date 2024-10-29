@@ -103,7 +103,7 @@ void Run::copyTo(SkTextBlobBuilder& builder, size_t pos, size_t size) const {
 // Find a cluster range from text range (within one run)
 // Cluster range is normalized ([start:end) start < end regardless of TextDirection
 // Boolean value in triple indicates whether the cluster range was found or not
-std::tuple<bool, ClusterIndex, ClusterIndex> Run::findLimitingClusters(TextRange text) const {
+std::tuple<bool, ClusterIndex, ClusterIndex> Run::findLimitingClusters(TextIndexRange text) const {
     if (text.width() == 0) {
         // Special Flutter case for "\n" and "...\n"
         if (text.end > this->fTextRange.start) {
@@ -137,7 +137,7 @@ std::tuple<bool, ClusterIndex, ClusterIndex> Run::findLimitingClusters(TextRange
             clusterRange.end);
 }
 
-std::tuple<bool, TextIndex, TextIndex> Run::findLimitingGlyphClusters(TextRange text) const {
+std::tuple<bool, TextIndex, TextIndex> Run::findLimitingGlyphClusters(TextIndexRange text) const {
     TextIndex start = fOwner->findPreviousGlyphClusterBoundary(text.start);
     TextIndex end = fOwner->findNextGlyphClusterBoundary(text.end);
     return std::make_tuple(true, start, end);
@@ -146,7 +146,7 @@ std::tuple<bool, TextIndex, TextIndex> Run::findLimitingGlyphClusters(TextRange 
 // Adjust the text to grapheme edges so the first grapheme start is in the text and the last grapheme start is in the text
 // It actually means that the first grapheme is entirely in the text and the last grapheme does not have to be
 // 12345 234 2:2 -> 2,5 4:4
-std::tuple<bool, TextIndex, TextIndex> Run::findLimitingGraphemes(TextRange text) const {
+std::tuple<bool, TextIndex, TextIndex> Run::findLimitingGraphemes(TextIndexRange text) const {
     TextIndex start = fOwner->findPreviousGraphemeBoundary(text.start);
     TextIndex end = fOwner->findNextGraphemeBoundary(text.end);
     return std::make_tuple(true, start, end);

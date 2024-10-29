@@ -52,12 +52,12 @@ template <typename TStyle>
 struct StyleBlock {
     StyleBlock() : fRange(EMPTY_RANGE), fStyle() { }
     StyleBlock(size_t start, size_t end, const TStyle& style) : fRange(start, end), fStyle(style) {}
-    StyleBlock(TextRange textRange, const TStyle& style) : fRange(textRange), fStyle(style) {}
-    void add(TextRange tail) {
+    StyleBlock(TextIndexRange textRange, const TStyle& style) : fRange(textRange), fStyle(style) {}
+    void add(TextIndexRange tail) {
         SkASSERT(fRange.end == tail.start);
-        fRange = TextRange(fRange.start, fRange.start + fRange.width() + tail.width());
+        fRange = TextIndexRange(fRange.start, fRange.start + fRange.width() + tail.width());
     }
-    TextRange fRange;
+    TextIndexRange fRange;
     TStyle fStyle;
 };
 
@@ -122,7 +122,7 @@ public:
     size_t lineNumber() override { return fLines.size(); }
 
     TextLine& addLine(SkVector offset, SkVector advance,
-                      TextRange textExcludingSpaces, TextRange text, TextRange textIncludingNewlines,
+                      TextIndexRange textExcludingSpaces, TextIndexRange text, TextIndexRange textIncludingNewlines,
                       ClusterRange clusters, ClusterRange clustersWithGhosts, SkScalar widthWithSpaces,
                       InternalLineMetrics sizes);
 
@@ -141,7 +141,7 @@ public:
     sk_sp<FontCollection> fontCollection() const { return fFontCollection; }
     void formatLines(SkScalar maxWidth);
     void ensureUTF16Mapping();
-    skia_private::TArray<TextIndex> countSurroundingGraphemes(TextRange textRange) const;
+    skia_private::TArray<TextIndex> countSurroundingGraphemes(TextIndexRange textRange) const;
     TextIndex findNextGraphemeBoundary(TextIndex utf8) const;
     TextIndex findPreviousGraphemeBoundary(TextIndex utf8) const;
     TextIndex findNextGlyphClusterBoundary(TextIndex utf8) const;
@@ -161,7 +161,7 @@ public:
 
     SkString getEllipsis() const;
 
-    SkSpan<const char> text(TextRange textRange);
+    SkSpan<const char> text(TextIndexRange textRange);
     SkSpan<Cluster> clusters(ClusterRange clusterRange);
     Cluster& cluster(ClusterIndex clusterIndex);
     ClusterIndex clusterIndex(TextIndex textIndex) {
@@ -187,7 +187,7 @@ public:
 
     int32_t unresolvedGlyphs() override;
     std::unordered_set<SkUnichar> unresolvedCodepoints() override;
-    void addUnresolvedCodepoints(TextRange textRange);
+    void addUnresolvedCodepoints(TextIndexRange textRange);
 
     void setState(InternalState state);
     sk_sp<SkPicture> getPicture() { return fPicture; }
@@ -203,6 +203,8 @@ public:
     bool shapeTextIntoEndlessLine();
     void breakShapedTextIntoLines(SkScalar maxWidth);
 
+    bool extractInfoFromCoreText();
+
     void updateTextAlign(TextAlign textAlign) override;
     void updateFontSize(size_t from, size_t to, SkScalar fontSize) override;
     void updateForegroundPaint(size_t from, size_t to, SkPaint paint) override;
@@ -217,7 +219,7 @@ public:
     int getLineNumberAt(TextIndex codeUnitIndex) const override;
     int getLineNumberAtUTF16Offset(size_t codeUnitIndex) override;
     bool getLineMetricsAt(int lineNumber, LineMetrics* lineMetrics) const override;
-    TextRange getActualTextRange(int lineNumber, bool includeSpaces) const override;
+    TextIndexRange getActualTextRange(int lineNumber, bool includeSpaces) const override;
     bool getGlyphClusterAt(TextIndex codeUnitIndex, GlyphClusterInfo* glyphInfo) override;
     bool getClosestGlyphClusterAt(SkScalar dx,
                                   SkScalar dy,
@@ -232,7 +234,7 @@ public:
     InternalLineMetrics getEmptyMetrics() const { return fEmptyMetrics; }
     InternalLineMetrics getStrutMetrics() const { return fStrutMetrics; }
 
-    BlockRange findAllBlocks(TextRange textRange);
+    BlockRange findAllBlocks(TextIndexRange textRange);
 
     void resetShifts() {
         for (auto& run : fRuns) {

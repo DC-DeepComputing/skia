@@ -186,7 +186,7 @@ void ParagraphBuilderImpl::addPlaceholder(const PlaceholderStyle& placeholderSty
 
     BlockRange stylesBefore(fPlaceholders.empty() ? 0 : fPlaceholders.back().fBlocksBefore.end + 1,
                             fStyledBlocks.size());
-    TextRange textBefore(fPlaceholders.empty() ? 0 : fPlaceholders.back().fRange.end,
+    TextIndexRange textBefore(fPlaceholders.empty() ? 0 : fPlaceholders.back().fRange.end,
                             fUtf8.size());
     auto start = fUtf8.size();
     auto topStyle = internalPeekStyle();
@@ -248,8 +248,9 @@ std::unique_ptr<Paragraph> ParagraphBuilderImpl::Build() {
                                             std::move(fLineBreaksUtf8));
     }
 #endif
-
+#ifndef SK_BUILD_FOR_CORETEXT
     SkASSERT_RELEASE(fUnicode);
+#endif
     return std::make_unique<ParagraphImpl>(
             fUtf8, fParagraphStyle, fStyledBlocks, fPlaceholders, fFontCollection, fUnicode);
 }

@@ -48,11 +48,11 @@ SkScalar littleRound(SkScalar a) {
 }
 }  // namespace
 
-TextRange operator*(const TextRange& a, const TextRange& b) {
+TextIndexRange operator*(const TextIndexRange& a, const TextIndexRange& b) {
     if (a.start == b.start && a.end == b.end) return a;
     auto begin = std::max(a.start, b.start);
     auto end = std::min(a.end, b.end);
-    return end > begin ? TextRange(begin, end) : EMPTY_TEXT;
+    return end > begin ? TextIndexRange(begin, end) : EMPTY_TEXT;
 }
 
 Paragraph::Paragraph(ParagraphStyle style, sk_sp<FontCollection> fonts)
@@ -91,7 +91,9 @@ ParagraphImpl::ParagraphImpl(const SkString& text,
         , fHasWhitespacesInside(false)
         , fTrailingSpaces(0)
 {
+#ifndef SK_BUILD_FOR_CORETEXT
     SkASSERT(fUnicode);
+#endif
 }
 
 ParagraphImpl::ParagraphImpl(const std::u16string& utf16text,
@@ -125,7 +127,7 @@ std::unordered_set<SkUnichar> ParagraphImpl::unresolvedCodepoints() {
     return fUnresolvedCodepoints;
 }
 
-void ParagraphImpl::addUnresolvedCodepoints(TextRange textRange) {
+void ParagraphImpl::addUnresolvedCodepoints(skia::textlayout::TextIndexRange textRange) {
     fUnicode->forEachCodepoint(
         &fText[textRange.start], textRange.width(),
         [&](SkUnichar unichar, int32_t start, int32_t end, int32_t count) {
@@ -158,6 +160,14 @@ void ParagraphImpl::layout(SkScalar rawWidth) {
     if (fState < kShaped) {
         // Check if we have the text in the cache and don't need to shape it again
         if (!fFontCollection->getParagraphCache()->findParagraph(this)) {
+            this->fRuns.clear();
+            this->fClusters.clear();
+            this->fClustersIndexFromCodeUnit.clear();
+            this->fClustersIndexFromCodeUnit.push_back_n(fText.size() + 1, EMPTY_INDEX);
+#ifdef SK_BUILD_FOR_CORETEXT
+            // Fill out CodeUnitProperties & Runs (along with all the helper maps)
+            if (!this->extractInfoFromCoreText()) {
+#else
             if (fState < kIndexed) {
                 // This only happens once at the first layout; the text is immutable
                 // and there is no reason to repeat it
@@ -165,11 +175,8 @@ void ParagraphImpl::layout(SkScalar rawWidth) {
                     fState = kIndexed;
                 }
             }
-            this->fRuns.clear();
-            this->fClusters.clear();
-            this->fClustersIndexFromCodeUnit.clear();
-            this->fClustersIndexFromCodeUnit.push_back_n(fText.size() + 1, EMPTY_INDEX);
             if (!this->shapeTextIntoEndlessLine()) {
+#endif
                 this->resetContext();
                 // TODO: merge the two next calls - they always come together
                 this->resolveStrut();
@@ -587,8 +594,8 @@ void ParagraphImpl::breakShapedTextIntoLines(SkScalar maxWidth) {
         // However, it's how it's done in Flutter now)
         auto& run = this->fRuns[0];
         auto advance = run.advance();
-        auto textRange = TextRange(0, this->text().size());
-        auto textExcludingSpaces = TextRange(0, fTrailingSpaces);
+        auto textRange = skia::textlayout::TextIndexRange(0, this->text().size());
+        auto textExcludingSpaces = skia::textlayout::TextIndexRange(0, fTrailingSpaces);
         InternalLineMetrics metrics(this->strutForceHeight());
         metrics.add(&run);
         auto disableFirstAscent = this->paragraphStyle().getTextHeightBehavior() &
@@ -638,9 +645,9 @@ void ParagraphImpl::breakShapedTextIntoLines(SkScalar maxWidth) {
     textWrapper.breakTextIntoLines(
             this,
             maxWidth,
-            [&](TextRange textExcludingSpaces,
-                TextRange text,
-                TextRange textWithNewlines,
+            [&](TextIndexRange textExcludingSpaces,
+                TextIndexRange text,
+                TextIndexRange textWithNewlines,
                 ClusterRange clusters,
                 ClusterRange clustersWithGhosts,
                 SkScalar widthWithSpaces,
@@ -734,7 +741,7 @@ void ParagraphImpl::resolveStrut() {
     fStrutMetrics.setForceStrut(this->paragraphStyle().getStrutStyle().getForceStrutHeight());
 }
 
-BlockRange ParagraphImpl::findAllBlocks(TextRange textRange) {
+BlockRange ParagraphImpl::findAllBlocks(TextIndexRange textRange) {
     BlockIndex begin = EMPTY_BLOCK;
     BlockIndex end = EMPTY_BLOCK;
     for (int index = 0; index < fTextStyles.size(); ++index) {
@@ -762,9 +769,9 @@ BlockRange ParagraphImpl::findAllBlocks(TextRange textRange) {
 
 TextLine& ParagraphImpl::addLine(SkVector offset,
                                  SkVector advance,
-                                 TextRange textExcludingSpaces,
-                                 TextRange text,
-                                 TextRange textIncludingNewLines,
+                                 TextIndexRange textExcludingSpaces,
+                                 TextIndexRange text,
+                                 TextIndexRange textIncludingNewLines,
                                  ClusterRange clusters,
                                  ClusterRange clustersWithGhosts,
                                  SkScalar widthWithSpaces,
@@ -806,7 +813,7 @@ std::vector<TextBox> ParagraphImpl::getRectsForRange(unsigned start,
     // To avoid any problems, I will not allow any selection of a part of a grapheme.
     // One flutter test fails because of it but the editing experience is correct
     // (although you have to press the cursor many times before it moves to the next grapheme).
-    TextRange text(fText.size(), fText.size());
+    TextIndexRange text(fText.size(), fText.size());
     // TODO: This is probably a temp change that makes SkParagraph work as TxtLib
     //  (so we can compare the results). We now include in the selection box only the graphemes
     //  that belongs to the given [start:end) range entirely (not the ones that intersect with it)
@@ -935,7 +942,7 @@ void ParagraphImpl::getLineMetrics(std::vector<LineMetrics>& metrics) {
     }
 }
 
-SkSpan<const char> ParagraphImpl::text(TextRange textRange) {
+SkSpan<const char> ParagraphImpl::text(TextIndexRange textRange) {
     SkASSERT(textRange.start <= fText.size() && textRange.end <= fText.size());
     auto start = fText.c_str() + textRange.start;
     return SkSpan<const char>(start, textRange.width());
@@ -1120,7 +1127,7 @@ void ParagraphImpl::updateBackgroundPaint(size_t from, size_t to, SkPaint paint)
     }
 }
 
-TArray<TextIndex> ParagraphImpl::countSurroundingGraphemes(TextRange textRange) const {
+TArray<TextIndex> ParagraphImpl::countSurroundingGraphemes(TextIndexRange textRange) const {
     textRange = textRange.intersection({0, fText.size()});
     TArray<TextIndex> graphemes;
     if ((fCodeUnitProperties[textRange.start] & SkUnicode::CodeUnitFlags::kGraphemeStart) == 0) {
@@ -1234,7 +1241,7 @@ int ParagraphImpl::getLineNumberAt(TextIndex codeUnitIndex) const {
     while (endLine > startLine) {
         // startLine + 1 <= endLine, so we have startLine <= midLine <= endLine - 1.
         const size_t midLine = (endLine + startLine) / 2;
-        const TextRange midLineRange = fLines[midLine].textWithNewlines();
+        const TextIndexRange midLineRange = fLines[midLine].textWithNewlines();
         if (codeUnitIndex < midLineRange.start) {
             endLine = midLine - 1;
         } else if (midLineRange.end <= codeUnitIndex) {
@@ -1267,7 +1274,7 @@ bool ParagraphImpl::getLineMetricsAt(int lineNumber, LineMetrics* lineMetrics) c
     return true;
 }
 
-TextRange ParagraphImpl::getActualTextRange(int lineNumber, bool includeSpaces) const {
+TextIndexRange ParagraphImpl::getActualTextRange(int lineNumber, bool includeSpaces) const {
     if (lineNumber < 0 || lineNumber >= fLines.size()) {
         return EMPTY_TEXT;
     }
@@ -1394,7 +1401,7 @@ void ParagraphImpl::extendedVisit(const ExtendedVisitor& visitor) {
             false,
             [&](const Run* run,
                 SkScalar runOffsetInLine,
-                TextRange textRange,
+                TextIndexRange textRange,
                 SkScalar* runWidthInLine) {
                 *runWidthInLine = line.iterateThroughSingleRunByStyles(
                 TextLine::TextAdjustment::GlyphCluster,
@@ -1402,7 +1409,7 @@ void ParagraphImpl::extendedVisit(const ExtendedVisitor& visitor) {
                 runOffsetInLine,
                 textRange,
                 StyleType::kNone,
-                [&](TextRange textRange,
+                [&](TextIndexRange textRange,
                     const TextStyle& style,
                     const TextLine::ClipContext& context) {
                     SkScalar correctedBaseline = SkScalarFloorToScalar(
@@ -1454,7 +1461,7 @@ int ParagraphImpl::getPath(int lineNumber, SkPath* dest) {
               false,
               [&](const Run* run,
                   SkScalar runOffsetInLine,
-                  TextRange textRange,
+                  TextIndexRange textRange,
                   SkScalar* runWidthInLine) {
           *runWidthInLine = line.iterateThroughSingleRunByStyles(
           TextLine::TextAdjustment::GlyphCluster,
@@ -1462,7 +1469,7 @@ int ParagraphImpl::getPath(int lineNumber, SkPath* dest) {
           runOffsetInLine,
           textRange,
           StyleType::kNone,
-          [&](TextRange textRange,
+          [&](TextIndexRange textRange,
               const TextStyle& style,
               const TextLine::ClipContext& context) {
               const SkFont& font = run->font();

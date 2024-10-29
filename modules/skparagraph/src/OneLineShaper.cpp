@@ -83,7 +83,7 @@ void OneLineShaper::printState() {
 
 void OneLineShaper::fillGaps(size_t startingCount) {
     // Fill out gaps between all unresolved blocks
-    TextRange resolvedTextLimits = fCurrentRun->fTextRange;
+    TextIndexRange resolvedTextLimits = fCurrentRun->fTextRange;
     if (!fCurrentRun->leftToRight()) {
         std::swap(resolvedTextLimits.start, resolvedTextLimits.end);
     }
@@ -93,7 +93,7 @@ void OneLineShaper::fillGaps(size_t startingCount) {
     auto begin = fUnresolvedBlocks.begin();
     auto end = fUnresolvedBlocks.end();
     begin += startingCount; // Skip the old ones, do the new ones
-    TextRange prevText = EMPTY_TEXT;
+    TextIndexRange prevText = EMPTY_TEXT;
     for (; begin != end; ++begin) {
         auto& unresolved = *begin;
 
@@ -105,7 +105,7 @@ void OneLineShaper::fillGaps(size_t startingCount) {
             prevText = unresolved.fText;
         }
 
-        TextRange resolvedText(resolvedTextStart, fCurrentRun->leftToRight() ? unresolved.fText.start : unresolved.fText.end);
+        TextIndexRange resolvedText(resolvedTextStart, fCurrentRun->leftToRight() ? unresolved.fText.start : unresolved.fText.end);
         if (resolvedText.width() > 0) {
             if (!fCurrentRun->leftToRight()) {
                 std::swap(resolvedText.start, resolvedText.end);
@@ -132,7 +132,7 @@ void OneLineShaper::fillGaps(size_t startingCount) {
                                 : unresolved.fText.start;
     }
 
-    TextRange resolvedText(resolvedTextStart,resolvedTextLimits.end);
+    TextIndexRange resolvedText(resolvedTextStart,resolvedTextLimits.end);
     if (resolvedText.width() > 0) {
         if (!fCurrentRun->leftToRight()) {
             std::swap(resolvedText.start, resolvedText.end);
@@ -250,12 +250,12 @@ void OneLineShaper::finish(const Block& block, SkScalar height, SkScalar& advanc
 }
 
 // Make it [left:right) regardless of a text direction
-TextRange OneLineShaper::normalizeTextRange(GlyphRange glyphRange) {
+TextIndexRange OneLineShaper::normalizeTextRange(GlyphRange glyphRange) {
 
     if (fCurrentRun->leftToRight()) {
-        return TextRange(clusterIndex(glyphRange.start), clusterIndex(glyphRange.end));
+        return TextIndexRange(clusterIndex(glyphRange.start), clusterIndex(glyphRange.end));
     } else {
-        return TextRange(clusterIndex(glyphRange.end - 1),
+        return TextIndexRange(clusterIndex(glyphRange.end - 1),
                 glyphRange.start > 0
                 ? clusterIndex(glyphRange.start - 1)
                 : fCurrentRun->fTextRange.end);
@@ -362,7 +362,7 @@ void OneLineShaper::sortOutGlyphs(std::function<void(GlyphRange)>&& sortOutUnres
     }
 }
 
-void OneLineShaper::iterateThroughFontStyles(TextRange textRange,
+void OneLineShaper::iterateThroughFontStyles(TextIndexRange textRange,
                                              SkSpan<Block> styleSpan,
                                              const ShapeSingleFontVisitor& visitor) {
     Block combinedBlock;
@@ -554,7 +554,7 @@ bool OneLineShaper::iterateThroughShapingRegions(const ShapeVisitor& shape) {
                 auto end = std::min(bidiRegion.end, placeholder.fTextBefore.end);
 
                 // Set up the iterators (the style iterator points to a bigger region that it could
-                TextRange textRange(start, end);
+                TextIndexRange textRange(start, end);
                 auto blockRange = fParagraph->findAllBlocks(textRange);
                 if (!blockRange.empty()) {
                     SkSpan<Block> styleSpan(fParagraph->blocks(blockRange));
@@ -622,7 +622,7 @@ bool OneLineShaper::shape() {
 
     auto result = iterateThroughShapingRegions(
             [this, limitlessWidth]
-            (TextRange textRange, SkSpan<Block> styleSpan, SkScalar& advanceX, TextIndex textStart, uint8_t defaultBidiLevel) {
+            (TextIndexRange textRange, SkSpan<Block> styleSpan, SkScalar& advanceX, TextIndex textStart, uint8_t defaultBidiLevel) {
 
         // Set up the shaper and shape the next
         auto shaper = SkShapers::HB::ShapeDontWrapOrReorder(fParagraph->fUnicode,
@@ -728,7 +728,7 @@ bool OneLineShaper::shape() {
 }
 
 // When we extend TextRange to the grapheme edges, we also extend glyphs range
-TextRange OneLineShaper::clusteredText(GlyphRange& glyphs) {
+TextIndexRange OneLineShaper::clusteredText(GlyphRange& glyphs) {
 
     enum class Dir { left, right };
     enum class Pos { inclusive, exclusive };
@@ -757,7 +757,7 @@ TextRange OneLineShaper::clusteredText(GlyphRange& glyphs) {
         }
     };
 
-    TextRange textRange(normalizeTextRange(glyphs));
+    TextIndexRange textRange(normalizeTextRange(glyphs));
     textRange.start = findBaseChar(textRange.start, Dir::left);
     textRange.end = findBaseChar(textRange.end, Dir::right);
 

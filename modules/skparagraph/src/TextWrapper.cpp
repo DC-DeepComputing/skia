@@ -353,9 +353,9 @@ void TextWrapper::breakTextIntoLines(ParagraphImpl* parent,
         maxRunMetrics.fForceStrut = false;
 
         // TODO: keep start/end/break info for text and runs but in a better way that below
-        TextRange textExcludingSpaces(fEndLine.startCluster()->textRange().start, fEndLine.endCluster()->textRange().end);
-        TextRange text(fEndLine.startCluster()->textRange().start, fEndLine.breakCluster()->textRange().start);
-        TextRange textIncludingNewlines(fEndLine.startCluster()->textRange().start, startLine->textRange().start);
+        TextIndexRange textExcludingSpaces(fEndLine.startCluster()->textRange().start, fEndLine.endCluster()->textRange().end);
+        TextIndexRange text(fEndLine.startCluster()->textRange().start, fEndLine.breakCluster()->textRange().start);
+        TextIndexRange textIncludingNewlines(fEndLine.startCluster()->textRange().start, startLine->textRange().start);
         if (startLine == end) {
             textIncludingNewlines.end = parent->text().size();
             text.end = parent->text().size();

@@ -105,7 +105,7 @@ public:
     size_t globalClusterIndex(size_t pos) const { return fClusterStart + fClusterIndexes[pos]; }
     SkScalar positionX(size_t pos) const;
 
-    TextRange textRange() const { return fTextRange; }
+    TextIndexRange textRange() const { return fTextRange; }
     ClusterRange clusterRange() const { return fClusterRange; }
 
     ParagraphImpl* owner() const { return fOwner; }
@@ -143,9 +143,9 @@ public:
     using ClusterVisitor = std::function<void(Cluster* cluster)>;
     void iterateThroughClusters(const ClusterVisitor& visitor);
 
-    std::tuple<bool, ClusterIndex, ClusterIndex> findLimitingClusters(TextRange text) const;
-    std::tuple<bool, TextIndex, TextIndex> findLimitingGlyphClusters(TextRange text) const;
-    std::tuple<bool, TextIndex, TextIndex> findLimitingGraphemes(TextRange text) const;
+    std::tuple<bool, ClusterIndex, ClusterIndex> findLimitingClusters(TextIndexRange text) const;
+    std::tuple<bool, TextIndex, TextIndex> findLimitingGlyphClusters(TextIndexRange text) const;
+    std::tuple<bool, TextIndex, TextIndex> findLimitingGraphemes(TextIndexRange text) const;
     SkSpan<const SkGlyphID> glyphs() const {
         return SkSpan<const SkGlyphID>(fGlyphs.begin(), fGlyphs.size());
     }
@@ -174,7 +174,7 @@ private:
     friend class OneLineShaper;
 
     ParagraphImpl* fOwner;
-    TextRange fTextRange;
+    TextIndexRange fTextRange;
     ClusterRange fClusterRange;
 
     SkFont fFont;
@@ -288,7 +288,7 @@ public:
             SkScalar width,
             SkScalar height);
 
-    Cluster(TextRange textRange) : fTextRange(textRange), fGraphemeRange(EMPTY_RANGE) { }
+    Cluster(TextIndexRange textRange) : fTextRange(textRange), fGraphemeRange(EMPTY_RANGE) { }
 
     Cluster(const Cluster&) = default;
     ~Cluster() = default;
@@ -322,7 +322,7 @@ public:
     void setHalfLetterSpacing(SkScalar halfLetterSpacing) { fHalfLetterSpacing = halfLetterSpacing; }
     SkScalar getHalfLetterSpacing() const { return fHalfLetterSpacing; }
 
-    TextRange textRange() const { return fTextRange; }
+    TextIndexRange textRange() const { return fTextRange; }
 
     RunIndex runIndex() const { return fRunIndex; }
     ParagraphImpl* owner() const { return fOwner; }
@@ -335,11 +335,11 @@ public:
 
     bool contains(TextIndex ch) const { return ch >= fTextRange.start && ch < fTextRange.end; }
 
-    bool belongs(TextRange text) const {
+    bool belongs(TextIndexRange text) const {
         return fTextRange.start >= text.start && fTextRange.end <= text.end;
     }
 
-    bool startsIn(TextRange text) const {
+    bool startsIn(TextIndexRange text) const {
         return fTextRange.start >= text.start && fTextRange.start < text.end;
     }
 
@@ -349,7 +349,7 @@ private:
 
     ParagraphImpl* fOwner;
     RunIndex fRunIndex;
-    TextRange fTextRange;
+    TextIndexRange fTextRange;
     GraphemeRange fGraphemeRange;
 
     size_t fStart;

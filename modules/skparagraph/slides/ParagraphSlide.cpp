@@ -1911,7 +1911,7 @@ public:
                                                     line.offset().fX);
                 }
                 line.iterateThroughVisualRuns(true,
-                    [&](const Run* run, SkScalar runOffset, TextRange textRange, SkScalar* width) {
+                    [&](const Run* run, SkScalar runOffset, TextIndexRange textRange, SkScalar* width) {
                     *width = line.measureTextInsideOneRun(textRange, run, runOffset, 0, true, TextLine::TextAdjustment::GlyphCluster).clip.width();
                     if (this->isVerbose()) {
                         SkDebugf("%zu[%zu: %zu) @%f + %f %s\n",
@@ -4231,7 +4231,6 @@ public:
     }
 };
 
-
 class ParagraphSlideEllipsisInRTL : public ParagraphSlide_Base {
 public:
     ParagraphSlideEllipsisInRTL() { fName = "ParagraphSlideEllipsisInRTL"; }
@@ -4362,6 +4361,39 @@ public:
     }
 };
 
+class ParagraphSlide_CoreText : public ParagraphSlide_Base {
+public:
+    ParagraphSlide_CoreText() { fName = SkString("ParagraphCoreText"); }
+    void draw(SkCanvas* canvas) override {
+        canvas->drawColor(SK_ColorWHITE);
+        auto fontCollection = getFontCollection();
+        fontCollection->setDefaultFontManager(ToolUtils::TestFontMgr());
+        fontCollection->enableFontFallback();
+        TextStyle text_style;
+        text_style.setFontFamilies({SkString("Roboto")});
+        text_style.setFontSize(40);
+        text_style.setColor(SK_ColorBLACK);
+        ParagraphStyle paragraph_style;
+        paragraph_style.setTextStyle(text_style);
+        ParagraphBuilderImpl builder(paragraph_style, fontCollection, nullptr);
+        text_style.setColor(SK_ColorBLUE);
+        builder.pushStyle(text_style);
+        builder.addText(u"World domination is such an ugly phrase - I prefer to call it world optimisation.");
+        text_style.setColor(SK_ColorBLACK);
+        builder.pushStyle(text_style);
+        builder.addText(u"World domination");
+        text_style.setColor(SK_ColorGREEN);
+        text_style.setDecoration(TextDecoration::kUnderline);
+        text_style.setDecorationColor(SK_ColorRED);
+        text_style.setDecorationStyle(TextDecorationStyle::kDouble);
+        builder.pushStyle(text_style);
+        builder.addText(u" is such an ugly phrase - I prefer to call it world optimisation.");
+        auto paragraph = builder.Build();
+        paragraph->layout(400/*this->size().width()*/);
+        paragraph->paint(canvas, 0, 0);
+    }
+};
+
 class ParagraphSlideLast : public ParagraphSlide_Base {
 public:
     ParagraphSlideLast() { fName = "ParagraphSlideLast"; }
@@ -4479,4 +4511,5 @@ DEF_SLIDE(return new ParagraphSlideGlyphs();)
 DEF_SLIDE(return new ParagraphSlideEllipsisInRTL();)
 DEF_SLIDE(return new ParagraphSlideEmojiSequence();)
 DEF_SLIDE(return new ParagraphSlideWordSpacing();)
+DEF_SLIDE(return new ParagraphSlide_CoreText();)
 DEF_SLIDE(return new ParagraphSlideLast();)

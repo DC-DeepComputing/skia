@@ -45,6 +45,7 @@ skparagraph_sources = [
   "$_modules/skparagraph/src/ParagraphBuilderImpl.h",
   "$_modules/skparagraph/src/ParagraphCache.cpp",
   "$_modules/skparagraph/src/ParagraphImpl.cpp",
+  "$_modules/skparagraph/src/ParagraphImpl_CoreText.cpp",
   "$_modules/skparagraph/src/ParagraphImpl.h",
   "$_modules/skparagraph/src/ParagraphPainterImpl.cpp",
   "$_modules/skparagraph/src/ParagraphPainterImpl.h",

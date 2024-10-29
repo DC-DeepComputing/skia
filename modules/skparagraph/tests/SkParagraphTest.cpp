@@ -91,7 +91,7 @@ SkScalar EPSILON10 = 0.1f;
 SkScalar EPSILON5 = 0.20f;
 SkScalar EPSILON2 = 0.50f;
 
-bool equal(const char* base, TextRange a, const char* b) {
+bool equal(const char* base, TextIndexRange a, const char* b) {
     return std::strncmp(b, base + a.start, a.width()) == 0;
 }
 
@@ -324,7 +324,7 @@ UNIX_ONLY_TEST(SkParagraph_SimpleParagraph, reporter) {
     for (auto& line : impl->lines()) {
         line.scanStyles(StyleType::kDecorations,
                         [&index, reporter]
-                        (TextRange textRange, const TextStyle& style, const TextLine::ClipContext& context) {
+                        (TextIndexRange textRange, const TextStyle& style, const TextLine::ClipContext& context) {
                             REPORTER_ASSERT(reporter, index == 0);
                             REPORTER_ASSERT(reporter, style.getColor() == SK_ColorBLACK);
                             ++index;
@@ -1180,7 +1180,7 @@ UNIX_ONLY_TEST(SkParagraph_SimpleRedParagraph, reporter) {
     size_t index = 0;
     for (auto& line : impl->lines()) {
         line.scanStyles(StyleType::kDecorations,
-            [reporter, &index](TextRange textRange, const TextStyle& style, const TextLine::ClipContext& context) {
+            [reporter, &index](TextIndexRange textRange, const TextStyle& style, const TextLine::ClipContext& context) {
                 REPORTER_ASSERT(reporter, index == 0);
                 REPORTER_ASSERT(reporter, style.getColor() == SK_ColorRED);
                 ++index;
@@ -1270,7 +1270,7 @@ UNIX_ONLY_TEST(SkParagraph_RainbowParagraph, reporter) {
     size_t index = 0;
     impl->lines()[0].scanStyles(
         StyleType::kAllAttributes,
-           [&](TextRange textRange, const TextStyle& style, const TextLine::ClipContext& context) {
+           [&](TextIndexRange textRange, const TextStyle& style, const TextLine::ClipContext& context) {
             switch (index) {
                 case 0:
                     REPORTER_ASSERT(reporter, style.equals(text_style1));
@@ -1297,7 +1297,7 @@ UNIX_ONLY_TEST(SkParagraph_RainbowParagraph, reporter) {
         });
     impl->lines()[1].scanStyles(
         StyleType::kAllAttributes,
-        [&](TextRange textRange, const TextStyle& style, const TextLine::ClipContext& context) {
+        [&](TextIndexRange textRange, const TextStyle& style, const TextLine::ClipContext& context) {
         switch (index) {
             case 4:
                 REPORTER_ASSERT(reporter, style.equals(text_style4));
@@ -1344,7 +1344,7 @@ UNIX_ONLY_TEST(SkParagraph_DefaultStyleParagraph, reporter) {
     size_t index = 0;
     impl->lines()[0].scanStyles(
             StyleType::kAllAttributes,
-            [&](TextRange textRange, const TextStyle& style, const TextLine::ClipContext& context) {
+            [&](TextIndexRange textRange, const TextStyle& style, const TextLine::ClipContext& context) {
                 REPORTER_ASSERT(reporter, style.equals(paragraph_style.getTextStyle()));
                 REPORTER_ASSERT(reporter, equal(impl->text().begin(), textRange, text));
                 ++index;
@@ -1390,7 +1390,7 @@ UNIX_ONLY_TEST(SkParagraph_BoldParagraph, reporter) {
     size_t index = 0;
     impl->lines()[0].scanStyles(
             StyleType::kAllAttributes,
-            [&](TextRange textRange, const TextStyle& style, const TextLine::ClipContext& context) {
+            [&](TextIndexRange textRange, const TextStyle& style, const TextLine::ClipContext& context) {
                 REPORTER_ASSERT(reporter, style.equals(text_style));
                 REPORTER_ASSERT(reporter, equal(impl->text().begin(), textRange, text));
                 ++index;
@@ -2414,7 +2414,7 @@ UNIX_ONLY_TEST(SkParagraph_DecorationsParagraph, reporter) {
     for (auto& line : impl->lines()) {
         line.scanStyles(
             StyleType::kDecorations,
-            [&](TextRange textRange, const TextStyle& style, const TextLine::ClipContext& context) {
+            [&](TextIndexRange textRange, const TextStyle& style, const TextLine::ClipContext& context) {
                     auto decoration = (TextDecoration)(TextDecoration::kUnderline |
                                                        TextDecoration::kOverline |
                                                        TextDecoration::kLineThrough);
@@ -2507,7 +2507,7 @@ UNIX_ONLY_TEST(SkParagraph_ItalicsParagraph, reporter) {
     size_t index = 0;
     line.scanStyles(
         StyleType::kForeground,
-        [&](TextRange textRange, const TextStyle& style, const TextLine::ClipContext& context) {
+        [&](TextIndexRange textRange, const TextStyle& style, const TextLine::ClipContext& context) {
             switch (index) {
                 case 0:
                     REPORTER_ASSERT(
@@ -4089,14 +4089,14 @@ UNIX_ONLY_TEST(SkParagraph_SpacingParagraph, reporter) {
     REPORTER_ASSERT(reporter, impl->lines().size() == 1);
     size_t index = 0;
     impl->lines().begin()->scanStyles(StyleType::kLetterSpacing,
-       [&](TextRange textRange, const TextStyle& style, const TextLine::ClipContext& context) {
+       [&](TextIndexRange textRange, const TextStyle& style, const TextLine::ClipContext& context) {
           ++index;
           return true;
         });
     REPORTER_ASSERT(reporter, index == 4);
     index = 0;
     impl->lines().begin()->scanStyles(StyleType::kWordSpacing,
-        [&](TextRange textRange, const TextStyle& style, const TextLine::ClipContext& context) {
+        [&](TextIndexRange textRange, const TextStyle& style, const TextLine::ClipContext& context) {
           ++index;
           return true;
         });
@@ -4530,7 +4530,7 @@ UNIX_ONLY_TEST(SkParagraph_SimpleShadow, reporter) {
     size_t index = 0;
     for (auto& line : impl->lines()) {
         line.scanStyles(StyleType::kShadow,
-           [&](TextRange textRange, const TextStyle& style, const TextLine::ClipContext& context) {
+           [&](TextIndexRange textRange, const TextStyle& style, const TextLine::ClipContext& context) {
                 REPORTER_ASSERT(reporter, index == 0 && style.equals(text_style));
                 ++index;
                 return true;
@@ -4581,7 +4581,7 @@ UNIX_ONLY_TEST(SkParagraph_ComplexShadow, reporter) {
     size_t index = 0;
     for (auto& line : impl->lines()) {
         line.scanStyles(StyleType::kShadow,
-           [&](TextRange textRange, const TextStyle& style, const TextLine::ClipContext& context) {
+           [&](TextIndexRange textRange, const TextStyle& style, const TextLine::ClipContext& context) {
                 ++index;
                 switch (index) {
                     case 1:
@@ -7256,7 +7256,7 @@ UNIX_ONLY_TEST(SkParagraph_SimpleParagraphReset, reporter) {
         for (auto& line : impl->lines()) {
             line.scanStyles(StyleType::kDecorations,
                             [&index, reporter]
-                            (TextRange textRange, const TextStyle& style, const TextLine::ClipContext& context) {
+                            (TextIndexRange textRange, const TextStyle& style, const TextLine::ClipContext& context) {
                                 REPORTER_ASSERT(reporter, index == 0);
                                 REPORTER_ASSERT(reporter, style.getColor() == SK_ColorBLACK);
                                 ++index;
@@ -7654,7 +7654,7 @@ UNIX_ONLY_TEST(SkParagraph_MultiStyle_Logo, reporter) {
     SkScalar left = 0.0f;
     impl->lines().data()->scanStyles(StyleType::kDecorations,
         [&index, &left, reporter]
-        (TextRange textRange, const TextStyle& style, const TextLine::ClipContext& context) {
+        (TextIndexRange textRange, const TextStyle& style, const TextLine::ClipContext& context) {
             switch (index) {
                 case 0: REPORTER_ASSERT(reporter, context.pos == 0 && context.size == 1);
                         REPORTER_ASSERT(reporter, SkScalarNearlyEqual(context.clip.fLeft, left));
@@ -7949,7 +7949,7 @@ UNIX_ONLY_TEST(SkParagraph_RtlEllipsis1, reporter) {
     bool first = true;
     line.iterateThroughVisualRuns(true,
         [&]
-        (const Run* run, SkScalar runOffsetInLine, TextRange textRange, SkScalar* runWidthInLine) {
+        (const Run* run, SkScalar runOffsetInLine, TextIndexRange textRange, SkScalar* runWidthInLine) {
             REPORTER_ASSERT(reporter, first == (run->isEllipsis()));
             first = false;
             return true;
@@ -7986,7 +7986,7 @@ UNIX_ONLY_TEST(SkParagraph_RtlEllipsis2, reporter) {
     bool first = true;
     line.iterateThroughVisualRuns(true,
         [&]
-        (const Run* run, SkScalar runOffsetInLine, TextRange textRange, SkScalar* runWidthInLine) {
+        (const Run* run, SkScalar runOffsetInLine, TextIndexRange textRange, SkScalar* runWidthInLine) {
             REPORTER_ASSERT(reporter, first == (run->isEllipsis()));
             first = false;
             return true;
@@ -8318,7 +8318,7 @@ UNIX_ONLY_TEST(SkParagraph_SingleDummyPlaceholder, reporter) {
     for (auto& line : impl->lines()) {
         line.scanStyles(StyleType::kDecorations,
                         [&index, reporter]
-                        (TextRange textRange, const TextStyle& style, const TextLine::ClipContext& context) {
+                        (TextIndexRange textRange, const TextStyle& style, const TextLine::ClipContext& context) {
                             REPORTER_ASSERT(reporter, index == 0);
                             REPORTER_ASSERT(reporter, style.getColor() == SK_ColorBLACK);
                             ++index;

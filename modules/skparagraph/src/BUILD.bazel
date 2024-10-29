@@ -20,6 +20,7 @@ skia_filegroup(
         "ParagraphBuilderImpl.h",
         "ParagraphCache.cpp",
         "ParagraphImpl.cpp",
+        "ParagraphImpl_CoreText.cpp",
         "ParagraphImpl.h",
         "ParagraphPainterImpl.cpp",
         "ParagraphPainterImpl.h",

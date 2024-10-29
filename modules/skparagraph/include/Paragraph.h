@@ -178,11 +178,11 @@ public:
      * @param includeSpaces indicates if the whitespaces should be included
      * @return              the range of the text that is shown in the line
      */
-    virtual TextRange getActualTextRange(int lineNumber, bool includeSpaces) const = 0;
+    virtual TextIndexRange getActualTextRange(int lineNumber, bool includeSpaces) const = 0;
 
     struct GlyphClusterInfo {
         SkRect fBounds;
-        TextRange fClusterTextRange;
+        TextIndexRange fClusterTextIndexRange;
         TextDirection fGlyphClusterPosition;
     };
 
@@ -210,7 +210,7 @@ public:
     // codepoint in the paragraph.
     struct GlyphInfo {
         SkRect fGraphemeLayoutBounds;
-        TextRange fGraphemeClusterTextRange;
+        TextIndexRange fGraphemeClusterTextIndexRange;
         TextDirection fDirection;
         bool fIsEllipsis;
     };
@@ -241,12 +241,12 @@ public:
     virtual bool getClosestUTF16GlyphInfoAt(SkScalar dx, SkScalar dy, GlyphInfo* glyphInfo) = 0;
 
     struct FontInfo {
-        FontInfo(const SkFont& font, const TextRange textRange)
-                : fFont(font), fTextRange(textRange) {}
+        FontInfo(const SkFont& font, const TextIndexRange TextIndexRange)
+                : fFont(font), fTextIndexRange(TextIndexRange) {}
         virtual ~FontInfo() = default;
         FontInfo(const FontInfo& ) = default;
         SkFont fFont;
-        TextRange fTextRange;
+        TextIndexRange fTextIndexRange;
     };
 
     /** Returns the font that is used to shape the text at the position

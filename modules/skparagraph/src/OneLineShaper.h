@@ -42,9 +42,9 @@ private:
         RunBlock() : fRun(nullptr) { }
 
         // First unresolved block
-        explicit RunBlock(TextRange text) : fRun(nullptr), fText(text) { }
+        explicit RunBlock(TextIndexRange text) : fRun(nullptr), fText(text) { }
 
-        RunBlock(std::shared_ptr<Run> run, TextRange text, GlyphRange glyphs, size_t score)
+        RunBlock(std::shared_ptr<Run> run, TextIndexRange text, GlyphRange glyphs, size_t score)
             : fRun(std::move(run))
             , fText(text)
             , fGlyphs(glyphs) { }
@@ -56,19 +56,19 @@ private:
             , fGlyphs(GlyphRange(0, fRun->size())) { }
 
         std::shared_ptr<Run> fRun;
-        TextRange fText;
+        TextIndexRange fText;
         GlyphRange fGlyphs;
         bool isFullyResolved() { return fRun != nullptr && fGlyphs.width() == fRun->size(); }
     };
 
     using ShapeVisitor =
-            std::function<SkScalar(TextRange textRange, SkSpan<Block>, SkScalar&, TextIndex, uint8_t)>;
+            std::function<SkScalar(TextIndexRange textRange, SkSpan<Block>, SkScalar&, TextIndex, uint8_t)>;
     bool iterateThroughShapingRegions(const ShapeVisitor& shape);
 
     using ShapeSingleFontVisitor =
             std::function<void(Block, skia_private::TArray<SkShaper::Feature>)>;
     void iterateThroughFontStyles(
-            TextRange textRange, SkSpan<Block> styleSpan, const ShapeSingleFontVisitor& visitor);
+            TextIndexRange textRange, SkSpan<Block> styleSpan, const ShapeSingleFontVisitor& visitor);
 
     enum Resolved {
         Nothing,
@@ -102,7 +102,7 @@ private:
 
     void commitRunBuffer(const RunInfo&) override;
 
-    TextRange clusteredText(GlyphRange& glyphs);
+    TextIndexRange clusteredText(GlyphRange& glyphs);
     ClusterIndex clusterIndex(GlyphIndex glyph) {
         return fCurrentText.start + fCurrentRun->fClusterIndexes[glyph];
     }
@@ -113,7 +113,7 @@ private:
     void fillGaps(size_t);
 
     ParagraphImpl* fParagraph;
-    TextRange fCurrentText;
+    TextIndexRange fCurrentText;
     SkScalar fHeight;
     bool fUseHalfLeading;
     SkScalar fBaselineShift;

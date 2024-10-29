@@ -334,20 +334,20 @@ private:
 };
 
 typedef size_t TextIndex;
-typedef SkRange<size_t> TextRange;
+typedef SkRange<size_t> TextIndexRange;
 const SkRange<size_t> EMPTY_TEXT = EMPTY_RANGE;
 
 struct Block {
     Block() = default;
     Block(size_t start, size_t end, const TextStyle& style) : fRange(start, end), fStyle(style) {}
-    Block(TextRange textRange, const TextStyle& style) : fRange(textRange), fStyle(style) {}
+    Block(TextIndexRange textRange, const TextStyle& style) : fRange(textRange), fStyle(style) {}
 
-    void add(TextRange tail) {
+    void add(TextIndexRange tail) {
         SkASSERT(fRange.end == tail.start);
-        fRange = TextRange(fRange.start, fRange.start + fRange.width() + tail.width());
+        fRange = TextIndexRange(fRange.start, fRange.start + fRange.width() + tail.width());
     }
 
-    TextRange fRange = EMPTY_RANGE;
+    TextIndexRange fRange = EMPTY_RANGE;
     TextStyle fStyle;
 };
 
@@ -360,18 +360,18 @@ const SkRange<size_t> EMPTY_BLOCKS = EMPTY_RANGE;
 struct Placeholder {
     Placeholder() = default;
     Placeholder(size_t start, size_t end, const PlaceholderStyle& style, const TextStyle& textStyle,
-                BlockRange blocksBefore, TextRange textBefore)
+                BlockRange blocksBefore, TextIndexRange textBefore)
             : fRange(start, end)
             , fStyle(style)
             , fTextStyle(textStyle)
             , fBlocksBefore(blocksBefore)
             , fTextBefore(textBefore) {}
 
-    TextRange fRange = EMPTY_RANGE;
+    TextIndexRange fRange = EMPTY_RANGE;
     PlaceholderStyle fStyle;
     TextStyle fTextStyle;
     BlockRange fBlocksBefore;
-    TextRange fTextBefore;
+    TextIndexRange fTextBefore;
 };
 
 }  // namespace textlayout

@@ -56,17 +56,17 @@ public:
              SkVector offset,
              SkVector advance,
              BlockRange blocks,
-             TextRange textExcludingSpaces,
-             TextRange text,
-             TextRange textIncludingNewlines,
+             TextIndexRange textExcludingSpaces,
+             TextIndexRange text,
+             TextIndexRange textIncludingNewlines,
              ClusterRange clusters,
              ClusterRange clustersWithGhosts,
              SkScalar widthWithSpaces,
              InternalLineMetrics sizes);
 
-    TextRange trimmedText() const { return fTextExcludingSpaces; }
-    TextRange textWithNewlines() const { return fTextIncludingNewlines; }
-    TextRange text() const { return fText; }
+    TextIndexRange trimmedText() const { return fTextExcludingSpaces; }
+    TextIndexRange textWithNewlines() const { return fTextIncludingNewlines; }
+    TextIndexRange text() const { return fText; }
     ClusterRange clusters() const { return fClusterRange; }
     ClusterRange clustersWithSpaces() const { return fGhostClusterRange; }
     Run* ellipsis() const { return fEllipsis.get(); }
@@ -86,14 +86,14 @@ public:
     SkScalar baseline() const { return fSizes.baseline(); }
 
     using RunVisitor = std::function<bool(
-            const Run* run, SkScalar runOffset, TextRange textRange, SkScalar* width)>;
+            const Run* run, SkScalar runOffset, TextIndexRange textRange, SkScalar* width)>;
     void iterateThroughVisualRuns(bool includingGhostSpaces, const RunVisitor& runVisitor) const;
     using RunStyleVisitor = std::function<void(
-            TextRange textRange, const TextStyle& style, const ClipContext& context)>;
+            TextIndexRange textRange, const TextStyle& style, const ClipContext& context)>;
     SkScalar iterateThroughSingleRunByStyles(TextAdjustment textAdjustment,
                                              const Run* run,
                                              SkScalar runOffset,
-                                             TextRange textRange,
+                                             TextIndexRange textRange,
                                              StyleType styleType,
                                              const RunStyleVisitor& visitor) const;
 
@@ -117,14 +117,14 @@ public:
 
     bool isFirstLine() const;
     bool isLastLine() const;
-    void getRectsForRange(TextRange textRange,
+    void getRectsForRange(TextIndexRange textRange,
                           RectHeightStyle rectHeightStyle,
                           RectWidthStyle rectWidthStyle,
                           std::vector<TextBox>& boxes) const;
     void getRectsForPlaceholders(std::vector<TextBox>& boxes);
     PositionWithAffinity getGlyphPositionAtCoordinate(SkScalar dx);
 
-    ClipContext measureTextInsideOneRun(TextRange textRange,
+    ClipContext measureTextInsideOneRun(TextIndexRange textRange,
                                         const Run* run,
                                         SkScalar runOffsetInLine,
                                         SkScalar textOffsetInRunInLine,
@@ -146,23 +146,23 @@ private:
     std::unique_ptr<Run> shapeEllipsis(const SkString& ellipsis, const Cluster* cluster);
     void justify(SkScalar maxWidth);
 
-    void buildTextBlob(TextRange textRange, const TextStyle& style, const ClipContext& context);
+    void buildTextBlob(TextIndexRange textRange, const TextStyle& style, const ClipContext& context);
     void paintBackground(ParagraphPainter* painter,
                          SkScalar x,
                          SkScalar y,
-                         TextRange textRange,
+                         TextIndexRange textRange,
                          const TextStyle& style,
                          const ClipContext& context) const;
     void paintShadow(ParagraphPainter* painter,
                      SkScalar x,
                      SkScalar y,
-                     TextRange textRange,
+                     TextIndexRange textRange,
                      const TextStyle& style,
                      const ClipContext& context) const;
     void paintDecorations(ParagraphPainter* painter,
                           SkScalar x,
                           SkScalar y,
-                          TextRange textRange,
+                          TextIndexRange textRange,
                           const TextStyle& style,
                           const ClipContext& context) const;
 
@@ -170,9 +170,9 @@ private:
 
     ParagraphImpl* fOwner;
     BlockRange fBlockRange;
-    TextRange fTextExcludingSpaces;
-    TextRange fText;
-    TextRange fTextIncludingNewlines;
+    TextIndexRange fTextExcludingSpaces;
+    TextIndexRange fText;
+    TextIndexRange fTextIncludingNewlines;
     ClusterRange fClusterRange;
     ClusterRange fGhostClusterRange;
     // Avoid the malloc/free in the common case of one run per line
