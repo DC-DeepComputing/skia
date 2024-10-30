@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83866942_29cb7de7",
+        "filename": "src/pdf/SkPDFTag.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-10-30T18:22:34Z",
+      "side": 1,
+      "message": "nit: `const SkString\u0026`, to defer making a copy to clients?",
+      "range": {
+        "startLine": 49,
+        "startChar": 8,
+        "endLine": 49,
+        "endChar": 16
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "3afb5105_9540209a",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/pdf/SkPDFTag.h",
+              "range": {
+                "startLine": 49,
+                "startChar": 0,
+                "endLine": 50,
+                "endChar": 0
+              },
+              "replacement": "        const SkString\u0026 structType() const; // only call when bool(this)\n"
+            }
+          ]
+        }
+      ],
+      "revId": "b57b0d7c5c601dccbdae77435abfbe4af994fa47",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
