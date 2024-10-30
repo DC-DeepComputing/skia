@@ -223,6 +223,8 @@ public:
     */
     bool interpolate(const SkPath& ending, SkScalar weight, SkPath* out) const;
 
+    bool general_interpolate(const SkPath& ending, SkScalar weight, SkPath* out) const;
+
     /** Returns SkPathFillType, the rule used to fill SkPath.
 
         @return  current SkPathFillType setting

@@ -19,6 +19,7 @@
 
 #include <algorithm>
 #include <utility>
+#include <vector>
 
 #define kMaxTValue  0x3FFFFFFF
 
@@ -628,6 +629,13 @@ bool SkContourMeasure::getPosTan(SkScalar distance, SkPoint* pos, SkVector* tang
     SkASSERT((unsigned)seg->fPtIndex < (unsigned)fPts.size());
     compute_pos_tan(&fPts[seg->fPtIndex], seg->fType, t, pos, tangent);
     return true;
+}
+
+std::optional<SkScalar> SkContourMeasure::getSegmentDistance(size_t index) const {
+    if (index >= static_cast<size_t>(fSegments.size())) {
+      return std::nullopt;
+    }
+    return fSegments[index].fDistance;
 }
 
 bool SkContourMeasure::getMatrix(SkScalar distance, SkMatrix* matrix, MatrixFlags flags) const {

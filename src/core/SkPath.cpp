@@ -9,6 +9,7 @@
 
 #include "include/core/SkArc.h"
 #include "include/core/SkPathBuilder.h"
+#include "include/core/SkPathMeasure.h"
 #include "include/core/SkRRect.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkString.h"
