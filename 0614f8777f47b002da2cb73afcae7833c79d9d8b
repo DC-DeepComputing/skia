@@ -16,6 +16,24 @@
       "message": "(for later) Is it set by CICP? If so, we should probably add CICP values to Skia\u0027s build... I have them sitting over [here](https://source.chromium.org/chromium/chromium/src/+/main:skia/ext/cicp.h;l\u003d18;drc\u003d4e504eb1ab1ae54d9909f48c4c05b0ae875590d2).",
       "revId": "0614f8777f47b002da2cb73afcae7833c79d9d8b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "399d9efc_f58c4f83",
+        "filename": "src/codec/SkCrabbyAvifCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2024-10-30T03:15:42Z",
+      "side": 1,
+      "message": "i haven\u0027t looked into how this is computed yet. chromium wrapper seems to have a dedicated function for this which is why i decided to defer it: https://source.chromium.org/chromium/chromium/src/+/main:third_party/blink/renderer/platform/image-decoders/avif/avif_image_decoder.cc;l\u003d150;drc\u003dd815f515138991af2aa5b1d07c64906fd8a7366b\n\ni\u0027ll keep your cicp comment in mind.",
+      "parentUuid": "753f8b46_70898a86",
+      "revId": "0614f8777f47b002da2cb73afcae7833c79d9d8b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
