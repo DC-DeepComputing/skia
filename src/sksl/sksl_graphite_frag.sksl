@@ -1571,7 +1571,9 @@ $pure half4 per_edge_aa_quad_coverage_fn(float4 coords,
 $pure half4 circular_arc_coverage_fn(float4 circleEdge,
                                      float3 clipPlane,
                                      float3 isectPlane,
-                                     float3 unionPlane) {
+                                     float3 unionPlane,
+                                     float roundCapRadius,
+                                     float4 roundCapPos) {
     float d = length(circleEdge.xy);
     half distanceToOuterEdge = half(circleEdge.z * (1.0 - d));
     half edgeAlpha = saturate(distanceToOuterEdge);
@@ -1583,8 +1585,17 @@ $pure half4 circular_arc_coverage_fn(float4 circleEdge,
     clip *= half(saturate(circleEdge.z * dot(circleEdge.xy, isectPlane.xy) + isectPlane.z));
     clip = saturate(clip +
                    half(saturate(circleEdge.z * dot(circleEdge.xy, unionPlane.xy) + unionPlane.z)));
+    edgeAlpha *= clip;
 
-    return half4(clip*edgeAlpha);
+    // We compute coverage of the round caps as circles at the butt caps produced
+    // by the clip planes. The inverse of the clip planes is applied so that there
+    // is no double counting.
+    half dcap1 = half(circleEdge.z * (roundCapRadius - length(circleEdge.xy - roundCapPos.xy)));
+    half dcap2 = half(circleEdge.z * (roundCapRadius - length(circleEdge.xy - roundCapPos.zw)));
+    half capAlpha = (1 - clip) * (max(dcap1, 0) + max(dcap2, 0));
+    edgeAlpha = min(edgeAlpha + capAlpha, 1.0);
+
+    return half4(edgeAlpha);
 }
 
 $pure half4 $rect_blur_coverage_fn(float2 coords,
