@@ -1,6 +1,46 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "733099ad_e4761df5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 20044
+      },
+      "writtenOn": "2024-10-30T13:34:56Z",
+      "side": 1,
+      "message": "LGTM apart from that one comment (but I can\u0027t vote anyway)",
+      "revId": "0614f8777f47b002da2cb73afcae7833c79d9d8b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b584fd70_696da517",
+        "filename": "src/codec/SkCrabbyAvifCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 20044
+      },
+      "writtenOn": "2024-10-30T13:34:56Z",
+      "side": 1,
+      "message": "for the headroom and gamma the numerator is a uint32_t so it might not fit in an int32_t",
+      "range": {
+        "startLine": 32,
+        "startChar": 22,
+        "endLine": 32,
+        "endChar": 29
+      },
+      "revId": "0614f8777f47b002da2cb73afcae7833c79d9d8b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "753f8b46_70898a86",
