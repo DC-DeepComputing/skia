@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc05c2e1_307de176",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1517,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-30T17:00:38Z",
+      "side": 1,
+      "message": "With either `SkTDArray` or `STArray` this can be done in the initializer list with initializer_list contruction.\n\n`, fMatrixStack({initialTransform})`",
+      "revId": "ad2ddfb39250f18abf2650d586283161b3c127fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e940fc39_4cb4e561",
+        "filename": "src/ports/SkTypeface_fontations_priv.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-30T17:00:38Z",
+      "side": 1,
+      "message": "It might work to make this an `skia_private::STArray\u003c8, SkMatrix\u003e fStack;` (336 bytes) or with some `N` such that in the common case there are no heap allocations.",
+      "revId": "ad2ddfb39250f18abf2650d586283161b3c127fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
