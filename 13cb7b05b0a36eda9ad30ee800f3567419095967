@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8cd020c_4c86e35b",
+        "filename": "src/gpu/graphite/vk/VulkanSharedContext.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-10-30T15:30:05Z",
+      "side": 0,
+      "message": "Do we not want to have this as a backup option at all? I mean, for push constants, we still have the intrinsic uniform buffer option available and we query Caps to see which to use. Though if you anticipate we will always use push constants for loading MSAA from resolve (and for all intrinsic information?), then we could purge both this and the intrinsic constant UBO. I already avoid initializing it when we are using push constants, but if we don\u0027t need the option, all that code can go away.",
+      "range": {
+        "startLine": 148,
+        "startChar": 0,
+        "endLine": 160,
+        "endChar": 63
+      },
+      "revId": "13cb7b05b0a36eda9ad30ee800f3567419095967",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

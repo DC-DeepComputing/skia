@@ -20,6 +20,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "90bfcd24_44321fb3",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 582,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-10-30T15:30:05Z",
+      "side": 1,
+      "message": "You could use `VulkanResourceProvider::kIntrinsicConstantSize` for the size value",
+      "range": {
+        "startLine": 582,
+        "startChar": 33,
+        "endLine": 582,
+        "endChar": 35
+      },
+      "revId": "ccdff6d57f822ab95a4b9a12c3b92c8122a927f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "22e45277_cb5f5c63",
         "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
         "patchSetId": 2
@@ -31,6 +54,30 @@
       "writtenOn": "2024-10-29T21:07:09Z",
       "side": 1,
       "message": "Need to fix these up to be less hardcoded especially when we may use pushConstants for intrinsics or normal uniforms in the future. Let me know if you have any thoughts on what would work best with your designs",
+      "range": {
+        "startLine": 581,
+        "startChar": 8,
+        "endLine": 583,
+        "endChar": 66
+      },
+      "revId": "ccdff6d57f822ab95a4b9a12c3b92c8122a927f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6fac1d24_03ba64d3",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 583,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-10-30T15:30:05Z",
+      "side": 1,
+      "message": "Yeah in my own push constant CL adds a method for push constants but this is good for now! \n\nIf you want to go ahead and TAL at that CL (https://skia-review.googlesource.com/c/skia/+/762398), I\u0027m tempted to get your feedback and perhaps land it for non-Android devices (or on GPUs where we are not having isses on... Nolan\u0027s Pixel 9 works with my push constant changes, but my Pixel 6 fails. I am working on eliminating any other confounding variables there like syncing to the exact same Android checkout etc.). At the very least, I can address any initial feedback you may have while builds deploy",
+      "parentUuid": "22e45277_cb5f5c63",
       "range": {
         "startLine": 581,
         "startChar": 8,
