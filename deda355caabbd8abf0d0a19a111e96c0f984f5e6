@@ -16,6 +16,179 @@
       "message": "content://media/external/downloads/1000001546",
       "revId": "deda355caabbd8abf0d0a19a111e96c0f984f5e6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cb7c62b3_b48b7088",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-10-30T13:38:50Z",
+      "side": 1,
+      "message": "nit: residing",
+      "range": {
+        "startLine": 158,
+        "startChar": 56,
+        "endLine": 158,
+        "endChar": 62
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "f8db4e95_66fd6721",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+              "range": {
+                "startLine": 158,
+                "startChar": 0,
+                "endLine": 159,
+                "endChar": 0
+              },
+              "replacement": "// Wraps a Dawn buffer, and tracks the intrinsic blocks residing in this buffer.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "deda355caabbd8abf0d0a19a111e96c0f984f5e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "691f88ba_a9932ba5",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-10-30T13:38:50Z",
+      "side": 1,
+      "message": "style-wise, Skia usually has `Make` factories for when the returned value is wrapped in a smart pointer.  Since these objects are just being managed directly as part of the internal linked list, we may as well just let the constructor be public.",
+      "range": {
+        "startLine": 163,
+        "startChar": 28,
+        "endLine": 163,
+        "endChar": 32
+      },
+      "revId": "deda355caabbd8abf0d0a19a111e96c0f984f5e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0dc4a620_bbb99fc7",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-10-30T13:38:50Z",
+      "side": 1,
+      "message": "this and the constructor\u0027s parameter should just be `sk_sp\u003cDawnBuffer\u003e`",
+      "range": {
+        "startLine": 163,
+        "startChar": 33,
+        "endLine": 163,
+        "endChar": 52
+      },
+      "revId": "deda355caabbd8abf0d0a19a111e96c0f984f5e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d3cde37e_bda0c408",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-10-30T13:38:50Z",
+      "side": 1,
+      "message": "`UniformDataBlock` is effectively a `std::span`, which is recommended to pass by value so we should do that here as well.",
+      "range": {
+        "startLine": 172,
+        "startChar": 24,
+        "endLine": 172,
+        "endChar": 47
+      },
+      "revId": "deda355caabbd8abf0d0a19a111e96c0f984f5e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4bd76e83_0299713f",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-10-30T13:38:50Z",
+      "side": 1,
+      "message": "I\u0027d like to start with a smaller value here so that the search time doesn\u0027t get to be too long. Perhaps just 16?",
+      "revId": "deda355caabbd8abf0d0a19a111e96c0f984f5e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32cbc85c_23c7249e",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 282,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-10-30T13:38:50Z",
+      "side": 1,
+      "message": "According to the webgpu spec, I think this is only an issue if we were dealing with mapped buffers. The queue WriteBuffer() only requires that the buffer be available (not mapped and not destroyed), so I think we can just drop all the `fCurrentCommandBuffer` tracking.",
+      "range": {
+        "startLine": 280,
+        "startChar": 0,
+        "endLine": 282,
+        "endChar": 22
+      },
+      "revId": "deda355caabbd8abf0d0a19a111e96c0f984f5e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54e204be_dfdeaf8e",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 293,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-10-30T13:38:50Z",
+      "side": 1,
+      "message": "This shouldn\u0027t be reset to 0 until after the `if (!dawnBuffer)` or we could get into a weird state where one `findOrCreateDawnBuffer` fails and then subsequent `add()` calls see we still have the old `fCurrentBuffer` but a slots used count of 0 and overwrite prior slots accidentally.",
+      "range": {
+        "startLine": 293,
+        "startChar": 0,
+        "endLine": 293,
+        "endChar": 23
+      },
+      "revId": "deda355caabbd8abf0d0a19a111e96c0f984f5e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

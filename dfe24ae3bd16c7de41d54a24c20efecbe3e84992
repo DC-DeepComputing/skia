@@ -166,6 +166,30 @@
       },
       "revId": "dfe24ae3bd16c7de41d54a24c20efecbe3e84992",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ef058ba_7ddd8930",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-10-30T13:38:50Z",
+      "side": 0,
+      "message": "I added more detailed comments, thanks for iterating on this. One thing that I think we should keep from the original work was making the cleanup functions on `ResourceProvider` virtual and having the `DawnResourceProvider` be able to forcibly empty out the LRU list of IntrinsicBuffers.",
+      "parentUuid": "4a5debde_d07ebed8",
+      "range": {
+        "startLine": 37,
+        "startChar": 25,
+        "endLine": 37,
+        "endChar": 50
+      },
+      "revId": "dfe24ae3bd16c7de41d54a24c20efecbe3e84992",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
