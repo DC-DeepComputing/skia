@@ -203,6 +203,24 @@ std::string emit_render_step_uniforms(int bufferID,
     return result;
 }
 
+std::string emit_intrinsic_constants(const ResourceBindingRequirements& bindingReqs) {
+    std::string result;
+    // bindingReqs.fUniformBufferLayout already takes into account whether or not we are using
+    // push constants.
+    auto offsetter = UniformOffsetCalculator::ForTopLevel(bindingReqs.fUniformBufferLayout);
+
+    if (bindingReqs.fUseVulkanPushConstants) {
+        result = "layout (vulkan, push_constant) uniform IntrinsicUniforms {\n";
+    } else {
+        result = get_uniform_header(bindingReqs.fIntrinsicBufferBinding, "Intrinsic");
+    }
+    result += get_uniforms(&offsetter, kIntrinsicUniforms, -1, /* wrotePaintColor= */ nullptr);
+    result.append("};\n\n");
+    SkASSERTF(bindingReqs.fUseVulkanPushConstants || result.find('[') == std::string::npos,
+              "Arrays are not supported in intrinsic uniforms");
+    return result;
+}
+
 std::string emit_paint_params_storage_buffer(int bufferID,
                                              SkSpan<const ShaderNode*> nodes,
                                              bool* hasUniforms,
@@ -628,8 +646,7 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
 
     // The uniforms are mangled by having their index in 'fEntries' as a suffix (i.e., "_%d")
     const ResourceBindingRequirements& bindingReqs = caps->resourceBindingRequirements();
-    preamble += emit_intrinsic_uniforms(bindingReqs.fIntrinsicBufferBinding,
-                                        bindingReqs.fUniformBufferLayout);
+    preamble += emit_intrinsic_constants(bindingReqs);
     if (hasStepUniforms) {
         if (useStepStorageBuffer) {
             preamble += emit_render_step_storage_buffer(bindingReqs.fRenderStepBufferBinding,
