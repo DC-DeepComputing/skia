@@ -57,6 +57,8 @@ public:
      */
     bool isClosed() const { return fIsClosed; }
 
+    std::optional<SkScalar> getSegmentDistance(size_t index) const;
+
 private:
     struct Segment {
         SkScalar    fDistance;  // total distance up to this point
