@@ -106,6 +106,10 @@ public:
     bool isTransferSrc(const VulkanTextureInfo&) const;
     bool isTransferDst(const VulkanTextureInfo&) const;
 
+    bool mustLoadFullImageForMSAA() const {
+        return fMustLoadFullImageForMSAA;
+    }
+
 private:
     enum VkVendor {
         kAMD_VkVendor             = 4098,
@@ -250,6 +254,9 @@ private:
     bool fGpuOnlyBuffersMorePerformant = false;
     bool fShouldPersistentlyMapCpuToGpuBuffers = true;
     bool fSupportsDeviceFaultInfo = false;
+
+    // Flags to enable workarounds for driver bugs
+    bool fMustLoadFullImageForMSAA = false;
 };
 
 } // namespace skgpu::graphite
