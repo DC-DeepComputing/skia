@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a80db539_cae7cc64",
+        "filename": "src/gpu/graphite/render/CircularArcRenderStep.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-10-30T17:58:15Z",
+      "side": 1,
+      "message": "nit: This will",
+      "range": {
+        "startLine": 75,
+        "startChar": 90,
+        "endLine": 75,
+        "endChar": 94
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "54954635_18acc20e",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/render/CircularArcRenderStep.cpp",
+              "range": {
+                "startLine": 76,
+                "startChar": 0,
+                "endLine": 77,
+                "endChar": 0
+              },
+              "replacement": "//    will be all zeroes if not needed.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "9729f8d91cd14b05cf5c747a3d34fcc50294a425",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
