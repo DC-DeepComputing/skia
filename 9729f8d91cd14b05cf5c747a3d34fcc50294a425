@@ -40,6 +40,30 @@
       ],
       "revId": "9729f8d91cd14b05cf5c747a3d34fcc50294a425",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "18bca85c_7777d158",
+        "filename": "src/gpu/graphite/render/CircularArcRenderStep.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-10-30T19:00:37Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "a80db539_cae7cc64",
+      "range": {
+        "startLine": 75,
+        "startChar": 90,
+        "endLine": 75,
+        "endChar": 94
+      },
+      "revId": "9729f8d91cd14b05cf5c747a3d34fcc50294a425",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
