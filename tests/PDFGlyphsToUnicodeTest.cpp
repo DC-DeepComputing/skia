@@ -89,7 +89,7 @@ DEF_TEST(SkPDF_ToUnicode, reporter) {
     for (uint16_t v : glyphsInSubset) {
         subset.set(v);
     }
-    SkPDFAppendCmapSections(&glyphToUnicode[0], &subset, &buffer, true, 0,
+    SkPDFAppendCmapSections(&glyphToUnicode[0], skia_private::THashMap<SkGlyphID, SkString>(), &subset, &buffer, true, 0,
                             std::min<SkGlyphID>(0xFFFF,  lastGlyphID));
 
     char expectedResult[] =
@@ -112,7 +112,7 @@ endbfrange\n";
     // Remove characters and ranges.
     buffer.reset();
 
-    SkPDFAppendCmapSections(&glyphToUnicode[0], &subset, &buffer, true, 8,
+    SkPDFAppendCmapSections(&glyphToUnicode[0], skia_private::THashMap<SkGlyphID, SkString>(), &subset, &buffer, true, 8,
                             std::min<SkGlyphID>(0x00FF, lastGlyphID));
 
     char expectedResultChop1[] =
@@ -131,7 +131,7 @@ endbfrange\n";
     // Remove characters from range to downdrade it to one char.
     buffer.reset();
 
-    SkPDFAppendCmapSections(&glyphToUnicode[0], &subset, &buffer, true, 0x00D,
+    SkPDFAppendCmapSections(&glyphToUnicode[0], skia_private::THashMap<SkGlyphID, SkString>(), &subset, &buffer, true, 0x00D,
                             std::min<SkGlyphID>(0x00FE, lastGlyphID));
 
     char expectedResultChop2[] =
@@ -145,7 +145,7 @@ endbfchar\n";
 
     buffer.reset();
 
-    SkPDFAppendCmapSections(&glyphToUnicode[0], nullptr, &buffer, false, 0xFC,
+    SkPDFAppendCmapSections(&glyphToUnicode[0], skia_private::THashMap<SkGlyphID, SkString>(), nullptr, &buffer, false, 0xFC,
                             std::min<SkGlyphID>(0x110, lastGlyphID));
 
     char expectedResultSingleBytes[] =
@@ -185,7 +185,7 @@ endbfrange\n";
     for (uint16_t v : glyphsInSubset) {
         subset2.set(v);
     }
-    SkPDFAppendCmapSections(&glyphToUnicode[0], &subset2, &buffer2, true, 0,
+    SkPDFAppendCmapSections(&glyphToUnicode[0], skia_private::THashMap<SkGlyphID, SkString>(), &subset2, &buffer2, true, 0,
                             std::min<SkGlyphID>(0xFFFF, lastGlyphID));
 
     char expectedResult2[] =
