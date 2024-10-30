@@ -22,6 +22,30 @@
       },
       "revId": "daef8330e9ef0c6e84efe2290d994b8f72b0040e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b958b1c_3c2d9e26",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-10-30T17:10:13Z",
+      "side": 1,
+      "message": "I see now it is verbs after reading the implementation of Next(Segment*)",
+      "parentUuid": "1ae9af20_462617f9",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 46
+      },
+      "revId": "daef8330e9ef0c6e84efe2290d994b8f72b0040e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
