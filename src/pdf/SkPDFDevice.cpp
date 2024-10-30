@@ -919,6 +919,7 @@ void SkPDFDevice::internalDrawGlyphRun(
     }
 
     const std::vector<SkUnichar>& glyphToUnicode = SkPDFFont::GetUnicodeMap(typeface, fDocument);
+    skia_private::THashMap<SkGlyphID, SkString>& glyphToUnicodeEx = SkPDFFont::GetUnicodeMapEx(typeface, fDocument);
 
     // TODO: FontType should probably be on SkPDFStrike?
     SkAdvancedTypefaceMetrics::FontType initialFontType = SkPDFFont::FontType(*pdfStrike, *metrics);
@@ -988,13 +989,25 @@ void SkPDFDevice::internalDrawGlyphRun(
             const char* textPtr = c.fUtf8Text;
             const char* textEnd = c.fUtf8Text + c.fTextByteLength;
             SkUnichar unichar = SkUTF::NextUTF8(&textPtr, textEnd);
-            if (unichar < 0) {
-                return;
+
+            // The regular cmap works if there is one glyph and one codepoint in the cluster
+            // and the glyph maps to the codepoint.
+            bool cmap = c.fGlyphCount == 1 && textPtr == textEnd &&
+                        unichar == map_glyph(glyphToUnicode, glyphIDs[index]);
+
+            // The extended cmap can handle this if there is one glyph in the cluster, less than
+            // 512 bytes in the UTF-16, and the mapping matches or can be added.
+            if (!cmap && c.fGlyphCount == 1) {
+                SkString* unicodes = glyphToUnicodeEx.find(glyphIDs[index]);
+                if (!unicodes /*&& UTF-16 bytes < 512*/) {
+                    glyphToUnicodeEx.set(glyphIDs[index], SkString(c.fUtf8Text, c.fTextByteLength));
+                    cmap = true;
+                } else if (unicodes->equals(c.fUtf8Text, c.fTextByteLength)) {
+                    cmap = true;
+                }
             }
-            if (textPtr < textEnd ||                                    // >1 code points in cluster
-                c.fGlyphCount > 1 ||                                    // >1 glyphs in cluster
-                unichar != map_glyph(glyphToUnicode, glyphIDs[index]))  // 1:1 but wrong mapping
-            {
+
+            if (!cmap) {
                 glyphPositioner.flush();
                 out->writeText("/Span<</ActualText ");
                 SkPDFWriteTextString(out, c.fUtf8Text, c.fTextByteLength);
