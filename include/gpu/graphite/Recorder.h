@@ -57,9 +57,6 @@ class UniformDataBlock;
 class UploadBufferManager;
 class UploadList;
 
-template<typename T> class PipelineDataCache;
-using TextureDataCache = PipelineDataCache<TextureDataBlock>;
-
 struct SK_API RecorderOptions final {
     RecorderOptions();
     RecorderOptions(const RecorderOptions&);
@@ -261,7 +258,6 @@ private:
     // Aggregated one-time uploads that preceed all tasks in the root task list.
     std::unique_ptr<UploadList> fRootUploads;
 
-    std::unique_ptr<TextureDataCache> fTextureDataCache;
     std::unique_ptr<DrawBufferManager> fDrawBufferManager;
     std::unique_ptr<UploadBufferManager> fUploadBufferManager;
     std::unique_ptr<ProxyReadCountMap> fProxyReadCounts;
@@ -282,8 +278,8 @@ private:
     sk_sp<ImageProvider> fClientImageProvider;
 
     // In debug builds we guard against improper thread handling
-    // This guard is passed to the ResourceCache.
-    // TODO: Should we also pass this to Device, DrawContext, and similar classes?
+    // This guard is passed to the ResourceCache. Devices, which can only be used by the Recorder
+    // that created it, access this owner directly through their Recorder back pointer.
     mutable SingleOwner fSingleOwner;
 
     sk_sp<Device> fTargetProxyDevice;
