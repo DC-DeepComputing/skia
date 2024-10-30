@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec55e8fd_cab308c8",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1517,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-10-30T17:23:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bc05c2e1_307de176",
+      "revId": "ad2ddfb39250f18abf2650d586283161b3c127fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e940fc39_4cb4e561",
@@ -31,6 +49,24 @@
       "writtenOn": "2024-10-30T17:00:38Z",
       "side": 1,
       "message": "It might work to make this an `skia_private::STArray\u003c8, SkMatrix\u003e fStack;` (336 bytes) or with some `N` such that in the common case there are no heap allocations.",
+      "revId": "ad2ddfb39250f18abf2650d586283161b3c127fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3101187a_a11dbb10",
+        "filename": "src/ports/SkTypeface_fontations_priv.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-10-30T17:23:12Z",
+      "side": 1,
+      "message": "Good point, done. 8 seems generous, I went with 4. Plakato Color only used 2 + initial transform.",
+      "parentUuid": "e940fc39_4cb4e561",
       "revId": "ad2ddfb39250f18abf2650d586283161b3c127fe",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
