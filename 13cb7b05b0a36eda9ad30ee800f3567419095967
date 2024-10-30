@@ -22,6 +22,30 @@
       },
       "revId": "13cb7b05b0a36eda9ad30ee800f3567419095967",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b876ce71_533d8345",
+        "filename": "src/gpu/graphite/vk/VulkanSharedContext.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-10-30T15:48:45Z",
+      "side": 0,
+      "message": "After offline discussion, I will go ahead and gut out the intrinsic constant UBO usage everywhere",
+      "parentUuid": "c8cd020c_4c86e35b",
+      "range": {
+        "startLine": 148,
+        "startChar": 0,
+        "endLine": 160,
+        "endChar": 63
+      },
+      "revId": "13cb7b05b0a36eda9ad30ee800f3567419095967",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

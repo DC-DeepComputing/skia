@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9821061c_c3705fb0",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 582,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-10-30T15:48:45Z",
+      "side": 1,
+      "message": "just kidding the size is 1/2 of that my bad keep it as-is\n\nPerhaps define a static variable for the load msaa push constant size for now (and in the future we can have a struct define this as we talked about offline)",
+      "parentUuid": "90bfcd24_44321fb3",
+      "range": {
+        "startLine": 582,
+        "startChar": 33,
+        "endLine": 582,
+        "endChar": 35
+      },
+      "revId": "ccdff6d57f822ab95a4b9a12c3b92c8122a927f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "22e45277_cb5f5c63",
