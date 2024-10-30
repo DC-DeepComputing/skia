@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba5bc5ec_33eb16a6",
+        "filename": "src/pdf/SkPDFTag.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-30T15:28:16Z",
+      "side": 1,
+      "message": "The implementation of the new `SkPDFStructTree::Mark::structType` and the existing `SkPDFStructElem::emitStructElem` need to agree on the structure type. This is a required field and must be a name (like `/Name`) so cannot be empty. Previously we just let this be empty and the one real user (`emitStructElem`) would emit `NonStruct` on empty. Instead of spreading out a bunch of logic to keep things in sync, just use `NonStruct` here instead and don\u0027t allow `fStructType` to be the empty string. To avoid having lots of copies of this `NonStruct` string in memory just hold onto one so that all the SkString copies point at the same data under the hood (since SkString is copy on write).",
+      "revId": "481c717f7ebe89d2b63bd38fae329b5faa61dd5b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
