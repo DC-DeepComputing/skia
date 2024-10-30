@@ -315,6 +315,16 @@ const std::vector<SkUnichar>& SkPDFFont::GetUnicodeMap(const SkTypeface& typefac
     return *canon->fToUnicodeMap.set(id, std::move(buffer));
 }
 
+skia_private::THashMap<SkGlyphID, SkString>& SkPDFFont::GetUnicodeMapEx(const SkTypeface& typeface,
+                                                                      SkPDFDocument* canon) {
+    SkASSERT(canon);
+    SkTypefaceID id = typeface.uniqueID();
+    if (skia_private::THashMap<SkGlyphID, SkString>* ptr = canon->fToUnicodeMapEx.find(id)) {
+        return *ptr;
+    }
+    return *canon->fToUnicodeMapEx.set(id, skia_private::THashMap<SkGlyphID, SkString>());
+}
+
 SkAdvancedTypefaceMetrics::FontType SkPDFFont::FontType(const SkPDFStrike& pdfStrike,
                                                         const SkAdvancedTypefaceMetrics& metrics) {
     if (SkToBool(metrics.fFlags & SkAdvancedTypefaceMetrics::kVariable_FontFlag) ||
@@ -528,6 +538,7 @@ static void emit_subset_type0(const SkPDFFont& font, SkPDFDocument* doc) {
     SkASSERT(SkToSizeT(typeface.countGlyphs()) == glyphToUnicode.size());
     std::unique_ptr<SkStreamAsset> toUnicode =
             SkPDFMakeToUnicodeCmap(glyphToUnicode.data(),
+                                   SkPDFFont::GetUnicodeMapEx(typeface, doc),
                                    &font.glyphUsage(),
                                    font.multiByteGlyphs(),
                                    font.firstGlyphID(),
@@ -890,6 +901,7 @@ static void emit_subset_type3(const SkPDFFont& pdfFont, SkPDFDocument* doc) {
     const std::vector<SkUnichar>& glyphToUnicode = SkPDFFont::GetUnicodeMap(pathTypeface, doc);
     SkASSERT(glyphToUnicode.size() == SkToSizeT(pathTypeface.countGlyphs()));
     auto toUnicodeCmap = SkPDFMakeToUnicodeCmap(glyphToUnicode.data(),
+                                                SkPDFFont::GetUnicodeMapEx(pathTypeface, doc),
                                                 &subset,
                                                 false,
                                                 firstGlyphID,
