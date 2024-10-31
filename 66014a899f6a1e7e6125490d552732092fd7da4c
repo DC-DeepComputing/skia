@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dd72d45a_da6a86a6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 29
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-10-31T15:31:30Z",
+      "side": 1,
+      "message": "After talking offline, I gutted the intrinsic constant UBO path, made push constants visible in vertex shader stage exclusively. I also cherry-picked in your CL where we use push constants for loading MSAA from resolve to unify some functionality. Just kicked off a CQ run. Still broken on the Pixel 6, but wanted to get your intial feedback on these code changes.",
+      "revId": "66014a899f6a1e7e6125490d552732092fd7da4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
