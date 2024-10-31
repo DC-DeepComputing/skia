@@ -1,0 +1,274 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2840eb4d_52063725",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 1056,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-10-31T18:38:09Z",
+      "side": 1,
+      "message": "Assuming we don\u0027t have to adjust includes, this can just go in the header directly with the declaration.",
+      "range": {
+        "startLine": 1053,
+        "startChar": 0,
+        "endLine": 1056,
+        "endChar": 0
+      },
+      "revId": "961d8dea4e24b3920b51d87bea990b75ebfd104c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7035ab36_78c6195f",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-10-31T18:38:09Z",
+      "side": 1,
+      "message": "Can we wrap this in a `#if defined(SK_DEBUG)` since it\u0027s really only used to validate the intrinsic constants are being modified at the right time.",
+      "range": {
+        "startLine": 39,
+        "startChar": 0,
+        "endLine": 39,
+        "endChar": 32
+      },
+      "revId": "961d8dea4e24b3920b51d87bea990b75ebfd104c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "484e3a91_80b98664",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-10-31T18:38:09Z",
+      "side": 1,
+      "message": "nit: newline before `private:`",
+      "range": {
+        "startLine": 216,
+        "startChar": 0,
+        "endLine": 216,
+        "endChar": 7
+      },
+      "revId": "961d8dea4e24b3920b51d87bea990b75ebfd104c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39b22da5_e1d8c46f",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-10-31T18:38:09Z",
+      "side": 1,
+      "message": "I think we can remove this and just look at `fCurrentBuffer-\u003efCachedIntrinsicValues.size()`",
+      "range": {
+        "startLine": 226,
+        "startChar": 0,
+        "endLine": 226,
+        "endChar": 97
+      },
+      "revId": "961d8dea4e24b3920b51d87bea990b75ebfd104c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "91029bf1_26081c54",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-10-31T18:38:09Z",
+      "side": 1,
+      "message": "nit: remove empty line here",
+      "revId": "961d8dea4e24b3920b51d87bea990b75ebfd104c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "623c75c8_9899e390",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-10-31T18:38:09Z",
+      "side": 1,
+      "message": "Can we move this to just be inside the class declaration?",
+      "range": {
+        "startLine": 235,
+        "startChar": 0,
+        "endLine": 235,
+        "endChar": 79
+      },
+      "revId": "961d8dea4e24b3920b51d87bea990b75ebfd104c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a80226c4_6c56f620",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-10-31T18:38:09Z",
+      "side": 1,
+      "message": "nit: `this-\u003e`",
+      "range": {
+        "startLine": 239,
+        "startChar": 4,
+        "endLine": 239,
+        "endChar": 18
+      },
+      "revId": "961d8dea4e24b3920b51d87bea990b75ebfd104c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ddea2271_af0a2117",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 330,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-10-31T18:38:09Z",
+      "side": 1,
+      "message": "Can we have `freeGpuResources()` and `purgeResourcesNotUsedSince()` just be in the class declaration since they are relatively simple functions?",
+      "range": {
+        "startLine": 330,
+        "startChar": 54,
+        "endLine": 330,
+        "endChar": 70
+      },
+      "revId": "961d8dea4e24b3920b51d87bea990b75ebfd104c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "940a9a78_28498b33",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 331,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-10-31T18:38:09Z",
+      "side": 1,
+      "message": "nit: this-\u003e",
+      "range": {
+        "startLine": 331,
+        "startChar": 4,
+        "endLine": 331,
+        "endChar": 30
+      },
+      "revId": "961d8dea4e24b3920b51d87bea990b75ebfd104c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2cb58c5c_7fbef83e",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 340,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-10-31T18:38:09Z",
+      "side": 1,
+      "message": "nit: `this-\u003e`",
+      "range": {
+        "startLine": 340,
+        "startChar": 4,
+        "endLine": 340,
+        "endChar": 18
+      },
+      "revId": "961d8dea4e24b3920b51d87bea990b75ebfd104c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f86c53ae_abf64dd4",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 727,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-10-31T18:38:09Z",
+      "side": 1,
+      "message": "nit: `this-\u003eResourceProvider::freeGpuResources()`",
+      "range": {
+        "startLine": 727,
+        "startChar": 4,
+        "endLine": 727,
+        "endChar": 20
+      },
+      "revId": "961d8dea4e24b3920b51d87bea990b75ebfd104c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "554f00c9_09e199f6",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 732,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-10-31T18:38:09Z",
+      "side": 1,
+      "message": "nit: `this-\u003eResourceProvider::`",
+      "range": {
+        "startLine": 732,
+        "startChar": 4,
+        "endLine": 732,
+        "endChar": 20
+      },
+      "revId": "961d8dea4e24b3920b51d87bea990b75ebfd104c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
