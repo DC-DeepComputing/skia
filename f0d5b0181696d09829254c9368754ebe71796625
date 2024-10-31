@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a3fe752_d3399bc4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-10-31T15:43:49Z",
+      "side": 1,
+      "message": "I just noticed that there are few places where SK_TYPEFACE_FACTORY_FREETYPE is not required but currently Android font manager by default is using FreeType. Want to make it explicit.",
+      "revId": "f0d5b0181696d09829254c9368754ebe71796625",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
