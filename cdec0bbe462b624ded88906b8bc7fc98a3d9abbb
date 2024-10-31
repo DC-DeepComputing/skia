@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b5e8ecd_082b0f05",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-10-31T19:28:07Z",
+      "side": 1,
+      "message": "Hm, one issue is that the existing tests in RecordingSurfacesTest.cpp accidentally worked even if the replay translation wasn\u0027t being applied, but not so with the new tests.",
+      "parentUuid": "ad178cf8_cfa6c7a0",
+      "revId": "cdec0bbe462b624ded88906b8bc7fc98a3d9abbb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "93e8ca60_0255a797",
