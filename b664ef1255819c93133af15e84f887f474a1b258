@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33c50049_1903bfdf",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 34
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-10-31T16:06:18Z",
+      "side": 1,
+      "message": "shouldn\u0027t be needed",
+      "range": {
+        "startLine": 102,
+        "startChar": 4,
+        "endLine": 102,
+        "endChar": 55
+      },
+      "revId": "b664ef1255819c93133af15e84f887f474a1b258",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4913bf2e_f7a51cad",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.h",
+        "patchSetId": 34
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-10-31T16:06:18Z",
+      "side": 1,
+      "message": "Again I don\u0027t think we need this until we start thinking of using push constants for general uniforms with variable sizes. Instead we can just add an assert in the couple places we\u0027re using them that the size is less than the min required device limit.",
+      "range": {
+        "startLine": 78,
+        "startChar": 4,
+        "endLine": 80,
+        "endChar": 5
+      },
+      "revId": "b664ef1255819c93133af15e84f887f474a1b258",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e74dcda_015191ac",
+        "filename": "src/gpu/graphite/Caps.h",
+        "patchSetId": 31
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-10-31T16:06:18Z",
+      "side": 1,
+      "message": "I don\u0027t think we need this cap at all. We\u0027re always going to use push constants for intrinsics and they should be less than the required supported size in Vulkan which is 128 (but we should assert that we are less somewhere).",
+      "range": {
+        "startLine": 66,
+        "startChar": 9,
+        "endLine": 66,
+        "endChar": 32
+      },
+      "revId": "422ba0087cffff9a2b56cc53d07f7a5537a4ddc0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
