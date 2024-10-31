@@ -16,6 +16,24 @@
       "message": "`Segment::Next()` does not perform any bounds validation (it was only called previously when safe).  To address that, store the remaining `Segment`s as a `SkSpan`, and ensure we\u0027re not overflowing.\n\nWhile working on the msan fix, I also discovered another bug: since the distance is cumulative across segments, for a given verb we need to report the distance for the last segment, not the first one.  Updated to always track the last segment for the current verb.\n\nDiffs vs original CL: https://skia-review.googlesource.com/c/skia/+/915177/1..3",
       "revId": "f46ba60987401da64af33ab040d1bf0be2003403",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7ae30ae_777a691e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-10-31T21:00:59Z",
+      "side": 1,
+      "message": "bump for visibility",
+      "parentUuid": "d98569e9_63cd7bb1",
+      "revId": "f46ba60987401da64af33ab040d1bf0be2003403",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
