@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b1518b7a_8c67ff94",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 35
+      },
+      "lineNbr": 518,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-10-31T20:34:58Z",
+      "side": 1,
+      "message": "Where is this happening? Like if we have no uniforms it doesn\u0027t look like we\u0027ll push back this empty dummy set. Or am I missing something?",
+      "range": {
+        "startLine": 517,
+        "startChar": 20,
+        "endLine": 518,
+        "endChar": 24
+      },
+      "revId": "9bf5e650d685911b6840b4da456def14dd576531",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
