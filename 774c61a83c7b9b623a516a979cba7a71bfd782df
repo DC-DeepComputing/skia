@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "967e5b67_ee8af0d2",
+        "filename": "src/ports/SkFontScanner_fontations.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-31T18:26:39Z",
+      "side": 1,
+      "message": "We really would like to not have yet another one of these. I do wish https://skia-review.googlesource.com/c/skia/+/824900 could just land, but I haven\u0027t gotten back to fixing up the users. I\u0027m not sure of the right thing to do at the moment.",
+      "revId": "774c61a83c7b9b623a516a979cba7a71bfd782df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "277d4859_b789bd4c",
+        "filename": "src/ports/SkFontScanner_fontations.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-31T18:26:39Z",
+      "side": 1,
+      "message": "Before doing this we want to check `SkStream::getData()` which can be even less expensive.",
+      "revId": "774c61a83c7b9b623a516a979cba7a71bfd782df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
